@@ -356,10 +356,25 @@ def text_problems(paths):
 CENSUS = "the Conductor, 2026-11-23, retire census"
 RETIRED_PATHS = (                     # fnmatch globs of tracked paths
     ".claude/hooks/bench_mode.py", "infrastructure/state/MODE",
+    "final.md", "claude_sha.txt", ".bridge.eld", "GLOBAL_CLAUDE.md", "Fable_Review/*", "src/RimMandrake/rimflow/docs/*",
+    "infrastructure/agents/POLICY.md", "infrastructure/agents/REP.md", "infrastructure/agents/CODEX_PROPOSAL_*",
+    "infrastructure/REFRESH.md", "infrastructure/state/queue/HUMAN.md",
+    "infrastructure/state/IDEOLOGY_REBUILD_TRIAL.md", "infrastructure/state/WORLDGEN_RUN.md",
+    "infrastructure/state/REBOOT_HANDOFF_2026-09-02.md", "infrastructure/state/BENCH_HANDOFF.md",
+    "infrastructure/state/WORLDPAINT_REHEARSAL.md", "infrastructure/state/LOAD_PROCEDURE.md",
+    "infrastructure/state/haiku_census_2026-10-31.md", "infrastructure/state/live_proof_triage.tsv",
+    "infrastructure/state/lightspeed_unmatched.tsv",
+    "infrastructure/dashboards/*", "infrastructure/state/GOAL_SHEET.md", "src/RimMandrake/Utils/project_maturity_dashboard.py",
+    "src/RimMandrake/Utils/prove_scratch_reap_refused_day.py", "src/RimMandrake/Utils/codebase_health_publish.py", "src/RimMandrake/Utils/codebase_health_artifact.tmpl.html",
 )
-RETIRED_UNITS = ()                    # unit file names; a tracked copy in the one home, or an installed unmasked one
+RETIRED_UNITS = (                     # unit file names; a tracked copy in the one home, or an installed unmasked one
+    "steve-cpu-retest.timer", "steve-cpu-retest.service", "testq-sweep.timer", "testq-sweep.service",
+    "rm-codebase-health.timer", "rm-codebase-health.service", "rm-dispatcher.timer", "rm-ops-watch.timer",
+    "rm-ops-watch.service", "rm-restart-reconcile.timer", "rm-restart-reconcile.service",
+)
 RETIRED_WORDS = (                     # regexes refused on a live instruction line that does not say "retired"
-    r"\bbench_mode\.py\b", r"infrastructure/state/MODE\b",
+    r"\bbench_mode\.py\b", r"infrastructure/state/MODE\b", r"\bGOAL_SHEET\.md\b", r"queue/HUMAN\.md\b", r"\bGLOBAL_CLAUDE\.md\b",
+    r"\bproject_maturity_dashboard\b", r"\bcodebase_health_publish\b", r"\b(testq-sweep|rm-codebase-health|steve-cpu-retest)\b",
 )
 UNIT_HOME = "src/RimMandrake/Utils/systemd/"
 

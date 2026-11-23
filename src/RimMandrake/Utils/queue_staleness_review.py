@@ -37,13 +37,7 @@ one who gets to say the cadence is wrong.
 
 WHAT #4 ("mis-tagged needs/for") ACTUALLY CHECKS, AND WHAT IT DOES NOT
 ========================================================================
-🔴 The `for OWNER should appear in queue/HUMAN.md` idea in this item's own title turned
-out to be a WRONG premise on inspection, not a stretch goal — `infrastructure/state/queue/
-HUMAN.md`'s own header says it plainly: *"Owner DECISIONS are items and do live in the
-ledger... those are tracked, counted on the board, and closed with a trailer. This file is
-for everything that is not shaped like an item."* An item filed `--for OWNER` is worked via
-`rimflow next --seat OWNER`, never via HUMAN.md — HUMAN.md is hand-written prose for things
-that are NOT items at all. So "for OWNER never in HUMAN.md" is not a defect and this tool
+An item filed `--for OWNER` is worked via `rimflow next --seat OWNER`; it belongs on no hand-written page. So this tool
 does not check for it; asserting otherwise would be exactly the "flagging a wrong thing"
 mistake the rest of this codebase's own lesson file warns about.
 

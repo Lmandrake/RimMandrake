@@ -217,7 +217,7 @@ def save_timings(results) -> None:
         TIMINGS_FILE.write_text(json.dumps(old, indent=0, sort_keys=True))
     except OSError:
         pass
-SEARCH_ROOTS = ("src", ".claude/hooks", "skills", "infrastructure/dashboards/hub", "infrastructure/stevedesktop")
+SEARCH_ROOTS = ("src", ".claude/hooks", "skills", "infrastructure/stevedesktop")
 SELFTEST_GLOB = "selftest*.py"
 
 # Selftests that exist and are real, but cannot be run as bare `python3 <file>`.

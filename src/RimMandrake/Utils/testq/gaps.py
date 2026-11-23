@@ -13,7 +13,7 @@ FlowWorks first". When SteveDesktop's lane is idle, `testq.py fill MOD` queues t
   3. unmeasured   a chain whose latest valid run at the current identity has UNMEASURED or NOT_RUN rows, except a
                   DRY chain (its last two runs measured nothing; see testq.is_dry).
   4. never_run    a chain with no valid run at the current identity, stalest first.
-  5. the sweep    is not the filler's: testq-sweep.timer queues it nightly (`testq.py sweep`).
+  5. the sweep    is not the filler's: it is a named act (`testq.py sweep`), no timer queues it.
 
 ONE VERDICT PER CODE VERSION (owner ruling by card 2026-10-31, "Retest only after a code change"; retest.py): a chain
 holding a verdict of any kind at its current code version is in NO rank: not a PASS, not a FAIL (a fix that changed no

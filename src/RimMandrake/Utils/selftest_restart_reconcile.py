@@ -79,8 +79,6 @@ def request_file(root, seat, ts, reason="goodbye", where="."):
 check(REAL_LIM["restart_reconcile_s"] > 0, "restart_reconcile_s is a positive bound in dispatcher_schedule.json (the owner tunes it)")
 check(REAL_LIM["restart_reconcile_s"] - REAL_LIM["restart_reconcile_slack_s"] >= REAL_LIM["restart_reconcile_s"] - REAL_LIM["restart_reconcile_pass_s"] - REAL_LIM["restart_reconcile_slack_s"]
       and REAL_LIM["restart_reconcile_pass_s"] + REAL_LIM["restart_reconcile_slack_s"] < REAL_LIM["restart_reconcile_s"], "a pass and a filing fit inside the bound")
-unit = (HERE / "systemd/rm-restart-reconcile.timer").read_text(encoding="utf-8")
-check("OnUnitInactiveSec=%ds" % REAL_LIM["restart_reconcile_pass_s"] in unit, "the timer's period is restart_reconcile_pass_s")
 try:
     RR.limits({})
     check(False, "a missing threshold fails by name")

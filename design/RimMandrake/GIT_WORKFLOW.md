@@ -117,10 +117,9 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
 | state | where |
 |---|---|
 | ledger | `infrastructure/state/ledger/events/<SEAT>.jsonl`, append-only, `merge=union`. `events.jsonl` is frozen. `ledger_lint.py` (and the pre-push hook `block_ledger_lint.py`) refuses an edited or reordered line. `model.read()` orders events by content, so the file order does not matter. Never resolve a shard with `checkout --ours/--theirs`. For events stranded in a seat clone that cannot push, run `ledger_sync.py --seat <SEAT>` (a dry run). `--apply` appends the missing lines and pushes from a throwaway clone under `/home/mandrake/rm/scratch/<SEAT>/`; the run deletes that clone when it ends. `--clone <dir>` keeps a reusable clone. |
-| queue views | Rendered on read, untracked: `python3 src/RimMandrake/rimflow/cli.py queue <SEAT>`. `queue/HUMAN.md` is the owner's hand-written inbox, and it stays tracked. |
+| queue views | Rendered on read, untracked: `python3 src/RimMandrake/rimflow/cli.py queue <SEAT>`. |
 | lessons | One file each in `infrastructure/state/lessons/` (`python3 src/RimMandrake/Utils/lessons.py add "…"`). `lessons.py render` makes the untracked `LESSONS_INBOX.md` view. |
 | code review status | Append-only records `infrastructure/state/code_review/<SEAT>.jsonl` (`merge=union`). Only `code_review_status.py` writes them. Each review wave is one file under `code_review/waves/`. |
-| health heartbeat | `Transient/codebase_health*`, `codebase_health_last.json` and `dashboards/hub/data/*.json` are untracked. `rm-codebase-health.timer` regenerates them in the bench clone (`/home/mandrake/rm/bench`). |
 | `Transient/` | **Untracked since 2026-10-18** (owner, by card). `Transient/.gitignore` ignores everything except three things: itself, every `*.decisions.json`, and the pins that `src/RimMandrake/Utils/transient_pin.py` manages (`add`/`rm`/`cited --add`/`untrack`). The files stay on disk: `./sync`, `./publish` and `land.sh` (via `seat_sync.reset_keep`) never delete a file only because upstream stopped tracking it. Unpinned output is only in the clone that wrote it — not on `D:\`, GitHub or the other seat. |
 | `conversations/` | The handoff commits them: `handoff.py` lands every new or changed record via `conversations_land.py` (owner 2026-10-18, *"the next handoff plays catchup"*). A handoff through `~/dev/Lodestar/bin/handoff.py` runs `python3 src/RimMandrake/Utils/conversations_land.py --apply` right after `conversations.py`. |
 | Saves folder | Keep only the canonical save(s) and the saves awaiting review (`infrastructure/state/saves_awaiting_review.txt`). A backup lives until the operation that it guards is verified. `python3 src/RimMandrake/Utils/saves_prune.py` reports (a dry run). `--apply` deletes only uncited debug saves > 72 h old and backups > 24 h old — never a `CANONICAL_*` save. |
@@ -508,7 +507,7 @@ The rest are discipline. Each trap gives what happens, then what to do instead.
   - `rm-scratch-reap` failed every run on 'ledger corpus missing', because `DEFAULT_CORPUS` still
     named the retired clone `/home/mandrake/rm/foundry`;
   - `rm-mirror.service` and `rm-codebase-health.service` ran code from the retired foundry clone, whose HEAD stopped at
-    2026-11-02. So the landed fixes to `mirror.py` and `codebase_health_publish.py` never went live (they are outside
+    2026-11-02. So the landed fix to `mirror.py` never went live (they are outside
     `ops_clocks.json`).
 - Do instead: before you retire a clone, grep `src/` and the unit files for it as a root. Give such services a non-seat
   home. `PROTECTED` lists in `scratch_reap.py` that name the clone are harmless.

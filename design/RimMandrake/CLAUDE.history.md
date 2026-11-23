@@ -188,3 +188,11 @@ commit of an ignored lock file, a 66-character item name, a by-card brief withou
 that included the Conductor window's slots, a stale certificate left as a hand command, a capped visit left
 unfinished, a close that wanted a level-L0 `verify` first, and a test table whose live commands could not start under
 `red-seen`. Each one was repaired as one instance. This section repairs the class.
+
+## The build pause of 2026-10-01 (lifted 2026-10-02)
+
+Moved 2026-11-23 from `design/RimMandrake/debug_process.md` §1 (the Conductor's decision on the retire census). The
+owner, 2026-10-01, typed: *"It's worth slowing or stopping all current build to get this in place
+everywhere and really exercise northstar. I really do mean stop and start working a new
+way. This would be as big a need as rerunning clean dirty code is now."* He lifted it on 2026-10-02, typed: *"Build
+pause is lifted."* The rules of the pause: `git show a3c29f34e3:design/RimMandrake/debug_process.md`.

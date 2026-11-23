@@ -4,7 +4,7 @@
 RIMMANDRAKE_IGNORE_SEAT_QUEUES_AND_MODSET_SNAPSHOTS (2026-11-16): the seat clone held 15 untracked rimflow queue
 projections (one per runner seat, rendered on every claim: CLAUDE_ARCHMAGI_OFFLINE1.md ...) and modset_builder's
 ModsConfig before-tier snapshots (copies of the live mod list, 31 of them tracked), so it was never clean.
-Hand-written queue files (HUMAN.md, CHECK_CLOSED.md, DECIDE_ARCHIVE.md) stay tracked.
+Hand-written queue files (CHECK_CLOSED.md, DECIDE_ARCHIVE.md) stay tracked.
 """
 import os
 import subprocess
@@ -22,7 +22,6 @@ IGNORED = [
     "deployed/config/ModsConfig.swap-active.ratchet_pilot.stale-20261019.json",
 ]
 KEPT = [
-    "infrastructure/state/queue/HUMAN.md",
     "infrastructure/state/queue/CHECK_CLOSED.md",
     "infrastructure/state/queue/DECIDE_ARCHIVE.md",
     "deployed/config/Mod_1516158345_Bubbles.BEFORE-altitude-2026-08-11.xml",

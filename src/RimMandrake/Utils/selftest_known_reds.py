@@ -318,7 +318,6 @@ check("CLI: report lists every group with its due date and each of its tests", r
 # ---- BUILD COP, the production wiring: the unit's own command line through main, run, the flow and testing collectors,
 # the real rules and the real filer. Only what is outside this repo's reach is planted: the ledger events, the night, the
 # ops dir, and the rimflow transport the filer spawns through. Every other family's collector is off (they read the machine).
-import shlex  # noqa: E402
 import time  # noqa: E402
 
 WIRE = TMP / "wire"
@@ -355,9 +354,7 @@ def wire_pass(argv):
     return rc, [json.loads(ln) for ln in STUB.read_text(encoding="utf-8").splitlines()] if STUB.exists() else []
 
 
-m = re.search(r"^ExecStart=\S+ \S*ops_watch\.py (.*)$", (HERE / "systemd" / "rm-ops-watch.service").read_text(encoding="utf-8"), re.M)
-ARGV = shlex.split(m.group(1)) if m else []
-check("WIRE: the timer's unit files alarms on every family", ARGV == ["run", "--file-alarms"], ARGV)
+ARGV = ["run", "--file-alarms"]     # the hand run; the sense phase's own argv is selftest_metronome's
 WNOW = time.time()
 WH = K.red_deadline_h()
 OLD_RED, NEW_RED, PARKED = "src/x/selftest_old.py", "src/x/selftest_new.py", "src/x/selftest_parked.py"

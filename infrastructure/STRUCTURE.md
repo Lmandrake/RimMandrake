@@ -18,7 +18,6 @@ that tier's own `README.md`. The tier's `README.md` is authoritative about what 
 | Path | What it is |
 |---|---|
 | `CLAUDE.md` | Standing operating rules. **Pinned** (must stay at the root): Claude Code auto-loads the root copy and only the root copy. |
-| `GLOBAL_CLAUDE.md` | Tracked mirror of `~/.claude/CLAUDE.md`, kept beside `CLAUDE.md` for the same reason. The mirror is out of date (`design/specs/2026-11-19-plain-english-rule-docs/census.md`). |
 | `.gitignore` | The payload rules: which files git does not track. Read it before you add a binary. |
 | `.claude/` | **Pinned by the harness.** Holds `hooks/` (for example `block_blanket_git_stage.py`, `set_session_title.py`), `settings.json`, `skills/` symlinks, and the gitignored `session_roles/`. |
 | `skills/` | Skill sources. The directory *is* the skill. **Pinned**; see the warning below this table. |
@@ -196,7 +195,6 @@ Payloads are gitignored; **the teardown is the work product.** A teardown is our
 | `infrastructure/STRUCTURE.md` | This file. |
 | `infrastructure/agents/CHARTER.md` | The whole process rulebook since 2026-08-27 (redesign #4: the fourth redesign of the seats. The first three each removed a coordination channel: peer chat, queue hand-edits, the CHECK seat's re-read loop). `POLICY.md` is a supersession stub. |
 | `infrastructure/agents/<WINDOW>.md` | One charter per window: `CONDUCTOR.md`. The workshop file was folded into it on 2026-11-04. The retired seat files are stubs. |
-| `infrastructure/REFRESH.md` | What to re-run after the mod list changes. |
 | `infrastructure/archive/` | Superseded narrative kept only for *why*: `context.md`. Never current state. `context.md` is absent (2026-11-23). |
 | `infrastructure/output/` | Reports **still being read**: audits, options papers, plans. Evidence, never doctrine. |
 
@@ -218,7 +216,7 @@ they trusted this?*
 | `design/V2_DREAMS.md` | Deferred `[v2]` bodies, kept intact. Append-only; every seat may write to it directly. |
 | `infrastructure/state/TEST_PLAN.md` | How deployed material gets proved in-game. A retired seat wrote it. `load_session.py` still cites it. |
 | game state | One `game` event on the ledger, measured or owner-announced (`./game`). The old `status/game.json` stamp and its directory are gone. |
-| `infrastructure/state/queue/<SEAT>.md` | Rendered views of a seat's queue (gitignored; `rimflow queue <SEAT>` renders one on read), plus the hand-written `HUMAN`. File work with `rimflow file --for <SEAT>`. |
+| `infrastructure/state/queue/<SEAT>.md` | Rendered views of a seat's queue (gitignored; `rimflow queue <SEAT>` renders one on read). File work with `rimflow file --for <SEAT>`. |
 
 ### The Conductor's window and the helpers it launches — since 2026-11-13
 

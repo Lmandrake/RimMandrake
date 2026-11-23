@@ -49,7 +49,6 @@ Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, with the Conduc
     Evidence-for-Ask).
   - Cite his words where he said them.
   - When he drops a goal, delete the goal. Git holds the history.
-  - `CONDUCTOR_GOALS.md` is not `GOAL_SHEET.md`. `GOAL_SHEET.md` is the inventory of what the game needs.
 
   You order the Conductor lane from the goals. The Conductor lane is the items filed for your own seat. The
   Maturation Pipeline works the mods, and the List Pipeline works the open rimflow items (`CLAUDE.md` §Mods keep their
@@ -565,8 +564,7 @@ Agents decide nearly everything. Only five acts still need him: `design/RimMandr
 - **He can be your hands in the game.** "Spawn me one and I'll read it back" beats a quicktest and beats a reload.
 - **His numbers stay honest through you.** Relay a count off a dump, save, log or DLL with its `MEASURED`/`UNMEASURED`
   word, never as bare digits. Treat any dump as stale until its fingerprint says otherwise.
-- **Build pause lifted** (owner, 2026-10-02: *"Build pause is lifted."*). Every workshop session leaves a test behind,
-  whenever a machine can check its lesson (`design/RimMandrake/debug_process.md`).
+- Every workshop session leaves a test behind, whenever a machine can check its lesson (`design/RimMandrake/debug_process.md`).
 - **An owner look ends with its defects appended to `design/RimMandrake/validation_holding/`** (owner, 2026-11-12
   ~9:35 PM PST; his words: `design/RimMandrake/roles.history.md` §conductor.md).
   Nothing from that folder is wired into a test or gate until the ladder is regenerated.

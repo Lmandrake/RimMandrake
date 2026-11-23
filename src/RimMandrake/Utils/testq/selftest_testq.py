@@ -818,16 +818,11 @@ def main():
         # every git-pulling unit runs git's auto gc in the FOREGROUND (2026-10-26: detached repacks were left over in the
         # tick's cgroup every minute, 463 times, and never finished). Can-fail: the env must really reach git's config.
         units_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "systemd")   # one home
-        for un in ("testq-tick.service", "testq-sweep.service"):
+        for un in ("testq-tick.service",):
             body = open(os.path.join(units_dir, un), encoding="utf-8").read().splitlines()
             envl = [l for l in body if l.startswith("Environment=GIT_CONFIG_COUNT=")]
             pre = [i for i, l in enumerate(body) if l.startswith("ExecStartPre=") and " pull " in l]
             check(envl and pre and body.index(envl[0]) < pre[0], "%s sets the git env before its pull: %s" % (un, body[:8]))
-        # the sweep has no start timeout (RIMMANDRAKE_UNCAP_TESTQ_SWEEP_KILLED_AT_FIVE_MINUTES): 11-21 01:35 PST systemd killed
-        # it at TimeoutStartSec=300 while gaps.settled alone took 134 s, so it queued nothing. The cap named no danger.
-        swb = open(os.path.join(units_dir, "testq-sweep.service"), encoding="utf-8").read().splitlines()
-        tos = [l.split("=", 1)[1].strip() for l in swb if l.startswith("TimeoutStartSec=")]
-        check(tos == ["infinity"], "testq-sweep.service sets no start timeout (TimeoutStartSec=infinity): %s" % tos)
         genv = dict(os.environ)
         git_env = [l for l in open(os.path.join(units_dir, "testq-tick.service"), encoding="utf-8").read().splitlines()
                    if l.startswith("Environment=GIT_CONFIG_COUNT=")][0]

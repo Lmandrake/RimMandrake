@@ -145,7 +145,7 @@ offset is applied in `PlanetTypeManager.GetBiomeScorePostfix` (`:122-124`), whic
 only tests `biomeConfigs.ContainsKey`. The `<biomes>` membership check at
 `PlanetTypeDef.cs:189-191` guards `HandleActivationFor` only — `defFields`,
 `texture` and `workerClass`. **So keeping `<biomes>` empty is still correct**
-(the whitelist trap in `WORLDGEN_RUN.md` §5 stands); expect up to 24 harmless
+(the whitelist trap stands: a whitelist silently excludes `Space`, `Orbit` and `Underground`); expect up to 24 harmless
 `<biomeConfigs> contains key X, which isn't present in <biomes>. Skipping.`
 warnings after the fix, and do **not** "fix" them by populating `<biomes>`.
 
@@ -247,7 +247,7 @@ already what `JawaWorld_BiomeMix.xml` does and it is correct.
 | `biomeBlacklist` | `List<string>` | **our 29** | working. Overrules `biomes` |
 | `biomeConfigs` | `Dictionary<string, BiomeConfig>` | 🔴 **empty — R-S1b** | the abundance/rarity mix. `scoreOffset` · `workerClass` · `texture` · `defFields` |
 | `globalBiomeConfig` | `BiomeConfig` | unset | `scoreOffset` is meaningless here by the author's own comment. Only `defFields`/`workerClass` |
-| `avgTempByLatitudeCurve` | `SimpleCurve` | the mod's 6 points, +70 → −80 | the day/night gradient. **Do not touch** — the arc-distance maths in `WORLDGEN_RUN.md` §2.C is derived from it |
+| `avgTempByLatitudeCurve` | `SimpleCurve` | the mod's 6 points, +70 → −80 | the day/night gradient. **Do not touch** — the arc-distance maths of the deleted run book, `git show de64ce0db7:infrastructure/state/WORLDGEN_RUN.md` §2.C, is derived from it |
 | `seasonalTempVariationCurve` | `SimpleCurve` | 3 points, 15/15/5 | leave |
 | `rainfallCurves` | `Dictionary<OverallRainfall, SimpleCurve>` | **EMPTY** | ⭐ **the XML home of R-H1** ("it rains only on the peaks"). Unwritten today |
 | `defaultRainfallCurve` | `SimpleCurve` | unset | the fallback for any `OverallRainfall` value `rainfallCurves` omits |
@@ -427,7 +427,7 @@ it, and all three are read once.
 
 # 🔴 Bucket B — the owner's checklist at world creation
 
-> ⛔ **`WORLDGEN_RUN.md` §2 carries the owner's ruling of 2026-08-14: planet
+> ⛔ **The deleted run book (`git show de64ce0db7:infrastructure/state/WORLDGEN_RUN.md` §2) carries the owner's ruling of 2026-08-14: planet
 > coverage, seed and planet type are HIS, decided at the screen, and nobody is to
 > ratify values in advance.** This section obeys that. It supplies the
 > **constraints and the warnings**, and deliberately leaves the numbers blank.
@@ -453,7 +453,7 @@ population, landmarks, pollution) → *Advanced settings* (map size, start seaso
 | B11 | **Pollution** (Biotech) — `pollution` | `<pollution>`, a **float 0–1**, not an enum. Default `0.05` | ⭐ **It closes the one residual Anomaly auto-spawn.** Under `AmbientHorror`, `GameComponent_Anomaly.TrySpawnHarbingerTrees` bypasses the threat fraction — but `GenStep_HarbingerTrees` sets `pollutionNone 0` / `pollutionLight 0`, so on an unpolluted world the desired count is 0 and the incident refuses. **Low pollution is load-bearing for R-S4, not cosmetic** |
 | B12 | ⭐ **Advanced settings → MAP SIZE and START SEASON** | `<initialMapSize>` is scribed into `<world><info>`; the season is consumed by map generation | 🔴 **Behind the *Advanced settings* button on the world page, and previously OPEN on `setup_checklist.md` §6 with no ruling.** Sizes are exactly **200 · 225 · 250 · 275 · 300 · 325**; `MapSizePerformanceWarning` guards the top. Season is `Undefined(Auto) · Spring · Summer · Fall · Winter · PermanentSummer · PermanentWinter` — ⚠️ on a tidally locked world *PermanentSummer* is the fiction, and `MapWinterWarning` guards a winter start |
 | B13 | **Factions** | `WORLDGEN_FACTION_CHECKLIST.md`, ratified. ⚠️ `<factions IsNull="True" />` in the observed save — the counts do not survive either | 🔴 **A faction absent at world creation can NEVER be added later.** ⚠️ **Corrected 2026-08-23: the 21 unticks are DEAD** — `OnlyOurFactions.xml` zeroes them and the page opens as our twelve at one each; those rows moved to `infrastructure/state/archive/WORLDGEN_FACTION_CHECKLIST_ARCHIVE.md`. Live: **4 keeps** (2 of them defaulting to 0) **/ 13 set ≥ 1**. Screenshot the page |
-| B14 | **The landing tile** | `<game><info><startingTile>` | `WORLDGEN_RUN.md` §2.B and §2.C — read the tile's **mutators**, and target by **arc distance from the subsolar point**, never by latitude |
+| B14 | **The landing tile** | `<game><info><startingTile>` | The deleted run book's §2.B and §2.C — read the tile's **mutators**, and target by **arc distance from the subsolar point**, never by latitude |
 | B15 | **The scenario and the ideoligion** | both serialised into the save verbatim | ⚠️ Listed for completeness. The scenario is R-S2's problem and the ideo is B54's; **both are read once** |
 
 🔴 **Screenshot every one of these screens.** The world is not reproducible from
@@ -514,9 +514,6 @@ careful click, and being wrong the other way costs a campaign.
      unsatisfiable as written**: `grep -o "anomalyPlaystyleDef>[^<]*"` will never
      return `AnomalyFrequency_None`. Correct the expected value to `AmbientHorror`
      and add a second grep for `overrideAnomalyThreatsFraction` = 0.
-   - `infrastructure/state/WORLDGEN_RUN.md` **§2.E** says playstyle `Disabled`.
-     🔴 **Superseded by R-S4.** Point it at `AmbientHorror` + slider 0. Its §2.A
-     also assumes the planet type is a choice *at the page*; per R-S1 it is not.
 7. **Strike "disable enemy flee%" wherever it appears** (`setup_checklist.md` §1,
    `concept.md:66`, `Gravship_Campaign_Planning_Discussion_2026-08-02.md:1420`).
    The setting does not exist.

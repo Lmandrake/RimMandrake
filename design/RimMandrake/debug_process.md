@@ -22,52 +22,11 @@ well as new validation scripts. And that's good. They evolve together."* And on 
 you learned in terms of tests to detect this from now on. Including other theories that
 proved false but would be informative to know."*
 
-## 1. The build pause — 2026-10-01, LIFTED 2026-10-02
+## 1. Keep the bridge busy
 
-**Lifted by the owner 2026-10-02, typed: *"Build pause is lifted."*** The rest of this section records what the pause
-was. The first-script contract (§2) still applies to every mod.
-
-Owner, typed: *"It's worth slowing or stopping all current build to get this in place
-everywhere and really exercise northstar. I really do mean stop and start working a new
-way. This would be as big a need as rerunning clean dirty code is now."*
-
-**Stopped** (decision taken by question card, 2026-10-01): **all new content**. All new content means new mods, new defs,
-new mechanics and biome work. It also means roster sittings, and art jobs for content that is not built yet. Bring work
-in flight to a committable state, and commit it. File its remainder as an item. Then the work stops.
-
-**Allowed during the pause:**
-- **Bug fixes** to existing mods, done by this process.
-- **First scripts** (§2) and the harness that they need: `modcheck`, `northstar_driver`, site recipes, companion
-  `[Tool]`s, and these four items in order:
-  - (1) the static schema lint over bridge calls;
-  - (2) the prior-pass-now-fail diff;
-  - (3) the GPT-consult wrapper (§5);
-  - (4) `northstar_driver run` that writes its result through `modcheck.status.record_run` (built; `--no-record` skips
-    the record in `modcheck_status.json`).
-- Load rounds that run first scripts. Batch them per `rimworld-load-round`. They remain on the Charter's expensive
-  list (`infrastructure/agents/CHARTER.md` §The expensive list).
-- **Exceptions:** only by the owner's own word, quoted on the item. A BENCH request is not an exception until he says
-  it.
-
-**DONE: what lifts the pause.** The pause lifts when **both** of these hold:
-
-- **(a) Every mod has a committed first script.** "Every mod" means every folder that matches
-  `src/*/*/About/About.xml`. The glob is the set, not a number in a doc. The glob held 164 on 2026-10-01, 48 of them
-  `*ArtOverride`. "Has a script" means that the mod meets §2. The mod has its own `validation.py`, or it is a member of a
-  family script. A family script is one script that covers a group of related mods. The mod also has a walk whose `## must be true`
-  declares coverage. A walk is the file `design/validation_walks/<tier>/<Mod>.md` (§2.1).
-- **(b) Every mod has a recorded live run.** In
-  `infrastructure/state/modcheck_status.json`, every mod (or its family key) holds a run entry at its current hash.
-  That entry is not `NEVER RUN` and not `REFUSED`. Every `RED` component is either fixed or filed as a named item.
-  The item says which kind of defect it is: a MOD, SITE or HARNESS defect.
-
-A filed RED does not hold the pause. A filed RED is bug work, and bug work continues anyway. When `modcheck status`
-plus the glob census show (a) and (b), the seat that saw it tells the owner in one line, with the census output. Then
-the pause is over. Umbrella item: `NORTHSTAR_EVERYWHERE_PROGRAM_1`.
-
-**Keep the bridge busy** (owner, 2026-10-01, typed: *"Multitasking to keep the bridge active is a good
-idea. That's what we want to maximize. Live bridge usage. In fact that's a great metric to track."*).
-Live-run throughput bounds the pause, not authoring. So the bridge holder always has a next script to run:
+Owner, 2026-10-01, typed: *"Multitasking to keep the bridge active is a good
+idea. That's what we want to maximize. Live bridge usage. In fact that's a great metric to track."*
+The bridge holder always has a next script to run:
 
 - Authors work offline in parallel behind the current live run. Each author delivers a READY-TO-RUN script with a
   live-run sheet.
@@ -75,7 +34,7 @@ Live-run throughput bounds the pause, not authoring. So the bridge holder always
 - Nobody blocks on "writing everything first".
 
 The tracked metric is bridge utilization (active driving and ticking time over held time):
-`NORTHSTAR_BRIDGE_UTILIZATION_1`.
+`NORTHSTAR_BRIDGE_UTILIZATION_1`. The first-script contract (§2) applies to every mod.
 
 ## 2. What a first script must contain
 

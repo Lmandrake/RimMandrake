@@ -230,7 +230,7 @@ infrastructure/state/derived/
 # `render.py --overwrite-queues`, exactly like derived/ above. They were tracked AND
 # uncommittable until 2026-08-21 — the commit guard refused every regenerated copy,
 # because a regenerated view differs from HEAD every time — so git held a frozen
-# snapshot while the disk held the truth. HUMAN.md, CHECK_CLOSED.md and
+# snapshot while the disk held the truth. CHECK_CLOSED.md and
 # DECIDE_ARCHIVE.md are HAND-WRITTEN and stay tracked.
 infrastructure/state/queue/DECIDE.md
 infrastructure/state/queue/BUILD.md
@@ -239,31 +239,18 @@ infrastructure/state/queue/REP.md
 # Git plan Phase 4 (2026-10-02, design/RimMandrake/git_workflow_plan_2026-10-01.md §2.4):
 # the two live views leave git too — they were the biggest conflict class after the
 # ledger (BENCH.md/FOUNDRY.md 647/738 path-conflicts at K=5). Read with
-# `rimflow queue <SEAT>`, which renders first. HUMAN.md stays tracked (hand-written).
+# `rimflow queue <SEAT>`, which renders first.
 infrastructure/state/queue/BENCH.md
 infrastructure/state/queue/FOUNDRY.md
 # Every seat's view is rendered, runner seats included (CLAUDE_ARCHMAGI_OFFLINE1.md ...: 15 of them sat
 # untracked in the seat clone, 2026-11-16). Only the hand-written files stay tracked.
 infrastructure/state/queue/*.md
-!infrastructure/state/queue/HUMAN.md
 !infrastructure/state/queue/CHECK_CLOSED.md
 !infrastructure/state/queue/DECIDE_ARCHIVE.md
 # modset_builder's before-copies of the live mod list and its swap marker: copies of a live file, rewritten
 # on every tier swap, so a tracked one is dirt in whichever clone swapped (untracked 2026-11-16).
 deployed/config/ModsConfig.before-tier-*.xml
 deployed/config/ModsConfig.swap-active*.json
-
-# Generated health/hub data (same plan, §2.4 rows 2-4). Regenerated every 15 min by the
-# `rm-codebase-health.timer` systemd user unit in FOUNDRY's clone
-# (src/RimMandrake/Utils/systemd/), which replaced the post-commit heartbeat; the
-# hub data by `infrastructure/dashboards/hub/regen_hub.py`.
-Transient/codebase_health.html
-Transient/codebase_health.json
-Transient/codebase_health_artifact.html
-infrastructure/state/codebase_health_last.json
-infrastructure/dashboards/hub/data/*.json
-# hand-maintained INPUT to regen_hub.py (published-path -> source), not an output
-!infrastructure/dashboards/hub/data/publish_manifest.json
 
 # Derived ortho globe SVGs — regenerate with worldview.py; the PNGs beside them are committed
 world/view/globes_*/*.svg
@@ -291,7 +278,6 @@ src/**/obj/
 # Kept ignored so a stale copy left in an older clone never shows as untracked.
 infrastructure/state/BRIDGE
 infrastructure/state/BRIDGE.tmp
-Transient/codebase_health_hook.log
 infrastructure/state/*.lock
 infrastructure/state/*.tmp.*
 infrastructure/artpipe/_codex_homes/

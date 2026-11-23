@@ -47,7 +47,7 @@ BUILDING = ("running", "candidate")
 CHECKING = ("checking",)
 CLOSING = ("closing",)
 
-# warm 70s browns, the palette of project_maturity_dashboard.py (owner-approved look, 2026-09-08): red = blocked,
+# warm 70s browns, an owner-approved look (2026-09-08): red = blocked,
 # yellow = waiting on him, otherwise a brown ramp.
 CSS = """
 :root{--bg:#171310;--panel:#211b16;--panel2:#1c1712;--line:#332a20;--ink:#efe7d9;--dim:#a99d89;--accent:#e0803a;

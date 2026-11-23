@@ -20,7 +20,7 @@ def repo(tmp, name, files):
     g = lambda c, *a: subprocess.run(["git", "-C", c] + list(a), capture_output=True, check=True, timeout=30)
     subprocess.run(["git", "init", "-q", "--bare", "-b", "main", up], check=True, timeout=30)
     subprocess.run(["git", "clone", "-q", up, work], check=True, capture_output=True, timeout=30)
-    for rel in ("infrastructure/state/queue/HUMAN.md", "conversations/old.md"):   # tracked, as on main
+    for rel in ("infrastructure/state/queue/CHECK_CLOSED.md", "conversations/old.md"):   # tracked, as on main
         os.makedirs(os.path.dirname(os.path.join(work, rel)), exist_ok=True)
         open(os.path.join(work, rel), "w").close()
         g(work, "add", rel)

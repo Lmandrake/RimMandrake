@@ -41,7 +41,7 @@ WHERE THE LIST COMES FROM. Three sources, unioned:
      resolved for each name from the live dump.
 
 ⛔ A cut recorded in (3) but absent from (1) is REPORTED, never added. Changing
-what is cut is the owner's decision, not this script's — see queue/HUMAN.md.
+what is cut is the owner's decision, not this script's.
 🔴 The code did NOT do this until 2026-08-23; it unioned them in, and that quietly
 pushed 10 unratified cuts live — including two bows against the owner's standing
 weapon floor. Removing a key from (1) is now enough to un-cut it, except where the

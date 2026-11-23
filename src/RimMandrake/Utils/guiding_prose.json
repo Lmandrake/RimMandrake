@@ -2,10 +2,10 @@
   "_doc": "The ONE list of guiding prose: each text that tells an agent how to act. Read by guiding_prose.py (page design/specs/2026-11-23-guiding-prose-check/boundary.md). `files`: globs, matched by path segment (a * never crosses a /). `left_out`: a file of the rewrite census that is not guiding prose, with its reason. A brief that detached_helper.py launches is guiding prose too; it has no path, so it is not a glob.",
   "glossary": "LEXICON.md",
   "files": [
-    "CLAUDE.md", "GUIDING_PRINCIPLES.md", "PURPOSE.md", "GLOBAL_CLAUDE.md", "README.md", "final.md",
+    "CLAUDE.md", "GUIDING_PRINCIPLES.md", "PURPOSE.md", "README.md",
     ".claude/agents/*.md", ".claude/rm_agent_shared_block.md", ".claude/rm_positive_steps.md", ".claude/commands/*.md",
     "infrastructure/agents/*.md", "infrastructure/*.md",
-    "src/RimMandrake/rimflow/roles/*.md", "src/RimMandrake/rimflow/docs/*.md", "src/RimMandrake/Utils/*_prompt.md",
+    "src/RimMandrake/rimflow/roles/*.md", "src/RimMandrake/Utils/*_prompt.md",
     "src/RimMandrake/Utils/findings_judge_friday.md", "src/RimMandrake/Utils/guiding_prose_reader.md",
     "design/RimMandrake/standing_rulings.md", "design/RimMandrake/biome_rulings.md",
     "design/RimMandrake/delegation_policy.md", "design/RimMandrake/debug_process.md",
@@ -17,12 +17,7 @@
   ],
   "left_out": {
     "design/RimMandrake/CLAUDE.history.md": "a record of measurements and owner words moved out of CLAUDE.md; it gives no rule",
-    "src/RimMandrake/rimflow/docs/DESIGN_HISTORY.md": "a record of how rimflow was designed; it gives no rule",
-    "src/RimMandrake/rimflow/docs/COMPARISON.md": "a comparison of tools at its date; it gives no rule",
-    "src/RimMandrake/rimflow/docs/RIMFLOW_ideogram.md": "a picture prompt",
     "infrastructure/DETERMINISM_ASSESSMENT.md": "an assessment at its date; it gives no rule",
-    "Fable_Review/rewrites/CHARTER.md": "a draft of the 2026 rewrite; the live file is infrastructure/agents/CHARTER.md",
-    "Fable_Review/rewrites/WINDOWS.md": "a draft of the 2026 rewrite; no agent loads it",
     "LEXICON.md": "the glossary itself: it defines each term"
   }
 }

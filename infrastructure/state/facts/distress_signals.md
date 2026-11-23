@@ -4,7 +4,7 @@
 
 - The ledger held 2,029 events and 436 items: 306 closed, 47 dropped, 83 open.
 - The ledger spanned 2026-08-21T05:05Z → 2026-08-24T03:06Z (2.92 days).
-- REP is a retired seat (`infrastructure/agents/REP.md`).
+- REP is a retired seat (retired 2026-08-27).
 - The query `rimflow next --bench` computes the index
   of this file (`cmd_bench` in `src/RimMandrake/rimflow/cli.py`).
 - A lift of detention is the rate of detention among flagged items, divided by the base rate (8.2%). The next two

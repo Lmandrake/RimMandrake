@@ -120,54 +120,6 @@ LOCK_PATH = os.path.join(REC_DIR, ".lock")
 GIT_TIMEOUT = 8  # seconds. A hung/contended git call fails fast, never hangs the caller.
 
 
-def _trigger_health_rebuild():
-    """Give the codebase-health map a heartbeat after a state change that isn't a
-    git commit — mark-clean (dirty->green) and reopen (green->dirty) both flip a
-    file's colour with no commit involved, so the 15-min health timer
-    (src/RimMandrake/Utils/systemd/rm-codebase-health.*, which replaced the git
-    post-commit hook 2026-10-02) would lag. Same three rules that hook kept:
-    never block the caller, never fail the caller, never touch the index. The
-    publisher itself decides whether a rebuild is actually due.
-
-    Cheap precheck: a plain read of the publisher's own state file's `ts` — no
-    subprocess — before spawning a python interpreter that would just re-derive
-    "not due yet" via its own fingerprint check. Any read failure falls through
-    to spawning, same as always; MIN_INTERVAL is mirrored from
-    codebase_health_publish.py.
-    """
-    # Sandboxed selftests (CODE_REVIEW_STATUS_ROOT) must never spawn the
-    # publisher: it derives its repo from its own __file__ and would rebuild
-    # the LIVE health state as a test side effect.
-    if os.environ.get("CODE_REVIEW_STATUS_ROOT"):
-        return
-    MIN_INTERVAL = 900
-    try:
-        with open(os.path.join(ROOT, "infrastructure", "state",
-                                "codebase_health_last.json")) as fh:
-            last_ts = json.load(fh).get("ts")
-        if last_ts is not None and (time.time() - last_ts) < MIN_INTERVAL:
-            return
-    except Exception:
-        # The contract above is "never fail the caller": a wrong-shaped but
-        # valid-JSON state file (multi-window-written) must fall through to
-        # spawning, not traceback AFTER a mutation was recorded as success.
-        pass
-    # The log is a human/agent debugging artifact (the publisher's only error
-    # channel), so it lives in Transient/ — gitignored there, NOT /tmp: /tmp is
-    # tmpfs here and a reboot would erase the diagnostics.
-    log_path = os.path.join(ROOT, "Transient", "codebase_health_hook.log")
-    try:
-        os.makedirs(os.path.dirname(log_path), exist_ok=True)
-        with open(log_path, "a") as fh:
-            subprocess.Popen(
-                [sys.executable, os.path.join(HERE, "codebase_health_publish.py")],
-                cwd=ROOT, stdout=fh, stderr=fh, stdin=subprocess.DEVNULL,
-                start_new_session=True,
-            )
-    except OSError:
-        pass
-
-
 @contextlib.contextmanager
 def locked():
     """Exclusive lock across a load-mutate-save critical section. This repo
@@ -1174,8 +1126,8 @@ def cmd_mark_clean(path, sha, reviewer=None, gpt_job=None):
         prior = data.get(rel) or {}
         # cleanCount: how many times THIS path has ever been marked clean. A
         # file already dirty again despite N prior clean marks is exactly the
-        # "reviewed and it keeps coming back dirty" signal the health board
-        # surfaces — see codebase_health.py's classify().
+        # "reviewed and it keeps coming back dirty" signal codebase_health.py
+        # surfaces — see its's classify().
         clean_count = prior.get("cleanCount", 0) + 1
         data[rel] = dict({"hash": current_hash, "sha": sha, "date": date, "cleanCount": clean_count}, **review)
         save(data)
@@ -1548,8 +1500,6 @@ def main():
         sys.exit(cmd_check_record(args.paths) if args.record else cmd_check(args.paths))
     elif args.cmd == "reopen":
         rc = cmd_reopen(args.paths, args.reason)
-        if rc == 0:
-            _trigger_health_rebuild()
         sys.exit(rc)
     elif args.cmd == "mark-clean":
         if args.gpt_job and (args.reviewer_seat or args.reviewer_session or args.reviewer_agent):
@@ -1561,8 +1511,6 @@ def main():
         rv = ({"kind": "agent", "seat": args.reviewer_seat.strip().upper(), "session": args.reviewer_session,
                "agent": args.reviewer_agent} if args.reviewer_seat else None)
         rc = cmd_mark_clean(args.path, args.sha, reviewer=rv, gpt_job=args.gpt_job)
-        if rc == 0:
-            _trigger_health_rebuild()
         sys.exit(rc)
     elif args.cmd == "list":
         sys.exit(cmd_list_flagged() if args.flagged else cmd_list(args.show_untracked))
@@ -1572,13 +1520,9 @@ def main():
         sys.exit(cmd_unflag(args.path, args.why))
     elif args.cmd == "migrate-hashes":
         rc = cmd_migrate_hashes()
-        if rc == 0:
-            _trigger_health_rebuild()  # it flips DIRTY->CLEAN like the others
         sys.exit(rc)
     elif args.cmd == "prune":
         rc = cmd_prune(args.apply)
-        if rc == 0 and args.apply:
-            _trigger_health_rebuild()
         sys.exit(rc)
 
 

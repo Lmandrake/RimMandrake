@@ -168,13 +168,6 @@
    "provenance": "D",
    "signal": "a runaway of short filler jobs; the lane-time budget testq.fill_hours was removed 2026-11-22 (FILL_NO_DANGERLESS_DAY_BUDGET: the filler starts only on an idle lane)"
   },
-  "testq.sweep_hour_local": {
-   "value": "01:30",
-   "unit": "local time, nightly modcheck sweep per TESTQ_SWEEP_MODS",
-   "why": "testq-sweep.timer; 9 sweeps yielded 17 findings in 4.8 lane-h (best yield per lane-hour measured)",
-   "provenance": "D",
-   "signal": "keep while findings/sweep >= 1; drop to every 2nd night if 5 sweeps in a row find nothing new"
-  },
   "live.cold_load_full_list_min": {
    "value": 15,
    "unit": "minutes (MEASURED 2026-09-07); minimal 13-mod list 22 s; quicktest map ~90 s",
@@ -198,7 +191,7 @@
   },
   "ops.ops_watch_period_min": {
    "value": 15,
-   "unit": "minutes (rm-ops-watch.timer)",
+   "unit": "minutes (the metronome's sense phase)",
    "why": "deterministic measurement arm for Operations; no AI",
    "provenance": "D",
    "signal": "raise if its alarms are mostly repeats of an open item"

@@ -22,7 +22,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
-SEARCH_ROOTS = ("src", ".claude/hooks", "skills", "infrastructure/dashboards/hub", "infrastructure/stevedesktop")
+SEARCH_ROOTS = ("src", ".claude/hooks", "skills", "infrastructure/stevedesktop")
 READ_METHODS = {"read_text", "read_bytes", "open"}
 PROBE_METHODS = {"exists", "is_file", "is_dir"}       # p.exists() anywhere in the file: its reads are guarded
 PROBE_FUNCS = {"exists", "isfile", "isdir", "lexists"}   # os.path.exists(p)

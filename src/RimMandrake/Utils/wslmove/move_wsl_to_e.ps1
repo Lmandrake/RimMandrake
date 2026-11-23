@@ -45,7 +45,7 @@ $env:WSL_UTF8 = "1"                        # wsl.exe prints UTF-16 otherwise
 $Stamp   = Get-Date -Format "yyyy-MM-dd_HHmm"
 $T0      = Get-Date
 $UserUnits = @("rm-artpiped.service","rm-pulse.service","hestia.service",
-               "rm-memwatch.timer","rm-mirror.timer","rm-objstore.timer","rm-codebase-health.timer",
+               "rm-memwatch.timer","rm-mirror.timer","rm-objstore.timer",
                "rm-pulse-digest.timer","rm-pulse-health.timer")
 $SysUnits  = @("tailscaled.service","lodestar-sync.timer")
 $WslTasks  = @("\WSL Keepalive","\RimFlow Pulse")

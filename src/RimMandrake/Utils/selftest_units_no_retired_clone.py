@@ -49,9 +49,6 @@ for p in files:
     bad = retired_refs(p.read_text())
     check(not bad, "%s names no retired clone%s" % (p.name, (" (names %s)" % bad) if bad else ""))
 
-health = (UNITS / "rm-codebase-health.service").read_text()
-check(directives(health, "WorkingDirectory") == ["/home/mandrake/rm/bench"],
-      "rm-codebase-health.service runs in the bench clone")
 mirror = (UNITS / "rm-mirror.service").read_text()
 ex = directives(mirror, "ExecStart")
 check(len(ex) == 1 and "/home/mandrake/rm/bench/src/RimMandrake/Utils/mirror.py" in ex[0],

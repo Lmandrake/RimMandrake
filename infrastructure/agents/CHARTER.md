@@ -95,8 +95,7 @@ stops walking finished work. `rimflow show` resolves both.
 
 The ledger is the truth. The ledger is the frozen `events.jsonl`, plus one `ledger/events/<SEAT>.jsonl` shard per seat
 since 2026-09-23. Only `rimflow` writes the ledger. The `queue/<SEAT>.md` files are gitignored rendered views. Never
-edit them. Read one with `rimflow queue <SEAT>`, which renders it first. `queue/HUMAN.md` is the owner's hand-written
-inbox, and it stays tracked.
+edit them. Read one with `rimflow queue <SEAT>`, which renders it first.
 
 Close: `rimflow close <ID> --sha <commit>`, commit carrying `Closes: <ID>`, push.
 
@@ -217,8 +216,8 @@ Which kind of testing to run, when, and its tunables: `design/RimMandrake/testin
 
 ## How we debug — owner, 2026-10-01
 
-The rule lines are in `CLAUDE.md` §How we debug. `design/RimMandrake/debug_process.md` is the process. Its §1 holds
-the build pause and its lift, and its §2 says what a first script must contain.
+The rule lines are in `CLAUDE.md` §How we debug. `design/RimMandrake/debug_process.md` is the process. Its §2
+says what a first script must contain.
 
 - Only the Conductor may loosen a bar, as a mindful act (`CLAUDE.md` §How we debug).
 - **3 non-pass runs in a row, or a defect that needs live observation, goes to a Test Pilot, not another retest**

@@ -110,9 +110,9 @@ PROBES = (
 HISTORY = ("conversations/", "infrastructure/state/ledger/", "infrastructure/state/handoffs/",
            "infrastructure/state/items/", "infrastructure/state/code_review/", "infrastructure/state/queue/",
            "infrastructure/archive/", "Transient/", "vendor/", "research/", "design/", "tickets/", "sync/", "items/",
-           "observed/", "deployed/", "Fable_Review/", "world/",
+           "observed/", "deployed/", "world/",
            "src/RimMandrake/Utils/hook_latency_corpus.json")    # recorded agent prompts: a mention there starts nothing
-DOC_ROOTS = ("skills/", ".claude/", "infrastructure/agents/","infrastructure/state/lessons/", RIMFLOW + "/roles/", RIMFLOW + "/docs/")
+DOC_ROOTS = ("skills/", ".claude/", "infrastructure/agents/","infrastructure/state/lessons/", RIMFLOW + "/roles/")
 RUN_EXT = (".service", ".timer", ".path", ".target", ".conf", ".sh", ".ps1", ".bat", ".cmd", ".json", ".yaml", ".yml", ".toml")
 MAX_TEXT = 4_000_000
 

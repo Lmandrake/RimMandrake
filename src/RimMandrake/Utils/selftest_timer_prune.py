@@ -20,7 +20,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 FAILS = []
-RETIRED = ("rm-arena-anchor", "rm-replay-watch", "rm-v3-vs-v2", "claude-account-warm")
+RETIRED = ("rm-arena-anchor", "rm-replay-watch", "rm-v3-vs-v2", "claude-account-warm",
+           "steve-cpu-retest", "testq-sweep", "rm-codebase-health")     # the last three: the Conductor, 2026-11-23, retire census
 SLOWED = {  # unit -> (repo file, timer key, value systemd reports)
     "rm-mirror": (HERE / "systemd/rm-mirror.timer", "OnUnitInactiveSec=15min", "OnUnitInactiveUSec=15min"),
     "rm-telemetry-export": (HERE / "systemd/rm-telemetry-export.timer", "OnUnitActiveSec=5min",

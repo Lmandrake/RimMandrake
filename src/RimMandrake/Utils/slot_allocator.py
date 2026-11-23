@@ -592,7 +592,7 @@ def ops_inputs(now, rules):
         return {"ok": False, "why": f"ops watch status is stamped {-age:.0f} min in the future (clock skew?)",
                 "age_min": round(age, 1)}
     if not age <= o.get("stale_min", 45):
-        return {"ok": False, "why": f"ops watch status is {age:.0f} min old (rm-ops-watch.timer stopped?)",
+        return {"ok": False, "why": f"ops watch status is {age:.0f} min old (the metronome's sense phase stopped?)",
                 "age_min": round(age, 1)}
     pts = st.get("points") or {}
 

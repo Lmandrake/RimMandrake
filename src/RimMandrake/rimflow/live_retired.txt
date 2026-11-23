@@ -23,3 +23,6 @@ unit=rm-whittle-now.service      # Whittle loops retired, owner 2026-11-13 (reti
 hook=notebox_deliver.py         # Relentless note box: nothing sets RELENTLESS_GEN, removed 2026-11-19 (RIMMANDRAKE_FINISH_RETIRED_ERA_REMAINS_TWENTY_ONE_NO_TICKETS)
 hook=warn_unclosed_queue_item.py  # its queue files are generated; 0 outputs in 30 days (the Conductor, 2026-11-23; design/specs/2026-11-23-retire-census/census.md Table 1)
 hook=bench_mode.py              # no belt and no second seat; conductor_goodbye.py handles his goodbye (the Conductor, 2026-11-23, same census)
+unit=rm-codebase-health.timer   # the older clean/dirty page; CODEBASE_NOW replaced it (the Conductor, 2026-11-23, census Table 2 row 10)
+unit=testq-sweep.timer          # the nightly full FlowWorks sweep on SteveDesktop (the Conductor, 2026-11-23, census Table 2 row 6)
+unit=steve-cpu-retest.timer     # the retest ended END_FAULT 2026-11-01 (the Conductor, 2026-11-23, census Table 1)

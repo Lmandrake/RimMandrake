@@ -37,7 +37,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Agents may add regression checks and new north-star bars (`design/RimMandrake/delegation_policy.md` §1).
 - Only the Conductor may loosen a bar, as a mindful act (see "Only five acts stay his" below).
 - When you are stuck, go to GPT early, for hypotheses to test.
-- Process, and the build pause of 2026-10-01 and its lift: `design/RimMandrake/debug_process.md`.
+- Process: `design/RimMandrake/debug_process.md`.
 
 ## There is no worldgen feature, in any version
 

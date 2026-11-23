@@ -4,8 +4,8 @@
 The owner, 2026-10-26: "I am most eager to have a competent agent appearing to check the spend of all the accounts
 including CODEX, SteveDesktop's operation... monitor the disk." and (ledger 2026-10-27T05:59:41Z) Operations "should
 just have those things automatically gathered for it, so it's not constantly burning tokens gathering it all up for
-every question considered." So this program, with no AI, every 15 min (rm-ops-watch.timer, listed in
-rimflow/dispatcher_schedule.json "measure"):
+every question considered." So this program, with no AI, as the metronome's sense phase, listed in
+rimflow/dispatcher_schedule.json "measure":
 
   GATHER   one record per metric family, reusing the instruments that already exist:
              accounts    account_usage.read_now() + slot_allocator.slope(): week % left, hours to reset, runway;

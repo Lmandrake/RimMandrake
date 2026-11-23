@@ -9,8 +9,8 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py cancel JOB --reason R     pending -> cancelled; running -> the worker is told to stop
   testq.py resume --reason R         lift a lane pause (paused.json) once its cause is dealt with
   testq.py sweep MOD [--by SEAT]     queue today's one full sweep of MOD (purpose=sweep, origin/main), unless a sweep
-                                     of MOD was already submitted today (local calendar date); the testq-sweep
-                                     timer runs it nightly at 01:30 local for each of TESTQ_SWEEP_MODS (FlowWorks)
+                                     of MOD was already submitted today (local calendar date). A named act for a
+                                     finished mod; no timer runs it (the nightly one was retired 2026-11-23)
   testq.py fill MOD [--n 4]          Steve never idles, no LLM: if nothing is pending/running, queue the N chains
                                      whose last real run is oldest, skipping DRY ones (last 2 runs all UNMEASURED,
                                      re-tried after 3 days) (requested_by BENCH.filler, prio 20). Brakes:
@@ -26,8 +26,8 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
                                      clock, escalation to BENCH at 10/30 min and the owner at 120 min; the tick runs it
   testq.py steward-watch             its heartbeat watcher (testq-steward-watch.timer, every 60 s)
   testq.py tick                      one dispatch pass (a systemd user timer runs it every 60 s)
-  its units: src/RimMandrake/Utils/systemd/testq-{tick,sweep,steward-watch}.{service,timer}, the one home; installed by
-                                     `ops_clocks.py install testq-tick testq-sweep testq-steward-watch --apply --enable`.
+  its units: src/RimMandrake/Utils/systemd/testq-{tick,steward-watch}.{service,timer}, the one home; installed by
+                                     `ops_clocks.py install testq-tick testq-steward-watch --apply --enable`.
                                      The tick runs from the
                                      dispatch clone (~/rm/dispatch, pulled before every tick, never an agent's clone),
                                      then ingest.py (results -> RUNNER ledger events, committed from that clone), then

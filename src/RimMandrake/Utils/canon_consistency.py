@@ -63,8 +63,7 @@ WHAT THIS FILE DOES
    item file.
 
 3. CHANGED-RULING WORKLIST: reuses the content-hash-baseline pattern already in
-   this repo (`code_review_status.py`'s CLEAN/DIRTY hash, `codebase_health_publish.py`'s
-   git fingerprint) rather than inventing a third way to notice "this changed" —
+   this repo (`code_review_status.py`'s CLEAN/DIRTY hash) rather than inventing a third way to notice "this changed" —
    fingerprint over timestamp, per this repo's own standing lesson. A baseline
    JSON records each doc's SHA-256 and the set of its RULED/BEDROCK
    `(entity, attribute, value)` triples. On a later run, any doc whose hash no

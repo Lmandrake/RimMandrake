@@ -1,8 +1,8 @@
 # RimFlow v3.0 Dispatcher tick (RIMFLOW_V3_BUILD_DISPATCHER_FIRST; src/RimMandrake/rimflow/dispatcher.py).
 # Runs from the dispatch clone like testq-tick.service. LIVE (--apply) since 2026-10-28 ~14:57 PDT: wave 1 step 11
 # (design/RimMandrake/dispatcher_golive_wave1.md), after FOUNDRY's doorbell armed. Rollback: runbook section 7.
-# Install: cp rm-dispatcher.{service,timer} ~/.config/systemd/user/ && systemctl --user daemon-reload
-#          && systemctl --user enable --now rm-dispatcher.timer
+# No timer: the metronome's dispatch phase is the clock (metronome_phases.json); seat_restart.py and rm-restart-now start
+# this service on demand. Install: ops_clocks.py install rm-dispatcher --apply
 [Unit]
 Description=RimFlow v3.0 Dispatcher tick (live wakes)
 

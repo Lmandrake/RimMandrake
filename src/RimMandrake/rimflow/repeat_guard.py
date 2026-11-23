@@ -14,7 +14,7 @@ import os
 import re
 import subprocess
 
-ROOTS = ("src/", ".claude/hooks/", "skills/", "infrastructure/dashboards/hub/", "infrastructure/stevedesktop/")   # run_selftests.SEARCH_ROOTS
+ROOTS = ("src/", ".claude/hooks/", "skills/", "infrastructure/stevedesktop/")   # run_selftests.SEARCH_ROOTS
 TIMEOUT_S = 240
 # what a test that never reached its own checks dies of; AssertionError is a test failing, and is a red
 CRASH = re.compile(r"^(?:\w+\.)*(?:ImportError|ModuleNotFoundError|SyntaxError|IndentationError|TabError|NameError|TypeError|"

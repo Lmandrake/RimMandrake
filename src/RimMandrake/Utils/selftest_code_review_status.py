@@ -293,22 +293,6 @@ try:
 finally:
     subprocess.run = real_run
 
-# ---- 12. the hook log is ONE path across two writers -----------------------
-# code_review_status.py (python) and the rm-codebase-health systemd unit (which
-# replaced git_hooks/post-commit 2026-10-02, git plan Phase 4) both name
-# Transient/codebase_health_hook.log; no shared constant can span the two
-# languages, so this check is what enforces the agreement. A drifted pair
-# silently splits the health publisher's only error channel (2026-09-09
-# review finding: they briefly disagreed via /tmp).
-_py_src = open(os.path.join(HERE, "code_review_status.py"), encoding="utf-8").read()
-_sh_src = open(os.path.join(HERE, "systemd", "rm-codebase-health.service"), encoding="utf-8").read()
-for _name, _src in (("code_review_status.py", _py_src), ("rm-codebase-health.service", _sh_src)):
-    _hits = [l for l in _src.splitlines()
-             if "codebase_health_hook.log" in l and "=" in l and not l.lstrip().startswith("#")]
-    eq(len(_hits) >= 1, True, f"{_name} assigns the hook log path")
-    eq(all("Transient" in l for l in _hits), True,
-       f"{_name} routes the hook log under Transient/ (never /tmp — tmpfs, erased on reboot)")
-
 # ---- 13. append-only per-seat records (git plan Phase 5, 2026-10-02) -------
 # Every write APPENDS; current state = last record per path by (ts, seat, line);
 # shards from two seats merge by line (merge=union) and still resolve; an

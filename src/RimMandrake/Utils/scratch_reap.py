@@ -162,7 +162,7 @@ DISPOSABLE_EXACT = {"Transient/codebase_health.html", "Transient/codebase_health
                     "Transient/codebase_health_hook.log", "infrastructure/state/codebase_health_last.json",
                     "infrastructure/state/codebase_health_last.json.lock",
                     "infrastructure/state/art/sheets/flyer_gate_selftest.snapshot.json"}     # selftest_flyer_gate writes it
-DISPOSABLE_DIRS = ("infrastructure/dashboards/hub/data/", "infrastructure/state/queue/")     # rendered from the ledger
+DISPOSABLE_DIRS = ("infrastructure/state/queue/",)     # rendered from the ledger
 
 
 def env_paths(name: str, default: list[Path]) -> list[Path]:

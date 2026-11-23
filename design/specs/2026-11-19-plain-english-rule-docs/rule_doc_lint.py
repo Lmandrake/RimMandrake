@@ -238,8 +238,7 @@ CLASSES = [
                "skills/rimworld-art-evaluation/references/prompts/*.md"]),
     ("facts", ["infrastructure/state/facts/*.md"]),
     ("skill", ["skills/*/SKILL.md", "skills/README.md", "skills/BY_WORK.md"]),
-    ("infra-doc", ["infrastructure/*.md", "src/RimMandrake/rimflow/docs/*.md", "README.md", "LEXICON.md",
-                   "GLOBAL_CLAUDE.md", "final.md", "Fable_Review/rewrites/*.md"]),
+    ("infra-doc", ["infrastructure/*.md", "README.md", "LEXICON.md"]),
 ]
 # who may cite a file, grouped; a hit is evidence of a reader
 READER_SETS = [
@@ -269,7 +268,7 @@ def needle(path):
     if base == "SKILL.md":
         return os.path.basename(os.path.dirname(path))
     if base in ("README.md", "CLAUDE.md", "PROMPT.md", "POLICY.md", "preamble.md", "operations.md", "AGENTS.md",
-                "CHARTER.md", "COMPARISON.md", "final.md"):
+                "CHARTER.md"):
         return path if "/" in path else base
     return base
 

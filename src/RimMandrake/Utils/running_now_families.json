@@ -86,7 +86,7 @@
       "art"
     ],
     [
-      "rm-(ops-watch|deadman|memwatch|pulse|telemetry|scratch|codebase-health|account-usage|objstore)",
+      "rm-(ops-watch|deadman|memwatch|pulse|telemetry|scratch|account-usage|objstore)",
       "monitors",
       "monitor"
     ],

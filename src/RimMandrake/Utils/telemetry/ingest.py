@@ -590,7 +590,7 @@ def make_sources() -> list[Source]:
         Source("ops_watch", lambda: [_j(c["ops_watch_series"], "*.jsonl")], parse_ops_watch,
                desc="ops_watch readings per family (rm_ops_reading / rm_ops_unmeasured / rm_ops_rows); "
                     "ops_memory.py reads its trends back from VM",
-               rate="15 min", producer="ops_watch.py (rm-ops-watch.timer)"),
+               rate="15 min", producer="ops_watch.py (the metronome's sense phase)"),
     ]
 
 

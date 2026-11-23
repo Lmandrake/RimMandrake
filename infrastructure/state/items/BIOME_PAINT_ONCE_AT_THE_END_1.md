@@ -136,3 +136,18 @@ Barrens"). Start tile 17007 is one of them. The list is rebuilt from the canonic
 that file and `--write` again before applying. The apply recipe is the plan's `apply` field. Until the painting,
 `FallLineGate` falls back to the tile's feature name. Both names are in its `FeatureNames`, so the gate already holds
 on these 308 tiles (proof: `src/RimMandrake/Utils/selftest_fall_line_mutator_plan.py`).
+
+## facts from the 2026-08-21 paint rehearsal, for the one paint (its file was deleted 2026-11-23)
+
+The full text: `git show de64ce0db7:infrastructure/state/WORLDPAINT_REHEARSAL.md`. What the paint must remember:
+- Painting under an instantiated map destroys that colony, and the session that holds it. Paint with no map.
+- `AddLandmark` ignores `IsValidTile` (measured 2026-08-19). The placing script must refuse a settlement tile and its
+  neighbours itself.
+- A shore mutator (`Coast`) is a function of where the water is now. Clear every old one and derive it again after the
+  water moves: 5,233 were once left stranded inland.
+- Landmarks are placed by hand. A named place stops being a place when there are 227.
+- A world copied file by file carries no mutators and no landmarks: they need a replay, and a replay rolls each
+  landmark's own `mutatorChances` again.
+- The world page must read Scale 7 and Coverage 100% (21,872 tiles), and the ideology mode must not be Classic, or the
+  faction faiths never exist.
+- Delete throwaway saves while the game runs. With the game down, Steam Cloud restores them.

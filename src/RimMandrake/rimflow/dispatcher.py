@@ -2,7 +2,7 @@
 """dispatcher.py — RimFlow v3.0, the Dispatcher: a PROGRAM, not an AI (design/RimMandrake/dispatcher_design_2026-10-26.md
 §2, §3, §6 item 1; item RIMFLOW_V3_BUILD_DISPATCHER_FIRST). It decides nothing: it follows its schedule file.
 
-Every tick (the rm-dispatcher.timer, every 2 min) it, for each seat in the schedule:
+Every tick (the metronome's dispatch phase) it, for each seat in the schedule:
   1. OBSERVES the seat's window: `claude agents --json` (status idle/busy, session id). If that command fails the
      whole tick is UNMEASURED and nothing is done (never act on a blind instrument). A busy window whose main transcript
      shows no work moving counts as idle (busy_waiting; BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK).

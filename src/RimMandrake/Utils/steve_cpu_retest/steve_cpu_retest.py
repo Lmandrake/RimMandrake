@@ -2,7 +2,7 @@
 """steve_cpu_retest.py - drain-triggered unmask retest of SteveDesktop CPUs 18 and 19.
 (CPU_RETEST_PROVE_MASKED_PAIR_AFTER_FLASH)
 
-A systemd user timer on the PC runs `tick` every 60 s. State machine (state.json):
+A systemd user timer on the PC ran `tick` every 60 s. State machine (state.json):
   DRAIN       lane paused (no new jobs); wait until no testq job runs, the worker is idle, no RimWorld on Steve,
               for two ticks in a row
   REBOOT_OFF  bcdedit export + deletevalue numproc, armed.flag, shutdown /r
@@ -13,7 +13,8 @@ A systemd user timer on the PC runs `tick` every 60 s. State machine (state.json
   WAIT_RESTORE   wait for the boot with 18 CPUs, resume the lane           -> END_FAULT
   DONE_CLEAN  clean past the onset time: leave unmasked, final
 Never reboots while a job runs. Persistent log: <HOME>/events.jsonl, readings mirror <HOME>/readings.jsonl.
-Subcommands: tick | status | arm | install-timer
+Subcommands: tick | status | arm. The retest ended END_FAULT on 2026-11-01 and its timer was retired 2026-11-23;
+soak_read.py and steve_cpu_sweep.py use this module's SSH helpers.
 """
 import base64, fcntl, json, os, subprocess, sys, time, glob
 
@@ -296,25 +297,12 @@ def cmd_arm():
     ensure_paused("CPU_RETEST_PROVE_MASKED_PAIR_AFTER_FLASH: drain for unmask reboot (current job finishes, none admitted)")
 
 
-def cmd_install():
-    """Copy this script to HOME (the unit runs that copy), then install its units from the one home
-    (src/RimMandrake/Utils/systemd/steve-cpu-retest.{service,timer}) through the only installer."""
-    os.makedirs(HOME, exist_ok=True)
-    with open(os.path.abspath(__file__)) as f, open(os.path.join(HOME, "steve_cpu_retest.py"), "w") as g:
-        g.write(f.read())
-    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    import ops_clocks
-    return ops_clocks.install(["steve-cpu-retest"], apply=True, enable=True)
-
-
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else "status"
     os.makedirs(HOME, exist_ok=True)
     if cmd == "status":
         print(json.dumps(load(), indent=1))
         return
-    if cmd == "install-timer":
-        return cmd_install()
     with open(os.path.join(HOME, "tick.lock"), "w") as lk:
         try:
             fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)

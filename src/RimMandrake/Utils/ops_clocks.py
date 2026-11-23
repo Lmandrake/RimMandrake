@@ -11,7 +11,7 @@ src/RimMandrake/Utils/systemd/ops_clocks.json; `RM_OPS_DEPLOY` overrides the dep
                              in "outside", every such owned timer (cut over, OPS_METRONOME_MIGRATE_CLOCKS_FENCED) is
                              neither enabled nor active (two owners), and `units` below holds; else exit 1, one line each
     ops_clocks.py units      exit 0 when every unit text of ours has its one home, src/RimMandrake/Utils/systemd/: each
-                             installed rm-*/testq-*/timer-guard/account-plan/steve-cpu-retest/claude-seats unit and
+                             installed rm-*/testq-*/timer-guard/account-plan/claude-seats unit and
                              drop-in equals the folder file of its name, every folder file is installed, and no non-test
                              Python source holds unit text (design/specs/2026-11-22-units-one-folder/boundary.md)
     ops_clocks.py install [UNIT ...] [--apply] [--enable]
@@ -60,7 +60,7 @@ def deploy(conf=None):
 # (design/specs/2026-11-22-units-one-folder/boundary.md).
 UNIT_DIR = HERE / "systemd"
 UNIT_SUFFIXES = (".service", ".timer", ".path", ".slice", ".socket", ".target")
-INSTALL_GLOBS = UNIT_GLOBS + ("steve-cpu-retest*", "claude-seats*")
+INSTALL_GLOBS = UNIT_GLOBS + ("claude-seats*",)
 THROWAWAY = ("testq-selftestthrow-*", "rm-probe-*")   # selftests make and remove these in the real install dir
 MASK = object()                                       # an installed name that is a symlink to /dev/null
 SECTION = re.compile(r"^\[(Service|Timer|Path|Slice|Socket)\]\s*$", re.M)

@@ -10,7 +10,7 @@ judgment of `ops_clocks.py check` is older and keeps its own tests (`selftest_op
 
 ## The one home, and why it is this one
 
-The text of every `rm-*`, `testq-*`, `timer-guard`, `account-plan`, `steve-cpu-retest` and `claude-seats` unit, and of
+The text of every `rm-*`, `testq-*`, `timer-guard`, `account-plan` and `claude-seats` unit, and of
 each drop-in under one of them, is one file in `src/RimMandrake/Utils/systemd/`, with the name it has when installed
 (`rm-deadman.timer`, `rm-memwatch.service.d/rm-data-root.conf`). The file is the literal text systemd reads: no
 template, no `{deploy}`. The deploy that clocks run from is written in the file, and `check` judges it against
