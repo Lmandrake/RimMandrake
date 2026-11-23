@@ -103,7 +103,8 @@ run could kill it. So a fresh reader read the repairs.)
 | 2 | `file` cannot see a cut criterion; no verb checks a `live-site` line | added to `lightspeed-authoring.md` §2 |
 | 2 | `lightspeed-authoring.md` says the filing lint is PLANNED, and "the runner refuses" | both corrected |
 
-No reader read these lines after their last edit: the two flyer-lint bullets of §Flyers, the "Two rows are seen less" lines,
+No reader read these lines after their last edit: the three lines that the `./publish` prose check asked to
+define (the functional script, chains, R1–R6), the two flyer-lint bullets of §Flyers, the "Two rows are seen less" lines,
 the poll-loop line and the §5 line of `lightspeed-authoring.md`.
 
 ## Could not determine
