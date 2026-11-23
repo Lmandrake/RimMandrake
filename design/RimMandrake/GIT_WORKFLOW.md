@@ -35,16 +35,23 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
 - Then `./publish` re-creates each local commit that is not yet upstream on top of origin/main. The replay uses
   plumbing (`merge-tree` + `commit-tree`). `./publish` then moves main there with `git reset --keep`.
 - Then it pushes. When origin moved, it retries up to 8 times.
-- `./publish` **never stashes**, so it works in a dirty clone. It refuses only in two cases. In each case it names the
-  path, and your commit stays intact on HEAD:
-  - a real conflict;
-  - you hold an uncommitted edit to a file that origin changed.
+- `./publish` **never stashes**, so it works in a dirty clone. It refuses on a real conflict. Then
+  it names the path, and your commit stays intact on HEAD.
+- If you hold an uncommitted edit to a file that origin changed, one of these happens:
+  - the edit merges cleanly: `./publish` carries the edit across and lands your commit;
+  - the edit really overlaps: `./publish` still pushes your commit, leaves the clone's branch and your edit in place, and
+    prints `LANDED, CLONE NOT MOVED: <why>`;
+  - the edit really overlaps and a DLL must be rebuilt: `./publish` refuses, names the path, and your commit stays intact
+    on HEAD.
 
 **The tree checks before the push.**
 - Before it pushes, `./publish` runs the fast whole-tree checks listed in `src/RimMandrake/Utils/publish_tree_checks.json`.
   The checks run in parallel (about 13 s, measured 2026-11-12).
 - On a red check, `./publish` refuses. The refusal names the check, its FAIL line and the fix (owner by card
   2026-11-12; `validation_map_and_rules.md` rule 10).
+- After a red tree check or a red pipeline check, `./publish` takes the commit of this run off HEAD and leaves your files
+  as they were. (If HEAD moved during the checks, the commit stays, and the refusal says so.) Fix, then publish the paths
+  again.
 - A publish of only ledger or lesson files skips the checks. A check that times out gives a warning.
 - In a sparse clone (the default of `scratch_clone.py`), the checks run on a throwaway full checkout of HEAD. That
   checkout is a `git clone --shared` in the clone's git dir, and costs about 20 s more. So a sparse clone publishes with
@@ -67,8 +74,9 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
 ### `./sync`
 
 - `./sync` moves main to origin/main with `git reset --keep` only when both conditions are true:
-  - each local commit is already upstream (git cherry marks it `-`, or upstream has the same bytes per path);
-  - no dirty file holds bytes other than upstream's.
+  - each local commit is already upstream (git cherry marks it `-`, or upstream has the same bytes and mode per path);
+  - no dirty file that upstream also changed holds bytes other than upstream's, unless the edit merges cleanly with
+    upstream.
 - Otherwise `./sync` prints `REFUSED: <why>` and changes nothing.
 - `./sync` saves local commits to `backup/<seat>-pre-sync-<stamp>-<sha>`.
 - Never stash. Never use `--hard`.
@@ -392,9 +400,11 @@ The rest are discipline. Each trap gives what happens, then what to do instead.
 - The cause is a peer's uncommitted edit to one of two things:
   - a file that origin changed;
   - the mod DLL pair (the peer's `winbuild.py` output, `+dirty` in the `.srchash`).
-- What happens: your commit stays local, and every later publish waits on that peer. The ledger_lint push hook refuses the workaround of a temp index + `commit-tree` + push. That hook lints the stale
+- What happens for a file that origin changed (read in `publish.py` 2026-11-23): if the edit really overlaps, `./publish`
+  pushes your commit and prints `LANDED, CLONE NOT MOVED`. Nothing is left to land by hand.
+- What happens when a DLL must be rebuilt: your commit stays local, and every later publish waits on that peer. The ledger_lint push hook refuses the workaround of a temp index + `commit-tree` + push. That hook lints the stale
   local HEAD.
-- Do instead: land WITHOUT a touch to the tree. Two ways:
+- Do instead, when the commit stayed local: land WITHOUT a touch to the tree. Two ways:
   - Plumbing: `tree=$(git merge-tree --write-tree --merge-base=C^ origin/main C)`. Run `commit-tree` on that tree onto
     `origin/main`. Run `git push origin <tip>:main`. Local main stays diverged; the next publish's `git cherry` skips
     it.

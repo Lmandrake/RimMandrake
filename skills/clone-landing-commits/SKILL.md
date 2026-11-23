@@ -5,56 +5,90 @@ description: How to get a commit from a RimMandrake seat clone (/home/mandrake/r
 
 # Landing commits from a seat clone
 
-A seat clone has one owning window, but its helpers share the tree and the index, and review-sheet servers keep a
-few files dirty at all times. So the tools below never need a clean tree, never stash, and never `--hard`.
+A seat clone has one owning window. But the helpers of that window share the tree and the index. Review-sheet
+servers also keep a few files dirty at all times. So the tools below never need a clean tree, never stash, and never use `--hard`.
+
 Proof of publication is `git merge-base --is-ancestor <sha> origin/main` — nothing else.
 
 ## The one landing path
 
 ```
-./publish -m "subject" path/one path/two     # commit those paths + replay onto origin/main + push
-land.sh <sha> <path>...                      # land one commit you already made (paths must cover it)
-land.sh -m "subject" <path>...               # land the paths' working-tree bytes, no local commit needed
+./publish -m "subject" path/one path/two                 # commit those paths + replay onto origin/main + push
+src/RimMandrake/Utils/land.sh <sha> <path>...            # land one commit you already made (paths must cover it)
+src/RimMandrake/Utils/land.sh -m "subject" <path>...     # land the paths' working-tree bytes, no local commit needed
 ```
 
-- All three print `PUBLISHED <sha>` (pass it to `rimflow close --sha`) and retry when origin moves mid-push.
-- `./publish` is the default. It refuses, naming the path and leaving your commit on HEAD, only on a real conflict or
-  when you hold an uncommitted edit to a file origin changed.
-- `land.sh` is for when you must not move HEAD or must publish a subset; it then realigns the clone itself.
-  Installed as `/home/mandrake/.seat-tmp/land.sh`; `LAND_REPO` defaults to the clone you are in.
-- Brand-new file: `git add -- <file>` first (explicit path), then publish it. Keep file writes and git in SEPARATE
-  Bash calls — a hook refusal cancels the whole call, writes included.
-- Commit messages: subject plus at most 2-3 lines; end with the session's attribution lines.
+- All three commands print `PUBLISHED <sha>`. Pass that sha to `rimflow close --sha`.
+- All three commands retry when origin moves during the push.
+- `./publish` is the default. The usual refusals are:
+  - A real conflict. The refusal names the path. Your commit stays on HEAD.
+  - A red tree check or pipeline check. The refusal names the check. `./publish` takes the commit of this run off HEAD
+    and leaves your files as they were. (If HEAD moved during the checks, the commit stays, and the refusal says so.)
+    Fix the fault, then publish the paths again
+    (`design/RimMandrake/GIT_WORKFLOW.md` §`./publish`).
+- If you hold an uncommitted edit to a file that origin changed, one of these happens:
+  - If the edit merges cleanly, `./publish` carries the edit across and lands your commit.
+  - If the edit really overlaps origin's change, `./publish` still pushes your commit. It leaves the clone's branch in
+    place, leaves your edit alone, and prints `LANDED, CLONE NOT MOVED: <why>`.
+  - If the edit really overlaps and the landing must rebuild a DLL, `./publish` refuses. The refusal names the path.
+    Your commit stays on HEAD.
+- Use `land.sh` when you must not move HEAD, or when you must publish a subset. After the push, `land.sh` realigns the
+  clone itself.
+- `land.sh` is `src/RimMandrake/Utils/land.sh`. `land.sh` is not on PATH. The old copy `/home/mandrake/.seat-tmp/land.sh` is
+  absent (measured 2026-11-23).
+- `LAND_REPO` defaults to the clone that you are in.
+- For a brand-new file, run `git add -- <file>` first (explicit path). Then publish the file.
+- Keep file writes and git in SEPARATE Bash calls. A hook refusal cancels the whole call, writes included.
+- A commit message is a subject plus at most 2-3 lines. End the message with the session's attribution lines.
 
 ## Sync: making the clone level again
 
-`./sync` (`src/RimMandrake/Utils/seat_sync.py`) fetches and runs `git reset --keep origin/main` only when that loses
-nothing: every local commit is already upstream (patch- or content-equivalent) and no dirty file holds bytes other than
-upstream's. Otherwise it prints `REFUSED: <why>` and changes nothing. `./sync --dry-run` shows the plan.
+`./sync` (`src/RimMandrake/Utils/seat_sync.py`) fetches. Then it runs `git reset --keep origin/main`, only when the
+reset loses nothing:
+
+- Each local commit is already upstream: patch-equivalent, or content-equivalent (upstream has the same bytes and mode
+  at each path).
+- No dirty file that upstream also changed holds bytes other than upstream's, unless the edit merges cleanly with
+  upstream.
+
+Otherwise `./sync` prints `REFUSED: <why>` and changes nothing. `./sync --dry-run` shows the plan.
 
 ## Recovery
 
 | you see | do |
 |---|---|
-| `ahead N, behind M` after landings | `./sync` — the N are duplicates of landed commits; they go to a `backup/<seat>-pre-sync-*` branch |
-| `REFUSED: local commit X is NOT on origin/main` | X is real unpublished work: `land.sh X <its paths>`, then `./sync`. If X is a peer's, leave it and tell them |
-| `REFUSED: dirty file(s) ... hold other bytes` | that edit collides with upstream: publish it, or copy it aside yourself, then `./sync` |
-| `pull --rebase` refuses / you are told to stash | don't; use `./publish` or `./sync` |
-| red selftest on a clone you have not synced | `./sync` and re-run before fixing anything |
-| `.git/index.lock` exists | a helper's git call holds it for a second: wait and retry, never delete a fresh lock |
+| `ahead N, behind M` after landings | Run `./sync`. The N commits are duplicates of landed commits. `./sync` keeps them on a `backup/<seat>-pre-sync-*` branch. |
+| `REFUSED: local commit X is NOT on origin/main` | X is real unpublished work. Run `src/RimMandrake/Utils/land.sh X <its paths>`, then `./sync`. If X is a peer's commit, leave X and tell the peer. |
+| `REFUSED: N dirty file(s) really overlap upstream's change` (the old text was `REFUSED: dirty file(s) ... hold other bytes`) | That edit collides with upstream. Publish the edit, or copy it aside yourself. Then run `./sync`. |
+| `pull --rebase` refuses, or someone tells you to stash | Do not stash. Use `./publish` or `./sync`. |
+| red selftest on a clone you have not synced | Run `./sync` and run the selftest again before you fix anything. |
+| `.git/index.lock` exists | A helper's git call holds the lock for a second. Wait and retry. Never delete a fresh lock. |
 
-Never `git stash`, `--autostash`, `reset --hard`, `checkout -- <path>` on files you did not write, `push --force`, or
-worktrees. A scratch clone is made only via `scratch_clone.py`, sparse by default (~200 MB of tooling dirs; name the
-dirs the task needs with `--sparse <dir>...`; `--checkout`, the whole ~4 GB, only for repo-wide work), and
-before deleting one check unpushed commits AND untracked files.
+Never use any of these:
+
+- `git stash`, `--autostash`, `reset --hard`, `push --force`, or worktrees;
+- `checkout -- <path>` on files that you did not write.
+
+Make a scratch clone only with `scratch_clone.py`:
+
+- The clone is sparse by default: ~200 MB of tooling directories.
+- Name the directories that the task needs with `--sparse <dir>...`.
+- Use `--checkout` (the whole tree, ~4 GB) only for repo-wide work.
+- Before you delete a scratch clone, check for unpushed commits AND untracked files.
 
 More traps for this section: [references/traps.md](references/traps.md) § Recovery.
 
 ## Traps
 
-The full list — silenced `git add`, pathspec commits taking the worktree, untracked paths, `-F -` after `--`, the zsh
-`$N:refs` modifier, compound-command refusals, pre-push lint on a stale HEAD — is
-the **Traps** table in `design/RimMandrake/GIT_WORKFLOW.md`. Read it before improvising any git you have not done here
-before.
+The full list is the section **Traps** in `design/RimMandrake/GIT_WORKFLOW.md`. Read that section before you improvise
+any git that you have not done here before. The section covers these traps, among others:
+
+- a silenced `git add`;
+- a pathspec commit that takes the worktree;
+- untracked paths;
+- `-F -` after `--`;
+- the zsh `$N:refs` modifier;
+- refusals of a compound command;
+- the pre-push lint on a stale HEAD.
 
 More traps for this section: [references/traps.md](references/traps.md) § Traps.
