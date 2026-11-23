@@ -91,7 +91,9 @@ def boom():
     raise Started()
 
 
-GC.codex_cli.find_codex_cli = boom
+GC.door.find_codex = lambda side: boom()     # the door's finder: reached only if the gate let it through
+import os as _os  # noqa: E402
+_os.environ.setdefault("GPT_DOOR_LOG_DIR", str(Path(__import__('tempfile').mkdtemp())))
 runs = []
 GC.subprocess.run = lambda *a, **k: runs.append(a) or (_ for _ in ()).throw(AssertionError("subprocess ran"))
 

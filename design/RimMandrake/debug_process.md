@@ -208,12 +208,7 @@ General consult lessons (inlining, size, timeouts, grading) live in the global `
 evidence that tells hypotheses apart; **two** genuinely different causal theories
 refuted; a result that makes no sense against the current model of the system.
 
-**Mechanism.** Use the Windows Codex CLI, read-only. Run
-`codex.exe exec --sandbox read-only --skip-git-repo-check -o answer.md "<read prompt.md as UTF-8 …>"`
-from `Transient/debug_gpt/<ITEM_ID>/` with stdin closed. Locate the binary the way
-`find_codex_cli()` in `src/RimMandrake/Utils/codex_cli.py` does. ⚠️ Through
-Windows PowerShell's codepage, Codex reads `°`/`§` as mojibake. Say "read as UTF-8" in
-the prompt, or write it in ASCII. The maintained wrapper (§1 item 3) will own both.
+**Mechanism.** `python3 src/RimMandrake/Utils/gpt_consult.py --prompt-file prompt.md -f <file>...`, a shim over Dispatch's GPT door (`~/dev/Dispatch/providers/chatgpt/bin/gpt_door.py`). Do not start `codex` or `codex.exe` by hand: the door picks the binary and the sign-in, keeps the outcomes apart, and refuses a Windows launch that would raise the sandbox-setup dialog.
 
 **The brief contains:** the symptom and its class; expected vs actual; last-known-good
 state and what changed since; mod, tier and companion versions; the failing result rows;

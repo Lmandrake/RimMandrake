@@ -35,9 +35,11 @@ def ok(name, got, want):
         FAILED.append(name)
 
 
-GC.codex_cli.CODEX_SCRATCH = Path(T) / "codex"
-GC.codex_cli.find_codex_cli = lambda: "/bin/true"
-GC.codex_cli.wsl_to_win = lambda p: str(p)
+import os as _os  # noqa: E402
+(Path(T) / "codex_home").mkdir(exist_ok=True)
+(Path(T) / "codex_home" / "auth.json").write_text("{}")        # the door launches only against a home with a login
+_os.environ.update(CODEX_SCRATCH=str(Path(T) / "codex"), GPT_DOOR_CODEX="/bin/true", RM_CODEX_SIDE="wsl",
+                   GPT_DOOR_LOG_DIR=str(Path(T) / "door_log"), CODEX_HOME=str(Path(T) / "codex_home"))
 GC.codex_advice.gate = lambda *a, **k: 0                 # the live Codex HOLD/EXHAUSTED advice is not under test
 _real_run = GC.subprocess.run
 ANSWER = {"text": "finding 1\n"}
@@ -58,7 +60,7 @@ def _fake_run(cmd, cwd=None, **kw):
 
 
 src = Path(GC.ROOT) / "src" / "RimMandrake" / "Utils" / "gpt_consult_rounds.py"
-GC.subprocess.run = _fake_run
+GC.door.RUNNER = _fake_run          # the door runs codex through RUNNER when a test sets it
 try:
     rc1 = GC.main(["review", "-f", str(src), "-m", "m1", "--round", "PARSER_R1"])
     os.environ["RM_CONSULT_ROUND"] = "PARSER_R1"
@@ -74,7 +76,7 @@ try:
     except SystemExit as e:
         bad_round = e.code
 finally:
-    GC.subprocess.run = _real_run
+    GC.door.RUNNER = None
 
 ok("consults return", (rc1, rc2, rc3, rc4), (0, 0, GC.EXIT_DEADLINE, 0))
 ok("a malformed --round is refused before any call", bad_round, 2)

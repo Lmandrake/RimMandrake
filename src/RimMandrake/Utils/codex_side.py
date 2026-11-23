@@ -28,8 +28,15 @@ def main(argv=None):
     selected, args = parser.parse_known_args(sys.argv[1:] if argv is None else argv)
     if selected.codex:
         os.environ["RM_CODEX_SIDE"] = selected.codex
-    import codex_cli as cx
-    cx.select_codex(selected.codex)
+    import dispatch_door
+    door = dispatch_door.load()
+    runtime = "linux" if codex_side() == "wsl" else "windows"
+    home = door.default_home(runtime)
+    if runtime == "windows":
+        ok, why = door.windows_sandbox_ready(home)
+        if ok is not True:                  # a launch would raise the Windows sandbox-setup dialog
+            print("codex_side: refusing to launch codex.exe: %s" % why, file=sys.stderr)
+            return 22
     path_flags = ("-C", "--cd", "-o", "--output-last-message", "--output-schema", "--add-dir")
     images = False
     path_next = False
@@ -37,13 +44,13 @@ def main(argv=None):
         if arg == "--":
             break
         if path_next or (images and not arg.startswith("-")):
-            args[i] = cx.codex_path(Path(arg))
+            args[i] = door.codex_path(runtime, Path(arg))
             path_next = False
         else:
             images = arg in ("-i", "--image")
             path_next = arg in path_flags
-    return subprocess.run([str(cx.find_codex_cli()), *args],
-                          env=cx.child_env(cx.base_codex_home()),
+    return subprocess.run([str(door.find_codex(runtime)), *args],
+                          env=door.child_env(runtime, home),
                           timeout=8 * 3600).returncode  # an interactive session, bounded to a working day
 
 

@@ -76,9 +76,11 @@ ok("an external review whose job never answered is only asserted", RI.identity(d
 
 # gpt_consult writes the receipt (codex faked: it writes the answer file)
 import gpt_consult as GC  # noqa: E402
-GC.codex_cli.CODEX_SCRATCH = Path(T) / "codex"
-GC.codex_cli.find_codex_cli = lambda: "/bin/true"
-GC.codex_cli.wsl_to_win = lambda p: str(p)
+import os as _os  # noqa: E402
+(Path(T) / "codex_home").mkdir(exist_ok=True)
+(Path(T) / "codex_home" / "auth.json").write_text("{}")        # the door launches only against a home with a login
+_os.environ.update(CODEX_SCRATCH=str(Path(T) / "codex"), GPT_DOOR_CODEX="/bin/true", RM_CODEX_SIDE="wsl",
+                   GPT_DOOR_LOG_DIR=str(Path(T) / "door_log"), CODEX_HOME=str(Path(T) / "codex_home"))
 _real_run = GC.subprocess.run
 
 
@@ -92,11 +94,11 @@ def _fake_run(cmd, cwd=None, **kw):
 
 
 src = Path(GC.ROOT) / "src" / "RimMandrake" / "Utils" / "review_identity.py"
-GC.subprocess.run = _fake_run
+GC.door.RUNNER = _fake_run          # the door runs codex through RUNNER when a test sets it
 try:
     rc = GC.main(["review this", "-f", str(src), "-m", "m2"])
 finally:
-    GC.subprocess.run = _real_run
+    GC.door.RUNNER = None
 lines = [json.loads(l) for l in open(os.environ["RM_CONSULT_RECEIPTS"]) if l.strip()]
 last = lines[-1]
 ok("gpt_consult answers", rc, 0)

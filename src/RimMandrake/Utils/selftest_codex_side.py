@@ -19,7 +19,7 @@ import common
 import ops_watch as ow
 
 cx = ar.CX          # the image skill's codex_image (agent_runner seeds isolated homes with it)
-cli = gc.codex_cli  # gpt_consult's and the shell launcher's own finder
+door = gc.door      # Dispatch's GPT door: the finder gpt_consult and the shell launcher share
 
 
 class RuntimeTests(unittest.TestCase):
@@ -75,10 +75,15 @@ class RuntimeTests(unittest.TestCase):
                 cx.codex_home(root / "invisible")
 
     def test_shell_launcher_override_and_multiple_images(self):
-        with patch.dict(os.environ, {"RM_CODEX_SIDE": "wsl"}), patch.object(cli, "CODEX_SCRATCH"), patch.object(cli, "find_codex_cli", return_value="codex.exe"), patch.object(cli, "base_codex_home", return_value=Path("/home")), patch.object(cli, "child_env", return_value={}), patch.object(cli, "codex_path", side_effect=lambda p: "WIN:" + str(p)), patch.object(subprocess, "run", return_value=subprocess.CompletedProcess([], 0)) as invoke:
+        with patch.dict(os.environ, {"RM_CODEX_SIDE": "wsl"}), patch.object(door, "find_codex", return_value="codex.exe"), patch.object(door, "default_home", return_value=Path("/home")), patch.object(door, "child_env", return_value={}), patch.object(door, "codex_path", side_effect=lambda side, p: "WIN:" + str(p)), patch.object(door, "windows_sandbox_ready", return_value=(True, "current")), patch.object(subprocess, "run", return_value=subprocess.CompletedProcess([], 0)) as invoke:
             self.assertEqual(side.main(["--codex", "win", "exec", "-C", "/repo", "-i", "/a.png", "/b.png", "--", "-"]), 0)
             self.assertEqual(side.codex_side(), "win")
             self.assertEqual(invoke.call_args.args[0], ["codex.exe", "exec", "-C", "WIN:/repo", "-i", "WIN:/a.png", "WIN:/b.png", "--", "-"])
+
+    def test_shell_launcher_refuses_windows_when_sandbox_unproven(self):
+        # A codex.exe launch against a home whose sandbox state is not current raises the Windows setup dialog.
+        with patch.dict(os.environ, {"RM_CODEX_SIDE": "win"}), patch.object(door, "default_home", return_value=Path("/home")), patch.object(door, "windows_sandbox_ready", return_value=(None, "net.exe unreadable")), patch.object(subprocess, "run", side_effect=AssertionError("codex.exe launched")):
+            self.assertEqual(side.main(["exec", "-"]), 22)
 
     def test_agent_linux_runs_in_clone_with_isolated_home(self):
         with tempfile.TemporaryDirectory() as td, patch.dict(os.environ, {"RM_CODEX_SIDE": "wsl"}), patch.object(cx, "find_codex_cli", return_value=Path("/bin/codex")), patch.object(cx, "wsl_to_win", side_effect=AssertionError("Windows translation on Linux")):
@@ -110,7 +115,8 @@ class RuntimeTests(unittest.TestCase):
                     self.assertEqual(argv[argv.index("-C") + 1], kw["cwd"])
                     Path(argv[argv.index("-o") + 1]).write_text("ok")
                     return subprocess.CompletedProcess(argv, 0)
-                with patch.object(cli, "CODEX_SCRATCH", root / "scratch"), patch.object(cli, "base_codex_home", return_value=root), patch.object(cli, "find_codex_cli", return_value="codex"), patch.object(cli, "wsl_to_win", side_effect=lambda p: str(p)), patch.object(gc.codex_advice, "gate", return_value=0), patch.object(gc, "_receipt"), patch.object(gc, "_log_call"), patch.object(gc.subprocess, "run", side_effect=invoke):
+                os.environ.update(CODEX_SCRATCH=str(root / "scratch"), GPT_DOOR_LOG_DIR=str(root / "door_log"))
+                with patch.object(door, "find_codex", return_value="codex"), patch.object(door, "wsl_to_win", side_effect=lambda p: str(p)), patch.object(door, "windows_sandbox_ready", return_value=(True, "current")), patch.object(gc.codex_advice, "gate", return_value=0), patch.object(gc, "_receipt"), patch.object(gc, "_log_call"), patch.object(gc.door, "RUNNER", invoke):
                     self.assertEqual(gc.main(["q", "--codex-home", str(root), "--lockdown", "--effort", "low"]), 0)
 
     def test_quota_uses_newest_account_reading_from_either_side(self):

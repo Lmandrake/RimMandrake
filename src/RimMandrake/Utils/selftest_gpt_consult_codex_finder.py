@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""gpt_consult.py finds Codex with the image skills absent (RIMMANDRAKE_MOVE_IMAGE_SKILLS_TO_WORKFLOWS_GPT_TOOL_BORROWS).
+"""gpt_consult.py finds Codex (through Dispatch's GPT door) with the image skills absent (RIMMANDRAKE_MOVE_IMAGE_SKILLS_TO_WORKFLOWS_GPT_TOOL_BORROWS).
 
 gpt_consult used to import the generating-images skill's codex_image.py for its Codex finder, so moving
 that skill out of the repo broke the ask-GPT tool. Each case runs in a fresh interpreter whose import of
@@ -12,6 +12,9 @@ import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import dispatch_door  # noqa: E402
+DISPATCH = str(dispatch_door.ROOT)   # the fake HOME below hides ~/dev/Dispatch
 
 PROBE = r"""
 import sys, importlib.abc
@@ -24,17 +27,17 @@ sys.meta_path.insert(0, Block())
 sys.path.insert(0, sys.argv[1])
 import gpt_consult as GC
 assert "codex_image" not in sys.modules, "gpt_consult still loaded codex_image"
-cli = GC.codex_cli
-print("CLI=" + str(cli.find_codex_cli()))
-print("HOME=" + str(cli.base_codex_home()))
-print("ENV=" + cli.child_env(cli.base_codex_home())["CODEX_HOME"])
-print("SCRATCH=" + str(cli.CODEX_SCRATCH))
+door = GC.door      # the finder lives in Dispatch's GPT door now
+print("CLI=" + str(door.find_codex("linux")))
+print("HOME=" + str(door.default_home("linux")))
+print("ENV=" + door.child_env("linux", door.default_home("linux"))["CODEX_HOME"])
+print("SCRATCH=" + str(GC.scratch_root()))
 """
 
 
 def run(home, env_extra):
-    env = {k: v for k, v in os.environ.items() if k not in ("CODEX_HOME", "CODEX_SCRATCH")}
-    env.update(HOME=str(home), RM_CODEX_SIDE="wsl", PATH="/usr/bin:/bin", **env_extra)
+    env = {k: v for k, v in os.environ.items() if k not in ("CODEX_HOME", "CODEX_SCRATCH", "GPT_DOOR_CODEX")}
+    env.update(HOME=str(home), RM_CODEX_SIDE="wsl", PATH="/usr/bin:/bin", RM_DISPATCH_ROOT=DISPATCH, **env_extra)
     return subprocess.run([sys.executable, "-c", PROBE, str(HERE)], capture_output=True, text=True, env=env,
                           timeout=60)
 
