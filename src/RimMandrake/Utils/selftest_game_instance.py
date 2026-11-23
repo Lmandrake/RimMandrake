@@ -188,8 +188,24 @@ def launch(w):
     check(F.alive(a) and open(a_cfg).read() == "game a's list" and w.kills() == [], "game a is untouched by b's launch")
     r = w.gi("launch", "b")
     check(r.returncode == 0 and "already running" in r.stdout and stdout(w.gi("pid", "b")) == b, "a second launch does not start a second b")
+    # live 2026-11-23: Steve2's worker keeps b up between jobs; a prepare that refused a seeded, running b refused 46 of
+    # 53 Steve2 jobs (REFUSED LOAD). Seeded already: it writes no Prefs, and only the companion profile is renewed.
+    ppath = os.path.join(w.b_dir, "Config", "Prefs.xml")
+    before = open(ppath, encoding="utf-8").read()
+    prof = os.path.join(w.b_dir, "JawaBench", "companion_profile.json")
+    os.remove(prof)
     r = w.gi("prepare", "b")
-    check(r.returncode == G.EX_REFUSED and "rewrites Prefs" in r.stderr, "prepare refuses while its own game runs")
+    check(r.returncode == 0 and open(ppath, encoding="utf-8").read() == before and os.path.exists(prof),
+          "prepare of a seeded b while it runs succeeds, Prefs untouched, profile renewed (rc %s: %s)"
+          % (r.returncode, r.stderr.strip()[-160:]))
+    # not seeded: the guard stands, since b rewrites Prefs from memory on exit and the seed would be lost
+    open(ppath, "w", encoding="utf-8").write(before.replace("<runInBackground>True", "<runInBackground>False"))
+    r = w.gi("prepare", "b")
+    check(r.returncode == G.EX_REFUSED and "rewrites Prefs" in r.stderr and "Prefs.xml" in r.stderr
+          and "<runInBackground>False" in open(ppath, encoding="utf-8").read(),
+          "prepare refuses while its own game runs and its Prefs still need the seed, writing nothing (%s)"
+          % r.stderr.strip()[-160:])
+    open(ppath, "w", encoding="utf-8").write(before)
     w.gi("stop", b, "--instance", "b")
     F.wait_dead(int(b))
 
@@ -221,8 +237,15 @@ def rw_game(w):
     check(r.returncode == 0 and "running pid=PROCESS %d" % b in r.stdout and "Player.log: 5175" in r.stdout, "status under b reads b, and b's log: %s %s" % (r.stdout[:160], r.stderr[-100:]))
     r = w.run([sh, "status"], RW_GAME_GUARDED="1")
     check(r.returncode == 0 and "running pid=PROCESS %d" % a in r.stdout and "Player.log: 5174" in r.stdout, "status, nothing set, reads a and a's log")
+    # b's own reason: b is up and its Prefs still need the seed (a seeded b that is up is let through, as a is)
+    bp = os.path.join(w.b_dir, "Config", "Prefs.xml")
+    btext = open(bp, encoding="utf-8").read() if os.path.exists(bp) else None  # a missing Prefs is unseeded already
+    if btext is not None:
+        open(bp, "w", encoding="utf-8").write(btext.replace("<runInBackground>True", "<runInBackground>False"))
     r = w.run([sh, "init"], instance="b", RW_GAME_GUARDED="1")
     check(r.returncode == G.EX_REFUSED, "init under b, with b up, refuses for b's own reason: %s %s" % (r.stdout, r.stderr[-120:]))
+    if btext is not None:
+        open(bp, "w", encoding="utf-8").write(btext)
     r = w.run([sh, "down"], instance="b", RW_GAME_GUARDED="1", timeout=120)
     check(r.returncode == 0 and "stopped (graceful)" in r.stdout and F.wait_dead(b), "down under b stops b: %s" % r.stdout)
     check(F.alive(a), "down under b: a lives")

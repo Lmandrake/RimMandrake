@@ -598,33 +598,54 @@ def _set_pref(text, tag, value, keep=False):
 def seed_prefs(path):
     """Prefs.xml with no fullscreen, runInBackground on, and a window size unless it already has one. Without the size B
     runs fullscreen whatever the flags say (MEASURED); without runInBackground it stops advancing unfocused."""
+    text = _seeded_prefs(path)
+    if text is not None:
+        with open(path, "w", encoding="utf-8", newline="") as f:
+            f.write(text)
+
+
+def _seeded_prefs(path):
+    """-> the Prefs.xml text seed_prefs would write at PATH, or None when the file already reads so."""
     src = path if os.path.exists(path) else PREFS_TEMPLATE
     with open(src, encoding="utf-8", newline="") as f:
         was = f.read()
     text = _set_pref(_set_pref(was, "fullscreen", "False"), "runInBackground", "True")
     text = _set_pref(_set_pref(text, "screenWidth", WINDOW[0], keep=True), "screenHeight", WINDOW[1], keep=True)
-    if src != path or text != was:
-        with open(path, "w", encoding="utf-8", newline="") as f:
-            f.write(text)
+    return text if src != path or text != was else None
+
+
+def _unseeded(name, d):
+    """-> what prepare would still have to write into game NAME's folder D besides its companion profile, [] when it is
+    seeded already. A running game rewrites Prefs.xml from memory on exit, so a seed written under it is lost."""
+    gaps = [] if os.path.exists(os.path.join(game_dir(name), GAME_EXE)) else ["its install"]
+    gaps += [] if read_token(name) else ["its bridge token"]
+    gaps += [] if os.path.exists(os.path.join(d, "Config", "ModsConfig.xml")) else ["Config/ModsConfig.xml"]
+    return gaps + ([] if _seeded_prefs(os.path.join(d, "Config", "Prefs.xml")) is None else ["Config/Prefs.xml"])
 
 
 def prepare(name=None):
     """Seed the folder a named instance needs. It reads no other game's state, so it works while A runs; it refuses while
-    its own game runs, which rewrites Prefs from memory on exit. Keeps whatever list and Prefs are already there."""
+    its own game runs and the folder is not seeded yet: that game rewrites Prefs from memory on exit. A running game whose
+    folder is seeded already (live 2026-11-23: Steve2's worker keeps its game up between jobs, and 46 of 53 Steve2 jobs
+    were refused at this step) only gets its companion profile renewed, as game a's `rw_game.sh init` does. Keeps
+    whatever list and Prefs are already there."""
     name = check_name(name or current())
     d = data_dir(name)
     if re.search(r"\s", d):
         raise Refused("instance folder %r has whitespace: the launch's -savedatafolder is unquoted, as measured" % d)
-    if running(name):
-        raise Refused("%s is running; it rewrites Prefs.xml on exit. Stop it first" % _n(name))
+    up = running(name)
+    if up and _unseeded(name, d):
+        raise Refused("%s is running; it rewrites Prefs.xml on exit, so %s cannot be seeded now. Stop it first" % (
+            _n(name), ", ".join(_unseeded(name, d))))
     for sub in ("Config", "JawaBench"):
         os.makedirs(os.path.join(d, sub), exist_ok=True)
-    install(name)
-    ensure_token(name)
-    seed_prefs(os.path.join(d, "Config", "Prefs.xml"))
-    mods = os.path.join(d, "Config", "ModsConfig.xml")
-    if not os.path.exists(mods):
-        shutil.copyfile(MINIMAL_LIST, mods)
+    if not up:
+        install(name)
+        ensure_token(name)
+        seed_prefs(os.path.join(d, "Config", "Prefs.xml"))
+        mods = os.path.join(d, "Config", "ModsConfig.xml")
+        if not os.path.exists(mods):
+            shutil.copyfile(MINIMAL_LIST, mods)
     expires = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 30 * 86400))
     with open(os.path.join(d, "JawaBench", "companion_profile.json"), "w", encoding="utf-8") as f:
         json.dump({"profile": "test", "expiresUtc": expires, "campaignSaves": "",

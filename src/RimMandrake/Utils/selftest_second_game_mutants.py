@@ -75,7 +75,7 @@ MUTANTS = [
     ("launch_keeps_the_old_log", GI, '        os.replace(log, log + ".prev")\n', '        pass\n', T_GI, "launch"),
     ("wait_never_sees_the_line", GI, '"%s %d" % (PORT_LINE, port(name)) in text', '"nothing like this" in text', T_GI, "launch"),
     ("wait_accepts_any_port", GI, '"%s %d" % (PORT_LINE, port(name)) in text', 'PORT_LINE in text', T_GI, "launch"),
-    ("prepare_while_running", GI, '    if running(name):\n        raise Refused("%s is running; it rewrites', '    if False:\n        raise Refused("%s is running; it rewrites', T_GI, "launch"),
+    ("prepare_while_running", GI, '    if up and _unseeded(name, d):\n        raise Refused("%s is running; it rewrites', '    if False:\n        raise Refused("%s is running; it rewrites', T_GI, "launch"),
     ("paths_ignore_the_name", GP, 'not in ("", "a"):', 'in ("never",):', T_GI, "paths"),
     ("paths_import_on_nothing_set", GP, 'if os.environ.get("RM_GAME_INSTANCE", "").strip().lower() not in ("", "a"):\n    import sys', 'import game_instance as _touch\nif os.environ.get("RM_GAME_INSTANCE", "").strip().lower() not in ("", "a"):\n    import sys', T_GI, "paths"),
     ("rw_pid_is_always_game_a", RW, 'pid_of() { python3 "$GI" pid; }', 'pid_of() { python3 "$GI" pid a; }', T_GI, "rw_game"),
