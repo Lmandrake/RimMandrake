@@ -11695,3 +11695,4 @@
 {"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_STALLED_UNOWNED_0B50","text":"steward-watch: the steward is writing again (stale 15 min)","ts":"2026-11-23T18:15:56Z","tsn":1795457756219697321}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_CAUSE_0C521E3A","result":"kept","detail":"sweep: running again","ts":"2026-11-23T18:18:30Z","tsn":1795457910178043811}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_UNITS","result":"kept","detail":"sweep: running again","ts":"2026-11-23T18:18:42Z","tsn":1795457922313787143}
+{"seat":"RUNNER","event":"note","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","text":"ops_watch: WORSE at 2026-11-23T18:19:50Z: 64 -> 191 min, the rule's step is {\"add\": 120}","ts":"2026-11-23T18:20:28Z","tsn":1795458028275156833}
