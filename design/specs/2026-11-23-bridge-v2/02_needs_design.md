@@ -87,7 +87,18 @@ The call returns one line per control. A scene names the profile it needs and th
 - **NOT IN THIS PROFILE**.
 
 A control is never reported HELD because a setting was written. It is HELD when the control has read back that its
-mechanism is in place (policy §6: "a line in a list is not proof").
+mechanism is in place (policy §6: "a line in a list is not proof"). And a control may carry the word HELD in a profile
+only after a planted breach of its kind has been seen to be stopped on that mod list; until then its status reads
+ARMED, UNPROVEN, and a scene that needs it is told so. Every "HELD" in the table below whose status column says GUESS
+or "not read" is a target, not a promise.
+
+A held source that never produced an attempt cannot count attempts. The status keeps two numbers apart: attempts that
+the control stopped, and scheduling that the control switched off (where no attempt exists to count).
+
+**What the calm steps past.** Like a force level, each control removes something that real play has. A fence removes
+competition for a target, congestion and a rival's reservation. A held need removes a pawn's own interruptions. A
+weather lock removes rain on a fire. A pinned update rate fixes timing. The receipt lists the controls that were on,
+and a claim about any of these things needs a scene that takes the control off as an exception.
 
 **Properties that the census demands** (each answers a measured failure):
 1. **One call arms all, one call reports all.** Today the controls are seven separate tools.
@@ -229,8 +240,10 @@ round every station, the health of the standing test colony (fed, rested, sane, 
 The reply has three lists: **held** (a count), **repaired** (what had drifted, and what was done), **could not
 repair** (with the cause). Only the third list stops a scene.
 
-The profile is a statement of the wanted state, so reassert is a comparison of wanted against actual. It is safe to
-call at any time and any number of times.
+The profile is a statement of the wanted state, so reassert is a comparison of wanted against actual. It can be
+called any number of times, with one hard rule: **nothing is repaired inside a deciding window.** There, a drift is
+recorded as a breach and left as it is, because the drift may be the failure under test (a fire that is put out is
+evidence destroyed). Outside a window, each drift is written to the record first and repaired second.
 
 It runs by itself: when the profile is armed, after every load, before every scene run, and between repeats.
 
@@ -294,8 +307,9 @@ next to the scene's own line "decisions left to the mod". The ladder, from least
   still reacts as the game makes a waiting pawn react. Note from the census: a drafted idle pawn is undrafted by the
   game after 10,000 ticks.
 - **a pin** (the pawn cannot leave the cell or the rectangle, whatever its job says): steps past movement and fleeing.
-- **a fence** (bystanders may do anything except enter a station or touch cast things): steps past nothing that the
-  scene tests. This is the default for every bystander.
+- **a fence** (bystanders may do anything except enter a station or touch cast things): steps past competition for
+  targets, congestion and reservations by others. A scene whose claim is about those takes the fence off. This is the
+  default for every bystander.
 Every hold reports a pawn that left anyway, as a breach.
 
 **Per kind of actor**, what differs:
@@ -349,6 +363,17 @@ from that trace by a program.
 GPT's review agreed with one observer after the whole tick and warned against reflection on hot paths; value paths are
 resolved to direct reads at arm time for that reason.
 
+**Requirements on a value path** (they are needs, not build details): it states what a missing link reads as (a pawn
+with no job reads "none", not an error and not the last value); it is bound again when the object under it is replaced
+(a new job, a swapped comp); each sample carries the tick it was read on; it may not call anything that changes the
+game, and a path through a method that computes is allowed only from a reviewed list; its cost per tick is measured
+and shown.
+
+**An exploring lane, kept apart.** A test pilot who hunts an unknown fault needs to ask the game anything, at once.
+For that, a sent script is right. It runs only in a test game, never on a save of his; the script and its output are
+recorded with a hash; nothing it reports can decide an acceptance scene. A script that proves useful is promoted: it
+becomes a named plug-in or a new path, and is then shown both ways like any checker.
+
 ### What a trace holds
 
 - **Tracks.** A value sampled after every complete tick (or every N ticks), stored only when it changes. About 20
@@ -377,9 +402,14 @@ resolved to direct reads at arm time for that reason.
 | mod says | mod, name, fields | never enough alone |
 
 - **Marks.** The runner writes a mark at each phase change (prepared, opportunity decided, act, end).
-- **A heartbeat.** Each armed probe writes one record that proves it is alive, and the runner fires one synthetic
-  event through each tap at arm time. "No event" then means that nothing happened, and not that the probe was blind.
-  A tap whose synthetic event did not arrive is COULD NOT ARM. (Review §4: "no tripwire fired is uninformative if it
+- **A heartbeat, and a reconciliation.** Each armed probe writes a record every N ticks that proves it is still
+  alive, and the runner fires one synthetic event through each tap at arm time. A tap whose synthetic event did not
+  arrive is COULD NOT ARM. That is not enough to trust silence: a real event can take a route that the tap does not
+  cover. So at the end of every run the runner **reconciles** the trace against state read directly: every alias
+  still bound, alive or dead as the taps said, health, position, holder and stack count as the events imply. A
+  difference that no event explains means a tap missed something, and the run is COULD NOT LOOK. Each tap also states
+  which routes it covers (the base method, its overrides, the bulk variants); "no event" means "nothing happened" only
+  for covered routes with a clean reconciliation. (Review §4: "no tripwire fired is uninformative if it
   never armed".) Known ways a tap goes blind, to test at arm time: the method was inlined, a subclass overrides it
   without calling the base, another mod's patch skips it.
 
@@ -408,8 +438,12 @@ screenshots. This design makes the flapping bird testable in three layers, and t
    and GPT could not confirm a formula. So the probe does not compute the frame. It asks the renderer's own resolver,
    for this pawn at this tick and facing, which graphic and which transform it would draw, and records that
    (the "draw intent" below). A checker asserts: while flying, the pictures cycle through every frame of the flip-book
-   in order, each held for the declared ticks; each facing uses its own set; the west view is the mirrored east view;
-   on landing the grounded picture returns. That is a flapping test, tick by tick, repeatable, with no screenshot.
+   in order, each held for the declared ticks (when the flight is long enough to show them all); each facing uses the
+   set that this creature's art declares for it; on landing the grounded picture returns. That is a flapping test,
+   tick by tick, repeatable, with no screenshot.
+   **What layer 2 does not prove:** that the picture was handed to the engine, that it was visible and not covered,
+   that the texture file holds the right drawing, or that consecutive frames read as motion to an eye. Those are
+   "draw submitted", layer 3, and his eye.
 3. **The flap as pixels, for his eye only.** A filmstrip: one image that tiles N consecutive ticks of the flyer,
    rendered tick by tick by the program (§6, pixels). It is made after layers 1 and 2 pass, for the owner or an art
    judge to look at once. It changes what his ruling of 2026-09-25 forbids, so it is an open question for him and is
@@ -476,32 +510,42 @@ a quiet machine and a like-for-like comparison stay the method's business (testi
 | prepare | station, clean, build, read-back, capability asserts (§2) | APPARATUS FAULT |
 | sweep | the before-sweep (§4) | APPARATUS FAULT on a BLOCKS finding that cannot be repaired |
 | arm | probes on, heartbeat seen (§6); the random state and a start digest recorded (§8) | COULD NOT LOOK if a needed probe cannot arm |
-| act | the scene's timeline: each step is tied to a tick or to a condition ("at +0 order the rescue", "when raider1 is on the lid, drop the lid") | APPARATUS FAULT if a step is refused |
+| act | the scene's timeline: each step is tied to a tick or to a condition ("at +0 order the rescue", "when raider1 is on the lid, drop the lid") | APPARATUS FAULT if a step cannot be delivered. A refusal by a giver that the scene leaves to the mod is a result (see the notes) |
 | run | the game side lets time pass and, after every tick, evaluates the opportunity, the forbidden effects, the success and the end | see the classifier |
 | settle | the after-sweep; the trace closed; the outcome decided | |
 | leave | the game is paused; the station is cleaned, or kept (with its twin) if the scene says "keep on this outcome" | |
 
-**Time inside the run belongs to the game side.** The caller never steps ticks. Two modes:
-- **burst**: as many ticks as fit in a work budget per frame, with drawing reduced to what the game needs to stay
-  responsive. For every scene that reads state.
-- **real time**: normal speed with normal drawing. For frame-time scenes, pixel captures and anything he watches.
+**Time inside the run belongs to the game side.** The caller never steps ticks. Two ways to let time pass, and they
+are different evidence:
+- **Ordinary execution** (the default, and the first to build): the game's own loop runs the ticks at one of its own
+  speeds, exactly as in play. The runner only hooks the end of each tick to evaluate the contract and to run the
+  timeline, and pauses the game at the end. The gap between calls is gone, and nothing about the simulation is
+  changed. The receipt records the speed and the update rate that the cast actually had (see point 2 below); in a
+  test game the camera is held on the station so that the rate is the one a watching player gets.
+- **Normalized execution** (later, and only if measured to be worth it): a tick driver of our own runs more ticks per
+  frame than the game's loop allows, with drawing reduced. It is faster, and it is not play: it decides when the
+  per-frame work happens and it pins update rates. A verdict from normalized execution says so on its receipt. Before
+  a scene may use it, the same scene is run both ways and the two traces are compared; a scene whose claim is about
+  timing uses ordinary execution only.
 
-**The tick driver is a real component, not a loop** `[READ, and corrected by GPT's review]`. Calling the game's tick
-method in a bare loop is not the same as play, for four reasons that I confirmed in the code:
+**Why a tick driver is a real component and not a loop** `[READ, and corrected twice by GPT's review]`. Calling the
+game's tick method in a bare loop is not the same as play, for four reasons that I confirmed in the code:
 1. Each map does simulation work once per **frame**, outside the tick: region and room rebuilding, power-net updates,
    the glow grid, a per-frame update of pawn groups, and "post-tick visuals" (`Map.MapUpdate`). The driver must do
    that work between ticks as play does.
 2. **How often a thing runs its interval work depends on the camera** (`GenTicks.GetCameraUpdateRate`): every 15
    ticks when the thing is on a map that is not shown or is outside the camera's view, and every (zoom level + 1)
    ticks when it is in view. Animals always use 15. So today the same scene can run differently when the camera
-   points elsewhere. No record in the census names this influence; it is new. The driver **pins the update rate** to
-   a declared value for the whole run (default: the rate of a thing in view at the closest zoom, which is what a
-   player watching would get), and writes it on the receipt.
+   points elsewhere. No record in the census names this influence; it is new. In ordinary execution the runner
+   holds the camera of a test game on the station and records the rate; a normalized driver **pins the update rate**
+   to a declared value. Either way the rate is on the receipt.
 3. Path computation runs on worker threads and reads live map state; the Multiplayer mod had to force its completion
    before pawns tick to remove a race (review §1). The driver does the same or reports that it could not.
 4. Long events (a load), windows and input are served per frame. The driver stops ticking while one is pending, and
    honours the game's own stop requests (pause on error, a forced pause).
-The driver is never entered from inside a tick.
+The driver is never entered from inside a tick. The Multiplayer mod's own solution moves the per-frame work into the
+tick; that makes a repeatable model of the game, and is not a proof that the model equals ordinary play (review,
+round 2). That is why normalized execution is labelled and compared, and is not the default.
 
 **Long scenes.** A scene of days cannot hold a caller's connection open. The call starts a run and returns a handle;
 the deciding still happens entirely inside the game; the receipt is written to disk when the run ends and can be
@@ -513,25 +557,54 @@ mechanical; the two rules in bold are the policy's own.
 | # | condition, from the record | outcome |
 |---|---|---|
 | 1 | **a forbidden effect was observed** (in any phase, even in a spoiled run) | MOD FAILURE |
-| 2 | the game died or stalled; or a probe that a condition needs was blind or dropped records in the span it needs; or identity could not be read | COULD NOT LOOK |
-| 3 | prepare, a capability assert, an act step, the tick driver or the session failed; or a foreign call touched the game | APPARATUS FAULT |
-| 4 | the valid opportunity failed, and a breach record or a sweep finding shows a cause that (a) came before the failure, (b) names an entity that is neither cast nor a thing of the mod under test, and (c) is of a kind that the contract lists as external | ENVIRONMENT FAULT |
-| 5 | **the valid opportunity failed and row 4 does not hold** (the mod could have spoiled it, or nobody knows) | UNRESOLVED |
-| 6 | the opportunity held to the end and success is true | SUCCESS |
-| 7 | the opportunity held, success is false, and the contract declares this miss allowed (a random result by design) | RANDOM MISS |
+| 2 | a known fault of the apparatus: prepare, a capability assert, the delivery of an act step, the runner or the session failed; a foreign call touched the game; a probe or the driver is known to have failed | APPARATUS FAULT |
+| 3 | the game died or stalled with no established cause; or a probe that a condition needs dropped records in the span it needs; or the end-of-run reconciliation found a change that no event explains; or identity could not be read | COULD NOT LOOK |
+| 4 | the valid opportunity failed, and the record shows that the spoiler **came to the cast**: (a) its first record is before the act, or it entered the station from outside during the window; (b) no cast member and no thing of the mod under test acted on it, moved toward it or left its expected cells or jobs before the spoiler acted; (c) it is of a kind that the contract lists as external | ENVIRONMENT FAULT |
+| 5 | **the valid opportunity failed and row 4 does not hold** (the cast went to the hazard, the mod could have spoiled it, or nobody knows) | UNRESOLVED |
+| 6 | the opportunity held to the end, every act step ran, the exposure that the contract names was observed, and success is true | SUCCESS |
+| 7 | the opportunity held, success is false, the scene is kind B, and the contract declares this miss allowed (a random result by design) | RANDOM MISS |
 | 8 | the opportunity held, success is false, kind A | MOD FAILURE |
-| 9 | the opportunity held, success is false, kind B or C, no allowed miss declared | UNRESOLVED |
+| 9 | the opportunity held, success is false, kind B, no allowed miss declared; or the run ended before the exposure was observed | UNRESOLVED |
 
-Notes. The opportunity is not one moment: a contract can state conditions "at the act", "throughout the window" and
-"at each of these steps" (review §3: a rescue has several boundaries). The receipt always gives the **first** failed
-condition with the values that were observed, so that an agent reads only what a program could not decide.
+Notes.
+- **Row 4 is narrow on purpose.** A program cannot prove a cause; it can only refuse to excuse. "The spoiler is not
+  ours" is not enough: a mod bug that walks its own actor into a vanilla fire has a spoiler that is not ours. So the
+  rule asks who moved first, from the trace. Anything short of "the spoiler came to a cast that was where it should
+  be, doing what it should do" is UNRESOLVED, as the policy says. An agent reads those.
+- **A refusal by the thing under test is a result, not an apparatus fault.** When an order goes through a giver that
+  the scene leaves to the mod, and the giver says no, the order was delivered. The contract decides what the refusal
+  means; for the ordered rescue it is a failed success condition (row 8). APPARATUS FAULT is for an order that could
+  not be delivered at all.
+- **Row 1 can charge the mod for another's act.** By default "a cast thing was destroyed" is a forbidden effect, and
+  the policy makes a forbidden effect a MOD FAILURE in any run. If another mod destroys the subject, that default
+  charges our mod. The design therefore narrows the default to effects with no recorded outside instigator ("lost or
+  doubled with no cause on record"), and a destruction with a recorded outside instigator is an opportunity failure
+  (rows 4 and 5). Whether the policy's unconditional wording should say this is a question for the Conductor
+  (`03_open_questions.md`).
+- **Kind C has no row of its own.** A hunt uses kind A or kind B scenes, and each keeps its own row (policy §3). Kind
+  A may not declare an allowed miss.
+- The opportunity is not one moment: a contract can state conditions "at the act", "throughout the window" and "at
+  each of these steps" (review §3: a rescue has several boundaries). The lint refuses a "throughout" condition that
+  the scene's own success would break (a victim who must stay downed while the success is that he is treated).
+- The receipt always gives the **first** failed condition with the values that were observed, so that an agent reads
+  only what a program could not decide.
+
+**One run is not a verdict.** The receipt is the record of one run. The scene's verdict is kept by a **scene verdict
+ledger** that applies the policy to the runs of one claim on one build: kind A decides on one valid run; kind B
+passes on one SUCCESS only while no MOD FAILURE and no UNRESOLVED run stands on the same claim and build, and ends
+INCONCLUSIVE when its budget is spent; an UNRESOLVED run holds the pass until someone classes it; a serious or
+repeated one opens a hunt, with the notice to the Conductor that the policy demands; a reclassification is added to
+the history and never overwrites it. The ledger can live outside the bridge. It is listed here because live testing
+does not work without it and nothing today does it.
 
 - **For:** every scene and every outcome of the policy; it removes the gap between calls, which is the cause behind
   census ranks 2, 5 and 9.
-- **It works when:** a scene whose deciding event lasts one tick gives the same outcome in ten runs out of ten in
-  burst mode; a planted fault of each row of the classifier table gives that row's outcome; and the game is paused
-  when the call returns, in every one of those cases.
-- **Value / effort:** high / high. It is the keystone.
+- **It works when:** a scene whose deciding event lasts one tick gives the same outcome in ten runs out of ten; a
+  planted fault of each row of the classifier table gives that row's outcome, including a mod bug that walks its own
+  actor into a hazard (UNRESOLVED, not ENVIRONMENT FAULT) and a giver that wrongly refuses (MOD FAILURE, not
+  APPARATUS FAULT); and the game is paused when the call returns, in every one of those cases.
+- **Value / effort:** high / medium on ordinary execution (the keystone); the normalized driver adds medium value
+  for high effort.
 
 ## 8. Fast repeats for kind B and kind C
 
@@ -543,7 +616,7 @@ moment again.
 | shape | what it buys | what it costs and what it cannot do |
 |---|---|---|
 | **1. Save and reload for each repeat** | The most complete return to a start state that the game offers. Works for map-wide state. | A reload rebuilds the whole game (seconds on a test list, minutes on the full list). It is not a process snapshot: static state of mods survives, loading itself draws random numbers, a warm run and a reloaded run start differently (review §3). The global random state is not in the save `[GUESS 85%]`, so each reload is a new sample unless the state is put back. |
-| **2. Stamp again**: clean the station and build the start state again from the scene's data (§2) | Milliseconds. Each stamp is an honest new sample. What it resets is exactly what the contract calls the valid opportunity. | It does not reset what is outside the scene's data: world pawns, quests, relations, memories, a mod's static counters, the id allocator (review §4). So it needs **reset verification**: a digest of the station and of the declared mod state, compared with the first stamp. |
+| **2. Stamp again**: clean the station and build the start state again from the scene's data (§2) | Milliseconds. Each stamp draws its own random numbers. What it resets is exactly what the contract calls the valid opportunity. | It does not reset what is outside the scene's data: world pawns, quests, relations, memories, a mod's static counters, the id allocator (review §4). So it needs **reset verification**: a digest of the station and of the declared mod state, compared with the first stamp. |
 | **3. Copies side by side**: N stations, one stretch of ticks | N samples for the price of one advance. The owner already reviews matrices. | Copies share one random stream, one weather, one room and region graph, one set of map-wide lists. A map-wide event spoils all of them at once. The copies are a **cluster**, not N independent runs (review §4). |
 | **4. A snapshot of a region in memory** (write a rectangle's things out and read them back) | Would be exact inside the rectangle and fast. | A rectangle is not a closed set of objects: jobs, relations, gear, owners and targets cross its edge (review §4). No engine feature does this for arbitrary content. High effort, high risk. |
 | **5. A fresh small map per scene** | A clean spatial boundary; a control arm for map-wide state. | Still one world, one process, one random stream. The cost to make and to remove a pocket map with 300 mods' components is unknown. |
@@ -552,25 +625,36 @@ moment again.
 ### Picked
 
 - **The workhorse for kinds B and C: stamp again (2), in copies side by side (3) when the scene allows it.** These are
-  cheap and are real samples. The scene states how far apart copies must stand (its margin) and whether it may share a
-  map with others at all (a map-wide scene may not).
-- **For diagnosis in a hunt: a keeper save plus the random state (1 + 6), with a divergence finder.** When a fault
-  shows, the runner writes a save of the failing run's START (taken at arm time, cheap: a save of 14 MB took 0.5 s)
-  together with the random state at the act. Replaying is: reload, wait for the same settle point, put the random
-  state back, run the same timeline on the same ticks.
+  cheap. They are new tries, but they are not proven independent: state that outlives a stamp can colour the next
+  try, and copies can compete for one target. So: the scene states how far apart copies must stand and whether it may
+  share a map at all (a map-wide scene may not); reset verification runs on every stamp; **and from time to time the
+  same scene is run on a fresh map in a fresh process and compared.** A difference there adds a line to a growing
+  list of what a stamp does not reset (caches, subscriptions, pending callbacks, world relations), and that list
+  becomes reset hooks.
+- **For diagnosis in a hunt: a keeper save plus the random state (1 + 6), with a divergence finder.** A scene that is
+  part of an open hunt, or that says "keep", takes a save at arm time on every run, together with the random state at
+  that same moment; a run that shows nothing discards it. The cost is stated: about half a second per run on a test
+  list (a save of 14 MB took 0.5 s), more on the full list, and disk for the kept ones; ordinary scenes do not pay it.
+  Replaying is: reload the save for BOTH runs to compare (a warm run and a reloaded run start differently), wait for
+  the same settle point, put the random state back, run the same timeline on the same ticks.
 - **For map-wide scenes: a fresh small map (5)** as the control arm, if its cost proves acceptable; else arms in
   sequence.
 - **Not designed: the region snapshot (4).** See the testing horizon.
 
 ### How a replay is told apart from a new sample
 
-Every run records a **sample identity**: the random state at the act, and a digest of the start state. During the
-run a **trajectory fingerprint** is recorded per tick: how many random numbers were drawn in that tick (the stream's
-counter makes this a subtraction `[READ]`), and the positions and jobs of the cast.
-- Two runs with the same sample identity and the same fingerprint on every tick are one sample, counted once.
+**By provenance, written down, never by inference.** Every run records how it was started: a fresh stamp, a copy in
+cluster N, or a replay of run R from keeper save S with the random state put back. A replay is never counted as a
+sample, whatever it shows.
+
+During the run a **trajectory fingerprint** is recorded per tick: how many random numbers were drawn in that tick
+(the stream's counter makes this a subtraction `[READ]`), and the positions and jobs of the cast, plus whatever state
+the scene's claim is about. The fingerprint is a **divergence alarm**, and only that:
 - A replay whose fingerprint leaves the original at tick T is reported as "diverged at tick T, first difference:
-  <which value>". That report is itself the diagnosis of what is not deterministic, and it is how the replay rate
-  gets measured instead of promised.
+  <which value>". That report is the diagnosis of what is not deterministic, and it is how the replay rate gets
+  measured instead of promised.
+- Equal fingerprints do not prove equal runs (equal counts can hide different draws; equal positions can hide
+  different health). Nothing is deduplicated or certified from a fingerprint.
 - Repeats are counted three ways, kept apart: launches, valid opportunities, exposures to the suspected trigger
   (review §3 and §4). A cluster of side-by-side copies is marked as one cluster.
 - No scene may put the random state back to search for the result it wants and then call that a rate (review §5.7).
@@ -592,10 +676,12 @@ in one process.
 
 ### High tick rate with no rendering, and long processes
 
-Burst mode (§7) gives the highest tick rate the simulation allows. On the full list the cost of a tick itself is the
-limit (the census has about 50 ticks per second by stepped calls; the game's own fastest speed is called "CPU-bound"
-there). What burst mode gains on each list is **unmeasured**; my guess is a large gain on a test list and a small one
-on the full list `[guess ~60%]`.
+Ordinary execution (§7) at the game's own fastest speed already runs with no call per step; the game's loop allows
+at most a fixed number of ticks per frame and 45 ms of ticking per frame `[READ]`. Normalized execution lifts that
+cap. On the full list the cost of a tick itself is the limit (the census has about 50 ticks per second by stepped
+calls, and calls the game's fastest speed "CPU-bound" there). What each mode gains on each list is **unmeasured**; my
+guess is a large gain over stepped calls from ordinary execution alone, a further large gain from normalized
+execution on a test list, and a small one on the full list `[guess ~60%]`.
 
 A process of days is not made faster by moving the clock: a clock jump simulates nothing and fires every timer that
 compares against the clock (census). The receipt carries a **time compression** line with one of: none; a rate setting
@@ -683,8 +769,9 @@ runs out, and at the next start of the bridge. A debt is repaid only by its own 
 **The aim:** a mod builder writes a scene and its contract in minutes, in one short file, and never learns the
 bridge.
 
-**A scene file** is data with these parts. Only `claim`, `cast`, `act`, `success` and `end` are always needed; the
-rest have defaults.
+**A scene file** is data with these parts. The six parts of the policy's contract (claim, entry, opportunity,
+success, forbidden, end) are always present in what runs. Where the author leaves one to a default, the lint prints
+the full contract as it will run, and that expanded text is what the receipt hashes; no default is silent.
 
 ```
 scene:    an id and a title
@@ -702,6 +789,19 @@ forbidden: conditions that must never hold (defaults below)
 end:      a condition, and a tick limit
 keep:     on which outcomes to keep the station, its twin and a save
 ```
+
+Two acts need more than a "do this" and have their own stated meaning:
+- **save and load in the middle** (asked for by 14 of 20 subjects in the census): the act names the point; the runner
+  saves, loads, waits until the map answers and the cast is spawned, binds every alias again, arms the profile and
+  the probes again, and continues the timeline from the same step with the game clock unbroken. The receipt says that
+  the run crossed a load. A condition can refer to "before the load" and "after the load".
+- **a reply from outside the game** (the in-game LLM, a stubbed model): the act names the request it answers, a time
+  limit, and what a late or missing reply means for the opportunity.
+
+**A scene cannot pass without doing its work.** The runner refuses SUCCESS unless every act step ran, the end came
+after the last act step, and the **exposure** that the contract names was observed (the blast did reach the place
+where the spared pawn was; the order was taken). A success made only of facts that were already true before the act
+is refused by the lint.
 
 **Conditions** are a small language over aliases, value paths and the trace: comparisons; `at(step)`,
 `throughout(window)`, `within(ticks)`, `before(event)`, `after(event)`; `count(event where ...)`; geometry
@@ -724,14 +824,17 @@ needs: { mods: [ExplosiveKnockback], station: 21x21, margin: 12 }
 cast:
   carrier: { pawn: Colonist, at: center, carrying: {thing: Steel, count: 40}, hold: pin, health: full }
   victim:  { pawn: Colonist, downed: true, carried_by: carrier }
+  control: { pawn: Colonist, downed: true, at: mirror_of(victim) }         # same distance from the blast, not carried
 entry: "pin (hold) the carrier; place the blast; leave to the mod: who is spared, who is thrown, what is dropped"
 opportunity:
   at(act):   [ carrier.position inside_radius_of(blast), carrier.carried == victim, victim.alive ]
   external:  [ non-cast pawn in station, weather change ]
 act:
   - at +30: explosion { kind: Bomb, cell: carrier.cell + (2,0), radius: 3.9 }
+exposure:
+  - victim.position inside_radius_of(blast) at(explosion)                   # the spared one was in reach
+  - count(damage where victim == control and instigator == blast) >= 1      # at that distance the blast does hurt
 success:
-  - count(damage where victim == carrier and instigator == blast) >= 1      # the threat was real
   - victim.health unchanged since act                                        # the spared one was spared
   - at(end): victim.spawned and victim.alive
 forbidden: [ count(spawn where thing is duplicate_of(victim)) > 0 ]
@@ -739,7 +842,9 @@ end: { after: explosion.finished, plus: 120, limit: 600 }
 ```
 
 What the pieces buy. The pin removes the walk-out, so the scene is kind A; it steps past the carrier's own movement,
-which this scene does not claim to test. The first success line rules out "survived because nothing hit" (review §3).
+which this scene does not claim to test. The exposure lines rule out "survived because nothing hit" (review §3): a
+downed pawn at the mirrored cell, not carried, must be hurt by the same blast. Damage to the carrier would not show
+that the carried one was exposed (GPT, round 2).
 If a boar had wandered in, the station watch would have recorded it before the act, and a failed opportunity would
 be ENVIRONMENT FAULT by row 4. If the carrier had still left the radius while pinned, that is not external: UNRESOLVED.
 
@@ -761,10 +866,10 @@ opportunity:
 act:   [ at +0: order { actor: rescuer, giver: RM_RaiderFetchFallen, target: fallen } ]
 success:
   - count(job_start where pawn == rescuer and job == RM_RaiderFetchFallen) == 1
-  - at(end): fallen.cell not in pit.cells and fallen.spawned
+  - count(job_end where pawn == rescuer and job == RM_RaiderFetchFallen and condition == Succeeded) == 1
+  - at(end): fallen.cell in pit.rim_cells and fallen.spawned                # the place the design names, not "anywhere else"
   - at(end): count(things like fallen) == 1                                 # not lost, not doubled
-  - at(end): rescuer.job != RM_RaiderFetchFallen                            # the job finished and let go
-end: { when: rescuer.job != RM_RaiderFetchFallen after(job_start), plus: 60, limit: 3000 }
+end: { when: job_end(rescuer, RM_RaiderFetchFallen), plus: 60, limit: 3000 }
 
 scene: flowworks.rescue_chosen         kind: B
 tag: { spoils: "the group's own target choice; other raid duties", tried: "calm profile; pin of the colony; one raider only", budget: "12 copies, one cluster" }
@@ -774,8 +879,11 @@ success: [ count(job_start where pawn == rescuer and job == RM_RaiderFetchFallen
 allowed_miss: "the rescuer chose another duty for the whole window"
 ```
 
-The first scene passes on one run. The second passes on one SUCCESS among its copies; a copy where the rescuer never
-chose is a RANDOM MISS; a copy where the fallen raider vanished is a MOD FAILURE whatever else happened.
+The first scene decides on one valid run. If the giver refuses the order, that is a failed success condition and a
+MOD FAILURE (the giver's eligibility is left to the mod), not an apparatus fault. In the second, a copy where the
+rescuer never chose is a RANDOM MISS, and a copy where the fallen raider vanished with no cause on record is a MOD
+FAILURE whatever else happened. The scene's verdict comes from the verdict ledger (§7): one SUCCESS passes it only
+while no MOD FAILURE and no UNRESOLVED copy stands.
 
 ### Worked example 3: a flyer taking off
 
@@ -789,11 +897,13 @@ opportunity: { throughout: [ bird.alive, bird.in_station ] }
 observe:
   - track bird.flight: [ state, lerp_tick, height_factor ]            every tick
   - track bird.draw_intent: [ graphic, facing, offset ]               every tick while flying
-success:                                                              # for at least one bird:
-  - sequence(bird.flight.state) contains [Grounded, TakingOff x50, Flying, Landing x50, Grounded]
-  - while Flying: bird.draw_intent.graphic cycles through all frames of its flip-book in order
+exposure: any bird: bird.flight.state reached Flying
+success:                                                              # for EVERY bird that took off and landed in the window:
+  - sequence(bird.flight.state) == [Grounded, TakingOff x50, Flying.., Landing x50, Grounded]
+  - while Flying: bird.draw_intent.graphic steps through its flip-book in order (all frames, if the flight is long enough)
   - at Grounded after Landing: bird.draw_intent.graphic == the grounded graphic
-allowed_miss: "no bird took off in the window"
+forbidden: [ any bird: a flight state that skips a step; a bird that left the station while flying and never landed ]
+allowed_miss: "no bird took off in the window"      # a bird still in the air at the limit is not judged and not a miss
 end: { limit: 2500 }
 ```
 
@@ -805,14 +915,17 @@ The start chance itself (how often) is checked offline, where runs are free (pol
 - **Lint, with no game:** the file is valid; every def name exists in the frozen def dump; every path's first step is
   a known alias; no success stands on "mod says" alone.
 - **Shown both ways, once** (the repo's rule for a deciding test): the scene runs against a planted fault and gives
-  MOD FAILURE, and against the real build and gives SUCCESS. A scene file can name its own plant ("with setting X
-  off", "with mutant build Y").
+  MOD FAILURE, and against the real build and gives SUCCESS. The plant must break the behaviour that the claim is
+  about, and is best chosen by someone other than the scene's author: a plant that only switches the whole feature
+  off turns any scene red and validates nothing.
 - **The result** is the receipt (§9): one file, a fixed schema, and a distinct exit code for each of the seven
   outcomes, so that a caller which loses the file still has the outcome.
 
 - **For:** the cost of every future scene; the policy's "a program decides each run from the contract".
-- **It works when:** a builder who has never used the bridge writes the spared-carrier scene from this page in under
-  15 minutes, and the lint catches a misspelt def and a success built only from "mod says".
+- **It works when:** a builder who has never used the bridge writes a new scene on existing fixtures from this page
+  in under 15 minutes, and the lint catches a misspelt def, a success built only from "mod says", and a success that
+  was already true before the act. A wholly new contract, with its exposure line and its plant, is more like an hour
+  `[guess]`; the saving is that none of that hour goes to the bridge.
 - **Value / effort:** high / medium.
 
 ## Every capability, with its value and effort
@@ -822,8 +935,11 @@ code (the second designer will correct it). Three levels each.
 
 | capability | section | value | effort |
 |---|---|---|---|
-| Scene runner: one call, in-game deciding, the classifier | 7 | high | high |
-| Tick driver: frame-level duties, pinned update rate, burst and real time | 7 | high | medium |
+| Scene runner on ordinary execution: one call, in-game deciding, the classifier | 7 | high | medium |
+| Normalized tick driver (burst), with the both-ways comparison | 7 | medium | high |
+| Scene verdict ledger: the policy's rules over the runs of one claim | 7 | high | low |
+| End-of-run reconciliation of trace against state | 6 | high | low |
+| Exploring lane: recorded scripts in test games, never acceptance | 6 | medium | low (a restricted script front end exists today) |
 | Tracks with value paths and aliases | 6 | high | medium |
 | Base event taps with heartbeat and synthetic test | 6 | high | medium |
 | Trace written out while running, bounded, crash-safe | 6 | high | low |
@@ -857,36 +973,45 @@ code (the second designer will correct it). Three levels each.
 
 ## The first ten capabilities to build
 
-Ranked by stability gained per unit of effort. Each line says which census ranks it answers.
+Ranked by stability gained per unit of effort. Each line says which census ranks it answers. GPT's second round
+reordered my first list; where I followed it and where I did not is under "What GPT changed".
 
-1. **The receipt with loaded-build identity.** Low effort, and it ends a whole class (rank 3: at least 28 visit
-   records and 40 lane jobs). Everything later writes into it.
-2. **The first-exception tap, log re-arm, heartbeat and broken-game watcher.** Low to medium effort; it makes COULD
-   NOT LOOK and APPARATUS FAULT real outcomes and stops blind repeats on a dead game (ranks 2 and 6).
-3. **The tick driver and the scene runner with in-game conditions** (the keystone). High effort and the largest gain:
-   it removes the gap between calls (ranks 2, 5, 9) and pins the camera-dependent update rate, an influence that no
-   record had named.
-4. **Tracks and the base taps, with aliases, heartbeat, and the trace written out while running.** With the runner,
-   this is what makes a contract decidable by a program (ranks 2, 5).
-5. **Stations with clean and read-back, and build-from-data with capability asserts.** Ends leftovers and
-   mis-staged actors (rank 7 and the "staged actor" row), and makes kind A reachable.
-6. **The fence and the holds, and the order through the giver.** The least force that makes the opportunity arrive
-   (rank 1), and the most common spoiler removed (bystanders).
-7. **The calm profile as one call with status, breach watchers, re-arm after load and restore.** Most of its controls
-   exist as single tools today; the gain is that they become one verified state (ranks 4 and 8).
-8. **Reassert and the before-sweep.** Low effort once 5 and 7 exist; they turn a spoiled run into a refused start.
-9. **Stamp again and copies side by side, with sample identity.** Low effort once 3 and 5 exist; it is what makes
-   kind B budgets affordable.
-10. **Draw intent and the window transcript.** They open the two blind areas that the coming mods lean on most (what
-    is drawn: 14 of 20 subjects; UI content: 8 of 11 in one group), and they carry the flapping bird test.
+1. **Truthful calls, one session per game, and the receipt with loaded-build identity.** Low effort, and it ends
+   whole classes: calls that report success while nothing changed, the wrong game driven, a stale build (rank 3: at
+   least 28 visit records and 40 lane jobs). The hash of each assembly must be taken when the game loads it; it
+   cannot be rebuilt later from the file on disk. Everything later writes into the receipt.
+2. **The first-exception tap, log re-arm, heartbeat and the watcher outside the game.** Low to medium effort; it
+   makes COULD NOT LOOK and APPARATUS FAULT real outcomes and stops blind repeats on a dead game (ranks 2 and 6).
+3. **Tracks and the base taps, with aliases, the heartbeat, the end-of-run reconciliation, and the trace written out
+   while running.** This is what makes a contract decidable by a program (ranks 2 and 5). Start with the taps that
+   the census needed most: job and toil, damage, spawn and destruction, cell entered, reservation, error.
+4. **The scene runner on ordinary execution, with in-game conditions and the classifier** (the keystone). It removes
+   the gap between calls (ranks 2, 5, 9) without changing how the game runs. It records the camera-dependent update
+   rate, an influence that no record had named.
+5. **Stations with clean and read-back, and build-from-data with capability asserts.** Ends leftovers and mis-staged
+   actors (rank 7 and the "staged actor" row), and makes kind A reachable.
+6. **The calm profile as one call**: the controls that exist today and the READ ones, with status, the breach
+   watchers, re-arm after a load, restore, and the fence and holds for bystanders (ranks 4 and 8).
+7. **Orders through the giver, with the giver's refusal as a result; motive.** The least force that makes the
+   opportunity arrive (rank 1: 1 success in 18 free runs against 2 of 2 when ordered).
+8. **The scene verdict ledger, the scene lint, and shown-both-ways with an independent plant.** Low effort; without
+   it the runner's receipts do not add up to the policy's verdicts, and a scene that cannot fail goes unnoticed.
+9. **Stamp again with reset verification, copies side by side, and the periodic fresh-map comparison.** Low effort
+   once 4 and 5 exist; it is what makes kind B budgets affordable.
+10. **Draw intent for pawns and things, and window content for the windows our mods own.** They open the two blind
+    areas that the coming mods lean on most (what is drawn: 14 of 20 subjects; UI content: 8 of 11 in one group), and
+    they carry the flapping bird test. Start with adapters for the named cases (a flyer's body, a cord's curve, the
+    trade window, a Mod Settings page); the general window transcript follows if the adapters show it is feasible.
 
-After these: the scene language's lint and plug-ins as scenes accumulate; the keeper save with the divergence finder
-when the first hunt needs it; pixels and the filmstrip on the owner's word; the second small map when a map-wide mod
-(Direct Sun, Stillsand) advances; draw submitted last.
+After these, each when its need is measured: reassert and the before-sweep grown one finding class at a time (start
+with bystanders in reach, reservations, queued incidents, open windows, unsettled weather, a stale build); the
+normalized tick driver, when ordinary execution is shown to be the bottleneck for long scenes; the keeper save with
+the divergence finder, when the first hunt needs it; pixels and the filmstrip, on the owner's word; the second small
+map, when a map-wide mod (Direct Sun, Stillsand) advances; draw submitted, last.
 
-Why the calm profile is seventh and not first `[my judgment, and the review's]`: its parts mostly exist, and the
+Why the calm profile is sixth and not first `[my judgment, and the review's twice]`: its parts mostly exist, and the
 census shows more loss from not seeing and from the gap between calls than from events that no control held. A calm
-profile without the breach watchers and the runner would still leave a spoiled run looking like a mod failure.
+profile without the watchers and the runner would still leave a spoiled run looking like a mod failure.
 
 ## The testing horizon: what is not designed, and why
 
@@ -898,15 +1023,19 @@ profile without the breach watchers and the runner would still leave a spoiled r
 - **Holding the hour or season still while ticks run.** It would need a false clock for part of the game, and would
   change schedules and timers. Scenes set the hour and stay short, or test the boundary on purpose.
 - **Faster days by clock jump.** It simulates nothing. Compression is labelled and comes from rates.
-- **What is heard.** Sound requests are recorded; the audio output is not judged.
+- **What is heard.** Sound requests are recorded (which sound, where, on which tick), so a missing sound, a wrong
+  sound and a sound at the wrong moment are testable. The audio that leaves the speakers is not judged.
 - **Taste.** Whether a picture looks right stays with the art judge and the owner's walk. The bridge supplies clean,
   repeatable pictures and filmstrips; it does not judge them.
 - **Frame-time method.** The runner offers a real-time mode and timings. A quiet machine, pairing and statistics stay
   in the performance method, not in the bridge.
-- **Natural scenes at force level 0** (a real raid finds its own way) as acceptance tests. The policy already leaves
-  these to the owner's walk and to real play.
-- **A complete list of third-party suppressors.** The profile grows one named suppressor at a time, when a mod bites.
-  The watchers catch what no suppressor holds.
+- **Whole natural play at force level 0** (a real raid on a real base finds its own way) as a standing acceptance
+  test. The policy lets a scene state this horizon; it does not forbid natural scenes. Where a forced order would
+  step past the very decision that matters, a budgeted kind B scene at level 0 to 2 is right, and the ladder, the
+  copies and the verdict ledger serve it.
+- **A complete list of third-party suppressors, and a complete watch.** The profile grows one named suppressor at a
+  time, when a mod bites. The watchers see only the routes they cover; an influence that no watcher covers stays
+  unknown until a run goes UNRESOLVED and someone finds it. "No breach" means "no breach on the covered routes".
 - **The quality of an in-game LLM's reply.** The bridge can stub the reply and read the validator's verdict; it does
   not judge prose.
 - **Scheduling across the four games.** Which game runs which scene is the test lane's and the pipeline's work. The
@@ -933,7 +1062,7 @@ Folded in:
 - **The flap frame cannot be computed from the tick alone**; the probe must ask the game's own resolver. §6.
 - **The known off-screen renderer moves the player's camera and restores it.** §6 and an open question.
 - **Missing render evidence is COULD NOT LOOK; lost telemetry or a bad tick driver is APPARATUS FAULT.** Classifier
-  rows 2 and 3.
+  rows 2 and 3 (round 2 then put the known apparatus fault before the unexplained one).
 
 Rejected, with the reason:
 - **"Thing ids are not renumbered by a load."** GPT cites the engine saving ids. A census record of ours says ids
@@ -942,3 +1071,49 @@ Rejected, with the reason:
 - **Reuse of a general in-game script front end as the probe mechanism.** GPT notes that the upstream bridge has a
   restricted script language. I keep sent programs out of acceptance tests for the reason in §6 (an unvalidated,
   unversioned checker); whether the tool list keeps a script front end for exploring is the second designer's call.
+
+Round 2 (a teardown of the whole design). Its full answer is `census_sources/gpt_round2_answer.md`.
+
+Folded in:
+- **Row 4 of the classifier excused the mod by ownership.** "The spoiler is not ours" does not make it external: a
+  bug that walks its own actor into a vanilla fire would have been excused. Row 4 now asks who moved first, from the
+  trace, and everything else is UNRESOLVED.
+- **A giver's refusal was classed as an apparatus fault**, which would have hidden a broken eligibility check. It is
+  now a result that the contract judges.
+- **A synthetic event at arm time does not prove continuous sight.** Added: a repeating heartbeat, the routes each
+  tap covers, and the end-of-run reconciliation of the trace against state. Unexplained differences are COULD NOT
+  LOOK.
+- **A tick driver of our own is a model of the game, not the game.** I had made it the keystone. Now the runner uses
+  the game's own loop first ("ordinary execution"), and the faster driver is later, labelled, and compared. This also
+  lowers the effort of the keystone from high to medium.
+- **A receipt is not a verdict.** Added the scene verdict ledger that applies the policy's rules for kinds A, B and C
+  across runs.
+- **A repair can erase the evidence.** Reassert never repairs inside a deciding window.
+- **HELD was claimed on guesses.** A control is HELD only after a planted breach was seen to be stopped; until then
+  ARMED, UNPROVEN. The calm profile and the fence now state what they step past, as force levels do.
+- **Value paths need stated behaviour** for missing links, replaced objects, freshness and side effects.
+- **An exploring lane** with recorded scripts, apart from acceptance.
+- **Repeats are not proven independent**; the fingerprint is an alarm and not an identity; a keeper save has a cost
+  and is taken only by scenes in a hunt.
+- **The scene language** gained the meaning of a save and load in the middle, replies from outside the game, the
+  rule that a scene cannot pass without its exposure, and independent plants. The three examples were corrected
+  (the carrier's exposure is now shown by a control pawn; the rescue names its destination and a succeeded job end;
+  the flight scene judges every bird that flew).
+- **The ranking** was reordered: truthful calls and identity first, the runner on ordinary execution fourth, the
+  verdict ledger and lint added at eighth, the faster driver and the general sweep moved out of the first ten.
+- **The horizon** no longer gives up natural decision scenes or missing and mistimed sounds, and no longer says that
+  the watchers catch everything.
+
+Rejected, with the reason:
+- **"A sent program can be hashed, versioned and validated, so allow it."** True for a program that is kept. The
+  design's objection is to a checker written inside the run that it decides. I kept sent scripts out of acceptance
+  and gave them the exploring lane, with promotion to a plug-in as the route to acceptance.
+- **"Cut the general UI transcript and the before-sweep from the scope."** I kept both as needs, because 8 of 11
+  subjects in one census group need UI content and the sweep is what turns a spoiled run into a refused start. I
+  took the advice on order: adapters and a few finding classes first, the general form after.
+- **"Environment charged to the mod through a forbidden effect follows the policy, so expose it or amend the
+  policy."** I narrowed the DEFAULT forbidden effects to those with no outside instigator on record, which the
+  policy allows a scene to state, and sent the wording question to the Conductor. I did not change the policy.
+- **"Defer the tick driver until a bottleneck is measured."** Accepted for the driver. Not accepted for its facts:
+  the camera-dependent update rate is recorded and the camera is held from the first runner on.
+

@@ -47,9 +47,11 @@ Each of these is a GUESS in the design, and each decides a choice. Read the 1.6 
 1. **Rebuild or improve.** The design's keystone (§7) moves the deciding from outside the game to inside it. Say
    whether the present companion can carry a scene runner, a tick driver and a probe engine, or whether those want a
    new core with the present tools kept as the exploring layer.
-2. **The tick driver.** How it does the per-frame map work between ticks, how it pins the update rate (a fixed value,
-   or the camera held on the station), how it yields so that the game window and the bridge stay alive, and how it
-   proves that a burst run and a normal-speed run of one scene agree.
+2. **Ordinary execution first, and the normalized tick driver later.** For the runner on the game's own loop: where
+   the end-of-tick hook sits, and how the camera of a test game is held on a station (and what happens with several
+   stations in one run). For the later driver: how it does the per-frame map work between ticks, how it pins the
+   update rate, how it yields so that the game window and the bridge stay alive, and the comparison that proves a
+   normalized run and an ordinary run of one scene agree.
 3. **Value paths.** How a path is resolved once and then read at the cost of a field read; which members it may touch
    (private fields are needed: the flight tracker's state is private); how a path that calls a method with side
    effects is refused.
@@ -69,7 +71,13 @@ Each of these is a GUESS in the design, and each decides a choice. Read the 1.6 
 10. **Migration.** Which of the present scenes (FlowWorks, Pyrelands, Explosive Knockback, Gimme Some Slack) are
     rewritten in the scene language first. The census suggests the scenes whose opportunity never arose
     (`sc_moat_raid`, `sc_islands`, `sc_pit_trap_raid`) and the full-list walks.
-11. **The disputed points from GPT round 2**, listed at the end of `02_needs_design.md` under "What GPT changed".
+11. **The disputed points from the two GPT rounds**, listed at the end of `02_needs_design.md` under "What GPT
+    changed", in particular the general window transcript and the general before-sweep, which GPT would cut and this
+    design keeps in a later place.
+12. **The scene verdict ledger** (§7): inside the bridge's Python, or in the Maturation Pipeline beside the test
+    table. It must hold runs by claim and build, apply the policy's rules, and send the hunt notice.
+13. **Who chooses a plant.** "Shown both ways" needs a planted fault that the scene's author did not choose. Say how
+    one is drawn (a mutant list per mod, kept by the mod).
 
 ## For the Conductor
 
@@ -82,7 +90,13 @@ These are not among the owner's five acts; the Conductor decides them and tells 
    and no current bar moves. Recommended, by the same rule as the conversion list of the guiding principles.
 3. **A scene's "shown both ways" record** (red on a planted fault, green on the real build) becomes part of the scene
    file's own history, replacing the separate red-seen step for live deciders.
-4. **The standard calm profile's content** is a list that will be argued over. Recommended start: everything in §1's
+4. **A forbidden effect caused by another mod.** The policy says: "A forbidden effect is a MOD FAILURE in any run,
+   even a spoiled one." If another mod destroys the subject of a scene, a default forbidden effect ("a cast thing was
+   destroyed") charges our mod. This design narrows the default to effects with no outside instigator on record, and
+   treats a destruction with a recorded outside instigator as a failed opportunity. Recommended: add to the policy's
+   sentence "that the record does not attribute to something outside the tested behaviour", or confirm that the
+   unconditional wording is meant.
+5. **The standard calm profile's content** is a list that will be argued over. Recommended start: everything in §1's
    table that is marked READ, plus the five breach watchers; add one control at a time when a breach names it.
 
 ## For the owner (real choices only)
@@ -127,7 +141,9 @@ disposable save they run freely. On a save of yours, a restore cannot bring back
 
 ### 4. The start state twin: built when the walk save is written
 
-You asked on 2026-11-23 for a start state twin beside each aftermath station. The design builds the twin at the moment
+The brief of this run cites your request of 2026-11-23 for a start state twin beside each aftermath station. I did
+not find the text of that request in the rulings record (`owner_rulings.py --grep twin` shows other twins), so the
+design works from the brief's one line. The design builds the twin at the moment
 the walk save is written, while paused, in the neighbouring station, with START and AFTER signs (§2). It does not
 stand beside the scene while the scene runs, because then it would have to be held still through the run.
 This is an assumption about what you meant, not a choice with a cost. If you wanted to watch start and aftermath
