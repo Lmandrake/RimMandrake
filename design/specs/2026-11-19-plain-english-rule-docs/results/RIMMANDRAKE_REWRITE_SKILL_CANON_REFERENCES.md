@@ -10,11 +10,11 @@ Also: skills/rimworld-canon-references/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 15,842 | 18,726 |
-| words in linted prose | 1,962 | 2,330 |
-| STE violations per 100 words | 5.45 | 2.23 |
+| bytes | 15,842 | 18,870 |
+| words in linted prose | 1,962 | 2,353 |
+| STE violations per 100 words | 5.45 | 2.17 |
 | sentences over 20 words | 45 | 10 |
-| flagged lines (mechanical) | 16 | 15 |
+| flagged lines (mechanical) | 16 | 12 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 8 | 0 |
 
 Of the 10 long sentences, one is an owner quote (the Q11a quote). The other 9 are two short sentences that the lint joined at a bold lead,
@@ -65,7 +65,9 @@ about 35 trivial items (most of them were checked TRUE).
 | trivial: the history counts "40 of 68" and "133", the remark on `IsReconnected()`, the census pointer | reworded with the method |
 
 The same reader then read the repairs and found 0 real and 5 trivial items. Two were repaired after that read: "visual
-line" in §2, and the census remark in the history file. No reader read those two edits.
+line" in §2, and the census remark in the history file. After the first landing (f3bdd187c574), the prose check of
+`./publish` named 6 lines. The writer repaired all 6. No reader read those two edits and those 6 repairs. One of the 6 is
+the meaning of "the pool": the `massassi` entry uses "the pool" for the skin genes that its xenotype lists.
 
 ## Conflicts and stale lines: settled
 

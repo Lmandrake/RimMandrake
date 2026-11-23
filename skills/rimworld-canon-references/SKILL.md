@@ -60,7 +60,7 @@ against such a fact later. The library was built to end that failure.
 ⛔ **A third-party mod's defName is not a source, even when it is the only thing you have.**
 
 - The general shape: a donor mod (a third-party mod whose content we use) ships a plausible name. Someone then reads
-  the name back as proof. That is not sourcing.
+  the name back as proof. A name read back is not a source.
 - Example: a "felucian glowspore" wild-plant row was recorded as "Canon". The row cited `Plant_FelucianGlowspore_Wild`
   as its evidence. `glowspore` returns zero Wookieepedia hits. The name is the mod author's own invention.
 - Absence from our own entries is no evidence either way. Write the entry as UNSOURCED and say so. Do not turn a donor
@@ -110,7 +110,7 @@ non-canon.**
   - The section exists so that a brief cannot ask for the impossible.
   - The queue filler (`src/RimMandrake/Utils/artpipe/fill_queue.py`) adds only `## Visual brief` and `## Must show` to
     a job. So carry the limits yourself.
-  - **`none known` is a real answer, and the usual one.** The words mean "go ahead". They do not mean "unchecked".
+  - **`none known` is a real answer, and the usual one.** The words mean "go ahead". The words do not mean "unchecked".
 - **Where the brief says the images contradict the prose, the images win on appearance.** The checklist already
   follows the images. Do not argue the point again from the sourced text. The disagreement is recorded deliberately.
 - **The entry decides WHICH canon form you are drawing.**
@@ -150,7 +150,7 @@ carry`. `design/RimMandrake/standing_rulings.md` §What is where restates the cl
 tell which class you are looking at**. So ask these questions in order:
 
 1. **Does the mod already own something that expresses the appearance?** That thing is a gene, a field, or a value in
-   the pool.
+   the list that a def picks from (for example the skin genes of a xenotype).
    - If yes, the defect is a **missing gene**: the def simply does not list the thing.
    - Search the shipped defs to settle this question. Do not answer from memory.
    - Example: the Massassi entry says that the lifespan is expressible. `RSW_lifespan_nine` and `RSW_lifespan_half`
@@ -249,8 +249,8 @@ Entries cite defNames and repo paths, and both move. Make three checks, all offl
 
 ## What this skill deliberately does not carry
 
-- **Writing or refreshing an entry**: `canon_references/AGENT_BRIEF.md`. That file is the operating doc. It holds the
-  format, sourcing discipline, the fetching route, the 2000px-image trap that kills a session, and the
+- **Writing or refreshing an entry**: `canon_references/AGENT_BRIEF.md`. That file is the operating doc. `AGENT_BRIEF.md`
+  holds the format, sourcing discipline, the fetching route, the 2000px-image trap that kills a session, and the
   write-incrementally rule. This skill only says how to *consume* what that file produces.
 - **The owner's library-wide rulings** (the three defect classes, what an empty ruling means):
   `design/RimMandrake/standing_rulings.md` §What is where, and `AGENT_BRIEF.md`.
@@ -264,8 +264,9 @@ Entries cite defNames and repo paths, and both move. Make three checks, all offl
 
 - Those lines are entry authors' recorded findings. `AGENT_BRIEF.md` says of the
   `useSkinShader: false` limit that what actually renders needs in-game confirmation.
-- RimSage (`mcp__rimsage__*`) answers on the Windows Desktop only, and has never connected on the Laptop. So what the
-  shader or the renderer actually does **cannot be measured on the Laptop at all**.
+- RimSage (`mcp__rimsage__*`) answers on Archmagi (the Windows desktop) only. RimSage has never connected on the Laptop
+  (the owner's Mac, `mt-400028`). So what the shader or the renderer actually does **cannot be measured on the Laptop
+  at all**.
 - Cite the limit as the entry's finding, or answer UNMEASURED.
 
 ## Where it all lives
