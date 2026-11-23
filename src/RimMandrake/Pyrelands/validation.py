@@ -6599,6 +6599,11 @@ def _r6_ullai_and_giant(t):
 
 FOIL_BIOME = "RM_Pyrelands"
 FOIL_DENSITY = 1.0   # the value Map Designer caps plantDensity to (RM_PyrelandsDensityEnforcer.cs header, bisected 2026-09-18)
+# The foil must read cover at least this far below the site. Danger guarded: regeneration noise read as the density
+# enforcer's effect. Evidence (visit 6, 2026-11-22, ArchSmall): the same seed regenerated at the site's own density read
+# 0.0002 below the site and passed a strictly-below check; the shipped 1.0 foil read 0.494 below. 0.05 is 250 times that
+# noise and a tenth of the real margin.
+FOIL_MIN_MARGIN = 0.05
 # planted state for plant_density_one_control_map: the foil is generated at the site's own enforced plantDensity, so it
 # regenerates the site itself (same seed, same density) and its cover share cannot read below the site's: the part must
 # read FAIL. Its reading beside the row also shows whether the same seed reproduces the site.
@@ -6666,12 +6671,12 @@ def density_foil_verdict(gc, r, fert, density=FOIL_DENSITY):
     if ratio is None:
         return None, "the foil has no plantable cell (%r)" % plantable, reading
     reading["margin"] = gc["ratio"] - ratio
-    if ratio < gc["ratio"]:
-        return True, "foil cover %.3f (%d/%d) < site %.3f at plantDensity %r" % (
-            ratio, covered, plantable, gc["ratio"], gc.get("plantDensity")), reading
-    return False, "the plantDensity-%s foil reads cover %.3f (%d/%d), not below the enforced site's %.3f: the density " \
-                  "enforcer's map is not thicker than the same seed at %s" % (density, ratio, covered, plantable,
-                                                                             gc["ratio"], density), reading
+    if gc["ratio"] - ratio >= FOIL_MIN_MARGIN:
+        return True, "foil cover %.3f (%d/%d) below site %.3f by %.3f (>= %.2f) at plantDensity %r" % (
+            ratio, covered, plantable, gc["ratio"], gc["ratio"] - ratio, FOIL_MIN_MARGIN, gc.get("plantDensity")), reading
+    return False, "the plantDensity-%s foil reads cover %.3f (%d/%d), not %.2f below the enforced site's %.3f: the " \
+                  "density enforcer's map is not clearly thicker than the same seed at %s" % (
+                      density, ratio, covered, plantable, FOIL_MIN_MARGIN, gc["ratio"], density), reading
 
 def _r6_embergrass_regrow(t):
     """sc_grass_regreens (g15): grass_cover's census ran with no sow, spawn or set_terrain call before it (the script's own

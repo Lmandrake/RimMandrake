@@ -416,8 +416,15 @@ def foil_checks(V, tools):
          foil_reply(covered=54545, terrain={"RM_PyreAshDeep": 54686, "Granite_Rough": 7814}), None, "FAIL"),
         ("planted: a foil one cell thicker than the site (54546 of 54686)",
          foil_reply(covered=54546, terrain={"RM_PyreAshDeep": 54686, "Granite_Rough": 7814}), None, "FAIL"),
-        ("a foil one cell thinner than the site (54544 of 54686): strictly below is the bar",
-         foil_reply(covered=54544, terrain={"RM_PyreAshDeep": 54686, "Granite_Rough": 7814}), None, "PASS"),
+        # HARNESS (visit 6, 2026-11-22, ArchSmall): the planted foil (same seed, the site's own density 16) read 53619 of
+        # 54120 against the site's 53620 of 54109 (margin 0.0002) and PASSed 'strictly below'; regeneration noise is not
+        # the enforcer's effect, so a foil inside FOIL_MIN_MARGIN of the site reads FAIL
+        ("planted, as measured live: a foil one cell thinner than the site (54544 of 54686) is generation noise",
+         foil_reply(covered=54544, terrain={"RM_PyreAshDeep": 54686, "Granite_Rough": 7814}), None, "FAIL"),
+        ("a foil just inside the margin below the site (52000 of 54686, margin 0.046)",
+         foil_reply(covered=52000, terrain={"RM_PyreAshDeep": 54686, "Granite_Rough": 7814}), None, "FAIL"),
+        ("a foil clearly below the site (51000 of 54686, margin 0.064)",
+         foil_reply(covered=51000, terrain={"RM_PyreAshDeep": 54686, "Granite_Rough": 7814}), None, "PASS"),
         ("a companion without map_seed_foil (a stale DLL)", foil_reply(),
          dict((k, x) for k, x in tools.items() if k != "jawa/map_seed_foil"), "UNMEASURED"),
         ("a failed foil call", foil_reply(success=False), None, "UNMEASURED"),
@@ -446,7 +453,7 @@ def foil_checks(V, tools):
           % V.PLANT_FOIL_AT_SITE_ENV, got == "FAIL" and (g.sent or {}).get("overrides")
           == "BiomeDef/RM_Pyrelands.plantDensity=16.0", (got, g.sent))
     ok, why, reading = v(SITE_CENSUS, foil_reply(), dict((k, {"fertility": f}) for k, f in FOIL_FERT.items()))
-    print("  foil reading: fixture margin %.3f (site %.3f, foil %.3f, limit: foil strictly below site), %d cases read"
+    print("  foil reading: fixture margin %.3f (site %.3f, foil %.3f, limit: foil at least FOIL_MIN_MARGIN below the site), %d cases read"
           % (reading.get("margin") or 0, reading["site"]["ratio"], reading["foil"]["ratio"], len(cases) + 1))
     V._GEN.clear()
 
