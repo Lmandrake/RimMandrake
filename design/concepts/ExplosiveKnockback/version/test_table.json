@@ -111,12 +111,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.05,
+    "seconds": 2.8,
     "last": "explosive knockback kernel: 246/246 passed",
-    "at": "2026-11-19T03:36:40Z",
+    "at": "2026-11-23T10:29:53Z",
     "result": "PASS",
-    "build": "0d3f55eb849d094f0003",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
+    "build": "2ecc9322683fa5df7dce",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+    "margins": []
    }
   },
   "T_FUZZ": {
@@ -134,12 +135,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.27,
-    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.36s total -> OK",
-    "at": "2026-11-19T03:36:45Z",
+    "seconds": 4.45,
+    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.43s total -> OK",
+    "at": "2026-11-23T10:29:58Z",
     "result": "PASS",
-    "build": "8afe2c39d6e415af503a",
-    "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py"
+    "build": "26c67486df8054502656",
+    "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py",
+    "margins": []
    }
   },
   "T_LINT": {
@@ -249,12 +251,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 10.97,
+    "seconds": 14.37,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-19T03:38:06Z",
+    "at": "2026-11-23T10:30:12Z",
     "result": "PASS",
-    "build": "b109b45796aeeea809da",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py"
+    "build": "5481fe6b6e68fcc23333",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
+    "margins": []
    }
   },
   "T_RESTORE": {
@@ -290,13 +293,14 @@
    "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py",
    "runs_today": {
     "ran": true,
-    "rc": 0,
-    "seconds": 2.91,
-    "last": "settings screens selftest: 856/856 ok",
-    "at": "2026-11-19T03:38:24Z",
-    "result": "PASS",
-    "build": "4199c1886e4599a39e6b",
-    "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py"
+    "rc": 1,
+    "seconds": 2.99,
+    "last": "settings screens selftest: 855/856 ok",
+    "at": "2026-11-23T10:30:15Z",
+    "result": "FAIL",
+    "build": "d5463b24aa3c6735113d",
+    "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py",
+    "margins": []
    }
   },
   "T_FW_COVER": {
@@ -313,12 +317,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.1,
+    "seconds": 0.06,
     "last": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); other drops require an open pit at the falling cell; intact cover = ground; 4 mutants red",
-    "at": "2026-11-19T03:38:24Z",
+    "at": "2026-11-23T10:30:15Z",
     "result": "PASS",
-    "build": "2402b18861ec6812061e",
-    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py"
+    "build": "4776821151eb771a9c18",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py",
+    "margins": []
    }
   },
   "T_SETTINGS_SWEEP_OFFLINE": {
@@ -340,12 +345,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.14,
+    "seconds": 2.19,
     "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 10/10 switch faults caught | PASS",
-    "at": "2026-11-19T03:38:26Z",
+    "at": "2026-11-23T10:30:18Z",
     "result": "PASS",
-    "build": "f1bded6f74a84dc6a715",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py"
+    "build": "963e7c9f7887b9583a93",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+    "margins": []
    }
   },
   "T_GAS_TAG_CENSUS": {
@@ -364,12 +370,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.28,
+    "seconds": 1.51,
     "last": "explosive knockback gas census: PASS (10 sources, tagged grid:RimMandrake.Cauldron.RM_MapComponent_VentGas; 0 faults; 5/5 planted faults caught)",
-    "at": "2026-11-19T03:38:28Z",
+    "at": "2026-11-23T10:30:19Z",
     "result": "PASS",
-    "build": "163b4abb86a9ca27b61e",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py"
+    "build": "ebeb1396540d1d7df4f7",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py",
+    "margins": []
    }
   },
   "T_GAS_CLUMP_ORDER": {
@@ -412,12 +419,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.18,
+    "seconds": 2.15,
     "last": "explosive knockback kernel: 246/246 passed",
-    "at": "2026-11-19T03:38:30Z",
+    "at": "2026-11-23T10:30:21Z",
     "result": "PASS",
-    "build": "0d3f55eb849d094f0003",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
+    "build": "2ecc9322683fa5df7dce",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+    "margins": []
    }
   },
   "T_STAGE3_SCENES": {
@@ -1800,12 +1808,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.49,
+    "seconds": 2.29,
     "last": "ALL PASS",
-    "at": "2026-11-19T03:38:33Z",
+    "at": "2026-11-23T10:30:24Z",
     "result": "PASS",
-    "build": "33a6c5a0f5e78dfb7d74",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_barrage_p99.py"
+    "build": "a260f972e8524835fd27",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_barrage_p99.py",
+    "margins": []
    }
   },
   "T_GAS_INTO_PIT_OFFLINE": {
@@ -1859,13 +1868,14 @@
    "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 0.08,
-    "last": "explosive knockback journal and jolt: FAIL (6 faults, 11/16 planted breaks caught)",
-    "at": "2026-11-19T03:38:33Z",
-    "result": "FAIL",
-    "build": "b7d7e7d732adf578a1c3",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py"
+    "rc": 0,
+    "seconds": 0.14,
+    "last": "explosive knockback journal and jolt: PASS (0 faults, 21/21 planted breaks caught)",
+    "at": "2026-11-23T10:30:24Z",
+    "result": "PASS",
+    "build": "36306ae279a636b27985",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py",
+    "margins": []
    }
   },
   "T_LANDING_JOB_SEARCH_OFFLINE": {
@@ -1981,7 +1991,18 @@
    "id": "T_BLIND_CYCLE1_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blind_cycle1.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.17,
+    "last": "explosive knockback blind cycle 1: PASS",
+    "at": "2026-11-23T10:30:26Z",
+    "result": "PASS",
+    "build": "dd207f7a4d14bd5ebbe9",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blind_cycle1.py",
+    "margins": []
+   }
   },
   "T_STAGE6_VISIT1_GUARDS_OFFLINE": {
    "stage": "4-5",
@@ -1991,7 +2012,18 @@
    "id": "T_STAGE6_VISIT1_GUARDS_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage6_visit1.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "PASS stage6 visit1 scenes: 0 failed",
+    "at": "2026-11-23T10:30:26Z",
+    "result": "PASS",
+    "build": "fc970df8f1b5ba693b32",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage6_visit1.py",
+    "margins": []
+   }
   }
  },
  "bars": [
