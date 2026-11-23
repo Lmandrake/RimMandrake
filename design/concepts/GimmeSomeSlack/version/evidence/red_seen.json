@@ -38,6 +38,19 @@
   "rc": 1,
   "test_blob": "68d00c2344f59aed4346d5af77107411a8c78506"
  },
+ "T_NO_KINK_OFFLINE": {
+  "at": "2026-11-23T04:53:53Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --kinks-only",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/KinkChecks.cs",
+  "last": "7/11 checks passed (no kink only)",
+  "patch": "--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -3617,7 +3617,7 @@\n         private const double UnderMachineKeep = 0.3;\n \n         /// <summary>Selftest only: the builder before <see cref=\"UnkinkPiece\"/>, for the red run of its check.</summary>\n-        internal static bool UnkinkOff;\n+        internal static bool UnkinkOff = true;\n \n         private static Func<CordStrand, bool, StubArt.Stub> StubPicker(CordWorld w, CordGraph g, CordEdge e, LaidPiece piece, CordNode na, CordNode nb, BuildOptions opt)\n         {\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
+  ],
+  "patch_sha": "1b16a2ced4079625",
+  "rc": 1,
+  "test_blob": "bba397cbae3e2e0fbe215b2f60ff07e523fa6d06"
+ },
  "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": {
   "at": "2026-11-21T01:39:45Z",
   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py",
