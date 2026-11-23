@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "in_game",
   "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-22T08:54:05-08:00",
+  "since": "2026-11-23T04:04:31-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -267,6 +267,23 @@
       "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-five-f-1795365974",
       "confirmed": {
         "steward_confirms": "read visit_5 SUMMARY.md, rows (32 PASS 0 FAIL 3 UNMEASURED), exit.lines and the counted repairs' diffs (2613e2e96a, e8cb081456, 15431f983f: none weakens what its check observes, each shown planted FAIL / real PASS); verdict: not met, road back in_game on RIMMANDRAKE_SEAL_PYRE_SPRAYER_RING_BOTH_COLONISTS_WAIT_IT_OUT, RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE, RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-23T04:04:31-08:00",
+      "by": "BENCH",
+      "why": "steward of visit 6: one undecided bar (walk_season_on_the_pyre), its only check sc_walk UNMEASURED because ArchSmall cannot hold his full list beside ArchBig; game-only, a rerun not done (REAL MISS, not a mod fault); no mod-wrong line, no mod fix, no fix reader owed. Next visit re-runs the 32 checks the Ullai art (99cede2bfa) and site-loader change touched; a visit owing only sc_walk now waits for ArchBig (aacba60155)",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-six-fa-1795432884",
+      "confirmed": {
+        "steward_confirms": "read visit_6 SUMMARY.md and rows.jsonl: 34 PASS, 0 FAIL, 1 UNMEASURED (sc_walk, class SITE, unrepaired: game placement); 7 harness/site repairs read, each tightens or re-classes, none weakens an observation; verdict: send back to in_game for sc_walk on ArchBig"
       },
       "checks_passed": [
         "order",
