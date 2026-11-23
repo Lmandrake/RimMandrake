@@ -45,7 +45,7 @@ and that the Conductor decides if it matters. Nobody is assigned here.
 | AU-7 read codebase health | The page is made each night. Nobody reads it on a schedule: REVIVE-OR-DROP. | `rm-codebase-health.timer` enabled |
 | AU-8 re-check the v3-against-v2 verdict | Dead: `v3_vs_v2.py` no longer exists. `Utils/v3_vs_v2_rules.json` is a leftover. | `ls src/RimMandrake/Utils` |
 | weekly sample of the findings fold's merges and retire decisions | Nobody: REVIVE-OR-DROP. | `dispatcher_schedule.json` `findings_fold` named the Auditor |
-| token talk in the reports of token-blind roles (the check that Operations owns) | The check measures nothing: the two roles that it listed are gone. Point it at the Designer and the Artist, or delete it: REVIVE-OR-DROP. | `ops_watch_rules.json` `token_talk.roles` is `[]` |
+| token talk in the reports of token-blind roles (the check that Operations owns) | The check measures nothing: the two roles that it listed are gone. Point it at the Designer, or delete it: REVIVE-OR-DROP. | `ops_watch_rules.json` `token_talk.roles` is `[]` |
 
 ## Retired names that are still in use (for the Conductor)
 
