@@ -131,16 +131,16 @@
   "test_blob": "a2db853aca26cabcb82fc6e4d3df9586ee47e704"
  },
  "T_VENOM_STAGING": {
-  "at": "2026-11-22T10:40:32Z",
+  "at": "2026-11-23T08:20:47Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
-  "last": "selftest_pyrelands_venom_staging: 4 of 36 checks failed",
-  "patch": "--- a/src/RimMandrake/Pyrelands/validation.py\n+++ b/src/RimMandrake/Pyrelands/validation.py\n@@ -3551,7 +3551,7 @@\n # Each venom-chain wait feeds every player pawn to 1.0 at least once per FEED_EVERY ticks. 15000 (6 h) holds for a pawn\n # factor up to ticks_to_starving(1.0) / 15000 = 3.7, and from the spawn level 0.8 up to 3.2; metabolism -5 alone is 2.25.\n # The cost: one list_pawns and two pawn_need calls a pawn per feed, 40 feeds in the ten-day wait-out.\n-FEED_EVERY = 15000\n+FEED_EVERY = 60000\n FEED_TO = 1.0\n \n \n",
+  "last": "selftest_pyrelands_venom_staging: 2 of 42 checks failed",
+  "patch": "--- a/src/RimMandrake/Pyrelands/validation.py\n+++ b/src/RimMandrake/Pyrelands/validation.py\n@@ -3592,7 +3592,7 @@\n     UNMEASURED, never a FAIL against the mod. HARNESS (Pyrelands visit 6, 2026-11-22, ArchSmall): the flamefang never bit\n     (the bite row UNMEASURED), and venom_rises_untreated read [None] * 7 and failed 'fewer than 3 readable severities'.\n     A bite with no venom is the bite row's own FAIL.\"\"\"\n-    return not [s for s in series or () if s is not None]\n+    return False   # PLANTED: the guard never fires\n \n \n def venom_rises(series, min_rise=0.02):\n",
   "patch_files": [
    "src/RimMandrake/Pyrelands/validation.py"
   ],
-  "patch_sha": "e35a8216e09599a3",
+  "patch_sha": "b4696ec6ee7fbc1a",
   "rc": 1,
-  "test_blob": "c48c88b2b535333a792d08bc02c3093990f6a0d8"
+  "test_blob": "c510d950cade50d656d9c7482f6f9ed40873be5a"
  }
 }

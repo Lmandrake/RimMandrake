@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/validation.py
++++ b/src/RimMandrake/Pyrelands/validation.py
+@@ -3592,7 +3592,7 @@
+     UNMEASURED, never a FAIL against the mod. HARNESS (Pyrelands visit 6, 2026-11-22, ArchSmall): the flamefang never bit
+     (the bite row UNMEASURED), and venom_rises_untreated read [None] * 7 and failed 'fewer than 3 readable severities'.
+     A bite with no venom is the bite row's own FAIL."""
+-    return not [s for s in series or () if s is not None]
++    return False   # PLANTED: the guard never fires
+ 
+ 
+ def venom_rises(series, min_rise=0.02):
