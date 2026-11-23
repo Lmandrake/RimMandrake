@@ -1,7 +1,9 @@
 # RimWorld's decompiled C# source — where it is and how to remake it
 ## Provenance for a 42 MB derived tree that is deliberately not in git
 
-**Established:** 2026-08-19 · **Location:** `D:\Luke\dev\reference\rimworld-decompiled`
+**Established:** 2026-08-19 at `D:\Luke\dev\reference\rimworld-decompiled`, which does not exist any more. **Location now:**
+`D:\ClaudeWork\rimmandrake\decomp\rw16\all` (its `Assembly-CSharp.dll` had the md5 of the installed file on 2026-11-23). To remake the
+tree, write under `D:\ClaudeWork` in the command below.
 
 ---
 

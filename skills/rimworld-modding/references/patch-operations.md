@@ -31,7 +31,7 @@ against that document. Consequences worth internalising:
   hundreds of mods this line is indistinguishable from ordinary noise, which is
   why conditional-wrapping matters — a conditional that finds nothing is a
   legitimate no-op, so it doesn't log at all, and the log stays meaningful.
-- **Duplicate `defName` = last one wins, wholesale.** Not a merge. A mod that
+- **Duplicate `defName` across mods = last one wins, wholesale.** (Inside one mod, the second def is skipped with one red line.) Not a merge. A mod that
   redefines `Armadillo` replaces Core's def entirely, including fields it never
   mentions.
 
@@ -49,7 +49,8 @@ Element names are the C# field names, exactly. `race`, `wildBiomes`,
 don't guess it — read the def, or decompile the class.
 
 List entries are `<li>` elements, *except* where the field is a dictionary-like
-`Dictionary<Def, float>`, in which case the key is the element name:
+list of records with a custom loader, in which case the key is the element name. (A true C#
+`Dictionary` takes `<li><key>…</key><value>…</value></li>`: `DirectXmlToObject.DictionaryFromXml`.)
 
 ```xml
 <race>
@@ -271,10 +272,10 @@ everything after it. Keep sequences short and related.
 `<nomatch>` hold operations. This is the default wrapper for anything touching
 another mod's content. Nest them when you need two conditions.
 
-**`PatchOperationFindMod`** — tests *installed mods* by packageId or name:
+**`PatchOperationFindMod`** — tests *active mods* by the exact About.xml `<name>`, never by packageId:
 ```xml
 <Operation Class="PatchOperationFindMod">
-  <mods><li>Ludeon.RimWorld.Odyssey</li></mods>
+  <mods><li>Odyssey</li></mods>
   <match Class="PatchOperationRemove"> ... </match>
 </Operation>
 ```
@@ -286,7 +287,7 @@ which is the fact you actually depend on.
 
 | situation | returns | logs |
 |---|---|---|
-| none of `<mods>` active | **true** | **nothing** |
+| none of `<mods>` active, and no `<nomatch>` | **true** | **nothing** |
 | a mod is active, `<match>` succeeds | true | nothing |
 | a mod is active, `<match>` fails | **false** | `Patch operation Verse.PatchOperationFindMod(<Name>) failed` |
 
@@ -302,7 +303,7 @@ how "that mod isn't installed" gets asserted about a mod that is.
 **`PatchOperationTest`** — obsolete. Use `Conditional`.
 
 ---
-- **`PatchOperationFindMod` needs the exact About `<name>` (or a packageId that matches), and a guard that matches nothing logs nothing.** The folded biome mods are named by the composed mod, `RimMandrake: Baroque Biomes`; the core game is `Core`, not `Ludeon.RimWorld`. An audit found 12 guards silently matching nothing. Also not real: `PatchOperationAddOrReplace`, a `CompProperties_Equippable` type, TrainabilityDef `Simple`; a cold composed-deploy load showed these and missing SoundDefs that offline checks passed.
+- **`PatchOperationFindMod` needs the exact About `<name>` (`ModLister.HasActiveModWithName` compares nothing else), and a guard that matches nothing logs nothing.** The folded biome mods are named by the composed mod, `RimMandrake: Baroque Biomes`; the core game is `Core`, not `Ludeon.RimWorld`. An audit found 12 guards silently matching nothing. Also not real: `PatchOperationAddOrReplace`, a `CompProperties_Equippable` type, TrainabilityDef `Simple`; a cold composed-deploy load showed these and missing SoundDefs that offline checks passed.
 
 ## 7. Worked examples
 
@@ -436,10 +437,11 @@ four-digit total means the number is dominated by structure, not by your changes
 structural classes were checked, or the next reader re-derives it from the same
 warnings and reaches the same non-conclusion.
 
-**It only validates `Patches/`. It does not check `Defs/` at all.** A hand-written
+**It checks field names in no file.** Since 2026-08-13 it also scans `Defs/` (parse, comments,
+defName, `ParentName`, `Class`, `texPath`), but not field names, types or values. A hand-written
 Def with a field that moved between versions sails straight through. That is
 exactly how `<exposedThought>` shipped in one of our own WeatherDefs when 1.6 had
-renamed it to `<weatherThought>`. Until the tool covers Defs, diff any Def you
+renamed it to `<weatherThought>`. So diff any Def you
 author field-by-field against the closest Core def — SKILL.md §1, applied to your
 own files.
 
@@ -461,9 +463,9 @@ node's existing children for exactly this reason.
 
 ---
 
-## 12. Full paragraphs behind `SKILL.md` §4's compressed rules
+## 12. Full paragraphs behind `SKILL.md` §4's rules
 
-Each heading below matches one compressed rule in `SKILL.md` §4. The first line repeats the kept lead; the rest is what moved.
+Each heading below matches one rule in `SKILL.md` §4. The text here is the full paragraph with its incident.
 
 ### Field shape: `<li>` vs keyed element — full paragraph
 

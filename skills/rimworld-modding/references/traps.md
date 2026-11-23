@@ -20,14 +20,16 @@ confidently — and answered a different question than the one asked.**
 
 ## Appending
 
-At the end of a task, if something surprised you, append it to the matching file:
-what it looked like, what was actually true, what worked. Keep it to a few lines.
+At the end of a task, if something surprised you, file a lesson with
+`python3 src/RimMandrake/Utils/lessons.py add "…" --home <the matching file>`:
+what it looked like, what was actually true, what worked. Keep it to a few lines. A
+fresh-context curation session moves the lesson into the file (`skills/README.md`).
 
 **It goes in only if it is specific, non-obvious and RimWorld-bound** — an error
 string, a flag, an xpath, a defName, a number — **and still true today.** General
 software or process advice is not a trap; that is what made this log unusable
-once already. If it would change what `SKILL.md` tells you to do by default, put
-it in `SKILL.md` instead and do not log it here.
+once already. If it would change what `SKILL.md` tells you to do by default, name
+`SKILL.md` as its `--home` instead.
 
 **Never number an entry, and never cite one by number, line or heading.** Say
 "as per the trap file" and stop.

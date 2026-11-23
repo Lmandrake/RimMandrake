@@ -149,7 +149,7 @@ optional-compat gate. Nothing distinguishes "gated off because the mod isn't
 installed" from "gated off because it's installed but inactive" in the log,
 because neither one logs anything.
 **Fix:** census the ACTIVE mod list (parse `ModsConfig.xml`'s `<activeMods>`,
-never a `<li>` count — see `SKILL.md` §1) to learn what is really gated off.
+never a `<li>` count — see `references/deploying-and-liveness.md`) to learn what is really gated off.
 The log can only tell you what fired; it cannot tell you what a `MayRequire`
 quietly declined to load.
 **Recurs when:** anything reasoned from "no errors about it" instead of from

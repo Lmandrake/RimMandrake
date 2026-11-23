@@ -65,17 +65,19 @@ third-party repo, which is the user's call, never yours.
 
 ---
 
-## Full paragraphs behind `SKILL.md` §5b's compressed rules
+## Full paragraphs behind `SKILL.md` §5b's rules
 
-Each heading below matches one compressed rule in `SKILL.md` §5b. The first line repeats the kept lead; the rest is what moved.
+Each heading below matches one rule in `SKILL.md` §5b. The text here is the full paragraph with its incident.
 
-### `ParentName` resolves only against `Abstract="True"` defs
+### `ParentName` resolves only against a `Name=` attribute
 
-**`ParentName` resolves only against `Abstract="True"` defs declared with a
-`Name=` attribute — never against a `defName`.** Core's EMP damage def uses
+**`ParentName` resolves only against a `Name=` attribute, never against a `defName`.**
+Most named parents are `Abstract="True"`, but the engine does not require that: Core's
+`<DamageDef Name="Stun" ParentName="StunBase">` is concrete and can be a parent
+(`XmlInheritance.TryRegister` reads only `Name=`). Core's EMP damage def uses
 `ParentName="StunBase"` (`<DamageDef Name="StunBase" Abstract="True">`), not
-`ParentName="EMP"`; naming a concrete def gives `XML error: Could not find parent
-node named "EMP"` and the def is **discarded** whole. So resolve every
+`ParentName="EMP"`; naming a defName gives `XML error: Could not find parent
+node named "EMP"`, and the def loads with nothing from the parent. So resolve every
 outward-pointing name against the live load set before shipping a `Defs/` file:
 `ParentName` against `Name=` attributes, and `Class=`/`workerClass`/`thingClass`/
 `graphicClass` against loaded assemblies. `validate_patch.py` does both since
@@ -101,9 +103,10 @@ node` and `Config error in <YourDefPrefix>` before believing it is a vanilla bug
 
 🔴 **`ParentName` resolution keys on the `Name=` attribute in a FLAT NAMESPACE NOT
 SCOPED BY DEF TYPE.** Giving a `ThingDef` and its paired `PawnKindDef` the SAME
-`Name=` (never `defName`, which is fine) is a live landmine even when both live
-in the same mod, same file even — it stays dormant until something actually
-inherits via `ParentName` against that shared name, and the merge then silently
+`Name=` (never `defName`, which is fine) is a live landmine. In ONE mod, the second def logs
+`Could not register node named "X" in mod … because this name is already used in this mod`
+and is never registered, so it inherits nothing itself. A def that then inherits via
+`ParentName` against that shared name silently
 pulls the wrong type's fields in (a `ThingDef`'s `<thingClass>`/`<statBases>`/etc.
 landing inside what should be a `PawnKindDef`), leaving fields like
 `PawnKindDef.race` null. This crashed a mod's own `GeneDefGenerator` at load with
@@ -124,13 +127,14 @@ fresh post-restart capture rather than "after the file(s) I have in mind."
 
 🔴 **`DefDatabase<T>.Add` does not override a repeated `<defName>` — it logs a
 red error and RANDOMIZES the new def's name every load** (`Source/Verse/
-DefDatabase.cs`). A batch of new defs whose `<defName>` accidentally duplicated
+DefDatabase.cs`). Ordinary XML defs do not reach that branch: they go through
+`AddAllInMods` (next paragraph). A batch of new defs whose `<defName>` accidentally duplicated
 the vanilla/donor def they were meant to replace would have been completely
 inert — spamming load errors while never actually taking ownership — because
 the "replacement" never got a stable identity. Always grep every new def
 batch's ACTUAL `<defName>` against its filename before staging; never trust the
 filename to match the content.
-A CROSS-mod duplicate defName logs NOTHING: `AddAllInMods` Remove()s then Add()s, so the 'Adding duplicate' error is unreachable for that case and the DefDatabase keeps only the winner (a dump's package_id per defName says who won). Only a SAME-mod duplicate logs the error and randomizes the name. Never use the log to find cross-mod collisions.
+A CROSS-mod duplicate defName logs NOTHING: `AddAllInMods` Remove()s then Add()s, so the 'Adding duplicate' error is unreachable for that case and the DefDatabase keeps only the winner (a dump's package_id per defName says who won). A SAME-mod duplicate logs `Mod X has multiple <type>s named Y. Skipping.` and the SECOND def is dropped; its name is not randomized. Never use the log to find cross-mod collisions.
 
 ### `AllLeafSubclasses()` means "nothing currently loaded subclasses this", not "concrete"
 
@@ -151,8 +155,8 @@ Same landmine applies to anything else using `AllLeafSubclasses` rather than
 
 ### A self-referencing `ResearchProjectDef` prerequisite recurses infinitely
 
-⚠️ **A self-referencing `ResearchProjectDef` prerequisite causes unconditional
-infinite recursion in vanilla `ResearchManager.FinishProject`** — there is no
+⚠️ **A self-referencing `ResearchProjectDef` prerequisite causes
+infinite recursion in vanilla `ResearchManager.FinishProject`, when the project is not yet finished at the call** — there is no
 cycle/visited-set guard there at all. The result is an uncatchable
 `StackOverflowException`: silent, immediate process death, NO managed
 exception and NO crash-handler log line, hit right when that project's
@@ -176,12 +180,3 @@ missing comp type discards the whole def carrying it**, with no error naming
 which def vanished. The same applies to art: a mod supplying the only texture at
 a given path needs to be a declared dependency too, or a reduced list renders that
 def as a magenta X with no log line pointing at the missing mod.
-
-### SKILL.md §5b — assert the order in code before every launch (full)
-
-manager: resolve the load set, compare the index of your mod against each mod it
-patches, and fail loudly. One check per mod you reach into.
-
-### SKILL.md §5b — same-mod Patches/ fix, continued line
-
-adds the duplicate" is not enough if a THIRD file in the same folder also

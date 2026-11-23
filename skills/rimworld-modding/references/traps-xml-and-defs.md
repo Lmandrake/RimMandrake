@@ -116,7 +116,7 @@ What goes in, and what does not: `references/traps.md`.
 ```
 `<OuterRim_Jawa>999</OuterRim_Jawa>` means *this xenotype, this weight*. **There is no `<li>` and no text node naming the xenotype**, so every instinctive xpath — at a `<li>`, at a value, at a `defName` attribute — targets something that does not exist.
 **Fix:** replace the whole `xenotypeChances` node. Guard with `PatchOperationConditional` testing the child element (`.../xenotypeChances/OuterRim_Jawa`) and `PatchOperationReplace` the parent; the inner/outer xpath mismatch is intentional and the validator's warning about it is expected here.
-**Recurs when:** any def field RimWorld serialises as `Dictionary<Def, T>` — the def becomes a tag name. `xenotypeChances` is the one that bites, but the shape is general: **if a block's children are named after defs rather than being `<li>`, the key is the tag and you must replace the container.** ⚠️ `OuterRim_Jawa` exists as BOTH a `XenotypeDef` and a `PawnKindDef` in the same file — the `xenotypeSet` lives on the pawn kind, so patching the xenotype changes nothing.
+**Recurs when:** any def field whose entries have a `LoadDataFromXmlCustom` that reads the node name as a def (not a true C# `Dictionary`, which takes `<li><key/><value/></li>`) — the def becomes a tag name. `xenotypeChances` is the one that bites, but the shape is general: **if a block's children are named after defs rather than being `<li>`, the key is the tag and you must replace the container.** ⚠️ `OuterRim_Jawa` exists as BOTH a `XenotypeDef` and a `PawnKindDef` in the same file — the `xenotypeSet` lives on the pawn kind, so patching the xenotype changes nothing.
 **Timing:** `xenotypeSet` is read at PAWN GENERATION, so a patch that lands after a world exists never fixes that world's colonists. It is a pre-worldgen gate, not a tuning patch, and it fails by producing quietly wrong pawns rather than an error.
 
 ---
@@ -420,17 +420,17 @@ correctly rejects this; it is not a lenient parser here.
 
 ---
 
-## Full paragraphs behind `SKILL.md` §4's compressed rules
+## Full paragraphs behind `SKILL.md` §4's rules
 
-Each heading below matches one compressed rule in `SKILL.md` §4. The first line repeats the kept lead; the rest is what moved.
+Each heading below matches one rule in `SKILL.md` §4. The text here is the full paragraph with its incident.
 
 ### Mis-cased enum value discards the whole target def
 
 **A mis-CASED enum value discards the whole target def, exactly like the `<li>`
 mistake above.** `Verse.ParseHelper.FromString` calls `Enum.Parse`
 case-SENSITIVELY, so `<viscosityClass>water</viscosityClass>` (lowercase) where
-the enum member is `Water` silently deletes the ENTIRE target def — not just the
-field. One generated compat patch wrote a lowercase value onto nine vanilla/DLC
+the enum member is `Water` deletes the ENTIRE target def — not just the
+field. (1.6 logs one line, `Exception loading def from file …`, which names the file and not the def.) One generated compat patch wrote a lowercase value onto nine vanilla/DLC
 TerrainDefs and thereby deleted them outright, so every biome's water-terrain
 reference read null and NO map generated visible water. A generator that emits
 enum values must normalise them and REFUSE an unknown/wrongly-cased member
@@ -494,10 +494,6 @@ grep -rl 'defName>Armadillo<' "$RW/Data" "$WS" --include=*.xml
   to NRE downstream during corpse-gen `PreResolve` — which crashes the **whole
   mod load**, not just that one def. `references/traps-xml-and-defs.md` has the
   mechanism.
-
-### SKILL.md §4 — mis-cased enum, continued line
-
-mistake above.** `Verse.ParseHelper.FromString` calls `Enum.Parse`
 
 ## Defs that load but never act
 - **A `BiomeDef` with `implemented=true`, `generatesNaturally=true` and a null `workerClass` crashes ALL worldgen** (`WorldGenStep_Terrain.BiomeFrom` throws per tile; it was the likely long-standing full-list quicktest crash). Set `generatesNaturally=false` or give a real worker; check every new BiomeDef for a worker before it enters a mod list.
