@@ -120,7 +120,8 @@ a note headed `QUESTION FOR OPERATIONS` on the parent item (`V3_ROLES_BUILD_EIGH
 - Operations then puts one sanitized note on the parent item: `OPS PROPOSAL <id>: <what it would change, in plan words>, for the Conductor's decision; owner-only file <path>`.
   The note holds no figure, account or reason.
 - These decisions are yours (owner 2026-11-19, `standing_rulings.md` §Only five acts stay his): a wider budget inside
-  the account lines, a raised cap, N (the helper slots of a seat) or stage ceiling. No capacity is kept for evening sessions with him: each account
+  the account lines, a raised cap, N (the helper slots of a seat) or stage ceiling
+  (the spend limit of one stage). No capacity is kept for evening sessions with him: each account
   runs to its line, at any hour (`design/RimMandrake/standing_rulings.md` §Account and capacity budget).
 - Read the file and decide. Record the decision as a note headed `OPS DECISION <id>`, with
   `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the decision and the reason>"`.
