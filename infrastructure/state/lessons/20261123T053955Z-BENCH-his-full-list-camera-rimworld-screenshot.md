@@ -1,0 +1,1 @@
+On his full list (Camera+), rimworld/screenshot_cell_rect crops wrong while the camera eases, and a rootSize passed to it returns the whole zoomed-out screen; jump, set_camera_zoom, wait until get_camera_state viewRect stops moving, then take_screenshot. rimworld/take_screenshot can also return the frame before a just-opened float menu: capture a menu with system_screenshot.py.

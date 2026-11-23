@@ -1,0 +1,1 @@
+Two RimWorld windows on Archmagi share the title 'RimWorld by Ludeon Studios': an OS click that finds the game by title can land on ArchSmall. Find ArchBig's window by its process id (game_instance.py pid ArchBig), and check WindowFromPoint is that window before the click.

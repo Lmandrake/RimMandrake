@@ -1,0 +1,1 @@
+A float-menu option is not a bridge target: rimworld/click_ui_target answers 'not actionable'. execute_gizmo opens the first menu; the next level needs an OS click, and a background process gets the foreground only after an Alt key tap before SetForegroundWindow.
