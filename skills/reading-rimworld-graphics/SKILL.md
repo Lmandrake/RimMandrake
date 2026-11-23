@@ -113,8 +113,8 @@ also        : GrassA · GrassB · AgaveA · AgaveB · SnowyTreeCecropiaA
   does.
 - Compare categories against each other before you compare any of them against zero.
 
-**A THIRD form: the letter lands in the MIDDLE.** If a texPath carries a trailing qualifier (here `_Leafless`), the
-variant letter goes before the qualifier, not at the end:
+**A THIRD form: the letter lands in the MIDDLE.** A texPath can carry a trailing qualifier, here `_Leafless`. The
+variant letter then goes before the qualifier, not at the end:
 
 ```
 def texPath : Things/Plant/Grass_Leafless
@@ -150,7 +150,7 @@ Measured over 190 plants: **69 needed a rung the ladder did not have.** A third 
 - `Plant_Berry_Leafless` declares `Things/Plant/BerryPlant_Leafless`. ReGrowth's art is `BerryBush_Leafless*`.
 - Nothing but a fuzzy stem match finds those. Fuzzy matching caused the apparel disaster. There, a name alone
   matched, and the paths did not agree (see "Matching a bundle texture to a def").
-- **Leave them blank and say WHY.** That is the correct answer. `Plant_Berry_Leafless` is the regression case that must
+- **Leave them blank and say WHY.** A blank with its reason is the correct answer. `Plant_Berry_Leafless` is the regression case that must
   stay unresolved.
 
 Three more rules about what renders in game:
@@ -177,7 +177,7 @@ Three more rules about what renders in game:
     `badTex=true`, regardless of art.
   - Read a vanilla control pawn first. A harness that is proven only against a fake bridge lies on the real bridge.
   - Player.log texture lines (`Failed to find any textures at`) are the instrument.
-  - Judge pawn art with the appearance block of `jawa/thing_explain` instead. It gives the life-stage paths,
+  - Judge pawn art with the appearance block of `jawa/thing_explain` instead. The block gives the life-stage paths,
     `packsHoldingPath` and the OBSERVED provider.
 - **A pawn's alternate graphic cannot be forced through `Thing.overrideGraphicIndex`.**
   - `PawnGraphicUtils.TryGetAlternate` rolls `kindDef.alternateGraphicChance`, seeded by `thingIDNumber`. The method
@@ -246,7 +246,7 @@ OuterRim/Apparel/ImperialUniform/ISBAgent/Apparel
 Two rules follow. We paid for each one:
 
 - **Never write extracted textures as `<source>/<m_Name>.png`.**
-  - Numbered names on disk (`Apparel~2.png` … `Apparel~42.png`) keep the bytes. That is worth doing, but it does
+  - Numbered names on disk (`Apparel~2.png` … `Apparel~42.png`) keep the bytes. Numbered names are worth doing, but they do
     **not** save you. The filename no longer says which garment it is. The index is still name-keyed, so 41 of the 42
     are unreachable.
   - Preserve the object's **container path**. Read `obj.container` on the ObjectReader, NOT on the parsed Texture2D,
@@ -296,15 +296,15 @@ matches everywhere. The results look plausible enough to ship:
   failed instantly on sight. Render a montage and read it. You are checking art, so check it with your eyes.
 
 🔴 **A blank-rate metric cannot detect a wrong picture.** "Blanks fell from 30% to 2.6%" measures whether *a* texture
-appeared, not whether it was *the right* one. A wrong render looks like a success in every count that you have.
+appeared. That number does not measure whether the texture was *the right* one. A wrong render looks like a success in every count that you have.
 Forty-two different garments that all showed one white tunic scored perfectly.
 
-**Verify IDENTITY, not coverage.** Take several defs that should look different. Assert that they resolve to **different
+**Verify IDENTITY, not coverage.** Take several defs whose looks must differ. Assert that they resolve to **different
 files, each under their own mod**. This check takes seconds. No other check catches a collision.
 
 ## 🔴 An icon is not the thing's appearance — check which one you were asked about
 
-**This is the costliest error available here, because every intermediate step looks right.** A def's `iconPath` is a UI
+**A mix-up of icon and appearance is the costliest error available here, because every intermediate step looks right.** A def's `iconPath` is a UI
 symbol. What the thing LOOKS like in game often comes from somewhere else. The two are unrelated:
 
 | def | `iconPath` gives you | the appearance comes from |
@@ -325,12 +325,12 @@ symbol. What the thing LOOKS like in game often comes from somewhere else. The t
 
 ## 🪤 Some rows are not content and can never render
 
-**Abstract parent defs have no `defName`.** They carry a `Name=` attribute instead. They exist only for other defs to
-inherit from, and they declare no art of their own.
+**Abstract parent defs have no `defName`.** Abstract parents carry a `Name=` attribute instead. Abstract parents exist
+only for other defs to inherit from. No abstract parent declares art of its own.
 
 - To a simple walker, an abstract parent looks exactly like a real def. The result is the most misleading blank of all.
   The cell says that a thing exists and that its art is missing. Neither half is true.
-- Measured in one animal inventory: **50 of 1,239 rows had no `defName`**. They were `AnimalThingBase`, `BasePawn`,
+- Measured in one animal inventory: **50 of 1,239 rows had no `defName`**. Those rows were `AnimalThingBase`, `BasePawn`,
   `BaseInsect`, `BS_DefaultHumanlike`, `VAEWaste_BaseInsect` and 45 more. Two of them carried a `label` inherited from a
   donor (`race-that-the-author-forgot-to-give-a-name`, `mech`). So those two read as real creatures with names.
 - **Filter rows with no `defName` out of any sheet or census before counting anything.** Such rows inflate totals and
@@ -349,7 +349,7 @@ thousands of files across hundreds of mods. The per-file stat cost dominates.
 - A diagnosis that cannot finish is not a diagnosis.
 - **Texture memory is not 4 B/px over every PNG.**
   - The game loads only `Textures/` of the load folders, one file per path.
-  - Under Prefs `textureCompression`, the game DXT5-compresses any texture with both sides %4. That is 1 B/px, with mips
+  - Under Prefs `textureCompression`, the game DXT5-compresses any texture with both sides %4. DXT5 costs 1 B/px, with mips
     clamped by FastCompressDXT.
   - So a 4 B/px proxy over every PNG in a mod folder overstates RimWorld 1.6 VRAM ~15x. For Planet Atmosphere, the proxy
     was 1131.6 MB against ~74 MB.
@@ -387,7 +387,7 @@ src/RimMandrake/Utils/thing_contact_sheet.py       weapons/apparel/items/buildin
 src/RimMandrake/Utils/animal_contact_sheet.py      animals, via the PawnKindDef hop
 ```
 
-- Run the sheet generators under Windows `python.exe`. They share one texture resolver. Extend that resolver. Do not
+- Run the sheet generators under Windows `python.exe`. The sheet generators share one texture resolver. Extend that resolver. Do not
   teach each sheet its own lookup.
 - For what to DO with the sheets once built, see the `rimworld-content-moderation` skill. That skill says how to run a
   review, cluster decisions and cut safely. Read it by path: `skills/rimworld-content-moderation/SKILL.md`.

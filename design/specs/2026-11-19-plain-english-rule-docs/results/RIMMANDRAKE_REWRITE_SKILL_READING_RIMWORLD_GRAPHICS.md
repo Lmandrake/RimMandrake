@@ -10,15 +10,15 @@ Also: skills/reading-rimworld-graphics/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 21,305 | 24,323 |
-| words in linted prose | 2,738 | 3,157 |
-| STE violations per 100 words | 4.67 | 1.74 |
-| sentences over 20 words | 59 | 16 |
-| flagged lines (mechanical) | 21 | 20 |
+| bytes | 21,305 | 24,476 |
+| words in linted prose | 2,738 | 3,179 |
+| STE violations per 100 words | 4.67 | 1.67 |
+| sentences over 20 words | 59 | 15 |
+| flagged lines (mechanical) | 21 | 16 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 9 | 0; 1 is under "Could not determine" |
 
-Of the 16 long sentences, all but one are two short sentences that the lint joined at a bold lead or an emoji. The other
-one is the "THIRD form" line, which is a bold lead joined to one sentence of 20 words. No long owner quote is in the file.
+The long sentences that stay: the lint joined two short sentences at a bold lead, an emoji or a closing mark. No owner
+quote is in the file.
 
 The front matter (`description` included) and every heading stay byte for byte.
 
@@ -65,6 +65,9 @@ One fresh Opus reader (rm-judge, model opus) read both texts without the writer'
 
 The same reader then read the repairs and found 0 real and 3 trivial items. Two were repaired (one sentence moved, one
 history line). The third stays: "fuzzy" covers two kinds of match, and the instruction (leave it blank) does not change.
+
+After the first landing (3597d774d8), the prose check of `./publish` named 10 lines. The writer repaired all 10, and split
+the "THIRD form" line and the blank-rate line. No reader read those repairs.
 
 No reader read these later edits: the sentence that moved, that history line, the split of three long sentences ("Fuzzy
 matching caused …", "Before you audit art", "For what to DO with the sheets"), and the docstring of `pnglib.py`.
