@@ -265,8 +265,13 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - All other work goes in one list, the rimflow ledger. Write the work there. Close the work there.
 - A handoff, a log, a status page, a memory file, a result file or a reply does not hold owed work. If a debt is only
   in one of those, file it in the list.
-- The pipeline works the list. Do not make a seat or a role that works the list by hand. Do not make the owner the
-  memory of the list.
+- A second pipeline works the list (the List Pipeline in the plan). The Maturation Pipeline page shows it beside the
+  mod pipeline, with its stages. A request to repair the pipeline is work for the second pipeline.
+- The second pipeline, not a seat, answers these questions: what it does now, what is next, what closed, what stays
+  open and why, what is escalated, what is ready for the owner's review.
+- The Conductor monitors, works with the owner, and rescues and repairs what must be done. A stage that needs the
+  Conductor window to keep it running is a defect of the pipeline.
+- Do not make a seat or a role that works the list by hand. Do not make the owner the memory of the list.
 - Work goes to the owner only for one of his five acts, or with concrete evidence against the obvious answer.
 - A trouble report names the outcome at risk, why the recovery was not enough, and the smallest act that clears it.
 - A page for the owner is a view of the list, made by one rule. A count of needs that have no home in the list goes

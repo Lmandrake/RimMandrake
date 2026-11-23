@@ -10,6 +10,11 @@ reader that did none of the work reads each need against the real file or run an
 `disposed` or `moved`. The lower of the two rates is the headline. Beside it, the same evening: Conductor debts ripe
 over a day and still unpaid (25 on 2026-11-22, audited first), waits past their date and not looked at again (21 of
 37), typed messages with no home in 3 days (14, a hand reading).
+Update 2026-11-22 11:05 PM PST: this is now plan step 5 (Shape became step 4). Added: `hands_off`, the share of list items
+closed with no act by the Conductor window, read beside the count of the window's acts on list work (baseline for the
+Conductor's own debts: 17 of 138 closed since 2026-11-16, 12%, a rough fold of the ledger); and one harmless planted need
+sent through the pipeline each week and watched from outside. The draw is from needs that started in the week, so it
+holds open and stuck needs. The script moved to `step5_follow_through_accept.py` and has 15 checks.
 Acceptance test for the reader's verdicts: none, the verdict on each need is a judgement; the script tests the sample
 and the arithmetic.
 
@@ -21,11 +26,11 @@ file: design/specs/2026-11-22-one-view-of-open-work/census.md
 file: design/specs/2026-11-22-one-view-of-open-work/probe_results.md
 
 ## criteria
-- `python3 design/specs/2026-11-22-coordination-every-agent-must-use/acceptance/step4_follow_through_accept.py` exits 0 and prints `PASS 11/11`.
+- `python3 design/specs/2026-11-22-coordination-every-agent-must-use/acceptance/step5_follow_through_accept.py` exits 0 and prints `PASS 15/15`.
 - The audit page for 2026-11-29 exists and states both rates, the headline, and each stream that could not be read as UNMEASURED.
 
 ## verify
-python3 design/specs/2026-11-22-coordination-every-agent-must-use/acceptance/step4_follow_through_accept.py   # exit 0, PASS 11/11
+python3 design/specs/2026-11-22-coordination-every-agent-must-use/acceptance/step5_follow_through_accept.py   # exit 0, PASS 15/15
 Acceptance test: watched failing on 68355dc59b2b: 11 of 11 fail, because the module the step adds does not exist. Expected:
-11 pass. The script was also run against a throwaway reference to show that it can pass, and against a planted fault to
+11 pass. Re-watched on 87a18efda498 after the update: 15 of 15 fail for the same reason; expected 15 pass. The script was also run against a throwaway reference to show that it can pass, and against a planted fault to
 show that it goes red (2026-11-22; the reference was deleted and is not in the repo).

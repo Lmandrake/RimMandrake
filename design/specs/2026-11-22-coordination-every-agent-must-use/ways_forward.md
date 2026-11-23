@@ -62,7 +62,8 @@ place to close. The list must be worked by the pipeline's clock, not by a window
 - **Whether a fresh helper has enough to act.** You asked it on 2026-11-20: "You have that view right now. Will the
   fixer?" The plan gives the pipeline only work whose "done" a program can check, and leaves the rest with the
   Conductor. How much of the list that covers is not measured.
-- **Whether the work with no check becomes the old pile with a new name.** GPT says it will. The plan shrinks that
-  pile and shows its ages; it does not drain it.
+- **Whether the work with no check becomes the old pile with a new name.** The plan now gives that work a Shape
+  stage, worked by a run and not by the window, as the Designer does for a mod. How much of the list a run can shape
+  is not measured.
 - **The 25.** It is "no evidence of an act found", audited before the comparison on 2026-11-29.
 - **Month three.** I found no outside report of any such scheme after three months.

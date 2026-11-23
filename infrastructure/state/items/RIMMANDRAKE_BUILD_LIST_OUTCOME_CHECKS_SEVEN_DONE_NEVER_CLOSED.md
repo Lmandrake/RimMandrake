@@ -10,6 +10,11 @@ A timed pass runs each open item's check and closes an item whose check passes, 
 launches nothing. A check that cannot be run reads unmeasured and closes nothing. An item with no check is left alone.
 Why first: 7 of the 48 Conductor debts in the census of 2026-11-22 were done and never closed.
 
+Update 2026-11-22 11:05 PM PST (the owner's direction of 10:47 PM: the list's worker is a pipeline with stages, the
+List Pipeline; `plan.md` §The stages): this is the **Verify** stage. The check runs against main (the dispatch clone at origin/main), never against a helper's
+copy. A check may carry one more line, "what would pass this check and leave the need unmet"; a check without it
+still runs. The acceptance script is unchanged: 15 checks.
+
 Pipeline machinery: write the boundary page before the code (root `CLAUDE.md` §Code is clean when its promises are
 tested). When the acceptance script is green, move it to `src/RimMandrake/rimflow/acceptance/`.
 

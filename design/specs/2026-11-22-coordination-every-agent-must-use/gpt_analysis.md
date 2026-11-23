@@ -3,8 +3,8 @@
 # GPT's analysis: blind first, then a teardown of his idea and our options
 
 **Read first (added 2026-11-22, 11:00 PM PST):** consults 1 and 2 below read the pipeline's frequent changes as churn.
-The owner corrected that the same night. Consult 3, at the end of this page, tears down the plan with the motive stated
-correctly, and `plan.md` is the result. The recommendation that consults 1 and 2 led to (a fresh helper that works
+The owner corrected that the same night. Consult 3, near the end of this page, tears down the plan with the motive stated
+correctly. Consult 4, at the end, tears down the stage model of the List Pipeline. `plan.md` is the result of both. The recommendation that consults 1 and 2 led to (a fresh helper that works
 the Conductor's debts) is withdrawn: it was the shape of the retired FOUNDRY seat and the retired Relentless tick.
 
 Item: `RIMMANDRAKE_STUDY_ONE_PLACE_FOR_OWED_WORK_HE_ASSUMED_IT_EXISTED`. Sunday 2026-11-22, 7:17 PM to 7:30 PM
@@ -784,3 +784,210 @@ Before building it, I would make these three changes, in order:
 3. **Make source-audited follow-through the acceptance test, then retire stores against demonstrated coverage.** Include existing dropped work and both attention streams. Remove writers and redirect readers before deleting their outputs.
 
 I am least sure how much genuine judgment the 25 debts require. The text gives their count and several stories, not their full contents. That uncertainty matters: the plan may need a small recovery mechanism, or substantial improvements in the pipeline’s ability to interpret and own work. It does not justify assuming that a `judge` queue will take care of the difference.
+
+---
+
+## Consult 4: GPT's teardown of the stage model of the List Pipeline (2026-11-22, 10:56 PM PST)
+
+The owner asked at 10:47 PM that the list's worker be a pipeline in its own right, with stages, on the Maturation
+Pipeline page, and said at 10:48 PM that a pipeline that always needs the Conductor is incomplete. Consult 4 got
+`plight.md` and the draft of `plan.md` with a first stage model: Intake, Shape, Ready, Work, Verify, Live, Closed, with
+Trouble and For your review beside it; "the stage is read, never stored, so no stage can go stale or disagree"; "the
+check must fail on the day it is written"; four routes; and one measure of the Conductor's share. Tool and model as
+before; a fresh session; answered in 147 s; `VERDICT=ANSWERED exit=0`. GPT used no web source.
+
+### What I acted on, after my own check
+
+| GPT's point | my check | what changed in `plan.md` |
+|---|---|---|
+| A run that ends is not only "done" or "failed". The study of 110 tickets did its brief and the need still fell. The model has no step for what a result leads to. | Story 1 in `plight.md` is exactly this. Confirmed. | A Work run ends by saying one of four things: done, a next act it may do, a wait with its resuming event, or help needed. A named next act gets one more Work run on the same item; two runs is the most. |
+| Intake is redundant as a place to sit: a missing cause refuses nothing. | True by the draft's own words. | Filing is a door, not a stage. |
+| Waiting is missing. Ready's exit held every dependency and resource, so Ready would become the pile. 21 of 37 waits expired in silence. | Confirmed from the census. | Waiting is a stage. Each wait names what it waits on and the event that resumes it. Ready holds only items that wait on nothing but a slot. |
+| Live "never leaves" and yet Closed holds passed items: Live is a second fact, not a stage. | Correct; the draft contradicted itself. | An operational item closes when installed and checked. Its promise is shown apart, kept or dead. |
+| "Read, not stored, so it cannot go stale or disagree" is false. A split, a route, a wait's resuming event and a run's result must be recorded, and two programs that derive stages differently will launch and display differently. | Correct. Fleet Now and the owner queue disagreed in this same way. | The facts are ledger events on the item. One function decides the stage, and the tick and the page both call it. A row of the step 3 acceptance test shows facts that disagree as a conflict. |
+| "The check must fail on the day it is written" is not enough (a missing report fails today; a useless report passes tomorrow), and it mishandles the 7 debts already done. | Correct on both. | That rule is gone. The check must test the need. Beside each check stands one line: what would pass this check and leave the need unmet. A check without the line still runs and is marked for the audit. |
+| A check on the helper's copy, or on words anywhere in a page, passes while builders still read the old text. | The landing gap is real here: helpers work in clones. | Verify runs the check against main. |
+| The four routes mix who acts, what is uncertain and where it is shown; a route with no expected answer and no resuming event is not a hand-over; "a change to a rule" would be routed to the Conductor by reflex. | Our rules already let a run remove a limit that names no danger. | A route has three parts: who, what is asked, what resumes the item. A repair that standing rules allow is done, not routed. The Conductor's route is narrowed to a choice between goals and a looser bar. |
+| The share of items closed with no Conductor act rises while hard items pile up. | 142 debts closed with a 2.1 h median while the tail grew to 48: both at once. Confirmed. | The share is read with the count of Conductor acts on list work and the unpaid tail. The audit draws from needs that started, so it holds open and stuck ones. |
+| "What remains open, and why" answered by counts and ages is true and useless. | Agreed. | Open items are grouped by reason, and each waiting or routed item names what resumes it. |
+| A heartbeat does not see a running pipeline that reports false progress. | Agreed; the retired Relentless did exactly that. | Each week one harmless planted need is sent through the pipeline and watched from outside. The dead-clock alarm travels on a path that does not pass through the List Pipeline. |
+| Shape may not deserve to be a stage where items sit. | Unknown; nothing measures it yet. | Shape stays, as an activity only for work that arrives with no check. The first week counts how many items needed it. |
+
+### What I did not take, and why
+
+- **"Measure Conductor time."** No instrument here reads a window's time. The plan counts the window's acts.
+- **"I would preserve Shape as a capability... while testing whether it deserves to be a routine residence stage."** I
+  kept it as a stage on the page, because the owner asked to see what is being done to work that cannot yet be
+  checked. The plan says most items should never enter it.
+- **GPT's walk (c), the idle machine:** it says a rule change could stall at the Conductor. Under the narrowed route
+  it does not: removing a limit that names no danger is already every run's duty.
+
+### GPT's answer, word for word
+
+The plan formalizes dispatch more convincingly than follow-through. It can show that a helper ran and a check passed while the owner is still waiting for the thing he asked for. That is the failure already demonstrated by the 110-ticket study, and the stage model does not yet rule it out.
+
+The direction is right: a second pipeline should own this work without requiring the Conductor to keep it moving. But copying a mod pipeline’s sequence is less important than copying its ownership of an outcome.
+
+**1. The missing step is disposition of a result: continue, apply, decide, or deliberately stop.**
+
+`Work → run ended → Verify` assumes that a run’s output is either completion or failure. The study demonstrates a third case: successful completion of a commissioned step that enables another necessary step. Nobody failed their brief; the need still fell.
+
+That disposition can happen inside Work rather than becoming another helper ceremony. But it needs an explicit transition with a responsible actor. “The next step stays on its own item” is insufficient unless something must execute that next step.
+
+There are three other problems with the stage line:
+
+- **Intake is redundant as a residence stage.** Naming the cause is useful metadata, but a missing cause refuses nothing. What distinguishes an item remaining in Intake from one eligible for Shape? The owed item to write the two answers already had a clear cause; its failure was lack of action. Intake adds no protection against that.
+- **Waiting is missing as an explicit state or condition.** Dependencies, dates, quota, unanswered questions and decisions are different waits with different resumption events. The study was parked on a date that passed silently; 21 of 37 waits had that failure. A prose “why” beside Ready does not establish who resumes it or what event does so.
+- **Live is a different dimension from progress.** It “never” leaves, yet Closed includes items whose checks passed, and a dead promise “reopens” the item. Those statements cannot all describe one exclusive stage. An operational change can finish installation and remain under a continuing obligation. SteveDesktop needs that distinction: installing an alarm and proving its continuing coverage are different facts.
+
+**Ready will become the waiting pile**, because its entry condition is a failing check while its exit conditions include almost every resource and dependency. **Trouble will become the Conductor pile** if every unsuccessful first Work run requires him. Verify already has a warning in the evidence: 612 items are built and awaiting verification. Verification needs an executor and recovery behavior too; calling it a program does not guarantee it drains.
+
+The three walks make the gaps concrete:
+
+**(a) Write the two ruled answers into the design page builders read.**
+
+`Intake → Shape → Ready → Work → Verify → Closed` should be straightforward. Shape identifies the two answers, their authoritative destinations, and the requirement that the old “open question” wording disappear or be resolved.
+
+But a check for “both answer strings occur in the page” can pass after an appendix is added while builders still encounter contradictory instructions. A helper can also edit its clone while the shared document remains unchanged. This item can therefore **stall operationally at landing/integration**, or **close falsely at Verify**.
+
+The check must inspect the effective document builders consume and the resolved questions, not merely a helper’s artifact.
+
+**(b) The study of 110 wrongly routed tickets.**
+
+The study correctly produced 103 proposed commands and executed none. If its check is “the answer page exists and contains recommendations,” it passes. The study closes, while the parent need—correct the owner routing—remains unresolved.
+
+If instead the check requires corrected routing, the successful study run fails Verify and goes to Trouble. The Conductor has again become the person who translates analysis into action.
+
+It stalls at **result disposition**, currently hidden between Work and Verify. The pipeline needs to examine the proposals, apply those within existing authority, route genuine decisions, and retain responsibility for unresolved parts. That does not mean blindly executing 103 commands or filing 103 tickets. The original carrier can hold their disposition. The final check includes whether the affected tickets are routed correctly and whether Fleet Now reflects that correction.
+
+**(c) SteveDesktop idle for 5.5 hours, with no alarm.**
+
+There are two outcomes: restore useful operation now, and repair detection so recurrence is noticed. They can remain parts of one incident rather than automatically becoming separate tickets.
+
+Shape must examine the eight-hour budget rule and its intended protection. Work might restore the lane, change the rule within authority, or expose a real decision. Verification must exercise the relevant condition: **eligible work waits while a usable game instance remains idle**.
+
+The likely false completion is “watcher runs” or “alarm test fires.” Existing watchers already ran and checked narrower conditions. The item then sits in **Live, apparently healthy**, while the same failure remains undetectable. If changing any rule automatically routes to the Conductor, it can also stall there before remediation.
+
+**2. Deriving the stage is sound only if the facts that determine it are explicitly recorded.**
+
+“No separate stage store” is sensible. “Therefore no stage can go stale or disagree” is false.
+
+The ledger and run records cannot reveal intentions that nobody recorded. They need durable facts such as:
+
+- Shape split this obligation into these parts, with this remaining parent obligation.
+- This route was selected for this reason, and this actor is responsible for the next act.
+- This item waits for a particular event; that event should trigger reconsideration.
+- This check version defines completion, against this effective artifact.
+- This recommendation was applied, rejected, deferred or superseded.
+
+The study’s dated wait shows why a date alone is insufficient. The ruling story shows why a recorded answer is not evidence that its destination changed. Separate clones show why “run ended” is not evidence that its output landed.
+
+These facts can live in the existing ledger. They do not require another queue or a ceremonial transition form.
+
+If two programs derive different stages, the disagreement affects behavior: one can launch while another says blocked; one can close while another still exposes owner work. That reproduces the existing disagreement between owner_queue and Fleet Now. Use one transition definition for both dispatch and display, with deterministic handling of incomplete or conflicting records. Sharing a rendering function alone is not enough.
+
+**3. Shape can do useful design work, but it cannot manufacture an adequate oracle for every need.**
+
+The analogy with Designer is incomplete. The mod pipeline has later blind challenges, game visits and a human walk that can expose an inadequate design. Here Shape may define the check that becomes the sole authority for closure.
+
+The cheapest passing checks are predictable:
+
+- Two answers: the words appear somewhere.
+- Ticket study: a report contains 103 commands.
+- SteveDesktop: a timer fires or a watcher process is alive.
+
+All three can pass with the original need unmet. The retired Relentless’s 146 unmeasured proof rows are direct evidence that agents will supply completion-shaped evidence.
+
+The cheapest guard is a **short counterexample attached to the check**: “What plausible result would pass this check while leaving the original need unmet?” Then observe that distinction in the actual destination or behavior. This is a few lines in the existing item, not another approval stage. Existing fresh review of pipeline code can inspect it.
+
+“The check must fail on the day it is written” is useful against checking an unrelated existing success. It is nowhere near sufficient: a missing report fails today, and creating a useless report makes it pass tomorrow. It also mishandles the seven debts already done but never closed. Those need verification and closure, not an artificially failing check. Same-run repairs may require a recorded before-state or a regression fixture rather than a failing live system.
+
+The four routes mix **kinds of uncertainty**, **destinations**, and **presentation**:
+
+- A judge is an executor.
+- A question about intent is a decision dependency.
+- The Conductor is a destination.
+- “For your review” is a readiness view.
+
+They overlap. A question about intent can also be a taste call; a rule change may already be authorized by standing direction.
+
+The **Conductor route becomes the new pile**, especially “a change to a rule or a bar.” SteveDesktop’s eight-hour rule is exactly the sort of repair that could be routed there reflexively. Existing authority should determine whether help is needed. Every route needs an expected response and a resumption action; naming a recipient is not a completed handover.
+
+**4. Keep the fast path, but do not let the maker define away the obligation.**
+
+Without it, the two-answer edit could consume more coordination than useful work. That would violate the owner’s ruling about faults of form.
+
+The abuse is equally clear: file a narrow check, skip Shape, implement exactly that check, close. The idle-machine repair becomes “add an alarm function,” bypassing the question of what condition must be detected. The study becomes “produce recommendations.”
+
+Same-run repairs also allow a check to be written after the implementation, merely confirming the implementation’s chosen behavior.
+
+The fast path should skip a separate shaping run, **not the connection between cause, outcome and evidence**. A defect fixed in the same run can enter Verify if that relationship is visible. If the record is incomplete, continue useful work and repair the record alongside it. Do not invalidate a real fix over formatting.
+
+**5. The Conductor measure can improve while dependence gets worse.**
+
+“Share of closed items with no Conductor act” selects the successes and ignores the queue.
+
+It rises if the pipeline closes hundreds of easy items while difficult repairs accumulate in Trouble. It rises if one need is split into many cheap closures. It rises if the Conductor supplies the diagnosis and check before filing, or constantly rescues shared accounts and clocks without an act being attributed to each item.
+
+The evidence already warns against this: 142 owed items closed, median 2.1 hours, while the unpaid tail grew to 48. Fast closure and growing dependence coexist.
+
+Keep the share as a secondary measure, with consistent attribution and scope; the 12% baseline for Conductor debts is not automatically comparable with all List Pipeline work.
+
+Beside it, measure:
+
+- **Follow-through on original needs**, using intake cohorts that include still-open, dropped and superseded work. Splitting must not multiply successes.
+- **Conductor interventions and time**, including diagnosis, prompting, releases, restarts and repair of shared machinery.
+- **Unattended operation:** whether eligible needs progress without a Conductor prompt, and how long ripe needs remain untouched.
+
+The plan’s sampled follow-through measure is stronger than its closure share. It should judge the stage model, not merely audit its output a week later.
+
+**6. The six questions require more than stages.**
+
+- **Doing now:** live Shape and Work runs help, but omit verification, recovery and continuing operational checks. A live run also needs a current purpose; elapsed time alone does not explain activity.
+- **Next:** oldest Ready first is a scheduling rule, not a consequence of stage. The old-ticket incidents show why age alone is dangerous. The answer needs the next eligible act and what will release it.
+- **Closed:** passing checks answer recorded closure. They answer actual completion only if the checks cover the need. The study can otherwise appear here falsely.
+- **Open and why:** counts, oldest item and age do not explain why the other items remain open. The 48 owed items contained real drops, completed work, stale work, valid waits and recent work. Those distinctions matter.
+- **Escalated:** Trouble needs an accepted responsibility, requested act and resumption condition. The existing enforced flags already prove that sending the Conductor another line does not produce action.
+- **Ready for human review:** a stage cannot establish that the evidence is usable, the requested decision is clear, and it truly requires him. The wrongly routed tickets demonstrate that failure.
+
+The most technically true and useless answer is **“what remains open, and why?” → stage counts and oldest age**. That tells him where the pile sits. It leaves him to discover why and administer its movement.
+
+**7. The dead-clock answer is necessary and inadequate.**
+
+An independent promise recheck, visible staleness and an actionable alarm are reasonable protection against a stopped tick. A rare manual rescue fits the Conductor’s role. The plan must establish that detection and delivery still work when the List Pipeline’s own machinery does not.
+
+But the deeper failure is **a running pipeline producing false progress**:
+
+- Shape consistently substitutes documents for outcomes: the 110-ticket study.
+- Verify accepts the wrong destination: answers recorded while the builders’ page stays false.
+- Operational checks report healthy components while the useful service is absent: idle SteveDesktop.
+- Routing keeps producing false owner needs: Fleet Now.
+- Completion records look persuasive without measurement: retired Relentless.
+
+A heartbeat detects none of these.
+
+The smallest additional protection is an independent observation of useful completion: periodically exercise a harmless item through capture, dispatch, effective change and verification, and sample real completed and stuck needs against their original causes. Neither should trust only the same success flags being tested. The planned fresh-reader audit helps, provided it includes failures and waiting work, rather than only claimed closures.
+
+A stale page also does little if nobody opens it. The alarm needs delivery outside the failed path, not another entry in the same stalled list.
+
+**8. It is formal in the wrong places.**
+
+It is more formal than necessary about universal stage names and a mandatory initial failing check, and less formal than necessary about continuing responsibility, waits, result disposition and meaningful acceptance.
+
+The mod pipeline’s strength is not its number of stages. It repeatedly confronts the product with evidence that can contradict the maker’s account. The List Pipeline should scale that principle to the work:
+
+- The ruling edit needs evidence from the effective design page.
+- The routing repair needs evidence from affected tickets and the owner-facing view.
+- The idle-machine repair needs a behavioral exercise and continuing observation.
+
+Those do not require blind challenges or a human walk for every item. They require the right observation at the point where a cheap false success is possible.
+
+I would make these three changes before building it, in this order:
+
+1. **Make continuation and waiting explicit.** A completed run must yield completion, a next authorized act, a resumable wait, or a genuine escalation. Keep responsibility on the original need through splits and recommendations. Do this within the existing item; do not require a ticket for every finding.
+
+2. **Define durable transition facts in the ledger and one shared transition rule.** Record routes, dependencies, resumption events, completion criteria and effective results. Separate continuing operational promises from progress toward installation. Missing paperwork must not stop useful authorized work.
+
+3. **Make acceptance test the unmet need, including on the fast path.** Use the cheap counterexample guard, evidence from the effective destination, and proportionate independent checks of pipeline behavior. Judge success by original needs completed and Conductor effort removed, including the unresolved tail.
+
+I am least sure how much ambiguous work Shape can resolve autonomously. The evidence establishes that capture and follow-through fail; it does not establish that a separate Shape helper is needed for most items. I would preserve Shape as a capability and a visible activity, while testing whether it deserves to be a routine residence stage.

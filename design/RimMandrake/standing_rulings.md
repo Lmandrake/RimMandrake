@@ -1481,6 +1481,33 @@ to me."* (Sun 2026-11-22 10:27 PM PST; on the ledger as an OWNER note on item
   not. Not every remark is work (§Touching code has a
   cost).
 
+### The list's worker is a pipeline in its own right, and it must not need the Conductor to run — owner, 2026-11-22
+
+*"I need to become aware of "the smaller copy of the pipeline" that you use for "some work different than mods." This
+is the key. That is the piece that isn't working yet. We can fix this! Please include it now on the Maturation Pipeline
+sheet as its own pipeline, with whatever modules/stages it has within it, along with what's running and why. THAT is
+the thing that needs to be held accountable for "what are you doing now, what's next, what closed, what remains open
+and why, what's been escalated for help, what is ready for human review"... all of that. That seems like the piece
+that would own much of this. When we say "the pipeline should be repaired," it is the smaller pipeline that processes
+that request, as it is not mod work, if I understand it. Let's make it as formalized as the mod-based pipeline."*
+(Sun 2026-11-22 10:47 PM PST.)
+
+*"And I agree, the Conductor should NOT be constantly required just to keep a pipeline running... that means we DO
+have things that still need fixing. The conductor monitors, works with us, and rescues/repairs what MUST be done...
+but if we're always in that mode, the pipeline is incomplete."* (Sun 2026-11-22 10:48 PM PST; on the ledger as an OWNER
+note on item `RIMMANDRAKE_RESUME_PLAN_RUN_WITH_HIS_SECOND_PIPELINE_DIRECTION`.)
+
+- **Two pipelines.** The Maturation Pipeline works mods. A second pipeline works the list (the plan calls it the List
+  Pipeline; the name is his to change). A request to repair the pipeline is work for the second pipeline.
+- **The second pipeline has stages, and it is shown on the Maturation Pipeline page** beside the mod pipeline. It, not
+  a seat, answers six questions: what it is doing now, what is next, what closed, what remains open and why, what is
+  escalated for help, what is ready for human review.
+- **It is as formal as its work needs, not as heavy as the mod pipeline.** A small fix with its test passes in
+  seconds through the stages that are programs.
+- **The Conductor's place:** it monitors, works with him, and rescues and repairs what must be done. A stage that
+  needs the Conductor window to keep it running is a defect of the pipeline, and the page shows which stages are
+  still worked by hand.
+
 Study, plan and build order: `design/specs/2026-11-22-coordination-every-agent-must-use/` (`plan.md`). The ancestors
 and what they did wrong: `plight.md` §10 in that folder.
 

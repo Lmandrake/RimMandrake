@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Acceptance for plan.md step 4: the follow-through audit's sample and its two rates. The reading of each sampled
+"""Acceptance for plan.md step 5: the follow-through audit's sample and its two rates. The reading of each sampled
 need is a fresh reader's judgement and has no test here; this script tests the program around it.
 
 Contract: a new module src/RimMandrake/Utils/follow_through.py
@@ -11,7 +11,12 @@ Contract: a new module src/RimMandrake/Utils/follow_through.py
       reached its result) and "disposed" (dropped for a stated reason) count as followed through. "moved" (a new
       note, a follow-on item, a new date) does not. A stream with no verdicts, or None, has rate None and is named in
       "unmeasured". The headline is the LOWER rate, and it is None while any stream is unmeasured.
-Expected when built: PASS 11/11.  Today: FAIL 0/11, because follow_through.py does not exist."""
+  hands_off(items) -> {"share": float or None, "closed": int, "hands_off": int}
+      the Conductor's share, read the other way round: of the list items closed in the week, the share that passed
+      every stage with no act by the Conductor window. items = list of {"closed": bool, "window_acts": int or None};
+      an open item is not counted; an item whose acts could not be read (None) makes the share None, never a guess;
+      no closed item is None, never 0.
+Expected when built: PASS 15/15.  Today: FAIL 0/15, because follow_through.py does not exist."""
 import os
 import sys
 
@@ -45,4 +50,13 @@ H.check("a stream with no verdicts has rate None, never 0",
 H.check("the headline is None while a stream is unmeasured",
         lambda: ft().rates({"talk": None, "pipe": ["outcome"]})["headline"] is None)
 H.check("all needs followed through is 1.0", lambda: ft().rates({"talk": ["outcome"], "pipe": ["disposed"]})["headline"] == 1.0)
-H.done(11)
+H.check("the share of closed items with no Conductor act",
+        lambda: ft().hands_off([{"closed": True, "window_acts": 0}, {"closed": True, "window_acts": 2},
+                                {"closed": True, "window_acts": 0}, {"closed": True, "window_acts": 1}]) ==
+        {"share": 0.5, "closed": 4, "hands_off": 2})
+H.check("an open item is not counted",
+        lambda: ft().hands_off([{"closed": True, "window_acts": 0}, {"closed": False, "window_acts": 0}])["closed"] == 1)
+H.check("no closed item is None, never 0", lambda: ft().hands_off([{"closed": False, "window_acts": 0}])["share"] is None)
+H.check("an item whose acts could not be read makes the share None",
+        lambda: ft().hands_off([{"closed": True, "window_acts": 0}, {"closed": True, "window_acts": None}])["share"] is None)
+H.done(15)
