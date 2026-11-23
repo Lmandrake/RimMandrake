@@ -4,9 +4,8 @@ pnglib.py — minimal pure-stdlib PNG read/write/measure for WreckedMachines.
 
 WHY THIS EXISTS INSTEAD OF PILLOW
 =================================
-Pillow is not installed in the WSL environment this project's tooling runs in,
-and `pip` is not available there either (`python3 -m pip` -> "No module named
-pip"). `src/RimMandrake/Utils/animal_contact_sheet.py` sidesteps that by declaring itself
+Pillow can be absent from the WSL environment this project's tooling runs in,
+and `pip install` is blocked there (PEP 668). `src/RimMandrake/Utils/animal_contact_sheet.py` sidesteps that by declaring itself
 Windows-only; this toolchain cannot, because the art pipeline needs to run in
 the same place as the deploy script and the def authoring.
 

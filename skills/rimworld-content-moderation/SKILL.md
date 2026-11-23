@@ -316,7 +316,7 @@ The contact sheet is a thin projection over the inventory: it owns no load-set
 resolution and no XML parsing. Build a weapon or apparel sheet the same way —
 project over `def_inventory.py`, do not re-solve inheritance.
 
-⚠️ **Pillow is not installed for WSL `python3`** (PEP 668 blocks `pip install`).
+⚠️ **Pillow can be absent from a WSL `python3`** (PEP 668 blocks `pip install`).
 Windows `python.exe` has it, and relative paths work from the repo root:
 
 ```

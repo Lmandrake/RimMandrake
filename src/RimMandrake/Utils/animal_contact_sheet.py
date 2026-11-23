@@ -766,8 +766,8 @@ def plan_cells(rows, by_race, tex_index, bundle_index=None):
       no_defName    the csv row is an abstract base (no defName), not an animal
       no_pawnkind   no PawnKindDef anywhere references this race
       no_texPath    a pawnkind exists but declares no bodyGraphicData/texPath
-      no_loose_png  a texPath exists and no loose PNG matches it — the asset
-                    bundle case, i.e. "exists, but not previewable offline"
+      no_loose_png  a texPath exists and neither a loose PNG nor a texture of the
+                    bundle cache matches it (see the comment at the append below)
     """
     placed, missing = [], []
     for i, row in enumerate(rows, 1):

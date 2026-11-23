@@ -106,8 +106,8 @@ OUTPUTS (per category, under --out/sheets_<category>/)
 
 USAGE
 =====
-  🔴 Pillow is NOT installed for WSL python3 (PEP 668). Use Windows python.exe;
-     relative paths work from the repo root.
+  🔴 Use Windows python.exe. Pillow can be absent from a WSL python3 (PEP 668
+     blocks pip install there). Relative paths work from the repo root.
 
   python.exe src/RimMandrake/Utils/thing_contact_sheet.py --category weapons
   python.exe src/RimMandrake/Utils/thing_contact_sheet.py --category all
@@ -363,12 +363,13 @@ def plan_cells(rows, tex_index, dir_index, bundle_index=None):
 
     `reason` on a missing row is the deliverable. Three causes, three different
     meanings:
-      no_graphicData  the def declares no <graphicData> at all — usually an
-                      abstract-ish or purely mechanical thing
+      no_graphicData  the def declares no <graphicData>, or one that names neither
+                      texPath nor graphicClass — usually an abstract-ish or
+                      purely mechanical thing
       no_texPath      graphicData exists but names no texture
-      no_loose_png    a texPath exists and no loose PNG matches it. **This is
-                      the AssetBundle case** — the thing exists and is fine, it
-                      just cannot be previewed offline. Expect a lot of these.
+      no_loose_png    a texPath exists and neither a loose PNG nor a texture of
+                      the bundle cache matches it. Without that cache, every
+                      bundled texture lands here.
     """
     placed, missing = [], []
     for row in rows:
