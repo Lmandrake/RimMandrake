@@ -24,9 +24,9 @@ that shows whether the joining holds; if that trial fails, the design says what 
    or in what was recorded, a new run is still needed, and the program says which case it is. (Past record: 51 of 73
    "mod failures" were faults of the test, not of the mod.)
 3. **Scenes play on a stage with no bystanders.** A test game gets a second map that holds only the actors of the
-   scene. The test colony waits on another map. No bystander can wander in, haul the evidence, drink the water under
-   test, starve or die in a long run. A result on the stage is evidence for the scene as staged; each bar keeps at
-   least one scene in a real colony, on your walk.
+   scene. The test colony waits on another map with its needs held. No bystander can walk onto the stage, haul the
+   evidence or drink the water under test. A result on the stage is evidence for the scene as staged; a bar that could
+   depend on a real colony keeps a scene in one, on your walk.
 4. **Every run ends in one of your seven outcomes, by program.** A spoiled run is named as spoiled, with what
    spoiled it. An agent reads only the runs that the program could not decide.
 5. **Force is the default, and it is written down.** A raid is fired by the scene. An order is given the way a player
@@ -49,18 +49,24 @@ that shows whether the joining holds; if that trial fails, the design says what 
 
 ## Your game, ArchBig: what a test may do
 
-| | your save, loaded in ArchBig | a copy of your save, loaded in ArchBig | a test game (ArchSmall, Steve1, Steve2) |
+The bridge has two profiles, and they exist today. A save of yours runs in the CAMPAIGN profile. The TEST profile is
+granted only by a file on the machine, and not while a save that the file lists as yours is loaded.
+
+| | ArchBig with a save of yours (CAMPAIGN) | ArchBig with a copy of your save, your hold off (TEST) | a test game: ArchSmall, Steve1, Steve2 (TEST) |
 |---|---|---|---|
-| run a scene | only while your hold is off | yes, while your hold is off | yes |
-| remove things (wild animals, a queued incident) | **no** (choice 3 below) | yes: the copy is disposable | yes |
-| change a value in the running game (tuning, planted faults) | **no agent does.** Only you, by your own word or with the sliders | no | yes |
-| move the camera, take the window's focus, go fullscreen, unpause while you look | **never** | never focus or fullscreen; the camera only under choice 4 | the camera is the test's |
+| the new scene machinery (stage, record, judge) | **does not run at all** | runs: this is how full-list checks are made | runs |
+| remove things (wild animals, a queued incident) | **refused** (choice 3 below) | allowed: the copy is disposable | allowed |
+| change a value in the running game (tuning, planted faults) | **no agent does.** Only you, by your word or with the dev sliders | not done on ArchBig: tuning runs on a test game | allowed |
+| the camera | no new tool touches it | the test's, while your hold is off | the test's |
+| focus the window, go fullscreen, unpause while you look | **never** | **never** | not your screen |
 | write over a save of yours | **never** | never; the copy has its own name | not applicable |
-| stop a broken game | choice 2 below | choice 2 below | yes, at once |
+| stop a broken game | choice 2 below | choice 2 below | at once |
+
+Nothing new is asked of your camera: no new tool moves it while a save of yours is loaded.
 
 ## The choices that are yours
 
-Each is one of your own acts: a live flight test, or your own game and camera.
+The Conductor's brief for this design names two things as yours: live flight tests, and your own game ArchBig.
 
 ### 1. The flapping bird
 
@@ -73,9 +79,10 @@ is a small build. It shows what the game selects, not what reaches the screen; t
 - **Choice 1a: after that first run, may flight scenes that read state only (no picture) run without you?**
   Yes buys a flapping test for every flyer on every change, with no session of yours. No keeps every flight run for a
   joint session. **Recommended: yes, after the first joint run shows that the recording matches what you see.**
-- **Choice 1b: may the program make a filmstrip for your eye?** One image that tiles the ticks of one wing beat, made
-  by the program after the state test passes. It is never a pass condition. Yes costs a medium build and is proven on
-  a vanilla bird first. **Recommended: yes, for review only.**
+- **Choice 1b: may a program ever make pictures of a flight?** Your rule of 2026-09-25 says no, because the hunt with
+  screenshots failed. A filmstrip is a different thing: the program knows the ticks and tiles one wing beat into one
+  image, for your eye only, never as a pass condition. Whether to build it is the Conductor's call; whether your rule
+  allows it is yours. **Recommended: allow it for review only, after it reproduces a vanilla bird correctly.**
 
 ### 2. When ArchBig breaks while your hold is on it, does the bridge stop the game?
 
@@ -83,21 +90,13 @@ is a small build. It shows what the game selects, not what reaches the screen; t
 - **Report only:** nothing is ever taken from you. Cost: tests that need ArchBig wait for you.
 - **Recommended: report only while your hold is on; stop it when your hold is off.**
 
-### 3. On your own saves, may a test remove things?
+### 3. On your own saves, may a test ever remove things?
 
 Some calm controls remove things: wild animals, a queued incident, an active game condition.
-- **Refuse on your saves (the default):** nothing of yours is ever removed. Cost: a scene in your full-list colony
-  runs with a weaker calm, and more of those runs end as spoiled.
-- **Allow when a scene asks:** a calmer full-list run. Cost: your save is changed by a test.
+- **Refuse on your saves (the design's default, and the profile's rule today):** nothing of yours is ever removed.
+  Cost: none for the new machinery, which runs on a copy; the older single tools stay as weak on your save as now.
+- **Allow when you say so for one sitting:** a calmer run on your own save. Cost: your save is changed by a test.
 - **Recommended: refuse.** Full-list checks run on a copy, which is disposable.
-
-### 4. May a test take an off-screen picture on ArchBig while your hold is off?
-
-The picture tool that exists points the camera at a rectangle, renders to a file, and puts the camera back inside one
-frame. You should see nothing on screen; you might feel one hitch `[guess 80%; not measured]`.
-- **Yes:** pictures of full-list scenes for the art judge and for you, with no session of yours.
-- **No:** every full-list picture waits for a sitting with you.
-- **Recommended: yes, with your hold off only, after one trial that you watch.**
 
 ## What is not yours to decide
 

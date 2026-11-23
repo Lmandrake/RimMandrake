@@ -1,6 +1,6 @@
 # BRIDGE v2.0, pass 2: the build order
 
-Item `RIMMANDRAKE_DESIGN_BRIDGE_TWO_REBUILD_OR_IMPROVE_CODE_READ`. Written 2026-11-23, repaired after the GPT review.
+Item `RIMMANDRAKE_DESIGN_BRIDGE_TWO_REBUILD_OR_IMPROVE_CODE_READ`. Written 2026-11-23, repaired after two GPT review rounds.
 The design is `05_build_design.md`. **None of these tickets is filed.** The list is for the Conductor.
 
 ## How to read a ticket
@@ -35,14 +35,18 @@ The design is `05_build_design.md`. **None of these tickets is filed.** The list
 If the sibling built any of the three as a tool body only, the run-plan ticket lifts that body into an internal
 function. That is a move of code, not a redesign.
 
-## The first three, and why they pay first
+## The first three that pay, and why
 
-1. **`RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED`**: the life-cycle slice. One hand-written scene on the
-   present runner, the condition evaluator stepped in the tick, a trace on disk that meets the evidence contract, an
-   exact stop in the game's own loop, and a clean end under a kill, a cancel and a thrown tick.
+1. **`RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED`**: the slice. One hand-written scene in the game's own
+   loop: one probe, one act, the condition evaluator stepped in the tick, a trace on disk that meets the evidence
+   contract, an exact stop.
 2. **`RIMMANDRAKE_BUILD_SCENE_JUDGE_OUTSIDE_GAME_FROM_KEPT_TRACE`**: the judge, on the slice's real traces and on
    hand-made ones.
 3. **`RIMMANDRAKE_BUILD_RUN_PLAN_ONE_CALL_SCENE_AS_DATA`**: the first scene as data on the release DLL.
+
+Two small guard tickets are built between the second and the third, because the run plan is the first thing that
+changes a map on its own: `RIMMANDRAKE_BUILD_GAME_WATCHER_NAMES_THE_BROKEN_STATE` and
+`RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK`.
 
 **Why these.** The condition evaluator's run object is built and unit-tested and has never run in a tick; wiring it is
 the smallest change that removes the gap between calls (census ranks 2, 5 and 9). The slice is also the measurement
@@ -51,36 +55,34 @@ before the interpreter is written. The judge makes a kept trace judgeable again 
 the two into a scene that a mod builder can write. **That they pay first is a GUESS (70%) until the slice is run**; my
 first draft stated it as a fact, and GPT was right that nothing had shown it.
 
+**Bootstrap mode.** Until the tap certificate exists, every run of `jawa/run_plan` is marked BOOTSTRAP on its receipt,
+and the verdict ledger counts it for no bar. The first scenes are built and compared in that mode.
+
 ## The tickets, in build order
 
 ### `RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED`
 - **Builds:** `design/specs/2026-11-23-bridge-v2/boundary.md` (the trace schema and the evidence contract of
-  `05_build_design.md`). In `JawaBenchVitals.cs` `TickPost`, an optional per-run evaluator with the fixed order
-  (sample, conditions, end test, act steps), `CondRun.Step` after every tick, tracks written on change through
-  `JawaBenchTpsWriter.Enqueue` as kind `scene`, the first and last samples, sequence numbers and phases, the closing
-  record after the writer drained. The exact stop in STEP (the inner loops of `jawa/run_scenes` and
-  `jawa/safe_advance` break after the tick that hit) and in PLAY (the pause in the postfix, read back; a run is
-  refused when the player has no control). The run lock: while a run is live, the gate on every tool refuses the
-  changing families. A clean end on cancel, on a thrown tick, on a changed game. Closes the intent of
+  `05_build_design.md`). In `JawaBenchVitals.cs` `TickPost`, an optional per-run evaluator for **PLAY only**: the fixed
+  order (sample, conditions, end test, act steps), `CondRun.Step` after every tick, tracks written on change through
+  `JawaBenchTpsWriter.Enqueue` as kind `scene`, the first and last samples, sequence numbers and phases, the random
+  state compared round the sample phase, the closing record after the writer drained, the pause in the postfix read
+  back. One hand-written scene: one probe on one pawn, one act (a damage), one end condition. Closes the intent of
   `ADVANCEUNTIL_WIRE_PER_TICK_STOP`.
 - **Needs:** nothing.
-- **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_scene_tick_wiring.py`, 16 checks on a .NET harness
+- **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_scene_tick_wiring.py`, 11 checks on a .NET harness
   that compiles the pure files (the pattern of `SceneRunnerSelfTest`): a hit on tick T gives `executed == T`; true at
-  arm gives `executed == 0`; a safety stop and a hit on one tick report both; a track writes one row per change and
-  none without a change; a probe that goes `gone` writes `gone`, never 0; an unknown under `on_unknown: stop` ends the
-  run as unknown; the budget stop names the costliest node; an epoch change ends the run; two runs cannot be armed at
-  once; a skipped original records nothing; a dropped row is counted in the closing record; a run that ends on a
-  thrown tick still writes its closing record; an act step and the end cannot fall on one tick; the first and the last
-  sample exist for every track; a changing tool called during a run is refused with the run's id; the hook table check
-  still passes.
-- **Wrong code that must go red:** sampling after the act steps; a closing record written before the writer drained;
-  a stop that lets one more tick run.
+  arm gives `executed == 0`; a track writes one row per change and none without a change; a probe that goes `gone`
+  writes `gone`, never 0; an unknown under `on_unknown: stop` ends the run as unknown; a skipped original records
+  nothing; a dropped row is counted in the closing record; **inside one tick the sample record's sequence number is
+  lower than the act record's**; an act step and the end cannot fall on one tick; the first and the last sample exist
+  for every track; a random draw inside the sample phase is reported.
+- **Wrong code that must go red:** sampling after the act steps (caught by the sequence check); a closing record
+  written before the writer drained; a stop that lets one more tick run.
 - **Live test (UNRUN until a game is held):** `python.exe src\RimMandrake\bridgetools\prove_scene_tick_wiring.py`,
-  7 rows: `until(game.tick >= T0+137)` gives `hitTick == T0+137` in STEP; the same in PLAY at speed 1 and at Ultrafast,
-  with the game paused on that tick and the tick count read after the frame ended; a thing spawned and destroyed inside
-  one tick is in the trace by its taps; a private field path reads the same value as `jawa/pawn_get`; an actor damaged
-  by an act step shows the new health in the trace before the run ends; the driver killed in the middle leaves a
-  closing record and a paused game; steady-state allocation is 0 (`jawa/alloc_probe`).
+  5 rows: `until(game.tick >= T0+137)` gives `hitTick == T0+137` at speed 1 and at Ultrafast, with the game paused on
+  that tick and the tick count read after the frame ended; a private field path reads the same value as
+  `jawa/pawn_get`; an actor damaged by the act step shows the new health in the trace before the run ends; the trace's
+  closing record counts zero dropped rows; steady-state allocation is 0 (`jawa/alloc_probe`).
 
 ### `RIMMANDRAKE_BUILD_SCENE_JUDGE_OUTSIDE_GAME_FROM_KEPT_TRACE`
 - **Builds:** `src/RimMandrake/rimflow/scene_judge.py`: plan + trace + receipt facts -> one of the seven outcomes,
@@ -102,6 +104,35 @@ first draft stated it as a fact, and GPT was right that nothing had shown it.
 - **Wrong code that must go red:** classifier rows 4 and 5 swapped; a dropped span read as an empty span; an empty
   trace read as "no forbidden effect"; a re-judgement that overwrites the first outcome.
 
+### `RIMMANDRAKE_BUILD_GAME_WATCHER_NAMES_THE_BROKEN_STATE`
+- **Builds:** the watcher outside the game, on the heartbeat that the disk writer already gives: ticking, paused,
+  frames stopped, an exception on every frame, stuck in a load, at the menu, no map, process gone. A run never starts
+  on a game whose last state was broken. A test game is stopped; ArchBig is reported (`07_for_the_owner.md`). It
+  builds on `crash_watch.sh`, the stall dump and `game_health_check.py`. It comes before the run plan, which is the first ticket that changes a map by itself.
+- **Needs:** nothing.
+- **Offline test:** `SELF src/RimMandrake/Utils/selftest_game_watcher.py`, 10 checks: one per state (8); "never
+  start on a broken game" (1); "could not read the heartbeat" is its own answer, never "ticking" (1).
+- **Wrong code that must go red:** a stale heartbeat file read as "paused"; an unreadable file read as "ticking".
+
+### `RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK`
+- **Builds:** the run's life cycle under faults: the run lock (while a run is live, the gate on every tool refuses the
+  changing families, by the run's id; reads are counted); one driver per run; a clean end on cancel, on a thrown tick,
+  on a changed game or map, on a driver that died; the same per-tick evaluator in the two step loops
+  (`jawa/run_scenes`, `jawa/safe_advance`) with their exact stop; the epoch check; the refusal to start when the
+  player has no control.
+- **Needs:** the slice.
+- **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_run_life_cycle.py`, 10 checks: a safety stop and a
+  hit on one tick report both; the budget stop names the costliest node; an epoch change ends the run; two runs cannot
+  be armed at once; a run that ends on a thrown tick still writes its closing record; a changing tool called during a
+  run is refused with the run's id; a read tool called during a run is allowed and counted; a cancelled run leaves the
+  game paused; a run refused for "no player control" changes nothing; the hook table check still passes.
+- **Wrong code that must go red:** a run lock that covers `jawa/` tools of one family only; a cancel that leaves the
+  evaluator armed.
+- **Live test (UNRUN):** `python.exe src\RimMandrake\bridgetools\prove_run_life_cycle.py`, 4 rows: the driver
+  killed in the middle leaves a closing record and a paused game; `jawa/spawn_pawn` from a second caller during a run
+  is refused and is a breach on the receipt; the STEP loops stop on the exact tick; a thing spawned and destroyed
+  inside one tick is in the trace by its taps.
+
 ### `RIMMANDRAKE_BUILD_RUN_PLAN_ONE_CALL_SCENE_AS_DATA`
 - **Builds:** `JawaBenchSceneKernelCore.cs` (pure: the plan parser, the phase order, the closed list of act ops) and
   `JawaBenchSceneKernel.cs` (the tools `jawa/run_plan` and `jawa/run_status`, TEST profile only). The phases admit,
@@ -110,13 +141,14 @@ first draft stated it as a fact, and GPT was right that nothing had shown it.
   the debt file written before the first change and repaid at the next start. `src/RimMandrake/Utils/scene.py run
   <plan.json>` drives it and calls the judge. First scene as data: Explosive Knockback's spared carrier (worked
   example 1 of `02_needs_design.md`).
-- **Needs:** the two tickets above; the sibling's receipt function.
-- **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_scene_kernel_core.py`, 15 checks: each phase's
+- **Needs:** the slice, the judge, the game watcher and the life-cycle ticket; the sibling's receipt function. Runs in bootstrap mode.
+- **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_scene_kernel_core.py`, 17 checks: each phase's
   refusal by name (5); an act step that cannot be delivered is an apparatus fact, not a verdict (1); a plan whose
   build hash differs from the loaded one is refused in admit, before any change (1); an alias bound twice is refused
-  (1); the settle reconciliation flags a cast thing that vanished with no event (1) and passes a clean run (1); a run
-  over the tick threshold returns a handle and a later status (2); unknown plan keys are refused (1); the game is left
-  paused in every ending (1); the kernel names no type of a PROOF build (1).
+  (1); the settle reconciliation flags a cast thing that vanished with no event (1), flags an actor that is still
+  there with a health that differs from the trace (1), and passes a clean run (1); a run over the tick threshold
+  returns a handle and a later status (2); unknown plan keys are refused (1); the game is left paused in every ending
+  (1); the kernel names no type of a PROOF build (1); a receipt made with no certificate reads BOOTSTRAP (1).
 - **Wrong code that must go red:** admit that checks the build after staging; a settle that skips the health
   reconciliation; a leave that does not repay the debt file after a thrown tick.
 - **Live test (UNRUN):** `python.exe src\RimMandrake\bridgetools\prove_run_plan_spared_carrier.py`, 4 rows: the data
@@ -131,35 +163,26 @@ first draft stated it as a fact, and GPT was right that nothing had shown it.
   in this pass: the state is not in the save). Arms, in order of trust: PLAY speed 1 (the reference), PLAY speed 3,
   PLAY Ultrafast, STEP. Five runs each; traces compared tick by tick; ticks per second of each arm on the 13-mod list
   and, riding a load that is already scheduled, on the full list. The receipt field `mode`, and the rule "an arm that
-  was not compared with the reference counts for no bar". Replaces the stuck measuring tool of
+  was not compared with the reference counts for no bar". A comparison holds for one key (plan hash, loaded hashes of
+  the mods the scene touches, companion hash, mod list, arm) and is owed again when the key changes. Replaces the stuck measuring tool of
   `TICKBURST_PROVE_MANY_TICKS_ONE_FRAME`.
 - **Needs:** the run-plan ticket.
-- **Offline test:** `SELF src/RimMandrake/Utils/selftest_scene_compare.py`, 7 checks: two equal traces compare equal;
+- **Offline test:** `SELF src/RimMandrake/Utils/selftest_scene_compare.py`, 8 checks: two equal traces compare equal;
   a difference in a track names the tick and the value; a difference only in wall time is no difference; a missing
   tick range is "could not compare", not "equal"; a replay is never counted as a sample; two runs that did not start
-  from one save are refused; a run whose random state was not written back is refused.
+  from one save are refused; a run whose random state was not written back is refused; a comparison under another key
+  is not used.
 - **Wrong code that must go red:** a comparison that ignores taps; "could not compare" reported as equal.
 - **Live test (UNRUN):** `python.exe src\RimMandrake\Utils\scene.py compare --plan <spared carrier> --arms play1,play3,ultra,step --n 5`:
   a table of 20 runs and, for each arm, "no divergence observed in 5 runs" or the first diverging tick and value.
 - This is the first of pass one's six first-week measurements. Its result decides which arms may be used for
   acceptance, and whether a faster driver is ever built.
 
-### `RIMMANDRAKE_BUILD_GAME_WATCHER_NAMES_THE_BROKEN_STATE`
-- **Builds:** the watcher outside the game, on the heartbeat that the disk writer already gives: ticking, paused,
-  frames stopped, an exception on every frame, stuck in a load, at the menu, no map, process gone. A run never starts
-  on a game whose last state was broken. A test game is stopped; ArchBig is reported (`07_for_the_owner.md`). It
-  builds on `crash_watch.sh`, the stall dump and `game_health_check.py`. It comes before the staging ops because those
-  destroy things.
-- **Needs:** nothing.
-- **Offline test:** `SELF src/RimMandrake/Utils/selftest_game_watcher.py`, 10 checks: one per state (8); "never
-  start on a broken game" (1); "could not read the heartbeat" is its own answer, never "ticking" (1).
-- **Wrong code that must go red:** a stale heartbeat file read as "paused"; an unreadable file read as "ticking".
-
 ### `RIMMANDRAKE_BUILD_STAGE_OPS_READ_BACK_NEVER_ECHO`
 - **Builds:** the full stage phase: terrain, structures with stuff and health, things with counts, a pawn with exact
   kind, faction, health (each injury and part), gear, skills, traits, work types, needs, position, facing; every
   write read back from the game; fixtures by name; clean with read-back.
-- **Needs:** the run-plan ticket; the game watcher.
+- **Needs:** the run-plan ticket.
 - **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_stage_ops.py`, 10 checks on the pure plan-to-ops
   layer: each op's refusal by name (6); a reply is built from the read-back, never from the request (1); a pawn whose
   kind was replaced by the game is a staging fault (1); two builds of one plan give equal digests on recorded
@@ -223,17 +246,36 @@ first draft stated it as a fact, and GPT was right that nothing had shown it.
   the six taps (6); an attempt and a start are two records (1); a message is recorded before the rule that hides
   repeats (1); the hook table check passes (1).
 
+### `RIMMANDRAKE_BUILD_INCIDENT_QUEST_MENTAL_GATES_BEFORE_CERTIFICATE`
+- **Builds:** the three gates that the calm profile will use, as mechanisms with an allow list and an attempt count:
+  incidents at `IncidentWorker.TryExecute` (on the present awareness hook), quests at `QuestManager.Add`, mental
+  states at `MentalStateHandler.TryStartMentalState`; the queued incidents held aside and given back with every
+  absolute tick moved by the time held (the fire tick and the retry window). They are built before the certificate so
+  that the certificate can show a held route and a refused route for each.
+- **Needs:** the world event taps ticket.
+- **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_scene_gates.py`, 9 checks: the allow list lets one
+  named incident through once (1); a held attempt is counted and recorded with its caller (1); a gate that is off
+  changes nothing and records nothing (1); a held queue entry comes back with its fire tick and its retry window both
+  moved (2); an entry already past its retry window when held is reported, never dropped in silence (1); the hook
+  rules for the two new gate sites (2); CAMPAIGN refuses every gate (1).
+- **Wrong code that must go red:** a queue return that moves the fire tick only (GPT's case: the entry expires at
+  once).
+
 ### `RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE`
 - **Builds:** the certification suite of `05_build_design.md` decision 4: for every tap, a positive and a negative
   route fixture by real engine acts, in a disposable game; a planted blind tap; the list of foreign patches per tapped
-  method; the certificate file keyed by companion hash, mod list fingerprint and patch inventory hash; the check at
-  arm, which performs no gameplay act.
-- **Needs:** both tap tickets.
-- **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_tap_certificate.py`, 8 checks: a certificate for
+  method; the certificate file keyed by companion hash, mod list fingerprint, patch inventory hash and the settings hash of
+  every mod with a patch on a tapped method; the check at arm, which performs no gameplay act and compares the scene's
+  needed routes with the certificate; the run-time witness (entries against records); the reference scene run with
+  and without tracks. From this ticket on, a run with a valid certificate is no longer BOOTSTRAP.
+- **Needs:** both tap tickets and the gates ticket.
+- **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_tap_certificate.py`, 11 checks: a certificate for
   another companion hash is refused (1); for another mod list (1); a changed patch inventory is refused (1); a tap
   with a route not shown is listed as such, never as covered (1); a scene that needs an uncertified tap is COULD NOT
   ARM (1); the arm check calls no op of the act list (1); a foreign prefix is named on the receipt (1); a missing
-  certificate is "could not look", never "covered" (1).
+  certificate is "could not look", never "covered" (1); a changed setting of a mod with a foreign patch voids the
+  certificate (1); an entry with no record voids that tap's coverage for the run (1); an absence on a method with a
+  foreign prefix reads "not provable here" (1).
 - **Live test (UNRUN):** `python.exe src\RimMandrake\bridgetools\prove_tap_certificate.py`, 4 rows: every fixture
   leaves its record on the 13-mod list; the same on the full list, with each foreign patch named; one hook taken off
   by hand is reported blind; the suite's time is printed.
@@ -243,13 +285,13 @@ first draft stated it as a fact, and GPT was right that nothing had shown it.
 ### `RIMMANDRAKE_BUILD_CALM_PROFILE_BREACH_LOG_AND_LEASE`
 - **Builds:** on the sibling's calm tool: named, versioned profiles; a control reads HELD only after a planted
   breach of its kind was seen stopped on this mod list (in the certification session), else ARMED UNPROVEN; the breach
-  log in the trace; the incident allow list at `IncidentWorker.TryExecute`; the quest gate at `QuestManager.Add`; the
-  mental state gate; the queued incidents held aside and given back with their fire ticks moved by the time held; the
-  profile armed again after a load; the lease; destructive controls refused in the CAMPAIGN profile.
-- **Needs:** the run-plan ticket; the tap certificate; the sibling's calm tool.
+  log in the trace; the three gates of the gates ticket joined into the profile with a scene's exceptions; the profile
+  armed again after a load; the lease; destructive controls refused in the CAMPAIGN profile.
+- **Needs:** the run-plan ticket; the gates ticket; the tap certificate; the sibling's calm tool.
 - **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_calm_profile.py`, 11 checks on the pure part: a
-  control reads HELD only with its certificate line (1); the allow list lets one named incident through once (1); a
-  held queue gives back each entry with its fire tick moved (1); the put-back runs in reverse order with read-back (1);
+  control reads HELD only with its certificate line (1); a scene's exception opens one gate for one named event and
+  closes it at leave (1); a hold on needs is two entries, the hold and what did not happen (1); the put-back runs in
+  reverse order with read-back (1);
   a lease that ran out puts back (1); a value that could not be put back is named (1); a destructive control in
   CAMPAIGN is refused by name (1); "attempts stopped" and "scheduling switched off" are two numbers (1); a second
   driver's call is a breach of class APPARATUS (1); unknown profile keys are refused (1); a control of class NOT
@@ -292,14 +334,15 @@ first draft stated it as a fact, and GPT was right that nothing had shown it.
 
 ### `RIMMANDRAKE_BUILD_DEVIATION_RECORD_SETTINGS_FIELD_JOINS_FIRST`
 - **Builds:** the deviation record of `05_build_design.md` (calm, force, overlay, time and rate; the classes PUT BACK,
-  GIVEN BACK and NOT UNDONE; the stamp; the taint mark); `jawa/mod_settings_field set` writes only through it; the
+  GIVEN BACK and NOT UNDONE with its reach: station, save or process; the stamp; the taint mark and "process dirty"); `jawa/mod_settings_field set` writes only through it; the
   block on `WriteSettings` while a settings entry is live; the journal written before the first poke; the on-screen
   line `OVERLAY <name> <hash>`; the plan's `overlay:` block. This is step 1 of `04_live_tuning.md`.
 - **Needs:** the run-plan ticket; the calm profile ticket.
-- **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_deviation_record.py`, 13 checks: entries applied in
+- **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_deviation_record.py`, 14 checks: entries applied in
   order, and a failure reverts the earlier ones (1); a failed revert marks the game SPOILED (1); the taint mark stays
   after a revert (1); `overlay: none` with the taint set is not clean (1); a receipt lists every live entry of all four
-  kinds with its class (1); a NOT UNDONE entry that reached outside the station marks the game state dirty (1); a
+  kinds with its class (1); a NOT UNDONE entry of reach "save" marks the game state dirty until the fixture is loaded, and one of reach
+  "process" stays dirty across a load (2); a
   `const` and a `static readonly` target are refused by name (2); CAMPAIGN refuses an overlay entry (1); a second
   holder cannot apply (1); the journal exists before the first write (1); a settings write to disk is blocked while an
   entry is live (1); a value changed by another hand is listed as differing from its default (1).
@@ -320,14 +363,16 @@ first draft stated it as a fact, and GPT was right that nothing had shown it.
 
 ### `RIMMANDRAKE_BUILD_MUTANTS_BY_OVERLAY_AUTHOR_DOES_NOT_CHOOSE`
 - **Builds:** `mutants.json` per mod with its lint and the two kinds (live, compiled); the seeded draw;
-  `scene.py both-ways <scene>`: the green run and the red run each from the fixture save loaded fresh, the proof that
-  the mutant was reached, both receipts in the scene's history; the live switch of one of our Harmony patches (off and
+  `scene.py both-ways <scene>`: the green run and the red run each from the fixture save loaded fresh, with the random
+  state written back; each mutant's witness (a recorded fact that differs because of the mutant); a list of at least
+  two mutants per bar, reviewed by an agent that did not write the scene; both receipts in the scene's history; the live switch of one of our Harmony patches (off and
   on, with a call counter that proves it).
 - **Needs:** the verdict ledger, the compiler and the deviation record tickets.
-- **Offline test:** `SELF src/RimMandrake/Utils/selftest_scene_mutants.py`, 11 checks: a mutant that only switches
+- **Offline test:** `SELF src/RimMandrake/Utils/selftest_scene_mutants.py`, 13 checks: a mutant that only switches
   the feature off is refused (1); a mutant must name a bar (1); the draw is the same for one scene and build, and the
   scene file cannot set it (2); the red run's receipt can never count as a pass (1); a red run that ends SUCCESS reads
-  "mutant not killed" (1); a red run with no exposure proves nothing and says so (1); a red run that fails on another
+  "mutant not killed" (1); a red run with no exposure proves nothing and says so (1); a red run whose witness did not change reads "mutant not
+  used" (1); a bar with one mutant is refused (1); a red run that fails on another
   condition than the mutant names is reported as such (1); both runs start from the same fixture hash (1); a compiled
   mutant is listed "needs build" and is not run live (1); a bar whose killed mutants are all value changes says so (1).
 
@@ -371,16 +416,19 @@ Each arrow reads "is needed by". Names are shortened to their subject words; the
 ```
 now, on the present bridge:  the sibling run (receipt, calm, first exception)
 
-COND_RUN_INTO_TICK (the slice) ── SCENE_JUDGE ── RUN_PLAN ──┬─ PLAY_AGAINST_PAUSED_STEP (measure)
-                                       │                    ├─ GAME_WATCHER* ── STAGE_OPS ── STAGE_MAP ──┐
-                                       │                    ├─ CAST_TRACKS_AND_JOB_TAPS ─────────────────┴─ CAST_ASSERTS_AND_ORDER
-                                       │                    │        └─ WORLD_EVENT_TAPS ── TAP_CERTIFICATE ── CALM_PROFILE ── DEVIATION_RECORD
-                                       │                    ├─ SCENE_FILE_COMPILER ── FLIGHT_PROBES ── (FLIGHT_FILMSTRIP, his yes)
-                                       │                    └─ MOD_TRACE_AND_RESET_HOOKS
-                                       └─ SCENE_VERDICT_LEDGER
+COND_RUN_INTO_TICK (the slice) ─┬─ SCENE_JUDGE ─────────────┐
+                                └─ RUN_LIFE_CYCLE ──────────┤
+GAME_WATCHER ───────────────────────────────────────────────┴─ RUN_PLAN (bootstrap mode)
+
+RUN_PLAN ──┬─ PLAY_AGAINST_PAUSED_STEP (measure)
+           ├─ STAGE_OPS ── STAGE_MAP ──────────────────┐
+           ├─ CAST_TRACKS_AND_JOB_TAPS ────────────────┴─ CAST_ASSERTS_AND_ORDER
+           │        └─ WORLD_EVENT_TAPS ── GATES ── TAP_CERTIFICATE ── CALM_PROFILE ── DEVIATION_RECORD
+           ├─ SCENE_FILE_COMPILER ── FLIGHT_PROBES ── (FLIGHT_FILMSTRIP, on his yes)
+           └─ MOD_TRACE_AND_RESET_HOOKS
+SCENE_JUDGE ── SCENE_VERDICT_LEDGER
 MUTANTS_BY_OVERLAY needs: SCENE_VERDICT_LEDGER, SCENE_FILE_COMPILER, DEVIATION_RECORD
 STAMP_AGAIN_REPEATS needs: STAGE_MAP, SCENE_VERDICT_LEDGER, MOD_TRACE_AND_RESET_HOOKS
-* GAME_WATCHER needs nothing and can be built at any time before STAGE_OPS.
 ```
 
 The judge, the verdict ledger, the compiler and the game watcher need no companion build. The tickets that change the
@@ -408,3 +456,17 @@ Pass one listed six things to measure in the first week. Their homes:
   ticket's live test;
 - the overhead of the taps: the tap certificate's live test;
 - the replay rate: the keeper save ticket.
+
+## Decisions that the Conductor owes before or while these are built
+
+They are not the owner's (only five acts stay his), and "not his" does not mean "no decision" (GPT). Each is small.
+
+1. Test-only hooks in shipped mods (`RMTrace`, reset and digest hooks): allow or not. Recommended: allow.
+2. How long traces and keeper saves are kept, and the disk limit for them, with the danger that the limit guards.
+   Recommended: the terms of `05_build_design.md` decision 9, and the pool's existing disk floor.
+3. The first content of the standard calm profile. Recommended: the controls marked READ in pass one's table.
+4. Which bars may rest on a staged scene alone, and which need a colony scene. Recommended: decide per bar at the
+   mod's next advance, with the rule of decision 7.
+5. The reviewed list of readers (properties and methods that an acceptance track may call): who reviews an addition.
+   Recommended: the code review role, as for any pipeline code.
+6. The wording of the policy's sentence on a forbidden effect caused by another mod (pass one's item, still open).

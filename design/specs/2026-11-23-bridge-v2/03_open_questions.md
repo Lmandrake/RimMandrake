@@ -11,24 +11,9 @@ skills only, is `census_sources/bridge_existing_capabilities.md` (547 tools in t
 
 ### Engine facts to read before you build on them
 
-Each of these is a GUESS in the design, and each decides a choice. Read the 1.6 code (RimSage) first.
-
-| guess in the design | where it matters | what changes if it is false |
-|---|---|---|
-| A path request's result is set only inside `PathFinderTick` (80%) | §7 tick driver, §8 | pawn movement would depend on frames; the driver must complete path jobs itself before pawns tick |
-| The global random state is not in the savegame (85%) | §8 | if it is saved, every reload is already a replay, and "a reload is a new sample" is wrong |
-| Thing ids survive a save and load (GPT: yes, from older source; one census record: ids shifted by 1000 after a load) | §6 aliases, §8 | decides how an alias is bound across a load |
-| Every mental state starts through `MentalStateHandler.TryStartMentalState` (85%); inspirations have one entry (75%) | §1 | a second route needs its own gate or stays WATCHED only |
-| Quest offers arrive as incidents (70%); orbital traders are incidents (70%) | §1 | more gates, or WATCHED only |
-| One point overrides the outdoor temperature of a map (60%) | §1 | temperature becomes SET and WATCHED, and scenes that need a temperature get a second small map on a chosen tile, or a roofed room |
-| Plant growth and wild plant spawning can be held per station (60%) | §1 | WATCHED only; long scenes get a cleared margin |
-| A spawn tap on the thing-spawn method sees every route by which a pawn appears on a map (80%) | §1 arrival watch | arrivals through containers, pods and portals need their own taps |
-| The UI has no stored widget tree; a window's content must be recorded while it draws (90%) | §6 window transcript | if a tree exists, read it instead |
-| Projectiles compute their position from their own tick count, as `PawnFlyer` does (80%) | §6 | a thrown thing's arc needs a plug-in |
-| How a flying animal's flip-book frame is chosen from the animation clock (not read; GPT could not confirm) | §6 flapping test, layer 2 | none for the design: the probe asks the resolver and does not compute. It decides how hard layer 2 is |
-| The engine exposes one log channel that carries errors which never reach `Verse.Log` (85%) | §10 | some exceptions stay invisible to the first-exception tap |
-| A pocket map with an empty generator is cheap to make and to remove on a 300-mod list (unknown) | §2, §8 | map-wide scenes use arms in sequence instead of a second map |
-| Static state of mods survives a load (90%) | §2 reset hooks, §8 | none if true; it is why reset hooks and reset verification exist |
+Pass two read all fourteen in the RimWorld 1.6 source on 2026-11-23. The table, with what was read for each, is in
+`05_build_design.md` under "Engine facts settled in this pass". One guess of pass one was false (quest offers do not
+all arrive as incidents); the others were true, two of them only in part (plant growth, the pocket map's cost).
 
 ### Things to measure in the first week, because the design leaves them unmeasured
 

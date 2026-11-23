@@ -55,7 +55,7 @@ A GUESS that decides a design choice is repeated in `03_open_questions.md` for t
 | How often a thing runs its interval work depends on the camera. `Thing.DoTick` calls `TickInterval(delta)` every `UpdateRateTicks` ticks, and `GenTicks.GetCameraUpdateRate` returns 15 for a thing on a map that is not shown or outside the camera's view, and (zoom level + 1) for a thing in view. Animals always use 15. | READ `Thing.DoTick`, `GenTicks.GetCameraUpdateRate`, `Pawn.UpdateRateTicks` |
 | A path request is computed by Unity jobs that `PathFinderTick` schedules. The next `PathFinderTick` first calls `ForceCompleteScheduledJobs` and then hands each result to its request. So a path result arrives on a tick boundary, not on a frame. | READ `PathFinder.PathFinderTick`, `FinalizeRecyclePathJobData`. That `PathRequest.ResultIsReady` is set only there: GUESS 80% |
 | `Verse.Rand` is one global stream. Its whole state is two numbers, `seed` and `iterations`. It is seeded from the clock when the process starts. `PushState` and `PopState` exist. | READ `Rand` |
-| The global random state is not written into a savegame. | GUESS 85% (a search for a save site of the state found none) |
+| The global random state is not written into a savegame. | READ in pass two (no save site of the state exists in the source) |
 | The storyteller makes incidents every 1,000 ticks, only while `DebugSettings.enableStoryteller` is true. The incident queue ticks every tick, whatever that switch says. | READ `Storyteller.StorytellerTick`, `IncidentQueue.IncidentQueueTick` |
 | `IncidentWorker.TryExecute` is public and not virtual. The storyteller, quest parts, scenario parts, signals, site parts, world raids, rituals and abilities all call it (27 call sites). | READ (search of call sites) |
 | Other switches that exist: `enableRandomMentalStates` (read in `MentalBreaker` and in social fights), `enableRandomDiseases`, `enableDamage`, `pauseOnError`, `fastEcology`, and `noAnimals`, which destroys EVERY spawned animal on its next tick. | READ `DebugSettings` and its users |
@@ -63,7 +63,7 @@ A GUESS that decides a design choice is repeated in `03_open_questions.md` for t
 | The weather changes when `curWeatherAge` passes a duration. A game condition can force a weather (`WeatherDecider.ForcedWeather`). A large fire shortens the duration to a quarter and multiplies the chance of rain by 15. `DisableRainFor(ticks)` exists. | READ `WeatherDecider` |
 | Needs change every 150 ticks per pawn (`Pawn_NeedsTracker.NeedsTrackerTickInterval`). A need has a protected `IsFrozen`. | READ |
 | A pawn's job tracker asks its constant think tree every 30 ticks, and looks for a new job whenever it has none. | READ `Pawn_JobTracker.JobTrackerTickInterval` |
-| Every mental state starts through `MentalStateHandler.TryStartMentalState`. | signature READ; "every": GUESS 85% |
+| Every mental state starts through `MentalStateHandler.TryStartMentalState`. | READ in pass two (one write site sets the state) |
 | An exception in a thing's tick is caught by `TickList.Tick` and sent to `Log.Error`; outside dev mode it is logged once per thing. | READ |
 | The game log stops at 10,000 messages. `Log.ResetMessageCount()` starts it again. `DebugSettings.pauseOnError` pauses on an error. | READ `Log` |
 | A load of a savegame queues a long event that loads the "Play" scene and builds a new `Game`. Static fields of mods are not touched by this. | READ `GameDataSaveLoader.LoadGame`; statics: GUESS 90% |
@@ -125,7 +125,7 @@ know. The breach watchers (below the table) work whatever the hold mechanism is.
 | Incidents already queued | HELD: the queue is frozen, kept, and given back at restore (not cleared) | each queued incident with its fire tick is listed at arm time | READ that the queue ignores the storyteller switch; freeze: GUESS 85% |
 | Incidents from any other caller (quests, scenario parts, signals, sites, rituals, abilities, other mods that use the incident system) | HELD at the one method that all 27 callers use, with the scene's allow list | every attempt logged with its caller | READ for the choke point |
 | Pawns that arrive without an incident (a mod that spawns raiders itself, map portals, drop pods) | cannot be held in general | WATCHED: every pawn that appears on the map and is not cast is a breach, with its kind, faction and the tick | GUESS 80% that a spawn tap sees all of them |
-| Quests offered and quest scripts that run | new offers HELD (GUESS 70%: offers are incidents) | running quests listed at arm time; their signals WATCHED | not read |
+| Quests offered and quest scripts that run | new offers HELD at `QuestManager.Add` (offers do not all arrive as incidents: at least nine other callers) | running quests listed at arm time; their signals WATCHED | READ in pass two (`05_build_design.md`) |
 | Weather | HELD by a forced weather, the engine's own route, with "settled" reported only when the rain rate has reached its target | every weather change logged | READ `ForcedWeather`; the settle rule is from the census |
 | Game conditions (eclipse, heat wave, toxic fallout) | active ones listed; ended only in a test game (destructive) | every start and end logged | GUESS 80% |
 | Outdoor temperature | HELD at a stated value (GUESS 60% that one override point exists) | a drift outside the scene's stated range is a breach | not read |
@@ -138,7 +138,7 @@ know. The breach watchers (below the table) work whatever the hold mechanism is.
 | Random diseases | HELD: the engine's own switch | none | READ |
 | Wild animal replenishment | HELD at the spawner's tick | each held spawn counted | READ |
 | Wild animals already on the map | removed or penned at arm time, in a test game; never with `noAnimals`, which would also destroy the scene's own animals | an animal that comes within reach of a station is a breach | READ for `noAnimals` |
-| Visitors, traders, caravans, orbital traders | HELD: they are incidents (orbital traders: GUESS 70%) | arrivals WATCHED by the pawn-arrival watch | partly read |
+| Visitors, traders, caravans, orbital traders | HELD: they are incidents (orbital traders too: `PassingShipManager.AddShip` has one caller, the incident worker) | arrivals WATCHED by the pawn-arrival watch | READ in pass two for orbital traders |
 | Faction relations | SET at prepare | a change of relation in the window is a breach | not read |
 | Fire outside the scene's own fire cells | cannot be held in general. The preparer builds a firebreak when the scene declares fire | WATCHED: a fire on a cell that the scene did not declare is a breach; the reassert call puts it out | by design |
 | Plant growth and wild plant spawning in a station | HELD (GUESS 60%) | a new plant in a station is a breach | not read |

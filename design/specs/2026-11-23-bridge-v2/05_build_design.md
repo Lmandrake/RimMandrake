@@ -192,7 +192,9 @@ This is where the code was heading on 2026-11-18: `[RMTest]` scenes in each mod'
    they record (`skills/rimbridge/references/silent-failures.md`, the six faults of `HOOKS.md`).
 2. **A data scene runs on the release DLL and is edited with no build and no restart.** Way C can repair its build
    identity fault only by moving fixtures into the companion, and then every scene edit restarts the game.
-3. **Only A and B allow the judge outside the game**, and B pays twice for the same result.
+3. **A, B and the companion-fixture form of C all allow the judge outside the game** (GPT corrected my first claim
+   that only A and B do). A is the only one of the three in which a scene edit needs no build and no restart, and B
+   pays twice for the same result.
 4. **A keeps both older rulings true at once.** 2026-11-06: proofs stay in Python and the game gains generic
    primitives. 2026-11-12: one shared in-game runner, prioritized by the owner. A data scene is a generic primitive that
    runs in the game, and its verdict is made in Python.
@@ -202,7 +204,7 @@ very long scenes. A C# plug-in covers the second where it is measured to matter.
 
 **The cost figures above are guesses from line counts.** GPT's objection holds: the pick is confirmed or refuted by one
 measured slice, not by an estimate. The first ticket of `06_build_order.md` is that slice: one scene, the game's own
-loop, a trace, an exact stop, a kill in the middle. If the slice shows that the parts cannot share one life cycle,
+loop, a trace, an exact stop; the ticket after the judge kills, cancels and throws in the middle of a run. If the slice shows that the parts cannot share one life cycle,
 Way B is reopened with the pure cores moved into a mod.
 
 ## The scene kernel
@@ -272,6 +274,11 @@ and answers COULD NOT LOOK when one fails.
 2. **A first sample before any act, and a last sample after the pause.** Every track has both, each under a phase mark.
 3. **Every record has a sequence number, its tick, and its phase** (in a tick, at end of tick, between ticks). Taps and
    tracks share one sequence. An act step writes its own record, so "the health changed after the act" is readable.
+   **A tap record carries two sequence numbers: the one taken when the call was entered and the one taken when it
+   completed, and the entry number of the call that enclosed it.** GPT's case: damage kills a pawn; the postfix of
+   `Pawn.Kill` runs before the postfix of the enclosing `Thing.TakeDamage`, so records written at completion show the
+   death before the damage. `before` and `after` in the judge compare entry numbers. A tap that has only a postfix
+   today (`Thing.TakeDamage`) gets a prefix that takes the entry number.
 4. **An alias names one object for the whole run.** Each record carries the alias and the object's own identity. When
    the object is replaced (a stack split, a pawn turned into a corpse, a load), the record of that event links old to
    new, and the alias does not move by itself.
@@ -280,7 +287,14 @@ and answers COULD NOT LOOK when one fails.
 6. **A sampled value is an end-of-tick value, and says so.** A value that changes twice inside one tick shows only its
    last state. A condition that needs the middle of a tick is refused at compile time unless a tap serves it.
 7. **The plan, the checker and their versions are part of the run.** A re-judgement adds a line to the run's history
-   with the checker's version and what changed; it never replaces the first outcome.
+   with the checker's version and what changed; it never replaces the first outcome. A re-judgement compares the
+   staging, the act steps, the end and the observation list of the two plans, and refuses when any of them differs.
+8. **Looking must not change the run.** A track that calls a property can fill a cache, draw a random number or
+   change state, and the trace would then describe a run that the observer repaired (GPT's case: a lazy cache that
+   ordinary play leaves stale). So: an acceptance track reads **fields**. A property or a method is read only from a
+   reviewed, versioned list of readers. The kernel compares the random state before and after its sample phase on every
+   tick; a draw inside the sample phase is a fault of the apparatus. The certification session runs one reference
+   scene with the full tracks and with none, and the two outcomes and tap records must agree.
 
 **What a re-judgement may and may not replace.** A repaired check judges a kept trace again when the repair changed only
 how recorded facts are read: a comparison, a tolerance, a window, a count, the classifier. A repair to the staging, to
@@ -307,7 +321,9 @@ The kernel has three time modes. Each receipt names the one used.
   ticks between two frames, so anything that a mod does once per frame (a cache refresh, a draw-time update) meets the
   ticks differently. Kind A means a decisive opportunity under a named configuration, not a promise that every
   configuration agrees. So the **reference configuration** is PLAY at speed 1 with the camera on the station. A faster
-  speed, and STEP, count for a bar only for a scene whose traces were compared with the reference and agreed. The
+  speed, and STEP, count for a bar only for a scene whose traces were compared with the reference and agreed. A
+  comparison is valid for one key: the plan's hash, the loaded hashes of the mods that the scene touches, the
+  companion's hash, the mod list and the arm. When any part of the key changes, the comparison is owed again. The
   measurement ticket compares speed 1, speed 3, Ultrafast and STEP, in that order of trust.
 - **The camera.** In a test game the camera is the kernel's. At arm it is placed so that every station of the run is in
   view. The view rectangle and the zoom are a track for the whole run, so a camera that moved is a breach on the
@@ -336,8 +352,8 @@ The path is resolved once at arm, type by type, to a chain of field and property
   def, and a mod's settings object. Today a path starts at a thing id.
 - **A reviewed list of pure methods** that a path may call (`Pawn.Downed` is a property and needs none; the list is
   for getters such as `GetStatValue` and the FlowWorks depth getters that are already allowed by name). A method not
-  on the list is refused by name. Properties stay allowed, because the engine's own UI calls them every frame; a
-  property known to have a side effect goes on a deny list (none is known today).
+  on the list is refused by name. A property is treated as a method: in an acceptance run it is read only when it is on the list (point 8 of the
+  evidence contract). In the exploring layer, any property may be read, as today.
 - **Rebinding.** A track re-resolves from its root every tick when any link is a replaceable object (a job, a comp
   list); the cost is measured per run and shown (`cost` exists in the result today).
 - **The flight probes** `pawn.flight.*` and `pawn.anim.*`, which the first version refused by name pending the flight
@@ -385,10 +401,20 @@ so it disturbs the very run that it certifies. The repair:
   taken off) and must report it. Its result is a **tap certificate**: for each tap, the routes shown, the routes not
   shown, and every other mod's patch on the same method (from Harmony's patch info, which `jawa/harmony_patches`
   reads today), because a foreign prefix can skip the original. The certificate is keyed by the companion's hash, the
-  mod list's fingerprint and the hash of that patch inventory.
+  mod list's fingerprint, the hash of that patch inventory, and a hash of the settings of every mod that has a patch
+  on a tapped method (GPT: a foreign prefix can skip the original only when one of its settings says so; the patch
+  list does not change).
 - **At arm, no gameplay act.** The kernel checks only: the certificate's key equals the loaded identity; our patch is
-  on each tapped method and the foreign patches are the certified ones; one marker row goes through the writer and
-  comes back acknowledged. A tap with no valid certificate is COULD NOT ARM for a scene that needs it.
+  on each tapped method and the foreign patches are the certified ones; the routes that the scene's conditions need
+  are on the certificate's "shown" list; one marker row goes through the writer and comes back acknowledged. A tap
+  with no valid certificate is COULD NOT ARM for a scene that needs it.
+- **A witness during the run.** Where a tap has a prefix, the prefix counts entries and the postfix counts records. An
+  entry with no record (the original was skipped, or the postfix did not run) is counted on the receipt, and it voids
+  that tap's coverage for the run.
+- **The limit, stated.** No check at arm can prove that another mod's prefix will act in this run as it did in the
+  certification session. Where a scene's verdict rests on "this event did not happen" and the tapped method has a
+  foreign prefix, the receipt marks the absence as "not provable here", and the judge does not use it to excuse or to
+  convict.
 - **Silence is still not proof.** Each tap states the routes it covers. The settle phase reconciles the trace against
   state. An unexplained difference is COULD NOT LOOK. "No event" means "nothing happened" only on certified routes with
   a clean reconciliation; an event that came and went inside one tick on an uncertified route stays invisible, and the
@@ -406,7 +432,11 @@ mod references the bridge. A plan may name a plug-in as a track (`plugin:<name>@
 plug-in that lives in a PROOF build is refused for an acceptance run (fault 1); a plug-in for acceptance ships in the
 companion, or in the mod's release DLL behind the trace interface of decision 8.
 
-`[RMTest]` scenes stay valid as an exploring tool and for a fixture too complex for data. Their rows are never a bar's
+**A compiled fixture** (for staging or an act that data cannot express) is a public static method with the attribute
+`RMFixtureAttribute` (name, version) in the companion. A plan calls it as a stage op or an act op. It stages or acts
+through the kernel, writes records to the same trace, and returns no verdict: the judge decides, as for a data scene.
+
+`[RMTest]` scenes stay valid as an exploring tool. Their rows are never a bar's
 evidence while they need the PROOF build.
 
 ### Decision 6: pixels without his camera
@@ -441,7 +471,10 @@ view-rectangle postfix that makes the game submit the draws `[READ: JawaBenchArt
     tile. It buys a fixed outdoor temperature and a cheap fresh map per scene.
   - `colony`: the scene runs in a real colony (the full-list walks; below).
   The receipt names the map kind. **A result on a stage is evidence for the claim as staged.** Whether it carries to a
-  real colony is shown, per bar, by at least one scene of that bar on a `colony` map (the walk), not assumed.
+  real colony is shown, per bar, by at least one scene of that bar on a `colony` map (the walk), not assumed. The
+  colony scene must reach the same exposure as the staged one; a colony scene about something else transfers nothing
+  (GPT's case: a branch taken only above five free colonists). A bar whose behaviour can depend on colony size, wealth
+  or a map-wide state either has such a scene or says in its text that the claim is the staged one only.
 - The stage is not free isolation. The green room still ticks, and the world, the storyteller and the one random
   stream are shared. The calm profile holds or watches those; the stage removes only what stands on the same map.
 - One trap, read in the code: an incident whose def requires colonists on the target map "succeeds" without running
@@ -546,10 +579,15 @@ overlay stamp other than `none`, a STEP run that was not compared, or a PROOF bu
   history. Compiled mutants cost one restart each and are run in batches.
 - "Shown both ways" for a scene:
   - the green run and the red run each start from **the same fixture state, loaded fresh** (the save that the scene
-    driver already takes before a run), so wear from the first run cannot make the second one red;
+    driver already takes before a run), with the random state written back and each mod's reset digest equal, so wear
+    from the first run cannot make the second one red;
   - the mutant is drawn for this scene by a seeded choice that the scene's author does not control;
-  - the red run must show that the mutant **was reached**: the overlay entry's read-back at the act, and the scene's
-    exposure condition holding as in the green run. A red run with no exposure proves nothing;
+  - the red run must show that the mutant **was used**, not only set: each mutant names its witness, which is a
+    recorded fact that differs because of the mutant (the changed number in a damage record, a trace point at the place
+    that reads the value, a call counter of the patch taken off). A read-back alone does not count: the mod may act on a
+    value that it cached earlier (GPT's case). The scene's exposure condition must also hold as in the green run;
+  - a bar's mutant list is reviewed by an agent that did not write the scene, and holds at least two mutants, so that
+    the draw is a draw;
   - the red run's outcome must be MOD FAILURE on the condition that the mutant names. A red run that ends SUCCESS
     means "this mutant was not killed by this scene". It does not mean that the scene cannot fail;
   - the red run's receipt carries the stamp, so it can never be counted as a pass.
@@ -577,16 +615,25 @@ the number caused, and a removed animal does not return. So every entry carries 
 | class | meaning | examples | how the game gets clean again |
 |---|---|---|---|
 | **PUT BACK** | a value was assigned; the old value is written back and read back | a settings field, a def field with a recipe, the weather lock, a switch, a pinned rate | the write-back, checked |
-| **GIVEN BACK** | something was held aside and is returned with a stated correction | queued incidents (fire ticks moved by the time held), needs released | the return, checked; the correction is on the record |
-| **NOT UNDONE** | an act with consequences | a job given, a pawn placed, ticks that ran, an animal removed, things made while an overlay was live, a patch that already acted on state | only a fresh load of the fixture save, or a restart of the game |
+| **GIVEN BACK** | something was held aside and is returned with a stated correction | queued incidents (every absolute tick of an entry is moved by the time held: its fire tick and its retry window, or the entry would expire on return) | the return, checked; the correction is on the record |
+| **NOT UNDONE** | an act with consequences | a job given, a pawn placed, ticks that ran, an animal removed, the hunger and the mental breaks that did not happen while needs were held, things made while an overlay was live, a patch that already acted on state | by how far it reached (below) |
+
+A NOT UNDONE entry names how far it reached, because the way to get clean differs:
+- **the station**: clean the station, or retire it;
+- **the save** (the map, the world, the pawns): load the fixture save again;
+- **the process** (a mod's static cache or counter, a patch taken off and put on, a def field): a load does not clear
+  it. Only the mod's reset hook with an equal digest, or a restart of the game, does. The taint mark is the overlay's
+  case of this; a non-overlay act that reached a mod's statics sets "process dirty" on the same footing.
+
+A hold on needs is two entries: the hold itself (PUT BACK when released) and what did not happen meanwhile (NOT
+UNDONE, the save).
 
 - **The game owns the truth.** One call lists every live entry with its class and its before value. A crashed script
   leaves a known game.
 - **Every receipt carries the whole record**, filled by the game. A scene cannot leave it out.
 - **Leaving a run**: PUT BACK and GIVEN BACK entries are returned in reverse order and read back; a debt file is
   written before the first write and repaid at leave, at lease end and at the next start of the companion
-  (pass one §10). A NOT UNDONE entry makes the station dirty (it is cleaned or retired) and, when it reached outside
-  the station, makes the game state dirty until the fixture save is loaded again.
+  (pass one §10). A NOT UNDONE entry is handled by its reach, as above.
 - **The stamp and the taint mark** are properties of the record: a receipt reads `overlay: none` only when no overlay
   entry is live, and `tainted: true` from the first overlay write until the process restarts.
 - **A sweep is a list of run plans** that differ in their `overlay:` block. The kernel needs only "run this list";
@@ -693,3 +740,40 @@ no web access; where it named an engine fact, I read the fact in the 1.6 source 
   evidence."** Taken for the map kind (settlement by default). Not taken for the cast-only stage: the census shows
   bystanders and leftovers as the cause of at least 23 spoiled records, and a claim about competition with bystanders
   can still ask for a `colony` map.
+
+### Round 2: folded in
+
+GPT judged five of the twelve round-1 repairs sufficient and seven partial. What I took from round 2:
+
+- **Looking can change the run.** A property read every tick can repair a stale cache, and the trace would be
+  perfect and wrong. Added point 8 of the evidence contract: fields by default, a reviewed list for anything else, a
+  random-state check round the sample phase, and a with-and-without comparison in the certification session.
+- **Record order of nested hooks.** A death was recorded before the damage that caused it. Tap records now carry the
+  entry number, the completion number and the enclosing call; the judge's `before` and `after` use entry numbers.
+- **The certificate named patches, not what they do.** Its key now holds the settings of every mod with a patch on a
+  tapped method; the scene's needed routes are checked against the certificate; a run-time witness counts entries
+  against records; and the design states what no check at arm can prove.
+- **A red run did not prove that the mutant was used.** Each mutant now names a witness that differs because of it; a
+  bar's list is reviewed by another agent and holds at least two.
+- **A fresh load is not a full reset.** A NOT UNDONE entry names its reach (station, save, process); a held queue
+  entry has every absolute tick moved, not only the fire tick; a hold on needs is two entries.
+- **A comparison of arms had no expiry.** It now has a key and is owed again when the key changes.
+- **"Only A and B allow the judge outside" was still false.** Corrected, and a compiled fixture now has a stated life
+  cycle with no verdict of its own.
+- **Transfer from the stage to a colony.** The colony scene must reach the same exposure, or the bar says that its
+  claim is the staged one.
+- **The build order:** the first ticket was still too big and is split into the slice and the life-cycle hardening;
+  the gates are built before the certificate, and the calm profile after; the game watcher is before the first plan
+  that changes a map; a bootstrap mode marks every run made before the certificate exists as counting for nothing; two
+  planted faults that their tests could not catch got fixtures that do.
+- **The owner's page:** the table of his game is now by profile (the kernel does not run at all on a save of his); the
+  camera choice is withdrawn, because nothing new touches his camera; "no bystander can die" was narrowed; the
+  filmstrip choice asks only what is his (whether pictures of flight may be made), not whether to build it.
+
+### Round 2: not taken, with the reason
+
+- **"Split persistence from restoration into two separate fields on every entry."** Taken in substance as the reach of
+  a NOT UNDONE entry. Not taken as a second axis on PUT BACK and GIVEN BACK entries: for those the reach is the value
+  itself, and a second field would be filled with the same word every time.
+- **"Choices 2 and 3 reserve 'his own game' beyond the five acts and need an authority."** The authority is this
+  run's brief from the Conductor, which names "his own game ArchBig and his camera" as his. The page now cites it.
