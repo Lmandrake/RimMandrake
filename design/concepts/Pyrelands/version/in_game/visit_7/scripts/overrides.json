@@ -1,0 +1,12 @@
+{
+ "sc_walk": {
+  "verdict_fixed": "UNMEASURED",
+  "site_checked": false,
+  "detail": "ArchSmall: tier list only beside ArchBig",
+  "held": [],
+  "class": "SITE",
+  "unrepaired": "ArchSmall cannot hold his full list beside ArchBig in memory, so this check did not run here",
+  "owner": "ArchBig: its full-list run of this check"
+ },
+ "_extra_tests": ["sc_fire_walks_with_wind", "P_gate", "firehawk_first_sighting_letter"]
+}
