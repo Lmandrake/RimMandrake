@@ -14,10 +14,10 @@ of the owner left the skill. `design/RimMandrake/CLAUDE.history.md` already held
 
 | measure | before | after |
 |---|---|---|
-| bytes | 22,055 | 25,847 |
-| words in linted prose | 2,590 | 3,189 |
-| STE violations per 100 words | 3.17 | 1.35 |
-| sentences over 20 words | 33 | 4 |
+| bytes | 22,055 | 26,022 |
+| words in linted prose | 2,590 | 3,219 |
+| STE violations per 100 words | 3.17 | 1.37 |
+| sentences over 20 words | 33 | 5 |
 | flagged lines (mechanical) | 11 | 10 |
 | hand count (lines a cold reader cannot act on) | 17 | 0 |
 
@@ -35,7 +35,7 @@ UNMEASURED) and the row ids R1–R6 and L2.
 | the anatomy block: blocks, tier, control-noise, Z | four terms with no meaning | a list "Terms in this block" |
 | "site hold still runs" | what the site hold is | meaning from `targeting.py` |
 | "A harness or site row in a shared session" | what a shared session is | meaning from `validation_core.SHARED` |
-| "style_hose R1–R6" | what R1–R6 are | "The rows R1–R6 of the block style_hose" |
+| "style_hose R1–R6" | what R1–R6 are | R1 and R6 named from `validation_style_hose.py` |
 | "throw their own NREs" | NRE | NullReferenceExceptions |
 | "Aim at the target's real footprint cell" | aim what | "Aim a hose at" |
 | "Pass 7's" | which pass | "the Pyrelands live pass 7 (2026-10-13)" |

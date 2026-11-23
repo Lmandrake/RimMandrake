@@ -31,7 +31,7 @@ So the job has two halves, and you owe both:
 
 1. **Make the instrument honest.** The instrument reports UNMEASURED whenever it could not ask.
 2. **Point the instrument at the mod.** Spend the run on the places where the mod can actually be wrong. Write what
-   each run taught you into the mod's functional script (`validation.py`; the ruled-out theories go in the mod's walk).
+   each run taught you into the mod's functional script, `validation.py`.
 
 ## When this skill, when another
 
@@ -162,8 +162,8 @@ block **reads the site back**:
 - **`clear_huge_plants` before every block** on an `RM_TheRot` map.
   - The mod Huge Things plans a giant plant's trunk blockers again when they vanish while the plant stands.
   - So a giant *outside* the rect blocks again a site that you just cleared.
-  - This happened on 2026-10-11, on a map with 5,000+ blocker cells. The rows R1–R6 (the hose-reel steps from build and lay
-    to pack-up and reinstall) of the block style_hose FAILed with "Space already occupied".
+  - This happened on 2026-10-11, on a map with 5,000+ blocker cells. The block style_hose FAILed with "Space already occupied". Its
+    rows R1–R6 are R1 (pick a hose look and place a reel) to R6 (pack up the reel and reinstall it).
 - **`prepare_site` reads back.**
   - A roof, rock, plant or ruin left in the rect is `UNMEASURED/SITE`, never a mod FAIL.
   - A colonist's sight clears the fog (`reveal`). `set_fog` alone does not clear it.
