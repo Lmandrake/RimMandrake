@@ -160,6 +160,12 @@ def t_the_gates_launch_nothing():
     chk(lambda: dec({"A": it(off="pipe off family:list_dispatch")}) == ("off", []), "pipe off")
     chk(lambda: dec({"A": it(held="HELD BY OWNER: FeverWood")}) == ("held", []), "a held mod")
     chk(lambda: dec({"A": it(off_unreadable="control store unreadable")}) == ("blind", []), "an unreadable store")
+    chk(lambda: dec({"A": it(verdict="holds")}, paused="paused") == ("pipeline_paused", []), "the pause closes nothing")
+    chk(lambda: dec({"A": it(verdict="holds", off="pipe off item:A")}) == ("off", []), "pipe off closes nothing")
+    chk(lambda: dec({"A": it(effect=None, verdict=None, accept="a/b_accept.py", off="pipe off all")}) == ("off", []),
+        "pipe off attaches nothing")
+    chk(lambda: dec({"A": it(verdict="holds")}, cfg=dict(CFG, enabled=False)) == ("disabled", []),
+        "a disabled lane closes nothing")
     chk(lambda: dec({"A": it()}, account=(False, "drain")) == ("account_hold", []), "an account hold")
     chk(lambda: dec({"A": it()}, pool="pool full: 16 clones") == ("pool_full", []), "the pool refuses a new clone")
     chk(lambda: dec({"A": it(clone_exists=True)}, pool="pool full: 16 clones") == ("launch", ["A"]),

@@ -219,6 +219,18 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if it.get("state") in CLOSED:
             put("closed", "the item is %s" % it.get("state"))
             continue
+        if not cfg.get("enabled"):          # the lane's own acts all stop: no close, no adoption, no launch
+            put("disabled", "list_dispatch.json has enabled: false")
+            continue
+        if paused:
+            put("pipeline_paused", paused)
+            continue
+        if it.get("off_unreadable"):
+            put("blind", it["off_unreadable"])
+            continue
+        if it.get("off"):
+            put("off", it["off"])
+            continue
         claimed = it.get("claimed") if not att else None     # the lease of a run of ours never stops our next run
         if not it.get("effect"):
             acc = it.get("accept")
@@ -273,12 +285,6 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if it.get("held"):
             put("held", it["held"])
             continue
-        if it.get("off_unreadable"):
-            put("blind", it["off_unreadable"])
-            continue
-        if it.get("off"):
-            put("off", it["off"])
-            continue
         if done:
             last = done[-1]
             if last.get("unit") not in (run.get("ended") or []):
@@ -304,12 +310,6 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if tail >= max_never:
             stop("%d launches in a row never started; the last: %s" % (tail, _one(att[-1].get("failed"), 200)),
                  "clear the cause the launch names, then `list_dispatch.py clear %s --why ...`" % iid)
-            continue
-        if not cfg.get("enabled"):
-            put("disabled", "list_dispatch.json has enabled: false")
-            continue
-        if paused:
-            put("pipeline_paused", paused)
             continue
         if not account[0]:
             put("account_hold", account[1] or "the account gate holds launches")
@@ -473,24 +473,25 @@ def gather(st, now=None, root=None):
     ordered = {i: items[i] for i in order_ids(items)}
     runs = _runs(set(ordered))
     _read_next(st, ordered, runs)
+    paused = _paused(now)
     for iid, d in ordered.items():
-        if not d.get("effect"):
+        d["mod"] = mod_of(iid, d.get("title"), mods)
+        d["off"], cnl = _off(iid, d["mod"])
+        if cnl:
+            d["off_unreadable"] = cnl
+        if not d.get("effect") or paused or d["off"] or cnl:      # no check runs where the lane may not act
             continue
         d["verdict"], d["out"] = LE.run(d["effect"], root)
         if d["verdict"] != "fails":
             continue
-        d["mod"] = mod_of(iid, d.get("title"), mods)
         try:
             d["held"] = _held(d["mod"])
         except Exception as e:  # noqa: BLE001
             d["off_unreadable"] = "the owner's mod holds could not be read (%s: %s)" % (type(e).__name__, e)
-        d["off"], cnl = _off(iid, d["mod"])
-        if cnl:
-            d["off_unreadable"] = cnl
         d["depth"] = chain_depth(iid, lambda i: (w.items.get(i).caused_by if w.items.get(i) else None), st)
         d["clone_exists"] = _clone_exists(iid)
     live = sum(len(r["live"]) for r in runs.values())
-    return {"items": ordered, "runs": runs, "other_live": 0, "paused": _paused(now),
+    return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused,
             "pool": _pool(), "live_lane": live}
 
 

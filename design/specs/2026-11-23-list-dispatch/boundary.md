@@ -55,7 +55,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   `reshape` (plan: a date never launches old work; the Shape stage, step 4, takes it). A blocked item reads `blocked`.
 - **the-gates-launch-nothing.** The lane launches nothing when it is disabled, under the pause, under `pipe off` (all,
   `family:list_dispatch`, the item or its mod), on an item whose mod is held by the owner, under an account hold (the plan's drain or the Dispatcher's pick), when
-  the control store cannot be read, or when the clone pool refuses a new clone. Each reads its own decision.
+  the control store cannot be read, or when the clone pool refuses a new clone. Each reads its own decision. Disabled, the pause and `pipe off` (or a
+  control store that cannot be read) also stop its closes and its adoptions, and the tick runs no check under the pause.
 - **the-lane-has-its-own-slots-and-chain-rule.** At most `max_live` live runs on lane items. Mod and nightly-test runs do
   not count. An item whose chain of causes (its `caused_by` ancestors) already holds `max_chain_depth` lane runs reads
   `chain_stop`. Live runs on items that carry no check do not fill the lane's slots.
