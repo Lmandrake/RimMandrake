@@ -235,12 +235,13 @@ beside the result.
   - Never let a per-item shortfall report absorb a total absence.
   - Check the FIRST stage. The hole was inserted where the input list was built, several stages before anyone noticed
     it.
-- 🔴 **A biome is done when the PLAYER'S tiles carry the content, not when the mod contains it.** Each of these passes
-  the `## verify` of its own item: a biome def with zero painted tiles, zero fauna or zero flora; a gene machine that
-  hands out placeholder genes; mechanics built onto a def that owns 0 tiles. Check what the planet or the player
-  actually receives. Before you believe that anything is finished, diff a sheet's Owed list (design intent) against
-  the ledger. Hand-kept tables of biome bindings and hardcoded painted-def lists rot the same way: derive them from the
-  world CSV.
+- 🔴 **Content is done when the player receives it in the mod, not when its item's `## verify` passes.** Each of these
+  passes the `## verify` of its own item: a biome def with zero fauna or zero flora; a gene machine that hands out
+  placeholder genes. Check what the player actually receives. Before you believe that anything is finished, diff a
+  sheet's Owed list (design intent) against the ledger. A tile count is never the evidence: a BiomeDef of ours on 0
+  tiles is the expected state until the planet is painted once, at the end (`CLAUDE.md` §A biome with zero tiles is
+  not a defect). Hand-kept tables of biome bindings and hardcoded painted-def lists rot: derive them, do not keep them
+  by hand.
 - ⚠️ **A name-matched census undercounts built content; read descriptions, not defNames.** A donor-prefix test
   (`RSW_<donor>`) can never find a port, because a port RENAMES the def: 105 "to author" was really 2. Our invented
   exotic names mean that a defName match reports a fully built roster as empty (an ossuary shrimp ships as
