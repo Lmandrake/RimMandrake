@@ -209,3 +209,26 @@ No third read checked those last two repairs.
 - `selftest_dispatcher.py` did not run. It cites Agent_Policy by name but reads the schedule, not the file.
 - The `rule_doc_lint.py` blind area above is not fixed in the tool. It is filed as
   `RIMMANDRAKE_FIX_KEEP_CHECK_MISPAIRS_BACKTICKS_ON_CHARTER`, with its acceptance test (watched to fail on the base).
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. Four quotes of the base CHARTER are not in today's file. A later crystallize run moved three to history files, where they stand word for word; the fourth is a command template.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| CHARTER | expensive list item 5, the leftover condition | SAME | none |
+| CHARTER | "Anything git can undo … Examples: …" | SAME | none |
+| CHARTER | "v2 ideas go straight to …" | SAME | none |
+| CHARTER | "The next checkout can erase such a fix …" | SAME | none |
+| CHARTER | the Evidence-for-Ask pointer | SAME | none |
+| CHARTER | "Never run a flyer's flight", a last repair | SAME | none |
+| CHARTER | the `broadcast.py` line, a last repair | SAME | true by `standing_rulings.md` §The bridge |
+| Agent_Policy | the **Nobody** row (2 lines) | SAME | none |
+| Agent_Policy | "Each item is classified by the rule below." | SAME | none |
+| Agent_Policy | "(folded in 2026-10-01 when Haiku was struck …)" | SAME | none |
+| Agent_Policy | "The routing axis is measured, not argued." | SAME | none |
+| Agent_Policy | "per closed item" (2 figures) | SAME | none |
+| Agent_Policy | the one-hour alarm clause, a last repair | SAME | none |

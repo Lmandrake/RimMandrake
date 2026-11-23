@@ -142,3 +142,24 @@ by itself after 90 s (`RESERVE_S`). Polish line only: no run was voided, and the
 - Sessions 2 to 5 of this batch rewrite the rest of the file. This run did not touch those sections.
 - `CLAUDE.md` pointers into this file were not re-read one by one. Each heading in scope is unchanged, so each pointer by
   heading still finds its section.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs (one match in the list was prose between two quotes).
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| standing | "keeps a one-line rule and points here" | SAME | none |
+| standing | "No test away from the home biome is owed." | SAME | none |
+| standing | "a mod that degrades gracefully when every switch is off" | SAME | none |
+| standing | the six "Enable outside this biome" switches | SAME | none |
+| standing | "changes the shade or the sun's strength" | SAME | none |
+| standing | "does the fix and the remaining check itself", "Do both in the same sitting" | SAME | none |
+| standing | "If the act of a card is not one of the five, and no concrete evidence …" | SAME | none |
+| standing | late edit `de63778138`: "Revert the pool … return to at most 4 writers" | SAME | gloss true: commit `5e603a1d82` approved the pool for writers above 4 |
+| standing | late edit `de63778138`: D/F is depth and fill; rulings 18 and 19 are in §20 and §21 | SAME | gloss true: `pit_superdeep_collapse_spec.md` line 8; `flowworks_mod_definition.md` lines 818 and 883 |
+| standing | late edit `de63778138`: the clone's return step bundles a trailing commit | SAME | gloss true: `detached_helper.py` lines 49 to 50 |
+| standing | late edit `de63778138`: the state of the pit build is read from its item | changed on purpose | none: the old "in progress" was state written as prose, and the item reads `ready` |

@@ -193,3 +193,25 @@ The reader checked hardest: the definition of an evidence write, the "one move" 
 - No live rescue, walk-brief or fixer run read the new text.
 - The new offline-model block now reaches the offline builder's and road-back fixer's briefs. Only
   `selftest_offline_model_rule.py` read those briefs.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. Two quotes of the base moved to `roles.history.md` in a later crystallize run, word for word.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| fable_rescue.md | "Each one is fixed, proved done and closed, or brought …", restored | SAME | none |
+| fable_rescue.md | `maturation_rescue.py` only proposes; the Conductor launches | SAME | none |
+| fable_rescue.md | "These positive steps", old scope | SAME | none |
+| fable_rescue.md | the fifth pair, with its source | SAME | none |
+| fable_rescue.md | the build stage gloss | SAME | none |
+| fable_rescue.md | "(`art install`)" | SAME | none |
+| fable_rescue.md | "Examples are another mod, or a redesign …" | SAME | a later rule edit joined this line; "Do not build it" still binds |
+| fable_rescue.md | "Examples of that change: …" | SAME | none |
+| fable_rescue.md | "More effort on the same path was already tried." | SAME | none |
+| fable_rescue.md | "truly needs", "is never told its spend" | SAME | none |
+| fable_rescue.md | the gradient gloss, the last repair | SAME | none |
+| criteria_fixer.md | the L4 gloss | SAME | none |

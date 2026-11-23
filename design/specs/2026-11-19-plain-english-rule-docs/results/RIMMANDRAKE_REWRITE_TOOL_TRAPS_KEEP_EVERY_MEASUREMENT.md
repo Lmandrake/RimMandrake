@@ -132,3 +132,20 @@ holds).
 - No measurement shows that an agent acts better on the new text.
 - The repair check by the reader covers only the 7 repaired lines.
 - Five lines over 120 characters stay (55, 117, 242 and two code spans). That is a style point only.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| tool_traps | "Prefer that API over Fetcher." | SAME | none |
+| tool_traps | "(Steve: offline 27+ min)" | SAME | none |
+| tool_traps | the Id=7 sentence removed | SAME | none |
+| tool_traps | the Codex runway sentence removed | SAME | none |
+| tool_traps | "a drop of free space on `/` (`disk.root_free_gb`)" | SAME | none |
+| tool_traps | "returns MISSING for real subjects constantly" | SAME | none |
+| tool_traps | "may not have a readable argv yet" | SAME | none |

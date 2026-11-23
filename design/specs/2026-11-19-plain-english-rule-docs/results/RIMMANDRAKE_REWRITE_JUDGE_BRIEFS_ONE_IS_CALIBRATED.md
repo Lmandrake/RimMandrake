@@ -242,3 +242,38 @@ The rest of the table did not change in either run: `code_review` UNTESTED, `cov
   art and scene judges ran on the new text only in the calibration runs.
 - No reader read the repairs of the meaning-read findings.
 - No measurement shows that an agent acts better on the new text.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| art | "The owner has overridden the pipeline." | SAME | none |
+| art | the "req N" gloss | SAME | none |
+| art | B2 "Grey mud is a REDO reason", gloss removed | SAME | none |
+| art | C4, old wording | SAME | none |
+| art | C5 gloss of "render-tree" | SAME | true by `flight.md`: a wing-layer render tree |
+| art | "a verdict on the constraint itself" | SAME | none |
+| art | "A malformed record is itself refused …" | SAME | none |
+| art | "Judge-KEEP pictures reach him … Nothing else reaches him." | SAME | none |
+| art | B6 "A Modern tier is never bright red …" | SAME | none |
+| scene | "In a matrix scene, one prepared cell … is replicated" | SAME | none |
+| scene | the presenter no longer replicates the cell | SAME | none |
+| scene | the presenter gloss, narrowed | SAME | none |
+| scene | "what a player should see" | SAME | none |
+| scene | "A malformed record is itself refused and re-asked once." | SAME | none |
+| scene | "The capture tool writes that crop." | SAME | none |
+| scene | "a judge that is asked again" | SAME | none |
+| canon brief | "regen", gloss removed | SAME | none |
+| canon brief | "That record of unsourced values is the standard." | SAME | none |
+| canon brief | "each future batch reads this file instead of a new brief" | SAME | none |
+| mod prompt | "Harmony patches." | SAME | none |
+| mod prompt | "'one kind of heat'" | SAME | none |
+| mod prompt | "reuse by, other mods or content in the campaign" | SAME | none |
+| canon prompt | "The facts to cover are: size; …" | SAME | none |
+
+No line of the two calibrated briefs was edited, so both calibrations stand.

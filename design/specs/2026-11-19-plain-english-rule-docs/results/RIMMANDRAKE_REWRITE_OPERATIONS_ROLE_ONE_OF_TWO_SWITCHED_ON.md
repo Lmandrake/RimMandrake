@@ -129,3 +129,24 @@ clerk run, and the forecast bullet). The checks and tests ran again after that e
 - No live Operations run read the new file. The inline extraction is tested only by `selftest_role_start_package.py`.
 - No measurement shows that an Operations run acts better on the new text.
 - The last split of three long sentences had no second meaning read.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. Quotes of the base that are not in today's file were moved by a later crystallize run. Each stands word for word in `roles.history.md` or `standing_rulings.md`.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| operations.md (role) | the token-blind clause removed | SAME | none |
+| operations.md (role) | the review-id sentence removed | SAME | none |
+| operations.md (role) | "Record a Conductor instruction that you act on" | SAME | none |
+| operations.md (role) | the Andon flag gloss | SAME | none |
+| operations.md (role) | the 30-min reading gloss | SAME | none |
+| operations.md (role) | "The cost is then fixed fast …" (removed later by the crystallize run) | SAME | none |
+| operations.md (role) | "The lessons below are for diagnosis" removed | SAME | none |
+| operations.md (role) | "File an item for the blind collector." | SAME | none |
+| operations.md (role) | late split: the `revisit_quiet` re-arm | SAME | none |
+| operations.md (role) | late split: the four cases of a clerk run | SAME | none |
+| operations.md (role) | late split: the forecast bullet | SAME | none |

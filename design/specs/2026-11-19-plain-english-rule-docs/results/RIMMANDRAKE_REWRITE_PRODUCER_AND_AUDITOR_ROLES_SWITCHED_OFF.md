@@ -147,3 +147,21 @@ No second reader read the repairs. Each repair restores the old wording or narro
 - No second reader read the repairs of the meaning-read findings.
 - `acceptance_stop_rules_calibrated.py` fails on the base and after the rewrite. No calibration family names
   `auditor.md`. This run did not calibrate it: the item does not ask for it, and the role is switched off.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| producer | "every unresolved replan request and failed plan step" | SAME | none |
+| producer | "finds the commits tagged with that name" | SAME | none |
+| producer | "the home given to a concern" | SAME | none |
+| producer | "Fix the kind." | SAME | none |
+| auditor | "finds the commits tagged with that name" | SAME | none |
+| auditor | the escape gloss | SAME | none |
+| auditor | "So" in two lines | SAME | none |
+| auditor | "measure the week's yields" | SAME | none |

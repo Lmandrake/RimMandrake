@@ -191,9 +191,9 @@ Such a card never times out into a decision. Its ask says what he must see to de
    second verdict stands. Two UNSUREs, or a subject still REDO after three rounds, go to his set, flagged (§6).
 6. **Every REDO or refusal is a refusal record** (owner, 2026-11-12: *"ANY refusals must be as detailed as the
    evidence they are rejecting and include the fixes and paths towards passing"*). A refusal record holds the evidence,
-   `would_pass`, `smallest_fix` and a verdict on the criterion. The judge checks the record with
-   `refusal_contract.py submit` before the judge sends anything back. Only the refusal of a CALIBRATED brief has a consequence. Full text: `standing_rulings.md`
-   §A refusal carries its path to pass.
+   `would_pass`, `smallest_fix` and a verdict on the criterion. The record is checked by `refusal_contract.py submit`
+   before it sends anything back. Only the refusal of a CALIBRATED brief has a consequence. Full text:
+   `standing_rulings.md` §A refusal carries its path to pass.
 7. **A judge's miss is a brief defect.** When he overturns a KEEP, his reason becomes a new line in the brief, the same
    day. The line has his words as its source.
 

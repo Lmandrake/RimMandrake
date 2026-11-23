@@ -130,3 +130,21 @@ The reader's polish notes, restored to the old words: "structurally identical fi
 - This run did not check whether each entry is still true today (for example "its checklist is VALIDATED with 12
   binding bars"). The rewrite keeps each claim as the old text stated it.
 - The rule-text score (the STE score without the evidence sentences) was not measured.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs (one match in the list was prose between two quotes).
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| instrument_traps | "The tool reports a false ERROR for every def whose parents …" | SAME | none |
+| instrument_traps | `O14` (`effective_def_lint`) | SAME | true by `preflight_bridge.py` line 660 |
+| instrument_traps | the GravTide pointer to two entries | SAME | none |
+| instrument_traps | the GSS aerial census order, the fix that nobody read | SAME | none |
+| instrument_traps | "structurally identical files" | SAME | none |
+| instrument_traps | "Otherwise a fix can 'win'" | SAME | none |
+| instrument_traps | "so the pawns of a later phase can be shocked there" | SAME | none |
+| instrument_traps | late edit `ff6dc8e491`: the zero-tiles claim is removed | changed on purpose | none: the new line agrees with `CLAUDE.md` §A biome with zero tiles is not a defect |

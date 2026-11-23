@@ -134,3 +134,25 @@ The home section gives the full rule." No reader read that last addition.
 - No agent run read the new text to do work. No measurement shows that an agent acts better on it.
 - No lint reads the table rows. The meaning read covered them.
 - `## 5. Floating above` and the sections after it are session 2 (`RIMMANDRAKE_REWRITE_MATURATION_SPEC_SECOND_HALF_HIS_QUESTIONS`).
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| maturation spec | "read by the bars' own checks before any fix or tuning" | SAME | none |
+| maturation spec | the mark of "After three cycles" | SAME | none |
+| maturation spec | "The offline model is:" | SAME | none |
+| maturation spec | "After that, mods enter" | SAME | none |
+| maturation spec | Evidence-for-Ask moved to "Words used here" | SAME | none |
+| maturation spec | the load times with [CARRIED] | SAME | none |
+| maturation spec | "Each deferral …" joined to the marked bullet | SAME | none |
+| maturation spec | "The agent does this before it opens …" | SAME | none |
+| maturation spec | "This is the answer offered to …" | SAME | none |
+| maturation spec | the two open pronouns | SAME | the draft words are gone; the [PROPOSAL] mark of "the cheapest stage" stands at its start |
+| maturation spec | "(a mod past the blind challenge)", the dated settings question | SAME | none |
+| maturation spec | late: "His five acts still wait for him. The home section gives the full rule." | SAME | true by `CLAUDE.md` §Stops, the Evidence-for-Ask rule |

@@ -188,3 +188,23 @@ sentence in `designer_write.md`). The checks and tests ran again after that edit
 - No Designer run read the new files. `selftest_designer_stage.py` builds packets from them; no live stage ran.
 - No measurement shows that a Designer run acts better on the new text.
 - The repairs of the meaning-read findings and the last two sentence splits had no second meaning read.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| designer.md | the packet gloss and its late split | SAME | true by `packet()` and `manifest_hashes` |
+| designer.md | "Record that act as a Conductor act … `certified_by conductor`" | SAME | true by the help text of `concept_tree.py` |
+| designer.md | "Define everything. (Define only the core concepts …)" | SAME | none |
+| designer_grounding.md | "each of his statements or rulings" | SAME | none |
+| designer_grounding.md | "the bounded questions", gloss removed | SAME | none |
+| designer_dialogue.md | "Ask him for a fresh statement of intent only when …", restored | SAME | none |
+| designer_dialogue.md | turn part 5, the reviewer sentence removed | SAME | none |
+| designer_write.md | "The Setter binds `oracle`, `tier` and `guard`; the launcher owns `budget`" | SAME | true by `concept_tree.py` line 280 |
+| designer_write.md | `establishes` in three modes, and its late split | SAME | true by `designer_stage.py` line 1377 |
+| designer_write.md | "Live needs `tier_reason`" and the lint rule | SAME | true by `concept_tree.py` line 309 |

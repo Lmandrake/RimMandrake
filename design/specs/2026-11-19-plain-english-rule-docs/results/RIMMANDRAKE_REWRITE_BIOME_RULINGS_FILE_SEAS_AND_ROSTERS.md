@@ -117,3 +117,22 @@ home section here.
 - The last edits after the meaning read (three glosses, two pronoun fixes, two sentence splits) had no second
   meaning read.
 - The tests that read the file ran on the new text only, not on the old text first.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| biome | "Later entries started here." | SAME | none |
+| biome | "So the count of 27 holds the `RM_` def, not its twin." | SAME | none |
+| biome | the split item and its title | SAME | none |
+| biome | "the session of 2026-09-26" | SAME | true: the date of commit `cd335ec02d` |
+| biome | "No build ticket is filed while the mod is held.", restored | SAME | none |
+| biome | late: the Scald ban 1 gloss | SAME | true by `scald_kit_spec.md` line 48 |
+| biome | late: the Contagion dose gloss | SAME | true by `design/concepts/Contagion/design.md` line 279 |
+| biome | late: the design-folder line for the design names | SAME | true: `WeepingStones/design.md` and `Warscar/design.md` define them |
+| biome | late: two pronoun lines and two sentence splits, not listed one by one | SAME | so this reader read each changed line of the file; no line moved |

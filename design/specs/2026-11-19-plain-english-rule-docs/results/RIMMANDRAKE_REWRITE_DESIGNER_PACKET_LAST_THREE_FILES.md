@@ -177,3 +177,17 @@ after them.
   `selftest_designer_cleanse.py` builds prompts on fixtures; no live stage or cleanse ran.
 - No measurement shows that a Designer run acts better on the new text.
 - The three repairs of the meaning-read findings had no second meaning read.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| designer_exam.md | "the stages that depended on the voiding change" | SAME | none |
+| designer_examples.md | "This file is loaded only on an explicit request …", restored | SAME | none |
+| designer_examples.md | "Stills that an agent called good met … in the game.", restored | SAME | none |
+| designer_cleanse.md | one line rewrapped | SAME | none |

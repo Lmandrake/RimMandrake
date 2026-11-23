@@ -149,3 +149,31 @@ or the two corrections (Steam, scratch).
 - No Codex run or Codex game session used the new runner_options.md.
 - No measurement shows that a run acts better on the new text.
 - The launch commands in step 2 to step 6 were not run.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| innovator | the Reverting rules before the list, steps 1 and 2 | SAME | none |
+| innovator | "Never quote the file." | SAME | none |
+| innovator | "Never commit with a stash or a reset", "Then run `./publish`" | SAME | none |
+| innovator | "one or more of these" | SAME | none |
+| innovator | `killed` in the chain | SAME | none |
+| innovator | "So the blind view is a closed type" | SAME | none |
+| innovator | "what git holds under that name" | SAME | none |
+| innovator | the I3 filing | SAME | none |
+| innovator | the GSS gloss | SAME | none |
+| innovator | late splits, not listed one by one | SAME | so this reader read each changed line of the file; no line moved |
+| runner_options | the settings/snapshot gloss deleted | SAME | none |
+| runner_options | "reports >90% used" | SAME | none |
+| runner_options | "No automatic sandbox relaxation …", restored | SAME | none |
+| runner_options | "Other Claude … guards" | SAME | none |
+| runner_options | the Steam correction | SAME | a correction, true by `fire_a` in `game_instance.py` |
+| runner_options | the scratch correction | SAME | a correction, true by `agent_runner.py` lines 4 and 225 |
+| runner_options | the retired-Whittle note | SAME | none |
+| runner_options | late splits, not listed one by one | SAME | so this reader read each changed line of the file; no line moved |

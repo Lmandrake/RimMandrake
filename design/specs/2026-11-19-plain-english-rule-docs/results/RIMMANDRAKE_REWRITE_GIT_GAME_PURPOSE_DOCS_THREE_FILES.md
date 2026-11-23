@@ -189,3 +189,40 @@ lines stay as in the old text.
 - No reader read the repairs of the meaning read a second time.
 - The changed comment in `game` is a comment only. `bash -n game` passes. No behaviour changed.
 - The two path claims in "Could not determine" were not checked.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| GIT | the absent `land.sh` wrapper | SAME | a correction; kept |
+| GIT | the reaper runs `--apply`, a correction | SAME | none |
+| GIT | the OP2 alarm name | SAME | none |
+| GIT | the 24 h TTL, true by `scratch_reap.py` line 25 | SAME | none |
+| GIT | "(they are outside `ops_clocks.json`)", restored | SAME | none |
+| GIT | "At that measurement, nobody had run `git gc` there." | SAME | none |
+| GIT | "a sparse checkout that holds the root files", "only" removed | SAME | none |
+| GAME | bare assent is recorded, and "passes" | SAME | a correction; the `game` comment agrees |
+| GAME | the game names | SAME | none |
+| GAME | "Those items are cleared automatically" | SAME | none |
+| GAME | "`take --force` always works and is recorded" | SAME | none |
+| GAME | "An inferred state is refused." | SAME | none |
+| GAME | "Only this case of a game kill is worth a question." | SAME | none |
+| GAME | "when clear", restored | SAME | none |
+| GAME | the authority line | SAME | none |
+| GAME | "Going idle is the owner's go-signal." | SAME | none |
+| GAME | "Aggressively question" | SAME | none |
+| PURPOSE | the four "whether" bullets | SAME | none |
+| PURPOSE | "That combination is extraordinarily hard to buy anywhere else." | SAME | none |
+| PURPOSE | "In that case the pipeline does not file the defect for someone else." | SAME | none |
+| PURPOSE | "the versions keep a pipeline from quietly redefining success" | SAME | none |
+| PURPOSE | "We treat … as the primary hazard" | SAME | none |
+| PURPOSE | where the role files are, a correction | SAME | none |
+| PURPOSE | "Every delegated call is logged as a delegation" | SAME | none |
+| PURPOSE | "The attempt runs in the one environment where …" | SAME | none |
+| PURPOSE | "We judge the remake on whether a player's experience is right." | SAME | none |
+| PURPOSE | "To discover a wrongly drawn autonomy boundary costs …" | SAME | none |

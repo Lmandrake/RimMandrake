@@ -238,3 +238,31 @@ The item stays open on one decision for the Conductor:
 - accept 3.33 for `rm-testpilot.md`, because the rest is owner quotes and the file's own terms; or
 - order a rename of "sitting", "failing", "ALARMING" and "MEASURING SURPRISE". A rename touches the
   `test-pilot-sitting` skill, `TESTPILOT_SAT` and `surprise_book.py`.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| shared block | "Use the ledger only through" | SAME | none |
+| shared block | the reset and clean-up sentences | SAME | none |
+| shared block | "So writing a file is not deploying it." | SAME | none |
+| shared block | the `--by-card`, `--per-ruling` and GSS glosses | SAME | none |
+| shared block | "Crop to the subject." | SAME | none |
+| shared block | the owner citation on both clauses, a last repair | SAME | none |
+| rm-testpilot.md | the regimes, colon list | SAME | none |
+| rm-testpilot.md | "(a job of `testq.py`)" | SAME | none |
+| rm-testpilot.md | "Example reads: …", a last repair | SAME | none |
+| rm-testpilot.md | "check these expectations: …" | SAME | none |
+| common tail | "Flag a factual error instead of refusing." | SAME | none |
+| common tail | "Keep writes and commits in separate Bash calls." | SAME | none |
+| common tail | the `git commit -a` gloss | SAME | none |
+| rm-builder.md, rm-fixer.md | "the two", restored | SAME | none |
+| rm-builder.md, rm-fixer.md | "Then, still before you change any code, read that range …" (builder), a last repair | SAME | none |
+| rm-bridge.md | the script line, joined | SAME | none |
+| rm-bridge.md | the `rimflow bridge take` and `release` names | SAME | none |
+| rm-judge.md | "a cosmetic change" | SAME | none |

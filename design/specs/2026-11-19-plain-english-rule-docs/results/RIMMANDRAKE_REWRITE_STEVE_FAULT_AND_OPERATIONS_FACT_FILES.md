@@ -130,3 +130,33 @@ No reader read the repairs. Most repairs restore the old words.
 - No reader read the repairs.
 - `check_refs.py` did not finish in 120 s; this run stopped it. Its answer is unknown.
 - This run did not check the fact files' claims against the live SteveDesktop.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| steve | "in `regprobe.log`" (2 terms) | SAME | none |
+| steve | the heat paragraph after the list | SAME | none |
+| steve | the `[guess ~80%]` claim joined | SAME | none |
+| steve | the `[guess ~70%]` claim joined | SAME | none |
+| steve | "Inside a window the bad CPU wanders …" in its bullet | SAME | none |
+| steve | "(line 46 of the text before this correction …)" | SAME | none |
+| steve | "on every CPU and day", restored | SAME | none |
+| steve | the passive form of the fault, restored | SAME | none |
+| steve | "the tailnet container", short form | SAME | none |
+| steve | "running" restored in three lines | SAME | none |
+| steve | "cooling falls back to BIOS fan curves" | SAME | none |
+| steve | "Only then is zero meaningful." | SAME | none |
+| steve | "over all 3898 cycles", old lead | SAME | none |
+| operations | "held chains", gloss removed | SAME | none |
+| operations | "name the population" in the list | SAME | none |
+| operations | the four-file finding list, one block | SAME | none |
+| operations | "unbudgeted" | SAME | none |
+| operations | "rimflow refuses `bench`" | SAME | the reader of the batch checked `cli.py` |
+| README | "holding area" | SAME | none |
+| README | the pointer instruction in its sentence | SAME | none |

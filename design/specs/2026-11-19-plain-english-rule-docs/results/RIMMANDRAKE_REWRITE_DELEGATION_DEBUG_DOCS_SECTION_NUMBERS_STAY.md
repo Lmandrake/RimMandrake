@@ -215,3 +215,38 @@ and clutter cannot decide the result").
 - The last four sentence splits (the player-truth definition, the `art marks` bullet, the D4(a) gloss, and the Test
   Pilot cases) came after the meaning reads. The checks and the lint ran again after them.
 - `selftest_conductor_authority.py` ran only on the new text. Its 6 failures name other files.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. No quote differs.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| delegation | the D4(a) gloss, also a late split | SAME | true by `dispatcher_risk_response_2026-10-29.md` §7 |
+| delegation | the player-truth definition, also a late split | SAME | true by `player_truth_testing_pilot_2026-10-26.md` |
+| delegation | "The table is not a complete list: …" | SAME | none |
+| delegation | §4 item 6: "The judge checks the record with `refusal_contract.py submit` before the judge sends anything back." | **MOVED** | The old line named no actor. `art_judge_brief.md` line 179 gives the act to the window and `scene_look_judge_brief.md` line 170 to the presenter. The new line told each judge to do it, with a `given` file that the judge does not hold. Restored: "The record is checked by `refusal_contract.py submit` before it sends anything back." |
+| delegation | "cut his OWNER bridge hold inside 45 minutes" | SAME | none |
+| delegation | "(§4.7)" and the move pointer | SAME | none |
+| delegation | the NONE, PLACEHOLDER and DONOR gloss | SAME | none |
+| delegation | the shadow sheet gloss | SAME | none |
+| delegation | the gloss of the cut | SAME | none |
+| delegation | the token-blind gloss | SAME | none |
+| delegation | "Each taste call … goes through a judge first (§4)." | SAME | none |
+| delegation | the `art marks` bullet, a late split | SAME | none |
+| debug | "In a `live-proof` line, use no `$`-built commands …" | SAME | none |
+| debug | "Superseded by the owner:" | SAME | none |
+| debug | "When … show (a) and (b), the seat that saw it tells the owner" | SAME | none |
+| debug | "record it, and carry on, unless the red invalidates …" | SAME | none |
+| debug | "that fits: a script check, source, the log, or a mod-set bisection" | SAME | none |
+| debug | "A door does not write a list that has neither: …" | SAME | none |
+| debug | "So water, plants and clutter cannot decide the result." | SAME | none |
+| debug | the two Test Pilot cases, a late split | SAME | none |
+
+Checks after the repair: check 1 MERGE OK, check 2 137 spans and 0 lost. `selftest_judge_refusal_records.py`,
+`selftest_judge_brief_records.py`, `selftest_retired_era_gone.py`, `selftest_salvage_lift_policy.py` and
+`selftest_block_forged_validation.py` PASS after the repair. No reader read
+this one repair. It puts the old words back.

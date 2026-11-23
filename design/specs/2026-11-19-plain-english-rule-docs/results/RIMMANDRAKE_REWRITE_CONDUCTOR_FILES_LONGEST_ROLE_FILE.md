@@ -190,3 +190,28 @@ the repairs (the diff against the version that it read). Their answers are in th
 - The sorting of the long sentences by kind is a heuristic script, read by the writer for the 6 that it could not sort.
 - The canon sweep (`canon_sweep.py`) was not run on the new text. Its pointer "roles/conductor.md step 3b" still names a
   step with that letter.
+
+## Second read of the repairs
+
+Run 2026-11-23, item `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM`. One fresh Opus reader that made none of
+these edits read each repair, restored line and late edit against the base text and the lines that travel with it. SAME
+means that a reader of the new line acts as a reader of the old line. A gloss reads SAME when its source says the same.
+His quotes: a script compared each quote of three words or more in the base with today's text, whitespace ignored. Quotes of the base that are not in today's two files were moved by a later crystallize run. Each stands word for word in `roles.history.md`, `standing_rulings.md` or the ledger.
+
+| file | line read | verdict | what was done |
+|---|---|---|---|
+| conductor.md | the window and the headless quick checks | SAME | none |
+| conductor.md | `seat_restart.py mode hold` only | SAME | none |
+| conductor.md | "An … item that you file by hand carries …" | SAME | none |
+| conductor.md | "An act left a day with neither raises …" | SAME | none |
+| conductor.md | "(taste, through a judge agent)" | SAME | none |
+| conductor.md | "Log each one as your act", old sentence shape | SAME | none |
+| conductor.md | "Never handle a proposal silently. Do not drop or build any …" | SAME | none |
+| conductor.md | the Conductor lane definition deleted | SAME | none |
+| conductor.md | the gloss of a promise | SAME | none |
+| conductor.md | "A reply … is always finished." | SAME | none |
+| conductor_restart.md | "A reply … is always finished." (the line was removed later; `conductor.md` holds it) | SAME | none |
+| conductor_restart.md | "every hold named with its fix" | SAME | none |
+| conductor_restart.md | the `seat_restart.seats.BENCH` citation | SAME | none |
+| conductor_restart.md | "his presence is not read" | SAME | none |
+| conductor_restart.md | "The causes that the request names:" | SAME | none |
