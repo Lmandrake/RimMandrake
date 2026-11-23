@@ -2567,8 +2567,75 @@ def _game_ops():
     return game_instance
 
 
+def _STANDIN_LOCK(game, purpose, seat):
+    """A stand-in game (the selftests' game_ops) is never guarded by a real game's lock."""
+    return "ok", "stand-in game: no real lock", lambda: None
+
+
+def _repair_lock(game, purpose, seat):
+    """-> (state, text, release): hold game `game`'s driver lock for this process for a repair's game-down window
+    (RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_EIGHT: on 2026-11-22 at 21:07 PST the tick read ArchBig free,
+    stopped it and began the companion rebuild without holding it; another run claimed the free lock mid-rebuild, and
+    build.py then refused the deploy under that hold). state: ok (held, or no lock on this machine: none to hold), held
+    (another live run or his hold: a wait), blind (the lock could not be looked at: a fault). The holder is this
+    process, never its parent: the systemd tick's parent never exits, and its hold would never free. While held, this
+    process and its children carry RM_HOST_GUARD_GEN (host_guard's inherited take), RM_DRIVER_PID (driver_lock's owner
+    of a take) and a seat, so game_instance.stop, build.py and the deploy read the take as their own. release() frees what this call took, and restores the env."""
+    import game_lock as GL
+    import driver_lock as DL
+    try:
+        path = GL.lock_path(game)
+    except Exception as e:  # noqa: BLE001
+        return "blind", "could not find %s's driver lock (%s: %s)" % (_gn(game), type(e).__name__, e), lambda: None
+    if not path:
+        return "ok", "no driver lock for %s on this machine: none to hold" % _gn(game), lambda: None
+    me = dict(DL.my_identity(), pid=os.getpid(), start=DL._proc_start(os.getpid())) if os.name != "nt" else None
+    r = GL.claim(game, purpose, seat=seat, identity=me, path=path)
+    if not r.get("ok"):
+        return ("held" if r.get("code") in (GL.EX_HELD, GL.EX_HIS) else "blind"), r.get("line") or "", lambda: None
+    keys = ("RM_HOST_GUARD_GEN", "RIMFLOW_SEAT", "RM_DRIVER_PID")
+    was = {k: os.environ.get(k) for k in keys}
+    os.environ["RM_HOST_GUARD_GEN"] = str(r.get("generation"))
+    os.environ.setdefault("RIMFLOW_SEAT", seat)
+    if not r.get("reentrant") and me:
+        # driver_lock's owner of a take: `rimflow bridge idle` (game_instance.stop's gate) and build.py compare it with
+        # the holder; measured 2026-11-22: without it, the stop's gate called this process's own take NOT TAKEABLE
+        os.environ["RM_DRIVER_PID"] = str(os.getpid())
+
+    def release():
+        for k, v in was.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        if not r.get("reentrant"):          # a take this tree already held (its window's) is not ours to free
+            GL.release(game, seat=seat, path=path)
+    return "ok", r.get("line") or "", release
+
+
 def deploy_repair(root, mod, game, reading, gi, purpose, runner=subprocess.run, sleep=time.sleep, clock=time.time,
-                  seat="BENCH", companion=None):
+                  seat="BENCH", companion=None, lock=None):
+    """Holds the game's driver lock across the whole repair (lock: a _repair_lock stand-in, the selftests'); a lock
+    another run holds is a wait, nothing done. Then _deploy_repair_held."""
+    held = gi.hold_refusal(game)
+    if held:
+        what = " and ".join(x for x in ("the game copy of %s needs a deploy" % mod if reading else "",
+                                         "its JawaBench companion needs a rebuild" if companion else "") if x)
+        return "wait", "%s %s and %s" % (WAIT_MARK, what, held.splitlines()[0])
+    state, ltxt, release = (lock or _repair_lock)(game, purpose, seat)
+    if state == "held":
+        return "wait", "%s %s is held by another run, so it cannot go down for the repair: %s" % (
+            WAIT_MARK, _gn(game), ltxt)
+    if state != "ok":
+        return "fail", "could not hold %s for the repair: %s; nothing done" % (_gn(game), ltxt)
+    try:
+        return _deploy_repair_held(root, mod, game, reading, gi, purpose, runner, sleep, clock, seat, companion)
+    finally:
+        release()
+
+
+def _deploy_repair_held(root, mod, game, reading, gi, purpose, runner=subprocess.run, sleep=time.sleep,
+                        clock=time.time, seat="BENCH", companion=None):
     """-> (state, text): cure a deploy_state reading of `drift`, a stale JawaBench companion, or both, before an in-game
     visit launches. state: ok (repaired, read again current), wait (his hold on the game: WAIT_MARK, nothing done), fail
     (the cause named). Game down first when it is up (a DLL cannot be written under a running game, and a def is only
@@ -2697,7 +2764,7 @@ def _twins_reader(runner, twins):
 
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
                resume=None, bars=None, preface=None, env=None, session=None, reconcile=None, game=None, companion=None,
-               deployed=None, twins=None, game_ops=None, continue_on_cap=0):
+               deployed=None, twins=None, game_ops=None, continue_on_cap=0, repair_lock=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
@@ -2779,7 +2846,8 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
                                 if x)
             state, rwhy = deploy_repair(root, mod, game, reading if dfix else None, game_ops or _game_ops(),
                                         "%s before its in-game visit %s" % (what, f.get("visit")), seat=seat,
-                                        companion=creader if cfix else None)
+                                        companion=creader if cfix else None,
+                                        lock=repair_lock or (_STANDIN_LOCK if game_ops else None))
             if state == "wait":
                 return 2, rwhy, None
             if state != "ok":

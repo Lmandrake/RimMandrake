@@ -84,6 +84,18 @@ because the composed Baroque Biomes copy differed from the repo, by one dev scri
   REFUSED, naming the cause; not a wait.
 - **a-stale-companion-on-a-held-game-waits.** His hold on the game: no rebuild and no stop; the refusal starts with
   `WAIT_MARK`.
+- **a-repair-holds-the-game-for-its-whole-window.** The repair takes the game's driver lock before it stops the game,
+  runs the rebuild and the deploy under that take (`RM_HOST_GUARD_GEN`, `RM_DRIVER_PID`, a seat), and frees the lock
+  only after the game is up again. Without it, another run claimed ArchBig while it was down for Pyrelands visit 6's
+  rebuild, and `build.py` refused the deploy (2026-11-22, 9:07 PM PST). `build.py` reads game a's lock held by its
+  caller's take (inherited `RM_HOST_GUARD_GEN`, or an ancestor) as no hold, and another process's BENCH hold still as a
+  hold: a seat name cannot tell two detached runs apart (`own_take_is_no_hold` in
+  `src/RimMandrake/bridgetools/selftest_build_deploy.py`).
+- **a-repair-on-a-game-another-run-holds-waits.** Another run's live lock: a wait (`WAIT_MARK`), the game left up and
+  nothing rebuilt. A lock that could not be looked at is a fault named, with nothing done.
+- **the-real-repair-lock-takes-and-frees-this-process.** `_repair_lock` holds the lock for this process, never its
+  parent (the systemd tick's parent never exits); `game_instance.stop`'s gate passes that take; release frees it and
+  restores the environment; another live process's lock reads as held.
 - **a-failed-deploy-is-a-fault.** A deploy that exits non-zero: REFUSED, naming the deploy failure; not a wait.
 - **a-blind-plan-is-could-not-look.** A plan that cannot run, or prints neither last line: REFUSED as could-not-look,
   never read as current, and no deploy is tried.

@@ -35,7 +35,7 @@
      "planted (art_calibration.py): kept_RM_Gawpsack_live, a picture the owner KEPT (CL-030) that the art-eval pipeline banded REALLY_BAD, staged with his keep: E3 forbids a REDO"
     ]
    },
-   "hash": "5dd4cdc6f858bf9a",
+   "hash": "3b973e8aa02826fc",
    "last_run": {
     "at": "2026-11-19T14:00:26Z",
     "cases": "11 planted case(s) ran and came out as planted",
@@ -625,8 +625,8 @@
      "id": "north_from_south_RM_DecayDrake_r2"
     }
    ],
-   "reset_at": "2026-11-19T14:00:26Z",
-   "status": "CALIBRATED",
+   "reset_at": "2026-11-23T05:25:47Z",
+   "status": "UNTESTED",
    "timeout_s": 2400,
    "was": "CALIBRATED"
   },
@@ -1226,7 +1226,7 @@
    ],
    "hash": "0ee972edfd0c3f9c",
    "last_run": {
-    "at": "2026-11-22T23:49:27Z",
+    "at": "2026-11-23T05:25:47Z",
     "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
@@ -1259,9 +1259,9 @@
     "src/RimMandrake/rimflow/selftest_maturation.py",
     "--submit"
    ],
-   "hash": "eb7bf3cb09de3118",
+   "hash": "05ed27fe4f9bad69",
    "last_run": {
-    "at": "2026-11-22T23:49:27Z",
+    "at": "2026-11-23T05:25:47Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
@@ -1297,7 +1297,7 @@
      "id": "locked_version_passes"
     }
    ],
-   "reset_at": "2026-11-22T23:49:27Z",
+   "reset_at": "2026-11-23T05:25:47Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },

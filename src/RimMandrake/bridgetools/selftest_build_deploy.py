@@ -139,6 +139,47 @@ def game_a_deploy_ignores_game_b(B):
           "b only / a+b / unattributed / none read %s, want [False, True, True, False]" % got)
 
 
+def own_take_is_no_hold(B):
+    """RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_EIGHT: the in-game visit's repair holds game a's lock and
+    runs this build as its child, under the take it exported (RM_HOST_GUARD_GEN). Its own take is no hold; another live
+    process's BENCH hold still is (every detached run is BENCH, so a seat name cannot tell them apart)."""
+    import subprocess
+    import tempfile as T
+    real = load()
+    real.GAME = "a"
+    rf = os.path.join(os.path.dirname(HERE), "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import game_lock as GL
+    import driver_lock as DL
+    path = os.path.join(T.mkdtemp(prefix="selftest_build_lock_"), "DRIVER_LOCK.json")
+    keys = ("RIMFLOW_DRIVER_LOCK", "RM_GAME_INSTANCE", "RM_HOST_GUARD_GEN", "RM_DRIVER_PID")
+    was = {k: os.environ.get(k) for k in keys}
+    os.environ["RIMFLOW_DRIVER_LOCK"] = path
+    for k in keys[1:]:
+        os.environ.pop(k, None)
+    sleeper = subprocess.Popen(["sleep", "60"])
+    got = []
+    try:
+        # the take of a parent run (a process that is not this one or an ancestor), exported to this child
+        r = GL.claim("a", "repair", seat="BENCH", identity=dict(DL.my_identity(), pid=sleeper.pid,
+                                                                  start=DL._proc_start(sleeper.pid)), path=path)
+        os.environ["RM_HOST_GUARD_GEN"] = str(r.get("generation"))
+        got.append(real.bridge_holder())
+        os.environ.pop("RM_HOST_GUARD_GEN")
+        got.append(real.bridge_holder())
+    finally:
+        sleeper.kill()
+        sleeper.wait()
+        for k, v in was.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    check(r.get("ok") and got == [None, "BENCH"], "own_take_is_no_hold",
+          "under the exported take / without it read %s, want [None, 'BENCH'] (%s)" % (got, r.get("line")))
+
+
 def main():
     B = load()
     tmp = tempfile.mkdtemp(prefix="selftest_build_deploy_")
@@ -234,6 +275,7 @@ def main():
         clean_waits_for_stage_lock(B, tmp)
         foreign_checkout_status(B, tmp)
         game_a_deploy_ignores_game_b(B)
+        own_take_is_no_hold(B)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("build deploy: %d failure(s)" % len(fails))

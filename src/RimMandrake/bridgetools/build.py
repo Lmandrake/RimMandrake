@@ -414,10 +414,27 @@ def bridge_holder():
         sys.path.insert(0, os.path.join(REPO_ROOT, "src", "RimMandrake", "rimflow"))
         import model
         d = model.game_a_lock_record()       # game a's driver lock, the one record (game_lock.py)
+        if d and d.get("holder") != "OWNER" and _held_by_my_take(model, d):
+            return None
         return d.get("holder") if d else None
     except Exception as e:  # noqa: BLE001
         print("  bridge hold check UNMEASURED (%s: %s)" % (type(e).__name__, e))
         return None
+
+
+def _held_by_my_take(model, d):
+    """Game a's live holder is this build's own take: it inherited the take (RM_HOST_GUARD_GEN, host_guard._reentrant)
+    or the holder is this process or an ancestor (game_lock.in_my_tree). The in-game visit's repair holds the lock and
+    runs this build as its child; seat names cannot tell that take from another run's, since every detached run is
+    BENCH (RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_EIGHT). His OWNER hold is never ours."""
+    import game_lock
+    import host_guard
+    try:
+        return bool(host_guard._reentrant(model.game_a_lock_path()) is not None
+                    or game_lock.in_my_tree(d.get("identity")))
+    except Exception as e:  # noqa: BLE001  could not look: the hold stands
+        print("  own-take check UNMEASURED (%s: %s); the hold stands" % (type(e).__name__, e))
+        return False
 
 
 def _my_seat():

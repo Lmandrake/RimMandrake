@@ -457,6 +457,8 @@ import os, sys
 d = os.environ["FAKE_PLAN_DIR"]
 with open(os.path.join(d, "build.log"), "a") as f:
     f.write(" ".join(sys.argv[1:]) + "\n")
+with open(os.path.join(d, "build_env.log"), "a") as f:
+    f.write("%s %s\n" % (os.environ.get("RM_HOST_GUARD_GEN", "-"), os.environ.get("RIMFLOW_SEAT", "-")))
 rc = int(os.environ.get("FAKE_BUILD_RC", "0"))
 if rc:
     print("CANNOT DEPLOY WHILE RIMWORLD IS RUNNING (the process list shows it). Nothing was written.")
@@ -471,7 +473,7 @@ class Companion:
 
     def __init__(self, fx, stays=False):
         self.fx, self.stays, self.reads = fx, stays, []
-        for n in ("built", "build.log"):
+        for n in ("built", "build.log", "build_env.log"):
             if os.path.exists(os.path.join(fx.pd, n)):
                 os.remove(os.path.join(fx.pd, n))
         b = os.path.join(fx.root, "fake_build.py")
@@ -551,6 +553,111 @@ def t_a_stale_companion_on_a_held_game_waits(fx):
           "WAIT_MARK (rc %s %s)" % (r[0], (r[1] or "")[:200]))
 
 
+class Lock:
+    """A _repair_lock stand-in: records claim and release beside the game's operations (one shared log)."""
+
+    def __init__(self, g, state="ok", gen=7):
+        self.g, self.state, self.gen = g, state, gen
+
+    def __call__(self, game, purpose, seat):
+        self.g.log.append(("claim", game, seat))
+        if self.state != "ok":
+            return self.state, "ArchBig: HELD by BENCH (pid 4009276), for: another run's staging", lambda: None
+        was = os.environ.get("RM_HOST_GUARD_GEN")
+        os.environ["RM_HOST_GUARD_GEN"] = str(self.gen)
+
+        def release():
+            if was is None:
+                os.environ.pop("RM_HOST_GUARD_GEN", None)
+            else:
+                os.environ["RM_HOST_GUARD_GEN"] = was
+            self.g.log.append(("release", game))
+        return "ok", "CLAIMED", release
+
+
+def t_a_repair_holds_the_game_for_its_whole_window(fx):
+    """RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_EIGHT: on 2026-11-22 at 21:07 PST the tick stopped ArchBig
+    for Pyrelands visit 6's companion rebuild without holding its lock; another run claimed the free lock mid-rebuild,
+    and build.py refused (`the bridge is held by BENCH (this seat: unset)`). The repair takes the lock before the stop,
+    its build runs under that take, and it frees the lock only after the game is up again."""
+    fx.plan(SYNC)
+    comp, g = Companion(fx), FakeGame(up=True)
+    st, txt = M.deploy_repair(fx.root, P, "a", None, g, "selftest repair", seat="BENCH", companion=comp, lock=Lock(g))
+    envp = os.path.join(fx.pd, "build_env.log")
+    benv = open(envp).read().split() if os.path.exists(envp) else []
+    check(st == "ok" and [x[0] for x in g.log] == ["claim", "stop", "launch", "release"] and benv[:1] == ["7"]
+          and os.environ.get("RM_HOST_GUARD_GEN") is None,
+          "a-repair-holds-the-game-for-its-whole-window: claim, stop, rebuild under the take (RM_HOST_GUARD_GEN), "
+          "start, release (state %s, ops %s, build env %s, %s)" % (st, g.log, benv, (txt or "")[:160]))
+
+
+def t_a_repair_on_a_game_another_run_holds_waits(fx):
+    fx.plan(SYNC)
+    comp, g = Companion(fx), FakeGame(up=True)
+    st, txt = M.deploy_repair(fx.root, P, "a", None, g, "selftest repair", seat="BENCH", companion=comp,
+                              lock=Lock(g, state="held"))
+    check(st == "wait" and txt.startswith(M.WAIT_MARK) and [x[0] for x in g.log] == ["claim"] and not comp.builds()
+          and g.up,
+          "a-repair-on-a-game-another-run-holds-waits: another run's live lock: a wait, the game left up, no rebuild "
+          "(state %s, ops %s, %s)" % (st, g.log, (txt or "")[:200]))
+    g2 = FakeGame(up=True)
+    st, txt = M.deploy_repair(fx.root, P, "a", None, g2, "selftest repair", seat="BENCH", companion=comp,
+                              lock=Lock(g2, state="blind"))
+    check(st == "fail" and not txt.startswith(M.WAIT_MARK) and [x[0] for x in g2.log] == ["claim"],
+          "a-repair-on-an-unreadable-lock-is-a-fault: a lock that could not be looked at: a fault named, nothing done "
+          "(state %s, ops %s, %s)" % (st, g2.log, (txt or "")[:200]))
+
+
+def t_the_real_repair_lock_takes_and_frees_this_process(fx):
+    """M._repair_lock on a temp lock file: free -> held by THIS process (not its parent, which for the systemd tick
+    never exits), RM_HOST_GUARD_GEN set while held; release -> FREE and the env restored; another live process's
+    lock -> held, nothing taken."""
+    import subprocess
+    import game_lock as GL
+    import driver_lock as DL
+    path = os.path.join(fx.root, "lock_a", "DRIVER_LOCK.json")
+    os.makedirs(os.path.dirname(path))
+    keys = ("RIMFLOW_DRIVER_LOCK", "RM_GAME_INSTANCE", "RM_HOST_GUARD_GEN", "RM_DRIVER_PID")
+    was = {k: os.environ.get(k) for k in keys}
+    os.environ["RIMFLOW_DRIVER_LOCK"] = path
+    os.environ.pop("RM_GAME_INSTANCE", None)
+    os.environ.pop("RM_HOST_GUARD_GEN", None)
+    sleeper = None
+    try:
+        st, txt, release = M._repair_lock("a", "selftest repair", "BENCH")
+        q = GL.query("a", pipe=False, path=path)
+        held_ok = (st == "ok" and q["state"] == "HELD" and (q.get("holder") or {}).get("pid") == os.getpid()
+                   and os.environ.get("RM_HOST_GUARD_GEN") == str(q.get("generation"))
+                   and os.environ.get("RM_DRIVER_PID") == str(os.getpid()))
+        utils = os.path.join(os.path.dirname(HERE), "Utils")
+        if utils not in sys.path:
+            sys.path.insert(0, utils)
+        import game_instance as GI
+        stop_gate = GI.bridge_refusal("a", "selftest stop", seat="BENCH")    # the stop's gate: our own take passes
+        release()
+        q2 = GL.query("a", pipe=False, path=path)
+        freed = (q2["state"] == "FREE" and os.environ.get("RM_HOST_GUARD_GEN") is None
+                 and os.environ.get("RM_DRIVER_PID") is None)
+        sleeper = subprocess.Popen(["sleep", "60"])
+        other = dict(DL.my_identity(), pid=sleeper.pid, start=DL._proc_start(sleeper.pid))
+        GL.claim("a", "another run", seat="BENCH", identity=other, path=path)
+        st3, txt3, _ = M._repair_lock("a", "selftest repair", "BENCH")
+        q3 = GL.query("a", pipe=False, path=path)
+        check(held_ok and stop_gate is None and freed and st3 == "held" and (q3.get("holder") or {}).get("pid") == sleeper.pid,
+              "the-real-repair-lock-takes-and-frees-this-process: held by pid %s with its generation exported, freed "
+              "on release, the stop's gate passes its own take, another live run's lock read as held (%s / %s / %s / %s %s)" % (
+                  os.getpid(), q.get("line"), stop_gate, q2.get("line"), st3, txt3[:120]))
+    finally:
+        if sleeper:
+            sleeper.kill()
+            sleeper.wait()
+        for k, v in was.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
 def main():
     fx = Fixture()
     try:
@@ -559,7 +666,9 @@ def main():
                   t_a_failed_deploy_is_a_fault, t_a_blind_plan_is_could_not_look, t_a_held_bridge_or_game_waits,
                   t_a_game_only_def_refuses, t_an_empty_or_add_only_plan, t_a_seatless_tick_stops_its_game,
                   t_a_stale_companion_rebuilds_with_the_game_down, t_a_stale_companion_and_drift_share_one_restart,
-                  t_a_failed_companion_build_is_a_fault, t_a_stale_companion_on_a_held_game_waits):
+                  t_a_failed_companion_build_is_a_fault, t_a_stale_companion_on_a_held_game_waits,
+                  t_a_repair_holds_the_game_for_its_whole_window, t_a_repair_on_a_game_another_run_holds_waits,
+                  t_the_real_repair_lock_takes_and_frees_this_process):
             safe(lambda: t(fx) is None, t.__name__[2:] + " ran")
     finally:
         fx.close()
