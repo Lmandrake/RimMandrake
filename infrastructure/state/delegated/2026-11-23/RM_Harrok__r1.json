@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Harrok",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [2.6, 2.6]: east 1024x1024 != 512x512; north 1024x1024 != 512x512; south 1024x1024 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a4ca8828c9c216c0f9d4c7f651c3cffb2ec4f8fb68ae10b089c82e92d772df01",
+  "east.png": "f113a3f41cb905a8b3675f95ca6788de8016a66266f20bf994ac26f695226c71",
+  "north.png": "714352337119ddbbd20107c2c704da5b2482c7ebdf81dfd041497fe7cceca673",
+  "scale.png": "38869dccf7efdacbf2847856b12ce46a6d6cd9413855d1eb6c2f0250bac0e81e",
+  "facings.png": "2073b39478f5c3aa7d00d01c8e8256b6859c4f55adb8ef75b56de92c30b0b36e"
+ }
+}

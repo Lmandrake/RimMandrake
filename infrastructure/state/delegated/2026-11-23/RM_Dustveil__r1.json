@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Dustveil",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [2.75, 2.75]: east 1024x1024 != 512x512; north 1024x1024 != 512x512; south 1024x1024 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "36a7e94fa70ad842acc9d7b476a43822a3282cfb991e5a023076336964ea1ff9",
+  "east.png": "fc4f8832655123abc9fb191f3e8be457adfbe96ca189b4107302347ebc9e417f",
+  "north.png": "8f2e83e244ece6487b5200ae4835dc3154b012eee4aa8e889655e04b3aa55b72",
+  "scale.png": "fa3822878ecc79340e93658c58882c91d13b2b2e0a0577b9c5fde1b9d94d0292",
+  "facings.png": "763941a609c94961e9017dbcbe17dd8d6ffd86df1b38888c7d46d50f0c150c27"
+ }
+}

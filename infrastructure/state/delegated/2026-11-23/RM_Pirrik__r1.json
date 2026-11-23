@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Pirrik",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [0.95, 0.95]: east 1024x1024 != 256x256; north 1024x1024 != 256x256; south 1024x1024 != 256x256"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "1dd524ae7fa4a0f7b415688508d97f20dcec2ca3dcd2c5555024a4d76f098ce9",
+  "east.png": "09d129ab75bf5bf5e41e5663411d2e30112439b7371dc1056e4ae5897f79f7aa",
+  "north.png": "a70e8f046db51fae07eb9bc33cffa94ee98b17d9e9cae1d72464644167e68f8c",
+  "scale.png": "6bb73c79a641ee2177759b16171494a4e4eea6509f29bb7218355ce77c02e0f6",
+  "facings.png": "497919176a0529d53c091cd0d5eec913a76d885fc1e43149a4f11b7494c1c1f8"
+ }
+}

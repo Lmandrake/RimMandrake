@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Mirrak",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [2.0, 2.0]: east 1024x1024 != 256x256; north 1024x1024 != 256x256; south 1024x1024 != 256x256"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9d6e42dc766fe3c831a3d527ce68317468126f03e8965be9c02da7cf0587129d",
+  "east.png": "a260f961c72957edf55850efc8efc59797e4bfc1db100787e5ac11d0db03ace4",
+  "north.png": "d5552609f6eb48c2d48f25c8fbb94aec29237e78ebe0555c0a5410fd1bee05f2",
+  "scale.png": "bd673ffef1405850c66516366b268570684d3ae48a3772eedb43c3eddf3ac77c",
+  "facings.png": "db0a24988b11fdcd8d6620923445d20885a71a29c717da8cf7f508e8e1b0be1d"
+ }
+}
