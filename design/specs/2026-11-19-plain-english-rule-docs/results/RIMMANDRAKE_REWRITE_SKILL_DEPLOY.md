@@ -10,14 +10,14 @@ Also: skills/rimworld-deploy/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 24,334 | 33,129 |
-| words in linted prose | 2,861 | 4,366 |
-| STE violations per 100 words | 4.89 | 1.37 |
-| sentences over 20 words | 61 | 13 |
-| flagged lines (mechanical) | 30 | 28 |
+| bytes | 24,334 | 33,324 |
+| words in linted prose | 2,861 | 4,395 |
+| STE violations per 100 words | 4.89 | 1.39 |
+| sentences over 20 words | 61 | 14 |
+| flagged lines (mechanical) | 30 | 25 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 11 | 0 that this run could resolve |
 
-Of the 13 long sentences, 11 are short sentences that the lint joined at a bold lead, an emoji or a code span. Two are single
+Of the 14 long sentences, 12 are short sentences that the lint joined at a bold lead, an emoji or a code span. Two are single
 sentences: the old bold rule "When enabling a mod that leans on another mod's C#", kept word for word, and the last sentence of
 the gated-out bullet (21 words). The front matter (`description` included) and every heading are byte for byte.
 
@@ -86,7 +86,9 @@ a second fresh Opus reader read the repaired parts once. That reader found 5 thi
 
 The fifth is not repaired. argparse takes an abbreviation such as `--inst ArchSmall`, and the early reader of `--instance` does
 not see it, so that run would write ArchBig's folder. Nobody has reported it, and no doc that this run read writes that form: not
-worth the touch. No reader read the last four repairs.
+worth the touch. No reader read the last four repairs. After the first landing
+(`19b2b9bbaf`), the prose check of `./publish` named 19 lines: 16 pronouns, 2 terms and 1 state. All are repaired in the same run, the
+slogan "It is PER-FILE, not per-mod" included (now "A hold is PER-FILE, not per-mod"). No reader read those repairs.
 
 ## Conflicts and stale lines: settled
 

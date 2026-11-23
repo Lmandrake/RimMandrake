@@ -29,9 +29,7 @@ C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>   ← what
 **Nothing syncs them.** If you edit only the repo, the change never reaches the game, and nothing tells you. There is no
 error and no red text. The def is simply not there.
 
-- An edit of the repo alone cost a whole test cycle once. A xenotype and its pawnkinds were written and reported ready. They
-  were invisible in
-  game, because nobody had touched the deployed copy.
+- An edit of the repo alone cost a whole test cycle once. A xenotype and its pawnkinds were written and reported ready. The new defs were invisible in game, because nobody had touched the deployed copy.
 - **And never edit in place under `Mods/`.** That copy is disposable and is not in version control. The next `--apply`
   overwrites it.
 
@@ -40,7 +38,7 @@ error and no red text. The def is simply not there.
 - Edit and commit in your seat clone (`/home/mandrake/rm/<seat>`) or in the helper clone that your brief names.
 - Run `deploy_custom_mods.py` from that clone. The tool plans and copies from the clone that holds it.
 - Build a C# mod with `python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>`. The tool stages on
-  `D:\ClaudeWork\rimmandrake\build` and builds with Windows dotnet. Then it copies the DLL and the `.srchash` back as a pair.
+  `D:\ClaudeWork\rimmandrake\build` and builds with Windows dotnet. Then the tool copies the DLL and the `.srchash` back as a pair.
 - `D:\Luke\dev\RimMandrake` is a read-only mirror of origin/main. Windows tools read it. Nothing writes it.
 
 🔴 **A subagent's clean `dotnet build`/`validate_patch.py` pass, plus a real commit+push, is NOT proof the fix was deployed.**
@@ -53,7 +51,8 @@ error and no red text. The def is simply not there.
 
 🔑 **"Deployed" and "active" are separate states with nothing reconciling them.**
 
-- `deploy_custom_mods.py` writes files. It never touches the mod list, and that is correct. It even PRINTS "not enabled in
+- `deploy_custom_mods.py` writes files. The tool never touches the mod list, and that is correct. The tool even
+  PRINTS "not enabled in
   ModsConfig", but nobody reads that flag.
 - A mod can be on disk and absent from `ModsConfig.xml`. Such a mod is inert: it spawns nothing, with no message. That state
   can last a long time before anyone sees it.
@@ -153,7 +152,7 @@ python3 skills/rimworld-modding/scripts/validate_patch.py <file> \
 - One patch file took about 4 minutes with all three roots (2026-11-23). Run it with a timeout above that, to a file.
 
 🔴 **The Mods folder is not optional.** Our own `mandrake.*` mods are there, not in the Workshop content. Without that
-root, a correct `ParentName` that points into another mod of ours reads as "resolves to no def". That is a false failure.
+root, a correct `ParentName` that points into another mod of ours reads as "resolves to no def". Such a reading is a false failure.
 
 ⚠️ **`--live` and `--defs` are orthogonal, and only `--defs` checks xpaths.**
 
@@ -166,7 +165,7 @@ root, a correct `ParentName` that points into another mod of ours reads as "reso
 (2026-09-22).
 
 - So "does this def resolve against the live mod list" is UNMEASURABLE from the laptop.
-- Say so. Give the check to a session on the Windows Desktop. Do not close the item on an assumption.
+- Say so. Give the check to a session on Archmagi, the Windows Desktop. Do not close the item on an assumption.
 
 ⚠️ **`--defs` inherits the LIVE `ModsConfig.xml`**, and another seat may have cut that list to a spike (a small test list).
 
@@ -191,16 +190,15 @@ diff <(grep -o '<li>[^<]*</li>' infrastructure/state/modlists/ModsConfig.FULL.LA
 ```
 
 - That path is ArchBig's live list. ArchSmall's is `D:\ClaudeWork\rimmandrake\instances\b\Config\ModsConfig.xml`.
-- If the lists differ, find the cause first. The live file can be on a tier on purpose, or `FULL.LATEST` can be behind.
+- If the lists differ, find the cause first. The live file can hold a tier (a smaller test list) on purpose, or `FULL.LATEST` can be behind.
 - Read the `N active mods … -> M def files` line before you trust any verdict. **If N is not the count of the list that the
   game will load, you are validating against a stack the game does not load.** Parse `activeMods` for that count.
 - 0 errors is the bar.
 
-⚠️ **It reads `Patches/` and `Defs/`, and each run prints what it did not scan.**
+⚠️ **`validate_patch.py` reads `Patches/` and `Defs/`, and each run prints what it did not scan.**
 
-- For a def file, the tool checks the XML parse, the comment bodies and missing or duplicate defNames. It also checks
-  `ParentName`, `Class` attributes and texture paths.
-- The tool does not check field names, field types, value ranges or C# class members. It cannot see a node that a patch
+- For a def file, the tool checks the XML parse, the comment bodies and missing or duplicate defNames. The tool also checks `ParentName`, `Class` attributes and texture paths.
+- The tool does not check field names, field types, value ranges or C# class members. The tool cannot see a node that a patch
   creates at load.
 - Give the tool the whole mod folder, so that it lists every XML, `About.xml` included. If you give it less, parse every
   other XML
@@ -231,10 +229,9 @@ game.
   `--apply`." If you act on that, you override an owner
   ruling, and it looks like housekeeping.
 
-**It is PER-FILE, not per-mod.** A live mod can have two held files while the rest of it keeps deploying.
+**A hold is PER-FILE, not per-mod.** A live mod can have two held files while the rest of it keeps deploying.
 
-- Do not infer a hold from `ModsConfig.xml`. Absence from that list proves only that a mod is INERT. It never proves that the
-  state is INTENDED.
+- Do not infer a hold from `ModsConfig.xml`. Absence from that list proves only that a mod is INERT. Absence never proves that the state is INTENDED.
 
 🔑 **"Not in the Workshop folder" is not "not available."** Copies of donor mod sources are in `vendor/mod_sources/`. Look
 there before you decide that a donor mod's XML or source is out of reach.
@@ -253,7 +250,7 @@ More traps for this section: [references/traps.md](references/traps.md) § 5. Fi
 - The packageId is **a ruling to ask for, not a file to invent**. A packageId is an identity. A guess ships a name that
   nobody
   chose.
-- Hold the mod with its reason, and put the decision to the Conductor. A new packageId follows
+- Add a `DEPLOY_HOLD.txt` line for the mod with its reason (§5), and put the decision to the Conductor. A new packageId follows
   `design/NAMING_SCHEME_PLAN.md`.
 
 ⚠️ **That refusal message can point at the wrong field.**
@@ -308,7 +305,7 @@ A DLL that a game has loaded **cannot be written while that game runs**. The fil
 
 ⚠️ **But `WinError 1224` is not the only lock failure, and the other one is silent.**
 
-- `deploy_custom_mods.py --apply` once printed the `~` plan line of the DLL and "Deployed N file(s)". But it had
+- `deploy_custom_mods.py --apply` once printed the `~` plan line of the DLL and "Deployed N file(s)". But the tool had
   SKIPPED the locked assembly with no message. The only sign was the printed file count: it did not match the count of plan
   lines.
 - A TRUNCATING copy (`shutil.copy2`, `open(dst, "wb")`) of a locked file fails with `[Errno 22] Invalid argument`. An
@@ -317,12 +314,11 @@ A DLL that a game has loaded **cannot be written while that game runs**. The fil
   `shutil.copy2`.
 - So the XML half of a deploy can land while the DLL half does not. Then every def whose comp `Class` is in that DLL is
   discarded.
-- The tool now prints `FAILED to write`, then `STILL DIFFERS`, and exits 1. It still prints "Deployed N file(s)" when any
+- The tool now prints `FAILED to write`, then `STILL DIFFERS`, and exits 1. The tool still prints "Deployed N file(s)" when any
   other
   file landed.
 - Run again when the game is really gone. Compare the deployed count with the plan count before you trust either "Deployed"
-  line. `VERIFIED in sync` is the proof for each `+` and `~` file that no hold covers. It
-  does not count a `-` file that the tool kept: the game still loads that file.
+  line. `VERIFIED in sync` is the proof for each `+` and `~` file that no hold covers. That line does not count a `-` file that the tool kept: the game still loads that file.
 
 ⚠️ **`MayRequire` checks the MOD, never the TYPE — it is no protection against an assembly that is PRESENT but STALE.**
 (2026-09-21)
@@ -382,7 +378,7 @@ arithmetic.** The table shows one way that a `current` verdict of `refresh.py` f
   freshness verdict is `refresh.py`'s.
 - The known holes are in `observed/LIVE.md`. Its list of empty types is of the 2026-08-15 dump. Read it for the kinds of
   blind spot, not for a count.
-- **Do not re-derive those facts**, and do not copy the numbers into another doc. They rot there.
+- **Do not re-derive those facts**, and do not copy the numbers into another doc. Copied numbers rot there.
 
 More traps for this section: [references/traps.md](references/traps.md) § 7b. 🔴 Is this artifact CURRENT? Never answer from a timestamp.
 
@@ -393,7 +389,7 @@ More traps for this section: [references/traps.md](references/traps.md) § 7b. �
     is
     its removal.
 - **Enable compatibility-patch mods LAST in load order.** Patches apply in load order. A fix-up mod that loads before the mod
-  it fixes patches a def that has not been redefined yet. Then the redefinition wins. This is the most common reason why a
+  it fixes patches a def that has not been redefined yet. Then the redefinition wins. A fix-up mod that loads too early is the most common reason why a
   correct patch appears to do nothing.
 - **One mod at a time, verified before the next, unless the load is shared on purpose.**
   `skills/rimworld-load-round/SKILL.md` §3 says which changes can share a
@@ -497,7 +493,7 @@ tool names deployed against 238 built** — 670 KB of IL, everything written tha
 - To tell the first cause apart, run `tool_surface()` of `src/RimMandrake/bridgetools/build.py` over the bytes of both DLLs.
   One is the built DLL, and one is in the `BridgeTools` folder of the game's install.
 - To tell the other two apart, read `tool_names_from_source` of `src/RimMandrake/bridgetools/tool_metadata.py`. A tool in the
-  source and in neither DLL is gated out of the build, or its DLL is not built yet.
+  source and in neither DLL is gated out of the build, or nobody has built its DLL since.
 - `tool_surface()` reads the exact set of `[Tool]` names from the metadata of the DLL. The function is no longer a byte scan.
   A name in
   one DLL and not in the other is a real difference. The read compares names only: a tool that got worse shows no difference.
