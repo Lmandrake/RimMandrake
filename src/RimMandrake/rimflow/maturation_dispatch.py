@@ -1313,7 +1313,8 @@ def cert_rerun_decide(cfg, s, f, row, put, now, to="blind_challenge", what="the 
             put("live", "certificate rerun %s published %s; this tree has not synced it yet, so the certificate read "
                 "here predates it" % (prior["unit"], mine["published"]))
             return "decided"
-        elif prior.get("unit") and mine and AUT.wait_refusal(str(mine.get("error") or "")):
+        elif prior.get("unit") and mine and (mine.get("race") or AUT.wait_refusal(str(mine.get("error") or "")) or (
+                "stopped on a conflict in: design/concepts/%s/version/test_table.json" % mod) in str(mine.get("error"))):
             # the rerun was refused a pool clone, a cause that ends by itself: it starts again, no try spent, never a
             # form repair (RIMMANDRAKE_UNBLOCK_PYRE_VISIT_SIX_HELD_BY_AN_ART_PICK_THAT_IS_HIS)
             void = "the rerun %s waited on a cause that ends by itself (no try spent): %s" % (
@@ -1441,10 +1442,19 @@ def cert_rerun_worker(mod, key, unit, runner=subprocess.run, take=None, now=time
             p = runner(["./publish", "-m", "maturation: %s certificate rerun on its build (dispatch, zero tokens)" % mod,
                         rel], cwd=clone, timeout=900, **kw)
             m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", (p.stdout or "") + (p.stderr or ""))
+            out = (p.stdout or "") + (p.stderr or "")
+            hit = re.search(r"stopped on a conflict in: (\S+?)\.?\s", out + " ")
             if m:
                 res["published"] = m.group(1)
+            elif hit and hit.group(1).rstrip(".") == rel:
+                # a newer table reached origin while the rerun worked (Pyrelands, 2026-11-22: a testq-blocks commit in
+                # its 449 s): the stamp commit is derived and this clone has one owner, so it is dropped and the tick
+                # starts the rerun again on the new table (cert_rerun_decide), never a hand merge
+                runner(["git", "reset", "--hard", "origin/main"], cwd=clone, timeout=120, **kw)
+                res.update(race=True, error="RERUN RACE: a newer %s reached origin while the rerun worked; its stamp "
+                                            "commit was dropped and the rerun starts again" % rel)
             else:
-                res["error"] = "publish exit %d: %s" % (p.returncode, ((p.stdout or "") + (p.stderr or ""))[-300:])
+                res["error"] = "publish exit %d: %s" % (p.returncode, out[-300:])
         else:
             res["note"] = "the table did not change"
     except Exception as e:      # noqa: BLE001  the result says what failed; the tick reads it

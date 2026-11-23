@@ -84,6 +84,12 @@ for the Conductor's hand. The refusal texts of that night are in the dispatch st
   (neither open nor done). It starts no repair run, and the mod's own act goes on in the same tick.
 - **a-pool-refused-cert-rerun-starts-again.** A certificate rerun whose own result error is a wait refusal is started
   again on the same build key. It spends no try (`cert_rerun.tries` is unchanged) and owes no repair.
+- **a-raced-cert-rerun-publish-starts-again.** When the certificate rerun's publish stops on a replay conflict in the
+  mod's own `test_table.json` alone, the worker drops its stamp commit (`git reset --hard origin/main`: the clone has one
+  owner and the table is derived) and writes `race: true`. The tick then starts the rerun again on the newer table. It
+  spends no try and owes no repair. A result written before this rule has no `race` field, and the tick reads it by
+  that same conflict text. A conflict in any other file drops nothing and stays a form refusal. Pyrelands, 2026-11-22
+  4:19 PM PST: a testq-blocks commit landed during the rerun's 449 s.
 
 ## LIMITS
 

@@ -340,6 +340,70 @@ def t_a_pool_refused_cert_rerun_starts_again():
                   err[-40:], got, len(s.get("form_repairs") or []), s["cert_rerun"].get("tries")))
 
 
+def t_a_raced_cert_rerun_publish_starts_again():
+    """Pyrelands, 2026-11-22 4:19 PM PST: the rerun ran 17 deciders green, then its publish met a newer test_table.json
+    on origin (a testq-blocks commit landed during its 449 s) and stopped on a conflict. The worker drops its own stamp
+    commit (the clone has one owner and the table is derived) and the tick starts the rerun again, no try, no repair."""
+    import types
+    mod = "FakeFlow"
+    rel = "design/concepts/%s/version/test_table.json" % mod
+    conflict = ("REFUSED: replaying 45656f037753 onto origin/main stopped on a conflict in: %s. Your commit is intact "
+                "on HEAD; this clone has one owner, so merge it by hand, then re-run ./publish" % rel)
+    calls = []
+
+    def runner(argv, cwd=None, **kw):
+        calls.append(list(argv))
+        if "certificate" in argv:
+            return types.SimpleNamespace(returncode=0, stdout=json.dumps({"ok": True, "rows": [], "run": {}}), stderr="")
+        if argv[:2] == ["git", "status"]:
+            return types.SimpleNamespace(returncode=0, stdout=" M %s\n" % rel, stderr="")
+        if argv[0] == "./publish":
+            return types.SimpleNamespace(returncode=2, stdout="tree checks: 19 green\n" + conflict, stderr="")
+        return types.SimpleNamespace(returncode=0, stdout="", stderr="")
+    d = tempfile.mkdtemp(prefix="rerunrace_")
+    old = MD.rerun_dir
+    MD.rerun_dir = lambda: d
+    try:
+        res = MD.cert_rerun_worker(mod, "k", "rm-cert-rerun-x", runner=runner, take=lambda item: (d, "made"),
+                                   now=lambda: NOW)
+    finally:
+        MD.rerun_dir = old
+    dropped = ["git", "reset", "--hard", "origin/main"] in calls
+    check(res.get("race") and dropped and not res.get("published"),
+          "a-raced-cert-rerun-publish-starts-again: the worker reads a race %s and drops its commit %s" % (
+              res.get("race"), dropped))
+    # must stay a hand merge: a conflict in any other file drops nothing
+    conflict = conflict.replace(rel, "src/RimMandrake/rimflow/cli.py")
+    calls.clear()
+    MD.rerun_dir = lambda: d
+    try:
+        other = MD.cert_rerun_worker(mod, "k", "rm-cert-rerun-x", runner=runner, take=lambda item: (d, "made"),
+                                     now=lambda: NOW)
+    finally:
+        MD.rerun_dir = old
+    check(not other.get("race") and ["git", "reset", "--hard", "origin/main"] not in calls
+          and "publish exit" in str(other.get("error")),
+          "a-raced-cert-rerun-publish-starts-again: a conflict in another file is no race and drops nothing (%s)" %
+          str(other.get("error"))[:60])
+    key = MD.stale_key(CERT)
+    s = {"cert_rerun": {"key": key, "unit": "rm-cert-rerun-x", "at": NOW - 600, "failed": None, "tries": 1}}
+    f = {"certificate": CERT, "cert_rerun_result": dict(res, key=key, unit="rm-cert-rerun-x")}
+    row = {"mod": mod}
+    got = MD.cert_rerun_decide({}, s, f, row, lambda dd, w, need=None: None, NOW)
+    check(got == "launch" and not s.get("form_repairs") and row.get("cert_rerun_wait"),
+          "a-raced-cert-rerun-publish-starts-again: the tick starts it again (%s), owes %d repair(s)" % (
+              got, len(s.get("form_repairs") or [])))
+    # a result written before the worker read races (no `race` field) is read by its conflict text on the table
+    s = {"cert_rerun": {"key": key, "unit": "rm-cert-rerun-x", "at": NOW - 600, "failed": None, "tries": 1}}
+    f = {"certificate": CERT, "cert_rerun_result": {"unit": "rm-cert-rerun-x", "ok": False, "published": None,
+                                                     "error": "publish exit 2: tree checks green\n" + conflict.replace(
+                                                         "src/RimMandrake/rimflow/cli.py", rel)}}
+    row = {"mod": mod}
+    got = MD.cert_rerun_decide({}, s, f, row, lambda dd, w, need=None: None, NOW)
+    check(got == "launch" and not s.get("form_repairs"),
+          "a-raced-cert-rerun-publish-starts-again: an older result's conflict text starts it again (%s)" % got)
+
+
 def main():
     for t in (t_form_note_repairs_and_continues, t_form_refusal_names_its_repair, t_every_brief_carries_the_repair_line,
               t_a_launch_that_never_started_is_form, t_a_repair_launch_refused_names_the_conductor,
@@ -348,7 +412,8 @@ def main():
               t_the_trip_starts_a_repair, t_a_tick_with_stand_ins_launches_nothing_real,
               t_a_refused_repair_launch_reuses_its_filed_item, t_repairing_is_a_named_wait_never_paused,
               t_a_pool_refusal_is_a_wait, t_a_pool_refused_repair_launch_spends_no_try,
-              t_an_owed_pool_refusal_owes_no_repair, t_a_pool_refused_cert_rerun_starts_again):
+              t_an_owed_pool_refusal_owes_no_repair, t_a_pool_refused_cert_rerun_starts_again,
+              t_a_raced_cert_rerun_publish_starts_again):
         try:
             t()
         except Exception as e:      # noqa: BLE001  one test's crash is that test's FAIL
