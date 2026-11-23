@@ -6,7 +6,8 @@ Started 2026-11-23 2:28 AM PST (bound 5:28 AM).
 Why this visit: `rerun_relation.py` reads 30 of 31 checks touched by the C# since their rows (stepped pit relief
 52182cca96, floor depth ladder 5c870d5a36, and others).
 
-Bridge released 04:53 PST; ArchBig left running on his full list at the sc_walk map (healthy).
+Bridge released 04:53 PST. Continued by itself 04:58 PST (continuation 1): moat trace and six reruns, PIT_LOOK_1114_LIVE,
+OL_OWNER_LOOK_READS and the big-pit screenshots, on ArchBig, same deployed build. See "Continuation 1" below.
 
 ## Build and lists
 
@@ -15,7 +16,7 @@ Bridge released 04:53 PST; ArchBig left running on his full list at the sc_walk 
 - Lists: the 13-mod flowworks tier (modset_builder.py, all five DLC) for 28 checks; his full list (FULL.LATEST, 315 mods)
   for sc_walk. Every row carries `build_match.py identity`.
 
-## Results: 27 PASS, 1 FAIL, 2 not run of 30, last row each [measured]
+## Results: 28 PASS, 1 FAIL, 1 UNMEASURED of 30 [measured]
 
 | check | verdict | runs | notes |
 |---|---|---|---|
@@ -23,8 +24,9 @@ Bridge released 04:53 PST; ArchBig left running on his full list at the sc_walk 
 | sc_garden | PASS | 2 | run 1 FAIL, class HARNESS (below); rerun PASS after fix 8380450 |
 | sc_ice | PASS | 2 | run 1 UNMEASURED, class HARNESS (the same outside restore); rerun PASS |
 | sc_walk | PASS | 1 | his full list, 196 s |
-| sc_moat_raid | **FAIL** | 4 | class MOD, not fixed: filed RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_CAPTURE_FAILS_TWO_IN_THREE_ON_NEW_BUILD (below) |
-| PIT_LOOK_1114_LIVE, OL_OWNER_LOOK_READS | not run | 0 | out of time (the bound); neither decides a bar; owed in the LEFT OPEN note |
+| sc_moat_raid | **FAIL** | 10 | 2 capture FAILs and 1 control FAIL (class MOD) in the first 3 counted runs, then 6 PASS in a row on the same build; not fixed, held by RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS (below) |
+| PIT_LOOK_1114_LIVE | PASS | 3 | evening_20261113 list, his sitting save; 19/19 rows, the same row set as visit 5; run 1 was the bridge client's lock refusal (HARNESS, no call made), run 2 lacked the site read |
+| OL_OWNER_LOOK_READS | UNMEASURED | 1 | 1629 PASS, 0 FAIL, 1 BLOCKED, as visit 4; class HARNESS, unrepaired (below) |
 
 ### sc_garden: a pipeline defect, found and fixed in the sitting (HARNESS)
 
@@ -50,23 +52,43 @@ Bridge released 04:53 PST; ArchBig left running on his full list at the sc_walk 
 - Run 2 (03:49): MOAT_two_held_and_captured FAIL, 2 held, 1 made prisoner in 900 ticks, 0 wardens downed.
 - Run 3 (04:26): void (WSL interop fault, no game call).
 - Run 4 (04:27): MOAT_two_held_and_captured FAIL, 3 held, 1 prisoner, 2 wardens downed.
-- These rows passed in visits 5, 6 and 7. 15 C# commits landed since, among them 5d9004b9ce (stranded colonist rescue) and
-  ba94149031 (pawns walk under pit covers): candidates, not traced. Not fixed: the cause is not known and the bound did not
-  allow a capture-stage probe. Filed with its acceptance test (three PASS runs in a row). Bar moat_raid_sequence stays undecided.
+- Continuation 1 (05:04-05:19 PST, the same deployed build 6b52871479): 6 PASS in a row, each with a per-poll trace of
+  every unfinished capture's warden and captive (`moatCaptureTrace` in the evidence JSONs; the trace was a local harness
+  edit, reverted before commit so no decider changed).
+- So the build reads 2 capture FAILs and 1 control FAIL in 9 counted runs; visits 5-7 read 4 PASS in 4. That is no evidence
+  of a new-build regression (0 of 4 at a ~22% rate is likely by chance) [guess ~75%]. The failures are the known capture
+  faults of RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS: a capture that stalls with its warden able
+  (run 2), and wardens downed beside held raiders (run 4). The trace of run T050452 shows a held raider in AttackMelee at
+  the lip during the capture window. Melee from the pit floor to the rim is current design
+  (`RM_Patch_SuperdeepShooting.cs`: "denying it would be a change to melee, which ruling 23 does not authorise"), so the
+  fix is a design call, not known in the sitting. The trace item was superseded into that item, with this evidence noted.
+- The earlier MOD rows stand: the exit reader rightly refuses a later PASS that carries no mod fix. Bar moat_raid_sequence
+  stays undecided.
+
+### OL_OWNER_LOOK_READS: UNMEASURED, HARNESS, unrepaired
+
+- Big pit staged on the calm site (evening_20261113 list): plan, stage (186 s), fill, verify 253 PASS + 1 UNMEASURED (the
+  known label reader row). OL with --acts: 1629 PASS, 0 FAIL, 0 UNMEASURED, 1 BLOCKED (OL_no_surface_shadow_under_sheet).
+- The blind row needs a shadow draw-queue field in the mod's C# proof reader; a check repair may not touch the mod. Its
+  item, RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER, was dropped 2026-11-23 as not worth the touch.
+  OL decides no bar. For the Conductor: fund the reader, or rule the blind row out of OL.
 
 ## Owed cases
 
 - Road back: sc_walk, sc_fill_front, sc_fill_tiers, sc_garden, sc_hose_look, sc_pit_trap_raid, sc_source_pays,
   sc_trench_cover, sc_fetch_fallen, sc_geyser_tub, sc_ice, sc_hole_prison, sc_ways_out, sc_covered_pit, sc_hung_bridge:
   each PASS on this build. sc_hole_prison and sc_hung_bridge ran once here, not three times in a row.
-- Road back on OL_OWNER_LOOK_READS and PIT_LOOK_1114_LIVE: not run (time).
+- Road back on PIT_LOOK_1114_LIVE: PASS (pour labels 100, 1000 and 2048000 read). On OL_OWNER_LOOK_READS: run, UNMEASURED
+  (one BLOCKED row, above); the big-pit stage-reset row is absent and the spare pit is planned and dug (verify 253 PASS).
 - Blind cycle 4: sc_garden PASS on this build (the four Problems' scene). No planted fault ran this visit; visits 3 and
   4's readings stand.
 
 ## Beyond the checks
 
-No screenshots and no exploration this visit: the bound went to the garden diagnosis and the pipeline fix. Owed.
-Two strange things, both in `strange.jsonl`: the mid-run setting reset (filed, fixed) and the interop fault (explained).
+Continuation 1 took the big-pit captures (overview and the seven copies, dry to brim and 1.5 m tar) and looked at them.
+Small copies in `screenshots/` (under 1 MB each); full size in `D:\ClaudeWork\rimmandrake\flowworks_visit8_shots\`.
+Three strange things, all in `strange.jsonl`: the mid-run setting reset (filed, fixed), the interop fault (explained), and
+corpse wound overlays drawn on top of opaque tar (filed, RIMMANDRAKE_CUT_FLOWWORKS_CORPSE_WOUNDS_FLOAT_ON_TAR).
 
 ## The savegame
 
@@ -77,11 +99,12 @@ looks are today's, but its staged scenes were not re-checked on this build:
 ## Items filed
 
 RIMMANDRAKE_HOLD_WRAPUP_RESTORE_OFF_A_LIVE_OWNERS_DEBT (pipeline, fixed and closed, 8380450 and f459f47);
-RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_CAPTURE_FAILS_TWO_IN_THREE_ON_NEW_BUILD (MOD, open).
+RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_CAPTURE_FAILS_TWO_IN_THREE_ON_NEW_BUILD (superseded into
+RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS); RIMMANDRAKE_CUT_FLOWWORKS_CORPSE_WOUNDS_FLOAT_ON_TAR (MOD, open).
 
 ## Exit
 ```
-ingame_rows: {sc_dig_and_read: pass, sc_dig_finds: pass, sc_fill_front: pass, sc_fill_tiers: pass, sc_one_surface: pass, sc_source_pays: pass, sc_canal_fire: pass, sc_slime: pass, sc_pawn_height: pass, sc_pit_reads: pass, sc_covered_pit: pass, sc_ways_out: pass, sc_sluice: pass, sc_hose_look: pass, sc_one_network: pass, sc_trench_cover: pass, sc_hung_bridge: pass, sc_ice: pass, sc_moat_raid: fail, sc_hole_prison: pass, sc_toss_flame: pass, sc_fetch_fallen: pass, sc_islands: pass, sc_walk: pass, sc_pit_trap_raid: pass, sc_garden: pass, OL_OWNER_LOOK_READS: unmeasured, sc_geyser_tub: pass, sc_coating_wash: pass, PIT_LOOK_1114_LIVE: unmeasured}
+ingame_rows: {sc_dig_and_read: pass, sc_dig_finds: pass, sc_fill_front: pass, sc_fill_tiers: pass, sc_one_surface: pass, sc_source_pays: pass, sc_canal_fire: pass, sc_slime: pass, sc_pawn_height: pass, sc_pit_reads: pass, sc_covered_pit: pass, sc_ways_out: pass, sc_sluice: pass, sc_hose_look: pass, sc_one_network: pass, sc_trench_cover: pass, sc_hung_bridge: pass, sc_ice: pass, sc_moat_raid: fail, sc_hole_prison: pass, sc_toss_flame: pass, sc_fetch_fallen: pass, sc_islands: pass, sc_walk: pass, sc_pit_trap_raid: pass, sc_garden: pass, OL_OWNER_LOOK_READS: unmeasured, sc_geyser_tub: pass, sc_coating_wash: pass, PIT_LOOK_1114_LIVE: pass}
 strange_open: 0
 savegame: C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\FLOWWORKS_OWNER_REVIEW_VISIT4_FULL_20261121_1727.rws
 exit_met: false

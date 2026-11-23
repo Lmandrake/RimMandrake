@@ -1,0 +1,21 @@
+{
+ "log": [
+  {
+   "shots": {
+    "deepest_BP5_brim": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_8\\evidence\\bigpit\\bp_deepest_BP5_brim.png",
+    "BP0_dry": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_8\\evidence\\bigpit\\bp_BP0_dry.png",
+    "BP1_0.5m": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_8\\evidence\\bigpit\\bp_BP1_0.5m.png",
+    "BP2_1m": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_8\\evidence\\bigpit\\bp_BP2_1m.png",
+    "BP3_2m": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_8\\evidence\\bigpit\\bp_BP3_2m.png",
+    "BP4_3m": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_8\\evidence\\bigpit\\bp_BP4_3m.png",
+    "BP5_brim": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_8\\evidence\\bigpit\\bp_BP5_brim.png",
+    "BP6_tar1.5m": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_8\\evidence\\bigpit\\bp_BP6_tar1.5m.png",
+    "overview": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_8\\evidence\\bigpit\\bp_overview.png"
+   }
+  },
+  {
+   "elapsed_s": 19.9
+  }
+ ],
+ "rows": []
+}

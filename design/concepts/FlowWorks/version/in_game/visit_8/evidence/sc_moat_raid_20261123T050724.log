@@ -1,0 +1,4 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\design\concepts\FlowWorks\version\in_game\visit_8\evidence\sc_moat_raid_20261123T050724.json 
+[bridge split] 136.2 s wall: load 0.5 / ticks 4.4 / reads 4.4 / other 94.3 / outside calls 32.6 s
+[bridge split] WARN 262 calls of jawa/flowworks_excavation_drive (10.9 s): batch them
+[bridge split] WARN 244 calls of jawa/static_call (10.3 s): batch them

@@ -1,0 +1,119 @@
+[
+ {
+  "name": "deepest_BP5_brim",
+  "cx": 69.0,
+  "cz": 99.0,
+  "rootSize": 13.0,
+  "rect": [
+   61,
+   91,
+   16,
+   16
+  ],
+  "why": "the deepest water copy (brim): owner asked for this one"
+ },
+ {
+  "name": "BP0_dry",
+  "cx": 50.0,
+  "cz": 119.0,
+  "rootSize": 13.0,
+  "rect": [
+   42,
+   111,
+   16,
+   16
+  ],
+  "why": "water fill 0 notches"
+ },
+ {
+  "name": "BP1_0.5m",
+  "cx": 69.0,
+  "cz": 119.0,
+  "rootSize": 13.0,
+  "rect": [
+   61,
+   111,
+   16,
+   16
+  ],
+  "why": "water fill 1 notches"
+ },
+ {
+  "name": "BP2_1m",
+  "cx": 88.0,
+  "cz": 119.0,
+  "rootSize": 13.0,
+  "rect": [
+   80,
+   111,
+   16,
+   16
+  ],
+  "why": "water fill 2 notches"
+ },
+ {
+  "name": "BP3_2m",
+  "cx": 107.0,
+  "cz": 119.0,
+  "rootSize": 13.0,
+  "rect": [
+   99,
+   111,
+   16,
+   16
+  ],
+  "why": "water fill 4 notches"
+ },
+ {
+  "name": "BP4_3m",
+  "cx": 50.0,
+  "cz": 99.0,
+  "rootSize": 13.0,
+  "rect": [
+   42,
+   91,
+   16,
+   16
+  ],
+  "why": "water fill 6 notches"
+ },
+ {
+  "name": "BP5_brim",
+  "cx": 69.0,
+  "cz": 99.0,
+  "rootSize": 13.0,
+  "rect": [
+   61,
+   91,
+   16,
+   16
+  ],
+  "why": "water fill 8 notches"
+ },
+ {
+  "name": "BP6_tar1.5m",
+  "cx": 88.0,
+  "cz": 99.0,
+  "rootSize": 13.0,
+  "rect": [
+   80,
+   91,
+   16,
+   16
+  ],
+  "why": "tar fill 3 notches"
+ },
+ {
+  "name": "overview",
+  "cx": 78.5,
+  "cz": 107.5,
+  "rootSize": 30.0,
+  "rect": [
+   40,
+   89,
+   77,
+   43
+  ],
+  "why": "the whole series"
+ }
+]

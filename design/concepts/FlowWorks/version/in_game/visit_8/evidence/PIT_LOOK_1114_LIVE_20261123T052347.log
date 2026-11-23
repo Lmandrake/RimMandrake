@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\FlowWorks\northstar\pit_look_1114_live.py", line 101, in <module>
+    SECTIONS[name]()
+    ~~~~~~~~~~~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\FlowWorks\northstar\pit_look_1114_live.py", line 34, in pour_labels
+    got = static("RimMandrake.FlowWorks.RM_GodLiquidMath", "StepLabel", litres)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\FlowWorks\northstar\pit_look_1114_live.py", line 26, in static
+    r = B.call("jawa/static_call", type=type_, method=method, args=args) or {}
+        ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\validation_core.py", line 148, in call
+    r = self._raw(tool, kw) or {}
+        ~~~~~~~~~^^^^^^^^^^
+  File "D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\validation_core.py", line 321, in _raw
+    return self.S.call(tool, kw, check=False)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\rimbridge_client.py", line 1384, in call
+    return self._call_one(tool, params, check)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\rimbridge_client.py", line 1406, in _call_one
+    raise DriverHeldError("refusing %s: %s. Wait for `rimflow bridge who` to read free, or take the bridge; "
+                          "to cross him on purpose set %s=<why>" % (tool, crossed, CROSS_ENV))
+rimbridge_client.DriverHeldError: refusing jawa/static_call: the driver lock is held by BENCH for 'FlowWorks visit 8 continuation: evening list up' (holder process not inspectable from here; heartbeat 32 s old); this call would change the game under it; from Windows python, run it under the holder's take: `python3 src/RimMandrake/rimflow/game_lock.py run <a|b> --for "<what>" -- python.exe ...`. Wait for `rimflow bridge who` to read free, or take the bridge; to cross him on purpose set RM_BRIDGE_CROSS_WHY=<why>
