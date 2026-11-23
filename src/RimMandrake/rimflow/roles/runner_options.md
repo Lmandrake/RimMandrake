@@ -67,7 +67,7 @@ Use the repository's tools and inspect their results explicitly. The operator mu
   - fresh process identity.
 - **The evidence.** Preserve raw receipts. Never flip a status or touch evidence merely to satisfy an mtime gate.
 - **The rest of the run.** Supply these:
-  - settings/snapshot debts;
+  - settings/snapshot debts (each setting and snapshot that the run changed and must restore, step 9);
   - pilot diagnosis after three non-passes;
   - exact readbacks;
   - first-exception investigation;
@@ -141,8 +141,8 @@ run in Windows Python. WSL Python runs offline checks and orchestration.
    - At three non-passes, obtain independent pilot diagnosis before you repeat.
    - Build/deploy/restart for changed C# or XML, then rerun.
    - Never relabel an old receipt.
-   - Obtain a fresh independent Whittle judge (the Whittle loops are retired). The judge works from the frozen
-     statement and raw evidence, without builder conclusions.
+   - Obtain a fresh independent judge: a run that did not make the work. The judge works from the frozen statement and
+     raw evidence, without builder conclusions.
 9. Record the result on the ledger item. `verify --criterion` counts only against the registered build SHA.
    - Publish the tested artifact. Update `implemented` with the **unchanged** owed criteria. Then verify at that SHA.
      Do not claim that a different SHA was tested just to close the item.

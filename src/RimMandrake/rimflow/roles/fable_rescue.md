@@ -88,7 +88,7 @@ More effort on the same path was already tried. Your task is to change the path.
    The dead zone rested on a builder's habit, not a bar.
 5. **An old check that goes red is evidence about your change.** A check that was green before your change and is red
    after it tells you something. Do not edit that check. Find the cause. (On Slack, a 2026 snap check went red on the
-   new whip. The cause was real, and the test went back untouched.)
+   new whip. That check counts the sharp kicks at the tip of a live cord, `LaneAChecks.cs`. The cause was real, and the test went back untouched.)
    - After that, the check can still be truly wrong while its bar still means the same. Then repair the check
      yourself, in this run (owner, 2026-11-20: *"I'm really tired of "throwing things back" rather than fixing
      in-place... if there are strong checks to validate in place, that can be overcome."*).
@@ -133,7 +133,7 @@ road-back fixer's briefs (item RIMMANDRAKE_TEACH_OFFLINE_MODEL_FIRST_BUILD; self
      changes, the results that rest on it are stale until a re-run.
    - The build stage is the folder on D: where `src/RimMandrake/Utils/winbuild.py` builds a mod. A long measurement
      holds the shared build stage against every other run. If you can, use a separate build stage folder for the
-     measurement.
+     measurement: in Python, `winbuild.stage_build(csproj, stage_name="<name>")`.
 
 **3. Prove any copy agrees with the game, then run the isolating experiment.**
    - You can copy an instrument or a mechanic outside the game. Python is preferred for geometry, numbers and rules.
