@@ -890,7 +890,7 @@
    "id": "look_menu_icons",
    "what": "Each look that the player can pick in a Gimme Some Slack look menu (the build menu's look choice and the Restyle button) shows its own icon, so the player tells the looks apart before reading a label. The icon for a look is the same picture that every RimMandrake mod with these looks shows for it.",
    "impl": "absent",
-   "search_scope": "grep of src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs (MenuIcon draws strand art per look and the switch's own art) and of src/RimMandrake/_Shared for a look-icon piece: none (no _Shared/StyleIcons); the four icon pictures are kept in the art store, not installed (design/specs/2026-11-20-vanilla-electrical-art-home/commissions.md)",
+   "search_scope": "grep of src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs (ConduitStylePicker.Icon draws the strand art of a look for conduit and the style def's own art for a switch or lamp) and of src/RimMandrake/_Shared for a shared look-icon piece: none; the four icon pictures are kept in the art store, not installed (design/specs/2026-11-20-vanilla-electrical-art-home/commissions.md)",
    "proof": "missing",
    "scope": "opened_by_owner",
    "scope_source": "OWNER:1795218772062482262",

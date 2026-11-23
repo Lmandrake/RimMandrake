@@ -553,3 +553,10 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Its numbered evidence (6 cycle, visit and arrival paths) is set aside in `version/previous/0.1.1`.
 - Was, "Stage now": - **Stage now:** Version passed on his word, since 2026-11-23 12:21 AM PST (`version/stage_record.json`).
 - Record: `version/stage_record.json`.
+
+### 2026-11-23 2:29 AM PST, re-pin of record.json (by DESIGNER)
+
+- The preflight run on 0.2.0 refused `named_defs_and_symbols_real` on `MenuIcon` and `StyleIcons`: words in the
+  `look_menu_icons` search_scope, not symbols of the code. The search_scope now names `ConduitStylePicker.Icon`. No bar
+  text changed; `version/bars.md` re-pins record.json (re-pin rule, 2026-11-14).
+

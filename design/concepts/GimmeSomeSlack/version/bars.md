@@ -13,7 +13,7 @@ Lock commit: `403dab5985a7d5e32e5545a6d44fa068b7415c3c`. Written by `maturation.
 | `design/concepts/GimmeSomeSlack/scenes.json` | `f1517819fd63e0d874a21d6fa553cafc2045e3ac` | locked input |
 | `design/concepts/GimmeSomeSlack/floor.json` | `c1d425ed7da4dd6f54a6f8eb296bda78e8d2cd4e` | locked input |
 | `design/concepts/GimmeSomeSlack/exam.json` | `edef19a6668cdfb69592a3b7985562c64ad6b4b7` | locked input |
-| `design/concepts/GimmeSomeSlack/record.json` | `5bb07f853d4f9569cb83bda29e4981ce44acbf6e` | locked input |
+| `design/concepts/GimmeSomeSlack/record.json` | `c9d79abf2ef4f5c9546644a0c0b0d60f57b8610d` | locked input (re-pinned 2026-11-23: the look_menu_icons search_scope named two symbols that do not exist; wording only, no bar changed; journal) |
 | `design/concepts/GimmeSomeSlack/plan.md` | `2021a347392bfbb57a37820a7963249446820983` | locked input |
 | `design/concepts/GimmeSomeSlack/stage.json` | `403ef858733385aae13902459ae5ec9645e5b7c5` | locked input |
 | `design/concepts/GimmeSomeSlack/coverage_verdict.json` | `0c43807d26b0b5190b0fa289fc76bc2008274220` | locked input |
