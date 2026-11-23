@@ -405,7 +405,7 @@ The fastest methods:
 | Inputs | The Stage 7 brief; a dense, labelled savegame. | CARRIED (rule 5) |
 | Outputs | His words, verbatim, in the ledger. Each thing he says becomes one line item with a class: mod fault, test-map fault, test-tool fault, art, new bar, or question. Each pass he gives is pinned. | CARRIED (rules 2a and 2e) |
 | Exit ("ready" means) | He passes the version. The pass record is written: date, git commit, bars, evidence, cost, cycles. | CARRIED (Design Versions draft §3.7); the pass is his alone |
-| Road back | A Problem (a defect, or something a player would reject as strange or disappointing) stays in this version. The Problem goes to the lowest stage that can show it. Polish goes to the mod's Polish list, confirmed with him. A Divergent idea goes to the next version. His objection closes only on his own later look, as a labelled cell in the next save he opens anyway. | CARRIED (his cards of 2026-11-13 and 2026-11-12) |
+| Road back | A Problem (a defect, or something a player would reject as strange or disappointing) stays in this version. The Problem goes to the lowest stage that can show it. Polish goes to the mod's Polish list; the Conductor decides each move and tells him after (card 2026-11-23). A Divergent idea goes to the next version. His objection closes only on his own later look, as a labelled cell in the next save he opens anyway. | CARRIED (his cards of 2026-11-13 and 2026-11-12) |
 | Tracked on the mod | His minutes; objections by class; pinned passes; the pass record. | PROPOSAL |
 
 ---
@@ -557,7 +557,7 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 | A version is a locked vision, bars and tests | Stage 1's exit | CARRIED |
 | Problem stays, Polish goes to the Polish list | every road back, and the exit of Stages 4 and 5 | CARRIED (his card 2026-11-13) |
 | Divergent goes to the next version | the road from Stage 8, or from any stage, to intake | CARRIED |
-| The now-or-next question is asked at filing | whenever a line item is written, at any stage | CARRIED (his card 2026-11-13) |
+| The now-or-next question is decided at filing, by the Conductor, who tells him after | whenever a line item is written, at any stage | HIS (cards 2026-11-13 and 2026-11-23) |
 | A judge round is a release candidate, rc.N | each arrival at Stage 7 | CARRIED; "what counts" is PROPOSAL |
 | A judge may propose deferring a bar that keeps failing on weak evidence; the Conductor decides, tells him after, and writes one journal line per deferral so the Maturation Now page counts them. Making a bar easier or deleting it stays his call | the Conductor (the steward), after three cycles; he confirms or changes it when next available; a trial he may withdraw if deferrals happen too often | CARRIED (his card 2026-11-13); deferral trial HIS (typed, 2026-11-14) |
 | Pass record; passed tests become regression tests for later versions | after Stage 8 | PROPOSAL (Design Versions draft §3.7, not yet ruled) |
@@ -631,7 +631,9 @@ Six questions blocked the pilot. He answered all six on the evening of 2026-11-1
 - **Recommendation:** drop both as gates for built mods now; decide for unbuilt mods after the first one goes through.
 - **Answered** by his card 2026-11-14 19:22Z: *Keep both*. A gate is only a gate if its judge is trustworthy both ways, so
   the coverage judge's `covered` signs and its `not_covered` sends the Designer back only under a CALIBRATED brief, one
-  whose planted good and bad cases ran and came out as planted (`RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS`).
+  whose planted good and bad cases ran and came out as planted (`RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS`). A cleansed design passes these two and the whole-mod check
+  (`designer_cleanse.py review`): "All three, as today" (his card 2026-11-23; `standing_rulings.md` §A cleansed design
+  passes all three checks).
 
 **9. How many mods advance at once?** Until one of the four reaches Stage 8, the four advance and none is added (decision 8). This asks the limit after that.
 

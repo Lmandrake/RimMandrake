@@ -10,9 +10,9 @@ refusal contract (`refusal_contract.py`, `infrastructure/state/judge_calibration
 claims of review rounds two to four with the analyst's labels, 4 problems and 31 polish [labels ~70%]:
 `D:\ClaudeWork\rimmandrake\conductor\control_review_rounds_real_or_treadmill_20261118.md`.
 
-🔴 His stop of 2026-11-18 8:22 PM PST stands until this passes: no Codex or GPT review of pipeline code, and no ticket
-from a review finding. Running the calibration is itself a call to a review model: it needs the Conductor's word
-first. Passing this item does not restart reviews by itself: the Conductor takes that to him.
+Codex and GPT reviews of pipeline code run (owner, card 2026-11-23; `standing_rulings.md` §A boundary page before
+pipeline code). They do not wait for this item. Running the calibration is a call to a review model: it needs the
+Conductor's word first.
 
 ## refs
 file: src/RimMandrake/rimflow/refusal_contract.py
@@ -20,7 +20,7 @@ file: design/RimMandrake/standing_rulings.md
 
 ## criteria
 - `python3 src/RimMandrake/rimflow/acceptance/code_review_brief_accept.py` exits 0 (4 checks).
-- The Conductor has the calibration's result and decides the restart with him.
+- The Conductor has the calibration's result.
 
 ## verify
 python3 src/RimMandrake/rimflow/acceptance/code_review_brief_accept.py   # exit 0

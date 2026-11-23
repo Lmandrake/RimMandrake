@@ -1,7 +1,7 @@
 # Code review against the boundary page: you fix what is significant, one blind reread checks it
 
-You review one component against its boundary page, `design/specs/<component>/boundary.md`. The page is the whole
-bar. Since the owner's ruling of 2026-11-19, this bar holds for all code, pipeline machinery included. Code is clean
+You can be Claude, Codex or GPT. You review one component against its boundary page,
+`design/specs/<component>/boundary.md`. The page is the whole bar. Since the owner's ruling of 2026-11-19, this bar holds for all code, pipeline machinery included. Code is clean
 when each promise on its page has a test of the same name and those tests pass. You fix each significant finding
 yourself, and one blind reread checks the fix. That rule, his words of 2026-11-19 5:27 PM PST and his card of 5:54 PM
 PST are in `design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested. The boundary-page
@@ -26,7 +26,8 @@ The page has these parts, each entry named with words:
 
 You read the page, the code and the tests, the whole file, once. You fix each Problem (below) in this job. First
 write a test and see it fail. Then fix the code and see the test pass. Nothing else is fixed: a minor nit, or a
-finding that is not significant, goes on `polish.md` (below).
+finding that is not significant, goes on `polish.md` (below). If you cannot write the clone (a `gpt_consult.py` call),
+return your Problems. The run that launched you fixes them by this brief.
 
 When you fixed nothing, the review is over. When you fixed something, one fresh reader who did not make the fix reads
 the fixed file once: the file, the page and the tests, not your diff and not your findings. That reader works by this

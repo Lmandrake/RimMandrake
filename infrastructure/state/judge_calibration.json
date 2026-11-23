@@ -648,7 +648,7 @@
      "planted (code_review_calibration.py): the 21 claims that are a rare failure the page lists as not handled, or polish, by the same rule; must not be admitted as Problems"
     ]
    },
-   "hash": "8f487294f6f811ba",
+   "hash": "f5fc230be16849e5",
    "last_run": {
     "at": "2026-11-19T13:54:07Z",
     "cases": "came out the other way: c2.9, c3.4, c4.1, c4.14",
@@ -661,7 +661,7 @@
     "src/RimMandrake/rimflow/code_review_calibration.py",
     "run"
    ],
-   "note": "Reviews of pipeline code stay stopped until the owner says start (his stop of 2026-11-18 8:22 PM PST); CALIBRATED here does not restart them. Labels: `page_rule` in src/RimMandrake/rimflow/code_review_calibration_set.json (owner card 2026-11-19 13:27:48Z); this row needs all 35 as labelled, and the run's last line is the owner's pass mark on the 12 agreed claims.",
+   "note": "Codex and GPT reviews of pipeline code are on (owner, card 2026-11-23), whatever this row reads; only a CALIBRATED row's refusal sends work back. Labels: `page_rule` in src/RimMandrake/rimflow/code_review_calibration_set.json (owner card 2026-11-19 13:27:48Z); this row needs all 35 as labelled, and the run's last line is the owner's pass mark on the 12 agreed claims.",
    "planted": [
     {
      "expect": "pass",
@@ -804,7 +804,7 @@
      "id": "c4.15"
     }
    ],
-   "reset_at": "2026-11-21T16:51:22Z",
+   "reset_at": "2026-11-23T17:28:17Z",
    "status": "UNTESTED",
    "timeout_s": 540,
    "was": "UNTESTED"
@@ -1232,7 +1232,7 @@
    ],
    "hash": "0ee972edfd0c3f9c",
    "last_run": {
-    "at": "2026-11-23T14:24:18Z",
+    "at": "2026-11-23T17:28:19Z",
     "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
@@ -1501,9 +1501,9 @@
     "src/RimMandrake/rimflow/selftest_maturation.py",
     "--submit"
    ],
-   "hash": "54ad3c1956afad7e",
+   "hash": "22b4b87c1561b603",
    "last_run": {
-    "at": "2026-11-23T14:24:18Z",
+    "at": "2026-11-23T17:28:19Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
@@ -1539,7 +1539,7 @@
      "id": "locked_version_passes"
     }
    ],
-   "reset_at": "2026-11-23T14:24:18Z",
+   "reset_at": "2026-11-23T17:28:17Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },

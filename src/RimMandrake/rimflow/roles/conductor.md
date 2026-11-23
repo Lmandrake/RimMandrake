@@ -124,9 +124,8 @@ a note headed `QUESTION FOR OPERATIONS` on the parent item (`V3_ROLES_BUILD_EIGH
 - Operations then puts one sanitized note on the parent item: `OPS PROPOSAL <id>: <what it would change, in plan words>, for the Conductor's decision; owner-only file <path>`.
   The note holds no figure, account or reason.
 - These decisions are yours (owner 2026-11-19, `standing_rulings.md` §Only five acts stay his): a wider budget inside
-  his weekly partition and night reserve (card 2026-10-25), a raised cap, N or stage ceiling. The weekly partition is
-  the rough per-day share of each account up to its weekly reset. The night reserve is the capacity kept for evening
-  sessions with him (`design/RimMandrake/standing_rulings.md` §Account and capacity budget).
+  the account lines, a raised cap, N or stage ceiling. No capacity is kept for evening sessions with him: each account
+  runs to its line, at any hour (`design/RimMandrake/standing_rulings.md` §Account and capacity budget).
 - Read the file and decide. Record the decision as a note headed `OPS DECISION <id>`, with
   `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the decision and the reason>"`.
   Operations carries it out.
@@ -600,6 +599,8 @@ Design work is never done in-window.
   - everything but his five acts (`design/RimMandrake/delegation_policy.md` §2, owner 2026-11-19), logged as your act;
   - what reaches him, when, and in what form;
   - delegated §1 calls in session work;
+  - each move to a mod's Polish list, and current or next Design Version, at filing (owner, card 2026-11-23,
+    `standing_rulings.md` §Mod Design Versions). He reads each one in his digest;
   - doc-to-canon fixes.
 
   Four acts name `lost:` and `undo:` in the why: a cut of his OWNER bridge hold, a change to the account order or
@@ -635,8 +636,12 @@ Design work is never done in-window.
   significant change, or is this code really unstable? End a flag with `unflag <path> --why "<the answer>"`. You do
   this until the Friday run of `rm-findings-judge.timer` is wired to do it
   (`RIMMANDRAKE_WIRE_FRIDAY_JUDGE_TO_EXAMINE_FLAGGED_FILES_WEEKLY`).
-- A minor nit is one line on `polish.md`, never a ticket. Code with no page reads NO PAGE. Codex and GPT reviews of
-  pipeline machinery stay stopped. The full text of all three: `CLAUDE.md` §Code is clean when its promises are tested.
+- A minor nit is one line on `polish.md`, never a ticket. Code with no page reads NO PAGE. The full text of both:
+  `CLAUDE.md` §Code is clean when its promises are tested.
+- **Codex and GPT may review pipeline code** (owner, card 2026-11-23; `standing_rulings.md` §A boundary page before
+  pipeline code). Give the reviewer `roles/code_review.md`, or a prompt with the same significance rule, stop level and
+  polish route. Read the first three reviews and count the findings and the significant ones. Until then, that
+  Codex obeys the rule is UNMEASURED.
 - **Every judging brief that you write states its stopping level** (a blind-challenge judge, a coverage or art look, a
   sweep): the level that is enough (each named thing has a verdict with its evidence), one full inspection then one
   check of the repairs and never a third look, refusals only for a flaw (§The judge refuses flaws, not polish), and

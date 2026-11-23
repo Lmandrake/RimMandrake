@@ -32,8 +32,8 @@ PAUSED naming the count and the last fault (RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT
 `maturation_dispatch.py clear MOD` releases a mod's never-launched keys and its ended runs outside an open road back. A mod in `wait` with nothing named running, or with no class, for stalled_min
 (10) raises maturation.stalled (OPS_MATURATION_MOD_STALLED).
 
-Never: certify, lock (except the autolock above), classify Convergent/Divergent, loosen a bar, take the bridge or a game, launch on a mod with a
-live unit. The steward brief says so, and a steward is opus (judging another agent's work, Agent_Policy.md).
+Never: certify, lock (except the autolock above), loosen a bar, take the bridge or a game, launch on a mod with a
+live unit. Convergent or Divergent is the Conductor's call. The steward brief says so, and a steward is opus (judging another agent's work, Agent_Policy.md).
 Selftest: selftest_maturation_autonomy.py.
 """
 import hashlib
@@ -1716,9 +1716,12 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
 - You are the Maturation Pipeline's STEWARD for this one state: you do what the Conductor used to do by hand here, with
   his authority for this step only (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM). Read the evidence first; write what you read.
 - Never certify a concept tree, lock a version (the Dispatch tick itself locks a new mod at 0.1.0 under his
-  Evidence-for-Ask ruling), classify a change Convergent or Divergent, loosen a bar, change his rulings, or pass his
-  walk. If the state needs one of those, stop and write the ready-to-ask card text (question, options, evidence
-  paths) in your ledger note; the pipeline shows it to him.
+  Evidence-for-Ask ruling), loosen a bar, change his rulings, or pass his walk. If the state needs one of those, stop
+  and write the ready-to-ask card text (question, options, evidence paths) in your ledger note; the pipeline shows it
+  to him.
+- Whether a change is Convergent or Divergent (this Design Version or the next), and each move to a Polish list, is the
+  Conductor's to decide (his card, 2026-11-23). Never card him on it and never stop for it: file the change with the
+  class you recommend and its evidence, and head the line in your ledger note `FOR THE CONDUCTOR:`. Go on with the rest.
 - Evidence-for-Ask (his ruling, 2026-11-15): any other choice you meet, take the obvious answer and log it as a
   delegated call (`--why "delegated: <class>"`). Write a card only with recorded evidence that the obvious answer is
   wrong, and the card quotes that evidence.

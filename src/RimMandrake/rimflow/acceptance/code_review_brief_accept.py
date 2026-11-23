@@ -3,8 +3,8 @@
 
 The code-review brief of design/specs/2026-11-18-review-growth-cycle/01-design.md section 5.3 exists as a role file, the
 refusal contract knows a `code_review` family, and that family is CALIBRATED on the labelled claims of 2026-11-18
-(4 problems, 31 polish). Until all three hold, no Codex or GPT review of pipeline code runs (owner, 2026-11-18 8:22 PM
-PST; standing_rulings.md, section "A boundary page before pipeline code"). Exit 0 = every check passes (expected: 4)."""
+(4 problems, 31 polish). Codex and GPT reviews of pipeline code do not wait for this (owner, card 2026-11-23;
+standing_rulings.md, section "A boundary page before pipeline code"). Exit 0 = every check passes (expected: 4)."""
 import json
 import os
 import sys

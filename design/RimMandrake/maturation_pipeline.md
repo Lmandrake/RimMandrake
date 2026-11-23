@@ -41,7 +41,7 @@ They stay off. The pipeline does not start them.
 - **Cycle**: one blind judge's run on a mod at the blind challenge.
 - **Visit**: one stay at a stage; a mod sent back and returning makes a new visit.
 - **Problem**: a defect, or something a player would reject as strange or disappointing. It must be fixed in this version.
-- **Polish**: an improvement the version passes without. It goes to the mod's Polish list, confirmed with him.
+- **Polish**: an improvement the version passes without. It goes to the mod's Polish list; the Conductor decides each move and tells him after.
 - **Convergent** change: brings the mod closer to its written vision. **Divergent** change: extends or shifts the vision;
   it goes to the next Design Version.
 - **Refusal record**: a refusal in the shape `refusal_contract.py check` accepts: what was observed, what would pass,
@@ -253,9 +253,8 @@ not built; it is to be written by hand the first time.
   bar deferred is the Conductor's call, told to him after (a trial he may withdraw); a change to what the mod is goes to
   the next version. A change he makes by card to a locked tree is re-pinned with `designer_stage.py repin <dir> --source
   OWNER:<tsn> --why ...`.
-- **Divergent or Convergent**: whether a change extends the vision (next version) or serves it (this version) is his,
-  asked when the ticket is filed as active. Problem versus Polish is the judge's call as best it can, each move to the
-  Polish list confirmed with him.
+- **Divergent or Convergent, and Polish moves, are not his to wait on**: the Conductor decides each when the ticket is
+  filed as active, and he reads it in his daily digest (card 2026-11-23, `standing_rulings.md` §Mod Design Versions).
 - **Pass** a version at his walk.
 - **Lift a park**: a Designer loop parked for him (`park_summary.md`) lifts only on his own word on the item.
 

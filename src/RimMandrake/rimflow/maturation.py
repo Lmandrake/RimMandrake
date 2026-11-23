@@ -926,7 +926,8 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
            observed="the record says version %s; VERSION.json says %s" % (rec.get("version"), vv if v else verr),
            would_pass="a stage_record.json whose version field equals VERSION.json's version %s" % vv,
            fix="open the new version with `maturation.py next-version` (the Conductor's ordering call against the other "
-               "mods, delegation_policy.md §1 and Evidence-for-Ask; a Divergent-or-not call stays his at filing), "
+               "mods, delegation_policy.md §1 and Evidence-for-Ask; the Conductor also decides current or next at filing, "
+               "card 2026-11-23), "
                "which seeds a fresh stage record for it", cost="edit")
     # hold: the journal holds the stage
     jref = rel(mod, "journal.md")

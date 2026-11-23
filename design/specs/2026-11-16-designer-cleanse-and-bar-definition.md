@@ -18,7 +18,7 @@ His card answers, same sitting:
 | what a biome's first version (0.1.0) may contain | land, life, one signature |
 | default fate of an extra and its code | next version, switched off |
 | how much the runs come to him | (typed) two pages per mod, dense, concise, very clear questions; and the models specified ahead of time |
-| what gates a cleansed design | one whole-mod check instead of the cold-reader exam and the coverage judge |
+| what gates a cleansed design | all three: the whole-mod check, the cold-reader exam and the coverage judge (his card of 2026-11-23, 8:57 AM PST) |
 
 ## 2. What the measurements say [measured 2026-11-16, 10:10 to 10:30 PM PST]
 
@@ -81,7 +81,7 @@ anything in `sees` switched off; a judge's refusal must name which of the six pa
 One run per mod, on Codex (the mass run) or Fable (a single mod worked as a whole). It writes only the proposal folder
 `design/concepts/<Mod>/cleanse/` (files: the brief's table). It asks nothing and waits for nothing.
 
-**The whole-mod check** (the only gate): a fresh reviewer that did not write the proposal, on a different model from
+**The whole-mod check** (the cleanse pass's gate; the exam and the coverage judge follow it): a fresh reviewer that did not write the proposal, on a different model from
 the author, reads the proposal against the brief and the mod's source and returns refusal records (evidence,
 `would_pass`, `smallest_fix`) under these heads only: two bars or a bar and a rule that cannot hold together; a kept
 mechanic with no definition; an instrument or scene that would read with a mechanic off or the sky locked; a number,
@@ -112,7 +112,7 @@ tonight's mass run.
 3. Selftest `selftest_designer_cleanse.py`, red first: `check` refuses a proposal with a bar holding "30%", a bar with
    no `range`, a census row with no fate, an old bar unmapped, a three-page `owner_pages.md`; accepts a minimal good one.
 4. Later, on his acceptance of §3: the stage machine's Write stage emits the six-part bar, `concept_tree.py` carries
-   `checks` and `rules`, the Exam and the coverage judge are replaced by the whole-mod check, and the apply program.
+   `checks` and `rules`, the Exam and the coverage judge stay after the whole-mod check, and the apply program.
 
 Acceptance test for this item: `python3 src/RimMandrake/Utils/run_selftests.py --only selftest_designer_cleanse` passes
 (fails on the base commit: the file does not exist), and `designer_cleanse.py status` shows a `proposed` or `blocked`

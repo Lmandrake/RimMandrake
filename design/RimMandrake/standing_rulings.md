@@ -610,10 +610,10 @@ the worst answer sets the exit. It runs each naming page's tests file once per c
   than spending a review on code nobody runs. A file only a human runs by hand can look unused to a naive grep and
   not be.
 - **What this does not change.** The judge rule for mod work (§The judge refuses flaws, not polish: one full
-  inspection, then one check of the repairs) is a separate ruling about mod judges. His stop of 2026-11-18 8:22 PM PST
-  on Codex and GPT reviews of pipeline machinery stands (§A boundary page before pipeline code). "The test is built
+  inspection, then one check of the repairs) is a separate ruling about mod judges. Codex and GPT
+  may review pipeline machinery by this rule (§A boundary page before pipeline code). "The test is built
   with the item" and "The pipeline fixes its own defects" stand. A mod's Polish list in the Maturation Pipeline (the
-  Design Version rule) is a separate list, confirmed with him; "nobody takes lines" covers only the `polish.md` beside
+  Design Version rule) is a separate list; the Conductor decides each move to it; "nobody takes lines" covers only the `polish.md` beside
   a code page.
 - **Test that this was applied:** `code_review_status.py check` on a file that no page names reads NO PAGE; on a file
   whose page has every promise tested and passing it reads CLEAN, with no review record. A FLAGGED file reads FLAGGED
@@ -904,9 +904,13 @@ The order of the accounts in that quote is replaced. His standard switching plan
 `ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING`) burns steven first inside its window after its reset, then system, then
 lukas. It keeps "about half" of steven as the leave line. The order, the leave lines, and each dated exception (one is
 in force from 2026-11-20) are in `src/RimMandrake/Utils/switching_plan.json`; obey that file.
-He was answering the card question "How much should be kept free for you?". Whether the night reserve in that quote
-still binds is an open question for him
-(`design/specs/2026-11-23-his-quotes-checked/questions.md`). No program holds such a reserve (measured 2026-11-23).
+He was answering the card question "How much should be kept free for you?". The share for his evenings and the rough
+daily partition in that quote are ended (owner, by card Mon 2026-11-23 8:57 AM PST, item
+`RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`). The card asked *"Must agents keep account capacity for
+your evenings?"* He picked *"No, run to the line (Recommended)"*: *"Buys: the most work done unattended. Costs: on a
+heavy day an account can be near its line when you sit down, and the sitting moves to another account or waits.
+Recommended: later and more specific."* No share is kept. Each account runs to its line, at any hour. The order, the
+leave lines and Steven's line do not change.
 The fixed account order and the shared account's leave line may be changed by the Conductor as its mindful act
 (owner 2026-11-19, §Only five acts stay his): its `--why` names what is lost if wrong (`lost:`) and the undo (`undo:`).
 The money side stays his: nothing here buys capacity.
@@ -1345,6 +1349,16 @@ still validated by the existing checks, and the quota gate and the rule against 
 *"Yes, from now on, we build the test at the same time as the item, both offline and online versions. then they get consolidated into the formal tests."*
 The run that builds an item also writes its offline test (red-first selftest) and its live test (a bridge script that stages the case and reads state). A live test that could not be run is recorded on the item as UNRUN with its exact command. Both are later consolidated into the mod's formal tests (its functional script and north-star bars). Item: `RIMMANDRAKE_BUILD_TESTS_WITH_ITEM_OFFLINE_AND_LIVE`.
 
+## A cleansed design passes all three checks — owner, by card 2026-11-23
+
+A cleansed design is a mod's design after the pass that strips out extras. The card (Mon 2026-11-23, 8:57 AM PST, item
+`RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`) asked: *"Which checks must a cleansed design pass when the
+held biome mods return?"* He picked *"All three, as today (Recommended)"*: *"Why: it keeps the strongest check before
+any build. Buys: nothing changes in the pipeline, and no weak design slips through to a build. Recommended: your later
+card kept both gates and did not withdraw the whole-mod check."* The three are the whole-mod check
+(`designer_cleanse.py review`), the cold-reader exam (stage 4, `exam.json`) and the coverage judge (stage 5). No agent
+switches one of them off for a cleansed design.
+
 ## Mod Design Versions use Semantic Versioning — owner, 2026-11-13
 
 *"Each mod now needs an official Version we are building towards. This is not a "game version" but just of that mod. It is not the "current snapshot in git hash" but rather the version of the mod's design we are aiming at."* · *"Semantic Versioning it is."*
@@ -1354,16 +1368,23 @@ Every mod's Design Version is numbered `MAJOR.MINOR.PATCH` (semver.org), with th
 - **PATCH**: Convergent polish and corrections after a version has passed.
 - A version before release is `0.x`; `1.0.0` is the version shipped to players. A judge round is a release candidate, `-rc.N`.
 The rule is user-level since the same day (*"Semantic Versioning should be a Lodestar-level, User-level addition to all current and future projects, along with the Convergent changes and Divergent changes that are part of the same design."*): `~/.claude/CLAUDE.md`, terms in `~/dev/Lodestar/LEXICON.md`. Here the unit is the mod. His card answers, 2026-11-13:
-- **Problem or Polish:** a refinement that fixes a Problem (a defect, or an experience a player would reject as strange or disappointing) stays in the current version; Polish goes to the mod's Polish list, is not part of passing, and each move is confirmed with him. The Judge makes the call as best it can; the threshold is tuned with him.
-- **Asked at filing:** the current-or-next question is put to him when the ticket is filed as active, not when it is picked up. Once filed as current it moves to the next version only by Judge deferral.
+- **Problem or Polish:** a refinement that fixes a Problem (a defect, or an experience a player would reject as strange or disappointing) stays in the current version; Polish goes to the mod's Polish list and is not part of passing. The Judge makes the call as best it can; the threshold is tuned with him.
+- **Asked at filing:** the current-or-next question is decided when the ticket is filed as active, not when it is picked up. Once filed as current it moves to the next version only by Judge deferral.
+- **The Conductor decides both in this repo, and tells him after** (owner, by card Mon 2026-11-23 8:57 AM PST, item
+  `RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`). The card asked who decides Polish moves and
+  current-or-next version in RimMandrake. He picked *"Conductor decides, tells you (Recommended)"*: *"Why: your
+  2026-11-19 words say everything else, and you ruled you should not be the bottleneck. Buys: no filing waits for you;
+  each call reaches your daily digest with its reason. Costs: a mod's scope can drift before you see it; you correct
+  after the fact. Recommended: it matches your later words."* The Conductor logs each call with
+  `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the call and its reason>"`. No filing waits: a helper or a
+  Judge files the change with the class that it recommends and its evidence, and the Conductor decides. His user-level
+  rule for other projects ("ask at filing", `~/.claude/CLAUDE.md`) is unchanged.
 - **Judge deferral** of a bar is approved by the Conductor; he sees each one after.
 - **The mods in the Designer enter as 0.1.0** at today's bars, their open gaps sorted into Problem, Polish and next version.
 - **The Deep Desert Tribes are their own mod with their own Design Version** (card 2026-11-13 ~9:30 PM PST, "Own mod, own version, later", correcting the 4 PM "One mod, Tribes next version"): Pyrelands 0.1.0 is the biome alone and passes first. The Tribes mod (`src/RimUtinni/PyrelandsMechanics`, `mandrake.rut.pyrelandsmechanics`, design `design/concepts/PyrelandsMechanics`) gets its own Design Version 0.1.0, started only after the biome passes, and stays out of test mod lists until then. Design kept as written.
 - **A new mod's first Design Version is 0.1.0, locked by the pipeline without asking him** (§Evidence-for-Ask, below):
   when its concept tree locks, `maturation_autonomy` writes VERSION.json `locked` 0.1.0, `locked_by: pipeline`, and a
-  delegated record for his digest. It asks him only when it finds evidence against 0.1.0, quoted on the card. His card
-  answers above (Polish moves confirmed with him, current-or-next asked at filing) stand; each such ask carries the
-  evidence against the obvious answer.
+  delegated record for his digest. It asks him only when it finds evidence against 0.1.0, quoted on the card.
 - **Each passed version is tagged** (owner, 2026-11-20, about 4:10 PM PST: *"Make sure we TAG each finished version
   of a mod so we can easily come precisely back to it, please. This should become policy."*): every version that passes
   gets the annotated git tag `mod/<Mod>/v<MAJOR.MINOR.PATCH>` (for example `mod/GimmeSomeSlack/v0.1.0`) on the commit
@@ -1918,17 +1939,29 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
   one more Codex test?"*: he picked *"Yes, after the page rule (Recommended)"*: *"Why: the page rule above changes
   which complaints count as real. I relabel the 35 by your rule, then run one test. Cost: one Codex run, and a short
   wait for the relabel. Recommended: a test against wrong labels tells us nothing."* That is one run; it does not
-  turn Codex reviews of pipeline machinery back on (his 8:22 PM stop below stands until he says otherwise).
+  turn Codex reviews of pipeline machinery back on (his card of 2026-11-23 below did).
   Applied: `src/RimMandrake/rimflow/roles/code_review.md`, the control page's DOES NOT SURVIVE, and the relabel in
   `design/specs/2026-11-18-review-growth-cycle/05-three-way-labels-20261119.md`.
 - **Changing a page after it has passed** is next-version work: a new accepted input, survived failure or promise is
   written for the next Design Version and never added to the current one's bars. Moving a failure to DOES NOT SURVIVE
   accepts a risk: the Conductor decides it (delegated, logged) and he sees it in the daily digest.
-- **What this does not change.** "The test is built with the item" and "The pipeline fixes its own defects" stand. 🔴 **His stop of 8:22 PM PST the same evening is not
-  lifted by this card:** *"Go ahead and stop the review growth cycle now. I don't want to pay for that anymore."* No
-  Codex or GPT review of pipeline machinery runs, and no ticket is filed from a review finding, until the review
-  brief of design section 5.3 exists and is calibrated (a later item; the ruling "only a calibrated brief's refusal
-  sends work back" applies).
+- **What this does not change.** "The test is built with the item" and "The pipeline fixes its own defects" stand.
+- **Codex and GPT reviews of pipeline machinery are back on (owner, by card Mon 2026-11-23 8:57 AM PST, item
+  `RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`).** The card asked whether his stop of 2026-11-18 8:22
+  PM PST (*"Go ahead and stop the review growth cycle now. I don't want to pay for that anymore."*) still stood. He
+  typed: *"Codex reviews back on. We found the problem. Modern code review instruction includes the significance
+  requirement. The old ones didn’t. It was the forced working of any finding no matter how small. Push back if that is
+  not your understanding but I felt we resolved this."*
+  - Each review uses `src/RimMandrake/rimflow/roles/code_review.md`, or a prompt that carries the same significance
+    rule, stop level and polish route. A finding that is not significant is one line on `polish.md`, never a ticket
+    and never worked.
+  - A Codex or GPT reviewer that cannot write the clone returns its Problems. The run that launched it fixes each
+    Problem, test first, and one fresh reader reads the fixed file once.
+  - UNMEASURED: that Codex obeys the significance rule on real code. To measure it, read the first three reviews:
+    count the findings, and count the significant ones. The one measured reading is a sort of 35 old claims, not a
+    review of code (2026-11-19): 1 of 9 agreed polish claims called a Problem, and 2 of 3 agreed real ones caught.
+    The `code_review` family reads UNTESTED. That does not stop a review; an UNTESTED brief's refusal sends no work
+    back by itself.
 - **First page (the pilot):** the control store, `design/specs/2026-11-18-pipeline-control-surface/boundary.md`.
 - **Test that this was applied:** a new pipeline component has a `boundary.md` committed before its first code
   commit; a review finding on pipeline machinery quotes a page entry or sits on a later list.

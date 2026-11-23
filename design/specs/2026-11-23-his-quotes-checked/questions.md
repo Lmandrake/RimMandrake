@@ -1,5 +1,9 @@
 # Questions for Mandrake: four rulings of yours that can be read two ways
 
+**Answered by card, 2026-11-23 8:57 AM PST** (`RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`). 1: reading
+B, Codex reviews are back on, with the significance requirement. 2: reading A, all three checks. 3: reading B, the
+Conductor decides and tells you. 4: reading B, each account runs to its line. Below is the text as it was asked.
+
 Checked 2026-11-23. The most consequential question comes first. Your words are quoted as you typed them, with their dates (Pacific).
 
 ## 1. May Codex review pipeline code again?

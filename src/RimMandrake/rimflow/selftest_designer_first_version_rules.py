@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Selftest: the owner's three cleanse card answers reach every Designer stage packet, word for word.
+"""Selftest: the owner's cleanse card answers reach every Designer stage packet, word for word.
 
-Item RIMMANDRAKE_TEACH_DESIGNER_CLEANSE_RULES_BRIEF_ONLY_KNEW. His three card answers (2026-11-17T06:24:09Z, 10:24 PM
+Item RIMMANDRAKE_TEACH_DESIGNER_CLEANSE_RULES_BRIEF_ONLY_KNEW. His card answers (2026-11-17T06:24:09Z, 10:24 PM
 PST 2026-11-16; on RIMMANDRAKE_UPGRADE_DESIGNER_CLEANSE_SIXTY_FOUR_BARS_LOCKED) were written only into
 roles/designer_cleanse.md, which no stage of roles/designer_manifest.json injects, so an ordinary Designer run never
 read the first-version scope rule. The packet a stage injects is the manifest's file list, read in order
@@ -22,8 +22,8 @@ CORE = os.path.join(ROLES, "designer.md")
 FIRST = "## What a first version may contain"
 FATE = "## The fate of an extra"
 AFTER = "## What a bar is"
-# his third card answer, picked label and its description as the card store holds them
-CHECK_LABEL = "One whole-mod check instead"
+# his card answer of 2026-11-23 on what gates a cleansed design, picked label as the card store holds it
+CHECK_LABEL = "All three, as today"
 
 FAILS = []
 
@@ -66,20 +66,21 @@ def test_every_stage_packet_carries_the_first_two_answers():
               block is not None and block in stage_packet(s), "the verbatim block is absent from the packet")
 
 
-def test_every_stage_packet_carries_the_third_answer():
+def test_every_stage_packet_carries_all_three_checks():
     for s in DS.STAGES:
         p = stage_packet(s)
-        check("test_every_stage_packet_carries_the_third_answer: stage %d" % s,
-              CHECK_LABEL in p and "2026-11-17T06:24:09Z" in p, "his third card answer is absent")
+        check("test_every_stage_packet_carries_all_three_checks: stage %d" % s,
+              CHECK_LABEL in p and "2026-11-23" in p and "One whole-mod check instead" not in p,
+              "his card answer of 2026-11-23 is absent, or the 2026-11-16 reading is back")
 
 
-def test_third_answer_does_not_lift_the_stage_gates():
+def test_gates_answer_keeps_the_stage_gates():
     """Stages 4 and 5 still end on the exam and coverage (the launcher enforces them); the packet must say so beside
-    the third answer, or a run reads it as leave to skip a gate the launcher will hold it to."""
+    the answer, or a run reads it as leave to skip a gate the launcher will hold it to."""
     core = read(CORE)
     at = core.find(CHECK_LABEL)
     near = core[at:at + 1400] if at >= 0 else ""
-    check("test_third_answer_does_not_lift_the_stage_gates",
+    check("test_gates_answer_keeps_the_stage_gates",
           at >= 0 and "stage 4" in near and "stage 5" in near and "still" in near, near[:200])
 
 
@@ -100,7 +101,7 @@ def test_one_copy_drift_is_caught():
 
 
 TESTS = (test_cleanse_block_found, test_every_stage_packet_carries_the_first_two_answers,
-         test_every_stage_packet_carries_the_third_answer, test_third_answer_does_not_lift_the_stage_gates,
+         test_every_stage_packet_carries_all_three_checks, test_gates_answer_keeps_the_stage_gates,
          test_a_locked_version_keeps_its_scope, test_one_copy_drift_is_caught)
 
 if __name__ == "__main__":

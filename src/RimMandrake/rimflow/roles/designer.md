@@ -127,10 +127,10 @@ without a valid result is a retry that has spent budget.
 - **Recovery before work.** A scene that changed persistent state and never restored blocks every run. The block holds
   until the scene is restored (`scene-end`) or held for his review (`scene-hold`); see `designer_scene_contract.md`.
 
-## His three answers on what a first version is (owner, by card 2026-11-17T06:24:09Z, 10:24 PM PST 2026-11-16)
+## His two answers on what a first version is (owner, by card 2026-11-17T06:24:09Z, 10:24 PM PST 2026-11-16)
 
-He answered three cards that night. The cards, word for word, are in
-`infrastructure/state/items/RIMMANDRAKE_UPGRADE_DESIGNER_CLEANSE_SIXTY_FOUR_BARS_LOCKED.md`. The first two answers are
+The cards, word for word, are in
+`infrastructure/state/items/closed/RIMMANDRAKE_UPGRADE_DESIGNER_CLEANSE_SIXTY_FOUR_BARS_LOCKED.md`. The answers are
 what a first version may contain and the fate of an extra. The two sections below are that brief's
 text about his answers, copied word for word from `roles/designer_cleanse.md`. His own words are in the cards. `selftest_designer_first_version_rules.py`
 keeps the two copies equal, so change both or neither. In the two sections, read "this pass" as your run and "his
@@ -213,17 +213,16 @@ defeat land, life or the signature. Record that argument in its `needed_by`. Whe
 code, the extra still moves, and its ticket includes the decoupling. Search the source for what calls the extra before
 you write the ticket. A waiver he already gave (in the concept's record) is never raised again.
 
-## His third answer: what gates a cleansed design
+## What gates a cleansed design: all three checks
 
-The card asked what should gate a cleansed design. He picked **One whole-mod check instead** of the cold-reader exam and
-the coverage judge. The card's description of it: *"One fresh reviewer hunts bars that conflict, promised mechanics with
-no spec, scenes with the main mechanic off, and tuning numbers; one round of fixes, then lock."* The check is the
-cleanse pass's gate (`designer_cleanse.py review`). The answer does not change the stage machine: stage 4 still ends on
+His card of 2026-11-23 (8:57 AM PST) asked which checks a cleansed design must pass. He picked **All three, as today**:
+the whole-mod check, the cold-reader exam and the coverage judge (`standing_rulings.md` §A cleansed design passes all
+three checks). The whole-mod check is the cleanse pass's gate (`designer_cleanse.py review`). The card's description of
+that check: *"One fresh reviewer hunts bars that conflict, promised mechanics with no spec, scenes with the main mechanic
+off, and tuning numbers; one round of fixes, then lock."* The stage machine does not change: stage 4 still ends on
 `exam.json`, and stage 5 still on coverage. The launcher enforces both, and you do not skip them.
-His later card (2026-11-20, "Keep both gates as now") keeps both gates for mods before build. Whether the one check still
-replaces them for a cleansed design is an open question for him (`design/specs/2026-11-23-his-quotes-checked/questions.md`). Here the answer asks
-one thing of you: write so that the check's four hunts find nothing. Leave no two bars that conflict and no promised
-mechanic without its spec. Leave no scene with the main mechanic off and no tuning number in a bar.
+Write so that the check's four hunts find nothing. Leave no two bars that conflict and no promised mechanic without its
+spec. Leave no scene with the main mechanic off and no tuning number in a bar.
 
 ## The working record, not the log
 

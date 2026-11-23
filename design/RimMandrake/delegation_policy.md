@@ -98,8 +98,8 @@ text: `standing_rulings.md` §Only five acts stay his. Code: `src/RimMandrake/ri
      the ban. Only `art.py unban <sha> --owner-said "…"` lifts a ban (`ART_X_BUILD_DELETE_FOREVER_BAN`).
 3. **The pass at his walk**, and his judgement of gameplay, fun, theme and UI. By his design, the pipeline ends at his
    walk. `maturation.owner_event` takes only an OWNER event that carries his words or his card, never a ruling.
-4. **Spending money or a purchase.** Nothing here buys capacity. A wider budget inside the weekly partition that he set
-   (card 2026-10-25) is not a purchase.
+4. **Spending money or a purchase.** Nothing here buys capacity. A wider budget inside the account lines
+   (`src/RimMandrake/Utils/switching_plan.json`) is not a purchase.
 5. **Publishing outside the private repos** — a Steam Workshop upload, a public post.
 
 **Everything else is the Conductor's to do, mindfully.** The Conductor is the window that he talks to (seat BENCH, no
@@ -116,8 +116,10 @@ words. Each Conductor act is a digest line (class `conductor act`, §5). Among t
   and rule a final look that is not about fun or gameplay;
 - re-freeze the `official` dump;
 - re-validate a hashed section;
-- raise a cap, N (the helper slots of a seat, `slot_allocator.py`) or a stage ceiling inside his weekly partition (the
-  rough per-day share of each account, `standing_rulings.md` §Account and capacity budget);
+- raise a cap, N (the helper slots of a seat, `slot_allocator.py`) or a stage ceiling inside the account lines. No
+  capacity is kept for his evenings (`standing_rulings.md` §Account and capacity budget);
+- move a change to a mod's Polish list, and decide whether a change goes in the current Design Version or the next
+  (owner, card 2026-11-23, `standing_rulings.md` §Mod Design Versions);
 - a cut decision;
 - overturn a ruling about pipeline machinery;
 - `broadcast.py`;

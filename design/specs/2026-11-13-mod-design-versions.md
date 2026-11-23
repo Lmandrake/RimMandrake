@@ -39,9 +39,9 @@ Lifecycle: **Drafting** (free change) → **Locked** (he says "lock it"; a new m
 - **Bar deferral** (his idea): when one bar keeps failing on weak evidence and no other bar depends on it, the Judge proposes moving it to the next version. Proposed trigger: three judge rounds unmet with the same weak-evidence reason. The pass record then reads "passed, N bars deferred", so the measure stays honest.
 
 ### 3.4 Who decides, and what they bring him
-The call is his. The Designer, the Conductor and the Judge watch for it and ask in his sentence: *"This change is not a tweak, it's a major change or addition. Modify the current version, or file it for the next version after we clear this one?"* Every such question carries four facts: feasibility, build effort, test effort, and how far the current version is from passing (bars met of bars total, last judge round).
+The call is the Conductor's, who tells him after in his daily digest (card 2026-11-23, `standing_rulings.md` §Mod Design Versions). The Designer, the Conductor and the Judge watch for it: *"This change is not a tweak, it's a major change or addition. Modify the current version, or file it for the next version after we clear this one?"* Every such call carries four facts: feasibility, build effort, test effort, and how far the current version is from passing (bars met of bars total, last judge round).
 
-*(Addition, to save his time.)* An asymmetric default: **filing something to the next version never needs him**, because it changes no current bar and loses nothing. **Only bringing a change INTO a locked version needs him.** He sees the filed list in the daily digest and can pull anything forward.
+He sees each call in the daily digest and can pull anything forward.
 
 ### 3.5 "It needs a redesign" is a new version, not an edit
 His rule: if the current bars cannot be passed because the design is wrong, redesign now. Proposed form: the current version is marked **Superseded, not passed**, with the reason, and the redesign opens as the next number. The failed attempt stays on the record with its cost. That keeps the pass statistics true and stops a redesign from hiding inside an edit.
@@ -92,12 +92,12 @@ Per passed version: cost, judge rounds, days, bars deferred. Across mods: passes
 **Which refinements re-open a locked version (replaces 3.2's blocking/polish wording):**
 > A condition: are the refinements to Improve (polish) play, or are they fixing a Problem (unwanted experience or actual defect). If they are polishing improvements, that should be filed to a Polish list to consider later and not be part of Passing. If they are fixing a Problem / unwanted defect that would cause a player to reject it as strange or disappointing, it stays. This is subjective, so we're asking the Judge to do their best. Anything sent to the Polish list should get a question sent to the user to confirm the decision and be marked in the decision. Tuning this is part of what we'll be doing together.
 
-So: the test is **Problem or Polish**, judged by the Judge. A Problem (a defect, or an experience a player would reject as strange or disappointing) stays in the current version. Polish goes to the mod's **Polish list**, is not part of passing, and each move to the Polish list is confirmed with him and marked in the decision. The threshold is tuned with him over time.
+So: the test is **Problem or Polish**, judged by the Judge. A Problem (a defect, or an experience a player would reject as strange or disappointing) stays in the current version. Polish goes to the mod's **Polish list**, is not part of passing, and each move to the Polish list is the Conductor's call, marked in the decision and told to him after (card 2026-11-23, which replaces the confirmation in the 2026-11-13 words above). The threshold is tuned with him over time.
 
 **When the now-or-next question is asked (replaces 3.4's asymmetric default):**
 > The questions need to come at the time of filing the ticket as active and to be worked, not when they pick it up to work it. So the user question should come when the item is Filed, and asking me is easy then. Once it's filed, it should not be deferred to next version unless the Judge sees it cannot be satisfied by the currently written acceptance tests or is failing to achieve its goals as we discussed before.
 
-So: the current-version-or-next question is put to him **at filing**. An item filed as active in the current version stays there; it moves to the next version only by Judge deferral (it cannot be satisfied by its written acceptance tests, or it keeps failing its goal on weak evidence).
+So: the current-version-or-next question is decided **at filing**, by the Conductor (card 2026-11-23, which replaces the question to him in the 2026-11-13 words above). An item filed as active in the current version stays there; it moves to the next version only by Judge deferral (it cannot be satisfied by its written acceptance tests, or it keeps failing its goal on weak evidence).
 
 **Who approves a Judge's bar deferral:** the Conductor; he sees each one after (by card: "Conductor, you see it after").
 
