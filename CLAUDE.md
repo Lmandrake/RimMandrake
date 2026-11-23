@@ -8,6 +8,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 - `PURPOSE.md` says what this repo is. It is an experimental agent software factory, and its product is a game.
 - `infrastructure/agents/CHARTER.md` is the full process rulebook.
+- The top of `infrastructure/agents/CHARTER.md` holds the Principle of Impactful Evidence. Spend testing where the
+  evidence is likely to change what we do, weighed against the cost of the evidence. Read the Principle before you add,
+  repeat or retire a test.
 - Read your own window file. The Conductor (the window that the owner talks to) reads
   `infrastructure/agents/CONDUCTOR.md`.
 - The game cycle is in `infrastructure/GAME_STATE_WORKFLOW.md`.
@@ -33,6 +36,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   blind, poke the live game.
 - Each live debug session ends with an update to that script. Write what the session learned, false theories included.
   The lesson is a check that is red for the reported reason before the final fix.
+- After the fix, a check that was made only for that fault stays in the live tests only while the fault is likely to return. Otherwise move the check to
+  the offline tests, or retire the check (§A live test declares its kind).
 - Agents write, approve and declare passing on these scripts. Every new mod ships with its first script.
 - Agents may add regression checks and new north-star bars (`design/RimMandrake/delegation_policy.md` §1).
 - Only the Conductor may loosen a bar, as a mindful act (see "Only five acts stay his" below).
@@ -564,6 +569,39 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   tests.
 - If the live test did not run, record it as UNRUN, with its command.
 - Full text: `design/RimMandrake/standing_rulings.md` §The test is built with the item.
+
+## A live test declares its kind
+
+- A scene is one staged live test. A run is one play of a scene. A scene with no tag is kind A. Before its first run, a
+  scene states its contract: claim, entry point, valid opportunity, success, forbidden effects and end.
+- **Kind A, deterministic.** One valid run decides: PASS or FAIL. Do not use a count such as "4 of 5".
+- **Kind B, stochastic.** After a sincere attempt at control, the opportunity is still uncertain, or the result is random
+  by design.
+  - Look for evidence of success.
+  - Write the budget of runs on the scene before the first run.
+  - One SUCCESS passes the scene, if no run on the same claim and build is a MOD FAILURE or UNRESOLVED.
+  - When the budget ends with no SUCCESS, the verdict is INCONCLUSIVE. INCONCLUSIVE is not PASS and not FAIL.
+  - For a result that is random by design, write X successes in Y valid opportunities before the first run. The scene
+    passes on X of Y.
+- **Kind C, intermittent hunt.** A hunt is temporary, and it looks for evidence of failure. A hunt is never part of a
+  mod's final acceptance tests.
+- A B tag or a C tag carries its evidence on the scene. Tag B names what spoils the run, what was tried to control each
+  thing, and why that was not enough. Tag C names the symptom, how often it was seen in how many opportunities, and the
+  trace.
+- A run ends in one of seven outcomes: SUCCESS, MOD FAILURE, RANDOM MISS, ENVIRONMENT FAULT, APPARATUS FAULT, UNRESOLVED,
+  COULD NOT LOOK. Keep the seven outcomes apart. Only SUCCESS speaks for the mod. No other outcome needs a later pass to
+  cancel it.
+- A run is an ENVIRONMENT FAULT only when the record shows that something outside the tested behaviour spoiled the
+  opportunity. If the mod could have spoiled it, the run is UNRESOLVED. A forbidden effect is a MOD FAILURE in any run.
+- One UNRESOLVED run holds the scene's pass until someone classes the run.
+- Open a hunt when the fault is serious (one sighting is enough) or is seen again. A hunt never opens silently: tell the
+  Conductor what happened, why it matters, the next step that tells two causes apart, and the cost of that step.
+- When a run names a thing that spoiled it, try to remove that thing. Lean towards building the control.
+- Use Minimum Force: the least force that makes the scene affordable and reliable, and that leaves to the mod every
+  decision that the scene claims to test.
+- A verdict on a scene stands until a change touches what the scene reads or exercises. The exit condition of a
+  stage or a visit never asks for every scene in one visit, or for one scene several times in a row.
+- Full text: `design/RimMandrake/standing_rulings.md` §Live tests have three kinds.
 
 ## Code is clean when its promises are tested
 

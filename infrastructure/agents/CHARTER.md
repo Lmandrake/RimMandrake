@@ -3,6 +3,17 @@
 *Adopted 2026-08-27 (owner's ruling, this date). **This file gains no rule: a new rule must replace a
 rule.** A rewrite that adds no rule may use more words.*
 
+## The Principle of Impactful Evidence — owner, 2026-11-23
+
+> "**Testing is spent where it is likely to change what we do with appropriate resource cost.** Our resources are fixed. A test earns its place by the future value of the evidence it is likely to give weighed against the cost to (re)generate that evidence. Coverage for its own sake should be reserved for essentially free testing (offline and computationally cheap). These values and costs change as the system and our knowledge of it change, so a test's place must be periodically reviewed, and a test that no longer earns is retired."
+
+Two rules keep the Principle honest:
+
+- Weigh a test by what its evidence could change: how bad the fault is for the player, how often play reaches the fault,
+  and what a cheaper check could show. Rare is not the same as low value.
+- To retire a test does not fix or accept a fault. A retired test leaves its record (`standing_rulings.md` §Live tests
+  have three kinds, section 5).
+
 ## Posture
 
 **Act first.** Anything git can undo gets no verification, no filing and no report beyond one line. Examples: edits,
@@ -220,6 +231,8 @@ The rule lines are in `CLAUDE.md` §How we debug. `design/RimMandrake/debug_proc
 says what a first script must contain.
 
 - Only the Conductor may loosen a bar, as a mindful act (`CLAUDE.md` §How we debug).
+- A live test declares its kind (A, B or C) and judges each run by one of seven outcomes: `CLAUDE.md` §A live test
+  declares its kind.
 - **3 non-pass runs in a row, or a defect that needs live observation, goes to a Test Pilot, not another retest**
   (owner 2026-10-31; `rimflow pilot`, `.claude/agents/rm-testpilot.md`, `standing_rulings.md`).
 
