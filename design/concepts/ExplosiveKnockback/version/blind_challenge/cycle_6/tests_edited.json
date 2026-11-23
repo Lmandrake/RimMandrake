@@ -1,0 +1,31 @@
+{
+ "tests_edited": [
+  {
+   "path": "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackMap.cs",
+   "why": "M04's 'pinned' exemption narrowed to the bar (deep water, or no free line in any of 8 directions); it had spared goods the bar does not spare. Stronger, not weaker.",
+   "before": "446c84cd05b1",
+   "after": "c9ebf7201b98",
+   "tests": [
+    "T_SITUATION_MAP_OFFLINE"
+   ]
+  },
+  {
+   "path": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py",
+   "why": "one planted fault added: 'a good pinned by a wall or a shelf row sits still' (31 of 31 seen)",
+   "before": "e85ffe801945",
+   "after": "a92d86d331be",
+   "tests": [
+    "T_SITUATION_MAP_OFFLINE"
+   ]
+  },
+  {
+   "path": "src/RimMandrake/Utils/proof_restore_check.py",
+   "why": "BASELINE: three keys (4 hits) for the filed FlowWorks item RIMMANDRAKE_RESTORE_FLOWWORKS_PIT_PROOF_SETTINGS_FOUR_NEW_LEAKS; no ExplosiveKnockback hit is baselined; still red on a planted EK leak",
+   "before": "584592af7341",
+   "after": "87ca88342215",
+   "tests": [
+    "T_RESTORE"
+   ]
+  }
+ ]
+}

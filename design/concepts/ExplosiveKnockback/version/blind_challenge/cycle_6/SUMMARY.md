@@ -29,25 +29,38 @@ Result: 34 rows: 28 PASS, 2 FAIL, 4 UNSETTLED [measured] (`lane1/lane1_rows.json
 - UNSETTLED `L1_NOT_KERNEL_GAME_SIDE` (not_kernel): flyers, hooks, pit hauling, pathing, gas census, the raid walk: Stage 6.
 
 ## Lane 2 reruns
-(pending)
+`lane2/rerun_offline.py`, every kind=offline test of `version/test_table.json` (28) with its recorded command [measured]:
+- Deciders of the offline bars: T_KERNEL, T_FUZZ, T_SCRIPT, T_PROOFGATE PASS = recorded. T_RESTORE **FAIL** (recorded PASS): `selftest_proof_restore_check` reads the whole repo and four FlowWorks proof-restore leaks of 2026-11-22 were outside its filed baseline. Class: check wrong (no ExplosiveKnockback hit). Repaired at `44bf0e6b6f` (BASELINE keys under the filed item RIMMANDRAKE_RESTORE_FLOWWORKS_PIT_PROOF_SETTINGS_FOUR_NEW_LEAKS, its acceptance test in the title); shown red on a planted EK leak (`lane2/plant_ek_restore_leak.patch`, rc 1, names RM_KnockbackProof.cs) and green on the tree (rc 0): `lane2/reruns_after_fix.jsonl`.
+- The other 23 offline tests: 23 of 23 PASS = recorded.
+- 27 of 28 match on first rerun; 28 of 28 PASS after the check repair [measured].
+- Verified the two claimed fixes of cycle 5 (`judge-verify`): RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER (`cycle_5/lane2/check_pit_pawn.py` rc 0, 6 of 6) and RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND (`accept_covered_pit.py --rev 9a0e1710fb` rc 0, 6 of 6); both `finding.verified` in the mod ledger.
 
 ## Planted
 (pending)
 
 ## Faults
-(pending)
+`lane2/faults.json` [measured counts]: 2 Problems, 2 Polish; 0 `miss_of: 5`.
+- Problem, against mod: RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES (every_good_moves). A reached good with a throw of a cell or more sat still when its line was blocked and no bounce or hop freed it: a one-cell throw into a wall (the bounce keeps floor(0.7 x 1) = 0 cells), a bounce whose reflected line is blocked at a corner, a throw along a shelf row deeper than 2 cells. Lane 1: 593 of 12,474 goods in walled rooms, 764 of 10,699 in open-shelf storerooms. The shipped situation map hid it: its M04 exempted such goods as "pinned", which the bar does not spare (on the parent with M04 narrowed: 7,334 of 243,452 readings break). The material (RM_KnockbackPlan.cs) is new since cycle 5, so not a miss.
+- Problem, against check: RIMMANDRAKE_SCOPE_KNOCKBACK_RESTORE_DECIDER_RED_ON_FLOWWORKS (inv_proof_scenes, decider T_RESTORE), above.
+- Polish (in `version/polish.md`): RIMMANDRAKE_NOTE_KNOCKBACK_FIRE_SWITCH_MISSES_UNPATCHED_FIRE, RIMMANDRAKE_NOTE_KNOCKBACK_GAS_SKIPS_PAWN_ON_INTACT_COVER. Neither failed; no concrete case; test 1 fails.
 
 ## Fixes
-(pending)
+`lane2/fixes.jsonl`:
+- `fa2de6ee4b` (mod, unit judge-1795437145): `RM_KnockbackPlan.cs` GoodsWithNoFirstCell ends with `Tumble()`: when throw, hop and bounce leave a good in place (deep water excepted), it walks its throw (up to +HopExtraCells) along the eight directions, most in line with the throw first, and takes the first that moves; `RM_MapComponent_Knockback.cs` journals `tumbled`; DLL rebuilt with its `.srchash`. Red: lane 1 against the parent's plan (`44bf0e6b6f`) rc 1 (2 FAIL); the map under `plant_tumble_removed.patch` rc 1. Green at the fix: lane 1 rc 0 (30 PASS, 4 UNSETTLED; `lane2/lane1_rows_after_fix.jsonl`), map `--map-only` rc 0, full map selftest PASS with 31 of 31 planted faults seen. Owes one fresh reader (the steward run).
+- `44bf0e6b6f` (check repair, no reader owed): T_RESTORE baseline, plant and both readings above.
+- `maturation.py red-seen` recorded for T_SITUATION_MAP_OFFLINE and T_RESTORE.
 
 ## Steward's decisions enacted
-(pending)
+None were written for this cycle; the standing default held (every bar judged as locked; no bar, wording, version or stage touched).
 
 ## Tests edited
-(pending)
+`tests_edited.json`: `Source/SelfTest/KnockbackMap.cs` (M04's pinned exemption narrowed to the bar: stronger), `selftest_explosiveknockback_map.py` (one planted fault added), `Utils/proof_restore_check.py` (BASELINE keys for the filed FlowWorks item; still red on an EK leak). No assertion was weakened or removed.
 
 ## Unsettled
-(pending)
+- `L1_SHIELD_DOES_NOT_STOP_GAS_SHOVE`: settled in lane 2: the caller passes `shield = null` for every gas burst (`RM_MapComponent_Knockback.cs` gas request), so `shieldAbsorbed` is never true for a shove; the map's M18 reads it too.
+- `L1_GAS_SHOVE_PAWN_ON_INTACT_COVER`, `L1_FIRE_SWITCH_ON_UNPATCHED_FIRE_TYPE`: Polish, above; no bar decided on them.
+- `L1_NOT_KERNEL_GAME_SIDE`: flyers, hooks, pit hauling, pathing, gas census, the raid walk: Stage 6, every bar it names proves at 6.
+- Code review status of the changed files reads UNREADABLE (mod bars mostly UNRUN live, Stage 6 state) and NO PAGE for `proof_restore_check.py` [measured].
 
 ## Exit
 offline_bars: {inv_kernel: red, inv_proof_scenes: red}

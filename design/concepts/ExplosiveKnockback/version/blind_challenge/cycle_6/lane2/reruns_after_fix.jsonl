@@ -1,0 +1,1 @@
+{"test": "T_RESTORE", "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py", "rc": 0, "result": "PASS", "recorded_result": "PASS", "last": "selftest_proof_restore_check: PASS (0 failure(s))", "recorded_last": "selftest_proof_restore_check: PASS (0 failure(s))", "match": true, "last_match": true, "seconds": 9.27, "at": "2026-11-23T12:51:07Z"}

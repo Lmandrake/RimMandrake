@@ -1,0 +1,70 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES",
+   "class": "Problem",
+   "bar": "every_good_moves",
+   "criterion": "sheet.md leaf every_good_moves: Every light loose good the blast reaches with a throw of a cell or more moves (bar those spared above)",
+   "evidence": [
+    "lane1/lane1_rows.jsonl L1_EVERY_REACHED_GOOD_MOVES: seed 7741, 593 of 12474 reached goods still (435 one-cell throw into a wall or door, 148 bounce blocked, 10 sandbags)",
+    "lane1/lane1_rows.jsonl L1_SHELF_STOREROOM_EVERY_GOOD_MOVES: seed 2611, 764 of 10699 still in open-shelf storerooms",
+    "shrunk: a 60 kg good at (5,0), wall at (6,0), blast r 2.4 force 1 at (3,0): kernel 1, wild 1, act Blocked (floor(0.7 x 1) = 0 bounce cells)",
+    "selftest_explosiveknockback_map.py --map-only with M04's pinned exemption narrowed to the bar: M04 7334 of 243452 readings break on the parent; the map had exempted them as pinned (KnockbackMap.cs Pinned())"
+   ],
+   "would_pass": "every reached good with a kernel throw of a cell or more leaves its cell, unless deep water is right behind it or no line in any of the eight directions has a cell to rest on",
+   "smallest_fix": "RM_KnockbackPlan.cs GoodsWithNoFirstCell: after throw, hop and bounce, Tumble() along the eight directions, most in line with the throw first; KnockbackMap.cs Pinned() narrowed to the bar",
+   "verdict_on_criterion": "criterion right, mod wrong (and the map check was too lenient)",
+   "status": "FIXED fa2de6ee4b",
+   "against": "mod",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_SCOPE_KNOCKBACK_RESTORE_DECIDER_RED_ON_FLOWWORKS",
+   "class": "Problem",
+   "bar": "inv_proof_scenes",
+   "criterion": "T_RESTORE, a decider of inv_proof_scenes, must read PASS on the rerun",
+   "evidence": [
+    "lane2/reruns.jsonl T_RESTORE: FAIL (recorded PASS): repo: no restore-leak outside the filed baseline -- 4 FlowWorks hits (RM_NorthstarProofs.cs:1170, pawn_in_liquid_matrix.py:412,421, stepped_pit_stage.py:134), landed 2026-11-22",
+    "no ExplosiveKnockback file in the hits"
+   ],
+   "would_pass": "T_RESTORE reads PASS while it still goes red on an ExplosiveKnockback restore leak",
+   "smallest_fix": "proof_restore_check.py BASELINE keys for the three FlowWorks files under the filed item RIMMANDRAKE_RESTORE_FLOWWORKS_PIT_PROOF_SETTINGS_FOUR_NEW_LEAKS (the check's own route)",
+   "verdict_on_criterion": "criterion right, check wrong (it read another mod's unfiled leak)",
+   "status": "FIXED 44bf0e6b6f",
+   "against": "check",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_KNOCKBACK_FIRE_SWITCH_MISSES_UNPATCHED_FIRE",
+   "class": "Polish",
+   "bar": "every_harmful_blast_throws",
+   "criterion": "fire at half off, fire throws nothing; the other-mods percent only for a damage type our patch does not tune",
+   "evidence": [
+    "lane1/lane1_rows.jsonl L1_FIRE_SWITCH_ON_UNPATCHED_FIRE_TYPE (UNSETTLED): another mod's fire type with no extension and no Flame parent throws at the other-mods percent and ignores the switch",
+    "RM_Patch_DamageWorker_ExplosionKnockback.cs ConfigOf: FireSwitchedOff only zeroes source damageDef; no such def is known in the official dump or our list (not measured: no case found), so test 1 fails: no failure, no concrete case"
+   ],
+   "would_pass": "none owed in 0.1.0",
+   "smallest_fix": "none: not worth the touch without a concrete fire type",
+   "verdict_on_criterion": "the two clauses overlap for an unpatched fire type; written for the next version",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "against": "mod",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_KNOCKBACK_GAS_SKIPS_PAWN_ON_INTACT_COVER",
+   "class": "Polish",
+   "bar": "gas_goes_clump_by_clump",
+   "criterion": "a burning gas clump shoves people one cell; spared: a pawn already in a pit",
+   "evidence": [
+    "lane1/lane1_rows.jsonl L1_GAS_SHOVE_PAWN_ON_INTACT_COVER (UNSETTLED): a pawn standing on an intact cover is skipped in_pit by a gas clump (KbFacts.onSuperdeep is true covered or not)",
+    "a mortar breaks that cover and the pawn falls (blast_breaks_pit_cover), so only a gas burst beside a pawn on a cover differs; no failure seen, a rare scene (Cauldron gas beside a pit cover)"
+   ],
+   "would_pass": "none owed in 0.1.0",
+   "smallest_fix": "none now: KbFacts would need 'covered' apart from 'superdeep'",
+   "verdict_on_criterion": "whether standing on a cover is 'in a pit' is not in the bars",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "against": "mod",
+   "miss_of": null
+  }
+ ]
+}

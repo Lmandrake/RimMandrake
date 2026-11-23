@@ -1,0 +1,325 @@
+[
+ {
+  "id": "PF_MATH_CREATURE_LIMIT_DOUBLED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "if (kind == KbKind.Pawn && mass > s.creatureMassLimit)",
+  "new": "if (kind == KbKind.Pawn && mass > s.creatureMassLimit * 2f)",
+  "bars": [
+   "inv_kernel",
+   "the_spared",
+   "inv_creature_mass_limit"
+  ]
+ },
+ {
+  "id": "PF_MATH_GOODS_INTO_DEEP_WATER",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "if (c == KbCell.Water)",
+  "new": "if (c == KbCell.Water && pawn)",
+  "bars": [
+   "inv_kernel",
+   "doors_and_deep_water_stop",
+   "goods_arc_spin_rebound"
+  ]
+ },
+ {
+  "id": "PF_MATH_FALLOFF_HALVED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "return 1f - Clamp01(dist / radius);",
+  "new": "return 1f - Clamp01(dist / (radius * 2f));",
+  "bars": [
+   "inv_kernel",
+   "people_thrown_three_cells"
+  ]
+ },
+ {
+  "id": "PF_MATH_GAS_BREAKS_COVER",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "return covered && !container && explosionId >= 0;",
+  "new": "return covered && !container;",
+  "bars": [
+   "inv_kernel",
+   "blast_breaks_pit_cover",
+   "thrown_into_pit_falls"
+  ]
+ },
+ {
+  "id": "PF_MATH_RIM_THROWS_ONE",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "return cells < 1 ? 0 : cells;",
+  "new": "return cells < 1 ? 1 : cells;",
+  "bars": [
+   "inv_kernel",
+   "inv_too_weak_skip",
+   "the_spared"
+  ]
+ },
+ {
+  "id": "PF_MATH_REBOUND_ROUNDS_UP",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "return Math.Min(cellsLeft, (int)Math.Floor(cellsLeft * k / 100f + 1e-4f));",
+  "new": "return Math.Min(cellsLeft, (int)Math.Ceiling(cellsLeft * k / 100f));",
+  "bars": [
+   "inv_kernel",
+   "goods_arc_spin_rebound"
+  ]
+ },
+ {
+  "id": "PF_PLAN_PIT_PAWN_THROWN",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+  "old": "if (f.onSuperdeep) return \"in_pit\";",
+  "new": "",
+  "bars": [
+   "the_spared",
+   "inv_who_is_spared"
+  ]
+ },
+ {
+  "id": "PF_PLAN_GAS_SHOVE_UNCAPPED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+  "old": "s.maxCells = Math.Min(s.maxCells, 1);",
+  "new": "",
+  "bars": [
+   "gas_goes_clump_by_clump"
+  ]
+ },
+ {
+  "id": "PF_PLAN_TUMBLE_REMOVED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+  "old": "            Tumble(p, f, s, grid);\n",
+  "new": "",
+  "bars": [
+   "every_good_moves"
+  ]
+ },
+ {
+  "id": "PF_PLAN_CONTAINER_THROUGH_PAWN",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+  "old": "if (w.PawnAt(x, z))",
+  "new": "if (false && w.PawnAt(x, z))",
+  "bars": [
+   "closed_container_holds",
+   "inv_container_shove"
+  ]
+ },
+ {
+  "id": "PF_MOD_RESET_MAX_EIGHT",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+  "old": "RimMandrakeExplosiveKnockbackSettings.maxThrowCells = 6;",
+  "new": "RimMandrakeExplosiveKnockbackSettings.maxThrowCells = 8;",
+  "bars": [
+   "inv_proof_scenes",
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_MOD_CREATURE_DEFAULT_250",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+  "old": "public static float creatureMassLimit = 150f;",
+  "new": "public static float creatureMassLimit = 250f;",
+  "bars": [
+   "inv_proof_scenes",
+   "the_spared",
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_MOD_SANDBAG_SWITCH_IGNORED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+  "old": "sandbagsStop = sandbagsStopThrow,",
+  "new": "sandbagsStop = false,",
+  "bars": [
+   "inv_proof_scenes",
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_GATE_WRONG_TYPE",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof_build_gate.py",
+  "old": "return \"Type not found\" in text and \"RM_KnockbackProof\" in text",
+  "new": "return \"Type not found\" in text and \"RM_KnockbackProofX\" in text",
+  "bars": [
+   "inv_proof_scenes"
+  ]
+ },
+ {
+  "id": "PF_GATE_NO_EXIT",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof_build_gate.py",
+  "old": "        raise SystemExit(EXIT)\n",
+  "new": "        return resp\n",
+  "bars": [
+   "inv_proof_scenes"
+  ]
+ },
+ {
+  "id": "PF_PROOF_RESET_NOOP",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+  "old": "                RimMandrakeExplosiveKnockbackMod.Reset();\n                return \"RESET\";",
+  "new": "                return \"RESET\";",
+  "bars": [
+   "inv_proof_scenes"
+  ]
+ },
+ {
+  "id": "PF_PROOF_WALL_SCENE_DROPPED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+  "old": "\"calibration\", \"wall_stop\", \"door_stop\"",
+  "new": "\"calibration\", \"door_stop\"",
+  "bars": [
+   "inv_proof_scenes",
+   "wall_stops_dead"
+  ]
+ },
+ {
+  "id": "PF_CALLER_SHIELD_NEVER",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+  "old": "f.shieldAbsorbed = r.shield != null;",
+  "new": "f.shieldAbsorbed = false;",
+  "bars": [
+   "shield_belt_holds",
+   "inv_shield"
+  ]
+ },
+ {
+  "id": "PF_CALLER_PIT_NEVER_READ",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+  "old": "x = t.Position.x, z = t.Position.z,\n                onSuperdeep = RM_KnockbackCompat.IsSuperdeep(map, t.Position) };",
+  "new": "x = t.Position.x, z = t.Position.z,\n                onSuperdeep = false };",
+  "bars": [
+   "the_spared",
+   "inv_pit_floor_goods_stay"
+  ]
+ },
+ {
+  "id": "PF_CALLER_PAWN_ON_COVER_IGNORED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+  "old": "return RM_KnockbackMath.PitCell(covered, forPawn, forPawn && OtherPawnAt(c, covered));",
+  "new": "return RM_KnockbackMath.PitCell(covered, forPawn, false);",
+  "bars": [
+   "pawn_hits_pawn_stops"
+  ]
+ },
+ {
+  "id": "PF_CALLER_FIRE_SWITCH_IGNORED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs",
+  "old": "if (RM_KnockbackMath.FireSwitchedOff(",
+  "new": "if (false && RM_KnockbackMath.FireSwitchedOff(",
+  "bars": [
+   "every_harmful_blast_throws",
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_CALLER_PAWN_LANDING_KEEPS_COVER",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs",
+  "old": "if (!RM_KnockbackMath.LandingBreaksCover(KbKind.Pawn,",
+  "new": "if (true || !RM_KnockbackMath.LandingBreaksCover(KbKind.Pawn,",
+  "bars": [
+   "thrown_into_pit_falls"
+  ]
+ },
+ {
+  "id": "PF_CALLER_PAWN_LANDING_NOT_STANDABLE",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs",
+  "old": "if (!chosen.InBounds(map) || !chosen.Standable(map))",
+  "new": "if (!chosen.InBounds(map))",
+  "bars": [
+   "pawn_flight_arc",
+   "no_teleport"
+  ]
+ },
+ {
+  "id": "PF_CALLER_GOODS_LANDING_KEEPS_COVER",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs",
+  "old": "if (landed.Spawned && RM_KnockbackMath.LandingBreaksCover(",
+  "new": "if (false && landed.Spawned && RM_KnockbackMath.LandingBreaksCover(",
+  "bars": [
+   "thrown_into_pit_falls"
+  ]
+ },
+ {
+  "id": "PF_CALLER_HEAVY_KNOCK_OFF",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs",
+  "old": "if (!RM_KnockbackMath.HeavyKnock(RimMandrakeExplosiveKnockbackSettings.heavyGoodsKnock,",
+  "new": "if (!RM_KnockbackMath.HeavyKnock(false,",
+  "bars": [
+   "heavy_stack_knocks"
+  ]
+ },
+ {
+  "id": "PF_COMPAT_CRATES_ALWAYS_CLOSED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs",
+  "old": "&& RimMandrakeExplosiveKnockbackSettings.vanillaCratesClosed);",
+  "new": ");",
+  "bars": [
+   "closed_container_holds",
+   "settings_scale_and_switch"
+  ]
+ },
+ {
+  "id": "PF_COMPAT_HIDDEN_NOT_CLOSED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs",
+  "old": "closed = d.HasModExtension<RM_KnockbackClosedStorage>() || AnyHides(d.comps) || AnyHides(d.modExtensions);",
+  "new": "closed = d.HasModExtension<RM_KnockbackClosedStorage>();",
+  "bars": [
+   "closed_container_holds",
+   "open_shelf_scatters"
+  ]
+ },
+ {
+  "id": "PF_PATCH_FIRE_FULL",
+  "file": "src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_DamageDefs.xml",
+  "old": "<xpath>Defs/DamageDef[defName=\"Flame\"]</xpath>\n    <value>\n      <li Class=\"RimMandrake.ExplosiveKnockback.RM_KnockbackExtension\"><force>0.5</force></li>",
+  "new": "<xpath>Defs/DamageDef[defName=\"Flame\"]</xpath>\n    <value>\n      <li Class=\"RimMandrake.ExplosiveKnockback.RM_KnockbackExtension\"><force>1.0</force></li>",
+  "bars": [
+   "every_harmful_blast_throws"
+  ]
+ },
+ {
+  "id": "PF_VERDICT_CALIBRATION_ANY_CELLS",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "return cells == 3 && away && alive && launches == 1;",
+  "new": "return cells >= 1 && away && alive && launches == 1;",
+  "bars": [
+   "people_thrown_three_cells",
+   "inv_proof_scenes"
+  ]
+ },
+ {
+  "id": "PF_VERDICT_WATER_LANE_LOOSE",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "if (stop != KbStop.Water || destX != beyond - 1)",
+  "new": "if (stop != KbStop.Water)",
+  "bars": [
+   "doors_and_deep_water_stop",
+   "inv_proof_scenes"
+  ]
+ },
+ {
+  "id": "PF_VALIDATION_FRAME_LOOSE",
+  "file": "src/RimMandrake/ExplosiveKnockback/validation.py",
+  "old": "FRAME_OVER_OFF = 0.10 ",
+  "new": "FRAME_OVER_OFF = 0.50 ",
+  "bars": [
+   "walk_storeroom_raid"
+  ]
+ },
+ {
+  "id": "PF_MAPAGREE_ALWAYS_OK",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/map_agreement.py",
+  "old": "    return 0 if rows and agree == len(rows) else 1\n",
+  "new": "    return 0\n",
+  "bars": [
+   "inv_proof_scenes"
+  ]
+ },
+ {
+  "id": "PF_SAVELOAD_ALWAYS_OK",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/pawn_flight_saveload.py",
+  "old": "sys.exit(0 if rows and all(r[1] == \"PASS\" for r in rows) else 1)",
+  "new": "sys.exit(0)",
+  "bars": [
+   "recovery_immunity",
+   "pawn_flight_arc"
+  ]
+ }
+]

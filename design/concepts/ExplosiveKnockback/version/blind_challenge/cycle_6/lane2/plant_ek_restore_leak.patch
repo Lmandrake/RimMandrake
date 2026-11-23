@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+@@ -524,6 +524,7 @@
+         /// inside [loS, hiS] probe seconds) + " path=" + the CSV; "NONE" when no probe ran or it saw no frame.</summary>
+         public static string Frame(string arg)
+         {
++            RimMandrakeExplosiveKnockbackSettings.strength = 2f;
+             string[] p = (arg ?? "").Split(',');
+             string verb = p[0].Trim().ToLowerInvariant();
+             if (verb == "begin")

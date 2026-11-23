@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
+@@ -304,7 +304,6 @@
+                 p.wallFirst = true;
+                 return;
+             }
+-            Tumble(p, f, s, grid);
+         }
+ 
+         /// <summary>Leaf every_good_moves, the cases its throw, hop and bounce all leave in place (blind cycle 6,
