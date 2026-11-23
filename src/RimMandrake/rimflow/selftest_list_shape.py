@@ -139,6 +139,10 @@ def t_a_routed_item_needs_no_shape_run():
     chk(lambda: rows["A"]["decision"] == "routed" and not launches, "a routed item reads routed, nothing launches")
     chk(lambda: "owner" in why and "pick one of two designs" in why and "his card answer" in why,
         "the routed row names who, what is asked and what resumes it (%s)" % why)
+    rows, launches, _ = decide({"A": lane_it(effect="cmd:false", verdict="fails", route=R_OK, shape_due=False)})
+    chk(lambda: rows["A"]["decision"] == "routed" and not launches,
+        "an item whose check fails while a part is routed reads routed, and no Work run launches (%s)"
+        % rows["A"]["decision"])
 
 
 def t_shaped_means_every_part_has_a_check_or_a_full_route():

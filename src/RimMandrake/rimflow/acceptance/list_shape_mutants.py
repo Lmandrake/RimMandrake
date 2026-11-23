@@ -48,6 +48,8 @@ MUTANTS = [
      '            if False:\n                stop("Shape run'),
     (LD, "the account gate skips Shape runs", '        if not account[0]:', '        if not account[0] and not shape:'),
     (LD, "a route is ignored", '            elif it.get("route"):', '            elif False:'),
+    (LD, "a route beside a failing check is ignored", '        if it.get("route"):     # an open routed part',
+     '        if False:     # an open routed part'),
     (LD, "a Shape run gets the Work brief", '        if row.get("kind") == "shape":\n            import list_shape',
      '        if False:\n            import list_shape'),
     (LD, "live Shape runs fill no slot",

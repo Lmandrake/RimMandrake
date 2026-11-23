@@ -20,7 +20,8 @@ oldest filing first, one decision:
                   than shape_grace_h): one Shape run (opus, the brief roles/list_shape.md), through every gate below. It
                   shapes the item and, when the item is small, does its work in the same run. A `large` Shape run is not
                   counted as a Work run. A Shape run that left neither check nor route reads stopped.
-  routed          no check, and a part routed to judge, owner, conductor or review: nothing launches (list_shape.py)
+  routed          a part routed to judge, owner, conductor or review and not yet answered (with or without a check):
+                  nothing launches; the party that answers shapes the item again (list_shape.py)
   live            a detached run is live on it
   waits_on | blocked | waiting | reshape   it waits on an open item | is blocked | has a dated wait ahead | its dated
                   wait passed and the check fails (a date never launches old work; Shape, step 4, takes it)
@@ -275,6 +276,10 @@ def decide(cfg, st, facts, now, account=(True, "")):
             continue
         if not shape and verdict != "fails":
             put("blind", "the check is unmeasured: %s" % _one(it.get("out") or verdict, 200))
+            continue
+        if it.get("route"):     # an open routed part holds the item: its answer re-shapes it (list_shape.py)
+            r = it["route"]
+            put("routed", "a part is routed to %s: %s; resumes on: %s" % (r.get("who"), r.get("ask"), r.get("resumes")))
             continue
         if run.get("live"):
             put("live", "%s is live on it" % ", ".join(run["live"]))

@@ -59,7 +59,8 @@ skills or models, or the run needs help. Asking for help (a `LEFT OPEN:` note, a
 - **an-item-filed-with-its-check-never-enters-shape.** `needs_shape_run` is False for an item with an outcome check,
   and the lane decides on it as before (never `shape`).
 - **a-routed-item-needs-no-shape-run.** An item with a full route needs no Shape run; the lane reads it `routed`, with
-  who holds it, what is asked and what resumes it, and launches nothing.
+  who holds it, what is asked and what resumes it, and launches nothing. This holds also when the item has a failing
+  check beside the routed part: no Work run is launched until the party that answers re-shapes it.
 - **shaped-means-every-part-has-a-check-or-a-full-route.** `shaped(parts)["shaped"]` is True only when there is at least
   one part and each part has an outcome check a program can read, or a route with a known `who` and a non-empty `ask`
   and `resumes`. Every other part is named in `unshaped`.
