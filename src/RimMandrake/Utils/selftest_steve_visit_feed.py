@@ -210,6 +210,54 @@ def t_nothing_waits_nothing_is_sent():
     check(not visit_jobs(), "nothing-waits-nothing-is-sent: a paused lane gets no job")
 
 
+def _refused(jid, cause, fin, chains=("pc0",)):
+    """A done record the worker refused before the chain ran (live: Steve2's `Steve2 is running; it rewrites Prefs.xml
+    on exit`, REFUSED LOAD, 46 of 53 Steve2 jobs 2026-11-23)."""
+    p = F.TMP / "testq" / "done" / (jid + ".json")
+    F.wjson(p, {"job": F.job(jid, "Pyrelands", list(chains), by="BENCH.visit"), "host": "stevedesktop.b",
+                "result": {"outcome": "REFUSED", "cause": cause, "note": "Steve2 is running; it rewrites Prefs.xml",
+                           "started": F.iso(fin - 60), "finished": F.iso(fin)}})
+    os.utime(p, (fin, fin))
+
+
+def t_a_lane_refusal_does_not_spend_a_check():
+    # live 2026-11-23: four FlowWorks visit jobs refused LOAD on Steve2 at 15:57-16:03Z spent six chains; the feed
+    # read `quiet` for six hours with the checks never run. A refusal before the chain ran measured nothing about it.
+    for cause in sorted(T.ARCH_BOUNCE | {"SYNC"}):
+        F.reset()
+        F.dispatch(F.one())
+        _refused("J-r1", cause, NOW - 50 * 60)
+        _refused("J-r2", cause, NOW - 40 * 60)
+        out = step() or {}
+        js = visit_jobs()
+        check(out.get("state") == "queued" and len(js) == 1 and "pc0" in js[0]["selector"]["chains"]
+              and "pc0" not in json.dumps(out.get("spent") or {}),
+              "a-lane-refusal-does-not-spend-a-check: two REFUSED %s runs since the opening still queue pc0 (%s, %s)"
+              % (cause, out.get("state"), out.get("spent")))
+    # just refused: held back a while (not resent into the same refusal every tick), and named, never `quiet`
+    F.reset()
+    F.dispatch(F.one())
+    _refused("J-r3", "LOAD", NOW - 60)
+    out = step() or {}
+    check(not visit_jobs() and out.get("state") == "backoff" and "pc0" in json.dumps(out.get("backoff") or {}),
+          "a-lane-refusal-does-not-spend-a-check: a check refused 1 min ago waits out its backoff, named (%s %s)"
+          % (out.get("state"), out.get("backoff")))
+    F.reset()
+    F.dispatch(F.one())
+    _refused("J-r4", "LOAD", NOW - 60 - __import__("visit_feed").BOUNCE_BACKOFF_S)
+    out = step() or {}
+    check(out.get("state") == "queued" and len(visit_jobs()) == 1,
+          "a-lane-refusal-does-not-spend-a-check: past the backoff it is sent again (%s)" % out.get("state"))
+    # a refusal for a cause about the mod (not the lane) still counts: two stop it
+    F.reset()
+    F.dispatch(F.one())
+    _refused("J-r5", "PREFLIGHT", NOW - 50 * 60)
+    _refused("J-r6", "PREFLIGHT", NOW - 40 * 60)
+    out = step() or {}
+    check(not visit_jobs() and (out.get("spent") or {}).get("Pyrelands") == {"pc0": 2},
+          "a-lane-refusal-does-not-spend-a-check: two REFUSED PREFLIGHT runs still stop it (%s)" % out.get("spent"))
+
+
 def t_could_not_look_sends_nothing():
     for label, setup in (("no dispatch reading", lambda: None),
                          ("a stale reading", lambda: F.dispatch(F.one(), age=3600)),
@@ -337,7 +385,7 @@ def t_the_feed_runs_after_reconcile_before_admission():
 
 def main():
     for t in (t_a_waiting_check_is_queued_ahead_of_filler, t_a_visit_opening_with_an_offset_reads, t_the_owners_hold_and_gate_still_stop_a_check,
-              t_nothing_waits_nothing_is_sent, t_could_not_look_sends_nothing, t_mods_take_turns,
+              t_nothing_waits_nothing_is_sent, t_a_lane_refusal_does_not_spend_a_check, t_could_not_look_sends_nothing, t_mods_take_turns,
               t_filler_prefers_advancing_mods, t_site_saves_ship_when_the_registry_changes,
               t_the_feed_runs_after_reconcile_before_admission):
         try:

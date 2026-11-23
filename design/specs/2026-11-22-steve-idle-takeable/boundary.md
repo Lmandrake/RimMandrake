@@ -77,6 +77,10 @@ test of its name in `src/RimMandrake/Utils/selftest_steve_visit_feed.py`; the si
   opened, with a PASS or FAIL row. A run before the opening drains nothing. A chain that measured nothing twice since
   the opening (not DONE, or DONE with only UNMEASURED rows) is named in `spent` and not sent again. `fill.stop` and a
   pause stop the feed.
+- **a-lane-refusal-does-not-spend-a-check.** A run the lane refused before the chain ran (REFUSED for a cause in
+  `testq.ARCH_BOUNCE` or SYNC) is not one of those failures: two of them still leave the chain sent. A chain refused so
+  within the last 10 min (`BOUNCE_BACKOFF_S`) is held back, named in `backoff`; with nothing else waiting the step reads
+  `backoff`, never `quiet`. A refusal for a cause about the job (PREFLIGHT) still counts.
 - **could-not-look-sends-nothing.** A missing, stale (over 30 min) or blockless dispatch reading sends nothing and
   says why. A queue that is not the live one reads no dispatch reading unless one is named for it
   (`RM_MATURATION_DISPATCH_DIR`).
@@ -96,6 +100,8 @@ test of its name in `src/RimMandrake/Utils/selftest_steve_visit_feed.py`; the si
 - `PRIORITY` 40: above the filler (20), under a hand commission (50).
 - `FAILS_TO_STOP` 2: the danger is a lane spun by a chain it cannot run. The evidence is the filler brake's two
   not-DONE runs in a row, and 20 h of lane lost on 2026-10-25.
+- `BOUNCE_BACKOFF_S` 600: the danger is a check resent into the same refusal every tick. It is longer than the 1-4 min
+  one refusal cycle took on Steve2 on 2026-11-23 (done records) and under the 30 min line above.
 - `READING_MAX_AGE_S` 1800: the same line as `MATURATION_READING_MAX_AGE_S` above.
 - `SITE_RETRY_S` 1800: the danger is up to ~100 MB of saves sent over ssh every 60 s while a cause persists.
 - Chains per visit job: the filler's `TESTQ_FILL_CHAINS` (4). It is not a new limit.

@@ -40,6 +40,14 @@ READING_MAX_AGE_S = 1800
 # it, and sending it every tick spins the lane (the filler brake's evidence: two filler jobs in a row not DONE; 20 h of
 # lane lost 2026-10-25). It is named in the step's `spent` until the visit reopens.
 FAILS_TO_STOP = 2
+# A run the lane refused before the chain ran (REFUSED for a cause in testq.ARCH_BOUNCE - deploy, load, the guard's
+# hold - or SYNC, the runner's pull) measured nothing about the chain and is not one of those failures: live 2026-11-23,
+# four FlowWorks visit jobs refused LOAD on Steve2 (its game was up) spent six chains, and the feed read `quiet` for six
+# hours with the checks never run. A chain just refused so waits this long before it is sent again, so the feed does not
+# resend into the same refusal every tick: longer than the 1-4 min one refusal cycle took on Steve2 that day (done
+# records), under the 30 min line of the lane's idle alarm (ops_watch_rules.json steve.idle_with_takeable_min).
+LANE_REFUSALS = {"SYNC"}       # with testq.ARCH_BOUNCE
+BOUNCE_BACKOFF_S = 600
 
 
 def _T():
@@ -116,8 +124,9 @@ def _measured(res):
 
 
 def waiting(now, blk, recs=None):
-    """-> ({mod: {"opened", "visit", "checks": {check: [chains]}}}, {mod: {chain: failures}}) for the visits whose
-    checks still wait for a lane run; the second map names the chains not sent again (FAILS_TO_STOP)."""
+    """-> ({mod: {"opened", "visit", "checks": {check: [chains]}}}, {mod: {chain: failures}}, {mod: {chain: seconds}})
+    for the visits whose checks still wait for a lane run; the second map names the chains not sent again
+    (FAILS_TO_STOP), the third the chains the lane refused just now, held back that many seconds (BOUNCE_BACKOFF_S)."""
     T = _T()
     out, unread = {}, {}
     for mod, e in sorted(blk.items()):
@@ -133,12 +142,13 @@ def waiting(now, blk, recs=None):
             continue
         out[mod] = {"opened": t0, "visit": e.get("visit"), "checks": ch}
     if not out:
-        return {}, ({"unread": unread} if unread else {})
+        return {}, ({"unread": unread} if unread else {}), {}
     gated = {}
     for j in T.records("pending"):
         if j.get("owner_gate") and j.get("mod") in out:
             gated.setdefault(j["mod"], set()).update(_chains(j))
-    ran, fails = {}, {}
+    ran, fails, bounced = {}, {}, {}
+    lane = set(getattr(T, "ARCH_BOUNCE", ())) | LANE_REFUSALS
     for rec in T.records("done") if recs is None else recs:
         j, res = T.job_of(rec), rec.get("result") or {}
         m = j.get("mod")
@@ -147,13 +157,17 @@ def waiting(now, blk, recs=None):
         fin = _parse(rec.get("finished") or res.get("finished"))
         if fin is None or fin < out[m]["opened"]:
             continue
+        if res.get("outcome") == "REFUSED" and res.get("cause") in lane:
+            for c in _chains(j):        # the lane's refusal, not the chain's failure (LANE_REFUSALS)
+                bounced.setdefault(m, {})[c] = max(bounced.get(m, {}).get(c, 0), fin)
+            continue
         measured = _measured(res) if res.get("outcome") == "DONE" else set()
         for c in _chains(j):
             if c in measured or "*" in measured:
                 ran.setdefault(m, set()).add(c)
             else:
                 fails.setdefault(m, {})[c] = fails.setdefault(m, {}).get(c, 0) + 1
-    spent = {}
+    spent, backoff = {}, {}
     for m in list(out):
         keep = {}
         for k, v in out[m]["checks"].items():
@@ -164,6 +178,11 @@ def waiting(now, blk, recs=None):
             if dead:
                 spent.setdefault(m, {}).update({c: fails[m][c] for c in dead})
             left = [c for c in left if c not in dead]
+            wait = {c: int(bounced[m][c] + BOUNCE_BACKOFF_S - now) for c in left
+                    if bounced.get(m, {}).get(c, 0) + BOUNCE_BACKOFF_S > now}
+            if wait:
+                backoff.setdefault(m, {}).update(wait)
+            left = [c for c in left if c not in wait]
             if left:
                 keep[k] = left
         if keep:
@@ -172,7 +191,7 @@ def waiting(now, blk, recs=None):
             del out[m]
     if unread:
         spent["unread"] = unread
-    return out, spent
+    return out, spent, backoff
 
 
 def _order(w, recs):
@@ -199,7 +218,8 @@ def in_flight(T):
 
 
 def step(now=None, n=None, dry=False):
-    """One tick's feed step -> a record: state `queued` (job), `busy`, `stopped`, `quiet` (nothing waits), `refused`
+    """One tick's feed step -> a record: state `queued` (job), `busy`, `stopped`, `quiet` (nothing waits), `backoff`
+    (what waits was refused by the lane just now), `refused`
     (every waiting mod refused at submit, each named) or `unmeasured` (why)."""
     T = _T()
     now = time.time() if now is None else now
@@ -216,10 +236,12 @@ def step(now=None, n=None, dry=False):
     if blk is None:
         return {"state": "unmeasured", "why": why}
     recs = T.records("done")
-    w, spent = waiting(now, blk, recs)
+    w, spent, backoff = waiting(now, blk, recs)
     if not w:
         if spent.get("unread"):
             return {"state": "unmeasured", "why": "nothing readable waits, but not read: %s" % spent["unread"]}
+        if backoff:     # {mod: {chain: seconds left}}: the lane refused them just now (LANE_REFUSALS); never `quiet`
+            return {"state": "backoff", "backoff": backoff, "spent": spent}
         return {"state": "quiet", "spent": spent}
     r = subprocess.run(["git", "-C", T.REPO, "rev-parse", "--short", "origin/main"], capture_output=True, text=True,
                        timeout=60)
@@ -239,6 +261,7 @@ def step(now=None, n=None, dry=False):
         pick = chains[:n]
         if dry:
             return {"state": "would_queue", "mod": mod, "chains": pick, "visit": e["visit"], "spent": spent,
+                    "backoff": backoff,
                     "waiting": {m: len(v["checks"]) for m, v in w.items()}}
         rc, text = _submit(T, mod, pick, sha, e)
         gone = T.unknown_chains(text) if rc != 0 else set()
@@ -252,6 +275,7 @@ def step(now=None, n=None, dry=False):
                 job = None
             T.log("visit feed: %s visit %s %s -> %s" % (mod, e["visit"], ",".join(pick), job))
             return {"state": "queued", "job": job, "mod": mod, "chains": pick, "visit": e["visit"], "spent": spent,
+                    "backoff": backoff,
                     "waiting": {m: len(v["checks"]) for m, v in w.items()}}
         refused[mod] = text.strip()[-300:]
     T.log("visit feed: every waiting mod refused: %s" % json.dumps(refused)[:400])
