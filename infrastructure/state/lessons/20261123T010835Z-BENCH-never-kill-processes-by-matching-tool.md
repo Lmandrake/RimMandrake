@@ -1,0 +1,2 @@
+Never kill processes by matching a tool name in their command line (ps | grep [s]erve_gated | xargs kill, pkill -f): a detached helper's own claude -p process carries its whole brief in argv, so any tool the brief names matches, and the helper kills itself (2026-11-22, exit 143 at 16:20 PST, all work recovered from the orphan bundle). Kill by the PID you started or by systemctl --user stop <unit>.
+item: RIMMANDRAKE_GENERATE_FLOWWORKS_TANK_DESIGNS_FIRST_RUN_ONLY_REPAINTED

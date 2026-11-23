@@ -1,0 +1,2 @@
+The sheet-protection hook (.claude/hooks/block_hand_edited_sheet.py) splits a Bash command on newlines and matches '(install' or '>' near a biome_ffar *_sheet_*.html path as a write: a ./publish whose commit message contains '(install ...' or a '> log' redirect, with the sheet html among its paths, is refused. Word the message without '(install' and publish without redirecting (pipe to tail under set -o pipefail).
+item: RIMMANDRAKE_GENERATE_FLOWWORKS_TANK_DESIGNS_FIRST_RUN_ONLY_REPAINTED
