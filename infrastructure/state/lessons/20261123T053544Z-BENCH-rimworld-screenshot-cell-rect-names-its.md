@@ -1,0 +1,1 @@
+rimworld/screenshot_cell_rect names its PNG to the second and writes it after the call returns: two captures in one second share a name, so a script that copies at once gets the previous case's picture. Pass fileName= per capture and wait until the file exists with a stable size (stepped_pit_stage.wait_file), and hash the set: identical md5s mean a stale or overwritten capture.
