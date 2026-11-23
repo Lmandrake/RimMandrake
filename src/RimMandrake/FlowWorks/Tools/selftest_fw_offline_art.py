@@ -21,7 +21,8 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     centroid, top-down and squat checks can-fail on a blank head, the seat checks on a board with no head; every check passes
     for every head look on every pipe look (the seat follows the pipe's look in game)
   parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat for all 16 masks x every look (k, r and the stub read from the
-          C# source via selftest_pipe_seat's parser); the installed head PNGs == top_heads.head(look) pixel for pixel,
+          C# source via selftest_pipe_seat's parser); the installed head PNGs' alpha == top_heads.head(look)'s pixel for pixel
+          (the footprint; a repaint he picked may change the colours) and each head == the art ledger's latest live install,
           and every RM_SprinklerHead drawSize == (1,1) and drawOffset z (the four styles and the base ThingDef) == 0
           -- together: the centred head lands on the seat.
   Modern waterworks blue, every recoloured piece + the Modern head (MODERN_PIPE_REDRAW_FIRETRUCK_RED_RETIRED):
@@ -170,6 +171,24 @@ def pipe_joins():
         want(not ok, "%s can-fail: riser_rims_north sees the west-going flip (%s)" % (look, d))
 
 
+def latest_live_art_sha():
+    """{rel: sha} of the newest art-ledger 'live' event per file under the FlowWorks mod."""
+    import json
+    from datetime import datetime
+    best = {}
+    for p in sorted((HERE.parents[3] / "infrastructure/state/art/events").glob("*.jsonl")):
+        for line in p.read_text().splitlines():
+            if '"type":"live"' not in line or "FlowWorks/Sprinkler" not in line:
+                continue
+            e = json.loads(line)
+            if e.get("mod") != "src/RimMandrake/FlowWorks":
+                continue
+            ts = datetime.strptime(e["ts"], "%Y-%m-%dT%H:%M:%S%z")
+            if e["rel"] not in best or ts > best[e["rel"]][0]:
+                best[e["rel"]] = (ts, e["sha"])
+    return {rel: sha for rel, (ts, sha) in best.items()}
+
+
 def sprinkler_parity():
     src = (fc.FW / "Source/Sprinklers/RM_PipeSeatMath.cs").read_text()
     for name, py in (("LoneStubScrapperPx", ss.LONE_STUB_SCRAPPER_PX), ("ShownCellPx", ss.SHOWN_CELL_PX)):
@@ -182,11 +201,20 @@ def sprinkler_parity():
     want(abs(ss.elbow_arc("Scrapper")[0] - arcs["Scrapper"][0]) < 1e-9, "parity: elbow_arc reads as ElbowArc")
     import numpy as np
     from PIL import Image
+    # The seat formula needs the head's footprint, so the alpha is the parity: a repaint he picked (Modern
+    # "field worn B", 2026-11-22) keeps top_heads' footprint and changes only its colours. The colours are pinned
+    # to the art ledger instead: the installed bytes == the latest live install of that file.
+    live = latest_live_art_sha()
     for look in fc.LOOKS:
         made = top_heads.head(look)
-        shipped = Image.open(fc.FW / "Textures/RimMandrake/FlowWorks/Sprinkler" / look / "RM_SprinklerHead.png").convert("RGBA")
-        same = made.size == shipped.size and np.array_equal(np.asarray(made), np.asarray(shipped))
-        want(same, "parity: installed %s head == top_heads.head(%s) pixel for pixel" % (look, look))
+        path = fc.FW / "Textures/RimMandrake/FlowWorks/Sprinkler" / look / "RM_SprinklerHead.png"
+        shipped = Image.open(path).convert("RGBA")
+        same = made.size == shipped.size and np.array_equal(np.asarray(made)[..., 3], np.asarray(shipped)[..., 3])
+        want(same, "parity: installed %s head alpha == top_heads.head(%s) alpha pixel for pixel" % (look, look))
+        rel = "RimMandrake/FlowWorks/Sprinkler/%s/RM_SprinklerHead.png" % look
+        got = hashlib.sha256(path.read_bytes()).hexdigest()
+        want(live.get(rel) == got, "pinned: installed %s head == the art ledger's latest live install (%s vs %s)"
+             % (look, got[:12], (live.get(rel) or "none")[:12]))
     try:
         oz = ss.def_offsets(base=True)
         ss.def_draw_sizes(base=True)
