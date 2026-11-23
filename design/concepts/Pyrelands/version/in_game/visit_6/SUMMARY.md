@@ -77,6 +77,8 @@ runs (strange.jsonl).
 
 - 23:30 28 of 29 main chains done: every row PASS but the SITE pads (rerun queued) and the regrow chain, stopped when a native orray killed a wild nuna mid-row (rerun queued, embergrass_regrow2). The hourly burn-front frames held no fire in 10 of 24: crop repaired 783177c5ca (HARNESS), burn_line rerun for new frames. Saves backed up to D:\ClaudeWork\backups\rimmandrake\archsmall_saves_before_pyre_visit6_20261122T2328.
 
+- 02:55 all reruns done; `maturation.py next Pyrelands` reads no form reason; its only refusal is substance: bar walk_season_on_the_pyre undecided until sc_walk runs on ArchBig. ArchSmall bridge released, game left running at the walk save on the tier list.
+
 ## Exit
 
 ```
