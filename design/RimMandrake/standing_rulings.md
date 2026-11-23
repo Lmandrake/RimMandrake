@@ -1,203 +1,293 @@
 # Standing owner rulings and process detail — full text
 
-Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchanged except heading levels. CLAUDE.md keeps a one-line rule and points here. Entries state what IS: delete a line the moment it turns false, never annotate it.
+This file came from the project `CLAUDE.md` on 2026-10-11, at the weekly cleaning. At that move, only the heading levels
+changed. Later rulings were added here. `CLAUDE.md` keeps a one-line rule and points here.
+
+Each entry states what is true now. When a line becomes false, delete the line at once. Never add a note to it.
 
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
-*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."*
+
+- The Conductor is the window that the owner talks to.
+- An instruction from the Conductor carries his authority for every seat and helper: Dispatcher, Operations, RUNNER,
+  helpers and subagents.
+- Act on a Conductor instruction as on his word.
+- **Never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".**
+- A receiver may still report a factual error.
+- The Conductor cannot grant more than the owner could.
+- Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, with the Conductor's text in `--why`.
 
 ## 🔴 Only five acts stay his; the Conductor may do the rest, mindfully — owner, 2026-11-19
 
-*"I only want to preserve Flyer flights, replacing art I kept, pass at my walk, spending money, public publishing.
+His words, Thu 2026-11-19 ~7:40 AM PST: *"I only want to preserve Flyer flights, replacing art I kept, pass at my walk, spending money, public publishing.
 Everything else the Conductor should mindfully be able to do. Of course question cards for me should get to me, but the
-Conductor should review them to ensure it can't just do them now and alert me later."* (Thu 2026-11-19 ~7:40 AM PST.)
-The same morning, by card: *"Conductor should also be able to lift a Hold. We work together, don't use me as a
-bottleneck alone."* (§Owner hold.) Item `RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`; the census of every act
-that needed him that morning: `D:\ClaudeWork\rimmandrake\conductor\owner_only_actions_census_20261119.md`.
+Conductor should review them to ensure it can't just do them now and alert me later."*
 
-**The five acts that stay his** (no Conductor ruling, `--why` or `--per-ruling` does any of them):
-1. **A live flight test of a flyer** (§If it flies in the fiction; the bridge gate's flyer refusal).
+The same morning, by card: *"Conductor should also be able to lift a Hold. We work together, don't use me as a
+bottleneck alone."* (§Owner hold.)
+
+- The item is `RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`.
+- The census of every act that needed him that morning is
+  `D:\ClaudeWork\rimmandrake\conductor\owner_only_actions_census_20261119.md`.
+
+**The five acts that stay his.** No Conductor ruling, `--why` or `--per-ruling` does any of them:
+1. **A live flight test of a flyer** (§If it flies in the fiction; the flyer refusal of the bridge gate).
 2. **Replacing art he KEPT**, and releasing a keep mark. The open exceptions stay open (`delegation_policy.md` §2).
 3. **The pass at his walk**, and his judgement of gameplay, fun, theme and UI (maturation Stage 8, `owner_event`).
 4. **Spending money or a purchase.**
 5. **Publishing outside the private repos** (a Steam Workshop upload, a public post).
 
-**Everything else is open to the Conductor**: the window he talks to (seat BENCH, no `RM_ROLE_UNIT`) and nobody else.
-No helper, other seat, role run or the tick gains anything; a Conductor instruction still carries his authority to them
-(§The Conductor speaks with the owner's authority), so a helper acts on what the Conductor decided, never on its own.
-That includes the acts the census recommended keeping: his OWNER bridge hold inside 45 minutes, the account order and
-the shared account's leave line, and deleting or overwriting work that is not ours.
+**Everything else is open to the Conductor**: the window that he talks to (seat BENCH, no `RM_ROLE_UNIT`), and nobody
+else.
+- No helper, other seat, role run or the tick gains any act from this ruling.
+- A Conductor instruction still carries his authority to them (§The Conductor speaks with the owner's authority). So a
+  helper acts on what the Conductor decided, never on its own decision.
+- The acts open to the Conductor include the acts that the census recommended to keep for him:
+  - his OWNER bridge hold inside 45 minutes;
+  - the account order and the leave line of the shared account;
+  - deleting or overwriting work that is not ours.
 - **Recorded as the Conductor's act, never as his words:** `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS
-  --why "<the act, and the reason>"`. `rimflow` refuses that ruling outside the Conductor window and on a `--why` of
-  fewer than four words, and writes the why as `delegated: conductor act: …`, so every such act is a line of his daily
-  digest (class `conductor act`, `delegated_digest.py`). A tool that writes no ledger event writes that note itself.
-- **"Mindfully":** four acts must name what is lost if the act is wrong and how it is undone, in the `--why` as
-  `lost: <…>` and `undo: <…>` (each at least three words; the gate refuses an empty or one-word why): cutting his OWNER
-  bridge hold inside 45 minutes, changing the account order or the shared account's leave line, deleting or overwriting
-  work that is not ours, and loosening or removing a bar.
+  --why "<the act, and the reason>"`.
+  - `rimflow` refuses that ruling outside the Conductor window.
+  - `rimflow` refuses that ruling when the `--why` has fewer than four words.
+  - `rimflow` writes the why as `delegated: conductor act: …`. So each such act is a line of his daily digest (class
+    `conductor act`, `delegated_digest.py`).
+  - A tool that writes no ledger event writes that note itself.
+- **"Mindfully":** four acts must name two things in the `--why`. The first is what is lost if the act is wrong, as
+  `lost: <…>`. The second is how to undo the act, as `undo: <…>`.
+  - Each of the two has at least three words. The gate refuses an empty or one-word why.
+  - The four acts:
+    - cutting his OWNER bridge hold inside 45 minutes;
+    - changing the account order or the leave line of the shared account;
+    - deleting or overwriting work that is not ours;
+    - loosening or removing a bar.
 - **Code:** `src/RimMandrake/rimflow/conductor_acts.py` (the five, the window check, the why rules; page
   `design/specs/conductor-acts/boundary.md`).
 
-**His cards: the Conductor reviews each one first.** Every question card bound for him passes the Conductor. If its act
-is not one of the five and there is no concrete evidence against the obvious answer, the Conductor acts now and alerts
-him after: one digest line with the undo (the act's `--why` carries it). Only the rest reaches him. This sits beside
-§Evidence-for-Ask and widens it: a card's subject no longer stays his just because an older rule called it his.
+**His cards: the Conductor reviews each one first.**
+- Every question card bound for him passes the Conductor first.
+- If the act of a card is not one of the five, and no concrete evidence goes against the obvious answer, the Conductor
+  acts now. Then the Conductor alerts him after.
+- The alert is one digest line with the undo. The `--why` of the act carries the undo.
+- Only the other cards reach him.
+- This rule sits beside §Evidence-for-Ask and widens it. A card's subject no longer stays his only because an older rule
+  called it his.
 
 **What it does not change.**
-- His user-level instructions (`~/.claude/CLAUDE.md`) and other repos: this run changed neither. Its ban on `push
-  --force` and history rewrites still binds every agent, the Conductor included.
-- Physical acts stay physical: an interactive login, or a screen he must look at, is still asked of him in words.
-- His own words keep their own field: `--owner-said` and `--by-card` are only ever his, and the `## his words` section of
-  a Designer record is written only from them.
-- §No mod runs forward on a broken pipeline: a mod whose readiness list is not READY still does not run.
+- The run that enacted this ruling changed neither his user-level instructions (`~/.claude/CLAUDE.md`) nor other repos.
+  The ban in those instructions on `push --force` and history rewrites still binds every agent, the Conductor included.
+- Physical acts stay physical. An agent still asks him in words for an interactive login, or for a screen that he must
+  look at.
+- His own words keep their own field. `--owner-said` and `--by-card` are only ever his. The `## his words` section of a
+  Designer record is written only from those two fields.
+- §No mod runs forward on a broken pipeline still applies. A mod whose readiness list is not READY still does not run.
 
-**Test that it was applied:** `selftest_conductor_acts.py` (the five refused to a Conductor act; a helper refused every
-act; a mindful act refused without `lost:` and `undo:`), and each opened gate's own selftest.
+**Test that it was applied:** `selftest_conductor_acts.py`, and the own selftest of each opened gate.
+`selftest_conductor_acts.py` checks three refusals:
+- a Conductor act on one of the five is refused;
+- a helper is refused every act;
+- a mindful act without `lost:` and `undo:` is refused.
 
 ## The pipeline never "blesses" a small change — owner, 2026-11-05
 
 *"Please make a ruling: The pipeline is NOT to be used to "bless" any change in the game. That's a huge expenditure
-for a small validation that could be manually performed."* A small change whose check is a quick manual validation
-(an installed picture equals his pick, a value reads back, a file is deployed) is checked by the agent that made it,
-on the spot (a hash, a read, a single bridge call), and closed with that evidence (`rimflow verify ... --level L0`
-then `close`). It is never queued, unheld or left open for the pipeline to judge (he said it of Relentless, since retired). The
-Maturation Pipeline builds and proves real work:
-code, systems, live proofs that need a game round. With "See it, fix it, then" in the CHARTER.
+for a small validation that could be manually performed."*
+
+- A small change is a change whose check is a quick manual validation. Examples: an installed picture equals his pick,
+  a value reads back, a file is deployed.
+- The agent that made a small change checks it on the spot (a hash, a read, a single bridge call).
+- That agent then closes the change with that evidence: `rimflow verify ... --level L0`, then `close`.
+- Never queue a small change, unhold it, or leave it open for the pipeline to judge.
+  He said this of Relentless, which is now retired.
+- The Maturation Pipeline builds and proves real work: code, systems, and live proofs that need a game round.
+- This rule goes with "See it, fix it, then" in the CHARTER.
 
 ## Fix it and check it yourself; no notes, no re-run generations — owner, 2026-11-05
 
 *"We MUST stop this endless token burn by making little cute notes on tickets and letting the system totally restart
 each item once more time to do a check, ok?"* (He had just said *"NO! Do not write this diagnosis onto the item...
-YOU DO IT NOW!"* to a Conductor that diagnosed `MODCHECK_DONOR_ENVIRONMENTS_1` and wrote the next step on the item.)
-Any seat or helper that finds why an item is stuck does the fix and the remaining check itself, in the same sitting
-(a run, a read, a bridge call, one live line), and closes the item with that evidence. Never write the diagnosis or a
-`NEXT:` onto the ticket instead, and never unhold or re-release an item so a whole new pipeline run can rebuild
-it only to re-run a check. An item returns to the pipeline only when real build work remains. With "The pipeline never
-blesses a small change" above.
+YOU DO IT NOW!"* to a Conductor. That Conductor had diagnosed `MODCHECK_DONOR_ENVIRONMENTS_1` and had written the next
+step on the item.)
+
+- When a seat or helper finds why an item is stuck, that seat or helper does the fix and the remaining check itself.
+- Do both in the same sitting: a run, a read, a bridge call or one live line.
+- Then that seat or helper closes the item with that evidence.
+- Never write the diagnosis or a `NEXT:` onto the ticket instead.
+- Never unhold or re-release an item for a check alone. A whole new pipeline run would rebuild the item only to run
+  the check again.
+- An item returns to the pipeline only when real build work remains.
+- This rule goes with the section "The pipeline never blesses a small change", just before this section.
 
 ## North-star validation state
 
-- 🔴 **Validation state is never written as prose: `modcheck floor --all` measures it.** 🔴 **And the 81 walk findings are NOT rot:**
-  `doctor` derives a walk's mod from the walk's BASENAME, never from its `subject:` line, so its
-  24 ORPHAN_WALKs and 10 SUBJECT_COLLISIONs are ONE phenomenon — **34 of 78 walks are deliberate
-  per-feature walks sharing a live mod's subject** (MEASURED 2026-09-18). Of the 33 failing
-  walks, 25 have a fully live subject and the defect is a stale id inside a STEP, and **0 are
-  genuinely orphaned**. ⛔ Never "fix" a walk on an ORPHAN_WALK finding alone, and ⛔ do not
-  rebuild the 43-row decision sheet: the owner ruled it was never his to adjudicate
-  (*"this doesnt feel like a sheet I should be asked"*) and its data was wrong besides — a walk's
-  subject packageId is backticked in 28 walks, BARE in 34 and absent in 16, so a backtick-only
-  regex reads None for 50 of 78. `DETERMINISM_ASSESSMENT.md` §11a is the account; the walk-model
-  ruling landed 2026-09-18 (owner card): **per-feature walks are first-class via a `feature:`
-  key** (`WALK_FEATURE_KEY_1`, done). ✅ **The "modcheck status reads a stored field" bug is
-  FIXED** (`fa27e1cab`, live-checked 2026-09-17; the account is in `design/RimMandrake/CLAUDE.history.md`). Don't
-  re-open this as a live defect without re-measuring; the stored field only ever appears now as a `[stored: ...]`
-  drift annotation.
-- ⛔ Do not casually edit their
-  `## north star` sections: the hash
-  covers the **whole section including explanatory prose**, so correcting a stale caveat
-  reverts the checklist to DRAFT and the mod quietly stops being refused (hit live
-  2026-09-16). 🔴 **Owner ruled 2026-09-17 that this stays as it is** — verbatim: *"Change
-  no code — you just re-validate when prose is corrected."* Bar-scoped hashing is
-  **declined, not deferred** (`NORTHSTAR_HASH_SCOPE_1` dropped), so the remedy for false
-  text in a hashed section is: correct it, then re-validate (on his word, or as the Conductor's act under §Only five
-  acts stay his), same sitting.
-  ⛔ Never leave false text standing to protect a hash — that trade is now ruled against.
-  🔑 Therefore **write only state-independent prose inside that section** — never "binds
-  nothing until validated", which is false the moment it is. And `modcheck/cli.py
-  validate <Mod>` refuses unless BOTH `state:` and `validated-hash:` header lines exist
-  (blank is fine), and since 2026-09-17 refuses a section parsing to **zero bars** — a
-  misformatted section used to record VALIDATED against an empty checklist, binding
-  nothing; omit `--owner-said` for a dry run that writes nothing.
+- 🔴 **Validation state is never written as prose: `modcheck floor --all` measures it.**
+- 🔴 **And the 81 walk findings are NOT rot:**
+  - `doctor` derives the mod of a walk from the BASENAME of the walk, never from its `subject:` line.
+  - So its 24 ORPHAN_WALKs and 10 SUBJECT_COLLISIONs are ONE phenomenon. **34 of 78 walks are deliberate per-feature
+    walks that share the subject of a live mod** (MEASURED 2026-09-18).
+  - Of the 33 failing walks, 25 have a fully live subject. In those 25 walks, the defect is a stale id inside a STEP.
+    **0 are genuinely orphaned**.
+  - Never "fix" a walk on an ORPHAN_WALK finding alone.
+  - Do not rebuild the 43-row decision sheet. The owner ruled that the sheet was never his to adjudicate
+    (*"this doesnt feel like a sheet I should be asked"*).
+  - The data of that sheet was also wrong. The subject packageId of a walk is backticked in 28 walks, BARE in 34 and
+    absent in 16. So a backtick-only regex reads None for 50 of 78.
+  - `DETERMINISM_ASSESSMENT.md` §11a is the account.
+  - The walk-model ruling landed 2026-09-18 (owner card): **per-feature walks are first-class via a `feature:` key**
+    (`WALK_FEATURE_KEY_1`, done).
+  - **The "modcheck status reads a stored field" bug is FIXED** (`fa27e1cab`, live-checked 2026-09-17; the account
+    is in `design/RimMandrake/CLAUDE.history.md`).
+  - Do not re-open that bug as a live defect without a new measurement. The stored field now appears only as a
+    `[stored: ...]` drift annotation.
+- Do not casually edit the `## north star` section of a mod.
+  - The hash covers the **whole section including explanatory prose**.
+  - So a correction of a stale caveat reverts the checklist to DRAFT (hit live 2026-09-16). Then the mod quietly stops
+    being refused.
+  - 🔴 **Owner ruled 2026-09-17 that this stays as it is** — verbatim: *"Change
+    no code — you just re-validate when prose is corrected."*
+  - Bar-scoped hashing is **declined, not deferred** (`NORTHSTAR_HASH_SCOPE_1` dropped).
+  - So the remedy for false text in a hashed section is: correct the text, then re-validate, in the same sitting.
+    Re-validate on his word, or as the Conductor's act under §Only five acts stay his.
+  - Never leave false text standing to protect a hash. That trade is now ruled against.
+  - Therefore **write only state-independent prose inside that section**. For example, never write "binds
+    nothing until validated": that text is false the moment the mod is validated.
+  - `modcheck/cli.py validate <Mod>` refuses unless BOTH `state:` and `validated-hash:` header lines exist. A blank
+    value is fine.
+  - Since 2026-09-17, `modcheck/cli.py validate <Mod>` also refuses a section that parses to **zero bars**. Before,
+    a misformatted section recorded VALIDATED against an empty checklist, which bound nothing.
+  - For a dry run that writes nothing, omit `--owner-said`.
 
 ## In-game LLM access is the Claude Code CLI, never a hosted API key — owner, 2026-09-05
 
-Every mod that calls out to an LLM (the Oracle, the raid-redesigner, any future
-consumer) does it by shelling out to **`claude -p "<prompt>"`** (Claude Code in
-non-interactive mode) as a subprocess, not by making an HTTP call to an
-OpenAI-compatible endpoint. Owner, verbatim: *"Claude Code in non-interactive
+- Every mod that calls an LLM shells out to **`claude -p "<prompt>"`** (Claude Code in non-interactive mode) as a
+  subprocess. Such mods are the Oracle, the raid-redesigner and any future consumer.
+- Such a mod never makes an HTTP call to an OpenAI-compatible endpoint.
+
+Owner, verbatim: *"Claude Code in non-interactive
 mode (`claude -p "..."`) authenticates via your claude.ai login and can be
 called from a shell script without any API key."*
 
-- ⛔ **Supersedes `OracleClient`'s original HTTP/OpenAI-compatible design**
-  (`design/RimMandrake/llm_ingame_wiring_spec.md` §1, `src/RimMandrake/Oracle`'s
-  `OracleHttpClient`) — no base URL, no model string, no API key field, no local
-  Ollama fallback. The two laws in that spec (text/menu authority only; the
-  game is whole with the LLM absent) and the async/timeout/kill-switch
-  threading shape are UNCHANGED — only the transport (HTTP → subprocess) moves.
-- The game process (Mono/Unity on the owner's Windows machine) launches `claude
-  -p` via `System.Diagnostics.Process`, same off-tick `Task`-based async
-  pattern already built, reading stdout instead of an HTTP response body.
-  Whoever rebuilds `OracleHttpClient` against this: verify the exact
-  invocation and output shape against a real local `claude -p` call before
-  wiring it — do not assume flags or JSON structure from this note.
-- **New environment dependency this creates**: the owner's machine must have
-  Claude Code installed and logged in for any consumer to work at all — this
-  is now a fact about his machine, not a config value in Mod Settings.
-- Affects `PLOT_MECHANISM_MODS_WAVE_1` Part 1 (the raid-redesigner's Oracle calls ride
-  whatever `OracleClient` becomes).
+- **Supersedes `OracleClient`'s original HTTP/OpenAI-compatible design** (`design/RimMandrake/llm_ingame_wiring_spec.md`
+  §1, and the `OracleHttpClient` of `src/RimMandrake/Oracle`).
+  - No base URL, no model string, no API key field, no local Ollama fallback.
+  - The two laws in that spec stay UNCHANGED: text/menu authority only; the game is whole with the LLM absent.
+  - The async/timeout/kill-switch threading shape stays UNCHANGED.
+  - Only the transport moves: HTTP → subprocess.
+- The game process (Mono/Unity on the owner's Windows machine) launches `claude -p` via `System.Diagnostics.Process`.
+  - The game process uses the same off-tick `Task`-based async pattern that is already built.
+  - The game process reads stdout instead of an HTTP response body.
+- Whoever rebuilds `OracleHttpClient` against this ruling: verify the exact invocation and output shape against a real
+  local `claude -p` call before you wire it. Do not assume flags or JSON structure from this note.
+- **New environment dependency this creates**: the owner's machine must have Claude Code installed and logged in. Else
+  no consumer works at all. This dependency is a fact about his machine now, not a config value in Mod Settings.
+- The ruling affects `PLOT_MECHANISM_MODS_WAVE_1` Part 1. The Oracle calls of the raid-redesigner ride whatever
+  `OracleClient` becomes.
 
 ## A pit is a SUPERDEEP cell, not a building — owner, 2026-09-17
 
-*"I'm not really sure a pit is any different than a deep canal."* Ruled and fully
-specified, build in progress: `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`.
-A pit is depth 4 on the D/F primitive rulings 18/19 already established, so the
-fitting concept collapses to **spikes alone** (oil and poison are FluidDefs; the
-oubliette is CUT), an enclosed superdeep area is a room that becomes a prison room
-once a bed is in it, `capture down`/`convert down` happen from the lip because
-nobody who enters can leave, and TEMPERATURE is the softening mechanism.
+*"I'm not really sure a pit is any different than a deep canal."*
+
+- The ruling is made and fully specified, and its build is in progress: `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`.
+- A pit is depth 4 on the D/F primitive that rulings 18/19 already established.
+- So the fitting concept collapses to **spikes alone**. Oil and poison are FluidDefs. The oubliette is CUT.
+- An enclosed superdeep area is a room. The room becomes a prison room once a bed is in it.
+- `capture down` and `convert down` happen from the lip, because nobody who enters can leave.
+- TEMPERATURE is the softening mechanism.
 
 🔴 **The ITEM is the authority, not the spec.**
-`design/RimMandrake/pit_superdeep_collapse_spec.md` (1127 lines) was written BEFORE
-three rounds of rulings that changed ten of its answers; the item lists the revisions
-it is owed. ⛔ Do not read the spec and act on it without reading the item first —
-you would build the version he rejected. Door family shipped as
-`FLOWWORKS_DOOR_FAMILY_1` (done): **two** stuffable defs, never the three he described and
-then talked himself out of.
+- `design/RimMandrake/pit_superdeep_collapse_spec.md` (1127 lines) was written BEFORE three rounds of rulings. Those
+  rulings changed ten of its answers. The item lists the revisions that the spec is owed.
+- Do not read the spec and act on it without reading the item first. Else you build the version that he rejected.
+- The door family shipped as `FLOWWORKS_DOOR_FAMILY_1` (done): **two** stuffable defs. The door family is never the
+  three defs that he described and then talked himself out of.
 
 ## Shipping names are three-tier — owner, 2026-08-30
 
-Every NEW packageId, defName, C# namespace and mod folder uses the tier
-grammar in `design/NAMING_SCHEME_PLAN.md`: **RimMandrake** (any RimWorld game) /
-**RimStarWars** (any Star Wars scenario) / **RimUtinni** (this campaign) —
-packageId `mandrake.<tier>.<modname>`, prefixes `RM_`/`RSW_`/`RUT_`,
-C# namespaces nested `RimMandrake[.StarWars|.Utinni].<Mod>` (never bare
-`RimStarWars`/`RimUtinni`). "Jawa" is lore text only. Dev tooling is exempt.
+- Every NEW packageId, defName, C# namespace and mod folder uses the tier grammar in `design/NAMING_SCHEME_PLAN.md`.
+- The three tiers:
+  - **RimMandrake**: any RimWorld game;
+  - **RimStarWars**: any Star Wars scenario;
+  - **RimUtinni**: this campaign.
+- The packageId is `mandrake.<tier>.<modname>`. The prefixes are `RM_`/`RSW_`/`RUT_`.
+- C# namespaces nest: `RimMandrake[.StarWars|.Utinni].<Mod>`. Never use a bare `RimStarWars`/`RimUtinni` namespace.
+- "Jawa" is lore text only. Dev tooling is exempt.
 
 🔴 **The migration is DONE — there is no rename gate any more.**
-`NAMING_SCHEME_EXECUTION_1` closed **2026-08-31** at `54a8e28d` on the owner's
-own word (*"Deploy the full rename."*), which is why the mod set already carries
-`mandrake.rm.*` / `mandrake.rsw.*`. So when a mod is RENAMED after that date, the
-rename is simply owed work — execute it, do not defer it to a closed item. If a doc
-cites that item as a reason to wait, delete the citation.
+- `NAMING_SCHEME_EXECUTION_1` closed **2026-08-31** at `54a8e28d`, on the owner's own word (*"Deploy the full
+  rename."*). That closure is why the mod set already carries `mandrake.rm.*` / `mandrake.rsw.*`.
+- So when a mod is RENAMED after that date, the rename is ordinary owed work. Do the rename. Do not defer it to a
+  closed item.
+- If a doc cites that item as a reason to wait, delete the citation.
 
 ## Every mod ships superb Mod Settings — owner, 2026-09-12
 
-Every mod we ship carries a real settings screen: on/off per major
-feature/mechanic, tuning where a number is the experience, defaults = shipped
-behavior, all-off degrades gracefully, and worldgen-affecting toggles labeled
-as such. The ruling on TESTING a biome mechanic away from its home biome: it is tested
-in game only on its home biome (owner, 2026-10-15, kept by his card of 2026-11-21:
-*"I would like to release the … requirement that the biome mechanics
-work in other biomes. That's too much of a lift. … We can't guarantee they will work
-in other biomes beyond our framework. They should… but we're not going to validate
-that at this time."*). A mechanic works by its conditions (§Biome mechanics work by their conditions). The switch
-for a mechanic is a plain on/off, default on, with no biome in it: each "Enable outside this biome" switch becomes one
-when its mod converts (his card of 2026-11-21). Spec + retrofit of existing mods:
-`MOD_OPTIONS_RETROFIT_1`. Applies to every future mod, no exceptions.
+- Every mod that we ship carries a real settings screen, with:
+  - an on/off switch per major feature/mechanic;
+  - tuning where a number is the experience;
+  - defaults that equal the shipped behavior;
+  - a mod that degrades gracefully when every switch is off;
+  - a label on each toggle that affects worldgen.
+- TESTING: a biome mechanic is tested in game only on its home biome. No test away from the home biome is owed.
+- That testing ruling is the owner's, 2026-10-15, kept by his card of 2026-11-21:
+  *"I would like to release the … requirement that the biome mechanics
+  work in other biomes. That's too much of a lift. … We can't guarantee they will work
+  in other biomes beyond our framework. They should… but we're not going to validate
+  that at this time."*
+- A mechanic works by its conditions (§Biome mechanics work by their conditions).
+- The switch for a mechanic is a plain on/off, default on, with no biome in it. Each "Enable outside this biome" switch
+  becomes such a switch when its mod converts (his card of 2026-11-21).
+- Spec and retrofit of existing mods: `MOD_OPTIONS_RETROFIT_1`.
+- This rule applies to every future mod, with no exceptions.
 
 ## Biome mechanics work by their conditions — owner, 2026-11-21
 
-The ruling (item `RIMMANDRAKE_RULE_MECHANICS_ARE_UNIVERSAL_THE_BIOME_ONLY_SHOWCASES`; the principles as entries: `GUIDING_PRINCIPLES.md` entries 1 to 5; what each existing mod converts: `design/specs/2026-11-21-guiding-principles/conversion_list.md`):
-1. By default, a mechanic works by the physical conditions where it acts (sun angle, heat, water, fire, ground, roof, food, and the like), not by which biome it is in. A biome holds its data: its plants, animals, terrain, weather odds and map generation. A biome depends on a mechanic, showcases it, or holds the materials or sources to make it or make it shine. This is a default, not a prohibition: many mechanics will in effect appear in one biome only, because only that biome has the conditions (tar where there are tar pits, unless a player carries tar; the Abyss's tiny particulates).
-2. The stated exception: a mechanic that is a heavy load even where it is not active may be left unloaded outside its parent biome. It is the exception, not the rule, and it is written in the mod's design with its reason.
-3. Testing: a mechanic is tested where it matters, in game on its home biome (his ruling of 2026-10-15, kept by card on 2026-11-21, §Every mod ships superb Mod Settings). No foreign-map check and no offline test is owed for this rule.
-4. The principle applies to all new design and code from 2026-11-21. Each existing mod converts when it next advances, as a planned change for its next version. No current version's bars move. Pyrelands 0.1.0 is not reworked.
-5. Each of the six "Enable outside this biome" switches (Greentide, Pyrelands, RustCathedral, Scarlands' Warscar, TerminalBiomes' Scald, TheRot) becomes a plain on/off for its mechanic, default on, with no biome in it, when its mod converts.
-6. A dangerous mechanic is on by default on every map; its conditions decide where it acts. There is no default-off list by biome.
-7. The Scald's hot water is physics, not a biome exception: water that hot scalds the same way on any map (§Direct Sun). The Scald's clock is rewritten at its next version.
-8. Vanilla and third-party biomes follow the same rule: conditions decide. There is no tag list and no master switch.
-9. A visible effect with no meaning is removed, not confined: his case is the constant pale marked region round a steam geyser. The swirling steam stays.
-10. `GUIDING_PRINCIPLES.md` binds. It holds at most 7 entries; each has his words, one example that honours it and one that breaks it. Only his ruling adds an entry; agents may only propose. He adopted three entries on his third card: a limit lives in the world; an effect that implies harm is true; mechanics justify their combined load. He adopted none of: an offline test for new mechanics; "a biome states how it earns a mechanic"; "a biome owns data, not laws"; "every effect is actionable".
+- The ruling: item `RIMMANDRAKE_RULE_MECHANICS_ARE_UNIVERSAL_THE_BIOME_ONLY_SHOWCASES`.
+- The principles as entries: `GUIDING_PRINCIPLES.md` entries 1 to 5.
+- What each existing mod converts: `design/specs/2026-11-21-guiding-principles/conversion_list.md`.
+
+The ruling:
+1. By default, a mechanic works by the physical conditions where it acts. A mechanic does not work by the biome that
+   it is in. The conditions are sun angle, heat, water, fire, ground, roof, food, and the like.
+   - A biome holds its data: its plants, animals, terrain, weather odds and map generation.
+   - A biome depends on a mechanic or showcases it. Or the biome holds the materials or sources to make the mechanic,
+     or to make it shine.
+   - This rule is a default, not a prohibition. Many mechanics will in effect appear in one biome only, because only
+     that biome has the conditions. Examples: tar where there are tar pits, unless a player carries tar; the tiny
+     particulates of the Abyss.
+2. The stated exception: a mechanic can be a heavy load even where it is not active. Such a mechanic may stay unloaded
+   outside its parent biome. That case is the exception, not the rule. The mod's design states the exception with its reason.
+3. Testing: a mechanic is tested where it matters, in game on its home biome. The ruling is his, of 2026-10-15, kept by
+   card on 2026-11-21 (§Every mod ships superb Mod Settings). No foreign-map check and no offline test is owed for this
+   rule.
+4. The principle applies to all new design and code from 2026-11-21.
+   - Each existing mod converts when it next advances, as a planned change for its next version.
+   - No bar of a current version moves.
+   - Pyrelands 0.1.0 is not reworked.
+5. Six switches are named "Enable outside this biome". The six switches are in Greentide, Pyrelands, RustCathedral, Scarlands'
+   Warscar, TerminalBiomes' Scald and TheRot. When its mod converts, each such switch becomes a plain on/off for its
+   mechanic.
+   The new switch is default on, with no biome in it.
+6. A dangerous mechanic is on by default on every map. Its conditions decide where it acts. No default-off list by biome
+   exists.
+7. The hot water of the Scald is physics, not a biome exception. Water that hot scalds the same way on any map (§Direct
+   Sun). The clock of the Scald is rewritten at its next version.
+8. Vanilla and third-party biomes follow the same rule: conditions decide. No tag list and no master switch exist.
+9. A visible effect with no meaning is removed, not confined. His case is the constant pale marked region round a steam
+   geyser. The swirling steam stays.
+10. `GUIDING_PRINCIPLES.md` binds.
+    - `GUIDING_PRINCIPLES.md` holds at most 7 entries. Each entry has his words, one example that honours it and one
+      example that breaks it.
+    - Only his ruling adds an entry. Agents may only propose.
+    - He adopted three entries on his third card:
+      - a limit lives in the world;
+      - an effect that implies harm is true;
+      - mechanics justify their combined load.
+    - He adopted none of these:
+      - an offline test for new mechanics;
+      - "a biome states how it earns a mechanic";
+      - "a biome owns data, not laws";
+      - "every effect is actionable".
 
 His words, 2026-11-21 (the ledger's `file` event of the item holds the whole message): *"the white hazy blocks inside the pit I do not think were "TheForge" but yes the geysers were. I didn't mind the steam so much, but the meaningless pale region around steamgeysers I definitely did. And Biome mechanics in general do NOT stay confined to the biome of origin: they are universal, but that biome depends on them, showcases them, or has the materials or sources to make them or make them shine. For example, the Stillshade has nothing "special" about its long shadows and intense sun exposure effects: those should be planet-wide. But the Stillshade showcases them with a unique biome adaptation to them. Make sense? The Rot features a living floor covering that heats rooms and keeps life alive in the cold through food consumption. It works anywhere, but it's native to the Rot and must be tended and carried elsewhere. We should also make it die in direct Sun exposure to explain why the Rot hasn't spread over the whole surface. Please take the GENERAL lessons in this message as guiding principles for the whole game, Baroque Biomes, etc. But then take my specific examples and enact them as well in specific tickets. If there are conflicting rulings, please let's review them right now and correct them to avoid ambiguity. If there are specific conflicts (current mechanics that don't honor these principles) let's also rule on them. But remember: Form first, Specifics later, ok?"*
 
@@ -211,7 +301,13 @@ His third card, 2026-11-21 (answered 23:23 UTC): (h) Which proposed lines do you
 
 ## Direct Sun — one model, a pure function of geometry — owner, 2026-09-29 and 2026-10-19
 
-The rule as the root `CLAUDE.md` carried it: Direct Sun feeds **vanilla** heat (felt temperature → Heatstroke), 55 °C at the zenith × sin(sun angle), the sun angle from the tile's planet position; no per-biome heat kind, number or exception. Shade gear is parasols and roofs (a tent is any quick roof). Volcanic/steam/fog heat is plain air temperature. And **no animal or pawn ever vanishes without a readable sign.**
+The rule, as the root `CLAUDE.md` carried it:
+- Direct Sun feeds **vanilla** heat (felt temperature → Heatstroke).
+- The value is 55 °C at the zenith × sin(sun angle). The sun angle comes from the position of the tile on the planet.
+- No biome has its own heat kind, number or exception.
+- Shade gear is parasols and roofs. A tent is any quick roof.
+- Volcanic/steam/fog heat is plain air temperature.
+- And **no animal or pawn ever vanishes without a readable sign.**
 
 2026-09-29 (Long Shade sitting): *"If we implement the heat load, then places like the Deep Desert
 and volcanic biomes should absolutely roast you similarly. It can't be a new "kind" of heat."*
@@ -239,105 +335,182 @@ description."*
   will be mostly shade then (ambient heat yes, direct sun no). So that needs to be deeply thought
   though. If we have an excellent tree shade model working, then YES direct sun works the same
   everywhere on the day side. If we do not go that route, we may choose to turn it off on tree-heavy
-  maps (this would be an inferior option)."* The model and its adopt-or-fall-back test are in
-  `design/RimMandrake/tree_shade_model_2026-10-19.md`, and the decision is
-  `TREE_SHADE_DECIDE_CROWNS_OR_LIGHTS_OUT`.
+  maps (this would be an inferior option)."*
+  - The model and its adopt-or-fall-back test are in `design/RimMandrake/tree_shade_model_2026-10-19.md`.
+  - The decision is `TREE_SHADE_DECIDE_CROWNS_OR_LIGHTS_OUT`.
 
-What this means, and how to check it was applied:
-- **The feature is called Direct Sun.** Felt heat = 55 °C × sin(sun elevation) × weather sun factor
-  × the strength dial, into the vanilla felt-temperature → Heatstroke path. No new hediff.
-- **Sun elevation comes from the map tile's position on the planet only.** In Utinni every map's sun
-  is fixed (time of day = location). On a world with a day/night cycle it follows the clock, or Direct
-  Sun switches off there; that world is not the primary target.
-- **Shade is geometry.** Roofs, and parasols, cover at every sun angle. Structures and rock cast a
-  shadow whose length grows as the sun drops, so a low sun gives long shade and a high sun gives
-  almost none beyond covered cells. No BiomeDef field, heat kind or per-biome number changes either.
-- **Shade gear is the parasol and roof structures.** A tent is any quick roof. The standing sun
-  shield is not a shade item.
-- **Ambient heat is vanilla air temperature**, shown on the thermometer; shade never changes it.
+What this means, and how to check that it was applied:
+- **The feature is called Direct Sun.**
+  - Felt heat = 55 °C × sin(sun elevation) × weather sun factor × the strength dial.
+  - The felt heat goes into the vanilla felt-temperature → Heatstroke path. No new hediff.
+- **Sun elevation comes from the map tile's position on the planet only.**
+  - In Utinni the sun of every map is fixed (time of day = location).
+  - On a world with a day/night cycle, the sun follows the clock, or Direct Sun switches off on that world. That world
+    is not the primary target.
+- **Shade is geometry.**
+  - Roofs and parasols cover at every sun angle.
+  - Structures and rock cast a shadow. The length of the shadow grows as the sun drops. So a low sun gives long shade,
+    and a high sun gives almost no shade beyond covered cells.
+  - No BiomeDef field, heat kind or per-biome number changes the shade or the sun's strength.
+- **Shade gear is the parasol and roof structures.** A tent is any quick roof. The standing sun shield is not a shade
+  item.
+- **Ambient heat is vanilla air temperature**, shown on the thermometer. Shade never changes ambient heat.
 - **Hot water is physics, not a Scald exception** — owner, by card, 2026-11-21: *"the harm comes from the water's
   heat, not the map. Any water that hot, on any map, harms the same way; the Scald is simply where it is common."*
-  His card of 2026-11-20 still says how it harms: *"yes keep the clock, AND it should be even worse in the Scald water
-  itself (hot water is not the same as hot air"*. So steam from hot water keeps its exposure clock
-  (`RM_HediffComp_EnvironmentalExposure`, answered by ordinary heat armour), and the water harms faster than that
-  steam, on any map where such water is. The Scald's clock is rewritten to read those conditions at its next version
-  (`design/specs/2026-11-21-guiding-principles/conversion_list.md` §TerminalBiomes). The sun, air heat and heatstroke
-  stay one kind everywhere. Design: `design/concepts/TerminalBiomes/TheScald_design.md`.
-- Test: no BiomeDef or patch under `src/` carries `heatKind`, `heatOffsetC` or any per-biome sun
-  field, and the selftest gives the same numbers at the same elevation in every biome
-  (`DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL`).
+  - His card of 2026-11-20 still says how hot water harms: *"yes keep the clock, AND it should be even worse in the Scald water
+    itself (hot water is not the same as hot air"*.
+  - So steam from hot water keeps its exposure clock (`RM_HediffComp_EnvironmentalExposure`). Ordinary heat armour
+    answers that clock.
+  - The water harms faster than that steam, on any map where such water is.
+  - The clock of the Scald is rewritten to read those conditions at its next version
+    (`design/specs/2026-11-21-guiding-principles/conversion_list.md` §TerminalBiomes).
+  - The sun, air heat and heatstroke stay one kind everywhere.
+  - Design: `design/concepts/TerminalBiomes/TheScald_design.md`.
+- Test:
+  - no BiomeDef or patch under `src/` carries `heatKind`, `heatOffsetC` or any per-biome sun field;
+  - the selftest gives the same numbers at the same elevation in every biome
+    (`DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL`).
 
 ## Every DLC is assumed — owner, 2026-09-19/25/26
 
-🔑 **Design assumes every DLC is present** — owner, 2026-09-25, verbatim: *"Always assume all the dlcs."* No
-standalone-without-expansion fallback tier is owed (asked about the free mods' deluxe gear without Odyssey).
+🔑 **Design assumes every DLC is present** — owner, 2026-09-25, verbatim: *"Always assume all the dlcs."*
+- No standalone-without-expansion fallback tier is owed.
+- He said this when asked about the deluxe gear of the free mods without Odyssey.
 
 🔴 **And that assumption covers the PLAYER, not just us** — owner, 2026-09-26: *"it is assumed
 that future players will have all the Rimworld DLC's currently installed."* ⇒ **Every DLC is a
-hard prerequisite of shipping, exactly like the base game.** Royalty, Ideology, Biotech, Anomaly
-and Odyssey content may be depended on outright in anything we ship — a mechanic, a def, a
-biome roster, a quest, a scenario.
-- ⛔ **Do not design, build or file a DLC-less degradation path**, and do not raise "what if the
-  player lacks X" as a defect, a risk or an open question. It is answered: they have it.
-- ⛔ **Do not spend a review, a test tier or a load round on proving a DLC-absent configuration.**
-  There is no such supported configuration.
-- ✅ `MayRequire` still goes on **mod** guards for load safety. On a DLC it is harmless but
-  decides nothing, so never read one as evidence that a DLC-absent case is supported.
+hard prerequisite of shipping, exactly like the base game.**
+- Anything that we ship may depend outright on Royalty, Ideology, Biotech, Anomaly and Odyssey content. That includes a
+  mechanic, a def, a biome roster, a quest, a scenario.
+- **Do not design, build or file a DLC-less degradation path**.
+- Do not raise "what if the player lacks X" as a defect, a risk or an open question. That question is answered: the
+  player has it.
+- **Do not spend a review, a test tier or a load round on proving a DLC-absent configuration.** No such supported
+  configuration exists.
+- `MayRequire` still goes on **mod** guards for load safety.
+  - On a DLC, `MayRequire` is harmless but decides nothing.
+  - So never read a `MayRequire` as evidence that a DLC-absent case is supported.
 
 🔑 **ALL TEST MOD LISTS include ALL FIVE EXPANSIONS — no exceptions right now.** Owner ruling, 2026-09-19, verbatim:
 *"Was Odyssey even loaded for this test? ALL TEST MOD LISTS should include ALL THE EXPANSIONS; we're not trying to
-ablate expansions out of our list at this time."* All `modset_builder.py` tiers set `dlc: True`. A tier's `want` list
-may still narrow which *mods* load for isolation. That list may no longer narrow which *DLC* loads.
+ablate expansions out of our list at this time."*
+- All `modset_builder.py` tiers set `dlc: True`.
+- The `want` list of a tier may still narrow which *mods* load, for isolation.
+- The `want` list may no longer narrow which *DLC* loads.
 
 ## Biome art never blocks — owner, 2026-10-18
 
 *"We are going to simply accept all art for the Biomes at this time and review them later, so there is no blocking. Art
-review is now a secondary priority."* All biome art currently in game is ACCEPTED as-is; open review sheets stay open
-for later, and no build, deploy, sprint gate or item waits on an art pick. Art work is picked up only after
-FlowWorks, which is force-advanced to finished first.
+review is now a secondary priority."*
+
+- All biome art in game now is ACCEPTED as it is.
+- Open review sheets stay open for later.
+- No build, deploy, sprint gate or item waits on an art pick.
+- Art work is picked up only after FlowWorks. FlowWorks is force-advanced to finished first.
 
 ## Draw order — owner, 2026-10-16 and 2026-11-08
 
-More south draws in front, for every large pawn, building and plant, game-wide (owner 2026-10-16, 2026-11-08): *"if you
-are more south, you go in front."* Built in `src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/` (setting "Southern
-things draw in front"); its measured limits: `infrastructure/state/items/RIMMASTER_FIX_SOUTH_DRAWS_FRONT_SAID_MANY_TIMES.md`.
+- More south draws in front, for every large pawn, building and plant, game-wide.
+- His words (owner 2026-10-16, 2026-11-08): *"if you are more south, you go in front."*
+- The rule is built in `src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/` (setting "Southern things draw in
+  front").
+- Its measured limits: `infrastructure/state/items/RIMMASTER_FIX_SOUTH_DRAWS_FRONT_SAID_MANY_TIMES.md`.
 
 ## Correctness outranks seat ownership — owner, 2026-09-19
 
 *"It is WORSE to leave incorrect information that belongs to another seat than it is
 to violate seats... ok? I keep saying this. MAKE IT SO EVERYWHERE."*
 
-🔴 **A false statement in another seat's file is yours to fix, on sight.** The full rule is in
-`infrastructure/agents/CHARTER.md` §Correctness outranks seat ownership. `.claude/hooks/queue_lint.py` WARNS on a
-cross-seat item edit and never blocks it. Pair it with the deletion rule directly below: remove wrong content, do not
-annotate it.
+🔴 **A false statement in another seat's file is yours to fix, on sight.**
+- The full rule is in `infrastructure/agents/CHARTER.md` §Correctness outranks seat ownership.
+- `.claude/hooks/queue_lint.py` WARNS on a cross-seat item edit. `queue_lint.py` never blocks the edit.
+- Pair this rule with the deletion rule in the next section: remove wrong content; do not annotate it.
 
 ## Inaccurate material is DELETED, not superseded-in-place — owner, 2026-09-09
 
 *"Simply remove offending inaccurate material, don't leave it in and supersede
-it."* Wrong or dead content is removed outright — git is the provenance — and
-every inbound reference is fixed in the same change. A one-line successor
-pointer at the top is only for content that MOVED somewhere else (owner,
-2026-08-30); it is never a banner over wrong content left in place. Entries
-state what IS, never what used to be. "Not my file" does not discharge it.
-Single-source only what a generator can enforce; where only discipline enforces
-a duplicate, write a pointer instead.
+it."*
+
+- Remove wrong or dead content outright. Git is the provenance.
+- Fix every inbound reference in the same change.
+- A one-line successor pointer at the top is only for content that MOVED somewhere else (owner, 2026-08-30). A pointer
+  is never a banner over wrong content that stays in place.
+- Entries state what IS, never what used to be.
+- "Not my file" does not discharge this duty.
+- Single-source only what a generator can enforce. Where only discipline enforces a duplicate, write a pointer instead.
 
 ## Git
 
-**Operating doc: `design/RimMandrake/GIT_WORKFLOW.md`** — read it before touching git.
+**Operating doc: `design/RimMandrake/GIT_WORKFLOW.md`** — read it before you touch git.
 
-- **Work in your seat clone** — `/home/mandrake/rm/bench` (the FOUNDRY clone was retired with its seat) or the helper clone your brief names, ext4, one writer each. `D:\Luke\dev\RimMandrake` is a **read-only mirror** of origin/main (no `.git`, refreshed every 5 min); never write it. Windows tools read it.
-- **Land with the wrappers:** `./publish -m "subject" path…` or `land.sh <sha> <paths>` (each prints `PUBLISHED <sha>`; pass that to `rimflow close --sha`), and `./sync` to realign the clone — never `git pull --rebase` (it refuses on any dirty file) and never a stash (`GIT_WORKFLOW.md`). Pathspec on the `commit` (`git commit <paths> -F -`), never `git add -A`/`.`/`-a` (hook-enforced), never `--force`, never a file over ~50 MB.
-- Committed *and pushed* is the only durable state: commit each finished unit and push at once. Proof of publication is `git merge-base --is-ancestor <sha> origin/main`, not an empty `git log origin/main..HEAD`.
-- The pre-push and PreToolUse hooks refuse a compound command whole: keep file writes and commits in separate Bash calls.
-- 🔴 **Worktrees are OFF** (owner, 2026-10-02, by card): never `isolation: "worktree"`, never `git worktree add` (`block_worktrees.py` refuses both). Writing helpers edit in the window's clone, one at a time when paths could overlap; the window commits explicit paths. Brief helpers that `reset --hard`, `checkout --` and `stash` are forbidden and a conflict is reported, never cleared.
-- **Clone pool: 16 clones and a disk floor** (owner by card 2026-11-02 18:35 PST, "How hard should Relentless run this machine? → 8 workers, 16 clones / 70 GB", from 10 / 40; first approved 2026-10-31, for writers above 4: "I trust you, but please monitor them carefully. They seem to propagate prolifically."; of the GB line, 2026-11-18: "You set the GB limit, so yes do as you think."). The count line, 16 clones, guards clones that multiply unwatched. The GB line is a disk floor, not a pool size: `scratch_clone.py` refuses a new clone when the free space on `/`, less the largest clone in the pool, is under `ops.disk_brake_free_gb` in `src/RimMandrake/Utils/slot_rules.json` (the `DISK_LOW` line, one worst day of scratch growth). The number lives there only. The fixed pool size (70, then 80 GB) went on 2026-11-22: it refused a launch at 83.55 GB with 433 GB free on `/`. Danger, evidence and promises: `design/specs/2026-11-22-clone-pool-disk-floor/boundary.md`. `scratch_clone.py` reuses an idle pushed clone first, sheds what the last run left in it (ignored files, publish checkouts, packed loose objects), and reports count, GB, free space, floor and oldest. One alarm, `disk.pool_breach`: it counts a pool over 16 clones, a pool under the disk floor, and any helper clone with unlanded work (pool, `rm/scratch`, session dir; PROTECTED is no excuse) after an idle hour, except a trailing lesson/ledger commit (the belt carries those) and a commit whose content origin/main already holds under another hash. A pool clone with unpushed work is never reused. Revert if a clone strands work or the free space on `/` goes under the disk floor.
-- **Per-writer state, nothing shared:** ledger shards `ledger/events/<SEAT>.jsonl` (`merge=union`, `ledger_lint.py`; never `checkout --ours/--theirs` one); queue views are rendered on read (`rimflow queue <SEAT>`); lessons are one file each under `infrastructure/state/lessons/`; review status records under `infrastructure/state/code_review/`; artpipe state is outside git at `D:\ClaudeWork\rimmandrake\artpipe\`.
-- **Windows-side tools:** builds go through `winbuild.py <Mod|csproj>`; `codex.exe` needs `D:\ClaudeWork\rimmandrake\scratch\codex\` staging (`gpt_consult.py`, `codex_image.py` do it). 🔴 A committed mod DLL carries a `.srchash` and is pushed with it (hook `block_dll_source_mismatch.py`, on push); after a merge touching a mod's `Source/`, rebuild — never pick a side's DLL.
+- **Work in your seat clone**: `/home/mandrake/rm/bench`, or the helper clone that your brief names.
+  - Each clone is on ext4, with one writer each.
+  - The FOUNDRY clone was retired with its seat.
+- `D:\Luke\dev\RimMandrake` is a **read-only mirror** of origin/main. The mirror has no `.git`, and the mirror is
+  refreshed every 5 min. Never write it. Windows tools read it.
+- **Land with the wrappers:** `./publish -m "subject" path…` or `land.sh <sha> <paths>`.
+  - Each wrapper prints `PUBLISHED <sha>`. Pass that sha to `rimflow close --sha`.
+  - To realign the clone, use `./sync`.
+  - Never use `git pull --rebase`: it refuses on any dirty file. Never use a stash (`GIT_WORKFLOW.md`).
+  - Put the pathspec on the `commit` (`git commit <paths> -F -`).
+  - Never use `git add -A`/`.`/`-a` (hook-enforced). Never use `--force`. Never commit a file over ~50 MB.
+- Committed *and pushed* is the only durable state. Commit each finished unit and push at once.
+- Proof of publication is `git merge-base --is-ancestor <sha> origin/main`, not an empty `git log origin/main..HEAD`.
+- The pre-push and PreToolUse hooks refuse a compound command whole. So keep file writes and commits in separate Bash
+  calls.
+- 🔴 **Worktrees are OFF** (owner, 2026-10-02, by card).
+  - Never use `isolation: "worktree"`. Never use `git worktree add`. `block_worktrees.py` refuses both.
+  - Writing helpers edit in the clone of the window, one at a time when paths could overlap.
+  - The window commits explicit paths.
+  - Tell each helper in its brief: `reset --hard`, `checkout --` and `stash` are forbidden, and a conflict is
+    reported, never cleared.
+- **Clone pool: 16 clones and a disk floor.** The owner's words:
+  - by card, 2026-11-02 18:35 PST: "How hard should Relentless run this machine? → 8 workers, 16 clones / 70 GB", from
+    10 / 40;
+  - first approved 2026-10-31, for writers above 4: "I trust you, but please monitor them carefully. They seem to
+    propagate prolifically.";
+  - of the GB line, 2026-11-18: "You set the GB limit, so yes do as you think."
+- The count line, 16 clones, guards against clones that multiply unwatched.
+- The GB line is a disk floor, not a pool size.
+  - `scratch_clone.py` refuses a new clone when the free space is under the disk floor.
+  - Here the free space is the free space on `/`, less the largest clone in the pool.
+  - The disk floor is `ops.disk_brake_free_gb` in `src/RimMandrake/Utils/slot_rules.json`.
+  - That value is the `DISK_LOW` line: one worst day of scratch growth. The number lives in that file only.
+  - The fixed pool size (70, then 80 GB) was removed on 2026-11-22. The fixed size had refused a launch at 83.55 GB
+    with 433 GB free on `/`.
+  - Danger, evidence and promises: `design/specs/2026-11-22-clone-pool-disk-floor/boundary.md`.
+- `scratch_clone.py` reuses an idle pushed clone first.
+  - `scratch_clone.py` sheds what the last run left in the clone: ignored files, publish checkouts, packed loose
+    objects.
+  - `scratch_clone.py` reports count, GB, free space, floor and oldest.
+- The pool has one alarm, `disk.pool_breach`. The alarm counts three things:
+  - a pool over 16 clones;
+  - a pool under the disk floor;
+  - any helper clone with unlanded work after an idle hour. The clone can be in the pool, in `rm/scratch` or in a
+    session dir. PROTECTED is no excuse.
+- The alarm does not count two kinds of commit:
+  - a trailing lesson/ledger commit (the belt carries those);
+  - a commit whose content origin/main already holds under another hash.
+- A pool clone with unpushed work is never reused.
+- Revert if a clone strands work, or if the free space on `/` goes under the disk floor.
+- **Per-writer state, nothing shared:**
+  - Ledger shards are `ledger/events/<SEAT>.jsonl` (`merge=union`, `ledger_lint.py`). Never `checkout --ours/--theirs`
+    a shard.
+  - Queue views are rendered on read (`rimflow queue <SEAT>`).
+  - Lessons are one file each under `infrastructure/state/lessons/`.
+  - Review status records are under `infrastructure/state/code_review/`.
+  - Artpipe state is outside git, at `D:\ClaudeWork\rimmandrake\artpipe\`.
+- **Windows-side tools:**
+  - Builds go through `winbuild.py <Mod|csproj>`.
+  - `codex.exe` needs staging in `D:\ClaudeWork\rimmandrake\scratch\codex\`. `gpt_consult.py` and `codex_image.py` do
+    that staging.
+  - 🔴 A committed mod DLL carries a `.srchash`, and is pushed with it (hook `block_dll_source_mismatch.py`, on push).
+  - After a merge that touches the `Source/` of a mod, rebuild. Never pick the DLL of one side.
 - Drained historical work lives in `archive/*` tags on origin.
-- Origin is SSH (`git@github.com:Lmandrake/RimMandrake.git`); a push that falls back to https can use a one-shot token header (`gh auth token`).
-- ⚠️ A `cd` in one Bash call persists into later calls (`modcheck` needs `python3 -m modcheck.cli <verb>` from `src/RimMandrake/Utils`); use absolute paths or `cd` back.
+- Origin is SSH (`git@github.com:Lmandrake/RimMandrake.git`). A push that falls back to https can use a one-shot token
+  header (`gh auth token`).
+- A `cd` in one Bash call persists into later calls. Use absolute paths, or `cd` back. (For example, `modcheck` needs
+  `python3 -m modcheck.cli <verb>` from `src/RimMandrake/Utils`.)
 
 ## Code is clean when its promises are tested — owner, 2026-11-19
 
