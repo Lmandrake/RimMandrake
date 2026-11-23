@@ -10,14 +10,14 @@ Also: skills/rimworld-layout-layers/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 18,869 | 20,575 |
-| words in linted prose | 2,381 | 2,733 |
-| STE violations per 100 words | 4.79 | 1.21 |
-| sentences over 20 words | 50 | 7 |
+| bytes | 18,869 | 20,621 |
+| words in linted prose | 2,381 | 2,740 |
+| STE violations per 100 words | 4.79 | 1.20 |
+| sentences over 20 words | 50 | 8 |
 | flagged lines (mechanical) | 17 | 13 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 11 | 0 |
 
-In each long sentence that stays, the lint joined a bold lead to the next sentence. The 13 flags are emphasis marks on the
+In the long sentences that stay, the lint joined two short sentences, in most cases at a bold lead. The 13 flags are emphasis marks on the
 worst traps, and the heading "This is a CHECK, not a gate". Those flags were there before.
 
 ## The hand count
@@ -69,7 +69,9 @@ corrections against the decompiled source, the rimplace code and the companion s
 
 The same reader then read each of those repairs. All held but one: "only if a conduit later joins that net" was too strong. That
 line now says to join the net to a source, or to place the connector again, as the reader proposed. No reader read that last
-repair, nor one sentence of the `inspect_string` trap and one of the power rate line, each split in two after the second read began.
+repair, nor one sentence of the `inspect_string` trap and one of the power rate line, each edited after the second read began.
+After the first landing (f1be9b6feed7), the prose check of `./publish` named six lines that open with a pronoun. The writer
+put the noun in each. No reader read those six.
 
 ## Conflicts and stale lines: settled
 

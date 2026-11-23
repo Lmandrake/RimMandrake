@@ -58,7 +58,7 @@ Remember these five things:
     transmitter has no radius.
   - A **connector** is a `CompPowerTrader` or `CompPowerBattery` that does not transmit, for example a Cooler. A connector
     links to the nearest transmitter within `PowerConnectionMaker.ConnectMaxDist = 6`.
-  - The connector search is a plain `CellRect.ExpandedBy(6)` with **no line-of-sight test**. So it reaches through a wall.
+  - The connector search is a plain `CellRect.ExpandedBy(6)` with **no line-of-sight test**. So the search reaches through a wall.
   - ⚠️ **`SolarGenerator` ships `transmitsPower: true`.** The generator is a *transmitter*, so do not give it the 6-cell
     reach. The wrong 6-cell reach was measured twice. A generator three cells from a conduit run sat alone at 1700 W, and the coolers read 0 W.
   - 🪤 **`Battery` is `transmitsPower: true`** too, so it is a transmitter. Only machines such as the Cooler get the 6-cell
@@ -106,7 +106,7 @@ consumer, ask the four questions in order. Stop at the first no, because the lat
    Check the IR (the plan's data model, `BuildPlan` in `core.py`), not the picture.
 2. **Is there a source?** A cooler needs a generator somewhere, not only a conduit. A pipe consumer needs a producer on *its
    own* `PipeNetDef`.
-3. **Is there a path?** This is the graph question, and it is the one that fails in practice. Trace the path:
+3. **Is there a path?** The path question is the graph question, and a path is what fails in practice. Trace the path:
    - cardinal adjacency for transmitters and pipes;
    - a 6-cell radius for power connectors;
    - region links through doors for access.
@@ -161,7 +161,7 @@ The full API, each lint rule, the palette, and where a connectivity model would 
 
 - `place()` refuses a second, different def in an occupied cell (`footprint-collision`).
 - `wall_mount()` *deletes* what is in the cell. So `wall_mount()` with a conduit erases the wall.
-- `place_overlay("CONDUIT", x, z)` is the verb for this job. It shares the cell and skips each collision check. A plan with
+- `place_overlay("CONDUIT", x, z)` is the verb for this job. The verb shares the cell and skips each collision check. A plan with
   conduit overlays on a wall row lints clean. No live paint of such a plan was measured.
 - The engine allows the stack, because it rejects only a second **edifice**. But a new transmitter wipes a
   conduit in its cells. A live cell with `Cooler` + `PowerConduit` reads
@@ -199,7 +199,7 @@ evidence. Roughly 40 calls on this bridge report success and change nothing.
 | pipes | `jawa/pipe_net_info` | current map only; totals and counts per net, no members or cells; Rimefeller and Dubs Bad Hygiene rows are `verified: false`; nothing writes |
 | reachability | `jawa/order_pawn` (`canReach`, then the cell where the pawn ended) | **no `CanReach` query between two cells without a pawn** |
 
-`jawa/fix_floating_roofs` is not a query. It removes unsupported roof over the whole map.
+`jawa/fix_floating_roofs` is not a query. That tool removes unsupported roof over the whole map.
 
 `jawa/get_power_nets_batch` takes many thing ids. Things on one net share a `netIndex`, so one call shows which things are
 wired together. `jawa/power_net` and the batch give the rate in watt-days per tick, so a tiny number is normal. 1 W reads as 1/60000.
@@ -223,7 +223,7 @@ Current power use: Low               <- powered, but not moving heat now
 For a cooler or a heater, `Off` means no power. `Low` means powered, but not moving heat at that moment. `High` means that
 the device moves heat. So `Low` alone does not prove that a room is cooled.
 
-🪤 `jawa/inspect_string` takes `rect`, **not** `x`/`z`. It declares `defName, limit, rect, thingIds`. Our client
+🪤 `jawa/inspect_string` takes `rect`, **not** `x`/`z`. The tool declares `defName, limit, rect, thingIds`. Our client
 (`rimbridge_client.py`) refuses `x`/`z`. In a raw call the bridge drops an unknown key. A tool that has defaults then answers
 on them.
 
@@ -278,7 +278,7 @@ comps from the def dump. The build groups then put transmitters ahead of connect
   - Recovery: `jawa/set_terrain_layer` with `layer=removeTop`, then `set`. Then lay the floor again, or repaint the holes to
     `Soil`.
 - 🪤 **A heat wave is the cheap way to make a hot tile.** Read temperature results at *equilibrium*.
-  - **Two in-game hours (~5,000 ticks) is enough** (owner, 2026-08-26). A longer run gives nothing more. It starts to throw
+  - **Two in-game hours (~5,000 ticks) is enough** (owner, 2026-08-26). A longer run gives nothing more. A longer run starts to throw
     quest dialogs at whoever watches the screen.
   - Start the run from steady state. A room that still sheds heat from an earlier fault gives a "worst" reading that is
     history, not design.
