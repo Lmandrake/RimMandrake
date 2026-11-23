@@ -1,4 +1,4 @@
-An agent is in the middle of a task. It meets ONE sentence of a rule file. The agent must be able to point at what each
+An agent is in the middle of a task. The agent meets ONE sentence of a rule file. The agent must be able to point at what each
 noun and each verb's object means IN ONE STEP. The agent will not search other documents.
 
 The agent already knows, and you must never flag:

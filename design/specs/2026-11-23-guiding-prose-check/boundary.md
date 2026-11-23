@@ -89,7 +89,8 @@ on the owner's own line, so the reader is Opus.
 - **a-publish-with-faults-still-lands.** `./publish` of a rule file with faults prints `PUBLISHED`, exits 0, and then
   prints each fault with its repair. The check runs after the landing and outside the clone's lock.
 - **a-launch-with-faults-still-starts.** `detached_helper.py launch` with a faulty brief starts the unit, exits 0, and
-  its text ends with each fault and its repair. A refused launch's text stays the gate's own.
+  its text ends with each fault and its repair. A refused launch's text stays the gate's own. A test's stand-in for
+  `launch` and a throwaway clone that does not hold `guiding_prose.json` are not read and leave no record.
 - **a-sentence-already-sent-in-a-brief-is-silent.** A sentence that an earlier launch sent is not checked again, so a
   program's template is read once.
 - **a-broken-check-stops-nothing.** When the check itself raises, the landing and the launch complete and the writer

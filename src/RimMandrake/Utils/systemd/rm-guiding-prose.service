@@ -2,7 +2,7 @@
 # RIMMANDRAKE_CHECK_GUIDING_PROSE_AT_WRITE_NO_SEARCHING_FOR_MEANING; page design/specs/2026-11-23-guiding-prose-check/boundary.md).
 # It sends a planted fault through a throwaway publish.py landing and through detached_helper.py's launch path, and it names
 # each landing of guiding prose with no run record. No model, no write to the repo. Runs from the dispatch clone.
-# Reading: D:\ClaudeWork\rimmandrake\guiding_prose\recheck.json, moved only while both doors return the fault; a failed
+# Reading: D:\ClaudeWork\rimmandrake\dispatcher\guiding_prose\recheck.json, moved only while both doors return the fault; a failed
 # recheck writes recheck_failed.json there.
 # Install:  python3 src/RimMandrake/Utils/ops_clocks.py install, then systemctl --user enable --now rm-guiding-prose.timer
 [Unit]

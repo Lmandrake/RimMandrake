@@ -1329,6 +1329,9 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     return code, (text + "\n" + warn) if warn else text
 
 
+OWN_LAUNCH = launch     # a test's stand-in for launch() starts nothing: main() then checks and records no brief
+
+
 def _RL():
     import role_launch
     return role_launch
@@ -2171,7 +2174,7 @@ def main(argv=None):
                               args.max_s, budget, clone=args.clone, skip_launch_checks=args.skip_launch_checks,
                               env=env, resume_session=session, extra=extra or None)
             text = (first + "\n" if first else "") + carried + text
-            if rc == 0:     # the writer reads the faults of the brief's new sentences; it refuses nothing
+            if rc == 0 and launch is OWN_LAUNCH:     # the writer reads the faults of the brief's new sentences; it refuses nothing
                 prose = prose_after(written, args.item)
                 text += "\n" + prose if prose else ""
     elif args.cmd == "finish":

@@ -16,8 +16,8 @@ design/specs/2026-11-23-guiding-prose-check/. Item RIMMANDRAKE_CHECK_GUIDING_PRO
 
 It runs by itself at the end of `./publish` and of `detached_helper.py launch`, after the landing or the start. It
 refuses nothing and changes no exit code there: it returns each fault with its repair to the writer, in the same run. A
-sentence that the old text already held is never read. Each run is one row in runs.jsonl (RM_GUIDING_PROSE_DIR, else the
-data root's guiding_prose/). RM_GUIDING_PROSE_READER=0 turns the model reader off; it also stays off when no agent reads
+sentence that the old text already held is never read. Each run is one row in runs.jsonl (RM_GUIDING_PROSE_DIR, else
+guiding_prose/ in the Dispatcher's state dir). RM_GUIDING_PROSE_READER=0 turns the model reader off; it also stays off when no agent reads
 the output (no CLAUDECODE). RM_GUIDING_PROSE_CUT=publish|launch cuts a door (the recheck then reads it as dead).
 """
 import argparse
@@ -39,6 +39,7 @@ TOP = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 RIMFLOW = os.path.join(TOP, "src", "RimMandrake", "rimflow")
 LINT_DIR = os.path.join(TOP, "design", "specs", "2026-11-19-plain-english-rule-docs")
 CONFIG = os.path.join(HERE, "guiding_prose.json")
+CONFIG_REL = "src/RimMandrake/Utils/guiding_prose.json"
 READER_BRIEF = os.path.join(HERE, "guiding_prose_reader.md")
 FAMILY = "guiding_prose_reader"
 ITEM_OF_THIS_CHECK = "RIMMANDRAKE_CHECK_GUIDING_PROSE_AT_WRITE_NO_SEARCHING_FOR_MEANING"
@@ -535,10 +536,10 @@ def render(res, principal=None):
 def data_dir():
     d = os.environ.get("RM_GUIDING_PROSE_DIR")
     if not d:
-        if HERE not in sys.path:
-            sys.path.insert(0, HERE)
-        import rmpaths
-        d = rmpaths.rm_str("guiding_prose")
+        if RIMFLOW not in sys.path:
+            sys.path.insert(0, RIMFLOW)
+        import doorbell
+        d = os.path.join(doorbell.state_dir(), "guiding_prose")
     os.makedirs(d, exist_ok=True)
     return d
 
@@ -597,6 +598,8 @@ def after_publish(top, base, head, landed):
     """What ./publish prints after a landing: "" when it touched no guiding prose or no fault was found. Never raises."""
     if os.environ.get("RM_GUIDING_PROSE_CUT") == "publish":
         return ""
+    if not (os.path.isfile(os.path.join(top, CONFIG_REL)) or os.environ.get("RM_GUIDING_PROSE_DIR")):
+        return ""           # another repo, or a test's throwaway clone: not this project's guiding prose
     try:
         news, olds = range_texts(top, base, head)
         if not news:
@@ -700,7 +703,7 @@ def _publish_door(env):
 
 def _launch_door(env):
     """detached_helper.py's own main with the start itself replaced. -> "ok" or the cause."""
-    code = ("import sys; sys.path.insert(0, %r); import detached_helper as D; D.launch = lambda *a, **k: (0, 'started');"
+    code = ("import sys; sys.path.insert(0, %r); import detached_helper as D; D.launch = D.OWN_LAUNCH = lambda *a, **k: (0, 'started');"
             "sys.exit(D.main(['launch', '--seat', 'BENCH', '--item', 'PLANT_A_LAUNCH_RECHECK', '--budget-usd', '0', '--brief', %r]))"
             % (RIMFLOW, PLANT))
     r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env=env, timeout=DOOR_TIMEOUT_S, cwd=TOP)

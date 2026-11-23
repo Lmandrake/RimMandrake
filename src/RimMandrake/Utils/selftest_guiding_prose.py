@@ -313,6 +313,15 @@ def t_a_publish_with_faults_still_lands():
         rows = G.rows()
         sha = g("rev-parse", "origin/main", cwd=c).strip()
         check(rows and rows[-1]["door"] == "publish" and sha in rows[-1]["landed"] and rows[-1]["faults"], "publish: the run is recorded with its sha")
+        n = len(G.rows())
+        other = dict(os.environ, RM_DISPATCHER_STATE=os.path.join(TMP, "other"))
+        other.pop("RM_GUIDING_PROSE_DIR")
+        with open(p, "a") as f:
+            f.write("\n- The clerk should go to the belt.\n")
+        r = subprocess.run([sys.executable, os.path.join(HERE, "publish.py"), "-m", "s", "design/RimMandrake/debug_process.md"], cwd=c,
+                           capture_output=True, text=True, env=other, timeout=120)
+        check(r.returncode == 0 and "GUIDING PROSE" not in r.stdout and not os.path.exists(os.path.join(TMP, "other", "guiding_prose")),
+              "publish: a throwaway clone with no guiding_prose.json is not read or recorded (%s)" % (r.stdout + r.stderr)[-200:])
         with open(os.path.join(c, "x.txt"), "w") as f:
             f.write("x")
         r = publish(c, "x.txt")
@@ -323,12 +332,13 @@ def t_a_publish_with_faults_still_lands():
               "publish: the check runs in main, outside the clone lock")
 
 
-def launch_main(brief, rc=0, boom=None):
+def launch_main(brief, rc=0, boom=None, stand_in=False):
     import detached_helper as DH
-    old, oldc = DH.launch, G.check_brief
+    old, oldc, own = DH.launch, G.check_brief, DH.OWN_LAUNCH
     started = []
     try:
         DH.launch = lambda *a, **k: (started.append(a) or (rc, "launched: unit x" if rc == 0 else "refused: no"))
+        DH.OWN_LAUNCH = own if stand_in else DH.launch
         if boom:
             def bad(*a, **k):
                 raise boom
@@ -341,7 +351,7 @@ def launch_main(brief, rc=0, boom=None):
             got = DH.main(["launch", "--seat", "BENCH", "--item", "X_Y_Z_W", "--brief-file", path, "--budget-usd", "0"])
         return got, buf.getvalue(), started
     finally:
-        DH.launch, G.check_brief = old, oldc
+        DH.launch, G.check_brief, DH.OWN_LAUNCH = old, oldc, own
 
 
 def t_a_launch_with_faults_still_starts():
@@ -350,6 +360,9 @@ def t_a_launch_with_faults_still_starts():
     check("the belt" in out and "REPAIR" in out and out.find("launched") < out.find("GUIDING PROSE"), "launch: the faults come back at the end (%s)" % out)
     rc, out, _ = launch_main("# Brief two\n\nGive the next item to the belt.\n", rc=2)
     check(rc == 2 and out == "refused: no\n", "launch: a refused launch's text stays the gate's own (%r)" % out)
+    n = len(G.rows())
+    rc, out, _ = launch_main("# Brief six\n\nThe page should go to the belt.\n", stand_in=True)
+    check(rc == 0 and out == "launched: unit x\n" and len(G.rows()) == n, "launch: another test's stand-in for launch() checks and records nothing")
     rc, out, _ = launch_main("# Brief three\n\nRun the test. Write the note.\n")
     check(rc == 0 and "GUIDING PROSE" not in out, "launch: a good brief says nothing (%s)" % out)
 

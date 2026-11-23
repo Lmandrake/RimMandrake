@@ -1260,9 +1260,9 @@
      "the same lines as repaired, plain commands, terms that the section defines, RimWorld words, glossary words, an owner quote, pointers"
     ]
    },
-   "hash": "1271f013f355bbf9",
+   "hash": "b8a9ed623ea31ad3",
    "last_run": {
-    "at": "2026-11-23T16:38:15Z",
+    "at": "2026-11-23T16:56:10Z",
     "cases": "18 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ok item_and_path_pointers: expect pass, got pass ([])",
@@ -1480,9 +1480,9 @@
      "id": "item_and_path_pointers"
     }
    ],
-   "reset_at": "2026-11-23T16:38:15Z",
+   "reset_at": "2026-11-23T16:56:10Z",
    "status": "CALIBRATED",
-   "was": "UNTESTED"
+   "was": "CALIBRATED"
   },
   "maturation_advance": {
    "brief": [
