@@ -22,9 +22,11 @@ namespace RimMandrake.FlowWorks
 	///   • a square under a concealed cover (a lid printing the ground) draws no pit art.</summary>
 	public static class RM_PitReliefMath
 	{
-		/// <summary>Floor terrain colour by depth band (FlowWorks_Terrain.xml: plain Gravel, 0.78, 0.58, 0.38; every depth past 2 m
-		/// is RM_Channel_Superdeep's 0.38) [measured, the defs].</summary>
-		private static readonly float[] TerrainColour = { 1f, 1f, 0.78f, 0.58f, 0.38f };
+		/// <summary>Floor terrain colour by depth band (FlowWorks_Terrain.xml: plain Gravel, 0.78, 0.69, 0.64; every depth past 2 m
+		/// is RM_Channel_Superdeep's 0.64) [the defs]. Deep and Superdeep were lifted from 0.58 and 0.38
+		/// (RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR) so a black shade can draw the stepped rule's lifted ladder; the
+		/// FloorBrightness law keeps its brightness (its shade takes the difference).</summary>
+		private static readonly float[] TerrainColour = { 1f, 1f, 0.78f, 0.69f, 0.64f };
 
 		/// <summary>Floor brightness wanted at 0.5, 1, 1.5 and 2 m: even steps of 0.14 down to the 2 m floor, which keeps its look.</summary>
 		private static readonly float[] BrightnessShallow = { 1f, 0.80f, 0.66f, 0.52f, 0.38f };
@@ -39,13 +41,16 @@ namespace RimMandrake.FlowWorks
 		public const float FaceFootK = 0.22f;
 		public const float FaceFootMax = 0.70f;
 
+		/// <summary>The colour (red channel) of the floor terrain a dry square at depth <paramref name="d"/> notches lies on.</summary>
+		public static float FloorTerrainColour(int d) => TerrainColour[d <= 0 ? 0 : (d < 4 ? d : 4)];
+
 		/// <summary>The floor's brightness at depth <paramref name="d"/> notches (1 = undug ground).</summary>
 		public static float FloorBrightness(int d)
 		{
 			if (d <= 0) return 1f;
 			if (d <= 4) return BrightnessShallow[d];
 			double r = 1.0 - FloorLogK * (Math.Log(d / 4.0) / Math.Log(2.0));
-			return TerrainColour[4] * (float)Math.Max(FloorMin, r);
+			return BrightnessShallow[4] * (float)Math.Max(FloorMin, r);
 		}
 
 		/// <summary>The black alpha laid over a dug floor (its terrain) at depth <paramref name="d"/> notches, so the floor draws at
@@ -187,13 +192,17 @@ namespace RimMandrake.FlowWorks
 		//   • every surface darkens by StepK of its depth (a multiplier: it holds over any floor terrain laid later);
 		//   • a fixed sun from the north-west lights the faces by their facing and casts a shadow past each face's foot.
 
-		// The north face is today's table at 0.7 and rises only to 0.62 at 20 m: at full size his L's 4 m north arm showed 0.26 of a
-		// square ("the lower-right northern inner shelf is incredibly narrow", 2026-11-22). A one-square north shelf keeps 0.4 in view
-		// to 8 m (PitStepped_north_shelf_stays_in_view; the twin's NORTH_SCALE).
-		private static readonly float[] StepNorthTable = { 0f, 0.7f * 0.12f, 0.7f * 0.23f, 0.7f * 0.35f, 0.7f * 0.50f, 0.7f * 0.62f };
+		// The north face (RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR, the art judge 2026-11-23: "carry 3 m against 4 m
+		// by the wall"; twin design/specs/2026-11-23-pit-floor-depth-ladder/ladder.py): today's table at 0.7 to 2 m, then StepHSlope a
+		// metre to 4 m, then StepHLog a doubling to 20 m. His L's 4 m north arm keeps 0.475 of a square ("the lower-right northern inner
+		// shelf is incredibly narrow" at 0.26, 2026-11-22); a one-square north shelf keeps 0.4 in view to 8 m.
+		private static readonly float[] StepNorthTable = { 0f, 0.7f * 0.12f, 0.7f * 0.23f, 0.7f * 0.35f, 0.7f * 0.50f };
+		private const double StepHSlope = 0.085, StepHLog = 0.078;
+		// The tone (the same twin): K(z) = KFloor + (1 - KFloor)(1 + z / KScale)^-KPow, a multiplier on undug ground. The 2 m floor
+		// at 0.63 (it was 0.38, and 3 m to 16 m fit in a dozen grey levels); never under KFloor, so the deepest floor keeps its grain.
+		private const double KFloor = 0.22, KScale = 1.6, KPow = 0.8;
 		private static readonly float[] StepSideTable = { 0f, 0.06f, 0.11f, 0.17f, 0.23f, 0.29f };
-		private const double StepHTop = 0.62, StepWTop = 0.46, StepP = 0.6, StepDeepest = 20.0;
-		private const double StepKScale = 0.75, StepKPow = 0.62;
+		private const double StepWTop = 0.46, StepP = 0.6, StepDeepest = 20.0;
 
 		/// <summary>The sun: compass degrees the light comes from (315 = north-west, option B of the pick) and its elevation.</summary>
 		public const float SunAzimuth = 315f, SunElevation = 55f;
@@ -215,20 +224,27 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>How far south of its top edge a north-wall point at depth <paramref name="notches"/> shows (cells).</summary>
-		public static float StepH(float notches) => Curve(StepNorthTable, StepHTop, notches);
+		public static float StepH(float notches)
+		{
+			if (notches <= 0f) return 0f;
+			if (notches <= 4f) return RM_UnderLiquid.FaceAt(StepNorthTable, notches);
+			double z = notches * 0.5, h2 = StepNorthTable[4];
+			if (z <= 4.0) return (float)(h2 + StepHSlope * (z - 2.0));
+			return (float)(h2 + 2.0 * StepHSlope + StepHLog * Math.Log(Math.Min(z, StepDeepest) / 4.0, 2.0));
+		}
 
 		/// <summary>How far in from its edge a side-wall point at depth <paramref name="notches"/> shows (cells).</summary>
 		public static float StepW(float notches) => Curve(StepSideTable, StepWTop, notches);
 
-		/// <summary>The darkening of a surface point at depth <paramref name="notches"/>: about 30 % a doubling, at every depth.</summary>
-		public static float StepK(float notches) => (float)Math.Pow(1.0 + Math.Max(0f, notches) * 0.5 / StepKScale, -StepKPow);
+		/// <summary>The tone of a surface point at depth <paramref name="notches"/> (a multiplier on undug ground; 1 at the ground).</summary>
+		public static float StepK(float notches) => (float)(KFloor + (1.0 - KFloor) * Math.Pow(1.0 + Math.Max(0f, notches) * 0.5 / KScale, -KPow));
 
-		/// <summary>A dry floor's brightness at depth <paramref name="d"/> notches under the stepped rule: StepK, anchored so the 2 m
-		/// floor keeps its look (shade 0 there) and every other depth draws apart from it.</summary>
+		/// <summary>A dry floor's brightness at depth <paramref name="d"/> notches under the stepped rule: StepK, the tone a face top at
+		/// that depth also takes.</summary>
 		public static float StepFloorBrightness(int d)
 		{
 			if (d <= 0) return 1f;
-			return TerrainColour[4] * StepK(d) / StepK(4);
+			return StepK(d);
 		}
 
 		/// <summary>The black alpha laid over a dry floor's terrain at depth <paramref name="d"/> so it draws at StepFloorBrightness.</summary>

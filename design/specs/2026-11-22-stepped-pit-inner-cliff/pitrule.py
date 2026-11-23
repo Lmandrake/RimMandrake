@@ -31,20 +31,25 @@ Coordinates: grids are lists of rows, NORTH FIRST; in a square, x runs 0 (west) 
 from __future__ import annotations
 
 import math
+import os
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "2026-11-23-pit-floor-depth-ladder"))
+import ladder as _LADDER  # noqa: E402
 
 # ── the two offset functions ──────────────────────────────────────────────
 # Up to 2.5 m W is today's table exactly and H is today's at NORTH_SCALE (RM_WallFaceMath NorthByDrop / SideByDrop), so a
 # single-depth pit at 2.5 m or less keeps today's side walls (his walk: stations 34 to 39 "look good and indicate their depth well"). Past 2.5 m
 # they keep rising to 20 m (today's stop at 2.5 m is why his 4 m and 8 m floors showed the same side wall), front-loaded so
 # the common 2.5 .. 8 m range gets most of the growth: rise(z) = (1 - (2.5/z)^P) / (1 - (2.5/20)^P).
-# The north face is today's table at NORTH_SCALE (0.7), and H rises only to H_TOP past 2.5 m: at full size, his L's 4 m north
-# arm showed 0.26 of a square and read as a lip (his words, 2026-11-22: "the lower-right northern inner shelf is incredibly
-# narrow, that's a bit weird and incorrect"). A fresh judge picked this setting (S) from four: the arm is as wide as the west
-# arm and no step, shadow or riser is lost. The depth reads by the shadows and the darkening, which he accepted.
+# The north face (H) is the depth ladder's (ladder.py): today's table at NORTH_SCALE (0.7) to 2 m, then 0.085 a metre to 4 m
+# (3 m against 4 m read by the wall: the art judge, 2026-11-23), then 0.078 a doubling to 20 m. His L's 4 m north arm keeps
+# 0.475 of a square of floor (0.50 before; his words, 2026-11-22: "the lower-right northern inner shelf is incredibly narrow",
+# it showed 0.26), and a one-square north shelf keeps 0.4 in view to 8 m (P7).
 NORTH_SCALE = 0.7
-NORTH_TABLE = [NORTH_SCALE * v for v in (0.0, 0.12, 0.23, 0.35, 0.50, 0.62)]   # per 0.5 m notch, 0 .. 2.5 m
+NORTH_TABLE = [NORTH_SCALE * v for v in (0.0, 0.12, 0.23, 0.35, 0.50)]   # per 0.5 m notch, 0 .. 2 m (ladder.H's own)
 SIDE_TABLE = [0.0, 0.06, 0.11, 0.17, 0.23, 0.29]
-H_TOP, W_TOP = 0.62, 0.46     # at 20 m (a one-square trench 20 m deep keeps 0.38 of a square of floor in view)
+W_TOP = 0.46     # at 20 m
 P = 0.6
 DEEPEST = 20.0
 
@@ -62,11 +67,10 @@ def _table(t, z):
 
 
 def H(z: float) -> float:
-    if z <= 0:
-        return 0.0
-    if z <= 2.5:
-        return _table(NORTH_TABLE, z)
-    return NORTH_TABLE[-1] + (H_TOP - NORTH_TABLE[-1]) * _rise(min(z, DEEPEST))
+    """The north face: the depth ladder's (RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR,
+    design/specs/2026-11-23-pit-floor-depth-ladder/ladder.py): today's table at NORTH_SCALE to 2 m, then taller with depth so
+    3 m and 4 m pits read apart by the wall (the art judge's ruling), slowly enough past 4 m that his L's north arm stays wide."""
+    return _LADDER.H(z)
 
 
 def W(z: float) -> float:
@@ -102,14 +106,11 @@ def W_inv(v: float) -> float:
 
 
 # ── depth value: the darkening of a surface point at depth z (a multiplier on its terrain colour) ──
-# K(z) = (1 + z / K_SCALE) ** -K_POW: 0.5 m 0.73, 1 m 0.59, 2 m 0.45, 4 m 0.32, 6 m 0.26, 8 m 0.22, 20 m 0.13. Each doubling
-# of depth is about 30 % darker (the fresh judge measured his 4 m and 8 m floors too close at 0.50; his words: "each level
-# needs a pretty clear differential in coloration"), at every depth (today's floor stops darkening past about 2 m: measured, the earlier item).
-K_SCALE, K_POW = 0.75, 0.62
-
-
 def K(z: float) -> float:
-    return (1.0 + max(0.0, z) / K_SCALE) ** -K_POW
+    """The depth ladder's tone (ladder.py): K_FLOOR + (1 - K_FLOOR) (1 + z / K_S)^-K_P. The art judge refused a 2 m floor at
+    0.38 with 3 m .. 16 m squeezed into a dozen grey levels: the 2 m floor is lifted to about 0.63, every depth below it keeps
+    its grain (never under K_FLOOR, 0.22), and floors and face tops share the one tone."""
+    return _LADDER.K(z)
 
 
 # ── the lines (black, as today) ──

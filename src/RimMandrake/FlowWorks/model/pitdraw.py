@@ -69,9 +69,11 @@ RIM_LINE = _cs_const(_FM, "RimLine")
 SIDE_LINE = _cs_const(_FM, "SideLine")
 
 # ── the new numbers (C#: RM_PitReliefMath; the parity golden table carries them) ──
-# Floor terrain colour by depth band (Defs/Canals/TerrainDefs/FlowWorks_Terrain.xml: plain Gravel, then 0.78, 0.58, 0.38;
-# every depth past 2 m is RM_Channel_Superdeep's 0.38) [measured, the defs].
-TERRAIN_COLOUR = [1.0, 1.0, 0.78, 0.58, 0.38]
+# Floor terrain colour by depth band (Defs/Canals/TerrainDefs/FlowWorks_Terrain.xml: plain Gravel, then 0.78, 0.69, 0.64;
+# every depth past 2 m is RM_Channel_Superdeep's 0.64) [measured, the defs]. Deep and Superdeep were lifted from 0.58 and 0.38
+# by RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR so the stepped rule's lifted ladder can be drawn by a black shade;
+# this law (the relief off, and under liquid) keeps its brightness: the shade takes the difference.
+TERRAIN_COLOUR = [1.0, 1.0, 0.78, 0.69, 0.64]
 # Floor brightness wanted at 0.5, 1, 1.5, 2 m: even steps of 0.14 down to the 2 m floor (which keeps its 0.38, so a 2 m pit
 # looks as it did), so a 0.5 m canal is 20% darker than plain gravel (his walk 2026-11-20 part 2, "a darker floor would likely
 # help"). Past 2 m, B = 0.38 x (1 - FLOOR_LOG_K x log2(d / 4)), never under FLOOR_MIN of 0.38: a fixed share darker at every
@@ -127,7 +129,7 @@ def floor_brightness(d: int) -> float:
         return 1.0
     if d <= 4:
         return FLOOR_BRIGHTNESS_SHALLOW[d]
-    return TERRAIN_COLOUR[4] * max(FLOOR_MIN, 1.0 - FLOOR_LOG_K * math.log2(d / 4.0))
+    return FLOOR_BRIGHTNESS_SHALLOW[4] * max(FLOOR_MIN, 1.0 - FLOOR_LOG_K * math.log2(d / 4.0))
 
 
 def floor_shade(d: int) -> float:
@@ -558,9 +560,11 @@ def sweep(seed=20261120, random_grids=4000):
         a = floor_shade(d)
         if not (0 <= a < 1):
             fails.append(("floor_shade_out_of_range", d, a))
-    rows.append(("2 m floor keeps its look (shade at 4 notches)", floor_shade(4), 0.0, 1))
-    if floor_shade(4) != 0.0:
-        fails.append(("two_metre_floor_changed", floor_shade(4)))
+    # the 2 m floor keeps its look: its terrain under its shade draws 0.38 (the shade was 0 while the terrain itself was 0.38)
+    drawn2 = (1.0 - floor_shade(4)) * TERRAIN_COLOUR[4]
+    rows.append(("2 m floor keeps its look (drawn at 4 notches)", drawn2, 0.38, 1))
+    if abs(drawn2 - 0.38) > 1e-4:
+        fails.append(("two_metre_floor_changed", drawn2))
 
     # 3. the face foot: never lighter for a bigger drop, and drops past 2.5 m apart
     es = [x / 4.0 for x in range(0, 4 * DEEPEST + 1)]

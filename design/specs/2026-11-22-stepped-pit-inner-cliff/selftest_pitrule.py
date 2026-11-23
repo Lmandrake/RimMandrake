@@ -11,7 +11,7 @@ the drop, a lip line from edge to edge; must FAIL where today is wrong), so the 
                                 between its two floors, never a second full-height wall
   P4 EVERY_DEPTH_APART          H, W and the depth value K strictly change over the whole dig range (no cap that makes two
                                 depths alike, today's stop at 2.5 m)
-  P5 SINGLE_DEPTH_SIDES_KEPT    a single-depth pit of 2.5 m or less keeps today's side strips exactly, and its north face is
+  P5 SINGLE_DEPTH_SIDES_KEPT    a single-depth pit keeps today's side strips exactly to 2.5 m, and its north face is
                                 today's at NORTH_SCALE (0.7: his L's 4 m north arm read as a lip, 2026-11-22)
   P6 LOCAL_3X3                  a square's plan reads only its 3x3 (changing a square two away changes nothing)
   P7 NORTH_SHELF_IN_VIEW        a one-square shelf along a north wall keeps at least 0.4 of a square of floor in view at
@@ -95,9 +95,9 @@ def p5(M):
     for z in DEPTHS:
         if z > 2.5:
             break
-        if abs(M.H(z) - scale * today_face(TODAY_N, z)) > 1e-9 or abs(M.W(z) - today_face(TODAY_S, z)) > 1e-9:
+        if abs(M.W(z) - today_face(TODAY_S, z)) > 1e-9 or (z <= 2.0 and abs(M.H(z) - scale * today_face(TODAY_N, z)) > 1e-9):
             return False, f"{z} m differs from today's side strip or scaled north face"
-    return True, "single-depth pits to 2.5 m keep today's side strips and today's north face at NORTH_SCALE"
+    return True, "single-depth pits keep today's side strips to 2.5 m and today's north face at NORTH_SCALE to 2 m"
 
 
 def p7(M):

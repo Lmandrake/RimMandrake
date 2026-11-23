@@ -14,9 +14,13 @@ script ends with it on, the shipped default):
   FLOOR_LADDER_DRAWS_THE_LAW_relief_<off|on>         every depth's brightness against the 2 m floor's, beside the law read from
       the running game (jawa/static_call): FloorBrightness with the relief off, within 0.06 both ways; StepFloorBrightness with
       it on, at most 0.06 brighter (the relief casts the walls' shadow over the shade, so a floor may be darker than the law).
+  FLOOR_DEEPEST_KEEPS_GRAIN_relief_on   the art judge's ruling (2026-11-23): the 16 m floor's centre square still shows its dirt
+      grain, a grey spread (std) of at least 2.0 levels. The same reading with the relief off (the old law, the 16 m floor at about
+      10 of 255) is recorded beside it as the known-bad state, and is expected under 2.0.
 SITE (never PASS, never FAIL): not full daylight (glow < 0.95), a roof, a pit that did not dig, or the undug margin not at
-least twice as bright as the 2 m floor (the camera does not see the scene). HARNESS: a refused call or a missing capture.
-Exit 0 only when all four rows PASS; 1 on any FAIL; 2 otherwise. The pits are filled back in unless --keep.
+least 1.25 times as bright as the 2 m floor (the camera does not see the scene; the lifted ladder draws the 2 m floor at about
+0.63 of the ground, so the old "twice as bright" guard would call every real scene blind). HARNESS: a refused call or a missing capture.
+Exit 0 only when all five rows PASS; 1 on any FAIL; 2 otherwise. The pits are filled back in unless --keep.
 
 ## anti-guessing notes (Test Pilot sitting 2026-11-22, ArchBig, RM_TheRot stage map, noon)
   - RULED OUT: "the black tint quad does not blend, or draws under the floor" (MOD) -- the ladder's centre squares read red
@@ -59,21 +63,24 @@ DOUBLINGS = [(4, 8), (8, 16), (16, 32)]
 ITEM = "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR"
 PLAN = (
     ("ladder", ("FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_off", "FLOOR_LADDER_DRAWS_THE_LAW_relief_off",
-                "FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_on", "FLOOR_LADDER_DRAWS_THE_LAW_relief_on")),
+                "FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_on", "FLOOR_LADDER_DRAWS_THE_LAW_relief_on",
+                "FLOOR_DEEPEST_KEEPS_GRAIN_relief_on")),
 )
 MATH = "RimMandrake.FlowWorks.RM_PitReliefMath"
+GRAIN_STD = 2.0     # grey levels: the judge's "grain almost gone" 8 m and 16 m floors read about 14 and 12 of 255, a spread near 1.5
 PROOFS = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 
 
 def centre_mean(png):
-    """Mean R, G, B of the centre square of a 5-square-wide capture (square cells from the width, centred vertically)."""
+    """Mean R, G, B of the centre square of a 5-square-wide capture (square cells from the width, centred vertically), the
+    undug margin's mean, and the centre square's grey spread (std of the luminance)."""
     from PIL import Image, ImageStat
     im = Image.open(png).convert("RGB")
     cw = im.size[0] / 5.0
     mid_y = im.size[1] / 2.0
     box = (int(2.05 * cw), int(mid_y - 0.45 * cw), int(2.95 * cw), int(mid_y + 0.45 * cw))
     edge = (int(0.1 * cw), int(mid_y - 0.45 * cw), int(0.6 * cw), int(mid_y + 0.45 * cw))
-    return ImageStat.Stat(im.crop(box)).mean, ImageStat.Stat(im.crop(edge)).mean
+    return ImageStat.Stat(im.crop(box)).mean, ImageStat.Stat(im.crop(edge)).mean, ImageStat.Stat(im.crop(box).convert("L")).stddev[0]
 
 
 def main(argv=None):
@@ -142,7 +149,7 @@ def main(argv=None):
                     res["harness"].append("%s(%d) not read: %s" % (method, d, str(r.get("message"))[:120]))
         c("jawa/clear_ui", all=True)
         c("rimworld/set_camera_zoom", rootSize=11)
-        stamp, seen, soil = int(time.time()), {}, {}
+        stamp, seen, soil, grain = int(time.time()), {}, {}, {}
         for mode in ("off", "on"):          # ends on, the shipped default
             r = c("jawa/static_call", type=PROOFS, method="ProofPitRelief", args=mode)
             if ("setting=%s" % (mode == "on")) not in str(r.get("result")):
@@ -171,8 +178,9 @@ def main(argv=None):
                     continue
                 dst = os.path.join(a.out, "ladder_%s_d%02d.png" % (mode, d))
                 shutil.copyfile(src, dst)
-                m, edge = centre_mean(dst)
+                m, edge, spread = centre_mean(dst)
                 seen[mode][d] = sum(m) / 3.0
+                grain.setdefault(mode, {})[d] = round(spread, 2)
                 soil[mode] = sum(edge) / 3.0 if d == 4 else soil.get(mode)
                 res.setdefault("drawn_rgb", {}).setdefault(mode, {})[d] = [round(v, 1) for v in m]
         if not a.keep:
@@ -181,8 +189,8 @@ def main(argv=None):
         lum, law = seen.get(mode) or {}, laws.get(mode) or {}
         k1, k2 = "FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_" + mode, "FLOOR_LADDER_DRAWS_THE_LAW_relief_" + mode
         site = list(res["site"])
-        if 4 in lum and soil.get(mode) is not None and soil[mode] < 2.0 * lum[4]:
-            site.append("the undug margin is not twice as bright as the 2 m floor: the camera does not see the scene")
+        if 4 in lum and soil.get(mode) is not None and soil[mode] < 1.25 * lum[4]:
+            site.append("the undug margin is not 1.25 times as bright as the 2 m floor: the camera does not see the scene")
             res["site"] = site
         if len(lum) == len(LADDER) and len(law) == len(LADDER) and not res["harness"] and not site:
             steps = {"%d->%d" % (s, e): round(1 - lum[e] / lum[s], 3) for s, e in DOUBLINGS}
@@ -195,6 +203,15 @@ def main(argv=None):
             why = "HARNESS" if res["harness"] else "SITE"
             res["verdicts"][k1] = {"verdict": "UNMEASURED", "class": why}
             res["verdicts"][k2] = {"verdict": "UNMEASURED", "class": why}
+    deep = max(LADDER)
+    g_on, g_off = (grain.get("on") or {}).get(deep), (grain.get("off") or {}).get(deep)
+    kg = "FLOOR_DEEPEST_KEEPS_GRAIN_relief_on"
+    if g_on is not None and not res["harness"] and not res["site"]:
+        res["verdicts"][kg] = {"verdict": "PASS" if g_on >= GRAIN_STD else "FAIL", "std_16m_on": g_on, "std_16m_off_known_bad": g_off,
+                               "bar": GRAIN_STD}
+    else:
+        res["verdicts"][kg] = {"verdict": "UNMEASURED", "class": "HARNESS" if res["harness"] else "SITE"}
+    res["grain_std"] = grain
     for rid in PLAN[0][1]:
         v = res["verdicts"].get(rid) or {"verdict": "UNMEASURED", "class": "HARNESS"}
         det = {k: v[k] for k in v if k not in ("verdict", "class")}

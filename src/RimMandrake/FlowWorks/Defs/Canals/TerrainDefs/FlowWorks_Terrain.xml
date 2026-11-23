@@ -86,7 +86,9 @@
     <label>pit</label>
     <description>Ground dug a metre and a half below the surface. Climbing in or out costs dearly; walking along the bottom is easy.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
-    <color>(0.58,0.55,0.51)</color>
+    <!-- lifted from 0.58 (RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR): the pit draw's black depth shade darkens a
+         floor to its depth's tone, so the terrain must be at least that light (RM_PitReliefMath.TerrainColour) -->
+    <color>(0.69,0.654,0.607)</color>
     <renderPrecedence>327</renderPrecedence>
     <fertility>0</fertility>
     <pathCost>80</pathCost>
@@ -121,7 +123,8 @@
     <label>pit</label>
     <description>Ground dug at least two metres below the surface (the cell readout gives the exact depth). Anything that walks into it falls in and is held there; without a ladder or a ramp standing in the hole, it is not climbing out.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
-    <color>(0.38,0.36,0.33)</color>
+    <!-- lifted from 0.38 (RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR): as RM_Channel_Deep -->
+    <color>(0.64,0.606,0.556)</color>
     <renderPrecedence>328</renderPrecedence>
     <fertility>0</fertility>
     <pathCost>300</pathCost>
