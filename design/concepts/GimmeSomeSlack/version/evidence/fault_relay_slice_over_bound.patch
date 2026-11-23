@@ -1,0 +1,19 @@
+--- a/src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs
+@@ -583,14 +583,14 @@
+             // the same way, so b keeps the first re-lay's state for the reuse checks below.
+             double first2 = worst2;
+             int relays = 1;
+-            while (worst2 > SyncLayBoundMs && relays < SliceAttempts)
++            while (worst2 > 0.5 && relays < SliceAttempts)
+             {
+                 var bb = new CordBuilder();
+                 Converge(bb, RebuildPerDigChecks.LiveScene(), opt, dead);
+                 worst2 = Math.Min(worst2, Converge(bb, RebuildPerDigChecks.LiveScene(), opt2, dead).worst);
+                 relays++;
+             }
+-            Program.Check(worst2 <= SyncLayBoundMs && slices2 > 1, $"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms at best over {relays} re-lay(s), first {first2:0.0} ms, over {slices2} Builds");
++            Program.Check(worst2 <= 0.5 && slices2 > 1, $"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms at best over {relays} re-lay(s), first {first2:0.0} ms, over {slices2} Builds");
+             Console.WriteLine($"slice: all-keys-changed re-lay worst {worst2:0.0} ms at best over {relays} re-lay(s) over {slices2} Builds (bound {SyncLayBoundMs} ms)");
+             Program.Check(GssFuzz.Digest(last2) == wantLit, "slice: the all-keys-changed re-lay did not end bit-identical to one unbudgeted Build");
+             Program.Check(minEdges2 == edges, $"slice: a mid-re-lay Build showed {minEdges2} of {edges} cords (a deferred edge must keep its previous piece)");

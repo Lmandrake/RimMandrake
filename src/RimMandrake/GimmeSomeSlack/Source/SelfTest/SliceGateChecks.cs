@@ -577,8 +577,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             full2.Lay.SlackScale = opt2.Lay.SlackScale;
             var (slices2, worst2, last2, minEdges2) = Converge(b, RebuildPerDigChecks.LiveScene(), opt2, dead);
             ulong wantLit = GssFuzz.Digest(new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), full2, dead));
-            Program.Check(worst2 <= SyncLayBoundMs && slices2 > 1, $"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms over {slices2} Builds");
-            Console.WriteLine($"slice: all-keys-changed re-lay worst {worst2:0.0} ms over {slices2} Builds (bound {SyncLayBoundMs} ms)");
+            // best of up to SliceAttempts re-lays, as the cold build above (SliceBound): one wall-clock reading went over the
+            // bound twice on a loaded machine with no change to the lay (32.1 ms 2026-11-22, 30.2 ms 2026-11-23 at load 13 on
+            // 14 cores; item RIMMANDRAKE_RETRY_SLACK_RELAY_SLICE_CHECK_RED_TWICE). Each retry warms a fresh builder
+            // the same way, so b keeps the first re-lay's state for the reuse checks below.
+            double first2 = worst2;
+            int relays = 1;
+            while (worst2 > SyncLayBoundMs && relays < SliceAttempts)
+            {
+                var bb = new CordBuilder();
+                Converge(bb, RebuildPerDigChecks.LiveScene(), opt, dead);
+                worst2 = Math.Min(worst2, Converge(bb, RebuildPerDigChecks.LiveScene(), opt2, dead).worst);
+                relays++;
+            }
+            Program.Check(worst2 <= SyncLayBoundMs && slices2 > 1, $"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms at best over {relays} re-lay(s), first {first2:0.0} ms, over {slices2} Builds");
+            Console.WriteLine($"slice: all-keys-changed re-lay worst {worst2:0.0} ms at best over {relays} re-lay(s) over {slices2} Builds (bound {SyncLayBoundMs} ms)");
             Program.Check(GssFuzz.Digest(last2) == wantLit, "slice: the all-keys-changed re-lay did not end bit-identical to one unbudgeted Build");
             Program.Check(minEdges2 == edges, $"slice: a mid-re-lay Build showed {minEdges2} of {edges} cords (a deferred edge must keep its previous piece)");
 

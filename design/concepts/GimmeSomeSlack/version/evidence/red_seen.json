@@ -1,16 +1,16 @@
 {
  "T_CORE": {
-  "at": "2026-11-21T08:49:32Z",
+  "at": "2026-11-23T11:02:27Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
   "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
-  "last": "5653/5654 checks passed",
-  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs\nindex 58b4a3237f..7e08df0b53 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs\n@@ -34,6 +34,6 @@ namespace RimMandrake.GimmeSomeSlack.Core\n         /// dirty event marked the cords stale and the next frame's rebuild has not run (<paramref name=\"staleOffscreen\"/>). A\n         /// change no event announced is NOT owed: a probe read must still see that bug (D2_fresh_builder_same, live_flip_fresh.py).</summary>\n         public static bool OwesBuild(bool enabled, int lastPending, bool staleOffscreen) =>\n-            enabled && (lastPending > 0 || staleOffscreen);\n+            enabled && (lastPending > 99999 || staleOffscreen);\n     }\n }\n",
+  "last": "5697/5698 checks passed",
+  "patch": "--- a/src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs\n@@ -583,14 +583,14 @@\n             // the same way, so b keeps the first re-lay's state for the reuse checks below.\n             double first2 = worst2;\n             int relays = 1;\n-            while (worst2 > SyncLayBoundMs && relays < SliceAttempts)\n+            while (worst2 > 0.5 && relays < SliceAttempts)\n             {\n                 var bb = new CordBuilder();\n                 Converge(bb, RebuildPerDigChecks.LiveScene(), opt, dead);\n                 worst2 = Math.Min(worst2, Converge(bb, RebuildPerDigChecks.LiveScene(), opt2, dead).worst);\n                 relays++;\n             }\n-            Program.Check(worst2 <= SyncLayBoundMs && slices2 > 1, $\"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms at best over {relays} re-lay(s), first {first2:0.0} ms, over {slices2} Builds\");\n+            Program.Check(worst2 <= 0.5 && slices2 > 1, $\"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms at best over {relays} re-lay(s), first {first2:0.0} ms, over {slices2} Builds\");\n             Console.WriteLine($\"slice: all-keys-changed re-lay worst {worst2:0.0} ms at best over {relays} re-lay(s) over {slices2} Builds (bound {SyncLayBoundMs} ms)\");\n             Program.Check(GssFuzz.Digest(last2) == wantLit, \"slice: the all-keys-changed re-lay did not end bit-identical to one unbudgeted Build\");\n             Program.Check(minEdges2 == edges, $\"slice: a mid-re-lay Build showed {minEdges2} of {edges} cords (a deferred edge must keep its previous piece)\");\n",
   "patch_files": [
-   "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs"
+   "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs"
   ],
-  "patch_sha": "253794eb853b5092",
+  "patch_sha": "56960ebbbd3b6776",
   "rc": 1,
-  "test_blob": "b0059be60534e300037a6e3985b55480fd996b7e"
+  "test_blob": "f893cbe93425c619e3a7d3336279c0689c2631ef"
  },
  "T_H_PLAYTEST_RUNNER": {
   "at": "2026-11-20T15:51:20Z",
