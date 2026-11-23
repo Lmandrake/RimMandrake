@@ -384,5 +384,14 @@ namespace RimMandrake.FlowWorks
 			}
 			return -1;
 		}
+	
+		/// <summary>May a rescuer standing at <paramref name="rescuerDepth"/> (levels below ground) lift a comrade lying at
+		/// <paramref name="fallenDepth"/>? Only across a step he could climb himself (his climb limit, one level at least):
+		/// from the rim of a 4 m pit he cannot, down on the floor beside the man he can. Live 2026-11-23: the carry walked
+		/// to ClosestTouch, so a raider on the rim lifted a downed man out of a 4 m pit with no ladder.</summary>
+		public static bool FetchLiftAllowed(int rescuerDepth, int fallenDepth, int climbLimit)
+		{
+			return fallenDepth - rescuerDepth <= System.Math.Max(1, climbLimit);
+		}
 	}
 }

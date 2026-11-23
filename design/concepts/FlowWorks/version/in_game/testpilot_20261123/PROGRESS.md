@@ -107,3 +107,32 @@ Host: ArchBig (archmagi), bridge taken 06:06 PST 2026-11-23. Clone: .../RIMMANDR
 - 08:04, 08:11, 08:20 PST polls: no Archmagi game free; ArchBig now on the ExplosiveKnockback tier (a FlowWorks run there needs
   a tier reload). Steve2 rolled to a new testq job at 08:09 (the lane refills itself).
 - U8 KIDNAP (08:55, before its experiment): a held raider beside a colonist downed on the rim takes vanilla Kidnap (seen as a free raider's job in t3); the carry-and-exit walks him out. Predicts: job Kidnap on the held raider, then a place outside the pit.
+## 09:25 PST *** THE FAULT ON DEMAND (Steve1, run t18) ***
+- Took Steve1 08:32 (guard gen 2429), flowworks tier (12 active), FlowWorks in sync with origin. Runs t1..t17: 0 of 31 held left.
+- t18: Human21277 stood on lidded pit square 60,62 (held=False, descents=0) at t=1442 and 1502; the deck gave way at 1533
+  (fall=10.3, Stab from the spikes, DOWNED). t=1562 and 1592: held=True, Wait_Downed at 60,62; comrade Human21258 on the strip
+  61,63 has job RM_RaiderFetchFallen>60,62; ladders=[] on every read. t=1622: 21277 lies at 62,63, held=False, still downed;
+  21258 walks off. A comrade lifted a downed man out of a 4 m pit from the rim with no ladder. Evidence t18.json (scratch).
+- Mechanism (source): RM_RaiderFetchFallen.TryFetch takes "CanReach(fallen.Position, OnCell)" as "a way down" and then gives the
+  carry job, whose driver walks to ClosestTouch: from the strip he touches the man and picks him up. U1 was half right (a fetch,
+  no ladder); U2-U8 refuted (U8 by t7: free raiders kidnapped the downed colonists, the held raiders stayed).
+- Theory V1 (before the experiment): the reach answer was stale for some ticks after the lids fell (pit read as deck).
+  Predicts: a held raider downed 120+ ticks after the fall is NOT lifted out. V2: CanReach says yes whenever. Predicts: lifted.
+- t19, t20 (--down-held: a held raider downed 120 ticks after the fall, raid on the map, 600 ticks): no fetch job, he stayed.
+  Fits V1 (the reach answer is wrong only around the lids' collapse); not proof (no read of which raiders were under fire).
+- t21, t22 RED ON DEMAND (--down-held --order-fetch): the carry job RM_RaiderFetchFallen ordered on the nearest free raider;
+  within 30 ticks the downed man lay outside the pit, held=False, ladders=[]. Keeper save TP_FETCH_LIFTS_FROM_RIM_4M.rws and
+  picture fetch_red.png in D:\ClaudeWork\rimmandrake\testpilot_pit_capture_faults (also on Steve1's Saves folder).
+- FIX (building): the rescuer walks ONTO the fallen man's square (GotoThing OnCell) and the pickup asks
+  RM_RaiderTrenchMath.FetchLiftAllowed(rescuer depth, fallen depth, climb limit); a refused lift is remembered so the giver
+  does not hand the job out again at once. C# case RaiderFetch_no_lift_from_the_rim_of_a_deep_pit.
+- Steve1 released 09:41 PST for the lane while the build runs (machine load 35, the C# selftest stage copy is slow).
+## Looks
+- Look 1 (09:14 PST, Steve1 after p3): calm site restored, 3 colonists, paused tick 3, Clear (forced), 57F spring, no modal
+  (ImmediateWindow + Dialog_DevPalette), no raiders. EXPECTED (scene restore; census 3 pawns).
+- Player.log (Steve1): 1 NullReferenceException (duplicate stacktrace ref) after "Resolved path returned no nodes ... (60,0,60) ->
+  colonist, for Arkady"; 6 such lines in ~20 runs, each beside FlowWorks' own "reach residual: CanReach said yes, A* found
+  nothing" for a raider on a first-row pit square. ODD -> see the stray raider of t6 below.
+- t6 stray: free raider Human21297 (Arkady) stood on pit square 60,60 from t=632 to 1052 (AttackMelee on a far colonist, no
+  path), then walked out over the strip. Lids were gone by then (t18 read: every lid gone after the fall), so he stood IN an
+  open 4 m pit square, unread by my trace then (fixed since: every hostile on a pit square is read). Not seen in t7-t22.

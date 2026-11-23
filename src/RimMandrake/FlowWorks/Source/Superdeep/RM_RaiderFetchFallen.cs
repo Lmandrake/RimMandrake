@@ -36,9 +36,45 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The lip the first rescuer planned from, per fallen pawn: later rescuers use the same ladder line.</summary>
 		private static readonly Dictionary<int, (int tick, IntVec3 lip)> fetchLips = new Dictionary<int, (int, IntVec3)>();
 
+		/// <summary>A lift the pickup refused, per fallen pawn (tick): the giver hands no carry out for him again until
+		/// RefusedLiftTicks pass, so a rescuer who cannot get down does not take and drop the job every tick.</summary>
+		private static readonly Dictionary<int, int> refusedLifts = new Dictionary<int, int>();
+
+		/// <summary>How long (ticks; 250 = about 4 s) a refused lift keeps the carry from being handed out again.</summary>
+		public const int RefusedLiftTicks = 250;
+
 		public static void ClearMemos()
 		{
 			fetchLips.Clear();
+			refusedLifts.Clear();
+		}
+
+		/// <summary>May <paramref name="p"/> pick <paramref name="fallen"/> up from where the two stand now? Only across a
+		/// step he could climb (RM_RaiderTrenchMath.FetchLiftAllowed), read off the dug depths, never off a reach answer:
+		/// live 2026-11-23 a raider on the rim of a 4 m pit touched a downed comrade and carried him out, no ladder.</summary>
+		public static bool MayLift(Pawn p, Pawn fallen)
+		{
+			if (p?.Map == null || fallen == null || !fallen.Spawned || fallen.Map != p.Map)
+			{
+				return false;
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(p.Map);
+			return RM_RaiderTrenchMath.FetchLiftAllowed(RM_SuperdeepTrap.StepDepthAt(p.Map, eng, p.Position),
+				RM_SuperdeepTrap.StepDepthAt(p.Map, eng, fallen.Position), RM_PocketGrid.ClimbLimitOf(p));
+		}
+
+		public static void NoteRefusedLift(Pawn fallen)
+		{
+			if (fallen != null)
+			{
+				refusedLifts[fallen.thingIDNumber] = Find.TickManager?.TicksGame ?? 0;
+			}
+		}
+
+		public static bool RecentlyRefused(Pawn fallen)
+		{
+			int now = Find.TickManager?.TicksGame ?? 0;
+			return fallen != null && refusedLifts.TryGetValue(fallen.thingIDNumber, out int t) && now >= t && now - t < RefusedLiftTicks;
 		}
 
 		public static bool UnderFire(Pawn p)
@@ -105,7 +141,7 @@ namespace RimMandrake.FlowWorks
 			if (p.CanReach(fallen.Position, PathEndMode.OnCell, Danger.Deadly))
 			{
 				// a standing comrade climbs out by the ladder himself; a downed one is carried up
-				return fallen.Downed ? CarryJob(p, fallen, LipFor(p, fallen)) : null;
+				return fallen.Downed && !RecentlyRefused(fallen) ? CarryJob(p, fallen, LipFor(p, fallen)) : null;
 			}
 			int k = RM_PocketGrid.ClimbLimitOf(p);
 			IntVec3 origin = MemoLip(p, fallen, k);
@@ -284,9 +320,27 @@ namespace RimMandrake.FlowWorks
 				{
 					pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Thing _);
 				}
+				else if (cond == JobCondition.Incompletable || cond == JobCondition.ErroredPather)
+				{
+					// no way down to him after all (the walk onto his square failed): not handed out again at once
+					RM_RaiderFetchFallen.NoteRefusedLift(job.targetA.Thing as Pawn);
+				}
 			});
-			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch)
+			// The rescuer goes DOWN to him: onto his square, by a real way (a ladder, a climbable step). A touch from the rim
+			// is no fetch (live 2026-11-23, save TP_FETCH_LIFTS_FROM_RIM_4M: a downed man lifted out of a 4 m pit, no ladder).
+			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.OnCell)
 				.FailOn(() => !Fallen.Downed);
+			Toil lift = ToilMaker.MakeToil("RM_RaiderFetchFallen_MayLift");
+			lift.initAction = delegate
+			{
+				if (!RM_RaiderFetchFallen.MayLift(pawn, Fallen))
+				{
+					RM_RaiderFetchFallen.NoteRefusedLift(Fallen);
+					EndJobWith(JobCondition.Incompletable);
+				}
+			};
+			lift.defaultCompleteMode = ToilCompleteMode.Instant;
+			yield return lift;
 			yield return Toils_Haul.StartCarryThing(TargetIndex.A);
 			yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
 			Toil drop = ToilMaker.MakeToil("RM_RaiderFetchFallen_Drop");

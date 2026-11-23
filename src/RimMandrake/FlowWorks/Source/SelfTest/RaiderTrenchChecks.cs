@@ -223,6 +223,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(r, @"Scribe_Values\.Look\(ref raiderFillLineFollowsDigCap, ""raiderFillLineFollowsDigCap"", true\);", "scribed line switch");
                 RiverSwitchFlipChecks.Has(r, @"Scribe_Values\.Look\(ref raiderFillMaxDepth, ""raiderFillMaxDepth"", RM_DigDepthMath\.DefaultMaxDigDepth\);", "scribed fixed line");
             });
+            Case("RaiderFetch_no_lift_from_the_rim_of_a_deep_pit", () =>
+            {
+                // RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS (Test Pilot, Steve1 2026-11-23, save
+                // TP_FETCH_LIFTS_FROM_RIM_4M): a raider on the strip touched a comrade lying downed 4 m down and carried him
+                // out, no ladder anywhere (the carry walked to ClosestTouch). A man is lifted only across a step the rescuer
+                // could climb himself.
+                Assert(!RM_RaiderTrenchMath.FetchLiftAllowed(0, 8, 2), "can-fail: rim (0) to a 4 m floor (8 levels), person climb 2: no lift (the failing moment)");
+                Assert(!RM_RaiderTrenchMath.FetchLiftAllowed(0, 6, 2), "can-fail: nor out of 3 m from the rim: the rescuer goes down the ladder first");
+                Assert(RM_RaiderTrenchMath.FetchLiftAllowed(8, 8, 2), "down on his level: lifts");
+                Assert(RM_RaiderTrenchMath.FetchLiftAllowed(6, 8, 2), "one climbable step above him: lifts");
+                Assert(RM_RaiderTrenchMath.FetchLiftAllowed(0, 1, 0), "a shallow ditch: every rescuer lifts across one level");
+                Assert(RM_RaiderTrenchMath.FetchLiftAllowed(8, 0, 2), "a fallen man above the rescuer is no pit lift at all");
+                string f = Src("Superdeep", "RM_RaiderFetchFallen.cs");
+                RiverSwitchFlipChecks.Has(f, @"Toils_Goto\.GotoThing\(TargetIndex\.A, PathEndMode\.OnCell\)", "the rescuer walks ONTO his square (a real way down), never a touch from the rim");
+                RiverSwitchFlipChecks.Has(f, @"if \(!RM_RaiderFetchFallen\.MayLift\(pawn, Fallen\)\)", "the pickup asks the lift rule where the two stand");
+                RiverSwitchFlipChecks.Has(f, @"RecentlyRefused\(fallen\)", "a refused lift is not handed out again at once");
+            });
             Case("RaiderTrench_wiring", () =>
             {
                 string r = Src("Superdeep", "RM_RaiderTrench.cs");

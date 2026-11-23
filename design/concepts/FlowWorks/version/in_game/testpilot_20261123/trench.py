@@ -10,7 +10,9 @@ import sys, os
 sys.path.insert(0, r'src/RimMandrake/FlowWorks/northstar'); sys.path.insert(0, r'src/RimMandrake/Utils'); sys.path.insert(0, r'src/RimMandrake/Utils/modcheck')
 import concept_scenes as cs
 out, width, ticks = sys.argv[1], int(sys.argv[2]), int(sys.argv[3])
+ARGV = list(sys.argv)
 wardens = '--wardens' in sys.argv
+down_held = '--down-held' in sys.argv   # down the first held raider where he stands, raid on the map (the fetch-by-touch test)
 downed = '--downed' in sys.argv        # read here: sys.argv is replaced below, before the scene body runs
 cs.TRAP_PW = width
 opt = dict(a[2:].split('=') for a in sys.argv if a.startswith('--') and '=' in a)
@@ -30,6 +32,7 @@ def body(S):
     try:
         seen = cs._watch_trap(S, pit, until_ladder=False, until_held=2)
         held = sorted(seen['held'])
+        S.r['coversAfterFall'] = {'%d,%d' % c: S.sc(cs.EXC, 'ProofCover', '%d,%d' % c)[22:70] for c in pit}   # which lids still stand
         if wardens:
             for pid in held[:2]:
                 _, v = cs._ptr_prisoner(S, pid)
@@ -39,6 +42,19 @@ def body(S):
                     lip = (at[0], max(c[1] for c in pit) + 1) if ACROSS else cs._trap_lip(at)
                     w = S.pawn('Colonist', lip, 'player')
                     S.call('jawa/ordered_job', pawnId=w, jobDef='RM_CaptureDown', targetAId=pid, targetBX=lip[0], targetBZ=lip[1])
+        if down_held and held:
+            S.ticks(120)                      # well clear of the lids' collapse: any cached reach answer is rebuilt by now
+            S.call('jawa/pawn_force_incapacitate', pawn=held[0], action='downed')
+        if '--order-fetch' in ARGV and held:   # the fetch's carry job given straight to the nearest free raider: no ladder exists
+            _, v = cs._ptr_prisoner(S, held[0])
+            at = tuple(int(q) for q in cs.kv(v).get('cell', '0,0').split(','))
+            lip = cs._trap_lip(at)
+            free = [p for p in S.call('jawa/list_pawns', faction='hostile').get('pawns') or []
+                    if p.get('id') not in held and not p.get('dead') and not p.get('downed') and p.get('x') is not None]
+            free.sort(key=lambda p: cs._cheb((p['x'], p['z']), lip))
+            S.r['orderFetch'] = {'fallen': held[0], 'at': at, 'lip': lip, 'rescuer': free[0]['id'] if free else None,
+                                 'reply': S.call('jawa/ordered_job', pawnId=free[0]['id'], jobDef='RM_RaiderFetchFallen',
+                                                 targetAId=held[0], targetBX=lip[0], targetBZ=lip[1]) if free else None}
         if downed:           # U8: a colonist lying downed on the rim beside each held raider, raid on the map
             for pid in held[:2]:
                 _, v = cs._ptr_prisoner(S, pid)
@@ -85,6 +101,14 @@ def body(S):
             if left and i - min(v['poll'] for v in left.values()) >= 4:
                 break
             S.ticks(STEP)
+        keep = [a[7:] for a in ARGV if a.startswith('--keep=')]
+        if keep:                               # the moment as a keeper save and a picture of the pit
+            import test_site_saves as T
+            from game_paths import SAVES
+            xs, zs = [c[0] for c in pit], [c[1] for c in pit]
+            S.r['keep'] = {'save': str(T.save_site(S.B.call, keep[0], SAVES))[:200],
+                           'shot': (S.B.call('rimworld/screenshot_cell_rect', x=min(xs) - 5, z=min(zs) - 4, width=12, height=14,
+                                             fileName=keep[0], suppressMessage=True) or {}).get('path')}
         S.r['holdTrace'], S.r['holdLeft'], S.r['holdHeld'] = trace, left, held
         S.row('TP_held_stay_held', not left, {'held': held, 'left': left, 'polls': len(trace), 'width': width, 'length': cs.TRAP_PL, 'strip': cs.TRAP_STRIP},
               unmeasured=len(held) < 1)
