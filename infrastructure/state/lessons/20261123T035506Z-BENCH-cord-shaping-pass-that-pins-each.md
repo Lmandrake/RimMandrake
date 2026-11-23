@@ -1,0 +1,2 @@
+A cord-shaping pass that pins each end run as laid and reshapes only the middle leaves a corner at the pin's edge when the middle leaves at an angle; GSS's bend bar called any turn within 0.75 cell of a fitting 'socket' however sharp, so no redraw ever fixed those hooks (station 3, 2026-11-22). Measure kinks with a short window (50 deg in 0.12 cell) and round them last, keeping both headings.
+item: RIMMANDRAKE_SMOOTH_SLACK_GROUND_CORD_KINKS_AT_STATION_THREE

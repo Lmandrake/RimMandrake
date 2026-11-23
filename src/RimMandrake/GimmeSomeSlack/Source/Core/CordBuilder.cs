@@ -1378,12 +1378,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
         {
             LaidPiece best = LayEdgeDraw(w, g, e, key, parallel, opt, isLive);
             if (!opt.Lay.FairBends) return best;
-            int bestF = LayFaults(w, e, best);
-            for (int k = 1; k <= LayRedraws && bestF > 0; k++)
+            int bestF = LayFaults(w, e, best, out int bestK), plain = bestF - bestK;
+            // the draws stop where they stopped before the kink counted (a draw with no bend, slack or excursion fault), or at most KinkRedraws draws on while the
+            // chosen draw keeps a kink CordShape.Unkink could not round (a slack bump in a short lead between two kept end runs); the choice weighs the kinks.
+            // (A kink that kept the draws going to LayRedraws doubled the slice check's re-lay Build, 16-19 ms to 35 ms.)
+            for (int k = 1; k <= LayRedraws && (plain > 0 || (bestK > 0 && k <= KinkRedraws)); k++)
             {
                 LaidPiece alt = LayEdgeDraw(w, g, e, key + "~redraw" + k, parallel, opt, isLive);
-                int f = LayFaults(w, e, alt);
-                if (f < bestF) { best = alt; bestF = f; }
+                int f = LayFaults(w, e, alt, out int kk);
+                plain = Math.Min(plain, f - kk);
+                // a bend, slack or excursion fault is never traded for kinks: fewer of those first, then fewer kinks (the geometry suite's ratchet of 0 bends)
+                if (f - kk < bestF - bestK || (f - kk == bestF - bestK && kk < bestK)) { best = alt; bestF = f; bestK = kk; }
             }
             return best;
         }
@@ -1396,25 +1401,40 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>How many times <see cref="LayEdge"/> may draw a faulted piece again.</summary>
         public const int LayRedraws = 8;
+        /// <summary>The draws a kink alone may ask for (<see cref="LayEdge"/>): the region sweep round station 3 (2026-11-22) left 31 kinks in 128 worlds with none
+        /// and 0 with all eight, which held one Build over the slice check's 30 ms bound.</summary>
+        public const int KinkRedraws = 2;
 
-        /// <summary>What the cord bars count against a laid piece: each unforced bend (<see cref="CordShapeAudit.Why"/>, its tied loops left out), each strand with a chord of two
+        /// <summary>What the cord bars count against a laid piece: each unforced bend (<see cref="CordShapeAudit.Why"/>, its tied loops left out), each unforced kink
+        /// (<see cref="CordShapeAudit.KinkWhy"/>), each strand with a chord of two
         /// cells or more drawn under <see cref="CordSlacken.Bar"/> times it, and a first strand that never strays <see cref="CordSlacken.MinExcursion"/> off a conduit line of more
         /// than four cells (cords_lie_slack, no_unforced_sharp_turn).</summary>
-        internal static int LayFaults(CordWorld w, CordEdge e, LaidPiece p)
+        internal static int LayFaults(CordWorld w, CordEdge e, LaidPiece p) => LayFaults(w, e, p, out _);
+
+        /// <summary><see cref="LayFaults"/>, and how many of them are kinks (<paramref name="kinks"/>).</summary>
+        internal static int LayFaults(CordWorld w, CordEdge e, LaidPiece p, out int kinks)
         {
             int f = 0;
+            kinks = 0;
             List<V2> line = null;
-            for (int si = 0; si < p.Strands.Count; si++) f += StrandFaults(w, e, p, p.Strands[si], si, ref line);
+            for (int si = 0; si < p.Strands.Count; si++)
+            {
+                f += StrandFaults(w, e, p, p.Strands[si], si, ref line, kinks: false);
+                CordStrand s = p.Strands[si];
+                if (!UnkinkOff && s.Pts != null && s.Pts.Count >= 3 && !s.Lifted) kinks += CordShapeAudit.UnforcedKinks(w, p.EndA, p.EndB, s.Pts, s.Ties);
+            }
+            f += kinks;
             return f;
         }
-
         /// <summary><see cref="LayFaults"/> of one strand (<paramref name="si"/> its index; <paramref name="line"/> the edge's conduit line, read once).</summary>
-        private static int StrandFaults(CordWorld w, CordEdge e, LaidPiece p, CordStrand s, int si, ref List<V2> line)
+        private static int StrandFaults(CordWorld w, CordEdge e, LaidPiece p, CordStrand s, int si, ref List<V2> line, bool kinks = true)
         {
             int f = 0;
             if (s.Pts == null || s.Pts.Count < 3 || s.Lifted) return 0;
             foreach (CordShapeAudit.Bend b in CordShapeAudit.Bends(s.Pts, s.Ties))
                 if (CordShapeAudit.Why(w, p.EndA, p.EndB, s.Pts, b) == "unforced") f++;
+            // a kink no wall or machine forces (no_kink, the owner's walk of 2026-11-22): a draw that keeps one loses to one that does not
+            if (kinks && !UnkinkOff) f += CordShapeAudit.UnforcedKinks(w, p.EndA, p.EndB, s.Pts, s.Ties);
             if (s.OverFace || s.DiveA || s.DiveB) return f;
             double ch = V2.Dist(s.Pts[0], s.Pts[s.Pts.Count - 1]);
             if (ch >= 2 && Geo.Length(s.Pts) < CordSlacken.Bar * ch) f++;
@@ -1694,6 +1714,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             StepTrace?.Invoke("live", piece.EndA, piece.EndB, piece.Strands.Count > 0 ? piece.Strands[0].Pts : null);
             FitEnds(w, g, e, piece, na, nb, isLive, opt, SlackClear(g, e, opt));
             StepTrace?.Invoke("fit", piece.EndA, piece.EndB, piece.Strands.Count > 0 ? piece.Strands[0].Pts : null);
+            UnkinkPiece(w, g, e, piece, na, nb, opt, isLive);
+            StepTrace?.Invoke("unkink", piece.EndA, piece.EndB, piece.Strands.Count > 0 ? piece.Strands[0].Pts : null);
             // corridor: path bounding box expanded by 3 cells (§8.2.7)
             double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
             foreach (CordStrand s in piece.Strands)
@@ -3060,6 +3082,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             StepTrace?.Invoke("live", piece.EndA, piece.EndB, piece.Strands.Count > 0 ? piece.Strands[0].Pts : null);
             FitEnds(w, g, e, piece, na, nb, isLive, opt, SlackClear(g, e, opt));
             StepTrace?.Invoke("fit", piece.EndA, piece.EndB, piece.Strands.Count > 0 ? piece.Strands[0].Pts : null);
+            UnkinkPiece(w, g, e, piece, na, nb, opt, isLive);
+            StepTrace?.Invoke("unkink", piece.EndA, piece.EndB, piece.Strands.Count > 0 ? piece.Strands[0].Pts : null);
             // a dived cord's route depends on walls anywhere (a door opened far off may give it a surface route): its corridor
             // is the whole map, so any walkability change re-plans it
             piece.CX0 = 0; piece.CZ0 = 0; piece.CX1 = w.Width - 1; piece.CZ1 = w.Height - 1;
@@ -3501,6 +3525,100 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>The stub a strand's end goes into (null: none): the graph's own for a box arm, a switch stub or a heap port (the one whose
         /// line the end lies on: a cord that fell back to its planned line ends on the box's middle, on every arm's line and near no tip); else
         /// the one the rule reads the end at, among the piece's own decals (a plug's boot, a wall plate, a device box). Null: the piece has no stub.</summary>
+        /// <summary>The last pass on an edge's laid strands (<see cref="CordShape.Unkink"/>): a kink where a pinned end run meets the shaped cord is rounded on the cord's
+        /// own ground (walkable, no door, furniture or other machine; a cell the cord already lay on stays allowed). The end runs never move: a cut end's live run, limp
+        /// curl and whipping tail (<see cref="CutPin"/>, WhipA/WhipB), a plug's seat (<see cref="SeatedPin"/>), a fitting's stub run, and <see cref="FairPin"/> at every
+        /// other end. The owner's walk of 2026-11-22 (station 3): RIMMANDRAKE_SMOOTH_SLACK_GROUND_CORD_KINKS_AT_STATION_THREE.</summary>
+        private static void UnkinkPiece(CordWorld w, CordGraph g, CordEdge e, LaidPiece piece, CordNode na, CordNode nb, BuildOptions opt, Func<Cell, bool> isLive)
+        {
+            if (!opt.Lay.FairBends || UnkinkOff) return;
+            List<MachineInfo> own = CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB);
+            List<MachineInfo> near = null;
+            // a door or furniture cell the strand already lies on stays allowed (the cord goes through a doorway); an unwalkable cell never
+            HashSet<Cell> crossed = null;
+            Func<V2, bool> ok = q =>
+            {
+                Cell c = q.Floor;
+                if (!w.IsWalkable(c)) return false;
+                if (w.IsDoor(c) || w.IsFurniture(c))
+                {
+                    if (crossed == null) { crossed = new HashSet<Cell>(); foreach (CordStrand s in piece.Strands) if (s.Pts != null) foreach (V2 p in s.Pts) crossed.Add(p.Floor); }
+                    if (!crossed.Contains(c)) return false;
+                }
+                if (near == null)
+                {
+                    // the machines round the piece, read once: a blend reaches at most UnkinkFar past a kink
+                    double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
+                    foreach (CordStrand s in piece.Strands) if (s.Pts != null) foreach (V2 p in s.Pts) { x0 = Math.Min(x0, p.X); z0 = Math.Min(z0, p.Z); x1 = Math.Max(x1, p.X); z1 = Math.Max(z1, p.Z); }
+                    near = w.Machines.Where(m => !own.Contains(m) && m.X0 <= x1 + 3 && m.X0 + m.W >= x0 - 3 && m.Z0 <= z1 + 3 && m.Z0 + m.H >= z0 - 3).ToList();
+                }
+                foreach (MachineInfo m in near) if (m.Contains(c)) return false;
+                return true;
+            };
+            Func<CordStrand, bool, StubArt.Stub> stubOf = null;
+            bool stubRead = false;
+            double Keep(CordStrand s, bool atStart)
+            {
+                CordNode nd = atStart ? na : nb;
+                // a plug's seat keeps exactly the plug's own run and the slope rule's chord past it (CordEndAudit.SlopeChord), not the shaping passes'
+                // margin: the lamp-plug kinks the region sweep left lay 0.03-0.08 cell past the chord, inside that margin
+                double seat = SeatedPin(piece, opt, s.Pts, atStart, anyLength: true);
+                double k = (atStart ? s.DiveA : s.DiveB) ? FairPin(nd, isLive)
+                    : nd.Type == NodeType.Terminal && !nd.Seam ? CutPin(nd, isLive)
+                    : seat > 0 ? seat - SeatPinMargin : FairPin(nd, isLive);
+                int whip = atStart ? s.WhipA : s.WhipB;
+                if (whip > 0)
+                {
+                    double[] cum = Geo.CumLen(s.Pts);
+                    int i = Math.Min(s.Pts.Count - 1, whip);
+                    k = Math.Max(k, atStart ? cum[i] : cum[cum.Length - 1] - cum[cum.Length - 1 - i]);
+                }
+                // the run under the cord's own machine (its slide under the footprint, its lead under the art) and UnderMachineKeep past where it comes out
+                if (seat <= 0 && nd.IsMachine && nd.Machine != null && s.Pts.Count > 1)
+                {
+                    double[] cum = Geo.CumLen(s.Pts);
+                    int n = s.Pts.Count, last = -1;
+                    for (int i = 0; i < n; i++) if (nd.Machine.Contains((atStart ? s.Pts[i] : s.Pts[n - 1 - i]).Floor)) last = i;
+                    if (last >= 0) k = Math.Max(k, (atStart ? cum[last] : cum[n - 1] - cum[n - 1 - last]) + UnderMachineKeep);
+                }
+                if (!stubRead) { stubOf = StubPicker(w, g, e, piece, na, nb, opt); stubRead = true; }
+                if (stubOf != null && !(atStart ? s.DiveA : s.DiveB))
+                {
+                    StubArt.Stub st = stubOf(s, atStart);
+                    // the stub's own run and the slope rule's chord past its tip (StubRun, its sample of margin each side included)
+                    if (st != null) k = Math.Max(k, StubRun(atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], st));
+                }
+                return k;
+            }
+            // the first strand's twin shapes too: the twin pass may draw one of them in its place (PartTwins)
+            if (piece.TwinPts != null && piece.Strands.Count > 0 && !piece.Strands[0].Lifted && !piece.Strands[0].OverFace)
+                for (int t = 0; t < piece.TwinPts.Length; t++)
+                {
+                    if (piece.TwinPts[t] == null || piece.TwinPts[t].Count < 6 || CordShapeAudit.Kinks(piece.TwinPts[t], piece.Strands[0].Ties).Count == 0) continue;
+                    CordStrand tw = piece.Strands[0].With(piece.TwinPts[t]);
+                    tw.Ties = tw.Ties == null ? null : new List<CordTie>(tw.Ties);
+                    List<V2> twLine = null;
+                    piece.TwinPts[t] = CordShape.Unkink(tw.Pts, ok, tw.Ties, Keep(tw, true), Keep(tw, false), Q => StrandFaults(w, e, piece, tw.With(Q), 0, ref twLine, kinks: false));
+                }
+            List<V2> line = null;
+            for (int si = 0; si < piece.Strands.Count; si++)
+            {
+                CordStrand s = piece.Strands[si];
+                if (s.Lifted || s.OverFace || s.Pts == null || s.Pts.Count < 6 || CordShapeAudit.Kinks(s.Pts, s.Ties).Count == 0) continue;
+                int sIdx = si;
+                // a blend adds no fault the draws count (a bend, a lead drawn under the slack bar, a first strand that no longer strays off its conduit):
+                // a rounding that shortened a lead under the bar sent 138 more edges of the slice check's re-lay to redraw
+                List<V2> q = CordShape.Unkink(s.Pts, ok, s.Ties, Keep(s, true), Keep(s, false), Q => StrandFaults(w, e, piece, s.With(Q), sIdx, ref line, kinks: false));
+                if (!ReferenceEquals(q, s.Pts)) { s.Pts = q; s.Lay += "+unkink"; }
+            }
+        }
+
+        /// <summary>The cord <see cref="UnkinkPiece"/> keeps past where it comes out from under its own machine: the slide-under's diagonal approach (CordSlideUnderChecks), cells.</summary>
+        private const double UnderMachineKeep = 0.3;
+
+        /// <summary>Selftest only: the builder before <see cref="UnkinkPiece"/>, for the red run of its check.</summary>
+        internal static bool UnkinkOff;
+
         private static Func<CordStrand, bool, StubArt.Stub> StubPicker(CordWorld w, CordGraph g, CordEdge e, LaidPiece piece, CordNode na, CordNode nb, BuildOptions opt)
         {
             var stubs = new List<StubArt.Stub>();
@@ -5441,6 +5559,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return null;
         }
 
+        /// <summary>The run at each end of a heap cable <see cref="CordShape.Unkink"/> leaves as laid: the plug's tip in its socket, cells.</summary>
+        private const double HeapUnkinkKeep = 0.04;
+
         /// <summary>How far past the middle of its cell a heap's cable may wander, as a multiple of the old 0.3 cell (so up to 0.6 past the middle).</summary>
         public const double PileSpill = 2.0;
 
@@ -5597,8 +5718,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // the spline cable too: one the bar counts a bend on is drawn again from a fresh stream (HeapRedraws), the draw with the fewest kept, on the heap's ground
                 List<V2> P = null;
                 double s0 = 0;
-                int fBad = int.MaxValue;
-                for (int d = 0; d <= (opt.Lay.FairBends ? HeapRedraws : 0) && fBad > 0; d++)
+                int fBad = int.MaxValue, fKinks = int.MaxValue;
+                for (int d = 0; d <= (opt.Lay.FairBends ? HeapRedraws : 0) && (fBad > 0 || fKinks > 0); d++)
                 {
                     if (d > 0) r = CordRng.Of(opt.Seed, "tangle", nd.Cell.X, nd.Cell.Z, i, "redraw", d);
                     var stops = new List<V2> { pa.Tip, pa.Tip + pa.Out * 0.22 };
@@ -5633,8 +5754,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     Pd = CordShape.Unfold(w, Pd);
                     if (opt.Lay.FairBends) Pd = CordShape.Fair(w, Pd, 0.22, 0.22, null, compSet, cutLoops: false);
                     if (!Pd.All(q => compSet.Contains(q.Floor))) { if (d == 0) break; continue; }
+                    // each draw is rounded first (CordShape.Unkink, no bend added); then draws compare by the bar's bends, then by kinks left (a spline that
+                    // doubles back where no rounding fits is drawn again: the one pile cable the region sweep left, 2026-11-22)
+                    int kd = 0;
+                    if (opt.Lay.FairBends && !UnkinkOff)
+                    {
+                        Func<V2, bool> heapOk = q => compSet.Contains(q.Floor) || (onGround != null && onGround(q));
+                        Pd = CordShape.Unkink(Pd, heapOk, null, HeapUnkinkKeep, HeapUnkinkKeep, Q => CordShapeAudit.Unforced(w, p.EndA, p.EndB, Q));
+                        kd = CordShapeAudit.Kinks(Pd).Count;
+                    }
                     int bd = opt.Lay.FairBends ? CordShapeAudit.Unforced(w, p.EndA, p.EndB, Pd) : 0;
-                    if (bd < fBad) { P = Pd; fBad = bd; s0 = r.Value(); }
+                    if (bd < fBad || (bd == fBad && kd < fKinks)) { P = Pd; fBad = bd; fKinks = kd; s0 = r.Value(); }
                 }
                 if (P == null) continue;
                 p.Strands.Add(new CordStrand { Pts = P, S0 = s0, Lay = "tangle" });
@@ -5650,6 +5780,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     Func<V2, bool> heap = q => compSet.Contains(q.Floor) || (onGround != null && onGround(q));
                     List<V2> eased = CordSlacken.Unbend(w, s.Pts, 0.22, 0.22, null, null, heap, s.Ties, 0, 0, !strips, !strips);
                     if (eased != null) { s.Pts = eased; s.Lay += "+unbend"; }
+                }
+            // a heap cable's kink where its port's lead meets the walk or spline after it is rounded on the heap's ground; its port end keeps only the plug's own tip
+            // (the owner's walk of 2026-11-22, station 3: every heap kink lay on a spline cable, the fallback when no walk fits)
+            if (opt.Lay.FairBends && !UnkinkOff)
+                foreach (CordStrand s in p.Strands)
+                {
+                    if (s.Pts == null || s.Pts.Count < 6) continue;
+                    Func<V2, bool> heap = q => compSet.Contains(q.Floor) || (onGround != null && onGround(q));
+                    List<V2> q2 = CordShape.Unkink(s.Pts, heap, s.Ties, HeapUnkinkKeep, HeapUnkinkKeep, Q => CordShapeAudit.Unforced(w, p.EndA, p.EndB, Q));
+                    if (!ReferenceEquals(q2, s.Pts)) { s.Pts = q2; s.Lay += "+unkink"; }
                 }
             // a heap's box draws only the arms a cable or an arriving cord is on (the bar: no stub drawn bare while a cord is attached
             // elsewhere on its piece; PoseJunction's rule for a junction's own box). A heap's cables are capped and a walk can fail, so

@@ -9,7 +9,8 @@
 //             HasActivePowerSource false), or an active source;
 //   state     closed or open; the setting on or off;
 //   sequence  power lost while open, power restored while open, a flick while unpowered, a flick with power on the far side only.
-// Left out: the draw itself (position, size, colour on screen: the art judge and the live row sc_switch_light read those) and a
+// Size: SizeOk, half the radius the owner saw at his walk of 2026-11-22. Left out: the draw itself (position, colour on screen: the art judge and the
+// live row sc_switch_light read those) and a
 // switch of another size (vanilla's is 1x1).
 //
 // --switchlight-plant runs the checks against planted wrong rules; each must be caught (a check that cannot fail proves nothing).
@@ -160,9 +161,17 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             ("unpowered open shows red", s => { var (own, sides) = s.Read(); bool p = SwitchLight.AnySidePowered(own, sides); return !s.Setting ? SwitchLamp.Dark : !s.Closed ? SwitchLamp.Red : p ? SwitchLamp.Green : SwitchLamp.Dark; }),
         };
 
+        /// <summary>The light's drawn size (RIMMANDRAKE_SHRINK_SLACK_SWITCH_LIGHT_TWICE_TOO_WIDE_AT_HIS_WALK; the owner at his walk of 2026-11-22: "twice as large
+        /// in radius as it should be"): lens and halo at no more than half the radius he saw, the halo still wider than the lens, and the lens no smaller than the
+        /// LED cap it sits beside (a lamp so small it reads as no lamp would break the bar the other way).</summary>
+        internal static bool SizeOk(float lens, float halo) =>
+            lens <= SwitchLampArt.WalkLensCells / 2 + 1e-4f && halo <= SwitchLampArt.WalkHaloCells / 2 + 1e-4f && halo > lens && lens >= SwitchLampArt.LedCapCells;
+
         /// <summary>T_CORE entry: the shipped rule, every check through Program.Check.</summary>
         internal static void Run()
         {
+            Program.Check(SizeOk(SwitchLampArt.LensCells, SwitchLampArt.HaloCells), "switch light: lens " + SwitchLampArt.LensCells + " and halo " + SwitchLampArt.HaloCells +
+                " cells are at most half the size at his walk (" + SwitchLampArt.WalkLensCells + ", " + SwitchLampArt.WalkHaloCells + ")");
             int f = RunWith(Shipped, (ok, msg) => Program.Check(ok, msg));
             Console.WriteLine("switch light: " + (checks - f) + "/" + checks + " checks passed (T_SWITCH_LIGHT_OFFLINE)");
         }
@@ -172,6 +181,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             int shipped = RunWith(Shipped, null);
             Program.Check(shipped == 0, "switch light plant: the shipped rule passes (" + shipped + " fails)");
+            // the size check: the walk's own size, and a lamp shrunk to nothing, are each caught
+            bool walkCaught = !SizeOk(SwitchLampArt.WalkLensCells, SwitchLampArt.WalkHaloCells), tinyCaught = !SizeOk(0.02f, 0.05f);
+            Console.WriteLine("planted [the size at his walk, 0.16/0.52]: " + (walkCaught ? "CAUGHT" : "NOT CAUGHT") + "; [a lamp shrunk to nothing]: " + (tinyCaught ? "CAUGHT" : "NOT CAUGHT"));
+            Program.Check(walkCaught && tinyCaught, "switch light plant: the size check catches the walk's size and a vanished lamp");
             foreach (var (name, rule) in Planted)
             {
                 int f = RunWith(rule, null);

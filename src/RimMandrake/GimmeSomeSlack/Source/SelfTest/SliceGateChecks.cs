@@ -540,7 +540,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 last = now; prev = st; prevKey = key;
             };
             var total = Stopwatch.StartNew();
-            List<LaidPiece> ps = new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), dead);
+            var popt = new BuildOptions();
+            // GSS_PROFILE_SLACK=0.8: the slice check's all-keys-changed re-lay (its SlackScale x 0.8)
+            if (double.TryParse(Environment.GetEnvironmentVariable("GSS_PROFILE_SLACK"), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double ps0)) popt.Lay.SlackScale *= ps0;
+            List<LaidPiece> ps = new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), popt, dead);
             double all = total.Elapsed.TotalMilliseconds;
             CordBuilder.StepTrace = null;
             Console.WriteLine($"lay-profile: {ps.Count(p => p.EndA != null)} edges, {all:0} ms; by stage: " + string.Join(", ", byStage.OrderByDescending(kv => kv.Value).Take(12).Select(kv => $"{kv.Key} {kv.Value:0}")));
@@ -575,6 +578,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var (slices2, worst2, last2, minEdges2) = Converge(b, RebuildPerDigChecks.LiveScene(), opt2, dead);
             ulong wantLit = GssFuzz.Digest(new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), full2, dead));
             Program.Check(worst2 <= SyncLayBoundMs && slices2 > 1, $"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms over {slices2} Builds");
+            Console.WriteLine($"slice: all-keys-changed re-lay worst {worst2:0.0} ms over {slices2} Builds (bound {SyncLayBoundMs} ms)");
             Program.Check(GssFuzz.Digest(last2) == wantLit, "slice: the all-keys-changed re-lay did not end bit-identical to one unbudgeted Build");
             Program.Check(minEdges2 == edges, $"slice: a mid-re-lay Build showed {minEdges2} of {edges} cords (a deferred edge must keep its previous piece)");
 

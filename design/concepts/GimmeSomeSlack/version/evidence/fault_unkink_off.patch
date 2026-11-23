@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs
+@@ -3617,7 +3617,7 @@
+         private const double UnderMachineKeep = 0.3;
+ 
+         /// <summary>Selftest only: the builder before <see cref="UnkinkPiece"/>, for the red run of its check.</summary>
+-        internal static bool UnkinkOff;
++        internal static bool UnkinkOff = true;
+ 
+         private static Func<CordStrand, bool, StubArt.Stub> StubPicker(CordWorld w, CordGraph g, CordEdge e, LaidPiece piece, CordNode na, CordNode nb, BuildOptions opt)
+         {

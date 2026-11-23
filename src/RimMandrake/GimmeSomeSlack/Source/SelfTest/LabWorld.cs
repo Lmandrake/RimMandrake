@@ -88,6 +88,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             CordWorld w = Read(doc.RootElement, out BuildOptions opt, out HashSet<Cell> live);
             var b = new CordBuilder();
             CordBuilder.HopWhy = t => Console.WriteLine("HOP " + t);
+            if (Environment.GetEnvironmentVariable("GSS_UNKINK_TRACE") == "1") CordShape.UnkinkWhy = t => Console.WriteLine("UNKINK " + t);
             List<LaidPiece> ps = b.Build(w, opt, c => live.Contains(c));
             CordBuilder.HopWhy = null;
             var sb = new StringBuilder("{\"pieces\":[");
@@ -109,7 +110,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     if (i > 0) sb.Append(',');
                     sb.Append('[').Append(string.Join(",", pts.Select(q => "[" + F(q.X) + "," + F(q.Z) + "]"))).Append(']');
                 }
-                sb.Append("],\"decals\":[");
+                sb.Append("],\"lays\":[").Append(string.Join(",", p.Strands.Select(q => JsonSerializer.Serialize(q.Lay ?? "")))).Append("],\"decals\":[");
                 sb.Append(string.Join(",", p.Decals.Select(d => "[\"" + d.Kind + "\"," + F(d.Pos.X) + "," + F(d.Pos.Z) + "," + F(d.Angle) + "," + F(d.Scale) + "]")));
                 sb.Append("],\"ends\":[").Append(string.Join(",", p.Ends.Select(e => "[" + F(e.Tip.X) + "," + F(e.Tip.Z) + "]"))).Append("]}");
             }

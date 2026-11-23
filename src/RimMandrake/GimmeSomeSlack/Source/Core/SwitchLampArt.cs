@@ -16,8 +16,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// every look and clear of every lever and handle (the art judge's repair, 2026-11-20: over the Industrial LED it hid that look's
         /// open handle).</summary>
         public const float OffX = -0.125f, OffZ = -0.13f;
-        /// <summary>Lens and halo sizes, in cells.</summary>
-        public const float LensCells = 0.16f, HaloCells = 0.52f;
+        /// <summary>Lens and halo sizes, in cells: half the size at his walk of 2026-11-22 (0.16 and 0.52), which read "twice as large in radius as it should be and
+        /// quite obnoxious" (RIMMANDRAKE_SHRINK_SLACK_SWITCH_LIGHT_TWICE_TOO_WIDE_AT_HIS_WALK).</summary>
+        public const float LensCells = 0.08f, HaloCells = 0.26f;
+        /// <summary>The sizes he saw at that walk, for the check that the light stays at half of them (SwitchLightChecks).</summary>
+        public const float WalkLensCells = 0.16f, WalkHaloCells = 0.52f;
         /// <summary>The Industrial look's closed art bakes a small green LED (texture pixel 53.5, 51 of 128) that would glow on an
         /// unpowered switch beside a dark lamp. An unlit cap this size covers it on that look's closed art.</summary>
         public const float LedX = -0.082f, LedZ = 0.10f, LedCapCells = 0.06f;

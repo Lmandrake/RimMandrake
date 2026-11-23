@@ -157,6 +157,15 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
                  "swapped, open reads no side, one side only, setting ignored, hasPowerSource for active, unpowered open red) each caught "
                  "every run (bar switch_light_reads_state)",
         reads=[G + "Source/SwitchLightDraw.cs"] + CORE),
+    # his walk of 2026-11-22 (station 3: "radical kinks ... it didn't have to bend that radically"): RIMMANDRAKE_SMOOTH_SLACK_GROUND_CORD_KINKS_AT_STATION_THREE
+    "T_NO_KINK_OFFLINE": dict(
+        stage="4-5", file=G + "Source/SelfTest/KinkChecks.cs",
+        observes="the production builder over the review map's ground-cord stations 1-4 (the probe's dump; station 3 is the build he walked) "
+                 "and the region round station 3 (seeds x pile size x battery lead x lamp place x wall x pile look): no unforced kink "
+                 "(a turn of 50 degrees or more within 0.12 cell that no wall, machine, art or cut end's curl excuses); planted: "
+                 "the builder before CordShape.Unkink is caught at station 3, a planted hook reads as a kink and a 0.45 loop as none "
+                 "(bar no_unforced_sharp_turn)",
+        reads=CORE),
     "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": dict(
         stage="4-5", file=G + "selftest_gss_pole_south_draws_front.py",
         observes="over the SouthDrawsFront rule (MandrakePatches) and the mast def: the mast is drawn above every plant or "
@@ -171,7 +180,7 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
 
 # ---- the judgment: which offline tests decide (or support) each bar ----
 OFF_DECIDES = {
-    "cords_lie_slack": ["T_CORE", "T_CORD_GEOMETRY_OFFLINE"], "no_unforced_sharp_turn": ["T_CORD_GEOMETRY_OFFLINE"],
+    "cords_lie_slack": ["T_CORE", "T_CORD_GEOMETRY_OFFLINE"], "no_unforced_sharp_turn": ["T_CORD_GEOMETRY_OFFLINE", "T_NO_KINK_OFFLINE"],
     "strip_at_every_junction": ["T_CORE"], "dense_block_tangle": ["T_CORE"], "cord_shape_variation_probe": ["T_CORE"],
     "cords_never_repeat": ["T_CORE"], "drawing_true_to_grid": ["T_CORE"], "cut_live_and_dead_ends": ["T_CORE"],
     "floor_end_shocks_crossers": ["T_SHOCK_RULE_OFFLINE"], "shock_reach_setting": ["T_SHOCK_RULE_OFFLINE"],
@@ -295,6 +304,7 @@ for k, t in OFF.items():
 NEW_CMD = {"T_CORD_GEOMETRY_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--geometry"],
            "T_SWITCH_OFF_NODE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
            "T_SWITCH_LIGHT_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--switchlight-only"],
+           "T_NO_KINK_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--kinks-only"],
            "T_SHOCK_RULE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"]}
 for k, t in NEW.items():
     argv = NEW_CMD.get(k) or [t["file"]]

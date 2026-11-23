@@ -431,6 +431,188 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return o;
         }
 
+        /// <summary>The last word on a finished floor strand: every kink (<see cref="CordShapeAudit.Kinks"/>) is rounded by a cubic blend that leaves the cord before it in
+        /// its own heading and joins the cord after it in its own heading, no tighter than <see cref="UnkinkR"/>. The owner, walk of 2026-11-22: "radical kinks ... it
+        /// didn't have to bend that radically". Each shaping pass (Fair, Polish, Unbend, the heap's spline) pins the run at each end as laid and shapes only the cord
+        /// between, so where the shaped cord left the pinned run at an angle the joint stayed a corner: at a battery's plug, a strip socket, a heap port, a wall plate.
+        /// The arcs <paramref name="keepA"/> and <paramref name="keepB"/> at the ends, and every tied loop, never move. A blend with a point <paramref name="ok"/> refuses
+        /// is not laid: a kink only a wall or a machine leaves room for stays; nor one that adds a fault <paramref name="bendFaults"/> counts. Geometry first: the sweep in
+        /// design/concepts/GimmeSomeSlack/version/evidence/kinks_20261122/ (station 3 and the region round it). Ties are shifted with the length the blend changes.</summary>
+        internal static List<V2> Unkink(List<V2> pts, Func<V2, bool> ok, List<CordTie> ties, double keepA, double keepB, Func<List<V2>, int> bendFaults = null)
+        {
+            if (pts == null || pts.Count < 6) return pts;
+            List<V2> P = pts;
+            var stuck = new List<double>();
+            for (int guard = 0; guard < UnkinkRounds; guard++)
+            {
+                double[] cum = Geo.CumLen(P);
+                double L = cum[cum.Length - 1];
+                double apex = -1;
+                foreach (double s in CordShapeAudit.Kinks(P, ties))
+                    // a kink whose turn starts inside a kept run and runs out past it is rounded from the run's end (half the kink's arc may lie inside)
+                    if (s >= keepA - CordShapeAudit.KinkArc / 2 && s <= L - keepB + CordShapeAudit.KinkArc / 2 && !stuck.Any(q => Math.Abs(q - s) < 0.05)) { apex = s; break; }
+                if (apex < 0) return P;
+                List<V2> best = null;
+                double bestDelta = 0;
+                int kinksNow = CordShapeAudit.Kinks(P, null).Count;
+                int? bendsNow = null;
+                var why = new Dictionary<string, int>();
+                void No(string k) { if (UnkinkWhy != null) why[k] = why.TryGetValue(k, out int c) ? c + 1 : 1; }
+                // the spans tried, short to long; last, the whole free cord between the two kept runs (a slack bump too steep for the room
+                // between a stub and a plug's art is laid again from one run's heading to the other's: the switch-to-wall-plate lead, station 3)
+                var spans = new List<(double lo, double hi)>();
+                foreach (double b in UnkinkFar)
+                    foreach (double a in UnkinkNear)
+                        foreach (bool flip in new[] { false, true })
+                            spans.Add((apex - CordShapeAudit.KinkArc / 2 - (flip ? b : a), apex + CordShapeAudit.KinkArc / 2 + (flip ? a : b)));
+                // the whole span runs from where each end's straight run really ends, if that is before its kept arc: a bump that rises off a stub at its tip
+                // is laid back on the stub's line, the slope rule's own wish (the switch-to-wall-plate hop, region sweep 2026-11-22)
+                double wa = Math.Min(keepA, StraightRun(P, cum, true)), wb = Math.Min(keepB, StraightRun(P, cum, false));
+                spans.Add((wa, L - wb));
+                int whole = spans.Count - 1, si = -1;
+                foreach (var (lo0, hi0) in spans)
+                        {
+                            si++;
+                            if (best != null) break;
+                            double lo = si == whole ? lo0 : Math.Max(lo0, keepA), hi = si == whole ? hi0 : Math.Min(hi0, L - keepB);
+                            if (hi - lo < CordShapeAudit.KinkArc || lo < 0.02 || hi > L - 0.02 || TieOverlaps(ties, lo, hi)) { No("span"); continue; }
+                            V2? u = HeadAt(P, cum, lo, true), v = HeadAt(P, cum, hi, false);
+                            if (u == null || v == null) continue;
+                            int i0 = IndexAfter(cum, lo), i1 = IndexAfter(cum, hi);
+                            V2 S = PointAtArc(P, cum, lo), E = PointAtArc(P, cum, hi);
+                            foreach (List<V2> bl in Blends(S, u.Value, E, v.Value, TurnOver(P, i0, i1)))
+                            {
+                                if (ok != null && !bl.All(ok)) { No("ground"); continue; }
+                                var Q = new List<V2>(P.Count + bl.Count);
+                                for (int k = 0; k < i0; k++) Q.Add(P[k]);
+                                Q.AddRange(bl);
+                                for (int k = i1; k < P.Count; k++) if (V2.Dist(P[k], E) > 1e-6) Q.Add(P[k]);
+                                // the blend no tighter than the radius asked; its two joins with no kink; and no new kink anywhere (a turn already
+                                // inside a kept run is the run's, not the blend's)
+                                if (CordShapeAudit.Kinks(bl, null, UnkinkMaxDeg).Count > 0) { No("tight"); continue; }
+                                double[] qc = Geo.CumLen(Q);
+                                double s0 = Math.Max(0, lo - CordShapeAudit.KinkArc), s1 = lo + Geo.Length(bl) + CordShapeAudit.KinkArc;
+                                List<V2> span = Q.Where((q, k) => qc[k] >= s0 && qc[k] <= s1).ToList();
+                                if (CordShapeAudit.Kinks(span, null).Count > 0) { No("join"); continue; }
+                                if (CordShapeAudit.Kinks(Q, null).Count >= kinksNow) { No("more"); continue; }
+                                // nor a fault the draws count that the cord did not have (a hook rounded into a U a cell out, a lead shortened under the slack bar)
+                                if (bendFaults != null && bendFaults(Q) > (bendsNow ??= bendFaults(P))) { No("bend"); continue; }
+                                best = Q;
+                                bestDelta = qc[qc.Length - 1] - L;
+                                break;
+                            }
+                        }
+                if (best == null) { UnkinkWhy?.Invoke("stuck at " + apex.ToString("0.00") + "/" + L.ToString("0.00") + " keep " + keepA.ToString("0.00") + "," + keepB.ToString("0.00") + " " + string.Join(" ", why.Select(kv => kv.Key + ":" + kv.Value))); stuck.Add(apex); continue; }
+                if (ties != null)
+                    for (int k = 0; k < ties.Count; k++)
+                    {
+                        CordTie t = ties[k];
+                        if (t.S0 > apex) { t.S0 += bestDelta; t.S1 += bestDelta; ties[k] = t; }
+                    }
+                P = best;
+            }
+            return P;
+        }
+
+        /// <summary>The tightest radius a blend may turn at (a turn of <see cref="UnkinkMaxDeg"/> within <see cref="CordShapeAudit.KinkArc"/>); the cord before a kink
+        /// it may take into the blend, and the cord after it (tried short to long, so the blend changes as little as it can); the blend's handles as parts of its chord.</summary>
+        public const double UnkinkR = 0.2;
+        public static readonly double UnkinkMaxDeg = CordShapeAudit.KinkArc / UnkinkR * 180 / Math.PI;
+        private static readonly double[] UnkinkNear = { 0.0, 0.12, 0.3 }, UnkinkFar = { 0.3, 0.6, 1.0, 1.6 }, UnkinkHandles = { 0.5, 0.8 }, UnkinkRadii = { 0.35, 0.22 };
+        private const int UnkinkRounds = 16;
+        /// <summary>Diagnosis only (the shape lab sets it): why a kink was left.</summary>
+        internal static Action<string> UnkinkWhy;
+
+        /// <summary>The arc from one end over which the strand holds the heading of its first <see cref="StraightProbe"/> cell to within <see cref="StraightTolDeg"/>.</summary>
+        private static double StraightRun(List<V2> P, double[] cum, bool fromStart)
+        {
+            double L = cum[cum.Length - 1];
+            if (L < 2 * StraightProbe) return 0;
+            V2 a = PointAtArc(P, cum, fromStart ? 0 : L), b = PointAtArc(P, cum, fromStart ? StraightProbe : L - StraightProbe);
+            V2 d = b - a;
+            if (d.Len < 1e-9) return 0;
+            double h = Math.Atan2(d.Z, d.X), run = StraightProbe;
+            int n = P.Count;
+            for (int k = 1; k < n; k++)
+            {
+                int i = fromStart ? k : n - 1 - k;
+                double t = fromStart ? cum[i] : L - cum[i];
+                if (t <= StraightProbe) continue;
+                V2 q = P[i] - a;
+                double dev = Math.Abs(Math.IEEERemainder(Math.Atan2(q.Z, q.X) - h, 2 * Math.PI)) * 180 / Math.PI;
+                if (dev > StraightTolDeg) break;
+                run = t;
+            }
+            return run;
+        }
+        private const double StraightProbe = 0.1, StraightTolDeg = 2;
+
+        private static bool TieOverlaps(List<CordTie> ties, double lo, double hi)
+        {
+            if (ties == null) return false;
+            foreach (CordTie t in ties) if (hi >= t.S0 - CordShapeAudit.TieMargin && lo <= t.S1 + CordShapeAudit.TieMargin) return true;
+            return false;
+        }
+
+        private static int IndexAfter(double[] cum, double s)
+        {
+            for (int i = 0; i < cum.Length; i++) if (cum[i] >= s) return i;
+            return cum.Length - 1;
+        }
+
+        private static V2 PointAtArc(List<V2> P, double[] cum, double s)
+        {
+            for (int i = 1; i < P.Count; i++)
+                if (cum[i] >= s)
+                {
+                    double d = cum[i] - cum[i - 1];
+                    return d < 1e-12 ? P[i] : P[i - 1] + (P[i] - P[i - 1]) * ((s - cum[i - 1]) / d);
+                }
+            return P[P.Count - 1];
+        }
+
+        /// <summary>The cord's unit heading over the 0.08 cell before <paramref name="s"/> (<paramref name="back"/>) or after it.</summary>
+        private static V2? HeadAt(List<V2> P, double[] cum, double s, bool back)
+        {
+            double L = cum[cum.Length - 1];
+            double s0 = back ? Math.Max(0, s - 0.08) : s, s1 = back ? s : Math.Min(L, s + 0.08);
+            V2 d = PointAtArc(P, cum, s1) - PointAtArc(P, cum, s0);
+            return d.Len < 1e-9 ? (V2?)null : d * (1 / d.Len);
+        }
+
+        /// <summary>The blends tried between two poses, in order: Dubins paths (an arc, a straight, an arc: never tighter than their radius, and the only kind that
+        /// can turn a cable that doubles straight back off its port), widest radius first, then cubic curves. A Dubins path that turns a half turn more than the cord
+        /// it replaces is a ring, not a rounding, and is not offered.</summary>
+        private static IEnumerable<List<V2>> Blends(V2 S, V2 u, V2 E, V2 v, double turned)
+        {
+            double hs = Math.Atan2(u.Z, u.X), he = Math.Atan2(v.Z, v.X);
+            foreach (double r in UnkinkRadii)
+            {
+                List<Dubins.Path> all = Dubins.All(S, hs, E, he, r);
+                all.Sort((a, b) => a.Len.CompareTo(b.Len));
+                for (int k = 0; k < Math.Min(2, all.Count); k++)
+                    if (all[k].Turning <= turned + Math.PI) yield return Geo.Resample(Dubins.Sample(S, hs, all[k], 0.025), 0.05);
+            }
+            double d = V2.Dist(S, E);
+            foreach (double h in UnkinkHandles) yield return Bezier(S, u, E, v, d * h);
+        }
+
+        /// <summary>Radians the cord turns through, either way, from point i0 to point i1.</summary>
+        private static double TurnOver(List<V2> P, int i0, int i1) => CordShapeAudit.TotalTurn(P, Math.Max(0, i0 - 1), Math.Min(P.Count - 1, i1 + 1));
+
+        private static List<V2> Bezier(V2 S, V2 u, V2 E, V2 v, double h)
+        {
+            V2 p1 = S + u * h, p2 = E - v * h;
+            int n = Math.Max(4, (int)Math.Ceiling(V2.Dist(S, E) * 2.5 / 0.025));
+            var o = new List<V2>(n + 1);
+            for (int k = 0; k <= n; k++)
+            {
+                double t = (double)k / n, m = 1 - t;
+                o.Add(S * (m * m * m) + p1 * (3 * m * m * t) + p2 * (3 * m * t * t) + E * (t * t * t));
+            }
+            return Geo.Resample(o, 0.05);
+        }
+
         /// <summary>The owner, 2026-11-07 7:07 PM: "cords take slowly curving paths rather than straight lines often: what they avoid are sharp curves unless they must". The last shaping a laid
         /// floor strand gets: wherever it bends tighter than <see cref="FairR"/> on open floor it is drawn toward its chord a little at a time, so the bend opens and the cord gives up the
         /// length the tight bend took, until no such bend is left. Its broad loops (<see cref="CordShapeAudit.LoopKeepR"/> and wider) and the art at its two ends (<paramref name="pinA"/>,

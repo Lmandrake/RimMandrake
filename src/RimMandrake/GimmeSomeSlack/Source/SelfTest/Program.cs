@@ -42,6 +42,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         private static int Main(string[] args)
         {
+            if (args.Contains("--no-unkink")) { CordBuilder.UnkinkOff = true; Console.WriteLine("unkink: OFF (--no-unkink, the builder before CordShape.Unkink)"); }
             int lab = Array.IndexOf(args, "--lab");
             if (lab >= 0) return LabWorld.Run(args[lab + 1], args[lab + 2]);
             int uc = Array.IndexOf(args, "--unroutable-census");
@@ -75,6 +76,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 Console.WriteLine("switch lamp pixels written to " + args[sld + 1]);
                 return 0;
             }
+            if (args.Contains("--kinks-only")) { KinkChecks.Run(6); KinkChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (no kink only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchlight-only")) { SwitchLightChecks.Run(); SwitchLightChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchlight-plant")) { SwitchLightChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light plant)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchoff-only")) { SwitchOffChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch off only)"); return fails == 0 ? 0 : 1; }
@@ -163,6 +165,7 @@ TexPathChecks.Run();           // RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIR
             SittingChecks.Run();           // owner live sitting 2026-11-08 12:20 PM (Modern hooks, heap density, pole foot, pole-top kinks): SittingChecks.cs
             SwitchOffChecks.Run();         // T_SWITCH_OFF_NODE_OFFLINE (his walk 2026-11-20 row 1): an off switch stays a node: SwitchOffChecks.cs
             SwitchLightChecks.Run();       // T_SWITCH_LIGHT_OFFLINE (owner 2026-11-20): the switch lamp green / red / dark: SwitchLightChecks.cs
+            KinkChecks.Run();              // T_NO_KINK_OFFLINE (his walk 2026-11-22, station 3): no ground cord kinks where nothing forces it: KinkChecks.cs
             StubJoinChecks.Run();          // RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK (owner 2026-11-16): position AND slope at every stub
             LiveEndSweepChecks.Run();      // RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN: every live cut end the game can lay, by the three bars, with margin
             CordEndKindChecks.Run(scenes); // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO (owner look 2026-11-16): CordEndKindChecks.cs

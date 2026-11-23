@@ -44,6 +44,76 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return o;
         }
 
+        // ---------------------------------------------------------------- no_kink: a cord never bends sharply where nothing forces it
+        /// <summary>The owner at his walk, 2026-11-22 (station 3, ground cords): "radical kinks ... it didn't have to bend that radically". A kink is a turn of
+        /// <see cref="KinkDeg"/> or more within <see cref="KinkArc"/> of cord, a radius under 0.14 cell, where the loose loops lie at 0.45 and wider
+        /// (<see cref="LoopKeepR"/>) and the faired floor at <see cref="CordShape.FairR"/>. Every kink he saw lay where a pinned end run (a plug, a strip
+        /// socket, a heap port) met the shaped cord after it: <see cref="CordShape.Unkink"/> rounds them.</summary>
+        public const double KinkArc = 0.12, KinkDeg = 50, KinkStep = 0.02;
+
+        /// <summary>Arcs (cells from the strand's first point) of the strand's kinks, one per kink, the turn summed with its sign over
+        /// <see cref="KinkArc"/>; a tied loop's own arc is left out (<paramref name="ties"/>), as the bars leave it out.</summary>
+        internal static List<double> Kinks(List<V2> pts, List<CordTie> ties = null, double deg = KinkDeg)
+        {
+            var o = new List<double>();
+            if (pts == null || pts.Count < 3) return o;
+            List<V2> q = Geo.Resample(pts, KinkStep);
+            int n = q.Count, k = Math.Max(2, (int)Math.Round(KinkArc / KinkStep));
+            if (n < k + 2) return o;
+            var t = new double[n];
+            for (int i = 1; i < n - 1; i++) t[i] = SignedTurn(q[i] - q[i - 1], q[i + 1] - q[i]);
+            double thr = deg * Math.PI / 180;
+            var win = new double[n];
+            for (int i = 1; i + k - 1 < n - 1; i++)
+            {
+                double s = 0;
+                for (int j = i; j < i + k - 1; j++) s += t[j];
+                win[i] = Math.Abs(s);
+            }
+            for (int i = 1; i < n; i++)
+            {
+                if (win[i] < thr) continue;
+                int j = i;
+                while (j + 1 < n && win[j + 1] >= thr) j++;
+                int m = i;
+                for (int r = i; r <= j; r++) if (win[r] > win[m]) m = r;
+                double arc = (m - 1 + (k - 1) / 2.0) * KinkStep;
+                if (!InTie(ties, arc)) o.Add(arc);
+                i = j;
+            }
+            return o;
+        }
+
+        /// <summary>What a kink is, for the bar no_kink, read as <see cref="Why"/> reads a bend: "hidden" (under a wall or the art of a machine the cord plugs into), "limp"
+        /// (a cut end's own curl, within <see cref="LimpReach"/> of it), "wall" or "building" (within <see cref="ForceNear"/> of what makes the cord bend), else "unforced".
+        /// No fitting forces a kink: a socket's or a plug's own way out is a heading the cord leaves by and then bends round from (CordPlugExit's rule, owner 2026-11-08).</summary>
+        internal static string KinkWhy(CordWorld w, string endA, string endB, List<V2> pts, double arc)
+        {
+            double L = Geo.Length(pts);
+            bool nearFirst = arc <= L - arc;
+            double fromEnd = Math.Min(arc, L - arc);
+            string end = nearFirst ? endA : endB;
+            string kind = end == null ? "pile" : end.Split(':')[0];
+            V2 a = PointAt(pts, arc);
+            if (w == null) return "unforced";
+            if (!w.IsWalkable(a.Floor)) return "hidden";
+            List<MachineInfo> own = OwnMachines(w, endA, endB);
+            foreach (MachineInfo m in own)
+                if (InArt(m, a)) return "hidden";
+            if (kind == "terminal" && fromEnd <= LimpReach) return "limp";
+            if (NearCell(a, ForceNear, c => !w.IsWalkable(c))) return "wall";
+            if (NearCell(a, ForceNear, c => w.IsFurniture(c)) || w.Machines.Any(m => !own.Contains(m) && RectDist(m.X0, m.Z0, m.W, m.H, a) <= ForceNear)) return "building";
+            return "unforced";
+        }
+
+        /// <summary>How many of a strand's kinks the bar no_kink counts against it (<see cref="KinkWhy"/> "unforced").</summary>
+        internal static int UnforcedKinks(CordWorld w, string endA, string endB, List<V2> pts, List<CordTie> ties = null)
+        {
+            int k = 0;
+            foreach (double s in Kinks(pts, ties)) if (KinkWhy(w, endA, endB, pts, s) == "unforced") k++;
+            return k;
+        }
+
         /// <summary>The longest stretch of the strand holding one line, cells. Runs under art are not excluded here: the caller trims a machine's run off first.</summary>
         internal static double LongestRod(List<V2> pts, out V2 at)
         {
