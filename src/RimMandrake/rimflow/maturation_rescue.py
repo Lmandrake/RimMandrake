@@ -173,7 +173,7 @@ def read_blind(root, mod, until, errors):
             continue
         d = os.path.join(base, "cycle_%d" % n)
         edited = _json(os.path.join(d, "tests_edited.json"), errors)      # a list, or {"edited": [...]} (both on disk)
-        edited = edited.get("edited") if isinstance(edited, dict) else edited
+        edited = edited.get("edited", edited.get("tests_edited")) if isinstance(edited, dict) else edited
         ed = {str(x.get("path", "")).replace("\\", "/") for x in edited if isinstance(x, dict)} \
             if isinstance(edited, list) else set()
         for j, name in enumerate(("reruns.jsonl", "reruns_after_fix.jsonl")):

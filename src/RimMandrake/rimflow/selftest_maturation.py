@@ -1447,6 +1447,12 @@ def blind_main():
             ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
             ok(ex.get("state") == "not_met" and word in " ".join(ex.get("why") or []),
                "%s: not met, and the reading says why (%s)" % (what, (ex.get("why") or ["-"])[0][:90]))
+        # RIMMANDRAKE_READ_TESTS_EDITED_KEY_JUDGE_NAMED_ITS_OWN: the brief names no shape, and a judge wrote
+        # {"tests_edited": [...]} (EK cycle 6); a fault of form is read, never a refusal; its paths count as edited
+        write_cycle(root, "FlowWorks", 1, edited_text=json.dumps({"tests_edited": [{"path": "tests/t1.py"}]}))
+        ex = M.blind_facts(root, "FlowWorks").get("exit") or {}
+        ok(ex.get("state") == "met" and M._edited_paths({"tests_edited": [{"path": "a.py"}]}) == {"a.py"},
+           "tests_edited.json as {\"tests_edited\": [...]} reads met and its paths count (%s)" % ex.get("why"))
         # RIMMANDRAKE_PASS_BLIND_EXIT_ZERO_OFFLINE_BARS_GRAFFITI_STUCK: a locked table whose every bar proves live (Graffiti
         # 0.1.0, 47 of 47 at stage 6) has no offline bar to be green; a clean record meets the exit on its Problems alone
         ttp = os.path.join(root, "design/concepts/FlowWorks/version/test_table.json")

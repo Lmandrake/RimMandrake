@@ -3072,8 +3072,24 @@ def _commit_paths(root, sha):
     return PR.value(paths) if paths else PR.empty()
 
 
+EDIT_KEYS = ("edited", "tests_edited")      # the brief names no shape; both keys are on disk (EK cycle 6 wrote the second)
+
+
+def edit_rows(te):
+    """-> the edits list of a tests_edited.json: a list, or a dict's "edited" or "tests_edited" list; None when it holds
+    none. Reading either key is the fault-of-form rule: a shape the brief never fixed is read, never refused
+    (RIMMANDRAKE_READ_TESTS_EDITED_KEY_JUDGE_NAMED_ITS_OWN)."""
+    if isinstance(te, list):
+        return te
+    if isinstance(te, dict):
+        for k in EDIT_KEYS:
+            if isinstance(te.get(k), list):
+                return te[k]
+    return None
+
+
 def _edited_paths(te):
-    rows = te.get("edited") if isinstance(te, dict) else te
+    rows = edit_rows(te)
     return {str(x.get("path") if isinstance(x, dict) else x) for x in rows or [] if x}
 
 
@@ -3259,7 +3275,7 @@ def read_exit(root, mod, n, tt=None, game_only_bars=None):
     te, terr = read_json(root, mod, base + "/tests_edited.json")
     if not os.path.exists(os.path.join(d, "tests_edited.json")):
         why.append("tests_edited.json is missing (an empty list is written, never left out)")
-    elif not (isinstance(te, list) or (isinstance(te, dict) and isinstance(te.get("edited"), list))):
+    elif edit_rows(te) is None:
         why.append("tests_edited.json is not a list of edits (a list, or {\"edited\": [...]}): %s" % (
             terr or "it holds %s" % type(te).__name__))
     pr = _jsonl(os.path.join(d, "lane2", "planted_results.jsonl"))
