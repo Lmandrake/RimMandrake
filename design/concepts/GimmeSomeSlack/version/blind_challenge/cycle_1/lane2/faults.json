@@ -1,0 +1,125 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_SEE_SLACK_HOSE_PICTURE_COPIED_UNDER_INNOCENT_NAME",
+   "class": "Problem",
+   "bar": "no_hose_in_gss",
+   "criterion": "T_NO_HOSE sees a hose, reel or pipe picture left in the mod",
+   "evidence": [
+    "lane2/planted_before_repair.jsonl NH_HOSE_PICTURE_UNDER_INNOCENT_NAME: T_NO_HOSE rc 0 with FlowWorks' Hose/Binding.png copied in as CoilEnd.png",
+    "lane1 row NH_TEXTURE_BYTES_NOT_HOSE_ART caught it"
+   ],
+   "would_pass": "the test names the copied picture",
+   "smallest_fix": "compare picture bytes with FlowWorks' hose, reel and pipe pictures",
+   "verdict_on_criterion": "criterion right, check short of it",
+   "status": "FIXED 650bdab37b6247371fb355a0186795aa609fd749",
+   "against": "check"
+  },
+  {
+   "id": "RIMMANDRAKE_READ_SLACK_DEF_DESCRIPTION_THAT_PROMISES_HOSE",
+   "class": "Problem",
+   "bar": "no_hose",
+   "criterion": "T_NO_HOSE reads player text that promises a hose",
+   "evidence": [
+    "lane2/planted_before_repair.jsonl NH_DESCRIPTION_PROMISES_HOSE: T_NO_HOSE rc 0 with the mast described as a fire hose reel",
+    "the settings header did ship such a promise once (blind cycle 5 of 0.1.0)"
+   ],
+   "would_pass": "the test names the description",
+   "smallest_fix": "read prose fields for the CLAIM words",
+   "verdict_on_criterion": "criterion right, check short of it",
+   "status": "FIXED 650bdab37b6247371fb355a0186795aa609fd749",
+   "against": "check"
+  },
+  {
+   "id": "RIMMANDRAKE_STEADY_SLACK_REBUILD_TAIL_BOUND_UNDER_LOAD",
+   "class": "Problem",
+   "bar": "rebuild_cost",
+   "criterion": "the rebuild-tail time bound reads the mod, not the machine",
+   "evidence": [
+    "lane2/reruns.jsonl T_CORD_GEOMETRY_OFFLINE: 5813/5814, rc 1, at load about 21 of 14 cores; the rerun of the same build was 5812/5812",
+    "the failing line was not captured; the two extra checks fit two retries of the tail bound and a red third pass [guess ~90%]",
+    "pass 1 of that bound read 11 to 13 ms against 5 ms in three other runs"
+   ],
+   "would_pass": "green on the real build under load, red when a frame is 6 ms slower on every pass",
+   "smallest_fix": "keep each frame's best time over the passes and bound the worst of those",
+   "verdict_on_criterion": "criterion right, check read the load",
+   "status": "FIXED cf5a867a53fb545dfea544e0a883bde16ee3f407",
+   "against": "check"
+  },
+  {
+   "id": "RIMMANDRAKE_CHECK_SLACK_LAMP_MASTER_OFF_GUARD_NEGATED_SURVIVES",
+   "class": "Polish",
+   "bar": "wall_lamp_takes_looks",
+   "criterion": "T_WALL_LAMP_LOOKS_OFFLINE sees the master-off lamp patch negated",
+   "evidence": [
+    "lane2/planted_results.jsonl GC_LAMP_MASTER_OFF_KEEPS_LOOK: T_LOOKS rc 0",
+    "the bar proves at stage 6: sc_wall_lamp_looks flips the master in game, and its fake game mutant master_off_ignored goes red, so no bar goes undecided (test 1)"
+   ],
+   "would_pass": "the check names the whole condition",
+   "smallest_fix": "match the un-negated condition text",
+   "verdict_on_criterion": "criterion right",
+   "status": "NOTED polish",
+   "against": "check"
+  },
+  {
+   "id": "RIMMANDRAKE_CAP_SLACK_GUST_SWAY_ABOVE_CHORD_MAX_SLIDER",
+   "class": "Polish",
+   "bar": "overhead_spans",
+   "criterion": "an overhead line sags under its chord",
+   "evidence": [
+    "lane 1 row SWAY_STAYS_HANGING_SLIDER_VANILLA_WIND_GUST",
+    "GUST_RISE_TABLE: never at strength 1 to wind 2.5; at strength 2 and wind 2.0 in 25% of frames, rise 1.38 x sag"
+   ],
+   "would_pass": "the swing never passes the chord over the whole slider",
+   "smallest_fix": "clamp the Gust angle below 90 degrees in AerialMath.SwayPose",
+   "verdict_on_criterion": "bar does not fix the slider's far end; only a doubled sway in the strongest wind shows it",
+   "status": "NOTED polish",
+   "against": "mod"
+  },
+  {
+   "id": "RIMMANDRAKE_SPREAD_SLACK_FALLEN_TIPS_TWO_OF_THREE_MEET",
+   "class": "Polish",
+   "bar": "fallen_span_on_ground",
+   "criterion": "the wires of a broken span do not pinch to one point",
+   "evidence": [
+    "lane 1 row FALLEN_STRANDS_ONE_PER_WIRE",
+    "FALLEN_TIP_SPACING: 517 of 20000 3-wire falls have two tips within 0.25 cells; the bar names the wire on the ground and its live or dead end, not tip spacing"
+   ],
+   "would_pass": "two tips of one span stay 0.25 apart",
+   "smallest_fix": "push a tip sideways when it lands on a neighbour's",
+   "verdict_on_criterion": "my bar is stricter than the bar",
+   "status": "NOTED polish",
+   "against": "mod"
+  },
+  {
+   "id": "RIMMANDRAKE_CLIP_SLACK_FALLEN_WIRE_TWENTIETH_CELL_INTO_WALL",
+   "class": "Polish",
+   "bar": "fallen_span_on_ground",
+   "criterion": "a fallen wire lies on open ground",
+   "evidence": [
+    "lane 1 row FALLEN_WIRE_LIES_ON_OPEN_GROUND",
+    "FALLEN_WALL_CLIP_DEPTH: 21 of 4000, at most 0.047 cells; already on polish.md (RIMMANDRAKE_CLIP_SLACK_FALLEN_WIRE_TENTH_CELL_INTO_WALL)"
+   ],
+   "would_pass": "no grounded point in a wall cell",
+   "smallest_fix": "check walkability at the drawn 0.1 step",
+   "verdict_on_criterion": "hidden under the wall face art",
+   "status": "NOTED polish",
+   "against": "mod"
+  },
+  {
+   "id": "RIMMANDRAKE_ASK_SLACK_LAMP_ON_FOREIGN_CONDUIT_ITS_LINE",
+   "class": "Polish",
+   "bar": "restyle_whole_line",
+   "criterion": "All connected from any piece of the line",
+   "evidence": [
+    "RM_MapComponent_ConduitRuns.RunOfLamp returns null when the lamp's connection is another mod's drawn conduit; LampsOf hooks the same lamp (bridgesBeside)",
+    "the bar lists cord, switch, pole and bracket as the pieces that start it; the lamp is not one, and the line's own menu still repaints the lamp"
+   ],
+   "would_pass": "the lamp's menu offers its line",
+   "smallest_fix": "walk the bridge to its members in RunOfLamp",
+   "verdict_on_criterion": "bar does not name the lamp as a start",
+   "status": "NOTED polish",
+   "against": "mod"
+  }
+ ]
+}

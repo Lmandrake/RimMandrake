@@ -78,17 +78,17 @@
   "test_blob": "6b63b8f5fd8ad3cb68205dd5b93d06d79ad6c397"
  },
  "T_NO_HOSE": {
-  "at": "2026-11-23T14:49:38Z",
+  "at": "2026-11-23T19:42:19Z",
   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
   "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
-  "last": "UNMEASURED  M1_planted_thingdef  clean copy read red: ['defName: RM_HoseReel (Defs/Planted_HoseReel.xml)', 'label: hose reel (Defs/Planted_HoseReel.xml)']",
-  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Defs/Planted_HoseReel.xml b/src/RimMandrake/GimmeSomeSlack/Defs/Planted_HoseReel.xml\nnew file mode 100644\n--- /dev/null\n+++ b/src/RimMandrake/GimmeSomeSlack/Defs/Planted_HoseReel.xml\n@@ -0,0 +1,7 @@\n+<?xml version=\"1.0\" encoding=\"utf-8\"?>\n+<Defs>\n+  <ThingDef>\n+    <defName>RM_HoseReel</defName>\n+    <label>hose reel</label>\n+  </ThingDef>\n+</Defs>\n",
+  "last": "UNMEASURED  M1_planted_thingdef  clean copy read red: ['prose: A wheeled fire hose on a stand. (Defs/Planted_Coil.xml)']",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Defs/Planted_Coil.xml b/src/RimMandrake/GimmeSomeSlack/Defs/Planted_Coil.xml\nnew file mode 100644\n--- /dev/null\n+++ b/src/RimMandrake/GimmeSomeSlack/Defs/Planted_Coil.xml\n@@ -0,0 +1,7 @@\n+<?xml version=\"1.0\" encoding=\"utf-8\"?>\n+<Defs>\n+  <ThingDef>\n+    <defName>RM_PlantedCoil</defName>\n+    <description>A wheeled fire hose on a stand.</description>\n+  </ThingDef>\n+</Defs>\n",
   "patch_files": [
-   "src/RimMandrake/GimmeSomeSlack/Defs/Planted_HoseReel.xml"
+   "src/RimMandrake/GimmeSomeSlack/Defs/Planted_Coil.xml"
   ],
-  "patch_sha": "ec9962fe18e2ee81",
+  "patch_sha": "038649b1d20e2e63",
   "rc": 2,
-  "test_blob": "811bf13413d27eb7653a878224e9d93997709980"
+  "test_blob": "d864389ff076f176693627604f4032f29261c035"
  },
  "T_NO_KINK_OFFLINE": {
   "at": "2026-11-23T04:53:53Z",

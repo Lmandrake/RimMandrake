@@ -1,0 +1,16 @@
+[
+ {
+  "path": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+  "why": "reads copied hose pictures by bytes and def prose that promises a hose; two mutants added; stops UNMEASURED when no FlowWorks hose picture is readable",
+  "before": "811bf13413d27eb7653a878224e9d93997709980",
+  "after": "d864389ff076f176693627604f4032f29261c035",
+  "sha": "650bdab37b6247371fb355a0186795aa609fd749"
+ },
+ {
+  "path": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RebuildTailChecks.cs",
+  "why": "the tail time bound takes each frame's best of 4 passes; bounds 5 ms and a third unchanged",
+  "before": "b495f39d59c9bcc80610d4d64d541ba365ccddbe",
+  "after": "0cbef093e639f3c5e644d3be027cd28b8c1dff55",
+  "sha": "cf5a867a53fb545dfea544e0a883bde16ee3f407"
+ }
+]

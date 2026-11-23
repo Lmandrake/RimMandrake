@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs
+index 8c70c22a52..6958c194ff 100644
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs
+@@ -35,6 +35,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
+         {
+             // GSS_PLAN_FIX_SECOND_PER_FULL_BUILD: kept between calls (read only inside one): two tens-of-KB tables per frame paid the
+             // incremental collector by size. [ThreadStatic] because the SelfTest's frames may run on any thread.
++            System.Threading.Thread.Sleep(6);
+             Dictionary<string, string> parent = scratchParent ??= new Dictionary<string, string>();
+             parent.Clear();
+             string Find(string x)

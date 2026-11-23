@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Defs/Planted_Coil.xml b/src/RimMandrake/GimmeSomeSlack/Defs/Planted_Coil.xml
+new file mode 100644
+--- /dev/null
++++ b/src/RimMandrake/GimmeSomeSlack/Defs/Planted_Coil.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<Defs>
++  <ThingDef>
++    <defName>RM_PlantedCoil</defName>
++    <description>A wheeled fire hose on a stand.</description>
++  </ThingDef>
++</Defs>
