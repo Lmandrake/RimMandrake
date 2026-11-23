@@ -129,6 +129,17 @@ inventory]`: they are **separate calls** (weather lock, rain suppress, wild-spaw
 hostile sweep, draft, forbid), they are **lost on a load or expire by themselves**, and **none reports a breach**:
 nothing says "an incident tried to fire and was held". No profile turns them on together or says which are on.
 
+## Influences found in the engine that no record names
+
+Two influences came from reading the RimWorld 1.6 code in this run (after GPT's review pointed at the Multiplayer
+mod's patches). No visit, lesson or item names either. They may be behind some of the "same build, different result"
+rows above; that link is a guess `[guess ~40%]`, and nothing measured it.
+
+| influence | the engine fact `[read]` | why it can spoil a live test |
+|---|---|---|
+| **The camera.** Where the camera points and how far it is zoomed changes how often a thing runs its interval work | `GenTicks.GetCameraUpdateRate`: 15 ticks for a thing outside the camera's view or on a map that is not shown, (zoom level + 1) ticks for a thing in view; `Thing.DoTick` passes the elapsed ticks to `TickInterval` | the same scene runs with different timing of needs, job checks and comp intervals when it is on screen, off screen, or at another zoom. A screenshot helper that moves the camera changes the run that it photographs |
+| **Frames between ticks.** Each map does simulation work once per frame, outside the tick | `Map.MapUpdate`: power nets, dirty regions and rooms, glow grid, pawn groups, post-tick visuals | a stepped advance, a high game speed and normal play do this work at different points between ticks. A read of a room, a region or a power state right after a change can differ with the frame rate |
+
 ## Hypothesized influences, per mod we are building
 
 From the mods' designs (`census_sources/mods_hypotheses_a.md` and `_b.md`; each line there is marked DESIGN with its
