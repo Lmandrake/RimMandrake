@@ -561,15 +561,27 @@ namespace RimMandrake.FlowWorks.Machinery
             return quads.Count;
         }
 
+        private static readonly Dictionary<Material, Material> socketMats = new Dictionary<Material, Material>();
+
+        /// <summary>The pipe's material, as a copy of its own for the sockets. One material is one section mesh, and the game sorts
+        /// a cutout mesh whole: printed with the under-runs (same material, far below the pump), the socket drew under the pump
+        /// (live 2026-11-23).</summary>
+        private static Material SocketMat(Material pipe)
+        {
+            if (pipe == null) return null;
+            if (!socketMats.TryGetValue(pipe, out Material m) || m == null) socketMats[pipe] = m = new Material(pipe);
+            return m;
+        }
+
         /// <summary>The end of the pipe <paramref name="pipe"/> (on <paramref name="c"/>, south of the pump <paramref name="pump"/>)
         /// drawn over the pump's south cap, inside its bolted rim (PumpSouthSocket). Returns 1 when printed.</summary>
         private int PrintSouthSocket(Thing pipe, IntVec3 c, Thing pump)
         {
             if (!PumpSouthSocket.TryCap(RM_LiquidJoins.LookOf(pump), out PumpSouthSocket.Cap cap)) return 0;
-            Material m = StraightMat(pipe, false);
+            Material m = SocketMat(StraightMat(pipe, false));
             if (m == null) return 0;
             LayerSubMesh mesh = GetSubMesh(m);
-            float y = AltitudeLayer.Building.AltitudeFor() + PumpSouthSocket.AboveBuilding;
+            float y = AltitudeLayer.BuildingOnTop.AltitudeFor();   // the couplers' altitude: over the pump, under items and pawns
             List<PumpSouthSocket.Vert> q = PumpSouthSocket.Quads(cap);
             for (int i = 0; i < q.Count; i++)
             {

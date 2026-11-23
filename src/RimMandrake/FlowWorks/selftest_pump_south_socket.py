@@ -78,7 +78,10 @@ for look, p in check_oblique.INSTALLED.items():
 
 src = open(os.path.join(HERE, "Source", "Machinery", "RM_LiquidJoins.cs"), encoding="utf-8-sig").read()
 check("the pipe layer prints the socket over the pump", "PrintSouthSocket(t, c, b)" in src and "PumpSouthSocket.Quads(" in src)
-check("the socket is drawn above the building layer, below what stands on it", "AltitudeLayer.Building.AltitudeFor() + PumpSouthSocket.AboveBuilding" in src)
+# live 2026-11-23: printed into the under-runs' mesh (same material, below the pump) the socket drew under the pump
+body = src[src.find("private int PrintSouthSocket("):][:1500]
+check("the socket has a mesh of its own, over the pump", "SocketMat(StraightMat(pipe, false))" in body and "new Material(pipe)" in src)
+check("the socket is at the couplers' altitude", "float y = AltitudeLayer.BuildingOnTop.AltitudeFor();" in body)
 check("no loose flange is laid beside the pump's own", "if (RM_LiquidJoins.DrawsOwnFlanges(b)) continue;" in src)
 print("selftest_pump_south_socket.py: %d failure(s)" % fails)
 sys.exit(1 if fails else 0)

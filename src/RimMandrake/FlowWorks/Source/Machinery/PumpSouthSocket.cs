@@ -14,8 +14,6 @@ namespace RimMandrake.FlowWorks.Machinery
     /// </summary>
     public static class PumpSouthSocket
     {
-        /// <summary>Added to the Building altitude: over the pump, below whatever stands on the next layer up.</summary>
-        public const float AboveBuilding = 0.02f;
         public const int Columns = 24;
         /// <summary>Where the universal pipe's north-south tile is drawn across its 0..1 width (every look;
         /// selftest_pump_south_socket.py re-measures it).</summary>

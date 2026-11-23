@@ -60,6 +60,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
                 Assert(joins.Contains("if (risers && di < 4 && d.z == 1 && RM_LiquidJoins.DrawsOwnFlanges(b)) nSockets += PrintSouthSocket(t, c, b);"),
                     "a pipe south of a pump prints the socket, under the pipe-arm setting");
+                Assert(joins.Contains("Material m = SocketMat(StraightMat(pipe, false));"), "the socket's own material, so its own mesh over the pump");
                 Assert(joins.Contains("if (RM_LiquidJoins.DrawsOwnFlanges(b)) continue;"), "no loose flange beside the pump's own");
             });
         }
