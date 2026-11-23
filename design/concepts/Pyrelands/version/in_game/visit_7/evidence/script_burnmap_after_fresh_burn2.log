@@ -1,0 +1,3 @@
+{"verdict": "PASS", "save": "-", "now": 906501, "window": 200000, "burned": 0, "strandCells": 0, "strandShare": 0.0, "limit": 0.25, "longestOneCellRunAlongX": 0, "oneCellRunsAlongX_ge20": 0}
+[bridge split] 11.3 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 3.3 / outside calls 7.9 s
+[bridge split] WARN 169 calls of jawa/static_call (3.3 s): batch them

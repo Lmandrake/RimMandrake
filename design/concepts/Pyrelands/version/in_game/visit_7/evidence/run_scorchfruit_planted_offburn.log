@@ -1,0 +1,148 @@
+[modcheck] chain plant_census START 16:16:07Z
+[pyre-note] heat guard (row start, row plant_distribution_correct): {"cleared": [["Human75563", 0.0008], ["Human75569", 0.0008]], "failed": [], "read": true}
+[pyre-note] burned cells outside the suite's fire pads: 0
+[pyre-note] gen plant census: {"perDef": {"RM_FE_Plant_EmberGrass": 32469, "RM_FE_Plant_Quickgrass": 21079}, "wildPlants": [{"plant": "RM_FE_Plant_EmberGrass", "commonality": 9.0}, {"plant": "RM_FE_Plant_Quickgrass", "commonality": 3.8}], "plantDensity": 16.0}
+[pyre-note] CALIBRATING ember:quickgrass ratio (expect ~2.4): {"ember": 32469, "quickgrass": 21079, "ratio": 1.5403482138621376}
+[pyre-note] colony vitals after plant_distribution_correct: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 08:16:11 plant_distribution_correct PASS 
+[pyre-note] firecast counts: {"RM_FireHawk": 3, "RM_Ashwallow": 8}
+[pyre-note] colony vitals after firecast_counts: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 08:16:12 firecast_counts PASS 
+[pyre-note] heat guard (every 6000 ticks, row wild_plant_allowlist_day): {"cleared": [["Human75563", 0.0203], ["Human75569", 0.0038]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wild_plant_allowlist_day): {"cleared": [["Human75563", 0.0368], ["Human75569", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wild_plant_allowlist_day): {"cleared": [["Human75563", 0.036], ["Human75569", 0.0045]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row wild_plant_allowlist_day): {"cleared": [["Human75563", 0.0173], ["Human75569", 0.0169]], "failed": [], "read": true}
+[pyre-note] plants outside PLANT_MANIFEST that appeared in a day with the allowlist on: {}
+[pyre-note] colony vitals after wild_plant_allowlist_day: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 08:18:02 wild_plant_allowlist_day PASS 
+[modcheck] chain plant_census END 115s PASS=3 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=0.1s body=115.1s teardown=0.0s
+[modcheck] chain scorchfruit_fire_born START 16:18:02Z
+[pyre-note] ScorchFruit left on the map after the cap-budget clear: 0
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_fire_born): {"cleared": [["Human75563", 0.0173], ["Human75569", 0.0176]], "failed": [], "read": true}
+[pyre-note] ScorchFruit inside the burned cohort: 31
+[pyre-note] gen ScorchFruit positions: {"all": [], "outsideFirePads": []}
+[pyre-note] colony vitals after scorchfruit_fire_born: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 08:19:00 scorchfruit_fire_born PASS 
+[pyre-note] heat guard (row start, row scorchfruit_off_burn_bears_none): {"cleared": [["Human75563", 0.0353], ["Human75569", 0.009]], "failed": [], "read": true}
+[pyre-note] ScorchFruit left on the map after the cap-budget clear: 0
+[pyre-note] PLANTED FAULT: "PYRE_PLANT_OFFBURN_TOGGLE_IGNORED=1: scorchFruitEnabled is left on, as if the switch did nothing"
+[pyre-note] open ground 184,78,12,12 (margin 4): {"left": [], "terrain": {"RM_FE_Ground_Soil": 400}, "roofed": 0}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_off_burn_bears_none): {"cleared": [["Human75563", 0.0225], ["Human75569", 0.0225]], "failed": [], "read": true}
+[pyre-note] scorch-fruit on a burn with scorchFruitEnabled off: during / after: [7, 7]
+[pyre-note] colony vitals after scorchfruit_off_burn_bears_none: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 08:19:27 scorchfruit_off_burn_bears_none FAIL ExpectationFailed: scorchFruitEnabled off, yet the burn bore 7 / 7 scorch-fruit
+[modcheck] chain scorchfruit_fire_born END 85s PASS=1 FAIL=1 UNMEASURED=0 NOT_RUN=0 hold=0.1s body=85.3s teardown=0.0s
+component scorchfruit_fire_born/scorchfruit_off_burn_bears_none: {"toggle": null, "beyond_toggle": false, "verdict": "FAIL", "execution": "ran", "detail": "ExpectationFailed: scorchFruitEnabled off, yet the burn bore 7 / 7 scorch-fruit", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 193, "tileValid": true, "mapId": 1, "sizeX": 250, "sizeZ": 250, "cellCount": 62500, "tileInfo": {"biome": "RM_Pyrelands", "hilliness": "Flat", "hillinessInt": 1, "elevation": 257.0, "rainfall": 0.0, "swampiness": 0.0, "temperature": 50.0, "pollution": 0.0, "waterCovered": false, "isSurfaceTile": true}, "mapBiome": "RM_Pyrelands", "mapBiom
+component mapgen_log/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_mapgen_log_clean"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component animal_census/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_animal_distribution_correct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component grass_cover/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_grass_chokes_ground"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ruins/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ruins_scorched"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ruins/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component burn_line/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burn_line_present"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component burn_line/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component burn_line/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component burn_line/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component opening_front/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component opening_front/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component startup_and_def_wiring/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "biomeGenerationEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ground_deep_ash/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ground_deep_ash"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ground_deep_ash/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ground_deep_ash/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ground_deep_ash/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ground_deep_ash/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ground_deep_ash/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ground_deep_ash/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ground_deep_ash/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ash_fertility_watered/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ash_fertile_when_watered"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ash_fertility_watered/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ash_fertility_watered/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component fresh_burn_bonus/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_fresh_burn_feeds_the_field"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component fresh_burn_bonus/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ambient_ash_drift/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ambientAshEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component fire_tick_effects/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashDustingEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component fire_tick_effects/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "scorchFruitEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ashfall_weather_accumulation/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ashfallAccumulationEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ashfall_drifts/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_ashfall_darkens_drifts"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component cinderfall/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cinderfall_distinct"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component cinderfall/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component cinderfall/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component cinderfall/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component blackrain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_blackrain_reads"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component blackrain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component blackrain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "blackRainDousingEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component soaked_map_stays_smooth/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component no_ordinary_rain/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_cannot_ordinary_rain"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component no_ordinary_rain/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component no_ordinary_rain/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component scorchfruit_produces/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_produces"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component scorchfruit_spoils/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_scorchfruit_spoils_fast"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component firehawk/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_firehawk_carries_ember"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component firehawk/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component firehawk/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component furnace_warmth/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_warmth"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component furnace_room/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_furnacebeast_heats_room"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component furnace_sleep/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component furnace_sleep/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component burrowers/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_burrowers_dive"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component heat_dome/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component heat_dome/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "burrowDomeOnHeatHit", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component heat_dome/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component embergrass_regrow/skipped#0: {"verdict": "UNMEASURED", "shows": ["pyre_embergrass_regrows"], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component embergrass_regrow/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component embergrass_regrow/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component embergrass_regrow/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ullai_and_giant/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "ullaiEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ullai_and_giant/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "furnaceBeastGiant", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ullai_and_giant/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component ullai_and_giant/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component gpt_hunt_plausible/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component gpt_hunt_plausible/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component gpt_hunt_plausible/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component gpt_hunt_plausible/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component gpt_hunt_plausible/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component gpt_hunt_plausible/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component gpt_hunt_plausible/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component gpt_hunt_plausible/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component gpt_hunt_plausible/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component sand_shovel/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sandShovelEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component flamefang_venom/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component flamefang_venom/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component flamefang_venom/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component flamefang_venom/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component flamefang_venom/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component rite_hook_alone/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component rite_hook_alone/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireClockEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component firefoam_sprayer/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component firefoam_sprayer/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component walk_season/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component walk_season/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component walk_season/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component walk_season/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component walk_season/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component walk_season/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component walk_season/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component walk_season/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component foreign_arrivals/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component foreign_arrivals/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component foreign_arrivals/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component fire_sense/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component fire_sense/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component fire_sense/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component fire_sense/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component fire_sense/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component burn_line_off_control/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component furnace_hide_bank/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component roof_withers/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component roof_withers/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component roof_withers/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component herd_thirst/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component firehawk_first_sighting_letter/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component firehawk_first_sighting_letter/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireHawkSightingLetterEnabled", "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component firehawk_first_sighting_letter/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component firehawk_crestfeather_yield/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+component firehawk_mapwide_carry/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains plant_census,scorchfruit_fire_born)"}
+Pyrelands: NOT GREEN  PASS=2 FAIL=1 UNMEASURED=110  calls=597 mean=340.896ms  -> design/concepts/Pyrelands/version/in_game/visit_7/evidence/pv7_scorchfruit_planted_offburn.json
+[bridge split] 211.6 s wall: load 0.0 / ticks 144.5 / reads 2.0 / other 40.8 / outside calls 24.3 s
+[bridge split] WARN 170 calls of jawa/pawn_need (2.2 s): batch them
+[bridge split] WARN 73 calls of jawa/list_pawns (0.9 s): batch them
+[bridge split] WARN 62 calls of rimworld/get_game_info (0.2 s): batch them

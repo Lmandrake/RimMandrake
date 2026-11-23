@@ -1,0 +1,6 @@
+SHOT burn_front (18, 20, 24, 16) D:\ClaudeWork\rimmandrake\instances\b\Screenshots\pv7_walk_closeup_burn_front__cell_rect.png
+SHOT creatures (68, 20, 20, 16) D:\ClaudeWork\rimmandrake\instances\b\Screenshots\pv7_walk_closeup_creatures__cell_rect.png
+SHOT scorchfruit (162, 22, 12, 12) D:\ClaudeWork\rimmandrake\instances\b\Screenshots\pv7_walk_closeup_scorchfruit__cell_rect.png
+SHOT roof_wither (200, 20, 20, 16) D:\ClaudeWork\rimmandrake\instances\b\Screenshots\pv7_walk_closeup_roof_wither__cell_rect.png
+SHOT charred_ruin (107, 183, 16, 12) D:\ClaudeWork\rimmandrake\instances\b\Screenshots\pv7_walk_closeup_charred_ruin__cell_rect.png
+[bridge split] 10.6 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 4.1 / outside calls 6.5 s

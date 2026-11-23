@@ -1,0 +1,21 @@
+{"id": "RM_FurnaceBeast75540", "kindDef": "RM_FurnaceBeast", "x": 55, "z": 111, "dead": false, "downed": false, "faction": null}
+{"id": "RM_FurnaceBeast75541", "kindDef": "RM_FurnaceBeast", "x": 55, "z": 111, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow75555", "kindDef": "RM_Ashwallow", "x": 137, "z": 135, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow75556", "kindDef": "RM_Ashwallow", "x": 123, "z": 146, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow75557", "kindDef": "RM_Ashwallow", "x": 132, "z": 153, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow75558", "kindDef": "RM_Ashwallow", "x": 132, "z": 142, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow75559", "kindDef": "RM_Ashwallow", "x": 134, "z": 122, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow75560", "kindDef": "RM_Ashwallow", "x": 120, "z": 134, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow75561", "kindDef": "RM_Ashwallow", "x": 123, "z": 117, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow75562", "kindDef": "RM_Ashwallow", "x": 94, "z": 130, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai79240", "kindDef": "RM_Ullai", "x": 80, "z": 23, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai79241", "kindDef": "RM_Ullai", "x": 64, "z": 1, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai79242", "kindDef": "RM_Ullai", "x": 81, "z": 26, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai79243", "kindDef": "RM_Ullai", "x": 80, "z": 26, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai79244", "kindDef": "RM_Ullai", "x": 82, "z": 22, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ullai79245", "kindDef": "RM_Ullai", "x": 78, "z": 24, "dead": false, "downed": false, "faction": null}
+{"id": "RM_FurnaceBeast79246", "kindDef": "RM_FurnaceBeast", "x": 75, "z": 27, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow79247", "kindDef": "RM_Ashwallow", "x": 69, "z": 11, "dead": false, "downed": false, "faction": null}
+{"id": "RM_Ashwallow79248", "kindDef": "RM_Ashwallow", "x": 87, "z": 29, "dead": false, "downed": false, "faction": null}
+in station rect (80..99, 20..35): ['RM_Ullai79240', 'RM_Ullai79242', 'RM_Ullai79243', 'RM_Ullai79244', 'RM_Ashwallow79248']
+[bridge split] 0.2 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.0 / outside calls 0.2 s

@@ -1,0 +1,5 @@
+BEFORE {"success": true, "result": "now=533722;samples=21;oldestTick=377579;newestTick=531959;newest=74,60;ago=74,60;burning=87;center=78,66", "message": null}
+BACKDATE {"success": true, "result": "21", "message": null}
+AFTER {"success": true, "result": "now=533722;samples=0;oldestTick=-1;newestTick=-1;newest=none;ago=invalid;burning=87;center=78,66", "message": null}
+PASS
+[bridge split] 1.1 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.0 / outside calls 1.1 s

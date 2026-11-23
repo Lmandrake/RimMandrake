@@ -1,6 +1,76 @@
 # Pyrelands 0.1.0: in-game acceptance, visit 7 (Archmagi, ArchSmall)
 
-Detached BENCH helper, item RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_SEVEN. Started 2026-11-23 05:01 PST.
+Detached BENCH helper, item RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_SEVEN. 2026-11-23 05:01 to 08:45 PST.
+
+Game ArchSmall, game 1.6.4871 rev590, tier `pyrelands` (18 mods, all five DLC; Huge Things joined the tier since visit 6),
+identity `evidence/identity_pyrelands.json` (mod_sha 3b18f315d8, mod_hash sha256:9aa62b4a...). Nothing in the mod was changed.
+Site built fresh on the 18-mod list: tile 193, 51.7 C, `NS_Pyrelands_site_1_417df172fdb5_visit7`, reloaded before every chain
+(`scripts/runner.sh`). Gate B CLEAN; gate A all PASS except loadavg (other agents' work; strange.jsonl). SteveDesktop not
+used (visits 2 and 5 measured no Pyrelands site there). The run went past the brief's 3-hour bound (the launch line set none).
+
+## Result
+
+35 checks [measured, each check's last row]: 32 PASS, 2 FAIL, 1 UNMEASURED. The 2 FAIL and the UNMEASURED:
+- P_furnace_room FAIL, class MOD, unfixed, filed RIMMANDRAKE_SPARE_PYRE_FURNACE_BARN_ROOF_FROM_TITAN_WAKE. Beast room +0.3 C
+  over its control (needs +10) and both pens' roofs open. Huge Things (a hard dependency of the composed biomes since
+  0dc82e3270) rates the furnace-beast (body size 9) tier T2, whose wake holes thin roofs per cell. Measured both ways: its
+  roof holing off -> PASS (+24.8 C, 0 open), back on -> FAIL, no beast -> roofs stay. Fix is a design choice (whole opt-out
+  or a per-def exemption); not known in the sitting.
+- sc_burn_line_walks FAIL, class MOD, unfixed, filed RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT. The four harness rows
+  PASS and the front reads as a natural moving fire, but lone fires away from it walk as ruler-straight one-cell lanes
+  (20-27 cells, one cell per ~1,300 ticks: `evidence/script_line_speed.log`), seen as thin lines across the map in the first
+  real day-end captures. Reproduced offline on the shipped model (`design/concepts/Pyrelands/version/evidence/
+  accept_lone_fire_lane.py`, 0 of 8 cases, exit 1). The judge is this driver, not the maker.
+- sc_walk UNMEASURED: ArchSmall is the tier list only beside ArchBig; ArchBig runs its full-list check later.
+
+## What failed, and what was done (class first)
+
+- HARNESS, repaired 5e888e1af2 (RIMMANDRAKE_RESUME_FIXTURE_ARRIVAL_PAST_UNASKED_BITE, filed and closed): sc_flamefang_venom
+  read 4 rows UNMEASURED because the biter's arrival and its bite landed in one 60-tick sub-step and clockgate refused to
+  resume past a `hurt` trigger the venom rows deliberately do not stop on. clockgate.py reads NO PAGE (no boundary page yet).
+  selftest_clockgate 85/86 on the parent, 86/86 on the fix. Real run 5/5 PASS (flamefang_venom2), planted wrong tend FAIL.
+- SITE: burn_compounds_with_black_rain's control pad C burned in the first run (stamp 413443), cause unproven (one candidate:
+  a lone-fire lane); fresh_burn_bonus2 on a reloaded site PASS 2/2 (strange.jsonl).
+- Pipeline: the main runner was killed at its 2-hour background limit during scorchfruit_spoils; requeued, PASS.
+
+## Owed cases, one by one
+
+- RIMMANDRAKE_SCOPE_SETTINGS_SCREENS_DECIDER_TO_ITS_OWN_MOD: P_gate PASS live (gate_live_proof); sc_walk not run (ArchBig).
+- RIMMANDRAKE_PIN_PYRE_DESCRIPTIONS_FURNACE_CARD_COULD_READ_BLANK: sc_three_skies PASS (cinderfall 4/4).
+- Lane 1 game_side_bars: sc_fire_dusts_ash, sc_grass_regreens, sc_ruins, sc_ullai, sc_firefoam_sprayer, sc_rite_hook_alone,
+  sc_flamefang_venom, sc_populations, sc_foreign_arrivals PASS; sc_walk not run (ArchBig); sc_sand_shovel kept (untouched).
+- The three ashwallow caller faults: sc_ashwallow PASS, sc_heat_dome PASS.
+- RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES / RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY / REORDER_PYRE_BURN_WALK /
+  TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK / FRAME_PYRE_CHAIN_SHOTS (burn_line): burn_line 4/4 harness PASS,
+  24 hourly captures with the front in frame; no Manhunter stop. sc_burn_line_walks FAIL on the lone-fire lanes (above).
+- RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED: wind_burn_live PASS (sc_fire_walks_with_wind).
+- RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT / REPAIR_PYRE_TABLE_LIVE_COMMANDS / FRAME_PYRE_CHAIN_SHOTS (ullai): ullai_and_giant PASS,
+  giant_furnace_beast PASS.
+- RIMMANDRAKE_FIX_PYRE_HAWK_LETTER_BLANKS_FOUR_NAMED_SLOTS: firehawk_first_sighting_letter PASS.
+- RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN: no_ordinary_rain, ash_fertility_watered, plant_census, ruins,
+  ullai_and_giant, flamefang_venom, scorchfruit PASS; sc_walk not run (ArchBig).
+- RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE: burrowers PASS, heat_dome PASS.
+- RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW: cinderfall PASS; planted DryThunderstorm strike FAIL.
+- RIMMANDRAKE_IGNORE_OFFMAP_COLONIST_DEATH_HEART_ATTACK_TWICE: fresh_burn_bonus2 PASS, scorchfruit_spoils PASS, no world-pawn
+  death stop.
+- RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL / TUNE_PYRE_FLAMEFANG_BITE_KILLS_BEFORE_IMMUNITY / FEED_PYRE_VENOM
+  _FIXTURES_HUNGER_STOPS_WAITOUT: flamefang_venom 5/5 PASS, planted wrong tend FAIL.
+- RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH / SEAL_PYRE_SPRAYER_RING: firefoam_sprayer 2/2 PASS; the ring
+  gap plant did not take on this site (UNMEASURED; strange.jsonl).
+- RIMMANDRAKE_TRACE_PYRE_EMBERGRASS_GROWS_TENTH_OF_ITS_RATE / BUILD_PYRE_DENSITY_ONE_FOIL_BLIND_AT_FIVE: embergrass_regrow
+  5/5 PASS incl. the density-one control; the same-density plant was not rerun.
+- RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES: probe_burnhist_red.py on the burn_line_walking save PASS
+  (21 samples backdated, 0 after); sc_walk part not run (ArchBig).
+- RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES: the front lanes are gone (strand share 0.056 on the walking
+  save), but lone fires still walk one-cell lanes (above).
+- Plants: scorchfruit off-burn toggle ignored FAIL; venom wrong tend FAIL; cinderfall strike FAIL; ring gap not set.
+
+## The labelled savegame
+
+`D:\ClaudeWork\rimmandrake\instances\b\Saves\PYRELANDS_0.1.0_VISIT7_WALK.rws`, five labelled stations (burn front, creatures
+with the giant furnace-beast, scorch-fruit in ash, grass under a roof beside an open patch, charred ruin). Saves folder copied
+to `D:\ClaudeWork\backups\rimmandrake\archsmall_saves_pyre_visit7_20261123T0825` (taken after the walk save, which only
+added its one file). Captures in `screenshots/` (walk stations and close-ups included).
 
 ## Progress
 
@@ -18,8 +88,8 @@ Detached BENCH helper, item RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT
 ## Exit
 
 ```
-ingame_rows: {}
+ingame_rows: {P_ambient_ash_drift: pass, P_animal_census: pass, P_ashfall_drifts: pass, P_ashfall_weather_accumulation: pass, P_blackrain: pass, P_furnace_room: fail, P_gate: pass, P_grass_cover: pass, P_mapgen_log: pass, P_scorchfruit_produces: pass, P_scorchfruit_spoils: pass, P_startup_and_def_wiring: pass, firehawk_first_sighting_letter: pass, sc_ash_watered: pass, sc_ashwallow: pass, sc_burn_compounds: pass, sc_burn_line_walks: fail, sc_fire_dusts_ash: pass, sc_fire_walks_with_wind: pass, sc_firefoam_sprayer: pass, sc_firehawk: pass, sc_firehawk_rewards: pass, sc_flamefang_venom: pass, sc_foreign_arrivals: pass, sc_furnace: pass, sc_grass_regreens: pass, sc_heat_dome: pass, sc_no_rain: pass, sc_populations: pass, sc_rite_hook_alone: pass, sc_ruins: pass, sc_scorchfruit: pass, sc_three_skies: pass, sc_ullai: pass, sc_walk: unmeasured}
 strange_open: 0
-savegame: (not yet written)
+savegame: D:\ClaudeWork\rimmandrake\instances\b\Saves\PYRELANDS_0.1.0_VISIT7_WALK.rws
 exit_met: false
 ```

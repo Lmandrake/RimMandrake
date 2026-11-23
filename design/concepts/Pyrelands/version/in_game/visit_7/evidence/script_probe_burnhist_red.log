@@ -1,0 +1,3 @@
+BEFORE {"success": true, "result": "now=379001;samples=0;oldestTick=-1;newestTick=-1;newest=none;ago=invalid;burning=0;center=invalid", "message": null}
+UNMEASURED: no burn history to prune on this map
+[bridge split] 0.5 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.0 / outside calls 0.5 s

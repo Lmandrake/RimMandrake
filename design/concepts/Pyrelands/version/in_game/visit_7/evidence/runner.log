@@ -40,3 +40,22 @@ DONE furnace_room@furnace_room_holing reload_rc=0 rc=1 43s 07:33:40
 DONE flamefang_venom@flamefang_venom2 reload_rc=0 rc=1 354s 07:39:34
 DONE PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1:flamefang_venom@flamefang_venom_planted_wrong_tend reload_rc=0 rc=1 407s 07:46:21
 DONE LANES_SAVE=burn_line_walking:+script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/lanes_probe.py@lanes_walking reload_rc=skipped rc=0 20s 07:46:41
+DONE scorchfruit_spoils@scorchfruit_spoils reload_rc=0 rc=1 411s 07:53:32
+DONE fresh_burn_bonus@fresh_burn_bonus2 reload_rc=0 rc=1 1151s 08:12:43
+DONE LANES_SAVE=- LANES_TAG=after_fresh_burn2 LANES_WINDOW=200000:+script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/lanes_probe.py@burnmap_after_fresh_burn2 reload_rc=skipped rc=0 12s 08:12:55
+END follow 2026-11-23 08:12:55
+START last 2026-11-23 08:13:12
+DONE LANES_SAVE=burn_line_walking:+script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/line_speed.py@line_speed reload_rc=skipped rc=0 22s 08:13:34
+DONE script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/walk_save.py@walk_save reload_rc=0 rc=0 34s 08:14:08
+DONE script:design/concepts/Pyrelands/version/in_game/visit_5/scripts/probe_burnhist_red.py@probe_burnhist_red reload_rc=0 rc=2 20s 08:14:28
+DONE PYRE_PLANT_RING_GAP=1:firefoam_sprayer@firefoam_planted_ring_gap reload_rc=0 rc=1 64s 08:15:32
+DONE PYRE_PLANT_OFFBURN_TOGGLE_IGNORED=1:plant_census,scorchfruit_fire_born@scorchfruit_planted_offburn reload_rc=0 rc=1 236s 08:19:28
+DONE PYRE_PLANT_ASHFALL_STRIKE=DryThunderstorm:cinderfall@cinderfall_planted_strike reload_rc=0 rc=1 539s 08:28:27
+END last 2026-11-23 08:28:27
+START final 2026-11-23 08:28:37
+DONE LANES_SAVE=burn_line_walking:+script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/line_speed.py@line_speed2 reload_rc=skipped rc=0 19s 08:28:56
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_5/scripts/probe_burnhist_red.py@probe_burnhist_walking reload_rc=skipped rc=0 2s 08:28:58
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/load_walk.py@load_walk reload_rc=skipped rc=0 22s 08:29:20
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/walk_closeups.py@walk_closeups reload_rc=skipped rc=0 12s 08:29:32
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/walk_creatures_probe.py@walk_creatures_probe reload_rc=skipped rc=0 1s 08:29:33
+END final 2026-11-23 08:29:33

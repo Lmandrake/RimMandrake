@@ -1,0 +1,12 @@
+{
+ "verdict": "PASS",
+ "save": "-",
+ "now": 906501,
+ "window": 200000,
+ "burned": 0,
+ "strandCells": 0,
+ "strandShare": 0.0,
+ "limit": 0.25,
+ "longestOneCellRunAlongX": 0,
+ "oneCellRunsAlongX_ge20": 0
+}

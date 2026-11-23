@@ -76,5 +76,15 @@
     "note": "burn_compounds_with_black_rain UNMEASURED: the old-ash control pad C carried a burn stamp (tick 413443) set during the first row's day-1 wait, 40 cells from that row's firebreaked burn"
    }
   ]
+ },
+ "sc_burn_line_walks": {
+  "verdict_fixed": "FAIL",
+  "site_checked": true,
+  "label": "burn_line",
+  "evidence": "design/concepts/Pyrelands/version/in_game/visit_7/evidence/script_line_speed.log",
+  "class": "MOD",
+  "detail": "harness rows 4/4 PASS (present, walks hourly, burned share, off control: evidence/pv7_burn_line.json). The bar's judge clause ('a judge shown them and the whole-map day-end captures confirms a natural grass fire that moves'): this driver (not the maker) reads the front itself as a natural moving grass fire, but lone fires away from it walk as ruler-straight one-cell lanes 20-27 cells long, one cell every ~1,300 ticks along the wind (script_line_speed.log), and the day-end captures show thin straight lines across the map (screenshots/burn_line_dayend_sheet.jpg, burn_line_hourly_sheet.jpg; lanes_burn_line_walking_mask.png). Reproduced offline on the shipped model (evidence/accept_lone_fire_lane.py, 0/8).",
+  "unfixed": "the fix is a kernel design choice (how a single lit cell should spread under the carry: even spread until it is a front, or a widened carry), not known in the sitting; it needs a new kernel build and every check rerun",
+  "filed": "RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT"
  }
 }
