@@ -2,9 +2,9 @@
  "judge_model": {},
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Mirrak",
- "decision": "HOLD_CANVAS",
+ "decision": "REGEN",
  "reasons": [
-  "canvas not the shipping rule for drawSize [2.0, 2.0]: east 1024x1024 != 256x256; north 1024x1024 != 256x256; south 1024x1024 != 256x256"
+  "facing truth FLAG (facing_scale_lint gate, plan quadruped): south d_south 0.488 (band 0.63..1.33); north d_north 1.515 (band 0.64..1.23); south feet 0.1328 (band -0.03..0.03); north feet 0.3281 (band -0.03..0.03)"
  ],
  "prompt_versions": {
   "preamble": {
@@ -37,10 +37,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "9d6e42dc766fe3c831a3d527ce68317468126f03e8965be9c02da7cf0587129d",
-  "east.png": "a260f961c72957edf55850efc8efc59797e4bfc1db100787e5ac11d0db03ace4",
-  "north.png": "d5552609f6eb48c2d48f25c8fbb94aec29237e78ebe0555c0a5410fd1bee05f2",
-  "scale.png": "bd673ffef1405850c66516366b268570684d3ae48a3772eedb43c3eddf3ac77c",
-  "facings.png": "db0a24988b11fdcd8d6620923445d20885a71a29c717da8cf7f508e8e1b0be1d"
+  "south.png": "dda8f7c1a7f5eb09005cf8f82381754e37dc131ed4cc95e7cbc3f4c6402ec66a",
+  "east.png": "8ca2945ed61727d1edd35f26a5fb5c2871496a3d233c58323965721930b42c74",
+  "north.png": "42f30e934ff29ac28490dfd1ef204701ab870bd520eb2376bc5599026163afd1",
+  "scale.png": "c3cd13c15c65ed7fc5d0165112a6215ec921918f83d5a5d80bd29989c8987c06",
+  "facings.png": "790455e84b50ffb56d7b84a0e487654bafa6451ebdb98d5532307eccad38b0e2"
  }
 }

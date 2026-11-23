@@ -2,9 +2,9 @@
  "judge_model": {},
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Dustveil",
- "decision": "HOLD_CANVAS",
+ "decision": "REGEN",
  "reasons": [
-  "canvas not the shipping rule for drawSize [2.75, 2.75]: east 1024x1024 != 512x512; north 1024x1024 != 512x512; south 1024x1024 != 512x512"
+  "facing truth FLAG (facing_scale_lint gate, plan insect): south feet 0.0547 (band -0.03..0.03); north feet -0.0488 (band -0.03..0.03)"
  ],
  "prompt_versions": {
   "preamble": {
@@ -37,10 +37,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "36a7e94fa70ad842acc9d7b476a43822a3282cfb991e5a023076336964ea1ff9",
-  "east.png": "fc4f8832655123abc9fb191f3e8be457adfbe96ca189b4107302347ebc9e417f",
-  "north.png": "8f2e83e244ece6487b5200ae4835dc3154b012eee4aa8e889655e04b3aa55b72",
-  "scale.png": "fa3822878ecc79340e93658c58882c91d13b2b2e0a0577b9c5fde1b9d94d0292",
-  "facings.png": "763941a609c94961e9017dbcbe17dd8d6ffd86df1b38888c7d46d50f0c150c27"
+  "south.png": "97ade17738c415a122e16a10660b5202ab8bdbb2234e6bb07ae3dc34f8ee897c",
+  "east.png": "42b09b9b5ce632cb28aa430c3f15ed6cf1ea682c07182e8ba4a69ee93e241ca4",
+  "north.png": "40eb585fcc5d071876b5a8a5ee9f889e73ff627b688ccf6ea2a3e5e1f4a545cd",
+  "scale.png": "a786be4e91095fda09a1ac4f050692e9bcb4139121c2f6bc572918a11de54946",
+  "facings.png": "c76f5f1beb37026dd1352ec0d1be022c8af53ec79b95c321874e2f0795152418"
  }
 }

@@ -1,10 +1,29 @@
 {
- "judge_model": {},
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 40.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4205042
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.14760700000000002
+  }
+ },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Harrok",
- "decision": "HOLD_CANVAS",
+ "decision": "REGEN",
  "reasons": [
-  "canvas not the shipping rule for drawSize [2.6, 2.6]: east 1024x1024 != 512x512; north 1024x1024 != 512x512; south 1024x1024 != 512x512"
+  "opus band REALLY_BAD (model said really_bad); blocking ['STYLE_EARTHLY', 'DESC_MISS', 'STYLE_OFF']; polish ['LEGIB_32']"
  ],
  "prompt_versions": {
   "preamble": {
@@ -37,10 +56,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "a4ca8828c9c216c0f9d4c7f651c3cffb2ec4f8fb68ae10b089c82e92d772df01",
-  "east.png": "f113a3f41cb905a8b3675f95ca6788de8016a66266f20bf994ac26f695226c71",
-  "north.png": "714352337119ddbbd20107c2c704da5b2482c7ebdf81dfd041497fe7cceca673",
-  "scale.png": "38869dccf7efdacbf2847856b12ce46a6d6cd9413855d1eb6c2f0250bac0e81e",
-  "facings.png": "2073b39478f5c3aa7d00d01c8e8256b6859c4f55adb8ef75b56de92c30b0b36e"
+  "south.png": "1b1239182581e29ae58dea5969ee8daa15ed6f48f2be1f30985c48d43a673dd2",
+  "east.png": "acf7b8bd7337bf285309fc1d5942f7efe932b17b7d8044c1957a5502cbe0193d",
+  "north.png": "1ef4f0a10e1abd3858a9bb30f7b831b6c8001c2a1456f3112a497030689641b6",
+  "scale.png": "d111bb813aac804e513971b2b3b2232e769e902e437a9b0fb51ebabc7897b755",
+  "facings.png": "8ab48ae7548daf3592bff7ea0b95d69003612ec7850db6ff26d2ff866fa0eb9b"
  }
 }

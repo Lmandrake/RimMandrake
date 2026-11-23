@@ -2,9 +2,9 @@
  "judge_model": {},
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Pirrik",
- "decision": "HOLD_CANVAS",
+ "decision": "REGEN",
  "reasons": [
-  "canvas not the shipping rule for drawSize [0.95, 0.95]: east 1024x1024 != 256x256; north 1024x1024 != 256x256; south 1024x1024 != 256x256"
+  "facing truth FLAG (facing_scale_lint gate, plan flyer): north d_north 1.202 (band 0.82..1.17); north feet 0.0352 (band -0.03..0.03)"
  ],
  "prompt_versions": {
   "preamble": {
@@ -37,10 +37,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "1dd524ae7fa4a0f7b415688508d97f20dcec2ca3dcd2c5555024a4d76f098ce9",
-  "east.png": "09d129ab75bf5bf5e41e5663411d2e30112439b7371dc1056e4ae5897f79f7aa",
-  "north.png": "a70e8f046db51fae07eb9bc33cffa94ee98b17d9e9cae1d72464644167e68f8c",
-  "scale.png": "6bb73c79a641ee2177759b16171494a4e4eea6509f29bb7218355ce77c02e0f6",
-  "facings.png": "497919176a0529d53c091cd0d5eec913a76d885fc1e43149a4f11b7494c1c1f8"
+  "south.png": "7432376f8dea0dfcd8f5c57a1c4cc78dcec5c9c254cba920f44b5ad1cd530fbf",
+  "east.png": "b991c994019939101613dbb9245577f105e89d988c9d10b1d734681640df93c8",
+  "north.png": "c98c1cc05fc547f27c12905cc17c0840ad309cf441df6c41a1f6edd8da7c0d5e",
+  "scale.png": "8f11ec0197c9b93e9a5c64d7035240f2a6bfbd2774b6785ad07fd18fb38941de",
+  "facings.png": "0b8760ccffa819d1be2860e41754eb59cc37191252d6bf341c17ce96c17fe4eb"
  }
 }
