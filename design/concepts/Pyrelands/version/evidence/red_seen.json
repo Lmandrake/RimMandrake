@@ -39,17 +39,17 @@
   "test_blob": "3b1c0d91704957a35f87d54e536566f8904cb9ce"
  },
  "T_DEFS_OFFLINE": {
-  "at": "2026-11-22T05:34:49Z",
+  "at": "2026-11-23T18:19:17Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
   "last": "FAIL: the unchanged copy is not green (the copy misses a file facts() reads)",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\nindex dc0abf0ea8..7de77597dc 100644\n--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\n+++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\n@@ -221,7 +221,7 @@\n   <ThingDef ParentName=\"AnimalThingBase\">\n     <defName>RM_FurnaceBeast</defName>\n     <label>furnace-beast</label>\n-    <description>A giant whose banded mineral hide stores the heat of the burns and glows between the plates. It walks into the flames to bank that heat, and carries it long after. A kept furnace-beast can heat a barn for weeks, but may also set the floor alight.</description>\n+    \n     <statBases>\n       <MoveSpeed>3.6</MoveSpeed>\n       <!-- PYRELANDS_ULLAI_GIANT_BUILD_1: the giant (bs 9: twice the Zeer's 4.5, the largest other Pyrelands animal;\n",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\n+++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml\n@@ -336,7 +336,7 @@\n       <!-- Body size 9 makes it a Huge Things T2 titan, and a T2 wake holes every thin roof: it unroofed the barn it heats.\n            It stays a titan and spares roofs. -->\n       <li Class=\"RimMandrake.TitanicCreatures.RM_TitanicExtension\" MayRequire=\"mandrake.rm.hugethings\">\n-        <sparesRoofs>true</sparesRoofs>\n+        <sparesRoofs>false</sparesRoofs>\n       </li>\n     </modExtensions>\n   </ThingDef>\n",
   "patch_files": [
    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml"
   ],
-  "patch_sha": "dfb701b20d318fd0",
+  "patch_sha": "14c34be75c255792",
   "rc": 1,
-  "test_blob": "6f3c72c49fc0af980c0f84f993ed6e2098f95ea0"
+  "test_blob": "da1b0e763efb5d3facf0c80982880b78c7e64fbf"
  },
  "T_FH_CRESTFEATHER": {
   "at": "2026-11-23T00:14:11Z",

@@ -333,6 +333,11 @@
       <li Class="RimMandrake.CreatureBehaviors.RM_SunDashExtension" MayRequire="mandrake.rm.biomes">
         <exempt>true</exempt>
       </li>
+      <!-- Body size 9 makes it a Huge Things T2 titan, and a T2 wake holes every thin roof: it unroofed the barn it heats.
+           It stays a titan and spares roofs. -->
+      <li Class="RimMandrake.TitanicCreatures.RM_TitanicExtension" MayRequire="mandrake.rm.hugethings">
+        <sparesRoofs>true</sparesRoofs>
+      </li>
     </modExtensions>
   </ThingDef>
 

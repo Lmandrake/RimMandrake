@@ -7,6 +7,7 @@
   tc-crush      every RM_CrushRuleDef row names exactly one of thing / category, minTier is T1|T2|T3, no two rows share a target, and
                 the Chunks row still protects (crushable false): chunks are a named "needs individual ruling" case
   tc-keys       every "RM_TitanicCorpseSite_*".Translate() key in C# exists in Languages/*/Keyed
+  tc-spares-roofs  a race's RM_TitanicExtension.sparesRoofs (default false) reaches the kernel's HolesRoof from the wake's roof call
   tc-kernel     the kernel is Verse-free, the csproj keeps SelfTest out of the mod assembly, the kernel's day length is GenDate's 60000
                 and its crush damage numbers are the ones the settings text promises (light < heavy)
   tc-defof      every [DefOf] field of the mod names a def its XML defines
@@ -110,6 +111,17 @@ def main(argv):
         n["keys"] += 1
         if f"<{k}>" not in keyed:
             E("tc-keys", f'"{k}".Translate() has no <{k}> in Languages/*/Keyed (the game shows the raw key)')
+
+    # tc-spares-roofs
+    strip = lambda s: re.sub(r"//[^\n]*|/\*.*?\*/", "", s, flags=re.S)
+    wake = strip(read(os.path.join(src, "Titanic", "Wake", "TitanicWakeProcessor.cs")))
+    ext = strip(read(os.path.join(src, "Titanic", "Tiering", "RM_TitanicExtension.cs")))
+    if not re.search(r"public\s+bool\s+sparesRoofs\s*;", ext):
+        E("tc-spares-roofs", "RM_TitanicExtension.sparesRoofs is not a public bool that defaults to false (every other titan holes thin roofs)")
+    if not re.search(r"bool\s+sparesRoofs\s*=\s*titan\.def\.GetModExtension<RM_TitanicExtension>\(\)\?\.sparesRoofs\s*\?\?\s*false\s*;", wake):
+        E("tc-spares-roofs", "the wake does not read sparesRoofs from the titan's own race (default false)")
+    if not re.search(r"HolesRoof\(.*,\s*sparesRoofs\)\)", wake) or not re.search(r"ProcessRoof\([^)]*,\s*sparesRoofs\);", wake):
+        E("tc-spares-roofs", "the wake's roof call does not pass sparesRoofs to the kernel")
 
     # tc-kernel
     kp = os.path.join(src, "Kernel", "RM_TitanicKernel.cs")

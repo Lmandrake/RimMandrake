@@ -29,6 +29,7 @@ namespace RimMandrake.TitanicCreatures
             if (titan.Flying) return; // TITAN_WAKE_FIXES_1 (B3.8): no ground wake while airborne
             Map map = titan.Map;
             CellRect rect = titan.OccupiedRect();
+            bool sparesRoofs = titan.def.GetModExtension<RM_TitanicExtension>()?.sparesRoofs ?? false;
             // TITAN_WAKE_FIXES_1 (B3.6): 1.6 ThingGrid registers a multi-cell thing in every cell it covers, so crushables are gathered
             // across the whole footprint first and each is struck once per step (a 2x2 under a 4x4 step took four blows before).
             var cells = new List<List<Thing>>();
@@ -38,7 +39,7 @@ namespace RimMandrake.TitanicCreatures
                 {
                     continue;
                 }
-                ProcessRoof(c, map, tier);
+                ProcessRoof(c, map, tier, sparesRoofs);
                 if (RM_TitanicKernel.LeavesFilth((int)tier, Rand.Chance(RM_HugeThingsSettings.wakeFilthTrailChance)))
                 {
                     FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_RubbleRock);
@@ -87,13 +88,13 @@ namespace RimMandrake.TitanicCreatures
         /// only ever a thin one; a thick roof overhead is never touched here
         /// even as a fallback, on purpose (never destroy natural rock).
         /// Gated to T2+ per the tier table ("T2 colossal: thin roofs holed";
-        /// T1 does not hole roofs).
+        /// T1 does not hole roofs). A race may spare roofs (RM_TitanicExtension.sparesRoofs).
         /// </summary>
-        private static void ProcessRoof(IntVec3 c, Map map, TitanicTier tier)
+        private static void ProcessRoof(IntVec3 c, Map map, TitanicTier tier, bool sparesRoofs)
         {
             if (!RM_HugeThingsSettings.RoofHolingActive) return;
             RoofDef roof = c.GetRoof(map);
-            if (RM_TitanicKernel.HolesRoof((int)tier, roof != null, roof != null && roof.isThickRoof))
+            if (RM_TitanicKernel.HolesRoof((int)tier, roof != null, roof != null && roof.isThickRoof, sparesRoofs))
             {
                 map.roofGrid.SetRoof(c, null);
             }

@@ -26,5 +26,9 @@ namespace RimMandrake.TitanicCreatures
         /// <summary>TITANIC_BODYSIZE_TEST_RACE_1: a harness-only test race (mod HugeThingsTestRaces). Tiers as its body size says, but no
         /// titan event ever picks it (TitanPassageUtility.Eligible), so loading the test mod cannot put a test titan into a session.</summary>
         public bool harnessOnly;
+
+        /// <summary>RIMMANDRAKE_SPARE_PYRE_FURNACE_BARN_ROOF_FROM_TITAN_WAKE: this race's wake never holes a roof, at any tier; the
+        /// rest of its wake and its place in the titan pool are unchanged. For a beast that is kept indoors (the furnace-beast).</summary>
+        public bool sparesRoofs;
     }
 }

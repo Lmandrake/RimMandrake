@@ -12,6 +12,7 @@ Reads the repo's XML and C# only (plus the def dump for the rainRate of weathers
   furnace (g6 static)    RM_FurnaceBeast body size at least twice every other RM_Pyrelands animal's (native AND
                          patch-added rows) and its adult draw size strictly the largest; Patch_FurnaceBeastHeatImmunity
                          names it and absorbs Heat damage
+  furnace barn roof      RM_FurnaceBeast's RM_TitanicExtension spares roofs and leaves it a titan (in-game visit 7)
   sand shovel            RM_FE_Ground_Sand digs to 5 RM_GlassSand and leaves RM_FE_Ground_Gravel; the designator joins Orders
   descriptions_present   every concrete def of this mod a player inspects (things, terrain, the biome, hediffs, weathers,
                          research, conditions; not projectiles, motes or filth) carries a description, its own or a repo
@@ -244,6 +245,15 @@ def facts(root, dump_rain):
     cs = open(os.path.join(root, MOD, "Source", "Patch_FurnaceBeastHeatImmunity.cs"), errors="replace").read()
     fact("furnace_heat_patch_targets_it", '"RM_FurnaceBeast"' in cs and re.search(r"absorbed\s*=\s*true", cs)
          and '"Heat"' in cs, "names RM_FurnaceBeast, the Heat category, and sets absorbed = true")
+    # RIMMANDRAKE_SPARE_PYRE_FURNACE_BARN_ROOF_FROM_TITAN_WAKE (in-game visit 7): body size 9 makes it a Huge Things T2 titan,
+    # whose wake holes every thin roof it walks under, so it unroofed the barn it heats. It must spare roofs and must stay a
+    # titan (forceEnabled false would take it out of the giant pool).
+    tix = next((li for li in (fb.findall("modExtensions/li") if fb is not None else [])
+                if li.get("Class") == "RimMandrake.TitanicCreatures.RM_TitanicExtension"), None)
+    spares = (tix.findtext("sparesRoofs") or "").strip().lower() if tix is not None else None
+    forced = (tix.findtext("forceEnabled") or "").strip().lower() if tix is not None else None
+    fact("furnace_spares_its_barn_roof", spares == "true" and forced != "false",
+         "RM_TitanicExtension sparesRoofs %s, forceEnabled %s" % (spares, forced or "unset"))
     # sand shovel
     terr, terrab = _defs(root, "TerrainDef")
     sand = terr.get("RM_FE_Ground_Sand")
@@ -318,6 +328,10 @@ MUTANTS = [
     ("furnace drawn as the zeer", D + "ThingDefs_Races/RM_PyrelandsFauna.xml", "<drawSize>7.5</drawSize>", "<drawSize>6</drawSize>"),
     ("heat patch on wrong def", MOD + "/Source/Patch_FurnaceBeastHeatImmunity.cs", '"RM_FurnaceBeast"', '"RM_Ullai"'),
     ("heat patch absorbs nothing", MOD + "/Source/Patch_FurnaceBeastHeatImmunity.cs", "absorbed = true", "absorbed = false"),
+    ("furnace holes its barn roof", D + "ThingDefs_Races/RM_PyrelandsFauna.xml", "<sparesRoofs>true</sparesRoofs>",
+     "<sparesRoofs>false</sparesRoofs>"),
+    ("furnace no titan", D + "ThingDefs_Races/RM_PyrelandsFauna.xml", "<sparesRoofs>true</sparesRoofs>",
+     "<sparesRoofs>true</sparesRoofs><forceEnabled>false</forceEnabled>"),
     ("shovel yields 4", D + "TerrainDefs/ScorchableGround.xml", "<count>5</count>", "<count>4</count>"),
     ("shovel leaves sand", D + "TerrainDefs/ScorchableGround.xml", "<leaves>RM_FE_Ground_Gravel</leaves>", "<leaves>RM_FE_Ground_Sand</leaves>"),
     ("furnace-beast description gone", D + "ThingDefs_Races/RM_PyrelandsFauna.xml",

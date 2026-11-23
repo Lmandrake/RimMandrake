@@ -197,9 +197,11 @@ namespace RimMandrake.TitanicCreatures.SelfTest
                         }
                         foreach (bool has in new[] { false, true })
                             foreach (bool thick in new[] { false, true })
+                            foreach (bool spares in new[] { false, true })
                             {
-                                bool holes = RM_TitanicKernel.HolesRoof(tier, has, thick);
-                                Check(holes == (tier >= 2 && has && !thick), "HolesRoof wrong");
+                                bool holes = RM_TitanicKernel.HolesRoof(tier, has, thick, spares);
+                                Check(!(spares && holes), $"a T{tier} race that spares roofs holed one");
+                                Check(holes == (tier >= 2 && has && !thick && !spares), "HolesRoof wrong");
                                 Check(!(thick && holes), "a thick roof (natural rock) was holed");
                                 Check(!(!has && holes), "holed a roof that is not there");
                             }

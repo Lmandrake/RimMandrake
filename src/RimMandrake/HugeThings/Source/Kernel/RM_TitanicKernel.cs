@@ -168,10 +168,10 @@ namespace RimMandrake.TitanicCreatures
             return tier == T3 && isBuilding;
         }
 
-        /// <summary>Thin roofs are holed from T2; a thick roof (overhead mountain) is never removed.</summary>
-        public static bool HolesRoof(int tier, bool hasRoof, bool thick)
+        /// <summary>Thin roofs are holed from T2, unless the race spares roofs; a thick roof (overhead mountain) is never removed.</summary>
+        public static bool HolesRoof(int tier, bool hasRoof, bool thick, bool sparesRoofs)
         {
-            return tier >= T2 && hasRoof && !thick;
+            return tier >= T2 && hasRoof && !thick && !sparesRoofs;
         }
 
         /// <summary>Rubble trail: every tiered pawn leaves a chance of filth per cell.</summary>

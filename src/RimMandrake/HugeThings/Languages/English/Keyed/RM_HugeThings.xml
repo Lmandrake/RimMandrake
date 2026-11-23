@@ -35,7 +35,7 @@
   <RM_HugeThings_WakeDamage>  Crush damage: {0}x</RM_HugeThings_WakeDamage>
   <RM_HugeThings_WakeRubble>  Rubble chance per footprint cell: {0}%</RM_HugeThings_WakeRubble>
   <RM_HugeThings_WakeRoof>  Colossal titans hole thin roofs</RM_HugeThings_WakeRoof>
-  <RM_HugeThings_WakeRoof_Desc>T2 and larger tear out constructed and thin rock roofs as they pass. Overhead mountain is never removed.</RM_HugeThings_WakeRoof_Desc>
+  <RM_HugeThings_WakeRoof_Desc>T2 and larger tear out constructed and thin rock roofs as they pass, except the few kinds that spare roofs (the furnace-beast). Overhead mountain is never removed.</RM_HugeThings_WakeRoof_Desc>
   <RM_HugeThings_Smash>  The biggest titans smash giant plants</RM_HugeThings_Smash>
   <RM_HugeThings_Smash_Desc>A titan at or above the smash tier damages every giant plant whose trunk it brushes, once per step, until the plant falls and the way opens. Smaller titans treat giant trunks as walls and go around. Off: every titan goes around.</RM_HugeThings_Smash_Desc>
   <RM_HugeThings_SmashTier>    Smash tier: T{0} and larger</RM_HugeThings_SmashTier>
