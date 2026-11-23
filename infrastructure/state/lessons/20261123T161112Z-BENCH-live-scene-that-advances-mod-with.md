@@ -1,0 +1,1 @@
+A live scene that advances the mod with a bare engine call (jawa/flowworks_pulse) while pawns act in game ticks freezes the pawns: sc_moat_raid drained 2,000 ticks of water in 0 game ticks and passed a moat that holds 0-2% of simulated raids when played in game time. Drive an effect that races pawns by game ticks only.
