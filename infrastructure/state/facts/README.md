@@ -2,22 +2,20 @@
 
 🔴 **NOTHING LEARNED IS EVER DROPPED FOR SPACE.** Owner, 2026-08-23.
 
-⭐ **UNBUDGETED, permanently and on purpose.** The doc-budget system was retired 2026-08-27; this directory was always exempt. Append freely —
-the overflow destination must never itself be full.
+⭐ **UNBUDGETED, permanently and on purpose.** The doc-budget system was retired 2026-08-27. This directory was always
+exempt. Append freely: the overflow destination must never itself be full.
 
-> **Cutting a learned FACT is never on the cut-list. Only its NARRATION is.** If a fact will
-> not fit its proper doc, append it here and leave a one-line pointer in that doc.
-> ⛔ "It did not fit" is not a reason to lose it. ⛔ "git history keeps it" is not a
-> destination — nobody reads backwards through diffs.
+> **Cutting a learned FACT is never on the cut-list. Only its NARRATION is.** If a fact does not fit its proper doc,
+> append the fact here and leave a one-line pointer in that doc.
+> ⛔ "It did not fit" is not a reason to lose a fact. ⛔ "git history keeps it" is not a
+> destination: nobody reads backwards through diffs.
 
 ## How to use it
 
-- **One file per topic**, named for the subject, not the seat or the date: `biomes.md`,
-  `pawnkinds.md`, `bridge.md`.
-- **Append. Never rewrite, reorder or prune.** Newest at the bottom.
-- **One fact per entry, with the date and how it was measured** — a fact with no measurement
-  behind it is a rumour.
-- ⚠️ **Promote, do not duplicate.** When a fact earns a place in a skill, a design doc or
-  `BUILDABLE.md`, move it and leave a line saying where it went. This is a holding area,
-  not a second canon.
-- ⛔ **Not a diary.** What you did belongs in the commit message; what is TRUE belongs here.
+- **One file per topic.** Name the file for the subject, not for the seat or the date: `biomes.md`, `pawnkinds.md`,
+  `bridge.md`.
+- **Append. Never rewrite, reorder or prune.** The newest entry goes at the bottom.
+- **One fact per entry, with the date and how it was measured.** A fact with no measurement behind it is a rumour.
+- ⚠️ **Promote, do not duplicate.** When a fact earns a place in a skill, a design doc or `BUILDABLE.md`, move it.
+  Leave a line that says where the fact went. This directory is a holding area, not a second canon.
+- ⛔ **Not a diary.** What you did belongs in the commit message. What is TRUE belongs here.
