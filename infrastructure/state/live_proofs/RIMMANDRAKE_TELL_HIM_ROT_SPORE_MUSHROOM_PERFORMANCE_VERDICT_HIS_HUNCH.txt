@@ -1,0 +1,9 @@
+# The Rot spore-emitter A/B as one SteveDesktop lane job (exact tier builds_biomes: the bridge and mandrake.rm.biomes,
+# with every DLC). Submitted by RIMMANDRAKE_ROUTE_VISIT_TESTQ_CHECKS_AHEAD_OF_FILLER, 2026-11-22: ArchSmall was held and
+# ArchBig barred, so the measurement had sat UNRUN since d7e47c44d1.
+# A1 makes an RM_TheRot map (live_site.py; a failure there exits 3, which the worker reads UNMEASURED, never FAIL),
+# then runs spore_emitter_window.py: windows with 1, 5 and 20 RM_AgariluxPrime placed when the map has none, then one
+# window with every emitter and spore gas stripped (the A/B). Exit 0 is REFUTED (Burst max < 5 ms and < 5% of the worst
+# tick); 1 is any other verdict (BETWEEN, SUPPORTED, BLIND, NEVER_FIRED, NO_EMITTER, WRONG_SCENE). The window records
+# are printed at the end, so the job's proof_A1.log carries every number.
+live-proof A1: python.exe src/RimMandrake/Utils/live_site.py --biome RM_TheRot --needs mandrake.rm.biomes || exit 3; python.exe src/RimMandrake/Utils/perf/spore_emitter_window.py --place 1,5,20 --strip --out Transient/perf_rot; rc=$?; f=$(ls -t Transient/perf_rot/*.json 2>/dev/null | head -1); [ -n "$f" ] && tail -c 6000 "$f"; exit $rc
