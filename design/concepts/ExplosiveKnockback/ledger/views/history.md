@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":30663,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=6ab32a57625c1389abd1eb41842e083011fd1ebc0f81a6b17c34f1f77f5d354e -->
-# ExplosiveKnockback — mod ledger history (630 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":30663,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":2030,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=97e7edba98b9e8fd23440b540acc851f45b9f6c05f4ef4207a3df2ee88faedf7 -->
+# ExplosiveKnockback — mod ledger history (637 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -631,3 +631,10 @@
 - 2026-11-23T20:07:20Z DISPATCH#85 run.start run v0.1.0: 
 - 2026-11-23T20:14:24Z DISPATCH#86 run.end run v0.1.0: 
 - 2026-11-23T20:14:25Z DISPATCH#87 session.id session v0.1.0: 
+- 2026-11-23T20:24:51Z HOLDER.run-1795464425#1 lease.renew lease v0.1.0: 
+- 2026-11-23T20:49:46Z HOLDER.run-1795464425#2 lease.renew lease v0.1.0: 
+- 2026-11-23T21:07:22Z HOLDER.run-1795464425#3 lease.renew lease v0.1.0: 
+- 2026-11-23T21:20:08Z HOLDER.run-1795464425#4 lease.renew lease v0.1.0: 
+- 2026-11-23T21:40:39Z HOLDER.run-1795464425#5 lease.renew lease v0.1.0: 
+- 2026-11-23T22:00:00Z HOLDER.run-1795464425#6 lease.renew lease v0.1.0: 
+- 2026-11-23T22:13:39Z HOLDER.run-1795464425#7 lease.renew lease v0.1.0: 
