@@ -1,18 +1,18 @@
-# Gimme Some Slack 0.1.1: test-and-stage table
+# Gimme Some Slack 0.2.0: test-and-stage table
 
-Generated 2026-11-22T20:15:46-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
+Generated 2026-11-23T02:23:31-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
 
 ## Counts (measured)
 
-- bars: 54
+- bars: 57
 - with a deciding test runnable today (an offline test that ran, or an in-game scene whose entry exists): 54
-- with every deciding test runnable today: 53
+- with every deciding test runnable today: 52
 - with at least one test of any kind runnable today, supports included (proof rows whose code exists count): 54
-- with an offline deciding test, all green today: 29
+- with an offline deciding test, all green today: 28
 - decided offline only (no game needed): 2
-- in-game scenes: 26 named in scenes.json plus 7 specified here; entry exists 33, absent 0
+- in-game scenes: 26 named in scenes.json plus 10 specified here; entry exists 33, absent 3
 - older proof rows (supports): 170 mapped in proof_leaves.ROW_LEAVES (2 of them gravship_scene), code found for 170; last live run J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard); mapped rows and run rows not reconciled one to one
-- offline tests: 31 built before Stage 3 (ran today: 30 PASS, 1 FAIL); 9 specified at the lock, built in Stage 3: T_SETTINGS_SWEEP_OFFLINE PASS, T_SHOCK_RULE_OFFLINE PASS, T_CORD_GEOMETRY_OFFLINE PASS, T_MAIN_THREAD_TEXTURES_OFFLINE PASS, T_STATICS_CENSUS PASS, T_SWITCH_OFF_NODE_OFFLINE PASS, T_SWITCH_LIGHT_OFFLINE PASS, T_NO_KINK_OFFLINE PASS, T_POLE_SOUTH_DRAWS_FRONT_OFFLINE PASS
+- offline tests: 31 built before Stage 3 (ran today: 30 PASS, 1 FAIL); 13 specified at the lock, built in Stage 3: T_SETTINGS_SWEEP_OFFLINE PASS, T_SHOCK_RULE_OFFLINE PASS, T_CORD_GEOMETRY_OFFLINE PASS, T_MAIN_THREAD_TEXTURES_OFFLINE PASS, T_STATICS_CENSUS PASS, T_SWITCH_OFF_NODE_OFFLINE PASS, T_SWITCH_LIGHT_OFFLINE PASS, T_NO_KINK_OFFLINE PASS, T_POLE_SOUTH_DRAWS_FRONT_OFFLINE PASS, T_LINE_RESTYLE_OFFLINE NOT BUILT, T_LOOK_ICONS_OFFLINE NOT BUILT, T_WALL_LAMP_LOOKS_OFFLINE NOT BUILT, T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE NOT BUILT
 
 ## Bars
 
@@ -44,9 +44,12 @@ Generated 2026-11-22T20:15:46-08:00 from `test_table.json` (the record; this is 
 | `cords_join_stubs_on_position_and_slope` | record | 6 | T_STUB_JOINS, T_STUB_ART_CENSUS, sc_stub_joins | - | 0 | all |
 | `switch_off_cords_stay_connected` | record | 6 | T_SWITCH_OFF_NODE_OFFLINE, sc_switch_off_ends | - | 0 | all |
 | `pole_buttons_show_icons` | record | 6 | sc_pole_icons_loaded | T_MAIN_THREAD_TEXTURES_OFFLINE | 0 | all |
-| `poles_draw_in_front_when_south` | record | 6 | T_POLE_SOUTH_DRAWS_FRONT_OFFLINE, sc_pole_south_of_tree | - | 0 | all |
+| `poles_draw_in_front_when_south` | record | 6 | T_POLE_SOUTH_DRAWS_FRONT_OFFLINE, T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE, sc_pole_south_of_tree | - | 0 | some |
 | `no_roof_over_pole` | record | 6 | sc_no_roof_over_pole | - | 0 | all |
 | `switch_light_reads_state` | record | 6 | T_SWITCH_LIGHT_OFFLINE, sc_switch_light | - | 0 | all |
+| `restyle_whole_line` | record | 6 | T_LINE_RESTYLE_OFFLINE, sc_restyle_whole_line | - | 0 | none |
+| `look_menu_icons` | record | 6 | T_LOOK_ICONS_OFFLINE, sc_look_menu_icons | - | 0 | none |
+| `wall_lamp_takes_looks` | record | 6 | T_WALL_LAMP_LOOKS_OFFLINE, sc_wall_lamp_looks | - | 0 | none |
 | `conduit_invisible` | tree | 6 | sc_conduit_invisible | T_GATE | 7 | all |
 | `cords_lie_slack` | tree | 6 | T_CORE, T_CORD_GEOMETRY_OFFLINE, sc_cords_slack | T_MATRIX, T_END_HEAP, T_NO_GROUND_WIND_OFFLINE | 20 | all |
 | `no_unforced_sharp_turn` | tree | 6 | T_CORD_GEOMETRY_OFFLINE, T_NO_KINK_OFFLINE, sc_no_sharp_turn | - | 2 | all |
@@ -111,6 +114,10 @@ Generated 2026-11-22T20:15:46-08:00 from `test_table.json` (the record; this is 
 | `T_SWITCH_LIGHT_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SwitchLightChecks.cs` | PASS rc=0 3.65s | the shipped lamp rule (Core/SwitchLight) over every side/power/state/setting case (4^4 sides x closed/open x setting) and the brief's sequences (power lost whil |
 | `T_NO_KINK_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/KinkChecks.cs` | PASS rc=0 29.3s | the production builder over the review map's ground-cord stations 1-4 (the probe's dump; station 3 is the build he walked) and the region round station 3 (seeds |
 | `T_POLE_SOUTH_DRAWS_FRONT_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py` | PASS rc=0 0.58s | over the SouthDrawsFront rule (MandrakePatches) and the mast def: the mast is drawn above every plant or building north of it within its picture height and belo |
+| `T_LINE_RESTYLE_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LineRestyleChecks.cs` | SPECIFIED | the run flood (ConduitStyles.Components over RM_MapComponent_ConduitRuns' neighbour rule) on generated lines of floor cords, a power switch, two poles joined by |
+| `T_LOOK_ICONS_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LookIconChecks.cs` | SPECIFIED | every look entry of the build menu's look choice and of the Restyle button takes its icon from the shared look-icon path (UI/Looks/<Look>), the four pictures ex |
+| `T_WALL_LAMP_LOOKS_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallLampLookChecks.cs` | SPECIFIED | WallLamp is a lamp def of the picker with one style def per look, each look's texture exists for every facing it draws, the wall lamp follows its line as the st |
+| `T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_mast_behind_tall_south_picture.py` | SPECIFIED | the reverse case of the south rule: a building whose picture reaches north into a mast just north of it draws in front of the mast; the line APART BUILDING_LAYE |
 | `sc_conduit_invisible` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_conduit_invisible | entry exists | no pipe drawn on any PowerConduit or WaterproofConduit cell, a cord per edge on both runs, overlay connector lines present; the HiddenConduit run owns no cord |
 | `sc_cords_slack` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_cords_slack | entry exists | every edge at least 1.4 times its chord, no bend tighter than the minimum radius, an excursion off the conduit line on edges over four cells |
 | `sc_no_sharp_turn` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_no_sharp_turn | entry exists | strands read greater than zero in every look (the instrument sees cords); unforced == 0 in every look, at plug and junction ends as well as mid-cord; every forc |
@@ -144,6 +151,9 @@ Generated 2026-11-22T20:15:46-08:00 from `test_table.json` (the record; this is 
 | `sc_pole_south_of_tree` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_pole_south_of_tree | entry exists | a capture of a pole south of a tree and one north of it: the south pole is drawn in front, the north one behind |
 | `sc_no_roof_over_pole` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_no_roof_over_pole | entry exists | auto-roof and a build-roof designation over a mast cell form no roof and the refusal names the pole; a god-mode roof still cuts the spans |
 | `sc_switch_light` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_switch_light | entry exists | two batteries, an in-line power switch: the GSS probe switchlights reads the lamp dark with no power, green closed and powered, red open and powered, dark after |
+| `sc_restyle_whole_line` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_restyle_whole_line | entry ABSENT | a line of floor cords, a power switch, two poles with an overhead span, a wall bracket and a hooked lamp, all Industrial: All connected on the far pole to Futur |
+| `sc_look_menu_icons` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_look_menu_icons | entry ABSENT | a capture of the build menu's look choice and of the Restyle menu: each look shows its own icon, the same picture in both menus |
+| `sc_wall_lamp_looks` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_wall_lamp_looks | entry ABSENT | wall lamps on a wall in each look beside a standing lamp, captured at play zoom; a restyle of the line they hook to repaints them as it does the standing lamp;  |
 | `LOOK_STAGE8` | 8 | look | `None` | entry ABSENT | his walk of a scavenger base on his full list, with a mid-way reload |
 | `T_CORDS_UNDER_ITEMS_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py` | PASS rc=0 0.3s | Offline half of sc_cords_under_items (GimmeSomeSlack 0.1.0, bar cords_draw_under_things, owner by card 2026-11-14). No game: the scene's entry imports and is wi |
 | `T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py` | PASS rc=0 0.02s | Another mod's dropped live cord is not an overhead line: the overhead-lines master switch must not silence it. |
@@ -158,6 +168,7 @@ Generated 2026-11-22T20:15:46-08:00 from `test_table.json` (the record; this is 
 - `design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md` row 36, "The wires are also above the items and furniture otherwise, likely all the same problem." -> bars cords_draw_under_things; test T_CORE (slideunder: under) + sc_cords_under_items (in scenes.json since 2026-11-14) (stage 4-5 then 6, as row 34)
 - `design/RimMandrake/validation_holding/owner_look_defects_2026-11-13.md` row 16, "[Image #8] Also, the GSS cables are now correctly below the items." -> bars cords_draw_under_things; test sc_cords_under_items (in scenes.json since 2026-11-14) keeps it so (stage 6, approval: the regression the in-game read guards; bar added by his card 2026-11-14)
 - `infrastructure/state/ledger/events/OWNER.jsonl` row OWNER:1795233641482676326, "You know with respect to the switch issue with gss showing disconnection the switch should have some illuminated indicator on it showing whether it is open or closed but always powered (green Vs red) vs unpowered (no glow). That would help with the user awareness part. Please make that so." -> bars switch_light_reads_state; test T_SWITCH_LIGHT_OFFLINE + sc_switch_light (stage 4-5 then 6, request, 0.1.1: bar added by his card 2026-11-20 (OWNER:1795244532644873616))
+- `infrastructure/state/ledger/events/OWNER.jsonl` row OWNER:1795387443867018723, "Both Flow Works need the "change everything on this line" (for flow works items) and GSS needs "change everything on this line" (for GSS items). They don't need to change each other's items though. Each mod can handle only its own, that's ok." -> bars restyle_whole_line; test T_LINE_RESTYLE_OFFLINE + sc_restyle_whole_line (stage 4-5 then 6, request, 0.2.0 MINOR: bar restyle_whole_line)
 - `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 1, "row 1 of the walk record's His points table" -> bars switch_off_cords_stay_connected; test T_SWITCH_OFF_NODE_OFFLINE (stage 4-5 then 6, defect; 0.1.1 bar (RIMMANDRAKE_SEAT_SLACK_CORDS_IN_OFF_SWITCH_NOT_CUT))
 - `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 2, "row 2 of the walk record's His points table" -> bars four_looks_one_run; test T_CORE (stage 4-5 then 6, approval)
 - `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 3, "row 3 of the walk record's His points table" -> bars four_looks_one_run; test T_CORE (stage 4-5 then 6, approval)
@@ -167,12 +178,12 @@ Generated 2026-11-22T20:15:46-08:00 from `test_table.json` (the record; this is 
 - `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 7, "row 7 of the walk record's His points table" -> bars ; test - (stage -, request, next version: RIMMANDRAKE_CUT_SLACK_REVIEW_STATIONS_NOBODY_READS (VERSION.json caveats))
 - `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 8, "row 8 of the walk record's His points table" -> bars junction_strips, cords_join_stubs_on_position_and_slope; test T_CORE + T_STUB_JOINS (stage 4-5 then 6, approval)
 - `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 9, "row 9 of the walk record's His points table" -> bars pole_buttons_show_icons; test (the bar's own deciders) (stage 4-5 then 6, defect; 0.1.1 bar (RIMMANDRAKE_LOAD_SLACK_POLE_ICONS_ON_MAIN_THREAD))
-- `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 10, "row 10 of the walk record's His points table" -> bars ; test - (stage -, request, next version: RIMMANDRAKE_WIRE_STYLE_ICONS_INTO_EVERY_LOOK_MENU)
-- `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 11, "row 11 of the walk record's His points table" -> bars ; test - (stage -, request, next version: RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP; art on RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART)
+- `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 10, "row 10 of the walk record's His points table" -> bars look_menu_icons; test T_LOOK_ICONS_OFFLINE (stage 4-5 then 6, request; 0.2.0 bar look_menu_icons (RIMMANDRAKE_WIRE_STYLE_ICONS_INTO_EVERY_LOOK_MENU))
+- `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 11, "row 11 of the walk record's His points table" -> bars ; test - (stage -, request; the battery's home is Machine Looks by the design pass (design/specs/2026-11-20-vanilla-electrical-art-home/design.md), not a GSS bar: RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP)
 - `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 12, "row 12 of the walk record's His points table" -> bars ; test - (stage -, art, held by RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART)
 - `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 13, "row 13 of the walk record's His points table" -> bars poles_draw_in_front_when_south; test T_POLE_SOUTH_DRAWS_FRONT_OFFLINE (stage 4-5 then 6, defect; 0.1.1 bar (RIMMANDRAKE_DRAW_SLACK_POLES_IN_FRONT_WHEN_SOUTH))
 - `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 14, "row 14 of the walk record's His points table" -> bars no_roof_over_pole; test (the bar's own deciders) (stage 4-5 then 6, defect; 0.1.1 bar (RIMMANDRAKE_BLOCK_SLACK_ROOF_OVER_POLE_KEEP_THE_CUT))
-- `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 15, "row 15 of the walk record's His points table" -> bars ; test - (stage -, request, held by RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART)
+- `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 15, "row 15 of the walk record's His points table" -> bars wall_lamp_takes_looks; test T_WALL_LAMP_LOOKS_OFFLINE (stage 4-5 then 6, request; the wall lamp is a 0.2.0 bar (wall_lamp_takes_looks); the other machines go to Machine Looks (RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART))
 - `design/RimMandrake/validation_holding/gss_walk_20261120.md` row 16, "row 16 of the walk record's His points table" -> bars ; test - (stage -, approval of the whole mod: the 0.1.0 pass (e1d9c3c042))
 
 ## The five judge corrections (rm-coverage-judge-1794599377), checked against the current text

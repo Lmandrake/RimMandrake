@@ -1,7 +1,7 @@
 {
  "mod": "GimmeSomeSlack",
- "version": "0.1.1",
- "made": "2026-11-22T20:15:46-08:00",
+ "version": "0.2.0",
+ "made": "2026-11-23T02:23:31-08:00",
  "made_by": "rm-builder, Maturation hand run beside the pilot, row 2 (throwaway version/make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -56,6 +56,17 @@
    "test": "T_SWITCH_LIGHT_OFFLINE + sc_switch_light",
    "stage": "4-5 then 6",
    "kind": "request, 0.1.1: bar added by his card 2026-11-20 (OWNER:1795244532644873616)"
+  },
+  {
+   "file": "infrastructure/state/ledger/events/OWNER.jsonl",
+   "row": "OWNER:1795387443867018723",
+   "words": "Both Flow Works need the \"change everything on this line\" (for flow works items) and GSS needs \"change everything on this line\" (for GSS items). They don't need to change each other's items though. Each mod can handle only its own, that's ok.",
+   "bars": [
+    "restyle_whole_line"
+   ],
+   "test": "T_LINE_RESTYLE_OFFLINE + sc_restyle_whole_line",
+   "stage": "4-5 then 6",
+   "kind": "request, 0.2.0 MINOR: bar restyle_whole_line"
   },
   {
    "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
@@ -159,10 +170,12 @@
    "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
    "row": 10,
    "words": "row 10 of the walk record's His points table",
-   "bars": [],
-   "test": "-",
-   "stage": "-",
-   "kind": "request, next version: RIMMANDRAKE_WIRE_STYLE_ICONS_INTO_EVERY_LOOK_MENU"
+   "bars": [
+    "look_menu_icons"
+   ],
+   "test": "T_LOOK_ICONS_OFFLINE",
+   "stage": "4-5 then 6",
+   "kind": "request; 0.2.0 bar look_menu_icons (RIMMANDRAKE_WIRE_STYLE_ICONS_INTO_EVERY_LOOK_MENU)"
   },
   {
    "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
@@ -171,7 +184,7 @@
    "bars": [],
    "test": "-",
    "stage": "-",
-   "kind": "request, next version: RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP; art on RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART"
+   "kind": "request; the battery's home is Machine Looks by the design pass (design/specs/2026-11-20-vanilla-electrical-art-home/design.md), not a GSS bar: RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP"
   },
   {
    "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
@@ -208,10 +221,12 @@
    "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
    "row": 15,
    "words": "row 15 of the walk record's His points table",
-   "bars": [],
-   "test": "-",
-   "stage": "-",
-   "kind": "request, held by RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART"
+   "bars": [
+    "wall_lamp_takes_looks"
+   ],
+   "test": "T_WALL_LAMP_LOOKS_OFFLINE",
+   "stage": "4-5 then 6",
+   "kind": "request; the wall lamp is a 0.2.0 bar (wall_lamp_takes_looks); the other machines go to Machine Looks (RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART)"
   },
   {
    "file": "design/RimMandrake/validation_holding/gss_walk_20261120.md",
@@ -1769,6 +1784,81 @@
     "result": "PASS"
    }
   },
+  "T_LINE_RESTYLE_OFFLINE": {
+   "id": "T_LINE_RESTYLE_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LineRestyleChecks.cs",
+   "observes": "the run flood (ConduitStyles.Components over RM_MapComponent_ConduitRuns' neighbour rule) on generated lines of floor cords, a power switch, two poles joined by an overhead span, a wall bracket, a hooked lamp and a FlowWorks pipe pole on the same cells: All connected from each member kind takes every Gimme Some Slack member and no FlowWorks item; a cut span splits the line in two; planted: a flood that stops at a pole, and one that takes the pipe pole, each go red (bar restyle_whole_line)",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs"
+   ],
+   "new": true,
+   "built_in_stage": "3",
+   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built: Stage 3 builds it failing first"
+   }
+  },
+  "T_LOOK_ICONS_OFFLINE": {
+   "id": "T_LOOK_ICONS_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LookIconChecks.cs",
+   "observes": "every look entry of the build menu's look choice and of the Restyle button takes its icon from the shared look-icon path (UI/Looks/<Look>), the four pictures exist and differ; planted: a menu entry back on its strand art goes red (bar look_menu_icons)",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs",
+    "src/RimMandrake/GimmeSomeSlack/Textures"
+   ],
+   "new": true,
+   "built_in_stage": "3",
+   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built: Stage 3 builds it failing first"
+   }
+  },
+  "T_WALL_LAMP_LOOKS_OFFLINE": {
+   "id": "T_WALL_LAMP_LOOKS_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallLampLookChecks.cs",
+   "observes": "WallLamp is a lamp def of the picker with one style def per look, each look's texture exists for every facing it draws, the wall lamp follows its line as the standing lamp does, and the master switch off draws vanilla; planted: a look with a missing facing goes red (bar wall_lamp_takes_looks)",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
+    "src/RimMandrake/GimmeSomeSlack/Defs",
+    "src/RimMandrake/GimmeSomeSlack/Textures"
+   ],
+   "new": true,
+   "built_in_stage": "3",
+   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built: Stage 3 builds it failing first"
+   }
+  },
+  "T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE": {
+   "id": "T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_mast_behind_tall_south_picture.py",
+   "observes": "the reverse case of the south rule: a building whose picture reaches north into a mast just north of it draws in front of the mast; the line APART BUILDING_LAYER_REACH of selftest_gss_pole_south_draws_front.py reads no pairs (1170 on 2026-11-22); planted: the building back on its own layer goes red (bar poles_draw_in_front_when_south; item RIMMANDRAKE_ORDER_SLACK_MAST_BEHIND_TALL_SOUTHERN_PICTURES)",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py",
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml",
+    "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs"
+   ],
+   "new": true,
+   "built_in_stage": "3",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_mast_behind_tall_south_picture.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified, not built: Stage 3 builds it failing first"
+   }
+  },
   "sc_conduit_invisible": {
    "id": "sc_conduit_invisible",
    "kind": "live_minimal",
@@ -2465,6 +2555,71 @@
    "runs_today": {
     "ran": false,
     "why": "live: offline-only run; entry exists in the code"
+   }
+  },
+  "sc_restyle_whole_line": {
+   "id": "sc_restyle_whole_line",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack",
+   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+   "entry": "scene_restyle_whole_line",
+   "entry_exists": false,
+   "new": true,
+   "observes": "a line of floor cords, a power switch, two poles with an overhead span, a wall bracket and a hooked lamp, all Industrial: All connected on the far pole to Futuristic; the GSS probe cstyles reads every piece, the span and the lamp Futuristic; then a cut span and All connected on one side to Modern leaves the other side Futuristic",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyleProbe.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs"
+   ],
+   "why_game": "a run is worked out from the running map (things, spans and their Up state); only the live map has them",
+   "for_bar": "restyle_whole_line",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_restyle_whole_line   (minimal list; entry ABSENT)",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run; entry ABSENT in the code"
+   }
+  },
+  "sc_look_menu_icons": {
+   "id": "sc_look_menu_icons",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack",
+   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+   "entry": "scene_look_menu_icons",
+   "entry_exists": false,
+   "new": true,
+   "observes": "a capture of the build menu's look choice and of the Restyle menu: each look shows its own icon, the same picture in both menus",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs"
+   ],
+   "why_game": "a float menu and its icons are drawn only by the running game's UI",
+   "for_bar": "look_menu_icons",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_look_menu_icons   (minimal list; entry ABSENT)",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run; entry ABSENT in the code"
+   }
+  },
+  "sc_wall_lamp_looks": {
+   "id": "sc_wall_lamp_looks",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack",
+   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+   "entry": "scene_wall_lamp_looks",
+   "entry_exists": false,
+   "new": true,
+   "observes": "wall lamps on a wall in each look beside a standing lamp, captured at play zoom; a restyle of the line they hook to repaints them as it does the standing lamp; the master switch off draws vanilla wall lamps without a restart",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyleProbe.cs"
+   ],
+   "why_game": "the drawn picture of a style def exists only in the running renderer",
+   "for_bar": "wall_lamp_takes_looks",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\validation.py --scene scene_wall_lamp_looks   (minimal list; entry ABSENT)",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run; entry ABSENT in the code"
    }
   },
   "LOOK_STAGE8": {
@@ -7745,6 +7900,7 @@
    "proves_at": "6",
    "decides": [
     "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE",
+    "T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE",
     "sc_pole_south_of_tree"
    ],
    "supports": [],
@@ -7752,10 +7908,11 @@
     "gss_walk_20261120.md#13"
    ],
    "offline_decides": [
-    "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE"
+    "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE",
+    "T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE"
    ],
-   "offline_green_today": true,
-   "every_decider_runnable_today": true,
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
    "any_test_runnable_today": true,
    "any_decider_runnable_today": true
   },
@@ -7797,6 +7954,69 @@
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
    "any_decider_runnable_today": true
+  },
+  {
+   "id": "restyle_whole_line",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_LINE_RESTYLE_OFFLINE",
+    "sc_restyle_whole_line"
+   ],
+   "supports": [],
+   "held": [
+    "OWNER.jsonl#OWNER:1795387443867018723"
+   ],
+   "offline_decides": [
+    "T_LINE_RESTYLE_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false
+  },
+  {
+   "id": "look_menu_icons",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_LOOK_ICONS_OFFLINE",
+    "sc_look_menu_icons"
+   ],
+   "supports": [],
+   "held": [
+    "gss_walk_20261120.md#10"
+   ],
+   "offline_decides": [
+    "T_LOOK_ICONS_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false
+  },
+  {
+   "id": "wall_lamp_takes_looks",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_WALL_LAMP_LOOKS_OFFLINE",
+    "sc_wall_lamp_looks"
+   ],
+   "supports": [],
+   "held": [
+    "gss_walk_20261120.md#15"
+   ],
+   "offline_decides": [
+    "T_WALL_LAMP_LOOKS_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false
   },
   {
    "id": "conduit_invisible",
