@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 40.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.43707720000000005
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 51.7
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Pirrik",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'ALPHA_HALO']; polish ['SCALE_WRONG']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_INCONSISTENT', 'ALPHA_HALO']",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "3c620f00dbd101408c4ab9dbc19b680a07fce7869380083d8afee940d4e122d9",
+  "east.png": "6a5b9eb02690c5fdde3df7a289cb44ff8cf48b410d708997ff6ca89ab52394fb",
+  "north.png": "6c2ec1ab58ba1c68976671b5e96afff042325090bae220985abe19c63f486263",
+  "scale.png": "8012b6bd381f030781995f52df47928bc832caa25c4083fcf39c2b9f3ef3ff7a",
+  "facings.png": "6ce88612ee3daee9b1f3552bec123c30e339a1668495d8a2a67001ed76cfa9f9"
+ }
+}

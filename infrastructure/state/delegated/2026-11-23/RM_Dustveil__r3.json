@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Dustveil",
+ "decision": "ESCALATE",
+ "reasons": [
+  "facing truth FLAG (facing_scale_lint gate, plan insect): south d_south 1.643 (band 0.69..1.20); north d_north 1.722 (band 0.74..1.36); south feet 0.1289 (band -0.03..0.03); north feet 0.1426 (band -0.03..0.03)"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "d31d2db86bc07ad7b9e467f5014791be6e7cc00891b40f09347544c52df5ede7",
+  "east.png": "52d4b71dd8f66c0556055cdd7ff83e2d99deef3010cfb335a6c09f3d986946d3",
+  "north.png": "d2415bd25d6d9868f91b7ab251aa311734a62868c82869884b20bf2cb0805b38",
+  "scale.png": "524e93c0119e8c521f1db35e8af3138019c1c6fd7585c0605d7d9cd8d5fbfd7c",
+  "facings.png": "8401e53155fbec7f117813457499835fcbcfb2f180deee67995b1b66746bf147"
+ }
+}

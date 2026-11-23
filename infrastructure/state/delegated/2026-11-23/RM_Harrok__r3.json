@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 49.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5047573999999999
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 38.5
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Harrok",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'F_INCONSISTENT', 'ALPHA_HALO']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K3'], own blocking ['F_INCONSISTENT', 'ALPHA_HALO']",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9b59ba5403640858d3dfae33b5df5f3bcf971195c4a71a22105e4b330f459372",
+  "east.png": "41d6d5b7012f0971fb8e69621af2397474ecda400a24399f0be5cb13b9af311b",
+  "north.png": "1f236a5f4cd3f1506cbb5ab2d746c1ba34011f4818e40c1b0ae7801694b0b89f",
+  "scale.png": "5cc3a0ad6b8ebfd94e303df3a0bcc5ba5de8815a2db5010345c1610523515a31",
+  "facings.png": "d29e5da7f9aee45388ae37a8863c28700d0f6dc07afea67e71bfaa30d23ae416"
+ }
+}
