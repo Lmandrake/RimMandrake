@@ -276,7 +276,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
-			foreach (Thing t in map.listerThings.ThingsOfDef(ThingDefOf.MinifiedThing))
+			foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.MinifiedThing))
 			{
 				// a stored ladder no free colonist can reach would be chosen and never carried: the rescue stalled for good
 				if (t is MinifiedThing m && m.InnerThing?.def == portable && m.Spawned && !m.IsForbidden(Faction.OfPlayer)
