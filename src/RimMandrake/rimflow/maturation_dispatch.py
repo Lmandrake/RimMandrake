@@ -8,8 +8,9 @@ pointlessly it seems, if I'm reading correctly. As long as we don't have automat
 can't get into too much trouble." (Measured that evening: all four advancing mods sat at Stage 3 for 6 to 9 hours with
 no builder on them, because every launch was a Conductor hand step.)
 
-    python3 src/RimMandrake/rimflow/maturation_dispatch.py tick [--apply] [--no-page]
-            one pass: decide per mod, launch (only with --apply), write the reading, regenerate MATURATION_NOW
+    python3 src/RimMandrake/rimflow/maturation_dispatch.py tick [--apply] [--page]
+            one pass: decide per mod, launch (only with --apply), write the reading. MATURATION_NOW is built by its own
+            unit, rm-maturation-page.timer, never inside the tick's cgroup; --page also builds it here, by hand
     python3 src/RimMandrake/rimflow/maturation_dispatch.py status        the last reading, one line per mod
     python3 src/RimMandrake/rimflow/maturation_dispatch.py clear MOD --why "..."
             the Conductor lifts a stop on MOD (the next tick may launch on it once)
@@ -3657,7 +3658,7 @@ def paused_rows(pz, mods, facts):
     return out
 
 
-def tick(root, cfg, apply, fx=None, now=None, page=True):
+def tick(root, cfg, apply, fx=None, now=None, page=False):
     """One tick; with apply, under the state lock from its read of state.json to its write."""
     if not apply:
         return _tick(root, cfg, apply, fx, now, page)
@@ -3665,7 +3666,7 @@ def tick(root, cfg, apply, fx=None, now=None, page=True):
         return _tick(root, cfg, apply, fx, now, page)
 
 
-def _tick(root, cfg, apply, fx=None, now=None, page=True):
+def _tick(root, cfg, apply, fx=None, now=None, page=False):
     fx = fx or {}
     now = now or time.time()
     d = sdir()
@@ -3841,6 +3842,10 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
             f.write(json.dumps({"at": now, "decisions": {r["mod"]: [r.get("decision"), r.get("refused"), r.get("klass")]
                                                          for r in rows},
                                 "launched": rd["launched"]}) + "\n")
+    # The page is built by its own unit (rm-maturation-page.timer), not here: as a child of the tick it ran in the tick's
+    # cgroup, ~326 MB beside the tick's ~340 MB and 46 s of each tick's wall; the unit read 1G peaks and a 5 min tick at
+    # its 1G MemoryMax (journal 2026-11-23 02:15-02:31 PST; RIMMANDRAKE_SLIM_TICK_MEMORY_PAGE_BUILD_HITS_ONE_GIG_TICK_TOOK_FIVE_MIN,
+    # boundary design/specs/2026-11-23-tick-page-own-unit/boundary.md). page=True (`tick --page`) is a hand tick's.
     if page and apply:
         regen = fx.get("page") or (lambda: subprocess.run([sys.executable, os.path.join(
             REPO, "src", "RimMandrake", "Utils", "maturation_now.py")], capture_output=True, text=True, timeout=600))
@@ -4087,7 +4092,9 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     t = sub.add_parser("tick")
     t.add_argument("--apply", action="store_true", help="launch and write state; without it, a dry pass")
-    t.add_argument("--no-page", action="store_true")
+    t.add_argument("--page", action="store_true", help="also build MATURATION_NOW (by hand; the timed tick never does: "
+                   "rm-maturation-page.timer builds it in its own cgroup)")
+    t.add_argument("--no-page", action="store_true", help=argparse.SUPPRESS)    # the default now; kept for old callers
     sub.add_parser("status")
     c = sub.add_parser("clear")
     c.add_argument("mod")
@@ -4176,12 +4183,12 @@ def main(argv=None):
         return 1 if res.get("error") else 0
     cfg = load_cfg()
     if o.cmd == "tick":
-        rd = tick(os.path.abspath(o.root), cfg, o.apply, page=not o.no_page)
+        rd = tick(os.path.abspath(o.root), cfg, o.apply, page=o.page and not o.no_page)
         for mod, r in rd["mods"].items():
             print("%-20s %-7s %-13s %s" % (mod, r.get("klass"), r["decision"], r.get("status") or r["why"]))
         print("idle owed max %s min%s; launched %d; page %s" % (
             rd["idle_owed_max_min"], (" (over %s: %s)" % (rd["idle_alarm_min"], ", ".join(rd["idle_owed_mods"])))
-            if rd["idle_owed_mods"] else "", len(rd["launched"]), rd.get("page", "not regenerated")))
+            if rd["idle_owed_mods"] else "", len(rd["launched"]), rd.get("page", "built by rm-maturation-page.timer")))
         return 0
     if o.cmd == "judge-verify":
         print(judge_verify_text(os.path.abspath(o.root), o.mod), end="")

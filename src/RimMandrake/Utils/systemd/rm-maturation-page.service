@@ -1,0 +1,24 @@
+# MATURATION_NOW (Utils/maturation_now.py): the Maturation Pipeline page, its .html and its phone images, built in its own
+# cgroup. It ran as a child of rm-maturation-dispatch.service until 2026-11-23, where it sat beside the tick in one
+# cgroup (item RIMMANDRAKE_SLIM_TICK_MEMORY_PAGE_BUILD_HITS_ONE_GIG_TICK_TOOK_FIVE_MIN;
+# boundary design/specs/2026-11-23-tick-page-own-unit/boundary.md). No model, no tokens. Runs from the dispatch clone.
+# Reading: D:\ClaudeWork\rimmandrake\conductor\MATURATION_NOW.md (WSL /mnt/d/ClaudeWork/rimmandrake/conductor/MATURATION_NOW.md)
+# Install:  cp src/RimMandrake/Utils/systemd/rm-maturation-page.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-maturation-page.timer
+[Unit]
+Description=RimMandrake Maturation Pipeline page (MATURATION_NOW), 60 s after each build
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/maturation_now.py
+Nice=10
+# MemoryMax guards the WSL VM (the games, the tick, the helpers) against a page build that grows without bound, as the
+# tick and page together grew to 1G on 2026-11-23. Measured alone that day: 326 MB peak in its own cgroup, phone images
+# included. A build over the line is killed and the next timer run tries again; the tick does not wait on it.
+MemoryMax=1G
+# A hang guard, not a speed bar: a build stuck on a dead drvfs read or a git call never ends, and a oneshot that never
+# ends never fires again. Measured 2026-11-23: 46 s. The tick's old subprocess bound for the same build was 600 s.
+TimeoutStartSec=10min

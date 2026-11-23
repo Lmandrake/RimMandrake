@@ -452,24 +452,30 @@ class Relation:
                 continue
             seen.add(f)
             for sha in (self.new, old):
-                txt = self.git.show(sha, f)
-                if not txt:
-                    continue
-                try:
-                    tree = ast.parse(txt)
-                except (SyntaxError, ValueError):
-                    continue
-                names = set()
-                for n in ast.walk(tree):
-                    if isinstance(n, ast.Import):
-                        names.update(part for a in n.names for part in a.name.split("."))
-                    elif isinstance(n, ast.ImportFrom):
-                        names.update((n.module or "").split("."))
-                        names.update(a.name for a in n.names)
                 stems = self._mod_py(sha)
-                for nm in names:
+                for nm in self._imports(sha, f):
                     todo.extend(stems.get(nm, []))
         return seen - set(files)
+
+    def _imports(self, sha, f):
+        """The names a Python file imports at a commit, parsed once per relation (python-imports-read-once-per-commit:
+        every check of a table declares the same scene files, and a blob at a commit never changes)."""
+        k = ("imports", sha, f)
+        if k not in self._py:
+            names = set()
+            txt = self.git.show(sha, f)
+            try:
+                tree = ast.parse(txt) if txt else None
+            except (SyntaxError, ValueError):
+                tree = None
+            for n in ast.walk(tree) if tree is not None else ():
+                if isinstance(n, ast.Import):
+                    names.update(part for a in n.names for part in a.name.split("."))
+                elif isinstance(n, ast.ImportFrom):
+                    names.update((n.module or "").split("."))
+                    names.update(a.name for a in n.names)
+            self._py[k] = names
+        return self._py[k]
 
     def touches(self, tid, old):
         """-> (state, why, files): state 'untouched' | 'touched' | 'unreadable'. files: the changed files that touch."""

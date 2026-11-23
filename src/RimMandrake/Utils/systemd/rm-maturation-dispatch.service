@@ -1,6 +1,6 @@
 # The Maturation Pipeline's Dispatch step (rimflow/maturation_dispatch.py; item RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE):
-# capped offline builders for advancing mods at Stage 3 with build work owed, the idle reading Operations alarms on,
-# and MATURATION_NOW regenerated. No model of its own. Runs from the dispatch clone, outside the Dispatcher's tick.
+# capped offline builders for advancing mods at Stage 3 with build work owed, and the idle reading Operations alarms on.
+# MATURATION_NOW is built by rm-maturation-page.timer in its own cgroup, never here. No model of its own. Runs from the dispatch clone, outside the Dispatcher's tick.
 # Reading: D:\ClaudeWork\rimmandrake\dispatcher\maturation\reading.json (WSL /mnt/d/ClaudeWork/rimmandrake/dispatcher/maturation/reading.json)
 # Install:  cp src/RimMandrake/Utils/systemd/rm-maturation-dispatch.{service,timer} ~/.config/systemd/user/
 #           systemctl --user daemon-reload && systemctl --user enable --now rm-maturation-dispatch.timer

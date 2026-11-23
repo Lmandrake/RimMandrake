@@ -399,6 +399,35 @@ TESTS = [t_declared_paths_are_exercises_reads_and_file, t_untouched_row_counts, 
          t_a_path_outside_the_repo_is_not_in_the_change]
 
 
+def t_python_imports_read_once_per_commit():
+    """Three checks declare validation.py and it changed: its imports are parsed once at each of the two commits (the
+    symbol tables parse it once more per commit), never once per check."""
+    import ast
+    tr = Tree()
+    try:
+        tr.edit("src/RimMandrake/Planted/validation.py", "return x + 1", "return x + 3")
+        tr.commit("helper_a")
+        tt = table({"sc_a2": dict(table()["sc_a"], id="sc_a2"), "sc_a3": dict(table()["sc_a"], id="sc_a3")})
+        texts = {tr.git("show", "%s:src/RimMandrake/Planted/validation.py" % s) for s in (tr.base, "HEAD")}
+        counts = {}
+        real = ast.parse
+
+        def counting(src, *a, **k):
+            if src.strip() in texts:
+                counts[src.strip()] = counts.get(src.strip(), 0) + 1
+            return real(src, *a, **k)
+        ast.parse = counting
+        try:
+            res = relate(tr, all_rows(tr.base, tt), tests=tt)
+        finally:
+            ast.parse = real
+        ok("python-imports-read-once-per-commit: three checks on one changed file parse it at most twice per commit "
+           "(imports once, symbols once)", counts and max(counts.values()) <= 2
+           and res["rows"]["sc_a3"]["state"] == "touched", {"parses": sorted(counts.values()), "rows": res["rows"]})
+    finally:
+        tr.close()
+
+
 def _ledger_digest():
     h = hashlib.sha256()
     d = os.path.join(REPO, "infrastructure", "state", "ledger", "events")
@@ -439,6 +468,7 @@ def main():
     t_rows_from_several_builds()
     t_walk_not_the_source_is_one_deploy()
     t_a_path_outside_the_repo_is_not_in_the_change()
+    t_python_imports_read_once_per_commit()
     ok("the run left infrastructure/state/ledger/events/ unchanged", _ledger_digest() == before)
     print("%d of %d checks failed" % (len(FAILS), len(SEEN)))
     return 1 if FAILS else 0

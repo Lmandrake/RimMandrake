@@ -1,0 +1,11 @@
+# 60 s after each page build ends - see rm-maturation-page.service.
+[Unit]
+Description=RimMandrake Maturation Pipeline page, 60 s after each build
+
+[Timer]
+OnBootSec=4min
+OnUnitInactiveSec=60s
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target
