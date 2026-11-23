@@ -1,8 +1,8 @@
 # Wyyyschokk
 
-**defName**: `Wyyyschokk` (bare, third-party — lives in `mlie.starwarsanimalcollection`,
-patched by `src/RimStarWars/Shokk/Patches/RSW_Shokk_Wyyyschokk.xml`, packageId
-`mandrake.rsw.shokk`)
+**defName**: `RM_Ollathrix` (`src/RimMandrake/Webwork/Defs/ThingDefs_Races/RM_Ollathrix.xml`; `mandrake.rsw.shokk`
+gives it the wyyyschokk look in `src/RimStarWars/Shokk/Patches/RSW_Shokk_OllathrixSkin.xml`. The donor def
+`Wyyyschokk` of `mlie.starwarsanimalcollection` is retired)
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Wyyyschokk

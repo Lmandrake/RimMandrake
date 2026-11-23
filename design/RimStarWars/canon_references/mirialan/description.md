@@ -135,7 +135,7 @@ none known
   Cloudflare-walled — wikitext pulled via
   `https://starwars.fandom.com/api.php?action=parse&page=Mirialan&format=json&prop=wikitext`,
   36,347 chars, 2026-09-15)
-- https://static.wikia.nocookie.net/starwars/images/3/39/LuminaraUnduli-SWM41.png → `wookieepedia_luminaraunduli_swm41.png` (⚠️ this line previously cited the file as `wookieepedia_luminaraunduli_swm41.png` and claimed it was "already on disk under that name... re-verified this pass" — it never was. Corrected 2026-09-16 against the actual directory listing.)
+- https://static.wikia.nocookie.net/starwars/images/3/39/LuminaraUnduli-SWM41.png → `wookieepedia_luminaraunduli_swm41.png` (⚠️ this line previously cited the file as `wookieepedia_mirialan_luminara_swm41.png` and claimed it was "already on disk under that name... re-verified this pass" — it never was. Corrected 2026-09-16 against the actual directory listing.)
 - https://static.wikia.nocookie.net/starwars/images/e/eb/Luminara1.jpg/revision/latest?cb=20070322160411 → `wookieepedia_luminara_closeup_aotc.jpg`
 - https://static.wikia.nocookie.net/starwars/images/0/00/LuminaraUnduli-SWE.png/revision/latest?cb=20160912051446 → `wookieepedia_luminara_fullbody.png`
 - NOT fetched this pass: `Star Wars: Alien Archive` (source of the "yellow-green"

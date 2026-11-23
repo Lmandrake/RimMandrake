@@ -40,8 +40,8 @@ Then create `design/RimStarWars/canon_references/<slug>/` with:
 - **`donor_current_sprite.png`**, if the repo already has art for that species. The only art on disk can be a corpse
   or a desiccated variant. If so, say so and treat that art as weak evidence. The anooba entry does this correctly.
 
-**defNames:** the shipping list is `src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml`, with 70
-xenotypes. That file is **generated, so never edit it.**
+**defNames:** the shipping list is `src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml`, one
+XenotypeDef for each species. That file is **generated, so never edit it.**
 
 - `RACES_TODO.md` already records the defName for every species. Verify it against the XML, and use the real one.
 - If no defName exists, say so plainly. **Never invent a defName.**
@@ -113,8 +113,9 @@ through three with it.
 - **Never invent a height, mass, lifespan or date.** Unsourced means absent. The Rakata entry correctly recorded all
   three as unsourced rather than guessing. That record of unsourced values is the standard.
 - **Check whether an image is one that the wiki disowns.** The Rakata directory contained a Mon Calamari that someone
-  had mislabelled. It also held a figure that Lucasfilm confirmed was "generic alien extra #3457". Both images are kept,
-  but labelled as negative references. Do the same.
+  had mislabelled. It also held a figure that Lucasfilm confirmed was "generic alien extra #3457". Both images were
+  kept, labelled as negative references, until the realism sweep of 2026-10-08 deleted them. Keep and label such an
+  image in the same way.
 - **Flag loudly when a repo def contradicts canon.** The Rakata xenotype carries psychic genes, although post-plague
   Rakata are Force-blind. It also has orange/brown skin where canon is grey to reddish-grey. Findings like that are the
   single most useful thing that you can report, because the owner wants this library for exactly that. **Report them;
