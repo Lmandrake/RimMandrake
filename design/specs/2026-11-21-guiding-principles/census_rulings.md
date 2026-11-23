@@ -50,6 +50,8 @@ Three things about what I searched:
 | A16 | `design/concepts/GelatinousSlime/tree.json` leaf 11 | "Arbitrary third-party biome retrofit is outside the adopted scope." | none | 1. This is the draft's question about vanilla and third-party biomes. |
 | A17 | `design/concepts/TheRot/design.md:107`, `:353`; `design/RimMandrake/rot_warm_mat_portable_2026-10-22.md`; `design/RimMandrake/rot_northstar_bars_draft_2026-10-22.md:52` | His new ask "make it die in direct Sun exposure" | 2026-11-21 | 3. No file says it yet. |
 
+Ruled after this census was written (2026-11-21 5:34 PM PST). A11 (his card, 2026-11-21 5:34 PM PST): vanilla crops need water nearby wherever the ground is dry and hot, a condition, not 'in our biomes'. Temperate maps are untouched. 'Dry and hot' is defined as a measurable condition when Explosive Growth next advances. A12 (the Conductor's call under his cards of 2026-11-21): no conflict is left. Explosive growth belongs to the plant species and acts wherever those plants and water are. The Baroque biomes are where the plants are native (biome data). A14 (the Conductor's call under his cards of 2026-11-21): the Tribes rite follows a burn front where the Tribes are present. The front's schedule is the biome's weather odds (data). The code names no biome.
+
 I did not read the sentence at `design/RimMandrake/sprinklers_design_2026-10-16.md:112` in context: "the 2026-10-15 rule keeps us out of other biomes" (principle 1).
 
 ## CONSISTENT, but worded as confinement (rewording only)

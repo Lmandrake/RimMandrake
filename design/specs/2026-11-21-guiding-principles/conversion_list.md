@@ -77,11 +77,12 @@ Not ruled yet (wait for his card): none.
 | rulings A5 | `design/concepts/CrackedLands/cleanse/bars.json` | bars 0/2/3/6/7 and check 1: "Existing unsupported cross-biome switches stay off". Under the universal rule these switches have nothing to switch. (also in Cauldron, Contagion, FeverWood, GelatinousSlime, LeaningScrub, LongShade, Miasma, RustCathedral, Stillsand, TerminalBiomes, TheRot, TheSump) | AMBIGUOUS |
 | rulings A12 | `design/Jawa/worldbuilding/biomes/the_cracked_lands.md:273`<br>`infrastructure/state/items/EXPLOSIVE_PLANT_GROWTH_1.md:5-8` | Two growth rulings disagree: "the owner took it planet-wide" (2026-09-06) against "only natively apply to plants within the Baroque Biomes" (2026-10-16). (also in ExplosiveGrowth) | AMBIGUOUS |
 | code 65 | `src/RimMandrake/CrackedLands/Source/RM_MercyLedges.cs:296`<br>`src/RimMandrake/CrackedLands/Source/RM_FossilStrata.cs:240`<br>`src/RimMandrake/CrackedLands/Source/RM_MapComponent_CanyonFlood.cs:126` | The flood cycle and mercy ledges run only in Flooded Canyon. (also in ExplosiveGrowth) | MECHANIC-GATE |
-| switch | `src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:155`<br>`src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:227` | featureInOtherBiomes "Run the flood cycle in other biomes too" (default false). | SWITCH (not ruled) |
-| switch | `src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:164`<br>`src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:282` | fossilSeamsInOtherBiomes "Fossil seams in other biomes too (worldgen)" (default false). | SWITCH (not ruled) |
+| switch | `src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:155`<br>`src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:227` | featureInOtherBiomes "Run the flood cycle in other biomes too" (default false). | SWITCH (ruled 2026-11-21) |
+| switch | `src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:164`<br>`src/RimMandrake/CrackedLands/Source/RM_CrackedLandsMod.cs:282` | fossilSeamsInOtherBiomes "Fossil seams in other biomes too (worldgen)" (default false). | SWITCH (ruled 2026-11-21) |
 
 Ruled 2026-11-21 (convert at the next version): A5: the bar line becomes "each mechanic's switch is a plain on/off, default on, with no biome in it".
-Not ruled yet (wait for his card): switch: featureInOtherBiomes "Run the flood cycle in other biomes too"; switch: fossilSeamsInOtherBiomes "Fossil seams in other biomes too (worldgen)"; rulings A12 (open question).
+Ruled 2026-11-21 (convert at the next version): A12 (the Conductor's call under his cards of 2026-11-21): no conflict is left. Explosive growth belongs to the plant species and acts wherever those plants and water are. The Baroque biomes are where the plants are native (biome data). Switches featureInOtherBiomes and fossilSeamsInOtherBiomes: each becomes a plain on/off for its mechanic, default on, with no biome in it (the Conductor's call 2026-11-21: the same as the six-switch ruling).
+Not ruled yet (wait for his card): none.
 
 ## FeverWood
 
@@ -136,9 +137,10 @@ Not ruled yet (wait for his card): none.
 |---|---|---|---|
 | rulings R10 | `design/concepts/LanternDeeps/cleanse/bars.json` | Rules R0 and R8: custom host list is "unsupported outside shipped hosts". The temperature test alone should decide. | REVERSED |
 | code extra | `src/RimMandrake/LanternDeeps/Source/RM_AuroraCollapse.cs:268-269`<br>`src/RimMandrake/LanternDeeps/Source/Patch_GateLanternstoneDeep.cs:29` | Collapse warnings only in the home biome; both are hard defName checks (outside the 66 numbered rows). | MECHANIC-GATE |
-| switch | `src/RimMandrake/LanternDeeps/Source/LanternDeepsMod.cs:115-122` | entranceBiomes list (default BiomeGRimond, RM_SleepingIce, RM_TheChill). | SWITCH (not ruled) |
+| switch | `src/RimMandrake/LanternDeeps/Source/LanternDeepsMod.cs:115-122` | entranceBiomes list (default BiomeGRimond, RM_SleepingIce, RM_TheChill). | SWITCH (ruled 2026-11-21) |
 
-Not ruled yet (wait for his card): switch: entranceBiomes list.
+Ruled 2026-11-21 (convert at the next version): switch entranceBiomes list: each becomes a plain on/off for its mechanic, default on, with no biome in it (the Conductor's call 2026-11-21: the same as the six-switch ruling).
+Not ruled yet (wait for his card): none.
 
 ## LeaningScrub
 
@@ -221,9 +223,10 @@ Not ruled yet (wait for his card): switch: pyrelandsEnabled "Mod enabled".
 
 | census row | file:line | what is confined | class |
 |---|---|---|---|
-| rulings A14 | `design/concepts/PyrelandsMechanics/tree.json` | Leaf 8: the player who sets fires on a Pyrelands map never sees a raid. Open: is the Tribes rite biome data or a mechanic? | AMBIGUOUS |
+| rulings A14 | `design/concepts/PyrelandsMechanics/tree.json` | Leaf 8: the player who sets fires on a Pyrelands map never sees a raid. The question was whether the Tribes rite is biome data or a mechanic. | AMBIGUOUS |
 
-Not ruled yet (wait for his card): rulings A14 (open question).
+Ruled 2026-11-21 (convert at the next version): A14 (the Conductor's call under his cards of 2026-11-21): the Tribes rite follows a burn front where the Tribes are present. The front's schedule is the biome's weather odds (data). The code names no biome.
+Not ruled yet (wait for his card): none.
 
 ## RustCathedral
 
@@ -480,9 +483,10 @@ Not ruled yet (wait for his card): none.
 | rulings A11 | `design/RimMandrake/explosive_growth_ruled_spec_2026-10-16.md` | Section 6, setting A: vanilla crops in our biomes need water nearby. Applied everywhere, it changes vanilla crops on the whole planet. | AMBIGUOUS |
 | rulings A12 | `design/Jawa/worldbuilding/biomes/the_cracked_lands.md:273`<br>`infrastructure/state/items/EXPLOSIVE_PLANT_GROWTH_1.md:5-8` | Two growth rulings disagree: "the owner took it planet-wide" (2026-09-06) against "only natively apply to plants within the Baroque Biomes" (2026-10-16). (also in CrackedLands) | AMBIGUOUS |
 | code 65 | `src/RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowthRegistry.cs:95-104`<br>`src/RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowthRegistry.cs:129-134`<br>`src/RimMandrake/ExplosiveGrowth/Source/RM_MapComponent_ExplosiveGrowth.cs:135`<br>`src/RimMandrake/ExplosiveGrowth/Source/RM_MapComponent_ExplosiveGrowth.cs:176`<br>`src/RimMandrake/ExplosiveGrowth/Source/RM_MapComponent_ExplosiveGrowth.cs:340`<br>`src/RimMandrake/ExplosiveGrowth/Source/RM_MapComponent_ExplosiveGrowth.cs:479`<br>`src/RimMandrake/ExplosiveGrowth/Source/RM_SoakSources.cs:54`<br>`src/RimMandrake/ExplosiveGrowth/Source/RM_IncidentWorker_BloomBurst.cs:41` | Explosive growth runs only in HomeBiomes; vanilla crops need water only in scope; soak refused in noSoakBiomes; snowmelt applies in snowmeltBiomes. (also in CrackedLands) | MECHANIC-GATE |
-| switch | `src/RimMandrake/ExplosiveGrowth/Source/ExplosiveGrowthMod.cs:122`<br>`src/RimMandrake/ExplosiveGrowth/Source/ExplosiveGrowthMod.cs:243` | nativesSameRuleInOtherBiomes "UNSUPPORTED: our plants follow the same rule in other biomes" (default false). | SWITCH (not ruled) |
+| switch | `src/RimMandrake/ExplosiveGrowth/Source/ExplosiveGrowthMod.cs:122`<br>`src/RimMandrake/ExplosiveGrowth/Source/ExplosiveGrowthMod.cs:243` | nativesSameRuleInOtherBiomes "UNSUPPORTED: our plants follow the same rule in other biomes" (default false). | SWITCH (ruled 2026-11-21) |
 
-Not ruled yet (wait for his card): switch: nativesSameRuleInOtherBiomes "UNSUPPORTED: our plants follow the same rule in other biomes"; rulings A11 (open question); rulings A12 (open question).
+Ruled 2026-11-21 (convert at the next version): A11 (his card, 2026-11-21 5:34 PM PST): vanilla crops need water nearby wherever the ground is dry and hot, a condition, not 'in our biomes'. Temperate maps are untouched. 'Dry and hot' is defined as a measurable condition when Explosive Growth next advances. A12 (the Conductor's call under his cards of 2026-11-21): no conflict is left. Explosive growth belongs to the plant species and acts wherever those plants and water are. The Baroque biomes are where the plants are native (biome data). Switch nativesSameRuleInOtherBiomes: each becomes a plain on/off for its mechanic, default on, with no biome in it (the Conductor's call 2026-11-21: the same as the six-switch ruling).
+Not ruled yet (wait for his card): none.
 
 ## FlowWorks
 
@@ -504,9 +508,10 @@ Not ruled yet (wait for his card): none.
 | census row | file:line | what is confined | class |
 |---|---|---|---|
 | rulings R8 | `design/RimMandrake/biome_mod_architecture.md:485`<br>`design/RimMandrake/biome_mod_architecture.md:494-496` | A biome-defName allowlist; default answer "yes on RM_X, no elsewhere". The design is itself a biome check. | REVERSED |
-| switch | `src/RimMandrake/BiomesShell/Source/RM_BiomesMod.cs:123-130` | Per-biome roster enabled[key] (default true). It gates Pyrelands and ExplosiveGrowth mechanics (mechanicsGated). | SWITCH (not ruled) |
+| switch | `src/RimMandrake/BiomesShell/Source/RM_BiomesMod.cs:123-130` | Per-biome roster enabled[key] (default true). It gates Pyrelands and ExplosiveGrowth mechanics (mechanicsGated). | SWITCH (ruled 2026-11-21) |
 
-Not ruled yet (wait for his card): switch: Per-biome roster enabled[key].
+Ruled 2026-11-21 (convert at the next version): switch Per-biome roster enabled[key]: each becomes a plain on/off for its mechanic, default on, with no biome in it (the Conductor's call 2026-11-21: the same as the six-switch ruling).
+Not ruled yet (wait for his card): none.
 
 ## Minerals
 
@@ -516,9 +521,10 @@ Not ruled yet (wait for his card): switch: Per-biome roster enabled[key].
 | census row | file:line | what is confined | class |
 |---|---|---|---|
 | code 66 | `src/RimMandrake/Minerals/Source/RM_MineralQuarry.cs:116-132` | The mineral quarry picks its plan by biome (UNCLEAR). (also in RustCathedral, SleepingIce, Wastes, Webwork, WeepingStones) | MECHANIC-GATE (UNCLEAR for Wastes storms and Minerals quarry) |
-| switch | `src/RimMandrake/Minerals/Source/Kernel/RM_MineralPolicyKernel.cs:17`<br>`src/RimMandrake/Minerals/Source/Kernel/RM_MineralPolicyKernel.cs:239` | OtherBiomes policy per mineral row (default not read by the census). | SWITCH (not ruled) |
+| switch | `src/RimMandrake/Minerals/Source/Kernel/RM_MineralPolicyKernel.cs:17`<br>`src/RimMandrake/Minerals/Source/Kernel/RM_MineralPolicyKernel.cs:239` | OtherBiomes policy per mineral row (default not read by the census). | SWITCH (ruled 2026-11-21) |
 
-Not ruled yet (wait for his card): switch: OtherBiomes policy per mineral row.
+Ruled 2026-11-21 (convert at the next version): switch OtherBiomes policy per mineral row: each becomes a plain on/off for its mechanic, default on, with no biome in it (the Conductor's call 2026-11-21: the same as the six-switch ruling).
+Not ruled yet (wait for his card): none.
 
 ## Rule texts (corrected by this item)
 
