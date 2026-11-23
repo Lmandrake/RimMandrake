@@ -49,6 +49,10 @@ the name, dashes as underscores) in `src/RimMandrake/rimflow/selftest_never_refu
   shard (OWNER.jsonl from a ruling, say): for the Conductor the launcher runs the exact `./publish -m "ledger: <ITEM>
   filed" <shards>` itself, notes it, checks origin again and goes on; a helper run is refused with the command, as
   before, and nothing is published.
+- **replay-launch-continues-when-the-item-is-already-published.** When the launcher's own `./publish` exits non-zero
+  (`REFUSED: nothing to publish: HEAD is already on origin/main`, another publish having landed the shard) the launcher
+  fetches and reads origin/main again: the item found there, the launch goes on with a NOTE; absent, it refuses with the
+  publish's own words. Item `RIMMANDRAKE_CONTINUE_HELPER_LAUNCH_WHEN_ITEM_ALREADY_PUBLISHED_NOTHING_TO_LAND`, 2026-11-22.
 - **replay-resume-takes-a-fresh-clone-and-restores-the-bundle.** `launch --resume <session>` when `<ITEM>.det` is held
   only by FINISHED runs (a return that kept the clone) takes a fresh pool clone `<ITEM>.r<epoch>.det`, carries the
   transcript there, restores the bundle the session's newest run record names (run_store's restore_bundle), and the

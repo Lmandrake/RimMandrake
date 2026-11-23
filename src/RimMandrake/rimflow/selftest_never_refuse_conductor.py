@@ -332,6 +332,46 @@ def t_replay_launch_publishes_the_ledger_shard():
               "launch replay: the Conductor's launch publishes the ledger shard itself, noted, and goes on", (rc, text, pub))
 
 
+class FakeSysPublishRefuses(FakeSys):
+    """`./publish` answers rc 1 "REFUSED: nothing to publish" (the shard reached origin by another publish, or by this one)
+    and extends origin with the shard's lines only when `landed`; false = the item is truly absent."""
+
+    def __init__(self, landed, **kw):
+        super().__init__(**kw)
+        self.landed = landed
+
+    def __call__(self, argv, **kw):
+        if argv and argv[0] == "./publish":
+            self.calls.append(list(argv))
+            if self.landed:
+                for path in argv[3:]:
+                    self.origin += self.shards.get(path, [])
+            return subprocess.CompletedProcess(argv, 1, "", "REFUSED: nothing to publish: HEAD is already on origin/main\n")
+        return super().__call__(argv, **kw)
+
+
+def t_replay_launch_continues_when_the_item_is_already_published():
+    item = "RIMMANDRAKE_PROBE_PUBLISH_FOUND_NOTHING_TO_LAND"
+    repo, shards = _det_repo("launch_pub_landed", item)
+    clone = os.path.join(TMP, "launch_pub_landed_clone")
+    os.makedirs(os.path.join(clone, "src", "RimMandrake", "Utils"), exist_ok=True)
+    open(os.path.join(clone, "src", "RimMandrake", "Utils", "claude_bounded.sh"), "w").close()
+    with _det_repo_bound(repo) as DH:
+        fake = FakeSysPublishRefuses(True, shards=shards)
+        with as_caller(conductor_env()), contextlib.redirect_stderr(io.StringIO()) as err:
+            rc, text = DH.launch("BENCH", item, "Build.", "sonnet", None, 0, runner=fake, known={item}, clone=clone,
+                                 skip_launch_checks="selftest")
+        check(rc == 0 and any(c[:1] == ["systemd-run"] for c in fake.calls) and "already" in err.getvalue(),
+              "launch landed: the own publish says nothing to publish yet the item is on origin: the launch goes on, noted",
+              (rc, text, err.getvalue()[-200:]))
+        fake = FakeSysPublishRefuses(False, shards=shards)
+        with as_caller(conductor_env()), contextlib.redirect_stderr(io.StringIO()):
+            rc, text = DH.launch("BENCH", item, "Build.", "sonnet", None, 0, runner=fake, known={item}, clone=clone,
+                                 skip_launch_checks="selftest")
+        check(rc == 2 and "nothing to publish" in text and not any(c[:1] == ["systemd-run"] for c in fake.calls),
+              "launch landed: an item truly absent still refuses, with the publish's own reason", text)
+
+
 def t_replay_resume_takes_a_fresh_clone_and_restores_the_bundle():
     import detached_helper as DH
     item = "RIMMANDRAKE_PROBE_RESUME_AFTER_A_KEPT_CLONE"
@@ -406,7 +446,8 @@ def main():
     tests = [t_principal_is_the_conductor_window_or_the_owner, t_a_planted_form_gate_waives_for_the_conductor_only,
              t_replay_close_no_code_free_text, t_replay_long_names_file_spawn_namecheck, t_replay_note_positional_text,
              t_replay_pipe_undo_stop_and_on_unit, t_replay_fold_before_the_act_is_recorded,
-             t_replay_launch_publishes_the_ledger_shard, t_replay_resume_takes_a_fresh_clone_and_restores_the_bundle,
+             t_replay_launch_publishes_the_ledger_shard,
+             t_replay_launch_continues_when_the_item_is_already_published, t_replay_resume_takes_a_fresh_clone_and_restores_the_bundle,
              t_real_ledger_unchanged]
     only = sys.argv[1:]
     for t in tests:

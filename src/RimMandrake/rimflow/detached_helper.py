@@ -323,9 +323,14 @@ def origin_gate(item, runner=subprocess.run, repo=None, seat=None, env=None):
         r = runner(argv, cwd=repo, capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         return "%s; the launcher's own publish could not run (%s)" % (text, str(e)[-120:])
-    if r.returncode:
+    again = origin_check(item, runner=runner, repo=repo, seat=seat)     # fetches first: a publish that exited non-zero may
+    if r.returncode:                                                    # still find the item landed (another publish won)
+        if again is None:
+            principal.form("the launcher's own publish exited %d (%s) but %s is on %s now: going on" % (
+                r.returncode, _tail(r, 120), item, ORIGIN_REF), env=env)
+            return None
         return "%s; the launcher's own publish exited %d: %s" % (text, r.returncode, _tail(r, 200))
-    return origin_check(item, runner=runner, repo=repo, seat=seat)
+    return again
 
 
 def live_status(rec, runner=subprocess.run, now=None):
