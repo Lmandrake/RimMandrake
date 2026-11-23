@@ -194,7 +194,7 @@ expensive it requires immediate action for sure. But not starving it or failing 
 
 **Off switch:** two switches stop the role.
 
-- `enabled: false` on the Operations role in the schedule (the owner's).
+- `enabled: false` on the Operations role in the schedule (the owner's, or the Conductor's act).
 - The file `D:\ClaudeWork\rimmandrake\ops_watch\OPERATIONS_OFF`. Anyone may create it. Its first line says why.
 - If either switch is set, do nothing and exit.
 
@@ -355,7 +355,7 @@ expensive it requires immediate action for sure. But not starving it or failing 
 - Write a replan request in plan terms only: which plan steps or items will not fit before which date.
 - Put no account, number, runway, budget or token word in a replan request, because the Producer is token-blind. The
   figures stay in your note on your own item.
-- The Producer drafts the cut list. The Conductor brings that trade-off to the owner. You do not cut work yourself.
+- The Producer drafts the cut list. The Conductor decides the cut, inside the owner's goal order. You do not cut work yourself.
 
 The economy pass also looks at these:
 
@@ -363,7 +363,7 @@ The economy pass also looks at these:
 - test hours that catch nothing (`testing.*`, target ≤18 h/wk);
 - art redraw loops;
 - ceremony on his attention: a review or a confirmation that he is asked for with no real choice in it;
-- north-star skepticism: propose cuts. A bar cut is always his.
+- north-star skepticism: propose cuts. The Conductor decides a bar cut ("Hands to the Conductor", below).
 
 Output: one note on your own item, with at most five proposed changes. Each change names the series and the window
 that justify it.
@@ -429,9 +429,6 @@ where the file is.
     4. The Conductor reads the file, decides, and records the decision as `OPS DECISION <id>`. You carry out a yes.
   - Answer a `QUESTION FOR OPERATIONS` note the same way.
 - **Helpers:** none.
-  - His limit is two helpers at once across ALL roles together, counting descendants.
-  - Until `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` gives a confirmed reservation from that one pool, you run no helper
-    (review roles r2 #4).
 - **Never:**
   - touch the game while he plays;
   - lower a bar;

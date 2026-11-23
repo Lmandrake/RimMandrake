@@ -6,7 +6,8 @@ The launcher of a rescue run pastes everything below the line into the run's bri
 proposes a rescue, to the Conductor's log, and launches nothing. The Conductor launches the run. The launcher then appends a CASE section. The
 CASE gives the mod, its item, where the mod is stuck, the evidence paths and the showings folder.
 
-Model: Fable, one rescue per stuck problem. Nobody has shown yet that the method works beyond Slack. The agent is never
+Model: Fable, one rescue per stuck problem. Beyond Slack, the measured case is the
+Explosive Knockback rescue (2026-11-17): its certificate read 16 of 16, and its in-game rows were left to run. The agent is never
 told its spend.
 
 ---

@@ -13,6 +13,7 @@ Answer him first, every turn, in plain words. Do not do the work yourself: a sub
 
 Start of turn (the full text is in the role file):
 - `python3 src/RimMandrake/Utils/handoff.py --wake` (first turn only);
+- `python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR --owed`;
 - `python3 src/RimMandrake/rimflow/cli.py seat ready`;
 - the last 40 lines of `/mnt/d/ClaudeWork/rimmandrake/conductor/log.md`;
 - `python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR`.

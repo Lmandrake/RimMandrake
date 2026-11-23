@@ -61,16 +61,13 @@ The Dispatcher may refuse to start a run, or stop a run that has gone on too lon
 refused or stopped. Each refusal and each stop is the Dispatcher's business, never yours.
 
 **Helpers.** You start re-check helpers only.
-- His limit is two helpers at once across ALL roles together, not two each. The limit counts every role's helpers and
-  their descendants (review roles r2 #4). "His" is the owner's.
-- Start a helper only after a reservation from that shared pool is confirmed. `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES`
-  gives the reservation.
-- Until that item is closed, run no helper at all. Do the re-checks yourself, one at a time.
+- The spawn hook `.claude/hooks/block_agent_over_slots.py` holds the limit. If the hook refuses a helper, do the
+  re-check yourself, one at a time.
 - You never built, reviewed or judged the work that you audit. So the re-checker rules below bind you the same way. A
   pick where those rules would not bind you waits.
 - The adversarial reviews of the weekly pass need a helper that never wrote the script. Until such a helper can start,
   the reviews wait, noted as waiting for a helper.
-- A refused or unconfirmed reservation means no helper, never a way around it.
+- A refused helper means no helper, never a way around it.
 - A helper never starts helpers of its own. Say so in its brief.
 
 The re-checker rules:
@@ -82,7 +79,7 @@ The re-checker rules:
   re-check is a verdict on a verdict).
 - The Dispatcher picks which model and which account.
 
-**Off switch:** `enabled: false` on the Auditor role in the schedule (the owner's). The second off switch is the file
+**Off switch:** `enabled: false` on the Auditor role in the schedule (the owner's, or the Conductor's act). The second off switch is the file
 `D:\ClaudeWork\rimmandrake\auditor\AUDITOR_OFF`. Anyone may create the file; its first line says why. If either one is
 set, the Dispatcher launches no run. Then the interim holders in the activation table keep every duty. An interim
 holder is the role that holds a duty until its own role runs.
@@ -174,7 +171,8 @@ of discretionary picks cannot starve the pass (review roles r2 #8).
      failed check result that the verdict set aside.
    - Re-check that the corrected check reran.
    - Until you record SOUND on the verdict, the red that it set aside still blocks. Say so on the item.
-3. **The checker's PASSes (ruling D1(b), 2026-11-01):** a close needs a pass, so calibration runs on false ACCEPTS.
+3. **The checker's PASSes (ruling D1(b), 2026-11-01):** a fail blocks a close. A close with no level-tagged pass goes,
+   noted and recorded `uncheckedLifted` (`cli.py`, since 2026-11-20). So calibration runs on false ACCEPTS.
    - Sample the blind-check PASSes first.
    - A defect that you find in one is a false accept. Record it with
      `rimflow verify <ID> --sha <the closed sha> --level L0 --result fail`. That command reopens the item.

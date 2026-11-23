@@ -163,7 +163,7 @@ Owner: "be more free firm in its investigation of alive game, capable of filing 
 3. Stamp the sitting: `rimflow note <ID> --text "TESTPILOT_SAT: <sha>, cause, false theories | explored: <what> | surprises: <n scored, ids filed> | book: explained <n>, retired <keys> (from `surprise_book.py summary`) | filed: <ids>"`.
    - The stamp restarts the count of the Test Pilot rule. That rule (`rimflow pilot`) sends an item to a pilot after 3 non-pass runs in a row. So your finding gets its fix and retest.
    - Three fresh misses send the item back to a pilot.
-4. Leave the game as you found it (restore the list, game down). Release the bridge. Commit `infrastructure/state/testpilot/surprise_book.jsonl` with your paths, and publish.
+4. Leave the game as you found it: up if you found it up, down if you found it down. Leave the mod list on the tier that serves the work. Release the bridge. Commit `infrastructure/state/testpilot/surprise_book.jsonl` with your paths, and publish.
 5. Return 10 lines or fewer: cause, class (MOD, SITE, HARNESS), false theories, surprises scored, explored and filed, shas, evidence path, and what is owed.
 
 ## Read first: the skills for this kind of work, by path

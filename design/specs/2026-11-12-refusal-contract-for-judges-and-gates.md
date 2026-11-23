@@ -100,11 +100,11 @@ add a GPT second read through `chatgpt-consult`.
 
 **What it may not change.**
 - It may not loosen an owner bar: remove, merge or relax a hash-bound `## north star` line or anything tagged L4
-  (`delegation_policy.md` §2 line 1: "Loosening a bar ... stays his"). That goes to him as a card, with the clause, the
-  evidence that nothing could pass, and options.
+  (`delegation_policy.md` §2). That goes to the Conductor, which decides it as its recorded act with `lost:` and `undo:`
+  (owner 2026-11-19), with the clause, the evidence that nothing could pass, and options.
 - It may not loosen an agent-written criterion quietly. Removal or relaxation is classed `loosen`. It is allowed only
-  when the fixer shows that no owner bar or spec line asks for the property, and a second reader (GPT) agrees.
-  Otherwise it becomes a card.
+  when the fixer shows that no owner bar or spec line asks for the property, and a second reader agrees.
+  Otherwise it becomes a card. The guard takes either reference.
 
 **Mechanical guard** (`refusal_contract.py diffguard old new`):
 - classifies each change as tighten / clarify / replace / fixture / loosen, by finding:

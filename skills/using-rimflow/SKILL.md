@@ -118,7 +118,8 @@ More traps for this section: [references/traps.md](references/traps.md) § Item 
 here or touches only the ledger is refused. Then, each refused with its reason and nothing changed:
 
 - **owed:** a criterion still outstanding. No word lifts it; verify it or drop the item.
-- **unchecked:** no level-tagged pass on that sha. Record one first:
+- **unchecked:** no level-tagged pass on that sha. Not a refusal since 2026-11-20: the close goes, with a note, and is
+  recorded `uncheckedLifted`. Record a pass where you have one:
   `rimflow verify <ID> --sha <sha> --level L0 --result pass --config <what ran> --evidence <path>`. A pass on another sha does not count.
 - **fail:** the newest deciding run is a fail. A pass on that sha after it clears it.
 - A sha touching none of the paths the item cites needs `--why`.
@@ -166,8 +167,8 @@ authority, so nothing lands in `ownerSaid` by mistake:
 - **A delegated decision** (`design/RimMandrake/delegation_policy.md`, owner 2026-10-22) is
   `--why "delegated: <class>"` — ours, not his. ⛔ Never `--per-ruling` the delegation
   item to make it read as OWNER: the ruling authorises the class, not the call.
-- rimflow still checks the quote's **shape** only: a question or bare assent ("yes") is
-  refused as `--owner-said` — quote the instruction, or use `--by-card`.
+- rimflow checks the quote's **shape** only. A question or bare assent ("yes") is recorded as he typed it, with a note
+  that asks for `--why` (owner 2026-11-20).
 - `note --owner-said` stamps the WHOLE event as OWNER-authored; use bare `note` (plus
   `--why` if useful) for your own writeups.
 - `rimflow show <ID>` prints each field labelled (`owner said “…”`, `decided by card:`,

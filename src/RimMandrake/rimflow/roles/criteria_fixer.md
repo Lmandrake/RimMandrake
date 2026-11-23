@@ -34,10 +34,11 @@ You may make four kinds of change:
 
 Do not loosen the clause. To loosen is to remove the clause, drop a control, or move a threshold toward permissive.
 One exception applies: you show that no owner bar or spec line asks for the property. Then say so in `why`. The
-caller then needs a second reader before the change lands.
+caller then needs a second reader, or an owner card, before the change lands.
 
 An owner bar never reaches you. An owner bar is a `## north star` line, or anything tagged L4 (the level of the
-owner's own review, `infrastructure/VALIDATION_LADDER.md`). An owner bar goes to him as a card.
+owner's own review, `infrastructure/VALIDATION_LADDER.md`). The Conductor decides a change to an
+owner bar, as its recorded act (`CLAUDE.md` §How we debug).
 
 Answer with JSON only, with three fields:
 - `new_text`: the whole repaired clause;

@@ -776,7 +776,7 @@ def classify(old, new):
 
 def diffguard(old, new, owner_bars=(), card=None, second_read=None, bad_passes=None, good_passes=None):
     """Guard a criteria repair. `old`/`new` are {clause_id: text}. -> {ok, changes: [{clause, class, why}], errors}.
-    Refused: an owner bar touched (it goes to him as a card, whatever reference is given); a loosen with no card or
+    Refused: an owner bar touched (it goes to the Conductor, whatever reference is given); a loosen with no card or
     second-read reference; a repair after which the known-bad case passes or the known-good case fails."""
     changes, errs = [], []
     for c in sorted(set(old) | set(new)):
@@ -785,7 +785,7 @@ def diffguard(old, new, owner_bars=(), card=None, second_read=None, bad_passes=N
             continue
         changes.append({"clause": c, "class": cls, "why": why})
         if c in set(owner_bars):
-            errs.append("%s is an owner bar: a change to it is his word only (a card), never a repair" % c)
+            errs.append("%s is an owner bar: a change to it is his word or the Conductor's recorded act, never a repair" % c)
         elif cls == "loosen" and not (str(card or "").strip() or str(second_read or "").strip()):
             errs.append("%s: loosen (%s) with no card or second-read reference" % (c, why))
     if bad_passes:

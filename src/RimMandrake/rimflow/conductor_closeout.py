@@ -179,7 +179,7 @@ def exempt_why(text, is_goodbye=None):
 def hint_for(text, miss=()):
     import cli
     if cli._norm_said(text or "") in cli.ASSENT_ONLY:
-        return ("bare assent: the ledger refuses to quote it. If it answered something, record the decision (--by-card, "
+        return ("bare assent: the ledger records it, but it names no decision. If it answered something, record the decision (--by-card, "
                 "or the sentence that says what to do), then dismiss it")
     if not (text or "").strip():
         return "no text (an image?): open the record in the transcript"

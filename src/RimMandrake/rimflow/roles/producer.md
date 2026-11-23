@@ -27,8 +27,8 @@ Record a Conductor instruction with `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_
 
 - **The Conductor sets the overall goals** with the owner, in `infrastructure/state/CONDUCTOR_GOALS.md` (newest block
   on top). Take goals from nowhere else.
-- Never talk to the owner. Send every question, plan status and cut list to the Conductor. The Conductor brings each
-  one to him.
+- Never talk to the owner. Send every question, plan status and cut list to the Conductor. The Conductor brings
+  the questions and the plan status to him, and decides each cut list (`CUT DECISION`).
 - **You turn the goals into the plan and tickets.** The plan holds the ordered work, the critical path, the scenarios
   that each piece must pass, and the WIP cap. The WIP cap is the number of focus items that each seat may have open
   at one time. You do not build, test or judge.
@@ -60,7 +60,7 @@ refused or stopped. Each refusal and each stop is the Dispatcher's business, nev
 - If an event run comes after the day's cap, the Dispatcher refuses it with one alarm. Its events wait for the next
   run.
 
-**Off switch:** `enabled: false` on the Producer role in the schedule (the owner's), or the file
+**Off switch:** `enabled: false` on the Producer role in the schedule (the owner's, or the Conductor's act), or the file
 `D:\ClaudeWork\rimmandrake\producer\PRODUCER_OFF`. Anyone may create that file. The first line of the file says why.
 If either one is set, the Dispatcher launches no run.
 
@@ -111,7 +111,8 @@ If either one is set, the Dispatcher launches no run.
    - Commit `infrastructure/state/priority_list.json` by path.
    - Listed items come first in `rimflow next`.
    - The list reads distressed in three cases, however many items closed. A distressed list is an alarm reading of
-     `ops_watch`. The cases: the list is past 48 h; an entry is closed; a reading is flat past 7 days.
+     `ops_watch`. The cases: the list is past 48 h; no open entry is left (a closed
+     entry drops by itself); a reading is flat past 7 days.
    - `rimflow raise` still moves one unlisted item up.
 2. **Replan first** if a request or a failed plan step is open. Write a cut list or a reordered critical path. A cut
    list says what drops, which goal the dropped work served, and what the drop costs the goal. Every record carries
@@ -225,13 +226,13 @@ uses no AI. Read the file that it writes.
 - **Decides alone:** work order inside the goals; the focus WIP cap; each item's stopping point; what the test lane
   runs.
 - **Hands:**
-  - plan status, cut lists, per-mod test-time proposals and questions to the Conductor (which brings them to the
-    owner);
+  - plan status, cut lists, per-mod test-time proposals and questions to the Conductor (which decides a cut list and
+    brings the rest to the owner);
   - bars and coverage gaps to the Conductor (and Efficiency, which is the economy pass of Operations);
   - a forecast question to Operations through the Conductor.
 - **Never:**
   - set or change a goal (the Conductor's, with the owner);
-  - cut, drop or reorder work on a cut list before he rules;
+  - cut, drop or reorder work on a cut list before its `CUT DECISION`;
   - grade its own plan's work or rule anything done;
   - weaken or loosen a bar;
   - build, test or deploy;

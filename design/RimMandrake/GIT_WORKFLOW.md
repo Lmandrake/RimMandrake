@@ -8,7 +8,7 @@ This file states what IS. The reasons and the measurements are in two places:
 
 | place | what it is |
 |---|---|
-| `/home/mandrake/rm/bench` | The seat clone: ext4, plain git, **one writer** (the seat's own window). The seat launches from its clone. (FOUNDRY is retired, and its clone is deleted.) |
+| `/home/mandrake/rm/bench` | The seat clone: ext4, plain git, **one writer** (the seat's own window, and the helpers that it runs in that clone). The seat launches from its clone. (FOUNDRY is retired, and its clone is deleted.) |
 | `D:\Luke\dev\RimMandrake` (`/mnt/d/Luke/dev/RimMandrake`) | The **read-only mirror** of origin/main. `rm-mirror.timer` refreshes it every 5 min (`./mirror sync`). The mirror has no `.git`. Never write the mirror. Windows tools read it: the game deploy, Explorer, python.exe. `MIRROR_HEAD` names its commit. `MIRROR_STALE` appears if a refresh failed. |
 | `/home/mandrake/rm/mirror.git` | The mirror's bare, fetch-only repo. |
 | `D:\ClaudeWork\rimmandrake\artpipe\` | The artpipe queue and state (not in git): `pending/ active/ done/ failed/ _artsrc/ registry.jsonl` |
@@ -351,8 +351,8 @@ The rest are discipline. Each trap gives what happens, then what to do instead.
 
 **`git rm` stages a deletion into the index; delete with plain `rm`, then a pathspec commit.**
 - A directory pathspec sweeps untracked build output (`bin/`, `obj/`). So read `git status` on the directory first.
-- Two windows of one seat share a clone and its index. An `index.lock` "File exists" means that a commit runs now. So
-  wait, and never delete the lock.
+- A seat window and its helpers share the seat clone and its index. An `index.lock` "File exists" means that a commit
+  runs now. So wait, and never delete the lock.
 
 ### Landing, syncing and pushing
 

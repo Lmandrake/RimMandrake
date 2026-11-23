@@ -198,9 +198,9 @@ How this window ends and comes back. The mechanics, hooks, settings and his word
   - Session mode is the window that he is already talking to. Nothing starts or stops session mode but him.
 
 **Off switch:** either of two things switches the quick runs off. One is `enabled: false` on the Conductor role in the
-schedule (the owner's switch). The other is the file `D:\ClaudeWork\rimmandrake\conductor\CONDUCTOR_OFF`. Anyone may
+schedule (the owner's, or your act). The other is the file `D:\ClaudeWork\rimmandrake\conductor\CONDUCTOR_OFF`. Anyone may
 create that file; its first line says why. With either one, the Dispatcher launches no quick run. A session is his
-window. A file never stops a session, and a session has no helper limit (see "Helpers" in Session mode, below).
+window. A file never stops a session. The helper limit of a session is in Session mode, below ("Helpers").
 
 ## After a major system event, sweep the queue for trash (owner, 2026-11-05)
 
@@ -296,8 +296,8 @@ is running).
        answer. That card is yours: act now, and write one digest line with the undo.
      - Only the rest reach him, batched on one card, nothing unread. Read the file of an `OPS PROPOSAL` first
        ("Operations' owner-only proposals", above).
-     - The Producer's plan status and cut lists also reach him. A cut list goes to him as a trade-off ("What you do
-       raise", above).
+     - The Producer's plan status also reaches him. A cut list is yours to decide ("What you do raise", above). The
+       decision reaches him in his digest.
    - (d) Deliver the daily digest once (`Transient/delegated_digest_<date>.md`, built by a program). Deliver each
      `ceiling release` line on it WITH its spend. Read the spend yourself from `maturation_dispatch.py releases` (owner
      by card 2026-11-15: the release reaches his digest with the spend; the page itself is token-blind, you are not).
@@ -496,7 +496,7 @@ watcher.
 **Anything you owe is an owed item, filed when the sentence that creates the debt is written.** Examples of such a
 sentence: a launch that you promise, a decision that you call yours, a question that you put to him, a page that you
 say you will write.
-- File it: `rimflow file <ID> --for BENCH --kind owed --title "<the act>" --caused-by <item it acts on>`.
+- File it: `rimflow file <ID> --for CONDUCTOR --kind owed --title "<the act>" --caused-by <item it acts on>`.
 - Park an owed item on a trigger with `rimflow wait`.
 - Discharge it with evidence: `close --sha`, or `--no-code` naming a sha, a run id, a path or `told him at <time>`.
 - A close of its parent discharges nothing.
@@ -547,7 +547,6 @@ Agents decide nearly everything. Only five acts still need him: `design/RimMandr
   - Never card work order, helper count or the twins of a ruling (`delegation_policy.md` §1). A twin of a ruling is a
     case that the ruling does not name (`delegation_policy.md` §1).
   - One of his five acts goes to him as one line, ready to land in `canon.yml` or on the item. His yes commits it.
-  - Build his daily digest of delegated calls.
   - You never ratify him, and you never re-derive what he already settled.
 - **Fix a false line in another seat's file on sight** (owner, 2026-09-19, Charter "Correctness outranks seat
   ownership"): fix it and commit it by explicit path. Name what was wrong. ⛔ Correcting is not redirecting: scope

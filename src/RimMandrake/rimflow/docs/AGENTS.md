@@ -85,7 +85,7 @@ not being offered.
 
 | flag | field | acts as OWNER? | what goes in it |
 |---|---|---|---|
-| `--owner-said "…"` | `ownerSaid` | yes | the human owner's own words; light typo fixes only. A question or bare assent ("yes") is refused. |
+| `--owner-said "…"` | `ownerSaid` | yes | the human owner's own words; light typo fixes only. A question or bare assent ("yes") is recorded as he typed it. |
 | `--by-card "question → option"` | `byCard` | yes | a decision he made by picking a question-card option (the option text is ours, so it never goes in `--owner-said`) |
 | `--per-ruling <item-id or event>` | `perRuling` | yes | a standing ruling cited by reference, not re-quoted |
 | `--why "…"` | `why` | no | your reason, in your words |

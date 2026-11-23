@@ -46,10 +46,10 @@ window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like yo
 - The Dispatcher restarts the window at once, as a fresh Remote Control `CONDUCTOR` (`goodbye_quiet_s` 0, owner
   2026-11-01).
 - Only a live helper, the bridge or PAUSE holds the restart. PAUSE is the Dispatcher's stop-everything file
-  (`state/PAUSE`). The background commands of the window end with the window.
+  (`state/PAUSE`). On a goodbye, the background commands of the window end with the window.
 - A request that printed DEFERRED (live helpers) drains: it waits for the live helpers to end.
-- The wake of the fresh window lists, whole and once, what he sent the old window after the goodbye. `--gen` binds the
-  wake to that one restart.
+- The wake of the fresh window lists, whole, what he sent the old window after the goodbye. The wake lists that text
+  again until a window has answered. `--gen` binds the wake to that one restart.
 
 **A full handoff is written only when a keyboard sitting ends.**
 
@@ -142,8 +142,8 @@ Built in `seat_restart.py`:
   sends that window carries the reason (`conductor_goodbye.py`, `seat_restart.restart_notice`). So the window stops
   saying HANDOFF READY into the void. Fix what the reason names, or tell him in one line why the window stays open.
 
-These still hold the restart, as before: a live helper, the bridge or driver lock, PAUSE, background commands, and his
-reset switch. A dirty file that is not a ledger file holds the restart only when it stops the shard's publish.
+These still hold the restart, as before: a live helper, the bridge or driver lock, PAUSE, and his reset switch.
+Background commands hold every restart of this window but a goodbye (`seat_restart.conductor_holds`). A dirty file that is not a ledger file holds the restart only when it stops the shard's publish.
 Selftest: `selftest_seat_restart_held.py`.
 
 **Authority:** `CLAUDE.md` §The Conductor speaks with the owner's authority. Record an act on a Conductor

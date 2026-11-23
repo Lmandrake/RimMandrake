@@ -25,8 +25,9 @@ file was condensed for the two-window fleet of that time (BENCH · FOUNDRY). FOU
    - Release the bridge the instant you stop driving.
    - CLAUDE.md's "The bridge is passed through one file" is canonical for each lock. That rule errs toward ALLOWING,
      not toward mutual lockout.
-   - A stale hold (45 minutes idle) is simply taken. Say so when you take it.
-   - `take --force` always works and is recorded.
+   - A holder is a process. When the process ends, the game is free at once. A live holder holds.
+   - `take --force` cuts a live holder and is recorded. `--force` does not cut his OWNER hold before 45 minutes after his
+     last deliberate interaction.
    - `python3 src/RimMandrake/rimflow/game_lock.py query all` is the one-glance answer for every game.
    - `./bridge conductor|free` is the owner's override.
    - A busy game is never a reason to wait. Name the game, and say why no other game can take the work (CLAUDE.md
@@ -101,8 +102,8 @@ provenance:
 - 🔴 **An agent's relay stamps the ledger and messages NO window** (owner, 2026-09-29: cross-window game-state
   broadcasts *"burn tokens unnecessarily and rarely inform"*).
   - The other windows learn the state from `rimflow next`. `rimflow next` measures the game itself.
-  - Only the owner, when he runs `broadcast.py` himself, reaches the windows.
-  - Game state is still the ONLY subject for which a window may reach `broadcast.py`.
+  - Only `broadcast.py` reaches the windows. The owner runs `broadcast.py`, or the Conductor window as its recorded act
+    (owner 2026-11-19). No other seat or helper runs it.
 - The machine cannot see two differences: `DEPLOYING` vs `DOWN`, and `GOING_DOWN` vs `UP`. Those states are the
   owner's alone.
   - The probe never touches those states.
