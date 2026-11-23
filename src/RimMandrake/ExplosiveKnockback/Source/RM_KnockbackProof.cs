@@ -83,6 +83,25 @@ namespace RimMandrake.ExplosiveKnockback
             return string.Join(",", SceneNames) + " flowworks=" + RM_KnockbackCompat.FlowWorks + " hoses=" + RM_KnockbackCompat.Hoses;
         }
 
+        /// <summary>Forgets which cells near o burst: the mod lets a gas cell burst once per GasCellOnceTicks (600), and the runner
+        /// stages the next scene at the same origin 300 ticks later. Visit 4: sc_cauldron_gas read FAIL (26 gas_reburst_skip, 22
+        /// at age 300) because sc_gas_chain had just burst its cells. The rule itself is untouched; only another scene's bursts
+        /// are forgotten.</summary>
+        private static void ForgetGasBursts(IntVec3 o, int radius)
+        {
+            var comp = Map?.GetComponent<RM_MapComponent_Knockback>();
+            var f = typeof(RM_MapComponent_Knockback).GetField("gasCellBurstTick", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            if (comp == null || f == null)
+            {
+                throw new InvalidOperationException("gas burst memory not reachable: RM_MapComponent_Knockback.gasCellBurstTick");
+            }
+            var mem = (Dictionary<IntVec3, int>)f.GetValue(comp);
+            foreach (IntVec3 c in mem.Keys.Where(k => k.InHorDistOf(o, radius)).ToList())
+            {
+                mem.Remove(c);
+            }
+        }
+
         public static string Clear(string _)
         {
             RM_KnockbackJournal.Clear();
@@ -490,6 +509,7 @@ namespace RimMandrake.ExplosiveKnockback
             try
             {
                 Prepare(s.o, 7);
+                ForgetGasBursts(s.o, 12);
                 // the site is asserted, never hoped: a prepared rect reads no FlowWorks climb depth (a natural pond's bed outlasts
                 // the Soil paint; Origins skips such rects, a hand-given origin is refused here)
                 foreach (IntVec3 c in CellRect.CenteredOn(s.o, 7).ClipInsideMap(Map))
