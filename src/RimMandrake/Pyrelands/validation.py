@@ -5401,6 +5401,9 @@ def _ten_flamefang_venom(t):
     hediff and its severity, not immunity."""
     x, z = PAD_VENOM
     _independent(t)
+    # HARNESS (visit 6, 2026-11-22, ArchSmall): the first row's patient, untended, was downed by its venom during this row
+    # and the row read RESTART (twice); like the wait-out, the earlier envenomed patients are not this row's subjects
+    _GEN["not_subjects"] = _retire_venom_patients(t)
     with _comp(t, "venom_tended_vs_untended"):
         # SITE (visit 4, 2026-11-22): both patients were spawned before either bite, so the second, undrafted, fled from
         # the first one's biter, and the first (drafted, standing) took the second one's biter again and again: venom 0.67

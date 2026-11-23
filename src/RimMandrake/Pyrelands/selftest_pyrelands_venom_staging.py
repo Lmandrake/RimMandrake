@@ -380,6 +380,8 @@ def run_scene(V, game):
 
     @contextlib.contextmanager
     def comp(t, name, **kw):
+        if hasattr(game, "not_subjects_at"):   # what the real _comp leaves out of the row's damage reading
+            game.not_subjects_at[name] = list(V._GEN.get("not_subjects") or [])
         pre = V._vitals(t)                       # the real _comp's row-start top-up
         if pre is not None and name not in V.NEEDS_ROWS:
             V._top_up(t, pre)
@@ -557,6 +559,25 @@ def main():
                                    ("venom read once", [None, 0.17, None], False), ("venom rising", [0.17, 0.19, 0.21], False),
                                    ("venom read as 0.0", [0.0, None], False)):
             check("venom_never_read: %s -> %s" % (what, want), nr(series) is want, repr(series))
+    # HARNESS (visit 6, 2026-11-22, ArchSmall): the first row's patient, left untended, was downed by its venom during the
+    # tended row, and the tended row read RESTART on it (venom3, venom4); like the wait-out, the tended row leaves the
+    # earlier envenomed patients out of its damage reading
+    g = Game(**dict((k, v[0]) for k, v in GRID.items()))
+    g.not_subjects_at, g.colonists_spawned = {}, []
+    _c = g.call
+
+    def spy2(tool, _c=_c, g=g, **k):
+        r = _c(tool, **k)
+        if tool == "jawa/spawn_pawn" and k.get("kindDef") == "Colonist":
+            g.colonists_spawned.extend(p_.get("id") for p_ in (r or {}).get("pawns") or [])
+        return r
+    g.call = spy2
+    V._GEN.clear()
+    run_scene(V, g)
+    first = g.colonists_spawned[:1]
+    got_ns = g.not_subjects_at.get("venom_tended_vs_untended")
+    check("the tended row leaves the first row's envenomed patient %r out of its damage reading (not_subjects %r)"
+          % (first, got_ns), bool(first) and first[0] in (got_ns or []), g.not_subjects_at)
     # HARNESS (visit 6, 2026-11-22, ArchSmall, a 55.8 C site): the ten-day wait-out advanced through _bite_wait, which called
     # the clock directly and never ran the heat guard; three wait-outs lost a site colonist (downed, then dead) by day 3-4
     # (about 0.06 heatstroke per colonist every six hours). A guarded bite wait passes a heat guard every HEAT_CHUNK_TICKS.
