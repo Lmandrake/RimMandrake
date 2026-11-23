@@ -121,6 +121,8 @@ PAGES = {
         "src/RimMandrake/rimflow/selftest_red_seen_owner.py",
     "design/specs/2026-11-23-stale-red-rerun-first/boundary.md":
         "src/RimMandrake/rimflow/selftest_stale_red_rerun_first.py",
+    "design/specs/2026-11-23-one-live-run-per-mod/boundary.md":
+        "src/RimMandrake/rimflow/selftest_one_live_run_per_mod.py",
     "design/specs/2026-11-20-road-back-holder-first/boundary.md":
         "src/RimMandrake/rimflow/selftest_road_back_holder_first.py",
     "design/specs/2026-11-20-coverage-judge-reads-only/boundary.md":

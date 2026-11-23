@@ -683,6 +683,65 @@ def progressed(w, ids, fp_now):
     return True, "refused bars resolved: %s" % ", ".join(gone[:6])
 
 
+def control_env(mod, stage):
+    """-> the env that records a launch's mod and stage in its run record: maturation_now.runs_for_mods places the run
+    by it, so the next tick reads the mod live whatever the item is called. The red-decider builder records no stage:
+    it works the offline build while the row may stand at a later stage, and a stage switch refusing that launch after
+    the tick's own switch check would be booked as its one spent try."""
+    return dict({"RM_CONTROL_MOD": mod}, **({"RM_CONTROL_STAGE": stage} if stage else {}))
+
+
+def own_live(st, facts, record, status=None):
+    """-> facts (copied) with each mod's un-ended ledger runs (s["ledger_runs"]) counted live, whatever placement read:
+    one live run per mod, as pilot_launch holds it (RIMMANDRAKE_REFUSE_SECOND_HOLDER_WHILE_FIRST_LIVES_FENCED_AGAIN: a
+    holder on an item naming no mod read as nothing live, and the next launch's lease fenced it). A record that is
+    absent, unreadable or without a status is never an end: its unit is live, and named in live_unread."""
+    status = status or DH.live_status
+    out = dict(facts)
+    for mod, f in facts.items():
+        if not isinstance(f, dict) or not isinstance(f.get("live_units"), list):
+            continue        # an unreadable reading stays one: nothing launches on it already
+        live, unread, own = list(f["live_units"]), [], []
+        for r in ((st.get("mods") or {}).get(mod) or {}).get("ledger_runs") or []:
+            u = r.get("unit")
+            if not u or r.get("ended") or u in own:
+                continue
+            if u in live:
+                own.append(u)
+                continue
+            try:
+                rec = record(u)
+            except Exception:       # noqa: BLE001  could not look is never "ended"
+                rec = None
+            if not isinstance(rec, dict) or not rec.get("status"):
+                unread.append(u)
+            elif status(rec) not in ("launching", "running"):
+                continue
+            live.append(u)
+            own.append(u)
+        out[mod] = dict(f, live_units=live, **dict({"own_live": own} if own else {},
+                                                  **({"live_unread": unread} if unread else {})))
+    return out
+
+
+def one_run_fence(facts, rows, launches):
+    """The last word on one live ledger run per mod, whatever layer asked for the launch: a run taking a slot on a mod
+    whose own ledger run is live (own_live) waits for its end. Before it, a live run that advanced its own mod's stage
+    met the next stage's steward there, whose lease fenced it (the steward stages read no live run). -> launches."""
+    for row in rows:
+        own = (facts.get(row["mod"]) or {}).get("own_live")
+        if own and takes_slot(row) and (row["mod"] in launches or row.get("decision") == "slots_full"):
+            row.update(decision="live", aut=None, waits_on=", ".join(own), why="%s is live on it: one ledger run per "
+                       "mod; it was: %s" % (", ".join(own), row.get("why")))
+            row.pop("need", None)
+            launches = [m for m in launches if m != row["mod"]]
+        unread = (facts.get(row["mod"]) or {}).get("live_unread")
+        if unread and row.get("decision") == "live":
+            row["why"] = "%s; the run record of %s cannot be read: counted live, never ended" % (
+                row.get("why"), ", ".join(unread))
+    return launches
+
+
 def occupancy(facts):
     """-> the live runs on advancing mods, or None when any mod's live runs cannot be read: an unknown occupancy is
     never counted as zero (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH; it used to skip a non-list and launch)."""
@@ -1687,12 +1746,13 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
                 led, text = None, "REFUSED: %s's ledger launch failed: %s: %s" % (mod, type(e).__name__, e)
             if led:
                 rc, text, unit = do_brief(item, led["brief"], cfg.get("model", "opus"), cap, cfg.get("seat", "BENCH"),
-                                          env=led["env"])
+                                          env=dict(led["env"], **control_env(mod, None)))
                 unit = unit if rc == 0 else None
                 text = "%s; %s" % ((text or "").splitlines()[0] if text else rc,
                                    ledger_after(root, st, mod, led, unit, item, now, fx))
         else:
-            rc, text, unit = do_brief(item, brief, cfg.get("model", "opus"), cap, cfg.get("seat", "BENCH"))
+            rc, text, unit = do_brief(item, brief, cfg.get("model", "opus"), cap, cfg.get("seat", "BENCH"),
+                                      env=control_env(mod, None))
             unit = unit if rc == 0 else None
         if unit:
             s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "cap": cap,
@@ -2791,7 +2851,7 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game
             "%s (%s)" % kv for kv in sorted(busy.items())) if busy else "")), stage=stage, now=now, fx=fx)
     rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
         item, led["brief"], MM.for_mod(cfg, mod).get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
-        env=dict(led["env"], **({"RM_GAME_INSTANCE": game} if game else {})), **rkw)
+        env=dict(led["env"], **control_env(mod, stage), **({"RM_GAME_INSTANCE": game} if game else {})), **rkw)
     unit = unit if rc == 0 else None
     text = "%s%s%s; %s%s" % ("live holder on %s (bridge and game allowed): " % _GN.show(game) if live else "",
                              "%s; " % plan["why"] if rkw else "",
@@ -3845,7 +3905,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=False):
     shipped = cfg                       # the file's own values, before widen adds discovered mods (maturation_hands)
     cfg = AUT.widen(root, cfg, st, apply, fx) if aut else cfg   # Designer concepts seen and seeded; the game queue
     cfg = dict(cfg, _code=(fx["code"]() if "code" in fx else pipeline_code(REPO)))   # the code this tick runs
-    facts = fx["facts"]() if "facts" in fx else gather(root, cfg)
+    facts = own_live(st, fx["facts"]() if "facts" in fx else gather(root, cfg), record)
     account = fx["account"]() if "account" in fx else account_gate()
     releases = fx["releases"]() if "releases" in fx else read_releases()
     # The owner's hold (mod_owner_hold.py): a held mod is read (its live run finishes, its spend and ledger rows are still
@@ -3886,6 +3946,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=False):
     if aut:
         rows, launches = AUT.resolve(root, cfg, st, facts, rows, launches, now, fx)
         rows, launches = pilot_holders(root, cfg, st, facts, rows, launches, now, dict(fx, account=lambda: account))
+    launches = one_run_fence(facts, rows, launches)     # before the slots: a mod that waits on its own run takes none
     launches = prioritise(cfg, st, facts, rows, launches, root)     # one slot order over every layer: the list's
     # the pause's gate on every layer's launch row: pipeline_paused (class planned: no alarm); a live run is left alone
     for r in rows:
