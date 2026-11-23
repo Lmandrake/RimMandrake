@@ -43,6 +43,9 @@ TICKNAME = re.compile(r"(?i)tick$")
 
 # relpath::field -> why it is safe across a game reload. Read the code before adding a line here.
 REVIEWED = {
+    # FlowWorks, reviewed 2026-11-22 (RIMMANDRAKE_GUARD_STATIC_GAME_STATE_THREE_NEW_CACHES_UNREVIEWED)
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs::fetchLips": "cleared on every Game.FinalizeInit (new game or load) by RM_Patch_GameInit_FetchFallenMemos; keys are this game's thingIDNumbers, values a tick and a cell, no Map or Thing reference",
+    "src/RimMandrake/FlowWorks/Source/Pits/Drawbridge/RM_DrawbridgeRaid.cs::winchAttacks": "cleared on every Game.FinalizeInit (new game or load) by RM_Patch_GameInit_DrawbridgeRaidMemos; keys are this game's thingIDNumbers, values a bridge record id and a tick, no Map or Thing reference",
     # FlowWorks, reviewed 2026-10-31 (SELFTEST_SWEEP_FIX_FOUR_REDS_REMAIN)
     "src/RimMandrake/FlowWorks/Source/Hose/HosePorts.cs::sideIds": "scratch list of ints, cleared at its only use (line 190) on the main thread; no game reference",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs::kindMap": "set by KindFn immediately before each read and nulled by KindFnDone; never read without a fresh KindFn",

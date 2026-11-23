@@ -101,6 +101,14 @@ namespace RimMandrake.FlowWorks.Pits
 
 		public static int Spared;
 
+		/// <summary>RIMMANDRAKE_GUARD_STATIC_GAME_STATE_THREE_NEW_CACHES_UNREVIEWED: forget the last game's attackers on every
+		/// new game or load (RM_Patch_GameInit_DrawbridgeRaidMemos), so a reused thingIDNumber never reads an old stamp.</summary>
+		public static void ClearMemos()
+		{
+			winchAttacks.Clear();
+			Spared = 0;
+		}
+
 		private static void StampWinchAttack(Pawn pawn, Building_DrawbridgeWinch winch)
 		{
 			RM_MapComponent_SuspensionBridges comp = RM_MapComponent_SuspensionBridges.Of(pawn.Map);
@@ -443,6 +451,17 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 			}
 			return false;
+		}
+	}
+
+	[HarmonyLib.HarmonyPatch(typeof(Game), nameof(Game.FinalizeInit))]
+	[RimMandrake.Shared.PatchFeature("Drawbridges can be built", typeof(RimMandrake.FlowWorks.Pits.RM_DrawbridgeSettings), "drawbridgesEnabled")]
+	public static class RM_Patch_GameInit_DrawbridgeRaidMemos
+	{
+		[HarmonyLib.HarmonyPostfix]
+		public static void Postfix()
+		{
+			RM_DrawbridgeRaid.ClearMemos();
 		}
 	}
 }

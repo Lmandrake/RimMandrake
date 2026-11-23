@@ -22,8 +22,8 @@ rimworld/save_game + rimworld/load_game_ready.
 Owner rulings this proves (2026-10-20, by card unless quoted): raise from either side, lower only from the winch side; riders
 *"tip towards hinged side, pulls enemies inside"*, overflow falls; underpass untouched; peace auto-lower, any FREE hostile
 locks (trapped ones do not), lock cancels a pending auto-lower; timber by hand, steel powered, steel without power freezes;
-a destroyed winch crashes its leaf down and hits what is under it (follow-up); two leaves
-each tip to their own hinge; raiders use the trench rules + go for the winch + some bring planks laid exactly once.
+a destroyed winch crashes its leaf down and hits what is under it (follow-up); one leaf only, a span over the longest
+leaf is not a drawbridge (his rulings of 2026-11-03: no double drawbridges, no winch on the enemy side); raiders use the trench rules + go for the winch + some bring planks laid exactly once.
 
 Scenes (plot coords from --origin, default 140,140; dig by jawa/flowworks_excavation_drive, 8 notches = 4 m; hinge = bank A,
 the drag's first end, unless said):
@@ -35,8 +35,8 @@ the drag's first end, unless said):
                                                            -> RAISE_TIPS_RIDERS (six hostile riders)
   F  z=32  steel  1-wide (0,32)-(5,32), 4 m trench; a colonist put UNDER (2,32), a rider on (3,32)
                                                            -> RAISE_SPARES_UNDERPASS
-  G  z=38  timber 1-wide (0,38)-(7,38), trench 1..6 (two leaves of 3, a winch on each bank; timber spans cap at 6)
-                                                           -> TWO_LEAF_TIPS_OWN_HINGE
+  G  z=38  timber 1-wide (0,38)-(7,38), trench 1..6 (6 squares: longer than one timber leaf of 4)
+                                                           -> LONG_SPAN_NOT_A_DRAWBRIDGE
   H  z=44  steel  1-wide (0,44)-(5,44); a 2x2 4 m pit at (10..11, 44..45) to trap a hostile in
                                                            -> HOSTILE_LOCKS (raiseSpeed 0.25 for the section, restored)
   I  z=50  timber 1-wide (0,50)-(5,50), 4 m trench; leaf raised, a colonist in the hole under it, winch destroyed
@@ -98,7 +98,7 @@ DEEP = 8          # notches: 4 m
 FULL_STEEL = 120  # RM_DrawbridgeMath.PoweredTicksPerLeaf at raiseSpeed 1
 FULL_STEEL_4 = 160  # the same for a 4-lane leaf: RM_DrawbridgeMath.WinchLoad(4) = 4/3 (DRAWBRIDGE_WIDEN_FOUR_LANES_TO_MATCH)
 
-ROW_IDS = ["RAISE_PATH", "RAISE_TIPS_RIDERS", "RAISE_SPARES_UNDERPASS", "LOWER_ONLY_FROM_WINCH", "TWO_LEAF_TIPS_OWN_HINGE",
+ROW_IDS = ["RAISE_PATH", "RAISE_TIPS_RIDERS", "RAISE_SPARES_UNDERPASS", "LOWER_ONLY_FROM_WINCH", "LONG_SPAN_NOT_A_DRAWBRIDGE",
            "HOSTILE_LOCKS", "STEEL_UNPOWERED_FREEZES", "WINCH_LOST_CRASHES",
            "WINCH_DESPAWN_CRASHES", "RAID_UP", "RAID_PLANK", "ONE_DRAG_PACKAGE", "ONE_DRAG_FOUR_WIDE",
            "SAVE_MIDRAISE"]
@@ -632,26 +632,22 @@ def lower_only_from_winch(ctx):
     row("LOWER_ONLY_FROM_WINCH", "PASS" if good else "FAIL", {"farRaise": tfr, "farLower": tfl, "winchLower": twl, "leaf": tl, "noWalkRound": tp})
 
 
-def two_leaf_tips_own_hinge(ctx):
-    """PROVE a timber bridge of 6 interior squares (two leaves of 3, a winch on each bank), a drafted rider on each leaf,
-    both raised (ProofDevSet instant; staging, the drive is not the claim).
-    EXPECT 2 leaves hinged A and B; rider 1 lands on bank A (x <= 0), rider 2 on bank B (x >= 7). LIES: both riders on bank A
-    would mean 'tip to the colony bank', the ruled-out reading; a one-leaf split makes the row UNMEASURED (SITE)."""
-    P, xz, row, dproof, spawn = _c(ctx, "P", "xz", "row", "dproof", "spawn")
-    # 6 interior squares, not 8: a timber suspension span is capped at 6 between supports (RM_SuspensionMath) while a timber
-    # leaf is capped at 4, so 5..6 is the only timber two-leaf range (live 2026-10-21: the 8-square scene was refused, SITE)
+def long_span_not_a_drawbridge(ctx):
+    """PROVE a timber drawbridge drag over 6 interior squares (longer than one timber leaf of 4) is refused, and no leaf is
+    made (RIMMANDRAKE_PRUNE_FLOWWORKS_DRAWBRIDGE_TO_HIS_NOV_THIRD_RULINGS; his rulings of 2026-11-03: "Remove double
+    drawbridges: SplitLeaves goes to one leaf, spans over the max leaf are not drawbridges, ordinary bridges still allowed").
+    EXPECT DRAW ok=False leaves=0 with a too-long reason. LIES: a refusal for any other reason (no trench, a bad cell) is not
+    the rule; the row reads UNMEASURED (SITE) unless the reason names the length."""
+    P, xz, row, dproof = _c(ctx, "P", "xz", "row", "dproof")
     for i in range(1, 7):
         ctx["dig"](P(i, 38))
-    kv, txt = ctx["build"]("G", P(0, 38), P(7, 38), "timber")
-    V.require(kv.get("leaves") == "2" and kv.get("hinges") == "A,B", "two leaves, one hinge per bank", txt)
-    r1, r2 = spawn(P(2, 38), draft=True), spawn(P(5, 38), draft=True)
-    dproof("ProofDevSet", "%s;raise;instant" % xz(P(2, 38)))
-    dproof("ProofDevSet", "%s;raise;instant" % xz(P(5, 38)))
-    ps = ctx["pawns"]()
-    a1, a2 = ctx["at"](ps.get(r1)), ctx["at"](ps.get(r2))
-    V.require(a1[0] is not None and a2[0] is not None, "both riders in the read", [a1, a2], cls="HARNESS")
-    good = a1[0] is not None and a2[0] is not None and a1[0] <= P(0, 0)[0] and a2[0] >= P(7, 0)[0]
-    row("TWO_LEAF_TIPS_OWN_HINGE", "PASS" if good else "FAIL", {"build": txt, "rider1": a1, "rider2": a2})
+    kv, txt = dproof("ProofMakeDrawbridge", "%s;%s;timber;A;winch" % (xz(P(0, 38)), xz(P(7, 38))))
+    if kv.get("ok") == "True":
+        row("LONG_SPAN_NOT_A_DRAWBRIDGE", "FAIL", {"build": txt, "why": "a 6-square timber span became a drawbridge"})
+        return
+    V.require("too_long" in (kv.get("reason") or "").lower().replace(":", "_").replace("-", "_")
+              or "too long" in txt.lower(), "the refusal names the length", txt)
+    row("LONG_SPAN_NOT_A_DRAWBRIDGE", "PASS" if kv.get("leaves") in ("0", None) else "FAIL", {"build": txt})
 
 
 def hostile_locks(ctx):
@@ -1154,7 +1150,7 @@ def _health(p):
 
 
 SCENES = {"RAISE_PATH": raise_path, "RAISE_TIPS_RIDERS": raise_tips_riders, "RAISE_SPARES_UNDERPASS": raise_spares_underpass,
-          "LOWER_ONLY_FROM_WINCH": lower_only_from_winch, "TWO_LEAF_TIPS_OWN_HINGE": two_leaf_tips_own_hinge,
+          "LOWER_ONLY_FROM_WINCH": lower_only_from_winch, "LONG_SPAN_NOT_A_DRAWBRIDGE": long_span_not_a_drawbridge,
           "HOSTILE_LOCKS": hostile_locks, "STEEL_UNPOWERED_FREEZES": steel_unpowered_freezes,
           "WINCH_LOST_CRASHES": winch_lost_crashes, "WINCH_DESPAWN_CRASHES": winch_despawn_crashes, "RAID_UP": raid_up, "RAID_PLANK": raid_plank, "ONE_DRAG_PACKAGE": one_drag_package,
           "ONE_DRAG_FOUR_WIDE": one_drag_four_wide, "SAVE_MIDRAISE": save_midraise}
@@ -1172,7 +1168,7 @@ class FakeBridge(object):
       no_repath        MOD: a toggle re-paths nobody                           -> RAISE_PATH FAIL
       underpass_tipped MOD: the pawn under the deck is moved by the raise     -> RAISE_SPARES_UNDERPASS FAIL
       lower_from_far   MOD: the far-bank pawn gets a lower job                 -> LOWER_ONLY_FROM_WINCH FAIL
-      tip_colony_bank  MOD: both leaves tip to bank A                          -> TWO_LEAF_TIPS_OWN_HINGE FAIL
+      two_leaf_allowed MOD: a span over one leaf is split into two leaves      -> LONG_SPAN_NOT_A_DRAWBRIDGE FAIL
       trapped_locks    MOD: a trapped hostile counts as free                   -> HOSTILE_LOCKS FAIL
       freeze_ignored   MOD: unpowered steel keeps moving                       -> STEEL_UNPOWERED_FREEZES FAIL
       no_crash         MOD: a destroyed winch leaves the leaf up               -> WINCH_LOST_CRASHES FAIL
@@ -1186,7 +1182,7 @@ class FakeBridge(object):
       four_refused     MOD: a 4-lane drawbridge drag is refused (1 to 3 kept)  -> ONE_DRAG_FOUR_WIDE FAIL
       wide_flat        MOD: a 4-lane leaf lifts as fast as a 1-lane one         -> ONE_DRAG_FOUR_WIDE FAIL"""
     FAULTS = ("far_reaches_winch", "no_proofs", "noclock", "no_free", "tip_all_fall", "no_repath", "underpass_tipped", "lower_from_far",
-              "tip_colony_bank", "trapped_locks", "freeze_ignored", "no_crash", "despawn_stale", "raid_loop", "far_raiders", "dup_plank",
+              "two_leaf_allowed", "trapped_locks", "freeze_ignored", "no_crash", "despawn_stale", "raid_loop", "far_raiders", "dup_plank",
               "replay_tip", "drag_unlinked", "four_refused", "wide_flat", "rebuild_unlinked")
 
     def __init__(self, faults=()):
@@ -1221,7 +1217,7 @@ class FakeBridge(object):
     def _tip(self, l):
         riders = [i for i, p in self.pawns.items() if l["z0"] <= p["z"] <= l["z1"] and l["first"] <= p["x"] <= l["last"]
                   and (not p.get("under") or "underpass_tipped" in self.f) and not p.get("dead")]
-        bank_x = l["ax"] if (l["hinge"] == "A" or "tip_colony_bank" in self.f) else l["bx"]
+        bank_x = l["ax"] if l["hinge"] == "A" else l["bx"]
         step = -1 if bank_x == l["ax"] else 1
         free = [(bank_x + step * k, z) for k in range(0, 4) for z in range(l["z0"] - 1, l["z1"] + 2)]
         free = [c for c in free if c not in self.walls and c != l["winch"] and c[0] != l["ax"] and c[0] != l["bx"]]
@@ -1449,6 +1445,8 @@ class FakeBridge(object):
             (x1, z1), (x2, z2), tier = cell(a[0]), cell(a[1]), a[2]
             n = abs(x2 - x1) - 1
             mx = 4 if tier == "timber" else 8
+            if n > mx and "two_leaf_allowed" not in self.f:
+                return "DRAW ok=False leaves=0 tier=%s hinges=- winchAt=- firstAt=- reason=too_long:_one_leaf_at_most_%d" % (tier, mx)
             spans = [(x1 + 1, x2 - 1, "A")] if n <= mx else [(x1 + 1, x1 + n // 2, "A"), (x1 + n // 2 + 1, x2 - 1, "B")]
             winches = []
             for f_, l_, h in spans:

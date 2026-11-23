@@ -68,19 +68,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "timber is hand-winched, steel powered");
             });
 
-            Case("Drawbridge_P1_split_one_leaf_or_two_each_hinged_on_its_own_bank", () =>
+            Case("Drawbridge_P1_one_leaf_on_the_colony_bank_never_two", () =>
             {
+                // RIMMANDRAKE_PRUNE_FLOWWORKS_DRAWBRIDGE_TO_HIS_NOV_THIRD_RULINGS (his rulings of 2026-11-03): no double
+                // drawbridges; a span over the longest leaf is not a drawbridge (it stays an ordinary bridge), and the winch and
+                // hinge are always on the friendly bank.
                 List<LeafSpan> one = RM_DrawbridgeMath.SplitLeaves(1, 4, 4, true);
                 Assert(one != null && one.Count == 1 && one[0].First == 1 && one[0].Last == 4 && one[0].HingeAtFirst, "4 squares of timber: one leaf on bank A");
-                List<LeafSpan> two = RM_DrawbridgeMath.SplitLeaves(1, 7, 4, true);
-                Assert(two != null && two.Count == 2, "7 squares of timber: two leaves");
-                Assert(two[0].First == 1 && two[0].Last == 4 && two[0].HingeAtFirst, "the colony leaf takes the odd square, hinged on A");
-                Assert(two[1].First == 5 && two[1].Last == 7 && !two[1].HingeAtFirst, "can-fail: the far leaf hinges on the FAR bank (review answer 2)");
-                List<LeafSpan> rev = RM_DrawbridgeMath.SplitLeaves(1, 7, 4, false);
-                Assert(rev[0].First == 4 && rev[0].Last == 7 && !rev[0].HingeAtFirst && rev[1].First == 1 && rev[1].Last == 3 && rev[1].HingeAtFirst,
-                    "colony on bank B: mirror");
-                Assert(RM_DrawbridgeMath.SplitLeaves(1, 9, 4, true) == null, "can-fail: 9 squares is longer than two timber leaves");
-                Assert(RM_DrawbridgeMath.SplitLeaves(1, 16, 8, true).Count == 2 && RM_DrawbridgeMath.SplitLeaves(1, 17, 8, true) == null, "steel: up to 16");
+                List<LeafSpan> rev = RM_DrawbridgeMath.SplitLeaves(1, 4, 4, false);
+                Assert(rev != null && rev.Count == 1 && rev[0].First == 1 && rev[0].Last == 4 && !rev[0].HingeAtFirst, "colony on bank B: the one leaf hinges on B");
+                Assert(RM_DrawbridgeMath.SplitLeaves(1, 5, 4, true) == null, "can-fail: 5 squares of timber is longer than one leaf, so not a drawbridge (no two-leaf bridge)");
+                Assert(RM_DrawbridgeMath.SplitLeaves(1, 7, 4, false) == null, "can-fail: no far-bank leaf, from either bank");
+                Assert(RM_DrawbridgeMath.SplitLeaves(1, 8, 8, true).Count == 1 && RM_DrawbridgeMath.SplitLeaves(1, 9, 8, true) == null, "steel: one leaf up to 8");
                 Assert(RM_DrawbridgeMath.SplitLeaves(1, 4, 0, true) == null, "no leaf length: not a drawbridge");
             });
 
@@ -414,7 +413,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string set = Src("Pits", "Drawbridge", "RM_DrawbridgeSettings.cs");
                 Assert(set.Contains("public static int maxLeafTimber = 4;") && set.Contains("public static int maxLeafSteel = 8;"), "defaults timber 4, steel 8");
                 Assert(Body(db, "public static bool CanBeDrawbridge(SuspensionBridgeRecord r, out string why)").Contains("SplitLeaves(1, r.length - 2, MaxLeaf(r.tier), true) == null"),
-                    "a bridge longer than two leaves of its material is refused");
+                    "a bridge longer than one leaf of its material is refused");
             });
 
             Case("Drawbridge_P6_gate_never_open_on_a_raised_leaf_locked_only_by_order", () =>
@@ -548,7 +547,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string a = Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs");
                 Assert(Body(a, "public static void DrawLeafUp(").Contains("LeafUp(r.tier, LookOf(r), LeafView.Face, out string path)"), "can-fail: the raised leaf reads its bridge's look");
-                Assert(Body(a, "public static void DrawPlanks(").Contains("Planks(r.tier, LookOf(r))"), "the planks read the look");
+                Assert(!a.Contains("DrawPlanks(") && !Body(a, "public static void DrawLeaves(").Contains("Planks"),
+                    "can-fail: no plank stack is drawn beside the hinge (his rulings of 2026-11-03; raid planks untouched)");
                 Assert(Body(a, "public static string LookOf(").Contains("r.look"), "the look is the bridge's own");
                 string c = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
                 Assert(c.Contains("lookGraphic = RM_DrawbridgeArt.Winch(Tier, look) ?? base.Graphic;"), "can-fail: the winch house draws its look");
@@ -587,8 +587,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "can-fail: leaves draw even with nobody under a deck");
                 string a = Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs");
                 string leaves = Body(a, "public static void DrawLeaves(Map map, IReadOnlyList<SuspensionBridgeRecord> bridges)");
-                Assert(leaves.IndexOf("DrawLeafUp(map, r, l);") >= 0 && leaves.IndexOf("DrawLeafUp(map, r, l);") < leaves.IndexOf("if (l.winch != null"),
-                    "can-fail: the raised leaf is not gated on a winch");
+                Assert(leaves.Contains("DrawLeafUp(map, r, l);") && !leaves.Contains("l.winch"),
+                    "can-fail: the raised leaf is not gated on a winch (nothing in the leaf loop waits on one since the plank stack left)");
                 string w = Body(Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs"), "protected override void DrawAt(Vector3 drawLoc, bool flip = false)");
                 Assert(!w.Contains("DrawLeafUp") && !w.Contains("DrawPlanks"), "can-fail: the winch must not draw the leaf a second time");
             });
@@ -673,7 +673,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("Drawbridge_OneDrag_every_planned_winch_is_beside_its_own_hinge", () =>
             {
-                // every legal deck length and width, one or two leaves, both banks, both sides: the planned winch stands where the
+                // every legal deck length and width (one leaf: his rulings of 2026-11-03), both banks, both sides: the planned winch stands where the
                 // old adjacency link would also find it (a save from before keeps working), never on a deck or anchor square, on
                 // the leaf's own hinge bank; gates sit one square further onto that bank, one per lane
                 int checkedLeaves = 0;
@@ -707,7 +707,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     else
                         Assert(leaves[0].HingeAtFirst == startA, "one leaf: hinged on the bank the drag started on");
                 }
-                Assert(checkedLeaves > 500, "the sweep saw " + checkedLeaves + " leaves (instrument check)");
+                Assert(checkedLeaves >= 420, "the sweep saw " + checkedLeaves + " leaves (instrument check: 12 per leaf length, lengths 2 to 8)");
                 Assert(!RM_DrawbridgePackageMath.BesideHinge(new LeafSpan(1, 4, true), 2, 1, 0), "can-fail: the far anchor's lane is not beside");
                 Assert(RM_DrawbridgePackageMath.OtherSideFromRotation(0) == false && RM_DrawbridgePackageMath.OtherSideFromRotation(2) == true,
                     "Q/E flips the winch side");

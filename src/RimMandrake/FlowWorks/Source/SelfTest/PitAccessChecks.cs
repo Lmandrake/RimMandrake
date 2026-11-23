@@ -26,6 +26,19 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            Case("PitAccess_rescue_reads_no_way_out_and_a_reachable_spare", () =>
+            {
+                // RIMMANDRAKE_RESCUE_FLOWWORKS_STRANDED_COLONIST_REACHABLE_LADDER: a colonist stranded on his feet in a sealed 4 m
+                // pit read trapped=False (IsTrapped asks captures only), so no rescue ever queued (live 2026-11-12, run 18); and an
+                // unreachable stored portable ladder was chosen and stalled the rescue for good.
+                string s = Src("Superdeep", "RM_PitAccess.cs");
+                string q = DrawbridgeChecks.Body(s, "public RM_PitAccessMath.RescueLadder TryQueueFor(Pawn p, RM_MapComponent_Excavation eng, int now)");
+                Assert(q.Contains("bool needsHelp = downed || RM_SuperdeepTrap.HasNoWayOut(p);"),
+                    "can-fail: a colonist with no way out needs help, held or not (HasNoWayOut, not the captures-only IsTrapped)");
+                string sp = DrawbridgeChecks.Body(s, "private MinifiedThing SparePortable(Pawn forPawn)");
+                Assert(sp.Contains("map.reachability.CanReachColony(m.Position)"),
+                    "can-fail: a spare portable ladder no free colonist can reach is not offered (a new ladder is built instead)");
+            });
             Case("PitAccess_portable_ladder_reach", () =>
             {
                 Assert(RM_PitAccessMath.LadderReaches(8, 0, 0), "the fixed ladder (0) spans any depth: 4 m");

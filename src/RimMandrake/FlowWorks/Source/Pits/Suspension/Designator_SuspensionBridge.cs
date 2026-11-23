@@ -165,7 +165,7 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 				string why = Plan(map, r, dragged, out List<SuspensionBridgeRecord> pieces);
 				// DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6: a drawbridge button cuts the planned bridge into leaves (no towers,
-				// no longer than two leaves of its material), the colony's leaf hinged on the home bank
+				// no longer than one leaf of its material: his rulings of 2026-11-03), the leaf hinged on the home bank
 				// DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: hinged on the bank the drag started from, with its winch houses and gates
 				if (why == null && Drawbridge && !RM_Drawbridges.MakeDrawbridge(r, HingeBankAtFirst(map, r), out string dwhy))
 				{
@@ -474,8 +474,8 @@ namespace RimMandrake.FlowWorks.Pits
 
 		public override string Desc => "A suspension bridge whose deck raises on a winch, so the moat under it is a whole pit again.\n\n"
 			+ "Start the drag on the bank you want it hinged on and drag across the dug hole to solid ground, 1 to " + RM_SuspensionMath.DrawbridgeMaxWidth + " squares wide, with no towers. "
-			+ "Up to " + RM_Drawbridges.MaxLeaf(Tier) + " squares it is one leaf hinged on your starting bank; up to " + (2 * RM_Drawbridges.MaxLeaf(Tier))
-			+ " it is two leaves, one hinged on each bank. The drag also plans each leaf's winch house beside its hinge anchor (rotate with Q/E to "
+			+ "It is one leaf, up to " + RM_Drawbridges.MaxLeaf(Tier) + " squares, hinged on your starting bank; a longer span is an ordinary bridge. "
+			+ "The drag also plans the winch house beside its hinge anchor (rotate with Q/E to "
 			+ "put it on the other side)" + (RM_DrawbridgeSettings.gatesWithDrag ? " and a gate behind each lane" : "")
 			+ (RM_DrawbridgeMath.IsPowered(Tier) ? "; the winch needs power" : "") + ". It raises from either bank and lowers only from the winch's.";
 

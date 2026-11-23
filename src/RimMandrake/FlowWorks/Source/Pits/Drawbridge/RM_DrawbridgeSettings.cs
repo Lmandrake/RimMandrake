@@ -56,9 +56,9 @@ namespace RimMandrake.FlowWorks.Pits
 			list.Label("  Raise speed: x" + raiseSpeed.ToString("0.00"), tooltip:
 				"x1: a timber leaf about 4 s a square by hand, a steel leaf about 2 s by motor (PROVISIONAL).");
 			raiseSpeed = Mathf.Round(list.Slider(raiseSpeed, 0.25f, 4f) * 20f) / 20f;
-			list.Label("  Longest timber leaf: " + maxLeafTimber + " squares (a bridge up to " + (2 * maxLeafTimber) + " is two leaves)");
+			list.Label("  Longest timber leaf: " + maxLeafTimber + " squares (the longest timber drawbridge)");
 			maxLeafTimber = Mathf.RoundToInt(list.Slider(maxLeafTimber, 2f, 8f));
-			list.Label("  Longest steel leaf: " + maxLeafSteel + " squares (a bridge up to " + (2 * maxLeafSteel) + " is two leaves)");
+			list.Label("  Longest steel leaf: " + maxLeafSteel + " squares (the longest steel drawbridge)");
 			maxLeafSteel = Mathf.RoundToInt(list.Slider(maxLeafSteel, 2f, 14f));
 			list.CheckboxLabeled("  Raids bring planks", ref raidsBringPlanks,
 				"Some raids against a colony with a drawbridge carry planks: a raider lays one across a moat gap of up to "

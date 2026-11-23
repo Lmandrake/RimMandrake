@@ -109,7 +109,7 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 
 		/// <summary>Whether this bridge can be a drawbridge: timber or steel, a bridge (not a jetty), no towers (a leaf swings
-		/// from a bank, never from a tower), and a deck no longer than two leaves of its material.</summary>
+		/// from a bank, never from a tower), and a deck no longer than one leaf of its material (his rulings of 2026-11-03).</summary>
 		public static bool CanBeDrawbridge(SuspensionBridgeRecord r, out string why)
 		{
 			why = null;
@@ -131,7 +131,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			else if (RM_DrawbridgeMath.SplitLeaves(1, r.length - 2, MaxLeaf(r.tier), true) == null)
 			{
-				why = "too long: a " + RM_SuspensionMath.TierLabel(r.tier) + " drawbridge spans at most " + (2 * MaxLeaf(r.tier)) + " squares";
+				why = "too long: a " + RM_SuspensionMath.TierLabel(r.tier) + " drawbridge is one leaf, at most " + MaxLeaf(r.tier) + " squares; a longer span stays an ordinary bridge";
 			}
 			return why == null;
 		}

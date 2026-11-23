@@ -1361,7 +1361,7 @@ def sprinklers(t):
 # DLL (driver_rows_at), else UNMEASURED naming the driver. The driver calls the C# class RM_DrawbridgeProofs (contracts:
 # drawbridge_proof.OWED_PROOFS); against a deployed FlowWorks without it, a live run writes every row UNMEASURED/HARNESS.
 DRAWBRIDGE_CASES = [
-    "Drawbridge_P1_materials_timber_and_steel_only", "Drawbridge_P1_split_one_leaf_or_two_each_hinged_on_its_own_bank",
+    "Drawbridge_P1_materials_timber_and_steel_only", "Drawbridge_P1_one_leaf_on_the_colony_bank_never_two",
     "Drawbridge_P1_leaf_is_rigid_off_its_seat_and_reversible", "Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise",
     "Drawbridge_P1_structure_reads_see_a_raised_leaf", "Drawbridge_P1_toggle_forces_pocket_rebuild_and_repath",
     "Drawbridge_P1_raise_never_collapses", "Drawbridge_P1_leaf_record_saves_per_leaf_versioned",
@@ -1397,7 +1397,8 @@ DRAWBRIDGE_LIVE = [
     ("RAISE_SPARES_UNDERPASS", None, "a colonist under the deck keeps its cell and health; the rider on it tips"),
     ("LOWER_ONLY_FROM_WINCH", None, "the WorkGiver gives a far-bank colonist a raise job but no lower job; the winch-bank "
      "colonist gets the lower job"),
-    ("TWO_LEAF_TIPS_OWN_HINGE", None, "an 8-square timber bridge is two leaves; each rider tips to its own leaf's hinge bank"),
+    ("LONG_SPAN_NOT_A_DRAWBRIDGE", None, "a 6-square timber span is longer than one leaf, so the drawbridge drag is refused "
+     "(his rulings of 2026-11-03: one leaf only)"),
     ("HOSTILE_LOCKS", None, "a raid cancels a pending auto-lower (target back to raised); a hostile trapped in a pit does "
      "not lock (FreeHostileCount 0)"),
     ("STEEL_UNPOWERED_FREEZES", None, "a steel leaf part-way up stays put while its winch is unpowered; moves on when powered"),

@@ -34,8 +34,9 @@ namespace RimMandrake.FlowWorks
 	/// <summary>
 	/// DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md §Ruled design, phase 1
 	/// "core"): the Verse-free rules of a drawbridge leaf. A drawbridge is a timber or steel suspension bridge whose deck is cut
-	/// into one or two LEAVES (R1): a leaf no longer than its material allows (Mod Settings, defaults timber 4, steel 8); a
-	/// longer deck is two leaves, one hinged on each bank, each tipping toward its own hinge.
+	/// into LEAVES (R1): one leaf no longer than its material allows (Mod Settings, defaults timber 4, steel 8), hinged on the
+	/// colony's bank. A longer deck is not a drawbridge (his rulings of 2026-11-03: no double drawbridges, no winch on the
+	/// enemy side); a two-leaf bridge from an older save keeps its two leaves.
 	///
 	/// A leaf's movement is a progress count in ticks, 0 = lowered, FullTicks = raised. A leaf is rigid: off its seat
 	/// (any progress) none of its squares is ground (RaisedSquares); its riders tip to the hinge bank first. Raising is a reversible
@@ -76,30 +77,19 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>Cut the deck squares first..last into leaves: one leaf hinged on `colonyBankAtFirst`'s bank when it fits,
-		/// else two leaves (the larger half on the colony bank), each hinged on its own bank; null when even two leaves are too
-		/// short to close the gap, or the material is not a drawbridge material.</summary>
+		/// <summary>The deck squares first..last as one leaf hinged on `colonyBankAtFirst`'s bank; null when the span is longer
+		/// than one leaf, or the material is not a drawbridge material. RIMMANDRAKE_PRUNE_FLOWWORKS_DRAWBRIDGE_TO_HIS_NOV_THIRD_RULINGS
+		/// (his rulings of 2026-11-03: "Remove double drawbridges: SplitLeaves goes to one leaf, spans over the max leaf are not
+		/// drawbridges, ordinary bridges still allowed"; the winch and hinge stay on the friendly bank). A two-leaf bridge put a
+		/// winch on the far bank. A list, so a two-leaf bridge in an older save still loads and works as it was built.</summary>
 		public static List<LeafSpan> SplitLeaves(int first, int last, int maxLeaf, bool colonyBankAtFirst)
 		{
 			int n = last - first + 1;
-			if (n < 1 || maxLeaf < 1)
+			if (n < 1 || maxLeaf < 1 || n > maxLeaf)
 			{
 				return null;
 			}
-			if (n <= maxLeaf)
-			{
-				return new List<LeafSpan> { new LeafSpan(first, last, colonyBankAtFirst) };
-			}
-			if (n > 2 * maxLeaf)
-			{
-				return null;
-			}
-			int near = (n + 1) / 2; // the colony-bank leaf takes the odd square
-			if (colonyBankAtFirst)
-			{
-				return new List<LeafSpan> { new LeafSpan(first, first + near - 1, true), new LeafSpan(first + near, last, false) };
-			}
-			return new List<LeafSpan> { new LeafSpan(last - near + 1, last, false), new LeafSpan(first, last - near, true) };
+			return new List<LeafSpan> { new LeafSpan(first, last, colonyBankAtFirst) };
 		}
 
 		/// <summary>Lanes one winch lifts at its plain speed; each lane past this adds its share (WinchLoad).</summary>

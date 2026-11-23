@@ -89,7 +89,9 @@ namespace RimMandrake.FlowWorks
 		public RM_PitAccessMath.RescueLadder TryQueueFor(Pawn p, RM_MapComponent_Excavation eng, int now)
 		{
 			bool downed = p.Downed;
-			bool needsHelp = downed || RM_SuperdeepTrap.IsTrapped(p);
+			// RIMMANDRAKE_RESCUE_FLOWWORKS_STRANDED_COLONIST_REACHABLE_LADDER: a colonist stranded on his feet in a sealed pit is
+			// not held (IsTrapped asks captures only) but has no way out; he needs the ladder too (live 2026-11-12, run 18).
+			bool needsHelp = downed || RM_SuperdeepTrap.HasNoWayOut(p);
 			if (!needsHelp)
 			{
 				return RM_PitAccessMath.RescueLadder.None;
@@ -276,8 +278,9 @@ namespace RimMandrake.FlowWorks
 			}
 			foreach (Thing t in map.listerThings.ThingsOfDef(ThingDefOf.MinifiedThing))
 			{
+				// a stored ladder no free colonist can reach would be chosen and never carried: the rescue stalled for good
 				if (t is MinifiedThing m && m.InnerThing?.def == portable && m.Spawned && !m.IsForbidden(Faction.OfPlayer)
-					&& InstallBlueprintUtility.ExistingBlueprintFor(m) == null)
+					&& InstallBlueprintUtility.ExistingBlueprintFor(m) == null && map.reachability.CanReachColony(m.Position))
 				{
 					return m;
 				}

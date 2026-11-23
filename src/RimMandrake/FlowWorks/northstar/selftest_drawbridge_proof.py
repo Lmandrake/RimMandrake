@@ -23,7 +23,7 @@ CAN_FAIL = {
     "no_repath": ("RAISE_PATH", "FAIL", "MOD"),
     "underpass_tipped": ("RAISE_SPARES_UNDERPASS", "FAIL", "MOD"),
     "lower_from_far": ("LOWER_ONLY_FROM_WINCH", "FAIL", "MOD"),
-    "tip_colony_bank": ("TWO_LEAF_TIPS_OWN_HINGE", "FAIL", "MOD"),
+    "two_leaf_allowed": ("LONG_SPAN_NOT_A_DRAWBRIDGE", "FAIL", "MOD"),
     "trapped_locks": ("HOSTILE_LOCKS", "FAIL", "MOD"),
     "freeze_ignored": ("STEEL_UNPOWERED_FREEZES", "FAIL", "MOD"),
     "no_crash": ("WINCH_LOST_CRASHES", "FAIL", "MOD"),
@@ -39,7 +39,7 @@ CAN_FAIL = {
     "far_reaches_winch": ("LOWER_ONLY_FROM_WINCH", "UNMEASURED", "SITE"),
     "far_raiders": ("RAID_UP", "UNMEASURED", "SITE"),
 }
-TICKLESS = {"TWO_LEAF_TIPS_OWN_HINGE"}   # LOWER_ONLY_FROM_WINCH ticks since 2026-10-22 (1.6 pathfinder settle)
+TICKLESS = {"LONG_SPAN_NOT_A_DRAWBRIDGE"}   # LOWER_ONLY_FROM_WINCH ticks since 2026-10-22 (1.6 pathfinder settle)
 
 
 def run(d, name, *argv):

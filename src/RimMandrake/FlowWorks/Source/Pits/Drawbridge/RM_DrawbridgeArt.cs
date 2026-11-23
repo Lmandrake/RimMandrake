@@ -125,13 +125,6 @@ namespace RimMandrake.FlowWorks.Pits
 			return null;
 		}
 
-		public static Material Planks(SuspensionTier t, string look)
-		{
-			List<string> c = new List<string>(DrawbridgeArtPaths.Planks(t, look));
-			c.Add("Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_" + Material(t));
-			return MatOrNull(c.ToArray());
-		}
-
 		/// <summary>The winch house picture for a material and look (Graphic_Multi, drawSize 1.5), or null (the def's own).</summary>
 		public static Graphic Winch(SuspensionTier t, string look)
 		{
@@ -200,10 +193,6 @@ namespace RimMandrake.FlowWorks.Pits
 				foreach (DrawbridgeLeaf l in r.leaves)
 				{
 					DrawLeafUp(map, r, l);
-					if (l.winch != null && l.winch.Spawned)
-					{
-						DrawPlanks(map, r, l);
-					}
 				}
 			}
 		}
@@ -453,24 +442,6 @@ namespace RimMandrake.FlowWorks.Pits
 				src += piece;
 			}
 			return src;
-		}
-
-		/// <summary>The art planks, stacked beside the hinge anchor (outside lane 0): art only, never an item (answer 1).</summary>
-		public static void DrawPlanks(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)
-		{
-			Material mat = Planks(r.tier, LookOf(r));
-			if (mat == null)
-			{
-				return;
-			}
-			IntVec3 c = r.Cell(0, RM_Drawbridges.HingeIndex(l)) - r.Side;
-			if (!c.InBounds(map))
-			{
-				return;
-			}
-			Vector3 at = c.ToVector3Shifted();
-			at.y = AltitudeLayer.ItemImportant.AltitudeFor();
-			Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(at, Quaternion.Euler(0f, r.dir.AsAngle, 0f), new Vector3(0.7f, 1f, 0.7f)), mat, 0);
 		}
 
 		/// <summary>A gate drawn in its picked art: 1 wide × 1.5 tall, standing on its own square (the top half-cell overlaps the

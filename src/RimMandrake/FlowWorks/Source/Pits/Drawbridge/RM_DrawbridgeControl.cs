@@ -29,7 +29,7 @@ namespace RimMandrake.FlowWorks.Pits
 
 	/// <summary>
 	/// DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 3 (R2, owner follow-ups 2026-10-20): the winch house of ONE leaf, built on the
-	/// leaf's own hinge bank beside its hinge anchor (a two-leaf bridge has one on each bank). Timber: a hand winch a colonist
+	/// leaf's own hinge bank beside its hinge anchor (a two-leaf bridge from an older save has one on each bank). Timber: a hand winch a colonist
 	/// turns. Steel: powered (CompPowerTrader); without power its leaf freezes where it is. Gone from the map any way (destroyed,
 	/// deconstructed, flown off on a gravship) while its leaf is up, the leaf crashes down and hits anything under it.
 	/// </summary>
