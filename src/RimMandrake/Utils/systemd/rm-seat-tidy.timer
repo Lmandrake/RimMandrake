@@ -1,0 +1,9 @@
+[Unit]
+Description=Land the seat and role clones' safe-class dirt every 15 minutes (seat_dirt tidy --all)
+
+[Timer]
+OnBootSec=5min
+OnUnitInactiveSec=15min
+
+[Install]
+WantedBy=timers.target

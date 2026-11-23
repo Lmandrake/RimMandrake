@@ -70,7 +70,7 @@ def fetch_cost():
 
             def slow(clone, *a, **kw):
                 if a[0] == "fetch":
-                    raise subprocess.TimeoutExpired(["git", "fetch"], seat_dirt.FETCH_DEADLINE_S)
+                    raise subprocess.TimeoutExpired(["git", "fetch"], 6)
                 return real(clone, *a, **kw)
             seat_dirt.git = slow
             write(c, "conversations/2026-11-22-0000-x.md", "record\n", age_s=2 * 3600)

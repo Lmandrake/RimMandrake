@@ -1,0 +1,16 @@
+# Land the seat and role clones' safe-class dirt (seat_dirt.py tidy --all --apply: conversation records, filed item
+# prose, settled concept folders). Out of the metronome's sense beat: a tidy fetches and runs land.sh, and inside the
+# beat's 15 s kill the land was killed on every beat, which blinded every disk.* reading from 11:02 to 16:20 PST
+# 2026-11-22 (RIMMANDRAKE_UNBLIND_OPS_DISK_FAMILY_TWENTY_OVERRUNS_STRAIGHT). ops_watch's disk.seat_dirt counts a
+# safe-class path this unit left past seat_dirt.TIDY_LATE_MIN, so a dead unit alarms.
+# Install:  python3 src/RimMandrake/Utils/ops_clocks.py install rm-seat-tidy --apply --enable
+[Unit]
+Description=RimMandrake seat_dirt: land the safe classes in the seat and role clones
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/seat_dirt.py tidy --all --apply
+Nice=10
+# Hang guard on the unit (one fetch of 120 s and one land.sh of 600 s per clone are seat_dirt's own call guards).
+TimeoutStartSec=1800s

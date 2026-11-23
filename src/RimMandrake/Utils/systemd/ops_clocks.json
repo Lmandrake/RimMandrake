@@ -16,6 +16,7 @@
     "rm-objstore": "rm-objstore.timer",
     "rm-metronome": "rm-metronome.timer",
     "rm-ops-reds": "rm-ops-reds.timer",
+    "rm-seat-tidy": "rm-seat-tidy.timer",
     "rm-canon-sweep": "rm-canon-sweep.timer",
     "rm-order7": "rm-order7.timer",
     "rm-codebase-now": "rm-codebase-now.timer",

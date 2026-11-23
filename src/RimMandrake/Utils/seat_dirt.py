@@ -21,8 +21,16 @@ settled (SETTLE_MIN, or CONCEPT_SETTLE_MIN for a concept folder).
 Every role clone (ROLE_CLONE_ROOT/<name>, rimflow/role_clones.py: the Dispatcher's role runs and the art daemon work
 there since RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES) is read and tidied the same way (clones()).
 
+A safe-class path that is still dirty TIDY_LATE_MIN after its last change is counted as dirt too: the tidy did not
+land it (its unit is dead, or land.sh refused), and nothing else would say so.
+
+The tidy fetches and lands, so it runs in its own unit (rm-seat-tidy.timer: `tidy --all --apply`), never inside
+ops_watch's disk sense: there a land under the metronome's 15 s kill was killed on every beat and blinded every disk.*
+reading (RIMMANDRAKE_UNBLIND_OPS_DISK_FAMILY_TWENTY_OVERRUNS_STRAIGHT, 11:02-16:20 PST 2026-11-22).
+
     seat_dirt.py report [--clone DIR]        one JSON reading
     seat_dirt.py tidy [--clone DIR] --apply  land the safe classes, then print the reading
+    seat_dirt.py tidy --all --apply          the same for every clone (clones()); exit 1 when any clone's tidy failed
 """
 import argparse
 import json
@@ -37,18 +45,15 @@ SEAT_CLONE = os.environ.get("RM_SEAT_CLONE", "/home/mandrake/rm/bench")
 ROLE_CLONE_ROOT = os.environ.get("RM_ROLE_CLONE_ROOT", "/home/mandrake/rm/roles")     # = role_clones.ROOT
 STALE_MIN = 60           # older than this and not landable -> dirt (the alarm)
 SETTLE_MIN = 10          # a safe-class file is landed only once it has not changed for this long
+# A settled safe-class path still dirty this long after its last change is dirt: the tidy left it. The tidy unit runs
+# every 15 min (rm-seat-tidy.timer), so a live tidy has had several passes by then.
+TIDY_LATE_MIN = STALE_MIN + 30
 ITEMS = "infrastructure/state/items/"
 LEDGER = "infrastructure/state/ledger/"
 LAND = os.path.join(HERE, "land.sh")
 ITEM_RE = re.compile(r"^infrastructure/state/items/([A-Z0-9_]+)\.md$")
 CONCEPT_RE = re.compile(r"^design/concepts/([^/]+)/")
 CONCEPT_SETTLE_MIN = 30  # a concept folder lands only this long after its last change, and only with no run open
-
-
-# Hang guard on tidy's fetch when ops_watch calls it (fetch_timeout). Danger: tidy runs inside ops_watch's disk sense phase, which the metronome kills at its
-# 15 s limit; a kill blinds every disk.* reading and aborts the fetch, so a clone behind origin never catches up.
-# Evidence: beats.jsonl 2026-11-22 10:00-14:00Z, every disk sense overran (fetches of 20-24 s in two role clones).
-FETCH_DEADLINE_S = 6
 
 
 def git(clone, *a, check=True, timeout=120):
@@ -200,9 +205,13 @@ def settled_concepts(clone, rows):
 
 
 def reading(clone=SEAT_CLONE, now=None):
+    """Reads git status and file times only: no fetch, no land (ops_watch's disk sense calls it under a 15 s kill)."""
+    now = time.time() if now is None else now
     c = classify(clone, now)
-    return {"clone": clone, "stale": len(c["stale"]), "landable": len(c["landable"]), "fresh": len(c["fresh"]),
-            "stale_paths": c["stale"][:12]}
+    late = [p for p in c["landable"] if age_min(clone, p, now) >= TIDY_LATE_MIN]
+    stale = c["stale"] + late
+    return {"clone": clone, "stale": len(stale), "landable": len(c["landable"]), "fresh": len(c["fresh"]),
+            "stale_paths": stale[:12], "tidy_late": len(late)}
 
 
 def tidy(clone=SEAT_CLONE, now=None, land=LAND, settle_min=SETTLE_MIN, fetch_timeout=120):
@@ -234,8 +243,21 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("cmd", choices=("report", "tidy"))
     ap.add_argument("--clone", default=SEAT_CLONE)
+    ap.add_argument("--all", action="store_true", help="tidy: every clone (clones()), one failure costs only its clone")
     ap.add_argument("--apply", action="store_true")
     a = ap.parse_args(argv)
+    if a.cmd == "tidy" and a.all:
+        failed = 0
+        for clone in clones():
+            if not a.apply:
+                print("%s: %s" % (clone, " ".join(classify(clone)["landable"]) or "nothing to land"))
+                continue
+            try:
+                print("%s: %s" % (clone, tidy(clone)))
+            except Exception as e:  # noqa: BLE001 - named, counted in the exit; the next clone still lands
+                failed += 1
+                print("%s: FAILED %s: %s" % (clone, type(e).__name__, str(e)[:400]))
+        return 1 if failed else 0
     if a.cmd == "tidy":
         if a.apply:
             print(tidy(a.clone))

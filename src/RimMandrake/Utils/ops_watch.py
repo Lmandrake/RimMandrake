@@ -1859,25 +1859,19 @@ def scratch_dirty(san):
     return out
 
 
-SEAT_TIDY = False    # set by `run --file-alarms` only: a selftest calling c_disk never lands anything
-
-
 def seat_dirt_reading():
     """disk.seat_dirt (RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR): paths dirty for over an hour that no safe
-    class covers, in the seat clone and in every role clone (seat_dirt.clones; the Dispatcher's role runs and the art
-    daemon write there: RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES). A live pass first lands the safe
-    classes (seat_dirt.tidy: conversation records, filed item prose, settled concept folders). Unreadable is 9999, never silence."""
+    class covers, and safe-class paths the tidy left past seat_dirt.TIDY_LATE_MIN, in the seat clone and in every role
+    clone (seat_dirt.clones; the Dispatcher's role runs and the art daemon write there:
+    RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES). A read only: the tidy that lands the safe classes fetches
+    and pushes, so it runs in rm-seat-tidy.timer, never here under the sense phase's 15 s kill
+    (RIMMANDRAKE_UNBLIND_OPS_DISK_FAMILY_TWENTY_OVERRUNS_STRAIGHT). Unreadable is 9999, never silence."""
     try:
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         import seat_dirt
-        landed, stale, fresh, paths, unread = {}, 0, 0, [], []
+        stale, fresh, late, paths, unread = 0, 0, 0, [], []
         for clone in seat_dirt.clones():
             tag = "" if clone == seat_dirt.SEAT_CLONE else os.path.basename(clone) + ":"
-            if SEAT_TIDY and os.path.isdir(clone):
-                try:
-                    landed[clone] = seat_dirt.tidy(clone, fetch_timeout=seat_dirt.FETCH_DEADLINE_S)
-                except Exception as e:  # noqa: BLE001 - said in the reading; the count below still measures
-                    landed[clone] = "tidy failed: %s" % str(e)[:200]
             try:
                 r = seat_dirt.reading(clone)
             except Exception as e:  # noqa: BLE001 - one unreadable clone makes the whole reading unreadable below
@@ -1885,11 +1879,12 @@ def seat_dirt_reading():
                 continue
             stale += r["stale"]
             fresh += r["fresh"]
+            late += r.get("tidy_late", 0)
             paths += [tag + p for p in r["stale_paths"]]
         if unread:
             return {"disk.seat_dirt": M(9999, "paths dirty in the seat and role clones", why="unreadable: " + "; ".join(unread))}
         return {"disk.seat_dirt": M(stale, "paths dirty in the seat and role clones over %d min" % seat_dirt.STALE_MIN,
-                                    paths=paths[:12], fresh=fresh, landed=landed or None)}
+                                    paths=paths[:12], fresh=fresh, tidy_late=late)}
     except Exception as e:
         return {"disk.seat_dirt": M(9999, "paths dirty in the seat clone", why="unreadable: %s" % str(e)[:200])}
 
@@ -4985,8 +4980,6 @@ def main(argv=None):
     ln.add_argument("--rules", help="the rules file, default the shipped one")
     a = ap.parse_args(argv)
     if a.cmd == "run":
-        global SEAT_TIDY
-        SEAT_TIDY = bool(a.file_alarms)
         if a.family and not a.compose and a.file_alarms:
             print("ops_watch: REFUSED: --family without --compose files no alarms (STATUS_FIX_HALF_PASS_ATE_THE_SLOT)")
             return 2
