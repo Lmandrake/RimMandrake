@@ -293,13 +293,13 @@
    "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod ExplosiveKnockback",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 2.99,
-    "last": "settings screens selftest: 855/856 ok",
-    "at": "2026-11-23T10:30:15Z",
-    "result": "FAIL",
+    "rc": 0,
+    "seconds": 0.1,
+    "last": "settings screens selftest: 7/7 ok (mods: ExplosiveKnockback)",
+    "at": "2026-11-23T11:30:44Z",
+    "result": "PASS",
     "build": "d5463b24aa3c6735113d",
-    "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py",
+    "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod ExplosiveKnockback",
     "margins": []
    }
   },
