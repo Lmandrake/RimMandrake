@@ -37,7 +37,7 @@ past art, and his notes on the subject verbatim. Missing any of these → `UNSUR
   black outline or keyline; a sprite without one is correct, and a heavy drawn keyline is STYLE_OFF. — Owner card
   2026-10-04 (`ART_VERSION_WRANGLING_1`; the house register `HOUSE_ART_REGISTER` in
   `src/RimMandrake/Utils/artpipe/common.py`). It retired the outline clause B1 carried from 2026-09-14.
-  Exception: the Pyrelands ullai carries a thin black outline by the owner's pick of 2026-11-22, this creature only.
+  Exception: the Pyrelands ullai carries a MEDIUM black outline (option B) by the owner's pick of 2026-11-23, this creature only.
 - B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly
   apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a
   number. — Lesson 2026-09-12, softened by Owner 2026-09-14
