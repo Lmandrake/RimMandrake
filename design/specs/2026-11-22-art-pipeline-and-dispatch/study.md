@@ -90,7 +90,7 @@ selftest leftovers in `C:\Users\Mandrake\.codex_sandbox_backup_*`.
 | canon check | `artpipe/canon_check.py` | 656 | grades a finished render against its canon entry with a vision call (Codex) |
 | console | `artpipe/console.py` | 764 | the status line, per-run log, `status/heartbeat.json` |
 | image tool | `~/dev/MandrakeWorkflows/skills/generating-images/scripts/codex_image.py` | 1,854 | finds Codex, seeds a home, sandbox guards (Windows), runs `$imagegen`, harvests the file, foreign-file guard |
-| finder copy | `src/RimMandrake/Utils/codex_cli.py` | 172 | a copy of the finder half of `codex_image.py`, for `gpt_consult.py` ("a fix to the finder belongs in both copies") |
+| finder copy | `src/RimMandrake/Utils/codex_cli.py` (deleted 2026-11-22, `c96e6cb2`) | 172 | was a copy of the finder half of `codex_image.py`, for `gpt_consult.py`; the consult finder now lives in Dispatch `providers/chatgpt/bin/gpt_door.py` |
 | second queue | `generating-images/scripts/codex_queue_runner.py` | 302 | N one-shot workers draining a file queue (the first parallel design; superseded by the daemon in practice) |
 | Gemini channel | `generating-images/scripts/gemini_image.py` | 171 | Nano Banana Pro, API key in `~/.config/rwgfx/gemini.key`, no alpha (rembg after) |
 | meters | `generating-images/scripts/codex_grumpiness.py` | 147 | reads the account rate-limit meter from a Codex rollout file |

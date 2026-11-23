@@ -32,7 +32,7 @@ the GPT door's (Dispatch providers/chatgpt/bin/gpt_door.py EXIT):
     0   an answer arrived and is non-empty
     4   Codex advice says HOLD and this call was not --required
     5   Codex advice says EXHAUSTED
-    20  AUTH: no usable login (no CODEX_HOME, no CLI, 401/invalid_grant)   -> a human logs in
+    20  AUTH: no usable login (no CODEX_HOME, 401/invalid_grant)  -> the agent renews it: gpt_door.py renew
     21  ALLOWANCE: usage limit, 429, quota                                 -> wait for the reset
     22  TRANSPORT: the route is broken (no interpreter, bad flag, 400 model_not_found, container down)
     22  SANDBOX_UNPROVEN: Windows sandbox state not proven current; codex.exe was not launched
