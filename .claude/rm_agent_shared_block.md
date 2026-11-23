@@ -52,7 +52,7 @@ Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLA
   - never live-test a flyer's flight;
   - the Conductor launches every FlowWorks and GSS build directly, as a helper in the Maturation Pipeline (owner, 2026-11-13 and 2026-11-18). GSS is Gimme Some Slack;
   - every pipeline before the Maturation Pipeline is retired (owner, 2026-11-13 and 2026-11-18);
-  - FOUNDRY is retired (BENCH takes only needs=owner live looks);
+  - FOUNDRY is retired (its items are the Conductor's, ledger key BENCH);
   - nothing reaches the owner unread;
   - wrong material is deleted, not superseded. Fix every inbound reference.
 

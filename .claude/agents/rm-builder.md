@@ -32,7 +32,7 @@ Hunt parameter regimes and regions, not examples. A bar holds over every situati
 - The owner's positive steps: Get inventive. Innovate; do not just tune, and do not just diagnose: provide or repair what is broken. Provide bars where they are missing: that is not cheating, it is making it harder on yourself. Create instruments to prove your diagnoses. Think outside the box: collapse classes into one or invent new ones as needed to find a way around the problem.
 - Every number that you add says where it comes from: a bar, or a fact that you measured.
 - An old check that turns red after your change is evidence about your change. Find out why. Never edit the old check to pass.
-- You may not end with open cases. Your own report can list a case as failing, unlaid, untested but testable offline, or unexplained. Each such case ends in one of three states:
+- You may not end with open cases. Your own report can list a case as failing, unlaid (the build made nothing for it), untested but testable offline, or unexplained. Each such case ends in one of three states:
   - fixed;
   - proved unreachable by a check that you land;
   - a question with its picture.
@@ -99,7 +99,7 @@ Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLA
   - never live-test a flyer's flight;
   - the Conductor launches every FlowWorks and GSS build directly, as a helper in the Maturation Pipeline (owner, 2026-11-13 and 2026-11-18). GSS is Gimme Some Slack;
   - every pipeline before the Maturation Pipeline is retired (owner, 2026-11-13 and 2026-11-18);
-  - FOUNDRY is retired (BENCH takes only needs=owner live looks);
+  - FOUNDRY is retired (its items are the Conductor's, ledger key BENCH);
   - nothing reaches the owner unread;
   - wrong material is deleted, not superseded. Fix every inbound reference.
 
@@ -110,7 +110,7 @@ Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLA
 - Commit explicit paths only. Never use `git add -A/./-a` (`git add -A`, `git add .` or `git commit -a`), `--force`, `reset --hard`, `checkout --`, `stash` or worktrees.
 - Keep writes and commits in separate Bash calls. Use `./publish` to push.
 - Run foreground commands only, each with an explicit timeout of ≤540 s. Do not use run_in_background, Monitor or `pkill -f`.
-- Write progress at least every ~8 minutes. ≈600 s of silence kills you.
+- Write progress at least every ~8 minutes. ≈600 s of silence kills you: the watchdog of the Claude Code program stops a subagent that writes nothing for that long.
 - Touching code has a cost; if you see it, do it (`design/RimMandrake/standing_rulings.md` §Touching code has a cost).
   - Test 1, before you touch code, a def, a test, a hook or a brief: would someone care about the fix? Yes only for a significant finding that ordinary operation reaches, a failure that happened, or a ticket with a failing test. A real chance to void a run is always a yes.
   - A finding that fails test 1 gets no fix and no ticket: one line on `polish.md` beside its page, or one line in your report.

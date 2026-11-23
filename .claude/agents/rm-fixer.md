@@ -85,7 +85,7 @@ Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLA
   - never live-test a flyer's flight;
   - the Conductor launches every FlowWorks and GSS build directly, as a helper in the Maturation Pipeline (owner, 2026-11-13 and 2026-11-18). GSS is Gimme Some Slack;
   - every pipeline before the Maturation Pipeline is retired (owner, 2026-11-13 and 2026-11-18);
-  - FOUNDRY is retired (BENCH takes only needs=owner live looks);
+  - FOUNDRY is retired (its items are the Conductor's, ledger key BENCH);
   - nothing reaches the owner unread;
   - wrong material is deleted, not superseded. Fix every inbound reference.
 
@@ -96,7 +96,7 @@ Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLA
 - Commit explicit paths only. Never use `git add -A/./-a` (`git add -A`, `git add .` or `git commit -a`), `--force`, `reset --hard`, `checkout --`, `stash` or worktrees.
 - Keep writes and commits in separate Bash calls. Use `./publish` to push.
 - Run foreground commands only, each with an explicit timeout of ≤540 s. Do not use run_in_background, Monitor or `pkill -f`.
-- Write progress at least every ~8 minutes. ≈600 s of silence kills you.
+- Write progress at least every ~8 minutes. ≈600 s of silence kills you: the watchdog of the Claude Code program stops a subagent that writes nothing for that long.
 - Touching code has a cost; if you see it, do it (`design/RimMandrake/standing_rulings.md` §Touching code has a cost).
   - Test 1, before you touch code, a def, a test, a hook or a brief: would someone care about the fix? Yes only for a significant finding that ordinary operation reaches, a failure that happened, or a ticket with a failing test. A real chance to void a run is always a yes.
   - A finding that fails test 1 gets no fix and no ticket: one line on `polish.md` beside its page, or one line in your report.
