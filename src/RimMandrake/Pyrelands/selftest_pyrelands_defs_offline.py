@@ -293,7 +293,27 @@ def facts(root, dump_rain):
                 if not (_field(x, "description", abt) or "").strip():
                     blank.append("%s %s" % (tag, x.findtext("defName")))
     fact("descriptions_present", seen > 0 and not blank, "%d inspected defs; without a description: %s" % (seen, blank or "none"))
+    # every picture a def of this mod names is shipped (bar inv_art_and_text; blind cycle 6: a wrong ullai texPath, a pink
+    # square in game, stayed green). Files read from the repo; a vanilla path is pinned by name.
+    lost, seen = [], 0
+    tex = os.path.join(REPO, MOD, "Textures")
+    for f in glob.glob(os.path.join(root, MOD, "Defs", "**", "*.xml"), recursive=True):
+        r = _parse(f)
+        for e in (r.iter() if r is not None else []):
+            p = (e.text or "").strip()
+            if not (e.tag.lower().endswith("texpath") or e.tag == "texturePath") or not p:
+                continue
+            seen += 1
+            base = os.path.join(tex, p)
+            if not (p in VANILLA_TEX or os.path.exists(base + ".png") or glob.glob(base + "_*.png") or glob.glob(base + "/*.png")):
+                lost.append(p)
+    fact("pictures_shipped", seen >= 40 and not lost, "%d texture paths; not shipped: %s" % (seen, sorted(set(lost)) or "none"))
     return out
+
+
+# Vanilla pictures this mod's defs draw (the crestfeather's is RIMMANDRAKE_DRAW_CRESTFEATHER_OWN_ART_NOT_A_THRUMBO_HORN).
+VANILLA_TEX = {"UI/Designators/Mine", "Things/Item/Special/ThrumboHorn", "Terrain/Surfaces/Sand", "Terrain/Surfaces/Gravel",
+               "Terrain/Surfaces/Soil", "Terrain/Surfaces/SoilRich"}
 
 
 def _mutate(root, rel, old, new):
@@ -338,6 +358,7 @@ MUTANTS = [
      "<description>A giant whose banded mineral hide stores the heat of the burns and glows between the plates. It walks into the "
      "flames to bank that heat, and carries it long after. A kept furnace-beast can heat a barn for weeks, but may also set the floor "
      "alight.</description>", ""),
+    ("ullai picture not shipped", D + "ThingDefs_Races/RM_Ullai.xml", "Pyrelands/Ullai/Ullai</texPath>", "Pyrelands/Ullai/UllaiGone</texPath>"),
     ("shovel off the Orders tab", MOD + "/Patches/RM_ShovelSand_Orders.xml", "<li>RimMandrake.Pyrelands.Designator_RM_ShovelTerrain</li>",
      "<li>RimMandrake.Pyrelands.Designator_RM_NoSuchDesignator</li>"),
 ]

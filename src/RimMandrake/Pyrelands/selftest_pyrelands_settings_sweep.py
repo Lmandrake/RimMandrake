@@ -31,6 +31,8 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
                    BurnStampMay(true, ...) in a postfix that consults the gate elsewhere stayed green)
   wind_reads_pred  the wind carry's one predicate is what the wind patches read: WindCarriedFire.Governs reads WindCarries, and
                    both wind patches call Governs (blind cycle 4: Governs without WindCarries carried fire with every switch off)
+  own_switch_stops a mechanic stopped by its own switch only (not by "Mod enabled") opens its tick with `if (!switch ...) return;`
+                   (blind cycle 6: a sprayer carrier that foamed with its switch off stayed green, the probe's read counted as `read`)
 Every planted fault must go red and the clean copy stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = FAIL
 """
@@ -83,6 +85,8 @@ ENTRY_POINTS = [("PyrelandsAshField.cs", "PyrelandsAshFieldPatches", "FertilityP
                 ("Patch_FurnaceBeastHeatImmunity.cs", "Patch_FurnaceBeastHeatImmunity", "Prefix")]
 # (file, property, the setting it must also read): expression-bodied predicates every entry point of a mechanic reads.
 ENTRY_PROPERTIES = [("MapComponent_BurnLine.cs", "WindCarries", "windCarriesFireEnabled")]
+# (file, class, method, switch): the entry point of a mechanic only its own switch stops; its first statement returns on that switch.
+SWITCH_GUARDS = [("PyrelandsFoamPath.cs", "MapComponent_RM_FoamPath", "MapComponentTick", "sprayerFoamsPathEnabled")]
 SHELL_ON_EXPR = r"\bShellOn\s*=>\s*shellEnabled\s*==\s*null\s*\|\|\s*shellEnabled\(RosterKey\)\s*;"
 
 
@@ -268,6 +272,14 @@ def facts(mod):
         if b is None or "WindCarriedFire.Governs(" not in b:
             bad.append("%s.%s does not ask WindCarriedFire.Governs" % (cls, meth))
     fact("wind_reads_pred", bad, "both wind patches ask Governs, and Governs reads WindCarries")
+    bad = []
+    for f, cls, meth, switch in SWITCH_GUARDS:
+        body = re.sub(r"\s+", " ", _method_body(code.get(f, ""), cls, meth) or "")
+        g = re.match(r"^ ?if \(([^{};]*?)\) \{? ?return ?;", body)
+        terms = [t.strip().replace("! ", "!") for t in g.group(1).split("||")] if g else []
+        if "!RM_PyrelandsSettings.%s" % switch not in terms:
+            bad.append("%s.%s does not return first on %s off" % (cls, meth, switch))
+    fact("own_switch_stops", bad, "%d mechanics stop on their own switch" % len(SWITCH_GUARDS))
     return out
 
 
@@ -353,6 +365,9 @@ MUTANTS = [
     ("wind patches ignore the wind predicate", S + "FireEcologyHook.cs", "if (burn == null || !burn.WindCarries) return false;", "if (burn == null) return false;"),
     ("dousing kernel ignores the gate", S + "Kernel/RM_FireEcoKernel.cs", "if (!gateOn || !enabled || !exposed", "if (!enabled || !exposed"),
     ("hawk letter kernel ignores the gate", S + "Kernel/RM_FireHawkRewardsKernel.cs", "|| !mechanicsOn ||", "||"),
+    # blind challenge cycle 6 (each one stayed green before)
+    ("sprayer carrier ignores its switch", S + "PyrelandsFoamPath.cs", "if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled || SprayerDef == null) return;", "if (SprayerDef == null) return;"),
+    ("sprayer carrier needs both", S + "PyrelandsFoamPath.cs", "if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled || SprayerDef == null) return;", "if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled && SprayerDef == null) return;"),
 ]
 
 
