@@ -219,7 +219,9 @@ The card asked what should gate a cleansed design. He picked **One whole-mod che
 the coverage judge. The card's description of it: *"One fresh reviewer hunts bars that conflict, promised mechanics with
 no spec, scenes with the main mechanic off, and tuning numbers; one round of fixes, then lock."* The check is the
 cleanse pass's gate (`designer_cleanse.py review`). The answer does not change the stage machine: stage 4 still ends on
-`exam.json`, and stage 5 still on coverage. The launcher enforces both, and you do not skip them. Here the answer asks
+`exam.json`, and stage 5 still on coverage. The launcher enforces both, and you do not skip them.
+His later card (2026-11-20, "Keep both gates as now") keeps both gates for mods before build. Whether the one check still
+replaces them for a cleansed design is an open question for him (`design/specs/2026-11-23-his-quotes-checked/questions.md`). Here the answer asks
 one thing of you: write so that the check's four hunts find nothing. Leave no two bars that conflict and no promised
 mechanic without its spec. Leave no scene with the main mechanic off and no tuning number in a bar.
 

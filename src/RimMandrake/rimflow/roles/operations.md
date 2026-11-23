@@ -186,7 +186,8 @@ expensive it requires immediate action for sure. But not starving it or failing 
 - Since 2026-10-28 every band, FLOOR included, runs like GREEN: `slots: "all"`, `quick_cap_x` 1.0 (d92c4c825e,
   owner: *"Stop the whole account rated RED on runeway crap. Just do the checkout."*).
 - So the 07:30 run, the 19:30 check and alarm runs all go, whatever the band.
-- Restoring a band is the owner's.
+- Restoring a band is the owner's or the Conductor's act (owner 2026-11-19, `standing_rulings.md` §Only five acts stay
+  his).
 - A missing, stale (older than 45 min) or UNMEASURED reading is refused loudly with an alarm. Such a reading is not
   treated as a band.
 - The dead-man timer covers the death of ops_watch.
@@ -376,7 +377,10 @@ that justify it.
 - Prepare for a surplus before it comes (owner, 2026-11-20: *"Keep as a failure. Prepare for it by having quality work
   pre queued so low value work is never needed. Clean dirty code review as backup plan is never low quality. It is
   value."*). Keep quality work queued ahead, so that no low-value work is ever needed to use quota. The backup plan is
-  the review of DIRTY code to CLEAN (`code_review_status.py`); that review counts as value.
+  the clean/dirty code review, which counts as value. That review is the standing scan of quiet files, on Sonnet, that he
+  ordered the day before (his card of 2026-11-19, `standing_rulings.md` §Code is clean when its promises are tested; item
+  `RIMMANDRAKE_BUILD_STANDING_SCAN_OF_QUIET_FILES_ON_SONNET`). It is not a sweep that writes promise pages for untouched
+  code.
 - Never let caution read as success.
 
 ## Drift check (yours)

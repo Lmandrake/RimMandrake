@@ -195,7 +195,11 @@ called from a shell script without any API key."*
   (§20 and §21).
 - So the fitting concept collapses to **spikes alone**. Oil and poison are FluidDefs. The oubliette is CUT.
 - An enclosed superdeep area is a room. The room becomes a prison room once a bed is in it.
-- `capture down` and `convert down` happen from the lip, because nobody who enters can leave.
+- The quote above is his opinion from the sitting before the ruling. The ruling is his 2026-09-17 message, whole in the
+  item. Its "you can't climb out. Period." is replaced by his rulings of 2026-10-12 and 2026-10-23: a pit traps each
+  creature by its own climb, and a ladder lets a creature out (`design/RimMandrake/relative_depth_climb_design_2026-10-12.md`;
+  items `PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS` and `LADDER_PARITY_BUILD_NO_KEYS_REQUIRED`).
+- `capture down` and `convert down` happen from the lip, because a creature that the pit traps cannot leave.
 - TEMPERATURE is the softening mechanism.
 
 🔴 **The ITEM is the authority, not the spec.**
@@ -409,7 +413,9 @@ review is now a secondary priority."*
 - All biome art in game now is ACCEPTED as it is.
 - Open review sheets stay open for later.
 - No build, deploy, sprint gate or item waits on an art pick.
-- Art work is picked up only after FlowWorks. FlowWorks is force-advanced to finished first.
+- Art review is a secondary priority. Art work itself is not stopped. (The rest of his message told the window of that
+  evening to prepare the finish of FlowWorks. He put no order between FlowWorks and later art work. His later words
+  keep the art pipeline running, 2026-11-07: "It's ok to keep the art pipeline going".)
 
 ## Draw order — owner, 2026-10-16 and 2026-11-08
 
@@ -577,8 +583,8 @@ and 9 of 15 later claims pointed at lines the last fix had just written.
   per symptom.
 - **A standing scan reads quiet files when the machine is idle** (his card above): files unchanged for 7 days or more,
   mod content first, when no mod step needs the machine. It follows the same method (significant, the reviewer fixes,
-  one blind reread, flag). The clean/dirty view returns to the Desktop visualizations. Not built yet: the item
-  `RIMMANDRAKE_RESTART_QUIET_FILE_SCAN_3580_NEVER_READ` holds it.
+  one blind reread, flag). The clean/dirty view is back on the Desktop (`CODEBASE_NOW.html`). The scan is not built
+  yet: the item `RIMMANDRAKE_BUILD_STANDING_SCAN_OF_QUIET_FILES_ON_SONNET` holds it.
 - **A mod's locked bars are the page of every file inside the mod** (his card, 2026-11-19 evening: *"Locked bars are
   the page"*). The promises are `design/concepts/<Mod>/version/locked_bars.json`, and the tests are the test table
   rows that decide each bar. A mod with no locked bars reads NO PAGE. A bar with no test, or a red test, reads DIRTY.
@@ -882,7 +888,10 @@ of "no one will ever find anything wrong." Hours producing no issues, or only pa
 had multiple rounds of attempting to fix them already, produce a conditional pass... and that's ok."*
 So finishing or strengthening a thing STOPS at a conditional pass: hours of testing that turn up no issues,
 or only weak/partial ones already through several fix rounds. Record it as a conditional pass and move on;
-never grind toward zero defects.
+never grind toward zero defects. Here "finish" and "strengthen" are kinds of spare work, and "(4)" is the card's
+option 4. A conditional pass ends that spare work. A conditional pass never passes a mod's version: only his walk does
+(§Only five acts stay his). His later ruling of 2026-11-20 says what fills a quota surplus: quality work queued ahead,
+with the clean/dirty code review as the backup plan (`src/RimMandrake/rimflow/roles/operations.md` §Success test).
 
 ## Account and capacity budget (owner, 2026-10-25, by card)
 
@@ -890,9 +899,14 @@ never grind toward zero defects.
 fully consumed each week. Partition how much you can use per day (roughly), but it's really the weekly
 reset. Always save some capacity for our interactive exploration together at night (predominantly).
 There's also GPT capacity to monitor and exploit. Steven.lewis can be used once the others are depleted...
-roughly half of it is available for our use."* So: budget the two owned Claude accounts against their
-WEEKLY reset with a rough per-day share; keep a reserve for evening sessions with him; use steven only
-after both are depleted and never past about half of it; track GPT capacity too and use it.
+roughly half of it is available for our use."* So: budget against the WEEKLY reset; track GPT capacity too and use it.
+The order of the accounts in that quote is replaced. His standard switching plan of 2026-10-28 (item
+`ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING`) burns steven first inside its window after its reset, then system, then
+lukas. It keeps "about half" of steven as the leave line. The order, the leave lines, and each dated exception (one is
+in force from 2026-11-20) are in `src/RimMandrake/Utils/switching_plan.json`; obey that file.
+He was answering the card question "How much should be kept free for you?". Whether the night reserve in that quote
+still binds is an open question for him
+(`design/specs/2026-11-23-his-quotes-checked/questions.md`). No program holds such a reserve (measured 2026-11-23).
 The fixed account order and the shared account's leave line may be changed by the Conductor as its mindful act
 (owner 2026-11-19, §Only five acts stay his): its `--why` names what is lost if wrong (`lost:`) and the undo (`undo:`).
 The money side stays his: nothing here buys capacity.
@@ -1049,6 +1063,12 @@ unnecessarily and rarely inform"*; `rimflow next` measures the game itself).
 
 *"I don't accept anything being closed to you. Don't make those designs. Conductor accesses everything. Redo that analysis."*
 
+- "Those designs" are designs that close a source to the Conductor. He answered a report that the Dispatcher journal was
+  closed to the Conductor and to its helper (record `conversations/2026-10-31-1440-7d9f8e12.md`).
+- No design, gate or role file closes a journal, log, ledger, record or tool to the Conductor window. A page that shows
+  no spend figure is not a closed source, because the Conductor reads the figures elsewhere.
+- "Redo that analysis" was an order for that morning. It is done and binds nothing now.
+
 ## The Test Pilot is a permanent way of working — owner, 2026-10-31
 
 *"Ok, so the "test pilot" agent is a real idea we should simply implement and accept, period."*
@@ -1063,7 +1083,8 @@ A code version is `gate.code_version`: the chain's runtime hash, the runtime has
 
 ## No limit without the danger it guards; parallel work is the default — owner, 2026-10-31 to 2026-11-17
 
-*"In general, any decision we make that is shown to simply limit progress, productivity, or parallel construction should be immediately attacked to force it to defend its requirement. Parallel subagent development must be maximized so long as it's reliable, work is fairly checked, etc. That's true of ALL architectural comparisons, ok? They MUST support this. And our handoff procedures and context management must be robust to this."* · *"Trial gets priority, not exclusion."* (2026-10-31.) An architectural comparison that does not exercise parallel work does not decide which design is best. Review: `design/RimMandrake/parallel_review_2026-10-31/`.
+*"In general, any decision we make that is shown to simply limit progress, productivity, or parallel construction should be immediately attacked to force it to defend its requirement. Parallel subagent development must be maximized so long as it's reliable, work is fairly checked, etc. That's true of ALL architectural comparisons, ok? They MUST support this. And our handoff procedures and context management must be robust to this."* · *"Trial gets priority, not exclusion."* (2026-10-31.) The trial was the retired architecture trial of that week (card on
+`ARENA_DAYZERO_PROVE_GAME_DEV_BAR_LIFTS`); that sentence binds nothing now. An architectural comparison that does not exercise parallel work does not decide which design is best. Review: `design/RimMandrake/parallel_review_2026-10-31/`.
 
 **His test for any guard** (record `conversations/2026-11-16-0055-2020153c.md`, a session begun Sun 2026-11-15 4:55 PM
 PST; said of deterministic checks before a model reads a ticket): *"I don't mean to create needless ceremony (and please
@@ -1139,9 +1160,12 @@ Maturation Pipeline's form of the first rule is §The pipeline fixes its own def
 
 *"Yes relentless fixes itself first."* · *"Relentless fixes operations or conductor or designer or any other part of the
 system before continuing content creation yes."* Any known fault in the system itself (Operations, the Conductor,
-the Designer, the Dispatcher, timers, tests, tools: anything that is not game content) outranks content creation: while
-such an item was open and buildable, Relentless took it before any content item. When the system misses
-its health targets (its error budget is spent), new content stops only as far as the broken part reaches (below). Design: top-5 #5 of
+the Designer, the Dispatcher, timers, tests, tools: anything that is not game content) outranked content creation: while
+such an item was open and buildable, Relentless took it before any content item. When the system missed
+its health targets (its error budget was spent), new content stopped only as far as the broken part reached (below).
+Two rulings of 2026-11-19 replace "fixes itself first" for work today: only an open ticket classed BLOCKS on a mod's path
+stops that mod (§No mod runs forward on a broken pipeline), and a fault that fails test 1 gets no fix (§Touching code has
+a cost). Design: top-5 #5 of
 `design/RimMandrake/build_system_practices_2026-11-03.md`; build item `PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF`.
 
 🔑 **Operations owns the health assessment; the build pipeline only asks** — owner, 2026-11-03, of the retired Relentless: *"I don't want relentless to own
@@ -1177,7 +1201,17 @@ the spec, the retired Relentless recovery plan's §3, is in git: `git show 9e35e
 
 ## Every mod's test script matures at first touch — owner, 2026-11-03
 
-🔑 *"We do (2) but only for the mods we're touching recently. Baroque Biomes, GSS, FlowWorks, Solar. After that, it's "the first time an item names a mod, it gets a deep Designer pass to read out its code/spec, expand the spec and validation strategies, certifies it with the user/clarifies confusion, then writes it all out for Relentless. That way we learn as we go, getting better and better at it incrementally rather than pretending we know what we're doing right now.""* Items: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; trigger `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`. Role wording: `src/RimMandrake/rimflow/roles/designer.md`.
+🔑 *"We do (2) but only for the mods we're touching recently. Baroque Biomes, GSS, FlowWorks, Solar. After that, it's "the first time an item names a mod, it gets a deep Designer pass to read out its code/spec, expand the spec and validation strategies, certifies it with the user/clarifies confusion, then writes it all out for Relentless. That way we learn as we go, getting better and better at it incrementally rather than pretending we know what we're doing right now.""* 
+
+- "(2)" is option 2 of the card question "How far should the Designer go?". The items below carry it out for the mods that
+  he names: the Designer reads each proof script and names each scene's missing site preparation and control case.
+- For every other mod, the deep Designer pass runs when the mod is first worked. The Designer reads the code and the
+  spec, expands the spec and the validation strategies, and clears up confusion.
+- "Certifies it with the user": the Conductor certifies the pass (his ruling of 2026-11-19, `delegation_policy.md` §2),
+  and brings him only a question that carries its evidence (§Evidence-for-Ask).
+- "Writes it all out for Relentless": Relentless is retired. The Designer writes for the Maturation Pipeline.
+
+Items: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; trigger `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`. Role wording: `src/RimMandrake/rimflow/roles/designer.md`.
 
 ## A passing bar is an experience, never a tuning number — owner, 2026-11-16
 
@@ -1551,9 +1585,10 @@ The earlier agreements he cites: his card of 2026-11-12 (rule 2d, `design/specs/
 *"Piecemeal revalidation of specific touched line items is crucial"*; §Live runs are TARGETED (2026-10-25); and
 `run_selftests.py --only <tests>` with `pipeline_tests.json` (only the tests for what you changed).
 
-**What it narrows.** His build-match ruling of 2026-11-17 (item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`,
-as `build_match.py` records it): *"A verdict whose mod hash or game build differs from the build he walks does not
-count; its check is re-run."* This ruling narrows it to the checks the change touches. A game build that differs still
+**What it narrows.** The build-match change of 2026-11-17 (item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`).
+The text is ours, as `build_match.py` records it: "A verdict whose mod hash or game build differs from the build he walks
+does not count; its check is re-run." He approved it, 2026-11-17: *"Leave it as is, I justed wanted to understand. I
+approve your changes to the Step 6->Step 7 transition and preparation."* This ruling narrows it to the checks the change touches. A game build that differs still
 re-runs the row (the game itself changed). A mod hash that differs re-runs the row only when the change touches its
 check.
 
@@ -1608,7 +1643,10 @@ The rule, for every agent and program that can move a mod:
   §A boundary page before pipeline code, Decision 4) or **NOT ON PATH**; and for each component whether it was looked
   at. "Could not look" is never counted as clean: a component not looked at keeps the list from reading READY.
 - **"Fixed" is measured by that list: it reads READY for that mod** (no BLOCKS row open, no component unlooked). Then
-  the mod runs under the usual rules: his holds, his one-mod-at-a-time card, the stage ceiling.
+  the mod runs under the usual rules: his holds, his newest word on how many mods run at once, the stage ceiling. His
+  one-mod-at-a-time words of 2026-11-17 and 2026-11-19 are replaced: two mods (2026-11-20), then three, while the
+  pipeline shows no sign of breaking (2026-11-20 4:12 PM PST, item `RIMMANDRAKE_BURN_STEVEN_FULLY_NEXT_NOT_LUKAS`; three
+  again on 2026-11-23).
 - No agent asks him whether to run a mod before its list reads READY: the answer is already his, and it is no.
 - What continues: pipeline repair (the BLOCKS tickets first, each under §The pipeline fixes its own defects), design
   text, investigations, read-only checks and readiness lists.
@@ -1901,8 +1939,10 @@ His words (Mon 2026-11-16, ~5:20 PM PST, on the ledger 01:22Z 11-17 under `RIMMA
 *"And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now
 and the system choked at their lack of precision I think."*
 
-- **Held:** Contagion, Cauldron, FeverWood, GelatinousSlime, LeaningScrub, Stillsand. **Untouched:** Pyrelands,
-  PyrelandsMechanics, Gimme Some Slack, Explosive Knockback, FlowWorks, Graffiti.
+- **Held:** Contagion, Cauldron, FeverWood, GelatinousSlime, LeaningScrub, Stillsand: the biome mods that were in the
+  pipeline that day. **His words cover every biome mod but Pyrelands** ("Only Pyrelands as a biome mod right now"). So do
+  not start a biome mod that is not on the list either; first put its row in the list. The hold does not touch mods that
+  are not biome mods.
 - **One list, one file:** `src/RimMandrake/rimflow/mod_owner_hold.json` (code `mod_owner_hold.py`). A held mod: the Dispatch
   tick launches nothing on it (no builder, judge, live driver, steward, fixer or holder, and a discovered concept is not
   seeded); the Designer and DesignerCodex chain sweeps, the harvest chain and a pending run-now skip it; it is on no
@@ -1952,9 +1992,11 @@ task."*).
 - No program, hook, unit or agent posts an alarm, alert, page or "ring his phone" message as a Todoist task. The
   Todoist posts of `ops_core/phone_push.py` (deadman_check, login_watch, switching_plan) and `windows/heartbeat.ps1` are
   off by default: `RM_TODOIST_ALARM_POSTS=1` / `-TodoistAlarmPosts` is the switch, and nothing sets it.
-- Until the new alert route is built, **no alarm reaches his phone**; each alarm still goes to its own log, alarms
-  file and ledger. Which route replaces it is his open choice on `RIMMASTER_DESIGN_PHONE_ALERTS_THAT_ACTUALLY_RING`,
-  with the Todoist backup rung struck from every option.
+- The route that replaces it is decided (owner, 2026-11-19, item
+  `RIMMANDRAKE_DESIGN_PUSHOVER_ALERTS_CRITICAL_ONLY_TWO_SENDERS`): Pushover, for CRITICAL needs only, sent by the
+  Conductor or Operations only. The program is `src/RimMandrake/Utils/pager.py`.
+- Until that item closes, **no alarm reaches his phone** (`pager.py status` read "last sent: none" on 2026-11-23). Each
+  alarm still goes to its own log, alarms file and ledger.
 - To-do lists synced into Todoist (Lodestar Burning, Hestia) are unaffected.
 
 ## The root CLAUDE.md holds rule lines and pointers only — owner, 2026-11-19

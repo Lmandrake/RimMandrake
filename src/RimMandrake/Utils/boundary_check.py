@@ -145,6 +145,8 @@ PAGES = {
     "design/specs/2026-11-19-vv-negative-control/boundary.md": "src/RimMandrake/Utils/selftest_vv_negative_control.py",
     "design/specs/2026-11-19-clean-means-promises-tested/boundary.md":
         "src/RimMandrake/Utils/selftest_code_review_page_state.py",
+    "design/specs/2026-11-23-his-quotes-checked/boundary.md":
+        "design/specs/2026-11-23-his-quotes-checked/selftest_his_quotes_checked.py",
     "design/specs/2026-11-21-northstar-run-exit-codes/boundary.md":
         "src/RimMandrake/Utils/northstar_driver/selftest_run_exit_codes.py",
 }

@@ -111,7 +111,8 @@ here.
 
 - **Unattended seats: at most 3 helpers per seat** (the allocator's limit).
 - **The Conductor window has no helper limit only for work started within 20 min of the owner's last typed message.**
-  After that, the limit is two helpers, and a helper that runs over an hour raises an alarm. Owner: "...only for work
+  After that, the limit is two helpers, and a helper that runs over an hour raises an alarm. Detached runs are not counted
+  (`roles/conductor.md` §Session mode). Owner, 2026-10-29: "...only for work
   started within 20 mins of the last time the user typed to conductor. After that it should relax to two subagents
   only." To measure helper use, run `python3 src/RimMandrake/Utils/token_census.py --since <UTC>`.
 - **Worktrees are OFF:** never pass `isolation: "worktree"` (`block_worktrees.py` refuses it).
@@ -122,11 +123,11 @@ here.
   `src/RimMandrake/Utils/doc_claims.py` numbers the claims.
 - **Cheap read-only fan-out:** `src/RimMandrake/Utils/nemotron_fanout.py` and `nemotron_ceiling.py`. The measured
   pool, its ranking and the abstention clause are in `research/FANOUT_WORKER_EVALUATION.md`.
-- **One live-game lane at a time.**
-  - Several helper lanes that each need the running game starve one another. One lane waited 45 minutes and tested
-    nothing. So run at most one live-game lane, and batch the live checks.
-  - A bridge hold goes stale after 45 idle minutes. Then another window can take the bridge, and that kills a helper's
-    live session. During long helper runs, keep the hold fresh with an event inside every 45 minutes.
+- **One live-game lane for each game.**
+  - Several helper lanes that need the same running game starve one another. One lane waited 45 minutes and tested
+    nothing. So run at most one lane on each game, and batch the live checks.
+  - The holder of a game is a process. The hold lasts while that process lives (`CLAUDE.md` §The bridge is passed through
+    one file).
 - **Split art redraws one agent per subject.** An art-regeneration agent works one picture at a time. Eight redraws
   took ~20 min in one agent. So launch the redraws in parallel, one agent per subject.
 - **`infrastructure/state/code_review/<SEAT>.jsonl` is one shared file per seat, and parallel helpers collide on it.**

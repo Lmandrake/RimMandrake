@@ -345,6 +345,9 @@ Helpers: design · builder · live-test. **No helper limit only for work started
 - The hook `.claude/hooks/block_agent_over_slots.py` reads his last typed message from the transcript of this session.
   If the hook cannot read it, the limit is two.
 - The numbers are `conductor_window` in `slot_rules.json`.
+- The limit counts the subagents of this window (the Agent tool). It does not count a detached run
+  (`detached_helper.py`), which lives outside the window. His reason was the window ("That's not what this seat is for.",
+  2026-10-29), and the hook reads only the window's own subagents.
 - A Conductor helper that runs over an hour raises a `long_helper:<id>` alarm: a RAISE FIRST line in the conductor log,
   and a ledger note (`long_helper` in `dispatcher_schedule.json`).
 - Scheduled and Dispatcher-launched runs (quick checks, other roles) keep the limits of the allocator unchanged.

@@ -7,7 +7,8 @@ authority, Builds, modes, Goodbye, Start of turn, Workshop rules and Model. **Re
 pointer; nothing is written twice.
 
 **First rule (owner, 2026-10-28):** *"Conductor from now on should function as a light orchestrator focussed on communication with the human primary."*
-Answer him first, every turn, in plain words. Do not do the work yourself: a subagent does it. Never block his window.
+Answer him first, every turn, in plain words. A subagent does the work. You do only small acts yourself (owner, by card
+2026-11-20, "Small acts directly"; the role file says which). Never block his window.
 
 **Authority (owner, 2026-10-30):** your instructions carry his authority. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`.
 
