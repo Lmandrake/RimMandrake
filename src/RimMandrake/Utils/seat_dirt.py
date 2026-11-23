@@ -136,6 +136,24 @@ def replaces_nothing_newer(clone, st, path, ref="origin/main"):
     return False
 
 
+def closed_copy(clone, path, ref="origin/main"):
+    """For an items/<ID>.md path: "same" when origin holds items/closed/<ID>.md with these exact bytes, "differs" when it
+    holds that file with other bytes, None when origin has no closed prose for the item. A closed item's prose never
+    lands in items/ (origin's check refuses the push, and the refusal sank the whole tidy on 2026-11-22)."""
+    m = ITEM_RE.match(path)
+    if not m:
+        return None
+    r = subprocess.run(["git", "-C", clone, "cat-file", "blob", "%s:%sclosed/%s.md" % (ref, ITEMS, m.group(1))],
+                       capture_output=True, timeout=60)
+    if r.returncode != 0:
+        return None
+    try:
+        with open(os.path.join(clone, path), "rb") as f:
+            return "same" if f.read() == r.stdout else "differs"
+    except OSError:
+        return "differs"
+
+
 def clones(seat=None, role_root=None):
     """The seat clone, then every role clone on disk (<role_root>/<name> holding a .git), sorted."""
     seat = seat or SEAT_CLONE
@@ -148,8 +166,10 @@ def clones(seat=None, role_root=None):
 
 
 def classify(clone, now=None, settle_min=SETTLE_MIN):
-    """-> {"landable": [paths], "fresh": [paths], "stale": [paths]} over the clone's dirt. settle_min 0: the writer
-    is known to have stopped (role_clones.land at the end of a role run's unit)."""
+    """-> {"landable": [paths], "fresh": [paths], "stale": [paths], "closed_copies": [paths]} over the clone's dirt.
+    settle_min 0: the writer is known to have stopped (role_clones.land at the end of a role run's unit). A closed_copies
+    path is an untracked items/<ID>.md that origin already holds byte for byte in items/closed/: nothing is at risk, and
+    tidy removes it."""
     now = time.time() if now is None else now
     rows = [(st, p, age_min(clone, p, now)) for st, p in dirty(clone)]
     item_ids = {ITEM_RE.match(p).group(1) for st, p, _ in rows if st == "??" and ITEM_RE.match(p)}
@@ -159,14 +179,18 @@ def classify(clone, now=None, settle_min=SETTLE_MIN):
     settled -= {CONCEPT_RE.match(p).group(1) for st, p, _ in rows
                 if CONCEPT_RE.match(p) and CONCEPT_RE.match(p).group(1) in settled
                 and not replaces_nothing_newer(clone, st, p)}
-    out = {"landable": [], "fresh": [], "stale": []}
+    out = {"landable": [], "fresh": [], "stale": [], "closed_copies": []}
     for st, p, age in rows:
         m = ITEM_RE.match(p)
         c = CONCEPT_RE.match(p)
+        closed = closed_copy(clone, p) if st == "??" and m and m.group(1) in filed else None
+        if closed == "same":
+            out["closed_copies"].append(p)
+            continue
         # a deletion (staged or not) or an unmerged path is never a safe class
         safe = (p.startswith("conversations/") and p.endswith(".md") and "D" not in st and "U" not in st
                 and replaces_nothing_newer(clone, st, p)) or \
-               (st == "??" and m and m.group(1) in filed and not on_origin(clone, p)) or \
+               (st == "??" and m and m.group(1) in filed and closed is None and not on_origin(clone, p)) or \
                bool(c and c.group(1) in settled)
         if safe and (age >= settle_min or (c and c.group(1) in settled)):
             out["landable"].append(p)
@@ -223,9 +247,18 @@ def tidy(clone=SEAT_CLONE, now=None, land=LAND, settle_min=SETTLE_MIN, fetch_tim
         git(clone, "fetch", "-q", "origin", check=False, timeout=fetch_timeout)
     except subprocess.TimeoutExpired:
         return "not landed: fetch past %d s (the reading still counts the dirt)" % fetch_timeout
-    paths = classify(clone, now, settle_min)["landable"]
+    c = classify(clone, now, settle_min)
+    removed = []
+    for p in c["closed_copies"]:       # origin holds these exact bytes in items/closed/: removing loses nothing
+        try:
+            os.remove(os.path.join(clone, p))
+            removed.append(p)
+        except OSError:
+            pass
+    said = "removed %d closed item copies; " % len(removed) if removed else ""
+    paths = c["landable"]
     if not paths:
-        return "nothing to land"
+        return said + "nothing to land"
     where = "seat clone" if clone == SEAT_CLONE else "role clone " + os.path.basename(os.path.normpath(clone))
     msg = ("seat_dirt: land %d safe path(s) left in the %s (conversation records, filed item prose, "
            "settled concept folders)\n\n"
@@ -233,9 +266,9 @@ def tidy(clone=SEAT_CLONE, now=None, land=LAND, settle_min=SETTLE_MIN, fetch_tim
     p = subprocess.run(["sh", land, "-m", msg] + paths, cwd=clone, capture_output=True, text=True, timeout=600,
                        env=dict(os.environ, LAND_REPO=clone))
     if p.returncode == 0:
-        return (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
+        return said + (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
     if "nothing to land" in p.stderr:
-        return "nothing to land"
+        return said + "nothing to land"
     raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-400:]))
 
 

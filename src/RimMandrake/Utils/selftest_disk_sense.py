@@ -171,9 +171,53 @@ def t_a_safe_path_the_tidy_left_counts_as_dirt():
     check(r["stale"] == 0 and r["landable"] == 1, "a-safe-path-the-tidy-left-counts-as-dirt: settled, not late (%s)" % r)
 
 
+def t_a_closed_items_leftover_copy_is_removed_not_landed():
+    """An untracked items/<ID>.md whose item origin has filed and closed (items/closed/<ID>.md on origin): a byte-identical
+    copy is removed by the tidy and never landed (origin's check refuses it, and the refusal sank the whole land on
+    2026-11-22); a copy that differs is not a safe class."""
+    seat_with_landable_dirt()
+    iid, jid = "RIMMANDRAKE_PLANT_CLOSED_LEFTOVER_SAME", "RIMMANDRAKE_PLANT_CLOSED_LEFTOVER_DIFFERS"
+    wt = TMP / "origin_wt"
+    if not wt.exists():
+        sh("git", "clone", "-q", str(ORIGIN), str(wt))
+    for i in (iid, jid):
+        (wt / "infrastructure/state/items/closed").mkdir(parents=True, exist_ok=True)
+        (wt / "infrastructure/state/items/closed" / (i + ".md")).write_text("# %s\nprose\n" % i)
+    (wt / "infrastructure/state/ledger/events").mkdir(parents=True, exist_ok=True)
+    (wt / "infrastructure/state/ledger/events/BENCH.jsonl").write_text(
+        "".join(json.dumps({"event": "file", "id": i}) + "\n" for i in (iid, jid)))
+    sh("git", "-C", str(wt), "add", "-A")
+    sh("git", "-C", str(wt), "commit", "-q", "-m", "closed items")
+    sh("git", "-C", str(wt), "push", "-q", "origin", "HEAD:main")
+    sh("git", "-C", str(SEAT), "fetch", "-q", "origin")
+    (SEAT / "conversations/2026-11-22-1102-x.md").unlink()
+    write("infrastructure/state/items/%s.md" % iid, "# %s\nprose\n" % iid, age_s=2 * 3600)
+    write("infrastructure/state/items/%s.md" % jid, "# %s\nedited prose\n" % jid, age_s=2 * 3600)
+    c = seat_dirt.classify(str(SEAT))
+    same, differs = "infrastructure/state/items/%s.md" % iid, "infrastructure/state/items/%s.md" % jid
+    check(same not in c["landable"] and differs not in c["landable"],
+          "a-closed-items-leftover-copy-is-removed-not-landed: neither copy is landable (%s)" % c)
+    lands, real = [], seat_dirt.subprocess.run
+
+    def run(argv, *a, **kw):
+        if any(str(x).endswith("land.sh") for x in argv):
+            lands.append(argv)
+            return subprocess.CompletedProcess(argv, 0, "PUBLISHED x\n", "")
+        return real(argv, *a, **kw)
+    seat_dirt.subprocess.run = run
+    try:
+        r = seat_dirt.tidy(str(SEAT))
+    finally:
+        seat_dirt.subprocess.run = real
+    check(not (SEAT / same).exists() and (SEAT / differs).exists() and not lands,
+          "a-closed-items-leftover-copy-is-removed-not-landed: the identical copy is gone, the edited one stays, "
+          "nothing landed (%s, lands %s)" % (r, len(lands)))
+    (SEAT / differs).unlink()
+
+
 def main():
     for t in (t_the_disk_sense_starts_no_fetch_and_no_landing, t_the_seat_tidy_runs_in_its_own_unit,
-              t_a_safe_path_the_tidy_left_counts_as_dirt):
+              t_a_safe_path_the_tidy_left_counts_as_dirt, t_a_closed_items_leftover_copy_is_removed_not_landed):
         try:
             t()
         except (Exception, SystemExit) as e:  # noqa: BLE001  a test that raises (argparse exits) is a red, named

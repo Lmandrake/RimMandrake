@@ -40,5 +40,9 @@ a test of its name in `src/RimMandrake/Utils/selftest_disk_sense.py`.
   runs that command from the deploy, `rm-seat-tidy.timer` exists, and `ops_clocks.json` names the timer as a clock.
 - **a-safe-path-the-tidy-left-counts-as-dirt.** A landable path that is still dirty `TIDY_LATE_MIN` after its last
   change counts in the reading's `stale`, which `disk.seat_dirt` alarms on. A landable path younger than that does not.
+- **a-closed-items-leftover-copy-is-removed-not-landed.** An untracked `items/<ID>.md` whose item origin has filed, when
+  origin also holds `items/closed/<ID>.md`, is never landable: origin's check refuses that push, and on 2026-11-22 two
+  such copies in the seat clone sank the whole land (`rm-seat-tidy.service`, 4:39 PM PST). The tidy removes a copy that
+  is byte-identical to origin's closed prose, since nothing is lost. A copy that differs stays, and counts as dirt by age.
 
 Later lists beside this page: `polish.md`.
