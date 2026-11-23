@@ -527,7 +527,8 @@ Engine checks (RimSage loaded): VERIFIED the target: vanilla `Defs/Core/MapGener
 - **Gap for the fixed-crew rulings.** It does **not** set `rootIncreasesPopulation`, yet recruiting the
   survivor is a live branch. Under §1 that means the quest sits in the non-population pool and is not
   throttled by population intent. Either set it (and accept vanilla's gate) or remove the recruit
-  branch's possibility; the owner's open card (C07) decides which. NOT seen in game (offline-validated
+  branch's possibility; card C07 (crew growth, answered 2026-10-10: our own crew quests, third-party
+  joiner mods retired) does not pick one, so decide before the quest ships. NOT seen in game (offline-validated
   only, per its own header).
 - **Reusable.** The whole shape: *asker + subject pawn list + shown timer + one priced End per object
   signal + a HistoryEventDef reason*. This is the template for most crew quests in §6.
@@ -548,7 +549,7 @@ Studied as the counterpoint to Raid Protection Fee, because the plot-mechanisms 
   and returns `true`. Give: demanded pawns are kidnapped by the faction (`faction.kidnapped.Kidnap`),
   items destroyed, attackers discarded to world pawns. Fight: `LongEventHandler.QueueLongEvent` →
   `arrivalMode.Worker.Arrive` + `raidStrategy.Worker.MakeLords` + a hand-built ThreatBig letter.
-- **Demand roll.** Of `DemandWeight 1.8`: 0.15 colonist-or-prisoner (only if ≥2 free colonists), 0.15
+- **Demand roll.** Of `DemandWeight 1.8`: 0.15 colonist-or-prisoner (a colonist only if ≥2 free colonists; a prisoner always), 0.15
   animals (up to 60% of them, priciest first), else items: 5-20% of colony value clamped to 300-35,000
   silver, chosen by weight `(value/mass)^2`, ignoring stacks under 50 and worn apparel under 500.
 - **Fun.** The *same* pawns either leave or attack, so the choice is honest; the letter names the count.
@@ -556,9 +557,9 @@ Studied as the counterpoint to Raid Protection Fee, because the plot-mechanisms 
   outcome is still a dialog, so the incident is "fired" (cooldown stamped, debug/bridge sees success)
   even if no pawn ever spawns. (2) The pre-generated attackers live only in the dialog closure; they are
   not on the map, not saved. (The dialog force-pauses play but does not set `preventSave`, so a save can still capture this state; VERIFIED in the review.)
-  (3) **It can demand a founder**: with our crew of six, 15% of extortions may ask for a colonist, who is
-  then kidnapped. That is a strong beat for us (kidnap → rescue, and `Patch_ColonistKidnapped` in our
-  OldFriends already records it) but it must be a deliberate choice, not an accident of a weight.
+  (3) **It can demand a founder**: with our crew of six, about 8% of extortions (weight 0.15 of 1.8) may ask for a colonist or prisoner, who is
+  then kidnapped. That is a strong beat for us (kidnap → rescue, but `Patch_ColonistKidnapped` in our
+  OldFriends does not record it: the kidnapper is null) and it must be a deliberate choice, not an accident of a weight.
 - **Reusable.** "Pre-generate the threat, show it, let the player choose, then either deliver or discard"
   is the best pattern in this whole set for *qualitative* danger: the player sees what is coming.
 
@@ -674,10 +675,10 @@ branch, generating the pawns only when they are about to spawn (`skills/rimworld
   (LFB). Reject: LFB's day-scaled garrison points (to ~4,400 at day 200), STE's damage and mood
   multipliers, Rimesis' skill/gear ladder and ×1.5 retaliation points, RPF's points bonus for
   refusing, BI's unscaled 150-bug horde.
-- **Small fixed crew, 3-8** [§1; card C07 open]. Every joiner path carries the population gate
+- **Small fixed crew, 3-8** [§1; card C07 answered 2026-10-10]. Every joiner path carries the population gate
   (§1, trap 8); recruitment, slave stock and the Stranded recruit branch become *settings* whose
   default the owner sets. Losing a founder (TD demand, kidnap) is a campaign beat with a rescue
-  path, not an accident of a 15% weight.
+  path, not an accident of a 0.15 weight.
 - **Scarcity** [§1, §4 test 3]. Payment is in what is scarce here (water, fuel, ship parts, a
   crew member's time on a journey), not silver; MFI's silver-for-service dialogs are the
   counter-example.
@@ -724,7 +725,7 @@ register; canon names go through the Utinni tier. Nothing here is filed work; it
 |---|---|---|---|---|---|
 | 1 | **The collector** | A Hutt-ledger envoy and his guards stand at the ship's ramp: hand over fuel cells, water or a named part, or they take it. | Our `IncidentWorker` in the Tribute Demand shape (pattern 1): pre-generate the guards, demand list drawn from scarce goods (never a part whose loss blocks launch, or the ship-or-nothing travel soft-locks), held in a `ChoiceLetter` subclass with a timeout; Refuse generates and spawns the guards then, with `attackTargets` = fuel storage. | M | TD, RPF |
 | 2 | **The one who got away** | The raider who fled with your water returns a season later, named, scarred, and carrying the answer to your turret. | OldFriends roster + eligibility timer + `GeneratePawns` postfix yielding the same Pawn + history paragraph in the raid letter; counter chosen from a scan of colony defences. | L | Rimesis |
-| 3 | **Pod down, someone aboard** | RM_Stranded as shipped, with the recruit branch behind the crew-size setting and `rootIncreasesPopulation` set honestly. | XML edit to `Quest_Stranded.xml` after card C07. | S | Stranded |
+| 3 | **Pod down, someone aboard** | RM_Stranded as shipped, with the recruit branch behind the crew-size setting and `rootIncreasesPopulation` set honestly. | XML edit to `Quest_Stranded.xml` (card C07 is answered 2026-10-10; §5 holds the setting). | S | Stranded |
 | 4 | **The passenger** | A castaway the Empire is hunting asks for passage. Hide them until the ship lifts, or sell them to the patrol. | Stranded shape: lodger + shown timer ending at the next launch signal; Empire goodwill priced on each branch; a `QuestNode` raid if the patrol finds them. | S-M | Stranded, TD |
 | 5 | **Something in the salvage** | A sealed crate from the dune wreck is warm and ticking. Open it in the hold, dump it outside, or sell it unopened. | Space Worms shape with a visible tell: an item with a Scribed countdown comp that spawns one creature; the cure is a scavenged scanner part, not research. | M | Space Worms |
 | 6 | **The sick traveller** | A trader's porter is coughing. Let the caravan in and trade, or turn them away and lose the deal. | Pre-arrival choice letter; accepting gives the porter a severity-driven hediff that is visible from the first day and spreads by proximity; a quarantine room halts it. | M | Space Worms, MFI |
@@ -740,7 +741,7 @@ register; canon names go through the Utinni tier. Nothing here is filed work; it
 | 16 | **Decide or it decides** | A demand letter whose deadline re-opens the letter instead of expiring silently. | MFI timed `ChoiceLetter` with forced re-prompt, used as the shell for 1 and 4; implement as a `ChoiceLetter` whose `Removed()` applies the default. | S-M | MFI |
 | 17 | **Staged garrison** | Authored enemy outposts whose quiet half wakes only when the loud half breaks. | Two lords with different `Trigger_PawnHarmed`/`Trigger_FractionPawnsLost` thresholds on our authored sites, appended after vanilla map gen, never replacing it. | M | LFB |
 | 18 | **The slaver's barge** | One specific Hutt trader kind sells people; buying is possible and has a cost in reputation and in what the crew thinks. | Our own `StockGenerator` subclass on one `TraderKindDef`, keeping `respectPopulationIntent` and the ideology check; a thought or goodwill hit on purchase. | S | More Slaves |
-| 19 | **A founder taken** | A demand that names a crew member; paying hands them over, and a rescue quest opens at once. | Demand list (idea 1) with an explicit person option; `faction.kidnapped.Kidnap`; OldFriends records it; a `QuestScriptDef` rescue at the faction's authored site. | L | TD, OldFriends |
+| 19 | **A founder taken** | A demand that names a crew member; paying hands them over, and a rescue quest opens at once. | Demand list (idea 1) with an explicit person option; `faction.kidnapped.Kidnap`; pass a named envoy as the kidnapper (OldFriends skips a null kidnapper); a `QuestScriptDef` rescue at the faction's authored site. | L | TD, OldFriends |
 | 20 | **Moods of the desert** | Long calm seasons, then storms of trouble, under Randy. | Patch a second `StorytellerCompProperties_RandomMain` (or an `OnOffCycle`) into Randy with its own weights; owner decision because it changes vanilla Randy. | S | STE |
 | 21 | **Heat is a threat** | Heat waves, dust storms and short circuits ride the threat budget, not the misc dice. | STE's category reassignment patches, reproduced in our own patch with our desert events, if card C09 wants it. Vanilla heat only (the one-kind-of-heat ruling): no new heat hediff. | S | STE |
 | 22 | **Storm cover** | Raiders come only under a dust storm, out of the murk, for the water stores. | `CanFireNowSub` reads the map's current weather against a tag list (field name UNVERIFIED); `attackTargets` = water storage; flee when the storm ends. Same points, worse moment. | M | gate-by-world-fact, parms levers |

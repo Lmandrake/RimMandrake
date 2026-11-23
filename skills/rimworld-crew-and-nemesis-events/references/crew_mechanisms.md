@@ -45,9 +45,10 @@ points. If the recruit branch stays, set `rootIncreasesPopulation`.
 
 ## 4. A person demanded (Tribute Demand)
 
-Its demand roll (of weight 1.8): 0.15 colonist-or-prisoner (only with ≥2 free colonists), 0.15
+Its demand roll (of weight 1.8): 0.15 colonist-or-prisoner (a colonist only with ≥2 free colonists; a prisoner always), 0.15
 animals (up to 60%, priciest first), else items worth 5-20% of colony value clamped 300-35,000,
 chosen by `(value/mass)^2`. Giving a person calls `faction.kidnapped.Kidnap(pawn, null)`. For
 us: build our own demand list (scarce goods first), make "a person" an explicit authored option,
-and pair it with a rescue path — OldFriends' `Patch_ColonistKidnapped` already records the
-event, and a rescue `QuestScriptDef` can target the faction's authored site.
+and pair it with a rescue path. OldFriends' `Patch_ColonistKidnapped` does not record this event: it records the
+kidnapper, and it returns when the kidnapper is null. So pass a named envoy as the kidnapper, or see `SKILL.md` §3. A rescue `QuestScriptDef`
+can target the faction's authored site.
