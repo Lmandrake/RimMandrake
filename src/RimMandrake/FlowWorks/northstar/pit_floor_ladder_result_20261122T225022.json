@@ -1,0 +1,295 @@
+{
+ "script": "pit_floor_ladder_live.py",
+ "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+ "stamp": "20261122T225022",
+ "started": "2026-11-22T22:50:22",
+ "origin": [
+  146,
+  171
+ ],
+ "ladder": [
+  4,
+  6,
+  8,
+  16,
+  32
+ ],
+ "planted_flat": false,
+ "verdicts": {
+  "FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_off": {
+   "verdict": "PASS",
+   "darker": {
+    "4->8": 0.198,
+    "8->16": 0.299,
+    "16->32": 0.419
+   }
+  },
+  "FLOOR_LADDER_DRAWS_THE_LAW_relief_off": {
+   "verdict": "PASS",
+   "drawn_vs_law": {
+    "4": [
+     1.0,
+     1.0
+    ],
+    "6": [
+     0.918,
+     0.871
+    ],
+    "8": [
+     0.802,
+     0.78
+    ],
+    "16": [
+     0.563,
+     0.56
+    ],
+    "32": [
+     0.327,
+     0.34
+    ]
+   }
+  },
+  "FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_on": {
+   "verdict": "PASS",
+   "darker": {
+    "4->8": 0.268,
+    "8->16": 0.36,
+    "16->32": 0.346
+   }
+  },
+  "FLOOR_LADDER_DRAWS_THE_LAW_relief_on": {
+   "verdict": "PASS",
+   "drawn_vs_law": {
+    "4": [
+     1.0,
+     1.0
+    ],
+    "6": [
+     0.866,
+     0.825
+    ],
+    "8": [
+     0.732,
+     0.713
+    ],
+    "16": [
+     0.469,
+     0.488
+    ],
+    "32": [
+     0.307,
+     0.326
+    ]
+   }
+  }
+ },
+ "rows": [
+  {
+   "id": "FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_off",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+   "detail": "{\"darker\": {\"4->8\": 0.198, \"8->16\": 0.299, \"16->32\": 0.419}}"
+  },
+  {
+   "id": "FLOOR_LADDER_DRAWS_THE_LAW_relief_off",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+   "detail": "{\"drawn_vs_law\": {\"4\": [1.0, 1.0], \"6\": [0.918, 0.871], \"8\": [0.802, 0.78], \"16\": [0.563, 0.56], \"32\": [0.327, 0.34]}}"
+  },
+  {
+   "id": "FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_on",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+   "detail": "{\"darker\": {\"4->8\": 0.268, \"8->16\": 0.36, \"16->32\": 0.346}}"
+  },
+  {
+   "id": "FLOOR_LADDER_DRAWS_THE_LAW_relief_on",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+   "detail": "{\"drawn_vs_law\": {\"4\": [1.0, 1.0], \"6\": [0.866, 0.825], \"8\": [0.732, 0.713], \"16\": [0.469, 0.488], \"32\": [0.307, 0.326]}}"
+  }
+ ],
+ "site": [],
+ "harness": [],
+ "captures": "D:\\ClaudeWork\\rimmandrake\\testpilot_pit_floor_tint\\ladder_run",
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "5461a0ceca616e3fbdde2a34d0be237b36b0ea630c25a15c2f5b47b70f446244",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/pit_floor_ladder_live.py",
+  "runtime": "8638538add2ec0ee21c6c0e6314661c8137ac94763378a074e9058035f60a5c8",
+  "test": "24109f83d3d3a7c5eae0d81af31b8b0f2d0c011f4b65e0988275c65e85b34231",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/pit_floor_ladder_live.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/harness_run.py",
+   "Utils/known_results.py",
+   "Utils/live_def_check.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/play_zoom.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/settings_keep.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/spoil_gate.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/nightly_scope.py",
+   "Utils/pipeline_tests.json",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/tickburst_step.py",
+   "Utils/winbuild.py",
+   "Utils/wrapup_debt.py",
+   "Utils/zoom_guard.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ray1203.simplecamerasetting",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "brrainz.rimbridgeserver",
+   "7f.alienworlds",
+   "7f.alienworlds.tidallylocked",
+   "sarg.alphabiomes",
+   "oblitus.mylittleplanet",
+   "mandrake.rm.inhabited",
+   "neronix17.toolbox",
+   "neronix17.outerrim.core",
+   "erdelf.humanoidalienraces",
+   "mandrake.rsw.ionweapons",
+   "mandrake.rsw.droidworks",
+   "mandrake.rm.flowworks",
+   "mandrake.rut.shipmemory",
+   "mandrake.rm.injections",
+   "mandrake.rut.injections",
+   "rw.mod.simplestairs",
+   "kutte.stairs",
+   "mlie.decorativecliffs"
+  ],
+  "assembly_sha256": "ac5b61080d2566c3dbd7909f94e838c4f78c91f49c757830dcd042d68611c29e"
+ },
+ "dug": [
+  4,
+  6,
+  8,
+  16,
+  32
+ ],
+ "light": {
+  "hour": 6.00039959,
+  "skyGlow": 1.0,
+  "groundGlow": 1.0,
+  "roofed": false
+ },
+ "drawn_rgb": {
+  "off": {
+   "4": [
+    35.2,
+    25.0,
+    15.6
+   ],
+   "6": [
+    31.9,
+    22.9,
+    14.8
+   ],
+   "8": [
+    28.3,
+    19.9,
+    12.6
+   ],
+   "16": [
+    20.1,
+    13.9,
+    8.7
+   ],
+   "32": [
+    11.7,
+    8.0,
+    5.1
+   ]
+  },
+  "on": {
+   "4": [
+    35.2,
+    25.0,
+    15.6
+   ],
+   "6": [
+    30.2,
+    21.6,
+    13.9
+   ],
+   "8": [
+    25.9,
+    18.1,
+    11.5
+   ],
+   "16": [
+    16.5,
+    11.6,
+    7.4
+   ],
+   "32": [
+    10.7,
+    7.2,
+    5.3
+   ]
+  }
+ }
+}

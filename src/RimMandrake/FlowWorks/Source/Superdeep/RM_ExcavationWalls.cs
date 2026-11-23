@@ -230,6 +230,9 @@ namespace RimMandrake.FlowWorks
 		private readonly float[] cornerXz = new float[8];
 		private static readonly Color32 ShadeBlack = new Color32(10, 8, 7, 0);
 
+		/// <summary>The floor depth shade's colour (RM_PitReliefMath.FloorTint: pure black, so the floor draws at FloorBrightness).</summary>
+		private static readonly Color32 FloorTintColour = new Color32(RM_PitReliefMath.FloorTint, RM_PitReliefMath.FloorTint, RM_PitReliefMath.FloorTint, 0);
+
 		/// <summary>The floor's depth shade: black at RM_PitReliefMath.FloorShade(d) over the floor between the faces
 		/// (RM_PitReliefMath.FloorRects, never over a face), so every depth draws apart, past 2 m too.</summary>
 		private void FloorShade(IntVec3 c, int d, float ww, float ew, float h, float wnw, float hnw, float wne, float hne, float y)
@@ -243,7 +246,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			Color32 k = ShadeBlack;
+			Color32 k = FloorTintColour;
 			k.a = Alpha(a);
 			int n = RM_PitReliefMath.FloorRects(ww, ew, h, wnw, hnw, wne, hne, floorRects);
 			for (int i = 0; i < n; i++)
@@ -934,7 +937,7 @@ namespace RimMandrake.FlowWorks
 			// RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN: the floor between the faces (RM_PitReliefMath.FloorRects: never
 			// under a dry corner piece), its depth shade, then the sheet
 			Color32 fs = SheetTint(body, RM_UnderLiquid.Seen(clarity, levelM));
-			Color32 shade = ShadeBlack;
+			Color32 shade = FloorTintColour;
 			shade.a = Alpha(RM_PitReliefMath.FloorShade(d));
 			// wet ground under the line is darker (RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED; 0 with the setting off)
 			Color32 wetK = new Color32(0, 0, 0, Alpha(RM_UnderLiquid.WetAlpha));

@@ -732,6 +732,18 @@ namespace RimMandrake.FlowWorks.SelfTest
 
 		public static void Run(Action<string, Action> Case)
 		{
+			// RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR: the shade must DRAW the law. Over the live deep floor (about 34 of
+			// 255) a (10, 8, 7) tint drew 16 m at 0.535 of the 2 m floor against the law's 0.34 (ArchBig, 2026-11-22).
+			Case("PitRelief_floor_shade_draws_the_brightness_law", () =>
+			{
+				float t = 34f / 255f, two = RM_PitReliefMath.FloorBrightness(4);
+				for (int d = 4; d <= 64; d++)
+				{
+					float drawn = RM_PitReliefMath.FloorDrawn(t, d) / t, law = RM_PitReliefMath.FloorBrightness(d) / two;
+					Assert(Math.Abs(drawn - law) < 0.005f, "can-fail: a " + (d * 0.5f) + " m floor draws at " + drawn + " of the 2 m floor, the law says " + law);
+				}
+				Assert(RM_PitReliefMath.FloorDrawn(t, 16) <= 0.9f * RM_PitReliefMath.FloorDrawn(t, 8), "can-fail: 8 m draws a tenth darker than 4 m");
+			});
 			Case("PitRelief_floor_shade_and_face_foot_match_the_model", () =>
 			{
 				Assert(FloorGolden.GetLength(0) > 40 && FootGolden.GetLength(0) > 10, "can-fail: the golden tables are filled");

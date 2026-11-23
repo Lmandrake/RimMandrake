@@ -1087,7 +1087,7 @@ def container_styles(t):
 DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "drawbridge_result_*.json", "lines_result_*.json",
                   "suspension_bridge_result_*.json", "trench_cover_proof_result_*.json", "live_session_result_*.json",
                   "mission_fixture_result_*.json", "sheet_overflow_result_*.json",
-                  "droid_dig_result_*.json", "pit_exposure_result_*.json")
+                  "droid_dig_result_*.json", "pit_exposure_result_*.json", "pit_floor_ladder_result_*.json")
 DRIVER_OF = {"T21_drinking_reserve": "sprinkler_live.py", "T22_no_brine_spray": "sprinkler_live.py"}
 
 
@@ -1624,6 +1624,28 @@ def pit_exposure(t):
     _driver_live_report(t, PIT_EXPOSURE_LIVE, "pit_exposure_live.py", "PIT_TEMPERATURE_SOFTENING_1")
 
 
+# RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR: a ladder of dry 3x3 pits at 2, 3, 4, 8 and 16 m, each pit's CENTRE
+# square read from its own capture (northstar/pit_floor_ladder_live.py, its rows named in its PLAN). Lessons of the 2026-11-22
+# sitting, kept in the driver's anti-guessing notes: a square on a pit's south edge carries a light band (a whole-square mean
+# there read "one colour" at every depth: HARNESS); the shade tint was (10, 8, 7), not black, so deep floors drew lighter than
+# the law (MOD, fixed: RM_PitReliefMath.FloorTint = 0, C# case PitRelief_floor_shade_draws_the_brightness_law).
+PIT_FLOOR_LADDER_LIVE = [
+    ("FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_off", None, "relief off: each floor 2 -> 4 -> 8 -> 16 m draws at least 10 % "
+     "darker than the one before (centre squares, full daylight)"),
+    ("FLOOR_LADDER_DRAWS_THE_LAW_relief_off", None, "relief off: every depth's drawn brightness against the 2 m floor's is "
+     "within 0.06 of FloorBrightness read from the running game"),
+    ("FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_on", None, "relief on (the shipped default): each doubling at least 10 % darker"),
+    ("FLOOR_LADDER_DRAWS_THE_LAW_relief_on", None, "relief on: no depth draws more than 0.06 brighter than StepFloorBrightness "
+     "(the walls' cast shadow may only darken it)"),
+]
+
+
+@suite.chain("pit_floor_ladder")
+def pit_floor_ladder(t):
+    """Live rows only: read from the newest pit_floor_ladder_live results at the current mod hash, else UNMEASURED."""
+    _driver_live_report(t, PIT_FLOOR_LADDER_LIVE, "pit_floor_ladder_live.py", "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR")
+
+
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402
@@ -1798,7 +1820,7 @@ for _name in ("limitless_endless", "ladder_rails_raise_lower", "pit_travel_fly_j
               "dig_fill_shovel_hours", "pump_ports_one_per_side", "water_ladder_silt", "deep_water_swims",
               "pit_access_gear_ladders", "wall_scaling_gear", "suspension_bridges_and_covers", "pipes_meet_centre",
               "thirst", "sprinklers", "drawbridges", "lines", "player_missions", "canal_overflow",
-              "droid_dig", "pit_exposure"):
+              "droid_dig", "pit_exposure", "pit_floor_ladder"):
     suite.chain_inputs[_name] = GATE_SELFTEST_INPUTS + GATE_READER_INPUTS
 suite.chain_inputs["trench_cover_and_raiders"] = (["Source/**/*.cs", "Source/**/*.csproj",
                                                    "@closure:../Utils/selftest_flowworks_trench_cover.py"]
@@ -1861,6 +1883,10 @@ suite.live_drivers = [
     {"name": "pit_exposure_live", "script": "northstar/pit_exposure_live.py", "args": ["--fresh-map", "--rolls", "8",
      "--interaction", "ReduceResistance"],   # wardens work every prisoner, as a player sets them (ordinary use)
      "chains": ["pit_exposure"], "timeout_s": 1800},
+    # RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR: five 3x3 pits dug by bridge calls on the loaded map + ten
+    # captures; the sitting's runs took 14-20 s (2026-11-22) -> 300.
+    {"name": "pit_floor_ladder_live", "script": "northstar/pit_floor_ladder_live.py", "args": [],
+     "chains": ["pit_floor_ladder"], "timeout_s": 300},
     # RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE: the river chains need a map with a river (they ran on AridShrubland). The
     # river site replaces the current map, so it is settled on demand by the FIRST river chain, which the composition
     # above puts after every other chain. toggle_river_steam's biome-gate half

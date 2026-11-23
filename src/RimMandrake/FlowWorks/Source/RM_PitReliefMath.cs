@@ -58,6 +58,20 @@ namespace RimMandrake.FlowWorks
 			return a > 0f ? (float)Math.Round(a, 5) : 0f;
 		}
 
+		/// <summary>The depth shade's colour, one byte for red, green and blue: pure black. Only black makes a floor of colour t under
+		/// alpha FloorShade(d) draw at (1 - alpha) x t, which is FloorBrightness. A dark brown (10, 8, 7) did not: over the dark deep
+		/// floor (about 34 of 255) it drew the 16 m floor at 0.535 of the 2 m floor where the law says 0.34, and 3 m at 0.945 where
+		/// the law says 0.871, alike to the eye [measured live, ArchBig 2026-11-22].</summary>
+		public const byte FloorTint = 0;
+
+		/// <summary>What a floor of brightness <paramref name="t"/> (0 to 1) draws at under the depth shade at depth
+		/// <paramref name="d"/> notches: the game's alpha blend of FloorTint over it.</summary>
+		public static float FloorDrawn(float t, int d)
+		{
+			float a = FloorShade(d);
+			return (1f - a) * t + a * (FloorTint / 255f);
+		}
+
 		/// <summary>The black alpha at the foot of a face whose exposed drop is <paramref name="exposed"/> notches (0 at its top):
 		/// nothing up to the tallest face, then a fixed step per doubling of the drop.</summary>
 		public static float FaceFootShade(float exposed)
