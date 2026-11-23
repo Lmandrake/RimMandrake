@@ -187,6 +187,17 @@ def _order(w, recs):
     return sorted(w, key=lambda m: (last.get(m, 0), w[m]["opened"], m))
 
 
+def in_flight(T):
+    """-> (the visit job that makes the feed busy, or None; the mods whose visit job is in flight). Busy while a visit job
+    is pending, or while as many run as there are live Steve games (T.steve_lanes(): Steve2 too when switched on); a
+    free second game takes a visit job of another mod (design/specs/2026-11-23-steve-two-games-lane/boundary.md)."""
+    pend = [j for j in T.records("pending") if j.get("requested_by") == BY]
+    run = [T.job_of(r) for r in T.records("running") if T.job_of(r).get("requested_by") == BY]
+    lanes = T.steve_lanes() if hasattr(T, "steve_lanes") else [T.STEVE]
+    busy = pend[0] if pend else (run[0] if len(run) >= len(lanes) else None)
+    return busy, sorted({j.get("mod") for j in run})
+
+
 def step(now=None, n=None, dry=False):
     """One tick's feed step -> a record: state `queued` (job), `busy`, `stopped`, `quiet` (nothing waits), `refused`
     (every waiting mod refused at submit, each named) or `unmeasured` (why)."""
@@ -198,10 +209,9 @@ def step(now=None, n=None, dry=False):
         return {"state": "stopped", "why": "%s exists" % T.q("fill.stop")}
     if T.paused():
         return {"state": "stopped", "why": "the lane is paused"}
-    mine = [j for j in T.records("pending") if j.get("requested_by") == BY] + \
-           [T.job_of(r) for r in T.records("running") if T.job_of(r).get("requested_by") == BY]
-    if mine:
-        return {"state": "busy", "job": mine[0].get("id"), "mod": mine[0].get("mod")}
+    busy, inflight = in_flight(T)
+    if busy:
+        return {"state": "busy", "job": busy.get("id"), "mod": busy.get("mod")}
     blk, why = reading(now)
     if blk is None:
         return {"state": "unmeasured", "why": why}
@@ -218,6 +228,8 @@ def step(now=None, n=None, dry=False):
     sha = r.stdout.strip()
     refused = {}
     for mod in _order(w, recs):
+        if mod in inflight:     # its job runs on the other game: never a second job for one mod
+            continue
         e = w[mod]
         chains = []
         for k in sorted(e["checks"]):

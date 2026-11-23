@@ -160,6 +160,9 @@ ATTEMPT_RE = re.compile(S.JOB_ID_RE.pattern[:-1] + r"\.a\d+$")
 SEAT = "RUNNER"
 # the machine this worker runs on, named in every result: the testq Archmagi backfill runs this same worker locally
 HOST = os.environ.get("TESTQ_WORKER_HOST") or "stevedesktop"
+# Steve1 ("stevedesktop") and Steve2 ("stevedesktop.b") own their games: the list repair, the kept-game probe and the
+# dump are theirs; the archmagi lane's game is the owner's (design/specs/2026-11-23-steve-two-games-lane/boundary.md)
+STEVE_LANE = HOST.split(".")[0] == "stevedesktop"
 GAME = "infrastructure/stevedesktop/rw_game.sh"
 DUMP_TIMEOUT_S = 180      # one small (no full memory) dump before a kill; the kill follows either way
 PROBE_TIMEOUT_S = 30    # the kept-game bridge probe: modcheck's own client timeout (ensure_playing_map)
@@ -590,6 +593,20 @@ def guard_held_by_other():
     return "%s (%s)" % (st.get("seat"), st.get("purpose"))
 
 
+def kept_env_keys(environ):
+    """The environment a detached attempt keeps: the RM_/TESTQ_/STEVE_/RIMFLOW_ seams, and GABP_ (Steve2's bridge port
+    and token, from `game_instance.py env b`; without them its modcheck would knock on Steve1's 5174)."""
+    return [k for k in environ if k != "TESTQ_UNIT" and k.startswith(("RM_", "TESTQ_", "STEVE_", "RIMFLOW_", "GABP_"))
+            or k in ("PATH", "HOME", "USER", "LANG", "WSLENV", "WSL_DISTRO_NAME")]
+
+
+def staged_companion():
+    """Where a FRESH companion waits to be installed: TESTQ_COMPANION_INBOX (Steve2 reads Steve1's inbox, the one the
+    stager fills), else this worker's own TESTQ_HOME/companion."""
+    inbox = os.environ.get("TESTQ_COMPANION_INBOX")
+    return os.path.join(inbox, CI.DLL_NAME) if inbox else p("companion", CI.DLL_NAME)
+
+
 def spawn(aid, d):
     """Detach `worker.py _run <attempt>`: a transient systemd user unit, else a new session."""
     # run a COPY of this (main-checkout) worker, not __file__ inside the clone that is about to be pinned: a pin older
@@ -606,8 +623,7 @@ def spawn(aid, d):
         f.write(_MODELS[1])
     os.environ["TESTQ_REPO"] = RUNNER
     argv = [sys.executable, os.path.join(outer, "worker.py"), "_run", aid]
-    keep = [k for k in os.environ if k != "TESTQ_UNIT" and k.startswith(("RM_", "TESTQ_", "STEVE_", "RIMFLOW_"))
-            or k in ("PATH", "HOME", "USER", "LANG", "WSLENV", "WSL_DISTRO_NAME")]
+    keep = kept_env_keys(os.environ)
     unit = "testq-" + re.sub(r"[^A-Za-z0-9_-]", "_", aid)
     if shutil.which("systemd-run") and os.environ.get("TESTQ_NO_SYSTEMD") != "1":
         r = subprocess.run(["systemd-run", "--user", "--collect", "--quiet", "--unit", unit,
@@ -660,7 +676,7 @@ def repair_reset_list(d):
     """Put the before-copy back if a crash reset the live list; never raises, and a refusal costs the job nothing (the
     swap itself refuses by name). Only SteveDesktop's runner owns its list: the archmagi lane's is the owner's. The
     account lands in the attempt's RESET_REPAIR_LOG."""
-    if HOST != "stevedesktop":
+    if not STEVE_LANE:
         return
     cmd = os.environ.get("TESTQ_CMD_RESETREPAIR")
     if not cmd and os.environ.get("TESTQ_SKIP_PULL") == "1":    # a test's worker never touches this machine's real list
@@ -932,12 +948,12 @@ class Attempt:
         if v["state"] == "FRESH":
             self.say("companion: " + CI.describe(v))
             return True
-        never = HOST != "stevedesktop" and os.environ.get("TESTQ_CMD_DEPLOY")    # archmagi_phases: may not deploy
+        never = not STEVE_LANE and os.environ.get("TESTQ_CMD_DEPLOY")    # archmagi_phases: may not deploy
         outcome = "REFUSED" if never else "INVALID"
         if v["state"] == "UNMEASURED":
             return self.fail(outcome, "DEPLOY", "companion check UNMEASURED: cannot hash %s at source_sha %s"
                              % (CI.SRC_REL, self.job["source_sha"][:10]))
-        staged = p("companion", CI.DLL_NAME)
+        staged = staged_companion()
         sv = CI.verdict(staged, CLONE, self.job["source_sha"], want=v["want"])
         if sv["state"] != "FRESH" or never:
             # the note is clipped to its last 400 chars (fail): state and DLL name first, the paths go to the log
@@ -1072,7 +1088,7 @@ class Attempt:
         `rw_game.sh up --wait` proves a process, not a game that serves calls. A read-only call answered, or a refused
         one, is a live bridge; only a call that ran and got no answer, twice, is a wedged game. A probe that could not
         run at all (no client here: rc 126/127) keeps the old behaviour: the job's own calls will say if it matters."""
-        if HOST != "stevedesktop" and not os.environ.get("TESTQ_CMD_PROBE"):
+        if not STEVE_LANE and not os.environ.get("TESTQ_CMD_PROBE"):
             return None                     # the archmagi lane's kept game is the owner's: never probed, never stopped
         cmd = os.environ.get("TESTQ_CMD_PROBE") or (self.bridge_cmd()
                                                     + " --timeout %d --call rimworld/get_ui_state" % PROBE_TIMEOUT_S)
@@ -1100,7 +1116,7 @@ class Attempt:
     def kept_game_overgrown(self, load_tail):
         """-> why a kept game (it answered the probe) is past a limit, or None. Age comes from `rw_game.sh up`'s status
         line (age_s=), the map count from a read-only call. Either unreadable decides nothing: the other limit stands."""
-        if HOST != "stevedesktop" and not os.environ.get("TESTQ_CMD_MAPS"):
+        if not STEVE_LANE and not os.environ.get("TESTQ_CMD_MAPS"):
             return None                     # the archmagi lane's kept game is the owner's: never probed, never stopped
         age = re.search(r"\bage_s=(\d+)", load_tail)
         if age and int(age.group(1)) >= MAX_GAME_AGE_S:
@@ -1166,7 +1182,7 @@ class Attempt:
         TESTQ_HOME (no result exists yet) and would kill a game a human had started by hand; and a real wound is still
         caught by this job's own run, costing one job, never the three this item was filed for. The two outcomes are
         told apart by their words: a stop says "cannot make a map: ...", a blind keep is only in worker.log."""
-        if HOST != "stevedesktop":
+        if not STEVE_LANE:
             return None                     # the archmagi lane's kept game is the owner's: never probed, never stopped
         blind = []
         log = game_log_path()
@@ -1527,7 +1543,7 @@ class Attempt:
         nothing. Never fails the result; a dump that hangs is cut off after DUMP_TIMEOUT_S. Only on SteveDesktop: the
         archmagi lane never stops the owner's game (archmagi_phases.py down REFUSED), so no kill follows a dump there."""
         cmd = os.environ.get("TESTQ_CMD_DUMP")
-        if cmd is None and HOST != "stevedesktop":
+        if cmd is None and not STEVE_LANE:
             self.res["note"] = (self.res.get("note") or "") + "; game dump (%s) skipped: %s never kills its game" % (
                 name, HOST)
             return

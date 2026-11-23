@@ -260,7 +260,7 @@ def advisory():
 def gate(rec, windows, state, now=None):
     """-> ("quarantine", window) | ("hold", why) | ("count", why or None). Only SteveDesktop's results are its business.
     With advisory() on, an in-window result is ("count", "advisory: <window id>") instead of ("quarantine", window)."""
-    if state is None or (rec.get("result") or {}).get("host", T.STEVE) != T.STEVE:
+    if state is None or not T.on_steve((rec.get("result") or {}).get("host", T.STEVE)):     # Steve1 and Steve2
         return "count", None
     span = job_span(rec)
     if span is None:
@@ -440,9 +440,13 @@ def reboot(why):
 
 
 def worker_busy():
-    """True / False; None when the worker cannot be asked."""
+    """True / False; None when a worker cannot be asked. Both of SteveDesktop's workers while Steve2 is switched on: a
+    drain-and-reboot takes both games."""
     try:
-        return bool(T.remote(["status"])[1].get("busy"))
+        busy = bool(T.remote(["status"])[1].get("busy"))
+        if not busy and T.steve2_on():
+            busy = bool(T.remote(["status"], host=T.STEVE2)[1].get("busy"))
+        return busy
     except (T.SshDown, AttributeError, TypeError, ValueError):
         return None
 
@@ -787,7 +791,7 @@ def check(_a=None, now=None):
     nleft = 0
     for rec in ([] if advisory() else T.records("done")):
         span = job_span(rec)
-        if (rec.get("result") or {}).get("host", T.STEVE) == T.STEVE and span and window_of(span, windows) \
+        if T.on_steve((rec.get("result") or {}).get("host", T.STEVE)) and span and window_of(span, windows) \
                 and now - span[1] > 600:
             nleft += 1
     if nleft:

@@ -249,7 +249,7 @@ def env_window(rec):
     overlaps a known SteveDesktop fault window is the host's; it files no repair (the gate quarantines and re-queues it)."""
     res = (rec or {}).get("result") or {}
     host = res.get("host", T.STEVE)
-    if host != T.STEVE:
+    if not T.on_steve(host):            # Steve1 and Steve2 share the machine and its fault windows
         return None, "host %s: SteveDesktop's fault windows do not apply" % host
     windows, state = FM.load()
     span = FM.job_span(rec)
@@ -509,10 +509,15 @@ def ingest_done(job, res, item, host=None):
     return {"groups": out, "result": ",".join("%s=%s" % (i, o["result"]) for i, o in out.items())}
 
 
+def config_for(host, item, profile):
+    """The verify --config: steve-<profile> for either SteveDesktop game, <host>-<profile> else (archmagi-...)."""
+    return "%s-%s" % ("steve" if T.on_steve(host) else host,
+                      "filler" if item == FILL_ITEM else profile)   # testpilot_route.NOT_A_TEST
+
+
 def ingest_group(job, res, item, gres, att, names=None):
     host = res.get("host") or "stevedesktop"         # the archmagi backfill runs the same worker (host "archmagi")
-    config = "%s-%s" % ("steve" if host == "stevedesktop" else host,
-                        "filler" if item == FILL_ITEM else job.get("profile", "targeted"))   # testpilot_route.NOT_A_TEST
+    config = config_for(host, item, job.get("profile", "targeted"))
     run = recorded_run(item, att)
     if not run:
         rc, out = rimflow("verify", item, "--result", verdict(gres), "--config", config,
@@ -532,7 +537,8 @@ def ingest_group(job, res, item, gres, att, names=None):
             continue
         rc, out = rimflow("finding", "--from", run, "--name", name, "--type", "UNTRIAGED", "--severity", "medium",
                           "--why", "%s/%s FAIL on %s: %s" % (row.get("chain"), row["row"],
-                                                           "SteveDesktop" if host == "stevedesktop" else host,
+                                                           {"stevedesktop": "SteveDesktop", "stevedesktop.b":
+                                                            "Steve2"}.get(host, host),
                                                            (row.get("detail") or "")[:160]))
         if rc != 0:     # retried: the run is reused, findings already filed are found in the shard
             return {"error": "finding %s not recorded: %s" % (name, out[-120:])}

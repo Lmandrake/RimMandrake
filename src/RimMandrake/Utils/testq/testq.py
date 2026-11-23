@@ -122,6 +122,34 @@ PAUSE_ON = {("INVALID", "CANARY"): "the vanilla canary was red after a load",
 EX_BUSY = 75
 ARCHMAGI = "archmagi"
 STEVE = "stevedesktop"
+# Steve2, SteveDesktop's second game (RIMMANDRAKE_FILL_BOTH_STEVEDESKTOP_GAMES_HE_SAYS_IT_HOLDS_TWO; page
+# design/specs/2026-11-23-steve-two-games-lane/boundary.md). Its own install, runner clone and worker home; the same
+# machine, so the machine's pause (paused.json) and fault windows are its too. Driven only while QHOME/steve2.on exists
+# and QHOME/steve2.stop does not.
+STEVE2 = "stevedesktop.b"
+STEVE_HOSTS = (STEVE, STEVE2)
+REMOTE_RUNNER_B = os.environ.get("TESTQ_REMOTE_RUNNER_B", "~/rm/runner_b")
+STEVE1_HOME = "/mnt/d/RimTest/testq"          # Steve1's worker home on SteveDesktop: its companion inbox is the stager's
+STEVE2_HOME = os.environ.get("TESTQ_STEVE2_HOME", "/mnt/d/RimTest/testq.b")
+# fails closed: a game_instance.py that cannot name game b runs no worker at all (`&&`), never Steve1's by default
+STEVE2_PREFIX = os.environ.get("TESTQ_STEVE2_PREFIX") or (
+    '_e=$(python3 src/RimMandrake/Utils/game_instance.py env b) && eval "$_e" && '
+    'export TESTQ_HOME=%s TESTQ_WORKER_HOST=%s TESTQ_COMPANION_INBOX=%s/companion && ' % (STEVE2_HOME, STEVE2,
+                                                                                         STEVE1_HOME))
+
+
+def on_steve(host):
+    """True for a host that is one of SteveDesktop's games (its fault windows, its pause, its ingest config)."""
+    return (host or STEVE) in STEVE_HOSTS
+
+
+def steve2_on():
+    return os.path.exists(q("steve2.on")) and not os.path.exists(q("steve2.stop"))
+
+
+def steve_lanes():
+    """The Steve games that may take a job now: Steve1, and Steve2 while it is switched on and not paused by itself."""
+    return [STEVE] + ([STEVE2] if steve2_on() and not paused(STEVE2) else [])
 
 
 class SshDown(Exception):
@@ -230,10 +258,16 @@ def job_of(rec):
 
 # ---------------------------------------------------------------- the worker, over ssh
 
-def remote(args, stdin=None, timeout=180):
+def remote_cmd(args, host=STEVE):
+    """The shell line that runs `worker.py ARGS` for HOST's game on SteveDesktop (Steve2: its own clone, home and game)."""
+    runner, pre = (REMOTE_RUNNER_B, STEVE2_PREFIX) if host == STEVE2 else (REMOTE_RUNNER, "")
+    return "cd %s && %spython3 infrastructure/stevedesktop/worker.py %s" % (
+        runner, pre, " ".join(shlex.quote(a) for a in args))
+
+
+def remote(args, stdin=None, timeout=180, host=STEVE):
     """Run `worker.py ARGS` in SteveDesktop's runner clone -> (exit code, last JSON line). SshDown on ssh failure."""
-    cmd = "cd %s && python3 infrastructure/stevedesktop/worker.py %s" % (
-        REMOTE_RUNNER, " ".join(shlex.quote(a) for a in args))
+    cmd = remote_cmd(args, host)
     try:
         r = subprocess.run(SSH + [SSH_TARGET, cmd], input=stdin, capture_output=True, text=True, timeout=timeout)
     except subprocess.TimeoutExpired:
@@ -270,7 +304,11 @@ def host_of(rec):
 
 
 def worker_for(host):
-    return archmagi_worker if host == ARCHMAGI else remote
+    if host == ARCHMAGI:
+        return archmagi_worker
+    if host == STEVE2:
+        return lambda args, stdin=None, timeout=180: remote(args, stdin=stdin, timeout=timeout, host=STEVE2)
+    return remote
 
 
 def reconcile(rec):
@@ -324,7 +362,7 @@ def reconcile(rec):
         res = invalid_result(rec, latest, shadow)
     if host == ARCHMAGI and not rec.get("cancel") and archmagi_bounce(rec, res):
         return
-    if host == STEVE and (res["outcome"], res["cause"]) == ("REFUSED", "GUARD_HELD") and not rec.get("cancel"):
+    if on_steve(host) and (res["outcome"], res["cause"]) == ("REFUSED", "GUARD_HELD") and not rec.get("cancel"):
         # a driver took the game guard between the worker's start check and the attempt's acquire: nothing was measured,
         # so the job is NOT finished. Ask for a fresh attempt every tick (no retry budget); busy (75) = still held.
         rc, o = remote(["start", "--retry"], stdin=json.dumps(job))
@@ -426,7 +464,17 @@ def ready(job, now):
 
 
 def steve_running():
-    return [r for r in records("running") if host_of(r) == STEVE]
+    """Running jobs on either of SteveDesktop's games (the machine is busy)."""
+    return [r for r in records("running") if on_steve(host_of(r))]
+
+
+def lane_running(host):
+    return [r for r in records("running") if host_of(r) == host]
+
+
+def lane_file(host, name):
+    """Steve1 keeps the old file names (train.json, admission_waits.json); Steve2 prefixes its host."""
+    return q(name) if host == STEVE else q("%s_%s" % (host, name))
 
 
 TIER_STAY_BONUS = int(os.environ.get("TESTQ_TIER_STAY_BONUS", "35"))
@@ -446,7 +494,7 @@ def admit_key(job, train):
 ADMISSION_WAITS = "admission_waits.json"     # {job id: {"reason", "since"}}: pending jobs admission skipped
 
 
-def admit(status):
+def admit(status, host=STEVE):
     """Admit the first ready pending job, in admit_key order. A job whose companion is not staged on SteveDesktop
     (companion_unready) would only die at deploy: a filler job is cancelled (the filler picks again); any other job
     whose companion is origin/main's, which the stager stages by itself, WAITS, named in ADMISSION_WAITS and
@@ -454,13 +502,15 @@ def admit(status):
     companion left origin/main will never be staged: it is admitted and the worker judges it, as before
     (RIMMANDRAKE_HOLD_PENDING_BATCH_AFTER_DELIVERY_DEATH: 17 helper jobs of 5 mods, at shas that all wanted one companion, died
     `companion STALE` one after another, 2026-11-12 17:13-18:03 UTC, when the gate covered the filler alone)."""
-    if steve_running() or paused():
+    remote = worker_for(host)       # noqa: F811 - the same verbs, on this game's worker
+    if lane_running(host) or paused() or (host != STEVE and paused(host)):
         return
     if status.get("busy"):
-        log("worker busy with %s (not ours); nothing admitted" % status.get("current"))
+        log("worker%s busy with %s (not ours); nothing admitted" % ("" if host == STEVE else " " + host,
+                                                                    status.get("current")))
         return
     now = time.time()
-    train = (read_json(q("train.json")) or {}).get("profile")
+    train = (read_json(lane_file(host, "train.json")) or {}).get("profile")
     cands = [j for j in records("pending") if ready(j, now)]
     if not cands:
         return
@@ -478,7 +528,7 @@ def admit(status):
             import companion_stage as CS
             got.append(CS.probe())
         return got[0]
-    before = read_json(q(ADMISSION_WAITS)) or {}
+    before = read_json(lane_file(host, ADMISSION_WAITS)) or {}
     waits, job = {}, None
     for cand in cands:
         why = companion_unready(cand, read_once)
@@ -498,7 +548,7 @@ def admit(status):
             log("%s waits at admission: %s" % (cand["id"], why))
         CS.ask_recheck("%s waits: %s" % (cand["id"], why))
     if waits or before:
-        S.dump(waits, q(ADMISSION_WAITS))
+        S.dump(waits, lane_file(host, ADMISSION_WAITS))
     if job is None:
         return
     rc, o = remote(["start"], stdin=json.dumps(job))
@@ -508,11 +558,15 @@ def admit(status):
     if not o.get("attempt"):
         log("%s: start failed (exit %d): %s; stays pending" % (job["id"], rc, o.get("error") or o))
         return
-    move(job["id"], "pending", "running", {"job": job, "attempt": o["attempt"], "sent": S.utcnow(),
-                                           "attempts": [o["attempt"]], "auto_retries": 0, "cancel": False})
-    S.dump({"profile": job["profile"], "at": S.utcnow()}, q("train.json"))
-    log("%s admitted -> %s (%s, prio %d, %s)%s" % (job["id"], o["attempt"], job["purpose"], job["priority"],
-                                                   job["profile"], " duplicate" if o.get("duplicate") else ""))
+    rec = {"job": job, "attempt": o["attempt"], "sent": S.utcnow(), "attempts": [o["attempt"]], "auto_retries": 0,
+           "cancel": False}
+    if host != STEVE:
+        rec["host"] = host
+    move(job["id"], "pending", "running", rec)
+    S.dump({"profile": job["profile"], "at": S.utcnow()}, lane_file(host, "train.json"))
+    log("%s admitted -> %s (%s, prio %d, %s)%s%s" % (job["id"], o["attempt"], job["purpose"], job["priority"],
+                                                     job["profile"], " duplicate" if o.get("duplicate") else "",
+                                                     "" if host == STEVE else " on " + host))
 
 
 def cmd_tick(_a):
@@ -531,10 +585,14 @@ def cmd_tick(_a):
                 for rec in steve_running():
                     reconcile(rec)
                 drain_outbox(remote(["outbox"])[1].get("outbox") or [])
+                if steve2_on():
+                    drain_outbox(remote(["outbox"], host=STEVE2)[1].get("outbox") or [], host=STEVE2)
                 # after reconcile (a visit job that just finished is done, not "running": 07:28Z 2026-11-23 the feed
                 # read it busy and the fill loop queued filler), before admission (this tick admits what it queues)
                 visit_feed_step()
                 admit(remote(["status"])[1])
+                if steve2_on():
+                    admit(remote(["status"], host=STEVE2)[1], host=STEVE2)
             except SshDown as e:
                 S.dump({"down_since": S.utcnow(), "last_probe": time.time(), "last_error": str(e)},
                        q("ssh_state.json"))
@@ -1867,9 +1925,11 @@ def fill_plan(mod, n, cap, *, now=None):   # now keyword-only: an old (.., day_s
     if paused():
         return {"verdict": "paused", "text": "lane paused; no fill"}
     # an owner-gated, not-yet-due or other-lane job cannot run, so it does not keep Steve busy
-    busy = [j for j in records("pending") if ready(j, now)] + steve_running()   # an archmagi job is not Steve
-    if busy:
-        return {"verdict": "busy", "text": "busy: %d pending/running" % len(busy)}
+    # busy while a ready job waits, or while every live Steve game runs one (an archmagi job is not Steve's): with
+    # Steve2 switched on, Steve1 running and Steve2 idle, the filler picks for Steve2
+    pend, run = [j for j in records("pending") if ready(j, now)], steve_running()
+    if pend or len(run) >= len(steve_lanes()):
+        return {"verdict": "busy", "text": "busy: %d pending/running" % (len(pend) + len(run))}
     off = held_fill(mod)
     if off:         # the owner's hold (mod_owner_hold.json): the filler is off for a held mod
         return {"verdict": "held", "text": "%s; no fill" % off}
@@ -1978,7 +2038,7 @@ def cmd_list(a):
         print("PAUSED since %s by %s %s/%s: %s  (testq.py resume --reason R)" % (pz.get("since"), pz.get("job"),
                                                                               pz.get("outcome"), pz.get("cause"),
                                                                               pz.get("reason")))
-    waits = read_json(q(ADMISSION_WAITS)) or {}
+    waits = dict(read_json(q(ADMISSION_WAITS)) or {}, **(read_json(lane_file(STEVE2, ADMISSION_WAITS)) or {}))
     for st in ([a.state] if a.state else STATES):
         for rec in records(st):
             job, res = job_of(rec), rec.get("result") or {}
@@ -2157,7 +2217,7 @@ def main(argv=None):
     s.add_argument("--reason", required=True)
     s = sub.add_parser("resume")
     s.add_argument("--reason", required=True)
-    s.add_argument("--lane", choices=(STEVE, ARCHMAGI), default=STEVE)
+    s.add_argument("--lane", choices=(STEVE, STEVE2, ARCHMAGI), default=STEVE)
     s = sub.add_parser("sweep")
     s.add_argument("mod")
     s.add_argument("--by", default="BENCH", help="the requesting seat (default BENCH; FOUNDRY owns FlowWorks since the v3 cutover)")
