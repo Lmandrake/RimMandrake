@@ -311,7 +311,7 @@ and the verdict ledger counts it for no bar. The first scenes are built and comp
 - **Needs:** the judge ticket. No game.
 - **Offline test:** `SELF src/RimMandrake/rimflow/selftest_scene_verdicts.py`, 17 checks: kind A decides on one
   valid run (2); kind B passes on one SUCCESS only with no MOD FAILURE and no UNRESOLVED (3); a spent budget gives
-  INCONCLUSIVE (1); X of Y for a result random by design (1); one UNRESOLVED holds the pass until classed (1); a
+  INCONCLUSIVE (1); X of Y for a result random by design, and one short of X held for the Conductor's call (1); one UNRESOLVED holds the pass until classed (1); a
   reclassification keeps the history (1); a replay is not a sample (1); a cluster counts as one cluster (1); a stamped
   run reads TUNED and counts for nothing (1); a run with the taint mark and `overlay: none` counts for nothing (1); an
   uncompared arm counts for nothing (1); a change that does not touch what the scene reads keeps the verdict (1); a

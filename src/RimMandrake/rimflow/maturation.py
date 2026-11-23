@@ -2125,7 +2125,8 @@ LIVE_KINDS_RULE = "\n".join([
     "- A scene with no tag is kind A: one valid run decides PASS or FAIL. Never repeat an unchanged run to get a PASS.",
     "- Kind B (stochastic) and kind C (an intermittent hunt) carry their evidence on the scene. Kind B passes on one "
     "SUCCESS, with no MOD FAILURE and no UNRESOLVED run on the same claim and build. A result that is random by design "
-    "passes on its written X of Y. All budgeted runs done with no SUCCESS: the verdict is INCONCLUSIVE. A hunt is never "
+    "passes on its written X of Y. When its runs end short of X, stop: the scene is held, the pipeline asks the Conductor, "
+    "and nobody else changes X or Y. All budgeted runs done with no SUCCESS: the verdict is INCONCLUSIVE. A hunt is never "
     "part of the exit. The tag is on the scene in the test table: `test_kind` (\"A\", \"B\", \"C\"; absent is A), "
     "`tag_evidence`, `budget` (runs, kind B) and `x_of_y` ([X, Y], a result that is random by design).",
     "- Write `outcome` on every row: SUCCESS, MOD FAILURE, RANDOM MISS, ENVIRONMENT FAULT, APPARATUS FAULT, UNRESOLVED or "
@@ -4472,6 +4473,7 @@ def read_ingame_exit(root, mod, n, tt=None):
             ln["count"] = "needless"
     reviews = fix_reviews(os.path.join(d, FIX_REVIEWS))
     owed = out["fix_readers_owed"] = []
+    out["shortfalls"] = []
     out["carried"] = sorted(carried)
     for t, _ in checks:
         claim = blk["ingame_rows"].get(t)
@@ -4499,6 +4501,8 @@ def read_ingame_exit(root, mod, n, tt=None):
                                t, mf.get("commit"), rwhy, rel(mod, base), FIX_REVIEWS))
         if k is not None:
             why.extend("in-game check %s: %s" % (t, w) for w in k["why"])
+            if k["short"] and cnt == "inconclusive":        # the tick asks the Conductor (shortfall.py)
+                out["shortfalls"].append(dict(k["short"], test=t))
             if cnt in LK.HOLDS:     # nothing here sends the mod back, and no class is owed: the scene, or the words, are
                 out["rows"][t] = k["rows"] or v
                 ln["why"] = "; ".join(k["why"])

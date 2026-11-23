@@ -385,6 +385,213 @@ def t_budgeted_runs_repeat():
     return free and refused and unread and spent and held, (free, refused, unread, spent, held)
 
 
+SHORT = [good(), miss(), miss(), miss()]
+CALL_WHY = "the yield is a guess against pawns that wander off"
+
+
+def called(call, rows=None, why=CALL_WHY, xy=(2, 4), **kw):
+    """SHORT (or rows), read on a scene that carries one recorded call."""
+    c = dict({"call": call, "x_of_y": list(xy), "why": why, "by": "BENCH"}, **kw)
+    return dict(XY, x_of_y_calls=[c])
+
+
+def short_root(rows=None, **c1):
+    N[0] += 1
+    return S.visit("k%d" % N[0], (rows or SHORT) + OTHERS, tt=table(**(c1 or XY)))
+
+
+def t_shortfall_escalates():
+    import shortfall as SF
+    root = short_root()
+    tt = table(**XY)
+    ex = M.read_ingame_exit(root, MOD, 1, tt)
+    d = tempfile.mkdtemp(prefix="short_")
+    log = os.path.join(d, "log.md")
+    item = "RIMMANDRAKE_DRIVE_WMOD_IN_GAME_ACCEPTANCE_VISIT_ONE"
+    facts = {MOD: {"stage": "in_game", "visit": 1, "exit": ex, "runs_seen": [
+        {"unit": "u0", "item": "RIMMANDRAKE_FIX_WMOD_LATER", "at": 9.0}, {"unit": "u1", "item": item, "at": 5.0}]}}
+    notes, bad = [], []
+
+    def note(it, text):
+        notes.append((it, text))
+        return (not bad, "note refused" if bad else "ok")
+    st, rd = {}, {}
+    fx = {"conductor_log": log, "note": note, "holds": set()}
+    SF.observe(facts, st, 1000.0, rd, fx)
+    text = open(log, encoding="utf-8").read() if os.path.exists(log) else ""
+    want = ("RAISE FIRST", MOD, "c1", "1 of", "2 of 4", EV, "Does the mod REQUIRE", "guess", "shortfall.py call %s c1 needed" % MOD,
+            "shortfall.py call %s c1 guess" % MOD, item)
+    lacks = [w for w in want if w not in text] + [w for w in want[1:] if not notes or w not in notes[0][1]]
+    once = len(notes) == 1 and notes[0][0] == item and text.count("RAISE FIRST") == 1
+    need = any("c1" in x and "2 of 4" in x for x in rd.get("needs_conductor") or [])
+    rd2 = {}
+    SF.observe(facts, st, 1060.0, rd2, fx)
+    again = len(notes) == 1 and open(log, encoding="utf-8").read().count("RAISE FIRST") == 1 and bool(rd2.get("needs_conductor"))
+    # a refused note is named and tried again after 10 minutes; the log line is not written twice
+    bad.append(1)
+    st3, rd3 = {}, {}
+    SF.observe(facts, st3, 1000.0, rd3, fx)
+    n = len(notes)
+    SF.observe(facts, st3, 1060.0, {}, fx)
+    quiet = len(notes) == n
+    bad.clear()
+    SF.observe(facts, st3, 1700.0, {}, fx)
+    retried = len(notes) == n + 1 and "note refused" in json.dumps(rd3) and open(
+        log, encoding="utf-8").read().count("RAISE FIRST") == 2
+    nolog = {}
+    SF.observe(facts, {}, 1000.0, nolog, dict(fx, conductor_log=os.path.join(d, "none", "log.md")))
+    told = "FileNotFoundError" in json.dumps(nolog) and bool(nolog.get("needs_conductor"))
+    held, n = {}, len(notes)
+    SF.observe(facts, {}, 1000.0, held, dict(fx, holds={MOD}))
+    noitem = {}
+    SF.observe({MOD: dict(facts[MOD], runs_seen=[])}, {}, 1000.0, noitem, fx)
+    quiet_held = not held.get("needs_conductor") and len(notes) == n and "no in-game run item" in json.dumps(noitem)
+    # nothing is raised before the scene ends short, on a pass, on a scene held for another reason, or after the call
+    none = [read([good(), miss()], **XY), read([good(), good()], **XY), read(SHORT + [o(LK.UNRESOLVED)], **XY),
+            read([o(LK.MOD_FAILURE, "FAIL")] + SHORT, **XY), read([env()] * 3, **B), read(SHORT, **called("needed"))]
+    spent = read([good(), env(), env(), env()], **XY)      # the budget ended first: short of X all the same
+    return (not lacks and once and need and again and quiet and retried and told and quiet_held
+            and all(x["shortfalls"] == [] for x in none) and [(x["test"], x["got"], x["valid"], x["x_of_y"]) for x in
+                                                             ex["shortfalls"] + spent["shortfalls"]]
+            == [("c1", 1, 4, [2, 4]), ("c1", 1, 1, [2, 4])]), (
+        lacks, once, need, again, quiet, retried, told, quiet_held, [x["shortfalls"] for x in none], spent.get("shortfalls"))
+
+
+def tick_asks():
+    """-> (dry lines, applied lines, the second tick's lines, errors): the Dispatch tick itself, on one short scene."""
+    import maturation_dispatch as MD
+    d = tempfile.mkdtemp(prefix="short_tick_")
+    root, log, notes = short_root(), os.path.join(d, "log.md"), []
+    hold = os.path.join(d, "holds.json")
+    S.put(d, "holds.json", {"holds": []})
+    keep = {k: os.environ.get(k) for k in ("RM_MATURATION_DISPATCH_DIR", "RM_OWNER_HOLD_FILE")}
+    os.environ.update(RM_MATURATION_DISPATCH_DIR=os.path.join(d, "st"), RM_OWNER_HOLD_FILE=hold)
+    cfg = {"enabled": False, "advancing": [MOD], "cap_usd": 15, "max_live": 4, "stage_ceiling_usd": 100, "settle_s": 180,
+           "ingame_enabled": True, "ingame_cap_usd": 30, "ingame_auto_runs_per_visit": 1, "launch_tries": 3}
+
+    def facts():
+        return {MOD: dict(M.ingame_facts(root, MOD), live_units=[], last_end=None, stage_runs={}, run_usd={}, runs_seen=[
+            {"unit": "u1", "item": "RIMMANDRAKE_DRIVE_WMOD_IN_GAME_ACCEPTANCE_VISIT_ONE", "at": 5.0, "end": 6.0}])}
+
+    fx = {"autonomy": False, "convergence": lambda r, rd: None, "facts": facts, "account": lambda: (True, "test"),
+          "known": lambda: set(), "clone": lambda: (0, 0), "releases": lambda: ([], 0), "code": lambda: "code-T", "hands": {},
+          "file": lambda *x, **k: (False, "none"), "launch": lambda *x, **k: (1, "none", None),
+          "rescue": {"conductor_log": log + ".r", "holds": lambda: set(), "records": lambda m, c: []},
+          "shortfall": {"conductor_log": log, "note": lambda it, t: (notes.append(it) or True, "ok")}}
+    n, errs = [], []
+    try:
+        for apply, now in ((False, 1e6), (True, 1e6 + 60), (True, 1e6 + 120)):
+            rd = MD.tick(root, cfg, apply, fx=fx, now=now, page=False)
+            errs.append(rd.get("shortfall_error"))
+            n.append((open(log, encoding="utf-8").read().count("RAISE FIRST") if os.path.exists(log) else 0, len(notes)))
+    finally:
+        for k, v in keep.items():
+            os.environ.pop(k, None) if v is None else os.environ.update({k: v})
+        shutil.rmtree(d, ignore_errors=True)
+    return n, errs
+
+
+def t_shortfall_escalates_from_the_tick():
+    """The promise shortfall-escalates, by the program that the timer runs."""
+    n, errs = tick_asks()
+    return n == [(0, 0), (1, 1), (1, 1)] and errs == [None] * 3, (n, errs)
+
+
+def t_shortfall_holds_until_call():
+    ex = read(SHORT, **XY)
+    later_ = read(SHORT + [good(), good(), good()], **XY)
+    blanks = [read(SHORT, **called(**kw)) for kw in ({"call": ""}, {"call": "maybe"}, {"call": "needed", "why": "ok"},
+                                                    {"call": "needed", "by": ""}, {"call": "needed", "xy": (3, 4)})]
+    odd = read(SHORT, **dict(XY, x_of_y_calls="needed"))
+    return (all(x["state"] == "not_met" and cnt(x) == "inconclusive" and x["rows"]["c1"] == "INCONCLUSIVE"
+                and len(x["shortfalls"]) == 1 and said(x, "shortfall.py call") for x in [ex, later_, odd] + blanks)), (
+        [(cnt(x), x["why"]) for x in [ex, later_, odd] + blanks if cnt(x) != "inconclusive"], ex["why"])
+
+
+def t_call_needed_is_mod_failure():
+    tag = called("needed")
+    ex = read(SHORT, **tag)
+    new = [read2(SHORT, [good(mod_sha="0123456789"), miss(mod_sha="0123456789")] + [miss(mod_sha="0123456789")] * 2, **tag),
+           read2(SHORT, [good(mod_sha="0123456789")] * 2, **tag), read2(SHORT, [good(mod_sha="0123456789")], **tag)]
+    return (ex["state"] == "not_met" and cnt(ex) == "mod" and ex["lines"]["c1"]["class"] == "MOD" and ex["rows"]["c1"] == "FAIL"
+            and said(ex, "needs X of Y", "classed MOD") and ex["shortfalls"] == [] and [cnt(x) for x in new] == [
+                "mod", "pass", "spoiled"] and new[1]["state"] == "met" and new[0]["next_run"] == ["c1"]), (
+        cnt(ex), ex["why"], [(cnt(x), x["why"]) for x in new])
+
+
+def t_call_guess_judges_again():
+    tag = dict(called("guess", to=[1, 4]), x_of_y=[1, 4])
+    ex, other = read(SHORT, **tag), read2(SHORT, [miss(mod_sha="0123456789")] * 4, **tag)
+    return (ex["state"] == "met" and cnt(ex) == "pass" and cnt(other) == "inconclusive"
+            and [x["x_of_y"] for x in other["shortfalls"]] == [[1, 4]]), (ex["why"], cnt(other), other["why"])
+
+
+def t_conductor_records_the_call():
+    import shortfall as SF
+    item, calls = "RIMMANDRAKE_DRIVE_WMOD_IN_GAME_ACCEPTANCE_VISIT_ONE", []
+    win, rc = {"AGENT_SEAT": "BENCH"}, {"publish": 0, "note": 0}
+
+    class R:
+        def __init__(self, code):
+            self.returncode, self.stdout, self.stderr = code, "PUBLISHED abc\n" if code == 0 else "", "boom"
+
+    def runner(argv, **kw):
+        calls.append([str(x) for x in argv])
+        return R(rc["note" if "note" in calls[-1] else "publish"])
+
+    def go(root, *a, env=win, why=CALL_WHY, mod=MOD, scene="c1"):
+        calls.clear()
+        out, sys.stdout = sys.stdout, open(os.devnull, "w")
+        try:
+            return SF.main(["call", mod, scene] + list(a) + ["--item", item, "--why", why], root=root, runner=runner, env=env)
+        finally:
+            sys.stdout.close()
+            sys.stdout = out
+
+    def tab(root):
+        with open(os.path.join(root, "design/concepts/%s/version/test_table.json" % MOD), encoding="utf-8") as f:
+            return f.read()
+
+    def after(root):
+        tt = json.loads(tab(root))
+        return M.read_ingame_exit(root, MOD, 1, tt), tt["tests"]["c1"]
+    root = short_root()
+    was = tab(root)
+    refused = [go(root, "needed", env={"AGENT_SEAT": "BENCH", "RM_ROLE_UNIT": "rm-x"}), go(root, "needed", env={"AGENT_SEAT": "OPS"}),
+               go(root, "needed", why="because yes"), go(root, "guess"), go(root, "guess", "--x", "2"),
+               go(root, "guess", "--x", "0"), go(root, "guess", "--x", "3"), go(root, "guess", "--x", "1", "--y", "3"),
+               go(root, "needed", "--x", "1"), go(root, "needed", scene="c2"), go(root, "needed", scene="nope")]
+    clean = tab(root) == was and not calls
+    none = go(short_root([good(), good()]), "needed")
+    blind = short_root()
+    os.remove(os.path.join(blind, "design/concepts/%s/version/in_game/visit_1/rows.jsonl" % MOD))
+    os.mkdir(os.path.join(blind, "design/concepts/%s/version/in_game/visit_1/rows.jsonl" % MOD))
+    could_not = [go(blind, "needed"), go(root, "needed", mod="NoSuchMod")]
+    ok1 = go(root, "needed")
+    argv = [list(x) for x in calls]
+    ex, t = after(root)
+    e = t["x_of_y_calls"][-1]
+    wrote = (cnt(ex) == "mod" and t["x_of_y"] == [2, 4] and e["call"] == "needed" and (e["got"], e["valid"]) == (1, 4)
+             and e["why"] == CALL_WHY and len(argv) == 2 and "publish" in argv[0][0] and argv[0][-1].endswith("test_table.json")
+             and "note" in argv[1] and item in argv[1] and "--per-ruling" in argv[1] and "--publish" in argv[1])
+    g = short_root()
+    ok2 = go(g, "guess", "--x", "1")
+    ex2, t2 = after(g)
+    z = short_root([miss()] * 4)
+    ok3, (ex3, t3) = go(z, "guess", "--x", "1", "--y", "8"), after(z)
+    low = go(short_root([miss()] * 4), "guess", "--x", "1")
+    rc["publish"] = 1
+    f = short_root()
+    failed = go(f, "guess", "--x", "1"), [x for x in calls if "note" in x], after(f)[1]["x_of_y"]
+    rc.update(publish=0, note=1)
+    failed2 = go(short_root(), "needed")
+    return (refused == [2] * 11 and clean and none == 2 and could_not == [3, 3] and ok1 == 0 and wrote and ok2 == 0
+            and ex2["state"] == "met" and t2["x_of_y"] == [1, 4] and t2["x_of_y_calls"][-1]["to"] == [1, 4] and ok3 == 0
+            and cnt(ex3) == "spoiled" and t3["x_of_y"] == [1, 8] and t3["budget"] == 8 and low == 2
+            and failed[0] == 4 and not failed[1] and failed[2] == [1, 4] and failed2 == 4), (
+        refused, clean, none, could_not, ok1, wrote, argv, ok2, ex2["why"], ok3, cnt(ex3), t3, low, failed, failed2)
+
+
 def run(tests, quiet=False):
     fails = []
     for fn in tests:
@@ -433,6 +640,13 @@ def _mutants():
         LK.norm((s or {}).get("test_kind")) or "A")
     yield "a spoiled FAIL refuses a bar", LK, "no_verdict", lambda r: False
     yield "our own faults spend the budget", LK, "NO_BUDGET", ()
+    yield "a call is not read", LK, "call_of", lambda spec: None
+    yield "any entry is a call", LK, "call_of", lambda spec: ([c for c in (spec or {}).get("x_of_y_calls") or [] if isinstance(
+        c, dict)] or [None])[-1]
+    import shortfall as SF
+    yield "a raised shortfall is raised again", SF, "seen", lambda st, key: {}
+    yield "the Conductor window is not asked", SF, "may", lambda why, env: (True, "ok")
+    yield "a new X that stays short is written", SF, "stays_short", lambda spec, runs: False
     yield "one word classes an UNRESOLVED run", LK, "WHY_WORDS", 1
 
 
@@ -457,7 +671,9 @@ def main():
              t_random_miss_only_by_design, t_kind_b_one_success, t_kind_b_x_of_y,
              t_inconclusive_is_not_pass_or_fail, t_tag_without_evidence_refused, t_hunt_is_never_in_the_exit,
              t_per_scene_run_list, t_a_spoiled_fail_is_no_refused_bar, t_briefs_name_the_fields,
-             t_hunt_open_tells_both, t_budgeted_runs_repeat]
+             t_hunt_open_tells_both, t_budgeted_runs_repeat, t_shortfall_escalates,
+             t_shortfall_escalates_from_the_tick, t_shortfall_holds_until_call,
+             t_call_needed_is_mod_failure, t_call_guess_judges_again, t_conductor_records_the_call]
     fails, missed = run(tests), []
     if not fails:
         missed = missed_mutants(tests)

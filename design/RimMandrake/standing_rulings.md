@@ -1279,7 +1279,8 @@ The run that builds an item also writes its offline test (red-first selftest) an
 ## Live tests have three kinds — owner, 2026-11-23
 
 Item `RIMMANDRAKE_ENACT_THREE_TEST_KINDS_FORCED_COUNTED_HUNTED_NOT_STARS_ALIGNED`. He approved this text on 2026-11-23
-(*"Approve updated draft 3."*). Sections 1 to 8 below are the approved text. The reasons and the examples:
+(*"Approve updated draft 3."*). Sections 1 to 8 below are the approved text, with one later ruling of his in section 3 (a
+scene short of its X of Y; his words are at the end). The reasons and the examples:
 `design/specs/2026-11-23-three-test-kinds/draft.md`.
 
 Two cases of 2026-11-23 started the rule. In Explosive Knockback visit 4, the spared-carrier scene failed once because
@@ -1319,10 +1320,18 @@ A scene with no tag is kind A.
   - A kind B scene passes on one SUCCESS, with no MOD FAILURE and no UNRESOLVED run (section 2) on the same claim and build.
   - That pass says "this was seen to work". That pass does not say how often the thing works.
   - How many runs to spend is a budget, written on the scene before the first run. When the budget ends with no
-    SUCCESS, the verdict is INCONCLUSIVE, never PASS and never FAIL.
+    SUCCESS, the verdict is INCONCLUSIVE, never PASS and never FAIL. (A scene with X of Y that ends short: below.)
   - Where the result is random by design (a yield, a drop chance), the scene passes on X successes in Y valid
     opportunities. X and Y come from the intended yield and from the testing budget, and are written before the first
     run. Check the rate itself offline where that is possible, because offline runs are free.
+  - **Short of X of Y (his ruling, 2026-11-23).** A scene that ends with fewer than X successes escalates to the Conductor.
+    The program raises it: one RAISE FIRST line in the Conductor log and a note on the item of the mod's in-game run, with
+    the scene, X, Y, the count reached and the tag evidence. The Conductor decides whether the mod's function needs X of
+    Y, or X was a guess that guarded against environmental fluctuation. The scene's pass is held until the call is
+    recorded (`src/RimMandrake/rimflow/shortfall.py call`). "The mod needs X of Y": the scene reads MOD FAILURE and takes
+    the road back; the call stands while X of Y stands. "X was a guess": a new X goes on the scene before its next run, and
+    the scene is judged again. The opportunities already run on the same build count. Nobody else changes X or Y. This
+    changes nothing for a scene with no X of Y, and no rule of kind A or C.
 - **Kind C, intermittent hunt.** A temporary hunt for a fault that shows only sometimes. A hunt looks for evidence of failure.
   A hunt is never part of a mod's final acceptance tests. A hunt may use kind A or B scenes to get exposure; their verdicts
   stay their own.
@@ -1405,6 +1414,11 @@ failure, typed:
 His comments on draft 3, about 1:25 PM PST (the last part of the message orders BRIDGE v2):
 
 > *"1) agreed, but that was kind of covered. We are obliged to trace environmental causes to their source... and unexplained movement of colonists repeatedly out of the zone should show up... but I take your point. 2) Agreed... I had indicated that for stochastic testing you use X of Y successes, where X and Y are set by the intended yield plus the testing resources we have. That should cover this, should it not? 3) Yes... we know this... that's why the rule of minimum forcing. I feel this restates what we ourselves said. But if you find value in its version, so be it. Environment repair is proportionate: but biased towards the spend towards control. It is unlikely a single test will require a unique environmental control, so you are lowering the cost of much future testing (as well as reruns of this test in the future). So proportional here is biased towards testing capacity, not just "the cost of a single proof." Hunt opens on serious, yes surely. Serous faults must announce being dropped, agreed. These are my comments."*
+
+The ruling on a scene short of its X of Y (about 3:00 PM PST; item
+`RIMMANDRAKE_ENACT_SHORT_OF_X_OF_Y_ESCALATES_CONDUCTOR_CALLS_IT`):
+
+> *"I can also rule too: It means escallation is required. Does the mod REQUIRE X of Y to be true, or was X of Y a guess and (X-1) of Y is just as good? Depends on whether the mod's actual function requires X of Y or whether X of Y was just guarding environmental variable fluctuation. That's a Conductor call."*
 
 ## A cleansed design passes all three checks — owner, by card 2026-11-23
 

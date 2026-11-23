@@ -59,6 +59,9 @@ The fields are on `tests.<id>` of `version/test_table.json`, and the Stage 6 exi
   C, the symptom, how often it was seen in how many opportunities, and where the trace is. An empty one is refused.
 - `budget`: the runs to spend on a kind B scene, a whole number, written before the first run.
 - `x_of_y`: `[X, Y]`, only for a result that is random by design (a yield, a drop chance), written before the first run.
+  A scene that ends short of X escalates to the Conductor, who decides if the mod needs X of Y or X was a
+  guess. `x_of_y_calls` is the
+  Conductor's record: do not write it.
 
 A kind C scene is never in a bar's `decides` alone. Do not tag a new scene B or C on a guess: the tester tags it on evidence.
 

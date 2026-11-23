@@ -580,9 +580,10 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - Look for evidence of success.
   - Write the budget of runs on the scene before the first run.
   - One SUCCESS passes the scene, if no run on the same claim and build is a MOD FAILURE or UNRESOLVED.
-  - When the budget ends with no SUCCESS, the verdict is INCONCLUSIVE. INCONCLUSIVE is not PASS and not FAIL.
+  - When the budget of a scene with no X of Y ends with no SUCCESS, the verdict is INCONCLUSIVE. INCONCLUSIVE is not PASS and not FAIL.
   - For a result that is random by design, write X successes in Y valid opportunities before the first run. The scene
-    passes on X of Y.
+    passes on X of Y. A scene that ends short of X escalates to the Conductor, who decides if the mod needs X of Y or X
+    was a guess. Hold the scene's pass until the Conductor records the call (`shortfall.py call`).
 - **Kind C, intermittent hunt.** A hunt is temporary, and it looks for evidence of failure. A hunt is never part of a
   mod's final acceptance tests.
 - A B tag or a C tag carries its evidence on the scene. Tag B names what spoils the run, what was tried to control each

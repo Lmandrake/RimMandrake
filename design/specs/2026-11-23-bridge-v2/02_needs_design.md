@@ -592,7 +592,8 @@ Notes.
 **One run is not a verdict.** The receipt is the record of one run. The scene's verdict is kept by a **scene verdict
 ledger** that applies the policy to the runs of one claim on one build: kind A decides on one valid run; kind B
 passes on one SUCCESS only while no MOD FAILURE and no UNRESOLVED run stands on the same claim and build, and ends
-INCONCLUSIVE when its budget is spent; an UNRESOLVED run holds the pass until someone classes it; a serious or
+INCONCLUSIVE when its budget is spent; a scene that ends short of its X of Y is held for the Conductor's call
+(`src/RimMandrake/rimflow/shortfall.py`); an UNRESOLVED run holds the pass until someone classes it; a serious or
 repeated one opens a hunt, with the notice to the Conductor that the policy demands; a reclassification is added to
 the history and never overwrites it. The ledger can live outside the bridge. It is listed here because live testing
 does not work without it and nothing today does it.

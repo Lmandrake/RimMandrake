@@ -279,6 +279,13 @@ is running).
    judged by evidence of success) or tag C (an intermittent hunt), you give the tag, with its evidence. When a serious fault stays unresolved at the mod's pass, write the
    decision about it. The owner reads that decision in his digest.
 
+   A scene that ends short of its X of Y can be raised to you: a `SHORT OF X OF Y (RAISE FIRST)` line in your log, with a
+   note on the item of the mod's in-game run. Decide if the mod's function needs X of Y, or X was a guess that guarded
+   against environmental fluctuation. Read the scene's claim and tag evidence first. Record the call from your window with
+   the command in the line (`src/RimMandrake/rimflow/shortfall.py call <Mod> <scene> needed`, or `guess --x N [--y M]`).
+   The scene's pass is held until you do. If the budget ended before Y valid opportunities, you can also set a larger
+   `budget` on the scene: it changes neither X nor Y, and the scene runs on.
+
    An incident can be rung to you: a `DISPATCHER ESCALATION (incident:<id>)` line in your log, or an entry in
    `rimflow incidents`. Take it with `rimflow ack <id> --plan "<next>"`. If you do not, it goes on to a fresh Operations
    run, and then to him. Reading an incident is not an ack.

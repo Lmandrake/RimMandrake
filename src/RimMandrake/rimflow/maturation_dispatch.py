@@ -4062,6 +4062,11 @@ def _tick(root, cfg, apply, fx=None, now=None, page=False):
             MR.observe(root, cfg, st, facts, rows, now, rd, fx.get("rescue"))
         except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
             rd["rescue_error"] = "%s: %s" % (e.__class__.__name__, e)
+        try:        # a scene short of its X of Y: the Conductor is asked, once (shortfall.py; owner, 2026-11-23)
+            import shortfall as SF      # noqa: E402
+            SF.observe(facts, st, now, rd, dict({"holds": {OH.key(m) for m in holds}}, **(fx.get("shortfall") or {})))
+        except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
+            rd["shortfall_error"] = "%s: %s" % (e.__class__.__name__, e)
         _write(os.path.join(d, "state.json"), st)
         _write(os.path.join(d, "reading.json"), rd)
         with open(os.path.join(d, "ticks.jsonl"), "a", encoding="utf-8") as f:

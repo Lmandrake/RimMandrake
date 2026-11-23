@@ -173,11 +173,14 @@ opportunity at the deciding moment (example: the carrier stands inside the blast
 |---|---|---|
 | A, deterministic | the scene makes a valid opportunity on demand, and the result is not random | one valid run decides PASS or FAIL; never "4 of 5" |
 | B, stochastic | after a sincere attempt at control, the opportunity is still uncertain | one SUCCESS passes, with no MOD FAILURE and no UNRESOLVED run on the same claim and build; all budgeted runs done with no SUCCESS is INCONCLUSIVE |
-| B, random by design | the result is a yield or a drop chance | X successes in Y valid opportunities; X and Y come from the intended yield and the testing budget, and are written before the first run; check the rate itself offline where possible |
+| B, random by design | the result is a yield or a drop chance | X successes in Y valid opportunities; X and Y come from the intended yield and the testing budget, and are written before the first run; check the rate itself offline where possible; a scene that ends short of X is held, and the Conductor decides (below) |
 | C, hunt | a fault that shows only sometimes | looks for evidence of failure; temporary; never part of a mod's final acceptance tests |
 
 - Tag B names the things that spoil the run, what was tried to control each, and why that was not enough. The budget of
   runs stands on the scene before the first run.
+- A scene that ends short of its X of Y escalates to the Conductor. Stop running the scene. Do not change X or Y. The
+  pipeline writes the RAISE FIRST line and the note. The scene's pass is held until the Conductor records one of two calls
+  with `src/RimMandrake/rimflow/shortfall.py call`: the mod needs X of Y (the scene reads MOD FAILURE), or X was a guess (a new X goes on the scene, the scene is judged again, and the opportunities already run on the same build count).
 - Tag C names the symptom, how often it was seen in how many opportunities, and where the trace is.
 - A tag never removes a recorded run. Never tag B on a guess.
 

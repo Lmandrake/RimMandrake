@@ -16,14 +16,18 @@ NO_BUDGET = (APPARATUS, NO_LOOK)    # our own fault or no reading spends no tria
 WRONG = ("HARNESS", "SITE")
 NOTHING = ("NONE", "NO", "N/A", "NOTHING")      # a `forbidden` entry that says nothing was seen
 WHY_WORDS = 6               # the word floor of `classed.why`; its danger and evidence: the page, LIMITS
+NEEDED, GUESS = CALLS = ("needed", "guess")     # the Conductor's call on a scene short of its X of Y
 HOLDS = ("spoiled", "inconclusive", "unresolved", "refused", "tag")    # the line counts that only this module gives
 
 STEWARD_RULE = (
     "- The kinds and outcomes (owner, 2026-11-23; standing_rulings.md §Live tests have three kinds): a line that reads "
     "`spoiled` (every run was spoiled), `inconclusive` (a kind B budget spent with no SUCCESS) or `unresolved` (a run "
     "nobody has classed) sends the mod to no earlier stage and gets no mod item. A `spoiled` scene runs again in the "
-    "next visit (--to in_game). For INCONCLUSIVE, the scene runs again with a budget that the Conductor sets, or the "
-    "Conductor decides: head the line in your note `FOR THE CONDUCTOR:`. An UNRESOLVED run is classed by whoever reads "
+    "next visit (--to in_game). For an INCONCLUSIVE scene with no X of Y, the scene runs again with a budget that the "
+    "Conductor sets, or the Conductor decides: head the line in your note `FOR THE CONDUCTOR:`. A scene that ended short "
+    "of its X of Y waits for the Conductor's call: the tick has asked, so open no visit only for that scene, and never "
+    "edit its `x_of_y` (the Conductor's command is `shortfall.py call`). When the call is that the mod needs X of Y, the "
+    "line reads MOD FAILURE: route it as any mod wrong line. An UNRESOLVED run is classed by whoever reads "
     "its evidence: add to that row `classed`: `{\"outcome\": <one of the other six>, \"why\": <six words at least>, "
     "\"by\": <your unit>}` (and `spoiled_by` for an ENVIRONMENT FAULT); class it only on evidence. A `refused` or `tag` "
     "line is a fault of form in the row or the table: repair the words, never the reading.")
@@ -51,6 +55,16 @@ def x_of_y(spec):
     if any(isinstance(i, bool) or not isinstance(i, int) for i in v) or not 1 <= v[0] <= v[1]:
         return None
     return v[0], v[1]
+
+
+def call_of(spec):
+    """-> the Conductor's standing call that the mod needs this scene's X of Y (shortfall.py writes it), or None. The last
+    usable entry on the scene's present [X, Y] speaks."""
+    xy, v = x_of_y(spec), (spec or {}).get("x_of_y_calls")
+    mine = [c for c in v if isinstance(c, dict) and xy and list(c.get("x_of_y") or []) == list(xy)
+            and c.get("call") in CALLS and len(str(c.get("why") or "").split()) >= WHY_WORDS and _text(c.get("by"))
+            ] if isinstance(v, list) else []
+    return mine[-1] if mine and mine[-1]["call"] == NEEDED else None
 
 
 def budget(spec):
@@ -196,7 +210,8 @@ def reading(spec, runs):
     """runs: [(visit, row)], every row of one check up to the visit, in order. -> None (kind A, old rows only: the exit
     reads them as before), or {count: None | one of HOLDS | "pass" (kind B), why: [...], rows: the word for the exit's
     rows or None, use: the row that decides, mod: True when an earlier run of the same build is a MOD FAILURE, passes:
-    the scene passes on its runs (holds aside), claim_free: the block's claim is not held against it}."""
+    the scene passes on its runs (holds aside), claim_free: the block's claim is not held against it, short: what ended
+    short of the scene's X of Y, or None}."""
     runs = [(v, r) for v, r in runs or [] if isinstance(r, dict)]
     k = kind(spec)
     if not runs or (k == "A" and all(outcome(r, spec)[0] is None for _, r in runs)):
@@ -206,7 +221,7 @@ def reading(spec, runs):
         d = later(d, r)
     at = max(i for i, (_, r) in enumerate(runs) if r is d)
     word = _as_outcome if k == "B" else (lambda r, s: outcome(r, s)[0])
-    out = {"count": None, "why": [], "rows": None, "use": d, "claim_free": runs[-1][1] is not d or k == "B",
+    out = {"count": None, "why": [], "rows": None, "use": d, "short": None, "claim_free": runs[-1][1] is not d or k == "B",
            "mod": any(i != at and word(r, spec) == MOD_FAILURE and same_build(r, d) for i, (_, r) in enumerate(runs)),
            "passes": norm(d.get("verdict")) == "PASS" and outcome(d, spec)[0] in (None, SUCCESS)}
     if k == "B" and not tag_flaws(spec):
@@ -257,6 +272,9 @@ def _kind_b(spec, pool, out):
         said = "no SUCCESS in %d of %d budgeted run(s)" % (spent, b)
     if ok:
         out.update(count="pass", use=good[-1], passes=True)
+    elif done and xy:
+        _short(spec, pool, out, {"x_of_y": list(xy), "got": got, "valid": len(valid), "spent": spent, "budget": b,
+                                 "mod_sha": pool[-1].get("mod_sha"), "tag_evidence": (spec or {}).get("tag_evidence")}, said)
     elif done:
         out.update(count="inconclusive", rows="INCONCLUSIVE", passes=False)
         out["why"].append("INCONCLUSIVE (%s; %d of %d budgeted run(s) spent): never PASS and never FAIL; the scene runs "
@@ -264,3 +282,19 @@ def _kind_b(spec, pool, out):
     else:
         out.update(count="spoiled", rows="SPOILED", passes=False)
         out["why"].append("kind B, %s: run that scene again (%d of %d budgeted run(s) left)" % (said, b - spent, b))
+
+
+def _short(spec, pool, out, short, said):
+    """The scene ended short of its X of Y: held for the Conductor's call, or MOD FAILURE when the call is that the mod
+    needs X of Y (owner, 2026-11-23). A call that X was a guess changed x_of_y itself, so it is not seen here."""
+    out["short"], c = short, call_of(spec)
+    if c:
+        d = out["use"] if any(r is out["use"] for r in pool) else pool[-1]
+        out.update(use=dict(d, outcome=MOD_FAILURE, verdict="FAIL", **{"class": "MOD"}), passes=False)
+        out["why"].append("MOD FAILURE: it ended short of its X of Y (%s), and the Conductor's call is that the mod needs X "
+                          "of Y: %s" % (said, c["why"]))
+        return
+    out.update(count="inconclusive", rows="INCONCLUSIVE", passes=False)
+    out["why"].append("INCONCLUSIVE (%s; %d of %d budgeted run(s) spent): never PASS and never FAIL; escalated, and held "
+                      "until the Conductor's call is recorded: does the mod's function need X of Y, or was X a guess "
+                      "(shortfall.py call)" % (said, short["spent"], short["budget"]))
