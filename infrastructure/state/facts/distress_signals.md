@@ -67,7 +67,7 @@ Absolute age is meaningless on a mixed board. This table shows the p90 life of i
 ## ⛔ REFUTED — do not re-derive these, they cost an hour
 
 - **Prose thinness predicts NOTHING.** `has_file`, `has_spec`, `has_verify`, `has_criteria` and links to other items all
-  sit at **AUC 0.48–0.53, coin flips**, against death.
+  sit at **AUC 0.48–0.53, coin flips**, against death (a dropped item).
   - Against detention, these fields are **inverted**: no prose file **0.00×**, under 200 words **0.00×**, no `## spec`
     **0.00×**. Not one thin item was ever detained.
   - **Thin items are thin because they are small, and small things finish.** What kills work is contested scope, and

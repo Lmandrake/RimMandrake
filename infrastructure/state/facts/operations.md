@@ -116,9 +116,11 @@ This file is unbudgeted, like everything in `facts/`.
   - The bridge held 10.9 h/day.
   - 98.8% of closes since 10-19 carry no verify level.
   - 123 doing-rows with median age 23.8 d and 0 live leases.
-  - Net +567 items in 7 days (recomputed 609 filed-minus-done before drops/supersedes).
+  - Net +567 items in 7 days (1,531 filed less 922 done is 609, before drops/supersedes; use 567 for the growth of the
+    list).
 
-  BUILT 343, 496 and the verify backlog 521 are three different sets: name the population.
+  BUILT 343 (the waiting items), 496 (the BUILT items of the friction count, 470 of which owe a bridge level) and the
+  verify backlog 521 are three different sets: name the population.
 - **Selftest time is concentrated and repeated.**
   - The total is 72.1 agent-hours of selftests in 22 days. The flowworks_stock selftest alone took 18.7 h (26%) at 38 PASS
     to 1 FAIL. 33% of executions were repeats.
@@ -128,7 +130,7 @@ This file is unbudgeted, like everything in `facts/`.
   - 40% of owner messages drive the machine (card pulls 7.4/d, go-ahead 6.4/d, restart 5.1/d, handoff 4.6/d, wake 4.1/d).
   - 5 card classes are 69-89% rule-predictable (~47 min/wk).
   - Of 21 owner defect reports since 10-12, 12 were findable by an instrument we own.
-  - The art judge sends 74% to REGEN (one asset was regenerated 40 times).
+  - The art judge sends 74% to REGEN (802 of 1,086 decisions of the judge in use on 2026-10-26; one asset was regenerated 40 times).
   - Evidence: `D:\ClaudeWork\rimmandrake\csuite\evidence.md` Q7, Q8, Q16.
 - **Open Codex review findings on the relentless live-run files (reviewed at cd905b46d6; the four files are still DIRTY).**
   `relentless_live.py`: deploy_gap rejects unrelated off mods (~L692); drift exit 1 loses game identity (~L1054);
@@ -166,6 +168,9 @@ This file is unbudgeted, like everything in `facts/`.
 - **The weekly budget decides TestPilot, not reload tactics.**
   - In the round-2 sim, reload and full-batch parameters (2-min drain, 2 items/30 min, 12k startup, 17-30 min full load)
     moved accepted/day by +0.43 (noise) at +25% reloads and +22% game minutes.
+  - The designs are in `src/RimMandrake/Utils/sim/testpilot_sim.py` and `loop_sim.py`. TestPilot-plus is variant TP+:
+    two Test Pilots and a critic with a two-round cap. Ralph C+sub is two Ralph builder loops with bounded subagents. The
+    v2/v3 world is the calibrated model of the fleet as it ran under rimflow v2 and v3.
   - At a 1.0G weekly budget TestPilot-plus loses 16.7/day, and Ralph C+sub beats it on sound production in 98% of members.
   - Measure critic false rejects and budget first. Design reload tactics last.
 - **TestPilot is limited by the blind critic, not the pilots.**

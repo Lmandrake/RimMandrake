@@ -17,7 +17,7 @@ This file is the project tier. It narrows or extends the fleet's `~/dev/Lodestar
 | **Designer** | The Maturation Pipeline role that argues a mod idea into a well-defined design before any code, and again when an inconsistency needs refining. |
 | **Operations** | The role that watches the production system's health and raises the alarm. |
 | **Dispatcher** | The clock that starts scheduled roles; there is no AI in it. |
-| **Test Pilot** | One live debugging sitting on one stuck item/ticket, ending in measured cause and check that it produces the fail. Also called Test Drive. |
+| **Test Pilot** | One live debugging sitting on one stuck item/ticket, ending in measured cause and check that it produces the fail (the check goes red for the reported reason before the fix). Also called Test Drive. |
 | **Fable Rescue** | A Fable run sent to a stuck mod when ordinary building could not finish it. "Rescuer" and "Rescue agent" mean it. |
 | **Foundry** | The old builder window; retired, folded into the Conductor now. |
 | **Bench** | The old name for the window he talks to; retired, it is the Conductor now. |

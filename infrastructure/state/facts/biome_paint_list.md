@@ -117,5 +117,5 @@ roster. The other half of his law says that holes are filled with **new** creatu
   the Rot, the Pyrelands, the Lantern Deeps.
 - ⛔ **Do NOT file fill work for any other biome** on the strength of a hole alone. Those other
   biomes are worked individually, as their own per-biome pass reaches them.
-  - A withdrawn *admission* that was never wired changes nothing in game. Such a withdrawal is not
+  - A withdrawn *admission* (a biome sheet's decision that a creature belongs in its roster) that was never wired changes nothing in game. Such a withdrawal is not
     a hole worth chasing.

@@ -42,8 +42,8 @@ corrected in place 2026-08-23. The old text stays there as a quote, so that nobo
 - Both `thing_contact_sheet.py` and `animal_contact_sheet.py` filter by default. Both print `Cuts.provenance(suppressed)`.
 - ⚠️ **The kill-list numbers of the table above (1,289, 1,162, 1,209) are the 2026-08-23 reading. The list has
   grown since: 1,342 defs as of 2026-08-27.** Read the list. Never use a count that someone wrote down.
-- ⛔ Six other scripts still parse the settings file with their own regex. Move each script onto the module when you
-  touch that script.
+- ⛔ On 2026-08-27, eight scripts parsed the settings file with their own regex. The two contact sheets moved; six were
+  left. `cherrypick_build.py` still does (2026-11-23). Move each such script onto the module when you touch that script.
 - The full record was `infrastructure/state/items/DUMP_DERIVED_SHEETS_SHOW_CUT_1.md`. Commit `55c62c85c6` (2026-08-27)
   deleted that file. Read it with `git show 55c62c85c6^:infrastructure/state/items/DUMP_DERIVED_SHEETS_SHOW_CUT_1.md`.
 

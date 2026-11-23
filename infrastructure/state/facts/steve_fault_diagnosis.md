@@ -109,7 +109,8 @@ In this section, "this boot" and "today" mean the boot of 2026-11-20 20:05:07Z a
 
 ## 🔴 The +0.100 V raise is stored in the BIOS, is not visible in the sensors, and did not cure the fault (MEASURED 2026-11-20)
 
-Per-boot bad-cycle counts from the whole probe log, and the pre/post split over all 3898 cycles:
+Per-boot bad-cycle counts from the whole probe log, and the pre/post split over all 3898 cycles. The table shows 5 of
+the boots (2326 cycles). Each boot is in `digest\watch_per_boot.tsv` of the 2026-11-19 package:
 
 | boot (UTC) | cycles | bad cycles | bad share | uptime at last read |
 |---|---|---|---|---|
@@ -271,7 +272,7 @@ Item `RIMMANDRAKE_BOOT_STEVE_NO_LIGHTING_DRIVERS_LAST_SUSPECT_BUT_CPU`. Record a
   boot (regprobe.log; whether a game ran in each boot was not checked).
 - **B, drivers unloaded (boot 11:44:18Z):** RPCONTROL ok=1. RimWorld ran the same 315-mod list, started natively at
   11:45:29Z. The probe ran 10 cycles with the game up, 4 to 49 min after the start, **all clean**, 18/18 CPUs each,
-  0 RPFAULT lines. Before tonight, 7 of 7 boots faulted 3–14 min after a game start, with the hypervisor on or off.
+  0 RPFAULT lines. Before tonight, 7 of 7 boots (2026-11-20 from 20:05Z, `night_20261120\steve_hypervisor_test.md`) faulted 3–14 min after a game start, with the hypervisor on or off.
 - **A again, drivers restored (boot 12:41:17Z):** the same native launcher ran at 12:43:42Z. **Fault** at 12:46:35Z,
   CPU 2, `upper_half_loss`, 2.9 min after the start.
 - **What this means:** a driver in the set is needed for the fault [guess ~90%].

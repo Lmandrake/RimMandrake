@@ -49,8 +49,8 @@ one tier of the ladder. The cheapest tier is first.
 
 ## L3 — Opus evaluation (new class of testing; reserved for Opus-grade judgment)
 
-- This tier judges art quality, style coherence with the shipping game, and thematic concepts. The builder's grade is not
-  enough for these calls, but they still need no human.
+- This tier judges art quality, style coherence with the shipping game, and thematic concepts. The builder's grade (the model class that
+  built the work) is not enough for these calls, but they still need no human.
 - **This is an AUTOMATED cycle with the bridge in the evaluator's own hands** (owner, 2026-09-01). An Opus agent does
   the cycle:
   1. The agent takes the bridge (`rimflow bridge take`/`release`, like anyone).

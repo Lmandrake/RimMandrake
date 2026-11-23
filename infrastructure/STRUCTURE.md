@@ -131,7 +131,7 @@ game produced (→ `observed/`).
 
 ⏳ **`deployed/mods/` and `deployed/MODLIST.md` DO NOT EXIST.**
 
-- The charter describes the two.
+- The charter of the folder (`deployed/README.md`) describes the two.
 - The modlist needs `harvest_log.py --emit-modlist`.
 - Do not cite either one as though it exists.
 
@@ -196,7 +196,7 @@ Payloads are gitignored; **the teardown is the work product.** A teardown is our
 |---|---|
 | `infrastructure/README.md` | The tier rule, and the rules-vs-state line. |
 | `infrastructure/STRUCTURE.md` | This file. |
-| `infrastructure/agents/CHARTER.md` | The whole process rulebook since 2026-08-27 (redesign #4). `POLICY.md` is a supersession stub. |
+| `infrastructure/agents/CHARTER.md` | The whole process rulebook since 2026-08-27 (redesign #4: the fourth redesign of the seats. The first three each removed a coordination channel: peer chat, queue hand-edits, the CHECK seat's re-read loop). `POLICY.md` is a supersession stub. |
 | `infrastructure/agents/<WINDOW>.md` | One charter per window: `CONDUCTOR.md`. The workshop file was folded into it on 2026-11-04. The retired seat files are stubs. |
 | `infrastructure/REFRESH.md` | What to re-run after the mod list changes. |
 | `infrastructure/archive/` | Superseded narrative kept only for *why*: `context.md`. Never current state. `context.md` is absent (2026-11-23). |
@@ -242,7 +242,7 @@ they trusted this?*
 
 **Charter: `skills/README.md`.** The charter holds these rules:
 
-- what earns a skill versus a traps entry;
+- how a skill is wired and edited, where its lessons and evidence go, and which skills are registered;
 - the `SKILL.md` / `references/` / `scripts/` split;
 - the enforced caps (500-line body, 1024-char description).
 
