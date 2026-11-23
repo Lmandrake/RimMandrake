@@ -337,6 +337,53 @@ def io_checks(tmp):
           "one reading scans the installed mods once; the next reading sees a mod gone and refuses the tier "
           "(scans %d, then %s)" % (calls["scan"], again))
 
+    # ---- RIMMANDRAKE_READ_TIER_LIST_FROM_EVERY_GAME_INSTALL_HERE: the tier's list on this machine's other install -----
+    other = os.path.join(tmp, "b", "Mods")
+    os.makedirs(other, exist_ok=True)
+    scans = []
+
+    class TwoMB:
+        gone = False
+
+        @staticmethod
+        def tier_def(t):
+            return {} if t == "bridge" else None
+
+        @staticmethod
+        def scan(local_mods=None):
+            scans.append(local_mods)
+            return {"where": local_mods}
+
+        @staticmethod
+        def resolve_tier(t, installed):
+            b = installed["where"] == other
+            return (["ludeon.rimworld"] + (["dep.mod"] if b else []), ["gone.mod"] if b and TwoMB.gone else [], [])
+    real_dirs = getattr(B, "other_installs", None)
+    sys.modules["modset_builder"] = TwoMB
+    B.other_installs = lambda: [("ArchSmall", other)]
+    walk = dict(WALK, why=[])
+    try:
+        def judged(mods):
+            return B.judge_row("min_t", {}, row("min_t", active_mods=mods), walk, B.tier_lister(walk))
+        plain = judged(["ludeon.rimworld"])
+        lazy = list(scans)
+        alt = judged(["ludeon.rimworld", "dep.mod"])
+        bad = judged(["ludeon.rimworld", "dep.mod", "stray.mod"])
+        TwoMB.gone = True
+        lost = judged(["ludeon.rimworld", "dep.mod"])
+    finally:
+        B.other_installs = real_dirs
+        if real is None:
+            sys.modules.pop("modset_builder", None)
+        else:
+            sys.modules["modset_builder"] = real
+    check(plain[0] and lazy == [None], "a row on the default install's list counts and no other install is scanned: %s %s"
+          % (plain, lazy))
+    check(alt[0] and "ArchSmall" in alt[1], "a row whose list is the tier's on the other install counts, named: %s" % (alt,))
+    check(not bad[0] and "list" in bad[1], "a list that is the tier's on no install does not count: %s" % (bad,))
+    check(not lost[0] and "ArchSmall" in lost[1], "an install the tier cannot be built on counts nothing, and is named: %s"
+          % (lost,))
+
 
 WALK = {"game": "archmagi", "mod_hash": "sha256:aaaa", "game_build": "1.6.4871 rev590",
         "active_mods": ["brrainz.harmony", "ludeon.rimworld", "ludeon.rimworld.royalty", "mandrake.rm.testmod",
@@ -550,6 +597,14 @@ def _old_last_rows(rows):
     return {r.get("test") or r.get("id"): r for r in rows or [] if r.get("test") or r.get("id")}
 
 
+def _field_ignored(field, real=B.judge_row):
+    """judge_row that never compares one field: the row is given the walk's own (a missing field stays missing)."""
+    def f(test, spec, r, walk, tiers, relation=None):
+        r = dict(r, **{field: walk.get(field)}) if r and r.get(field) else r
+        return real(test, spec, r, walk, tiers, relation)
+    return f
+
+
 MUTANTS = {
     "links_and_errors_skipped": lambda: setattr(B, "_files", _old_files),
     "cache_key_size_mtime": lambda: setattr(B, "_cache_key", _old_key),
@@ -567,8 +622,10 @@ MUTANTS = {
     "foreign_checkout_read": lambda: setattr(B, "_foreign_checkout", lambda root: False),
     "idless_rows_dropped": lambda: setattr(B, "last_rows", _old_last_rows),
     "tier_scans_every_tier": lambda: setattr(B, "_resolve_tier", (lambda o: lambda t, i: o(t, []))(B._resolve_tier)),
-    "hash_ignored": lambda: setattr(B, "CHECKED", ("game_build",)),
-    "build_ignored": lambda: setattr(B, "CHECKED", ("mod_hash",)),
+    "other_installs_ignored": lambda: setattr(B, "other_tier_match", lambda *a: (None, "")),
+    "other_installs_always_match": lambda: setattr(B, "other_tier_match", lambda *a: ("ArchSmall", "")),
+    "hash_ignored": lambda: setattr(B, "judge_row", _field_ignored("mod_hash")),
+    "build_ignored": lambda: setattr(B, "judge_row", _field_ignored("game_build")),
     "list_as_set": lambda: setattr(B, "same_list", lambda a, b: set(B.norm_list(a)) == set(B.norm_list(b))),
     "full_read_as_minimal": lambda: setattr(B, "is_full", lambda test: False),
     "missing_counts": lambda: setattr(B, "REQUIRED", ()),

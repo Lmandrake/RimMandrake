@@ -366,6 +366,21 @@ def t_walk_not_the_source_is_one_deploy():
         shutil.rmtree(d, ignore_errors=True)
 
 
+def t_tier_list_of_any_install_here_counts():
+    """RIMMANDRAKE_READ_TIER_LIST_FROM_EVERY_GAME_INSTALL_HERE (Pyrelands visit 7, 2026-11-23): 37 ArchSmall rows read "to
+    run" because the reference came from ArchBig's older About.xml."""
+    walk = {"mod_hash": "h", "game_build": "g", "active_mods": ["x"], "why": []}
+    r = {"mod_hash": "h", "game_build": "g", "active_mods": ["x", "dep"], "tier": "t", "mod_sha": "s"}
+
+    def tiers(t):
+        return ["x"], None
+    tiers.others = lambda t: [("ArchSmall", ["x", "dep"], None)]
+    yes = BM.judge_row("c", {}, r, walk, tiers)
+    no = BM.judge_row("c", {}, dict(r, active_mods=["x", "stray"]), walk, tiers)
+    ok("tier-list-of-any-install-here-counts: the list on the other install counts, a list on neither does not",
+       yes[0] and "ArchSmall" in yes[1] and not no[0], (yes, no))
+
+
 def t_a_path_outside_the_repo_is_not_in_the_change():
     """RIMMANDRAKE_KEEP_RERUN_RELATION_READABLE_PAST_THE_STEAM_FOLDER: Pyrelands' table declared `/mnt/c/Program Files`
     paths; git diff refused the whole pathspec (exit 128), and all 64 checks read 'git cannot list the change'."""
@@ -396,6 +411,7 @@ TESTS = [t_declared_paths_are_exercises_reads_and_file, t_untouched_row_counts, 
          t_whole_mod_check_reruns_on_any_change, t_whole_mod_check_skips_hashignored,
          t_csharp_relates_by_source_file, t_python_relates_by_symbol,
          t_json_relates_by_entry, t_spec_change_reruns, t_rows_from_several_builds, t_walk_not_the_source_is_one_deploy,
+         t_tier_list_of_any_install_here_counts,
          t_a_path_outside_the_repo_is_not_in_the_change]
 
 
@@ -467,6 +483,7 @@ def main():
     t_spec_change_reruns()
     t_rows_from_several_builds()
     t_walk_not_the_source_is_one_deploy()
+    t_tier_list_of_any_install_here_counts()
     t_a_path_outside_the_repo_is_not_in_the_change()
     t_python_imports_read_once_per_commit()
     ok("the run left infrastructure/state/ledger/events/ unchanged", _ledger_digest() == before)

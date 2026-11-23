@@ -64,6 +64,11 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   such paths is unreadable alone and reruns.
 - **walk-not-the-source-is-one-deploy.** When the deployed walk folder is not the current source (its `.srchash`
   differs from the source's), the build match names one act, a deploy, and reruns no check for it.
+- **tier-list-of-any-install-here-counts.** A row does not name the install it ran on, so a minimal-list row's list is
+  compared with the tier's list on this process's install, then on the machine's other game install. The list as either
+  install gives it counts; a list that is the tier's on neither does not. (Measured 2026-11-23: 37 ArchSmall rows of
+  Pyrelands visit 7 read "to run" against ArchBig's older About.xml; item
+  RIMMANDRAKE_READ_TIER_LIST_FROM_EVERY_GAME_INSTALL_HERE.)
 - **python-imports-read-once-per-commit.** In one relation, the imports of a Python file at one commit are parsed once,
   however many checks declare or import that file: a git blob at a resolved commit never changes. (Measured
   2026-11-23: the tick's three relations parsed 1166 files for 107 checks, 86 s of a 204 s profiled tick; item

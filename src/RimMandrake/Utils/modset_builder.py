@@ -1143,10 +1143,10 @@ def read_about(path):
     }
 
 
-def scan():
-    """packageId -> record, across DLC, workshop and local mods."""
+def scan(local_mods=None):
+    """packageId -> record, across DLC, workshop and local mods (local_mods: another install's Mods folder)."""
     found = {}
-    for base in (DATA, WORKSHOP, LOCAL_MODS):
+    for base in (DATA, WORKSHOP, local_mods or LOCAL_MODS):
         if not os.path.isdir(base):
             continue
         for d in sorted(os.listdir(base)):

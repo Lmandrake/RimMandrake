@@ -33,7 +33,9 @@ Where each piece comes from:
   walk list    the labelled savegame's <modIds>, in order: his walk loads that save (spec: the walk's list is read when
                the walk savegame is made). He walks on Archmagi (WALK_HOST), so the walk build is read there only.
   tier list    modset_builder.resolve_tier(tier, scan()) on this machine and this commit; a tier it refuses or that
-               misses a mod gives no list, so the row does not count.
+               misses a mod gives no list, so the row does not count. A row does not name the install it ran on, so a
+               list that differs from this process's install is read against the machine's other installs too
+               (ArchBig, ArchSmall: each reads its own Mods folder, so one deployed About.xml can differ).
 Packages compare lower-case with a trailing `_steam` dropped (RimWorld's own suffix for a Steam copy of a local mod).
 MATURATION_WALK_BUILD names a JSON file that stands in for the live machine ({mod_hash, game_build, active_mods,
 tiers: {name: [packageIds]}}); selftests use it, and every reading made with it names it.
@@ -404,18 +406,55 @@ def tier_lister(walk, cache_dir=None):
         if t not in memo:
             memo[t] = _resolve_tier(t, installed)
         return memo[t]
+    scanned, seen = {}, {}
+
+    def others(t):
+        """The tier's list on each other install of this machine -> [(game, list or None, why)]: built only when a row's
+        list is not this install's, one scan per install per reading."""
+        if t not in seen:
+            seen[t] = [(g, *_resolve_tier(t, scanned.setdefault(g, []), d)) for g, d in other_installs()]
+        return seen[t]
+    f.others = others
     return f
 
 
-def _resolve_tier(t, installed):
-    """installed: [] until the first tier of a reading scans; then [scan()] for the rest of it."""
+def other_installs():
+    """-> [(game name, its Mods folder)] for this machine's game installs other than the one this process reads."""
+    sys.path.insert(0, UTILS) if UTILS not in sys.path else None
+    import game_instance
+    import game_names
+    here, out = os.path.realpath(_paths()[0]), []
+    for game, _key, machine, letter in game_names.GAMES:
+        d = os.path.join(game_instance.game_dir(letter), "Mods") if machine == WALK_HOST else ""
+        if d and os.path.isdir(d) and os.path.realpath(d) != here:
+            out.append((game, d))
+    return out
+
+
+def other_tier_match(tier, mods, tiers):
+    """-> (game name whose install gives exactly this list for the tier, or None; what else was read, as text)."""
+    said = []
+    try:
+        lists = (getattr(tiers, "others", None) or (lambda t: []))(tier)
+    except Exception as e:                  # could not look is said, and counts nothing
+        return None, "; the other installs could not be read (%s: %s)" % (type(e).__name__, e)
+    for g, ref, why in lists:
+        if ref is not None and same_list(mods, ref):
+            return g, ""
+        said.append("on %s: %s" % (g, why if ref is None else _first_diff(mods, ref)))
+    return None, "".join("; " + x for x in said)
+
+
+def _resolve_tier(t, installed, mods_dir=None):
+    """installed: [] until the first tier of a reading scans; then [scan()] for the rest of it. mods_dir: another
+    install's Mods folder."""
     sys.path.insert(0, UTILS) if UTILS not in sys.path else None
     import modset_builder as MB
     try:
         if MB.tier_def(t) is None:
             return None, "modset_builder has no tier %s" % t
         if not installed:
-            installed.append(MB.scan())
+            installed.append(MB.scan(mods_dir) if mods_dir else MB.scan())
         ordered, missing, refusals = MB.resolve_tier(t, installed[0])
         if missing or refusals:
             return None, "modset_builder refuses tier %s: %s" % (t, "; ".join(map(str, (missing and [
@@ -481,8 +520,11 @@ def judge_row(test, spec, r, walk, tiers, relation=None):
     if ref is None:
         return False, "tier %s gives no list: %s" % (tier, why)
     if not same_list(r.get("active_mods"), ref):
-        return False, "a minimal-list test whose list is not tier %s's: %s" % (tier, _first_diff(
-            r.get("active_mods"), ref))
+        game, said = other_tier_match(tier, r.get("active_mods"), tiers)
+        if not game:
+            return False, "a minimal-list test whose list is not tier %s's: %s%s" % (tier, _first_diff(
+                r.get("active_mods"), ref), said)
+        ref, carried = r["active_mods"], "%s; the list as %s's install gives it" % (carried, game)
     return True, "game build and tier %s's list (%d mods)%s%s" % (
         tier, len(ref), "" if spec.get("tier") else "; tier named by the row, the test table names none", carried)
 
