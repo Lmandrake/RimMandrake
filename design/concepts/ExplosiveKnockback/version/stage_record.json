@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.1.0",
-  "stage": "blind_challenge",
-  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-16T22:21:38-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-23T06:21:40-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -233,6 +233,26 @@
         "version",
         "hold",
         "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-23T06:21:40-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward advance: blind cycle 6 exit met at 6586e989e2 (the judge was killed; the steward completed its record from its own reruns at e0e997836e; the one fresh reader read the mod fix fa2de6ee4b sound); certificate --to in_game rc 0",
+      "unit": "rm-detached-bench-rimmandrake-route-explosiveknockback-cyc-1795442063",
+      "confirmed": {
+        "steward_confirms": "run-1795441975 read cycle_6 SUMMARY, faults, fixes, tests_edited (M04 narrowed: stronger; restore BASELINE: check repair shown red on a planted EK leak), planted results (12 not caught, all in the two open findings' classes), and read fa2de6ee4b once: sound. Polish confirmed for lane-1 rows L1_FIRE_SWITCH_ON_UNPATCHED_FIRE_TYPE and L1_GAS_SHOVE_PAWN_ON_INTACT_COVER (no failure, no concrete case in normal play; test 1 fails). Verdict: exit met."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
         "judge_certificate"
       ]
     }

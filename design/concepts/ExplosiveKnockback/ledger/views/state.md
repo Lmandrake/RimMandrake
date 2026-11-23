@@ -1,16 +1,16 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":22162,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2181,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=2ca53dd194260553028319e3ee8a7b60549b78ee17b8883903fa02cb58fedf73 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":22513,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=c2077b74a2b7fbc099cfc320c8c94e3cf360d969299b577c7c1535f251f0aef0 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage blind_challenge · 577 events in 12 shards · reducer 1
-holder lease run-1795441975, token 15, last active 2026-11-23T14:20:36Z
+version 0.1.0 · stage in_game · 579 events in 12 shards · reducer 1
+holder lease run-1795441975, token 15, last active 2026-11-23T14:21:47Z
 holder session cd35d81a-f17f-4ab1-8903-7d8930199e43, context 116582 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795435910, 2026-11-23T12:27:41Z)
-- done: red runs recorded for T_FUZZ, T_KERNEL, T_HEAVY_KNOCK_RULE, T_PROOFGATE, T_SETTINGS_SCREEN, T_SETTINGS_SWEEP_OFFLINE (00b1840eed); certificate to blind_challenge OK
-- next: Fix the two road-back items, then run blind cycle 6 on the changed files
-- ruled out: none of the six deciders stayed green under its planted fault
+## Last checkpoint (HOLDER.run-1795441975, 2026-11-23T14:21:47Z)
+- done: cycle 6 record completed by measurement (decider reruns at e0e997836e, L1_SHIELD settled by planted T_GAS_CLUMP_ORDER run, fresh reader of fa2de6ee4b: sound); reader fix 4b7d56b65c; advanced to in_game
+- next: Run Stage 6 in-game acceptance on the build with fa2de6ee4b (tumbled goods) and the 8 caller faults no offline test caught
+- ruled out: the red offline bars in the Exit block: a killed judge wrote them before its fixes; all five deciders rc 0 at HEAD
 
 ## Open findings (44)
-(claimed fixes, awaiting a judge, on one line each with the oldest 39 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
+(claimed fixes, awaiting a judge, on one line each with the oldest 40 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
 - RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL [open, polish · bars closed_container_holds]: RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter lightMassLimit) is called by no game code; ThrowContainer thr…
 - RIMMANDRAKE_STAGE_KERNEL_SELFTEST_COPY_INSIDE_LOCK [open, polish · bars inv_kernel]: selftest_explosiveknockback_kernel.py copies RM_KnockbackMath.cs into the machine-wide ExplosiveKnockbackSelfTest build…
 - RIMMANDRAKE_ASK_GOODS_WILD_FACTOR_BECOME_A_SLIDER [open, polish · bars settings_scale_and_switch, goods_arc_spin_rebound]: The goods wild factor ships as a constant 1.6 because adding a saved setting (goodsThrowWild) turns T_STAGE3_SCENES red…
@@ -52,9 +52,7 @@ holder session cd35d81a-f17f-4ab1-8903-7d8930199e43, context 116582 of ceiling 4
 - RIMMANDRAKE_NOTE_KNOCKBACK_CALLER_MUTANTS_OWED_TO_STAGE_SIX [open, polish · bars the_spared]: 10 planted faults in game-side Verse callers (MC grid/sleeper/pawn mass, TF rebound/heavy knock/landing cover, PF redir…
 - RIMMANDRAKE_PROVE_SCENE_RUNNER_LIVE_SAME_ROWS_FEWER_CALLS [open, problem]: The shared scene runner's first slice (fd8e514b76) is proven offline only; it is unproven live that scene_runner.py giv…
 - RIMMANDRAKE_REPOINT_EK_JOURNAL_JOLT_CHECKS_AFTER_PLAN_MOVE [open, problem]: selftest_explosiveknockback_journal_jolt.py greps RM_MapComponent_Knockback.cs for throw rules that ffc3937ee7 moved in…
-- finding:RIMMANDRAKE_RESCUE_KNOCKBACK_PAST_CEILING_CYCLE_SIX [open, problem] by BACKFILL, 2026-11-19T23:32:59Z: Explosive Knockback 0.1.0 was stuck at Stages 4+5 with blind cycle 6 unrun and paused at its stage spend ceiling. Live checks flipped, and each blind cycle found the next miss in Verse callers (Execute, grid, landings) that no offline test reads.
-  proposed fix: Lift the whole throw decision into a Verse-free plan (Source/RM_KnockbackPlan.cs) that the SelfTest compiles, add an enumerating map instrument reading the bars as properties, and fix what it finds.
-  accept: Report names each open 0.1.0 ticket taken and what closed it; every touched bar holds over a written range; blind cycle 6 ready for the pipeline with no hand act to restart the Dispatch tick.
+- RIMMANDRAKE_RESCUE_KNOCKBACK_PAST_CEILING_CYCLE_SIX [open, problem]: Explosive Knockback 0.1.0 was stuck at Stages 4+5 with blind cycle 6 unrun and paused at its stage spend ceiling. Live…
 - finding:RIMMANDRAKE_FIX_KNOCKBACK_RAID_NULL_PAWN_STORM_780_TICKS [open, problem] by BACKFILL, 2026-11-19T23:33:01Z: The raid walk logs 780x 'Exception ticking Levin' (vanilla Pawn.Tick+0x60 at (246,0,36)) and 447x root Update NRE in PawnTweener.TweenedPosRoot via Pawn_DrawTracker.DrawPos; both read as a pawn left with a null map/position by a knockback.
   proposed fix: Fix the knockback so no pawn is left with a null map/position (see midair saves EK_WALK_RAID_MIDAIR_*), and cut the walk's reloads (57 reloads in 2 h, heap 2.9 to 11.4 GB).
   accept: none, live-only: a rerun of the raid walk logs 0 'Exception ticking' and 0 'TweenedPosRoot' lines.
@@ -238,7 +236,7 @@ spend recorded: USD 178.61, 171672717 tokens
 - closed findings: 51, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - tests: 100, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 2 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 39 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 577 events (views/history.md; never read whole)
+- open findings in brief: the oldest 40 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
+- the full history: 579 events (views/history.md; never read whole)
 
-cursor: t=2026-11-23T14:20:36Z.1795443636610147405 (modledger.py since --mod ExplosiveKnockback t=2026-11-23T14:20:36Z.1795443636610147405 prints what changed after this packet)
+cursor: t=2026-11-23T14:21:47Z.1795443707989314974 (modledger.py since --mod ExplosiveKnockback t=2026-11-23T14:21:47Z.1795443707989314974 prints what changed after this packet)

@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "0f7ff130fd278df2d675d7dc9631680c2340b5c302237f09e3981bda8e1664a1",
+  "body_sha256": "ca4feecbe1f1f2ab90d928cdf0cc53a5df610339b20430ac7e5fed41acd2a013",
   "reducer": 1,
   "shards": {
    "BACKFILL": 344431,
-   "DISPATCH": 22162,
+   "DISPATCH": 22513,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
    "HOLDER.run-1794830532": 2304,
@@ -12,7 +12,7 @@
    "HOLDER.run-1794865314": 728,
    "HOLDER.run-1794895533": 1780,
    "HOLDER.run-1795435910": 630,
-   "HOLDER.run-1795441975": 2181,
+   "HOLDER.run-1795441975": 2951,
    "JUDGE.judge-1794890427": 18837,
    "OWNER": 1207
   }
@@ -681,11 +681,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795435910",
-   "done": "red runs recorded for T_FUZZ, T_KERNEL, T_HEAVY_KNOCK_RULE, T_PROOFGATE, T_SETTINGS_SCREEN, T_SETTINGS_SWEEP_OFFLINE (00b1840eed); certificate to blind_challenge OK",
-   "next": "Fix the two road-back items, then run blind cycle 6 on the changed files",
-   "ruled_out": "none of the six deciders stayed green under its planted fault",
-   "ts": "2026-11-23T12:27:41Z"
+   "by": "HOLDER.run-1795441975",
+   "done": "cycle 6 record completed by measurement (decider reruns at e0e997836e, L1_SHIELD settled by planted T_GAS_CLUMP_ORDER run, fresh reader of fa2de6ee4b: sound); reader fix 4b7d56b65c; advanced to in_game",
+   "next": "Run Stage 6 in-game acceptance on the build with fa2de6ee4b (tumbled goods) and the 8 caller faults no offline test caught",
+   "ruled_out": "the red offline bars in the Exit block: a killed judge wrote them before its fixes; all five deciders rc 0 at HEAD",
+   "ts": "2026-11-23T14:21:47Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -881,7 +881,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 577,
+  "events": 579,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2469,7 +2469,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-23T14:20:36Z",
+   "last": "2026-11-23T14:21:47Z",
    "lease": "run-1795441975",
    "released": false,
    "token": 15
@@ -2511,7 +2511,7 @@
   ],
   "spend_tokens": 171672717,
   "spend_usd": 178.6086,
-  "stage": "blind_challenge",
+  "stage": "in_game",
   "superseded": [],
   "tests": [
    {
