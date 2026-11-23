@@ -1,0 +1,4 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\design\concepts\FlowWorks\version\in_game\visit_8\evidence\sc_hose_look_20261123T024944.json 
+[bridge split] 116.0 s wall: load 0.4 / ticks 27.3 / reads 2.5 / other 18.0 / outside calls 67.8 s
+[bridge split] WARN 336 calls of jawa/mod_settings_fields (14.4 s): batch them
+[bridge split] WARN 159 calls of jawa/safe_advance (27.3 s): batch them

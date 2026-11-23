@@ -17,6 +17,10 @@ paid by `wrapup.py restore` (wrapup.restore), and SettingsTransaction no longer 
   R8  probe(): the live proof's logic on a fake game -> 0 restored and paid; no such field -> 2 UNMEASURED
   R10 the CLI: `wrapup.py restore` prints its tally and exits 1 on a failed restore, 0 on a clean one, 2 with no bridge
   R11 restore's writes through the bridge door pay what they put back and never owe the reverse change
+  R12 a debt whose owner process is still running is in flight, never replayed (left, named); its owner restores it
+      at teardown. RIMMANDRAKE_HOLD_WRAPUP_RESTORE_OFF_A_LIVE_OWNERS_DEBT: on 2026-11-23 a `wrapup.py restore` replayed
+      sc_garden's converterRateMultiplier 4.1 -> 1 mid-window on ArchBig and its filter row read half rate (14 batches
+      of 32). The real World reads the owner's pid: this process is alive, a pid that never ran is not.
 """
 import glob
 import io
@@ -64,6 +68,9 @@ class World(wrapup.World):
 
     def game_relaunched(self):
         return self.relaunched
+
+    def owner_alive(self, debt):
+        return debt.get("owner") in getattr(self, "live", ())
 
 
 class Game(object):
@@ -281,6 +288,31 @@ def main():
     out = wrapup.restore(g.call, World(relaunched=time.time() + 3 * 3600))
     check(out["void"] == 1 and not out["restored"] and not [c for c in g.calls if c[1].get("action") == "set"],
           "R7 a debt owed to an exited game is never replayed: %r" % (out,))
+
+    # R12 a live owner's debt is in flight: restore leaves it, names it, writes nothing; a dead owner's is replayed
+    reset()
+    g = Game()
+    g.dbg["enableStoryteller"] = False
+    live = wrapup.owe("setting", "debug_settings:enableStoryteller=False (was True)", "x", owner="pid:4242",
+                      extra={"key": "debug_settings:enableStoryteller", "orig": True})
+    w = World()
+    w.live = ("pid:4242",)
+    out = wrapup.restore(g.call, w)
+    left = dict(out["left"])
+    check(not out["restored"] and live in left and "in flight" in left[live] and owed() == [live]
+          and not [c for c in g.calls if c[1].get("action") == "set"] and g.dbg["enableStoryteller"] is False,
+          "R12 a debt whose owner still runs is never replayed, left in flight: %r" % (out,))
+    w.live = ()
+    out = wrapup.restore(g.call, w)
+    check(out["restored"] == [live] and g.dbg["enableStoryteller"] is True and owed() == [],
+          "R12 once its owner has ended the same debt is replayed and paid: %r" % (out,))
+    real = wrapup.World()
+    check(real.owner_alive({"owner": "pid:%d" % os.getpid(), "at": "2000-01-01T00:00:00Z"}) is False
+          and real.owner_alive({"owner": "pid:%d" % os.getpid(), "at": wrapup._iso(wrapup._now())}) is True,
+          "R12 the real World reads this live process as alive, and not as the owner of a debt older than it (pid reuse)")
+    check(real.owner_alive({"owner": "pid:999999999", "at": wrapup._iso(wrapup._now())}) is False
+          and real.owner_alive({"owner": "unit:rm-x", "at": wrapup._iso(wrapup._now())}) is None,
+          "R12 a pid that never ran is not alive; a unit owner is unread (None: replayed as before)")
 
     # R8 probe
     reset()

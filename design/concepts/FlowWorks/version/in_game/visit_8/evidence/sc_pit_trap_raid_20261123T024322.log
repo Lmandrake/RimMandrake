@@ -1,0 +1,5 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\design\concepts\FlowWorks\version\in_game\visit_8\evidence\sc_pit_trap_raid_20261123T024322.json 
+[bridge split] 123.0 s wall: load 0.4 / ticks 35.8 / reads 33.6 / other 22.9 / outside calls 30.2 s
+[bridge split] WARN 420 calls of jawa/list_things (20.6 s): batch them
+[bridge split] WARN 219 calls of jawa/list_pawns (10.8 s): batch them
+[bridge split] WARN 209 calls of jawa/safe_advance (35.8 s): batch them

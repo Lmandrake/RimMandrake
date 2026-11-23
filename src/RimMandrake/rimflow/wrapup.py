@@ -375,6 +375,27 @@ class World(object):
             return "live", "an open file description holds %s (the kernel reports no pid for it)" % lk
         return "live", "pid %d holds %s: its run, review or fleet is live" % (pid, lk)
 
+    def owner_alive(self, debt):
+        """RIMMANDRAKE_HOLD_WRAPUP_RESTORE_OFF_A_LIVE_OWNERS_DEBT: is the process that owes this debt still running?
+        Only a `pid:N` owner is read (a unit or session owner -> None, unread). True when that process runs and was
+        started before the debt was written; False when it does not run, or a later process took its pid. Read on the
+        OS that wrote the debt: python.exe owes with a Windows pid and replays under python.exe, WSL with a Linux one.
+        -> True | False | None"""
+        own = str(debt.get("owner") or "")
+        if not own.startswith("pid:"):
+            return None
+        try:
+            pid = int(own[4:])
+            at = _parse_iso(debt.get("at"))
+        except (TypeError, ValueError):
+            return None
+        started = _process_started(pid)
+        if started is None:
+            return None
+        if started is False:
+            return False
+        return bool(at is None or started <= at + 1.0)
+
     def game_relaunched(self):
         """-> epoch seconds the previous game process last wrote its log (every process older than the running one
         had ended by then), or None when unmeasured: a debt is never voided on ignorance. Env RM_WRAPUP_PREV_LOG
@@ -697,6 +718,53 @@ def _resolve(path, why):
 
 # ---------------------------------------------------------------- restore: replay what is owed, at a bridge hold
 
+def _parse_iso(t):
+    """ISO 'YYYY-MM-DDTHH:MM:SSZ' -> epoch seconds, or None."""
+    if not t:
+        return None
+    import calendar
+    return float(calendar.timegm(time.strptime(str(t)[:19], "%Y-%m-%dT%H:%M:%S")))
+
+
+def _process_started(pid):
+    """-> epoch seconds process `pid` started, False when no such process runs, None when unreadable."""
+    if pid <= 0:
+        return False
+    if os.name == "nt":
+        try:
+            import ctypes
+            from ctypes import wintypes
+            k = ctypes.WinDLL("kernel32", use_last_error=True)
+            h = k.OpenProcess(0x1000, False, pid)            # PROCESS_QUERY_LIMITED_INFORMATION
+            if not h:
+                return False if ctypes.get_last_error() == 87 else None   # 87: no such process
+            try:
+                code = wintypes.DWORD()
+                if not k.GetExitCodeProcess(h, ctypes.byref(code)):
+                    return None
+                if code.value != 259:                        # STILL_ACTIVE
+                    return False
+                c, e, kk, u = (wintypes.FILETIME() for _ in range(4))
+                if not k.GetProcessTimes(h, ctypes.byref(c), ctypes.byref(e), ctypes.byref(kk), ctypes.byref(u)):
+                    return None
+                ft = (c.dwHighDateTime << 32) | c.dwLowDateTime
+                return ft / 1e7 - 11644473600.0
+            finally:
+                k.CloseHandle(h)
+        except Exception:  # noqa: BLE001
+            return None
+    try:
+        with open("/proc/%d/stat" % pid) as f:
+            ticks = int(f.read().rsplit(")", 1)[1].split()[19])
+        with open("/proc/stat") as f:
+            btime = next(int(x.split()[1]) for x in f if x.startswith("btime"))
+        return btime + ticks / float(os.sysconf("SC_CLK_TCK"))
+    except FileNotFoundError:
+        return False
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def _door():
     sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
     import wrapup_debt
@@ -730,6 +798,15 @@ def restore(call, world=None):
         for d in debts:
             if void_debt(world, d.get("at")):
                 out["void"] += 1
+                continue
+            try:
+                alive = world.owner_alive(d)
+            except Exception:  # noqa: BLE001  unread: replayed as before
+                alive = None
+            if alive:
+                # its owner is still running and restores it at its own teardown: a replay now forces the game back
+                # under a live run (sc_garden 2026-11-23: converterRateMultiplier 4.1 -> 1 mid-window)
+                out["left"].append((d["token"], "in flight: its owner %s is still running" % d.get("owner")))
                 continue
             plan = D.plan_of(d)
             if not plan:
