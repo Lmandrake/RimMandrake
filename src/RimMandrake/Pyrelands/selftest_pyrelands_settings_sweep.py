@@ -33,6 +33,9 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
                    both wind patches call Governs (blind cycle 4: Governs without WindCarries carried fire with every switch off)
   own_switch_stops a mechanic stopped by its own switch only (not by "Mod enabled") opens its tick with `if (!switch ...) return;`
                    (blind cycle 6: a sprayer carrier that foamed with its switch off stayed green, the probe's read counted as `read`)
+  wind_tooltip     "The wind carries the fire" does not promise one cell a fire, no sideways step or a line no wider than it was lit:
+                   the kernel's CarryPlan heals a cell aside and its FlankPlan opens and closes the flanks
+  master_tooltip   the "Mod enabled" tooltip names every switch that ships on and is not declared under it
 Every planted fault must go red and the clean copy stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = FAIL
 """
@@ -87,6 +90,9 @@ ENTRY_POINTS = [("PyrelandsAshField.cs", "PyrelandsAshFieldPatches", "FertilityP
 ENTRY_PROPERTIES = [("MapComponent_BurnLine.cs", "WindCarries", "windCarriesFireEnabled")]
 # (file, class, method, switch): the entry point of a mechanic only its own switch stops; its first statement returns on that switch.
 SWITCH_GUARDS = [("PyrelandsFoamPath.cs", "MapComponent_RM_FoamPath", "MapComponentTick", "sprayerFoamsPathEnabled")]
+# A switch "Mod enabled" does not stop, and the words its tooltip names it by.
+MASTER_LEAVES = {"sandShovelEnabled": "sand shovelling", "furnaceBeastGiant": "giant furnace-beast", "ullaiEnabled": "ullai spawning",
+                 "sprayerFoamsPathEnabled": "firefoam sprayer"}
 SHELL_ON_EXPR = r"\bShellOn\s*=>\s*shellEnabled\s*==\s*null\s*\|\|\s*shellEnabled\(RosterKey\)\s*;"
 
 
@@ -197,6 +203,24 @@ def facts(mod):
     fact("clock_label", ["no fire-clock checkbox"] if not clock else
          ["the fire-clock %s does not name the biome's fire fronts it stops" % w for w, x in
           (("label", clock[0][0]), ("tooltip", clock[0][1])) if not re.search(r"fire fronts?", x, re.I)])
+    def tip(name):
+        m = re.search(r"CheckboxLabeled\([^;]*?,\s*ref %s\s*,([^;]*)\);" % name, ms)
+        return "".join(re.findall(r'"([^"]*)"', m.group(1))) if m else ""
+
+    wind = tip("windCarriesFireEnabled")
+    fact("wind_tooltip", ["no wind tooltip"] if not re.search(r"downwind", wind, re.I) else
+         ["the wind tooltip says %r" % m.group(0) for m in
+          re.finditer(r"never spreads? back or sideways|never sideways|as wide as what was lit|lights one cell", wind, re.I)])
+    under = {m.group(1): set(re.findall(r'"(\w+)"', m.group(2))) for m in re.finditer(r'\.Declare\("(\w+)",([^)]*)\)', ms)}
+    stopped, todo = set(), ["pyrelandsEnabled"]
+    while todo:
+        new = under.get(todo.pop(), set()) - stopped
+        stopped |= new
+        todo += new
+    left = [n for n, (t, v) in fields.items() if t == "bool" and v and n != "pyrelandsEnabled" and n not in stopped]
+    master = tip("pyrelandsEnabled").lower()
+    fact("master_tooltip", ["\"Mod enabled\" leaves %s on and its tooltip does not name it" % n for n in left
+                            if n not in MASTER_LEAVES or MASTER_LEAVES[n] not in master], "%d switches left on, each named" % len(left))
     refs = re.findall(r"CheckboxLabeled\([^;]*?,\s*ref (\w+)", ms)
     bools = [n for n, (t, v) in fields.items() if t == "bool"]
     fact("checkboxes", ["%s is the ref of %d checkboxes" % (n, refs.count(n)) for n in bools if refs.count(n) != 1]
@@ -366,6 +390,8 @@ MUTANTS = [
     ("dousing kernel ignores the gate", S + "Kernel/RM_FireEcoKernel.cs", "if (!gateOn || !enabled || !exposed", "if (!enabled || !exposed"),
     ("hawk letter kernel ignores the gate", S + "Kernel/RM_FireHawkRewardsKernel.cs", "|| !mechanicsOn ||", "||"),
     # blind challenge cycle 6 (each one stayed green before)
+    ("wind tooltip as wide as lit", S + SETTINGS, "as a front whose edges wander", "as a line as wide as what was lit"),
+    ("master tooltip drops the sprayer", S + SETTINGS, "the firefoam sprayer carrier's own foam, ", ""),
     ("sprayer carrier ignores its switch", S + "PyrelandsFoamPath.cs", "if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled || SprayerDef == null) return;", "if (SprayerDef == null) return;"),
     ("sprayer carrier needs both", S + "PyrelandsFoamPath.cs", "if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled || SprayerDef == null) return;", "if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled && SprayerDef == null) return;"),
 ]

@@ -345,7 +345,7 @@ namespace RimMandrake.Pyrelands
     list.CheckboxLabeled("Mod enabled", ref pyrelandsEnabled,
                     "Off: RM_Pyrelands still loads and can still be assigned to a tile, but every "
                   + "mechanic below stops mattering (their own toggles still apply if this is back "
-                  + "on). Not gated by it, only by their own switches: sand shovelling, and the restart-time switches (giant furnace-beast, ullai spawning and herd size). Biome tile placement has its own separate switch, further down. "
+                  + "on). Not gated by it, only by their own switches: sand shovelling, the firefoam sprayer carrier's own foam, and the restart-time switches (giant furnace-beast, ullai spawning and herd size). Biome tile placement has its own separate switch, further down. "
                   + "When Pyrelands is part of RimMandrake: Baroque Biomes, that mod's Pyrelands toggle switches these mechanics off too.");
                 list.GapLine();
             }
@@ -524,8 +524,9 @@ namespace RimMandrake.Pyrelands
                 using (Dependent(list, "windCarriesFireEnabled"))
                 {
                     list.CheckboxLabeled("The wind carries the fire", ref windCarriesFireEnabled,
-                        "On Pyrelands ground each fire lights one cell downwind and never spreads back or sideways, so a burn stays a line "
-                      + "as wide as what was lit, walking one way with the map's prevailing wind. Putting out the head of a line stops it. "
+                        "On Pyrelands ground a fire is carried downwind once and never spreads back, so a burn walks one way with the map's "
+                      + "prevailing wind, as a front whose edges wander: a lone fire fans out, and gaps in a line close. Putting out the whole "
+                      + "head of a front stops it. "
                       + "Off: vanilla's even spread, under which a grass fire grows as a ring and takes the whole map.");
                 }
                 list.CheckboxLabeled("Fire-hawk ember carrying", ref fireHawkSpreadEnabled,

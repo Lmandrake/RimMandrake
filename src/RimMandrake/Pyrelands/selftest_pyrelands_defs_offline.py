@@ -308,6 +308,15 @@ def facts(root, dump_rain):
             if not (p in VANILLA_TEX or os.path.exists(base + ".png") or glob.glob(base + "_*.png") or glob.glob(base + "/*.png")):
                 lost.append(p)
     fact("pictures_shipped", seen >= 40 and not lost, "%d texture paths; not shipped: %s" % (seen, sorted(set(lost)) or "none"))
+    # the fire's own text tells the truth (bar inv_art_and_text; blind cycle 6: after the wind carry's gap heal and flanks the
+    # fire-front letter still said a line never spreads sideways and is as wide as it was lit). Language and About text.
+    false_fire, seen = [], 0
+    for f in sorted(glob.glob(os.path.join(root, MOD, "Languages", "**", "*.xml"), recursive=True)) + [about_p]:
+        r = _parse(f)
+        seen += r is not None
+        false_fire += ["%s: %r" % (e.tag, m.group(0)) for e in (r.iter() if r is not None else [])
+                       for m in re.finditer(r"(?:never|not)\b[^.;:]*\bspreads? sideways|as wide as (?:it|what) was lit", e.text or "", re.I)]
+    fact("fire_text_true", seen >= 2 and not false_fire, "%d text files; false of the wind-carried fire: %s" % (seen, false_fire or "none"))
     return out
 
 
@@ -359,15 +368,17 @@ MUTANTS = [
      "flames to bank that heat, and carries it long after. A kept furnace-beast can heat a barn for weeks, but may also set the floor "
      "alight.</description>", ""),
     ("ullai picture not shipped", D + "ThingDefs_Races/RM_Ullai.xml", "Pyrelands/Ullai/Ullai</texPath>", "Pyrelands/Ullai/UllaiGone</texPath>"),
+    ("letter says never sideways", MOD + "/Languages/English/Keyed/Pyrelands.xml", "it will not turn back,",
+     "it will not turn back or spread sideways,"),
     ("shovel off the Orders tab", MOD + "/Patches/RM_ShovelSand_Orders.xml", "<li>RimMandrake.Pyrelands.Designator_RM_ShovelTerrain</li>",
      "<li>RimMandrake.Pyrelands.Designator_RM_NoSuchDesignator</li>"),
 ]
 
 
 def _copy(dst):
-    """Copy only what facts() reads: every src/Rim*/**/Defs, Patches and the mod's Source."""
+    """Copy only what facts() reads: every src/Rim*/**/Defs, Patches and the mod's Source, Languages and About."""
     for f in (_xml_files(REPO, "Defs") + _xml_files(REPO, "Patches") + glob.glob(os.path.join(REPO, MOD, "Source", "*.cs"))
-              + [os.path.join(REPO, MOD, "About", "About.xml")]):
+              + glob.glob(os.path.join(REPO, MOD, "Languages", "**", "*.xml"), recursive=True) + [os.path.join(REPO, MOD, "About", "About.xml")]):
         rel = os.path.relpath(f, REPO)
         os.makedirs(os.path.dirname(os.path.join(dst, rel)), exist_ok=True)
         shutil.copy2(f, os.path.join(dst, rel))
