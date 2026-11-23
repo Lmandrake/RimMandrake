@@ -17,10 +17,13 @@ hose texture in a texture field the old tag list did not name, topTexPath; a ree
 under an innocent defName, named only by its element tag; an RM_HoseReel defName literal in C#, no "/" in it; a patch whose xpath
 reaches into a hose reel's drawing) must each go red BY NAME; and five blind cycle 5 saw pass (a hose def under 1.6/Defs and a
 hose texture under Common/, folders the game loads beside the root; a leftover assembly in Assemblies/ holding hose types; a
-hose texture path joined from slash-free pieces; Mod Settings text saying the mod draws hoses). The clean copy, a hose
+hose texture path joined from slash-free pieces; Mod Settings text saying the mod draws Mod Settings text saying the mod draws hoses); and two the 0.2.0 blind
+cycle 1 saw pass (a FlowWorks hose picture copied in under an innocent name, read by its bytes; a def description promising a
+hose, player text like the settings header that shipped one). The clean copy, a hose
 COMMENT and the slide-under setting's "pipe or hose port" text must stay green.
 Exit 0 green, 1 red, 2 instrument broke (a mutant that never applied, or the clean copy read red).
 """
+import hashlib
 import re
 import shutil
 import sys
@@ -66,6 +69,21 @@ def content_roots(mod):
 PROSE = {"description", "jobString", "reportString", "letterText", "letterLabel", "tooltip", "text"}
 
 
+FLOWWORKS_TEXTURES = HERE.parent / "FlowWorks" / "Textures"
+_hose_pictures = {}
+
+
+def hose_pictures():
+    """sha256 -> path of every FlowWorks picture whose path names a hose, reel or pipe (0.2.0 blind cycle 1: a hose picture
+    copied here under an innocent name passed every name scan). Empty = could not look; main() stops on it."""
+    if not _hose_pictures and FLOWWORKS_TEXTURES.is_dir():
+        for f in FLOWWORKS_TEXTURES.rglob("*.png"):
+            rel = str(f.relative_to(FLOWWORKS_TEXTURES))
+            if WORD.search(rel):
+                _hose_pictures[hashlib.sha256(f.read_bytes()).hexdigest()] = rel
+    return _hose_pictures
+
+
 def scan(mod):
     """Every hose/reel/pipe thing the mod ships, as 'kind: name (file)' strings (FlowWorks' pipe-pole spans are drawn with
     FlowWorks' own art and defs, so GSS ships no pipe of its own)."""
@@ -89,6 +107,9 @@ def scan(mod):
                 # texture field (topTexPath, texturePath, spanTexPath ...), and a patch's xpath into a hose def (blind cycle 4)
                 if el.tag not in PROSE and el.text and el.text.strip() and WORD.search(el.text):
                     hits.append("%s: %s (%s)" % (el.tag, el.text.strip()[:120], f.relative_to(mod)))
+                # prose is player text: it may not promise a hose, a reel or a flexible pipe (0.2.0 blind cycle 1)
+                elif el.tag in PROSE and el.text and CLAIM.search(el.text) and not re.search(r"(?i)\bports?\b|FlowWorks", el.text):
+                    hits.append("prose: %s (%s)" % (el.text.strip()[:120], f.relative_to(mod)))
                 # a comp, worker or graphic named by its Class attribute (<li Class="CompProperties_HoseReel" />) is a class too
                 cls = el.get("Class")
                 if cls and WORD.search(cls):
@@ -98,6 +119,10 @@ def scan(mod):
             # the whole path under Textures/, so a hose texture inside a Hose/ folder is seen (the bar's false pass: "missing a texture folder")
             if f.is_file() and WORD.search(str(f.relative_to(tex))):
                 hits.append("texture: %s" % f.relative_to(mod))
+            elif f.is_file() and f.suffix.lower() == ".png":
+                copied = hose_pictures().get(hashlib.sha256(f.read_bytes()).hexdigest())
+                if copied:
+                    hits.append("picture: %s is FlowWorks' %s" % (f.relative_to(mod), copied))
     # what ships as code: every assembly the game loads, read for hose and reel type and member names (blind cycle 5: a
     # leftover hose DLL in Assemblies/ ships its classes whatever Source/ holds)
     for asm in [r / "Assemblies" for r in roots]:
@@ -279,6 +304,21 @@ def _plant_settings_text(m):
     return "text: Drawn flexible hoses"
 
 
+def _plant_copied_picture(m):
+    src = min(hose_pictures().values())
+    d = m / "Textures" / "Things"
+    d.mkdir(parents=True, exist_ok=True)
+    shutil.copy(FLOWWORKS_TEXTURES / src, d / "CoilEnd.png")
+    return "picture: Textures/Things/CoilEnd.png is FlowWorks'"
+
+
+def _plant_description(m):
+    p = m / "Defs" / "RM_PlantedProse.xml"
+    p.write_text('<?xml version="1.0" encoding="utf-8"?>\n<Defs><ThingDef><defName>RM_PlantedCoil</defName>'
+                 '<description>A wheeled fire hose on a stand.</description></ThingDef></Defs>\n', encoding="utf-8")
+    return "prose: A wheeled fire hose"
+
+
 def _green_port_text(m):
     (m / "Source" / "PlantedPort.cs").write_text('namespace X { static class D { const string L = "Cords slide under buildings at a '
                                                  'diagonal (never onto a pipe or hose port)"; } }\n', encoding="utf-8")
@@ -301,6 +341,8 @@ def _green_comment(m):
 def main():
     if not (HERE / "Defs").is_dir():
         print("UNMEASURED: no Defs folder beside the selftest"); return 2
+    if not hose_pictures():
+        print("UNMEASURED: no hose, reel or pipe picture under %s, so a copied one could not be seen" % FLOWWORKS_TEXTURES); return 2
     real = scan(HERE)
     ok = True
     print("%s  T1_tree_ships_no_hose  %s" % ("PASS" if not real else "FAIL", real or "0 hose/reel/pipe defs, textures or types"))
@@ -315,7 +357,8 @@ def main():
                         ("M15_planted_patch_xpath", _plant_patch_xpath),
                         ("M16_planted_version_folder_def", _plant_version_folder_def), ("M17_planted_common_texture", _plant_common_texture),
                         ("M18_planted_assembly_hose_types", _plant_assembly), ("M19_planted_joined_path_pieces", _plant_joined_path),
-                        ("M20_planted_settings_text_hoses", _plant_settings_text), ("G3_port_text_stays_green", _green_port_text),
+                        ("M20_planted_settings_text_hoses", _plant_settings_text), ("M21_planted_hose_picture_copied", _plant_copied_picture),
+                        ("M22_planted_description_hose", _plant_description), ("G3_port_text_stays_green", _green_port_text),
                         ("G2_selftest_literal_stays_green", _green_selftest_literal),
                         ("G1_hose_comment_stays_green", _green_comment), ("G0_clean_copy", None)):
         with tempfile.TemporaryDirectory(prefix="gss_nohose_") as tmp:
