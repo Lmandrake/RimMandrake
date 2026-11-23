@@ -136,6 +136,10 @@ helper by `conductor_acts.check`. So the ledger notes of this item carry the Con
 | "run `git add` first" / `./publish` adds | `./publish` adds it; `land.sh` needs it | 1: `publish.py` line 222 | the commit of this file |
 | `references/traps.md` quotes old refusal texts | today's texts | 1: `seat_sync.py`, `publish.py` | the commit of this file |
 
+## The skill `rimbridge`
+
+The 17 rows are in `results/RIMMANDRAKE_REWRITE_SKILL_RIMBRIDGE.md` §Conflicts and stale lines: settled. None goes to the owner.
+
 ## For the owner (rule 5)
 
 None. No listed conflict was left open by rules 1 to 4 and turned on two of his rulings with no later one.

@@ -15,22 +15,16 @@ python3 src/RimMandrake/rimflow/cli.py bridge take
 python3 src/RimMandrake/rimflow/cli.py bridge release
 ```
 
-Release it the moment you stop — a borrower who goes quiet has taken the
-bridge indefinitely and blocks whoever needs it next, same hazard as before,
-just enforced by `rimflow` state rather than a chat handshake. If `bridge
-take` refuses because someone else holds it, that is your answer: wait for
-their release, or check with the owner if it looks abandoned. `rimflow`'s own
-take/release state is the handshake.
+Release it the moment you stop: a live process that keeps the lock blocks whoever needs that game next. If `bridge
+take` refuses because someone else holds it, that is your answer: take another free game (`game_lock.py query all`), or
+wait for the release when only that game can take the work.
 
-🔴 **`rimflow bridge`'s 45-minute staleness rule measures EVENT SILENCE, not game
-activity.** Driving the bridge does not by itself refresh the lock — only a `rimflow`
-ledger event does — so a seat that drives for 1.5h emitting no events reads as stale to
-anyone checking, even though the game is genuinely live. Emit a periodic note while
-driving a long session. Before restarting or swapping the mod list on a "stale" hold,
-cross-check `rimworld/get_game_info` and `Player.log`'s own mtime against wall-clock —
-a session can be genuinely live despite a long-idle ledger (2026-09-08).
+🔴 **A holder is a process** (`src/RimMandrake/rimflow/game_lock.py`). A live holder holds the game, with or without ledger
+events, and the game is free the moment that process ends. The 45-minute rule covers only the owner's OWNER hold. Before
+you restart or swap the mod list on a hold that looks stale, cross-check `rimworld/get_game_info` and `Player.log`'s own
+mtime against wall-clock: a session can be live behind an idle ledger (2026-09-08).
 
-⚠️ **And the reverse check matters too: `Player.log`'s mtime can read HOURS stale
+⚠️ **`Player.log`'s mtime can read HOURS stale
 relative to a just-recorded `bridge take` event**, if a restart hasn't produced a load
 yet or crashed before Unity opened the file. Always `stat` the log's mtime and check
 `tasklist.exe` before trusting log content as "this session" — a fresh `bridge take`

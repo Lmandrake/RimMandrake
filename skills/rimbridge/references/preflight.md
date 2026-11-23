@@ -1,7 +1,6 @@
 # Pre-flight: before a cold load, and in its first five minutes
 
-*Fold-in owed: this is the full text; `SKILL.md` carries one pointer row. Skills are curated in
-fresh-context passes, so this file waits for one.* Source: `src/RimMandrake/Utils/preflight_bridge.py`
+This is the full text; `SKILL.md` §0 carries one pointer row. Source: `src/RimMandrake/Utils/preflight_bridge.py`
 (`PREFLIGHT_BUILD_85_ROWS_OF_HINDSIGHT`). Design: a GPT review (expired) and
 `design/RimMandrake/bridge_debugging_system.md` §5.3.
 
