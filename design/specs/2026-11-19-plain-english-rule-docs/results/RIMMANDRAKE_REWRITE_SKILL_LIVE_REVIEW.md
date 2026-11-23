@@ -15,7 +15,7 @@ Also: skills/rimworld-live-review/references/history.md
 | STE violations per 100 words | 4.23 | 1.57 |
 | sentences over 20 words | 77 | 28 |
 | flagged lines (mechanical) | 25 | 23 |
-| lines that a cold reader cannot act on (hand count, by the writer) | 9 | 0 that this run could resolve; 4 listed under "Could not determine" |
+| lines that a cold reader cannot act on (hand count, by the writer) | 9 | 0 that this run could resolve; 5 listed under "Could not determine" |
 
 The long sentences that stay, by kind. Owner quotes: the walkthrough rule and §8d items 1 to 5. Sentences that hold a
 command or a code name: the `settlement_attack`, `refresh_rect` and `clear_log` lines. The others are two short sentences
@@ -75,7 +75,12 @@ trivial items. The reader wrote that the quotes of the walkthrough rule and §8d
 The same reader then read each repair. One repair had added a false statement: `pyre_clear.png` "(clear)". `--two-pass`
 sets no weather before its first shot. The comment now says "the running weather", and §5 says to add `--weather Clear`.
 
-No reader read the last four edits: that comment, the `--weather Clear` sentence of §5, and two reasons in the history file. Not
+After the first landing (009f93194b), the prose check of `./publish` named 5 lines. The writer repaired 3 ("should", the dry
+plot, the 11-mod list). The other 2 are items: `RIMMANDRAKE_DEFINE_THE_COMBINED_IN_RIMWORLD_LIVE_NOT_FOUND` and
+`RIMMANDRAKE_DEFINE_THE_CLEAN_IN_RIMWORLD_LIVE_NOT_FOUND`. The gloss of the dry plot is from `debug_process.md`
+§ "Owner-look scenes come from the proof scripts" and `lightspeed-authoring.md` §4.
+
+No reader read those 3 repairs. No reader read four earlier edits: that comment, the `--weather Clear` sentence of §5, and two reasons in the history file. Not
 repaired (the reader called each one polish): "every step below" in the helper section (old wording), "on a pawn" in §5,
 the dropped "which is the whole reason it exists" of §8a, the place of one date in §3.
 
@@ -111,6 +116,7 @@ The three faults of `stage_review.py` are a ticket: `RIMMANDRAKE_FIX_STAGE_REVIE
 |---|---|---|
 | "MINIMAL + content mods + overrides" | which mods are the overrides | the author of the first art walk (2026-09-14) |
 | "The combined review list loads in ~80 s" | which list it is | the author of the 2026-09-17 campaign note |
+| "the clean base save" | a save made before the staging, or a named save | the item above |
 | rootSize 11 is "Closest"; `references/traps.md` says 8; the station capture asks ~6 | the number depends on the camera mod of the list (`CameraDriver.CurrentZoom` compares with `sizeRange.min`) | a live read of `get_camera_state` on each tier |
 | "caught all four" in §8a | whether a parameter guard can catch a tool name that does not exist | the session of 2026-09-20 |
 

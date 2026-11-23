@@ -45,7 +45,7 @@ what it is"*). At each station:
 2. Check what the mod draws:
    - Does each part render?
    - Does every connection meet (hose into reel, pipe into fitting)?
-   - Does anything run under a building, or draw over a thing that should cover it?
+   - Does anything run under a building, or draw over a thing that belongs on top of it?
    - Is each object recognisable as what it is?
 3. Fix or remove a broken station. Then tell him in one line what you caught.
 
@@ -89,8 +89,8 @@ Do not crank such work by hand. The signal is this: you are about to issue the s
 them behind a flag instead.
 
 **A scene for a mechanism mod comes from the mod's own proof script**, never staged by hand. Use the script's
-`prepare_site`, the dry plot and the controls. The reason: a hand-staged scene shows something that the proof never
-reproduces. Then the owner judges a scene that nobody can rebuild.
+`prepare_site`, its dry plot (a plot with no water source beside it) and its control cases. The reason: a hand-staged
+scene shows something that the proof never reproduces. Then the owner judges a scene that nobody can rebuild.
 
 - Validate the site in the script first (water/source margin:
   `skills/live-debugging-proof-harness/references/lightspeed-authoring.md` §4).
@@ -289,7 +289,7 @@ biome.
   `get_camera_state` back.
 - 🔴 **`frame_cell_rect` does not zoom IN past the current zoom.** On the owner's full list the root size 24 gives a
   ~149-cell-wide view. So a shot "framed on X, only X on screen" holds half the map. Call `set_camera_zoom` with the
-  `sizeRange.min` value first, then frame. The 11-mod tier hides this fault, because its camera mod starts zoomed in
+  `sizeRange.min` value first, then frame. An 11-mod test list hid this fault, because its camera mod starts zoomed in
   (2026-10-11).
 - **Don't over-zoom on a pawn.** `jump_camera_to_cell` + `rootSize: 11` (the "Closest" zoom) draws any
   forbidden-item icon at full-screen size. The icon and its red forbidden-X overlay fill the frame instead of the animal.
