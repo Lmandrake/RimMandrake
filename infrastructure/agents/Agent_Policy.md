@@ -1,8 +1,8 @@
 # Agent_Policy — which model does which work
 
 **Binds the Conductor and every helper it launches.** Read it with `CHARTER.md`. `Agent_Policy.md` is the ONLY file that says
-which model does what *for this repo's seats*. Every other doc in RimMandrake points here. The routing axis is measured,
-not argued.
+which model does what *for this repo's seats*. Every other doc in RimMandrake points here. The routing axis (the one
+question below: if this goes wrong, who catches it?) is measured, not argued.
 
 🔴 **FOR WHAT THE FLEET CAN ACTUALLY REACH, ASK `~/dev/Dispatch/bin/delegate`.**
 
@@ -82,7 +82,8 @@ The test is whether a test or output can say the work is right. The test is not 
   taxonomies; triage or verification judgment with nobody to catch it.
 - **Sonnet:** XML defs and patches that `validate_patch` checks; fixes that a selftest proves; deploys; quicktests;
   greps, censuses and searches.
-- **Unsure: Opus.** Put `model: opus` on the spawn. Escalate the model, never the ceremony: keep the same short leash.
+- **Unsure: Opus.** Put `model: opus` on the spawn. Escalate the model, never the ceremony: keep the
+  same short leash. That is, a hard problem gets a smarter model on the same short brief, not more spec sections.
 
 External free workers (nemotron) do candidate narrowing only. They never give conclusions and never write. See
 `research/FANOUT_WORKER_EVALUATION.md`.
@@ -146,10 +147,12 @@ here.
     bottom cast) still named 'lease practice' after "The Compact does NOT sell light... Remove." (owner).
   - Grep the item's design dir for an existing draft. Read the 'Ruled' headers of the later sibling passes first.
 - **Say what happened and how you know in the first clause of a status line.** 'No longer in the running list' reads
-  as lost or dropped to the owner. In that case, v3 had simply finished.
+  as lost or dropped to the owner. In that case, the trial run `v3` (one arm of a comparison of orchestrators) had
+  simply finished.
 - **More than ~10 concurrent helpers closes the fewest items per token.**
-  - Burn days with 10-22 helpers spent 99.5M cache-read tokens per closed item (30 closes).
-  - The framework-guided day at 4-7 concurrent spent 5.2M per closed item. ALMOST_OUT (the "nearly out, only vital
+  - Burn days (days of high spend) with 10-22 helpers spent 99.5M cache-read tokens per closed item (30 closes).
+  - The framework-guided day (the day after a weekly reset, run by the rules of
+    `design/RimMandrake/work_allocation_framework_2026-10-26.md`) at 4-7 concurrent spent 5.2M per closed item. ALMOST_OUT (the "nearly out, only vital
     work" operating mode, `design/RimMandrake/operating_modes_2026-10-26.md`) spent 11.2M per closed item.
   - Spend surplus tokens on durable no-review work (harnesses, instruments, wiring). Do not spend them on more
     parallel helpers or review waves.
@@ -157,7 +160,8 @@ here.
   - After `delegation_policy.md`, he still answered 207 card questions in 4.1 days (~50/day vs ~76/day before).
   - 144 of them were in classes already delegated (design 57, process 58, art picks 29).
   - In those classes, his agreement with the agent's Recommended option was only 50-61%. So most were real choices.
-  - Ordering/helper-count cards (81% agree) and twin-apply cards (86%) are pure leak.
+  - Ordering/helper-count cards (81% agree) and twin-apply cards (86%) are pure leak: cards that reach him although
+    the call is already delegated and he nearly always agrees with the recommendation.
   - On his own sheet marks, agents' 'wait/keep' recommendations matched him 39%. A 'newest mark wins, x acts now' rule
     predicts 83%.
 - **No subagent type can reach Artifact/ArtifactData.** rm-fixer lacks ToolSearch. rm-builder's ToolSearch finds

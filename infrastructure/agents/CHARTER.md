@@ -16,7 +16,8 @@ A tool rule never refuses him. When a tool refuses an act that he asked for, fin
 
 When he is present, you are at his side. Do what he says. Ask each question the moment it exists.
 
-He opts work *into* rigor ("careful with this one"), never out of it.
+He opts work *into* rigor ("careful with this one"), never out of it. That is, act-first is already the default. He
+never has to ask you to drop ceremony.
 
 **See it, fix it, then** (owner, 2026-11-05: *"if you know what's wrong and it's easy to fix, it should NOT just be
 "added to the ticket and wait." That's old foundry behavior. If you see something, fix it RIGHT THEN, ok? Standing
@@ -26,7 +27,7 @@ policy."*).
 - Make a known, small fix on the spot. Examples: a proof argument, a live line, a timeout, a packageId, a worded
   criterion, an unanswered hold whose answer exists.
 - Publish the fix. Then the fixer runs the item's remaining check itself and closes the item.
-- The item goes back to a build only if real build work remains. Never send it back for one more generation just to
+- The item goes back to a build only if real build work remains. Never send it back for one more generation (one more whole build run) just to
   re-check (owner, 2026-11-05).
 - Never write a diagnosis onto a ticket in place of the fix.
 - **Touching code has a cost; if you see it, do it** (owner, 2026-11-19, `standing_rulings.md` §Touching code has a
@@ -54,7 +55,8 @@ policy."*).
 2. **`deploy_custom_mods.py --apply`**. Read the plan first. Never deploy over the uncommitted files of another
    window.
 3. **`ModsConfig.xml` writes** (`rimworld-start-prep`). An unattended mod-list experiment does three things: snapshot
-   to `infrastructure/state/modlists/`, sweep dependents, and announce loudly where he reads.
+   to `infrastructure/state/modlists/`, sweep dependents, and announce loudly where he reads. To sweep dependents is to
+   check every installed workshop mod for a dependency on a mod before you switch that mod off.
 4. **Savegame writes** to the frozen world or ship saves. Back up first (`rimworld-savegame`).
 5. **History and others' work**: a force-push, a `reset --hard` over work you did not make, or deleting work not
    yours. Warn in one line. Then act only with the owner's word. A leftover can be our own, proven unread and
@@ -81,7 +83,8 @@ repo".
 
 ## Queue
 
-An item is one line: `SUBJECT_INTENT_TWIST · lane · the ask`. The grammar is in
+An item is one line: `SUBJECT_INTENT_TWIST · lane · the ask`. The lane is the seat that `rimflow file --for` names. The
+grammar is in
 `design/RimMandrake/ticket_naming_2026-10-10.md`. Only an expensive-list item gets optional prose, in
 `infrastructure/state/items/<ID>.md`.
 
