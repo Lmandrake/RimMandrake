@@ -98,7 +98,8 @@ SEATS = ("BENCH", "STEVE", "RUNNER")   # FOUNDRY retired (owner by card 2026-11-
 REAL_LOG = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
 ORIGIN_REF = "origin/main"
 # Linux refuses any one argument over 128 KB (MAX_ARG_STRLEN, E2BIG): Gimme Some Slack's in-game brief (94.5 KB) plus
-# its holder packet passed it and every launch failed (2026-11-16). A brief past this goes in by file on stdin.
+# its holder packet passed it and every launch failed (2026-11-16). Every brief now goes in by file on stdin (a short
+# one in argv was matched by the run's own `pgrep -f`, 2026-11-23); this stays the bound no launch argument may reach.
 ARG_BRIEF_MAX = 100_000
 DEAD_STATES = ("inactive", "failed", "not-found")   # a unit in one of these runs nothing; "unknown" is not proof of death
 KILL_STATUSES = ("HUP", "INT", "KILL", "TERM", "129", "130", "137", "143")   # systemd's EXIT_STATUS of a signal stop
@@ -1057,7 +1058,7 @@ def launch_argv(rec, msg, claude):
     wrapup = "-+" + shlex.join(stop_resolver(stop_candidates(rec, "wrapup.py"),
                                              ["unit", "--unit", unit, "--seat", seat, "--clone", clone]))
     back = "-" + shlex.join(return_argv(rec))
-    via_file = rec.get("brief_file")    # a long brief: claude -p reads it from stdin (StandardInput=file:)
+    via_file = rec.get("brief_file")    # the brief: claude -p reads it from stdin (StandardInput=file:), never argv
     cmd = [bounded, "-p"] + ([] if via_file else [msg]) + [
            "--model", _RL().launch_model(rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--output-format", "json", "--dangerously-skip-permissions",
@@ -1420,11 +1421,12 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     if runner is subprocess.run:        # its own TMPDIR, deleted by run_tmp.sweep when the unit is gone
         rec["tmp"] = run_tmp.prepare(unit)
         write_record(rec, root)
-    if len(msg.encode("utf-8")) > ARG_BRIEF_MAX:
-        rec["brief_file"] = os.path.join(runs_dir(root), unit + ".brief.md")
-        with open(rec["brief_file"], "w", encoding="utf-8") as fh:
-            fh.write(msg)
-        write_record(rec, root)
+    # every brief, of any length, goes in by file on stdin: a phrase of it in a wrapper's argv let the run's own
+    # `pgrep -f <phrase>` match spend_watchdog.py and kill it (RIMMANDRAKE_STOP_KILLING_WORKING_JUDGE_AT_FORTY_FIVE_MIN)
+    rec["brief_file"] = os.path.join(runs_dir(root), unit + ".brief.md")
+    with open(rec["brief_file"], "w", encoding="utf-8") as fh:
+        fh.write(msg)
+    write_record(rec, root)
     import control as C     # the one admission point (control.py): a switch, his hold or a duplicate refuses here
     cenv = rec.get("env") or {}
     cspec = {"family": "detached", "unit": unit, "item": item, "model": model, "mod": cenv.get("RM_CONTROL_MOD"),

@@ -68,6 +68,12 @@ T0 = 1_800_000_000.0
 KNOWN = {"SOME_ITEM_TO_BUILD"}
 CLONE = os.path.join(TMP, "clone")
 # a --clone that exists is one a unit can start in (RIMMANDRAKE_GUARD_HELPER_LAUNCH_ON_MISSING_CLONE_TWO_RUNS_DIED_UNSTARTED)
+
+def brief_of(argv):
+    """The brief a launch's systemd-run argv hands claude: the StandardInput file (every brief goes in on stdin)."""
+    f = next((a[len("StandardInput=file:"):] for a in argv if a.startswith("StandardInput=file:")), "")
+    return open(f, encoding="utf-8").read() if f and os.path.isfile(f) else ""
+
 def _bounded(path):
     """Make `path` a clone a unit can start in: the claude_bounded.sh the unit's argv runs."""
     os.makedirs(os.path.join(path, "src", "RimMandrake", "Utils"), exist_ok=True)
@@ -162,14 +168,14 @@ def test_launch_and_finish():
     check(rc2 == 0 and DH.DEFAULT_MAX_S is None, "unbounded: the default is no limit")
     check(not any(x.startswith("RuntimeMaxSec=") or x.startswith("CLAUDE_SCOPE_RUNTIME_MAX") for x in a2),
           "unbounded: argv carries no RuntimeMaxSec and no scope bound")
-    msg2 = a2[a2.index("--") :][a2[a2.index("--"):].index("-p") + 1]
+    msg2 = brief_of(a2)
     check("no wall-time bound" in msg2 and "Wall-time bound" not in msg2, "unbounded: footer says no wall-time bound")
     check(a2[a2.index("--cap-usd") + 1] == "12", "unbounded: spend bound kept")
     check(DH.parse_max_s("none") is None and DH.parse_max_s("0") is None and DH.parse_max_s("900") == 900, "parse_max_s")
     check(any(a.startswith("ExecStopPost=/usr/bin/python3 ") and a.endswith("finish --unit " + argv[argv.index("--unit") + 1])
               for a in argv), "argv: ExecStopPost runs finish for this unit")
     check("RM_DISPATCHER_STATE=" + os.environ["RM_DISPATCHER_STATE"] in argv, "argv: the finish step finds the record")
-    msg = argv[argv.index("-p", argv.index("--")) + 1]
+    msg = brief_of(argv)
     check(msg.startswith("Build the thing.") and "cli.py note SOME_ITEM_TO_BUILD" in msg and "./publish" in msg,
           "argv: the brief carries the note-and-publish footer")
     unit = argv[argv.index("--unit") + 1]
@@ -195,7 +201,7 @@ def test_launch_and_finish():
     check("success" in nt and "Built it" in nt and "600 s" in nt, "finish: the note says how it ended (%s)" % nt[:80])
     check(fcalls[1][0][0] == "./publish" and fcalls[1][0][-1] == "infrastructure/state/ledger/events/BENCH.jsonl",
           "finish: the seat shard is published")
-    msg2 = argv[argv.index("-p", argv.index("--")) + 1]
+    msg2 = brief_of(argv)
     check("OWNER.jsonl" in msg2, "argv: the footer says an OWNER-authority event's shard is published too")
     with open(os.environ["RM_CONDUCTOR_LOG"]) as f:
         log = f.read()
@@ -1313,12 +1319,6 @@ def test_long_brief():
     check(rc == 0 and big < DH.ARG_BRIEF_MAX and stdin and brief in body,
           "longbrief: a 150 KB brief goes in by file on stdin, no argument over the cap (rc %s, biggest %d bytes, %s)"
           % (rc, big, stdin[:1]))
-    calls, run = recorder()
-    DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "Short brief.", "sonnet", 600, 5, now=T0 + 951, runner=run, known=KNOWN,
-              clone=CLONE)
-    argv = next((c[0] for c in calls if c[0][0].endswith("systemd-run")), [])
-    check(not any(a.startswith("StandardInput=") for a in argv) and any("Short brief." in a for a in argv),
-          "longbrief: a short brief still goes in as the -p argument")
 
     def e2big(argv, **kw):
         if argv[:2] in (["git", "fetch"], ["git", "grep"]):
@@ -1332,6 +1332,26 @@ def test_long_brief():
                          clone=CLONE)
     check(rc == 1 and "Argument list too long" in text and "did not answer" not in text,
           "longbrief: an exec failure is recorded with its own words, not as a silent systemd-run (%s)" % text[:120])
+
+
+def t_a_brief_never_rides_in_a_wrappers_argv():
+    """RIMMANDRAKE_STOP_KILLING_WORKING_JUDGE_AT_FORTY_FIVE_MIN (2026-11-23): the ExplosiveKnockback blind-cycle-6 judge
+    ran `kill -TERM $(pgrep -f 'lane2/plant_faults[.]py' | head -1)` to stop its own background job. Its brief named
+    lane2/plant_faults.py and the brief rode in spend_watchdog.py's argv, so pgrep matched the run's own main process;
+    the unit sat 600 s in stop-sigterm and then killed the working judge. A brief of any length goes in by file on
+    stdin: no argument the unit's processes carry holds a phrase of it."""
+    calls, run = recorder()
+    phrase = "Run them with `lane2/plant_faults.py`, then SUMMARY."
+    rc, text = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "Short brief. " + phrase, "sonnet", 600, 5, now=T0 + 951,
+                         runner=run, known=KNOWN, clone=CLONE)
+    argv = next((c[0] for c in calls if c[0][0].endswith("systemd-run")), [])
+    stdin = [a for a in argv if a.startswith("StandardInput=file:")]
+    path = stdin[0][len("StandardInput=file:"):] if stdin else ""
+    body = open(path, encoding="utf-8").read() if path and os.path.isfile(path) else ""
+    leaked = [a[:60] for a in argv if "plant_faults" in a or "Short brief." in a]
+    check(rc == 0 and stdin and phrase in body and not leaked,
+          "argv: a short brief goes in by file on stdin and no argument carries it (rc %s, stdin %s, leaked %s)"
+          % (rc, stdin[:1], leaked[:2]))
 
 
 def test_resumed_part():
@@ -1665,6 +1685,7 @@ def main():
     test_scope_quiet_when_gone()
     test_launch_timeout()
     test_long_brief()
+    t_a_brief_never_rides_in_a_wrappers_argv()
     test_owed_close()
     test_hook_points_here()
     test_windows_path()
