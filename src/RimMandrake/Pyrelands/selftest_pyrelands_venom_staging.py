@@ -53,6 +53,7 @@ import sys
 import types
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(1, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils", "modcheck"))   # testenv_guards (the live path has it)
 import venom_dose as vd  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -556,6 +557,37 @@ def main():
                                    ("venom read once", [None, 0.17, None], False), ("venom rising", [0.17, 0.19, 0.21], False),
                                    ("venom read as 0.0", [0.0, None], False)):
             check("venom_never_read: %s -> %s" % (what, want), nr(series) is want, repr(series))
+    # HARNESS (visit 6, 2026-11-22, ArchSmall, a 55.8 C site): the ten-day wait-out advanced through _bite_wait, which called
+    # the clock directly and never ran the heat guard; three wait-outs lost a site colonist (downed, then dead) by day 3-4
+    # (about 0.06 heatstroke per colonist every six hours). A guarded bite wait passes a heat guard every HEAT_CHUNK_TICKS.
+    import types as _types
+    adv, guards = [], []
+    fake_cg = _types.ModuleType("clockgate")
+    fake_cg.SAFE_CHUNK_MAX = 2500
+    fake_cg.has_safe_advance = lambda session: True
+    fake_cg.advance_chunk = lambda session, step, stop_on=None: adv.append(step)
+    saved_cg = sys.modules.get("clockgate")
+    saved = {k: getattr(V, k) for k in ("_heat_guarded", "_heat_guard", "_on_site", "_live")}
+    sys.modules["clockgate"] = fake_cg
+    V._heat_guarded, V._on_site, V._live = (lambda t: True), (lambda t: None), (lambda t: True)
+    V._heat_guard = lambda t, why: (guards.append(why), V._GEN.__setitem__("heat_ticks", 0))
+    try:
+        V._GEN["heat_ticks"] = 0
+
+        class _T(object):
+            upstream_failed = False
+            session = object()
+        V._bite_wait(_T(), 60000, stop_on=V.WAIT_OUT_STOP_ON)
+    finally:
+        for k, x in saved.items():
+            setattr(V, k, x)
+        if saved_cg is None:
+            sys.modules.pop("clockgate", None)
+        else:
+            sys.modules["clockgate"] = saved_cg
+    check("a guarded 60000-tick bite wait advances all 60000 ticks (%d)" % sum(adv), sum(adv) == 60000, adv[:6])
+    check("a guarded 60000-tick bite wait passes a heat guard at least every 6000 ticks (%d guards)" % len(guards),
+          len(guards) >= 9, guards[:3])
     bad = RESULTS.count(False)
     print("%s: %d of %d checks failed" % (NAME, bad, len(RESULTS)))
     return 1 if bad else 0

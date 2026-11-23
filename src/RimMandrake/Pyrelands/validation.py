@@ -3628,11 +3628,20 @@ def _bite_wait(t, n, stop_on=None):
     import clockgate  # noqa: E402 - on sys.path via the modcheck package
     if not clockgate.has_safe_advance(t.session):
         return _wait(t, n)
-    left = n
-    while left > 0:
-        step = min(left, clockgate.SAFE_CHUNK_MAX)
-        clockgate.advance_chunk(t.session, step, stop_on=stop_on or BITE_STOP_ON)
-        left -= step
+    # HARNESS (visit 6, 2026-11-22, ArchSmall, 55.8 C): this path never ran the heat guard that _wait runs, and three ten-day
+    # wait-outs lost a site colonist by day 3-4; exposure is now carried and guarded as in _wait
+    import testenv_guards  # noqa: E402 - on sys.path via the modcheck package
+    guarded = _heat_guarded(t)
+    for part, guard in (testenv_guards.heat_steps(n, _GEN.get("heat_ticks", 0)) if guarded else [(n, False)]):
+        left = part
+        while left > 0:
+            step = min(left, clockgate.SAFE_CHUNK_MAX)
+            clockgate.advance_chunk(t.session, step, stop_on=stop_on or BITE_STOP_ON)
+            left -= step
+        if guarded:
+            _GEN["heat_ticks"] = _GEN.get("heat_ticks", 0) + part
+            if guard and _heat_guarded(t):
+                _heat_guard(t, "every %d ticks" % testenv_guards.HEAT_CHUNK_TICKS)
     _on_site(t)
 
 
