@@ -822,10 +822,16 @@ FAIL_RX = re.compile(r"\s*(FAIL|RED|BROKEN|STALE)")
 TMP_RX = re.compile(r"(?:/private)?(?:/tmp|/var/folders|%s)/\S*" % re.escape(tempfile.gettempdir()))
 
 
+# A measured reading moves between two runs of the same code: a quoted number in a list (['581', '742']) or a number
+# with a unit of time, size or share (629 ms, 1.5 s, 38 MB, 12%). A bare count ("unit 2", "3 of 9") is kept.
+READING_RX = re.compile(r"'\d+(?:\.\d+)?'|\b\d+(?:\.\d+)?\s?(?:ms|s|MB|GB|KB|%)(?![A-Za-z])")
+
+
 def _norm(ln, tree):
-    """What moves between two runs of the same code, blanked: the tree's own path, temp paths, and numbers of four or more
-    digits (pids, timestamps, unit names). A short number (a count, a case number) is kept, so "unit 2" is not "unit 1"."""
+    """What moves between two runs of the same code, blanked: the tree's own path, temp paths, measured readings
+    (READING_RX) and numbers of four or more digits (pids, timestamps, unit names). A short number (a count, a case number) is kept, so "unit 2" is not "unit 1"."""
     ln = ln.strip().replace(os.path.realpath(tree), "<TOP>").replace(tree, "<TOP>")
+    ln = READING_RX.sub("R", ln)
     return re.sub(r"\d{4,}", "N", TMP_RX.sub("<TMP>", ln))
 
 

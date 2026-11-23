@@ -53,6 +53,7 @@ CFG_PATH = os.path.join(HERE, "list_dispatch.json")
 CLOSED = ("done", "dropped", "superseded")
 PAC = dt.timezone(dt.timedelta(hours=-8), "PST")
 ACCEPT_RX = re.compile(r"python3\s+((?:design|src)/[^\s'\"`]+?_accept\.py)\b")
+WRITTEN_NOT_LANDED = 4      # a rimflow write's --publish exit: the event stands, its landing failed (ledger_landing.py)
 # Hang guard (the class of call_deadline_lint.py) for one `detached_helper.py launch` (a clone sync, a fetch).
 LAUNCH_TIMEOUT_S = 900
 # Hang guard for `rimflow effect` (it runs the check once, then publishes).
@@ -612,8 +613,10 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
             text = "outcome check holds (list_dispatch, before a Work run): %s | output: %s" % (
                 it.get("effect"), _one(it.get("out"), 400) or "(none)")
             rc, said = do_close(iid, text, "pipeline act (list_dispatch tick, %s): the item's outcome check holds" % UNIT)
-            if rc == 0:
+            if rc in (0, WRITTEN_NOT_LANDED):
                 row["decision"] = "closed_by_check"
+                if rc:
+                    row["why"] = "closed; the event is written, not landed yet: %s" % _one(said, 200)
             else:
                 s["close_refused"] = {"fp": [it.get("effect"), it.get("events")], "why": _one(said, 600), "at": now}
                 row.update(decision="close_refused", why=_one(said, 300))
@@ -621,8 +624,10 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
         if row["decision"] == "adopt":
             rc, said = do_attach(iid, "cmd:python3 %s" % row["accept"],
                                  "pipeline act (list_dispatch tick, %s): its ## verify runs this acceptance script" % UNIT)
-            if rc == 0:
+            if rc in (0, WRITTEN_NOT_LANDED):
                 row["decision"] = "adopted"
+                if rc:
+                    row["why"] = "attached; the event is written, not landed yet: %s" % _one(said, 200)
             else:
                 s["adopt_refused"] = {"fp": [row["accept"], it.get("events")], "why": _one(said, 600), "at": now}
                 row.update(decision="adopt_refused", why=_one(said, 300))

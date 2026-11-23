@@ -68,6 +68,10 @@ waited for the Conductor's hand, because no program launched them. Each promise 
 - **a-heavy-acceptance-script-is-not-adopted.** Before it adopts an acceptance script, the tick runs it once, bounded by
   `max_adopt_check_s`, and keeps the reading per item state. A script that does not end inside the bound reads
   `adopt_too_heavy` and is not attached, because an attached check runs on every beat of two timers.
+- **a-write-that-stands-unlanded-is-not-a-refusal.** A `rimflow close` or `rimflow effect` that exits 4 (written, not
+  landed: another writer moved origin during the publish) stands. The row reads `closed_by_check` or `adopted` and says
+  it is not landed yet; it is never recorded as a refusal. Measured 2026-11-23: two of the first ticks' writes exited
+  4 and landed on origin minutes later.
 - **the-tick-files-nothing.** A tick writes no `file` or `spawn` event. Its ledger writes are `close` (a check that holds)
   and `effect` (an adopted acceptance script).
 - **a-dry-tick-writes-nothing.** A tick without `--apply` launches nothing, closes nothing, attaches nothing and writes no

@@ -271,6 +271,24 @@ def t_a_heavy_acceptance_script_is_not_adopted():
     chk(lambda: len(calls) == 1 and t == t2, "a script is timed once per item state, not every tick")
 
 
+def t_a_write_that_stands_unlanded_is_not_a_refusal():
+    d = tempfile.mkdtemp(prefix="ld_rc4_")
+    os.environ["RM_LIST_DISPATCH_DIR"] = d
+    fx = {"facts": lambda st: {"items": {"A": it(verdict="holds"),
+                                         "B": it(effect=None, verdict=None, accept="a/b_accept.py", accept_s=1.0)},
+                               "runs": {}, "other_live": 0},
+          "account": lambda: (True, ""), "launch": lambda *a: (0, "", "u"), "need": lambda *a: None,
+          "close": lambda *a: (4, "closed at abc. WRITTEN, NOT PUBLISHED: ./publish exited 2: origin moved"),
+          "effect": lambda *a: (4, "outcome check attached. WRITTEN, NOT PUBLISHED: ./publish exited 2")}
+    rd = LD().tick(dict(CFG), apply=True, fx=fx, now=NOW)
+    st = json.load(open(os.path.join(d, "state.json")))
+    chk(lambda: rd["items"]["A"]["decision"] == "closed_by_check" and "close_refused" not in st["items"].get("A", {}),
+        "exit 4 on close: the close stands (closed_by_check), not refused")
+    chk(lambda: rd["items"]["B"]["decision"] == "adopted" and "adopt_refused" not in st["items"].get("B", {}),
+        "exit 4 on attach: the check stands (adopted), not refused")
+    chk(lambda: "not landed" in rd["items"]["A"]["why"], "the row says the write is not landed yet")
+
+
 def t_a_dry_tick_writes_nothing():
     d = tempfile.mkdtemp(prefix="ld_dry_")
     os.environ["RM_LIST_DISPATCH_DIR"] = d
@@ -318,6 +336,7 @@ def main():
               t_the_run_owns_no_continuation,
               t_the_tick_files_nothing,
               t_a_heavy_acceptance_script_is_not_adopted,
+              t_a_write_that_stands_unlanded_is_not_a_refusal,
               t_a_dry_tick_writes_nothing,
               t_only_narrows_the_items_never_the_gates,
               t_each_limit_names_its_danger):

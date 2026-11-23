@@ -411,7 +411,26 @@ def t_the_landing_tree_sees_origin_main_as_landed(tmp):
           "the-landing-tree-sees-origin-main-as-landed: a cited sha on no branch is still refused (%r)" % (err or out)[-300:])
 
 
+def measured_readings_cases():
+    """2026-11-23: selftest_game_lock's timing row, red on origin/main too, was refused as "new" because its 3-digit ms
+    readings differed between the two runs (the blanking took only numbers of 4+ digits)."""
+    a = ("FAIL a query answers in under 100 ms (median of 9, in one of up to three batches)  batch medians "
+         "['581', '742', '629'] ms, CPU ['106', '111', '107'] ms")
+    b = ("FAIL a query answers in under 100 ms (median of 9, in one of up to three batches)  batch medians "
+         "['566', '560', '495'] ms, CPU ['102', '108', '108'] ms")
+    ka, _ = P.red_signature(a + "\n", "/nowhere", 1)
+    kb, _ = P.red_signature(b + "\n", "/nowhere", 1)
+    check(ka == kb, "the same FAIL line with other timing readings is the same red (%s / %s)" % (list(ka), list(kb)))
+    k1, _ = P.red_signature("FAIL unit 1 is wrong\n", "/nowhere", 1)
+    k2, _ = P.red_signature("FAIL unit 2 is wrong\n", "/nowhere", 1)
+    check(k1 != k2, "a short number that is not a reading still tells two FAIL lines apart")
+    k3, _ = P.red_signature("FAIL took 3 of 9 rows\n", "/nowhere", 1)
+    k4, _ = P.red_signature("FAIL took 4 of 9 rows\n", "/nowhere", 1)
+    check(k3 != k4, "a count is kept")
+
+
 def main():
+    measured_readings_cases()
     for t in (t_the_door_judges_the_tree_that_lands, t_a_red_origin_already_repaired_does_not_refuse,
               t_the_landing_tree_sees_origin_main_as_landed,
               t_a_red_the_commit_makes_is_refused_on_the_landing_tree, t_a_red_origin_has_not_repaired_is_still_refused):
