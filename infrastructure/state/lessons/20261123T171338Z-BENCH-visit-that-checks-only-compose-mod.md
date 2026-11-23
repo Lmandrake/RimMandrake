@@ -1,0 +1,1 @@
+A visit that checks only the compose mod's deploy state misses stale tier mods: Pyrelands visit 7 ran with FlowWorks and MandrakePatches behind source, and build match does not see other mods' versions. Dry-run every tier mod before the first chain.
