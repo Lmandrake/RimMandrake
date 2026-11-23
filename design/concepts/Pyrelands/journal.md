@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 4:04 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-23 9:55 AM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,7 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 4:04 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 9:55 AM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -507,4 +507,13 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Steward confirms: read visit_6 SUMMARY.md and rows.jsonl: 34 PASS, 0 FAIL, 1 UNMEASURED (sc_walk, class SITE, unrepaired: game placement); 7 harness/site repairs read, each tightens or re-classes, none weakens an observation; verdict: send back to in_game for sc_walk on ArchBig
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-22 8:54 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-22 8:54 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-23 9:55 AM PST, stage change: In-game acceptance (Stage 6) to Offline build (Stage 3) (by BENCH)
+
+- Why: steward of visit 7: two mod-wrong lines not fixed in the sitting, both shown red offline: RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT (sc_burn_line_walks' judge clause; accept_lone_fire_lane.py 0 of 8) and RIMMANDRAKE_SPARE_PYRE_FURNACE_BARN_ROOF_FROM_TITAN_WAKE (P_furnace_room; accept_furnace_beast_spares_roof.py FAIL). sc_walk stays UNMEASURED: it needs ArchBig's full list and is the next visit's
+- Checks passed: order, by, version, hold.
+- Steward confirms: read visit_7 SUMMARY.md, rows.jsonl, strange.jsonl, the day-end sheet and the lane mask by eye (one-cell lanes and flat-sided bands, wind-off row ragged), and the harness repair 5e888e1af2 (weakens nothing: an asked kind or a critical trigger still stops; planted wrong tend FAIL, real 5/5 PASS); no mod fix in the visit, no fix reader owed; verdict: not met, REAL MISS on both, road back offline_build
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 4:04 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 4:04 AM PST).
 - Record: `version/stage_record.json`.

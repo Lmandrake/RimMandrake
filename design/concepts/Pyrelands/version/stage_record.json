@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-23T04:04:31-08:00",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-23T09:55:31-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -284,6 +284,23 @@
       "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-six-fa-1795432884",
       "confirmed": {
         "steward_confirms": "read visit_6 SUMMARY.md and rows.jsonl: 34 PASS, 0 FAIL, 1 UNMEASURED (sc_walk, class SITE, unrepaired: game placement); 7 harness/site repairs read, each tightens or re-classes, none weakens an observation; verdict: send back to in_game for sc_walk on ArchBig"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-23T09:55:31-08:00",
+      "by": "BENCH",
+      "why": "steward of visit 7: two mod-wrong lines not fixed in the sitting, both shown red offline: RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT (sc_burn_line_walks' judge clause; accept_lone_fire_lane.py 0 of 8) and RIMMANDRAKE_SPARE_PYRE_FURNACE_BARN_ROOF_FROM_TITAN_WAKE (P_furnace_room; accept_furnace_beast_spares_roof.py FAIL). sc_walk stays UNMEASURED: it needs ArchBig's full list and is the next visit's",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-seven-1795454755",
+      "confirmed": {
+        "steward_confirms": "read visit_7 SUMMARY.md, rows.jsonl, strange.jsonl, the day-end sheet and the lane mask by eye (one-cell lanes and flat-sided bands, wind-off row ragged), and the harness repair 5e888e1af2 (weakens nothing: an asked kind or a critical trigger still stops; planted wrong tend FAIL, real 5/5 PASS); no mod fix in the visit, no fix reader owed; verdict: not met, REAL MISS on both, road back offline_build"
       },
       "checks_passed": [
         "order",
