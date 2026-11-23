@@ -20,9 +20,17 @@ import pitrule as R  # noqa: E402
 
 # lookup tables (the rule's functions are scalar; these are their exact samples, for numpy)
 _ZT = np.linspace(0.0, R.DEEPEST, 4001)
-_HT = np.array([R.H(v) for v in _ZT])
-_WT = np.array([R.W(v) for v in _ZT])
-_KT = np.array([R.K(v) for v in _ZT])
+
+
+def retable():
+    """Resample the tables from pitrule's functions (call after changing its constants, as make_pick.py does)."""
+    global _HT, _WT, _KT
+    _HT = np.array([R.H(v) for v in _ZT])
+    _WT = np.array([R.W(v) for v in _ZT])
+    _KT = np.array([R.K(v) for v in _ZT])
+
+
+retable()
 
 
 def Hv(z):
@@ -76,7 +84,7 @@ AMBIENT, DIRECT = 0.55, 0.45
 WALL_AMBIENT = 0.85          # a wall in the shade still sees half the sky and the light bounced off the lit floor
 FACE_FADE = 0.30
 SHADOW_POW = 0.7
-SHADOW_K = 0.15              # cast shadow past a face's foot: SHADOW_K x (sqrt b - sqrt a) squares (cast_shadow)
+SHADOW_K = R.SHADOW_K       # cast shadow past a face's foot: SHADOW_K x (sqrt b - sqrt a) squares (cast_shadow)
 
 
 def load_soil(tex_dir, ppc):
@@ -209,8 +217,8 @@ def classify(grid, ppc, pad):
 def cast_shadow(ztop, ppc, az, shadow_k):
     """1 where lit, 0 where in shadow. The drawn face of a wall belongs to the level above it (it stands at its wall's
     top), and the cliff drops at the face's foot; a ray march toward the sun over the heights -SHADOW_K*depth^0.7 at a
-    slope of 1, so a drop from a to b casts SHADOW_K*(b^0.7 - a^0.7) squares past the foot (2 m rim 0.24, 4 m rim 0.40,
-    8 m rim 0.64, a 4 m -> 8 m riser 0.25, a 2 m -> 6 m riser 0.28). Computed at a quarter of the resolution, softened to a penumbra."""
+    slope of 1, so a drop from a to b casts SHADOW_K*(b^0.7 - a^0.7) squares past the foot (SHADOW_K 0.12: 2 m rim 0.19, 4 m rim
+    0.32, 8 m rim 0.51, a 4 m -> 8 m riser 0.20, a 2 m -> 6 m riser 0.22). Computed at a quarter of the resolution, softened to a penumbra."""
     q = max(1, ppc // 24)
     hgt = -shadow_k * ztop[::q, ::q] ** SHADOW_POW
     pq = ppc / q

@@ -33,13 +33,18 @@ from __future__ import annotations
 import math
 
 # ── the two offset functions ──────────────────────────────────────────────
-# Up to 2.5 m they are today's tables exactly (RM_WallFaceMath NorthByDrop / SideByDrop), so a single-depth pit at 2.5 m or
-# less looks exactly as it does today (his walk: stations 34 to 39 "look good and indicate their depth well"). Past 2.5 m
+# Up to 2.5 m W is today's table exactly and H is today's at NORTH_SCALE (RM_WallFaceMath NorthByDrop / SideByDrop), so a
+# single-depth pit at 2.5 m or less keeps today's side walls (his walk: stations 34 to 39 "look good and indicate their depth well"). Past 2.5 m
 # they keep rising to 20 m (today's stop at 2.5 m is why his 4 m and 8 m floors showed the same side wall), front-loaded so
 # the common 2.5 .. 8 m range gets most of the growth: rise(z) = (1 - (2.5/z)^P) / (1 - (2.5/20)^P).
-NORTH_TABLE = [0.0, 0.12, 0.23, 0.35, 0.50, 0.62]   # per 0.5 m notch, 0 .. 2.5 m
+# The north face is today's table at NORTH_SCALE (0.7), and H rises only to H_TOP past 2.5 m: at full size, his L's 4 m north
+# arm showed 0.26 of a square and read as a lip (his words, 2026-11-22: "the lower-right northern inner shelf is incredibly
+# narrow, that's a bit weird and incorrect"). A fresh judge picked this setting (S) from four: the arm is as wide as the west
+# arm and no step, shadow or riser is lost. The depth reads by the shadows and the darkening, which he accepted.
+NORTH_SCALE = 0.7
+NORTH_TABLE = [NORTH_SCALE * v for v in (0.0, 0.12, 0.23, 0.35, 0.50, 0.62)]   # per 0.5 m notch, 0 .. 2.5 m
 SIDE_TABLE = [0.0, 0.06, 0.11, 0.17, 0.23, 0.29]
-H_TOP, W_TOP = 0.97, 0.46     # at 20 m (a one-square trench 20 m deep keeps 0.08 of a square of floor in view)
+H_TOP, W_TOP = 0.62, 0.46     # at 20 m (a one-square trench 20 m deep keeps 0.38 of a square of floor in view)
 P = 0.6
 DEEPEST = 20.0
 
@@ -196,7 +201,7 @@ def side_boundary(p: dict, side: str, y: float) -> float:
 
 # ── the cast shadow at one point (the scalar twin of render.cast_shadow, which the game's C# copies) ──
 SUN_AZ = 315.0           # option B, his pick pending: the light comes from the north-west (compass degrees)
-SHADOW_K, SHADOW_POW = 0.15, 0.7   # a drop from a to b casts SHADOW_K x (b^0.7 - a^0.7) squares past the face's foot
+SHADOW_K, SHADOW_POW = 0.12, 0.7   # a drop from a to b casts SHADOW_K x (b^0.7 - a^0.7) squares past the face's foot
 PENUMBRA = 0.04          # squares: the soft edge
 MARCH_STEP = 1.0 / 32.0
 SHADOW_REACH = SHADOW_K * DEEPEST ** SHADOW_POW + MARCH_STEP

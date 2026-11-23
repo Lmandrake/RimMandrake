@@ -11,8 +11,12 @@ the drop, a lip line from edge to edge; must FAIL where today is wrong), so the 
                                 between its two floors, never a second full-height wall
   P4 EVERY_DEPTH_APART          H, W and the depth value K strictly change over the whole dig range (no cap that makes two
                                 depths alike, today's stop at 2.5 m)
-  P5 SINGLE_DEPTH_UNCHANGED     a single-depth pit of 2.5 m or less has today's face sizes exactly
+  P5 SINGLE_DEPTH_SIDES_KEPT    a single-depth pit of 2.5 m or less keeps today's side strips exactly, and its north face is
+                                today's at NORTH_SCALE (0.7: his L's 4 m north arm read as a lip, 2026-11-22)
   P6 LOCAL_3X3                  a square's plan reads only its 3x3 (changing a square two away changes nothing)
+  P7 NORTH_SHELF_IN_VIEW        a one-square shelf along a north wall keeps at least 0.4 of a square of floor in view at
+                                every depth to 8 m (his words, 2026-11-22: "the lower-right northern inner shelf is incredibly
+                                narrow, that's a bit weird and incorrect"; it showed 0.26 at 4 m)
 
     python3 selftest_pitrule.py          exit 0 when every promise holds on the new rule and P1..P4 fail on today's twin
 """
@@ -87,12 +91,22 @@ def p4(M):
 
 
 def p5(M):
+    scale = getattr(R, "NORTH_SCALE", 1.0)
     for z in DEPTHS:
         if z > 2.5:
             break
-        if abs(M.H(z) - today_face(TODAY_N, z)) > 1e-9 or abs(M.W(z) - today_face(TODAY_S, z)) > 1e-9:
-            return False, f"{z} m differs from today"
-    return True, "single-depth pits to 2.5 m keep today's sizes"
+        if abs(M.H(z) - scale * today_face(TODAY_N, z)) > 1e-9 or abs(M.W(z) - today_face(TODAY_S, z)) > 1e-9:
+            return False, f"{z} m differs from today's side strip or scaled north face"
+    return True, "single-depth pits to 2.5 m keep today's side strips and today's north face at NORTH_SCALE"
+
+
+def p7(M):
+    for z in DEPTHS:
+        if z > 8.0:
+            break
+        if 1.0 - M.H(z) < 0.4:
+            return False, f"a 1-square north shelf at {z} m shows {1.0 - M.H(z):.2f} of a square"
+    return True, "a 1-square north shelf keeps 0.4 of a square in view to 8 m"
 
 
 def p6(M):
@@ -111,7 +125,8 @@ def p6(M):
 
 PROMISES = [("P1 RISER_STOPS_AT_SIDE_WALL", p1, True), ("P2 SIDE_WALL_WIDER_WHEN_DEEPER", p2, True),
             ("P3 FACES_ADD_UP", p3, True), ("P4 EVERY_DEPTH_APART", p4, True),
-            ("P5 SINGLE_DEPTH_UNCHANGED", p5, False), ("P6 LOCAL_3X3", p6, False)]
+            ("P5 SINGLE_DEPTH_SIDES_KEPT", p5, False), ("P6 LOCAL_3X3", p6, False),
+            ("P7 NORTH_SHELF_IN_VIEW", p7, False)]
 
 
 def main():

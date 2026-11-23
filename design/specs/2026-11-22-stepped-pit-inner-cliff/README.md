@@ -19,14 +19,17 @@ make out the shadow, but yes, I think realistic shadowing is crucial here."*
 ## Where to look
 
 - The pick image: `D:\ClaudeWork\rimmandrake\showings\RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM\PICK_stepped_pit.png`
-  (in game today, A, B; his L and the 2 m / 6 m step, close; both at default zoom, shown 2x).
+  (in game today, the build before the shelf fix, the build now; his L and the 2 m / 6 m step, close; both at default zoom,
+  shown 2x). The first version, with options A and B, is `PICK_stepped_pit_v1_A_B.png` beside it.
 - Half size in this folder: `img/PICK_stepped_pit_half.png`.
 - The sweep (12 cases, each option, close and default zoom): the `sweep\` folder beside it.
 
 ## The rule (`pitrule.py`, a pure function of a square's depth and its 8 neighbours' depths)
 
-1. Two offset functions of depth, `H(z)` (north face) and `W(z)` (side strip), equal today's tables up to 2.5 m and keep
-   rising to 20 m (today they stop at 2.5 m, which is why his 4 m and 8 m floors had the same side walls).
+1. Two offset functions of depth, `H(z)` (north face) and `W(z)` (side strip), keep rising to 20 m (today they stop at
+   2.5 m, which is why his 4 m and 8 m floors had the same side walls). `W` is today's table up to 2.5 m; `H` is today's
+   table at 0.7 (`NORTH_SCALE`) and rises only to 0.62 at 20 m, so a one-square shelf along a north wall keeps at least
+   0.4 of a square in view to 8 m (see "The narrow north shelf").
 2. A wall between a shallow floor `a` and a deep floor `b` is drawn in the deeper square and shows only the part between
    them: a face `H(b) - H(a)` tall, a strip `W(b) - W(a)` wide. Down any column the faces add up to `H(deepest)`.
 3. An inner riser's top edge meets each side wall at that wall's depth-`a` line (`W(a)` in from the edge), never at the
@@ -35,11 +38,69 @@ make out the shadow, but yes, I think realistic shadowing is crucial here."*
    the depth value of their top; every surface is darkened to `K(z)` of its terrain by its depth (about 30 % per doubling,
    at every depth), a multiplier, so it holds over any floor terrain laid later.
 5. A fixed sun lights the faces by their facing and casts shadows past each face's foot, longer for a bigger drop
-   (`0.15 x (b^0.7 - a^0.7)` squares: a 2 m rim 0.24, a 4 m to 8 m riser 0.25, an 8 m rim 0.64).
+   (`0.12 x (b^0.7 - a^0.7)` squares: a 2 m rim 0.19, a 4 m to 8 m riser 0.20, an 8 m rim 0.51).
 
 Promises and their test: `selftest_pitrule.py` (P1 riser stops at the side wall, P2 side wall wider when deeper, P3 faces
-add up, P4 every depth apart, P5 single-depth pits to 2.5 m keep today's sizes, P6 3x3 locality). Today's draw, twinned in
+add up, P4 every depth apart, P5 single-depth pits to 2.5 m keep today's side strips and a 0.7 north face, P6 3x3 locality, P7 a one-square north
+shelf keeps 0.4 of a square in view to 8 m). Today's draw, twinned in
 the test, is red on P1 to P4.
+
+## The narrow north shelf (his fault on the pick, 2026-11-22)
+
+His words, on the pick image: *"YOU SOLVED IT! The new pit renderings with shadows CLEARLY indicate the height relationships
+(though the lower-right northern inner shelf is incredibly narrow, that's a bit weird and incorrect)."*
+
+- Cause: his L's 4 m north arm showed `1 - H(4)` = 0.26 of a square (the outer north face took 0.74), and the rim's cast
+  shadow (0.40) covered all of it, so the arm read as a lip.
+- Fix: the north face is today's table at 0.7, rising only to 0.62 at 20 m (`H(4)` 0.50, `H(8)` 0.57), and the cast shadow is
+  `0.12 x` instead of `0.15 x`. Four settings were rendered (the original, two milder ones, this one); a fresh Opus judge
+  picked this one: the north arm is as wide as the west arm, and no step, shadow or riser is lost.
+- What changes for a plain pit: its north face is 0.7 of today's (a 2 m pit's face 0.35 of a square, not 0.50). Its side
+  strips are today's.
+- Test: `selftest_pitrule.py` P7 (red on the old rule: 0.38 at 2.5 m), the C# case `PitStepped_north_shelf_stays_in_view`, and the
+  golden tables (`gen_golden.py`).
+
+## Light: the sun's direction, the moon, lamps, roofs (from the 1.6 decompile, 2026-11-22; nothing here is measured in game)
+
+His question (2026-11-22): *"how do shadows render when a player brings a strong light in the game today? If they light a pit
+with a strong lamp, do the shadows throw correctly? What about if the light is "below?" This is pretty important actually."*
+
+What vanilla does (read in RimSage):
+- Sun shadows of buildings (`SectionLayer_SunShadows`) are baked with each wall's height in the vertex alpha; the shader pushes
+  them along one global vector, `_CastVect`, which `SkyManager` sets every frame (x, z the shadow's direction and length; w the
+  strength, `GenCelestial.CurShadowStrength`). By day the vector swings from west (morning) to east (evening) and always
+  points south; by night it is the moon's, and the strength fades to 0 around dusk and dawn.
+- On a pinned-sun map (Utinni, `RM_MapComponent_PinnedSun`), a never-ending weather event overrides the vector, and a patch
+  rewrites its strength. So `_CastVect` is already the one sun every shadow in the estate follows: the Direct Sun ruling's
+  "fixed sun = location" on Utinni, and the clock elsewhere.
+- Lamps cast no shadows in vanilla. Light is a per-cell glow grid drawn as one darkening overlay over everything
+  (`SectionLayer_LightingOverlay`), so a lamp brightens cells in its radius and never moves a shadow.
+
+What the pit draws today, as built (option B):
+- The pit's cast shadow and face light come from one fixed sun (`RM_PitReliefMath.SunAzimuth` 315, elevation 55), baked in the
+  walls layer. They do not follow `_CastVect`, do not fade at dusk, and do not turn with the moon.
+- (a) A strong lamp at the rim, and (b) a lamp on the pit floor: the floor brightens by the glow overlay, as every lit cell
+  does. The depth darkening and the baked north-west shadow stay. With a lamp south-east of a rim, the baked shadow points
+  toward the lamp: this breaks "no shadow may point toward a light". At night a lamp-lit pit floor is brighter than an unlit
+  one, because the overlay darkens the unlit floor more. By day a lamp changes little.
+- (c) Night with no lamp: the whole map is dark by the overlay. The pit keeps its fixed sun shadow at full strength while the
+  buildings beside it switch to moon shadows.
+- (d) A roofed pit: `SectionLayer_SunShadows` reads no roof, so vanilla's sun shadows draw under a roof; the pit's baked
+  shadow also stays.
+
+The plan (not built; build after the in-game stage of this build has been looked at):
+1. The pit's cast shadow takes its direction, length and strength from `_CastVect` (read from `SkyManager`, the same numbers
+   vanilla's shader gets), not from a constant. The shadow is re-baked when the direction moves by more than a step (on a pinned
+   sun: never after the first bake). A and B stop being a choice.
+2. Where artificial light outshines the sky at a cell, the cast shadow there fades out (re-baked on the `GroundGlow` change
+   that vanilla already raises when a light turns on or off). So no shadow points toward a lamp, and a lamp on the floor
+   lights it.
+3. Directional shadows thrown BY a lamp are a new feature (a Divergent change): file it for the next version, with his
+   choice at filing.
+Acceptance test for 1 and 2 (offline, C#): with a cast vector from the south-east, the cast shadow falls on the north-west
+side of each drop; with strength 0, no cell is shaded; with a cell's artificial glow above its sky glow, that cell is unshaded.
+Each check is red on the build as it is (fixed sun), green on the fix. Live: the stage below at noon, at dusk, at night, and with
+a lamp on a pit floor.
 
 ## The options (the same rule; only the sun differs)
 
@@ -60,8 +121,7 @@ the test, is red on P1 to P4.
 
 - Reads right: the 2 m / 6 m step both ways, a north-south step, three levels, a deep corner, a hole in a shallow pit,
   1-wide trenches at 3 m and 8 m, a 1-square pit.
-- Weak (before the value fix): his L at close zoom. At 4 m the outer north face is 0.74 of a square, so most of the L's top arm is wall and rim
-  shadow; the L reads by its lip and its lower arm.
+- His L's north arm was narrow (fixed: see "The narrow north shelf").
 - Odd but not wrong: a deep floor north of a shallow one ends its wider side strip in a small notch at the step; the face
   under a raised 1 m island in a 6 m pit, with its corner pieces, reads as a bowl.
 - Changes he may notice: a single-depth pit loses today's cream-lit north face (the faces now take the sun), and every

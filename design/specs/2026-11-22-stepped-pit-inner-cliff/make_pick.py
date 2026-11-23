@@ -1,5 +1,6 @@
-"""The one pick image for the owner: in game today beside options A and B, his L and the 2 m / 6 m step, close, plus a
-default-zoom row. Warm dark-brown background; no text but the column labels.
+"""The one pick image for the owner: in game today, the build before the shelf fix (option B, his narrow north shelf), and
+the build now; his L and the 2 m / 6 m step, close, plus a default-zoom row. Warm dark-brown background; no text but the
+column labels. (Its first version showed options A and B; he accepted the shadows and flagged the narrow shelf, 2026-11-22.)
 
     python3 make_pick.py <tex_dir> <captures_dir> <out.png>
 
@@ -18,7 +19,8 @@ BG = (44, 32, 23)
 TEXT = (236, 214, 172)
 PPC = 110          # close rows, px a square
 DZ = 24            # the default zoom, px a square (measured on the capture: a 3-square pit is 72 px)
-COLS = [("In game today", None), ("A  sun from north", "N"), ("B  sun from north-west", "NW")]
+COLS = [("In game today", None), ("Before  narrow shelf", "before"), ("Now  shelf fixed", "now")]
+BEFORE = dict(NORTH_TABLE=[0.0, 0.12, 0.23, 0.35, 0.50, 0.62], H_TOP=0.97, SHADOW_K=0.15)   # the rule as first built (ea50968f56)
 L = Rr.CASES["his L: 4 m L in 8 m"]
 STEP = Rr.CASES["step 2 m / 6 m (E-W edge)"]
 
@@ -34,8 +36,22 @@ def main(tex, caps, out):
         if opt is None:
             cells.append((label, today_L, today_S, today_dL, today_dS))
         else:
-            cells.append((label, Rr.render(L, opt, tex, PPC), Rr.render(STEP, opt, tex, PPC),
-                          Rr.render(L, opt, tex, DZ), Rr.render(STEP, opt, tex, DZ)))
+            saved = {k: getattr(Rr.R, k) for k in BEFORE}
+            saved_rk, saved_reach = Rr.SHADOW_K, Rr.R.SHADOW_REACH
+            if opt == "before":
+                for k, v in BEFORE.items():
+                    setattr(Rr.R, k, list(v) if isinstance(v, list) else v)
+                Rr.SHADOW_K = BEFORE["SHADOW_K"]
+                Rr.R.SHADOW_REACH = Rr.R.SHADOW_K * Rr.R.DEEPEST ** Rr.R.SHADOW_POW + Rr.R.MARCH_STEP
+            Rr.retable()
+            try:
+                cells.append((label, Rr.render(L, "NW", tex, PPC), Rr.render(STEP, "NW", tex, PPC),
+                              Rr.render(L, "NW", tex, DZ), Rr.render(STEP, "NW", tex, DZ)))
+            finally:
+                for k, v in saved.items():
+                    setattr(Rr.R, k, v)
+                Rr.SHADOW_K, Rr.R.SHADOW_REACH = saved_rk, saved_reach
+                Rr.retable()
     colw = 6 * PPC
     gap = 40
     head = 70

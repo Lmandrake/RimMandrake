@@ -167,15 +167,18 @@ namespace RimMandrake.FlowWorks
 		// making it look like a standing wall. The inner "cliff" should only go part way up the side walls. It's all about the
 		// side wall interactions. They need to extend deeper into the pit where it is deeper". Twin:
 		// design/specs/2026-11-22-stepped-pit-inner-cliff/pitrule.py (metres; these take notches of 0.5 m).
-		//   • two offset functions of depth, StepH (north face) and StepW (side strip), today's tables to 2.5 m, rising on to 20 m;
+		//   • two offset functions of depth, StepH (north face, today's table x 0.7) and StepW (side strip, today's) to 2.5 m, rising on to 20 m;
 		//   • a wall between a shallow floor a and a deep floor b shows H(b) - H(a) / W(b) - W(a), so a riser's top meets each side
 		//     wall at that wall's depth-a line, never at the ground rim, and the side wall runs on unbroken above it;
 		//   • every surface darkens by StepK of its depth (a multiplier: it holds over any floor terrain laid later);
 		//   • a fixed sun from the north-west lights the faces by their facing and casts a shadow past each face's foot.
 
-		private static readonly float[] StepNorthTable = { 0f, 0.12f, 0.23f, 0.35f, 0.50f, 0.62f };
+		// The north face is today's table at 0.7 and rises only to 0.62 at 20 m: at full size his L's 4 m north arm showed 0.26 of a
+		// square ("the lower-right northern inner shelf is incredibly narrow", 2026-11-22). A one-square north shelf keeps 0.4 in view
+		// to 8 m (PitStepped_north_shelf_stays_in_view; the twin's NORTH_SCALE).
+		private static readonly float[] StepNorthTable = { 0f, 0.7f * 0.12f, 0.7f * 0.23f, 0.7f * 0.35f, 0.7f * 0.50f, 0.7f * 0.62f };
 		private static readonly float[] StepSideTable = { 0f, 0.06f, 0.11f, 0.17f, 0.23f, 0.29f };
-		private const double StepHTop = 0.97, StepWTop = 0.46, StepP = 0.6, StepDeepest = 20.0;
+		private const double StepHTop = 0.62, StepWTop = 0.46, StepP = 0.6, StepDeepest = 20.0;
 		private const double StepKScale = 0.75, StepKPow = 0.62;
 
 		/// <summary>The sun: compass degrees the light comes from (315 = north-west, option B of the pick) and its elevation.</summary>
@@ -183,7 +186,7 @@ namespace RimMandrake.FlowWorks
 		private const float Ambient = 0.55f, Direct = 0.45f, WallAmbient = 0.85f;
 		/// <summary>A face darkens toward its foot by this share (a crisp foot, never a gradient that melts into the floor).</summary>
 		public const float FaceFade = 0.30f;
-		private const float ShadowK = 0.15f, ShadowPow = 0.7f, Penumbra = 0.04f, MarchStep = 1f / 32f;
+		private const float ShadowK = 0.12f, ShadowPow = 0.7f, Penumbra = 0.04f, MarchStep = 1f / 32f;
 		/// <summary>The pale edge of an upper floor at its lip (his "differently colored edge marked in black"): width and lift.</summary>
 		public const float LipBand = 0.07f, LipLift = 1.45f;
 
@@ -316,7 +319,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>1 lit .. 0 in shadow at a point (<paramref name="fx"/>, <paramref name="fy"/>) of the centre square of
 		/// <paramref name="win"/> (y down): a march toward the sun over the heights, at a slope of 1, so a drop from a to b casts
-		/// 0.15 x (b^0.7 - a^0.7) squares (metres) past the face's foot. Only a higher point casts. The twin's lit_at.</summary>
+		/// 0.12 x (b^0.7 - a^0.7) squares (metres) past the face's foot. Only a higher point casts. The twin's lit_at.</summary>
 		public static float Lit(int[] win, float fx, float fy)
 		{
 			float h0 = Height(PointTop(win, fx, fy));
