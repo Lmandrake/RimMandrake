@@ -42,7 +42,7 @@ path. The joins are at a bold lead or a quote. The flags are emphasis marks on t
 | check 2 (`rule_doc_lint.py keep`), with `--also` | the same copy | 5 lost, exit 1. Check 2 did not see "7,813", which history.md also holds. |
 | check 1, check 2 | the rewrite, with `--also` | 27 items, 0 lost; 143 spans, 0 lost (run again after the last edit) |
 | `rule_doc_lint.py`, `checkable.py`, `batch_done.py` selftests | none | pass; 19 of 19; GREEN, 12 cases |
-| `selftest_block_blind_scan.py`, `selftest_warn_skill_unwired.py`, `selftest_guiding_prose.py`, `selftest_skills_by_work.py`, `selftest_skills_registered_or_listed.py`, `selftest_validate_skills.py`, `selftest_game_names_prose.py`, `selftest_retired_era_gone.py` | the first draft | exit 0 each |
+| `selftest_block_blind_scan.py`, `selftest_warn_skill_unwired.py`, `selftest_guiding_prose.py`, `selftest_skills_by_work.py`, `selftest_skills_registered_or_listed.py`, `selftest_validate_skills.py`, `selftest_game_names_prose.py`, `selftest_retired_era_gone.py` | the first draft | exit 0 each; `selftest_retired_era_gone.py` was red in `./publish` on one word of history.md, then green |
 
 Names of people: none in the old text or the new text. The front matter is byte for byte the same.
 
@@ -66,6 +66,8 @@ The same reader then read each repair. Finding 1 needed the words on a resave of
 search needed a correction. Both are repaired. The reader also proposed a new title for §3. The title stays, because headings
 stay, and the first line of §3 sends the reader to the head. No reader read those last two repairs, nor the line break of the
 `missing_mods` line and "The bridge also paints".
+After the first landing (f1e82c2df3b5), the prose check of `./publish` named "keeper save" and one "It". The writer repaired both.
+No reader read those two.
 
 ## Conflicts and stale lines: settled
 

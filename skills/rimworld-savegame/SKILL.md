@@ -33,7 +33,8 @@ inside the file.
 **Before you delete or rename a def that the planet uses (a BiomeDef above all), check the tiles of the live world.** Decode
 the tiles; do not grep them. The `tileBiome` array of the world grid holds shortHashes (§5). So `grep -c <defName>` on the
 `.rws` reads 0 while thousands of tiles point at that def. `WorldGrid(save).census()` in `src/RimMandrake/Utils/worldmap.py`
-decodes the tiles of a save offline. Check every keeper save. Read the live game when the live game is newer than the save.
+decodes the tiles of a save offline. Check each world save: the canonical saves in
+`infrastructure/state/CANONICAL_SAVE.md` and the `ASHKARR_DEV_*` saves. Read the live game when the live game is newer than the save.
 The dump must come from the mod set of the save (§5), and `WorldGrid(save).unresolved()` must be `[]`. An empty list alone
 does not prove that the dump is right.
 
@@ -235,7 +236,7 @@ for a file that `SaveMap.write()` made.)
 
 To restore terrain is **not** to undo the paint. `SetTerrain` destroys the plants on a cell when the new terrain cannot
 support them. Measured: grass dies on Sand, PackedDirt, rock and water. Grass survives on Gravel. One capture and restore
-recorded only terrain. It put 2,601 cells back to their original `TerrainDef`, **0 wrong**. The map still did not look as
+recorded only terrain. That restore put 2,601 cells back to their original `TerrainDef`, **0 wrong**. The map still did not look as
 before.
 
 **On a colony that matters, save before the experiment, and reload that save to undo the experiment.** The reload restores the
