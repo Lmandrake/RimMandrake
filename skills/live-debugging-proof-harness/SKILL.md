@@ -224,8 +224,8 @@ python3 -c "import sys,time; sys.path.insert(0,'src/RimMandrake/rimflow'); impor
 - After a fix, the forced scene stays in the live tests only while the fault is likely to return. Otherwise its check
   goes to the offline tests, or is retired.
 
-**Verdicts keep, per scene.** A verdict stands until a change touches what the scene reads or exercises. The exit of an in-game
-visit never asks for every scene in one visit, or for one scene several times in a row. Record the build that the game had
+**Verdicts keep, per scene.** A verdict stands until a change touches what the scene reads or exercises. The exit condition of the
+pipeline's in-game stage never asks for every scene in one visit, or for one scene several times in a row. Record the build that the game had
 loaded, not only the build on disk.
 
 ### Minimum Force

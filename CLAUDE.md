@@ -598,12 +598,13 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - One UNRESOLVED run holds the scene's pass until someone classes the run.
 - Open a hunt when the fault is serious (one sighting is enough) or is seen again. A hunt never opens silently: tell the
   Conductor what happened, why it matters, the next step that tells two causes apart, and the cost of that step.
-- When a run names a thing that spoiled it, try to remove that thing. Lean towards building a tool
-  that holds that thing still.
+- When a run names a thing that spoiled it, try to remove that thing. Lean towards building a tool that holds that
+  thing still.
 - Use Minimum Force: the least force that makes the scene affordable and reliable, and that leaves to the mod every
   decision that the scene claims to test.
 - A verdict on a scene stands until a change touches what the scene reads or exercises. The exit condition of
-  Stage 6 (in-game acceptance in the Maturation Pipeline) never asks for every scene in one in-game visit, or for one scene several times in a row.
+  Stage 6 (in-game acceptance in the Maturation Pipeline) never asks for every scene in one in-game visit, or for one
+  scene several times in a row.
 - Full text: `design/RimMandrake/standing_rulings.md` §Live tests have three kinds.
 
 ## Code is clean when its promises are tested
