@@ -33,7 +33,7 @@ SUPPLIES the def; --check reads the def dump and reports a name that has moved
 mods or vanished, which is how a palette fails silently when a mod leaves.
 
 ⚠️ --check ALSO CONSULTS cherrypicker.py (2026-09-02, DUMP_DERIVED_SHEETS_SHOW_CUT_1).
-The def dump is captured before Cherry Picker removes anything, so a def a palette
+Cherry Picker leaves a cut TerrainDef or ThingDef in the dump, so a def a palette
 names can be present and correctly-typed in the dump and STILL be cut from the
 shipped game - the check would read clean while a build using this palette places a
 floor or wreck piece nobody will ever see in-game. A cut def is reported as its own

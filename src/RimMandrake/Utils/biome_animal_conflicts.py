@@ -100,17 +100,17 @@ def conflicts(capture, cast_paths=()):
 
     # (b) the animal's own list, mapped back to kinds
     #
-    # 🔑 CHECKED 2026-09-02 (DUMP_DERIVED_SHEETS_SHOW_CUT_1 sweep): this capture is
-    # pre-Cherry-Picker in general, but Cherry Picker neuters a cut animal's
-    # `race.wildBiomes` to empty IN PLACE (same pattern as `weapon_tag_audit.py`
-    # stripping `weaponTags`) - measured on the 2026-09-02T19-36-08Z capture, 0 of
+    # 🔑 CHECKED 2026-09-02 (DUMP_DERIVED_SHEETS_SHOW_CUT_1 sweep): this capture
+    # still holds cut animals. Cherry Picker sets each `wildBiomes` commonality of a
+    # cut animal to 0 and leaves the entry (CherryPicker.dll, read 2026-11-23), and it
+    # zeroes the matching `wildAnimals` entries. So what empties the list below is
+    # unknown (another mod or a patch of ours) - measured on the 2026-09-02T19-36-08Z capture, 0 of
     # 281 cut animals with a `race` block carry any `wildBiomes` entry, while the
     # BIOME side (`a_side` above, `wildAnimals`) still lists 21,870 cut-pawnkind
-    # entries untouched. Since a reported conflict requires BOTH sides to name the
+    # entries. 2026-11-23: 0 of 128 cut animals with a `race` block. Since a reported conflict requires BOTH sides to name the
     # same pair, a cut animal can never source the `b_side` half and this join
     # cannot manufacture a phantom conflict from cut content - no cherrypicker.py
-    # filter is needed here. Re-measure before trusting this if Cherry Picker's
-    # neuter behaviour ever changes what it strips.
+    # filter is needed here. Re-measure before trusting this on a new mod list.
     b_side = collections.defaultdict(dict)      # biome -> {kind: raceDefName}
     for t in things["defs"]:
         race = t["fields"].get("race")

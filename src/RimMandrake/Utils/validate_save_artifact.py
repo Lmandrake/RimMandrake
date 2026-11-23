@@ -36,10 +36,10 @@ WHAT IT DOES NOT DO
     not sufficient. The live check is still one dialog on a scratch map.
 
 ⚠️ A REFERENCE THAT RESOLVES CAN STILL BE CUT (2026-09-02, DUMP_DERIVED_SHEETS_SHOW_CUT_1).
-    The def dump is captured BEFORE Cherry Picker removes anything
-    (`infrastructure/state/facts/dump-is-pre-cherrypicker.md`), so a def this artifact
-    names can resolve here — genuinely present in the dump, a real type — and still be
-    ABSENT from the owner's shipped game. That is the worst possible outcome for THIS
+    Cherry Picker leaves most cut defs in the dump, and a def cut after the capture is in it
+    whatever its type (`infrastructure/state/facts/dump-is-pre-cherrypicker.md`). So a def this
+    artifact names can resolve here — genuinely present in the dump, a real type — and still be
+    cut from the owner's shipped game. That is the worst possible outcome for THIS
     tool specifically: "no dangling names" reading as a pass on a `.rid` that bakes
     unrecoverably at world creation. `cherrypicker.py` (this project's one Cherry
     Picker reader) is consulted for every resolved reference; a resolved-but-cut name
@@ -350,7 +350,7 @@ def report(path, index, meta, as_json=False):
         if not hits:
             missing.append({"path": xpath, "name": value})
             continue
-        # A resolved reference can still be CUT — the dump is pre-Cherry-Picker, so
+        # A resolved reference can still be CUT — most cut defs stay in the dump, so
         # "present here" and "present in the shipped game" are different claims. Any
         # resolved type being on the live cut list makes this its own class, checked
         # BEFORE counting toward `ok`: a cut-but-resolvable name is not a pass.

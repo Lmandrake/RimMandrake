@@ -107,10 +107,10 @@ THINGDEF_OK_CATEGORIES = {1, 2, 3, 4, "Pawn", "Item", "Building", "Plant"}
 # Cuts the owner RECORDED and then explicitly held back. Keyed by defName, valued
 # by the reason, and printed every run — a silent exception is how a decision gets
 # lost twice.
-# 🔴 BiomeDef is one of the types Cherry Picker genuinely DELETES rather than
-# neuters, and the frozen Ash'karr map stands on both of these: AridShrubland 1,988
+# 🔴 Cherry Picker sets `implemented = false` on a cut BiomeDef (it does not delete it;
+# CherryPicker.dll read 2026-11-23), and the frozen Ash'karr map stands on both of these: AridShrubland 1,988
 # tiles and Lake 312, together 2,300 of 21,872 (10.5%) plus 4 of the 72 settlements.
-# Cutting them would point the hand-authored world at defs that no longer exist.
+# Cutting them would leave the hand-authored world on biomes marked unimplemented.
 # Owner, 2026-08-19: "Apply 28, keep AridShrubland + Lake".
 OWNER_EXCLUDE = {
     "AridShrubland": "1,988 tiles of the frozen Ash'karr map are this biome",

@@ -284,7 +284,7 @@ never run.**
 |---|---|
 | **CQF's complete capability surface** — 4 building blocks, 4 `SpawnType` triggers, all 21 `CQFAction` verbs, conditions, signals, required-items, 7 quest shapes, and the tradeoffs vs save-editing | `D:\Luke\dev\RimMandrake\vendor\wisdom\cqf_quest_types_explainer.md` |
 | **The space-acceptance ruling, campaign-wide** — mechanism, the IL-level refinement ("friction, not silence"), and the ⛔ *do not sweep 200 vanilla quest defs* decision | `D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\v1_quest_the_claim.md` §106-193 |
-| **What Cherry Picker does to a `QuestScriptDef`**, and that it does nothing to an existing save | `D:\Luke\dev\RimMandrake\infrastructure\archive\2026-08-13_mechanoid_removal_study.md:100-180` |
+| **What Cherry Picker does to a `QuestScriptDef`**, and that it does nothing to an existing save | deleted file; read it with `git show d3487d7b3f^:infrastructure/archive/2026-08-13_mechanoid_removal_study.md` lines 100-180 |
 | **The `questScriptDef`-referenced-by-`IncidentDef` gate** in the cherry-pick builder | `D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\cherrypick_build.py:30,166-180,300` |
 | **The grammar-bracket failure with verbatim log trace**, and the guarded-patch rationale | `D:\Luke\dev\RimMandrake\src\Jawa\Jawa_Patches\Patches\BTDGravshipQuest_GrammarFix.xml` |
 | **Row 3's gate, and why "blocked on a human" was the wrong conclusion** | `D:\Luke\dev\RimMandrake\infrastructure\state\V1_CHAIN.md` |

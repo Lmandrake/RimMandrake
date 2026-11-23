@@ -68,16 +68,15 @@ rather than raising an error:
 
 WHAT THIS CANNOT SHOW — read this before reading the numbers
 ============================================================
-**Roughly 40% of animals have no previewable sprite, and that is correct
-behaviour, not a bug.** Vanilla and DLC art (Core, Odyssey, Anomaly, Ideology)
+**Without the bundle cache, roughly 40% of animals have no previewable sprite,
+and that is correct behaviour, not a bug.** Vanilla and DLC art (Core, Odyssey, Anomaly, Ideology)
 ships packed inside Unity asset bundles, not as loose PNGs, and several large
 mods do the same — Star Wars Animal Collection ships exactly ONE loose PNG for
-its whole roster; Jurassic Rimworld and JDS Separatist likewise. Extracting
-Unity bundles is out of scope and stays out of scope: it needs a bundle
-unpacker, it is version-fragile, and the payoff is a picture we could also get
-by looking at the animal in game.
+its whole roster; Jurassic Rimworld and JDS Separatist likewise.
+extract_bundle_textures.py writes a cache of that art, and this tool reads it
+(--bundles, --no-bundles). A fresh clone has no cache: git ignores it.
 
-So the sheets cover the MODDED long tail, which is precisely the population the
+Without the cache the sheets cover the MODDED long tail, which is precisely the population the
 keep/cut/re-skin decision is about — the vanilla animals are the ones you
 already know by sight. `animal_textures_missing.csv` is therefore a deliverable
 in its own right: it is the list of animals that can only be reviewed in game,
@@ -1159,7 +1158,7 @@ def main(argv=None):
     ap.add_argument("--include-cut", action="store_true",
                     help="show animals Cherry Picker removes. ⛔ Never for a sheet the "
                          "owner will make a keep/cut call on — animals.csv is built "
-                         "from a dump captured BEFORE the removals")
+                         "from mod XML, which holds every cut animal")
     ap.add_argument("--cut-source", choices=("auto", "live", "ratified", "log"),
                     default="auto", help="where the kill list comes from; `log` is "
                                          "runtime truth, the rest are intent")
@@ -1179,8 +1178,8 @@ def main(argv=None):
     rows = read_animals_csv(a.csv)
     if not rows:
         sys.exit("UNMEASURED: %s holds no animal rows - nothing to sheet." % a.csv)
-    # 🔴 THE DEF DUMP — AND SO animals.csv — IS PRE-CHERRY-PICKER. A cut that WORKED
-    # is still in it. This is the sheet the owner reviewed when he said "I had really
+    # 🔴 animals.csv IS BUILT FROM MOD XML, so Cherry Picker never touched it. A cut that
+    # WORKED is still in it. This is the sheet the owner reviewed when he said "I had really
     # thought I had already removed all of these terrestrial animals somewhere
     # already": he had, and 1,162 of his cuts were on the page anyway. He spent a
     # review pass judging animals the game no longer has.

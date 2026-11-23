@@ -14,11 +14,11 @@ of cuts — is what made varying the game for testing painful.
 attribute is lore or roster curation. Cutting has only ever CAUSED failures here — the
 Ikwa cut silently disarmed every kind inheriting TribalWarriorBase for four days — so a
 review game with zero cuts is no less stable than the ship game, and is the only one
-whose contents match the def dump.
+where a def's presence in the dump means that the game really offers it.
 
-⚠️ THE DUMP CANNOT SEE CUTS. The def dump is captured before Cherry Picker runs, so
-every dump-derived census and review sheet describes the SHIP list's contents as though
-they were present. That is how the owner came to review animals that no longer existed
+⚠️ THE DUMP CANNOT SEE MOST CUTS. Cherry Picker leaves a cut ThingDef (and most other
+types) in the game with its fields neutered, so every dump-derived census
+and review sheet describes the SHIP list's contents as though they were present. That is how the owner came to review animals that no longer existed
 in his game. Under REVIEW they genuinely are present, and the dump is honest again.
 
     cherrypicker_swap.py --status

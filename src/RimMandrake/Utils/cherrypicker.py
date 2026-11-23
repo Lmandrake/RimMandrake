@@ -8,9 +8,11 @@ Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 
 WHY THIS EXISTS
 ===============
-🔴 THE DEF DUMP IS CAPTURED BEFORE CHERRY PICKER REMOVES ANYTHING. A cut that
-worked is PRESENT in the dump. The dump cannot answer "is this cut" in either
-direction — measured 2026-08-23, `infrastructure/state/facts/dump-is-pre-cherrypicker.md`.
+🔴 THE DEF DUMP STILL HOLDS MOST CUT DEFS. Cherry Picker runs before the capture, but
+for most types (ThingDef, PawnKindDef, BiomeDef ...) it changes fields and leaves the
+def; it deletes 13 types only (GeneDef, XenotypeDef, RecipeDef ...). So for most types the
+dump cannot answer "is this cut" in either direction — measured 2026-08-23 and 2026-11-23,
+`infrastructure/state/facts/dump-is-pre-cherrypicker.md`.
 
 The cost was not theoretical. The owner reviewed a creature art sheet built from
 the dump and said *"I had really thought I had already removed all of these

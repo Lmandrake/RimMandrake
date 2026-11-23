@@ -6,22 +6,21 @@ counterpart and the owner asked for a THOROUGH retag of "weapons and armor".
 
 🔴 WHAT A PawnKindDef ACTUALLY ASKS FOR. `apparelTags` is a filter over the apparel
 pool, exactly as `weaponTags` is over the weapon pool. Empty every tag a kind names and
-the kind still spawns - it just spawns wearing whatever the generic pool and
-`apparelMoney` hand it, which for a themed faction means its look quietly dissolves.
+the kind still spawns, with nothing from the general pool: `PawnApparelGenerator.CanUsePair`
+rejects every item that matches none of a kind's non-empty `apparelTags` (read 2026-11-23).
 
 ⚠️ AND THAT IS WHY THIS IS A DIFFERENT SEVERITY FROM THE WEAPON CASE, STATED PLAINLY
 RATHER THAN LEFT FOR SOMEONE TO ASSUME. A kind whose weapon tags all go empty arrives
-BARE-HANDED - a hard, visible, combat-relevant failure. A kind whose apparel tags all go
-empty is not naked; `apparelRequired` still applies and the general pool still dresses
-it. The symptom is a stormtrooper in a duster, not a stormtrooper in the nude. ⇒ Treat a
-finding here as a LOOK defect, not an arming defect, and do not let it borrow the
-urgency of the weapon audit.
+BARE-HANDED. A kind whose apparel tags all go empty keeps only `apparelRequired` (cut items
+are stripped from that list), `specificApparelRequirements` and the free warmth, toxic and
+vacuum items. A kind with none of these is near naked; a kind with a full `apparelRequired`
+loses only its variety. ⇒ Read `apparelRequired` before you grade a finding.
 
 🔴 READ THE TAGS FROM THE DEF DUMP, NOT FROM MOD XML - same ruling as the weapon audit
 (owner, 2026-08-19). The dump is post-inheritance, post-PatchOperation and post-dedup; a
 raw XML scan is none of those.
-⚠️ Same proviso, same refusal: this REFUSES to report unless the dump's mod set matches
-`ModsConfig.xml`, because a dump captured under a different list describes a different
+⚠️ Same proviso, same refusal: this REFUSES to report unless the dump's mod COUNT matches
+`ModsConfig.xml` (the count only; an unreadable ModsConfig only warns), because a dump captured under a different list describes a different
 game. `--anyway` downgrades that to a loud warning.
 
 ⚠️ THE BLIND SPOT THIS TOOL CANNOT SEE, and it is the same one BUILDABLE.md 4 records
@@ -149,9 +148,9 @@ def main() -> int:
         # family is the decision. ⚠️ And the same refusal to pick - an apparel sibling
         # is usually a TIER or a ROLE, so `AM_Boss` -> `AM_Fashion` is not a repair, it
         # is a different faction look. Read the counts, then choose.
-        # ⚠️ ONE DIFFERENCE FROM WEAPONS, AND IT MATTERS: a kind here is not naked, so
-        # "no surviving sibling" is not a call to reach for a vanilla ladder. Leaving it
-        # to the generic pool is a legitimate answer on the armour side.
+        # ⚠️ ONE DIFFERENCE FROM WEAPONS, AND IT MATTERS: a kind here may keep its
+        # `apparelRequired`. Read that list first: the generic pool gives a kind nothing
+        # when none of its apparelTags has a carrier.
         for w in want:
             fam = _family(w)
             sibs = sorted((t, len(v)) for t, v in tags.items()
@@ -170,9 +169,9 @@ def main() -> int:
     elif thin:
         print("   (--verbose to list them; each still dresses, just from a smaller pool)")
 
-    print("\n🔑 A kind listed above is NOT naked. `apparelRequired` and the general pool "
-          "still dress it.\n   The symptom is a faction losing its LOOK, not a pawn "
-          "losing its clothes.")
+    print("\n🔑 A kind listed above gets nothing from the general pool. It keeps only its "
+          "`apparelRequired`,\n   `specificApparelRequirements` and the free warmth, toxic and "
+          "vacuum items. Read `apparelRequired` first.")
     return 1 if naked else 0
 
 

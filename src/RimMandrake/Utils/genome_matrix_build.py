@@ -283,8 +283,8 @@ def build(args) -> int:
     gene_by_name = {g["defName"]: g for g in genes_raw}
     log(f"dump: {len(xenos)} xenotypes, {len(genes_raw)} genes")
 
-    # 🔴 THE DEF DUMP IS PRE-CHERRY-PICKER: a xenotype or gene the owner already cut
-    # is still in it, unmarked, and this register decides which PACK to standardise
+    # 🔴 A XENOTYPE OR GENE ADDED TO THE CUT LIST AFTER THIS CAPTURE IS STILL IN THE DUMP
+    # (Cherry Picker deletes those two types at load, before the capture). This register decides which PACK to standardise
     # on per species — showing a cut implementation as a live candidate would put a
     # decision in front of the owner about content his game does not have.
     # `DUMP_DERIVED_SHEETS_SHOW_CUT_1`, facts/dump-is-pre-cherrypicker.md. Same
@@ -304,9 +304,8 @@ def build(args) -> int:
     log(f"rows: {len(rows)} selected, {sum(excluded.values())} excluded, "
         f"{len(rows_cut)} cut (Cherry Picker) and dropped from the candidate set")
 
-    # A cut GeneDef is neutered, not deleted (established by weapon_tag_audit.py's
-    # `weaponTags` case) — its record can still be present and still referenced by
-    # a KEPT xenotype's `genes` list. Exclude it from the columns a pack is judged
+    # Cherry Picker deletes a cut GeneDef at load, but a gene cut after this capture
+    # is still present and still referenced by a KEPT xenotype's `genes` list. Exclude it from the columns a pack is judged
     # on: a gene the game no longer has is not part of "which pack has more genes".
     cut_genes = cuts.by_type.get("GeneDef", frozenset())
 

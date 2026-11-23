@@ -512,7 +512,7 @@ def run_category(ds, category, tex_index, dir_index, a, bundle_index=None):
     os.makedirs(out_dir, exist_ok=True)
 
     rows = collect_rows(ds, category)
-    # 🔴 THE DEF DUMP IS PRE-CHERRY-PICKER: a cut that WORKED is still in it, so an
+    # 🔴 THE ROWS COME FROM MOD XML, which Cherry Picker never touches: a cut that WORKED is still there, so an
     # unfiltered sheet shows the owner things the running game does not have. He
     # reviewed one and said "I had really thought I had already removed all of these
     # terrestrial animals somewhere already" — he had; the sheet was wrong, not his
@@ -636,9 +636,8 @@ def main(argv=None):
     ap.add_argument("--max-upscale", type=float, default=2.0)
     ap.add_argument("--include-cut", action="store_true",
                     help="show defs Cherry Picker removes. ⛔ Never for a sheet the "
-                         "owner will make a keep/cut call on — the dump is captured "
-                         "BEFORE the removals, so unfiltered it shows things the "
-                         "running game does not have")
+                         "owner will make a keep/cut call on — the rows come "
+                         "from mod XML, so unfiltered it shows things that are cut")
     ap.add_argument("--cut-source", choices=("auto", "live", "ratified", "log"),
                     default="auto", help="where the kill list comes from; `log` is "
                                          "runtime truth, the rest are intent")

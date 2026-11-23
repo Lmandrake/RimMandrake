@@ -35,7 +35,7 @@ Validated over the population, not on a sample:
     always-off animals (all 67 biomes)   168   in the cut list  167  (99.4%)
     always-alive animals                 414   in the cut list    0   (0.0%)
 
-⛔ **Its cuts are INVISIBLE to the def dump** - every cut animal is still PRESENT as
+⛔ **Its cuts leave the defs in the def dump** - every cut animal is still PRESENT as
 both ThingDef and PawnKindDef in the capture. That is why every earlier theory
 reached for the engine: the defs were all there, so the value looked corrupted. It
 was not corrupted; it was switched off on purpose.

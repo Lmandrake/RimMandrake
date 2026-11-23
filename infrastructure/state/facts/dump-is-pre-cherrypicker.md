@@ -1,4 +1,27 @@
-# The def dump is captured BEFORE Cherry Picker removes anything
+# The def dump still holds most defs that Cherry Picker cut
+
+The file name says "pre-cherrypicker". That explanation is wrong (corrected 2026-11-23). The name stays, because code
+cites the path.
+
+**Measured 2026-11-23.** In one `Player.log` (ArchBig, 314 mods), the Cherry Picker block is at line 1279 and the dump
+starts at line 2817. So Cherry Picker runs FIRST. `RemoveDef` in the 1.6 `CherryPicker.dll` (decompiled with `ilspycmd`)
+does two different things:
+
+| what Cherry Picker does | types | of the defs that the log reports removed, still in capture `2026-11-23T19-47-11Z` |
+|---|---|---|
+| **deletes the def** (`DefDatabase<T>.Remove`) | `GeneDef`, `XenotypeDef`, `BackstoryDef`, `ResearchProjectDef`, `RecipeDef`, `TraitDef`, `HairDef`, `BeardDef`, `TattooDef`, `MemeDef`, `PreceptDef`, `RitualPatternDef`, `DesignationCategoryDef` | 0 of 9 `GeneDef`, 0 of 13 `XenotypeDef`, 0 of 109 `ResearchProjectDef`, 0 of 2 `RecipeDef` |
+| **changes fields and leaves the def** | `ThingDef`, `PawnKindDef`, `BiomeDef`, `IncidentDef`, `HediffDef`, `FactionDef`, `AbilityDef` and most others | 397 of 397 `ThingDef`, 19 of 19 `PawnKindDef`, 11 of 11 `BiomeDef`, 9 of 9 `IncidentDef`, 3 of 3 `HediffDef`, 2 of 2 `AbilityDef` |
+
+- The fields that it changes include: `weaponTags`, `apparel.tags`, `tradeability`, `thingCategories`, the commonality of
+  the animal in `race/wildBiomes` and in each biome's `wildAnimals` and `pollutionWildAnimals` (set to 0),
+  `BiomeDef.implemented` (set to false), and three world-creation fields of a `FactionDef`.
+- It does not touch `coastalWildAnimals` (read in the code; not tested in game).
+- A `FactionDef` with `maxConfigurableAtWorldCreation` at 0 or below is skipped with no message.
+- The practical rule does not change: for a type of the second row, a dump cannot say "is this cut". Use the kill list or
+  the log. For a deleted type, PRESENT means that the cut did not work, or that the dump comes from a load without the key.
+
+The rest of this file is the record of 2026-08-23 to 2026-09-05. Where it says that the dump comes before Cherry Picker,
+the explanation above replaces it. Its measurements stand.
 
 Cherry Picker is the mod that removes defs while the game loads. Its kill list is the list of defs that it is
 configured to remove.
@@ -22,19 +45,19 @@ removed all of these terrestrial animals somewhere already."*
 | of those, still present in `defs.sqlite` | **1,162 — 90%** |
 | `Player.log` at the last load | `[Cherry Picker] The database was processed in 00.73 seconds…` then **1,209 defs removed**, including `ThingDef/Cat`, `ThingDef/YorkshireTerrier`, `ThingDef/Alphabeaver`, `ThingDef/BlackBear` |
 
-⇒ 🔑 **The def dump is captured BEFORE Cherry Picker removes anything.** A cut that worked is **PRESENT** in the dump.
-The dump cannot answer "is this cut" in either direction.
+⇒ 🔑 **A cut `ThingDef` that worked is PRESENT in the dump.** The dump cannot answer "is this `ThingDef` cut" in either
+direction.
 
 **What that costs.**
 
 - Nearly every census, count, roster and **contact sheet** in this repo is built from the dump. Each one silently
   includes content that the running game does not have.
-- The owner spent a review pass judging animals that no longer exist. His question read as a memory failure. The failure was
+- The owner spent a review pass judging animals that he had already cut. His question read as a memory failure. The failure was
   in the instrument.
 
 ⛔ **The skill `rimworld-content-moderation` asserted the OPPOSITE** — *"the def dump is the post-removal state; a cut
 that worked is ABSENT."* Nobody measured that claim. Its author reasoned from how Cherry Picker works. The skill was
-corrected in place 2026-08-23. The old text stays there as a quote, so that nobody derives it again.
+corrected in place 2026-08-23. The old text is in the skill's `references/history.md`.
 
 ## ✅ FIXED for the two contact sheets, 2026-08-27 — `DUMP_DERIVED_SHEETS_SHOW_CUT_1`
 
@@ -54,8 +77,8 @@ corrected in place 2026-08-23. The old text stays there as a quote, so that nobo
 - The kill list is at
   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_3521312241_Mod_CherryPicker.xml`
   (repo copy: `deployed/config/v1_freeze/`).
-- **Better, if cheap: parse `Player.log`'s removal block instead.** That block is runtime truth. The kill list is a
-  config, and the game may not have loaded it yet. One regex does it: `^\s*-\s*(\w+)/([^,\s]+),?$` after the
+- **Better, if cheap: read `Player.log`'s removal block instead (`cherrypicker.from_log()`).** That block is runtime truth. The kill list is a
+  config, and the game may not have loaded it yet. One regex reads the lines, except a `- FAILED:` line: `^\s*-\s*(\w+)/([^,\s]+),?$` after the
   `was processed in` line.
 - **Known consumers to fix or flag:** `animal_contact_sheet.py`, `animal_inventory.py`, `def_inventory.py`,
   `creature_size_review.html`, and anything else that projects over the dump.
@@ -79,18 +102,17 @@ to a human. The same def must be present in `defs.sqlite`. **Both, simultaneousl
 
 ---
 
-## ⚠️ REFINED 2026-09-05 — true for DEFS, NOT uniformly true for LIST FIELDS
+## ⚠️ REFINED 2026-09-05 — the def stays, some LIST FIELDS do not
 
 Measured during the build of the weapon register (764 weapons, full 595-mod stack):
 
 - All **177** weapons that Cherry Picker cut carry an **empty `weaponTags`** in the dump. **No tagged weapon is cut.**
   The match is 177/177, in BOTH directions.
-- So the dump is pre-Cherry-Picker about whether a **def exists**. The original finding stands, and it is why cut things
-  still appear in sheets.
-- But some **list fields have already been stripped** in the dump. The def of a cut weapon is present, and its
-  `weaponTags` list is gone.
+- So the **def** of a cut weapon is still in the dump. That is why cut things still appear in sheets.
+- But some **list fields have been stripped** in the dump. The def of a cut weapon is present, and its
+  `weaponTags` list is empty.
 
-⇒ Do NOT read "the dump is pre-Cherry-Picker" as "every field in the dump is pre-cut." A list field can be empty
+⇒ A list field can be empty
 *because* the thing was cut. That reads identically to a def that never had the list. `cherrypicker.py` remains the ONLY
 authority on cut state. A dump field is at best corroboration.
 

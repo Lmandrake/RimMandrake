@@ -10,8 +10,8 @@ texPath. A tier passes when it carries Cherry Picker, or when none of the mods i
 
 Inputs, all read, none guessed:
   cut list   infrastructure/state/cherrypicker/CherryPicker.SHIP.xml (ThingDef/<name> keys; --cuts overrides)
-  creatures  the newest DefDump capture's animals.json (defName -> packageId; captured before Cherry Picker runs,
-             so cut creatures are in it)
+  creatures  the newest DefDump capture's animals.json (defName -> packageId; Cherry Picker neuters a cut creature
+             and leaves its def, so cut creatures are in it)
   tiers      modset_builder.TIERS resolved against the installed mods, the exact list --apply would write
 
 Exit 0: every tier clean. 1: a tier loads a cut creature (listed). 2: UNMEASURED (an input is unreadable, a tier

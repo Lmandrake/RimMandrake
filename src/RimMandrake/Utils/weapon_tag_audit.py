@@ -13,8 +13,8 @@ regenerated under the full list is "much more accurate than scanning the XML def
 provided that its version matches the current modlist." The dump is post-inheritance,
 post-PatchOperation and post-dedup; a raw XML scan is none of those, so it cannot see a
 tag a kind inherits from an abstract parent or is handed by another mod's patch.
-⚠️ The proviso is the point: this tool REFUSES to report unless the dump's mod set
-matches ModsConfig.xml, because a dump captured under a different list describes a
+⚠️ The proviso is the point: this tool REFUSES to report unless the dump's mod COUNT
+matches ModsConfig.xml (the count only; an unreadable ModsConfig only warns), because a dump captured under a different list describes a
 different game. --anyway downgrades that to a loud warning.
 
     python3 src/RimMandrake/Utils/weapon_tag_audit.py                 # report
