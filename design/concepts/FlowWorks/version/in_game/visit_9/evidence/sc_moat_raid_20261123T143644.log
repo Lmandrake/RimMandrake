@@ -1,0 +1,4 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE.det\design\concepts\FlowWorks\version\in_game\visit_9\evidence\sc_moat_raid_20261123T143644.json AssertionError("rows not all PASS: [('scene_moat_raid_staging', 'UNMEASURED')]")
+[bridge split] 47.4 s wall: load 0.4 / ticks 0.0 / reads 2.4 / other 19.6 / outside calls 24.9 s
+[bridge split] WARN 242 calls of jawa/flowworks_excavation_drive (9.8 s): batch them
+[bridge split] WARN 196 calls of jawa/static_call (7.9 s): batch them

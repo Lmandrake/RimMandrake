@@ -1,0 +1,8 @@
+ok    no crushed ice from a frozen cut: the cut FAILs, the melt UNMEASURED (never PASS), the control PASS 
+ok    crushed ice on every cut: the control FAILs 
+ok    warm, the pile never melts: the melt FAILs 
+ok    the work giver refuses the frozen square: the cut FAILs (MOD), the melt UNMEASURED 
+FAIL  healthy fake (swim and tire, drain, hold, capture two, pump chemfuel, it burns; over the lowered leaf they walk): every row PASS ({'scene_moat_raid_stagin
+FAIL  the sluice drains the moat in game time, the raid going on (frozen flow pulses: 0 ticks) None
+FAIL  4 wide but brim-full: it holds too late, the capture never PASSes {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  more than a metre of wall above the water: nobody enters, the swim FAILs {'scene_moat_raid_staging': 'UNMEASURED'}

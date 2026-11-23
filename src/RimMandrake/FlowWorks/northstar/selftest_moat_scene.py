@@ -68,7 +68,7 @@ class Fake:
     def __init__(self, mod='healthy', fault=None):
         self.mod, self.fault = mod, fault
         self.stop_on = 'default'
-        self.g = {'dug': {}, 'water': {}, 'fluid': {}, 'built': {}, 'pawns': {}, 'announced': set(), 'n': 0, 'lifted': False,
+        self.g = {'grass': {C._moat_geom()['tank'], C._moat_geom()['battery']}, 'dug': {}, 'water': {}, 'fluid': {}, 'built': {}, 'pawns': {}, 'announced': set(), 'n': 0, 'lifted': False,
                   'leaf': None, 'tank': None, 'pour': False, 'charged': False, 'tick': 0, 'orders': [], 'lit': set(), 'mark': {}}
         self.saves, self.contract, self.drained_in = {}, [], None
 
@@ -215,8 +215,18 @@ class Fake:
             for _ in range(kw['count']):
                 self.flow()
             return {'success': True}
+        if tool == 'jawa/destroy_batch':            # the plot's grass goes (nothing is built yet, so nothing else is in it)
+            if 'Building' in kw['categories'] or 'Plant' not in kw['categories']:
+                self.bad('destroy_batch %s' % kw)
+            x, z, w, h = (int(v) for v in kw['rects'].split(','))
+            g['grass'] -= {(x + i, z + j) for i in range(w) for j in range(h)}
+            return {'success': True}
         if tool in ('jawa/spawn_batch', 'jawa/build_batch'):
             n = 0
+            if tool == 'jawa/build_batch' and kw.get('wipeExisting') is False:
+                tops = [xz(op.split(':')[1]) for op in kw['ops'].split(';')]
+                if g['grass'] & {tuple(c) for c in tops}:       # live ArchSmall 2026-11-23: 'placing this would destroy'
+                    return {'success': False, 'partial': True, 'error': 'op(s) failed: Plant_Grass', 'survived': 0}
             for op in kw['ops'].split(';'):
                 d, at = op.split(':')
                 if d not in THINGDEFS:

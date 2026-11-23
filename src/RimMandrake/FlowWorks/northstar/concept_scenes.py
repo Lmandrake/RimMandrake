@@ -1205,6 +1205,7 @@ def _ice_cut(S, pid, c, frozen):
                            cutTempsC=temps[-3:])
 
 
+ICE_CUTTER_TRIES = 5          # spawns tried for a cutter whose Mining is not disabled
 ICE_ROWS = ('ICE_control_unfrozen_cut_no_crushed_ice', 'ICE_cut_leaves_crushed_ice', 'ICE_melts_back_into_pond')
 
 
@@ -1221,9 +1222,16 @@ def _ice(S):
     S.setting('digRockWorkMultiplier', 1.0)                        # the rows judge the yield, not the cut's time
     S.setting('digLabourMultiplier', ICE_LABOUR)
     cut, twin_cut = (pond[0], pond[1] + 2), (twin[0], twin[1] + 2)  # west-edge middles, reachable from the bank
-    col = S.pawn('Colonist', (pond[0] - 2, pond[1] + 2), 'player')
+    # a backstory can disable Mining outright (live ArchSmall 2026-11-23, visit 9: set_pawn_skill refused, "TOTALLY DISABLED";
+    # the suspension bridge proof's repair b1cc65afe2): such a colonist leaves the map and another is spawned
+    for k in range(ICE_CUTTER_TRIES):
+        col = S.pawn('Colonist', (pond[0] - 2, pond[1] + 2), 'player')
+        sk = _soft(S, 'jawa/set_pawn_skill', pawn=col, skill='Mining', level=10)
+        if sk.get('success') is not False:
+            break
+        if k + 1 < ICE_CUTTER_TRIES:
+            S.call('jawa/pawn_force_incapacitate', pawn=col, action='vanish')
     staged = [shovel_stage.give_shovel(lambda tool, **kw: _soft(S, tool, **kw), col)]
-    sk = _soft(S, 'jawa/set_pawn_skill', pawn=col, skill='Mining', level=10)
     staged.append((sk.get('success') is not False, 'Mining 10: %s' % str(sk)[:120]))
     pk = _soft(S, 'jawa/pawn_gear', pawn=col, action='wear', **{'def': 'Apparel_Parka'})
     staged.append((pk.get('success') is not False, 'parka: %s' % str(pk)[:120]))
@@ -1411,6 +1419,10 @@ def _moat_stage(S, raised=True):
     if raised:
         txt = S.sc(DPROOF, 'ProofDevSet', '%d,%d;raise;instant' % G['deck'])
         require(kv(txt).get('target') == 'raised' and kv(txt).get('progress', '0') != '0', 'the leaf did not go up: %s' % txt)
+    # site: the plot keeps its grass (live ArchSmall 2026-11-23, visit 9: grass on the tank and battery squares refused the
+    # build_batch, wipeExisting=False, and the scene read UNMEASURED)
+    S.call('jawa/destroy_batch', rects='%d,%d,%d,%d' % (O[0] + MOAT_W, O[1] + MOAT_W, MOAT_PLOT, MOAT_PLOT),
+           categories='Plant,Item,Filth')
     ops = ['RM_LiquidPump:%d,%d' % G['pump'], 'RM_LiquidTank:%d,%d' % G['tank'], 'Battery:%d,%d' % G['battery']]
     b = S.call('jawa/build_batch', ops=';'.join(ops), faction='player', wipeExisting=False)
     require(int(b.get('survived') or 0) >= len(ops), 'build_batch built less than asked: %s' % b)
@@ -2043,14 +2055,18 @@ def _pit_trap_raid(S):
             c['reply'] = c['reply'][:120]
             if c['warden']:
                 c['wardenAbleAfter'] = _able(S, c['warden'])
+                if not c['wardenAbleAfter'] or not c['after']:
+                    c['wardenHits'] = _hits_on(S, c['warden'])         # who took the warden off the capture, so the row names it
             if c['after'] is None:                                     # gone: say how, so the row names its own miss
                 c['fate'] = _ptr_fate(S, c['pawn'])
         # a capture its warden could not finish (downed, no prisoner) or whose captive is gone did not ask the mod:
         # UNMEASURED, never FAIL
         S.row('PTR_fallen_become_prisoners', bool(caught) and all(c['before'] is False and c['after'] for c in caught),
               {'drivenOff': len(gone), 'captured': [
-                  '%s prisoner %s->%s, warden able %s, %s' % (c['pawn'], c['before'], c['after'], c['wardenAbleAfter'],
-                                                            c.get('fate') or c['reply'][8:70]) for c in caught]} if caught
+                  '%s prisoner %s->%s, warden able %s, %s%s' % (c['pawn'], c['before'], c['after'], c['wardenAbleAfter'],
+                                                            c.get('fate') or c['reply'][8:70],
+                                                            ' hits on warden %s: %s' % (c['warden'], c['wardenHits'])
+                                                            if c.get('wardenHits') else '') for c in caught]} if caught
               else 'nobody fell, so there was no one to capture',
               unmeasured=not caught or any(c['before'] is None or c['after'] is None
                                            or (not c['after'] and c['wardenAbleAfter'] is False) for c in caught))

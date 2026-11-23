@@ -1,0 +1,5 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE.det\design\concepts\FlowWorks\version\in_game\visit_9\evidence\sc_pit_trap_raid_20261123T144132.json AssertionError("rows not all PASS: [('PTR_two_fall', 'PASS'), ('PTR_fallen_become_prisoners', 'UNMEASURED'), ('PTR_held_stay_in_the_trench', 'PASS'), ('PTR_control_open_pit_no_one_falls', 'PASS')]")
+[bridge split] 141.3 s wall: load 0.5 / ticks 40.5 / reads 32.2 / other 37.2 / outside calls 30.9 s
+[bridge split] WARN 420 calls of jawa/list_things (20.2 s): batch them
+[bridge split] WARN 236 calls of jawa/safe_advance (40.5 s): batch them
+[bridge split] WARN 220 calls of jawa/list_pawns (10.6 s): batch them

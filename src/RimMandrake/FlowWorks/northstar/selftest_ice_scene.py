@@ -21,6 +21,8 @@ ticks, sheet_overflow_proof r5K); the twin's original ground is Sand, which slum
 unless the scene stages Soil.
   fault='nocold'   the cold conditions are refused -> the cut and melt UNMEASURED, never PASS
   fault='noshovel' pawn_gear refuses the shovel -> every row UNMEASURED
+  fault='nomining1' the first colonist's Mining is disabled -> another is spawned, every row PASS
+  fault='nomining'  every colonist's Mining is disabled -> every row UNMEASURED
   fault='slump'    the Soil staging does not take: the twin slumps -> the control FAILs (MOD refusal, decided)
 Red on the draft at 2b4bffe212 and on the visit-2 scene (HEAD before the fix), green on the fix. The fake proves the scene's logic, never the game; the live half is
 `python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_ice --out <json>`.
@@ -126,6 +128,8 @@ class Fake:
             return {'success': True}
         if tool == 'jawa/set_pawn_skill':
             if kw.get('skill') == 'Mining':
+                if self.fault == 'nomining' or (self.fault == 'nomining1' and kw.get('pawn') == 'Human901'):
+                    return {'success': False, 'message': "Skill 'Mining' is TOTALLY DISABLED on this pawn"}
                 g['mining'] = int(kw['level'])
             return {'success': True}
         if tool == 'jawa/pawn_gear':
@@ -138,6 +142,10 @@ class Fake:
             else:
                 self.contract.append('pawn_gear %s' % kw)
                 return {'success': False}
+            return {'success': True}
+        if tool == 'jawa/pawn_force_incapacitate':
+            if kw.get('action') != 'vanish':
+                self.contract.append('pawn_force_incapacitate %s' % kw)
             return {'success': True}
         if tool == 'jawa/spawn_pawn':
             g['n'] += 1
@@ -265,6 +273,11 @@ r, o, _ = run(fault='nocold')
 check('the cold refused: the cut and the melt UNMEASURED, none PASS', r.get(CUT) == 'UNMEASURED' and r.get(MELT) == 'UNMEASURED', r)
 r, o, _ = run(fault='noshovel')
 check('no shovel staged: every row UNMEASURED', all(r.get(x) == 'UNMEASURED' for x in (CUT, MELT, CTRL)), r)
+r, o, _ = run(fault='nomining1')
+check('the first colonist has Mining disabled by backstory: another is spawned and every row PASS',
+      all(r.get(x) == 'PASS' for x in (CUT, MELT, CTRL)), r)
+r, o, _ = run(fault='nomining')
+check('every colonist has Mining disabled: every row UNMEASURED, never PASS', all(r.get(x) == 'UNMEASURED' for x in (CUT, MELT, CTRL)), r)
 r, o, _ = run(fault='slump')
 check('the twin slumps (Soil staging did not take): the control FAILs as a MOD refusal, the frozen rows still PASS',
       r.get(CTRL) == 'FAIL' and [x for x in o['rows'] if x['id'] == CTRL][0]['kind'] == 'MOD' and r.get(CUT) == 'PASS', r)

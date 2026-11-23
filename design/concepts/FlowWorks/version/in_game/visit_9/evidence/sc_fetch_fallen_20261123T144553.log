@@ -1,0 +1,6 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE.det\design\concepts\FlowWorks\version\in_game\visit_9\evidence\sc_fetch_fallen_20261123T144553.json 
+[bridge split] 115.8 s wall: load 0.5 / ticks 41.1 / reads 36.9 / other 6.8 / outside calls 30.5 s
+[bridge split] WARN 470 calls of jawa/list_things (23.0 s): batch them
+[bridge split] WARN 253 calls of jawa/list_pawns (12.4 s): batch them
+[bridge split] WARN 243 calls of jawa/safe_advance (41.1 s): batch them
+[bridge split] WARN 70 calls of jawa/static_call (3.0 s): batch them
