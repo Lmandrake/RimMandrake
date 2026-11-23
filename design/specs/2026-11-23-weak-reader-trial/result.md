@@ -67,7 +67,8 @@ CORRECTION +60 [+30, +90]. CONTROL +2 [0, +6].
 - Style by itself at section level: of 36 random changed sections, only 3 changed in style only. So the kind is the
   kind of the sentence that the case turns on, and the rest of the section travels with it.
 - The plants were easy (the case author wrote them). A hand read of 20 random grades and of every told-but-wrong answer found the grader too
-  strict on 2 CONTROL answers (one in each arm: the act was right, "60 minutes" unsaid) and perhaps 2 "a metric joins" answers (already
+  strict on 2 CONTROL answers (one in each arm: the act was right, "60 minutes" unsaid), arguably on the one wrong STYLE answer (old arm;
+  without it STYLE is +0), and perhaps 2 "a metric joins" answers (already
   NOT TOLD, so only the +14 moves). I left the grades as they fell.
 - I wrote the source-of-truth lines after I had seen many new lines; that can favour the new text in BINDING and
   CORRECTION. The STYLE keys come from the old text; that can favour the old.
@@ -78,8 +79,8 @@ CORRECTION +60 [+30, +90]. CONTROL +2 [0, +6].
 - Cost per case, with no Opus readers: about 37,000 weighted tokens (`weighted_v2`: situation and key 13k, 13 Sonnet readers 17.6k, grading
   ≈6k) [measured, grading share guess ~70%]. The full trial as first sized (285 cases) is ≈10.5M [guess ~80%].
 - **Not worth it.** STYLE has no room; CORRECTION is already decided; BINDING has no 138 cases.
-- Worth it, if you want BINDING settled: the 9 act-bearing terms not yet used, at 5 readers: ≈0.33M weighted tokens [guess ~80%]. With 19 cases the
-  trial can see about 27 points, so it can confirm an effect of the size seen, no smaller one.
+- Worth it, if you want BINDING settled: the 8 act-bearing terms not yet used, at 5 readers: ≈0.30M weighted tokens [guess ~80%]. With 18 cases the
+  trial can see about 28 points, so it can confirm an effect of the size seen, no smaller one.
 - This pilot spent 2.51M weighted tokens, all instrument calls: readers 1.18M (Sonnet 0.71M, Opus 0.47M), Opus
   situations, key checks, classifier and grader 1.33M. [measured]
 
