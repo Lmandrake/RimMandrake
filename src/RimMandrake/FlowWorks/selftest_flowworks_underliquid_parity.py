@@ -196,8 +196,8 @@ def cs_checks(model, ul: str, draw: str, walls: str, mod: str, gold: str, progra
     standing = method_body(drm, r"private\s+static\s+float\s+StandingMetres\s*\(\s*Thing\s+t\s*\)")
     out.append(("installed buildings are covered by their real height (Begin -> StandingMetres -> BuildingMetres)",
                 "StandingMetres(t)" in begin and "BuildingMetres(t)" in standing and "BuildingMetres(" in ulm))
-    out.append(("pawns and corpses standing in liquid get the cover (PawnRenderer.RenderPawnAt)",
-                re.search(r"HarmonyPatch\(\s*typeof\(\s*PawnRenderer\s*\)\s*,\s*nameof\(\s*PawnRenderer\.RenderPawnAt\s*\)", drm) is not None))
+    out.append(("pawns and corpses standing in liquid get the cut (PawnRenderTree.Draw; RIMMANDRAKE_DRAW_PAWN_OWN_PICTURE_CUT_AT_LIQUID_SURFACE_NOT_ICON)",
+                re.search(r"HarmonyPatch\(\s*typeof\(\s*PawnRenderTree\s*\)\s*,\s*nameof\(\s*PawnRenderTree\.Draw\s*\)", drm) is not None))
     out.append(("no vanilla sun shadow from a thing in a pit (SectionLayer_SunShadows transpiled)",
                 re.search(r'TypeByName\(\s*"Verse\.SectionLayer_SunShadows"\s*\)\s*,\s*"Regenerate"', drm) is not None
                 and "ShadowCaster" in drm))

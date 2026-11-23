@@ -133,20 +133,15 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
 
             // his 7: "The human bodies still show some flesh above the water while their clothing is not. It actually reads like
-            // they're floating." The cover was a stock lifestage silhouette (one generic human blob), so the pawn's own head, hands
-            // and apparel edges stuck out of it.
+            // they're floating." The cover was a stock lifestage silhouette (one generic human blob). Since
+            // RIMMANDRAKE_DRAW_PAWN_OWN_PICTURE_CUT_AT_LIQUID_SURFACE_NOT_ICON every node of her own picture (body, head, hands,
+            // hair, apparel) is drawn through one cut at one line, so no part of her can stay out of it.
             Case("PitLook1114_drowned_body_cover_is_the_pawns_own_picture", () =>
             {
-                Assert(RM_UnderLiquid.CoverFromOwnPicture(false, 1f, true, false), "a body lying wholly under clear liquid is covered by a blob");
-                Assert(!RM_UnderLiquid.CoverFromOwnPicture(true, 1f, true, false), "an upright wader lost its banded cover");
-                Assert(!RM_UnderLiquid.CoverFromOwnPicture(false, 0.6f, true, false), "a part-drowned body takes a whole-picture cover");
-                Assert(!RM_UnderLiquid.CoverFromOwnPicture(false, 1f, false, false), "no cached picture: nothing to cover with");
-                Assert(!RM_UnderLiquid.CoverFromOwnPicture(false, 1f, true, true), "a stale (dirty) picture is used as the mask");
                 string src = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
-                RiverSwitchFlipChecks.Has(src, @"RM_UnderLiquid\.CoverFromOwnPicture\(upright, s, ", "the body cover asks the rule");
-                RiverSwitchFlipChecks.Has(src, @"GlobalTextureAtlasManager\.TryGetPawnFrameSet\(pawn, out PawnTextureAtlasFrameSet fs, out bool fresh, false\)",
-                    "the cover reads the pawn's own cached picture, never creating an atlas");
-                RiverSwitchFlipChecks.Has(src, @"new MaterialRequest\(fs\.atlas, ShaderDatabase\.Silhouette", "the picture is drawn as a flat liquid-coloured silhouette");
+                RiverSwitchFlipChecks.Has(src, @"\[HarmonyPatch\(typeof\(PawnRenderTree\), nameof\(PawnRenderTree\.Draw\)\)\]", "the cut opens on her own render tree");
+                RiverSwitchFlipChecks.Has(src, @"typeof\(GenDraw\), nameof\(GenDraw\.DrawMeshNowOrLater\)", "every node she draws passes the cut");
+                Assert(!System.Text.RegularExpressions.Regex.IsMatch(src, @"SilhouetteGraphic"), "the life stage's generic icon still paints her");
             });
 
             Case("PitLook1114_no_fill_n_wording_in_visible_text", () =>

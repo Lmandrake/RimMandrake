@@ -177,6 +177,17 @@ TIERS = {
         "forbid_substr": ["manywaters"],
         "dlc": True,
     },
+    "flowworks_pawn_matrix": {
+        "why": "RIMMANDRAKE_DRAW_PAWN_OWN_PICTURE_CUT_AT_LIQUID_SURFACE_NOT_ICON: the pawn-in-liquid matrix "
+               "(FlowWorks/northstar/pawn_in_liquid_matrix.py). The `flowworks` tier plus the bodies the owner named "
+               "(2026-11-22): the Star Wars species (a Jawa, a Hutt, an Ithorian: mandrake.rsw.starwarsraces) and a "
+               "droid (Droidworks' KotOR droid colonists). Same FlowWorks guards. All five DLCs resolve automatically.",
+        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.patches",
+                 "mandrake.rsw.starwarsraces", "neronix17.toolbox", "mandrake.rsw.droidworks"],
+        "forbid": ["mandrake.rm.pits", "sarg.alphabiomes"],
+        "forbid_substr": ["manywaters"],
+        "dlc": True,
+    },
     "fw_gss_sitting": {
         "why": "FW/GSS owed-criteria sitting (Transient/flowworks_gss_owed_20261011.md section 3): the `flowworks` "
                "tier plus CrackedLands and ExplosiveGrowth, so CrackedLands/validation.py runs on the same load "

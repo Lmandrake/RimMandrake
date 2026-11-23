@@ -80,6 +80,8 @@
     <Compile Include="UnderLiquidParityChecks.cs" />
     <Compile Include="PitReliefParityChecks.cs" />
     <Compile Include="..\Superdeep\RM_UnderLiquid.cs" />
+    <Compile Include="..\Superdeep\RM_PawnCutMath.cs" />
+    <Compile Include="PawnCutChecks.cs" />
     <Compile Include="..\Superdeep\RM_PitAccessMath.cs" />
     <Compile Include="PitAccessChecks.cs" />
     <Compile Include="..\Superdeep\RM_WallClimbMath.cs" />

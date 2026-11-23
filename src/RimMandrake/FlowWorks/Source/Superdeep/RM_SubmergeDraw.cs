@@ -491,10 +491,7 @@ namespace RimMandrake.FlowWorks
 			return RM_UnderLiquid.LabelAlpha(clarity, levelM, h);
 		}
 
-		// ── pawns and corpses (realtime) ─────────────────────────────────────
-
-		private static readonly MaterialPropertyBlock coverBlock = new MaterialPropertyBlock();
-		private static readonly Dictionary<Graphic, Graphic> silhouettes = new Dictionary<Graphic, Graphic>();
+		// ── pawns and corpses (realtime): her own picture cut at the surface ─────────────────
 
 		/// <summary>The liquid's colour where it covers a pawn: a clear liquid's body colour (the sheet's,
 		/// <see cref="BodyColour"/>), an opaque liquid's own tint.</summary>
@@ -552,87 +549,515 @@ namespace RimMandrake.FlowWorks
 		/// lying, downed or dead, RM_UnderLiquid.CorpseMetres.</summary>
 		public static float PawnMetres(Pawn p, bool dead) => dead || RM_Drowning.Lying(p) ? RM_UnderLiquid.CorpseMetres : RM_Drowning.HeightOf(p);
 
-		/// <summary>PawnRenderer.RenderPawnAt postfix: a pawn wading, lying or dead in a wet pit (never a swimmer: vanilla's
-		/// swim pose draws its head only) is covered by the law. Its body's silhouette (vanilla's Silhouette shader: one flat
-		/// colour through the sprite's own alpha) is drawn over the drowned part in the liquid's colour at 1 - Seen, banded
-		/// by depth, so the part reads as lerp(liquid, pawn, Seen); under an opaque liquid it is the liquid.</summary>
-		internal static void CoverPawn(Pawn pawn, PawnRenderer r, Vector3 drawLoc, Rot4? rotOverride)
+		/// <summary>The cut open for the render tree drawing now (PawnRenderTree.Draw, main thread). A tree drawn inside
+		/// another (a carried pawn, drawn by her carrier's Carried node) opens its own and restores the outer one after.</summary>
+		private struct PawnCutState
 		{
-			if (!On || pawn == null || r == null || pawn.Flying || pawn.Swimming)
+			public bool on;
+			public RM_PawnCutMath.Mode mode;
+			public float lineZ;
+			public bool clear;
+			public Color tint;
+		}
+
+		private static PawnCutState cut;
+		private static readonly Stack<PawnCutState> outerCuts = new Stack<PawnCutState>();
+
+		/// <summary>Pawns (thingIDNumber) drawn wet on the last draw: vanilla's far-zoom cached frame (one atlas quad, no render
+		/// tree) is turned off for them so the cut can see her nodes. Written on the main thread in the draw phase only; read
+		/// by ParallelGetPreRenderResults (worker threads, before that phase; no writer runs then).</summary>
+		private static readonly HashSet<int> wetPawns = new HashSet<int>();
+
+		internal static bool NoCachedFrame(Pawn p) => p != null && wetPawns.Contains(p.thingIDNumber);
+
+		private static readonly AccessTools.FieldRef<PawnRenderTree, List<PawnGraphicDrawRequest>> RequestsOf =
+			AccessTools.FieldRefAccess<PawnRenderTree, List<PawnGraphicDrawRequest>>("drawRequests");
+
+		/// <summary>PawnRenderTree.Draw prefix: decides the cut for this pawn by RM_PawnCutMath.Decide (standing: a line at her
+		/// body landmarks on her own picture; lying: whole and tinted; carried: whole) and opens it for every node the tree
+		/// draws (GenDraw.DrawMeshNowOrLater, <see cref="DrawCutNode"/>). Portraits, the atlas cache, statues and drawNow
+		/// renders are never cut.</summary>
+		internal static void BeginPawnCut(PawnRenderTree tree, PawnDrawParms parms)
+		{
+			outerCuts.Push(cut);
+			cut = default(PawnCutState);
+			Pawn pawn = parms.pawn;
+			if (!On || pawn == null || parms.DrawNow || parms.Portrait || parms.Cache || parms.Statue || parms.swimming || pawn.Flying)
 			{
 				return;
 			}
 			Corpse corpse = pawn.Spawned ? null : pawn.ParentHolder as Corpse;
-			Thing at = pawn.Spawned ? pawn : corpse;
-			if (at == null || !at.Spawned || !Wet(at, out int _, out float levelM, out float clarity, false))
+			Thing at = pawn.Spawned ? pawn : corpse;   // carried (held by a carry tracker): neither, so whole
+			float levelM = 0f, clarity = 0f;
+			bool wet = at != null && at.Spawned && Wet(at, out int _, out levelM, out clarity, false);
+			if (at != null)
 			{
-				return;
+				// a corpse's pawn too: vanilla draws a dead body from the atlas at far zoom as well
+				if (wet)
+				{
+					wetPawns.Add(pawn.thingIDNumber);
+				}
+				else
+				{
+					wetPawns.Remove(pawn.thingIDNumber);
+				}
 			}
-			if (pawn.Spawned && (drawLoc - pawn.DrawPos).MagnitudeHorizontalSquared() > 1f)
+			if (!wet || (parms.matrix.Position() - at.DrawPos).MagnitudeHorizontalSquared() > 1f)
 			{
-				return;   // drawn somewhere else (a drafted-move preview ghost): not standing in this liquid
+				return;   // dry, or drawn somewhere else (a drafted-move preview ghost): not standing in this liquid
 			}
-			bool dead = corpse != null;
-			float h = PawnMetres(pawn, dead);
-			float s = RM_UnderLiquid.Share(levelM, 0f, h);
-			Graphic g = r.SilhouetteGraphic;
-			if (s <= 0f || g == null)
+			bool lying = corpse != null || parms.dead || RM_Drowning.Lying(pawn);
+			List<PawnGraphicDrawRequest> reqs = RequestsOf(tree);
+			bool humanlike = pawn.RaceProps.Humanlike && HasHeadNode(reqs);
+			RM_PawnCutMath.Mode mode = RM_PawnCutMath.Decide(lying, false, humanlike, levelM, RM_Drowning.HeightOf(pawn),
+				RM_UnderLiquid.CorpseMetres, clarity, out float share, out float strength);
+			if (mode == RM_PawnCutMath.Mode.Whole || mode == RM_PawnCutMath.Mode.Hidden)
 			{
-				return;
+				return;   // Hidden: the realtime gate already skipped her draw (RealtimeRead); never reached in practice
 			}
-			if (!silhouettes.TryGetValue(g, out Graphic sil))
+			float lineZ = 0f;
+			if (mode == RM_PawnCutMath.Mode.Cut)
 			{
-				sil = g.GetColoredVersion(ShaderDatabase.Silhouette, Color.white, Color.white);
-				silhouettes[g] = sil;
+				if (!PictureExtent(reqs, out float foot, out float crown))
+				{
+					return;   // no node to measure: drawn whole rather than cut at a guessed line
+				}
+				lineZ = RM_PawnCutMath.LineZ(foot, crown, share);
 			}
-			// the facing vanilla draws the body at (PawnRenderer.ParallelGetPreRenderResults): a lying or dead pawn faces its
-			// LayingFacing, not its Rotation (RIMMANDRAKE_ALIGN_CORPSE_LIQUID_COVER_SKEWED_TWIN: the cover was the wrong facing's
-			// silhouette, drawn beside the body)
-			bool upright = pawn.GetPosture() == PawnPosture.Standing || pawn.Crawling;
-			Rot4 rot = rotOverride ?? (upright ? pawn.Rotation : r.LayingFacing());
-			Material mat = sil.MatAt(rot);
-			bool flip = rot == Rot4.West ? g.WestFlipped : rot == Rot4.East && g.EastFlipped;
-			Vector2 size = g.drawSize;
-			float angle = upright ? 0f : r.BodyAngle(PawnRenderFlags.None);
-			// where vanilla drew the body (results.bodyPos, kept as SilhouettePos by RenderPawnAt before this postfix)
-			Vector3 body = r.SilhouettePos;
-			if ((body - drawLoc).MagnitudeHorizontalSquared() > 4f)
-			{
-				body = drawLoc;   // not set by this draw (vanilla returned before it): the body is where it was asked
-			}
-			Matrix4x4 at4 = Matrix4x4.TRS(new Vector3(body.x, Mathf.Max(drawLoc.y, body.y) + CoverLift, body.z), Quaternion.AngleAxis(angle, Vector3.up), Vector3.one);
 			RM_LiquidSurfaceLook look = LookAt(at.Map, RM_SuperdeepTrap.EngineOf(at.Map), at.Position);
-			Color col = CoverColour(look, clarity);
-			// the whole drowned part is seen as the floor under the full depth (round 7); hidden under an opaque liquid
-			float cover = RM_UnderLiquid.CoverAlpha(RM_UnderLiquid.DrownedStep(clarity, levelM));
-			if (cover > 0.01f && !upright && s >= 1f && TryCoverWithOwnPicture(pawn, upright, s, rot, at4, col, cover))
-			{
-				return;
-			}
-			Mesh band = cover > 0.01f ? SliceMesh(size, 0f, s, flip) : null;
-			if (band != null)
-			{
-				coverBlock.SetColor(ShaderPropertyIDs.Color, new Color(col.r, col.g, col.b, cover));
-				UnityEngine.Graphics.DrawMesh(band, at4, mat, 0, null, 0, coverBlock);
-			}
+			Color liquid = CoverColour(look, clarity);
+			float seen = clarity > 0f ? RM_UnderLiquid.Seen(clarity, levelM) : 0f;
+			RM_UnderLiquid.Float3 k = RM_PawnCutMath.TintFactor(new RM_UnderLiquid.Float3(liquid.r, liquid.g, liquid.b), seen, strength);
+			cut = new PawnCutState { on = true, mode = mode, lineZ = lineZ, clear = clarity > 0f, tint = new Color(k.r, k.g, k.b, 1f) };
 		}
 
-		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (his 7): a body wholly drowned is covered through vanilla's cached frame
-		/// of this pawn (the picture RenderPawnAt drew it from: body, head, hair, apparel), drawn where and as vanilla drew it, as
-		/// one flat liquid colour; false = no fresh frame, the silhouette band covers it as before.</summary>
-		private static bool TryCoverWithOwnPicture(Pawn pawn, bool upright, float s, Rot4 rot, Matrix4x4 at4, Color col, float cover)
+		/// <summary>PawnRenderTree.Draw finalizer: the outer tree's cut (or none) again.</summary>
+		internal static void EndPawnCut()
 		{
-			bool have = GlobalTextureAtlasManager.TryGetPawnFrameSet(pawn, out PawnTextureAtlasFrameSet fs, out bool fresh, false)
-				&& !fresh && fs?.atlas != null;
-			int idx = have ? fs.GetIndex(rot, PawnDrawMode.BodyAndHead) : 0;
-			if (!RM_UnderLiquid.CoverFromOwnPicture(upright, s, have && fs.meshes[idx] != null, have && fs.isDirty[idx]))
+			cut = outerCuts.Count > 0 ? outerCuts.Pop() : default(PawnCutState);
+		}
+
+		private static bool HasHeadNode(List<PawnGraphicDrawRequest> reqs)
+		{
+			for (int i = 0; i < reqs.Count; i++)
+			{
+				if (reqs[i].node?.Props?.tagDef == PawnRenderNodeTagDefOf.Head)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>Her picture's world z extent: from the lowest to the highest drawn pixel of her body and head nodes (her
+		/// own body, so a hat or a pack does not move the line), every drawn node when the tree tags neither (a mechanoid or a
+		/// modded body). False when no node could be measured.</summary>
+		private static bool PictureExtent(List<PawnGraphicDrawRequest> reqs, out float foot, out float crown)
+		{
+			foot = float.PositiveInfinity;
+			crown = float.NegativeInfinity;
+			for (int pass = 0; pass < 2 && foot > crown; pass++)
+			{
+				for (int i = 0; i < reqs.Count; i++)
+				{
+					PawnGraphicDrawRequest r = reqs[i];
+					if (r.mesh == null || r.material == null)
+					{
+						continue;
+					}
+					PawnRenderNodeTagDef tag = r.node?.Props?.tagDef;
+					if (pass == 0 && tag != PawnRenderNodeTagDefOf.Body && tag != PawnRenderNodeTagDefOf.Head)
+					{
+						continue;
+					}
+					if (!Rows(r.material.mainTexture, out float c0, out float c1))
+					{
+						continue;
+					}
+					MeshSpan span = SpanOf(r.mesh);
+					Matrix4x4 m = r.preDrawnComputedMatrix;
+					RM_PawnCutMath.NodeExtent(span.zMin, span.zMax, span.vMin, span.vMax, c0, c1, m.m22, m.m20 * span.xMid + m.m23,
+						out float lo, out float hi);
+					foot = Mathf.Min(foot, lo);
+					crown = Mathf.Max(crown, hi);
+				}
+			}
+			return foot < crown;
+		}
+
+		private struct MeshSpan
+		{
+			public float zMin, zMax, vMin, vMax, xMid;
+			public Vector3[] verts;
+			public Vector2[] uvs;
+			public int[] tris;
+		}
+
+		private static readonly Dictionary<int, MeshSpan> meshSpans = new Dictionary<int, MeshSpan>();
+
+		/// <summary>A pawn mesh's local z and texture-row span, and its arrays (read once per mesh: pawn meshes are MeshPool's
+		/// shared planes).</summary>
+		private static MeshSpan SpanOf(Mesh mesh)
+		{
+			int id = mesh.GetInstanceID();
+			if (meshSpans.TryGetValue(id, out MeshSpan s))
+			{
+				return s;
+			}
+			s.verts = mesh.vertices;
+			s.uvs = mesh.uv;
+			s.tris = mesh.triangles;
+			s.zMin = float.PositiveInfinity;
+			s.zMax = float.NegativeInfinity;
+			float vAtZMin = 0f, vAtZMax = 1f, xMin = float.PositiveInfinity, xMax = float.NegativeInfinity;
+			for (int i = 0; i < s.verts.Length; i++)
+			{
+				Vector3 v = s.verts[i];
+				float tv = i < s.uvs.Length ? s.uvs[i].y : 0f;
+				if (v.z < s.zMin)
+				{
+					s.zMin = v.z;
+					vAtZMin = tv;
+				}
+				if (v.z > s.zMax)
+				{
+					s.zMax = v.z;
+					vAtZMax = tv;
+				}
+				xMin = Mathf.Min(xMin, v.x);
+				xMax = Mathf.Max(xMax, v.x);
+			}
+			s.vMin = vAtZMin;
+			s.vMax = vAtZMax;
+			s.xMid = s.verts.Length > 0 ? (xMin + xMax) * 0.5f : 0f;
+			meshSpans[id] = s;
+			return s;
+		}
+
+		/// <summary>Rows (0 bottom .. 1 top) a texture holds drawn pixels in (alpha over 0.1): read once per texture, by a
+		/// small blit (game textures are not CPU-readable). False when it holds none or cannot be read.</summary>
+		private static readonly Dictionary<int, Vector2> textureRows = new Dictionary<int, Vector2>();
+
+		private static bool Rows(Texture tex, out float c0, out float c1)
+		{
+			c0 = 0f;
+			c1 = 1f;
+			if (tex == null)
 			{
 				return false;
 			}
-			Material m = MaterialPool.MatFrom(new MaterialRequest(fs.atlas, ShaderDatabase.Silhouette, Color.white));
-			coverBlock.SetColor(ShaderPropertyIDs.Color, new Color(col.r, col.g, col.b, cover));
-			UnityEngine.Graphics.DrawMesh(fs.meshes[idx], at4, m, 0, null, 0, coverBlock);
+			int id = tex.GetInstanceID();
+			if (!textureRows.TryGetValue(id, out Vector2 r))
+			{
+				r = ReadRows(tex);
+				textureRows[id] = r;
+			}
+			if (!(r.y > r.x))
+			{
+				return false;
+			}
+			c0 = r.x;
+			c1 = r.y;
 			return true;
+		}
+
+		private static Vector2 ReadRows(Texture tex)
+		{
+			int w = Mathf.Clamp(tex.width, 1, 64), h = Mathf.Clamp(tex.height, 1, 128);
+			RenderTexture prev = RenderTexture.active;
+			RenderTexture rt = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+			Texture2D read = null;
+			try
+			{
+				UnityEngine.Graphics.Blit(tex, rt);
+				RenderTexture.active = rt;
+				read = new Texture2D(w, h, TextureFormat.ARGB32, false);
+				read.ReadPixels(new Rect(0, 0, w, h), 0, 0, false);
+				read.Apply(false);
+				Color32[] px = read.GetPixels32();
+				int lo = -1, hi = -1;
+				for (int y = 0; y < h; y++)
+				{
+					for (int x = 0; x < w; x++)
+					{
+						if (px[y * w + x].a > 25)
+						{
+							if (lo < 0)
+							{
+								lo = y;
+							}
+							hi = y;
+							break;
+						}
+					}
+				}
+				return lo < 0 ? Vector2.zero : new Vector2((float)lo / h, (float)(hi + 1) / h);
+			}
+			catch (System.Exception e)
+			{
+				Log.WarningOnce("[FlowWorks] could not read a pawn texture's drawn rows (" + tex.name + "): " + e.Message, tex.GetInstanceID() ^ 0x5C07);
+				return Vector2.zero;
+			}
+			finally
+			{
+				RenderTexture.active = prev;
+				RenderTexture.ReleaseTemporary(rt);
+				if (read != null)
+				{
+					UnityEngine.Object.Destroy(read);
+				}
+			}
+		}
+
+		/// <summary>GenDraw.DrawMeshNowOrLater prefix while a cut is open: true when this drew the node (cut at the line, or
+		/// tinted whole), false = vanilla draws it as asked.</summary>
+		internal static bool DrawCutNode(Mesh mesh, Matrix4x4 matrix, Material mat, bool drawNow, MaterialPropertyBlock props)
+		{
+			if (!cut.on || drawNow || mesh == null || mat == null)
+			{
+				return false;
+			}
+			if (cut.mode == RM_PawnCutMath.Mode.Tinted)
+			{
+				DrawTinted(mesh, matrix, mat, props);
+				return true;
+			}
+			MeshSpan s = SpanOf(mesh);
+			Mesh upper = ClipMesh(mesh, s, matrix, cut.lineZ, true);
+			if (upper != null)
+			{
+				UnityEngine.Graphics.DrawMesh(upper, matrix, mat, 0, null, 0, props);
+			}
+			if (cut.clear)
+			{
+				Mesh lower = ClipMesh(mesh, s, matrix, cut.lineZ, false);
+				if (lower != null)
+				{
+					DrawTinted(lower, matrix, mat, props);
+				}
+			}
+			return true;
+		}
+
+		private static readonly MaterialPropertyBlock tintBlock = new MaterialPropertyBlock();
+
+		/// <summary>Draws <paramref name="mesh"/> in its own material with its colours multiplied by the cut's tint (the liquid
+		/// over it), through the node's own property block (its colour restored after).</summary>
+		private static void DrawTinted(Mesh mesh, Matrix4x4 matrix, Material mat, MaterialPropertyBlock props)
+		{
+			int colId = ShaderPropertyIDs.Color, twoId = ShaderPropertyIDs.ColorTwo;
+			bool hasTwo = mat.HasProperty(twoId);
+			if (props == null)
+			{
+				tintBlock.Clear();
+				tintBlock.SetColor(colId, mat.color * cut.tint);
+				if (hasTwo)
+				{
+					tintBlock.SetColor(twoId, mat.GetColor(twoId) * cut.tint);
+				}
+				UnityEngine.Graphics.DrawMesh(mesh, matrix, mat, 0, null, 0, tintBlock);
+				return;
+			}
+			Color col = props.HasColor(colId) ? props.GetColor(colId) : mat.color;
+			bool hadTwo = props.HasColor(twoId);
+			Color two = hadTwo ? props.GetColor(twoId) : (hasTwo ? mat.GetColor(twoId) : Color.white);
+			props.SetColor(colId, col * cut.tint);
+			if (hasTwo || hadTwo)
+			{
+				props.SetColor(twoId, two * cut.tint);
+			}
+			UnityEngine.Graphics.DrawMesh(mesh, matrix, mat, 0, null, 0, props);
+			props.SetColor(colId, col);
+			if (hasTwo || hadTwo)
+			{
+				props.SetColor(twoId, two);
+			}
+		}
+
+		// the cut meshes: a pool reused frame by frame (a mesh queued by Graphics.DrawMesh is read at render time, so each is
+		// written once per frame)
+		private static readonly List<Mesh> cutPool = new List<Mesh>();
+		private static int cutPoolUsed, cutPoolFrame = -1;
+		private static readonly List<Vector3> cutVerts = new List<Vector3>();
+		private static readonly List<Vector2> cutUvs = new List<Vector2>();
+		private static readonly List<int> cutTris = new List<int>();
+		private static readonly float[] triA = new float[5], triB = new float[5], triC = new float[5];
+		private static readonly float[] cutPoly = new float[RM_PawnCutMath.MaxPolyCorners * 5];
+
+		/// <summary>The part of <paramref name="mesh"/> above (<paramref name="keepAbove"/>) or below the world line z =
+		/// <paramref name="lineZ"/> once placed by <paramref name="matrix"/>: the mesh itself when all of it is on that side,
+		/// null when none is, else a pooled mesh of its clipped triangles (uvs carried, so the picture is cut, not
+		/// stretched).</summary>
+		private static Mesh ClipMesh(Mesh mesh, MeshSpan s, Matrix4x4 matrix, float lineZ, bool keepAbove)
+		{
+			float kx = matrix.m20, ky = matrix.m21, kz = matrix.m22, w = matrix.m23 - lineZ;
+			int above = 0, n = s.verts.Length;
+			for (int i = 0; i < n; i++)
+			{
+				Vector3 v = s.verts[i];
+				if (kx * v.x + ky * v.y + kz * v.z + w >= 0f)
+				{
+					above++;
+				}
+			}
+			if (above == n)
+			{
+				return keepAbove ? mesh : null;
+			}
+			if (above == 0)
+			{
+				return keepAbove ? null : mesh;
+			}
+			cutVerts.Clear();
+			cutUvs.Clear();
+			cutTris.Clear();
+			for (int t = 0; t + 2 < s.tris.Length; t += 3)
+			{
+				Fill(triA, s, s.tris[t]);
+				Fill(triB, s, s.tris[t + 1]);
+				Fill(triC, s, s.tris[t + 2]);
+				int k = RM_PawnCutMath.ClipTriangle(triA, triB, triC, kx, ky, kz, w, keepAbove, cutPoly);
+				int b0 = cutVerts.Count;
+				for (int i = 0; i < k; i++)
+				{
+					cutVerts.Add(new Vector3(cutPoly[i * 5], cutPoly[i * 5 + 1], cutPoly[i * 5 + 2]));
+					cutUvs.Add(new Vector2(cutPoly[i * 5 + 3], cutPoly[i * 5 + 4]));
+				}
+				for (int i = 1; i + 1 < k; i++)
+				{
+					cutTris.Add(b0);
+					cutTris.Add(b0 + i);
+					cutTris.Add(b0 + i + 1);
+				}
+			}
+			if (cutTris.Count == 0)
+			{
+				return null;
+			}
+			if (cutPoolFrame != Time.frameCount)
+			{
+				cutPoolFrame = Time.frameCount;
+				cutPoolUsed = 0;
+			}
+			if (cutPoolUsed >= cutPool.Count)
+			{
+				Mesh fresh = new Mesh { name = "RM_PawnCut" };
+				fresh.MarkDynamic();
+				cutPool.Add(fresh);
+			}
+			Mesh m = cutPool[cutPoolUsed++];
+			m.Clear();
+			m.SetVertices(cutVerts);
+			m.SetUVs(0, cutUvs);
+			m.SetTriangles(cutTris, 0);
+			m.RecalculateBounds();
+			return m;
+		}
+
+		private static void Fill(float[] dst, MeshSpan s, int i)
+		{
+			Vector3 v = s.verts[i];
+			Vector2 uv = i < s.uvs.Length ? s.uvs[i] : Vector2.zero;
+			dst[0] = v.x;
+			dst[1] = v.y;
+			dst[2] = v.z;
+			dst[3] = uv.x;
+			dst[4] = uv.y;
+		}
+
+		/// <summary>Live matrix (northstar/pawn_in_liquid_matrix.py): <see cref="ProofPawnCut"/> for the pawn, or the corpse's
+		/// pawn, whose ThingID is <paramref name="id"/> on the current map.</summary>
+		public static string ProofPawnCutId(string id)
+		{
+			Map map = Find.CurrentMap;
+			string want = (id ?? "").Trim();
+			if (map == null || want.Length == 0)
+			{
+				return "PAWNCUT none";
+			}
+			foreach (Thing t in map.listerThings.AllThings)
+			{
+				Pawn p = t as Pawn ?? (t as Corpse)?.InnerPawn;
+				if (p != null && (t.ThingID == want || p.ThingID == want))
+				{
+					return ProofPawnCut(p);
+				}
+			}
+			return "PAWNCUT " + want + " notfound";
+		}
+
+		/// <summary>Live matrix: the player's click at a map point "x,z" (floats) as vanilla's Selector reads it
+		/// (GenUI.ThingsUnderMouse at 1 cell with the click's targeting, mustBeSelectable), then selects the first hit as a
+		/// click does. "SELECT first=&lt;ThingID|none&gt; selected=&lt;ThingID|none&gt; hits=a,b,...".</summary>
+		public static string ProofSelectAt(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] p = (arg ?? "").Split(',');
+			if (map == null || p.Length < 2 || !float.TryParse(p[0].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out float x)
+				|| !float.TryParse(p[1].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out float z))
+			{
+				return "REFUSED: want x,z";
+			}
+			TargetingParameters clickParams = new TargetingParameters
+			{
+				mustBeSelectable = true,
+				canTargetPawns = true,
+				canTargetBuildings = true,
+				canTargetItems = true,
+				mapObjectTargetsMustBeAutoAttackable = false
+			};
+			List<Thing> hits = GenUI.ThingsUnderMouse(new Vector3(x, 0f, z), 1f, clickParams);
+			Thing first = hits.Count > 0 ? hits[0] : null;
+			Find.Selector.ClearSelection();
+			if (first != null)
+			{
+				Find.Selector.Select(first, false, true);
+			}
+			Thing sel = Find.Selector.SingleSelectedThing;
+			StringBuilder sb = new StringBuilder("SELECT first=").Append(first != null ? first.ThingID : "none")
+				.Append(" selected=").Append(sel != null ? sel.ThingID : "none").Append(" hits=");
+			for (int i = 0; i < hits.Count && i < 8; i++)
+			{
+				sb.Append(i > 0 ? "," : "").Append(hits[i].ThingID);
+			}
+			return sb.ToString();
+		}
+
+		/// <summary>A proof line for one pawn (the live matrix reads it): the decision, the line and her picture's extent as the
+		/// last draw measured them. "PAWNCUT id mode=... share=... level=... height=... clarity=... lying=... foot=... crown=...
+		/// line=..." or "PAWNCUT id none".</summary>
+		public static string ProofPawnCut(Pawn pawn)
+		{
+			if (pawn == null)
+			{
+				return "PAWNCUT none";
+			}
+			CultureInfo inv = CultureInfo.InvariantCulture;
+			Corpse corpse = pawn.Spawned ? null : pawn.ParentHolder as Corpse;
+			Thing at = pawn.Spawned ? pawn : corpse;
+			if (at == null || !at.Spawned || !Wet(at, out int _, out float levelM, out float clarity, false))
+			{
+				return "PAWNCUT " + pawn.ThingID + " dry";
+			}
+			bool lying = corpse != null || RM_Drowning.Lying(pawn);
+			PawnRenderTree tree = pawn.Drawer?.renderer?.renderTree;
+			List<PawnGraphicDrawRequest> reqs = tree != null ? RequestsOf(tree) : null;
+			bool humanlike = pawn.RaceProps.Humanlike && reqs != null && HasHeadNode(reqs);
+			float h = RM_Drowning.HeightOf(pawn);
+			RM_PawnCutMath.Mode mode = RM_PawnCutMath.Decide(lying, false, humanlike, levelM, h, RM_UnderLiquid.CorpseMetres, clarity,
+				out float share, out float strength);
+			StringBuilder sb = new StringBuilder("PAWNCUT ").Append(pawn.ThingID).Append(" mode=").Append(mode)
+				.Append(" share=").Append(share.ToString("0.###", inv)).Append(" tint=").Append(strength.ToString("0.###", inv))
+				.Append(" level=").Append(levelM.ToString("0.###", inv)).Append(" height=").Append(h.ToString("0.###", inv))
+				.Append(" clarity=").Append(clarity.ToString("0.###", inv)).Append(" lying=").Append(lying)
+				.Append(" humanlike=").Append(humanlike).Append(" noCache=").Append(NoCachedFrame(pawn));
+			if (reqs != null && PictureExtent(reqs, out float foot, out float crown))
+			{
+				sb.Append(" foot=").Append(foot.ToString("0.###", inv)).Append(" crown=").Append(crown.ToString("0.###", inv))
+					.Append(" line=").Append(RM_PawnCutMath.LineZ(foot, crown, share).ToString("0.###", inv))
+					.Append(" drawZ=").Append(pawn.DrawPos.z.ToString("0.###", inv));
+			}
+			return sb.ToString();
 		}
 
 		// ── the realtime layer (RIMMANDRAKE_SINK_HOSES_AND_OVERLAYS_TORCHES_BURN_IN_TAR) ─────────────────
@@ -689,8 +1114,8 @@ namespace RimMandrake.FlowWorks
 			return true;
 		}
 
-		/// <summary>What the realtime gate does with a thing: drawn whole (dry, off a pit, nothing to cut), hidden, covered by
-		/// its silhouette (a wading or lying body, CoverPawn) or split at the line.</summary>
+		/// <summary>What the realtime gate does with a thing: drawn whole (dry, off a pit, nothing to cut), hidden, drawn as its
+		/// own picture cut at the line (a wading or lying body: its render tree's nodes, BeginPawnCut) or split at the line.</summary>
 		internal enum RealtimeVerdict { Whole, Hidden, BodyCover, Split }
 
 		/// <summary>The realtime gate's decision for <paramref name="t"/>, read only (BeginRealtime and ProofOverlays share it).</summary>
@@ -907,10 +1332,6 @@ namespace RimMandrake.FlowWorks
 			return sb.ToString();
 		}
 
-		/// <summary>Above every layer a pawn's own render tree draws (body, apparel, head; the slice keeps the head out while
-		/// it is above the line).</summary>
-		private const float CoverLift = 0.05f;
-
 		private static readonly float[] Uv0 = new float[8];
 		private static readonly float[] Uv = new float[8];
 		private static readonly Vector2[] UvBuf = new Vector2[4];
@@ -918,8 +1339,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Printer_Plane.PrintPlane prefix while a context is open: true when this drew the plane (split, covered, cut
 		/// at the rim, under the sheet or hidden), false = vanilla prints it as asked.
 		/// A drowned part is drawn whole in its own material with a cover in the liquid's colour over it (its silhouette, at
-		/// RM_UnderLiquid.CoverAlpha of the law's Seen, banded by depth), so it reads lerp(liquid, own, Seen) as a pawn does
-		/// (CoverPawn) and as the floor beside it does under the sheet; under an opaque liquid only the part above the line is
+		/// RM_UnderLiquid.CoverAlpha of the law's Seen, banded by depth), so it reads lerp(liquid, own, Seen) as the floor beside it does under the sheet; under an opaque liquid only the part above the line is
 		/// drawn. A thing lying on the floor (a vent, filth, a plant wholly under) is drawn under the sheet instead.</summary>
 		internal static bool Split(MapDrawLayer layer, Vector3 center, Vector2 size, Material mat, float rot, bool flipUv,
 			Vector2[] uvs, Color32[] colors, float bias, float payload)
@@ -1567,17 +1987,54 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
-	/// <summary>Pawns and corpses standing, lying or dead in a wet pit are covered by the law (RM_SubmergeDraw.CoverPawn).</summary>
-	[HarmonyPatch(typeof(PawnRenderer), nameof(PawnRenderer.RenderPawnAt))]
+	/// <summary>RIMMANDRAKE_DRAW_PAWN_OWN_PICTURE_CUT_AT_LIQUID_SURFACE_NOT_ICON: a pawn or corpse standing, lying or dead in a
+	/// wet pit is drawn as her own picture cut at the liquid's surface (RM_SubmergeDraw.BeginPawnCut): the cut opens for the
+	/// render tree's draw and closes after it.</summary>
+	[HarmonyPatch(typeof(PawnRenderTree), nameof(PawnRenderTree.Draw))]
 	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (pawns)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
-	internal static class Patch_RM_SubmergePawn
+	internal static class Patch_RM_SubmergePawnCut
+	{
+		[HarmonyPrefix]
+		private static void Prefix(PawnRenderTree __instance, PawnDrawParms parms)
+		{
+			RM_SubmergeDraw.BeginPawnCut(__instance, parms);
+		}
+
+		[HarmonyFinalizer]
+		private static void Finalizer()
+		{
+			RM_SubmergeDraw.EndPawnCut();
+		}
+	}
+
+	/// <summary>Every node a pawn's render tree draws passes here; inside an open cut it is drawn cut at the line or tinted
+	/// (RM_SubmergeDraw.DrawCutNode).</summary>
+	[HarmonyPatch(typeof(GenDraw), nameof(GenDraw.DrawMeshNowOrLater), new[] { typeof(Mesh), typeof(Matrix4x4), typeof(Material), typeof(bool), typeof(MaterialPropertyBlock) })]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (pawn nodes)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergePawnNode
+	{
+		[HarmonyPrefix]
+		private static bool Prefix(Mesh mesh, Matrix4x4 matrix, Material mat, bool drawNow, MaterialPropertyBlock properties)
+		{
+			return !RM_SubmergeDraw.DrawCutNode(mesh, matrix, mat, drawNow, properties);
+		}
+	}
+
+	/// <summary>Vanilla draws a humanlike at far zoom from one cached atlas quad, with no render tree to cut: a pawn that was
+	/// wet on her last draw is drawn from her tree instead (RM_SubmergeDraw.NoCachedFrame).</summary>
+	[HarmonyPatch(typeof(PawnRenderer), "ParallelGetPreRenderResults")]
+	[RimMandrake.Shared.PatchFeature("Pit contents under liquid (pawn cache)", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitSubmergeCutEnabled")]
+	internal static class Patch_RM_SubmergePawnNoCache
 	{
 		private static readonly AccessTools.FieldRef<PawnRenderer, Pawn> PawnOf = AccessTools.FieldRefAccess<PawnRenderer, Pawn>("pawn");
 
-		[HarmonyPostfix]
-		private static void Postfix(PawnRenderer __instance, Vector3 drawLoc, Rot4? rotOverride)
+		[HarmonyPrefix]
+		private static void Prefix(PawnRenderer __instance, ref bool disableCache)
 		{
-			RM_SubmergeDraw.CoverPawn(PawnOf(__instance), __instance, drawLoc, rotOverride);
+			if (!disableCache && RM_SubmergeDraw.On && RM_SubmergeDraw.NoCachedFrame(PawnOf(__instance)))
+			{
+				disableCache = true;
+			}
 		}
 	}
 

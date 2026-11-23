@@ -419,7 +419,7 @@ def as_cover(law):
 def drown_sprite(sprite, law, foot_m_over, height_m, quad=None, uniform=False):
     """Cut a thing's picture the way the game does (RM_UnderLiquid.Share, from its foot): its drawn quad's rows
     quad = (top, bottom), transparent margin included, span height_m; rows above the quad (a pawn's head) are higher
-    still. A drowned row lies (foot - its height) under, or, with uniform (a pawn: RM_SubmergeDraw.CoverPawn covers its
+    still. A drowned row lies (foot - its height) under, or, with uniform (a pawn: RM_SubmergeDraw.DrawCutNode tints its
     whole drowned part as at the full depth), foot_m_over under."""
     out = sprite.copy()
     h = sprite.shape[0]
