@@ -2013,6 +2013,9 @@ def _pit_trap_raid(S):
             for c in waiting:
                 c['after'], c['reply'] = _ptr_prisoner(S, c['pawn'])
                 c['trace'] = (c['trace'] + [c['reply'][8:60]])[-3:]
+                at = kv(c['reply']).get('cell', '')
+                if c['after'] is False and ',' in at and tuple(int(q) for q in at.split(',')) not in pit and 'out' not in c:
+                    c['out'] = '%s out of the pit at %s, no prisoner: %s' % (c['pawn'], at, ' || '.join(ptrace[-3:])[:420])
         S.r['ptrCaptureTrace'] = ptrace             # beside the rows, as moatCaptureTrace: a row's detail is cut short
         for c in caught:
             c['reply'] = c['reply'][:120]
@@ -2029,6 +2032,18 @@ def _pit_trap_raid(S):
               else 'nobody fell, so there was no one to capture',
               unmeasured=not caught or any(c['before'] is None or c['after'] is None
                                            or (not c['after'] and c['wardenAbleAfter'] is False) for c in caught))
+        # RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_4M_TRENCH_ONCE: a raider the 4 m trench holds, alive and no prisoner,
+        # read on a square outside the pit (seen once, 2026-11-21, on the old 1-wide staging; how he left was never read).
+        # Red for that: the detail carries the last three 30-tick trace lines before the read that found him out.
+        # Test Pilot 2026-11-23 (Steve1, build 1c053b325bc5): 0 of 31 held raiders left in 15 runs of 1,500 ticks with the
+        # raid on the map (design/concepts/FlowWorks/version/in_game/testpilot_20261123/PROGRESS.md), so the cause is unnamed.
+        # RULED OUT there, each by its own run: a comrade's ladder (no ladder was ever read by the trench; 4 m is past a
+        # portable ladder), a kidnap job on a held raider beside a colonist downed on the strip (the free raiders took the
+        # colonists; the held stayed), the raid's flight (the held stayed when every free raider left the map), the old
+        # across-the-gap staging (held raiders walked the trench floor to hit the wall at its end and stayed held).
+        S.row('PTR_held_stay_in_the_trench', bool(caught) and not any('out' in c for c in caught),
+              [c['out'] for c in caught if 'out' in c] or 'every captive read stood on a pit square until taken (%d trace lines)'
+              % len(ptrace), unmeasured=not caught or all(c['before'] is None for c in caught))
         S.again()
         pit = _pit_trap(S, fall=False)              # control: no lid; the same raid must path round and nobody fall
         seen = _watch_trap(S, pit, until_ladder=False)

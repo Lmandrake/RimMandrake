@@ -263,6 +263,8 @@ class Fake:
             h = g['hostile'].get(arg)
             if h is None or self.fault == ('refuse_trap' if method == 'ProofTrap' else 'refuse_capture'):
                 return 'REFUSED: no spawned pawn %s' % arg
+            if method == 'ProofCaptureDown' and self.fault == 'climbs_out' and arg in g['orders']:
+                return 'VERDICT NotHeld held=False prisoner=False cell=%d,%d' % (h['x'] - 5, h['z'])   # out, alive, no prisoner
             if method == 'ProofTrap':
                 return 'TRAP descents=1 lastCell=none pos=%d,%d held=%s last=-' % (h['x'], h['z'], h['held'])
             return 'VERDICT %s held=%s prisoner=%s cell=%d,%d' % (self._verdict(arg), h['held'], bool(h.get('prisoner')),
@@ -270,7 +272,7 @@ class Fake:
         raise AssertionError('unexpected static %s.%s' % (typ, method))
 
 
-ROWS = ('PTR_two_fall', 'PTR_fallen_become_prisoners', 'PTR_control_open_pit_no_one_falls')
+ROWS = ('PTR_two_fall', 'PTR_fallen_become_prisoners', 'PTR_held_stay_in_the_trench', 'PTR_control_open_pit_no_one_falls')
 
 
 def run(mod='capture', fault=None):
@@ -306,6 +308,14 @@ check('the capture window leaves a 30-tick trace beside the rows (ptrCaptureTrac
       '(RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_4M_TRENCH_ONCE: two reads 900 ticks apart could not)',
       len(tr) >= 3 and all(t.startswith('t=') for t in tr) and any(':RM_CaptureDown>' in t for t in tr)
       and len({t.split()[0] for t in tr}) == len(tr), tr[:4])
+r, o, _ = run(mod=None, fault='climbs_out')
+det = next((str(x.get('detail')) for x in o.get('rows', []) if x['id'] == 'PTR_held_stay_in_the_trench'), '')
+check('a held raider read alive, no prisoner, on a square outside the pit: PTR_held_stay_in_the_trench FAIL and its detail '
+      'names him, the square and the trace before it (seen once live, 2026-11-21, with no read of how he left)',
+      r.get('PTR_held_stay_in_the_trench') == 'FAIL' and 'out of the pit at' in det and 't=' in det, [r, det[:200]])
+r, o, _ = run(mod=None)
+check('a mod whose capture makes no prisoner, the captives still in the pit: PTR_held_stay_in_the_trench PASS (a stalled '
+      'capture is the other row\'s fault)', r.get('PTR_held_stay_in_the_trench') == 'PASS', r)
 r, o, _ = run(mod=None)
 check('a mod whose capture makes no prisoner: PTR_fallen_become_prisoners FAIL, the fall and the control PASS',
       r.get('PTR_fallen_become_prisoners') == 'FAIL' and r.get('PTR_two_fall') == 'PASS'

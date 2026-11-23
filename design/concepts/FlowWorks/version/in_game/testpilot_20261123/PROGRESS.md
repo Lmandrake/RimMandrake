@@ -69,3 +69,41 @@ Host: ArchBig (archmagi), bridge taken 06:06 PST 2026-11-23. Clone: .../RIMMANDR
 ## NOT DONE
 - Third merged ticket (held raider read NotHeld one square out of a 4 m trench, sc_pit_trap_raid) not traced.
 - Big-pit owner look not restaged on ArchBig (design/concepts/FlowWorks/version/in_game/visit_8/evidence/bigpit plan+stage).
+
+# Continuation 1 (2026-11-23 07:48 PST): the third fault, RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_4M_TRENCH_ONCE
+## State
+- 07:55 PST: no game free [measured, game_lock.py query all + bridge who]: ArchBig = ExplosiveKnockback visit 4 (took it 07:50),
+  ArchSmall = Pyrelands visit 7 (since 05:03), Steve1/Steve2 = testq jobs. No take made, nothing forced.
+- Published 0613b8a45863: ptrCaptureTrace (30-tick trace in _pit_trap_raid's capture window) + selftest check + trench.py.
+## What the old evidence says (visit_2/evidence/exp/sc_pit_trap_raid_20261121T0823_gameb_fixed.json) [measured]
+- Raider Human21236 (Grenadier_Tox, PirateWaster raid of 10) fell at 63,60 tick 243, held=True at 302. Warden Human21304 ordered
+  RM_CaptureDown from lip 63,61 (NORTH). At tick 1202: NotHeld at 63,59 = the SOUTH bank, the raid's side, across the 1-wide
+  trench from the warden. Warden downed. The second held raider (21240) was gone from the map (reply None).
+- Ladder reads (list_things RM_LadderPortable) stop at tick 302: nothing was read between 302 and 1202.
+- The mod's own rule: a portable ladder spans 3 m at most (FETCH_DEPTH note in concept_scenes.py), so a fetch by ladder into a
+  4 m trench should be refused. If that held on 51e9d9ce4a, a ladder fetch is NOT how he left.
+## Theories (written before any experiment)
+- U1 FETCH: a comrade set a ladder on the south bank and he walked out. Predicts: RM_LadderPortable at 63,59/63,60 and a free
+  raider's fetch job before he moves; held=False while still in the pit (LadderLetsOut). Against: the 3 m ladder limit.
+- U2 EJECTED: his square became unwalkable and vanilla moved him (Pawn_PathFollower.TryRecoverFromUnwalkablePosition), or a
+  position write with no path (a carry and drop). Predicts: a jump between two reads with no ladder, job unchanged.
+- U3 HOLD LAPSED IN PLACE: IsHeld went false at 63,60 (the width clause of a 1-wide trench, a lid state, a corpse or item
+  changing the pocket), then he walked out by an ordinary path. Predicts: held=False at 63,60 one read before he moves.
+- U4 MELEE CHASE: his attack job on someone on the bank moved him by a step the StartPath / TryEnterNextPathCell veto misses
+  (now also behind pitLipMeleeDeniedEnabled, 1c053b325bc5). Predicts: job AttackMelee, held=True on the last read in the pit.
+- U5 CAPTURE SIDE EFFECT: the warden's capture moved him before the warden was downed. Predicts: the warden's job active at
+  the move. Against: he ended on the far bank from the warden.
+## Experiment ready, not run (no game)
+- python.exe -u design/concepts/FlowWorks/version/in_game/testpilot_20261123/trench.py <out.json> <width 1|2> <ticks> [--wardens]
+  (width 1 = the old 1-wide trench; the raid stays on the map; receipt keys holdTrace / holdLeft; row TP_held_stay_held).
+## Next
+- take a game when one is free (FlowWorks 1c053b325bc5 must be deployed on it), run trench.py 1 1500 --wardens, read holdLeft.
+- U6 JUMP PACK (added 08:25 from RM_RaiderTrench.cs, before any experiment): the mod hands raiders jump packs to cross trenches
+  (owner card Q7; MinClimbCellsForJumpPacks 20). A jump is a pawn flyer: no path step, so the step veto never sees it.
+  Predicts: a jump job on the held raider (or a jump pack in his gear), a move of more than 0 squares between two 30-tick reads
+  with held=True on the last read in the pit. The old trench was 9 squares; whether the map had 20 dug squares is unread.
+- U7 CROSSING LADDER: the raid, cut off by the trench across its path (old staging), set its own crossing ladder
+  (JobGiver_RM_CrossTrench) on his square; LadderLetsOut then frees him. Against: "4 m is past a 3 m ladder" (pinned).
+- 08:04, 08:11, 08:20 PST polls: no Archmagi game free; ArchBig now on the ExplosiveKnockback tier (a FlowWorks run there needs
+  a tier reload). Steve2 rolled to a new testq job at 08:09 (the lane refills itself).
+- U8 KIDNAP (08:55, before its experiment): a held raider beside a colonist downed on the rim takes vanilla Kidnap (seen as a free raider's job in t3); the carry-and-exit walks him out. Predicts: job Kidnap on the held raider, then a place outside the pit.
