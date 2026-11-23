@@ -19,8 +19,13 @@ namespace RimMandrake.Patches
     //   * Pawns: Pawn_DrawTracker.DrawPos's read of SeededYOffset is routed to SouthDrawsFrontPawn.OrderedYOffset.
     //   * Buildings and plants: SectionLayer_ThingsGeneral.TakePrintFrom names the thing being printed; every
     //     Printer_Plane.PrintPlane call it makes is lifted by how far south the thing stands, flat (no tilt).
-    //     Map-mesh rebuilds only, never per frame. Moved here from BiomesShell's RM_PlantDrawOrder (which applied to
+    //     Map-mesh rebuilds only. Moved here from BiomesShell's RM_PlantDrawOrder (which applied to
     //     plants in our biomes only); this is the one home of the rule.
+    //   * Real-time parts: while Thing.DynamicDrawPhase draws a non-plant thing the print path orders, that thing's
+    //     DrawPos (so the drawLoc its DrawAt gets, and the parent.DrawPos its comps read) carries the same lift as its
+    //     printed quads, so a turret's gun, a battery's bar or a solar panel's fill stay over their lifted body.
+    //     The one vanilla building part drawn at an explicit def.altitudeLayer.AltitudeFor() (decompiled 1.6,
+    //     CompBandNode.cs:176, the band node's tuning bar) reads PartAltitudeFor instead, which adds the same lift.
     // NOT covered: a pawn against a tall building or tree. Pawns sit on the Pawn layer, two layers above every
     // building and plant, so a pawn standing north of a tree still draws over its canopy (vanilla's choice).
     public static class SouthDrawsFrontPatches
@@ -29,8 +34,7 @@ namespace RimMandrake.Patches
         public const string LogTag = "[RimMandrake Patches] south draws front:";
 
         private static bool installed;
-        private static bool pawnRouted, printRouted;
-        private static readonly float commonAltitude = ((AltitudeLayer)SouthDrawsFrontKernel.CommonLayer).AltitudeFor();
+        private static bool pawnRouted, printRouted, realtimeRouted, partsRouted;
 
         // The thing SectionLayer_ThingsGeneral is printing, and what its quads get. ThreadStatic: a print on another
         // thread never reads this one's thing.
@@ -39,6 +43,13 @@ namespace RimMandrake.Patches
         [ThreadStatic] private static float printingLift;
         [ThreadStatic] private static int printingMapZ;
 
+        // The thing DynamicDrawManager is drawing now (main thread, DrawPhase.Draw only) and its lift. drawingThing is a
+        // plain static so Thing.DrawPos's postfix costs one reference compare; drawingHere (ThreadStatic) keeps another
+        // thread reading the same thing's DrawPos at that moment on vanilla's value.
+        private static Thing drawingThing;
+        private static float drawingLift;
+        [ThreadStatic] private static bool drawingHere;
+
         public static string Status
         {
             get
@@ -46,7 +57,9 @@ namespace RimMandrake.Patches
                 if (!RM_PatchesSettings.southDrawsFront)
                     return "Off: vanilla draw order (pawns by a random seed, printed things by their size).";
                 return "Pawns " + (pawnRouted ? "ordered" : "NOT patched") + "; buildings and plants "
-                    + (printRouted ? "ordered" : "NOT patched") + ".";
+                    + (printRouted ? "ordered" : "NOT patched") + "; real-time parts "
+                    + (realtimeRouted ? "lifted with their body" : "NOT patched") + "; band node bar "
+                    + (partsRouted ? "lifted" : "NOT patched") + ".";
             }
         }
 
@@ -77,6 +90,29 @@ namespace RimMandrake.Patches
             catch (Exception e)
             {
                 Log.Error(LogTag + " could not patch the thing printer: " + e.Message + ". Buildings and plants keep vanilla order.");
+            }
+            try
+            {
+                harmony.Patch(AccessTools.Method(typeof(Thing), nameof(Thing.DynamicDrawPhase)),
+                    prefix: new HarmonyMethod(typeof(SouthDrawsFrontPatches), nameof(DynamicDrawPhasePrefix)),
+                    finalizer: new HarmonyMethod(typeof(SouthDrawsFrontPatches), nameof(DynamicDrawPhaseFinalizer)));
+                harmony.Patch(AccessTools.PropertyGetter(typeof(Thing), nameof(Thing.DrawPos)),
+                    postfix: new HarmonyMethod(typeof(SouthDrawsFrontPatches), nameof(ThingDrawPosPostfix)));
+                realtimeRouted = true;
+            }
+            catch (Exception e)
+            {
+                Log.Error(LogTag + " could not patch Thing.DynamicDrawPhase / Thing.DrawPos: " + e.Message
+                    + ". Real-time parts of lifted buildings draw at vanilla altitude.");
+            }
+            try
+            {
+                harmony.Patch(AccessTools.Method(typeof(CompBandNode), nameof(CompBandNode.PostDraw)),
+                    transpiler: new HarmonyMethod(typeof(SouthDrawsFrontPatches), nameof(PartAltitudeTranspiler)));
+            }
+            catch (Exception e)
+            {
+                Log.Error(LogTag + " could not patch CompBandNode.PostDraw: " + e.Message + ". Its tuning bar draws at vanilla altitude.");
             }
             Log.Message(LogTag + " " + Status);
         }
@@ -115,20 +151,13 @@ namespace RimMandrake.Patches
             if (map == null)
                 return;
             int layer = (int)t.def.altitudeLayer;
-            if (t is Plant)
-            {
-                if (layer < SouthDrawsFrontKernel.PlantMinLayer || layer > SouthDrawsFrontKernel.CommonLayer)
-                    return;
-                printingPlant = true;
-            }
-            else
-            {
-                if (layer < SouthDrawsFrontKernel.BuildingMinLayer || layer > SouthDrawsFrontKernel.CommonLayer)
-                    return;
-                printingPlant = false;
-                // Every quad of one building shares its footprint's south edge, so its own parts keep their order.
-                printingLift = SouthDrawsFrontKernel.PrintOffset(t.OccupiedRect().minZ, map.Size.z);
-            }
+            bool plant = t is Plant;
+            if (!SouthDrawsFrontKernel.Orders(plant, layer))
+                return;
+            printingPlant = plant;
+            if (!plant)
+                // Every quad of one building gets one lift, so its own parts keep their order.
+                printingLift = SouthDrawsFrontKernel.BuildingLift(layer, t.OccupiedRect().minZ, map.Size.z);
             printingMapZ = map.Size.z;
             printing = t;
         }
@@ -151,13 +180,77 @@ namespace RimMandrake.Patches
                 if (carried > SouthDrawsFrontKernel.MaxCarriedOffset || carried < -SouthDrawsFrontKernel.MaxCarriedOffset)
                     carried = 0f;
                 float foot = SouthDrawsFrontKernel.PlantFoot(center.z, size.y, t.def.graphicData?.drawSize.x ?? 1f);
-                center.y = commonAltitude + SouthDrawsFrontKernel.PrintOffset(foot, printingMapZ) + carried;
+                center.y = SouthDrawsFrontKernel.PlantAltitude(foot, printingMapZ) + carried;
             }
             else
             {
                 center.y += printingLift;
             }
             topVerticesAltitudeBias = 0f;
+        }
+
+        public static void DynamicDrawPhasePrefix(Thing __instance, DrawPhase phase)
+        {
+            if (phase != DrawPhase.Draw)
+                return;   // the parallel phases run on other threads: they never touch the statics
+            drawingThing = null;
+            drawingHere = false;
+            if (!RM_PatchesSettings.southDrawsFront || __instance?.def == null || __instance is Plant)
+                return;
+            int layer = (int)__instance.def.altitudeLayer;
+            if (!SouthDrawsFrontKernel.Orders(false, layer))
+                return;
+            Map map = __instance.Map;
+            if (map == null)
+                return;
+            drawingLift = SouthDrawsFrontKernel.BuildingLift(layer, __instance.OccupiedRect().minZ, map.Size.z);
+            drawingThing = __instance;
+            drawingHere = true;
+        }
+
+        public static Exception DynamicDrawPhaseFinalizer(Exception __exception)
+        {
+            if (drawingHere)
+            {
+                drawingThing = null;
+                drawingHere = false;
+            }
+            return __exception;
+        }
+
+        public static void ThingDrawPosPostfix(Thing __instance, ref Vector3 __result)
+        {
+            if (__instance == drawingThing && drawingHere)
+                __result.y += drawingLift;
+        }
+
+        /// <summary>A part's explicit layer altitude, lifted with the thing being drawn (zero lift on any other thread,
+        /// phase or thing, so vanilla's value).</summary>
+        public static float PartAltitudeFor(AltitudeLayer alt)
+        {
+            float y = alt.AltitudeFor();
+            return drawingHere ? y + drawingLift : y;
+        }
+
+        public static IEnumerable<CodeInstruction> PartAltitudeTranspiler(IEnumerable<CodeInstruction> instructions)
+        {
+            MethodInfo vanilla = AccessTools.Method(typeof(Altitudes), nameof(Altitudes.AltitudeFor), new[] { typeof(AltitudeLayer) });
+            MethodInfo ours = AccessTools.Method(typeof(SouthDrawsFrontPatches), nameof(PartAltitudeFor));
+            int replaced = 0;
+            foreach (CodeInstruction ins in instructions)
+            {
+                if (vanilla != null && ins.Calls(vanilla))
+                {
+                    yield return new CodeInstruction(OpCodes.Call, ours) { labels = ins.labels, blocks = ins.blocks };
+                    replaced++;
+                    continue;
+                }
+                yield return ins;
+            }
+            partsRouted = replaced == 1;
+            if (replaced != 1)
+                Log.Error(LogTag + " expected one AltitudeFor call in CompBandNode.PostDraw, found " + replaced
+                    + ". Its tuning bar draws at vanilla altitude.");
         }
 
         /// <summary>Read-only live probe (prove_draw_order_live.py, by jawa/static_call): the setting, the routing, and

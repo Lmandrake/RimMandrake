@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs
++++ b/src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs
+@@ -100,7 +100,7 @@
+         /// breaks the tie inside one row.</summary>
+         public static float BuildingAltitude(int layer, int footMinZ, int mapSizeZ)
+         {
+-            return LayerAltitude(CommonLayer) + PrintOffset(footMinZ, mapSizeZ) - (CommonLayer - layer) * LayerTie;
++            return LayerAltitude(layer) + PrintOffset(footMinZ, mapSizeZ);
+         }
+ 
+         /// <summary>What every quad and every real-time part of such a thing gets added to its vanilla altitude: one

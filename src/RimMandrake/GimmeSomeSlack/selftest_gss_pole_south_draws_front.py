@@ -5,7 +5,8 @@
 Reads the SHIPPED decision: each standing mast's altitudeLayer from Defs/Aerial/RM_AerialAnchors.xml (inheritance resolved), and the
 SouthDrawsFront rule's constants from MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs (through MandrakePatches'
 own selftest parser, so neither can drift). The printed y of each thing is the patch's (SouthDrawsFrontPatches.cs): a plant prints
-flat on the common layer at its quad's foot; a building on Building..BuildingOnTop keeps its layer, lifted by its footprint's minZ;
+flat on the common layer at its quad's foot; a building on Building..BuildingOnTop prints on the common layer too, lifted by its
+footprint's minZ, its own layer only breaking the tie inside one row (SouthDrawsFrontKernel.BuildingAltitude);
 the mast head overlay draws real-time at TopAltitude (PawnState, RM_MapComponent_Aerial.cs:840). Larger y is in front.
 
 The range of situations (what the game varies for this bar):
@@ -20,9 +21,9 @@ The range of situations (what the game varies for this bar):
 Left out, with the reason: two things on the same row (neither is south; the print order decides); a pawn (vanilla draws pawns over
 every building and plant, SouthDrawsFront NOT covered); the mast's wires (they hang from the head).
 Two regions the mast's own layer cannot reach are counted apart and are questions to the Conductor (not passes, not fails here):
-  BUILDING_LAYER_REACH  a picture on the Building (15) or 16 layer south of a mast that reaches north into it: the rule keeps such a
-                        building on its own layer, under the common layer the mast now prints on (a fix lives in the rule's home,
-                        MandrakePatches: a building whose picture reaches north of its footprint joins the common layer)
+  BUILDING_LAYER_REACH  a picture on the Building (15) or 16 layer south of a mast that reaches north into it, drawn behind the mast:
+                        0 since every building joined the common layer (RIMMANDRAKE_ORDER_SLACK_MAST_BEHIND_TALL_SOUTHERN_PICTURES;
+                        selftest_gss_mast_behind_tall_south_picture.py reads that rule across every row and map depth)
   HEAD_OVER_SOUTHERN_PICTURE  a plant or building south of a mast whose picture reaches the head overlay, which draws above pawns as
                         the wires do (no vanilla plant reaches it; our greatbole-class plants and pictures over 3 cells tall do)
 
@@ -128,6 +129,18 @@ def neighbours():
     return out
 
 
+def printed_y(m, c, kind, layer, foot, map_z):
+    """The y SouthDrawsFrontPatches prints a thing at (foot: a plant quad's foot, a building's footprint minZ). A copy of
+    SouthDrawsFrontKernel.PlantAltitude / BuildingAltitude in Python; selftest_gss_mast_behind_tall_south_picture.py holds this
+    copy to the compiled kernel."""
+    L = c["LayerSpacing"]
+    if kind == "plant":
+        return m.plant_base(foot, c, map_z)
+    if c["BuildingMinLayer"] <= layer <= c["CommonLayer"]:
+        return c["CommonLayer"] * L + c["PrintBand"] * m.southness(foot, map_z) - (c["CommonLayer"] - layer) * c["LayerTie"]
+    return layer * L
+
+
 def main(argv):
     planted = argv[argv.index("--mast-layer") + 1] if "--mast-layer" in argv else None
     m, c = kernel()
@@ -138,11 +151,7 @@ def main(argv):
         return 1
 
     def printed(kind, layer, foot, map_z):
-        if kind == "plant":
-            return m.plant_base(foot, c, map_z)
-        if c["BuildingMinLayer"] <= layer <= c["CommonLayer"]:
-            return layer * L + c["PrintBand"] * m.southness(foot, map_z)
-        return layer * L
+        return printed_y(m, c, kind, layer, foot, map_z)
     cases = ties = 0
     worst = None
     bad, apart = [], {"BUILDING_LAYER_REACH": [], "HEAD_OVER_SOUTHERN_PICTURE": []}

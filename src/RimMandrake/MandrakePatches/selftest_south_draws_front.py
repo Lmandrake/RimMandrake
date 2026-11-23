@@ -55,7 +55,7 @@ def constants():
     text = SRC.read_text(encoding="utf-8")
     out = {}
     for name in ("PlantMinLayer", "CommonLayer", "BuildingMinLayer", "PrintBand", "MaxCarriedOffset",
-                 "PawnFloor", "PawnBand", "AltInc", "LayerSpacing"):
+                 "PawnFloor", "PawnBand", "AltInc", "LayerSpacing", "LayerTie"):
         m = re.search(r"public const (?:int|float) " + name + r"\s*=\s*(-?[0-9.]+)f?;", text)
         if not m:
             sys.exit(f"FAIL: constant {name} not found in {SRC}")

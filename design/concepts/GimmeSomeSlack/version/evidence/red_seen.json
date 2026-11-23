@@ -38,6 +38,19 @@
   "rc": 1,
   "test_blob": "68d00c2344f59aed4346d5af77107411a8c78506"
  },
+ "T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE": {
+  "at": "2026-11-23T11:44:46Z",
+  "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_mast_behind_tall_south_picture.py",
+  "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_mast_behind_tall_south_picture.py",
+  "last": "FAIL",
+  "patch": "--- a/src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs\n+++ b/src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs\n@@ -100,7 +100,7 @@\n         /// breaks the tie inside one row.</summary>\n         public static float BuildingAltitude(int layer, int footMinZ, int mapSizeZ)\n         {\n-            return LayerAltitude(CommonLayer) + PrintOffset(footMinZ, mapSizeZ) - (CommonLayer - layer) * LayerTie;\n+            return LayerAltitude(layer) + PrintOffset(footMinZ, mapSizeZ);\n         }\n \n         /// <summary>What every quad and every real-time part of such a thing gets added to its vanilla altitude: one\n",
+  "patch_files": [
+   "src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/SouthDrawsFrontKernel.cs"
+  ],
+  "patch_sha": "7b6dc103cfdb6971",
+  "rc": 1,
+  "test_blob": "6b63b8f5fd8ad3cb68205dd5b93d06d79ad6c397"
+ },
  "T_NO_KINK_OFFLINE": {
   "at": "2026-11-23T04:53:53Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --kinks-only",
@@ -52,7 +65,7 @@
   "test_blob": "bba397cbae3e2e0fbe215b2f60ff07e523fa6d06"
  },
  "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": {
-  "at": "2026-11-21T01:39:45Z",
+  "at": "2026-11-23T11:38:58Z",
   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py",
   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_pole_south_draws_front.py",
   "last": "FAIL",
@@ -62,7 +75,7 @@
   ],
   "patch_sha": "3aca93aae801795a",
   "rc": 1,
-  "test_blob": "48276a5f028eb349aad77f8f80c3c4bbc1b22cc0"
+  "test_blob": "c1d29774595ccbf53c8886b0e2d157202ecedc1d"
  },
  "T_STUB_JOINS": {
   "at": "2026-11-21T08:43:30Z",
