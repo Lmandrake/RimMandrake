@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Pirrik",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth FLAG (facing_scale_lint gate, plan flyer): south feet -0.0312 (band -0.03..0.03); north feet -0.0312 (band -0.03..0.03)"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "30352031b5808cfdbd80059f7e6eacf9a166a051d452c731474c681653c28163",
+  "east.png": "bbe70674956f15630851e48305af9607a4c86b5639a69420dbc05e0e4f8957b6",
+  "north.png": "d03cf0f79cf95ace9ddf8bb4cc2f56b900c87408fd779825f8fe425f7f5774e2",
+  "scale.png": "053ac32a41e3a181ca7d76347e71f2c045eb07ef6d4297fad1d6c637ca9dee95",
+  "facings.png": "63726f392b2fac74fd1f78e770c35f67cb70e5da054b254fb9e8e41ec7c69054"
+ }
+}

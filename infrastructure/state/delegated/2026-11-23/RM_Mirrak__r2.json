@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Mirrak",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth FLAG (facing_scale_lint gate, plan quadruped): north d_north 1.511 (band 0.63..1.20); south feet 0.0508 (band -0.03..0.03)"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "6ca096f33bb617834a90a73d49a675e1ae29c76b7a076e8f51398c6963f0ddb8",
+  "east.png": "9d36d8405d2cbb43cc478b3792087204f56afb97306d4a1832c6242a99e44bf5",
+  "north.png": "b276ee6fc95f987ddc154fe961aecdea8e0b8bd140821290777c41f0debf9444",
+  "scale.png": "75d244f6ae5ebde74b957964731f4447e8cb58e03cb8573a0c428366609f9be7",
+  "facings.png": "d94b2d62c5c6aa4aafa9e969a0364d6013fa0fa51b73441fefff1aa137bb91ce"
+ }
+}

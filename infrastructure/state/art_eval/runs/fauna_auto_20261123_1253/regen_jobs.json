@@ -1,0 +1,82 @@
+[
+ {
+  "id": "arteval_RM_Dustveil_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dustveil",
+  "prompt": "dustveil: A broad-winged moth of the Rot, grown as much as hatched: its pale wings are a living felt of fungal threads, dusted with spores, and they hang from it like a veil. It flies in short, fluttering hops, over walls and water alike, and drops to the ground to feed. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, the fungal felt of its wings, provided the silk is kept well away from every other dustveil, which will eat that too. It is NOT an Earth animal: wings made of a felt of fungal threads instead of scaled membrane; wings dusted with spores; wings hang from the body like a veil. The north view stands with its feet on the same row as the east view's feet (measured: feet row +0.088 of canvas height from east's). The south view is drawn at the same body height as the east view (measured: rescale). Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261123_1253",
+  "drawsize": 2.75,
+  "module": "flyer",
+  "target_texpath": "RotSpecies/AngelMoth/AngelMoth"
+ },
+ {
+  "id": "arteval_RM_Harrok_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Harrok",
+  "prompt": "harrok: A narrow-bodied animal held a man's height above the sand on four thin legs. It stands beside shelter and lets its long shadow cross the edge, taking the small animals that settle beneath it. It seldom moves and does not chase its prey. It is NOT an Earth animal: four thin legs; narrow body; body held a man's height above the sand by its legs. The south view stands with its feet on the same row as the east view's feet (measured: feet row +0.041 of canvas height from east's). Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261123_1253",
+  "drawsize": 2.6,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Harrok/RM_Harrok"
+ },
+ {
+  "id": "arteval_RM_Mirrak_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mirrak",
+  "prompt": "mirrak: A wafer-flat ambusher whose matte, dark back passes for a boulder's long shadow, even in full sun. It folds shut around small animals fleeing the heat. Real shadows all point the same way; a mirrak points whichever way it lies. It is NOT an Earth animal: wafer-flat body; matte, dark back; back reads as a boulder's long shadow. The north view is drawn at the same body height as the east view (measured: common S+N factor (keeps N:S width)). The south view is drawn at the same body height as the east view (measured: common S+N factor (keeps N:S width)). Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261123_1253",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Mirrak/RM_Mirrak"
+ },
+ {
+  "id": "arteval_RM_Pirrik_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Pirrik",
+  "prompt": "pirrik: A palm-sized bird whose iridescent plumage reflects light without producing any of its own. It feeds and breeds within the moving shadow of a single gloomcast and cannot survive on sunlit sand. When its gloomcast dies, the pirrik eventually dies too. It is NOT an Earth animal: iridescent plumage that reflects light and does not glow. The north view stands with its feet on the same row as the east view's feet (measured: feet row -0.031 of canvas height from east's). The south view stands with its feet on the same row as the east view's feet (measured: feet row -0.031 of canvas height from east's). Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261123_1253",
+  "drawsize": 0.95,
+  "module": "flyer",
+  "target_texpath": "Things/Pawn/Animal/RM_Pirrik/RM_Pirrik"
+ }
+]

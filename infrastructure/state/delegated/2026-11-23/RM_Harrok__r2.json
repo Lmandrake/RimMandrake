@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Harrok",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth FLAG (facing_scale_lint gate, plan quadruped): south feet 0.041 (band -0.03..0.03)"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "b53d38af3ef8a43a24d33c599c563a884d5a91361f92c76c7dd5558f14ca1298",
+  "east.png": "59c853111d53b1b6866c3982e952c1143223aa963e72c0540ca166bb366b7ff2",
+  "north.png": "e58431b14d7263761425d017bcc27a0f8b0882a12908d27b2b2308f94fd16d78",
+  "scale.png": "8b18a20a1585ffa92ea2801c9a641820fa2045d146f8377713096e9976a82594",
+  "facings.png": "e4468d1246f4b2f9cb4a717c7a0837222572972440f9a32534796c0b40b37995"
+ }
+}
