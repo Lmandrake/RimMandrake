@@ -164,6 +164,10 @@ def t_the_gates_launch_nothing():
     chk(lambda: dec({"A": it()}, pool="pool full: 16 clones") == ("pool_full", []), "the pool refuses a new clone")
     chk(lambda: dec({"A": it(clone_exists=True)}, pool="pool full: 16 clones") == ("launch", ["A"]),
         "the pool does not stop a launch that reuses the item's own clone")
+    chk(lambda: LD().account_gate(gate=lambda: (True, "KEEP"), drain=lambda now: "the plan drains steven")
+        == (False, "the plan drains steven"), "the switching plan's drain is an account hold, before any launch")
+    chk(lambda: LD().account_gate(gate=lambda: (True, "KEEP"), drain=lambda now: None) == (True, "KEEP"),
+        "no drain: the Dispatcher's pick decides")
     import control
     chk(lambda: "list_dispatch" in control.FAMILIES, "list_dispatch is a control family (pipe off family:list_dispatch)")
 

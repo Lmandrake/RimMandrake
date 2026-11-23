@@ -21,8 +21,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
 - **the-detached-run-records.** `detached_helper.all_records()` and `live_status`: a unit is live while it is
   `launching` or `running`.
 - **the-gates.** The pipeline's pause (`pipeline_pause.blocks`), the control store (`control.blocked` with family
-  `list_dispatch`, the item and the item's mod), the owner's mod holds (`mod_owner_hold`), the Dispatcher's account pick
-  (`maturation_dispatch.account_gate`), the clone pool's admission (`scratch_clone.pool_admit`).
+  `list_dispatch`, the item and the item's mod), the owner's mod holds (`mod_owner_hold`), the switching plan's drain (`detached_helper.drain_refusal`),
+  the Dispatcher's account pick (`maturation_dispatch.account_gate`), the clone pool's admission (`scratch_clone.pool_admit`).
 
 ## DOES NOT SURVIVE (not promised)
 
@@ -54,7 +54,7 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   dated wait in the future reads `waiting`. An item whose dated wait has passed and whose check still fails reads
   `reshape` (plan: a date never launches old work; the Shape stage, step 4, takes it). A blocked item reads `blocked`.
 - **the-gates-launch-nothing.** The lane launches nothing when it is disabled, under the pause, under `pipe off` (all,
-  `family:list_dispatch`, the item or its mod), on an item whose mod is held by the owner, under an account hold, when
+  `family:list_dispatch`, the item or its mod), on an item whose mod is held by the owner, under an account hold (the plan's drain or the Dispatcher's pick), when
   the control store cannot be read, or when the clone pool refuses a new clone. Each reads its own decision.
 - **the-lane-has-its-own-slots-and-chain-rule.** At most `max_live` live runs on lane items. Mod and nightly-test runs do
   not count. An item whose chain of causes (its `caused_by` ancestors) already holds `max_chain_depth` lane runs reads

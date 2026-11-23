@@ -459,9 +459,15 @@ def gather(st, now=None, root=None):
             "pool": _pool(), "live_lane": live}
 
 
-def account_gate():
+def account_gate(gate=None, drain=None, now=None):
+    """-> (go, why): the switching plan's drain first (detached_helper.drain_refusal: a launch now would be refused, and
+    a refusal is not the item's fault), then the Dispatcher's account pick (maturation_dispatch.account_gate)."""
+    import detached_helper as DH
     import maturation_dispatch as MD
-    return MD.account_gate()
+    why = (drain or DH.drain_refusal)(time.time() if now is None else now)
+    if why:
+        return False, why
+    return (gate or MD.account_gate)()
 
 
 # ---- the acts -------------------------------------------------------------------------------------------------------
