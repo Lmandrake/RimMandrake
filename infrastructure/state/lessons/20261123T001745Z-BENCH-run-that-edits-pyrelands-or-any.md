@@ -1,0 +1,1 @@
+A run that edits a Pyrelands (or any mod's) deciding selftest or rebuilds its DLL must run maturation.py red-seen for each edited decider and certificate <Mod> --run before it lands; otherwise the next visit's certificate refuses every touched bar and the tick files a form-repair item (measured 2026-11-22: 9 of 16 bars refused after the ticket sweep's 71dcee74a7).

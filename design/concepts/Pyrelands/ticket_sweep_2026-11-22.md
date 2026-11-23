@@ -67,6 +67,11 @@ RIMMANDRAKE_GENERALIZE_WIND_FIRE_ALL_BAROQUE_BIOMES_NEXT_VERSION.
   each with a planted mutant red. Offline: cut_stays_cut, settings_sweep, firehawk_crestfeather, self_contained,
   defs_offline, round6_gaps, round6_parts, settings_screens --mod Pyrelands, all green.
 - UNRUN live: the label on the Mod Settings screen, after the next deploy (`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod Pyrelands --apply`, game down; ArchBig is in his walk).
+- afc872abb4: the three deciders this run edited had no red record and the rebuilt DLL left the offline deciders stale,
+  so visit 6's certificate refused 9 of 16 bars and the tick filed RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_SEVEN.
+  Repaired: `maturation.py red-seen` for T_CUT_STAYS_CUT, T_SETTINGS_SWEEP_OFFLINE and T_FH_CRESTFEATHER (patches in
+  `version/evidence/patches/`), `certificate Pyrelands --run`; the certificate reads OK; the repair item closed.
+- Merging the ullai judge item freed the road back: `./pipe why Pyrelands` no longer reads fixer_spent (4:04 PM PST).
 - The pipeline fix's acceptance test, `src/RimMandrake/rimflow/acceptance/road_back_owner_item_holds_nothing_accept.py`.
 
 ## Needs him (his plain words)
