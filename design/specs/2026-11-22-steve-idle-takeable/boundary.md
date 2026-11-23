@@ -55,7 +55,9 @@ test of its name in `src/RimMandrake/Utils/selftest_steve_visit_feed.py`; the si
   mod is on the owner's hold, the visit is blocked or its exit is met, each chain ran DONE since the visit opened, or
   the only job for it is gated by the owner.
 - **commissioned-or-takeable-work-is-busy.** The point reads 0, state `busy`, when the lane runs (or has ready in its
-  queue) a job that is not filler, or any job on a waiting check's mod and chain.
+  queue) a job that is not filler, or any job on a waiting check's mod and chain. The lane is both games on
+  SteveDesktop (hosts `stevedesktop` and `stevedesktop.b`): on 2026-11-23 the visit's jobs ran on Steve2 and the point,
+  reading Steve1 only, counted their checks as waiting.
 - **could-not-look-is-unmeasured.** The point reads UNMEASURED when the dispatch reading is missing, stale or has no
   block, when the owner's hold could not be read, when a queue directory cannot be read, or when an in-game mod is
   missing from the reading and no other waiting check is known.

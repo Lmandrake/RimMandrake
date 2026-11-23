@@ -1128,7 +1128,9 @@ def c_steve_takeable(now, rules, ctx):
     sj = read_json(qhome() / "steward.json")
     sj = sj if isinstance(sj, dict) else {}
     steward = "%s%s" % (sj.get("state") or "unread", " (%s)" % sj["reason"] if sj.get("reason") else "")
-    work = [(state, j) for state, host, j in jobs if host == "stevedesktop" and (state == "running" or ready(j))
+    # either of the lane's games (testq.STEVE, testq.STEVE2): a visit job running on Steve2 is the lane's work too
+    lane_hosts = ("stevedesktop", "stevedesktop.b")
+    work = [(state, j) for state, host, j in jobs if host in lane_hosts and (state == "running" or ready(j))
             and (j.get("requested_by") != FILLER_BY or on_waiting(j, waiting))]
     if work:
         state, j = work[0]
@@ -1143,10 +1145,10 @@ def c_steve_takeable(now, rules, ctx):
     for fin, d in done:
         j = d.get("job") or {}
         h = d.get("host") or j.get("host") or "stevedesktop"
-        if h == "stevedesktop" and fin > start and (j.get("requested_by") != FILLER_BY or on_waiting(j, waiting)):
+        if h in lane_hosts and fin > start and (j.get("requested_by") != FILLER_BY or on_waiting(j, waiting)):
             start = fin
     v = round(max(0.0, now - start) / 60.0, 1)
-    run = [j for state, host, j in jobs if state == "running" and host == "stevedesktop"]
+    run = [j for state, host, j in jobs if state == "running" and host in lane_hosts]
     said = "SteveDesktop %s for %.0f min, %s; %s waiting with a testq block (%s)" % (
         "on filler %s (%s)" % (run[0].get("id"), run[0].get("mod")) if run else "idle", v, steward,
         sum(counts.values()), ", ".join("%s %d" % (m, n) for m, n in sorted(counts.items())))

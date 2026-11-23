@@ -292,6 +292,14 @@ def t_commissioned_or_takeable_work_is_busy():
     dispatch(today())
     running(job("J-fillp", "Pyrelands", ["pc03"], by="BENCH.filler"))
     cases.append(("filler runs a waiting chain", read("filler runs a waiting chain")))
+    # Steve2 (testq.STEVE2, the lane's second game) runs the visit's job: that is the lane's work too (live 2026-11-23:
+    # the four FlowWorks visit jobs ran on stevedesktop.b while this read the lane as waiting)
+    reset()
+    dispatch(today())
+    jb = job("J-b", "Pyrelands", ["pc03"], by="BENCH.visit")
+    wjson(TMP / "testq" / "running" / "J-b.json", {"attempt": "J-b.a1", "job": jb, "cancel": False,
+                                                    "host": "stevedesktop.b"})
+    cases.append(("Steve2 runs the visit's job", read("Steve2 runs the visit's job")))
     for label, p in cases:
         check(p.get("m") == "MEASURED" and p.get("v") == 0 and (p.get("x") or {}).get("state") == "busy",
               "commissioned-or-takeable-work-is-busy: %s reads 0 busy (%s %s %s)" % (
