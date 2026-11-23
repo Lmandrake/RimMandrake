@@ -11,9 +11,9 @@ No evidence left the active file, so this skill has no history file.
 
 | measure | before | after |
 |---|---|---|
-| bytes | 9,925 | 13,151 |
-| words in linted prose | 1,314 | 1,836 |
-| STE violations per 100 words | 4.64 | 2.23 |
+| bytes | 9,925 | 13,377 |
+| words in linted prose | 1,314 | 1,870 |
+| STE violations per 100 words | 4.64 | 2.19 |
 | sentences over 20 words | 26 | 6 |
 | flagged lines (mechanical) | 0 | 0 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 11 | 0 |
@@ -55,7 +55,8 @@ Names: no person is named in either text.
 
 One fresh Opus reader (rm-judge, model opus) read both texts and the `lifecycle.md` corrections without the writer's
 reasoning. The reader checked the added facts against the code. It found 6 items. All are repaired. No reader read the repairs, nor
-six small sentence splits made after them for the STE target.
+six small sentence splits made after them for the STE target. The prose check of `./publish` then named 3 lines
+(art ledger, a pronoun, "live writer"). All are repaired in a second landing, and no reader read those.
 
 | finding | repair |
 |---|---|

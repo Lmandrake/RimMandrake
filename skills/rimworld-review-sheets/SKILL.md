@@ -101,7 +101,11 @@ realistic game human for scale. It's the only way I can judge the art quality/re
    - Some notes ask for a picture and also for a change to the def. After the def half is done, pass
      `--mark-done <row>`.
    - Enact in one pass, with at most one batched card for the conflicts (owner, 2026-10-08).
-7. **Audit** the enact with a fresh read of the art ledger and artpipe. Never audit the enact from its own summary.
+7. **Audit** the enact with a fresh read of the art ledger and artpipe.
+   - Never audit the enact from its own summary.
+   - The art ledger is the event record in `infrastructure/state/art/events/`. Read the art ledger with
+     `art.py status <subject>`.
+   - artpipe is the queue that draws the pictures.
 8. **Clear followed notes.** Enact moves a note that was followed into `notes_followed`.
    - Before you act on a raw note, check that the note was not already followed (owner, 2026-10-08: *"You shouldn't
      leave my notes AFTER you follow the notes... it can produce accidental multiple firings."*).
@@ -131,12 +135,12 @@ The other files of this skill:
       is orphaned when its pictures are no longer in the row.
 - [ ] He gets the served `http://localhost` URL and nothing else.
   - Never give him a copy of the sheet. Never give him a `/home/`, `/mnt/` or `\\wsl.localhost` path.
-  - If a sheet has no server, serve the sheet first. This also applies when the link goes in an owner pile (a
-    `Transient/owner_pile…` page of work for him).
+  - If a sheet has no server, serve the sheet first. Do the same for a link in an owner pile. An owner
+    pile is a `Transient/owner_pile…` page of work for him.
   - His device can be unable to reach that URL (a phone off the tailnet). Then export the sheet with
     `sheet_to_artifact.py`. Publish that page privately (`references/lifecycle.md`).
   - Code enforces this:
-    - A page without its live writer blocks picks and names the URL (`sheet_live_guard.py`, req 16).
+    - A page that its sidecar (its live writer) does not serve blocks picks. The page names the URL (`sheet_live_guard.py`, req 16).
     - A hook refuses a copy out of the clone, and a copy refuses to serve.
     - `owner_doc_lint.py` refuses those paths in piles, Transient docs and cards.
 - **Every sheet shown must be truly new.** "Please ensure that each sheet is truly new." (owner)
