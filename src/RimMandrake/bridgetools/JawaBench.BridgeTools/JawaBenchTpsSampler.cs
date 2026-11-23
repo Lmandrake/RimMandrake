@@ -889,6 +889,9 @@ namespace JawaBench.BridgeTools
             // initializer. Install() is idempotent (_attempted gate), so JawaBenchInit's call is then a no-op.
             try { JawaBenchLogAutoOpenSuppress.Install(); }
             catch { }
+            // the first-exception tap (jawa/first_exception): armed before any call can arrive. Never throws.
+            try { JawaBenchFirstException.Install("bridge-registration"); }
+            catch { }
         }
 
 #if JAWA_GM_TOOLS

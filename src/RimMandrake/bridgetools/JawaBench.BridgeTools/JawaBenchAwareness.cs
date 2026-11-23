@@ -419,6 +419,17 @@ namespace JawaBench.BridgeTools
             }
         }
 
+        /// <summary>Does the block hold the spawner now? The same four conditions that WildTickPre reads, plus the patch.</summary>
+        internal static bool WildHolds(out string why)
+        {
+            why = null;
+            if (WildPatch != "patched") why = "the spawner is not patched (" + WildPatch + ")";
+            else if (!Sw.On(A.MWild)) why = "the switch " + A.MWild + " is off";
+            else if (!JawaBenchCompanionSafety.CurrentPolicy.WildSpawnerBlock) why = "the profile policy refuses the block";
+            else if (!Wild.Active(Current.Game, JawaBenchTpsWatchdog.Now)) why = "not blocked (last release: " + (Wild.LastRelease ?? "none") + ")";
+            return why == null;
+        }
+
         /// <summary>Blocks only while the block is ACTIVE for THIS game and unexpired (QuietBlock releases itself on a
         /// new game/load, on no game, and at TTL expiry - the dead-man for a runner that was killed). Contained: any
         /// failure here lets the spawner run (the game's normal behaviour), never throws into the map tick.</summary>

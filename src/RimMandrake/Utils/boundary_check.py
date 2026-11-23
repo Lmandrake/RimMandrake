@@ -25,6 +25,9 @@ import sys
 TOP = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 # page -> its tests file, repo-relative. A new boundary page is added here.
 PAGES = {
+    "design/specs/2026-11-23-loaded-receipt/boundary.md": "src/RimMandrake/rimflow/selftest_loaded_receipt.py",
+    "design/specs/2026-11-23-calm-map/boundary.md": "src/RimMandrake/Utils/selftest_calm_core.py",
+    "design/specs/2026-11-23-first-exception-tap/boundary.md": "src/RimMandrake/Utils/selftest_first_exception_core.py",
     "design/specs/2026-11-23-gravship-layout-library/boundary.md": "src/RimMandrake/Utils/selftest_gravship_layout.py",
     "design/specs/2026-11-23-close-check/boundary.md": "src/RimMandrake/rimflow/selftest_close_check.py",
     "design/specs/2026-11-23-guiding-prose-check/boundary.md": "src/RimMandrake/Utils/selftest_guiding_prose.py",

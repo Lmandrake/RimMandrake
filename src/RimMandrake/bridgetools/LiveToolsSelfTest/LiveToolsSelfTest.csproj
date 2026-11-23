@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Offline unit harness for the receipt, the calm map and the first-exception tap (design/specs/2026-11-23-loaded-receipt, -calm-map,
+       -first-exception-tap). Plain net8.0, zero RimWorld/Unity references: the Core files are the PRODUCTION files the
+       companion compiles. Run by Utils/live_tools_units.py. -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>LiveToolsSelfTest</AssemblyName>
+    <RootNamespace>JawaBench.BridgeTools</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchReceiptCore.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchCalmCore.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchFirstExceptionCore.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

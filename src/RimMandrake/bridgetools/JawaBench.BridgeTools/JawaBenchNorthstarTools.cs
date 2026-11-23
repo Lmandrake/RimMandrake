@@ -398,7 +398,11 @@ namespace JawaBench.BridgeTools
                 "⚠ More than one match, or more than one claiming mod, means a duplicate copy - the caller " +
                 "must refuse; Assembly.LoadFrom of a same-identity second file silently returns the first. " +
                 "⚠ sha256 is of the file AT Location NOW; a redeploy after launch changes the file but not " +
-                "the loaded code, so compare MVID to the built DLL too.",
+                "the loaded code, so compare MVID to the built DLL too. " +
+                "loadedOf=ours (every mandrake.* mod) or a comma list of packageIds adds `loaded`, the receipt of what this " +
+                "PROCESS loaded: per mod a state (LOADED | FILE_CHANGED | DLL_NOT_LOADED | FOREIGN_COPY | NO_ASSEMBLY | COULD_NOT_READ), " +
+                "each assembly's MVID and whether its file still holds that code, the list fingerprint, the game's key, pid, version. " +
+                "Code only: Defs, patches and art are not identified. Compare it with `build_match.py loaded`.",
             ResultDescription =
                 "success, count, packageIds[] (load order), mods[]: loadOrder, packageId, name, folder, " +
                 "assembly: {name, matchCount, matches[]: location, mvid, version, sha256, fileBytes, " +
@@ -409,7 +413,9 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Simple assembly name to locate (default RimMandrakeGraffiti). Empty skips.")]
             string assembly = "RimMandrakeGraffiti",
             [ToolParameter(Description = "Include the full mods[] rows (default true); false returns packageIds only.")]
-            bool details = true)
+            bool details = true,
+            [ToolParameter(Description = "Also return `loaded`, the receipt of loaded code: 'ours', or a comma list of packageIds. Empty skips.")]
+            string loadedOf = null)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -420,6 +426,9 @@ namespace JawaBench.BridgeTools
                 var rows = details
                     ? all.Select(m => (object)new { loadOrder = m.loadOrder, packageId = m.PackageId, name = m.Name, folder = m.RootDir }).ToList()
                     : null;
+
+                object loaded = null;
+                if (!string.IsNullOrWhiteSpace(loadedOf)) loaded = JawaBenchReceipt.Build(loadedOf, all.ToList());
 
                 object asmInfo = null;
                 if (!string.IsNullOrWhiteSpace(assembly))
@@ -471,6 +480,7 @@ namespace JawaBench.BridgeTools
                     packageIds = ids,
                     mods = rows,
                     assembly = asmInfo,
+                    loaded,
                     ticksGame = TicksGameSafe(),
                 };
             });

@@ -11,6 +11,10 @@ spec design/specs/2026-11-13-maturation-pipeline.md, Stage 6 exit and Stage 7):
   python3 src/RimMandrake/rimflow/build_match.py identity --mod M (--tier T | --full) [--mod-sha SHA]
       one JSON line, the identity fields a live driver merges into each rows.jsonl row it writes (run it on the game
       machine, after the deploy and the list swap, before the check)
+  python3 src/RimMandrake/rimflow/build_match.py loaded --mod M [--receipt FILE|-] [--game NAME]
+      one JSON line: is what the RUNNING game loaded the deployed folder's and the commit's DLLs, on ModsConfig's list
+      (loaded_build.py; the receipt is read over the bridge of the game this shell means, or from FILE). Exit 0 MATCH,
+      1 a fault, 2 could not look, 4 the mod ships no DLL
   python3 src/RimMandrake/rimflow/build_match.py check --mod M [--visit N]
       reads each check's last row (visit N's, else the latest earlier visit's) against the walk build (the labelled
       savegame its Exit block names, read on Archmagi): one line per check, then cases read, how many count, the checks
@@ -711,11 +715,31 @@ def main(argv=None):
     g.add_argument("--full", action="store_true", help="the check ran on his full list (its why_full_list says why)")
     a.add_argument("--mod-sha")
     a.add_argument("--root", default=REPO)
+    d = sub.add_parser("loaded", help="what the RUNNING game loaded, against the deployed folder, the commit and the list")
+    d.add_argument("--mod", required=True)
+    d.add_argument("--receipt", help="a file holding jawa/running_mods' reply (loadedOf=ours), or - for stdin; else read it over the bridge")
+    d.add_argument("--game", help="the game it must be (ArchSmall, ...): another game is WRONG_GAME")
+    d.add_argument("--root", default=REPO)
     c = sub.add_parser("check", help="read a visit's rows against the walk build")
     c.add_argument("--mod", required=True)
     c.add_argument("--visit", type=int)
     c.add_argument("--root", default=REPO)
     args = ap.parse_args(argv)
+    if args.cmd == "loaded":
+        sys.path.insert(0, HERE) if HERE not in sys.path else None
+        import game_names
+        import loaded_build as LB
+        try:
+            if args.receipt:
+                with (sys.stdin if args.receipt == "-" else open(args.receipt, encoding="utf-8")) as f:
+                    reply = LB.unwrap(json.load(f))
+            else:
+                reply = LB.fetch(UTILS)
+        except (OSError, ValueError) as e:
+            reply = {"success": False, "message": "the receipt could not be read: %s" % e}
+        out = LB.loaded(args.root, args.mod, reply, expected_game=game_names.key(args.game))
+        print(json.dumps(out))
+        return LB.EXIT.get(out["verdict"], 1)
     if args.cmd == "identity":
         out = identity(args.root, args.mod, tier=args.tier, full=args.full, mod_sha=args.mod_sha, cache_dir=CACHE_DIR)
         print(json.dumps(out))
