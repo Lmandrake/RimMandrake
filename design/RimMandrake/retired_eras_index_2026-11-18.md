@@ -108,7 +108,7 @@ Old names inside live files (not paths, so the guard does not see them), for the
 
 | path | why it stays |
 |---|---|
-| `infrastructure/state/items/RIMMANDRAKE_LAND_RALPH_FLOWWORKS_PIT_FEATURES.md` | mod content, out of scope: 36 FlowWorks pit-feature commits on `origin/ralph/flowworks` are not on main; the ticket is to land them. The name keeps "RALPH" because the branch does. |
+| *(none)* | The last row, the Ralph FlowWorks pit-features ticket, left on 2026-11-22: the FlowWorks ticket sweep dropped it as DEAD (main built its own fetch-fallen, bedless pit prison and pit drawing). Its prose is in `infrastructure/state/items/closed/`; the 36 commits stay on `origin/ralph/flowworks` as the archive. |
 
 ## Outside this repo
 
