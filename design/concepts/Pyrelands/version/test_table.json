@@ -246,11 +246,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.27,
+    "seconds": 0.58,
     "last": "PASS",
-    "at": "2026-11-22T02:58:08Z",
+    "at": "2026-11-23T12:13:56Z",
     "result": "PASS",
-    "build": "c9f4e716208a2ff0c5ee",
+    "build": "a156e6478f70f8145cc0",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_track_contrast.py",
     "margins": []
    }
@@ -292,11 +292,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.0,
+    "seconds": 6.65,
     "last": "PASS: 0 failure(s)",
-    "at": "2026-11-23T00:13:36Z",
+    "at": "2026-11-23T12:14:03Z",
     "result": "PASS",
-    "build": "8ab057a7f5d0a0a92fac",
+    "build": "15621fe10507cb0e0eea",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
     "margins": []
    }
@@ -314,11 +314,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.16,
     "last": "selftest_pyrelands_fruit_clear: PASS",
-    "at": "2026-11-23T00:13:36Z",
+    "at": "2026-11-23T12:14:03Z",
     "result": "PASS",
-    "build": "1349a84bb0725cd74bb2",
+    "build": "ed54c61d3c916e4bc55e",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py",
     "margins": []
    }
@@ -336,11 +336,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.38,
+    "seconds": 0.71,
     "last": "selftest_pyrelands_firefoam_scene: PASS  cases {'geometry': 1, 'verdicts': 36, 'staging': 396, 'timelines': 1352, 'challenges': 3}",
-    "at": "2026-11-23T00:13:37Z",
+    "at": "2026-11-23T12:14:04Z",
     "result": "PASS",
-    "build": "e37e8d43a9cee7082b0e",
+    "build": "8c8e34d80b66355af038",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py",
     "margins": []
    }
@@ -382,12 +382,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.07,
     "last": "PASS barbslinger two tails",
-    "at": "2026-11-17T20:30:16Z",
+    "at": "2026-11-23T12:14:04Z",
     "result": "PASS",
-    "build": "dedcfce6fa016830e928",
-    "command": "python3 src/RimMandrake/Utils/selftest_barbslinger_two_tails.py"
+    "build": "7e724e93d14a6c88da03",
+    "command": "python3 src/RimMandrake/Utils/selftest_barbslinger_two_tails.py",
+    "margins": []
    }
   },
   "T_REVIEW_MAP": {
@@ -1625,11 +1626,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.26,
+    "seconds": 7.54,
     "last": "PASS: 0 of 18 checks failed",
-    "at": "2026-11-23T00:14:14Z",
+    "at": "2026-11-23T12:14:13Z",
     "result": "PASS",
-    "build": "7c8a09f596c117338d70",
+    "build": "af8ca7539a2cef46195f",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
     "margins": []
    }
@@ -1695,11 +1696,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.27,
-    "last": "selftest_pyrelands_venom_staging: 0 of 36 checks failed",
-    "at": "2026-11-23T00:14:00Z",
+    "seconds": 8.67,
+    "last": "selftest_pyrelands_venom_staging: 0 of 46 checks failed",
+    "at": "2026-11-23T12:14:21Z",
     "result": "PASS",
-    "build": "6a60881752a805dbb8af",
+    "build": "aa0e616d5976d87828f1",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
     "margins": []
    }
