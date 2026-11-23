@@ -21,3 +21,12 @@ Started 2026-11-23 1:14 PM PST.
 - 1:41-1:43 PM walk save reloaded: master off reads vanilla conduit and lamp art with no cord layer, on reads both back
   (evidence/full_master_off_on.json); stations captured and looked at.
 - 1:44 PM relaunched on tier gimmesomeslack (12 mods, all 5 DLC), bridge up 25 s; runC and runB started.
+- 1:45-1:54 PM first pass on the tier (build a9e908d1ed3e): runC 108 PASS + 2 UNMEASURED (FlowWorks), runB 64/64, seven
+  one-off scenes: 6 as they should, sc_restyle_whole_line FAIL on SC_restyle_cut_span_ends_line. Class SITE: the first pole
+  auto-linked to the bracket too, so cutting the poles' span left the line whole. Repaired (that wire is taken down, read
+  back); the fake game now auto-links as the mod does, and reads the old scene FAIL and the repaired one PASS.
+- 1:42-2:06 PM MOD fault found by looking at stand 33 (wall lamps): the device plug of a lamp on the far side of a wall was
+  drawn on the wall plate, and the cord left the wall plug 39-48 degrees off its slope (visible in Modern). Two causes in
+  CordBuilder.cs: EndDecor's tie picked the dive end as the machine's end; FitEnds and UnkinkPiece skipped dive ends. Test
+  first (StubJoinChecks.FarWallLamps, 240 scenes): red on the parent (240 of 240 plugs away from their lamp, 6 joins off),
+  green after (0, 0). Full SelfTest 5803/5803. Every check runs again on the fixed build.

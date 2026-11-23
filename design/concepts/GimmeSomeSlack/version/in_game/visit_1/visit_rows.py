@@ -50,6 +50,7 @@ def last_rows():
 
 IDENT = {}
 HELD = []
+SITE_CONDITIONS = "weather locked Clear, incident queue cleared (the proof's site pin); every part of the mod on"
 
 
 def append(row):
@@ -57,6 +58,7 @@ def append(row):
     # what the site held for this run (visit 2 and 3: the brief's row shape)
     row = dict(row, **IDENT)
     row.setdefault("held", list(HELD))
+    row.setdefault("site_conditions", SITE_CONDITIONS)
     with open(ROWS, "a") as f:
         f.write(json.dumps(row, sort_keys=True) + "\n")
 

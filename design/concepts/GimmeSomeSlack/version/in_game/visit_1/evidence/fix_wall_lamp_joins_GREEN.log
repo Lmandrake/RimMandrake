@@ -1,0 +1,25 @@
+sliced rebuild callers: ok
+probe read wiring: ok
+staging src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RimMandrakeGimmeSomeSlack.SelfTest.csproj -> D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest
+  src/RimMandrake/GimmeSomeSlack/Defs/
+  src/RimMandrake/_Shared/SlackGeometry/
+  src/RimMandrake/GimmeSomeSlack/Patches/
+  src/RimMandrake/GimmeSomeSlack/Source/Core/
+  src/RimMandrake/GimmeSomeSlack/Source/Aerial/
+  src/RimMandrake/GimmeSomeSlack/Source/SelfTest/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  RimMandrakeGimmeSomeSlack.SelfTest -> D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\bin\Release\net8.0\RimMandrakeGimmeSomeSlack.SelfTest.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.65
+  stub joins, owner's review map: 9 builds (as dumped; four default looks, nets live and dead) in 13.8 s, 3381 stubs, 3567 cords
+  stub joins, far wall lamps: 240 scenes, 240 device plugs, 0 not at their lamp; 1890 cords at stubs, 0 off line, 0 off slope, 0 bare
+  stub joins: 524 scenes; box T: 258 cords on 198 stubs, 0 off line, 0 off slope, 0 bare, box X: 132 cords on 96 stubs, 0 off line, 0 off slope, 0 bare, device box: 3 cords on 3 stubs, 0 off line, 0 off slope, 0 bare, plug: 1044 cords on 1044 stubs, 0 off line, 0 off slope, 0 bare, rock hole: 126 cords on 120 stubs, 0 off line, 0 off slope, 0 bare, strip lead: 31 cords on 31 stubs, 0 off line, 0 off slope, 0 bare, strip plug: 68 cords on 68 stubs, 0 off line, 0 off slope, 0 bare, switch: 432 cords on 404 stubs, 0 off line, 0 off slope, 0 bare, wall outlet: 12 cords on 12 stubs, 0 off line, 0 off slope, 0 bare, wall plate: 168 cords on 162 stubs, 0 off line, 0 off slope, 0 bare, wall plug: 42 cords on 42 stubs, 0 off line, 0 off slope, 0 bare
+  stub joins: live ends 36 tails x frames 3240: 0 turn at the join, 0 pinched, 0 jump; worst 0 deg, min radius 0.314
+  stub joins: device stub scene nodes HiddenEnd@(12,10) StubDevice@(11,10) Battery@(4,10) | decals Plug/0.55 JunctionTin/0.60
+11/11 checks passed (stub joins only)

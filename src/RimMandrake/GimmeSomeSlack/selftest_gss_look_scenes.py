@@ -18,6 +18,7 @@ import scene_rows as S  # noqa: E402
 
 MEMBERS = {"PowerConduit", "PowerSwitch", "RM_AerialMast", "RM_AerialWallBracket"}
 LAMPS = {"StandingLamp", "WallLamp"}
+ANCHORS = {"RM_AerialMast", "RM_AerialWallBracket"}
 LOOKS = S.LOOK_NAMES
 
 
@@ -35,6 +36,11 @@ class Fake:
         t = {"id": self.next, "def": d, "x": x, "z": z, "look": look, "rot": rot}
         self.things[self.next] = t
         self.next += 1
+        # a new pole or bracket links itself to the nearest anchor in range, as the mod's own auto-link does (in-game visit 1 of 0.2.0: the
+        # first pole linked itself to the bracket too, so the cut of the poles' span left the line whole)
+        if d in ANCHORS:
+            for o in [u for u in self.things.values() if u["def"] in ANCHORS and u is not t]:
+                self.spans[(o["id"], t["id"])] = True
         return t
 
     def call(self, tool, **k):
@@ -125,6 +131,12 @@ class Fake:
             if ok:
                 self.spans[(a, b)] = False
             return {"success": True, "done": ok}
+        if verb == "unlink":
+            a, b = (int(v) for v in rest.split(","))
+            return {"success": True, "done": self.spans.pop((a, b), self.spans.pop((b, a), None)) is not None}
+        if verb == "census":
+            return {"success": True, "anchors": [{"id": t["id"], "links": [{"other": b if t["id"] == a else a, "state": "Up" if up else "Cut"}
+                    for (a, b), up in self.spans.items() if t["id"] in (a, b)]} for t in self.things.values() if t["def"] in ANCHORS]}
         if verb == "crestyleone":
             t = self.at(*cell(p[0]), MEMBERS)
             if t:

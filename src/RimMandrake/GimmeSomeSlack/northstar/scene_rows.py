@@ -1026,6 +1026,9 @@ def restyle_whole_line(B, V, rows):
     r0, mem, _ = _styles(B, rect)
     ids = {c: m.get("id") for c, m in mem.items()}
     link = B.ap("link:%d,%d" % (ids[ma], ids[mb])) if ids.get(ma) and ids.get(mb) else {"success": False, "error": "a mast is missing"}
+    # the new anchors link themselves to whatever is in range (the mod's auto-link): the first pole's own wire to the bracket is taken down, so
+    # the poles' span is the one thing joining the legs (in-game visit 1 of 0.2.0: the cut left that second wire, and the line was still one)
+    B.ap("unlink:%d,%d" % (ids.get(ma) or -1, ids.get(br) or -1))
     B.ap("cprocess")
     cells_a, cells_b = leg_a + [sw, ma], leg_b + [mb, br]
     for c in cells_a + cells_b:
@@ -1058,9 +1061,11 @@ def restyle_whole_line(B, V, rows):
     B.ticks(2)
     _, mem, lamps = _styles(B, rect)
     bad = line_look_verdict(mem, {}, "Modern", cells_b) + line_look_verdict(mem, lamps, "Industrial", cells_a)
-    cut_ok = bool(cut.get("done"))
+    # the site: the first pole holds no wire still up (read back, never assumed)
+    up_left = [l for a in B.ap("census").get("anchors") or [] if a.get("id") == ids.get(ma) for l in a.get("links") or [] if l.get("state") == "Up"]
+    cut_ok = bool(cut.get("done")) and not up_left
     V.row(rows, "SC_restyle_cut_span_ends_line", "UNMEASURED" if not (ok_stage and cut_ok and rr.get("success")) else ("PASS" if not bad else "FAIL"),
-          "SITE" if not (ok_stage and cut_ok) else "HARNESS" if not rr.get("success") else "MOD", {"cut": cut, "restyle": rr, "wrong": bad[:8]})
+          "SITE" if not (ok_stage and cut_ok) else "HARNESS" if not rr.get("success") else "MOD", {"cut": cut, "stillUp": up_left, "restyle": rr, "wrong": bad[:8]})
 
 
 def look_icon_verdict(menus):

@@ -60,6 +60,47 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return w;
         }
 
+        /// <summary>A wall lamp on the far side of a wall, <paramref name="dx"/> cells along from where its cord goes through (in-game visit 1 of
+        /// 0.2.0, the wall lamp stand): its base is in the wall cell, half a cell outside its own footprint.</summary>
+        internal static CordWorld FarWallLampScene(int dx, Cell into)
+        {
+            var w = new CordWorld(40, 40);
+            Cell P(int along, int deep) => new Cell(20 + into.Z * along + into.X * deep, 20 + into.X * along + into.Z * deep);   // deep: from the cord line toward and past the wall
+            for (int k = -8; k <= 8; k++) { w.SetConduit(P(k, 0)); w.SetBlocked(P(k, 2), BlockKind.Wall); }
+            Cell bat = P(-9, 0), lamp = P(0, 3), home = P(0, 2), from = P(dx, 0);
+            w.SetBlocked(bat, BlockKind.Device);
+            w.Machines.Add(new MachineInfo { Id = "bat", Kind = MachineKind.Battery, X0 = bat.X, Z0 = bat.Z, Hookups = new List<Cell> { P(-8, 0) } });
+            w.Machines.Add(new MachineInfo { Id = "lamp", DefName = "WallLamp", Kind = MachineKind.Consumer, X0 = lamp.X, Z0 = lamp.Z, Hookups = new List<Cell> { from }, HasHome = true, HomeX = home.X, HomeZ = home.Z });
+            return w;
+        }
+
+        /// <summary>Every device plug is drawn at its machine: none on the wall plate its cord comes through by.</summary>
+        private static void FarWallLamps()
+        {
+            int plugs = 0, atPlate = 0, scenes = 0;
+            var read = new StubJoins.JoinRead();
+            foreach (string look in Looks)
+                foreach (Cell into in Dirs)
+                    foreach (int dx in new[] { -2, -1, 0, 1, 2 })
+                        for (int seed = 0; seed < 3; seed++)
+                        {
+                            CordWorld w = FarWallLampScene(dx, into);
+                            MachineInfo lamp = w.Machines.First(m => m.Id == "lamp");
+                            BuildOptions opt = Opt(look, (ulong)(71 + seed));
+                            List<LaidPiece> ps = Build(w, opt, _ => true, out CordGraph g);
+                            scenes++;
+                            var home = new V2(lamp.HomeX + 0.5, lamp.HomeZ + 0.5);
+                            foreach (LaidPiece p in ps.Where(x => x.EndA == "consumer:" + lamp.X0 + "," + lamp.Z0 || (x.EndA + "|" + x.EndB).Contains("consumer")))
+                                foreach (CordDecal d in p.Decals.Where(x => x.Kind == DecalKind.Plug && x.Scale == CordBuilder.PlugScale))
+                                { plugs++; if (V2.Dist(d.Pos, home) > 0.35) atPlate++; }
+                            read.Add(StubJoins.Joins(w, ps, opt, $"{look} far wall lamp {into} dx{dx} s{seed}"));
+                        }
+            foreach (string x in read.Bad.Take(6)) Console.WriteLine("  stub joins refused: " + x);
+            Console.WriteLine($"  stub joins, far wall lamps: {scenes} scenes, {plugs} device plugs, {atPlate} not at their lamp; {read.Taken} cords at stubs, {read.OffLine} off line, {read.OffSlope} off slope, {read.Empty} bare");
+            Check(scenes == 240 && plugs >= 200 && atPlate == 0, $"far wall lamps: {atPlate} of {plugs} device plugs drawn away from their lamp ({scenes} scenes)");
+            Check(read.Taken >= 400 && read.OffLine == 0 && read.OffSlope == 0 && read.Empty == 0, $"far wall lamps: {read.OffLine} off line, {read.OffSlope} off slope, {read.Empty} bare of {read.Taken} cords at stubs");
+        }
+
         /// <summary>The owner's review map (save GSS_OWNER_LOOK_20261116, the cord world the live probe dumped on 2026-11-17: worlddump), built here
         /// with the production builder and read with the live check's own two readings. In-game visit 1 read 19 joins off slope, 1 off line and
         /// 4 bare stubs of 399 there while every check of this file passed on its tidy rooms.</summary>
@@ -116,6 +157,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             OwnerMap();
             LampsOnTheLine();
+            FarWallLamps();
             var all = new StubJoins.JoinRead();
             var ends = new CordEndAudit.EndRead();
             var live = new StubJoins.LiveRead();

@@ -1,0 +1,216 @@
+{
+ "scene": "scene_restyle_whole_line",
+ "status": "FAIL",
+ "rows": [
+  {
+   "id": "SC_restyle_line_staged",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "notIndustrial": [],
+    "link": {
+     "success": true,
+     "cmd": "link:10954,10955",
+     "verdict": "AlreadyLinked",
+     "_probeSerial": 503
+    },
+    "oneRunByTheMod": true,
+    "lamps": 1,
+    "first": null
+   }
+  },
+  {
+   "id": "SC_restyle_whole_line_from_pole",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "from": [
+     36,
+     169
+    ],
+    "look": "Futuristic",
+    "restyle": {
+     "success": true,
+     "cmd": "crestyle:36,169:Futuristic",
+     "changed": 18,
+     "message": "Restyled this run (18 pieces, 18 changed) to Futuristic; lamps on it: 1 changed.",
+     "_probeSerial": 525
+    },
+    "wrong": []
+   }
+  },
+  {
+   "id": "SC_restyle_whole_line_from_switch",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "from": [
+     23,
+     169
+    ],
+    "look": "Modern",
+    "restyle": {
+     "success": true,
+     "cmd": "crestyle:23,169:Modern",
+     "changed": 18,
+     "message": "Restyled this run (18 pieces, 18 changed) to Modern; lamps on it: 1 changed.",
+     "_probeSerial": 528
+    },
+    "wrong": []
+   }
+  },
+  {
+   "id": "SC_restyle_whole_line_from_bracket",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "from": [
+     41,
+     169
+    ],
+    "look": "Scrapper",
+    "restyle": {
+     "success": true,
+     "cmd": "crestyle:41,169:Scrapper",
+     "changed": 18,
+     "message": "Restyled this run (18 pieces, 18 changed) to Scrapper; lamps on it: 1 changed.",
+     "_probeSerial": 531
+    },
+    "wrong": []
+   }
+  },
+  {
+   "id": "SC_restyle_whole_line_from_cord",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "from": [
+     16,
+     169
+    ],
+    "look": "Industrial",
+    "restyle": {
+     "success": true,
+     "cmd": "crestyle:16,169:Industrial",
+     "changed": 18,
+     "message": "Restyled this run (18 pieces, 18 changed) to Industrial; lamps on it: 1 changed.",
+     "_probeSerial": 534
+    },
+    "wrong": []
+   }
+  },
+  {
+   "id": "SC_restyle_cut_span_ends_line",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "cut": {
+     "success": true,
+     "cmd": "cut:10954,10955",
+     "done": true,
+     "_probeSerial": 537
+    },
+    "restyle": {
+     "success": true,
+     "cmd": "crestyle:38,169:Modern",
+     "changed": 18,
+     "message": "Restyled this run (18 pieces, 18 changed) to Modern; lamps on it: 1 changed.",
+     "_probeSerial": 538
+    },
+    "wrong": [
+     [
+      "member",
+      [
+       16,
+       169
+      ],
+      "Modern"
+     ],
+     [
+      "member",
+      [
+       17,
+       169
+      ],
+      "Modern"
+     ],
+     [
+      "member",
+      [
+       18,
+       169
+      ],
+      "Modern"
+     ],
+     [
+      "member",
+      [
+       19,
+       169
+      ],
+      "Modern"
+     ],
+     [
+      "member",
+      [
+       20,
+       169
+      ],
+      "Modern"
+     ],
+     [
+      "member",
+      [
+       21,
+       169
+      ],
+      "Modern"
+     ],
+     [
+      "member",
+      [
+       22,
+       169
+      ],
+      "Modern"
+     ],
+     [
+      "member",
+      [
+       24,
+       169
+      ],
+      "Modern"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "SCENE_sc_restyle_whole_line",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "rows": {
+     "SC_restyle_line_staged": [
+      "PASS"
+     ],
+     "SC_restyle_whole_line_from_pole": [
+      "PASS"
+     ],
+     "SC_restyle_whole_line_from_switch": [
+      "PASS"
+     ],
+     "SC_restyle_whole_line_from_bracket": [
+      "PASS"
+     ],
+     "SC_restyle_whole_line_from_cord": [
+      "PASS"
+     ],
+     "SC_restyle_cut_span_ends_line": [
+      "FAIL"
+     ]
+    }
+   }
+  }
+ ]
+}
