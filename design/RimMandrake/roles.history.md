@@ -253,6 +253,10 @@ The retired Relentless checker made none (it never passed over a red: a MEASUREM
 The owner ruling of 2026-11-01 (D3(a), `LESSONS_RETIRE_INBOX_AS_QUEUE`) reverses his 2026-10-29 answer that the
 Auditor fold lessons weekly.
 
+## producer.md and auditor.md: the roles are retired, 2026-11-23
+
+The owner, 2026-11-23: *"Those are old v3 roles we retired! V3 and relentless was supposed to be retired. Get those out if active rules. The codex versions of modern roles though are valuable for when we need to burn their tokens instead."* Both files were deleted (`git show 2a9009e7ec:src/RimMandrake/rimflow/roles/producer.md`, `…/auditor.md`); item `RIMMANDRAKE_REMOVE_RETIRED_V3_ROLES_FROM_ACTIVE_RULES_STILL_LISTED`.
+
 ## innovator.md: the role is retired, 2026-11-23
 
 The owner, 2026-11-23: *"Role is retired."* `innovator.md` was deleted (`git show 2a9009e7ec:src/RimMandrake/rimflow/roles/innovator.md`); item `RIMMANDRAKE_RETIRE_INNOVATOR_ROLE_HE_FORGOT_IT_WAS_THERE`.

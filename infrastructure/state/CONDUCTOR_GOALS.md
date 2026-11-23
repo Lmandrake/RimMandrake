@@ -1,8 +1,8 @@
-# CONDUCTOR_GOALS — the Conductor's goals for the Producer
+# CONDUCTOR_GOALS — the Conductor's goals
 
-The Producer's only input (`src/RimMandrake/rimflow/roles/producer.md`). Newest block on top; within a block, goals in
-his order of priority, highest first: the Producer cuts the lowest-ranked goal's work first and never a scenario a kept
-goal needs. Written by the Conductor with him (`src/RimMandrake/rimflow/roles/conductor.md` "Down"); a goal he drops is
+The Conductor reads this file at wake and orders its lane from it; Operations forecasts against it. Newest block on top;
+within a block, goals in his order of priority, highest first: a cut takes the lowest-ranked goal's work first and never
+a scenario a kept goal needs. Written by the Conductor with him (`src/RimMandrake/rimflow/roles/conductor.md` "Down"); a goal he drops is
 deleted, git holds the history. His words are cited from the ledger notes on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`
 (`python3 src/RimMandrake/rimflow/cli.py show V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`) unless another item is named.
 

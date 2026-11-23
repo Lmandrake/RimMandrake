@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "rimmandrake/rimflow/audits.schema.json",
-  "title": "One Auditor re-check result: one JSON line in D:\\ClaudeWork\\rimmandrake\\auditor\\audits.jsonl",
-  "description": "Appended by the Auditor (roles/auditor.md) through audits.py, the one reader/writer of this schema; read by audit_prescreen and arbiter_tiers through audits.read(). The file exists and may be empty (= no audits yet): `python3 src/RimMandrake/rimflow/audits.py ensure` creates it (the Auditor's pre_launch and the wave-2 setup step). A missing file, or a line that breaks this schema, is UNMEASURED, never 'no past failures' (review AA, brief AA8).",
+  "title": "One re-check result of the retired Auditor role: one JSON line in D:\\ClaudeWork\\rimmandrake\\auditor\\audits.jsonl",
+  "description": "Was appended by the Auditor role (retired 2026-11-23) through audits.py, the one reader/writer of this schema; read by audit_prescreen and arbiter_tiers through audits.read(). The file exists and may be empty (= no audits yet): `python3 src/RimMandrake/rimflow/audits.py ensure` creates it (the Auditor's pre_launch and the wave-2 setup step). A missing file, or a line that breaks this schema, is UNMEASURED, never 'no past failures' (review AA, brief AA8).",
   "type": "object",
   "required": [
     "ts",
@@ -86,11 +86,11 @@
     "sha",
     "run"
   ],
-  "x-idempotency-doc": "One line per item, sha and run: audits.append() refuses a second line with the same key (auditor.md 'Two records per result').",
+  "x-idempotency-doc": "One line per item, sha and run: audits.append() refuses a second line with the same key .",
   "x-waiting-index": {
     "waiting": "verdict UNRESOLVED with a non-empty waiting_for",
     "settled_by": "a LATER line (file order) for the same item and sha whose verdict is SOUND or DEFECT",
-    "doc": "the durable waiting index (auditor.md 'Carried picks', review roles r2 #7): audits.waiting() lists every waiting line with no settling successor; a wait is never dropped"
+    "doc": "the durable waiting index : audits.waiting() lists every waiting line with no settling successor; a wait is never dropped"
   },
   "x-conditionals": [
     "defect_class is a non-empty string iff verdict is DEFECT",

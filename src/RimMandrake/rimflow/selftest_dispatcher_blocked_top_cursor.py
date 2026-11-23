@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""selftest_dispatcher_blocked_top_cursor.py - two Dispatcher doors the v3 audit found unproven (T15,
+"""selftest_dispatcher_blocked_top_cursor.py - a Dispatcher door the v3 audit found unproven (T15,
 DISPATCHER_PROVE_BLOCKED_TOP_AND_CURSOR; design/RimMandrake/dispatcher_risk_response_2026-10-29.md R03 and T15).
 
     python3 src/RimMandrake/rimflow/selftest_dispatcher_blocked_top_cursor.py
@@ -9,14 +9,6 @@ DISPATCHER_PROVE_BLOCKED_TOP_AND_CURSOR; design/RimMandrake/dispatcher_risk_resp
    rings the stalled seat with that ticket. The planted fault is the block itself: the raised item is offered first
    while clear (the instrument can see it), and once blocked the lower offline item is the ticket and the ring. Same
    for a top item blocked `--on` an open predecessor; all blocked -> {} and no ring; unblocked -> back on top.
-
-2. THE EVENT CURSOR SURVIVES A 7 H OUTAGE. role_launch's `event_cursor` (EVENT_LOOKBACK_S = 6 h behind it) through
-   dispatcher.decide: (a) no tick at all for 7 h (the timer dead), events landing all through it, the oldest 6 h 35 min
-   before the resume tick -- the first tick back launches one event run that names the oldest and counts the rest,
-   moves the cursor and re-fires nothing after; (b) the ticks keep running every 2 min but the ledger is unreadable
-   for 7 h -- the cursor does not move and the first readable tick launches on the same events. Planted fault: the
-   same runs with a window measured from NOW (now - 6 h) instead of from the cursor -- the checks that pass on the
-   real code fail.
 """
 import os
 import subprocess
@@ -120,82 +112,8 @@ def test_blocked_top_does_not_hide_lower():
           % t)
 
 
-# ---------------------------------------------------------------- 2. the event cursor across a 7 h outage
-
-H = 3600
-
-
-def now_window(resume):
-    """The planted fault: a lookback measured from the resume tick, not from the cursor."""
-    real = RL.unseen
-
-    def fake(evs, rs):
-        return [e for e in real(evs, rs) if e[0] > resume - RL.EVENT_LOOKBACK_S]
-    return real, fake
-
-
-def producer_outage(blind_ticks, planted=False):
-    """Cursor at the 09:00 run; nothing read for 7 h; events at +30 min, +3 h, +6.5 h. -> (launches, st, resume)."""
-    t9 = SD.at_local("09:00", plus_s=0)
-    resume = t9 + 7 * H + 300
-    items = {"PLAN_A": SD.FakeItem(raised="2026-10-28T01:00:00Z"), "PLAN_ROW": SD.FakeItem(row="R3")}
-    evs = [SD.BASE_EV,
-           dict(SD.BASE_EV, event="note", id="ROLES_ITEM_X", text="REPLAN REQUEST: the plan slips", ts=SD.lts(t9 + 1800)),
-           dict(SD.BASE_EV, event="verify", id="PLAN_A", result="fail", ts=SD.lts(t9 + 3 * H)),
-           dict(SD.BASE_EV, event="block", id="PLAN_ROW", ts=SD.lts(t9 + 6 * H + 1800))]
-    st = SD.fresh()
-    st["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t9): "launch"}, "runs": [], "event_cursor": t9,
-                                "events_seen": []}}
-    p = SD.producer(after_role=None)
-
-    def boom():
-        raise ValueError("selftest: ledger unreadable")
-    cursors = set()
-    for k in range(blind_ticks):          # the ticks of a blind outage (ledger unreadable); 0 = timer dead
-        tk = t9 + 120 * (k + 1)
-        SD.rdecide([p], st, SD.lrobs(SD.ops_status(tk), boom), tk)
-        cursors.add(st["roles"]["Producer"].get("event_cursor"))
-    real, fake = now_window(resume)
-    if planted:
-        RL.unseen = fake
-    try:
-        a = SD.role_acts(SD.rdecide([p], st, SD.lrobs(SD.ops_status(resume), SD.lread(evs, items)), resume))
-    finally:
-        RL.unseen = real
-    return [x for x in a if x["do"] == "role_launch"], st, resume, cursors, (p, evs, items)
-
-
-def producer_checks(label, blind_ticks, planted):
-    la, st, resume, cursors, (p, evs, items) = producer_outage(blind_ticks, planted)
-    ok = []
-    if blind_ticks:
-        ok.append(("%s: the cursor never moved during %d blind ticks" % (label, blind_ticks),
-                   cursors == {SD.at_local("09:00", plus_s=0)}))
-    ok.append(("%s: the first tick back launches ONE event run" % label, len(la) == 1 and la[0]["mode"] == "event"))
-    why = la[0]["why"] if la else ""
-    ok.append(("%s: it names the oldest unread event (6 h 35 min old) and counts the other two" % label,
-               "replan request on ROLES_ITEM_X" in why and "+2 more" in why))
-    ok.append(("%s: the launch moves the cursor to the resume tick" % label,
-               st["roles"]["Producer"]["event_cursor"] == resume))
-    a = SD.role_acts(SD.rdecide([p], st, SD.lrobs(SD.ops_status(resume + 120), SD.lread(evs, items)), resume + 120))
-    ok.append(("%s: the next tick re-fires nothing" % label, not [x for x in a if x["do"] == "role_launch"]))
-    return ok
-
-
-def test_cursor_survives_7h_outage():
-    rows = producer_checks("timer dead 7 h", 0, False) + producer_checks("ledger blind 7 h", 210, False)
-    for msg, ok in rows:
-        check(ok, msg)
-    # the planted fault on the same path: a window from now, not from the cursor. Each scenario must catch it.
-    for label, rows in (("timer dead 7 h", producer_checks("timer dead 7 h", 0, True)),
-                        ("ledger blind 7 h", producer_checks("ledger blind 7 h", 210, True))):
-        bad = [m for m, ok in rows if not ok]
-        check(bool(bad), "planted fault (lookback from now) is caught by the %s case: %s" % (label, bad[:1]))
-
-
 def main():
     test_blocked_top_does_not_hide_lower()
-    test_cursor_survives_7h_outage()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

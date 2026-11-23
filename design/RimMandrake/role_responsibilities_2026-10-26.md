@@ -486,6 +486,9 @@ D2 idle with work queued · D4 cap breaches. Measurable but not yet taken: C3, A
 
 ## Part 4. Activation table — who holds each duty until its role runs
 
+**The Producer, the Arbiter and the Auditor are retired (owner, 2026-11-23), and their waves never come. Who does each of
+their duties now: `design/RimMandrake/retired_v3_role_duties_2026-11-23.md`.**
+
 Item `V3_ROLES_DESIGN_INTERIM_HOLDER_PER_DUTY` (GPT r2, `D:\ClaudeWork\rimmandrake\orphan_homes\r2_answer.md`: "a
 future owner plus a filed ticket does not establish someone running the duty today"). Waves, from the owner's item
 `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` (2026-10-27): **Wed** (after the weekly reset) Dispatcher + Conductor +

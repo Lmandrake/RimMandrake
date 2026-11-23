@@ -27,6 +27,8 @@ rimflow/era_text.py. Watched red on the pre-fix tree: 2011 era text lines (evide
 D:\ClaudeWork\rimmandrake\conductor\era_finish_20261119\gate_prefix_run.txt).
 
 Retired roles too (RIMMANDRAKE_RETIRE_INNOVATOR_ROLE_HE_FORGOT_IT_WAS_THERE): the owner, 2026-11-23, "Role is retired."
+RIMMANDRAKE_REMOVE_RETIRED_V3_ROLES_FROM_ACTIVE_RULES_STILL_LISTED, the same day: "Those are old v3 roles we retired!"
+(Producer and Auditor; the Arbiter and the Setter went before them). Watched red on that item's parent: 92 ROLE lines.
 A role of RETIRED_ROLES fails on a machinery path named for it, on its word in a file that could launch or count it
 (ROLE_FILES), and on a line of a live instruction file that names it without "retired" on that line. The idea list
 design/RimMandrake/innovations.md is not the role.
@@ -75,14 +77,21 @@ def era_unit(name):
 MASKED = ("masked", "masked-runtime")
 
 # --- Retired roles: name -> whose word. A role that comes back needs its owner's word and its entry here removed.
-RETIRED_ROLES = {"Innovator": "the owner, 2026-11-23"}
+RETIRED_ROLES = {"Innovator": "the owner, 2026-11-23", "Producer": "the owner, 2026-11-23", "Auditor": "the owner, 2026-11-23",
+                 "Arbiter": "CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED",
+                 "Setter": "RIMMANDRAKE_RETIRE_SETTER_ARBITER_SEAMS_EVERY_LAUNCH_REFUSED"}
+COMMON_WORDS = ("Producer", "Auditor", "Arbiter", "Setter")   # plain English in lower case ("a pipe producer")
+NOT_THE_ROLE = (("skills/telemetry/SKILL.md", "Producer writes JSONL"),)    # any program that writes a series
+ROLE_LIVE_TOO = ("src/RimMandrake/Utils/findings_judge_prompt.md", "src/RimMandrake/Utils/findings_judge_friday.md")
 ROLE_PATHS = ("src/", ".claude/", "skills/", "infrastructure/agents/")
 SCHEDULE = "src/RimMandrake/rimflow/dispatcher_schedule.json"
 ROLE_FILES = (SCHEDULE, "src/RimMandrake/Utils/ops_watch_rules.json", "src/RimMandrake/rimflow/live_baseline.txt")
 
 
-def role_rx(name):
-    return re.compile(r"\b%s\b" % re.escape(name), re.I)      # "_" is a word character: an id INNOVATOR_X is not the role
+def role_rx(name, text=False):
+    """text: a live instruction line, where a COMMON_WORDS name counts only capitalised."""
+    return re.compile(r"\b%ss?\b" % re.escape(name),      # "_" is a word character: an id INNOVATOR_X is not the role
+                      0 if text and name in COMMON_WORDS else re.I)
 
 
 def check_roles(paths, files, live):
@@ -92,7 +101,9 @@ def check_roles(paths, files, live):
     for name in RETIRED_ROLES:
         rx = role_rx(name)
         out += [f"role {name}: {p}" for p in paths
-                if p.startswith(ROLE_PATHS) and re.search(name, os.path.basename(p), re.I)]
+                if p.startswith(ROLE_PATHS) and re.search(name, os.path.basename(p), re.I)
+                and (name not in COMMON_WORDS or p.startswith(("src/RimMandrake/rimflow/", "src/RimMandrake/Utils/", ".claude/",
+                                                               "infrastructure/agents/")))]    # mod content: plain words
         for p, text in files.items():
             if p == SCHEDULE:
                 sch = json.loads(text)
@@ -101,7 +112,9 @@ def check_roles(paths, files, live):
                         for r in (sch.get("golive") or {}).get("roles") or [] if rx.search(str(r))]
             out += [f"role {name}: {p}:{n}" for n, ln in enumerate(text.splitlines(), 1) if rx.search(ln)]
         out += [f"role {name}: {p}:{n}: {ln.strip()[:160]}" for p, text in live
-                for n, ln in enumerate(text.splitlines(), 1) if rx.search(ln) and not re.search(r"\bretired\b", ln, re.I)]
+                for n, ln in enumerate(text.splitlines(), 1)
+                if role_rx(name, True).search(ln) and not re.search(r"\bretired\b", ln, re.I)
+                and not any(p == q and w in ln for q, w in NOT_THE_ROLE)]
     return out
 
 # --- Text: the rule lives in era_text.py (shared with Utils/era_history_mark.py).
@@ -274,7 +287,7 @@ def probes():
     want(check_text("src/RimMandrake/rimflow/x.py", "relentless.py runs\n") == [] and
          check_text("design/Jawa/x.md", "Foundry floor\n") == [], "code and lore are not read by the text check")
     # Retired roles: a planted return of each kind is refused; the idea list, an id and a "retired" line are not.
-    clean = json.dumps({"golive": {"roles": ["Conductor"]}, "roles": [{"name": "Auditor"}]}, indent=1)
+    clean = json.dumps({"golive": {"roles": ["Conductor"]}, "roles": [{"name": "Operations"}]}, indent=1)
     row = json.dumps({"golive": {"roles": []}, "roles": [{"name": "Innovator", "enabled": False}]}, indent=1)
     live = json.dumps({"golive": {"roles": ["Innovator"]}, "roles": []}, indent=1)
     want(any("a row of roles" in x for x in check_roles([], {SCHEDULE: row}, [])),
@@ -284,13 +297,22 @@ def probes():
                           "src/RimMandrake/Utils/systemd/rm-innovator.timer"], {}, [])) == 3,
          "a role file, an agent definition and a unit named for the role are remnants")
     want(len(check_roles([], {ROLE_FILES[1]: '  "roles": ["auditor", "innovator"],\n', ROLE_FILES[2]: "role=Innovator max_age=6d\n"},
-                         [])) == 2, "a word-list entry and a live promise are remnants")
+                         [])) == 3, "a word-list entry and a live promise are remnants")
     want(len(check_roles([], {}, [("src/RimMandrake/rimflow/roles/x.md", "and the proposals of the Innovator\n")])) == 1,
          "a live instruction line that names the role as running is a remnant")
     want(check_roles(["design/RimMandrake/innovations.md", "infrastructure/state/items/closed/INNOVATOR_X.md"],
-                     {SCHEDULE: clean, ROLE_FILES[2]: "role=Auditor max_age=3d\n"},
+                     {SCHEDULE: clean, ROLE_FILES[2]: "role=Operations max_age=3d\n"},
                      [("CLAUDE.md", "The Innovator role was retired 2026-11-23.\nGet inventive. Innovate.\n`INNOVATOR_X_Y` is closed.\n")])
          == [], "the idea list, a closed item, an id and a line that says retired are not remnants")
+    for name in ("Producer", "Auditor"):
+        back = json.dumps({"golive": {"roles": []}, "roles": [{"name": name, "enabled": False}]}, indent=1)
+        want(any("a row of roles" in x for x in check_roles([], {SCHEDULE: back}, [])), f"a planted {name} schedule row is a remnant")
+        want(check_roles([f"src/RimMandrake/rimflow/roles/{name.lower()}.md"], {}, []) != [], f"a returned {name} role file is a remnant")
+        want(check_roles([], {}, [("CLAUDE.md", f"Hand it to the {name}.\n")]) != [], f"a rule line that sends work to the {name} is a remnant")
+    want(check_roles([], {}, [("CLAUDE.md", "The Setter binds oracles.\n")]) != [], "a rule line with the Setter acting is a remnant")
+    want(check_roles([], {}, [("skills/rimworld-layout-layers/SKILL.md", "a path from a producer to this consumer\n"),
+                              ("skills/rimworld-debug-testing/SKILL.md", "in-game info card is the arbiter\n"), NOT_THE_ROLE[0]]) == [],
+         "the plain English words are not the roles")
     return fails
 
 
@@ -302,7 +324,7 @@ def role_problems(paths):
             with open(os.path.join(REPO, p), encoding="utf-8") as f:
                 files[p] = f.read()
         for p in paths:
-            if text_scope(p) == "live" and os.path.exists(os.path.join(REPO, p)):
+            if (text_scope(p) == "live" or p in ROLE_LIVE_TOO) and os.path.exists(os.path.join(REPO, p)):
                 with open(os.path.join(REPO, p), encoding="utf-8") as f:
                     live.append((p, f.read()))
         return check_roles(paths, files, live), ""

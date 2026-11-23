@@ -2,7 +2,7 @@
 """Class guard for RELAPSE_PLAN_FIX_DIED_TWICE: a compose pass must never read a healthy family blind because the
 metronome's round robin took longer to come back to it than a typed carry bound allowed.
 
-Instance (2026-11-05): plan was measured at 18:38:14Z and next at 19:00:35Z (1341 s; 5 overruns, each followed by
+Instance (2026-11-05, the plan family of that day): plan was measured at 18:38:14Z and next at 19:00:35Z (1341 s; 5 overruns, each followed by
 fam_retry beats). The carry bound was a typed 1000 s, so the compose pass at 18:58:17Z carried plan as UNMEASURED,
 st_suppressed wrote plan.blind = 1, and incident plan-20261105134046 opened for the third time on a healthy source.
 The guard: the bound is derived from the phase table and the timer, covers the worst round, a rule cannot lower it,
@@ -34,7 +34,7 @@ def check(name, cond, detail=""):
 def stub(fam):
     def c(now, rules, ctx):
         pts = {"%s.stub" % fam: OW.M(1, "n")}
-        if fam in ("plan", "relentless", "seats"):
+        if fam == "seats":
             pts["%s.blind" % fam] = OW.M(0, "sources not seen", cause="none")
         return pts
     return c
@@ -64,21 +64,21 @@ check("an unreadable table: the floor, said aloud",
 
 
 def blind_after(gap_s, label):
-    """Seed every series at t0, then a compose pass `gap_s` later that measures two other families: plan.blind."""
+    """Seed every series at t0, then a compose pass `gap_s` later that measures two other families: seats.blind."""
     d = _TMP / label
     os.environ["RM_OPS_WATCH_DIR"] = str(d)
     t0 = time.time() - gap_s - 120
     OW.run(now=t0, rules=rules)
     OW.run(now=t0 + gap_s, rules=rules, families=["accounts", "codex"], compose=True)
     st = json.loads((d / "status.json").read_text())
-    return st["points"].get("plan.blind") or {}
+    return st["points"].get("seats.blind") or {}
 
 
 p = blind_after(INSTANCE_OPEN_S, "instance_open")
-check("instance: plan carried %.0f s across a slow round reads blind 0, not 1" % INSTANCE_OPEN_S,
+check("instance: seats carried %.0f s across a slow round reads blind 0, not 1" % INSTANCE_OPEN_S,
       p.get("m") == "MEASURED" and p.get("v") == 0, p)
 p = blind_after(INSTANCE_GAP_S, "instance_gap")
-check("instance: plan carried the whole measured gap (%.0f s) reads blind 0" % INSTANCE_GAP_S,
+check("instance: seats carried the whole measured gap (%.0f s) reads blind 0" % INSTANCE_GAP_S,
       p.get("m") == "MEASURED" and p.get("v") == 0, p)
 p = blind_after(bound + 120, "past_bound")
 check("a family older than the round robin's worst round still reads blind 1",

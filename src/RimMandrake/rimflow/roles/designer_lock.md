@@ -43,7 +43,7 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    set. The lock is refused while a record.json inventory capability is exercised by no showcase and no scene. The
    scenes that the set names are rechecked against the scene contract: a scene added since stage 3 is not trusted by id.
 5. **File the mod item**, `--kind mod`, with `## verify` citing `design/concepts/<Mod>/tree.json` and the accepted tree
-   hash (a new mod under another kind escapes the gate). The Producer admits the mod item. The Maturation Pipeline
+   hash (a new mod under another kind escapes the gate). The Maturation Pipeline
    builds it from the locked bars (`design/specs/2026-11-13-maturation-pipeline.md`). FlowWorks and GSS go the same
    way, as helpers the Conductor launches. Every scene's missing entry point or control is a filed build item before
    this one (resetting a scene is harness housekeeping, never a mod item: owner 2026-11-17).

@@ -7,7 +7,7 @@ emitted, minus the long launch message, and the role state it left). The expecte
 snapshot in GOLDEN below. Exact equality is the point: a mutated string literal is "XX<text>XX", which still
 CONTAINS the old text, so a substring check cannot see it. A few scenarios carry explicit semantic asserts beside
 the snapshot (boundaries). Regenerate the snapshot with `--gen` after a REVIEWED behaviour change.
-Pure: fake runners, no systemd, no clock. Imports selftest_dispatcher for its role fixtures (conductor(), producer()...).
+Pure: fake runners, no systemd, no clock. Imports selftest_dispatcher for its role fixtures (conductor(), daily()...).
 """
 import copy
 import json
@@ -280,10 +280,6 @@ def fresh_st(**roles):
     return {"roles": {n: dict(v) for n, v in roles.items()}}
 
 
-def lo(status=None, events=(), items=None, **kw):
-    return SD.lrobs(status, SD.lread([SD.BASE_EV] + list(events), items), **kw)
-
-
 def tick(roles, st, ob, now, n=1, step=120, **kw):
     """n successive ticks; the list of each tick's result (acts and the role state)."""
     out = []
@@ -340,7 +336,7 @@ def decide_role_entries_and_schedule_errors():
     out["non-mapping entries"] = decide(["junk", 7, SD.conductor(enabled=False)], fresh_st(), SD.robs(SD.ops_status(T)), T,
                                         busy=set())
     out["disabled role"] = decide([SD.conductor(enabled=False)], fresh_st(), SD.robs(SD.ops_status(T)), T, busy=set())
-    out["missing launch keys"] = decide([{"name": "Auditor", "enabled": True, "seat": "BENCH"}], fresh_st(),
+    out["missing launch keys"] = decide([{"name": "Nobody", "enabled": True, "seat": "BENCH"}], fresh_st(),
                                         SD.robs(SD.ops_status(T)), T, busy=set())
     out["bad slot_late_s"] = decide([SD.conductor(slot_late_s=0)], fresh_st(), SD.robs(SD.ops_status(T)), T, busy=set())
     cc = SD.conductor(after_role="Operations")
@@ -358,22 +354,6 @@ def decide_after_role_waits_once_and_follows():
     st = fresh_st()
     ticks = tick([cc, op], st, SD.robs(SD.ops_status(t0)), t0, n=2, busy=set())
     return ticks
-
-
-@scen
-def decide_ledger_blind_and_baseline():
-    p = SD.producer(after_role=None)
-    t9 = SD.at_local("09:00")
-    st = fresh_st()
-    def boom():
-        raise OSError("ledger unreadable")
-    blind_obs = SD.robs(SD.ops_status(t9))
-    blind_obs["ledger"] = boom
-    blind_ticks = tick([p], st, blind_obs, t9, n=2, busy=set())
-    after = decide([p], st, SD.lrobs(SD.ops_status(t9 + 300), SD.lread([SD.BASE_EV, dict(SD.BASE_EV, id="X2")])), t9 + 300,
-                   busy=set())
-    no_ledger_reader = decide([p], fresh_st(), SD.robs(SD.ops_status(t9)), t9, busy=set())
-    return [blind_ticks, after, no_ledger_reader]
 
 
 @scen
@@ -426,55 +406,16 @@ def decide_alarm_daily_limits():
     return out
 
 
-def fail_ev(i, t, what="block"):
-    return dict(SD.BASE_EV, event=what, id=i, ts=SD.lts(t), result="fail")
-
-
-class OpenItem(object):
-    open, raised, row = True, True, None
-
-
 @scen
-def decide_event_runs():
-    p = SD.producer(after_role=None, runs_local=["09:00"], event_runs=["plan_step_failure", "replan_request"])
-    p.pop("event_runs_per_day", None)               # absent: the default of 1 a day
-    t = SD.at_local("13:00")
-    items = {"A": OpenItem(), "B": OpenItem()}
-    evs = [fail_ev("A", t - 1500), fail_ev("B", t - 900)]
-    out = {}
-
-    def st0(**rs):
-        return fresh_st(Producer=dict({"done": {}, "runs": [], "event_cursor": t - 3000, "events_seen": []}, **rs))
-    st = st0()
-    out["two pending: one run, names both"] = tick([p], st, lo(SD.ops_status(t), evs, items), t, n=2, busy=set())
-    st = st0()
-    out["one pending: no more-line"] = decide([p], st, lo(SD.ops_status(t), evs[:1], items), t, busy=set())
-    st = st0(done={"%s event#1" % RL.day_of(t): "launch"})
-    out["quota used: held once a day"] = tick([p], st, lo(SD.ops_status(t), evs, items), t, n=2, busy=set())
-    p2 = dict(p, event_runs_per_day=2)
-    st = st0(done={"%s event#1" % RL.day_of(t): "launch"})
-    out["second of two"] = decide([p2], st, lo(SD.ops_status(t), evs, items), t, busy=set())
+def decide_done_retention():
     # old done keys are dropped past two local days; two days back stays
+    p = SD.daily(after_role=None)
+    t = SD.at_local("13:00")
     d = lambda n: RL.day_of(t - n * 86400)
-    st = st0(done={d(3) + " 09:00": "launch", d(2) + " 09:00": "launch", d(1) + " 09:00": "launch",
-                   d(2) + " event#1": "launch"})
-    decide([p], st, lo(SD.ops_status(t), [], items), t, busy=set())
-    out["done retention"] = sorted(st["roles"]["Producer"]["done"])
-    # unreadable event kind
-    pbad = dict(p, event_runs=["plan_step_failure", "nonsense"])
-    st = st0()
-    out["bad event kind"] = decide([pbad], st, lo(SD.ops_status(t), evs, items), t, busy=set())
-    out["pending_events kinds"] = [
-        RL.pending_events({"event_runs": ["plan_step_failure"], "ledger_item": "X", "plan_scope": ["row"]},
-                          {"events": evs, "world": SD.FakeWorld({"A": OpenItem()})}, t - 3000),
-        RL.pending_events({"event_runs": ["plan_step_failure"], "ledger_item": "X"},
-                          {"events": evs, "world": SD.FakeWorld({"A": OpenItem()})}, t - 3000),
-    ]
-    try:
-        RL.pending_events({"event_runs": ["zzz"]}, {"events": [], "world": None}, 0)
-    except ValueError as e:
-        out["pending_events bad kind"] = str(e)
-    return out
+    st = fresh_st(Daily={"done": {d(3) + " 09:00": "launch", d(2) + " 09:00": "launch", d(1) + " 09:00": "launch"},
+                         "runs": []})
+    decide([p], st, SD.robs(SD.ops_status(t)), t, busy=set())
+    return sorted(st["roles"]["Daily"]["done"])
 
 
 @scen
@@ -514,20 +455,6 @@ def decide_off_switch_and_window():
 
 
 @scen
-def decide_off_switch_on_event_run_is_not_spent():
-    p = SD.producer(after_role=None)
-    t = SD.at_local("13:00")
-    items = {"A": OpenItem()}
-    evs = [fail_ev("A", t - 900)]
-    st = fresh_st(Producer={"done": {}, "runs": [], "event_cursor": t - 3000, "events_seen": []})
-    ob = lo(SD.ops_status(t), evs, items, off="owner: stop")
-    first = tick([p], st, ob, t, n=2, busy=set())
-    ob2 = lo(SD.ops_status(t + 600), evs, items)
-    later = decide([p], st, ob2, t + 600, busy=set())
-    return [first, later]
-
-
-@scen
 def decide_blocked_by_reading_band_and_caps():
     out = {}
     c = SD.conductor()
@@ -550,34 +477,14 @@ def decide_blocked_by_reading_band_and_caps():
 
 
 @scen
-def decide_event_and_alarm_reserve_the_days_scheduled_runs():
+def decide_alarm_reserve_the_days_scheduled_runs():
     out = {}
-    p = SD.producer(after_role=None, daily_token_cap=250000, run_token_cap=100000)
-    t = SD.at_local("07:00")                      # 09:00 daily run still to come
-    items = {"A": OpenItem()}
-    evs = [fail_ev("A", t - 600)]
-
-    def st0():
-        return fresh_st(Producer={"done": {}, "runs": [], "event_cursor": t - 3000, "events_seen": []})
-    out["event fits beside the reserve"] = decide([dict(p, daily_token_cap=300000)], st0(), lo(SD.ops_status(t), evs, items),
-                                                  t, busy=set())
-    out["event waits for the reserve, once"] = tick([dict(p, daily_token_cap=199999)], st0(),
-                                                    lo(SD.ops_status(t), evs, items), t, n=2, busy=set())
-    out["event: nothing left to reserve"] = decide([dict(p, daily_token_cap=100000, runs_local=["06:00"])], st0(),
-                                                   lo(SD.ops_status(t), evs, items), t, busy=set())
-    # alarm run: reserves even with no scheduled runs left (mode alarm)
+    t = SD.at_local("07:00")
     op = SD.operations(runs_local=["06:00"], economy_pass_local=None, daily_token_cap=60000, run_token_cap=60000)
     al = {"a1": {"state": "OPEN", "item": "ITEM_ONE"}}
     out["alarm fits exactly"] = decide([op], fresh_st(), SD.robs(SD.ops_status(t, alarms=al)), t, busy=set())
     op2 = dict(op, daily_token_cap=59999)
     out["alarm over the cap waits"] = tick([op2], fresh_st(), SD.robs(SD.ops_status(t, alarms=al)), t, n=2, busy=set())
-    # the scheduled run later in the day is band-blocked: it keeps no share
-    pr = dict(p, daily_token_cap=100000)
-    out["blocked slot reserves nothing (RED, Thursday)"] = decide(
-        [pr], st0(), lo(SD.ops_status(t, runway=0.3), evs, items), t, busy=set())
-    # an event refused on the daily cap keeps its quota; alarms once
-    out["event refused on the cap"] = tick([dict(p, daily_token_cap=50000, runs_local=["06:00"])], st0(),
-                                           lo(SD.ops_status(t), evs, items), t, n=2, busy=set())
     return out
 
 
@@ -617,52 +524,17 @@ def slot_blocked_table_and_slots_edges():
     for i, (hh, m, _) in enumerate(sl):
         jobs.append({"slot": hh, "first": i == 0, "mode": m})
     jobs.append({"slot": None, "first": False, "mode": "alarm"})
-    jobs.append({"slot": None, "first": False, "mode": "event"})
-    jobs.append({"slot": None, "first": False, "mode": "weekly"})
     jobs.append({"slot": "", "first": False, "mode": "quick"})
     for allowed in RL.BAND_SLOTS + ("bogus",):
         out[allowed] = [RL.slot_blocked(allowed, j, c, t) for j in jobs]
     # quick_one with a schedule of nothing but an economy slot
     ce = SD.conductor(quick_checks_local=["13:00"], economy_pass_local="13:00", economy_token_cap=5000)
     out["quick_one, only economy"] = [RL.slot_blocked("quick_one", {"slot": "13:00", "first": True, "mode": "quick"}, ce, t)]
-    # weekday filtering and the weekly slot
-    p = SD.producer(runs_local=["Wed 09:00", "Wed 15:00", "Thu 09:00"], weekly_plan_weekday="wed")
+    # weekday filtering
+    p = SD.daily(runs_local=["Wed 09:00", "Wed 15:00", "Thu 09:00"])
     out["Wed"] = RL.slots(p, SD.at_local("07:00"))
     out["Thu"] = RL.slots(p, SD.at_local("07:00") + 86400)
     out["no day"] = RL.slots(p, None)
-    p2 = SD.producer(runs_local=["09:00", "15:00"], weekly_plan_weekday="Wednesday")
-    for k in ("weekly_plan_weekday",):
-        try:
-            RL.slots(dict(p2, **{k: "Funday"}), SD.at_local("07:00"))
-        except ValueError as e:
-            out["bad weekday"] = str(e)
-    out["wk none"] = RL.slots(dict(p2, weekly_plan_weekday=None), SD.at_local("07:00"))
-    return out
-
-
-@scen
-def pending_events_combines_kinds_and_since():
-    t = SD.at_local("13:00")
-    items = {"A": OpenItem()}
-    evs = [fail_ev("A", t - 900),
-           dict(SD.BASE_EV, event="note", id="PLAN_X", ts=SD.lts(t - 700), text="REPLAN: change"),
-           dict(SD.BASE_EV, event="implemented", id="BUILT", ts=SD.lts(t - 500))]
-    lr = {"events": evs, "world": SD.FakeWorld(items)}
-    role = {"event_runs": ["plan_step_failure", "replan_request"], "ledger_item": "PLAN_X",
-            "replan_note_prefix": "REPLAN", "plan_scope": ["raised", "row"]}
-    out = {"all": RL.pending_events(role, lr, t - 3000)}
-    out["since later"] = RL.pending_events(role, lr, t - 600)
-    out["reverse order"] = RL.pending_events(dict(role, event_runs=list(reversed(role["event_runs"]))), lr, t - 3000)
-    out["only replan"] = RL.pending_events(dict(role, event_runs=["replan_request"]), lr, t - 3000)
-    out["world_filter off"] = RL.pending_events(dict(role, event_runs=["plan_step_failure"]),
-                                                {"events": evs, "world": SD.FakeWorld({})}, t - 3000, False)
-    out["world_filter on, none open"] = RL.pending_events(dict(role, event_runs=["plan_step_failure"]),
-                                                          {"events": evs, "world": SD.FakeWorld({})}, t - 3000)
-    out["scope default"] = RL.pending_events({"event_runs": ["plan_step_failure"]}, lr, t - 3000)
-    try:
-        RL.pending_events({"event_runs": ["x"]}, lr, 0)
-    except ValueError as e:
-        out["bad"] = str(e)
     return out
 
 
@@ -699,24 +571,21 @@ def supervise_overbudget_repeats_tell_the_conductor():
     return supervise([c], st, sobs({"u0": "inactive"}, {"u0": cli(1, subtype="success")}), T)
 
 
-def _first_launching_cap(role, band_cfg, t, evs, items, lo_, hi_, step):
+def _first_launching_cap(role, band_cfg, t, lo_, hi_, step):
+    al = {"a1": {"state": "OPEN", "item": "ITEM_ONE"}}
     for cap in range(lo_, hi_, step):
         r = dict(role, daily_token_cap=cap, throttle_bands=band_cfg)
-        st = fresh_st(Producer={"done": {}, "runs": [], "event_cursor": t - 3000, "events_seen": []})
-        res = decide([r], st, lo(SD.ops_status(t), evs, items), t, busy=set())
+        res = decide([r], fresh_st(), SD.robs(SD.ops_status(t, alarms=al)), t, busy=set())
         if any(a["do"] == "role_launch" for a in res["acts"]):
             return cap
     return None
 
 
 @scen
-def event_reserve_sweeps_the_daily_cap_for_every_band_shape():
+def alarm_reserve_sweeps_the_daily_cap_for_every_band_shape():
     t = SD.at_local("07:00")
-    items = {"A": OpenItem()}
-    evs = [fail_ev("A", t - 600)]
-    p = SD.producer(after_role=None, runs_local=["08:00", "10:00", "12:00", "14:00"], run_token_cap=40000,
-                    quick_token_cap=20000, economy_pass_local="12:00", economy_token_cap=10000)
-    p.pop("weekly_plan_weekday", None)
+    p = SD.operations(after_role=None, runs_local=["08:00", "10:00", "12:00", "14:00"], run_token_cap=40000,
+                      quick_token_cap=20000, economy_pass_local="12:00", economy_token_cap=10000)
     shapes = {
         "x1 all": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"}},
         "x1.5 all": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.5, "slots": "all"}},
@@ -725,24 +594,18 @@ def event_reserve_sweeps_the_daily_cap_for_every_band_shape():
         "x1 quick": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "quick"}},
         "x1 quick_one": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "quick_one"}},
         "x1 none": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "none"}},
-        "x3 weekly": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 3.0, "slots": "weekly"}},
     }
-    out = {}
-    for name, bc in shapes.items():
-        out[name] = _first_launching_cap(p, bc, t, evs, items, 20000, 400000, 1000)
-    return out
+    return {name: _first_launching_cap(p, bc, t, 20000, 400000, 1000) for name, bc in shapes.items()}
 
 
 @scen
-def event_reserve_edges_one_cap_apart():
+def alarm_reserve_edges_one_cap_apart():
     # the sweep above is coarse (1000): pin the exact boundary for the default shape
     t = SD.at_local("07:00")
-    items = {"A": OpenItem()}
-    evs = [fail_ev("A", t - 600)]
-    p = SD.producer(after_role=None, runs_local=["08:00", "10:00"], run_token_cap=40000, quick_token_cap=20000)
-    p.pop("weekly_plan_weekday", None)
+    p = SD.operations(after_role=None, runs_local=["08:00", "10:00"], economy_pass_local=None, run_token_cap=40000,
+                      quick_token_cap=20000)
     bc = {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.5, "slots": "all"}}
-    return _first_launching_cap(p, bc, t, evs, items, 90000, 140000, 1)
+    return _first_launching_cap(p, bc, t, 60000, 140000, 1)
 
 
 # GOLDEN-BEGIN
@@ -763,6 +626,14 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                     '08:00': ['2026-10-28 08:00', '2026-10-27 12:00'],
                                                     '08:01': ['2026-10-28 08:00', '2026-10-27 12:00'],
                                                     '12:00': ['2026-10-28 12:00', '2026-10-28 08:00']},
+ 'alarm_reserve_edges_one_cap_apart': 100000,
+ 'alarm_reserve_sweeps_the_daily_cap_for_every_band_shape': {'x1 all': 110000,
+                                                             'x1 last': 60000,
+                                                             'x1 none': None,
+                                                             'x1 quick': 100000,
+                                                             'x1 quick_one': None,
+                                                             'x1.5 all': 140000,
+                                                             'x2 first': 80000},
  'decide_after_role_waits_once_and_follows': [{'acts': [{'account': None,
                                                          'band': 'NONE',
                                                          'blind': {'mode': 'economy',
@@ -800,8 +671,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                            'alarm_last_run': None,
                                                                                            'alarms_seen': [],
                                                                                            'done': None,
-                                                                                           'event_cursor': None,
-                                                                                           'events_seen': None,
                                                                                            'had_done': False,
                                                                                            'key': '2026-10-28 07:30',
                                                                                            'mode': 'economy',
@@ -820,8 +689,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                            'alarm_last_run': None,
                                                                                            'alarms_seen': [],
                                                                                            'done': None,
-                                                                                           'event_cursor': None,
-                                                                                           'events_seen': None,
                                                                                            'had_done': False,
                                                                                            'key': '2026-10-28 07:30',
                                                                                            'mode': 'economy',
@@ -866,8 +733,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                         'alarm_last_run': None,
                                                                                                         'alarms_seen': [],
                                                                                                         'done': None,
-                                                                                                        'event_cursor': None,
-                                                                                                        'events_seen': None,
                                                                                                         'had_done': False,
                                                                                                         'key': 'alarm '
                                                                                                                'ITEM_ONE',
@@ -948,8 +813,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                     'alarm_last_run': None,
                                                                                                     'alarms_seen': [],
                                                                                                     'done': None,
-                                                                                                    'event_cursor': None,
-                                                                                                    'events_seen': None,
                                                                                                     'had_done': False,
                                                                                                     'key': 'alarm '
                                                                                                            'ITEM_ONE',
@@ -1005,8 +868,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                          'alarm_last_run': None,
                                                                                                          'alarms_seen': [],
                                                                                                          'done': None,
-                                                                                                         'event_cursor': None,
-                                                                                                         'events_seen': None,
                                                                                                          'had_done': False,
                                                                                                          'key': 'alarm '
                                                                                                                 'ITEM_TWO',
@@ -1030,8 +891,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                          'alarm_last_run': None,
                                                                                                          'alarms_seen': [],
                                                                                                          'done': None,
-                                                                                                         'event_cursor': None,
-                                                                                                         'events_seen': None,
                                                                                                          'had_done': False,
                                                                                                          'key': 'alarm '
                                                                                                                 'ITEM_TWO',
@@ -1081,14 +940,87 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                                 'alarm_last_run': None,
                                                                                                                 'alarms_seen': [],
                                                                                                                 'done': None,
-                                                                                                                'event_cursor': None,
-                                                                                                                'events_seen': None,
                                                                                                                 'had_done': False,
                                                                                                                 'key': 'alarm '
                                                                                                                        'ITEM_ONE',
                                                                                                                 'mode': 'alarm',
                                                                                                                 'unit': 'rm-role-operations-1793188860'},
                                                                                              'runs': []}}}},
+ 'decide_alarm_reserve_the_days_scheduled_runs': {'alarm fits exactly': {'acts': [{'do': 'role_hold',
+                                                                                   'role': 'Operations',
+                                                                                   'why': 'Operations slot 06:00 '
+                                                                                          'missed (tick 3660 s late '
+                                                                                          '> slot_late_s)'},
+                                                                                  {'account': None,
+                                                                                   'band': 'NONE',
+                                                                                   'blind': {'mode': 'alarm',
+                                                                                             'outcome': 'launched',
+                                                                                             'role': 'Operations',
+                                                                                             'unit': 'rm-role-operations-1793170860'},
+                                                                                   'budget': 60000,
+                                                                                   'do': 'role_launch',
+                                                                                   'message': '<message>',
+                                                                                   'mode': 'alarm',
+                                                                                   'note': True,
+                                                                                   'role': 'Operations',
+                                                                                   'run_max_s': 1800,
+                                                                                   'seat': 'BENCH',
+                                                                                   'slot': 'alarm ITEM_ONE',
+                                                                                   'ticket': 'ITEM_ONE',
+                                                                                   'unit': 'rm-role-operations-1793170860',
+                                                                                   'why': 'Operations ops_watch '
+                                                                                          'alarm ITEM_ONE, band '
+                                                                                          'NONE, budget 60000 (cap '
+                                                                                          '60000 x 1.0), 0 used '
+                                                                                          'today, unit '
+                                                                                          'rm-role-operations-1793170860, '
+                                                                                          'model sonnet'}],
+                                                                         'ledger_blind': None,
+                                                                         'roles': {'Operations': {'alarm_day': {'day': '2026-10-28',
+                                                                                                                'keys': {'ITEM_ONE': 1},
+                                                                                                                'n': 1},
+                                                                                                  'alarm_last_run': 1793170860.0,
+                                                                                                  'alarms_seen': ['ITEM_ONE'],
+                                                                                                  'done': {'2026-10-28 06:00': 'missed'},
+                                                                                                  'pending_launch': {'alarm_day': None,
+                                                                                                                     'alarm_last_run': None,
+                                                                                                                     'alarms_seen': [],
+                                                                                                                     'done': None,
+                                                                                                                     'had_done': False,
+                                                                                                                     'key': 'alarm '
+                                                                                                                            'ITEM_ONE',
+                                                                                                                     'mode': 'alarm',
+                                                                                                                     'unit': 'rm-role-operations-1793170860'},
+                                                                                                  'runs': []}}},
+                                                  'alarm over the cap waits': [{'acts': [{'do': 'role_hold',
+                                                                                          'role': 'Operations',
+                                                                                          'why': 'Operations slot '
+                                                                                                 '06:00 missed (tick '
+                                                                                                 '3660 s late > '
+                                                                                                 'slot_late_s)'},
+                                                                                         {'do': 'role_hold',
+                                                                                          'role': 'Operations',
+                                                                                          'why': 'Operations '
+                                                                                                 'ops_watch alarm '
+                                                                                                 'ITEM_ONE waits: '
+                                                                                                 "the day's "
+                                                                                                 'scheduled run(s) '
+                                                                                                 'still to come keep '
+                                                                                                 'their share of the '
+                                                                                                 'daily cap; it runs '
+                                                                                                 'once they leave '
+                                                                                                 'room'}],
+                                                                                'ledger_blind': None,
+                                                                                'roles': {'Operations': {'alarms_seen': [],
+                                                                                                         'done': {'2026-10-28 06:00': 'missed'},
+                                                                                                         'event_reserve_day': '2026-10-28',
+                                                                                                         'runs': []}}},
+                                                                               {'acts': [],
+                                                                                'ledger_blind': None,
+                                                                                'roles': {'Operations': {'alarms_seen': [],
+                                                                                                         'done': {'2026-10-28 06:00': 'missed'},
+                                                                                                         'event_reserve_day': '2026-10-28',
+                                                                                                         'runs': []}}}]},
  'decide_alarm_runs': {'after gap launches': {'acts': [{'do': 'role_hold',
                                                         'role': 'Operations',
                                                         'why': 'Operations slot 07:30 missed (tick 16260 s late > '
@@ -1125,8 +1057,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                           'alarm_last_run': 1793183860.0,
                                                                                           'alarms_seen': [],
                                                                                           'done': None,
-                                                                                          'event_cursor': None,
-                                                                                          'events_seen': None,
                                                                                           'had_done': False,
                                                                                           'key': 'alarm ITEM_ONE',
                                                                                           'mode': 'alarm',
@@ -1193,8 +1123,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                     'alarm_last_run': None,
                                                                                     'alarms_seen': [],
                                                                                     'done': None,
-                                                                                    'event_cursor': None,
-                                                                                    'events_seen': None,
                                                                                     'had_done': False,
                                                                                     'key': 'alarm ITEM_ONE',
                                                                                     'mode': 'alarm',
@@ -1238,8 +1166,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                         'alarm_last_run': None,
                                                                                                         'alarms_seen': ['ITEM_ONE'],
                                                                                                         'done': None,
-                                                                                                        'event_cursor': None,
-                                                                                                        'events_seen': None,
                                                                                                         'had_done': False,
                                                                                                         'key': 'alarm '
                                                                                                                'alarm:a2',
@@ -1283,8 +1209,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                  'alarm_last_run': 1793187860.0,
                                                                                                  'alarms_seen': [],
                                                                                                  'done': None,
-                                                                                                 'event_cursor': None,
-                                                                                                 'events_seen': None,
                                                                                                  'had_done': False,
                                                                                                  'key': 'alarm '
                                                                                                         'ITEM_ONE',
@@ -1400,8 +1324,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                                    'alarm_last_run': None,
                                                                                                                    'alarms_seen': None,
                                                                                                                    'done': None,
-                                                                                                                   'event_cursor': None,
-                                                                                                                   'events_seen': None,
                                                                                                                    'had_done': False,
                                                                                                                    'key': '2026-10-28 '
                                                                                                                           '08:00',
@@ -1494,560 +1416,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                  'seat': 'BENCH',
                                                                                  'state': 'running',
                                                                                  'unit': 'live'}]}}},
- 'decide_event_and_alarm_reserve_the_days_scheduled_runs': {'alarm fits exactly': {'acts': [{'do': 'role_hold',
-                                                                                             'role': 'Operations',
-                                                                                             'why': 'Operations slot '
-                                                                                                    '06:00 missed '
-                                                                                                    '(tick 3660 s '
-                                                                                                    'late > '
-                                                                                                    'slot_late_s)'},
-                                                                                            {'account': None,
-                                                                                             'band': 'NONE',
-                                                                                             'blind': {'mode': 'alarm',
-                                                                                                       'outcome': 'launched',
-                                                                                                       'role': 'Operations',
-                                                                                                       'unit': 'rm-role-operations-1793170860'},
-                                                                                             'budget': 60000,
-                                                                                             'do': 'role_launch',
-                                                                                             'message': '<message>',
-                                                                                             'mode': 'alarm',
-                                                                                             'note': True,
-                                                                                             'role': 'Operations',
-                                                                                             'run_max_s': 1800,
-                                                                                             'seat': 'BENCH',
-                                                                                             'slot': 'alarm ITEM_ONE',
-                                                                                             'ticket': 'ITEM_ONE',
-                                                                                             'unit': 'rm-role-operations-1793170860',
-                                                                                             'why': 'Operations '
-                                                                                                    'ops_watch alarm '
-                                                                                                    'ITEM_ONE, band '
-                                                                                                    'NONE, budget '
-                                                                                                    '60000 (cap '
-                                                                                                    '60000 x 1.0), 0 '
-                                                                                                    'used today, '
-                                                                                                    'unit '
-                                                                                                    'rm-role-operations-1793170860, '
-                                                                                                    'model sonnet'}],
-                                                                                   'ledger_blind': None,
-                                                                                   'roles': {'Operations': {'alarm_day': {'day': '2026-10-28',
-                                                                                                                          'keys': {'ITEM_ONE': 1},
-                                                                                                                          'n': 1},
-                                                                                                            'alarm_last_run': 1793170860.0,
-                                                                                                            'alarms_seen': ['ITEM_ONE'],
-                                                                                                            'done': {'2026-10-28 06:00': 'missed'},
-                                                                                                            'pending_launch': {'alarm_day': None,
-                                                                                                                               'alarm_last_run': None,
-                                                                                                                               'alarms_seen': [],
-                                                                                                                               'done': None,
-                                                                                                                               'event_cursor': None,
-                                                                                                                               'events_seen': None,
-                                                                                                                               'had_done': False,
-                                                                                                                               'key': 'alarm '
-                                                                                                                                      'ITEM_ONE',
-                                                                                                                               'mode': 'alarm',
-                                                                                                                               'unit': 'rm-role-operations-1793170860'},
-                                                                                                            'runs': []}}},
-                                                            'alarm over the cap waits': [{'acts': [{'do': 'role_hold',
-                                                                                                    'role': 'Operations',
-                                                                                                    'why': 'Operations '
-                                                                                                           'slot '
-                                                                                                           '06:00 '
-                                                                                                           'missed '
-                                                                                                           '(tick '
-                                                                                                           '3660 s '
-                                                                                                           'late > '
-                                                                                                           'slot_late_s)'},
-                                                                                                   {'do': 'role_hold',
-                                                                                                    'role': 'Operations',
-                                                                                                    'why': 'Operations '
-                                                                                                           'ops_watch '
-                                                                                                           'alarm '
-                                                                                                           'ITEM_ONE '
-                                                                                                           'waits: '
-                                                                                                           'the '
-                                                                                                           "day's "
-                                                                                                           'scheduled '
-                                                                                                           'run(s) '
-                                                                                                           'still to '
-                                                                                                           'come '
-                                                                                                           'keep '
-                                                                                                           'their '
-                                                                                                           'share of '
-                                                                                                           'the '
-                                                                                                           'daily '
-                                                                                                           'cap; the '
-                                                                                                           'event '
-                                                                                                           'runs '
-                                                                                                           'once '
-                                                                                                           'they '
-                                                                                                           'leave '
-                                                                                                           'room'}],
-                                                                                          'ledger_blind': None,
-                                                                                          'roles': {'Operations': {'alarms_seen': [],
-                                                                                                                   'done': {'2026-10-28 06:00': 'missed'},
-                                                                                                                   'event_reserve_day': '2026-10-28',
-                                                                                                                   'runs': []}}},
-                                                                                         {'acts': [],
-                                                                                          'ledger_blind': None,
-                                                                                          'roles': {'Operations': {'alarms_seen': [],
-                                                                                                                   'done': {'2026-10-28 06:00': 'missed'},
-                                                                                                                   'event_reserve_day': '2026-10-28',
-                                                                                                                   'runs': []}}}],
-                                                            'blocked slot reserves nothing (RED, Thursday)': {'acts': [{'do': 'role_hold',
-                                                                                                                        'role': 'Producer',
-                                                                                                                        'why': 'Producer '
-                                                                                                                               'ledger '
-                                                                                                                               'event: '
-                                                                                                                               'block '
-                                                                                                                               'on '
-                                                                                                                               'A '
-                                                                                                                               'at '
-                                                                                                                               '2026-10-28T06:51:00Z '
-                                                                                                                               'waits: '
-                                                                                                                               'the '
-                                                                                                                               "day's "
-                                                                                                                               'scheduled '
-                                                                                                                               'run(s) '
-                                                                                                                               'still '
-                                                                                                                               'to '
-                                                                                                                               'come '
-                                                                                                                               'keep '
-                                                                                                                               'their '
-                                                                                                                               'share '
-                                                                                                                               'of '
-                                                                                                                               'the '
-                                                                                                                               'daily '
-                                                                                                                               'cap; '
-                                                                                                                               'the '
-                                                                                                                               'event '
-                                                                                                                               'runs '
-                                                                                                                               'once '
-                                                                                                                               'they '
-                                                                                                                               'leave '
-                                                                                                                               'room'}],
-                                                                                                              'ledger_blind': None,
-                                                                                                              'roles': {'Producer': {'done': {},
-                                                                                                                                     'event_cursor': 1793167860.0,
-                                                                                                                                     'event_reserve_day': '2026-10-28',
-                                                                                                                                     'events_seen': [],
-                                                                                                                                     'runs': []}}},
-                                                            'event fits beside the reserve': {'acts': [{'account': None,
-                                                                                                        'band': 'GREEN',
-                                                                                                        'blind': {'mode': 'event',
-                                                                                                                  'outcome': 'launched',
-                                                                                                                  'role': 'Producer',
-                                                                                                                  'unit': 'rm-role-producer-1793170860'},
-                                                                                                        'budget': 100000,
-                                                                                                        'do': 'role_launch',
-                                                                                                        'message': '<message>',
-                                                                                                        'mode': 'event',
-                                                                                                        'note': True,
-                                                                                                        'role': 'Producer',
-                                                                                                        'run_max_s': 1800,
-                                                                                                        'seat': 'BENCH',
-                                                                                                        'slot': '2026-10-28 '
-                                                                                                                'event#1',
-                                                                                                        'ticket': 'ROLES_ITEM_X',
-                                                                                                        'unit': 'rm-role-producer-1793170860',
-                                                                                                        'why': 'Producer '
-                                                                                                               'ledger '
-                                                                                                               'event: '
-                                                                                                               'block '
-                                                                                                               'on A '
-                                                                                                               'at '
-                                                                                                               '2026-10-28T06:51:00Z, '
-                                                                                                               'band '
-                                                                                                               'GREEN, '
-                                                                                                               'budget '
-                                                                                                               '100000 '
-                                                                                                               '(cap '
-                                                                                                               '100000 '
-                                                                                                               'x '
-                                                                                                               '1.0), '
-                                                                                                               '0 '
-                                                                                                               'used '
-                                                                                                               'today, '
-                                                                                                               'unit '
-                                                                                                               'rm-role-producer-1793170860, '
-                                                                                                               'model '
-                                                                                                               'opus'}],
-                                                                                              'ledger_blind': None,
-                                                                                              'roles': {'Producer': {'done': {'2026-10-28 event#1': 'launch'},
-                                                                                                                     'event_cursor': 1793170860.0,
-                                                                                                                     'events_seen': ['1793170260.000000|A|block'],
-                                                                                                                     'pending_launch': {'alarm_day': None,
-                                                                                                                                        'alarm_last_run': None,
-                                                                                                                                        'alarms_seen': None,
-                                                                                                                                        'done': None,
-                                                                                                                                        'event_cursor': 1793167860.0,
-                                                                                                                                        'events_seen': [],
-                                                                                                                                        'had_done': False,
-                                                                                                                                        'key': '2026-10-28 '
-                                                                                                                                               'event#1',
-                                                                                                                                        'mode': 'event',
-                                                                                                                                        'unit': 'rm-role-producer-1793170860'},
-                                                                                                                     'runs': []}}},
-                                                            'event refused on the cap': [{'acts': [{'do': 'role_hold',
-                                                                                                    'role': 'Producer',
-                                                                                                    'why': 'Producer '
-                                                                                                           'slot '
-                                                                                                           '06:00 '
-                                                                                                           'missed '
-                                                                                                           '(tick '
-                                                                                                           '3660 s '
-                                                                                                           'late > '
-                                                                                                           'slot_late_s)'},
-                                                                                                   {'do': 'alarm',
-                                                                                                    'kind': 'role:Producer:cap',
-                                                                                                    'note': True,
-                                                                                                    'ticket': 'ROLES_ITEM_X',
-                                                                                                    'why': 'Producer '
-                                                                                                           'ledger '
-                                                                                                           'event: '
-                                                                                                           'block on '
-                                                                                                           'A at '
-                                                                                                           '2026-10-28T06:51:00Z '
-                                                                                                           'REFUSED: '
-                                                                                                           'daily_token_cap '
-                                                                                                           '50000, 0 '
-                                                                                                           'used '
-                                                                                                           'today + '
-                                                                                                           '100000 '
-                                                                                                           'budget'}],
-                                                                                          'ledger_blind': None,
-                                                                                          'roles': {'Producer': {'done': {'2026-10-28 06:00': 'missed'},
-                                                                                                                 'event_cursor': 1793167860.0,
-                                                                                                                 'event_skip': ['2026-10-28 '
-                                                                                                                                'event#1',
-                                                                                                                                'daily '
-                                                                                                                                'cap'],
-                                                                                                                 'events_seen': [],
-                                                                                                                 'runs': []}}},
-                                                                                         {'acts': [],
-                                                                                          'ledger_blind': None,
-                                                                                          'roles': {'Producer': {'done': {'2026-10-28 06:00': 'missed'},
-                                                                                                                 'event_cursor': 1793167860.0,
-                                                                                                                 'event_skip': ['2026-10-28 '
-                                                                                                                                'event#1',
-                                                                                                                                'daily '
-                                                                                                                                'cap'],
-                                                                                                                 'events_seen': [],
-                                                                                                                 'runs': []}}}],
-                                                            'event waits for the reserve, once': [{'acts': [{'do': 'role_hold',
-                                                                                                             'role': 'Producer',
-                                                                                                             'why': 'Producer '
-                                                                                                                    'ledger '
-                                                                                                                    'event: '
-                                                                                                                    'block '
-                                                                                                                    'on '
-                                                                                                                    'A '
-                                                                                                                    'at '
-                                                                                                                    '2026-10-28T06:51:00Z '
-                                                                                                                    'waits: '
-                                                                                                                    'the '
-                                                                                                                    "day's "
-                                                                                                                    'scheduled '
-                                                                                                                    'run(s) '
-                                                                                                                    'still '
-                                                                                                                    'to '
-                                                                                                                    'come '
-                                                                                                                    'keep '
-                                                                                                                    'their '
-                                                                                                                    'share '
-                                                                                                                    'of '
-                                                                                                                    'the '
-                                                                                                                    'daily '
-                                                                                                                    'cap; '
-                                                                                                                    'the '
-                                                                                                                    'event '
-                                                                                                                    'runs '
-                                                                                                                    'once '
-                                                                                                                    'they '
-                                                                                                                    'leave '
-                                                                                                                    'room'}],
-                                                                                                   'ledger_blind': None,
-                                                                                                   'roles': {'Producer': {'done': {},
-                                                                                                                          'event_cursor': 1793167860.0,
-                                                                                                                          'event_reserve_day': '2026-10-28',
-                                                                                                                          'events_seen': [],
-                                                                                                                          'runs': []}}},
-                                                                                                  {'acts': [],
-                                                                                                   'ledger_blind': None,
-                                                                                                   'roles': {'Producer': {'done': {},
-                                                                                                                          'event_cursor': 1793167860.0,
-                                                                                                                          'event_reserve_day': '2026-10-28',
-                                                                                                                          'events_seen': [],
-                                                                                                                          'runs': []}}}],
-                                                            'event: nothing left to reserve': {'acts': [{'do': 'role_hold',
-                                                                                                         'role': 'Producer',
-                                                                                                         'why': 'Producer '
-                                                                                                                'slot '
-                                                                                                                '06:00 '
-                                                                                                                'missed '
-                                                                                                                '(tick '
-                                                                                                                '3660 '
-                                                                                                                's '
-                                                                                                                'late '
-                                                                                                                '> '
-                                                                                                                'slot_late_s)'},
-                                                                                                        {'account': None,
-                                                                                                         'band': 'GREEN',
-                                                                                                         'blind': {'mode': 'event',
-                                                                                                                   'outcome': 'launched',
-                                                                                                                   'role': 'Producer',
-                                                                                                                   'unit': 'rm-role-producer-1793170860'},
-                                                                                                         'budget': 100000,
-                                                                                                         'do': 'role_launch',
-                                                                                                         'message': '<message>',
-                                                                                                         'mode': 'event',
-                                                                                                         'note': True,
-                                                                                                         'role': 'Producer',
-                                                                                                         'run_max_s': 1800,
-                                                                                                         'seat': 'BENCH',
-                                                                                                         'slot': '2026-10-28 '
-                                                                                                                 'event#1',
-                                                                                                         'ticket': 'ROLES_ITEM_X',
-                                                                                                         'unit': 'rm-role-producer-1793170860',
-                                                                                                         'why': 'Producer '
-                                                                                                                'ledger '
-                                                                                                                'event: '
-                                                                                                                'block '
-                                                                                                                'on '
-                                                                                                                'A '
-                                                                                                                'at '
-                                                                                                                '2026-10-28T06:51:00Z, '
-                                                                                                                'band '
-                                                                                                                'GREEN, '
-                                                                                                                'budget '
-                                                                                                                '100000 '
-                                                                                                                '(cap '
-                                                                                                                '100000 '
-                                                                                                                'x '
-                                                                                                                '1.0), '
-                                                                                                                '0 '
-                                                                                                                'used '
-                                                                                                                'today, '
-                                                                                                                'unit '
-                                                                                                                'rm-role-producer-1793170860, '
-                                                                                                                'model '
-                                                                                                                'opus'}],
-                                                                                               'ledger_blind': None,
-                                                                                               'roles': {'Producer': {'done': {'2026-10-28 06:00': 'missed',
-                                                                                                                               '2026-10-28 event#1': 'launch'},
-                                                                                                                      'event_cursor': 1793170860.0,
-                                                                                                                      'events_seen': ['1793170260.000000|A|block'],
-                                                                                                                      'pending_launch': {'alarm_day': None,
-                                                                                                                                         'alarm_last_run': None,
-                                                                                                                                         'alarms_seen': None,
-                                                                                                                                         'done': None,
-                                                                                                                                         'event_cursor': 1793167860.0,
-                                                                                                                                         'events_seen': [],
-                                                                                                                                         'had_done': False,
-                                                                                                                                         'key': '2026-10-28 '
-                                                                                                                                                'event#1',
-                                                                                                                                         'mode': 'event',
-                                                                                                                                         'unit': 'rm-role-producer-1793170860'},
-                                                                                                                      'runs': []}}}},
- 'decide_event_runs': {'bad event kind': {'acts': [{'do': 'role_hold',
-                                                    'role': 'Producer',
-                                                    'why': 'Producer slot 09:00 missed (tick 14460 s late > '
-                                                           'slot_late_s)'},
-                                                   {'blind': {'mode': None,
-                                                              'outcome': 'events_unreadable',
-                                                              'role': 'Producer',
-                                                              'unit': None},
-                                                    'do': 'alarm',
-                                                    'kind': 'role:Producer:schedule',
-                                                    'note': True,
-                                                    'ticket': 'ROLES_ITEM_X',
-                                                    'why': "role Producer NOT RUN: event_runs kind 'nonsense' is not "
-                                                           'one of plan_step_failure, replan_request'}],
-                                          'ledger_blind': None,
-                                          'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed'},
-                                                                 'event_cursor': 1793189460.0,
-                                                                 'events_seen': [],
-                                                                 'runs': []}}},
-                       'done retention': ['2026-10-26 09:00',
-                                          '2026-10-26 event#1',
-                                          '2026-10-27 09:00',
-                                          '2026-10-28 09:00'],
-                       'one pending: no more-line': {'acts': [{'do': 'role_hold',
-                                                               'role': 'Producer',
-                                                               'why': 'Producer slot 09:00 missed (tick 14460 s late '
-                                                                      '> slot_late_s)'},
-                                                              {'account': None,
-                                                               'band': 'GREEN',
-                                                               'blind': {'mode': 'event',
-                                                                         'outcome': 'launched',
-                                                                         'role': 'Producer',
-                                                                         'unit': 'rm-role-producer-1793192460'},
-                                                               'budget': 100000,
-                                                               'do': 'role_launch',
-                                                               'message': '<message>',
-                                                               'mode': 'event',
-                                                               'note': True,
-                                                               'role': 'Producer',
-                                                               'run_max_s': 1800,
-                                                               'seat': 'BENCH',
-                                                               'slot': '2026-10-28 event#1',
-                                                               'ticket': 'ROLES_ITEM_X',
-                                                               'unit': 'rm-role-producer-1793192460',
-                                                               'why': 'Producer ledger event: block on A at '
-                                                                      '2026-10-28T12:36:00Z, band GREEN, budget '
-                                                                      '100000 (cap 100000 x 1.0), 0 used today, unit '
-                                                                      'rm-role-producer-1793192460, model opus'}],
-                                                     'ledger_blind': None,
-                                                     'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed',
-                                                                                     '2026-10-28 event#1': 'launch'},
-                                                                            'event_cursor': 1793192460.0,
-                                                                            'events_seen': ['1793190960.000000|A|block'],
-                                                                            'pending_launch': {'alarm_day': None,
-                                                                                               'alarm_last_run': None,
-                                                                                               'alarms_seen': None,
-                                                                                               'done': None,
-                                                                                               'event_cursor': 1793189460.0,
-                                                                                               'events_seen': [],
-                                                                                               'had_done': False,
-                                                                                               'key': '2026-10-28 '
-                                                                                                      'event#1',
-                                                                                               'mode': 'event',
-                                                                                               'unit': 'rm-role-producer-1793192460'},
-                                                                            'runs': []}}},
-                       'pending_events bad kind': "event_runs kind 'zzz' is not one of plan_step_failure, "
-                                                  'replan_request',
-                       'pending_events kinds': [[], [[1793190960, 'A', 'block']]],
-                       'quota used: held once a day': [{'acts': [{'do': 'role_hold',
-                                                                  'role': 'Producer',
-                                                                  'why': 'Producer slot 09:00 missed (tick 14460 s '
-                                                                         'late > slot_late_s)'},
-                                                                 {'do': 'role_hold',
-                                                                  'role': 'Producer',
-                                                                  'why': 'Producer: 2 ledger event(s) pending, '
-                                                                         'event_runs_per_day 1 used: the next run '
-                                                                         'reads them'}],
-                                                        'ledger_blind': None,
-                                                        'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed',
-                                                                                        '2026-10-28 event#1': 'launch'},
-                                                                               'event_cap_day': '2026-10-28',
-                                                                               'event_cursor': 1793189460.0,
-                                                                               'events_seen': [],
-                                                                               'runs': []}}},
-                                                       {'acts': [],
-                                                        'ledger_blind': None,
-                                                        'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed',
-                                                                                        '2026-10-28 event#1': 'launch'},
-                                                                               'event_cap_day': '2026-10-28',
-                                                                               'event_cursor': 1793189460.0,
-                                                                               'events_seen': [],
-                                                                               'runs': []}}}],
-                       'second of two': {'acts': [{'do': 'role_hold',
-                                                   'role': 'Producer',
-                                                   'why': 'Producer slot 09:00 missed (tick 14460 s late > '
-                                                          'slot_late_s)'},
-                                                  {'account': None,
-                                                   'band': 'GREEN',
-                                                   'blind': {'mode': 'event',
-                                                             'outcome': 'launched',
-                                                             'role': 'Producer',
-                                                             'unit': 'rm-role-producer-1793192460'},
-                                                   'budget': 100000,
-                                                   'do': 'role_launch',
-                                                   'message': '<message>',
-                                                   'mode': 'event',
-                                                   'note': True,
-                                                   'role': 'Producer',
-                                                   'run_max_s': 1800,
-                                                   'seat': 'BENCH',
-                                                   'slot': '2026-10-28 event#2',
-                                                   'ticket': 'ROLES_ITEM_X',
-                                                   'unit': 'rm-role-producer-1793192460',
-                                                   'why': 'Producer ledger event: block on A at 2026-10-28T12:36:00Z '
-                                                          '(+1 more since 2026-10-28T12:11:00Z), band GREEN, budget '
-                                                          '100000 (cap 100000 x 1.0), 0 used today, unit '
-                                                          'rm-role-producer-1793192460, model opus'}],
-                                         'ledger_blind': None,
-                                         'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed',
-                                                                         '2026-10-28 event#1': 'launch',
-                                                                         '2026-10-28 event#2': 'launch'},
-                                                                'event_cursor': 1793192460.0,
-                                                                'events_seen': ['1793190960.000000|A|block',
-                                                                                '1793191560.000000|B|block'],
-                                                                'pending_launch': {'alarm_day': None,
-                                                                                   'alarm_last_run': None,
-                                                                                   'alarms_seen': None,
-                                                                                   'done': None,
-                                                                                   'event_cursor': 1793189460.0,
-                                                                                   'events_seen': [],
-                                                                                   'had_done': False,
-                                                                                   'key': '2026-10-28 event#2',
-                                                                                   'mode': 'event',
-                                                                                   'unit': 'rm-role-producer-1793192460'},
-                                                                'runs': []}}},
-                       'two pending: one run, names both': [{'acts': [{'do': 'role_hold',
-                                                                       'role': 'Producer',
-                                                                       'why': 'Producer slot 09:00 missed (tick '
-                                                                              '14460 s late > slot_late_s)'},
-                                                                      {'account': None,
-                                                                       'band': 'GREEN',
-                                                                       'blind': {'mode': 'event',
-                                                                                 'outcome': 'launched',
-                                                                                 'role': 'Producer',
-                                                                                 'unit': 'rm-role-producer-1793192460'},
-                                                                       'budget': 100000,
-                                                                       'do': 'role_launch',
-                                                                       'message': '<message>',
-                                                                       'mode': 'event',
-                                                                       'note': True,
-                                                                       'role': 'Producer',
-                                                                       'run_max_s': 1800,
-                                                                       'seat': 'BENCH',
-                                                                       'slot': '2026-10-28 event#1',
-                                                                       'ticket': 'ROLES_ITEM_X',
-                                                                       'unit': 'rm-role-producer-1793192460',
-                                                                       'why': 'Producer ledger event: block on A at '
-                                                                              '2026-10-28T12:36:00Z (+1 more since '
-                                                                              '2026-10-28T12:11:00Z), band GREEN, '
-                                                                              'budget 100000 (cap 100000 x 1.0), 0 '
-                                                                              'used today, unit '
-                                                                              'rm-role-producer-1793192460, model '
-                                                                              'opus'}],
-                                                             'ledger_blind': None,
-                                                             'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed',
-                                                                                             '2026-10-28 event#1': 'launch'},
-                                                                                    'event_cursor': 1793192460.0,
-                                                                                    'events_seen': ['1793190960.000000|A|block',
-                                                                                                    '1793191560.000000|B|block'],
-                                                                                    'pending_launch': {'alarm_day': None,
-                                                                                                       'alarm_last_run': None,
-                                                                                                       'alarms_seen': None,
-                                                                                                       'done': None,
-                                                                                                       'event_cursor': 1793189460.0,
-                                                                                                       'events_seen': [],
-                                                                                                       'had_done': False,
-                                                                                                       'key': '2026-10-28 '
-                                                                                                              'event#1',
-                                                                                                       'mode': 'event',
-                                                                                                       'unit': 'rm-role-producer-1793192460'},
-                                                                                    'runs': []}}},
-                                                            {'acts': [],
-                                                             'ledger_blind': None,
-                                                             'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed',
-                                                                                             '2026-10-28 event#1': 'launch'},
-                                                                                    'event_cursor': 1793192460.0,
-                                                                                    'events_seen': ['1793190960.000000|A|block',
-                                                                                                    '1793191560.000000|B|block'],
-                                                                                    'pending_launch': {'alarm_day': None,
-                                                                                                       'alarm_last_run': None,
-                                                                                                       'alarms_seen': None,
-                                                                                                       'done': None,
-                                                                                                       'event_cursor': 1793189460.0,
-                                                                                                       'events_seen': [],
-                                                                                                       'had_done': False,
-                                                                                                       'key': '2026-10-28 '
-                                                                                                              'event#1',
-                                                                                                       'mode': 'event',
-                                                                                                       'unit': 'rm-role-producer-1793192460'},
-                                                                                    'runs': []}}}]},
+ 'decide_done_retention': ['2026-10-26 09:00', '2026-10-27 09:00', '2026-10-28 09:00'],
  'decide_exception_without_a_launch_alarms_with_the_roles_item': [{'acts': [{'do': 'alarm',
                                                                              'kind': 'role:Conductor:schedule',
                                                                              'note': True,
@@ -2106,8 +1475,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                'alarm_last_run': None,
                                                                                                'alarms_seen': None,
                                                                                                'done': None,
-                                                                                               'event_cursor': None,
-                                                                                               'events_seen': None,
                                                                                                'had_done': False,
                                                                                                'key': '2026-10-28 '
                                                                                                       '08:00',
@@ -2140,78 +1507,12 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                'alarm_last_run': None,
                                                                                                'alarms_seen': None,
                                                                                                'done': None,
-                                                                                               'event_cursor': None,
-                                                                                               'events_seen': None,
                                                                                                'had_done': False,
                                                                                                'key': '2026-10-28 '
                                                                                                       '08:00',
                                                                                                'mode': 'quick',
                                                                                                'unit': 'rm-role-conductor-1793174460'},
                                                                             'runs': []}}}],
- 'decide_ledger_blind_and_baseline': [[{'acts': [{'do': 'alarm',
-                                                  'kind': 'role:ledger',
-                                                  'note': True,
-                                                  'why': 'ledger UNMEASURED (the ledger is unreadable: OSError: '
-                                                         'ledger unreadable): the roles that trigger on ledger '
-                                                         'events launch nothing until it reads again; alarmed once '
-                                                         'per outage'}],
-                                        'ledger_blind': 'the ledger is unreadable: OSError: ledger unreadable',
-                                        'roles': {'Producer': {'done': {}, 'runs': []}}},
-                                       {'acts': [],
-                                        'ledger_blind': 'the ledger is unreadable: OSError: ledger unreadable',
-                                        'roles': {'Producer': {'done': {}, 'runs': []}}}],
-                                      {'acts': [{'do': 'role_hold',
-                                                 'role': '*',
-                                                 'why': 'ledger readable again (2 events): event triggers resume'},
-                                                {'do': 'role_hold',
-                                                 'role': 'Producer',
-                                                 'why': 'Producer event triggers: baseline set at '
-                                                        '2026-10-28T09:06:00Z; ledger events after it trigger'},
-                                                {'account': None,
-                                                 'band': 'GREEN',
-                                                 'blind': {'mode': 'weekly',
-                                                           'outcome': 'launched',
-                                                           'role': 'Producer',
-                                                           'unit': 'rm-role-producer-1793178360'},
-                                                 'budget': 100000,
-                                                 'do': 'role_launch',
-                                                 'message': '<message>',
-                                                 'mode': 'weekly',
-                                                 'note': True,
-                                                 'role': 'Producer',
-                                                 'run_max_s': 1800,
-                                                 'seat': 'BENCH',
-                                                 'slot': '2026-10-28 09:00',
-                                                 'ticket': 'ROLES_ITEM_X',
-                                                 'unit': 'rm-role-producer-1793178360',
-                                                 'why': 'Producer slot 09:00 local (weekly plan, Wed), band GREEN, '
-                                                        'budget 100000 (cap 100000 x 1.0), 0 used today, unit '
-                                                        'rm-role-producer-1793178360, model opus'}],
-                                       'ledger_blind': None,
-                                       'roles': {'Producer': {'done': {'2026-10-28 09:00': 'launch'},
-                                                              'event_cursor': 1793178360.0,
-                                                              'events_seen': [],
-                                                              'pending_launch': {'alarm_day': None,
-                                                                                 'alarm_last_run': None,
-                                                                                 'alarms_seen': None,
-                                                                                 'done': None,
-                                                                                 'event_cursor': 1793178360.0,
-                                                                                 'events_seen': [],
-                                                                                 'had_done': False,
-                                                                                 'key': '2026-10-28 09:00',
-                                                                                 'mode': 'weekly',
-                                                                                 'unit': 'rm-role-producer-1793178360'},
-                                                              'runs': []}}},
-                                      {'acts': [{'do': 'alarm',
-                                                 'kind': 'role:ledger',
-                                                 'note': True,
-                                                 'why': 'ledger UNMEASURED (the ledger read returned no events (a '
-                                                        'blind read, not an empty ledger)): the roles that trigger '
-                                                        'on ledger events launch nothing until it reads again; '
-                                                        'alarmed once per outage'}],
-                                       'ledger_blind': 'the ledger read returned no events (a blind read, not an '
-                                                       'empty ledger)',
-                                       'roles': {'Producer': {'done': {}, 'runs': []}}}],
  'decide_off_switch_and_window': {'no off_file: asked with empty path': [''],
                                   'off path': ['<TMP>/CONDUCTOR_OFF'],
                                   'off reason': {'acts': [{'do': 'role_hold',
@@ -2249,8 +1550,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                          'alarm_last_run': None,
                                                                                                          'alarms_seen': None,
                                                                                                          'done': None,
-                                                                                                         'event_cursor': None,
-                                                                                                         'events_seen': None,
                                                                                                          'had_done': False,
                                                                                                          'key': '2026-10-28 '
                                                                                                                 '08:00',
@@ -2293,8 +1592,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                          'alarm_last_run': None,
                                                                                                          'alarms_seen': None,
                                                                                                          'done': None,
-                                                                                                         'event_cursor': None,
-                                                                                                         'events_seen': None,
                                                                                                          'had_done': False,
                                                                                                          'key': '2026-10-28 '
                                                                                                                 '08:00',
@@ -2343,8 +1640,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                   'alarm_last_run': None,
                                                                                                   'alarms_seen': None,
                                                                                                   'done': None,
-                                                                                                  'event_cursor': None,
-                                                                                                  'events_seen': None,
                                                                                                   'had_done': False,
                                                                                                   'key': '2026-10-28 '
                                                                                                          '08:00',
@@ -2358,8 +1653,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                   'alarm_last_run': None,
                                                                                                   'alarms_seen': None,
                                                                                                   'done': None,
-                                                                                                  'event_cursor': None,
-                                                                                                  'events_seen': None,
                                                                                                   'had_done': False,
                                                                                                   'key': '2026-10-28 '
                                                                                                          '08:00',
@@ -2382,66 +1675,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                  'window_hold': '2026-10-28 '
                                                                                                 '08:00'}}}],
                                   'window unmeasured asked': ['Conductor RC', 'Conductor RC']},
- 'decide_off_switch_on_event_run_is_not_spent': [[{'acts': [{'do': 'role_hold',
-                                                             'role': 'Producer',
-                                                             'why': 'Producer slot 09:00 missed (tick 14460 s late > '
-                                                                    'slot_late_s)'},
-                                                            {'do': 'role_hold',
-                                                             'role': 'Producer',
-                                                             'why': 'Producer ledger event: block on A at '
-                                                                    '2026-10-28T12:46:00Z skipped: off switch '
-                                                                    '<TMP>/PRODUCER_OFF (owner: stop)'}],
-                                                   'ledger_blind': None,
-                                                   'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed'},
-                                                                          'event_cursor': 1793189460.0,
-                                                                          'event_skip': ['2026-10-28 event#1', 'off'],
-                                                                          'events_seen': [],
-                                                                          'runs': []}}},
-                                                  {'acts': [],
-                                                   'ledger_blind': None,
-                                                   'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed'},
-                                                                          'event_cursor': 1793189460.0,
-                                                                          'event_skip': ['2026-10-28 event#1', 'off'],
-                                                                          'events_seen': [],
-                                                                          'runs': []}}}],
-                                                 {'acts': [{'account': None,
-                                                            'band': 'GREEN',
-                                                            'blind': {'mode': 'event',
-                                                                      'outcome': 'launched',
-                                                                      'role': 'Producer',
-                                                                      'unit': 'rm-role-producer-1793193060'},
-                                                            'budget': 100000,
-                                                            'do': 'role_launch',
-                                                            'message': '<message>',
-                                                            'mode': 'event',
-                                                            'note': True,
-                                                            'role': 'Producer',
-                                                            'run_max_s': 1800,
-                                                            'seat': 'BENCH',
-                                                            'slot': '2026-10-28 event#1',
-                                                            'ticket': 'ROLES_ITEM_X',
-                                                            'unit': 'rm-role-producer-1793193060',
-                                                            'why': 'Producer ledger event: block on A at '
-                                                                   '2026-10-28T12:46:00Z, band GREEN, budget 100000 '
-                                                                   '(cap 100000 x 1.0), 0 used today, unit '
-                                                                   'rm-role-producer-1793193060, model opus'}],
-                                                  'ledger_blind': None,
-                                                  'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed',
-                                                                                  '2026-10-28 event#1': 'launch'},
-                                                                         'event_cursor': 1793193060.0,
-                                                                         'events_seen': ['1793191560.000000|A|block'],
-                                                                         'pending_launch': {'alarm_day': None,
-                                                                                            'alarm_last_run': None,
-                                                                                            'alarms_seen': None,
-                                                                                            'done': None,
-                                                                                            'event_cursor': 1793189460.0,
-                                                                                            'events_seen': [],
-                                                                                            'had_done': False,
-                                                                                            'key': '2026-10-28 '
-                                                                                                   'event#1',
-                                                                                            'mode': 'event',
-                                                                                            'unit': 'rm-role-producer-1793193060'},
-                                                                         'runs': []}}}],
  'decide_role_entries_and_schedule_errors': {'bad slot_late_s': {'acts': [{'blind': {'mode': None,
                                                                                      'outcome': 'schedule_unreadable',
                                                                                      'role': 'Conductor',
@@ -2459,9 +1692,9 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                              'disabled role': {'acts': [], 'ledger_blind': None, 'roles': {}},
                                              'missing launch keys': {'acts': [{'conductor_log': True,
                                                                                'do': 'alarm',
-                                                                               'kind': 'role:Auditor',
+                                                                               'kind': 'role:Nobody',
                                                                                'note': True,
-                                                                               'why': 'role Auditor is enabled but '
+                                                                               'why': 'role Nobody is enabled but '
                                                                                       'cannot be launched: no '
                                                                                       'instructions, clone, model, '
                                                                                       'ledger_item in the schedule'}],
@@ -2588,8 +1821,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                    'alarm_last_run': None,
                                                                                    'alarms_seen': None,
                                                                                    'done': None,
-                                                                                   'event_cursor': None,
-                                                                                   'events_seen': None,
                                                                                    'had_done': False,
                                                                                    'key': '2026-10-28 08:00',
                                                                                    'mode': 'quick',
@@ -2621,8 +1852,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                        'alarm_last_run': None,
                                                                                        'alarms_seen': None,
                                                                                        'done': None,
-                                                                                       'event_cursor': None,
-                                                                                       'events_seen': None,
                                                                                        'had_done': False,
                                                                                        'key': '2026-10-28 08:00',
                                                                                        'mode': 'quick',
@@ -2672,8 +1901,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                    'alarm_last_run': None,
                                                                                                    'alarms_seen': [],
                                                                                                    'done': None,
-                                                                                                   'event_cursor': None,
-                                                                                                   'events_seen': None,
                                                                                                    'had_done': False,
                                                                                                    'key': '2026-10-28 '
                                                                                                           '07:30',
@@ -2721,34 +1948,12 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                                'alarm_last_run': None,
                                                                                                                'alarms_seen': [],
                                                                                                                'done': None,
-                                                                                                               'event_cursor': None,
-                                                                                                               'events_seen': None,
                                                                                                                'had_done': False,
                                                                                                                'key': '2026-10-28 '
                                                                                                                       '07:30',
                                                                                                                'mode': 'economy',
                                                                                                                'unit': 'rm-role-operations-1793175100'},
                                                                                             'runs': []}}}},
- 'event_reserve_edges_one_cap_apart': 120000,
- 'event_reserve_sweeps_the_daily_cap_for_every_band_shape': {'x1 all': 110000,
-                                                             'x1 last': 60000,
-                                                             'x1 none': None,
-                                                             'x1 quick': 100000,
-                                                             'x1 quick_one': None,
-                                                             'x1.5 all': 160000,
-                                                             'x2 first': 120000,
-                                                             'x3 weekly': 120000},
- 'pending_events_combines_kinds_and_since': {'all': [[1793191560, 'A', 'block'],
-                                                     [1793191760, 'PLAN_X', 'replan request']],
-                                             'bad': "event_runs kind 'x' is not one of plan_step_failure, "
-                                                    'replan_request',
-                                             'only replan': [[1793191760, 'PLAN_X', 'replan request']],
-                                             'reverse order': [[1793191560, 'A', 'block'],
-                                                               [1793191760, 'PLAN_X', 'replan request']],
-                                             'scope default': [[1793191560, 'A', 'block']],
-                                             'since later': [],
-                                             'world_filter off': [[1793191560, 'A', 'block']],
-                                             'world_filter on, none open': []},
  'signal_marked_every_line': {'blind empty': 'marker scan UNMEASURED (proc unlistable)',
                               'blind with pid': 'TERM to 1 of 1 process(es) marked m; scan partly UNMEASURED '
                                                 '(environ unreadable)',
@@ -2762,25 +1967,21 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                               'scan raised': 'marker scan raised ZeroDivisionError: UNMEASURED',
                               'term': 'TERM to 2 of 2 process(es) marked m'},
  'slot_blocked_table_and_slots_edges': {'Thu': [['Thu 09:00', 'run', 100000]],
-                                        'Wed': [['Wed 09:00', 'weekly', 100000], ['Wed 15:00', 'run', 100000]],
-                                        'all': [False, False, False, False, False, False, False],
-                                        'bad weekday': "weekly_plan_weekday 'Funday' is not one of "
-                                                       'Mon,Tue,Wed,Thu,Fri,Sat,Sun',
-                                        'bogus': [False, False, False, False, False, False, False],
-                                        'first': [False, True, True, False, False, False, False],
-                                        'last': [True, True, False, False, False, False, False],
+                                        'Wed': [['Wed 09:00', 'run', 100000], ['Wed 15:00', 'run', 100000]],
+                                        'all': [False, False, False, False, False],
+                                        'bogus': [False, False, False, False, False],
+                                        'first': [False, True, True, False, False],
+                                        'last': [True, True, False, False, False],
                                         'no day': [['Wed 09:00', 'run', 100000],
                                                    ['Wed 15:00', 'run', 100000],
                                                    ['Thu 09:00', 'run', 100000]],
-                                        'none': [True, True, True, True, True, True, True],
-                                        'quick': [False, True, False, False, False, False, False],
-                                        'quick_one': [False, True, True, True, True, True, True],
+                                        'none': [True, True, True, True, True],
+                                        'quick': [False, True, False, False, False],
+                                        'quick_one': [False, True, True, True, True],
                                         'quick_one, only economy': [False],
                                         'slots': [['09:00', 'quick', 30000],
                                                   ['13:00', 'economy', 5000],
-                                                  ['19:30', 'quick', 30000]],
-                                        'weekly': [True, True, True, True, False, False, True],
-                                        'wk none': [['09:00', 'run', 100000], ['15:00', 'run', 100000]]},
+                                                  ['19:30', 'quick', 30000]]},
  'sup_done_runs_and_budget_alarm': {'acts': [{'blind': {'mode': 'quick',
                                                         'outcome': 'completed',
                                                         'role': 'Conductor',

@@ -36,10 +36,9 @@ give-up, raises of a dead window on raise_ladder.py's ladder (life note, 2/8 min
 deaths in 7 days, login/quota gated per model; it replaced the flat recovers_per_seat_day cap), and a PAUSE file
 (state/PAUSE) that stops everything. §3's roles are listed in the
 schedule; role_launch.py starts an enabled role that has its launch keys on its clock slots (daily or
-weekday-qualified, "Wed 09:00") and on ledger events (a failed plan step or
-a replan request launches the Producer), each as its own transient systemd unit, so the run outlives this oneshot
+weekday-qualified, "Wed 09:00"), each as its own transient systemd unit, so the run outlives this oneshot
 tick, gated by its off switch, the ops_watch reading, its throttle band and its token caps; an enabled role without
-launch keys is an alarm, and an unreadable ledger launches no ledger-triggered role (one alarm per outage).
+launch keys is an alarm.
 
 ACCOUNT FIRST (account_pick.py; item DISPATCHER_BUILD_PICK_ACCOUNT_FIRST): before it releases work that spends a
 Claude session — a role launch, a ring, a recover — the tick picks the account by the schedule's `account_pick` rule
@@ -1712,7 +1711,6 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
     do_lock = fx.get("lock") or ((lambda: git_lock(max(0.0, min(5.0, act_deadline - time.time())))) if beat
                                  else git_lock)
     do_launch, do_stop = fx.get("role_launch", RL.launch), fx.get("role_stop", RL.stop)
-    do_stamp = fx.get("finish_stamp", RL.AP.write_stamp)
     do_attach = fx.get("cause_attach", RL.cause_attach)
     do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
     do_conductor = fx.get("conductor_log", conductor_log)
@@ -2057,18 +2055,6 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                     rs.pop("launch_failed_key", None)
                                     rs.pop("held_control_key", None)
                                 do_persist()
-                    elif a["do"] == "role_stamp":
-                        # a run finished done (role_launch FINISH_STAMP): the next pre-screen starts here. A failed
-                        # write is alarmed: the next run then re-screens from the older stamp (overlap, never a gap)
-                        try:
-                            res = do_stamp(a["path"], a["at"], a.get("unit"))
-                        except Exception as e:  # noqa: BLE001
-                            res = "error: %s: %s" % (type(e).__name__, str(e))
-                            actions.append(dict(
-                                do="alarm", kind="role:%s:stamp" % a.get("role"), at=iso(now), note=True,
-                                ticket=a.get("ticket"), role=a.get("role"),
-                                why="role %s: finish stamp NOT written to %s: %s; its next pre-screen starts at the "
-                                    "previous stamp" % (a.get("role"), a["path"], res)))
                     elif a["do"] == "role_cause_attach":
                         # load-attach-save under the book's lock; a busy book keeps the attachment for the next tick.
                         # One Busy this tick owes the rest at once, and no wait outruns the tick's act/note deadline
@@ -2246,7 +2232,7 @@ def phone_safe(send, row):
 # at least once: a tick killed after it journalled a carried act but before it saved state runs it again (a second
 # journal line), which is the cheaper failure than the lost record. Nothing is trimmed: a carry that grows means every
 # tick is cut, which beat_starved already alarms.
-CARRY_DOES = ("role_done", "role_stage", "role_hold", "role_cause_attach", "role_stamp")
+CARRY_DOES = ("role_done", "role_stage", "role_hold", "role_cause_attach")
 
 
 def carry_acts(st, acts, now):
@@ -2336,7 +2322,6 @@ def role_obs(sch):
         "off": RL.off_switch,
         "scope": RL.scope_of,
         "procs": RL.procs_of,
-        "ledger": RL.read_ledger,
         "lent": lambda: AP.load_lent(sch.get("account_pick") or {}),
         "window_live": window_live,
     }

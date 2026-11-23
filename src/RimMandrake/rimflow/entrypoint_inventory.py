@@ -87,19 +87,22 @@ RETIRED_BATCHES = ({  # RIMFLOW_RETIRE_DEAD_MODULES
     "relentless_wake": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
     "replay_unreached_closes": "replayed past Relentless closes (its item was dropped)",
     "validator_replay": "replayed the retired supervisor's transitions",
+}, {  # RIMMANDRAKE_REMOVE_RETIRED_V3_ROLES_FROM_ACTIVE_RULES_STILL_LISTED (owner 2026-11-23)
+    "audit_prescreen": "the pre-step of the retired Auditor role; nothing else ran it",
+    "audit_hardflag_file": "the retired Auditor's pre-step that filed the pre-screen's hard flags; last run 2026-11-01",
+    "selftest_audit_prescreen": "tested the pre-screen",
+    "selftest_audit_prescreen_window": "tested the pre-screen's window",
+    "selftest_audit_hardflag_file": "tested the filer",
 },)
 RETIRED = {name: why for batch in RETIRED_BATCHES for name, why in batch.items()}
 # Named dead by redesign.md, and not: retiring these takes a decision, not a delete.
 KEPT = {
     "close_audit": "redesign_final.md G20: an independent audit is kept while the gate it audits is replaced",
-    "audit_prescreen": "role_launch imports it at module top (AP.STAMP); the Auditor's pre_launch runs it; only switched off",
-    "audit_hardflag_file": "the Auditor's pre_launch runs it after audit_prescreen; goes with that role, not alone: only switched off",
     "fixture_guard_gate": "by-hand release fixture for cli._guard_refusals, named by evidence_gate_enforce_before_deletes_2026-11-06.md",
 }
 # (module, kind, a substring of the file): an instrument that cannot see these cannot be believed about a retired module.
 PROBES = (
-    ("audit_prescreen", "import", "role_launch.py"),
-    ("audit_prescreen", "run", "dispatcher_schedule.json"),
+    ("maturation_dispatch", "run", "dispatcher_schedule.json"),
     ("maturation_dispatch", "run", ".service"),
     ("regrade", "doc", "findings_judge_prompt.md"),
 )

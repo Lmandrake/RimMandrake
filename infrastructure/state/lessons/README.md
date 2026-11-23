@@ -8,8 +8,8 @@ skill owns it, and say which home you propose. File one with
 which creates `infrastructure/state/lessons/<utc>-<seat>-<slug>.md`; commit that path. `--item` names the item you
 learned it on (default: the session's `$RIMFLOW_ITEM`). The daily agent-improvement
 pass reads the lesson's task kind from it, and a change built on lessons with no item cannot have its generalization
-checked (design `daily_agent_improvement_2026-11-02.md` 4.3). Curation
-folds a lesson into its skill and **deletes its file**; the Auditor does it every week with a
-budget (`roles/auditor.md`, owner 2026-10-29: "The Auditor once a week."). `LESSONS_INBOX.md` beside this folder is a
+checked (design `daily_agent_improvement_2026-11-02.md` 4.3). Curation,
+in a fresh-context skill session, folds a lesson into its skill and **deletes its file**. The files are a corpus, not a
+queue: no number of them is owed work, and a lesson earns work when its class recurs. `LESSONS_INBOX.md` beside this folder is a
 gitignored view — `python3 src/RimMandrake/Utils/lessons.py render` rebuilds it; never edit it.
 Last drained 2026-11-07 (spring clean, two runs: every lesson folded into its owning skill or fact file, or spent, except one a companion `.cs` comment cites). How it was done, reusably: checked digests that classify each lesson covered, rule, merge or spent, then a script that applies them and deletes what landed. Folded detail goes to a skill's `references/traps.md`, not its SKILL.md.

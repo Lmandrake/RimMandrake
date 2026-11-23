@@ -564,10 +564,10 @@ def test_cut_harvest_acts_are_carried():
     # Codex review of efe8abe6a8
     st = {}
     many = [{"do": "role_done", "unit": "u%d" % n, "at": "t"} for n in range(D.CARRY_MAX + 1 if hasattr(D, "CARRY_MAX")
-                                                                          else 201)] + [{"do": "role_stamp", "at": "t"}]
+                                                                          else 201)] + [{"do": "role_stage", "at": "t"}]
     n = D.carry_acts(st, many, 1.0)
     check(n == len(many) and len(st.get("acts_carry") or []) == len(many),
-          "no carried act is trimmed away, and a finish stamp (role_stamp) is carried too: %d of %d" % (
+          "no carried act is trimmed away, and a stage act (role_stage) is carried too: %d of %d" % (
               len(st.get("acts_carry") or []), len(many)))
     st = {}
     D.carry_acts(st, [{"do": "role_done", "unit": "j", "at": "t", "result": "noted"}], 1.0)
@@ -589,7 +589,7 @@ def _ops_launch_decide(name):
     def decide(sch, st, o, now, apply, out=None):
         sch["roles"] = [{"name": name, "enabled": True, "seat": "BENCH", "model": "opus"}]
         st.setdefault("roles", {})[name] = {"pending_launch": {"unit": "u-" + name, "mode": "slot", "had_done": False,
-                                                               "key": "d1", "event_cursor": None, "events_seen": None},
+                                                               "key": "d1"},
                                             "runs": [], "done": {"d1": 5}}
         out.append({"do": "role_launch", "role": name, "unit": "u-" + name, "budget": 1, "slot": "s", "band": "b",
                     "mode": "slot", "message": "m", "why": "w", "ticket": None})
@@ -629,8 +629,7 @@ def test_making_clone_is_a_planned_hold():
     os.makedirs(root, exist_ok=True)
     sch["roles"] = [{"name": "Designer", "enabled": True, "seat": "BENCH", "model": "opus"}]
     st = {"seats": {}, "alarms": {}, "roles": {"Designer": {
-        "pending_launch": {"unit": "u1", "mode": "slot", "had_done": False, "key": "d1", "event_cursor": None,
-                           "events_seen": None}, "done": {"d1": 5}}}}
+        "pending_launch": {"unit": "u1", "mode": "slot", "had_done": False, "key": "d1",                            "events_seen": None}, "done": {"d1": 5}}}}
     launched = []
 
     def fake_launch(role, unit, msg, root, exe):

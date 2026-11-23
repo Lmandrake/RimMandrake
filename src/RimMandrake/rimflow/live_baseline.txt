@@ -43,7 +43,4 @@ hook=set_session_title.py
 hook=warn_skill_unwired.py
 hook=warn_unclosed_queue_item.py
 role=Conductor max_age=3d
-role=Arbiter max_age=3d
-role=Auditor max_age=3d
 role=Operations max_age=3d
-role=Producer max_age=3d

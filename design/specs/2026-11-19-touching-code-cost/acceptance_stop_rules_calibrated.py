@@ -5,7 +5,7 @@ Each judging brief that got a stopping level on 2026-11-19 (standing_rulings.md 
 it, do it) is listed in a family of infrastructure/state/judge_calibration.json whose status, read by
 refusal_contract.status() at the brief's current hash, is CALIBRATED. The art judge brief also carries its stop rule.
 
-Expected on a correct result: PASS 7/7. On the base (2026-11-19, the filing commit) it reads FAIL with 0 or 1 of 7.
+Expected on a correct result: PASS 6/6. On the base (2026-11-19, the filing commit) it reads FAIL with 0 or 1 of 7 (the retired Auditor's brief was the seventh until 2026-11-23).
 Exit 0 all pass; 1 any check fails; 3 the registry or refusal_contract could not be read (no score is printed).
 """
 import os
@@ -13,7 +13,6 @@ import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 BRIEFS = [
-    "src/RimMandrake/rimflow/roles/auditor.md",
     "src/RimMandrake/rimflow/roles/operations.md",
     "src/RimMandrake/Utils/findings_judge_prompt.md",
     "design/RimMandrake/scene_look_judge_brief.md",

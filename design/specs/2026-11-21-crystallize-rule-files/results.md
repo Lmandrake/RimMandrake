@@ -114,7 +114,7 @@ Of the eleven batches that were left in `design/specs/2026-11-19-plain-english-r
 |---|---|
 | Designer packet files (7) | Done in this pass, with its meaning read. Lint per 100 words went from 3.2-5.4 to 1.3-4.7. Four files are still above the 2.5 target (`designer.md` 2.93, `designer_cleanse.md` 3.47, `designer_dialogue.md` 3.07, `designer_examples.md` 4.68): owed, small. |
 | Untested judge role files (3) | Rewritten, with its meaning read (3.9-4.6 to 2.9-3.7). Still owed: the calibration of both judge families. Both rows read UNTESTED before and after, so no state changed. |
-| Producer, Auditor, Innovator, runner options (4) | Done in this pass, with its meaning read. `producer.md` 2.48 and `runner_options.md` 1.68 meet the target; `auditor.md` 3.42 does not: owed, small. `innovator.md` was deleted 2026-11-23 (the role is retired). |
+| Producer, Auditor, Innovator, runner options (4) | Done in this pass, with its meaning read. `producer.md` 2.48 and `runner_options.md` 1.68 meet the target; `producer.md`, `auditor.md` and `innovator.md` were deleted 2026-11-23 (the roles are retired). |
 | `standing_rulings.md` | Changed, still owed. 11 of 70 sections were compressed and written plainly. The other sections wait for the batch; 6 of them also wait for the refusal run. |
 | Judge briefs; biome, delegation and debug docs; trap fact files; git, game and purpose docs; the maturation spec; undated fact files; other docs; skills | Not touched. Still owed, unchanged. |
 
@@ -129,7 +129,7 @@ Both sides of each are untouched.
 1. `roles/operations.md` "two helpers at once across ALL roles" against `Agent_Policy.md` lines 105-107 (3 per
    unattended seat). The item that the line waits on, `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES`, is dropped.
 2. Settled: `roles/innovator.md` was deleted 2026-11-23 (the role is retired).
-3. `roles/producer.md` line 183 (no cut before he rules) against its step 2 (the cut is the Conductor's decision).
+3. Settled: `roles/producer.md` was deleted 2026-11-23 (the role is retired).
 4. `CHARTER.md` "Loosening a bar stays his" against the root and `standing_rulings.md` (the Conductor may, mindfully).
 5. `CHARTER.md` §Git "seat clone only" against the root §Git (helper clones and the pool).
 6. The root sends program-read output to `/tmp`; the user-level file says never `/tmp`.

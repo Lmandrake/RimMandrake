@@ -8,7 +8,7 @@ instability, but this is done infrequently, say weekly or so."*
 
 The rule text (`design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested) proposes that
 the Friday run of `rm-findings-judge.timer` does this examination. The Friday run is a weekly Opus `claude -p`
-(`src/RimMandrake/Utils/findings_judge.sh`). It already reads patterns across runs and files Auditor rule candidates
+(`src/RimMandrake/Utils/findings_judge.sh`). It already reads patterns across runs and files rule candidates
 (`src/RimMandrake/Utils/findings_judge_friday.md`). Until this item closes, the Conductor examines the flagged files.
 
 Add one step to `findings_judge_friday.md`:
@@ -17,7 +17,7 @@ Add one step to `findings_judge_friday.md`:
    unreadable: report that, and examine nothing.
 2. For each flagged file, answer one question: must the definition of significant change, or is this code really
    unstable? Read the flag's why and `git log` of the file since the flag.
-3. A definition answer: file one Auditor rule candidate (one per source event) that quotes the flags.
+3. A definition answer: file one rule candidate (one per source event) that quotes the flags.
    An instability answer: leave the flag and write one line in the run's report.
    When the examination ends a flag: `code_review_status.py unflag <path> --why "<the answer>"`.
 4. Count the examined files in the run record (`flagged=`).

@@ -625,8 +625,8 @@ def store_handles(text, handles, directory):
 # ---- the dispatcher's notes for a token-blind role's ledger item (review dispatcher-full #2). One closed record:
 # a known role, a known mode, a dispatcher unit name and a FIXED outcome. role_launch.blind_note and
 # dispatcher.route_note both use these; contracts.blind.BlindNote is the same record as a Pydantic model.
-NOTE_ROLES = ("Conductor", "Arbiter", "Auditor", "Operations", "Producer")
-NOTE_MODES = ("quick", "run", "weekly", "economy", "event", "alarm")
+NOTE_ROLES = ("Conductor", "Operations")
+NOTE_MODES = ("quick", "run", "economy", "alarm")
 NOTE_OUTCOMES = {
     "launched": "launched",
     "held_pause": "held by PAUSE, not launched",
@@ -638,7 +638,6 @@ NOTE_OUTCOMES = {
     "failed": "ended without a good result",
     "after_disabled": "not run, the role it runs after is not enabled",
     "schedule_unreadable": "not run, its schedule entry is unreadable",
-    "events_unreadable": "not run, its event triggers are unreadable",
 }
 NOTE_OUTCOME_TEXTS = tuple(NOTE_OUTCOMES.values())
 NOTE_VOCAB = frozenset({"dispatcher", "run"})

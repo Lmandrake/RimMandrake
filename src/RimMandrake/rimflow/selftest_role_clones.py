@@ -34,7 +34,7 @@ def main():
     seat = "/home/mandrake/rm/bench"
     sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
     roles = [r for r in sch["roles"] if isinstance(r, dict) and r.get("clone")]
-    check(len(roles) >= 7, "the schedule has its role rows (%d)" % len(roles))
+    check(len(roles) >= 5, "the schedule has its role rows (%d)" % len(roles))
     in_seat = [r["name"] for r in roles if os.path.normpath(r["clone"]) == seat]
     check(not in_seat, "no role row runs in the seat clone (%s)" % (in_seat or "none"))
     own = [r["name"] for r in roles if os.path.normpath(r["clone"]) != RC.clone_of(r["name"])]

@@ -793,7 +793,7 @@ MACHINE_FAMILIES = (
     re.compile(r"^GAMEENV_FIX_[A-Z]+_[0-9A-F]{8}_ITEMS_WAIT$"),     # relentless_game.REPAIR_FMT
     re.compile(r"^[A-Z0-9]+_DESIGN_FIRST_TOUCH$"),                  # first_touch.SUFFIX
     re.compile(r"^(OPS|LIVE_RESTORE|STEVE_LANE_UNSTICK)_[A-Z0-9_]+$"),  # ops_watch / steward alarms
-    re.compile(r"^AUDIT_HARDFLAG_FIX_[A-Z0-9]+$"),                  # audit_hardflag_file
+    re.compile(r"^AUDIT_HARDFLAG_FIX_[A-Z0-9]+$"),                  # the retired audit_hardflag_file (past names)
     re.compile(r"^HARNESS_REPAIR_CAUSE_[0-9A-F]{8}(_[0-9]+)?$"),    # testq retest.repair_base / repair_slot
 )
 
@@ -804,7 +804,7 @@ def mint_problems(iid, known_ids, strict=None):
     Mint-time only. Replay never calls this: every id already in the ledger, of every older form, stays
     valid forever. The verb in slot 2 is never checked against a list.
 
-    `strict` defaults to True; a MACHINE minter (ops_watch alarms, steward, audit_hardflag_file: ~60 fixed alarm
+    `strict` defaults to True; a MACHINE minter (ops_watch alarms, steward: ~60 fixed alarm
     prefixes, minted by code, not written by an agent) declares itself with RIMFLOW_MACHINE_MINT=1 and gets the
     same relaxed mode; under a TEST ledger (RIMFLOW_LEDGER set, never the real one) it defaults to False,
     which skips only slot 1 and the 4-word floor so the ~40 selftests that file fixture ids like CODE_FIX_ALPHA keep
@@ -1186,7 +1186,7 @@ def stamp(epoch_s, plus=0):
 def raise_key(item):
     """-> the sort key that puts raised items first, IN RAISE ORDER (first-raise `ts`, then `tsn`),
     and every unraised item after them all (RAISE_ORDER_FIX_FILING_DATE_OUTRANKS_PLAN, 2026-10-29:
-    sorting raised items by created_at lost the Producer's plan order)."""
+    sorting raised items by created_at lost the raiser's order)."""
     if item.raised is None:
         return (1, "", 0)
     return (0, item.raised, item.raised_tsn)
@@ -1808,7 +1808,7 @@ class Item(object):
         self.shape = None               # the last `shape` split: {parts, size, at, seat} (list_shape.py)
         self.shape_named = None         # ts of the first `shape --enter`: named for a Shape run
         self.raised_tsn = 0             # tsn of that same first `raise` (0 when absent): `ts` is to the
-        #                                 second, so a Producer raising C, A, B in one run needs it for order
+        #                                 second, so a run raising C, A, B in one run needs it for order
 
     @property
     def open(self):

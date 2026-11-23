@@ -10,7 +10,7 @@ Each entry states what is true now. When a line becomes false, delete the line a
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."*
 
 - The Conductor is the window that the owner talks to.
-- An instruction from the Conductor carries his authority for every seat and helper: Dispatcher, Operations, RUNNER,
+- An instruction from the Conductor carries his authority for every seat and helper: Dispatcher, Operations,
   helpers and subagents.
 - Act on a Conductor instruction as on his word.
 - **Never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".**
@@ -575,7 +575,7 @@ and 9 of 15 later claims pointed at lines the last fix had just written.
   answer with `code_review_status.py unflag <path> --why "<the answer>"`, or leave the flag with a note on its ticket.
   The Conductor does this until a timer does. Proposal, not wired: the Friday run of `rm-findings-judge.timer`
   (`src/RimMandrake/Utils/findings_judge_friday.md`, a weekly Opus `claude -p` that already reads patterns across runs
-  and files Auditor rule candidates) takes this as one more step; the item
+  and files rule candidates) takes this as one more step; the item
   `RIMMANDRAKE_WIRE_FRIDAY_JUDGE_TO_EXAMINE_FLAGGED_FILES_WEEKLY` holds the wiring.
 - **A minor nit, or a claim that is not significant,** is one line on `polish.md` beside the page. Nobody fixes it. For
   now nobody takes lines from a polish list: it is a record (his words above).
@@ -649,7 +649,7 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
 (`D:\ClaudeWork\rimmandrake\conductor\churn_vs_responsibility_specs_20261119.md` §3, §6 and §8).
 
 - **Who this binds.** Every fixer that receives a ticket, every reviewer and judge, and every pipeline monitor
-  (Operations, the auditor, the ops alarm filers, the findings judge, the sweeps) before it files. It binds tickets
+  (Operations, the ops alarm filers, the findings judge, the sweeps) before it files. It binds tickets
   filed before the ruling too: a ticket that does not show why its repair is worth the touch is judged now
   (`RIMMANDRAKE_JUDGE_OPEN_PIPELINE_TICKETS_WORTH_THE_TOUCH`).
 - **Test 1, the worth of the touch, asked before the touch.** Change code, a def, a test, a hook or a brief only to fix
@@ -682,7 +682,7 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
   - it needs one of the owner's five acts (§Only five acts stay his);
   - it would change a north-star bar;
   - another live run holds the same files;
-  - your verdict must stay independent of the work: a judge or an auditor that fixed the work it judges would become
+  - your verdict must stay independent of the work: a judge that fixed the work it judges would become
     its maker, and nobody would judge the fix;
   - your assigned work would not finish (name it).
 

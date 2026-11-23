@@ -1,33 +1,29 @@
 #!/usr/bin/env python3
-"""rimflow/priority_list.py: the one short plan list (DI3, MI1 in design/RimMandrake/operating_requirements_2026-11-01.md).
+"""rimflow/priority_list.py: the Conductor's one short list of what comes first (DI3 in design/RimMandrake/operating_requirements_2026-11-01.md).
 
-infrastructure/state/priority_list.json, written by Producer or Conductor through this tool and committed by them:
+infrastructure/state/priority_list.json, written by the Conductor through this tool and committed:
 
-    {"set_at": "<iso>", "set_by": "Producer", "entries": [
+    {"set_at": "<iso>", "set_by": "Conductor", "entries": [
         {"id": "<item>", "reading": {"mod": "Abyss"}},
         {"row": "<V1 row>", "reading": {"file": "infrastructure/state/x.json", "key": "a.b"}}]}
 
-Only the Dispatcher's ring (`rimflow next`) and relentless's pool order by it. A listed item goes ahead of everything
-else on those two paths, raised items included; an item `rimflow raise` puts up that is not listed keeps its place
-behind the list and ahead of the rest. A list that is missing, torn or too long gives no order, so both paths keep
-today's; ops_watch's `plan` family reads that as distressed. A listed item that has closed drops by itself: no reader
-orders by it, `add` removes it, and ops_watch reads distress only when no open entry is left (a spent list). Age and advance limits are the ranges block of
-Utils/ops_watch_rules.json (plan.list_age_h, plan.days_since_advance), never here.
+`rimflow next` orders by it. A listed item goes ahead of everything else, raised items included; an item `rimflow
+raise` puts up that is not listed keeps its place behind the list and ahead of the rest. A list that is missing, torn
+or too long gives no order. A listed item that has closed drops by itself: no reader orders by it and `add` removes it.
 
     python3 src/RimMandrake/rimflow/priority_list.py show
-    python3 src/RimMandrake/rimflow/priority_list.py set --file <entries.json> --by Producer|Conductor
-    python3 src/RimMandrake/rimflow/priority_list.py add <ID> --mod <Mod> --by Producer|Conductor
+    python3 src/RimMandrake/rimflow/priority_list.py set --file <entries.json> --by Conductor
+    python3 src/RimMandrake/rimflow/priority_list.py add <ID> --mod <Mod> --by Conductor
 """
 import argparse
 import datetime
 import json
-import math
 import os
 import sys
 
 RELPATH = os.path.join("infrastructure", "state", "priority_list.json")
 MAX_ENTRIES = 29        # "under 30 entries"
-WRITERS = ("Producer", "Conductor")
+WRITERS = ("Conductor",)
 FUTURE_SLACK_S = 300
 
 
@@ -128,61 +124,6 @@ def closed_entries(entries, world, open_states):
     return [entry_key(e) for e in entries if not open_items(e, world, open_states)]
 
 
-def read_key(doc, dotted):
-    for part in dotted.split("."):
-        if not isinstance(doc, dict) or part not in doc:
-            return None
-        doc = doc[part]
-    return doc
-
-
-def read_reading(spec, root, status_rank):
-    """-> (number, None) or (None, why): one entry's finish-line reading, now. `status_rank` turns a mod's modcheck
-    status into a number. Never a guess: an unknown status or non-number is a reading not seen."""
-    mod = spec.get("mod")
-    rel = os.path.join("infrastructure", "state", "modcheck_status.json") if mod else spec["file"]
-    try:
-        with open(os.path.join(str(root), rel), encoding="utf-8") as f:
-            doc = json.load(f)
-    except (OSError, ValueError) as e:
-        return None, "%s: %s" % (rel, str(e))
-    if mod:
-        v = read_key({"m": doc.get(mod) if isinstance(doc, dict) else None}, "m.status")
-        return (status_rank[v], None) if isinstance(v, str) and v in status_rank else (None, "%s status %r has no rank" % (mod, v))
-    v = read_key(doc, spec["key"])
-    if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v):
-        return None, "%s %s is %r, not a number" % (rel, spec["key"], v)
-    return v, None
-
-
-def advance(entries, root, status_rank, kept, now):
-    """One pass of MI1. `kept`: {entry key: {"spec", "best", "rose_t"}} from the last pass.
-    -> (new kept, {key: days since its reading last rose}, {key: why unread}). A fall then a return to the old best is
-    no rise. A changed reading is a new finish line and starts its own count. A torn record is reported, never reset:
-    that would start the clock of an entry already flat."""
-    out, days, unread = {}, {}, {}
-    for e in entries:
-        k = entry_key(e)
-        old = kept.get(k) if isinstance(kept.get(k), dict) and kept[k].get("spec") == e["reading"] else None
-        v, why = read_reading(e["reading"], root, status_rank)
-        if why:
-            unread[k] = why
-            if old:
-                out[k] = old
-            continue
-        if old is not None and not all(isinstance(old.get(f), (int, float)) and not isinstance(old.get(f), bool)
-                                       and math.isfinite(old[f]) for f in ("best", "rose_t")):
-            unread[k] = "its advance record is torn: mend or remove it in plan_advance.json"
-            out[k] = old
-            continue
-        if old is None or v > old["best"]:
-            out[k] = {"spec": e["reading"], "best": v, "rose_t": now}
-        else:
-            out[k] = old
-        days[k] = round(max(now - out[k]["rose_t"], 0) / 86400.0, 2)
-    return out, days, unread
-
-
 def write(root, entries, by, now=None):
     """The one writer: refuses what `problem` refuses, stamps set_at, replaces atomically. -> the doc."""
     now = now or datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
@@ -203,7 +144,7 @@ def write(root, entries, by, now=None):
 def main(argv=None):
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from rimflow import model
-    ap = argparse.ArgumentParser(description="the one short plan list (DI3, MI1)")
+    ap = argparse.ArgumentParser(description="the one short list of what comes first (DI3)")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("show")
     s = sub.add_parser("set")

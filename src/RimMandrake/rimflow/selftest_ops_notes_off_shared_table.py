@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Guard for OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE (review U N2), run against the REAL
 dispatcher_schedule.json and ops_watch_rules.json, not a fixture: the token-aware Operations role's launch, done and
-economy notes, and every dispatcher note bound for the shared V3 roles item that token-blind roles read, land on
+economy notes, and every dispatcher note bound for an item that a token-blind role reads (the Designer's), land on
 Operations' own item; only a closed-type blind note may reach the shared item.
 
 A fixture test cannot catch the schedule drifting (Operations' row pointed back at the shared item, its token_aware
@@ -17,7 +17,7 @@ import dispatcher as D  # noqa: E402
 import role_launch as RL  # noqa: E402
 
 OPS_ITEM = "OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE"
-SHARED = "V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE"
+SHARED = "CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING"
 FAILS = []
 
 
@@ -35,7 +35,7 @@ def main():
     check(ops.get("token_aware") is True, "Operations is token_aware")
     check(sch.get("token_notes_item") == OPS_ITEM, "token_notes_item is Operations' item: %r" % sch.get("token_notes_item"))
     blind = D.blind_items(sch)
-    check(SHARED in blind, "the shared V3 roles item is read by a token-blind role (so it is guarded)")
+    check(SHARED in blind, "the Designer's item is read by a token-blind role (so it is guarded)")
     check(OPS_ITEM not in blind, "no token-blind role reads Operations' item")
     readers = sorted(n for n, r in roles.items() if r.get("ledger_item") == OPS_ITEM)
     check(readers == ["Operations"], "only Operations reads its item: %r" % readers)
@@ -50,7 +50,7 @@ def main():
         check(D.route_note(sch, OPS_ITEM, text) == (OPS_ITEM, text), "Operations note stays home: %s" % text[:40])
 
     # anything with figures bound for the shared item is diverted, naming where it was meant to go
-    for text in ("dispatcher alarm : Arbiter run used 1020596 weighted tokens (raw 5451557), budget 500000",
+    for text in ("dispatcher alarm : Designer run used 1020596 weighted tokens (raw 5451557), budget 500000",
                  "usage limit reached on account steven",   # a phrasing the word list may lack: still diverted
                  "plain text with no figure"):               # not a closed-type blind note: diverted too
         to, out = D.route_note(sch, SHARED, text)

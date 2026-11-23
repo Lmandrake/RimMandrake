@@ -89,10 +89,11 @@ for _p in (HERE, HERE / "ops_core", HERE / "sim"):
 SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
-# families whose collector was removed: their old keys never read as silent (relentless: the retired tick's belt, 2026-11-18)
-REMOVED_FAMILIES = ("relentless",)
+# families whose collector was removed: their old keys never read as silent and their alarms leave (relentless: the retired
+# tick's belt, 2026-11-18; plan: the retired Producer's daily list, 2026-11-23)
+REMOVED_FAMILIES = ("relentless", "plan")
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
-            "evidence", "companion", "seats", "plan", "roles", "queues", "wrapup", "maturation", "pager")
+            "evidence", "companion", "seats", "roles", "queues", "wrapup", "maturation", "pager")
 
 
 LIVE_OPS_DIR = "/mnt/d/ClaudeWork/rimmandrake/ops_watch"
@@ -2587,7 +2588,7 @@ def tt_texts(now, rules, ctx):
         for sn in seats:
             bad["commits." + sn] = "git log unreadable: %s: %s" % (type(e).__name__, str(e))
     rd = tt_roles_dir()
-    names = set(cfg.get("roles") or ["producer", "auditor"])
+    names = set(cfg.get("roles") or [])
     try:
         if not rd.is_dir():
             raise RuntimeError("role run folder %s absent" % rd)
@@ -2635,8 +2636,7 @@ def tt_groups(rules):
     """-> the groups token_talk measures now: each seat, its commits, each role."""
     cfg = rules.get("token_talk") or {}
     seats = cfg.get("seats") or []
-    return list(seats) + ["commits." + s for s in seats] + ["role." + r for r in (cfg.get("roles") or
-            ["producer", "auditor"])]
+    return list(seats) + ["commits." + s for s in seats] + ["role." + r for r in (cfg.get("roles") or [])]
 
 
 def tt_retired(k, rules):
@@ -2722,97 +2722,6 @@ def st_suppressed(points, fam):
     quiet: the point is written here so its target alarms, on this pass, whatever stopped the collection."""
     why = str((points.get(fam + "._collector") or {}).get("why") or "the %s collector did not run this pass" % fam)
     return M(1, "sources not seen", cause=why)
-
-
-# ---------------------------------------------------------------- plan: the priority list and its advance (DI3, MI1)
-PL_KEYS = ("plan.list_state", "plan.days_since_advance", "plan.distressed", "plan.cause")
-PL_RANGES = ("plan.list_state", "plan.list_age_h", "plan.days_since_advance", "plan.blind")
-
-
-def plan_modules():
-    root = str(HERE.parent)
-    if root not in sys.path:
-        sys.path.insert(0, root)
-    import importlib
-    return importlib.import_module("rimflow.priority_list"), importlib.import_module("rimflow.model")
-
-
-def pl_verdict(ms, pts, closes, days, state):
-    """-> (class, cause): the worst class of the three judged readings, and the first reading standing in it."""
-    flat = sorted(days.items(), key=lambda kv: -kv[1])[:1]
-    said = {"plan.list_state": "priority list %s" % state,
-            "plan.list_age_h": "priority list %s h old" % (pts["plan.list_age_h"].get("v") if isinstance(pts.get("plan.list_age_h"), dict) else "?"),
-            "plan.days_since_advance": "%s flat %s days despite %d closes" % (flat[0][0], flat[0][1], closes) if flat else "no entry read"}
-    worst = "sane", "none"
-    for key, text in said.items():
-        c = read_class(ms, key, pts)
-        if c in ALARMED and (worst[0] == "sane" or c == "emergency" and worst[0] != "emergency"):
-            worst = c, text
-    return worst
-
-
-def c_plan(now, rules, ctx):
-    """plan.* (DI3, MI1): is the priority list one anybody may obey, and does each entry's finish-line reading rise?
-    Read from the data clone, as the ring and the pool read their own. Limits in the ranges block; the rest in
-    rules["plan"]. Closes are counted only to be named: they clear nothing. An entry's best reading and when it last
-    rose are kept in plan_advance.json beside the series; a torn one, a ledger or a reading not seen counts in
-    plan.blind, whose target alarms."""
-    no_range = need_ranges(rules, PL_RANGES)
-    cfg = rules.get("plan")
-    if no_range or not isinstance(cfg, dict) or not isinstance(cfg.get("status_rank"), dict):
-        why = no_range or "ops_watch_rules.json has no plan.status_rank"
-        return {**{k: U(why) for k in PL_KEYS}, "plan.list_age_h": U(why, "h"), "plan.blind": M(1, "sources not seen", cause=why)}
-    PL, model = plan_modules()
-    ms, root = ranges_of(rules), data_clone()
-    got = PL.load(root)
-    bad, closes, entries = [], 0, got["entries"]
-    state = got["state"]
-    try:
-        evs = model.read_clone(str(root / "infrastructure" / "state" / "ledger" / "events.jsonl"))
-        world = model.replay(evs)
-        if not world.items:
-            raise ValueError("the ledger holds no items")
-    except Exception as e:  # noqa: BLE001  whatever stopped the ledger: not seen, never sane, never a closed entry
-        world, evs = None, []
-        bad.append("ledger: %s: %s" % (type(e).__name__, str(e)))
-    pts = {"plan.entries": M(len(entries), "entries")}
-    if got["state"] == "ok":
-        t = PL.epoch(got["doc"]["set_at"])
-        if t > now + PL.FUTURE_SLACK_S:
-            state = "future_set_at"
-            pts["plan.list_age_h"] = U("set_at %s is ahead of now" % got["doc"]["set_at"], "h")
-        else:
-            pts["plan.list_age_h"] = M(round(max(now - t, 0) / HOUR, 2), "h", set_at=got["doc"]["set_at"], set_by=got["doc"]["set_by"])
-    else:
-        pts["plan.list_age_h"] = U(got["why"], "h")
-    closed = PL.closed_entries(entries, world, model.OPEN_STATES) if world is not None else []
-    # RIMMANDRAKE_PRUNE_PRIORITY_LIST_CLOSED_ENTRY_STALLS_PLAN: a finished entry drops by itself (it held PLAN_DISTRESS
-    # open 7 days, the fourth time, and hid real distress); a list with no open entry left is spent, and that alarms
-    if closed and state == "ok" and len(closed) == len(entries):
-        state = "spent"
-    p = ops_dir() / "plan_advance.json"
-    kept = read_json(p) if p.exists() else {}
-    if not isinstance(kept, dict):
-        bad.append("plan_advance.json is torn")
-        kept = {}
-    live = [e for e in entries if PL.entry_key(e) not in closed]
-    new, days, unread = PL.advance(live, root, cfg["status_rank"], kept, now)
-    bad += ["%s: %s" % kv for kv in sorted(unread.items())]
-    if got["state"] == "ok":        # a torn list says nothing about advance, and must not start every clock again
-        atomic_json(p, new)
-    if world is not None and days:
-        since = min(new[k]["rose_t"] for k in days)
-        closes = sum(1 for ev in evs if ev.get("event") == "close" and (epoch(ev.get("ts")) or 0) >= since)
-    pts["plan.list_state"] = M(state, why=(got["why"] or ", ".join(closed)), dropped_closed=closed)
-    if days:
-        pts["plan.days_since_advance"] = M(max(days.values()), "days", per_entry=days, closes=closes)
-    else:
-        pts["plan.days_since_advance"] = U("no entry on the list to read: %s" % state, "days")
-    cls, cause = pl_verdict(ms, pts, closes, days, state)
-    pts["plan.distressed"] = M(int(cls in ALARMED), "1 when the plan list is distressed or worse", state=cls, cause=cause)
-    pts["plan.cause"] = M(cause)
-    pts["plan.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad) or "none")
-    return pts
 
 
 # ---------------------------------------------------------------- seats: idle with work ready, from the Dispatcher (OP2)
@@ -3387,10 +3296,10 @@ def c_pager(now, rules, ctx):
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve_all, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
               "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion,
-              "seats": c_seats, "plan": c_plan, "roles": c_roles,
+              "seats": c_seats, "roles": c_roles,
               "queues": c_queues, "wrapup": c_wrapup, "maturation": c_maturation, "pager": c_pager}
 ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
-         "evidence", "companion", "seats", "plan", "roles", "queues", "wrapup", "maturation", "pager")
+         "evidence", "companion", "seats", "roles", "queues", "wrapup", "maturation", "pager")
 
 
 # ==================================================================================================== storage
@@ -4030,6 +3939,11 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
         return {"_alarm_state": {"state": "UNREADABLE", "error": "%s exists but is not a readable JSON object: alarm "
                                  "filing held this pass" % p}}
     log = []
+    # an alarm of a removed family has no target left that could clear it: it leaves with its family
+    for aid in [a for a in state if a.split(":", 1)[-1].split(".", 1)[0] in REMOVED_FAMILIES]:
+        was = state.pop(aid)
+        log.append({"ts": iso(now), "event": "family_removed", "aid": aid,
+                    "item": was.get("item") if isinstance(was, dict) else None})
     # before any step: a line owed from an earlier pass is retried even when this pass clears its alarm
     retry_conductor_lines(state, now, log)
     ts = target_state(points, rules)
@@ -4572,13 +4486,6 @@ def st_headline(g):
         "" if cause == "none" else ": " + cause)
 
 
-def plan_headline(g):
-    cause = g("plan.cause").strip()
-    return "plan list %s, age %s h, days since advance %s, blind %s%s" % (
-        g("plan.list_state").strip(), g("plan.list_age_h").strip(), g("plan.days_since_advance").strip(),
-        g("plan.blind").strip(), "" if cause == "none" else ": " + cause)
-
-
 def headline(points, flags, alarms):
     def g(k):
         p = points.get(k) or {}
@@ -4604,7 +4511,6 @@ def headline(points, flags, alarms):
         g("disk.scratch_total_gb").strip(), g("disk.pool_clones").strip(), g("disk.pool_gb").strip(),
         g("disk.pool_oldest_h").strip()))
     parts.append(st_headline(g))
-    parts.append(plan_headline(g))
     opened = [a for a in alarms.values() if a.get("state") == "OPEN"]
     pend = [a for a in alarms.values() if a.get("state") == "PENDING"]
     parts.append("%d flag(s), %d alarm(s) open, %d pending" % (len(flags), len(opened), len(pend)))
@@ -4664,7 +4570,7 @@ def digest_md(dg):
 # routing (run_alarms); the blind digest does NOT rely on it: that is an allow-list (BLIND_KEYS).
 TOKEN_FAMILIES = ("accounts", "codex", "tokentalk")
 
-# digest_blind.md is an ALLOW-LIST (review V, V1): a token-blind role (Producer, Auditor) sees exactly these series
+# digest_blind.md is an ALLOW-LIST (review V, V1): a token-blind role sees exactly these series
 # and nothing else. Machine health (steve, timers, tps), disk, stalls, flow and production output counts. Every key
 # not named here is withheld by default, so a new collector, or a quota reading phrased without a token word
 # (production.B, "% of the week used"), can never reach them. Adding a key is a decision: name it here, with care.
@@ -4686,7 +4592,6 @@ production.G9
 production.O1 production.O2 production.O3 production.O4
 production.P1 production.P2 production.P3 production.P4
 production.V0 production.W1 production.W2 production.W3 production.W4 production.record_age_min
-plan.blind plan.cause plan.days_since_advance plan.distressed plan.list_age_h plan.list_state
 seats.blind seats.cause seats.distressed seats.idle_with_work_min seats.paused seats.tick_age_s
 steve.fault_min steve.heartbeat_age_min steve.invalid_24h steve.invalid_streak steve.jobs_24h steve.last_done_age_min
 steve.seats_absent_min steve.state steve.unowned_stall_min steve.watch_age_min
@@ -4732,7 +4637,6 @@ def blind_digest_md(dg, rules):
               g("disk.root_free_gb"), g("disk.c_free_gb"), g("disk.d_free_gb"), g("disk.scratch_total_gb"),
               g("disk.pool_clones"), g("disk.pool_gb"), g("disk.pool_oldest_h")),
           st_headline(g),
-          plan_headline(g),
           "%d flag(s), %d alarm(s) open, %d pending" % (
               len(fl), len(opened), len([a for a in al.values() if a.get("state") == "PENDING"]))]
     L = ["# Ops watch, health digest %s (an allow-list of health series; account readings are Operations')"
@@ -5224,8 +5128,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
         points[BLIND_KEY] = blind_point({}, compose_max_age_s(rules)[0])
     if release is not None:
         sick += steve_release_finish(release)
-    for fam, key in (("seats", "seats.blind"), ("plan", "plan.blind"),
-                     ("disk", "disk.scratch_outside_blind")):
+    for fam, key in (("seats", "seats.blind"), ("disk", "disk.scratch_outside_blind")):
         if (whole or fam in families) and not counts_as_measured(points.get(key)):
             points[key] = st_suppressed(points, fam)
             stamp_ranges(points, rules)

@@ -7,7 +7,7 @@ design/RimMandrake/standing_rulings.md §Touching code has a cost; if you see it
 
 - PRESENT: each file carries the words of the two tests, or its stopping level.
 - The extension of 2026-11-20 (a wrong check is repaired or set aside in the sitting) is pinned the same way (WRONG).
-- ABSENT: the lines that the ruling made false stay deleted (the auditor's "No fixed count", the CHARTER's "File a
+- ABSENT: the lines that the ruling made false stay deleted (the CHARTER's "File a
   ticket only for a fix that is not small", the agents' "Do not pick up more work.", designer.md's "The Conductor
   cannot supply these" and "first-touch certification stay his").
 - The checker is mutated in place on every run: each PRESENT pin dropped from its text, and each ABSENT line planted
@@ -40,9 +40,6 @@ PRESENT = {
     ".claude/agents/rm-builder.md": ["Report `not worth the touch: <why>` to your parent."],
     ".claude/agents/rm-judge.md": ["## When the look is enough, and when to stop", "Never a third look",
                                    "You do not fix the work that you judge."],
-    "src/RimMandrake/rimflow/roles/auditor.md": ["**When the audit is enough**", "five picks in a row",
-                                                 "The danger the count of five guards",
-                                                 "A DEFECT is filed only when it passes test 1"],
     "src/RimMandrake/rimflow/roles/operations.md": ["**When an alarm run is enough:**", "`not worth the touch: <why>`",
                                                     "Test 2: if yes, you make the fix in this run, test first."],
     "src/RimMandrake/rimflow/roles/conductor.md": ["carries the two tests", "NOT WORTH THE TOUCH",
@@ -83,7 +80,6 @@ for k, v in WRONG.items():
     PRESENT.setdefault(k, []).extend(v)
 
 ABSENT = {
-    "src/RimMandrake/rimflow/roles/auditor.md": ["No fixed count"],
     "infrastructure/agents/CHARTER.md": ["File a ticket only for a fix that is not small."],
     "src/RimMandrake/rimflow/roles/designer.md": ["The Conductor cannot supply these",
                                                   "first-touch certification stay his"],

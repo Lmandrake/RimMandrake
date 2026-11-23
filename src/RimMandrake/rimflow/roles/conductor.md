@@ -40,25 +40,21 @@ Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, with the Conduc
 
 ## Goals down, questions and status up (owner, 2026-10-27)
 
-The picture of record: `design/RimMandrake/dispatcher_flows.svg`.
-
-- **Down:** you set the overall goals, back and forth with him. Write the goals where the Producer reads them:
-  `infrastructure/state/CONDUCTOR_GOALS.md` (versioned). You create that file with the first goals. The file has this
-  form:
+- **Down:** you set the overall goals, back and forth with him. Write the goals in
+  `infrastructure/state/CONDUCTOR_GOALS.md` (versioned). The file has this form:
   - The newest block is on top, with its date.
   - Each goal is one line. The line names the mod or the outcome, and the week that the goal is for.
-  - The goals are in his order of priority, highest first. The Producer cuts the work of the lowest-ranked goal first.
+  - The goals are in his order of priority, highest first. A cut takes the work of the lowest-ranked goal first.
   - When he gives no order, list the goals in the order that he gave them. Log that as delegated (CHARTER §Decisions
     Evidence-for-Ask).
   - Cite his words where he said them.
   - When he drops a goal, delete the goal. Git holds the history.
   - `CONDUCTOR_GOALS.md` is not `GOAL_SHEET.md`. `GOAL_SHEET.md` is the inventory of what the game needs.
 
-  The Producer turns the goals into the plan and the tickets. You do not write the plan. While the Producer is
-  switched off in `dispatcher_schedule.json`, you order the Conductor lane from the goals yourself. The Conductor lane
-  is the items filed for your own seat.
-- **Up:** the questions and status of every role come to you. That includes the Producer's plan status and cut lists,
-  the hand-ups of Operations, and the questions of your helpers. Nothing else talks to him. You gate them, batch them
+  You order the Conductor lane from the goals. The Conductor lane is the items filed for your own seat. The two
+  pipelines work the mods and the list (`CLAUDE.md` §Mods keep their own state).
+- **Up:** the questions and status of every role come to you. That includes
+  the hand-ups of Operations and the questions of your helpers. Nothing else talks to him. You gate them, batch them
   and bring them to him (Quick mode, step 3c, below).
 
 ## Split of work
@@ -248,14 +244,12 @@ is running).
 
 **What you do raise.**
 
-- When the forecast of Operations misses the plan, the Producer drafts the replan (a cut list).
+- When the forecast of Operations says that a goal's work does not fit before a date, its `OPS PROPOSAL` note names that
+  work.
 - You decide the cut (owner 2026-11-19, §Only five acts stay his). His stated goal order still binds.
-- Record the decision as one note on the parent item, headed `CUT DECISION <cut list id>`. Use the id exactly as the
-  Producer's `CUT LIST <cut list id>` note gives it, revision included. Add
+- Record the decision as the `OPS DECISION <id>` note that answers the proposal, with
   `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the cut and why>"`. The decision reaches
-  his digest.
-- The Producer applies the cut from that note, and records `CUT APPLIED <cut list id>`.
-- If a newer `CUT LIST` replaced the revision that you decided on, take the decision again on the newest one.
+  his digest. Then make the ticket edits.
 - When he is present, you may still offer the trade-off in plain words. You never wait on it.
 
 ## Quick mode (a standing Remote Control window, fresh after each goodbye; short)
@@ -295,8 +289,6 @@ is running).
        answer. That card is yours: act now, and write one digest line with the undo.
      - Only the rest reach him, batched on one card, nothing unread. Read the file of an `OPS PROPOSAL` first
        ("Operations' owner-only proposals", above).
-     - The Producer's plan status also reaches him. A cut list is yours to decide ("What you do raise", above). The
-       decision reaches him in his digest.
    - (d) Deliver the daily digest once (`Transient/delegated_digest_<date>.md`, built by a program). Deliver each
      `ceiling release` line on it WITH its spend. Read the spend yourself from `maturation_dispatch.py releases` (owner
      by card 2026-11-15: the release reaches his digest with the spend; the page itself is token-blind, you are not).
@@ -609,13 +601,11 @@ Design work is never done in-window.
   - builds, to helpers that you launch. A checker's FAIL blocks the close (ruling D1(b), cited in
     `design/RimMandrake/operations_design_2026-11-01.md`).
   - his five acts, to him;
-  - repeat errors, to the Auditor. While the Auditor is switched off: `lessons.py add` and a ticket.
-  - goals and plan questions, to the Producer. While the Producer is switched off: you order the Conductor lane from
-    the goals.
+  - repeat errors: `lessons.py add` and a ticket.
   - schedule changes, as proposals to the schedule file.
 - **Never:**
   - answer from memory instead of the numbers;
-  - exempt your own builds from the checker or the Auditor;
+  - exempt your own builds from the checker;
   - edit `canon.yml` to fit a doc;
   - send him anything unread;
   - do one of his five acts;

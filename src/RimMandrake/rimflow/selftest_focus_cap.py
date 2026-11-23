@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""selftest_focus_cap.py - the Producer's WIP cap held by `rimflow next` (RO2, FOCUS_CAP_ENFORCE_IN_RIMFLOW_NEXT).
+"""selftest_focus_cap.py - the WIP cap held by `rimflow next` (RO2, FOCUS_CAP_ENFORCE_IN_RIMFLOW_NEXT).
 
     python3 src/RimMandrake/rimflow/selftest_focus_cap.py
 

@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""audits.py - the Auditor's audits.jsonl and its schema, in one place (item AUDITOR_BUILD_AUDITS_FILE).
+"""audits.py - the retired Auditor's audits.jsonl and its schema, in one place (item AUDITOR_BUILD_AUDITS_FILE).
 
-The schema is audits.schema.json beside this file; this module is its only reader and enforcer. Everything that
-reads or writes D:\\ClaudeWork\\rimmandrake\\auditor\\audits.jsonl goes through here: audit_prescreen.py and
-the Auditor's appends (roles/auditor.md "Two records per result") and the
-waiting index ("Carried picks").
+HISTORY RECORD: the Auditor role that wrote the file retired 2026-11-23 (the owner's order); the file holds its 2026-10/11
+audits and nothing appends to it now. The module stays because contracts/ replays it as one of its record families. The
+schema is audits.schema.json beside this file; this module is its only reader and enforcer.
 
   ensure   create the file when it is absent (an empty file = no audits yet), never truncate one that exists, then
-           validate it. The Auditor's pre_launch (dispatcher_schedule.json) and the wave-2 setup step
-           (design/RimMandrake/dispatcher_golive_wave1.md section 9) run it.
+           validate it.
   check    validate every line; exit 2 on a missing file or a line that breaks the schema.
   waiting  print the waiting index: UNRESOLVED lines with waiting_for and no later SOUND/DEFECT for that item+sha.
   append   one JSON line from stdin, validated, refused when its idempotency key (item, sha, run) is already there.
@@ -89,7 +87,7 @@ def read(path=DEFAULT_PATH):
 
 
 def past_failed(rows):
-    """Items with a DEFECT audit (audit_prescreen's past_audit_failed)."""
+    """Items with a DEFECT audit (a past audit failed)."""
     return {r["item"] for r in rows if r["verdict"] == "DEFECT"}
 
 

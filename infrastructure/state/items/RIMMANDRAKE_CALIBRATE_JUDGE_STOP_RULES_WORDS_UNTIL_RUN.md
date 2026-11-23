@@ -4,7 +4,7 @@
 
 The owner picked "Stop rule in every judge brief (Recommended)" by card on 2026-11-19 (answered about 6:29 PM PST,
 item `RIMMANDRAKE_ENACT_TOUCHING_CODE_COSTS_SEE_IT_DO_IT`). The picked description, word for word: *"Why: it hits the
-measured cause. About a dozen briefs (auditor, ops alarms, blind judges, art and coverage judges, sweeps) each get a
+measured cause. About a dozen briefs (ops alarms, blind judges, art and coverage judges, sweeps) each get a
 look count and a 'good enough' level. Cost: each brief needs a calibration run, or the rule is only words. Recommended
 with the next option: the data favours the pair."* The card stamped: "Owed: needs a calibration run".
 
@@ -15,7 +15,6 @@ Briefs that now carry a stop rule, and their calibration state on 2026-11-19 (`r
 
 | brief | stop rule | calibration family today |
 |---|---|---|
-| `src/RimMandrake/rimflow/roles/auditor.md` | §When the audit is enough: steps 3 and 4 stop after five SOUND picks in a row | none: a family with planted cases is owed |
 | `src/RimMandrake/rimflow/roles/operations.md` | Alarm runs: "When an alarm run is enough" | none |
 | `src/RimMandrake/Utils/findings_judge_prompt.md` | step 2: worth the touch, "Enough: each signature …" | none |
 | `design/RimMandrake/scene_look_judge_brief.md` | §When the look is enough, and when to stop | `scene_look_judge_brief`, UNTESTED |
@@ -39,7 +38,7 @@ per family. A brief that comes out FAILED is reported with its case results; nev
 ## criteria
 
 Acceptance test: `python3 design/specs/2026-11-19-touching-code-cost/acceptance_stop_rules_calibrated.py` prints
-`PASS 7/7` and exits 0. Watched on the filing base (2026-11-19): `FAIL 1/7`, exit 1 (only the art judge brief's
+`PASS 6/6` and exits 0 (7/7 until the Auditor brief was deleted, 2026-11-23). Watched on the filing base (2026-11-19): `FAIL 1/7`, exit 1 (only the art judge brief's
 current CALIBRATED status passes; it lacks the stop rule). A planted root with every brief CALIBRATED at its hash and
 the art text added read `PASS 7/7`; the same root with one brief edited after calibration read FAIL.
 

@@ -320,7 +320,7 @@ SKILLS = os.path.join(REPO, "skills")
 RELENTLESS = "src/RimMandrake/rimflow/relentless.py"
 # rulings, grading and counting are never the pass's to edit (survey rule 4: grading parts go to a judge and a human);
 # the Conductor's role carries the owner's authority. These get a proposal line only.
-PROPOSAL_ONLY_ROLES = {"auditor", "conductor"}
+PROPOSAL_ONLY_ROLES = {"conductor"}
 MAX_EDIT_LINES = 15
 LEVELS = [
     {"level": 0, "interval_days": 1, "recur": 2, "window_days": 7, "min_task_kinds": 0, "need_recheck": False,

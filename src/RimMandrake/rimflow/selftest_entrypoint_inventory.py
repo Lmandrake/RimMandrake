@@ -131,9 +131,9 @@ inv, _ = E.inventory(E.ROOT, ["evidence_metrics"])
 check(any(k == "doc" and f.endswith("findings_judge_prompt.md") for k, f, _l in inv["evidence_metrics"]),
       "evidence_metrics' daily caller, the findings judge prompt, is read as an entry point")
 check(os.path.exists(os.path.join(E.ROOT, E.RIMFLOW, "close_audit.py")), "close_audit stays (redesign_final.md G20)")
-inv, _ = E.inventory(E.ROOT, ["audit_prescreen"])
-check(any(k == "import" and f.endswith("role_launch.py") for k, f, _l in inv["audit_prescreen"]),
-      "the instrument sees role_launch's import of audit_prescreen, the one the importer-grep table called dead")
+inv, _ = E.inventory(E.ROOT, ["role_clones"])
+check(any(k == "import" and f.endswith("role_launch.py") for k, f, _l in inv["role_clones"]),
+      "the instrument sees role_launch's import of role_clones")
 
 
 def bundle_case(retired, doctor=None, ancestor=True):

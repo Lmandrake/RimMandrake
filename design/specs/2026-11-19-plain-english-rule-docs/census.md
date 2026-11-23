@@ -162,7 +162,7 @@ Class total: 8 files, 109950 bytes, STE 4.09 per 100 words, 150 sentences over 2
 | file | bytes | STE | long | flagged | cited by: code, roles and agents, skills | last commit | note |
 |---|---|---|---|---|---|---|---|
 | `src/RimMandrake/rimflow/roles/artist.md` | 8374 | 3.41 | 15 | 3 | 1, 0, 3 | 2026-11-19 | Before this run. After: 2.30. See `batch_plan.md`. Scheduled role, switch off. |
-| `src/RimMandrake/rimflow/roles/auditor.md` | 17429 | 4.15 | 59 | 9 | 5, 0, 0 | 2026-11-19 | Scheduled role, switch off. |
+| `src/RimMandrake/rimflow/roles/auditor.md` | 17429 | 4.15 | 59 | 9 | 5, 0, 0 | 2026-11-19 | Deleted 2026-11-23: the role is retired. |
 | `src/RimMandrake/rimflow/roles/code_review.md` | 6007 | 4.08 | 14 | 6 | 2, 0, 0 | 2026-11-19 | In a calibration row (now UNTESTED). |
 | `src/RimMandrake/rimflow/roles/conductor.md` | 40292 | 4.15 | 108 | 8 | 4, 2, 1 | 2026-11-19 | Scheduled role, switch on. |
 | `src/RimMandrake/rimflow/roles/conductor_restart.md` | 10708 | 3.89 | 29 | 1 | 0, 1, 0 | 2026-11-19 |  |
@@ -179,7 +179,7 @@ Class total: 8 files, 109950 bytes, STE 4.09 per 100 words, 150 sentences over 2
 | `src/RimMandrake/rimflow/roles/fable_rescue.md` | 19456 | 4.57 | 67 | 3 | 3, 0, 0 | 2026-11-19 |  |
 | `src/RimMandrake/rimflow/roles/innovator.md` | 18278 | 4.22 | 57 | 7 | 1, 0, 0 | 2026-11-19 | Deleted 2026-11-23: the role is retired. |
 | `src/RimMandrake/rimflow/roles/operations.md` | 27080 | 4.38 | 85 | 4 | 1, 0, 0 | 2026-11-19 | Scheduled role, switch on. |
-| `src/RimMandrake/rimflow/roles/producer.md` | 15565 | 3.58 | 43 | 5 | 2, 0, 0 | 2026-11-19 | Scheduled role, switch off. |
+| `src/RimMandrake/rimflow/roles/producer.md` | 15565 | 3.58 | 43 | 5 | 2, 0, 0 | 2026-11-19 | Deleted 2026-11-23: the role is retired. |
 | `src/RimMandrake/rimflow/roles/runner_options.md` | 15447 | 3.03 | 16 | 6 | 0, 1, 0 | 2026-11-19 | Only `designer.md` cites it. |
 | `src/RimMandrake/rimflow/roles/walk_brief.md` | 3485 | 2.53 | 7 | 0 | 2, 0, 0 | 2026-11-19 |  |
 

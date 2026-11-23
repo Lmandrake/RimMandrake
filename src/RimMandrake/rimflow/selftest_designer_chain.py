@@ -63,7 +63,7 @@ def test_done_chains():
     st = SD.fresh()
     st["roles"] = {"Arbiter": dict({"done": {}, "runs": []}, run_now=r)}
     opened = []
-    ro = SD.lrobs(SD.ops_status(T), lambda: None)
+    ro = SD.robs(SD.ops_status(T))
     ro["stage_open"] = lambda c, u, b: (opened.append(c), ("PACKET", b))[1]
     ro["coverage_pre"] = lambda c: None
     la = [a for a in SD.role_acts(SD.rdecide([SD.arbiter(enabled=False)], st, ro, T + 60)) if a["do"] == "role_launch"]
@@ -118,7 +118,7 @@ def test_queue_behind_pending():
           "a free slot takes the queued chain, its TTL starting now: %r" % rs.get("run_now"))
     st = SD.fresh()
     st["roles"] = {"Arbiter": {"done": {}, "runs": [], "run_now_queue": [dict(hand, concept=C1, at=T)]}}
-    ro = SD.lrobs(SD.ops_status(T), lambda: None)
+    ro = SD.robs(SD.ops_status(T))
     ro["stage_open"] = lambda c, u, b: ("PACKET", b)
     ro["coverage_pre"] = lambda c: None
     la = [a for a in SD.role_acts(SD.rdecide([SD.arbiter(enabled=False)], st, ro, T + 60)) if a["do"] == "role_launch"]
@@ -169,7 +169,7 @@ def sweep_decide(rows, roles_state=None, cfg_over=None, now=None):
     st = SD.fresh()
     st["roles"] = roles_state if roles_state is not None else {}
     opened = []
-    ro = SD.lrobs(SD.ops_status(T), lambda: None)
+    ro = SD.robs(SD.ops_status(T))
     ro["stage_open"] = lambda c, u, b: (opened.append(c), ("PACKET", b))[1]
     ro["coverage_pre"] = lambda c: None
     ro["stage_concepts"] = rows if callable(rows) else (lambda: rows)
@@ -335,17 +335,17 @@ def test_parked_record():
 
 def sweep_with(fn, rows, extra):
     """sweep_decide with extra obs (the parked rule pointed at a temp repo)."""
-    real = SD.lrobs
+    real = SD.robs
 
-    def lrobs(*a, **k):
+    def robs(*a, **k):
         ro = real(*a, **k)
         ro.update(extra)
         return ro
-    SD.lrobs = lrobs
+    SD.robs = robs
     try:
         return fn(rows)
     finally:
-        SD.lrobs = real
+        SD.robs = real
 
 
 def main():

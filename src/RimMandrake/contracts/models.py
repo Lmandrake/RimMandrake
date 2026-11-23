@@ -218,7 +218,7 @@ def _py_pattern(p):
 
 
 class AuditRecord(Open):
-    """One Auditor line == audits.schema.json (additionalProperties true, so extra keys stay allowed). This IS the
+    """One line of the retired Auditor's record == audits.schema.json (additionalProperties true, so extra keys stay allowed). This IS the
     acceptance rule audits.problems() now delegates to; selftest_contracts proves it equals the old interpreter."""
     ts: str
     item: str = Field(min_length=1)

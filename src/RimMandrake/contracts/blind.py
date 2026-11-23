@@ -189,8 +189,8 @@ SourceState = Literal["measured", "unmeasured"]
 SourceFault = Literal["none", "absent", "unreadable", "git_failed", "import_failed", "error"]
 SectionTitle = Literal["NEXT", "IN PROGRESS", "BLOCKED", "WAITING ON A WINDOW", "NOT THIS TARGET", "BUILT", "PROPOSED",
                        "OTHER"]   # a section queue grows later reads OTHER: never silently dropped
-NoteRole = Literal["Conductor", "Arbiter", "Auditor", "Operations", "Producer"]
-NoteMode = Literal["quick", "run", "weekly", "economy", "event", "alarm"]
+NoteRole = Literal["Conductor", "Operations"]
+NoteMode = Literal["quick", "run", "economy", "alarm"]
 NoteOutcome = Literal[tuple(C.NOTE_OUTCOMES)]
 LedgerVerb = Short                     # a rimflow verb; projections map anything outside model.VERBS to "other"
 Kind = Literal["task", "bug", "build", "decision", "design", "check", "fix", "defect", "art", "feature", "finding",

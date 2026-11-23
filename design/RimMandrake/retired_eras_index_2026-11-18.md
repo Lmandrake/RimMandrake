@@ -81,6 +81,7 @@ an instruction file (CLAUDE.md, agent definitions, roles, SKILL.md files, seat f
 | the seat files of the 2026-08-27 redesign, each already "SUPERSEDED" and pointing at a CLAUDE.md section that no longer exists | `infrastructure/agents/BUILD.md`, `CHECK.md`, `DECIDE.md` | FOUNDRY-era seats | they sent a reader to Relentless as the place the work went (`.claude/hooks/selftest_documented_commands.py` no longer lists them) | `9761a57a92` |
 | `./bridge foundry` (gave the bridge to the retired FOUNDRY seat, which has no window) | `bridge` (one case and its hint) | FOUNDRY | the override now names `conductor` and `free` only; `rimflow bridge give FOUNDRY` still replays old events | `9761a57a92` |
 | the Innovator role: its instruction file, its schedule row and go-live name, its `ops_watch` word-list and acted-share rows, its live promise and its note name (the owner, 2026-11-23: "Role is retired.") | `src/RimMandrake/rimflow/roles/innovator.md`, the row in `dispatcher_schedule.json`, rows in `ops_watch_rules.json`, `live_baseline.txt`, `contracts/blind*.py` | rimflow v3 | switched off, last ran 2026-10-30, and waited on two items dropped 2026-11-01. The idea list `design/RimMandrake/innovations.md` stays. `selftest_retired_era_gone.py` (`RETIRED_ROLES`) refuses its return | `2a9009e7ec` |
+| the Producer role and the Auditor role: their instruction files, schedule rows and go-live names; the Dispatcher's event runs, weekly run and finish stamp that only they used; the Auditor's pre-steps; the `plan` alarm family that watched the Producer's list; their live promises, acted-share rows and note names (the owner, 2026-11-23: "Those are old v3 roles we retired!") | `src/RimMandrake/rimflow/roles/producer.md`, `roles/auditor.md`, `audit_prescreen.py`, `audit_hardflag_file.py`, `audit_prescreen_rules.json` and their selftests, rows in `dispatcher_schedule.json`, branches of `role_launch.py` and `dispatcher.py`, `ops_watch.py` c_plan, `priority_list.py` advance | rimflow v3 | both switched off, last ran 2026-11-01. Kept: `rimflow/audits.py` (contracts/ replays the old audits), `priority_list.py` (the Conductor's order for `rimflow next`), DesignerCodex (the Designer is modern). Each duty and who does it now: `design/RimMandrake/retired_v3_role_duties_2026-11-23.md`. `selftest_retired_era_gone.py` (`RETIRED_ROLES`) refuses a return | `2a9009e7ec` |
 
 ## Phase 2: renames
 
@@ -335,8 +336,8 @@ ticket, and 11 places that told a fresh agent to use a retired thing, while the 
 - **The gate reads text** (`fbdf50a5b2`): watched red on the pre-fix tree, 2011 era text lines
   (`D:\ClaudeWork\rimmandrake\conductor\era_finish_20261119\gate_prefix_run.txt`); green after, 1782 files read.
 - **Settled from "could not tell"**: `rm-dispatcher.service` is live (static, started by the live wakes; it ran
-  2026-11-19 06:31 PST; its timer is disabled). The Auditor is a scheduled role in
-  `dispatcher_schedule.json`, `enabled: false`. The store's `transcripts` (written by `scratch_clone.py`) and
+  2026-11-19 06:31 PST; its timer is disabled). The Auditor role was retired
+  2026-11-23. The store's `transcripts` (written by `scratch_clone.py`) and
   `store/evidence_shadow.jsonl` (written by `rimflow close`) are live.
 
 Left, one ticket each, every one with its acceptance test watched failing:

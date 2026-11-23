@@ -35,9 +35,10 @@ def ok(cond, what, got=None):
 
 
 R = ow.load_rules()
+R["token_talk"]["roles"] = ["designer"]       # one measured group for the cases; the shipped list is empty today
 groups = ow.tt_groups(R)
 ok("BENCH" not in groups and "role.conductor" not in groups and "role.arbiter" not in groups,
-   "live token_talk measures neither BENCH, the conductor role nor the deleted arbiter", groups)
+   "token_talk measures neither BENCH, the conductor role nor the deleted arbiter", groups)
 
 ghosts = ["tokentalk.BENCH.share", "tokentalk.commits.BENCH.share", "tokentalk.role.conductor.share",
           "tokentalk.role.arbiter.share"]

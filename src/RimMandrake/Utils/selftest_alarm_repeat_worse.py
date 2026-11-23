@@ -33,7 +33,7 @@ CLOG = TMP / "conductor_log.md"
 RULES = OW.load_rules()
 # Operations and the owner tune these alarm lines and steps: the cases run on the ones shipped 2026-11-15
 # (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS; tunable_sweep.py ops_watch_rules.json --only 'targets/*').
-PIN_TARGETS = {"accounts.*.runway": {"value": 1.0, "worse": {"factor": 2}}, "plan.distressed": {"value": 0},
+PIN_TARGETS = {"accounts.*.runway": {"value": 1.0, "worse": {"factor": 2}}, "seats.distressed": {"value": 0},
                "steve.unowned_stall_min": {"value": 30, "worse": {"factor": 2}},
                "disk.root_free_gb": {"value": 210, "worse": {"add": 50}}}
 for _t in RULES["targets"]:
@@ -114,7 +114,7 @@ def test_downward_step():
 
 
 def test_severity_needs_no_step():
-    b = Bench("PLAN_DISTRESS:plan.distressed")
+    b = Bench("SEAT_IDLE_WITH_WORK:seats.distressed")
     cur = b.read(OW.M(1, "flag", state="distressed", cause="breaker open"))
     ok(cur["told"]["class"] == "distressed", "the collector's judged class is the severity told")
     b.sent = []
@@ -415,12 +415,25 @@ def test_operations_gets_a_fresh_run():
     ok(not runs, "covered once: no run again until it worsens again")
 
 
+def test_removed_family_leaves():
+    """RIMMANDRAKE_REMOVE_RETIRED_V3_ROLES_FROM_ACTIVE_RULES_STILL_LISTED: an OPEN alarm of a removed family (the plan
+    list's PLAN_DISTRESS, open since 2026-11-13) has no target left that could clear it: it leaves the state, said."""
+    p = OW.ops_dir() / "alarms.json"
+    p.write_text(json.dumps({"PLAN_DISTRESS:plan.distressed": {"state": "OPEN", "item": "OPS_PLAN_LIST_FIX_VMIV"},
+                             "STEVE_STALL:steve.unowned_stall_min": {"state": "OPEN", "item": "SOME_ITEM"}}))
+    sent = []
+    st = OW.run_alarms({}, RULES, NOW, {"SOME_ITEM", "OPS_PLAN_LIST_FIX_VMIV"}, lambda todo, conf: sent.extend(todo) or {}, None)
+    ok("PLAN_DISTRESS:plan.distressed" not in st, "an open alarm of a removed family leaves the state")
+    ok("STEVE_STALL:steve.unowned_stall_min" in st, "an open alarm of a live family that was not read stays")
+    ok(not [t for t in sent if "PLAN" in json.dumps(t, default=str)], "nothing is filed for it")
+
+
 def main():
     for t in (test_step_on_a_rising_alarm, test_downward_step, test_severity_needs_no_step, test_ranges_class_is_read,
               test_failed_delivery_retries, test_closed_item_reopens, test_deploy_re_raises_nothing,
               test_token_alarm_stays_operations, test_rule_rows, test_every_stated_step_stays, test_dispatcher_breaks_on_worse,
               test_real_emitters_break_on_worse,
-              test_operations_gets_a_fresh_run):
+              test_operations_gets_a_fresh_run, test_removed_family_leaves):
         p = OW.ops_dir() / "alarms.json"
         if p.exists():
             p.unlink()

@@ -41,12 +41,8 @@ def state(r=None, **rs):
     return st
 
 
-def ledger_boom():
-    raise RuntimeError("ledger must not be read for a run-now")
-
-
 def decide(st, role=None, status=None, now=T, **kw):
-    ro = SD.lrobs(status if status is not None else SD.ops_status(now), ledger_boom, **kw)
+    ro = SD.robs(status if status is not None else SD.ops_status(now), **kw)
     return SD.role_acts(SD.rdecide([role or SD.arbiter(enabled=False)], st, ro, now))
 
 
@@ -84,7 +80,6 @@ def test_launch_disabled_role_once():
     rs = st["roles"]["Arbiter"]
     check("run_now" not in rs and rs["run_now_last"]["outcome"] == "launched" and rs["run_now_last"]["unit"] == a["unit"],
           "the request is consumed on launch, its outcome kept: %r" % rs.get("run_now_last"))
-    check("event_cursor" not in rs, "a run-now sets no event baseline (enabling the role later baselines as before)")
     rs["runs"] = []
     rs.pop("pending_launch", None)
     check(not launches(decide(st, now=T + 120)), "one-shot: the next tick launches nothing")
@@ -123,9 +118,22 @@ def test_waits_keep_request():
           and any("expired" in x.get("why", "") for x in acts), "a request older than RUN_NOW_TTL_S expires, said")
 
 
+def test_missing_role_clone_is_named():
+    """RIMMANDRAKE_REMOVE_RETIRED_V3_ROLES_FROM_ACTIVE_RULES_STILL_LISTED: DesignerCodex's clone had been removed, and the
+    run-now said the concept has no stage.json (init it first), which is false: the clone it looked in was missing."""
+    clone = os.path.join(RL.role_clones.ROOT, "NoSuchRole")
+    sch = SD.sched(roles=[SD.arbiter(enabled=False, stage_machine="designer_stage", clone=clone)])
+    try:
+        RL.run_now_request(sch, {"role": "Arbiter", "by": "BENCH", "why": "x", "mode": None,
+                                 "concept": "design/concepts/Cauldron"}, T)
+        check(False, "a run-now on a role whose clone is missing is refused")
+    except ValueError as e:
+        check("role_clones.py ensure NoSuchRole" in str(e), "the refusal names the missing clone and its repair: %s" % e)
+
+
 def test_enabled_role_slot_untouched():
     t = SD.at_local("11:00")
-    st = state(dict(req(), at=t - 60), event_cursor=t - 60, events_seen=[])
+    st = state(dict(req(), at=t - 60))
     # daily cap room for the run-now beside the two scheduled slots it keeps a reserve for (2 x 100000)
     role = SD.arbiter(daily_token_cap=400000)
     ro = SD.robs(SD.ops_status(t))
@@ -133,7 +141,6 @@ def test_enabled_role_slot_untouched():
     rs = st["roles"]["Arbiter"]
     check(len(la) == 1 and " run-now " in la[0]["slot"], "an enabled role: the run-now goes first")
     check(RL.slot_key(t, "11:00") not in rs["done"], "its 11:00 slot is not consumed by the run-now")
-    check(rs["event_cursor"] == t - 60, "a run-now does not move the event cursor")
     rs["runs"] = []
     rs.pop("pending_launch", None)
     la = launches(SD.role_acts(SD.rdecide([role], st, ro, t + 120)))
@@ -141,11 +148,11 @@ def test_enabled_role_slot_untouched():
     # review r1: a slot already past its late window keeps no reserve (13:00: 11:00 is gone, 17:00 is kept)
     t = SD.at_local("13:00")
     ro = SD.robs(SD.ops_status(t))
-    st = state(dict(req(), at=t - 60), event_cursor=t - 60, events_seen=[])
+    st = state(dict(req(), at=t - 60))
     role = SD.arbiter(daily_token_cap=200000)
     la = launches(SD.role_acts(SD.rdecide([role], st, ro, t)))
     check(len(la) == 1 and " run-now " in la[0]["slot"], "13:00: only 17:00 is reserved, the run-now fits 200000")
-    st = state(dict(req(), at=t - 60), event_cursor=t - 60, events_seen=[])
+    st = state(dict(req(), at=t - 60))
     role = SD.arbiter(daily_token_cap=199999)
     acts = SD.role_acts(SD.rdecide([role], st, ro, t))
     check(not launches(acts) and st["roles"]["Arbiter"]["run_now_last"]["outcome"] == "refused: daily cap",
@@ -209,7 +216,7 @@ def test_cli_writes_request():
 
 
 TESTS = (test_request_validated, test_launch_disabled_role_once, test_refusals_consume, test_waits_keep_request,
-         test_enabled_role_slot_untouched, test_launch_role_override, test_execute_launches_disabled_role,
+         test_enabled_role_slot_untouched, test_missing_role_clone_is_named, test_launch_role_override, test_execute_launches_disabled_role,
          test_cli_writes_request)
 
 

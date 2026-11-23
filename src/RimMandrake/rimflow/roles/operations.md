@@ -341,22 +341,13 @@ expensive it requires immediate action for sure. But not starving it or failing 
   - the slope of the week;
   - what spent it;
   - any surprising bleed or trend;
-  - a **forecast against the plan**. The forecast takes the Producer's plan, with the work that the plan lists. The forecast
-    runs at the measured burn, to the reset of each account.
-- When the forecast misses the plan, say so in your note, on your own item. Then hand the Producer a replan request.
-- A replan request is a `rimflow note` on the Producer's ledger item `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`. The text
-  of the note starts with the exact prefix `REPLAN REQUEST`.
-- The Dispatcher matches that prefix and starts a Producer run, at most one event run a day. Without the prefix,
-  nothing starts that run.
-- Give each request a unique id right after the prefix: `REPLAN REQUEST RR-<yyyymmddThhmmZ>: ...` (UTC, the minute
-  you write it).
-- A later request about the same miss names the request that it replaces (`replaces RR-...`). The Producer keys its
-  cut lists to that id (review roles r2 #6).
-- Write a replan request only when the forecast misses the plan. Never write one for a clean forecast.
-- Write a replan request in plan terms only: which plan steps or items will not fit before which date.
-- Put no account, number, runway, budget or token word in a replan request, because the Producer is token-blind. The
-  figures stay in your note on your own item.
-- The Producer drafts the cut list. The Conductor decides the cut, inside the owner's goal order. You do not cut work yourself.
+  - a **forecast against the goals**. The forecast takes the work of the goals in `infrastructure/state/CONDUCTOR_GOALS.md`.
+    The forecast runs at the measured burn, to the reset of each account.
+- When the forecast says that a goal's work does not fit before a date, say so in your note, on your own item. Then put
+  one `OPS PROPOSAL <id>: ...` note on the parent item (`V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`), in plan words: which
+  work will not fit before which date. Write no such note for a clean forecast.
+- The figures stay in your note on your own item.
+- The Conductor decides the cut. You do not cut work yourself.
 
 The economy pass also looks at these:
 
@@ -385,9 +376,9 @@ that justify it.
 
 ## Drift check (yours)
 
-- You own a no-AI check in `ops_watch`. That check flags token talk creeping into the reports of the token-blind roles
-  (Producer, Auditor).
-- The instructions of those roles forbid token talk and token-saving judgment.
+- You own a no-AI check in `ops_watch`. That check flags token talk creeping into the reports of the roles that
+  `token_talk.roles` in `ops_watch_rules.json` lists. The list is empty now: the two roles that it named are retired
+  (owner, 2026-11-23). So the check measures nothing.
 - When the check flags, find which instruction or prompt leaked the token talk, and file the fix. Do not rewrite the
   reports of those roles.
 

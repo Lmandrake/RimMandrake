@@ -46,7 +46,6 @@
     {"match": "roles.*", "route": "role", "reader": "Operations", "cause": "roles", "_why": "as process.*; roles.*.acted_share above is program"},
     {"match": "*._collector", "route": "role", "reader": "Operations", "cause": "ops_watch", "_why": "a collector that raised reads UNMEASURED, which rings nothing; as process.*"},
     {"match": "seats.*", "route": "role", "reader": "Operations", "cause": "work_belt"},
-    {"match": "plan.*", "route": "role", "reader": "Operations", "cause": "plan"},
     {"match": "disk.pool_breach", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "disk.seat_dirt", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "disk.scratch_dirty_end", "route": "program", "band": {"max": 6}, "reader": "Operations", "cause": "disk", "runbook": "Scratch dirt at the cleaner's run end has so far always been reaper backlog deferred past its time budget and drained on later runs (~/.local/state/rm-scratch-reap/sanity.json lists the problems); above 6 Operations is called.", "_why": "RIMMANDRAKE_QUIET_OPS_REPEATS_AGING_COUNTS_AS_NEWS (owner's card 2026-11-19, 'Program answers 5 repeat alarms'): Operations answered this alarm 'nothing to fix' every time (analysis 2026-11-17 section 3); the program notes the runbook line, an agent is called once the reading leaves its band (incident.program_answer). Band: up to 6 problems; measured 2026-11-01..2026-11-19, 629 nonzero readings, p90 6, max 7."},

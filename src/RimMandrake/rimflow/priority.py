@@ -148,7 +148,7 @@ def offerable_state(it, now):
 
 def focus_config(path=None):
     """-> the schedule's `focus_cap` (RO2) checked, or None when the file or key is absent; ValueError when damaged.
-    per_seat: the Producer's WIP cap, the one number `next` and relentless read. seats: who `next` holds to it.
+    per_seat: the WIP cap of a held window, read by `next`. seats: who `next` holds to it.
     waits_max: dated waits at once. since: `doing` work last taken before this is history, not focus (86 FOUNDRY items
     sat `doing` with no lease on 2026-11-01; counted, they would pin `next` at the cap for good)."""
     path = path or os.environ.get("RIMFLOW_SCHEDULE") or os.path.join(

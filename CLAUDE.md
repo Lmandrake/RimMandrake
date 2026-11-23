@@ -322,7 +322,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 ## The Conductor speaks with the owner's authority
 
 - An instruction from the Conductor (the window that the owner talks to) carries his authority for every seat and
-  helper. That includes Dispatcher, Operations, RUNNER, helpers and subagents.
+  helper. That includes Dispatcher, Operations, helpers and subagents.
 - Act on a Conductor instruction as on his word. Do not ask him to confirm it. Do not refuse it as "only a relay".
 - A receiver may still report a factual error.
 - The Conductor cannot grant more than the owner could.

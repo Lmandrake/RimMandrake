@@ -34,10 +34,6 @@
   "journal_grace_s": 600,
   "_journal_grace_s_doc": "rm-dispatcher.service's TimeoutStartSec: a tick that holds a ring in state.json has journalled it or died by then"
  },
- "plan": {
-  "_doc": "c_plan (DI3, MI1 in operating_requirements_2026-11-01.md). status_rank: a mod's modcheck status as the number an entry's finish-line reading rises on; a status not here is a reading not seen. Every limit is in the ranges block: list_max_age_h is plan.list_age_h's distressed bound, advance_max_days is plan.days_since_advance's",
-  "status_rank": {"DRAFT-CHECKLIST": 0, "RED": 1, "GREEN": 2}
- },
  "health": {
   "_doc": "ops_health.py (PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF): Operations' ONE verdict, health.json beside status.json, read by relentless.py to order its pool. Owner 2026-11-03: 'Yes relentless fixes itself first.'; 'I don't want relentless to own assessing system health. I want it to ask \"the system\" for its health assessment, and that belongs to the operations component.' An SLI is bad past its line; its budget is spent at allowed_bad_h bad hours in window_h (design idea 5: 'When any SLI is over budget for 24 h, Relentless staffs only pipeline items until it recovers'). Spent: degraded, content paused. system_words/system_prefixes classify an open item as the system's own (no game mod named). Words match the id's SUBJECT only, never its twist; a system_words_lead word counts only as the first word (HOSE_NET_SELFTEST is a mod's test). guard_exempt_kinds: alarm kinds no test can guard, a spent account is weather (alarm_census.recurring).",
   "max_age_min": 45, "window_h": 48, "allowed_bad_h": 24, "max_gap_h": 1.0,
@@ -61,64 +57,10 @@
   "system_words": ["relentless", "bridge", "steve", "stevedesktop", "token", "deadlines", "ops", "operations", "conductor", "designer", "dispatcher", "dispatch", "timer", "timers", "selftest", "selftests", "nightly", "tool", "tools", "tooling", "pipeline", "rimflow", "ledger", "hooks", "alarm", "alarms", "deadman", "harness", "checker", "checkers", "worker", "workers", "clone", "clones", "pool", "scratch", "rimpulse", "pulse", "digest", "testq", "artpipe", "steward", "supervisor", "budget", "lint", "modcheck", "winbuild", "handoff", "lessons", "seat", "seats", "runner", "census", "belt", "lease", "watcher", "systemd", "testpilot", "rimbridge", "jawabench", "brief", "briefs", "mirror", "publish", "landing", "incident", "incidents", "compaction", "helper", "spend", "tmpfs", "deploy", "scratchreap", "reaper", "bringback", "restart", "jam", "bridgetools", "closeevidence", "runningpage", "statuspages", "roletokens", "proofharness", "builtoldreader", "holdselftest", "readoutselftest", "vvprobes", "spendcensus", "telemetrybridge", "livefixer", "liveproofs", "ownerasks", "oldreader", "conceptcoverage"]
  },
  "ranges": {
-  "plan.list_state": {
-   "owner": "Producer",
-   "ack_within_min": 30,
-   "max_age_min": 30,
-   "why": "DI3: a list missing, torn, too long or spent (no open entry left) is a plan nobody is obeying; the ring and the pool have fallen back. A closed entry beside open ones drops by itself (RIMMANDRAKE_PRUNE_PRIORITY_LIST_CLOSED_ENTRY_STALLS_PLAN).",
-   "classes": {"sane": {"in": ["ok"]}, "distressed": {"otherwise": true}}
-  },
-  "plan.list_age_h": {
-   "owner": "Producer",
-   "ack_within_min": 30,
-   "max_age_min": 30,
-   "why": "DI3 list_max_age_h: 48. The Producer's list is daily, so two missed days without a rewrite means the plan is no longer being read.",
-   "classes": {"sane": {"at_least": 0}, "distressed": {"at_least": 48}}
-  },
-  "plan.days_since_advance": {
-   "owner": "Conductor",
-   "ack_within_min": 240,
-   "max_age_min": 30,
-   "why": "MI1 advance_max_days: 7. A listed entry whose finish-line reading has not risen in a week is busy, not progress, however many tickets closed.",
-   "classes": {"sane": {"at_least": 0}, "distressed": {"at_least": 7}}
-  },
-  "plan.blind": {
-   "owner": "Operations",
-   "ack_within_min": 30,
-   "max_age_min": 30,
-   "why": "The ledger, an entry's reading or the advance record was not seen, or the collector did not run: nothing can then say the plan is advancing.",
-   "classes": {"sane": {"at_least": 0}, "distressed": {"at_least": 1}}
-  },
   "roles.Operations.acted_share": {
    "owner": "Operations",
    "max_age_min": 60,
    "why": "RO1: the share of Operations's outputs somebody later acted on. Report-only and coarse: under range two weeks running gets a named fix of its input or its reader from the Conductor, and nothing rings. 0.25 is a first line, set by hand from the 2026-11-01 reading, not a target.",
-   "classes": {
-    "under": {
-     "at_least": 0
-    },
-    "sane": {
-     "at_least": 0.25
-    }
-   }
-  },
-  "roles.Auditor.acted_share": {
-   "owner": "Operations",
-   "max_age_min": 60,
-   "why": "RO1: the share of Auditor's outputs somebody later acted on. Report-only and coarse: under range two weeks running gets a named fix of its input or its reader from the Conductor, and nothing rings. 0.25 is a first line, set by hand from the 2026-11-01 reading, not a target.",
-   "classes": {
-    "under": {
-     "at_least": 0
-    },
-    "sane": {
-     "at_least": 0.25
-    }
-   }
-  },
-  "roles.Producer.acted_share": {
-   "owner": "Operations",
-   "max_age_min": 60,
-   "why": "RO1: the share of Producer's outputs somebody later acted on. Report-only and coarse: under range two weeks running gets a named fix of its input or its reader from the Conductor, and nothing rings. 0.25 is a first line, set by hand from the 2026-11-01 reading, not a target.",
    "classes": {
     "under": {
      "at_least": 0
@@ -299,16 +241,6 @@
    "Operations": {
     "marked": "^Operations (diagnosis|run|alarm)|^OPS PROPOSAL|rm-role-operations-\\d",
     "coarse": "(?i)^(operations\\b|ops )",
-    "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
-   },
-   "Auditor": {
-    "marked": "^AUDITOR\\b|^audit: |^audit hard flag|rm-role-auditor-\\d",
-    "coarse": "(?i)^audit",
-    "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
-   },
-   "Producer": {
-    "marked": "(?i)^producer (status|daily|weekly|event|run)|rm-role-producer-\\d",
-    "coarse": "(?i)^producer\\b",
     "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
    }
   }
@@ -503,12 +435,6 @@
   {"key": "seats.distressed", "op": ">", "value": 0, "alarm": true, "tag": "SEAT_IDLE_WITH_WORK", "name": "OPS_SEAT_UNSTICK", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2: FOUNDRY sat idle with work ready on 2026-10-30 and 10-31, rung, and nothing brought it back. The seat and the minutes are in the title; the limits are in the ranges block"},
-  {"key": "plan.distressed", "op": ">", "value": 0, "alarm": true, "tag": "PLAN_DISTRESS", "name": "OPS_PLAN_LIST_FIX", "marks": ["MEASURED"], "title_field": "cause",
-   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
-   "why": "DI3, MI1: the priority list is missing, stale, too long or holds a closed entry, or an entry's finish-line reading stood flat past advance_max_days. Closes do not clear it. The cause is in the title and in plan.cause; the limits are in the ranges block"},
-  {"key": "plan.blind", "op": ">", "value": 0, "alarm": true, "tag": "PLAN_BLIND", "name": "OPS_PLAN_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
-   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
-   "why": "DI3, MI1: a source of the plan family is missing or torn, or the collector did not run. Nothing can say the list is obeyed or advancing"},
   {"key": "seats.blind", "op": ">", "value": 0, "alarm": true, "tag": "SEATS_BLIND", "name": "OPS_SEATS_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2: the Dispatcher's state or journal is missing, frozen or disagreeing, or the collector did not run. Nothing can say the seats are sane until it is seen again; the cause names which source"},
@@ -613,7 +539,7 @@
   "window_days": 7,
   "min_reports": 5,
   "seats": [],
-  "roles": ["producer", "auditor"],
+  "roles": [],
   "_seats_why": "owner 2026-10-31: \"Conductor accesses everything.\" Seat BENCH (the Conductor and its helpers) and the conductor role are not measured. FOUNDRY, the one seat it measured, retired (owner by card 2026-11-02); Relentless writes as RELENTLESS but every ledger reader folds that to BENCH, so no seat is measured here until a reader keeps the written name.",
   "terms": ["tokens?", "burn(?:s|ed|ing)?", "budget(?:s|ed|ing)?", "quota", "runway", "throttl\\w*", "(?:token|daily|week(?:ly)?|session|usage) caps?", "spend(?:s|ing)?", "spent", "cheap(?:er|ly)?", "economi[sz]\\w*", "thrift\\w*"]
  },

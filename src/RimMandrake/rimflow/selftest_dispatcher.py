@@ -139,7 +139,7 @@ def test_blind_pause_roles_caps():
     check(kinds(D.decide(sch, st, obs(agents_ok=False), 1000.0, True)) == ["skip"] and not st["seats"],
           "claude agents UNMEASURED: skip, nothing decided")
     check(kinds(D.decide(sch, st, obs(paused="owner said stop"), 1000.0, True)) == ["skip"], "PAUSE file: skip")
-    sch2 = sched(roles=[{"name": "Auditor", "enabled": True}])
+    sch2 = sched(roles=[{"name": "Nobody", "enabled": True}])
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
     check("alarm" in kinds(D.decide(sch2, st, obs(), 1000.0, True)), "an enabled role in v3.0: alarm, not run")
     st = {"seats": {}, "wakes": [{"seat": "FOUNDRY", "at": 900.0 + i} for i in range(3)], "recovers": [],
@@ -1024,7 +1024,7 @@ def test_role_gates():
     a = role_acts(rdecide([conductor(enabled=False)], st, robs(ops_status(now)), now))
     check(a == [], "role enabled false: nothing")
     st = fresh()
-    a = role_acts(rdecide([{"name": "Auditor", "enabled": True}], st, robs(ops_status(now)), now))
+    a = role_acts(rdecide([{"name": "Nobody", "enabled": True}], st, robs(ops_status(now)), now))
     check([x["do"] for x in a] == ["alarm"] and "cannot be launched" in a[0]["why"],
           "enabled role without launch keys: alarm, not run")
     st = fresh()
@@ -1813,32 +1813,11 @@ def test_account_pick_dispatch():
     check("account_pick" not in kinds(a), "nothing to release: the pick is not made")
 
 
-# ---------------------------------------------------------------- weekday slots and ledger event triggers
+# ---------------------------------------------------------------- weekday slots
 # (item DISPATCHER_BUILD_WEEKDAY_AND_EVENT_TRIGGERS)
 
-class FakeItem(object):
-    def __init__(self, open_=True, raised=None, row=None):
-        self.open, self.raised, self.row = open_, raised, row
-
-
-class FakeWorld(object):
-    def __init__(self, items):
-        self.items = items
-
-
-def lts(t):
-    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
-
-
-def lread(events, items=None):
-    return lambda: {"events": list(events), "world": FakeWorld(items or {})}
-
-
-BASE_EV = {"seat": "BENCH", "event": "file", "id": "OLD_ONE", "ts": "2026-01-01T00:00:00Z"}
-
-
 def arbiter(**kw):
-    r = {"name": "Arbiter", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/auditor.md",
+    r = {"name": "Arbiter", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/designer.md",
          "seat": "BENCH", "clone": os.path.join(TMP, "clone"), "model": "opus", "ledger_item": "ROLES_ITEM_X",
          "off_file": os.path.join(TMP, "ARBITER_OFF"), "runs_local": ["11:00", "17:00"],
          "run_token_cap": 100000, "daily_token_cap": 250000}
@@ -1846,23 +1825,16 @@ def arbiter(**kw):
     return r
 
 
-def producer(**kw):
-    r = {"name": "Producer", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/producer.md",
+def daily(**kw):
+    r = {"name": "Daily", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/operations.md",
          "seat": "BENCH", "clone": os.path.join(TMP, "clone"), "model": "opus", "ledger_item": "ROLES_ITEM_X",
-         "off_file": os.path.join(TMP, "PRODUCER_OFF"), "runs_local": ["09:00"], "weekly_plan_weekday": "Wed",
-         "run_token_cap": 100000, "daily_token_cap": 250000, "event_runs": ["plan_step_failure", "replan_request"],
-         "event_runs_per_day": 1, "plan_scope": ["raised", "row"], "replan_note_prefix": "REPLAN REQUEST",
+         "off_file": os.path.join(TMP, "DAILY_OFF"), "runs_local": ["09:00"],
+         "run_token_cap": 100000, "daily_token_cap": 250000,
          "throttle_bands": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
-                            "RED": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "weekly"},
+                            "RED": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "first"},
                             "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.75, "slots": "none"}}}
     r.update(kw)
     return r
-
-
-def lrobs(status, ledger, **kw):
-    o = robs(status, **kw)
-    o["ledger"] = ledger
-    return o
 
 
 def day_with_weekday(wd):
@@ -1884,12 +1856,9 @@ def test_role_weekday_slots():
         except ValueError:
             check(True, "slot %r refused (ValueError)" % bad)
     wed, thu = day_with_weekday(2), day_with_weekday(3)
-    inn = producer(name="Auditor", runs_local=["Mon,Thu 10:00", "Wed 15:00"], weekly_plan_weekday=None,
-                   event_runs=None)
+    inn = daily(runs_local=["Mon,Thu 10:00", "Wed 15:00"])
     check([t for t, _, _ in RL.slots(inn, wed)] == ["Wed 15:00"], "weekday filter: Wednesday keeps only 'Wed 15:00'")
     check([t for t, _, _ in RL.slots(inn, thu)] == ["Mon,Thu 10:00"], "weekday filter: Thursday keeps 'Mon,Thu 10:00'")
-    check([m for _, m, _ in RL.slots(producer(), wed)] == ["weekly"], "Producer on Wednesday: the 09:00 is the weekly run")
-    check([m for _, m, _ in RL.slots(producer(), thu)] == ["run"], "Producer on Thursday: the 09:00 is a daily run")
     # a weekday slot launches on its day only
     o = operations(runs_local=["Wed 07:30"], economy_pass_local=None, alarm_runs=False)
     tw, tt = RL.slot_epoch(wed, "07:30") + 60, RL.slot_epoch(thu, "07:30") + 60
@@ -1901,19 +1870,6 @@ def test_role_weekday_slots():
     a = role_acts(rdecide([operations(runs_local=["Wdy 07:30"])], fresh(), robs(ops_status(tw)), tw))
     check([x.get("kind") for x in a] == ["role:Operations:schedule"] and "unreadable" in a[0]["why"],
           "an unreadable weekday slot: alarm, no launch")
-    # Producer weekly mode and the RED band (weekly only)
-    led = lread([BASE_EV])
-    t9w, t9t = RL.slot_epoch(wed, "09:00") + 60, RL.slot_epoch(thu, "09:00") + 60
-    p = producer(after_role=None)
-    a = role_acts(rdecide([p], fresh(), lrobs(ops_status(t9w), led), t9w))
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and la[0]["mode"] == "weekly" and "weekly plan" in la[0]["message"], "Wednesday 09:00: weekly-plan run")
-    a = role_acts(rdecide([p], fresh(), lrobs(ops_status(t9w, runway=0.3), led), t9w))
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and la[0]["budget"] == 75000, "RED Wednesday: the weekly run goes at x0.75")
-    a = role_acts(rdecide([p], fresh(), lrobs(ops_status(t9t, runway=0.3), led), t9t))
-    check(not [x for x in a if x["do"] == "role_launch"] and any("band RED" in x.get("why", "") for x in a),
-          "RED Thursday: the daily run is held (weekly only)")
 
 
 def test_role_pre_launch_max_s():
@@ -1928,84 +1884,13 @@ def test_role_pre_launch_max_s():
           and RL.max_s_of({}, arbiter(run_max_s=2700)) == 2700, "pre_launch_max_s: max_s_of sums it, absent = 0")
 
 
-def test_role_event_skip_keeps_quota():
-    """Review night r2: an event run skipped by the off switch or a band is not a run: it must not use the day's
-    event_runs_per_day, so the event launches once the switch is gone (or the band allows it), the hold journalled
-    once, not every tick. And daily_token_cap 0 is a cap of zero, not no cap."""
-    t = at_local("13:00")
-    items = {"PLAN_A": FakeItem(raised="2026-10-28T01:00:00Z")}
-    fail = dict(BASE_EV, event="verify", id="PLAN_A", result="fail", ts=lts(t - 200))
-    st = fresh()
-    st["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t): "launch"}, "runs": [], "event_cursor": t - 3600}}
-    p = producer(after_role=None)
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t), lread([BASE_EV, fail], items), off="quiet"), t))
-    check([x["do"] for x in a] == ["role_hold"] and "off switch" in a[0]["why"], "event + off switch: held %r" % a)
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t + 60), lread([BASE_EV, fail], items), off="quiet"), t + 60))
-    check(a == [], "event + off switch: the hold is journalled once, not every tick %r" % a)
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t + 120), lread([BASE_EV, fail], items)), t + 120))
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and la[0]["mode"] == "event", "off switch removed the same day: the event runs (quota unused) %r" % a)
-    # band FLOOR blocks event runs; when the band lifts the same day, the event runs
-    st = fresh()
-    st["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t): "launch"}, "runs": [], "event_cursor": t - 3600}}
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t, week_left=5), lread([BASE_EV, fail], items)), t))
-    check(not [x for x in a if x["do"] == "role_launch"] and any("FLOOR" in x.get("why", "") for x in a),
-          "event in FLOOR: not run %r" % a)
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t + 60, week_left=5), lread([BASE_EV, fail], items)), t + 60))
-    check(a == [], "event in FLOOR: the hold is journalled once %r" % a)
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t + 120), lread([BASE_EV, fail], items)), t + 120))
-    check([x for x in a if x["do"] == "role_launch"], "band lifts the same day: the event runs %r" % a)
+def test_role_zero_daily_cap():
+    """Review night r2: daily_token_cap 0 is a cap of zero, not no cap."""
     now = at_local("08:00")
     st = fresh()
     a = role_acts(rdecide([conductor(daily_token_cap=0)], st, robs(ops_status(now)), now))
     check([x["do"] for x in a] == ["alarm"] and "daily_token_cap" in a[0]["why"],
           "daily_token_cap 0: refused, not uncapped %r" % a)
-
-
-def test_role_event_cap_refusal_keeps_quota():
-    """ROLE_LAUNCH_REVIEW_FINISH_ROUND_FIVE: an event run REFUSED on daily_token_cap is not a run: it must not use the
-    day's event_runs_per_day, so it launches the same day once it fits (a raised cap, a band that shrinks its
-    budget). The refusal alarms once, not every tick."""
-    t = at_local("13:00")
-    items = {"PLAN_A": FakeItem(raised="2026-10-28T01:00:00Z")}
-    fail = dict(BASE_EV, event="verify", id="PLAN_A", result="fail", ts=lts(t - 200))
-    st = fresh()
-    st["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t): "launch"}, "event_cursor": t - 3600,
-                                "runs": [{"day": RL.day_of(t), "tokens": 200000, "token_unit": RL.TOKEN_UNIT, "state": "done",
-                                          "at": t - 3600, "unit": "u0", "budget": 100000}]}}
-    p = producer(after_role=None)
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t), lread([BASE_EV, fail], items)), t))
-    check([x["do"] for x in a] == ["alarm"] and "daily_token_cap" in a[0]["why"], "event over the daily cap: refused %r"
-          % a)
-    check(not [k for k in st["roles"]["Producer"]["done"] if " event" in k],
-          "a refused event run does not use the day's event quota %r" % st["roles"]["Producer"]["done"])
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t + 60), lread([BASE_EV, fail], items)), t + 60))
-    check(a == [], "event refused on the cap: alarmed once, not every tick %r" % a)
-    p2 = producer(after_role=None, daily_token_cap=300000)
-    a = role_acts(rdecide([p2], st, lrobs(ops_status(t + 120), lread([BASE_EV, fail], items)), t + 120))
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and la[0]["mode"] == "event", "the cap leaves room the same day: the event runs (quota unused) %r" % a)
-
-
-def test_role_event_key_same_second_twins():
-    """ROLE_EVENT_KEY_WIDEN_SAME_SECOND_TWINS: two replan notes on one item in the same second are two events (their
-    tsn differ), so a run that read the first does not swallow the second; a seen list written before the widening
-    (int-second keys) still covers the events it named, so a deploy re-fires nothing."""
-    ts, base = "2026-10-28T01:00:00Z", 1793174400 * 10 ** 9
-    a = {"event": "note", "id": "PROD_ITEM", "text": "REPLAN REQUEST one", "ts": ts, "tsn": base + 100000000}
-    b = dict(a, text="REPLAN REQUEST two", tsn=base + 700000000)
-    ea = RL.replan_requests([a], 0, "PROD_ITEM", "REPLAN REQUEST")
-    eb = RL.replan_requests([a, b], 0, "PROD_ITEM", "REPLAN REQUEST")
-    rs = {"events_seen": [RL.event_key(e) for e in ea]}
-    check(len(eb) == 2 and len(RL.unseen(eb, rs)) == 1,
-          "a same-second twin note is a second event, unseen after a run read the first: %s %s" % (eb, rs))
-    legacy = {"events_seen": ["%d|PROD_ITEM|replan request" % RL.utc_epoch(ts)]}
-    check(RL.unseen(eb, legacy) == [], "an int-second seen list from before the widening still covers its events")
-    check(all(int(e[0]) == RL.utc_epoch(ts) for e in eb), "an event's whole second is still its ts")
-    z = RL.replan_requests([dict(a, tsn=base)], 0, "PROD_ITEM", "REPLAN REQUEST")
-    zs = {"events_seen": [RL.event_key(e) for e in z]}
-    check(len(RL.unseen(eb, zs)) == 2, "a new list whose only event fell on .000000 is not read as a legacy list: %s"
-          % zs)
 
 
 def test_role_review_r5():
@@ -2014,12 +1899,12 @@ def test_role_review_r5():
     for bad, word in (({"runway_ge": 0.0, "quick_cap_x": -1}, "quick_cap_x"),
                       ({"runway_ge": 0.0, "quick_cap_x": 1.0, "slots": "weeky"}, "slots")):
         try:
-            RL.validate_role(dict(RL.ROLE_DEFAULTS, **producer(throttle_bands={"GREEN": bad})))
+            RL.validate_role(dict(RL.ROLE_DEFAULTS, **daily(throttle_bands={"GREEN": bad})))
             check(False, "r5: band %r is refused" % bad)
         except ValueError as e:
             check(word in str(e), "r5: band %r is refused (%s)" % (bad, e))
-    RL.validate_role(dict(RL.ROLE_DEFAULTS, **producer()))
-    check(True, "r5: the fixture bands (all, weekly, none) still validate")
+    RL.validate_role(dict(RL.ROLE_DEFAULTS, **daily()))
+    check(True, "r5: the fixture bands (all, first, none) still validate")
 
 
 def test_role_review_night_r3():
@@ -2049,113 +1934,14 @@ def test_role_review_night_r3():
           "unit bound: default run_max_s + pre_launch_max_s, as decide counts it")
 
 
-def test_role_plan_failure_events():
-    t = at_local("13:00")
-    items = {"PLAN_A": FakeItem(raised="2026-10-28T01:00:00Z"), "PLAN_ROW": FakeItem(row="R3"),
-             "OFF_PLAN": FakeItem(), "PLAN_CLOSED": FakeItem(open_=False, raised="x")}
-    evs = [BASE_EV,
-           dict(BASE_EV, event="block", id="OFF_PLAN", ts=lts(t - 300)),
-           dict(BASE_EV, event="verify", id="PLAN_CLOSED", result="fail", ts=lts(t - 290)),
-           dict(BASE_EV, event="verify", id="PLAN_A", result="pass", ts=lts(t - 280))]
-    st = fresh()
-    st["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t): "launch"}, "runs": [], "event_cursor": t - 3600}}
-    p = producer(after_role=None)
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t), lread(evs, items)), t))
-    check(a == [], "no event run for: a block off the plan, a fail on a closed item, a verify pass")
-    fail = dict(BASE_EV, event="verify", id="PLAN_A", result="fail", ts=lts(t - 200))
-    blk = dict(BASE_EV, event="block", id="PLAN_ROW", ts=lts(t - 100))
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t), lread(evs + [fail, blk], items)), t))
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and la[0]["mode"] == "event" and "verify fail on PLAN_A" in la[0]["why"] and "+1 more" in la[0]["why"],
-          "a verify fail on a raised item (and a block on a rowed one): one event run, naming the oldest")
-    check(la and la[0]["budget"] == 100000 and la[0]["slot"] == "%s event#1" % RL.day_of(t),
-          "event run: run cap, keyed once per day")
-    st["roles"]["Producer"]["runs"][:0] = []
-    t2 = t + 3600
-    blk2 = dict(BASE_EV, event="block", id="PLAN_A", ts=lts(t2 - 60))
-    st["roles"]["Producer"]["runs"] = [{"unit": "u", "at": t, "day": RL.day_of(t), "budget": 100000, "mode": "event",
-                                        "state": "done", "tokens": 50000, "token_unit": RL.TOKEN_UNIT, "item": "ROLES_ITEM_X"}]
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t2), lread(evs + [fail, blk, blk2], items)), t2))
-    check(not [x for x in a if x["do"] == "role_launch"] and any("event_runs_per_day" in x.get("why", "") for x in a),
-          "a second failure the same day: no second event run (per-day count), journaled once")
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t2 + 120), lread(evs + [fail, blk, blk2], items)), t2 + 120))
-    check(a == [], "... and not journaled again on the next tick")
-    # replan request
-    st3 = fresh()
-    st3["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t): "launch"}, "runs": [], "event_cursor": t - 3600}}
-    notes = [dict(BASE_EV, event="note", id="OTHER_ITEM", text="REPLAN REQUEST elsewhere", ts=lts(t - 50)),
-             dict(BASE_EV, event="note", id="ROLES_ITEM_X", text="economy pass: fine", ts=lts(t - 40))]
-    a = role_acts(rdecide([p], st3, lrobs(ops_status(t), lread(evs + notes, items)), t))
-    check(a == [], "a note without the prefix, or on another item: no replan run")
-    req = dict(BASE_EV, event="note", id="ROLES_ITEM_X", text="Replan request: 30% of the plan misses", ts=lts(t - 30))
-    a = role_acts(rdecide([p], st3, lrobs(ops_status(t), lread(evs + notes + [req], items)), t))
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and "replan request on ROLES_ITEM_X" in la[0]["why"], "an Operations REPLAN REQUEST note: event run")
-    # RED: event runs still go; FLOOR: nothing
-    st4 = fresh()
-    st4["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t - 3600}}
-    a = role_acts(rdecide([p], st4, lrobs(ops_status(t, runway=0.3), lread(evs + [fail], items)), t))
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and la[0]["mode"] == "event" and la[0]["budget"] == 75000, "RED: the event run goes at x0.75")
-    st4 = fresh()
-    st4["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t - 3600}}
-    a = role_acts(rdecide([p], st4, lrobs(ops_status(t, week_left=5), lread(evs + [fail], items)), t))
-    check(not [x for x in a if x["do"] == "role_launch"], "FLOOR: no event run")
-    # a slot due in the same tick wins; its launch covers the events (cursor moves)
-    t9 = at_local("09:00")
-    st5 = fresh()
-    st5["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t9 - 3600}}
-    early = dict(fail, ts=lts(t9 - 100))
-    a = role_acts(rdecide([p], st5, lrobs(ops_status(t9), lread(evs + [early], items)), t9))
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and la[0]["mode"] in ("run", "weekly") and st5["roles"]["Producer"]["event_cursor"] == t9,
-          "slot and event due together: the slot runs and covers the event")
-    a = role_acts(rdecide([p], st5, lrobs(ops_status(t9 + 2000), lread(evs + [early], items), unit="inactive",
-                                         result=cli(usage(output_tokens=10))), t9 + 2000))
-    check(not [x for x in a if x["do"] == "role_launch"], "... and no event run follows for that covered failure")
-
-
-def test_role_ledger_unmeasured():
-    t = at_local("11:00")
-
-    def boom():
-        raise ValueError("torn line 812")
-
-    for led, label in ((boom, "raises"), (lambda: None, "returns nothing"), (lread([]), "zero events")):
-        st = fresh()
-        st["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t - 3600}}
-        roles = [producer(after_role=None, runs_local=["11:00"])]
-        a = role_acts(rdecide(roles, st, lrobs(ops_status(t), led), t))
-        check(not [x for x in a if x["do"] == "role_launch"], "ledger %s: nothing launches, clock slots included" % label)
-        al = [x for x in a if x.get("kind") == "role:ledger"]
-        check(len(al) == 1 and "UNMEASURED" in al[0]["why"] and al[0]["note"], "ledger %s: ONE alarm" % label)
-        check("%s 11:00" % RL.day_of(t) not in st["roles"]["Producer"]["done"],
-              "ledger %s: the slot is not spent (it waits, missed only after slot_late_s)" % label)
-        a = role_acts(rdecide(roles, st, lrobs(ops_status(t + 120), led), t + 120))
-        check(not [x for x in a if x.get("kind") == "role:ledger"] and not a,
-              "ledger %s: next tick, no second alarm" % label)
-    a = role_acts(rdecide(roles, st, lrobs(ops_status(t + 240), lread([BASE_EV])), t + 240))
-    check(any("readable again" in x.get("why", "") for x in a) and [x for x in a if x["do"] == "role_launch"]
-          and "ledger_blind" not in st, "ledger readable again: journaled, the batch launches")
-    st = fresh()
-    a = role_acts(rdecide([producer(after_role=None, runs_local=["11:00"])], st, lrobs(ops_status(t), boom), t))
-    check("event_cursor" not in st["roles"]["Producer"], "a blind first tick sets no baseline")
-    a = role_acts(rdecide([conductor()], fresh(), robs(ops_status(at_local("08:00"))), at_local("08:00")))
-    check([x["do"] for x in a] == ["role_launch"], "a role with no event keys never reads the ledger")
-    check(RL.ledger_reading(RL.read_ledger)["state"] == "MEASURED", "read_ledger: the real ledger reads MEASURED")
+def test_role_read_ledger():
+    check(len(RL.read_ledger()["events"]) > 1000, "read_ledger: the real ledger reads its events")
 
 
 def test_role_real_schedule_triggers():
     sch = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")))
     roles = {r["name"]: r for r in sch["roles"]}
-    p = roles["Producer"]
     check("Arbiter" not in roles, "schedule: no Arbiter (retired: CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED)")
-    check(roles["Auditor"].get("pre_launch") == [["python3", "src/RimMandrake/rimflow/audits.py", "ensure"],
-                                                 ["python3", "src/RimMandrake/rimflow/audit_prescreen.py"],
-                                                 ["python3", "src/RimMandrake/rimflow/audit_hardflag_file.py"]],
-          "schedule: the Auditor's pre_launch creates/validates audits.jsonl (audits.py ensure), then writes a fresh "
-          "prescreen.json over the closes since the last finished run (audit_prescreen.py, no --days: "
-          "AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN), then files its hard flags (audit_hardflag_file.py)")
     here = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     for r in sch["roles"]:
         if r.get("pre_launch"):
@@ -2165,10 +1951,6 @@ def test_role_real_schedule_triggers():
             steps = r["pre_launch"] if isinstance(r["pre_launch"][0], list) else [r["pre_launch"]]
             check(all(os.path.isfile(os.path.join(here, st[1])) for st in steps),
                   "schedule: %s pre_launch scripts exist in the clone" % r["name"])
-    check(p.get("event_runs") == ["plan_step_failure", "replan_request"] and p["weekly_plan_weekday"] == "Wed"
-          , "schedule: Producer weekly Wed, events")
-    # Owner 2026-10-28 ("Less cautioun, more progress?"): the day may hold a re-plan after the weekly run.
-    check(p["daily_token_cap"] >= int(p["run_token_cap"] * 1.25), "schedule: Producer daily cap >= one run + 25%")
     for r in sch["roles"]:
         for t in r.get("runs_local") or r.get("quick_checks_local") or []:
             RL.parse_slot(t)
@@ -2195,7 +1977,7 @@ def test_review_t():
     msg = [x for x in a if x["do"] == "role_launch"][0]["message"].lower()
     check(not any(w in msg for w in ("token", "budget", "runway", "week left", "band")),
           "F1: a role without token_aware: no token content in its launch message")
-    for r in (producer(after_role=None), arbiter()):
+    for r in (daily(after_role=None), arbiter()):
         msg = RL.prompt(r, "run", "x", "GREEN", {"runway": 2.0, "runway_m": "MEASURED", "week_left": 40,
                                                 "week_left_m": "MEASURED", "at": "now"}, 1, 2, 1.0, 3, "u").lower()
         check(not any(w in msg for w in ("token", "budget", "runway", "week left", "band", "stop at")),
@@ -2206,33 +1988,33 @@ def test_review_t():
     # F2: no code claims a mid-run token stop
     src = open(os.path.join(HERE, "role_launch.py"), encoding="utf-8").read()
     check("At the budget" not in src and "stops a run at its cap" not in src, "F2: role_launch claims no token stop")
-    # F4: Operations' 07:30 skipped by its band -> the Producer's 09:00 follows the 19:30 run of the day before
+    # F4: Operations' 07:30 skipped by its band -> a following role's 09:00 follows the 19:30 run of the day before
     t9 = at_local("09:00")
     ops = operations(throttle_bands={"AMBER": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "quick"}})
-    p = producer(after_role="Operations", event_runs=None, weekly_plan_weekday=None)
+    p = daily(after_role="Operations")
     yday = RL.day_of(t9 - 86400)
     st = fresh()
     st["roles"] = {"Operations": {"done": {"%s 19:30" % yday: "launch", "%s 07:30" % RL.day_of(t9): "band AMBER"},
                                   "runs": [{"unit": "u", "at": t9 - 50000, "day": yday, "slot": "%s 19:30" % yday,
                                             "mode": "run", "state": "done", "tokens": 1, "token_unit": RL.TOKEN_UNIT, "budget": 1}]}}
     a = role_acts(rdecide([ops, p], st, robs(ops_status(t9)), t9))
-    check([x for x in a if x["do"] == "role_launch" and x["role"] == "Producer"],
-          "F4: AMBER, Operations 07:30 band-skipped: the Producer's 09:00 follows yesterday's 19:30 run")
+    check([x for x in a if x["do"] == "role_launch" and x["role"] == "Daily"],
+          "F4: AMBER, Operations 07:30 band-skipped: the role's 09:00 follows yesterday's 19:30 run")
     st["roles"]["Operations"]["runs"][0]["state"] = "failed"
-    st["roles"].pop("Producer", None)
+    st["roles"].pop("Daily", None)
     a = role_acts(rdecide([ops, p], st, robs(ops_status(t9)), t9))
-    check(not [x for x in a if x["do"] == "role_launch" and x["role"] == "Producer"],
+    check(not [x for x in a if x["do"] == "role_launch" and x["role"] == "Daily"],
           "F4: ... but not when that 19:30 run failed")
     st["roles"]["Operations"]["done"]["%s 07:30" % RL.day_of(t9)] = "off switch"
     st["roles"]["Operations"]["runs"][0]["state"] = "done"
-    st["roles"].pop("Producer", None)
+    st["roles"].pop("Daily", None)
     a = role_acts(rdecide([ops, p], st, robs(ops_status(t9)), t9))
-    check(not [x for x in a if x["do"] == "role_launch" and x["role"] == "Producer"],
+    check(not [x for x in a if x["do"] == "role_launch" and x["role"] == "Daily"],
           "F4: a 07:30 skipped for another reason (off switch) is not passed over")
     # F7: every role on opus (Agent_Policy.md, the one ladder)
     check(all(r.get("model") == "opus" for r in sch["roles"] if r["name"] in
-              ("Conductor", "Operations", "Producer", "Auditor")),
-          "F7: Conductor, Operations, Producer, Auditor are opus")
+              ("Conductor", "Operations")),
+          "F7: Conductor, Operations are opus")
 
 
 def test_account_hold_dispatch():
@@ -2318,8 +2100,8 @@ def test_review_u_notes():
     check(not noted and a[0]["ledger"].startswith("not noted"), "N2: no token_notes_item -> not noted, journalled")
     real = D.load_schedule()
     check(real.get("token_notes_item") and real["token_notes_item"] not in D.blind_items(real)
-          and "V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE" in D.blind_items(real),
-          "N2 real schedule: token notes go to Operations' own item, off the shared table")
+          and "CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING" in D.blind_items(real),
+          "N2 real schedule: token notes go to Operations' own item; the Designer's item is blind")
     # decide: a blind role's launch note_text carries no term; the journal's why keeps the budget
     now = at_local("08:00")
     st = fresh()
@@ -2390,10 +2172,10 @@ def test_review_u_group4():
     al = [x for x in a if x.get("kind") == "role:Conductor:schedule"]
     check(al and "runway_ge" in al[0]["why"] and al[0]["note"], "N5: bands without runway_ge -> schedule alarm")
     check([x["role"] for x in a if x["do"] == "role_launch"] == ["Operations"], "N5: the other role still launches")
-    for kw, word in (({"event_runs_per_day": "two"}, "event_runs_per_day"), ({"run_token_cap": "lots"}, "run_token_cap"),
+    for kw, word in (({"run_token_cap": "lots"}, "run_token_cap"),
                      ({"throttle_bands": {"G": {"runway_ge": "high"}}}, "runway_ge")):
-        a = role_acts(rdecide([producer(after_role=None, **kw)], fresh(), lrobs(ops_status(t8), lread([BASE_EV])), t8))
-        check([x.get("kind") for x in a] == ["role:Producer:schedule"] and word in a[0]["why"],
+        a = role_acts(rdecide([daily(after_role=None, **kw)], fresh(), robs(ops_status(t8)), t8))
+        check([x.get("kind") for x in a] == ["role:Daily:schedule"] and word in a[0]["why"],
               "N5: %s refused per role" % word)
     try:
         RL.band({"throttle_bands": {"F": {"week_left_pct_lt": 10}}}, {"week_left": 50, "runway": 1})
@@ -2418,30 +2200,6 @@ def test_review_u_group4():
     check(any(x.get("kind") == "role:Operations:schedule" and "raised" in x["why"] for x in acts),
           "N5: a raise while deciding one role -> that role's alarm, the tick goes on")
     check(any(x["do"] == "role_stop" for x in acts), "N5: the over-time run is still stopped")
-    # N3: an event run may not eat the day's scheduled run
-    wed = day_with_weekday(2)
-    t8w = RL.slot_epoch(wed, "08:00") + 60
-    items = {"PLAN_A": FakeItem(raised="2026-10-28T01:00:00Z")}
-    fail = dict(BASE_EV, event="verify", id="PLAN_A", result="fail", ts=lts(t8w - 100))
-    led = lread([BASE_EV, fail], items)
-    p = producer(after_role=None, daily_token_cap=125000)
-    st = fresh()
-    st["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t8w - 3600}}
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t8w), led), t8w))
-    check(not [x for x in a if x["do"] == "role_launch"] and any("waits" in x.get("why", "") for x in a)
-          and not [k for k in st["roles"]["Producer"]["done"] if "event" in k],
-          "N3: 08:00 Wednesday event with the weekly run still to come: waits, not spent, no alarm")
-    check(not [x for x in a if x["do"] == "alarm"], "N3: the wait raises no alarm")
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t8w + 120), led), t8w + 120))
-    check(a == [], "N3: the wait is journalled once")
-    t9w = RL.slot_epoch(wed, "09:00") + 60
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t9w), led), t9w))
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and la[0]["mode"] == "weekly" and la[0]["budget"] == 100000, "N3: the 09:00 weekly plan still runs")
-    st = fresh()
-    st["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t8w - 3600}}
-    a = role_acts(rdecide([producer(after_role=None)], st, lrobs(ops_status(t8w), led), t8w))
-    check([x["mode"] for x in a if x["do"] == "role_launch"] == ["event"], "N3: room for both -> the event runs")
     # N6: a failed launch alarms and gives the slot back; a PAUSE recheck gives it back; success clears the record
     root = os.path.join(TMP, "roles_exec_u")
     sch = sched(roles=[conductor()])
@@ -2598,52 +2356,6 @@ def test_review_v():
                          "C:z": {"state": "OPEN"}, "D:w": "junk", "E:v": {"state": "PENDING", "for": "Operations"}})
           == {"IT", "alarm:B:y"} and RL.alarm_keys(["junk"]) == set(),
           "V2: alarm_keys: item, or alarm:<aid> for Operations; junk and non-OPEN skipped")
-    # V5: a block that was off the plan when a run read it does not trigger later once the item is raised
-    p = producer(after_role=None, runs_local=["11:00"])
-    t11 = at_local("11:00")
-    blk = dict(BASE_EV, event="block", id="X_ITEM", ts=lts(t11 - 1800))
-    st = fresh()
-    st["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t11 - 7200, "events_seen": []}}
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t11), lread([BASE_EV, blk], {"X_ITEM": FakeItem()})), t11))
-    check([x["mode"] for x in a if x["do"] == "role_launch"] in (["run"], ["weekly"]), "V5: the 11:00 run launches")
-    st["roles"]["Producer"]["runs"] = []
-    raised = {"X_ITEM": FakeItem(raised="2026-10-28T01:00:00Z")}
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t12), lread([BASE_EV, blk], raised)), t12))
-    check(not [x for x in a if x["do"] == "role_launch"],
-          "V5: a block the 11:00 run already read (off the plan then) does not trigger once the item is raised")
-    blk2 = dict(blk, ts=lts(t11 + 600))
-    a = role_acts(rdecide([p], st, lrobs(ops_status(t12), lread([BASE_EV, blk, blk2], raised)), t12))
-    check([x["mode"] for x in a if x["do"] == "role_launch"] == ["event"], "V5: a new block on it does trigger")
-    # V6: a slot the band blocks reserves nothing: RED (weekly only), not Wednesday, a 01:00 event is not held
-    thu = day_with_weekday(3)
-    t1 = RL.slot_epoch(thu, "01:00") + 60
-    fail = dict(BASE_EV, event="verify", id="PLAN_A", result="fail", ts=lts(t1 - 100))
-    led = lread([BASE_EV, fail], {"PLAN_A": FakeItem(raised="x")})
-    for runway, waits in ((0.5, False), (2.0, True)):
-        st = fresh()
-        st["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t1 - 3600}}
-        a = role_acts(rdecide([producer(after_role=None, daily_token_cap=125000)], st,
-                              lrobs(ops_status(t1, runway=runway), led), t1))
-        got = any("waits" in x.get("why", "") for x in a)
-        check(got == waits and bool([x for x in a if x["do"] == "role_launch"]) != waits,
-              "V6: runway %s: the 09:00 slot %s, so the event %s" % (
-                  runway, "will run" if waits else "is blocked", "waits" if waits else "runs"))
-    # V7: a raise after the slot was consumed gives it back; a raise building the prompt consumes nothing
-    real_re = RL.role_events
-
-    def re_boom(*a, **k):
-        raise RuntimeError("ledger shape")
-    RL.role_events = re_boom
-    try:
-        st = fresh()
-        st["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t11 - 600, "events_seen": []}}
-        a = role_acts(rdecide([p], st, lrobs(ops_status(t11), lread([BASE_EV])), t11))
-    finally:
-        RL.role_events = real_re
-    rs = st["roles"]["Producer"]
-    check(any(x.get("kind") == "role:Producer:schedule" for x in a) and not rs["done"] and "pending_launch" not in rs
-          and not [x for x in a if x["do"] == "role_launch"],
-          "V7: a raise after mark() gives the slot back (it stays due), with an alarm")
     real_pr = RL.prompt
 
     def pr_boom(*a):
@@ -2856,14 +2568,14 @@ def test_golive_b3_wave1_config():
     check(not wave1_problems(real), "B3 the shipped schedule is within its go-live set: %s" % (wave1_problems(real),))
     on = wave1_base(real)
     check(not wave1_problems(on), "B3 Conductor + Operations enabled is within wave 1")
-    for name in ("Designer", "Auditor", "Producer"):
+    for name in ("Designer", "Artist"):
         x = copy.deepcopy(on)
         next(r for r in x["roles"] if r["name"] == name)["enabled"] = True
         check(wave1_problems(x) == ["role %s must stay disabled (go-live set: Conductor/Operations)" % name],
               "B3 %s enabled is refused" % name)
         del next(r for r in x["roles"] if r["name"] == name)["enabled"]
         check(wave1_problems(x), "B3 %s with no enabled key is refused (only an explicit false passes)" % name)
-    check({r["name"] for r in real["roles"]} >= set(WAVE1_ROLES) | {"Designer", "Auditor", "Producer"},
+    check({r["name"] for r in real["roles"]} >= set(WAVE1_ROLES) | {"Designer", "Artist"},
           "B3 the probe roles exist in the schedule")
     for seat in sorted(real["seats"]):
         x = copy.deepcopy(on)
@@ -2889,9 +2601,9 @@ def test_golive_trial_set_from_schedule():
     x["golive"]["roles"].append("Designer")
     check(not wave1_problems(x), "TN Designer enabled AND listed in golive.roles passes (the trial flip): %s"
           % (wave1_problems(x),))
-    next(r for r in x["roles"] if r["name"] == "Producer")["enabled"] = True
-    check(wave1_problems(x) == ["role Producer must stay disabled (go-live set: Conductor/Operations/Designer)"],
-          "TN listing Designer does not let Producer through: %s" % (wave1_problems(x),))
+    next(r for r in x["roles"] if r["name"] == "Artist")["enabled"] = True
+    check(wave1_problems(x) == ["role Artist must stay disabled (go-live set: Conductor/Operations/Designer)"],
+          "TN listing Designer does not let Artist through: %s" % (wave1_problems(x),))
     y = copy.deepcopy(base)
     y["seats"]["FOUNDRY"] = {"enabled": True, "wake": True, "recover_dead": False, "session_name": "AGENT FOUNDRY", "clone": "/home/mandrake/rm/foundry", "model": "sonnet"}      # a worker seat: the live schedule has none since 2026-11-02
     y["seats"]["FOUNDRY"]["recover_dead"] = True
@@ -3685,10 +3397,9 @@ def main():
               test_role_real_schedule_caps_and_ops_bands, test_schedule_keeps_no_unread_helper_keys, test_role_execute_and_dry, test_review_q,
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
               test_role_weekday_slots, test_role_pre_launch_max_s,
-              test_role_plan_failure_events, test_role_event_skip_keeps_quota, test_role_event_cap_refusal_keeps_quota, test_role_review_r5,
-              test_role_event_key_same_second_twins,
+              test_role_zero_daily_cap, test_role_review_r5,
               test_role_review_night_r3,
-              test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
+              test_role_read_ledger, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
               test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_slot_run_covers_open_alarms, test_review_x_alarm_flap,
               test_golive_b1_busy_until_ended, test_golive_b2_blind_fixed_outcomes,

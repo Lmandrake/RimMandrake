@@ -290,10 +290,6 @@ def test_validate_role():
     check(raises(lambda: RL.validate_role(dict(good(), pre_launch_max_s=0)), "pre_launch_max_s 0 is not a number > 0"), "pre 0")
     RL.validate_role(dict(good(), pre_launch_max_s=1))
     RL.validate_role(dict(good(), pre_launch_max_s=0.5))
-    RL.validate_role(dict(good(), event_runs_per_day=0))
-    RL.validate_role(dict(good(), event_runs_per_day=1))
-    for bad in (-1, 1.5, True, "1"):
-        check(raises(lambda: RL.validate_role(dict(good(), event_runs_per_day=bad)), "event_runs_per_day"), "per_day %r" % (bad,))
     for k in ("run_token_cap", "quick_token_cap", "economy_token_cap", "daily_token_cap"):
         RL.validate_role(dict(good(), **{k: 0}))
         RL.validate_role(dict(good(), **{k: 0.5}))
@@ -309,7 +305,6 @@ def test_validate_role():
     r = dict(good())
     del r["run_max_s"]
     check(raises(lambda: RL.validate_role(r), "run_max_s None"), "missing run_max_s refused")
-    check(raises(lambda: RL.validate_role(dict(good(), event_runs="x")), "event_runs is not a list"), "event_runs list")
 
 
 def test_incident_run_cap_and_page():

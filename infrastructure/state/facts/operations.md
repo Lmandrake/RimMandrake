@@ -64,8 +64,8 @@ This file is unbudgeted, like everything in `facts/`.
   - After any Claude Code upgrade, check that `claude --debug` shows a tool cgroup path under the seat scope.
   - If these guards misbehave, the fallback is to mask `tmp.mount` (SEAT_MEMORY_STANDARD_FALLBACK_1). See
     `design/RimMandrake/memory_clones_drives_2026-10-08.md` §9.
-- **Producer launch floor.** Every Producer run writes the same 107,656 tokens of opening context as 1-hour cache writes
-  (weight 2). So any Producer launch costs about 215k weighted before the run reads anything. Size a more frequent role
+- **Role launch floor (measured on the retired Producer role).** Every run wrote the same 107,656 tokens of opening context as 1-hour cache writes
+  (weight 2). So any such launch costs about 215k weighted before the run reads anything. Size a more frequent role
   cadence's cap from this floor, not from turn count. A lean launch for short runs is the lever.
 - **The live `ops_watch` timer, like every Operations clock, runs from the one Operations deploy, `/home/mandrake/rm/dispatch`**
   (`src/RimMandrake/Utils/systemd/ops_clocks.json`), not a seat clone.
