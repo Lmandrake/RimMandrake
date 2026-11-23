@@ -58,8 +58,8 @@ what a modder expects:
 - Each `MemeDef` can carry `requireOne`, a list of groups. The generator takes one precept from each group.
 - The generator skips a precept that another rule refuses. Such rules are `disallowedPrecepts`, `conflictingMemes`,
   `requiredMemes` and a shared issue. If every precept of a group is refused, the group gives nothing.
-- Then the generator adds random precepts. It draws from the precepts that name one of the memes in
-  `associatedMemes`. It also fills an empty issue, if a legal precept of that issue has a nonzero
+- Then the generator adds random precepts. The draw uses the precepts that name one of the memes in
+  `associatedMemes`. The generator also fills an empty issue, if a legal precept of that issue has a nonzero
   `defaultSelectionWeight`.
 - **Choosing memes is how you choose doctrine.** `requiredPreceptsOnly` means "take *only* those": no draw by impact, no
   fill of empty issues and no specialist roles (`Precept_RoleMulti`). The religion still gets its rituals, its leader,
@@ -78,11 +78,11 @@ Full treatment: `references/design.md`. The four rules that matter most:
 1. **A religion is interesting when it *forbids something the player would otherwise do by reflex*.**
    `TreeCutting_Prohibited` is a better design than any three mood modifiers. The player meets that precept
    on turn one, and nobody has to say that the religion exists.
-   🔴 **But that example is for the player's religion. It does not transfer to an NPC faction:**
+   🔴 **But that example is for the player's religion. That example does not transfer to an NPC faction:**
    - `TreeCutting_Prohibited` has `defaultSelectionWeight: 0`, and the `requireOne` of no meme can yield it. Its only
      route to an NPC faction is a random draw for a religion that holds `NaturePrimacy`. The draw is never sure, and
      `requiredPreceptsOnly` stops it.
-   - `Mining_Prohibited` has the same random route. It also has `enabledForNPCFactions: false`. Its refusal and its
+   - `Mining_Prohibited` has the same random route. `Mining_Prohibited` also has `enabledForNPCFactions: false`. Its refusal and its
      thoughts do nothing on an NPC pawn (§6).
    - No XML route whitelists a precept (§1). So **the design that forbids a reflex is reachable for the player and
      largely unreachable for an NPC faction.**
@@ -101,7 +101,7 @@ Full treatment: `references/design.md`. The four rules that matter most:
 🔴 **Impact is a RATING, not a budget.** `MemeDef.impact` is an integer. All 36 structure memes have impact 0. Of the
 normal memes, 26 have impact 1, 50 have 2, 23 have 3 and 4 have 4.
 
-- `MaxMemeImpact = 3` and `MaxCombinedImpact = 9` exist in `IdeoImpactUtility`. They only clamp the label that the game
+- `MaxMemeImpact = 3` and `MaxCombinedImpact = 9` exist in `IdeoImpactUtility`. The two constants only clamp the label that the game
   shows. The presets `VME_Inhuman_Ravagers` and `VME_Insectoid_Psykers` both total **10**.
 - **The ceiling is a COUNT, and only the editor enforces it.** `MemeCountRangeAbsolute = 1–4` normal memes (the
   structure meme is not counted). A random NPC religion starts with 1–3 normal memes. Other limits:
@@ -137,7 +137,7 @@ lines 44–71:
 
 The Empire (`…\Data\Royalty\Defs\FactionDefs\Faction_Empire.xml`) uses the other family of fields:
 `requiredMemes` + `allowedMemes` + `structureMemeWeights` + `disallowedPrecepts`. That family of fields *constrains
-a generated* religion. It does not author one.
+a generated* religion. That family does not author a religion.
 
 | field | meaning |
 |---|---|
@@ -186,10 +186,10 @@ religion INVALID. The main ERROR checks:
 - no precept has `visible:false`;
 - each precept that has `requiredMemes` has one of them in the religion.
 
-The `deityCount` of a structure is an `IntRange`. A deity count outside that range is a **WARN, not an ERROR**. It cannot
+The `deityCount` of a structure is an `IntRange`. A deity count outside that range is a **WARN, not an ERROR**. Such a WARN cannot
 make a religion INVALID.
 
-🔴 **The script does NOT check `MayRequire`, and it looks like it does.** `def/needs-mayrequire` is an **INFO**. It prints
+🔴 **The script does NOT check `MayRequire`, and it looks like it does.** `def/needs-mayrequire` is an **INFO**. The code prints
 the attribute that you must write. Nothing checks that you wrote it: `from_xml` reads `li.text` and never reads
 attributes. **No offline check finds a missing `MayRequire`. Read the XML yourself, every time.**
 
@@ -200,7 +200,7 @@ attributes. **No offline check finds a missing `MayRequire`. Read the XML yourse
 - the deity names appear;
 - the styles resolved.
 
-The bridge tool `jawa/ideo_of` reads the memes, precepts, key deity and factions of each built ideo. It does not list styles.
+The bridge tool `jawa/ideo_of` reads the memes, precepts, key deity and factions of each built ideo. `jawa/ideo_of` does not list styles.
 
 `references/validation.md` §4 (live) holds the dev-mode route and the lines to read from `Player.log`.
 
@@ -209,7 +209,7 @@ The bridge tool `jawa/ideo_of` reads the memes, precepts, key deity and factions
 `validate_ideoligion.py` reads **XML you author**: the `FactionDef` ideo block, or the same block in a patch. A `.rid`
 (saved ideoligion) and a `.xtp` (saved xenotype) are **Scribe output from a running game**. Scribe is the game's save
 writer. Such a file has tab indents, `Class="..."` attributes and `IsNull="True"` marks. For such a file the authoring
-validator prints `no religions found in the input` and exits 1. **It checked nothing.** The exit is not a verdict on
+validator prints `no religions found in the input` and exits 1. **The validator checked nothing.** The exit is not a verdict on
 the file.
 
 Use the other tool:
@@ -229,7 +229,7 @@ The tool looks up every def reference in the def dump. Its exit codes:
 owner loads the saved file at the one irreversible moment. A faction that is absent at that moment has the same property.
 
 **The trap: a precept `<li>` nests other def types inside itself.** One agent read every `<def>` element and checked
-all of them against `PreceptDef`. It reported **71 missing precepts. Every one was false.**
+all of them against `PreceptDef`. The agent reported **71 missing precepts. Every one was false.**
 
 ```xml
 <li Class="Precept_Ritual">
@@ -244,14 +244,14 @@ all of them against `PreceptDef`. It reported **71 missing precepts. Every one w
 of their member names are the same. Do not guess the type from the name.
 
 **The rule that makes this safe: a reference is MISSING only if it resolves against NO def type at all.** If a reference
-resolves but has an unexpected type, the tool reports a softer `TYPE MISMATCH`. It never reports such a reference as
+resolves but has an unexpected type, the tool reports a softer `TYPE MISMATCH`. The tool never reports such a reference as
 missing. So a wrong guess costs a note, not a false defect.
 
 ⬜ **And "absent from the dump" is not "absent from the game."** A dump can hold no rows for a def type. Each reference
 of that type then reads `UNMEASURABLE`. Such a reading is a hole in the evidence, not a result, and the tool prints it as its own
 class. Never change such a reading into a pass or a failure. An old dump had no `AbilityDef` rows; the current dump does.
 
-**These values are not references.** They look like defNames and resolve to nothing. The first run of the tool read them
+**These values are not references.** The values look like defNames and resolve to nothing. The first run of the tool read them
 as defs, and that made 73 false positives:
 
 - `precepts/li/name` (the display name, for example "population", "trading", "junk");
@@ -261,7 +261,7 @@ as defs, and that made 73 false positives:
 - the frequency and gender enums (`MaleUsually`, `Uncommon`, …).
 
 📌 The `<modIds>` block is **provenance, not a dependency list**. A mod in the block that no longer loads is expected and
-harmless. It matters only if a *reference* also fails to resolve. The line
+harmless. Such a mod matters only if a *reference* also fails to resolve. The line
 `provenance list: UNMEASURED` means that the tool could not read the live mod list.
 
 **What an authoring mistake does in the game.** Only the first mistake makes a red line in the log:
@@ -290,7 +290,7 @@ A deityPreset on a `deityCount 0` structure is not a mistake when `fixedIdeo` is
 dump of the FULL list. The tool does not check `Class=` attributes. So 246/251 references of one file passed while the
 dev world logged ritual NREs. Check a `.rid` against the packageIds of the target list.
 `src/RimMandrake/Utils/remake/salvation_paint_clean.py` shows how: its docstring gives the rules, and its `--check` run
-prints the removal list for one list (PAINT).
+prints the removal list for the PAINT mod list (`infrastructure/state/modlists/ModsConfig.PAINT.RULED_2026-10-20.xml`).
 
 ## 5. EVALUATE — judging a religion
 
@@ -311,7 +311,7 @@ thing that would most improve it>`.
 
 ## 6. Traps
 
-- **`classic: true` is NOT the do-not-author marker; `visible: false` is.** 50 precepts carry `classic`. They include
+- **`classic: true` is NOT the do-not-author marker; `visible: false` is.** 50 precepts carry `classic`. The 50 include
   `IdeoRole_Leader`, `Funeral`, `IdeoRelic` and `Corpses_Ugly`, and all four are legitimate. 31 precepts have
   `visible: false` (`Cannibalism_Classic`, `LeaderSpeech`, `Trial`, `Conversion`, `Execution`, …). Those belong to the
   engine. Never hand-author one.
@@ -328,9 +328,9 @@ thing that would most improve it>`.
 - **Every `fixedIdeo` religion is marked `solid`, and vanilla takes the first `solid` religion as the Horax religion**
   (`IdeoManager.Horaxian`). With several fixed factions, that religion can be one of ours. A baby then gets no exposure to
   that religion, and `IdeoChangeToWeight` gives it weight 0. Read in the source, not seen in game.
-- **`Charity` has no negative position.** It has `Charity_Essential/Important/Worthwhile` only. "Charity: abhorrent"
+- **`Charity` has no negative position.** The issue has `Charity_Essential/Important/Worthwhile` only. "Charity: abhorrent"
   cannot be said.
-- **`PreferredXenotype` picks its xenotype at ideo-generation time, not in XML.** It can appear only when the
+- **`PreferredXenotype` picks its xenotype at ideo-generation time, not in XML.** The precept can appear only when the
   `xenotypeSet` of the faction has exactly one entry, and then by chance. Species composition comes from the xenotype
   chances of the `PawnKindDef`.
 - **Under Ideology a `BuildableDef` with `canGenerateDefaultDesignator=false` is IDEO-ONLY.** `Ideo.MembersCanBuild`

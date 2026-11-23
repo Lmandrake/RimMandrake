@@ -10,11 +10,11 @@ Also: skills/rimworld-ideoligion/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 16,629 | 23,479 |
-| words in linted prose | 1,793 | 2,791 |
-| STE violations per 100 words | 4.18 | 2.19 |
-| sentences over 20 words | 29 | 22 |
-| flagged lines (mechanical) | 13 | 12 |
+| bytes | 16,629 | 23,703 |
+| words in linted prose | 1,793 | 2,811 |
+| STE violations per 100 words | 4.18 | 2.21 |
+| sentences over 20 words | 29 | 23 |
+| flagged lines (mechanical) | 13 | 10 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 11 | 0 |
 
 The long sentences that stay are of three kinds. Most are two short sentences that the lint joined at a bold lead or a
@@ -75,6 +75,8 @@ engine facts in a local 1.6 decompile and the counts in the 2026-11-23 dump. The
 A second fresh Opus reader read those repairs and every change outside `SKILL.md`. It found no fault in `SKILL.md`. It found
 four contradictions in `validation.md` and `authoring.md`; the writer repaired them in the reader's words. No reader read
 those four repairs, the key-deity word in §4, or the Compassion row of the faction spec.
+After the first landing (d5786b22eb), the prose check of `./publish` named 18 lines: 17 pronouns and the name PAINT. The
+writer put the noun in each line. No reader read those lines.
 
 ## Conflicts and stale lines: settled
 
