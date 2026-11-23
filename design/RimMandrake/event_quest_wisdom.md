@@ -124,7 +124,7 @@ autosaver cannot fire), but a save can still be taken by other routes, capturing
 `ChoiceLetter.OpenLetter` rebuilds the `DiaNode` from the abstract `Choices` property each time it opens, so a
 subclass that Scribes its own fields survives save/load with no component; `StartTimeout(ticks)` sets
 `disappearAtTick`; the last-tick auto-open is skipped while another force-pause window is open, and on timeout
-the letter is removed through `Letter.Removed()` — apply the default branch there, never rely on the auto-open.
+the letter is removed through `Letter.Removed()` — apply the default branch there, under a Scribed `resolved` flag (recipes §2 step 4), never rely on the auto-open.
 Vanilla precedents: `ChoiceLetter_RansomDemand`, `ChoiceLetter_AcceptVisitors`, `ChoiceLetter_BetrayVisitors`.
 
 **World pawns** (VERIFIED). `PassToWorld(p, PawnDiscardDecideMode.KeepForever)` adds the pawn to the same
@@ -684,9 +684,9 @@ branch, generating the pawns only when they are about to spawn (`skills/rimworld
   counter-example.
 - **Vanilla Randy** [`SCENARIO_SETTINGS_SPEC.md` R-S7 as cited in batch_04]. Custom pacing is
   added as comps patched into `StorytellerDef[defName="Randy"]/comps` or as our own components
-  enqueuing into `incidentQueue`; no new storyteller. Whether STE's eight incident-category
-  patches are wanted is the open C09 card; this study shows they are cheap to reproduce in our
-  own patch if wanted.
+  enqueuing into `incidentQueue`; no new storyteller. Card C09 (answered 2026-10-10)
+  dropped STE. Its eight incident-category patches are cheap to reproduce in our own patch; nobody has
+  ordered that patch.
 - **One frozen hand-made planet; no worldgen** [`CLAUDE.md`]. Anything that creates, upgrades
   or replaces settlements or sites at random (MFI outposts and squatters, BI's world-gen hive
   seeding) is out. Authored sites that *exist* on the planet may carry timeouts, visit actions
@@ -743,7 +743,7 @@ register; canon names go through the Utinni tier. Nothing here is filed work; it
 | 18 | **The slaver's barge** | One specific Hutt trader kind sells people; buying is possible and has a cost in reputation and in what the crew thinks. | Our own `StockGenerator` subclass on one `TraderKindDef`, keeping `respectPopulationIntent` and the ideology check; a thought or goodwill hit on purchase. | S | More Slaves |
 | 19 | **A founder taken** | A demand that names a crew member; paying hands them over, and a rescue quest opens at once. | Demand list (idea 1) with an explicit person option; `faction.kidnapped.Kidnap`; pass a named envoy as the kidnapper (OldFriends skips a null kidnapper); a `QuestScriptDef` rescue at the faction's authored site. | L | TD, OldFriends |
 | 20 | **Moods of the desert** | Long calm seasons, then storms of trouble, under Randy. | Patch a second `StorytellerCompProperties_RandomMain` (or an `OnOffCycle`) into Randy with its own weights; owner decision because it changes vanilla Randy. | S | STE |
-| 21 | **Heat is a threat** | Heat waves, dust storms and short circuits ride the threat budget, not the misc dice. | STE's category reassignment patches, reproduced in our own patch with our desert events, if card C09 wants it. Vanilla heat only (the one-kind-of-heat ruling): no new heat hediff. | S | STE |
+| 21 | **Heat is a threat** | Heat waves, dust storms and short circuits ride the threat budget, not the misc dice. | STE's category reassignment patches, reproduced in our own patch with our desert events. Card C09 (answered 2026-10-10) dropped STE; nobody has ordered our own patch. Vanilla heat only (the one-kind-of-heat ruling): no new heat hediff. | S | STE |
 | 22 | **Storm cover** | Raiders come only under a dust storm, out of the murk, for the water stores. | `CanFireNowSub` reads the map's current weather against a tag list (field name UNVERIFIED); `attackTargets` = water storage; flee when the storm ends. Same points, worse moment. | M | gate-by-world-fact, parms levers |
 | 23 | **Part thieves** | A small band goes straight for the engine cradle, grabs one part and runs. | `canSteal` + `attackTargets` = gravship part Things, small points; if they escape OldFriends records thief and part, and idea 2 can bring it back as loot. | S-M | parms levers, Rimesis memory |
 | 24 | **The debt ledger** | Credit trades with the Hutt clan add to a visible debt; past a threshold the collector comes, past a second a bounty. | One Scribed per-faction number; thresholds enqueue idea 1 / 33 through the queue. State-flag storyline. | M | MFI war flag, FRC counter |

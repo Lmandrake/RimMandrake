@@ -25,6 +25,8 @@ Why later: Guiding a migrating oasis only serves the deferred walking condenser.
 ### sell action
 Season-choice Sell selects friendly humanlike faction by goodwill, saves buyer and expiry, pays fixed 1500 silver on a surface home map and grants goodwill. This implements a sale action, not fulfilment of the buyer-settlement pool promise or a highest-bidder auction.
 
+Known fault (read 2026-11-23, `RM_WalkingCondenser.cs`): `RM_ChoiceLetter_Condenser.Choices` does not test `ArchivedOnly`. A removed letter can be opened again from the archive, so the player can sell, guide or cut again while the crab is spawned and alive. Return only `Option_Close` when `ArchivedOnly` is true.
+
 Why later: Selling a seasonal destination is a separate faction trade action. The farm and normal caravan trade do not call it. Switch/spec: T5.
 
 ### extract plant

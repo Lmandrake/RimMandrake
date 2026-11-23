@@ -61,10 +61,19 @@ letter through `Letter.Removed()`.
    list) so it survives save/load with no component.
 3. `Choices` builds Pay / Refuse from those fields; disable Pay with a reason when the colony
    cannot pay. Refuse rebuilds `IncidentParms` from the fields and delivers the raid then
-   (through the queue at `now`, or a direct worker call with `bypassStorytellerSettings`).
-4. Override `Removed()`: if `TimeoutPassed`, apply the default branch (usually Refuse). Do not
+   (through the queue at `now`, with a retry window and `bypassStorytellerSettings`; never a direct
+   `def.Worker.TryExecute`). When `ArchivedOnly` is true, `Choices` returns only `Option_Close`: a removed letter
+   can still be opened from the archive. Each one-shot option also calls
+   `Find.LetterStack.RemoveLetter(this)`. Override `CanDismissWithRightClick => false`, and on a live demand
+   offer no vanilla option that removes the letter with no branch (`Option_Close`, `Option_Reject`,
+   `Option_JumpToLocation`, `Option_ViewInQuestsTab` without `postpone: true`). Use
+   `Option_JumpToLocationAndPostpone` and `Option_Postpone`.
+4. Override `Removed()`: if `TimeoutPassed && !resolved`, apply the default branch (usually Refuse).
+   `resolved` is a Scribed bool of ours. Set it in each one-shot action before `RemoveLetter`, and when the
+   default branch runs: `RemoveLetter` calls `Removed()` again when an archived letter is closed. Do not
    rely on the last-tick auto-open — it is skipped while another force-pause window is open.
-   Vanilla precedents: `ChoiceLetter_RansomDemand`, `ChoiceLetter_AcceptVisitors`.
+   Vanilla precedents for `Choices` (neither overrides `Removed()`): `ChoiceLetter_RansomDemand`,
+   `ChoiceLetter_AcceptVisitors`.
 
 Showing "these exact pawns" before they exist would need regenerating them from a Scribed
 `pawnGroupMakerSeed`; whether the seed alone fixes gear and backstory is UNVERIFIED — test first,
