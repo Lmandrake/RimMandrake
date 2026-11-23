@@ -1,0 +1,21 @@
+MOVE 21181 63,60 {'success': True, 'message': '1/1 pawn(s) standing on (63,60) after 240 tick(s); 1 moved at all.', 'arrivedCount': 1, 'movedCount': 1, 'pawnCount': 1, 'destination': {'x': 63, 'z': 60}, 'pathEndMode': 'OnCell', 'ticksElapsed': 240, 'ticksRequested': 240, 'timedOut': False, 'polls': 35, 'waitedSecond VERDICT Allowed held=True prisoner=False cell=63,60
+DOWN --down=21181 {'success': True, 'action': 'downed', 'allowBleedingWoundsHonoured': True, 'downedBefore': False, 'deadBefore': False, 'downedAfter': True, 'deadAfter': False, 'changed': True, 'hediffCount': 11, 'tic
+SPEC Human21181 at (63, 60) lip (63, 62) warden Human24672 accepted=True | VERDICT Allowed held=True prisoner=False cell=63,60
+t0 21181@63,60:->- 21233@68,61:Wait>- 24672@63,62:CD>63,60
+t+15 21181@63,60:Wait_Downed>- 21233@68,61:Wait>- 24672@63,62:CD>63,60 | True prisoner=False cell=63,60
+t+225 21181@63,60:Wait_Downed>- 21233@68,61:Wait_MaintainPosture>- 24672@63,62:CD>63,60 | True prisoner=False cell=63,60
+t+240 21181@63,60:Wait_Downed>- 21233@68,61:AttackMelee>63,62 24672@63,62:CD>63,60 | True prisoner=False cell=63,60
+t+270 21181@63,60:Wait_Downed>- 21233@67,61:AttackMelee>63,62 24672@63,62:CD>63,60 | True prisoner=False cell=63,60
+t+285 21181@63,60:Wait_Downed>- 21233@66,61:AttackMelee>63,62 24672@63,62:CD>63,60 | True prisoner=False cell=63,60
+t+300 21181@63,60:Wait_Downed>- 21233@65,61:AttackMelee>63,62 24672@63,62:CD>63,60 | True prisoner=False cell=63,60
+t+315 21181@63,60:Wait_Downed>- 21233@64,61:AttackMelee>63,62 24672@63,62:CD>63,60 | True prisoner=False cell=63,60
+t+360 21181@63,60:Wait_Downed>- 21233@64,61:AttackMelee>63,62 24672@63,62:Wait>- | True prisoner=False cell=63,60
+t+375 21181@63,60:Wait_Downed>- 21233@64,61:AttackMelee>63,62 24672@63,62:FleeAndCower>51,80 | True prisoner=False cell=63,60
+t+450 21181@63,60:Wait_Downed>- 21233@64,61:AttackMelee>63,62 24672@63,62:Wait>- | True prisoner=False cell=63,60
+t+465 21181@63,60:Wait_Downed>- 21233@64,61:AttackMelee>63,62 24672@63,62:FleeAndCower>51,80 | True prisoner=False cell=63,60
+t+480 21181@63,60:Wait_Downed>- 21233@64,61:Wait_MaintainPosture>- 24672@63,62:FleeAndCower>51,80 | True prisoner=False cell=63,60
+t+495 21181@63,60:Wait_Downed>- 21233@64,61:AttackMelee>63,62 24672@63,62:FleeAndCower>51,80 | True prisoner=False cell=63,60
+t+510 21181@63,60:Wait_MaintainPosture>- 21233@64,61:AttackMelee>63,62 24672@63,62:FleeAndCower>51,80 | True prisoner=False cell=63,60
+t+525 21181@63,60:Wait>- 21233@64,61:AttackMelee>63,62 24672@63,62:FleeAndCower>51,80 | True prisoner=False cell=63,60
+END warden Human24672 victim Human21181 | VERDICT Allowed held=True prisoner=False cell=63,60 | hits ['1267 Human21181 Stab', '1267 Human21181 RM_StunningSpores', '1456 Human21233 Stab', '1456 Human21233 Stab', '1596 Human24672 Blunt']
+[bridge split] 45.9 s wall: load 0.0 / ticks 6.3 / reads 1.7 / other 27.4 / outside calls 10.5 s

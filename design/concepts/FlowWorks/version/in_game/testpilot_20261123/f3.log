@@ -1,0 +1,15 @@
+SPEC Human21181 at (63, 61) lip (63, 62) warden Human24671 accepted=None | VERDICT Allowed held=True prisoner=False cell=63,61
+SPEC Human21233 at (68, 61) lip (68, 62) warden Human24681 accepted=None | VERDICT Allowed held=True prisoner=False cell=68,61
+t0 21181@63,61:Wait>- 21233@68,61:Wait>- 24671@63,62:->- 24681@68,62:->-
+t+15 21181@63,61:Wait>- 21233@68,61:Wait>- 24671@63,62:Wait>- 24681@68,62:Wait>- | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+315 21181@63,61:Wait_MaintainPosture>- 21233@68,61:Wait>- 24671@63,62:Wait>- 24681@68,62:Wait>- | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+330 21181@63,61:AttackMelee>66,62 21233@68,61:Wait>- 24671@63,62:Wait>- 24681@68,62:Wait>- | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+360 21181@64,61:AttackMelee>66,62 21233@68,61:Wait>- 24671@63,62:Wait>- 24681@68,62:Wait>- | True prisoner=False cell=64,61 True prisoner=False cell=68,61
+t+375 21181@65,61:AttackMelee>66,62 21233@68,61:Wait>- 24671@63,62:Wait>- 24681@68,62:Wait>- | True prisoner=False cell=65,61 True prisoner=False cell=68,61
+t+465 21181@65,61:AttackMelee>66,62 21233@68,61:Wait_MaintainPosture>- 24671@63,62:Wait>- 24681@68,62:Wait>- | True prisoner=False cell=65,61 True prisoner=False cell=68,61
+t+480 21181@65,61:AttackMelee>66,62 21233@68,61:Ignite>66,61 24671@63,62:Wait>- 24681@68,62:Wait>- | True prisoner=False cell=65,61 True prisoner=False cell=68,61
+t+495 21181@65,61:AttackMelee>66,62 21233@67,61:Ignite>66,61 24671@63,62:Wait>- 24681@68,62:Wait>- | True prisoner=False cell=65,61 True prisoner=False cell=67,61
+END warden Human24671 victim Human21181 | VERDICT Allowed held=True prisoner=False cell=65,61 | hits []
+END warden Human24681 victim Human21233 | VERDICT Allowed held=True prisoner=False cell=67,61 | hits []
+[bridge split] 31.2 s wall: load 0.0 / ticks 7.4 / reads 2.7 / other 8.5 / outside calls 12.5 s
+[bridge split] WARN 84 calls of jawa/static_call (3.5 s): batch them

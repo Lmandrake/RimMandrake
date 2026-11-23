@@ -1,0 +1,15 @@
+MOVE 21181 63,60 {'success': True, 'message': '1/1 pawn(s) standing on (63,60) after 246 tick(s); 1 moved at all.', 'arrivedCount': 1, 'movedCount': 1, 'pawnCount': 1, 'destination': {'x': 63, 'z': 60}, 'pathEndMode': 'OnCell', 'ticksElapsed': 246, 'ticksRequested': 240, 'timedOut': False, 'polls': 36, 'waitedSecond VERDICT Allowed held=True prisoner=False cell=63,60
+DOWN --down=21181 {'success': True, 'action': 'downed', 'allowBleedingWoundsHonoured': True, 'downedBefore': False, 'deadBefore': False, 'downedAfter': True, 'deadAfter': False, 'changed': True, 'hediffCount': 11, 'tic
+SPEC Human21181 at (63, 60) lip (63, 62) warden Human24673 accepted=True | VERDICT Allowed held=True prisoner=False cell=63,60
+t0 21181@63,60:Wait>63,62 21233@68,61:Wait>- 24673@63,62:CD>63,60
+t+15 21181@63,60:Wait>63,62 21233@68,61:Wait>- 24673@63,62:CD>63,60 | True prisoner=False cell=63,60
+t+180 21181@63,60:->- 21233@68,61:Wait>- 24673@63,62:Wait_MaintainPosture>- | True prisoner=True cell=63,60
+t+195 21181@63,60:Wait_Downed>- 21233@68,61:Wait>- 24673@63,62:Wait>- | True prisoner=True cell=63,60
+t+225 21181@63,60:Wait_Downed>- 21233@68,61:Wait_MaintainPosture>- 24673@63,62:Wait>- | True prisoner=True cell=63,60
+t+240 21181@63,60:Wait_Downed>- 21233@68,61:AttackMelee>63,62 24673@63,62:Wait>- | True prisoner=True cell=63,60
+t+270 21181@63,60:Wait_Downed>- 21233@67,61:AttackMelee>63,62 24673@63,62:Wait>- | True prisoner=True cell=63,60
+t+285 21181@63,60:Wait_Downed>- 21233@66,61:AttackMelee>63,62 24673@63,62:Wait>- | True prisoner=True cell=63,60
+t+300 21181@63,60:Wait_Downed>- 21233@65,61:AttackMelee>63,62 24673@63,62:Wait>- | True prisoner=True cell=63,60
+t+315 21181@63,60:Wait_Downed>- 21233@64,61:AttackMelee>63,62 24673@63,62:FleeAndCower>51,80 | True prisoner=True cell=63,60
+END warden Human24673 victim Human21181 | VERDICT AlreadyPrisoner held=True prisoner=True cell=63,60 | hits ['1456 Human21233 Stab']
+[bridge split] 44.3 s wall: load 0.0 / ticks 5.0 / reads 3.0 / other 27.5 / outside calls 8.7 s

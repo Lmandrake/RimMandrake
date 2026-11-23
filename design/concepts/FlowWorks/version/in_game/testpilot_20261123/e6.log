@@ -1,0 +1,17 @@
+SPEC Human21233 at (68, 61) lip (68, 62) warden Human24671 accepted=True | VERDICT Allowed held=True prisoner=False cell=68,61
+ATTACK order Human21181 -> Human24671 {'success': True, 'accepted': True, 'interruptibleBefore': True, 'beforeJobDef': 'Wait', 'requestedJobDef': 'AttackMelee', 'afterJobDef': 'AttackMelee', 'nowRunningRequested': True, 'ticksElapsed': 0, 'pausedDuringWait': True, 'queueLength': 0, 'operation': {'OperationId': 'op_fcbd98feb4b648f1bd5084cf2b00c1b0', 'Status': 'Completed', 'Success': True, 'DurationMs': 17085}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 905}}
+t0 21181@63,61:AttackMelee>68,62 21233@68,61:CDPinned>68,62 24671@68,62:CD>68,61
+t+15 21181@63,61:AttackMelee>68,62 21233@68,61:CDPinned>68,62 24671@68,62:CD>68,61 | True prisoner=False cell=68,61
+t+30 21181@64,61:AttackMelee>68,62 21233@68,61:CDPinned>68,62 24671@68,62:CD>68,61 | True prisoner=False cell=68,61
+t+45 21181@65,61:AttackMelee>68,62 21233@68,61:CDPinned>68,62 24671@68,62:CD>68,61 | True prisoner=False cell=68,61
+t+60 21181@66,61:AttackMelee>68,62 21233@68,61:CDPinned>68,62 24671@68,62:CD>68,61 | True prisoner=False cell=68,61
+t+75 21181@67,61:AttackMelee>68,62 21233@68,61:CDPinned>68,62 24671@68,62:CD>68,61 | True prisoner=False cell=68,61
+t+180 21181@67,61:AttackMelee>68,62 21233@68,61:->- 24671@68,62:Wait_MaintainPosture>- | True prisoner=True cell=68,61
+t+195 21181@67,61:AttackMelee>68,62 21233@68,61:Wait_Wander>- 24671@68,62:FleeAndCower>80,80 | True prisoner=True cell=68,61
+t+300 21181@67,61:AttackMelee>68,62 21233@68,61:Wait_Wander>- 24671@68,62:Wait>- | True prisoner=True cell=68,61
+t+315 21181@67,61:AttackMelee>68,62 21233@68,61:Wait_Wander>- 24671@68,62:FleeAndCower>80,80 | True prisoner=True cell=68,61
+t+345 21181@67,61:AttackMelee>68,62 21233@68,61:Wait_MaintainPosture>- 24671@68,62:FleeAndCower>80,80 | True prisoner=True cell=68,61
+t+360 21181@67,61:AttackMelee>68,62 21233@68,61:GotoWander>70,66 24671@68,62:FleeAndCower>80,80 | True prisoner=True cell=68,61
+t+420 21181@67,61:AttackMelee>68,62 21233@68,61:GotoWander>70,66 24671@68,62:Wait>- | True prisoner=True cell=68,61
+END warden Human24671 victim Human21233 | VERDICT AlreadyPrisoner held=True prisoner=True cell=68,61 | hits ['1087 Human21181 Stab', '1087 Human21181 RM_StunningSpores', '1252 Human21181 Stab', '1252 Human21181 RM_StunningSpores', '1204 Human24679 Blunt', '1227 Human24671 Blunt', '1324 Human24679 Blunt', '982 Human21181 Stab', '982 Human21181 RM_StunningSpores', '1085 Human24671 Blunt', '1267 Human21181 Stab', '1267 Human21181 RM_StunningSpores']
+[bridge split] 57.0 s wall: load 0.0 / ticks 4.9 / reads 1.9 / other 40.1 / outside calls 10.2 s

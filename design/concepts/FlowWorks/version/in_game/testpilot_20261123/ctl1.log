@@ -1,0 +1,13 @@
+A Human21181 sent to (66, 60) '1/1 pawn(s) standing on (66,60) after 366 tick(s); 1 moved at all.'
+LEAF LEAF leaf=1/1 progress=0 full=480 target=lowered raised=0/2 frozen=False winch=True powered=True hold=False auto=False p
+B Human21187 ordered to (66, 65) '0/1 pawn(s) standing on (66,65) after 0 tick(s); 0 moved at all. \u26a0\ufe0f THE GAME DID NOT TICK \u2014 nothing here
+  B at (66, 62) Goto | A at (66, 60) Ignite 
+  B at (67, 63) Goto | A at (66, 61) Ignite 
+  B at (67, 64) Goto | A at (66, 61) Ignite 
+  B at (66, 65) AttackMelee | A at (66, 61) Ignite 
+RESULT block=True swimSquares=[]
+PASS D:\ClaudeWork\rimmandrake\testpilot_pit_capture_faults\ctl1.json 
+[bridge split] 55.5 s wall: load 0.5 / ticks 3.7 / reads 4.7 / other 24.7 / outside calls 22.0 s
+[bridge split] WARN 131 calls of jawa/flowworks_excavation_drive (6.0 s): batch them
+[bridge split] WARN 85 calls of jawa/static_call (4.0 s): batch them
+[bridge split] WARN 70 calls of jawa/window_list_close (3.3 s): batch them

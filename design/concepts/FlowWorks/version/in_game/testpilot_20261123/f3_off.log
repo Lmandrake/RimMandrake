@@ -1,0 +1,13 @@
+SPEC Human21181 at (63, 61) lip (63, 62) warden Human24671 accepted=None | VERDICT Allowed held=True prisoner=False cell=63,61
+SPEC Human21233 at (68, 61) lip (68, 62) warden Human24675 accepted=None | VERDICT Allowed held=True prisoner=False cell=68,61
+t0 21181@63,61:Wait>- 21233@68,61:Wait>- 24671@63,62:->- 24675@68,62:->-
+t+15 21181@63,61:AttackMelee>63,62 21233@68,61:AttackMelee>68,62 24671@63,62:Wait>- 24675@68,62:Wait>- | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+30 21181@63,61:AttackMelee>63,62 21233@68,61:Wait_MaintainPosture>- 24671@63,62:Wait>- 24675@68,62:Wait>- | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+45 21181@63,61:AttackMelee>63,62 21233@68,61:AttackMelee>68,62 24671@63,62:FleeAndCower>63,84 24675@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+150 21181@63,61:Wait_MaintainPosture>- 21233@68,61:AttackMelee>68,62 24671@63,62:FleeAndCower>63,84 24675@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+165 21181@63,61:AttackMelee>63,62 21233@68,61:AttackMelee>68,62 24671@63,62:FleeAndCower>63,84 24675@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+195 21181@63,61:AttackMelee>63,62 21233@68,61:Wait_MaintainPosture>- 24671@63,62:FleeAndCower>63,84 24675@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+210 21181@63,61:AttackMelee>63,62 21233@68,61:AttackMelee>68,62 24671@63,62:FleeAndCower>63,84 24675@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+END warden Human24671 victim Human21181 | VERDICT Allowed held=True prisoner=False cell=63,61 | hits ['912 Human24671 Blunt', '1032 Human24671 Blunt']
+END warden Human24675 victim Human21233 | VERDICT Allowed held=True prisoner=False cell=68,61 | hits ['915 Human24675 Blunt', '1035 Human24675 Blunt', '1096 Human21233 Stab']
+[bridge split] 18.7 s wall: load 0.0 / ticks 2.7 / reads 1.6 / other 5.6 / outside calls 8.8 s

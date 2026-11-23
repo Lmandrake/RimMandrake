@@ -229,6 +229,14 @@ class Fake:
             return {'success': True, 'value': 'True'}
         if tool == 'jawa/static_call':
             return {'success': True, 'result': self.static(kw['type'], kw['method'], kw.get('args', ''))}
+        if tool == 'jawa/site_state':                # the capture trace's read (S.B.call, past the receipt)
+            return {'success': True, 'pawns': [{'id': k, 'x': p['x'], 'z': p['z'], 'job': None} for k, p in g['pawns'].items()],
+                    'state': {'tick': 0}}
+        if tool == 'jawa/damage_log':               # who hurt a warden: nobody, or (fault 'stab') a held raider
+            if self.fault == 'stab':
+                raider = sorted(k for k, p in g['pawns'].items() if p['hostile'])[0]
+                return {'success': True, 'events': [{'tick': 9, 'instigatorId': raider, 'damageDef': 'Stab'}]}
+            return {'success': True, 'events': []}
         raise AssertionError('unexpected tool %s %s' % (tool, kw))
 
     def static(self, typ, method, arg):
@@ -345,8 +353,8 @@ def check(label, ok, why=''):
         FAILS.append(label)
 
 
-ROWS = ('MOAT_raiders_swim', 'MOAT_drains_fast', 'MOAT_two_held_and_captured', 'MOAT_chemfuel_pumped', 'MOAT_moat_burns',
-        'MOAT_control_bridge_down_no_swim')
+ROWS = ('MOAT_raiders_swim', 'MOAT_drains_fast', 'MOAT_two_held_and_captured', 'MOAT_rim_wardens_not_stabbed', 'MOAT_chemfuel_pumped',
+        'MOAT_moat_burns', 'MOAT_control_bridge_down_no_swim')
 rows, out, F = run()
 check('every staging call keeps its tool contract (placed raid; proof args; a pump, a door and a leaf where asked)',
       not F.contract, F.contract)
@@ -369,6 +377,9 @@ check('a lifted sluice that drains nothing: the drain FAILs, capture and chemfue
       and r.get('MOAT_chemfuel_pumped') == 'UNMEASURED', r)
 r, o, _ = run(mod='nohold')
 check('a dry ring that holds nobody: the capture FAILs', r.get('MOAT_two_held_and_captured') == 'FAIL', r)
+r, o, _ = run(fault='stab')
+check('a held raider that stabs a warden on the rim (2026-11-23): MOAT_rim_wardens_not_stabbed FAILs',
+      r.get('MOAT_rim_wardens_not_stabbed') == 'FAIL' and r.get('MOAT_two_held_and_captured') == 'PASS', r)
 r, o, _ = run(fault='gone')
 check('a raid that is gone at the first poll: swim, capture and control UNMEASURED, none of them PASS',
       all(r.get(x) == 'UNMEASURED' for x in ('MOAT_raiders_swim', 'MOAT_two_held_and_captured',

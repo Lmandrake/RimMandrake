@@ -1,0 +1,21 @@
+SPEC Human21233 at (68, 61) lip (68, 62) warden Human24671 accepted=True | VERDICT Allowed held=True prisoner=False cell=68,61
+t0 21181@63,61:Wait>- 21233@68,61:CDPinned>68,62 24671@68,62:CD>68,61
+t+15 21181@63,61:Wait>- 21233@68,61:CDPinned>68,62 24671@68,62:CD>68,61 | True prisoner=False cell=68,61
+SPEC Human21181 at (63, 61) lip (63, 62) warden Human24675 accepted=True | VERDICT Allowed held=True prisoner=False cell=63,61
+t+60 21181@63,61:CDPinned>63,62 21233@68,61:CDPinned>68,62 24671@68,62:CD>68,61 24675@63,62:CD>63,61 | True prisoner=False cell=68,61 True prisoner=False cell=63,61
+t+180 21181@63,61:CDPinned>63,62 21233@68,61:->- 24671@68,62:Wait_MaintainPosture>- 24675@63,62:CD>63,61 | True prisoner=True cell=68,61 True prisoner=False cell=63,61
+t+195 21181@63,61:CDPinned>63,62 21233@68,61:Wait_Wander>- 24671@68,62:Wait>- 24675@63,62:CD>63,61 | True prisoner=True cell=68,61 True prisoner=False cell=63,61
+t+240 21181@63,61:->- 21233@68,61:Wait_Wander>- 24671@68,62:Wait>- 24675@63,62:Wait_MaintainPosture>- | True prisoner=True cell=68,61 True prisoner=True cell=63,61
+t+255 21181@63,61:Wait_Wander>- 21233@68,61:Wait_Wander>- 24671@68,62:Wait>- 24675@63,62:RemoveApparel>63,62 | True prisoner=True cell=68,61 True prisoner=True cell=63,61
+t+330 21181@63,61:Wait_Wander>- 21233@68,61:Wait_Wander>- 24671@68,62:Wait>- 24675@63,62:Clean>63,62 | True prisoner=True cell=68,61 True prisoner=True cell=63,61
+t+345 21181@63,61:Wait_Wander>- 21233@68,61:Wait_MaintainPosture>- 24671@68,62:Wait>- 24675@63,62:Clean>63,62 | True prisoner=True cell=68,61 True prisoner=True cell=63,61
+t+360 21181@63,61:Wait_Wander>- 21233@68,61:GotoWander>70,65 24671@68,62:Wait>- 24675@63,62:Wait_MaintainPosture>- | True prisoner=True cell=68,61 True prisoner=True cell=63,61
+t+375 21181@63,61:Wait_Wander>- 21233@68,61:GotoWander>70,65 24671@68,62:Wait>- 24675@63,62:GotoWander>62,69 | True prisoner=True cell=68,61 True prisoner=True cell=63,61
+t+435 21181@63,61:Wait_Wander>- 21233@68,61:GotoWander>70,65 24671@68,62:Wait>- 24675@63,63:GotoWander>62,69 | True prisoner=True cell=68,61 True prisoner=True cell=63,61
+t+450 21181@63,61:Wait_MaintainPosture>- 21233@68,61:GotoWander>70,65 24671@68,62:Wait>- 24675@63,63:GotoWander>62,69 | True prisoner=True cell=68,61 True prisoner=True cell=63,61
+t+465 21181@63,61:Wait_Wander>- 21233@68,61:GotoWander>70,65 24671@68,62:Wait>- 24675@63,63:GotoWander>62,69 | True prisoner=True cell=68,61 True prisoner=True cell=63,61
+t+480 21181@63,61:Wait_Wander>- 21233@69,61:GotoWander>70,65 24671@68,62:Wait>- 24675@63,63:GotoWander>62,69 | True prisoner=True cell=69,61 True prisoner=True cell=63,61
+END warden Human24671 victim Human21233 | VERDICT AlreadyPrisoner held=True prisoner=True cell=69,61 | hits ['1252 Human21181 Stab', '1252 Human21181 RM_StunningSpores', '1204 Human24679 Blunt', '1227 Human24671 Blunt', '1324 Human24679 Blunt', '982 Human21181 Stab', '982 Human21181 RM_StunningSpores', '1085 Human24671 Blunt', '1267 Human21181 Stab', '1267 Human21181 RM_StunningSpores', '1467 Human24671 Blunt', '1587 Human24671 Blunt']
+END warden Human24675 victim Human21181 | VERDICT AlreadyPrisoner held=True prisoner=True cell=63,61 | hits []
+[bridge split] 62.3 s wall: load 0.0 / ticks 5.5 / reads 2.1 / other 41.5 / outside calls 13.2 s
+[bridge split] WARN 65 calls of jawa/static_call (2.7 s): batch them

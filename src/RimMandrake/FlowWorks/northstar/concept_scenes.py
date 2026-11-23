@@ -1509,12 +1509,40 @@ def _hits_on(S, pid):
     return ['%s %s %s' % (e.get('tick'), e.get('instigatorId') or 'no instigator', e.get('damageDef')) for e in r.get('events') or []]
 
 
+def _rim_stabs(hits_by_warden, raiders):
+    """The hits a held raider landed on each warden: {warden: ['tick instigator damageDef', ...]}. A warden's own punches
+    (the recorder lists a pawn's events as instigator too) and a recorder that refused (a string) are not stabs."""
+    return {w: [h for h in hits if len(h.split()) >= 2 and h.split()[1] in raiders] if isinstance(hits, list) else []
+            for w, hits in hits_by_warden.items()}
+
+
 def _moat_plot_lip(at):
     """The plot square nearest the raider at `at` (the plot is x/z O+2..O+9: undug, inside the ring)."""
     plot = [(O[0] + i, O[1] + j) for i in range(2, MOAT_N - 2) for j in range(2, MOAT_N - 2)]
     return min(plot, key=lambda c: (c[0] - at[0]) ** 2 + (c[1] - at[1]) ** 2)
 
 
+# ── anti-guessing notes: the moat capture (test pilot sitting 2026-11-23, RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS)
+# CAUSE (measured, fixed 1c053b325bc5): (a) a held raider on a moat square that no rim square the warden can walk to touches
+#   (the outer column of this 2-wide ring, seen from the plot) made the warden wait at the nearest rim square until
+#   CaptureRepathLimit x CaptureRepathPauseTicks ran out (about 330 ticks), then the job ended with no prisoner and no message:
+#   the "prisoner flag backslides" and "held raider read free" readings. (b) any held raider that is not pinned stabbed any
+#   colonist on a rim square and walked the moat floor to reach one: the downed wardens. The check for (a) is the C# case
+#   PitCapture_takes_from_the_rim_without_touching; for (b) the row MOAT_rim_wardens_not_stabbed and PitLip_no_melee_across_a_pit_room_edge.
+# RULED OUT: a third raider's hit ends the warden's capture job. A stab (with stun spores) landed 90 ticks into the hold and
+#   the capture still finished at 180 ticks.
+# RULED OUT: the first finished capture ends the others (the pit becoming a prison). Two captures 60 ticks apart both finished.
+# RULED OUT: a raider on the outer column alone stalls it. An awake raider walks in to attack, is pinned and taken; the stall
+#   needs him to stay out of touch past the repath budget (downed, dormant for 330 ticks after the drive-off, or busy).
+# RULED OUT: a new-build regression on 6b52871479. The failing runs differ from the passing ones only in where the held
+#   raiders stood when the order was given.
+# HARNESS traps met: a row's detail is cut short in the evidence file, so the trace lives in S.r['moatCaptureTrace']; raiders
+#   sit in job Wait for about 330 ticks after the free ones are driven off, and Wait still auto-attacks the 8 squares around;
+#   jawa/damage_log keeps events across a save reload within one game session (same ids, earlier ticks); a .cs file that is
+#   not on the csproj Compile list builds clean and never reaches the game (read jawa/harmony_patches, type RimWorld.Pawn_MeleeVerbs).
+# NOT this fault, filed apart: MOAT_raiders_swim misses a crossing that falls between two 250-tick exhaustion checks
+#   (RIMMANDRAKE_FIX_FLOWWORKS_MOAT_SWIM_ROW_MISSES_SHORT_CROSSING); a swimmer beside the lowered leaf
+#   (RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMER_PAST_LOWERED_LEAF_AGAIN: every swim is on the column next to the 1-wide deck).
 def _moat_raid(S):
     G = _moat_stage(S, raised=True)                 # its raiders spawn after its last tick
     prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON  # a raid hurts, downs and kills by design: narrowed for every tick of it
@@ -1593,6 +1621,15 @@ def _moat_rows(S, G):
           {'held': [h[0] for h in held], 'prisoners': [c['pawn'] for c in made], 'wardensDowned': len([c for c in caught if c['wardenAbleAfter'] is False]),
            'captured': caught, 'freeRaidersDrivenOff': len(gone), 'baitColonist': (bait or {}).get('job', 'not on the map')},
           unmeasured=not swimmers or dry_at is None or len(held) < 2 or (len(made) < 2 and len(made) + len(lost) == len(caught)))
+    # RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS: no held raider's hand weapon reaches a warden on the rim
+    # (setting pitLipMeleeDeniedEnabled, shipped on). Red before 1c053b325bc5: visit 8 run T042734 (2 wardens downed) and the
+    # sitting's E3 (a warden standing on the rim downed in 360 ticks by 3 stabs).
+    raiders = set(G['raiders'])
+    stabs = _rim_stabs(S.r['moatWardenHits'], raiders)
+    S.row('MOAT_rim_wardens_not_stabbed', not any(stabs.values()) and not any(c['wardenAbleAfter'] is False for c in caught),
+          {'hitsByHeldRaiders': {w: h for w, h in stabs.items() if h}, 'wardens': len(caught),
+           'wardensDowned': len([c for c in caught if c['wardenAbleAfter'] is False])},
+          unmeasured=not caught or any(not isinstance(h, list) for h in S.r['moatWardenHits'].values()))
     # chemfuel from the Dump tank, through the powered pump, into the drained moat
     _poll_ticks(S, lambda: 'running=True' in S.sc(NSP, 'ProofPump', '%d,%d' % G['pump']), 400)
     p0 = S.sc(NSP, 'ProofPump', '%d,%d;pour' % G['pump'])

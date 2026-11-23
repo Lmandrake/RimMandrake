@@ -1,0 +1,26 @@
+SPEC Human21181 at (63, 61) lip (63, 62) warden Human24671 accepted=None | VERDICT Allowed held=True prisoner=False cell=63,61
+SPEC Human21233 at (68, 61) lip (68, 62) warden Human24673 accepted=None | VERDICT Allowed held=True prisoner=False cell=68,61
+t0 21181@63,61:Wait>- 21233@68,61:Wait>- 24671@63,62:->- 24673@68,62:->-
+t+15 21181@63,61:AttackMelee>63,62 21233@68,61:Wait>- 24671@63,62:Wait>- 24673@68,62:Wait>- | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+30 21181@63,61:AttackMelee>63,62 21233@68,61:Wait>- 24671@63,62:Wait>- 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+45 21181@63,61:AttackMelee>63,62 21233@68,61:Wait>- 24671@63,62:FleeAndCower>63,84 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+195 21181@63,61:Wait_MaintainPosture>- 21233@68,61:Wait>- 24671@63,62:FleeAndCower>63,84 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+210 21181@63,61:AttackMelee>63,62 21233@68,61:Wait>- 24671@63,62:FleeAndCower>63,84 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+255 21181@63,61:AttackMelee>63,62 21233@68,61:Wait>- 24671@63,62:FleeAndCower>63,84 24673@68,62:Wait>- | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+270 21181@63,61:AttackMelee>63,62 21233@68,61:Wait>- 24671@63,62:FleeAndCower>63,84 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+360 21181@63,61:Wait_MaintainPosture>- 21233@68,61:Wait>- 24671@63,62:Wait_Downed>- 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+375 21181@63,61:AttackMelee>68,62 21233@68,61:AttackMelee>68,62 24671@63,62:Wait_Downed>- 24673@68,62:Wait>- | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+390 21181@63,61:AttackMelee>68,62 21233@68,61:AttackMelee>68,62 24671@63,62:Wait_Downed>- 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+465 21181@63,61:AttackMelee>68,62 21233@68,61:Wait_MaintainPosture>- 24671@63,62:Wait_Downed>- 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+480 21181@63,61:AttackMelee>68,62 21233@68,61:AttackMelee>68,62 24671@63,62:Wait_Downed>- 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+495 21181@63,61:AttackMelee>68,62 21233@68,61:AttackMelee>68,62 24671@63,62:Wait_Downed>- 24673@68,62:Wait>- | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+510 21181@63,61:AttackMelee>68,62 21233@68,61:AttackMelee>68,62 24671@63,62:Wait_Downed>- 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=63,61 True prisoner=False cell=68,61
+t+540 21181@64,61:AttackMelee>68,62 21233@68,61:AttackMelee>68,62 24671@63,62:Wait_Downed>- 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=64,61 True prisoner=False cell=68,61
+t+555 21181@65,61:AttackMelee>68,62 21233@68,61:AttackMelee>68,62 24671@63,62:Wait_Downed>- 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=65,61 True prisoner=False cell=68,61
+t+570 21181@66,61:AttackMelee>68,62 21233@68,61:AttackMelee>68,62 24671@63,62:Wait_Downed>- 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=66,61 True prisoner=False cell=68,61
+t+585 21181@67,61:AttackMelee>68,62 21233@68,61:Wait_MaintainPosture>- 24671@63,62:Wait_Downed>- 24673@68,62:FleeAndCower>68,84 | True prisoner=False cell=67,61 True prisoner=False cell=68,61
+t+600 21181@67,61:AttackMelee>68,62 21233@68,61:AttackMelee>72,71 24671@63,62:Wait_Downed>- 24673@68,62:->- | True prisoner=False cell=67,61 True prisoner=False cell=68,61
+END warden Human24671 victim Human21181 | VERDICT Allowed held=True prisoner=False cell=67,61 | hits ['907 Human21181 Stab', '912 Human24671 Blunt', '1032 Human24671 Blunt', '1087 Human21181 Stab', '1087 Human21181 RM_StunningSpores', '1252 Human21181 Stab', '1252 Human21181 RM_StunningSpores']
+END warden Human24673 victim Human21233 | VERDICT Allowed held=True prisoner=False cell=68,61 | hits ['1036 Human21233 Stab', '1266 Human24673 Blunt', '1366 Human21233 Blunt', '1486 Human21233 Stab', '1492 Human21181 Stab', '1492 Human21181 RM_StunningSpores']
+[bridge split] 29.9 s wall: load 0.0 / ticks 7.0 / reads 2.1 / other 8.3 / outside calls 12.5 s
+[bridge split] WARN 84 calls of jawa/static_call (3.5 s): batch them
