@@ -10,10 +10,10 @@ Also: skills/gravship-layout/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 24,269 | 27860 |
-| words in linted prose | 2,681 | 3312 |
-| STE violations per 100 words | 5.04 | 2.36 |
-| sentences over 20 words | 52 | 27 |
+| bytes | 24,269 | 27872 |
+| words in linted prose | 2,681 | 3311 |
+| STE violations per 100 words | 5.04 | 2.33 |
+| sentences over 20 words | 52 | 26 |
 | flagged lines (mechanical) | 27 | 2 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 9 | 0 |
 
@@ -65,6 +65,9 @@ checked the other corrections against the source and found each one true, with s
 
 The same reader then read each repair, the history file and the two changed reference files. It found nothing real. Every
 changed line of those files was read.
+
+After the first landing (2b17990eb3), the prose check of `./publish` named 5 lines. The writer repaired all 5 (four pronoun
+subjects, one long sentence). No reader read those 5 repairs.
 
 ## Conflicts and stale lines: settled
 

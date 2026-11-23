@@ -182,7 +182,7 @@ Floors **do** survive (§"What is measured here"). Each item below changes how y
   tested which one is true. If a demo opens under fog, put the starting pawns where the ship must be visible. The fog is
   cosmetic, but it reads as a bug.
 - **Every mod used in the ship becomes a hard dependency of the exported mod.** This costs us nothing while we use one
-  mod list on one machine. It costs the other player if you share a ship. Only a ship of vanilla parts stays portable.
+  mod list on one machine. A shared ship costs the other player every mod. Only a ship of vanilla parts stays portable.
 - **A preview image is written beside the XML by the export** (`ShipPreviewRenderer.Capture`). The README says that the
   author could not automate the preview. That line is older than the code. A hand-written layout has no preview until
   somebody puts a PNG beside the XML, with the same basename.
@@ -308,7 +308,7 @@ BuildFromLayout(ShipLayoutDefV2 layout)`**. The file also holds `public static S
 - **The call works outside a scenario start, by its source.** The file holds **zero** references to `Find.`, `Current.`,
   `GameInitData`, `Scenario` or `Map`. The method resolves defs through `DefDatabase` and its own caches. The scenario
   resolver is only its caller. No live run here tested this call.
-- **The method is not a pure function.** It sets `CurrentLayout` and `CurrentSketch`. It raises the footprint radius of
+- **The method is not a pure function.** `BuildFromLayout` sets `CurrentLayout` and `CurrentSketch`. The call raises the footprint radius of
   the `GravEngine` def to 79 when the radius is smaller. Only the arrival Postfix calls `RestoreGravEngineRange()`. So call that method yourself
   after a mid-game spawn, or every grav engine keeps the larger radius.
 - **`BuildFromLayout` does not lay the floors.** The floors land during arrival, through
@@ -334,8 +334,7 @@ and some hold one `plantToGrowDef`. None of our exports holds a `quality`. The l
   `terrainStuff`, `List<ShipThingEntry> things`
 
 **A layout this library accepts is still not one the game has accepted.** A round trip proves that our parser agrees with
-itself. Do not call a hand-written ship done until the ship went through the choose-gravship page and somebody looked at
-the result.
+itself. Send a hand-written ship through the choose-gravship page and look at the result. Until then the ship is not done.
 
 ## Capacity, and the dial that changes it
 
@@ -429,7 +428,7 @@ design.
 When a ship turns to land, each thing turns by these rules (1.6 `Gravship.GetPlacementValues`):
 
 - A rotatable thing turns with the ship.
-- A `rotatable=false` SQUARE thing keeps `defaultPlacingRot`. It never turns.
+- A `rotatable=false` SQUARE thing keeps `defaultPlacingRot` and never turns.
 - A `rotatable=false` NON-square Building is FORCED to the ship's rotation anyway.
 
 Audit and lint with `src/RimMandrake/Utils/gravship_rotation_audit.py --check`.
