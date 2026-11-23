@@ -106,6 +106,8 @@ PAGES = {
         "src/RimMandrake/rimflow/selftest_wrong_check_fixed_in_sitting.py",
     "design/specs/2026-11-20-red-seen-owner/boundary.md":
         "src/RimMandrake/rimflow/selftest_red_seen_owner.py",
+    "design/specs/2026-11-23-stale-red-rerun-first/boundary.md":
+        "src/RimMandrake/rimflow/selftest_stale_red_rerun_first.py",
     "design/specs/2026-11-20-road-back-holder-first/boundary.md":
         "src/RimMandrake/rimflow/selftest_road_back_holder_first.py",
     "design/specs/2026-11-20-coverage-judge-reads-only/boundary.md":

@@ -1122,13 +1122,24 @@ def offline_usd(f, s):
     return _off_ceiling(f, s, spent, "offline_build")[0]     # less every VOID run: his card of 2026-11-18 (void_units)
 
 
+def stale_red(cv):
+    """-> the deciders a certificate refuses on ran_on_this_build: their recorded run (red or green) is of an older build
+    or command, so only a rerun can say what they read now (design/specs/2026-11-23-stale-red-rerun-first/boundary.md)."""
+    return {r.get("test") for r in (cv.get("rows") or [] if isinstance(cv, dict) else [])
+            if r.get("status") == "REFUSED" and r.get("clause") == "ran_on_this_build" and r.get("test")}
+
+
 def red_deciders(f):
-    """-> the offline deciders the certificate refuses as recorded red (clause green), sorted."""
+    """-> the offline deciders the certificate refuses as recorded red (clause green) on THIS build, sorted. A red run that
+    is also stale is the zero-token rerun's, never a builder's (stale_key;
+    RIMMANDRAKE_RERUN_STALE_RED_DECIDER_BEFORE_ANY_BUILDER_RUNS: Explosive Knockback's T_SETTINGS_SCREEN was red on its
+    old unscoped command)."""
     cv = f.get("certificate")
     if not isinstance(cv, dict):
         return []
+    stale = stale_red(cv)
     return sorted({r.get("test") for r in cv.get("rows") or [] if r.get("status") == "REFUSED"
-                   and r.get("clause") == "green" and r.get("test")})
+                   and r.get("clause") == "green" and r.get("test") and r.get("test") not in stale})
 
 
 def red_seen_owed(f):
@@ -1240,13 +1251,15 @@ RERUN_MAX_S = 4 * 3600     # a certificate rerun unit's bound (RuntimeMaxSec); F
 def stale_key(cv):
     """-> a key for a certificate whose every refusal is a stale stamp (clause ran_on_this_build): the stale deciders and
     the build each must carry now (would_pass names it), so a new build is a new key. None when it does not refuse, or
-    refuses on anything a rerun cannot pass (a red decider, an unregistered one, a bar with no decider). A red_seen
+    refuses on anything a rerun cannot pass (a red decider on this build, an unregistered one, a bar with no decider). A red_seen
     refusal (an edited decider owes a planted-fault proof) neither starts nor blocks the rerun: the rerun clears the stale
     stamps and the red proof stays the certificate's own wait, with its fix (RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN)."""
     if not isinstance(cv, dict):
         return None
+    stale = stale_red(cv)
+    # a green refusal of a stale decider is a red read on an older build or command: the rerun decides it
     ref = [r for r in cv.get("rows") or [] if isinstance(r, dict) and r.get("status") == "REFUSED"
-           and r.get("clause") != "red_seen"]
+           and r.get("clause") != "red_seen" and not (r.get("clause") == "green" and r.get("test") in stale)]
     if not ref or any(r.get("clause") != "ran_on_this_build" for r in ref):
         return None
     want = sorted({(str(r.get("test")), str(r.get("would_pass"))) for r in ref})
