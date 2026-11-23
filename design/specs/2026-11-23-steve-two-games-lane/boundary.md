@@ -1,6 +1,6 @@
 # BOUNDARY: the SteveDesktop lane drives Steve1 and Steve2 at once, Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/testq/testq.py` (`STEVE2`, `on_steve`, `steve2_on`, `steve_lanes`, `remote` with `host`, `worker_for`, `admit` with `host`, `lane_running`, the tick's Steve2 step, `fill_plan`'s busy rule), `infrastructure/stevedesktop/worker.py` (`STEVE_LANE`, `staged_companion`, the kept environment of `spawn`), `src/RimMandrake/Utils/testq/visit_feed.py` (the in-flight rule of `step`), `src/RimMandrake/Utils/testq/fault_monitor.py` (`gate`, `worker_busy`, the not-quarantined count), `src/RimMandrake/Utils/testq/ingest.py` (`env_window`, `ingest_group`'s config).
+Code: `src/RimMandrake/Utils/testq/testq.py` (`STEVE2`, `on_steve`, `steve2_on`, `steve_lanes`, `remote` with `host`, `worker_for`, `admit` with `host`, `lane_running`, the tick's Steve2 step, `fill_plan`'s busy rule), `infrastructure/stevedesktop/worker.py` (`STEVE_LANE`, `staged_companion`, the kept environment of `spawn`), `src/RimMandrake/Utils/testq/visit_feed.py` (the in-flight rule of `step`), `src/RimMandrake/Utils/testq/fault_monitor.py` (`gate`, `worker_busy`, the not-quarantined count), `src/RimMandrake/Utils/testq/ingest.py` (`env_window`, `ingest_group`'s config), `infrastructure/stevedesktop/sync_test_mods.py` (`site_saves`' extra targets, `--also-saves`), `testq.py`'s `site_stage_argv`.
 Item: `RIMMANDRAKE_FILL_BOTH_STEVEDESKTOP_GAMES_HE_SAYS_IT_HOLDS_TWO`, written 2026-11-23. The owner's words that night:
 *"Fill up Steve Desktop please... it can support two live games at a time."* Each promise has a test of its name in
 `src/RimMandrake/Utils/testq/selftest_testq_steve2.py`. This page covers only these parts of the files named; the rest
@@ -26,8 +26,6 @@ host `stevedesktop.b`); the map is `src/RimMandrake/rimflow/game_names.py`.
   A list near Archmagi's full 316 mods on both games is not measured.
 - **a-third-party-mod-updated-after-steve2s-copy.** Steve2's `Mods` copy of a third-party mod is the copy of the day
   `install b` ran (`install b --refresh` adds and updates). `sync_test_mods.py` writes Steve1's folders only.
-- **a-site-save-registered-after-staging.** The tick stages registered site saves into Steve1's Saves only. A visit
-  check that loads a site save on Steve2 needs that save in `instances/b/Saves`.
 - **a-stale-steve2-runner-clone-code.** Steve2's worker pulls `runner_b` before each attempt, as Steve1's does; a
   runner_b that cannot pull refuses the job (REFUSED/SYNC), which pauses Steve2 only.
 
@@ -59,3 +57,7 @@ host `stevedesktop.b`); the map is `src/RimMandrake/rimflow/game_names.py`.
 - **steve2-worker-is-a-steve-lane.** A worker with `TESTQ_WORKER_HOST=stevedesktop.b` takes the SteveDesktop paths
   (the list reset repair, the kept-game probe, the dump), not the Archmagi ones; it reads its staged companion from
   `TESTQ_COMPANION_INBOX` when that is set; and its detached attempt keeps the `GABP_` port and token of its game.
+- **site-saves-reach-steve2.** `sync_test_mods.site_saves` pushes each registered site save into every target Saves
+  folder it is given (`--also-saves`), and the tick's copy names Steve2's Saves
+  (`/mnt/d/ClaudeWork/rimmandrake/instances/b/Saves`) while Steve2 is switched on. (A Pyrelands job on a game with no
+  site save polls 420 s and reads UNMEASURED SITE: RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE.)

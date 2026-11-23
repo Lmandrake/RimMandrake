@@ -332,10 +332,35 @@ def t_steve2_worker_is_a_steve_lane(r):
           "steve2-worker-is-a-steve-lane: the archmagi worker is not, and reads its own home's inbox (%s)" % (a,))
 
 
+def t_site_saves_reach_steve2(r):
+    """sync_test_mods.site_saves copies each registered save into every target Saves folder it is given, and the tick
+    asks for Steve2's folder too while Steve2 is switched on."""
+    code = ("import sync_test_mods as M\npushed = []\n"
+            "M.remote_saves = lambda: '/a/Saves'\nM.remote_sha = lambda path: ''\n"
+            "M.push_file = lambda src, d: pushed.append(d)\n"
+            "M.remote_sha = (lambda f: (lambda path: f.get(path, '')))(dict())\n"
+            "import os, tempfile, json as J\nt = tempfile.mkdtemp(); sv = os.path.join(t, 'S'); os.makedirs(sv)\n"
+            "open(os.path.join(sv, 'Site_one.rws'), 'w').write('x')\nreg = os.path.join(t, 'reg.json')\n"
+            "J.dump({'one': {'save': 'Site_one'}}, open(reg, 'w'))\n"
+            "rc = M.site_saves(True, registry=reg, saves=sv, extra=['/b/Saves'])\n"
+            "print(json.dumps(sorted(pushed)))")
+    got = r.py(code)
+    check(got == ["/a/Saves", "/b/Saves"], "site-saves-reach-steve2: one registered save is pushed to Steve1's and "
+                                           "Steve2's Saves (%s)" % (got,))
+    argv_off = r.py("import testq; print(json.dumps(testq.site_stage_argv()))")
+    open(r.p("queue", "steve2.on"), "w").close()
+    argv_on = r.py("import testq; print(json.dumps(testq.site_stage_argv()))")
+    check(isinstance(argv_off, list) and "--also-saves" not in argv_off and isinstance(argv_on, list)
+          and argv_on[argv_on.index("--also-saves") + 1] == "/mnt/d/ClaudeWork/rimmandrake/instances/b/Saves",
+          "site-saves-reach-steve2: the tick's copy names Steve2's Saves only while Steve2 is on (%s / %s)" % (
+              argv_off, argv_on))
+    r.reset()
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="testq_steve2_")
     r = Rig(tmp)
-    for t in (t_steve2_command_carries_its_game, t_steve2_worker_is_a_steve_lane, t_steve2_results_are_steve_results,
+    for t in (t_site_saves_reach_steve2, t_steve2_command_carries_its_game, t_steve2_worker_is_a_steve_lane, t_steve2_results_are_steve_results,
               t_fault_drain_waits_for_both_workers, t_filler_fills_an_idle_game, t_visit_feed_one_mod_per_game,
               t_steve2_off_by_default, t_two_jobs_run_at_once_one_per_game,
               t_steve2_respects_the_machine_pause_and_its_own, t_steve2_stop_file_wins):

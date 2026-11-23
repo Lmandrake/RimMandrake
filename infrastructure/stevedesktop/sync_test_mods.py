@@ -191,12 +191,13 @@ def remote_saves():
 REGISTRY = os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck", "test_site_saves.json")
 
 
-def site_saves(apply, registry=REGISTRY, saves=None):
+def site_saves(apply, registry=REGISTRY, saves=None, extra=()):
     """Copy every registered test-site save (test_site_saves.json) that SteveDesktop lacks or holds in another version
     -> 0 ok / 1 when a save is missing here, unread there, or did not arrive whole. RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_
     STEVE_NO_SITE_THERE: SteveDesktop's Saves held no Pyrelands site, so `rimworld/load_game` of the registered save did
     nothing and every Pyrelands job polled 420 s and read UNMEASURED SITE (5 jobs since 2026-11-19, 0 PASS). Compared by
-    sha256, never by size (a rebuilt save may keep its size)."""
+    sha256, never by size (a rebuilt save may keep its size). EXTRA: more Saves folders on SteveDesktop that get the same
+    saves (Steve2's, `--also-saves`; design/specs/2026-11-23-steve-two-games-lane/boundary.md)."""
     saves = saves or gp.SAVES
     try:
         with open(registry, encoding="utf-8") as f:
@@ -210,6 +211,7 @@ def site_saves(apply, registry=REGISTRY, saves=None):
               % (ENV_SH, TARGET))
         return 1
     bad = 0
+    targets = [there] + [x for x in extra if x and x != there]
     for site, e in sorted(reg.items()):
         name = (e or {}).get("save") if isinstance(e, dict) else None
         if not name:
@@ -220,18 +222,19 @@ def site_saves(apply, registry=REGISTRY, saves=None):
             bad += 1
             continue
         want = CI.sha256(src) if hasattr(CI, "sha256") else _sha256(src)
-        got = remote_sha(there + "/" + name + ".rws")
-        if got is None:
-            print("UNMEASURED site %s: could not read %s on %s (ssh failed)" % (site, name, TARGET))
-            bad += 1
-            continue
-        state = "same" if got == want else "copy"
-        print("%-4s site %-13s %-44s %6.1f MB -> %s" % (state, site, name, os.path.getsize(src) / 1e6, there))
-        if state == "copy" and apply:
-            push_file(src, there)
-            after = remote_sha(there + "/" + name + ".rws")
-            bad += after != want
-            print("     %s (target sha %s)" % ("ok" if after == want else "MISMATCH", (after or "unreadable")[:12]))
+        for there in targets:
+            got = remote_sha(there + "/" + name + ".rws")
+            if got is None:
+                print("UNMEASURED site %s: could not read %s in %s on %s (ssh failed)" % (site, name, there, TARGET))
+                bad += 1
+                continue
+            state = "same" if got == want else "copy"
+            print("%-4s site %-13s %-44s %6.1f MB -> %s" % (state, site, name, os.path.getsize(src) / 1e6, there))
+            if state == "copy" and apply:
+                push_file(src, there)
+                after = remote_sha(there + "/" + name + ".rws")
+                bad += after != want
+                print("     %s (target sha %s)" % ("ok" if after == want else "MISMATCH", (after or "unreadable")[:12]))
     return 1 if bad else 0
 
 
@@ -248,9 +251,11 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--apply", action="store_true", help="copy (default: plan only)")
     ap.add_argument("--sites", action="store_true", help="only the registered test-site saves (test_site_saves.json)")
+    ap.add_argument("--also-saves", action="append", default=[], help="another Saves folder on SteveDesktop (WSL form) "
+                                                                      "that gets the same site saves (Steve2's)")
     a = ap.parse_args()
     if a.sites:
-        rc = site_saves(a.apply)
+        rc = site_saves(a.apply, extra=a.also_saves)
         if not a.apply:
             print("\nplan only; --apply copies")
         return rc

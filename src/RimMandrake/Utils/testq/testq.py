@@ -131,6 +131,7 @@ STEVE_HOSTS = (STEVE, STEVE2)
 REMOTE_RUNNER_B = os.environ.get("TESTQ_REMOTE_RUNNER_B", "~/rm/runner_b")
 STEVE1_HOME = "/mnt/d/RimTest/testq"          # Steve1's worker home on SteveDesktop: its companion inbox is the stager's
 STEVE2_HOME = os.environ.get("TESTQ_STEVE2_HOME", "/mnt/d/RimTest/testq.b")
+STEVE2_SAVES = "/mnt/d/ClaudeWork/rimmandrake/instances/b/Saves"     # Steve2's data folder (game_instance.py env b)
 # fails closed: a game_instance.py that cannot name game b runs no worker at all (`&&`), never Steve1's by default
 STEVE2_PREFIX = os.environ.get("TESTQ_STEVE2_PREFIX") or (
     '_e=$(python3 src/RimMandrake/Utils/game_instance.py env b) && eval "$_e" && '
@@ -621,6 +622,12 @@ SITE_STAGE = "site_saves_stage.json"
 SITE_RETRY_S = 1800
 
 
+def site_stage_argv():
+    """The copy the tick runs: Steve1's Saves, and Steve2's too while Steve2 is switched on."""
+    return [sys.executable, os.path.join(REPO, "infrastructure", "stevedesktop", "sync_test_mods.py"), "--sites",
+            "--apply"] + (["--also-saves", STEVE2_SAVES] if steve2_on() else [])
+
+
 def site_stage_step(now=None, run=None):
     """Ship every registered test-site save SteveDesktop lacks (sync_test_mods.site_saves;
     RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE: no Pyrelands site there, 5 jobs 0 PASS). Runs when
@@ -633,7 +640,7 @@ def site_stage_step(now=None, run=None):
     reg = os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck", "test_site_saves.json")
     try:
         with open(reg, "rb") as f:
-            want = hashlib.sha256(f.read()).hexdigest()
+            want = hashlib.sha256(f.read()).hexdigest() + ("+steve2" if steve2_on() else "")    # switching on copies
     except OSError as e:
         return {"state": "unmeasured", "why": "%s unreadable: %s" % (reg, e)}
     st = read_json(q(SITE_STAGE)) or {}
@@ -641,8 +648,7 @@ def site_stage_step(now=None, run=None):
         return {"state": "unchanged", "rc": st.get("rc")}
     if run is None:
         def run():
-            r = subprocess.run([sys.executable, os.path.join(REPO, "infrastructure", "stevedesktop", "sync_test_mods.py"),
-                                "--sites", "--apply"], capture_output=True, text=True, timeout=900)
+            r = subprocess.run(site_stage_argv(), capture_output=True, text=True, timeout=900)
             return r.returncode, (r.stdout + r.stderr)[-1500:]
     try:
         rc, text = run()
