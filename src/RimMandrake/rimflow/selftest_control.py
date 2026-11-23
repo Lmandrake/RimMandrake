@@ -2721,6 +2721,18 @@ def t_deadline_is_wall_clock():
           "pipe stop still states the deadline it set", r)
 
 
+def t_an_off_over_a_live_switch_names_the_one_it_replaces():
+    """2026-11-23 4:02 AM PST: a helper's proof ran `pipe off family:list_dispatch` over the Conductor's live switch
+    (ct_000112, machine load) and then `pipe on`; the output said only "OFF -> OFF", and the Conductor's switch was gone."""
+    fresh()
+    rc, out1, _ = pipe("off", "family:testq", "--why", "the first reason")
+    rc, out, _ = pipe("off", "family:testq", "--why", "a second reason")
+    check(rc == 0 and "REPLACES" in out and "the first reason" in out and "pipe on" in out,
+          "an off over a live switch names the act and reason it replaces, and that `pipe on` lifts both", out)
+    rc, out, _ = pipe("off", "family:stop_resume", "--why", "fresh")
+    check(rc == 0 and "REPLACES" not in out, "an off on a scope that was on says nothing about a replacement", out)
+
+
 def t_an_unseeded_mod_can_be_switched_off():
     """Promise an-unseeded-mod-can-be-switched-off (RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS): WreckedMachines
     was admitted with a shipping folder and no concept, and `pipe off WreckedMachines` read "no mod in the pipeline"."""
@@ -2759,6 +2771,7 @@ def main():
               t_his_hold_lifts_by_him_or_the_conductor, t_conductor_lift_only_from_its_window,
               t_conductors_lift_is_its_own_act, t_mirror_failure_is_an_alarm, t_held_stays_held_across_the_mirror,
               t_next_fits_a_screen, t_deadline_is_wall_clock, t_an_unseeded_mod_can_be_switched_off,
+              t_an_off_over_a_live_switch_names_the_one_it_replaces,
               t_a_test_process_starts_no_real_unit, t_a_test_process_never_writes_the_real_ledger):
         print("== %s" % t.__name__)
         try:

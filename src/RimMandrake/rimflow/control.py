@@ -606,7 +606,7 @@ def _switch(scope, off, why, layer, until, said, owner_said, per_ruling, idem, p
             c.execute("DELETE FROM switches WHERE scope=? AND layer=?", (scope, layer))
         still = [describe(r) for r in blocking(c, [scope], now)]
         return {"act": a, "before": before, "cancelled": cancelled, "still": still, "replayed": False,
-                "had": bool(old)}
+                "had": bool(old), "replaced": dict(old) if off and old and _live(old, now) else None}
 
 
 def switches(p=None, now=None):
@@ -2854,6 +2854,11 @@ def cmd_switch(o, off):
     after = "OFF" if off else ("still " + r["still"][0][:120] if r["still"] else "ON")
     lines = ["%s %s -> %s%s" % (shown, r["before"], after,
                                 "; cancelled before start: %s" % ", ".join(r["cancelled"]) if r["cancelled"] else "")]
+    rep = r.get("replaced")
+    if rep:     # the old switch's reason is gone from the store now: a later `pipe on` lifts both (2026-11-23)
+        lines.append("REPLACES %s (%s, %s): %s -- a later `pipe on %s` lifts that switch too; to keep it, put it back "
+                     "with its own --why" % (rep.get("act") or "-", rep.get("who") or "-", rep.get("at_pacific") or "-",
+                                            str(rep.get("why") or "")[:300], o.target))
     if off:
         try:
             live = [x for x in _q("SELECT * FROM runs WHERE state='started'") if _in_scope(x, scope)]
