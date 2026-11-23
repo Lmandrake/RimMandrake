@@ -2236,6 +2236,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             SpikeDrawChecks.Run(Case);         // PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE: stakes on the floor, never the walls; gone under 1 m (SpikeDrawChecks.cs)
             UnderLiquidParityChecks.Run(Case);  // RIMMANDRAKE_FIX_BIG_PIT_SCENE_BUILDINGS_STAY_DRY: C# law = model/underliquid.py
             PitReliefParityChecks.Run(Case);    // RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN: RM_PitReliefMath = model/pitdraw.py
+            PitSteppedReliefChecks.Run(Case);   // RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: the stepped-pit rule = pitrule.py
             PitFloorGroundChecks.Run(Case);     // RIMMANDRAKE_ALLOW_MEDIUM_FURNITURE_ON_PIT_FLOOR: a dry dug floor carries its ground's load
             SubmergeDrawChecks.Run(Case);      // RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL: liquid covers ladders, ramp, stakes by level
             PawnCutChecks.Run(Case);           // RIMMANDRAKE_DRAW_PAWN_OWN_PICTURE_CUT_AT_LIQUID_SURFACE_NOT_ICON: own picture cut at the surface

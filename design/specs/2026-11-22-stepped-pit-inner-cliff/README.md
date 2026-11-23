@@ -1,7 +1,8 @@
 # A stepped pit: the inner cliff stops part way down the side walls
 
-Item: `RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM`. Mod: FlowWorks (pits). Status: offline options for his
-pick. Nothing in the mod is changed.
+Item: `RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM`. Mod: FlowWorks (pits). Status: option B is built in the
+mod behind the Mod Setting "Pit relief: shadows and depth shading" (`pitSteppedReliefEnabled`, default on; off: today's look).
+His pick between A and B is still open; A is one constant (`RM_PitReliefMath.SunAzimuth` 0).
 
 His words (2026-11-22, about 6:20 PM PST, on the comparison sheet of
 `RIMMANDRAKE_ASK_GPT_HOW_TO_DRAW_STEPPED_PIT_FLOOR_HE_COULD_NOT_READ_IT`): *"I see comparison.png now. Oh boy. These all
@@ -66,7 +67,24 @@ the test, is red on P1 to P4.
 - Changes he may notice: a single-depth pit loses today's cream-lit north face (the faces now take the sun), and every
   floor is darker by depth.
 
-## The build, when it is built (the plan)
+## The build (as built)
+
+- `RM_PitReliefMath`: `StepH`, `StepW`, `StepK` (notches), `PlanStep` (the plan of `pitrule.plan_cell`, with liquid), `PointTop`
+  and `Lit` (the cast shadow at a point, a march over a 5x5 window of depths: `pitrule.lit_at`), `FaceLight`, `ShadowDark`,
+  `StepFloorShade` (StepK anchored so the 2 m floor keeps its look), `StepLipAlpha`.
+- `RM_UnderLiquid.NorthFaceAt` / `SideFaceAt(d, n, lv)`: H(d - lv) - H(n) under the rule (`Relief`, pushed from the setting), today's
+  face by the drop when off. The water layers, `RM_LiquidSurface`, the ladder waterline proof read, the stakes' floor
+  (`RM_SpikeDrawMath`) and `CornerPiece` read these, so every layer agrees on the face sizes.
+- `SectionLayer_RMExcavationWalls`: the dry relief path (`ReliefCell`): faces as polygons of the plan, toned by StepK of
+  their top x their light, lines by the plan, lip bands, the floor shade, the cast-shadow grid (8 a cell). `RedrawStep` dirties
+  the 5x5.
+- Test: `SelfTest/PitSteppedReliefChecks.cs`, golden tables written by `gen_golden.py --write` from `pitrule.py` (plain
+  `gen_golden.py` fails when they drift). Red on the parent (the rule's functions absent), green on the build.
+- Live stage: `FlowWorks/northstar/stepped_pit_stage.py` digs the 12 cases, captures each, saves the map.
+- Not done: a ladder hung on an inner riser in water reads its waterline from the drop (`Waterline(rot, drop, lv)`), not
+  from the riser's top; the water layers draw their side strips as plain strips (no hv / top width).
+
+## The build plan (as planned before the build)
 
 The walls layer is `Source/Superdeep/RM_ExcavationWalls.cs` (`SectionLayer_RMExcavationWalls`); its pure decisions are in
 `Source/RM_PitReliefMath.cs` and the face tables in `Source/RM_WallFaceMath.cs`; the offline twin is `model/pitdraw.py`.
@@ -92,5 +110,3 @@ The walls layer is `Source/Superdeep/RM_ExcavationWalls.cs` (`SectionLayer_RMExc
 
 - Water: wet pits are not drawn by these mockups. The water layers (`SeeThrough`, `WetEdges`, `SideUnder`,
   `RM_LiquidSurface`) and the pit fittings (`RM_SubmergeDraw`) read the same face sizes and must change with them.
-- The game: not built. The face functions are read by the water and fittings code, so the build is a change to all of
-  them at once, not to the walls layer alone.

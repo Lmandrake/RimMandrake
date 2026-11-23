@@ -1760,12 +1760,11 @@ namespace RimMandrake.FlowWorks
 			{
 				return RM_UnderLiquid.NoCut;   // hangs on no wall: no face to meet
 			}
-			float e = RM_UnderLiquid.Exposed(d, nb, lv);
 			if (rot == 0)
 			{
-				return 1f - RM_UnderLiquid.NorthFace(e);
+				return 1f - RM_UnderLiquid.NorthFaceAt(d, nb, lv);
 			}
-			float w = RM_UnderLiquid.SideFace(e);
+			float w = RM_UnderLiquid.SideFaceAt(d, nb, lv);
 			return rot == 1 ? 1f - w : w;
 		}
 

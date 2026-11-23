@@ -115,7 +115,11 @@ def deepening_redraws_walls():
     walls = _read(WALLS)
     helper = re.search(r"public static void RedrawStep\(Map map, IntVec3 c\)\s*\{(.*?)\n\t\t\}", walls, re.S)
     # the 4-argument form: the 2-argument MapMeshDirty dirties the neighbours' sections only for FogOfWar|Buildings|Roofs (1.6)
-    helper_ok = bool(helper and "MapMeshDirty(c," in helper.group(1) and "regenAdjacentCells: true" in helper.group(1))
+    # RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: the cast shadow reads two squares toward the sun, so the
+    # helper may dirty each of the 3x3 (GenAdj.AdjacentCellsAndInside) with its adjacent cells: the 5x5
+    body = helper.group(1) if helper else ""
+    helper_ok = bool(helper and ("MapMeshDirty(c," in body or ("MapMeshDirty(q," in body and "AdjacentCellsAndInside" in body))
+                     and "regenAdjacentCells: true" in body)
     calls = {name: "SectionLayer_RMExcavationWalls.RedrawStep(map, " in body
              for name, body in (("deepen", deepen), ("fill_in", fill), ("deck_spawn", spawn), ("deck_despawn", despawn))}
     ok = model_ok and helper_ok and all(calls.values())

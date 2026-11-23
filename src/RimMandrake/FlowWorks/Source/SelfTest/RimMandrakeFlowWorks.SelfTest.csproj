@@ -79,6 +79,7 @@
     <Compile Include="SubmergeDrawChecks.cs" />
     <Compile Include="UnderLiquidParityChecks.cs" />
     <Compile Include="PitReliefParityChecks.cs" />
+    <Compile Include="PitSteppedReliefChecks.cs" />
     <Compile Include="..\Superdeep\RM_UnderLiquid.cs" />
     <Compile Include="..\Superdeep\RM_PawnCutMath.cs" />
     <Compile Include="PawnCutChecks.cs" />

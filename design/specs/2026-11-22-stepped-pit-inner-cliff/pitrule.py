@@ -129,7 +129,7 @@ def _at(grid, r, c):
     return 0.0
 
 
-def plan_cell(grid, r, c) -> dict | None:
+def plan_cell(grid, r, c, lv: float = 0.0) -> dict | None:
     """Everything one square draws, from its depth and its 8 neighbours' depths. None for undug ground.
 
     Keys (sizes in squares, y down from the north edge):
@@ -151,16 +151,19 @@ def plan_cell(grid, r, c) -> dict | None:
         return None
     n, s, w, e = _at(grid, r - 1, c), _at(grid, r + 1, c), _at(grid, r, c - 1), _at(grid, r, c + 1)
     nw, ne = _at(grid, r - 1, c - 1), _at(grid, r - 1, c + 1)
-    t = H(d) - H(n) if n < d else 0.0
-    l = W(d) - W(w) if w < d else 0.0
-    rr = W(d) - W(e) if e < d else 0.0
-    lt = W(n) - W(w) if (n < d and w < n) else 0.0
-    rt = W(n) - W(e) if (n < d and e < n) else 0.0
-    hv_l = H(min(w, d)) - H(n) if (n < d and w > n) else 0.0
-    hv_r = H(min(e, d)) - H(n) if (n < d and e > n) else 0.0
+    # liquid lv metres deep in this square hides the foot of its walls: the faces show down to the waterline de only
+    # (the lines are the edges' and stay where they are)
+    de = d - max(0.0, lv)
+    t = H(de) - H(n) if n < de else 0.0
+    l = W(de) - W(w) if w < de else 0.0
+    rr = W(de) - W(e) if e < de else 0.0
+    lt = W(n) - W(w) if (n < de and w < n) else 0.0
+    rt = W(n) - W(e) if (n < de and e < n) else 0.0
+    hv_l = H(min(w, de)) - H(n) if (n < de and w > n) else 0.0
+    hv_r = H(min(e, de)) - H(n) if (n < de and e > n) else 0.0
     sl = south_lining(d - s) if s < d else 0.0
-    cnw = (W(d) - W(nw), H(d) - H(nw)) if (n >= d and w >= d and nw < d) else (0.0, 0.0)
-    cne = (W(d) - W(ne), H(d) - H(ne)) if (n >= d and e >= d and ne < d) else (0.0, 0.0)
+    cnw = (W(de) - W(nw), H(de) - H(nw)) if (n >= d and w >= d and nw < de) else (0.0, 0.0)
+    cne = (W(de) - W(ne), H(de) - H(ne)) if (n >= d and e >= d and ne < de) else (0.0, 0.0)
     return {
         "d": d, "t": t, "l": l, "r": rr, "lt": lt, "rt": rt, "hv_l": hv_l, "hv_r": hv_r, "sl": sl,
         "cnw": cnw, "cne": cne,
@@ -189,3 +192,72 @@ def side_boundary(p: dict, side: str, y: float) -> float:
     if t - hv <= 1e-9:
         return full
     return top + (full - top) * (y - hv) / (t - hv)
+
+
+# ── the cast shadow at one point (the scalar twin of render.cast_shadow, which the game's C# copies) ──
+SUN_AZ = 315.0           # option B, his pick pending: the light comes from the north-west (compass degrees)
+SHADOW_K, SHADOW_POW = 0.15, 0.7   # a drop from a to b casts SHADOW_K x (b^0.7 - a^0.7) squares past the face's foot
+PENUMBRA = 0.04          # squares: the soft edge
+MARCH_STEP = 1.0 / 32.0
+SHADOW_REACH = SHADOW_K * DEEPEST ** SHADOW_POW + MARCH_STEP
+
+
+def point_top(grid, x: float, y: float) -> float:
+    """The depth (m) a point casts from: a wall point stands at its wall's TOP, a floor point at its floor, ground at 0.
+    x, y in squares from the grid's north-west corner, y down."""
+    r, c = math.floor(y), math.floor(x)
+    p = plan_cell(grid, r, c)
+    if p is None:
+        return 0.0
+    fx, fy = x - c, y - r
+    cw, ch = p["cne"]
+    if cw > 0 and (1 - fx) < cw and fy < ch - min(cw, ch) * (1 - fx) / cw:
+        return p["zne"]
+    cw, ch = p["cnw"]
+    if cw > 0 and fx < cw and fy < ch - min(cw, ch) * fx / cw:
+        return p["znw"]
+    in_w = fx < side_boundary(p, "l", fy)
+    in_e = (1 - fx) < side_boundary(p, "r", fy)
+    if in_e:
+        return p["ze"]
+    if in_w:
+        return p["zw"]
+    if fy < p["t"]:
+        return p["zn"]
+    return p["d"]
+
+
+def lit_at(grid, x: float, y: float, az: float = SUN_AZ) -> float:
+    """1 lit .. 0 in shadow, at a point: march toward the sun over the heights -SHADOW_K x top^SHADOW_POW at a slope of 1."""
+    h0 = -SHADOW_K * point_top(grid, x, y) ** SHADOW_POW
+    a = math.radians(az)
+    dx, dy = math.sin(a), -math.cos(a)
+    excess = -1e9
+    k = 1
+    while k * MARCH_STEP <= SHADOW_REACH:
+        s = k * MARCH_STEP
+        hq = -SHADOW_K * point_top(grid, x + dx * s, y + dy * s) ** SHADOW_POW
+        if hq > h0 + 1e-6:       # only a higher point casts (level ground beside a point never shades it)
+            excess = max(excess, hq - h0 - s)
+        k += 1
+    return min(1.0, max(0.0, 0.5 - excess / (2 * PENUMBRA)))
+
+
+# ── the light on a face and on a floor (option B: sun at SUN_AZ, elevation SUN_EL; render.py's numbers) ──
+SUN_EL = 55.0
+AMBIENT, DIRECT, WALL_AMBIENT, FACE_FADE = 0.55, 0.45, 0.85, 0.30
+
+
+def face_light(facing: str, az: float = SUN_AZ, el: float = SUN_EL) -> float:
+    """A face's light relative to a lit floor: 'n' a north wall (faces south), 'w' a west wall (faces east), 'e' an east wall."""
+    a, e = math.radians(az), math.radians(el)
+    sx, sy, sz = math.cos(e) * math.sin(a), math.cos(e) * math.cos(a), math.sin(e)
+    nx, ny = {"n": (0.0, -1.0), "w": (1.0, 0.0), "e": (-1.0, 0.0)}[facing]
+    flat = AMBIENT + DIRECT * sz
+    return (WALL_AMBIENT + DIRECT * max(0.0, nx * sx + ny * sy)) / flat
+
+
+def shadow_dark(el: float = SUN_EL) -> float:
+    """How much darker a floor in full shadow is than a lit one (black alpha)."""
+    sz = math.sin(math.radians(el))
+    return 1.0 - AMBIENT / (AMBIENT + DIRECT * sz)

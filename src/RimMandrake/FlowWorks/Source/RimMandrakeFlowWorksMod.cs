@@ -382,6 +382,8 @@ namespace RimMandrake.FlowWorks
         public static bool pitScorchEnabled = true;                // a cut that burned dry reads scorched
         public static float pitScorchFadeDays = 20f;               // PROVISIONAL; 0 = never fades
         public static bool pitOutlineEnabled = true;               // closed dark outline, strong near (south) lining
+        // RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: the stepped-pit rule (relief, depth shading, sun shadows)
+        public static bool pitSteppedReliefEnabled = true;
         public static bool pitHidesShadowEnabled = true;           // no ground shadow under a pawn sunk in a cut
         // FLOWWORKS_DOOR_FAMILY_1: the sluice and security grate (two stuffable doors; a shut sluice seals, the grate passes liquid).
         public static bool flowDoorsSealedFromPitEnabled = true;
@@ -715,6 +717,7 @@ namespace RimMandrake.FlowWorks
                 disabledFluids = new System.Collections.Generic.List<string>();
             }
             Scribe_Values.Look(ref pitOutlineEnabled, "pitOutlineEnabled", true);
+            Scribe_Values.Look(ref pitSteppedReliefEnabled, "pitSteppedReliefEnabled", true);
             Scribe_Values.Look(ref pitHidesShadowEnabled, "pitHidesShadowEnabled", true);
             Scribe_Values.Look(ref pitScorchEnabled, "pitScorchEnabled", true);
             Scribe_Values.Look(ref pitScorchFadeDays, "pitScorchFadeDays", 20f);
@@ -812,7 +815,7 @@ namespace RimMandrake.FlowWorks
             .Declare("pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled")
             .Declare("pitLipOcclusionEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled")
             .Declare("pitLipOccupantCutEnabled", "pitLipOccupantCutWidth")
-            .Declare("excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled")
+            .Declare("excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitSteppedReliefEnabled")
             .Declare("pitScorchEnabled", "pitScorchFadeDays")
             .Declare("liquidBubblesEnabled", "liquidBubbleDensity")
             .Declare("pitSubmergeCutEnabled", "underLiquidDeepOpacity", "underLiquidShallowOpacity", "underLiquidFullMetres", "underLiquidDarken", "pitThingShadowAlpha")
@@ -1845,7 +1848,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "pitSubmergeCutEnabled", "underLiquidDeepOpacity", "underLiquidFullMetres", "underLiquidDarken", "pitThingShadowAlpha", "pitWaterWetGroundEnabled", "pitWaterRippleLightEnabled", "pitWaterRippleLight" }))
+            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitSteppedReliefEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "pitSubmergeCutEnabled", "underLiquidDeepOpacity", "underLiquidFullMetres", "underLiquidDarken", "pitThingShadowAlpha", "pitWaterWetGroundEnabled", "pitWaterRippleLightEnabled", "pitWaterRippleLight" }))
             {
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
                 "A pawn standing in a dug square is drawn lower the deeper the square, and rises smoothly as it "
@@ -1877,6 +1880,14 @@ namespace RimMandrake.FlowWorks
                     "Every cut gets a closed dark outline so you can see where it is: a thin line on the far and side "
                   + "banks and a heavy dark lining on the near (south) edge that grows with depth. Shows even when "
                   + "liquid fills the cut. Drawing only.");
+            }
+            using (Dependent(list, "pitSteppedReliefEnabled"))
+            {
+                list.CheckboxLabeled("  Pit relief: shadows and depth shading", ref pitSteppedReliefEnabled,
+                    "Each floor of a pit is darker the deeper it is, the walls take the light of a sun from the north-west and "
+                  + "cast shadows onto the floor below, and where a pit steps down inside itself the inner cliff stops part "
+                  + "way down the side walls, at the upper floor's depth. Drawing only. Off: every face is lit alike and "
+                  + "stops growing at 2.5 m.");
             }
             list.CheckboxLabeled("A cut that burned dry looks scorched", ref pitScorchEnabled,
                 "After a liquid fire burns a cut dry, it stays an empty pit with charred walls, an ash floor and a scorch "
@@ -2156,7 +2167,7 @@ namespace RimMandrake.FlowWorks
         private static bool appliedKnown;
         private static float appliedRoomMin = -1f;
         private static bool appliedHollow, appliedClimb, appliedRamps, appliedRooms, appliedWalls, appliedMat, appliedOutline,
-            appliedScorch, appliedLooks, appliedSee, appliedPortable, appliedSubmerge, appliedWetGround = true;
+            appliedScorch, appliedLooks, appliedSee, appliedPortable, appliedSubmerge, appliedWetGround = true, appliedRelief = true;
         private static float appliedClimbMul, appliedDeepOpacity, appliedShallowOpacity, appliedFullMetres, appliedDarken, appliedThingShadow;
 
         /// <summary>RM_UnderLiquid is Verse-free (the SelfTest compiles it): the law's setting numbers are pushed into it.</summary>
@@ -2168,6 +2179,7 @@ namespace RimMandrake.FlowWorks
             RM_UnderLiquid.Darken = underLiquidDarken;
             RM_UnderLiquid.ThingShadowAlpha = pitThingShadowAlpha;
             RM_UnderLiquid.WetGround = pitWaterWetGroundEnabled;
+            RM_UnderLiquid.Relief = excavationWallFacesEnabled && pitSteppedReliefEnabled;
             RM_UnderLiquid.RipplePeak = pitWaterRippleLightEnabled ? pitWaterRippleLight : 0f;
         }
         private static int appliedRampSpan, appliedPortableReach;
@@ -2205,7 +2217,8 @@ namespace RimMandrake.FlowWorks
                     || appliedFullMetres != underLiquidFullMetres
                     || appliedDarken != underLiquidDarken
                     || appliedThingShadow != pitThingShadowAlpha
-                    || appliedWetGround != pitWaterWetGroundEnabled;
+                    || appliedWetGround != pitWaterWetGroundEnabled
+                    || appliedRelief != pitSteppedReliefEnabled;
                 if (lawMoved)
                 {
                     SectionLayer_RMExcavationWalls.RedrawAll();
@@ -2246,6 +2259,7 @@ namespace RimMandrake.FlowWorks
             appliedDarken = underLiquidDarken;
             appliedThingShadow = pitThingShadowAlpha;
             appliedWetGround = pitWaterWetGroundEnabled;
+            appliedRelief = pitSteppedReliefEnabled;
         }
     }
 

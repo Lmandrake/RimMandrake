@@ -357,9 +357,34 @@ namespace RimMandrake.FlowWorks
 			return table[lo] + (table[lo + 1] - table[lo]) * t;
 		}
 
-		public static float NorthFace(float exposed) => FaceAt(RM_WallFaceMath.NorthByDrop, exposed);
+		/// <summary>RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: the stepped-pit rule is on (the mod pushes
+		/// RimMandrakeFlowWorksSettings.pitSteppedReliefEnabled, default on). Off here, the Verse-free default, so every check
+		/// written before the rule keeps reading today's face tables; a check of the rule sets it.</summary>
+		public static bool Relief;
 
-		public static float SideFace(float exposed) => FaceAt(RM_WallFaceMath.SideByDrop, exposed);
+		/// <summary>The north face over a drop of <paramref name="exposed"/> notches from the ground: today's table, or under the
+		/// stepped rule the face keeps rising past 2.5 m (RM_PitReliefMath.StepH; equal to the table up to 2.5 m).</summary>
+		public static float NorthFace(float exposed) => Relief ? RM_PitReliefMath.StepH(exposed) : FaceAt(RM_WallFaceMath.NorthByDrop, exposed);
+
+		public static float SideFace(float exposed) => Relief ? RM_PitReliefMath.StepW(exposed) : FaceAt(RM_WallFaceMath.SideByDrop, exposed);
+
+		/// <summary>The north face a square at depth <paramref name="d"/> shows over a neighbour at <paramref name="n"/> (notches)
+		/// with <paramref name="lv"/> notches of liquid standing in it. Stepped rule: only the part of the wall between the two
+		/// floors, H(d - lv) - H(n), so a riser's top meets the side walls part way down; off: today's face by the drop.</summary>
+		public static float NorthFaceAt(int d, int n, float lv)
+		{
+			if (!Relief) return NorthFace(Exposed(d, n, lv));
+			float de = d - (lv > 0f ? lv : 0f);
+			return de > n ? RM_PitReliefMath.StepH(de) - RM_PitReliefMath.StepH(n) : 0f;
+		}
+
+		/// <summary>The side strip, as NorthFaceAt: W(d - lv) - W(n) under the stepped rule.</summary>
+		public static float SideFaceAt(int d, int n, float lv)
+		{
+			if (!Relief) return SideFace(Exposed(d, n, lv));
+			float de = d - (lv > 0f ? lv : 0f);
+			return de > n ? RM_PitReliefMath.StepW(de) - RM_PitReliefMath.StepW(n) : 0f;
+		}
 
 		/// <summary>The cell-local waterline of a thing hung on rotation <paramref name="rot"/> (0 N, 1 E, 2 S, 3 W) over a
 		/// wall of <paramref name="drop"/> notches with <paramref name="levelNotches"/> standing: exactly where the wall layer

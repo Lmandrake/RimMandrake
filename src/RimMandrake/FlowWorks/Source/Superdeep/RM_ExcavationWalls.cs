@@ -94,15 +94,26 @@ namespace RimMandrake.FlowWorks
 				int ne = NeighbourLevel(map, eng, c + IntVec3.North + IntVec3.East, d);
 				int sw = NeighbourLevel(map, eng, c + IntVec3.South + IntVec3.West, d);
 				int se = NeighbourLevel(map, eng, c + IntVec3.South + IntVec3.East, d);
+				// RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: the stepped rule (RM_PitReliefMath.PlanStep): a wall
+				// shows only the part between the two floors, so a riser's top meets the side walls part way down
+				bool relief = RM_UnderLiquid.Relief && material;
+				RM_PitReliefMath.StepPlan sp = RM_PitReliefMath.PlanStep(d, north, south, west, east, nw, ne, lv);
 				if (RimMandrakeFlowWorksSettings.pitOutlineEnabled)
 				{
-					Outline(c, d, north, south, west, east, y + 0.0009f);
+					if (relief)
+					{
+						OutlineStep(c, sp, y + 0.0009f);
+					}
+					else
+					{
+						Outline(c, d, north, south, west, east, y + 0.0009f);
+					}
 					CornerLines(c, d, north, south, west, east, nw, ne, sw, se, y + 0.0009f);
 				}
 				float nd = RM_UnderLiquid.Exposed(d, north, lv);
 				float wd = RM_UnderLiquid.Exposed(d, west, lv);
 				float ed = RM_UnderLiquid.Exposed(d, east, lv);
-				float h = RM_UnderLiquid.NorthFace(nd);
+				float h = relief ? sp.T : RM_UnderLiquid.NorthFace(nd);
 				RM_PitReliefMath.CornerPiece(d, north, west, nw, lv, out float wnw, out float hnw);
 				RM_PitReliefMath.CornerPiece(d, north, east, ne, lv, out float wne, out float hne);
 				if (sc > 0f && note == 0)
@@ -135,6 +146,11 @@ namespace RimMandrake.FlowWorks
 				}
 				float ww = RM_UnderLiquid.SideFace(wd);
 				float ew = RM_UnderLiquid.SideFace(ed);
+				if (relief)
+				{
+					ReliefCell(map, eng, c, d, sp, note == 0, sc, y);
+					continue;
+				}
 				if (nd > 0f)
 				{
 					NorthFace(map, eng, c, d, h, ww, ew, y, sc, RM_PitReliefMath.FaceFootShade(nd));
@@ -176,8 +192,17 @@ namespace RimMandrake.FlowWorks
 			}
 			ulong flag = RM_WaterLookDraw.LookFlag;
 			// the 4-argument form: the 2-argument MapMeshDirty dirties the 8 neighbours' sections only for FogOfWar, Buildings or
-			// Roofs (Verse.MapDrawer, 1.6, read in RimSage 2026-11-21), so a neighbour across a section edge kept its old faces
-			map.mapDrawer.MapMeshDirty(c, flag != 0 ? flag : (ulong)MapMeshFlagDefOf.Terrain, regenAdjacentCells: true, regenAdjacentSections: false);
+			// Roofs (Verse.MapDrawer, 1.6, read in RimSage 2026-11-21), so a neighbour across a section edge kept its old faces.
+			// RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: a square's cast shadow reads the plans of the squares
+			// toward the sun, which read their own neighbours: the 5x5 re-meshes (each of the 3x3 with its adjacent cells).
+			for (int i = 0; i < 9; i++)
+			{
+				IntVec3 q = c + GenAdj.AdjacentCellsAndInside[i];
+				if (q.InBounds(map))
+				{
+					map.mapDrawer.MapMeshDirty(q, flag != 0 ? flag : (ulong)MapMeshFlagDefOf.Terrain, regenAdjacentCells: true, regenAdjacentSections: false);
+				}
+			}
 		}
 
 		/// <summary>Does this dug square draw pit art? Not under a cover that prints the ground (RM_PitReliefMath.DrawsPitArt).</summary>
@@ -199,7 +224,11 @@ namespace RimMandrake.FlowWorks
 		/// (RM_PitReliefMath.FloorRects, never over a face), so every depth draws apart, past 2 m too.</summary>
 		private void FloorShade(IntVec3 c, int d, float ww, float ew, float h, float wnw, float hnw, float wne, float hne, float y)
 		{
-			float a = RM_PitReliefMath.FloorShade(d);
+			FloorShade(c, RM_PitReliefMath.FloorShade(d), ww, ew, h, wnw, hnw, wne, hne, y);
+		}
+
+		private void FloorShade(IntVec3 c, float a, float ww, float ew, float h, float wnw, float hnw, float wne, float hne, float y)
+		{
 			if (!(a > 0f))
 			{
 				return;
@@ -211,6 +240,273 @@ namespace RimMandrake.FlowWorks
 			{
 				float x0 = floorRects[4 * i], z0 = floorRects[4 * i + 1], x1 = floorRects[4 * i + 2], z1 = floorRects[4 * i + 3];
 				QuadVMat(RM_FaceMaterial.TintMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, y, k, k);
+			}
+		}
+
+		// ── the stepped rule's draw (RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM; RM_PitReliefMath.PlanStep) ──
+		// Every face is the bank's own ground, darkened to StepK of its TOP's depth and lit by its facing (a black tint, a white
+		// lift only where the sun brightens it past the ground), fading by FaceFade toward its foot; floors darken by StepK; the
+		// upper floor at a lip gets a pale band; a fixed north-west sun casts each face's shadow onto the floor past its foot.
+
+		private readonly int[] win = new int[25];
+
+		private void ReliefCell(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, RM_PitReliefMath.StepPlan sp, bool dry, float sc, float y)
+		{
+			if (sp.T > 0f)
+			{
+				NorthFaceStep(map, eng, c, sp, y, sc);
+			}
+			if (sp.L > 0f)
+			{
+				SideFaceStep(map, eng, c, sp, false, y + 0.001f, sc);
+			}
+			if (sp.R > 0f)
+			{
+				SideFaceStep(map, eng, c, sp, true, y + 0.001f, sc);
+			}
+			if (sp.CnwW > 0f)
+			{
+				CornerFaceStep(map, eng, c, c + IntVec3.North + IntVec3.West, false, sp.CnwW, sp.CnwH, sp.Znw, y + 0.001f);
+			}
+			if (sp.CneW > 0f)
+			{
+				CornerFaceStep(map, eng, c, c + IntVec3.North + IntVec3.East, true, sp.CneW, sp.CneH, sp.Zne, y + 0.001f);
+			}
+			if (!dry)
+			{
+				return;
+			}
+			LipBands(c, d, sp, y + 0.0005f);
+			FloorShade(c, RM_PitReliefMath.StepFloorShade(d), sp.L, sp.R, sp.T, sp.CnwW, sp.CnwH, sp.CneW, sp.CneH, y + 0.0012f);
+			CastShadow(map, eng, c, d, sp, y + 0.0013f);
+		}
+
+		/// <summary>A point of the square in its plan's coordinates (x east, y DOWN from the north edge) on the map.</summary>
+		private static Vector3 At(IntVec3 c, float x, float yDown, float y) => new Vector3(c.x + x, y, c.z + 1f - yDown);
+
+		private void NorthFaceStep(Map map, RM_MapComponent_Excavation eng, IntVec3 c, RM_PitReliefMath.StepPlan sp, float y, float scorch)
+		{
+			float t = sp.T, foot = c.z + 1f - t;
+			// the face's ends: straight down by hv beside a side wall that runs on above it, then the mitre to the floor strip
+			Vector3[] q =
+			{
+				At(c, sp.Lt, 0f, y), At(c, 1f - sp.Rt, 0f, y), At(c, 1f - sp.Rt, sp.HvR, y), At(c, 1f - sp.R, t, y),
+				At(c, sp.L, t, y), At(c, sp.Lt, sp.HvL, y),
+			};
+			float[] frac = { 0f, 0f, sp.HvR / t, 1f, 1f, sp.HvL / t };
+			TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, c + IntVec3.North, out bool stone);
+			Fan(RM_FaceMaterial.FaceMat(ground), q, null, true, foot);
+			FaceShadeStep(q, frac, RM_PitReliefMath.StepK(sp.Zn), RM_PitReliefMath.FaceLight(0), foot);
+			Fan(stone ? RM_FaceMaterial.JointMat : RM_FaceMaterial.StrataMat, Lift(q, 0.0004f), null, true, foot);
+			if (scorch > 0f)
+			{
+				SootFace(c, c.x + sp.L, c.x + 1f - sp.R, foot, c.z + 1f, scorch, y + 0.0007f);
+			}
+		}
+
+		private void SideFaceStep(Map map, RM_MapComponent_Excavation eng, IntVec3 c, RM_PitReliefMath.StepPlan sp, bool east, float y, float scorch)
+		{
+			float full = east ? sp.R : sp.L, top = east ? sp.Rt : sp.Lt, hv = east ? sp.HvR : sp.HvL, t = sp.T;
+			Vector3[] q;
+			float[] off;
+			if (t <= 0f)
+			{
+				off = new[] { 0f, 0f, full, full };
+				q = new[] { At(c, 0f, 1f, y), At(c, 0f, 0f, y), At(c, full, 0f, y), At(c, full, 1f, y) };
+			}
+			else
+			{
+				// x in from the wall's edge: the upper part beside the north face (top wide, straight down by hv), the mitre, the strip
+				off = new[] { 0f, 0f, top, top, full, full };
+				q = new[] { At(c, 0f, 1f, y), At(c, 0f, 0f, y), At(c, top, 0f, y), At(c, top, hv, y), At(c, full, t, y), At(c, full, 1f, y) };
+			}
+			float[] frac = new float[q.Length];
+			for (int i = 0; i < q.Length; i++)
+			{
+				frac[i] = full > 0f ? off[i] / full : 0f;
+				if (east)
+				{
+					q[i].x = c.x + 1f - (q[i].x - c.x);
+				}
+			}
+			if (east)
+			{
+				System.Array.Reverse(q);
+				System.Array.Reverse(frac);
+			}
+			TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, east ? c + IntVec3.East : c + IntVec3.West, out bool _);
+			Fan(RM_FaceMaterial.FaceMat(ground), q, null, false, c.z);
+			FaceShadeStep(q, frac, RM_PitReliefMath.StepK(east ? sp.Ze : sp.Zw), RM_PitReliefMath.FaceLight(east ? 2 : 1), c.z);
+			if (scorch > 0f)
+			{
+				byte st = (byte)(255f * RM_WallFaceMath.FaceSoot(scorch, 0.3f, 0.5f));
+				Fan(RM_FaceMaterial.SootMat, Lift(q, 0.0007f), Uniform(q.Length, new Color32(255, 255, 255, st)), false, c.z);
+			}
+		}
+
+		private void CornerFaceStep(Map map, RM_MapComponent_Excavation eng, IntVec3 c, IntVec3 diag, bool east, float w, float h, int zTop, float y)
+		{
+			RM_PitReliefMath.CornerPoly(east, w, h, cornerXz);
+			Vector3[] q = new Vector3[4];
+			float[] frac = new float[4];
+			for (int i = 0; i < 4; i++)
+			{
+				float x = cornerXz[2 * i];
+				q[i] = new Vector3(c.x + x, y, c.z + cornerXz[2 * i + 1]);
+				frac[i] = east ? (1f - x) / w : x / w;
+			}
+			TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, diag, out bool _);
+			Fan(RM_FaceMaterial.FaceMat(ground), q, null, false, c.z);
+			FaceShadeStep(q, frac, RM_PitReliefMath.StepK(zTop), RM_PitReliefMath.FaceLight(east ? 2 : 1), c.z);
+		}
+
+		/// <summary>A face's tone: StepK of its top x its light x (1 - FaceFade x frac), frac 0 at the top line, 1 at the foot. Under 1
+		/// a black tint; over 1 (a sunlit face beside the ground) a white lift.</summary>
+		private void FaceShadeStep(Vector3[] q, float[] frac, float kTop, float light, float zFoot)
+		{
+			Color32[] dark = new Color32[q.Length], lift = new Color32[q.Length];
+			bool anyDark = false, anyLift = false;
+			for (int i = 0; i < q.Length; i++)
+			{
+				float m = kTop * light * (1f - RM_PitReliefMath.FaceFade * RM_UnderLiquid.Clamp01(frac[i]));
+				dark[i] = ShadeBlack;
+				dark[i].a = Alpha(m < 1f ? 1f - m : 0f);
+				lift[i] = new Color32(255, 248, 232, Alpha(m > 1f ? LightAlpha(m) : 0f));
+				anyDark |= dark[i].a > 0;
+				anyLift |= lift[i].a > 0;
+			}
+			if (anyDark)
+			{
+				Fan(RM_FaceMaterial.TintMat, Lift(q, 0.0002f), dark, false, zFoot);
+			}
+			if (anyLift)
+			{
+				Fan(RM_FaceMaterial.ShadeMat, Lift(q, 0.0003f), lift, false, zFoot);
+			}
+		}
+
+		/// <summary>The outline under the stepped rule: the near lining as today; the north lip line only between the side walls
+		/// (from Lt to 1 - Rt, where the riser's top meets them); a side lip line from its hv down.</summary>
+		private void OutlineStep(IntVec3 c, RM_PitReliefMath.StepPlan sp, float y)
+		{
+			Material m = RM_FaceMaterial.OutlineMat;
+			Color32 k = new Color32(0, 0, 0, 255);
+			if (sp.Sl > 0f)
+			{
+				QuadVMat(m, c.x, c.z, 1f, sp.Sl, y, k, k);
+			}
+			float r = RM_WallFaceMath.RimLine, sl = RM_WallFaceMath.SideLine;
+			if (sp.LipN && sp.LipN1 > sp.LipN0)
+			{
+				QuadVMat(m, c.x + sp.LipN0, c.z + 1f - r, sp.LipN1 - sp.LipN0, r, y, k, k);
+			}
+			if (sp.LipW && sp.LipW0 < 1f)
+			{
+				QuadHMat(m, c.x, c.z, sl, 1f - sp.LipW0, y, k, k);
+			}
+			if (sp.LipE && sp.LipE0 < 1f)
+			{
+				QuadHMat(m, c.x + 1f - sl, c.z, sl, 1f - sp.LipE0, y, k, k);
+			}
+		}
+
+		/// <summary>The pale band of this floor along an edge where its neighbour is deeper (his "differently colored edge").</summary>
+		private void LipBands(IntVec3 c, int d, RM_PitReliefMath.StepPlan sp, float y)
+		{
+			float b = RM_PitReliefMath.LipBand;
+			Color32 w = new Color32(255, 248, 232, Alpha(RM_PitReliefMath.StepLipAlpha(d)));
+			Material m = RM_FaceMaterial.ShadeMat;
+			if (sp.EdgeS)
+			{
+				QuadVMat(m, c.x + sp.L, c.z, 1f - sp.L - sp.R, b, y, w, w);
+			}
+			if (sp.EdgeN)
+			{
+				float x0 = Mathf.Max(sp.L, sp.CnwW), x1 = 1f - Mathf.Max(sp.R, sp.CneW);
+				QuadVMat(m, c.x + x0, c.z + 1f - b, x1 - x0, b, y, w, w);
+			}
+			if (sp.EdgeW)
+			{
+				QuadVMat(m, c.x, c.z, b, 1f - Mathf.Max(sp.T, sp.CnwH), y, w, w);
+			}
+			if (sp.EdgeE)
+			{
+				QuadVMat(m, c.x + 1f - b, c.z, b, 1f - Mathf.Max(sp.T, sp.CneH), y, w, w);
+			}
+		}
+
+		/// <summary>The cast shadow over the dry floor: a vertex grid (8 a cell) whose black alpha is ShadowDark x (1 - Lit), read from
+		/// the 5x5 depths round the square (RM_PitReliefMath.Lit). Skipped when nothing toward the sun is shallower.</summary>
+		private void CastShadow(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, RM_PitReliefMath.StepPlan sp, float y)
+		{
+			for (int r = -2; r <= 2; r++)
+			{
+				for (int k = -2; k <= 2; k++)
+				{
+					win[(r + 2) * 5 + (k + 2)] = r == 0 && k == 0 ? d : NeighbourLevel(map, eng, c + new IntVec3(k, 0, -r), d);
+				}
+			}
+			if (!RM_PitReliefMath.MayBeShaded(win))
+			{
+				return;
+			}
+			float dark = RM_PitReliefMath.ShadowDark;
+			int n = RM_PitReliefMath.FloorRects(sp.L, sp.R, sp.T, sp.CnwW, sp.CnwH, sp.CneW, sp.CneH, floorRects);
+			for (int i = 0; i < n; i++)
+			{
+				float x0 = floorRects[4 * i], z0 = floorRects[4 * i + 1], x1 = floorRects[4 * i + 2], z1 = floorRects[4 * i + 3];
+				int nx = Mathf.Max(1, Mathf.CeilToInt((x1 - x0) * 8f)), nz = Mathf.Max(1, Mathf.CeilToInt((z1 - z0) * 8f));
+				Color32[,] col = new Color32[nx + 1, nz + 1];
+				bool any = false;
+				for (int a = 0; a <= nx; a++)
+				{
+					for (int b = 0; b <= nz; b++)
+					{
+						float fx = x0 + (x1 - x0) * a / nx, fz = z0 + (z1 - z0) * b / nz;
+						Color32 k = ShadeBlack;
+						k.a = Alpha(dark * (1f - RM_PitReliefMath.Lit(win, fx, 1f - fz)));
+						any |= k.a > 0;
+						col[a, b] = k;
+					}
+				}
+				if (any)
+				{
+					Grid(RM_FaceMaterial.TintMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, nx, col, y, nz);
+				}
+			}
+		}
+
+		private static Color32[] Uniform(int n, Color32 c)
+		{
+			Color32[] r = new Color32[n];
+			for (int i = 0; i < n; i++)
+			{
+				r[i] = c;
+			}
+			return r;
+		}
+
+		/// <summary>A convex (or star-shaped from v[0]) polygon as a fan from v[0]; colours per vertex (null: white); faceUv: u
+		/// along x, v from <paramref name="zFoot"/> (as Poly), else world uv.</summary>
+		private void Fan(Material mat, Vector3[] v, Color32[] col, bool faceUv, float zFoot)
+		{
+			if (mat == null || v.Length < 3)
+			{
+				return;
+			}
+			LayerSubMesh sm = GetSubMesh(mat);
+			int b = sm.verts.Count;
+			for (int i = 0; i < v.Length; i++)
+			{
+				sm.verts.Add(v[i]);
+				sm.uvs.Add(faceUv ? new Vector3(v[i].x, (v[i].z - zFoot) * 2f, 0f) : new Vector3(v[i].x, v[i].z, 0f));
+				sm.colors.Add(col != null ? col[i] : White);
+			}
+			for (int i = 1; i + 1 < v.Length; i++)
+			{
+				sm.tris.Add(b);
+				sm.tris.Add(b + i);
+				sm.tris.Add(b + i + 1);
 			}
 		}
 
@@ -615,13 +911,13 @@ namespace RimMandrake.FlowWorks
 			Color body = RM_SubmergeDraw.BodyColour(look);
 			float levelM = lv * RM_UnderLiquid.Notch;
 			TerrainDef floor = RM_ExcavationDepth.DryTerrainFor((byte)Mathf.Clamp(d, RM_ExcavationDepth.Shallow, 255)) ?? TerrainDefOf.Soil;
-			float hFull = RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, north, 0f));
-			float hDry = RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, north, lv));
+			float hFull = RM_UnderLiquid.NorthFaceAt(d, north, 0f);
+			float hDry = RM_UnderLiquid.NorthFaceAt(d, north, lv);
 			float floorTop = 1f - hFull;
 			// the floor between the side walls' full feet (the strips below draw over their own width, not twice), and the sheet
 			// over it at the one depth the whole floor lies at: even over every cell at that level
-			float wW = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, west, 0f));
-			float wE = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, east, 0f));
+			float wW = RM_UnderLiquid.SideFaceAt(d, west, 0f);
+			float wE = RM_UnderLiquid.SideFaceAt(d, east, 0f);
 			// RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN: the floor between the faces (RM_PitReliefMath.FloorRects: never
 			// under a dry corner piece), its depth shade, then the sheet
 			Color32 fs = SheetTint(body, RM_UnderLiquid.Seen(clarity, levelM));
@@ -699,7 +995,7 @@ namespace RimMandrake.FlowWorks
 			float zTop = 1f;
 			if (RM_UnderLiquid.Exposed(d, north, 0f) > 0f)
 			{
-				float hDry = RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, north, lv));
+				float hDry = RM_UnderLiquid.NorthFaceAt(d, north, lv);
 				zTop = 1f - hDry;
 				if (hDry > 0f)
 				{
@@ -725,7 +1021,7 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				float wDry = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, nb, lv));
+				float wDry = RM_UnderLiquid.SideFaceAt(d, nb, lv);
 				float bw = wDry > 0f ? Mathf.Min(band, wDry) : band;
 				float bh = wDry > 0f ? zTop : 1f;
 				if (!isEast)
@@ -746,8 +1042,8 @@ namespace RimMandrake.FlowWorks
 		private void SideUnder(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, int nb, bool east, float lv, float levelM,
 			float clarity, Color body, float wetTop, float y)
 		{
-			float wFull = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, nb, 0f));
-			float wDry = RM_UnderLiquid.SideFace(RM_UnderLiquid.Exposed(d, nb, lv));
+			float wFull = RM_UnderLiquid.SideFaceAt(d, nb, 0f);
+			float wDry = RM_UnderLiquid.SideFaceAt(d, nb, lv);
 			float span = wFull - wDry;
 			if (span <= 0.001f)
 			{

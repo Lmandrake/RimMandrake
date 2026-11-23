@@ -45,9 +45,10 @@ namespace RimMandrake.FlowWorks
 			float top = 0f, left = 0f, right = 0f, bottom = 0f;
 			if (faces)
 			{
-				top = RM_WallFaceMath.NorthFaceHeight(RM_WallFaceMath.ExposedDrop(d, north, 0));
-				left = RM_WallFaceMath.SideFaceWidth(RM_WallFaceMath.ExposedDrop(d, west, 0));
-				right = RM_WallFaceMath.SideFaceWidth(RM_WallFaceMath.ExposedDrop(d, east, 0));
+				// the walls layer's own face sizes (today's tables, or the stepped rule when RM_UnderLiquid.Relief is on)
+				top = RM_UnderLiquid.NorthFaceAt(d, north, 0f);
+				left = RM_UnderLiquid.SideFaceAt(d, west, 0f);
+				right = RM_UnderLiquid.SideFaceAt(d, east, 0f);
 			}
 			if (lines)
 			{

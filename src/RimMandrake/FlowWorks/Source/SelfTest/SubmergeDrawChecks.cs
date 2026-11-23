@@ -119,7 +119,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(walls.Contains("RM_UnderLiquid.Seen(") && walls.Contains("RM_WaterLookDraw.LookFlag") && !walls.Contains("FillAt("),
 					"can-fail: walls: the one law, re-meshed on a level move, no whole-notch fill");
 				Assert(!walls.Contains("LookFor(") , "can-fail: see-through does not hang on a look the vanilla rungs lack");
-				Assert(surface.Contains("RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed("), "can-fail: the surface overlay stops at the same face line");
+				Assert(surface.Contains("RM_UnderLiquid.NorthFaceAt(") && walls.Contains("RM_UnderLiquid.NorthFaceAt(d, north, lv)"),
+					"can-fail: the surface overlay stops at the same face line as the walls (NorthFaceAt, the stepped rule's face)");
 				int depthCheck = eng.IndexOf("a lake square is RM_LiquidStock.StagePond's", StringComparison.Ordinal);
 				int hook = eng.IndexOf("RM_SubmergeDraw.FillPictured(", StringComparison.Ordinal);
 				Assert(depthCheck > 0 && hook > depthCheck && hook - depthCheck < 400, "can-fail: the fill picture-writer re-meshes a noted cell");

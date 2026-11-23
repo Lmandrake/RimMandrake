@@ -314,7 +314,7 @@ namespace RimMandrake.FlowWorks
 						IntVec3 n = c + IntVec3.North;
 						int nd = n.InBounds(map) && !eng.IsSourceCell(n) ? eng.ExcavatedDepthAt(n) : d;
 						// the far wall's dry face at the TRUE level, as the wall layer draws it (RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL)
-						top -= RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, nd, RM_UnderLiquid.NoteLevel(RM_SubmergeDraw.NoteAt(eng, c))));
+						top -= RM_UnderLiquid.NorthFaceAt(d, nd, RM_UnderLiquid.NoteLevel(RM_SubmergeDraw.NoteAt(eng, c)));
 					}
 				}
 				if (!vbuf.TryGetValue(look, out List<Vector3> v))
@@ -421,7 +421,7 @@ namespace RimMandrake.FlowWorks
 				}
 				IntVec3 n = c + IntVec3.North;
 				int nd = n.InBounds(map) && !eng.IsSourceCell(n) ? eng.ExcavatedDepthAt(n) : d;
-				float top = 1f - RM_UnderLiquid.NorthFace(RM_UnderLiquid.Exposed(d, nd, lv));
+				float top = 1f - RM_UnderLiquid.NorthFaceAt(d, nd, lv);
 				List<Vector3> v = rippleVerts[k];
 				v.Add(new Vector3(c.x, 0f, c.z));
 				v.Add(new Vector3(c.x, 0f, c.z + top));
