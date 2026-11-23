@@ -1,4 +1,5 @@
 # Live proof of the Rot giants' body click (fix 0dc82e3270: The Rot hard-depends on Huge Things).
+# Windows python: the bridge binds Windows loopback (python3 from WSL read UNMEASURED: no route to 127.0.0.1:5175).
 # Runs as a testq exact-tier job on tier baroque_wave0, which names mandrake.rm.biomes and not mandrake.rm.hugethings:
 # the dependency closure must bring Huge Things in. Exit 0 every giant PASS, 1 a FAIL, 2 could not look.
-live-proof A1: python3 src/RimMandrake/TheRot/rot_giants_clickable_live.py < /dev/null
+live-proof A1: python.exe src/RimMandrake/TheRot/rot_giants_clickable_live.py < /dev/null
