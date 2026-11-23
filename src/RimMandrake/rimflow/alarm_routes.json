@@ -116,6 +116,7 @@
     {"match": "budget:*", "route": "role", "reader": "Operations", "cause": "helpers"},
     {"match": "dry:*", "route": "program"},
     {"match": "blind:*", "route": "role", "reader": "Operations", "cause": "replay"},
+    {"match": "sense.families_blind", "route": "role", "reader": "Operations", "cause": "replay", "_why": "6e7ea2cae4 raised this kind with no route; selftest_incident.py was red"},
     {"match": "paged:*", "route": "role", "reader": "Operations", "cause": "replay"},
     {"match": "selftest_false_hit", "route": "role", "reader": "Operations", "cause": "selftest_ledger"},
     {"match": "stalled:*", "route": "role", "reader": "Operations", "cause": "replay"},
