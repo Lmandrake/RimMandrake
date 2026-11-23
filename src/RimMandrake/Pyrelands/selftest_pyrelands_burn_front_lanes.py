@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # selftest-timeout: 900
-"""T_BURN_LANES: a burn line burns as a front, not as one-cell lanes (bar burn_line_walks: "a natural grass fire that moves").
+"""T_BURN_LANES: a burn burns as a front, not as one-cell lanes or a straight-edged band (bar burn_line_walks: "a natural grass
+fire that moves").
 
 Why it exists (RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES, Pyrelands in-game visit 5, 2026-11-22): the 24
 hourly captures of burn_line showed many parallel, ruler-straight lanes one or two cells wide, a fire at the head of each and
@@ -22,6 +23,14 @@ The range of situations (what the game can vary for this bar):
   setting     freshBurnBonusEnabled on (the ash field stamps burned cells) and off (the heal reads live fires and
               MapComponent_BurnLine.CarriedAt only)
   seeds, time 2 seeds for arcs, 1 per bearing for lines; 24 game hours (the visit's 24 hourly captures)
+  lone fires  (RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT, visit 7: single fires away from the front walked one-cell lanes)
+              one lit cell and a lightning strike's blob (radius 1.9), bearings every 15 degrees, the same covers, 2 seeds each;
+              read against the game's own lone fire burned to the same size (6 h: 180 to 730 cells, the carry's 24 h: 270 to
+              970; a small fire holds more strands than a large one)
+  extinction  a 24-cell front pinched to 1-8 lanes past a lake; one cell lit 0, 2 or 4 cells from a scar under a day old
+  edges       the 24-cell front and a 60-cell one under a wind on a compass step: the longest run of rows a flank stands at
+              one lane, the longest run of lanes the head stands at one row; held under half of what the carry alone leaves
+              (its flanks stood 46 of 46 rows at full cover), read at cover 1.00 and 0.97 where that rule was straight
 Left out: weather (black rain puts fires out: T_BURN_ECOLOGY), regrowth during the day, rock and water blobs (the cover is
 per-cell random; T_BURN_ECOLOGY's season runs blob maps), home areas and buildings (a lawful-cell matter, not the carry's),
 two lines meeting, the in-game rendering (Stage 6: a judge shown the hourly captures, sc_burn_line_walks).
@@ -46,7 +55,8 @@ TUNING = os.path.join(HERE, "Source", "PyrelandsTuning.cs")
 SIZE = 160
 HOURS = 24
 HOUR = 2500
-PRE_FIX = dict(heal_reach=0, carry_merge=False)
+PRE_FIX = dict(heal_reach=0, carry_merge=False, flank=False)      # 2026-11-22's rule before the lanes fix
+PRE_FLANK = dict(flank=False)                                      # 2026-11-23's rule before the lone-fire fix
 # Our own rule, not a bar: a front may hold at most one burned cell in ten more as one-cell strands than the game's own
 # even-spread fire leaves on the same grass (patchy grass leaves strands under any fire: vanilla's own share is 0.02 at full
 # cover and 0.23 at 0.70, measured 2026-11-22). The defect read 0.48 to 1.00 on the arc at every cover.
@@ -132,6 +142,116 @@ def burn(shape, wind, cover, seed, rule, hours=HOURS):
     return strand_share(burned), widen, int(burned.sum())
 
 
+def lone_cells(blob):
+    c = SIZE // 2
+    return [(c + dx, c + dz) for dx in range(-2, 3) for dz in range(-2, 3) if dx * dx + dz * dz <= (3.61 if blob else 0)]
+
+
+def lone(blob, wind, cover, seed, rule, hours=HOURS):
+    """A lone fire (one cell) or a lightning strike's blob in open grass. -> (strand share, cells burned)."""
+    plant = field(cover, seed)
+    kw = dict(wind=None, carried=False) if rule == "vanilla" else dict(dict(wind=wind, carried=True, **CARRY), **rule)
+    s = M.Sim(plant, np.ones_like(plant, bool), seed, weather=False, clock=False, keepalive=False, sprout_per_day=0,
+              loss_per_day=0, **kw)
+    for x, z in lone_cells(blob):
+        if s.chance(z, x) <= 0:
+            s.plant[z, x] = 1
+            s.hp[z, x] = M.HP[1]
+        if blob:
+            s.hp[z, x] -= M.STRIKE_DAMAGE      # the strike's flame burst hits the grass it lights
+        s.start(z, x, 0.35)
+    while s.tick < hours * HOUR:
+        s.beat()
+    burned = s.burn >= 0
+    return strand_share(burned), int(burned.sum())
+
+
+def lone_sweep(rule, quick):
+    """-> {cover: worst strand share}, {cover: where}, {cover: least cells burned}, cases read"""
+    worst, where, least, n = {}, {}, {}, 0
+    for cover in COVERS:
+        for blob in (False, True):
+            for wind in range(0, 360, 45 if quick else 15):
+                for sd in (0, 1):
+                    share, cells = lone(blob, float(wind), cover, sd, rule)
+                    n += 1
+                    if share > worst.get(cover, -1.0):
+                        worst[cover], where[cover] = share, "%s wind %d seed %d" % ("strike" if blob else "one cell", wind, sd)
+                    least[cover] = min(least.get(cover, 10 ** 9), cells)
+    return worst, where, least, n
+
+
+def longest_flat(v):
+    best = n = 0
+    prev = None
+    for x in v:
+        n = n + 1 if x == prev else 1
+        prev = x
+        best = max(best, n)
+    return best
+
+
+def edges(width, wind, cover, seed, rule):
+    """A front lit across a compass-step wind, burned 24 h. -> the longest straight run of its flanks (rows), of its head (lanes)."""
+    plant = field(cover, seed)
+    s = M.Sim(plant, np.ones_like(plant, bool), seed, weather=False, clock=False, keepalive=False, sprout_per_day=0,
+              loss_per_day=0, **dict(dict(wind=wind, carried=True, **CARRY), **rule))
+    r = math.radians(wind)
+    s.light_line(int(round(SIZE / 2 - 50 * math.sin(r))), int(round(SIZE / 2 - 50 * math.cos(r))), width, 0.35, angle=wind + 90)
+    while s.tick < HOURS * HOUR:
+        s.beat()
+    b = s.burn >= 0                                                # turned so the wind blows toward +column
+    b = {0: b.T, 90: b, 180: b.T[:, ::-1], 270: b[:, ::-1]}[int(wind)]
+    cols, lanes = np.nonzero(b.any(0))[0], np.nonzero(b.any(1))[0]
+    # two rows in from the lit line and from the head, where the front is whole
+    lo = [int(np.nonzero(b[:, c])[0].min()) for c in range(cols[0] + 2, cols[-1] - 2) if b[:, c].any()]
+    hi = [int(np.nonzero(b[:, c])[0].max()) for c in range(cols[0] + 2, cols[-1] - 2) if b[:, c].any()]
+    head = [int(np.nonzero(b[z])[0].max()) for z in lanes]
+    return max(longest_flat(lo), longest_flat(hi)), longest_flat(head)
+
+
+def edge_sweep(rule, quick):
+    """-> {cover: mean of the longest straight flank run}, {cover: the same of the head}, cases read"""
+    flank, head, n = {}, {}, 0
+    for cover in (1.0, 0.97):
+        got = [edges(w, wind, cover, sd, rule) for w in (24, 60) for wind in (0.0, 90.0, 180.0, 270.0)
+               for sd in ((0,) if quick else (0, 1, 2))]
+        n += len(got)
+        flank[cover], head[cover] = float(np.mean([g[0] for g in got])), float(np.mean([g[1] for g in got]))
+    return flank, head, n
+
+
+def pinch(gap, seed, rule):
+    """A 24-cell front meets a lake 20 cells long that leaves `gap` lanes of grass beside it. -> did fire enter
+    the gap, and reach the far side? (a flank that wandered in before the lake never enters a narrow gap: that is not a fire put out)"""
+    rng = np.random.default_rng(seed)
+    p = (rng.random((100, 130)) < 0.97).astype(np.int8)
+    p[50 - 12 + gap:80, 40:60] = 0
+    s = M.Sim(p, np.ones_like(p, bool), seed, weather=False, clock=False, keepalive=False, sprout_per_day=0, loss_per_day=0,
+              **dict(dict(wind=90.0, carried=True, **CARRY), **rule))
+    s.light_line(20, 50, 24, 0.35, angle=180.0)
+    while s.tick < 72 * HOUR and (s.size > 0).any():
+        s.beat()
+    b = s.burn >= 0
+    return bool(b[:, 45:60].any()), bool(b[:, 120:].any())
+
+
+def beside_scar(gap, seed, rule):
+    """One cell lit `gap` cells from ground burned less than a day ago. -> did its fire run 60 cells?"""
+    rng = np.random.default_rng(seed)
+    p = (rng.random((100, 130)) < 0.97).astype(np.int8)
+    p[50:80] = 0
+    s = M.Sim(p, np.ones_like(p, bool), seed, weather=False, clock=False, keepalive=False, sprout_per_day=0, loss_per_day=0,
+              **dict(dict(wind=90.0, carried=True, **CARRY), **rule))
+    s.burn[50:80] = 0
+    s.plant[49 - gap, 20] = 1
+    s.hp[49 - gap, 20] = M.HP[1]
+    s.start(49 - gap, 20, 0.35)
+    while s.tick < 48 * HOUR and (s.size > 0).any():
+        s.beat()
+    return True, bool((s.burn[:50] >= 0)[:, 80:].any())
+
+
 def cases(quick):
     arc_seeds = (0,) if quick else (0, 1)
     out = []
@@ -181,6 +301,18 @@ def main(argv):
         "== %s (the fuzz asserts its side)" % (want.group(1) if want else "no CarryPlanChecksum"),
         "1,200 LCG neighbourhoods x bearings x rolls")
 
+    # RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT: the same tie for the flank rule and the carry's age
+    ties = dict(WindCarryTicks="carry_ticks", WindCarryExtraTicks="carry_extra", FlankWidth="flank_width", FlankLeanCap="flank_cap",
+                FlankNarrow="flank_narrow", FlankRows="flank_rows", FlankLook="flank_look", FlankBeside="flank_beside",
+                FlankFuel="flank_fuel", FlankPatch="flank_patch", PacePatch="pace_patch", FuelSpentHp="fuel_spent")
+    off = ["%s %s != %s" % (k, const(KERNEL, k), M.DEFAULTS.get(v)) for k, v in ties.items() if const(KERNEL, k) != M.DEFAULTS.get(v)]
+    row("the kernel's flank constants are the model's", not off, "; ".join(off) or "all equal", "== the model's", "%d constants" % len(ties))
+    want = re.search(r"FlankPlanChecksum = (\d+)L;", open(FUZZ, encoding="utf-8").read())
+    got = M.flank_plan_checksum() if hasattr(M, "flank_plan_checksum") else (None, 0, 0)
+    row("the model's flank and carry age equal RM_BurnKernel's", bool(want) and got[0] == int(want.group(1)), str(got[0]),
+        "== %s (the fuzz asserts its side)" % (want.group(1) if want else "no FlankPlanChecksum"),
+        "2,000 LCG neighbourhoods, %d open, %d close" % got[1:])
+
     shipped = PRE_FIX if old else {}
     label = "the rule before the fix (--old)" if old else "the shipped rule"
 
@@ -217,6 +349,45 @@ def main(argv):
     flood = sweep(dict(shipped, carry_splits=2), True)[1]
     row("PLANTED FAULT a carry that lights two probes widens", flood > full_pre_widen,
         "%.1f cells beyond the lit span" % flood, "> %.1f (the row above goes red)" % full_pre_widen, "carry_splits=2, quick range")
+
+    # ---- 5. a lone fire is a fire, not a lane; a front's edges are not ruled ----------------------------------------------
+    van = {c: max(lone(False, 0.0, c, sd, "vanilla", hours=6)[0] for sd in range(6)) for c in COVERS}
+    lone_lim = {c: van[c] + STRAND_MARGIN for c in COVERS}
+    lim_txt = ", ".join("%.2f: %.2f" % (c, lone_lim[c]) for c in COVERS)
+    flankless = PRE_FIX if old else PRE_FLANK
+    w0, at0, _, n0 = lone_sweep(PRE_FLANK, True)
+    row("RED CONTROL before the fix a lone fire is a lane", all(w0[c] > lone_lim[c] for c in COVERS),
+        ", ".join("%.2f: %.2f" % (c, w0[c]) for c in COVERS), "> the limit at every cover (%s)" % lim_txt, "%d cases, flank off" % n0)
+    lone_rule = flankless if old else {}
+    w1, at1, least, n1 = lone_sweep(lone_rule, quick)
+    row("a lone fire burns as a fire, not a lane (burn_line_walks)", all(w1[c] <= lone_lim[c] for c in COVERS),
+        "; ".join("%.2f: %.2f (%s)" % (c, w1[c], at1[c]) for c in COVERS),
+        "<= the game's own lone fire + %.2f (%s)" % (STRAND_MARGIN, lim_txt),
+        "%d cases, least burned %s cells" % (n1, min(least.values())))
+    w2, _, _, n2 = lone_sweep(dict(lone_rule, burn_stamps=False), True)
+    row("the same with freshBurnBonusEnabled off", all(w2[c] <= lone_lim[c] for c in COVERS),
+        "; ".join("%.2f: %.2f" % (c, w2[c]) for c in COVERS), "<= the same limits", "%d cases (quick range)" % n2)
+    # the fix's fresh reader: the flank's close put out the last live lanes past a lake and beside a fresh scar; a strike's
+    # damaged grass was gone before the slowest carry. Each is held to what the carry alone does on the same maps.
+    nseed = 6 if quick else 20
+    hold, txt = [], []
+    for name, fn, gaps in (("past a lake", pinch, (1, 2, 3, 5, 8)), ("beside a scar", beside_scar, (0, 2, 4))):
+        for g in gaps:
+            got, base = [fn(g, sd, lone_rule) for sd in range(nseed)], [fn(g, sd, PRE_FLANK) for sd in range(nseed)]
+            a, b0 = [x[1] for x in got if x[0]], [x[1] for x in base if x[0]]
+            hold.append(len(a) >= nseed // 4 and sum(a) / len(a) >= sum(b0) / len(b0) - 0.05)
+            txt.append("%s %d: %d of %d (%d of %d)" % (name, g, sum(a), len(a), sum(b0), len(b0)))
+    row("the last lane of a burn is not put out by its flank", all(hold), "; ".join(txt),
+        ">= the carry alone's share (in brackets) less 0.05", "%d runs a case; of those that entered" % nseed)
+    least_strike = min(lone(True, w, 0.97, sd, lone_rule, hours=12)[1] for w in (0.0, 90.0, 240.0) for sd in range(nseed // 2))
+    row("a strike's fire leaves its blob", least_strike > 3 * len(lone_cells(True)), "%d cells in 12 h" % least_strike,
+        "> 3 x the %d cells lit" % len(lone_cells(True)), "%d strikes, grass at 18 of 28 hit points" % (3 * (nseed // 2)))
+    f0, h0, _ = edge_sweep(PRE_FLANK, quick)
+    f1, h1, ne = edge_sweep(lone_rule, quick)
+    row("a front's flanks and head are not ruled straight", all(f1[c] < f0[c] / 2 and h1[c] < h0[c] / 2 for c in f1),
+        "; ".join("%.2f: flank %.1f rows, head %.1f lanes" % (c, f1[c], h1[c]) for c in f1),
+        "< half the carry alone's (%s)" % "; ".join("%.2f: %.1f, %.1f" % (c, f0[c], h0[c]) for c in f0),
+        "%d fronts of 24 and 60, mean of each front's longest straight run" % ne)
 
     bad = rows.count(False)
     print("%s: %d of %d rows hold" % ("PASS" if not bad else "FAIL", len(rows) - bad, len(rows)))

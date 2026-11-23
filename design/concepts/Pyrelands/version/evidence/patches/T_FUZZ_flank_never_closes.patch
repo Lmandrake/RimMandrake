@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs
++++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs
+@@ -810,7 +810,7 @@
+                         }
+                         if (goes) on++;
+                     }
+-                    if (2 * on > FlankNarrow) return 0;
++                    if (2 * on > 99) return 0;
+                 }
+                 if (healed || n == 0 || noise < lean) continue;
+                 int ux = outX[0] + sx, uz = outZ[0] + sz;

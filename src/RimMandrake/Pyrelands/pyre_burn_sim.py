@@ -24,6 +24,7 @@ ADJ = [(0, -1), (1, 0), (0, 1), (-1, 0), (1, -1), (1, 1), (-1, 1), (-1, -1)]
 SPARK = [(-2, 0), (0, 2), (0, -2), (2, 1), (2, -1), (-2, 1), (-2, -1), (-1, 2), (1, 2), (-1, -2), (1, -2)]
 FLAM = np.array([0.0, 1.6, 0.7])      # none, ember grass, quickgrass (Defs/ThingDefs_Plants)
 HP = np.array([0.0, 28.0, 32.0])
+STRIKE_DAMAGE = 10.0      # a strike is a Flame explosion (defaultDamage 10) over radius 1.9: it hits the grass it lights
 
 # name: (commonality, favorability 0 VeryBad..3 Good, rainRate, duration lo, hi, lightning strike interval or 0, repeatable)
 WEATHERS = {
@@ -57,6 +58,10 @@ DEFAULTS = dict(
     carry_merge=True,        # with heal_reach=0 and this False: the rule before 2026-11-22 (lanes; the lanes test's --old)
     burn_stamps=True,        # RM_PyrelandsSettings.freshBurnBonusEnabled: the ash field stamps every burning cell; off, the heal
                              # reads live fires and MapComponent_BurnLine.CarriedAt (cells whose fire was carried on) only
+    flank=True,              # RM_BurnKernel.FlankPlan and CarryAge: ragged flanks and head, a lone fire fans out into a front
+    carry_extra=400,         # RM_BurnKernel.WindCarryExtraTicks (selftest_pyrelands_burn_front_lanes.py reads these from the C# file)
+    flank_width=10, flank_cap=576, flank_narrow=8, flank_rows=4, flank_look=10, flank_beside=2, flank_fuel=2, flank_patch=5,
+    pace_patch=8, fuel_spent=3,
     carry_heal=None,         # DROPPED candidate: lanes that heal (wind_carry_plan); None = the shipped one-cell rule
     carry_splits=1,          # MUTANT only: a fire lights this many cells (2 = a fire makes two, the flood comes back)
     cure_days=0.0,           # DROPPED candidate: grass younger than this does not carry fire
@@ -148,6 +153,97 @@ def carry_plan(bearing_deg, roll01, roll2, roll_side, reach, heal_reach, cell, a
             if anchor(ax, az):
                 return out + [(tx + sx, tz + sz)], 1
     return out, 0
+
+
+def ground_hash(ix, iz, seed):
+    """RM_BurnKernel.GroundHash: 0..1023, the same on both sides (32-bit wrap)."""
+    h = (ix * 374761393 + iz * 668265263 + seed * 1274126177) & 0xffffffff
+    h = ((h ^ (h >> 13)) * 1274126177) & 0xffffffff
+    return (h ^ (h >> 16)) >> 22
+
+
+def ground_noise(x, z, seed, patch):
+    """RM_BurnKernel.GroundNoise: smooth 0..1023 noise of the ground, bilinear between hashed points `patch` cells apart."""
+    ix, iz = x // patch, z // patch
+    fx, fz = x - ix * patch, z - iz * patch
+    a, b, c, d = (ground_hash(ix, iz, seed), ground_hash(ix + 1, iz, seed), ground_hash(ix, iz + 1, seed),
+                  ground_hash(ix + 1, iz + 1, seed))
+    return ((a * (patch - fx) + b * fx) * (patch - fz) + (c * (patch - fx) + d * fx) * fz) // (patch * patch)
+
+
+def carry_extra(x, z, seed, extra, patch):
+    """RM_BurnKernel.CarryAge less WindCarryTicks: the ticks by which the ground here slows the carry (0 .. extra)."""
+    v = max(0, min(1023, 512 + (ground_noise(x, z, seed + 7, patch) - 512) * 2))
+    return v * extra // 1024
+
+
+def flank_plan(bearing_deg, roll_side, x, z, seed, heal_reach, cell, anchor, plan, healed, P=None, live=None):
+    """RM_BurnKernel.FlankPlan: what the outermost fire of a burn does at its flank, after carry_plan. (x, z) is the fire's own
+    cell. -> the plan: unchanged, with one more cell beside the carried one (the burn opens), or empty (the flank closes).
+    RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT: under the carry alone a burn keeps the width it was lit with, so one lit
+    cell burns a one-cell lane and a front has ruler-straight sides.
+    1. The burn's width here: 1 + how far LIVE fire runs to each side of this fire, gaps up to heal_reach passed, read within
+       flank_look rows ahead of and behind it. Read from burned ground too, the last lane past a lake or beside a fresh scar took
+       itself for a wide front and was put out (4 of 40 crossed, 40 of 40 under the carry alone). Read in its own row only, the foremost tip of a ragged head took itself for a
+       lone fire and the burn widened 70 cells crossing a map (measured 2026-11-23).
+    2. One row in flank_rows may change the flank (every row while the burn is flank_narrow or less), so a flank leaves the
+       wind by one cell in four.
+    3. On a side with no burn within heal_reach + 1 (flank_beside rows ahead and behind): the ground's noise against a lean that
+       grows with the width. Narrow: it opens nearly always. At flank_width it opens and closes evenly; past it, it closes a
+       little more often than it opens (flank_cap), so no burn floods.
+       It closes only where the burn goes on without it: over half of the flank_narrow lanes inward hold fuel, fire or fresh burn
+       in the next two rows (at a lake's edge, the lanes beside it are ending).
+    4. It opens only into grass: the cell, and flank_fuel of the 5 cells ahead of and beyond it (a fresh scar stays a scar)."""
+    P = P or DEFAULTS
+    if heal_reach <= 0:
+        return plan
+    b = bearing_deg % 360.0
+    n = int(math.floor(b / 45.0 + 0.5)) % 8
+    nx, nz = DIRS8[n]
+    sides = [DIRS8[(n + 2) % 8], DIRS8[(n - 2) % 8]]
+    if roll_side >= 0.5:
+        sides.reverse()
+    look, width = P["flank_look"], P["flank_width"]
+    if live is None:
+        def live(sx, sz):
+            return [any(cell(sx * k - nx * j, sz * k - nz * j) == BURNING for j in range(-look, look + 1)) for k in range(1, width + 1)]
+    ext = []
+    for sx, sz in sides:
+        e, k, lanes = 0, 1, live(sx, sz)
+        while k <= width and k - e <= heal_reach + 1:
+            if lanes[k - 1]:
+                e = k
+            k += 1
+        ext.append(e)
+    w = 1 + ext[0] + ext[1]
+    narrow = w <= P["flank_narrow"]
+    rows = 1 if narrow else P["flank_rows"]
+    along = (x * nx + z * nz) // (nx * nx + nz * nz)
+    block = along // rows
+    if along - block * rows != ground_hash(block, rows, seed + 3) % rows:
+        return plan
+    lean = min(P["flank_cap"], 512 * w // width)
+    noise = ground_noise(x, z, seed, P["flank_patch"])
+    beside = P["flank_beside"]
+    for (sx, sz), e in zip(sides, ext):
+        if any(anchor(sx * k - nx * j, sz * k - nz * j) for k in range(1, heal_reach + 2) for j in range(-beside, beside + 1)):
+            continue
+        if not narrow and noise < 2 * lean - 512:
+            on = sum(any(cell(nx * d - sx * k, nz * d - sz * k) != BARE or anchor(nx * d - sx * k, nz * d - sz * k) for d in (1, 2))
+                     for k in range(1, P["flank_narrow"] + 1))
+            if 2 * on > P["flank_narrow"]:
+                return []
+        if healed or not plan or noise < lean:
+            continue
+        ux, uz = plan[0][0] + sx, plan[0][1] + sz
+        if cell(ux, uz) != FUEL:
+            continue
+        around = ((nx, nz), (sx, sz), (nx + sx, nz + sz), (sx - nx, sz - nz), (2 * sx, 2 * sz))
+        if sum(cell(ux + dx, uz + dz) == FUEL for dx, dz in around) >= P["flank_fuel"]:
+            return plan + [(ux, uz)]
+    return plan
+
+
 CARDINAL = [(0, 1), (1, 0), (0, -1), (-1, 0)]       # the wind blows toward north, east, south, west
 
 
@@ -217,6 +313,44 @@ def carry_plan_checksum(cases=1200, reach=2, heal_reach=5):
     return h
 
 
+def flank_plan_checksum(cases=2000, reach=2, heal_reach=5, P=None):
+    """The FlankPlan table both sides compute (PyrelandsFuzz.FlankPlanTable asserts FlankPlanChecksum). -> hash, opened, shut."""
+    P = P or DEFAULTS
+    h = opened = shut = 0
+    for c in range(cases):
+        x = 54321 + c
+        grid, (hx, hz) = {}, DIRS8[c // 4 % 8]
+        for dz in range(-20, 21):
+            for dx in range(-20, 21):
+                x = (x * 1103515245 + 12345) & 0x7fffffff
+                v = (x >> 8) % 100
+                keep = (False, max(abs(dx), abs(dz)) <= 3, dx * hx + dz * hz < 0, True)[c % 4]     # where the burn may lie
+                if v >= 70 and not keep:
+                    v -= 60
+                grid[(dx, dz)] = v
+        bearing = (c * 75 % 3600) / 10.0
+        r1, r2, rs = (c * 3 % 8) / 8.0, (2 * (c * 5 % 8) + 1) / 16.0, (2 * (c * 7 % 4) + 1) / 8.0
+        bare = 60 if c % 8 == 2 else 20      # thin ground: a flank there has few lanes to leave behind
+        fx, fz, seed = c * 37 % 263 - 7, c * 53 % 271 - 9, c * 7919 + 4177
+
+        def cell(dx, dz, bare=bare):
+            v = grid.get((dx, dz))
+            if v is None or v < bare or v >= 80: return BARE
+            return FUEL if v < 70 else BURNING
+
+        def anchor(dx, dz):
+            v = grid.get((dx, dz))
+            return v is not None and v >= 70
+        plan, healed = carry_plan(bearing, r1, r2, rs, reach, heal_reach, cell, anchor)
+        full = len(plan)
+        plan = flank_plan(bearing, rs, fx, fz, seed, heal_reach, cell, anchor, plan, healed, P)
+        opened += len(plan) > full; shut += len(plan) < full
+        for dx, dz in plan:
+            h = (h * 31 + (dx + 20) * 41 + (dz + 20)) % 1000000007
+        h = (h * 31 + len(plan) * 7 + P["carry_ticks"] + carry_extra(fx, fz, seed, P["carry_extra"], P["pace_patch"])) % 1000000007
+    return h, opened, shut
+
+
 class Sim:
     def __init__(self, plant, plantable, seed=0, **kw):
         self.P = dict(DEFAULTS); self.P.update(kw)
@@ -250,6 +384,12 @@ class Sim:
         self.rains = []         # dicts: start, fires_at_start, out_tick
         self.lit_by_day = {}    # game day -> cells that caught fire that day
         self.heal_lit = 0
+        self.flank_opens = self.flank_shuts = 0
+        self.ground_seed = seed
+        self.carry_extra = np.zeros(plant.shape, np.int64)
+        if self.P["flank"] and self.P["carried"]:
+            self.carry_extra = np.array([[carry_extra(x, z, seed, self.P["carry_extra"], self.P["pace_patch"])
+                                          for x in range(self.W)] for z in range(self.H)])
         self.carries = 0; self.carry_lit = 0      # fires carried on, cells they lit (never more than one each)
 
     # ---------------------------------------------------------------- ignition
@@ -345,6 +485,7 @@ class Sim:
             for dz in range(-2, 3):
                 for dx in range(-2, 3):
                     if dx * dx + dz * dz <= 1.9 * 1.9 and 0 <= x + dx < self.W and 0 <= z + dz < self.H:
+                        self.hp[z + dz, x + dx] -= STRIKE_DAMAGE
                         if self.rng.random() < self.chance(z + dz, x + dx):
                             self.start(z + dz, x + dx, 0.2 + 0.4 * self.rng.random())
 
@@ -377,7 +518,10 @@ class Sim:
             self.burn[zs[~out], xs[~out]] = self.tick
             # spread
             if P["carried"]:
-                due = (~out) & (~self.carried[zs, xs]) & (self.tick - self.born[zs, xs] >= P["carry_ticks"])
+                due = (~out) & (~self.carried[zs, xs]) & (self.tick - self.born[zs, xs] >= P["carry_ticks"] + self.carry_extra[zs, xs])
+                if P["flank"]:      # RM_BurnKernel.CarryAge: a fire whose grass is nearly spent does not wait for the ground
+                    spent = self.hp[zs, xs] <= P["fuel_spent"]
+                    due |= (~out) & (~self.carried[zs, xs]) & spent & (self.tick - self.born[zs, xs] >= P["carry_ticks"])
                 dz_, dx_ = zs[due], xs[due]
                 for i in rng.permutation(len(dz_)):      # the game ticks its fires in no row order
                     z0, x0 = int(dz_[i]), int(dx_[i])
@@ -396,11 +540,27 @@ class Sim:
                             if not (0 <= tx < self.W and 0 <= tz < self.H): return False
                             stamp = max(int(self.burn[tz, tx]) if P["burn_stamps"] else -1, int(self.carried_at[tz, tx]))
                             return bool(self.size[tz, tx] > 0 or (stamp >= 0 and self.tick - stamp <= P["heal_recent"]))
-                        plan, healed = carry_plan(self.wind, rng.random(), rng.random(), rng.random(), P["carry_reach"],
+                        roll1, roll2, roll_side = rng.random(), rng.random(), rng.random()
+                        plan, healed = carry_plan(self.wind, roll1, roll2, roll_side, P["carry_reach"],
                                                   P["heal_reach"], cell, anchor, P["carry_splits"], P["carry_merge"])
+                        opened = 0
+                        if P["flank"]:
+                            full = len(plan)
+
+                            def live(sx, sz, x0=x0, z0=z0):     # flank_plan's own read, in one numpy look (the sweeps are slow without)
+                                nx, nz = DIRS8[int(math.floor(self.wind % 360.0 / 45.0 + 0.5)) % 8]
+                                k, j = np.arange(1, P["flank_width"] + 1)[:, None], np.arange(-P["flank_look"], P["flank_look"] + 1)
+                                tx, tz = x0 + sx * k - nx * j, z0 + sz * k - nz * j
+                                inside = (tx >= 0) & (tx < self.W) & (tz >= 0) & (tz < self.H)
+                                return (inside & (self.size[tz.clip(0, self.H - 1), tx.clip(0, self.W - 1)] > 0)).any(1)
+                            plan = flank_plan(self.wind, roll_side, x0, z0, self.ground_seed, P["heal_reach"], cell, anchor, plan, healed, P, live)
+                            opened = int(len(plan) > full)
+                            self.flank_opens += opened
+                            if len(plan) < full:
+                                self.flank_shuts += 1; healed = 0
                         for dx, dz in plan:
                             self.start(z0 + dz, x0 + dx, 0.1)
-                        self.carry_lit += len(plan) - healed; self.heal_lit += healed
+                        self.carry_lit += len(plan) - healed - opened; self.heal_lit += healed
                         continue
                     # DROPPED candidate (lanes that heal): see wind_carry_plan.
                     ux, uz = CARDINAL[int(round(self.wind / 90.0)) % 4]; px, pz = uz, -ux

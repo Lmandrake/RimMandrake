@@ -141,7 +141,7 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_burn_front_lanes.py",
-   "observes": "a burn line burns as a front, not one-cell lanes (visit 5's strange thing): over the scar arc (radius 35/45/61, wind from each edge) and the scheduled front at every 15 degrees, on cover 1.00/0.97/0.80/0.70, with the ash stamps on and off, the share of burned cells in one-cell strands stays within 0.10 of the game's own even-spread fire on the same grass, and the burn is no wider than under the carry alone; red on the rule before the fix (--old) and on a carry that lights two probes; the model's carry equals RM_BurnKernel.CarryPlan (CarryPlanChecksum)",
+   "observes": "a burn burns as a front, not one-cell lanes or a straight-edged band (visit 5's and visit 7's strange things): over the scar arc (radius 35/45/61, wind from each edge) and the scheduled front at every 15 degrees, on cover 1.00/0.97/0.80/0.70, with the ash stamps on and off, the share of burned cells in one-cell strands stays within 0.10 of the game's own even-spread fire on the same grass, and the burn is no wider than under the carry alone; a lone lit cell and a lightning strike's blob, at every 15 degrees and the same covers, within 0.10 of the game's own lone fire of the same size; a front's flanks and head stand straight less than half as long as under the carry alone; red on the rules before each fix (--old, flank off) and on a carry that lights two probes; the model's carry, flank and carry age equal RM_BurnKernel's (CarryPlanChecksum, FlankPlanChecksum)",
    "reads": [
     "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
     "src/RimMandrake/Pyrelands/pyre_burn_sim.py",

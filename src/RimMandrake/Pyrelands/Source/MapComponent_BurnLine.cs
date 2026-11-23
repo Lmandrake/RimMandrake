@@ -69,8 +69,8 @@ namespace RimMandrake.Pyrelands
 
         // The wind carries the fire (RM_BurnKernel, "the wind carries the fire"). One prevailing wind per map, the bearing it
         // blows TOWARD: set by the edge yesterday's fire came from, else from the map's id, and held for good, so every burn
-        // line walks the same way and keeps its width. Saved. carriedFires: the fires already carried on (each lights one
-        // cell, once); saved, so a reload does not carry a fire twice and widen the line.
+        // line walks the same way. Saved. carriedFires: the fires already carried on (each lights one
+        // cell, once); saved, so a reload does not carry a fire twice.
         private float windBearing = -1f;
         private HashSet<int> carriedFires = new HashSet<int>();
 

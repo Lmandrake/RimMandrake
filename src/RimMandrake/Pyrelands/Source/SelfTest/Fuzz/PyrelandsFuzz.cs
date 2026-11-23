@@ -495,12 +495,64 @@ namespace RimMandrake.Pyrelands.Fuzz
             return h;
         }
 
+        /// <summary>The flank table the Python model (pyre_burn_sim.flank_plan_checksum) also computes: 2,000 LCG-drawn 41 x 41
+        /// neighbourhoods, the burn lying nowhere, near, on one side or all round, the fire's own cell and ground seed drawn too (negative cells
+        /// included), CarryPlan then FlankPlan; and the carry age on each. selftest_pyrelands_burn_front_lanes.py asserts the same
+        /// number (RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT).</summary>
+        internal const long FlankPlanChecksum = 707081263L;
+
+        internal static long FlankPlanTable(out int opened, out int shut)
+        {
+            long h = 0;
+            opened = shut = 0;
+            int[] ox = new int[2], oz = new int[2];
+            for (int c = 0; c < 2000; c++)
+            {
+                long x = 54321 + c;
+                var grid = new int[41, 41];
+                int hx = RM_BurnKernel.Dir8X[c / 4 % 8], hz = RM_BurnKernel.Dir8Z[c / 4 % 8];
+                for (int dz = -20; dz <= 20; dz++)
+                    for (int dx = -20; dx <= 20; dx++)
+                    {
+                        x = (x * 1103515245L + 12345L) & 0x7fffffffL;
+                        int v = (int)((x >> 8) % 100);
+                        bool keep = c % 4 == 1 ? Math.Max(Math.Abs(dx), Math.Abs(dz)) <= 3 : c % 4 == 2 ? dx * hx + dz * hz < 0 : c % 4 == 3;
+                        if (v >= 70 && !keep) v -= 60;                  // where the burn may lie: nowhere, near, one side, all round
+                        grid[dx + 20, dz + 20] = v;
+                    }
+                float bearing = (c * 75 % 3600) / 10f;
+                float r1 = (c * 3 % 8) / 8f, r2 = (2 * (c * 5 % 8) + 1) / 16f, rs = (2 * (c * 7 % 4) + 1) / 8f;
+                int fx = c * 37 % 263 - 7, fz = c * 53 % 271 - 9, seed = c * 7919 + 4177;
+                int bare = c % 8 == 2 ? 60 : 20;                        // thin ground: a flank there has few lanes to leave behind
+                Func<int, int, int> at = (dx, dz) => dx < -20 || dx > 20 || dz < -20 || dz > 20 ? -1 : grid[dx + 20, dz + 20];
+                Func<int, int, RM_BurnKernel.RM_CarryCell> cell = (dx, dz) =>
+                {
+                    int v = at(dx, dz);
+                    if (v < bare || v >= 80) return RM_BurnKernel.RM_CarryCell.Bare;
+                    return v < 70 ? RM_BurnKernel.RM_CarryCell.Fuel : RM_BurnKernel.RM_CarryCell.Burning;
+                };
+                Func<int, int, bool> anchor = (dx, dz) => at(dx, dz) >= 70;
+                int n = RM_BurnKernel.CarryPlan(bearing, r1, r2, rs, 2, RM_BurnKernel.HealReach, cell, anchor, ox, oz, out bool healed);
+                int m = RM_BurnKernel.FlankPlan(bearing, rs, fx, fz, seed, RM_BurnKernel.HealReach, cell, anchor, ox, oz, n, healed);
+                if (m > n) opened++;
+                if (m < n) shut++;
+                for (int i = 0; i < m; i++) h = (h * 31 + (ox[i] + 20) * 41 + (oz[i] + 20)) % 1000000007L;
+                h = (h * 31 + m * 7 + RM_BurnKernel.CarryAge(fx, fz, seed, 28)) % 1000000007L;
+            }
+            return h;
+        }
+
         private static List<string> Burn(int n, int seed)
         {
             if (WindProbeTable() != WindProbeChecksum)
                 return new List<string> { "burn: wind probe table " + WindProbeTable() + " != the model's " + WindProbeChecksum + " (pyre_burn_sim.wind_probes and RM_BurnKernel.WindProbes disagree)" };
             if (CarryPlanTable() != CarryPlanChecksum)
                 return new List<string> { "burn: carry plan table " + CarryPlanTable() + " != the model's " + CarryPlanChecksum + " (pyre_burn_sim.carry_plan and RM_BurnKernel.CarryPlan disagree)" };
+            long flank = FlankPlanTable(out int opened, out int shut);
+            if (flank != FlankPlanChecksum)
+                return new List<string> { "burn: flank plan table " + flank + " != the model's " + FlankPlanChecksum + " (pyre_burn_sim.flank_plan and RM_BurnKernel.FlankPlan disagree)" };
+            if (opened < 25 || shut < 15)
+                return new List<string> { "burn: the flank table opened " + opened + " and closed " + shut + " of 2,000 (it must exercise both)" };
             var fails = RunFamily("burn", n, seed, GenBurn, RunBurn);
             fails.AddRange(RunSeeded("burn-pure", Math.Max(1, n), seed, 31, r =>
             {
@@ -571,13 +623,17 @@ namespace RimMandrake.Pyrelands.Fuzz
                     }
                     Check(bestDot > 0.92, $"neither of the first two wind probes is the compass step nearest the bearing {bearing:F1}");
                     // one fire, one rule: vanilla's spread and the wind's carry never both run for a fire, and a carried fire is never carried again
+                    int age = RM_BurnKernel.CarryAge(r.Next(-20, 350), r.Next(-20, 350), r.Next(), 28);
+                    Check(age >= RM_BurnKernel.WindCarryTicks && age < RM_BurnKernel.WindCarryTicks + RM_BurnKernel.WindCarryExtraTicks, "carry age " + age);
+                    for (int hp = 0; hp <= 32; hp++)
+                        Check((RM_BurnKernel.CarryAge(40, 40, 5, hp) == RM_BurnKernel.CarryAge(40, 40, 5, 28)) == (hp > RM_BurnKernel.FuelSpentHp || RM_BurnKernel.CarryAge(40, 40, 5, 28) == RM_BurnKernel.WindCarryTicks), "carry age at fuel " + hp);
                     for (int m = 0; m < 8; m++)
                     {
                         bool en = (m & 1) != 0, free = (m & 2) != 0, ground = (m & 4) != 0;
-                        Check(RM_BurnKernel.VanillaSpreadRuns(en, free, ground) != RM_BurnKernel.WindCarryDue(en, free, ground, false, RM_BurnKernel.WindCarryTicks),
+                        Check(RM_BurnKernel.VanillaSpreadRuns(en, free, ground) != RM_BurnKernel.WindCarryDue(en, free, ground, false, RM_BurnKernel.WindCarryTicks, RM_BurnKernel.WindCarryTicks),
                             "a fire is under both spread rules, or under neither (" + m + ")");
-                        Check(!RM_BurnKernel.WindCarryDue(en, free, ground, true, int.MaxValue), "a carried fire is carried again");
-                        Check(!RM_BurnKernel.WindCarryDue(en, free, ground, false, RM_BurnKernel.WindCarryTicks - 1), "a fire is carried before its time");
+                        Check(!RM_BurnKernel.WindCarryDue(en, free, ground, true, int.MaxValue, 0), "a carried fire is carried again");
+                        Check(!RM_BurnKernel.WindCarryDue(en, free, ground, false, age - 1, age), "a fire is carried before its time");
                     }
                     // the gap heal (RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES): on a random neighbourhood the plan
                     // lights at most the carry cell and one heal cell; the carry cell is a Fuel probe; a Burning first probe lights

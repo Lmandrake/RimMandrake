@@ -342,7 +342,7 @@ namespace RimMandrake.Pyrelands
     // sooner than a clear sky (Pyrelands visit 1, rain_fire.py: both pads out at 2,250 ticks). On the fire's own 150-tick beat, after
     // vanilla's DoComplexCalcs, black rain deals RM_PyrelandsSettings.blackRainDousing more, on the fires vanilla rain reaches.
     // The wind carries the fire (RM_BurnKernel, same heading). A free-standing fire on natural ground of a Pyrelands map (not a
-    // floor) takes no part in vanilla's even spread; once, WindCarryTicks after it is lit, it lights the first cell downwind
+    // floor) takes no part in vanilla's even spread; once, RM_BurnKernel.CarryAge after it is lit, it lights the first cell downwind
     // that can take fire (vanilla's own ChanceToStartFireIn: grass, a crop, a wooden wall). A fire on a floor or a building keeps
     // vanilla's rule. Both patches read one predicate, so the two can never disagree about a fire.
     public static class WindCarriedFire
@@ -376,16 +376,21 @@ namespace RimMandrake.Pyrelands
             IntVec3 at = fire.Position;
             int now = Find.TickManager.TicksGame;
             MapComponent_PyrelandsAshField ash = MapComponent_PyrelandsAshField.For(map);
-            int n = RM_BurnKernel.CarryPlan(burn.WindBearing, Rand.Value, Rand.Value, Rand.Value, RM_BurnKernel.WindCarryReach,
-                RM_BurnKernel.HealReach,
-                (dx, dz) => CellState(map, new IntVec3(at.x + dx, 0, at.z + dz)),
-                (dx, dz) => Anchor(map, ash, burn, new IntVec3(at.x + dx, 0, at.z + dz), now),
-                planX, planZ, out _);
+            float rollSide = Rand.Value;
+            Func<int, int, RM_BurnKernel.RM_CarryCell> cell = (dx, dz) => CellState(map, new IntVec3(at.x + dx, 0, at.z + dz));
+            Func<int, int, bool> anchor = (dx, dz) => Anchor(map, ash, burn, new IntVec3(at.x + dx, 0, at.z + dz), now);
+            int n = RM_BurnKernel.CarryPlan(burn.WindBearing, Rand.Value, Rand.Value, rollSide, RM_BurnKernel.WindCarryReach,
+                RM_BurnKernel.HealReach, cell, anchor, planX, planZ, out bool healed);
+            n = RM_BurnKernel.FlankPlan(burn.WindBearing, rollSide, at.x, at.z, GroundSeed(map), RM_BurnKernel.HealReach, cell, anchor,
+                planX, planZ, n, healed);
             for (int i = 0; i < n; i++)
             {
                 FireUtility.TryStartFireIn(new IntVec3(at.x + planX[i], 0, at.z + planZ[i]), map, Fire.MinFireSize, fire.instigator);
             }
         }
+
+        // RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT: the ground's noise (RM_BurnKernel.CarryAge, FlankPlan) is one field per map.
+        internal static int GroundSeed(Map map) => map.uniqueID * 7919 + 4177;
 
         private static readonly int[] planX = new int[2];
         private static readonly int[] planZ = new int[2];
@@ -413,7 +418,11 @@ namespace RimMandrake.Pyrelands
             {
                 if (__instance == null || __instance.TicksSinceSpawn < RM_BurnKernel.WindCarryTicks) return;
                 if (!WindCarriedFire.Governs(__instance, out MapComponent_BurnLine burn)) return;
-                if (RM_BurnKernel.WindCarryDue(true, true, true, burn.WasCarried(__instance), __instance.TicksSinceSpawn))
+                bool carried = burn.WasCarried(__instance);
+                IntVec3 at = __instance.Position;
+                int age = carried ? 0 : RM_BurnKernel.CarryAge(at.x, at.z, WindCarriedFire.GroundSeed(__instance.Map),
+                    at.GetPlant(__instance.Map)?.HitPoints ?? 0);
+                if (RM_BurnKernel.WindCarryDue(true, true, true, carried, __instance.TicksSinceSpawn, age))
                 {
                     WindCarriedFire.Carry(__instance, burn);
                 }

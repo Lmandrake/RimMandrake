@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/pyre_burn_sim.py
++++ b/src/RimMandrake/Pyrelands/pyre_burn_sim.py
+@@ -58,7 +58,7 @@
+     carry_merge=True,        # with heal_reach=0 and this False: the rule before 2026-11-22 (lanes; the lanes test's --old)
+     burn_stamps=True,        # RM_PyrelandsSettings.freshBurnBonusEnabled: the ash field stamps every burning cell; off, the heal
+                              # reads live fires and MapComponent_BurnLine.CarriedAt (cells whose fire was carried on) only
+-    flank=True,              # RM_BurnKernel.FlankPlan and CarryAge: ragged flanks and head, a lone fire fans out into a front
++    flank=False,             # RM_BurnKernel.FlankPlan and CarryAge: ragged flanks and head, a lone fire fans out into a front
+     carry_extra=400,         # RM_BurnKernel.WindCarryExtraTicks (selftest_pyrelands_burn_front_lanes.py reads these from the C# file)
+     flank_width=10, flank_cap=576, flank_narrow=8, flank_rows=4, flank_look=10, flank_beside=2, flank_fuel=2, flank_patch=5,
+     pace_patch=8, fuel_spent=3,

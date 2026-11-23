@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/pyre_burn_sim.py
++++ b/src/RimMandrake/Pyrelands/pyre_burn_sim.py
+@@ -63,7 +63,7 @@
+     flank_width=10, flank_cap=576, flank_narrow=8, flank_rows=4, flank_look=10, flank_beside=2, flank_fuel=2, flank_patch=5,
+     pace_patch=8, fuel_spent=3,
+     carry_heal=None,         # DROPPED candidate: lanes that heal (wind_carry_plan); None = the shipped one-cell rule
+-    carry_splits=1,          # MUTANT only: a fire lights this many cells (2 = a fire makes two, the flood comes back)
++    carry_splits=2,          # MUTANT only: a fire lights this many cells (2 = a fire makes two, the flood comes back)
+     cure_days=0.0,           # DROPPED candidate: grass younger than this does not carry fire
+     home=None,               # (x0, z0, x1, z1) home area, or None
+ )

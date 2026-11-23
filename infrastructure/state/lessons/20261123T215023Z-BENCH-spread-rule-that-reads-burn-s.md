@@ -1,0 +1,1 @@
+A spread rule that reads a burn's width from burned ground puts out the last live lanes (beside a fresh scar, past a lake); read width from live fire, and when a rule may put a fire out, hold it to what the rule-off build does at a pinch.

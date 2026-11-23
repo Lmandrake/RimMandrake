@@ -506,18 +506,22 @@ namespace RimMandrake.Pyrelands
         // neighbours, so a fire in the grass carpet is a ring, not a line: in the visit-1 walk saves one opening front burned
         // 78% of a 250 x 250 map in 4 days and the map burned again in week 2 (bar burn_line_walks: "a line of grass fire
         // walking ... It must not read as a scattered wildfire"; bar grass_carpets_and_regreens: "no bare-dirt expanses").
-        // On Pyrelands ground the wind carries the fire instead: each fire lights at most ONE cell, downwind, once. A burn is
-        // then exactly as wide as what was lit, and no fire makes two. The whole-map model that checks it:
+        // On Pyrelands ground the wind carries the fire instead: each fire lights at most ONE cell, downwind, once. A burn
+        // then keeps near the width it was lit with (FlankPlan below lets its flanks wander), and no fire makes two downwind. The whole-map model that checks it:
         // src/RimMandrake/Pyrelands/pyre_burn_sim.py (selftest_pyrelands_burn_ecology.py).
 
         /// <summary>The eight compass steps clockwise from north (+z): N, NE, E, SE, S, SW, W, NW.</summary>
         public static readonly int[] Dir8X = { 0, 1, 1, 1, 0, -1, -1, -1 };
         public static readonly int[] Dir8Z = { 1, 1, 0, -1, -1, -1, 0, 1 };
 
-        /// <summary>Ticks after it is lit that a fire is carried on. Bar burn_line_walks ("walking"): this is vanilla's own pace,
-        /// not a new one: a 0.1 fire on ember grass (Flammability 1.6, +0.132 a 150-tick beat) passes size 1 on its 7th beat
-        /// (1,050 ticks) and vanilla spreads within one more interval; the walk saves measured 43 cells a day, this gives 50.</summary>
+        /// <summary>The least ticks after it is lit that a fire is carried on (CarryAge adds up to WindCarryExtraTicks). Vanilla's
+        /// own pace: a 0.1 fire on ember grass (Flammability 1.6, +0.132 a 150-tick beat) passes size 1 on its 7th beat (1,050
+        /// ticks) and vanilla spreads within one more interval.</summary>
         public const int WindCarryTicks = 1200;
+
+        /// <summary>The most the ground slows a carry. With WindCarryTicks the mean is 1,400 ticks a cell, 43 cells a day, the pace
+        /// the walk saves measured; the longest, 1,600, stays under an ember-grass fire's life (28 HP: 12 to 13 beats, 1,800).</summary>
+        public const int WindCarryExtraTicks = 400;
 
         /// <summary>How far downwind a spark is tried when the next cell is bare. Bar burn_line_walks ("never out for long"): a
         /// line must cross thin grass. 2 is vanilla's own spark reach (GenRadial.ManualRadialPattern[10..20], two cells out).</summary>
@@ -645,10 +649,190 @@ namespace RimMandrake.Pyrelands
             return 1;
         }
 
-        /// <summary>Is this fire due to be carried on? Only a free-standing ground fire on Pyrelands ground, once, at its age.</summary>
-        public static bool WindCarryDue(bool enabled, bool freeStanding, bool onPyrelandsGround, bool alreadyCarried, int ticksSinceSpawn)
+        // ------------------------------------------------------------ a burn's edges are the ground's
+        // RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT (Pyrelands visit 7, 2026-11-23): under the carry alone a burn keeps the width it
+        // was lit with and every fire carries at one age, so a lone fire walked as a one-cell lane 20-27 cells long, and a front ran
+        // as a flat-sided band with a ruler-straight head (bar burn_line_walks: "like a natural grass fire"). Two rules, both read
+        // from a smooth noise of the ground (no state to save; one field per map):
+        //   CarryAge:  the ground's noise slows the carry, so a head runs ahead here and lags there;
+        //   FlankPlan: the outermost fire of a burn opens one cell aside, or is not carried on. The odds lean with the burn's own
+        //              width: a lone fire fans out into a front, a front wanders in and out, and none floods.
+        // Refuted on the way (measured 2026-11-23 in the model): one lean roll for a whole row (more strands, not fewer); the width
+        // read in the fire's own row only (the foremost tip of a ragged head took itself for a lone fire, and the burn widened 70
+        // cells crossing a map). Model: pyre_burn_sim.flank_plan, carry_extra (the fuzz's FlankPlanChecksum ties them); check:
+        // selftest_pyrelands_burn_front_lanes.py.
+
+        /// <summary>The live width at which a flank opens and closes evenly. The model's sweep holds every other row from 10 to 14; of
+        /// those 10 has the fewest fires, so it calls down the fewest black rains (48 maps, 40 days: 7.4 a map, 8.2 to 8.6 at
+        /// 12 and 14, 5.5 under the carry alone, 16 under vanilla's spread on 24 of them) and the most room under the
+        /// 27-fire limit of fire_walks_with_wind's scene (24).</summary>
+        public const int FlankWidth = 10;
+
+        /// <summary>The lean's ceiling, of 1024 (512 is even). Above 512 a burn wider than FlankWidth closes a little more often
+        /// than it opens, so the mod's own 24-cell front ends no wider than under the carry alone.</summary>
+        public const int FlankLeanCap = 576;
+
+        /// <summary>A burn this narrow opens in any row and never closes: a lone fire fans out at once. Under the 9-cell line of bar
+        /// fire_walks_with_wind, whose outer lanes must hold no fire.</summary>
+        public const int FlankNarrow = 8;
+
+        /// <summary>One row in this many may change a flank: it leaves the wind by one cell in four. At three, the 9-cell scene of
+        /// bar fire_walks_with_wind put a fire in its outer lanes on 2 of 500 runs; at four on none.</summary>
+        public const int FlankRows = 4;
+
+        /// <summary>Rows ahead of and behind the fire in which its burn's width is read. A head is ragged by a few rows and the
+        /// scar's arc by more; at 8 an arc's end still took itself for a lone fire, at 10 not (both read before the width was read from live fire).</summary>
+        public const int FlankLook = 10;
+
+        /// <summary>Rows ahead and behind in which burn on a side means this fire is not the outermost one there.</summary>
+        public const int FlankBeside = 2;
+
+        /// <summary>Of the 5 cells ahead of and beyond the one it opens into, this many must hold fuel: a burn fans out in grass
+        /// and not in the thin regrowth of a fresh scar (a line dies there, as under the carry alone).</summary>
+        public const int FlankFuel = 2;
+
+        /// <summary>Cells between the points of the flanks' noise: a flank bends every few cells. The model's sweep held from 4 to 10
+        /// (the longer, the straighter the edge).</summary>
+        public const int FlankPatch = 5;
+
+        /// <summary>Cells between the points of the pace's noise. At 10 a 60-cell head stood straight for 20 lanes, at 8 for 11.</summary>
+        public const int PacePatch = 8;
+
+        private static int FloorDiv(int a, int b)
         {
-            return enabled && freeStanding && onPyrelandsGround && !alreadyCarried && ticksSinceSpawn >= WindCarryTicks;
+            int q = a / b;
+            return a % b != 0 && (a < 0) != (b < 0) ? q - 1 : q;
+        }
+
+        /// <summary>0 .. 1023 from a point of the ground; wraps at 32 bits (the model computes the same).</summary>
+        public static int GroundHash(int ix, int iz, int seed)
+        {
+            unchecked
+            {
+                uint h = (uint)ix * 374761393u + (uint)iz * 668265263u + (uint)seed * 1274126177u;
+                h = (h ^ (h >> 13)) * 1274126177u;
+                return (int)((h ^ (h >> 16)) >> 22);
+            }
+        }
+
+        /// <summary>Smooth noise of the ground, 0 .. 1023: bilinear between hashed points `patch` cells apart.</summary>
+        public static int GroundNoise(int x, int z, int seed, int patch)
+        {
+            int ix = FloorDiv(x, patch), iz = FloorDiv(z, patch);
+            int fx = x - ix * patch, fz = z - iz * patch;
+            int a = GroundHash(ix, iz, seed), b = GroundHash(ix + 1, iz, seed);
+            int c = GroundHash(ix, iz + 1, seed), d = GroundHash(ix + 1, iz + 1, seed);
+            return ((a * (patch - fx) + b * fx) * (patch - fz) + (c * (patch - fx) + d * fx) * fz) / (patch * patch);
+        }
+
+        /// <summary>A plant with this many hit points or fewer may not outlive the fire's next beat: Fire.DoFireDamage at full size
+        /// (1.75) deals (0.0125 + 0.0036 x 1.75) x 150 = 2.8, rounded at random to 2 or 3.</summary>
+        public const int FuelSpentHp = 3;
+
+        /// <summary>Ticks after it is lit that a fire on this cell is carried on: WindCarryTicks plus what the ground slows it. A fire
+        /// whose plant is nearly spent does not wait for the ground: a lightning strike's flame burst takes 10 of the 28 hit points of
+        /// the grass it lights, and that grass is gone before the slowest carry. fuelHp 0: the plant is gone, or none burns here.</summary>
+        public static int CarryAge(int x, int z, int seed, int fuelHp)
+        {
+            if (fuelHp <= FuelSpentHp) return WindCarryTicks;
+            int v = Math.Max(0, Math.Min(1023, 512 + (GroundNoise(x, z, unchecked(seed + 7), PacePatch) - 512) * 2));
+            return WindCarryTicks + v * WindCarryExtraTicks / 1024;
+        }
+
+        private static bool LiveNear(Func<int, int, RM_CarryCell> cell, int ax, int az, int nx, int nz, int rows)
+        {
+            for (int j = -rows; j <= rows; j++)
+            {
+                if (cell(ax - nx * j, az - nz * j) == RM_CarryCell.Burning) return true;
+            }
+            return false;
+        }
+
+        private static bool AnchorNear(Func<int, int, bool> anchor, int ax, int az, int nx, int nz, int rows)
+        {
+            for (int j = -rows; j <= rows; j++)
+            {
+                if (anchor(ax - nx * j, az - nz * j)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>What the outermost fire of a burn does at its flank, after CarryPlan (n cells planned in outX/outZ, healed). (x, z)
+        /// is the fire's own cell. Returns the new count: n, or n + 1 = 2 (the burn opens one cell beside the carried one), or 0 (the
+        /// flank closes: this fire is not carried on).
+        /// 1. The burn's width here: 1 + how far LIVE fire runs to each side of this fire, gaps up to healReach passed, read within
+        ///    FlankLook rows (read from burned ground too, the last lane past a lake took itself for a wide front and was put out). 2. One row in FlankRows may change the flank (every row while the burn is FlankNarrow or less).
+        /// 3. On a side with no burn beside: the ground's noise against a lean that grows with the width. It closes only where the
+        ///    burn goes on without it: over half of the FlankNarrow lanes inward hold fuel, fire or fresh burn in the next two rows
+        ///    (at a lake's edge, the lanes beside it are ending). 4. It opens only into
+        ///    grass (FlankFuel).</summary>
+        public static int FlankPlan(float bearingDeg, float rollSide, int x, int z, int seed, int healReach,
+            Func<int, int, RM_CarryCell> cell, Func<int, int, bool> anchor, int[] outX, int[] outZ, int n, bool healed)
+        {
+            if (healReach <= 0) return n;
+            double b = bearingDeg % 360.0;
+            if (b < 0) b += 360.0;
+            int step = (int)Math.Floor(b / 45.0 + 0.5) % 8;
+            int nx = Dir8X[step], nz = Dir8Z[step];
+            int s1 = rollSide < 0.5f ? 2 : -2;
+            int width = 1;
+            for (int side = 0; side < 2; side++)
+            {
+                int d = (step + (side == 0 ? s1 : -s1) + 8) % 8, run = 0;
+                for (int k = 1; k <= FlankWidth && k - run <= healReach + 1; k++)
+                {
+                    if (LiveNear(cell, Dir8X[d] * k, Dir8Z[d] * k, nx, nz, FlankLook)) run = k;
+                }
+                width += run;
+            }
+            bool narrow = width <= FlankNarrow;
+            int rows = narrow ? 1 : FlankRows;
+            int along = FloorDiv(x * nx + z * nz, nx * nx + nz * nz), block = FloorDiv(along, rows);
+            if (along - block * rows != GroundHash(block, rows, unchecked(seed + 3)) % rows) return n;
+            int lean = Math.Min(FlankLeanCap, 512 * width / FlankWidth);
+            int noise = GroundNoise(x, z, seed, FlankPatch);
+            for (int side = 0; side < 2; side++)
+            {
+                int d = (step + (side == 0 ? s1 : -s1) + 8) % 8, sx = Dir8X[d], sz = Dir8Z[d];
+                bool beside = false;
+                for (int k = 1; k <= healReach + 1 && !beside; k++) beside = AnchorNear(anchor, sx * k, sz * k, nx, nz, FlankBeside);
+                if (beside) continue;
+                if (!narrow && noise < 2 * lean - 512)
+                {
+                    int on = 0;
+                    for (int k = 1; k <= FlankNarrow; k++)
+                    {
+                        bool goes = false;
+                        for (int d2 = 1; d2 <= 2 && !goes; d2++)
+                        {
+                            int gx = nx * d2 - sx * k, gz = nz * d2 - sz * k;
+                            goes = cell(gx, gz) != RM_CarryCell.Bare || anchor(gx, gz);
+                        }
+                        if (goes) on++;
+                    }
+                    if (2 * on > FlankNarrow) return 0;
+                }
+                if (healed || n == 0 || noise < lean) continue;
+                int ux = outX[0] + sx, uz = outZ[0] + sz;
+                if (cell(ux, uz) != RM_CarryCell.Fuel) continue;
+                int fuel = 0;
+                if (cell(ux + nx, uz + nz) == RM_CarryCell.Fuel) fuel++;
+                if (cell(ux + sx, uz + sz) == RM_CarryCell.Fuel) fuel++;
+                if (cell(ux + nx + sx, uz + nz + sz) == RM_CarryCell.Fuel) fuel++;
+                if (cell(ux + sx - nx, uz + sz - nz) == RM_CarryCell.Fuel) fuel++;
+                if (cell(ux + 2 * sx, uz + 2 * sz) == RM_CarryCell.Fuel) fuel++;
+                if (fuel < FlankFuel) continue;
+                outX[n] = ux;
+                outZ[n] = uz;
+                return n + 1;
+            }
+            return n;
+        }
+
+        /// <summary>Is this fire due to be carried on? Only a free-standing ground fire on Pyrelands ground, once, at its age.</summary>
+        public static bool WindCarryDue(bool enabled, bool freeStanding, bool onPyrelandsGround, bool alreadyCarried, int ticksSinceSpawn, int carryAge)
+        {
+            return enabled && freeStanding && onPyrelandsGround && !alreadyCarried && ticksSinceSpawn >= carryAge;
         }
 
         /// <summary>Does vanilla's own even spread still run for this fire? Not where the wind carries it.</summary>
@@ -678,7 +862,9 @@ namespace RimMandrake.Pyrelands
 
         /// <summary>Does (dx, dz) lie downwind of a fire, inside the cone a carried line can ever reach? WindProbes' nearest
         /// compass step is at most 22.5 degrees off the bearing and its two neighbours 45 beyond that, so no chain of carries
-        /// leaves 67.5 degrees either side of the wind (tan 67.5 = 2.4142). The burn-approach warning reads it.</summary>
+        /// leaves 67.5 degrees either side of the wind (tan 67.5 = 2.4142). A flank that opens (FlankPlan) or a healed gap adds a
+        /// cell aside now and then; no burned cell of the model's lone fires lay beyond the cone more than 8 cells from where it
+        /// was lit. The burn-approach warning reads it, again as the fire walks.</summary>
         public static bool Downwind(int dx, int dz, float windX, float windZ)
         {
             float along = dx * windX + dz * windZ, across = Math.Abs(dx * windZ - dz * windX);

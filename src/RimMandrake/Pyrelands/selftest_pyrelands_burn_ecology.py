@@ -164,7 +164,7 @@ def main(argv):
                     worst_reach, worst_case = reach, "cover %.2f wind %.0f seed %d" % (cover, wind, sd)
                 if s.widen > worst_widen:
                     worst_widen, widen_case = s.widen, "cover %.2f wind %.0f seed %d" % (cover, wind, sd)
-                ctrl_widen = max(ctrl_widen, line_run(cover, sd, wind, heal_reach=0, carry_merge=False)[3].widen)
+                ctrl_widen = max(ctrl_widen, line_run(cover, sd, wind, heal_reach=0, carry_merge=False, flank=False)[3].widen)
                 assert s.carry_lit <= s.carries
     row("a lit line crosses the map (burn_line_walks)", worst_reach >= 200, "reach %.0f cells (%s)" % (worst_reach, worst_case),
         ">= 200 of the 200+ to the far edge", "%d-cell line, cover 0.70/0.80/0.97 x 5 bearings x %d seeds" % (WIDTH, len(seeds)))
