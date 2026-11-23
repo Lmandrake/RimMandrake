@@ -286,16 +286,16 @@ def t_fill_plan():
         G.owed_items = lambda world=None: {}
         G.git = fake_git()
         now = S.parse_ts(fin) + 3600
-        p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, T.FILL_DAY_S, now)
+        p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, now=now)
         check(p["verdict"] == "pick" and p["pick"] == ["beta_b"] and p["rank"] == "never_run"
               and p["purpose"] == "guard", "fill_plan: the gap order, not the stalest chain: %s" % p["text"])
         put(rec(2, 25, [("beta_b", "b1", "PASS")]))
-        p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, T.FILL_DAY_S, now)
+        p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, now=now)
         check(p["verdict"] == "exhausted" and p["pick"] == [], "fill_plan: all PASSED at the identity: exhausted: %s"
               % p["text"])
         put(rec(3, 25, [("beta_b", "b1", "FAIL")]))
         put(rec(4, 25, [("beta_b", "b1", "PASS")], by=T.FILLER, purpose="flake"))
-        p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, T.FILL_DAY_S, now)
+        p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, now=now)
         check(p["verdict"] == "exhausted" and p["flaky"] == ["beta_b"], "fill_plan: a flipped chain is only reported: %s"
               % p["text"])
     finally:

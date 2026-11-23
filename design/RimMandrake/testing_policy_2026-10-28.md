@@ -180,7 +180,7 @@ after the gate passes. Use a scoped run (`--scope changed-functions --since SHA`
 
 ### 2.7 testq lanes (guard / filler, fix, sweep, commission)
 - **Purpose:** live and modcheck verification on the test lanes.
-- **Cadence:** sweep nightly at 01:30; filler up to `testq.fill_hours` 8 [D] (was 20; lowered 2026-10-29) and `testq.fill_cap` 200 [D].
+- **Cadence:** sweep nightly at 01:30; filler whenever the lane is idle, up to `testq.fill_cap` 200 jobs a day [D]; the lane-time budget `testq.fill_hours` (20 h, then 8 h on 2026-10-29) was removed 2026-11-22: the filler starts only when nothing is ready or running, so it took no hours from fix or sweep work and only left the lane idle (FILL_NO_DANGERLESS_DAY_BUDGET).
 - **Helps:**
   - sweep: 3.5 findings per lane-hour;
   - commission: 2.8;

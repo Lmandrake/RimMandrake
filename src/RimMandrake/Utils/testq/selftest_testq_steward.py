@@ -550,9 +550,9 @@ def main():
             T.fill_plan = lambda *a, **k: {"verdict": "exhausted", "text": "nothing to fill"}
             ls = W.lane_state(base, ["Mock"])
             check(ls["state"] == "EXHAUSTED" and ls["fault_at"] is None, "EXHAUSTED is not a fault")
-            T.fill_plan = lambda *a, **k: {"verdict": "budget", "text": "cap: day budget"}
+            T.fill_plan = lambda *a, **k: {"verdict": "cap", "text": "cap: 200 filler jobs today (cap 200)"}
             ls = W.lane_state(base, ["Mock"])
-            check(ls["state"] == "BRAKED" and ls["fault_at"] is None, "the day budget is a brake, not a fault")
+            check(ls["state"] == "BRAKED" and ls["fault_at"] is None, "the day job backstop is a brake, not a fault")
             # ---------------------------------------- a settled lane ends an incident (..._OFFLINE_UNOWNED_2DEB)
             kept = T.read_json(T.q("steward.json"))
             t0 = base + 500000

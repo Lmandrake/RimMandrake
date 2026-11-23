@@ -45,7 +45,7 @@ def main():
               n in ("mutation.scope", "mutation.full_min_stable_days", "mutation.full_requires_review_clean",
                     "mutation.score_bar", "mutation.evolving_scope")), "the approved rule's params are provenance O")
     check(not TP.tunable("mutation.full_min_stable_days", pol), "an O param is not tunable by the autotuner")
-    check(TP.tunable("testq.fill_hours", pol), "a D param is tunable")
+    check(TP.tunable("testq.fill_cap", pol), "a D param is tunable")
     try:
         TP.param("no.such.param", pol)
         check(False, "unknown param raises KeyError")

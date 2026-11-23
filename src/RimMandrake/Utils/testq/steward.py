@@ -199,7 +199,7 @@ def lane_state(now, mods=None):
         return _st("READY", "%d ready job(s) not admitted (oldest ready since %s)" % (len(ready), iso(t0)),
                    t0 + READY_GRACE_S, jobs=[j["id"] for j in ready])
     plans = {m: T.fill_plan(m, int(os.environ.get("TESTQ_FILL_CHAINS", "4")),
-                            int(os.environ.get("TESTQ_FILL_CAP") or T.FILL_CAP_DEFAULT), T.FILL_DAY_S, now)
+                            int(os.environ.get("TESTQ_FILL_CAP") or T.FILL_CAP_DEFAULT), now=now)
              for m in mods or mods_default()}
     by = {}
     for m, p in plans.items():
@@ -227,7 +227,7 @@ def lane_state(now, mods=None):
     gaps = [m for v in ("nohist", "dry") for m in by.get(v, [])]
     if gaps:
         return _st("IDLE_EMPTY", "nothing selectable: " + "; ".join(plans[m]["text"][:160] for m in gaps), 0)
-    capped = by.get("cap", []) + by.get("budget", [])
+    capped = by.get("cap", [])     # the job backstop; no lane-time budget (FILL_NO_DANGERLESS_DAY_BUDGET)
     if capped:
         return _st("BRAKED", "day brake: " + plans[capped[0]]["text"][:200], settled=True)
     if "exhausted" in by:

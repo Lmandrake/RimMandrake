@@ -61,7 +61,7 @@ def counted_open(path, *a, **k):     # brake_release's own reads of queue files 
 
 
 BR.open = counted_open
-T.fill_plan = lambda mod, n, cap, day_s, now=None: {"verdict": "busy", "text": "stub", "tail": []}
+T.fill_plan = lambda mod, n, cap, *, now=None: {"verdict": "busy", "text": "stub", "tail": []}
 
 rec = BR.release_pass(now=1000.0, mods=["M"])
 qdir = os.path.abspath(T.q())

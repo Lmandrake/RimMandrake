@@ -14,8 +14,8 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py fill MOD [--n 4]          Steve never idles, no LLM: if nothing is pending/running, queue the N chains
                                      whose last real run is oldest, skipping DRY ones (last 2 runs all UNMEASURED,
                                      re-tried after 3 days) (requested_by BENCH.filler, prio 20). Brakes:
-                                     QHOME/fill.stop, lane time per local day (TESTQ_FILL_HOURS, 8 h; a job
-                                     backstop TESTQ_FILL_CAP, 200), a paused lane, two non-DONE fillers running;
+                                     QHOME/fill.stop, a job backstop (TESTQ_FILL_CAP, 200 per local day), a
+                                     paused lane, two non-DONE fillers running (no lane-time budget: see fill_plan);
                                      every tick runs it for each mod `coverage.py wired` names (wired_mods.json;
                                      TESTQ_FILL_MODS overrides)
   testq.py maintenance --reason R --since T [--until T]  record a maintenance reboot or known hardware outage, after the
@@ -1575,8 +1575,7 @@ FILLER = "BENCH.filler"     # requested_by of a filler job: BENCH's dispatcher, 
 
 
 SITE_HOLD_ROW = "<site hold"      # modcheck's row when the site could not be held: no verdict on the chain
-FILL_DAY_S = int(float(os.environ.get("TESTQ_FILL_HOURS") or 8) * 3600)   # filler lane time per local day
-FILL_CAP_DEFAULT = 200              # filler JOBS per day: a backstop only; the day budget is lane time
+FILL_CAP_DEFAULT = 200              # filler JOBS per day: a backstop only (no lane-time budget: see fill_plan)
 FILL_DRY_RUNS = 2                   # a chain whose last this-many runs measured nothing is DRY ...
 FILL_DRY_RETRY_S = 3 * 86400        # ... and is skipped until its latest run is older than this (new wiring lands)
 
@@ -1789,11 +1788,11 @@ def brake_tail(mine):
     return None if lane_proven_after(tail[:1]) else tail
 
 
-def fill_plan(mod, n, cap, day_s, now=None):
+def fill_plan(mod, n, cap, *, now=None):   # now keyword-only: an old (.., day_s, now) call fails loudly
     """-> {"verdict", "text", ...}: what `fill MOD` would do now, without doing it. Shared by `cmd_fill` and the
     steward (steward.py), so the lane's brakes are read from ONE place. verdict:
       stopped  fill.stop exists          paused  the lane is paused       busy    a ready pending or a running job
-      cap      the daily job backstop    budget  the day's lane time      brake   last two filler jobs not DONE (a cancel is not counted: brake_tail),
+      cap      the daily job backstop                                     brake   last two filler jobs not DONE (a cancel is not counted: brake_tail),
                                                                           and no DONE+canary job since (lane_proven_after)
       nohist   no history, no catalogue  dry      every chain is DRY       exhausted  nothing may be filler
       companion  a job at origin/main could only die at deploy: its companion is not staged (companion_hold)
@@ -1819,14 +1818,14 @@ def fill_plan(mod, n, cap, day_s, now=None):
     out = {"n_today": n_today, "mine": mine}
     if n_today >= cap:
         return dict(out, verdict="cap", text="cap: %d filler jobs today (cap %d)" % (n_today, cap))
-    # TESTQ_FILL_CAP_SCALE_AND_SKIP_DRY: the day's brake is lane TIME, not a job count. A count of 8 was spent in an
-    # hour of ~4-min jobs and left SteveDesktop idle for the other 23 (2026-10-25).
+    # FILL_NO_DANGERLESS_DAY_BUDGET (2026-11-22): no lane-time budget. The danger it was set for (20 h 2026-10-25,
+    # 8 h 2026-10-29, TESTQ_FILLER_GUARD_TUNE_LOW_YIELD: low-yield filler taking lane hours from fix/sweep) is guarded
+    # by `busy` above: the filler starts only on an idle lane. Measured over the 7 d to 2026-11-23: 4 of 14 real jobs were
+    # submitted while a filler ran, with at most 330 s of it left; the budget only left the lane idle (BRAKED from
+    # 21:14Z on 2026-11-22 with nothing pending). Lane time spent is still reported.
     spent = fill_spent_s(read_json(q("done", j["id"] + ".json")) for j in mine
                          if time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(j["submitted"]))) == today)
     out["spent"] = spent
-    if spent >= day_s:
-        return dict(out, verdict="budget", text="cap: filler lane time today %d s >= day budget %d s (%d jobs)"
-                    % (spent, day_s, n_today))
     tail = brake_tail(mine)
     if tail:
         return dict(out, verdict="brake", tail=tail,
@@ -1871,11 +1870,11 @@ def cmd_fill(a):
     """Never let Steve's lane idle, with no LLM in the loop: when nothing is pending or running, queue up to `--n`
     chains of MOD from the first non-empty rank of the evidence-gap order (gaps.py: a FAIL whose fix has landed, an
     item owing a live level, UNMEASURED/NOT_RUN at the current identity, never run at it). A chain that PASSED at the
-    current identity is never filler. Brakes (`fill_plan`): the stop file, a daily cap and lane-time budget, a paused
+    current identity is never filler. Brakes (`fill_plan`): the stop file, a daily job backstop, a paused
     lane, and two filler jobs in a row that did not come back DONE (a cancel is not counted; a brake whose jobs all have
     a recorded non-fault cause is released by Operations' one canary, brake_release.py)."""
     now = time.time()
-    plan = fill_plan(a.mod, a.n, a.cap, a.day_s, now)
+    plan = fill_plan(a.mod, a.n, a.cap, now=now)
     if plan["verdict"] != "pick":
         print(plan["text"])
         return 0
@@ -1900,8 +1899,8 @@ def cmd_fill(a):
     if r.returncode != 0:
         print("REFUSED: no origin/main in %s: %s" % (REPO, r.stderr.strip()[-200:]))
         return 2
-    log("filler: %s %s %s (%d today, cap %d, %d s of %d s; %d dry skipped%s)" % (
-        a.mod, plan["rank"], ",".join(pick), n_today + 1, a.cap, spent, a.day_s, len(plan["dry"]),
+    log("filler: %s %s %s (%d today, cap %d, %d s lane time today; %d dry skipped%s)" % (
+        a.mod, plan["rank"], ",".join(pick), n_today + 1, a.cap, spent, len(plan["dry"]),
         "; blind: " + "; ".join(plan["blind"]) if plan["blind"] else ""))
     sub = argparse.Namespace(mod=a.mod, chains=",".join(pick), rows=None, item=None, full=False,
                              purpose=plan["purpose"], by=FILLER, sha=r.stdout.strip(), for_item=None, profile=None,
@@ -2107,9 +2106,7 @@ def main(argv=None):
     s.add_argument("mod")
     s.add_argument("--n", type=int, default=int(os.environ.get("TESTQ_FILL_CHAINS", "4")), help="chains per job")
     s.add_argument("--cap", type=int, default=int(os.environ.get("TESTQ_FILL_CAP") or FILL_CAP_DEFAULT),
-                   help="filler jobs per day: a backstop; the day budget is --day-s of lane time")
-    s.add_argument("--day-s", type=int, default=FILL_DAY_S,
-                   help="filler lane seconds per local day (TESTQ_FILL_HOURS, default 8 h)")
+                   help="filler jobs per day: a backstop (there is no lane-time budget: fill_plan)")
     sub.add_parser("tick")
     s = sub.add_parser("archmagi-report", help="the section 2 trial: verified items/day net of load and displaced time")
     s.add_argument("--days", type=float, default=7.0)

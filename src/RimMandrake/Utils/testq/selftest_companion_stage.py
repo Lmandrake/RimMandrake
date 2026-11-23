@@ -131,9 +131,9 @@ def main():
     why = T.companion_hold()
     check(why and "companion hold" in why, "a source commit before the pass: held: %s" % why)
     now = time.time()
-    plan = T.fill_plan("Mock", 1, 200, 3600, now)
+    plan = T.fill_plan("Mock", 1, 200, now=now)
     check(plan["verdict"] == "companion", "fill_plan says companion, not pick: %s" % plan["verdict"])
-    r = T.cmd_fill(type("A", (), dict(mod="Mock", n=1, cap=200, day_s=3600))())
+    r = T.cmd_fill(type("A", (), dict(mod="Mock", n=1, cap=200))())
     check(r == 0 and not os.listdir(T.q("pending")), "the filler spends no job on it")
 
     # ---------------------------------------------- admission: ANY job whose companion is not staged waits, not only
@@ -194,7 +194,7 @@ def main():
         T.remote = real_remote
     rec = C.run_pass()
     check(rec["state"] == "staged" and rec["how"] == "built" and count("count") == 2, "the next pass stages it: %s" % rec)
-    check(T.companion_hold() is None and T.fill_plan("Mock", 1, 200, 3600, now)["verdict"] == "pick",
+    check(T.companion_hold() is None and T.fill_plan("Mock", 1, 200, now=now)["verdict"] == "pick",
           "and the filler picks again")
 
     # ---------------------------------------------- already there: the game copy is enough

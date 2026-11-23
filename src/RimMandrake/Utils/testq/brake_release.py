@@ -194,7 +194,7 @@ def decide(now, mods):
     plans, unmeasured, mod = {}, {}, None
     for m in mods:
         try:
-            p = T.fill_plan(m, 1, cap, T.FILL_DAY_S, now)
+            p = T.fill_plan(m, 1, cap, now=now)
         except Exception as e:      # could not look: neither braked nor clear
             unmeasured[m] = "%s: %s" % (type(e).__name__, str(e)[:120])
             continue

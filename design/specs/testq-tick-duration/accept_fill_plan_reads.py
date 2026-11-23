@@ -9,7 +9,7 @@ calls = [0]; orig = T.read_json
 def counted(p):
     calls[0] += "/done/" in p.replace("\\", "/"); return orig(p)
 T.read_json = counted
-p = T.fill_plan(sys.argv[2], 4, T.FILL_CAP_DEFAULT, T.FILL_DAY_S)
+p = T.fill_plan(sys.argv[2], 4, T.FILL_CAP_DEFAULT)
 ok = calls[0] <= n + 5
 print("%s: fill_plan(%s) verdict=%s read %d done files for %d records" % ("PASS" if ok else "FAIL", sys.argv[2], p["verdict"], calls[0], n))
 sys.exit(0 if ok else 1)

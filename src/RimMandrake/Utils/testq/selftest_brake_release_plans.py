@@ -28,7 +28,7 @@ calls = []
 verdicts = {}
 
 
-def stub_plan(mod, n, cap, day_s, now=None):
+def stub_plan(mod, n, cap, *, now=None):
     calls.append(mod)
     v = verdicts.get(mod, "busy")
     if isinstance(v, Exception):

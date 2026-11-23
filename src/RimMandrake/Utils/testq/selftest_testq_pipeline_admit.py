@@ -173,10 +173,10 @@ def testq_checks():
                 check(REACHED in o, "the nightly sweep of a blind_challenge mod reaches submit: %r" % o.strip()[:160])
     finally:
         T.preview = saved
-    plan = T.fill_plan("Heldmod", 4, 200, 8 * 3600, 0)
+    plan = T.fill_plan("Heldmod", 4, 200, now=0)
     check(plan.get("verdict") == "held" and SAID in plan.get("text", ""),
           "the filler is off for a held mod and quotes his hold: %s" % plan.get("text"))
-    plan = T.fill_plan("Blind", 4, 200, 8 * 3600, 0)
+    plan = T.fill_plan("Blind", 4, 200, now=0)
     check(plan.get("verdict") not in ("held", "pipeline"), "the filler walks a blind_challenge mod: %s %s"
           % (plan.get("verdict"), plan.get("text", "")[:120]))
     saved_span = FM.job_span

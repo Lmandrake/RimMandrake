@@ -82,7 +82,7 @@ def main():
         T.record_lane_window(kind, iso(t0), iso(t1), "test")
 
     def plan():
-        return T.fill_plan("Mock", 1, 1000, 10 ** 9, now)
+        return T.fill_plan("Mock", 1, 1000, now=now)
 
     def pending_canaries():
         return [j for j in T.records("pending") if j.get("requested_by") == BR.BY]

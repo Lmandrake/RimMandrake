@@ -248,9 +248,9 @@ def t_fill_policy():
     today = [rec("2026-10-22T01:00:00Z", [], start="2026-10-22T00:56:00Z"),
              rec("2026-10-22T02:00:00Z", [], start="2026-10-22T01:50:00Z")]
     check(T.fill_spent_s(today) == 840, "lane time spent = sum of today's filler walls: %s" % T.fill_spent_s(today))
-    check(T.FILL_DAY_S >= 4 * 3600 and T.FILL_CAP_DEFAULT >= 100,
-          "the default day budget is lane TIME (>= 4 h; 8 h since 2026-10-29), the count ceiling only a backstop (>= 100): %s %s"
-          % (T.FILL_DAY_S, T.FILL_CAP_DEFAULT))
+    check(not hasattr(T, "FILL_DAY_S") and T.FILL_CAP_DEFAULT >= 100,
+          "no lane-time day budget (FILL_NO_DANGERLESS_DAY_BUDGET); the job count ceiling only a backstop (>= 100): %s"
+          % T.FILL_CAP_DEFAULT)
 
 
 def t_fill_drops_unknown_chains():
@@ -282,10 +282,52 @@ def t_fill_drops_unknown_chains():
         gaps.owed_items = lambda world=None: {}
         T.cmd_submit = lambda sub: sent.append((sub.chains, sub.purpose)) or 0
         import argparse
-        rc = T.cmd_fill(argparse.Namespace(mod="FlowWorks", n=1, cap=T.FILL_CAP_DEFAULT, day_s=T.FILL_DAY_S))
+        rc = T.cmd_fill(argparse.Namespace(mod="FlowWorks", n=1, cap=T.FILL_CAP_DEFAULT))
         check(rc == 0 and sent == [("thirst", "guard")],
               "fill ranks a history-only chain, drops it when modcheck refuses it, never picks an offline one, and "
               "submits the live chain (no identity: never run at it): rc=%s sent=%s" % (rc, sent))
+    finally:
+        T.QHOME, T.cmd_submit, gaps.probe, gaps.owed_items = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def t_fill_no_day_budget():
+    """FILL_NO_DANGERLESS_DAY_BUDGET (2026-11-22): the filler runs only when nothing is ready or running (fill_plan's
+    `busy`), so it cannot take lane time from fix/sweep work; a lane-time day budget on it guarded no danger and left
+    SteveDesktop BRAKED (idle) from 21:14Z on 2026-11-22 at 29,260 s >= 28,800 s. The tick's default `fill`, with a
+    10 h filler wall already spent today, still submits."""
+    import testq as T
+    import gaps
+    import argparse
+    tmp = tempfile.mkdtemp(prefix="rf_testq_nobudget_")
+    saved = (T.QHOME, T.cmd_submit, gaps.probe, gaps.owed_items)
+    sent = []
+    try:
+        T.QHOME = tmp
+        T.ensure_dirs()
+        now = time.time()
+        iso = lambda t: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
+        with open(os.path.join(tmp, "done", "JPASS.json"), "w") as fh:
+            json.dump({"finished": "2026-10-01T00:00:00Z", "job": {"id": "JPASS", "mod": "FlowWorks",
+                       "submitted": "2026-10-01T00:00:00Z", "requested_by": "someone"},
+                       "result": {"outcome": "DONE", "started": "2026-10-01T00:00:00Z",
+                                  "finished": "2026-10-01T00:00:00Z",
+                                  "rows": [{"chain": "thirst", "row": "r", "verdict": "PASS"}]}}, fh)
+        with open(os.path.join(tmp, "done", "JLONG.json"), "w") as fh:   # submitted today, a 10 h filler wall
+            json.dump({"finished": iso(now - 30), "job": {"id": "JLONG", "mod": "FlowWorks", "submitted": iso(now - 60),
+                       "requested_by": T.FILLER, "purpose": "guard", "canary": True, "lane": "stevedesktop"},
+                       "result": {"outcome": "DONE", "started": iso(now - 36000), "finished": iso(now - 30),
+                                  "rows": []}}, fh)
+        gaps.probe = lambda mod, items, since: {"chains": ["thirst"], "offline": [], "item_chains": {}, "changed": {}}
+        gaps.owed_items = lambda world=None: {}
+        T.cmd_submit = lambda sub: sent.append((sub.chains, sub.purpose)) or 0
+        ns = argparse.Namespace(mod="FlowWorks", n=1, cap=T.FILL_CAP_DEFAULT)
+        spent = T.fill_spent_s([json.load(open(os.path.join(tmp, "done", "JLONG.json")))])
+        rc = T.cmd_fill(ns)
+        print("  fill after %d s of filler wall today: rc=%s sent=%s (limit: none; cases 1)" % (spent, rc, sent))
+        check(spent >= 36000 - 60 and rc == 0 and sent == [("thirst", "guard")],
+              "an idle lane takes a filler job whatever lane time filler has spent today: spent=%s rc=%s sent=%s"
+              % (spent, rc, sent))
     finally:
         T.QHOME, T.cmd_submit, gaps.probe, gaps.owed_items = saved
         shutil.rmtree(tmp, ignore_errors=True)
@@ -313,16 +355,16 @@ def t_fill_brake_released_by_proof():
         put("J1", "2026-10-26T15:21:16Z", T.FILLER, "INVALID")
         put("J2", "2026-10-26T15:33:14Z", T.FILLER, "FAILED")
         now = T.S.parse_ts("2026-10-26T20:00:00Z")
-        args = ("FlowWorks", 1, T.FILL_CAP_DEFAULT, T.FILL_DAY_S, now)
-        check(T.fill_plan(*args)["verdict"] == "brake", "two filler jobs not DONE: brake")
+        args = ("FlowWorks", 1, T.FILL_CAP_DEFAULT)
+        check(T.fill_plan(*args, now=now)["verdict"] == "brake", "two filler jobs not DONE: brake")
         put("J0", "2026-10-26T15:00:00Z", "BENCH", "DONE")
-        check(T.fill_plan(*args)["verdict"] == "brake", "a DONE job from BEFORE the braking jobs does not release it")
+        check(T.fill_plan(*args, now=now)["verdict"] == "brake", "a DONE job from BEFORE the braking jobs does not release it")
         put("J3", "2026-10-26T18:54:19Z", "BENCH", "DONE", canary=False)
-        check(T.fill_plan(*args)["verdict"] == "brake", "a later DONE job run without its canary does not release it")
+        check(T.fill_plan(*args, now=now)["verdict"] == "brake", "a later DONE job run without its canary does not release it")
         put("J4", "2026-10-26T18:55:00Z", "BENCH", "DONE", lane="archmagi")
-        check(T.fill_plan(*args)["verdict"] == "brake", "a later DONE job on another lane does not release it")
+        check(T.fill_plan(*args, now=now)["verdict"] == "brake", "a later DONE job on another lane does not release it")
         put("J5", "2026-10-26T18:56:00Z", "BENCH", "DONE")
-        p = T.fill_plan(*args)
+        p = T.fill_plan(*args, now=now)
         check(p["verdict"] == "pick" and p["pick"] == ["thirst"],
               "a hand-submitted job DONE with its canary after the braking jobs releases the brake: %s" % p["text"])
     finally:
@@ -509,6 +551,7 @@ def main():
         t_sweep_split()
         t_fill_policy()
         t_fill_drops_unknown_chains()
+        t_fill_no_day_budget()
         t_fill_brake_released_by_proof()
         t_fill_brake_stale_companion_out_of_the_window()
         t_result_hardening()
