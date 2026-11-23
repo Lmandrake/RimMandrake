@@ -8,7 +8,27 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 ---
 
-## From Sun 2026-11-15, 5:30 PM PST: cheap guards first, no sleeper tickets (block 8, on top)
+## From Sun 2026-11-22, about 5:57 PM PST: one week on mods, to 2026-11-29 (block 9, on top)
+
+His card (ledger, owner-said note on `RIMMANDRAKE_DEBATE_CLEAN_HOUSE_ADVICE_WITH_GPT_ONE_AGENT_PER_VIEWPOINT`):
+*"One week focusing on mods. At the end of the week, we study what we know. If there are some trials we KNOW will
+inform that decision, do the trials now. If we do not know which trial will help yet, wait on trials."* It answers
+the one decision of the debate plan (`design/specs/2026-11-22-clean-house-advice/debate/plan.md`). It replaces that
+plan's two-week window to 12-06: the week ends on 2026-11-29. For that week this block outranks block 8's "ahead of
+game work".
+
+1. **Mods, for the week to 2026-11-29**: the mods move through the pipeline that exists now, when their holds,
+   stops and readiness lists allow (the plan's first acts: the next legal act of Pyrelands and of FlowWorks;
+   GimmeSomeSlack's walk stays offered to him). A stop that the mod work exposes is repaired at its cause.
+2. **On 2026-11-29, study what we know**: `RIMMANDRAKE_STUDY_WHAT_ONE_WEEK_OF_MODS_TAUGHT_ON_NOV_TWENTY_NINE` (one
+   page: what moved, what blocked it, what that cost, what is still unknown, and which trial we now know would
+   inform the decision).
+3. **Trials only if we KNOW they inform that decision**: such a trial runs now. Any other trial or new pipeline
+   experiment waits until the study.
+
+---
+
+## From Sun 2026-11-15, 5:30 PM PST: cheap guards first, no sleeper tickets (block 8)
 
 His words (ledger, owner-said on `RIMMANDRAKE_GUARD_PIPELINE_DOORS_CHEAPLY_NO_CEREMONY`): *"Once you have the built design, building this is your #1 priority, ok? Even more important than getting game work done. No more sleeper tickets."*
 
