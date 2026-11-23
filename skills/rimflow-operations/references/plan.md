@@ -16,7 +16,7 @@ above its line. target != live: arm, use, disarm (marker per transition and targ
 at line+2 or within 20 min of a reset that will cause a switch. No target: one hard fleet-stop per account-week;
 fleet-start when a reset gives headroom. Under-line accounts are no target until their reset (anti-flap). Stale pending
 marker after 2400 s = a dead pass. Output dir files: markers/, notice.json (readers ignore it after 20 min), HOLD.
-Commands: `switching_plan.py check [--dry-run] | status | install`. Unit timeout 2700 s.
+Commands: `switching_plan.py check [--dry-run] | status`. Unit timeout 2700 s.
 
 Pool pacing (`pool()`, read by slot_allocator): each account's budget down to its line is due at its expiry (next
 reset; steven's at his window end); a lower account's budget is kept only if, at the pace without it, the higher

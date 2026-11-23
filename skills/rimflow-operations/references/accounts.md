@@ -10,7 +10,7 @@ registry is discarded. Read order: live here, live remote (ssh), vault here (tok
 ESTIMATE, UNMEASURED.
 
 Per account (rules in switching_plan.json; verify with `status`, times change weekly):
-- `system`, `lukas`: plain; switch-away floor 0%, wait floor 2%.
+- `system`, `lukas`: plain; switch-away floor 1%, wait floor 2%.
 - `steven`: lent, not ours. Owner 2026-10-27: use up to 50% used, only after a fresh reset. We leave at 52% left
   (card 10:20). "Fresh" = 48 h after his reset (delegated reading); outside it the engine never switches to him and
   switches off him if live. For pool pacing his budget "expires" at the end of that window. The meter cannot
