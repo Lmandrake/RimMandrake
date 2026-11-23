@@ -1,0 +1,59 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs
+index 72c41c3758..d68f3884ac 100644
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs
+@@ -3563,7 +3563,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
+                 // a plug's seat keeps exactly the plug's own run and the slope rule's chord past it (CordEndAudit.SlopeChord), not the shaping passes'
+                 // margin: the lamp-plug kinks the region sweep left lay 0.03-0.08 cell past the chord, inside that margin
+                 double seat = SeatedPin(piece, opt, s.Pts, atStart, anyLength: true);
+-                double k = (atStart ? s.DiveA : s.DiveB) ? Math.Max(FairPin(nd, isLive), seat - SeatPinMargin)
++                double k = (atStart ? s.DiveA : s.DiveB) ? FairPin(nd, isLive)
+                     : nd.Type == NodeType.Terminal && !nd.Seam ? CutPin(nd, isLive)
+                     : seat > 0 ? seat - SeatPinMargin : FairPin(nd, isLive);
+                 int whip = atStart ? s.WhipA : s.WhipB;
+@@ -3582,7 +3582,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
+                     if (last >= 0) k = Math.Max(k, (atStart ? cum[last] : cum[n - 1] - cum[n - 1 - last]) + UnderMachineKeep);
+                 }
+                 if (!stubRead) { stubOf = StubPicker(w, g, e, piece, na, nb, opt); stubRead = true; }
+-                if (stubOf != null)
++                if (stubOf != null && !(atStart ? s.DiveA : s.DiveB))
+                 {
+                     StubArt.Stub st = stubOf(s, atStart);
+                     // the stub's own run and the slope rule's chord past its tip (StubRun, its sample of margin each side included)
+@@ -3703,12 +3703,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
+                 if (s.Pts == null || s.Pts.Count < 3 || s.OverFace || s.Lifted) continue;
+                 foreach (bool atStart in new[] { false, true })
+                 {
+-                    bool dive = atStart ? s.DiveA : s.DiveB;
+-                    if (!dive && (atStart ? cutA : cutB)) continue;
+-                    if (!dive && UnderOwnMachine(atStart ? na : nb, atStart ? nb : na)) continue;
++                    if (atStart ? s.DiveA || cutA : s.DiveB || cutB) continue;
++                    if (UnderOwnMachine(atStart ? na : nb, atStart ? nb : na)) continue;
+                     StubArt.Stub st = Pick(s, atStart);
+-                    // a dive's end holds its slope by its own lay (the overrun, the seated plug); it is laid again only where that broke the rule
+-                    if (dive && st != null && OnStub(s.Pts, atStart, st, CordEndAudit.SlopeMaxDeg)) continue;
+                     // (a cord that comes back over its own box after leaving it is laid again from past where it does)
+                     if (st == null || (OnStub(s.Pts, atStart, st, CordEndAudit.SlopeMaxDeg / 2) && s.Pts.All(ownClear))) continue;
+                     double runLen = StubRun(atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], st);
+@@ -4876,8 +4873,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
+                                      Func<Cell, bool> isLive)
+         {
+             if (piece.Strands.Count == 0) return;
+-            CordStrand firstStrand = piece.Strands.FirstOrDefault(s => !(atStart ? s.DiveA : s.DiveB)) ?? piece.Strands[0];
+-            List<V2> first = firstStrand.Pts;
++            List<V2> first = (piece.Strands.FirstOrDefault(s => !(atStart ? s.DiveA : s.DiveB)) ?? piece.Strands[0]).Pts;
+             V2 tip = atStart ? first[0] : first[first.Count - 1];
+             if (nd.IsMachine)
+             {
+@@ -4891,10 +4887,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
+                 // a power switch's own stub is the connector the cord goes into (owner 2026-11-16): no plug of ours beside it
+                 if (mi != null && mi.SidePorts) return;
+                 bool atS = atStart;
+-                // an end that goes into a wall is the wall fitting's, never the machine's: a lamp on the far side of the wall ends in the wall cell,
+-                // half a cell outside its own footprint, as near as the plate its cord comes through by (in-game visit 1 of 0.2.0)
+-                if (firstStrand.DiveA != firstStrand.DiveB) atS = firstStrand.DiveB;
+-                else if (mi != null)
++                if (mi != null)
+                 {
+                     double RectD(V2 q) => Math.Max(Math.Max(mi.X0 - q.X, q.X - (mi.X0 + mi.W)), Math.Max(mi.Z0 - q.Z, q.Z - (mi.Z0 + mi.H)));
+                     atS = RectD(first[0]) <= RectD(first[first.Count - 1]);

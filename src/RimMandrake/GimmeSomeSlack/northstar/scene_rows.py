@@ -1110,14 +1110,23 @@ def look_menu_icons(B, V, rows, log):
     V.row(rows, "SC_look_icons_restyle_menus", st or ("PASS" if not restyle else "FAIL"), "HARNESS" if st else "MOD",
           {"wrong": restyle[:8], "blind": blind})
     V.row(rows, "SC_look_icons_same_picture", st or ("PASS" if not multi else "FAIL"), "HARNESS" if st else "MOD", {"lookWithManyPictures": multi})
-    B.ap("clookicons:%d,%d:open" % cord[0])
-    try:
-        V.frame_fit(B, (x, z, 20, 10))
-        dst = V.shot(B, "sc_look_menu_icons", (x, z, 20, 10), log)
-    finally:
-        B.ap("cclosemenus")
+    # the pictures on screen: the Restyle button draws its piece's look icon (the picture a menu entry of that look carries, read above), so
+    # the cord is given each look in turn and the whole screen is captured with it selected. A look menu itself cannot be held open here: one
+    # opened from the bridge closes in the same frame while the game window is not under the mouse, and a cell-rect render leaves the
+    # interface out (in-game visit 1 of 0.2.0: the first capture showed no menu at all).
+    dst, ids = [], [t.get("id") for t in B.call("jawa/list_things", defName="PowerConduit", rect="%d,%d,1,1" % cord[0], limit=1).get("things") or []]
+    V.frame_fit(B, (x, z, 20, 10))
+    for look in LOOK_NAMES:
+        B.ap("crestyleone:%d,%d:%s" % (cord[0] + (look,)))
+        B.ap("cprocess")
+        B.ticks(2)
+        B.call("jawa/select_things", ids=ids[0] if ids else "")
+        labels = [g.get("label") for g in B.call("rimworld/list_selected_gizmos").get("gizmos") or []]
+        if any((g or "").startswith("Restyle") for g in labels):
+            dst.append(B.call("rimworld/take_screenshot", fileName="sc_look_icon_" + look).get("path"))
+    B.ap("cclosemenus")
     V.row(rows, "SC_look_icons_shot", "UNMEASURED", "LOOK",
-          {"shot": dst, "judge": "the All connected look menu: each look shows its own icon, the four tell apart before the label is read"})
+          {"shot": dst, "judge": "the Restyle button in each capture wears its look's own icon, the four tell apart before the label is read"})
 
 
 def wall_lamp_verdict(lamps, want):
