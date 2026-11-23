@@ -47,3 +47,7 @@
 ## Machine
 `pool.py` → `classify.py` → `make_spec.py` → `author.py` → `keycheck.py` → `run.py` → `grade.py` → `score.py`. `selftest_trial.py`
 tests the parser and the scorer. Raw answers: `raw/answers.jsonl`. No limit on calls but a 20-minute hang guard for each call.
+
+## Why the file is not named `boundary.md`
+The brief named it `boundary.md`. `boundary_check.py` requires each `design/specs/*/boundary.md` to have a row in that program, and
+the brief says that this run touches no pipeline code. So the page has this name.

@@ -1,0 +1,442 @@
+[
+ {
+  "case": "STYLE_03",
+  "grades": {
+   "plant_wrong_listed0": "W",
+   "plant_wrong_listed1": "W",
+   "plant_other": "W",
+   "plant_correct": "C",
+   "plant_wrong": "W"
+  },
+  "w": 3226.0
+ },
+ {
+  "case": "STYLE_06",
+  "grades": {
+   "plant_wrong_listed0": "W",
+   "plant_correct": "C",
+   "plant_wrong": "W",
+   "plant_other": "W",
+   "plant_wrong_listed1": "W"
+  },
+  "w": 3484.0
+ },
+ {
+  "case": "STYLE_10",
+  "grades": {
+   "plant_other": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong_listed0": "W",
+   "plant_wrong": "W",
+   "plant_correct": "C"
+  },
+  "w": 3294.0
+ },
+ {
+  "case": "STYLE_18",
+  "grades": {
+   "plant_wrong": "W",
+   "plant_wrong_listed0": "W",
+   "plant_other": "W",
+   "plant_correct": "C",
+   "plant_wrong_listed1": "W"
+  },
+  "w": 3064.0
+ },
+ {
+  "case": "STYLE_20",
+  "grades": {
+   "plant_other": "W",
+   "plant_correct": "C",
+   "plant_wrong": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong_listed0": "W"
+  },
+  "w": 3396.0
+ },
+ {
+  "case": "STYLE_21",
+  "grades": {
+   "plant_wrong": "W",
+   "plant_other": "W",
+   "plant_wrong_listed0": "W",
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C"
+  },
+  "w": 3352.0
+ },
+ {
+  "case": "STYLE_22",
+  "grades": {
+   "plant_other": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong_listed0": "W",
+   "plant_correct": "C",
+   "plant_wrong": "W"
+  },
+  "w": 3030.0
+ },
+ {
+  "case": "STYLE_27",
+  "grades": {
+   "plant_correct": "C",
+   "plant_other": "W",
+   "plant_wrong": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong_listed0": "W"
+  },
+  "w": 3032.0
+ },
+ {
+  "case": "STYLE_29",
+  "grades": {
+   "plant_wrong_listed0": "W",
+   "plant_wrong": "W",
+   "plant_other": "W",
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C"
+  },
+  "w": 3312.0
+ },
+ {
+  "case": "STYLE_30",
+  "grades": {
+   "plant_other": "W",
+   "plant_wrong": "W",
+   "plant_wrong_listed0": "W",
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C"
+  },
+  "w": 3264.0
+ },
+ {
+  "case": "BINDING_charter_lane",
+  "grades": {
+   "plant_correct": "C",
+   "plant_other": "W",
+   "plant_wrong_listed0": "W",
+   "plant_wrong": "W",
+   "plant_wrong_listed1": "W"
+  },
+  "w": 2892.0
+ },
+ {
+  "case": "BINDING_close_game_when_clear",
+  "grades": {
+   "plant_other": "W",
+   "plant_correct": "C",
+   "plant_wrong_listed0": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong": "W"
+  },
+  "w": 3082.0
+ },
+ {
+  "case": "BINDING_pool_revert",
+  "grades": {
+   "plant_wrong": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong_listed0": "W",
+   "plant_other": "W",
+   "plant_correct": "C"
+  },
+  "w": 3238.0
+ },
+ {
+  "case": "BINDING_low_codex_runway",
+  "grades": {
+   "plant_wrong": "W",
+   "plant_other": "W",
+   "plant_wrong_listed0": "W",
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C"
+  },
+  "w": 3208.0
+ },
+ {
+  "case": "BINDING_snapshot_debts",
+  "grades": {
+   "plant_wrong": "W",
+   "plant_correct": "C",
+   "plant_other": "W",
+   "plant_wrong_listed0": "W",
+   "plant_wrong_listed1": "W"
+  },
+  "w": 3284.0
+ },
+ {
+  "case": "BINDING_on_one_alarm",
+  "grades": {
+   "plant_other": "W",
+   "plant_wrong": "W",
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C",
+   "plant_wrong_listed0": "W"
+  },
+  "w": 3138.0
+ },
+ {
+  "case": "BINDING_one_more_generation",
+  "grades": {
+   "plant_other": "W",
+   "plant_correct": "C",
+   "plant_wrong": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong_listed0": "W"
+  },
+  "w": 3166.0
+ },
+ {
+  "case": "BINDING_the_family",
+  "grades": {
+   "plant_correct": "C",
+   "plant_wrong_listed0": "W",
+   "plant_other": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong": "W"
+  },
+  "w": 3566.0
+ },
+ {
+  "case": "BINDING_short_leash",
+  "grades": {
+   "plant_correct": "C",
+   "plant_other": "W",
+   "plant_wrong_listed0": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong": "W"
+  },
+  "w": 3278.0
+ },
+ {
+  "case": "BINDING_metric_joins",
+  "grades": {
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C",
+   "plant_other": "W",
+   "plant_wrong_listed0": "W",
+   "plant_wrong": "W"
+  },
+  "w": 3418.0
+ },
+ {
+  "case": "CORRECTION_digest_by_hand",
+  "grades": {
+   "plant_other": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong": "W",
+   "plant_correct": "C",
+   "plant_wrong_listed0": "W"
+  },
+  "w": 3112.0
+ },
+ {
+  "case": "CORRECTION_jawa_folder",
+  "grades": {
+   "plant_other": "W",
+   "plant_wrong": "W",
+   "plant_correct": "C",
+   "plant_wrong_listed1": "W",
+   "plant_wrong_listed0": "W"
+  },
+  "w": 3250.0
+ },
+ {
+  "case": "CORRECTION_who_broadcasts",
+  "grades": {
+   "plant_other": "W",
+   "plant_wrong": "W",
+   "plant_correct": "C",
+   "plant_wrong_listed0": "W",
+   "plant_wrong_listed1": "W"
+  },
+  "w": 3262.0
+ },
+ {
+  "case": "CORRECTION_bridge_45_min",
+  "grades": {
+   "plant_wrong_listed1": "W",
+   "plant_other": "W",
+   "plant_correct": "C",
+   "plant_wrong": "W",
+   "plant_wrong_listed0": "W"
+  },
+  "w": 3370.0
+ },
+ {
+  "case": "CORRECTION_fable_blank_page",
+  "grades": {
+   "plant_wrong_listed0": "W",
+   "plant_other": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong": "W",
+   "plant_correct": "C"
+  },
+  "w": 3126.0
+ },
+ {
+  "case": "CORRECTION_goodbye_background",
+  "grades": {
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C",
+   "plant_wrong_listed0": "W",
+   "plant_wrong": "W",
+   "plant_other": "W"
+  },
+  "w": 2920.0
+ },
+ {
+  "case": "CORRECTION_delete_others_work",
+  "grades": {
+   "plant_wrong_listed0": "W",
+   "plant_wrong": "W",
+   "plant_other": "W",
+   "plant_correct": "C",
+   "plant_wrong_listed1": "W"
+  },
+  "w": 3172.0
+ },
+ {
+  "case": "CORRECTION_steve_queue_entry",
+  "grades": {
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C",
+   "plant_other": "W",
+   "plant_wrong_listed0": "W",
+   "plant_wrong": "W"
+  },
+  "w": 3196.0
+ },
+ {
+  "case": "CORRECTION_land_sh_head",
+  "grades": {
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C",
+   "plant_other": "W",
+   "plant_wrong_listed0": "W",
+   "plant_wrong": "W"
+  },
+  "w": 3526.0
+ },
+ {
+  "case": "CORRECTION_stale_hold",
+  "grades": {
+   "plant_wrong_listed0": "W",
+   "plant_correct": "C",
+   "plant_wrong": "W",
+   "plant_other": "W",
+   "plant_wrong_listed1": "W"
+  },
+  "w": 3406.0
+ },
+ {
+  "case": "CONTROL_00",
+  "grades": {
+   "plant_correct": "C",
+   "plant_wrong_listed0": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong": "W",
+   "plant_other": "W"
+  },
+  "w": 3196.0
+ },
+ {
+  "case": "CONTROL_01",
+  "grades": {
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C",
+   "plant_wrong_listed0": "W",
+   "plant_other": "W",
+   "plant_wrong": "W"
+  },
+  "w": 3344.0
+ },
+ {
+  "case": "CONTROL_02",
+  "grades": {
+   "plant_wrong": "W",
+   "plant_correct": "C",
+   "plant_wrong_listed0": "W",
+   "plant_wrong_listed1": "W",
+   "plant_other": "W"
+  },
+  "w": 3126.0
+ },
+ {
+  "case": "CONTROL_03",
+  "grades": {
+   "plant_wrong": "W",
+   "plant_other": "W",
+   "plant_wrong_listed0": "W",
+   "plant_correct": "C",
+   "plant_wrong_listed1": "W"
+  },
+  "w": 3218.0
+ },
+ {
+  "case": "CONTROL_04",
+  "grades": {
+   "plant_correct": "C",
+   "plant_wrong": "W",
+   "plant_other": "W",
+   "plant_wrong_listed0": "W",
+   "plant_wrong_listed1": "W"
+  },
+  "w": 2890.0
+ },
+ {
+  "case": "CONTROL_05",
+  "grades": {
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C",
+   "plant_wrong": "W",
+   "plant_wrong_listed0": "W",
+   "plant_other": "W"
+  },
+  "w": 3170.0
+ },
+ {
+  "case": "CONTROL_06",
+  "grades": {
+   "plant_wrong_listed1": "W",
+   "plant_correct": "C",
+   "plant_wrong": "W",
+   "plant_wrong_listed0": "W",
+   "plant_other": "W"
+  },
+  "w": 3044.0
+ },
+ {
+  "case": "CONTROL_07",
+  "grades": {
+   "plant_wrong_listed1": "W",
+   "plant_other": "W",
+   "plant_wrong_listed0": "W",
+   "plant_correct": "C",
+   "plant_wrong": "W"
+  },
+  "w": 3242.0
+ },
+ {
+  "case": "CONTROL_08",
+  "grades": {
+   "plant_wrong": "W",
+   "plant_wrong_listed1": "W",
+   "plant_wrong_listed0": "W",
+   "plant_other": "W",
+   "plant_correct": "C"
+  },
+  "w": 3134.0
+ },
+ {
+  "case": "CONTROL_09",
+  "grades": {
+   "plant_wrong_listed0": "W",
+   "plant_correct": "C",
+   "plant_other": "W",
+   "plant_wrong": "W",
+   "plant_wrong_listed1": "W"
+  },
+  "w": 3000.0
+ }
+]

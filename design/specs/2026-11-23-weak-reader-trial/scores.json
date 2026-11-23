@@ -1,0 +1,902 @@
+{
+ "outcomes": {
+  "STYLE|sonnet|none": {
+   "WRONG": 16,
+   "CORRECT": 14
+  },
+  "STYLE|sonnet|old": {
+   "CORRECT": 49,
+   "WRONG": 1
+  },
+  "STYLE|sonnet|new": {
+   "CORRECT": 50
+  },
+  "STYLE|opus|old": {
+   "CORRECT": 20
+  },
+  "STYLE|opus|new": {
+   "CORRECT": 20
+  },
+  "BINDING|sonnet|none": {
+   "CORRECT": 13,
+   "WRONG": 17
+  },
+  "BINDING|sonnet|old": {
+   "CORRECT": 32,
+   "NOT_TOLD": 18
+  },
+  "BINDING|sonnet|new": {
+   "CORRECT": 46,
+   "NOT_TOLD": 4
+  },
+  "BINDING|opus|old": {
+   "NOT_TOLD": 2,
+   "CORRECT": 18
+  },
+  "BINDING|opus|new": {
+   "CORRECT": 20
+  },
+  "CORRECTION|sonnet|none": {
+   "WRONG": 18,
+   "CORRECT": 12
+  },
+  "CORRECTION|sonnet|old": {
+   "WRONG": 45,
+   "CORRECT": 5
+  },
+  "CORRECTION|sonnet|new": {
+   "NOT_TOLD": 14,
+   "CORRECT": 35,
+   "WRONG": 1
+  },
+  "CORRECTION|opus|old": {
+   "WRONG": 16,
+   "CORRECT": 2,
+   "NOT_TOLD": 2
+  },
+  "CORRECTION|opus|new": {
+   "CORRECT": 14,
+   "NOT_TOLD": 4,
+   "WRONG": 2
+  },
+  "CONTROL|sonnet|none": {
+   "WRONG": 21,
+   "CORRECT": 9
+  },
+  "CONTROL|sonnet|old": {
+   "CORRECT": 48,
+   "WRONG": 1,
+   "NOT_TOLD": 1
+  },
+  "CONTROL|sonnet|new": {
+   "CORRECT": 49,
+   "WRONG": 1
+  },
+  "CONTROL|opus|old": {
+   "CORRECT": 20
+  },
+  "CONTROL|opus|new": {
+   "CORRECT": 20
+  }
+ },
+ "diff": {
+  "STYLE|sonnet|stated rule correct": {
+   "mean": 1.9999999999999996,
+   "lo": 0,
+   "hi": 5.999999999999999,
+   "sd": 6.324555320336757
+  },
+  "STYLE|opus|stated rule correct": {
+   "mean": 0,
+   "lo": 0,
+   "hi": 0,
+   "sd": 0.0
+  },
+  "STYLE|sonnet|act right, TOLD ignored": {
+   "mean": 1.9999999999999996,
+   "lo": 0,
+   "hi": 5.999999999999999,
+   "sd": 6.324555320336757
+  },
+  "STYLE|opus|act right, TOLD ignored": {
+   "mean": 0,
+   "lo": 0,
+   "hi": 0,
+   "sd": 0.0
+  },
+  "BINDING|sonnet|stated rule correct": {
+   "mean": 28.0,
+   "lo": 6.0,
+   "hi": 56.0,
+   "sd": 42.37399621885521
+  },
+  "BINDING|opus|stated rule correct": {
+   "mean": 10,
+   "lo": 0,
+   "hi": 30,
+   "sd": 31.622776601683793
+  },
+  "BINDING|sonnet|act right, TOLD ignored": {
+   "mean": 14.0,
+   "lo": 0,
+   "hi": 36.0,
+   "sd": 32.72783388968954
+  },
+  "BINDING|opus|act right, TOLD ignored": {
+   "mean": 10,
+   "lo": 0,
+   "hi": 30,
+   "sd": 31.622776601683793
+  },
+  "CORRECTION|sonnet|stated rule correct": {
+   "mean": 60,
+   "lo": 30,
+   "hi": 90,
+   "sd": 51.63977794943222
+  },
+  "CORRECTION|opus|stated rule correct": {
+   "mean": 60,
+   "lo": 30,
+   "hi": 90,
+   "sd": 51.63977794943222
+  },
+  "CORRECTION|sonnet|act right, TOLD ignored": {
+   "mean": 64.0,
+   "lo": 34.0,
+   "hi": 90,
+   "sd": 47.88875998951459
+  },
+  "CORRECTION|opus|act right, TOLD ignored": {
+   "mean": 70,
+   "lo": 40,
+   "hi": 100,
+   "sd": 48.3045891539648
+  },
+  "CONTROL|sonnet|stated rule correct": {
+   "mean": 1.9999999999999996,
+   "lo": 0,
+   "hi": 5.999999999999999,
+   "sd": 6.324555320336757
+  },
+  "CONTROL|opus|stated rule correct": {
+   "mean": 0,
+   "lo": 0,
+   "hi": 0,
+   "sd": 0.0
+  },
+  "CONTROL|sonnet|act right, TOLD ignored": {
+   "mean": 0.0,
+   "lo": 0.0,
+   "hi": 0,
+   "sd": 0.0
+  },
+  "CONTROL|opus|act right, TOLD ignored": {
+   "mean": 0,
+   "lo": 0,
+   "hi": 0,
+   "sd": 0.0
+  }
+ },
+ "cases": {
+  "STYLE_03": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "STYLE_06": {
+   "correct": {
+    "sonnet_none": 2,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 2,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "STYLE_10": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "STYLE_18": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "STYLE_20": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "STYLE_21": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 4,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 4,
+    "new": 5
+   }
+  },
+  "STYLE_22": {
+   "correct": {
+    "sonnet_none": 1,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 1,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "STYLE_27": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "STYLE_29": {
+   "correct": {
+    "sonnet_none": 2,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 2,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "STYLE_30": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "BINDING_charter_lane": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 0,
+    "sonnet_new": 5,
+    "opus_old": 0,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 5,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 0,
+    "new": 5
+   }
+  },
+  "BINDING_close_game_when_clear": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "BINDING_pool_revert": {
+   "correct": {
+    "sonnet_none": 1,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 1,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "BINDING_low_codex_runway": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "BINDING_snapshot_debts": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 2,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 3,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "BINDING_on_one_alarm": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 0,
+    "sonnet_new": 1,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 5,
+    "new": 4
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "BINDING_one_more_generation": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "BINDING_the_family": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "BINDING_short_leash": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "BINDING_metric_joins": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 0,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 5,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 3,
+    "new": 5
+   }
+  },
+  "CORRECTION_digest_by_hand": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 0,
+    "sonnet_new": 0,
+    "opus_old": 0,
+    "opus_new": 0
+   },
+   "not_told": {
+    "old": 0,
+    "new": 5
+   },
+   "act_right": {
+    "none": 0,
+    "old": 0,
+    "new": 0
+   }
+  },
+  "CORRECTION_jawa_folder": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 0,
+    "sonnet_new": 0,
+    "opus_old": 0,
+    "opus_new": 0
+   },
+   "not_told": {
+    "old": 0,
+    "new": 5
+   },
+   "act_right": {
+    "none": 3,
+    "old": 0,
+    "new": 2
+   }
+  },
+  "CORRECTION_who_broadcasts": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 0,
+    "sonnet_new": 0,
+    "opus_old": 0,
+    "opus_new": 0
+   },
+   "not_told": {
+    "old": 0,
+    "new": 4
+   },
+   "act_right": {
+    "none": 0,
+    "old": 0,
+    "new": 0
+   }
+  },
+  "CORRECTION_bridge_45_min": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "CORRECTION_fable_blank_page": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 0,
+    "sonnet_new": 5,
+    "opus_old": 0,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 0,
+    "new": 5
+   }
+  },
+  "CORRECTION_goodbye_background": {
+   "correct": {
+    "sonnet_none": 1,
+    "sonnet_old": 0,
+    "sonnet_new": 5,
+    "opus_old": 0,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 1,
+    "old": 0,
+    "new": 5
+   }
+  },
+  "CORRECTION_delete_others_work": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 0,
+    "sonnet_new": 5,
+    "opus_old": 0,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 0,
+    "new": 5
+   }
+  },
+  "CORRECTION_steve_queue_entry": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 0,
+    "sonnet_new": 5,
+    "opus_old": 0,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 0,
+    "new": 5
+   }
+  },
+  "CORRECTION_land_sh_head": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 0,
+    "sonnet_new": 5,
+    "opus_old": 0,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 0,
+    "new": 5
+   }
+  },
+  "CORRECTION_stale_hold": {
+   "correct": {
+    "sonnet_none": 2,
+    "sonnet_old": 0,
+    "sonnet_new": 5,
+    "opus_old": 0,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 2,
+    "old": 0,
+    "new": 5
+   }
+  },
+  "CONTROL_00": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "CONTROL_01": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "CONTROL_02": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 4,
+    "sonnet_new": 4,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 4,
+    "new": 4
+   }
+  },
+  "CONTROL_03": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "CONTROL_04": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "CONTROL_05": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "CONTROL_06": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "CONTROL_07": {
+   "correct": {
+    "sonnet_none": 3,
+    "sonnet_old": 4,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 1,
+    "new": 0
+   },
+   "act_right": {
+    "none": 3,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "CONTROL_08": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  },
+  "CONTROL_09": {
+   "correct": {
+    "sonnet_none": 0,
+    "sonnet_old": 5,
+    "sonnet_new": 5,
+    "opus_old": 2,
+    "opus_new": 2
+   },
+   "not_told": {
+    "old": 0,
+    "new": 0
+   },
+   "act_right": {
+    "none": 0,
+    "old": 5,
+    "new": 5
+   }
+  }
+ }
+}
