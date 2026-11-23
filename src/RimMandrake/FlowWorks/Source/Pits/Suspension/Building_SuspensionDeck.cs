@@ -183,6 +183,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			leafRaised = RM_Drawbridges.RaisedAt(map, Position);   // DRAWBRIDGE: a reload (or a rebuilt square) reads its leaf
 			RM_MapComponent_SuspensionBridges.DirtyAround(map, Position);
+			RM_DeckArt.DirtyEnds(map, Record);   // the picked art's cables hang only from a whole deck
 			RM_SuspensionWaters.Notify_DeckChanged(map, Position);
 		}
 
@@ -194,9 +195,11 @@ namespace RimMandrake.FlowWorks.Pits
 			// floor: whoever is under it is hit like a roof collapse, and the wreck blocks the floor until cleared
 			bool falls = collapsed;
 			List<Pawn> under = falls ? Bridges?.BandPawnsAt(pos) : null;
-			string look = Bridges?.RecordAt(pos)?.look;
+			SuspensionBridgeRecord rec = Bridges?.RecordAt(pos);
+			string look = rec?.look;
 			base.DeSpawn(mode);
 			RM_MapComponent_SuspensionBridges.DirtyAround(map, pos);
+			RM_DeckArt.DirtyEnds(map, rec);
 			RM_SuspensionWaters.Notify_DeckChanged(map, pos);
 			if (falls && map != null)
 			{
@@ -214,6 +217,10 @@ namespace RimMandrake.FlowWorks.Pits
 			if (RM_DrawbridgeArt.PrintRaidPlank(layer, this, Record))
 			{
 				// DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS: a laid raid plank draws its own mid and end pieces, turned to the span
+			}
+			else if (RM_DeckArt.PrintDeck(layer, this, Record))
+			{
+				// RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS: the owner's picked art, one strip cut into root/mid/tip/solo pieces
 			}
 			else if (Graphic is Graphic_Linked linked && linked.SubGraphic != null)
 			{
@@ -342,6 +349,7 @@ namespace RimMandrake.FlowWorks.Pits
 			if (p == null)
 			{
 				base.Print(layer);
+				RM_DeckArt.PrintEnd(layer, this);
 				return;
 			}
 			if (p.slack)
@@ -357,6 +365,7 @@ namespace RimMandrake.FlowWorks.Pits
 				base.Print(layer);
 			}
 			RM_DrawbridgeArt.PrintRopes(layer, p);
+			RM_DeckArt.PrintEnd(layer, this);
 		}
 
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)

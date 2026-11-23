@@ -61,6 +61,25 @@
       <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS_HEAVY_B_CHOSEN_TWO_PICKS_OPEN: his pick bridge_Scrapper_C (2026-11-22), drawn by RM_DeckArt; numbers = gen_render.py spec_for -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain</cable>
+        <deckWidth>0.78</deckWidth>
+        <postHeight>1</postHeight>
+        <postWidth>0.08</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.114</cableThick>
+        <fan>1</fan>
+        <doubled>false</doubled>
+        <sagLow>0.08</sagLow>
+        <hangerPitch>0.5</hangerPitch>
+        <hangerFactor>0.5</hangerFactor>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -73,6 +92,25 @@
       <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS_HEAVY_B_CHOSEN_TWO_PICKS_OPEN: his pick bridge_Industrial_A (2026-11-22), drawn by RM_DeckArt; numbers = gen_render.py spec_for -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Steel_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Black</cable>
+        <deckWidth>0.78</deckWidth>
+        <postHeight>1.3</postHeight>
+        <postWidth>0.17</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.1013</cableThick>
+        <fan>1</fan>
+        <doubled>false</doubled>
+        <sagLow>0.18</sagLow>
+        <hangerPitch>0.33</hangerPitch>
+        <hangerFactor>0.55</hangerFactor>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -85,6 +123,25 @@
       <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS_HEAVY_B_CHOSEN_TWO_PICKS_OPEN: his pick bridge_Modern_A (2026-11-22), drawn by RM_DeckArt; numbers = gen_render.py spec_for -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Galv</cable>
+        <deckWidth>0.76</deckWidth>
+        <postHeight>1.35</postHeight>
+        <postWidth>0.075</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.036</cableThick>
+        <fan>1</fan>
+        <doubled>false</doubled>
+        <sagLow>0.55</sagLow>
+        <hangerPitch>1</hangerPitch>
+        <hangerFactor>0.6</hangerFactor>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -97,6 +154,25 @@
       <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS_HEAVY_B_CHOSEN_TWO_PICKS_OPEN: his pick bridge_Futuristic_A (2026-11-22), drawn by RM_DeckArt; numbers = gen_render.py spec_for -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Steel_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Cyan</cable>
+        <deckWidth>0.78</deckWidth>
+        <postHeight>1.55</postHeight>
+        <postWidth>0.1</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.042</cableThick>
+        <fan>1</fan>
+        <doubled>false</doubled>
+        <sagLow>1</sagLow>
+        <hangerPitch>0.25</hangerPitch>
+        <hangerFactor>0.45</hangerFactor>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -121,6 +197,25 @@
       <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS_HEAVY_B_CHOSEN_TWO_PICKS_OPEN: his pick heavy_bridge_B (2026-11-22), drawn by RM_DeckArt; numbers = gen_render.py spec_for -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Heavy_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Heavy_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Black</cable>
+        <deckWidth>0.84</deckWidth>
+        <postHeight>1.35</postHeight>
+        <postWidth>0.13</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.081</cableThick>
+        <fan>1</fan>
+        <doubled>true</doubled>
+        <sagLow>0.22</sagLow>
+        <hangerPitch>0.5</hangerPitch>
+        <hangerFactor>0.45</hangerFactor>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -261,6 +356,25 @@
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Steel</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS_HEAVY_B_CHOSEN_TWO_PICKS_OPEN: his pick steel_jetty_B (2026-11-22), drawn by RM_DeckArt; numbers = gen_render.py spec_for -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Steel_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Galv</cable>
+        <deckWidth>0.74</deckWidth>
+        <postHeight>1.35</postHeight>
+        <postWidth>0.08</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.054</cableThick>
+        <fan>2</fan>
+        <doubled>false</doubled>
+        <sagLow>0.22</sagLow>
+        <hangerPitch>0.5</hangerPitch>
+        <hangerFactor>0.45</hangerFactor>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -301,6 +415,25 @@
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Heavy</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS_HEAVY_B_CHOSEN_TWO_PICKS_OPEN: his pick heavy_jetty_B (2026-11-22), drawn by RM_DeckArt; numbers = gen_render.py spec_for -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Heavy_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Heavy_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Black</cable>
+        <deckWidth>0.84</deckWidth>
+        <postHeight>1.35</postHeight>
+        <postWidth>0.13</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.081</cableThick>
+        <fan>1</fan>
+        <doubled>true</doubled>
+        <sagLow>0.22</sagLow>
+        <hangerPitch>0.5</hangerPitch>
+        <hangerFactor>0.45</hangerFactor>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>

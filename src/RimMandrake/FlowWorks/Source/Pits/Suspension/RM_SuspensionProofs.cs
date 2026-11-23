@@ -608,7 +608,8 @@ namespace RimMandrake.FlowWorks.Pits
 
 		// ── SUSPENSION_JETTY_BUILD_WALK_THE_PLANK ─────────────────────────────────────────────────────────────────
 
-		/// <summary>"x1,z1;x2,z2;steel|heavy[;god]": drag a jetty over that line (either end may be the root). → "JETTY ok=b
+		/// <summary>"x1,z1;x2,z2;steel|heavy[;god[;Look]]": drag a jetty over that line (either end may be the root), in that look
+		/// when one is named (RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS: his picks are the Industrial jetties). → "JETTY ok=b
 		/// anchors=N decks=N blueprints=N railed=N reason=..."</summary>
 		public static string ProofJetty(string arg)
 		{
@@ -620,6 +621,10 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			Designator_SuspensionJetty d = a[2] == "heavy" ? (Designator_SuspensionJetty)new Designator_SuspensionJetty_Heavy() : new Designator_SuspensionJetty_Steel();
 			bool god = a.Length > 3 && a[3] == "god";
+			if (a.Length > 4 && Machinery.PipeStyles.IsLook(a[4]))
+			{
+				Machinery.PipeLook.Core.Pick(d, a[4]);
+			}
 			bool was = DebugSettings.godMode;
 			DebugSettings.godMode = god;
 			string reason;
@@ -647,20 +652,58 @@ namespace RimMandrake.FlowWorks.Pits
 				+ " reason=" + (reason ?? "-");
 		}
 
+		// ── RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS_HEAVY_B_CHOSEN_TWO_PICKS_OPEN ──────────────────────────────────────
+
+		/// <summary>"x,z": the picked art of the bridge or jetty at that cell, as the game will draw it. → "DECKART look=L
+		/// strip=path|none pieces=root,mid,tip angle=A complete=b posts=path cable=path"</summary>
+		public static string ProofDeckArt(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !Cell(arg ?? "", out IntVec3 c))
+			{
+				return "REFUSED: arg must be x,z on the current map";
+			}
+			SuspensionBridgeRecord r = map.GetComponent<RM_MapComponent_SuspensionBridges>()?.RecordAt(c);
+			if (r == null)
+			{
+				return "DECKART none: no bridge or jetty at " + arg;
+			}
+			var pieces = new List<string>();
+			string strip = "none", post = "-", cable = "-";
+			for (int i = RM_DeckArt.FirstDeck(r); i <= r.LastDeck; i++)
+			{
+				Building_SuspensionDeck d = r.Cell(0, i).GetFirstThing<Building_SuspensionDeck>(map);
+				RM_DeckArtExtension x = RM_DeckArt.For(r, d?.StyleDef);
+				if (x == null)
+				{
+					pieces.Add(d == null ? "unbuilt" : "old");
+					continue;
+				}
+				strip = x.strip;
+				post = x.post;
+				cable = x.cable;
+				pieces.Add(d == null ? "unbuilt" : RM_DeckArtMath.PieceAt(i - RM_DeckArt.FirstDeck(r), RM_DeckArt.DeckCount(r)));
+			}
+			return "DECKART look=" + RM_DrawbridgeArt.LookOf(r) + " jetty=" + r.jetty + " dir=" + r.dir + " strip=" + strip
+				+ " pieces=" + string.Join(",", pieces) + " angle=" + RM_DeckArtMath.StripAngle(r.dir.AsInt)
+				+ " complete=" + RM_DeckArt.DeckComplete(map, r) + " post=" + post + " cable=" + cable;
+		}
+
 		// ── SUSPENSION_ART_RESKIN_HE_SEES_FIRST ───────────────────────────────────────────────────────────────────
 
-		/// <summary>"Look;x1,z1;x2,z2": pick that look on the steel bridge button, drag it built (god), turn its railings on, and
+		/// <summary>"Look;x1,z1;x2,z2[;heavy]": pick that look on the steel (or heavy) bridge button, drag it built (god), turn its railings on, and
 		/// read every part's graphic. → "LOOK look=L parts=N styled=N pink=N paths=a|b|..." (pink = the game's missing-texture
 		/// material).</summary>
 		public static string ProofLook(string arg)
 		{
 			Map map = Find.CurrentMap;
 			string[] a = (arg ?? "").Split(';');
-			if (map == null || a.Length != 3 || !Cell(a[1], out IntVec3 c1) || !Cell(a[2], out IntVec3 c2))
+			if (map == null || a.Length < 3 || a.Length > 4 || !Cell(a[1], out IntVec3 c1) || !Cell(a[2], out IntVec3 c2))
 			{
-				return "REFUSED: arg must be Look;x1,z1;x2,z2";
+				return "REFUSED: arg must be Look;x1,z1;x2,z2[;heavy]";
 			}
-			var des = new Designator_SuspensionBridge_Steel();
+			Designator_SuspensionBridge des = a.Length == 4 && a[3] == "heavy" ? (Designator_SuspensionBridge)new Designator_SuspensionBridge_Heavy()
+				: new Designator_SuspensionBridge_Steel();
 			Machinery.PipeLook.Core.Pick(des, a[0]);
 			bool was = DebugSettings.godMode;
 			DebugSettings.godMode = true;
