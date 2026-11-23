@@ -160,7 +160,7 @@ A mod setting written with `jawa/mod_settings_field` does NOT fire the mod's `Wr
 - `jawa/flowworks_excavation_drive` (dig+fill) followed by a same-tick teleport into the new pool makes the pawn FALL (9.7 blunt, bruise + cracked clavicle): the swim-climb cache (`RM_MapComponent_Excavation.swimClimb`) refreshes only every `SwimRefreshTicks`=60 or after a pulse, so for that first tick a brim-full pool still reads as an 8-deep dry pit. Step >=60 ticks after driving fill before putting a pawn in; check `flowworks_pit_report` `recentDescents` + `pawn_get` hediffs, and heal with `jawa/pawn_health remove`. Injuries silently move ConstructionSpeed via Manipulation.
 
 ## `jawa/power_net` units
-- **`jawa/power_net` reports watt-days per tick (1/60000 W),** so tiny numbers like 1.67e-05 are normal. Scale before judging a gain.
+- **`jawa/power_net` reports watt-days per tick,** so tiny numbers like 1.67e-05 (1 W) are normal. Multiply by 60000 for watts before judging a gain.
 
 ## Bridge and live-game traps
 **Removing a mod can expose what it was masking, and a mapgen call reporting success is not a live map.** Biome Transitions overrode Odyssey's `MixedBiome`; with it gone, `MixedBiome` on a non-vanilla biome nulls the secondary biome and `GenStep_Plants`/`GenStep_Animals` throw, leaving a dead map (1 plant) from a call reporting success with `failedSteps 0`. Assert plant count and read 'Error in GenStep' in `Player.log`.

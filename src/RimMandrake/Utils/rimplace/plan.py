@@ -686,10 +686,11 @@ def compile_calls(plan: BuildPlan, faction: str | None = None,
         groups[(t.defName, t.stuff)].append(t)
     # 🔴 TRANSMITTERS BEFORE CONNECTORS, or the power layer is dead on arrival.
     # A connector (Cooler, most machines) binds to the nearest transmitter
-    # within ConnectMaxDist=6 AT SPAWN; a transmitter appearing afterwards does
-    # not retroactively claim it. Alphabetical grouping put Battery and Cooler
-    # ahead of PowerConduit, so every cooler bound to nothing and read
-    # `Grid excess: 0 W` even after the bus was live and the game had ticked.
+    # within ConnectMaxDist=6 AT SPAWN and keeps it; only a connector with no
+    # parent is claimed by a later net. Alphabetical grouping put Battery and
+    # Cooler ahead of PowerConduit, so every cooler bound to a dead net (likely
+    # the battery's own; not measured) and read `Grid excess: 0 W` even after
+    # the bus was live and the game had ticked.
     # Measured 2026-08-26; re-placing the same coolers afterwards fixed them.
     tx = netinfo.transmitters({d for d, _ in groups})
     if tx is None:
@@ -699,7 +700,7 @@ def compile_calls(plan: BuildPlan, faction: str | None = None,
         tx = set()
         plan.notes.append("⚠️ def dump unreadable: build order NOT sorted "
                           "transmitters-first, so any power or pipe network in "
-                          "this plan may spawn unbound. Re-place connectors "
+                          "this plan may bind to a dead net. Re-place connectors "
                           "after the bus, or re-run with the dump present.")
 
     def _rank(kv):

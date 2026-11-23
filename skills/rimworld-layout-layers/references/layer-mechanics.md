@@ -10,8 +10,9 @@ from memory. Where something was not read, it says UNMEASURED.
 (`ContiguousPowerBuildings`) over `GenAdj.CellsAdjacentCardinal`, collecting
 buildings whose `TransmitsPowerNow == true`. Those become the `transmitters` of
 one `PowerNet`. Driven by `PowerNetManager.TryCreateNetAt`, processed from a
-`DelayedAction` queue in `PowerNetManager.UpdatePowerNetsAndConnections_First()`
-— **on tick**, so a paused game has not yet resolved a net you just built.
+`DelayedAction` queue in `PowerNetManager.UpdatePowerNetsAndConnections_First()`,
+which `Map.MapUpdate` calls **each frame**, so a paused game also resolves a net
+that you just built, on the next frame.
 
 ### Two different joining rules — this asymmetry is the trap
 - **Transmitters** (`CompProperties_Power.transmitsPower == true`: conduits,
@@ -28,10 +29,17 @@ one `PowerNet`. Driven by `PowerNetManager.TryCreateNetAt`, processed from a
 
 **`PowerConnectionMaker.ConnectMaxDist = 6`** (`private const int`).
 
-⚠️ A generator is a *connector*, not a transmitter. Two conduit runs that never
-touch cardinally are two nets, and a generator adjacent to one of them joins
-only that one. Measured live: a `SolarGenerator` reading `Grid excess: 690 W`
-four cells from a conduit run reading `0 W`.
+⚠️ `SolarGenerator` and `Battery` ship `transmitsPower: true`, so both are
+*transmitters*. Read the def before you call a generator a connector. Two conduit
+runs that never touch cardinally are two nets, and a transmitter beside one of
+them joins only that one. Measured live: a `SolarGenerator` reading
+`Grid excess: 690 W` four cells from a conduit run reading `0 W`.
+
+A connector that has no net is claimed later: `PowerNetManager.TryCreateNetAt` calls
+`PowerConnectionMaker.ConnectAllConnectorsToTransmitter` for each transmitter of a
+new net, and that claims each connector within 6 cells whose `connectParent` is
+null. A connector that already has a `connectParent` keeps it, even on a net with
+no source.
 
 ### Conduit under a wall
 `PowerConduit` sets `<building><isEdifice>false</isEdifice>
@@ -75,7 +83,8 @@ the radial set around a despawned support; failures go to
 `map.roofCollapseBuffer.MarkToCollapse(...)`.
 
 ⚠️ Because it flood-fills *through roofed cells*, straight-line distance is a
-lower bound, not the rule. An approximation should err toward over-warning.
+lower bound, not the rule. An approximation should err toward over-warning. The
+rimplace lint does not: it ignores the roofed path (`rimplace-gaps.md`).
 
 ### Roof kinds
 `RoofConstructed`, `RoofRockThin`, `RoofRockThick` are all `RoofDef` data, not

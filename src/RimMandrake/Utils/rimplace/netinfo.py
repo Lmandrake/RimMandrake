@@ -8,8 +8,9 @@
   * a CONNECTOR (transmitsPower false - Cooler, most machines) binds to the
     nearest transmitter within `PowerConnectionMaker.ConnectMaxDist = 6`.
 
-A connector binds AT SPAWN. A transmitter that appears later does not
-retroactively claim it. Measured 2026-08-26: coolers painted before their
+A connector with no net is claimed by the next net that forms within range
+(PowerNetManager.TryCreateNetAt). A connector that already has a connectParent
+keeps it, even on a net with no source. Measured 2026-08-26: coolers painted before their
 conduit bus read `Grid excess: 0 W` even after the bus was energised and the
 game ticked; destroying and re-placing the same two coolers, nothing else
 changed, took them to 1700 W.

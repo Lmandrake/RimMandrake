@@ -578,7 +578,7 @@ cd /mnt/d/Luke/dev/RimMandrake/src/RimMandrake/Utils
 | `lint` | every check that does not need a game |
 | `calls` | the exact ordered `jawa/*` calls it would make |
 | `verify` | every defName checked against the live def dump |
-| `selftest` | 23 cases, **over half negative controls** |
+| `selftest` | **over half negative controls** (count: `grep -c "^@case" selftest.py`) |
 
 **What the prototype demonstrates that the spec could only assert:**
 

@@ -47,7 +47,7 @@ function build(ctx)
   --     which ships transmitsPower TRUE) joins a net ONLY by CARDINAL cell
   --     adjacency. No radius, no diagonal.
   --   * A CONNECTOR (CompPowerTrader/CompPowerBattery that does not transmit -
-  --     Cooler, Battery) links to the nearest transmitter within
+  --     Cooler; the vanilla Battery DOES transmit) links to the nearest transmitter within
   --     PowerConnectionMaker.ConnectMaxDist = 6, via a plain
   --     CellRect.ExpandedBy(6) with NO line-of-sight test. It reaches THROUGH
   --     a wall.
@@ -57,9 +57,9 @@ function build(ctx)
   --
   -- So the bus runs OUTSIDE, along the row above the north wall, cardinally
   -- contiguous from the generator to over the coolers. The coolers then reach
-  -- it through the wall as connectors. Nothing has to cross a wall cell -
-  -- which this engine cannot express anyway, since place() refuses a second
-  -- def in an occupied cell and wall_mount() would delete the wall.
+  -- it through the wall as connectors. Nothing has to cross a wall cell.
+  -- (place() refuses a second def in an occupied cell and wall_mount() would
+  -- delete the wall; place_overlay() is the verb for a conduit over a wall.)
   local bus_z  = z + RH
   -- The generator is 4x4 and its footprint is centred on the origin cell, so
   -- it is parked clear of the bus row's end and the bus is run up to its west

@@ -96,11 +96,12 @@ Do not assume the PipeSystem model transfers.
 
 ## Bridge support
 
-🔴 **None.** A grep of the whole companion source for `PipeNet`,
-`CompResourceStorage`, `CompGasTrader` and net-grid patterns returns **zero hits**,
-live or in source. There is no pipe tool in either direction. This is a blank
-layer, not a deployment gap — unlike `jawa/power_net`, which is written but
-undeployed.
+**Read only.** `jawa/pipe_net_info` reads each net of the current map: `pipeNetDef`,
+`stored`, `availableCapacity`, `production`, `consumption`, and the counts of
+connectors, storages, producers and receivers. It names no member and no cell. The
+VEF `PipeSystem` fields are verified against source. The Rimefeller and Dubs Bad
+Hygiene rows are a raw field dump, each marked `verified: false`. An absent framework
+reads `present: false`.
 
-⇒ Until a tool exists, the only live reading of a pipe net is
-`jawa/inspect_string`, which surfaces the inspect pane as free text.
+No tool writes a pipe net. `jawa/inspect_string` gives the inspect pane of one
+building as free text.

@@ -131,7 +131,7 @@ end
 
 -- Roof support for a big interior: vanilla holds a roof within 6 cells of a
 -- wall, so a room whose interior exceeds 12 on BOTH axes has a middle no
--- wall reaches (rimplace lint rule 6, Manhattan, over-warns never under-warns).
+-- wall reaches (rimplace lint rule 6, Manhattan, ignores the roofed path).
 -- Four columns at 7 in from each corner cover interiors up to about 26x26;
 -- anything bigger gets a refusal rather than a silent collapse. Returns the
 -- columns placed.

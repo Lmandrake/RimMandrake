@@ -42,7 +42,7 @@ $P -m rimplace selftest
 | `plan.py` | `lint()`, `render()`, `compile_calls()` |
 | `cli.py` | the five commands |
 | `palette.json` | role → defName. 🔴 **UNVERIFIED until `verify` says otherwise** |
-| `selftest.py` | 23 cases, over half of them **negative controls** |
+| `selftest.py` | the cases, over half of them **negative controls** |
 
 ## Three properties worth knowing
 
