@@ -1,43 +1,29 @@
 # PumpOblique — LIQUID_PUMP_REDRAW_PLAN_VIEW_HUB
 
-The four RM_LiquidPump looks redrawn from plan-view medallions to the oblique building camera, deterministically
-from the installed plan art (`plan/`, a copy of the 2026-10-23 installed textures, kept as the source and revert).
+The four RM_LiquidPump looks redrawn from plan-view medallions to the oblique building camera.
 
-- `oblique_pump.py [outdir]` writes `<Look>.png` for Scrapper, Industrial, Modern and Futuristic. Its output is
-  deterministic and is not committed.
-- `check_oblique.py [--dir D]` is the gate. Each look must be oblique, meaning the south wall is no brighter than
-  0.80 × the north rim. Each of the four ports must be centred on its edge centre within 0.02 cell, and its face must
-  be within 0.10 cell of the edge.
+- `plan/` holds a copy of the 2026-10-23 installed plan art: the parts reference, and the revert.
+- `oblique_pump.py` is the 2026-11-05 attempt. It squashes the flat plan picture, adds a synthetic wall and pastes the
+  flat pipe arms back. The owner rejected its output on 2026-11-23 ("the rest of the graphics have just been crudely
+  distorted to match it. Entirely wrong."). Do not install its output.
+- `v2/` is the 2026-11-23 redraw, generated from a true 3D model:
+  - `blockout.py <out.png> [flange_radius] [neck_radius]` raymarches the grey 3D pump under the building camera. Modern
+    uses 56 38; the other looks use the defaults.
+  - `render.py <Look> <blockout.png> <out.png>` holds the prompt and makes one codex edit: image 1 the blockout, image 2
+    the look's tank, image 3 the plan pump.
+  - `finish.py <raw.png> <out.png> [scale]` makes the 512 px sprite. Industrial used scale 0.985.
+  - `sheet.py <showing dir> <dated dir> <out.png>` builds the owner's pick sheet.
+- `check_oblique.py [--dir D]` reads ports and an oblique clause. Each port must be centred on its edge centre within
+  0.02 cell, with its face within 0.10 cell of the edge. Trust the port clause only. The oblique clause is a brightness
+  ratio: it passed all four rejected candidates, and it fails the white Futuristic v2, which an independent judge kept.
 
-Measured 2026-11-05:
-
-| art | oblique ratio | ports |
-|---|---|---|
-| installed plan art | 0.98–1.06, all four FAIL | pass |
-| candidates | 0.51–0.58 | all 16 pass (offsets ≤ 0.010 cell, gaps ≤ 0.053 cell) |
+Measured 2026-11-23, v2 round 1: `validate_sprite.py` passes all four; 16 of 16 ports pass. An independent GPT judge kept
+all four.
 
 ## Candidates
 
-The candidates are in the art store (`art.py put`), sha256 prefixes:
-
-| look | sha256 prefix |
-|---|---|
-| Scrapper | c9bda35b4bc0 |
-| Industrial | 307c455cd973 |
-| Modern | 3188aa2146b9 |
-| Futuristic | 67b0925cb84c |
-
-Copies and a before/after sheet at true scale are in `D:\ClaudeWork\rimmandrake\relentless\LIQUID_PUMP_REDRAW_PLAN_VIEW_HUB\candidates\`.
-
-Three fresh Opus judges looked at successive versions. Their verdicts are `judge_verdict_v1..v3.json` in the folder
-above `candidates\`; each version's defects were fixed in the next.
-
-- **v1:** rejected for a black-box wall and streaks.
-- **v2:** rejected because the top was too round.
-- **v3:** said the art reads oblique (the top face's height is 0.575 of its width). It rejected the art for a
-  translucent seam, ghost rings in the wall and a south neck with no collar.
-
-The current version fixes all three v3 findings. It has not been judged by a fresh agent.
+`D:\ClaudeWork\rimmandrake\showings\LIQUID_PUMP_REDRAW_PLAN_VIEW_HUB\2026-11-23_true_oblique\` holds the candidates,
+raw renders, exact prompts, GPT's advice, the judge's answer and `pump_pick_sheet.png`.
 
 ## Blocked: owner-kept art
 
@@ -62,7 +48,6 @@ All four installed looks are owner-KEPT pictures (960ddf23f012, ea7ddc15b970, 87
    ```
 
    This rewrites `UnderCouplerReach.cs`, and the DLL is rebuilt by publish.
-3. Promote `check_oblique.py` to `src/RimMandrake/FlowWorks/selftest_pump_oblique.py`. That is the contract's proof.
+3. Promote only the port clause of `check_oblique.py` to `src/RimMandrake/FlowWorks/selftest_pump_oblique.py`.
 4. Run `selftest_hose_fittings.py`.
 
-Both scripts are still DIRTY in `code_review_status`: no independent full-file review has been done.
