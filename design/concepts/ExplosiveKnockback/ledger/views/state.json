@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "4c7385ac662935e8364695c42c3ae44cda02b6fda312180d6694bdf785317c82",
+  "body_sha256": "e8d8af506c1b59ef80a076159ddbae58ce3f48677517e9282468aa695e493219",
   "reducer": 1,
   "shards": {
    "BACKFILL": 344431,
@@ -11,6 +11,7 @@
    "HOLDER.run-1794860741": 975,
    "HOLDER.run-1794865314": 728,
    "HOLDER.run-1794895533": 1780,
+   "HOLDER.run-1795435910": 630,
    "JUDGE.judge-1794890427": 18837,
    "OWNER": 1207
   }
@@ -679,11 +680,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1794895533",
-   "done": "cycle 5 judged: 2 Problems re-filed under the route item (RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP, RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED); restore-check closure false positive fixed 20eca8db5d; certificate OK; advanced to blind_challenge (cycle 6)",
+   "by": "HOLDER.run-1795435910",
+   "done": "red runs recorded for T_FUZZ, T_KERNEL, T_HEAVY_KNOCK_RULE, T_PROOFGATE, T_SETTINGS_SCREEN, T_SETTINGS_SWEEP_OFFLINE (00b1840eed); certificate to blind_challenge OK",
    "next": "Fix the two road-back items, then run blind cycle 6 on the changed files",
-   "ruled_out": "re-pinning inv_proof_scenes (changes what decides it); Pyrelands wind_burn_live.py as a real restore leak",
-   "ts": "2026-11-17T06:22:32Z"
+   "ruled_out": "none of the six deciders stayed green under its planted fault",
+   "ts": "2026-11-23T12:27:41Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -879,7 +880,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 564,
+  "events": 565,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2467,7 +2468,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-23T12:16:16Z",
+   "last": "2026-11-23T12:27:41Z",
    "lease": "run-1795435910",
    "released": false,
    "token": 14
@@ -2502,6 +2503,7 @@
    "HOLDER.run-1794860741",
    "HOLDER.run-1794865314",
    "HOLDER.run-1794895533",
+   "HOLDER.run-1795435910",
    "JUDGE.judge-1794890427",
    "OWNER"
   ],
