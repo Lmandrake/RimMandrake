@@ -232,10 +232,16 @@ def t_inconclusive_is_not_pass_or_fail():
     two = read([env(), env(), o(LK.APPARATUS), o(LK.NO_LOOK)], **B)      # our own faults spend no budget
     nb = read2([env(), env()], [env(mod_sha="0123456789")], **B)        # a new build has its own budget
     again = read2([env(), env(), env()], [row("c2")], **B)
+    # a SUCCESS on an earlier build does not end a later build's budget: the scene ran again on the new build, so the
+    # new build's runs are the scene's runs (found by the fresh read, 2026-11-23: this read pass and re-ran without end)
+    moved = read2([good()], [env(mod_sha="0123456789")] * 3, **B)
+    left = read2([good()], [env(mod_sha="0123456789")], **B)
     return (ex["rows"]["c1"] == "INCONCLUSIVE" and cnt(ex) == "inconclusive" and ex["state"] == "not_met"
             and not ex["undecided_bars"] and said(ex, "Conductor decides") and cnt(two) == "spoiled"
-            and said(two, "1 of 3 budgeted run(s) left") and cnt(nb) == "spoiled" and again["next_run"] == ["c1"]), (
-        ex["why"], two["why"], nb["why"])
+            and said(two, "1 of 3 budgeted run(s) left") and cnt(nb) == "spoiled" and again["next_run"] == ["c1"]
+            and cnt(moved) == "inconclusive" and moved["state"] == "not_met" and cnt(left) == "spoiled"
+            and said(left, "2 of 3 budgeted run(s) left") and left["next_run"] == ["c1"]), (
+        ex["why"], two["why"], nb["why"], cnt(moved), moved["why"], cnt(left), left["why"])
 
 
 def t_tag_without_evidence_refused():
@@ -414,6 +420,12 @@ def _mutants():
     yield "a MOD FAILURE is left as its row says", LK, "as_old", lambda r: r
     yield "every build is one build", LK, "same_build", lambda a, b: True
     yield "no two rows share a build", LK, "same_build", lambda a, b: a is b
+    def deciding_build(runs, last):
+        d = None
+        for _, r in runs:
+            d = LK.later(d, r)
+        return [r for _, r in runs if LK.same_build(r, d)]
+    yield "a kind B scene's runs are its deciding row's build", LK, "build_runs", deciding_build
     yield "a tag needs no evidence", LK, "tag_flaws", lambda s: []
     yield "the table's flaws are not said", LK, "table_flaws", lambda tt: {}
     yield "x_of_y is not read", LK, "x_of_y", lambda s: None

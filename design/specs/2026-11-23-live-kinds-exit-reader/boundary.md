@@ -60,7 +60,8 @@ LOOK. The **deciding row** of a check is its last row that is not spoiled, or it
   `mod_sha` counts the same way.
 - **random-miss-only-by-design.** RANDOM MISS on a scene without `x_of_y` reads `refused`.
 - **kind-b-one-success.** A kind B scene passes on one SUCCESS in its runs, with no MOD FAILURE and no UNRESOLVED. Its runs
-  are the rows of every visit on the `mod_sha` of its deciding row.
+  are the rows of every visit on the `mod_sha` of its latest row: a SUCCESS on an earlier build neither passes the
+  scene nor ends a later build's budget (fresh read, 2026-11-23: it read pass and re-ran past its budget).
 - **kind-b-x-of-y.** With `x_of_y`, the scene passes on X SUCCESS rows among the first Y valid opportunities (SUCCESS or
   RANDOM MISS).
 - **inconclusive-is-not-pass-or-fail.** A kind B scene with no SUCCESS when its budget of runs is spent, or with fewer than

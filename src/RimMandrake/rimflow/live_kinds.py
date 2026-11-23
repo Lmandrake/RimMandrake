@@ -210,7 +210,7 @@ def reading(spec, runs):
            "mod": any(i != at and word(r, spec) == MOD_FAILURE and same_build(r, d) for i, (_, r) in enumerate(runs)),
            "passes": norm(d.get("verdict")) == "PASS" and outcome(d, spec)[0] in (None, SUCCESS)}
     if k == "B" and not tag_flaws(spec):
-        _kind_b(spec, [r for _, r in runs if same_build(r, d)], out)
+        _kind_b(spec, build_runs(runs, runs[-1][1]), out)
     elif spoiled(d):
         w = outcome(d, spec)[0]
         out.update(count="spoiled", rows="SPOILED", passes=False)
@@ -228,6 +228,13 @@ def reading(spec, runs):
     if tag_flaws(spec):
         out["count"], out["rows"] = "tag", None       # the table's flaw is said once, by table_flaws
     return out
+
+
+def build_runs(runs, last):
+    """-> the rows of runs on the build of `last`, the scene's latest run. A kind B scene is judged on the build it last
+    ran on: a SUCCESS on an earlier build neither passes it nor ends that build's budget (rule: "on the same claim and
+    build"). It differs from the deciding row's build only when every run on the latest build is spoiled."""
+    return [r for _, r in runs if same_build(r, last)]
 
 
 def _kind_b(spec, pool, out):
