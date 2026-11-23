@@ -63,6 +63,12 @@ import handoff  # noqa: E402
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "FlowWorks", "northstar"))
 import preflight_flowworks as PF  # noqa: E402
 
+# RIMFLOW_LEDGER alone redirects nothing for an imported cli: only cli.main() calls _bind_paths. Unbound, the frozen
+# printer's ledger fallback (cli.load, cli._bridge_who) read the clone's REAL ledger, so P-B1 for ArchSmall turned
+# red whenever the live ledger's last ArchBig take was BENCH's (2026-11-22, RIMMANDRAKE_MEND_GLANCE_READER_ARCHSMALL_
+# LOCK_READS_WRONG). Every verdict here is a reading of the throwaway locks and this empty throwaway ledger only.
+cli._bind_paths()
+
 FAILS, SLEEPERS = [], []
 TALLY = {"compared": 0, "same": 0, "old_wrong": {}}
 
@@ -368,6 +374,10 @@ def blind(extra=None):
 
 # --- the fixture cases --------------------------------------------------------------------------------------------
 def t_fixtures():
+    evs = cli.load()[0]
+    check(os.path.realpath(cli.model.shard_dir()).startswith(os.path.realpath(TMP)) and not evs,
+          "the readers read only this test's throwaway ledger (empty), never the clone's live one",
+          (cli.model.EVENTS, len(evs)))
     s = sleeper()
     pf, rows = compare("both games free", why_differs=blind())
     check(pf == "PASS" and [r["state"] for r in rows] == ["FREE", "FREE"], "both free: PASS, two FREE rows")

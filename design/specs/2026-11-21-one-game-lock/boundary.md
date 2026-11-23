@@ -86,8 +86,9 @@ Before: `rimflow bridge who` 5.0 s for ArchBig, 1.8 s for ArchSmall.
   decides (measured 2026-11-21: 38-45 ms wall and 33 ms CPU quiet; 110-274 ms wall and 63-72 ms CPU inside
   `./publish`'s side-by-side door tests).
 - **the-225-am-release-that-left-bridge-who-saying-held.** When a run's holder process has ended with its take still in
-  this clone's ledger, `rimflow bridge who` reads FREE and the next `rimflow bridge take` succeeds without `--force`,
-  even with a control store that cannot be read (his pipe hold binds pipeline runs, not a window's take).
+  this clone's ledger, `rimflow bridge who` reads FREE and the next `rimflow bridge take` succeeds without `--force`.
+  A take still honours his `pipe off game:<g>`, and a control store that cannot be read refuses it as COULD NOT LOOK
+  (`selftest_bridge_take_pipe_hold.py`).
 - **the-243-am-game-b-record-that-named-the-ended-run.** `rimflow bridge who --host ArchSmall` names ArchSmall's live holder
   from its lock, never a run that has ended.
 - **the-335-am-ledger-free-while-the-lock-was-held.** With this clone's ledger empty and another clone's live hold in the

@@ -380,13 +380,11 @@ def t_the_225_am_release_that_left_bridge_who_saying_held():
     check(r.returncode == 0 and "bridge FREE" in r.stdout and "held by" not in r.stdout,
           "bridge who reads FREE from the lock, not the ledger's stale take", r.stdout + r.stderr)
     s2 = sleeper()                                 # another seat: the ledger's fresh BENCH take would refuse it
-    bad_store = os.path.join(bx.d, "control_store_is_a_dir")      # and a control store nobody can read
-    os.makedirs(bad_store)
-    r = bx.rf("bridge", "take", "--for", "Gimme Some Slack visit", pid=s2.pid, RIMFLOW_SEAT="FOUNDRY",
-              RM_CONTROL_DB=bad_store)
+    # (an unreadable control store DOES stop a take since 34d860f96a: COULD NOT LOOK, selftest_bridge_take_pipe_hold)
+    r = bx.rf("bridge", "take", "--for", "Gimme Some Slack visit", pid=s2.pid, RIMFLOW_SEAT="FOUNDRY")
     check(r.returncode == 0 and bx.lock()["purpose"] == "Gimme Some Slack visit",
-          "the next take, by another seat, succeeds without --force or a hand release (an unreadable control "
-          "store does not stop it)", r.stdout + r.stderr)
+          "the next take, by another seat, succeeds without --force or a hand release (the ledger's stale take "
+          "does not stop it)", r.stdout + r.stderr)
     s3 = sleeper()
     r = bx.rf("bridge", "idle", "--for", "a third run", pid=s3.pid)
     check(r.returncode == 1 and "Gimme Some Slack visit" in r.stdout,
