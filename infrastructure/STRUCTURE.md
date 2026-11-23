@@ -236,13 +236,14 @@ they trusted this?*
 
 ## `skills/` — loadable procedure
 
-**Charter: `skills/README.md`.** The charter holds these rules:
+**Charter: `skills/README.md`.** The charter says how a skill is wired and edited, where its lessons and evidence go,
+and which skills are registered.
 
-- how a skill is wired and edited, where its lessons and evidence go, and which skills are registered;
-- the `SKILL.md` / `references/` / `scripts/` split;
-- the enforced caps (500-line body, 1024-char description).
+- A skill folder holds `SKILL.md`, and it can hold `references/` and `scripts/`.
+- `python3 skills/validate_skills.py` warns when a `SKILL.md` body has more than 500 lines. `package_skill.py` refuses
+  that body, and it refuses a description over 1024 characters.
 
-Archives are gitignored build outputs. At hand-off, rebuild them with
+Archives are gitignored build outputs. Build them only for an upload to claude.ai, with
 `python3 src/RimMandrake/Utils/package_skill.py --all`.
 
 The directory is the source. The `<name>.skill` zips beside it are untracked packaging artifacts.

@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 """package_skill.py — zip a skill folder into an installable .skill archive.
 
-Skills in this repo live as source folders under `skills/`, but Claude Code
-does not auto-discover that directory. They are installed from a `.skill`
-archive, which is a plain zip with the skill folder at top level:
+The archive is only for an upload to claude.ai. Claude Code does not load skills
+from it: it finds a skill through the symlink `.claude/skills/<name>`
+(`skills/README.md`). The `.skill` archive is a plain zip with the skill folder
+at top level:
 
     rimworld-modding/SKILL.md
     rimworld-modding/references/...
     rimworld-modding/scripts/...
-
-Writing the folder is therefore NOT shipping the skill - the same distinction
-this project already makes between writing a mod file and deploying it.
 
     python src/RimMandrake/Utils/package_skill.py generating-rimworld-sprites
     python src/RimMandrake/Utils/package_skill.py --all
@@ -206,10 +204,8 @@ def main() -> int:
         )
         return 1
     if not args.check:
-        print("\nArchives written. These are EXPORTS, for a machine without this "
-              "checkout.\nThis repo installs skills by symlink - .claude/skills/<name> "
-              "-> skills/<name> - so\nthe folder was already live and nothing here "
-              "loads from a .skill.")
+        print("\nArchives written, only for an upload to claude.ai. Claude Code loads a "
+              "skill through\n.claude/skills/<name> -> skills/<name>, never from a .skill.")
     return 0
 
 

@@ -1,110 +1,128 @@
 # Skills by kind of work: the SKILL.md paths to read first
 
 Owner, 2026-11-19: *"since we're not seeming enamored of auto firing skills at the moment, it might be very important
-to pass relevant debug skills to the subagents we assign to do related work, yes?"* Most project skills are no longer
-registered (`skills/README.md`, table "Not registered (read by path)"), so a helper never sees their descriptions. A
-helper reads a skill only when its brief names the skill's path. **Every brief names the SKILL.md paths for its kind
-of work, taken from this page** (`src/RimMandrake/rimflow/roles/conductor.md`); `detached_helper.py launch` prints a
-WARNING for a brief that names none.
+to pass relevant debug skills to the subagents we assign to do related work, yes?"*
 
-Paths in this repo are relative to the clone root (on the mirror: `D:\Luke\dev\RimMandrake\skills\...`). Paths starting
-`~/dev/` are skills outside this repo (`D:\Luke\dev\...`); most are not registered machine-wide either
-(`~/dev/Lodestar/claude/skills.md` says which), so they too are read by path. Read the skill
-when you are about to do the work, not before. Whether each one is registered is the table at the end.
-`src/RimMandrake/Utils/selftest_skills_by_work.py` refuses a skill folder missing from this page, and a registration
-column that disagrees with `.claude/skills/`.
+- Most project skills are no longer registered (`skills/README.md`, table "Not registered (read by path)"). So a helper
+  never sees their descriptions. A helper reads such a skill only when its brief names the skill's path.
+- **Every brief names the SKILL.md paths for its kind of work, taken from this page**
+  (`src/RimMandrake/rimflow/roles/conductor.md`).
+- `detached_helper.py launch` prints a WARNING for a brief that names none.
+- Read a skill when you are about to do the work, not before.
+- Paths in this repo are relative to the clone root (on the mirror: `D:\Luke\dev\RimMandrake\skills\...`).
+- Paths that start with `~/dev/` are skills outside this repo (`D:\Luke\dev\...`). Read them by path too. Most of them
+  are not registered machine-wide. `~/dev/Lodestar/claude/skills.md` says which are. A machine can also hold a link that
+  `skills.md` does not declare (Archmagi does).
+- The table at the end gives the registration of each skill of this repo.
+- `src/RimMandrake/Utils/selftest_skills_by_work.py` refuses a skill folder that this page does not name. The selftest
+  also refuses a registration column that disagrees with `.claude/skills/`.
 
 ## Live debugging and proofs
-- `skills/live-debugging-proof-harness/SKILL.md`: write, run and read a live proof (proof_all, validation_v2, LogTap).
-- `skills/rimworld-debug-testing/SKILL.md`: throwaway quicktest colonies; what a quicktest can and cannot prove.
-- `skills/northstar-validation/SKILL.md`: a mod's north-star suites live (bland world, situational envelope).
-- `skills/telemetry/SKILL.md`: recorded history before re-measuring the game, bridge, disks or art pipeline.
-- `~/dev/MandrakeWorkflows/skills/test-pilot-sitting/SKILL.md`: the Test Pilot's method (theories, one change at a time).
+- `skills/live-debugging-proof-harness/SKILL.md`: write, run and read a live proof (`proof_all`, `validation_v2`,
+  `LogTap`).
+- `skills/rimworld-debug-testing/SKILL.md`: test in a throwaway quicktest colony. The skill says what a quicktest can and
+  cannot prove.
+- `skills/northstar-validation/SKILL.md`: run a mod's north-star suites live (the bland world, and the situational envelope of
+  `modcheck run --situational`).
+- `skills/telemetry/SKILL.md`: recorded history. Query the history before you measure the game, the bridge, the disks or
+  the art pipeline again.
+- `~/dev/MandrakeWorkflows/skills/test-pilot-sitting/SKILL.md`: the Test Pilot's method (write theories first; make
+  one change at a time).
 
 ## Driving the live game over the bridge
-- `skills/rimbridge/SKILL.md`: drive the running game (planet, map, pawns, weather, raids); a call that "succeeded" but
-  moved nothing.
-- `skills/rimbridge-companion/SKILL.md`: add a new [Tool] to the JawaBench companion DLL when the bridge cannot do it.
+- `skills/rimbridge/SKILL.md`: drive the live game (planet, map, pawns, weather, raids). Use it also when a call
+  "succeeded" but moved nothing.
+- `skills/rimbridge-companion/SKILL.md`: add a new `[Tool]` method to the JawaBench companion DLL when the bridge cannot
+  do a thing.
 - `skills/rimworld-live-review/SKILL.md`: stage a scene and capture it for a human to look at.
 - `skills/rimworld-world-editing/SKILL.md`: edit the planet (tiles, biomes, rivers, landmarks) from the bridge.
 
 ## Deploying to the game
-- `skills/rimworld-deploy/SKILL.md`: the repo is not the game's Mods folder; plan, apply, validate.
-- `skills/rimworld-start-prep/SKILL.md`: the mod list and load order before the game launches.
+- `skills/rimworld-deploy/SKILL.md`: the repo is not the game's Mods folder. Plan, apply and validate a deploy.
+- `skills/rimworld-start-prep/SKILL.md`: set the mod list and the load order before the game launches.
 
 ## Load rounds (a cold load, a restart)
-- `skills/rimworld-load-round/SKILL.md`: spend a cold load well, or avoid it (the 13-mod minimal list).
-- `skills/rimworld-start-prep/SKILL.md`: the three writers of the mod list.
+- `skills/rimworld-load-round/SKILL.md`: spend a cold load well, or avoid it with the minimal list (13 mods on 2026-08-19,
+  larger now).
+- `skills/rimworld-start-prep/SKILL.md`: the three writers of the mod list (RimWorld, RimSort and Steam).
 
 ## Savegames
 - `skills/rimworld-savegame/SKILL.md`: read, grep and edit a `.rws` (map grids, shortHashes, fogGrid).
-- `skills/gravship-layout/SKILL.md`: gravship layouts as XML (ShipLayoutDefV2), with no game running.
+- `skills/gravship-layout/SKILL.md`: gravship layouts as XML (`ShipLayoutDefV2`), with no live game.
 
 ## Modding and patches
 - `skills/rimworld-modding/SKILL.md`: Defs, XML patches, C#/Harmony, inheritance, Player.log triage.
-- `skills/rimworld-deploy/SKILL.md`: writing a file is not deploying it.
-- `skills/rimbridge-companion/SKILL.md`: when the change is a bridge tool.
+- `skills/rimworld-deploy/SKILL.md`: a file that you write is not yet deployed.
+- `skills/rimbridge-companion/SKILL.md`: read it when the change is a bridge tool.
 
 ## Game content by kind
-- `skills/rimworld-quests/SKILL.md`: QuestScriptDefs and their silent signal bugs.
-- `skills/rimworld-custom-incidents/SKILL.md`: IncidentDefs, IncidentWorkers, storyteller pacing.
-- `skills/rimworld-crew-and-nemesis-events/SKILL.md`: who joins, is taken or comes back to a small crew.
-- `skills/rimworld-ideoligion/SKILL.md`: ideoligions (IdeoPresetDef, the FactionDef ideo block).
+- `skills/rimworld-quests/SKILL.md`: `QuestScriptDef`s and their silent signal bugs (signal bugs that show no error).
+- `skills/rimworld-custom-incidents/SKILL.md`: `IncidentDef`s, `IncidentWorker`s and storyteller pace.
+- `skills/rimworld-crew-and-nemesis-events/SKILL.md`: events about who joins a small crew, whom someone takes, and
+  who comes back.
+- `skills/rimworld-ideoligion/SKILL.md`: ideoligions (`IdeoPresetDef`, the `FactionDef` ideo block).
 - `skills/rimworld-xenotypes/SKILL.md`: xenotypes and the genes that give them a face.
 - `skills/rimworld-scenario-building/SKILL.md`: scenarios, game-creation settings, storyteller.
-- `skills/rimworld-content-moderation/SKILL.md`: which content from a large mod stack stays.
+- `skills/rimworld-content-moderation/SKILL.md`: decide which content from a large mod stack stays.
 
 ## Maps, structures and scenes
-- `skills/rimworld-layout-layers/SKILL.md`: a structure by its power, pipe, roof and floor layers.
-- `skills/rimworld-scene-composition/SKILL.md`: a scattered site that reads as one authored place.
-- `skills/gravship-layout/SKILL.md`: gravship designs.
-- `skills/rimworld-world-editing/SKILL.md`: the planet.
+- `skills/rimworld-layout-layers/SKILL.md`: assess a structure by its power, pipe, roof and floor layers.
+- `skills/rimworld-scene-composition/SKILL.md`: make a scattered site read as one authored place.
+- `skills/gravship-layout/SKILL.md`: design a gravship.
+- `skills/rimworld-world-editing/SKILL.md`: edit the planet.
 
 ## Art and sprites
-- `skills/generating-rimworld-sprites/SKILL.md`: game-ready sprites matching a reference (canvas, alpha, footprint).
-- `skills/rimworld-sprite-facings/SKILL.md`: north/south/east/west facings, mirrors, flip-books.
-- `~/dev/MandrakeWorkflows/skills/generating-images/SKILL.md`: a new raster image through Codex $imagegen.
-- `~/dev/MandrakeWorkflows/skills/editing-images/SKILL.md`: editing an existing image through Codex $imagegen.
-- `skills/reading-rimworld-graphics/SKILL.md`: finding a texture on disk or in an AssetBundle.
+- `skills/generating-rimworld-sprites/SKILL.md`: make game-ready sprites that match a reference (canvas, alpha,
+  footprint).
+- `skills/rimworld-sprite-facings/SKILL.md`: north/south/east/west facings, mirrors and flip-books.
+- `~/dev/MandrakeWorkflows/skills/generating-images/SKILL.md`: make a new raster image through Codex `$imagegen`.
+- `~/dev/MandrakeWorkflows/skills/editing-images/SKILL.md`: change an existing image through Codex `$imagegen`.
+- `skills/reading-rimworld-graphics/SKILL.md`: find a texture on disk or in an AssetBundle.
 
 ## Judging art
-- `skills/rimworld-art-evaluation/SKILL.md`: the art judging pipeline (Opus first, GPT second look).
-- `skills/rimworld-sprite-facings/SKILL.md`: whether each facing is right.
-- `skills/rimworld-canon-references/SKILL.md`: Star Wars work graded against the canon library.
+- `skills/rimworld-art-evaluation/SKILL.md`: the pipeline that judges art. Opus scores first. GPT takes a second look at a
+  weak score.
+- `skills/rimworld-sprite-facings/SKILL.md`: decide whether each facing is right.
+- `skills/rimworld-canon-references/SKILL.md`: grade Star Wars work against the canon library.
 
 ## Review sheets (a human keeps, cuts or ranks many items)
-- `skills/rimworld-review-sheets/SKILL.md`: RimMandrake sheets, true scale, `art.py enact`.
-- `~/dev/MandrakeWorkflows/skills/review-sheets/SKILL.md`: the general layer under it.
-- `skills/rimworld-content-moderation/SKILL.md`: contact sheets for keep/cut calls on a mod stack.
+- `skills/rimworld-review-sheets/SKILL.md`: RimMandrake review sheets: pictures at true scale, and `art.py enact`.
+- `~/dev/MandrakeWorkflows/skills/review-sheets/SKILL.md`: the general layer under `rimworld-review-sheets`.
+- `skills/rimworld-content-moderation/SKILL.md`: make contact sheets for keep/cut calls on a mod stack.
 
 ## Landing commits
-- `skills/clone-landing-commits/SKILL.md`: `./publish`, `./sync`, a clone that reads ahead and behind.
+- `skills/clone-landing-commits/SKILL.md`: `./publish`, `./sync`, and a clone that reads both ahead and behind.
 
 ## The ledger (rimflow) and the accounts
-- `skills/using-rimflow/SKILL.md`: every rimflow verb, the shards, the provenance flags, the bridge lock.
-- `skills/rimflow-operations/SKILL.md`: the Claude accounts' quota, switching plan, standing windows down and up.
+- `skills/using-rimflow/SKILL.md`: every rimflow verb, the ledger shards, the provenance flags and the bridge lock.
+- `skills/rimflow-operations/SKILL.md`: the quota of the Claude accounts and the plan for an account switch. The
+  skill also says how to stand windows down and up.
 
 ## Measuring large files
-- `~/dev/MandrakeWorkflows/skills/measuring-large-artifacts/SKILL.md`: numbers from files too big to read.
-- `~/dev/MandrakeWorkflows/skills/confident-wrong-numbers/SKILL.md`: a round, zero or alarming count.
-- `skills/rimworld-savegame/SKILL.md`: when the large file is a save.
-- `skills/telemetry/SKILL.md`: when the answer is already recorded.
+- `~/dev/MandrakeWorkflows/skills/measuring-large-artifacts/SKILL.md`: get numbers from files that are too big to
+  read.
+- `~/dev/MandrakeWorkflows/skills/confident-wrong-numbers/SKILL.md`: check a count that is round, zero or alarming.
+- `skills/rimworld-savegame/SKILL.md`: read it when the large file is a save.
+- `skills/telemetry/SKILL.md`: when the answer is already in a record.
 
 ## Design orders (three options with tradeoffs, a GPT skeptical teardown, a merge)
-- `~/dev/MandrakeWorkflows/skills/deep-design-3x2/SKILL.md`: his usual design order, run as one workflow (three real
-  solutions, GPT blind then critiquing, a re-measure, one merge, decisions back to him).
+- `~/dev/MandrakeWorkflows/skills/deep-design-3x2/SKILL.md`: the owner's usual design order, as one workflow. The
+  steps are three real solutions, a blind GPT answer, a GPT critique, a re-measure and one merge. Then the decisions go
+  back to the owner.
 - `~/dev/Dispatch/skills/chatgpt-consult/SKILL.md`: how to reach GPT for the second pass.
 
 ## Writing a helper's brief
-- `~/dev/MandrakeWorkflows/skills/efficient-subagents/SKILL.md`: scope, feed and bound a helper.
-- This page: name the paths for the helper's kind of work.
+- `~/dev/MandrakeWorkflows/skills/efficient-subagents/SKILL.md`: set a helper's scope, its inputs and its bounds.
+- This page. Name in the brief the paths for the helper's kind of work.
 
 ## Writing a checker (a selftest, a gate, a judge)
-- `~/dev/MandrakeWorkflows/skills/mutate-your-checker/SKILL.md`: watch it go red on a planted fault first.
+- `~/dev/MandrakeWorkflows/skills/mutate-your-checker/SKILL.md`: watch the checker go red on a planted fault
+  first.
 
 ## Every skill folder in this repo, and whether it is registered
 
-`yes` = linked under `.claude/skills/`, so its description loads by itself; `no` = read by path only.
+`yes` means that the skill has a link under `.claude/skills/`, so its description loads by itself. `no` means that you
+read the skill by path only.
 
 | skill | registered |
 |---|---|

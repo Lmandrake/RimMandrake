@@ -1,58 +1,80 @@
 # Skills
 
-Each loads itself when its `description` matches the task. Read one when you are
-about to do the thing it names — not before.
+A registered skill loads itself when its `description` matches the task. An unregistered skill does not load itself: you
+read it by path (§Not registered (read by path)). Read a skill when you are about to do the thing that it names. Do not
+read it before.
 
 ## 🔴 A skill is INVISIBLE until it is wired — and `skills/` is not where Claude looks
 
-Authoring is `skills/<name>/SKILL.md`. **Discovery is `.claude/skills/<name>`, a symlink
-back into it.** A skill with no symlink loads for nobody, triggers on nothing, and has no
-symptom — the work it encodes simply never happens.
+You write a skill in `skills/<name>/SKILL.md`. **Claude Code finds a skill only at `.claude/skills/<name>`.** That entry
+is a symlink to `skills/<name>`. A skill is wired, or registered, when that symlink works.
+
+If a skill has no symlink, the skill loads for nobody and triggers on nothing. The missing symlink has no symptom. The
+work that the skill holds never happens.
 
 ```
 ln -s ../../skills/<name> .claude/skills/<name>            # a skill in THIS repo
 ln -s /mnt/d/Luke/dev/<name> .claude/skills/<name>         # one that lives OUTSIDE it
 ```
 
-⚠️ **A skill outside this repo must be linked by ABSOLUTE path.** The relative form
-resolves inside the checkout and dangles the moment the skill is not there.
-
-✅ **Enforced since 2026-08-22**: `.claude/hooks/warn_skill_unwired.py` warns (never
-blocks) when a `SKILL.md` is written or committed with no working symlink, and hands over
-that exact command. ⚠️ A **dangling** symlink is as invisible as none, and the hook treats
-it the same. A skill listed in the "Not registered (read by path)" table below is unwired on purpose
-(the hook stays quiet for it). `python3 skills/validate_skills.py` re-measures the set.
+- **Link a skill outside this repo by ABSOLUTE path.** A relative path resolves inside the checkout. So the link dangles
+  (points at nothing) as soon as the skill is not there.
+- **Enforced since 2026-08-22** by the hook `.claude/hooks/warn_skill_unwired.py`. The hook warns when you write or commit
+  a `SKILL.md` that has no symlink that works. The hook never blocks. The hook prints the first command above for that skill.
+- A symlink that dangles is as invisible as no symlink. The hook treats the two the same.
+- Each skill in the table "Not registered (read by path)" below is unwired on purpose. The hook stays quiet for it.
+- `python3 src/RimMandrake/Utils/selftest_skills_registered_or_listed.py` checks the set. Each skill folder is either
+  linked or in that table, never both, never neither.
+- `python3 skills/validate_skills.py` checks the content of each skill folder (front matter, pointers to reference files,
+  `jawa/` tool names). This tool does not check the links.
 
 ## Editing a skill
 
-**Editing `skills/<name>/` IS installing it** — the symlink means the next session loads
-the new text. Skills are edited only in fresh-context curation sessions; lessons land one
-file each in `infrastructure/state/lessons/` (`src/RimMandrake/Utils/lessons.py add`) until
-then. Any window maintains any skill. `package_skill.py` builds a `.skill` zip
-(gitignored) only for uploading to claude.ai — it is not how Claude Code loads skills.
+- **To edit `skills/<name>/` IS to install the skill.** For a wired skill, the symlink means that the next session loads
+  the new text.
+- Edit skills only in fresh-context curation sessions.
+- Until such a session, each lesson goes in its own file in `infrastructure/state/lessons/`
+  (`src/RimMandrake/Utils/lessons.py add`).
+- Any window maintains any skill.
+- `package_skill.py` builds a `.skill` zip (gitignored). Build the zip only to upload the skill to claude.ai. Claude Code
+  does not load skills from the zip.
 
 ## Lessons stay; evidence moves to a history file
 
-A skill's active files hold the lessons, in plain words, each as strong as it was given. What leaves them is narration,
-incident stories, dates and repeated copies (owner, 2026-11-07: *"move evidence into pointer history files while keeping
-the lessons themselves in the active files. Provenance is for git."*). One convention everywhere:
+The active files of a skill are all its files except its history file. If its repo uses a record folder instead, the
+files in that folder are not active files.
+The active files hold the lessons, in plain words. Each lesson stays as strong as it was given. Four things leave the
+active files: narration, incident stories, dates and repeated copies. Owner, 2026-11-07: *"move evidence into pointer
+history files while keeping the lessons themselves in the active files. Provenance is for git."* One convention applies
+everywhere:
 
-- Evidence that still matters goes to `references/history.md` beside the skill. For a project-level fact file it goes to
-  `infrastructure/state/facts/history/<topic>.md`. A skill whose repo keeps its own record folder uses that instead.
-- The active file points at it once. Everything else is in git.
-- **Every learned fact stays in an active file.** "Nothing learned is dropped for space" still holds. Before removing a *claim*
-  as redundant, prove it implied or duplicated, by the two-blind-arms method in `efficient-subagents` if doubtful.
-- A skill's `description` fires it. Change one only with `skill-creator`'s trigger evals.
-- When a project skill's lesson would be true with RimWorld removed, it belongs in MandrakeWorkflows, with a thin layer here.
+- Put evidence that still matters in `references/history.md` beside the skill. For a project-level fact file, put such
+  evidence in `infrastructure/state/facts/history/<topic>.md`. If the skill's repo keeps its own record folder, use that
+  folder instead.
+- The active file points at the history file once. Everything else is in git.
+- **Every learned fact stays in an active file.** "Nothing learned is dropped for space" still holds.
+- Before you remove a *claim* as redundant, prove that another claim implies it or repeats it. If you are in doubt, use
+  the two-blind-arms method in `efficient-subagents`.
+- A skill's `description` fires the skill. Change a `description` only with `skill-creator`'s trigger evals.
+- Ask if a lesson of a project skill stays true with RimWorld removed. If yes, the lesson belongs in MandrakeWorkflows,
+  with a thin layer here.
 
 ## Skills that live OUTSIDE this repo
 
-General skills live in `~/dev/MandrakeWorkflows/skills/` (`D:\Luke\dev\MandrakeWorkflows\skills\`) or their own repos, linked
-into `~/.claude/skills/` for every project; `~/dev/Lodestar/claude/skills.md` is the cross-machine table. These include
-`efficient-subagents`, `deciding-and-superseding`, `frozen-artifacts`, `verify-before-you-escalate`, `agent-fanout-research`,
-`calibrating-binary-formats`, `measuring-large-artifacts`, `review-sheets` and `confident-wrong-numbers` (the loop
-skills `artisan`, `artisan-head`, `artisan-judge`, `whittle` and `relentless-pipeline` are retired here, hidden by `.claude/settings.json`). The roster below reads `skills/` and **cannot see them**; fix one in its own repo
-and push there — a queue item here never reaches it.
+- General skills live in `~/dev/MandrakeWorkflows/skills/` (`D:\Luke\dev\MandrakeWorkflows\skills\`) or in their own
+  repos.
+- `~/dev/Lodestar/claude/skills.md` is the cross-machine table. The table declares which of these skills have a link in
+  `~/.claude/skills/`. A skill with a link there loads for every project, unless the settings of that project hide the
+  skill.
+- A machine can also hold a link that the table does not declare. Archmagi holds many. So a skill that loads here can be
+  absent on another machine.
+- The general skills include `efficient-subagents`, `deciding-and-superseding`, `frozen-artifacts`,
+  `verify-before-you-escalate`, `agent-fanout-research`, `calibrating-binary-formats`, `measuring-large-artifacts`,
+  `review-sheets` and `confident-wrong-numbers`.
+- The loop skills `artisan`, `artisan-head`, `artisan-judge`, `whittle` and `relentless-pipeline` are retired here.
+  `.claude/settings.json` hides them.
+- The roster below reads `skills/` and **cannot see the general skills**.
+- Fix a general skill in its own repo, and push there. A queue item here never reaches that repo.
 
 <!-- doc_roster:BEGIN — generated, do not hand-edit -->
 | skill | when it loads |
@@ -94,13 +116,22 @@ and push there — a queue item here never reaches it.
 
 ## Not registered (read by path)
 
-Owner, 2026-11-19: *"most of the time I invoke things quite manually in my text when I want a skill (hence they don't need to be registered... it knows where to look already)"*. Each skill below is never-invoked in 30 days, so its `description` is not loaded into every session; the folder stays. **Read its SKILL.md by path when you are about to do what the line says.** Which skills go with which kind of work, for a brief: `skills/BY_WORK.md`. Undo for one: the command in the last column.
+Owner, 2026-11-19: *"most of the time I invoke things quite manually in my text when I want a skill (hence they don't need to be registered... it knows where to look already)"*.
+
+- When we made this table, nobody had invoked these skills in 30 days. So this project does not load their
+  descriptions into every session. Each skill folder stays.
+- **Read a skill's SKILL.md by path when you are about to do what its line says.**
+- `skills/BY_WORK.md` says which skills go with which kind of work. Use that page when you write a brief.
+- To undo one row, run the command in its last column. Then delete the row here, and set the skill to `yes` in
+  `skills/BY_WORK.md`. The selftests refuse a half-done undo.
+- To undo the `review-sheets` row (a skill outside this repo), run its command and delete the row only. No selftest
+  checks that undo.
 
 | skill | SKILL.md | read it when | undo |
 |---|---|---|---|
 | `gravship-layout` | `D:\Luke\dev\RimMandrake\skills\gravship-layout\SKILL.md` | writing, saving, loading or inspecting a gravship layout (ShipLayoutDefV2) as XML | `ln -s ../../skills/gravship-layout .claude/skills/gravship-layout` |
 | `reading-rimworld-graphics` | `D:\Luke\dev\RimMandrake\skills\reading-rimworld-graphics\SKILL.md` | finding or extracting a RimWorld texture on disk or in an AssetBundle | `ln -s ../../skills/reading-rimworld-graphics .claude/skills/reading-rimworld-graphics` |
-| `review-sheets` | `D:\Luke\dev\MandrakeWorkflows\skills\review-sheets\SKILL.md` | building an HTML sheet where a human keeps, cuts or ranks many items | `ln -s /mnt/d/Luke/dev/MandrakeWorkflows/skills/review-sheets .claude/skills/review-sheets` |
+| `review-sheets` | `D:\Luke\dev\MandrakeWorkflows\skills\review-sheets\SKILL.md` | building an HTML sheet where a human keeps, cuts or ranks many items (this row is about the project link only: a machine-wide link in `~/.claude/skills/` loads this description in every session) | `ln -s /mnt/d/Luke/dev/MandrakeWorkflows/skills/review-sheets .claude/skills/review-sheets` |
 | `rimworld-art-evaluation` | `D:\Luke\dev\RimMandrake\skills\rimworld-art-evaluation\SKILL.md` | judging game art or a regen before it reaches the owner | `ln -s ../../skills/rimworld-art-evaluation .claude/skills/rimworld-art-evaluation` |
 | `rimworld-canon-references` | `D:\Luke\dev\RimMandrake\skills\rimworld-canon-references\SKILL.md` | grading Star Wars creature, species or droid work against the canon library | `ln -s ../../skills/rimworld-canon-references .claude/skills/rimworld-canon-references` |
 | `rimworld-content-moderation` | `D:\Luke\dev\RimMandrake\skills\rimworld-content-moderation\SKILL.md` | deciding which content from a large mod stack stays in the campaign | `ln -s ../../skills/rimworld-content-moderation .claude/skills/rimworld-content-moderation` |
@@ -118,5 +149,5 @@ Owner, 2026-11-19: *"most of the time I invoke things quite manually in my text 
 | `rimworld-start-prep` | `D:\Luke\dev\RimMandrake\skills\rimworld-start-prep\SKILL.md` | getting the mod list and load order right before RimWorld launches | `ln -s ../../skills/rimworld-start-prep .claude/skills/rimworld-start-prep` |
 | `rimworld-world-editing` | `D:\Luke\dev\RimMandrake\skills\rimworld-world-editing\SKILL.md` | editing the planet (tiles, biomes, rivers, roads, landmarks) from the bridge | `ln -s ../../skills/rimworld-world-editing .claude/skills/rimworld-world-editing` |
 | `rimworld-xenotypes` | `D:\Luke\dev\RimMandrake\skills\rimworld-xenotypes\SKILL.md` | authoring, spawning or debugging xenotypes and genes | `ln -s ../../skills/rimworld-xenotypes .claude/skills/rimworld-xenotypes` |
-| `northstar-validation` | `D:\Luke\dev\RimMandrake\skills\northstar-validation\SKILL.md` | running a mod's north-star suites live without the harness eating the sitting (was never linked) | `ln -s ../../skills/northstar-validation .claude/skills/northstar-validation` |
+| `northstar-validation` | `D:\Luke\dev\RimMandrake\skills\northstar-validation\SKILL.md` | running a mod's north-star suites live, so that the test harness does not use up the sitting (was never linked) | `ln -s ../../skills/northstar-validation .claude/skills/northstar-validation` |
 | `telemetry` | `D:\Luke\dev\RimMandrake\skills\telemetry\SKILL.md` | querying recorded history before re-measuring the game, bridge, disks or art pipeline | `ln -s ../../skills/telemetry .claude/skills/telemetry` |
