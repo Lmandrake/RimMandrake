@@ -611,6 +611,22 @@ def main():
         f2 = st2["mods"]["Fake"]
         ok(not f2["steward"] and RV.faults(f2) == 0 and [r.get("state") for r in f2.get("form_repairs") or []] == ["owed"],
            "a launch that never started is void_form: no fault, one repair owed")
+        # a never-started launch booked as a system fault BEFORE the form rule (2026-11-21) is not counted: two such
+        # holder_road_back faults of 2026-11-18 ("its launch never started: no unit") plus one timeout tripped the
+        # fault loop on ExplosiveKnockback, 2026-11-23 (RIMMANDRAKE_REPAIR_EXPLOSIVEKNOCKBACK_FAULT_LOOP_AT_THE_GATE)
+        old = [{"at": T0, "book": "holder_road_back", "key": None, "unit": None,
+                "cause": "its launch never started: no unit", "n": 1} for _ in range(2)]
+        timed = {"at": T0, "book": "blind_auto", "key": None, "unit": "u-timed", "cause": "it timed out (x)", "n": 1}
+        held = {"at": T0, "book": "launch", "key": "I", "unit": None,
+                "cause": "the repair of X did not hold (repair run u ended; the same refusal came back): X", "n": 1}
+        sf = {"system_faults": old + [timed]}
+        ok(RV.faults(sf) == 1, "a pre-form-rule 'its launch never started' fault is not counted (read %d, want 1)"
+           % RV.faults(sf))
+        ok(RV.faults({"system_faults": old + [timed, held]}) == 2,
+           "a 'repair did not hold' fault and a dead run still count (want 2)")
+        rows = [{"mod": "Fake", "decision": "launch"}]
+        ok(MD.system_fault_stop({"system_fault_limit": 3}, {"mods": {"Fake": sf}}, rows, ["Fake"]) == ["Fake"],
+           "two stale never-started faults and one timeout do not trip the fault loop (%s)" % rows[0]["decision"])
         f2["system_faults"] = [{"at": T0, "book": "steward", "unit": "u-dead-%d" % i, "cause": "it timed out", "n": 1}
                                for i in range(3)]
         rows = [{"mod": "Fake", "decision": "launch"}]

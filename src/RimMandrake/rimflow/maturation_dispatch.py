@@ -3405,7 +3405,7 @@ def system_fault_stop(cfg, st, rows, launches):
         s = (st.get("mods") or {}).get(r["mod"]) or {}
         n = RV.faults(s)
         if n >= most and r["mod"] in launches:
-            last = (s.get("system_faults") or [{}])[-1]
+            last = ([f for f in s.get("system_faults") or [] if RV.counted_fault(f)] or [{}])[-1]
             r.update(decision="system_fault", why="%s: %d system faults since the last clear (limit %d), the last %s: "
                      "%s; no trial is spent; read the cause, then `maturation_dispatch.py clear %s --why ...`" % (
                          RV.ALARM_ID, n, most, last.get("unit") or "a launch", last.get("cause"), r["mod"]))
@@ -3546,7 +3546,7 @@ def fault_repair_step(root, cfg, st, rows, now, apply, fx=None):
             continue
         t0 = max([hand] + [x.get("at") or 0 for x in s.get("auto_cleared") or [] if isinstance(x, dict)])
         causes = [{"where": "%s %s" % (f.get("book"), f.get("unit") or f.get("key") or ""), "text": f.get("cause")}
-                  for f in s.get("system_faults") or [] if isinstance(f, dict) and (f.get("at") or 0) > t0]
+                  for f in s.get("system_faults") or [] if RV.counted_fault(f) and (f.get("at") or 0) > t0]
         try:
             ok, text, unit = do(root, cfg, r["mod"], causes or [{"text": r.get("why")}], kind="fault")
         except Exception as e:      # noqa: BLE001

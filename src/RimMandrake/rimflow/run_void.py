@@ -670,13 +670,21 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
     return seen_out
 
 
+def counted_fault(f):
+    """-> True for a system_faults entry the fault loop counts. A launch with no unit booked "its launch never started"
+    is a fault of form (form_fault): only builds before 2026-11-21 wrote one, and today's builds book such a launch
+    only as "the repair of ... did not hold". Two of 2026-11-18 tripped ExplosiveKnockback's loop on 2026-11-23."""
+    return isinstance(f, dict) and not (not f.get("unit")
+                                        and str(f.get("cause") or "").startswith("its launch never started"))
+
+
 def faults(s):
     """-> system faults on a mod since its last `clear` (a sum of kills and launch tries). The tick's own reset after a
     repair run on the fault loop ended (auto_cleared, form_fault.sync_repairs) counts as a clear."""
     cl = [c.get("at") for c in (s.get("cleared") or []) + (s.get("auto_cleared") or [])
           if isinstance(c, dict) and isinstance(c.get("at"), (int, float))]
     t0 = max(cl) if cl else 0
-    return sum(int(f.get("n") or 1) for f in s.get("system_faults") or [] if isinstance(f, dict)
+    return sum(int(f.get("n") or 1) for f in s.get("system_faults") or [] if counted_fault(f)
                and (f.get("at") or 0) > t0)
 
 
