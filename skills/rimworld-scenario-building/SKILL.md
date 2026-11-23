@@ -14,7 +14,8 @@ Corrected lines and their evidence: `references/history.md`.
 ## What RimMandrake ships: one saved game
 
 - RimMandrake players generate no world. Each player gets a saved game with one fixed, hand-made world.
-- So bucket B binds the person who makes that saved game. The choices of that person go to every player.
+- Bucket B holds the settings that the game fixes at world creation. So bucket B binds the person who makes that saved
+  game. The choices of that person go to every player.
 - Do not build worldgen, and do not offer worldgen to players. Rule: `design/RimMandrake/standing_rulings.md` §There is
   no worldgen feature, in any version.
 - The settings that our campaign start needs are in `design/Jawa/worldbuilding/SCENARIO_SETTINGS_SPEC.md`.
@@ -179,7 +180,7 @@ bucket C. **The settings that nobody can change later are the world settings bel
 the player cannot choose `AmbientHorror`. Let only the DLC's own scenario set it.
 
 ⚠️ **Do not confuse the playstyle defNames with the slider's translation keys.** The `AnomalyFrequency_*` strings are
-the labels that the slider shows for its value. They are not playstyles. A check against those strings fails on a
+the labels that the slider shows for its value. Those strings are not playstyles. A check against those strings fails on a
 correct setup.
 
 ## World creation: the bucket B list

@@ -10,9 +10,9 @@ Also: skills/rimworld-scenario-building/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 11,925 | 16,141 |
-| words in linted prose | 1,096 | 1,632 |
-| STE violations per 100 words | 5.57 | 1.47 |
+| bytes | 11,925 | 16,219 |
+| words in linted prose | 1,096 | 1,645 |
+| STE violations per 100 words | 5.57 | 1.46 |
 | sentences over 20 words | 22 | 10 |
 | flagged lines (mechanical) | 29 | 29 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 8 | 0 |
@@ -60,7 +60,7 @@ design files. The reader checked the corrections against a decompile of the inst
 | `hideOffMap` was not explained; the invalid-scenario line had no evidence | added to the history file |
 
 The reader did not confirm "marks the scenario invalid". The writer read it in `GameDataSaveLoader.TryLoadScenario`.
-No reader read the repairs. Each repair follows what the reader proposed or a source line that the writer read. Our
+After the first landing (cb5e4f56b5), the prose check of `./publish` named two lines; the writer repaired both. No reader read the repairs. Each repair follows what the reader proposed or a source line that the writer read. Our
 scenario already disables the `Misc` and `GiveQuest` Anomaly incidents (`Scenario_Utinni.xml`), so no mod fault follows.
 
 ## Conflicts and stale lines: settled
