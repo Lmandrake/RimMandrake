@@ -420,7 +420,7 @@ Full validation plan (PROVE/EXPECT/LIES, how sprite checks lie, worked example):
 
 ## What he has shown that he likes
 
-What the owner has shown that he likes is in `design/RimMandrake/art_style_memory.md`. It is a reference, not a constraint.
+What the owner has shown that he likes is in `design/RimMandrake/art_style_memory.md`. That file is a reference, not a constraint.
 
 ## Reference
 

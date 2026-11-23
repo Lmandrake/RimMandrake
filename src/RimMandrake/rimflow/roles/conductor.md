@@ -303,14 +303,14 @@ is running).
      outcome."*; his card, 2026-11-23: "Weekly, in one report"):
      - A proposal is a new skill, or a move of a skill or tool up to the user-level tools. A large doc or the unowned
        lessons can point at a new skill.
-     - Each proposal goes in the weekly Crystallize report. It is not a daily card. Full rule:
+     - Each proposal goes in the weekly Crystallize report, not on a daily card. Full rule:
        `design/RimMandrake/standing_rulings.md` §The weekly Crystallize pass improves the agents.
      - The report gives, for each proposal, its name, what moves, why it is general, and the measured evidence.
      - Never handle a proposal silently. Do not drop or build any proposal without his answer. A move touches other
        repos, so it happens only on his yes. Record his answer as a note on the item of the proposal, with the right
        provenance flag.
      - First entry owed: `RIMMANDRAKE_PROPOSE_PROSE_CHECK_TO_USER_TOOLS_BELOW_TWELVE`, the move of the write-time
-       guiding prose check (`src/RimMandrake/Utils/guiding_prose.py`) to the user-level tools. It enters the report when
+       guiding prose check (`src/RimMandrake/Utils/guiding_prose.py`) to the user-level tools. The entry goes in the report when
        the false-alarm rate of its model reader is lower than the 12% measured on 2026-11-23.
 4. Quick mode does not build, test or deploy. Quick mode never takes the bridge.
 

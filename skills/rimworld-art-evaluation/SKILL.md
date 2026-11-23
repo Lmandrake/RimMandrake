@@ -127,7 +127,7 @@ Neighbours: `rimworld-review-sheets` (his page), `design/RimMandrake/art_judge_b
 cite), `rimworld-sprite-facings` and `generating-rimworld-sprites` (the facts the preamble quotes),
 `rimworld-live-review` (machine captures), `chatgpt-consult` (GPT is guidance, never a grading key).
 
-**Style memory**, learned from his overrides: `design/RimMandrake/art_style_memory.md`. It is a reference for the art
+**Style memory**, learned from his overrides: `design/RimMandrake/art_style_memory.md`. That file is a reference for the art
 judge, not a constraint. The pipeline, its timers and its judge run exactly as written here.
 
 ## Subagent budget — read before spawning ANY helper for this pipeline (owner, 2026-10-23)

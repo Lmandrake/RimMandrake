@@ -2108,11 +2108,11 @@ This is the list as the root `CLAUDE.md` carried it until 2026-11-19, word for w
 
 Crystallize is the consolidation pass (the `crystallize` skill of MandrakeWorkflows). For this project it has two jobs.
 
-- **It improves the agents and the skills.** His words, 2026-11-02: *"Every day we should ask if each agent can be
+- **Crystallize improves the agents and the skills.** His words, 2026-11-02: *"Every day we should ask if each agent can be
   improved based on our evidence. That's the beauty of making them agents. Same with reusable skills not agent
   specific."* By his card of 2026-11-23 ("Stop it, weekly does it") the weekly pass does this work. The daily improvement
   pass was deleted. Each pass asks, for each role file and each skill, if the evidence since the last pass improves it.
-- **It carries the skill and tool proposals.** His words, 2026-10-29: *"This is a good thing to discuss with the user and
+- **Crystallize carries the skill and tool proposals.** His words, 2026-10-29: *"This is a good thing to discuss with the user and
   a positive outcome."* By his card of 2026-11-23 ("Weekly, in one report") a proposal for a new skill, or for a move of a
   skill or tool up to the user-level tools, goes in the weekly report, not on a daily card. Each entry gives its name,
   what moves, why it is general, and the measured evidence. He decides each one. First entry owed:
