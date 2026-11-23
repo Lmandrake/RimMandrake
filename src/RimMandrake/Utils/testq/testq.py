@@ -594,6 +594,7 @@ def cmd_tick(_a):
                 admit(remote(["status"])[1])
                 if steve2_on():
                     admit(remote(["status"], host=STEVE2)[1], host=STEVE2)
+                games_reading()
             except SshDown as e:
                 S.dump({"down_since": S.utcnow(), "last_probe": time.time(), "last_error": str(e)},
                        q("ssh_state.json"))
@@ -603,6 +604,35 @@ def cmd_tick(_a):
             visit_feed_step()       # SteveDesktop unreachable: the visit's job still waits first in the queue
         archmagi_tick(steve_up=steve_up, steve_busy=bool(steve_running()) or bool((status or {}).get("busy")))
     return 0
+
+
+GAME_NAMES = {STEVE: "Steve1", STEVE2: "Steve2"}
+
+
+def games_reading():
+    """The ops reading of SteveDesktop's two games (design/specs/2026-11-23-steve-two-games-lane/boundary.md): every tick
+    that reached the machine rewrites steve_games.json; only a tick in which both games run a job rewrites
+    steve_both_busy.json, so that file's age is the time since both were last busy together (the item's --live promise).
+    Never breaks the tick."""
+    try:
+        games = {}
+        for host in STEVE_HOSTS:
+            run = lane_running(host)
+            if run:
+                games[GAME_NAMES[host]] = {"state": "busy", "job": run[0]["job"]["id"], "mod": run[0]["job"].get("mod"),
+                                           "sent": run[0].get("sent")}
+            elif host == STEVE2 and not steve2_on():
+                games[GAME_NAMES[host]] = {"state": "off"}
+            elif paused() or paused(host):
+                games[GAME_NAMES[host]] = {"state": "paused"}
+            else:
+                games[GAME_NAMES[host]] = {"state": "idle"}
+        both = all(g["state"] == "busy" for g in games.values())
+        S.dump({"at": S.utcnow(), "both_busy": both, "games": games}, q("steve_games.json"))
+        if both:
+            S.dump({"at": S.utcnow(), "jobs": {n: g["job"] for n, g in games.items()}}, q("steve_both_busy.json"))
+    except Exception as e:  # noqa: BLE001 - a reading must never stop dispatch
+        log("steve games reading failed: %s: %s" % (type(e).__name__, e))
 
 
 def visit_feed_step(now=None):

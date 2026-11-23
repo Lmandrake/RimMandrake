@@ -1,6 +1,6 @@
 # BOUNDARY: the SteveDesktop lane drives Steve1 and Steve2 at once, Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/testq/testq.py` (`STEVE2`, `on_steve`, `steve2_on`, `steve_lanes`, `remote` with `host`, `worker_for`, `admit` with `host`, `lane_running`, the tick's Steve2 step, `fill_plan`'s busy rule), `infrastructure/stevedesktop/worker.py` (`STEVE_LANE`, `staged_companion`, the kept environment of `spawn`), `src/RimMandrake/Utils/testq/visit_feed.py` (the in-flight rule of `step`), `src/RimMandrake/Utils/testq/fault_monitor.py` (`gate`, `worker_busy`, the not-quarantined count), `src/RimMandrake/Utils/testq/ingest.py` (`env_window`, `ingest_group`'s config), `infrastructure/stevedesktop/sync_test_mods.py` (`site_saves`' extra targets, `--also-saves`), `testq.py`'s `site_stage_argv`.
+Code: `src/RimMandrake/Utils/testq/testq.py` (`STEVE2`, `on_steve`, `steve2_on`, `steve_lanes`, `games_reading`, `remote` with `host`, `worker_for`, `admit` with `host`, `lane_running`, the tick's Steve2 step, `fill_plan`'s busy rule), `infrastructure/stevedesktop/worker.py` (`STEVE_LANE`, `staged_companion`, the kept environment of `spawn`), `src/RimMandrake/Utils/testq/visit_feed.py` (the in-flight rule of `step`), `src/RimMandrake/Utils/testq/fault_monitor.py` (`gate`, `worker_busy`, the not-quarantined count), `src/RimMandrake/Utils/testq/ingest.py` (`env_window`, `ingest_group`'s config), `infrastructure/stevedesktop/sync_test_mods.py` (`site_saves`' extra targets, `--also-saves`), `testq.py`'s `site_stage_argv`.
 Item: `RIMMANDRAKE_FILL_BOTH_STEVEDESKTOP_GAMES_HE_SAYS_IT_HOLDS_TWO`, written 2026-11-23. The owner's words that night:
 *"Fill up Steve Desktop please... it can support two live games at a time."* Each promise has a test of its name in
 `src/RimMandrake/Utils/testq/selftest_testq_steve2.py`. This page covers only these parts of the files named; the rest
@@ -61,3 +61,7 @@ host `stevedesktop.b`); the map is `src/RimMandrake/rimflow/game_names.py`.
   folder it is given (`--also-saves`), and the tick's copy names Steve2's Saves
   (`/mnt/d/ClaudeWork/rimmandrake/instances/b/Saves`) while Steve2 is switched on. (A Pyrelands job on a game with no
   site save polls 420 s and reads UNMEASURED SITE: RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE.)
+- **a-tick-with-both-games-busy-writes-the-reading.** Each tick that reached SteveDesktop writes `QHOME/steve_games.json`
+  (each game: off, paused, idle or the job it runs; `both_busy`). Only a tick in which both games run a job writes
+  `QHOME/steve_both_busy.json` (the two jobs), so its age is the time since both games were last busy together: the
+  item's `--live` promise reads it.

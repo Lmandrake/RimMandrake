@@ -155,6 +155,7 @@ def t_steve2_off_by_default(r):
           "steve2-off-by-default: no steve2.on -> one job admitted, to Steve1 (%s)" % [r.where(a), r.where(b)])
     check(not os.path.isdir(r.p("home_b", "attempts")),
           "steve2-off-by-default: Steve2's worker home was never touched")
+
     r.reset()
 
 
@@ -357,13 +358,38 @@ def t_site_saves_reach_steve2(r):
     r.reset()
 
 
+def t_a_tick_with_both_games_busy_writes_the_reading(r):
+    r.tq("list")
+    for f in ("steve_both_busy.json", "steve_games.json"):
+        if os.path.exists(r.p("queue", f)):
+            os.remove(r.p("queue", f))
+    r.job()
+    r.tq("tick")
+    gv = r.py("import testq; print(json.dumps(testq.read_json(testq.q('steve_games.json'))))")
+    check(not os.path.exists(r.p("queue", "steve_both_busy.json")) and isinstance(gv, dict)
+          and gv.get("both_busy") is False and (gv.get("games") or {}).get("Steve2", {}).get("state") == "off"
+          and (gv.get("games") or {}).get("Steve1", {}).get("state") == "busy",
+          "a-tick-with-both-games-busy-writes-the-reading: Steve1 busy, Steve2 off -> no steve_both_busy.json, and "
+          "steve_games.json says so (%s)" % (gv,))
+    open(r.p("queue", "steve2.on"), "w").close()
+    r.job()
+    r.tq("tick")
+    rd = r.py("import testq; print(json.dumps(testq.read_json(testq.q('steve_both_busy.json'))))")
+    gv = r.py("import testq; print(json.dumps(testq.read_json(testq.q('steve_games.json'))))")
+    check(isinstance(rd, dict) and sorted(rd.get("jobs", {})) == ["Steve1", "Steve2"] and isinstance(gv, dict)
+          and gv.get("both_busy") is True,
+          "a-tick-with-both-games-busy-writes-the-reading: both busy -> steve_both_busy.json names both jobs (%s)" % (rd,))
+    r.reset()
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="testq_steve2_")
     r = Rig(tmp)
     for t in (t_site_saves_reach_steve2, t_steve2_command_carries_its_game, t_steve2_worker_is_a_steve_lane, t_steve2_results_are_steve_results,
               t_fault_drain_waits_for_both_workers, t_filler_fills_an_idle_game, t_visit_feed_one_mod_per_game,
               t_steve2_off_by_default, t_two_jobs_run_at_once_one_per_game,
-              t_steve2_respects_the_machine_pause_and_its_own, t_steve2_stop_file_wins):
+              t_steve2_respects_the_machine_pause_and_its_own, t_steve2_stop_file_wins,
+              t_a_tick_with_both_games_busy_writes_the_reading):
         try:
             t(r)
         except Exception as e:  # noqa: BLE001 - a crashing test is a failed promise, named
