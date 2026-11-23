@@ -24,7 +24,7 @@ Special rule: this run deleted no file. The delete candidates of `census.md` wer
 | | flagged lines | 12 | 12 |
 | | hand count | 6 | 0 that this run could resolve; 3 under "Could not determine" |
 | `README.md` | bytes | 4,295 | 5,909 |
-| | words in linted prose | 591 | 788 |
+| | words in linted prose | 591 | 794 |
 | | STE violations per 100 words | 3.38 | 0.63 |
 | | sentences over 20 words | 12 | 1 |
 | | flagged lines | 4 | 1 |
