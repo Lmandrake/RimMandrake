@@ -367,6 +367,9 @@ def run_scene(V, game):
         upstream_failed = False
         session = Session()
 
+        def _declare_fixture(self, pid, name=None):   # the suite's: the safe_advance stop rule's own-pawn list
+            game.declared.add(pid)
+
         def bridge_call(self, tool, **kw):
             return game.call(tool, **kw)
 
@@ -433,14 +436,26 @@ def main():
     keys = sorted(GRID)
     cases = [dict(zip(keys, vals)) for vals in itertools.product(*(GRID[k] for k in keys))]
     bad_rows, deaths, multi, gaps, peaks, starved, lows = [], [], [], [], [], [], []
+    undeclared = []
     for kw in cases:
         g = Game(**kw)
+        g.declared, g.spawned_biters = set(), []
+        _call = g.call
+
+        def spy(tool, _call=_call, g=g, **k):
+            r = _call(tool, **k)
+            if tool == "jawa/spawn_pawn" and k.get("kindDef") in ("RM_Flamefang", "Fox_Fennec"):
+                g.spawned_biters.extend(p.get("id") for p in (r or {}).get("pawns") or [])
+            return r
+        g.call = spy
         try:
             got = run_scene(V, g)
         except Exception as e:     # a scene that cannot run is a FAIL here, never a crash with no verdict
             got = {"raised": "%s: %s" % (type(e).__name__, e)}
         if any(got.get(r) != "PASS" for r in ROWS + FIRST):
             bad_rows.append((kw, got))
+        if [b for b in g.spawned_biters if b not in g.declared]:
+            undeclared.append((kw, [b for b in g.spawned_biters if b not in g.declared]))
         if g.deaths:
             deaths.append((kw, g.deaths))
         if g.starved:
@@ -459,6 +474,10 @@ def main():
           "%.3g/day x %.2f days to immunity = %.3f, by the shipped defs (power %.4g from %s)"
           % (max(peaks), VD["lethal"], n, vd.dose(VD), VD["rise"], vd.days_to_immune(VD), vd.peak(VD, vd.dose(VD)),
              VD["power"], VD["sources"]["power"]))
+    # HARNESS (visit 6, 2026-11-22, ArchSmall): the wait-out's own biter, spawned wild and undeclared, stopped the advance as
+    # a 'hostile_arrival' (declared False) 60 ticks in; every biter the scene spawns is the test's own fixture
+    check("real build: every biter the scene spawns is declared a fixture (%d cases; %d with an undeclared biter)"
+          % (n, len(undeclared)), not undeclared, undeclared[:2])
     check("real build: every venom row PASS over the grid (%d cases read; %d not PASS)" % (n, len(bad_rows)),
           not bad_rows, "first: %r" % (bad_rows[:2],))
     check("real build: no colonist dies over the grid (%d cases; %d with a death)" % (n, len(deaths)), not deaths,

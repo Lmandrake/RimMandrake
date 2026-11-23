@@ -3756,6 +3756,10 @@ def _bite_until(t, victim, biter_kind, x, z, hediff=None, max_ticks=6000, clear_
             # own biter, spawned on its planned cell, went for the nearer drafted patient and bit it again and again)
             bx, bz = _beside(row, x, z)
             bid = _spawn_wild(t, biter_kind, bx, bz)
+            # HARNESS (visit 6, 2026-11-22, ArchSmall): undeclared, the wait-out's own biter stopped the advance as a
+            # 'hostile_arrival' 60 ticks in; the biter is this test's own pawn (selftest_pyrelands_venom_staging.py)
+            if bid and hasattr(t, "_declare_fixture"):
+                t._declare_fixture(bid, biter_kind)
             biters.append(bid)
             m = t.bridge_call("jawa/pawn_mental", pawn=bid, action="start", state="ManhunterPermanent")
             if not (m or {}).get("success"):
