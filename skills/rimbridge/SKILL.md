@@ -8,7 +8,7 @@ description: Drive a live RimWorld from outside via the RimBridgeServer GABP bri
 Every claim here was **verified against a running game**. Nothing is repeated
 from documentation without a live test. The mark ❓ is for a guess. The mark ⚠️ is for a provisional finding.
 
-**`references/traps.md` is the index of the trap catalogue.** It lists the title of every entry.
+**`references/traps.md` is the index of the trap catalogue.** The index lists the title of every entry.
 Each title stands under the topic file that holds the entry. The seven topic files are in `references/traps/`.
 
 - Do not read the topic files whole. **Grep them for your verb**
@@ -52,7 +52,7 @@ example:
 - a testq lane (proofs that run with no LLM);
 - a Test Pilot;
 - an owner live look;
-- an L3 evaluation (an Opus evaluation, `infrastructure/VALIDATION_LADDER.md`).
+- an Opus evaluation (L3 is level 3 of the validation ladder, `infrastructure/VALIDATION_LADDER.md`).
 
 A refused claim is your answer. Exit 75 is held, 3 is his hold, 2 is could not look.
 
@@ -68,7 +68,7 @@ python3 src/RimMandrake/rimflow/game_lock.py release ArchBig
   lock is `archmagi`, the default.
 - **ArchSmall** is its own install on Archmagi (`D:\ClaudeWork\rimmandrake\instances\b\game`). Its bridge port is 5175.
   Its lock is `archmagi.b`.
-- **Steve1** and **Steve2** are the SteveDesktop games. They take work through `infrastructure/stevedesktop/RUNBOOK.md`.
+- **Steve1** and **Steve2** are the SteveDesktop games. Those two games take work through `infrastructure/stevedesktop/RUNBOOK.md`.
 - To drive ArchSmall, first run `eval "$(python3 src/RimMandrake/Utils/game_instance.py env ArchSmall)"`. The bridge
   client, `game_paths` and the driver lock all follow that command. Name ArchSmall in the claim too
   (`game_lock.py claim ArchSmall`, or `--host ArchSmall` for `rimflow bridge`).
@@ -84,8 +84,8 @@ Four rules for a driver:
   Before you restart a game whose hold looks stale, cross-check `rimworld/get_game_info` and `Player.log`'s mtime.
 - ⚠️ **`Player.log`'s mtime can read hours stale against a just-recorded `bridge take`.** Before you trust the content
   of the log as this session, `stat` the log and check `tasklist.exe`.
-- 🔴 **Tell a subagent up front to block in a foreground loop, if it must start or wait on a cold load.** Tell it never
-  to end its turn "to wait for the monitor's notification". No background notification reaches a subagent.
+- 🔴 **If a subagent must start or wait on a cold load, tell it up front to block in a foreground loop.**
+  Tell the subagent never to end its turn "to wait for the monitor's notification". No background notification reaches a subagent.
 - **Two drivers at once on one game leave its bridge STUCK, not crashed.** The bridge comes back when the other call
   finishes. Find out who else is on that game. Do not restart that game. Do not wait: take another free game for your
   work.
@@ -124,7 +124,7 @@ with RimBridge(host, port, token) as rb:
   loopback. A script that reads `/mnt/c` paths needs `python3`. The choice is per script, not per project.
 - 🔴 **Turn on Options → Run in background before any unattended run.** Do it in the game's menu. The game discards a
   `Prefs.xml` edit that you make while it runs. An all-null `get_bridge_status` means that this option is off and the game is
-  unfocused. It does not mean "no map is loaded".
+  unfocused. An all-null status does not mean "no map is loaded".
 - ⏳ **The bridge answering is NOT the game being reactive.** The game becomes drivable about forty seconds after the
   bridge first answers. Hold mutations until then (`load_session.py --settle`).
 - ⚠️ **A timeout is fatal to the CONNECTION, not to the call.** Open a fresh `RimBridge` and poll the post-condition.
@@ -188,7 +188,7 @@ succeeds and nothing happens, suspect the parameter name before suspecting the g
 exactly like the documented no-op failure. Check pawns with `jawa/list_pawns`, `list_colonists` or a save parse instead.
 
 🔴 **The law's blind spot: a correct number can answer the wrong question.** `jawa/order_pawn` once returned
-`canReach: true` from a real `ReachabilityUtility.CanReach` call. That call ran and answered honestly. But it asked
+`canReach: true` from a real `ReachabilityUtility.CanReach` call. That call ran and answered honestly. But the call asked
 about a **cell** with `PathEndMode.OnCell`. The game's own launch gate passes the **thing** with
 `PathEndMode.InteractionCell`. Two verdicts wore one field name, and `true` looks identical either way. So:
 
@@ -200,7 +200,7 @@ about a **cell** with `PathEndMode.OnCell`. The game's own launch gate passes th
 * Where no engine call exists to copy, score a **null baseline**. A number with no baseline cannot tell "my method
   worked" from "anything would have scored that".
 * **Prefer testing the MECHANISM synthetically over testing your artifact.** For example, build a sealed room from
-  nothing on a throwaway map. That room tests the rule every derived claim rests on. It needs no save, no deck and no
+  nothing on a throwaway map. That room tests the rule every derived claim rests on. The test needs no save, no deck and no
   import.
 
 ---
@@ -256,7 +256,7 @@ diagnosed a healthy player-owned ship as factionless for an hour (2026-09-09).
 
 ⚠️ **A raw hediff-severity write via `jawa/pawn_health` (`remove`+`add`+set `Severity`) never
 triggers vanilla's needs recompute.** `HediffSet.DirtyCache` only refreshes the disabled-needs
-cache. `AddOrRemoveNeedsAsAppropriate()` fires only from `HediffSet.AddDirect`. It fires once, at
+cache. `AddOrRemoveNeedsAsAppropriate()` fires only from `HediffSet.AddDirect`. `AddDirect` makes that call once, at
 whatever stage the hediff was at when first added. So test a stage-dependent mechanic through the
 real player path (a bench recipe / bill), not a raw severity poke (2026-09-09).
 
@@ -280,7 +280,7 @@ menu.** A *three-mod* list gave 1,119 matches for "apparel".
 
 **`pawnId` is `Thing_<id>` for `rimworld/…` tools, but bare `<id>` from
 `jawa/list_pawns`.** The companion returns `Human1066`. The stock tools want
-`Thing_Human1066`. They answer a bare id with *"Could not find current-map pawn"*.
+`Thing_Human1066`. The stock tools answer a bare id with *"Could not find current-map pawn"*.
 That answer reads as "that pawn does not exist" rather than "wrong id format". Read
 `pawnId` off `rimworld/list_colonists` when you call a `rimworld/` tool.
 
@@ -291,7 +291,7 @@ mysteriously broken for so long. To affect a hostile, use a `ToolMap` action and
 give it `x`/`z`. For example, `Actions\Explosion...\EMP` works on anything, anywhere.
 
 ⚠️ **`get_debug_action` returns `actionType: null` for some working leaves.** So
-it is not a reliable diagnostic. Compare against a known-good sibling instead.
+`get_debug_action` is not a reliable diagnostic. Compare against a known-good sibling instead.
 
 ⚠️ **Some `ToolMap` leaves refuse a `thingId` param outright despite the table above.**
 `Actions\T: Resurrect` and `Actions\T: Destroy` both answer *"Could not find current-map
@@ -300,18 +300,18 @@ tools, `x`/`z` cell targeting works where `thingId` does not. Most `ToolMap` act
 both forms. Do not assume that every one does (2026-09-10).
 
 🔴 **`Actions\T: Destroy` targeted by `x`/`z` destroys EVERY thing in that cell, not
-just the one you meant.** It once destroyed the damaged pipes that were
+just the one you meant.** One such call destroyed the damaged pipes that were
 the target, and with them a healthy conduit and a decorative sign. Read `solidThingDefs` in
 that cell before AND after a cell-targeted destroy. Rebuild anything that was not
 the intended target (2026-09-10).
 
 ⚠️ **NEVER call `search_debug_actions` against the full mod stack — with or
 without a `limit`.** It livelocked and killed a 568-mod game on 2026-08-12.
-`limit` truncates the returned rows. It does not bound the search, because
+`limit` truncates the returned rows. `limit` does not bound the search, because
 `totalMatchCount` walks the whole tree regardless. The old "safe with
 `query` + `limit`" note was measured on three mods and does not transfer.
 
-✅ **`list_debug_action_children` IS safe on the full stack.** It walks one
+✅ **`list_debug_action_children` IS safe on the full stack.** `list_debug_action_children` walks one
 bounded level. `search_debug_actions` traverses the whole tree.
 Browse down from `list_debug_action_roots`. `Actions` has 596 children and
 returns in about a second. **This is the discovery route to use on the full stack.**
@@ -354,7 +354,7 @@ dead and several downed. Neither call was wrong; only the combination was.
   `success: true` on `set_time_speed` is not evidence that time stopped.
 * ⚠️ **This applies to friendly pawns too, not just hostiles.** Unpaused
   colonists treat bridge-printed furniture as theirs to optimize. In a 90k-tick
-  blind run, the colony's own haulers MINIFIED two gravship fuel tanks. They hauled
+  blind run, the colony's own haulers MINIFIED two gravship fuel tanks. The haulers took
   the tanks off to a corner stockpile (2026-09-09).
 
 ---
@@ -362,7 +362,7 @@ dead and several downed. Neither call was wrong; only the combination was.
 ## 5. Map authoring
 
 **`references/map-authoring.md`** covers structures, terrain paint, batched spawns, ground clearance, and how to stage a
-pawn for a photograph. It also covers the map-scoped tools. The world, pawn and event families have their own
+pawn for a photograph. The file also covers the map-scoped tools. The world, pawn and event families have their own
 reference files. Read `references/map-authoring.md` before your first
 `apply_architect_designator`, `jawa/set_terrain*` or `jawa/spawn_batch` call.
 Four of the things in it are one-way doors:
@@ -374,12 +374,13 @@ Four of the things in it are one-way doors:
   inspection afterwards can see it.
 * **multi-cell things spawn CENTRED** on the cell you name.
 * **laying a floor and painting terrain both destroy the plants under them.**
-  `restore()` puts the TerrainDef back but not the plants.
+  `restore()` (`src/RimMandrake/Utils/rimbench/terrain.py`) puts the TerrainDef back but not the plants.
 
-One more thing in that area: **the inhabited leave/re-enter harness silently no-ops on PLAYER settlements.** The harness needs a
-`WorldObject_InhabitedSettlement`. On a player settlement it gives `success: true` plus a warning only in the log. The
+One more thing in that area: **the inhabited leave/re-enter harness silently no-ops on PLAYER settlements.** The harness
+is the pair of debug actions "Leave settlement now" and "Re-enter settlement here" of the Inhabited mod
+(`src/RimMandrake/Inhabited/Source/DebugActions_Inhabited.cs`). The harness needs a `WorldObject_InhabitedSettlement`. On a player settlement it gives `success: true` plus a warning only in the log. The
 real player-map regen route is the vanilla debug action `Actions\Regenerate Current Map`. That action wipes colonists
-(Game Over letter). It honours the tile's CURRENT biome fresh, with no restart needed (2026-09-14).
+(Game Over letter). The action honours the tile's CURRENT biome fresh, with no restart needed (2026-09-14).
 
 Go to `references/map-authoring.md` too in each of these cases:
 
@@ -405,7 +406,7 @@ Go to `references/map-authoring.md` too in each of these cases:
 ⚠️ **Do not restore the owner's mod list.** Leave ModsConfig on the tier that serves your work (root `CLAUDE.md` §Facts
 you cannot guess). If you do run `modset_builder.py --restore`, know three things:
 
-* `--restore` puts back the list from before the first `--apply` of the swap, verified by md5. It refuses a running
+* `--restore` puts back the list from before the first `--apply` of the swap, verified by md5. `--restore` refuses a running
   game, a missing marker, a changed before-copy and a live list that it does not know. A chain of tiers keeps that
   first before-copy, or the next `--apply` refuses. `--restore-full` writes the stored full list.
 * `--restore` refuses a seat that does not hold the bridge of that game. The override is `--not-my-bridge "<reason>"`.
@@ -473,20 +474,20 @@ quote nothing.
 reversible: the player reloads if they dislike the result. A save-edit
 permanently changes state.
 
-The measured tables are in **`references/performance.md`**. They hold the per-operation timings, the 421-cell crater at
-421 vs 124 vs 1 call, and the per-formation call counts. They also hold why an old timing note does not transfer
+The measured tables are in **`references/performance.md`**. The tables hold the per-operation timings, the 421-cell crater at
+421 vs 124 vs 1 call, and the per-formation call counts. The same file says why an old timing note does not transfer
 across mod tiers. Read that file before you optimise anything and before you quote a timing. Read it also when a
 loop is slower than you expected.
 
 
 ## 9. Extending the bridge — now its own skill
 
-When the bridge cannot do something, **you can add a `[Tool]` method to a companion DLL.** That is a
+When the bridge cannot do something, **you can add a `[Tool]` method to a companion DLL.** A companion `[Tool]` is a
 documented, supported path, not a hack. Every `jawa/` tool came from that path. One single day added
 59 of them.
 
 ⇒ **Use the `rimbridge-companion` skill.** That skill has the tool pattern, the build guards, and the
-edit→build→deploy→test cycle (about **one minute** on a minimal mod list). It also has
+edit→build→deploy→test cycle (about **one minute** on a minimal mod list). The skill also has
 the traps that make a new tool silently absent.
 `references/extending.md` keeps the lower-level assembly and csproj detail.
 

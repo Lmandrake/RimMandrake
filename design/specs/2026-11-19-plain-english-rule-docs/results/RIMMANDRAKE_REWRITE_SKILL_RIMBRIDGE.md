@@ -10,15 +10,15 @@ Also: skills/rimbridge/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 29,187 | 30907 |
-| words in linted prose | 3,172 | 3,489 |
-| STE violations per 100 words | 4.22 | 2.21 |
-| sentences over 20 words | 65 | 30 |
-| flagged lines (mechanical) | 56 | 48 |
-| lines that a cold reader cannot act on (hand count, by the writer) | 11 | 0 that this run could resolve; 4 listed under "Could not determine" |
+| bytes | 29,187 | 31,355 |
+| words in linted prose | 3,172 | 3,541 |
+| STE violations per 100 words | 4.22 | 2.23 |
+| sentences over 20 words | 65 | 32 |
+| flagged lines (mechanical) | 56 | 47 |
+| lines that a cold reader cannot act on (hand count, by the writer) | 11 | 0 that this run could resolve; 5 listed under "Could not determine" |
 
-The 30 long sentences that stay: one holds a command list and a measurement (the VEF line, §3), one holds an engine quote
-(`ResolvePawn`). The other 28 are two short sentences that the lint joined at a bold lead, a closing quote mark or an emoji.
+The 32 long sentences that stay: one holds a command list and a measurement (the VEF line, §3), one holds an engine quote
+(`ResolvePawn`). The other 30 are two short sentences that the lint joined at a bold lead, a closing quote mark or an emoji.
 
 The flags that stay are the 🔴, ⛔, ⚠️ and ✅ marks. ⚠️ stays everywhere because line 9 gives it a meaning (provisional).
 The 🔑 and ⭐ marks are gone.
@@ -88,7 +88,10 @@ The same reader then read each repair, the split of the fuel-tank line, and the 
 - his quote "No more long runs." is the ledger's form; the history file now gives the transcript's form too;
 - "check with the owner if it looks abandoned" had no history record: added.
 
-No reader read those three last repairs.
+No reader read those three last repairs. After the first landing, the prose check of `./publish` named 23 lines. The writer
+repaired 22 in the same run: a noun for a pronoun (18), the L3 wording, one long sentence, the two debug actions that are the
+"inhabited harness" (`DebugActions_Inhabited.cs`), and the file of `restore()`. No meaning reader read those; `keep` and the
+prose check did. The term "deck" was not found: item `RIMMANDRAKE_DEFINE_DECK_IN_RIMBRIDGE_NOT_FOUND`.
 
 ## Conflicts and stale lines: settled
 
@@ -124,6 +127,7 @@ Left as dated records: `design/RimMandrake/bridge_system.md` (2026-10-10, labell
 | "provisional findings ⚠️" | many ⚠️ lines are measured warnings, so the mark has two senses | the author of the skill head |
 | "`saveName` … state-dependent" | which state decides it | a live run of `rimworld/save_game` |
 | "`ResolvePawn` accepts player-controlled colonists only" | still true in today's RimBridgeServer; its source is not on this machine | a live call |
+| "needs no save, no deck" | which deck (text of 2026-08-15) | item `RIMMANDRAKE_DEFINE_DECK_IN_RIMBRIDGE_NOT_FOUND` |
 | "16.7 ms floor … cause of the spread is unknown" | the cause | `bridge_latency_bench.py` |
 
 ## What this run did not test
