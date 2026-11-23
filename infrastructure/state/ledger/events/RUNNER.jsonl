@@ -11673,3 +11673,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-23T16:17:06Z","tsn":1795450626939705783}
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 2 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-23T16:17:16Z","tsn":1795450636876862326}
 {"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-23T16:17:25Z","tsn":1795450645306694603}
+{"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"kept","detail":"sweep: running again","ts":"2026-11-23T16:18:12Z","tsn":1795450692821275311}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","result":"kept","detail":"sweep: running again","ts":"2026-11-23T16:18:20Z","tsn":1795450700509488991}
