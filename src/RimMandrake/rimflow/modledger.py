@@ -644,13 +644,17 @@ def fenced(ev, by):
 
 
 def seals(events):
-    """-> {judge shard name: latest judge.sealed body}."""
+    """-> {judge shard name: latest judge.sealed body}, for the shards whose latest seal event is not a judge.unsealed
+    (a voided run's seal reopened for its own lines: unseal)."""
     out = {}
     for ev in events:
-        if ev.get("writer") == "DISPATCH" and ev.get("kind") == "judge.sealed":
+        if ev.get("writer") == "DISPATCH" and ev.get("kind") in ("judge.sealed", "judge.unsealed"):
             b = ev.get("body") or {}
             if isinstance(b.get("shard"), str):
-                out[b["shard"]] = b
+                if ev["kind"] == "judge.sealed":
+                    out[b["shard"]] = b
+                else:
+                    out.pop(b["shard"], None)
     return out
 
 
@@ -866,6 +870,20 @@ def seal(root, mod, run, ts=None, views=True):
     return eid
 
 
+def unseal(root, mod, run, why, void=None, ts=None, views=True):
+    """DISPATCH reopens the seal of JUDGE.<run> for that run's own lines: only for a run that was VOIDED (the caller
+    checks: maturation_dispatch.reopen_void_judge), whose shard was sealed when its unit died. Its lines then append
+    and lint; the next seal (the resumed run's end, or reopen_void_judge's own) closes it again
+    (design/specs/2026-11-23-resume-voided-blind-judge/boundary.md). -> the event id, or None when it is not sealed."""
+    shard = "JUDGE.%s" % run
+    _check_writer(shard)
+    if shard not in seals(read(root, mod)):
+        return None
+    eid, _ = append(root, mod, "DISPATCH", "judge.unsealed", "judge", ts=ts, views=views,
+                    body={"shard": shard, "why": str(why)[:300], "void": void})
+    return eid
+
+
 def holder_brief(mod, lease, token, role, stage):
     """-> the lines that follow the packet in a holder's brief: who it writes as and how it checkpoints."""
     me = "python3 src/RimMandrake/rimflow/modledger.py"
@@ -980,7 +998,7 @@ def _edited_in_place(rel, data, base_data):
              "append the right value" % i) for i in sorted(now) if i in base and not now[i] & base[i]]
 
 
-DELETE_REFUSED = ("lease.grant", "judge.sealed")
+DELETE_REFUSED = ("lease.grant", "judge.sealed", "judge.unsealed")
 
 
 def delete(root, mod, ids):

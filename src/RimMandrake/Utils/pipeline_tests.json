@@ -221,6 +221,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_mod_model_pin.py", "seconds": 14},
     {"test": "src/RimMandrake/rimflow/selftest_run_void.py", "seconds": 2.0},
     {"test": "src/RimMandrake/rimflow/selftest_void_counters.py", "seconds": 4.0},
+    {"test": "src/RimMandrake/rimflow/selftest_resume_voided_blind_judge.py", "seconds": 8.0},
     {"test": "src/RimMandrake/rimflow/selftest_incident_news.py", "inputs": ["design/specs/2026-11-19-incident-news-and-program-routes/boundary.md", "src/RimMandrake/rimflow/alarm_routes.json"], "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_incident_clerk.py", "inputs": ["design/specs/2026-11-19-incident-clerk/boundary.md", "src/RimMandrake/rimflow/alarm_routes.json"], "seconds": 1.0},
     {"test": "src/RimMandrake/rimflow/selftest_dispatch_two_games.py", "seconds": 3.8},

@@ -583,6 +583,12 @@ def add_blind(root, mod, f, runs):
     f["blind_runs"] = [r.get("unit") for r in runs or [] if _is_blind_item(r.get("item")) and ran(r)
                        and r.get("unit") not in void
                        and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
+    f["blind_run_at"] = {r.get("unit"): r.get("at") for r in runs or [] if r.get("unit") in f["blind_runs"]}
+    if isinstance(f.get("void_run"), dict):     # a voided judge's own session, to resume (decide_blind)
+        try:
+            f["void_session"] = DH.run_session(f["void_run"]["unit"])
+        except Exception as e:      # noqa: BLE001  could not look: the cycle then opens fresh, said
+            f["void_session"] = (None, None, "the session could not be read: %s: %s" % (type(e).__name__, e))
     return f
 
 
@@ -1830,6 +1836,8 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
         b = "; ".join(f.get("blocked") or [])
         put("held" if "hold" in b else "blocked", b)
         return False
+    if owed == "resume":
+        return decide_void_resume(cfg, s, f, row, put, n, vid, account, live_total, releases)
     if owed == "exit met":
         put("exit_met", "blind cycle %s: exit met (%s)" % (n, (ex.get("why") or ["-"])[0]),
             "blind cycle %s: exit met (a program's reading of %s); the steward reads it and confirms: maturation.py "
@@ -1906,6 +1914,57 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
         row["retry_of"] = dict(retry)
     put("launch", "blind cycle %s owed, nothing live or recorded on it, the visit's first automatic cycle%s (%s)" % (
         n, retried(cfg, retry, mod), account[1]))
+    return True
+
+
+def decide_void_resume(cfg, s, f, row, put, n, vid, account, live_total, releases=None):
+    """Blind cycle n's newest booked judge run was VOIDED (maturation.blind_facts owed "resume"): it gave no verdict,
+    so its exit block is interim and nothing is handed to the Conductor. The SAME judge resumes its own session
+    (row["judge_resume"]: its ledger run, session and unit); with no session, or one at or past
+    holder_context_ceiling_tokens, a fresh judge opens the cycle (row["judge_fresh"]). It is the cycle's own run, not a
+    new automatic cycle, and it is past the certificate (which gates a cycle's opening); a blind run that started
+    after the void stops it (design/specs/2026-11-23-resume-voided-blind-judge/boundary.md). -> True to launch."""
+    vr = f.get("void_run") or {}
+    unit = vr.get("unit")
+    entry = dict(vr.get("entry") or {})
+    at = entry.get("at") if isinstance(entry.get("at"), (int, float)) else 0
+    after = [u for u in f.get("blind_runs") or [] if u != unit and u not in (f.get("killed") or {})
+             and isinstance((f.get("blind_run_at") or {}).get(u), (int, float)) and f["blind_run_at"][u] > at]
+    if after:
+        put("hand_run_seen", "blind run(s) %s worked on cycle %s after its voided judge %s" % (
+            ", ".join(after), n, unit),
+            "blind run(s) %s worked on cycle %s after its judge %s was voided; nothing launches: the Conductor reads "
+            "what they left" % (", ".join(after), n, unit))
+        return False
+    sid, ctx, how = (list(f.get("void_session") or ()) + [None, None, "no session reading"])[:3]
+    ceiling = modledger.config()["holder_context_ceiling_tokens"]
+    if sid and isinstance(ctx, int) and not isinstance(ctx, bool) and ctx < ceiling:
+        row["judge_resume"] = {"run": vr.get("run"), "session": sid, "unit": unit, "context_tokens": ctx}
+        what = "resume its session %s (%d of %d context tokens; %s)" % (sid, ctx, ceiling, how)
+    else:
+        why = (how if not sid else "session %s at %s context tokens, at or past the %d ceiling" % (
+            sid, ctx if isinstance(ctx, int) else UNM, ceiling))
+        row["judge_fresh"] = {"unit": unit, "why": why}
+        what = "open the cycle fresh, its session cannot be resumed: %s" % why
+    if not cfg.get("blind_enabled"):
+        put("blind_off", "blind_enabled is off in maturation_dispatch.json",
+            "blind cycle %s's voided judge is owed its resume with nothing live; the Dispatch step's blind launches "
+            "are off" % n)
+        return False
+    cap = cfg.get("blind_cap_usd")
+    if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
+        put("no_cap", "the settings have no positive blind_cap_usd; no judge launches without a cap")
+        return False
+    if reserve_refused(cfg, f, row, put, cap, "blind_challenge", s.get("blind_auto"), s, releases, killed=unit):
+        return False
+    if not account[0]:
+        put("account_hold", account[1])
+        return False
+    if no_slot(cfg, live_total, put):
+        return False
+    row.update(cap=cap, visit_id=vid, retry_of=entry, void_run=unit)
+    put("launch", "blind cycle %s: its judge %s was voided (%s), so its exit block is interim, no verdict; %s (%s)" % (
+        n, unit, vr.get("void") or vr.get("class"), what, account[1]))
     return True
 
 
@@ -2421,6 +2480,70 @@ def judge_open(root, mod, stage=None, now=None, fx=None):
             "writer": w, "env": {"RM_MODLEDGER_WRITER": w}}
 
 
+def judge_reopen(root, mod, run, stage=None, why="", fx=None):
+    """A voided blind judge resumes its own session: DISPATCH reopens the seal of its JUDGE.<run> (modledger.unseal),
+    so its lines land; no new judge run starts. Its run end seals the shard again (end_ledger_runs). -> the dict
+    judge_open returns, with "reopened": True."""
+    w = "JUDGE.%s" % run
+    lines = judge_lines(mod, run, stage)
+    modledger.unseal(root, mod, run, why)
+    landed = land_ledger(root, [mod], "judge run %s on %s reopened" % (run, mod), fx)
+    return {"run": run, "stage": stage, "packet": lines, "landed": landed, "brief": lines, "judge": True,
+            "writer": w, "env": {"RM_MODLEDGER_WRITER": w}, "reopened": True}
+
+
+def void_judge_runs(s):
+    """-> {ledger run: its void record} for the judge runs of one mod's Dispatch state that are VOID (their
+    `ledger_runs` entry moved to `voided`, or a unit that a standing hand void names)."""
+    out = {}
+    hand = RV.active()
+    for m in (s or {}).get("voided") or []:
+        e = (m or {}).get("entry") or {}
+        if m.get("book") == "ledger_runs" and str(e.get("writer") or "").startswith("JUDGE.") and e.get("run"):
+            out[e["run"]] = m
+    for e in (s or {}).get("ledger_runs") or []:
+        if isinstance(e, dict) and e.get("unit") in hand and str(e.get("writer") or "").startswith("JUDGE."):
+            out.setdefault(e["run"], {"unit": e["unit"], "void": hand[e["unit"]].get("id"), "class": "void_hand"})
+    return out
+
+
+def reopen_void_judge(root, st, mod, run, lines_file=None, why=""):
+    """`judge-reopen MOD --run R [--lines FILE]`: a VOIDED judge's sealed shard takes its own lines. Refuses a run that
+    is not void. Reopens the seal, appends from FILE only the lines whose writer is JUDGE.<run> and whose run is R
+    (skipping one the shard holds already), then seals it again. -> (rc, text, [repo paths written])."""
+    v = void_judge_runs(((st or {}).get("mods") or {}).get(mod))
+    if run not in v:
+        return 2, ("REFUSED: %s's judge run %s is not void (no voided ledger_runs entry, no standing hand void): only "
+                   "a voided run's seal reopens" % (mod, run)), []
+    shard = "JUDGE.%s" % run
+    path = os.path.join(modledger.ledger_dir(root, mod), shard + ".jsonl")
+    keep, skipped = [], 0
+    if lines_file:
+        for ln in open(lines_file, encoding="utf-8").read().splitlines():
+            try:
+                ev = json.loads(ln)
+            except ValueError:
+                ev = None
+            if isinstance(ev, dict) and ev.get("writer") == shard and ev.get("run") == run:
+                keep.append(ln)
+            elif ln.strip():
+                skipped += 1
+    have = set(open(path, encoding="utf-8").read().splitlines()) if os.path.exists(path) else set()
+    new = [ln for ln in keep if ln not in have]
+    eid = modledger.unseal(root, mod, run, why or "run %s was voided (%s)" % (run, (v[run] or {}).get("void")),
+                           void=(v[run] or {}).get("void"))
+    if new:
+        with open(path, "a", encoding="utf-8") as fh:
+            fh.write("".join(ln + "\n" for ln in new))
+    seal_id = modledger.seal(root, mod, run)
+    bad = [x for x in modledger.lint(root, mod)[0] if str(x[1]).endswith(shard + ".jsonl")]
+    paths = [os.path.relpath(p, root) for p in [path] if os.path.exists(p)] + ledger_paths(root, [mod])
+    return (1 if bad else 0), ("%s: seal %s reopened (%s), %d line(s) of its own landed, %d other line(s) refused, "
+                               "sealed again (%s)%s" % (
+                                   shard, "was" if eid else "was not", eid or "nothing to reopen", len(new), skipped,
+                                   seal_id, "; LINT: %s" % bad if bad else "")), paths
+
+
 def judge_lines(mod, run, stage):
     w = "JUDGE.%s" % run
     a = "%s append --mod %s --writer %s --run %s" % (JUDGE_ME, mod, w, run)
@@ -2493,11 +2616,17 @@ def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, 
     cfg = MM.for_mod(cfg, mod)      # its builders' pin; the judge and the live driver keep theirs
     model = (cfg.get("ingame_model", "opus") if stage == "in_game" else MM.judge_model(cfg)
              if stage == "blind_challenge" else cfg.get("model", "opus"))
+    jr = kw.pop("judge_resume", None)       # a voided judge's own session (decide_void_resume)
+    if jr and jr.get("session"):
+        kw["session"] = jr["session"]
     if not pilot_ledger(root, mod):
         return launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, **kw)
     now = now or time.time()
     try:
-        if stage == "blind_challenge":      # a judge is never the holder: it writes JUDGE.<run>, blind (spec §3.6)
+        if stage == "blind_challenge" and jr and jr.get("run"):     # the same judge writes its own reopened shard
+            led = judge_reopen(root, mod, jr["run"], stage=stage, why="its run %s was voided; the same judge resumes "
+                               "session %s" % (jr.get("unit"), jr.get("session")), fx=fx)
+        elif stage == "blind_challenge":      # a judge is never the holder: it writes JUDGE.<run>, blind (spec §3.6)
             led = judge_open(root, mod, stage=stage, now=now, fx=fx)
         else:
             led = ledger_open(root, mod, ROLE_OF_STAGE.get(stage, "holder"), "", stage=stage, now=now, fx=fx)
@@ -3063,7 +3192,7 @@ def holder_launch(root, cfg, s, row, cap, fx=None):
     if not pilot_ledger(root, mod):
         return cap, {}
     plan = modledger.resume_plan(root, mod)
-    killed = (row.get("retry_of") or {}).get("unit")
+    killed = None if row.get("judge_fresh") else (row.get("retry_of") or {}).get("unit")
     if killed and not plan["reconcile"]:
         plan = dict(plan, reconcile=True, why="%s; this launch retries killed run %s: reconcile the clone, unpublished "
                     "commits and the bridge first" % (plan["why"], killed))
@@ -3104,9 +3233,16 @@ def record_holder_session(root, mod, r, fx=None):
 
 
 def resume_kw(row):
-    """The launch's resume argument for a retry of a KILLED run (its unit), else none."""
+    """The launch's resume argument for a retry of a KILLED run (its unit), else none. A voided blind judge
+    (decide_void_resume) also carries judge_resume (its own session and ledger run), or only fresh_of (a fresh judge:
+    no resume section)."""
+    if row.get("judge_fresh"):
+        return {"fresh_of": dict(row["judge_fresh"])}
     u = (row.get("retry_of") or {}).get("unit")
-    return {"resume": u} if u else {}
+    kw = {"resume": u} if u else {}
+    if row.get("judge_resume"):
+        kw["judge_resume"] = dict(row["judge_resume"])
+    return kw
 
 
 def reap_run(unit):
@@ -4125,6 +4261,12 @@ def main(argv=None):
     jv = sub.add_parser("judge-verify", help="a blind judge's verification list: MOD's findings claimed fixed (finding "
                                              "text, reproduction, the claim's test; never the holder's story)")
     jv.add_argument("mod")
+    jr = sub.add_parser("judge-reopen", help="a VOIDED judge's sealed shard takes its own lines: reopen the seal, "
+                                             "append FILE's lines of that run, seal again; prints the paths to land")
+    jr.add_argument("mod")
+    jr.add_argument("--run", required=True, help="the judge's ledger run (judge-<epoch>)")
+    jr.add_argument("--lines", help="a JSONL file holding the run's own shard lines (a bundle's copy)")
+    jr.add_argument("--why", default="")
     cr = sub.add_parser("cert-rerun", help="the certificate rerun unit's body: certificate MOD --run in a pool clone, "
                                            "publish the table, write the result the tick reads (zero tokens)")
     cr.add_argument("mod")
@@ -4200,6 +4342,12 @@ def main(argv=None):
     if o.cmd == "judge-verify":
         print(judge_verify_text(os.path.abspath(o.root), o.mod), end="")
         return 0
+    if o.cmd == "judge-reopen":
+        rc, text, paths = reopen_void_judge(os.path.abspath(o.root), read_state(os.path.join(sdir(), "state.json")),
+                                            o.mod, o.run, o.lines, o.why)
+        print(text)
+        print("PATHS %s" % " ".join(paths) if paths else "PATHS none")
+        return rc
     if o.cmd == "pilot-launch":
         rc, text = pilot_launch(os.path.abspath(o.root), cfg, o.mod, o.why, item=o.item, usd=o.usd)
         print(text)

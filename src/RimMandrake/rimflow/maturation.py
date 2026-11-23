@@ -784,6 +784,8 @@ def exit_met_clause(root, mod, rec, cur, owner, clause, rec_ref, req_ref, game_o
             bf = blind_facts(root, mod)
             n, ex, opened = bf.get("cycle"), bf.get("exit") or {}, bf.get("opened")
             blocked += [b for b in bf.get("blocked") or [] if not b.startswith("version/test_table.json")]
+            if bf.get("owed") == "resume":
+                blocked.append(void_resume_text(bf))
             if game_only_bars is not None and n is not None:
                 ex = read_exit(root, mod, n, tt, game_only_bars=game_only_bars)
             what, reader, base = "blind cycle %s" % n, "read_exit", "%s/cycle_%s" % (BLIND_DIR, n)
@@ -1973,6 +1975,8 @@ def gate_step(root, mod, _reread=False):
     elif blind and blind.get("owed") == "cycle":
         nxt = ("NEXT (automatic: the Dispatch tick launches it): blind cycle %d (maturation.py launch %s --budget-usd <cap> --item <ID>, or the Dispatch "
                "step); its record goes in %s" % (blind["cycle"], mod, blind["exit"]["record"]))
+    elif blind and blind.get("owed") == "resume":
+        nxt = "NEXT (automatic: the Dispatch tick resumes it): %s" % void_resume_text(blind)
     elif blind and blind.get("owed") == "no exit block":
         nxt = ("NEXT (wait on its live run, else PAUSED): cycle %d is recorded without an exit block: its run writes one, "
                "or (nothing live) the mod is PAUSED until someone reads %s/SUMMARY.md" % (blind["cycle"], blind["exit"]["record"]))
@@ -2017,6 +2021,8 @@ def gate_step(root, mod, _reread=False):
                        "maturation_dispatch.py)" % mod) if cur == "offline_build" and prog else
             ("maturation.py launch %s --budget-usd <cap> --item <ID> (blind cycle %d; or the Dispatch step, "
              "maturation_dispatch.py)" % (mod, blind["cycle"])) if blind and blind.get("owed") == "cycle" else
+            ("the Dispatch step resumes blind cycle %d: %s" % (blind["cycle"], void_resume_text(blind)))
+            if blind and blind.get("owed") == "resume" else
             ("none: blind cycle %d is %s" % (blind["cycle"], blind.get("owed"))) if blind else
             ("maturation.py launch %s --budget-usd <cap> --item <ID naming IN_GAME_ACCEPTANCE> (in-game visit %d, "
              "a live driver, opus; refused "
@@ -2368,6 +2374,29 @@ def resumed_text(mod, session):
             "disagreement with it: re-read `python3 src/RimMandrake/rimflow/modledger.py packet --mod %s` before you "
             "act; never chase a cause it lists as refuted, never re-ask a question it lists as answered. The stage's "
             "instructions follow.\n" % (mod, session, mod))
+
+
+def judge_resumed_text(f, session):
+    """The opening of a voided blind judge's own session, resumed: the same judge continues its own cycle (no blind
+    boundary is crossed), and its run counted nothing."""
+    rec = (f.get("exit") or {}).get("record") or "the cycle record"
+    return ("**You are the same blind judge, resumed (session %s).** Your run on cycle %s was killed from outside by a "
+            "system fault and voided: it spent no trial, and the exit block you left in %s/SUMMARY.md is interim, no "
+            "verdict. Your clone is new, from origin/main: what you published stands; check what did not land. Continue "
+            "from where you stopped, finish the cycle, and replace the interim block with your final exit block. Your "
+            "ledger shard is reopened for your own lines.\n" % (session, f.get("cycle"), rec))
+
+
+def fresh_cycle_text(f, void):
+    """The section a FRESH judge's brief opens with when a voided judge's session cannot be resumed: the old run's
+    record is moved aside unread, and this judge starts with no context of it."""
+    rec = (f.get("exit") or {}).get("record") or "the cycle record"
+    tag = str((void or {}).get("unit") or "void").rsplit("-", 1)[-1]
+    return ["## First: open cycle %s fresh" % f.get("cycle"), "",
+            "A judge run on this cycle was voided (a system fault; it gave no verdict), and its session cannot be "
+            "resumed (%s). Its record is in `%s`. Do NOT open or read it. First move it aside unread: `git mv %s "
+            "%s.void-%s`, commit and publish that path alone. Then do the whole cycle as written below, blind." % (
+                (void or {}).get("why") or "-", rec, rec, rec, tag), ""]
 
 
 def reconcile_text(mod, why):
@@ -2764,7 +2793,7 @@ def _twins_reader(runner, twins):
 
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
                resume=None, bars=None, preface=None, env=None, session=None, reconcile=None, game=None, companion=None,
-               deployed=None, twins=None, game_ops=None, continue_on_cap=0, repair_lock=None):
+               deployed=None, twins=None, game_ops=None, continue_on_cap=0, repair_lock=None, fresh_of=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
@@ -2785,7 +2814,10 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     (RIMMANDRAKE_GUARD_HAND_LAUNCH_AGAINST_DISPATCHER_TWIN_RUN: a hand launch twinned the Dispatch step's cycle 6).
     game_ops: a stand-in for game_instance (running, hold_refusal, stop, pids, alive, launch) for the deploy before a visit
     (deploy_repair); with a stand-in deploy plan (MATURATION_DEPLOY_PLAN) and none given, drift refuses as before. A
-    refusal whose cause ends by itself (the bridge not takeable, his hold on the game) starts with WAIT_MARK."""
+    refusal whose cause ends by itself (the bridge not takeable, his hold on the game) starts with WAIT_MARK. At the
+    blind challenge, a session (a voided judge's own, the Dispatch step's judge_resume) opens with
+    judge_resumed_text, and fresh_of (a voided judge whose session cannot resume) opens with fresh_cycle_text; either
+    launches on owed "resume" (design/specs/2026-11-23-resume-voided-blind-judge/boundary.md)."""
     if game:
         env = dict(env or {}, RM_GAME_INSTANCE=game)
     game = (env or {}).get("RM_GAME_INSTANCE") or "a"
@@ -2794,8 +2826,11 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     if not item:
         return 2, "REFUSED: --item is required (a ledger item filed on origin/main)", None
     text, f = brief_text(root, mod, budget_usd, bars=bars)
-    ok_owed = ("cycle", "run") + (("no exit block",) if resume else ())
-    if resume and f.get("stage") in ("blind_challenge", "in_game"):
+    ok_owed = ("cycle", "run") + (("no exit block",) if resume else ()) + (("resume",) if resume or fresh_of else ())
+    if fresh_of and f.get("stage") == "blind_challenge":
+        head, _, rest = text.partition("\n\n")
+        text = "\n".join([head, ""] + fresh_cycle_text(f, fresh_of)) + "\n" + rest
+    elif resume and f.get("stage") in ("blind_challenge", "in_game"):
         head, _, rest = text.partition("\n\n")
         text = "\n".join([head, ""] + resume_text(f, resume)) + "\n" + rest
     if f.get("stage") == "blind_challenge":
@@ -2877,7 +2912,8 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     if reconcile:
         text = reconcile_text(mod, reconcile) + "\n" + text
     if session:
-        text = resumed_text(mod, session) + "\n" + text
+        text = (judge_resumed_text(f, session) if f.get("stage") == "blind_challenge" else
+                resumed_text(mod, session)) + "\n" + text
     path = os.path.join(brief_dir(), "%s-%d.md" % (mod, int(now_ts())))
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
@@ -3435,7 +3471,46 @@ def blind_facts(root, mod):
     out["owed"] = ("blocked" if blocked else "cycle" if ex["state"] == "absent" else
                    "no exit block" if ex["state"] == "no_exit_block" else
                    "exit met" if ex["state"] == "met" else "exit not met")
+    if out["owed"] in ("no exit block", "exit met", "exit not met"):
+        # a VOID judge run gave no verdict: its block is interim, and the cycle resumes (design/specs/
+        # 2026-11-23-resume-voided-blind-judge/boundary.md)
+        vr = void_judge_run(mod, "%s#%s" % (out["version"], out["visit_first"]), n)
+        if isinstance(vr, dict):
+            out.update(void_run=vr, owed="resume")
+        elif vr:
+            blocked.append("whether blind cycle %d's last judge run was voided is UNMEASURED: %s" % (n, vr))
+            out["owed"] = "blocked"
     return out
+
+
+def void_resume_text(bf):
+    """-> the line that says a voided judge run's block is no verdict and what the tick does with the cycle."""
+    vr = bf.get("void_run") or {}
+    return ("its last judge run %s was voided (%s: %s), so its exit block in %s/SUMMARY.md is interim, no verdict; "
+            "the tick resumes that judge's own session (ledger run %s), or opens the cycle fresh when the session "
+            "cannot be resumed" % (vr.get("unit"), vr.get("void") or vr.get("class"), str(vr.get("why") or "-")[:160],
+                                   (bf.get("exit") or {}).get("record", "the cycle record"), vr.get("run") or UNM))
+
+
+def void_judge_run(mod, vid, n):
+    """-> run_void.voided_cycle_run read from the Dispatch tick's state (None: no void, or no state yet), or a text
+    naming why that state could not be read."""
+    import run_void as RV
+    d = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    try:
+        if not d:
+            import doorbell
+            d = os.path.join(doorbell.state_dir(), "maturation")
+        with open(os.path.join(d, "state.json"), encoding="utf-8") as fh:
+            st = json.load(fh)
+        st = RV.sync_dispatch(st) if isinstance(st, dict) else None
+    except FileNotFoundError:
+        return None
+    except Exception as e:  # noqa: BLE001  could not look: said, never read as "no void"
+        return "%s/state.json: %s: %s" % (d, type(e).__name__, str(e)[:160])
+    if not isinstance(st, dict):
+        return "%s/state.json is not an object" % d
+    return RV.voided_cycle_run((st.get("mods") or {}).get(mod), vid, n)
 
 
 def _src_dir(root, mod):

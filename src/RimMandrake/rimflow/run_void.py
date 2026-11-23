@@ -164,6 +164,38 @@ def book_entries(st):
     return out
 
 
+def _at_of(x):
+    v = (x or {}).get("at")
+    return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else 0.0
+
+
+def voided_cycle_run(s, visit_id, cycle):
+    """-> the newest booked judge run on blind cycle `cycle` of visit `visit_id` when it is VOID and no counted
+    `blind_auto` entry on that cycle is as new, else None. A voided run gave no verdict: its exit block is interim
+    (RIMMANDRAKE_RESUME_VOIDED_BLIND_JUDGE_NOT_READ_AS_VERDICT; design/specs/2026-11-23-resume-voided-blind-judge/).
+    s: one mod's dict of the Dispatch state (after sync_dispatch). -> {"entry", "unit", "run" (its ledger run or None),
+    "void", "class", "why"}."""
+    if not isinstance(s, dict):
+        return None
+
+    def on(x):
+        return (isinstance(x, dict) and x.get("cycle") == cycle and x.get("visit_id") == visit_id
+                and bool(_units_of(x)))
+    moved = [m for m in s.get("voided") or [] if isinstance(m, dict) and m.get("book") == "blind_auto"
+             and on(m.get("entry"))]
+    if not moved:
+        return None
+    last = max(moved, key=lambda m: _at_of(m["entry"]))
+    if any(on(x) and _at_of(x) >= _at_of(last["entry"]) for x in s.get("blind_auto") or []):
+        return None
+    unit = last["entry"]["unit"]
+    runs = [m.get("entry") for m in s.get("voided") or [] if isinstance(m, dict) and m.get("book") == "ledger_runs"] + \
+        list(s.get("ledger_runs") or [])
+    run = next((r.get("run") for r in runs if isinstance(r, dict) and r.get("unit") == unit and r.get("run")), None)
+    return {"entry": dict(last["entry"]), "unit": unit, "run": run, "void": last.get("void"),
+            "class": last.get("class"), "why": last.get("why")}
+
+
 def stage_runs(st):
     """-> {unit: at (epoch or None)} for the runs a Designer stage.json names: its coverage judges, its results and the
     runs its history opened."""

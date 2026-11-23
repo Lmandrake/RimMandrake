@@ -21,6 +21,7 @@
       "lease.grant",
       "lease.revoke",
       "judge.sealed",
+      "judge.unsealed",
       "run.start",
       "run.end",
       "stage.enter",
@@ -305,6 +306,10 @@
         "shard",
         "sha256"
       ],
+      "judge.unsealed": [
+        "shard",
+        "why"
+      ],
       "session.id": [
         "session_id"
       ],
@@ -398,7 +403,8 @@
       "run.end",
       "verify",
       "session.id",
-      "judge.sealed"
+      "judge.sealed",
+      "judge.unsealed"
     ],
     "mint_duplicate_overlap": 0.7,
     "mint_duplicate_min_tokens": 4,

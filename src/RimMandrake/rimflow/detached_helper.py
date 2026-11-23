@@ -979,6 +979,31 @@ def session_of(unit, root=None, projects=None):
     return sid, (context_tokens(t) if t else None)
 
 
+def run_session(unit, root=None, projects=None):
+    """-> (session id, context tokens, how) of a run, also one KILLED before it wrote a result (session_of then reads
+    nothing): the transcript in its clone's project folder written during the run (from its start to 10 min after its
+    end), the newest one. (None, None, why) when none is found (resume a voided judge:
+    design/specs/2026-11-23-resume-voided-blind-judge/boundary.md)."""
+    sid, ctx = session_of(unit, root, projects)
+    if sid:
+        return sid, ctx, "its result file"
+    rec = read_record(unit, root)
+    if not isinstance(rec, dict) or not rec.get("clone"):
+        return None, None, "no run record with a clone for %s" % unit
+    t0, t1 = [rec.get(k) if _num(rec.get(k)) else None for k in ("at", "ended")]
+    d = project_dir(rec["clone"], projects)
+    hits = []
+    for p in glob.glob(os.path.join(d, "*.jsonl")):
+        m = os.path.getmtime(p)
+        if SESSION_RE.match(os.path.basename(p)[:-len(".jsonl")]) and (t0 is None or m >= t0) and \
+                (t1 is None or m <= t1 + 600):
+            hits.append((m, p))
+    if not hits:
+        return None, None, "no transcript in %s written during the run" % d
+    p = max(hits)[1]
+    return os.path.basename(p)[:-len(".jsonl")], context_tokens(p), "its clone's transcript %s" % p
+
+
 def earlier_cap(session, root=None):
     """-> (cap, unit) of the newest run record of `session` (its `session`, its `resume_session`, or the session_id in a
     result file of a record from before `session` was kept), or (None, why) when no record holds it or the newest one

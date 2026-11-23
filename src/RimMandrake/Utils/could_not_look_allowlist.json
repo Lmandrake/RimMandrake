@@ -264,7 +264,8 @@
   "src/RimMandrake/rimflow/seat_restart.py::cmd_words::or-empty": 1,
   "src/RimMandrake/rimflow/wake_words.py::Wake._since::or-empty": 1,
   "src/RimMandrake/rimflow/wake_words.py::Wake.stamp::or-empty": 1,
-  "src/RimMandrake/rimflow/wake_words.py::first_ts::except-returns-empty": 1
+  "src/RimMandrake/rimflow/wake_words.py::first_ts::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/maturation.py::void_judge_run::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/list_pipeline.py::epoch::except-returns-empty": [
@@ -1116,6 +1117,9 @@
   ],
   "src/RimMandrake/rimflow/wake_words.py::first_ts::except-returns-empty": [
    "NOT A COLLAPSE: None is 'no start read'; with no stamp either, every section says UNMEASURED (design/specs/2026-11-23-wake-his-words/boundary.md since-is-the-previous-wake)"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::void_judge_run::except-returns-empty": [
+   "NOT A COLLAPSE: no Dispatch state.json means no booked judge run, so no voided one: None is the true empty answer; a state that exists and cannot be read returns its cause, and blind_facts reads it as blocked UNMEASURED (design/specs/2026-11-23-resume-voided-blind-judge/boundary.md a-voided-judges-block-is-no-verdict)"
   ]
  }
 }
