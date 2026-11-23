@@ -104,6 +104,9 @@ class Fake:
             return {'success': True}
         if tool == 'jawa/damage_log':
             return {'success': True, 'events': []}
+        if tool == 'jawa/site_state':                # sc_pit_trap_raid's capture trace (read past the receipt)
+            return {'success': True, 'state': {'tick': 0},
+                    'pawns': [{'id': k, 'x': h['x'], 'z': h['z'], 'job': None} for k, h in g['hostile'].items()]}
         if tool == 'jawa/set_plants':
             if not all(':' in op for op in kw['ops'].split(';')):
                 self.contract.append('set_plants op names no def: %s' % kw['ops'])
