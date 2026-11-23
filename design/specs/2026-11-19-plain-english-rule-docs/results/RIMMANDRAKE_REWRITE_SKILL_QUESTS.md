@@ -10,8 +10,8 @@ Also: skills/rimworld-quests/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 24,409 | 29,679 |
-| words in linted prose | 2,580 | 3,490 |
+| bytes | 24,409 | 29,760 |
+| words in linted prose | 2,580 | 3,497 |
 | STE violations per 100 words | 4.07 | 1.43 |
 | sentences over 20 words | 52 | 18 |
 | flagged lines (mechanical) | 25 | 22 |
@@ -80,6 +80,8 @@ A second fresh Opus reader (rm-judge) read each of those repairs, `history.md`, 
 
 No reader read the repairs of the second table, the §6 line on our own C# suffix (`site.RUT_SleepersWoken`), and the last
 sentence splits in §9 and §10. Each repair follows what the second reader proposed.
+After the first landing (7d73e51d9c), the prose check of `./publish` named five pronouns in §5 and §8. The writer put the
+noun in each place. No reader read those lines.
 
 ## Conflicts and stale lines: settled
 

@@ -210,8 +210,9 @@ rule is left, the whole text fails.
 **A slate var becomes `[symbol]` with no declaration.** The resolver trims the text in the brackets until the text is a
 slate key:
 
-- First it tries the whole string.
-- Then it strips the last digits. If there are none, it cuts the text at the last `_`. Then it repeats.
+- First the resolver tries the whole string.
+- Then the resolver strips the last digits. If there are none, the resolver cuts the text at the last `_`.
+- The resolver repeats these steps.
 
 So `[timeoutTicks_duration]` and `[lodgers0_nameDef]` both work. The suffixes depend on the type of the value, so there
 is no one fixed list:
@@ -371,8 +372,8 @@ python3 skills/rimworld-quests/scripts/validate_quest.py MyQuest.xml
 python3 skills/rimworld-quests/scripts/validate_quest.py --dir MyMod/Defs/QuestScriptDefs
 ```
 
-The validator indexes `Assembly-CSharp.dll` and the shipped quest corpus, and keeps a cache. It resolves `ParentName`
-inheritance and the outputs of each `QuestNode_SubScript`. It checks for:
+The validator indexes `Assembly-CSharp.dll` and the shipped quest corpus, and keeps a cache. The validator resolves
+`ParentName` inheritance and the outputs of each `QuestNode_SubScript`. The validator checks for:
 
 - unknown or mis-cased node classes;
 - `$vars` that nothing stores;
@@ -391,7 +392,7 @@ inheritance and the outputs of each `QuestNode_SubScript`. It checks for:
 - **If it fires on your def, read it: the false-positive rate is known and low.** It cannot see inside a C# root, and it
   does not claim to.
 - **The tool gives a false WARN `[unwritten-slate]` for a list that only
-  `<addToLists><li>X</li></addToLists>` of `QuestNode_GeneratePawn` builds.** That is a real engine field: in 1.6,
+  `<addToLists><li>X</li></addToLists>` of `QuestNode_GeneratePawn` builds.** `<addToLists>` is a real engine field: in 1.6,
   `RunInt` loops it into `AddToOrMakeList`. The tool's `collect_writes` does not read that field. Treat the WARN as a
   false positive for such a list, or teach `collect_writes` the field.
 
