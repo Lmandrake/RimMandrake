@@ -1,0 +1,131 @@
+{
+ "rows": {
+  "W_PRECONDITIONS": [
+   "PASS",
+   "small list, 24 active mods, storeroom stocked (frame arms only)"
+  ],
+  "FRAME_BUDGET": [
+   "FAIL",
+   "+14.5% over mod off; on p99 59.4 ms (443 rows, 10 in the air), mod off p99 51.9 ms (511 rows), PASS at most +10%; on: 3 arm(s), p99s [97.1, 56.9, 59.4]: FRAME frames=728 probeRows=728 paused=79 wall=13.48s worstMs=202.3 meanMs=18.5 maxInAir=10 window=0.5-10s windowRows=443 windowP99Ms=97.1 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261123T135318.csv | FRAME frames=731 probeRows=731"
+  ]
+ },
+ "ev": {
+  "args": {
+   "storeroom": "97,37,7,7",
+   "cover": "102,36",
+   "gas": "100,41",
+   "lit": null,
+   "save": "EK_WALK_SMALL_COLONY_20261123",
+   "site": null,
+   "shelf_defs": "Shelf,ShelfSmall",
+   "shells": 3,
+   "settle": 120,
+   "frame_seconds": 8.0,
+   "frame_pairs": 3,
+   "frames_only": true,
+   "frame_evidence": null,
+   "gas_ticks": 900,
+   "raid_points": 300.0,
+   "full_min": 100,
+   "out": "D:\\ClaudeWork\\rimmandrake\\ek_run_20261123\\ek_frames_small_PLANT_slow_flight_45ms.json",
+   "stamp": "20261123T135246"
+  },
+  "active_mods": 24,
+  "mode": "frames_only",
+  "dll_md5": "af28cbfe",
+  "pre": {
+   "goods": 11
+  },
+  "saves": [
+   "EK_WALK_RAID_BASE_20261123T135246"
+  ],
+  "tick_rest": 0.0,
+  "raid": {
+   "success": true,
+   "blockedByDialog": false,
+   "pawnsArrivedTotal": 2,
+   "exc": null
+  },
+  "frame_arms": {
+   "on": [
+    {
+     "text": "FRAME frames=728 probeRows=728 paused=79 wall=13.48s worstMs=202.3 meanMs=18.5 maxInAir=10 window=0.5-10s windowRows=443 windowP99Ms=97.1 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261123T135318.csv",
+     "p99": 97.1,
+     "rows": 443,
+     "inAir": 10
+    },
+    {
+     "text": "FRAME frames=731 probeRows=731 paused=74 wall=12.89s worstMs=91.2 meanMs=17.6 maxInAir=10 window=0.5-10s windowRows=486 windowP99Ms=56.9 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261123T135357.csv",
+     "p99": 56.9,
+     "rows": 486,
+     "inAir": 10
+    },
+    {
+     "text": "FRAME frames=740 probeRows=740 paused=82 wall=13.10s worstMs=104.4 meanMs=17.7 maxInAir=10 window=0.5-10s windowRows=482 windowP99Ms=59.4 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261123T135435.csv",
+     "p99": 59.4,
+     "rows": 482,
+     "inAir": 10
+    }
+   ],
+   "off": [
+    {
+     "text": "FRAME frames=738 probeRows=738 paused=75 wall=12.68s worstMs=78.5 meanMs=17.2 maxInAir=0 window=0.5-10s windowRows=513 windowP99Ms=48.5 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261123T135337.csv",
+     "p99": 48.5,
+     "rows": 513,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=740 probeRows=740 paused=74 wall=12.68s worstMs=62.8 meanMs=17.1 maxInAir=0 window=0.5-10s windowRows=511 windowP99Ms=58.1 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261123T135416.csv",
+     "p99": 58.1,
+     "rows": 511,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=758 probeRows=758 paused=79 wall=12.98s worstMs=74.6 meanMs=17.1 maxInAir=0 window=0.5-10s windowRows=511 windowP99Ms=51.9 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261123T135455.csv",
+     "p99": 51.9,
+     "rows": 511,
+     "inAir": 0
+    }
+   ]
+  },
+  "frame_clock": {
+   "on": 2,
+   "off": 2
+  },
+  "tick_rest_running": 4.96781,
+  "tick_air_running": 5.517401,
+  "in_air_at_tick_read": 0,
+  "frame_on": {
+   "p99": 59.4,
+   "rows": 443,
+   "rows_each": [
+    443,
+    486,
+    482
+   ],
+   "p99_each": [
+    97.1,
+    56.9,
+    59.4
+   ],
+   "inAir": 10,
+   "text": "3 arm(s), p99s [97.1, 56.9, 59.4]: FRAME frames=728 probeRows=728 paused=79 wall=13.48s worstMs=202.3 meanMs=18.5 maxInAir=10 window=0.5-10s windowRows=443 windowP99Ms=97.1 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261123T135318.csv | FRAME frames=731 probeRows=731 paused=74 wall=12.89s worstMs=91.2 meanMs=17.6 maxInAir=10 window=0.5-10s windowRows=486 windowP99Ms=56.9 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261123T135357.csv | FRAME frames=740 probeRows=740 paused=82 wall=13.10s worstMs=104.4 meanMs=17.7 maxInAir=10 window=0.5-10s windowRows=482 windowP99Ms=59.4 path=D:\\ClaudeWork\\rimmandrak"
+  },
+  "frame_off": {
+   "p99": 51.9,
+   "rows": 511,
+   "rows_each": [
+    513,
+    511,
+    511
+   ],
+   "p99_each": [
+    48.5,
+    58.1,
+    51.9
+   ],
+   "inAir": 0,
+   "text": "3 arm(s), p99s [48.5, 58.1, 51.9]: FRAME frames=738 probeRows=738 paused=75 wall=12.68s worstMs=78.5 meanMs=17.2 maxInAir=0 window=0.5-10s windowRows=513 windowP99Ms=48.5 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261123T135337.csv | FRAME frames=740 probeRows=740 paused=74 wall=12.68s worstMs=62.8 meanMs=17.1 maxInAir=0 window=0.5-10s windowRows=511 windowP99Ms=58.1 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261123T135416.csv | FRAME frames=758 probeRows=758 paused=79 wall=12.98s worstMs=74.6 meanMs=17.1 maxInAir=0 window=0.5-10s windowRows=511 windowP99Ms=51.9 path=D:\\ClaudeWork\\rimmandrake\\ins"
+  }
+ }
+}

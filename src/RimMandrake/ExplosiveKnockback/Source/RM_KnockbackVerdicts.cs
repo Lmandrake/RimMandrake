@@ -22,6 +22,17 @@ namespace RimMandrake.ExplosiveKnockback
             return RM_KnockbackMath.WildCells(dist, radius, 1f, mass, k, wild);
         }
 
+        /// <summary>sc_spared's start assertion for one spared thing: null when it stood on its staged cell on the blast's tick, else
+        /// why the run says nothing about it (INVALID, never FAIL: a pawn that left the blast has no request line and no skip).</summary>
+        public static string SparedOffCell(string key, bool seen, int x, int z, int stagedX, int stagedZ)
+        {
+            if (!seen)
+            {
+                return key + " not on the map";
+            }
+            return x == stagedX && z == stagedZ ? null : key + " at " + x + "," + z + ", staged " + stagedX + "," + stagedZ;
+        }
+
         /// <summary>sc_calibration: the colonist is thrown exactly 3 cells (people_thrown_three_cells), straight away from
         /// the blast (same row, larger x), alive, with exactly one launch line. `away` comes back for the detail text.</summary>
         public static bool Calibration(int cells, bool spawned, int x, int z, int startX, int startZ, bool alive, int launches,

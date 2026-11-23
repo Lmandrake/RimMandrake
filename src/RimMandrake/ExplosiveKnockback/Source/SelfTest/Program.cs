@@ -770,6 +770,11 @@ internal static class Program
                 && !RM_KnockbackVerdicts.ContainerThrown(7, 6, true, true, true) && !RM_KnockbackVerdicts.ContainerThrown(-1, 6, true, true, true));
             Check("V-10 container toward the blast, not journalled thrown or spilled fails", !RM_KnockbackVerdicts.ContainerThrown(2, 6, false, true, true)
                 && !RM_KnockbackVerdicts.ContainerThrown(2, 6, true, false, true) && !RM_KnockbackVerdicts.ContainerThrown(2, 6, true, true, false));
+
+            // V-11 sc_spared's start assertion (visit 4 2026-11-23: a carrier off the blast read FAIL; it says nothing, so INVALID)
+            Check("V-11 a spared thing on its staged cell at the blast is in the scene", RM_KnockbackVerdicts.SparedOffCell("carrier", true, 5, 9, 5, 9) == null);
+            Check("V-11 a spared thing one cell off either way, or gone, is named", RM_KnockbackVerdicts.SparedOffCell("carrier", true, 6, 9, 5, 9) == "carrier at 6,9, staged 5,9"
+                && RM_KnockbackVerdicts.SparedOffCell("big", true, 5, 8, 5, 9) != null && RM_KnockbackVerdicts.SparedOffCell("pit", false, 5, 9, 5, 9) == "pit not on the map");
         }
 
         Console.WriteLine("explosive knockback kernel: " + pass + "/" + (pass + fail) + " passed");

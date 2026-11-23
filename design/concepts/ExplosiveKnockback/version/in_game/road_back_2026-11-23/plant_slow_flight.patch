@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
+index ed7c8995e1..7dec386baa 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
+@@ -892,6 +892,7 @@ namespace RimMandrake.ExplosiveKnockback
+         /// RM_KnockbackMath.JoltOffset; a finished, despawned or destroyed one is dropped.</summary>
+         public override void MapComponentUpdate()
+         {
++            foreach (Thing pf in map.dynamicDrawManager.DrawThings) { if (pf is RM_ThingFlyer_Knockback) { System.Threading.Thread.Sleep(45); break; } }
+             if (joltThing.Count == 0)
+             {
+                 return;

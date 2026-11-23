@@ -831,6 +831,11 @@ namespace RimMandrake.ExplosiveKnockback
         private static RM_FrameProbe live;
         internal static int SleepNextMs;
         internal static string LastPath = "none";
+        // the rate every recorded walk arm ran at while the window was visible (474 to 520 rows in 9.5 s). Vsync alone does not hold
+        // a covered window: live 2026-11-23, 21 pairs read 517 to 2678 window frames in both arms, and a p99 over frames falls
+        // as the rate rises, so the arms were not like for like
+        internal const int ProbeFps = 60;
+        private int priorVSync, priorTarget;
         private readonly List<float> ms = new List<float>();
         private readonly List<bool> paused = new List<bool>();
         private readonly List<int> inAir = new List<int>();
@@ -855,6 +860,11 @@ namespace RimMandrake.ExplosiveKnockback
             var go = new GameObject("RM_FrameProbe");
             DontDestroyOnLoad(go);
             live = go.AddComponent<RM_FrameProbe>();
+            live.priorVSync = QualitySettings.vSyncCount;
+            live.priorTarget = Application.targetFrameRate;
+            // restore-check: ok the probe's own OnDestroy puts both priors back, and Unity runs it however the probe ends
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = ProbeFps;
         }
 
         internal static KbFrameSummary Stop()
@@ -889,8 +899,15 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 LastPath = "UNWRITTEN " + ex.GetType().Name;
             }
-            Destroy(p.gameObject);
+            DestroyImmediate(p.gameObject);     // at once: a Begin in this same frame must read the restored priors
             return g;
+        }
+
+        private void OnDestroy()
+        {
+            // restore-check: ok this IS the restore (the priors read in Begin)
+            QualitySettings.vSyncCount = priorVSync;
+            Application.targetFrameRate = priorTarget;
         }
 
         private void Update()

@@ -1,0 +1,6 @@
+ROW                          STATUS     DETAIL
+W_PRECONDITIONS              PASS       small list, 24 active mods, storeroom stocked (frame arms only)
+FRAME_BUDGET                 FAIL       +14.5% over mod off; on p99 59.4 ms (443 rows, 10 in the air), mod off p99 51.9 ms (511 rows), PASS at most +10%; on: 3 arm(s), p99s [97.1, 56.9, 59.4]: FRAME frames=728 probeRows=728 paused=79 wall=13.48s worstMs=202.3 meanMs=18.5 maxInAir=10 window=0.5-10s windowRows=443 windowP99Ms=97.1 path=D:\ClaudeWork\rimmandrake\instances\b\RM_FrameProbe_20261123T135318.csv | FRAME frames=731 probeRows=731
+evidence: D:\ClaudeWork\rimmandrake\ek_run_20261123\ek_frames_small_PLANT_slow_flight_45ms.json   throwaway saves: ['EK_WALK_RAID_BASE_20261123T135246']
+[bridge split] 147.1 s wall: load 0.8 / ticks 0.0 / reads 13.6 / other 5.9 / outside calls 126.9 s
+[bridge split] WARN 96 calls of jawa/mod_settings_field (1.4 s): batch them

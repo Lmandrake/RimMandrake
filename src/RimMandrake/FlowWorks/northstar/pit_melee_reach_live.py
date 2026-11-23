@@ -77,10 +77,12 @@ def main():
     def step(n):
         return B.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=max(60000, n * 40)) or {}
 
-    def field(v=None):
-        if v is not None:
-            B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=FIELD, value=str(v))
+    def switch():
         return str((B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=FIELD) or {}).get("value"))
+
+    def set_switch(v):
+        B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=FIELD, value=str(v))
+        return switch()
 
     ox, oz = (int(v) for v in a.origin.split(","))
     if a.fresh_map:
@@ -142,24 +144,24 @@ def main():
         return got, {"attacker": att, "target": tgt, "proof": kv, "hits": hits, "accepted": order.get("accepted")}
 
     colonist, thrumbo = ("Colonist", "player"), ("Thrumbo", None)
-    was = field()
-    if was != "True":
-        field("True")
-    for rid, deep, above, want_up, want_down in (("REACH_3m_neither", 6, colonist, "none", "none"),
-                                                 ("REACH_half_m_both", 1, colonist, "hit", "hit"),
-                                                 ("REACH_2m_one_way", 4, thrumbo, "none", "hit")):
-        (u, du), (d, dd) = run(deep, above, True), run(deep, above, False)
-        st, why = verdict(u, d, want_up, want_down)
-        row(rid, st, "MOD" if st == "FAIL" else "SITE" if st == "UNMEASURED" else "", {"why": why, "fromBelow": du, "fromAbove": dd})
+    was = switch()
     try:
-        off = field("False")
+        if was != "True":
+            set_switch("True")
+        for rid, deep, above, want_up, want_down in (("REACH_3m_neither", 6, colonist, "none", "none"),
+                                                     ("REACH_half_m_both", 1, colonist, "hit", "hit"),
+                                                     ("REACH_2m_one_way", 4, thrumbo, "none", "hit")):
+            (u, du), (d, dd) = run(deep, above, True), run(deep, above, False)
+            st, why = verdict(u, d, want_up, want_down)
+            row(rid, st, "MOD" if st == "FAIL" else "SITE" if st == "UNMEASURED" else "", {"why": why, "fromBelow": du, "fromAbove": dd})
+        off = set_switch("False")
         u, du = run(6, colonist, True)
     finally:
-        back = field("True")
+        back = set_switch(was if was in ("True", "False") else "True")   # unreadable: the shipped default
     st, why = verdict(u, None, "hit", None) if off == "False" else ("UNMEASURED", "the switch did not go off: %s" % off)
     row("REACH_3m_switch_off", st, "MOD" if st == "FAIL" else "", {"why": why, "fromBelow": du, "switchBack": back, "switchWas": was})
     res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
-    row("REACH_done", "PASS" if back == "True" else "FAIL", "HARNESS", {"switch": back})
+    row("REACH_done", "PASS" if back == was else "FAIL", "HARNESS", {"switch": back, "switchWas": was})
     return 0 if all(r["status"] == "PASS" for r in rows) else 1
 
 

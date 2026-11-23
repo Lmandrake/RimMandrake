@@ -1,0 +1,6 @@
+ROW                          STATUS     DETAIL
+W_PRECONDITIONS              PASS       small list, 24 active mods, storeroom stocked (frame arms only)
+FRAME_BUDGET                 UNMEASURED arms not like for like (window frames [430, 437, 442] on, [553, 510, 509] off, over x1.25; a p99 over frames falls as the frame rate rises): on p99 103.3 ms (430 rows, 8 in the air), mod off p99 59.6 ms (509 rows), PASS at most +10%; on: 3 arm(s), p99s [105.9, 102.7, 103.3]: FRAME frames=737 probeRows=737 paused=84 wall=13.79s worstMs=174.9 meanMs=18.7 maxInAir=9 window=0.5-10s windowRows=430 wind
+evidence: D:\ClaudeWork\rimmandrake\ek_run_20261123\ek_frames_small_PLANT_slow_flight.json   throwaway saves: ['EK_WALK_RAID_BASE_20261123T134521']
+[bridge split] 144.0 s wall: load 0.7 / ticks 0.0 / reads 12.8 / other 6.6 / outside calls 123.9 s
+[bridge split] WARN 96 calls of jawa/mod_settings_field (1.6 s): batch them

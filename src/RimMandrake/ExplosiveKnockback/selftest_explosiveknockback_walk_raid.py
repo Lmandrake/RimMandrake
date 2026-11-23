@@ -61,6 +61,14 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
       the full list (one unjudged on arm reads CARRIER_TICK_COST), every other row PASS
   W34 --frame-evidence carries a small-list FAIL as FAIL; a frames file from the full list, another deployed DLL, a missing
       file, or a walk that is not --frames-only reads UNMEASURED
+  W35 the pause of a load cuts a step short (live, visit 4 run 2: arm C asked 10 ticks, got 1): the mid-air arms step the
+      rest on the measured clock and A_RELOAD_NO_DUP_LOST PASSes; a duplicated good still FAILs there; a clock that never
+      moves again after a load leaves the row UNMEASURED
+  W36 the grenade kills the rider on the first throw only (live, visit 4 run 2, order B): the baseline is loaded again, the
+      grenade thrown again, and the COVER row PASSes on the living rider, naming both throws
+  W38 the frame probe holds one frame rate while it runs (vsync off, a fixed target; put back at Stop): live 2026-11-23, 21
+      pairs read 517 to 2678 window frames because vsync does not hold a covered window, and every verdict was UNMEASURED
+  W37 the rider dies on the first throw, then lives and does not descend: COVER rows FAIL (a retry never hides the mod's fault)
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_walk_raid.py
 """
@@ -114,7 +122,8 @@ class Fake:
             rider = self.w["pawns"].get("Human900")
             if rider and not rider["dead"]:
                 self.rec(type="request", exp=exp, thing="Human900", centre=list(at), radius=radius, **{"def": "Human"})
-                if self.brk.get("rider_killed"):
+                self.grenades = getattr(self, "grenades", 0) + 1
+                if self.brk.get("rider_killed") or (self.brk.get("rider_killed_first") and self.grenades % 2 == 1):
                     rider["dead"] = True
             if not self.brk.get("cover_stays"):
                 had, self.w["cover"] = self.w["cover"], False
@@ -265,7 +274,10 @@ class Fake:
             w["burn"] = cells
             return {"success": True, "firesStarted": 1}
         if tool == "rimworld/step_game_ticks":
-            for _ in range(kw["ticks"]):
+            if w.get("cut") == "dead":
+                return {"success": True}
+            n = 1 if w.pop("cut", None) else kw["ticks"]          # the load's pause cuts the step short
+            for _ in range(n):
                 self.tick()
             return {"success": True}
         if tool == "rimworld/save_game":
@@ -283,6 +295,8 @@ class Fake:
                 self.w["loaded"] = True
             if self.brk.get("pause_on_load"):
                 self.w["loaded_pause"] = 2
+            if self.brk.get("step_cut") and "MIDAIR" in kw["saveName"]:
+                self.w["cut"] = self.brk["step_cut"]
             if self.brk.get("load_tick"):
                 self.tick()                         # Prefs.PauseOnLoad: Game.LoadGame runs one DoSingleTick
             return {"success": True}
@@ -382,6 +396,24 @@ def main():
     check("W13", [rows.get(r) for r in cover] == ["UNMEASURED"] * 2 and [rows.get(r) for r in plan] == ["PASS"] * 2,
           "rider killed: cover %s, plan %s" % ([rows.get(r) for r in cover], [rows.get(r) for r in plan]))
     code, rows, _ = run(no_descent=True)
+    got = [run(**b)[1].get("A_RELOAD_NO_DUP_LOST") for b in ({"step_cut": "once"}, {"step_cut": "once", "dup_on_reload": True},
+                                                             {"step_cut": "dead"})]
+    check("W35", got == ["PASS", "FAIL", "UNMEASURED"], "a step cut short by the load's pause is stepped to the target, a twin "
+          "still FAILs, a dead clock is UNMEASURED (got %s)" % got)
+    code, rows, txt = run(rider_killed_first=True)
+    check("W36", [rows.get(r) for r in cover] == ["PASS"] * 2 and txt.count("throw 2 of") == 2,
+          "rider killed on the first throw only: %s" % [rows.get(r) for r in cover])
+    code, rows, txt = run(rider_killed_first=True, no_descent=True)
+    check("W37", code == 1 and [rows.get(r) for r in cover] == ["FAIL"] * 2,
+          "killed first, then living with no descent: %s" % [rows.get(r) for r in cover])
+    src = open(os.path.join(HERE, "Source", "RM_KnockbackProof_StageThree.cs"), encoding="utf-8").read()
+    begin = src[src.find("internal static void Begin()"):src.find("internal static KbFrameSummary Stop()")]
+    stop = src[src.find("private void OnDestroy()"):src.find("private void Update()", src.find("private void OnDestroy()"))]
+    ends = src[src.find("internal static KbFrameSummary Stop(float"):src.find("private void OnDestroy()")]
+    check("W38", "vSyncCount = 0" in begin and "targetFrameRate = ProbeFps" in begin and "priorVSync = QualitySettings.vSyncCount" in begin
+          and "vSyncCount = priorVSync" in stop and "targetFrameRate = priorTarget" in stop and "DestroyImmediate(p.gameObject)" in ends,
+          "the frame probe fixes the frame rate at Begin and puts the player's values back however it ends")
+    code, rows, txt = run(no_descent=True)
     check("W14", code == 1 and [rows.get(r) for r in cover] == ["FAIL"] * 2, "living rider, no descent: %s" % [rows.get(r) for r in cover])
     code, rows, txt = run(cover_broken_early=True)
     check("W15", [rows.get(r) for r in cover] == ["PASS"] * 2,

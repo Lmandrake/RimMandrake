@@ -33,6 +33,7 @@ namespace RimMandrake.ExplosiveKnockback
             public Func<Scene, string> verdict;
             public Action restore;
             public Dictionary<string, IntVec3> atBlast;     // spared_states: each thing's cell just after the blast (visit 1)
+            public Dictionary<string, IntVec3> stagedCells; // spared_states: each spared thing's cell as staged (the sleeper has its own bed check)
             public Dictionary<string, IntVec3> preBlast;    // spared_states: each thing's cell on the blast's tick, before it
         }
 
@@ -2135,12 +2136,16 @@ namespace RimMandrake.ExplosiveKnockback
                         // (atBlast), since a skipped animal wanders and a woken sleeper gets up before the 300-tick verdict
                         var atBlast = new Dictionary<string, IntVec3>();
                         // the carry is re-pinned every tick from +55 to +64 and read on each tick of the blast's spread (+60 to +64);
-                        // from +55 to +68 the spared pawns' own walking is stopped (pather.StopDead), and each spared thing's cell
-                        // just before the blast (+60) is compared with its cell at +68: the blast's effect alone
+                        // from +1 to +68 the spared pawns' own walking is stopped (pather.StopDead), and each spared thing's cell
+                        // just before the blast (+60) is compared with its cell at +68: the blast's effect alone. Until 2026-11-23
+                        // the hold began at +55 and visit 4 read FAIL once, the carrier with no request line: a pawn free for 55
+                        // ticks can be off the blast. A spared thing off its staged cell at +60 is INVALID, never FAIL or PASS.
                         s.numbers["carryingAtBlast"] = 1;
                         var before = new Dictionary<string, IntVec3>();
                         string[] spared = { "big", "pit", "pitstack", "carrier", "sleeper", "corpse" };
-                        for (int d = 55; d <= 68; d++)
+                        s.stagedCells = spared.Where(k => k != "sleeper").ToDictionary(k => k, k => s.things[k].Position);
+                        const int holdFrom = 1;
+                        for (int d = holdFrom; d <= 68; d++)
                         {
                             int dd = d;
                             RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + dd, () =>
@@ -2152,11 +2157,11 @@ namespace RimMandrake.ExplosiveKnockback
                                         sp.pather?.StopDead();
                                     }
                                 }
-                                if (dd < 60 && sleeper.Spawned && !sleeper.InBed() && !bed.Destroyed)   // it got up once in 3 runs (visit 1)
+                                if (dd >= 55 && dd < 60 && sleeper.Spawned && !sleeper.InBed() && !bed.Destroyed)   // it got up once in 3 runs (visit 1)
                                 {
                                     sleeper.jobs.StartJob(JobMaker.MakeJob(JobDefOf.LayDown, bed), JobCondition.InterruptForced);
                                 }
-                                if (dd <= 64 && carrier.carryTracker.CarriedThing != carried && carried.Spawned)
+                                if (dd >= 55 && dd <= 64 && carrier.carryTracker.CarriedThing != carried && carried.Spawned)
                                 {
                                     carrier.carryTracker.TryStartCarry(carried, 1, reserve: false);   // the count overload despawns it (SplitOff)
                                 }
@@ -2195,6 +2200,15 @@ namespace RimMandrake.ExplosiveKnockback
                         if (!sc.numbers.TryGetValue("carryingAtBlast", out float cab) || cab < 1f)
                         {
                             return "INVALID " + sc.name + " the carrier was not carrying its pawn at the blast";
+                        }
+                        string off = string.Join(", ", sc.stagedCells.Select(kv =>
+                        {
+                            bool seen = sc.preBlast.TryGetValue(kv.Key, out IntVec3 pre);
+                            return RM_KnockbackVerdicts.SparedOffCell(kv.Key, seen, pre.x, pre.z, kv.Value.x, kv.Value.z);
+                        }).Where(x => x != null));
+                        if (off.Length > 0)
+                        {
+                            return "INVALID " + sc.name + " off its staged cell at the blast (origin " + sc.o.x + "," + sc.o.z + "): " + off;
                         }
                         var want = new Dictionary<string, string> { ["big"] = "too_heavy_creature", ["pit"] = "in_pit", ["pitstack"] = "in_pit",
                             ["carrier"] = "carrying_pawn", ["sleeper"] = "in_bed", ["corpse"] = "too_heavy" };

@@ -25,6 +25,8 @@ scene read it wrong. Read from the C# source, since the scenes only run in a gam
      still reads lowered: the control was an RM_LadderPortable, which FlowWorks never counts raised
      (EffectivelyRaised = raised && !Props.portable && ...), so its pit stayed open and its stack was hauled out
      (sc_pit_fetch FAIL, 2026-11-15; RIMMANDRAKE_TRACE_PIT_FETCH_CONTROL_STACK_PAST_RAISED_LADDER)
+  S5 spared_states holds the spared pawns from tick 1 and reads INVALID when one is off its staged cell at the blast (visit 4,
+     2026-11-23: held only from +55, the carrier had no request line and the row read FAIL)
   S3 spared_states carries the downed pawn with the count overload: TryStartCarry(thing) cannot take a spawned pawn
   W2 the sweep's gas-goods stack lies inside the seeded cloud (radius 1 at O(-5,-5)), so a burst always reaches it; two
      cells out it was reached on 13 of 18 lanes and the default lane's "still" read as drift on the rest
@@ -64,6 +66,12 @@ def main():
     check("S2", re.search(r"ProofSchedule\.Add\(.*?TryStartCarry.*?Blast\(", sp, re.S) is not None
           and "carrier was not carrying" in sp,
           "spared_states starts the carry in the blast's scheduled action and is INVALID when the carrier is not carrying")
+    hold = re.search(r"holdFrom = (\d+);\s*for \(int d = holdFrom; d <= 68", sp)
+    off = sp.find("RM_KnockbackVerdicts.SparedOffCell(")
+    check("S5", hold is not None and int(hold.group(1)) <= 1 and "sp.pather?.StopDead()" in sp
+          and 0 < off < sp.find('["big"] = "too_heavy_creature"') and "off its staged cell at the blast" in sp,
+          "spared_states holds every spared pawn from the first tick and is INVALID, never FAIL, when one is off its staged "
+          "cell at the blast (visit 4: a carrier free for 55 ticks had no request line)")
     pa = case(proof, "pawn_arc")
     check("A1", re.search(r'Colonist\(s, "w", O\(s, 4, 1\)', pa) is not None and "if (to != O(s, 4, 0))" in pa,
           "pawn_arc's walker starts one cell from the planned landing O(4,0)")

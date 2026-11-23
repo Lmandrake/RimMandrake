@@ -375,9 +375,12 @@ def mock_run():
 # What "match the kernel's plan" can read live: every request has an outcome line for the same blast and thing, a launch
 # travels at most its planned cells (fewer only with a stop reason), a goods move flies its wild cells with the kernel's
 # cells beside them. Recomputing the plan from the kernel is the offline selftest's job (selftest_explosiveknockback_kernel).
+RIDER_KILLED = "SITE: the grenade killed every rider, and a corpse never descends; "
 TRIPLET_SEAMS = {}           # saveload_triplet's saves_stat / wait_saved (the offline selftest passes fakes)
 SLEEP = None                 # the frame act's real-time wait (time.sleep; the offline selftest passes a no-op)
 FRAME_OVER_OFF = 0.10        # the walk's frame row: mod-on p99 at most 10% over the same run's mod-off p99 (owner card 2026-11-16)
+STEP_RETRIES = 3             # a hang guard: a clock that never moves ends the loop (the arm then reads UNMEASURED, off its target)
+GRENADE_THROWS = 5           # a hang guard: the grenade killed the rider in 3 of 16 recorded throws (visits 3 and 4), so 5 in a row is a broken site
 FRAME_MIN_ROWS = 30          # fewer unpaused rows in the window than this is no reading
 FRAME_ROWS_LIKE = 1.25       # arms whose window frame counts differ by more than this ratio are not like for like
 FRAME_ONLY_ROWS = ("W_PRECONDITIONS", "FRAME_BUDGET")   # what a --frames-only run judges (the small list)
@@ -648,7 +651,17 @@ class _Walk:
                 return walk.B.call(tool, _answer=_answer, **kw)
 
             def ticks(self, n):
+                # live, visit 4 run 2: arm C asked 10 ticks and got 1 (the load's own PauseOnLoad tick and pause landed
+                # during the step). The rest is stepped on the measured clock; the triplet still refuses any arm not AT its
+                # target, so a dead or overshooting clock stays UNMEASURED.
+                t0 = VC.ticks_game(self)
                 walk.step(n)
+                for _ in range(STEP_RETRIES):
+                    now = VC.ticks_game(self)
+                    if t0 is None or now is None or now >= t0 + n:
+                        return
+                    walk.ev.setdefault("short_steps", []).append({"from": t0, "asked": n, "at": now})
+                    walk.step(t0 + n - now)
         self.ev.setdefault("saves", []).append(name)
         try:
             tr = VC.saveload_triplet(_TB(), census, ticks=VC.TRIPLET_MIN_TICKS, save_name=name, wait_playing=self.wait,
@@ -723,7 +736,7 @@ class _Walk:
             return recs, "UNMEASURED", "SITE: nobody living stood on the cover %d,%d when the grenade went off; %s" % (
                 self.cover + (det,))
         if not alive and not still and not twice:
-            return recs, "UNMEASURED", "SITE: the grenade killed every rider, and a corpse never descends; " + det
+            return recs, "UNMEASURED", RIDER_KILLED + det
         ok = not still and not twice and all(per.get(i) == 1 for i in alive)
         return recs, ok, det
 
@@ -827,9 +840,22 @@ class _Walk:
         # RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES, live 2026-11-16: the first storeroom shell broke the cover
         # (102,36, 4.5 cells off) within 120 ticks and its rider fell then, so a grenade thrown after the shells always met a
         # broken cover. The scripted grenade goes first in each order; the shells and the gas follow.
-        gr, ok, det = self.grenade(tag)
-        self.row(tag + "_COVER_BROKEN_ONE_DESCENT", ok, det)
-        recs = list(gr)
+        # live, visit 4 run 2, order B: the grenade killed the rider, and a corpse never descends, so the throw read nothing.
+        # Only that SITE miss is thrown again, on a fresh baseline; any other answer (a FAIL above all) is the row's.
+        recs, killed = [], []
+        for n in range(1, GRENADE_THROWS + 1):
+            gr, ok, det = self.grenade(tag)
+            recs += list(gr)
+            if not (ok == "UNMEASURED" and RIDER_KILLED in det) or n == GRENADE_THROWS:
+                break
+            good, why = self.fresh()
+            if not good:
+                det += "; the baseline did not load for another throw (%s)" % why
+                break
+            killed.append(n)
+        self.ev.setdefault("grenade_throws", {})[tag] = n
+        self.row(tag + "_COVER_BROKEN_ONE_DESCENT", ok, "throw %d of at most %d (rider killed on %s); %s" % (
+            n, GRENADE_THROWS, killed or "none", det))
         if gas_first:
             g = self.gas_act()
             self.judge_gas(tag, g)
@@ -962,13 +988,22 @@ class _Walk:
         else:
             self.row("FRAME_BUDGET", row[0], "small list (%d active mods, %s): %s" % (n, os.path.basename(path), row[1]))
 
+    def store_buildings(self):
+        rb = self.c("jawa/list_things", rect="%d,%d,%d,%d" % self.room, group="BuildingArtificial", limit=500).get("things") or []
+        return sorted("%s@%s" % (t.get("def"), _pos(t)) for t in rb)
+
     def control(self):
         """The mod off (run() turns it off inside its try, whose finally puts every setting back)."""
-        before = dict((_num(t.get("id")), _pos(t)) for t in self.haulables(self.room))
+        start = self.haulables(self.room)
+        before = dict((_num(t.get("id")), _pos(t)) for t in start)
+        names = dict((_num(t.get("id")), t.get("def")) for t in start)
+        standing = self.store_buildings()
         cells, recs, ok_all, _m = self.mortars("C")
         after = dict((_num(t.get("id")), _pos(t)) for t in self.haulables(self.room))
         moved = [i for i, p in after.items() if i in before and before[i] != p]
         thrown = [r for r in recs if r.get("type") in ("launch", "item_move")]
+        self.ev["off_moved"] = dict((i, {"from": before[i], "to": after[i], "def": names.get(i)}) for i in moved)
+        self.ev["off_buildings"] = {"before": standing, "after": self.store_buildings()}
         self.row("C_OFF_IMPACTS_NO_THROWS", ok_all and not thrown and not moved and before,
                  "mod off: %d shell(s) went off (%s), %d throw line(s), %d of %d storeroom stack(s) moved" % (
                      len(cells), "all" if ok_all else "NOT all", len(thrown), len(moved), len(before)))
@@ -1001,6 +1036,14 @@ class _Walk:
             if self.a.raid_points > 0:
                 rr = self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
                 self.ev["raid"] = {k: rr.get(k) for k in ("success", "blockedByDialog", "pawnsArrivedTotal", "exc")}
+            def fresh():
+                got, reason = self.load(base)
+                if got:
+                    self.kp("Settings", "reset")
+                    if self.a.raid_points > 0:              # B and the control C face the same raid
+                        self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
+                return got, reason
+            self.fresh = fresh
             # the frame arms run as interleaved pairs (on, off, on, off, ...): one pair's p99 is decided by one random
             # stall (live 2026-11-16, runs 4-6: the off arm alone read 80.2, 37.1 and 38.1 ms); frame_row takes medians.
             # They run only with --frames-only (the small list); the full list runs one unjudged on arm for the tick cost.
@@ -1012,16 +1055,13 @@ class _Walk:
                 steps = [("B", lambda: self.order("B", gas_first=True)), ("C", self.control),
                          ("TICK", lambda: self.frame_act("on", key="tick_arm_unjudged"))]
             for tag, fn in steps:
-                ok, why = self.load(base)
+                ok, why = fresh()
                 if not ok:
                     self.unmeasured([r for r in WALK_ROWS if r.startswith(tag)], "UNMEASURED: baseline reload failed (%s)" % why)
                     if tag.startswith("FRAME"):
                         self.ev.setdefault("frame_arms", {}).setdefault(tag[6:].lower(), []).append(
                             {"why": "baseline reload failed (%s)" % why})
                     continue
-                self.kp("Settings", "reset")
-                if self.a.raid_points > 0:                  # B and the control C face the same raid
-                    self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
                 if tag in ("C", "FRAME_OFF"):
                     self.kp("Settings", "enabled=False")
                 fn()
