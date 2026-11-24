@@ -1,0 +1,2 @@
+An account's week can refill mid-week with its reset time unchanged (steven: 95% used to 0% on 2026-11-22 6:26 PM PST, reset still 2026-11-25). The switching plan's 'left at its line' marker keeps such an account out until the old reset time, so the plan reads the live account as the last one while a full account stands idle. Read switching_plan.py status beside account_usage.py now; do not trust the reset time alone.
+item: RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN

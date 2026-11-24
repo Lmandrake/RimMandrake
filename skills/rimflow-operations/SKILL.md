@@ -81,8 +81,9 @@ What enforces the soft line and the save warning today:
 - While the plan drains (its notice reads `soft` with `drain` true), `detached_helper.launch` refuses a new run. With
   `account_end` true it refuses a continuation and a resume too. A continuation that waited starts after the switch
   (`left_open_continue.kick_waiting`). A notice that is unreadable or over 20 min old refuses nothing.
-- The orders are stop orders of the control store, for the detached and role runs. A run hears an order after its tool
-  call in hand ends. The orders write no OFF switch and void no run. A run that ends on an order writes a note that
+- The orders are stop orders like those of `./pipe stop`, written to its database (`~/.local/state/rimmandrake/control/control.db`),
+  for the detached and role runs. A run hears an order after its tool
+  call in hand ends. The orders switch nothing off (no `./pipe off`) and void no run. A run that ends on an order writes a note that
   starts `LEFT OPEN:`, and that note carries its work on.
 - A window has no stop hook. Its signs are the notice, the Conductor log lines `ACCOUNT END` and the ledger notes on
   `RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN`.

@@ -1,0 +1,2 @@
+pipe stop all writes an OFF switch on 'all' that nothing lifts, and voids every live run, so left_open_continue never carries them on. To tell live runs something without stopping the pipeline, use control.order_runs (stop rows per unit only). A run's hook runs the control.py of its own older clone, so a new text must travel in the row's why, not in a new STOP_TEXT mode.
+item: RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN

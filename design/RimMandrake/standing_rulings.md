@@ -1010,8 +1010,8 @@ Please make that true everywhere."* About 6 AM PST: *"Agreed for 1% at the momen
   it's the last account."* By card ("Sized from the burn rate"): *"that may also initiate the "no new work / save now"
   warning up at 3% as well if the burn is going crazy fast. Scale both 3/2% (initiate saves) warning and the
   time-constant post 1% based on load. If the reading is believed to be stale, default to safe values. TELL THE
-  PROCESSES these numbers. Estimate how long they have to complete their saves. It may influence their choices."* This
-  replaces the hard line. Page: `design/specs/2026-11-24-account-end/boundary.md`.
+  PROCESSES these numbers. Estimate how long they have to complete their saves. It may influence their choices."* Before
+  2026-11-24 the switch killed live runs at max(1%, line - 2%); that rule has ended. Page: `design/specs/2026-11-24-account-end/boundary.md`.
 - The meter reads whole percents (8,749 readings to 2026-11-20, none fractional). So 1% is the lowest line that the
   meter can see. A 0.1% line waits for a finer meter.
 - A switch that the priority pulls (above the line) waits for live runs too, at most 2 h.
@@ -2529,7 +2529,8 @@ constantly"*.
   `USD budget: $used/$cap; $left remaining` every turn (attachment `budget_usd`; 143 in one 11-16 builder run).
   - Claude 2.1.311 has no switch that keeps the cap without the reminder. `CLAUDE_CODE_DISABLE_ATTACHMENTS` drops every
     attachment, hooks included.
-- **One exception: the two orders at the end of an account** tell each live run the account's percent left, the burn
+- **One exception: the save warning and the emergency order** that the switching plan sends to live runs when an account
+  has 1% to 3% left (§Account and capacity budget, "The end of an account"). These two orders tell each live run the account's percent left, the burn
   rate and the time left to save (owner, 2026-11-24: *"TELL THE PROCESSES these numbers. Estimate how long they have to
   complete their saves. It may influence their choices."*). No brief, footer or resume prompt carries these numbers.
 - **The hard per-run stop stays** (owner 2026-11-12: *"Don't let any burn go to 90M this time ok?"*).
