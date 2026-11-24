@@ -848,5 +848,158 @@
     "sc_coating_wash": "a pawn wades oil then water and the coating comes and goes: the liquid coating and wading",
     "OL_OWNER_LOOK_READS": "reads the under-liquid law, the overlays and the pit label on a keeper scene, and can pour on a spare pit: the sunk draw, the water look and the mouse-over",
     "PIT_LOOK_1114_LIVE": "his 2026-11-14 pit look fixes read live: pour labels, the pit walk cost, the hot tub, the pit edge and the pit floor"
+  },
+  "chains_what": "A modcheck chain that no stage-6 check names: what it reads, for the filler's one question, may a passed chain stand (testq/gaps.py chain_specs, rerun_relation.py). `like` takes the declared lists of those checks too; a chain's own entry for a file stands over theirs. A chain not here is read by its whole mod.",
+  "chains": {
+    "plot_C_limitless_canal": {
+      "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+      "like": [
+        "sc_fill_front",
+        "sc_fill_tiers"
+      ],
+      "exercises": [
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksNorthstarTools.cs",
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksPulseTools.cs",
+        "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs::~",
+        "src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs::ProofResetRect",
+        "src/RimMandrake/FlowWorks/Defs/Canals/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidBodyDefs/"
+      ]
+    },
+    "plot_C2_tar_and_fluids": {
+      "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+      "like": [
+        "sc_fill_front",
+        "sc_fill_tiers"
+      ],
+      "exercises": [
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksNorthstarTools.cs",
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksPulseTools.cs",
+        "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs::~",
+        "src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs::ProofResetRect",
+        "src/RimMandrake/FlowWorks/Defs/Canals/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidBodyDefs/",
+        "src/RimMandrake/FlowWorks/Source/RM_PromotionProofs.cs::ProofFluidRow"
+      ]
+    },
+    "plot_D_limited_pond": {
+      "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+      "like": [
+        "sc_fill_front",
+        "sc_fill_tiers",
+        "sc_source_pays"
+      ],
+      "exercises": [
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksNorthstarTools.cs",
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksPulseTools.cs",
+        "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs::~",
+        "src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs::ProofResetRect,ProofSetBodyFraction",
+        "src/RimMandrake/FlowWorks/Source/RM_BedMath.cs",
+        "src/RimMandrake/FlowWorks/Defs/Canals/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidBodyDefs/"
+      ]
+    },
+    "plot_E_fire": {
+      "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+      "like": [
+        "sc_fill_front",
+        "sc_canal_fire"
+      ],
+      "exercises": [
+        "src/RimMandrake/FlowWorks/Source/Machinery/RM_LineProofs.cs",
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksNorthstarTools.cs",
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksPulseTools.cs",
+        "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs::~",
+        "src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs::ProofResetRect",
+        "src/RimMandrake/FlowWorks/Source/RM_SpanMath.cs",
+        "src/RimMandrake/FlowWorks/Defs/Canals/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidBodyDefs/",
+        "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetFire.cs",
+        "src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs"
+      ]
+    },
+    "plot_F_slime": {
+      "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+      "like": [
+        "sc_slime",
+        "sc_fill_tiers"
+      ],
+      "exercises": [
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksNorthstarTools.cs",
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksPulseTools.cs",
+        "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs::~",
+        "src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs::ProofResetRect",
+        "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs",
+        "src/RimMandrake/FlowWorks/Defs/Canals/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidBodyDefs/"
+      ]
+    },
+    "liquid_pump": {
+      "file": "src/RimMandrake/FlowWorks/northstar/extensions.py",
+      "like": [
+        "sc_one_network"
+      ],
+      "exercises": [
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksNorthstarTools.cs",
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksPulseTools.cs",
+        "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs::~",
+        "src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs::ProofResetRect,ProofPump,ProofTank",
+        "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidSpill.cs",
+        "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidTheft.cs",
+        "src/RimMandrake/FlowWorks/Source/Machinery/RM_PumpPortMath.cs",
+        "src/RimMandrake/FlowWorks/Source/Machinery/RM_UnderCouplers.cs",
+        "src/RimMandrake/FlowWorks/Source/Machinery/RM_LineProofs.cs",
+        "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+        "src/RimMandrake/FlowWorks/Source/Hose/RM_HoseSettings.cs",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_LiquidPump.xml",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_LiquidTank.xml",
+        "src/RimMandrake/FlowWorks/Defs/Canals/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidBodyDefs/"
+      ]
+    },
+    "taken_by_land": {
+      "file": "src/RimMandrake/FlowWorks/northstar/extensions_rivers.py",
+      "like": [],
+      "exercises": [
+        "src/RimMandrake/FlowWorks/Source/TakenByLand/",
+        "src/RimMandrake/FlowWorks/Source/Rivers/RM_RiverWorksProof.cs::ProofTaken",
+        "src/RimMandrake/FlowWorks/Source/Rivers/RM_RiversSettings.cs",
+        "src/RimMandrake/FlowWorks/Source/Rivers/RM_WorldComponent_SweptAway.cs"
+      ]
+    },
+    "pit_exposure": {
+      "file": "src/RimMandrake/FlowWorks/validation.py",
+      "like": [
+        "sc_pit_reads"
+      ],
+      "exercises": [
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksNorthstarTools.cs",
+        "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksPulseTools.cs",
+        "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs::~",
+        "src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs::ProofResetRect,ProofExposure,ProofRoom,ProofSetInteraction,ProofClimb",
+        "src/RimMandrake/FlowWorks/Source/RM_PitExposure.cs",
+        "src/RimMandrake/FlowWorks/Source/RM_PitExposureMath.cs",
+        "src/RimMandrake/FlowWorks/Source/RM_PitFillEffects.cs",
+        "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitAccess.cs",
+        "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitAccessMath.cs",
+        "src/RimMandrake/FlowWorks/Defs/Pits/HediffDefs/",
+        "src/RimMandrake/FlowWorks/Defs/Canals/"
+      ],
+      "reads": [
+        "src/RimMandrake/FlowWorks/northstar/pit_exposure_live.py"
+      ]
+    }
   }
 }

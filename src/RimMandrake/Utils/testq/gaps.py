@@ -31,6 +31,7 @@ modcheck (the chain catalogue, item links and `--changed`) is reached through ga
 checkout's src/RimMandrake/Utils/modcheck. A checkout without it, or without MOD's source, cannot see ranks 2 or the
 file half of 1. The plan then says "blind: ..." in its text rather than pretending those ranks are empty.
 """
+import functools
 import hashlib
 import json
 import os
@@ -321,6 +322,30 @@ def stage6_tests(mod):
         return None
 
 
+def chain_specs(mod, tests):
+    """-> {chain: spec} of the chains that version/exercises.json declares under `chains`, for a chain that no stage-6 check
+    names: {"file", "entry", "reads", "exercises", "like": [check ids whose declared lists it takes too]}. Not the locked
+    table. {} when none. A declaration that cannot be read, or a `like` that names no declared check, declares nothing."""
+    try:
+        with open(os.path.join(repo_root(), "design", "concepts", mod, "version", "exercises.json"), encoding="utf-8") as f:
+            d = json.load(f)
+        out = {}
+        named = {c for t in tests.values() if str(t.get("stage")) == "6" for c in (t.get("testq") or {}).get("chains") or []}
+        for c, x in (d.get("chains") or {}).items():
+            like = x.get("like") or []
+            if c in tests or c in named or not all((d.get("checks") or {}).get(k) for k in like):
+                continue
+            own = list(x.get("exercises") or [])            # its own entry for a file stands over a `like` list's
+            mine = {p.split("::")[0] for p in own}
+            got = own + [p for k in like for p in d["checks"][k] if p.split("::")[0] not in mine]
+            if x.get("file") and got:
+                out[c] = {"stage": "chain", "kind": "live_minimal", "file": x["file"], "entry": x.get("entry") or c,
+                          "reads": list(x.get("reads") or []) + [x["file"]], "exercises": sorted(set(got))}
+        return out
+    except (OSError, ValueError, TypeError, AttributeError):
+        return {}
+
+
 def _relation(mod, tests, new):
     """The change relation of MOD at NEW (rimflow/rerun_relation.py: the files, the C# members and the test entry a check
     declares, the mod's exercises.json with it). One per process and commit: it caches what it reads."""
@@ -355,16 +380,21 @@ def _cache_key(mod, chain, old, new, tests, g):
     return hashlib.sha256(("%s|%s|%s|%s" % (mod, chain, old, out)).encode()).hexdigest()[:24]
 
 
-def untouched(mod, chain, old_sha, new_sha, changed=None, tests=None, g=git):
+def untouched(mod, chain, old_sha, new_sha, changed=None, tests=None, g=git, mod_reads=None):
     """-> True | False | None. True: the change OLD_SHA..NEW_SHA touches nothing that a stage-6 check of CHAIN reads or
-    exercises (rerun_relation.py, the one change relation). False: it touches one. None: no check names the chain, one
-    declares nothing it reads, or the relation of one cannot be read: the chain runs again. CHANGED / TESTS stand in for
-    git's file list and the test table: then the checks' declared `reads` decide, by path."""
+    exercises (rerun_relation.py, the one change relation). False: it touches one. A chain that no check names is read by
+    its own declaration (chain_specs), else by MOD_READS, the paths its whole mod reads (gapprobe.mod_reads). None: nothing
+    says what the chain reads, a check that names it declares nothing, or the relation cannot be read: the chain runs again.
+    CHANGED / TESTS stand in for git's file list and the test table: then the checks' declared `reads` decide, by path."""
     real = changed is None and tests is None
     tests = stage6_tests(mod) if tests is None else tests
-    if not tests:
-        return None
-    checks = {k: t for k, t in tests.items() if str(t.get("stage")) == "6" and chain in ((t.get("testq") or {}).get("chains") or [])}
+    checks = {k: t for k, t in (tests or {}).items()
+              if str(t.get("stage")) == "6" and chain in ((t.get("testq") or {}).get("chains") or [])}
+    if real and not checks:
+        specs = chain_specs(mod, tests or {}) if tests else {}
+        if chain in specs:
+            return _related(mod, chain, {chain: specs[chain]}, old_sha, new_sha, tests, g)
+        return _whole(mod_reads, old_sha, new_sha, g)
     if not checks or any(not t.get("reads") for t in checks.values()):
         return None
     if real:
@@ -378,6 +408,14 @@ def untouched(mod, chain, old_sha, new_sha, changed=None, tests=None, g=git):
     return not any(f == r or f.startswith(r + "/") for f in changed for r in reads)
 
 
+def _whole(mod_reads, old_sha, new_sha, g):
+    """The relation of a chain by its whole mod: True when no file under MOD_READS differs, None when that cannot be told."""
+    if not mod_reads or not old_sha or not new_sha:
+        return None
+    out = g("diff", "--name-only", "--no-renames", old_sha, new_sha, "--", *mod_reads)
+    return None if out is None else not out.strip()
+
+
 def _related(mod, chain, checks, old_sha, new_sha, tests, g):
     import testq as T
     new_sha = (g("rev-parse", "--verify", "-q", new_sha + "^{commit}") or "").strip() if new_sha else None   # a ref moves
@@ -385,6 +423,7 @@ def _related(mod, chain, checks, old_sha, new_sha, tests, g):
         return None
     path = T.q(RELATION_CACHE)
     cache = T.read_json(path) or {}
+    tests = dict(chain_specs(mod, tests), **tests)      # one relation per mod and commit: every chain's declaration is in it
     try:
         key = _cache_key(mod, chain, old_sha, new_sha, tests, g)
         if key and key in cache:
@@ -441,9 +480,10 @@ def settled(mod, recs, world=None, g=None, prober=None, items=None):
             by_identity.add(c)      # a run from before chain_versions, or no version known: the identity decides. A
             #                         --rows run is a verdict on its prefix once a version can tell: only the old rule's
     settled_set |= by_identity
+    gm = functools.lru_cache(None)(g)       # many chains passed at one commit: one answer from git for this call
     for c, s_ in st.items():     # a PASS whose checks nothing touched since its commit stands (the code version hashes the whole mod)
         if c not in settled_set and s_["last"][1] == "PASS" and not s_["last"][0]["partial"] \
-                and untouched(mod, c, s_["last"][0]["sha"], "origin/main", g=g) is True:
+                and untouched(mod, c, s_["last"][0]["sha"], "origin/main", g=gm, mod_reads=pr.get("reads")) is True:
             settled_set.add(c)
     skew = sorted(c for c, s in st.items() if latest and s["last"][0]["sha"] == latest["sha"] and not moved
                   and now_v.get(c) and (s["last"][0]["versions"] or {}).get(c) not in (None, now_v[c])

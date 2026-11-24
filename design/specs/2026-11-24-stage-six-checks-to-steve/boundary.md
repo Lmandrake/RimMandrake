@@ -70,5 +70,12 @@ Each promise has a test of its name in `src/RimMandrake/Utils/testq/selftest_sta
   cannot be read, runs the chain again. A kept answer (`relation_cache.json`) holds only for the same bytes. Tested in
   `selftest_guard_relation.py`. Measured 2026-11-24: path-only `reads` (the first rule) named only the test script, so
   a C# change left a guard settled; of 37 passed chains with a check, that rule settled 7 and the relation settles 26.
+  A chain that no stage-6 check names is read by its own declaration (`chains` in `version/exercises.json`,
+  `gaps.chain_specs`), else by its whole mod (`gapprobe.mod_reads`: the mod's folder, the folders of its dependency mods,
+  the shared source that a csproj compiles, the Python it imports outside the harness). With neither, it runs again. A change
+  of only another mod leaves it settled. Measured 2026-11-24 on the filler's record of 2026-11-17..24: of 236 reruns that
+  passed again, 42 are spared before the declarations and 125 after; the other 111 changed something that the chain reads, or
+  cannot be read. Checked by `acceptance/chain_reads_accept.py` (62 chains with two reruns or more: 15 spared before, 46
+  after), with a planted change that must run each declared chain again.
 
 Later lists beside this page: `polish.md`.

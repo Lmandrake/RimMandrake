@@ -501,5 +501,16 @@
     "sc_scorchfruit": {
       "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs::PyrelandsYesterdayFire": "lays yesterday's fire at map generation; the scene burns its own pad"
     }
+  },
+  "chains_what": "A modcheck chain that no stage-6 check names: what it reads, for the filler's one question, may a passed chain stand (testq/gaps.py chain_specs, rerun_relation.py). `like` takes the declared lists of those checks too; a chain's own entry for a file stands over theirs. A chain not here is read by its whole mod.",
+  "chains": {
+    "firehawk_mapwide_carry": {
+      "file": "src/RimMandrake/Pyrelands/firehawk_rewards_live.py",
+      "like": [
+        "sc_firehawk",
+        "sc_firehawk_rewards"
+      ],
+      "exercises": []
+    }
   }
 }
