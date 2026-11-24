@@ -132,10 +132,11 @@ Host: ArchBig (archmagi), bridge taken 06:06 PST 2026-11-23. Clone: .../RIMMANDR
   (ImmediateWindow + Dialog_DevPalette), no raiders. EXPECTED (scene restore; census 3 pawns).
 - Player.log (Steve1): 1 NullReferenceException (duplicate stacktrace ref) after "Resolved path returned no nodes ... (60,0,60) ->
   colonist, for Arkady"; 6 such lines in ~20 runs, each beside FlowWorks' own "reach residual: CanReach said yes, A* found
-  nothing" for a raider on a first-row pit square. ODD -> see the stray raider of t6 below.
-- t6 stray: free raider Human21297 (Arkady) stood on pit square 60,60 from t=632 to 1052 (AttackMelee on a far colonist, no
-  path), then walked out over the strip. Lids were gone by then (t18 read: every lid gone after the fall), so he stood IN an
-  open 4 m pit square, unread by my trace then (fixed since: every hostile on a pit square is read). Not seen in t7-t22.
+  nothing" for a raider on a first-row pit square. The line is vanilla's for ANY path not found. No raider of t6 is named Arkady.
+- t6 stray: free raider Human21297 (Bagdark, Thrasher) stood at the rim 60,59 to t=602, on pit square 60,60 from t=632 to 1052
+  (AttackMelee on a far colonist), then walked out over the strip. Explained 2026-11-24: each stand is one 450-tick step of a
+  climber in gear (vanilla MaxMoveTicks; Thrasher wears RM_ClimbingGear 8 %). gear_climber.py on ArchBig: in 480, out 450, never
+  held; without gear he never enters and is held if put in. His own gear in t6 was not read.
 ## The melee rule of this sitting was replaced (owner ruling, 2026-11-23, RIMMANDRAKE_ENACT_PIT_MELEE_REACH_EQUALS_CLIMB_SIZE_DECIDES)
 - "No melee across a pit's edge" (3 m pit rooms, both ways, every size) is gone. Melee reach is now the climb criterion:
   `design/RimMandrake/relative_depth_climb_design_2026-10-12.md` §8.8. Capture from the rim is unchanged. Live: UNRUN.
@@ -149,7 +150,7 @@ Host: ArchBig (archmagi), bridge taken 06:06 PST 2026-11-23. Clone: .../RIMMANDR
 - C# case RaiderFetch_no_lift_from_the_rim_of_a_deep_pit: FAIL with "return true" planted, 11/11 on the fix
   (selftest_flowworks_stock.py --only 'RaiderFetch_*,RaiderTrench_*'). Four earlier attempts timed out waiting on the shared
   build lock (other FlowWorks runs), not on the case.
-- Filed: RIMMANDRAKE_TRACE_FLOWWORKS_RAIDER_IN_OPEN_PIT_WALKED_OUT (the t6 stray raider; cause unread).
+- Filed: RIMMANDRAKE_TRACE_FLOWWORKS_RAIDER_IN_OPEN_PIT_WALKED_OUT (the t6 stray raider; explained 2026-11-24, above).
 - Steve1 released 10:50 PST, left UP on the flowworks tier (the lane swaps tiers itself; ModsConfig backup
   deployed/config/ModsConfig.before-tier-flowworks.xml on Steve). Keeper save TP_FETCH_LIFTS_FROM_RIM_4M.rws:
   D:\ClaudeWork\rimmandrake\testpilot_pit_capture_faults and Steve1's Saves folder.

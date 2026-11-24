@@ -13,26 +13,19 @@ AttackMelee on a colonist about 20 squares away and no movement, then at 61,62 (
 and walked on. The lids were gone by then: the deck gave way before tick 182, and run t18 of the same sitting read every
 lid gone after the fall.
 
-Player.log on Steve1 carries for the same run `Resolved path returned no nodes, request: ((60, 0, 60) ->
-Thing_Human21239 ..., Touch, for Arkady)`, one NullReferenceException after it, and FlowWorks' own line `[FlowWorks]
-reach residual: ... CanReach said yes, A* found nothing`. Six such lines came in about 20 runs, each from a first-row
-pit square (59,60 or 60,60).
-
-Not read: whether he was held. The trace of that run read only the raiders that were held at its start. The driver now
-reads every hostile on a pit square (ProofTrap and ProofCover). Not seen again in 16 later runs.
-
-Class: MOD or HARNESS (the pit's first row lies in the gap of the wall line), undecided.
+Cause (2026-11-24): a raider in climbing gear, by design (vision line 5: ladders, climbing gear and jumps are the ways in and
+out). Human21297 is Bagdark, a Thrasher (8 % wear RM_ClimbingGear); each of his two stands is one 450-tick step (vanilla
+MaxMoveTicks, the cap on the gear's price for a 4 m step). `gear_climber.py`, live on ArchBig, no raid: in gear he steps in and
+out in 450 to 480 ticks and is never held, and walks round an open pit on a fresh path; without gear he never enters, and is held
+when put in. Human21297's own gear in t6 was not read [guess ~95%]. The "no nodes" line names Arkady, who is no raider of t6, and
+is vanilla's line for any path not found.
 
 Related, fixed: a comrade's fetch lifted a downed raider out of a 4 m pit from the rim (`d15dd762b231`). That was a
 carry of a downed man. This raider was standing and had an attack job, so it is a different case.
 
 ## verify
-Live, on any free game on the flowworks tier:
-`python.exe design/concepts/FlowWorks/version/in_game/testpilot_20261123/trench.py <out.json> 2 1500`
-
-Red when `holdTrace` has an `ONPIT` line (a hostile on a pit square that is not held: the line names his job, his trap
-read and the lid state), or `holdLeft` is not empty, or Player.log gained a `Resolved path returned no nodes` line in the
-run. Green: none of the three over 10 runs.
+`python3 design/concepts/FlowWorks/version/in_game/testpilot_20261123/selftest_on_pit.py` (the driver's label, and the live
+receipt of `gear_climber.py`).
 
 Acceptance test: none offline, live-app behaviour (the cause is known only from a live read).
 
@@ -44,5 +37,4 @@ file: src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs
 
 ## criteria
 - A live read names what the raider on the open pit square was (held, on a lid, a climber) and how he left it.
-- If the cause is the mod: no raider stands on an open 4 m pit square unheld, and no `Resolved path returned no nodes`
-  line comes from a pit square, over 10 runs.
+- No raider WITHOUT climbing gear stands on an open 4 m pit square unheld (`trench.py` names a geared one CLIMBER, not ONPIT).

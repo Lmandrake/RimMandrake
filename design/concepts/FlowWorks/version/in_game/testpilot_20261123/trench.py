@@ -8,6 +8,8 @@
 # The trace is the receipt key holdTrace; the row TP_held_stay_held is FAIL when a held raider left the pit alive.
 import sys, os
 sys.path.insert(0, r'src/RimMandrake/FlowWorks/northstar'); sys.path.insert(0, r'src/RimMandrake/Utils'); sys.path.insert(0, r'src/RimMandrake/Utils/modcheck')
+import os.path; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import on_pit
 import concept_scenes as cs
 out, width, ticks = sys.argv[1], int(sys.argv[2]), int(sys.argv[3])
 ARGV = list(sys.argv)
@@ -80,7 +82,9 @@ def body(S):
                     if 'held=True' in trap and pid not in held:
                         held.append(pid)
                     elif pid not in held:                           # on a pit square, not held: say what he stands on
-                        parts.append('ONPIT %s@%s,%s:%s>%s %s %s' % (pid, at[0], at[1], p.get('job'), tgt, trap[-40:],
+                        # CLIMBER is allowed (climbing gear); ONPIT is the fault; *-UNREAD says the read was blind
+                        what = on_pit.label(trap, on_pit.worn(S.B.call('jawa/pawn_get', pawn=str(pid))))
+                        parts.append('%s %s@%s,%s:%s>%s %s %s' % (what, pid, at[0], at[1], p.get('job'), tgt, trap[-40:],
                                                                     S.sc(cs.EXC, 'ProofCover', '%d,%d' % at)[:60]))
                         continue
                 if pid in held:
