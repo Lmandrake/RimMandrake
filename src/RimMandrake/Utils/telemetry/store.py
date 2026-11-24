@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS cursors(
   src TEXT, key TEXT, ino TEXT, offset INTEGER, size INTEGER, mtime REAL, done INTEGER DEFAULT 0,
   gen INTEGER DEFAULT 0, head TEXT, PRIMARY KEY(src, key));
 CREATE TABLE IF NOT EXISTS kv(k TEXT PRIMARY KEY, v TEXT);
+CREATE TABLE IF NOT EXISTS vm_pending(seq INTEGER PRIMARY KEY, point TEXT NOT NULL);
 """
 
 
@@ -117,7 +118,10 @@ class VMSink:
         self.url = (url or cfg()["vm_url"]).rstrip("/")
         self.spool_dir = spool_dir or os.path.join(cfg()["state"], "vm_spool")
         self.points: list[tuple[str, dict, float, float]] = []
+        self.pending_start = 0   # sequence of the first queued point, including across flushes
         self._post = post or self._http_post
+        self._retry_at = 0.0
+        self._timeout_error: str | None = None
         self.sent = 0
         self.spooled = 0
         self.last_error: str | None = None
@@ -126,6 +130,7 @@ class VMSink:
         self._seq = itertools.count()
 
     MAX_PENDING = 500_000        # points held in memory while VM and the spool both refuse
+    TIMEOUT_RETRY_S = 10         # a hung VM must not cost another POST timeout on every source pass
 
     def add(self, name: str, labels: dict | None, value, ts: float) -> None:
         if value is None:
@@ -163,30 +168,44 @@ class VMSink:
         with urllib.request.urlopen(req, timeout=10) as r:
             r.read()
 
+    def _post_error(self, error: Exception, prefix: str = "") -> None:
+        self.last_error = f"{prefix}{type(error).__name__}: {error}"
+        if isinstance(getattr(error, "reason", error), TimeoutError):
+            self._timeout_error = self.last_error
+            self._retry_at = time.monotonic() + self.TIMEOUT_RETRY_S
+
     def flush(self) -> int:
         pts, self.points = self.points, []
         if not pts:
             self._replay_spool()
             return 0
         body = self._lines(pts)
-        try:
-            self._post(body)
-            self.sent += len(pts)
-            self.last_error = None
-            self._replay_spool()
-        except Exception as e:  # noqa: BLE001 — any transport failure spools
-            self.last_error = f"{type(e).__name__}: {e}"
+        if time.monotonic() >= self._retry_at:
             try:
-                spooled = self._spool(body)
-            except OSError as e2:   # disk full / unwritable: keep the batch queued for the next flush
-                spooled = False
-                self.last_error += f"; spool: {type(e2).__name__}: {e2}"
-            if spooled:
-                self.spooled += len(pts)
-            else:
-                keep = (pts + self.points)[-self.MAX_PENDING:]
-                self.dropped += len(pts) + len(self.points) - len(keep)
-                self.points = keep
+                self._post(body)
+                self.sent += len(pts)
+                self.last_error = None
+                self._replay_spool()
+                self.pending_start += len(pts)
+                return len(pts)
+            except Exception as e:  # noqa: BLE001 — any transport failure spools
+                self._post_error(e)
+        else:
+            self.last_error = self._timeout_error
+        try:
+            spooled = self._spool(body)
+        except OSError as e:   # disk full / unwritable: keep the batch queued for the next flush
+            spooled = False
+            self.last_error += f"; spool: {type(e).__name__}: {e}"
+        if spooled:
+            self.spooled += len(pts)
+            self.pending_start += len(pts)
+        else:
+            keep = (pts + self.points)[-self.MAX_PENDING:]
+            dropped = len(pts) + len(self.points) - len(keep)
+            self.dropped += dropped
+            self.pending_start += dropped
+            self.points = keep
         return len(pts)
 
     def _spool(self, body: bytes) -> bool:
@@ -203,7 +222,7 @@ class VMSink:
         return True
 
     def _replay_spool(self) -> None:
-        if not os.path.isdir(self.spool_dir):
+        if time.monotonic() < self._retry_at or not os.path.isdir(self.spool_dir):
             return
         replayed = 0
         for fn in sorted(os.listdir(self.spool_dir))[:20]:
@@ -214,7 +233,7 @@ class VMSink:
                 os.remove(p)
                 replayed += 1
             except Exception as e:  # noqa: BLE001 — still down; try next cycle
-                self.last_error = f"spool replay: {type(e).__name__}: {e}"
+                self._post_error(e, "spool replay: ")
                 return
         if replayed:    # VM took every replayed batch: any earlier transport error is over
             self.last_error = None

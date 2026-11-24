@@ -432,16 +432,14 @@ def flush_bridge_buckets(E: Emit, force: bool = False, now: float | None = None)
 TAIL_STATE_KEY = "tail_state"
 
 
-def tail_state(vm: store.VMSink, latest: dict) -> dict:
+def tail_state(latest: dict) -> dict:
     """What the committed cursors stand on beyond SQLite: the open and parked bridge buckets (rows already read but
-    not yet a point), secondary games' speed history and episodes, and points neither VM nor the spool took.
-    Written in the cursor's own commit."""
+    not yet a point) and secondary games' speed history and episodes. Written in the cursor's own commit."""
     return {"open": [[*k, a] for k, a in _BRIDGE_OPEN.items()],
             "parked": [[cid, list(v)] for cid, v in _BRIDGE_PARKED.items()],
             "bridge_lasts": latest.get("bridge_lasts"),
             "game_speed": {name: {"tps_hist": g["tps_hist"], "tps_low": g["tps_low"]}
-                           for name, g in latest.get("games", {}).items() if "tps_low" in g},
-            "points": [list(p) for p in vm.points]}
+                           for name, g in latest.get("games", {}).items() if "tps_low" in g}}
 
 
 def restore_tail_state(con, vm: store.VMSink, latest: dict) -> bool:
@@ -462,9 +460,12 @@ def restore_tail_state(con, vm: store.VMSink, latest: dict) -> bool:
         lasts[src] = max(lasts.get(src) or 0, t)
     for name, speed in (st.get("game_speed") or {}).items():
         latest.setdefault("games", {}).setdefault(name, {}).update(speed)
-    held = [tuple(p) for p in st.get("points") or []]
-    if held:
-        vm.points[:0] = held
+    held = [tuple(p) for p in st.get("points") or []]    # old stores move these to vm_pending on the next commit
+    for seq, point in con.execute("SELECT seq,point FROM vm_pending ORDER BY seq"):
+        if not held:
+            vm.pending_start = seq
+        held.append(tuple(json.loads(point)))
+    vm.points[:0] = held
     return True
 
 
@@ -806,7 +807,16 @@ class Tailer:
         first lost every point of the pass to a crash before telemetryd's vm.flush() (the restart resumed past it).
         At-least-once: a crash between the flush and the commit re-reads the rows and re-sends identical points."""
         self.vm.flush()
-        store.kv_set(self.con, TAIL_STATE_KEY, tail_state(self.vm, self.latest))
+        # Only retire the delivered/evicted prefix and write the new suffix of the refused points.
+        first = self.vm.pending_start
+        self.con.execute("DELETE FROM vm_pending WHERE seq < ?", (first,))
+        if self.vm.points:
+            last = self.con.execute("SELECT MAX(seq) FROM vm_pending").fetchone()[0]
+            start = first if last is None else last + 1
+            self.con.executemany("INSERT INTO vm_pending VALUES(?,?)",
+                                 ((seq, json.dumps(p, default=str))
+                                  for seq, p in enumerate(self.vm.points[start - first:], start)))
+        store.kv_set(self.con, TAIL_STATE_KEY, tail_state(self.latest))
         self.con.commit()
 
     def flush_raw(self, force=False) -> None:

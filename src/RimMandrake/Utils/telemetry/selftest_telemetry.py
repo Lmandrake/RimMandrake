@@ -31,6 +31,7 @@ import sqlite3
 import sys
 import tempfile
 import time
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -93,6 +94,92 @@ def w(path, rows, partial=None):
             f.write((r if isinstance(r, str) else json.dumps(r)) + "\n")
         if partial:
             f.write(partial)
+
+
+def vm_outage(tmp, now):
+    import ingest
+    import store
+    from tcommon import cfg
+    from urllib.error import URLError
+
+    path = os.path.join(tmp, "outage.jsonl")
+    db = os.path.join(tmp, "outage.db")
+    spool = os.path.join(tmp, "outage_spool")
+    source = ingest.Source("outage", lambda: [path],
+                           lambda r, E, ref: E.point("rm_outage", {}, r["v"], r["t"]), archive=False)
+    vm = FakeVM()
+    vm.down = True
+    sink = store.VMSink("http://fake", spool, vm)
+    sink.MAX_PENDING = 256
+    sink._spool = lambda body: False
+    con = store.connect(db)
+    # An existing store may already have held points in the old tail_state format.
+    store.kv_set(con, ingest.TAIL_STATE_KEY, {"points": [["rm_outage", {}, -1, now - 1]]})
+    con.commit()
+    tailer = ingest.Tailer(con, sink, {})
+    check("[tail-state] a legacy tail_state restores its held point", [p[2] for p in sink.points] == [-1])
+    w(path, [{"t": now + i, "v": i} for i in range(255)])
+    tailer.pass_source(source)
+    w(path, [{"t": now + 255, "v": 255}])
+    changes = con.total_changes
+    tailer.pass_source(source)
+    writes = con.total_changes - changes
+    size = con.execute("SELECT length(v) FROM kv WHERE k=?", (ingest.TAIL_STATE_KEY,)).fetchone()[0]
+    check("[tail-state] a full held queue keeps tail_state small and writes only the delta",
+          size < 1024 and writes <= 4, f"tail_state is {size} bytes, {writes} row changes")
+    con.close()
+
+    con = store.connect(db)
+    vm.down = False
+    sink = store.VMSink("http://fake", spool, vm)
+    tailer = ingest.Tailer(con, sink, {})
+    reread = tailer.pass_source(source)
+    tailer.commit_durable()
+    con.close()
+    con = store.connect(db)
+    sink = store.VMSink("http://fake", spool, vm)
+    tailer = ingest.Tailer(con, sink, {})
+    tailer.commit_durable()
+    got = [p["values"][0] for p in vm.of("rm_outage")]
+    check("[tail-state] restart drains exactly the retained points without rereading committed rows",
+          reread == 0 and got == list(range(256)), (reread, len(got)))
+
+    vm.down = True
+    sink._spool = lambda body: False
+    w(path, [{"t": now + 256, "v": 256}])
+    tailer.pass_source(source)
+    con.close()
+    import cli
+    with patch.dict(cfg(), db=db):
+        cli.main(["rebuild", "--since", "7d"])
+    con = store.connect(db)
+    clock, attempts = [100.0], []
+    vm.down = False
+
+    def hung(body):
+        attempts.append(clock[0])
+        if clock[0] == 100.0:
+            raise URLError(TimeoutError("fake VM hung"))
+        vm(body)
+
+    sink = store.VMSink("http://fake", spool, hung)
+    tailer = ingest.Tailer(con, sink, {})
+    check("[tail-state] rebuild clears the held queue with the cursor rewind", not sink.points, len(sink.points))
+    vm.lines.clear()
+    with patch.object(store.time, "monotonic", lambda: clock[0]):
+        tailer.pass_source(source)
+        w(path, [{"t": now + 257, "v": 257}])
+        tailer.pass_source(source)
+        sink.flush()  # daemon's end-of-step flush: even spool replay must wait
+        check("[vm-timeout] later passes do not POST during a timeout cooldown",
+              attempts == [100.0] and "fake VM hung" in (sink.last_error or ""),
+              f"{len(attempts)} POST attempts before the clock moved")
+        clock[0] += 60
+        sink.flush()
+    got = [p["values"][0] for p in vm.of("rm_outage")]
+    check("[vm-timeout] retry drains the spool and clears the timeout", got == list(range(258))
+          and sink.last_error is None and not os.listdir(spool), (len(got), sink.last_error))
+    con.close()
 
 
 def main(argv) -> int:
@@ -1097,6 +1184,8 @@ def main(argv) -> int:
         finally:
             wsl_export.MAX_READ = mr0
         check("[tail] exporter moves past a row longer than MAX_READ and drops its tail", got == [6], got)
+
+        vm_outage(tmp, now)
 
         # dashboards are generated, not hand-edited
         sys.path.insert(0, os.path.join(HERE, "grafana"))
