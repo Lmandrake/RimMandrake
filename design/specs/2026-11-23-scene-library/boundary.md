@@ -67,10 +67,10 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
 
 **LIVE PROOF** (2026-11-23, ArchSmall, companion `6ac9a7490885`, so every run was played by `jawa/scene_slice`):
 - `scene.py accept src/RimMandrake/bridgetools/scene_smoke_run.py` at commit 67e5c46ec0f4: 11 of 11 rows PASS, exit 0.
-- `src/RimMandrake/bridgetools/prove_scene_mark.py`: 12 PASS, 1 FAIL (the lock of a killed driver was read between two states; the
-  lock reading was repaired after it).
-- UNRUN: that row again (`python.exe src/RimMandrake/bridgetools/prove_scene_mark.py`); a restarted game carries no stamp
-  (`... prove_scene_mark.py --unmarked`, after a restart); a run played by `jawa/run_until` (the smoke run on a companion that has
+- `src/RimMandrake/bridgetools/prove_scene_mark.py`: first run 12 PASS and 1 FAIL (the lock of a killed driver was read between two
+  states); after the repair (9610cf8230f6) 13 PASS and 1 UNMEASURED (the process was already marked; that row passed in the first run).
+- `prove_scene_mark.py --unmarked` after a restart: 1 of 1 PASS.
+- UNRUN: a run played by `jawa/run_until` (the smoke run on a companion that has
   it); `WRONG_BUILD`, `OWNER_HOLD`, a lost reply, and a game that ran on, each from a real game (offline only).
 
 Later lists beside this page: `polish.md`.

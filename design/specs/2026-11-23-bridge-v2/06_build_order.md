@@ -530,11 +530,8 @@ dropped: SCENE_FILE_COMPILER
 
 ### What the Conductor still owes
 
-- `RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED` and
-  `RIMMANDRAKE_FILE_BRIDGE_TWO_BUILD_ORDER_THEN_WIRE_FIRST_SLICE` wait to 2026-11-25 "on the owner's discussion with the
-  Conductor". That discussion is settled. `SCENE_JUDGE` is blocked on the first of them, so it cannot start before that
-  wait ends (`rimflow unwait`).
-- The slice's live proof and experiment A are UNRUN. Their commands are in `08_where_tests_live.md`, "The experiment".
+- The slice and the filing item are closed: `prove_scene_tick_wiring.py` read 7 PASS of 7 on ArchSmall on 2026-11-23.
+  `SCENE_JUDGE` is no longer blocked on the slice. Experiment A: `experiments/exp_a_result.md`.
 - The tickets that stay keep their text, in which "plan" now means "what the script asked for in a call"
   (`05_build_design.md`, corrected at its top). `RMProbe` and `RMFixture` plug-ins are not built.
 - The sweep ticket's name still says "run plan list". The name stays (a name states what was meant at filing); its work
