@@ -17,7 +17,7 @@ selftest selftest_quiet_scan.py; acceptance acceptance/quiet_scan_running_accept
 One decision per tick: disabled | off | pipeline_paused | stopped | live (a scan run is live) | blind (could not look) |
 yields (a mod step is live or about to start) | system_wait | account_hold | pool_full | none_left | launch.
 The tick runs on rm-quiet-scan.timer from the dispatch clone. State: <RM_DISPATCHER_STATE>/quiet_scan (RM_QUIET_SCAN_DIR
-overrides): state.json, reading.json, ticks.jsonl, picks.jsonl, ends.jsonl.
+overrides): state.json, reading.json, ticks.jsonl, picks.jsonl, answers.jsonl, ends.jsonl.
 """
 import argparse
 import datetime as dt
@@ -43,7 +43,7 @@ ROLE = os.path.join(HERE, "roles", "quiet_scan.md")
 RUN_ITEM = "RIMMANDRAKE_RESTART_QUIET_FILE_SCAN_3580_NEVER_READ"
 EXTS = (".cs", ".xml", ".py")
 # A mod decision under which a mod step is live, or starts as soon as it can (maturation_dispatch's decision words).
-BUSY = ("live", "launch", "launched", "launch_wait", "launch_retry", "slots_full", "ready", "repairing")
+BUSY = ("live", "launch", "launched", "launch_wait", "launch_retry", "slots_full", "ready", "repairing", "settling")
 # A test program inside a mod: the game never loads it, so it is not mod content.
 MOD_TEST = re.compile(r"/[^/]*(SelfTest|Fuzz|Tests?)[^/]*(/|\.cs$)|/(selftest|northstar)")
 OUTCOMES = ("clean", "flagged", "noted")
@@ -109,6 +109,11 @@ def picks():
 
 def ends():
     return _rows("ends.jsonl")
+
+
+def answers():
+    """Each YIELD or DONE that `next` gave a run: the proof that a run with no pick asked."""
+    return _rows("answers.jsonl")
 
 
 def pac(t):
@@ -192,9 +197,11 @@ def gather_files(root, days, now, readers=None):
     ended = {}
     for e in ends():
         ended.setdefault(e["path"], set()).add(e.get("sha256"))
+    over = set((e["run"], e["path"]) for e in ends())
     tries = {}
     for p in picks():
-        tries[p["path"]] = tries.get(p["path"], 0) + 1
+        if (p["run"], p["path"]) not in over:       # picked and released: only a system death leaves that
+            tries[p["path"]] = tries.get(p["path"], 0) + 1
     clean, done = set(), set()
     for p in tracked:
         ent = got["records"].get(p)
@@ -381,6 +388,10 @@ def record_pick(unit, path, root, now):
                             "sha256": sha256(os.path.join(root, path))})
 
 
+def record_answer(unit, word, why, now):
+    _append("answers.jsonl", {"at": now, "run": unit, "word": word, "why": why})
+
+
 def look_at(root, path):
     """-> {record, flag, landed} of `path` in the review record of `root`. landed: the file's bytes and every record line
     that names it are on origin/main."""
@@ -454,6 +465,12 @@ def harvest(st, runs, now, wait_s=3600):
     if mine and not ended:
         st.update(stopped="run %s ended (%s) and gave no outcome for any of its %d files" % (
             unit, r.get("result"), len(mine)), told=None)
+    elif not mine:
+        said = [a for a in answers() if a["run"] == unit]
+        if said:        # told to yield before its first file: the next launch waits, so a yield in its clone is no loop
+            st.update(wait_until=now + wait_s, wait_why="%s was told %s: %s" % (unit, said[-1]["word"], said[-1]["why"]))
+        else:
+            st.update(stopped="run %s ended (%s) and never asked for a file" % (unit, r.get("result")), told=None)
 
 
 def clear(st, why, now):
@@ -617,6 +634,8 @@ def main(argv=None):
                 record_pick(args.run, what, REPO, now)
             except Blind as e:
                 word, what = "YIELD", str(e)
+        if word != "READ":
+            record_answer(args.run, word, what, now)
         print("%s %s" % (word, what))
         return 0
     try:

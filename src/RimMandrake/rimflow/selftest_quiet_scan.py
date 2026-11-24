@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import traceback
+from unittest import mock
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TMP = tempfile.mkdtemp(prefix="selftest_quiet_scan_")
@@ -19,6 +20,7 @@ except ImportError as e:
     sys.exit(1)
 
 FAILS = []
+GIT = QS.git
 NOW = 1_800_000_000.0
 DAY = 86400
 
@@ -136,6 +138,21 @@ def t_a_file_that_needs_no_read_is_not_picked():
     f = QS.gather_files(root, 7, t, readers={"flags": lambda: {}, "records": lambda: {}, "holds": lambda: {}})
     eq(QS.candidates(f), ["src/RimMandrake/M/edge8.cs", "src/RimMandrake/M/old.cs", "src/RimMandrake/M/About/About.xml"],
        "the live gather over a real repo")
+    old, e8 = "src/RimMandrake/M/old.cs", "src/RimMandrake/M/edge8.cs"
+    h = QS.sha256(os.path.join(root, old))
+    for ent, want in (({"hash": h, "status": "clean"}, set([old])), ({"hash": h}, set([old])),
+                      ({"hash": h, "status": "dirty"}, set()), ({"hash": "0" * 64}, set())):
+        f = QS.gather_files(root, 7, t, readers={"flags": lambda: {}, "records": lambda: {old: ent}, "holds": lambda: {}})
+        eq(f["clean"], want, "a record %s" % ent)
+        assert (old in QS.candidates(f)) == (not want), ent
+    f = QS.gather_files(root, 7, t, readers={"flags": lambda: {e8: {}}, "records": lambda: {}, "holds": lambda: {"M": "held"}})
+    eq((f["flagged"], f["held"]), (set([e8]), {"M": "held"}), "flags and holds reach the facts")
+    # the three default readers are the tools' own
+    import code_review_status as CRS
+    import mod_owner_hold as MOH
+    with mock.patch.object(CRS, "flags", lambda: {"f": 1}), mock.patch.object(CRS, "load", lambda: {"r": {}}), \
+            mock.patch.object(MOH, "load", lambda: {"X": {"mod": "X", "date": "d", "said": "s"}}):
+        eq((QS._flags(), QS._records(), list(QS._holds())), ({"f": 1}, {"r": {}}, ["X"]), "default readers")
 
 
 def t_a_picked_file_ends_clean_flagged_or_with_a_noted_reason():
@@ -181,16 +198,56 @@ def t_a_picked_file_ends_clean_flagged_or_with_a_noted_reason():
     open(os.path.join(root, p), "a").write("z\n")
     f = QS.gather_files(root, 7, t, readers={"flags": lambda: {}, "records": lambda: {}, "holds": lambda: {}})
     assert p in QS.candidates(f), "new bytes are a new file to read"
+    eq(f["picked"], {}, "a file whose picks all ended is not behind the others when it is owed a new read")
+    # look_at, for real: a record line and the file's bytes are landed only when origin/main holds them
+    rec = os.path.join(root, QS.REC)
+    os.makedirs(rec + "/flags")
+    import code_review_status as CRS
+    with mock.patch.object(CRS, "ROOT", root), mock.patch.object(CRS, "REC_DIR", rec), \
+            mock.patch.object(QS, "git", lambda r, *a: "" if a[0] == "fetch" else GIT(r, *a)):
+        git(root, "checkout", "-q", "--", p)
+        eq(QS.look_at(root, p), {"record": "DIRTY", "flag": False, "landed": True}, "no record")
+        line = json.dumps({"path": p, "sha256": QS.sha256(os.path.join(root, p)), "verdict": "clean", "seat": "T",
+                           "ts": "2026-11-24T00:00:00Z", "sha": "x", "date": "2026-11-24", "cleanCount": 1})
+        open(os.path.join(rec, "T.jsonl"), "w").write(line + "\n")
+        eq(QS.look_at(root, p), {"record": "CLEAN", "flag": False, "landed": False}, "an unlanded record")
+        git(root, "add", "-A")
+        git(root, "commit", "-q", "-m", "rec")
+        eq(QS.look_at(root, p)["landed"], False, "a commit that is not on origin/main")
+        git(root, "update-ref", "refs/remotes/origin/main", "HEAD")
+        eq(QS.look_at(root, p), {"record": "CLEAN", "flag": False, "landed": True}, "landed")
+        open(os.path.join(rec, "flags", "T.jsonl"), "w").write(json.dumps(
+            {"event": "flag", "path": p, "seat": "T", "sha256": "x", "ts": "2026-11-24T00:00:00Z", "why": "w"}) + "\n")
+        eq(QS.look_at(root, p), {"record": "CLEAN", "flag": True, "landed": False}, "an unlanded flag")
+        open(os.path.join(root, p), "a").write("fix\n")
+        git(root, "add", QS.REC)
+        git(root, "commit", "-q", "-m", "flag")
+        git(root, "update-ref", "refs/remotes/origin/main", "HEAD")
+        eq(QS.look_at(root, p)["landed"], False, "a fix that is not on origin/main")
 
 
 def t_a_system_death_releases_the_file():
     root, t = repo()
+    import detached_helper as DH
+    fin = {"unit": "r", "status": "finished", "result": "success (exited 0)", "clone": "/c", "seat": "BENCH", "at": NOW}
+    for rec, live, want in ((None, "dead", {}), (fin, "running", {"r": {"live": True}}),
+                            (fin, "launching", {"r": {"live": True}})):
+        with mock.patch.object(DH, "read_record", lambda u: rec), mock.patch.object(DH, "live_status", lambda r: live):
+            eq(QS._run("r"), want, "%s %s" % (rec, live))
+    for res, counts in (("success (exited 0)", True), ("killed (signal TERM)", False), ("timeout (killed KILL)", False)):
+        with mock.patch.object(DH, "read_record", lambda u: dict(fin, result=res)), \
+                mock.patch.object(DH, "live_status", lambda r: "finished"):
+            r = QS._run("r")["r"]
+            eq((r["live"], r["counts"]), (False, counts), res)
+    eq(QS._run(None), {}, "no run")
     p = "src/RimMandrake/M/old.cs"
     n = len(QS.ends())
     QS.record_pick("u3", p, root, NOW)
     s = {"run": {"unit": "u3"}}
     QS.harvest(s, {"u3": {"live": False, "counts": False, "result": "killed"}}, NOW)
     eq(len(QS.ends()), n, "nothing noted")
+    f = QS.gather_files(root, 7, t, readers={"flags": lambda: {}, "records": lambda: {}, "holds": lambda: {}})
+    eq(f["picked"], {p: 1}, "a released pick is counted")
     assert not s.get("stopped"), s
     eq(QS.decide(CFG, s, facts(), NOW + 60)["decision"], "system_wait", "waits")
     eq(QS.decide(CFG, s, facts(), NOW + 3601)["decision"], "launch", "then goes")
@@ -206,7 +263,7 @@ def t_the_job_yields_to_a_live_mod_step():
     def rd(decision, live=(), age=10):
         return {"at": NOW - age, "mods": {"Pyrelands": {"decision": decision, "live": list(live)},
                                           "Held": {"decision": "owner_hold", "live": []}}}
-    for d in ("live", "launch", "launched", "launch_wait", "launch_retry", "slots_full", "ready", "repairing"):
+    for d in ("live", "launch", "launched", "launch_wait", "launch_retry", "slots_full", "ready", "repairing", "settling"):
         assert QS.mod_step(rd(d), [], NOW, 600)[0], d
     for d in ("owner", "stopped", "ceiling", "owner_hold", "upstream_wait"):
         eq(QS.mod_step(rd(d), [], NOW, 600), (None, None), d)
@@ -219,6 +276,11 @@ def t_the_job_yields_to_a_live_mod_step():
         busy, blind = QS.mod_step(bad, [], NOW, 600)
         assert blind and not busy, bad
     eq(QS.decide(CFG, {}, facts(busy="Pyrelands is live"), NOW)["decision"], "yields", "tick")
+    import detached_helper as DH
+    recs = [{"unit": "a", "status": "running"}, {"unit": "b", "status": "running"}, {"unit": "c", "status": "finished"}]
+    with mock.patch.object(DH, "all_records", lambda: recs), \
+            mock.patch.object(DH, "live_status", lambda r: "dead" if r["unit"] == "b" else "running"):
+        eq([r["unit"] for r in QS._live_records()], ["a"], "the live runs")
     eq(QS.decide(CFG, {}, facts(blind="the reading is stale"), NOW)["decision"], "blind", "tick, stale reading")
     w = QS.next_word(CFG, {"run": {"unit": "u"}}, facts(busy="Pyrelands is live"), "u", [], NOW)
     eq(w[0], "YIELD", "next")
@@ -229,6 +291,51 @@ def t_the_job_yields_to_a_live_mod_step():
 def t_the_gates_launch_nothing():
     D = lambda cfg=CFG, st=None, account=(True, ""), **kw: QS.decide(cfg, st or {}, facts(**kw), NOW, account)
     eq(D()["decision"], "launch", "the green case")
+    # gather, for real: each gate's own answer reaches the facts, and one that cannot be read is blind
+    import control as C
+    import detached_helper as DH
+    import maturation_dispatch as MD
+    import pipeline_pause as PP
+    import scratch_clone as SC
+    root, t = repo()
+    rdir = tempfile.mkdtemp(dir=TMP)
+
+    def boom(*a, **k):
+        raise RuntimeError("unreadable")
+
+    def got(reading_at=t, recs=(), **over):
+        json.dump({"at": reading_at, "mods": {}}, open(os.path.join(rdir, "reading.json"), "w"))
+        p = {"blocked": lambda spec: None, "blocks": lambda mod, now: None, "pool": lambda dest: None, "run": lambda u: {}}
+        p.update(over)
+        files = {}
+
+        def gf(r, days, now):
+            files["days"] = days
+            return files_facts()
+        with mock.patch.object(C, "blocked", p["blocked"]), mock.patch.object(PP, "blocks", p["blocks"]), \
+                mock.patch.object(SC, "pool_admit", p["pool"]), mock.patch.object(DH, "all_records", lambda: list(recs)), \
+                mock.patch.object(DH, "pool_root", lambda: TMP), mock.patch.object(QS, "_run", p["run"]), \
+                mock.patch.object(DH, "live_status", lambda r: "running"), mock.patch.object(QS, "gather_files", gf), \
+                mock.patch.object(QS, "git", lambda r, *a: ""), \
+                mock.patch.dict(os.environ, {"RM_MATURATION_DISPATCH_DIR": rdir}):
+            f = QS.gather(CFG, {"run": {"unit": "u"}}, t, root)
+        eq(files["days"], 7, "quiet_days")
+        return f
+    f = got()
+    eq((f["off"], f["paused"], f["pool"], f["busy"], f["blind"]), (None,) * 5, "all green")
+    eq(got(blocked=lambda s: "off" if s["family"] == "quiet_scan" else None)["off"], "off", "pipe off family:quiet_scan")
+    eq(got(blocked=lambda s: "off" if s["family"] == "detached" else None)["off"], "off", "pipe off family:detached")
+    eq(got(blocks=lambda mod, now: "paused")["paused"], "paused", "the pause")
+    eq(got(pool=lambda dest: "full")["pool"], "full", "the pool")
+    eq(got(run=lambda u: {u: {"live": True}})["runs"], {"u": {"live": True}}, "the run")
+    assert got(recs=[{"unit": "x", "status": "running", "env": {"RM_CONTROL_MOD": "M"}}])["busy"], "a live mod run"
+    assert got(reading_at=t - 601)["blind"], "a stale reading"
+    for k in ("blocked", "blocks", "pool", "run"):
+        assert got(**{k: boom})["blind"], "%s unreadable" % k
+    with mock.patch.object(DH, "drain_refusal", lambda now: "draining"):
+        eq(QS.account_gate(), (False, "draining"), "the account drain")
+    with mock.patch.object(DH, "drain_refusal", lambda now: None), mock.patch.object(MD, "account_gate", lambda: (False, "HOLD")):
+        eq(QS.account_gate(), (False, "HOLD"), "the account pick")
     eq(D(cfg=dict(CFG, enabled=False))["decision"], "disabled", "")
     eq(D(off="OFF by pipe")["decision"], "off", "")
     eq(D(paused="pause all")["decision"], "pipeline_paused", "")
@@ -267,10 +374,32 @@ def t_a_run_that_ends_no_file_stops_the_scan():
     eq(len(told), 1, "said once")
     QS.clear(s, "fixed the brief", NOW)
     eq(QS.decide(CFG, s, facts(), NOW)["decision"], "launch", "cleared")
-    # a run that yielded before it picked any file ended nothing and is no fault
+    # a run that asked and was told to yield is no fault, and the next launch waits
     s = {"run": {"unit": "u5"}}
+    QS.record_answer("u5", "YIELD", "a mod step", NOW)
     QS.harvest(s, {"u5": {"live": False, "counts": True, "result": "success (0)"}}, NOW)
     assert not s.get("stopped"), s
+    eq(QS.decide(CFG, s, facts(), NOW + 60)["decision"], "system_wait", "a run that was told to yield is not sent again at once")
+    # a run that never asked read nothing: it stops the scan
+    s = {"run": {"unit": "u6"}}
+    QS.harvest(s, {"u6": {"live": False, "counts": True, "result": "success (0)"}}, NOW)
+    assert s.get("stopped") and "u6" in s["stopped"], s
+    # tick itself harvests the ended run, before it decides
+    d = tempfile.mkdtemp(dir=TMP)
+    os.environ["RM_QUIET_SCAN_DIR"] = d
+    try:
+        json.dump({"run": {"unit": "u7"}}, open(os.path.join(d, "state.json"), "w"))
+        fx = {"facts": lambda cfg, st, now: facts(runs={"u7": {"live": False, "counts": True, "result": "success (0)"}}),
+              "account": lambda: (True, ""), "launch": lambda cfg: (0, "", "u8"), "need": lambda text, now: None}
+        eq(QS.tick(CFG, True, fx, NOW)["decision"], "stopped", "tick")
+        # the run's own two words, through main: the answer is recorded, the file is picked once, then ended
+        st = {"run": {"unit": "u9"}}
+        json.dump(st, open(os.path.join(d, "state.json"), "w"))
+        with mock.patch.object(QS, "gather", lambda cfg, st_, now, root=None: facts(busy="a mod step")):
+            eq(QS.main(["next", "--run", "u9"]), 0, "next")
+        eq([a["word"] for a in QS.answers() if a["run"] == "u9"], ["YIELD"], "next records its answer")
+    finally:
+        os.environ["RM_QUIET_SCAN_DIR"] = os.path.join(TMP, "state")
 
 
 def t_the_run_is_sonnet_and_knows_the_method():

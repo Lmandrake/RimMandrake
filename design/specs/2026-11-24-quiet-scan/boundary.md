@@ -44,8 +44,9 @@ name in `src/RimMandrake/rimflow/selftest_quiet_scan.py`. `acceptance/quiet_scan
 - **the-gates-launch-nothing.** Disabled, `pipe off` (all, `family:quiet_scan`, `family:detached`), the pipeline's pause,
   an account hold, a full clone pool and a live scan run each read their own decision and launch nothing. `next` answers YIELD
   under the first three. `--hand` skips only the mod-step gate.
-- **a-run-that-ends-no-file-stops-the-scan.** A run that ended on its merits with no outcome for any file stops the scan and says
-  it once to the Conductor. `clear` starts it again.
+- **a-run-that-ends-no-file-stops-the-scan.** A run that ended on its merits with no outcome for any file that it
+  picked, or that never asked `next`, stops the scan and says it once to the Conductor. `clear` starts it again. A run that
+  `next` told to yield before its first file is no fault: the next launch waits `system_wait_s`.
 - **the-run-is-sonnet-and-knows-the-method.** The launch is sonnet, and its brief names the review method, the fresh reader
   and the three outcomes.
 - **a-scan-run-does-not-wake-the-conductor.** The end of a scan run writes its record and log line, and posts no wake. Every other

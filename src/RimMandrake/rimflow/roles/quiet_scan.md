@@ -35,7 +35,7 @@ false answer. Do not write a page.
 4. A Problem: fix it here, now. Write an offline test first, see it FAIL, fix the code, see it PASS. Run the mod's other offline
    tests that read the changed file. A C# change is built with `python3 src/RimMandrake/Utils/winbuild.py <Mod>`, and the DLL
    travels with its `.srchash`. Land with `./publish` and explicit paths.
-   - Then start one fresh reader: the Agent tool, `subagent_type: "general-purpose"`, `model: "sonnet"`,
+   - Then start one fresh reader: the Agent tool, `subagent_type: "rm-fixer"`, `model: "sonnet"`,
      `run_in_background: false`, with the reader's text below and nothing else. No second reread follows.
    - Never fix a style point, a stricter test, a tuning number or a rare failure. Each of those is one line on
      `polish.md` beside the page, when the file has a page. When the file has no page, drop it.
