@@ -91,17 +91,17 @@
   "test_blob": "787cc18515457b03ad94d895813165e4d18ea988"
  },
  "T_SITUATION_MAP_OFFLINE": {
-  "at": "2026-11-23T13:05:56Z",
+  "at": "2026-11-24T13:27:45Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py",
   "last": "explosive knockback map: FAIL (the map is red on the shipped decision)",
-  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n@@ -304,7 +304,6 @@\n                 p.wallFirst = true;\n                 return;\n             }\n-            Tumble(p, f, s, grid);\n         }\n \n         /// <summary>Leaf every_good_moves, the cases its throw, hop and bounce all leave in place (blind cycle 6,\n",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\nindex 2804b41d04..2fa5af111f 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n@@ -408,7 +408,7 @@ namespace RimMandrake.ExplosiveKnockback\n \n         public static bool LandingWithinCap(int x, int z, int originX, int originZ, int cap)\n         {\n-            return cap <= 0 || Math.Max(Math.Abs(x - originX), Math.Abs(z - originZ)) <= cap;\n+            return true;\n         }\n \n         /// <summary>The floor of the pit at (x, z): every open pit cell joined to it, corners included, within PitReach. Owner, by card\n",
   "patch_files": [
    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs"
   ],
-  "patch_sha": "415bef62cef18df1",
+  "patch_sha": "4eaaff05ed786e65",
   "rc": 1,
-  "test_blob": "1e9359c92c547242e855a9f72b580c1262f832f6"
+  "test_blob": "0f4db00a080d1ee0e89b14b4b931181a0e3952ee"
  },
  "T_STAGE3_SCENES": {
   "at": "2026-11-24T09:32:03Z",
