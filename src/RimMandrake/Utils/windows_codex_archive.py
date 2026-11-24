@@ -5,6 +5,7 @@
     windows_codex_archive.py move       move each folder, one manifest row for each; run it again to carry on
     windows_codex_archive.py status     what is archived, and the calls of the retired Windows route since
     windows_codex_archive.py restore    put every archived folder back where it was
+    windows_codex_archive.py probe --id ID --why W   declare one logged call as our own proof call (kept in the log)
     windows_codex_archive.py delete     delete the archive: only after the date, and only when no call was logged
 
 Item RIMMANDRAKE_MOVE_ALL_CODEX_WORK_TO_WSL_ONE_DISPATCH_DOOR_ONE_LOGIN (owner, 2026-11-23: "somehow disabling the
@@ -185,11 +186,33 @@ def calls(a: Path, log_dir=None) -> tuple[int | None, list, str]:
             if r.get("t", 0) < since:
                 continue
             total += 1
-            if r.get("outcome") == "WINDOWS_RETIRED":
+            if r.get("outcome") == "WINDOWS_RETIRED" and r.get("id") not in m.get("probes", {}):
                 seen.append(str(r.get("caller")))
     if not total:
         return None, [], "the log holds no call at all since the move: the reader is blind, not the route quiet"
     return len(seen), seen, "%d calls read, %d torn records" % (total, torn)
+
+
+def probe(a: Path, cid: str | None, why: str | None, log_dir=None) -> int:
+    if not cid or not (why or "").strip():
+        print("REFUSED: give --id and --why")
+        return 1
+    if log_dir is None:
+        import dispatch_door
+        log_dir = dispatch_door.load().log_dir()
+    for f in Path(log_dir).glob("*/*.json"):
+        try:
+            r = json.loads(f.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if r.get("id") == cid and r.get("outcome") == "WINDOWS_RETIRED":
+            m = manifest(a)
+            m.setdefault("probes", {})[cid] = why.strip()
+            save(a, m)
+            print("DECLARED %s" % cid)
+            return 0
+    print("REFUSED: no logged WINDOWS_RETIRED call has the id %s" % cid)
+    return 1
 
 
 def delete_refusal(a: Path, now: float | None = None, log_dir=None) -> str:
@@ -209,7 +232,9 @@ def delete_refusal(a: Path, now: float | None = None, log_dir=None) -> str:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("do", choices=("plan", "move", "status", "restore", "delete"))
+    ap.add_argument("do", choices=("plan", "move", "status", "restore", "probe", "delete"))
+    ap.add_argument("--id")
+    ap.add_argument("--why")
     ap.add_argument("--only", action="append", help="move: just this folder name; repeat")
     x = ap.parse_args(argv)
     try:
@@ -224,8 +249,12 @@ def main(argv=None) -> int:
             return move(p, a, x.only)
         if x.do == "restore":
             return restore(a)
+        if x.do == "probe":
+            return probe(a, x.id, x.why)
         m = manifest(a)
         n, who, why = calls(a)
+        for cid, w in sorted(m.get("probes", {}).items()):
+            print("declared probe %s: %s" % (cid, w))
         print("archive %s: %s" % (a, {s: sum(r["state"] == s for r in m["rows"].values())
                                       for s in sorted({r["state"] for r in m["rows"].values()})}))
         print("calls of the retired route since %s: %s %s (%s)" % (m["started"], "UNMEASURED" if n is None else n,

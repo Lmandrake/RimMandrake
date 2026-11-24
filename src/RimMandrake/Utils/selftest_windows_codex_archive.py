@@ -114,6 +114,21 @@ class T(unittest.TestCase):
         self.rec("WINDOWS_RETIRED", t=time.time() - 86400)
         self.assertEqual(W.calls(self.a)[0], 0)
 
+    def test_a_declared_probe_is_named_and_not_counted_and_only_that_one(self):
+        self.run_("move")
+        self.rec("ANSWERED")
+        self.rec("WINDOWS_RETIRED")
+        f = next(self.log.rglob("WINDOWS_RETIRED*"))
+        f.write_text(json.dumps(dict(json.loads(f.read_text()), id="probe-1")))
+        self.assertEqual(self.run_("probe", "--id", "probe-1")[0], 1)              # no reason: refused
+        self.assertEqual(self.run_("probe", "--id", "nothing", "--why", "x")[0], 1)     # no such call
+        self.assertEqual(W.calls(self.a)[0], 1)
+        self.assertEqual(self.run_("probe", "--id", "probe-1", "--why", "my own proof call")[0], 0)
+        self.assertEqual(W.calls(self.a)[0], 0)
+        self.assertIn("probe-1: my own proof call", self.run_("status")[1])
+        self.rec("WINDOWS_RETIRED")
+        self.assertEqual(W.calls(self.a)[0], 1)
+
     def test_the_live_app_folder_can_never_match(self):
         for n in (".codex", ".codex_", ".codexfoo", "codex_workers", ".codex_workers2", ".codex_sandbox", "AppData"):
             self.assertFalse(W.TAKES.match(n), n)
