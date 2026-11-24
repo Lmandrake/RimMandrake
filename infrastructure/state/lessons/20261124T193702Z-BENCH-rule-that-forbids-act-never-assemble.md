@@ -1,0 +1,2 @@
+A rule that forbids an act ('never assemble the digest by hand') leaves the reader stuck when the allowed thing is absent: 4 of 5 weak readers reported the file missing and did not run the program that writes it. State the act for the absent case beside the ban. A second situation written by an agent that never saw the new text found the gap; the first situation read 5 of 5 (design/specs/2026-11-23-weak-reader-trial/result.md).
+item: RIMMANDRAKE_STATE_THREE_RULES_THE_CORRECTION_LEFT_SILENT_READERS_SCORED_ZERO
