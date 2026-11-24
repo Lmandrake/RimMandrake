@@ -26,8 +26,8 @@ nodes with the same layer have undefined order relative to each other
 (*inferred* — we never needed to rely on it). Real numbers from this repo: head
 attachments at 51, glowing eyes at 55.
 
-A full node, from `RimMandrake_Jawa_Eyes_HugeOrange` in
-`D:\Luke\dev\RimMandrake\src\Jawa\RimMandrake_StarWarsRaces\Defs\GeneDefs\Jawa_EyeColours.xml`:
+A full node, from `RSW_Jawa_Eyes_HugeOrange` in
+`D:\Luke\dev\RimMandrake\src\RimStarWars\StarWarsRaces\Defs\GeneDefs\Jawa_EyeColours.xml`:
 
 ```xml
 <li Class="PawnRenderNodeProperties_Eye">
@@ -60,10 +60,11 @@ Notes that cost time to learn:
 - **`colorType Skin` with `useSkinShader`** makes the node take the pawn's skin
   gene colour, so one grey texture serves every skin tone. A node that looks
   wrongly-coloured in game is usually this, not the PNG.
-- **`skipFlag Hair`** hides the node when hair draws over it. A head attachment
-  that "vanished" on some pawns and not others is a skipFlag plus a hair gene.
-- **`rotDrawMode` `Fresh, Rotting`** keeps the node on the corpse. Omit it and
-  the species partially reverts to human on death.
+- **`skipFlag Hair`** hides the node when drawn headgear hides the hair (apparel on
+  `UpperHead` or `FullHead`, unless the apparel sets `renderSkipFlags`; `PawnRenderTree.AdjustParms`). A head attachment that
+  "vanished" on some pawns and not others is a skipFlag plus a hat.
+- **`rotDrawMode`** names the corpse states in which the node draws. Unset, the node
+  draws in all three. `Fresh, Rotting` stops it on a dessicated corpse.
 
 ### 🔴 Facial Animation deletes the vanilla head draw
 
@@ -73,7 +74,8 @@ drawing.** The LFS eyes mod demonstrates the consequence — its FA compat patch
 *strips `renderNodeProperties` off every one of its own eye genes.*
 
 ⇒ **If a species relies on eye or face render nodes, exclude it from Facial
-Animation.** Our Jawa are excluded, which is the only reason the glow eyes work.
+Animation** (SKILL.md §3b). The Jawa glow eyes worked because Jawa were excluded.
+`RSW_MandrakeJawa` is on neither list now (2026-11-23); whether its eyes still show is UNMEASURED.
 
 ⚠️ **Do not edit a non-human pawn's HEAD in Character Editor.** Confirmed
 2026-08-10: it destroys the head on Mon Calamari and Bith. Eye and gene edits are
@@ -86,14 +88,14 @@ of a species' identity lives here**, which is why our 69 species needed **104
 HeadTypeDefs** — more head types than species.
 
 🔴 **60 of those 104 shipped with no `requiredGenes`.** A head type without
-`requiredGenes` is in the **global random-head pool for every pawn in the game**,
+`requiredGenes` and with `randomChosen` true (the default) is in the **global random-head pool for every pawn in the game**,
 so a donor mod's alien heads appear on ordinary humans. That is how the donor
 mods ship them, and copying them forward carries the behaviour.
 
 **Decide deliberately: either write `requiredGenes` on every head type you copy,
 or accept a wider pool and say so.** There is no error either way.
 
-`HeadShapeDef` is a separate def type and is not `HeadTypeDef`. Do not
+`HeadShapeDef` is a separate def type of Facial Animation and is not `HeadTypeDef`. Do not
 cross-reference them.
 
 `TabulaRasa.DefModExt_HeadTypeStuff` appears as a modExtension on 36 head-type

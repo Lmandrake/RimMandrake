@@ -5,20 +5,20 @@ description: Authoring, moving, spawning and debugging RimWorld xenotypes and th
 
 # Xenotypes — the def is a gene list; everything else is somewhere else
 
-Almost every expensive mistake here is the same mistake: **reading the
-XenotypeDef and expecting to find the species in it.** The def is a pointer. The
-species is spread across GeneDefs, HeadTypeDefs, RulePackDefs, text files,
-textures and sometimes a C# assembly, and each of those fails silently on its
-own.
+Almost every expensive mistake here is one mistake: **reading the XenotypeDef and expecting to find the species in
+it.** The def is a pointer. The species is in GeneDefs, HeadTypeDefs, RulePackDefs, text files and textures. Sometimes
+the species is also in a C# assembly. Each of those parts can fail on its own with no visible error.
 
-Measured on this project's 587-mod 1.6 stack, rescuing 69 Star Wars species into
-`D:\Luke\dev\RimMandrake\src\Jawa\RimMandrake_StarWarsRaces`. Everything below was
-observed there unless marked *inferred*.
+The lessons come from this project's 1.6 mod list. The work was the rescue of 69 Star Wars species into one mod of
+ours. That mod is `D:\Luke\dev\RimMandrake\src\RimStarWars\StarWarsRaces`. A "donor" is a mod that we copied species from.
+An engine claim names the game class that it comes from. A claim marked *inferred* was not observed. Dates,
+old counts and corrected claims are in `references/history.md`.
 
 | I want to… | Start at | Reference |
 |---|---|---|
 | **write** a xenotype and see one in game | §1, §4 | — |
 | find out **why a species looks wrong or "has no art"** | §2, §3 | `references/appearance.md` |
+| know **which colour a pawn shows** | §3a | — |
 | get a species **into a faction's pawns** | §5 | — |
 | work out **why a def is missing at runtime** | §6 | `references/verifying.md` |
 | **copy species out of a donor mod** | §10 | `references/closure.md` |
@@ -28,43 +28,46 @@ observed there unless marked *inferred*.
 
 ## 1. The whole surface of a XenotypeDef
 
-Our 69 species defs use these fields and no others:
+Each of our 70 species defs sets these fields. The gene list here is cut short:
 
 ```xml
 <XenotypeDef>
-  <defName>RimMandrakeAbednedo</defName>
+  <defName>RSW_RimMandrakeAbednedo</defName>
   <label>Abednedo</label>
   <description>...</description>
   <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Abednedo</iconPath>
   <inheritable>true</inheritable>
   <canGenerateAsCombatant>true</canGenerateAsCombatant>
   <factionlessGenerationWeight>0</factionlessGenerationWeight>
+  <nameMaker>RSW_NamerAbednedo</nameMaker>
   <genes>
     <li>Hair_BaldOnly</li>
-    <li>RimMandrake_AbednedoHead</li>
+    <li>RSW_AbednedoHead</li>
     <li>Skin_Orange</li>
   </genes>
 </XenotypeDef>
 ```
 
-**Genes own everything that matters** — appearance, stats, hediffs, abilities,
-needs. Judge a xenotype by walking its `genes` list, never by reading the def.
+Some of our defs also set `combatPowerFactor`, `chanceToUseNameMaker`, `nameMakerFemale` or `descriptionShort`.
 
-⭐ **A gene list can still randomise per pawn.** `GeneEyeColor` is an abstract
-parent carrying `exclusionTags: EyeColor`, so listing four of its children on one
-xenotype makes the engine pick one per pawn. `guy762_xenotype_hutt` ships four
-big-eye colours this way. So "the gene list is fixed" does not mean "every pawn
-of this species looks identical".
+**Genes own everything that matters**: appearance, stats, hediffs, abilities and needs. Judge a xenotype by walking its
+`genes` list. Never judge a xenotype by its def alone.
+
+⭐ **A gene list can still randomise per pawn.** `GeneEyeColor` is an abstract parent that carries
+`exclusionTags: EyeColor`. List four of its children on one xenotype, and the engine makes one of them active on each
+pawn. The later genes of the list win more often. `guy762_xenotype_hutt` ships four big-eye colours this way. A fixed
+gene list does not mean that every pawn of the species looks the same. §3a gives both mechanisms.
 
 ---
 
 ## 2. 🔴 An icon is not the appearance
 
-`iconPath` is a UI symbol for the xenotype panel. **A xenotype with no icon at
-all renders perfectly**, because none of its appearance was ever in the icon.
+`iconPath` is a UI symbol for the xenotype panel. **A xenotype with no icon at all renders perfectly.** None of its
+appearance was ever in the icon. With dev mode on, the load reports the config error
+`iconPath is empty.` (`XenotypeDef.ConfigErrors`).
 
-Reporting "no art" from an icon audit invites someone to delete working content.
-Measured gene counts against genes actually carrying pawn art:
+If you report "no art" from an icon audit, someone can delete working content. Measured gene counts against genes
+that carry pawn art:
 
 | xenotype | genes | genes carrying pawn art |
 |---|---|---|
@@ -72,16 +75,15 @@ Measured gene counts against genes actually carrying pawn art:
 | `Hutt` | 34 | 17 |
 | `Gamorrean` | 28 | 7 |
 
-**Say out loud which question you are answering** — *does this have a UI icon* or
-*does this render* — before auditing. A live spawn settled this after file
-analysis reached the wrong conclusion twice; see §9.
+**Before an audit, say which question you answer**: *does this have a UI icon*, or *does this render*. File analysis
+got the second question wrong twice. A live spawn settled it (§9).
 
 ---
 
 ## 3. Four different ways a gene supplies appearance
 
-Guess the wrong one and you find nothing, which reads as "the species has no
-art". Check all four before concluding anything is missing.
+If you check the wrong one, you find nothing, and "the species has no art" looks true. Check all four before you
+conclude that anything is missing.
 
 | mechanism | field on the GeneDef | gives you |
 |---|---|---|
@@ -90,13 +92,12 @@ art". Check all four before concluding anything is missing.
 | **colour only** | `skinColorOverride` · `hairColorOverride` | tint, no texture |
 | **body/fur** | `bodyType` → `BodyTypeDef` · `fur` → `FurDef` | silhouette and pelt |
 
-**Half the species identity lives in head types, not in the genes.** Our 69
-species needed **104 HeadTypeDefs**. `HeadShapeDef` also exists and is a
-different def type from `HeadTypeDef` — do not conflate them.
+**Half the species identity is in head types, not in the genes.** The first 69 species needed **104 HeadTypeDefs**.
+Facial Animation also has a def type named `HeadShapeDef`, and its own `FacialAnimation.HeadTypeDef`. Both differ from
+the game's `HeadTypeDef`. Do not conflate them.
 
-**The pawn is a stack of layers.** Each render node carries
-`drawData.defaultData.layer`, and paint order is that number. A real node from
-`RimMandrake_Jawa_Eyes_HugeOrange`:
+**The pawn is a stack of layers.** Each render node carries `drawData.defaultData.layer`. The paint order is that
+number. A real node from `RSW_Jawa_Eyes_HugeOrange`, cut short:
 
 ```xml
 <li Class="PawnRenderNodeProperties_Eye">
@@ -108,84 +109,105 @@ different def type from `HeadTypeDef` — do not conflate them.
 </li>
 ```
 
-The fields that carry the meaning, from real nodes in this stack:
+The fields that carry the meaning, from real nodes of this mod list:
 
 | field | what it does |
 |---|---|
-| `nodeClass` / `Class=` | e.g. `PawnRenderNode_AttachmentHead`, `PawnRenderNodeProperties_Eye` |
-| `parentTagDef` | what it anchors to — `Head`, `Body` |
+| `nodeClass` / `Class=` | e.g. `PawnRenderNode_AttachmentHead` (the node class), `PawnRenderNodeProperties_Eye` (the properties class) |
+| `parentTagDef` | what the node anchors to: `Head`, `Body` |
 | `texPath` | one texture |
-| `texPaths` | 🔴 a **LIST of variants**, picked per pawn by `texSeed` — two pawns of one species differ |
+| `texPaths` | 🔴 a **LIST of variants**. The engine picks one per pawn, from `texSeed`, the pawn's id and the gene's `loadID`. So two pawns of one species can differ |
 | `drawData.defaultData.layer` | paint order in the stack (`guy762_FacialRidges_bumpy` = 51, our glow eyes = 55) |
-| `colorType` + `useSkinShader` | `Skin` tints the node to the pawn's own skin gene |
-| `skipFlag` | `Hair` hides it when hair is drawn over it |
-| `rotDrawMode` | `Fresh, Rotting` keeps it drawn on the corpse |
+| `colorType` + `useSkinShader` | `Skin` tints the node to the pawn's own skin colour |
+| `skipFlag` | `Hair` hides the node when drawn headgear hides the hair (apparel on `UpperHead` or `FullHead`, unless the apparel sets `renderSkipFlags`; then that list alone decides). Drawn hair does not hide the node |
+| `rotDrawMode` | the corpse states in which the node draws. Unset, the node draws in all three states. `Fresh, Rotting` draws the node on a fresh or rotting corpse and stops it on a dessicated one |
 
-`guy762_FacialRidges_bumpy` is the reference example for the attachment form:
-`PawnRenderNode_AttachmentHead`, `parentTagDef Head`, two `texPaths` variants,
-`layer 51`, `colorType Skin` + `useSkinShader`, `skipFlag Hair`, `rotDrawMode
-"Fresh, Rotting"`.
+An eye node (`PawnRenderNodeProperties_Eye`) always has `skipFlag` `Eyes`, whatever the XML says. A full-head hat hides
+it, unless the hat sets `renderSkipFlags` or `forceEyesVisibleForRotations`.
 
-> **Which node class, which parent tag, what a layer number means, and how a
-> render node interacts with Facial Animation?** → `references/appearance.md`
+`guy762_FacialRidges_bumpy` is the reference example of the attachment form:
 
-⚠️ **60 of our 104 head types had no `requiredGenes`** — those enter the GLOBAL
-random-head pool and can land on any pawn in the game. That is how donor mods
-ship them. If you copy head types, decide deliberately whether you want that.
+- `PawnRenderNode_AttachmentHead`, `parentTagDef Head`, two `texPaths` variants, `layer 51`;
+- `colorType Skin` + `useSkinShader`, `skipFlag Hair`, `rotDrawMode "Fresh, Rotting"`.
+
+Our copy of it is `RSW_FacialRidges_bumpy`.
+
+> **Which node class, which parent tag, what a layer number means, and how a render node interacts with Facial
+> Animation?** → `references/appearance.md`
+
+⚠️ **60 of our first 104 head types had no `requiredGenes`.** Donor mods ship them that way. A head type with no
+`requiredGenes` and with `randomChosen` true (the default) is in the GLOBAL random-head pool. Such a head can land on
+any pawn in the game of the head's `gender` (`Pawn_StoryTracker.TryGetRandomHeadFromSet`; its callers test
+`randomChosen`). Either field closes the pool: set `requiredGenes`,
+or set `randomChosen` to false. If you copy head types, decide deliberately which one you want. No head type of
+StarWarsRaces is in the pool now.
 
 ---
 
-## 3a. 🔴 A xenotype's gene list is given WHOLE to every pawn — it is NOT a pool
+## 3a. 🔴 Every pawn gets the whole gene list; one colour gene of a conflicting group is active
 
-**The single most expensive misconception about xenotype colour**, and it survives
-contact with a screenshot, which is what makes it dangerous.
+Two facts decide the colour, and they are easy to mix up.
 
-Listing six `skinColorOverride` genes on a xenotype does **not** mean each pawn rolls
-one of six. **Every pawn gets all six**, as endogenes. MEASURED 2026-09-20 via
-`jawa/pawn_genes` against 17 live Ithorians: all 17 carried the identical set —
-`Skin_PaleRed, Outland_Skin_DeepSage, Skin_Orange, Outland_Skin_DeepBrown,
-Outland_Skin_Brown, Outland_Skin_PaleBrown`. Not one was missing from any pawn.
+**Fact 1: the list is not dealt out.** `Pawn_GeneTracker.SetXenotype` adds every gene of the list to every pawn. Six
+`skinColorOverride` genes on a xenotype mean that every pawn carries all six. They are endogenes when the xenotype is
+`inheritable`, and xenogenes otherwise. MEASURED 2026-09-20 via `jawa/pawn_genes` against 17 live Ithorians: all 17
+carried the identical set. The set was `Skin_PaleRed, Outland_Skin_DeepSage, Skin_Orange, Outland_Skin_DeepBrown,
+Outland_Skin_Brown, Outland_Skin_PaleBrown`. Not one gene was missing from any pawn.
 
-What actually varies pawn-to-pawn is what the **generator adds on top**: a
-`Skin_MelaninN` gene and the hair genes. Diffing three Ithorians, the only
-differences were `Skin_Melanin3` vs `Skin_Melanin9` and which `Hair_*` they got.
+**Fact 2: the pawn shows one of them, picked at random per pawn.** The code is in `Pawn_GeneTracker`
+(`Notify_GenesChanged`, `SelectGene`, `OverrideAllConflicting`):
 
-⇒ **Consequences, in the order they bite:**
+- When the engine adds a skin-colour gene, it picks one of the pawn's skin-colour genes at random, each equally likely.
+  If the pawn has xenogenes among them, it picks from the xenogenes only.
+- The chosen gene overrides each gene that it conflicts with. An overridden gene stays on the pawn, inactive and not
+  drawn. The last pick stands, and the save file keeps it (`overriddenByGene`).
+- Two genes conflict when they share an `exclusionTags` entry. Each `GeneSkinColorOverride` child inherits the
+  tag `SkinColorOverride`, and so do the `Outland_Skin_*` genes. A child can replace the list with `Inherit="False"`.
+  The four Dathomirian skin genes do: `SkinColorOverrideMale` and `SkinColorOverrideFemale`.
+- Only a gene that the engine calls `RandomChosen` overrides others in this way. That is a gene with `randomChosen`
+  true. A cosmetic gene (colour, body, head, hair, beard or graphics) is also
+  `RandomChosen` when its three biostats are all 0.
+- If the conflicting genes are not `RandomChosen`, the pick is not random. `CheckForOverrides` then makes one gene
+  override the other by a fixed rule. A xenogene beats an endogene; if not, the earlier in `GeneUtility.GenesInOrder`
+  wins. For skin colour, the rule shows only after the next gene change. Until then the last one in the list gives the
+  colour.
+- Other conflicting `RandomChosen` genes (eye colours) take a different path. Each added gene has a 50/50 chance against
+  the current winner. So the later genes of the list win more often.
+- If several skin-colour genes do not conflict, all of them stay active. The last active one in the pawn's list gives
+  the colour (`EnsureCorrectSkinColorOverride`).
+- A skin override replaces the melanin colour. The two do not mix (`Pawn_StoryTracker.SkinColor`).
 
-1. 🔴 **Adding a skin-colour gene to a xenotype that already has one does not add
-   variety.** It adds a *competing override*. You have changed what is on the pawn,
-   not what the player sees.
-2. 🔴 **A line-up of N pawns of one species is a SAMPLE OF ONE**, however many bodies
-   are in the frame — they are genetically identical apart from melanin and hair. Do
-   not build a "palette review" on it and do not let anyone rule a colour from it
+This agrees with an earlier observation. Bith pawns with byte-identical gene lists rendered orange, green and pink in
+one shot. Their four colour genes conflict. Nobody has measured if an active mod changes this pick.
+
+Pawn generation adds a `Skin_MelaninN` gene only if no active melanin gene is on the pawn. It adds a `Hair_*` colour
+gene by the same test. The diff of three Ithorians showed those differences only: `Skin_Melanin3` vs `Skin_Melanin9`,
+and which `Hair_*` each pawn got.
+
+Consequences:
+
+1. 🔴 **If you add a skin-colour gene to a conflicting group, you add one more candidate to the pick.** With N genes,
+   about 1 pawn in N shows each colour. The new gene does not replace the others. To get one colour on every pawn, leave
+   one skin-colour gene in the list.
+2. 🔴 **A line-up of N pawns of one species is one gene list with N colour picks.** The gene lists are identical except
+   for melanin and hair. The line-up may miss a colour of the list. Do not let anyone rule a palette from a line-up
    without saying this out loud.
-3. ⚠️ **`jawa/pawn_genes` cannot answer "which colour won".** It returns `endogenes` —
-   the whole list. Every pawn reads the same, so a census over it produces a
-   confident, uniform, meaningless number. (17/17 on one gene is what exposed this:
-   a suspiciously uniform count is a query bug until proven otherwise.)
+3. ⚠️ **`jawa/pawn_genes` cannot answer "which colour won".** The tool returns the def names of all genes, with no
+   active flag. Every pawn reads the same, so a census over it gives a confident, uniform, meaningless number. A
+   suspiciously uniform count, such as 17/17 on one gene, is a query bug until you prove otherwise. Look at the pawn, or
+   read `overriddenByGene` in the save.
 
-🔑 **OPEN, and do not guess it:** with several `GeneSkinColorOverride` genes on one
-pawn, **which one renders is NOT established here.** Observation muddies it further —
-Bith pawns with byte-identical gene sets visibly rendered orange, green and pink in
-the same shot, which no "one fixed winner" story explains. Candidate mechanisms worth
-checking against the decompiler before anyone acts: `displayOrderInCategory`
-precedence, a per-pawn seeded pick, or the added `Skin_MelaninN` compositing over the
-override. ⛔ Until that is measured, do not promise an owner that editing this gene
-list will change what they see.
-
-**If you need genuine per-pawn colour variety**, the mechanism that is documented to
-do it is `texPaths` on a render node (a LIST of variants picked by `texSeed`, §3
-above) — not a longer gene list.
+**A second way to vary a pawn** is `texPaths` on a render node, the list of variants that `texSeed` picks from (§3).
 
 ## 3b. 🔴 Facial Animation overdraws your face — exclude the xenotype or it looks human
 
-**Facial Animation replaces the pawn's face at render time.** A xenotype can have a
-perfect gene list, a resolving head type and shipped textures, and still render as a
-plain human, because FA draws over it. Symptom, verbatim from the owner: *"It has the
-ears, but no snoot... the face is a normal human."* Ears are a head ATTACHMENT outside
-the face rect and survive; the snoot is inside it and is overdrawn.
+Facial Animation is workshop mod 1635901197, called FA here. **FA replaces the pawn's face at render time.** A
+xenotype can have a perfect gene list, a head type that resolves and shipped textures. The pawn can still render as a
+plain human, because FA draws over it. The symptom, verbatim from the owner: *"It has the ears, but no snoot... the face is a normal
+human."* Ears are a head ATTACHMENT outside the face rect, so ears survive. The snoot is inside the rect, so FA
+overdraws it.
 
-**The switch is per-xenotype, in FA's mod settings — not in your def.**
+**FA itself has one switch, per xenotype, in the player's FA settings. No def can set it.**
 
 ```
 Config/Mod_1635901197_FacialAnimationMod.xml
@@ -193,19 +215,32 @@ Config/Mod_1635901197_FacialAnimationMod.xml
     <li>Human-BTD_Hutt</li>        <- "Human-" + the XenotypeDef defName
 ```
 
-It is a plain on/off per entry; the same toggles are exposed as checkboxes in FA's
-settings UI. There is **no partial mode** in the file — one list, plus the global
-`DrawEyesParts` / `DrawEarsParts` booleans. An "intermediate" look (brows animating,
-eyes static, no mouth) is NOT a setting: it is what you get when a xenotype is *not*
-excluded and its own big-eye and jaw art happens to mask FA's eyes and mouth.
+- **FA takes its skip list ONLY from the player's ModSettings.** FA reads that file once, at startup. So an edit of the
+  file needs a restart. No def, extension or XML hook exists.
+- Each entry is a plain on/off. FA's settings UI shows the same entries as checkboxes.
+- There is **no partial mode** in the file: one list, plus the global `DrawEyesParts` / `DrawEarsParts` booleans.
+- An "intermediate" look (brows animating, eyes static, no mouth) is NOT a setting. The cause: FA still draws the
+  xenotype, and the xenotype's own big-eye and jaw art masks FA's eyes and mouth.
 
-🔴 **The entries are defNames, so RENAMING A XENOTYPE SILENTLY UNPROTECTS IT.** Measured
-2026-08-15: 70 species were migrated into a new mod under new `RimMandrake*` names while
-all 86 exclusions still read `Human-BTD_*`, `Human-OuterRim*`, `Human-guy762_*`. Every
-old entry became a dead reference and **all 70 new species rendered with human faces at
-once.** After any rename or re-namespacing, re-key this list in the same commit.
+**Our mod ships the opt-out, so a player needs no setting.** StarWarsRaces holds the list as data in
+`src/RimStarWars/StarWarsRaces/Defs/Misc/RSW_FacialAnimationOptOut.xml`. Its C# postfixes
+`FacialAnimationModSettings.ShouldDrawRaceXenoType(Pawn)`, resolved by name. The mod setting `hideFacialAnimationFace`
+turns the opt-out on (the default) or off. Any other mod that ships an opt-out must do it in C# too. The owner's own
+config is not evidence that players get the same. `python3 src/RimStarWars/StarWarsRaces/selftest_fa_optout.py` fails
+when a xenotype with an `RSW_` head is not on the list. The live check of the opt-out is still owed (item
+`FACE_OPTOUT_REPAIR_ONLY_AT_HOME`).
 
-**Which species need it — decide by what the genes DRAW, not by how alien they look:**
+🔴 **The entries are defNames, so RENAMING A XENOTYPE SILENTLY UNPROTECTS IT.** Each entry is `Human-<XenotypeDefName>`. A stale key matches nothing, and the
+species draws FA faces. `reload_mod_settings`, dirty graphics and a respawn change nothing. After any rename (a tier
+prefix change, for example), re-key the opt-out def in the same commit. For a xenotype that only the player's file
+protects, re-key `IgnoreEnableAnimationForRaceXenoTypeListAA` and restart. This has happened: every old entry was a
+dead reference, and **all 70 new species rendered with human faces at once.**
+
+`RSW_MandrakeJawa`, the clan's own xenotype, is not on the shipped list. Its head gene `RSW_Jawa_Head_Plain` forces
+vanilla heads. Its key in the owner's FA file is the old name `Human-MandrakeJawa`, so nothing excludes it now. Whether
+FA then hides the Jawa's glow eyes is UNMEASURED.
+
+**Which species need the opt-out? Decide by what the genes DRAW, not by how alien the species looks:**
 
 | tier | what it does | FA verdict |
 |---|---|---|
@@ -213,26 +248,24 @@ once.** After any rename or re-namespacing, re-key this list in the same commit.
 | replaces the head SHAPE, or adds horns/ears/tails (`forcedHeadTypes`, render nodes) | FA paints a human face onto a non-human skull | **exclude** |
 | no head or face genes at all | nothing to conflict with | leave FA on |
 
-Survey the mod rather than guessing: a gene whose body mentions `HeadAttachments` is
-tier 1; one with `forcedHeadTypes` is tier 2. In our 70, that split was 29 / 35 / 5.
+Survey the mod; do not guess. A gene whose body mentions `HeadAttachments` is tier 1. A gene with `forcedHeadTypes` is
+tier 2. In our 70, that split was 29 / 35 / 5.
 
-⚠️ **This is hard-won and easily lost.** The repo carries a backup per fight —
-`deployed/config/Mod_1635901197_FacialAnimationMod.BEFORE-{hutt,gand,gamorrean,bulk}-exclude-*.xml`.
-Back up before editing and commit both sides; FA reads settings at startup, so the
-change needs a restart.
-- **Facial Animation (1635901197) reads its skip list ONLY from the player's ModSettings, once at startup.** No def, extension or XML hook exists, so a mod that ships the opt-out must do it in C#: postfix `FacialAnimationModSettings.ShouldDrawRaceXenoType(Pawn)`, resolved by name (StarWarsRaces does this); the owner's own config is not evidence that players get the same. Entries are `Human-<XenotypeDefName>`, so after ANY xenotype rename (e.g. a tier prefix change) re-key `IgnoreEnableAnimationForRaceXenoTypeListAA` and restart: a stale key silently matches nothing and every species draws FA faces (reload_mod_settings, graphics dirty and respawn change nothing).
+⚠️ **This fix was hard to get and is easy to lose.** The repo holds backups of FA's settings file:
+`deployed/config/Mod_1635901197_FacialAnimationMod.BEFORE-{hutt,gand,gamorrean,bulk}-exclude-*.xml`. Back up that file
+before you edit it, and commit both sides.
 
 ## 4. 🔴 A xenotype cannot be spawned — PawnKindDef is the handle
 
-Pawn generation takes a `PawnKindDef`. **A XenotypeDef on its own is
-unverifiable in game.** To test our 70 xenotypes we had to author 70
-PawnKindDefs.
+Pawn generation takes a `PawnKindDef`. **A XenotypeDef has no spawn of its own; it needs a route.** Four def fields feed ordinary generation: a `PawnKindDef.xenotypeSet`, a faction's `xenotypeSet`, a meme's
+`xenotypeSet`, and a `factionlessGenerationWeight` above 0 (`PawnGenerator`). Three other routes exist: the xenotype
+picker of the start screen, a scenario part, and another xenotype's `doubleXenotypeChances`.
 
-**Author the PawnKindDef in the same commit as the XenotypeDef**, or the species
-exists and nothing can ever produce one.
+**Author the PawnKindDef in the same commit as the XenotypeDef.** If the defs give the species no route,
+ordinary generation never produces one. We authored 70 PawnKindDefs for our 70 xenotypes.
 
-On the bridge, `jawa/spawn_pawn` takes a `xenotype` argument directly and is the
-fastest way to look at one.
+To look at one quickly, no new kind is needed. On the bridge, `jawa/spawn_pawn` takes any `kindDef` and a `xenotype`
+argument, and the argument beats the kind and the faction. The game's dev action "Set xenotype" converts a spawned pawn.
 
 ---
 
@@ -246,20 +279,20 @@ fastest way to look at one.
 </xenotypeChances>
 ```
 
-The key is the defName. **Writing `<li><xenotype>X</xenotype><chance>Y</chance></li>`
-makes ParseFloat return null and DISCARDS THE ENTIRE FactionDef, silently.**
-This killed five of our authored factions. The tell was pure correlation: every
-file *without* an `<li>` loaded, every file *with* one did not.
+The element name is the defName. **If you write `<li><xenotype>X</xenotype><chance>Y</chance></li>`, the loader
+DISCARDS THE ENTIRE FactionDef.** `XenotypeChance` reads the text of the first child, gets null, and the float parse
+throws. The loader then writes one error line, `Exception loading def from file …`, and goes on without the def
+(`DirectXmlToObjectNew`). In a long log that line is easy to miss, and nothing else tells you. The form killed five of
+our authored factions. The tell was pure correlation: every file *without* an `<li>` loaded, every file *with* one did not.
 
-**Write the keyed form and check every existing `xenotypeChances` you inherit.**
-Vanilla is unanimous — every instance in the game is keyed.
+**Write the keyed form, and check every existing `xenotypeChances` that you inherit.** Vanilla is unanimous: every
+instance in the game is keyed.
 
-⚠️ `validate_patch.py` cannot catch this; its own banner says it does not check
-field names, types or shapes.
+⚠️ `validate_patch.py` cannot catch this. Its own banner says that it does not check field names, types or shapes.
 
 ### 🔴 `xenotypeSet` inherits and APPENDS
 
-A child's list is **appended to its parent's**, not substituted. Measured:
+The game **appends** a child's list to its parent's list, and substitutes nothing. Vanilla parents ship:
 
 | parent | ships |
 |---|---|
@@ -267,162 +300,153 @@ A child's list is **appended to its parent's**, not substituted. Measured:
 | `PirateBandBase` | 9 |
 | `TribeBase` | none (luck, not design) |
 
-**Write `<xenotypeSet Inherit="False">` on any faction whose species list is
-meant to be exactly what you wrote**, or your Star Wars outlanders field
-Hussars. Same rule as `pawnGroupMakers`.
+Our patch `src/RimUtinni/UtinniPatches/Patches/XenotypeCut_SpawnSets.xml` removes many of those entries. A def that
+loads without that patch still gets them.
 
-⚠️ **An EMPTY set is not "no opinion" — it is 100% baseliner.**
-`XenotypeSet.BaselinerChance` returns `1f` when the list is empty
-(`RimWorld/XenotypeSet.cs`), so `<xenotypeSet Inherit="False" />` on a faction of
-ordinary humanlikes means plain humans, every time. That is usually what you want
-for a faction whose pawn kinds carry their own races — droids, mechanoids, insects —
-because `PawnGenerator` iterates the faction set by `Count` and an empty one simply
-contributes nothing, leaving the kind to decide. It is rarely what you want on a
-faction of people.
+**Write `<xenotypeSet Inherit="False">` on any faction whose species list must be exactly what you wrote.** If not,
+your Star Wars outlanders field Hussars. The same rule holds for `pawnGroupMakers`.
 
-🔑 **The two questions are separate, and conflating them is the trap.** *Does the
-parent's list still arrive?* is answered by `Inherit="False"`. *What happens when
-mine is empty?* is answered by `BaselinerChance`. An empty set with the attribute
-strips the parent AND yields baseliners; an empty set without it inherits the
-parent's five and yields those.
+⚠️ **An EMPTY set is not "no opinion". The faction's share is 100% baseliner.** `XenotypeSet.BaselinerChance` returns
+`1f` when the list is empty (`RimWorld/XenotypeSet.cs`). So `<xenotypeSet Inherit="False" />` on a faction of ordinary
+humanlikes means plain humans, unless a pawn kind or a meme names a xenotype. You usually want that for a faction whose
+pawn kinds carry their own races: droids, mechanoids, insects. `PawnGenerator` iterates the faction set by `Count`, so
+an empty set adds nothing, and the kind decides. You rarely want it on a faction of people.
+
+The chances of the faction, its memes and the kind add up. Baseliner takes what is left below 1. A kind with
+`useFactionXenotypes` false ignores the faction's set.
+
+🔑 **These are two separate questions. Do not mix them.**
+
+- *Does the parent's list still arrive?* `Inherit="False"` answers it.
+- *What happens when mine is empty?* `BaselinerChance` answers it.
+
+An empty set with the attribute strips the parent AND yields baseliners. An empty set without it inherits the parent's
+five and yields those.
 
 ### 🔴 Two xenotypes can share a `label`, and then the label proves nothing
 
-One mod can ship two xenotypes for the same species — a hand-built set and a
-generated one, both labelled "Jawa". Nothing in play distinguishes them: the pawn
-inspect panel shows the label, not the defName. Measured in this repo: a
-`defaultFactionDef PlayerColony` pawn kind had been rolling the 24-gene generated
-one for weeks while the owner's ratified 35-gene set sat unused, and it was
-invisible because both said "Jawa".
+One mod can ship two xenotypes for the same species: a hand-built set and a generated one, both labelled "Jawa".
+Nothing in play tells them apart, because the pawn inspect panel shows the label and not the defName. In this repo, a
+`defaultFactionDef PlayerColony` pawn kind rolled the 24-gene generated one for weeks. The owner's ratified set sat
+unused. Nobody saw it, because both said "Jawa". The ratified set is `RSW_MandrakeJawa` (38 genes); the generated one
+is `RSW_RimMandrakeJawa` (24).
 
-**Settle which one a pawn actually has by defName or by gene count, never by
-reading the label.** And when a ruling names "the only active xenotype", grep every
-`xenotypeChances` in the repo for the OTHER one — a def-keyed dictionary hides the
-name inside an element tag, so a plain search for `<xenotype>` will not find it.
+**Settle which one a pawn has by defName or by gene count, never by reading the label.** When a ruling names "the only
+active xenotype", grep every `xenotypeChances` in the repo for the OTHER one. A def-keyed dictionary hides the name
+inside an element tag. A plain search for `<xenotype>` will not find it.
 
 ### 🔴 `factionlessGenerationWeight` and `canGenerateAsCombatant` do not discriminate
 
-Unset defaults are `0` and `false`, and a runtime field read cannot tell an unset
-field from a deliberate suppression. Measured: `BTD_Jawa` declares **neither**
-(only 1 of BTD's 71 xenotypes declares `factionlessGenerationWeight` at all) and
-reads `0.0 / False` at runtime — **identical to a xenotype that is deliberately
-suppressed, and identical to `MandrakeJawa`, which must and does generate.**
+- `XenotypeDef` sets an unset `factionlessGenerationWeight` to `1` and an unset `canGenerateAsCombatant` to `true`.
+  So a xenotype that declares neither field can arrive as a factionless pawn. Write both fields on every xenotype.
+- `factionlessGenerationWeight` controls **wanderer/factionless generation only**: pawns with no faction that rolled
+  baseliner. A faction whose `xenotypeSet` names a xenotype still generates it at weight 0.
+- `canGenerateAsCombatant` matters only when the request needs a pawn capable of violence. A `false` there removes the
+  xenotype from a faction's fighters.
+- A runtime field read cannot tell an unset field from a chosen value, and it once misled us. `BTD_Jawa` declared
+  neither field and read `0.0 / False` at runtime. That reading is **identical to a xenotype that is deliberately
+  suppressed.** The cause of that reading is unknown: it does not match the engine's defaults.
 
-**Settle "does this generate?" from the SOURCE XML — does the def declare the
-field? — or by repeated generation. Never from a runtime field read.**
-
-Note what the field actually governs: `factionlessGenerationWeight` controls
-**wanderer/factionless generation only**. A faction whose `xenotypeSet` names a
-xenotype still generates it at weight 0.
+**Settle "does this generate?" from the SOURCE XML (does the def declare the field?), or by repeated generation.
+Never settle it from a runtime field read.**
 
 ---
 
 ## 6. 🔴 A def can ship in an active mod and not exist in the running process
 
-Another active mod can delete it at load. Measured:
-`[BTD] Xenotype REMIX: Star Wars` ships **70 XenotypeDefs, zero genes**, and a
-Harmony assembly whose only job is deduplication — `BTD_EquivalenceLoader`,
-`GetAllDefsToRemove`, `CalculateDuplicatesRemoved`, and the log string:
+Another active mod can delete the def at load. `[BTD] Xenotype REMIX: Star Wars` did. That mod ships **70 XenotypeDefs,
+zero genes**, and a Harmony assembly whose only job is deduplication: `BTD_EquivalenceLoader`, `GetAllDefsToRemove`,
+`CalculateDuplicatesRemoved`, and the log string:
 
 ```
 - {0} defs have {1} references to removed xenotype '{2}'
 ```
 
-Its `BTD_Data/XenotypeEquivalencies.xml` maps each species to its BTD, SWX and OR
-equivalents, and it keeps its own. So `OuterRim_Jawa` and `guy762_xenotype_jawa`
-load and are then removed; `BTD_Jawa` survives.
+Its `BTD_Data/XenotypeEquivalencies.xml` maps each species to its BTD, SWX and OR equivalents, and keeps its own. So
+`OuterRim_Jawa` and `guy762_xenotype_jawa` loaded, and BTD removed them. `BTD_Jawa` survived. Cherry Picker, which is
+active now, also deletes XenotypeDefs and GeneDefs at load (`infrastructure/state/facts/dump-is-pre-cherrypicker.md`).
 
-🔴 **AND THE SURVIVOR EXPIRES.** That sentence was measured with the three donor
-mods active. They were later switched off in favour of one authored species mod,
-and today **none of those three names loads** — the live Jawa xenotypes are
-`MandrakeJawa` and `RimMandrakeJawa`, from `mandrake.rsw.starwarsraces`. Patches still
-aimed at `BTD_Jawa` had been matching nothing for days without logging a thing,
-because a `PatchOperationConditional` on a missing def is a silent no-op.
+🔴 **The survivor expires.** That result was true while the three donor mods were active. The donors are now off, and
+one species mod of ours replaced them. **None of those three names loads today.** The live Jawa xenotypes are
+`RSW_MandrakeJawa` and `RSW_RimMandrakeJawa`, from `mandrake.rsw.starwarsraces`. Patches that still aimed at `BTD_Jawa`
+matched nothing for days and logged nothing. A `PatchOperationConditional` on a missing def is a silent no-op.
 
-⇒ **"X is the one that survives dedup" is a fact about a MOD LIST, not about a
-def.** Re-measure it after any change to the active set, and treat a survivor name
-written in a doc as a claim with an expiry date, not as a constant.
+⇒ **"X is the one that survives dedup" is a fact about a MOD LIST, not about a def.** Measure it again after any
+change to the active set. Treat a survivor name in a doc as a claim with an expiry date.
 
-⇒ **A def dump captures pre-deletion state; the live process is post-deletion.**
-Both readings are correct about their own moment, and no mod-list check finds
-this — all three mods are active and all three files are on disk.
+⇒ **A def dump can hold a def that the running game does not have.** An offline scan reads files, so it always shows
+the state before deletion. A DefDump comes from one load, and can be from before or after a deletion. Each reading is
+correct about its own moment. No mod-list check finds the difference: all three mods were active, and all three files
+were on disk.
 
-**The discriminating test is a runtime lookup by defName.** `set_pawn_xenotype`
-returned `"No XenotypeDef named 'X'"` for the two removed names while converting
-a pawn with the third in the same call.
+**The test that decides is a runtime lookup by defName.** `set_pawn_xenotype` returned `"No XenotypeDef named 'X'"`
+for the two removed names. The same call converted a pawn with the third name, so the tool and the spelling were
+proved. Use a test of that shape: a known-good control in the same call.
 
-⇒ **Remove such mods as a SET.** Removing only the dedupper resurrects every
-collision it was suppressing.
+⇒ **Remove such mods as a SET.** If you remove only the dedupper, every collision that it suppressed comes back.
 
 ---
 
 ## 7. Name makers: the def is not the content
 
-`nameMaker` and `nameMakerFemale` on a XenotypeDef point at **RulePackDefs**,
-whose `Rule_File` entries point at plain-text word lists under
-`Languages/<lang>/Strings/`.
+`nameMaker` and `nameMakerFemale` on a XenotypeDef point at **RulePackDefs**. Their `Rule_File` entries point at
+plain-text word lists under `Languages/<lang>/Strings/`.
 
-🔴 **Copy the def alone and the namer resolves cleanly and generates nothing** —
-a silent empty success, no error anywhere. Our 48 RulePackDefs needed **140
-`.txt` files**.
+🔴 **Copy the def alone, and the namer resolves cleanly and generates nothing.** The result is a silent empty success,
+with no error anywhere. The first 48 RulePackDefs needed **140 `.txt` files**.
 
-**Copy the `Strings/` tree with the RulePackDefs, and follow `include` for
-chained packs**, which pull further packs and further files.
+**Copy the `Strings/` tree with the RulePackDefs, and follow `include` for chained packs.** Chained packs pull further
+packs and further files.
 
 ---
 
 ## 8. `.xtp` files are not defs
 
-A xenotype saved in the game's own editor lands in
+The game's own xenotype editor saves to
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Xenotypes\<name>.xtp`.
-It is loaded by the pawn editor and **cannot be referenced by anything** —
-`PawnKindDef.xenotypeSet` takes XenotypeDefs.
+The pawn editor loads that file, and **no def can reference it**: `PawnKindDef.xenotypeSet` takes XenotypeDefs.
 
-**To use one, promote it into a real def by transcribing its genes**, and keep
-the two in step by hand thereafter; they drift.
+**To use one, promote it into a real def: transcribe its genes.** The def and the `.xtp` are then two separate things,
+and they drift. Write in the def's comment which differences are on purpose. `RSW_MandrakeJawa` has 38 genes, and its
+`.xtp` has 35. The three extra genes are the owner's rulings. Keep all three when someone transcribes the file again.
 
-🔴 **The `.xtp` carries only `name` and `inheritable`. Every other field in the
-promoted def was INVENTED by whoever transcribed it.** We found
-`canGenerateAsCombatant false` invented that way, which stopped a faction
-generating any fighter at all. **Audit every non-gene field of a promoted def
-against the `.xtp`; if the `.xtp` does not say it, you chose it — so choose it
-deliberately.**
+🔴 **The `.xtp` carries only `name` and `inheritable`, the gene list and `iconDef`. Whoever transcribed it INVENTED
+every other field in the promoted def.** We found `canGenerateAsCombatant false` invented that way. It stopped a
+faction from generating any fighter at all. **Audit every non-gene field of a promoted def against the `.xtp`. If the
+`.xtp` does not say it, you chose it, so choose it deliberately.**
 
 ---
 
 ## 9. Verifying xenotype work
 
-Nearly everything above fails silently, so **choose the check that can actually
-see the failure you care about**:
+Nearly every failure in this file is silent. So **choose the check that can see the failure that you care about**:
 
 | the question | the check that answers it |
 |---|---|
-| does this def exist in the *running game*? | a runtime lookup by defName — the def dump is disk, not runtime (§6) |
+| does this def exist in the *running game*? | a runtime lookup by defName. A dump can differ from the process (§6) |
 | does this species render? | **spawn one and look.** Beats any file analysis |
-| does this faction still load? | it generates pawns at all — a discarded FactionDef is silent (§5) |
+| does this faction still load? | it generates pawns at all. A discarded FactionDef leaves one log line only (§5) |
 | does this xenotype generate? | repeated generation, or the source XML. Not a runtime field read (§5) |
 | is this standalone set really standalone? | **a load with the donor mods switched OFF.** Nothing else proves it |
 
-🔴 **The live def dump is disk state, not process state.** It is the right tool
-for "what did the mods ship" and the wrong tool for "what exists right now".
+🔴 **A dump is not the running process.** An offline scan is the right tool for "what did the mods ship". The scan is the
+wrong tool for "what exists right now".
 
-🔴 **A spawn test beats any amount of file analysis.** One spawned pawn settled
-the art question in §2 after two file-based analyses got it wrong. If the bridge
-is available, spawn first and read files second. Bridge rights belong to CHECK —
-ask before driving.
+🔴 **A spawn test beats any amount of file analysis.** One spawned pawn settled the art question in §2, after two
+file-based analyses got it wrong. If a game is free, spawn first and read files second. Claim the game with
+`python3 src/RimMandrake/rimflow/game_lock.py claim <game> --for "<what>"`, and release it after.
 
-🔴 **A standalone mod is only proven standalone by a load with the donors
-disabled.** Loading it *alongside* its donors proves nothing: every reference you
-forgot to copy resolves against the donor and the mod looks complete.
+🔴 **Only a load with the donors disabled proves that a standalone mod is standalone.** A load *alongside* its donors
+proves nothing. Every reference that you forgot to copy resolves against the donor, and the mod looks complete.
 
-> **The full protocol — what each of these actually costs, and the order to run
-> them in?** → `references/verifying.md`
+> **The full protocol — what each of these actually costs, and the order to run them in?** →
+> `references/verifying.md`
 
 ---
 
 ## 10. Moving species between mods
 
-The closure is much wider than genes. Rescuing 69 species pulled:
+The closure (everything that the species points at) is much wider than genes. The rescue of 69 species pulled:
 
 ```
 113 genes · 104 head types · 48 rule packs · 140 word lists · 713 textures
@@ -432,10 +456,10 @@ tattoos, hair, style categories, gene categories, furs, body types
 
 Three mask hediffs alone pulled 3 ThingDefs and 6 RecipeDefs.
 
-**Two traps that decide whether the copy works at all:**
+**Two traps decide whether the copy works at all:**
 
-🔴 **Grep `geneClass` and `Class=` before assuming a gene is pure XML.** Measured
-C# dependencies hiding in genes and modExtensions:
+🔴 **Grep `geneClass` and `Class=` before you assume that a gene is pure XML.** Measured C# dependencies that hid in
+genes and modExtensions:
 
 | symbol | from |
 |---|---|
@@ -446,47 +470,49 @@ C# dependencies hiding in genes and modExtensions:
 | `BigAndSmall.PawnExtension` · `BetterPrerequisites.GeneExtension` | frameworks |
 | `TabulaRasa.DefModExt_HeadTypeStuff` | 36 defs |
 
-🔴 **`Name=` is a second global namespace, and defNames collide across def
-types.** Abstract parents must travel with the copied defs **and be renamed**, or
-`ParentName` resolves to nothing and the child is a silent discard. And
-`OuterRim_Wookiee` is **both** a XenotypeDef and a PawnKindDef — an index keyed
-on defName alone silently keeps whichever was walked last.
+🔴 **`Name=` is a second global namespace, and defNames collide across def types.**
 
-⇒ **A prefix migration is never a string replace.** Key every index on
-`(defType, defName)`.
+- An abstract parent must travel with the copied defs **and be renamed**. If not, `ParentName` resolves to nothing.
+  The load then logs `Could not find parent node named`, and the child loads without every inherited field
+  (`XmlInheritance`).
+- `OuterRim_Wookiee` is **both** a XenotypeDef and a PawnKindDef. An index keyed on defName alone silently keeps the
+  one that it walked last.
 
-> **The full extraction procedure, the closure walk, and the per-def-type list of
-> what points at what?** → `references/closure.md`
+⇒ **A prefix migration is never a string replace.** Key every index on `(defType, defName)`.
+
+> **The full extraction procedure, the closure walk, and the per-def-type list of what points at what?** →
+> `references/closure.md`
 
 ---
 
 ## In this repo
 
 ```
-src/Jawa/RimMandrake_StarWarsRaces/       69 xenotypes, 114 genes, 104 head types
-src/RimMandrake/Utils/gen_races_mod.py    builds that mod from the donor stack
-src/RimMandrake/Utils/refresh.py          rebuilds the offline def dump (disk state)
+src/RimStarWars/StarWarsRaces/            our species mod: xenotypes, genes, head types, kinds, namers
+src/RimMandrake/Utils/gen_races_mod.py    regenerates its generated files from the donors; --check writes nothing
+src/RimMandrake/Utils/refresh.py          says which artefact is stale; --offline rebuilds the offline scans
 ```
 
-**Survey tooling that predates this skill — reach for it before writing your own.**
-It is the reason a xenotype question usually needs no new script:
+`Defs/XenotypeDefs/RimMandrakeXenotypes.xml` is generated; do not edit it by hand. `MandrakeJawaXenotype.xml` and
+`Defs/PawnKindDefs/RimMandrakePawnKinds.xml` are hand-edited. Read the header of a file before you edit it.
+
+**Survey tools that are older than this skill. Reach for them before you write your own:**
 
 ```
 src/RimMandrake/Utils/genome_scan.py         every XenotypeDef + GeneDef in the ACTIVE list -> JSON
 src/RimMandrake/Utils/genome_matrix_build.py the genome register: every candidate xenotype, aligned by gene
 src/RimMandrake/Utils/genome_art_cache.py    gene and xenotype icons OUT of AssetBundles (needs ~/.venvs/rimart/bin/python)
-design/Jawa/worldbuilding/review/genome_register.html   the rendered result, art inlined
 ```
 
-⚠️ `genome_art_cache.py` is the answer to "the icon does not exist on disk" —
-vanilla ships gene art inside Unity bundles, so a `find` sweep reports most of
-Biotech's genes as art-less. It is not; you are looking in the wrong place. Full
-treatment in `reading-rimworld-graphics`.
+⚠️ `genome_matrix_build.py` picks its rows from `CANDIDATE_PACKS`. That table names the three donor packs, which are
+off, and not our mod. Change the table before you trust a new register.
 
-⇒ **These existed for a day before this skill did, and the knowledge in them was
-invisible** — it lived in scripts and one generated HTML page, so the next person
-to touch a xenotype re-derived it by hand. That is the failure this file exists
-to prevent: if you learn something here, write it HERE, not only into a script.
+⚠️ `genome_art_cache.py` is the answer to "the icon does not exist on disk". Vanilla ships gene art inside Unity
+bundles, so a `find` sweep reports most of Biotech's genes as art-less. That report is false: the sweep looked in the
+wrong place. Full treatment in `reading-rimworld-graphics`.
 
-Deploying it is `rimworld-deploy`; looking at the art is
-`reading-rimworld-graphics`; spawning to check is `rimbridge`.
+⇒ **Knowledge that lives only in a script is invisible.** The next person who touches a xenotype then derives it again
+by hand. If you learn something here, file it with `python3 src/RimMandrake/Utils/lessons.py add "…"`. A curation
+session then writes it into this file.
+
+Deploying is `rimworld-deploy`; looking at the art is `reading-rimworld-graphics`; spawning to check is `rimbridge`.

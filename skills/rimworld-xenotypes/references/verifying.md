@@ -38,13 +38,12 @@ run minutes apart.
    directly. This is the single most conclusive check available and it costs
    seconds. It settled the "these species have no art" question after two
    file-based analyses reached the wrong conclusion.
-   ⚠️ **Bridge rights belong to CHECK.** Ask in one line before driving, and say
-   when you are done.
+   Claim a free game first: `python3 src/RimMandrake/rimflow/game_lock.py claim <game> --for "<what>"`. Release it after.
 2. **Runtime lookup by defName**, with a control name you know is present.
 3. **Generate repeatedly** when the question is *does this xenotype appear* —
    never read `factionlessGenerationWeight` or `canGenerateAsCombatant` at
-   runtime to answer it, because unset reads identically to suppressed
-   (SKILL.md §5).
+   runtime to answer it, because one unset pair once read the same as a suppressed
+   pair (SKILL.md §5).
 4. **Read the SOURCE XML** when the question is *did the author intend this* —
    "does the def declare the field at all" is the only way to tell an unset
    default from a deliberate 0.
@@ -54,14 +53,14 @@ run minutes apart.
 
 | failure | symptom | catch it with |
 |---|---|---|
-| `<li>` inside `xenotypeChances` | 🔴 the **entire FactionDef** is discarded | the faction generates no pawns at all; grep every `xenotypeChances` for `<li>` |
+| `<li>` inside `xenotypeChances` | 🔴 the **entire FactionDef** is discarded, with one log line `Exception loading def from file` | the faction generates no pawns at all; grep every `xenotypeChances` for `<li>` |
 | `xenotypeSet` inherited | vanilla Hussars in your faction | inspect generated pawns; add `Inherit="False"` |
 | RulePackDef copied without its `.txt` files | pawns have empty/fallback names | generate names; count `Rule_File` targets against files on disk |
-| `ParentName` unresolved after a rename | the def is simply absent | runtime lookup by defName |
+| `ParentName` unresolved after a rename | the def lacks every inherited field | `Could not find parent node named` in `Player.log` |
 | defName collision across def types | one of the two silently lost | index on `(defType, defName)` |
 | a `geneClass` whose assembly is absent | the gene's effect is missing | `Player.log` at load, then spawn |
 | dedup mod deleted the def | present on disk, absent at runtime | runtime lookup; the dedupper's own log line |
-| `canGenerateAsCombatant false` invented during a `.xtp` promotion | faction generates no fighters | diff the promoted def against the `.xtp`, which carries only `name` and `inheritable` |
+| `canGenerateAsCombatant false` invented during a `.xtp` promotion | faction generates no fighters | diff the promoted def against the `.xtp`, which carries only `name`, `inheritable`, the genes and `iconDef` |
 
 ⚠️ **`validate_patch.py` cannot see any of the shape errors above.** Its own
 banner says it does not check field names, types or shapes. It validates xpath

@@ -20,7 +20,7 @@ WHAT IS DEPENDED ON      Biotech, Core, VEF, Outland Genetics, Integrated Genes,
 
 verify() also scans src/RimUtinni/UtinniPatches and src/RimStarWars/StarWarsPatches:
 it fails if any def there still reaches a departing mod, including through a
-ParentName, which is a silent discard rather than an error.
+ParentName: an unresolved one logs one error and the child loads without its inherited fields.
 
 Re-runnable. Reads the live def dump for the species table and the donor mods'
 own XML on disk for the def bodies, so the copies are the authors' text rather
@@ -111,8 +111,8 @@ RESCUE_KINDS = [
     "OuterRim_Quarren", "OuterRim_QuarrenTribal", "OuterRim_Wookiee",
     "OuterRim_WookieeTribal",
 ]
-# Their two abstract parents. A ParentName that resolves to nothing is a SILENT
-# discard, so these travel and are renamed with them.
+# Their two abstract parents. A ParentName that resolves to nothing logs one
+# error and the child inherits nothing, so these travel and are renamed with them.
 RESCUE_KIND_PARENTS = {"OuterRimTestColonyPawnKind": PREFIX + "ColonyPawnKind",
                        "OuterRimTestTribalPawnKind": PREFIX + "TribalPawnKind"}
 # Owner ruling 2026-08-14: RSW_MandrakeJawa is the ONLY active Jawa xenotype. The
@@ -329,8 +329,8 @@ def _parse_shipped(path):
 def _key(e):
     # 🪤 ABSTRACT PARENTS HAVE NO defName — they are keyed by a Name= ATTRIBUTE.
     # Keying on defName alone silently skipped every abstract, and an abstract that
-    # vanishes takes its CHILDREN with it (a ParentName that resolves to nothing is a
-    # SILENT DISCARD). MEASURED 2026-08-23: RSW_GunganEars and two head types died so.
+    # vanishes breaks its CHILDREN (a ParentName that resolves to nothing: they inherit
+    # nothing). MEASURED 2026-08-23: RSW_GunganEars and two head types were lost here.
     return e.findtext("defName") or e.get("Name")
 
 
@@ -758,8 +758,8 @@ def pick_species(x, g, donor_defs):
 
 def closure(seeds, defs, absts):
     """Everything donor-owned that the seed defs can reach, plus the abstract
-    parents they inherit from. A ParentName that resolves to nothing is a SILENT
-    discard, so an abstract that is used must travel with the def."""
+    parents they inherit from. A ParentName that resolves to nothing inherits
+    nothing, so an abstract that is used must travel with the def."""
     seen, abstract = set(), set()
     queue = [("d", n) for n in seeds]
     while queue:
@@ -2264,7 +2264,7 @@ def verify():
     ext_parents = sorted(p for p in parents if "@" + p not in ours)
     # A ParentName names a Name= attribute, which never appears in the def dump
     # -- so the dump cannot say who owns one. The donors' own XML can. A patch
-    # inheriting from a departing abstract is a SILENT discard, not an error.
+    # inheriting from a departing abstract logs one error and inherits nothing.
     _, dabs, dkinds = index_donors()
     donor_names = set(dabs) | {k[1:] for k in dkinds if k.startswith("@")}
     dead_parents = sorted(p for p in pparents
@@ -2350,7 +2350,7 @@ def verify():
     print("   species that lost a name %d %s" % (len(lost), ", ".join(lost)))
     print("   namers that do not resolve %d %s"
           % (len(bad_namers), ", ".join(bad_namers[:10])))
-    print("   ParentName from a departing mod (silent discard) %d %s"
+    print("   ParentName from a departing mod (inherits nothing) %d %s"
           % (len(dead_parents), ", ".join(dead_parents)))
     print("   ParentName from elsewhere (must be a mod we keep): %s"
           % ", ".join(ext_parents))

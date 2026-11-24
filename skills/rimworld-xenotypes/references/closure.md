@@ -2,7 +2,7 @@
 
 Read this before extracting xenotypes into a standalone mod, or before merging
 two species mods. Measured while rescuing 69 Star Wars species into
-`D:\Luke\dev\RimMandrake\src\Jawa\RimMandrake_StarWarsRaces`; the builder is
+`D:\Luke\dev\RimMandrake\src\RimStarWars\StarWarsRaces`; the builder is
 `D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\gen_races_mod.py`.
 
 ## What actually travelled
@@ -22,8 +22,8 @@ tattoos, hair defs, style categories, gene categories, furs and body types.
 **Three mask hediffs alone pulled 3 ThingDefs and 6 RecipeDefs.**
 
 ⇒ **Budget for a transitive walk, not a file copy.** Every def type above can
-name another def type, and each unresolved name is a *silent* discard, not an
-error.
+name another def type. Each reference to an unresolved name logs an error or
+nothing, and the load goes on.
 
 ## Walk the closure, do not guess it
 
@@ -91,8 +91,8 @@ thereby innocent.
 
 Abstract parents are addressed by `Name=`, which is global and separate from
 `defName`. **An abstract parent must travel with its children AND be renamed with
-them** — if `ParentName` resolves to nothing, the child is a **silent discard**.
-You get a mod that loads clean and is missing defs.
+them**. If `ParentName` resolves to nothing, the load logs `Could not find parent node named`,
+and the child loads without every inherited field.
 
 ## 🔴 defNames collide ACROSS def types
 
@@ -110,8 +110,8 @@ actually copied.
 
 ## Do not forget PawnKindDefs
 
-A rescued XenotypeDef with no PawnKindDef cannot be spawned or tested at all
-(SKILL.md §4). We authored 70. **Generate them in the same pass as the
+A rescued XenotypeDef with no PawnKindDef and no other route never comes from ordinary
+generation (SKILL.md §4). We authored 70. **Generate them in the same pass as the
 xenotypes** so the set is testable the moment it exists.
 
 ## The dedup-mod hazard
