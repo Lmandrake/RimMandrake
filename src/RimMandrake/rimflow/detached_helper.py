@@ -134,6 +134,8 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
 - At the end, close it with the sha ./publish printed (the close line; an operational item also takes `--live`), or, when
   anything is left, write a note whose text starts `LEFT OPEN:` and says exactly what. A run that ends success with its item open and no such note is
   flagged to the Conductor.
+- An acceptance check can pass on less than the spec. Before you close, read each spec line again: build what is not
+  built, or file it as ONE ticket and close with `--remainder <its id>`. `close` asks when your words name an unbuilt part.
 - A `LEFT OPEN:` note relaunches this brief in a fresh session (left_open_continue.py). When what is left is not a
   helper's to do (the owner's decision, an act of the Conductor's, a date), also put a dated wait on the item, so it
   is not relaunched for nothing (the wait line).
@@ -1658,8 +1660,18 @@ sys.path.insert(0, os.path.join("src", "RimMandrake", "rimflow"))
 import model
 item = sys.argv[1]
 evs = model.read()
-it = model.replay(evs).items.get(item)
-print(json.dumps({"state": getattr(it, "state", None), "wait_until": getattr(it, "wait_until", None),
+items = model.replay(evs).items
+it = items.get(item)
+rest = {}
+try:
+    import close_remainder as CR
+    ends = [e for e in evs[CR.last_start(evs, item):] if e.get("id") == item and e.get("event") == "close"]
+    rest = {"unit": ends[-1].get("role_unit") if ends else None, "linked": CR.linked(item, evs, items) or (ends and (
+        ends[-1].get("remainder") or ends[-1].get("noRemainder"))) or "", "name": CR.name(item, items),
+        "held": [i for i in items if CR.holds(items, item, i)]}
+except Exception as e:
+    rest = {"blind": "%s: %s" % (type(e).__name__, e)}
+print(json.dumps({"state": getattr(it, "state", None), "wait_until": getattr(it, "wait_until", None), "rest": rest,
                   "notes": [e for e in evs if e.get("id") == item and e.get("event") == "note"]}))
 """
 
@@ -1775,6 +1787,35 @@ def result_left_open(rec):
 
 _LEFT_OPEN_AT = re.compile(r"(?:^|(?<=[.!?]) )[ \t]*([*_]{0,3}" + re.escape(LEFT_OPEN) + ")",
                            re.IGNORECASE | re.MULTILINE)
+
+
+def file_remainder(rec, got, report, runner=subprocess.run):
+    """A run that closed its item while its own report declares unbuilt parts, with no ticket linked: the program files
+    the ticket (close_remainder.py), with the report in a note on it. -> one step line, or "" when nothing is owed."""
+    import close_remainder as CR
+    import spend_talk
+    rest = got.get("rest") or {}
+    if got.get("state") != "done":
+        return ""
+    item = rec["item"]
+    parts = [p for p in CR.declared(report) if not any(c in (rest.get("held") or ()) for c in CR.ids(p))]
+    if not parts:
+        return ""
+    if rest.get("blind") or not rest:
+        return "remainder: could not look (%s); the report declares: %s" % (rest.get("blind") or "no reading", " | ".join(parts))
+    if rest.get("linked") or rest.get("unit") != rec.get("unit"):
+        return ""
+    cli = os.path.join(rec["clone"], "src", "RimMandrake", "rimflow", "cli.py")
+    for argv in (["file", rest["name"], "--for", "BENCH", "--title", CR.title(item, [spend_talk.strip(p) for p in parts]),
+                  "--caused-by", item],
+                 ["note", rest["name"], "--text", "Filed at the end of %s, which closed %s. Its report:\n%s"
+                  % (rec["unit"], item, spend_talk.strip(report))]):
+        r = runner(["python3", cli] + argv + ["--seat", rec["seat"], "--why", "a run closed its item with parts unbuilt"],
+                   cwd=rec["clone"], capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+        if r.returncode:
+            return "remainder FAILED (%s exit %d: %s)" % (argv[0], r.returncode,
+                                                          ((r.stderr or "") + (r.stdout or "")).strip()[-200:])
+    return "remainder filed: " + rest["name"]
 
 
 def owed_close(rec, state, notes):
@@ -2147,6 +2188,13 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
             if isinstance(got, dict) and st.startswith("success ("):
                 owed = owed_close(dict(rec, result=st), got.get("state"), got.get("notes"))
                 steps.append("item " + (got.get("state") or "absent") + (": OWED" if owed else ""))
+                try:
+                    left = file_remainder(rec, got, run_report(rec), runner)
+                except Exception as e:  # noqa: BLE001  the filing never stops the finish; its failure is said
+                    left = "remainder FAILED (%s: %s)" % (type(e).__name__, e)
+                if left:
+                    steps.append(left)
+                    text += " " + left[0].upper() + left[1:] + "."
             else:
                 steps.append("item state UNMEASURED (its clone's ledger could not be read)")
         if owed:

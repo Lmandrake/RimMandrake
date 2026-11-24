@@ -56,7 +56,8 @@ Item: `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED`, step 1 of
   `pipe off family:list_effect` or `pipe off item:<ID>`, and when the control store cannot be read, the beat closes
   nothing (the item reads `pipeline_paused`, `off` or `blind`).
 - **the-tick-launches-nothing-and-files-nothing.** A beat writes no `file`, `spawn` or `start` and starts no unit. Its
-  only ledger write is `close`.
+  only ledger write is `close`. (That `close` itself files the remainder that the item's last note names as not built:
+  `design/specs/2026-11-24-close-files-its-remainder/boundary.md`.)
 - **a-refused-close-is-not-sent-again-unchanged.** When `rimflow close` refuses, the beat records the refusal with the
   item's event count, says it once on the Needs Conductor line, and sends no close for that item until the item or its
   check changes.

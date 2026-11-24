@@ -574,7 +574,7 @@ VERBS = {
     # `reason` on `close` carries WHY, and is what a cross-seat close writes instead of
     # a shrug. ⛔ The BAR is unchanged: done means proven, dead means probed. This
     # removes the seat boundary, never the evidence requirement.
-    "close":     {"who": "any",   "req": ("sha",), "opt": ("reason", "live", "noCode", "uncheckedLifted", "form_notes")},
+    "close":     {"who": "any",   "req": ("sha",), "opt": ("reason", "live", "noCode", "uncheckedLifted", "form_notes", "remainder", "noRemainder")},
     # `live` on close and implemented is the promise (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING, live_line.py). The verb
     # `live` is the no-AI sweep's reading of it, RUNNER only: `broken` takes a done item back to ready, ONE OF THE TWO PATHS
     # OUT OF `done` (the other is a `fail` verify on the closed work, `_earned_run`), because the record of the close stands in the log and the same id must count the repeat; `kept`

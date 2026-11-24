@@ -1147,19 +1147,19 @@ def test_owed_close():
           "(RIMMANDRAKE_TEACH_HELPER_WAIT_OWNERS_TURN_RELAUNCHED_FABLE)")
     ok_env = {"SERVICE_RESULT": "success", "EXIT_CODE": "exited", "EXIT_STATUS": "0"}
 
-    def ended(state, notes, env=None, item="SOME_ITEM_TO_BUILD", unreadable=False):
+    def ended(state, notes, env=None, item="SOME_ITEM_TO_BUILD", unreadable=False, report=None, rest=None):
         unit, _ = det_clone(item, status="running", path=CLONE)
         with open(os.path.join(TMP, unit + ".out"), "w") as f:
-            json.dump({"result": "Fixed 17 gaps; PUBLISHED abc.", "usage": {"input_tokens": 1, "output_tokens": 1}}, f)
+            json.dump({"result": report or "Fixed 17 gaps; PUBLISHED abc.", "usage": {"input_tokens": 1, "output_tokens": 1}}, f)
         open(os.environ["RM_CONDUCTOR_LOG"], "w").close()
         calls, run = recorder(out="PUBLISHED abcdef1234567")
         seen = []
 
         def reader(clone, it):
             seen.append((clone, it))
-            return None if unreadable else {"state": state, "notes": notes}
+            return None if unreadable else {"state": state, "notes": notes, "rest": dict(rest, unit=unit) if rest else {}}
         DH.finish(unit, now=T0 + 900, env=ok_env if env is None else env, runner=run, item_reader=reader)
-        note = [c[0] for c in non_systemctl(calls) if c[0][2:3] == ["note"]]
+        note = [c[0] for c in non_systemctl(calls) if c[0][2:4] == ["note", item]]
         with open(os.environ["RM_CONDUCTOR_LOG"]) as f:
             log = f.read()
         return unit, (note[0][note[0].index("--text") + 1] if note else ""), log, DH.read_record(unit), seen
@@ -1188,6 +1188,16 @@ def test_owed_close():
     class It:
         def __init__(self, state):
             self.state = state
+    # page 2026-11-24-close-files-its-remainder: finish files the remainder that a closed run's report declares
+    said = "I closed the item.\n\n- **Not built:** the boundary page.\n"
+    _, nt, log, rd, _ = ended("done", [], report=said, rest={"linked": "", "name": "RIMMANDRAKE_FINISH_SOME_UNBUILT_PARTS", "held": []})
+    check("Remainder filed: RIMMANDRAKE_FINISH_SOME_UNBUILT_PARTS" in nt and "remainder filed" in " ".join(rd["steps"]),
+          "remainder: finish files it and the note and the record say so (%s | %s)" % (nt[-160:], rd["steps"]))
+    _, nt, log, rd, _ = ended("done", [], report=said, rest={"linked": "RIMMANDRAKE_X_Y_Z", "name": "N", "held": []})
+    check("emainder" not in nt, "remainder: a linked remainder files nothing (%s)" % nt[-160:])
+    _, nt, log, rd, _ = ended("done", [], report=said)
+    check("could not look" in nt and rd["status"] == "finished", "remainder: an unread ledger is said and the finish goes on")
+
     lines = DH.owed_lines([rec, dict(rec, unit="other", owed_close="")], {"SOME_ITEM_TO_BUILD": It("proposed")}, [])
     check(len(lines) == 1 and line in lines[0], "owed: the status page line stands while the item is open (%s)" % lines)
     check(DH.owed_lines([rec], {"SOME_ITEM_TO_BUILD": It("done")}, []) == [],

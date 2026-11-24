@@ -2899,6 +2899,55 @@ def _close_evidence(args, seat, evs, sha):
     return ev, w2
 
 
+def _remainder_gate(args, seat, evs, w, it, no_code, evidence, notes):
+    """A close whose words name unbuilt spec parts with no ticket for them (close_remainder.py; page
+    design/specs/2026-11-24-close-files-its-remainder/boundary.md). -> (close fields, parts for this close to file).
+    A detached run is answered with the repair; the owner and the Conductor window are noted; any other closer is a
+    program with no agent to answer, so its close files the remainder."""
+    import close_remainder as CR
+    iid = args.id
+    if args.no_remainder is not None:
+        if not args.no_remainder.strip():
+            die("close: --no-remainder needs the reason why nothing is owed. Nothing changed.")
+        return {"noRemainder": args.no_remainder.strip()}, []
+    if args.remainder:
+        if not CR.holds(w.items, iid, args.remainder):
+            die("close: --remainder %s: it is not a filed item that can hold the remainder of %s (absent, dropped, or the "
+                "item itself). File it, or name the right one. Nothing changed." % (args.remainder, iid))
+        return {"remainder": args.remainder}, []
+    unit = (os.environ.get("RM_ROLE_UNIT") or "").strip()
+    run, boss = unit.startswith("rm-detached-"), principal.who(seat=seat)
+    texts = [CR.last_note(evs, iid)]
+    if run or boss:     # a program's close words hold its check's output, which are nobody's statement about the work
+        texts += [evidence, no_code, args.reason or "", model.AGENT_WHY or ""]
+    spec = "\n".join(b for n, b in read_prose(iid) if n.lower() == "spec")
+    parts = CR.owed(iid, [p for t in texts for p in CR.named(t) + CR.untested(t, spec)], w.items)
+    parts = list(dict.fromkeys(parts))
+    have = CR.linked(iid, evs, w.items) if parts else ""
+    if have:
+        return {"remainder": have}, []
+    if not parts:
+        return {}, []
+    if boss:
+        what = "parts named as not built, with no ticket: %s" % " | ".join(parts)
+        principal.form(what, seat=seat, event={"form_notes": notes})
+        return {}, []
+    if run:
+        die(CR.repair(iid, seat, parts, CR.name(iid, w.items)))
+    return {}, parts
+
+
+def _file_remainder(args, seat, w, parts):
+    """The program's own filing of the remainder, before its close. -> its id."""
+    import close_remainder as CR
+    ev = CR.to_file(args.id, seat, parts, w.items)
+    _emit(ev, w, quiet=True)
+    _emit({"seat": seat, "event": "note", "id": ev["id"], "text": "Filed by the close of %s. Its closer's words:\n%s"
+           % (args.id, "\n".join("- " + p for p in parts))}, w, quiet=True)
+    print("%s filed: the remainder of %s (%d part(s))" % (ev["id"], args.id, len(parts)))
+    return ev["id"]
+
+
 def cmd_close(args, seat):
     evs, w = load()
     _card_owed_or_die(args, evs)
@@ -2939,9 +2988,11 @@ def cmd_close(args, seat):
         # an owed act is discharged by evidence, never by "done"; a principal's free-text evidence goes, noted
         principal.form("evidence form: free text (no sha, run id, path or `told him at <time>`)",
                        _owed().refusal(args.id, no_code), seat=seat, die=die, event={"form_notes": form_notes})
-    ran = None
+    ran, rest = None, ({}, [])
     if it is not None:
         args.seat_is_owner = seat == "OWNER"
+        if it.open:
+            rest = _remainder_gate(args, seat, evs, w, it, no_code, evidence, form_notes)
         ran, as_passed = _close_evidence(args, seat, evs, sha) if evidence and not no_code else (None, None)
         _close_gate(args, as_passed.items.get(args.id) if ran else it, sha, no_code)
     ev = {"seat": seat, "event": "close", "id": args.id, "sha": sha}
@@ -2956,6 +3007,7 @@ def cmd_close(args, seat):
         ev["noCode"] = no_code
     if form_notes:
         ev["form_notes"] = form_notes
+    ev.update(rest[0])
     try:
         line = _live_gate("close", args, it, None if no_code else sha)
     except SystemExit:
@@ -2972,6 +3024,12 @@ def cmd_close(args, seat):
         except model.LedgerError as e:
             die(str(e))
         _emit(ran, w, quiet=True)
+    if rest[1]:
+        try:
+            model.check(ev, as_passed if ran else w)
+        except model.LedgerError as e:
+            die(str(e))
+        ev["remainder"] = _file_remainder(args, seat, w, rest[1])
     _emit(ev, w, quiet=True)
     if holder and holder != seat:
         print("%s closed at %s — ruled by %s (%s's item)%s"
@@ -4928,6 +4986,9 @@ def build_parser():
     s.add_argument("--level", choices=model.LEVELS, help="the level of that pass (default L0)")
     s.add_argument("--config", help="what that pass ran on, e.g. full-578 (default: close)")
     s.add_argument("--live", help=LIVE_HELP)
+    s.add_argument("--remainder", metavar="<ID>", help="the item that holds the spec parts this close leaves unbuilt")
+    s.add_argument("--no-remainder", dest="no_remainder", metavar="\"<why>\"",
+                   help="why nothing is owed, where the close's words or the last note read as if a spec part were unbuilt")
     s.add_argument("--reason", help="why it is done/dead — required in practice when "
                                     "the item is another seat's; the ledger records "
                                     "which seat ruled")
