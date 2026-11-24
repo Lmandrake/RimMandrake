@@ -64,6 +64,23 @@ def true_to_grid(edges, net_of):
     return bad
 
 
+def cell_net(n):
+    """The net of one cell of AerialProbe's net: read: the transmitted net there, else the net of the device that stands there (a lamp
+    wired to a battery by vanilla's own link stands on no transmitted net: seen live 2026-11-24). None: no net, or no read."""
+    if not n.get("success"):
+        return None
+    got = [n.get("net")] + [t.get("net") for t in n.get("things") or []]
+    return next((v for v in got if v not in (None, -1)), None)
+
+
+def in_other_walls(total, own):
+    """Cord vertices in a wall that is not a bracket's own: the census total less the count read in each aboard bracket's home wall cell
+    (the cord of a wall bracket ends at its foot on that wall, under the bracket). None: a count could not be read."""
+    if total is None or any(v is None for v in own):
+        return None
+    return total - sum(own)
+
+
 def control_verdict(before_edges, net_of):
     """-> (status, class, detail): the pre-launch cord set against the landed map must fail by name on an end outside the landed net."""
     bad = true_to_grid(before_edges, net_of)
@@ -226,7 +243,7 @@ def scene(a, det):
         def net_of(c):
             if c not in cache:
                 n = B.ap("net:%d,%d" % c)
-                cache[c] = None if not n.get("success") or n.get("net") in (None, -1) else n["net"]
+                cache[c] = cell_net(n)
             return cache[c]
         edges = cord_edges(gr)
         grid = true_to_grid(edges, net_of)
@@ -236,7 +253,15 @@ def scene(a, det):
             print("UNMEASURED: the battery or a consumer was not found on the landed map: %s" % (reads,))
             det["unmeasured"] = "the battery or a consumer was not found on the landed map: %s" % (reads,)
             return 2
-        why = flight_verdict(a.mode, up_aboard, to_ground, after.get("spansUp"), grid, edges, net_ok, gr.get("verticesInUnwalkable"))
+        home = [(q["x"], q["z"] + 1) for q in anchors if q["id"] in ids[:2]]      # the walls of the two brackets, each on a south face
+        own = [B.probe("rect:%d,%d,1,1" % c).get("verticesInUnwalkable") for c in home]
+        walls = in_other_walls(gr.get("verticesInUnwalkable"), own)
+        if walls is None or len(home) != 2:
+            print("UNMEASURED: the cord vertices at the brackets' walls could not be read: %s %s" % (home, own))
+            det["unmeasured"] = "the cord vertices at the brackets' walls could not be read"
+            return 2
+        lay["inBracketWalls"] = own
+        why = flight_verdict(a.mode, up_aboard, to_ground, after.get("spansUp"), grid, edges, net_ok, walls)
         ok = not why
         det.update({"mode": a.mode, "before": {"spansUp": before.get("spansUp")}, "after": {"spansUp": after.get("spansUp"), "spansCut": after.get("spansCut")},
                     "aboardSpanUp": up_aboard, "groundLinkKept": to_ground, "cords": lay, "links": links, "ids": ids, "netAfter": reads,

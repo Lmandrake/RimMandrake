@@ -281,6 +281,10 @@ check("ship: an edge name with no cells is a fault, never skipped", GS.true_to_g
 check("ship: one net is true to the grid", GS.true_to_grid(E1, lambda c: 5) == [])
 check("ship planted: a cord joining two nets", GS.true_to_grid(E1, lambda c: c[0])[0][1] == "joins two nets")
 check("ship planted: a cord end off the net", "outside the landed net" in GS.true_to_grid(E1, lambda c: None if c[0] == 8 else 1)[0][1])
+check("ship: a lamp's own net stands in for its cell's", GS.cell_net({"success": True, "net": -1, "things": [{"net": -1}, {"net": 6}]}) == 6
+      and GS.cell_net({"success": True, "net": -1, "things": []}) is None and GS.cell_net({"success": False, "net": 3}) is None)
+check("ship planted: a lamp on another net than its battery", GS.true_to_grid([("k", (1, 1), (2, 2))], lambda c: GS.cell_net(
+    {"success": True, "net": 5 if c == (2, 2) else -1, "things": [{"net": 8}]}))[0][1] == "joins two nets")
 check("ship control: fails by name on the landed map", GS.control_verdict(E1, lambda c: None)[0] == "PASS")
 check("ship control: a read that cannot fail is not a pass", GS.control_verdict(E1, lambda c: 1)[0] == "UNMEASURED")
 check("ship control: no pre-launch cord is UNMEASURED", GS.control_verdict([], lambda c: None)[0] == "UNMEASURED")
@@ -373,14 +377,26 @@ class Ship:
                                 for i, d, x, z in an]}
         return {"success": True}
 
+    WALL = 15                      # the cord of a wall bracket runs this many vertices into the bracket's own wall (read live 2026-11-24)
+
     def probe(self, cmd):
+        walls = [(x, z + 1) for _, d, x, z in self.things if d == "RM_AerialWallBracket"]
+        if cmd.startswith("rect:"):
+            if self.plant == "bracket wall unread":
+                return {"success": False}
+            at = tuple(int(q) for q in cmd.split(":")[1].split(",")[:2])
+            return {"success": True, "verticesInUnwalkable": self.WALL if walls[:1] == [at] else 0}
         if cmd != "census":
             return {"success": True}
+        bad = (self.WALL if walls else 0) + (4 if self.landed and self.plant == "a cord in another wall" else 0)
         c = self.conduit()
         if self.landed and self.plant == "cords left behind":
             c = [(x - self.MOVE[0], z - self.MOVE[1]) for x, z in c]
         e = {"end:%d,%d|end:%d,%d" % (c[0] + c[-1]): "h"} if c and not (self.landed and self.plant == "no cords after") else {}
-        return {"success": True, "edgeHashes": e, "cordEdges": len(e), "cordsAcrossNets": 0, "verticesInUnwalkable": 0, "conduitCells": len(c)}
+        dev = {d: (x, z) for _, d, x, z in self.things if d in ("Battery", "StandingLamp")}
+        if e and len(dev) == 2:    # vanilla's own link: a lamp wired straight to the battery; its end stands on the lamp's cell
+            e["consumer:%d,%d|battery:%d,%d" % (dev["StandingLamp"] + dev["Battery"])] = "h2"
+        return {"success": True, "edgeHashes": e, "cordEdges": len(e), "cordsAcrossNets": 0, "verticesInUnwalkable": bad, "conduitCells": len(c)}
 
 
 def fly(mode, plant=None):
@@ -416,12 +432,12 @@ for mode in ("on", "off", "off_autolink"):
           [sum(t[1] == d for t in ship.things) for d in ("RM_AerialWallBracket", "Battery", "StandingLamp")] == [2, 1, 2])
 for mode, plant in (("on", "switch ignored"), ("off", "switch ignored"), ("off_autolink", "switch ignored"), ("off_autolink", "re-strung on landing"),
                     ("on", "ground link kept"), ("off", "ground link kept"), ("on", "no cords after"), ("off", "cords left behind"),
-                    ("on", "consumers cut off by the landing")):
+                    ("on", "consumers cut off by the landing"), ("off", "a cord in another wall")):
     rc, det, _ = fly(mode, plant)
     check("flight %s planted: %s reads FAIL" % (mode, plant), rc == 1, det)
 rc, det, _ = fly("off", "re-strung on landing")
 check("flight off: the old flight (auto-link off) cannot see the re-string, which is why off_autolink flies", rc == 0, det)
-for plant in ("lands where it stood", "one lamp", "two nets before", "brackets refused", "blind"):
+for plant in ("lands where it stood", "one lamp", "two nets before", "brackets refused", "blind", "bracket wall unread"):
     rc, det, _ = fly("on", plant)
     check("flight: %s is UNMEASURED, never a pass" % plant, rc == 2, det)
 
