@@ -141,6 +141,7 @@ def main(argv=None):
     ap.add_argument("--effort", default=DEFAULT_EFFORT, help="model_reasoning_effort (default %s)" % DEFAULT_EFFORT)
     ap.add_argument("--timeout", type=int, default=1500)
     ap.add_argument("--keep", action="store_true", help="keep the scratch job dir")
+    ap.add_argument("--codex", help=argparse.SUPPRESS)      # retired: "win" is refused by name and logged by the door
     ap.add_argument("--codex-home", help="run codex with this CODEX_HOME (must already hold a login; never seeded here)")
     ap.add_argument("--lockdown", action="store_true",
                     help="no tools: --ephemeral, every tool feature disabled, web search off, strict config")
@@ -149,7 +150,7 @@ def main(argv=None):
     ap.add_argument("--required", help="the rule that requires this review round: lets it run while the Codex "
                                        "advice is HOLD (never while EXHAUSTED)")
     a = ap.parse_args(argv)
-    side = door.resolve_side(None)
+    side = door.resolve_side(a.codex or os.environ.get("RM_CODEX_SIDE") or None)
     if a.round is not None and not ROUND_RE.match(a.round):
         ap.error("--round %r: 1-80 chars of A-Z a-z 0-9 _ . : - (starting alphanumeric)" % a.round)
     refused = codex_advice.gate("gpt_consult", a.required)

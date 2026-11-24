@@ -38,7 +38,7 @@ def ok(name, got, want):
 import os as _os  # noqa: E402
 (Path(T) / "codex_home").mkdir(exist_ok=True)
 (Path(T) / "codex_home" / "auth.json").write_text("{}")        # the door launches only against a home with a login
-_os.environ.update(CODEX_SCRATCH=str(Path(T) / "codex"), GPT_DOOR_CODEX="/bin/true", RM_CODEX_SIDE="wsl",
+_os.environ.update(CODEX_SCRATCH=str(Path(T) / "codex"), GPT_DOOR_CODEX="/bin/true",
                    GPT_DOOR_LOG_DIR=str(Path(T) / "door_log"), CODEX_HOME=str(Path(T) / "codex_home"))
 GC.codex_advice.gate = lambda *a, **k: 0                 # the live Codex HOLD/EXHAUSTED advice is not under test
 _real_run = GC.subprocess.run

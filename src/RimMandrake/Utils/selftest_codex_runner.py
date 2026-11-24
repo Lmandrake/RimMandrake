@@ -378,6 +378,15 @@ class CodexRunnerTests(unittest.TestCase):
             p.write_text(json.dumps(row) + "\n")
             self.assertEqual(ow.c_codex(now, ow.load_rules(), {})["codex.week_used_pct"]["v"], 68)
 
+    def test_the_retired_windows_route_is_refused_and_logged(self):
+        import gpt_consult as gc
+        for argv, env in ((["q", "--codex", "win"], ""), (["q"], "win")):
+            with tempfile.TemporaryDirectory() as td, patch.dict(os.environ, {"GPT_DOOR_LOG_DIR": td, "RM_CODEX_SIDE": env,
+                                                                              "GPT_DOOR_CALLER": "hidden"}), \
+                    patch.object(gc.codex_advice, "gate", return_value=0), patch.object(gc.door, "ask", side_effect=AssertionError("asked")):
+                self.assertNotEqual(gc.cli(argv), 0)
+                self.assertEqual([(r["outcome"], r["caller"]) for r in gc.door.read_log(Path(td))], [("WINDOWS_RETIRED", "hidden")])
+
     def test_consult_lockdown_through_the_door(self):
         """gpt_consult --lockdown asks the door with no tools, in the job folder, on the named sign-in."""
         import gpt_consult as gc

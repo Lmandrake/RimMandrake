@@ -79,7 +79,7 @@ import gpt_consult as GC  # noqa: E402
 import os as _os  # noqa: E402
 (Path(T) / "codex_home").mkdir(exist_ok=True)
 (Path(T) / "codex_home" / "auth.json").write_text("{}")        # the door launches only against a home with a login
-_os.environ.update(CODEX_SCRATCH=str(Path(T) / "codex"), GPT_DOOR_CODEX="/bin/true", RM_CODEX_SIDE="wsl",
+_os.environ.update(CODEX_SCRATCH=str(Path(T) / "codex"), GPT_DOOR_CODEX="/bin/true",
                    GPT_DOOR_LOG_DIR=str(Path(T) / "door_log"), CODEX_HOME=str(Path(T) / "codex_home"))
 _real_run = GC.subprocess.run
 
