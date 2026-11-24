@@ -2452,6 +2452,33 @@ def forward_submit(a, argv):
     return r.returncode
 
 
+def cmd_ask(a):
+    """One line asks the lane: the host's facts, the item's live-proof lines, the tier -> the whole submit. 0 asked, 3 cannot, 4 could not look."""
+    import re
+    import ask as ASK
+    import host_facts as HF
+    r = HF.read()
+    proofs, mod = {}, None
+    try:
+        with open(os.path.join(REPO, "infrastructure", "state", "live_proofs", a.item + ".txt"), encoding="utf-8") as f:
+            for line in f:
+                m = re.match(r"live-proof (\w+):", line)
+                if m:
+                    proofs[m.group(1)] = line
+                m = re.match(r"live-mods:\s*(\w+)", line)
+                mod = mod or (m.group(1) if m else None)
+    except OSError:
+        pass
+    sha = a.sha or subprocess.run(["git", "-C", REPO, "rev-parse", "origin/main"], capture_output=True, text=True, timeout=60).stdout.strip() or "origin/main"
+    p = ASK.plan(a.item, r["facts"], r["stale"], proofs, {}, {a.tier: a.mods or []} if a.tier else {}, mod=mod, sha=sha)
+    print("%s %s" % (p["verdict"], "; ".join(p["why"])))
+    if p["verdict"] in ("ASK", "HOLD"):
+        argv = p["argv"] + ["--purpose", a.purpose, "--by", a.by]
+        print("testq.py " + " ".join(argv))
+        return main(argv) if p["verdict"] == "ASK" and not a.dry else 0
+    return 4 if p["verdict"] == "COULD NOT LOOK" else 3
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="testq.py", description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -2488,6 +2515,14 @@ def main(argv=None):
     s.add_argument("--situational", action="store_true", help="modcheck run --situational --policy abort")
     s.add_argument("--no-sha-check", action="store_true", help="skip the is-it-on-origin/main check")
     s.add_argument("--retest-why", help="run chains that already hold a verdict at their code version, and say why")
+    s = sub.add_parser("ask", help="ask the lane for an item's live proofs, after the host's facts (exit 0 asked, 3 cannot, 4 could not look)")
+    s.add_argument("item")
+    s.add_argument("--purpose", choices=S.PURPOSES, required=True)
+    s.add_argument("--by", default="BENCH")
+    s.add_argument("--sha")
+    s.add_argument("--tier")
+    s.add_argument("--mods", nargs="*")
+    s.add_argument("--dry", action="store_true")
     s = sub.add_parser("list")
     s.add_argument("--state", choices=STATES)
     s = sub.add_parser("show")
@@ -2535,7 +2570,7 @@ def main(argv=None):
         if fwd is not None:
             return fwd
     return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "wait": cmd_wait, "cancel": cmd_cancel, "resume": cmd_resume,
-            "sweep": cmd_sweep, "fill": cmd_fill,
+            "sweep": cmd_sweep, "fill": cmd_fill, "ask": cmd_ask,
             "tick": cmd_tick, "visit-feed": cmd_visit_feed, "pause": cmd_pause, "maintenance": cmd_maintenance, "steward": cmd_steward, "steward-watch": cmd_steward_watch,
             "archmagi-report": cmd_archmagi_report}[a.cmd](a)
 
