@@ -32,7 +32,7 @@ Item: `RIMMANDRAKE_AUDIT_CODEX_NIGHT_FIXES_INTEGRATED_AND_TICKETS_CLOSED`. Scope
 | `RIMMANDRAKE_RETIRE_FOUNDRY_SLOT_KEY_INDEX_NAMED_A_GHOST` | `f090327ad2` |
 | `RIMMANDRAKE_TICKET_LANE_CAUSE_ONCE_THIRTEEN_FOR_ONE`, `RIMMANDRAKE_FINISH_TICKET_LANE_CAUSE_ONCE_THREE_SPEC_PARTS_UNBUILT` | `f86902c8e7`, `f97db855eb`, `ba7109b975` |
 | closed by this audit: `RIMMANDRAKE_FENCE_ARTPIPE_SELFTEST_OUT_OF_PROFILE_169_LEAKS`, `WAKE_LIST_FIX_OLD_MAIL_MARKED_LATE`, `RIMMANDRAKE_FIX_BRIDGE_RELEASE_WRAPUP_RESTORE_TRACEBACK_EXIT_ONE` | `200755349a`, `e9efb41a65`, `61e38119d3` (each test run today) |
-| eight stale tickets and the Friday judge | six re-run today, PASS; `enact_*` folders 0; `SCRATCH_AGE_FIX_FIFTY_SIX_YEARS_YOUNG` was not read again |
+| eight stale tickets and the Friday judge | six re-run today, PASS; `enact_*` folders 0; `oldest_h` reads 488.5 |
 
 Review fixes with no ticket, on main: `bde6d4ae9d`, `9f5835b8ef`, `7aa1752ee4`, `e0cba017d6`, `fe2fcefa3a`, `f792bd7b76`,
 `61f1aabc81`, `bd87258ddd`.
