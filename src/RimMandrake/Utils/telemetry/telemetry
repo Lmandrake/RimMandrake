@@ -5,7 +5,14 @@
 here="$(dirname "$(readlink -f "$0")")"
 if [ "$1" = "wsl-health" ]; then shift; exec python3 "$here/health.py" "$@"; fi
 store="$(python3 "$here/games.py" store)" || { echo "COULD NOT LOOK: this machine's telemetry config cannot be read" >&2; exit 3; }
-if [ "$store" = local ]; then exec python.exe "$(wslpath -w "$here/cli.py")" "$@"; fi
+if [ "$store" = local ]; then
+  py="$(command -v python.exe)"   # an ssh session has no Windows folder on PATH (measured 2026-11-23)
+  for p in "${RM_WIN_USERS:-/mnt/c/Users}"/*/AppData/Local/Microsoft/WindowsApps/python.exe; do
+    [ -n "$py" ] || { [ -x "$p" ] && py="$p"; }
+  done
+  [ -n "$py" ] || { echo "COULD NOT LOOK: no Windows python.exe here to read the store with" >&2; exit 3; }
+  exec "$py" "$(wslpath -w "$here/cli.py")" "$@"
+fi
 args=""; for a in "$@"; do args="$args '${a//\'/\'\\\'\'}'"; done
 ssh -o BatchMode=yes -o ConnectTimeout=10 -o LogLevel=ERROR "$store" "~/.local/bin/telemetry$args"; rc=$?
 if [ $rc = 255 ]; then echo "COULD NOT LOOK: the telemetry store ($store) could not be reached" >&2; exit 3; fi

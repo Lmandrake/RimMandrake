@@ -49,6 +49,8 @@ into `<root>/inbox/games/<machine>/`, and read from there. Every point, event an
 - **one-games-alarm-state-never-mixes-with-anothers.** The alarms read the store's own first game. A stall or a low
   speed of another game is kept as that game's event, raises no alarm, and leaves the first game's alarm state
   unchanged; a second game that is up does not read as "the record of the first is silent".
+- **a-session-without-windows-folders-on-path-finds-python.** The command works in an ssh session on the store's
+  machine; with no Windows python at all it reads "could not look", exit 3.
 - **a-backlog-being-read-is-a-live-daemon.** The heartbeat is written between files, so a daemon that drains a long
   backlog is not read as a dead one.
 - **a-pull-copies-each-byte-once.** A pull appends what is new; a rename-rotated file is renamed, not copied again; a cut
@@ -60,4 +62,4 @@ into `<root>/inbox/games/<machine>/`, and read from there. Every point, event an
 - **a-machine-without-the-store-asks-the-one-that-has-it.** The `telemetry` command on another machine runs on the
   store's machine over ssh; when that cannot be reached it reads "could not look", exit 3.
 
-Later lists beside this page: `polish.md` (none yet) and `next_version.md` (none yet).
+Later lists beside this page: `polish.md` and `next_version.md` (none yet).

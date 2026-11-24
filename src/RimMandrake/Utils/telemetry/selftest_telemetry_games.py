@@ -409,6 +409,33 @@ def t_the_tps_report_takes_a_game_name_too(W):
     check("a game with no record is no data yet", rc == 4 and "no data yet" in o, (rc, o))
 
 
+def t_a_session_without_windows_folders_on_path_finds_python(W):
+    """What an ssh session has: PATH with no Windows folder. The store's own machine is reached that way from elsewhere."""
+    users = os.path.join(W.tmp, "users")
+    d = os.path.join(users, "someone", "AppData", "Local", "Microsoft", "WindowsApps")
+    b = os.path.join(W.tmp, "nowin")
+    os.makedirs(b)
+    for x in ("bash", "env", "dirname", "readlink", "python3"):
+        os.symlink(shutil.which(x), os.path.join(b, x))
+    with open(os.path.join(b, "wslpath"), "w") as f:
+        f.write('#!/bin/sh\necho "$2"\n')
+    os.chmod(os.path.join(b, "wslpath"), 0o755)
+    os.symlink(shutil.which("sh"), os.path.join(b, "sh"))
+
+    def run():
+        r = subprocess.run([os.path.join(HERE, "telemetry"), "games", "Steve1"], capture_output=True, text=True,
+                           timeout=60, env={**os.environ, "PATH": b, "RM_WIN_USERS": users})
+        return r.returncode, r.stdout + r.stderr
+    rc, o = run()
+    check("no Windows python at all is could not look, exit 3", rc == 3 and "COULD NOT LOOK" in o, (rc, o))
+    os.makedirs(d)
+    with open(os.path.join(d, "python.exe"), "w") as f:
+        f.write('#!/bin/sh\necho "PY $@"; exit 4\n')
+    os.chmod(os.path.join(d, "python.exe"), 0o755)
+    rc, o = run()
+    check("it is found off PATH, and its exit code comes back", rc == 4 and "cli.py games Steve1" in o, (rc, o))
+
+
 def t_a_backlog_being_read_is_a_live_daemon(W):
     """The heartbeat moves between files, so a long first pass is never read as a dead telemetryd."""
     for i in range(3):
@@ -499,6 +526,7 @@ def main():
             t_one_games_alarm_state_never_mixes_with_anothers,
             t_a_pull_copies_each_byte_once,
             t_the_tps_report_takes_a_game_name_too,
+            t_a_session_without_windows_folders_on_path_finds_python,
             t_a_backlog_being_read_is_a_live_daemon,
             t_no_machine_path_or_game_is_hard_wired,
             t_a_machine_without_the_store_asks_the_one_that_has_it,
