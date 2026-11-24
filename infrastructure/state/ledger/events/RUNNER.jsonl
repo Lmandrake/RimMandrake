@@ -11915,3 +11915,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_TESTQ_UNSTICK_ECPK_LZZW","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-24T11:29:49Z","tsn":1795519789172705233}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-24T11:31:41Z","tsn":1795519901905779324}
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC_XKGA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-24T11:31:53Z","tsn":1795519913171545992}
+{"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_STALLED_UNOWNED_1FFD","text":"steward: started one capped headless BENCH session (budget $5, 2700 s cap); log /mnt/d/ClaudeWork/rimmandrake/testq/wake/20261124T113343Z.log","ts":"2026-11-24T11:34:04Z","tsn":1795520044801353389}
