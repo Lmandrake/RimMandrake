@@ -48,11 +48,16 @@ def _cmd(spec):
 # key: checks of one key share one run. steps: shell lines in the repo root; {out} is the run's result file (Linux path),
 # {wout} the same as Windows spells it, {stamp} a stamp. read: the reader's name. site: what is made before the steps.
 
+# a scene whose site save was built on another tier (it does not load verified on `flowworks`: Steve1, 2026-11-24)
+CONCEPT_TIERS = {"scene_source_pays": "fw_gss_sitting"}
+
+
 def _concept(tid, spec):
     entry = str(spec.get("entry") or "")
     if not entry.startswith("scene_"):
         return None
-    return {"key": "concept:" + entry, "read": "concept", "tier": "flowworks", "build": "release",
+    return {"key": "concept:" + entry, "read": "concept", "build": "release",
+            "tier": spec.get("tier") or CONCEPT_TIERS.get(entry, "flowworks"),
             "steps": ["python.exe -u src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene %s --out {wout}" % entry]}
 
 

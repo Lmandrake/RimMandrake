@@ -91,6 +91,9 @@ def t_the_four_mods_are_takeable():
 
 
 def t_a_full_list_check_is_never_sent():
+    p = SC.place("FlowWorks", {"a": concept("scene_source_pays"), "b": concept(tier="gimmesomeslack_flowworks")}, root=ROOT)
+    check(p["a"][1]["check"]["tier"] == "fw_gss_sitting" and p["b"][1]["check"]["tier"] == "gimmesomeslack_flowworks",
+          "the-four-mods-are-takeable: a scene on a site built on another tier, or with a tier of its own, names it")
     p = SC.place("FlowWorks", {"a": concept(kind="live_full"), "b": concept(why_full_list="the walk"),
                                "c": concept(kind="look"), "d": concept()}, root=ROOT)
     check([p[k][0] for k in "abcd"] == [SC.NOT_LANE] * 3 + [SC.TAKEABLE], "a-full-list-check-is-never-sent: %s" % {
