@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "ee1db7d26989abf9be54515bd24da5773bccdd5111c6d2377739c492786eadb9",
+  "body_sha256": "882a9607e8dda0a9ba499b0cb686da402b7bd8ba7ab853d314639eb97f0deeca",
   "reducer": 1,
   "shards": {
    "BACKFILL": 890449,
@@ -42,7 +42,7 @@
    "HOLDER.run-1795441687": 754,
    "HOLDER.run-1795461568": 2159,
    "HOLDER.run-1795471235": 562,
-   "HOLDER.run-1795503470": 1124,
+   "HOLDER.run-1795503470": 1774,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1284,11 +1284,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795461568",
-   "done": "corpse-wounds item dropped as SITE (hit flecks); OL blocked row removed and its item closed; moat control staged one raider at a time, 32766479e0, green/red offline",
-   "next": "In visit 9 read MOAT_control_bridge_down_no_swim and moatControlTrace over 5 runs, and plant six at once",
-   "ruled_out": "wound overlays over tar; pathfinder slack beside the lowered leaf",
-   "ts": "2026-11-23T19:39:50Z"
+   "by": "HOLDER.run-1795503470",
+   "done": "visit 9 routed: no mod-wrong line sends it back, advanced in_game to in_game (f0dd729654); paused-raid item hold fixed (f054ee9f94)",
+   "next": "Drive visit 10: the three walker scenes, the build-match re-runs; sc_walk and PIT_LOOK_1114_LIVE on ArchBig",
+   "ruled_out": "offline_build or blind_challenge as the road back: the one MOD FAIL is of a paused scene",
+   "ts": "2026-11-24T07:29:18Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1740,7 +1740,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1695,
+  "events": 1696,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7840,7 +7840,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-24T07:21:11Z",
+   "last": "2026-11-24T07:29:18Z",
    "lease": "run-1795503470",
    "released": false,
    "token": 59
