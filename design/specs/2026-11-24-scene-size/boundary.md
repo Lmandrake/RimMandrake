@@ -30,6 +30,8 @@ than one game day, runs on the full list, or holds more than one claim. Its **ev
   counts as unread. A missing file, function or syntax reads UNMEASURED.
 - **declared-size-wins.** `game_days` and `claims` replace what is read.
 - **one-day-and-one-claim-pass.** Exactly one game day, and one claim, are not oversized.
+- **full-list-is-refused.** A test that asks for the full list is refused, whatever its evidence and whatever the known list says. The one
+  exemption list, `FULL_LEFT`, names a test that still stands, with its reason.
 - **known-is-not-new.** A listed test is not new. A listed test that grows is new.
 - **tree-is-clean.** The tables in this tree hold no new oversized test.
 - **unreadable-is-could-not-look.** A table or a list that cannot be read exits 2, never 0.

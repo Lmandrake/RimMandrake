@@ -11,7 +11,8 @@ A stage-6 live test of a test table is OVERSIZED when one of these is measured:
   list     it runs on the full list (kind live_full, or `why_full_list`)
   claims   it holds more than one claim: `claims`, a list on the entry. An entry that declares none is read from the clauses of
            its `observes` (split at ';', a "log clean" clause left out), and CLAUSES or more of them read as several claims
-An oversized test owes `cheaper_why` on its entry: why a cheaper, faster, simpler test cannot decide the same bar. A span that
+A test on the full list is refused, whatever its evidence (owner, 2026-11-24: retired until the integration phase).
+Any other oversized test owes `cheaper_why` on its entry: why a cheaper, faster, simpler test cannot decide the same bar. A span that
 cannot be read is UNMEASURED, never small and never oversized.
 
   scene_size.py check [--mod M ...] [--table FILE] [--all]   one line per finding; --all lists the known ones too
@@ -39,6 +40,12 @@ SPAN_DAYS = 1.0
 # so a clause count is a proxy only where the entry declares no `claims`.
 CLAUSES = 5
 DAY = 60000
+# Owner, 2026-11-24 ("go"): full-list testing is retired until the integration phase. No evidence buys a full-list test now.
+# FULL_LEFT names each test that still stands on it, with why; nothing else may. It empties with that reason.
+FULL_LEFT = {("Pyrelands", "sc_full_list_smoke"): "Pyrelands visit 9 was live when the owner ruled; it leaves the table when that visit has ended"}
+FULL_REPAIR = ("run the same scene on the mod's small list (kind live_minimal, its tier in small_list.json), or take it out of the table "
+               "and write its claim on design/RimMandrake/integration_phase_list.md (design/RimMandrake/standing_rulings.md "
+               "§Mod development runs on small lists)")
 WAITS = ("_wait", "wait_ticks", "_wait_raw", "_r6_tick_on", "wait", "advance_ticks")
 REPAIR = ("write the cheaper scene (one claim, the least list, the shortest advance), or say in `cheaper_why` of its test-table "
           "entry why a cheaper, faster, simpler test cannot decide the same bar (design/RimMandrake/standing_rulings.md §The "
@@ -225,12 +232,20 @@ def load_known(path=KNOWN):
         return json.load(f).get("tests") or {}
 
 
-def check(tables, root=REPO, known=None):
-    """tables: {mod: parsed table}. -> (new, old): lines [(mod, test, words)]."""
+def check(tables, root=REPO, known=None, left=None):
+    """tables: {mod: parsed table}. -> (new, old): lines [(mod, test, words)]. A test on the full list is always new, whatever its
+    evidence, unless `left` (FULL_LEFT) names it."""
     known = load_known() if known is None else known
+    left = FULL_LEFT if left is None else left
     new, old = [], []
     for mod, tt in sorted(tables.items()):
+        for t, v in sorted(live_tests(tt).items()):
+            if (v.get("kind") == "live_full" or _txt(v.get("why_full_list"))) and (mod, t) not in left:
+                new.append((mod, t, ["asks for the full list, which is retired: %s" % FULL_REPAIR]))
+        asked = {t for m_, t, _w in new if m_ == mod}
         for t, (m, w) in sorted(owed(tt, root).items()):
+            if t in asked:
+                continue
             k = (known.get(mod) or {}).get(t)
             (new if k is None or grown(m, k) else old).append((mod, t, w))
     return new, old
@@ -272,7 +287,7 @@ def main(argv=None):
         return 2
     new, old = check(tables, REPO, known)
     for mod, t, w in new:
-        print("NEW   %s %s: %s. %s" % (mod, t, "; ".join(w), REPAIR))
+        print("NEW   %s %s: %s%s" % (mod, t, "; ".join(w), "" if FULL_REPAIR in w[0] else ". " + REPAIR))
     if a.all:
         for mod, t, w in old:
             print("known %s %s: %s" % (mod, t, "; ".join(w)))

@@ -449,7 +449,7 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
 ```
 - There are several live games (owner, 2026-11-20: "There are two live games. ... Please stop saying waiting for the
   live game."):
-  - ArchBig is Steam's install on Archmagi, with the full list (lock `archmagi`).
+  - ArchBig is Steam's install on Archmagi (lock `archmagi`).
   - ArchSmall is its own install on Archmagi (lock `archmagi.b`).
   - Steve1 and Steve2 on SteveDesktop take work through `infrastructure/stevedesktop/RUNBOOK.md`.
   - Each game has one bridge holder at a time. Two holders may drive two games.
@@ -464,8 +464,9 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
   - The hold does not depend on your bridge hold. It stays when your bridge hold lapses.
   - Every in-game run that can use ArchSmall goes to ArchSmall. ArchSmall has its own install, Mods and BridgeTools
     (`D:\ClaudeWork\rimmandrake\instances\b\game`), so its deploys never touch ArchBig.
-  - A visit whose every check needs his full list waits. `./pipe why <Mod>` names those checks. ArchSmall holds a tier list (a small named mod list)
-    only beside ArchBig (memory). In a mixed visit on ArchSmall, the full-list checks are UNMEASURED.
+  - No visit waits for a mod list: full-list testing is retired (`design/RimMandrake/standing_rulings.md` §Mod development runs
+    on small lists). He walks on the game whose Saves folder holds the walk savegame. For an ArchSmall walk, hold ArchSmall
+    (`./pipe off game:ArchSmall`).
   - Full text: `design/specs/2026-11-20-per-game-hold-own-install/boundary.md` and
     `design/RimMandrake/two_rimworld_instances_2026-11-07.md` `§Game b's own install` (ArchSmall's).
 - Always name the stop mode (owner, by card 2026-11-18: "we shouldn't rely on defaults"). Every brief that you write

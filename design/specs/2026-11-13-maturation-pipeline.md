@@ -330,7 +330,7 @@ The one source is `roles/fable_rescue.md` step 2. The ruling is `design/RimMandr
 
 The fastest methods:
 
-- The 13-mod minimal list loads in 22 seconds. The full list takes about 15 minutes. A test uses the full list only when it says why. **[CARRIED]** (his ruling 2026-11-12)
+- The 13-mod minimal list loads in 22 seconds. No test uses the full list. **[HIS, 2026-11-24]** (standing_rulings §Mod development runs on small lists)
 - A flyer's flight is never tested live without him. **[CARRIED]**
 
 #### Which game runs what
@@ -341,7 +341,7 @@ The fastest methods:
 |---|---|---|
 | The scripted verdict on each locked in-game bar | Either game: Dispatch takes whichever is free | HIS, by card 2026-11-14 (18a) |
 | Exploring beyond the bars; screenshots looking for strange things | ArchBig or ArchSmall | PROPOSAL: an agent must look, and the looking tools run there |
-| The labelled savegame and his live walk (Stage 8) | ArchBig | CARRIED: he sits at that machine |
+| The labelled savegame and his live walk (Stage 8) | ArchBig or ArchSmall, on the mod's small list: the game whose Saves folder holds the savegame | HIS, 2026-11-24 ("go") |
 | Re-running a passed version's bars when something it depends on changes | Either game, through the queue (§6, "After a version passes") | HIS, by card 2026-11-14 (18b): built only after one version has passed |
 
 **A verdict counts only on the version and list he walks.** This rule follows from 18a. A pass from a game that ran a different build proves nothing about the build that he walks.
@@ -356,16 +356,16 @@ The fastest methods:
   - the active mod list, read by parsing that game's `ModsConfig.xml` (`activeMods`, in order);
   - the game build.
 - **Where the runner gets them.** The runner runs `python3 src/RimMandrake/rimflow/build_match.py identity --mod <Mod> (--tier <T> | --full)` after the deploy and the list swap. The runner merges that line into every row.
-- **What the program compares.** The program reads the same things on Archmagi for the build that he walks:
+- **What the program compares.** The program reads the same things, on the Archmagi game that holds the walk savegame, for the build that he walks:
   - the mod's deployed folder hash;
   - the game's `Version.txt`;
   - the mod list of the labelled walk savegame that the Stage 6 Exit block names.
 - **Which row.** The program compares each check's last row with those readings. The last row is the row of visit N. If visit N has no row, the last row is the row of the latest earlier visit.
 - **A different game build.** A row whose game build differs does not count, and its line item is re-run.
 - **A different mod hash. [HIS, 2026-11-21]** A row whose mod hash differs can still count. The row counts when the change since its commit touches nothing that its check reads or exercises (`src/RimMandrake/rimflow/rerun_relation.py`; `design/RimMandrake/standing_rulings.md` §After a change, only the checks that the change touches run again). Only a touched check, or a check whose relation cannot be read, is re-run. A walk folder that is not the current source is one act, a deploy. That act reruns no check.
-- **The mod list.** The program compares the mod list as the test declares it.
-  - A full-list test (its `why_full_list` set) must match his walk's list exactly.
-  - A minimal-list test (the carried default, §4 Stage 6) must match the list of its tier. `modset_builder.py` builds that list from the same commit. His walk is the check of that verdict on his full list.
+- **The mod list.** The program compares the mod list as the test declares it. Full-list testing is retired (HIS, 2026-11-24).
+  - A minimal-list test (the carried default, §4 Stage 6) must match the list of its tier. `modset_builder.py` builds that list from the same commit. The walk savegame's list is the mod's small list
+    (`src/RimMandrake/Utils/small_list.py`).
 - **How to run it.** `maturation.py` runs the build match in its Stage 6 exit reading (its `build_match` clause). `python3 src/RimMandrake/rimflow/build_match.py check --mod <Mod> [--visit N]` runs the build match alone. That command exits 0 only when every check counts.
 - **Selftest:** `src/RimMandrake/rimflow/selftest_build_match.py` (with `--mutants`).
 
@@ -436,7 +436,7 @@ Nothing changes in what Operations watches.
 - For each advancing mod, Dispatch asks one question: what does this mod's current stage need right now? The answer is a game, an offline builder, a blind judge, or him.
 - The games are the narrow point. A mod at Stage 6 waits for a game. A mod at Stage 8 waits for him and for the game on his machine. Offline stages never wait for a game.
 - **[HIS, by card 2026-11-14]** (§8, decision 18) Dispatch sends a Stage 6 mod's scripted bar verdicts to whichever game is free.
-  - Stage 8 is ArchBig only [CARRIED: he sits there].
+  - Stage 8 is on Archmagi, ArchBig or ArchSmall [HIS, 2026-11-24].
   - SteveDesktop's queue admits any mod's token-free test, whatever its stage ([HIS, 2026-11-17], 18c).
 - Inside a stage, the work is still tickets in RimFlow. The stage's worker picks among that mod's tickets. Nobody picks among all tickets of all mods.
 - **[HIS, 2026-11-14 ~9 PM PST]** "So can we wire up Operations/Dispatch such that they do advance on these offline builders? This was pretty inefficient and pointlessly it seems, if I'm reading correctly. As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble." (That evening all four advancing mods had sat at Stage 3 for 6 to 9 hours with no builder on them. Every launch was a Conductor hand step.) So Dispatch launches offline builders by itself:
@@ -806,7 +806,7 @@ At every stage change the steward writes three things in the journal:
 
 - The count of mod ideas that sit inside tickets and are not first-touch items: UNMEASURED. No marker says "this ticket is a mod idea".
 - What a stage change costs the Conductor as steward: UNMEASURED until the pilot.
-- Whether a minimal-list verdict counts towards a walk on his full list without a full-list re-run, beyond his walk itself. Settled 2026-11-17. The verdict counts when its mod list matches the list of its test tier (§4 Stage 6). His walk is the check of that verdict on his full list (§4 Stage 6, "A verdict counts only on the version and list he walks").
+- Whether a minimal-list verdict counts towards a walk on his full list without a full-list re-run, beyond his walk itself. Settled 2026-11-17. The verdict counts when its mod list matches the list of its test tier (§4 Stage 6).
 - Whether a scripted verdict alone, from either game, can pass a bar. Rule 1 of the earlier map (§7) lets a mechanism bar close on a script's verdict. But nobody looks at the game that gives the verdict. A script checks the test site (the place on the map). That check is the only check that the test was fair. Whether a look bar ever passes there, or only on Archmagi, is not settled.
 - Flyers. A flyer's flight is never tested live without him [CARRIED]. So a flight bar never runs on SteveDesktop unattended. Whether rule 11's paused read of the flight state may run there is not settled.
 - His minutes per look: UNMEASURED.

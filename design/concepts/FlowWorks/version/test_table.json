@@ -3728,14 +3728,14 @@
     "entry_exists": true,
     "why": "UNRUN: written 2026-11-23 to decide, with no raid, the parts of sc_moat_raid that need no raider; seen FAIL on planted faults on a fake bridge; never the game"
    },
+   "cheaper_why": "its six claims are one moat seen through: each needs the same dug, filled 4 m ring, so six scenes would dig and pour six times (107 s once, against about 50 s of staging each); offline the swim, the climb and the drain are copies of the engine's path and flow; no raid, the 13-mod list, 7 s to 60 s of game time a claim",
    "testq": {
     "check": {
      "tier": "flowworks",
      "build": "release"
     },
     "by": "testq_blocks.py"
-   },
-   "cheaper_why": "its six claims are one moat seen through: each needs the same dug, filled 4 m ring, so six scenes would dig and pour six times (107 s once, against about 50 s of staging each); offline the swim, the climb and the drain are copies of the engine's path and flow; no raid, the 13-mod list, 7 s to 60 s of game time a claim"
+   }
   },
   "sc_hole_prison": {
    "id": "sc_hole_prison",
@@ -3819,7 +3819,7 @@
   },
   "sc_walk": {
    "id": "sc_walk",
-   "kind": "live_full",
+   "kind": "live_minimal",
    "stage": "6",
    "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
    "entry": "scene_walk_moat_season",
@@ -3828,15 +3828,24 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_walk_moat_season --out <json>  (bridge held; his full list)",
-   "why_game": "the breadth failure only shows on his full list with every system at once, and a reload from a mid-way save",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_walk_moat_season --out <json>  (bridge held; tier flowworks_list, design/concepts/FlowWorks/version/small_list.json)",
+   "why_game": "the breadth failure only shows with every FlowWorks system at once, and a reload from a mid-way save",
    "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
    "runs_today": {
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    },
-   "cheaper_why": "its bar is that every system holds together on his own full list across a reload from a mid-way save; each system's own check runs on the minimal list, and only this walk loads the other mods beside them, so a smaller list cannot show the failure it looks for; it runs once, in one load"
+   "cheaper_why": "its bar is that every system holds together on his own full list across a reload from a mid-way save; each system's own check runs on the minimal list, and only this walk loads the other mods beside them, so a smaller list cannot show the failure it looks for; it runs once, in one load",
+   "tier": "flowworks_list",
+   "list_note": "owner, 2026-11-24 (RIMMANDRAKE_PROPOSE_FULL_LIST_WALK_NOT_PER_MOD_ARCHBIG_IS_THE_LINE): full-list testing is retired until the integration phase",
+   "testq": {
+    "check": {
+     "tier": "flowworks_list",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_garden": {
    "id": "sc_garden",

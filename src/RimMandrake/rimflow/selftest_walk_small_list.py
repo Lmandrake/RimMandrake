@@ -200,7 +200,7 @@ def t_his_hold_is_read_on_the_walk_game():
 def t_a_visit_that_opened_before_the_ruling_keeps_its_save():
     walk = {"active_mods": ["a", "b"]}
     said = []
-    with Patch(SL, walk_save_why=lambda r, m, mods: said.append(list(mods)) or "not on the small list"):
+    with Patch(SL, list_faults=lambda r, m: [], walk_save_why=lambda r, m, mods: said.append(list(mods)) or "not on the small list"):
         for at, want in ((M.SMALL_LIST_FROM, True), ("2026-11-24T07:14:54-08:00", False)):
             with Patch(M, load=lambda r, m, at=at: {"moves": [{"to": "in_game", "at": at}]}):
                 got = M.walk_small_list_why("/r", "M", 1, walk)
@@ -210,9 +210,17 @@ def t_a_visit_that_opened_before_the_ruling_keeps_its_save():
                   and M.walk_small_list_why("/r", "M", 1, None) is None, "...a stand-in and an absent reading are not judged")
 
 
+def t_the_exit_reads_the_list_too():
+    with Patch(SL, list_faults=lambda r, m: ["x.mod is needed"], walk_save_why=lambda r, m, mods: None), \
+            Patch(M, load=lambda r, m: {"moves": [{"to": "in_game", "at": M.SMALL_LIST_FROM}]}):
+        got = M.walk_small_list_why("/r", "M", 1, {"active_mods": ["a"]})
+    check(got == "x.mod is needed", "the-exit-reads-the-list-too (%s)" % got)
+    check(SL.list_faults("/nowhere", "M") == [], "...and a mod with no small list has no fault of it")
+
+
 def t_an_opening_time_that_cannot_be_read_is_said():
     walk = {"active_mods": ["a", "b"]}
-    with Patch(SL, walk_save_why=lambda r, m, mods: None):
+    with Patch(SL, list_faults=lambda r, m: [], walk_save_why=lambda r, m, mods: None):
         for at in (None, "yesterday"):
             with Patch(M, load=lambda r, m, at=at: {"moves": [{"to": "in_game", "at": at}]}):
                 check("could not be read" in (M.walk_small_list_why("/r", "M", 1, walk) or ""),
@@ -224,7 +232,7 @@ def t_a_list_that_cannot_be_read_is_said():
 
     def boom(*a):
         raise SL.CouldNotLook("planted")
-    with Patch(SL, walk_save_why=boom), Patch(M, load=lambda r, m: {"moves": [{"to": "in_game", "at": M.SMALL_LIST_FROM}]}):
+    with Patch(SL, list_faults=boom), Patch(M, load=lambda r, m: {"moves": [{"to": "in_game", "at": M.SMALL_LIST_FROM}]}):
         check("could not be read" in (M.walk_small_list_why("/r", "M", 1, walk) or ""), "a-list-that-cannot-be-read-is-said")
 
 
@@ -245,6 +253,7 @@ def main():
               t_a_stale_walk_build_is_deployed_to_the_walk_game,
               t_his_hold_is_read_on_the_walk_game,
               t_a_visit_that_opened_before_the_ruling_keeps_its_save,
+              t_the_exit_reads_the_list_too,
               t_an_opening_time_that_cannot_be_read_is_said,
               t_a_list_that_cannot_be_read_is_said):
         t()

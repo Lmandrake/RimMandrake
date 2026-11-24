@@ -42,6 +42,8 @@ The failure: 65 hours of ArchBig in a week, 31% of it on the full list, and four
   deploy and his hold are read on that game.
 - **a-stale-walk-build-is-deployed-to-the-walk-game.**
 - **his-hold-is-read-on-the-walk-game.**
+- **the-exit-reads-the-list-too.** The Stage 6 exit of a visit that opened after the ruling is not met while the small list lacks a mod
+  that the mod needs.
 - **a-list-that-cannot-be-read-is-said.**
 - **an-opening-time-that-cannot-be-read-is-said.**
 

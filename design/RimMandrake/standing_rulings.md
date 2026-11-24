@@ -1022,8 +1022,8 @@ His words, by card, 2026-11-23, about 4:45 PM PST (item
 
 What follows from his words:
 
-- No game is the owner's game, and no save is the owner's save. ArchBig is the game with the full mod list. He looks at
-  staged work there.
+- No game is the owner's game, and no save is the owner's save. ArchBig is Steam's install on Archmagi. He looks at staged work on ArchBig or
+  ArchSmall.
 - The canonical world saves (`infrastructure/state/CANONICAL_SAVE.md`) are the only protected saves. The reason is that
   to paint the world again is slow. A test may remove things on any other save.
 - Each other save is disposable. A save that waits for his review stays until he rules
@@ -1053,8 +1053,8 @@ The games. Each game has its own install, its own bridge and its own lock:
 
 | game | where | lock (`--host`) | what it is for |
 |---|---|---|---|
-| ArchBig | Steam's install on Archmagi, `C:\Program Files (x86)\Steam\steamapps\common\RimWorld` | `archmagi` (the default) | his walks and looks, and every check that needs the full mod list |
-| ArchSmall | its own install on Archmagi, `D:\ClaudeWork\rimmandrake\instances\b\game` (own Mods, BridgeTools, Saves) | `archmagi.b` | any work that a tier mod list can prove |
+| ArchBig | Steam's install on Archmagi, `C:\Program Files (x86)\Steam\steamapps\common\RimWorld` | `archmagi` (the default) | any work, his walks and looks included (§Mod development runs on small lists) |
+| ArchSmall | its own install on Archmagi, `D:\ClaudeWork\rimmandrake\instances\b\game` (own Mods, BridgeTools, Saves) | `archmagi.b` | any work, his walks and looks included |
 | Steve1, Steve2 | SteveDesktop, through `infrastructure/stevedesktop/RUNBOOK.md` | `stevedesktop`, `stevedesktop.b` | queued pipeline tests |
 
 The names of the games (owner, by card, 2026-11-22 about 2:35 AM PST). His question: *"How should we call the
@@ -1091,10 +1091,11 @@ The policies:
   that work goes to ArchSmall or to SteveDesktop.
 - A seat that needs ArchSmall starts it and does not ask:
   `python3 src/RimMandrake/Utils/game_instance.py launch ArchSmall --wait`.
-- Only a check that needs the full mod list must use ArchBig. A wait for ArchBig names those checks.
+- No check needs ArchBig rather than another game: full-list testing is retired (§Mod development runs on small lists).
 - The full list on ArchSmall beside ArchBig does not fit in Archmagi's memory. The list needs about 17.5 GB. The headroom
   was 19.6 GB, and a 12 GB floor of it must stay free (measured 2026-11-20).
-- His walk holds ArchBig only (`./pipe off game:ArchBig`). In-game runs then go to ArchSmall.
+- His walk holds only the game he walks on (`./pipe off game:ArchBig` or `./pipe off game:ArchSmall`). In-game runs then go
+  to the other game.
 - Never write or say "waiting for the live game", "needs the live game" or "the game is busy". Name the game. Say why no
   other game can take the work.
 - A tick line, brief, refusal or status page says that work needs a game. If a game is free, or ArchSmall could take the
@@ -1751,8 +1752,8 @@ of `infrastructure/agents/CHARTER.md`).
    `RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS`).
    - Give each scene one claim (`claims` in the test table). A season of play is play testing
      (§Season-long play is play testing).
-   - "The full list might break it" is one short scene: load, one event of the mod, a clean log.
-   - A live scene is oversized when it plays more than one game day, runs on the full list, or holds several claims. An
+   - "The full list might break it" is no scene now: it waits for the integration phase (§Mod development runs on small lists).
+   - A live scene is oversized when it plays more than one game day or holds several claims. An
      oversized scene carries `cheaper_why`. `src/RimMandrake/rimflow/scene_size.py` finds an oversized scene, and `./publish`
      refuses a new one with no `cheaper_why`. Page: `design/specs/2026-11-24-scene-size/boundary.md`.
    - The case is Pyrelands `sc_walk`: two weeks on his full list, ten claims, spoiled in visits 2, 5 and 8
@@ -1804,6 +1805,35 @@ His words, 2026-11-24, about 8:05 AM PST:
   - His walk's other looks: gameplay, fun, theme and UI at the labelled places of the savegame.
 - **The test.** Search the whole repo, records of past runs excepted, for lines on a walk that name weeks or a season of play. The search finds only his words, this section
   and the play testing list.
+
+## Mod development runs on small lists — owner, 2026-11-24
+
+Item `RIMMANDRAKE_PROPOSE_FULL_LIST_WALK_NOT_PER_MOD_ARCHBIG_IS_THE_LINE`. Measurement and removal list:
+`design/specs/2026-11-24-full-list-walk-not-per-mod/proposal.md`.
+
+His words, 2026-11-24 (ledger, 8:37 AM PST):
+
+> "Here's what I propose. Development of the mods is 100% small mod list. Version after version, we build them up only on the mods they really need, to keep us lean and fast. There will later be integration tests on the whole mod list, but that comes much later when we actually HAVE mature mods to integrate into each other. So I would propose we retire big-mod-list testing at this time. It is for a later game testing phase we haven't reached yet (every mod has v0.3.0 or so, approximately). That would free up huge resources that are bogging us down. Actual worldpainting/world-testing will take place on the big game later."
+
+The Conductor weighed it. He answered, 2026-11-24 (ledger, 8:40 AM PST): *"go"*.
+
+- **The rule.** Full-list testing is retired until the integration phase. The integration phase starts when he says so, at about
+  version 0.3.0 of every mod. World painting and world testing take place on the full list, later.
+- **What runs on the small list.** Mod development, every test, every walk savegame and his walks. No test, stage exit, deploy or
+  savegame step asks for the full list. `./publish` refuses a test table that does (`src/RimMandrake/rimflow/scene_size.py`).
+- **Each mod's small list has one place:** `design/concepts/<Mod>/version/small_list.json`. It names a `modset_builder` tier. The list
+  holds every mod that the mod patches or requires, all five expansions, and the advanced-zoom mod. A test may run on a
+  smaller tier of its own.
+- **The check.** A patch that matches nothing logs nothing. So `python3 src/RimMandrake/Utils/small_list.py check` fails when a mod's
+  patch targets a mod that is absent from its list. The Stage 6 exit reads that check and the walk savegame's list.
+- **The game he walks on** is the game whose Saves folder holds the walk savegame: ArchBig or ArchSmall. The walk build, its deploy and his
+  hold are read on that game.
+- **A locked bar that names the full list** is not edited. This ruling voids the phrase. The bars are named in the proposal.
+- **What waits for the integration phase:** `design/RimMandrake/integration_phase_list.md`. No ticket for a line of it.
+- **What this does not change.** The walk is one of his five acts. A list for a sitting keeps the advanced-zoom mod. Every list holds all
+  five expansions. A visit that was live when he ruled keeps its list.
+- **What this replaces.** The rule that only a check that needs the full list must use ArchBig, the rule that his walk is the check of a small-list
+  verdict on his full list, and the full-list smoke scene of §The cheapest test that decides the bar.
 
 ## What Python cannot reach goes into the bridge's C#; tests stay in Python — owner, 2026-11-23
 

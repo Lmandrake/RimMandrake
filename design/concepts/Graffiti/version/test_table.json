@@ -1282,7 +1282,7 @@
   },
   "sc_lived_in_soak": {
    "id": "sc_lived_in_soak",
-   "kind": "live_full",
+   "kind": "live_minimal",
    "stage": "6",
    "file": "src/RimMandrake/Graffiti/validation.py",
    "entry": "scene_lived_in_soak",
@@ -1291,9 +1291,9 @@
     "src/RimMandrake/Graffiti/validation.py"
    ],
    "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_lived_in_soak",
-   "why_game": "only a long run of an ordinary colony shows whether the layer becomes a tax; compressed at top speed on the full list",
+   "why_game": "only a long run of an ordinary colony shows whether the layer becomes a tax; compressed at top speed",
    "why_game_from_leaf": "stories_not_tax",
-   "why_full_list": "only a long run of an ordinary colony shows whether the layer becomes a tax; compressed at top speed on the full list",
+   "why_full_list": "",
    "entry_exists": true,
    "item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE",
    "hold": "immediate",
@@ -1307,11 +1307,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
-   }
+   },
+   "tier": "graffiti_solo",
+   "list_note": "owner, 2026-11-24 (RIMMANDRAKE_PROPOSE_FULL_LIST_WALK_NOT_PER_MOD_ARCHBIG_IS_THE_LINE): full-list testing is retired until the integration phase"
   },
   "sc_walk": {
    "id": "sc_walk",
-   "kind": "live_full",
+   "kind": "live_minimal",
    "stage": "6",
    "file": "src/RimMandrake/Graffiti/validation.py",
    "entry": "scene_walk_lived_in",
@@ -1320,9 +1322,9 @@
     "src/RimMandrake/Graffiti/validation.py"
    ],
    "command": "bridge: src/RimMandrake/Graffiti/validation.py scene_walk_lived_in",
-   "why_game": "the walk is the mod in play on the full list",
+   "why_game": "the walk is the mod in play",
    "why_game_from_leaf": "walk_lived_in",
-   "why_full_list": "the walk is the mod in play on the full list",
+   "why_full_list": "",
    "entry_exists": true,
    "item": "RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES",
    "hold": "owner_review",
@@ -1336,7 +1338,9 @@
     "ran": false,
     "entry_exists": true,
     "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
-   }
+   },
+   "tier": "graffiti_solo",
+   "list_note": "owner, 2026-11-24 (RIMMANDRAKE_PROPOSE_FULL_LIST_WALK_NOT_PER_MOD_ARCHBIG_IS_THE_LINE): full-list testing is retired until the integration phase"
   },
   "sc_weathered_raid_mark": {
    "id": "sc_weathered_raid_mark",

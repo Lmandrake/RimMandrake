@@ -233,6 +233,13 @@ def walk_save_why(root, mod, save_mods, installed=None):
                 if more else ""))
 
 
+def list_faults(root, mod):
+    """-> the mod's small-list faults as read on this machine now (a mod with no small_list.json: none). Raises CouldNotLook."""
+    if load_spec(root, mod) is None:
+        return []
+    return check(root, mod, scan(), full_list(root), folded())[0]
+
+
 def mods_with_lists(root=REPO):
     return sorted(os.path.basename(os.path.dirname(os.path.dirname(p))) for p in glob.glob(spec_path(root, "*")))
 

@@ -15,7 +15,7 @@ file was condensed for the two-window fleet of that time (BENCH · FOUNDRY). FOU
    - Do not write a sentence that compares a recorded state with a measured state. Run the probe instead. Then the
      disagreement is gone.
 2. 🔴 **One bridge driver per game.** There are several live games:
-   - ArchBig: Steam's install on Archmagi, with the full mod list. The owner looks at staged work there. Lock `archmagi`.
+   - ArchBig: Steam's install on Archmagi. Lock `archmagi`. The owner looks at staged work on ArchBig or ArchSmall.
    - ArchSmall: its own install on Archmagi. Lock `archmagi.b`.
    - Steve1 and Steve2, the SteveDesktop games. Locks `stevedesktop` and `stevedesktop.b`.
 
@@ -32,7 +32,7 @@ file was condensed for the two-window fleet of that time (BENCH · FOUNDRY). FOU
    - `./bridge conductor|free` is the owner's override.
    - A busy game is never a reason to wait. Name the game, and say why no other game can take the work (CLAUDE.md
      "There are several live games").
-3. **The states below are ArchBig's.** `./game` announces and measures ArchBig, the game with the full mod list.
+3. **The states below are ArchBig's.** `./game` announces and measures ArchBig.
    ArchSmall and the other games have no announced state. A seat starts, measures and stops one of those games with
    `python3 src/RimMandrake/Utils/game_instance.py launch|status|stop`.
 

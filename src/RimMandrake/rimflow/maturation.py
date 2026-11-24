@@ -2109,13 +2109,13 @@ RED_SEEN_RULE = (
 # fixer gets only offline items (a game-only item goes back to Stage 6), so its brief keeps "Never take the bridge".
 FREE_GAME_RULE = (
     "- **A fix that needs the live game takes it when it is free** (owner, 2026-11-20): there are several games, each "
-    "with its own bridge holder: ArchBig (Steam's install on Archmagi, his full list), ArchSmall (its own install on "
+    "with its own bridge holder: ArchBig (Steam's install on Archmagi), ArchSmall (its own install on "
     "Archmagi), and Steve1 and Steve2 on SteveDesktop. Take any game whose bridge is free, ours, or stale by the "
     "45-minute rule, with `python3 "
     "src/RimMandrake/rimflow/cli.py bridge take --idle-ok --for \"<what>\" --seat BENCH` and `./game --idle-ok --why "
     "\"<what>\" up`; for ArchSmall run `eval \"$(python3 src/RimMandrake/Utils/game_instance.py env ArchSmall)\"` first (a bare `RM_GAME_INSTANCE=b` does not reach a `python.exe` tool, which then drives ArchBig; deploy with `--instance ArchSmall`) and start it if "
     "it is down (`python3 src/RimMandrake/Utils/game_instance.py launch ArchSmall --wait`). If ArchBig is busy or held, use "
-    "ArchSmall; only a check that needs his full list waits for ArchBig, and then say so by name. Release it the moment the "
+    "ArchSmall; no check needs one game rather than another. Release it the moment the "
     "work stops (`python3 src/RimMandrake/rimflow/cli.py bridge release --seat BENCH`). His OWNER hold, the `./bridge` "
     "override, no flyer flight, and never fullscreen or focus a game still bind. A mod does not wait a stage for a game "
     "that sits unused, and no line says \"waiting for the live game\": name the game and why no other game can take "
@@ -3961,8 +3961,9 @@ BRIDGE_RULES = (
     "- Never leave a broken game running: a game that errors at load, hangs or holds a broken map when you stop is "
     "closed (`./game --why \"<why>\" down`). Never fullscreen or focus the game window.",
     "- Every mod list holds all five DLC (owner: \"ALL TEST MOD LISTS should include ALL THE EXPANSIONS\"). Use the "
-    "smallest list a check names (the 13-mod minimal list plus what its command adds: ~22 s a load, against ~15 min "
-    "on the full list); the full list only for a check whose `why_full_list` says why. "
+    "smallest list a check names (the 13-mod minimal list plus what its command adds: ~22 s a load). Never the full "
+    "list: full-list testing is retired until the integration phase (owner, 2026-11-24, standing_rulings.md §Mod "
+    "development runs on small lists). "
     "`src/RimMandrake/Utils/modlist_swap.py` does the swap; never restore his list afterwards (owner, 2026-10-24).",
     "- Deploy before you test: `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s` (a dry run), then "
     "`--apply`. Writing a file is not deploying it.",
@@ -4531,7 +4532,7 @@ SMALL_LIST_FROM = "2026-11-24T09:00:00-08:00"
 
 
 def walk_small_list_why(root, mod, n, walk):
-    """-> None, or why visit n's walk savegame is not on the mod's small list (small_list.py). A visit that opened before
+    """-> None, or why the mod's small list lacks a mod it needs, or visit n's walk savegame is not on that list (small_list.py). A visit that opened before
     SMALL_LIST_FROM, a stand-in walk and a mod with no small_list.json are not judged; a list that cannot be read is said."""
     if not walk or walk.get("standin") or not walk.get("active_mods"):
         return None
@@ -4544,7 +4545,8 @@ def walk_small_list_why(root, mod, n, walk):
         return "when visit %d opened could not be read (%r: %s), so the walk savegame's list is not checked" % (n, at, e)
     try:
         import small_list as SL
-        return SL.walk_save_why(root, mod, walk["active_mods"])
+        faults = SL.list_faults(root, mod)
+        return "; ".join(faults) if faults else SL.walk_save_why(root, mod, walk["active_mods"])
     except Exception as e:      # noqa: BLE001  (a list that cannot be read counts nothing)
         return "the mod's small list could not be read (%s: %s), so the walk savegame's list is not checked" % (
             type(e).__name__, e)
@@ -5744,17 +5746,17 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "\"site_checked\": true, \"game\": \"archmagi\"|\"stevedesktop\", \"mod_sha\": <sha of the deployed source>, "
           "\"command\": ..., \"evidence\": <path>, \"held\": [what the site switched off or locked for this run, e.g. "
           "\"fire\", \"weather\"; [] when the whole mod ran]}`, merged with the one JSON line `python3 "
-          "src/RimMandrake/rimflow/build_match.py identity --mod %s --tier <the tier you loaded>` prints (`--full` "
-          "instead for a check whose `why_full_list` says why), run on the game machine after the deploy and the list "
+          "src/RimMandrake/rimflow/build_match.py identity --mod %s --tier <the tier you loaded>` prints, run on the game machine after the deploy and the list "
           "swap: `mod_hash` (the deployed folder), `game_build`, `active_mods` (ModsConfig.xml, parsed, in order), "
-          "`tier` or `full_list`, `unit`. The BUILD MATCH (owner, 2026-11-17, narrowed 2026-11-21) counts a row when its "
-          "game build equals the build he walks (the labelled savegame below, read on Archmagi), its list is his "
-          "walk's (a full-list check) or the list modset_builder.py builds for its tier (a minimal-list check), and "
-          "its mod hash equals the walk's or the change since its `mod_sha` touches nothing its check reads or "
+          "`tier`, `unit`. The BUILD MATCH (owner, 2026-11-17, narrowed 2026-11-21) counts a row when its "
+          "game build equals the build he walks (on the game that holds the labelled savegame below), its list is the "
+          "list modset_builder.py builds for its tier, and its mod hash equals the walk's or the change since its `mod_sha` touches nothing its check reads or "
           "exercises. A row without the fields, or one the change touches, runs again; no other row does. Redeploying "
           "changes the hash: identity again after every deploy." % mod,
           "- `strange.jsonl`: as above; an empty file when nothing strange was seen.",
-          "- the labelled savegame for his walk (dense, labelled scenes; spec rule 5), its path in the block.",
+          "- the labelled savegame for his walk (dense, labelled scenes; spec rule 5), its path in the block. Stage it on the "
+          "mod's small list, never the full list (`python3 src/RimMandrake/Utils/small_list.py show %s` prints the tier and "
+          "its mods); the game whose Saves folder holds it is the game he walks on, ArchBig or ArchSmall." % mod,
           "- `SUMMARY.md`: what ran, what failed and what you did about it, the owed cases one by one, then this block "
           "(the program reads it):", "",
           "```", "## Exit", "```", "ingame_rows: {%s}" % ", ".join("%s: pass|fail|unmeasured" % k for k in checks[:3])

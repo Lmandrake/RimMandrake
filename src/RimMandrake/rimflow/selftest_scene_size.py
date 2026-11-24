@@ -117,6 +117,19 @@ def t_known_is_not_new():
     assert len(Z.check(full, r, k)[0]) == 1
 
 
+def t_full_list_is_refused():
+    r = tmp_root("def go(t):\n    _wait(t, 10)\n")
+    for sp in (spec(kind="live_full", cheaper_why="because"), spec(why_full_list="a donor patch", cheaper_why="because")):
+        tt = {"M": {"tests": {"t": sp}}}
+        new, _ = Z.check(tt, r, {"M": {"t": {"days": 9.0, "full": True, "claims": 9}}})
+        assert len(new) == 1 and "full list" in new[0][2][0], new
+        assert Z.check(tt, r, {}, left={("M", "t"): "why"}) == ([], [])
+    assert not Z.check({"M": {"tests": {"t": spec(kind="live_minimal", why_full_list="")}}}, r, {})[0]
+    for (m, t), why in Z.FULL_LEFT.items():         # an exemption names a test that still stands, with its reason
+        tt = json.load(open(os.path.join(ROOT, "design", "concepts", m, "version", "test_table.json")))
+        assert Z.measure(tt["tests"][t])["full"] and why, (m, t)
+
+
 def t_tree_is_clean():
     rc, out = run(["check"])
     assert rc == 0, out
@@ -154,7 +167,7 @@ def t_brief_names_them():
 def main():
     bad = 0
     tests = [t_old_walk_is_red, t_new_scenes_are_green, t_evidence_clears, t_span_is_counted,
-             t_declared_size_wins, t_one_day_and_one_claim_pass, t_known_is_not_new,
+             t_declared_size_wins, t_one_day_and_one_claim_pass, t_known_is_not_new, t_full_list_is_refused,
              t_tree_is_clean, t_unreadable_is_could_not_look, t_brief_names_them]
     for f in tests:
         try:
