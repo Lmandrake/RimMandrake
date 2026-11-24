@@ -1,0 +1,12 @@
+{
+ "run_id": "audit_auto_20261124_1211",
+ "test": false,
+ "started": "2026-11-24T12:11:41-08:00",
+ "subjects": [
+  "RM_Ysvaltha",
+  "SWPotF_RaceDef_ysalamir__ysalamiri",
+  "RM_Wuum",
+  "RM_Gembug__Yellow_Jewelbug"
+ ],
+ "versions_key": "departures_brief@v3#50b472+gpt_targeted_second_look@v2#4640d0+opus_first_pass@v3#d22c47+preamble@v4#815246+regen_prompt_edit@v2#209449+severity@v4#3e1892+creature@v4#3a3bc2"
+}

@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Ysvaltha",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth FLAG (facing_scale_lint gate, plan quadruped): north d_north 0.425 (band 0.64..1.23)"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v4",
+   "sha": "3a3bc2e81422"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "deb899cbf6c7eae09e82201558380b74ff81771d95c141b1d9aa9941aaa07281",
+  "east.png": "a2a9f129491ef7c8501c8168016aef0c26170e66a2334da78bd6190792b5dc57",
+  "north.png": "9ee88bd85a74a2512ed6ada46fb9bf700a7d4c5c5713a42002a5ca6d612cffc4",
+  "scale.png": "7704c4102d2d38c8b30d18bfdb8b57927de85dbd09e4bc3057ffc80d99e17d44",
+  "facings.png": "7f878f5de20e76086c5cdf71f7bf6c131aa07769daaf6dd55d76db3a2d89c29c"
+ }
+}

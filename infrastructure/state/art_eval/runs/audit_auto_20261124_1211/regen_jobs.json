@@ -1,0 +1,91 @@
+[
+ {
+  "id": "arteval_RM_Ysvaltha_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ysvaltha",
+  "prompt": "A creature sprite for RimWorld: the ysvaltha. Something bred for killing rather than born to it: a long, low, sinuous body in near-black hide, a whip of a tail fringed with crimson barbs, and a narrow, needle-pointed head set with four glowing yellow eyes. Along its shoulders it carries curved, crimson-edged blades folded back like swept wings. Visible features it must show: a long, low, sinuous body in near-black hide; a narrow needle-pointed head with four glowing yellow eyes; curved crimson-edged blades folded back along the shoulders like swept wings; a whip-like tail fringed with crimson barbs. One shared body scale in every view: the shoulder height, torso girth, limb length and the span of the shoulder blades are identical in the front, side and rear views, so the creature has the same bulk whichever way it faces. Eye arrangement, identical in every view: four glowing yellow eyes in fixed positions on the head, two larger eyes set low toward the front of the head and two smaller eyes directly above them, one such pair on each side of the needle-pointed head. In the front view, eyes toward the viewer, all four eyes show as two stacked pairs, one pair left and one pair right of the needle point. In the side view, the two eyes of the near side show as a vertical pair on the side of the head, the larger eye below and the smaller above, with the far-side pair hidden behind the snout. In the rear view, seen from behind, the eyes are hidden. Tail pose, rotated with the body: the tail sweeps back low from the rump, trails close above the ground in one smooth curve, and ends in a small returning hook at the tip, with the crimson barbs fringing the outer edge of the whole curve. In the front view the tail shows as a short low curve of barbs beside and behind the haunches, hooked tip visible. In the side view the full low sweep and the hooked tip are shown in profile. In the rear view, seen from behind, the back, haunches and tail are shown: the shoulders, torso, limbs and blade span are drawn at the same size as in the front view, and the tail curls in a compact S close beside the haunches with the hooked tip resting next to the hind leg, so the body fills the frame and sets the scale. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border. The north view is redrawn as a ground-camera view at the east view's height (measured: enlarging x2.19 > 1.25 loses detail).",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261124_1211",
+  "drawsize": 2.5,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha"
+ },
+ {
+  "id": "arteval_SWPotF_RaceDef_ysalamir__ysalamiri_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "SWPotF_RaceDef_ysalamir__ysalamiri",
+  "prompt": "A creature sprite sheet for RimWorld: the ysalamir, the canon ysalamir of Myrkr. A slow, claw-footed tree lizard whose living body nullifies psychic sensitivity in everything near it. One slender lizard with a moderately long head ending in a gently tapering, rounded-tip snout, clear small flaps at the sides of the head behind the jaw, a slim raised neck, a lean body slightly deeper than wide, limbs of medium thickness, a long tail, and claw feet of medium size with three curved gripping claws each; calm, sluggish posture; muted olive-green and grey-brown scales with a paler belly. The same lizard, with the same head shape, side flaps, neck, limb thickness, body width, foot size, proportions and palette, appears in every view, drawn at one shared anatomical scale. Side view (east): the full profile, moderately long head with tapering snout forward, side flap visible, slim raised neck, lean body, medium limbs with gripping claw feet, and long tail trailing behind. Front view (south): that same animal seen head-on at the game's low three-quarter camera, eyes toward the viewer, the same moderately long head with its tapering snout and side flaps, the same slim raised neck, forelegs of medium thickness, a chest as wide as the body is deep, and medium claw feet gripping on either side. Rear view (north): that same standing lizard seen from behind at the same low three-quarter camera as the front view; the rump, the base of the tail and the two hind legs stand nearest the camera, with the haunches as wide as the front view's chest, the hind legs bent under the body and planted on the ground as far apart as the front feet, with claw feet of the same size as the front feet; the tail is foreshortened and curls short beside the hind legs; the foreshortened back recedes upward toward the shoulders, and the back of the head with its side flaps rises beyond them, so the head is the same width as in the front view and the eyes stay hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges; value and colour contrast against the ground carry the silhouette. Exactly ONE creature per view, centred, the whole body visible with nothing cut off. Fully transparent background with alpha 0 everywhere outside the creature: a crisp clean edge, empty canvas, no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_TOPDOWN, F_INCONSISTENT, F_SIZE_JUMP, F_TOPDOWN, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261124_1211",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "ysalamiri/ysalamiri"
+ },
+ {
+  "id": "arteval_RM_Wuum_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Wuum",
+  "prompt": "A creature sprite for RimWorld: the wuum. Countless small bodies that all belong to one vast, spreading thing \u2014 every wuum is a cell of the same superorganism, working toward the same single purpose: grow, and keep growing. A wuum buds off a copy of itself every few days and needs almost nothing to eat. It bursts when it dies, and what bursts out burns like acid. It is a small, soft, blob-like body that looks like one cell of something larger, limbless and faceless, made of a lower main mass and one budding lobe rising from the top of it where it copies itself. The lower main mass is one consistent body volume: a rounded dome with a fixed height and a fixed transverse width. The front view (south) and the rear view (north) are opposite views of this same dome, with the same width, the same height, and matching left and right flanks that curve inward at the same rate; the north view shows the dome seen from behind, with the budding lobe at the same size and position as in the south view. The wider, lower profile appears only in the side views (east and west), where the body's length is shown. The budding lobe is a two-chamber structure about one third as wide as the body, with a fixed bulk and height relative to the lower mass; the two chambers overlap naturally and the lobe always reads as the same full, round, substantial form. Acid-bright fluid glows in chambers under a thin skin, held inside a firmly defined, more opaque membrane edge, so the contour is stronger than the interior glow. The membrane is matte and layered, with visible brush texture and painted shading, and highlights are small and localized to a few spots. Style: realistic, hand-painted vanilla RimWorld sprite with soft painted edges; value and colour contrast against the ground carry the silhouette, so the shape reads clearly at standard zoom. Keep the same palette, body plan and lobe proportions as the previous render. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261124_1211",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Wuum/RM_Wuum"
+ },
+ {
+  "id": "arteval_RM_Gembug__Yellow_Jewelbug_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gembug__Yellow_Jewelbug",
+  "prompt": "A creature sprite for RimWorld: the gembug, a plated crawler of the lanternstone voids that runs on cold waxy hydrocarbon oil rather than blood. Its body is a squat, irregular wedge of crystalline rock, broader than it is tall, with a jagged, ragged lower edge like a fractured piece of cave wall. The shell grows in uneven crystal facets: hard, opaque, planar crystal faces of different sizes and angles, separated by sharp straight fracture breaks. Each face is one flat plane with its own value, crisp pale-yellow highlights on the lit faces and deep amber-brown shadow on the shaded faces, in the waxy yellow-amber colour of lanternstone, like cut and cleaved mineral rather than glossy insect chitin or smooth wing-cases. The whole animal is one continuous fractured-stone mass that reads first as a broken-off chip of cave wall, and only on a second look as a living thing. Its short, stubby legs are tucked under the shell's ragged edge, with only the tips of a few feet showing. Its tiny feelers lie flush against the shell, almost hidden among the facets. The head is recessed into the front of the mass beneath uneven mineral plates, with two small dull eyes set between facets and no separate rounded head or neck. Side view in profile, the eyes toward the facing direction. Realistic painterly vanilla RimWorld sprite style with soft painted edges; value and colour contrast against the ground carry the silhouette, legible at normal gameplay scale. Pale gold and cream appear only as highlights inside the shell. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261124_1211",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug"
+ }
+]
