@@ -1,0 +1,26 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
+index ced88d6d4a..d3bcfcf25e 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
+@@ -864,7 +864,7 @@ namespace RimMandrake.ExplosiveKnockback
+             if (!flew)
+             {
+                 FleckMaker.ThrowDustPuff(start, map, 1f);
+-                StartJolt(b, p.dx, p.dz);
++                /* planted */
+             }
+             RM_KnockbackJournal.Add("container", r.explosionId, b, "action", flew ? "thrown" : "jolt", "from", start, "to", flew ? to : start,
+                 "planned", p.planned, "cells", flew ? p.travelled : 0, "mass", mass, "goods", goods.Count, "held", held, "oneByOne", one,
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs
+index cc6a0bfedc..2c50258cb7 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs
+@@ -114,7 +114,7 @@ namespace RimMandrake.ExplosiveKnockback
+             f.arcHeight = Mathf.Max(0f, RimMandrakeExplosiveKnockbackSettings.goodsArcHeight);
+             f.spin0 = f.Inner is Corpse dead ? CorpseAngle(dead) : Rand.Range(0f, 360f);   // a body turns on from how it lay
+             f.spin0IsCorpsePose = f.Inner is Corpse;
+-            f.spinRate = RimMandrakeExplosiveKnockbackSettings.goodsSpinDegPerTick * Rand.Sign;
++            f.spinRate = kind == KbKind.Corpse ? 0f : RimMandrakeExplosiveKnockbackSettings.goodsSpinDegPerTick * Rand.Sign;
+             f.StartLeg(start, res, dx, dz);
+             GenSpawn.Spawn(f, start, map);
+             return f;

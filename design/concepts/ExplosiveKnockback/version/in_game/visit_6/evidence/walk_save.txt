@@ -32,7 +32,7 @@ START  14 storeroom_bomb_pit   STAGED storeroom_bomb_pit at 207,42 tick=15300 ex
 START  15 shield_counter       STAGED shield_counter at 222,42 tick=15300 explosions removed 1 left 0
 START  16 goods_obstacles      STAGED goods_obstacles at 237,42 tick=15300 explosions removed 3 left 0
 signs placed: 32
-{"save": {"ok": true, "new": ["EK_VISIT6_WALK_20261124.rws"], "changed": [], "gone": [], "name": "EK_VISIT6_WALK_20261124", "tool": true, "signs": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBenchReviewSigns\\EK_VISIT6_WALK_20261124.txt"}, "stations": [[1, "calibration", "PASS"], [2, "over_sandbags", "PASS"], [3, "wall_stop", "PASS"], [4, "door_stop", "PASS"], [5, "pawn_hits_pawn", "PASS"], [6, "goods_fly_wild", "PASS"], [7, "open_storage", "PASS"], [8, "closed_containers", "PASS"], [9, "heavy_knock", "PASS"], [10, "gas_chain", "PASS"], [11, "cover_breaks", "PASS"], [12, "pit_colonist", "PASS"], [13, "killed_by_blast", "PASS"], [14, "storeroom_bomb_pit", "PASS"], [15, "shield_counter", "PASS"], [16, "goods_obstacles", "PASS"]]}
-[bridge split] 74.4 s wall: load 0.5 / ticks 1.1 / reads 0.5 / other 4.5 / outside calls 67.9 s
-[bridge split] WARN 96 calls of jawa/mod_settings_field (2.2 s): batch them
-[bridge split] WARN 52 calls of jawa/static_call (1.7 s): batch them
+{"save": {"ok": true, "new": ["EK_VISIT6_WALK_20261124_C.rws"], "changed": [], "gone": [], "name": "EK_VISIT6_WALK_20261124_C", "tool": true, "signs": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBenchReviewSigns\\EK_VISIT6_WALK_20261124_C.txt"}, "stations": [[1, "calibration", "PASS"], [2, "over_sandbags", "PASS"], [3, "wall_stop", "PASS"], [4, "door_stop", "PASS"], [5, "pawn_hits_pawn", "PASS"], [6, "goods_fly_wild", "PASS"], [7, "open_storage", "PASS"], [8, "closed_containers", "PASS"], [9, "heavy_knock", "PASS"], [10, "gas_chain", "PASS"], [11, "cover_breaks", "PASS"], [12, "pit_colonist", "PASS"], [13, "killed_by_blast", "PASS"], [14, "storeroom_bomb_pit", "PASS"], [15, "shield_counter", "PASS"], [16, "goods_obstacles", "PASS"]]}
+[bridge split] 16.0 s wall: load 0.5 / ticks 0.7 / reads 0.6 / other 3.3 / outside calls 10.9 s
+[bridge split] WARN 96 calls of jawa/mod_settings_field (1.3 s): batch them
+[bridge split] WARN 52 calls of jawa/static_call (1.5 s): batch them

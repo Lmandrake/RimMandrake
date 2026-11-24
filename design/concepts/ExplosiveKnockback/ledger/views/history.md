@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":37168,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":2030,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=2f073a8b4cd564c0f85c3297e4ddc83069adfc2ef98a9d4ac0fea5b1eda62990 -->
-# ExplosiveKnockback — mod ledger history (679 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":37168,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=d9276da833a63e5323685921741402be4927523426482d157f02d37a61cdf0f1 -->
+# ExplosiveKnockback — mod ledger history (685 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -680,3 +680,9 @@
 - 2026-11-24T10:33:24Z HOLDER.run-1795510833#5 lease.renew lease v0.1.0: 
 - 2026-11-24T10:53:14Z HOLDER.run-1795510833#6 lease.renew lease v0.1.0: 
 - 2026-11-24T11:13:20Z HOLDER.run-1795510833#7 lease.renew lease v0.1.0: 
+- 2026-11-24T11:33:18Z HOLDER.run-1795510833#8 lease.renew lease v0.1.0: 
+- 2026-11-24T11:53:17Z HOLDER.run-1795510833#9 lease.renew lease v0.1.0: 
+- 2026-11-24T12:13:20Z HOLDER.run-1795510833#10 lease.renew lease v0.1.0: 
+- 2026-11-24T12:33:20Z HOLDER.run-1795510833#11 lease.renew lease v0.1.0: 
+- 2026-11-24T12:53:13Z HOLDER.run-1795510833#12 lease.renew lease v0.1.0: 
+- 2026-11-24T13:03:16Z HOLDER.run-1795510833#13 session.checkpoint session v0.1.0: 

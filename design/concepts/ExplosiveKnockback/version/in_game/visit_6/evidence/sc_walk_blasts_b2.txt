@@ -1,0 +1,28 @@
+ROW                          STATUS     DETAIL
+W_PRECONDITIONS              PASS       24 active mods, FlowWorks, Cauldron gas, shelves, closed container, cover
+A_IMPACTS_IN_ROOM            PASS       3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 46 request(s) centred in the storeroom, 22 throw(s)
+A_SAVE_MIDAIR                PASS       3 carrier(s) in the air; save EK_WALK_RAID_MIDAIR_20261124T041954; triplet IDENTICAL
+A_RELOAD_NO_DUP_LOST         PASS       at tick 745: live 13, load 13, reload 13 things; dup {}; lost [] new [] (load vs live); live, load and reload agree at tick 745
+A_COVER_BROKEN_ONE_DESCENT   PASS       throw 1 of at most 5 (rider killed on none); grenade ok; cover left none; riders ['Human40417'] (killed []); 1 descent(s) {'Human40417': 1}, twice []
+A_GAS_CLUMP_BY_CLUMP         PASS       27 bursts on 6 ticks, 27 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.4, 3.4, 4.4, 5.0, 5.4]; burst again {}
+A_GAS_GOODS_MOVED            PASS       22 throw(s) from 27 burst(s)
+A_REQUESTS_MATCH_PLAN        PASS       102 requests, 0 mismatch(es): []; answered by a corpse: ['Human40405 as Corpse_Human45014']
+A_REACHED_ACCOUNTED          PASS       0 thing(s) inside a shell's radius with no journal line: []
+B_GAS_CLUMP_BY_CLUMP         PASS       22 bursts on 5 ticks, 22 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.4, 3.4, 4.2, 5.0]; burst again {}
+B_GAS_GOODS_MOVED            PASS       21 throw(s) from 22 burst(s)
+B_IMPACTS_IN_ROOM            PASS       3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 27 request(s) centred in the storeroom, 18 throw(s)
+B_COVER_BROKEN_ONE_DESCENT   PASS       throw 1 of at most 5 (rider killed on none); grenade ok; cover left none; riders ['Human40417'] (killed []); 1 descent(s) {'Human40417': 1}, twice []
+B_REQUESTS_MATCH_PLAN        PASS       101 requests, 0 mismatch(es): []; answered by a corpse: ['Human40405 as Corpse_Human49650', 'Human40408 as Corpse_Human49677']
+B_REACHED_ACCOUNTED          PASS       0 thing(s) inside a shell's radius with no journal line: []
+C_OFF_IMPACTS_NO_THROWS      PASS       mod off: 3 shell(s) went off (all), 0 throw line(s), 0 of 11 storeroom stack(s) moved, 1 dropped by their own destroyed storage
+CARRIER_TICK_COST            PASS       meanTickTime 1.63242722 ms at rest, 2.01498818 ms 1 s after the shells with 0 carrier(s) in the air, clock running (recorded, not judged)
+FRAME_BUDGET                 PASS       +0.0% over mod off; on p99 21.0 ms (503 rows, 9 in the air), mod off p99 21.0 ms (497 rows), PASS at most +10%; on: 21 arm(s), p99s [20.4, 20.6, 22.1, 24.8, 22.3, 24.0, 22.6, 21.9, 20.9, 21.4, 21.4, 21.2, 21.0, 32.0, 21.0, 20.8, 20.3, 20.8, 21.0, 20.8, 20.3]: FRAME frames=777 probeRows=777 paused=86 wall=13.00s worstMs=48.3 meanMs=16.7 maxInAir=10 window=0.5-10s windowRows=517 windowP99Ms=20.4 pat
+evidence: D:\ClaudeWork\rimmandrake\ek_proof\walk_storeroom_raid_20261124T041954.json   throwaway saves: ['EK_WALK_RAID_BASE_20261124T041954', 'EK_WALK_RAID_MIDAIR_20261124T041954']
+[bridge split] 926.4 s wall: load 1.6 / ticks 14.1 / reads 75.2 / other 28.4 / outside calls 807.1 s
+[bridge split] WARN 245 calls of rimworld/get_ui_state (63.9 s): batch them
+[bridge split] WARN 211 calls of jawa/static_call (6.9 s): batch them
+[bridge split] WARN 175 calls of jawa/time_clock (7.4 s): batch them
+[bridge split] WARN 165 calls of rimworld/set_time_speed (1.6 s): batch them
+[bridge split] WARN 140 calls of jawa/explosion_at (7.5 s): batch them
+[bridge split] WARN 98 calls of rimworld/get_game_info (10.0 s): batch them
+[bridge split] WARN 96 calls of jawa/mod_settings_field (4.5 s): batch them

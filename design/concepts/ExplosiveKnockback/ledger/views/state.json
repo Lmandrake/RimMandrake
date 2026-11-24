@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "b35a4ffeebd13a3066648967c159104deeea402fa7d9c1517e3a7cf1caf1745b",
+  "body_sha256": "4eb641c92154850a35d73997ba625b6c14f4ed1faa6c856129bc965239f722bd",
   "reducer": 1,
   "shards": {
    "BACKFILL": 341359,
@@ -19,7 +19,7 @@
    "HOLDER.run-1795478277": 3184,
    "HOLDER.run-1795485747": 1414,
    "HOLDER.run-1795487290": 2197,
-   "HOLDER.run-1795510833": 2030,
+   "HOLDER.run-1795510833": 4164,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -680,11 +680,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795487290",
-   "done": "Walk brief arrival 1 (54c99b1267); fix db80fab783 read sound; pre_human to his_walk to in_game: sc_barrage_perf, sc_walk_raid owed on db80fab783",
-   "next": "Drive in-game visit 6 on ArchBig: sc_barrage_perf and sc_walk_raid on db80fab783; walk save in daylight with start-state twins",
-   "ruled_out": "2026-11-16 raid NRE storms did not return: archived visit 5 walk log has 0 such lines over 18 loads; station 10 tox gas is burned vent gas smoke",
-   "ts": "2026-11-24T03:33:23Z"
+   "by": "HOLDER.run-1795510833",
+   "done": "Visit 6: 56 of 56 PASS on e089dc2573; fixes 1acc05e0ed, d61b1e2b31, e089dc2573; walk save EK_VISIT6_WALK_20261124_C",
+   "next": "Steward reads visit 6, reads the three fixes once, deploys the release build to ArchBig, advances to pre_human",
+   "ruled_out": "closed_containers_control FAIL was my own earlier steel on the landing cell; walk control FAIL was the two-cell shelf miscount",
+   "ts": "2026-11-24T13:03:16Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -880,7 +880,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 679,
+  "events": 685,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2486,7 +2486,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-24T11:13:20Z",
+   "last": "2026-11-24T13:03:16Z",
    "lease": "run-1795510833",
    "released": false,
    "token": 24

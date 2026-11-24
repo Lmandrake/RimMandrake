@@ -1,0 +1,1149 @@
+{
+ "rows": {
+  "W_PRECONDITIONS": [
+   "PASS",
+   "24 active mods, FlowWorks, Cauldron gas, shelves, closed container, cover"
+  ],
+  "A_COVER_BROKEN_ONE_DESCENT": [
+   "PASS",
+   "throw 1 of at most 5 (rider killed on none); grenade ok; cover left none; riders ['Human40417'] (killed []); 1 descent(s) {'Human40417': 1}, twice []"
+  ],
+  "A_SAVE_MIDAIR": [
+   "PASS",
+   "3 carrier(s) in the air; save EK_WALK_RAID_MIDAIR_20261124T041954; triplet IDENTICAL"
+  ],
+  "A_RELOAD_NO_DUP_LOST": [
+   "PASS",
+   "at tick 745: live 13, load 13, reload 13 things; dup {}; lost [] new [] (load vs live); live, load and reload agree at tick 745"
+  ],
+  "A_IMPACTS_IN_ROOM": [
+   "PASS",
+   "3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 46 request(s) centred in the storeroom, 22 throw(s)"
+  ],
+  "A_REACHED_ACCOUNTED": [
+   "PASS",
+   "0 thing(s) inside a shell's radius with no journal line: []"
+  ],
+  "A_GAS_CLUMP_BY_CLUMP": [
+   "PASS",
+   "27 bursts on 6 ticks, 27 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.4, 3.4, 4.4, 5.0, 5.4]; burst again {}"
+  ],
+  "A_GAS_GOODS_MOVED": [
+   "PASS",
+   "22 throw(s) from 27 burst(s)"
+  ],
+  "A_REQUESTS_MATCH_PLAN": [
+   "PASS",
+   "102 requests, 0 mismatch(es): []; answered by a corpse: ['Human40405 as Corpse_Human45014']"
+  ],
+  "B_COVER_BROKEN_ONE_DESCENT": [
+   "PASS",
+   "throw 1 of at most 5 (rider killed on none); grenade ok; cover left none; riders ['Human40417'] (killed []); 1 descent(s) {'Human40417': 1}, twice []"
+  ],
+  "B_GAS_CLUMP_BY_CLUMP": [
+   "PASS",
+   "22 bursts on 5 ticks, 22 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.4, 3.4, 4.2, 5.0]; burst again {}"
+  ],
+  "B_GAS_GOODS_MOVED": [
+   "PASS",
+   "21 throw(s) from 22 burst(s)"
+  ],
+  "B_IMPACTS_IN_ROOM": [
+   "PASS",
+   "3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 27 request(s) centred in the storeroom, 18 throw(s)"
+  ],
+  "B_REACHED_ACCOUNTED": [
+   "PASS",
+   "0 thing(s) inside a shell's radius with no journal line: []"
+  ],
+  "B_REQUESTS_MATCH_PLAN": [
+   "PASS",
+   "101 requests, 0 mismatch(es): []; answered by a corpse: ['Human40405 as Corpse_Human49650', 'Human40408 as Corpse_Human49677']"
+  ],
+  "C_OFF_IMPACTS_NO_THROWS": [
+   "PASS",
+   "mod off: 3 shell(s) went off (all), 0 throw line(s), 0 of 11 storeroom stack(s) moved, 1 dropped by their own destroyed storage"
+  ],
+  "CARRIER_TICK_COST": [
+   "PASS",
+   "meanTickTime 1.63242722 ms at rest, 2.01498818 ms 1 s after the shells with 0 carrier(s) in the air, clock running (recorded, not judged)"
+  ],
+  "FRAME_BUDGET": [
+   "PASS",
+   "+0.0% over mod off; on p99 21.0 ms (503 rows, 9 in the air), mod off p99 21.0 ms (497 rows), PASS at most +10%; on: 21 arm(s), p99s [20.4, 20.6, 22.1, 24.8, 22.3, 24.0, 22.6, 21.9, 20.9, 21.4, 21.4, 21.2, 21.0, 32.0, 21.0, 20.8, 20.3, 20.8, 21.0, 20.8, 20.3]: FRAME frames=777 probeRows=777 paused=86 wall=13.00s worstMs=48.3 meanMs=16.7 maxInAir=10 window=0.5-10s windowRows=517 windowP99Ms=20.4 pat"
+  ]
+ },
+ "ev": {
+  "args": {
+   "storeroom": "97,37,7,7",
+   "cover": "102,36",
+   "gas": "100,41",
+   "lit": null,
+   "save": "EK_WALK_SMALL_COLONY_20261124V6",
+   "site": null,
+   "shelf_defs": "Shelf,ShelfSmall",
+   "shells": 3,
+   "settle": 120,
+   "frame_seconds": 8.0,
+   "frame_pairs": 21,
+   "frames_only": false,
+   "frame_evidence": null,
+   "gas_ticks": 900,
+   "full_min": 100,
+   "out": null,
+   "stamp": "20261124T041954"
+  },
+  "active_mods": 24,
+  "mode": "small",
+  "dll_md5": "d4b7e5a0",
+  "src_id": "abe5911ba5d2bcb2",
+  "pre": {
+   "shelves": [
+    "Shelf",
+    "ShelfSmall"
+   ],
+   "closed": [
+    "LWM_WeaponsLocker"
+   ],
+   "goods": 11,
+   "cover": "RM_PitCover_WovenScrap"
+  },
+  "saves": [
+   "EK_WALK_RAID_BASE_20261124T041954",
+   "EK_WALK_RAID_MIDAIR_20261124T041954"
+  ],
+  "tick_rest": 0.0,
+  "grenade": {
+   "A": {
+    "riders": [
+     "Human40417"
+    ],
+    "killed": [],
+    "descents": {
+     "Human40417": 1
+    },
+    "coverBefore": [
+     "RM_PitCover_WovenScrap"
+    ],
+    "earlierDescents": [],
+    "riderLines": [
+     {
+      "type": "request",
+      "tick": 614,
+      "exp": 45002,
+      "thing": "Human40417",
+      "def": "Human",
+      "from": [
+       102,
+       36
+      ],
+      "centre": [
+       102,
+       36
+      ],
+      "radius": 1.9,
+      "force": 1,
+      "damType": "Bomb",
+      "source": "damageDef",
+      "shieldAbsorbed": false,
+      "typeForce": 1,
+      "damage": 50,
+      "damageRatio": 1
+     },
+     {
+      "type": "descent",
+      "tick": 614,
+      "exp": 0,
+      "thing": "Human40417",
+      "def": "Human",
+      "at": [
+       102,
+       36
+      ]
+     },
+     {
+      "type": "skip",
+      "tick": 614,
+      "exp": 45002,
+      "thing": "Human40417",
+      "def": "Human",
+      "reason": "in_pit",
+      "at": [
+       102,
+       36
+      ]
+     }
+    ]
+   },
+   "B": {
+    "riders": [
+     "Human40417"
+    ],
+    "killed": [],
+    "descents": {
+     "Human40417": 1
+    },
+    "coverBefore": [
+     "RM_PitCover_WovenScrap"
+    ],
+    "earlierDescents": [],
+    "riderLines": [
+     {
+      "type": "request",
+      "tick": 615,
+      "exp": 49584,
+      "thing": "Human40417",
+      "def": "Human",
+      "from": [
+       102,
+       36
+      ],
+      "centre": [
+       102,
+       36
+      ],
+      "radius": 1.9,
+      "force": 1,
+      "damType": "Bomb",
+      "source": "damageDef",
+      "shieldAbsorbed": false,
+      "typeForce": 1,
+      "damage": 50,
+      "damageRatio": 1
+     },
+     {
+      "type": "descent",
+      "tick": 615,
+      "exp": 0,
+      "thing": "Human40417",
+      "def": "Human",
+      "at": [
+       102,
+       36
+      ]
+     },
+     {
+      "type": "skip",
+      "tick": 615,
+      "exp": 49584,
+      "thing": "Human40417",
+      "def": "Human",
+      "reason": "in_pit",
+      "at": [
+       102,
+       36
+      ]
+     }
+    ]
+   }
+  },
+  "grenade_throws": {
+   "A": 1,
+   "B": 1
+  },
+  "tick_air": 0.0,
+  "midair_flights": [
+   "RM_ThingFlyer_Knockback45016 inner=Corpse_Human x1 innerId=Corpse_Human45014 at=101,40 dest=103,40 left=8 bounces=0",
+   "RM_ThingFlyer_Knockback45017 inner=WoodLog x8 innerId=WoodLog40403 at=99,41 dest=97,43 left=13 bounces=0",
+   "RM_ThingFlyer_Knockback45018 inner=Steel x75 innerId=Steel40402 at=101,41 dest=103,43 left=13 bounces=0"
+  ],
+  "reload_born": [
+   {
+    "WoodLog": 2
+   },
+   {
+    "WoodLog": 2,
+    "Corpse_Human": 1
+   },
+   {
+    "WoodLog": 2
+   }
+  ],
+  "reload_census": {
+   "verdict": "IDENTICAL",
+   "why": "live, load and reload agree at tick 745",
+   "target": 745,
+   "loadedAt": {
+    "A": null,
+    "B": 736,
+    "C": 736
+   },
+   "count": {
+    "A": 13,
+    "B": 13,
+    "C": 13
+   },
+   "dup": {
+    "A": [],
+    "B": [],
+    "C": []
+   },
+   "lost": [],
+   "new": [],
+   "BC": {}
+  },
+  "gas": [
+   {
+    "seeded": "seeded=13 total=3250",
+    "fire": {
+     "success": true,
+     "firesStarted": 1
+    }
+   },
+   {
+    "seeded": "seeded=13 total=3250",
+    "fire": {
+     "success": true,
+     "firesStarted": 1
+    }
+   }
+  ],
+  "gas_bursts": {
+   "A": [
+    [
+     1129,
+     [
+      98,
+      41
+     ],
+     -1,
+     2
+    ],
+    [
+     1129,
+     [
+      99,
+      41
+     ],
+     -2,
+     1
+    ],
+    [
+     1129,
+     [
+      99,
+      40
+     ],
+     -3,
+     2
+    ],
+    [
+     1129,
+     [
+      99,
+      42
+     ],
+     -4,
+     2
+    ],
+    [
+     1159,
+     [
+      100,
+      41
+     ],
+     -5,
+     2
+    ],
+    [
+     1159,
+     [
+      100,
+      40
+     ],
+     -6,
+     1
+    ],
+    [
+     1159,
+     [
+      100,
+      42
+     ],
+     -7,
+     2
+    ],
+    [
+     1159,
+     [
+      99,
+      39
+     ],
+     -8,
+     2
+    ],
+    [
+     1159,
+     [
+      100,
+      39
+     ],
+     -9,
+     1
+    ],
+    [
+     1159,
+     [
+      99,
+      43
+     ],
+     -10,
+     1
+    ],
+    [
+     1159,
+     [
+      100,
+      43
+     ],
+     -11,
+     2
+    ],
+    [
+     1189,
+     [
+      101,
+      41
+     ],
+     -12,
+     2
+    ],
+    [
+     1189,
+     [
+      101,
+      40
+     ],
+     -13,
+     1
+    ],
+    [
+     1189,
+     [
+      101,
+      42
+     ],
+     -14,
+     3
+    ],
+    [
+     1189,
+     [
+      101,
+      39
+     ],
+     -15,
+     2
+    ],
+    [
+     1189,
+     [
+      101,
+      43
+     ],
+     -16,
+     3
+    ],
+    [
+     1189,
+     [
+      99,
+      38
+     ],
+     -17,
+     1
+    ],
+    [
+     1189,
+     [
+      100,
+      38
+     ],
+     -18,
+     1
+    ],
+    [
+     1189,
+     [
+      101,
+      38
+     ],
+     -19,
+     3
+    ],
+    [
+     1219,
+     [
+      102,
+      41
+     ],
+     -20,
+     2
+    ],
+    [
+     1219,
+     [
+      102,
+      42
+     ],
+     -21,
+     6
+    ],
+    [
+     1219,
+     [
+      102,
+      39
+     ],
+     -22,
+     1
+    ],
+    [
+     1219,
+     [
+      102,
+      43
+     ],
+     -23,
+     6
+    ],
+    [
+     1219,
+     [
+      102,
+      38
+     ],
+     -24,
+     1
+    ],
+    [
+     1249,
+     [
+      103,
+      41
+     ],
+     -25,
+     1
+    ],
+    [
+     1249,
+     [
+      103,
+      42
+     ],
+     -26,
+     3
+    ],
+    [
+     1279,
+     [
+      103,
+      39
+     ],
+     -27,
+     0
+    ]
+   ],
+   "B": [
+    [
+     739,
+     [
+      98,
+      41
+     ],
+     -1,
+     6
+    ],
+    [
+     739,
+     [
+      99,
+      41
+     ],
+     -2,
+     6
+    ],
+    [
+     739,
+     [
+      99,
+      40
+     ],
+     -3,
+     5
+    ],
+    [
+     739,
+     [
+      99,
+      42
+     ],
+     -4,
+     4
+    ],
+    [
+     769,
+     [
+      100,
+      41
+     ],
+     -5,
+     5
+    ],
+    [
+     769,
+     [
+      100,
+      40
+     ],
+     -6,
+     3
+    ],
+    [
+     769,
+     [
+      100,
+      42
+     ],
+     -7,
+     4
+    ],
+    [
+     769,
+     [
+      99,
+      39
+     ],
+     -8,
+     3
+    ],
+    [
+     769,
+     [
+      100,
+      39
+     ],
+     -9,
+     2
+    ],
+    [
+     769,
+     [
+      100,
+      43
+     ],
+     -10,
+     2
+    ],
+    [
+     799,
+     [
+      101,
+      41
+     ],
+     -11,
+     2
+    ],
+    [
+     799,
+     [
+      101,
+      40
+     ],
+     -12,
+     2
+    ],
+    [
+     799,
+     [
+      101,
+      42
+     ],
+     -13,
+     4
+    ],
+    [
+     799,
+     [
+      101,
+      39
+     ],
+     -14,
+     3
+    ],
+    [
+     799,
+     [
+      101,
+      43
+     ],
+     -15,
+     4
+    ],
+    [
+     799,
+     [
+      100,
+      38
+     ],
+     -16,
+     1
+    ],
+    [
+     829,
+     [
+      102,
+      41
+     ],
+     -17,
+     2
+    ],
+    [
+     829,
+     [
+      102,
+      40
+     ],
+     -18,
+     2
+    ],
+    [
+     829,
+     [
+      102,
+      42
+     ],
+     -19,
+     5
+    ],
+    [
+     829,
+     [
+      102,
+      43
+     ],
+     -20,
+     4
+    ],
+    [
+     859,
+     [
+      103,
+      41
+     ],
+     -21,
+     1
+    ],
+    [
+     859,
+     [
+      103,
+      40
+     ],
+     -22,
+     2
+    ]
+   ]
+  },
+  "killed_by_blast": {
+   "A": [
+    "Human40405 as Corpse_Human45014"
+   ],
+   "B": [
+    "Human40405 as Corpse_Human49650",
+    "Human40408 as Corpse_Human49677"
+   ]
+  },
+  "off_dropped_by_destroyed_storage": [
+   "40396"
+  ],
+  "off_moved": {},
+  "off_buildings": {
+   "before": [
+    "LWM_WeaponsLocker@(98, 40)",
+    "Shelf@(101, 42)",
+    "ShelfSmall@(98, 42)"
+   ],
+   "after": []
+  },
+  "tick_arm_unjudged": {
+   "on": [
+    {
+     "text": "FRAME frames=784 probeRows=784 paused=79 wall=13.13s worstMs=53.6 meanMs=16.7 maxInAir=10 window=0.5-10s windowRows=522 windowP99Ms=21.1 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042131.csv",
+     "p99": 21.1,
+     "rows": 522,
+     "inAir": 10
+    }
+   ]
+  },
+  "frame_clock": {
+   "on": 2,
+   "off": 2
+  },
+  "tick_rest_running": 1.63242722,
+  "tick_air_running": 2.01498818,
+  "in_air_at_tick_read": 0,
+  "frame_arms": {
+   "on": [
+    {
+     "text": "FRAME frames=777 probeRows=777 paused=86 wall=13.00s worstMs=48.3 meanMs=16.7 maxInAir=10 window=0.5-10s windowRows=517 windowP99Ms=20.4 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042150.csv",
+     "p99": 20.4,
+     "rows": 517,
+     "inAir": 10
+    },
+    {
+     "text": "FRAME frames=786 probeRows=786 paused=94 wall=13.15s worstMs=50.5 meanMs=16.7 maxInAir=10 window=0.5-10s windowRows=506 windowP99Ms=20.6 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042228.csv",
+     "p99": 20.6,
+     "rows": 506,
+     "inAir": 10
+    },
+    {
+     "text": "FRAME frames=788 probeRows=788 paused=88 wall=13.22s worstMs=62.6 meanMs=16.8 maxInAir=9 window=0.5-10s windowRows=511 windowP99Ms=22.1 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042307.csv",
+     "p99": 22.1,
+     "rows": 511,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=788 probeRows=788 paused=97 wall=13.23s worstMs=52.0 meanMs=16.8 maxInAir=9 window=0.5-10s windowRows=505 windowP99Ms=24.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042347.csv",
+     "p99": 24.8,
+     "rows": 505,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=727 probeRows=727 paused=13 wall=12.19s worstMs=54.2 meanMs=16.8 maxInAir=10 window=0.5-10s windowRows=566 windowP99Ms=22.3 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042425.csv",
+     "p99": 22.3,
+     "rows": 566,
+     "inAir": 10
+    },
+    {
+     "text": "FRAME frames=704 probeRows=704 paused=10 wall=11.90s worstMs=62.1 meanMs=16.9 maxInAir=9 window=0.5-10s windowRows=561 windowP99Ms=24.0 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042503.csv",
+     "p99": 24.0,
+     "rows": 561,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=786 probeRows=786 paused=92 wall=13.17s worstMs=48.6 meanMs=16.8 maxInAir=10 window=0.5-10s windowRows=508 windowP99Ms=22.6 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042543.csv",
+     "p99": 22.6,
+     "rows": 508,
+     "inAir": 10
+    },
+    {
+     "text": "FRAME frames=789 probeRows=789 paused=83 wall=13.25s worstMs=60.5 meanMs=16.8 maxInAir=9 window=0.5-10s windowRows=516 windowP99Ms=21.9 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042623.csv",
+     "p99": 21.9,
+     "rows": 516,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=774 probeRows=774 paused=83 wall=12.97s worstMs=57.1 meanMs=16.8 maxInAir=10 window=0.5-10s windowRows=518 windowP99Ms=20.9 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042701.csv",
+     "p99": 20.9,
+     "rows": 518,
+     "inAir": 10
+    },
+    {
+     "text": "FRAME frames=772 probeRows=772 paused=80 wall=12.93s worstMs=53.8 meanMs=16.8 maxInAir=9 window=0.5-10s windowRows=520 windowP99Ms=21.4 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042740.csv",
+     "p99": 21.4,
+     "rows": 520,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=767 probeRows=767 paused=80 wall=12.85s worstMs=57.1 meanMs=16.8 maxInAir=10 window=0.5-10s windowRows=519 windowP99Ms=21.4 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042819.csv",
+     "p99": 21.4,
+     "rows": 519,
+     "inAir": 10
+    },
+    {
+     "text": "FRAME frames=767 probeRows=767 paused=80 wall=12.85s worstMs=52.7 meanMs=16.7 maxInAir=9 window=0.5-10s windowRows=521 windowP99Ms=21.2 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042857.csv",
+     "p99": 21.2,
+     "rows": 521,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=774 probeRows=774 paused=84 wall=12.97s worstMs=58.8 meanMs=16.8 maxInAir=9 window=0.5-10s windowRows=515 windowP99Ms=21.0 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042937.csv",
+     "p99": 21.0,
+     "rows": 515,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=761 probeRows=761 paused=80 wall=12.93s worstMs=100.8 meanMs=17.0 maxInAir=9 window=0.5-10s windowRows=509 windowP99Ms=32.0 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043017.csv",
+     "p99": 32.0,
+     "rows": 509,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=802 probeRows=802 paused=97 wall=13.42s worstMs=45.9 meanMs=16.7 maxInAir=10 window=0.5-10s windowRows=503 windowP99Ms=21.0 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043056.csv",
+     "p99": 21.0,
+     "rows": 503,
+     "inAir": 10
+    },
+    {
+     "text": "FRAME frames=778 probeRows=778 paused=84 wall=13.03s worstMs=52.7 meanMs=16.7 maxInAir=9 window=0.5-10s windowRows=521 windowP99Ms=20.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043134.csv",
+     "p99": 20.8,
+     "rows": 521,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=781 probeRows=781 paused=84 wall=13.08s worstMs=53.0 meanMs=16.7 maxInAir=9 window=0.5-10s windowRows=517 windowP99Ms=20.3 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043213.csv",
+     "p99": 20.3,
+     "rows": 517,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=786 probeRows=786 paused=83 wall=13.15s worstMs=46.6 meanMs=16.7 maxInAir=10 window=0.5-10s windowRows=518 windowP99Ms=20.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043252.csv",
+     "p99": 20.8,
+     "rows": 518,
+     "inAir": 10
+    },
+    {
+     "text": "FRAME frames=784 probeRows=784 paused=89 wall=13.17s worstMs=53.2 meanMs=16.8 maxInAir=9 window=0.5-10s windowRows=511 windowP99Ms=21.0 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043332.csv",
+     "p99": 21.0,
+     "rows": 511,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=790 probeRows=790 paused=88 wall=13.22s worstMs=45.9 meanMs=16.7 maxInAir=9 window=0.5-10s windowRows=515 windowP99Ms=20.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043411.csv",
+     "p99": 20.8,
+     "rows": 515,
+     "inAir": 9
+    },
+    {
+     "text": "FRAME frames=784 probeRows=784 paused=88 wall=13.13s worstMs=51.0 meanMs=16.7 maxInAir=9 window=0.5-10s windowRows=513 windowP99Ms=20.3 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043450.csv",
+     "p99": 20.3,
+     "rows": 513,
+     "inAir": 9
+    }
+   ],
+   "off": [
+    {
+     "text": "FRAME frames=773 probeRows=773 paused=82 wall=12.97s worstMs=53.0 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=517 windowP99Ms=21.1 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042209.csv",
+     "p99": 21.1,
+     "rows": 517,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=767 probeRows=767 paused=79 wall=12.91s worstMs=54.1 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=518 windowP99Ms=22.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042247.csv",
+     "p99": 22.8,
+     "rows": 518,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=717 probeRows=717 paused=15 wall=12.03s worstMs=53.2 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=566 windowP99Ms=21.9 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042327.csv",
+     "p99": 21.9,
+     "rows": 566,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=706 probeRows=706 paused=11 wall=11.84s worstMs=55.4 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=566 windowP99Ms=20.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042405.csv",
+     "p99": 20.8,
+     "rows": 566,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=723 probeRows=723 paused=11 wall=12.15s worstMs=52.6 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=566 windowP99Ms=22.5 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042444.csv",
+     "p99": 22.5,
+     "rows": 566,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=789 probeRows=789 paused=89 wall=13.48s worstMs=73.6 meanMs=17.1 maxInAir=0 window=0.5-10s windowRows=497 windowP99Ms=49.4 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042523.csv",
+     "p99": 49.4,
+     "rows": 497,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=718 probeRows=718 paused=28 wall=12.19s worstMs=56.3 meanMs=17.0 maxInAir=0 window=0.5-10s windowRows=565 windowP99Ms=23.1 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042603.csv",
+     "p99": 23.1,
+     "rows": 565,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=703 probeRows=703 paused=11 wall=11.78s worstMs=52.6 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=567 windowP99Ms=21.1 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042641.csv",
+     "p99": 21.1,
+     "rows": 567,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=702 probeRows=702 paused=9 wall=11.77s worstMs=53.0 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=566 windowP99Ms=21.4 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042720.csv",
+     "p99": 21.4,
+     "rows": 566,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=768 probeRows=768 paused=80 wall=12.86s worstMs=53.3 meanMs=16.7 maxInAir=0 window=0.5-10s windowRows=520 windowP99Ms=21.2 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042759.csv",
+     "p99": 21.2,
+     "rows": 520,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=765 probeRows=765 paused=78 wall=12.83s worstMs=51.0 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=521 windowP99Ms=20.9 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042838.csv",
+     "p99": 20.9,
+     "rows": 521,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=769 probeRows=769 paused=81 wall=12.89s worstMs=58.0 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=518 windowP99Ms=20.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042917.csv",
+     "p99": 20.8,
+     "rows": 518,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=761 probeRows=761 paused=75 wall=12.74s worstMs=50.5 meanMs=16.7 maxInAir=0 window=0.5-10s windowRows=524 windowP99Ms=20.4 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042957.csv",
+     "p99": 20.4,
+     "rows": 524,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=795 probeRows=795 paused=89 wall=13.30s worstMs=47.4 meanMs=16.7 maxInAir=0 window=0.5-10s windowRows=516 windowP99Ms=20.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043037.csv",
+     "p99": 20.8,
+     "rows": 516,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=702 probeRows=702 paused=11 wall=11.75s worstMs=52.7 meanMs=16.7 maxInAir=0 window=0.5-10s windowRows=567 windowP99Ms=20.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043115.csv",
+     "p99": 20.8,
+     "rows": 567,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=698 probeRows=698 paused=7 wall=11.69s worstMs=51.8 meanMs=16.7 maxInAir=0 window=0.5-10s windowRows=567 windowP99Ms=21.0 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043153.csv",
+     "p99": 21.0,
+     "rows": 567,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=784 probeRows=784 paused=86 wall=13.11s worstMs=49.3 meanMs=16.7 maxInAir=0 window=0.5-10s windowRows=518 windowP99Ms=21.0 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043232.csv",
+     "p99": 21.0,
+     "rows": 518,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=782 probeRows=782 paused=85 wall=13.10s worstMs=58.3 meanMs=16.7 maxInAir=0 window=0.5-10s windowRows=518 windowP99Ms=20.0 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043312.csv",
+     "p99": 20.0,
+     "rows": 518,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=704 probeRows=704 paused=9 wall=11.79s worstMs=50.0 meanMs=16.7 maxInAir=0 window=0.5-10s windowRows=567 windowP99Ms=21.0 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043350.csv",
+     "p99": 21.0,
+     "rows": 567,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=713 probeRows=713 paused=16 wall=11.93s worstMs=50.0 meanMs=16.7 maxInAir=0 window=0.5-10s windowRows=567 windowP99Ms=20.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043430.csv",
+     "p99": 20.8,
+     "rows": 567,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=777 probeRows=777 paused=82 wall=13.06s worstMs=59.8 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=515 windowP99Ms=20.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T043509.csv",
+     "p99": 20.8,
+     "rows": 515,
+     "inAir": 0
+    }
+   ]
+  },
+  "frame_on": {
+   "p99": 21.0,
+   "rows": 503,
+   "rows_each": [
+    517,
+    506,
+    511,
+    505,
+    566,
+    561,
+    508,
+    516,
+    518,
+    520,
+    519,
+    521,
+    515,
+    509,
+    503,
+    521,
+    517,
+    518,
+    511,
+    515,
+    513
+   ],
+   "p99_each": [
+    20.4,
+    20.6,
+    22.1,
+    24.8,
+    22.3,
+    24.0,
+    22.6,
+    21.9,
+    20.9,
+    21.4,
+    21.4,
+    21.2,
+    21.0,
+    32.0,
+    21.0,
+    20.8,
+    20.3,
+    20.8,
+    21.0,
+    20.8,
+    20.3
+   ],
+   "inAir": 9,
+   "text": "21 arm(s), p99s [20.4, 20.6, 22.1, 24.8, 22.3, 24.0, 22.6, 21.9, 20.9, 21.4, 21.4, 21.2, 21.0, 32.0, 21.0, 20.8, 20.3, 20.8, 21.0, 20.8, 20.3]: FRAME frames=777 probeRows=777 paused=86 wall=13.00s worstMs=48.3 meanMs=16.7 maxInAir=10 window=0.5-10s windowRows=517 windowP99Ms=20.4 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042150.csv | FRAME frames=786 probeRows=786 paused=94 wall=13.15s worstMs=50.5 meanMs=16.7 maxInAir=10 window=0.5-10s windowRows=506 windowP99Ms=20.6 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042228.csv | FRAME frames=788 probeRows=788 paused=88 wall=13.22s worstMs=62.6 meanMs=16.8 maxInAir=9 window=0.5-10s windowRows=511 windowP99Ms=22.1 path=D:\\ClaudeWork\\rimmandrake\\i"
+  },
+  "frame_off": {
+   "p99": 21.0,
+   "rows": 497,
+   "rows_each": [
+    517,
+    518,
+    566,
+    566,
+    566,
+    497,
+    565,
+    567,
+    566,
+    520,
+    521,
+    518,
+    524,
+    516,
+    567,
+    567,
+    518,
+    518,
+    567,
+    567,
+    515
+   ],
+   "p99_each": [
+    21.1,
+    22.8,
+    21.9,
+    20.8,
+    22.5,
+    49.4,
+    23.1,
+    21.1,
+    21.4,
+    21.2,
+    20.9,
+    20.8,
+    20.4,
+    20.8,
+    20.8,
+    21.0,
+    21.0,
+    20.0,
+    21.0,
+    20.8,
+    20.8
+   ],
+   "inAir": 0,
+   "text": "21 arm(s), p99s [21.1, 22.8, 21.9, 20.8, 22.5, 49.4, 23.1, 21.1, 21.4, 21.2, 20.9, 20.8, 20.4, 20.8, 20.8, 21.0, 21.0, 20.0, 21.0, 20.8, 20.8]: FRAME frames=773 probeRows=773 paused=82 wall=12.97s worstMs=53.0 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=517 windowP99Ms=21.1 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042209.csv | FRAME frames=767 probeRows=767 paused=79 wall=12.91s worstMs=54.1 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=518 windowP99Ms=22.8 path=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261124T042247.csv | FRAME frames=717 probeRows=717 paused=15 wall=12.03s worstMs=53.2 meanMs=16.8 maxInAir=0 window=0.5-10s windowRows=566 windowP99Ms=21.9 path=D:\\ClaudeWork\\rimmandrake\\ins"
+  }
+ }
+}

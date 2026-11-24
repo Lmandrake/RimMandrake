@@ -63,6 +63,10 @@ def main():
             bad = [(x, z) for x in cols for z in (LOW, HIGH) if "%d,%d" % (x, z) not in free]
             if len(cols) < len(STATIONS) or bad:
                 sys.exit("NOT STAGED: a pond under %s; use another quicktest map" % bad)
+            roofed = [(x, z) for x in cols for z in (LOW, HIGH)
+                      if ((b.call("rimworld/get_cell_info", {"x": x, "z": z}).get("cell") or {}).get("roofDefName"))]
+            if roofed:
+                sys.exit("NOT STAGED: %d sites are under a roof %s; use an open quicktest map" % (len(roofed), roofed[:4]))
             staged = []
             for i, (scene, what, decide) in enumerate(STATIONS):
                 staged.append((i, scene, what, decide, K.call(b, "Stage", "%s,%d,%d" % (scene, cols[i], LOW))))
@@ -72,12 +76,13 @@ def main():
                 v = K.parse_verdict(K.call(b, "Verdict", scene))[0] if st == "STAGED" else st
                 rows.append((i + 1, scene, v))
                 print("STATION %02d %-20s %s" % (i + 1, scene, v), flush=True)
-                signs.append(RM.sign_book(cols[i], LOW - 3, "%02d" % (i + 1), "%s AFTER" % scene, look=what + ". The start state is the site straight above (z %d)" % HIGH,
-                                          do="compare with the START site above", decide=decide, more="proof verdict %s" % v))
+                signs.append(RM.sign_book(cols[i], LOW - 3, "%02d" % (i + 1), "%s AFTER" % scene, look=what + ". Compare with the START site straight above (z %d)" % HIGH,
+                                          decide=decide, more="proof verdict %s" % v))
             for i, (scene, what, decide) in enumerate(STATIONS):
                 x = cols[i]
                 if scene == "gas_chain":        # its Stage lights the gas at once: the same things by hand, the cloud unlit
                     K.call(b, "Settings", "reset")
+                    b.call("jawa/destroy_batch", {"rects": "%d,%d,11,11" % (x - 5, HIGH - 5), "categories": "Building,Plant,Item"})
                     for dx, dz in ((1, 0), (-1, 1), (0, -2)):
                         b.call("rimworld/spawn_thing", {"defName": "Steel", "stackCount": 10, "x": x + dx, "z": HIGH + dz})
                     p = b.call("jawa/spawn_pawn", {"kindDef": "Colonist", "x": x - 1, "z": HIGH - 1, "faction": "player", "count": 1})
@@ -95,8 +100,7 @@ def main():
                     print("START  %02d %-20s %s explosions removed %d left %d" % (i + 1, scene, str(r)[:60], len(ex), len(left)), flush=True)
                     if left:
                         sys.exit("NOT STAGED: an explosion is still on the map")
-                signs.append(RM.sign_book(x, HIGH - 3, "%02d" % (i + 1), "%s START" % scene, look="as it stood before the blast; nothing is armed",
-                                          do="the AFTER site is straight below (z %d)" % LOW))
+                signs.append(RM.sign_book(x, HIGH - 3, "%02d" % (i + 1), "%s START" % scene, look="as it stood before the blast; nothing is armed. The AFTER site is straight below (z %d)" % LOW))
         finally:
             K.restore_settings(b, snap)
         b.call("jawa/set_fog", {"action": "unfog", "rect": "0,0,250,60"})

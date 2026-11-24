@@ -124,7 +124,7 @@
 124 AGREE    c:pit:3:0;c:pit:3:1;c:pit:3:2;c:pit:3:3;t:o:wood50:3:0;t:p:wood50:3:1;t:q:wood50:3:2;t:a:steel2:1:0;b:bomb:2.9
 125 AGREE    c:pit:3:0;c:pit:3:1;t:o:wood50:3:0;t:p:wood50:3:1;t:a:steel2:1:0;b:bomb:2.9
 MAP AGREEMENT 125 of 125 cases agree (0 disagree, 0 invalid); model map-6
-[bridge split] 167.9 s wall: load 0.0 / ticks 51.9 / reads 0.0 / other 14.3 / outside calls 101.7 s
-[bridge split] WARN 500 calls of jawa/safe_advance (51.9 s): batch them
-[bridge split] WARN 378 calls of jawa/static_call (11.5 s): batch them
-[bridge split] WARN 96 calls of jawa/mod_settings_field (2.8 s): batch them
+[bridge split] 201.0 s wall: load 0.0 / ticks 107.5 / reads 0.0 / other 9.3 / outside calls 84.2 s
+[bridge split] WARN 500 calls of jawa/safe_advance (107.5 s): batch them
+[bridge split] WARN 378 calls of jawa/static_call (7.9 s): batch them
+[bridge split] WARN 96 calls of jawa/mod_settings_field (1.4 s): batch them
