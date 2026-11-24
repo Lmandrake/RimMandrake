@@ -1,0 +1,11 @@
+116 DISAGREE c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:gas:1.9  <- a: game 3,3,0, model 1,1,0
+117 DISAGREE c:wall:-1:0;c:wall:0:-1;t:a:steel2:-1:-1;b:gas:1.9  <- a: game -3,-3,0, model -1,-1,0
+118 DISAGREE c:wall:1:0;c:door:0:1;t:a:col:1:1;b:gas:1.9  <- a: game 2,2,0, model 1,1,0
+119 DISAGREE c:wall:1:0;t:a:steel2:1:1;b:gas:1.9  <- a: game 3,3,0, model 1,1,0
+120 AGREE    c:wall:0:1;t:a:steel2:1:1;b:gas:1.9
+121 AGREE    c:sandbag:1:0;c:sandbag:0:1;t:a:steel2:1:1;b:gas:1.9
+122 AGREE    c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:bomb:2.9
+123 AGREE    c:wall:1:0;t:a:steel2:2:0;b:bomb:2.9
+MAP AGREEMENT 4 of 8 cases agree (4 disagree, 0 invalid); model map-5
+[bridge split] 18.3 s wall: load 0.0 / ticks 5.7 / reads 0.0 / other 5.6 / outside calls 6.9 s
+[bridge split] WARN 96 calls of jawa/mod_settings_field (4.3 s): batch them

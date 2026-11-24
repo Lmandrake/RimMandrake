@@ -13,8 +13,9 @@
 //   A3 a stack lands by GenPlace: Direct when that bumps nobody, else Near the cell, else Near its origin (Verse.GenPlace,
 //      TryFindPlaceSpotNear and PlaceSpotQualityAt copied: 9 cells, then radius 3, then radius 12.9; another room is Bad)
 //   A4 one stack a cell, three on a shelf cell; two stacks merge only when both carry the same key and the resident is not full
-//   A5 a blast reaches what lies within its radius with no wall or closed door on the line; a gas burst reaches everything
-//      within its radius (RM_MapComponent_Knockback.GasBurst reads GenRadial, no line of sight)
+//   A5 a blast and a gas burst reach what lies within their radius with no wall or closed door on the sight line
+//      (Verse.DamageWorker.ExplosionCellsToHit and RM_MapComponent_Knockback.GasBurst: GenSight.LineOfSight, skipFirstCell;
+//      the line is copied here). A thing standing in the wall or door cell itself is reached when its near side is seen
 // NOT covered (named so nobody reads a green map as "every case"): two blasts in sequence (recovery, barrages, gas chains),
 // covers wider than one cell, things that die or are destroyed by the blast, doors that open mid-flight, maps edges,
 // multi-cell containers' footprints, the drawn arc, settings other than those the `settings` family flips, save and load.
@@ -213,7 +214,7 @@ internal sealed class MWorld : IKbWorld
 
 internal static class KnockbackMap
 {
-    public const string Version = "map-4";
+    public const string Version = "map-5";
     private static KbRules Q = new KbRules();
 
     public sealed class Blast
@@ -230,11 +231,16 @@ internal static class KnockbackMap
 
     private static bool Los(MWorld w, int cx, int cz, int x, int z)
     {
-        int n = Math.Max(Math.Abs(x - cx), Math.Abs(z - cz));
-        for (int i = 1; i < n; i++)
+        // Verse.GenSight.LineOfSight(start, end, map, skipFirstCell: true), copied: from cell to side neighbour, never diagonally
+        bool flag = cx != x ? cx < x : cz < z;
+        int dx = Math.Abs(x - cx), dz = Math.Abs(z - cz), px = cx, pz = cz, left = 1 + dx + dz, sx = x > cx ? 1 : -1, sz = z > cz ? 1 : -1;
+        dx *= 4; dz *= 4;
+        int err = dx / 2 - dz / 2;
+        for (; left > 1; left--)
         {
-            int px = cx + (int)Math.Round((double)(x - cx) * i / n, MidpointRounding.AwayFromZero), pz = cz + (int)Math.Round((double)(z - cz) * i / n, MidpointRounding.AwayFromZero);
-            if (w.terr[px, pz] == KbCell.Wall || w.terr[px, pz] == KbCell.Door) return false;
+            if ((px != cx || pz != cz) && (w.terr[px, pz] == KbCell.Wall || w.terr[px, pz] == KbCell.Door)) return false;
+            if (err > 0 || err == 0 && flag) { px += sx; err -= dz; }
+            else { pz += sz; err += dx; }
         }
         return true;
     }
@@ -282,7 +288,7 @@ internal static class KnockbackMap
         {
             double d = Dist(t.x, t.z, b.cx, b.cz);
             t.los = Los(w, b.cx, b.cz, t.x, t.z);
-            t.reached = d <= b.radius && (b.gas || t.los);
+            t.reached = d <= b.radius && t.los;
             if (!t.reached || t.rides != null && false) continue;
             cands.Add(new KbCandidate { index = reqs.Count, kind = t.container ? KbKind.Item : t.kind, distance = (float)d });
             reqs.Add(t);
@@ -950,6 +956,16 @@ internal static class KnockbackMap
             Case("gas shove onto a cover: it stands on it, the cover whole", e.z == 12 && !e.inPit && w.cover[10, 12], Where(e));
         }
         {
+            // RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN: a burst reaches only what it sees, like an explosion (A5)
+            var w = new MWorld(30, 30); w.terr[11, 10] = KbCell.Wall; w.terr[10, 11] = KbCell.Wall; MThing s = Stack(w, 11, 11);
+            MThing open = Stack(w, 9, 9, 5f, "open");
+            Run(w, Gas(10, 10));
+            Case("gas past a sealed wall corner: the stack behind it stays, the stack in the open moves", s.x == 11 && s.z == 11 && !s.flew && open.flew, Where(s) + " " + Where(open));
+            var w2 = new MWorld(30, 30); w2.terr[11, 10] = KbCell.Wall; w2.terr[10, 11] = KbCell.Wall; MThing s2 = Stack(w2, 11, 11);
+            Run(w2, Bomb(10, 10));
+            Case("a bomb past a sealed wall corner: the stack behind it stays", s2.x == 11 && s2.z == 11 && !s2.flew, Where(s2));
+        }
+        {
             // the map's own first finding: a stack with a wall right behind it
             var w = new MWorld(30, 30); for (int z = 5; z <= 15; z++) w.terr[13, z] = KbCell.Wall; MThing s = Stack(w, 12, 10);
             Run(w, Bomb(10, 10));
@@ -1132,6 +1148,15 @@ internal static class KnockbackMap
             "c:door:3:0;c:wall:3:1;c:wall:3:-1;t:a:steel2:1:0;b:bomb:2.9",
             "c:water:3:0;c:water:4:0;t:a:steel2:1:0;b:bomb:2.9",
             "c:water:2:0;t:a:steel2:1:0;b:bomb:2.9",
+            // reach (A5): a sealed corner, a door corner, half a corner from the side the sight line takes and from the other, a wall between
+            "c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:gas:1.9",
+            "c:wall:-1:0;c:wall:0:-1;t:a:steel2:-1:-1;b:gas:1.9",
+            "c:wall:1:0;c:door:0:1;t:a:col:1:1;b:gas:1.9",
+            "c:wall:1:0;t:a:steel2:1:1;b:gas:1.9",
+            "c:wall:0:1;t:a:steel2:1:1;b:gas:1.9",
+            "c:sandbag:1:0;c:sandbag:0:1;t:a:steel2:1:1;b:gas:1.9",
+            "c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:bomb:2.9",
+            "c:wall:1:0;t:a:steel2:2:0;b:bomb:2.9",
         });
         var inv = System.Globalization.CultureInfo.InvariantCulture;
         using (var f = new System.IO.StreamWriter(path))

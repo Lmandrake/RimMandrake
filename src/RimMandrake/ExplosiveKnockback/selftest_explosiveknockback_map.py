@@ -78,6 +78,16 @@ FAULTS = [
 ]
 
 
+GAS_REACH = "GenSight.LineOfSight(c, cell, map, skipFirstCell: true)"
+
+
+def gas_reach_is_the_explosions(source):
+    """GasBurst's body asks the sight line DamageWorker.ExplosionCellsToHit asks, and skips a cell it refuses."""
+    body = source.split("public static void GasBurst(", 1)[-1].split("private bool ThrowPawn(", 1)[0]
+    code = "\n".join(l.split("//", 1)[0] for l in body.splitlines())
+    return "!" + GAS_REACH in code
+
+
 def stage(fault=None):
     os.makedirs(os.path.join(STAGE, "SelfTest"), exist_ok=True)
     # shutil.copy, never copy2: a fresh mtime makes dotnet rebuild; an old one ran a stale binary, the last planted
@@ -115,6 +125,10 @@ def main(argv):
         print("UNMEASURED: no Windows dotnet.exe / D: staging root on this machine")
         return 1
     # machine-wide (/tmp, not the per-seat TMPDIR): every clone stages into the same folder
+    # the model's A5 and the game must reach by one rule: the sight line an explosion uses (RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN)
+    if not gas_reach_is_the_explosions(open(os.path.join(HERE, "Source", "RM_MapComponent_Knockback.cs"), encoding="utf-8").read()):
+        print("explosive knockback map: FAIL (GasBurst queues things without the explosion's sight line: %s)" % GAS_REACH)
+        return 1
     with open(os.path.join("/tmp", "explosiveknockback_map_selftest.lock"), "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
         for d in ("obj", "bin"):     # retained outputs can look newer than fresh sources (a clock step back): build clean

@@ -976,7 +976,7 @@ namespace RimMandrake.ExplosiveKnockback
 
         /// <summary>RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS (plan step 4): one clump of flammable gas burned at c. Not an
         /// explosion: nothing is damaged (so no pit cover breaks and no belt is drained), but every pawn, corpse and loose
-        /// good within gasBurstRadius is queued like a blast's, at full force, goods capped at gasBurstGoodsCells and people
+        /// good within gasBurstRadius on a clear sight line is queued like a blast's, at full force, goods capped at gasBurstGoodsCells and people
         /// at one cell, shield belts ignored. Each burst has its own negative id. A journal "gas_burst" line each.</summary>
         /// <summary>A vent-gas cell bursts at most once in this many ticks (10 s), however often its fire relights drifted gas.</summary>
         private const int GasCellOnceTicks = 600;
@@ -1012,7 +1012,8 @@ namespace RimMandrake.ExplosiveKnockback
             int n = 0;
             foreach (IntVec3 cell in GenRadial.RadialCellsAround(c, radius, true))
             {
-                if (!cell.InBounds(map))
+                // RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN: the sight line an explosion uses (DamageWorker.ExplosionCellsToHit)
+                if (!cell.InBounds(map) || !GenSight.LineOfSight(c, cell, map, skipFirstCell: true))
                 {
                     continue;
                 }
