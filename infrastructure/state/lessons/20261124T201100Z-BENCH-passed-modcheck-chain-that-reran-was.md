@@ -1,0 +1,2 @@
+A passed modcheck chain that reran was mostly not touched by its own mod: of 140 wasted filler reruns in mods with no test table (2026-11-17..24), 109 had an untouched mod folder, because the chain's code version hashes every mod composed with it. Read where the change lies before declaring C# per chain: a whole-mod relation (own folder, dependency folders, shared source a csproj compiles) spares most of them and cannot go stale.
+item: RIMMANDRAKE_DECLARE_READS_OF_GUARD_CHAINS_LEAVE_PASSED_CHANGES_NOTHING
