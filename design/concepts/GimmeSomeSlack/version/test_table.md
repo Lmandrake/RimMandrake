@@ -1,6 +1,6 @@
 # Gimme Some Slack 0.2.0: test-and-stage table
 
-Generated 2026-11-23T16:46:40-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
+Generated 2026-11-23T17:52:32-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
 
 ## Counts (measured)
 
@@ -82,7 +82,7 @@ Generated 2026-11-23T16:46:40-08:00 from `test_table.json` (the record; this is 
 |---|---|---|---|---|---|
 | `T_CORE` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gimmesomeslack.py` | PASS rc=0 369.26s | the C# SelfTest on the production core and aerial halves against the Python oracle: graph reduction, planner, slack laying, shape no-two-alike, junction strips, |
 | `T_STUB_JOINS` | 4-5 | offline | `src/RimMandrake/Utils/selftest_gimmesomeslack.py` | PASS rc=0 20.23s | Core/StubJoinAudit over 524 generated scenes (four looks x boxes, switches with 1-4 cords, wall/rock faces through and dead-ending, his stations 12 and 25): eac |
-| `T_STUB_ART_CENSUS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py` | PASS rc=0 0.33s | every texture under Textures/ is classed in StubArt.Census (stubbed, position only, loose end, cord); a planted unknown texture goes red |
+| `T_STUB_ART_CENSUS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py` | PASS rc=0 0.33s | every texture under Textures/ is classed in StubArt.Census (stubbed, position only, loose end, cord); a planted unknown texture goes red; every Plug.png and Plu |
 | `T_GATE` | 2 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py` | PASS rc=0 405.09s | the offline tier O1-O8: mod files, csproj and DLL, the 26 shipped setting defaults, style art sanity with planted faults, review-round art, GPT fix shapes, lamp |
 | `T_MATRIX` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar_matrix/selftest.py` | PASS rc=0 8.17s | the scene matrix generator, oracle, placer and fake game: 57 checks, 17 negative controls |
 | `T_NO_HOSE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py` | PASS rc=0 4.19s | the mod ships no hose, reel or pipe def, texture or class; a planted hose goes red |

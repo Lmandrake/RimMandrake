@@ -27,9 +27,13 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         internal sealed class Read
         {
-            public int Scenes, Plugs, Cords, Bare, Off, Slant, Stacked, Kinks;
+            public int Scenes, Plugs, Cords, Bare, Off, Slant, Stacked, Kinks, BendsNear;
+            public readonly SortedDictionary<string, int> BendWhy = new SortedDictionary<string, int>(StringComparer.Ordinal);
+            public readonly List<string> Unforced = new List<string>();
             public double WorstDeg, WorstOff;
             public readonly SortedDictionary<string, List<double>> ByKind = new SortedDictionary<string, List<double>>(StringComparer.Ordinal);
+            /// <summary>Each plug cord's (cell off the stub's end, degrees off its axis), by stub kind.</summary>
+            public readonly SortedDictionary<string, List<(double Off, double Deg)>> OffByKind = new SortedDictionary<string, List<(double Off, double Deg)>>(StringComparer.Ordinal);
             public readonly List<string> Bad = new List<string>();
         }
 
@@ -52,9 +56,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                         double deg = Math.Acos(Math.Max(-1, Math.Min(1, h.X * st.U.X + h.Z * st.U.Z))) * 180 / Math.PI, off = V2.Dist(q, st.T);
                         if (!r.ByKind.TryGetValue(st.Kind, out List<double> l)) r.ByKind[st.Kind] = l = new List<double>();
                         l.Add(deg);
+                        if (!r.OffByKind.TryGetValue(st.Kind, out List<(double, double)> lo)) r.OffByKind[st.Kind] = lo = new List<(double, double)>();
+                        lo.Add((off, deg));
                         if (st.Kind != "wall plug" && st.Kind != "wall outlet") continue;
                         seen.Add(st);
                         r.Cords++;
+                        // (instrument, fresh reader of 1e926ebe4c: the bar sc_no_sharp_turn's bends on this cord within 1.5 cells of the plug, as the bar classes them)
+                        foreach (CordShapeAudit.Bend b in CordShapeAudit.Bends(s.Pts, s.Ties))
+                        {
+                            double fromPlug = atStart ? b.S : Geo.Length(s.Pts) - b.S;
+                            if (fromPlug > 1.5) continue;
+                            r.BendsNear++;
+                            string why = CordShapeAudit.Why(w, p.EndA, p.EndB, s.Pts, b);
+                            r.BendWhy[why] = r.BendWhy.TryGetValue(why, out int nw) ? nw + 1 : 1;
+                            if (why == "unforced") r.Unforced.Add($"{name} {st.Piece}: an unforced bend {b.Turn:0} deg over {b.Arc:0.00} cell, {fromPlug:0.00} from the plug (lay {s.Lay})");
+                        }
                         r.WorstDeg = Math.Max(r.WorstDeg, deg); r.WorstOff = Math.Max(r.WorstOff, off);
                         bool bad = false;
                         if (off > MaxOff) { r.Off++; bad = true; }
@@ -114,12 +130,12 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return w;
         }
 
-        internal static Read Sweep(StreamWriter dump = null, int seeds = 2, int cords = 0, int firstSeed = 71)
+        internal static Read Sweep(StreamWriter dump = null, int seeds = 2, int cords = 0, int firstSeed = 71, string look = "Modern")
         {
             var r = new Read();
             void Run1(CordWorld w, string name, int seed)
             {
-                var opt = new BuildOptions { Pile = PileArt.Strips, Seed = (ulong)seed, PlugBoot = CordBuilder.PlugBootU("Modern") };
+                var opt = new BuildOptions { Pile = look == "Modern" ? PileArt.Strips : PileArt.Junctions, Seed = (ulong)seed, PlugBoot = CordBuilder.PlugBootU(look) };
                 if (cords > 0) opt.Lay.CordsMin = opt.Lay.CordsMax = cords;
                 List<LaidPiece> ps = new CordBuilder().Build(w, opt, _ => true);
                 Take(r, w, ps, opt, name + " s" + seed, dump);
@@ -157,6 +173,28 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Console.WriteLine($"  wall plugs: {r.Scenes} scenes, {r.Plugs} plugs, {r.Cords} cords at a wall plug or outlet, {r.Slant} slanted, {r.Off} off line, {r.Bare} bare, {r.Stacked} stacked, {r.Kinks} unforced kinks; worst {r.WorstDeg:0.0} deg, {r.WorstOff:0.000} cell");
             Console.WriteLine($"  wall plugs, 2 cords per run: {two.Scenes} scenes, {two.Cords} cords, {two.Slant} slanted, {two.Off} off line, {two.Bare} bare, {two.Stacked} stacked, {two.Kinks} unforced kinks; worst {two.WorstDeg:0.0} deg, {two.WorstOff:0.000} cell");
             Program.Check(two.Scenes >= 500 && two.Slant == 0 && two.Off == 0 && two.Bare == 0 && two.Stacked == 0, $"wall plugs, 2 cords per run: every cord leaves its wall plug straight ({two.Slant} over {MaxDeg} deg, {two.Off} over {MaxOff} cell, {two.Bare} bare, {two.Stacked} stacked, of {two.Cords})");
+            Console.WriteLine($"  wall plugs: bends within 1.5 cells of a wall plug: {r.BendsNear}; by the bar's class: {string.Join(", ", r.BendWhy.Select(kv => kv.Key + " " + kv.Value))}");
+            // every plug a cord leaves, in every look (owner 2026-11-23, via the Conductor: "the wall-plug connector has a literal stub for the cord to
+            // connect to ... it's coming out of the side of the wall-plug connector impossibly"): the cord starts on the drawn stub's end and runs along
+            // its axis, for the device and battery plug (kind "plug", each look's boot: PlugBootU, measured from the art by selftest_gss_stub_art_census.py),
+            // the strip plug, the wall plug and the south outlet. The wall plug's own bars hold here for all of them.
+            int anchorCords = 0, anchorBad = 0; double anchorOff = 0, anchorDeg = 0;
+            var anchorWhy = new List<string>();
+            void Hold(string lk, Read o)
+            {
+                foreach (var kv in o.OffByKind)
+                {
+                    List<double> offs = kv.Value.Select(x => x.Off).ToList(), degs = kv.Value.Select(x => x.Deg).ToList();
+                    int bad = kv.Value.Count(x => x.Off > MaxOff || x.Deg > MaxDeg);
+                    anchorCords += offs.Count; anchorBad += bad; anchorOff = Math.Max(anchorOff, offs.Max()); anchorDeg = Math.Max(anchorDeg, degs.Max());
+                    Console.WriteLine($"  plugs ({lk}): {kv.Key}: {offs.Count} cords, worst {offs.Max():0.000} cell off the stub's end (limit {MaxOff}), worst {degs.Max():0.0} deg off its axis (limit {MaxDeg}); {bad} over");
+                    if (bad > 0) anchorWhy.Add($"{lk} {kv.Key} {bad}");
+                }
+            }
+            Hold("Modern", r);
+            foreach (string lk in new[] { "Industrial", "Futuristic", "Scrapper" }) Hold(lk, Sweep(null, 1, 0, firstSeed, lk));
+            Program.Check(anchorCords >= 8000 && anchorBad == 0, $"plugs, every look: each cord starts on its plug's stub end and runs along it ({anchorBad} of {anchorCords} over {MaxOff} cell or {MaxDeg} deg: {string.Join(", ", anchorWhy)}; worst {anchorOff:0.000} cell, {anchorDeg:0.0} deg)");
+            foreach (string b in r.Unforced.Take(Environment.GetEnvironmentVariable("WP_ALL") != null ? 9999 : 12)) Console.WriteLine("  wall plugs, unforced bend: " + b);
             Program.Check(r.Kinks == 0, $"wall plugs: no cord kinks where nothing forces it ({r.Kinks})");
             Program.Check(r.Scenes >= 1000 && r.Plugs >= 1500, $"wall plugs: the sweep reads its scenes ({r.Scenes} scenes, {r.Plugs} plugs)");
             Program.Check(r.Slant == 0 && r.Off == 0 && r.Bare == 0, $"wall plugs: every cord leaves its wall plug straight ({r.Slant} over {MaxDeg} deg, {r.Off} over {MaxOff} cell, {r.Bare} bare, of {r.Cords}; worst {r.WorstDeg:0.0} deg)");

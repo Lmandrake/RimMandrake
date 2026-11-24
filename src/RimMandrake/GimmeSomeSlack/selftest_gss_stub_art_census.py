@@ -10,6 +10,12 @@ art_source/switch_stub_masks_2026-11-16/make_switch_masks.py) is classed as its 
 along each arm's centre ray a kept arm reaches exactly as far as the parent's, a cut one stops short of it. The joins check
 (StubJoinAudit.OfPiece) puts a stub only on the mask's arms, so a cut texture that drew another arm would be a bare stub it never reads.
 
+Each plug's drawn stub (its strain-relief boot) is measured from its own pixels against the constants the builder seats the cord on
+(owner 2026-11-23, via the Conductor: "the wall-plug connector has a literal stub for the cord to connect to ... it's coming out of the side
+of the wall-plug connector impossibly"): every look's Plug.png ends its boot at art u = -CordBuilder.PlugBootU(look), on the centre row,
+and PlugTop.png at u = +PlugTopReach / PlugTopScale; within one screen pixel at 110 px a cell (the zoom of his picture) at the largest
+scale each is drawn at. WallPlugChecks then holds every cord to those ends (T_WALL_PLUG_STRAIGHT_OFFLINE).
+
     python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py
 """
 import os
@@ -22,6 +28,11 @@ TEX = os.path.join(HERE, "Textures")
 ROW = re.compile(r'\("([A-Za-z0-9_]+)",\s*Join\.(\w+),')
 CUT = re.compile(r"(.+)_p(\d+)$")
 ARMS = ((1, 0), (0, -1), (-1, 0), (0, 1))   # E N W S in image rows (row 0 is north), bits 1 2 4 8
+BUILDER = os.path.join(HERE, "Source", "Core", "CordBuilder.cs")
+# which look draws which Plug.png (CordMaterials.StyleOfLook, SlotPath: StarWarsJawa at the root)
+PLUG_LOOK = {"Plug.png": "Scrapper", "Styles/StarWars/Plug.png": "Industrial", "Styles/Cybertek/Plug.png": "Futuristic"}
+# one screen pixel at 110 px a cell (WallPlugChecks: the zoom of the owner's picture), in cells
+SCREEN_PX = 1 / 110.0
 
 
 def census(src):
@@ -69,6 +80,44 @@ def cut_arm_fails(pairs):
                 if lost <= 0:
                     fails.append("%s: arm bit %d is cut by the mask but still drawn as far as its parent's" % (label, 1 << b))
     return fails, kept, cut, n
+
+
+def const(src, name):
+    m = re.search(r"\b%s\s*=\s*([0-9.]+)" % name, src)
+    return float(m.group(1)) if m else None
+
+
+def boot_of(src, look):
+    """CordBuilder.PlugBootU(look), read from its switch (default: the Scrapper plug)."""
+    body = src[src.index("public static double PlugBootU("):]
+    body = body[:body.index("private const double SeatStep")]
+    m = re.search(r'case "%s":\s*return\s*([A-Za-z0-9_.]+);' % look, body)
+    v = m.group(1) if m else re.search(r"default:\s*return\s*([A-Za-z0-9_.]+);", body).group(1)
+    return float(v) if v[0].isdigit() else const(src, v)
+
+
+def stub_end(alpha, side):
+    """The boot's end: the outermost opaque (> 128) column on that side (-1 left, +1 right), in canvas widths from the centre
+    (its outer edge), and the middle of its opaque run across, in canvas heights from the centre row (+ up)."""
+    h, w = alpha.shape
+    cols = [x for x in range(w) if (alpha[:, x] > 128).any()]
+    x = cols[0] if side < 0 else cols[-1]
+    rows = [y for y in range(h) if alpha[y, x] > 128]
+    u = ((x if side < 0 else x + 1) - w / 2.0) / w
+    v = (h / 2.0 - (rows[0] + rows[-1] + 1) / 2.0) / h
+    return u, v
+
+
+def plug_end_fails(src, ends):
+    """ends: (label, measured u, measured v, expected u, largest scale drawn at). Returns (fails, worst miss in screen px)."""
+    fails, worst = [], 0.0
+    for label, u, v, want, scale in ends:
+        miss = max(abs(u - want), abs(v)) * scale / SCREEN_PX
+        worst = max(worst, miss)
+        if miss > 1:
+            fails.append("%s: the drawn stub ends at art (%+.4f, %+.4f), the builder seats the cord at (%+.4f, 0): %.1f screen px off (limit 1)"
+                         % (label, u, v, want, miss))
+    return fails, worst
 
 
 def main():
@@ -129,6 +178,34 @@ def main():
                 fails.append("guard: a cut texture read against the complementary mask was not caught")
             if not cut_arm_fails([(label, mask, parent, parent)])[0]:
                 fails.append("guard: an uncut parent posing as a cut texture was not caught")
+    # each plug's drawn stub end against the builder's constants
+    if np is not None:
+        with open(BUILDER, encoding="utf-8") as f:
+            src = f.read()
+        wall, dev, top = const(src, "WallPlugScale"), const(src, "PlugScale"), const(src, "PlugTopScale")
+        ends = []
+        for path in png_files(TEX):
+            rel = os.path.relpath(path, TEX).replace(os.sep, "/")
+            rel = rel.split("GimmeSomeSlack/", 1)[-1]
+            a = np.array(Image.open(path).convert("RGBA"))[:, :, 3]
+            if os.path.basename(rel) == "Plug.png":
+                look = "Modern" if rel.startswith("Styles/ExtCord/") else PLUG_LOOK.get(rel)
+                if look is None:
+                    fails.append("%s: a plug no look draws (add it to PLUG_LOOK)" % rel)
+                    continue
+                u, v = stub_end(a, -1)
+                ends.append((rel + " (" + look + ")", u, v, -boot_of(src, look), max(dev, wall) if look == "Modern" else dev))
+            elif rel == "PlugTop.png":
+                u, v = stub_end(a, +1)
+                ends.append((rel, u, v, const(src, "PlugTopReach") / top, top))
+        if len(ends) < 9:
+            fails.append("instrument: only %d plug textures measured (9 expected: 5 Modern colours, 3 other looks, the strip plug)" % len(ends))
+        end_fails, worst = plug_end_fails(src, ends)
+        fails += end_fails
+        print("plug stubs: %d textures measured; worst %.2f screen px between the drawn stub end and the cord's seat (limit 1)" % (len(ends), worst))
+        # the guard can fail: a boot moved by 0.03 of a canvas is caught
+        if ends and not plug_end_fails(src, [(ends[0][0], ends[0][1] + 0.03, ends[0][2], ends[0][3], ends[0][4])])[0]:
+            fails.append("guard: a plug stub moved 0.03 of its canvas was not caught")
     # the guard can fail: a planted unknown texture is caught
     if unclassed(names + ["Junction_Y_Planted"], table) != miss + ["Junction_Y_Planted"]:
         fails.append("guard: a planted unclassed texture was not caught")

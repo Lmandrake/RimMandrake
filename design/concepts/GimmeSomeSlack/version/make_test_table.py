@@ -53,8 +53,10 @@ OFF = {
                          reads=[G + "Source/Core/StubJoinAudit.cs", G + "Source/SelfTest/StubJoinChecks.cs", G + "Source/Core/CordBuilder.cs"]),
     "T_STUB_ART_CENSUS": dict(stage="4-5", file=G + "selftest_gss_stub_art_census.py",
                               observes="every texture under Textures/ is classed in StubArt.Census (stubbed, position only, loose end, cord); "
-                                       "a planted unknown texture goes red",
-                              reads=[G + "Source/Core/StubJoinAudit.cs", G + "Textures"]),
+                                       "a planted unknown texture goes red; every Plug.png and PlugTop.png stub end, measured from its pixels, "
+                                       "lies within 1 screen px (110 px a cell) of the boot or reach CordBuilder seats the cord at, every look; "
+                                       "a boot moved 0.03 of its canvas goes red",
+                              reads=[G + "Source/Core/StubJoinAudit.cs", G + "Source/Core/CordBuilder.cs", G + "Textures"]),
     "T_GATE": dict(stage="2", file=G + "northstar/proof_all.py", args=["--offline-gate"],
                    observes="the offline tier O1-O8: mod files, csproj and DLL, the 26 shipped setting defaults, style art sanity "
                             "with planted faults, review-round art, GPT fix shapes, lamp mast register; plus the matrix and "
@@ -171,7 +173,9 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
         stage="4-5", file=G + "Source/SelfTest/WallPlugChecks.cs",
         observes="the production builder over 1560 generated Modern scenes (every wall face; far-side wall lamps, devices across a wall, conduit through a wall, "
                  "runs ending in one; near, far, left, right and the shortest spans; again at 2 cords per run): every cord leaves its wall plug or outlet within 3 "
-                 "degrees of the plug's axis and 0.02 cell of its line, no wall plug is bare, no device plug is drawn on one, no cord kinks where nothing forces it "
+                 "degrees of the plug's axis and 0.02 cell of its line, no wall plug is bare, no device plug is drawn on one, no cord kinks where nothing forces it; "
+                 "and in every look (Modern, Industrial, Futuristic, Scrapper) each device, strip and wall plug and wall outlet cord starts within 0.02 cell "
+                 "of its stub's end and 3 degrees of its axis, a planted decal offset goes red "
                  "(bars cords_join_stubs_on_position_and_slope, no_unforced_sharp_turn)",
         reads=CORE),
     "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": dict(

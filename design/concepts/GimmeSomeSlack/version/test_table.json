@@ -1,7 +1,7 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.2.0",
- "made": "2026-11-23T16:46:40-08:00",
+ "made": "2026-11-23T17:52:32-08:00",
  "made_by": "rm-builder, Maturation hand run beside the pilot, row 2 (throwaway version/make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -462,9 +462,10 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py",
-   "observes": "every texture under Textures/ is classed in StubArt.Census (stubbed, position only, loose end, cord); a planted unknown texture goes red",
+   "observes": "every texture under Textures/ is classed in StubArt.Census (stubbed, position only, loose end, cord); a planted unknown texture goes red; every Plug.png and PlugTop.png stub end, measured from its pixels, lies within 1 screen px (110 px a cell) of the boot or reach CordBuilder seats the cord at, every look; a boot moved 0.03 of its canvas goes red",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
     "src/RimMandrake/GimmeSomeSlack/Textures"
    ],
    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py",
@@ -1888,7 +1889,7 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallPlugChecks.cs",
-   "observes": "the production builder over 1560 generated Modern scenes (every wall face; far-side wall lamps, devices across a wall, conduit through a wall, runs ending in one; near, far, left, right and the shortest spans; again at 2 cords per run): every cord leaves its wall plug or outlet within 3 degrees of the plug's axis and 0.02 cell of its line, no wall plug is bare, no device plug is drawn on one, no cord kinks where nothing forces it (bars cords_join_stubs_on_position_and_slope, no_unforced_sharp_turn)",
+   "observes": "the production builder over 1560 generated Modern scenes (every wall face; far-side wall lamps, devices across a wall, conduit through a wall, runs ending in one; near, far, left, right and the shortest spans; again at 2 cords per run): every cord leaves its wall plug or outlet within 3 degrees of the plug's axis and 0.02 cell of its line, no wall plug is bare, no device plug is drawn on one, no cord kinks where nothing forces it; and in every look (Modern, Industrial, Futuristic, Scrapper) each device, strip and wall plug and wall outlet cord starts within 0.02 cell of its stub's end and 3 degrees of its axis, a planted decal offset goes red (bars cords_join_stubs_on_position_and_slope, no_unforced_sharp_turn)",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitPlacementGate.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitTargets.cs",
