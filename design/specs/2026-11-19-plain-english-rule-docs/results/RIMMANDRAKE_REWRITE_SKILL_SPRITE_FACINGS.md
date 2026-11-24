@@ -10,10 +10,10 @@ Also: skills/rimworld-sprite-facings/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 28,066 | 32,607 |
-| words in linted prose | 4,023 | 4,744 |
-| STE violations per 100 words | 4.72 | 2.26 |
-| sentences over 20 words | 79 | 32 |
+| bytes | 28,066 | 32,992 |
+| words in linted prose | 4,023 | 4,793 |
+| STE violations per 100 words | 4.72 | 2.21 |
+| sentences over 20 words | 79 | 31 |
 | flagged lines (mechanical) | 29 | 20 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 10 | 0 |
 
@@ -69,6 +69,10 @@ One fresh Opus reader (rm-judge) read old and new, with no reasoning from the wr
 The same reader then read each repair. One repair was still wrong (the feet test binds only some body plans) and two needed a
 small fix. The writer made these three fixes from the reader's text and the code (`judge` in `facing_scale_lint.py`). No
 reader read these last three fixes.
+
+After the first landing (a7fde265dd), the prose check of `./publish` named 21 faults and then 2. The writer repaired each one; its
+own reader then found none. The meaning reader did not read these repairs (nouns for pronouns, tool names, one gloss: the
+quadrant is a quarter of the facing's picture).
 
 ## Conflicts and stale lines: settled
 

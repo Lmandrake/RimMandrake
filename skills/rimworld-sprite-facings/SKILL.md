@@ -16,7 +16,8 @@ The parent skill holds canvas, alpha, downscaling and the validator. The flying 
 The format of that plan is in `../generating-rimworld-sprites/references/validation-plan.md`.
 
 A building's SOUTH facing is drawn from the measured building camera: orthographic, ~35° above horizontal. A round top
-is an ellipse 0.56 tall for its width. Full text: `../generating-rimworld-sprites/references/building_camera_perspective.md`.
+is an ellipse 0.56 tall for its width. Full text:
+`../generating-rimworld-sprites/references/building_camera_perspective.md`.
 
 ## 🔴 WHAT NORTH AND SOUTH MEAN — owner ruling, 2026-09-15
 
@@ -42,8 +43,9 @@ rows were creatures. Only about three of the 19 had no defect. The wrong north a
 notes: *"North is HUGE compared to east, and South isn't south"* (Anooba) · *"Norht isn't north, south isn't very south
 either"* (Orray) · *"south isn't south, north isn't north"* (Iriaz).
 
-🔴 **The donor art obeys the convention. On that date our regenerated art broke it.** Three creatures existed both as
-donor art and as our override. The numbers are the mirror-symmetry of the visible silhouette:
+🔴 **The donor art (the `SWBestiary` art that came from other mods) obeys the convention. On that date our regenerated
+art broke it.** Three creatures existed both as donor art and as our override. The numbers are the mirror-symmetry of
+the visible silhouette:
 
 | creature | donor (SWBestiary) | our override |
 |---|---|---|
@@ -58,8 +60,8 @@ A few shipped donor files are wrong. For example, Nuna's donor north shows a bea
 the formula of `art_checks.py`:
 
 - The median score is 0.99 for north and 0.99 for south. East has a median of 0.73.
-- 123 norths and 122 souths reach the floor of 0.80. Five animals fail in one facing or both: Squirrel, Cobra, HermitCrabC,
-  HermitCrabA and HermitCrabA_Stationary.
+- 123 norths and 122 souths reach the floor of 0.80. Five animals fail in one facing or both: Squirrel, Cobra,
+  HermitCrabC, HermitCrabA and HermitCrabA_Stationary.
 - A symmetric silhouette fits a front view and a top-down view alike. `facing_scale_lint.py` models the vanilla north
   and south as top-down. The owner's ruling above decides our art, whatever vanilla does.
 
@@ -88,8 +90,8 @@ the formula of `art_checks.py`:
   The drift happens even when the prompt says "strict side profile" (owner ruling 2026-09-16, gizka
   east). So the prompt must forbid the overhead camera explicitly. The daemon's stamp does this. In a prompt outside the
   daemon, write that yourself.
-- The hedge of a canon entry ("reads almost one-eyed") can become a literal cyclops in the render. This happens when the
-  prompt does not forbid the overhead camera.
+- The hedge of a canon entry ("reads almost one-eyed") can become a literal cyclops in the render. The cyclops comes
+  when the prompt does not forbid the overhead camera.
 
 ### What can be checked without a model, and what cannot
 
@@ -116,7 +118,7 @@ a fallback for the time when the real check is unavailable.
   separated the two. So a `claude -p` judge of the rendered frame became the measurement (BENCH 2026-09-17).
 - Flag an UNMEASURED verdict of the judge as UNMEASURED. Never pass it as if a numeric check had run.
 - **The judge must first pass a calibration on art that our pipeline never touched.** The judge of that example failed
-  the calibration of 2026-09-20. It called 5 of 6 donor sets OVERHEAD (83%), more than our own art. So its OVERHEAD
+  the calibration of 2026-09-20. The judge called 5 of 6 donor sets OVERHEAD (83%), more than our own art. So its OVERHEAD
   verdict in `src/RimMandrake/Utils/artpipe/facing_set_audit.py` is ADVISORY: a list for a human look, never a gate.
 
 ### Cross-facing size and height, not just symmetry
@@ -124,18 +126,18 @@ a fallback for the time when the real check is unavailable.
 - 🔴 **Run a cross-facing size audit at WIRING time, for every creature facing set.** Run
   `src/RimMandrake/Utils/artpipe/facing_set_audit.py`. The audit measures the spread of the major-axis bbox
   across facings, and flags anything over 15%.
-  - The structural gates of the sprite validator check each facing against its own reference. The gates do not check facings
-    against EACH OTHER. The gap is exactly the anooba-looks-huge class of defect.
+  - The structural gates of the sprite validator check each facing against its own reference. The gates do not check
+    facings against EACH OTHER. The gap is exactly the anooba-looks-huge class of defect.
   - In the audit of 2026-09-16 all 12 sets passed. The borderliners were `nuna-female` at 14.3% and `sytheclaw` at 10.6%.
 - **Facing HEIGHT is measurable and predicts an owner rejection before he looks.** The measurement caught the one row
   that he flagged, at 1.85x (2026-09-15).
   - Our art is drawn from a ground camera. There, height cannot legitimately change with the viewing angle. Width can.
   - In art drawn top-down, as vanilla is, north and south legitimately stand taller than east. `facing_scale_lint.py`
-    judges each view by its own model. Our own quadruped, biped, flyer or animal of unknown plan is judged as top-down,
-    unless that view and the east each show two or more feet. Our other body plans are judged as ground camera.
+    judges each view by its own model. Our own quadruped, biped, flyer or animal of unknown plan is judged as top-down.
+    The exception: that view and the east each show two or more feet. Our other body plans are judged as ground camera.
   - Two limits differ by tool. `art_checks.py` flags a height ratio above 1.35. `facing_scale_lint.py` uses the spread of
-    vanilla. The art judge runs the gate of `facing_scale_lint.py`. That gate needs a
-    creature card with our own east and a south or north.
+    vanilla. The art judge runs the gate of `facing_scale_lint.py`. That gate needs our own
+    east picture of the creature, and a south or a north picture.
   - The art judge may refuse a set for a size that differs between facings (owner, 2026-11-19: "Allow the Judge to bounce
     incorrectly sized creatures").
 - **Do not pre-fill a review sheet on provenance alone** (whether the current wave touched the row). That pre-fill
@@ -162,7 +164,7 @@ means that a file was copied, not drawn. `art_checks.py` (`duplicate_facings`) d
 ⛔ **The rotation/flip extension was measured and abandoned.**
 
 - The idea was to catch a facing that was manufactured from another. The test tried all eight dihedral transforms
-  (90/180/270, each with and without a flip). It exempted east↔west, since west legitimately *is* a flipped east.
+  (90/180/270, each with and without a flip). The test exempted east↔west, since west legitimately *is* a flipped east.
 - The test compared 84 within-set pairs at native scale, over the union silhouette. So shared transparency could not
   inflate the score.
 - **Nothing reached 0.90.** The whole corpus sat between 0.57 and 0.86. No defect here was a literal rotation of another
@@ -203,7 +205,7 @@ The halo is a defect of the export step, worth a fix there. Do not re-render 13 
 defect of one sprite only when it displaces the silhouette (`transparency_real` in `art_checks.py`).
 
 🔴 **LANCZOS resampling amplifies alpha dust.** Alpha dust is near-zero but nonzero alpha that reaches past the visible
-silhouette. The resample rings. Measured on one facing: 1055→3452px of such pixels. That fix traded a boundary-clip
+silhouette. The resample rings. Measured on one facing: 1055→3452px of such pixels. The resample traded a boundary-clip
 finding for a worse `transparency_real` finding. Of 4 resamplers tested (LANCZOS/BICUBIC/BILINEAR/BOX), only **BOX**
 (area-averaging) left the file no worse than before. For a repad/recenter-in-place fix on existing game art, prefer
 BOX.
@@ -228,8 +230,8 @@ pipeline. One facing is enough to learn if the art direction survives downscalin
 
 ### ⚠️ Generate facings individually, not as a 2×2 sheet
 
-A sheet draws one machine four ways in one pass. A sheet is the obvious way to get consistency. **Measured 2026-08-12, it is
-the wrong trade.** The reason is resolution, not art.
+A sheet draws one machine four ways in one pass. A sheet is the obvious way to get consistency. **Measured 2026-08-12,
+it is the wrong trade.** The reason is resolution, not art.
 
 A generation returns roughly a fixed pixel budget, regardless of what is in the picture. When four facings share one
 picture, each facing gets a quarter of the budget:
@@ -242,9 +244,9 @@ picture, each facing gets a quarter of the budget:
 **4× fewer pixels per facing, leaving almost no downsampling headroom.** A finished sprite is crisp because it was
 generated well above target and then area-averaged down. At 1.2× there is nothing to average.
 
-The sheet also did some things well, so this is a trade and not a failure. It held the 2×2 layout. It kept the viewing
-direction of each cell. Its four panels were more alike in style than four independent runs. It still did not deliver
-verifiable damage correspondence between views.
+The sheet also did some things well, so this is a trade and not a failure. The sheet held the 2×2 layout, and kept the
+viewing direction of each cell. Its four panels were more alike in style than four independent runs. The sheet still did
+not deliver verifiable damage correspondence between views.
 
 **Recommendation: generate each facing individually, anchored to a chosen sibling.** Ask for a match on palette,
 material and damage language. That buys most of the consistency at full resolution. The ways to anchor:
@@ -258,9 +260,9 @@ material and damage language. That buys most of the consistency at full resoluti
     facings together on two different creatures.
   - Copy the method, not the words "hard black outline". The house art now has no outlines (owner card 2026-10-04).
     The rule and its exception: `design/RimMandrake/art_judge_brief.md`, rule B1a (No outlines).
-- **Two images: the reference as image 1 and the approved facing as image 2.** This form is not proven for sibling facings.
-  Two-image calls hung three times running. That looked like the cause and was not. A two-image edit of a building worked on
-  2026-10-14 (`../generating-rimworld-sprites/references/building_camera_perspective.md`).
+- **Two images: the reference as image 1 and the approved facing as image 2.** This form is not proven for sibling
+  facings. Two-image calls hung three times running. That looked like the cause and was not. A two-image edit of a
+  building worked on 2026-10-14 (`../generating-rimworld-sprites/references/building_camera_perspective.md`).
 
 **Codex `edit` hangs on roughly one call in four, with no error of its own.**
 
@@ -268,8 +270,8 @@ material and damage language. That buys most of the consistency at full resoluti
 - Run one call at a time in the foreground. When a call fails, run the same call again. Do not put the retry loop inside
   a batch script.
 - **The full measurement, the budgeting table and the harness bug that made the hang look worse than it is live in
-  `~/dev/MandrakeWorkflows/skills/generating-images/SKILL.md` > "Cost and timing".** Those are engine facts, not sprite
-  facts. So they are in one place.
+  `~/dev/MandrakeWorkflows/skills/generating-images/SKILL.md` > "Cost and timing".** The facts are engine facts, not
+  sprite facts. So the facts are in one place.
 
 → The history of the Codex `edit` hang: `references/codex-edit-hang-history.md`.
 
@@ -294,15 +296,16 @@ Vanilla creatures are static by default. An arm that waves or a tail that twitch
 node** (owner ruling 2026-09-19).
 
 - The cause of the ruling: `FIREHAWK_FLIGHT_BEHAVIOR_1` shipped a custom `BodyDef` wing part with a
-  `PawnRenderNodeProperties_Spastic` node. It looked broken live. Sideways, the bird stood still with no visible flap. Going
-  north, one wing was missing and the other was misaligned.
-- The fault is not a tuning miss. A Spastic node idle-jiggles ONE static texture. The node was never built to express a per-facing
-  "wings up" pose against a "wings down" pose. Nothing keeps a single wing texture registered across four facings.
+  `PawnRenderNodeProperties_Spastic` node. The node looked broken live. Sideways, the bird stood still with no visible
+  flap. Going north, one wing was missing and the other was misaligned.
+- The fault is not a tuning miss. A Spastic node idle-jiggles ONE static texture. The node was never built to express a
+  per-facing "wings up" pose against a "wings down" pose. Nothing keeps a single wing texture registered across four
+  facings.
 - The rule and the owner's words: `design/RimMandrake/standing_rulings.md`, section "If it flies in the fiction". The full
   account and the mechanics: `skills/rimworld-modding/references/flight.md`.
 
-**The real mechanism is `PawnKindDef.flyingAnimationFramePathPrefix`.** This is MEASURED against the installed game:
-`Chicken_Flying_*` was extracted from `resources.assets` (UnityPy), and frame 1 was compared with frame 5:
+**The real mechanism is `PawnKindDef.flyingAnimationFramePathPrefix`.** The mechanism is MEASURED against the installed
+game: `Chicken_Flying_*` was extracted from `resources.assets` (UnityPy), and frame 1 was compared with frame 5:
 
 ```xml
 <flyingAnimationFramePathPrefix>Things/Pawn/Animal/Chicken/Chicken_Flying_</flyingAnimationFramePathPrefix>
@@ -356,8 +359,8 @@ reason to counter it** (none identified yet). FireHawk's own v1 art hit two fail
   eyes, so use the head mass.
 - The owner calls the vanilla Chicken a bird that "satisfies the requirements perfectly". Its head moves 0 px across all
   8 frames of all three facings. Its wings and much of its torso are redrawn from frame to frame.
-- **Hold the torso still.** Whether a torso may change as the Chicken's does is a looser bar. The owner rules on it, or the
-  Conductor may by a mindful act (root `CLAUDE.md`, "Only five acts stay his"). No ruling allows it now.
+- **Hold the torso still.** Whether a torso may change as the Chicken's does is a looser bar. The owner rules on it, or
+  the Conductor may by a mindful act (root `CLAUDE.md`, "Only five acts stay his"). No ruling allows it now.
 
 ### Cut-out flip-books: what `flyer_cutout.py` can get wrong
 
@@ -365,16 +368,16 @@ A cut-out keeps one master frame as a plate and swings wing layers over it. Its 
 body gates pass the cut-out, whatever the plate contains. The four faults below all passed those gates, and the owner
 saw each one.
 
-**Before you build, run `flyer_eye_checks.py parts CONFIG --src DIR --out PNG` and look at the picture.** The picture shows
-the plate alone and each wing layer alone. The plate must be a wingless body with its own natural outline. Each wing
-layer must hold wing and nothing else. Faults 1 and 3 are obvious on that sheet. No check that exists shows them.
+**Before you build, run `flyer_eye_checks.py parts CONFIG --src DIR --out PNG` and look at the picture.** The picture
+shows the plate alone and each wing layer alone. The plate must be a wingless body with its own natural outline. Each
+wing layer must hold wing and nothing else. Faults 1 and 3 are obvious on that sheet. No check that exists shows them.
 
 1. **Two wings at once: a wing baked into the plate.** Everything outside the wing polygon stays on screen in every
    frame.
    - Some masters have a folded wing along the flank and a raised wing as well. Then the plate holds the folded wing. So
      the folded wing stays while the moving wing flaps.
-   - Pick the master from what its flank shows, not only from where its wing is. A clean source has a thin torso behind the
-     wing root and no wing feathers on the flank.
+   - Pick the master from what its flank shows, not only from where its wing is. A clean source has a thin torso behind
+     the wing root and no wing feathers on the flank.
    - To check, measure the torso at a column behind the root against the thinnest source frame. FireHawk's plate was 47 px
      thick at x=80. The clean frame was 32 px.
    - The cut-out pass did not draw this wing. The pass made one bad frame permanent.
@@ -383,23 +386,24 @@ layer must hold wing and nothing else. Faults 1 and 3 are obvious on that sheet.
    - At `sy` -0.1, each output row covers ten source rows and reads only a few. So the outlines break into specks, and the
      pattern changes every frame.
    - An area filter removes the specks and leaves a smear. So a filter is not the fix.
-   - Keep every side-view pose at |`sy`| 0.5 or above (SQUASH row). For mid-stroke, use a drawn pose: a wing seen edge-on
-     or folded along the body.
+   - Keep every side-view pose at |`sy`| 0.5 or above (the SQUASH row of `flyer_eye_checks.py audit`). For mid-stroke,
+     use a drawn pose: a wing seen edge-on or folded along the body.
 3. **Flesh ripping away: a wing polygon that crosses the body.** The polygon takes whatever is inside it.
-   - An inner edge through body texture leaves the plate with a straight sliced side. The lifted wing then carries a strip of
-     body away. Route the polygon along the drawn outline of the wing.
+   - An inner edge through body texture leaves the plate with a straight sliced side. The lifted wing then carries a
+     strip of body away. Route the polygon along the drawn outline of the wing.
    - Where the wing and the body differ in colour, count the body-coloured pixels in the layer. The Porg's south wing held
      514 belly-white pixels of 3478. Its pale moved pixels went from 81 at rest to 738 at full lift.
    - A static sprite has no body drawn under its folded wing. So a large lift uncovers a hole. Use a small lift or a drawn
      wing.
-4. **A wing that does not flap, with a sliver of it elsewhere in the quadrant: a mapping error, not art.** Some polygon
+4. **A wing that does not flap, with a sliver of it elsewhere in the quadrant: a mapping error, not art.** The quadrant
+   is a quarter of that facing's picture. Some polygon
    or mask does not cover the wing's whole sweep. So the pixels outside it behave differently. Fix the mask. Do not
    redraw.
 
-**A facing with part of its art missing** shows as an empty quadrant. The eye finds the fault at once in motion, because one
-side of a symmetric bird does nothing. Motion gates add both wings together and pass it. Compare the two sides instead
-(SIDES row). Pixels moved left of the axis against right of it read 0.05 on a frozen or erased wing. They read 0.94 to 1.00
-on every other north and south in the truth set.
+**A facing with part of its art missing** shows as an empty quadrant. The eye finds the fault at once in motion, because
+one side of a symmetric bird does nothing. Motion gates add both wings together and pass it. Compare the two sides
+instead (the SIDES row of `flyer_eye_checks.py audit`). Pixels moved left of the axis against right of it read 0.05 on a
+frozen or erased wing. Those pixels read 0.94 to 1.00 on every other north and south in `references/flyer_truth_set.md`.
 
 More traps for this section: [references/traps.md](references/traps.md) § Cut-out flip-books: what `flyer_cutout.py` can get wrong.
 
@@ -408,10 +412,11 @@ More traps for this section: [references/traps.md](references/traps.md) § Cut-o
 **The engine holds the last frame for two steps.** `durationTicks` is `(frames + 1) * ticksPerFrame`, and the last key is
 at `(frames - 1) * ticksPerFrame`. So the eye gets the last frame the longest. **Put a stroke extreme last.**
 
-- The evidence is two sets of identical frames. Only the last frame differed. The owner said that the set that held the full
-  raise appeared "to beat more and that's better". The other set held a pose part way through the stroke.
+- The evidence is two sets of identical frames. Only the last frame differed. The owner said that the set that held the
+  full raise appeared "to beat more and that's better". The other set held a pose part way through the stroke.
 - Both sets ran 12 ticks a cycle, 5 beats a second. So the beat count did not change.
-- HOLD reports this as advice. It rests on that one comparison, and the Chicken holds mid-stroke.
+- The HOLD row of `flyer_eye_checks.py audit` reports this as advice. The advice rests on that one comparison, and the
+  Chicken holds mid-stroke.
 
 ### Checking a flip-book before anyone watches it
 
@@ -419,15 +424,15 @@ at `(frames - 1) * ticksPerFrame`. So the eye gets the last frame the longest. *
 
 - The rows are FRAMES, HEAD, SIDES, SQUASH, STATIC and HOLD. HEAD tests that the head is held on the skull mass. A person
   places the head box. No box is UNMEASURED.
-- The rows are fitted on `references/flyer_truth_set.md`, the eight birds that he labelled. The rows are unproven on a fresh
-  batch. So green is a lead. Score any new flyer check against that table.
+- The rows are fitted on `references/flyer_truth_set.md`, the eight birds that he labelled. The rows are unproven on a
+  fresh batch. So green is a lead. Score any new flyer check against that table.
 
 **When a control he passed goes red, the check is at fault.**
 
 - The Chicken reads OFFENDER at `flier_frame_registration` (17 px, wing mass read as body). The Chicken reads red at
   `flyer_cutout check`, and BROKE at stabilize (`flier_body_stabilize.py`).
-- A set started one frame later reads red at stabilize and `--lines`. The cause: the tool's master index now points at
-  another frame.
+- A set started one frame later reads red at `flier_body_stabilize.py`, and at its `--lines` check. The cause: the
+  `master` index in the set's config now points at another frame.
 - Do not redraw art to satisfy those readings. Fix the check, or set the check aside.
 
 **A pass from stills is not evidence about motion.** The judge passed the double wing, the squash noise and the Porg rip.
@@ -436,11 +441,11 @@ size. Count what the judge catches, never what the judge passes.
 
 **Every flyer review page gets a frame-step control and a slow speed**, beside the true game rate.
 
-- The page has full-size frames and a true-scale view next to a vanilla human. At 5 beats a second a fault goes by too fast
-  to diagnose: he could only call it noise.
+- The page has full-size frames and a true-scale view next to a vanilla human. At 5 beats a second a fault goes by too
+  fast to diagnose: he could only call it noise.
 - Honour the double-held last frame in the playback. If you do not, the page does not show what ships.
-- `src/RimMandrake/Utils/art/flyer_step_page.py` builds such a page from frame folders. It draws west as east mirrored, as
-  the engine does.
+- `src/RimMandrake/Utils/art/flyer_step_page.py` builds such a page from frame folders. The page draws west as east
+  mirrored, as the engine does.
 
 **Also verify** these three things:
 
