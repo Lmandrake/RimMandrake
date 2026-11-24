@@ -44,6 +44,48 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
+def t_incident_lifecycle(W, step, finished, events, now):
+    def fault(reason):
+        return W._st("BRAKED", reason, 0, at_once=True)
+
+    reason = "filler brake on NewTestMod: worker pull failed"
+    real_state = W.lane_state
+    W.lane_state = lambda *a: fault(reason)
+    try:
+        first = step(now)["incident"]["item"]
+        finished("DONE", None, now + 1)
+        W.lane_state = lambda *a: W._st("EXHAUSTED", "nothing to fill", settled=True)
+        end = step(now + 2)
+        it = W.world()[1].items[first]
+        check(end["incident"] is None and it.open and it.blocked_kind == "external"
+              and "worker pull failed" in (it.blocked_reason or ""),
+              "cause recovery leaves the ticket on an external wait naming the cause")
+        W.lane_state = lambda *a: fault(reason)
+        n_spawn = len(events("spawn"))
+        again = step(now + 100)["incident"]
+        it = W.world()[1].items[first]
+        check(again["item"] == first and again["since"] == W.iso(now + 100) and not it.blocked
+              and len(events("spawn")) == n_spawn and events("note")[-1]["id"] == first,
+              "return lifts the wait and notes the same ticket with a new incident")
+    finally:
+        W.lane_state = real_state
+
+
+def t_cause_identity(W, step, now):
+    real_state = W.lane_state
+    try:
+        prior = W.T.read_json(W.path("steward.json"))["incident"]
+        for state, reason in (("BRAKED", "filler brake on NewTestMod: canary failed"),
+                              ("PAUSED", "filler brake on NewTestMod: canary failed")):
+            W.lane_state = lambda *a: W._st(state, reason, 0, at_once=True)
+            inc = step(now)["incident"]
+            check(inc["item"] and inc["item"] != prior["item"] and inc["unowned_s"] >= prior["unowned_s"],
+                  "another %s fault gets a distinct ticket without resetting the ladder" % state)
+            prior, now = inc, now + 60
+    finally:
+        W.lane_state = real_state
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="rf_steward_")
     try:
@@ -252,14 +294,16 @@ def main():
         check(pulses()[-1]["status"] == "ok", "recovery records steve:lane ok")
         check(len(events("note")) == notes0 + 1 and events("note")[-1]["id"] == item, "recovery notes the item")
         dropped = sorted(e["id"] for e in events("drop"))
-        check(dropped == [item], "recovery drops the item the incident spawned: %s" % dropped)
+        parked = W.world()[1].items[item]
+        check(item not in dropped and parked.open and parked.blocked_kind == "external",
+              "recovery parks the open item the incident spawned: %s" % dropped)
         # ------------------------------------------------ the next incident
         reset()
         filler("INVALID", "HANG", base), filler("INVALID", "HANG", base)
         step(base + 10000)
         rec = step(base + 10600)
         check(rec["incident"]["item"] != item and len(events("spawn")) == 2,
-              "a new incident after a recovery opens its own item: the old one was dropped")
+              "a different cause after recovery opens its own item")
         item = rec["incident"]["item"]
         rec = step(base + 10700)
         check(rec["incident"]["item"] == item and len(events("spawn")) == 2, "while the item is open, never a second one")
@@ -716,7 +760,7 @@ def main():
         inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 1, "item": "STEVE_CLOSED_UNDER_ITEM",
                "told": None}
         sp_n = len(events("spawn"))
-        W.escalate(inc, {"reason": "r", "jobs": []}, base + 5, "STEVE_CLOSED_UNDER_ITEM")
+        W.escalate(inc, {"reason": "fixture item closed", "jobs": []}, base + 5, "STEVE_CLOSED_UNDER_ITEM")
         check(inc["item"] != "STEVE_CLOSED_UNDER_ITEM" and inc["level"] >= 1 and W.item_open(inc["item"], W.world()),
               "an item closed at level 1 under a continuing fault is replaced: %s" % inc)
         real_rf = W.rimflow
@@ -737,7 +781,7 @@ def main():
         W.nobody_for, W.open_lane_item = (lambda s, n: "nobody drains %s" % s), (lambda w, now: None)
         inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "told": None}
         sp_n = len(events("spawn"))
-        W.escalate(inc, {"reason": "r", "jobs": []}, base + 5, "STEVE_CLOSED_UNDER_ITEM")
+        W.escalate(inc, {"reason": "fixture without receiver", "jobs": []}, base + 5, "STEVE_CLOSED_UNDER_ITEM")
         W.nobody_for, W.open_lane_item = real_nf, real_ol
         check(len(events("spawn")) == sp_n and inc["level"] == 0 and "no receiver: nobody drains BENCH" in str(inc.get("error")),
               "T2: with no receiver the L1 spawn is refused, the reason is on the incident, the rung is retried: %s" % inc)
@@ -935,6 +979,10 @@ def main():
         inc = (rec or {}).get("incident") or {}
         check(not inc.get("error") and inc.get("item") and inc.get("level", 0) >= 1,
               "VHRP: a readable ledger again lets the ladder climb and clears the error: %s" % inc)
+        reset()
+        os.remove(T.q("steward.json"))
+        t_incident_lifecycle(W, step, finished, events, base + 40000)
+        t_cause_identity(W, step, base + 40200)
         # ------------------------------------------------ units
         # the unit texts live in Utils/systemd/ since 76bd31f806 (testq.UNITS is gone: one home for every unit text)
         udir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "systemd")

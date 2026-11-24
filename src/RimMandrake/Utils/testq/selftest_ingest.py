@@ -808,6 +808,12 @@ def template_checks(env):
         check(ingest.repair(rec["job"], rec["result"], cause, rec) is None and not calls and not os.path.exists(path),
               "a cause inside a fault window is ENVIRONMENT: never filed or noted: %s" % calls)
         windows[:] = [{"id": "F8", "start": "2026-10-30T09:00:00Z", "end": "2026-10-30T11:00:00Z"}]
+        # An eligible site-hold repair still writes the same template. Supply the two other jobs.
+        for at in ("2026-11-01T10:20:10Z", "2026-11-01T10:20:20Z"):
+            supporting = done_rec(None, rows=(("r9", "UNMEASURED"),))
+            supporting["result"]["rows"] = [dead]
+            supporting["finished"] = at
+            S.dump(supporting, ingest.T.q("done", supporting["job"]["id"] + ".json"))
         ingest.repair(rec["job"], rec["result"], cause, rec)
         spawn = [c for c in calls if c[0] == "spawn"]
         check(len(spawn) == 1 and spawn[0][spawn[0].index("--name") + 1] == name, "outside every window it is filed")
@@ -866,7 +872,7 @@ def template_checks(env):
         ingest._REPAIRED.clear()
         ingest._REPAIR_ITEMS[0] = {}
         orphan = done_rec(ITEM, rows=(("r1", "PASS"),))
-        orphan["result"].update(rows=[dict(dead, chain="c8"), {"row": "r1", "chain": "c2", "verdict": "PASS",
+        orphan["result"].update(rows=[dict(dead, chain="c8", detail="canary red"), {"row": "r1", "chain": "c2", "verdict": "PASS",
                                                                "detail": ""}], attempt=orphan["job"]["id"] + ".a7")
         o_cause = R.causes_of(orphan["result"])[0]
         o_path = os.path.join(items_dir, R.repair_base(o_cause) + ".md")
@@ -916,6 +922,7 @@ def template_checks(env):
               "publish stages the spawned repair's template only: %s" % ingest.repair_prose_paths(lambda *a: G))
     finally:
         ingest.rimflow, ingest.note_once, ingest.FM.load, ingest.recorded_run, ingest.T.QHOME = saved
+        ingest._REPAIR_HISTORY[0] = None
         ingest._REPAIR_ITEMS[0] = None
         ingest._REPAIRED.clear()
 
@@ -1060,6 +1067,31 @@ def window_and_proofs_checks(env, queue, events, ingest):
     check(len(events()) == n, "a second ingest of them writes nothing")
 
 
+def t_self_healing_threshold(queue, events, ingest):
+    def sight(finish, prior=None):
+        rec = done_rec(None, rows=(("surprised", "UNMEASURED"),)) if prior is None else json.loads(json.dumps(prior))
+        rec["result"]["rows"][0]["detail"] = "a surprise ended this chain on the threshold fixture"
+        rec["finished"] = finish
+        if prior:
+            rec["result"]["attempt"] = rec["job"]["id"] + ".a2"
+        fn = rec["result"]["attempt"] + ".json"
+        S.dump(rec, os.path.join(queue, "done", fn))
+        before = len(events())
+        ingest()
+        acts = [(e["event"], e.get("id")) for e in events()[before:]]
+        return rec, acts
+
+    sight("2026-11-01T10:00:00Z")
+    first, acts = sight("2026-11-02T10:00:01Z")
+    check(acts == [("note", FILL)], "one recent self-healing job only notes the filler host: %s" % acts)
+    _, acts = sight("2026-11-02T10:00:02Z", prior=first)
+    check(acts == [("note", FILL)], "a second attempt of the same job still only notes: %s" % acts)
+    _, acts = sight("2026-11-02T10:01:00Z")
+    check(acts == [("note", FILL)], "two distinct jobs in 24 h only note: %s" % acts)
+    _, acts = sight("2026-11-02T10:02:00Z")
+    check([ev for ev, _ in acts] == ["spawn"], "the third distinct job within 24 h files one repair: %s" % acts)
+
+
 def main():
     tries_checks()
     crash_checks()
@@ -1177,6 +1209,7 @@ def main():
                        capture_output=True, text=True, timeout=300)
         u = rec_of("unknown")
         check("error" in u.get("ingested", {}) and "ingest_pending" not in u, "the last try marks it with the error")
+        t_self_healing_threshold(queue, events, ingest)
         # a standing host (TESTQ_HOST_ITEM) hosts only item-less jobs: a job that names its own item is not noted there
         harness_checks(env)
         quarantine_repair_checks(env)

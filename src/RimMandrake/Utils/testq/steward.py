@@ -49,9 +49,9 @@ while the claim's lease is live, or for 2 h after a claim with no lease; a lapse
 incident pauses for at most CLAIM_HOLD_S (2 h) in all (incident claim_paused_s): a renewed lease is not a fix.
 
 Escalation (section 6.4), each at most once per incident:
-  T+10 min   spawn STEVE_LANE_UNSTICK_<STATE>_UNOWNED_<hex4> --for ALARM_SEAT (BENCH, the Conductor seat, which
+  T+10 min   spawn a cause-keyed STEVE_LANE_UNSTICK item --for ALARM_SEAT (BENCH, the Conductor seat, which
              works its raised items) --needs offline (from the steward's own item), naming the state and job ids, or note
-             the still-open item of an earlier incident (never a duplicate); refused, with the reason on the incident,
+             the still-open item of this cause; refused, with the reason on the incident,
              when rimflow incident.receiver_problem says nobody would pick it up (T2, ALARMS_REWIRE_OFF_RETIRED_BENCH);
              a failed `steve:lane` record lights the pulse health row
   T+30 min   `rimflow raise` it: first in `rimflow next --seat BENCH`, a line in the phone brief
@@ -60,7 +60,7 @@ Escalation (section 6.4), each at most once per incident:
              STEVE_RUNG_KIND, routed by alarm_routes.json steve.* to an Operations incident whose chain climbs to the
              Conductor; it names the drainable item, which stays open, and says "IN PERSON:" when SteveDesktop is
              unreachable. No new item. (An older incident's incident.owner_item is only retired.)
-Recovery (a DONE+canary job after the incident began) records `steve:lane` ok, notes the item and drops the items the incident spawned.
+Recovery (a DONE+canary job after the incident began) records `steve:lane` ok, notes the item and waits on its cause.
 
 The LLM wake (the owner's card ruling 2026-10-26 12:27 PDT, "Yes, after 30 min", on STEVE_STEWARD_BUILD_NO_LLM_OWNER):
 once an incident has been raised (T+30) and no claim holds its item, the steward MAY start ONE headless Claude session
@@ -299,25 +299,30 @@ def nobody_for(seat, needs):
         return "receiver check failed: %s: %s" % (type(e).__name__, e)
 
 
-def drop_as_bench(item, reason):
-    """RUNNER may not `drop` (model.RUNNER_VERBS, enforced at replay), so the retirement is the steward's BENCH hat, the
-    one its wake session already wears; `publish_bench` carries that shard, which no other tick step commits."""
+def bench(*args):
+    """The steward's BENCH hat writes cause waits and legacy retirements."""
     import ingest
     env = dict(os.environ, RIMFLOW_SEAT="BENCH", CLAUDE_PROJECT_DIR=ingest.REPO)
-    r = subprocess.run([sys.executable, ingest.CLI, "drop", item, "--reason", reason, "--why",
-                        "steward: the lane recovered by itself"], env=env, capture_output=True, text=True, timeout=120)
+    try:
+        r = subprocess.run([sys.executable, ingest.CLI, *args], env=env, capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return 1, "could not run rimflow %s: %s" % (args[0], e)
     return r.returncode, (r.stdout + r.stderr).strip()
+
+
+def drop_as_bench(item, reason):
+    return bench("drop", item, "--reason", reason, "--why", "steward: the lane recovered by itself")
 
 
 def publish_bench():
     if os.environ.get("TESTQ_INGEST_PUSH", "1") == "0":
         return "push off"
     import ingest
-    return ingest.publish(0, shard_rel=BENCH_SHARD, message="ledger: steward retired a recovered incident")
+    return ingest.publish(0, shard_rel=BENCH_SHARD, message="ledger: steward updated a recovered incident")
 
 
 def flush_bench():
-    """A retirement whose publish failed is closed locally, so no later drop carries it, and a dirty shard can stop the
+    """A retirement or wait whose publish failed is recorded locally, and a dirty shard can stop the
     tick's --ff-only pull: every pass retries while the shard has unpublished work."""
     if os.environ.get("TESTQ_INGEST_PUSH", "1") == "0":
         return
@@ -681,15 +686,8 @@ def claim_holds(item_id, now, w=None):
         return False
     model, wd = w or world()
     it = wd.items.get(item_id)
-    if not it or not it.open or not it.claim_ts or it.owner in (None, "RUNNER"):
-        return False
-    ls = model.lease_status(it, now)
-    if ls == "live":
-        return True
-    if ls is None:
-        t = model.epoch(it.claim_ts)
-        return t is not None and now < t + CLAIM_HOLD_S
-    return False
+    win = _window(it, model)
+    return bool(win and now < win[1])
 
 
 def abandoned(item_id, now, w):
@@ -735,6 +733,8 @@ def _window(it, model):
             rel = model.epoch(ls.get("released"))
             end = min(end, rel) if rel is not None else end
     else:
+        if getattr(it, "state", None) == "ready" and LT.CAUSE_ITEM.fullmatch(it.id):
+            return None                         # reclaim cleared the lease and returned the cause to the pool
         end = start + CLAIM_HOLD_S
     return start, end
 
@@ -788,9 +788,10 @@ def lock_open():
 
 
 def open_lane_item(w, now):
-    """An open escalation item of ours whose name says so: survives a lost steward.json (spawn landed, dump did not)."""
+    """Find an older escalation when an in-flight incident has no cause key."""
     for k, it in sorted(w[1].items.items()):
-        if k.startswith("STEVE_LANE_UNSTICK_") and "_UNOWNED_" in k and it.open and not abandoned(k, now, w):
+        if (k.startswith("STEVE_LANE_UNSTICK_") and "_UNOWNED_" in k and not LT.CAUSE_ITEM.fullmatch(k)
+                and it.open and not abandoned(k, now, w)):
             return k
     return None
 
@@ -801,13 +802,17 @@ def item_open(item_id, w):
 
 
 def mint(w, tag, who, cause=None):
-    """A cause (lane_ticket.cause_key) names the ticket, so one cause is one name; no cause: a random suffix."""
+    """Keep the landed name of a cause. A terminal ticket needs a named successor."""
     model, wd = w
     known = set(wd.items)
     if cause:
-        name = "STEVE_LANE_UNSTICK_%s_%s_%s" % (tag, who, cause)
-        if name not in known and not model.mint_problems(name, known):
-            return name          # a name already in the ledger (a dropped ticket cannot reopen) takes a random suffix below
+        base = name = "STEVE_LANE_UNSTICK_%s_%s_%s" % (tag, who, cause)
+        n = 1
+        while name in known and not item_open(name, w):
+            n += 1
+            name = "%s_R%d" % (base, n)
+        if name in known or not model.mint_problems(name, known):
+            return name
     for _ in range(20):
         name = "STEVE_LANE_UNSTICK_%s_%s_%s" % (tag, who, secrets.token_hex(2).upper())
         if not model.mint_problems(name, known):
@@ -816,10 +821,7 @@ def mint(w, tag, who, cause=None):
 
 
 def retire(items, why, now):
-    """Drop what a recovered incident spawned -> the items still to retire. It was a stall that ended, no work was
-    done, so no commit proves it: an open one holds ops_watch steve.incident_unclaimed_min high for hours (FCE8, D070,
-    STEWARD_FIX_LEAVES_THE_LIGHTS_ON). An item a seat holds, by a claim or by having started it (the relentless
-    supervisor starts without claiming), is left to that seat; a refused drop is retried next pass."""
+    """Wait on a cause or retire a legacy item. Leave work a seat holds and retry refused writes."""
     left = []
     for k, item in enumerate(items):
         try:
@@ -832,9 +834,17 @@ def retire(items, why, now):
         if claim_holds(item, now, w) or (w[1].items[item].state == "doing" and not abandoned(item, now, w)):
             left.append(item)
             continue
-        rc, out = drop_as_bench(item, why)
+        it, event = w[1].items[item], "retired"
+        cause = LT.CAUSE_ITEM.fullmatch(item)
+        if cause:
+            if it.blocked:
+                continue
+            rc, out = bench("block", item, "--kind", "external", "--reason", LT.WAIT + cause[1] + " (" + it.title + ")")
+            event = "cause_wait"
+        else:
+            rc, out = drop_as_bench(item, why)
         if rc == 0:
-            jlog({"ts": iso(now), "event": "retired", "item": item, "publish": publish_bench()})
+            jlog({"ts": iso(now), "event": event, "item": item, "publish": publish_bench()})
         else:
             left.append(item)
             jlog({"ts": iso(now), "event": "retire_failed", "item": item, "error": out[-200:]})
@@ -862,8 +872,12 @@ def _escalate(inc, ls, now, last_item, src):
     u = inc["unowned_s"]
     if u < L1_S:
         return None
+    key = inc.get("key")
+    if key:
+        inc.setdefault("opened", iso(now - max(0, u - L1_S) if inc["level"] else now))
     w = world()
-    left = not item_open(inc.get("item"), w) or abandoned(inc.get("item"), now, w)
+    left = not item_open(inc.get("item"), w) or (
+        (not key or u >= L2_S) and abandoned(inc.get("item"), now, w))
     if inc["level"] >= 3 and not left:
         return None
     tag = TAG.get(inc["state"], "STALLED")
@@ -872,16 +886,33 @@ def _escalate(inc, ls, now, last_item, src):
     if inc["level"] >= 1 and left:                  # closed or left under a continuing fault: open (or reuse) another.
         inc.update(level=0, item=None)              # At L3 too: Operations' told row is no item to drain (ETBS)
     if inc["level"] < 1:
-        if not item_open(last_item, w) or abandoned(last_item, now, w):
-            last_item = open_lane_item(w, now)
+        item = mint(w, tag, "UNOWNED", key or LT.cause_key(inc["state"], ls["reason"]))
+        if key:
+            book = {key: {"item": item, "open": None, "incidents": []}} if item_open(item, w) else {}
+            _, act = LT.step(book, {"state": inc["state"], "reason": inc["cause_reason"],
+                                    "began": S.parse_ts(inc["opened"])})
+            last_item = act[1] if act[0] == "note" else None
+        elif not item_open(last_item, w) or abandoned(last_item, now, w):
+            last_item = open_lane_item(w, now) or (item if item_open(item, w) else None)
         if item_open(last_item, w):
+            it = w[1].items[last_item]
+            changes = []
+            if key and abandoned(last_item, now, w):
+                changes.append("reclaim")
+            if key and it.blocked and (it.blocked_reason or "").startswith(LT.WAIT):
+                changes.append("unblock")
+            for verb in changes:
+                rc, out = bench(verb, last_item, "--reason", "steward: lane cause returned")
+                if rc:
+                    inc["error"] = out[-200:]
+                    return None
+                publish_bench()
             rc, out = rimflow("note", last_item, "--text", "%s: SteveDesktop lane %s again since %s, %d min unowned"
                               % (src, what, inc["since"], u // 60))
             item = last_item
         elif nobody_for(ALARM_SEAT, "offline"):     # T2: never an item nobody picks up; the error is on the incident
             rc, out = 1, "no receiver: " + nobody_for(ALARM_SEAT, "offline")
         else:
-            item = mint(w, tag, "UNOWNED", LT.cause_key(inc["state"], ls["reason"]))
             rc, out = rimflow("spawn", "--from", STEWARD_ITEM, "--for", ALARM_SEAT, "--needs", "offline", "--name", item,
                               "--title", ("SteveDesktop lane %s, unowned %d min: %s" % (inc["state"], u // 60,
                                                                                         ls["reason"]))[:160])
@@ -973,11 +1004,23 @@ def _steward_pass(now, mods):
         if (inc["level"], inc.get("item"), inc.get("told")) != rung:
             jlog({"ts": iso(now), "event": "rung_publish", "item": inc.get("item"), "result": safe_publish()})
     elif fault:
+        key = LT.cause_key(ls["state"], ls["reason"])
         if not inc:
             inc = {"state": ls["state"], "since": iso(now), "unowned_s": 0, "level": 0, "item": None,
                    "told": None}
             dt = 0.0
+        else:
+            old_item = inc.get("item")
+            named = LT.CAUSE_ITEM.fullmatch(old_item or "")
+            old_key = inc.get("key") or (named[1] if named else None)
+            if (old_key and old_key != key) or inc["state"] != ls["state"]:
+                jlog({"ts": iso(now), "event": "cause_changed", "incident": inc, "next": key})
+                if old_item and old_item not in to_retire:
+                    to_retire.append(old_item)
+                inc = {k: inc[k] for k in ("unowned_s", "opened") if k in inc}
+                inc.update(since=iso(now), level=0, item=None, told=None)
         inc["state"] = ls["state"]
+        inc.update(key=key, cause_reason=ls["reason"])
         if prev.get("fault") or prev.get("state") == "RUNNING":
             inc["unowned_s"] = int(inc["unowned_s"] + dt - capped_cover(inc, now - dt, now))
         if ls["at_once"]:
@@ -988,6 +1031,10 @@ def _steward_pass(now, mods):
         if (inc["level"], inc.get("item"), inc.get("told")) != rung:
             jlog({"ts": iso(now), "event": "rung_publish", "item": inc.get("item"), "result": safe_publish()})
         maybe_wake(inc, ls, now)
+    if inc and to_retire:
+        pending = [i for i in to_retire if i != inc.get("item")]
+        waits = [i for i in pending if LT.CAUSE_ITEM.fullmatch(i)]
+        to_retire = [i for i in pending if i not in waits] + retire(waits, "steward: lane cause changed", now)
     rec = {"ts": iso(now), "epoch": now, "state": ls["state"], "fault": fault, "reason": ls["reason"],
            "jobs": ls["jobs"], "incident": inc, "last_item": last_item, "to_retire": to_retire,
            "since": prev.get("since") if prev.get("state") == ls["state"] and prev.get("fault") == fault else iso(now)}
@@ -1049,12 +1096,14 @@ def _watch_pass(now):
         else:
             lvl = inc["level"]
             ls = {"reason": reason + "; restarting testq-tick.timer did not bring it back", "jobs": []}
+            inc.update(key=LT.cause_key(inc["state"], ls["reason"]), cause_reason=ls["reason"])
             escalate(inc, ls, now, (sj or {}).get("last_item"), src="steward-watch")
             if inc["level"] != lvl:
                 safe_publish()
             maybe_wake(inc, ls, now, src="steward-watch")
         wst["incident"] = inc
-    wst["to_retire"] = retire(wst.get("to_retire") or [], "steward-watch: the steward is writing again", now)
+    pending = [i for i in wst.get("to_retire") or [] if i != (wst["incident"] or {}).get("item")]
+    wst["to_retire"] = retire(pending, "steward-watch: the steward is writing again", now)
     flush_bench()       # the watch has its own timer, so this retry outlives a stopped tick
     wst.update(ts=iso(now), epoch=now, age_s=int(age))
     S.dump(wst, path("steward_watch.json"))

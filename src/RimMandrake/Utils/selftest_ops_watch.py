@@ -1210,6 +1210,29 @@ check("incident: an OWNER rung beside a held item -> 0 (ETBS: 2E27 read 35.9 wit
 r = OW.steve_incident_unclaimed(_w(_it(_P + "BRAKED_OWNER_2E27", "proposed", 90), _it(_P + "BRAKED_UNOWNED_A", "proposed", 12)), _M, NOW, RULES)
 check("incident: an OWNER rung hides no unclaimed seat item", abs(r["v"] - 12) < 0.1 and r["x"]["first"] == [_P + "BRAKED_UNOWNED_A"], r)
 
+_active = _it(_P + "BRAKED_UNOWNED_BRAKED_ABCDEF", "ready", 900)
+_parked = _it(_P + "PAUSED_UNOWNED_PAUSED_ABCDEF", "ready", 1800, blocked=True)
+_parked.blocked_reason = "steward: waiting for lane cause PAUSED_ABCDEF (red canary)"
+_inc = {"item": _active.id, "state": "BRAKED", "opened": OW.iso(NOW - 31 * 60)}
+try:
+    _sj0.write_text(json.dumps({"incident": _inc, "epoch": NOW}))
+    r = OW.steve_incident_unclaimed(_w(_active, _parked), _M, NOW, RULES, NOW - 41 * 60)
+    check("incident: an old ticket and an unrelated wait leave the current 31 min clock", r["v"] == 31.0, r)
+    _sj0.write_text(json.dumps({"incident": dict(_inc, item=None), "epoch": NOW}))
+    r = OW.steve_incident_unclaimed(_w(_parked), _M, NOW, RULES)
+    check("incident: a due rung that could not file still crosses the Operations target", r["v"] == 31.0, r)
+    _sj0.write_text(json.dumps({"incident": None, "epoch": NOW}))
+    r = OW.steve_incident_unclaimed(_w(_active, _parked), _M, NOW, RULES)
+    check("incident: after recovery even a delayed wait write has no age", r["v"] == 0.0, r)
+    _sj0.write_text(json.dumps({"incident": dict(_inc, opened="torn"), "epoch": NOW}))
+    r = OW.steve_incident_unclaimed(_w(_active), _M, NOW, RULES)
+    check("incident: an unreadable incident clock is unmeasured", r["m"] == "UNMEASURED", r)
+finally:
+    if _sj0b is None:
+        _sj0.unlink()
+    else:
+        _sj0.write_text(_sj0b)
+
 import ops_ledger as _pc  # noqa: E402
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "ops_watch_rules.json"), encoding="utf-8") as _f:
     _real = json.load(_f)

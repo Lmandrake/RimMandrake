@@ -2343,7 +2343,8 @@ def _lane_ticket():
 
 
 def steve_incident_unclaimed(world, model, now, rules, fault_since=None):
-    """steve.incident_unclaimed_min: the age of the OLDEST open steward incident item (id prefix
+    """steve.incident_unclaimed_min: the age of the oldest unclaimed incident, from its first rung.
+    Older incident records still use the ledger reading (id prefix
     rules steve_incident.prefix) that no seat holds: still proposed/ready (not doing/built/validated) (claim/start), no live lease, not blocked. The steward
     escalating a stall makes c_steve call it owned; this is the point that says nobody has picked the escalation up
     (owner 2026-10-28: the lane sat paused 21 min with an open STEVE_LANE_UNSTICK item and no alarm). An OWNER rung
@@ -2355,10 +2356,51 @@ def steve_incident_unclaimed(world, model, now, rules, fault_since=None):
     of BRAKED, the only item blocked on the in-person step of the UNREACHABLE fault that had already ended."""
     cfg = rules.get("steve_incident") or {}
     pre, rung = cfg.get("prefix", "STEVE_LANE_UNSTICK_"), cfg.get("owner_rung", "_OWNER_")
-    ages, names = [], []
-    for it in world.items.values():
-        if not it.id.startswith(pre) or rung in it.id or it.state not in ("proposed", "ready", "doing"):
+    lt = _lane_ticket()
+    ages, names, unread = [], [], []
+    active, legacy, seen = set(), set(), set()
+    for source in ("steward.json", "steward_watch.json"):
+        try:
+            state = json.loads((qhome() / source).read_text(encoding="utf-8"))
+            inc = state["incident"]
+            if inc is not None and not isinstance(inc, dict):
+                raise ValueError("incident is not a record")
+        except FileNotFoundError:
             continue
+        except (KeyError, TypeError, OSError, ValueError) as e:
+            unread.append("%s: %s" % (source, e))
+            continue
+        seen.add(source)
+        if not inc:
+            continue
+        item = inc.get("item")
+        if "opened" not in inc:
+            legacy.add(item)
+            continue
+        active.add(item)
+        it = world.items.get(item)
+        if it and it.open:
+            lease = model.lease_status(it, now)
+            waiting = it.blocked and not (getattr(it, "blocked_reason", None) or "").startswith(lt.WAIT)
+            if (lease == "live" or it.state not in ("proposed", "ready", "doing")
+                    or (waiting and fault_since is None)
+                    or (not it.blocked and it.state == "doing" and lease != "lapsed")):
+                continue
+        began = epoch(inc["opened"])
+        if began is None or began > now + 300:
+            unread.append("%s: incident has no readable first-rung time" % source)
+            continue
+        name = item or "SteveDesktop " + inc.get("state", source)
+        ages.append(max(0.0, lt.unclaimed_s({name: {"open": {"began": began}}}, name, now) / 60.0))
+        names.append(name)
+    for it in world.items.values():
+        if it.id in active or not it.id.startswith(pre) or rung in it.id or it.state not in ("proposed", "ready", "doing"):
+            continue
+        cause = lt.CAUSE_ITEM.fullmatch(it.id)
+        if cause and it.id not in legacy:
+            source = "steward_watch.json" if cause[1].startswith("STALEHEARTBEAT_") else "steward.json"
+            if source in seen or (getattr(it, "blocked_reason", None) or "").startswith(lt.WAIT):
+                continue
         lease = model.lease_status(it, now)
         if lease == "live" or (it.blocked and fault_since is None):
             continue
@@ -2370,13 +2412,15 @@ def steve_incident_unclaimed(world, model, now, rules, fault_since=None):
         if t > now + 300:
             return U("incident %s is dated %.0f min in the future" % (it.id, (t - now) / 60.0))
         began = max(t, fault_since) if (it.blocked or fault_since is not None) else t     # the incident's clock, not the ticket's
-        ages.append(max(0.0, _lane_ticket().unclaimed_s({"k": {"open": {"began": began}}}, "k", now) / 60.0))
+        ages.append(max(0.0, (now - began) / 60.0))
         names.append(it.id)
     if not ages:
+        if unread:
+            return U("could not look at lane incident: " + "; ".join(unread))
         return M(0.0, "min the oldest unclaimed steward incident has waited", why="no unclaimed steward incident")
     old = sorted(zip(ages, names), key=lambda an: (-an[0], an[1]))[:3]     # oldest first: the ones the alarm hands over
     return M(round(old[0][0], 1), "min the oldest unclaimed steward incident has waited", first=[n for _, n in old],
-             ages={n: round(a, 1) for a, n in old})
+             ages={n: round(a, 1) for a, n in old}, **({"could_not_look": unread} if unread else {}))
 
 
 GIT_LOG_FMT = "--format=%x1e%ct%x1f%B%x1f"

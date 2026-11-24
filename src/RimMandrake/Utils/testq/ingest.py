@@ -14,7 +14,8 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
   a harness fault   -> no verdict (owner ruling by card 2026-10-31, retest.py). A chain the harness stopped is left out of
                        the verify, so it never reads as a feature's partial, and each distinct cause files ONE repair
                        item, HARNESS_REPAIR_CAUSE_<HEX> (--for BENCH, needs offline; FOUNDRY is retired), or a
-                       note on the open one. An INVALID job with no sheet does the same. The item is filed with its
+                       note on the open one. Self-healing causes note the filler host until three jobs in 24 h.
+                       An INVALID job with no sheet does the same. The item is filed with its
                        template, items/<NAME>.md (repair_prose: job ids to re-run, classify first, pass = the same
                        job re-run yields a verdict, `retest.py passed`, forbidden fixes, a negative control), committed
                        with the shard; a run inside a known fault window is ENVIRONMENT and files nothing
@@ -225,6 +226,9 @@ def note_once(item, needle, text):
 
 _REPAIR_ITEMS = [None]      # the ledger's items, once per process; REPAIRED holds what this process has filed since
 _REPAIRED = {}
+_REPAIR_HISTORY = [None]    # indexed once per pass, only if a self-healing cause is seen
+REPAIR_WINDOW_S = 24 * 3600
+REPAIR_JOBS = 3
 
 
 def spawned_for(base, att):
@@ -371,13 +375,51 @@ def write_repair_prose(name, text):
     return path
 
 
+def self_healing(res, cause):
+    return (R.stale_load(res) == "repaired" and cause.startswith("HARNESS: stale_load,")) or all(
+        part.split(":", 1)[0] in ("site_hold", "surprise") for part in cause.split(" + "))
+
+
+def repair_history():
+    """Index readable self-healing sightings and keep failures to read separate from an empty history."""
+    sightings, unread = {}, []
+    windows, _ = FM.load()
+    for name in sorted(os.listdir(T.q("done"))):
+        if not name.endswith(".json"):
+            continue
+        rec = T.read_json(T.q("done", name))
+        if not isinstance(rec, dict):
+            unread.append(name)
+            continue
+        job, res = rec.get("job"), rec.get("result")
+        if not isinstance(job, dict) or not isinstance(res, dict):
+            unread.append(name)
+            continue
+        if S.is_checks(job) or S.is_proofs(job):
+            continue
+        causes = [cause for cause in R.causes_of(res) if self_healing(res, cause)]
+        if not causes:
+            continue
+        at = IC.finished_of(rec)
+        if at is None or not job.get("id"):
+            unread.append(name)
+            continue
+        span = FM.job_span(rec)
+        if span and T.on_steve(res.get("host", T.STEVE)) and FM.window_of(span, windows):
+            continue
+        for cause in causes:
+            sightings.setdefault(cause, []).append((at, job["id"]))
+    return sightings, unread
+
+
 def repair(job, res, cause, rec=None):
     """One repair item per CAUSE: file it with its template (items/NAME.md), or note the open one -> None, or an error
     string (retried). A run inside a known fault window is ENVIRONMENT: never filed, never noted."""
     att, base = res["attempt"], R.repair_base(cause)
     if spawned_for(base, att):      # a retry of this attempt, even if its repair has closed since
         return None
-    w, env_read = env_window(rec or {"job": job, "result": res})
+    rec = rec or {"job": job, "result": res}
+    w, env_read = env_window(rec)
     # RIMMANDRAKE_STOP_STEVEDESKTOP_INVALID_RUNS_REPEATING_UNFIXED: a broken test or delivery fault is code, never the
     # host's doing. Fault windows ran back to back from 2026-11-08 on, so this exemption filed no repair for 76
     # sightings and no hold ever formed: the filler re-ran the same selections into the same faults.
@@ -387,6 +429,26 @@ def repair(job, res, cause, rec=None):
     elif w:
         T.log("ingest %s: cause %s ran inside fault window %s: ENVIRONMENT, no repair filed" % (att, base, w.get("id")))
         return None
+    if self_healing(res, cause):
+        finished = IC.finished_of(rec)
+        if finished is None:
+            return "repair %s: could not look at the finish time" % att
+        try:
+            if _REPAIR_HISTORY[0] is None:
+                _REPAIR_HISTORY[0] = repair_history()
+            sightings, unread = _REPAIR_HISTORY[0]
+        except OSError as e:
+            return "repair %s: could not look at done jobs: %s" % (att, e)
+        seen = {jid for at, jid in sightings.get(cause, ()) if finished - REPAIR_WINDOW_S <= at <= finished}
+        seen.add(job["id"])
+        if len(seen) < REPAIR_JOBS:
+            if unread:
+                return "repair %s: could not look at done job %s" % (att, unread[0])
+            needle = "testq %s self-healing cause %s" % (att, base)
+            if note_once(FILL_ITEM, needle, "%s (job %s, %d/%d distinct jobs in 24 h): %s"
+                         % (needle, job["id"], len(seen), REPAIR_JOBS, cause)):
+                return None
+            return "repair %s: filler host note refused" % att
     try:
         if _REPAIR_ITEMS[0] is None:
             _REPAIR_ITEMS[0] = ledger_items()
@@ -1133,6 +1195,7 @@ def main():
 
 
 def _ingest_locked():
+    _REPAIR_HISTORY[0] = None
     if True:
         push = os.environ.get("TESTQ_INGEST_PUSH", "1") != "0"
         if rebase_left(clear=push):

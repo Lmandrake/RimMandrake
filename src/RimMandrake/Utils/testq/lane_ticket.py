@@ -7,12 +7,14 @@ step(book, incident) -> (book, act). book is {key: {"item", "open", "incidents"}
     files. Ending an incident never ends the ticket: the ticket waits on its cause.
 unclaimed_s(book, key, now) -> seconds since the CURRENT incident began, never since the ticket was filed; None when no
     incident is open (or the key is unknown): None means "no open incident", never 0.
-Boundary page: design/specs/2026-11-23-stevedesktop-work-to-code/lane_ticket_boundary.md
+Boundary page: design/specs/2026-11-23-lane-cause-once/boundary.md
 """
 import hashlib
 import re
 
 JOB = re.compile(r"\bJ\d{8}T\d{6}Z-\w+", re.I)
+CAUSE_ITEM = re.compile(r"STEVE_LANE_UNSTICK_[A-Z]+_UNOWNED_([A-Z0-9]+_[A-Z]{6})(?:_R\d+)?")
+WAIT = "steward: waiting for lane cause "
 
 
 def cause_key(state, reason):
