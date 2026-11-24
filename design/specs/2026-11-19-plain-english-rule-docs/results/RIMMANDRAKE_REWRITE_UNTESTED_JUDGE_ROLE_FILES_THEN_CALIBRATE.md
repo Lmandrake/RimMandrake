@@ -188,6 +188,14 @@ For the owner: none.
 | review: "beside the page" for a mod file | whether `polish.md` there is `version/polish.md` (the mod's Polish list) or a separate record | the Conductor |
 | lock: "only `coverage_judge.py release`" beside `./pipe grant <Mod> look` | `look_balance` adds a `pipe grant` to the look that a release granted. So the line reads true for the first look; the file does not name the second command | `coverage_judge.py`; left as it was |
 
+## Left as it is, with the reason
+
+`designer_lock.md` line 85, "except an instrument leaf": the guiding-prose check of the second landing (`8d08585c97`) says
+that nothing defines the term. This run's own gloss brought the term in. The meaning is known: a leaf whose `leaf_kind` is
+`instrument` (`concept_tree.py`). The repair is to write those words. Any edit resets `coverage_judge` to UNTESTED, and a third
+calibration costs ≈1.5M weighted_v2 tokens (Opus 5.5). So the next run that edits this file makes the repair before its
+calibration.
+
 ## What this run did not test
 
 - No code review and no Designer run read the new text, except the judge calls of the two calibrations.
