@@ -18,7 +18,7 @@
 //      the line is copied here). A thing standing in the wall or door cell itself is reached when its near side is seen
 // NOT covered (named so nobody reads a green map as "every case"): two blasts in sequence (recovery, barrages, gas chains),
 // covers wider than one cell, things that die or are destroyed by the blast, doors that open mid-flight, maps edges,
-// multi-cell containers' footprints, the drawn arc, settings other than those the `settings` family flips, save and load.
+// multi-cell containers' footprints, the drawn arc, settings other than those the `settings` family flips, live save and load.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +36,8 @@ internal sealed class MThing
     public bool full = true;    // a full stack absorbs nothing
     public bool dead, flying, inBed, carryingPawn, downed, animal, mech, shield, recovering;
     public int gasShovedAgo = int.MaxValue;
+    public float damageTaken;
+    public int stunTicks;
     public bool inPit;          // on a pit floor (under an intact cover: beneath the lid)
     public MThing rides;        // a good on a closed container's cell rides with it
     public string label;
@@ -186,7 +188,7 @@ internal sealed class MWorld : IKbWorld
             return comp[x, z] != 0 && comp[x, z] == comp[cx, cz] ? 2 : 1;
         }
         if (stack) return 4;
-        if (terr[x, z] == KbCell.Door) return 2;
+        if (terr[x, z] == KbCell.Door || At(x, z).Any(p => p.kind == KbKind.Pawn && p.downed)) return 2;
         return 4;
     }
 
@@ -220,6 +222,7 @@ internal static class KnockbackMap
     public sealed class Blast
     {
         public string name; public int cx, cz; public float radius, force; public bool gas; public int id = 7;
+        public float strength = 1f;
         public KbConfig Config() => gas
             ? new KbConfig { force = 1f, ownCap = 2, impactFactor = 0f, source = "gas", scaleOwnCap = false }
             : new KbConfig { force = force };
@@ -302,7 +305,7 @@ internal static class KnockbackMap
             MThing t = reqs[c.index];
             w.self = t;
             KbFacts f = Facts(w, t, b.gas); // a gas burst is no explosion: its requests carry no shield (GasBurst: shield = null)
-            KbSettings s = KbLookup.Apply(new KbSettings(), cfg, 6, 1f);
+            KbSettings s = KbLookup.Apply(new KbSettings { globalMultiplier = b.strength }, cfg, 6, 1f);
             t.plan = KbPlanner.Decide(f, kb, Q, s, w);
             w.self = null;
             KbPlan p = t.plan;
@@ -378,7 +381,7 @@ internal static class KnockbackMap
                     Leg(w, evs, ref seq, t, next, e.t, kb.id);
                     continue;
                 }
-                Place(w, t, atX, atZ);
+                Place(w, t, atX, atZ, b.gas ? t.plan.s.maxCells : 0);
                 Settle(w, t, kb.id, true);
             }
         }
@@ -404,9 +407,10 @@ internal static class KnockbackMap
         // RM_ThingFlyer_Knockback.HeavyHit: a heavy stack reaching a standing person's cell stops there
         for (int i = 0; i < cells.Count; i++)
         {
-            bool person = w.At(cells[i].x, cells[i].z).Any(p => p.kind == KbKind.Pawn && !p.container && !p.dead);
-            if (RM_KnockbackMath.HeavyKnock(true, t.kind, person, t.mass, 10f, 2f, 5f, 0.5f, 30, out _, out _, explosionId))
+            MThing person = w.At(cells[i].x, cells[i].z).FirstOrDefault(p => p.kind == KbKind.Pawn && !p.container && !p.dead);
+            if (RM_KnockbackMath.HeavyKnock(true, t.kind, person != null, t.mass, 10f, 2f, 5f, 0.5f, 30, out float damage, out int stun, explosionId))
             {
+                person.damageTaken += damage; person.stunTicks = stun;
                 cells = cells.Take(i + 1).ToList();
                 res.destX = cells[i].x; res.destZ = cells[i].z;
                 stop = KbStop.Pawn; left = 0; t.heavyStopped = true;
@@ -422,18 +426,26 @@ internal static class KnockbackMap
     }
 
     /// <summary>RM_MapComponent_Knockback.PlaceLanding on the model (A3): the shipped order, each through the model's GenPlace.</summary>
-    private static void Place(MWorld w, MThing t, int dx, int dz)
+    private static void Place(MWorld w, MThing t, int dx, int dz, int landingCap)
     {
+        bool WithinCap(int x, int z) => KbPlanner.LandingWithinCap(x, z, t.sx, t.sz, landingCap);
+        bool destWithinCap = WithinCap(dx, dz);
         int px = dx, pz = dz;
         bool deep = w.deep[dx, dz];
         foreach (KbPlanner.KbPlace place in KbPlanner.LandingOrder(w.WouldBump(t, dx, dz), deep))
         {
             t.placedVia = (int)place + 1;
-            if (place == KbPlanner.KbPlace.Direct || place == KbPlanner.KbPlace.Fallback) { px = dx; pz = dz; break; }
+            if (place == KbPlanner.KbPlace.Direct && !destWithinCap) continue;
+            if (place == KbPlanner.KbPlace.Direct || place == KbPlanner.KbPlace.Fallback)
+            {
+                (px, pz) = destWithinCap ? (dx, dz) : (t.sx, t.sz);
+                break;
+            }
             int cx = place == KbPlanner.KbPlace.NearOrigin ? t.sx : dx, cz = place == KbPlanner.KbPlace.NearOrigin ? t.sz : dz;
             IKbGrid g = w.Grid(false);
             HashSet<long> pit = place == KbPlanner.KbPlace.PitFloor ? KbPlanner.PitAround(g, dx, dz) : null;
-            Func<int, int, bool> allow = (x, z) => w.In(x, z) && KbPlanner.PlaceAllows(place, x, z, dx, dz, t.legFromX, t.legFromZ, g.At(x, z), pit);
+            Func<int, int, bool> allow = (x, z) => w.In(x, z) && WithinCap(x, z)
+                && KbPlanner.PlaceAllows(place, x, z, dx, dz, t.legFromX, t.legFromZ, g.At(x, z), pit);
             if (w.Near(t, cx, cz, allow, out px, out pz)) break;
         }
         t.pitFloorFull = deep && t.placedVia > (int)KbPlanner.KbPlace.PitFloor + 1;
@@ -925,6 +937,50 @@ internal static class KnockbackMap
         Blast Gas(int x, int z) => new Blast { name = "gas", cx = x, cz = z, radius = 1.9f, force = 1f, gas = true };
         MThing Col(MWorld w, int x, int z) => w.Add(new MThing { kind = KbKind.Pawn, mass = 70f, x = x, z = z, label = "colonist" });
         MThing Stack(MWorld w, int x, int z, float m = 5f, string key = null) => w.Add(new MThing { kind = KbKind.Item, mass = m, x = x, z = z, label = "stack", key = key });
+#if RM_KB_CARRIER_TEST
+        {
+            Blast mortar = Bomb(8, 9); mortar.strength = 3f;
+            var w = new MWorld(30, 30);
+            w.terr[14, 11] = KbCell.Wall;
+            MThing control = Stack(w, 10, 10, 1f);
+            Run(w, mortar);
+            KbLeg clear = control.plan.first;
+            Case("mortar control: the flight to (16,13) clears the wall", clear.res.destX == 16 && clear.res.destZ == 13
+                && !new GoodsFlightProbe().Samples(clear).Any(p => p.cell == (14, 11)), Where(control));
+            w = new MWorld(30, 30);
+            w.terr[14, 11] = KbCell.Wall; w.deep[15, 12] = true;
+            MThing goods = Stack(w, 10, 10, 1f);
+            Run(w, mortar);
+            var path = new GoodsFlightProbe().Samples(goods.plan.first).ToList();
+            int wallTick = path.FindIndex(p => p.cell == (14, 11)) + 1;
+            var end = path.Last();
+            Case("diagonal pit flight clears the wall", goods.inPit && goods.x == 15 && goods.z == 12
+                && end.cell == (15, 12) && end.x == 15f && end.z == 12.75f && wallTick == 0,
+                $"wall (14,11) at tick {wallTick}; settled at {Where(goods)}");
+        }
+        {
+            var legacy = new CorpsePoseProbe();
+            var body = new CorpsePoseProbe.Corpse();
+            legacy.Expose(new Dictionary<string, object> { ["spin0"] = 1f }, true);
+            legacy.Tick(body);
+            float airborne = body.angle;
+            legacy.Land(body);
+            Case("legacy corpse keeps its lying pose", airborne == 90f && body.angle == 90f,
+                $"airborne angle {airborne}; landed angle {body.angle}");
+
+            var fresh = new CorpsePoseProbe();
+            fresh.Launch(body = new CorpsePoseProbe.Corpse());
+            var save = new Dictionary<string, object>();
+            fresh.Expose(save, false);
+            fresh = new CorpsePoseProbe();
+            fresh.Expose(save, true);
+            fresh.Tick(body);
+            airborne = body.angle;
+            fresh.Land(body);
+            Case("fresh corpse still spins after load and lands lying", airborne == 110f && body.angle == 90f,
+                $"airborne angle {airborne}; landed angle {body.angle}");
+        }
+#endif
         {
             // sc_mortar_throw (people_thrown_three_cells): a mortar shell one cell from a clothed colonist throws them 3 cells straight away
             var w = new MWorld(30, 30); MThing c = Col(w, 11, 10);
@@ -991,6 +1047,30 @@ internal static class KnockbackMap
                 else
                     Case("a real blast still hops over the sandbags", s.plan.hopped && s.flew && s.x == 14 && s.z == 10, travel);
             }
+        }
+        {
+            var w = new MWorld(30, 30);
+            for (int x = 0; x < w.W; x++) w.terr[x, 9] = w.terr[x, 11] = KbCell.Wall;
+            MThing steel = Stack(w, 11, 10, 20f, "steel");
+            MThing pawn = Col(w, 12, 10); pawn.downed = true;
+            MThing wood = Stack(w, 13, 10, 5f, "wood");
+            Run(w, Gas(10, 10));
+            Case("gas landing stays within the cap beside a full destination",
+                steel.flew && steel.plan.first.res.destX == 13 && steel.route.Contains((12, 10))
+                && Math.Max(Math.Abs(steel.x - steel.sx), Math.Abs(steel.z - steel.sz)) <= 2
+                && !pawn.reached && pawn.x == 12 && pawn.z == 10 && pawn.damageTaken == 0f && pawn.stunTicks == 0
+                && !wood.reached && !wood.merged && wood.x == 13 && wood.z == 10,
+                $"steel {Where(steel)}; pawn {Where(pawn)}, damage {pawn.damageTaken}, stun {pawn.stunTicks}; wood {Where(wood)}");
+        }
+        {
+            var w = new MWorld(30, 30);
+            MThing steel = Stack(w, 11, 10, 20f, "steel"); steel.air = true;
+            for (int x = 9; x <= 13; x++)
+                for (int z = 8; z <= 12; z++)
+                    Stack(w, x, z, 5f, "wood");
+            Place(w, steel, 14, 10, 2);
+            Case("gas landing fallback returns to takeoff when the destination is outside the cap",
+                steel.placedVia == (int)KbPlanner.KbPlace.Fallback + 1 && steel.x == 11 && steel.z == 10, Where(steel));
         }
         {
             foreach (Blast b in new[] { Gas(10, 10), Bomb(10, 10, 1.9f) })

@@ -541,14 +541,17 @@ namespace RimMandrake.ExplosiveKnockback
         /// picks a full cell); a landing on a pit cell goes to the pit floor beside it, then to the rim on the side its leg
         /// came from (`from`), never past the pit; then Near the origin. Only when all fail is it spawned with
         /// VanishOrMoveAside (fallback), and then the residents it moved are counted. residentsMoved is measured, not
-        /// assumed: every item on dest before, compared after.</summary>
+        /// assumed: every item on the fallback cell before, compared after. Gas bounds every placement by its cap from takeoff.</summary>
         internal static Thing PlaceLanding(Thing t, IntVec3 dest, IntVec3 origin, IntVec3 from, Map map, out bool fallback, out int residentsMoved,
-            out KbPlanner.KbPlace via)
+            out KbPlanner.KbPlace via, int landingCap = 0)
         {
             fallback = false;
             via = KbPlanner.KbPlace.Fallback;
+            bool WithinCap(IntVec3 c) => KbPlanner.LandingWithinCap(c.x, c.z, origin.x, origin.z, landingCap);
+            bool destWithinCap = WithinCap(dest);
+            IntVec3 fallbackCell = destWithinCap ? dest : origin;
             var residents = new List<KeyValuePair<Thing, IntVec3>>();
-            foreach (Thing h in dest.GetThingList(map))
+            foreach (Thing h in fallbackCell.GetThingList(map))
             {
                 if (h != t && h.def.category == ThingCategory.Item)
                 {
@@ -569,14 +572,14 @@ namespace RimMandrake.ExplosiveKnockback
                     // never vanish: no free cell anywhere near either end
                     if (!t.Spawned && !t.Destroyed)
                     {
-                        placed = GenSpawn.Spawn(t, dest, map, WipeMode.VanishOrMoveAside);
+                        placed = GenSpawn.Spawn(t, fallbackCell, map, WipeMode.VanishOrMoveAside);
                         fallback = true;
                     }
                     break;
                 }
                 if (place == KbPlanner.KbPlace.Direct)
                 {
-                    if (GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Direct, out placed))
+                    if (destWithinCap && GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Direct, out placed))
                     {
                         break;
                     }
@@ -587,7 +590,12 @@ namespace RimMandrake.ExplosiveKnockback
                 {
                     KbPlanner.KbPlace pl = place;
                     HashSet<long> pit = place == KbPlanner.KbPlace.PitFloor ? KbPlanner.PitAround(grid, dest.x, dest.z) : null;
-                    allow = c => c.InBounds(map) && KbPlanner.PlaceAllows(pl, c.x, c.z, dest.x, dest.z, from.x, from.z, grid.At(c.x, c.z), pit);
+                    allow = c => c.InBounds(map) && WithinCap(c)
+                        && KbPlanner.PlaceAllows(pl, c.x, c.z, dest.x, dest.z, from.x, from.z, grid.At(c.x, c.z), pit);
+                }
+                else if (landingCap > 0)
+                {
+                    allow = WithinCap;
                 }
                 if (GenPlace.TryPlaceThing(t, place == KbPlanner.KbPlace.NearOrigin ? origin : dest, map, ThingPlaceMode.Near, out placed, null, allow))
                 {
@@ -683,8 +691,9 @@ namespace RimMandrake.ExplosiveKnockback
             }
             // RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: the stack flies to the very cell the plan chose; the carrier lands it with
             // the plan's own placing order and takes the wall impact where the flight is cut short
+            int landingCap = r.gas ? p.s.maxCells : 0;
             RM_ThingFlyer_Knockback fl = RM_ThingFlyer_Knockback.Launch(t, map, start, leg.res, leg.dx, leg.dz, kind, mass, r.explosionId,
-                impactFactor, r.instigator, p.wallFirst ? 1 : 0);
+                impactFactor, r.instigator, p.wallFirst ? 1 : 0, landingCap);
             if (fl != null)
             {
                 RM_KnockbackJournal.ItemMoves++;
@@ -706,7 +715,7 @@ namespace RimMandrake.ExplosiveKnockback
             }
             // the carrier could not take it (never seen live): the old instant move, same placing
             t.DeSpawn();
-            Thing placed = PlaceLanding(t, dest, start, start, map, out bool fallback, out int bumped, out KbPlanner.KbPlace via);
+            Thing placed = PlaceLanding(t, dest, start, start, map, out bool fallback, out int bumped, out KbPlanner.KbPlace via, landingCap);
             FleckMaker.ThrowDustPuff(dest, map, 1f);
             RM_KnockbackJournal.ItemMoves++;
             RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", placed.Spawned ? placed.Position : dest,

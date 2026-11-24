@@ -152,6 +152,7 @@ namespace RimMandrake.ExplosiveKnockback
     public struct KbResult
     {
         public int destX, destZ;
+        public float pitEntryOffsetX, pitEntryOffsetZ; // from the landing cell's centre to the end of the flight
         public int cellsPlanned;
         public int cellsTravelled;
         public float impact;          // on the thrown pawn (already split when a pawn was hit)

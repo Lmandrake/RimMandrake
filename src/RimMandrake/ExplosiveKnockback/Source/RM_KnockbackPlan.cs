@@ -364,29 +364,31 @@ namespace RimMandrake.ExplosiveKnockback
         public const int HopExtraCells = 2;
 
         /// <summary>Goods fly from cell centre to cell centre. Between the kernel's rounded steps the straight leg can
-        /// enter an open pit. End the leg there and recheck the shortened line to that cell's centre.</summary>
+        /// enter an open pit. End the flight on that ray at the pit lip and use the pit cell for landing.</summary>
         private static KbResult StopAtCrossedPit(IKbGrid grid, int fromX, int fromZ, KbResult res)
         {
-            while (res.destX != fromX && res.destZ != fromZ)
+            int dx = res.destX - fromX, dz = res.destZ - fromZ;
+            if (dx == 0 || dz == 0)
             {
-                int dx = res.destX - fromX, dz = res.destZ - fromZ;
-                int nx = Math.Abs(dx), nz = Math.Abs(dz);
-                int stepX = Math.Sign(dx), stepZ = Math.Sign(dz);
-                int x = 0, z = 0;
-                while (x != nx || z != nz)
+                return res;
+            }
+            int nx = Math.Abs(dx), nz = Math.Abs(dz);
+            int stepX = Math.Sign(dx), stepZ = Math.Sign(dz);
+            int x = 0, z = 0;
+            while (x != nx || z != nz)
+            {
+                // Compare the next boundary times (x + 0.5) / nx and (z + 0.5) / nz. A corner enters only the diagonal cell.
+                int crossX = (2 * x + 1) * nz, crossZ = (2 * z + 1) * nx;
+                if (crossX <= crossZ) x++;
+                if (crossZ <= crossX) z++;
+                if (x == nx && z == nz) return res;
+                int atX = fromX + x * stepX, atZ = fromZ + z * stepZ;
+                if (grid.At(atX, atZ) == KbCell.Pit)
                 {
-                    // Compare the next boundary times (x + 0.5) / nx and (z + 0.5) / nz. A corner enters only the diagonal cell.
-                    int crossX = (2 * x + 1) * nz, crossZ = (2 * z + 1) * nx;
-                    if (crossX <= crossZ) x++;
-                    if (crossZ <= crossX) z++;
-                    if (x == nx && z == nz) return res;
-                    int atX = fromX + x * stepX, atZ = fromZ + z * stepZ;
-                    if (grid.At(atX, atZ) == KbCell.Pit)
-                    {
-                        res = new KbResult { destX = atX, destZ = atZ, cellsPlanned = res.cellsPlanned,
-                            cellsTravelled = Math.Max(x, z), stop = KbStop.Pit };
-                        break;
-                    }
+                    float entry = Math.Min(crossX, crossZ) / (2f * nx * nz);
+                    return new KbResult { destX = atX, destZ = atZ, cellsPlanned = res.cellsPlanned,
+                        cellsTravelled = Math.Max(x, z), stop = KbStop.Pit,
+                        pitEntryOffsetX = dx * entry - x * stepX, pitEntryOffsetZ = dz * entry - z * stepZ };
                 }
             }
             return res;
@@ -402,6 +404,11 @@ namespace RimMandrake.ExplosiveKnockback
             NearRim = 3,      // beside the pit on the side it came from, never past it
             NearOrigin = 4,   // GenPlace's "near" where it was thrown from
             Fallback = 5,     // spawned on the landing cell whatever is there
+        }
+
+        public static bool LandingWithinCap(int x, int z, int originX, int originZ, int cap)
+        {
+            return cap <= 0 || Math.Max(Math.Abs(x - originX), Math.Abs(z - originZ)) <= cap;
         }
 
         /// <summary>The floor of the pit at (x, z): every open pit cell joined to it, corners included, within PitReach. Owner, by card

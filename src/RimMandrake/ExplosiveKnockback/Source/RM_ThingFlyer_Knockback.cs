@@ -32,12 +32,14 @@ namespace RimMandrake.ExplosiveKnockback
 
         private ThingOwner<Thing> innerContainer;
         private Vector3 startVec;
+        private Vector3 destinationOffset;
         private IntVec3 originCell;
         private IntVec3 destCell;
         private int ticksFlightTime = 1;
         private int ticksFlying;
         private int ticksTotal;
         private int explosionId;
+        private int landingCap;
         private int planned;
         private int cellsLeft;     // cells of this leg's throw not travelled (the wall impact's "per cell left")
         private int bounces;
@@ -49,6 +51,7 @@ namespace RimMandrake.ExplosiveKnockback
         private float impactFactor = 1f;
         private float spin0;
         private float spinRate;
+        private bool spin0IsCorpsePose; // older carriers saved a random spin0 for corpses
         private float arcHeight;
         private KbKind kind;
         private Thing instigator; // not saved: after a load the impact has no instigator
@@ -82,7 +85,7 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>Put a spawned stack into a new carrier and send it along `res` (already resolved by the kernel).
         /// Null when it could not: the stack is then still spawned where it was and the caller moves it instantly.</summary>
         public static RM_ThingFlyer_Knockback Launch(Thing t, Map map, IntVec3 start, KbResult res, float dx, float dz,
-            KbKind kind, float mass, int explosionId, float impactFactor, Thing instigator, int bounces = 0)
+            KbKind kind, float mass, int explosionId, float impactFactor, Thing instigator, int bounces = 0, int landingCap = 0)
         {
             ThingDef def = RM_KnockbackDefOf.RM_ThingFlyer_Knockback;
             if (def == null || t == null || !t.Spawned || map == null || !res.Moved)
@@ -102,6 +105,7 @@ namespace RimMandrake.ExplosiveKnockback
             f.originCell = start;
             f.bounces = bounces;   // 1 = it was slammed into the wall behind it before it flew (KbPlan.wallFirst)
             f.explosionId = explosionId;
+            f.landingCap = landingCap;
             f.planned = res.cellsPlanned;
             f.kind = kind;
             f.mass = mass;
@@ -109,6 +113,7 @@ namespace RimMandrake.ExplosiveKnockback
             f.instigator = instigator;
             f.arcHeight = Mathf.Max(0f, RimMandrakeExplosiveKnockbackSettings.goodsArcHeight);
             f.spin0 = f.Inner is Corpse dead ? CorpseAngle(dead) : Rand.Range(0f, 360f);   // a body turns on from how it lay
+            f.spin0IsCorpsePose = f.Inner is Corpse;
             f.spinRate = RimMandrakeExplosiveKnockbackSettings.goodsSpinDegPerTick * Rand.Sign;
             f.StartLeg(start, res, dx, dz);
             GenSpawn.Spawn(f, start, map);
@@ -157,6 +162,7 @@ namespace RimMandrake.ExplosiveKnockback
         {
             startVec = from.ToVector3ShiftedWithAltitude(def.Altitude);
             destCell = new IntVec3(res.destX, 0, res.destZ);
+            destinationOffset = new Vector3(res.pitEntryOffsetX, 0f, res.pitEntryOffsetZ);
             cellsLeft = res.cellsPlanned - res.cellsTravelled;
             stop = res.stop;
             hasBlock = res.hasBlock;
@@ -166,7 +172,7 @@ namespace RimMandrake.ExplosiveKnockback
             blockFromZ = res.blockFromZ;
             dirX = dx;
             dirZ = dz;
-            float dist = Mathf.Max(1f, (destCell - from).LengthHorizontal);
+            float dist = Mathf.Max(1f, Vector3.Distance(startVec, DestinationPos));
             float speed = Mathf.Max(1f, RimMandrakeExplosiveKnockbackSettings.goodsFlightSpeed);
             ticksFlightTime = Mathf.Max(6, Mathf.CeilToInt(dist / speed * 60f));
             ticksFlying = 0;
@@ -174,7 +180,7 @@ namespace RimMandrake.ExplosiveKnockback
             lastCell = from;
         }
 
-        private Vector3 DestinationPos => destCell.ToVector3ShiftedWithAltitude(def.Altitude);
+        private Vector3 DestinationPos => destCell.ToVector3ShiftedWithAltitude(def.Altitude) + destinationOffset;
 
         private void RecomputePosition()
         {
@@ -209,12 +215,12 @@ namespace RimMandrake.ExplosiveKnockback
             }
             ticksFlying++;
             ticksTotal++;
-            if (inner is Corpse body)
+            if (spin0IsCorpsePose && inner is Corpse body)
             {
                 TurnCorpse(body, SpinAngle);   // the pawn renderer draws a dead body at this angle (PawnRenderer.BodyAngle)
             }
             RecomputePosition();
-            IntVec3 cell = groundPos.ToIntVec3();
+            IntVec3 cell = ticksFlying >= ticksFlightTime ? destCell : groundPos.ToIntVec3();
             if (cell.InBounds(Map))
             {
                 Position = cell;
@@ -308,14 +314,14 @@ namespace RimMandrake.ExplosiveKnockback
                 return;
             }
             int count = inner.stackCount;
-            if (inner is Corpse lying)
+            if (spin0IsCorpsePose && inner is Corpse lying)
             {
                 TurnCorpse(lying, spin0);   // it comes to rest lying as it did, never upright
             }
             innerContainer.Remove(inner);
             // RIMMANDRAKE_LAND_KNOCKBACK_GOODS_NEVER_BUMP_RESIDENTS: never Direct onto a cell where that shoves a resident
             Thing landed = RM_MapComponent_Knockback.PlaceLanding(inner, destCell, originCell, startVec.ToIntVec3(), map, out bool fallback, out int bumped,
-                out KbPlanner.KbPlace via);
+                out KbPlanner.KbPlace via, landingCap);
             FleckMaker.ThrowDustPuff(destCell, map, 1f);
             RM_KnockbackJournal.Add("item_land", explosionId, inner, "from", originCell, "to", landed.Spawned ? landed.Position : destCell,
                 "dest", destCell, "bounces", bounces, "stop", stop.ToString(), "count", count, "spawnFallback", fallback,
@@ -445,12 +451,14 @@ namespace RimMandrake.ExplosiveKnockback
             base.ExposeData();
             Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
             Scribe_Values.Look(ref startVec, "startVec");
+            Scribe_Values.Look(ref destinationOffset, "destinationOffset");
             Scribe_Values.Look(ref originCell, "originCell");
             Scribe_Values.Look(ref destCell, "destCell");
             Scribe_Values.Look(ref ticksFlightTime, "ticksFlightTime", 1);
             Scribe_Values.Look(ref ticksFlying, "ticksFlying", 0);
             Scribe_Values.Look(ref ticksTotal, "ticksTotal", 0);
             Scribe_Values.Look(ref explosionId, "explosionId", 0);
+            Scribe_Values.Look(ref landingCap, "landingCap", 0);
             Scribe_Values.Look(ref planned, "planned", 0);
             Scribe_Values.Look(ref cellsLeft, "cellsLeft", 0);
             Scribe_Values.Look(ref bounces, "bounces", 0);
@@ -466,6 +474,7 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref impactFactor, "impactFactor", 1f);
             Scribe_Values.Look(ref spin0, "spin0", 0f);
             Scribe_Values.Look(ref spinRate, "spinRate", 0f);
+            Scribe_Values.Look(ref spin0IsCorpsePose, "spin0IsCorpsePose", false);
             Scribe_Values.Look(ref arcHeight, "arcHeight", 0f);
             Scribe_Values.Look(ref kind, "kind", KbKind.Item);
             Scribe_Values.Look(ref container, "container", false);
@@ -476,6 +485,10 @@ namespace RimMandrake.ExplosiveKnockback
                 if (innerContainer == null)
                 {
                     innerContainer = new ThingOwner<Thing>(this);
+                }
+                if (explosionId < 0 && landingCap == 0)
+                {
+                    landingCap = Mathf.Max(1, RimMandrakeExplosiveKnockbackSettings.gasBurstGoodsCells);
                 }
                 lastComputed = -1;
             }

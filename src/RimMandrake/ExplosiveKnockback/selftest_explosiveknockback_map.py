@@ -6,6 +6,7 @@ map and reads the mod's bars off where every thing ends, over situations it enum
 distance x obstacle x obstacle distance x width x blast), 2,496 spared cases, 20,000 seeded storerooms each with both tie
 orders of the game's "place near" search, the mod's own scenes and the cases that used to fail, and each plan-side Mod
 Settings switch flipped alone. What the model assumes and what the range leaves out is the header of KnockbackMap.cs.
+The carrier probes compile its ground-path and corpse-pose code with stand-ins for Unity and Verse.
 
 This script:
   1. runs the whole map: every bar must hold (exit 1 with the breaking readings otherwise);
@@ -20,16 +21,18 @@ This script:
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_str  # noqa: E402  (data root: rmpaths.py)
-from winbuild import run_interop_captured  # noqa: E402  (WSL lost-launch retry)
+from winbuild import run_interop_captured, win  # noqa: E402  (WSL lost-launch retry and paths)
 import fcntl
 import os
 import re
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-STAGE = os.environ.get("WINBUILD_ROOT", rm_str("build")) + "/ExplosiveKnockbackMapSelfTest"
+STAGE_ROOT = os.path.abspath(os.environ.get("WINBUILD_ROOT", rm_str("build")))
+STAGE = os.path.join(STAGE_ROOT, "ExplosiveKnockbackMapSelfTest")
 DOTNET = ["/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotnet/dotnet.exe"]
 SOURCE = ("RM_KnockbackMath.cs", "RM_KnockbackPlan.cs", "RM_KnockbackVerdicts.cs")
 SELFTEST = ("Program.cs", "KnockbackFuzz.cs", "KnockbackSweep.cs", "KnockbackMap.cs", "RimMandrakeExplosiveKnockback.SelfTest.csproj")
@@ -82,6 +85,10 @@ FAULTS = [
     ("a gas tumble can exceed the burst cap", "RM_KnockbackPlan.cs", "Tumble(p, f, s, grid, maxCells);", "Tumble(p, f, s, grid, p.cells + HopExtraCells);"),
     ("a gas-thrown heavy stack hits a pawn", "RM_KnockbackMath.cs", "if (explosionId < 0 || !enabled", "if (!enabled"),
     ("a diagonal goods leg crosses an open pit", "RM_KnockbackPlan.cs", "p.res = StopAtCrossedPit(grid, f.x, f.z, p.res);", ""),
+    ("a diagonal pit flight aims at the pit centre", "RM_KnockbackPlan.cs",
+     "pitEntryOffsetX = dx * entry - x * stepX, pitEntryOffsetZ = dz * entry - z * stepZ", "pitEntryOffsetX = 0f, pitEntryOffsetZ = 0f"),
+    ("a gas landing ignores the burst cap", "RM_KnockbackPlan.cs",
+     "return cap <= 0 || Math.Max(Math.Abs(x - originX), Math.Abs(z - originZ)) <= cap;", "return true;"),
 ]
 
 
@@ -103,6 +110,9 @@ def stage(fault=None):
         shutil.copy(os.path.join(HERE, "Source", f), os.path.join(STAGE, f))
     for f in SELFTEST:
         shutil.copy(os.path.join(HERE, "Source", "SelfTest", f), os.path.join(STAGE, "SelfTest", f))
+    map_test = Path(STAGE, "SelfTest", "KnockbackMap.cs")
+    original = map_test.read_text(encoding="utf-8")
+    map_test.write_text("#define RM_KB_CARRIER_TEST\n" + original + carrier_probes(), encoding="utf-8")
     if fault is None:
         return True
     _, name, old, new = fault
@@ -115,9 +125,117 @@ def stage(fault=None):
     return True
 
 
-def win(p):
-    p = os.path.abspath(p)
-    return "%s:\\%s" % (p[5].upper(), p[7:].replace("/", "\\"))
+def carrier_probes():
+    """Compile the carrier's ground interpolation and pose writes with stand-ins for Unity and Verse."""
+    source = Path(HERE, "Source", "RM_ThingFlyer_Knockback.cs").read_text(encoding="utf-8")
+    launch = "\n".join(re.findall(r"^ +f\.spin[^\n]+", source.split("LaunchContainer(", 1)[0], re.M))
+    spin_angle = re.search(r"private float SpinAngle => [^;]+;", source)[0]
+    save_fields = "\n".join(re.findall(r"Scribe_Values\.Look\(ref spin[^;]+;", source))
+    writes = [re.search(r"if \([^\n]*inner is Corpse [^\n]+\)\s+\{\s+TurnCorpse\([^)]+\);[^\n]*\n\s+\}", source[source.index(start):])[0]
+              for start in ("protected override void Tick()", "private void Land(")]
+    start = source.split("private void StartLeg(", 1)[1].split("private Vector3 DestinationPos", 1)[0]
+    setup = "\n".join(re.findall(r"^\s*(?:startVec|destCell|destinationOffset|float dist|float speed|ticksFlightTime) =[^;]+;", start, re.M))
+    endpoint = re.search(r"private Vector3 DestinationPos => [^;]+;", source)[0]
+    sample = re.search(r"groundPos = Vector3.Lerp\([^;]+;", source)[0]
+    cell = re.search(r"IntVec3 cell = [^;]+groundPos.ToIntVec3\(\);", source)[0]
+    return """
+internal sealed class GoodsFlightProbe
+{
+    private struct IntVec3
+    {
+        public int x, z;
+        public IntVec3(int x, int y, int z) { this.x = x; this.z = z; }
+        public Vector3 ToVector3ShiftedWithAltitude(float altitude) => new Vector3(x + 0.5f, altitude, z + 0.5f);
+    }
+    private struct Vector3
+    {
+        public float x, y, z;
+        public Vector3(float x, float y, float z) { this.x = x; this.y = y; this.z = z; }
+        public IntVec3 ToIntVec3() => new IntVec3((int)x, 0, (int)z);
+        public static Vector3 operator +(Vector3 a, Vector3 b) => new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
+        public static float Distance(Vector3 a, Vector3 b)
+        {
+            float x = a.x - b.x, y = a.y - b.y, z = a.z - b.z;
+            return MathF.Sqrt(x * x + y * y + z * z);
+        }
+        public static Vector3 Lerp(Vector3 a, Vector3 b, float t) =>
+            new Vector3(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t);
+    }
+    private static class Mathf
+    {
+        public static int Max(int a, int b) => Math.Max(a, b);
+        public static float Max(float a, float b) => Math.Max(a, b);
+        public static int CeilToInt(float f) => (int)MathF.Ceiling(f);
+    }
+    private static class RimMandrakeExplosiveKnockbackSettings { public const float goodsFlightSpeed = 14f; }
+    private sealed class FlightDef { public readonly float Altitude = 0f; }
+    private readonly FlightDef def = new FlightDef();
+    private Vector3 startVec, destinationOffset;
+    private IntVec3 destCell;
+    private int ticksFlightTime;
+""" + endpoint + """
+    public IEnumerable<((int x, int z) cell, float x, float z)> Samples(KbLeg leg)
+    {
+        var from = new IntVec3(leg.fromX, 0, leg.fromZ);
+        KbResult res = leg.res;
+""" + setup + """
+        for (int ticksFlying = 1; ticksFlying <= ticksFlightTime; ticksFlying++)
+        {
+            float t = (float)ticksFlying / ticksFlightTime;
+            Vector3 """ + sample + """
+            """ + cell + """
+            yield return ((cell.x, cell.z), groundPos.x, groundPos.z);
+        }
+    }
+}
+
+internal sealed class CorpsePoseProbe
+{
+    internal sealed class Corpse { public float angle = 90f; }
+    private static float CorpseAngle(Corpse body) => body.angle;
+    private static void TurnCorpse(Corpse body, float angle) => body.angle = angle;
+    private static class Mathf { public static float Repeat(float value, float length) => value - MathF.Floor(value / length) * length; }
+    private static class Rand { public const float Sign = 1f; public static float Range(float min, float max) => 1f; }
+    private static class RimMandrakeExplosiveKnockbackSettings { public const float goodsSpinDegPerTick = 20f; }
+    private sealed class Scribe_Values
+    {
+        public Dictionary<string, object> fields;
+        public bool loading;
+        public void Look<T>(ref T value, string label, T fallback)
+        {
+            if (loading) value = fields.TryGetValue(label, out object saved) ? (T)saved : fallback;
+            else if (!Equals(value, fallback)) fields[label] = value;
+        }
+    }
+    private readonly Scribe_Values scribe = new Scribe_Values();
+    private float spin0, spinRate;
+    private bool spin0IsCorpsePose;
+    private int ticksTotal;
+    private object Inner;
+""" + spin_angle + """
+    public void Launch(Corpse body)
+    {
+        var f = this;
+        Inner = body;
+""" + launch + """
+    }
+    public void Tick(object inner)
+    {
+        ticksTotal++;
+""" + writes[0] + """
+    }
+    public void Land(object inner)
+    {
+""" + writes[1] + """
+    }
+    public void Expose(Dictionary<string, object> fields, bool loading)
+    {
+        scribe.fields = fields;
+        scribe.loading = loading;
+""" + save_fields.replace("Scribe_Values.Look", "scribe.Look") + """
+    }
+}
+"""
 
 
 def run(dotnet, extra):
@@ -129,9 +247,8 @@ def run(dotnet, extra):
 def main(argv):
     dotnet = next((d for d in DOTNET if os.path.isfile(d)), None)
     if dotnet is None or not os.path.isdir(os.path.dirname(STAGE)):
-        print("UNMEASURED: no Windows dotnet.exe / D: staging root on this machine")
+        print("UNMEASURED: no Windows dotnet.exe / staging root on this machine")
         return 1
-    # machine-wide (/tmp, not the per-seat TMPDIR): every clone stages into the same folder
     # the model's A5 and the game must reach by one rule: the sight line an explosion uses (RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN)
     if not gas_reach_is_the_explosions(open(os.path.join(HERE, "Source", "RM_MapComponent_Knockback.cs"), encoding="utf-8").read()):
         print("explosive knockback map: FAIL (GasBurst queues things without the explosion's sight line: %s)" % GAS_REACH)
@@ -140,7 +257,8 @@ def main(argv):
         if not re.search(r"RM_KnockbackMath\.HeavyKnock\([^;]*out int stun, explosionId\)\)", f.read()):
             print("explosive knockback map: FAIL (the carrier drops the burst ID before testing for a heavy hit)")
             return 1
-    with open(os.path.join("/tmp", "explosiveknockback_map_selftest.lock"), "w") as lk:
+    lock_path = "/tmp/explosiveknockback_map_selftest.lock" if STAGE_ROOT == rm_str("build") else STAGE + ".lock"
+    with open(lock_path, "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
         for d in ("obj", "bin"):     # retained outputs can look newer than fresh sources (a clock step back): build clean
             shutil.rmtree(os.path.join(STAGE, "SelfTest", d), ignore_errors=True)
