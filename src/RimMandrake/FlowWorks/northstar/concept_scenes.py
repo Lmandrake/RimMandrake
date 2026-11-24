@@ -1765,6 +1765,14 @@ def _mw_in_plot(G, at):
     return at is not None and O[0] + MOAT_W <= at[0] < O[0] + MOAT_N - MOAT_W and O[1] + MOAT_W <= at[1] < O[1] + MOAT_N - MOAT_W
 
 
+def _order_said(r, pid):
+    """What jawa/order_pawn said of one pawn. Its success means arrival, so at waitTicks=0 it is False for a good order too."""
+    p = next((q for q in r.get('pawns') or [] if q.get('id') == pid), None)
+    if p is None:
+        return ('no pawn row: %s' % (r.get('message') or r.get('error') or r))[:120]
+    return 'canReach=%s accepted=%s job=%s' % (p.get('canReach'), p.get('orderAccepted'), p.get('curJob'))
+
+
 def _mw_cross(S, G, pid, to):
     """One drafted colonist is ordered across; every MW_POLL ticks his square and ProofSwim under him are read. -> what was seen."""
     # visit 10 (ArchSmall and Steve1, 2026-11-24): the scene ordered 4 ticks after its staged pour, while the mod's reach labels
@@ -1777,7 +1785,7 @@ def _mw_cross(S, G, pid, to):
         return 'canReach=True' in reach[-1]
     after = _poll_ticks(S, open_, MW_REACH_TICKS, step=30)
     r = S.call('jawa/order_pawn', pawnId=pid, x=to[0], z=to[1], waitTicks=0, draft=True)
-    seen = {'order': r.get('success'), 'start': _at(S, pid), 'reads': 0, 'swam': False, 'tired': None, 'arrived': False, 'last': None,
+    seen = {'orderSaid': _order_said(r, pid), 'start': _at(S, pid), 'reads': 0, 'swam': False, 'tired': None, 'arrived': False, 'last': None,
             'refused': 0, 'reachAfterTicks': after, 'reach': reach[-1]}
     ring = set(G['ring'])
     for _ in range(MW_POLLS):

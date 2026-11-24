@@ -506,9 +506,13 @@ class Walk(Fake):
         if tool == 'jawa/order_pawn':
             # the live engine (visit 10): the reach labels follow a staged pour 60 ticks later; a Goto to a plot that reads
             # unreachable is taken and dropped, and the reply's success is False until he stands on the square
-            if not self.stale():
+            if self.fault == 'badorder':
+                return {'success': False, 'message': 'No pawn on this map with id ' + kw['pawnId']}
+            ok = not self.stale()
+            if ok:
                 g['pawns'][kw['pawnId']]['to'] = (kw['x'], kw['z'])
-            return {'success': False}
+            return {'success': False, 'message': '0/1 pawn(s) standing on the cell after 0 tick(s)', 'pawns': [
+                {'id': kw['pawnId'], 'canReach': ok, 'orderAccepted': True, 'curJob': 'Goto' if ok else 'Wait'}]}
         return Fake.call(self, tool, _answer=_answer, **kw)
 
     def stale(self):
@@ -570,6 +574,12 @@ for mod, rid, want in (('dryshod', MW[0], 'FAIL'), ('refuse', MW[0], 'UNMEASURED
                        ('laggy', MW[0], 'UNMEASURED')):
     r, o, _ = walkers(mod)
     check('sc_moat_walkers, plant %s: %s %s' % (mod, rid, want), r.get(rid) == want, (r, [x['detail'] for x in o['rows'] if x['id'] == rid]))
+# the detail keeps what the order's reply said of the pawn (its success is arrival, False at waitTicks=0 on a healthy run too)
+for mod, fault, want in (('healthy', None, 'canReach=True accepted=True job=Goto'), ('laggy', None, 'canReach=False accepted=True job=Wait'),
+                         ('healthy', 'badorder', 'no pawn row: No pawn on this map')):
+    r, o, _ = walkers(mod, fault)
+    d = next((x['detail'] for x in o['rows'] if x['id'] == MW[0]), '')
+    check('sc_moat_walkers, %s %s: the detail holds orderSaid %s' % (mod, fault, want), "'orderSaid': '" + want in d, d)
 r, o, _ = walkers(fault='nopower')
 check('sc_moat_walkers, a pump that never runs: chemfuel and burn UNMEASURED', r.get(MW[3]) == 'UNMEASURED' and r.get(MW[4]) == 'UNMEASURED', r)
 print('selftest_moat_scene: %s' % ('FAIL' if FAILS else 'ok'))
