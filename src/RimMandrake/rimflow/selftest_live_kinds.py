@@ -221,6 +221,18 @@ def t_kind_b_one_success():
            read([o(LK.UNRESOLVED), good()], **B), read([row("c1", "FAIL"), good()], **B),
            read2([row("c1", "FAIL", **{"class": "MOD"})], [good()], **B)]
     newbuild = read2([good()], [row("c1", "FAIL", mod_sha="0123456789", **{"class": "MOD"})], **B)
+    failure = o(LK.MOD_FAILURE, "FAIL")
+    sha = "0123456789"
+    spoiled = env(mod_sha=sha)
+    after_fix = read2([failure], [spoiled], **dict(B, budget=4))
+    same_build = read2([dict(failure, mod_sha=sha)], [spoiled], **dict(B, budget=4))
+    still_fails = read2([dict(failure, mod_sha=sha)], [good(mod_sha=sha)], **B)
+    if not (cnt(after_fix) == "spoiled" and after_fix["rows"]["c1"] == "SPOILED"
+            and said(after_fix, "3 of 4 budgeted run(s) left") and after_fix["next_run"] == ["c1"]
+            and cnt(same_build) == "mod" and same_build["rows"]["c1"] == "FAIL" and cnt(still_fails) == "mod"):
+        return False, "new build after old MOD FAILURE read %s/%s: %s; same-build failure read %s/%s, then %s" % (
+            cnt(after_fix), after_fix["rows"]["c1"], after_fix["why"], cnt(same_build), same_build["rows"]["c1"],
+            cnt(still_fails))
     return (all(x["state"] == "met" and x["rows"]["c1"] == "PASS" for x in ok) and ok[4]["next_run"] == []
             and all(x["state"] == "not_met" for x in bad) and cnt(newbuild) == "mod"), (
         [x["why"] for x in ok if x["state"] != "met"], [x["why"] for x in bad], newbuild["why"])

@@ -647,7 +647,7 @@ def account_gate(sched_path=None, dstate=None):
 # ---- the decision ---------------------------------------------------------------------------------------------------
 
 def autonomy_book(s, unit):
-    """-> "steward" or "fixers" when `unit` is a run the autonomy layer launched for this mod, else None.
+    """-> the steward, fixers or holder_road_back book that launched `unit` for this mod, else None.
     RIMMANDRAKE_EXEMPT_STEWARD_RUNS_FROM_BUILDER_PROGRESS_STOP: Graffiti's preflight steward moved it into the offline
     build while still live, and its end was judged as a builder's ("stopped, 33 -> 33")."""
     if not unit:
@@ -656,6 +656,8 @@ def autonomy_book(s, unit):
         for e in (s.get(book) or {}).values():
             if isinstance(e, dict) and e.get("unit") == unit:
                 return book
+    if any(e.get("unit") == unit for e in s.get("holder_road_back") or []):
+        return "holder_road_back"
     return None
 
 
@@ -694,15 +696,18 @@ def control_env(mod, stage):
 def own_live(st, facts, record, status=None):
     """-> facts (copied) with each mod's un-ended ledger runs (s["ledger_runs"]) counted live, whatever placement read:
     one live run per mod, as pilot_launch holds it (RIMMANDRAKE_REFUSE_SECOND_HOLDER_WHILE_FIRST_LIVES_FENCED_AGAIN: a
-    holder on an item naming no mod read as nothing live, and the next launch's lease fenced it). A record that is
-    absent, unreadable or without a status is never an end: its unit is live, and named in live_unread."""
+    holder on an item naming no mod read as nothing live, and the next launch's lease fenced it). A voided trial can
+    still have a live unit while a cooperative stop is pending. A record that is absent, unreadable or without a
+    status is never an end: its unit is live, and named in live_unread."""
     status = status or DH.live_status
     out = dict(facts)
     for mod, f in facts.items():
         if not isinstance(f, dict) or not isinstance(f.get("live_units"), list):
             continue        # an unreadable reading stays one: nothing launches on it already
         live, unread, own = list(f["live_units"]), [], []
-        for r in ((st.get("mods") or {}).get(mod) or {}).get("ledger_runs") or []:
+        s = (st.get("mods") or {}).get(mod) or {}
+        voided = [m["entry"] for m in s.get("voided") or [] if m.get("book") == "ledger_runs"]
+        for r in (s.get("ledger_runs") or []) + voided:
             u = r.get("unit")
             if not u or r.get("ended") or u in own:
                 continue
@@ -713,6 +718,8 @@ def own_live(st, facts, record, status=None):
                 rec = record(u)
             except Exception:       # noqa: BLE001  could not look is never "ended"
                 rec = None
+            if rec is None and r in voided:     # an old void whose record is pruned holds no mod for good
+                continue
             if not isinstance(rec, dict) or not rec.get("status"):
                 unread.append(u)
             elif status(rec) not in ("launching", "running"):
@@ -1088,7 +1095,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             was = w.get("refused")
             s["last_run"] = {"unit": w.get("unit"), "refused_before": was, "refused_after": n, "ended_seen": now}
             book = autonomy_book(s, w.get("unit"))
-            if book:    # a steward or fixer is not a builder: its own book and cap govern its retries
+            if book:    # the steward, fixer and road-back holder books govern their own retries
                 s["last_run"]["autonomy"] = book
             prog, pwhy = progressed(w, ids, f.get("bar_fp"))
             # a run first seen with no refused bars had no build work to resolve: it was no builder (a hand-launched
@@ -1149,7 +1156,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
         lr = s.get("last_run") or {}
         if (stop and lr.get("unit") and str(stop.get("why")).startswith("run %s ended and " % lr["unit"])
                 and autonomy_book(s, lr["unit"])):
-            # a stop written before the progress test learned that a steward or fixer run is not a builder's
+            # a stop written before the progress test exempted this book
             s.pop("stopped")
             row["stop_lifted"], stop = "it judged the %s run %s as a builder" % (
                 autonomy_book(s, lr["unit"]), lr["unit"]), None

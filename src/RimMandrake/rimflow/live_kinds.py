@@ -222,16 +222,18 @@ def reading(spec, runs):
     k = kind(spec)
     if not runs or (k == "A" and all(outcome(r, spec)[0] is None for _, r in runs)):
         return None
+    pool = build_runs(runs, runs[-1][1]) if k == "B" and not tag_flaws(spec) else None
+    deciding_rows = pool if pool is not None else [r for _, r in runs]
     d = None
-    for _, r in runs:
+    for r in deciding_rows:
         d = later(d, r)
-    at = max(i for i, (_, r) in enumerate(runs) if r is d)
+    at = max(i for i, r in enumerate(deciding_rows) if r is d)
     word = _as_outcome if k == "B" else (lambda r, s: outcome(r, s)[0])
     out = {"count": None, "why": [], "rows": None, "use": d, "short": None, "claim_free": runs[-1][1] is not d or k == "B",
-           "mod": any(i != at and word(r, spec) == MOD_FAILURE and same_build(r, d) for i, (_, r) in enumerate(runs)),
+           "mod": any(i != at and word(r, spec) == MOD_FAILURE and same_build(r, d) for i, r in enumerate(deciding_rows)),
            "passes": norm(d.get("verdict")) == "PASS" and outcome(d, spec)[0] in (None, SUCCESS)}
-    if k == "B" and not tag_flaws(spec):
-        _kind_b(spec, build_runs(runs, runs[-1][1]), out)
+    if pool is not None:
+        _kind_b(spec, pool, out)
     elif spoiled(d):
         w = outcome(d, spec)[0]
         out.update(count="spoiled", rows="SPOILED", passes=False)
@@ -253,8 +255,7 @@ def reading(spec, runs):
 
 def build_runs(runs, last):
     """-> the rows of runs on the build of `last`, the scene's latest run. A kind B scene is judged on the build it last
-    ran on: a SUCCESS on an earlier build neither passes it nor ends that build's budget (rule: "on the same claim and
-    build"). It differs from the deciding row's build only when every run on the latest build is spoiled."""
+    ran on: its deciding row, MOD FAILURE check and budget use this pool (rule: "on the same claim and build")."""
     return [r for _, r in runs if same_build(r, last)]
 
 

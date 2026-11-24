@@ -1,7 +1,8 @@
 # BOUNDARY: one live ledger run per mod, Design Version 0.1.0
 
 Code: `src/RimMandrake/rimflow/maturation_dispatch.py` (`own_live`, `one_run_fence`, `control_env`, and their calls in `_tick`,
-`road_back_holder` and `cert_launch`). Item: `RIMMANDRAKE_REFUSE_SECOND_HOLDER_WHILE_FIRST_LIVES_FENCED_AGAIN`.
+`road_back_holder` and `cert_launch`, plus the offline progress check for road-back holders in `decide`).
+Item: `RIMMANDRAKE_REFUSE_SECOND_HOLDER_WHILE_FIRST_LIVES_FENCED_AGAIN`.
 The case, measured 2026-11-23: the tick launched ExplosiveKnockback's holder on an item whose id and title do not name
 the mod ("EK visit 4"). The launch did not record the mod. So `maturation_now.runs_for_mods` put the run on no mod, the
 next ticks read no live run, and the tick launched a fixer on the same mod. The fixer's lease fenced the live holder.
@@ -13,7 +14,7 @@ This page covers only these parts; the rest of the file has its own pages.
 ## ACCEPTS (the only inputs this is built for)
 
 - **a-ledger-run-book.** `s["ledger_runs"]` of the tick's state: one entry for each run the tick or `pilot-launch`
-  started from the mod's ledger, with `unit`, and `ended` when its end is recorded.
+  started from the mod's ledger, with `unit`, and `ended` when its end is recorded. Voided entries move to `s["voided"]`.
 - **a-facts-reading.** The mod's facts, with `live_units` a list, or not a list when the run records cannot be read.
 - **a-run-record.** The detached run record of the unit, or None when there is none or it cannot be read.
 
@@ -35,9 +36,12 @@ This page covers only these parts; the rest of the file has its own pages.
   live on its mod when its record names no mod. A judge's run counts as a holder's does.
 - **a-live-run-holds-the-mod-at-every-stage.** A live ledger run holds its mod at the steward stages (`preflight`,
   `pre_human`) as at the others: no launch that takes a slot starts, and a launch refused only for a slot is not granted
-  again. An act of the pipeline and a zero-token certificate rerun grant no lease and are left alone.
+  again. A cooperative stop voids the trial, and the unit keeps holding the mod until it ends. An act of the pipeline
+  and a zero-token certificate rerun grant no lease and are left alone.
 - **an-ended-holder-frees-the-mod.** A unit whose record reads finished, whose unit is measured gone, or whose end is
-  recorded in the book, is not live: the next tick launches what is owed.
+  recorded in the book, is not live: the next tick launches what is owed. With launch gates open, the first tick after
+  an offline road-back holder finishes and settles launches the independently owed build if the holder closed its last
+  assigned ticket.
 - **an-unreadable-record-is-not-an-end.** A unit whose record is absent, raises, or has no status is live. Nothing
   launches on its mod, and the row says that the record cannot be read.
 - **an-unreadable-reading-stays-unreadable.** A mod whose live runs cannot be read keeps that reading. A unit that is

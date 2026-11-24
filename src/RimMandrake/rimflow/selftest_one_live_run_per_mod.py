@@ -17,6 +17,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
 TMP = tempfile.mkdtemp(prefix="one_live_run_")
 os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "_dispatcher")
 os.environ["RM_MATURATION_DISPATCH_DIR"] = os.path.join(TMP, "state")
+os.environ["RM_RUN_VOIDS_FILE"] = os.path.join(TMP, "state", "voids.jsonl")
 os.environ["MATURATION_BRIEF_DIR"] = os.path.join(TMP, "briefs")
 os.environ["RM_OWNER_HOLD_FILE"] = os.path.join(TMP, "mod_owner_hold.json")
 os.environ["RM_CONTROL_DB"] = os.path.join(TMP, "control", "control.db")
@@ -93,7 +94,9 @@ class World:
         recs = [dict(r, live_state=self.live_status(r)) for u, r in self.recs.items() if self.record_seen(u)]
         runs = MN.runs_for_mods([MOD], recs, [], {}, NOW, spend=lambda r: (1.0, None, False), titles=TITLES)[MOD]
         ends = [r["end"] for r in runs if isinstance(r["end"], (int, float))]
-        return {MOD: {"mod": MOD, "stage": self.stage, "version": "0.1.0", "owed": "exit not met", "visit": 4,
+        offline = self.stage == "offline_build"
+        return {MOD: {"mod": MOD, "stage": self.stage, "version": "0.1.0", "visit": 4,
+                      "owed": "build" if offline else "exit not met", "refused_bars": ["unbuilt"] if offline else [],
                       "live_units": "UNMEASURED" if self.blind_records else [r["unit"] for r in runs if r["live"]],
                       "last_end": max(ends) if ends else None, "ingame_live": [], "ingame_runs": [],
                       "ended_runs": [r for r in runs if not r["live"] and isinstance(r["end"], (int, float))],
@@ -139,6 +142,7 @@ class World:
                    (control, "queue_apply", lambda a: a), (control, "heartbeat", lambda *a: None),
                    (control, "game_held", lambda g: None)):
             rd = MD.tick(self.root, dict(CFG), True, fx=fx, now=now)
+        self.needs_conductor = rd["needs_conductor"]
         return (rd["mods"].get(MOD) or {})
 
     def state(self):
@@ -231,6 +235,27 @@ def t_a_live_run_holds_the_mod_at_every_stage():
         la = MD.one_run_fence(facts, [row], [MOD])
         out.append((row, None, (la == [MOD] and row["decision"] != "live") if go else (
             la == [] and row["decision"] == "live" and not row.get("aut")), la))
+    w = World()
+    w.open.clear()
+    first = w.tick(NOW)
+    if len(w.launched) != 1 or len(w.grants()) != 1 or not any(
+            e.get("unit") == w.launched[0][1] for e in (w.state().get("steward") or {}).values()):
+        raise AssertionError("the in-game steward did not start: %s" % say(w, [first]))
+    unit = w.launched[0][1]
+    w.stage = "pre_human"
+    # The cooperative stop has told the books, but the unit is still working toward its stopping point.
+    control.void_books(unit, MOD, "stopped (at-easy-spot): fixture", None, "fixture-stop")
+    pending = w.tick(NOW + 60)
+    grants = len(w.grants())
+    moved = w.state().get("voided") or []
+    assert any(e["book"] == "ledger_runs" and e["unit"] == unit for e in moved), moved
+    out.append(("cooperative stop pending", None, pending.get("decision") == "live" and unit in pending.get("live", [])
+                and len(w.launched) == grants == 1, "pre_human read %s with %d launches and %d leases" % (
+                    pending.get("decision"), len(w.launched), grants)))
+    w.recs[unit].update(status="finished", ended=NOW + 100, result="success (exited 0)")
+    ended = w.tick(NOW + 120)
+    out.append(("cooperative stop ended", None, ended.get("decision") == "launched" and len(w.grants()) == grants + 1,
+                "pre_human read %s with %d leases" % (ended.get("decision"), len(w.grants()))))
     return all(x[2] for x in out), [x for x in out if not x[2]]
 
 
@@ -250,6 +275,22 @@ def t_an_ended_holder_frees_the_mod():
                         rows[3].get("decision") == "live", say(w, rows)))
     f = MD.own_live({"mods": {MOD: {"ledger_runs": [{"unit": "rm-x", "ended": NOW}]}}}, {MOD: {"live_units": []}},
                     lambda u: None, lambda r: r["status"])
+    w = World()
+    w.stage = "offline_build"
+    w.open = [{"id": CARRIER, "needs": "offline"}]
+    started(w)
+    live = w.tick(NOW + 60)
+    unit = w.launched[0][1]
+    w.open.clear()
+    w.recs[unit].update(status="finished", ended=NOW + 100, result="success (exited 0)")
+    settling = w.tick(NOW + 120)
+    build = w.tick(NOW + 100 + CFG["settle_s"])
+    ok = (live.get("decision") == "live" and settling.get("decision") == "settling"
+          and build.get("decision") == "launched" and build.get("refused") == 1 and not w.needs_conductor
+          and not w.state().get("stopped") and len(w.launched) == 2 and w.state()["launches"][-1]["ids"] == ["unbuilt"])
+    if not ok:
+        return False, "offline road-back holder after settlement read %s with %d launches: %s" % (
+            build.get("decision"), len(w.launched), "; ".join(w.needs_conductor) or build.get("why"))
     return all(x[2] and x[3] and x[4] and x[5] for x in out) and f[MOD]["live_units"] == [], out
 
 
