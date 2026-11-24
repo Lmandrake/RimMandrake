@@ -66,6 +66,9 @@ PARTS = {
     "PowerSwitch_Off": ("power switch, off", [1.0, 1.0], "Defs/RM_ConduitStyles.xml: inherits vanilla PowerSwitch graphic (1x1)"),
     "StandingLamp":    ("standing lamp", [1.0, 1.0], "Defs/RM_ConduitStyles.xml: inherits vanilla StandingLamp graphic (1x1)"),
     "SparkGlow":       ("spark glow", [0.5, 0.5], "CordMaterials.SparkGlow mote — size NOT located in source; 0.5 cells is an estimate"),
+    # new parts go at the END: a row's key holds its part's rank here, and his decisions are filed under row keys
+    "WallLamp":        ("wall lamp", [1.0, 1.0], "Defs/Aerial/RM_ConduitStyles.xml WallLamp_<Look>: Graphic_WallLampLook, no drawSize set (1x1), Graphic_Multi per facing"),
+    "LookIcon":        ("look icon (menu picture, never drawn on the map)", [1.0, 1.0], "ConduitStyles.LookIconPath, a float-menu icon: it has no size in cells; shown at 1 cell"),
 }
 # FlowWorks hoses (moved there 2026-10-11): HoseMath / RM_MapComponent_Hoses constants (selftest_gss_art_manifest_sizes.py
 # re-reads the width, wrap, lip and fitting constants from the C#, so a retune there fails the test instead of silently
@@ -134,10 +137,14 @@ def classify_gss(rel: str):
             look, variant, name = "Modern", p[2], p[3]
         else:
             look, name = FAMILY_LOOK[fam], p[2]
+        if name.startswith("WallLamp_"):          # Graphic_Multi: the facings are one picture's row
+            name, res = (re.sub(r"_(north|east|south|west)$", "", x) for x in (name, res))
         name = re.sub(r"_p\d+$", "", name)
         if name.startswith("Strand_"):
             variant, name = name[len("Strand_"):], "Strand"
         return name, look, variant, res
+    if p[:2] == ["UI", "Looks"] and len(p) == 3 and p[2] in LOOKS:
+        return "LookIcon", p[2], "", res          # UI/Looks/<Look>: that look's icon in every look menu
     name = re.sub(r"_p\d+$", "", p[0])          # Junction_X_p1..p14, PowerSwitch_p1..: pile-variant copies of one part
     alias = {"Strand_Jawa": ("Strand", "Jawa"), "Strand_ScrapTaped": ("Strand", "ScrapTaped"), "Junction_Tape": ("Junction_T", ""), "Junction_Tin": ("Junction_X", "")}
     if name in alias:

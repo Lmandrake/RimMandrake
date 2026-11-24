@@ -3475,6 +3475,214 @@
    ]
   },
   {
+   "key": "GSS_29_WallLamp_0Scrapper",
+   "part": "WallLamp",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall lamp \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Scrapper/WallLamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Aerial/RM_ConduitStyles.xml WallLamp_<Look>: Graphic_WallLampLook, no drawSize set (1x1), Graphic_Multi per facing"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Scrapper/WallLamp"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_29_WallLamp_1Industrial",
+   "part": "WallLamp",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall lamp \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/WallLamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Aerial/RM_ConduitStyles.xml WallLamp_<Look>: Graphic_WallLampLook, no drawSize set (1x1), Graphic_Multi per facing"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Industrial/WallLamp"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_29_WallLamp_2Modern",
+   "part": "WallLamp",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall lamp \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/WallLamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Aerial/RM_ConduitStyles.xml WallLamp_<Look>: Graphic_WallLampLook, no drawSize set (1x1), Graphic_Multi per facing"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Modern/WallLamp"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_29_WallLamp_3Futuristic",
+   "part": "WallLamp",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall lamp \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/WallLamp"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Aerial/RM_ConduitStyles.xml WallLamp_<Look>: Graphic_WallLampLook, no drawSize set (1x1), Graphic_Multi per facing"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Futuristic/WallLamp"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_30_LookIcon_0Scrapper",
+   "part": "LookIcon",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "look icon (menu picture, never drawn on the map) \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/UI/Looks/Scrapper"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "ConduitStyles.LookIconPath, a float-menu icon: it has no size in cells; shown at 1 cell"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/UI/Looks/Scrapper"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_30_LookIcon_1Industrial",
+   "part": "LookIcon",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "look icon (menu picture, never drawn on the map) \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/UI/Looks/Industrial"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "ConduitStyles.LookIconPath, a float-menu icon: it has no size in cells; shown at 1 cell"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/UI/Looks/Industrial"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_30_LookIcon_2Modern",
+   "part": "LookIcon",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "look icon (menu picture, never drawn on the map) \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/UI/Looks/Modern"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "ConduitStyles.LookIconPath, a float-menu icon: it has no size in cells; shown at 1 cell"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/UI/Looks/Modern"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_30_LookIcon_3Futuristic",
+   "part": "LookIcon",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "look icon (menu picture, never drawn on the map) \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/UI/Looks/Futuristic"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "ConduitStyles.LookIconPath, a float-menu icon: it has no size in cells; shown at 1 cell"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/UI/Looks/Futuristic"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
    "key": "ZFW_00_Strand_Flat_0Scrapper",
    "part": "Strand_Flat",
    "look": "Scrapper",
@@ -4395,6 +4603,6 @@
    "render_match": "Cybertek|futuristic"
   }
  ],
- "textures_seen": 405,
- "lead_html": "<div style='border:2px solid #c9a227;padding:10px 14px;margin:0 0 12px;font-size:15px;line-height:1.5'><b>1. What this is:</b> every picture Gimme Some Slack draws in the game \u2014 116 rows, one per part per look (Scrapper, Industrial, Modern, Futuristic; Modern cords also per colour), each at its true in-game size beside a human, the same part's looks banded together. The power-tap clamp is first; the last 40 rows are hose art that <b>moved to FlowWorks</b>.<br><b>2. What you rule on:</b> for each picture in each look, keep it or redo it (say why in the note). The clamp rows also hold the new clamp candidates \u2014 pick one per look.<br><b>3. Your clicks save automatically.</b> The blue IN GAME frame is only the agent's starting point (a prefill, counted separately), never your choice; nothing installs until you say the sheet is done.</div>"
+ "textures_seen": 421,
+ "lead_html": "<div style='border:2px solid #c9a227;padding:10px 14px;margin:0 0 12px;font-size:15px;line-height:1.5'><b>1. What this is:</b> every picture Gimme Some Slack draws in the game \u2014 124 rows, one per part per look (Scrapper, Industrial, Modern, Futuristic; Modern cords also per colour), each at its true in-game size beside a human, the same part's looks banded together. The power-tap clamp is first; the last 40 rows are hose art that <b>moved to FlowWorks</b>.<br><b>2. What you rule on:</b> for each picture in each look, keep it or redo it (say why in the note). The clamp rows also hold the new clamp candidates \u2014 pick one per look.<br><b>3. Your clicks save automatically.</b> The blue IN GAME frame is only the agent's starting point (a prefill, counted separately), never your choice; nothing installs until you say the sheet is done.</div>"
 }
