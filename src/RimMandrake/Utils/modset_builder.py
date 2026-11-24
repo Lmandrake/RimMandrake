@@ -249,6 +249,16 @@ TIERS = {
         "forbid": ["glitchgoblin.invisibleconduitcont"],
         "dlc": True,
     },
+    "gimmesomeslack_walk": {
+        "why": "His walk of Gimme Some Slack on the small list (owner 2026-11-24, 'go': walks use only the mods a mod "
+               "really needs, all five DLC and the advanced-zoom mod; never the full list). The list is written in "
+               "design/concepts/GimmeSomeSlack/version/small_list.json; the bridge is the staging harness. No "
+               "MandrakePatches, no Cherry Picker (no_cherry). selftest_modset_walk_small_list.py.",
+        "want": [BRIDGE, "mandrake.rm.gimmesomeslack"],
+        "forbid": ["glitchgoblin.invisibleconduitcont"],
+        "no_cherry": True,
+        "dlc": True,
+    },
     "builds_biomes": {
         "why": "Live def-resolve proof of the biome-mod content built 2026-10-03 (Abyss, Stillsand, Scarlands, "
                "Contagion suites run through the situational re-run job). Those mods are folded into the "
@@ -1092,7 +1102,8 @@ def resolve_tier(name, installed):
     else:
         want += [CORE]
     want += [HARMONY]
-    if CHERRY in installed and CHERRY not in want:      # not installed: tier_cut_creature_check.py reads the tier red
+    # not installed: tier_cut_creature_check.py reads the tier red. `no_cherry`: a walk's small list (owner 2026-11-24)
+    if CHERRY in installed and CHERRY not in want and not t.get("no_cherry"):
         want.append(CHERRY)
     # a tier that wants Camera+, or pulls it in as a dependency, never gets the rival zoom mod, whether or not it says
     # no_zoom (Codex cd905b re-review): the zoom mod is added only after the closure is known to hold no Camera+

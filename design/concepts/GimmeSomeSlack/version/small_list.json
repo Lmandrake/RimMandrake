@@ -1,0 +1,26 @@
+{
+  "mod": "GimmeSomeSlack",
+  "packageId": "mandrake.rm.gimmesomeslack",
+  "tier": "gimmesomeslack_walk",
+  "ruling": "owner 2026-11-24 ('go'), ledger RIMMANDRAKE_PROPOSE_FULL_LIST_WALK_NOT_PER_MOD_ARCHBIG_IS_THE_LINE: development, tests, walk saves and his walks use a small list of the mods a mod really needs; all five expansions; the advanced-zoom mod for a sitting. Never the full list.",
+  "requires": [
+    "ludeon.rimworld",
+    "ludeon.rimworld.royalty",
+    "ludeon.rimworld.ideology",
+    "ludeon.rimworld.biotech",
+    "ludeon.rimworld.anomaly",
+    "ludeon.rimworld.odyssey",
+    "brrainz.harmony"
+  ],
+  "patch_targets": [],
+  "patch_targets_why": "Patches/RM_ConduitStyleable.xml targets Core defs only (PowerConduit, PowerSwitch, StandingLamp, WallLamp); no PatchOperationFindMod.",
+  "zoom": "ray1203.simplecamerasetting",
+  "harness": {
+    "brrainz.rimbridgeserver": "the bridge that stages the walk map and its sign books and labels (JawaBench companion); not a mod Gimme Some Slack needs"
+  },
+  "not_on_the_list": {
+    "mandrake.rm.flowworks": "optional (reflection only: CordUnderLiquid, pipe-pole spans); the 0.2.0 walk stations hold no FlowWorks item",
+    "mandrake.rm.patches": "in the test tier gimmesomeslack; Gimme Some Slack neither requires nor patches through it",
+    "owlchemist.cherrypicker": "added to every test tier to keep the full list's cut creatures cut; Gimme Some Slack does not need it"
+  }
+}
