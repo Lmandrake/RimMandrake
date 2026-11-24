@@ -132,13 +132,15 @@ def t_ingest():
     rec = {"job": job, "result": {"attempt": job["id"] + ".a1", "outcome": "DONE", "cause": None,
                                   "rows": [{"chain": "proofs", "row": "A1", "verdict": "FAIL", "detail": "exit 1"}]}}
     called = []
-    saved = I.rimflow
-    I.rimflow = lambda *a: called.append(a)
+    saved = I.rimflow, I.recorded_run
+    I.rimflow = lambda *a: (called.append(a), (0, "X/run-1@steve-proofs recorded"))[1]
+    I.recorded_run = lambda item, att: None
     try:
         out = I.ingest_one(rec)
     finally:
-        I.rimflow = saved
-    check("skipped" in out and not called, "ingest leaves a proofs job to Relentless: %s %s" % (out, called))
+        I.rimflow, I.recorded_run = saved
+    check(out.get("result") == "fail" and len(called) == 1 and called[0][:2] == ("verify", job["item"]),
+          "ingest records a proofs job's verdict on its item (its reader Relentless is retired): %s %s" % (out, called))
 
 
 def main():

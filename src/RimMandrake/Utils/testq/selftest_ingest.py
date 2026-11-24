@@ -1019,6 +1019,47 @@ def tries_checks():
     check(f({}, "verify refused: no item X on the ledger") == (1, False), "a-verdict-is-not-dropped-by-a-crash: the first does not")
 
 
+def window_and_proofs_checks(env, queue, events, ingest):
+    """the-ledger-line-names-the-fault-window; a-proofs-jobs-verdict-lands-on-its-item."""
+    w_item, p_item = "WINDOW_ITEM_FIX_IT", "PROOFS_ITEM_FIX_IT"
+    for it in (w_item, p_item):
+        subprocess.run([sys.executable, CLI, "file", it, "--for", "BENCH", "--title", "t", "--seat", "BENCH"], env=env,
+                       capture_output=True, text=True, timeout=120)
+    win = {"id": "F20261121T032952Z", "mode": "advisory"}
+    put = lambda r: S.dump(r, os.path.join(queue, "done", r["job"]["id"] + ".json"))  # noqa: E731
+    inside = dict(done_rec(w_item), fault_window=win)
+    dead = dict(done_rec(w_item, "INVALID", "HANG"), fault_window=win)
+    clean = done_rec(w_item, rows=(("r1", "PASS"),))
+    proofs, pdead = done_rec(p_item, rows=(("A1", "FAIL"),)), done_rec(p_item, "INVALID", "HANG", rows=(("A1", "FAIL"),))
+    for r in (proofs, pdead):
+        r["job"]["selector"], r["job"]["profile"] = {"proofs": ["A1"]}, "tier:mods__base"
+    pwin = dict(done_rec(p_item, rows=(("A2", "PASS"),)), fault_window=win)
+    pwin["job"]["selector"], pwin["job"]["profile"] = {"proofs": ["A2"]}, "tier:mods__base"
+    for r in (inside, dead, clean, proofs, pdead, pwin):
+        put(r)
+    ingest()
+    ev = events()
+    has = lambda e: "[inside machine-fault window F20261121T032952Z]" in json.dumps(e)  # noqa: E731
+    mine = [e for e in ev if e.get("id") == w_item or str(e.get("from", "")).startswith(w_item)]
+    ver = {json.dumps(e.get("evidence")).split("testq ")[1][:28]: has(e) for e in mine if e["event"] == "verify"}
+    check(sorted(ver.values()) == [False, True], "the-ledger-line-names-the-fault-window: the inside verify says so, the clean one does not (%s)" % ver)
+    fnd = [e for e in mine if e["event"] == "finding"]
+    check(len(fnd) == 2 and all(map(has, fnd)), "the-ledger-line-names-the-fault-window: each finding says so")
+    check(any(has(e) for e in mine if e["event"] == "note"), "the-ledger-line-names-the-fault-window: a no-verdict note says so")
+    pv = [e for e in ev if e["event"] == "verify" and e.get("id") == p_item]
+    check(sorted(e["result"] for e in pv) == ["fail", "pass"] and all(e["config"] == "steve-proofs" for e in pv)
+          and any("A1 FAIL d" in e["evidence"] for e in pv) and [has(e) for e in pv if e["result"] == "pass"] == [True],
+          "a-proofs-jobs-verdict-lands-on-its-item: one verify each, its clause named, its window named (%s)" % pv)
+    check(not [e for e in ev if e["event"] == "finding" and str(e.get("from", "")).startswith(p_item)]
+          and any(e["event"] == "note" and e.get("id") == p_item and "INVALID/HANG" in e["text"] for e in ev),
+          "a-proofs-jobs-verdict-lands-on-its-item: no finding; a job with no verdict is a note")
+    n = len(ev)
+    for r in (inside, proofs):
+        put(r)          # unmarked: the run is reused
+    ingest()
+    check(len(events()) == n, "a second ingest of them writes nothing")
+
+
 def main():
     tries_checks()
     crash_checks()
@@ -1142,6 +1183,7 @@ def main():
         withdraw_checks()
         withdraw_ledger_checks(env)
         template_checks(env)
+        window_and_proofs_checks(env, queue, events, ingest)
         hr =done_rec(ITEM, "INVALID", "HANG")
         S.dump(hr, os.path.join(queue, "done", hr["job"]["id"] + ".json"))
         subprocess.run([sys.executable, os.path.join(HERE, "ingest.py")], env=dict(env, TESTQ_HOST_ITEM=MANY_A),

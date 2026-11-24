@@ -85,6 +85,23 @@ def main():
         check(r["rc"] != 0 and "index.lock" in (r["msg"] or ""), "a lock from this boot still refuses: %s" % r)
         check(os.path.exists(lock), "a lock from this boot is never deleted")
         os.remove(lock)
+
+        # 3. the reboot hit an ATTEMPT: the clone is still on its detached pin, with the old lock (the usual case)
+        advance("three")
+        g(clone, "checkout", "-q", "--detach", "HEAD")
+        open(lock, "w").close()
+        os.utime(lock, (1000, 1000))
+        r = start("a3")
+        check(r["rc"] == 0 and g(clone, "symbolic-ref", "-q", "--short", "HEAD") == "main" and not os.path.exists(lock),
+              "a pre-boot lock on a clone left on its pin: unpinned and pulled (%s)" % r)
+
+        # 4. and with a dirty tracked file beside it
+        advance("four")
+        open(os.path.join(clone, "base"), "w").write("dirt")
+        open(lock, "w").close()
+        os.utime(lock, (1000, 1000))
+        r = start("a4")
+        check(r["rc"] == 0 and open(os.path.join(clone, "base")).read() == "base", "a pre-boot lock and dirt: healed and pulled (%s)" % r)
     print("FAIL %d" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

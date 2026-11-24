@@ -139,6 +139,7 @@ def mods_default():
 
 # ---------------------------------------------------------------- what state the lane is in
 
+UNIT_PAUSE_S = 24 * 3600     # a pause that waits for a unit is told of after a day (a 49 h pause stood unseen, 2026-11-15)
 COMPANION_GRACE_S = 900     # a hold outlasting a build and a push, and more than one retry of a blip, is a fault
 
 
@@ -181,11 +182,18 @@ def lane_state(now, mods=None):
         if pz.get("outcome"):
             return _st("PAUSED", "auto pause by %s %s/%s: %s" % (pz.get("job"), pz.get("outcome"), pz.get("cause"),
                                                                  why[:120]), 0, jobs=[pz["job"]] if pz.get("job") else [])
+        if pz.get("until_unit"):
+            return _st("PAUSED", "paused until unit %s is over: %s" % (pz["until_unit"], why[:120]), since + UNIT_PAUSE_S)
         if pz.get("until"):
             until = S.parse_ts(pz["until"])
             return _st("PAUSED", "paused until %s: %s" % (pz["until"], why[:120]), until)
         return _st("PAUSED", "paused since %s with no expiry: %s" % (pz.get("since"), why[:120]),
                    since + MANUAL_PAUSE_S)
+    if not T.steve_lanes():     # every live game is stopped after two equal endings (lane_stop.py): it retries by itself
+        stops = [x for x in (T.LS.stopped(T, h) for h in T.STEVE_HOSTS) if x]
+        return _st("PAUSED", "; ".join("stopped until %s after equal endings: %s" % (x["until"], x["signature"][:100])
+                                       for x in stops),
+                   min(S.parse_ts(x["first"]) for x in stops) + T.LS.ESCALATE_S)
     if os.path.exists(path("fill.stop")):
         return _st("PAUSED", "fill stopped: %s exists" % path("fill.stop"),
                    os.path.getmtime(path("fill.stop")) + MANUAL_PAUSE_S)

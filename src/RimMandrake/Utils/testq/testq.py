@@ -20,8 +20,9 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
                                      TESTQ_FILL_MODS overrides)
   testq.py maintenance --reason R --since T [--until T]  record a maintenance reboot or known hardware outage, after the
                                      fact too: a job killed inside it is not a lane fault (nonfault_cause, brake_release.py)
-  testq.py pause --reason R [--hours H]  pause the lane by hand; with --hours it is intentional until then (the
-                                     steward never escalates it before), without, the steward escalates it at 60 min
+  testq.py pause --reason R [--hours H | --until-unit U]  pause the lane by hand. Every pause ends by itself: at H hours
+                                     (default 2) or when the systemd --user unit U is over. Pausing again extends it.
+                                     Two equal bad endings in a row stop that one game for 30 min (lane_stop.py)
   testq.py steward                   the lane steward (steward.py; STEVE_STEWARD_BUILD_NO_LLM_OWNER): state, unowned
                                      clock, escalation to BENCH at 10/30 min and the owner at 120 min; the tick runs it
   testq.py steward-watch             its heartbeat watcher (testq-steward-watch.timer, every 60 s)
@@ -53,7 +54,7 @@ One tick, under a non-blocking lock (a second tick while one runs exits at once)
      sent twice: finished -> fetch the result, move to done/, ack it; dead -> `start` again without --retry
      (the worker finalizes the dead attempt and answers with it); a finished INTERRUPTED/CRASH or INVALID/GAME_DIED
      attempt gets ONE automatic `start --retry`. A job finishing INVALID/CANARY (a red canary) or REFUSED/SYNC (the
-     runner pull failed) PAUSES the lane: paused.json is written and ingest.py files a finding.
+     runner pull failed) PAUSES the lane until a retry in 30 min: paused.json is written and ingest.py files a finding.
   3. Drain the worker's outbox: duplicates of results already in done/ are acked; results for jobs the queue
      does not know go to orphans/ and are acked.
   4. Admit one ready job when the lane is idle and not paused: no owner_gate, not_before passed, lane stevedesktop
@@ -102,6 +103,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import schema as S  # noqa: E402
 import archmagi_switch as SW  # noqa: E402
+import lane_stop as LS  # noqa: E402
 if os.path.dirname(os.path.dirname(HERE)) not in sys.path:
     sys.path.append(os.path.dirname(os.path.dirname(HERE)))      # src/RimMandrake, for contracts (stdlib-only modules)
 from contracts import compat as CC  # noqa: E402
@@ -150,7 +152,7 @@ def steve2_on():
 
 def steve_lanes():
     """The Steve games that may take a job now: Steve1, and Steve2 while it is switched on and not paused by itself."""
-    return [STEVE] + ([STEVE2] if steve2_on() and not paused(STEVE2) else [])
+    return [h for h in [STEVE] + ([STEVE2] if steve2_on() and not paused(STEVE2) else []) if not LS.stopped(sys.modules[__name__], h)]
 
 
 class SshDown(Exception):
@@ -398,6 +400,9 @@ def finish(rec, res):
         done["sent"] = rec["sent"]      # when it was admitted: its span, for nonfault_cause
     if host != STEVE:
         done["host"] = host
+    stop = LS.on_finish(sys.modules[__name__], host, rec["job"], res, bool(rec.get("cancel"))) if on_steve(host) else None
+    if stop:
+        done["repeat_stop"] = stop["signature"]
     move(jid, "running", "done", done)
     worker_for(host)(["ack", "--attempt", res["attempt"]])
     log("%s DONE-> %s %s %s (%s%s)" % (jid, res["outcome"], res["cause"] or "", res.get("counts"), res["attempt"],
@@ -417,7 +422,8 @@ def finish(rec, res):
         os.remove(armed)
     if why and not rec.get("cancel") and not paused(host):
         S.dump({"since": S.utcnow(), "job": jid, "attempt": res["attempt"], "outcome": res["outcome"],
-                "cause": res["cause"], "reason": why, "note": (res.get("note") or "")[-300:]}, pause_path(host))
+                "cause": res["cause"], "reason": why, "note": (res.get("note") or "")[-300:],
+                "until": LS.stamp(time.time() + LS.RETRY_S)}, pause_path(host))
         log("LANE%s PAUSED by %s %s/%s: %s; `testq.py resume%s --reason R` lifts it" % (
             "" if host == STEVE else " " + host, jid, res["outcome"], res["cause"], why,
             "" if host == STEVE else " --lane " + host))
@@ -504,7 +510,7 @@ def admit(status, host=STEVE):
     (RIMMANDRAKE_HOLD_PENDING_BATCH_AFTER_DELIVERY_DEATH: 17 helper jobs of 5 mods, at shas that all wanted one companion, died
     `companion STALE` one after another, 2026-11-12 17:13-18:03 UTC, when the gate covered the filler alone)."""
     remote = worker_for(host)       # noqa: F811 - the same verbs, on this game's worker
-    if lane_running(host) or paused() or (host != STEVE and paused(host)):
+    if lane_running(host) or paused() or (host != STEVE and paused(host)) or LS.stopped(sys.modules[__name__], host):
         return
     if status.get("busy"):
         log("worker%s busy with %s (not ours); nothing admitted" % ("" if host == STEVE else " " + host,
@@ -578,6 +584,7 @@ def cmd_tick(_a):
         except BlockingIOError:
             print("tick already running")
             return 0
+        LS.step(sys.modules[__name__], STEVE_HOSTS)
         status = ssh_reachable()
         steve_up = status is not None
         if steve_up:
@@ -2164,18 +2171,28 @@ DISPATCH = os.path.expanduser("~/rm/dispatch")
 
 
 def cmd_pause(a):
+    """Every pause names its end (lane_stop.py): --until-unit, --hours, or the default hours. A hand pause that stands is
+    extended; an auto pause is left to its own end."""
     ensure_dirs()
-    if paused():
-        print("already paused: %s" % json.dumps(paused()))
+    old, unit, hours = paused(), getattr(a, "until_unit", None), getattr(a, "hours", None)
+    if old and old.get("outcome"):
+        print("already paused by the lane itself: %s" % json.dumps(old))
         return 1
     now = time.time()
-    rec = {"since": S.utcnow(), "job": None, "attempt": None, "outcome": None, "cause": None, "reason": a.reason,
-           "note": "paused by hand", "until": None}
-    if a.hours:
-        rec["until"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now + a.hours * 3600))
+    rec = {"since": (old or {}).get("since") or S.utcnow(), "job": None, "attempt": None, "outcome": None, "cause": None,
+           "reason": a.reason, "note": "paused by hand", "until": None}
+    if unit:
+        rec["until_unit"] = unit
+        end = "until unit %s is over" % unit
+    else:
+        if not hours:
+            hours = LS.DEFAULT_PAUSE_H
+            print("NOTE: no --hours and no --until-unit: the pause ends in %g h; pause again to extend it" % hours)
+        rec["until"] = LS.stamp(now + hours * 3600)
+        end = "until " + rec["until"]
     S.dump(rec, pause_path())
-    log("LANE PAUSED by hand%s: %s; `testq.py resume --reason R` lifts it" % (
-        " until " + rec["until"] if rec["until"] else " (no expiry: the steward escalates it at 60 min)", a.reason))
+    log("LANE PAUSED by hand %s%s: %s; it ends by itself, or `testq.py resume --reason R`" % (
+        end, " (extended)" if old else "", a.reason))
     return 0
 
 
@@ -2312,7 +2329,8 @@ def main(argv=None):
     s.add_argument("--days", type=float, default=7.0)
     s = sub.add_parser("pause", help="pause the lane by hand (with --hours: intentional until then)")
     s.add_argument("--reason", required=True)
-    s.add_argument("--hours", type=float)
+    s.add_argument("--hours", type=float, help="the pause ends this many hours from now (default %d)" % LS.DEFAULT_PAUSE_H)
+    s.add_argument("--until-unit", help="the pause ends when this systemd --user unit is over")
     s = sub.add_parser("maintenance", help="record a maintenance reboot or a known hardware outage of SteveDesktop")
     s.add_argument("--reason", required=True)
     s.add_argument("--since", required=True, help="ISO UTC start")

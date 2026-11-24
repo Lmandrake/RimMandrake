@@ -11,14 +11,15 @@
 # NOTE: processes started this way run in session 0 (no desktop). To start the GAME use
 # rw_game.sh from SteveDesktop's WSL, which lands in the logged-in session.
 #
-# Env: STEVE_WIN (default sjlewis@192.168.86.87), T (timeout seconds, default 120).
+# Env: STEVE_WIN (default the ssh host `stevedesktop`, ~/.ssh/config: a machine's address has one home), T (timeout
+# seconds, default 120).
 set -o pipefail
 script="\$ProgressPreference='SilentlyContinue'
 $(cat)"
 enc=$(printf '%s' "$script" | iconv -f utf-8 -t utf-16le | base64 -w0)
 # cmd.exe caps a command line at 8191 chars; base64 of UTF-16 is ~2.7x the script, so a script
 # over ~2900 chars would be cut off. Such a script is copied over with scp and run with -File.
-HOST=${STEVE_WIN:-sjlewis@192.168.86.87}
+HOST=${STEVE_WIN:-stevedesktop}
 SSHO=(-o BatchMode=yes -o ConnectTimeout=8 -o LogLevel=ERROR)
 if [ ${#enc} -gt 8000 ]; then
     tmp=$(mktemp --suffix=.ps1)

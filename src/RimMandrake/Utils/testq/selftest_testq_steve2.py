@@ -144,6 +144,10 @@ class Rig:
                 os.remove(self.p("queue", f))
 
 
+def T_NOW():     # a pause with no end ends by the default hours (lane_stop.py): these stand now
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
 def t_steve2_off_by_default(r):
     r.tq("list")
     subprocess.run(["rm", "-rf", r.p("home_b")])      # an earlier test's drain (with steve2.on) may have made it
@@ -183,13 +187,13 @@ def t_two_jobs_run_at_once_one_per_game(r):
 
 def t_steve2_respects_the_machine_pause_and_its_own(r):
     open(r.p("queue", "steve2.on"), "w").close()
-    json.dump({"since": "2026-11-23T00:00:00Z", "reason": "test machine pause"}, open(r.p("queue", "paused.json"), "w"))
+    json.dump({"since": T_NOW(), "reason": "test machine pause"}, open(r.p("queue", "paused.json"), "w"))
     a = r.job()
     r.tq("tick")
     check(r.where(a) == "pending", "steve2-respects-the-machine-pause-and-its-own: machine pause -> Steve2 admits "
                                    "nothing (%s)" % r.where(a))
     os.remove(r.p("queue", "paused.json"))
-    json.dump({"since": "2026-11-23T00:00:00Z", "reason": "test steve2 pause"},
+    json.dump({"since": T_NOW(), "reason": "test steve2 pause"},
               open(r.p("queue", "stevedesktop.b_paused.json"), "w"))
     b = r.job()
     r.tq("tick")

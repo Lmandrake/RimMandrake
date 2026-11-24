@@ -504,13 +504,13 @@ def main():
         check(ls["state"] == "PAUSED" and ls["fault_at"] == S.parse_ts(time.strftime(
             "%Y-%m-%dT%H:%M:%SZ", time.gmtime(base + 4 * 3600))), "a pause with an expiry is a fault only after it")
         r = T.main(["pause", "--reason", "x"])
-        check(r == 1, "pause refuses when already paused")
+        check(r == 0 and T.paused()["reason"] == "x", "a second hand pause replaces the end of the first (lane_stop.py)")
         os.remove(T.q("paused.json"))
         T.main(["pause", "--reason", "looking at it"])
         pz = T.paused()
         ls = W.lane_state(time.time(), ["Mock"])
-        check(pz and pz["until"] is None and ls["fault_at"] == S.parse_ts(pz["since"]) + 3600,
-              "testq pause with no --hours: a fault at 60 min: %s" % ls)
+        check(pz and S.parse_ts(pz["until"]) - S.parse_ts(pz["since"]) >= 2 * 3600 - 2 and ls["fault_at"] == S.parse_ts(pz["until"]),
+              "testq pause with no --hours: it ends by itself in the default hours: %s" % ls)
         os.remove(T.q("paused.json"))
         T.main(["pause", "--reason", "rebooting", "--hours", "2"])
         pz = T.paused()

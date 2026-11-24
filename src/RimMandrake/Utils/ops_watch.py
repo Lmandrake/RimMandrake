@@ -1243,26 +1243,31 @@ def c_testing(now, rules, ctx):
         out["testing.steve_nothing_h_7d"] = U("the ledger was not readable, so closes after a run are unknown")
     else:
         ch = rules["testing"]["close_after_h"]
-        steve_h, steve_n, unk, young = 0.0, 0, 0, 0
+        steve_h, steve_n, unk, young, young_h, settled = 0.0, 0, 0, 0, 0.0, 0
         for fin, d in jobs:
             st = epoch((d.get("result") or {}).get("started"))
             if st is None or fin - st <= 0 or not outcome_of(d) or fail_count_unreadable(d):
                 unk += 1        # no span, or no outcome to say whether it caught anything
                 continue
+            if now - fin < ch * HOUR:       # its close window is still open: told beside the reading, never summed into it
+                if not caught(d, closes, ch):
+                    young += 1
+                    young_h += (fin - st) / HOUR
+                continue
+            settled += 1
             if not caught(d, closes, ch):
                 steve_h += (fin - st) / HOUR
                 steve_n += 1
-                if now - fin < ch * HOUR:
-                    young += 1      # its close window is still open: "caught nothing" is provisional
-        if jobs and (unk or young or bad):
+        if jobs and (unk or bad or not settled):
             out["testing.steve_nothing_h_7d"] = E(round(steve_h, 2), "%d of %d jobs have no start time or outcome (not counted); %d "
-                                                  "counted jobs are inside their %d h close window; %d unreadable" % (unk, len(jobs), young, ch,
-                                                                                      len(bad)),
-                                                  "busy h on jobs that caught nothing, 7 d", jobs=len(jobs),
-                                                  nothing_jobs=steve_n, no_span=unk, young=young)
+                                                  "settled, %d inside their %d h close window; %d unreadable" % (
+                                                      unk, len(jobs), settled, young, ch, len(bad)),
+                                                  "busy h on jobs that caught nothing, 7 d", jobs=len(jobs), settled=settled,
+                                                  nothing_jobs=steve_n, no_span=unk, young=young, young_h=round(young_h, 2))
         elif jobs:
             out["testing.steve_nothing_h_7d"] = M(round(steve_h, 2), "busy h on jobs that caught nothing, 7 d", jobs=len(jobs),
-                                                  nothing_jobs=steve_n, no_span=unk,
+                                                  nothing_jobs=steve_n, no_span=unk, settled=settled, young=young,
+                                                  young_h=round(young_h, 2),
                                                   rule="no FAIL, no finding, no close of a run item within %d h" % ch)
         else:
             out["testing.steve_nothing_h_7d"] = U("no testq done record in 7 d")

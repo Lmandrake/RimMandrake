@@ -416,13 +416,43 @@ def repair(job, res, cause, rec=None):
     return None
 
 
+def in_window(res):
+    """-> " [inside machine-fault window F...]" for a result the fault tracker dated inside one, else "". It goes on every
+    ledger line of the result: 157 verdicts of 2026-11 stood there with nothing that said so."""
+    w = (res.get("fault_window") or {}).get("id")
+    return " [inside machine-fault window %s]" % w if w else ""
+
+
+def ingest_proofs(job, res):
+    """An exact-tier job (profile tier:<name>): its rows are the live-proof clauses of its item, so the verdict is a RUNNER
+    verify on that item and no finding. (Its old reader was retired 2026-11-18 and the verdict went nowhere.)"""
+    item, att, res = job["item"], res["attempt"], dict(res, counts=S.count_verdicts(res.get("rows") or []))
+    if res["outcome"] != "DONE":
+        needle = "testq %s on SteveDesktop:" % att
+        ok = note_once(item, needle, "%s %s/%s, no verdict recorded%s (%s)" % (
+            needle, res["outcome"], res.get("cause"), in_window(res), (res.get("note") or "")[:160]))
+        return {"note": True} if ok else {"error": "note refused on %s" % item}
+    run = recorded_run(item, att)
+    if not run:
+        host = res.get("host") or "stevedesktop"
+        look = ["--outcome", FC.LK.NO_LOOK] if verdict(res) == "partial" else []
+        rc, out = rimflow("verify", item, "--result", verdict(res), "--config", config_for(host, item, "proofs"),
+                          "--evidence", "%s: testq %s%s: %s" % (host, att, in_window(res), "; ".join(
+                              "%s %s %s" % (r["row"], r["verdict"], (r.get("detail") or "")[:120]) for r in res.get("rows") or [])),
+                          "--sha", res.get("runner_sha") or job["source_sha"], *look)
+        m = re.search(r"(\S+/run-\d+@\S+) recorded", out)
+        if rc != 0 or not m:
+            return {"error": out[-300:]}
+        run = m.group(1)
+    return {"run": run, "result": verdict(res)}
+
+
 def ingest_one(rec):
     job, res = rec["job"], rec["result"]
+    if rec.get("fault_window"):
+        res = dict(res, fault_window=rec["fault_window"])
     if S.is_proofs(job):
-        # an exact-tier job (profile tier:<name>, LANE_TIER_WIRE_A_WHOLE_LIST_LOAD): its rows are an item's live-proof
-        # clauses, which Relentless's game phase reads from done/ through fault_monitor.gate and verifies per criterion
-        # (relentless_game.steve_sync); an item-level RUNNER verify or a finding per FAIL row here would say it twice
-        return {"skipped": "a Relentless exact-tier proofs job: relentless_game reads its verdict"}
+        return ingest_proofs(job, res)
     item, att = job.get("item"), res["attempt"]
     lane = lane_finding(job, res)
     if lane and lane.startswith("lane "):  # run or finding not recorded (host item not on origin yet): retried
@@ -431,6 +461,8 @@ def ingest_one(rec):
         causes = R.split_rows(res.get("rows") or [])[2].values()
     else:
         causes = [c for c in [R.job_cause(res)] if c]
+        if rec.get("repeat_stop") and not causes:       # one-ticket-for-one-cause (lane_stop.py)
+            causes = ["repeat: " + rec["repeat_stop"]]
     for cause in sorted(set(causes)):       # before the no-item return: the filler's jobs name no item
         err = repair(job, res, cause, rec)
         if err:
@@ -451,8 +483,8 @@ def ingest_one(rec):
     if res["outcome"] != "DONE":
         for it in items:
             needle = "testq %s on SteveDesktop:" % att
-            if not note_once(it, needle, "%s %s/%s, no verdict recorded (%s)"
-                             % (needle, res["outcome"], res.get("cause"), (res.get("note") or "")[:160])):
+            if not note_once(it, needle, "%s %s/%s, no verdict recorded%s (%s)"
+                             % (needle, res["outcome"], res.get("cause"), in_window(res), (res.get("note") or "")[:160])):
                 failed.append(it)
         if failed:
             return {"error": "note refused on %s" % ",".join(sorted(set(failed)))}
@@ -532,7 +564,7 @@ def ingest_group(job, res, item, gres, att, names=None):
         # a partial holds no FAIL row (verdict()): its non-pass is rows nobody measured, which no streak counts
         look = ["--outcome", FC.LK.NO_LOOK] if verdict(gres) == "partial" else []
         rc, out = rimflow("verify", item, "--result", verdict(gres), "--config", config,
-                          "--evidence", "%s:%s (testq %s)" % (host, sheet_of(res), att),
+                          "--evidence", "%s:%s (testq %s)%s" % (host, sheet_of(res), att, in_window(gres)),
                           "--sha", res.get("runner_sha") or job["source_sha"], *look)
         m = re.search(r"(\S+/run-\d+@\S+) recorded", out)
         if rc != 0 or not m:
@@ -547,10 +579,10 @@ def ingest_group(job, res, item, gres, att, names=None):
             found.append(name)
             continue
         rc, out = rimflow("finding", "--from", run, "--name", name, "--type", "UNTRIAGED", "--severity", "medium",
-                          "--why", "%s/%s FAIL on %s: %s" % (row.get("chain"), row["row"],
-                                                           {"stevedesktop": "SteveDesktop", "stevedesktop.b":
-                                                            "Steve2"}.get(host, host),
-                                                           (row.get("detail") or "")[:160]))
+                          "--why", "%s/%s FAIL on %s%s: %s" % (row.get("chain"), row["row"],
+                                                             {"stevedesktop": "SteveDesktop", "stevedesktop.b":
+                                                              "Steve2"}.get(host, host), in_window(gres),
+                                                             (row.get("detail") or "")[:160]))
         if rc != 0:     # retried: the run is reused, findings already filed are found in the shard
             return {"error": "finding %s not recorded: %s" % (name, out[-120:])}
         found.append(name)

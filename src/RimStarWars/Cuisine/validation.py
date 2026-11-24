@@ -55,12 +55,21 @@ MIASMA_BED_XML = os.path.join(HERE, "..", "..", "RimMandrake", "Miasma", "Defs",
 ROTTING_BED_PATCH = os.path.join(HERE, "Patches", "RSW_RottingBed_MarshFungus.xml")
 
 
+def _etree():
+    """lxml's etree, or UNMEASURED: a host without the package could not look, which is no verdict on the mod."""
+    try:
+        from lxml import etree
+    except ImportError as e:
+        raise ExpectationFailed("UNMEASURED: lxml is not installed for %s (%s)" % (sys.executable, e))
+    return etree
+
+
 def static_checks():
     """MIASMA_ROTTING_BED_CUISINE_1, offline: the cross-tier patch applies to the real Miasma bed def exactly once
     (lxml stands in for the engine's xpath: the outer Conditional matches, comps is created if absent, and the
     spawner lands naming RSW_MarshFungus), it is not guarded by a top-level MayRequire, and the item is PlantFoodRaw
     through RSW_CultureStarters. Sanity probe: the bed def must be found first, or nothing is measured."""
-    from lxml import etree
+    etree = _etree()
     bad = []
     bed = etree.parse(MIASMA_BED_XML)
     beds = bed.xpath('/Defs/ThingDef[defName="RM_RottingBed"]')
@@ -98,7 +107,7 @@ def vce_sealer_problems(path=VCE_SEALER_PATCH):
     only behind a PatchOperationConditional on that recipe, because VCE loads it from a Vanilla Fishing Expanded load
     folder; inside the main Sequence a missing recipe would fail every other relabel. Sanity probe: the main Sequence
     must be found and must relabel VCE_CanMeats, or nothing is measured."""
-    from lxml import etree
+    etree = _etree()
     doc = etree.parse(path)
     seqs = doc.xpath('/Patch/Operation/match/match[@Class="PatchOperationSequence"]')
     if not seqs or not seqs[0].xpath('.//xpath[contains(text(), "VCE_CanMeats")]'):
@@ -345,7 +354,11 @@ def cooking_disabled_pawn_roasts_cleanly(t):
 
 
 if __name__ == "__main__":
-    problems = static_checks()
+    try:
+        problems = static_checks()
+    except ExpectationFailed as e:
+        print("STATIC: %s" % e)
+        sys.exit(2)
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)

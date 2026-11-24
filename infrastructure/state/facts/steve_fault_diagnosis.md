@@ -17,7 +17,8 @@ Terms in this file:
 - `RPCONTROL ok=1` in `regprobe.log` means that the probe's control passed on a CPU. The control plants faults at each
   probe start. The control passes when the probe classes each planted fault, and a clean hold, correctly.
 - An `RPFAULT` line in `regprobe.log` is one wrong register.
-- The watch is the old fault watch (`watch2.ps1`, log `watch.log`). It is retired since 2026-11-23.
+- The watch is the old fault watch (`watch2.ps1`, log `watch.log`). The watch is retired since 2026-11-23.
+- The audio driver is the Windows kernel driver `AVoluteSS3Vad`.
 - The lane is the SteveDesktop test lane.
 
 ## 🔴 `AVoluteSS3Vad` is OFF for good (2026-11-21): the cure is in place
@@ -68,9 +69,9 @@ Terms in this file:
   - While both probes ran (2026-11-20 20:05Z to 2026-11-21 20:48Z), 19 boots faulted. The register probe saw 17 of them
     and the watch saw 16 [measured]. Each missed boot had one or two bad cycles. A lasting fault (the 14 boots to
     2026-11-21 03:29Z) the probe saw 14 of 14 times. A single short fault may pass unseen in one boot.
-  - A new window, or the driver loaded again, wakes the sleeping ticket `STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO`
+  - A new fault window, or the audio driver loaded again, wakes the sleeping ticket `STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO`
     (`ingest.wake_fault_ticket`).
-  - The 12 h periodic reboot runs only while a fault or the driver was seen in the last 48 h (`fault_monitor.fault_shown`).
+  - The 12 h periodic reboot runs only while a fault or the loaded audio driver was seen in the last 48 h (`fault_monitor.fault_shown`).
 
 ## Live catch, boot 2026-11-20 20:05:07Z (read 2026-11-20 20:21-20:26Z over ssh, read-only)
 

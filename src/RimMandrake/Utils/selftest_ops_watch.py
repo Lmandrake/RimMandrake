@@ -623,8 +623,12 @@ t = OW.c_testing(NOW, RULES, {"steve_jobs": grown + mute, "closes": {}})
 check("testing: a done record with no outcome is not counted as caught-nothing (ESTIMATE, 2 h not 4)",
       t["testing.steve_nothing_h_7d"]["m"] == "ESTIMATE" and t["testing.steve_nothing_h_7d"]["v"] == 2.0, t)
 t = OW.c_testing(NOW, RULES, {"steve_jobs": young, "closes": {}})
-check("testing: a job still inside its close window makes the Steve total an ESTIMATE",
+check("testing: no settled job at all: the Steve total is an ESTIMATE, the young job told beside it",
       t["testing.steve_nothing_h_7d"]["m"] == "ESTIMATE" and t["testing.steve_nothing_h_7d"]["x"].get("young") == 1, t)
+t = OW.c_testing(NOW, RULES, {"steve_jobs": grown + young, "closes": {}})
+check("testing: one settled and one young job read MEASURED on the settled hours, the young one told beside (the lane is "
+      "never without a young job)", t["testing.steve_nothing_h_7d"]["m"] == "MEASURED" and t["testing.steve_nothing_h_7d"]["v"] == 2.0
+      and t["testing.steve_nothing_h_7d"]["x"].get("young") == 1 and t["testing.steve_nothing_h_7d"]["x"].get("young_h") == 2.0, t)
 t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
 check("testing: a job past its close window counts MEASURED", t["testing.steve_nothing_h_7d"]["m"] == "MEASURED"
       and t["testing.steve_nothing_h_7d"]["v"] == 2.0, t)

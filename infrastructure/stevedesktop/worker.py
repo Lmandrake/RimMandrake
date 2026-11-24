@@ -385,9 +385,9 @@ def clear_boot_stale_index_lock(logdir):
 def ready_for_pull(d):
     """The start's steps before `pull --ff-only`, each of which once refused a job SYNC: a leftover pin, dirt on
     main, and a reboot's leftover index.lock."""
+    clear_boot_stale_index_lock(d)  # first: a reboot mid-git leaves index.lock, and the two checkouts below need the index
     unpin(d)    # a crashed attempt can leave the clone on its detached pin: pull needs main
     heal_dirty(d)   # dirt left on main by the last attempt would make the pull refuse SYNC
-    clear_boot_stale_index_lock(d)  # a reboot mid-git leaves index.lock: pull refuses 'File exists'
 
 
 def git(*args):
