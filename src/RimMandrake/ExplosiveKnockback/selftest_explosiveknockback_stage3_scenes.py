@@ -31,7 +31,7 @@ LANES = {
     "sc_closed_containers": ("closed_containers", ["closed_containers_control"], "ClosedContainers",
                              ["LWM_WeaponsLocker", "LWM_Safe", "SealedCrate", "AncientSecurityCrate",
                               "guy762_SecretFloorPanel_darkwhiteoutlines", "RM_KnockbackClosedStorage", "ClearClosedCache",
-                              "76f", "249f", "closedContainerMassLimit", "\"jolt\"", "drawnOffset=UNMEASURED"]),
+                              "76f", "249f", "closedContainerMassLimit", "\"jolt\"", "drawnOffset=", "held && drawn > 0f", "jolter.MapComponentUpdate()"]),
     "sc_settings_sweep": ("settings_sweep", ["settings_sweep_after"], "SettingsSweep",
                           ["the Cauldron (mandrake.rm.cauldron) not loaded", "LWM's Deep Storage (lwm.deepstorage) not loaded",
                            "maxThrowsPerExplosion", "maxItemThrowsPerMapTick", "immuneBodySize", "KernelReadBack", "sweepFieldDefaults"]),

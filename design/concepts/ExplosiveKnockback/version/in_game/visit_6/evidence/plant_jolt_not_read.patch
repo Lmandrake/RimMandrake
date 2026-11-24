@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs
+index db7692a8ca..fa7f0767a9 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs
+@@ -325,7 +325,7 @@ namespace RimMandrake.ExplosiveKnockback
+                     bool jolt = line.Count == 1 && (string)line[0]["action"] == "jolt";
+                     bool held = k == "sec" || GoodsOn(b).Count == (int)sc.numbers["goods_" + k];
+                     float drawn = RM_MapComponent_Knockback.JoltDrawn.TryGetValue(b.thingIDNumber, out float jd) ? jd : 0f;
+-                    bool row = stayed && jolt && held && drawn > 0f;
++                    bool row = stayed && jolt && held;
+                     ok &= row;
+                     rows.Add(k + "=" + (row ? "jolted" : "FAIL") + " stayed=" + stayed + " held=" + held + " lines=" + line.Count
+                         + " action=" + (line.Count > 0 ? (string)line[0]["action"] : "none") + " drawnOffset=" + drawn.ToString("0.000"));
