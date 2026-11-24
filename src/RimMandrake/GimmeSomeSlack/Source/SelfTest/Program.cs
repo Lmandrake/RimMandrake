@@ -89,6 +89,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (args.Contains("--looks-only")) { LookIconChecks.Run(); WallLampLookChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (look icons + wall lamp looks only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--line-restyle-only")) { LineRestyleChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (line restyle only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--reach-only")) { StyleStage2Checks.Run(); StyleReachChecks.Run(); BatchedLinkStyleMergeChecks.Run(); LineRestyleChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (style reach only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--wallplugs-only")) { int wpd = Array.IndexOf(args, "--wallplug-dump"); int wps = Array.IndexOf(args, "--wallplug-seeds"); WallPlugChecks.Run(wpd >= 0 ? args[wpd + 1] : null, wps >= 0 ? int.Parse(args[wps + 1]) : 2, wps >= 0 ? 101 : 71); Console.WriteLine($"{checks - fails}/{checks} checks passed (wall plugs only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--joins-only")) { StubJoinChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (stub joins only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--endkind-only")) { CordEndKindChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (end kind + slope only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--shape-diag")) { CordShapeChecks.Diag(); return 0; }
@@ -178,6 +179,7 @@ TexPathChecks.Run();           // RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIR
             SwitchLightChecks.Run();       // T_SWITCH_LIGHT_OFFLINE (owner 2026-11-20): the switch lamp green / red / dark: SwitchLightChecks.cs
             KinkChecks.Run();              // T_NO_KINK_OFFLINE (his walk 2026-11-22, station 3): no ground cord kinks where nothing forces it: KinkChecks.cs
             StubJoinChecks.Run();          // RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK (owner 2026-11-16): position AND slope at every stub
+            WallPlugChecks.Run();          // RIMMANDRAKE_STRAIGHTEN_SLACK_CORD_WHERE_IT_LEAVES_WALL_PLUG_HE_SAW_IT_LIVE (owner 2026-11-23): straight out of every wall plug
             LiveEndSweepChecks.Run();      // RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN: every live cut end the game can lay, by the three bars, with margin
             CordEndKindChecks.Run(scenes); // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO (owner look 2026-11-16): CordEndKindChecks.cs
             JunctionStripChecks.Run();     // d_modern_junction_strip (owner 2026-11-05): JunctionStripChecks.cs

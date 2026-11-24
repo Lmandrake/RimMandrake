@@ -42,6 +42,7 @@
     <Compile Include="JunctionStripChecks.cs" />
     <Compile Include="CordEndKindChecks.cs" />
     <Compile Include="StubJoinChecks.cs" />
+    <Compile Include="WallPlugChecks.cs" />
     <Compile Include="SwitchOffChecks.cs" />
     <Compile Include="SwitchLightChecks.cs" />
     <Compile Include="KinkChecks.cs" />

@@ -21,7 +21,7 @@ The switch lamp (RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED, 2
 Ticket sweep of 2026-11-22 (RIMMANDRAKE_SWEEP_SLACK_TICKETS_MERGE_TO_MODERN_BUILD_THE_VALUABLE): each ticket below failed test 1 of §Touching code has a cost (no broken promise in ordinary play, no failure that happened, no red test that shows misbehaviour) and was dropped `not worth the touch`. One line each; nobody fixes these. Page: `ticket_sweep_2026-11-22.md`.
 - **CORD_PLANNER_MEASURE_ASTAR_EXPANSIONS** (TOOL): an A* expansion counter for the hose replay harness; a measurement, no failure.
 - **GSS_FRAME_GARBAGE_SHRINK_HALF_MEG_LEFT** (MOD): CordBuilder.Build allocates ~0.45 MB per AsyncLay frame at 8 lattices; the no-delay bar passes in game.
-- **RIMMASTER_POLISH_GSS_CORD_LEFTOVERS_AFTER_APPROVAL** (ART): Scrapper lead S-bend, 5-12 degree plug-join slopes, the r3_13 crossing, the faded wall plug; each changes the look he approved (put on this list 2026-11-19).
+- **RIMMASTER_POLISH_GSS_CORD_LEFTOVERS_AFTER_APPROVAL** (ART): Scrapper lead S-bend, the r3_13 crossing, the faded wall plug; each changes the look he approved (put on this list 2026-11-19).
 - **RIMMANDRAKE_COVER_GSS_CALLERS_FOUR_PLANTS_WALKED_PAST** (HARNESS): blind-cycle caller and patch plants no offline suite reds; the in-game rows decide those bars.
 - **RIMMANDRAKE_TRIM_GSS_LAY_COST_SLICES_ROSE_A_THIRD** (MOD): the cold lay costs ~690 ms over ~71 Builds after 0416599c69; the no-delay bar passes.
 - **RIMMANDRAKE_ALIGN_GSS_SHARP_ROW_READS_CUT_END_CELL** (HARNESS): lane 1's sharp-turn row reads windows the bar's instrument does not count.

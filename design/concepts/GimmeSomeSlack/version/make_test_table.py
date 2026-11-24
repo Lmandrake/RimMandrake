@@ -166,6 +166,14 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
                  "the builder before CordShape.Unkink is caught at station 3, a planted hook reads as a kink and a 0.45 loop as none "
                  "(bar no_unforced_sharp_turn)",
         reads=CORE),
+    # his sighting of 2026-11-23 on ArchBig: RIMMANDRAKE_STRAIGHTEN_SLACK_CORD_WHERE_IT_LEAVES_WALL_PLUG_HE_SAW_IT_LIVE
+    "T_WALL_PLUG_STRAIGHT_OFFLINE": dict(
+        stage="4-5", file=G + "Source/SelfTest/WallPlugChecks.cs",
+        observes="the production builder over 1560 generated Modern scenes (every wall face; far-side wall lamps, devices across a wall, conduit through a wall, "
+                 "runs ending in one; near, far, left, right and the shortest spans; again at 2 cords per run): every cord leaves its wall plug or outlet within 3 "
+                 "degrees of the plug's axis and 0.02 cell of its line, no wall plug is bare, no device plug is drawn on one, no cord kinks where nothing forces it "
+                 "(bars cords_join_stubs_on_position_and_slope, no_unforced_sharp_turn)",
+        reads=CORE),
     "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": dict(
         stage="4-5", file=G + "selftest_gss_pole_south_draws_front.py",
         observes="over the SouthDrawsFront rule (MandrakePatches) and the mast def: the mast is drawn above every plant or "
@@ -218,7 +226,7 @@ OFF["T_LOOK_SCENES_FAKE_GAME"] = dict(stage="4-5", file=G + "selftest_gss_look_s
 
 # ---- the judgment: which offline tests decide (or support) each bar ----
 OFF_DECIDES = {
-    "cords_lie_slack": ["T_CORE", "T_CORD_GEOMETRY_OFFLINE"], "no_unforced_sharp_turn": ["T_CORD_GEOMETRY_OFFLINE", "T_NO_KINK_OFFLINE"],
+    "cords_lie_slack": ["T_CORE", "T_CORD_GEOMETRY_OFFLINE"], "no_unforced_sharp_turn": ["T_CORD_GEOMETRY_OFFLINE", "T_NO_KINK_OFFLINE", "T_WALL_PLUG_STRAIGHT_OFFLINE"],
     "strip_at_every_junction": ["T_CORE"], "dense_block_tangle": ["T_CORE"], "cord_shape_variation_probe": ["T_CORE"],
     "cords_never_repeat": ["T_CORE"], "drawing_true_to_grid": ["T_CORE"], "cut_live_and_dead_ends": ["T_CORE"],
     "floor_end_shocks_crossers": ["T_SHOCK_RULE_OFFLINE"], "shock_reach_setting": ["T_SHOCK_RULE_OFFLINE"],
@@ -232,7 +240,7 @@ OFF_DECIDES = {
     # added by his card 2026-11-14 (OWNER:1794693278631337978): T_CORE's slideunder "under" check (cord layer below Building)
     "cords_draw_under_things": ["T_CORE"],
     # added 2026-11-16 under the lock rule (RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK)
-    "cords_join_stubs_on_position_and_slope": ["T_STUB_JOINS", "T_STUB_ART_CENSUS"],
+    "cords_join_stubs_on_position_and_slope": ["T_STUB_JOINS", "T_STUB_ART_CENSUS", "T_WALL_PLUG_STRAIGHT_OFFLINE"],
     # 0.1.1 PATCH bars (record.json proof_note): the offline halves; the live halves are added with the scenes below
     "switch_off_cords_stay_connected": ["T_SWITCH_OFF_NODE_OFFLINE"],
     "poles_draw_in_front_when_south": ["T_POLE_SOUTH_DRAWS_FRONT_OFFLINE"],
@@ -355,6 +363,7 @@ NEW_CMD = {"T_CORD_GEOMETRY_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesome
            "T_SWITCH_OFF_NODE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
            "T_SWITCH_LIGHT_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--switchlight-only"],
            "T_NO_KINK_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--kinks-only"],
+           "T_WALL_PLUG_STRAIGHT_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--wallplugs-only"],
            "T_SHOCK_RULE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
            # 0.2.0: a SelfTest .cs is run by T_CORE once Stage 3 writes it
            "T_LINE_RESTYLE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],

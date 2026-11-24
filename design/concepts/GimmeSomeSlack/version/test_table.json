@@ -1,7 +1,7 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.2.0",
- "made": "2026-11-23T06:41:05-08:00",
+ "made": "2026-11-23T16:46:40-08:00",
  "made_by": "rm-builder, Maturation hand run beside the pilot, row 2 (throwaway version/make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -416,6 +416,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnityShim.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnroutableCensus.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallLampLookChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallPlugChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WaterStubChecks.cs",
     "src/RimMandrake/Utils/selftest_gimmesomeslack.py"
    ],
@@ -1547,6 +1548,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnityShim.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnroutableCensus.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallLampLookChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallPlugChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WaterStubChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/StyleProbe.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SwitchLightDraw.cs",
@@ -1705,6 +1707,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnityShim.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/UnroutableCensus.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallLampLookChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallPlugChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WaterStubChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/StyleProbe.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SwitchLightDraw.cs",
@@ -1878,6 +1881,54 @@
     "build": "f318f2f14ba9686aea5d",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --kinks-only",
     "margins": []
+   }
+  },
+  "T_WALL_PLUG_STRAIGHT_OFFLINE": {
+   "id": "T_WALL_PLUG_STRAIGHT_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallPlugChecks.cs",
+   "observes": "the production builder over 1560 generated Modern scenes (every wall face; far-side wall lamps, devices across a wall, conduit through a wall, runs ending in one; near, far, left, right and the shortest spans; again at 2 cords per run): every cord leaves its wall plug or outlet within 3 degrees of the plug's axis and 0.02 cell of its line, no wall plug is bare, no device plug is drawn on one, no cord kinks where nothing forces it (bars cords_join_stubs_on_position_and_slope, no_unforced_sharp_turn)",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitPlacementGate.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitTargets.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordLiveEnd.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordReach.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordShape.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordShapeAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/LegacyName.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildGate.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SettingsPrint.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SliceWindow.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLampArt.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs"
+   ],
+   "new": true,
+   "built_in_stage": "3",
+   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --wallplugs-only",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 54.04,
+    "last": "5/5 checks passed (wall plugs only)",
+    "at": "2026-11-23T16:46:40-08:00",
+    "result": "PASS"
    }
   },
   "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": {
@@ -8022,6 +8073,7 @@
    "decides": [
     "T_STUB_JOINS",
     "T_STUB_ART_CENSUS",
+    "T_WALL_PLUG_STRAIGHT_OFFLINE",
     "sc_stub_joins"
    ],
    "supports": [],
@@ -8030,7 +8082,8 @@
    ],
    "offline_decides": [
     "T_STUB_JOINS",
-    "T_STUB_ART_CENSUS"
+    "T_STUB_ART_CENSUS",
+    "T_WALL_PLUG_STRAIGHT_OFFLINE"
    ],
    "offline_green_today": true,
    "every_decider_runnable_today": true,
@@ -8289,6 +8342,7 @@
    "decides": [
     "T_CORD_GEOMETRY_OFFLINE",
     "T_NO_KINK_OFFLINE",
+    "T_WALL_PLUG_STRAIGHT_OFFLINE",
     "sc_no_sharp_turn"
    ],
    "supports": [
@@ -8300,7 +8354,8 @@
    ],
    "offline_decides": [
     "T_CORD_GEOMETRY_OFFLINE",
-    "T_NO_KINK_OFFLINE"
+    "T_NO_KINK_OFFLINE",
+    "T_WALL_PLUG_STRAIGHT_OFFLINE"
    ],
    "offline_green_today": true,
    "every_decider_runnable_today": true,

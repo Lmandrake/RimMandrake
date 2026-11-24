@@ -4,6 +4,7 @@ Version here must match `<modVersion>` in `About/About.xml`. Never deployed (`.m
 
 ## Unreleased
 
+- A cord that goes through a wall leaves its wall plug or outlet straight, on both sides of the wall, and does not bend sharp past it; a plug facing a power strip lines up with its socket; a device standing against the wall takes the cord straight in under it.
 - A wall lamp on the far side of a wall wears its plug at the lamp, not on the wall plate its cord comes through by, and a cord leaves a wall plug or outlet on the fitting's line and slope on both sides of the wall (in-game visit 1 of 0.2.0).
 - Every look in a look menu (the build menu's look choice and the Restyle menus) shows its own icon, the same picture in every menu; a Modern colour choice shows the Modern icon and names its colour.
 - The vanilla wall lamp takes the four looks as the standing lamp does: pick its look in the build menu or with Restyle, it follows the cable run it is hooked to on "All connected", and with the master switch off it draws the vanilla wall lamp.

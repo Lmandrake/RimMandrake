@@ -3054,6 +3054,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                             }, opt);
                     }
                     if (!fell) P = CordShape.Unfold(w, P, LimpSkip(na, nb, isLive));
+                    // a device standing at the plate: no floor between the wall and its footprint, so the cord goes straight in under it (no plug of its own, EndDecor)
+                    if (diveA != diveB && DeviceAtFace(diveA ? nb : na, diveA ? pl.Dives[si - 1].OutFace : pl.Dives[si].InFace, diveA ? pl.Dives[si - 1].OutInto : pl.Dives[si].InInto))
+                        P = StraightIn(P, diveA, diveA ? nb.Machine : na.Machine, diveA ? pl.Dives[si - 1].OutInto : pl.Dives[si].InInto);
                     List<CordTie> ties = null;
                     if (!fell && prm.FairBends)
                     {
@@ -3088,6 +3091,23 @@ namespace RimMandrake.GimmeSomeSlack.Core
             // is the whole map, so any walkability change re-plans it
             piece.CX0 = 0; piece.CZ0 = 0; piece.CX1 = w.Width - 1; piece.CZ1 = w.Height - 1;
             return piece;
+        }
+
+        /// <summary>Whether a machine's own footprint begins at a dive's face: the cord comes out of the wall under it.</summary>
+        private static bool DeviceAtFace(CordNode nd, V2 face, V2 into) =>
+            nd.IsMachine && nd.Machine != null && !nd.Machine.SidePorts && !nd.Machine.HasHome && nd.Machine.Contains((face - into * 0.1).Floor);
+
+        /// <summary>The cord of a device standing at the plate (<see cref="DeviceAtFace"/>): from the wall straight out under the machine, to its middle's depth (past the
+        /// wall plug's boot and the slope rule's chord at least).</summary>
+        private static List<V2> StraightIn(List<V2> P, bool wallAtStart, MachineInfo m, V2 into)
+        {
+            V2 tip = wallAtStart ? P[0] : P[P.Count - 1], mid = new V2(m.X0 + m.W / 2.0, m.Z0 + m.H / 2.0);
+            double len = Math.Max(Dot(mid - tip, into * -1), (CordAudit.PlugFaceU + ExtPlugBootU) * WallPlugScale + PastFaceDepth + SeatNeck + 0.05);
+            int k = Math.Max(2, (int)Math.Ceiling(len / CordLiveEnd.Step));
+            var o = new List<V2>(k + 1);
+            for (int i = 0; i <= k; i++) o.Add(tip - into * (len * i / k));
+            if (!wallAtStart) o.Reverse();
+            return o;
         }
 
         /// <summary>An east/west outlet that got a plug prints from the plugged art (owner 2026-11-09 "Yes all": its receptacle
@@ -3644,6 +3664,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>Whether a strand's end holds the stub rule at <paramref name="st"/> as the rule itself reads it (StubJoins: on the stub's tip
         /// within PosMax, the cord's heading there within <paramref name="deg"/> of the stub).</summary>
+        /// <summary>A cord leaves a wall plug (or the outlet that carries one) straight out of it, to this many degrees where its boot ends (the owner, 2026-11-23: "the cord
+        /// that does not come out stright so it doesn't look aligned with the wall plug"). 3: over the slope rule's chord the cord's middle then strays half a screen pixel.</summary>
+        internal const double WallPlugMaxDeg = 3;
+        /// <summary>The cord (cells) at a dive's wall plug an unforced kink counts as the plug's own: its run and the ease past it.</summary>
+        private const double KinkedEnd = 1.0;
+        private static bool IsWallFitting(StubArt.Stub st) => st.Kind == "wall plug" || st.Kind == "wall outlet";
+        /// <summary>What a fitted end is laid to: half the slope rule, a wall plug's end to <see cref="WallPlugMaxDeg"/>.</summary>
+        private static double FitTol(StubArt.Stub st) => IsWallFitting(st) ? Math.Min(WallPlugMaxDeg, CordEndAudit.SlopeMaxDeg / 2) : CordEndAudit.SlopeMaxDeg / 2;
+
         private static bool OnStub(List<V2> P, bool atStart, StubArt.Stub st, double deg)
         {
             V2 e = atStart ? P[0] : P[P.Count - 1];
@@ -3701,16 +3730,21 @@ namespace RimMandrake.GimmeSomeSlack.Core
             foreach (CordStrand s in piece.Strands)
             {
                 if (s.Pts == null || s.Pts.Count < 3 || s.OverFace || s.Lifted) continue;
-                foreach (bool atStart in new[] { false, true })
+                // (a dive's end last: the fit of the other end may join as near as the plug's boot, and the plug's own ease then mends it)
+                foreach (bool atStart in s.DiveB && !s.DiveA ? new[] { true, false } : new[] { false, true })
                 {
                     bool dive = atStart ? s.DiveA : s.DiveB;
                     if (!dive && (atStart ? cutA : cutB)) continue;
                     if (!dive && UnderOwnMachine(atStart ? na : nb, atStart ? nb : na)) continue;
                     StubArt.Stub st = Pick(s, atStart);
                     // a dive's end holds its slope by its own lay (the overrun, the seated plug); it is laid again only where that broke the rule
-                    if (dive && st != null && OnStub(s.Pts, atStart, st, CordEndAudit.SlopeMaxDeg)) continue;
+                    // (a wall plug's or outlet's to FitTol: a dive's ease off its short neck left the plug at 3-9 degrees, WallPlugChecks;
+                    // and where its ease turns sharp past the plug: the seat's own slope keeps Unkink off it)
+                    int EndKinks(List<V2> q) => CordShapeAudit.Kinks(q).Count(a => (atStart ? a : Geo.Length(q) - a) < KinkedEnd && CordShapeAudit.KinkWhy(w, piece.EndA, piece.EndB, q, a) == "unforced");
+                    int kinked = st != null && (s.DiveA || s.DiveB) && (IsWallFitting(st) || st.Kind == "strip plug") ? EndKinks(s.Pts) : 0;
+                    if (dive && st != null && kinked == 0 && OnStub(s.Pts, atStart, st, IsWallFitting(st) ? FitTol(st) : CordEndAudit.SlopeMaxDeg)) continue;
                     // (a cord that comes back over its own box after leaving it is laid again from past where it does)
-                    if (st == null || (OnStub(s.Pts, atStart, st, CordEndAudit.SlopeMaxDeg / 2) && s.Pts.All(ownClear))) continue;
+                    if (st == null || (kinked == 0 && OnStub(s.Pts, atStart, st, FitTol(st)) && s.Pts.All(ownClear))) continue;
                     double runLen = StubRun(atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], st);
                     if (runLen <= 0) continue;
                     // the far end's own: a live cut end's run, tail and the window its pinch bar reads; a dead end's limp curl; a dive's
@@ -3746,7 +3780,18 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     };
                     string why = null;
                     if (FitTrace) CordLiveEnd.FitWhy = x => why = x;
-                    List<V2> R = CordLiveEnd.Fit(P, -st.U, runLen, site, ties, keep, q => OnStub(Native(q), atStart, st, CordEndAudit.SlopeMaxDeg / 2) && q.All(x => OnRun(x, st, runLen) || ownClear(x)), out double _);
+                    List<V2> FitTo(bool unkink) => CordLiveEnd.Fit(P, -st.U, runLen, site, ties, keep, q => OnStub(Native(q), atStart, st, FitTol(st)) && q.All(x => OnRun(x, st, runLen) || ownClear(x))
+                        && (!unkink || EndKinks(Native(q)) < kinked), out double _);
+                    List<V2> R = (s.DiveA || s.DiveB) && (IsWallFitting(st) || kinked > 0) ? EasePast(P, -st.U, runLen, ties, keep, site, q => OnStub(Native(q), atStart, st, FitTol(st)) && q.All(x => OnRun(x, st, runLen) || ownClear(x))
+                        && EndKinks(Native(q)) <= Math.Max(0, kinked - 1)) : null;
+                    bool eased = R != null;
+                    if (!eased) R = FitTo(kinked > 0);
+                    if (R == null && kinked > 0)
+                    {
+                        // no round join here: the slope alone, or the cord as it is
+                        if (OnStub(s.Pts, atStart, st, FitTol(st)) && (dive || s.Pts.All(ownClear))) { CordLiveEnd.FitWhy = null; continue; }
+                        R = FitTo(false);
+                    }
                     CordLiveEnd.FitWhy = null;
                     if (R == null)
                     {
@@ -3754,6 +3799,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         // between them is straighter at both than the straight from one to the other. Taken where both stubs' rule then
                         // holds as the rule itself reads it
                         StubArt.Stub fs2 = farCut || farDive ? null : Pick(s, !atStart);
+                        if (fs2 != null && dive && st.Kind == "wall plug" && SlidePlug(piece, s, atStart, st, fs2)) { s.Lay += "+slid"; continue; }
                         if (fs2 != null)
                         {
                             V2 e0 = s.Pts[0], e1 = s.Pts[s.Pts.Count - 1];
@@ -3773,9 +3819,115 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     }
                     s.Pts = Native(R);
                     s.Ties = ties == null || ties.Count == 0 ? null : NativeTies(R, ties);
-                    s.Lay += "+fit";
+                    s.Lay += eased ? "+ease" : "+fit";
                 }
             }
+        }
+
+        /// <summary>The least change that brings a cord straight out of its plug: the plug's straight run, then one cubic back onto the cord as laid, the nearest join that
+        /// holds. (The round joins of <see cref="CordLiveEnd.Fit"/> start at radius 0.7 and turn a loop to lose 5 degrees of slant.) P runs toward the plug. Null: none holds.</summary>
+        private static List<V2> EasePast(List<V2> P, V2 into, double runLen, List<CordTie> ties, double keep, CordLiveEnd.Site site, Func<List<V2>, bool> holds)
+        {
+            double[] cum = Geo.CumLen(P);
+            double L = cum[P.Count - 1], tieEnd = ties != null && ties.Count > 0 ? ties.Max(t => t.S1) + 0.1 : 0;
+            V2 o = into.Norm(), T = P[P.Count - 1], A = T - o * runLen;
+            int runN = Math.Max(2, (int)Math.Ceiling(runLen / SeatStep));
+            int bends = -1, kinks = 0;
+            foreach (double back in new[] { 0.25, 0.35, 0.5, 0.65, 0.8, 1.0, 1.3, 1.6 })
+            {
+                double at = L - runLen - back;
+                if (at < Math.Max(keep, tieEnd)) break;
+                int j = Array.FindIndex(cum, c => c >= at);
+                if (j < 1) break;
+                V2 tan = (P[Math.Min(P.Count - 1, j + 1)] - P[j - 1]).Norm();
+                double m = V2.Dist(P[j], A);
+                if (m < 0.1) continue;
+                foreach (double k0 in new[] { 1.0, 0.7, 1.4, 2.0 })
+                    foreach (double k1 in new[] { 1.0, 1.6, 2.2 })
+                    {
+                        var q = P.GetRange(0, j + 1);
+                        int c = Math.Max(4, (int)Math.Ceiling(m * 1.4 / SeatStep));
+                        bool clear = true;
+                        for (int k = 1; k <= c && clear; k++)
+                        {
+                            double t = (double)k / c, t2 = t * t, t3 = t2 * t;
+                            V2 x = P[j] * (2 * t3 - 3 * t2 + 1) + tan * (m * k0 * (t3 - 2 * t2 + t)) + A * (-2 * t3 + 3 * t2) + o * (m * k1 * (t3 - t2));
+                            clear = site.Clear(x);
+                            q.Add(x);
+                        }
+                        if (!clear) continue;
+                        for (int k = 1; k <= runN; k++) q.Add(A + (T - A) * (k / (double)runN));
+                        if (Geo.Length(q) > L + 0.6 || !holds(q) || StubJoins.MinRadius(q.GetRange(Math.Max(0, j - 2), q.Count - Math.Max(0, j - 2))) < StubJoins.MinBendR) continue;
+                        if (bends < 0) { bends = site.Bends(P, ties); kinks = site.Kinks(P, ties); }
+                        if (site.Bends(q, ties) > bends || site.Kinks(q, ties) > kinks) continue;
+                        return q;
+                    }
+            }
+            return null;
+        }
+
+        /// <summary>How far (cells) a dive's wall plug may slide along its wall, with its outlet, onto the line of the strip socket it faces.</summary>
+        private const double PlugSlide = 0.1;
+        /// <summary>How far askew (degrees) the strip it faces may stand: the arc takes the turn, held to both ends' own rules.</summary>
+        private const double PlugLean = 20;
+
+        /// <summary>A dive's wall plug facing a strip plug nearer than their two straight runs, a little off its line (the strip's sockets stand where the art has them, the
+        /// strip a few degrees askew): the plug and its outlet slide along the wall until the two boots lie on the bisector of their ways out, and the cord between is one arc
+        /// (the straight, when they face square). Slanted from one to the other it left the plug at 5-7 degrees and 0.03 cell off its line, in 74 of WallPlugChecks' 3088
+        /// cords. False, and nothing moved: they do not face each other, lie too far off one line, or the arc breaks either end's rule.</summary>
+        private static bool SlidePlug(LaidPiece piece, CordStrand s, bool atStart, StubArt.Stub plug, StubArt.Stub other)
+        {
+            if (plug.Decal < 0 || (s.Ties != null && s.Ties.Count > 0) || piece.Strands.Count > piece.Dives + 1) return false;
+            V2 u = plug.U, across = u.Perp, d = other.T - plug.T;
+            double lean = Math.Atan2(u.X * -other.U.Z - u.Z * -other.U.X, -Dot(u, other.U));
+            double fwd = Dot(d, u);
+            if (Math.Abs(lean) > PlugLean * Math.PI / 180 || fwd <= 0.02) return false;
+            // (the part of the gap held on the plug's own axis before the arc: a strip far askew takes its turn at its own end)
+            foreach (double held in new[] { 0.0, 0.3, 0.5 })
+                if (SlidePlug(piece, s, atStart, plug, other, held * fwd, lean)) return true;
+            return false;
+        }
+
+        private static bool SlidePlug(LaidPiece piece, CordStrand s, bool atStart, StubArt.Stub plug, StubArt.Stub other, double held, double lean)
+        {
+            V2 u = plug.U, across = u.Perp, d = other.T - plug.T;
+            double fwd = Dot(d, u) - held;
+            double shift = Dot(d, across) - fwd * Math.Tan(lean / 2) * (Dot(CordEndAudit.Rot(u, Math.PI / 2), across) > 0 ? 1 : -1);
+            if (Math.Abs(shift) > PlugSlide) return false;
+            V2 move = across * shift, boot = plug.T + move, arc = boot + u * held;
+            V2 tip = (atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1]), end = atStart ? s.Pts[s.Pts.Count - 1] : s.Pts[0];
+            tip = boot + u * Dot(tip - plug.T, u);
+            V2 far = other.T + other.U * Dot(end - other.T, other.U);
+            CordDecal pd = piece.Decals[plug.Decal];
+            int oi = -1;
+            for (int i = 0; i < piece.Decals.Count; i++)
+                if (piece.Decals[i].Kind == DecalKind.WallOutlet && V2.Dist(piece.Decals[i].Pos, pd.Pos) < 0.6 && Math.Abs(Dot(piece.Decals[i].Pos - pd.Pos, across)) < 0.1
+                    && (oi < 0 || V2.Dist(piece.Decals[i].Pos, pd.Pos) < V2.Dist(piece.Decals[oi].Pos, pd.Pos))) oi = i;
+            if (oi < 0) return false;
+            var line = new List<V2>();
+            void Straight(V2 p0, V2 p1)
+            {
+                int n = Math.Max(1, (int)Math.Ceiling(V2.Dist(p0, p1) / SeatStep));
+                for (int k = line.Count == 0 ? 0 : 1; k <= n; k++) line.Add(p0 + (p1 - p0) * (k / (double)n));
+            }
+            Straight(tip, boot);
+            if (held > 0) Straight(boot, arc);
+            double m = V2.Dist(arc, other.T);
+            int c = Math.Max(4, (int)Math.Ceiling(m / 0.02));
+            for (int k = 1; k <= c; k++)
+            {
+                double t = (double)k / c, t2 = t * t, t3 = t2 * t;
+                line.Add(arc * (2 * t3 - 3 * t2 + 1) + u * (m * (t3 - 2 * t2 + t)) + other.T * (-2 * t3 + 3 * t2) - other.U * (m * (t3 - t2)));
+            }
+            if (Dot(other.T - far, other.U) > 1e-3) Straight(other.T, far);
+            if (!atStart) line.Reverse();
+            var moved = new StubArt.Stub { Kind = plug.Kind, Piece = plug.Piece, T = boot, U = u, Fitting = plug.Fitting, Decal = plug.Decal };
+            if (!OnStub(line, atStart, moved, WallPlugMaxDeg) || !OnStub(line, !atStart, other, CordEndAudit.SlopeMaxDeg / 2)) return false;
+            CordDecal od = piece.Decals[oi];
+            pd.Pos = pd.Pos + move; od.Pos = od.Pos + move;
+            piece.Decals[plug.Decal] = pd; piece.Decals[oi] = od;
+            s.Pts = line;
+            return true;
         }
 
         /// <summary>The census reads the cords as handed (CordLiveEnd's LiveEndLayOff twin for the fitted ends).</summary>
@@ -4893,7 +5045,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 bool atS = atStart;
                 // an end that goes into a wall is the wall fitting's, never the machine's: a lamp on the far side of the wall ends in the wall cell,
                 // half a cell outside its own footprint, as near as the plate its cord comes through by (in-game visit 1 of 0.2.0)
-                if (firstStrand.DiveA != firstStrand.DiveB) atS = firstStrand.DiveB;
+                if (firstStrand.DiveA != firstStrand.DiveB)
+                {
+                    atS = firstStrand.DiveB;
+                    // it stands at the plate itself: the wall's plug is the one it wears (a second one lay on it, its cord off to the side)
+                    V2 wall = atS ? first[first.Count - 1] : first[0], next = atS ? first[first.Count - 2] : first[1], into = Snap4(wall - next);
+                    if (DeviceAtFace(nd, wall - into * PastFaceDepth, into)) return;
+                }
                 else if (mi != null)
                 {
                     double RectD(V2 q) => Math.Max(Math.Max(mi.X0 - q.X, q.X - (mi.X0 + mi.W)), Math.Max(mi.Z0 - q.Z, q.Z - (mi.Z0 + mi.H)));
@@ -4901,8 +5059,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 tip = atS ? first[0] : first[first.Count - 1];
                 V2 a = atS ? first[Math.Min(first.Count - 1, 1)] : first[Math.Max(0, first.Count - 2)];
-                V2 into = Snap4(tip - a);
-                piece.Decals.Add(new CordDecal(DecalKind.Plug, tip - into * (PlugScale * 0.25), Math.Atan2(into.Z, into.X), PlugScale));
+                V2 plugInto = Snap4(tip - a);
+                piece.Decals.Add(new CordDecal(DecalKind.Plug, tip - plugInto * (PlugScale * 0.25), Math.Atan2(plugInto.Z, plugInto.X), PlugScale));
             }
             else if (nd.Type == NodeType.Junction && opt.PileFor(nd.Cell) == PileArt.Strips)
             {
