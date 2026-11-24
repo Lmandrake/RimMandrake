@@ -1,0 +1,3 @@
+Before a cheap model (Jev or another) is given one of our quick closed-set calls, check that the deciding fact is in the text that the model reads, and score a word-count floor trained on our own labels on the same set. Measured 2026-11-24 with jev-1.14.0: ticket 'worth the touch' AUC 0.47 to 0.76 and review finding 'significant or polish' AUC 0.61, while the word-count floor scored 0.89 to 0.94; Jev's stated p>=0.9 was right 43 to 86 percent of the time. The Conductor's drop reasons name facts outside the ticket. Evidence: design/specs/2026-11-24-jev-study/study.md
+item: RIMMANDRAKE_STUDY_JEV_CHEAP_JUDGMENT_MODEL_ASKED_ONCE_BEFORE_FABLE
+home: NONE
