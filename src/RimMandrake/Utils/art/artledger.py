@@ -1250,6 +1250,46 @@ def owner_keep_ruling(sha: str, *, owner_said: str | None = None, by_card: str |
     return r
 
 
+def _with_gap(plan: dict, mod: str, rel: str) -> dict:
+    gap = manifest_rule_gap(mod, rel)
+    if gap:
+        plan["manifest_gap"] = gap
+        print("WARNING: " + gap, file=_rm_sys.stderr)
+    return plan
+
+
+def manifest_rule_gap(mod: str, rel: str) -> str | None:
+    """SELFTEST_FIX_GSS_ART_MANIFEST_SIZES_SLAT class guard: a Gimme Some Slack texture (or a FlowWorks Hose one) that
+    gss_art_manifest.py has no size rule for makes its main() exit 2 and the nightly selftest go red (2026-11-21, again
+    2026-11-24). Say so at install time. Returns the message, or None (ruled, or not a manifest-read texture)."""
+    mod, rel = str(mod).replace("\\", "/"), str(rel).replace("\\", "/")
+    gss = mod.endswith("/GimmeSomeSlack") and rel.startswith("RimMandrake/GimmeSomeSlack/")
+    hose = mod.endswith("/FlowWorks") and rel.startswith("RimMandrake/FlowWorks/Hose/")
+    if not (gss or hose) or not rel.lower().endswith(".png"):
+        return None
+    import importlib.util
+    mp = REPO_ROOT / "src/RimMandrake/GimmeSomeSlack/review/gss_art_manifest.py"
+    if not mp.is_file():
+        return None
+    spec = importlib.util.spec_from_file_location("_gss_art_manifest_guard", mp)
+    M = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(M)
+    try:
+        c = M.classify_gss(rel) if gss else M.classify_hose(rel)
+        if c is None:
+            return None
+        part = c[0]
+        ruled = part in (M.PARTS if gss else M.HOSE)
+    except (IndexError, KeyError):
+        part, ruled = "?", False
+    if ruled:
+        return None
+    table = "PARTS" if gss else "HOSE"
+    return (f"NO MANIFEST RULE for {rel} (part {part!r}): src/RimMandrake/GimmeSomeSlack/review/gss_art_manifest.py main() "
+            f"will exit 2 and selftest_gss_art_manifest_sizes.py goes red tonight. Add a {table} entry for {part!r} "
+            f"(label, [width, height] cells, source note) in that file, or a classify rule if the name should fold into a part.")
+
+
 def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
             owner_said: str | None = None, reason: str | None = None,
             provenance: dict | None = None, dry_run: bool = False,
@@ -1366,7 +1406,7 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
     plan = {"status": "planned", "path": str(target), "old": old_sha, "new": sha,
             "old_protected": old_protected}
     if dry_run:
-        return plan
+        return _with_gap(plan, mod, rel)
     w = Writer({e["id"] for e in idx.events})
     if sha not in idx.variants:
         pt = parse_texfile(rel)
@@ -1406,7 +1446,7 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
     w.flush()
     _absorb(added)
     plan["status"] = "installed"
-    return plan
+    return _with_gap(plan, mod, rel)
 
 
 def locate(dest) -> tuple[str, str]:
