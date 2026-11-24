@@ -881,6 +881,10 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
     # the game-only road: a record sent to an offline stage from Stage 6 goes back to Stage 6 when every open item of its
     # road back is a fault only the game can show (its `game_only` clause below checks the items)
     back = back or bool(game_only and to == "in_game" and cur in OFFLINE_STAGES)
+    # Stage 7 judges nothing and has no road back of its own; a check that a landed change owes a game sends it back to
+    # Stage 6 (design/specs/2026-11-24-walk-owes-its-checks/boundary.md)
+    wo = walk_owed(root, mod, rec) if cur == "pre_human" and to in ("his_walk", "in_game") else None
+    back = back or bool(wo and wo["owed"] and to == "in_game")
     nxt = WORDS[i_cur + 1] if 0 <= i_cur < len(WORDS) - 1 else None
     clause("order", "a mod moves forward one stage at a time, or back only along a road the spec draws",
            forward or back, [req_ref, rec_ref],
@@ -1090,7 +1094,28 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                        why_sound="his ruling of 2026-11-17 (RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO), "
                                  "narrowed by his of 2026-11-21 (RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203): "
                                  "only the checks the change touches run again")
+                tt6_, _ = read_json(root, mod, "version/test_table.json")
+                known6 = dict(ingame_tests(tt6_))
+                uo = [u for u in unrun_owed(root, mod, tt6_) if u.get("check") in known6]
+                uref = rel(mod, UNRUN_FILE)
+                clause("unrun_run", "every in-game check recorded UNRUN has run on a commit that holds its change",
+                       not uo, [uref, rec_ref], observed="still UNRUN: %s" % "; ".join(
+                           "%s (%s)" % (r.get("check"), r.get("owed_why")) for r in uo),
+                       would_pass="a row for each on a commit that contains its UNRUN row's sha",
+                       fix="run only these checks (%s) and write their rows" % ", ".join(
+                           dict.fromkeys(str(r.get("check")) for r in uo)), cost="rerun",
+                       why_sound="spec Stage 3 exit: an in-game check is UNRUN until Stage 6 runs it")
         elif cur == "pre_human":
+            clause("walk_checks_stand", "no in-game check is owed on the build he walks: no UNRUN row is left, and no "
+                   "change since a check's last row touches it or cannot be related to it (walk_owed)",
+                   not wo["owed"] and not wo["why"], [rec_ref, rel(mod, UNRUN_FILE)],
+                   observed="; ".join(["owed: %s (%s)" % (t, w) for t, w in wo["owed"].items()] +
+                                      ["could not look: %s" % w for w in wo["why"]]),
+                   would_pass="python3 src/RimMandrake/rimflow/build_match.py check --mod %s names no check to run" % mod,
+                   fix="the tick sends the mod back to Stage 6 for only these checks (autovisit); by hand: maturation.py "
+                       "advance %s --to in_game" % mod if wo["owed"] else "repair what could not be read, then advance again",
+                   cost="rerun", why_sound="root CLAUDE.md, After a change, only the checks that the change touches run "
+                   "again: those checks run before he walks the build (Pyrelands, 2026-11-24)")
             wb = read_walk_brief(root, mod, rec)
             clause("walk_brief", "his walk brief for this arrival is written (%s), by an agent that made none of the "
                    "evidence writes" % ", ".join(WALK_BRIEF_HEADINGS), not wb["why"], [wb["path"], rec_ref],
@@ -5228,18 +5253,93 @@ def read_unrun(root, mod):
     return [r for r in rows if isinstance(r, dict) and "_bad" not in r]
 
 
+def unrun_owed(root, mod, tt=None, carried=None, git=None):
+    """-> the UNRUN rows still owed a run, each with `owed_why`. A row is met when its check's deciding row (carried_rows:
+    {check: row}) ran on a commit that contains the UNRUN row's sha; when git cannot resolve either commit, when that row
+    is of a visit that opened after the UNRUN row was written. design/specs/2026-11-24-walk-owes-its-checks/boundary.md."""
+    rows = unrun_live(read_unrun(root, mod), tt if tt is not None else read_json(root, mod, "version/test_table.json")[0],
+                      moved_to_next(root, mod, "scenes"))
+    if not rows:
+        return []
+    last = BM.carried_rows(root, mod) if carried is None else carried
+    rec = load(root, mod)
+    opened = ingame_openings(rec) if rec else {}
+    g = git or BM.RR.Git(root)
+    held_, out = {}, []
+    for u in rows:
+        r = last.get(u.get("check"))
+        if not r or LK.spoiled(r):
+            out.append(dict(u, owed_why="no run of it speaks for the mod"))
+            continue
+        a, b = g.rev(u.get("sha")), g.rev(r.get("mod_sha"))
+        if a and b:
+            if (a, b) not in held_:
+                held_[(a, b)] = a == b or g._git("merge-base", "--is-ancestor", a, b) is not None
+            if not held_[(a, b)]:
+                out.append(dict(u, owed_why="its last row ran on %s, which does not hold %s" % (
+                    r.get("mod_sha"), u.get("sha"))))
+            continue
+        t_open, t_row = _ts(opened.get(r.get("_visit"))), _ts(u.get("at"))
+        if t_open is None or t_row is None or t_open <= t_row:
+            out.append(dict(u, owed_why="git cannot resolve %s or %s, and its last row is of no later visit" % (
+                u.get("sha"), r.get("mod_sha"))))
+    return out
+
+
+def walk_owed(root, mod, rec=None):
+    """-> {owed: {check: why}, why: [cause]}: the in-game checks that must run before he walks (Stage 7 and 8). Owed: an
+    UNRUN row not met, or a row the build match no longer counts because the change touches its check or cannot be related
+    to it. why: what could not be read; then nothing is known to be clean. It never raises."""
+    out = {"owed": {}, "why": []}
+    try:
+        rec = rec or load(root, mod)
+        tt, terr = read_json(root, mod, "version/test_table.json")
+        if tt is None:
+            out["why"].append("version/test_table.json: %s" % terr)
+            return out
+        tests, last = dict(ingame_tests(tt)), BM.carried_rows(root, mod)
+        for u in unrun_owed(root, mod, tt, carried=last):
+            if u.get("check") in tests:     # a check outside the table has no row a program knows: it holds nothing
+                out["owed"].setdefault(u["check"], "UNRUN: %s" % u["owed_why"])
+        # the relation first: with nothing touched no row of a check can stop counting for a change, and the walk folder
+        # (about 30 s of Windows reads for Pyrelands) is not read by every tick
+        rel_ = BM.RR.relate(root, mod, tests, {t: r for t, r in last.items() if t})
+        if not (rel_["touched"] or rel_["unreadable"]):
+            return out
+        n = max(1, len(ingame_openings(rec)))
+        ex = read_ingame_exit(root, mod, n, tt)
+        bm = ex.get("build_match")
+        if not bm:
+            out["why"].append("visit %d gives no build match (its exit reads %s)" % (n, ex.get("state")))
+        elif bm.get("walk_why"):
+            out["why"].append("the walk build cannot be read: %s" % "; ".join(bm["walk_why"]))
+        else:
+            for t in bm["rerun"]:
+                x = bm["rows"][t]
+                if x.get("relation") in ("touched", "unreadable"):
+                    out["owed"].setdefault(t, x["why"])
+    except Exception as e:      # noqa: BLE001  a reading that cannot be made is named, never read as clean
+        out["why"].append("the in-game checks owed could not be read (%s: %s)" % (type(e).__name__, e))
+    return out
+
+
 def unrun_lines(root, mod):
-    """-> the Stage 6 brief's lines for the road-back items closed offline whose in-game check is still UNRUN."""
-    return unrun_lines_of(read_unrun(root, mod), read_json(root, mod, "version/test_table.json")[0],
-                          moved_to_next(root, mod, "scenes"))
+    """-> the Stage 6 brief's lines for the in-game checks still UNRUN (unrun_owed): a met one is not run again."""
+    tt = read_json(root, mod, "version/test_table.json")[0]
+    return unrun_lines_of(unrun_owed(root, mod, tt), tt, moved_to_next(root, mod, "scenes"))
+
+
+def unrun_live(rows, tt, moved=()):
+    """-> those UNRUN rows without the check of a paused raid scene, of one that another check of the table replaces, or
+    of one that moved to the next version."""
+    tests = (tt or {}).get("tests") or {}
+    gone = {x for t in tests.values() if isinstance(t, dict) for x in t.get("replaces") or []} | set(moved)
+    return [r for r in rows or [] if r.get("check") not in gone and not (RP.paused() and RP.stages(tests.get(r.get("check"))))]
 
 
 def unrun_lines_of(rows, tt, moved=()):
-    """-> those lines, without the check of a paused raid scene, of one that another check of the table replaces, or of one
-    that moved to the next version."""
-    tests = (tt or {}).get("tests") or {}
-    gone = {x for t in tests.values() if isinstance(t, dict) for x in t.get("replaces") or []} | set(moved)
-    rows = [r for r in rows or [] if r.get("check") not in gone and not (RP.paused() and RP.stages(tests.get(r.get("check"))))]
+    """-> those lines, one per row of unrun_live."""
+    rows = unrun_live(rows, tt, moved)
     if not rows:
         return ["- none recorded"]
     return ["- Item `%s` (closed offline on `%s` at %s): in-game check `%s` is UNRUN; run `%s`." % (
@@ -5372,6 +5472,7 @@ def ingame_to_run(root, mod, n, tt):
     last = BM.carried_rows(root, mod, n - 1)
     runs = BM.check_runs(root, mod, n - 1)
     rel = BM.RR.relate(root, mod, dict(checks), {t: r for t, r in last.items() if t})
+    unrun = {u.get("check") for u in unrun_owed(root, mod, tt, carried=last)}
     run, counted = [], []
     for k, spec in checks:
         r = last.get(k)
@@ -5379,7 +5480,8 @@ def ingame_to_run(root, mod, n, tt):
         x = LK.reading(spec, runs.get(k)) if r else None
         if x is not None:       # the kind and the outcomes say whether the scene passes on its runs
             r = dict(x["use"], verdict="PASS" if x["passes"] else "FAIL")
-        if r and str(r.get("verdict", "")).upper() == "PASS" and r.get("site_checked") is True and st == "untouched":
+        if r and str(r.get("verdict", "")).upper() == "PASS" and r.get("site_checked") is True and st == "untouched" \
+                and k not in unrun:
             counted.append(k)
         else:
             run.append(k)

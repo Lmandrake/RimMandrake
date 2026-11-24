@@ -579,7 +579,9 @@ def compare(tests, last_rows, walk, tiers, relation=None, deploy=None):
            "unreadable": list((relation or {}).get("unreadable") or []), "new": (relation or {}).get("new")}
     for t, spec in tests:
         ok, why = judge_row(t, spec, last_rows.get(t), walk, tiers, relation, deploy)
-        out["rows"][t] = {"counts": ok, "why": why, "full": is_full(spec)}
+        # relation: what the change relation says of the check's row (None: not read); walk_owed reads it
+        out["rows"][t] = {"counts": ok, "why": why, "full": is_full(spec),
+                          "relation": (((relation or {}).get("rows") or {}).get(t) or {}).get("state")}
         if not ok:
             out["rerun"].append(t)
             out["worst"] = out["worst"] or "%s: %s" % (t, why)

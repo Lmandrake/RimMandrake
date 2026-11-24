@@ -135,6 +135,7 @@ OWNER_STAGES = {"his_walk": "his live walk (Stage 8): the version passes on his 
 # mods, an ordering call (delegation_policy.md §1), so it is no card to him (Evidence-for-Ask, owner 2026-11-15).
 RESTED = ("the version passed and the mod rests; opening its next version is the Conductor's ordering call against "
           "the other mods (delegation_policy.md §1, Evidence-for-Ask), taken with `maturation.py next-version`")
+WALK_STAGES = {"pre_human", "his_walk"}     # no in-game check may be owed here (M.walk_owed)
 STEWARD_STAGES = {"preflight", "pre_human"}     # stages whose whole step is the steward's: run it, then advance
 CHAIN_AFTER = ("coverage_release", "coverage_stop", "lock")
 ROAD_BACK_STAGES = ("offline_build", "blind_challenge", "in_game")
@@ -402,7 +403,7 @@ def stop_tickets(dst, s, items):
     return [{"id": i} for i in out]
 
 
-ACTS = ("autolock", "autorepin", "autounblock", "autogameonly")  # the pipeline's acts on a concept: one landing each,
+ACTS = ("autolock", "autorepin", "autounblock", "autogameonly", "autovisit")  # the pipeline's acts on a concept: one landing each,
 # no run, no slot
 ITEM_NAME = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){3,}\b")
 
@@ -528,12 +529,10 @@ def gameonly_key(ver, stage, ids):
     return "%s|%s|game_only|%s" % (ver, stage, hashlib.sha1(",".join(sorted(ids)).encode("utf-8")).hexdigest()[:12])
 
 
-def gameonly_and_land(root, mod, ids, now=None, land=None, advance=None):
-    """The pipeline's game-only exit: `maturation.py advance <mod> --to in_game --game-only <ids>` by DISPATCH, then
-    every file the move wrote under design/concepts/<mod>/ (the stage record, journal.md, the mod ledger and its views)
-    landed in one landing. -> the landing's last line. A refused move raises and writes nothing; an unlanded move is no
-    move: every changed file is put back byte for byte and every new one removed, and the act's own retry count
-    decides (RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)."""
+def _move_and_land(root, mod, what, move, subject, land=None):
+    """Make one stage move (`move()` -> maturation.advance's result) and land every file it wrote under
+    design/concepts/<mod>/ in one landing. -> the landing's last line. A refused move raises and writes nothing; an
+    unlanded move is no move: every changed file is put back byte for byte and every new one removed."""
     import designer_stage as DS
     d = M.mod_dir(root, mod)
 
@@ -553,12 +552,9 @@ def gameonly_and_land(root, mod, ids, now=None, land=None, advance=None):
                     out[p] = f.read()
         return out
     was = snap()
-    why = ("every open road-back item (%s) is a fault only the game can show, and the version's offline Problems are "
-           "closed: the Maturation tick takes the game-only exit back to Stage 6 "
-           "(RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)" % ", ".join(ids))
-    res = (advance or M.advance)(root, mod, "in_game", "DISPATCH", why, game_only=list(ids))
+    res = move()
     if not res.get("ok"):
-        raise RuntimeError("the game-only exit of %s was refused: %s" % (mod, json.dumps(
+        raise RuntimeError("%s of %s was refused: %s" % (what, mod, json.dumps(
             {k: res.get(k) for k in ("malformed", "moved_meanwhile", "submit_error", "why") if res.get(k)} or
             [r.get("clause") for r in ((res.get("verdict") or {}).get("refusals") or [])])))
     now_files = snap()
@@ -569,10 +565,9 @@ def gameonly_and_land(root, mod, ids, now=None, land=None, advance=None):
                          text=True, timeout=60) if rels else None
     if ign is not None and ign.returncode in (0, 1):
         rels = [x for x in rels if x not in set(ign.stdout.split("\n"))]
-    subject = "maturation: the pipeline takes %s's game-only exit to Stage 6 (%s)" % (mod, ", ".join(ids))
     try:
         if not rels:
-            raise RuntimeError("the game-only exit of %s wrote no file" % mod)
+            raise RuntimeError("%s of %s wrote no file" % (what, mod))
         if land:
             return land(subject, rels)
         p = subprocess.run([DS.LAND, "-m", subject] + rels, cwd=root, capture_output=True, text=True, timeout=300,
@@ -589,6 +584,30 @@ def gameonly_and_land(root, mod, ids, now=None, land=None, advance=None):
                 with open(p, "wb") as f:
                     f.write(b)
         raise
+
+
+def gameonly_and_land(root, mod, ids, now=None, land=None, advance=None):
+    """The pipeline's game-only exit: `maturation.py advance <mod> --to in_game --game-only <ids>` by DISPATCH, then
+    every file the move wrote under design/concepts/<mod>/ (the stage record, journal.md, the mod ledger and its views)
+    landed in one landing. -> the landing's last line. A refused move raises and writes nothing; an unlanded move is no
+    move: every changed file is put back byte for byte and every new one removed, and the act's own retry count
+    decides (RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)."""
+    why = ("every open road-back item (%s) is a fault only the game can show, and the version's offline Problems are "
+           "closed: the Maturation tick takes the game-only exit back to Stage 6 "
+           "(RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)" % ", ".join(ids))
+    subject = "maturation: the pipeline takes %s's game-only exit to Stage 6 (%s)" % (mod, ", ".join(ids))
+    return _move_and_land(root, mod, "the game-only exit", lambda: (advance or M.advance)(
+        root, mod, "in_game", "DISPATCH", why, game_only=list(ids)), subject, land)
+
+
+def visit_and_land(root, mod, checks, now=None, land=None, advance=None):
+    """The pipeline's move from Stage 7 or 8 back to Stage 6 when in-game checks are owed (M.walk_owed), landed as one
+    landing (_move_and_land). The visit it opens runs only the checks that are owed."""
+    why = ("in-game checks are owed before he walks (%s): the Maturation tick opens the next visit for only these "
+           "(RIMMANDRAKE_FIX_CHANGE_RELATION_BLIND_TO_CSHARP_NINE_ROWS_MISSED)" % ", ".join(checks))
+    return _move_and_land(root, mod, "the visit move", lambda: (advance or M.advance)(
+        root, mod, "in_game", "DISPATCH", why),
+        "maturation: %s goes back to Stage 6, %d in-game check(s) owed before his walk" % (mod, len(checks)), land)
 
 
 def ticket_runs(item):
@@ -892,7 +911,8 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
         else:
             _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx.get("designer_unit", designer_unit),
                    fx.get("designer_chain", lambda m: designer_chain(m, now)), now=now, fx_evidence=evidence,
-                   fx_exam=fx.get("exam_gate", lambda m: exam_gate(root, m)), endings=endings, fx_version_bugs=vbugs)
+                   fx_exam=fx.get("exam_gate", lambda m: exam_gate(root, m)), endings=endings, fx_version_bugs=vbugs,
+                   fx_walk_owed=fx.get("walk_owed"), fx_walk_game=fx.get("walk_game"))
             if row.get("decision") == "designer_blocked":
                 # a Designer blocked on a filed fix item (a pipeline defect) gets that item's one fixer run; the mod
                 # stays paused meanwhile (RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS)
@@ -910,7 +930,9 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
                                  "autounblock": "the pipeline's lift of %s's Designer block was tried (%s) and stage.json "
                                                 "still reads blocked; ",
                                  "autogameonly": "the pipeline's game-only exit of %s to Stage 6 was tried (%s) and the "
-                                                 "record still reads an offline stage; "}[row["aut"]])
+                                                 "record still reads an offline stage; ",
+                                 "autovisit": "the pipeline's move of %s back to Stage 6 for its owed checks was tried "
+                                              "(%s) and the record still reads its walk stage; "}[row["aut"]])
                            % (mod, str(x.get("failed") or x.get("landed") or "ended")) +
                            "`maturation_dispatch.py clear %s --why ...` un-pauses it" % mod)
                 if row.get("repin_sources") is not None:
@@ -1381,8 +1403,42 @@ def _mark_worked(s, ver, stage, live, now, ended=None):
             v["worked_after"] = max(later)
 
 
+def walk_game():
+    """-> None when nothing guards a look on ArchBig, else the line that says what does (his hold, a stop, or a record
+    that cannot be read)."""
+    try:
+        import game_lock as GL
+        r = GL.query("archbig")
+    except Exception as e:      # noqa: BLE001
+        return "who holds ArchBig could not be read (%s: %s)" % (type(e).__name__, e)
+    return r.get("line") if r.get("code") in (GL.EX_HIS, GL.EX_BLIND) else None
+
+
+def _walk_owed(root, s, row, ver, owed=None, game=None):
+    """-> True when the row becomes the act `autovisit`: an in-game check is owed before his walk (M.walk_owed) and
+    nothing guards a look at Stage 8. Otherwise False, with `walk_note` on the row when something is owed or unread.
+    design/specs/2026-11-24-walk-owes-its-checks/boundary.md."""
+    mod, stage = row["mod"], row["stage"]
+    wo = (owed or M.walk_owed)(root, mod)
+    checks = sorted(wo["owed"])
+    if not checks:
+        if wo["why"]:
+            row["walk_note"] = "Whether an in-game check is owed could not be read: %s" % "; ".join(wo["why"])
+        return False
+    said = "%d in-game check(s) owed before he walks: %s" % (len(checks), ", ".join(checks))
+    guard = (game or walk_game)() if stage == "his_walk" else None
+    if guard:
+        row["walk_note"] = "%s; the visit waits, because it would move the mod from under his look (%s)" % (said, guard)
+        return False
+    row.update(aut="autovisit", decision="autovisit", visit_checks=checks, need=None,
+               why="%s; the pipeline sends the mod back to Stage 6 for only these" % said, steward_why=said,
+               steward_key="%s|%s|autovisit|%d|%s" % (
+                   ver, stage, len(M.ingame_openings(M.load(root, mod))), _h(checks)))
+    return True
+
+
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,
-           fx_evidence=None, fx_exam=None, endings=None, fx_version_bugs=None):
+           fx_evidence=None, fx_exam=None, endings=None, fx_version_bugs=None, fx_walk_owed=None, fx_walk_game=None):
     mod, dec, stage = row["mod"], row.get("decision"), row.get("stage")
     dst = dstate(mod)
     lc = chain_owed(dst)
@@ -1428,8 +1484,11 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
     if stage == "passed":
         row.update(decision="rested", why=RESTED)
         return
+    if stage in WALK_STAGES and _walk_owed(root, s, row, ver, fx_walk_owed, fx_walk_game):
+        return
     if stage in OWNER_STAGES:
-        row.update(decision="owner", why=OWNER_STAGES[stage],
+        row.update(decision="owner", why=OWNER_STAGES[stage] + (
+                       ". %s" % row["walk_note"] if row.get("walk_note") else ""),
                    card="%s %s stands at %s. %s. Evidence: design/concepts/%s/journal.md and %s." % (
                        mod, ver, M.label(stage), OWNER_STAGES[stage], mod, M.RECORD))
         return
@@ -2102,6 +2161,14 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                 row.update(decision="launched", why="the pipeline took %s's game-only exit to Stage 6, its open "
                            "road-back items all faults only the game can show (%s): %s" % (
                                row["mod"], ", ".join(row["game_only_items"]), text))
+                continue
+            if row["aut"] == "autovisit":    # RIMMANDRAKE_FIX_CHANGE_RELATION_BLIND_TO_CSHARP_NINE_ROWS_MISSED
+                text = fx.get("autovisit", visit_and_land)(root, row["mod"], row["visit_checks"], now=now)
+                st["mods"][row["mod"]].setdefault("steward", {})[row["steward_key"]] = {
+                    "item": None, "unit": None, "at": now, "failed": None, "items": list(row["visit_checks"]),
+                    "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
+                row.update(decision="launched", why="the pipeline sent %s back to Stage 6 for %d owed in-game check(s) "
+                           "(%s): %s" % (row["mod"], len(row["visit_checks"]), ", ".join(row["visit_checks"]), text))
                 continue
             if row["aut"] == "autorepin":    # RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE: an act like the autolock
                 text = fx.get("autorepin", repin_and_land)(root, row["mod"], row["repin_sources"], now=now)

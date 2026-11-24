@@ -2212,6 +2212,8 @@ approve your changes to the Step 6->Step 7 transition and preparation."*
 **Where it is in force:**
 - the in-game build match and Stage 6 exit (`build_match.py`, `maturation.py`);
 - the visit brief and `next` (they name only the checks to run);
+- Stages 7 and 8 (`walk_owed` in `maturation.py`): an in-game check that a landed change touches, or that is still
+  recorded UNRUN, sends the mod back to Stage 6 for only those checks before he walks;
 - the walk identity (the build that he walked: mod hash, game build and mod list; `walk_identity` in `maturation.py`);
 - the offline certificate (`ran_on_this_build` hashes each test's own reads; `--run` keeps green-on-this-build tests);
 - `./publish` (only the pipeline tests whose inputs the change touches; every test only when the change set cannot be

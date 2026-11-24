@@ -58,6 +58,8 @@ def fixture(tmp, stage="his_walk"):
     for n in (1, 2, 3):
         with open(os.path.join(d, "version", "walk_brief", "arrival_%d.md" % n), "w") as f:
             f.write("written_by: fresh-reader-%d\n\n%s" % (n, body))
+    with open(os.path.join(d, "version", "test_table.json"), "w") as f:
+        json.dump({"version": VER, "tests": {}}, f)
     append(root, "OWNER", {"seat": "OWNER", "event": "file", "id": ROUTE, "tsn": RELEASE, "title": "route the walk",
                            "ownerSaid": "Ok, release my WalkMod walkthrough."})
     append(root, "OWNER", {"seat": "OWNER", "event": "note", "id": ROUTE, "tsn": REFUSE,
