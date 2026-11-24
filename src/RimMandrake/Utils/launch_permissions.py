@@ -81,26 +81,29 @@ class Py:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             self.tree, self.path, self.loader = ast.parse(src), path, loader
-        self.parent = {}
-        for n in ast.walk(self.tree):
+        self.parent, self.nodes, self.binds, self.docs, self.imports, self.defs = {}, [], {}, set(), {}, {}
+        todo = [self.tree]      # one walk; everything below reads self.nodes
+        while todo:
+            n = todo.pop()
+            self.nodes.append(n)
             for c in ast.iter_child_nodes(n):
                 self.parent[c] = n
-        self.defs = {n.name: n for n in ast.walk(self.tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))}
-        self.binds = {}
-        for n in ast.walk(self.tree):
+                todo.append(c)
+        for n in self.nodes:
             if isinstance(n, ast.Assign):
                 for t in n.targets:
                     if isinstance(t, ast.Name):
                         self.binds.setdefault((id(self.scope(n)), t.id), []).append(n)
-        self.docs = set()
-        for n in ast.walk(self.tree):
-            if isinstance(n, ast.Expr) and isinstance(n.value, ast.Constant) and isinstance(n.value.value, str):
-                self.docs.add(n.value)
-        self.imports = {}
-        for n in ast.walk(self.tree):
-            if isinstance(n, ast.Import):
-                for a in n.names:
-                    self.imports[a.asname or a.name] = a.name
+            elif isinstance(n, ast.Expr):
+                if isinstance(n.value, ast.Constant) and isinstance(n.value.value, str):
+                    self.docs.add(n.value)
+            elif isinstance(n, ast.Import):
+                for x in n.names:
+                    self.imports[x.asname or x.name] = x.name
+            elif isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                self.defs[n.name] = n
+        for got in self.binds.values():
+            got.sort(key=lambda g: g.lineno)
 
     def up(self, n, kinds):
         while n in self.parent:
@@ -213,7 +216,7 @@ class Py:
     def sites(self):
         """-> [(line, verdict, what)]"""
         out = []
-        for n in ast.walk(self.tree):
+        for n in self.nodes:
             if not isinstance(n, ast.List) or not n.elts:
                 continue
             sc = self.scope(n)
@@ -233,7 +236,7 @@ class Py:
                             g.target.id == tgt.targets[0].id and self.parent.get(g) is self.parent.get(tgt):
                         v = self.best(v, self.verdict(g.value, sc))
             out.append((n.lineno, v or LACKS, "argv"))
-        for n in ast.walk(self.tree):
+        for n in self.nodes:
             if not (isinstance(n, ast.Constant) and isinstance(n.value, str)) or n in self.docs:
                 continue
             for m in STRING_RX.finditer(n.value):
