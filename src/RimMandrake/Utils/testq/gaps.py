@@ -321,24 +321,85 @@ def stage6_tests(mod):
         return None
 
 
+def _relation(mod, tests, new):
+    """The change relation of MOD at NEW (rimflow/rerun_relation.py: the files, the C# members and the test entry a check
+    declares, the mod's exercises.json with it). One per process and commit: it caches what it reads."""
+    rf = os.path.join(HERE, "..", "..", "rimflow")
+    if rf not in sys.path:
+        sys.path.append(rf)
+    import rerun_relation as RR
+    key = (mod, new)
+    if key not in _REL:
+        _REL[key] = RR.Relation(repo_root(), mod, tests, new=new)
+    return _REL[key]
+
+
+_REL = {}
+RELATION_CACHE = "relation_cache.json"
+
+
+def _cache_key(mod, chain, old, new, tests, g):
+    """What the answer reads at NEW: the mod's own tree, its version folder, the files its checks declare elsewhere, and
+    the relation's code. None when git cannot say (nothing is cached)."""
+    root = next((os.path.join("src", t, mod) for t in TIERS if os.path.isdir(os.path.join(repo_root(), "src", t, mod))), None)
+    if not root:
+        return None
+    rel = _relation(mod, tests, new)
+    paths = {root, "design/concepts/%s/version/test_table.json" % mod, "design/concepts/%s/version/exercises.json" % mod,
+             "src/RimMandrake/rimflow/rerun_relation.py"}
+    for t, spec in tests.items():
+        paths.update(p.rstrip("/") for p in rel._paths(t, spec)[0] if not p.startswith(root + "/") and not os.path.isabs(p))
+    out = g("ls-tree", new, "--", *sorted(paths))
+    if not out:
+        return None
+    return hashlib.sha256(("%s|%s|%s|%s" % (mod, chain, old, out)).encode()).hexdigest()[:24]
+
+
 def untouched(mod, chain, old_sha, new_sha, changed=None, tests=None, g=git):
-    """-> True | False | None. True: every stage-6 check whose testq block names CHAIN declares `reads`, and no file
-    changed between OLD_SHA and NEW_SHA is one of them or under one. False: a changed file is. None: no check of the chain
-    declares reads (or one lacks them), or the change cannot be read: the chain runs again. CHANGED / TESTS stand in for
-    git's file list and the test table."""
+    """-> True | False | None. True: the change OLD_SHA..NEW_SHA touches nothing that a stage-6 check of CHAIN reads or
+    exercises (rerun_relation.py, the one change relation). False: it touches one. None: no check names the chain, one
+    declares nothing it reads, or the relation of one cannot be read: the chain runs again. CHANGED / TESTS stand in for
+    git's file list and the test table: then the checks' declared `reads` decide, by path."""
+    real = changed is None and tests is None
     tests = stage6_tests(mod) if tests is None else tests
     if not tests:
         return None
-    checks = [t for t in tests.values() if str(t.get("stage")) == "6" and chain in ((t.get("testq") or {}).get("chains") or [])]
-    if not checks or any(not t.get("reads") for t in checks):
+    checks = {k: t for k, t in tests.items() if str(t.get("stage")) == "6" and chain in ((t.get("testq") or {}).get("chains") or [])}
+    if not checks or any(not t.get("reads") for t in checks.values()):
         return None
+    if real:
+        return _related(mod, chain, checks, old_sha, new_sha, tests, g)
     if changed is None:
         out = g("diff", "--name-only", old_sha, new_sha) if old_sha and new_sha else None
         if out is None:
             return None
         changed = [l for l in out.splitlines() if l.strip()]
-    reads = [r.rstrip("/") for t in checks for r in t["reads"]]
+    reads = [r.rstrip("/") for t in checks.values() for r in t["reads"]]
     return not any(f == r or f.startswith(r + "/") for f in changed for r in reads)
+
+
+def _related(mod, chain, checks, old_sha, new_sha, tests, g):
+    import testq as T
+    if not old_sha or not new_sha:
+        return None
+    path = T.q(RELATION_CACHE)
+    cache = T.read_json(path) or {}
+    try:
+        key = _cache_key(mod, chain, old_sha, new_sha, tests, g)
+        if key and key in cache:
+            return cache[key]
+        rel = _relation(mod, tests, new_sha)
+        got = [rel.touches(k, old_sha)[0] for k in sorted(checks)]
+    except Exception:  # noqa: BLE001 - a relation that could not be read is no answer: the chain runs again
+        return None
+    ans = False if "touched" in got else None if "unreadable" in got else True
+    if key and ans is not None:         # an answer is the same for the same bytes; "could not look" is asked again
+        cache = dict(list((T.read_json(path) or {}).items())[-400:], **{key: ans})
+        try:
+            S.dump(cache, path)
+        except OSError:
+            pass
+    return ans
 
 
 def settled(mod, recs, world=None, g=None, prober=None, items=None):
@@ -379,7 +440,7 @@ def settled(mod, recs, world=None, g=None, prober=None, items=None):
             by_identity.add(c)      # a run from before chain_versions, or no version known: the identity decides. A
             #                         --rows run is a verdict on its prefix once a version can tell: only the old rule's
     settled_set |= by_identity
-    for c, s_ in st.items():     # a PASS whose checks read nothing that changed since its commit stands (the code version hashes the whole mod)
+    for c, s_ in st.items():     # a PASS whose checks nothing touched since its commit stands (the code version hashes the whole mod)
         if c not in settled_set and s_["last"][1] == "PASS" and not s_["last"][0]["partial"] \
                 and untouched(mod, c, s_["last"][0]["sha"], "origin/main", g=g) is True:
             settled_set.add(c)

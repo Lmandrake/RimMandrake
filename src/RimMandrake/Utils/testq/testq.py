@@ -112,7 +112,8 @@ if os.path.dirname(os.path.dirname(HERE)) not in sys.path:
 from contracts import compat as CC  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
-QHOME = os.environ.get("TESTQ_QUEUE", "/mnt/d/ClaudeWork/rimmandrake/testq")
+LIVE_QHOME = "/mnt/d/ClaudeWork/rimmandrake/testq"
+QHOME = os.environ.get("TESTQ_QUEUE", LIVE_QHOME)
 STATES = ("pending", "running", "done", "cancelled")
 # How SteveDesktop's WSL is reached: the same env and default as rimflow/host_guard.py's SSH_TARGETS.
 SSH_TARGET = os.environ.get("STEVE_WSL", "mandrake@stevedesktop-wsl")
@@ -2226,9 +2227,9 @@ def fill_plan(mod, n, cap, *, now=None):   # now keyword-only: an old (.., day_s
 
 
 def facts_hold(mod, now):
-    """Why the filler may not submit MOD at the host's facts (host_facts.py), or None. As companion_hold: no file at all
-    means the reader never ran here, and the worker's own refusal still stands."""
-    if not os.path.exists(q("host_facts.json")):
+    """Why the filler may not submit MOD at the host's facts (host_facts.py), or None. No file holds the live queue; a
+    queue that is not the live one (a selftest's) has no reader, and is not held for it."""
+    if not os.path.exists(q("host_facts.json")) and os.path.realpath(QHOME) != os.path.realpath(LIVE_QHOME):
         return None
     import host_facts as HF
     why = HF.unmet(mod, kept=HF.read(q("host_facts.json"), now))

@@ -96,6 +96,10 @@ def t_a_check_the_host_cannot_run_is_not_sent():
     F.facts(at=NOW - 3 * 3600)
     hold, plan = T.facts_hold("FlowWorks", NOW), T.fill_plan("FlowWorks", 4, 200, now=NOW)
     check("could not look" in str(hold) and plan["verdict"] == "facts", "a-check-the-host-cannot-run-is-not-sent: the filler holds on stale facts (%s)" % plan.get("text"))
+    os.remove(str(F.TMP / "testq" / "host_facts.json"))
+    other, real, T.LIVE_QHOME = T.facts_hold("FlowWorks", NOW), T.LIVE_QHOME, T.QHOME
+    live, T.LIVE_QHOME = T.facts_hold("FlowWorks", NOW), real
+    check("missing" in str(live) and other is None, "a-check-the-host-cannot-run-is-not-sent: no facts file holds the live queue's filler (%s)" % live)
     F.facts()
     check(T.facts_hold("FlowWorks", NOW) is None, "a-check-the-host-cannot-run-is-not-sent: whole facts hold no filler")
 

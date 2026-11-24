@@ -30,7 +30,7 @@ def pl(**kw):
 def t_old_facts_are_stale():
     p = os.path.join(tempfile.mkdtemp(), "f.json")
     json.dump({"at": 0, "facts": F}, open(p, "w"))
-    check(not HF.read(p, 10)["stale"] and HF.read(p, HF.MAX_AGE_S + 1)["stale"] and HF.read(p + "x", 1)["facts"] is None, "old facts are stale")
+    check(not HF.read(p, 10)["stale"] and HF.read(p, HF.MAX_AGE_S + 1) == {"age_s": HF.MAX_AGE_S + 1, "stale": True, "facts": None} and HF.read(p, 10)["facts"] == F and HF.read(p + "x", 1)["facts"] is None, "old facts are stale")
 
 
 def t_absent_is_measured():

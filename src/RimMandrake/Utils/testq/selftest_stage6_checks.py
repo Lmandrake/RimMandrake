@@ -643,6 +643,13 @@ def mutants():
     return 1 if bad else 0
 
 
+def t_a_passed_guard_stands_on_the_one_relation():
+    import subprocess
+    r = subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "selftest_guard_relation.py")],
+                       capture_output=True, text=True, timeout=300)
+    check(r.returncode == 0, "a-passed-guard-stands-on-the-one-relation (selftest_guard_relation.py): %s" % r.stdout[-200:])
+
+
 def main():
     if "--mutants" in sys.argv:
         return mutants()
@@ -652,7 +659,8 @@ def main():
               t_one_run_serves_all_its_checks, t_the_job_form_is_checked, t_the_worker_publishes_each_check,
               t_the_proof_build_never_touches_the_clone, t_the_feed_sends_one_tier_at_a_time, t_a_visit_row_is_written_once,
               t_a_lane_row_never_opens_a_visit,
-              t_could_not_look_never_replaces_a_row, t_the_filler_does_not_repeat_a_chain_in_flight):
+              t_could_not_look_never_replaces_a_row, t_the_filler_does_not_repeat_a_chain_in_flight,
+              t_a_passed_guard_stands_on_the_one_relation):
         t()
     shutil.rmtree(TMP, ignore_errors=True)
     print("selftest_stage6_checks: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

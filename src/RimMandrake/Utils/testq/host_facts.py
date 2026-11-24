@@ -81,7 +81,8 @@ def read(path=None, now=None):
     except (OSError, ValueError, KeyError, TypeError):
         return {"age_s": None, "stale": True, "facts": None}
     age = now - at
-    return {"age_s": age, "stale": age > MAX_AGE_S or age < 0, "facts": facts}
+    stale = age > MAX_AGE_S or age < 0
+    return {"age_s": age, "stale": stale, "facts": None if stale else facts}
 
 
 def lacks(need, facts, stale):
