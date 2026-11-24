@@ -2166,7 +2166,8 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         steps.append("conductor log " + path)
     except Exception as e:  # noqa: BLE001
         steps.append("conductor log FAILED: %s" % e)
-    steps.append(wake_conductor(unit, st, rec["out"], item, seat, waker, owed))
+    steps.append(wake_conductor(unit, st, rec["out"], item, seat, waker, owed) if run_wakes(rec, owed)
+                 else "wake: none for a scan run (the log line stands)")
     import role_launch as RL
     rec.pop("finish_owed", None)
     rec.update(status="finished", ended=now, result=st, tokens=tokens, token_unit=RL.TOKEN_UNIT, steps=steps,
@@ -2183,6 +2184,12 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         rec["steps"] = steps
         write_record(rec)
     return 0, "FINISHED %s: %s" % (unit, "; ".join(steps))
+
+
+def run_wakes(rec, owed=""):
+    """-> whether this run's end wakes the Conductor window. The standing scan's runs do not: each is routine, and a wake
+    costs the window tokens (quiet_scan.py says its own stop). One that owes something does."""
+    return bool(owed) or rec.get("next_act_owner") != "quiet_scan"
 
 
 def wake_conductor(unit, st, out, item, seat, waker=None, owed=""):

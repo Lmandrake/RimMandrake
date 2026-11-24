@@ -577,8 +577,10 @@ The rule:
     the machine.
   - The scan follows the same method: the same meaning of significant, the reviewer fixes, one blind reread, flag.
   - The clean/dirty view is back on the Desktop (`CODEBASE_NOW.html`).
-  - The item `RIMMANDRAKE_BUILD_STANDING_SCAN_OF_QUIET_FILES_ON_SONNET` holds the build of the scan. Until that
-    item closes, the scan is not built.
+  - The program is `src/RimMandrake/rimflow/quiet_scan.py`, on `rm-quiet-scan.timer`. Its page is
+    `design/specs/2026-11-24-quiet-scan/boundary.md`. `quiet_scan.py status` prints the last decision.
+  - To switch the scan off: `./pipe off family:quiet_scan --why "..."`. For one file now, beside a live mod step:
+    `quiet_scan.py tick --apply --hand "<why>"`.
 - **A mod's locked bars are the page of every file inside the mod** (his card, 2026-11-19 evening: *"Locked bars are
   the page"*).
   - The promises are `design/concepts/<Mod>/version/locked_bars.json`. The tests are the test table rows that decide

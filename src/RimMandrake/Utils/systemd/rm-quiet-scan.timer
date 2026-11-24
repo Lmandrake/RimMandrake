@@ -1,0 +1,11 @@
+# Every 10 min - see rm-quiet-scan.service.
+[Unit]
+Description=RimMandrake standing scan of quiet files, every 10 min
+
+[Timer]
+OnBootSec=11min
+OnUnitActiveSec=10min
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target

@@ -32,6 +32,7 @@
     "rm-close-check": "rm-close-check.timer",
     "rm-telemetry-pull": "rm-telemetry-pull.timer",
     "rm-list-dispatch": "rm-list-dispatch.timer",
+    "rm-quiet-scan": "rm-quiet-scan.timer",
     "rm-maturation-page": "rm-maturation-page.timer",
     "rm-run-alive": "rm-run-alive.timer"
   },

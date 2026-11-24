@@ -357,8 +357,8 @@ that justify it.
   pre queued so low value work is never needed. Clean dirty code review as backup plan is never low quality. It is
   value."*). Keep quality work queued ahead, so that no low-value work is ever needed to use quota. The backup plan is
   the clean/dirty code review, which counts as value. That review is the standing scan of quiet files, on Sonnet, that he
-  ordered the day before (his card of 2026-11-19, `standing_rulings.md` §Code is clean when its promises are tested; item
-  `RIMMANDRAKE_BUILD_STANDING_SCAN_OF_QUIET_FILES_ON_SONNET`). It is not a sweep that writes promise pages for untouched
+  ordered the day before (his card of 2026-11-19, `standing_rulings.md` §Code is clean when its promises are tested;
+  `src/RimMandrake/rimflow/quiet_scan.py`, on `rm-quiet-scan.timer`). It is not a sweep that writes promise pages for untouched
   code.
 - Never let caution read as success.
 
