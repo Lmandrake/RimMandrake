@@ -945,6 +945,72 @@ sv, text, svg = steve_view(env)
 check("steve-unread-is-unmeasured-with-cause: broken cache object preserves lane readings", "broken probe cache" in text
       and "Steve1 UNMEASURED" in text and sv["running"] == 1)
 
+
+# ---- steve-view-for-augur: the probe writes a decoded block for the Augur dashboard into the cache it already writes.
+class ViewProbe(FailedProbe):
+    """A due probe whose ssh returns the fixture's own readings, so the view is decoded from what a real probe reports."""
+    def steve_probe(self):
+        self.calls.append(("ssh", True))
+        if "ssh" in self.fail:
+            raise R.Unmeasured("ssh exited 255: no route")
+        return "\n".join("%s=%s" % kv for kv in self.good.items()) + "\n"
+
+
+def view_env(fail=()):
+    env, _ = fixture_env()
+    good = {k: str(v) for k, v in env.files[R.STEVE_CACHE]["good"].items() if k != "cpu_pct"}
+    good["claude"] = "2"
+    good["stat"] = "cpu 10 0 10 80 0 0 0 0 0 0"
+    env.files[R.TESTQ + "/running/r9.json"] = {"job": dict(env.files[R.TESTQ + "/running/r0.json"]["job"], id="J-arch"), "sent": iso(NOW - 60), "attempt": "J-arch.a1", "host": "archmagi"}
+    env.dirs[R.TESTQ + "/running"] = ["r0.json", "r9.json"]
+    env.files[R.TESTQ + "/pending/p0.json"]["lane"] = "stevedesktop"
+    del env.files[R.STEVE_CACHE]["t"]      # the probe is due
+    v = ViewProbe(files=env.files, dirs=env.dirs, fail=fail)
+    v.good = good
+    return v
+
+
+v = view_env()
+view = R.probe_steve(v).get("view") or {}
+vm, vg, vj = view.get("machine") or {}, view.get("games") or {}, view.get("jobs") or {}
+check("steve-view-for-augur: the probe writes a schema-tagged view naming the host, dated by the write", view.get("schema") == "augur.remote_host/1"
+      and view.get("host") == "SteveDesktop" and view.get("written_at") == NOW and v.files[R.STEVE_CACHE].get("view") == view)
+check("steve-view-for-augur: machine figures are decoded numbers with their reading time", vm.get("observed_at") == NOW and vm.get("load1") == 0.5
+      and vm.get("ncpu") == 18 and abs((vm.get("mem_free_pct") or 0) - 98.4) < 0.1 and vm.get("gpu_pct") == 27.0 and vm.get("agents") == 2 and vm.get("cpu_pct") is None
+      and any("cpu_pct" in x for x in vm.get("issues") or []))
+rows = {r.get("name"): r for r in vg.get("rows") or []}
+check("steve-view-for-augur: each game is up or down with its driver, purpose and the job it runs", vg.get("observed_at") == NOW
+      and rows.get("Steve1", {}).get("up") is True and rows["Steve1"].get("driver") == "RUNNER" and rows["Steve1"].get("for") == "testq J-run0.a1"
+      and rows["Steve1"].get("job") == "FlowWorks guard; chains water,power" and rows.get("Steve2", {}).get("up") is False and rows["Steve2"].get("driver_state") == "FREE")
+run_names = [(r.get("name"), r.get("where"), r.get("since"), r.get("id")) for r in vj.get("running") or []]
+check("steve-view-for-augur: running and queued jobs by name, where and since; another machine's job is not this host's", vj.get("observed_at") == NOW
+      and run_names == [("FlowWorks guard; chains water,power", "Steve1", NOW - 60, "J-run0")]
+      and [(r.get("where"), r.get("since")) for r in vj.get("queued") or []] == [("either game", NOW - 120)])
+dead = view_env(fail=("ssh",))
+dead.files[R.STEVE_CACHE]["good_t"] = NOW - R.STEVE_STALE - 1
+view = R.probe_steve(dead).get("view") or {}
+check("steve-view-for-augur: a failed probe writes the machine and games as unknown with the cause and the last good time, jobs still read",
+      "no route" in (view.get("machine") or {}).get("unknown", "") and view["machine"].get("last_at") == NOW - R.STEVE_STALE - 1
+      and "load1" not in view["machine"] and "unknown" in (view.get("games") or {}) and len((view.get("jobs") or {}).get("running") or []) == 1)
+for folder in ("running", "pending"):
+    dead.dirs[R.TESTQ + "/" + folder] = []
+dead.files[R.STEVE_CACHE].pop("t")
+view = R.probe_steve(dead).get("view") or {}
+check("steve-view-for-augur: looked-at empty folders are empty lists, not unknown", view["jobs"].get("running") == [] and view["jobs"].get("queued") == []
+      and view["jobs"].get("running_why") is None)
+dead.dirs.pop(R.TESTQ + "/pending")
+dead.files[R.STEVE_CACHE].pop("t")
+view = R.probe_steve(dead).get("view") or {}
+check("steve-view-for-augur: an unreadable folder is null with its cause, never an empty list", view["jobs"].get("queued") is None
+      and "no dir" in (view["jobs"].get("queued_why") or ""))
+real_games = R.collect_steve_games
+R.collect_steve_games = lambda *a, **k: 1 / 0
+dead.files[R.STEVE_CACHE].pop("t")
+cache = R.probe_steve(dead)
+R.collect_steve_games = real_games
+check("steve-view-for-augur: a view that cannot be decoded is written as unknown with the cause, and the probe still writes its file",
+      "ZeroDivisionError" in (cache.get("view") or {}).get("unknown", "") and dead.files[R.STEVE_CACHE].get("t") == NOW)
+
 # Execute only the added Python body locally, with subprocesses replaced by fixture executables: no ssh, Windows or /mnt/d.
 with tempfile.TemporaryDirectory() as d:
     os.makedirs(d + "/rm/runner")

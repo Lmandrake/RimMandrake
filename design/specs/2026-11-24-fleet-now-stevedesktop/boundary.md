@@ -1,7 +1,7 @@
 # BOUNDARY: the SteveDesktop part of FLEET_NOW.html, Design Version 0.1.0
 
 Code: `src/RimMandrake/Utils/running_now.py`, only these parts: `STEVE_SCRIPT`, `probe_steve`, `collect_steve`,
-`collect_steve_games`, `steve_jobs`, `steve_svg`, `steve_text` and the SteveDesktop chips of `status_strip`.
+`collect_steve_games`, `steve_jobs`, `steve_view_block`, `steve_svg`, `steve_text` and the SteveDesktop chips of `status_strip`.
 `running_now.py` writes `RELENTLESS_NOW.md` each minute (`rm-running.timer`) and `fleet_now.py` makes `FLEET_NOW.html`
 from it (`design/specs/2026-11-19-standing-status-tabs/boundary.md`). Item:
 `RIMMANDRAKE_RESTORE_STEVEDESKTOP_ON_FLEET_NOW_OLD_PAGE_HAD_IT`. The owner, 2026-11-24 about 1:30 PM PST: *"FLEET_NOW.md
@@ -34,6 +34,12 @@ like Archmagi supports. Use GPT."* Each promise has a test of its name in
   a 0, "idle", "down", "free", "none" or an empty list. A machine reading older than STEVE_STALE shows UNMEASURED with its age
   and the failure, not the old figures. A source that was read and is empty says "none" or 0.
 - **steve-no-second-connection.** The page is written before the one ssh; building it opens no connection. One ssh, not two.
+- **steve-view-for-augur.** Each probe write also puts a decoded `view` block (schema `augur.remote_host/1`) in
+  `running_steve.json`, for the Augur dashboard's FLEET_NOW.md: the machine figures as numbers with their reading time,
+  each game up or down with its driver, purpose and job, and this host's running and queued jobs by name, place and start
+  time. A part that cannot be read is `{"unknown": cause}` (the machine keeps its last good time) or a null list with its
+  cause, never an empty list; a looked-at empty folder is an empty list. A view that cannot be decoded is written as
+  unknown with the cause, and the probe still writes its file. Another machine's running job is not in this host's view.
 - **steve-panel-names-the-games-right.** The panel and the strip say SteveDesktop, Steve1 and Steve2. No chip or line says
   only "Steve" for the machine.
 

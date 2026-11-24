@@ -50,10 +50,15 @@ def t_steve_panel_names_the_games_right():
     promise("steve-panel-names-the-games-right")
 
 
+def t_steve_view_for_augur():
+    promise("steve-view-for-augur")
+
+
 def main():
     bad = 0
     tests = [t_steve_games_up_and_driver, t_steve_jobs_by_name, t_steve_every_reading_has_its_age,
-             t_steve_unread_is_unmeasured_with_cause, t_steve_no_second_connection, t_steve_panel_names_the_games_right]
+             t_steve_unread_is_unmeasured_with_cause, t_steve_no_second_connection, t_steve_panel_names_the_games_right,
+             t_steve_view_for_augur]
     for t in tests:
         try:
             t()

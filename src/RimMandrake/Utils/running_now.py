@@ -711,8 +711,53 @@ def probe_steve(env):
         cache["stat"] = st
         cache["good"] = d
         cache["good_t"] = now
+    view, why = guarded(steve_view_block, env, cache, now)
+    cache["view"] = view if view is not None else {"schema": VIEW_SCHEMA, "host": "SteveDesktop", "written_at": now, "unknown": "view not decoded: " + why}
     env.write_atomic(STEVE_CACHE, json.dumps(cache))
     return cache
+
+
+VIEW_SCHEMA = "augur.remote_host/1"
+
+
+def steve_view_block(env, cache, now):
+    """The decoded block another dashboard reads (Augur's FLEET_NOW page, promise steve-view-for-augur). Written only with the
+    probe, so the file's age still says how old the ssh readings are. Each part has its reading time or {"unknown": cause}."""
+    jobs = steve_jobs(env, now)
+    g = collect_steve_games(cache, now, jobs)
+    good = cache.get("good") if isinstance(cache.get("good"), dict) else {}
+    if g["machine_why"]:
+        machine = {"unknown": g["machine_why"], "last_at": cache.get("good_t")}
+        games = {"unknown": g["machine_why"]}
+    else:
+        m = g["machine"]
+        machine = {"observed_at": cache["good_t"], "issues": list(g["machine_issues"]), "last_error": cache.get("why")}
+        if "load" in m and "cores" in m:
+            machine.update(load1=float(m["load"]), ncpu=int(m["cores"]))
+        if "ram" in m and int(m["ram"].split()[1]) > 0:
+            used, total = (int(x) for x in m["ram"].split())
+            machine.update(mem_free_pct=round(100.0 * (total - used) / total, 1), mem_total_mb=total)
+        if "disk" in m and int(m["disk"].split()[1]) > 0:
+            free, total = (int(x) for x in m["disk"].split())
+            machine.update(disk_free_pct=round(100.0 * free / total, 1), disk_free_gb=free)
+        if "gpu" in m:
+            parts = [x.strip() for x in m["gpu"].split(",")]
+            machine.update(gpu_name=parts[0], gpu_pct=float(parts[1]))
+        machine["cpu_pct"] = m.get("cpu_pct")
+        machine["up_s"] = float(m["up"]) if "up" in m else None
+        machine["agents"] = int(good["claude"]) if str(good.get("claude", "")).isdigit() else None
+        games = {"observed_at": cache["good_t"], "rows": [
+            {"name": r["game"], "up": r["up"], "up_why": r["up_why"], "driver_state": r["driver_state"], "driver": r["driver"],
+             "driver_why": r["driver_why"], "for": r["for"], "job": r["job"]} for r in g["games"]]}
+
+    def mine(rows, folder):
+        if rows is None:
+            return None
+        keep = [r for r in rows if (str(r["host"]).startswith("stevedesktop") if folder == "running" else r["lane"] in ("stevedesktop", "any", None))]    # no lane: shown as "lane UNMEASURED", not hidden
+        return [{"name": r["desc"], "where": r["where"], "since": r["since"], "id": r["id"]} for r in keep]
+    return {"schema": VIEW_SCHEMA, "host": "SteveDesktop", "written_at": now, "machine": machine, "games": games,
+            "jobs": {"observed_at": now, "running": mine(jobs["running_jobs"], "running"), "running_why": jobs["running_why"],
+                     "queued": mine(jobs["pending_jobs"], "pending"), "queued_why": jobs["pending_why"]}}
 
 
 def steve_jobs(env, now):
@@ -744,7 +789,8 @@ def steve_jobs(env, now):
                 else:
                     game = game_names.show_key(host) if host in ("stevedesktop", "stevedesktop.b", "archmagi", "archmagi.b") else host
                 rows.append({"text": "%s: %s; %s %s; %s" % (game, desc, "ran" if folder == "running" else "waited", ago(max(0, now - iso_epoch(stamp))), job["id"]),
-                             "desc": desc, "id": job["id"], "attempt": rec.get("attempt")})
+                             "desc": desc, "id": job["id"], "attempt": rec.get("attempt"), "where": game, "since": iso_epoch(stamp),
+                             "host": host if folder == "running" else None, "lane": job.get("lane")})
         except Exception as e:      # noqa: BLE001 - missing/broken files are a cause, never an empty queue
             rows, why = None, "%s: %s" % (folder, e)
         out[folder + "_jobs"], out[folder + "_why"] = rows, why
@@ -830,14 +876,20 @@ def collect_steve_games(cache, now, jobs, source_why=None):
             "FREE": "FREE", "HIS_HOLD": "HIS_HOLD for %s" % (driver.get("purpose") or driver.get("line") or "owner"),
         }.get(driver["state"], "UNMEASURED")
         purpose = (driver or {}).get("purpose") or ""
+        job = None
         for key, desc in jobs["job_lookup"].items():
             if re.search(r"(?<![\w.-])" + re.escape(key) + r"(?![\w.-])", purpose):
                 who += "; " + desc
+                job = desc
                 break
         if "testq " in purpose and jobs.get("running_why"):
             who += "; job details UNMEASURED: " + jobs["running_why"]
+            job = "UNMEASURED: " + jobs["running_why"]
         word = "UNMEASURED: " + status_why if up is None else ("UP" if up else "DOWN")
-        out["games"].append({"game": name, "up": up, "who": who, "text": "%s %s; driver %s" % (name, word, who)})
+        out["games"].append({"game": name, "up": up, "who": who, "text": "%s %s; driver %s" % (name, word, who),
+                             "up_why": status_why if up is None else None, "driver_why": who_why,
+                             "driver_state": None if who_why else driver["state"], "driver": None if who_why else driver.get("seat"),
+                             "for": None if who_why else driver.get("purpose"), "job": job})
     services, why = guarded(read, "services_json")
     out["services"], out["services_why"] = None, why
     if services is not None:
