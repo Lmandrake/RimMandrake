@@ -1,0 +1,2 @@
+A hand builder lane (Codex or a helper) that takes open list tickets duplicates the List Pipeline: list_dispatch launches a Sonnet Work run on any open item with an outcome check, and a claim or lease by another run does not stop it. On 2026-11-24 two Codex builds (ask lane, lane cause) were overtaken by smaller Sonnet versions that landed first. Before building a ticket by hand, read its decision in list_dispatch/reading.json: take only no_effect items, or stop the item first with ./pipe off item:<ID>.
+item: RIMMANDRAKE_SPEND_CODEX_ALLOWANCE_BEFORE_TUESDAY_RESET_48_LEFT
