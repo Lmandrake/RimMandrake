@@ -1,0 +1,2 @@
+A wall attachment's facing (Rot4) is the side its WALL is on (GenConstruct.GetWallAttachedTo: pos + CardinalDirections[rot]), not the way it points. Art ordered as 'north = wall at the bottom' is named for the wrong side, and a check of texture path, file per facing and vanilla offsets passes it: read the picture's pixels (base edge against the wall face) at all four facings.
+item: RIMMANDRAKE_FIX_SLACK_WALL_LAMPS_FACE_INTO_WALL_CORDS_STOP_AT_HOLE

@@ -1,0 +1,2 @@
+art.py install --owner-said takes any sentence of his and passes the owner-kept guard, so praise of a picture ('your lamp art looks good') can be logged as 12 rulings that replace kept art. Renaming kept pictures between slots is a replacement to the ledger (old_protected true): turn the facing in code instead, or ask; read old_protected in a --dry-run first.
+item: RIMMANDRAKE_FIX_SLACK_WALL_LAMPS_FACE_INTO_WALL_CORDS_STOP_AT_HOLE
