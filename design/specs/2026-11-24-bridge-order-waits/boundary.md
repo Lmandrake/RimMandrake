@@ -8,7 +8,8 @@ Code: `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWaitCore.cs`,
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchAbilityTools.cs` (`PawnUseAbility`, `PawnUseVerb`),
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlightTools.cs` (`PawnFlight`),
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapCompTiming.cs` (`MapCompTiming`).
-Selftest: `src/RimMandrake/bridgetools/selftest_order_wait.py`.
+Selftest: `src/RimMandrake/bridgetools/selftest_order_wait.py`. It discovers Windows `dotnet.exe` through `winbuild`
+and stages the .NET 8 harness in a temporary directory in the clone. It runs with `PATH=/usr/bin:/bin`.
 
 The tools wait for a game tick count under a wall-clock limit. They poll on the game thread. The caller's cancellation
 still interrupts the wait. Pre-wait refusals, including an empty pawn selection, keep their existing replies.
@@ -25,6 +26,8 @@ still interrupts the wait. Pre-wait refusals, including an empty pawn selection,
   including when the result is already true at the first poll. Arrival wins if a limit is reached in the same poll.
   The reply still reads back each pawn and requires every pawn to stand on the destination after ticks elapsed for
   `success`. With the option off, arrival has no effect on the wait.
+- **missing-dotnet-is-unmeasured.** If Windows `dotnet.exe` is missing, the selftest fails as `UNMEASURED` with the
+  discovery error.
 
 ## DOES NOT SURVIVE
 

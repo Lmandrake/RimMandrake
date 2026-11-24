@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
-"""Compile the bridge wait policy with a .NET 8 SDK and check its tool wiring. No game or bridge."""
+"""Compile the bridge wait policy with a .NET 8 SDK and check its tool wiring. No game or bridge.
+Without dotnet.exe it FAILS as UNMEASURED.
+"""
 import json
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
-from xml.sax.saxutils import escape
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
+sys.path.insert(0, str(HERE.parent / "Utils"))
 CS = HERE / "JawaBench.BridgeTools"
 CORE = CS / "JawaBenchWaitCore.cs"
 WAITER = CS / "JawaBenchWait.cs"
@@ -26,10 +30,6 @@ PROJECT = """<Project Sdk="Microsoft.NET.Sdk">
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="CORE_PATH" />
-    <Compile Include="WAITER_PATH" />
-  </ItemGroup>
 </Project>"""
 PROGRAM = """
 using System;
@@ -137,17 +137,30 @@ def core_case(case):
     for source in (CORE, WAITER):
         if not source.is_file():
             return f"{source.name} is missing"
-    with tempfile.TemporaryDirectory(prefix="order-wait-", dir=ROOT) as tmp:
-        path = Path(tmp)
-        project = PROJECT.replace("CORE_PATH", escape(CORE.as_posix())).replace("WAITER_PATH", escape(WAITER.as_posix()))
-        (path / "OrderWait.csproj").write_text(project, encoding="utf-8")
-        (path / "Program.cs").write_text(PROGRAM, encoding="utf-8")
-        (path / "Stubs.cs").write_text(STUBS, encoding="utf-8")
-        try:
-            result = subprocess.run(["dotnet", "run", "--project", str(path / "OrderWait.csproj"), "--", case],
-                                    cwd=path, capture_output=True, text=True, timeout=120)
-        except (OSError, subprocess.TimeoutExpired) as error:
-            return f".NET 8 harness did not run ({error})"
+    try:
+        with tempfile.TemporaryDirectory(prefix="order-wait-", dir=ROOT) as tmp:
+            path = Path(tmp)
+            # Keep the staging configuration local to the selftest from the first import.
+            with patch.dict("os.environ", {"RM_DATA_ROOT": tmp}):
+                import winbuild
+            dotnet = winbuild.dotnet_exe()
+            project = path / "source"
+            project.mkdir()
+            csproj = project / "OrderWait.csproj"
+            csproj.write_text(PROJECT, encoding="utf-8")
+            (project / "Program.cs").write_text(PROGRAM, encoding="utf-8")
+            (project / "Stubs.cs").write_text(STUBS, encoding="utf-8")
+            for source in (CORE, WAITER):
+                shutil.copyfile(source, project / source.name)
+            with patch.multiple(winbuild, BUILD_ROOT=str(path / "build"), LOCK_DIR=str(path / "locks")):
+                rc, record = winbuild.stage_build(str(csproj))
+                if rc:
+                    return f"UNMEASURED: .NET 8 harness build failed (exit {rc})"
+                dll = winbuild.staged_win(record, project / "bin" / "Release" / "net8.0" / "OrderWait.dll")
+                result = winbuild.run_interop_captured([dotnet, dll, case], cwd=record["stage"],
+                                                       capture_output=True, text=True, timeout=120)
+    except (OSError, SystemExit, subprocess.TimeoutExpired) as error:
+        return f"UNMEASURED: .NET 8 harness did not run ({error})"
     return (result.stdout + result.stderr).strip() if result.returncode else None
 
 
@@ -175,8 +188,16 @@ def t_arrival_requires_opt_in():
     return core_case("arrival")
 
 
+def t_missing_dotnet_is_unmeasured():
+    with tempfile.TemporaryDirectory(prefix="order-wait-", dir=ROOT) as tmp:
+        with patch.dict("os.environ", {"WINBUILD_DOTNET": str(Path(tmp) / "dotnet.exe")}):
+            problem = core_case("pause")
+    if not problem or not problem.startswith("UNMEASURED: ") or "WINBUILD_DOTNET=" not in problem:
+        return f"expected a missing dotnet.exe to be UNMEASURED, got {problem}"
+
+
 def main():
-    tests = [t_paused_wait_stops, t_arrival_requires_opt_in]
+    tests = [t_paused_wait_stops, t_arrival_requires_opt_in, t_missing_dotnet_is_unmeasured]
     failed = 0
     for test in tests:
         problem = test()
