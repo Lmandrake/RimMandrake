@@ -324,6 +324,46 @@ namespace RimMandrake.FlowWorks
 			return now == lastPausedFrameTick && stamp != lastPausedFrameStamp;
 		}
 
+		/// <summary>RIMMANDRAKE_TRACE_FLOWWORKS_UNDER_DECK_PATH_MISS_ONE_IN_28_RUNS: what the paused frames of one map owe. A paused
+		/// write used to unthrottle the ONE frame that saw it (PausedUnthrottled), but a frame pays one slice: the labellings it
+		/// did not reach, and one whose kinds read that write dropped, waited for 60 ticks of a clock that was not running (live
+		/// 2026-11-24: a floor-view labelling left mid-dig, "cannot reach" along an open trench until the clock ran). Now the
+		/// debt stands until a frame leaves nothing stale. Labels left stale by the running clock's own throttle are owed too
+		/// once the clock has stood <see cref="StillFrames"/> frames: a player who pauses and gives an order.</summary>
+		public sealed class PausedDebt
+		{
+			/// <summary>Half a second of frames at 60 a second: longer than the gap between two bridge step calls (one call
+			/// took 20 ms, visit 10 2026-11-24), so a stepped soak stays throttled; shorter than pausing and giving an order.</summary>
+			public const int StillFrames = 30;
+			private int lastTick = int.MinValue;
+			private long lastStamp = long.MinValue;
+			private int still;
+			private bool owed;
+
+			/// <summary>This paused frame, before it rebuilds: may it rebuild unthrottled? A frame whose clock moved (stepped,
+			/// or the first after time ran) owes nothing.</summary>
+			public bool Unthrottled(int now, long stamp)
+			{
+				if (now != lastTick)
+				{
+					still = 0;
+					owed = false;
+					return false;
+				}
+				still = System.Math.Min(still + 1, StillFrames);
+				owed |= PausedUnthrottled(now, lastTick, stamp, lastStamp) || still >= StillFrames;
+				return owed;
+			}
+
+			/// <summary>What the frame left: its tick and stamp, and whether anything is still stale (the debt stands).</summary>
+			public void Left(int now, long stamp, bool stale)
+			{
+				lastTick = now;
+				lastStamp = stamp;
+				owed &= stale;
+			}
+		}
+
 		/// <summary>Should a stale labelling be rebuilt now? Throttled to once per <paramref name="minTicks"/> unless forced (a
 		/// breach, a drawbridge toggle, a gate lock or hold, a swim terrain change) or paused (no tick will ever pass).</summary>
 		public static bool RebuildDue(bool stale, bool forced, bool paused, int now, int builtTick, int minTicks)

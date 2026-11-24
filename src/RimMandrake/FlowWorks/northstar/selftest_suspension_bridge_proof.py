@@ -114,6 +114,16 @@ def main():
                                                                          else ostat(self, m, a)))
         if got.get("UND_shot_solid_deck") != "UNMEASURED":
             fails.append("an unarmed gunner reads UND_shot_solid_deck %s, want UNMEASURED" % got.get("UND_shot_solid_deck"))
+        # visit 10 (2026-11-24): the reach labels follow a staged dig within two throttles: the path row waits for them;
+        # labels that follow later, or never, stay a FAIL
+        for after, want in ((0, "PASS"), (60, "PASS"), (300, "FAIL"), (None, "FAIL")):
+            SBP.FakeBridge.labels_after = after
+            try:
+                got = verdicts("labels%s" % after, "underpass")
+            finally:
+                SBP.FakeBridge.labels_after = 0
+            if got.get("UND_floor_path_walks_under") != want:
+                fails.append("reach labels after %s ticks: the under-deck path row reads %s, want %s" % (after, got.get("UND_floor_path_walks_under"), want))
         # over-correction guard: a real mod fault (rails off, open edge, nobody falls) must still be FAIL
         got = verdicts("realfail", "posts", static=lambda self, m, a: ("KNOCK trials=20 fell=0 railed=False edge=True" if m == "ProofKnock"
                                                                         else ostat(self, m, a)))

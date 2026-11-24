@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/FlowWorks/Source/RM_WallReachMath.cs
++++ b/src/RimMandrake/FlowWorks/Source/RM_WallReachMath.cs
+@@ -360,7 +360,7 @@
+ 			{
+ 				lastTick = now;
+ 				lastStamp = stamp;
+-				owed &= stale;
++				owed = false;
+ 			}
+ 		}
+ 

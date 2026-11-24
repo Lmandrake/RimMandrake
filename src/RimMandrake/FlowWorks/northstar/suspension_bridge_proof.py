@@ -102,6 +102,8 @@ import validation_core as V  # noqa: E402  (preconditions: scope / require / gua
 
 PROOF = "RimMandrake.FlowWorks.Pits.RM_SuspensionProofs"
 DEEP = 8   # notches: 4 m
+REACH_TICKS = 120   # two of the mod's 60-tick relabel throttles (RM_WallReach.RebuildMinTicks)
+REACH_POLLS = 100   # 5 s of a standing clock: hundreds of frames, against 60 frames in the worst case of the offline sweep
 
 
 def parse(txt):
@@ -187,6 +189,27 @@ def main(argv=None):
     def pawns_by_id():
         return pawns_of(B)
 
+    def settle_reach(pid, dest):
+        """A path row is read once the mod's reach labels follow the staging (RM_WallReach relabels a slice a frame; visit 10,
+        2026-11-24: read in the instant of the dig, one run in 28 read found=False and its order was dropped). The clock stands
+        first (the mod's promise: a paused write is followed while paused), then at most two throttles of it run. The pawn is
+        drafted, so it stands still. A reach the mod gives later, or never, is read as it is: the row then FAILs."""
+        if not pid:
+            return None
+        B.call("jawa/set_draft", pawnId=pid, drafted=True)
+
+        def reached():
+            return proof("ProofReach", "%s;%s" % (pid, xz(dest)))[0].get("reach") == "True"
+        for n in range(REACH_POLLS):
+            if reached():
+                return {"paused_polls": n, "ticks": 0}
+            time.sleep(0 if a.mock else 0.05)
+        for t in range(30, REACH_TICKS + 1, 30):
+            ticks(30)
+            if reached():
+                return {"paused_polls": REACH_POLLS, "ticks": t}
+        return None
+
     def ticks(n):
         return B.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=max(60000, n * 40))
 
@@ -219,7 +242,7 @@ def main(argv=None):
         if bad:
             row("SB_site_ready", "UNMEASURED", {"rect": rect, "site": bad[:3]})
             only = set()            # unprepared ground: every section would measure the site, not the mod (review 2026-10-20)
-    ctx = dict(args=a, B=B, P=P, xz=xz, row=row, proof=proof, stage=stage, dig=dig, spawn=spawn, pawns_by_id=pawns_by_id, ticks=ticks, ox=ox, oz=oz)
+    ctx = dict(args=a, B=B, P=P, xz=xz, row=row, proof=proof, stage=stage, dig=dig, spawn=spawn, pawns_by_id=pawns_by_id, ticks=ticks, settle_reach=settle_reach, ox=ox, oz=oz)
     for name in SECTIONS:
         if name in only:
             print("== section %s" % name, flush=True)
@@ -262,6 +285,7 @@ def posts(ctx):
         wall = B.call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % P(x, dz) for x in range(-2, 10) for dz in (-1, 1)),
                       stuff="BlocksGranite") or {}
         walker = spawn(P(-1, 0))
+        ctx["settle_reach"](walker, P(8, 0))
         kv, txt = proof("ProofPath", "%s;%s" % (walker, xz(P(8, 0)))) if walker else ({}, "no pawn")
         good = kv.get("found") == "True" and int(kv.get("decked", "0")) >= 6
         row("SB_path_crosses_on_deck", "PASS" if good else "FAIL", {"read": txt, "walls": wall.get("success")})
@@ -487,6 +511,7 @@ def underpass(ctx):
         b_ = spawn(P(4, 38))
     with V.scope("UND_floor"):
         V.adopt(u1, fa)
+        after = ctx["settle_reach"](a_, P(8, 40))
         kv, txt = proof("ProofUnderPath", "%s;%s" % (a_, xz(P(8, 40)))) if a_ else ({}, "no pawn")
         good = kv.get("found") == "True" and int(kv.get("decked", "0")) >= 1 and kv.get("view") == "floor"
         why = None
@@ -499,7 +524,8 @@ def underpass(ctx):
                 ticks(60)
                 why["after"].append((proof("ProofUnderPath", "%s;%s" % (a_, xz(P(8, 40))))[1],
                                      proof("ProofReach", "%s;%s" % (a_, xz(P(8, 40))))[1]))
-        row("UND_floor_path_walks_under", "PASS" if good else "FAIL", {"read": txt, "why": why} if why else {"read": txt})
+        row("UND_floor_path_walks_under", "PASS" if good else "FAIL", {"read": txt, "why": why, "reachAfter": after} if why
+            else {"read": txt, "reachAfter": after})
     with V.scope("UND_both"):
         V.adopt(u1, fa, fb)
         oa = B.call("jawa/order_pawn", pawnId=a_, x=P(8, 40)[0], z=P(8, 40)[1], waitTicks=900, draft=True) or {}
@@ -570,6 +596,7 @@ def underpass(ctx):
         # the WALK reader (ProofPath: squares of the path that carry a deck), not ProofUnderPath (squares a deck passes OVER):
         # "crossed" means the pawn's path stands on the sunken deck's two core squares (2,57),(3,57). A path found by any other
         # way (round, or down the 7 m core) is not this row's PASS (review 2026-10-20).
+        ctx["settle_reach"](f_, P(4, 59))
         kvp, txtp = proof("ProofPath", "%s;%s" % (f_, xz(P(4, 59)))) if f_ else ({}, "no pawn")
         good = (kv.get("ok") == "True" and kvs.get("deckNotches") == "8" and kvp.get("found") == "True"
                 and int(kvp.get("decked", "0")) >= 2)
@@ -983,7 +1010,7 @@ class FakeBridge(object):
 
     def __init__(self):
         self.next_id, self.calls, self.reads, self.tags, self.last_tier, self.span = 1000, [], 0, {}, "", 0
-        self.shot, self.fell, self.under_shallow, self.dug, self.hp = 0, 0, {}, {}, 0
+        self.shot, self.fell, self.under_shallow, self.dug, self.hp, self.ticked = 0, 0, {}, {}, 0, 0
         self.depth, self.settings = {}, {}
 
     def call(self, tool, **kw):
@@ -991,6 +1018,8 @@ class FakeBridge(object):
         self.calls.append(method)
         if method == "jawa/static_call":
             return {"success": True, "result": self.static(kw.get("method"), kw.get("args") or "")}
+        if method == "rimworld/step_game_ticks":
+            self.ticked += kw.get("ticks") or 0
         if method == "jawa/flowworks_excavation_drive":
             cell = (kw.get("x"), kw.get("z"))
             if kw.get("deepenLevels") == 0 and kw.get("setBodyWaterM") == -1:     # a depth read
@@ -1056,6 +1085,7 @@ class FakeBridge(object):
         return {"success": True}
 
     ox, floor_z = 140, 140
+    labels_after = 0         # ticks before the labels follow the staging (None: never; the selftest plants both)
     reach_fault = None       # selftest_suspension_bridge_reach plants "yes" / "no"
     worker_speed = 1.0       # the reach worker's MiningSpeed read; selftest_suspension_bridge_reach plants 0.1 (Mining 0)
     skill_disabled = 0       # colonists in a row whose Mining is disabled; selftest_suspension_bridge_reach plants 1 and 99
@@ -1117,7 +1147,12 @@ class FakeBridge(object):
         if m == "ProofUnderPath":
             pid = int(arg.split(";")[0])
             shallow = self.under_shallow.get(pid)
+            if FakeBridge.labels_after is None or self.ticked < FakeBridge.labels_after:
+                return "UNDERPATH found=False cells=0 decked=0 view=floor"
             return "UNDERPATH found=True cells=8 decked=%d view=floor" % (0 if shallow else 1)
+        if m == "ProofReach":                                 # "laggy": the labels follow the staging late or never
+            ok = FakeBridge.labels_after is not None and self.ticked >= FakeBridge.labels_after
+            return "REACH veto=%s reach=%s reachPawnless=%s found=%s cells=8 onDeck=0 under=1 view=floor agree=True" % (not ok, ok, ok, ok)
         if m == "ProofPutUnder":
             return "PUTUNDER under=True"
         if m == "ProofBand":

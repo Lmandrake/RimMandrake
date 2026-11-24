@@ -197,6 +197,43 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(control > 0, "negative control: without the gate the replay must see a false NO (saw none: blind instrument)");
             });
 
+            Case("WallReach_paused_write_reaches_every_labelling", () =>
+            {
+                // RIMMANDRAKE_TRACE_FLOWWORKS_UNDER_DECK_PATH_MISS_ONE_IN_28_RUNS: an 8-square trench is dug one square a write with
+                // the clock stopped. The region: 1 to 4 labellings, 1 to 9 frames between writes, 1 to 9 slices a relabel, built
+                // before the trench inside or outside the throttle, the last write paused or on the running clock just before the
+                // pause. Left out: kinds that move too (a wall beside the trench: the wall part names its squares and is judged
+                // by the swim and wall rows above), and the live frame rate (the gap covers it). Each case ends when nothing is
+                // owed or 4 relabels a labelling have passed (plus StillFrames when the last write ran on the clock); then no labelling may be stale and none may veto
+                // the trench's far end. Negative control: the rule before (one unthrottled frame a write) must strand some.
+                PausedSweep(true, out int cases, out int stale, out int vetoed, out int worst, out int limit, out _);
+                PausedSweep(false, out int cases0, out int stale0, out int vetoed0, out _, out _, out int staleRan0);
+                string read = "cases=" + cases + " stale=" + stale + " vetoed=" + vetoed + " worstPercentOfBound=" + worst + " limit=" + limit
+                    + "; before: stale=" + stale0 + " vetoed=" + vetoed0 + " of " + cases0 + " (the last write paused: stale=" + (stale0 - staleRan0) + ")";
+                Console.WriteLine("      " + read);
+                Assert(stale0 - staleRan0 > 0 && staleRan0 > 0 && vetoed0 > 0, "negative control: the rule before strands a labelling: " + read);
+                Assert(stale == 0 && vetoed == 0, "a paused write reaches every labelling while the clock stands: " + read);
+                // the soak stays throttled: bursts of stepped ticks with 3 idle frames between, labels always stale
+                var d = new RM_WallReachMath.PausedDebt();
+                int un = 0, tick = 0;
+                for (int b = 0; b < 125; b++)
+                    for (int f = 0; f < 4; f++)
+                    {
+                        if (f == 0) tick += 8;
+                        if (d.Unthrottled(tick, b)) un++;
+                        d.Left(tick, b, true);
+                    }
+                Assert(un == 0, "a stepped soak whose labels are always stale: no unthrottled frame, got " + un);
+                // a write during an idle gap is owed until the clock moves again
+                d = new RM_WallReachMath.PausedDebt();
+                d.Unthrottled(5, 1); d.Left(5, 1, false);
+                Assert(d.Unthrottled(5, 2), "a paused write: now"); d.Left(5, 2, true);
+                Assert(d.Unthrottled(5, 2), "still stale: owed"); d.Left(5, 2, false);
+                Assert(!d.Unthrottled(5, 2), "nothing stale: paid"); d.Left(5, 2, false);
+                Assert(d.Unthrottled(5, 3), "the next write"); d.Left(5, 3, true);
+                Assert(!d.Unthrottled(6, 3), "the clock moved: throttled again");
+            });
+
             Case("WallReach_slice_wiring_source_pins", () =>
             {
                 string src = Src("Superdeep", "RM_WallReach.cs");
@@ -235,6 +272,132 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             public readonly RM_WallReachMath.LabelSlot slot = new RM_WallReachMath.LabelSlot();
             public int cls, stamp = -1, coverGen = -1, jobStamp, jobGen, builtTick = int.MinValue / 2;
+        }
+
+        /// <summary>RM_WallReach's paused frames (PausedFrameOwned over TickOwned's slices) on the shipped LabelSlot, KindsSnapshot,
+        /// ReadPartsDecision, RebuildDue and PausedDebt. owedRule false: the rule before (PausedUnthrottled alone).</summary>
+        private static void PausedSweep(bool owedRule, out int cases, out int stale, out int vetoed, out int worst, out int limit, out int staleRan)
+        {
+            cases = stale = vetoed = worst = staleRan = 0;
+            limit = 100;
+            for (int count = 1; count <= 4; count++)
+            for (int gap = 1; gap <= 9; gap++)
+            for (int slices = 1; slices <= 9; slices++)
+            for (int age = 0; age <= 60; age += 20)          // ticks since each labelling was built when the clock stopped
+            for (int lastRuns = 0; lastRuns <= 1; lastRuns++)
+            {
+                cases++;
+                const int w = 24, h = 12, n = w * h, z = 6, x0 = 8, len = 8;
+                var depth = new byte[n];
+                byte Kind(int i) => RM_WallReachMath.Open;
+                var kinds = new RM_WallReachMath.KindsSnapshot();
+                kinds.Publish(new byte[n], 0, w, h);
+                long climb = 0;
+                int tick = 1000, frame = 0;
+                var queue = new int[n];
+                var entries = new List<SimEntry>();
+                for (int i = 0; i < count; i++)
+                {
+                    var e = new SimEntry { cls = i, builtTick = tick - age, stamp = 0 };
+                    e.slot.Rebuild(kinds.published, (byte[])depth.Clone(), null, w, h, 2, e.cls);
+                    entries.Add(e);
+                }
+                SimEntry active = null;
+                bool reading = false;
+                var parts = new long[6];
+                var jobParts = new long[6];
+                var debt = new RM_WallReachMath.PausedDebt();
+                int seenTick = int.MinValue;
+                long seenStamp = long.MinValue;
+                void Begin(SimEntry e)
+                {
+                    if (e.slot.Begin(kinds.published, (byte[])depth.Clone(), null, w, h, 2, e.cls, queue)) { active = e; reading = false; }
+                    else { e.stamp = e.jobStamp; e.builtTick = tick; active = null; reading = false; }
+                }
+                // a relabel is one whole kinds read (n units) and at most 3n of flood: 4n units over this many slices
+                int budget = Math.Max(1, (4 * n + slices - 1) / slices);
+                void Frame(bool paused)
+                {
+                    frame++;
+                    bool un = false;
+                    if (paused)
+                    {
+                        un = owedRule ? debt.Unthrottled(tick, climb) : RM_WallReachMath.PausedUnthrottled(tick, seenTick, climb, seenStamp);
+                    }
+                    parts[0] = climb;
+                    var due = new List<SimEntry>();
+                    foreach (SimEntry e in entries)
+                    {
+                        if (e.stamp == climb)
+                        {
+                            if (active == e) { if (reading) kinds.AbortRead(); e.slot.Drop(); active = null; reading = false; }
+                            continue;
+                        }
+                        if (active != e && RM_WallReachMath.RebuildDue(true, false, un, tick, e.builtTick, 60)) due.Add(e);
+                    }
+                    due.Sort((a, b) => a.builtTick.CompareTo(b.builtTick));
+                    for (int left = budget, next = 0; left > 0;)
+                    {
+                        if (active == null)
+                        {
+                            if (next >= due.Count) break;
+                            SimEntry e = due[next++];
+                            e.jobStamp = (int)climb;
+                            Array.Copy(parts, jobParts, parts.Length);
+                            if (!kinds.CurrentFor(climb, w, h)) { kinds.BeginRead(climb, w, h); active = e; reading = true; }
+                            else Begin(e);
+                        }
+                        else if (reading)
+                        {
+                            if (RM_WallReachMath.ReadPartsDecision(jobParts, parts, 2, 4, 0, true) == RM_WallReachMath.ReadDrop)
+                            {
+                                kinds.AbortRead(); active = null; reading = false;
+                                continue;
+                            }
+                            bool done = kinds.ReadStep(left, Kind, out int spent);
+                            left -= Math.Max(1, spent);
+                            if (done) Begin(active);
+                        }
+                        else
+                        {
+                            bool done = active.slot.Advance(left, out int spent);
+                            left -= Math.Max(1, spent);
+                            if (done) { active.stamp = active.jobStamp; active.builtTick = tick; active = null; }
+                        }
+                    }
+                    if (paused)
+                    {
+                        bool any = entries.Exists(e => e.stamp != climb);
+                        debt.Left(tick, climb, any);
+                        seenTick = tick; seenStamp = climb;
+                    }
+                }
+                void Dig(int i) { depth[z * w + x0 + i] = 8; climb++; }
+                Frame(true);
+                for (int i = 0; i < len - 1; i++)
+                {
+                    Dig(i);
+                    for (int f = 0; f < gap; f++) Frame(true);
+                }
+                if (lastRuns == 1)
+                {
+                    tick++;                       // the clock ran one tick, the last square was dug on it, and the player paused
+                    Dig(len - 1);
+                    Frame(false);
+                }
+                else Dig(len - 1);
+                int bound = lastRuns * RM_WallReachMath.PausedDebt.StillFrames + 4 * count * (slices + 1), from = frame;
+                while (frame - from < bound && entries.Exists(e => e.stamp != climb)) Frame(true);
+                int took = frame - from, behind = 0;
+                foreach (SimEntry e in entries)
+                {
+                    if (e.stamp != climb) behind++;
+                    if (RM_WallReachMath.Vetoed(e.slot.labels.At(z * w + x0), new[] { e.slot.labels.At(z * w + x0 + len - 1) }, null)) vetoed++;
+                }
+                stale += behind;
+                staleRan += lastRuns * behind;
+                if (behind == 0) worst = Math.Max(worst, 100 * took / bound);
+            }
         }
 
         /// <summary>A replay of RM_WallReach.TickOwned's scheduling on random maps. Returns the false NOs seen.</summary>

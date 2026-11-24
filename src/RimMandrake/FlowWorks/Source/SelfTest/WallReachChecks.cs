@@ -290,7 +290,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 Assert(unthrottled == 1, "1000 stepped ticks in 125 bursts with idle frames: one unthrottled frame (the paused write), got " + unthrottled);
                 string wr = Src("Superdeep", "RM_WallReach.cs");
-                RiverSwitchFlipChecks.Has(wr, @"bool unthrottled = RM_WallReachMath\.PausedUnthrottled\(now, st\.pausedFrameTick, StampOf\(map, st\), st\.pausedFrameStamp\); Tick\(map, unthrottled\); st\.pausedFrameTick = now; st\.pausedFrameStamp = StampOf\(map, st\);",
+                RiverSwitchFlipChecks.Has(wr, @"bool unthrottled = st\.paused\.Unthrottled\(now, StampOf\(map, st\)\); Tick\(map, unthrottled\); st\.pausedFrameTick = now; long stamp = StampOf\(map, st\); st\.paused\.Left\(now, stamp, AnyStale\(st, stamp\)\);",
                     "PausedFrame judges, ticks with that flag (never true), then records the tick and stamp it left");
                 Assert(RM_WallReachMath.Classify(false, true) == RM_WallReachMath.FailKind.OutOfScope
                     && RM_WallReachMath.Classify(true, true) == RM_WallReachMath.FailKind.Stale

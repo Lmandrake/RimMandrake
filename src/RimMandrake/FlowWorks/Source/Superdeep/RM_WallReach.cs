@@ -166,8 +166,8 @@ namespace RimMandrake.FlowWorks
 			public readonly RM_WallReachMath.DeltaQueue deltas = new RM_WallReachMath.DeltaQueue();
 			public double lastMs, maxMs, totalMs;
 			public int firstBuiltTick = int.MinValue;
-			public int pausedFrameTick = int.MinValue;   // the tick and stamp the last paused frame left (PausedUnthrottled)
-			public long pausedFrameStamp = long.MinValue;
+			public readonly RM_WallReachMath.PausedDebt paused = new RM_WallReachMath.PausedDebt();   // what the paused frames owe
+			public int pausedFrameTick = int.MinValue;   // the tick the last paused frame left (steppedFrames)
 			public int steppedFrames;                    // paused frames whose clock had moved (time stepped under the pause)
 			// ladder joins, per (grid, pawn) for one tick and one ladder state
 			public int ladderTick = int.MinValue;
@@ -933,7 +933,8 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>From RM_PocketGrid.UpdatePaused (every frame while the game is paused). WALL_REACH_TUNE_REBUILDS_TENFOLD:
-		/// unthrottled only for a write made while the clock is stopped (RM_WallReachMath.PausedUnthrottled); a stepped frame
+		/// unthrottled only while the stopped clock owes a relabel (RM_WallReachMath.PausedDebt: a write made paused, until every
+		/// labelling follows it, or labels the throttle left stale once the clock has stood still); a stepped frame
 		/// (safe_advance, the dev step button) or an idle frame between step bursts runs the throttled Tick. The first paused
 		/// frame after time ran only records, so a write made paused is seen at most one frame later, never 60 ticks later.
 		/// The stamp is recorded after Tick (whose door re-read can move it), so the next frame compares against what this
@@ -962,10 +963,24 @@ namespace RimMandrake.FlowWorks
 				st.steppedFrames++;
 			}
 			FlushDeltas(map, st);   // a paused write's deltas move the stamp before it is compared (as the eager bump did)
-			bool unthrottled = RM_WallReachMath.PausedUnthrottled(now, st.pausedFrameTick, StampOf(map, st), st.pausedFrameStamp);
+			bool unthrottled = st.paused.Unthrottled(now, StampOf(map, st));
 			Tick(map, unthrottled);
 			st.pausedFrameTick = now;
-			st.pausedFrameStamp = StampOf(map, st);
+			long stamp = StampOf(map, st);
+			st.paused.Left(now, stamp, AnyStale(st, stamp));
+		}
+
+		/// <summary>Is a labelling still behind <paramref name="stamp"/> (a relabel in flight or not yet begun)?</summary>
+		private static bool AnyStale(MapState st, long stamp)
+		{
+			foreach (Entry e in st.entries.Values)
+			{
+				if (!RM_WallReachMath.StampCurrent(e.stamp, stamp, false))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/// <summary>From RM_PocketGrid.Tick (every map tick), PausedFrame and ForceRebuild (paused = unthrottled): re-read the
