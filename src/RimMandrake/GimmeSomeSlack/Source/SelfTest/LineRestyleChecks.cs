@@ -23,13 +23,14 @@
 //     member of another line, or unwired beside a member or beside nothing;
 //     wearing no look, a look the line draws, another look (styled on purpose) or a foreign style;
 //   * a wall lamp built before the cord: the drawn hookup moves to the new conduit end, with the battery still its power parent;
+//   * an exposed cord followed by a same-net hidden branch beside a standing lamp with an unchanged exposed power parent;
 //   * member looks: none (legacy, draws the default) or one of the four, sometimes mixed in one line;
 //   * lines laid along the map edge (InBounds), thing ids in random order.
 // Left out (why): the GSS master switch off (no style button: Patch_Building_GetGizmos_Restyle, so the bar's step never
 // happens); power on/off, a switch's position, faction (not inputs of the neighbour rule: source read below); All connected
 // from a floor lamp (the bar names cord, switch, pole, bracket); pending links / excluded members / a cut argument (RestyleRun
 // drains the queue first and calls RunOf(t) bare); an unstylable PowerSwitch (the mod's own patch; it logs a warning when
-// skipped); HiddenConduit (never drawn as cord); walls behind brackets (no joining thing); a lamp wired to an unticked
+// skipped); walls behind brackets (no joining thing); a lamp wired to an unticked
 // foreign conduit (GSS draws no line there, so no line of GSS's to be hooked to).
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             ["PowerConduit"] = (true, true), ["WaterproofConduit"] = (true, true), ["PowerSwitch"] = (true, false),
             ["StandingLamp"] = (true, false),
+            ["HiddenConduit"] = (false, false),
             ["RM_AerialMast"] = (false, false), ["RM_AerialLampMast"] = (false, false), ["RM_AerialWallBracket"] = (false, false),
             ["RM_PipePole"] = (false, false), ["RM_UniversalPipe"] = (false, false),
             [ForeignCord] = (false, true), [ForeignUnticked] = (false, false),
@@ -492,6 +494,45 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   "All connected on the new cord: cord " + cord[0].Look + ", wall lamp " + lamp.Look + " (want Modern for both, battery still its power parent)");
         }
 
+        private static void LampBesideHiddenBranch(bool rejectsHidden)
+        {
+            var scene = new Scene();
+            var world = new CordWorld(60, 60);
+            var machine = new MachineInfo { Id = "c1", X0 = 30, Z0 = 30, W = 1, H = 1 };
+            var parentCell = new Cell(27, 30);
+            var hiddenTip = new Cell(30, 29);
+            for (int x = 25; x <= 27; x++)
+            {
+                world.SetConduit(new Cell(x, 30));
+                Put(scene, "PowerConduit", x, 30, 0).Look = "Industrial";
+            }
+            foreach (Cell c in new[] { new Cell(26, 29), new Cell(26, 28), new Cell(27, 28), new Cell(28, 28),
+                                       new Cell(29, 28), new Cell(30, 28), hiddenTip })
+            {
+                world.SetConduit(c);
+                world.SetForcedBuried(c);
+                Put(scene, "HiddenConduit", c.X, c.Z, -1);
+            }
+            var lamp = Put(scene, "StandingLamp", 30, 30, -1);
+            lamp.Look = "Industrial";
+            P parent = scene.At((27, 30)).Single();
+            List<Cell> hookups = HookupPick.Pick(world, machine, parentCell, _ => true);
+            Check(hookups != null && hookups.SequenceEqual(new[] { hiddenTip, parentCell }),
+                  "the hidden tip is picked and the exposed power parent stays hooked up");
+            machine.Hookups.AddRange(hookups ?? new List<Cell>());
+            world.Machines.Add(machine);
+            Check(CordGraph.Reduce(world).CordEdges().Any(e => e.Chain().Contains(VId.Mach(machine.Id)) && e.Chain().Contains(VId.C(parentCell))),
+                  "the exposed power parent still draws a cord to the standing lamp");
+
+            Cell? drawnEnd = HookupPick.PickEnd(machine, parentCell, world.IsConduit, c => HookupPick.Degree(world, c), _ => true);
+            P hidden = scene.At((hiddenTip.X, hiddenTip.Z)).Single();
+            lamp.Conn = drawnEnd == hiddenTip && !rejectsHidden ? hidden : parent;
+            (List<P> run, List<P> follow) = AllConnected(scene, parent, new Rule());
+            foreach (P p in run.Concat(follow)) p.Look = "Modern";
+            Check(run.Count == 3 && run.All(p => p.Look == "Modern") && lamp.Look == "Modern",
+                  "All connected beside a hidden branch: exposed cord " + parent.Look + ", standing lamp " + lamp.Look + " (want Modern for both)");
+        }
+
         private static void CanFail(string what, Rule broken, Func<Tally, int> metric, int maps = 400)
         {
             var t = new Tally();
@@ -531,10 +572,14 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             string lo = Body(runs, "public List<Thing> LampsOf(");
             string adapter = File.ReadAllText(Path.Combine(dir, "..", "CordWorldAdapter.cs"));
             string hookup = Body(adapter, "internal static Thing DrawnConnection(");
-            LampBuiltBeforeCord(lo.Contains("l => CordWorldAdapter.DrawnConnection(l)") &&
+            bool usesDrawnConnection = lo.Contains("l => CordWorldAdapter.DrawnConnection(l)") &&
                 hookup.Contains("HookupPick.PickEnd(footprint, parentCell, cell => ConduitAt(cell) != null,") &&
                 hookup.Contains("cell => map.powerNetGrid.TransmittedPowerNetAt(I(cell)) == net") &&
-                hookup.Contains("return end.HasValue ? ConduitAt(end.Value) : parent;"));
+                (hookup.Contains("return end.HasValue ? ConduitAt(end.Value) : parent;") ||
+                 hookup.Contains("Thing drawn = end.HasValue ? ConduitAt(end.Value) : null;") && hookup.Contains("? drawn : parent;"));
+            LampBuiltBeforeCord(usesDrawnConnection);
+            LampBesideHiddenBranch(usesDrawnConnection &&
+                hookup.Contains("return drawn != null && drawn.def != ThingDefOf.HiddenConduit ? drawn : parent;"));
             Check(lo.Contains("ConduitStyles.LampsHookedTo(") && lo.Contains("x => Neighbours(x).Where(n => IsBridgeConduit(n.def))"),
                   "LampsOf is ConduitStyles.LampsHookedTo over the map's lamps, with the bridges beside each piece");
             string rr = Body(runs, "public int RestyleRun(");

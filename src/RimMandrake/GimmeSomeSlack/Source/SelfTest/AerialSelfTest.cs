@@ -408,10 +408,37 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
               Regex.IsMatch(live, @"n\.powerComps\.Any\(t => t\.PowerOn && t\.PowerOutput > 0f && t\.parent\.GetComp<CompPowerTap>\(\) != null\)"),
               "a tap-only net counts a powered-on clamp with positive output as a fallen-wire source");
 
-            // wire_down_alert: the later orphan-recovery loop skips the mast already linked by the nearest pick.
-            string nearest = Regex.Match(map, @"int pick = AerialMath\.AutoLinkPick[\s\S]*?(?=foreach \(CompAerialAnchor o in others\))").Value;
-            C(Regex.IsMatch(nearest, @"TryLink\(a, (\w+)\.parent\) == LinkVerdict\.Ok\)\s*\{[^}]*\1\.fallen\.RemoveAll\(f => FellToward\(f, a\.Position\)\)"),
-              "the successful nearest auto-link picks up the survivor's nearby fallen orphan");
+            // wire_down_alert: bind the offline orphan choice to both auto-link paths and to TryLink's exact-cell pickup.
+            string auto = Regex.Match(map, @"private void TryAutoLink\([\s\S]*?(?=public int orphanRelinks;)").Value;
+            C(map.Contains("TryAutoLink(a, nearest, false);") && map.Contains("TryAutoLink(a, o, true);") &&
+              Regex.IsMatch(auto, @"ClosestOrphan\(other\.fallen,\s*f => f\.cutPartner == -1 \? f\.toward\.DistanceToSquared\(a\.Position\) : int\.MaxValue\)") &&
+              auto.Contains("if (requireOrphan && orphan == null) return;") &&
+              Regex.IsMatch(auto, @"int fallenBefore = a\.fallen\.Count \+ other\.fallen\.Count;\s*if \(CompAerialAnchor\.TryLink\(a, other\.parent\) != LinkVerdict\.Ok\) return;") &&
+              Regex.IsMatch(auto, @"if \(a\.fallen\.Count \+ other\.fallen\.Count < fallenBefore\) orphanRelinks\+\+;\s*else if \(orphan != null && other\.fallen\.Remove\(orphan\)\)") &&
+              anchor.Contains("b.fallen.RemoveAll(f => f.cutPartner == -1 && f.toward == a.Position);"),
+              "both auto-link paths pick up a nearby orphan only after linking without an exact pickup");
+            C(File.ReadAllText(Path.Combine(dir, "Alert_WireDown.cs")).Contains("a.fallen.Count > 0"),
+              "Wire down still lists a player anchor with a remaining fallen wire");
+
+            // A successful link to the survivor applies the exact-cell pickup, then the shared orphan choice if needed.
+            int Remaining(params (int x, int z)[] fallen)
+            {
+                var left = fallen.Select(f => Tuple.Create(f.x, f.z)).ToList();
+                var orphan = AerialMath.ClosestOrphan(left, f => (f.Item1 - 47) * (f.Item1 - 47) + (f.Item2 - 50) * (f.Item2 - 50));
+                if (left.RemoveAll(f => f.Item1 == 47 && f.Item2 == 50) == 0 && orphan != null)
+                    left.Remove(orphan);
+                return left.Count;
+            }
+            int remaining = Remaining((47, 50), (47, 51));
+            C(remaining == 1, $"rebuilding one of two adjacent lost masts leaves one fallen wire for Wire down (found {remaining})");
+            C(Remaining((47, 51)) == 0, "the single orphan is recovered when its replacement is one cell away");
+            C(Remaining((47, 49), (47, 51)) == 2, "two equally close orphans stay on the ground");
+            C(AerialMath.ClosestOrphan(new[] { "beside", "exact" }, f => f == "exact" ? 0 : 1) == "exact",
+              "an exact-cell orphan takes precedence over a nearby orphan");
+            C(AerialMath.ClosestOrphan(new[] { "diagonal", "beside", "other diagonal" }, f => f == "beside" ? 1 : 2) == "beside",
+              "only the closest orphan is selected when several are within one cell");
+            C(AerialMath.ClosestOrphan(new[] { "out of reach", "cut" }, f => f == "cut" ? int.MaxValue : 4) == null,
+              "a distant orphan and a cut wire with a surviving partner are ineligible for proximity recovery");
         }
 
         private static void Watchdog()

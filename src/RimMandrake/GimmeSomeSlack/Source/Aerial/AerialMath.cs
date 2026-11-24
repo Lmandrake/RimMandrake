@@ -316,6 +316,22 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return best;
         }
 
+        /// <summary>An exact orphan, or the uniquely closest orphan within one cell (diagonals included).</summary>
+        internal static T ClosestOrphan<T>(IEnumerable<T> fallen, Func<T, int> distanceSquared) where T : class
+        {
+            T best = null;
+            const int maxDistanceSquared = 2;
+            int bestDistance = maxDistanceSquared + 1;
+            foreach (T cord in fallen)
+            {
+                int distance = distanceSquared(cord);
+                if (distance == 0) return cord;
+                if (distance < bestDistance) { best = cord; bestDistance = distance; }
+                else if (distance == bestDistance) best = null;
+            }
+            return best;
+        }
+
         /// <summary>"Auto-link selected": Kruskal minimum spanning forest over the selection, edges within range,
         /// respecting maxLinks; anchors already linked count as joined (their links are kept, not re-added).</summary>
         public static List<(int, int)> MinimumSpanningLinks(IList<AnchorInfo> sel, double range)

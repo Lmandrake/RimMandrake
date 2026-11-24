@@ -290,7 +290,8 @@ namespace RimMandrake.GimmeSomeSlack
             Cell? end = HookupPick.PickEnd(footprint, parentCell, cell => ConduitAt(cell) != null,
                 cell => Cell.Dirs4.Count(dir => ConduitAt(cell + dir) != null),
                 cell => map.powerNetGrid.TransmittedPowerNetAt(I(cell)) == net);
-            return end.HasValue ? ConduitAt(end.Value) : parent;
+            Thing drawn = end.HasValue ? ConduitAt(end.Value) : null;
+            return drawn != null && drawn.def != ThingDefOf.HiddenConduit ? drawn : parent;
         }
 
         /// <summary>A final fallback for every machine power comp: when no existing cord reaches it, draw its actual

@@ -338,32 +338,34 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 if (pick >= 0)
                 {
                     CompAerialAnchor nearest = others.First(o => o.thingIDNumber == pick);
-                    if (CompAerialAnchor.TryLink(a, nearest.parent) == LinkVerdict.Ok)
-                    {
-                        autoLinks++;
-                        if (nearest.fallen.RemoveAll(f => FellToward(f, a.Position)) > 0)
-                        {
-                            orphanRelinks++;
-                            DirtyGround(nearest);
-                        }
-                    }
+                    TryAutoLink(a, nearest, false);
                 }
-                // a pole put up where one died takes back every span that fell with it: each neighbour whose wires lie on the ground
-                // aimed at this cell (pass 12, played: a lamp mast rebuilt after a mortar came back linked to its nearest neighbour
-                // only; the other's wires lay live in the yard with no cut to re-string, and no way back but the link gizmo)
+                // A replacement can take back a fallen span from each neighbour, even beyond the nearest auto-link.
                 foreach (CompAerialAnchor o in others)
                 {
-                    if (!o.fallen.Any(f => FellToward(f, a.Position)) || o.links.Any(l => l.other == a)) continue;
-                    if (CompAerialAnchor.Verdict(a, o.parent) != LinkVerdict.Ok) continue;
-                    o.fallen.RemoveAll(f => FellToward(f, a.Position));
-                    if (CompAerialAnchor.TryLink(a, o.parent) == LinkVerdict.Ok) { autoLinks++; orphanRelinks++; }
+                    if (o.fallen.Count == 0 || o.links.Any(l => l.other == a)) continue;
+                    TryAutoLink(a, o, true);
                 }
             }
         }
 
-        /// <summary>Did <paramref name="f"/> fall when a pole on (or right beside) <paramref name="cell"/> died? Its partner is
-        /// dead and it is aimed at that cell: a pole rebuilt a cell off the old spot takes the span back too.</summary>
-        private static bool FellToward(FallenCord f, IntVec3 cell) => f.cutPartner == -1 && f.toward.DistanceToSquared(cell) <= 2;
+        private void TryAutoLink(CompAerialAnchor a, CompAerialAnchor other, bool requireOrphan)
+        {
+            FallenCord orphan = AerialMath.ClosestOrphan(other.fallen,
+                f => f.cutPartner == -1 ? f.toward.DistanceToSquared(a.Position) : int.MaxValue);
+            if (requireOrphan && orphan == null) return;
+
+            int fallenBefore = a.fallen.Count + other.fallen.Count;
+            if (CompAerialAnchor.TryLink(a, other.parent) != LinkVerdict.Ok) return;
+            autoLinks++;
+            // TryLink picks up exact-cell wires. Only use proximity when that link picked up none.
+            if (a.fallen.Count + other.fallen.Count < fallenBefore) orphanRelinks++;
+            else if (orphan != null && other.fallen.Remove(orphan))
+            {
+                orphanRelinks++;
+                DirtyGround(other);
+            }
+        }
 
         public int orphanRelinks;
 
