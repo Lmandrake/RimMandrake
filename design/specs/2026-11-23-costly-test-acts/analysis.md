@@ -246,8 +246,8 @@ our rule says that after a change only the touched checks run again, so each par
 | 3 | Run the full-list part last | Slack | about 28 min in a visit with a fix | first load and rows voided [measured]; visits 1 and 2 each had a fix [measured] | none: visit 2 does this |
 | 4 | Full-list loads retired | Knockback | 47 min | 1,178 + 1,645 s [measured]; already changed tonight | none: done |
 | 5 | Waits that stand still or that play slowly | FlowWorks | about 12 min (clock still, 757 s) | [measured]; saving the whole of it [guess ~85%] | small |
-| 6 | Walk one colonist once | FlowWorks | about 9 min | 620 s in two runs [measured]; about 80 s after [guess ~70%] | medium |
-| 7 | Rerun only on the changed list | Slack | about 11 min | 609 + 163 s [measured]; about 100 s after [guess ~65%] | medium (the proof has only block selection, "for debugging") |
+| 6 | Rerun only on the changed list | Slack | about 11 min | 609 + 163 s [measured]; about 100 s after [guess ~65%] | medium (the proof has only block selection, "for debugging") |
+| 7 | Walk one colonist once | FlowWorks | about 9 min | 620 s in two runs [measured]; about 80 s after [guess ~70%] | medium |
 | 8 | Short chains share a site load | Pyrelands | about 5 min | 718 s [measured]; 48 loads to about 20 [guess ~50%] | medium |
 | 9 | One process for many scenes | Knockback | about 5 min | 150 s of process gaps and 187 s of settings [measured]; saved [guess ~60%] | small |
 | 10 | One list for `sc_source_pays` and the owner-look check | FlowWorks | about 4 min | 324 + 234 s [measured]; one list can hold both [guess ~40%] | small |
@@ -267,16 +267,16 @@ through the library yet**: `contract` and `judge` are `NOT_BUILT`. The column sa
 | group | expressible now | needs |
 |---|---|---|
 | Waits (rank 5) | yes: `s.run(until, limit, speed)` ends on the state, at any of the four speeds | the order itself: `s.act` (`order`, `job`), `NOT_BUILT`; `s.raw` until then |
-| Walk one colonist once (rank 6) | the walk: `s.run(record=...)` keeps a value for every tick | `s.stage` for the pads and the colonist, `s.act` |
+| Walk one colonist once (rank 7) | the walk: `s.run(record=...)` keeps a value for every tick | `s.stage` for the pads and the colonist, `s.act` |
 | Gravship (rank 11) | the boarded ship as a fixture save: `scene.open(needs={"map": ...})`; each flight's waits: `s.run` | `s.stage`; a launch verb and a land verb (the verb list of `s.act` has none); `s.shot`; `s.read` |
 | Field weeks (rank 2) | the 14.6 days: `s.run` with limits, and daily records of named fields; checkpoints by a fixture save | `s.stage` (pads, terrain, plants), `s.act` (`weather`, `tune` for the switch readings), `s.read` for the fertility probe |
 | Short chains (rank 8), repeated chains (12) | no need of the library: they run in `northstar_driver` | - |
 | Scene batch (13) | partly: one `open` and several runs in one session | `s.stage` cleans a station between scenes |
 | One process for many scenes (9) | no need: `knockback_runner.py --scenes a,b,c` | - |
-| Rerun only on the changed list (7) | no need: a row filter in `proof_all.py` | - |
+| Rerun only on the changed list (6) | no need: a row filter in `proof_all.py` | - |
 | Ranks 1, 3, 10 | not a scene matter: order and lists | - |
 
-The library can have a direct effect on ranks 2, 5, 6 and 11 [guess ~75%].
+The library can have a direct effect on ranks 2, 5, 7 and 11 [guess ~75%].
 
 ## 11. UNMEASURED, with the cause
 
