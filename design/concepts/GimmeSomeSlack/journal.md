@@ -638,3 +638,8 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Fix on main: b7ec15d40a. No art changed. The rock-hole entry is off `version/polish.md`.
 - Visits 1 to 3 saw no defect because every lamp check read a texture path and every wall check read the laid strand. A wall-lamp picture that named "no light in it" was reported on the walk brief as a taste question; it was this defect.
 - Offline red on the walked build and green on the fix: T_WALL_LAMP_LOOKS_OFFLINE (16 of 16 lamp facings red) and T_CORD_ENTERS_HOLE_OFFLINE (766 of 766 cords red).
+
+### 2026-11-24, record repairs before the pass (by BENCH, RIMMANDRAKE_RECORD_SLACK_VERSION_PASS_AFTER_HIS_WALK_ALL_STATIONS_PASSED)
+
+- `record.json`: bar `ship_to_ground_wire_snaps`, proof missing to current (visit 4, row GS4_ground_wire_snaps_at_launch, 3 of 3 flights; offline red and green). The take-off message was not read live; its code was read.
+- `version/walk_brief/arrival_2.md`: a fault of form repaired after his walk (a written_by line, the four headings). Its writer is the close-out run, which also made the fixes it lists.

@@ -952,14 +952,19 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs",
     "ITEM:RIMMANDRAKE_SNAP_SLACK_GROUND_CORD_AT_TAKEOFF_IT_COILS_TODAY"
    ],
-   "proof": "missing",
+   "proof": "current",
+   "proof_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py row GS4_ground_wire_snaps_at_launch PASS 3 of 3 flights, ArchBig 2026-11-24, build 1e22ca37eb",
+    "design/concepts/GimmeSomeSlack/version/in_game/visit_4/evidence/gravship_on.slim.json, gravship_off.slim.json, gravship_off_autolink.slim.json",
+    "T_CORE (AerialSelfTest GravshipLaunch): red on the parent 8c13ce0390^ (195 of 196), green on the fix (201 of 201); red-seen under fault_ship_ground_wire_coiled_at_launch.patch (5910 of 5912)"
+   ],
    "scope": "opened_by_owner",
    "scope_source": "OWNER:1795510680855123236",
    "source": [
     "OWNER:1795510680855123236",
     "OWNER:1795546467448705900"
    ],
-   "note": "his words of 2026-11-24: 'Yes, the wire should snap ship-to-ground. Of course it would.' Offline: AerialSelfTest GravshipLaunch. Live flight UNRUN on 2026-11-24."
+   "note": "his words of 2026-11-24: 'Yes, the wire should snap ship-to-ground. Of course it would.' Offline: AerialSelfTest GravshipLaunch. Live: three flights, in-game visit 4, 2026-11-24. The take-off message was not read live; the code that shows it was read (CompAerialAnchor.cs, NotifyGroundedAtLaunch)."
   }
  ],
  "contradictions": [
