@@ -37,7 +37,7 @@ The code for this rule is `common.canvas_for_cells` in `src/RimMandrake/Utils/ar
 (`ART_PAINTERLY_RESTORATION_1`, 2026-09-14). The same ruling allows high resolution "as long as the user will actually
 see the resolution".
 
-- `fill_queue.py` only WARNS when a row's canvas is larger than the rule. It files the job anyway. State the reason in
+- `fill_queue.py` only WARNS when a row's canvas is larger than the rule. The tool files the job anyway. State the reason in
   the row's `oversize_reason`.
 - A row with no `drawsize` field and no measured def reads as 1.0 cell, so the rule gives 256. Put the real `drawsize`
   on the row.
@@ -47,7 +47,7 @@ see the resolution".
 
 - The model returns about **1.5 megapixels natively**. So a canvas beyond ~1024–1280 px is an upscale. The file is
   bigger and carries interpolated pixels, not more detail. The code stops at 1024 (`CANVAS_CEILING_PX`).
-- The measured case is the sea-beast colossi (`drawSize` 12–20). The 128 px/cell target puts them at 2048. They shipped
+- The measured case is the sea-beast colossi (`drawSize` 12–20). The 128 px/cell target puts them at 2048. The colossi shipped
   at **1024, i.e. 85–96 px/cell**. That size is CORRECT, not a shortfall.
 - **For any creature whose 128 px/cell target lands above 1024 px, do two things:**
   - **Ship the largest canvas that the generator fills with real detail: 1024.**
@@ -115,7 +115,7 @@ Typical RimWorld sprites fail both ends:
 | `2048x2048` | 4,194,304 | ✅ |
 
 **Never generate at the target size.** Generate at a legal size with the right *aspect*. Then downscale with
-`pnglib.resize_rgba`. That function premultiplies alpha. So it avoids the dark halo that plain averages make on a cutout.
+`pnglib.resize_rgba`. That function premultiplies alpha. So the function avoids the dark halo that plain averages make on a cutout.
 
 **For a repad/recenter-in-place fix on EXISTING game art, prefer BOX (area-averaging) over LANCZOS.**
 
@@ -230,8 +230,9 @@ The validator grades each finding:
 | Identity | pixel-identical to the reference — nothing changed |
 
 **For a redraw at another resolution, pass `--drawsize <the def's drawSize>`.** The validator then judges the candidate at
-scale and does not refuse it for canvas size. This works only when the candidate is square on the rule canvas
-(`canvas_for_cells`) and is an exact integer multiple or divisor of the reference on both axes. Any other canvas difference is still a REJECT.
+scale and does not refuse it for canvas size. The validator does so only for a candidate that is square on
+the rule canvas (`canvas_for_cells`). The candidate must also be an exact integer multiple or divisor of the reference
+on both axes. Any other canvas difference is still a REJECT.
 
 **Span is checked separately from coverage, and that separation is the point.** A wreck legitimately *loses area*,
 because its damage removed material. So the area tolerance has to stay loose. But a wreck must still *span* its
@@ -340,12 +341,12 @@ out". See `~/dev/MandrakeWorkflows/skills/generating-images/references/prompting
   the zoom levels of the current mod stack, so sizes err generous.
 - **Look at legibility with `art_zoom_sim.py`.** Downscale the candidate to on-screen tiers beside a same-tier vanilla
   control (vanilla small creatures ship at 128 px), and LOOK. At 32 px/cell two features carry a sprite: a few bold
-  shapes, and a body value clearly apart from the ground. Fine surface detail turns to mud. This is a judgment by eye,
-  never a refusal on a number (`design/RimMandrake/art_judge_brief.md` B2).
-- 🔴 **No outlines (owner card, 2026-10-04; `art_judge_brief.md` B1a).** Value and colour contrast carry the silhouette.
+  shapes, and a body value clearly apart from the ground. Fine surface detail turns to mud. Judge legibility by eye.
+  Never refuse a sprite on a legibility number (`design/RimMandrake/art_judge_brief.md`, section B. Style).
+- 🔴 **No outlines (owner card, 2026-10-04; `art_judge_brief.md`, rule No outlines).** Value and colour contrast carry the silhouette.
   A sprite without an outline is correct. A heavy drawn keyline is STYLE_OFF. `fill_queue.py` strips the retired
-  black-outline clause from a row, and refuses a row that still says "black outline" or "keyline". B1a lists the
-  exceptions by creature.
+  black-outline clause from a row, and refuses a row that still says "black outline" or "keyline". That rule of the
+  brief lists the exceptions by creature.
 
 More traps for this section: [references/traps.md](references/traps.md) § Art direction that survives downscaling.
 
@@ -386,10 +387,10 @@ For facings, mirroring, Spastic appendages and flight frames, read the `rimworld
   - A deliberate RESTYLE always fails it. 21 Pyrelands jobs REJECTed this way, on canvas/subject-size mismatch vs the
     donor.
   - For a restyle, file **reference-less**: prompt + library images for inspiration only (BENCH 2026-09-13). Reskin-validate
-    then does not run. Other checks can still fail the render, for example a wrong canvas, a flat placeholder shape, a picture that the owner
-    banned.
-  - No legibility gate runs. It is off by default since 2026-09-14 (`ART_PAINTERLY_RESTORATION_1`), and the daemon records
-    `skipped`, which is not a pass. So LOOK at the render (§5).
+    then does not run. Other checks can still fail the render, for example a wrong
+    canvas, a flat placeholder shape, or a picture that the owner banned.
+  - No legibility gate runs. The gate is off by default since 2026-09-14 (`ART_PAINTERLY_RESTORATION_1`). The daemon then
+    records `skipped`, which is not a pass. So LOOK at the render (§5. Look at it).
 - **A brief can cite reference art that does not exist.** "Match `X`'s art" is checked only when the job's `reference`
   field holds `X`'s path. Nothing checks prose in `style_notes`.
   - A def with a name and a `drawSize` does not always have a texture.
@@ -401,10 +402,11 @@ For facings, mirroring, Spastic appendages and flight frames, read the `rimworld
 - **The canon check is an ADVISOR, never a gate** (owner, 2026-10-15, by card; `canon_check.py`). The check attaches its
   verdict to the picture. The check never fails a job, never blocks one and never files a retry. FAIL predicted 0 of 64
   owner rejections. So never redraw on its score alone.
-  - A job with a canon entry is graded on the `## Must show` lines of the entry. The owner note is then context only.
+  - A job with a canon entry (`design/RimStarWars/canon_references/<slug>/description.md`) is graded on the `## Must show`
+    lines of the entry. The owner note is then context only.
   - A job with no canon entry but with an owner note is graded on each sentence of the note. The note is the `owner_note`
-    field. When the field is empty, the note is the prompt from its first sentence that names the owner, a rejection or
-    a ruling, to the end.
+    field. When the field is empty, the note is the tail of the prompt. The tail starts at the first sentence that names
+    the owner, a rejection or a ruling.
   - The check grades a workflow clause ("generate AFTER the source is settled") as a visual requirement, and flags it.
     Mark such a clause with the job's `canon_na` + `canon_na_reason`. Do not retry the render.
   - A note with only provenance ("decision taken by question card …") has only n/a lines. The verdict is then
