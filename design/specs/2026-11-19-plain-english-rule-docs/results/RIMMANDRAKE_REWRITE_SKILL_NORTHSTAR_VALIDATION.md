@@ -10,10 +10,10 @@ Also: skills/northstar-validation/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 17,389 | 23952 |
-| words in linted prose | 1,664 | 2549 |
-| STE violations per 100 words | 4.75 | 1.49 |
-| sentences over 20 words | 33 | 5 |
+| bytes | 17,389 | 23963 |
+| words in linted prose | 1,664 | 2550 |
+| STE violations per 100 words | 4.75 | 1.45 |
+| sentences over 20 words | 33 | 4 |
 | flagged lines (mechanical) | 3 | 2 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 11 | 0; 1 listed under "Could not determine" |
 | dead paths in `check_paths.py` | 1 | 0 |

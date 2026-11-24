@@ -294,8 +294,8 @@ say that a fix is done.
 ## The scoreboard counts only what it can read
 
 - `required_checks_report.py` counts the required checks that are proven, per mod. The report reads
-  `Transient/modcheck/live_queue/*/<Mod>_summary.json`. The report also reads the live results of a mod whose validation walk
-  (`design/validation_walks/<tier>/<Mod>.md`) names a `checkout:` script in its header.
+  `Transient/modcheck/live_queue/*/<Mod>_summary.json`. The report also reads the live results of a `checkout:` script. The header of
+  the mod's validation walk (`design/validation_walks/<tier>/<Mod>.md`) names that script.
 - A mod with no readable record counts as unproven, even when its suite passes live. The report once read "proven 0 of
   1543" while FlowWorks ran 59/59.
 - The report names the unreadable mods under NOT IN THE TOTAL. Never cite a proven-count without that line beside it.
