@@ -84,6 +84,15 @@ def problems(cells):
     return bad
 
 
+def stations(cells):
+    """[(row, col)] in grid order: station n is the n-th pair, its lowered cell on the left and its raised twin on the right (pure)."""
+    out = []
+    for c in cells:
+        if (c["row"], c["col"]) not in out:
+            out.append((c["row"], c["col"]))
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true")
@@ -102,8 +111,8 @@ def main():
     for b in bad[:8]:
         print("LAYOUT:", b)
     if a.dry_run or bad:
-        for c in cells:
-            print("%-40s %s" % (c["name"], c["box"]))
+        for n, (r, k) in enumerate(stations(cells), 1):
+            print("%2d  %s" % (n, [c["name"] for c in cells if c["row"] == r and c["col"] == k][0].replace(" lowered", "")))
         return 1 if bad else 0
     import water_scenes_walk as m
     w = m.Walk(a)
@@ -121,15 +130,22 @@ def main():
         w.call("rimworld/go_to_main_menu")
         r = w.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
         print("map:", str(r)[:150])
-    need((w.call("jawa/map_info") or {}).get("success") is not False, "a map is Playing", "map_info failed")
+    need(w.V._wait_playing(w.B, leave_s=0)[0], "a map is Playing", "the wait timed out")
     w.call("rimworld/pause_game")
     w.call("rimworld/set_god_mode", enabled=True)
     proof = lambda meth, arg, ty=DP: w.proof(ty, meth, arg)[1]      # noqa: E731
     if a.faults:
         return faults(w, proof, ox, oz, need, fails)
     if not a.shots_only:
+        calm = w.V.site_calm(w.B)        # no storyteller, no wild spawns, no stranger: a fight or a meteor broke bridges on the first pass
+        need(calm.get("ok"), "the world is calm", calm)
         w.call("jawa/kill_hostiles")
         w.call("jawa/weather_set", weather="Clear", lockWeather=True)
+        for _ in range(12):              # to midday BEFORE anything is built
+            tk = w.call("jawa/time_clock") or {}
+            if tk.get("ticksAbs") is None or 10 <= (tk["ticksAbs"] % 60000) / 2500.0 <= 13:
+                break
+            w.call("rimworld/step_game_ticks", ticks=2000, pauseFirst=True, timeoutMs=120000)
         print("site:", w.clear_site((ox, oz, W, H)), flush=True)
         for c in cells:
             for q in c["trench"]:
@@ -149,15 +165,23 @@ def main():
             kv = dict(x.split("=", 1) for x in t.split() if "=" in x)
             need((kv.get("progress") == kv.get("full")) == c["up"] and (kv.get("progress") == "0") != c["up"], c["name"] + " reads its state", t)
         w.call("jawa/kill_hostiles")
-        for _ in range(12):
-            tk = w.call("jawa/time_clock") or {}
-            if tk.get("ticksAbs") is None or 10 <= (tk["ticksAbs"] % 60000) / 2500.0 <= 14:
-                break
-            w.V_ticks = w.call("rimworld/step_game_ticks", ticks=2000, pauseFirst=True, timeoutMs=120000)
+        w.call("rimworld/step_game_ticks", ticks=120, pauseFirst=True, timeoutMs=120000)
+        import owner_review_stage as R
+        ops = []
+        for n, (r, k) in enumerate(stations(cells), 1):
+            two = [c for c in cells if c["row"] == r and c["col"] == k]
+            x0, x1 = two[0]["box"][0], two[1]["box"][0] + two[1]["box"][2]
+            ops.append(R.label_op(ox + (x0 + x1) // 2, oz + two[0]["box"][1] + two[0]["box"][3], "%d" % n, two[0]["name"].replace(" lowered", "")))
+        w.call("jawa/review_label", action="clear", tag="drawbridge_look")
+        need((w.call("jawa/review_label", action="add", ops="\n".join(ops), tag="drawbridge_look") or {}).get("success") is not False, "labels", "")
         for c in cells:      # the state after the clock moved: nothing lowered itself
             t = proof("ProofLeaf", P(c["deck"]))
             kv = dict(x.split("=", 1) for x in t.split() if "=" in x)
             need((kv.get("progress") == "0") != c["up"], c["name"] + " kept its state while the clock moved", t)
+    # a giant plant rooted outside the site leans over its edge rows: the margin is cleared too
+    need((w.call("jawa/destroy_batch", rects=";".join("%d,%d,%d,%d" % r for r in ((max(ox - 24, 1), max(oz - 24, 1), W + 48, 24),
+         (max(ox - 24, 1), oz + H, W + 48, 12), (max(ox - 24, 1), oz, min(24, ox - 1), H), (ox + W, oz, 24, H))), categories="Plant") or {}).get("success") is not False,
+         "the margin's plants cleared", "")
     import fw_walk_common as C
     out = a.out
     os.makedirs(out, exist_ok=True)
@@ -220,10 +244,12 @@ def faults(w, proof, ox, oz, need, fails):
     z2 = Z + 8
     dig(z2, 4)
     print(proof("ProofMakeDrawbridge", "%d,%d;%d,%d;steel;A" % (X, z2, X + 5, z2)))
-    w.call("jawa/spawn_batch", ops="RM_DrawbridgeWinch_Timber:%d,%d" % (X, z2 - 1), faction="player")
+    w.call("jawa/build_batch", ops="RM_DrawbridgeWinch_Timber:%d,%d" % (X, z2 - 1), faction="player")
+    there = [q.get("def") for q in (w.call("jawa/list_things", rect="%d,%d,1,1" % (X, z2 - 1), limit=9) or {}).get("things") or []]
+    need("RM_DrawbridgeWinch_Timber" in there, "the timber winch stands beside the steel hinge", there)
     kv, t = leaf(z2)
     res["TIMBER_WINCH_NO_STEEL"] = (need(kv.get("winch") == "False", "a timber winch beside a steel hinge", t), t)
-    w.call("jawa/spawn_batch", ops="RM_DrawbridgeWinch_Steel:%d,%d" % (X, z2 + 1), faction="player")
+    w.call("jawa/build_batch", ops="RM_DrawbridgeWinch_Steel:%d,%d" % (X, z2 + 1), faction="player")
     kv, t = leaf(z2)
     res["STEEL_WINCH_LINKS"] = (need(kv.get("winch") == "True", "can-fail: a steel winch does link", t), t)
     # 3 the order shows itself: the selected winch's readout names the order

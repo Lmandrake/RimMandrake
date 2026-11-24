@@ -922,7 +922,7 @@ namespace RimMandrake.FlowWorks.Pits
 				Thing t = j.targetA.Thing;
 				if (t != null && (t == l.winch || (t == far && j.count == index)))
 				{
-					atWinch = p.pather == null || !p.pather.Moving;
+					atWinch = p.Position.AdjacentTo8WayOrInside(t);   // where they stand, not whether the pather still counts a move
 					return p;
 				}
 			}

@@ -287,7 +287,7 @@ namespace RimMandrake.FlowWorks.Pits
 				double v = side.z > 0 ? -h : h;   // the southern long side
 				Slab(V(0, v, 0), V(length, v, 0), V(0, v, th), steel ? new Color(0.27f, 0.29f, 0.31f) : new Color(0.36f, 0.235f, 0.133f), y);
 			}
-			Slab(V(length, -h, 0), V(length, h, 0), V(length, -h, th), steel ? new Color(0.59f, 0.6f, 0.62f) : new Color(0.66f, 0.47f, 0.29f), y - Altitudes.AltInc * 0.2f);
+			Slab(V(length, -h, 0), V(length, h, 0), V(length, -h, th), steel ? new Color(0.5f, 0.51f, 0.53f) : new Color(0.52f, 0.36f, 0.22f), y - Altitudes.AltInc * 0.2f);
 		}
 
 		private static readonly Color Ink = new Color(0.06f, 0.05f, 0.04f);
@@ -297,7 +297,7 @@ namespace RimMandrake.FlowWorks.Pits
 		{
 			Vector3 ux = b - a, uz = c - a;
 			Vector3 mid = a + (ux + uz) * 0.5f;
-			Quad(mid, ux + ux.normalized * 0.05f, uz + uz.normalized * 0.05f, SolidColorMaterials.SimpleSolidColorMaterial(Ink), y - Altitudes.AltInc * 0.1f);
+			Quad(mid, ux + ux.normalized * 0.08f, uz + uz.normalized * 0.08f, SolidColorMaterials.SimpleSolidColorMaterial(Ink), y - Altitudes.AltInc * 0.1f);
 			Quad(mid, ux, uz, SolidColorMaterials.SimpleSolidColorMaterial(color), y);
 		}
 
@@ -548,7 +548,7 @@ namespace RimMandrake.FlowWorks.Pits
 			PrintRect(layer, art.PostEdge, new Vector3(back.x, postY, back.z + h * 0.5f), pw, h, 0f);
 			float z0 = front.z + h - 0.12f, z1 = back.z + h - 0.10f;
 			Material ink = MaterialPool.MatFrom(BaseContent.WhiteTex, ShaderDatabase.Cutout, Ink);
-			Printer_Plane.PrintPlane(layer, new Vector3(front.x, topY, (z0 + z1) * 0.5f), new Vector2(0.32f, z1 - z0), ink);
+			Printer_Plane.PrintPlane(layer, new Vector3(front.x, topY, (z0 + z1) * 0.5f), new Vector2(0.32f, z1 - z0), ink, 0f, false, null, null, 0f);
 			int m = Mathf.Max(1, Mathf.RoundToInt((z1 - z0) / 0.5f));
 			for (int k = 0; k < m; k++)
 			{
@@ -568,7 +568,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Vector3 f = o + step.ToVector3() * (length + 0.26f);
 			f.y = AltitudeLayer.FloorEmplacement.AltitudeFor();
 			Vector2 size = step.x == 0 ? new Vector2(r.width, 0.36f) : new Vector2(0.36f, r.width);
-			Printer_Plane.PrintPlane(layer, f, size + Vector2.one * 0.06f, MaterialPool.MatFrom(BaseContent.WhiteTex, ShaderDatabase.Cutout, Ink));
+			Printer_Plane.PrintPlane(layer, f, size + Vector2.one * 0.06f, MaterialPool.MatFrom(BaseContent.WhiteTex, ShaderDatabase.Cutout, Ink), 0f, false, null, null, 0f);
 			f.y += Altitudes.AltInc * 0.2f;
 			PrintRect(layer, DrawbridgeArtPaths.Footing, f, size.x, size.y, 0f, 0.55f);
 			float y = AltitudeLayer.Building.AltitudeFor();
@@ -593,7 +593,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Printer_Plane.PrintPlane(layer, at, new Vector2(w, h), m, rot, false, new[]
 			{
 				new Vector2(cut.U0, cut.V0), new Vector2(cut.U0, cut.V1), new Vector2(cut.U1, cut.V1), new Vector2(cut.U1, cut.V0),
-			});
+			}, null, 0f);   // no tilt: with the default top-vertex lift a tall piece cuts through a short one on the same layer
 		}
 
 		private static readonly Mesh[] leafSlices = new Mesh[DrawbridgeLeafPose.Slices];
