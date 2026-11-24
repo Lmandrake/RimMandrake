@@ -180,6 +180,35 @@ def t_waits_are_not_launched():
     chk(lambda: dec({"A": it(blocked=True)}) == ("blocked", []), "blocked: nothing")
 
 
+def t_a_passed_wait_gets_one_second_look():
+    past = dict(wait_until=NOW - 3600, wait_reason="three more launches", second_look=True)
+    rows, l, _ = run({"A": it(**past)})
+    chk(lambda: rows["A"]["decision"] == "launch" and l == ["A"] and rows["A"]["model"] == "opus"
+        and rows["A"].get("look") == "three more launches", "a wait passed on a lane item: one second look (%s)" % rows["A"])
+    ended = {"A": {"live": [], "ended": ["u1"]}}
+    own = att({"unit": "u1", "at": NOW - 90000, "failed": None, "next": None, "kind": "shape"})
+    rows, l, _ = run({"A": it(**past)}, st=own, runs=ended)
+    chk(lambda: rows["A"]["decision"] == "launch" and rows["A"]["run_n"] == 2,
+        "the wait that its own run left counts as that run's next act (%s)" % rows["A"]["why"])
+    two = att({"unit": "u0", "at": NOW - 95000, "failed": None, "next": "x"},
+              {"unit": "u1", "at": NOW - 90000, "failed": None, "next": None})
+    rows, l, _ = run({"A": it(**past)}, st=two, runs={"A": {"live": [], "ended": ["u0", "u1"]}})
+    chk(lambda: rows["A"]["decision"] == "stopped" and rows["A"].get("need") and not l,
+        "the two-run rule holds on a second look, and says so (%s)" % rows["A"]["why"])
+    after = att({"unit": "u1", "at": NOW - 60, "failed": None, "next": None})
+    rows, l, _ = run({"A": it(**past)}, st=after, runs=ended)
+    chk(lambda: rows["A"]["decision"] == "stopped" and not l,
+        "a run since the date is the look: its end decides (%s)" % rows["A"]["decision"])
+    chk(lambda: dec({"A": it(wait_until=NOW - 3600)}) == ("reshape", []), "an old item with no name: a date launches nothing")
+    chk(lambda: dec({"A": it(**past)}, account=(False, "drain")) == ("account_hold", []), "every gate still stops it")
+    chk(lambda: dec({"A": it(**dict(past, route={"who": "owner", "ask": "a", "resumes": "b"}))})[0] == "routed",
+        "a routed item gets no look")
+    b = LD().brief_text("A", it(**past), {"run_n": 2, "look": "three more launches"})
+    chk(lambda: "second look" in b and "three more launches" in b, "the brief says what the wait was for")
+    chk(lambda: "second look" not in LD().brief_text("A", it(), {"run_n": 1}), "a plain Work brief has no second look")
+
+
+
 def t_a_block_whose_predecessor_is_done_is_not_a_block():
     import model as LM
     def ev(**k):
@@ -246,11 +275,49 @@ def t_the_lane_has_its_own_slots_and_chain_rule():
     chk(lambda: dec({"A": it(depth=2)}) == ("chain_stop", []), "chain depth")
     rows, l, _ = run({"A": it(), "B": it(), "C": it()})
     chk(lambda: l == ["A", "B"] and rows["C"]["decision"] == "slots_full", "two launches in one tick, then full")
+    spare = dict(CFG, load_line=28, load_per_run=2)
+    five = {k: it() for k in "ABCDE"}
+    rows, l, _ = run(five, cfg=spare, load=21.0)
+    chk(lambda: l == ["A", "B", "C", "D"] and rows["E"]["decision"] == "slots_full" and "28" in rows["E"]["why"],
+        "past its own slots the lane launches while the load, and its launches of this tick, stay under the line (%s)" % l)
+    chk(lambda: dec(five, iid="C", cfg=spare, load=40.0) == ("slots_full", ["A", "B"]),
+        "over the line the lane keeps its own slots and takes no more")
+    chk(lambda: dec(five, iid="C", cfg=spare, load=24.0)[1] == ["A", "B"], "24 + two launches of 2 is at the line")
+    chk(lambda: dec(five, iid="C", cfg=spare, load=None) == ("slots_full", ["A", "B"]),
+        "a load that could not be read is no spare room")
+    chk(lambda: "could not be read" in run(five, cfg=spare, load=None)[0]["C"]["why"], "and the row says so")
+    chk(lambda: dec({"A": it(), "B": it(), "C": it()}, iid="C", runs=runs, cfg=spare, load=1.0) == ("launch", ["C"]),
+        "live lane runs past max_live: the load decides")
     w = {"A": {"caused_by": None}, "B": {"caused_by": "A"}, "C": {"caused_by": "B"}}
     st = {"items": {"A": {"attempts": [{"unit": "u1", "failed": None}]},
                     "B": {"attempts": [{"unit": "u2", "failed": None}, {"unit": None, "failed": "never started"}]}}}
     chk(lambda: LD().chain_depth("C", lambda i: w.get(i, {}).get("caused_by"), st) == 2,
         "chain depth counts spent lane runs on the ancestors only")
+
+
+def t_a_lane_run_on_a_mod_takes_no_mod_slot():
+    import maturation_dispatch as MD
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+    import maturation_now as MN
+    v = MN.run_view({"unit": "u-lane", "item": "X", "status": "running", "at": NOW, "next_act_owner": "list_dispatch"}, NOW)
+    chk(lambda: v.get("lane") == "list_dispatch", "a run's view carries the lane that launched it (%s)" % v.get("lane"))
+    f = {"FlowWorks": {"live_units": ["u-drive", "u-lane"], "lane_units": ["u-lane"]},
+         "Pyrelands": {"live_units": ["u-pyre"], "lane_units": []}, "ExplosiveKnockback": {"live_units": []}}
+    chk(lambda: MD.occupancy(f) == 2, "the mod tick's slots count mod runs, not the list lane's (%s)" % MD.occupancy(f))
+    chk(lambda: MD.occupancy({"A": {"live_units": MD.UNM, "lane_units": ["u"]}}) is None,
+        "an unreadable mod is still an unknown occupancy")
+    keep = MD.MN.gather, MD.M.build_facts, MD.M.load
+    MD.MN.gather = lambda root, live=True: {"mods": [{"name": "FlowWorks", "boxes": {}, "runs": [
+        dict(v, unit="u-lane", live=True, end=None), dict(v, unit="u-drive", lane=None, live=True, end=None),
+        dict(v, unit="u-old", live=False, end=NOW)]}]}
+    MD.M.build_facts = lambda root, mod: {"mod": mod, "stage": "designer"}
+    MD.M.load = lambda root, mod: {"stage": "designer"}
+    try:
+        g = MD.gather(REPO, {"advancing": ["FlowWorks"]})["FlowWorks"]
+    finally:
+        MD.MN.gather, MD.M.build_facts, MD.M.load = keep
+    chk(lambda: g["live_units"] == ["u-lane", "u-drive"] and g["lane_units"] == ["u-lane"],
+        "gather: the lane's run is live on the mod, and named as the lane's (%s, %s)" % (g.get("live_units"), g.get("lane_units")))
 
 
 def t_a_claimed_item_is_not_the_lanes():
@@ -397,6 +464,8 @@ def main():
               t_a_block_whose_predecessor_is_done_is_not_a_block,
               t_the_gates_launch_nothing,
               t_the_lane_has_its_own_slots_and_chain_rule,
+              t_a_lane_run_on_a_mod_takes_no_mod_slot,
+              t_a_passed_wait_gets_one_second_look,
               t_a_claimed_item_is_not_the_lanes,
               t_oldest_blocking_item_first,
               t_the_run_owns_no_continuation,

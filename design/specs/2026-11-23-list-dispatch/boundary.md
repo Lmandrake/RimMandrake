@@ -1,6 +1,7 @@
 # BOUNDARY: the List Pipeline's Waiting, Ready and Work stages (list_dispatch.py), Design Version 0.1.0
 
 Code: `src/RimMandrake/rimflow/list_dispatch.py` (all of it), `src/RimMandrake/rimflow/list_dispatch.json`,
+`maturation_dispatch.occupancy` (the lane's runs only),
 `src/RimMandrake/Utils/systemd/rm-list-dispatch.{service,timer}`, the `list_dispatch` family in
 `src/RimMandrake/rimflow/control.py`, `detached_helper.py launch --next-act-owner` and the one line in
 `left_open_continue.plan` that reads it.
@@ -55,9 +56,14 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   check that still fails), `why_not_recovered` and `smallest_act`, all non-empty. The tick writes it once as a Needs
   Conductor line, and not again until the item changes.
 - **waits-are-not-launched.** An item that waits on an open item reads `waits_on` and names that item. An item with a
-  dated wait in the future reads `waiting`. An item whose dated wait has passed and whose check still fails reads
-  `reshape` (plan: a date never launches old work; the Shape stage, step 4, takes it), and an item with no check that is
+  dated wait in the future reads `waiting`. An old item that nobody named, whose dated wait has passed and whose check
+  still fails, reads `reshape` and launches nothing (plan: a date never launches old work). An item with no check that is
   due for Shape goes on to `shape`. A blocked item reads `blocked`.
+- **a-passed-wait-gets-one-second-look.** A lane item with a check (named for the lane, or filed at or after `shape_from`)
+  whose dated wait passed and whose check still fails gets one Work run (opus) after that date, whose brief names what the
+  wait was for and asks first if the work is still worth the touch. It counts as a Work run: after `max_runs_per_item` the
+  item reads `stopped`, with its Needs Conductor line. A lane run launched since the date was that look. Measured
+  2026-11-24: such an item read `reshape` for good and no program ever launched it.
 - **a-block-whose-predecessor-is-done-is-not-a-block.** `block_facts` asks `priority.block_holds`, the one rule of every
   offer path. When each ticket that the block names has reached its level, the item reads neither `waits_on` nor
   `blocked` and the lane works it. A superseded predecessor is followed to its successor. A block of another kind, or on
@@ -67,10 +73,15 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   `family:list_dispatch`, the item or its mod), on an item whose mod is held by the owner, under an account hold (the plan's drain or the Dispatcher's pick), when
   the control store cannot be read, or when the clone pool refuses a new clone. Each reads its own decision. Disabled, the pause and `pipe off` (or a
   control store that cannot be read) also stop its closes and its adoptions, and the tick runs no check under the pause.
-- **the-lane-has-its-own-slots-and-chain-rule.** At most `max_live` live runs on lane items. Mod and nightly-test runs do
-  not count. An item whose chain of causes (its `caused_by` ancestors) already holds `max_chain_depth` lane runs reads
+- **the-lane-has-its-own-slots-and-chain-rule.** The lane keeps `max_live` slots for lane items at any load. Past them it
+  launches only while the larger of the 1 and 5 minute load averages, plus `load_per_run` for each launch of the same
+  tick, is under `load_line`; a load that cannot be read is no spare room. Mod and nightly-test runs do not count. An item whose chain of causes (its `caused_by` ancestors) already holds `max_chain_depth` lane runs reads
   `chain_stop`. Live runs on items that carry no check do not fill the lane's slots, except Shape runs on items due for
   Shape, which do.
+- **a-lane-run-on-a-mod-takes-no-mod-slot.** The mod tick (`maturation_dispatch.occupancy`) does not count a live run that
+  this lane launched (`next_act_owner` list_dispatch) in its own `max_live`. The run is still live on its mod, so no mod
+  run starts beside it on the same files. Measured 2026-11-24: lane runs on FlowWorks held the Gimme Some Slack walk brief
+  at slots_full.
 - **a-claimed-item-is-not-the-lanes.** An item that is `doing` under a live lease, with no lane run on it, reads
   `claimed`: it is not launched and not adopted. The lease of the lane's own run does not stop its second run.
 - **oldest-blocking-item-first.** Items are taken in this order: an item that another open item waits on first, then the

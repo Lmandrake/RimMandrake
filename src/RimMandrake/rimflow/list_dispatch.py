@@ -25,14 +25,16 @@ oldest filing first, one decision:
                   nothing launches; the party that answers shapes the item again (list_shape.py)
   live            a detached run is live on it
   waits_on | blocked | waiting | reshape   it waits on an open item | is blocked | has a dated wait ahead | its dated
-                  wait passed and the check fails (a date never launches old work; Shape, step 4, takes it). A due item
-                  with no check whose wait passed reads shape
+                  wait passed and the check fails on an old item that nobody named (a date never launches old work). A due
+                  item with no check whose wait passed reads shape. A lane item (named, or filed after shape_from) whose
+                  wait passed gets one second look: a Work run, opus, inside max_runs_per_item
   held | off      its mod is held by the owner | a `pipe off` (all, family:list_dispatch, family:detached, item, mod)
   stopped         a run ended on its own merits and the check fails with no named next act, or after max_runs_per_item
                   such runs, or a launch refused for its form: a Needs Conductor line, once
   system_wait     the last run died of a cause outside the work, or max_never_started launches in a row never started:
                   nothing is spent (failure_class), the next launch waits SYSTEM_WAIT_S
   disabled | pipeline_paused | account_hold | chain_stop | slots_full | pool_full   the gates
+                  slots_full: max_live lane runs are live, and the load average plus this tick's launches is at load_line
   launch          one detached helper (detached_helper.py launch --next-act-owner list_dispatch), sonnet when the check
                   runs a selftest or acceptance script, else opus
 A run's end is read from the item: closed (done), a wait (Waiting), a `LEFT OPEN:` note (its next act: one more run),
@@ -197,6 +199,34 @@ def pick_model(cfg, effect):
 
 # ---- the decision ---------------------------------------------------------------------------------------------------
 
+def slot_free(cfg, live_total, new, load):
+    """-> (free, why not). The lane's own max_live slots always; past them, spare room on the machine: the load average
+    plus load_per_run for each launch of this tick stays under load_line. load None: it could not be read, no spare."""
+    most = int(cfg.get("max_live", 2))
+    if live_total < most:
+        return True, None
+    line = cfg.get("load_line")
+    why = "%d live list-lane runs, the lane's own slots are %d" % (live_total, most)
+    if not line:
+        return False, why
+    if load is None:
+        return False, why + "; the load average could not be read, so no spare room is counted"
+    est = load + float(cfg.get("load_per_run", 0)) * new
+    if est < float(line):
+        return True, None
+    return False, "%s; load average %.1f and %d launch(es) of this tick reach the machine's line of %g" % (
+        why, load, new, float(line))
+
+
+def load_now():
+    """-> probe_result: the larger of the 1 and 5 minute load averages, or could_not_look(cause)."""
+    import probe_result as PR
+    try:
+        return PR.value(max(os.getloadavg()[:2]))
+    except OSError as e:
+        return PR.could_not_look("%s" % e)
+
+
 def _need(iid, it, why, smallest):
     return {"outcome": "%s: its outcome check %s still fails (%s)" % (iid, it.get("effect"), _one(it.get("out"), 160))
             if it.get("effect") else "%s: no program can close it; it has neither an outcome check nor a route" % iid,
@@ -315,12 +345,16 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("blocked", "the item is blocked: %s" % (it.get("blocked_reason") or "no reason given"))
             continue
         wu = it.get("wait_until")
-        if wu:
+        # a wait that passed on a lane item: one second look, unless a lane run launched since the date was that look
+        since = bool(wu) and any((a.get("at") or 0) >= wu for a in done)
+        look = bool(wu) and wu <= now and not shape and it.get("second_look") and not since
+        if wu and not look and not (since and wu <= now):
             if wu > now:
                 put("waiting", "it waits until %s: %s" % (pac(wu), it.get("wait_reason") or "no reason given"))
             elif not shape:     # a due item with no check goes on to Shape: that is the second look
-                put("reshape", "its wait to %s passed and the check still fails; a date never launches old work, so the "
-                               "Shape stage (plan step 4) looks at it again" % pac(wu))
+                put("reshape", "its wait to %s passed and the check still fails; it is an old item that nobody named, and a "
+                               "date never launches old work: name it (`rimflow shape %s --enter`) for a second look"
+                    % (pac(wu), iid))
             if wu > now or not shape:
                 continue
         if it.get("held"):
@@ -357,7 +391,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
                     "read the runs' notes on %s, then do the rest by hand, put a wait on it, drop it, or "
                     "`list_dispatch.py clear %s --why ...` for one more run" % (iid, iid))
                 continue
-            if last is done[-1] and not last.get("next"):
+            if last is done[-1] and not last.get("next") and not look:
                 stop("run %s ended with no LEFT OPEN: note (no next act of its own) and no wait, and the check still "
                      "fails" % last.get("unit"),
                      "read run %s's note on %s, then do the rest by hand, put a wait on it, drop it, or "
@@ -392,14 +426,17 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("chain_stop", "its chain of causes already holds %s lane runs; %s is the most" % (
                 it.get("depth"), cfg.get("max_chain_depth", 2)))
             continue
-        if live_total >= int(cfg.get("max_live", 2)):
-            put("slots_full", "%d live list-lane runs, the most is %s" % (live_total, cfg.get("max_live", 2)))
+        free, full = slot_free(cfg, live_total, len(launches), (facts or {}).get("load"))
+        if not free:
+            put("slots_full", full)
             continue
         if pool and not it.get("clone_exists"):
             put("pool_full", pool)
             continue
         if shape:
             model, mwhy = "opus", "a Shape run is a judgement, and does the work too when the item is small"
+        elif look:
+            model, mwhy = "opus", "a second look is a judgement"
         else:
             model, mwhy = pick_model(cfg, it.get("effect"))
         cap = cfg.get("%s_cap_usd" % model, _shipped().get("%s_cap_usd" % model))   # a partial cfg keeps the shipped cap
@@ -412,8 +449,11 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("shape", "Shape run: %s (%s); %s" % (model, mwhy, it.get("shape_why") or "due for Shape"))
         else:
             row.update(model=model, cap=cap, run_n=len(work) + 1)
-            put("launch", "Work run %d: %s (%s); the check fails: %s" % (len(work) + 1, model, mwhy,
-                                                                         _one(it.get("out"), 120)))
+            if look:
+                row["look"] = it.get("wait_reason") or "no reason given"
+            put("launch", "Work run %d%s: %s (%s); the check fails: %s" % (
+                len(work) + 1, ", a second look (its wait to %s passed)" % pac(wu) if look else "", model, mwhy,
+                _one(it.get("out"), 120)))
         launches.append(iid)
     return rows, launches
 
@@ -562,7 +602,9 @@ def gather(st, now=None, root=None):
              "effect": x.effect, "waits_on": waits, "events": len(x.history), "title": x.title,
              "filed": LM.epoch(x.created_at) if x.created_at else None, "blocks_others": iid in waited_on,
              "caused_by": x.caused_by, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
-             "shape_size": sf["size"], "shape_at": sf["shape_at"], "shape_unit": sf["shape_unit"]}
+             "shape_size": sf["size"], "shape_at": sf["shape_at"], "shape_unit": sf["shape_unit"],
+             "second_look": bool(sf["named"] or (sf["filed"] and cfg.get("shape_from")
+                                                 and sf["filed"] >= LS._epoch(cfg["shape_from"])))}
         if x.state == "doing" and LM.lease_status(x, now) == "live":
             d["claimed"] = "doing under %s, whose lease is live to %s" % (x.owner, (x.lease or {}).get("expires"))
         if x.wait_until:
@@ -598,8 +640,9 @@ def gather(st, now=None, root=None):
         d["depth"] = chain_depth(iid, lambda i: (w.items.get(i).caused_by if w.items.get(i) else None), st)
         d["clone_exists"] = _clone_exists(iid)
     live = sum(len(r["live"]) for r in runs.values())
+    load = load_now()
     return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused,
-            "pool": _pool(), "live_lane": live}
+            "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None}
 
 
 def account_gate(gate=None, drain=None, now=None):
@@ -623,7 +666,7 @@ Its outcome check, which fails now:   {check}
 What the check printed: {out}
 
 The check is the judge of "done". The item is done when the check holds on origin/main, and not before.
-
+{look}
 Steps:
 0. Start the item, before anything else:
    python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "list lane Work run (list_dispatch.py)" --publish
@@ -644,7 +687,16 @@ Steps:
      someone else's (the owner's, the Conductor's, a date).
    Do not file a new item for your own next step.
 """.format(item=iid, n=row.get("run_n", 1), title=it.get("title") or "-", check=it.get("effect"),
-           out=_one(it.get("out"), 600) or "(nothing)")
+           out=_one(it.get("out"), 600) or "(nothing)",
+           look=LOOK % _one(row["look"], 400) if row.get("look") else "")
+
+
+LOOK = """
+This run is a second look. The item had a dated wait, the date passed, and the check still fails. The wait was for: %s
+First find if that thing happened, and if the work is still worth the touch (CLAUDE.md, Touching code has a cost). Not
+worth it: drop the item with the reason. Already done by other work: close it with that sha. Not happened yet, and only
+someone else can make it happen: put a new dated wait that names who and what. Otherwise do the work now.
+"""
 
 
 def launch(item, model, cap, brief, seat, mod):

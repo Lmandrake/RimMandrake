@@ -333,6 +333,7 @@ def gather(root, cfg, live=True):
         runs = m.get("runs", UNM) if m else []
         if isinstance(runs, list):
             f["live_units"] = [r["unit"] for r in runs if r.get("live")]
+            f["lane_units"] = [r["unit"] for r in runs if r.get("live") and r.get("lane") == LIST_LANE]
             ends = [r["end"] for r in runs if isinstance(r.get("end"), (int, float))]
             f["last_end"] = max(ends) if ends else None
             box3 = ((m.get("boxes") or {}).get("3") or {}).get("runs") or []
@@ -750,13 +751,18 @@ def one_run_fence(facts, rows, launches):
     return launches
 
 
+LIST_LANE = "list_dispatch"     # detached_helper's next_act_owner on every List Pipeline run
+
+
 def occupancy(facts):
     """-> the live runs on advancing mods, or None when any mod's live runs cannot be read: an unknown occupancy is
-    never counted as zero (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH; it used to skip a non-list and launch)."""
+    never counted as zero (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH; it used to skip a non-list and launch). A List Pipeline
+    run on a mod's list item keeps the mod's files (it is live on the mod) and takes no mod slot: that lane has its own
+    (design/specs/2026-11-23-list-dispatch/boundary.md, a-lane-run-on-a-mod-takes-no-mod-slot)."""
     occ = [f.get("live_units") for f in facts.values()]
     if not all(isinstance(x, list) for x in occ):
         return None
-    return sum(len(x) for x in occ)
+    return sum(len(set(f["live_units"]) - set(f.get("lane_units") or ())) for f in facts.values())
 
 
 def no_slot(cfg, live_total, put):

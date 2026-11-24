@@ -47,9 +47,9 @@ skills or models, or the run needs help. Asking for help (a `LEFT OPEN:` note, a
 - **a-route-that-is-answered.** Nothing reads a route's answer. The party that answers re-shapes the item (`rimflow
   shape` again, the route replaced by a check, or dropped); until then the item's check fails and the lane reads it
   as routed or failing.
-- **a-reshape-after-a-dated-wait.** An item whose dated wait passed and whose check still fails reads `reshape` in the
-  lane and is not launched (a date never launches old work). A Shape run for that second look is not built. (An item
-  with no check is different: see a-passed-wait-never-keeps-a-due-item-out-of-shape.)
+- **a-second-shape-after-a-dated-wait.** A lane item with a check whose dated wait passed gets its second look as a Work
+  run, not as a Shape run (`design/specs/2026-11-23-list-dispatch/boundary.md`, a-passed-wait-gets-one-second-look). An
+  old item that nobody named reads `reshape`.
 - **the-fresh-reader-of-pipeline-code.** A Shape-and-Work run that changes pipeline code owes one fresh reader (CLAUDE.md
   §Code is clean). The lane does not launch that reader.
 - **old-items-unnamed.** An item filed before `shape_from` never enters Shape by itself (plan: no hand migration of

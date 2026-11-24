@@ -498,6 +498,8 @@ def t_a_reshape_by_another_party_starts_the_run_count_again():
     g = LD().gather({"items": {}})
     d = (g["items"] or {}).get(iid) or {}
     chk(lambda: d.get("shape_at") and "shape_unit" in d, "gather hands both to decide (%s)" % d)
+    chk(lambda: d.get("second_look") is True, "gather: an item filed since shape_from may have a second look (%s)" % d)
+    chk(lambda: isinstance(g.get("load"), float), "gather hands the load average to decide (%s)" % g.get("load"))
 
 
 def t_status_lists_every_item_due_for_shape():
