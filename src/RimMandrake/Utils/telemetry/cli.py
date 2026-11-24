@@ -428,7 +428,8 @@ def cmd_mark(a) -> int:
 
 
 def cmd_tier(a) -> int:
-    """Arms the in-game tier through the bridge. Refuses without the bridge hold (CLAUDE.md: one driver)."""
+    """Arms the in-game tier through the bridge. Hold the bridge first (CLAUDE.md: one driver). This verb does not check
+    for your hold; rimbridge_client refuses the call when another live process holds the driver lock."""
     utils = os.path.dirname(CODE_DIR)
     sys.path.insert(0, utils)
     try:

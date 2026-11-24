@@ -23,9 +23,10 @@
 - **Unknown is not failure.** A bridge row with `success` absent (None) was counted as a failure:
   `get_game_info` read 1572/1572 "failed". Fixed `7be154332c` (stored NULL, judged by `status`);
   when `success` is unknown, judge by status.
-- **Blind spots for a live test (2026-10-13).** No pawn vitals, colonist or hostile series yet
-  (`TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO`); the health observer is off until the overhead test;
+- **Blind spots for a live test (2026-10-13).** The pawn vitals, colonist and hostile series (`rm_game_pawns_*`,
+  `TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO`) have points only while the vitals monitor is armed (`jawa/vitals` with
+  `action=arm`, or `jawa/safe_advance`, which arms it); the health observer is off until the overhead test;
   `bridge_calls.jsonl` carries tool names and timings only, no args or results. A colony can die mid-pass
-  with every telemetry row green — pass 7 did. Until vitals land, read colonists and letters yourself
+  with every telemetry row green — pass 7 did, before those series existed. When the monitor is not armed, read colonists and letters yourself
   around every time advance, and watch `bridge_calls.jsonl` live during a pass (`Monitor`).
 - **A loop has access to an instrument only in principle until its prompt names it.** 19 passes ran no telemetry command, and the database reads Archmagi only.
