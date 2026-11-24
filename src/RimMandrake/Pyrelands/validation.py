@@ -5367,8 +5367,8 @@ def regrow_rate_verdict(series, gd):
 
 
 def _ten_embergrass_regrow(t):
-    """sc_grass_regreens: three patches burned together, aged past the fresh-burn bonus (freshBurnDays held at
-    REGROW_BONUS_DAYS for the row, so the bonus is spent in a day, not a week); one is then watered
+    """sc_grass_regreens: three patches burned together, aged past 7 days (no fresh-burn bonus, and
+    ExplosiveGrowth's fresh ash is spent: with the bonus held to one day, visit 9, both patches matured inside a day); one is then watered
     (WaterShallow beside it); ember grass sown on the dry and the watered patch, Plant_Grass on dry ash; daily growth for
     5 days and a burst count (regrow_rate_verdict: rates read before maturity, a burst is a day the patch's growth fell).
     Dry ember grass >= its vanilla rate (Plant_Grass on the same dry ash scaled by growDays), watered > dry, bursts on
@@ -5377,7 +5377,7 @@ def _ten_embergrass_regrow(t):
     _independent(t)
     with _comp(t, "regrow_dry_watered_vanilla"):
         _pad(t, TEN_PAD_GRASS)
-        _set(t, dict(dict((f, False) for f in ISOLATION_OFF), freshBurnDays=REGROW_BONUS_DAYS))
+        _isolate(t)
         t.clear_area(size=TEST_SIZE)
         x, z = t.anchor
         patches = {"dry": (x - 9, z - 2, 4, 4), "watered": (x - 2, z - 2, 4, 4), "vanilla": (x + 5, z - 2, 4, 4)}
@@ -5402,7 +5402,7 @@ def _ten_embergrass_regrow(t):
             _fire(t, r)
         _wait(t, 2 * TEN_HOUR)
         _extinguish(t)
-        _wait(t, int(REGROW_BONUS_DAYS * TEN_DAY) + TEN_HOUR)   # past freshBurnDays: the bonus is spent (read back below)
+        _wait(t, 7 * TEN_DAY + TEN_HOUR)   # past 7 days: the freshBurnDays bonus is spent
         t.bridge_call("jawa/set_terrain", x=x - 3, z=z - 2, terrainDef="WaterShallow", width=1, height=4, layer="top")
         _wait(t, 2600)                     # a full watering sweep
         cells = dict((k, _probe(t, r[0] + 1, r[1] + 1)) for k, r in patches.items())
@@ -5424,14 +5424,14 @@ def _ten_embergrass_regrow(t):
             near = (t.bridge_call("jawa/list_pawns", rect=_rs((x - 15, z - 8, 30, 16)), limit=200) or {}).get("pawns") or []
             seen.append([(pw.get("kindDef"), pw.get("x"), pw.get("z")) for pw in near if not pw.get("isPlayer")])
         if _live(t):
-            _note(t, "patch cells after the bonus (burnTick, watered, bonus)", cells)
+            _note(t, "patch cells after 7 days (burnTick, watered, bonus)", cells)
             _note(t, "wild pawns within 6 cells of the patches at each daily read", seen)
             if cells["dry"].get("watered") or cells["vanilla"].get("watered") or not cells["watered"].get("watered"):
                 _unmeasured(t, "the patches are not dry/watered as staged: %r" % cells)
             if any(str(c.get("ashField")) != "True" for c in cells.values()):
                 _unmeasured(t, "a patch is not ash-field ground (the scene asks for deep ash): %r" % cells)
             if any(float(c.get("bonus") or 0) > 0 for c in cells.values()):
-                _unmeasured(t, "a patch still carries the fresh-burn bonus after it was spent: %r" % cells)
+                _unmeasured(t, "a patch still carries the fresh-burn bonus after 7 days: %r" % cells)
             if any(str(c.get("burnTick")) in ("-1", "None") for c in cells.values()):
                 _unmeasured(t, "a patch was never burned (burnTick -1): %r" % cells)
             if any(v is None for s in series.values() for v in s):
@@ -5452,7 +5452,6 @@ def _ten_embergrass_regrow(t):
 PLANT_REGROW_WET_OFF_ENV = "PYRE_PLANT_REGROW_WET_ROOTS_OFF"
 PLANT_REGROW_NO_RING_ENV = "PYRE_PLANT_REGROW_NO_RING"   # planted state: grazers may reach the patches
 REGROW_PART_ENV = "PYRE_REGROW_PART"   # "growth": a planted run of this row alone; the chain's other rows do not run
-REGROW_BONUS_DAYS = 1.0
 PLANT_VENOM_TEND_WRONG_ENV = "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT"   # planted state: the tend lands on the untended patient   # planted state: the ash field's water switched off at sowing
 
 
@@ -6266,7 +6265,9 @@ PLANT_BURNLINE_TOGGLE_IGNORED_ENV = "PYRE_PLANT_BURNLINE_TOGGLE_IGNORED"   # pla
 # the other fire sources this control holds off, so that a fire after the window can only be the burn line's own relight
 # (KeepTheBurnAlive). burnLineEnabled and fireClockEnabled are independent switches (MapComponent_BurnLine, MOD_OPTIONS_
 # RETROFIT_1): visit 3's control switched off the burn line alone, the fire clock lit its fronts, and 161 fires read FAIL.
-OFF_CONTROL_HOLDS = ("fireClockEnabled", "fireHawkSpreadEnabled")
+# furnaceThermalEnabled: SITE (visit 9, 2026-11-24): the site's two furnace-beasts set the grass they sleep in alight, which the
+# control read as a burn line that relit (34 fires; off_control_source.py: the first fire one cell from a beast).
+OFF_CONTROL_HOLDS = ("fireClockEnabled", "fireHawkSpreadEnabled", "furnaceThermalEnabled")
 # HARNESS (visit 4, 2026-11-21): the quiet window plus a few watch intervals fits ONE reseed attempt (KeepAlive retries
 # every StandingBurnRetryTicks 2500, the lawful-cell search takes 40 random tries), so a planted run whose one attempt
 # found no cell read 0 fires and the control could not fail (visit 3). Four more retries; with the toggle off nothing else
@@ -6294,7 +6295,7 @@ def _burn_line_off_control(t):
             _set(t, dict([("burnLineEnabled", True)] + [(k, str(v) == "True") for k, v in prior.items()]))
             t.bridge_call("jawa/weather_set", unlock=True)
         if _live(t):
-            _note(t, "burnLineEnabled %s, fire clock and hawk spread held off, weather Clear, map extinguished: "
+            _note(t, "burnLineEnabled %s, fire clock, hawk spread and furnace-beast bed fire held off, weather Clear, map extinguished: "
                   "free-standing Fire after the window" % planted, n)
             if n:
                 _fail("%d free-standing fires after the window with burnLineEnabled %s and every other fire source held "

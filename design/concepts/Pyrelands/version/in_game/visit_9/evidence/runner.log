@@ -49,3 +49,22 @@ START b3a 2026-11-24 10:20:21
 DONE script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/owed_text.py reload_rc=0 rc=0 28s 10:20:49
 END b3a 2026-11-24 10:20:49
 START b3b 2026-11-24 10:20:49
+DONE embergrass_regrow@growth_real reload_rc=0 rc=1 1079s 10:38:48
+SKIPPED embergrass_regrow@growth_wet_off (skip) 10:38:48
+SKIPPED embergrass_regrow@growth_no_ring (skip) 10:38:48
+END b3b 2026-11-24 10:38:48
+START b3c 2026-11-24 10:38:48
+SKIPPED grass_cover,embergrass_regrow@regrow2 (later) 10:38:49
+SKIPPED furnace_warmth (later) 10:38:49
+SKIPPED fire_sense (later) 10:38:49
+SKIPPED animal_census (later) 10:38:49
+END b3c 2026-11-24 10:38:49
+START b4 2026-11-24 10:38:51
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/off_control_source.py@off_src reload_rc=skipped rc=0 210s 10:42:21
+DONE HOLD_FURNACE=1:+script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/off_control_source.py@off_src_furnace reload_rc=skipped rc=0 203s 10:45:44
+END b4 2026-11-24 10:45:44
+START b5 2026-11-24 10:46:45
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/off_control_source.py@off_src131 reload_rc=skipped rc=0 142s 10:49:07
+DONE HOLD_FURNACE=1:+script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/off_control_source.py@off_src131_furnace reload_rc=skipped rc=0 407s 10:55:54
+END b5 2026-11-24 10:55:54
+START b6 2026-11-24 10:55:54

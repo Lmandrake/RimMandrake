@@ -1,0 +1,10 @@
+holds ['burnLineEnabled', 'fireClockEnabled', 'fireHawkSpreadEnabled'] pawns {'RM_Flamefang': 2, 'RM_FireWasp': 5, 'RM_Ashwallow': 11, 'RSW_Nuna': 3, 'RM_Barbslinger': 1, 'RSW_Zeer': 4, 'RSW_Orray': 1, 'RM_FurnaceBeast': 2, 'RSW_Anooba': 8, 'RM_FireHawk': 2, 'Colonist': 3}
+after extinguish 0
+247 advance None
+NO FIRE in 65000 ticks
+burnLineEnabled True
+fireClockEnabled True
+fireHawkSpreadEnabled True
+[bridge split] 208.3 s wall: load 0.0 / ticks 149.7 / reads 10.7 / other 0.9 / outside calls 47.0 s
+[bridge split] WARN 262 calls of jawa/safe_advance (149.7 s): batch them
+[bridge split] WARN 261 calls of jawa/list_things (7.6 s): batch them
