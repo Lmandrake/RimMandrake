@@ -11,16 +11,16 @@ holds the rule from now on is `src/RimMandrake/Utils/time_budget_lint.py` (`boun
 
 | ratio (budget / longest real run) | budgets |
 |---|---|
-| under 1.5 | 39 |
+| under 1.5 | 38 |
 | 1.5 to under 3 | 12 |
-| 3 to under 10 | 36 |
+| 3 to under 10 | 37 |
 | 10 or more | 142 |
 | UNMEASURED: no record gives the time | 270 |
 
-- **"Within 10%" is true of 27 budgets** (ratio 1.10 or less), and it is worse than he said: most of these stood under the
-  real run. 12 of the 27 rest on an upper bound (the time of a whole that holds the work), so their true ratio may be
+- **"Within 10%" is true of 27 budgets** (ratio 1.10 or less), and it is worse than he said: 17 of these stood
+  under the longest real run. 12 of the 27 rest on an upper bound (the time of a whole that holds the work), so their true ratio may be
   higher. They are the first rows of the next table.
-- 15 of the 39 rows under 1.5 rest on an upper bound. A longest run that a budget cut is a floor: the true ratio is lower.
+- 15 of the 38 rows under 1.5 rest on an upper bound. A longest run that a budget cut is a floor: the true ratio is lower.
 - 159 of 499 budgets name no danger at the number.
 - The machine's load is the other half of the answer. `selftest_maturation_autonomy.py` took 36 s alone (2026-11-15) and
   599 s at load 45 (2026-11-24). A budget of 5 times the idle run is a budget of 0.3 times the loaded run.
@@ -56,7 +56,7 @@ run and stand at 1 to 2 times it. An agent measured the longest run on that day 
 | Utils/systemd/metronome_phases.json:6 | limit_s | 20 | the call, run or phase is ended | reason text in the file names the past runs, no danger | 97 | 5.0 | beats.jsonl, 14 d; 97 s is the old timer (2026-11-06) | 0.21 | 28 | one Dispatcher tick cut, each | raised to 1000 |
 | Utils/pipeline_tests.json:4 | timeout_s | 180 | the call, run or phase is ended | NONE | 599 | 17 to 104 (one run of 8 tests, load 13 to 45) | this run, 2026-11-24; reaches: agent transcripts, 14 d | 0.30 | 202 in 91 publishes (8 tests), 2026-11-19 to 2026-11-24 | each reached check read UNMEASURED and the landing went on without its verdict; 10 h of process time | guard on progress, backstop 6000 |
 | Utils/systemd/rm-scratch-reap.service:13 | --max-seconds | 1800 | rows of the run are deferred | NONE | 3707 | 320 | rm-scratch-reap runs.jsonl (164 runs) and user journal, 14 d | 0.49 | 45 of 164 runs | 18,902 rows deferred; 8,946 fixture rows deferred in the run of 2026-11-24 9:00 AM PST | removed |
-| rimflow/detached_helper.py:582 | timeout | 540 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | 896 | 145 | user journal, 14 d (whole rm-list-dispatch run, upper bound) | 0.60 | 0 seen (journal, agent transcripts, 14 d) | a half-made clone | raised to 1800 |
+| rimflow/detached_helper.py:582 | timeout | 540 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | 896 | 145 | user journal, 14 d (whole rm-list-dispatch run, upper bound) | 0.60 | 0 seen (journal, agent transcripts, 14 d) | a half-made clone | raised to 10800 |
 | Utils/systemd/testq-tick.service:15 | TimeoutStartSec | 900 | systemd kills the run | NONE | 1386.2 | 17.6 | user journal, 14 d (12818 runs) | 0.65 | 6 | the SteveDesktop feed, steward and ingest of that tick | raised to 14400 |
 | Utils/systemd/metronome_phases.json:6 | limit_s | 4 | the call, run or phase is ended | reason text in the file names the past runs, no danger | 5.7 | 0.4 | beats.jsonl, 14 d | 0.70 | 150 | one restart-reconcile pass lost, each | raised to 60 |
 | infrastructure/stevedesktop/worker.py:986 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | 827 | 74 | testq done records, 14 d (whole deploy phase, upper bound) | 0.73 | 0 | none | raised to 10800 |
@@ -84,7 +84,6 @@ run and stand at 1 to 2 times it. An agent measured the longest run on that day 
 | Utils/systemd/rm-metronome-sense.service:14 | TimeoutStartSec | 150 | systemd kills the run | A hang guard for the metronome process itself: above the phase's 120 s limit and 5 s cleanup. | 126 | 4.9 | user journal, 14 d (1882 runs) | 1.19 | 0 | none | raised to 1800 |
 | Utils/systemd/rm-maturation-dispatch.service:19 | TimeoutStartSec | 1200 | systemd kills the run | NONE | 997.7 | 24.2 | user journal, 14 d (12062 runs) | 1.20 | 0 | none | raised to 10800 |
 | Utils/testq/testq.py:2607 | timeout | 2700 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | 2103 | 137 | testq done records, 14 d | 1.28 | 0 | none | raised to 21600 |
-| rimflow/evidence_gate.py:77 | GIT_TIMEOUT_S | 5 | the call, run or phase is ended | NONE | 3.8 | 0.02 | 210 local git calls sampled at load 20 to 52, 2026-11-24 | 1.32 | 0 | none | raised to 60 |
 | Utils/systemd/rm-deploy-update.service:12 | TimeoutStartSec | 120 | systemd kills the run | NONE | 86.3 | 3.8 | user journal, 14 d (2380 runs) | 1.39 | 0 | none | raised to 900 |
 | infrastructure/stevedesktop/worker.py:956 | timeout | 1200 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | 827 | 74 | testq done records, 14 d (whole deploy phase, upper bound) | 1.45 | 0 | none | raised to 10800 |
 | infrastructure/stevedesktop/worker.py:977 | timeout | 1200 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | 827 | 74 | testq done records, 14 d (whole deploy phase, upper bound) | 1.45 | 0 | none | raised to 10800 |
@@ -122,6 +121,7 @@ run and stand at 1 to 2 times it. An agent measured the longest run on that day 
 | Utils/systemd/rm-telemetry-health.service:8 | TimeoutStartSec | 30 | systemd kills the run | NONE | 5.7 | 0.1 | user journal, 14 d (10051 runs) | 5.26 | 0 | none | raised to 120 |
 | Utils/systemd/rm-dispatcher.service:14 | TimeoutStartSec | 600 | systemd kills the run | NONE | 111.5 | 3.2 | user journal, 14 d (3065 runs) | 5.38 | 0 | none | raised to 1200 |
 | Utils/scratch_reap.py:2815 | timeout | 900 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | 165.2 | UNMEASURED | last_run.json phase_s.orphans (1 run) | 5.45 | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | guard on progress |
+| rimflow/evidence_gate.py:77 | GIT_TIMEOUT_S | 5 | the call, run or phase is ended | NONE | 0.9 | 0.02 | 210 local git calls sampled at load 20 to 52, 2026-11-24 | 5.56 | 0 | none | raised to 60 |
 | rimflow/dispatcher_schedule.json:85 | run_max_s#Designer | 2700 | the call, run or phase is ended | NONE | 464 | 49 | control.db runs, 14 d | 5.82 | 0 | none | raised to 9000 |
 | rimflow/maturation.py:4340 | timeout | 480 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | 80.2 | 14.5 | tree-check wall of 2758 publishes (agent transcripts, 14 d); 584 s when a pipeline file is in the landing | 5.99 | 0 | none | raised to 21600 |
 | Utils/systemd/rm-list-effect.service:23 | TimeoutStartSec | 3600 | systemd kills the run | Hang guard: a beat is a ledger replay plus each check (CMD_TIMEOUT_S each) and a close per passing item. | 583.9 | 39.6 | user journal, 14 d (139 runs) | 6.17 | 0 | none | raised to 6000 |
@@ -391,7 +391,7 @@ run and stand at 1 to 2 times it. An agent measured the longest run on that day 
 | Utils/testq/fault_monitor.py:278 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
 | Utils/testq/fault_monitor.py:373 | timeout | 180 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
 | Utils/testq/fault_monitor.py:731 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/gaps.py:53 | PROBE_TIMEOUT_S | 120 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
+| Utils/testq/gaps.py:53 | PROBE_TIMEOUT_S | 120 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | raised to 480 |
 | Utils/testq/host_facts.py:24 | MAX_AGE_S | 7200 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
 | Utils/testq/host_facts.py:164 | timeout | 180 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
 | Utils/testq/ingest.py:81 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
