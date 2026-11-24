@@ -91,17 +91,17 @@
   "test_blob": "c98dcc50c1ed08d663f3e2df95a86047afe128ce"
  },
  "PY_VALIDATION_V2_OFFLINE": {
-  "at": "2026-11-23T10:11:22Z",
+  "at": "2026-11-24T22:21:57Z",
   "command": "python3 src/RimMandrake/FlowWorks/northstar/validation_v2.py --offline",
   "file": "src/RimMandrake/FlowWorks/northstar/validation_v2.py",
-  "last": "O-LIVE-NEG FAIL   clean mock run not green: [('L2_tier_live', 'FAIL', \"settings_default: settings table misses C# toggles: ['pitSteppedReliefEnabled missing from the table']\")]",
-  "patch": "diff --git a/src/RimMandrake/FlowWorks/northstar/site_spec.py b/src/RimMandrake/FlowWorks/northstar/site_spec.py\nindex 6544bf56ff..e99733c95c 100644\n--- a/src/RimMandrake/FlowWorks/northstar/site_spec.py\n+++ b/src/RimMandrake/FlowWorks/northstar/site_spec.py\n@@ -106,7 +106,6 @@ SETTINGS = {\n         \"astrofuelDetonationEnabled\": True, \"astrofuelBlastScale\": 1.0,   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL fuel fires\n         \"pitStuckAlertEnabled\": True, \"superdeepRoomsEnabled\": True, \"captureDownEnabled\": True, \"wardenFromLipEnabled\": True, \"pitRoomMinDepthMetres\": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1\n         \"excavationWallFacesEnabled\": True,                     # EXCAVATION_WALL_ART_1 carrier\n-        \"pitSteppedReliefEnabled\": True,                        # stepped pit relief (52182cca96): shadows and depth shading\n         \"bottleRevertEnabled\": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer\n         \"liquidPumpEnabled\": True,                              # Phase 8 slice 1 (universal pump)\n         \"digFindsEnabled\": True, \"digFindsLocalOnly\": True, \"digFindChanceMultiplier\": 1.0,\n",
+  "last": "O-LIVE-NEG PASS   clean mock run green (62 rows, 4830 ticks); all 60 faults turned their rows red",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs b/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\nindex 695c6b5374..3545ea5034 100644\n--- a/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\n@@ -386,7 +386,7 @@ namespace RimMandrake.FlowWorks\n         public static float pitScorchFadeDays = 20f;               // PROVISIONAL; 0 = never fades\n         public static bool pitOutlineEnabled = true;               // closed dark outline, strong near (south) lining\n         // RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: the stepped-pit rule (relief, depth shading, sun shadows)\n-        public static bool pitSteppedReliefEnabled = true;\n+        public static bool pitSteppedReliefEnabled = false;\n         public static bool pitHidesShadowEnabled = true;           // no ground shadow under a pawn sunk in a cut\n         // FLOWWORKS_DOOR_FAMILY_1: the sluice and security grate (two stuffable doors; a shut sluice seals, the grate passes liquid).\n         public static bool flowDoorsSealedFromPitEnabled = true;\n@@ -721,7 +721,7 @@ namespace RimMandrake.FlowWorks\n                 disabledFluids = new System.Collections.Generic.List<string>();\n             }\n             Scribe_Values.Look(ref pitOutlineEnabled, \"pitOutlineEnabled\", true);\n-            Scribe_Values.Look(ref pitSteppedReliefEnabled, \"pitSteppedReliefEnabled\", true);\n+            Scribe_Values.Look(ref pitSteppedReliefEnabled, \"pitSteppedReliefEnabled\", false);\n             Scribe_Values.Look(ref pitHidesShadowEnabled, \"pitHidesShadowEnabled\", true);\n             Scribe_Values.Look(ref pitScorchEnabled, \"pitScorchEnabled\", true);\n             Scribe_Values.Look(ref pitScorchFadeDays, \"pitScorchFadeDays\", 20f);\n",
   "patch_files": [
-   "src/RimMandrake/FlowWorks/northstar/site_spec.py"
+   "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs"
   ],
-  "patch_sha": "74af6ecb20294c72",
+  "patch_sha": "f146acb23446fed9",
   "rc": 1,
-  "test_blob": "7bfbf35b104701a6aca1d07a64575a5197ea8fb9"
+  "test_blob": "9b980ff3656547fcd6cda8c36ccb42892076f4c3"
  },
  "T_BRIDGES": {
   "at": "2026-11-23T04:09:50Z",
