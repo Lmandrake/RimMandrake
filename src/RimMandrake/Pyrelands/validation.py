@@ -4498,7 +4498,7 @@ def walk_season(t):
         with _comp(t, "walk_reload_keeps_the_state"):
             if os.environ.get("PYRE_WALK") != "1":
                 _unmeasured(t, "the two-week walk runs only with PYRE_WALK=1 (full list, Stage 6)")
-            if os.environ.get(WALK_PARTS_ONLY_ENV) == "1" or os.environ.get(WALK_ONLY_ENV):
+            if os.environ.get(WALK_PARTS_ONLY_ENV) == "1":
                 _unmeasured(t, "%s=1: the two weeks are skipped in a planted run of the walk's later parts" % WALK_PARTS_ONLY_ENV)
             t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_pre")
             _wait(t, WALK_DAYS * 60000)
@@ -4516,7 +4516,7 @@ def walk_season(t):
                 if not digests_match(mid, again):
                     _fail("the digest after the reload differs from the one before: %r vs %r" % (mid, again))
         with _comp(t, "walk_second_pass_and_switches"):
-            if os.environ.get(WALK_PARTS_ONLY_ENV) == "1" or os.environ.get(WALK_ONLY_ENV):
+            if os.environ.get(WALK_PARTS_ONLY_ENV) == "1":
                 _unmeasured(t, "%s=1: the two weeks are skipped in a planted run of the walk's later parts" % WALK_PARTS_ONLY_ENV)
             _wait(t, WALK_DAYS * 60000)
             fruit_born = _count(t, FRUIT_PLANT) or 0
@@ -4538,8 +4538,12 @@ def walk_season(t):
                     _fail("%d fire cells burned with the mechanics off after an extinguish" % fires_off)
                 if errs:
                     _fail("the log holds %d error line(s) over the switch: %r" % (len(errs), errs[:2]))
+        if os.environ.get(WALK_BED_ONLY_ENV) == "1":   # a planted run of the bed part, by itself
+            _walk_bed_part(t)
+            return
         _ten_walk_season(t)
         _r6_walk_season(t)
+        _walk_bed_part(t)
 
 
 # ---- RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED: the owed parts of twelve scenes ----
@@ -4942,15 +4946,6 @@ def _ten_plant_census(t):
 PLANT_GATE_IGNORED_ENV = "PYRE_PLANT_GATE_IGNORED"   # planted state for walk_gate_off_then_on: the master switch left on
 
 
-WALK_ONLY_ENV = "PYRE_WALK_ONLY"   # a planted run of one walk part: the part's name; every other part reads UNMEASURED by name
-
-
-def _walk_only(t, name):
-    only = os.environ.get(WALK_ONLY_ENV)
-    if only and only != name:
-        _unmeasured(t, "%s=%s: this part is not in that run" % (WALK_ONLY_ENV, only))
-
-
 def _ten_walk_season(t):
     """sc_walk (PYRE_WALK=1 only): the gate off a day then on; a roofed room on ember grass withers; fire-cast thirst
     (RM_Thirst, no RM_Dehydration); no colonist burned (Burn) or starved (Malnutrition)."""
@@ -4959,7 +4954,6 @@ def _ten_walk_season(t):
     with _comp(t, "walk_gate_off_then_on"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
-        _walk_only(t, "walk_gate_off_then_on")
         planted = os.environ.get(PLANT_GATE_IGNORED_ENV) == "1"
         if planted:
             _note(t, "PLANTED FAULT", "%s=1: pyrelandsEnabled is left on, as if the switch did nothing" % PLANT_GATE_IGNORED_ENV)
@@ -4989,7 +4983,6 @@ def _ten_walk_season(t):
     with _comp(t, "walk_roster_toggle"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
-        _walk_only(t, "walk_roster_toggle")
         _ten_roster_set(t, False)
         try:
             _extinguish(t)   # as the gate-off day: a fire after the day was lit in it, never the walk's spread
@@ -5015,7 +5008,6 @@ def _ten_walk_season(t):
     with _comp(t, "walk_roofed_grass_withers"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
-        _walk_only(t, "walk_roofed_grass_withers")
         _pad(t, TEN_PAD_ROOF)
         x, z = t.anchor
         room = (x - 4, z - 4, 9, 9)
@@ -5037,7 +5029,6 @@ def _ten_walk_season(t):
     with _comp(t, "walk_firecast_thirst_and_colonists"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
-        _walk_only(t, "walk_firecast_thirst_and_colonists")
         thirst, bad = {}, []
         for _ in range(4):
             r = t.bridge_call("jawa/list_pawns", limit=1000, includeHealth=True)
@@ -6799,6 +6790,7 @@ def _r6_master_day(t, on):
     return {"fires": fires, "beds": beds, "ashGain": None if a0 is None or a1 is None else a1 - a0, "history": hist}
 
 
+WALK_BED_ONLY_ENV = "PYRE_WALK_BED_ONLY"
 PLANT_BED_MASTER_ENV = "PYRE_PLANT_BED_MASTER"   # planted states for walk_master_bed_fire_resumes: "left_off" or "left_on"
 R8_PAD_WALK_BED = (95, 225)    # the walk's own bed pad: free of every other pad (nearest PAD_VENOM and TEN_PAD_GRASS, 65 cells)
 
@@ -6859,7 +6851,7 @@ def _walk_bed_fire_resumes(t):
     t.bridge_call("jawa/set_plants", ops="CLEAR:%s" % _rs(pad))
     _soil(t, plot)
     _plants(t, "RM_FE_Plant_EmberGrass", plot)
-    _set(t, {"furnaceThermalEnabled": True, "pyrelandsEnabled": plant == "left_on"})
+    _set(t, {"pyrelandsEnabled": plant == "left_on"})   # furnaceThermalEnabled stands at its shipped on
     pid = _spawn_wild(t, "RM_FurnaceBeast", x, z)
     polls, orders = {"off": [], "on": []}, []
 
@@ -6911,6 +6903,15 @@ def _walk_bed_fire_resumes(t):
             _unmeasured(t, why)
 
 
+def _walk_bed_part(t):
+    walk = os.environ.get("PYRE_WALK") == "1"
+    _independent(t)
+    with _comp(t, "walk_master_bed_fire_resumes"):
+        if not walk:
+            _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        _walk_bed_fire_resumes(t)
+
+
 def _r6_walk_season(t):
     """sc_walk (g4; PYRE_WALK=1 only): the Mod enabled master (pyrelandsEnabled) off a day, the map extinguished first:
     no fire, no ash laid (ProbeAsh), no bed fire (ProbeSleep fireOnCell on every furnace-beast); then on a day: the
@@ -6920,7 +6921,6 @@ def _r6_walk_season(t):
     with _comp(t, "walk_master_off_then_on"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
-        _walk_only(t, "walk_master_off_then_on")
         _extinguish(t)
         off = _r6_master_day(t, False)
         on = _r6_master_day(t, True)
@@ -6934,12 +6934,6 @@ def _r6_walk_season(t):
                 _fail("back on, no front walked over the day")
             if not on["ashGain"] or on["ashGain"] <= R6_ASH_EPS:
                 _fail("back on, no ash was laid over the day: %r" % on["ashGain"])
-    _independent(t)
-    with _comp(t, "walk_master_bed_fire_resumes"):
-        if not walk:
-            _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
-        _walk_only(t, "walk_master_bed_fire_resumes")
-        _walk_bed_fire_resumes(t)
 
 
 # ---- new chains ----
