@@ -537,6 +537,17 @@ def t_python_relates_by_symbol():
         tr.close()
 
 
+def t_python_def_name_is_no_row_id():
+    """Pyrelands in-game visit 8: "RM_FurnaceBeast" in a check's own strings read as a row id, so every def of the 7,000-line
+    validation.py holding that string was the check's own, and an edit to the walk reran seven other checks."""
+    src = ('def scene_a(t):\n    t.spawn("RM_FurnaceBeast")\n    rows("A7_row_one")\n\n\n'
+           'def scene_b(t):\n    t.spawn("RM_FurnaceBeast")\n\n\n'
+           'def maker(t):\n    rows("A7_row_one")\n')
+    got = RR.py_reach({"v.py": RR.py_symbols(src)}, {"scene_a"})["v.py"]
+    ok("python_relates_by_symbol: a def naming the same creature is not reached", "scene_b" not in got, sorted(got))
+    ok("python_relates_by_symbol: a def writing a row the anchor names still is", "maker" in got, sorted(got))
+
+
 def t_json_relates_by_entry():
     tr = Tree()
     try:
@@ -778,6 +789,7 @@ def main():
     t_csharp_reads_the_types_it_names()
     t_declared_exercises_bound_the_types_named()
     t_python_relates_by_symbol()
+    t_python_def_name_is_no_row_id()
     t_json_relates_by_entry()
     t_spec_change_reruns()
     t_rows_from_several_builds()

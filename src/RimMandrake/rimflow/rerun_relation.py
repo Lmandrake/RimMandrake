@@ -49,7 +49,9 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 RUN_KEYS = ("kind", "file", "entry", "reads", "exercises", "command", "tier", "why_full_list")
 DERIVED_EXT = (".dll", ".pdb", ".srchash")
 IDENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
-ROW_ID = re.compile(r"^[A-Za-z][A-Za-z0-9]*_[A-Za-z0-9_]{4,}$")   # a row or check id: two parts or more, not PASS
+# a row or check id: two parts or more, not PASS; a shipped def name (RM_, RSW_, RUT_) is none (Pyrelands visit 8: "RM_FurnaceBeast"
+# made every def that names the creature part of the check)
+ROW_ID = re.compile(r"^(?!(?:RM|RSW|RUT)_)[A-Za-z][A-Za-z0-9]*_[A-Za-z0-9_]{4,}$")
 WHOLE = "*"
 
 

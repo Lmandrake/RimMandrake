@@ -66,6 +66,31 @@ check("no polls", run([], [])[0] is None)
 check("a fire beside an awake beast in the off-phase still counts", run(OFF + [poll(awake="True", fire=1)], LIT)[0] == "FAIL")
 gap = [poll(awake="True")]
 check("two half sleeps: each pays its own grace", run(OFF[:NEED_OFF // 2] + gap + OFF[:NEED_OFF // 2], LIT)[0] is None)
+# ---- walk_master_off_then_on: two spells (visit 8 tier rehearsal: one on-day read "no front" while the relight takes two days)
+MV = getattr(V, "master_spells_verdict", None)
+
+
+def spell(fires, ash, beds=None):
+    return {"fires": fires, "ash": ash, "beds": beds or [0] * len(fires)}
+
+
+def mv(off, on):
+    return (MV or (lambda a, b: ("MISSING", "")))(off, on)[0]
+
+
+DECAY = [272.0, 250.0, 230.0, 212.0]
+QUIET = spell([0, 0, 0], DECAY)
+LITON = spell([0, 3, 9], [50.0, 46.0, 43.0, 48.0])
+check("off quiet, on lit and dusting", mv(QUIET, LITON) is True, mv(QUIET, LITON))
+check("planted left_on: fires in the off spell", mv(LITON, LITON) is False)
+check("planted left_off: no fire in the on spell", mv(QUIET, QUIET) is False)
+check("off: ash rose in one hour under a net fall", mv(spell([0, 0, 0], [272.0, 250.0, 251.0, 212.0]), LITON) is False)
+check("off: a bed fire", mv(spell([0, 0, 0], DECAY, [0, 1, 0]), LITON) is False)
+check("on: fire and no ash in any hour", mv(QUIET, spell([0, 3, 9], DECAY)) is False)
+check("a missing ash read is undecided", mv(QUIET, spell([0, 3, 9], [50.0, None, 43.0, 48.0])) is None)
+check("no reads are undecided", mv(spell([], [1.0]), LITON) is None)
+check("the off spells outlast the standing burn's quiet window",
+      V.OFF_CONTROL_WAIT_TICKS > V.BURN_QUIET_TICKS and getattr(V, "R8_MASTER_HOURS", 0) * 2500 > V.BURN_QUIET_TICKS)
 src = open(_path, encoding="utf-8").read()
 check("the part stages its own sleeper", "def _walk_bed_fire_resumes" in src)
 check("the part carries its planted switch", "PYRE_PLANT_BED_MASTER" in src)
