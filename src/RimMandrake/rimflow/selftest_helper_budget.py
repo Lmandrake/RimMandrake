@@ -9,6 +9,7 @@ import os
 import sys
 import tempfile
 import time
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -34,14 +35,14 @@ class FakeSA(object):
         return Path(self.streams)
 
     def load_rules(self):
-        return {"seats": ["BENCH", "FOUNDRY"]}
+        return {"seats": ["BENCH", "MATURATION"]}
 
     def compute(self, now, rules, seat="BENCH"):
         self.calls += 1
         if self.raise_:
             raise self.raise_
         dec = {"t": now, "at": "x", "mode": "CRUISE", "presence": "AFK", "seats": dict(self.seats),
-               "why": "v3: machine total 2 -> FOUNDRY 2", "override": None}
+               "why": "v3: machine total 2 -> MATURATION 2", "override": None}
         if self.advice is not None:
             dec["advice"] = self.advice
         return dec
@@ -53,14 +54,19 @@ class FakeSA(object):
 
 root = tempfile.mkdtemp()
 streams = tempfile.mkdtemp()
-sa = FakeSA({"BENCH": 0, "FOUNDRY": 2}, streams)
+allocator = HB._sa()
+with patch.dict(os.environ, {"RM_STREAMS_DIR": streams}), patch.object(allocator, "gather", return_value={}):
+    placed = HB.compute(NOW)["seats"]
+check("the Dispatcher publishes the machine share under MATURATION",
+      placed.keys() == {"CONDUCTOR", "MATURATION"}, placed)
+sa = FakeSA({"BENCH": 0, "MATURATION": 2}, streams)
 
 # ---- publish
 rec = HB.publish(root, NOW, sa=sa)
 p = os.path.join(root, "helper_budget.json")
 check("publish writes helper_budget.json under the Dispatcher's state root", os.path.exists(p), p)
 disk = json.load(open(p))
-check("seats are published under v3 names: CONDUCTOR, FOUNDRY (no BENCH)", disk["seats"] == {"CONDUCTOR": 0, "FOUNDRY": 2},
+check("seats are published under v3 names: CONDUCTOR, MATURATION (no BENCH)", disk["seats"] == {"CONDUCTOR": 0, "MATURATION": 2},
       disk["seats"])
 check("the record says the Dispatcher published it, when, and why", disk["by"] == "dispatcher" and disk["t"] == NOW
       and "machine total" in disk["why"], disk)
@@ -68,7 +74,7 @@ check("compute() ran once, fresh this tick (presence is re-read every 2 min, not
 
 # ---- read (the hook's side)
 r = HB.read(root, NOW + 60, sa=sa)
-check("read: a fresh budget is returned", r is not None and r["seats"]["FOUNDRY"] == 2, r)
+check("read: a fresh budget is returned", r is not None and r["seats"]["MATURATION"] == 2, r)
 check("read: older than max_age_s -> None (the hook falls back)", HB.read(root, NOW + HB.MAX_AGE_S + 1, sa=sa) is None)
 ov = os.path.join(streams, "slot_override.json")
 open(ov, "w").write("{}")
@@ -79,35 +85,37 @@ check("read: his word older than the budget -> the budget", HB.read(root, NOW + 
 open(p, "w").write("{not json")
 check("read: a torn file -> None, never a raise", HB.read(root, NOW + 60, sa=sa) is None)
 check("read: no file -> None", HB.read(tempfile.mkdtemp(), NOW) is None)
-json.dump({"t": NOW, "seats": {"FOUNDRY": "x"}}, open(p, "w"))
+json.dump({"t": NOW, "seats": {"MATURATION": "x"}}, open(p, "w"))
 check("read: a non-count seat value -> None", HB.read(root, NOW + 1, sa=sa) is None)
-json.dump({"t": NOW + 10 * 3600, "seats": {"FOUNDRY": 2}}, open(p, "w"))
+json.dump({"t": NOW + 10 * 3600, "seats": {"MATURATION": 2}}, open(p, "w"))
 check("read: a budget stamped in the future -> None", HB.read(root, NOW, sa=sa) is None)
 
-json.dump({"t": NOW + 6, "seats": {"FOUNDRY": 2}}, open(p, "w"))
+json.dump({"t": NOW + 6, "seats": {"MATURATION": 2}}, open(p, "w"))
 check("r1#4 read: a budget stamped even 6 s ahead -> None (only clock jitter is forgiven)", HB.read(root, NOW, sa=sa) is None)
 
 # ---- seat names
 check("seat_for: BENCH window, bench and CONDUCTOR all mean the Conductor's budget",
       HB.budget_seat("BENCH") == "CONDUCTOR" and HB.budget_seat("bench") == "CONDUCTOR"
-      and HB.budget_seat("CONDUCTOR") == "CONDUCTOR" and HB.budget_seat("FOUNDRY") == "FOUNDRY")
+      and HB.budget_seat("CONDUCTOR") == "CONDUCTOR" and HB.budget_seat("MATURATION") == "MATURATION")
 
 # ---- the tick step never raises and journals a failure once per alarm window
 jr = []
 st = {}
 ON = {"alarm_every_s": 3600, "helper_budget": {"enabled": True}}
 none_root = tempfile.mkdtemp()
-counting = FakeSA({"FOUNDRY": 1}, streams)
+counting = FakeSA({"MATURATION": 1}, streams)
 HB.tick_step({"alarm_every_s": 3600}, {}, none_root, NOW, sa=counting, journal=jr.append)
 check("tick_step: a schedule with no helper_budget block publishes nothing and computes nothing (fixture schedules "
       "never read the real transcripts)", counting.calls == 0 and not os.listdir(none_root), counting.calls)
 live = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
+check("schedule names CONDUCTOR/MATURATION as the published budget seats",
+      "seats CONDUCTOR/MATURATION)" in live["helper_budget"]["_doc"])
 check("the live dispatcher_schedule.json opts in: helper_budget.enabled true",
       (live.get("helper_budget") or {}).get("enabled") is True, live.get("helper_budget"))
 check("the live schedule turns the token-pacing attention off (owner 2026-11-04: all token limits rescinded)",
       (live.get("helper_budget") or {}).get("pacing_attention") is False, live.get("helper_budget"))
-SHORT = {"seats": {"CONDUCTOR": 3, "FOUNDRY": 6}, "advice": {"paced_seats": {"CONDUCTOR": 0, "FOUNDRY": 3},
-                                                             "short": {"CONDUCTOR": 3, "FOUNDRY": 3}, "token_mode": "DARK"}}
+SHORT = {"seats": {"CONDUCTOR": 3, "MATURATION": 6}, "advice": {"paced_seats": {"CONDUCTOR": 0, "MATURATION": 3},
+                                                             "short": {"CONDUCTOR": 3, "MATURATION": 3}, "token_mode": "DARK"}}
 told = []
 check("pacing attention on (default): a short pace is told", HB.attention(ON, {}, SHORT, NOW, tell=told.append) is not None
       and len(told) == 1, told)
@@ -143,16 +151,16 @@ off = HB.tick_step({"helper_budget": {"enabled": False}}, st, root, NOW + 4000, 
 check("tick_step: helper_budget.enabled false -> nothing published", off is None and json.load(open(p))["t"] == NOW + 3800)
 
 # ---- token pacing is advisory (owner 2026-11-02): the paced seats are published as advice and raise attention
-adv = FakeSA({"BENCH": 3, "FOUNDRY": 6}, streams, advice={"paced_seats": {"BENCH": 0, "FOUNDRY": 0}, "paced_total": 0,
-                                                           "token_mode": "DARK", "short": {"BENCH": 3, "FOUNDRY": 6},
+adv = FakeSA({"BENCH": 3, "MATURATION": 6}, streams, advice={"paced_seats": {"BENCH": 0, "MATURATION": 0}, "paced_total": 0,
+                                                           "token_mode": "DARK", "short": {"BENCH": 3, "MATURATION": 6},
                                                            "why": "lukas 1% left -> DARK"})
 ast, ajr, told = {}, [], []
 out = HB.tick_step(ON, ast, root, NOW, sa=adv, journal=ajr.append, tell=told.append)
 pubd = json.load(open(p))
-check("advisory: the PLACED seats are published, not the paced ones", pubd["seats"] == {"CONDUCTOR": 3, "FOUNDRY": 6}, pubd)
+check("advisory: the PLACED seats are published, not the paced ones", pubd["seats"] == {"CONDUCTOR": 3, "MATURATION": 6}, pubd)
 check("advisory: the paced seats ride along as advice under v3 names",
-      pubd.get("advice", {}).get("paced_seats") == {"CONDUCTOR": 0, "FOUNDRY": 0}
-      and pubd["advice"].get("short") == {"CONDUCTOR": 3, "FOUNDRY": 6}, pubd.get("advice"))
+      pubd.get("advice", {}).get("paced_seats") == {"CONDUCTOR": 0, "MATURATION": 0}
+      and pubd["advice"].get("short") == {"CONDUCTOR": 3, "MATURATION": 6}, pubd.get("advice"))
 check("advisory: attention fires once: journalled and told the Conductor, saying what crossed, by how much, where to look",
       out and out["kind"] == HB.ATTENTION_KIND and out["advisory"] and len(ajr) == 1 and len(told) == 1
       and "DARK" in out["why"] and "9 helper(s) fewer" in out["why"] and "nothing was cut" in out["why"]
@@ -161,7 +169,7 @@ again = HB.tick_step(ON, ast, root, NOW + 120, sa=adv, journal=ajr.append, tell=
 check("advisory: 2 min later it is not said again", again is None and len(ajr) == 1 and len(told) == 1, (again, ajr))
 HB.tick_step(ON, ast, root, NOW + 3700, sa=adv, journal=ajr.append, tell=told.append)
 check("advisory: ... but is after alarm_every_s", len(ajr) == 2 and len(told) == 2, ajr)
-same = FakeSA({"FOUNDRY": 6}, streams, advice={"paced_seats": {"FOUNDRY": 6}, "token_mode": "CRUISE", "why": ""})
+same = FakeSA({"MATURATION": 6}, streams, advice={"paced_seats": {"MATURATION": 6}, "token_mode": "CRUISE", "why": ""})
 quiet = HB.tick_step(ON, ast, root, NOW + 3800, sa=same, journal=ajr.append, tell=told.append)
 check("advisory: pacing placing the same says nothing and clears the stamp",
       quiet is None and len(ajr) == 2 and HB.ATTENTION_KIND not in ast.get("alarms", {}), ast)

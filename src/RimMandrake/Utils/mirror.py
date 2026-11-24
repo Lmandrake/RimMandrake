@@ -36,7 +36,7 @@ GIT_DIR = os.environ.get("MIRROR_GIT_DIR", os.path.join(RM, "mirror.git"))
 LOCK = os.environ.get("MIRROR_LOCK", os.path.join(RM, "mirror.lock"))
 TARGET = os.environ.get("MIRROR_TARGET", "/mnt/d/Luke/dev/RimMandrake")
 ORIGIN = os.environ.get("MIRROR_ORIGIN", "git@github.com:Lmandrake/RimMandrake.git")
-SEAT_CLONES = (os.path.join(RM, "foundry"), os.path.join(RM, "bench"))
+SEAT_CLONES = (os.path.join(RM, "bench"),)
 REF = "refs/remotes/origin/main"
 STALE, HEAD_FILE = "MIRROR_STALE", "MIRROR_HEAD"
 

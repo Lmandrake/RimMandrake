@@ -22,7 +22,8 @@ HOW N IS SET, in order (each step can only lower what the previous one allowed, 
   2. Total fit (R8): mean helpers running over the last window_h x sustainable %/h / measured %/h. The measured %/h is
      the slope of account_usage's series when it has slope_min_points over slope_min_span_h; otherwise messages sent from
      THIS machine over the window / msgs_per_pct (the 13:05 hand calibration). Raised by at most raise_step per check.
-  3. Split: the builder (RELENTLESS) floor(total x share), BENCH the rest. No lower N applies because he is present (owner, 2026-10-26:
+  3. Split: Maturation gets the machine total in v3. The legacy share rule gives Maturation floor(total x share),
+     BENCH the rest. No lower N applies because he is present (owner, 2026-10-26:
      "No, just adjust later to make up for any additional spend I incur").
   4. Overage: helper-hours run above that N (his `set` word, or interactive work) are recorded as owed in the state.
      Once his word has lapsed and he is not in a window, the allocator lowers N by ceil(owed / hours left before the
@@ -71,9 +72,8 @@ if str(HERE) not in sys.path:
 RULES = Path(os.environ.get("RM_SLOT_RULES", HERE / "slot_rules.json"))
 TZ = ZoneInfo("America/Los_Angeles")
 HOUR = 3600.0
-# the autonomous builder's budget key: Relentless (FOUNDRY retired, owner by card 2026-11-02). It has no head window, so
-# no transcript project: its helpers are the supervisor's places, counted by relentless.py, never here.
-BUILDER = "RELENTLESS"
+# The Maturation Pipeline's machine-wide share. Its helpers run in their own sessions under role_runs.
+BUILDER = "MATURATION"
 SEAT_PROJECT = {"BENCH": "-home-mandrake-rm-bench"}
 CHUNK = 1 << 20
 
@@ -1342,12 +1342,14 @@ def seat_label(key):
 def seat_key(name):
     """A seat name as a person, a hook or an override file writes it (CONDUCTOR, BENCH, bench) -> the allocator key."""
     n = str(name).strip().upper()
+    if n == "RELENTLESS":  # keep saved owner overrides on the renamed share
+        return BUILDER
     return {v: k for k, v in SEAT_NAMES.items()}.get(n, n)
 
 
 def split_seats(total, seats, rules, presence, mode):
     """Total helpers -> per seat by rules["split"]["rule"].
-    v3: BUILDER (Relentless), the one autonomous builder, gets the whole machine total; the Conductor ("BENCH") gets
+    v3: Maturation gets the whole machine total; the Conductor ("BENCH") gets
     conductor_session_n, never above the total, only while he is in the window (presence BENCH), and nothing in DARK.
     share (v2, kept for rollback): BUILDER floor(total x builder_share), BENCH the rest."""
     sp = rules["split"]

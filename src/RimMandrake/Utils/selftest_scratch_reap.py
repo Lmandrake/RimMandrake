@@ -469,7 +469,7 @@ def run_cases(env):
     outside = clone_old(origin, td / "outside")
     check("outside the reap roots" in " ".join(R.judge_clone(outside, ctx)["why"]), "guard: an old clean clone outside the roots is REFUSED")
     os.environ["SCRATCH_REAP_ROOTS"] = "/home/mandrake/rm"
-    check("protected" in R.judge_clone(Path("/home/mandrake/rm/foundry"), ctx)["why"][0], "guard: foundry refused even with rm/ as a root")
+    check("protected" in R.judge_clone(Path("/home/mandrake/rm/bench"), ctx)["why"][0], "guard: bench refused even with rm/ as a root")
     check("protected" in R.judge_clone(Path("/home/mandrake/rm/dispatch"), ctx)["why"][0], "guard: dispatch refused too")
     os.environ["SCRATCH_REAP_ROOTS"] = str(root)
 

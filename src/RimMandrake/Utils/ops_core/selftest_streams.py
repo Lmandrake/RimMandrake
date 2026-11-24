@@ -196,7 +196,7 @@ check("pacing(): reads the frozen rules fixture, not the live slot_rules.json", 
 _adv = SA.load_rules().get("advisory") or {}   # the fixture's advisory: the placed total is the floor (owner 2026-11-02/04)
 _want = max(6, _adv.get("n_total", 0)) if _adv.get("enabled") is True else 6   # 6 = CRUISE's pace on this fixture
 check("pacing(): runs the allocator and writes allocation.json for the hook", al.get("seats") == pc_.get("seats")
-      and pc_.get("seats") == {"BENCH": 0, "RELENTLESS": _want}, (pc_, al.get("seats"), _want))
+      and pc_.get("seats") == {"BENCH": 0, "MATURATION": _want}, (pc_, al.get("seats"), _want))
 check("pacing(): carries the accounts with % left and hours to reset", any(a["name"] == "system" and a["burn"]
       and a["pct_left"] == 40.0 for a in pc_.get("accounts") or []), pc_.get("accounts"))
 check("collect() records pacing every 15 min", "pacing" in S.collect.__code__.co_names or "pacing(" in

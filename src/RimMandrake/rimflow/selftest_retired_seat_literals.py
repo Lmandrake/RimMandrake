@@ -5,8 +5,8 @@ FOUNDRY is retired (owner, by card 2026-11-02, "What should happen to FOUNDRY?" 
 "FOUNDRY" in these files is a seat some program still names: a default, a view, a budget-less bucket, a foreign seat.
 Comments and docstrings are history and stay. Deliberately NOT scanned: model.SEATS and cli.RETIRED_SEATS, which keep
 FOUNDRY so the 2387 closed FOUNDRY items still replay from events/FOUNDRY.jsonl. The machine-total helper budget key
-(slot_allocator, slot_rules.json, helper_budget, block_agent_over_slots) moved to RELENTLESS; its old reader, run_rules
-staffing.seat, went with the retired tick (2026-11-18), so only the allocator's end is checked.
+(slot_allocator, slot_rules.json, helper_budget, block_agent_over_slots) is now MATURATION. Check the seat clone
+registries too.
 
     python3 src/RimMandrake/rimflow/selftest_retired_seat_literals.py
 """
@@ -90,7 +90,13 @@ def main():
             check(not hits, "%s: no FOUNDRY value in %s %s" % (rel, sec, hits))
     # the allocator places its builder key, a seat it publishes
     sys.path.insert(0, os.path.join(ROOT, "src/RimMandrake/Utils"))
+    import mirror
+    import scratch_clone
+    import scratch_reap
     import slot_allocator as SA
+    check("foundry" not in scratch_clone.SEATS, "Foundry is no longer an identity source")
+    check(not any(p.endswith("/foundry") for p in mirror.SEAT_CLONES), "Foundry is no longer a mirror seat clone")
+    check(not any(p.name == "foundry" for p in scratch_reap.PROTECTED), "Foundry is no longer a protected seat clone")
     sr = json.load(open(os.path.join(ROOT, "src/RimMandrake/Utils/slot_rules.json"), encoding="utf-8"))
     check(SA.BUILDER in sr["seats"], "the allocator's builder key %r is a placed seat" % (SA.BUILDER,))
     per = SA.split_seats(7, sr["seats"], sr, "ELSEWHERE", "CRUISE")

@@ -13,7 +13,7 @@
  "total_max": 10,
  "fallback_n": {
   "BENCH": 3,
-  "RELENTLESS": 1
+  "MATURATION": 1
  },
  "token": {
   "DARK": {

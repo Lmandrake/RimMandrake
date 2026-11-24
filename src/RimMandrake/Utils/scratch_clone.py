@@ -76,7 +76,7 @@ STORE_CONFIG = {
     "core.logAllRefUpdates": "always",
     "objstore.role": "shared object store; borrowers via alternates; never prune (scratch_clone.py)",
 }
-SEATS = ("bench", "foundry")
+SEATS = ("bench",)
 # The default cone (see the module docstring). Root files are always in a cone checkout.
 # src/RimMandrake/contracts: rimflow and Utils import it (selftest_scratch_clone's cone_imports_check)
 BASE_CONE = (".claude", "infrastructure", "skills", "src/RimMandrake/Utils", "src/RimMandrake/contracts",
