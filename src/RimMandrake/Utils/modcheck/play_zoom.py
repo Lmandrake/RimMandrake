@@ -13,7 +13,8 @@ measured on the PNG (Graffiti_trial_plan.md 3.9), so the zoom here is MEASURED, 
     K is re-learned from that reply and the shot retaken once; still off -> UNMEASURED.
   * A rect taller than one screen at that zoom is shot in bands (no padding between them) and stitched
     into ONE image, so a component keeps its single judged shot (judge_cli judges a component's LAST shot).
-  * A rect wider than one screen is refused UNMEASURED: no horizontal stitching.
+  * A rect wider than one screen is shot in columns too and stitched side by side (Pyrelands visit 9, 2026-11-24: the game
+    window had been resized to 1458 px, and a 23-cell front crop lost the whole watched day as UNMEASURED).
 
 `shoot()` raises `fail("UNMEASURED: ...")`: the caller passes its ExpectationFailed (no circular import).
 """
@@ -108,15 +109,18 @@ def _one(session, cal, rect, ppc, fname, fail):
     return r
 
 
-def stitch(paths, out_path):
-    """Stack band crops top-down into one PNG (the caller passes them top band first)."""
+def stitch(rows, out_path):
+    """Crops -> one PNG. `rows`: top-down, each a path or a list of paths left to right."""
     from PIL import Image
-    ims = [Image.open(local_path(p)).convert("RGB") for p in paths]
-    canvas = Image.new("RGB", (max(i.width for i in ims), sum(i.height for i in ims)))
+    grid = [[Image.open(local_path(p)).convert("RGB") for p in (r if isinstance(r, (list, tuple)) else [r])] for r in rows]
+    canvas = Image.new("RGB", (max(sum(i.width for i in r) for r in grid), sum(max(i.height for i in r) for r in grid)))
     y = 0
-    for im in ims:
-        canvas.paste(im, (0, y))
-        y += im.height
+    for r in grid:
+        x = 0
+        for im in r:
+            canvas.paste(im, (x, y))
+            x += im.width
+        y += max(i.height for i in r)
     canvas.save(local_path(out_path))
     return out_path
 
@@ -133,20 +137,19 @@ def shoot(session, cal, rect, padding, ppc, fname, fail):
                        % (dict(probe or {}),))
     root = cal.k / ppc
     max_h = max(1, int(math.floor(cal.tall * root)) - 2 * MARGIN_CELLS) if cal.tall else h
-    max_w = int(math.floor(cal.wide * root)) - 2 * MARGIN_CELLS if cal.wide else w
-    if w > max_w:
-        raise fail("UNMEASURED: play-zoom rect %s is %d cells wide; one screen holds %d at %d px per cell"
-                   % (rect, w, max_w, ppc))
-    parts = bands(z, h, max_h)
-    if len(parts) == 1:
+    max_w = max(1, int(math.floor(cal.wide * root)) - 2 * MARGIN_CELLS) if cal.wide else w
+    parts, cols = bands(z, h, max_h), bands(x, w, max_w)
+    if len(parts) == 1 and len(cols) == 1:
         return _one(session, cal, (x, z, w, h), ppc, fname, fail)["path"]
-    shots = [_one(session, cal, (x, bz, w, bh), ppc, "%s_b%d" % (fname, i), fail)["path"]
-             for i, (bz, bh) in enumerate(parts)]
-    shots.reverse()                        # screen-up is +z: the highest band goes on top
-    first = shots[0]
+    rows = []
+    for i, (bz, bh) in enumerate(parts):
+        rows.append([_one(session, cal, (bx, bz, bw, bh), ppc, "%s_b%d%s" % (fname, i, "c%d" % j if len(cols) > 1 else ""),
+                          fail)["path"] for j, (bx, bw) in enumerate(cols)])
+    rows.reverse()                        # screen-up is +z: the highest band goes on top
+    first = rows[0][0]
     sep = "\\" if "\\" in first else "/"
     out = first.rsplit(sep, 1)[0] + sep + fname + "_stitched__cell_rect.png"
     try:
-        return stitch(shots, out)
+        return stitch(rows, out)
     except Exception as ex:                # noqa: BLE001 - a missing band or no PIL: the shot is unmeasured
-        raise fail("UNMEASURED: play-zoom stitch of %d bands failed: %s" % (len(shots), ex))
+        raise fail("UNMEASURED: play-zoom stitch of %d bands x %d columns failed: %s" % (len(parts), len(cols), ex))

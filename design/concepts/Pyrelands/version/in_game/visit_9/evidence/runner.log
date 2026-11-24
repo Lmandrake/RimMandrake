@@ -40,3 +40,12 @@ DONE script:src/RimMandrake/Pyrelands/wind_burn_live.py reload_rc=0 rc=0 199s 08
 END b1 2026-11-24 08:41:39
 START b2 2026-11-24 08:41:56
 DONE ash_fertility_watered@ash_watered reload_rc=0 rc=1 191s 08:45:07
+DONE fresh_burn_bonus@fresh_burn reload_rc=0 rc=1 1292s 09:06:39
+DONE grass_cover,embergrass_regrow@regrow reload_rc=0 rc=1 2438s 09:47:17
+DONE burn_line reload_rc=0 rc=1 1936s 10:19:33
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/lanes_probe.py reload_rc=skipped rc=0 47s 10:20:20
+END b2 2026-11-24 10:20:20
+START b3a 2026-11-24 10:20:21
+DONE script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/owed_text.py reload_rc=0 rc=0 28s 10:20:49
+END b3a 2026-11-24 10:20:49
+START b3b 2026-11-24 10:20:49

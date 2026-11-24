@@ -14,7 +14,7 @@ S2  play_zoom.shoot against a simulated camera (px per cell = 472.8 / rootSize, 
 S3  a gallery page (22 x 24 + padding) is taller than one 64-ppc screen: it is shot in bands that are each fully visible,
     and stitched into ONE image of (24 x 64) x (26 x 64) px, top band = highest z.
 S4  mutant camera that ignores rootSize (always the current zoom): UNMEASURED, never a 20-px image handed to the judge.
-S5  a reply with fullyVisible false, or a rect wider than one screen: UNMEASURED.
+S5  a reply with fullyVisible false: UNMEASURED. A rect wider than one screen: shot in columns, stitched side by side in order.
 S6  Suite.screenshot with ppc routes through play_zoom (records the one path); without ppc it sends no rootSize (unchanged).
 S7  the two LIVE replies of 2026-11-05 (g19/zt_0.txt at the current zoom, g19/zt_7.35.txt explicit), their fields inlined:
     the K learned from the rootSize-24 reply predicts the explicit shot's measured px per cell within 5%.
@@ -155,8 +155,28 @@ def s2_s3_s4_s5():
         check("S5 fullyVisible false -> UNMEASURED",
               unmeasured(lambda: PZ.shoot(Camera(d, never_visible=True), PZ.Calibration(), (100, 100, 7, 5), 0, 64,
                                           "v", Unmeasured)))
-        check("S5 a rect wider than one screen at 64 px -> UNMEASURED",
-              unmeasured(lambda: PZ.shoot(Camera(d), PZ.Calibration(), (100, 100, 44, 7), 0, 64, "w", Unmeasured)))
+        cam = Camera(d)
+        try:
+            p = PZ.shoot(cam, PZ.Calibration(), (100, 100, 44, 7), 0, 64, "w", Unmeasured)
+        except Unmeasured as ex:
+            p = None
+            check("S5 a rect wider than one screen is shot, not refused", False, ex)
+        if p:
+            cols = cam.calls[1:]   # the first call is the probe
+            im = Image.open(p)
+            check("S5 a 44-cell rect is shot in >= 2 columns, each inside one screen, no gap and no overlap",
+                  len(cols) >= 2 and all(c["width"] * 64 <= Camera.SCREEN[0] for c in cols)
+                  and [c["x"] for c in cols] == [100 + sum(q["width"] for q in cols[:i]) for i in range(len(cols))]
+                  and sum(c["width"] for c in cols) == 44, cols)
+            check("S5 ONE stitched image of 44x7 cells at 64 px (%dx%d)" % im.size,
+                  abs(im.size[0] - 44 * 64) <= 44 and abs(im.size[1] - 7 * 64) <= 8, im.size)
+        with tempfile.TemporaryDirectory() as d2:   # left column on the left: pasted in the order given
+            a, b = os.path.join(d2, "a.png"), os.path.join(d2, "b.png")
+            Image.new("RGB", (10, 5), (200, 0, 0)).save(a)
+            Image.new("RGB", (10, 5), (0, 200, 0)).save(b)
+            im = Image.open(PZ.stitch([[a, b]], os.path.join(d2, "o.png")))
+            check("S5 stitch lays a row left to right", im.size == (20, 5) and im.getpixel((2, 2))[0] == 200
+                  and im.getpixel((15, 2))[1] == 200, im.size)
 
 
 def s6_suite():

@@ -11,3 +11,12 @@ Detached BENCH helper, item RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT
 - 08:25 tier pyrelands (18 mods) up; gate A all PASS but loadavg 14; site tile 193, gate B CLEAN; batch 1 of the short checks running.
 - 08:30 sc_ash_watered shrunk (five reads over 50,000 ticks instead of five days); cheaper_why written for burn_line, burn_compounds, grass_regreens, heat_dome. burrowers, heat_dome, fire_tick_effects PASS.
 - 08:42 batch 1 done: burrowers, heat_dome (naive GPT judge told the dome from the standing body), fire_tick_effects, scorchfruit, no_ordinary_rain, mapgen_log, grass_cover, ambient_ash_drift, blackrain, gate, ullai_and_giant, reload_keeps_the_burn, wind_burn_live 9/9: all PASS. Batch 2 (ash_fertility_watered, fresh_burn_bonus, regrow, burn_line) running.
+- 08:47 ash_fertility_watered PASS on the short scene (hot and cool hours both read); certificate rerun OK on 16 bars; published 3a3294ac36.
+- 09:05 fresh_burn_bonus still playing its days (load 15-20 on the machine); regrow and burn_line queued.
+- 09:20 fresh_burn_bonus PASS; regrow playing.
+- 09:35 regrow still playing.
+- 09:47 regrow: regrow_dry_watered_vanilla FAIL, the other four PASS; diagnosing. burn_line running.
+- 09:52 regrow's FAIL: plants came and went in the open patches (dry 16, 13, 14, 15, 15, 15; watered 16, 7, 10...), so its burst read confounds; cause of the losses not yet shown (grazing suspected). Repair published 82bdcf15cf (steel ring; moved count reads UNMEASURED; bonus held to one day).
+- 10:10 burn_line playing; b3 queued (owed_text, growth part real and planted, full regrow again).
+- 10:20 burn_line: present PASS, burned_share PASS, walks_hourly UNMEASURED, off_control FAIL; diagnosing. b3 running.
+- 10:38 (past 10:40 bound soon: a needed-check repair and one open FAIL remain, so the run goes on; the launch line set no bound). burn_line_walks_hourly UNMEASURED: the game window was resized to 1458x831 between 08:18 and 10:20, so the 23-cell crop did not fit; play_zoom now stitches columns. burn_line_off_control: 34 fires; source probe queued. Reset-all: 4 changed fields back to defaults live; master window opened (screenshots/settings_window.jpg).

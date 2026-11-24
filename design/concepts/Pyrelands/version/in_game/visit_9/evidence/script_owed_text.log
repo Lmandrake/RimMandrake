@@ -1,0 +1,9 @@
+KEY RM_FireFrontLetterLabel = The grass has gone up
+KEY RM_FireFrontLetterTextWind = A line of ember-grass has caught somewhere out in the open, and it is walking {0} with the wind.
+
+RESET before {'burnLineEnabled': 'True', 'freshBurnDays': '6', 'crossBiomeBiomeList': None, 'windCarriesFireEnabled': 'True'} changed {'burnLineEnabled': 'False', 'freshBurnDays': '2', 'crossBiomeBiomeList': 'Desert', 'windCarriesFireEnabled': 'False'} call True after {'burnLineEnabled': 'True', 'freshBurnDays': '6', 'crossBiomeBiomeList': None, 'windCarriesFireEnabled': 'True'} OK
+OPEN {'success': True, 'changed': True, 'requestedModId': 'RM_PyrelandsMod', 'replaceExisting': True, 'closedExistingDialogCount': 0, 'message': "Opened mod settings dialog for 'RM_PyrelandsMod'.", 'mod': {'modId': 'mod-settings:mandrake.rm.biomes:4c9c2de27f8f2f55', 'packageId': 'mandrake.rm.biomes', 'pa
+SHOT settings (0)  C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\pv9_settings.png
+LAYOUT 22123
+CLOSE {'success': True, 'closed': ['Dialog_DevPalette'], 'closedCount': 1, 'remaining': ['ImmediateWindow', 'Dialog_ModSettings'], 'deselected': 0, 'hudHidden': True, 'hudWasHidden': False, 'hudLeaseSeconds
+[bridge split] 4.1 s wall: load 0.0 / ticks 0.0 / reads 0.1 / other 0.8 / outside calls 3.3 s
