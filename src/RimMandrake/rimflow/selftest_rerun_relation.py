@@ -62,7 +62,7 @@ def table(extra=None):
                  "entry": "scene_a", "reads": ["src/RimMandrake/Planted/Source/A.cs",
                                                "design/concepts/Planted/scenes.json"]},
         "sc_b": {"id": "sc_b", "kind": "live_minimal", "stage": "6", "tier": "t", "file": "src/RimMandrake/Planted/validation.py",
-                 "entry": "scene_b", "reads": ["src/RimMandrake/Planted/Defs/B.xml",
+                 "entry": "scene_b", "reads": ["src/RimMandrake/Planted/Defs/B.xml", "src/RimMandrake/Planted/Source/B.cs",
                                                "design/concepts/Planted/scenes.json"]},
         "sc_c": {"id": "sc_c", "kind": "live_minimal", "stage": "6", "tier": "t",
                  "reads": ["src/RimMandrake/Planted/Source/C.cs"]},
@@ -200,6 +200,103 @@ def t_undeclared_change_reruns_nothing_and_is_listed():
         part = sorted(set(res["touched"]) - {"sc_whole", "sc_full"})
         ok("undeclared-change-reruns-nothing-and-is-listed: no declared check reruns, the file is listed",
            part == [] and res["undeclared"] == ["src/RimMandrake/Planted/Defs/Loose.xml"], (part, res["undeclared"]))
+    finally:
+        tr.close()
+
+
+def t_shipped_csharp_reruns_the_live_checks_that_name_none():
+    name = "shipped-csharp-reruns-the-live-checks-that-name-none"
+    stamp = "# project: RimMandrake/Planted/Source/P.csproj\n# dll: %s\n%s A.cs\n00 B.cs\n00 C.cs\n"
+    src = "src/RimMandrake/Planted/"
+    extra = {
+        # the Pyrelands shape: a scene script and scenes.json, no C# anywhere
+        "sc_py": {"id": "sc_py", "kind": "live_minimal", "stage": "6", "tier": "t", "file": src + "validation.py",
+                  "entry": "scene_a", "reads": [src + "validation.py", "design/concepts/Planted/scenes.json"]},
+        "sc_def": {"id": "sc_def", "kind": "live_minimal", "stage": "6", "tier": "t", "reads": [src + "Defs/B.xml"]},
+        "sc_folder": {"id": "sc_folder", "kind": "live_minimal", "stage": "6", "tier": "t", "reads": [src + "Source/Kernel/"]},
+        "sc_selftest": {"id": "sc_selftest", "kind": "live_minimal", "stage": "6", "tier": "t",
+                        "reads": [src + "Source/SelfTest/T.cs"]},
+        "off_py": {"id": "off_py", "kind": "offline", "stage": "3", "file": src + "validation.py", "entry": "scene_a"},
+    }
+
+    def tree():
+        tr = Tree()
+        tr.write(src + "Source/P.csproj", "<Project/>\n")
+        tr.write(src + "Source/Kernel/K.cs", "class K { int v = 0; }\n")
+        tr.write(src + "Source/SelfTest/T.csproj", "<Project/>\n")
+        tr.write(src + "Source/SelfTest/T.cs", "class T { int v = 0; }\n")
+        tr.write(src + "Assemblies/P.dll.srchash", stamp % ("0", "00") + "00 Kernel/K.cs\n")
+        tr.set_table(table(extra))
+        return tr, tr.commit("the planted mod, its project and its offline program")
+
+    def read(*edits):
+        tr, base = tree()
+        try:
+            for rel, a, b in edits:
+                tr.edit(rel, a, b)
+            tr.commit("the change")
+            return relate(tr, all_rows(base, table(extra)))
+        finally:
+            tr.close()
+
+    res = read((src + "Source/A.cs", "v = 0", "v = 1"))
+    un = sorted(set(res["unreadable"]) - {"sc_blank"})
+    ok(name + ": a C# change reruns every live check that names no shipped C# (a def check and a check that names only "
+       "an offline program among them), and no offline check", un == ["sc_def", "sc_py", "sc_selftest"] and
+       res["rows"]["off_py"]["state"] == "untouched", (un, res["rows"]["off_py"]))
+    ok(name + ": a check that names other C#, by file or by folder, keeps its own answer",
+       all(res["rows"][t]["state"] == "untouched" for t in ("sc_b", "sc_c", "sc_folder"))
+       and res["rows"]["sc_a"]["state"] == "touched", res["rows"])
+    ok(name + ": the reading names the changed C#", res["rows"]["sc_py"]["files"] == [src + "Source/A.cs"] and
+       "Source/A.cs" in res["rows"]["sc_py"]["why"], res["rows"]["sc_py"])
+    res = read((src + "Source/SelfTest/T.cs", "v = 0", "v = 1"), (src + "Defs/Loose.xml", "<Defs/>", "<Defs><X/></Defs>"))
+    un = sorted(set(res["unreadable"]) - {"sc_blank"})
+    ok(name + ": an offline program and a def nobody declares rerun no live check", un == [] and all(
+       res["rows"][t]["state"] == "untouched" for t in ("sc_py", "sc_b", "sc_def")), (un, res["rows"]))
+    res = read((src + "validation.py", "def scene_b(rows):", "def scene_b(rows, x=1):"))
+    ok(name + ": a scene-script change reruns only the check that reaches it", res["rows"]["sc_py"]["state"] ==
+       "untouched" and res["rows"]["sc_b"]["state"] == "touched", (res["rows"]["sc_py"], res["rows"]["sc_b"]))
+    # a declaration in exercises.json makes the relation readable again
+    tr, base = tree()
+    try:
+        tr.write("design/concepts/Planted/version/exercises.json", json.dumps({"checks": {"sc_py": [src + "Source/B.cs"]}}))
+        base = tr.commit("declared")
+        tr.edit(src + "Source/A.cs", "v = 0", "v = 1")
+        tr.commit("A.cs")
+        res = relate(tr, all_rows(base, table(extra)))
+        ok(name + ": a declared check is related by its declaration", res["rows"]["sc_py"]["state"] == "untouched" and
+           res["rows"]["sc_def"]["state"] == "unreadable", (res["rows"]["sc_py"], res["rows"]["sc_def"]))
+    finally:
+        tr.close()
+
+
+def t_rebuilt_dll_relates_by_its_srchash():
+    name = "rebuilt-dll-relates-by-its-srchash"
+    src = "src/RimMandrake/Planted/"
+    live_def = {"sc_def": {"id": "sc_def", "kind": "live_minimal", "stage": "6", "tier": "t", "reads": [src + "Defs/B.xml"]}}
+    tr = Tree()
+    try:
+        tr.set_table(table(live_def))
+        tr.base = tr.commit("a check that names no C#")
+        tr.write(src + "Assemblies/P.dll", "dll1")
+        tr.write(src + "Assemblies/P.dll.srchash", "# dll: 1\n11 A.cs\n00 B.cs\n00 C.cs\n")
+        tr.commit("the DLL rebuilt from source that landed before")
+        res = relate(tr, all_rows(tr.base, table(live_def)))
+        ok(name + ": the check that declares the recompiled file reruns, and so does the live check that names no C#; "
+           "the check on another file does not", res["rows"]["sc_a"]["state"] == "touched" and
+           res["rows"]["sc_def"]["state"] == "unreadable" and res["rows"]["sc_c"]["state"] == "untouched", res["rows"])
+    finally:
+        tr.close()
+    tr = Tree()
+    try:
+        tr.set_table(table(live_def))
+        tr.base = tr.commit("a check that names no C#")
+        tr.write(src + "Assemblies/P.dll", "dll1")
+        tr.write(src + "Assemblies/P.dll.srchash", "# dll: 1\n00 A.cs\n00 B.cs\n00 C.cs\n")
+        tr.commit("the DLL rebuilt, no source moved")
+        res = relate(tr, all_rows(tr.base, table(live_def)))
+        ok(name + ": a rebuild of the same source touches no part check", all(
+            res["rows"][t]["state"] == "untouched" for t in ("sc_a", "sc_b", "sc_c", "sc_def")), res["rows"])
     finally:
         tr.close()
 
@@ -820,6 +917,8 @@ def main():
     t_untouched_row_counts()
     t_touched_check_reruns()
     t_undeclared_change_reruns_nothing_and_is_listed()
+    t_shipped_csharp_reruns_the_live_checks_that_name_none()
+    t_rebuilt_dll_relates_by_its_srchash()
     t_unreadable_relation_reruns_alone()
     t_whole_mod_check_reruns_on_any_change()
     t_whole_mod_check_skips_hashignored()

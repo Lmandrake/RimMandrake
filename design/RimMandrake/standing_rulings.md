@@ -2191,7 +2191,9 @@ approve your changes to the Step 6->Step 7 transition and preparation."*
 - How a changed file relates:
   - a Python file by top-level name;
   - a JSON file by the check's own entry;
-  - a C# file by member and by switch section (the DLL is derived, so the DLL relates to nothing);
+  - a C# file by member and by switch section (the DLL relates through the C# files whose `.srchash` hash moved);
+  - C# that ships, to a check that runs in the game and declares no C# file: no readable relation, so that check runs
+    again;
   - every other file by file;
   - a Python or C# file as a whole, when the program cannot relate its parts.
 - A full-list check, or one that declares `"*"` (a log budget, a load-without-errors check), relates to the whole mod.

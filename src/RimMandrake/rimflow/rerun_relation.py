@@ -30,7 +30,9 @@ check (kind live_full) declares the whole mod. How a changed file relates, by ki
          .srchash names): there a member touches the check only when the check reaches its name and its type's name,
          by name alone (no string, label or list value), and an engine-called member when the check names its type. A
          check that anchors in no C# and lists C# in its `exercises` is related by that list alone.
-         The DLL and its .srchash are derived: they relate to nothing by themselves.
+         A file whose .srchash line differs between OLD and NEW changed in the DLL, whatever its text: it relates whole.
+         A check that runs in the game and declares no C# that ships has no readable relation to a change of shipped C#.
+         The DLL's bytes relate to nothing by themselves.
   other  by file.
 A check whose own test-table entry changed in what it runs (RUN_KEYS) is touched. A check with no declared path, or a
 row whose commit git cannot resolve, has no readable relation: it alone runs again, and it is listed.
@@ -806,15 +808,26 @@ def cs_reach(units, seeds, owned, added=frozenset(), names_only=False):
 
 # ---- the relation ---------------------------------------------------------------------------------------------------
 
-def _srchash_sources(text, mod):
-    """The C# files a DLL is compiled from, repo-relative, from its .srchash (paths relative to Source/)."""
-    out = []
+def _srchash_hashes(text, mod):
+    """{C# file a DLL is compiled from, repo-relative: its hash}, from its .srchash (paths relative to Source/)."""
+    out = {}
     base = mod_root(mod) + "/Source"
     for ln in (text or "").splitlines():
         if ln.startswith("#") or " " not in ln:
             continue
-        rel = ln.split(" ", 1)[1].strip()
-        out.append(os.path.normpath(os.path.join(base, rel)).replace("\\", "/"))
+        h, rel = ln.split(" ", 1)
+        out[os.path.normpath(os.path.join(base, rel.strip())).replace("\\", "/")] = h
+    return out
+
+
+def compiled(git, mod, sha):
+    """{repo path: hash}: every C# file the mod's DLLs were compiled from at the commit, by its .srchash files."""
+    out = {}
+    names = git.show(sha, mod_root(mod) + "/Assemblies")
+    for p in names.splitlines() if names else ():       # None: the mod has no Assemblies folder at the commit
+        if p.endswith(".srchash"):
+            for f, h in _srchash_hashes(git.show(sha, "%s/Assemblies/%s" % (mod_root(mod), p)), mod).items():
+                out[f] = "%s %s" % (out[f], h) if f in out else h       # a file two DLLs share
     return out
 
 
@@ -824,9 +837,7 @@ def scope(git, mod, sha, specs):
     paths = {mod_root(mod), "design/concepts/%s" % mod}
     for s in specs.values():
         paths.update(declared(s, mod)[0])
-    for p in (git.show(sha, mod_root(mod) + "/Assemblies") or "").splitlines():
-        if p.endswith(".srchash"):
-            paths.update(_srchash_sources(git.show(sha, "%s/Assemblies/%s" % (mod_root(mod), p)), mod))
+    paths.update(compiled(git, mod, sha))
     return sorted(p for p in paths if in_repo(p))
 
 
@@ -1029,11 +1040,11 @@ class Relation:
                     return True, "%s uses the shared static %s it reads" % (k, ", ".join(sorted(u.refs & statics)))
         return False, ""
 
-    def _cs_types(self, sha):
-        """{mod .cs path: the type names it defines} at the commit (a file that does not read defines none), of the C#
-        projects the mod's DLLs are built from: a file whose nearest .csproj is one no .srchash names (an offline
-        SelfTest program) never runs in the game. When no .srchash names a project, every C# file of the mod counts."""
-        k = ("cstypes", sha)
+    def _cs_own(self, sha):
+        """The mod's own .cs files at the commit, of the C# projects the mod's DLLs are built from: a file whose nearest
+        .csproj is one no .srchash names (an offline SelfTest program) never runs in the game. When no .srchash names a
+        project, every C# file of the mod counts."""
+        k = ("csown", sha)
         if k not in self._py:
             out = self.git._git("ls-tree", "-r", "--name-only", sha, "--", mod_root(self.mod) + "/")
             files = out.decode().splitlines() if out else []
@@ -1057,16 +1068,41 @@ class Relation:
                         return mine[0]
                     d = d.rsplit("/", 1)[0]
                 return None
-            m = {}
+            own = []
             for f in files:
                 pr = project(f) if f.endswith(".cs") else None
                 if built and pr is not None and not any(pr.endswith(b) or b.endswith(pr) for b in built):
                     continue
                 if f.endswith(".cs") and not derived(f):
-                    u = self._cs(sha, f)
-                    m[f] = {x.name for x in (u or {}).values() if x.kind == "type"}
+                    own.append(f)
+            self._py[k] = own
+        return self._py[k]
+
+    def _cs_types(self, sha):
+        """{path of _cs_own: the type names it defines} at the commit (a file that does not read defines none)."""
+        k = ("cstypes", sha)
+        if k not in self._py:
+            m = {}
+            for f in self._cs_own(sha):
+                u = self._cs(sha, f)
+                m[f] = {x.name for x in (u or {}).values() if x.kind == "type"}
             self._py[k] = m
         return self._py[k]
+
+    def _compiled(self, sha):
+        k = ("compiled", sha)
+        if k not in self._py:
+            self._py[k] = compiled(self.git, self.mod, sha)
+        return self._py[k]
+
+    def shipped_cs(self, o):
+        """-> (ships, recompiled): every C# file that ships at either commit (a .srchash lists it, or it is the mod's own
+        in a project a .srchash names), and those whose .srchash hash differs between the two: they changed in the DLL,
+        though their text may have landed before OLD (FlowWorks 4e3323090718)."""
+        a, b = self._compiled(o), self._compiled(self.new)
+        ships = set(a) | set(b) | set(self._cs_own(o)) | set(self._cs_own(self.new))
+        # a commit with no .srchash at all says nothing of what its DLL was compiled from
+        return ships, ({f for f in set(a) | set(b) if a.get(f) != b.get(f)} if a and b else set())
 
     def cs_named_files(self, files, o):
         """The mod's C# files, outside `files`, that define a type a C# file of `files` names (a partial class's other
@@ -1123,10 +1159,30 @@ class Relation:
         return key in self._py[k]
 
     def touches(self, tid, old):
-        """-> (state, why, files): state 'untouched' | 'touched' | 'unreadable'. files: the changed files that touch."""
+        """-> (state, why, files): state 'untouched' | 'touched' | 'unreadable'. files: the changed files that touch. A
+        check that runs in the game and declares no C# that ships is never untouched by a change of shipped C#: that part
+        of its relation cannot be read, so it runs again (Pyrelands a6f05380df: 1 of 40 read as touched)."""
+        st, why, files = self._touches(tid, old)
         spec = self.tests.get(tid) or {}
-        paths, whole = declared(dict(spec, exercises=_aslist(spec.get("exercises")) + self.extra.get(tid, [])),
-                                self.mod)
+        paths, whole = self._paths(tid, spec)
+        o = self.git.rev(old)
+        if st != "untouched" or whole or not str(spec.get("kind", "")).startswith("live") or o == self.new:
+            return st, why, files
+        ships, recompiled = self.shipped_cs(o)
+        if any(covers(p, f) for p in paths for f in ships):
+            return st, why, files
+        cs = sorted({f for f in self.change(o) if f in ships} | recompiled)
+        if not cs:
+            return st, why, files
+        return "unreadable", "it runs in the game and declares no C# file, and C# that ships changed (%s%s)" % (
+            ", ".join(cs[:6]), " and %d more" % (len(cs) - 6) if len(cs) > 6 else ""), cs
+
+    def _paths(self, tid, spec):
+        return declared(dict(spec, exercises=_aslist(spec.get("exercises")) + self.extra.get(tid, [])), self.mod)
+
+    def _touches(self, tid, old):
+        spec = self.tests.get(tid) or {}
+        paths, whole = self._paths(tid, spec)
         if not paths and not whole:
             return "unreadable", "the check declares nothing it reads or exercises (no exercises, reads or file)", []
         if not whole and not any(in_repo(p) for p in paths):
@@ -1157,11 +1213,12 @@ class Relation:
                         ".hashignore lists (never ships; the mod hash does not move)" % len(under), [])
             return "untouched", "a whole-mod check, and nothing under the mod changed", []
         imported = self.py_closure([p for p in paths if p.endswith(".py")], o)
+        redone = self.shipped_cs(o)[1] - set(ch)     # changed in the DLL, its text unchanged between the commits
         decl_cs = sorted({f for f in ch if f.endswith(".cs") and any(covers(p, f) for p in paths)} |
                          {p for p in paths if p.endswith(".cs")})
         cs_named = self.cs_named_files(decl_cs, o) if decl_cs else set()
         imported |= cs_named
-        mine = [f for f in ch if not derived(f) and (any(covers(p, f) for p in paths) or f in imported)]
+        mine = [f for f in sorted(set(ch) | redone) if not derived(f) and (any(covers(p, f) for p in paths) or f in imported)]
         if not mine:
             return "untouched", "no changed file is one it declares or its Python imports", []
         seeds = {tid, spec.get("entry")}
@@ -1197,6 +1254,13 @@ class Relation:
                     why.append("%s: %s" % (f, ", ".join(got[:6]) + (" ..." if len(got) > 6 else "")))
         for f in mine:
             if f.endswith(".py"):
+                continue
+            if f in redone:
+                if f in cs_named and not any(covers(p, f) for p in paths) and listed and not self._cs_names(
+                        decl_cs, sorted(cs_named), o, {s for s in seeds if s})[1]:
+                    continue
+                hits.append(f)
+                why.append("%s: recompiled into the DLL (its .srchash hash differs; related whole)" % f)
                 continue
             if f.endswith(".cs"):
                 if f in cs_named and not any(covers(p, f) for p in paths):

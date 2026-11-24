@@ -30,6 +30,8 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   check exercises that it does not declare and whose types no declared C# file names, such as a class a def's XML
   names or one reached through a member of a type the check never names). The guards are the whole-mod checks, the next visit of the related checks,
   and the owner's walk. No full rerun is added to cover it.
+- **a-dll-with-no-srchash.** A shipped DLL that no `.srchash` describes (a third-party library) changes nothing in the
+  relation.
 - **lookup-by-a-computed-key.** A dict read with a key the code computes is related through the keys the check's own
   strings name. A key computed from something else is not seen.
 
@@ -41,7 +43,18 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   every changed declared file changed only in parts the check does not reach.
 - **touched-check-reruns.** A check reruns when a changed file is one it declares and the change reaches it.
 - **undeclared-change-reruns-nothing-and-is-listed.** A changed file under the mod that no check declares reruns no
-  check, and the reading lists it, so that someone can declare it.
+  check, and the reading lists it, so that someone can declare it. C# that ships is the exception (next promise).
+- **shipped-csharp-reruns-the-live-checks-that-name-none.** A check that runs in the game (`kind` starts `live`) and
+  declares no C# file that ships has no readable relation to a change of shipped C#: it reruns, and the reading names the
+  changed C#, so that someone can declare what it exercises (`version/exercises.json`). C# that ships is a `.cs` file
+  that a `.srchash` of the mod lists, or one under the mod in a project a `.srchash` names. An offline check, a change
+  to an offline SelfTest program, a def, a doc and a scene script do not reach this rule. (Measured 2026-11-24: Pyrelands
+  a6f05380df, six C# fixes, touched 1 of 40; no Pyrelands check names a C# file, and nine stale PASS rows stood; item
+  RIMMANDRAKE_FIX_CHANGE_RELATION_BLIND_TO_CSHARP_NINE_ROWS_MISSED.)
+- **rebuilt-dll-relates-by-its-srchash.** A `.cs` file whose hash in a `.srchash` differs between the two commits
+  changed in the DLL, though its text may have landed in an earlier commit: it relates whole to the checks that reach
+  that file, and by the promise above to the live checks that name no C#. (FlowWorks 4e3323090718, a DLL-only commit:
+  1 of 30 touched.)
 - **unreadable-relation-reruns-alone.** A check with no declared path, a row with no commit, or a commit git cannot
   resolve: that check reruns and is listed as unreadable; the other checks keep their own answers.
 - **whole-mod-check-reruns-on-any-change.** A check that declares `"*"`, the mod folder itself, or is a full-list check
@@ -50,8 +63,8 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
 - **whole-mod-check-skips-hashignored.** A change only to files the mod's `.hashignore` lists reruns no whole-mod or
   full-list check; the same change beside a shipped file still reruns them. An ignored file that a whole-mod check
   declares (its own script) still reruns that check.
-- **csharp-relates-by-source-file.** A C# change relates through the changed `.cs` files; the DLL and its `.srchash`
-  are derived and relate to nothing by themselves.
+- **csharp-relates-by-source-file.** A C# change relates through the changed `.cs` files; the DLL's bytes and the
+  `.srchash` file relate to nothing by themselves.
 - **csharp-relates-by-scene-section.** In a changed `.cs` file, only the members and `case "x":` sections that changed
   count, and they touch a check only when what its id and entry reach includes one (its own section, the helpers and
   fields it names, a `goto case` target). Whole file when it does not read, the check anchors nowhere in it, a using
