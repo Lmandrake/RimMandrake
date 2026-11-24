@@ -181,7 +181,9 @@ def clean_thing(d, notes):
         for tag in ("thinkTreeMain", "thinkTreeConstant"):
             el = race.find(tag)
             if el is not None and (el.text or "").strip().startswith("VEF_"):
-                el.set("MayRequire", VEF)
+                # a MayRequire here leaves the race with no tree when VEF is absent: name the vanilla tree, patch the VEF one in
+                notes.append(f"{tag} {el.text.strip()} -> vanilla; OWED: a Patches/<def>_VEFThinkTree.xml that sets it")
+                el.text = "Animal" if tag == "thinkTreeMain" else "AnimalConstant"
 
 
 def clean_kind(k, stem):
