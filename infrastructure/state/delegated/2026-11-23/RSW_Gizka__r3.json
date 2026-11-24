@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 53.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.50638
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 55.3
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Gizka",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['CANON_MISS', 'CANON_MISS', 'F_SIZE_JUMP', 'CANON_MISS', 'F_INCONSISTENT', 'STYLE_CARTOON']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K5'], own blocking ['CANON_MISS', 'CANON_MISS']",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "730bc41bc7eed91d96c6b579670874149c651f6b10108c25b4074dd459242e76",
+  "east.png": "29b8a4de58d2a6883067d5e57e45b6e8346eea6fb9eee99e3f61bd42a2b3c246",
+  "north.png": "caa118284a3166eeb89ea3093cde2e7a2db6dd36226174357a7d8e4733436e2a",
+  "scale.png": "31fdaba0cf63190b4cec512a9a762c177a9ceb94e2310ad75664cfe5fa5b25a0",
+  "facings.png": "30a1715a3e76e9908ade559de0f4445b819a85bb956c50951a59778fc39b24e9"
+ }
+}
