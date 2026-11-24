@@ -11825,3 +11825,4 @@
 {"seat":"RUNNER","event":"note","id":"HARNESS_REPAIR_CAUSE_F6CADE57","text":"seen again in testq J20261124T042805Z-591d2d.a1 (job J20261124T042805Z-591d2d): modcheck exit 1; {'PASS': 4, 'UNMEASURED': 3}","ts":"2026-11-24T05:10:07Z","tsn":1795497007898694796}
 {"seat":"RUNNER","event":"live","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","result":"broken","detail":"Ops alarm DISPATCH_CLONE_BEHIND: maturation.clone_behind_min = 6.8 min (MEASURED), line > 5","ts":"2026-11-24T05:15:33Z","tsn":1795497333180367132}
 {"seat":"RUNNER","event":"raise","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-24T05:15:42Z","tsn":1795497342980406011}
+{"seat":"RUNNER","event":"live","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","result":"kept","detail":"sweep: running again","ts":"2026-11-24T05:18:21Z","tsn":1795497501944941225}
