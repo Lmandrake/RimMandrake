@@ -19,8 +19,25 @@ the owner opens it. Staging only: no mod code, no bar. Read from the save file b
 
 Script to change: a copy of `design/concepts/Pyrelands/version/in_game/visit_8/scripts/walk_save.py`. Keep the old save.
 
+## Reading of the visit 9 save (Stage 7 reader of arrival 2, 2026-11-24 3:12 PM PST)
+
+The walk save is now `D:\ClaudeWork\rimmandrake\instances\b\Saves\PYRELANDS_0.1.0_VISIT9_WALK.rws` (ArchSmall, small list, 18 mods).
+The full-list save is out: full-list testing is retired. Restage this one, from
+`design/concepts/Pyrelands/version/in_game/visit_9/scripts/walk_save.py`.
+
+- Part 1 stands: storyteller Tutor, weather Clear.
+- Part 2 is done as saved: 6 ullai on 6 cells, the furnace-beast and 2 ashwallows in their station. They bolt for shade soon after
+  the clock runs (`screenshots/walk_small_closeups.jpg`: the herd is one heap at the station's left edge).
+  A station that he can watch with the clock running needs a fence or shade. A fence also keeps the herd in view.
+- Part 3 stands (the footprints station, plain signs).
+- 4. **No sign is in the save.** `review_label` draws in one game session only; a plain load shows no sign, and
+  `walk_twins.py check --mod Pyrelands` exits 2 (COULD NOT LOOK, no station sign). Write the signs as the in-save books
+  (the `SIGNS IN THE SAVE ITSELF` part of `JawaBenchReviewLabels.cs`), which survive a plain load.
+
 ## Acceptance test
 
 `python3 infrastructure/state/acceptance/RIMMANDRAKE_FREE_PYRE_WALK_SAVE_SKY_TUTOR_PINS_CLEAR.py "<the new save>"` exits 0.
 Watched red on the visit 8 save, 2026-11-24: `storyteller Tutor: FAIL; ullai 6 on 2 cells: FAIL`, exit 1.
 Part 3: none, it is a look.
+Also `python3 src/RimMandrake/Utils/walk_twins.py check "<the new save>"` exits 0. Watched on the visit 9 save, 2026-11-24: the first exits 1
+(`storyteller Tutor: FAIL; ullai 6 on 6 cells: ok`), the second exits 2 (no station sign).

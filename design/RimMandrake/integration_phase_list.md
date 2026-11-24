@@ -24,6 +24,7 @@ page, and no line has a live ticket (a ticket older than the ruling is parked wi
   ("Anything that draws its contents is open", 2026-11-12). This line's parked item: `RIMMANDRAKE_SETTLE_GUN_LOCKER_DRAWS_ITS_GUNS_BUT_KEEPS_THEM`.
 - Explosive Knockback: two storms of null errors in the raid walk after a load (780 and 447 lines). Not reproduced on 34 mods. Cause unknown.
 - Pyrelands: foreign animals (Zhakka, womp rats) on the full-list map though the roster is clean. Cause unknown.
+- Pyrelands: a stall of about one second every 250 ticks on a grown map, which he saw on 2026-11-07. Explosive Growth is the suspect, never measured.
 - All mods: freezes of 50 to 100 ms with the mod on or off. Cause unknown.
 - Gimme Some Slack: pale rectangles on plain soil of the review map, unchanged with the mod off [guess ~70%: another mod].
 

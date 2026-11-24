@@ -4,8 +4,8 @@
 
 Pyrelands 0.1.0: four live reads that no row of `design/concepts/Pyrelands/version/test_table.json` decides and that need a
 long run on a live game. Merged by the ticket sweep of 2026-11-22 (RIMMANDRAKE_SWEEP_PYRELANDS_TICKETS_MERGE_TO_MODERN_BUILD_THE_VALUABLE).
-Parts 1 and 2 need his full mod list (ArchBig; it does not fit on ArchSmall beside ArchBig), so they run after his walks
-free ArchBig; parts 3 and 4 run on any free game with the pyrelands tier.
+Parts 1 and 2 need the full mod list, so they wait for the integration phase (full-list testing is retired, 2026-11-24;
+`design/RimMandrake/integration_phase_list.md`); parts 3 and 4 run on any free game with the pyrelands tier.
 
 1. **Foreign kinds on the walked map (full list).** From RIMMANDRAKE_TRACE_ZHAKKA_ON_THE_WALKED_PYRELANDS_MAP: after two
    walked weeks on his full list (316 mods, visit 1, 2026-11-15) the map held 9 RSW_Zhakka and 1 RSW_WompRat although
