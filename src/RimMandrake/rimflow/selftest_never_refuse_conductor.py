@@ -327,7 +327,7 @@ def t_replay_launch_publishes_the_ledger_shard():
             rc, text = DH.launch("BENCH", item, "Build.", "sonnet", None, 0, runner=fake, known={item}, clone=clone,
                                  skip_launch_checks="selftest")
         pub = fake.published()
-        check(rc == 0 and pub and pub[0][3:] == [DH.EVENTS_REL + "/OWNER.jsonl"] and "publishes" in err.getvalue()
+        check(rc == 0 and pub and pub[0][3:] == [DH.EVENTS_REL + "/OWNER.jsonl", "--ledger"] and "publishes" in err.getvalue()
               and any(c[:1] == ["systemd-run"] for c in fake.calls),
               "launch replay: the Conductor's launch publishes the ledger shard itself, noted, and goes on", (rc, text, pub))
 

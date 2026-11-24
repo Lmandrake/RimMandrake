@@ -2817,9 +2817,8 @@ def _close_gate(args, it, sha, no_code):
     if found:
         _evidence_shadow(args, sha, no_code, found, None)
         die("close: %s has not earned its close at %s:\n%s\n\nA criterion passes with `rimflow verify %s --criterion <C> "
-            "--result pass --config <cfg> --evidence <path>`; a hand close first records a level-tagged pass on that sha "
-            "(`rimflow verify %s --sha %s --level L0 --result pass --config <what ran> --evidence <path>`); a fail needs a "
-            "pass after it. His word on this close (--owner-said, --by-card), or the Conductor window's act "
+            "--result pass --config <cfg> --evidence <path>`; a fail needs a pass after it (`rimflow close %s --sha %s "
+            "--evidence \"<what ran and its result>\"` records one with the close). His word on this close (--owner-said, --by-card), or the Conductor window's act "
             "(--per-ruling %s --why \"<the act and reason>\"), closes it as it is, recorded. "
             "Nothing changed: the item is as it was."
             % (args.id, sha, "\n".join("  %-9s %s" % f for f in found), args.id, args.id, sha, conductor_acts.RULING))
@@ -2830,10 +2829,28 @@ def _close_gate(args, it, sha, no_code):
               % (args.id, marker), file=sys.stderr)
 
 
+def _close_evidence(args, seat, evs, sha):
+    """`close --evidence`: the level-tagged pass a hand close once owed as a command of its own, as one event.
+    -> (the verify event or None, the item as it reads with that pass). Nothing is written here."""
+    ev = {"seat": seat, "event": "verify", "id": args.id, "result": "pass", "config": args.config or "close",
+          "evidence": args.evidence.strip(), "sha": sha, "level": args.level or "L0"}
+    try:
+        model.check(ev, _replay_now())
+        w2 = model.replay(evs + [dict(ev, ts=model.now(), tsn=time.time_ns())])
+    except model.LedgerError as e:
+        print("close: %s: --evidence is not recorded as a run (%s); the close goes on without it" % (args.id, e),
+              file=sys.stderr)
+        return None, None
+    return ev, w2.items.get(args.id)
+
+
 def cmd_close(args, seat):
     evs, w = load()
     _card_owed_or_die(args, evs)
     no_code = (args.no_code or "").strip()
+    evidence = (getattr(args, "evidence", None) or "").strip()
+    if no_code and evidence:
+        no_code = "%s; evidence: %s" % (no_code, evidence)
     if args.no_code is not None and not no_code:
         die("close: --no-code needs the words: what was finished that no commit shows.")
     if args.sha and no_code:
@@ -2867,9 +2884,11 @@ def cmd_close(args, seat):
         # an owed act is discharged by evidence, never by "done"; a principal's free-text evidence goes, noted
         principal.form("evidence form: free text (no sha, run id, path or `told him at <time>`)",
                        _owed().refusal(args.id, no_code), seat=seat, die=die, event={"form_notes": form_notes})
+    ran = None
     if it is not None:
         args.seat_is_owner = seat == "OWNER"
-        _close_gate(args, it, sha, no_code)
+        ran, as_passed = _close_evidence(args, seat, evs, sha) if evidence and not no_code else (None, None)
+        _close_gate(args, as_passed if ran else it, sha, no_code)
     ev = {"seat": seat, "event": "close", "id": args.id, "sha": sha}
     if getattr(args, "unchecked_lifted", False):
         ev["uncheckedLifted"] = True
@@ -2892,6 +2911,8 @@ def cmd_close(args, seat):
         _evidence_shadow(args, sha, no_code, [], line)
     if line:
         ev["live"] = line
+    if ran:
+        _emit(ran, w, quiet=True)
     _emit(ev, w, quiet=True)
     if holder and holder != seat:
         print("%s closed at %s — ruled by %s (%s's item)%s"
@@ -4826,6 +4847,9 @@ def build_parser():
     s.add_argument("--sha", help="the published commit that did the work; HEAD is never assumed")
     s.add_argument("--no-code", dest="no_code", metavar="\"<what>\"",
                    help="instead of --sha: what was finished that no commit shows")
+    s.add_argument("--evidence", help="what ran and its result, or a path: records a pass at --level on this sha with the close")
+    s.add_argument("--level", choices=model.LEVELS, help="the level of that pass (default L0)")
+    s.add_argument("--config", help="what that pass ran on, e.g. full-578 (default: close)")
     s.add_argument("--live", help=LIVE_HELP)
     s.add_argument("--reason", help="why it is done/dead — required in practice when "
                                     "the item is another seat's; the ledger records "

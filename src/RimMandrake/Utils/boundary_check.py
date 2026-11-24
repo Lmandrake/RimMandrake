@@ -31,6 +31,7 @@ PAGES = {
     "design/specs/2026-11-23-calm-map/boundary.md": "src/RimMandrake/Utils/selftest_calm_core.py",
     "design/specs/2026-11-23-first-exception-tap/boundary.md": "src/RimMandrake/Utils/selftest_first_exception_core.py",
     "design/specs/2026-11-23-gravship-layout-library/boundary.md": "src/RimMandrake/Utils/selftest_gravship_layout.py",
+    "design/specs/2026-11-23-streamline-review-state/boundary.md": "src/RimMandrake/rimflow/selftest_close_gate.py",
     "design/specs/2026-11-23-close-check/boundary.md": "src/RimMandrake/rimflow/selftest_close_check.py",
     "design/specs/2026-11-23-guiding-prose-check/boundary.md": "src/RimMandrake/Utils/selftest_guiding_prose.py",
     "design/specs/2026-11-23-tick-page-own-unit/boundary.md": "src/RimMandrake/rimflow/selftest_tick_page_own_unit.py",

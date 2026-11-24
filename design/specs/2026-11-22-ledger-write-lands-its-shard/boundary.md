@@ -1,7 +1,8 @@
 # BOUNDARY: a rimflow write lands the paths it wrote, Design Version 0.1.0
 
 Code: `src/RimMandrake/rimflow/ledger_landing.py` (the one home), its two recorders (`model.append` for a ledger shard,
-`cli.py` for item prose) and `cli.py main` (`--publish`). Item: `RIMMANDRAKE_MAKE_LEDGER_NOTE_LAND_ITS_OWN_SHARD_PROSE_STEP`,
+`cli.py` for item prose), `cli.py main` (`--publish`) and `src/RimMandrake/Utils/publish.py` (`land_ledger`,
+`_owed_lines`, `_level_if_free`: `./publish --ledger`). Item: `RIMMANDRAKE_MAKE_LEDGER_NOTE_LAND_ITS_OWN_SHARD_PROSE_STEP`,
 candidate 7 of `design/specs/2026-11-22-pipeline-single-source-sweep/report.md`. Each promise has a test of its name in
 `src/RimMandrake/rimflow/selftest_ledger_landing.py`.
 
@@ -32,9 +33,17 @@ that a card stamp writes or that `close` moves. The CLI knows what it wrote, so 
   refused append records nothing.
 - **records-the-item-prose-a-write-made.** A card stamp's prose append, `close`'s move to `items/closed/` and `reopen`'s
   move back are recorded, both paths of a move.
-- **publish-lands-exactly-the-written-paths.** With `--publish`, after the verb exits 0, one `./publish -m "ledger: <ID>
+- **publish-lands-exactly-the-written-paths.** With `--publish`, after the verb exits 0, one `./publish --ledger -m "ledger: <ID>
   <verb>" <paths>` runs in the ledger's clone, naming exactly the recorded repo paths (sorted, each once; a deleted path
   only when git tracks it). Its `PUBLISHED <sha>` line is printed and the verb's exit code stays 0.
+- **a-ledger-write-waits-for-no-peer-and-takes-no-peer-commit.** A write whose every path is a ledger shard lands its
+  shards' new lines on origin/main by plumbing: it lands while another `./publish` holds the clone's lock, the landed
+  commit holds the named shards alone, and a held clone's branch does not move. A free clone is levelled as `./sync` does.
+  Any other path, a torn last line, or an origin that cannot be fetched takes the ordinary `./publish` route. A line that
+  origin removed is not put back, a push race keeps both lines, and a pre-push refusal is raised with its text (each
+  one a `t_a_ledger_landing_…` case of `src/RimMandrake/Utils/selftest_publish.py`). Why: 1,146 ledger landings of
+  2026-11-22 1 PM to 11-23 6 PM PST waited 17 s (p50), 96 s (p90) and 677 s (p99) between the event and its commit
+  (measured from git; a write made without `--publish` and landed later counts too, so these are upper readings).
 - **a-plain-write-runs-no-git.** Without `--publish`, nothing is published and no git command runs for the landing.
 - **a-failed-landing-is-named.** A landing that does not print `PUBLISHED` exits `LANDING_FAILED` (4) and prints one line
   `WRITTEN, NOT PUBLISHED: <cause>; to pass, run in <clone>: ./publish -m ... <paths>`. The write itself stays.

@@ -126,7 +126,7 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
   landed: the line names the cause and the command that passes.
 - First, claim your item: `python3 src/RimMandrake/rimflow/cli.py claim {item} --seat {seat} --why "detached run" --publish`.
 - At the end, close it with the sha ./publish printed: `python3 src/RimMandrake/rimflow/cli.py close {item} --sha <sha>
-  --seat {seat} --why "..." --publish` (an operational item also takes `--live`), or, when anything is left, write a note whose
+  --evidence "<what ran and its result>" --seat {seat} --why "..." --publish` (an operational item also takes `--live`), or, when anything is left, write a note whose
   text starts `LEFT OPEN:` and says exactly what. A run that ends success with its item open and no such note is
   flagged to the Conductor.
 - A `LEFT OPEN:` note relaunches this brief in a fresh session (left_open_continue.py). When what is left is not a
@@ -319,7 +319,7 @@ def origin_gate(item, runner=subprocess.run, repo=None, seat=None, env=None):
     if not shards or not principal.form("%s was not on %s: the launcher publishes %s itself" % (
             item, ORIGIN_REF, " ".join(shards)), env=env):
         return text
-    argv = shlex.split(publish_command(item, shards))
+    argv = shlex.split(publish_command(item, shards)) + ["--ledger"]    # waits for no peer's publish (publish.land_ledger)
     try:
         r = runner(argv, cwd=repo, capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:

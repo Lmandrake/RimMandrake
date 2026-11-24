@@ -173,6 +173,47 @@ def s1(a, b, led):
     check(item(i).state == "done", "a clean close: named sha, a check on it, nothing failing -> done")
 
 
+def t_close_records_its_evidence(a, b):
+    """close-records-its-evidence (design/specs/2026-11-23-streamline-review-state/boundary.md): one command, not verify
+    then close."""
+    print("-- S8 close --evidence records the pass and the close together")
+    i = new("EVIDENCE")
+    rc, out = cli("close", i, "--sha", a, "--evidence", "selftest_x.py: PASS 12/12")
+    it, last = item(i), [e for e in events() if e.get("event") == "close"][-1]
+    run = it.runs[-1] if it.runs else None
+    check(rc == 0 and it.state == "done" and run and run.result == "pass" and run.level == "L0" and model.same_sha(run.sha, a)
+          and "PASS 12/12" in str(run.evidence), "a pass on that sha is recorded with its evidence (rc %d %s)" % (rc, out[-200:]))
+    check(not last.get("uncheckedLifted") and "no level-tagged pass" not in out, "and the close is not marked unchecked")
+
+    i = built("EVIDENCE_OWED", a, ("C1", "L1"))
+    n = len(events())
+    refused("evidence does not pass an owed criterion", "owed", "close", i, "--sha", a, "--evidence", "looked fine")
+    check(len(events()) == n, "and a refused close records nothing")
+
+    i = new("EVIDENCE_BLANK")
+    rc, out = cli("close", i, "--sha", a, "--evidence", "  ")
+    last = [e for e in events() if e.get("event") == "close"][-1]
+    check(rc == 0 and not item(i).runs and last.get("uncheckedLifted") is True, "blank evidence is no pass: closed unchecked, "
+          "as without it (rc %d)" % rc)
+
+    i = new("EVIDENCE_OTHER_SEAT")
+    rc, out = cli("close", i, "--sha", a, "--evidence", "x passed", "--reason", "proven", seat="CLAUDE_ARCHMAGI_OFFLINE2")
+    last = [e for e in events() if e.get("event") == "close"][-1]
+    check(rc == 0 and item(i).state == "done" and (item(i).runs and not last.get("uncheckedLifted") or "not recorded as a run" in out
+          and last.get("uncheckedLifted")), "another seat's close with evidence goes, recorded or said (rc %d %s)" % (rc, out[-300:]))
+
+    i = new("EVIDENCE_AFTER_FAIL")
+    ok("verify", i, "--sha", a, "--level", "L0", "--result", "fail", "--config", "fixture", "--evidence", "broke")
+    rc, out = cli("close", i, "--sha", a, "--evidence", "rerun: PASS")
+    check(rc == 0 and item(i).state == "done", "a pass after a fail clears the fail, as a separate verify did (rc %d)" % rc)
+
+    i = new("EVIDENCE_NOCODE")
+    rc, out = cli("close", i, "--no-code", "a decision", "--evidence", "told him at 6:10 PM")
+    last = [e for e in events() if e.get("event") == "close"][-1]
+    check(rc == 0 and not item(i).runs and "told him at 6:10 PM" in last.get("noCode", ""), "--no-code carries the evidence "
+          "in its own words and records no run on a sha (rc %d)" % rc)
+
+
 def s2(a, b):
     print("-- S2 a fail after a pass demotes")
     i = built("DEMOTE", a, ("C1", "L1"), ("C2", "L2"))
@@ -453,6 +494,7 @@ def main():
         s5_replay()
         s7_marker_fail(old_c, new_c)
         s6_every_way_to_done(old_c, new_c, led)
+        t_close_records_its_evidence(old_c, new_c)
         before = len(events())
         check(before > 40, "the instrument saw the fixture ledger (%d events)" % before)
     finally:

@@ -4,6 +4,8 @@
     ./publish -m "subject" path/one path/two     commit those paths, rebase, push, print PUBLISHED <sha>
     ./publish -F msg.txt path/one                message from a file ('-' = stdin)
     ./publish                                    push local commits already made (no new commit)
+    ./publish --ledger -m "subject" <shards>     land only these ledger shards' new lines (land_ledger: no clone lock, no
+                                                 peer's commit); any other path takes the ordinary route
 
 It is exactly: `git add --all -- <paths>` + `git commit -- <paths>` (pathspec on the commit, so
 nothing else staged rides along) + a replay of the local commits onto origin/main by plumbing, moved
@@ -32,11 +34,13 @@ old plumbing route that published from it (temp index, --catchup, --sync, --comm
 is deleted, not kept for emergencies. With no owned clone, make one on ext4.
 """
 import argparse
+import collections
 import concurrent.futures
 import contextlib
 import fcntl
 import fnmatch
 import glob
+import io
 import json
 import os
 import re
@@ -666,9 +670,119 @@ def land(top):
     raise Refuse("origin kept moving: %d non-fast-forward rejections in a row" % MAX_TRIES)
 
 
-def publish(top, paths, msg, cwd=None):
-    """Paths are relative to `cwd` (the caller's directory; defaults to the repo top)."""
+def _owed_lines(ours, base, theirs):
+    """-> the bytes this clone appended to a shard that origin does not hold, each line once, in our order; None when they
+    cannot be told (a torn last line). A base line that origin removed is not an append, so it is not put back."""
+    if (ours and not ours.endswith(b"\n")) or (theirs and not theirs.endswith(b"\n")):
+        return None
+    held = collections.Counter(base.splitlines(True))
+    up = set(theirs.splitlines(True))
+    new = []
+    for ln in ours.splitlines(True):
+        if held[ln]:
+            held[ln] -= 1
+        elif ln not in up:
+            up.add(ln)
+            new.append(ln)
+    return b"".join(new)
+
+
+def land_ledger(top, named, msg):
+    """Land ONLY these ledger shards' new lines on origin/main by plumbing: no clone lock, no local commit, no peer's
+    commit, no whole-tree check (the list skips ledger shards anyway). Then level the clone when no publish holds it.
+    -> the landed sha, or None when this cannot be done here (the caller takes the ordinary route).
+    Why: 1,146 ledger landings of 2026-11-22/23 waited 17 s at p50, 96 s at p90 and 677 s at p99 behind a peer's publish
+    and its tests (boundary design/specs/2026-11-22-ledger-write-lands-its-shard/boundary.md)."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import seat_sync
+    g = seat_sync.Git(top)
+    dest, track, _ = target_ref(top)
+
+    def blob(rev, p):
+        r = subprocess.run(["git", "cat-file", "blob", "%s:%s" % (rev, p)], cwd=top, capture_output=True,
+                           timeout=GIT_TIMEOUT_S)
+        return r.stdout if not r.returncode else b""
+    for attempt in range(MAX_TRIES):
+        if run(top, "fetch", "-q", REMOTE, check=False).returncode or not ref_exists(top, track):
+            return None
+        up = out(top, "rev-parse", track)
+        base = run(top, "merge-base", "HEAD", up, check=False).stdout.strip()
+        if not base:
+            return None
+        idx = os.path.join(out(top, "rev-parse", "--absolute-git-dir"), "ledger-landing.%d.idx" % os.getpid())
+        env = git_env(GIT_INDEX_FILE=idx)
+
+        def plumb(*a, inp=None):
+            r = subprocess.run(["git", *a], cwd=top, env=env, input=inp, capture_output=True, timeout=GIT_TIMEOUT_S)
+            if r.returncode:
+                raise Refuse("git %s failed: %s" % (a[0], r.stderr.decode("utf-8", "replace").strip()))
+            return r.stdout.decode().strip()
+        try:
+            plumb("read-tree", up)
+            changed = False
+            for p in named:
+                ours, theirs = seat_sync._read_shard(g, p), blob(up, p)
+                new = None if ours is None else _owed_lines(ours, blob(base, p), theirs)
+                if new is None:
+                    return None
+                if new:
+                    changed = True
+                    sha = plumb("hash-object", "-w", "--stdin", inp=theirs + new)
+                    plumb("update-index", "--add", "--cacheinfo", "100644,%s,%s" % (sha, p))
+            if not changed:
+                return None
+            tip = plumb("commit-tree", plumb("write-tree"), "-p", up, "-F", "-", inp=msg.encode())
+        finally:
+            for f in (idx, idx + ".lock"):
+                if os.path.exists(f):
+                    os.unlink(f)
+        if before_push:
+            before_push(attempt)
+        r = run(top, "push", "-q", REMOTE, "%s:%s" % (tip, dest), check=False)
+        run(top, "fetch", "-q", REMOTE, check=False)
+        if not r.returncode or (ref_exists(top, track) and is_ancestor(top, tip, track)):
+            _level_if_free(top)
+            return tip
+        err = (r.stderr or r.stdout).strip()
+        if re.search(r"^pre-push REFUSED", err, re.M):
+            raise Refuse("push refused by the pre-push hook (nothing pushed):\n%s" % err)
+        if not re.search(r"non-fast-forward|fetch first|\[rejected\]|failed to update ref", err):
+            return None                                  # the ordinary route retries it and names the cause
+        time.sleep(0.5 * (attempt + 1))
+    return None
+
+
+def _level_if_free(top):
+    """After land_ledger: move this clone onto origin/main as ./sync does, unless a publish holds the clone (it moves the
+    branch itself). What cannot move stays as it is; the next publish or ./sync carries it. Never a refusal."""
+    import seat_sync
+    fd = os.open(lock_path(top), os.O_CREAT | os.O_RDWR, 0o644)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        os.close(fd)
+        return
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            seat_sync.main(["--repo", top, "--no-fetch"])
+    except Exception as e:  # noqa: BLE001  the landing is done
+        print("LANDED, CLONE NOT MOVED: %s: %s" % (type(e).__name__, e))
+    finally:
+        os.close(fd)
+
+
+def publish(top, paths, msg, cwd=None, ledger=False):
+    """Paths are relative to `cwd` (the caller's directory; defaults to the repo top). `ledger`: when every path is a
+    ledger shard, land only their new lines, past the clone lock (land_ledger); anything else goes the ordinary way."""
     guard_mnt(top)
+    if ledger and paths and msg and msg.strip() and not door_skips():
+        named = rel_paths(top, paths, cwd or top)
+        if all(p.startswith(LEDGER_SHARDS) and p.endswith(".jsonl") for p in named) and not carried_prose_moves(top, named):
+            sha = land_ledger(top, named, msg if msg.endswith("\n") else msg + "\n")
+            if sha:
+                warn_owner_shard(top, named)
+                print("PUBLISHED %s" % sha)
+                return sha
     with clone_lock(top):
         return _publish(top, paths, msg, cwd)
 
@@ -1262,6 +1376,7 @@ def main(argv=None):
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("paths", nargs="*")
     ap.add_argument("-m", "--message")
+    ap.add_argument("--ledger", action="store_true", help="land only the named ledger shards' new lines")
     ap.add_argument("-F", "--file", help="read the message from a file ('-' = stdin)")
     a = ap.parse_args(argv)
     # Progress goes to stdout and REFUSED to stderr. Under a pipe stdout is block-buffered, so `2>&1 | tail` printed the
@@ -1271,7 +1386,7 @@ def main(argv=None):
     if a.file:
         msg = sys.stdin.read() if a.file == "-" else open(a.file).read()
     try:
-        sha = publish(toplevel(), a.paths, msg, os.getcwd())
+        sha = publish(toplevel(), a.paths, msg, os.getcwd(), ledger=a.ledger)
         if sha:
             print("close with: rimflow close <ID> --sha %s" % sha[:12])
             prose_after(toplevel())

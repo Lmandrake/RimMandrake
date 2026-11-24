@@ -73,6 +73,10 @@
    "n": 1,
    "why": "git push races; on giving up the commit stays intact on HEAD and the refusal names the cause, nothing is charged"
   },
+  "src/RimMandrake/Utils/publish.py::land_ledger::for attempt in range(MAX_TRIES)": {
+   "n": 1,
+   "why": "git push races of a ledger-only landing; on giving up the ordinary publish route takes over, nothing is charged"
+  },
   "src/RimMandrake/Utils/testq/archmagi_switch.py::decide::(inp.get('arch_invalid_streak') or 0) >= LATCH_STREAK": {
    "n": 1,
    "why": "machine brake: INVALID runs latch the Archmagi lane itself; no chain is charged"

@@ -1627,6 +1627,102 @@ def t_index_lock_held_long_exits_its_own_code_naming_the_holder(a, b):
     assert "index.lock" in text and str(pr.pid) in text and "python" in text, text
     assert "LINE 6" not in show(a, "f.txt"), "nothing was published"
 
+LSHARD = P.LEDGER_SHARDS + "S.jsonl"
+
+
+def seed_ledger(a, b, text="seed\n"):
+    write(a, ".gitattributes", P.LEDGER_SHARDS + "*.jsonl merge=union\n")
+    write(a, LSHARD, text)
+    P_quiet_publish(a, [".gitattributes", LSHARD], "shard")
+    sh(b, "pull", "-q", "--rebase")
+
+
+def ledger(a, paths):
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        sha = P.publish(a, paths, "ledger", ledger=True)
+    return sha, buf.getvalue()
+
+
+def t_a_ledger_landing_waits_for_no_peer_publish_and_takes_no_peer_commit(a, b):
+    # boundary design/specs/2026-11-22-ledger-write-lands-its-shard: the launch gate waited up to 600 s on a peer's
+    # publish lock and was refused by a red test of a peer's unpublished commit (2026-11-21 to 11-23)
+    seed_ledger(a, b)
+    write(a, "f.txt", LINES.replace("line 3", "PEER LINE 3"))
+    sh(a, "commit", "-q", "-m", "a peer's unpublished work", "--", "f.txt")
+    peers = sh(a, "rev-parse", "HEAD")
+    append(a, LSHARD, "mine\n")
+    old, P.LOCK_TIMEOUT = P.LOCK_TIMEOUT, 1
+    try:
+        with P.clone_lock(a):
+            sha, log = ledger(a, [LSHARD])
+    finally:
+        P.LOCK_TIMEOUT = old
+    assert sha and "PUBLISHED " + sha in log, log
+    assert show(a, LSHARD) == "seed\nmine\n"
+    assert "PEER" not in show(a, "f.txt"), "a peer's commit rode along"
+    assert sh(a, "rev-parse", "HEAD") == peers, "a held clone's branch moved"
+    # the peer's own publish afterwards lands its commit and doubles no ledger line
+    P_quiet_publish(a, [], None)
+    assert "PEER LINE 3" in show(a, "f.txt") and show(a, LSHARD) == "seed\nmine\n", show(a, LSHARD)
+
+
+def t_a_ledger_landing_levels_a_free_clone(a, b):
+    seed_ledger(a, b)
+    peer_push(b, LSHARD, "seed\npeer\n")
+    append(a, LSHARD, "mine\n")
+    sha, log = ledger(a, [LSHARD])
+    assert sha == sh(a, "rev-parse", "HEAD") == sh(a, "rev-parse", "origin/main"), log
+    assert show(a, LSHARD) == "seed\npeer\nmine\n" and not sh(a, "status", "--porcelain")
+
+
+def t_a_ledger_landing_that_loses_a_push_race_keeps_both_lines(a, b):
+    seed_ledger(a, b)
+    append(a, LSHARD, "mine\n")
+
+    def race(attempt):
+        if attempt == 0:
+            peer_push(b, LSHARD, "seed\npeer\n")
+    P.before_push = race
+    try:
+        sha, log = ledger(a, [LSHARD])
+    finally:
+        P.before_push = None
+    assert sha and show(a, LSHARD) == "seed\npeer\nmine\n", show(a, LSHARD)
+
+
+def t_a_ledger_landing_never_puts_back_a_line_origin_removed(a, b):
+    seed_ledger(a, b, "seed\nbad\n")
+    peer_push(b, LSHARD, "seed\n")
+    append(a, LSHARD, "mine\n")
+    ledger(a, [LSHARD])
+    assert "bad" not in show(a, LSHARD) and "mine" in show(a, LSHARD), show(a, LSHARD)
+
+
+def t_a_ledger_landing_of_another_path_goes_the_ordinary_way(a, b):
+    seed_ledger(a, b)
+    append(a, LSHARD, "mine\n")
+    write(a, "g.txt", "prose\n")
+    sha, log = ledger(a, [LSHARD, "g.txt"])
+    assert sha == sh(a, "rev-parse", "HEAD") and show(a, "g.txt") == "prose\n" and "mine" in show(a, LSHARD), log
+
+
+def t_a_ledger_landing_refused_by_the_hook_says_so_and_lands_nothing(a, b):
+    seed_ledger(a, b)
+    append(a, LSHARD, "mine\n")
+    hook = os.path.join(sh(a, "rev-parse", "--absolute-git-dir"), "hooks", "pre-push")
+    os.makedirs(os.path.dirname(hook), exist_ok=True)
+    with open(hook, "w") as f:
+        f.write("#!/bin/sh\necho 'pre-push REFUSED: planted' >&2\nexit 1\n")
+    os.chmod(hook, 0o755)
+    try:
+        ledger(a, [LSHARD])
+        raise AssertionError("a hook refusal must raise")
+    except P.Refuse as e:
+        assert "planted" in str(e), e
+    assert show(a, LSHARD) == "seed\n"
+
+
 TESTS = [v for k, v in sorted(globals().items()) if k.startswith("t_")]
 
 

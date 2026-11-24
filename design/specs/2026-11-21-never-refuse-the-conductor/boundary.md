@@ -47,7 +47,7 @@ the name, dashes as underscores) in `src/RimMandrake/rimflow/selftest_never_refu
   ledger is still refused (that is substance: the follow-up does not exist).
 - **replay-launch-publishes-the-ledger-shard.** `detached_helper.py launch` of an item filed only in this clone's
   shard (OWNER.jsonl from a ruling, say): for the Conductor the launcher runs the exact `./publish -m "ledger: <ITEM>
-  filed" <shards>` itself, notes it, checks origin again and goes on; a helper run is refused with the command, as
+  filed" <shards> --ledger` itself (it waits for no peer's publish: design/specs/2026-11-22-ledger-write-lands-its-shard/boundary.md), notes it, checks origin again and goes on; a helper run is refused with the command, as
   before, and nothing is published.
 - **replay-launch-continues-when-the-item-is-already-published.** When the launcher's own `./publish` exits non-zero
   (`REFUSED: nothing to publish: HEAD is already on origin/main`, another publish having landed the shard) the launcher

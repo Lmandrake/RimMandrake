@@ -135,6 +135,28 @@ def t_publish_lands_exactly_the_written_paths():
           "left dirty")
 
 
+def t_a_ledger_write_waits_for_no_peer_and_takes_no_peer_commit():
+    import fcntl
+    c = seeded("held")
+    with open(os.path.join(c, "peer.txt"), "w") as f:
+        f.write("a peer's unpublished work\n")
+    git(c, "add", "--", "peer.txt")
+    git(c, "commit", "-q", "-m", "peer")
+    head = git(c, "rev-parse", "HEAD")
+    with open(os.path.join(c, ".git", "publish.lock"), "w") as lk:
+        fcntl.flock(lk, fcntl.LOCK_EX)
+        old = os.environ.get("PUBLISH_LOCK_TIMEOUT")
+        os.environ["PUBLISH_LOCK_TIMEOUT"] = "2"
+        try:
+            rc, out, err = rimflow(c, "note", ITEM, "--text", "past the lock", "--seat", "BENCH", "--why", "t", "--publish")
+        finally:
+            os.environ.pop("PUBLISH_LOCK_TIMEOUT") if old is None else os.environ.update(PUBLISH_LOCK_TIMEOUT=old)
+    check(rc == 0 and "PUBLISHED " in out and landed(c) == [SEAT_SHARD], "a-ledger-write-waits-for-no-peer-and-takes-no-"
+          "peer-commit: lands with the clone's publish lock held, its shard alone: rc %d %s %s" % (rc, landed(c), out[-200:]))
+    check(git(c, "rev-parse", "HEAD") == head, "a-ledger-write-waits-for-no-peer-and-takes-no-peer-commit: the held "
+          "clone's branch did not move")
+
+
 def t_records_the_item_prose_a_write_made():
     c = seeded("prose")
     with open(os.path.join(c, ITEMS_REL, ITEM + ".md"), "w") as f:
@@ -363,6 +385,7 @@ def main(argv):
         t_records_the_shard_each_append_wrote()
         t_matches_every_recorded_event()
         t_publish_lands_exactly_the_written_paths()
+        t_a_ledger_write_waits_for_no_peer_and_takes_no_peer_commit()
         t_records_the_item_prose_a_write_made()
         t_a_plain_write_runs_no_git()
         t_a_failed_landing_is_named()

@@ -106,7 +106,9 @@ def land(verb, item=None, rc=0, paths=None, runner=subprocess.run, out=None):
         print("NOT PUBLISHED (the command exited %s): in %s run %s" % (rc, top, command(rels, subj)), file=out)
         return rc
     try:
-        r = runner([sys.executable, PUBLISH_PY, "-m", subj] + rels, cwd=top, capture_output=True, text=True,
+        # --ledger: shards alone land past the clone's publish lock and take no peer's commit (publish.land_ledger); with
+        # any other path among them, or where that cannot be done, publish.py takes its ordinary route
+        r = runner([sys.executable, PUBLISH_PY, "--ledger", "-m", subj] + rels, cwd=top, capture_output=True, text=True,
                    timeout=PUBLISH_TIMEOUT_S, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         print("WRITTEN, NOT PUBLISHED: ./publish could not run (%s); to pass, run in %s: %s"

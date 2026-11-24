@@ -739,7 +739,8 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
   `MODCHECK_DONOR_ENVIRONMENTS_1` and had written the next step on the item.)
   - A small change is a change whose check is a quick manual validation: an installed picture equals his pick, a value
     reads back, a file is deployed. The agent that made it checks it on the spot (a hash, a read, a single bridge call)
-    and closes it with that evidence: `rimflow verify ... --level L0`, then `close`.
+    and closes it with that evidence in one command: `rimflow close <ID> --sha <sha> --evidence "<what ran and its
+    result>"`. The command records the pass and the close together.
   - When a seat or helper finds why an item is stuck, that seat or helper does the fix and the remaining check at once.
     Then the same seat or helper closes the item with that evidence. Never write the diagnosis or a `NEXT:` onto the ticket instead.
   - Never queue, unhold or re-release an item for a check alone. An item goes back to the pipeline only when real build
