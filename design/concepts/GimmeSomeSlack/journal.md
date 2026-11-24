@@ -18,7 +18,7 @@ mods read alike.
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 10:54 AM PST).
+- **Waiting on:** his walk of 2026-11-24 is not passed (history entry of 2026-11-24 10:55 AM PST); the fix b7ec15d40a is on main and owes its fresh reader and a new walk staging.
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -630,3 +630,11 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-24 8:17 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 8:17 AM PST).
 - Record: `version/stage_record.json`.
+
+### 2026-11-24 10:55 AM PST, his walk of 0.2.0: not passed (by BENCH, RIMMANDRAKE_FIX_SLACK_WALL_LAMPS_FACE_INTO_WALL_CORDS_STOP_AT_HOLE)
+
+- His walk at about 10:10 AM PST on ArchSmall, build ad72a3cec3. Station 32 passed. Stations 33 and 12 have defects. The walk is not passed. His words and the three defects: `design/RimMandrake/validation_holding/gss_walk_20261124.md`.
+- The defects are Problems of 0.2.0: a wall lamp points into its wall (all looks, all facings), a cord stops at the wall plate, a cord stops at the rock hole. The Design Version stays 0.2.0.
+- Fix on main: b7ec15d40a. No art changed. The rock-hole entry is off `version/polish.md`.
+- Visits 1 to 3 saw no defect because every lamp check read a texture path and every wall check read the laid strand. A wall-lamp picture that named "no light in it" was reported on the walk brief as a taste question; it was this defect.
+- Offline red on the walked build and green on the fix: T_WALL_LAMP_LOOKS_OFFLINE (16 of 16 lamp facings red) and T_CORD_ENTERS_HOLE_OFFLINE (766 of 766 cords red).

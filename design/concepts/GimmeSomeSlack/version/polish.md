@@ -4,8 +4,6 @@ Polish improves play but is not part of passing 0.1.0. Each entry is moved here 
 
 *Empty at entry on 2026-11-13: no open judge gap sorted as Polish.* Candidate if he disagrees with the sort: g2's FlowWorks fallen-deck cord case (`gaps_sorted.md`).
 
-- **The cord runs further into a rock hole before it disappears** (cord art only, never printed stub art). Owner, his walk of 2026-11-20 (`conversations/2026-11-20-1329-aab6064a.md` line 1814): *"The yellow cable should "go into" the black of the hole before disappearing a bit more than it does currently... that's just extending the cable art a little longer into the black before it's cut off and disappears in, don't use hard-printed stub art! They suck. (This is definitely polish for next version)"*
-
 0.1.1 blind cycle 1 (`blind_challenge/cycle_1/lane2/faults.json`), moved to Polish by the steward RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_CYCLE_ONE_EXIT_MET as the Conductor's delegated call (`--per-ruling RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME`), 2026-11-20:
 - **RIMMANDRAKE_CLIP_SLACK_FALLEN_WIRE_TENTH_CELL_INTO_WALL** (MOD): a fallen wire's bend can clip up to 0.117 cell into a wall face in 15 of 5934 random walled lays (`LayFallen` samples walkability every 0.2 cell). The wire never crosses a wall; `fallen_span_on_ground` names no wall, and `cords_meet_walls_at_face` reds only a cord across a wall top. Stage 6 sees it live.
 - **RIMMANDRAKE_NOTE_SLACK_DLL_HOSE_NAMES_ONLY_ALTITUDES** (HARNESS): five hose-named altitude constants from `_Shared/SlackGeometry/DrawOrder.cs` are compiled into the GSS DLL; no hose def, texture, class or drawing ships.

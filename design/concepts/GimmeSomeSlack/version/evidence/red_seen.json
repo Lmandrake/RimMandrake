@@ -1,4 +1,17 @@
 {
+ "T_CORD_ENTERS_HOLE_OFFLINE": {
+  "at": "2026-11-24T18:54:46Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --holes-only",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/HoleEntryChecks.cs",
+  "last": "32/36 checks passed (cord enters hole only)",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/HoleEntry.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/HoleEntry.cs\nindex 89a46d7ead..aaf33a97a6 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/HoleEntry.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/HoleEntry.cs\n@@ -56,6 +56,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n         internal static List<Lead> Leads(LaidPiece p)\n         {\n             var res = new List<Lead>();\n+            if (p != null) return res;\n             for (int i = 0; i < p.Decals.Count; i++)\n             {\n                 if (!Is(p.Decals[i])) continue;\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/HoleEntry.cs"
+  ],
+  "patch_sha": "3332415653fcaf74",
+  "rc": 1,
+  "test_blob": "39ea3b4360cbee8337798b179acd787553dfd7e3"
+ },
  "T_CORE": {
   "at": "2026-11-24T14:14:56Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
@@ -195,17 +208,17 @@
   "test_blob": "dbff180e81fa0b0d9b38923ff827322a96db85b3"
  },
  "T_WALL_LAMP_LOOKS_OFFLINE": {
-  "at": "2026-11-23T14:48:33Z",
+  "at": "2026-11-24T18:53:46Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --looks-only",
   "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallLampLookChecks.cs",
-  "last": "40/50 checks passed (look icons + wall lamp looks only)",
-  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\nindex 0bab3764e4..1dbe5d9795 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\n@@ -29,7 +29,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial\n         /// machine, and machines end a run (design 2.1), so a lamp keeps its own picked look (art round 5, 2026-10-04).\n         /// 0.2.0 (bar wall_lamp_takes_looks, T_WALL_LAMP_LOOKS_OFFLINE): the vanilla wall lamp takes the looks as the standing\n         /// lamp does; every lamp rule here and in RM_MapComponent_ConduitRuns reads this list, never a def name.</summary>\n-        public static readonly string[] LampDefs = { \"StandingLamp\", \"WallLamp\" };\n+        public static readonly string[] LampDefs = { \"StandingLamp\" };   // PLANTED: the 0.1.1 lamp list\n \n         /// <summary>Modern (extension cord) colours, in CordMaterials' strand order.</summary>\n         public static readonly string[] Colours = { \"Orange\", \"Green\", \"Brown\", \"Yellow\", \"Blue\" };\n",
+  "last": "67/68 checks passed (look icons + wall lamp looks only)",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/WallLampFacing.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/WallLampFacing.cs\nindex d40c4a4edf..cba36e4506 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/WallLampFacing.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/WallLampFacing.cs\n@@ -8,6 +8,6 @@ namespace RimMandrake.GimmeSomeSlack.Core\n     public static class WallLampFacing\n     {\n         /// <summary>The facing (0 N, 1 E, 2 S, 3 W) whose picture a lamp with its wall at <paramref name=\"rot\"/> draws: the way it points.</summary>\n-        public static int PictureRot(int rot) => (rot + 2) % 4;\n+        public static int PictureRot(int rot) => rot;\n     }\n }\n",
   "patch_files": [
-   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs"
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/WallLampFacing.cs"
   ],
-  "patch_sha": "a32014f05cd7cde8",
+  "patch_sha": "bfdda6afce0b07c6",
   "rc": 1,
-  "test_blob": "2a515be5bda3bce53f48ef941c42788ed3d26bd7"
+  "test_blob": "787223df6bfe4d412ba77ef808d686e0861ebc72"
  },
  "T_WALL_PLUG_STRAIGHT_OFFLINE": {
   "at": "2026-11-24T05:09:19Z",
