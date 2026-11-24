@@ -23,7 +23,6 @@
     "rm-order7": "rm-order7.timer",
     "rm-codebase-now": "rm-codebase-now.timer",
     "rm-control-acts-export": "rm-control-acts-export.timer",
-    "rm-fleet-now": "rm-fleet-now.timer",
     "rm-maturation-dispatch": "rm-maturation-dispatch.timer",
     "rm-red-dispatch": "rm-red-dispatch.timer",
     "rm-list-effect": "rm-list-effect.timer",

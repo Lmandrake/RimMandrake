@@ -1,6 +1,6 @@
 # BOUNDARY: the standing status tabs (`./pages` and the self-reload of MATURATION_NOW), Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/pages_open.py` (run by `./pages` at the repo root), `src/RimMandrake/Utils/fleet_now.py` (run by `rm-fleet-now.timer`), and in `src/RimMandrake/Utils/maturation_now.py` the reload and build-time lines of the HTML page (`build`).
+Code: `src/RimMandrake/Utils/pages_open.py` (run by `./pages` at the repo root), and in `src/RimMandrake/Utils/maturation_now.py` the reload and build-time lines of the HTML page (`build`).
 Item: `RIMMANDRAKE_BUILD_PAGES_OPENER_ONE_EDGE_WINDOW_THREE_TABS`. Design: `proposal.md` beside this page, option A. Why it
 exists: the owner, 2026-11-19 about 7:02 PM PST: *"Please move MATURATION_NOW and FLEET_NOW into tabs alongside
 CODEBASE_NOW"*. Written 2026-11-19. Each promise has a test of its name in
@@ -26,8 +26,8 @@ CODEBASE_NOW"*. Written 2026-11-19. Each promise has a test of its name in
 
 ## PROMISES (each one is owed a test of the same name)
 
-- **three-tabs-in-order.** One command opens one window whose tabs are CODEBASE_NOW.html, FLEET_NOW.html, then
-  MATURATION_NOW.html, each as a `file:///` URL (FLEET_NOW is `FLEET_NOW.html`, the page `fleet_now.py` makes from `running_now.py`'s `RELENTLESS_NOW.md`; `STATUS_BOARD.html` is the dead Relentless board and is not a tab: owner, 2026-11-19 7:09 PM PST, *"Not Relentless, FLEET_NOW"*) in the conductor folder. Tested by `t_three_tabs_in_order`.
+- **two-tabs-in-order.** One command opens one window whose tabs are CODEBASE_NOW.html, then
+  MATURATION_NOW.html, each as a `file:///` URL (`STATUS_BOARD.html` is a retired board and is not a tab; the fleet page is Augur's, not a tab here) in the conductor folder. Tested by `t_two_tabs_in_order`.
 - **missing-page-named-others-open.** A page that is not on disk is named in the output as MISSING, the other pages
   still open, and the exit code is 2. All present: exit 0. Tested by `t_missing_page_named_others_open`.
 - **folder-from-rmpaths.** Changing `RM_DATA_ROOT` changes the folder in every URL; no drive path is written in
@@ -40,19 +40,6 @@ CODEBASE_NOW"*. Written 2026-11-19. Each promise has a test of its name in
   seconds (the STATUS_BOARD cadence) and its build time in its first lines, visible. Tested by
   `t_maturation_page_reloads_and_shows_build_time`.
 
-- **fleet-page-wraps-fresh-source.** When `RELENTLESS_NOW.md` is at most 600 seconds old, `FLEET_NOW.html` holds its
-  body rendered as Typora renders it (inline HTML kept as is, a fenced block as fixed-width preformatted text, headings, lists and tables as such), a 60 second reload line and a visible build time; exit 0. Tested by `t_fleet_page_wraps_fresh_source`.
-- **fleet-page-typora-look.** The page carries the CSS of the Typora theme the owner reads in (`blue-topaz-dark.css`
-  with its `blue-topaz.css`, found from the Typora `profile.data` setting `darkTheme`; measured 2026-11-19: dark mode on,
-  separate dark theme), inside `<div id="write">`, so background, text colour, font and width match his Typora
-  window. His words, 7:14 PM PST: *"Use precisely the same thing you use for the .md version, ported to html"*. When the
-  theme folder cannot be read the page uses the panel colours of the page itself (#14171c, #e8eaee) and says so in the
-  build line. Tested by `t_fleet_page_typora_look`.
-- **fleet-page-could-not-read.** When the source is missing or older than 600 seconds, the page says COULD NOT READ
-  with the cause and shows no old body; exit 3. It never shows a stale body as current. Tested by
-  `t_fleet_page_could_not_read`.
-- **fleet-page-written-whole.** The page is written to a temp name and renamed, so a tab never reads half a page; no
-  temp file is left. Tested by `t_fleet_page_written_whole`.
 
 ## LIMITS
 
@@ -60,14 +47,9 @@ CODEBASE_NOW"*. Written 2026-11-19. Each promise has a test of its name in
   data. The writer runs each dispatch tick (measured: the item's design table, 2026-11-19); STATUS_BOARD reloads at
   300 s (`status_board.RELOAD_S`), and the tab shows the build time, so a tab older than that is plain to see.
 
-- **600 seconds, the oldest source `fleet_now.py` will wrap.** Danger: a dead `running_now.py` leaves a body that
-  looks live. The source is written every minute (`rm-running.timer`), so 10 minutes is ten missed runs.
-- **60 seconds, the FLEET_NOW reload**, the source's own cadence.
 
 ## LIFE CYCLES (a move not listed here is a defect)
 
-- **a fleet run:** stat the source (missing or over 600 s: write the COULD NOT READ page, exit 3) → wrap the body → write
-  temp, rename → exit 0.
 - **a run:** read the folder → check each page file → build one command → (dry run: print and exit 0/2) → launch →
   print each URL and each MISSING → exit 0 (all opened), 2 (a page missing), 3 (launch failed).
 

@@ -1,9 +1,8 @@
-# BOUNDARY: the SteveDesktop part of FLEET_NOW.html, Design Version 0.1.0
+# BOUNDARY: the SteveDesktop part of RELENTLESS_NOW.md, Design Version 0.1.0
 
 Code: `src/RimMandrake/Utils/running_now.py`, only these parts: `STEVE_SCRIPT`, `probe_steve`, `collect_steve`,
 `collect_steve_games`, `steve_jobs`, `steve_view_block`, `steve_svg`, `steve_text` and the SteveDesktop chips of `status_strip`.
-`running_now.py` writes `RELENTLESS_NOW.md` each minute (`rm-running.timer`) and `fleet_now.py` makes `FLEET_NOW.html`
-from it (`design/specs/2026-11-19-standing-status-tabs/boundary.md`). Item:
+`running_now.py` writes `RELENTLESS_NOW.md` each minute (`rm-running.timer`). Item:
 `RIMMANDRAKE_RESTORE_STEVEDESKTOP_ON_FLEET_NOW_OLD_PAGE_HAD_IT`. The owner, 2026-11-24 about 1:30 PM PST: *"FLEET_NOW.md
 should also show Steve Desktop. The old Relentless one did. We need it back. Machine stats, the jobs its running, just
 like Archmagi supports. Use GPT."* Each promise has a test of its name in

@@ -14,7 +14,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-NAMES = ["CODEBASE_NOW.html", "FLEET_NOW.html", "MATURATION_NOW.html"]
+NAMES = ["CODEBASE_NOW.html", "MATURATION_NOW.html"]
 
 
 def run_pages(root, *args, env_extra=None):
@@ -36,21 +36,21 @@ def urls(out):
     return re.findall(r"file:///\S+", out)
 
 
-def t_three_tabs_in_order():
+def t_two_tabs_in_order():
     r = run_pages(folder(NAMES))
     u = urls(r.stdout)
     assert r.returncode == 0, (r.returncode, r.stderr[-300:])
     assert [x.rsplit("/", 1)[1] for x in u] == NAMES, u
-    assert len(r.stdout.splitlines()) >= 3 and sum(1 for l in r.stdout.splitlines() if "file:///" in l) == 3
+    assert len(r.stdout.splitlines()) >= 2 and sum(1 for l in r.stdout.splitlines() if "file:///" in l) == 2
     assert "--new-window" in r.stdout
     assert "chrome" in r.stdout.lower() and "edge" not in r.stdout.lower(), r.stdout
 
 
 def t_missing_page_named_others_open():
-    r = run_pages(folder([NAMES[0], NAMES[2]]))
+    r = run_pages(folder([NAMES[0]]))
     assert r.returncode == 2, r.returncode
-    assert "MISSING" in r.stdout and "FLEET_NOW.html" in r.stdout.split("MISSING", 1)[1], r.stdout
-    assert [x.rsplit("/", 1)[1] for x in urls(r.stdout)] == [NAMES[0], NAMES[2]], r.stdout
+    assert "MISSING" in r.stdout and "MATURATION_NOW.html" in r.stdout.split("MISSING", 1)[1], r.stdout
+    assert [x.rsplit("/", 1)[1] for x in urls(r.stdout)] == [NAMES[0]], r.stdout
 
 
 def t_folder_from_rmpaths():
@@ -94,70 +94,20 @@ def t_maturation_page_reloads_and_shows_build_time():
     assert re.search(r'id="built"[^>]*>[^<]*Built [^<]*\d', html[:6000]), "no visible build time near the top"
 
 
-def run_fleet(root, age_s=None, body="<b>live body</b>"):
-    cond = os.path.join(root, "conductor")
-    os.makedirs(cond, exist_ok=True)
-    src = os.path.join(cond, "RELENTLESS_NOW.md")
-    if age_s is not None:
-        open(src, "w").write(body)
-        t = time.time() - age_s
-        os.utime(src, (t, t))
-    r = subprocess.run([sys.executable, os.path.join(HERE, "fleet_now.py")], capture_output=True, text=True,
-                       env=dict(os.environ, RM_DATA_ROOT=root), timeout=60)
-    p = os.path.join(cond, "FLEET_NOW.html")
-    return r, (open(p, encoding="utf-8").read() if os.path.exists(p) else None), cond
-
-
-def t_fleet_page_wraps_fresh_source():
-    r, html, _ = run_fleet(tempfile.mkdtemp(prefix="fl_"), age_s=30)
-    assert r.returncode == 0, (r.returncode, r.stdout, r.stderr[-300:])
-    assert "<b>live body</b>" in html and '<meta http-equiv="refresh" content="60">' in html
-    assert re.search(r'id="built"[^>]*>[^<]*Built [^<]*\d', html), "no visible build time"
-    r, html, _ = run_fleet(tempfile.mkdtemp(prefix="fl_"), age_s=590)
-    assert r.returncode == 0, "590 s is inside the 600 s limit"
-
-
-def t_fleet_page_typora_look():
-    root = tempfile.mkdtemp(prefix="fl_")
-    th = tempfile.mkdtemp(prefix="themes_")
-    open(os.path.join(th, "blue-topaz.css"), "w").write("#write{max-width:777px}")
-    open(os.path.join(th, "blue-topaz-dark.css"), "w").write('@import "blue-topaz.css";\n:root{--bg-color:#202020}')
-    body = "# Head\n\n```\ntree  a\n  b\n```\n\n<b>live body</b>\n\n| a | b |\n|---|---|\n| 1 | 2 |\n"
-    os.environ["TYPORA_THEMES_DIR"] = th
-    try:
-        r, html, _ = run_fleet(root, age_s=5, body=body)
-    finally:
-        del os.environ["TYPORA_THEMES_DIR"]
-    assert r.returncode == 0, r.stderr[-300:]
-    assert '<div id="write"' in html and "max-width:777px" in html and "--bg-color:#202020" in html, "theme css missing"
-    assert "@import" not in html, "import left unresolved"
-    assert "<h1" in html and "<pre><code>tree  a\n  b\n</code></pre>" in html and "<table>" in html, html[-700:]
-    assert "<b>live body</b>" in html
-    os.environ["TYPORA_THEMES_DIR"] = tempfile.mkdtemp(prefix="nothemes_")
-    try:
-        r, html, _ = run_fleet(tempfile.mkdtemp(prefix="fl_"), age_s=5, body=body)
-    finally:
-        del os.environ["TYPORA_THEMES_DIR"]
-    assert r.returncode == 0 and "#14171c" in html and "#e8eaee" in html and "theme not found" in html, html[:500]
-
-
-def t_fleet_page_could_not_read():
-    for age, why in ((None, "missing"), (601, "old")):
-        root = tempfile.mkdtemp(prefix="fl_")
-        r, html, _ = run_fleet(root, age_s=age, body="<b>OLD BODY</b>")
-        assert r.returncode == 3, (why, r.returncode)
-        assert "COULD NOT READ" in html and "OLD BODY" not in html, (why, html[:300])
-        assert '<meta http-equiv="refresh"' in html and 'id="built"' in html, why
-
-
-def t_fleet_page_written_whole():
-    r, html, cond = run_fleet(tempfile.mkdtemp(prefix="fl_"), age_s=5)
-    assert html.rstrip().endswith("</html>"), html[-80:]
-    assert not [f for f in os.listdir(cond) if "tmp" in f], os.listdir(cond)
+def t_no_rimmandrake_fleet_page():
+    """The one fleet page is Augur's FLEET_NOW.md; RimMandrake has no page, generator or timer of that name."""
+    pat = re.compile("fleet" + "_now\\.py|rm-fleet" + "-now|FLEET" + "_NOW\\.html")
+    files = subprocess.run(["git", "ls-files", "src", "pages", "design/specs/2026-11-19-standing-status-tabs/boundary.md",
+                            "design/specs/2026-11-24-fleet-now-stevedesktop"], capture_output=True, text=True, cwd=REPO).stdout.split()
+    assert files, "git ls-files returned nothing"
+    hit = [f for f in files if os.path.exists(os.path.join(REPO, f)) and f != "src/RimMandrake/Utils/selftest_standing_tabs.py"
+           and pat.search(open(os.path.join(REPO, f), encoding="utf-8", errors="replace").read())]
+    assert not hit, hit
+    assert not os.path.exists(os.path.join(HERE, "fleet" + "_now.py"))
 
 
 def main():
-    tests = [t_fleet_page_wraps_fresh_source, t_fleet_page_typora_look, t_fleet_page_could_not_read, t_fleet_page_written_whole, t_three_tabs_in_order, t_missing_page_named_others_open, t_folder_from_rmpaths,
+    tests = [t_no_rimmandrake_fleet_page, t_two_tabs_in_order, t_missing_page_named_others_open, t_folder_from_rmpaths,
              t_never_fullscreen_never_steal_focus, t_dry_run_opens_nothing,
              t_maturation_page_reloads_and_shows_build_time]
     failed = 0
