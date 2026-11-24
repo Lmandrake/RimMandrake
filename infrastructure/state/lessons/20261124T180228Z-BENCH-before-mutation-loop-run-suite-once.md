@@ -1,0 +1,2 @@
+Before a mutation loop, run the suite once and require it green: a loop started on a suite that was already red printed 'caught' for all 27 mutants on 2026-11-24, and one of them was NOT CAUGHT once the baseline was green. Print the name of the failing check beside each 'caught': the same name on every line means the baseline is red.
+item: RIMMANDRAKE_STOP_CLOSE_WHEN_RUN_SAYS_SPEC_PARTS_ARE_NOT_BUILT
