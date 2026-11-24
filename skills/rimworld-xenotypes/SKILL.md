@@ -149,7 +149,7 @@ StarWarsRaces is in the pool now.
 Two facts decide the colour, and they are easy to mix up.
 
 **Fact 1: the list is not dealt out.** `Pawn_GeneTracker.SetXenotype` adds every gene of the list to every pawn. Six
-`skinColorOverride` genes on a xenotype mean that every pawn carries all six. They are endogenes when the xenotype is
+`skinColorOverride` genes on a xenotype mean that every pawn carries all six. The genes are endogenes when the xenotype is
 `inheritable`, and xenogenes otherwise. MEASURED 2026-09-20 via `jawa/pawn_genes` against 17 live Ithorians: all 17
 carried the identical set. The set was `Skin_PaleRed, Outland_Skin_DeepSage, Skin_Orange, Outland_Skin_DeepBrown,
 Outland_Skin_Brown, Outland_Skin_PaleBrown`. Not one gene was missing from any pawn.
@@ -164,7 +164,7 @@ Outland_Skin_Brown, Outland_Skin_PaleBrown`. Not one gene was missing from any p
 - Two genes conflict when they share an `exclusionTags` entry. Each `GeneSkinColorOverride` child inherits the
   tag `SkinColorOverride`, and so do the `Outland_Skin_*` genes. A child can replace the list with `Inherit="False"`.
   The four Dathomirian skin genes do: `SkinColorOverrideMale` and `SkinColorOverrideFemale`.
-- Only a gene that the engine calls `RandomChosen` overrides others in this way. That is a gene with `randomChosen`
+- Only a gene that the engine calls `RandomChosen` overrides others in this way. One kind is a gene with `randomChosen`
   true. A cosmetic gene (colour, body, head, hair, beard or graphics) is also
   `RandomChosen` when its three biostats are all 0.
 - If the conflicting genes are not `RandomChosen`, the pick is not random. `CheckForOverrides` then makes one gene
@@ -180,7 +180,7 @@ Outland_Skin_Brown, Outland_Skin_PaleBrown`. Not one gene was missing from any p
 This agrees with an earlier observation. Bith pawns with byte-identical gene lists rendered orange, green and pink in
 one shot. Their four colour genes conflict. Nobody has measured if an active mod changes this pick.
 
-Pawn generation adds a `Skin_MelaninN` gene only if no active melanin gene is on the pawn. It adds a `Hair_*` colour
+Pawn generation adds a `Skin_MelaninN` gene only if no active melanin gene is on the pawn. Pawn generation adds a `Hair_*` colour
 gene by the same test. The diff of three Ithorians showed those differences only: `Skin_Melanin3` vs `Skin_Melanin9`,
 and which `Hair_*` each pawn got.
 
@@ -233,7 +233,7 @@ when a xenotype with an `RSW_` head is not on the list. The live check of the op
 🔴 **The entries are defNames, so RENAMING A XENOTYPE SILENTLY UNPROTECTS IT.** Each entry is `Human-<XenotypeDefName>`. A stale key matches nothing, and the
 species draws FA faces. `reload_mod_settings`, dirty graphics and a respawn change nothing. After any rename (a tier
 prefix change, for example), re-key the opt-out def in the same commit. For a xenotype that only the player's file
-protects, re-key `IgnoreEnableAnimationForRaceXenoTypeListAA` and restart. This has happened: every old entry was a
+protects, re-key `IgnoreEnableAnimationForRaceXenoTypeListAA` and restart. A rename did this once: every old entry was a
 dead reference, and **all 70 new species rendered with human faces at once.**
 
 `RSW_MandrakeJawa`, the clan's own xenotype, is not on the shipped list. Its head gene `RSW_Jawa_Head_Plain` forces
@@ -253,7 +253,8 @@ tier 2. In our 70, that split was 29 / 35 / 5.
 
 ⚠️ **This fix was hard to get and is easy to lose.** The repo holds backups of FA's settings file:
 `deployed/config/Mod_1635901197_FacialAnimationMod.BEFORE-{hutt,gand,gamorrean,bulk}-exclude-*.xml`. Back up that file
-before you edit it, and commit both sides.
+before you edit it, and commit the backup
+and the edited file.
 
 ## 4. 🔴 A xenotype cannot be spawned — PawnKindDef is the handle
 
@@ -315,7 +316,7 @@ an empty set adds nothing, and the kind decides. You rarely want it on a faction
 The chances of the faction, its memes and the kind add up. Baseliner takes what is left below 1. A kind with
 `useFactionXenotypes` false ignores the faction's set.
 
-🔑 **These are two separate questions. Do not mix them.**
+🔑 **Two questions are separate here. Do not mix them.**
 
 - *Does the parent's list still arrive?* `Inherit="False"` answers it.
 - *What happens when mine is empty?* `BaselinerChance` answers it.
@@ -411,7 +412,7 @@ and they drift. Write in the def's comment which differences are on purpose. `RS
 `.xtp` has 35. The three extra genes are the owner's rulings. Keep all three when someone transcribes the file again.
 
 🔴 **The `.xtp` carries only `name` and `inheritable`, the gene list and `iconDef`. Whoever transcribed it INVENTED
-every other field in the promoted def.** We found `canGenerateAsCombatant false` invented that way. It stopped a
+every other field in the promoted def.** We found `canGenerateAsCombatant false` invented that way. That field stopped a
 faction from generating any fighter at all. **Audit every non-gene field of a promoted def against the `.xtp`. If the
 `.xtp` does not say it, you chose it, so choose it deliberately.**
 

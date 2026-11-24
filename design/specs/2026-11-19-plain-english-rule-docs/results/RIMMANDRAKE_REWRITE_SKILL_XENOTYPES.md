@@ -80,7 +80,8 @@ The same reader then read each repair. Three lines were still wrong, and each is
 line of `closure.md`; four more comments of `gen_races_mod.py`. One false line stays: the generated header of
 `src/RimStarWars/StarWarsRaces/Defs/PawnKindDefs/SW_RescuedKinds.xml` ("discards the child silently"). Its correction changes a mod
 def file and its generator together, for a comment only. It is not worth the touch.
-No reader read these last three repairs.
+No reader read these last three repairs. After the first landing (db3a8fbef7a0), the prose check of `./publish` named seven lines.
+The writer put the noun in each. No reader read those.
 
 ## Conflicts and stale lines: settled
 
