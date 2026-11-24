@@ -27,6 +27,7 @@ TOP = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "
 PAGES = {
     "design/specs/2026-11-24-quiet-scan/boundary.md": "src/RimMandrake/rimflow/selftest_quiet_scan.py",
     "design/specs/art-x-delete/boundary.md": "src/RimMandrake/Utils/art/selftest_art_x_ban_hardening.py",
+    "design/specs/static-call-thing-id/boundary.md": "src/RimMandrake/Utils/selftest_static_call_args_core.py",
     "design/specs/2026-11-24-wrapup-game-debts/boundary.md": "src/RimMandrake/rimflow/selftest_wrapup_void_relaunch.py",
     "design/specs/2026-11-24-wrapup-game-release/boundary.md": "src/RimMandrake/rimflow/selftest_wrapup_restore_at_release.py",
     "design/specs/2026-11-23-launch-permissions/boundary.md": "src/RimMandrake/Utils/selftest_launch_permissions.py",

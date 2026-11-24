@@ -312,34 +312,6 @@ namespace JawaBench.BridgeTools
         }
 
 #if JAWA_GM_TOOLS
-        // Exact ThingID ("Human123") or bare thingIDNumber ("123"); the current map first, then every map.
-        // Matched on the trailing number first (ThingID is a fresh string per call), then confirmed by ThingID.
-        private static Thing StaticCallResolveThing(string a, out string foundAt)
-        {
-            foundAt = null;
-            if (Find.Maps == null) return null;
-            int cut = a.Length;
-            while (cut > 0 && char.IsDigit(a[cut - 1])) cut--;
-            if (cut == a.Length || !int.TryParse(a.Substring(cut), NumberStyles.None, CultureInfo.InvariantCulture, out int num))
-                return null;
-            bool bare = cut == 0;
-            var maps = new List<Map>();
-            if (Find.CurrentMap != null) maps.Add(Find.CurrentMap);
-            foreach (Map m in Find.Maps) if (!maps.Contains(m)) maps.Add(m);
-            foreach (Map m in maps)
-            {
-                List<Thing> all = m.listerThings.AllThings;
-                for (int k = 0; k < all.Count; k++)
-                {
-                    Thing t = all[k];
-                    if (t.thingIDNumber != num || (!bare && t.ThingID != a)) continue;
-                    foundAt = (m == Find.CurrentMap ? "current map" : "map " + m.Index) + (bare ? ", by thingIDNumber" : ", by ThingID");
-                    return t;
-                }
-            }
-            return null;
-        }
-
         // Up to 12 ThingIDs of the wanted type on the current map, so a refusal names something callable.
         private static List<string> StaticCallThingCandidates(Type pt)
         {

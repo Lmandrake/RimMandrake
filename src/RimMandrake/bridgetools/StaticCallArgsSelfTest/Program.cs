@@ -1,7 +1,9 @@
-// Unit group for JawaBenchStaticCallArgsCore (production file). Prints "U <name> ok" or
+// Unit group for the production static_call argument coercion and Thing lookup. Prints "U <name> ok" or
 // "U <name> FAIL <why>" per case and "U-count <n>" last; driven by
 // src/RimMandrake/Utils/selftest_static_call_args_core.py.
 using System;
+using System.Collections.Generic;
+using Verse;
 using C = JawaBench.BridgeTools.JawaBenchStaticCallArgsCore;
 
 namespace JawaBench.BridgeTools
@@ -47,6 +49,22 @@ namespace JawaBench.BridgeTools
         {
             try { object got = C.Coerce(pt, a); U(name, false, "accepted as " + got); }
             catch (Exception) { U(name, true); }
+        }
+
+        static void ThingArgs()
+        {
+            var titan = new Thing { ThingID = "RM_TestTitanT253196", thingIDNumber = 53196 };
+            Find.CurrentMap = new Map();
+            Find.CurrentMap.listerThings.AllThings.Add(titan);
+            Find.Maps = new List<Map> { Find.CurrentMap };
+
+            Thing got = JawaBenchTerrainTools.ResolveThingForTest(titan.ThingID, out string foundAt);
+            U("thing_id.digit_ending_def_name", got == titan && foundAt == "current map, by ThingID",
+                "expected RM_TestTitanT253196 (#53196), got " + (got?.ThingID ?? "no match"));
+
+            got = JawaBenchTerrainTools.ResolveThingForTest("53196", out foundAt);
+            U("thing_id.bare_number", got == titan && foundAt == "current map, by thingIDNumber",
+                "expected #53196, got " + (got?.ThingID ?? "no match"));
         }
 
         static int Main()
@@ -107,6 +125,7 @@ namespace JawaBench.BridgeTools
             U("set.readonly_refused", e1 != null && t.fixedOne == 1, e1);
             e1 = C.SetField(t, "Never", "7", out was, out now);
             U("set.const_refused", e1 != null, e1);
+            ThingArgs();
 
             Console.WriteLine("U-count " + n);
             return 0;

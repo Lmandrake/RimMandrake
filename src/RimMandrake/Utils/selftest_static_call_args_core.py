@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Selftest: the PRODUCTION jawa/static_call scalar argument core (JawaBenchStaticCallArgsCore.cs) built and unit-tested offline.
+"""Selftest: the production jawa/static_call scalar core and Thing resolver built and unit-tested offline.
 Builds bridgetools/StaticCallArgsSelfTest (net8.0, no RimWorld references) through winbuild staging.
 Without dotnet.exe this FAILS as UNMEASURED (pass --no-cs to accept that). No game, no bridge.
 Run: python3 src/RimMandrake/Utils/selftest_static_call_args_core.py
@@ -12,7 +12,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 
-MIN_UNITS = 36
+MIN_UNITS = 38
+
+
+def t_thing_ids_resolve(lines):
+    missing = {"thing_id.digit_ending_def_name", "thing_id.bare_number"} - {ln.split()[1] for ln in lines}
+    for name in sorted(missing):
+        print("FAIL missing unit " + name)
+    return not missing
 
 
 def main(argv):
@@ -41,7 +48,7 @@ def main(argv):
               % (len(lines), want, MIN_UNITS, p.stderr[-400:]))
         return 1
     print("static-call-args core: %d/%d passed" % (len(lines) - len(bad), len(lines)))
-    return 1 if bad or p.returncode else 0
+    return 1 if not t_thing_ids_resolve(lines) or bad or p.returncode else 0
 
 
 if __name__ == "__main__":
