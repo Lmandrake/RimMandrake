@@ -102,8 +102,8 @@ raises an error.
 
 ## Arming the test tier for a live test
 
-The test tier makes the TPS record finer for one test. Its windows are 1 s in place of 5 s, and it reads each tick
-(only with TPS attribution on).
+The test tier makes the TPS record finer for one test. Its windows are 1 s in place of 5 s, and it reads each tick.
+The reading of each tick needs `attribution` on in the companion's `tps_settings.json` (on by default).
 The flight recorder is a part of the test tier. The flight recorder holds the last ticks in memory, and dumps them to
 a file.
 

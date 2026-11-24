@@ -9,9 +9,9 @@ Base: `c8588d7e606cba178c204a2a3fa73d34d9985a73`
 
 | measure | before | after |
 |---|---|---|
-| bytes | 5,734 | 8,272 |
-| words in linted prose | 477 | 887 |
-| STE violations per 100 words | 5.03 | 1.80 |
+| bytes | 5,734 | 8,345 |
+| words in linted prose | 477 | 897 |
+| STE violations per 100 words | 5.03 | 1.78 |
 | sentences over 20 words | 10 | 4 |
 | flagged lines (mechanical) | 0 | 0 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 8 | 0 |
@@ -62,6 +62,8 @@ new statement against the code. No rule was lost.
 
 The same reader then read each repair: all correct. No reader read two later edits: the words "`telemetry query` prints the
 labels", and "telemetryd" in place of "It" in law 1.
+After the first landing (95f6c84ead87), the prose check of `./publish` named "TPS attribution". The writer named the setting
+(`JawaBenchTpsSettings.cs`). No reader read that line.
 
 ## Conflicts and stale lines: settled
 
