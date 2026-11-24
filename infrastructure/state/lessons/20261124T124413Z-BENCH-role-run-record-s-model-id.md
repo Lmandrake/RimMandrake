@@ -1,0 +1,2 @@
+A role run record's model_id is None on Archmagi (its settings name no opus id; all 6 role runs on record 2026-11-24), so code that compares run model_id never matches. Read the model from the session transcript (designer_mend.transcript_model). The selftest caught this only because its fixture took model_id from the real environment.
+item: RIMMANDRAKE_ASSIGN_LEFTOVER_CONTEXT_CHANGES_NEITHER_WORKER_HAD
