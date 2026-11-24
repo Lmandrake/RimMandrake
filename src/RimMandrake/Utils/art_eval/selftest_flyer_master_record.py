@@ -12,15 +12,19 @@
             master, a later HOLD_ERROR does not, a --test run or one with no run.json never supplies one
   MERGE     this run's records over the history (run()'s call): an ACCEPT restores, an ESCALATE withdraws
   FINISHED  master_finished keeps a master only while the artpipe queue holds its ok manifest and render
+  OWNER     a redo, purge, replacement or retirement of the judged body vetoes its still-finished queue render
+  AUDIT     an audit/wholeset body REGEN leaves flight wing layers derived from the accepted master
   VETO      auto_judge.veto_record drops master_job from the REGEN that replaces a vetoed ACCEPT
 """
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 import tempfile
 from pathlib import Path
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[3]
@@ -28,7 +32,6 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(REPO / "src/RimMandrake/Utils/artpipe"))
 import runner as RN  # noqa: E402
 import policy as P  # noqa: E402
-import fill_queue as F  # noqa: E402
 
 fails = []
 FLYER, OTHER, OUTSIDE, LONE = "RSW_Strill", "RM_DryWalker", "RSW_Sketto", "RM_FireHawk"
@@ -41,6 +44,7 @@ def check(name, cond):
 
 
 def refused(row) -> bool:
+    import fill_queue as F
     try:
         F._refuse_unlocked_frames(row)
         return False
@@ -144,14 +148,72 @@ def history(tmp: Path):
     check("FINISHED failed / absent master dropped", "RSW_C" not in m and "RSW_B" not in m)
 
 
+def owner_history(tmp: Path, body: dict, flight: dict):
+    import round_series as RS
+    state, q = tmp / "production", tmp / "master_queue"
+    runs = state / "runs"
+    job = body["master_job"]
+    east = body["source_sha256"]["east"]
+    render = q / "_artsrc" / job / f"{job}.png"
+    render.parent.mkdir(parents=True)
+    render.write_bytes(Path(body["source_files"]["east"]).read_bytes())
+    (q / "done").mkdir()
+    (q / "done" / f"{job}.manifest.json").write_text('{"status": "ok"}')
+
+    def put(run, *recs):
+        d = runs / run
+        d.mkdir(parents=True)
+        (d / "run.json").write_text('{"test": false, "subjects": []}')
+        (d / "decisions.jsonl").write_text("".join(json.dumps(r) + "\n" for r in recs))
+
+    put("fauna_body", dict(body, at="2026-11-01T10:00:00+00:00"))
+    ledger = tmp / "owner_art"
+    shard = ledger / "events/fixture.jsonl"
+    shard.parent.mkdir(parents=True)
+
+    def masters(*events):
+        shard.write_text("".join(json.dumps(dict(ev, id=str(i), ts=f"2026-11-02T10:00:0{i}+00:00")) + "\n"
+                                 for i, ev in enumerate(events)))
+        return RN.accepted_masters(runs)
+
+    with patch.dict(os.environ, ARTPIPE_STATE_DIR=str(q), ART_LEDGER_DIR=str(ledger)):
+        check("OWNER uninstalled, unruled master remains usable", masters().get(FLYER) == job)
+        redo = {"type": "rejected", "sha": east, "verdict": "redo", "by": "owner"}
+        check("OWNER redo vetoes an accepted master with its render still queued", FLYER not in masters(redo))
+        purge = {"type": "purge", "sha": body["source_sha256"]["north"], "by": "owner"}
+        check("OWNER purge of a judged facing vetoes the master", FLYER not in masters(purge))
+        slot = {"type": "live", "mod": "SWBestiary", "rel": f"Things/Pawn/{FLYER}/{FLYER}_east.png"}
+        live = dict(slot, sha=east, prev=None)
+        swap = dict(slot, sha="a" * 64, prev=east, ruling_id="owner-pick")
+        check("OWNER enacted replacement vetoes the old master", FLYER not in masters(live, swap))
+        retire = dict(slot, sha=None, prev=east, reason="retire")
+        check("OWNER enacted retirement vetoes the old master", FLYER not in masters(live, retire))
+        restored = dict(slot, sha=east, prev=swap["sha"])
+        check("OWNER restored body remains usable", masters(live, swap, restored).get(FLYER) == job)
+
+        # The resumed run merges its own REGEN records, so test the written derive_from as well as history.
+        body_regen = dict(flight, candidate="body", at="2026-11-03T10:00:00+00:00",
+                          regen={"request": {"prompt": "A feathered body"}, "findings": []})
+        with patch.object(RN, "STATE", state), patch.object(RS, "RESETS", state / "resets.jsonl"), \
+                patch.object(RS, "ADOPTIONS", state / "adoptions.jsonl"):
+            for rid in ("audit_probe", "wholeset_probe"):
+                put(rid, body_regen, flight)
+                RN.run([], rid, rev=Mock(), work_root=tmp / "resume", state_root=runs)
+                jobs = json.loads((runs / rid / "regen_jobs.json").read_text())
+                check(f"HISTORY {rid} body REGEN preserves wing derivation",
+                      [j.get("derive_from") for j in jobs if RN.is_flight_row(j)] == [job] * 9)
+
+
 def main() -> int:
     flyers = RN.flyer_defs()
     check("fixture defs are flyers", {FLYER, OUTSIDE, LONE} <= flyers and OTHER not in flyers)
-    with tempfile.TemporaryDirectory() as td:
+    with tempfile.TemporaryDirectory() as td, patch.dict(os.environ):
         tmp = Path(td)
+        os.environ.update(ARTPIPE_STATE_DIR=str(tmp / "queue"), ART_LEDGER_DIR=str(tmp / "ledger"))
         sp = specs(tmp)
         # LONE's body is not in this run, so its flight cut has no master
-        recs = RN.run(sp, "selftest_master", rev=Mock(), test=True, work_root=tmp / "work", state_root=tmp / "state")
+        with patch.object(RN, "facing_truth", return_value=None):  # the facing gate's resolver reads deployed art
+            recs = RN.run(sp, "selftest_master", rev=Mock(), test=True, work_root=tmp / "work", state_root=tmp / "state")
         by = {(r["subject"], r.get("candidate")): r for r in recs}
         disk = [json.loads(x) for x in (tmp / "state/selftest_master/decisions.jsonl").read_text().splitlines() if x]
         body = next((r for r in disk if r["subject"] == FLYER and not RN.is_flight_record(r)), {})
@@ -173,6 +235,7 @@ def main() -> int:
         check("HELD no accepted body: one refused row", len(lone) == 1 and refused(lone[0])
               and "no accepted body master" in lone[0]["style_notes"])
         history(tmp)
+        owner_history(tmp, body, fl)
     import auto_judge as AJ
     v = AJ.veto_record({"subject": FLYER, "decision": "ACCEPT", "master_job": "m_east", "reasons": []},
                        {"verdict": "worse", "reason": "drifted"}, "a strill", 0)

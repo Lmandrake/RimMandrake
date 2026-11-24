@@ -18,7 +18,7 @@ Dark Lizards were a species of hssiss.
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 
-**Animation-only canon — no realistic source found (searched: Wookieepedia `Hssiss` page images, "Images of hssiss" category — everything is *Tales of the Jedi* / *Splinter of the Mind's Eye* comics, sourcebook paintings, the *Book of Sith* illustration and one *KOTOR II* promotional render).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. Deleted: the *Tales of the Jedi* comic panel (`canon_2`, `Ktriss1.jpg`) and the loose *Dark Side Sourcebook* nebula painting (`canon_4`, `Siss.jpg`). Kept (both Legends-continuity art):
+**Stylised Legends references — no realistic source found (searched: Wookieepedia `Hssiss` page images, "Images of hssiss" category — everything is *Tales of the Jedi* / *Splinter of the Mind's Eye* comics, sourcebook paintings, the *Book of Sith* illustration and one *KOTOR II* promotional render).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. Deleted: the *Tales of the Jedi* comic panel (`canon_2`, `Ktriss1.jpg`) and the loose *Dark Side Sourcebook* nebula painting (`canon_4`, `Siss.jpg`). Kept (both Legends-continuity art):
 - `canon_1` (`Hssiss-BoS.png`, *Book of Sith* detailed coloured illustration) — the anatomy target, matching the prose.
 - `canon_3` (`HssissKOTORII.jpg`, *KOTOR II* promotional render) — the most naturalistic image: glossy, heavy, plated scales with real specular highlights. Use it as the MATERIAL reference for realistic scale texture, not for colour.
 
@@ -44,11 +44,11 @@ Dark Lizards were a species of hssiss.
 not yet assessed
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Hssiss (canon; wikitext pulled via the API 2026-10-04)
+- https://starwars.fandom.com/wiki/Hssiss (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — ILLUSTRATION (*Book of Sith*), anatomy target — CANON page `Hssiss`; wiki caption: infobox image. File: `Hssiss-BoS.png` — https://static.wikia.nocookie.net/starwars/images/1/10/Hssiss-BoS.png/revision/latest?cb=20241010035441
-- `wookieepedia_canon_3.webp` — GAME promotional render (*KOTOR II*), most naturalistic scales — CANON page `Hssiss`; wiki caption: A Hssiss. File: `HssissKOTORII.jpg` — https://static.wikia.nocookie.net/starwars/images/d/da/HssissKOTORII.jpg/revision/latest?cb=20090511160917
+- `wookieepedia_canon_1.webp` — ILLUSTRATION (*Book of Sith*), anatomy target — LEGENDS page (non-canon continuity) `Hssiss`; wiki caption: infobox image. File: `Hssiss-BoS.png` — https://static.wikia.nocookie.net/starwars/images/1/10/Hssiss-BoS.png/revision/latest?cb=20241010035441
+- `wookieepedia_canon_3.webp` — GAME promotional render (*KOTOR II*), most naturalistic scales — LEGENDS page (non-canon continuity) `Hssiss`; wiki caption: A Hssiss. File: `HssissKOTORII.jpg` — https://static.wikia.nocookie.net/starwars/images/d/da/HssissKOTORII.jpg/revision/latest?cb=20090511160917
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

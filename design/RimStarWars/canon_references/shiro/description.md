@@ -9,22 +9,20 @@ sentient creature`, `aliens.fandom.com`'s own separate "Shiro" entry, and
 several near-miss titles (`Shrikarai`, `Shryo`, `Shirro`, `Ssori`). The actual
 species page is `https://starwars.fandom.com/wiki/Shiro` (pageid 589183),
 confirmed as the animal species by its `{{Species}}` infobox and its
-`Category:Creatures of Naboo` tag. That page carries both a canon stub and a
+`Category:Creatures of Naboo` tag. Wookieepedia has this non-canon stub and a
 `/Legends` continuity page (`https://starwars.fandom.com/wiki/Shiro/Legends`,
-pageid 58526) — this is the standard Wookieepedia split for an article with
-both continuities, not two different creatures. I ruled out
+pageid 58526). Both pages describe the same creature. I ruled out
 `aliens.fandom.com/wiki/Shiro` (a fan-run wiki, not Wookieepedia/canon
 Lucasfilm-licensed source — not used here) and the "Unidentified small
 sentient creature" page (a different, unrelated entity that only turned up
 because of shared search terms).
 
-**Canon page (Shiro)**: Shiro were a turtle-like species found on Naboo.
+**Non-canon page (Shiro)**: Shiro were a turtle-like species found on Naboo.
 Skin color is recorded in the infobox as green, sourced to the 2015 video
-game *Disney Infinity 3.0* — this is also their first canon appearance. The
-species originally appeared earlier in Legends, in the 1999 video game
-*Star Wars Episode I: The Gungan Frontier*. The canon-page text itself is
-very thin (one sentence), and the page carries a Noncanon banner (`{{Top|ncc}}` and `{{Noncanon|canon=1}}`), so its canon status is flagged on the wiki itself and no independent canon reintroduction was found — the infobox art (`File:ShiroDisneyInfinity.png`)
-is the primary canon visual source.
+game *Disney Infinity 3.0*, which also supplied the infobox art
+(`File:ShiroDisneyInfinity.png`). The one-sentence article carries a Noncanon
+banner (`{{Top|ncc}}` and `{{Noncanon|canon=1}}`). The species first appeared
+in Legends in the 1999 video game *Star Wars Episode I: The Gungan Frontier*.
 
 **Legends page (Shiro/Legends)**: much richer description. Shiros were
 hard-shelled, benign, slow-moving reptiles (class: Reptile, non-sentient,
@@ -41,7 +39,7 @@ name for a camouflaged/symbiotic Shiro, not a different species.**
 Source cited throughout: *The Wildlife of Star Wars: A Field Guide* (2001).
 
 ## Visual brief
-**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Removed: `shirodisneyinfinity.png` (the canon infobox art — a low-poly chibi *Disney Infinity 3.0* toy render). No live-action or photoreal shiro exists (searched: `Shiro`, `Shiro/Legends`, `Shiro-trap` page images; the realistic-labelled files there are unrelated *The Old Republic* scenes). The three remaining images are realistic painted Legends plates, and the owner-ruled `shiros_group_legends.jpg` is **the target**.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Removed: `shirodisneyinfinity.png` (the non-canon infobox art — a low-poly chibi *Disney Infinity 3.0* toy render). No live-action or photoreal shiro exists (searched: `Shiro`, `Shiro/Legends`, `Shiro-trap` page images; the realistic-labelled files there are unrelated *The Old Republic* scenes). The three remaining images are realistic painted Legends plates, and the owner-ruled `shiros_group_legends.jpg` is **the target**.
 
 - `shiros_group_legends.jpg` (file `Shiros.jpg`, Legends infobox; owner-ruled): a single large shiro in side view.
   - **Shell**: a high domed carapace built from tall, overlapping, backswept ridged plates that end in blunt wavy spines, like a frilled crest running the length of the back. Olive-green with yellow-green highlights along each ridge.
@@ -84,14 +82,14 @@ would risk exactly the kind of fabrication this library exists to prevent.
 **No donor sprite was obtainable this pass.**
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Shiro (canon article + infobox, pulled via
+- https://starwars.fandom.com/wiki/Shiro (non-canon article + infobox, pulled via
   `starwars.fandom.com/api.php?action=parse&page=Shiro&prop=wikitext`,
   2026-09-13)
 - https://starwars.fandom.com/wiki/Shiro/Legends (Legends article, pulled via
   the same API pattern with `page=Shiro/Legends`, 2026-09-13)
 - https://starwars.fandom.com/wiki/Shiro-trap (Legends "Shiro-trap" symbiosis
   article, confirms Shiro-trap = camouflaged Shiro, not a separate species)
-- https://static.wikia.nocookie.net/starwars/images/1/17/ShiroDisneyInfinity.png (canon infobox art, *Disney Infinity 3.0* toy render; not kept)
+- https://static.wikia.nocookie.net/starwars/images/1/17/ShiroDisneyInfinity.png (non-canon infobox art, *Disney Infinity 3.0* toy render; not kept)
 - https://static.wikia.nocookie.net/starwars/images/d/df/Shiro-trap.jpg (Legends, Shiro-trap camouflaged/retracted)
 - https://static.wikia.nocookie.net/starwars/images/4/42/Shiro-trap_2.jpg (Legends, Shiro-trap retracted into shell, close-up)
 - https://static.wikia.nocookie.net/starwars/images/f/fd/Shiros.jpg (Legends infobox art, group of Shiros)

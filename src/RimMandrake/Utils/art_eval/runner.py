@@ -673,7 +673,7 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
             rounds_file.write_text(json.dumps(cur, indent=1, sort_keys=True))
     # a resumed REGEN record may predate a stop: a stopped series files nothing (ARTEVAL_RESUME_FIX_FILES_STOPPED)
     # a flyer body this run ACCEPTed is a master for this run's flight rerolls too; a --test run reads no history
-    masters = latest_masters(recs) if test else accepted_masters(state_root or STATE / "runs", recs)
+    masters = latest_masters(recs) if test else accepted_masters(state_root or STATE / "runs", recs, run_id=run_id)
     jobs = regen_jobs([r for r in recs if test or not RS.stopped(r["subject"], rs)], run_id, rs=rs, masters=masters)
     if jobs:
         (out / "regen_jobs.json").write_text(json.dumps(jobs, indent=1))
@@ -850,18 +850,20 @@ def body_master_job(r: dict) -> str:
 BODY_VERDICTS = ("ACCEPT", "REGEN", "ESCALATE", "REGEN_AFTER_SOURCE")
 
 
-def latest_masters(recs) -> dict:
+def latest_masters(recs, eligible=None) -> dict:
     """subject -> master_job when its latest (by `at`) static-body verdict is an ACCEPT that recorded one: a later
     REGEN/ESCALATE of the body (a compare veto, a reroll) withdraws the master; a HOLD_* is no verdict. Per subject,
-    not per candidate: a rival candidate's later REGEN withdraws it too, which only holds the reroll (fails safe)."""
+    not per candidate: a rival candidate's later REGEN withdraws it too, which only holds the reroll (fails safe).
+    Check eligibility after selecting the verdict, so a vetoed master never falls back to an older ACCEPT."""
     best = {}
     for r in recs:
         if is_flight_record(r) or r.get("decision") not in BODY_VERDICTS or not r.get("subject"):
             continue
         at = _instant(r.get("at"))
         if r["subject"] not in best or at >= best[r["subject"]][0]:
-            best[r["subject"]] = (at, r.get("master_job") if r.get("decision") == "ACCEPT" else "")
-    return {k: v[1] for k, v in best.items() if v[1]}
+            best[r["subject"]] = (at, r)
+    return {s: r["master_job"] for s, (_, r) in best.items()
+            if r["decision"] == "ACCEPT" and r.get("master_job") and (eligible is None or eligible(r))}
 
 
 def master_finished(job: str, queue: Path | None = None) -> bool:
@@ -876,12 +878,38 @@ def master_finished(job: str, queue: Path | None = None) -> bool:
     return ok and (q / "_artsrc" / job / f"{job}.png").is_file()
 
 
-def accepted_masters(runs: Path, extra=(), job_ok=master_finished) -> dict:
-    """latest_masters over the production runs (round_series.production_decisions: a run with no readable run.json
-    counts as --test and never supplies one) plus `extra` records, keeping only masters `job_ok` still finds."""
+def accepted_masters(runs: Path, extra=(), job_ok=master_finished, *, run_id="") -> dict:
+    """Live queue masters from production body verdicts, subject to the art ledger's picture verdicts.
+    Audit and wholeset redraw requests do not withdraw a master."""
     import round_series as RS
-    m = latest_masters([r for _, r in RS.production_decisions(runs)] + list(extra))
-    return {k: v for k, v in m.items() if job_ok is None or job_ok(v)}
+
+    @functools.cache
+    def owner_state():
+        art = str(HERE.parent / "art")
+        if art not in sys.path:
+            sys.path.insert(0, art)
+        import artledger as L
+        idx = L.cached_index()
+        # A queue render can be accepted before its first install.
+        displaced = {e["prev"] for e in idx.events
+                     if e.get("type") == "live" and e.get("prev") and e["prev"] != e.get("sha")}
+        return idx, displaced - {e["sha"] for e in idx.live.values()}
+
+    def eligible(r):
+        if job_ok is not None and not job_ok(r["master_job"]):
+            return False
+        shas = RS.picture_key(r)
+        if not shas:
+            return True
+        idx, displaced = owner_state()
+        return not any(sha in displaced or idx.is_purged(sha) or sha in idx.bans
+                       or (sha in idx.rejected and idx.rejection(sha)) for sha in shas)
+
+    recs = list(RS.production_decisions(runs))
+    recs.extend((run_id, r) for r in extra)
+    verdicts = (r for run, r in recs
+                if r.get("decision") == "ACCEPT" or not run.startswith(("audit_", "wholeset_")))
+    return latest_masters(verdicts, eligible)
 
 
 def flight_layer_rows(r: dict, base: dict, designs: dict | None = None, def_sets: dict | None = None) -> list:

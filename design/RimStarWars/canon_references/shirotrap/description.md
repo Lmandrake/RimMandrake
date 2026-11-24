@@ -12,9 +12,9 @@ The Shiro-trap, native to Naboo, was not a separate creature, but a symbiotic pa
 
 Shiros were hard-shelled, benign, slow-moving non-sentient reptiles native to the Gungan Swamps of Naboo. Their main defense was to retract head, legs and tail into a spiny shell. They fed on mintri, zaela, grahn vine, chak-root and occasional mud-dwelling crustaceans and mollusks, and were popular with Gungan cooks. They rolled in mud and collected dirt and seeds between their shell ridges; Tooke-trap plants grew in these soil pockets (the "shiro-trap"), camouflaging the shiro from larger predators, especially the saw-toothed grank, in exchange for locomotion.
 
-### Canon note — https://starwars.fandom.com/wiki/Shiro
+### Non-canon note — https://starwars.fandom.com/wiki/Shiro
 
-Canon has only the Shiro (Disney Infinity 3.0): a turtle-like species of Naboo with green skin. No canon Shiro-trap.
+The non-canon Shiro article describes a green, turtle-like species from Naboo based on Disney Infinity 3.0. It does not establish a canon Shiro-trap.
 
 ## Visual brief
 Two pencil-and-watercolour concept pieces (images are from the Legends-only Shiro-trap page). Both show the same idea, a **leafy plant growing on the back of a low armoured animal**, but they disagree on the details. Text (the Shiro carrier is a turtle-like, spiny-shelled reptile, so the green "caterpillar" reading of `canon_2` is an artistic impression, not sourced anatomy): a symbiosis of a Tooke trap plant (the camouflage and the mouth) and a Shiro (the animal that carries it); no size is sourced.
@@ -36,11 +36,11 @@ Two pencil-and-watercolour concept pieces (images are from the Legends-only Shir
 not yet assessed
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Shiro-trap (canon; wikitext pulled via the API 2026-10-04)
+- https://starwars.fandom.com/wiki/Shiro-trap (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Shiro-trap`; wiki caption: infobox image. File: `Shiro-trap.jpg` — https://static.wikia.nocookie.net/starwars/images/d/df/Shiro-trap.jpg/revision/latest?cb=20090213132155
-- `wookieepedia_canon_2.webp` — CANON page `Shiro-trap`; wiki caption: (no caption on the page). File: `Shiro-trap 2.jpg` — https://static.wikia.nocookie.net/starwars/images/4/42/Shiro-trap_2.jpg/revision/latest?cb=20060719204014
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Shiro-trap`; wiki caption: infobox image. File: `Shiro-trap.jpg` — https://static.wikia.nocookie.net/starwars/images/d/df/Shiro-trap.jpg/revision/latest?cb=20090213132155
+- `wookieepedia_canon_2.webp` — LEGENDS page (non-canon continuity) `Shiro-trap`; wiki caption: (no caption on the page). File: `Shiro-trap 2.jpg` — https://static.wikia.nocookie.net/starwars/images/4/42/Shiro-trap_2.jpg/revision/latest?cb=20060719204014
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

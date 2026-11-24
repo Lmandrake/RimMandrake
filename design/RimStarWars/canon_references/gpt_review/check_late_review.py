@@ -8,10 +8,13 @@ Offline; exit 0 only if every clause holds.
   LATE_VERIFICATION_LOG.md  | entry | claim | VERDICT | page | quote |  - a VERIFIED/REFUTED quote must be in its page
   LATE_CLAIM_MAP.json     [{id, entry, rows}] - every ERRORS/ENRICHMENT/cross-entry line of late_NN.md (late_bullets.py) points at its log rows
   page continuity         read from each page's own {{Top}} header: no page of Legends or non-canon status is labelled canon in an entry
+  gapfill continuity      cached articles produce correctly labelled text and images, and known headers are checked across the library
   LATE_MERGES.json        {"owner_item": ID, "rows": [{entry, text, claim, ruled}]} - each text is in the entry now; owner_item is a ledger item filed in an earlier commit than the candidate
 A quote may be flat page text or raw wikitext; only the raw form can reach the {{Top}} header and the infobox lines.
 usage: check_late_review.py"""
-import json, os, re, sys, urllib.parse
+import json, os, re, sys, tempfile, urllib.parse
+from pathlib import Path
+from unittest.mock import patch
 HERE = os.path.dirname(os.path.abspath(__file__))
 LIB = os.path.dirname(HERE)
 ROOT = os.path.abspath(os.path.join(LIB, "..", "..", ".."))
@@ -127,17 +130,18 @@ def cited(line):
     return [(lambda x: x[:1].upper() + x[1:])(urllib.parse.unquote(x).replace("_", " ")) for x in re.findall(r"starwars\.fandom\.com/wiki/([^\s)\]`>]+)", line)]
 
 
-def mislabels(text):
+def mislabels(text, extra_not_canon=()):
     """lines of an entry that call a page canon when that page's header says it is not"""
+    marked = lambda p: (p in cache and not_canon(p)) or p in extra_not_canon
     out, pages = [], [p for ln in text.splitlines() for p in cited(ln)]
     for ln in text.splitlines():
         for p in cited(ln):
-            if p in cache and not_canon(p) and re.search(r"^### Canon\b|\(canon\b", ln):
+            if marked(p) and re.search(r"^### Canon\b|\(canon\b", ln):
                 out.append(ln)
         for p in re.findall(r"(?:CANON page|canon page) `([^`]+)`", ln):
-            if p in cache and not_canon(p):
+            if marked(p):
                 out.append(ln)
-        if pages and all(p in cache and not_canon(p) for p in pages) and re.search(r"canon text|canon says|also canon|canon-attested", ln):
+        if pages and all(marked(p) for p in pages) and re.search(r"canon text|canon says|also canon|canon-attested", ln):
             out.append(ln)
     return out
 
@@ -146,9 +150,48 @@ need(not_canon("Torton") and not not_canon("Rancor") and not_canon("Maalraas") a
      "sanity probe: page headers read Torton and Maalraas as Legends, Rancor and Nighthunter as canon")
 need(mislabels("### Canon — https://starwars.fandom.com/wiki/Torton") and not mislabels("### Canon — https://starwars.fandom.com/wiki/Rancor"),
      "sanity probe: the label scan flags a planted canon heading on Torton and passes the same line on Rancor")
+
+sys.path.insert(0, LIB)
+import canon_gapfill as gapfill
+
+for title, slot in (("Torton", "legends"), ("Maalraas", "legends"), ("Tusk-cat", "canon"),
+                    ("Rancor", "canon"), ("Rancor/Legends", "legends")):
+    wt = cache[title]["wikitext"]
+    cr = {"label": title, "defName": "TestCreature", "entry": None, "nimg": 0, "variants": []}
+    with tempfile.TemporaryDirectory(dir=LIB) as tmp, patch.multiple(
+        gapfill, HERE=Path(tmp), api=lambda **_: {"query": {"search": [{"title": title}]}},
+        wikitext=lambda t: (title, wt) if t == title or (title == "Rancor" and t == "Rancor/Legends") else None,
+        image_url=lambda _: "https://example.invalid/image", _get=lambda *a, **kw: b"\x89PNG" + b" " * 2000,
+    ):
+        result = gapfill.process(cr, 1, "entry")
+        output = (Path(tmp) / "entry/description.md").read_text(encoding="utf-8")
+    label = "Canon" if slot == "canon" else "Legends"
+    url = gapfill.WIKI + urllib.parse.quote(title.replace(" ", "_"))
+    need(result[slot] == title and result["legends" if slot == "canon" else "canon"] is None
+         and result["slots"] == [slot]
+         and f"### {label} — {url}" in output
+         and f"{url} ({slot if slot == 'canon' else label};" in output
+         and f"`wookieepedia_{slot}_1.png` — {label.upper()} page" in output
+         and not mislabels(output),
+         f"canon_gapfill writes {title} as {label} in the heading, source URL and image caption")
+
 lab = {s: mislabels(entry(s)) for s in late}
 lab = {s: v for s, v in lab.items() if v}
 need(not lab, f"no late entry labels a Legends or non-canon page as canon; mislabelled: {sorted(lab)}")
+
+# Headers quoted in VERIFICATION_LOG.md or in the entries themselves, beyond the late cache.
+earlier = {
+    "Bloddle", "Bolotaur", "Boma", "Borcatu", "Clodhopper", "Fanback",
+    "Hssiss", "Igitz", "Iriaz", "Jimvu", "Kissai", "Kreetle", "Kwi", "Marsh haunt",
+    "Qormot", "Saw-toothed grank", "Shiro", "Shiro-trap", "Sith wyrm", "Uvak", "Vornskr", "Wraid",
+    "B1-A air battle droid", "G0-T0 infrastructure planning system", "GE3-series protocol droid",
+    "HK Guardian Droid", "HK-series assassin droid", "K-X12 probe droid", "R-8009 utility droid",
+    "T1-series utility droid", "T3-series utility droid",
+}
+other = sorted(p.parent.name for p in Path(LIB).glob("*/description.md") if p.parent.name not in late)
+lab = [s for s in other if mislabels(entry(s), earlier)]
+need(not lab, f"no other library entry labels a known Legends or non-canon page as canon; scanned {len(other)} entries, mislabelled: {lab}")
+
 owed = {(s, p) for s in late for p in cited(entry(s)) if p in cache and not_canon(p) and not p.endswith("/Legends")}
 need(len(owed) >= 10, f"sanity probe: {len(owed)} unsuffixed pages of Legends or non-canon status are cited by late entries")
 hdr = {(r[0], r[3].strip()) for r in vrows if r[2] == "VERIFIED" and "{{Top" in r[4]}

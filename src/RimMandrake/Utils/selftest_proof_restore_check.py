@@ -202,6 +202,8 @@ check("py: the mailbox field `request` is not a setting",
       py('def run(b):\n    b.call("jawa/mod_settings_field", typeName=T, action="set", field="request", value="x")\n') == [])
 check("py: Settings(\"reset\") outside any guard loses the player's values",
       kinds(py('def run(b):\n    call(b, "Settings", "reset")\n')) == ["reset-loses-player-values"])
+check("py: static_call Settings with variable args outside any try is unrestored",
+      kinds(py('def arm(kv):\n    c("jawa/static_call", type=KP, method="Settings", args=kv)\n')) == ["unrestored-on-throw"])
 SUITE_SRC = '''
     from modcheck import Suite
     suite = Suite("x")

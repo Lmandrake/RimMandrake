@@ -9,7 +9,7 @@ role: "alternate"}, and role_of() names it "alternate".
 Checks: (1) a fixture mod — the alternate is a slot of its kind with role alternate, the primary stays body;
 (2) the live src/ tree — every PawnKindDef alternateGraphics texPath (parsed XML) has an alternate slot naming that
 kind, and the count is not zero (the instrument can see: the five creatures of this item still carrying
-alternates are all parsed).
+alternates are all parsed). Also checks graphicData replacements in a fixture and on RM_RecurvedStropharia.
 """
 from __future__ import annotations
 
@@ -48,10 +48,48 @@ def fixture(L) -> list[str]:
     return fails
 
 
+def patched_fixture(L) -> list[str]:
+    with tempfile.TemporaryDirectory() as td:
+        mod = Path(td) / "M"
+        (mod / "Defs").mkdir(parents=True)
+        (mod / "Patches").mkdir()
+        (mod / "Defs" / "things.xml").write_text(
+            "<Defs><ThingDef><defName>FX_Plant</defName><graphicData>"
+            "<texPath>X/Base</texPath><graphicClass>Graphic_Single</graphicClass></graphicData></ThingDef>"
+            "<ThingDef><defName>FX_Other</defName><graphicData><texPath>X/Base</texPath></graphicData>"
+            "</ThingDef></Defs>")
+        target = "/Defs/ThingDef[defName='FX_Plant']/graphicData"
+
+        def replace(field, value):
+            return (f"<xpath>{target}/{field}</xpath>"
+                    f"<value><{field}>{value}</{field}></value>")
+
+        def conditional(guard, value):
+            return (f'<Operation Class="PatchOperationConditional"><xpath>{guard}</xpath>'
+                    f'<match Class="PatchOperationReplace">{replace("texPath", value)}</match></Operation>')
+
+        (mod / "Patches" / "A.xml").write_text(
+            f'<Patch><Operation Class="PatchOperationReplace">{replace("texPath", "X/Direct")}</Operation>'
+            f'<Operation Class="PatchOperationReplace">{replace("graphicClass", "Graphic_Random")}</Operation>'
+            "</Patch>")
+        (mod / "Patches" / "B.xml").write_text(
+            "<Patch>" + conditional(f"{target}[graphicClass='Graphic_Random'][texPath='X/Direct']", "X/Patched")
+            + conditional(f"{target}/missing", "X/Bad") + "</Patch>")
+        slots = L.scan_def_slots(Path(td))
+    got = {tp: [s["subject"] for s in ss] for tp, ss in slots.items()}
+    expected = {"X/Patched": ["FX_Plant"], "X/Base": ["FX_Other"]}
+    return [] if got == expected else [f"fixture: graphicData patches should yield {expected}, got {got}"]
+
+
 def live(L) -> tuple[list[str], int]:
     fails, n, seen_six = [], 0, set()
     root = L.src_root()
     slots = L.scan_def_slots(root)
+    name = "RM_RecurvedStropharia"
+    paths = sorted(tp for tp, ss in slots.items()
+                   if any(s["subject"] == name and s["field"] == "graphicData" for s in ss))
+    if paths != ["RotSpecies/RecurvedStropharia"]:
+        fails.append(f"src: {name} should resolve to RotSpecies/RecurvedStropharia, got {paths}")
     for f in sorted(root.rglob("*.xml")):
         if "/Defs/" not in f.as_posix():
             continue
@@ -79,7 +117,7 @@ def live(L) -> tuple[list[str], int]:
 
 def main() -> int:
     import artledger as L
-    fails = fixture(L)
+    fails = fixture(L) + patched_fixture(L)
     lf, n = live(L)
     fails += lf
     print(f"alt_graphic_slots: {n} alternate texPath(s) in src/ PawnKindDefs, {len(fails)} failure(s)")

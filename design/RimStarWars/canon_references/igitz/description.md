@@ -33,10 +33,10 @@ One Legends-page image (`wookieepedia_canon_1`, the infobox render). It is small
 not yet assessed
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Igitz (canon; wikitext pulled via the API 2026-10-04)
+- https://starwars.fandom.com/wiki/Igitz (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Igitz`; wiki caption: infobox image. File: `Igitz.jpg` — https://static.wikia.nocookie.net/starwars/images/1/1c/Igitz.jpg/revision/latest?cb=20060823165442
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Igitz`; wiki caption: infobox image. File: `Igitz.jpg` — https://static.wikia.nocookie.net/starwars/images/1/1c/Igitz.jpg/revision/latest?cb=20060823165442
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

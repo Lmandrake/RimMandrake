@@ -45,6 +45,7 @@ import time
 import uuid
 import xml.etree.ElementTree as ET
 from collections import defaultdict
+from copy import deepcopy
 from datetime import datetime as _datetime
 from pathlib import Path
 
@@ -610,19 +611,57 @@ GRAPHIC_ROLE = {
     "wornGraphicPath": "apparel_worn",
 }
 
+_GRAPHIC_REPLACE = re.compile(r"""Defs/ThingDef\[defName\s*=\s*(['"])[^'"]+\1\]/graphicData/(texPath|graphicClass)""")
+
+
+def _apply_graphic_replaces(defs: ET.Element, patch: ET.Element) -> None:
+    for op in patch.findall("Operation"):
+        guard = None
+        if op.get("Class") == "PatchOperationConditional":
+            guard = op.findtext("xpath", "").strip().removeprefix("/")
+            op = op.find("match")
+        if op is None or op.get("Class") != "PatchOperationReplace":
+            continue
+        xpath = op.findtext("xpath", "").strip().removeprefix("/")
+        match = _GRAPHIC_REPLACE.fullmatch(xpath)
+        value = op.find("value")
+        if match is None or value is None:
+            continue
+        if guard is not None and guard != "Defs":
+            try:
+                if not guard.startswith("Defs/") or defs.find("." + guard[4:]) is None:
+                    continue
+            except (SyntaxError, TypeError):  # malformed guard or outside ElementTree's XPath subset
+                continue
+        for graphic in defs.findall("." + xpath[4:].rsplit("/", 1)[0]):
+            for i in reversed(range(len(graphic))):
+                if graphic[i].tag == match[2]:
+                    graphic[i:i + 1] = deepcopy(list(value))
+
 
 def scan_def_slots(root: Path | None = None) -> dict:
-    """texPath -> list of {subject, role, field, file}. Parsed XML, never text-matched."""
+    """texPath -> list of {subject, role, field, file}, after local graphicData field replacements."""
     root = root or src_root()
-    out = defaultdict(list)
+    # Share the def elements with their source trees so slots retain file provenance.
+    defs, files, patches = ET.Element("Defs"), [], {}
     for f in root.rglob("*.xml"):
-        if "/Defs/" not in str(f) and "/Patches/" not in str(f):
+        if "Defs" not in f.parts and "Patches" not in f.parts:
             continue
         try:
-            tree = ET.parse(f)
+            xml = ET.parse(f).getroot()
         except (ET.ParseError, OSError):
             continue
-        for d in tree.getroot().iter():
+        files.append((f, xml))
+        if "Patches" in f.parts:
+            patches[f] = xml
+        elif xml.tag == "Defs":
+            defs.extend(xml)
+    for f in sorted(patches):
+        _apply_graphic_replaces(defs, patches[f])
+
+    out = defaultdict(list)
+    for f, xml in files:
+        for d in xml.iter():
             dn = d.find("defName")
             if dn is None or not (dn.text or "").strip():
                 continue

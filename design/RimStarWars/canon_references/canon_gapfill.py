@@ -10,8 +10,8 @@ For each base creature (juvenile / larva / pupa / spawned variants fold into the
      exact title match whose wikitext carries a creature/species infobox — a guessed title
      that returns MISSING proves nothing, so a miss is recorded as "no title match", never
      "not canon";
-  2. read the canon page and the /Legends page, take infobox images first, then File: links
-     from appearance sections, then any other File: link;
+  2. read each resolved page's {{Top}} header to distinguish canon and Legends, take infobox
+     images first, then File: links from appearance sections, then any other File: link;
   3. download up to --max-img into <slug>/ as wookieepedia_<canon|legends>_<n>.<ext>, and write
      a skeleton description.md (sourced lead text + Source URLs + Candidate images with page,
      URL and caption). Visual brief / Must show are left OWED: no agent has viewed the images.
@@ -146,6 +146,13 @@ def is_creature(wt: str) -> bool:
     return bool(re.search(r"\{\{\s*(Species|Creature|Fauna)\b", wt[:4000], re.I))
 
 
+def page_slot(title: str, wt: str) -> str:
+    top = re.search(r"\{\{\s*Top\s*(\|[^{}]*)?\}\}", wt[:800], re.I)
+    if title.endswith("/Legends") or (top and re.search(r"\|\s*(?:leg\s*(?=\||$)|canon\s*=)", top[1] or "", re.I)):
+        return "legends"
+    return "canon"
+
+
 def resolve(names: list[str]) -> dict:
     """{'canon': (title, wt) | None, 'legends': (title, wt) | None, 'tried': [...]}"""
     tried, found = [], {"canon": None, "legends": None}
@@ -159,18 +166,18 @@ def resolve(names: list[str]) -> dict:
         for t in hits:
             if norm(t) != want:
                 continue
-            slot = "legends" if t.endswith("/Legends") else "canon"
-            if found[slot]:
-                continue
             got = wikitext(t)
             if got and is_creature(got[1]):
-                found[slot] = got
-        # an exact canon title implies a possible /Legends sibling the search did not rank
-        for slot, sfx in (("legends", "/Legends"),):
-            if found["canon"] and not found[slot]:
-                got = wikitext(found["canon"][0] + sfx)
-                if got and is_creature(got[1]):
+                slot = page_slot(*got)
+                if not found[slot]:
                     found[slot] = got
+                if found["canon"] and found["legends"]:
+                    break
+        # an exact canon title implies a possible /Legends sibling the search did not rank
+        if found["canon"] and not found["legends"]:
+            got = wikitext(found["canon"][0] + "/Legends")
+            if got and is_creature(got[1]) and page_slot(*got) == "legends":
+                found["legends"] = got
         if found["canon"] or found["legends"]:
             break
     found["tried"] = tried

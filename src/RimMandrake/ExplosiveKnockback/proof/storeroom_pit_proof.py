@@ -122,6 +122,7 @@ def arm(name, settings):
     # restore-check: ok -- the run snapshots every saved setting before its first reset and restore_player_settings puts each back in its finally
     c("jawa/static_call", type=KP, method="Settings", args="reset")
     for kv in settings:
+        # restore-check: ok -- the caller's finally restores the settings snapshot taken before this arm
         r = str(c("jawa/static_call", type=KP, method="Settings", args=kv).get("result"))
         if not r.startswith("SET"):
             row(name + "_SETTING", False, "%s -> %s" % (kv, r[:120]))
@@ -181,6 +182,7 @@ def storage_arm(name, settings):
         row(name + "_CONTAINER_CLOSED", False, cs[:120])
         return None
     for kv in settings:
+        # restore-check: ok -- the caller's finally restores the settings snapshot taken before this arm
         r = str(c("jawa/static_call", type=KP, method="Settings", args=kv).get("result"))
         if not r.startswith("SET"):
             row(name + "_SETTING", False, "%s -> %s" % (kv, r[:120]))

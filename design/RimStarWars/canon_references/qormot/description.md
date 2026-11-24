@@ -13,7 +13,7 @@ Qormots were relatively docile during most of Yeshocq's thirteen-month year, onl
 
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
-**Animation-only canon — no realistic source found (searched: Wookieepedia `Qormot` page images, title search "qormot"; the only depiction anywhere is the *Creatures of the Galaxy* RPG ink illustration).** The image below is a stylised black-and-white ink drawing; render this creature realistically anyway — real-world anatomy, materials and lighting, not the drawing's ink hatching or exaggerated proportions.
+**Stylised Legends references — no realistic source found (searched: Wookieepedia `Qormot` page images, title search "qormot"; the only depiction anywhere is the *Creatures of the Galaxy* RPG ink illustration).** The image below is a stylised black-and-white ink drawing; render this creature realistically anyway — real-world anatomy, materials and lighting, not the drawing's ink hatching or exaggerated proportions.
 Viewed 2026-10-04. The single image is from the Legends page (a black-and-white ink illustration, infobox): two
 adult qormots fighting in a forest and a small young one at lower right.
 - **LOUD DISAGREEMENT / unclear**: the prose says "stocky quadrupeds" with "a single eye in the
@@ -32,7 +32,7 @@ adult qormots fighting in a forest and a small young one at lower right.
 - **Hands/feet**: broad clawed hands and feet with visible claws.
 - **Skin**: rough, wrinkled, bare skin on the belly (smooth pale in the drawing) with quills only on
   the back and sides; the young one has a smooth domed head with a ridged brow and small spines.
-- **Colour**: none (greyscale); canon prose gives no colour either. Do not invent one.
+- **Colour**: none (greyscale); the Legends prose gives no colour either. Do not invent one.
 - **Size cues**: the adult towers over the young; no scale reference; prose says "stocky".
 
 ## Must show
@@ -50,10 +50,10 @@ adult qormots fighting in a forest and a small young one at lower right.
 not yet assessed
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Qormot (canon; wikitext pulled via the API 2026-10-04)
+- https://starwars.fandom.com/wiki/Qormot (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Qormot`; wiki caption: infobox image (*Creatures of the Galaxy*, black-and-white ink illustration, stylised). File: `Qormot.jpg` — https://static.wikia.nocookie.net/starwars/images/5/5a/Qormot.jpg/revision/latest?cb=20080830075705
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Qormot`; wiki caption: infobox image (*Creatures of the Galaxy*, black-and-white ink illustration, stylised). File: `Qormot.jpg` — https://static.wikia.nocookie.net/starwars/images/5/5a/Qormot.jpg/revision/latest?cb=20080830075705
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

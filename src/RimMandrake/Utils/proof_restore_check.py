@@ -16,7 +16,7 @@ What counts as a POKE
        (`fooDef.f =`, `ThingDefOf.X.f =`).
   Py   (every tracked *.py under src/ except selftests): `jawa/mod_settings_field` with action "set" (the mailbox
        field `request` excluded), `rimworld/update_mod_settings`, a proof's static_call `Settings` (reset or
-       field=value), and `.set_setting(...)`.
+       field=value or dynamic args), and `.set_setting(...)`.
 A poke is RESTORED when
   - it sits in a `try` whose `finally` writes the same target back (C#: same field; def lists: a Remove/restore
     runner; Py: any settings write in the finally), or it is followed directly by such a `try` with only plain
@@ -399,9 +399,10 @@ def py_poke_kind(call: ast.Call):
     if meth is None and len(call.args) >= 2 and isinstance(_const(call.args[-2]), str):
         meth = _const(call.args[-2])          # _call(t, "Settings", "reset") / call(b, "Settings", "x=1")
     if meth == "Settings" or (isinstance(meth, str) and meth.endswith(".Settings")):
-        arg = _const(_kw(call, "args"))
+        arg = _kw(call, "args")
         if arg is None and call.args:
-            arg = _const(call.args[-1])
+            arg = call.args[-1]
+        arg = _const(arg)
         if arg == "reset":
             return "reset"
         if isinstance(arg, str) and "=" in arg:
