@@ -3,8 +3,9 @@
 Item `RIMMANDRAKE_DESIGN_BRIDGE_TWO_PYTHON_TESTS_FEW_RICH_ENTRY_POINTS`. Written 2026-11-23, repaired after a GPT review.
 The argument and the counts: `D:\Luke\dev\RimMandrake\design\specs\2026-11-23-bridge-v2\08_where_tests_live.md`.
 The entry points: `D:\Luke\dev\RimMandrake\design\specs\2026-11-23-bridge-v2\09_entry_points.md`.
-**Nothing here was measured in a running game.** The live experiment that could overturn the recommendation is written
-and has not run.
+The live experiment ran on 2026-11-23 (`D:\Luke\dev\RimMandrake\design\specs\2026-11-23-bridge-v2\experiments\exp_a_result.md`):
+the tick is the same every time; a FlowWorks dig made on a paused game changes the result for the next 60 ticks at most. Nothing else
+here was measured in a running game.
 
 ## What I recommend
 
@@ -20,11 +21,11 @@ written on one library with ten names, not on 563 bridge tools.
   name symptoms, not causes, so they neither prove nor disprove the gap idea. `[read]`
 - **On a paused game, Python can put an act on an exact tick.** I read the game's code: a pause leaves no ticks owed and
   skips none. For every tick-exact act that our mod designs ask for, "stop on the tick, act from Python, go on" lands on
-  the same tick as an act inside the game would. `[read; not yet measured in a game]`
+  the same tick as an act inside the game would. `[measured 2026-11-23: 20 of 20, one scene]`
 - **The same tick is not proof of the same result.** While the game is paused, it still draws frames, and some of our
   own code does work on those frames (FlowWorks rebuilds part of its state there). So the next tick can see something
-  different. I give it about 30% that some scene of ours changes its answer because of this. This is the open question.
-  `[read in our code; the size of the effect is a guess]`
+  different. It does: a dig made on the paused game holds a pawn at once, and in running play it holds up to 60 ticks later.
+  `[measured 2026-11-23: 11 of 11 against 0 of 21]`
 - **C# tests already exist, and they are large.** 59 proof files inside our mods hold 19,607 lines of C#. Explosive
   Knockback's scenes are staged and judged by 5,045 lines of C# that only a special test build contains, so its
   verdicts are about a build that we do not ship. `[measured]`
@@ -80,10 +81,9 @@ stay in Python, and the added C# is a generic instrument, never a test. Both hal
 
 ## What is not known
 
-- Whether an act from Python on a paused game gives the same *result* as an act inside the game. The experiment has
-  four parts; the first needs only what is built and a small test game for a few minutes; the others need the first
-  new ticket. If it shows a difference, the affected kind of scene gets its acts done inside the game by a small
-  generic piece. That is still not a test written in C#.
+- Whether other kinds of scene differ as the FlowWorks dig does. Parts 2 to 4 of the experiment are unrun and need the
+  first new ticket. The affected kind gets its acts done inside the game by a small generic piece: an act that is done in the
+  same step that starts the clock. That is still not a test written in C#.
 - Whether ten names really make agents write better tests. It is your hypothesis, and two outside sources agree; nobody
   has measured it here. The first three converted scenes will show it.
 - GPT reviewed the draft and rejected its first claim as too strong. I narrowed it; the review and what I did with each

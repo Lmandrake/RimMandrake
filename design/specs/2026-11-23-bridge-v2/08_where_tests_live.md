@@ -38,7 +38,8 @@ both are in "Where I disagree".
 The pick rests on one fact that is read and not yet measured in a game: **on a paused game, an act from Python lands
 on a known tick.** That is a claim about the tick only. Whether the game's state is then the same as after an act made
 inside the tick loop is a second question, and it is open (GPT's first finding, taken). The live experiment is written
-and UNRUN ("The experiment"); its first scene needs no new C#, its third needs one small ticket.
+and its first scene ran (`experiments/exp_a_result.md`: same tick 20 of 20, and a FlowWorks dig made on the paused game
+changes the verdict of the next 32 to 40 ticks); its third needs one small ticket.
 
 ## Three things were called "the test"
 
@@ -120,7 +121,8 @@ Read in the 1.6 source in this run:
   resume" runs no catch-up ticks and skips none.
 - **A pause set inside a tick ends the game's loop on that tick.** The loop breaks right after `DoSingleTick` when
   `Paused` is true `[READ; pass two read the same]`. The landed slice does this (`jawa/scene_slice`, commit
-  `5cebf3567fe1`), offline-tested, live UNRUN.
+  `5cebf3567fe1`), offline-tested; its stop and its act were driven live by
+  `experiments/exp_a_result.md`.
 - **An act from Python lands between tick T and tick T+1.** That is the same tick as an act step of pass two's kernel,
   which fires in the end-of-tick hook of tick T `[READ: 05_build_design.md, "act and run"]`. Neither route can act in the
   middle of a tick. So the plan gives **no finer tick placement** than "stop on T, act, resume". Tick placement is all
@@ -156,7 +158,8 @@ Read in the 1.6 source in this run:
 
 These differences are not zero, and one of them is known code. After an act on a paused game, FlowWorks rebuilds before
 the next tick; after an act inside a tick loop that plays several ticks a frame, the next ticks can read the old state.
-So the two routes can give tick T+1 different inputs, and the difference need not end after one tick. `GUESS 30%` that
+So the two routes can give tick T+1 different inputs, and the difference need not end after one tick. **Measured 2026-11-23: yes** for a FlowWorks dig read within
+60 ticks (`experiments/exp_a_result.md`); written before it: `GUESS 30%` that
 a verdict of one of our scenes changes; the experiment's third scene and its pause-only arm are there to measure it.
 
 **So the claim is narrow:** under a pause that the session owns, an act can be made with the tick counter at T, before
@@ -326,7 +329,7 @@ python3 design/specs/2026-11-23-bridge-v2/experiments/exp_a_python_act_vs_kernel
 time python3 src/RimMandrake/bridgetools/prove_scene_tick_wiring.py --selfcheck                           # 21 of 21, 0.06 s
 time python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/bridgetools/selftest_scene_tick_wiring.py   # GREEN, 121.7 s
 
-# live, UNRUN (every game was held; this run took none). A test game on the 13-mod list, a quicktest map.
+# live. Scene 1 RAN 2026-11-23 on ArchSmall, and a FlowWorks scene with it: experiments/exp_a_result.md. Scenes 2 to 4 UNRUN.
 python3 src/RimMandrake/rimflow/game_lock.py run ArchSmall --for "bridge v2 experiment A" -- \
   python.exe design\specs\2026-11-23-bridge-v2\experiments\exp_a_python_act_vs_kernel_act.py --trials 10 --out D:\ClaudeWork\rimmandrake\scratch\bridge_v2_pass3\exp_a
 python.exe design\specs\2026-11-23-bridge-v2\experiments\exp_a_python_act_vs_kernel_act.py --trials 10 --speed Ultrafast --out ...\exp_a_ultra
@@ -334,7 +337,8 @@ python.exe src\RimMandrake\ExplosiveKnockback\knockback_runner.py --scenes store
 python.exe src\RimMandrake\Utils\scene_runner.py --type RimMandrake.ExplosiveKnockback.RM_KnockbackScenes --out ...\exp_a_runscenes.json
 ```
 
-- Scene 1 needs only landed code (the slice, `5cebf3567fe1`). Its live path in the script is itself unrun code.
+- Scene 1 needs only landed code (the slice, `5cebf3567fe1`). It ran on 2026-11-23: same tick 20 of 20; two
+  faults of the script were fixed (`experiments/exp_a_result.md`).
 - Scene 2 needs the Explosive Knockback PROOF build deployed.
 - Scenes 3 and 4 have no script yet. They need the slice widened (any act, the act batch), which is the first new
   ticket. So the full experiment is **not** free of new C#; only its first scene is.

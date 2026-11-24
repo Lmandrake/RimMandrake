@@ -20,8 +20,10 @@ net or a mod's frame work that differs. Scene 3 of 08 (a FlowWorks read on the t
                                                                            scratch quicktest map (it hurts one colonist)
     python3 exp_a_python_act_vs_kernel_act.py --selfcheck                  the comparison on hand-made traces; no game
 
+--late 1 plants a fault (arm P acts one tick late): every trial must then read DIFFER, or the instrument is blind.
+
 Exit 0 = the three arms agree on every tick offset in every trial, 1 = they differ, 2 = could not measure.
-The live part is UNRUN (2026-11-23): every game was held. It needs no code that is not landed (slice 5cebf3567fe1)."""
+Results: exp_a_result.md. Scene 1 replayed from one save with whole-state tracks, and the FlowWorks scene: exp_a_state_after_act.py."""
 import argparse
 import json
 import os
@@ -52,19 +54,22 @@ def whole(trace):
 def offsets(start, act_tick, traces):
     """-> dict of tick offsets from the start, or None when a trace cannot be read (could not look, never a number).
 
-    act: the tick on which the cut was done. seen: the first tick whose end-of-tick sample shows more injuries than the
-    first sample. end: the tick of the end record of the last segment."""
+    act: the tick on which the cut was done. seen: the first tick whose END shows more injuries than the first sample. end:
+    the tick of the end record of the last segment. A track is written on change only, and segment 2 opens after arm P's
+    act: its `first` sample is a read of the paused game, not an end of tick, so its value counts from the next tick's end."""
     if not traces or not all(whole(t) for t in traces) or act_tick is None:
         return None
     first = None
     seen = None
     for t in traces:
+        fresh = True
         for r in t:
-            if r.get("rec") == "track" and r.get("name") == INJ and r.get("st") == "ok":
+            if r.get("rec") == "track" and r.get("name") == INJ and r.get("st") == "ok" and r.get("phase") != "last":
                 if first is None:
                     first = r["v"]
                 elif seen is None and r["v"] > first:
-                    seen = r["tick"]
+                    seen = r["tick"] + (1 if fresh else 0)
+                fresh = False
     ends = [r for r in traces[-1] if r.get("rec") == "end"]
     if first is None or not ends:
         return None
@@ -103,9 +108,34 @@ def _made(start, act, seen, end, lost=False, segs=1):
     return offsets(start, act, out)
 
 
+def _real_p(start, act, end=None, act_late=0):
+    """Arm P as the slice really writes it: segment 2 opens AFTER the paused act, so its `first` sample already holds the cut
+    and no end_of_tick row follows (a track writes on change only)."""
+    end = end or start + END
+    t1 = [{"n": 1, "tick": start, "rec": "open"}, {"n": 2, "tick": start, "rec": "track", "phase": "first", "name": INJ, "st": "ok", "v": 0},
+          {"n": 3, "tick": act, "rec": "end", "state": "hit", "hitTick": act},
+          {"n": 4, "tick": act, "rec": "track", "phase": "last", "name": INJ, "st": "ok", "v": 0}, {"n": 5, "tick": act, "rec": "close", "drained": True, "dropped": 0}]
+    t2 = [{"n": 1, "tick": act, "rec": "open"}, {"n": 2, "tick": act, "rec": "track", "phase": "first", "name": INJ, "st": "ok", "v": 1},
+          {"n": 3, "tick": end, "rec": "end", "state": "hit", "hitTick": end},
+          {"n": 4, "tick": end, "rec": "track", "phase": "last", "name": INJ, "st": "ok", "v": 1}, {"n": 5, "tick": end, "rec": "close", "drained": True, "dropped": 0}]
+    return offsets(start, act, [t1, t2])
+
+
+def _real_k(start):
+    t = [{"n": 1, "tick": start, "rec": "open"}, {"n": 2, "tick": start, "rec": "track", "phase": "first", "name": INJ, "st": "ok", "v": 0},
+         {"n": 3, "tick": start + ACT, "rec": "act", "phase": "end_of_tick", "name": "damage", "ok": True},
+         {"n": 4, "tick": start + ACT + 1, "rec": "track", "phase": "end_of_tick", "name": INJ, "st": "ok", "v": 1},
+         {"n": 5, "tick": start + END, "rec": "end", "state": "hit", "hitTick": start + END},
+         {"n": 6, "tick": start + END, "rec": "track", "phase": "last", "name": INJ, "st": "ok", "v": 1}, {"n": 7, "tick": start + END, "rec": "close", "drained": True, "dropped": 0}]
+    return offsets(start, start + ACT, [t])
+
+
 def selfcheck():
     good = _made(1000, 1060, 1061, 1200)
     cases = [
+        ("as the slice writes it: K and P agree", compare(_real_k(1000), _real_p(5000, 5060))[0], True),
+        ("as the slice writes it: P one tick late", compare(_real_k(1000), _real_p(5000, 5061))[0], False),
+        ("as the slice writes it: P one tick early", compare(_real_k(1000), _real_p(5000, 5059))[0], False),
         ("same, K one segment and P two", compare(good, _made(5000, 5060, 5061, 5200, segs=2))[0], True),
         ("P act one tick late", compare(good, _made(5000, 5061, 5062, 5200, segs=2))[0], False),
         ("P injury seen one tick later", compare(good, _made(5000, 5060, 5062, 5200, segs=2))[0], False),
@@ -132,7 +162,8 @@ def live(a):
         calls[0] += 1
         return W.call(tool, **p)
     W.connect()
-    call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
+    if call("rimworld/get_ui_state").get("programState") != "Playing":      # asked again in a running game it waits out its whole timeout
+        call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
     for _ in range(240):
         if call("rimworld/get_ui_state").get("programState") == "Playing":
             break
@@ -149,6 +180,12 @@ def live(a):
     tracks = json.dumps({INJ: {"p": "thing.field", "thing": pid, "path": "health.hediffSet.hediffs._size"}})
     tick = {"p": "game.tick"}
 
+    def heal():
+        # 4 points of cut per arm on one torso of 40: without this the pawn is dead by trial 4 and every later trial is blind
+        r = call("jawa/pawn_health", pawn=pid, action="healAll", confirmDestructive=True)
+        if not r.get("success"):
+            raise SystemExit("UNMEASURED: the pawn could not be restored between arms: %s" % r)
+
     def seg(until_tick, limit, act_at=0):
         st, tr = W.run(pawn=pid, speed=a.speed, maxTicks=limit, actAt=act_at, damage=4.0, tracks=tracks,
                        until=json.dumps({"cmp": [tick, ">=", until_tick]}))
@@ -159,6 +196,7 @@ def live(a):
     os.makedirs(a.out, exist_ok=True)
     for i in range(a.trials):
         # arm K
+        heal()
         calls[0] = 0
         t0 = call("jawa/map_info").get("ticksGame")
         w = time.time()
@@ -167,10 +205,11 @@ def live(a):
         acts = [r for r in tr if r.get("rec") == "act"]
         k = offsets(t0, acts[0]["tick"] if acts else None, [tr])
         # arm P
+        heal()
         calls[0] = 0
         t1 = call("jawa/map_info").get("ticksGame")
         w = time.time()
-        st1, tr1 = seg(t1 + ACT, ACT + 50)
+        st1, tr1 = seg(t1 + ACT + a.late, ACT + 50)
         g = time.time()
         at = call("jawa/map_info").get("ticksGame")
         d = call("jawa/damage", damageDef="Cut", amount=4.0, thingId=pid, armorPenetration=1.0, bodyPart="Torso", allowColonists=True)
@@ -180,6 +219,7 @@ def live(a):
         p_wall, p_calls = time.time() - w, calls[0]
         p = offsets(t1, at if (d.get("success") and at == after) else None, [tr1, tr2] if tr1 and tr2 else [])
         # arm KP: the cut inside the game, then a pause with no call, then on
+        heal()
         t2 = call("jawa/map_info").get("ticksGame")
         st3, tr3 = seg(t2 + ACT + 1, ACT + 50, act_at=ACT)
         time.sleep(a.dwell)
@@ -191,7 +231,8 @@ def live(a):
         v2, text2 = compare(k, kp)
         v = None if (v is None or v2 is None) else (v and v2)
         verdicts.append(v)
-        rows.append({"trial": i, "K": k, "P": p, "KP": kp, "same": v, "text": text, "pause_only_text": text2,
+        rows.append({"trial": i, "traces": {"K": tr, "P": [tr1, tr2], "KP": [tr3, tr4]}, "damage": {k: d.get(k) for k in ("success", "message", "targets", "results")},
+                     "speed": a.speed, "planted_late": a.late, "K": k, "P": p, "KP": kp, "same": v, "text": text, "pause_only_text": text2,
                      "K_wall_s": round(k_wall, 3), "P_wall_s": round(p_wall, 3),
                      "K_calls": k_calls, "P_calls": p_calls, "P_paused_for_act_s": round(gap, 3), "clock_moved_in_gap": at != after,
                      "clock_moved_in_dwell": moved})
@@ -215,6 +256,7 @@ def main():
     ap.add_argument("--trials", type=int, default=10)
     ap.add_argument("--speed", default="Normal")
     ap.add_argument("--dwell", type=float, default=0.25, help="arm KP: seconds the game stands paused")
+    ap.add_argument("--late", type=int, default=0, help="PLANT a fault: arm P acts this many ticks late. 1 must turn every trial DIFFER")
     ap.add_argument("--out", default=".")
     a = ap.parse_args()
     return selfcheck() if a.selfcheck else live(a)
