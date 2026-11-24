@@ -1,5 +1,9 @@
 # Plan: sort the old list tickets before they enter Shape
 
+**Stopped by the owner on 2026-11-23 and replaced by `design/specs/2026-11-23-old-tickets-by-home/`.** Three batches ran
+(`results/`). The other 27 batch items and the four second-read items are dropped. The naming for Shape of the 80
+REAL_WORK tickets is taken off, so `sort_batch_accept.py check` on those three batches now reads FAILS. Run none of it.
+
 Item: `RIMMANDRAKE_SORT_OLD_TICKETS_BEFORE_SHAPE_971_WAIT_UNNAMED`. The owner picked this by card on 2026-11-23 at
 7:55 PM PST: *"Sort all of them now (Recommended)"*. Shape is the List Pipeline stage that gives a ticket an outcome
 check (`src/RimMandrake/rimflow/list_shape.py`).
