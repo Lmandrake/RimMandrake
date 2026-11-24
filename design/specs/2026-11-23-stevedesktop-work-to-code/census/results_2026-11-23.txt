@@ -1,0 +1,330 @@
+Mon Nov 23 20:35:45 PST 2026
+
+##### jobs.py
+window 2026-11-03 04:30:00+00:00 2026-11-24 04:30:00+00:00 records 964 unreadable 17 [('cancelled', 'J20261112T153400Z-0daa1c.json', 'no time'), ('cancelled', 'J20261112T153400Z-1459b3.json', 'no time'), ('cancelled', 'J20261112T153400Z-376239.json', 'no time'), ('cancelled', 'J20261112T153400Z-3920cb.json', 'no time'), ('cancelled', 'J20261112T153400Z-41ddc9.json', 'no time')]
+state Counter({'done': 679, 'quarantined': 275, 'cancelled': 8, 'running': 2})
+host Counter({(None, 'done'): 606, (None, 'quarantined'): 275, ('stevedesktop.b', 'done'): 73})
+requested_by [('BENCH.filler', 706), ('BENCH', 130), ('RELENTLESS', 76), ('BENCH.visit', 32), ('Operations.canary', 7), ('BENCH.steward-wake', 2), ('BENCH.conductor', 1)] (RELENTLESS: retired)
+mod [('FlowWorks', 219), ('Pyrelands', 99), ('TerminalBiomes', 24), ('Abyss', 24), ('LongShade', 21), ('Miasma', 21), ('CreatureBehaviors', 20), ('Contagion', 19), ('Greentide', 19), ('GimmeSomeSlack', 19), ('LuminousPigment', 18), ('Webwork', 18), ('LanternDeeps', 18), ('Stillsand', 17), ('UtinniPatches', 17), ('Scarlands', 16), ('DivingInteraction', 16), ('Watchers', 16), ('Cuisine', 15), ('HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE', 15), ('ExplosiveGrowth', 15), ('MovingDunes', 15), ('Atlas', 15), ('TheForge', 15), ('UnfinishedLine', 15), ('EnvironmentalHazards', 14), ('RustCathedral', 14), ('Cauldron', 14), ('Bacta', 13), ('Graffiti', 12)]
+purpose Counter({'guard': 739, 'fix': 139, 'commission': 46, 'sweep': 30})
+outcome [(('done', 'DONE', None), 506), (('quarantined', 'DONE', None), 155), (('quarantined', 'INVALID', 'LOAD'), 63), (('done', 'REFUSED', 'LOAD'), 47), (('done', 'INVALID', 'HARNESS'), 43), (('done', 'INVALID', 'LOAD'), 36), (('quarantined', 'INVALID', 'DEPLOY'), 27), (('done', 'INVALID', 'DEPLOY'), 23), (('quarantined', 'INVALID', 'HARNESS'), 20), (('quarantined', 'INVALID', 'GAME_DIED'), 8), (('done', 'INVALID', 'GAME_DIED'), 7), (('done', 'REFUSED', 'SYNC'), 5), (('done', 'INTERRUPTED', 'HARNESS'), 4), (('done', 'REFUSED', 'HARNESS'), 4), (('quarantined', 'INTERRUPTED', 'HARNESS'), 2), (('done', 'INVALID', 'CANARY'), 2), (('done', 'INVALID', 'CRASH'), 1), (('done', 'REFUSED', 'PREFLIGHT'), 1)]
+item named Counter({False: 481, True: 473})
+filler? [(('filler', 'DONE'), 539), (('filler', 'INVALID'), 123), (('other', 'INVALID'), 107), (('other', 'DONE'), 100), (('filler', 'REFUSED'), 40), (('visit', 'DONE'), 22), (('visit', 'REFUSED'), 10), (('other', 'REFUSED'), 7), (('filler', 'INTERRUPTED'), 4), (('other', 'INTERRUPTED'), 2)]
+ingested [(('the job names no item', "['skipped']"), 344), (('None', '[]'), 257), (('None', "['findings', 'result', 'run']"), 117), (('None', "['groups', 'result']"), 103), (('None', "['note']"), 59), (('a Relentless exact-tier proofs job: relentless_game reads its verdict', "['skipped']"), 59), (('None', "['error']"), 9), (('the job names no item', "['lane_finding', 'skipped']"), 4), (('None', "['note', 'result']"), 2)]
+
+##### kinds.py
+jobs 954 DONE 661 unreadable 0
+
+NOT DONE, by kind (a job has one kind)
+  74 quarantined  48 in-window  70 asked  21 filler  53 lane  12.4 h  11-03..11-21  last J20261121T205538Z-b4095c  game crashed or never got ready while loading
+  50 quarantined  27 in-window  44 asked  48 filler   2 lane   2.2 h  11-03..11-24  last J20261124T013316Z-550722  stale deploy: bridge companion not built from the job's sources
+  47 quarantined   0 in-window   0 asked  10 filler  37 lane   2.7 h  11-23..11-23  last J20261123T221133Z-9fd90d  wrong game: Steve2's job refused, its own game still up
+  45 quarantined  16 in-window  44 asked   8 filler  37 lane  10.5 h  11-03..11-21  last J20261121T234017Z-b5b521  harness read fault (broken JSON, bad python, bridge closed, no sheet)
+  26 quarantined  15 in-window  22 asked  26 filler   0 lane   1.0 h  11-06..11-17  last J20261117T192753Z-5da573  wrong mod list: the list could not be written (swap marker or before-copy)
+  15 quarantined   8 in-window  15 asked   1 filler  14 lane   6.7 h  11-10..11-14  last J20261114T224032Z-a6cdaa  game process gone under the job
+  11 quarantined   0 in-window   4 asked   6 filler   5 lane   1.6 h  11-04..11-22  last J20261122T084856Z-5609b5  wrong mod list: the running load was not the composed list
+  10 quarantined   4 in-window   6 asked   2 filler   8 lane   1.0 h  11-06..11-13  last J20261113T114138Z-7ba5eb  wrong map: the game held no test map the runner may use
+   6 quarantined   2 in-window   4 asked   2 filler   4 lane   0.4 h  11-03..11-13  last J20261113T054314Z-284b94  stopped from outside
+   5 quarantined   0 in-window   0 asked   2 filler   3 lane   0.1 h  11-03..11-20  last J20261120T213808Z-8aa00b  runner clone could not update
+   2 quarantined   0 in-window   1 asked   0 filler   2 lane   0.3 h  11-13..11-22  last J20261122T080441Z-8a39de  red canary
+   1 quarantined   0 in-window   0 asked   0 filler   1 lane   0.0 h  11-06..11-06  last J20261106T134317Z-55ba0d  other (INVALID CRASH)
+   1 quarantined   0 in-window   1 asked   0 filler   1 lane   0.2 h  11-12..11-12  last J20261112T183712Z-caa4c9  wrong contract: the worker's result shape was refused
+
+DONE, faults inside (a job can be in several)
+ 143 quarantined   0 in-window 143 asked  30 filler 113 lane  26.6 h  11-12..11-21  last J20261121T043833Z-b541e4  inside a machine-fault window and kept (advisory)
+  90 quarantined  20 in-window  39 asked  43 filler  47 lane  14.3 h  11-03..11-24  last J20261124T035514Z-a16591  ran to the end and measured nothing (every row UNMEASURED or NOT_RUN)
+  84 quarantined   0 in-window  84 asked  10 filler  74 lane  16.7 h  11-12..11-21  last J20261121T040348Z-49ee40     of those, written to the ledger as a verdict
+  66 quarantined  15 in-window  39 asked  16 filler  50 lane  10.2 h  11-06..11-23  last J20261123T064115Z-6e8714  wrong save, site or map: at least one row says so
+  55 quarantined   9 in-window  24 asked  25 filler  30 lane  14.1 h  11-04..11-24  last J20261124T035514Z-a16591  planned rows that never ran
+  33 quarantined   1 in-window   5 asked  16 filler  17 lane  13.5 h  11-04..11-24  last J20261124T035514Z-a16591  kept game was spoiled: dead colonist or site not quiet
+  28 quarantined   9 in-window  12 asked   7 filler  21 lane  19.9 h  11-03..11-24  last J20261124T030115Z-135064  check cannot run in this lane (needs a driver, proof build or result made elsewhere)
+  23 quarantined  10 in-window  14 asked  10 filler  13 lane   2.4 h  11-06..11-23  last J20261123T115429Z-9dd04f  missing tool, package or the wrong python on the machine
+  19 quarantined   0 in-window  19 asked   1 filler  18 lane   2.1 h  11-12..11-12  last J20261112T144249Z-2ac601  inside a machine-fault window and kept (released)
+  13 quarantined   0 in-window   0 asked   5 filler   8 lane   4.4 h  11-23..11-24  last J20261124T001426Z-9581b9  wrong build attested: a Steve2 result that checked Steve1's install (before 3bfaf78cd0)
+
+ledger verdicts from kept in-window jobs: Counter({'fail': 17, 'partial': 11, 'pass': 11, 'GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIN': 7, 'FEVERWOOD_BOUGH_SOIL_TERRAIN_1=pass,FEVE': 4, 'DECOY_SHADE_TARP_1=fail,FOOTPRINT_TRACK_': 3, 'LEANINGSCRUB_ENRICHMENT_QUICKTEST_1=pass': 3, 'ASTEROID_DESERT_ORES_1=fail,MINDSTONE_MA': 3, 'CAULDRON_ENRICHMENT_LIVE_PROOF_1=pass,CA': 3, 'ASH_FIELD_FIX_FORGETS_THE_WATER=fail,PYR': 2, 'SCALD_MECHANICS_1=pass,SEA_FISHABLES_ALI': 2, 'CREEP_WEB_HARVEST_LIVE_1=partial,WEBWORK': 2, 'FORGE_ENRICHMENT_QUICKTEST_1=pass,FORGE_': 2, 'TICKBURST_PROVE_MANY_TICKS_ONE_FRAME=har': 1, 'DUST_SETTLED_LETTER_1=partial,FOOTPRINT_': 1, 'ASH_FIELD_FIX_FORGETS_THE_WATER=partial,': 1, 'UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_RE': 1, 'FOOTPRINT_TRACK_GRID_1=harness,STILLSAND': 1, 'UNFINISHED_LINE_SITE_BEATS_1=fail,UNFINI': 1, 'FOOTPRINT_TRACK_GRID_1=pass,STILLSAND_LO': 1, 'harness': 
+DONE and kept: 506 in a fault window: 162 tagged: 162 in-window but not tagged: 0
+fault windows in the window: 55, 252.1 h last end 2026-11-21 17:46:45+00:00
+all                                  21 days     jobs 954, not DONE 293, of them setup 150; DONE but measured nothing 90; DONE with a PASS or FAIL 571
+all                                  last 7 days jobs 289, not DONE 64, of them setup 56; DONE but measured nothing 26; DONE with a PASS or FAIL 199
+asked (agent, visit feed, old tick)  21 days     jobs 248, not DONE 126, of them setup 94; DONE but measured nothing 43; DONE with a PASS or FAIL 79
+asked (agent, visit feed, old tick)  last 7 days jobs 61, not DONE 18, of them setup 16; DONE but measured nothing 14; DONE with a PASS or FAIL 29
+filler                               21 days     jobs 706, not DONE 167, of them setup 56; DONE but measured nothing 47; DONE with a PASS or FAIL 492
+filler                               last 7 days jobs 228, not DONE 46, of them setup 40; DONE but measured nothing 12; DONE with a PASS or FAIL 170
+last 7 days, not DONE by kind Counter({"wrong game: Steve2's job refused, its own game still up": 47, 'wrong mod list: the running load was not the composed list': 5, 'game crashed or never got ready while loading': 4, 'harness read fault (broken JSON, bad python, bridge closed, no sheet)': 3, "stale deploy: bridge companion not built from the job's sources": 2, 'wrong mod list: the list could not be written (swap marker or before-copy)': 1, 'runner clone could not update': 1, 'red canary': 1})
+
+##### repeats.py
+(19, 'stevedesktop.b', '11-23 15:59Z', 'Steve# is running; it rewrites Prefs.xml on exit. Stop it fi')
+(18, 'stevedesktop.b', '11-23 12:21Z', 'Steve# is running; it rewrites Prefs.xml on exit. Stop it fi')
+(15, 'Steve1', '11-12 17:17Z', 'companion STALE JawaBench.BridgeTools.dll not built from thi')
+(9, 'Steve1', '11-10 03:52Z', 'companion STALE JawaBench.BridgeTools.dll not built from thi')
+(7, 'stevedesktop.b', '11-23 19:56Z', 'Steve# is running; it rewrites Prefs.xml on exit. Stop it fi')
+(7, 'Steve1', '11-12 15:10Z', 'modset_builder --tier gimmesomeslack --apply failed:  marker')
+(6, 'Steve1', '11-10 03:26Z', 'companion STALE JawaBench.BridgeTools.dll not built from thi')
+(6, 'Steve1', '11-10 02:57Z', 'companion STALE JawaBench.BridgeTools.dll not built from thi')
+(4, 'Steve1', '11-09 23:05Z', 'modset_builder --tier mods__base --apply failed:  #.\n\n  REFU')
+(4, 'Steve1', '11-06 09:37Z', 'modcheck exit # and no sheet JSON: andrake\\Utils\\modcheck\\ru')
+(3, 'Steve1', '11-20 20:19Z', 'stale_load: game down for the restart onto the composed list')
+(3, 'Steve1', '11-14 18:43Z', "modcheck exit # and no sheet JSON: imWorld readiness 'mapDat")
+(3, 'Steve1', '11-13 19:11Z', "modcheck exit # and no sheet JSON: imWorld readiness 'mapDat")
+(3, 'Steve1', '11-10 04:45Z', 'modcheck exit # and no sheet JSON: heck\\runner.py", line #, ')
+(3, 'Steve1', '11-09 22:57Z', 'modset_builder --tier mods__base --apply failed:  #.\n\n  REFU')
+(3, 'Steve1', '11-06 11:58Z', 'modset_builder --tier mods__mandrake_rm_flowworks --apply fa')
+runs of 3 or more: 16 jobs 113 saved by a stop after two: 81 of them Steve2 refusals 38
+
+##### windows.py
+35 ('kept, in a window (advisory)', 'fail')
+23 ('kept, in a window (advisory)', 'partial')
+74 ('kept, in a window (advisory)', 'pass')
+8 ('kept, in a window (released)', 'fail')
+9 ('kept, in a window (released)', 'partial')
+8 ('kept, in a window (released)', 'pass')
+55 ('kept, no window', 'fail')
+54 ('kept, no window', 'partial')
+139 ('kept, no window', 'pass')
+2 ('quarantined', 'pass')
+{'quarantined': 2, 'kept, no window': 135, 'kept, in a window (released)': 13, 'kept, in a window (advisory)': 68} {('quarantined', 'does not'): 2, ('kept, no window', 'does not'): 248, ('kept, in a window (released)', 'does not'): 25, ('kept, in a window (advisory)', 'does not'): 132}
+
+##### visits.py
+visit jobs 32 Counter({'DONE': 22, 'REFUSED': 10}) with a PASS or FAIL row 12
+PASS rows 163 FAIL 3 UNMEASURED 42 NOT_RUN 89
+visit jobs named in a visit folder 0 | all job ids in visit folders (control) 1 | rows in rows.jsonl 1819 of them with game stevedesktop 1
+chain sets sent more than once: {'Pyrelands:ambient_ash_drift,animal_census,ashfall_drifts,ashfall_weath': 4, 'FlowWorks:flow_doors': 3, 'Pyrelands:blackrain,furnace_room,grass_cover,mapgen_log': 2, 'Pyrelands:scorchfruit_produces,scorchfruit_spoils,startup_and_def_wiri': 2, 'FlowWorks:suspension_bridges_and_covers': 2}
+
+##### ledger_after.py
+3 ('done', 'after 11-18', 'modcheck', 'NONE')
+5 ('done', 'after 11-18', 'modcheck', 'RUNNER program only')
+7 ('done', 'after 11-18', 'modcheck', 'a seat')
+3 ('done', 'after 11-18', 'proofs', 'NONE')
+9 ('done', 'after 11-18', 'proofs', 'a seat')
+16 ('done', 'after 11-18', 'visit', 'NONE')
+11 ('done', 'after 11-18', 'visit', 'RUNNER program only')
+5 ('done', 'after 11-18', 'visit', 'a seat')
+7 ('done', 'to 11-18', 'modcheck', 'NONE')
+23 ('done', 'to 11-18', 'modcheck', 'RUNNER program only')
+29 ('done', 'to 11-18', 'modcheck', 'a seat')
+33 ('done', 'to 11-18', 'proofs', 'NONE')
+7 ('done', 'to 11-18', 'proofs', 'RUNNER program only')
+7 ('done', 'to 11-18', 'proofs', 'a seat')
+7 ('quarantined', 'to 11-18', 'modcheck', 'NONE')
+12 ('quarantined', 'to 11-18', 'modcheck', 'RUNNER program only')
+4 ('quarantined', 'to 11-18', 'modcheck', 'a seat')
+60 ('quarantined', 'to 11-18', 'proofs', 'RUNNER program only')
+done {'a seat': 57, 'RUNNER program only': 46, 'NONE': 62}
+quarantined {'a seat': 4, 'NONE': 7, 'RUNNER program only': 72}
+
+##### idle.py
+lane_windows kinds Counter({'machine_down': 75, 'maintenance': 70}) open-ended 0
+jobs with no sent time 5
+day   Steve1 busy  Steve2 busy  down | real  filler | steward states (h)
+11-02    0.0    0.0    0.0 |   0.0   0.0 | {'UNREACHABLE': 3.5}
+11-03    5.3    0.0    0.3 |   0.5   4.8 | {'UNREACHABLE': 12.1, 'PAUSED': 0.5, 'RUNNING': 6.4, 'READY': 0.9, 'BRAKED': 3.5, 'EXHAUSTED': 0.5, 'IDLE_EMPTY': 0.1}
+11-04    9.3    0.0    0.7 |   1.4   7.9 | {'UNREACHABLE': 0.7, 'PAUSED': 2.2, 'RUNNING': 10.3, 'READY': 1.1, 'BRAKED': 9.5}
+11-05   20.3    0.0    0.8 |  12.9   7.3 | {'UNREACHABLE': 0.8, 'PAUSED': 1.8, 'RUNNING': 20.9, 'READY': 0.5}
+11-06    5.5    0.0    4.3 |   1.8   3.6 | {'UNREACHABLE': 4.3, 'PAUSED': 12.0, 'RUNNING': 5.8, 'READY': 0.6, 'BRAKED': 1.3}
+11-07    0.2    0.0    0.5 |   0.2   0.0 | {'UNREACHABLE': 0.5, 'PAUSED': 23.3, 'RUNNING': 0.2}
+11-08    0.0    0.0    0.0 |   0.0   0.0 | {'PAUSED': 24.0}
+11-09    8.7    0.0    0.0 |   5.2   3.5 | {'PAUSED': 14.9, 'RUNNING': 8.8, 'READY': 0.2}
+11-10   21.7    0.0    0.1 |   0.0  21.7 | {'UNREACHABLE': 0.1, 'RUNNING': 22.0, 'READY': 1.9}
+11-11    4.9    0.0    0.2 |   0.0   4.9 | {'UNREACHABLE': 0.2, 'PAUSED': 18.3, 'RUNNING': 5.0, 'READY': 0.5}
+11-12    5.3    0.0    0.1 |   4.9   0.4 | {'UNREACHABLE': 0.1, 'PAUSED': 8.4, 'RUNNING': 5.9, 'BRAKED': 9.5}
+11-13   14.6    0.0    0.2 |   2.5  12.1 | {'UNREACHABLE': 0.2, 'RUNNING': 15.4, 'READY': 2.0, 'BRAKED': 6.2}
+11-14   14.3    0.0    1.4 |   3.9  10.4 | {'UNREACHABLE': 1.4, 'PAUSED': 0.2, 'RUNNING': 14.0, 'READY': 2.1, 'BRAKED': 3.6, 'IDLE_BY_RULE': 2.7}
+11-15    0.1    0.0    0.1 |   0.1   0.0 | {'PAUSED': 18.1, 'IDLE_BY_RULE': 5.7}
+11-16    0.0    0.0    0.0 |   0.0   0.0 | {'PAUSED': 24.0}
+11-17    0.4    0.0    0.6 |   0.4   0.0 | {'UNREACHABLE': 0.6, 'PAUSED': 13.8, 'RUNNING': 0.4, 'BRAKED': 5.6, 'IDLE_BY_RULE': 3.6}
+11-18    0.0    0.0    0.0 |   0.0   0.0 | {'PAUSED': 24.0}
+11-19    0.0    0.0    0.0 |   0.0   0.0 | {'PAUSED': 24.0}
+11-20    5.0    0.0    1.7 |   1.2   3.8 | {'UNREACHABLE': 1.8, 'PAUSED': 13.5, 'RUNNING': 5.2, 'READY': 0.5, 'BRAKED': 2.8, 'IDLE_EMPTY': 0.1}
+11-21    8.9    0.0    1.3 |   2.2   6.7 | {'UNREACHABLE': 1.4, 'PAUSED': 5.7, 'RUNNING': 9.5, 'READY': 1.4, 'BRAKED': 6.0}
+11-22   14.8    0.0    0.2 |   2.4  12.4 | {'UNREACHABLE': 0.2, 'PAUSED': 0.2, 'RUNNING': 15.7, 'READY': 2.0, 'BRAKED': 5.9}
+11-23   16.0   10.0    0.2 |   6.7  14.6 | {'UNREACHABLE': 0.3, 'PAUSED': 0.2, 'RUNNING': 19.5, 'READY': 0.5}
+TOTAL Steve1 155.3 Steve2 10.0 down 12.7 maint 195.9 real 46.4 filler 114.2 window h 504 {'UNREACHABLE': 28.3, 'PAUSED': 229.2, 'RUNNING': 165.3, 'READY': 14.4, 'BRAKED': 54.1, 'EXHAUSTED': 0.5, 'IDLE_EMPTY': 0.3, 'IDLE_BY_RULE': 12.0}
+queue wait min, asked jobs: n 244 median 13.0 p90 3515.2 max 4592
+
+##### idle_why.py
+66.3 2 11-18 11-20 ('PAUSED', "paused until #: STEVE_CPU_SOAK_#H: owner #-#-# 'We need long soak data please' (RIMMANDRAKE_RER")
+54.1 3 11-07 11-09 ('PAUSED', "paused until #: STEVE_BUILD_ARTISAN_LOOPER_THIRTEEN_MINUTES: Steve hosts the GSS Artisan loop's")
+49.3 2 11-15 11-17 ('PAUSED', 'paused since # with no expiry: RIMMANDRAKE_AUTHOR_TESTQ_BLOCKS_STEVE_SITS_IDLE_BY_RULE probe # ')
+20.6 20 11-06 11-15 ('BRAKED', 'filler brake on FlowWorks,Stillsand,Contagion,TerminalBiomes,FeverWood,EnvironmentalHazards,Rus')
+17.5 20 11-03 11-23 ('UNREACHABLE', 'ssh to SteveDesktop down since #: ssh: connect to host #.# port #: Connection timed out')
+16.5 48 11-04 11-07 ('PAUSED', 'paused until #: STEVE_FAULT_MONITOR: # onset #, CPUs [#]: drain, reboot, verify')
+14.4 11 11-17 11-21 ('BRAKED', 'filler brake on FlowWorks,TerminalBiomes,EnvironmentalHazards,RustCathedral,Pyrelands,Scarlands')
+13.9 1 11-11 11-11 ('PAUSED', "paused until #: Owner order #-#-# ~#:# PST: SteveDesktop's game is Codex's (HugeThings Whittle ")
+12.0 4 11-15 11-17 ('IDLE_BY_RULE', 'pipeline tests only: nothing admissible (# mod(s)); e.g. not a pipeline test (#c, pipeline test')
+11.1 2 11-12 11-12 ('PAUSED', 'paused until #: Claude Whittle FWLIVE loops hold both games (owner order #-#-# #:# PST; helper ')
+10.8 70 11-03 11-23 ('UNREACHABLE', 'ssh to SteveDesktop down since #: ssh: connect to host #.# port #: Connection timed out; inside')
+10.1 3 11-04 11-05 ('BRAKED', 'filler brake on FlowWorks,Stillsand,Contagion,TerminalBiomes,FeverWood,EnvironmentalHazards: la')
+6.2 6 11-05 11-06 ('PAUSED', 'paused until #: STEVE_FAULT_MONITOR: # onset #, CPUs [#, #]: drain, reboot, verify')
+5.9 2 11-22 11-23 ('BRAKED', 'day brake: cap: filler lane time today # s >= day budget # s (# jobs)')
+1.8 2 11-03 11-03 ('BRAKED', 'filler brake on FlowWorks: last two filler jobs not DONE (# INTERRUPTED/CRASH, REFUSED/SYNC); H')
+1.8 4 11-03 11-20 ('PAUSED', 'auto pause by # REFUSED/SYNC: the runner pull/pin failed (someone wrote in the runner clone?)')
+1.4 3 11-21 11-21 ('PAUSED', 'paused until #: LANEAUDIO_ RIMMANDRAKE_KEEP_STEVE_LANE_GAME_SOUND_OFF_SONIC_STUDIO_AT_LAUNCH: l')
+1.1 15 11-15 11-21 ('PAUSED', 'paused until #: STEVE_PERIODIC_REBOOT: boot is # h old with an open fault window: drain, reboot')
+1.1 4 11-21 11-21 ('PAUSED', 'paused until #: DRVTEST_OWNER_CARD_# one boot with lighting drivers unloaded (RIMMANDRAKE_BOOT_')
+1.1 3 11-21 11-21 ('PAUSED', 'paused until #: DRVSPLIT RIMMANDRAKE_SPLIT_STEVE_DRIVER_SET_AUDIO_DRIVER_ALONE_FIRST: driver-sp')
+1.0 1 11-12 11-12 ('PAUSED', 'paused until #: speed_# tickburst bench + pit_exposure A/B (Conductor brief, slot between jobs)')
+0.9 2 11-03 11-03 ('BRAKED', 'filler brake on FlowWorks: last two filler jobs not DONE (# INTERRUPTED/CRASH, INVALID/DEPLOY);')
+0.9 2 11-21 11-21 ('PAUSED', 'paused until #: AUDIODEF_RIMMANDRAKE_TEST_STEVE_AUDIO_DEFAULT_ON_REALTEK_DRIVER_STILL_LOADED: o')
+0.9 2 11-21 11-21 ('PAUSED', 'paused until #: DRVOFF RIMMANDRAKE_DISABLE_STEVE_SONIC_STUDIO_DRIVER_SOUND_IS_UNUSED: test boot')
+0.8 10 11-12 11-23 ('PAUSED', 'paused until #: STEVE_PERIODIC_REBOOT: boot is # h old: drain, reboot, resume')
+0.6 2 11-12 11-12 ('PAUSED', 'fill stopped: /mnt/d/ClaudeWork/rimmandrake/testq/fill.stop exists')
+0.5 1 11-09 11-09 ('PAUSED', 'paused until #: STEVE_BUILD_ARTISAN_LOOPER_THIRTEEN_MINUTES: GSS on game A and Graffiti on game')
+0.4 3 11-21 11-21 ('PAUSED', 'paused until #: PERAPP_ROUTE_RIMWORLD_AUDIO_TEST (RIMMANDRAKE_ROUTE_STEVE_RIMWORLD_AUDIO_TO_REA')
+0.2 1 11-03 11-03 ('BRAKED', 'filler brake on FlowWorks: last two filler jobs not DONE (# INVALID/DEPLOY, INVALID/HARNESS); H')
+0.2 2 11-04 11-04 ('PAUSED', 'paused until #: STEVE_FAULT_MONITOR: # onset #, CPUs [#, #, #]: drain, reboot, verify')
+0.1 1 11-03 11-03 ('PAUSED', 'paused until #: Steve NVMe swap: owner fitting the Kingston now')
+0.1 2 11-04 11-04 ('BRAKED', 'filler brake on FlowWorks,Stillsand,Contagion,TerminalBiomes,FeverWood,EnvironmentalHazards on ')
+hours an asked job waited while nothing ran: 149.9
+   of those in state UNREACHABLE 5.7
+   of those in state PAUSED 142.7
+   of those in state RUNNING 0.4
+   of those in state READY 0.4
+   of those in state BRAKED 0.7
+   of those in state EXHAUSTED 0.0
+   of those in state IDLE_EMPTY 0.0
+   of those in state IDLE_BY_RULE 0.0
+day: hours Steve1 idle-of-lane-jobs with an asked job waiting, by the steward's state
+   11-04 0.6 {'UNREACHABLE': 0.2, 'PAUSED': 0.4}
+   11-05 0.9 {'UNREACHABLE': 0.3, 'PAUSED': 0.6}
+   11-06 15.6 {'UNREACHABLE': 4.3, 'PAUSED': 11.2}
+   11-07 23.8 {'UNREACHABLE': 0.5, 'PAUSED': 23.3}
+   11-08 24.0 {'PAUSED': 24.0}
+   11-09 15.0 {'PAUSED': 14.9}
+   11-11 2.0 {'PAUSED': 2.0}
+   11-12 8.1 {'PAUSED': 7.8}
+   11-18 22.5 {'PAUSED': 22.5}
+   11-19 24.0 {'PAUSED': 24.0}
+   11-20 12.2 {'PAUSED': 12.0}
+asked jobs that waited over 24 h: 28 over 2 h: 52 longest [(74.8, 'J20261106T210601Z-ef618d', 'BENCH', 'FlowWorks'), (76.0, 'J20261106T191218Z-c68996', 'BENCH', 'FlowWorks'), (76.1, 'J20261106T190658Z-5fddff', 'RELENTLESS', 'BESKARPROBE_FIX_EIGHTEEN_POKES_NO_NET'), (76.5, 'J20261106T212900Z-199ff6', 'RELENTLESS', 'LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW')] (RELENTLESS is a retired requester)
+since 2026-11-21 1:20 PM PST (audio driver off): h 55.2 Steve1 busy h 39.3
+
+##### submits.py
+submit calls 143 {'accepted': 68, 'help text': 51, 'refused or no job id': 24}
+   ('2026-11-05T17:56', 'FlowWorks --chains hose_live_rows --purpose fix --by BENCH --sha 66b7593ae2bfc8b3ba89c7aaab7d84f7e7e4f5f6 --profile targeted 2>', "REFUSED: hose_live_rows already hold a verdict at this code version, or wait for a harness repair: the owner's retest rule; drop them, or --retest-why REASON overrides / l=0")
+   ('2026-11-05T19:03', 'FlowWorks --chains hose_live_rows --purpose fix --by BENCH --sha 9a1a8a4481e788a89b7ffc588cdf92d3e110cc77 --profile targeted 2>', 'arallel / b56f697129 ledger: relentless supervisor / ec9e491263 ledger: RUNNER ingest of 0 testq job(s) / Terminated                 timeout 120 python3 src/RimMandrake/Utils/testq/testq.py submit FlowWorks --chains hose_live_rows --purpose fix --by BENCH --sha 9a1a8a4481e788a89b7ffc588cdf92d3e110cc77 --profile targeted 2>&1 | tail -3')
+   ('2026-11-05T19:05', 'FlowWorks --chains hose_live_rows --purpose fix --by BENCH --sha 9a1a8a4481e788a89b7ffc588cdf92d3e110cc77 --profile targeted > /mnt/d/ClaudeWork/rimma', "exit=2 / REFUSED: hose_live_rows already hold a verdict at this code version, or wait for a harness repair: the owner's retest rule; drop them, or --retest-why REASON overrides")
+   ('2026-11-05T19:53', 'FlowWorks --full --purpose sweep --by BENCH --sha $SHA --for-item KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES --profile full-list --gate shadow --priority 5', 'w: do not start a second copy while it runs. If it is no longer needed, stop it with TaskStop. To check interim output, use Read on that file path. / Session cwd remains /home/mandrake/rm/relentless/clones/KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES; directory changes made by the backgrounded command do not apply to subsequent commands.')
+   ('2026-11-05T19:55', 'FlowWorks --full --purpose sweep --by BENCH --sha 5e04961389e09374636ec7d9b42511ad074d5691 --for-item KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES --profile ', 'exit=2 / REFUSED: canal_overflow,core_live_rows,machinery_pipes,pit_fill_effects,thirst,works belong to items routed to a Test Pilot (CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED,FLOWWORKS_CHECKOUT_SCOPE_1,LIQUID_LEDGER_BUILD_NO_UNIT_LOST; `rimflow pilot`): no more code-and-retest; --retest-why REASON overrides')
+   ('2026-11-06T12:34', 'Graffiti --chains forced_paint_job,mental_break_spree,spree_wall --purpose guard --by BENCH --sha $sha --for-item STEVE_LANE_UNSTICK_BRAKED_UNOWNED_5C', "REFUSED: forced_paint_job,mental_break_spree,spree_wall already hold a verdict at this code version, or wait for a harness repair: the owner's retest rule; drop them, or --retest-why REASON overrides")
+   ('2026-11-12T14:42', 'Pyrelands --chains burrowers,gpt_hunt_plausible,opening_front --purpose guard --by BENCH --sha 77fc5ac872 --row-item burrowers=PYRELANDS_GREEN_MINIMAL', "ies RSW_Gizka and needs mandrake.rm.biomes. gimmesomeslack: JawaBench's companion tools TypeLoad-fail without it (see the rites tier). / REFUSED: burrowers,gpt_hunt_plausible,opening_front already hold a verdict at this code version, or wait for a harness repair: the owner's retest rule; drop them, or --retest-why REASON overrides")
+   ('2026-11-12T15:24', 'GimmeSomeSlack --proofs $P --profile tier:gimmesomeslack --for-item RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE --purpose commission --by BENCH --sha 0bdc', "from contracts import compat as CC  # noqa: E402 /     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ / ModuleNotFoundError: No module named 'contracts' /     from contracts import compat as CC  # noqa: E402 /     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ / ModuleNotFoundError: No module named 'contracts'")
+   ('2026-11-12T15:24', 'GimmeSomeSlack --proofs $P --profile tier:gimmesomeslack --for-item RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE --purpose commission --by BENCH --sha 0bdc', "exit=0 / REFUSED: modset_builder unreadable: [Errno 2] No such file or directory: '/home/mandrake/rm/scratch/BENCH/gss-proofs/src/RimStarWars/Armoury/modcheck_env.py' / REFUSED: modset_builder unreadable: [Errno 2] No such file or directory: '/home/mandrake/rm/scratch/BENCH/gss-proofs/src/RimStarWars/Armoury/modcheck_env.py'")
+   ('2026-11-12T15:25', 'GimmeSomeSlack --proofs A1 --profile tier:gimmesomeslack --for-item RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE --purpose commission --by BENCH --sha 0bdc', "3553 / exit=0 / REFUSED: modset_builder unreadable: [Errno 2] No such file or directory: '/home/mandrake/rm/scratch/BENCH/gss-proofs/src/RimMandrake/WreckedMachines/modcheck_env.py'")
+   ('2026-11-13T20:46', 'LongShade --chains defs_resolve --purpose guard --lane stevedesktop 2>', '[--retest-why RETEST_WHY] /                        mod / testq.py submit: error: the following arguments are required: --by, --sha')
+   ('2026-11-15T04:57', 'FlowWorks --chains drawbridges --purpose guard --by BENCH --sha $(git rev-parse --short origin/main) 2>', 'ds at offline_build, not past the blind offline challenge; it runs once the pipeline record shows FlowWorks past the blind offline challenge (stage in_game or later) on a locked version (smallest fix: finish Stages 4 and 5, then `python3 src/RimMandrake/rimflow/maturation.py advance FlowWorks --to in_game --by SEAT --why  / rc=0 / 0')
+   ('2026-11-15T05:12', 'Abyss --chains freed_beasts --purpose guard --by BENCH --sha $(git rev-parse origin/main) --lane stevedesktop --priority 30 --no-sha-check --for-item ', '     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^ /   File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode /     raise JSONDecodeError("Expecting value", s, err.value) from None / json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0) / Sun Nov 15 05:12:23 UTC 2026 / Shell cwd was reset to /home/mandrake/rm/bench')
+   ('2026-11-15T08:46', 'Abyss --chains freed_beasts --purpose flake --by BENCH --sha 03bd4d241f0b --for-item RIMMANDRAKE_DIAGNOSE_STEVE_WORLD_START_SIX_MODS_ONE_FAILURE --lan', 'version/stage_record.json: no file (the mod has no pipeline record); it runs once the pipeline record shows Abyss past the blind offline challenge (stage in_game or later) on a locked version (smallest fix: finish Stages 4 and 5, then `python3 src/RimMandrake/rimflow/maturation.py advance Abyss --to in_game --by SEAT --why ...`)')
+   ('2026-11-15T08:46', 'Cuisine --chains recipes_readback --purpose flake --by BENCH --sha 03bd4d241f0b --for-item RIMMANDRAKE_DIAGNOSE_STEVE_WORLD_START_SIX_MODS_ONE_FAILURE', 'shows Cuisine past the blind offline challenge (stage in_game or later) on a locked version (smallest fix: finish Stages 4 and 5, then `python3 src/RimMandrake/rimflow/maturation.py advance Cuisine --to in_game --by S / Terminated                 timeout 60 python3 src/RimMandrake/Utils/testq/fault_monitor.py report 2>&1 | head -1')
+   ('2026-11-15T13:50', 'FlowWorks --chains plot_H_depth_ladder --purpose guard --by BENCH --sha $SHA --for-item RIMMANDRAKE_AUTHOR_TESTQ_BLOCKS_STEVE_SITS_IDLE_BY_RULE --lane', 'nd copy while it runs. If it is no longer needed, stop it with TaskStop. To check interim output, use Read on that file path. / Session cwd remains /home/mandrake/rm/relentless/clones/RIMMANDRAKE_AUTHOR_TESTQ_BLOCKS_STEVE_SITS_IDLE_BY_RULE.det; directory changes made by the backgrounded command do not apply to subsequent commands.')
+   ('2026-11-17T18:49', 'Pyrelands --chains burn_line --purpose commission --by BENCH --sha c07cd5a998e6 2>', "ind offline challenge (stage in_game or later) on a locked version (smallest fix: finish Stages 4 and 5, then `python3 src/RimMandrake/rimflow/maturation.py advance Pyrelands --to in_game --by SEAT --wh / GimmeSomeSlack 0.1.0 at in_game: no locked bar's in-game check names a chain (the testq blocks of its test_table.json); no fill")
+   ('2026-11-20T20:36', 'FlowWorks --chains pit_exposure --purpose guard --by BENCH --sha 8e7f8832e482 --priority 80 --lane stevedesktop 2>', 'REFUSED: validated must-show lines no component claims: drained_hole_is_a_prison, geyser_pit_is_a_hot_tub, liquid_coating_washes_off, toss_flame_from_rim (checked before queueing: a bad row id would burn a runner slot) / Fri Nov 20 12:36:36 PST 2026')
+   ('2026-11-20T20:36', 'FlowWorks --chains trench_cover_and_raiders,sprinklers,player_missions,droid_dig --purpose sweep --by BENCH --sha 8e7f8832e482 --priority 80 --lane st', 'REFUSED: validated must-show lines no component claims: drained_hole_is_a_prison, geyser_pit_is_a_hot_tub, liquid_coating_washes_off, toss_flame_from_rim (checked before queueing: a bad row id would burn a runner slot) / Fri Nov 20 12:36:40 PST 2026')
+   ('2026-11-20T20:36', 'FlowWorks --chains trench_cover_and_raiders,sprinklers,player_missions,droid_dig --purpose sweep --by BENCH --sha 8e7f8832e482 --priority 80 --lane st', 'REFUSED: validated must-show lines no component claims: drained_hole_is_a_prison, geyser_pit_is_a_hot_tub, liquid_coating_washes_off, toss_flame_from_rim (checked before queueing: a bad row id would burn a runner slot) / Fri Nov 20 12:36:44 PST 2026')
+   ('2026-11-20T20:36', 'Miasma --chains salt_crust_free_tier --purpose guard --by BENCH --sha 8e7f8832e482 --priority 80 --lane stevedesktop 2>', 'REFUSED: salt_crust_free_tier belong to items routed to a Test Pilot (MIASMA_FIRST_SCRIPT_1; `rimflow pilot`): no more code-and-retest; --retest-why REASON overrides / Fri Nov 20 12:36:50 PST 2026')
+   ('2026-11-21T04:03', 'Pyrelands --chains burn_line,embergrass_regrow,fresh_burn_bonus,scorchfruit_spoils,scorchfruit_produces,ashfall_weather_accumulation,ashfall_drifts,op', 'REFUSED: opening_front belong to items routed to a Test Pilot (PYRE_OPENING_FRONT_BUILD_SMOKE_ON_ARRIVAL; `rimflow pilot`): no more code-and-retest; --retest-why REASON overrides')
+   ('2026-11-23T11:14', 'RIMMANDRAKE_RUN_ROT_GIANTS_CLICK_LIVE_TEST_BOTH_GAMES_WERE_TAKEN --proofs A1 --for-item RIMMANDRAKE_RUN_ROT_GIANTS_CLICK_LIVE_TEST_BOTH_GAMES_WERE_TAK', "REFUSED: --deploy 'biomes' is not a deployable mod folder under src/ (did you mean RimMandrake.Biomes, TerminalBiomes); the worker would die INVALID/DEPLOY on a booked slot")
+   ('2026-11-24T00:35', '$W --proofs A1 --profile tier:ratchet_pilot --for-item $W --purpose fix --by BENCH --sha $S --priority 85 --lane stevedesktop --retest-why "the first ', 'y while it runs. If it is no longer needed, stop it with TaskStop. To check interim output, use Read on that file path. / Session cwd remains /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FILE_BRIDGE_TWO_BUILD_ORDER_THEN_WIRE_FIRST_SLICE.det; directory changes made by the backgrounded command do not apply to subsequent commands.')
+
+##### items.py
+filed in window by family and state now:
+   13 ('HARNESS_REPAIR_CAUSE', 'superseded')
+   8 ('HARNESS_REPAIR_CAUSE', 'done')
+   5 ('HARNESS_REPAIR_CAUSE', 'dropped')
+   5 ('HARNESS_REPAIR_CAUSE', 'proposed')
+   1 ('OPS_STEVE_DIAGNOSE_INVALID_MBTX', 'ready')
+   1 ('OPS_STEVE_DIAGNOSE_INVALID_SHARE', 'done')
+   1 ('OPS_STEVE_FEED_IDLE_LANE', 'done')
+   1 ('OPS_STEVE_SEATS_RESTORE_QTWK', 'proposed')
+   1 ('OPS_TESTQ_INGEST_REFILE', 'proposed')
+   1 ('OPS_TESTQ_UNSTICK', 'ready')
+   2 ('STEVE_LANE_UNSTICK_BRAKED_OWNER', 'dropped')
+   18 ('STEVE_LANE_UNSTICK_BRAKED_UNOWNED', 'dropped')
+   5 ('STEVE_LANE_UNSTICK_BRAKED_UNOWNED', 'done')
+   2 ('STEVE_LANE_UNSTICK_BRAKED_UNOWNED', 'superseded')
+   1 ('STEVE_LANE_UNSTICK_IDLE_UNOWNED', 'dropped')
+   1 ('STEVE_LANE_UNSTICK_OFFLINE_OWNER', 'done')
+   6 ('STEVE_LANE_UNSTICK_OFFLINE_UNOWNED', 'dropped')
+   5 ('STEVE_LANE_UNSTICK_PAUSED_UNOWNED', 'done')
+   4 ('STEVE_LANE_UNSTICK_PAUSED_UNOWNED', 'dropped')
+   6 ('STEVE_LANE_UNSTICK_STALLED_UNOWNED', 'dropped')
+   58 ('named item', 'done')
+   13 ('named item', 'proposed')
+   5 ('named item', 'superseded')
+   5 ('named item', 'dropped')
+   5 ('named item', 'doing')
+   2 ('named item', 'ready')
+open now: ['CUISINE_LXML_MEND_STEVE_HAS_NONE', 'HARNESS_REPAIR_CAUSE_01DAD227_2', 'HARNESS_REPAIR_CAUSE_4AFBF8A2_2', 'HARNESS_REPAIR_CAUSE_4D2C5B87_2', 'HARNESS_REPAIR_CAUSE_AC81755A_3', 'HARNESS_REPAIR_CAUSE_F6CADE57', 'LIGHTSPEED_WIDEN_STEVE_TIERS_MISSING_MODS', 'OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV', 'OPS_STEVE_SEATS_RESTORE_QTWK_RGFZ', 'OPS_STEVE_UNSTICK_UNCLAIMED_ETBS', 'OPS_TESTQ_INGEST_REFILE_XQUU', 'OPS_TESTQ_UNSTICK_ECPK', 'RIMMANDRAKE_CACHE_TESTQ_DONE_READS_TICK_OUTRUNS_HEARTBEAT', 'RIMMANDRAKE_CENSUS_STEVEDESKTOP_ERA_REMAINS_WHILE_SOAK_RUNS', 'RIMMANDRAKE_DIAGNOSE_STEVE_GAME_VANISHES_FIVE_BEFORE_BREAKFAST', 'RIMMANDRAKE_FIX_STEVE2_LOAD_PREPARE_REFUSES_RUNNING', 'RIMMANDRAKE_FIX_STEVE_LANE_WORKER_AND_GAME_STOPS', 'RIMMANDRAKE_FIX_STEVE_WORKER_STALE_INDEX_LOCK_BEFORE_PULL', 'RIMMANDRAKE_KEY_TESTQ_SKIP_CACHE_ON_INPUTS', 'RIMMANDRAKE_MEASURE_STEVE_NOTHING_HOURS_ON_SETTLED_JOBS_ONL
+
+##### tokens.py (this machine)
+files 1934 unreadable 0 unpriced {} all turns M 1716.6
+  23.68M   1114 lane code and page work
+  13.72M    844 other text that names it
+  11.78M    436 ledger or note text that names it
+   5.32M    334 reach the machine over ssh
+   4.14M    275 read a job or the lane
+   3.20M    183 machine fault work
+   2.13M    112 set up (companion, mods, deploy, install, game)
+   1.83M    111 wait for a job
+   0.93M     52 submit a job
+   0.77M     55 lane control (pause, resume, cancel)
+       17.36M lane code and page work | other runs
+        7.49M other text that names it | other runs
+        5.63M ledger or note text that names it | other runs
+        5.16M other text that names it | Conductor and role windows
+        4.74M ledger or note text that names it | Conductor and role windows
+        4.37M lane code and page work | Conductor and role windows
+        2.29M read a job or the lane | other runs
+        2.00M reach the machine over ssh | fault or audio diagnosis runs
+        1.95M lane code and page work | fault or audio diagnosis runs
+        1.75M reach the machine over ssh | other runs
+        1.57M reach the machine over ssh | Conductor and role windows
+        1.53M machine fault work | Conductor and role windows
+        1.49M read a job or the lane | Conductor and role windows
+        1.42M set up (companion, mods, deploy, install, game) | other runs
+        1.41M ledger or note text that names it | fault or audio diagnosis runs
+        1.24M machine fault work | fault or audio diagnosis runs
+        1.06M other text that names it | fault or audio diagnosis runs
+        0.76M wait for a job | other runs
+        0.75M submit a job | other runs
+        0.65M wait for a job | fault or audio diagnosis runs
+        0.51M set up (companion, mods, deploy, install, game) | fault or audio diagnosis runs
+        0.43M machine fault work | other runs
+        0.42M wait for a job | Conductor and role windows
+        0.39M lane control (pause, resume, cancel) | fault or audio diagnosis runs
+        0.36M read a job or the lane | fault or audio diagnosis runs
+        0.21M lane control (pause, resume, cancel) | Conductor and role windows
+        0.21M set up (companion, mods, deploy, install, game) | Conductor and role windows
+        0.18M lane control (pause, resume, cancel) | other runs
+        0.18M submit a job | Conductor and role windows
+by model {'claude-opus-5-5': 53.5, 'claude-fable-5-2': 12.1, 'claude-sonnet-5-5': 1.9}
+    16.72M -home-mandrake-rm-bench
+     2.96M RIMMANDRAKE-ROUTE-VISIT-TESTQ-CHECKS-AHEAD-OF-FILLER-det
+     2.59M -home-mandrake-rm-roles-Operations
+     2.51M RIMMANDRAKE-FILL-BOTH-STEVEDESKTOP-GAMES-HE-SAYS-IT-HOLDS-TWO-det
+     1.87M RIMMANDRAKE-DISABLE-STEVE-SONIC-STUDIO-DRIVER-SOUND-IS-UNUSED-det
+     1.83M RIMMANDRAKE-SHARE-ONE-FAILURE-CLASSIFIER-EVERY-COUNTER-ROLLED-ITS-OWN-
+     1.67M RIMMANDRAKE-FIX-STEVE-LANE-WORKER-AND-GAME-STOPS-det
+     1.52M RIMMANDRAKE-HOLD-FLOWWORKS-PIT-PRISONERS-THREE-CAPTURE-FAULTS-det
+     1.44M RIMMANDRAKE-CLAIM-WIRED-MUST-SHOWS-THREE-MODS-BARE-det
+     1.34M RIMMANDRAKE-KEEP-STEVE-LANE-GAME-SOUND-OFF-SONIC-STUDIO-AT-LAUNCH-det
+     1.20M RIMMANDRAKE-BUILD-BRIDGE-RECEIPT-CALM-AND-TAP-EITHER-WAY-det
+     1.14M RIMMANDRAKE-REPORT-STEVEDESKTOP-CPU-FAULT-DATA-TO-GPT-TWICE-det
+     1.13M RIMMANDRAKE-BUILD-STEVE-REGISTER-PROBE-SEES-UPPER-HALF-LOSS-det
+     1.08M RIMMANDRAKE-FIX-FILED-PIPELINE-TICKETS-AFTER-WEDNESDAY-RESET-det
+     0.89M RIMMANDRAKE-DECIDE-RETIRE-CENSUS-EIGHTEEN-ARE-THE-CONDUCTORS-det
+     0.85M RIMMANDRAKE-FILE-BRIDGE-TWO-BUILD-ORDER-THEN-WIRE-FIRST-SLICE-det
+     0.81M RIMMANDRAKE-ROUTE-STEVE-RIMWORLD-AUDIO-TO-REALTEK-ONLY-THE-GAME-det
+     0.77M RIMMANDRAKE-TEST-STEVE-AUDIO-DEFAULT-ON-REALTEK-DRIVER-STILL-LOADED-de
+     0.73M RIMMANDRAKE-RENAME-GAMES-ARCHBIG-ARCHSMALL-STEVE1-STEVE2-LETTERS-UNREA
+     0.72M RIMMANDRAKE-BOOT-STEVE-NO-LIGHTING-DRIVERS-LAST-SUSPECT-BUT-CPU-det
+     0.72M RIMMANDRAKE-SWEEP-FLOWWORKS-TICKETS-MERGE-TO-MODERN-BUILD-THE-VALUABLE
+     0.70M RIMMANDRAKE-CENSUS-RULES-BEST-RETIRED-ANCIENT-STUFF-IN-THERE-det
+     0.68M RIMMANDRAKE-SEND-MOD-VISITS-TO-STEVEDESKTOP-TICK-SEES-TWO-OF-FOUR-GAME
+     0.67M RIMMANDRAKE-SPLIT-LIVE-CODE-OUT-OF-RELENTLESS-NAMED-MODULES-det
+     0.65M RIMMANDRAKE-BUILD-ONE-GAME-LOCK-CLAIM-FOUR-RECORDS-DISAGREE-det
+     0.62M RIMMANDRAKE-RERUN-STEVEDESKTOP-CPU-SOAK-INTERRUPTED-MID-RUN-det
+     0.60M RIMMANDRAKE-MOVE-UNIT-DEFINITIONS-INTO-ONE-FOLDER-SOME-LIVE-ONLY-ON-MA
+     0.58M RIMMANDRAKE-CENSUS-RED-TESTS-ON-ORIGIN-SEVEN-REPORTED-NONE-OWNED-det
+     0.58M RIMMANDRAKE-TEACH-EXIT-READER-KINDS-KNOWS-THREE-WORDS-ONLY-det
+     0.56M -home-mandrake-rm-roles-Conductor
