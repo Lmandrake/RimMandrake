@@ -1,0 +1,2 @@
+Before you edit a number or a comment in rimflow/coverage_judge.py, read the family's `brief` list in infrastructure/state/judge_calibration.json: that whole file is the judge's calibrated brief, so any edit resets coverage_judge to UNTESTED and only a paid calibration brings it back. Pass the value from the caller (role_launch.JUDGE_TIMEOUT_S) instead. The same holds for evidence_gate.py and maturation.py, whose calibration is free (refusal_contract.py calibrate).
+item: RIMMANDRAKE_MEASURE_EVERY_UNMEASURED_TIME_BUDGET_HE_CALLED_IT_LAZINESS
