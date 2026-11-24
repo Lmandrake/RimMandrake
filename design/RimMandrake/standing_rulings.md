@@ -1451,7 +1451,7 @@ The ruling on a scene short of its X of Y (about 3:00 PM PST; item
 
 ## The cheapest test that decides the bar — owner, 2026-11-23
 
-Item `RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST`. It extends the Principle of Impactful Evidence (top
+Item `RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST`. This ruling extends the Principle of Impactful Evidence (top
 of `infrastructure/agents/CHARTER.md`).
 
 1. **The cheapest test that decides the bar is the test.** The designer of a test shows, on the scene or the check
@@ -1468,8 +1468,8 @@ of `infrastructure/agents/CHARTER.md`).
      `src/RimMandrake/rimflow/raid_pause.json`. `raid_pause.py lift --why "..."` lifts the pause, and it is the Conductor's act
      or the owner's. The machinery, and what it does not stop: `design/specs/2026-11-23-raid-tests-paused/boundary.md`.
    - A test that stages a raid carries `stages_raid` (what it stages) and `cheaper_why` in its test table. While the pause is
-     on, nothing starts that test. It reads `PAUSED: raid tests wait for the tools`, which is not PASS, not FAIL and not
-     UNMEASURED. It spends no trial, turn, look or cycle, and it does not pause its mod.
+     on, nothing starts that test. The paused test reads `PAUSED: raid tests wait for the tools`, which is not PASS, not FAIL
+     and not UNMEASURED. The paused test spends no trial, turn, look or cycle, and does not pause its mod.
    - The bar of a paused scene stays open on the mod's record. The mod may go on to its walk brief, which names the open bar.
      The version does not pass until the bar is decided, or the Conductor decides by name what becomes of the bar.
    - The work that builds the raid tools may stage a raid: its item is in the `allow` list of the switch, and its run sets
@@ -1481,7 +1481,7 @@ of `infrastructure/agents/CHARTER.md`).
      raid, on the small list. `sc_barrage_perf` does not need the full list either.
 
 **What this does not change.** The bars (a bar about raiders is still a bar about raiders); the kinds of live test and the
-seven outcomes; his walk, where he may play a raid; a live flight test of a flyer; offline tests of raid code.
+seven outcomes of a live run (§Live tests have three kinds, section 2); his walk, where he may play a raid; a live flight test of a flyer; offline tests of raid code.
 
 **His words, 2026-11-23, about 9:15 PM PST** (his answer to a card):
 
