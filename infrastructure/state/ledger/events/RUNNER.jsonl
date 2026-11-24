@@ -11826,3 +11826,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","result":"broken","detail":"Ops alarm DISPATCH_CLONE_BEHIND: maturation.clone_behind_min = 6.8 min (MEASURED), line > 5","ts":"2026-11-24T05:15:33Z","tsn":1795497333180367132}
 {"seat":"RUNNER","event":"raise","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-24T05:15:42Z","tsn":1795497342980406011}
 {"seat":"RUNNER","event":"live","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","result":"kept","detail":"sweep: running again","ts":"2026-11-24T05:18:21Z","tsn":1795497501944941225}
+{"seat":"RUNNER","event":"note","id":"OPS_STEVE_SEATS_RESTORE_QTWK_RGFZ","text":"ops_watch: cleared at 2026-11-24T05:38:15Z (steve.seats_absent_min now 0.0)","ts":"2026-11-24T05:38:36Z","tsn":1795498716349938522}
