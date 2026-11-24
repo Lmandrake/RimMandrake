@@ -822,7 +822,7 @@ def default_fixer(prompt, timeout):
     claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
     p = subprocess.run([claude, "-p", prompt, "--model", "opus", "--output-format", "json",
                         "--json-schema", json.dumps(FIXER_SCHEMA, separators=(",", ":")),
-                        "--name", "CRITERIA FIXER"], capture_output=True, text=True, timeout=timeout)
+                        "--name", "CRITERIA FIXER", "--dangerously-skip-permissions"], capture_output=True, text=True, timeout=timeout)
     try:
         return json.loads(p.stdout or "null").get("structured_output")
     except (ValueError, AttributeError):

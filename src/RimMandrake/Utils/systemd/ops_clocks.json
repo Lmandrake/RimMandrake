@@ -14,6 +14,7 @@
     "rm-running": "rm-running.timer",
     "rm-memwatch": "rm-memwatch.timer",
     "rm-objstore": "rm-objstore.timer",
+    "rm-launch-permissions": "rm-launch-permissions.timer",
     "rm-metronome": "rm-metronome.timer",
     "rm-metronome-sense": "rm-metronome-sense.timer",
     "rm-ops-reds": "rm-ops-reds.timer",

@@ -108,6 +108,30 @@ if [ -z "$CLAUDE_BIN" ]; then
   exit 127
 fi
 
+# Every session skips permissions (owner, 2026-11-20: "ensure all Claude sessions everywhere have dangerously skip
+# permissions in their launch specifications from now on"). A caller that names no permission mode and no closed tool
+# list (--tools: a blind judge) gets the flag here, so a forgotten flag never asks him for an allow. The check over
+# every launch line: launch_permissions.py. `remote-control` takes only the --permission-mode form.
+skip_args() {
+  local a
+  case "${1:-}" in
+    remote-control) SKIP=(--permission-mode bypassPermissions) ;;
+    auth|update|mcp|doctor|install|plugin|setup-token|daemon|agents|--version|-v|--help|-h) SKIP=(); return ;;
+    *) SKIP=(--dangerously-skip-permissions) ;;
+  esac
+  for a in "$@"; do
+    case "$a" in
+      --) return ;;
+      --dangerously-skip-permissions|--permission-mode|--permission-mode=*|--tools|--tools=*) SKIP=(); return ;;
+    esac
+  done
+}
+SKIP=()
+skip_args "$@"
+if [ "${#SKIP[@]}" -gt 0 ]; then
+  if [ "${1:-}" = remote-control ]; then shift; set -- remote-control "${SKIP[@]}" "$@"; else set -- "${SKIP[@]}" "$@"; fi
+fi
+
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 # Seat temp dir on ext4 (header §2), set up before the scope probe so even an
 # unbounded seat keeps its temp off tmpfs. Failure is loud, never fatal. fd 9

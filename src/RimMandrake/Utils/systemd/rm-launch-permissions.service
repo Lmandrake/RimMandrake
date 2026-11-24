@@ -1,0 +1,21 @@
+# Every Claude launch skips permissions: the recheck for good (Utils/launch_permissions.py live; item
+# RIMMANDRAKE_SKIP_PERMISSIONS_EVERYWHERE_AUTO_MODE_BLOCKED_HIM; page design/specs/2026-11-23-launch-permissions/boundary.md).
+# It reads the launch lines in origin/main, and the settings, fleet file, Terminal profiles and running sessions of Archmagi
+# and SteveDesktop. No model, no write to the repo. Runs from the dispatch clone.
+# Reading: D:\ClaudeWork\rimmandrake\ops_watch\launch_permissions.json, moved only on a whole clean look; another look writes
+# launch_permissions_failed.json beside it.
+# Install:  python3 src/RimMandrake/Utils/ops_clocks.py install, then systemctl --user enable --now rm-launch-permissions.timer
+[Unit]
+Description=RimMandrake check that every Claude launch skips permissions, on Archmagi and SteveDesktop
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+Environment=RM_ROLE_UNIT=rm-launch-permissions.service
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/launch_permissions.py live
+Nice=10
+MemoryMax=1G
+# Hang guard: one git call, one ssh.
+TimeoutStartSec=10min

@@ -472,7 +472,7 @@ def launch_wake(clone, brief_path, log_path, budget, max_s):
     sys.path.insert(0, RIMFLOW_DIR)
     import spend_watchdog
     cmd = "%s%s > %s 2>&1; echo $? > %s" % (
-        spend_watchdog.wrap_shell("%s -p \"$(cat %s)\"" % (shlex.quote(exe), shlex.quote(brief_path)), budget),
+        spend_watchdog.wrap_shell("%s -p \"$(cat %s)\" --dangerously-skip-permissions" % (shlex.quote(exe), shlex.quote(brief_path)), budget),
         (" --model " + shlex.quote(os.environ["TESTQ_WAKE_MODEL"])) if os.environ.get("TESTQ_WAKE_MODEL") else "",
         shlex.quote(log_path), shlex.quote(exit_path(log_path)))
     try:

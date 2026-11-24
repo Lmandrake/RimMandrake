@@ -77,6 +77,17 @@ install_claude() {
     as_user 'test -x ~/.local/bin/claude || curl -fsSL https://claude.ai/install.sh | bash'
     as_user 'grep -q "/.local/bin" ~/.bashrc || echo "export PATH=\$HOME/.local/bin:\$PATH" >> ~/.bashrc'
     as_user '~/.local/bin/claude --version'
+    # A session started with no flag skips permissions too (owner, 2026-11-20; launch_permissions.py live reads it).
+    as_user 'python3 - ~/.claude/settings.json' <<'PY'
+import json, os, sys
+p = sys.argv[1]
+os.makedirs(os.path.dirname(p), exist_ok=True)
+d = json.load(open(p)) if os.path.exists(p) else {}
+d.setdefault("permissions", {})["defaultMode"] = "bypassPermissions"
+d["skipDangerousModePermissionPrompt"] = True
+open(p + ".tmp", "w").write(json.dumps(d, indent=2))
+os.replace(p + ".tmp", p)
+PY
 }
 
 user_keys() {

@@ -272,7 +272,8 @@
   "src/RimMandrake/rimflow/wake_words.py::Wake._since::or-empty": 1,
   "src/RimMandrake/rimflow/wake_words.py::Wake.stamp::or-empty": 1,
   "src/RimMandrake/rimflow/wake_words.py::first_ts::except-returns-empty": 1,
-  "src/RimMandrake/rimflow/maturation.py::void_judge_run::except-returns-empty": 1
+  "src/RimMandrake/rimflow/maturation.py::void_judge_run::except-returns-empty": 1,
+  "src/RimMandrake/Utils/install_wt_seat_profiles.py::restart_seats::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/run_end_wake.py::_disarm_if_mine::or-empty": [
@@ -1148,6 +1149,9 @@
   ],
   "src/RimMandrake/rimflow/maturation.py::void_judge_run::except-returns-empty": [
    "NOT A COLLAPSE: no Dispatch state.json means no booked judge run, so no voided one: None is the true empty answer; a state that exists and cannot be read returns its cause, and blind_facts reads it as blocked UNMEASURED (design/specs/2026-11-23-resume-voided-blind-judge/boundary.md a-voided-judges-block-is-no-verdict)"
+  ],
+  "src/RimMandrake/Utils/install_wt_seat_profiles.py::restart_seats::except-returns-empty": [
+   "RARE (design/specs/2026-11-23-launch-permissions/boundary.md an-unreadable-schedule): dispatcher_schedule.json is a tracked file of the same clone; unreadable, the installer writes the plain launch line, which skips permissions too"
   ]
  }
 }

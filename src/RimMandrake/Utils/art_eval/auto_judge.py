@@ -220,7 +220,8 @@ def probe() -> tuple:
     """One tiny call on the judge's own model before any judge call (subagent_budget.md: probe quota first)."""
     import runner as RN
     try:
-        r = subprocess.run([CLAUDE, "-p", "--output-format", "json", "--model", RN.model_for("opus")],
+        r = subprocess.run([CLAUDE, "-p", "--output-format", "json", "--model", RN.model_for("opus"),
+                            "--dangerously-skip-permissions"],
                            input="Reply with the single word OK.", capture_output=True, text=True, timeout=120,
                            cwd=str(SCRATCH))
     except (subprocess.TimeoutExpired, OSError) as e:

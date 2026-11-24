@@ -84,7 +84,7 @@ def now():
 # ------------------------------------------------------------------ transports
 def call_claude(prompt: str, cwd: Path, rung: str = "opus", timeout: int = 420, tools: str = "Read") -> tuple[str, dict]:
     model = model_for(rung)
-    cmd = [CLAUDE, "-p", "--output-format", "json", "--model", model]
+    cmd = [CLAUDE, "-p", "--output-format", "json", "--model", model, "--dangerously-skip-permissions"]
     if tools:
         cmd += ["--allowed-tools", tools]
     t0 = time.time()

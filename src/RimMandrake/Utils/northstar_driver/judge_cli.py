@@ -227,7 +227,7 @@ def claude_runner(model, timeout):
             local = os.path.join(d, "shot" + (os.path.splitext(image)[1] or ".png"))
             shutil.copyfile(image, local)
             cmd = [CLAUDE, "-p", prompt_for(local), "--output-format", "json",
-                   "--model", model, "--allowed-tools", "Read"]
+                   "--model", model, "--dangerously-skip-permissions", "--allowed-tools", "Read"]
             try:
                 r = harness_run.run(cmd, timeout, cwd=d)  # rm-harness.slice, not the seat
             except FileNotFoundError:

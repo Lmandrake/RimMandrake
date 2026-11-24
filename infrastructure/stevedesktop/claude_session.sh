@@ -5,6 +5,8 @@
 # account `claude-account` last selected is the one that runs.
 #   claude_session.sh centre|lodestar
 set -uo pipefail
+# Archmagi's desktop shortcut reaches this over a non-login ssh, whose PATH has no ~/.local/bin (measured 2026-11-23).
+export PATH="$HOME/.local/bin:$PATH"
 case "${1:-centre}" in
   centre)
     DIR="$HOME/rm/runner"; NAME="SteveDesktop test centre"; SEAT=STEVECENTRE; RC=SteveDesktop-Owner

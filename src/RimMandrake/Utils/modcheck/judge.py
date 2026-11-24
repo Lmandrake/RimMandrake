@@ -160,7 +160,7 @@ def _run_claude(prompt, cwd=None):
     must report itself broken, never fabricate a verdict (global rule: never
     hand-write the output a verifier would have produced)."""
     cmd = [CLAUDE, "-p", prompt,
-           "--output-format", "json",
+           "--output-format", "json", "--dangerously-skip-permissions",
            "--allowed-tools", "Read"]
     try:
         r = harness_run.run(cmd, CLAUDE_TIMEOUT_S, cwd=cwd)  # rm-harness.slice, not the seat

@@ -360,7 +360,8 @@ def judge(c, d, runner=None):
     runner = runner or default_runner
     g = given(d)
     base = [CLAUDE, "-p", None, "--model", MODEL, "--output-format", "json",
-            "--json-schema", json.dumps(SCHEMA, separators=(",", ":")), "--allowed-tools", "Read",
+            "--json-schema", json.dumps(SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions",
+            "--allowed-tools", "Read",
             "--name", "ART CALIBRATION %s" % c["id"]]
     argv = list(base)
     argv[2] = prompt(d, c["id"])

@@ -273,7 +273,8 @@ def model_ok(model, claude=None, timeout=90):
         return None, "no claude binary or no model"
     cwd = tempfile.mkdtemp(prefix="raise-gate-")
     try:
-        p = subprocess.run([exe, "-p", "--model", model, "Reply with the single word OK."], cwd=cwd,
+        p = subprocess.run([exe, "-p", "--model", model, "--dangerously-skip-permissions",
+                            "Reply with the single word OK."], cwd=cwd,
                            capture_output=True, text=True, timeout=timeout)
     except (OSError, subprocess.TimeoutExpired) as e:
         return None, "check gave no reading: %s" % type(e).__name__

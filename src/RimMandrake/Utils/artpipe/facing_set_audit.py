@@ -97,7 +97,7 @@ def viewpoint_south(path):
     """
     try:
         out = subprocess.run(
-            [CLAUDE, "-p", VIEWPOINT_PROMPT.format(path=path)],
+            [CLAUDE, "-p", VIEWPOINT_PROMPT.format(path=path), "--dangerously-skip-permissions"],
             capture_output=True, text=True, timeout=VIEWPOINT_TIMEOUT_S)
         word = (out.stdout or "").strip().split()[-1].upper() if out.stdout.strip() else ""
         if word in ("EYELEVEL", "OVERHEAD"):
