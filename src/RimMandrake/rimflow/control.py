@@ -2087,6 +2087,36 @@ def _extra_units(run):
     return [x for x in spec.get("extra_units") or [] if isinstance(x, str)]
 
 
+def order_runs(units, mode, why, deadline=None, p=None, now=None):
+    """One stop order for each unit of `units` and nothing else: no OFF switch, no void, no reservation released, no kill
+    timer (the account's end, account_end.py: the switch itself ends what is left, and a run that finishes in time keeps
+    its result). `deadline` is only said in the order. -> the act's row. Raises Unreadable / Refused."""
+    now = time.time() if now is None else now
+    if mode not in STOP_TEXT:
+        raise Refused("no stop order %r (%s)" % (mode, ", ".join(STOP_TEXT)))
+    units = [u[:-len(".service")] if u.endswith(".service") else u for u in units]
+    with txn(p) as c:
+        act = _act(c, "account_end", "all", None, {"mode": mode, "units": units, "deadline": deadline}, why, now=now)
+        for u in units:
+            r = c.execute("SELECT id FROM runs WHERE unit=?", (u,)).fetchone()
+            c.execute("INSERT INTO stops (unit, run, mode, act, why, at, deadline, state) VALUES (?,?,?,?,?,?,?,'pending')",
+                      (u, r["id"] if r else None, mode, act["id"], why.strip(), now, deadline))
+    return act
+
+
+def withdraw_orders(acts, why, p=None, now=None):
+    """Take back the orders of order_runs that no run has obeyed. -> how many. A delivered one is said withdrawn to its
+    run by the hook."""
+    now = time.time() if now is None else now
+    with txn(p) as c:
+        rows = [r for a in acts for r in c.execute("SELECT * FROM stops WHERE act=? AND state IN ('pending','seen')",
+                                                   (a,)).fetchall()]
+        if not rows:
+            return 0
+        _act(c, "account_end", "all", {"acts": list(acts)}, {"withdrawn": [r["id"] for r in rows]}, why, now=now)
+        return len(_withdraw_stops(c, rows, now)[0])
+
+
 def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p=None, now=None, killer=None,
          reaper=None, escalator=None, idem=None):
     """`pipe stop`: block new launches on the scope at once (a control switch, every unstarted run cancelled, in one

@@ -21,15 +21,32 @@
     "floors": {
         "switch_away_pct_left": 1,
         "wait_pct_left": 2,
-        "hard_pct_left": 1,
-        "drain_pct": 2,
         "blind_zero_pct": 1,
-        "_doc": "[O] 2026-11-20 about 5:30 AM PST: \"And yes for live runs finish past, absolutely. Actually 0.1% is even ok kept. We just don't want to crash to zero and get stuck. Please make that true everywhere.\" About 6 AM PST: \"Agreed for 1% at the moment\". So no account is driven to 0%: switch_away_pct_left is 1 (it was 0, his 2026-10-28 15:33 card 'Drain to 0%'), and hard_pct_left is the hard stop, 1%, the lowest line the meter can see (8,749 stored readings, 2026-10-26 to 2026-11-20, are all whole percents: a 0.1% line cannot be read; design/specs/2026-11-20-account-drain/boundary.md). Live runs FINISH past the soft line: at or under an account's line the switch (or the stop) waits while a detached run is live, and goes when they end or at the hard line = max(hard_pct_left, line - drain_pct), whichever is first. drain_pct 2 is his 2026-10-28 card's overshoot margin (steven 'Leave at 52% left', his words 'use it until 50%'; 'the 2 points are the overshoot margin'), so steven's hard line is 50. lost: 1% of the system and lukas weeks is left unspent; a live run may carry an account up to drain_pct under its line. undo: switch_away_pct_left 0, drain_pct 0 (the switch then kills live runs at the line, as before). [D] wait_pct_left 2: the account we idle on until a reset keeps 2%, so the owner can still talk to a seat (card 10:20, Floor: '[No preference]'). blind_zero_pct [R] coordinator 2026-10-28 11:2x: once an account's last MEASURED reading is at or under 1%, a blind reading (failed /usage, usage-limit error, ESTIMATE, stale) counts as 0% and triggers the switch: never sit waiting on a meter that cannot read an exhausted account."
+        "_doc": "[O] 2026-11-20 about 5:30 AM PST: \"And yes for live runs finish past, absolutely. Actually 0.1% is even ok kept. We just don't want to crash to zero and get stuck. Please make that true everywhere.\" About 6 AM PST: \"Agreed for 1% at the moment\". So no account is driven to 0%: switch_away_pct_left is 1 (it was 0, his 2026-10-28 15:33 card 'Drain to 0%'), the lowest line the meter can see (8,749 stored readings, 2026-10-26 to 2026-11-20, are all whole percents; design/specs/2026-11-20-account-drain/boundary.md). Live runs FINISH: a switch or a stop that falls due waits while a detached run is live; how an account ends is account_end (2026-11-24, which replaced hard_pct_left and drain_pct). lost: 1% of the system and lukas weeks is left unspent. undo: switch_away_pct_left 0. [D] wait_pct_left 2: the account we idle on until a reset keeps 2%, so the owner can still talk to a seat (card 10:20, Floor: '[No preference]'). blind_zero_pct [R] coordinator 2026-10-28 11:2x: once an account's last MEASURED reading is at or under 1%, a blind reading (failed /usage, usage-limit error, ESTIMATE, stale) counts as 0% and triggers the switch: never sit waiting on a meter that cannot read an exhausted account."
+    },
+    "account_end": {
+        "warn_pct": 2,
+        "warn_fast_pct": 3,
+        "emergency_pct": 1,
+        "emergency_max_line": 10,
+        "save_need_min": 10,
+        "burn_window_min": 45,
+        "burn_min_span_min": 10,
+        "stale_min": 20,
+        "poll_min": 0.5,
+        "pause_share": 0.2,
+        "pause_from_pct": 0.5,
+        "pause_max_s": 180,
+        "pause_min_s": 20,
+        "clear_pct": 5,
+        "_owner": "[O] 2026-11-24 11:05 to 11:15 AM PST: 'At 2% no new work is started and \"wrap it up cleanly and safely save your work\" is sent to everyone. At 1% \"emergency: record your state immediately and prepare for termination.\" Give it a beat... don't just kill at 1%. After a brief pause that has <10% chance of reaching 0% account, initiate the switch. Don't bother manually killing everything, it will happen all by itself, and you don't want to be yourself trapped in housekeeping.' Then: 'I agree with your switch when the last live run has ended when <2% remains. Correct, any account that has preserved space well above zero (usually only Steven's) does not need the emergency kill at all. Correct, wait for a reset if it's the last account.'",
+        "_card": "[C] 2026-11-24, How long should the pause at 1% be? -> Sized from the burn rate, with his words: 'that may also initiate the \"no new work / save now\" warning up at 3% as well if the burn is going crazy fast. Scale both 3/2% (initiate saves) warning and the time-constant post 1% based on load. If the reading is believed to be stale, default to safe values. TELL THE PROCESSES these numbers. Estimate how long they have to complete their saves. It may influence their choices.'",
+        "_numbers": "warn_pct, warn_fast_pct, emergency_pct, pause_share (a fifth), pause_from_pct and pause_max_s (3 min) are [O]/[C] above; the rest is [D]. Each number's danger and evidence: design/specs/2026-11-24-account-end/boundary.md LIMITS. lost: a floor account may end a little above 1%, at most 2 points a week; undo: revert the commits of RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN."
     },
     "soft_margin_pct": 2,
     "pull_drain_max_s": 7200,
     "_pull_drain_max_s": "[O] 2026-11-20 about 5:30 AM PST: \"And yes for live runs finish past, absolutely. Actually 0.1% is even ok kept. We just don't want to crash to zero and get stuck. Please make that true everywhere.\" A switch made ABOVE the line (a priority or reset pull, nothing spent) waits while a detached run is live, so the run finishes on its own account and keeps its prompt cache (the switch stops every Claude process; 2026-11-18: 9 resumes after a stop and a switch missed the cache, 4.73M weighted on their first turns). It waits at most this many seconds after the first drain notice. Danger of the bound: a run that never ends keeps every new start waiting and the machine off the account the order wants (steven's window is 48 h). Evidence: 724 detached runs, measured 2026-11-20, ran p50 24 min, p95 122, max 804; 7200 s lets 95 of 100 finish. With no live run the pull switch goes at once. Replaces checkpoint_grace_s (240 s, then SIGTERM). lost: a pull switch can come up to 2 h late; undo: pull_drain_max_s 0 (the switch goes at once, killing live runs).",
-    "_soft_margin_pct": "[C] card 10:20, Overshoot: 'Soft line, then hard stop'. At line + 2%: the allocator gives every seat 0 new helpers, detached_helper.launch starts no new run while the plan drains, and live runs finish (2026-11-20, floors._doc).; lost: a new run waits for the switch; undo: pull_drain_max_s 0 and drain_pct 0).",
+    "_soft_margin_pct": "[C] card 10:20, Overshoot: 'Soft line, then hard stop'. At line + 2%: a notice, publish and finish; a new detached run still starts (no new start comes at the warning line, account_end). lost: nothing is refused at the notice; undo: none needed.",
     "switch_lead_min": 20,
     "_switch_lead_min": "[A] a switch that a reset will cause (system at its reset, steven at his) raises the same soft notice this many minutes before the reset, so work is published before the windows close.",
     "fresh": {

@@ -1229,10 +1229,10 @@ def drain_refusal(now, extra=None, resume_session=None, path=None):
     """-> why a NEW run may not start now, or None. While the switching plan drains an account (its fresh notice reads
     soft with drain true), live runs finish on it and no new run starts there: a switch stops every Claude process, and
     a run started now would be killed by it (design/specs/2026-11-20-account-drain/boundary.md). A continuation of a
-    live run, or a resume of its session, is that run finishing and goes. An unreadable or stale notice refuses
+    live run, or a resume of its session, is that run finishing and goes, unless the account is at its end (the notice's
+    `account_end`: its runs were told to save and end, page design/specs/2026-11-24-account-end/boundary.md). An unreadable or stale notice refuses
     nothing (a dead plan timer must not hold every launch)."""
-    if (extra or {}).get("continued_from") or resume_session:
-        return None
+    carried = bool((extra or {}).get("continued_from") or resume_session)
     p = path or os.path.join(os.environ.get("RM_SWITCH_PLAN_DIR") or "/mnt/d/ClaudeWork/rimmandrake/switching_plan",
                              "notice.json")
     try:
@@ -1243,6 +1243,8 @@ def drain_refusal(now, extra=None, resume_session=None, path=None):
     at = _epoch(n.get("at")) if isinstance(n, dict) else None
     if not (isinstance(n, dict) and n.get("state") == "soft" and n.get("drain") and at is not None
             and now - at <= DRAIN_NOTICE_FRESH_S):
+        return None
+    if carried and not n.get("account_end"):
         return None
     return ("refused: the account %s is draining (switching plan notice since %s): live runs finish on it and no new "
             "run starts until the switch. Launch again after it (`python3 src/RimMandrake/Utils/switching_plan.py "

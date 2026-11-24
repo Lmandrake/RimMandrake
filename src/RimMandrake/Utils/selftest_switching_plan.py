@@ -41,7 +41,7 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
-def R(left, h, src="MEASURED", age=1.0, stale=False):
+def R(left, h, src="MEASURED", age=0.3, stale=False):
     """A read_now record: left % of the week, h hours to the weekly reset."""
     rs = NOW + h * 3600
     return {"source": src, "week_pct_left": left, "week_pct_used": None if left is None else 100 - left,
@@ -49,11 +49,14 @@ def R(left, h, src="MEASURED", age=1.0, stale=False):
             "stale": stale, "age_min": age}
 
 
+ORD = {"rate": 0.067, "stale": False, "age_s": 0, "span_min": 45, "why": ""}     # an ordinary burn
+
+
 def D(meter, live, state=None, gate=True, plan=PLAN, polled=False):
     st = dict(state or {})
     if gate:
         st["gate_passed"] = True
-    return SP.decide(meter, live, NOW, plan, st, markers=st.get("_markers", {}), polled=polled)
+    return SP.decide(meter, live, NOW, plan, st, markers=st.get("_markers", {}), polled=polled, burn=ORD)
 
 
 def manual_switch_cases(calls):
@@ -189,7 +192,7 @@ def manual_switch_cases(calls):
     man = SP.last_switch()
     d = SP.decide({**day, "lukas": R(0, 118)}, "lukas", NOW, plan, {}, {}, manual=man)
     check(d["do"] == "switch" and d["to"] == "steven", f"his account spent: the plan moves on (got {d['do']})")
-    d = SP.decide({**day, "lukas": R(1.5, 118)}, "lukas", NOW, plan, {}, {}, manual=man)
+    d = SP.decide({**day, "lukas": R(2.5, 118)}, "lukas", NOW, plan, {}, {}, manual=man, burn=ORD)
     check(d["do"] == "soft" and d.get("to") is None, f"his account in its soft zone: publish and finish, no switch (got {d['do']})")
     d = SP.decide({"steven": R(37, 100, age=40), "system": R(1, 100), "lukas": R(100, 118)}, "lukas", NOW, plan, {}, {}, manual=man)
     check(d["do"] == "normal", f"a stale other account raises no poll while his switch stands (got {d['do']})")
@@ -225,8 +228,8 @@ def main():
     off = {"steven": R(90, 100)}  # steven 68 h after his reset: outside the 48 h window
     d = D({**off, "system": R(50, 100), "lukas": R(98, 120)}, "system")
     check(d["do"] == "normal" and d.get("to") is None, "system live with headroom, steven out of window: normal")
-    d = D({**off, "system": R(1.5, 100), "lukas": R(98, 120)}, "system")
-    check(d["do"] == "soft", "system at 1.5% (switch-away line 1 + 2): soft line")
+    d = D({**off, "system": R(2.5, 100), "lukas": R(98, 120)}, "system")
+    check(d["do"] == "soft", "system at 2.5% (switch-away line 1 + 2, over its 2% warning line): soft line")
     d = D({**off, "system": R(0, 100), "lukas": R(98, 120)}, "system")
     check(d["do"] == "switch" and d["to"] == "lukas", "system at 0%, lukas has headroom: switch to lukas")
     d = D({**off, "system": R(0.9, 100, age=20), "lukas": R(98, 120)}, "system")
@@ -261,12 +264,12 @@ def main():
     # owner 2026-11-20: never driven to 0% ("0.1% is even ok kept"; the meter reads whole percents): switch away at
     # 1%, wait on 2%, hard stop at 1%; blind meter = 0% (2026-10-28 11:2x)
     check(PLAN["floors"]["switch_away_pct_left"] == 1 and PLAN["floors"]["wait_pct_left"] == 2
-          and PLAN["floors"]["hard_pct_left"] == 1 and PLAN["floors"]["blind_zero_pct"] == 1,
-          f"floors are 1 / 2, hard 1, blind at 1 (got {PLAN['floors']})")
+          and PLAN["account_end"]["emergency_pct"] == 1 and PLAN["floors"]["blind_zero_pct"] == 1,
+          f"floors are 1 / 2, emergency 1, blind at 1 (got {PLAN['floors']})")
     d = D({**off, "system": R(1.5, 100), "lukas": R(98, 120)}, "system")
-    check(d["do"] == "soft", f"1.5% on an account we switch away from at 1%: soft, keep burning (got {d['do']})")
+    check(d["do"] == "switch", f"1.5%, under the 2% warning line with no live run: switch (owner 2026-11-24) (got {d['do']})")
     d = D({**off, "system": R(0.5, 100), "lukas": R(98, 120)}, "system")
-    check(d["do"] == "switch", f"0.5%, under the 1% hard line: switch (got {d['do']})")
+    check(d["do"] == "switch", f"0.5%, under the 1% emergency line: switch (got {d['do']})")
     d = D({**off, "system": R(0, 100), "lukas": R(98, 120)}, "system")
     check(d["do"] == "switch" and d["to"] == "lukas", f"0% reached: switch (got {d})")
     d = D({**off, "system": R(0.8, 100, src="ESTIMATE", age=30), "lukas": R(98, 120)}, "system")
@@ -707,13 +710,13 @@ def main():
     (TMP / "live.txt").write_text("lukas")
     # a hold on a pending switch near the line still publishes the soft brake
     (TMP / "out" / "notice.json").unlink(missing_ok=True)
-    cur11 = {**off, "system": R(50, 30), "lukas": R(2, 60)}   # over lukas's 1% line, in its soft zone
+    cur11 = {**off, "system": R(50, 30), "lukas": R(3, 60)}   # over lukas's 2% warning line, in its soft zone
     kk = SP.switch_key("lukas", "system", cur11["system"])
     SP.write_marker(kk, {"phase": "pending", "at": SP.iso(NOW - 60), "from": "lukas", "to": "system"})
-    SP.check(dry=False, now=NOW, meter_fn=lambda: cur11, poll_fn=lambda: None)
+    SP.check(dry=False, now=NOW, meter_fn=lambda: cur11, poll_fn=lambda: None, burn_fn=lambda *a: ORD)
     (TMP / "out" / "markers" / f"{kk}.json").unlink(missing_ok=True)
     check(SP.read_json(TMP / "out" / "notice.json", {}).get("state") == "soft",
-          "a hold on a pending switch at 2% still publishes the soft brake")
+          "a hold on a pending switch at 3% still publishes the soft brake")
     # HOLD written while arming brakes the act
     calls.write_text("")
     st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)

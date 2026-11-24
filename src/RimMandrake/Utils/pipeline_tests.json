@@ -20,6 +20,8 @@
     "src/RimMandrake/rimflow/scene_size*", "src/RimMandrake/rimflow/selftest_scene_size.py",
     "src/RimMandrake/Utils/small_list.py",
     "src/RimMandrake/rimflow/selftest_walk_small_list.py",
+    "src/RimMandrake/Utils/account_end*.py",
+    "src/RimMandrake/Utils/selftest_account_end.py",
     "src/RimMandrake/rimflow/raid_pause*", "src/RimMandrake/rimflow/selftest_raid_pause.py",
     "src/RimMandrake/rimflow/game_lock.py",
     "src/RimMandrake/rimflow/game_names.py",
@@ -188,6 +190,8 @@
     "src/RimMandrake/rimflow/evidence_gate_corpus.json"
   ],
   "tests": [
+    {"test": "src/RimMandrake/Utils/selftest_account_end.py", "seconds": 2, "inputs": ["src/RimMandrake/Utils/account_end*.py", "src/RimMandrake/rimflow/left_open_continue.py", "design/specs/2026-11-24-account-end/boundary.md"]},
+    {"test": "src/RimMandrake/Utils/selftest_switching_plan_drain.py", "seconds": 2, "inputs": ["src/RimMandrake/Utils/switching_plan.*", "design/specs/2026-11-20-account-drain/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_scene_library.py", "seconds": 0.5, "inputs": ["src/RimMandrake/Utils/scene*", "src/RimMandrake/Utils/scene_contracts/*.md", "design/specs/2026-11-23-scene-library/boundary.md"]},
     {"test": "src/RimMandrake/rimflow/selftest_scene_judge.py", "seconds": 1, "inputs": ["src/RimMandrake/Utils/scene*", "design/specs/2026-11-23-bridge-v2/boundary.md", "design/specs/2026-11-23-scene-judge/boundary.md"]},
     {"test": "src/RimMandrake/Utils/scene_library_mutants.py", "seconds": 11, "inputs": ["src/RimMandrake/Utils/scene*", "src/RimMandrake/Utils/scene_contracts/*.md"]},

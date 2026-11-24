@@ -542,6 +542,12 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
             DH.write_record(rec, root)
             journal({"at": DH.iso(now), "unit": unit, "item": rec.get("item"), "act": "skipped", "why": why}, root)
         return {"unit": unit, "act": "none", "why": why}
+    waits_for = account_end_wait(now)
+    if waits_for:       # its run was told to save and end because the account ends: kick_waiting starts it after
+        rec["continue_waits"] = {"at": now, "why": waits_for[:300]}
+        DH.write_record(rec, root)
+        journal({"at": DH.iso(now), "unit": unit, "item": rec.get("item"), "act": "waits", "why": waits_for[:300]}, root)
+        return {"unit": unit, "act": "none", "why": "waits for the account switch: " + waits_for[:200]}
     rec["continue_claim"] = now
     DH.write_record(rec, root)
     root_brief = rec.get("continue_brief_src") or rec.get("brief_src")
@@ -608,6 +614,35 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
     return {"unit": unit, "act": "refused", "why": str(out)[:300]}
 
 
+def account_end_wait(now):
+    """-> why no continuation may start while the account ends (drain_refusal's text), or None."""
+    return DH.drain_refusal(now, {"continued_from": "-"})
+
+
+def kick_waiting(now=None, root=None, runner=subprocess.run, plan_dir=None):
+    """Start the continuations that waited for the account switch, once the plan has headroom (switching_plan.py calls
+    this after each pass). -> one line."""
+    import stop_resume as SR
+    now = now or time.time()
+    waiting_recs = [r for r in SR.recent_records(root, now) if r.get("continue_waits") and not r.get("continued_by")]
+    if not waiting_recs:
+        return "left_open: none waits"
+    ok, why = SR.headroom(plan_dir, now)
+    if not ok or account_end_wait(now):
+        return "left_open: %d wait (%s)" % (len(waiting_recs), why)
+    said = []
+    for r in waiting_recs:
+        r = DH.read_record(r["unit"], root) or r
+        kept = r.pop("continue_waits")
+        DH.write_record(r, root)
+        line = kick(r, r.get("continue_plan") or {}, runner)
+        if "kicked" not in line or "NOT kicked" in line:    # tried again at the next pass
+            r["continue_waits"] = kept
+            DH.write_record(r, root)
+        said.append(line)
+    return "; ".join(said)
+
+
 def kick_argv(rec):
     """The continuation step as its own unit (--no-block): finish runs inside the run's TimeoutStopSec and the return
     step after it gives the clone back, so the launch (which waits for that return) cannot run inside finish."""
@@ -636,7 +671,7 @@ def kick(rec, p, runner=subprocess.run):
     import control as C     # the one admission point: `pipe off family:left_open_continue` stops every kick
     try:
         r = C.launch_unit(kick_argv(rec), {"family": "left_open_continue", "unit": rec["unit"] + "-continue",
-                                           "item": p.get("target")},
+                                           "item": p.get("target"), "reuse_name": True},
                           runner=runner, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     except Exception as e:  # noqa: BLE001
         return "continue NOT kicked: %s: %s" % (type(e).__name__, e)

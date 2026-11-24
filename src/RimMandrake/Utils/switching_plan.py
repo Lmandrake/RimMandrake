@@ -6,7 +6,7 @@ code: reset times come from the meter each week.
 Each pass:
   target = the owner's fixed priority (10:15: steven after his reset to 50%, then system, then lukas): the first
            account in plan order that is MEASURED, fresh, inside its window (steven: the first 48 h after his
-           reset) and above its line (steven: leave_pct_left; others: the switch-away floor, 0%, while another
+           reset) and above its line (steven: leave_pct_left; others: the switch-away floor, 1%, while another
            account can take over, else the wait floor, 2%). A lower account's budget that expires first is lost.
   target != live  -> arm, `claude-account use <target>`, disarm (once per transition and target week: a marker)
   target == live  -> normal, or SOFT at line + soft_margin (allocator gives 0 new helpers; seats publish and finish),
@@ -26,11 +26,15 @@ cannot tell them from his hand, and leaving a working account alone is the safe 
 
 Live runs finish (owner 2026-11-20: "And yes for live runs finish past, absolutely. Actually 0.1% is even ok kept. We
 just don't want to crash to zero and get stuck."): `claude-account use` and `fleet-stop` stop every Claude process, so
-a switch or a stop that falls due at an account's line WAITS while a detached run is live (the pass reads `soft` with
-`drain`; detached_helper.launch starts no new run then), and goes when the runs end or at the account's hard line
-(hard_line: max(floors.hard_pct_left, line - floors.drain_pct); 1% at least, the lowest line the whole-percent meter can
-see), whichever is first. A switch made above the line (a priority or reset pull) waits the same way, at most
-pull_drain_max_s. Live runs that cannot be read count as live. Page: design/specs/2026-11-20-account-drain/boundary.md.
+a switch or a stop that falls due WAITS while a detached run is live (the pass reads `soft` with `drain`). A switch made
+above the line (a priority or reset pull) waits at most pull_drain_max_s. Live runs that cannot be read count as live.
+
+The end of an account (owner 2026-11-24; account_end.py, page design/specs/2026-11-24-account-end/boundary.md): at the
+warning line (2%, 3% at a fast or unread burn; an account kept above zero: its own line) no new work starts and every
+live run is told to save and end, with the percent, the burn and the minutes it has; the switch goes when the last run
+has ended. At 1% with a run live every run is told to record its state at once, the pass pauses (sized from the burn,
+3 min at most), and the switch goes. An account kept well above zero has no such emergency. While an account ends, the
+pass repeats each minute inside its 5-min beat.
 
 Brake: a file HOLD in the output dir makes every pass passive (the owner's or an agent's brake); it is the only
 gate.
@@ -65,6 +69,9 @@ STALE_PENDING_S = 2400  # arm + use + disarm at 600 s each plus the reads: a pen
 NOTICE_FRESH_S = 20 * 60  # readers (slot_allocator) ignore an older notice: the timer stopped
 DRY = False
 clock = time.time  # a seam: check() re-reads it after the slow poll
+sleep = time.sleep  # a seam: the pause before an emergency switch, and the repeats while an account ends
+sys.path.insert(0, str(HERE))
+import account_end as AE  # noqa: E402
 
 
 # ------------------------------------------------------------------ small helpers
@@ -443,12 +450,6 @@ def marker_lifted(raw: dict, plan: dict, name, m: dict, meter: dict) -> bool:
 
 
 # ------------------------------------------------------------------ the decision (pure)
-def hard_line(plan: dict, line: dict, name):
-    """-> the account's hard line: where a live run stops. Its line less drain_pct, never under hard_pct_left."""
-    fl = plan["floors"]
-    return max(fl["hard_pct_left"], line[name] - fl["drain_pct"])
-
-
 def runs_why(live_runs) -> str:
     if live_runs is None:
         return "the live runs are UNMEASURED (systemd could not be read), so they count as live"
@@ -456,34 +457,51 @@ def runs_why(live_runs) -> str:
 
 
 def drained(d: dict, plan: dict, live_runs) -> dict:
-    """A switch or stop due on a spent account waits while a detached run is live, above the account's hard line:
-    -> the decision as a drain (`soft`, drain true), or d unchanged. live_runs None (unreadable) counts as live."""
+    """A switch or stop due on a spent account waits while a detached run is live: -> the decision as a drain (`soft`,
+    drain and account_end true), or d, `emergency` true when it goes with a run live on an account at 1%. live_runs None
+    (unreadable) counts as live. An account kept well above zero waits for its runs (no emergency), down to 1%."""
     if d.get("do") not in ("switch", "stop") or (d["do"] == "switch" and not d.get("under")):
         return d
     if live_runs is not None and not live_runs:
         return d
-    p, ln = d.get("pct_left"), d.get("line")
-    if p is None or ln is None or "blind meter" in str(d.get("why")):
+    p, ln, cfg = d.get("pct_left"), d.get("line"), plan["account_end"]
+    if p is None or ln is None:
         return d
-    hard = hard_line(plan, {"x": ln}, "x")
-    if p <= hard:
-        return d
-    return {**d, "do": "soft", "drain": True, "drain_of": d["do"], "under": d.get("under"),
-            "why": f"{d['account']} at {p}% is at or under its {ln}% line: the {d['do']} waits while live runs finish "
-                   f"({runs_why(live_runs)}); no new start; it goes when they end or at the {hard}% hard line. Was: "
+    if p <= cfg["emergency_pct"]:
+        return {**d, "emergency": True} if AE.has_emergency(ln, cfg) else d
+    w = d.get("warn_line")
+    if w is None or p > w:      # past its window with budget left: the runs finish as they are, nobody is told to end
+        return {**d, "do": "soft", "drain": True, "drain_of": d["do"],
+                "why": f"{d['account']} at {p}% must be left: the {d['do']} waits while live runs finish "
+                       f"({runs_why(live_runs)}); no new start; it goes when they end. Was: " + str(d.get("why"))}
+    return {**d, "do": "soft", "drain": True, "account_end": True, "drain_of": d["do"],
+            "why": f"{d['account']} at {p}% is at or under its {w}% warning line: the {d['do']} waits while live runs "
+                   f"save and end ({runs_why(live_runs)}); no new start; it goes when they end"
+                   + (f" or at {cfg['emergency_pct']}%" if AE.has_emergency(ln, cfg) else "") + ". Was: "
                    + str(d.get("why"))}
 
 
 def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict, polled: bool = False,
-           manual=None, live_runs=()) -> dict:
+           manual=None, live_runs=(), burn=None) -> dict:
     """-> {do: skip|poll|normal|soft|switch|hold|stop|stopped|start, to, account, line, pct_left, why, poll, drain}
     (the HOLD brake is the caller's: check() and status()). manual: manual_switch(), the switch to respect.
-    live_runs: the live detached runs (None: unreadable); a switch or stop due at the line waits on them (drained)."""
-    return drained(_decide(meter, live, now, plan, state, markers, polled, manual), at(plan, now, meter), live_runs)
+    live_runs: the live detached runs (None: unreadable); a switch or stop due at the line waits on them (drained).
+    burn: account_end.read_burn of the live account; None reads as unknown (the safe warning line)."""
+    return drained(_decide(meter, live, now, plan, state, markers, polled, manual, burn), at(plan, now, meter), live_runs)
+
+
+def warn_at(plan: dict, line: dict, live, burn, state: dict):
+    """The live account's warning line: account_end.warning_line, never under the one that already fired (latched in
+    state["account_end"] until the account changes or resets). None for an account outside the plan."""
+    if live not in line:
+        return None
+    w = AE.warning_line(line[live], burn, plan["account_end"])
+    ep = state.get("account_end") or {}
+    return max(w, ep["warn_line"]) if ep.get("account") == live and ep.get("warn_line") is not None else w
 
 
 def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict, polled: bool = False,
-            manual=None) -> dict:
+            manual=None, burn=None) -> dict:
     if not live:
         return {"do": "skip", "why": "live account unknown (claude-account --json status failed)"}
     raw, plan = plan, at(plan, now, meter)  # the plan in force now: a dated exception, when one stands
@@ -500,19 +518,27 @@ def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dic
     line, elig = lines(meter, plan, now, kept_out)
     lr = meter.get(live) or {}
     pl = left(plan, lr, now)
+    warn = warn_at(plan, line, live, burn, state)
+    spent_at = {**line, live: max(line[live], warn)} if warn is not None else line  # spent at the warning line
+    cfg = plan["account_end"]
+    for n in elig:  # no switch lands on an account that would be warned at once
+        if n != live and elig[n] and AE.has_emergency(line[n], cfg):
+            elig[n] = meter[n]["week_pct_left"] > AE.target_line(line[n], cfg)
+    if warn is not None and pl is not None and pl <= warn:
+        elig[live] = False
     if ((state.get("stopped") or {}).get("account") == live and live in elig and pl is not None
             and pl <= line[live] + plan["soft_margin_pct"]):
         elig[live] = False  # a fleet stopped in its soft zone never restarts there: another account with budget wins
     target = pick(meter, plan, now, elig)
     # a switch the plan did not make stands until the account is spent. Not on a fleet this engine stopped there: the
     # soft-zone rule just above decides that one. Never for an account outside the plan's rules (it has no line).
-    held = bool(manual) and live in line and not is_spent(plan, line, live, lr, now) and (
+    held = bool(manual) and live in line and not is_spent(plan, spent_at, live, lr, now) and (
         (state.get("stopped") or {}).get("account") != live)
     if held:
         target = live
     respected = f"; {manual.get('from')} -> {live} at {manual.get('ts')} was not the plan's: respected" if held else ""
     blind = blind_zero(plan, lr, now)
-    base = {"account": live, "line": line.get(live), "pct_left": left(plan, lr, now), "to": None,
+    base = {"account": live, "line": line.get(live), "pct_left": left(plan, lr, now), "to": None, "warn_line": warn,
             "exception": plan.get("_exception")}
     if plan.get("_exception"):
         base["exception_until"] = plan["_exception_until"]
@@ -533,7 +559,9 @@ def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dic
         p, a = r.get("week_pct_left"), r.get("age_min")
         if n == live and blind:
             continue
-        if p is not None and n in line and p - line[n] <= fr["near_pct"] and (a is None or a > fr["max_age_min"]):
+        # at the end of an account the reading is kept fresher (account_end.poll_min)
+        old = cfg["poll_min"] if n == live and warn is not None and p is not None and p <= warn + 1 else fr["max_age_min"]
+        if p is not None and n in line and p - line[n] <= fr["near_pct"] and (a is None or a > old):
             why(n, f"{n} at {p}% is within {fr['near_pct']} of its {line[n]}% line on a {a}-min-old reading")
     if target is not None and target != live:
         a = (meter.get(target) or {}).get("age_min")
@@ -558,8 +586,8 @@ def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dic
     if why_poll and not polled:
         return {**base, "do": "poll", "poll": True, "why": "; ".join(why_poll)}
     p = left(plan, lr, now)
-    under = is_spent(plan, line, live, lr, now)
-    out = under and not (p is not None and live in line and p <= line[live] and not reset_passed(lr, now))
+    under = is_spent(plan, spent_at, live, lr, now)
+    out = under and not (p is not None and live in line and p <= spent_at[live] and not reset_passed(lr, now))
 
     if target is None:
         st = state.get("stopped") or {}
@@ -568,6 +596,11 @@ def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dic
         if not under:
             return {**base, "do": "soft", "why": f"no account has headroom but {live}'s reading cannot prove its line "
                                                  f"({lr.get('source')}, {p}%): no new helpers, no stop yet"}
+        if not out and p is not None and p > line[live]:
+            # warned, nowhere to go, its own line not reached: nothing new starts, and the windows keep what is left
+            return {**base, "do": "soft", "drain": True, "account_end": True,
+                    "why": f"{live} at {p}% is at its {warn}% warning line and no account has headroom: no new start; "
+                           f"the fleet stops at its {line[live]}% line"}
         return {**base, "do": "stop", "key": stop_key(live, lr, now),
                 "why": f"no account has headroom (outside windows or at lines); {live} at {p}% is spent"
                        + (" (past its window)" if out else "")
@@ -599,7 +632,7 @@ def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dic
             if m.get("phase") == "pending" and age < STALE_PENDING_S and under:
                 return {**base, "do": "stop", "key": stop_key(live, lr, now),
                         "why": f"transition {key} is pending yet live is still {live} at {p}% <= its "
-                               f"{line[live]}% line: stop rather than overshoot"}
+                               f"{spent_at[live]}% line: stop rather than overshoot"}
             if (m.get("phase") == "done" or age < STALE_PENDING_S) and not under:
                 return {**base, "do": "hold", "to": target, "key": key,
                         "why": f"transition {key} already {m.get('phase')}: never repeated; live is still {live} "
@@ -934,12 +967,14 @@ def write_notice(d: dict, now: float) -> None:
     since = (d.get("stopped_at") if state == "stop" else None) or (
         prev.get("since") if prev.get("state") == state and prev.get("since")
         and bool(prev.get("drain")) == bool(d.get("drain")) else iso(now))     # a drain's own start bounds a pull
-    msg = {"soft": ("draining: no new start; live runs finish on this account, then it switches" if d.get("drain")
+    msg = {"soft": ("the account ends: save your work now and publish; no new start" if d.get("account_end") else
+                    "draining: no new start; live runs finish on this account, then it switches" if d.get("drain")
                     else "switch pending: publish and finish; no new helpers"),
            "stop": "hard stop: the fleet is stopped until a reset", "none": ""}[state]
     write_atomic(OUT / "notice.json", {"state": state, "since": since, "at": iso(now), "account": d.get("account"),
                                        "line": d.get("line"), "pct_left": d.get("pct_left"), "message": msg,
                                        "why": d.get("why"), "drain": bool(d.get("drain")) and state == "soft",
+                                       "account_end": bool(d.get("account_end")) and state == "soft",
                                        **({k: d.get(k) or prev.get(k) for k in ("reset_at", "reset_account")}
                                           if state == "stop" else {})})
 
@@ -988,9 +1023,15 @@ def default_runs():
     return live_detached_runs() if OUT == LIVE_OUT else []
 
 
-def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll, runs_fn=None) -> int:
+def default_burn(live, now, cfg):
+    """The live plan dir reads the live series; a test's plan dir reads none (unknown: the safe values)."""
+    return AE.read_burn(live, now, cfg) if OUT == LIVE_OUT else AE.stale_burn("a test's plan reads no series")
+
+
+def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll, runs_fn=None, burn_fn=None, orders=None,
+          passes: int = 1) -> int:
     """One pass under an exclusive non-blocking lock: a pass that finds another running stands down (the markers are
-    not a lock, and two passes could both switch)."""
+    not a lock, and two passes could both switch). `passes` > 1: while an account ends the pass repeats each REPEAT_S."""
     OUT.mkdir(parents=True, exist_ok=True)
     with open(OUT / "check.lock", "a") as lk:
         try:
@@ -998,7 +1039,14 @@ def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll, r
         except OSError:
             log({"do": "skip", "why": "another pass holds check.lock", "acted": False})
             return 0
-        rc = _check(dry, now, meter_fn, poll_fn, runs_fn or default_runs)
+        rc = _check(dry, now, meter_fn, poll_fn, runs_fn or default_runs, burn_fn or default_burn, orders)
+        for _ in range(passes - 1):
+            if dry or not load_state().get("account_end") or load_state().get("stopped") or (OUT / "HOLD").exists():
+                break
+            sleep(REPEAT_S)
+            rc = _check(dry, None, meter_fn, poll_fn, runs_fn or default_runs, burn_fn or default_burn, orders)
+        if not dry and OUT == LIVE_OUT:
+            flush_events()
     if not dry and OUT == LIVE_OUT and not (OUT / "HOLD").exists():
         resume_stopped_runs()
     return rc
@@ -1014,12 +1062,160 @@ def resume_stopped_runs():
         print(stop_resume.kick(plan_dir=str(OUT), acct_log=str(SWITCH_LOG)))
     except Exception as e:  # noqa: BLE001
         print(f"stop_resume did not run: {type(e).__name__}: {e}", file=sys.stderr)
+    try:    # the runs that saved and ended because the account ended
+        import left_open_continue
+        print(left_open_continue.kick_waiting(plan_dir=str(OUT)))
+    except Exception as e:  # noqa: BLE001
+        print(f"left_open_continue did not run: {type(e).__name__}: {e}", file=sys.stderr)
 
 
 ACTS = ("soft", "stop", "stopped", "switch")
+REPEAT_S = 60   # page LIMITS, poll_min: 4 repeats fit inside one 5-min beat
 
 
-def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs) -> int:
+# ------------------------------------------------------------------ the end of an account: its steps
+def default_orders():
+    """The live plan dir orders the live runs; a test's plan dir never does (it hands its own)."""
+    return AE.Orders() if OUT == LIVE_OUT else None
+
+
+def record_step(state: dict, step: str, text: str, now: float) -> None:
+    """One Conductor log line now, and one ledger event owed (flush_events writes it after the pass's acts, so a slow
+    publish never delays an order or a switch). Never raises: a record never stops a step."""
+    state.setdefault("account_end_events", []).append(f"ACCOUNT END {step} at {iso(now)}: {text}")
+    save_state(state)
+    log({"do": "account_end", "step": step, "text": text, "acted": False})
+    if OUT == LIVE_OUT:
+        try:
+            AE.conductor_line(f"{step}: {text}", now)
+        except Exception as e:  # noqa: BLE001
+            print(f"account_end: conductor log not written: {e}", file=sys.stderr)
+
+
+def flush_events() -> None:
+    state = load_state()
+    texts = state.get("account_end_events") or []
+    if not texts:
+        return
+    try:
+        left_over = AE.ledger_events(texts)
+    except Exception as e:  # noqa: BLE001  tried again at the next pass
+        print(f"account_end: ledger events not written: {type(e).__name__}: {e}", file=sys.stderr)
+        return
+    state = load_state()
+    state["account_end_events"] = left_over
+    if not left_over:
+        state.pop("account_end_events")
+    save_state(state)
+
+
+def end_episode(state: dict, d: dict, orders, why: str) -> None:
+    """The account did not end after all (a reset, another account live): its undelivered orders are withdrawn."""
+    ep = state.pop("account_end", None) or {}
+    save_state(state)
+    if ep.get("acts") and orders is not None:
+        n, err = orders.withdraw(ep["acts"], why)
+        log({"do": "account_end", "step": "over", "text": f"{why}; {err or '%s order(s) withdrawn' % n}", "acted": False})
+
+
+def send_orders(state: dict, d: dict, step: str, mode: str, text: str, runs, orders, now, deadline=None):
+    """The order of one step to every live run that has not had it. -> (units ordered now, why not or None)."""
+    ep = state["account_end"]
+    seen = ep.setdefault("ordered", {})
+    store, blind = [], []
+    if orders is not None:
+        try:
+            store = orders.store_runs()
+        except Exception as e:  # noqa: BLE001  said in the step's record; the runs systemd lists are ordered all the same
+            blind = ["the control store could not be read (%s)" % e]
+    units = sorted(set(runs or []) | set(store))
+    todo = [u for u in units if step not in (seen.get(u) or {})]
+    blind += [] if runs is not None else ["systemd could not be read"]
+    if not todo or orders is None:
+        return [], "; ".join(blind) or None
+    act, err = orders.send(todo, mode, text, deadline)
+    if err:
+        return [], "; ".join(blind + ["the orders could NOT be written: " + err])
+    ep.setdefault("acts", []).append(act)
+    for u in todo:
+        seen.setdefault(u, {})[step] = now
+    save_state(state)
+    return todo, "; ".join(blind) or None
+
+
+def facts(d: dict, plan: dict, burn, runs) -> str:
+    b = burn or {}
+    rate = "burn STALE (%s)" % (b.get("why") or "unread") if b.get("stale", True) or b.get("rate") is None else \
+        "burn %.3f%% a minute" % b["rate"]
+    m = AE.minutes_left(d["pct_left"], burn, plan["account_end"]) if d.get("pct_left") is not None else None
+    em = AE.has_emergency(d.get("line"), plan["account_end"])
+    return (f"{d['account']} at {d.get('pct_left')}% (line {d.get('line')}%, warning line {d.get('warn_line')}%), {rate}, "
+            + (("about %s min to the emergency step" % ("?" if m is None else int(m))) if em else "no emergency step on "
+               "this account") + f"; {runs_why(runs)}")
+
+
+def warn_step(state: dict, d: dict, plan: dict, burn, runs, orders, now: float) -> None:
+    """Step 1: every live run is told to save and end; recorded once, a run that appears later gets its order too."""
+    first = (state.get("account_end") or {}).get("account") != d["account"]
+    if first:
+        state["account_end"] = {"account": d["account"], "warn_line": d.get("warn_line"), "warned_at": iso(now)}
+        save_state(state)
+    last = d.get("drain_of") != "switch"
+    text = AE.warn_text(d["account"], d.get("pct_left"), burn, d.get("line"), plan["account_end"], last)
+    sent, err = send_orders(state, d, "warn", "at_easy_spot", text, runs, orders, now)
+    if first:
+        record_step(state, "save warning", facts(d, plan, burn, runs) + f"; ordered: {', '.join(sent) or 'none'}"
+                    + (f"; {err}" if err else ""), now)
+    elif err:
+        log({"do": "account_end", "step": "warn", "text": err, "acted": False})
+
+
+def emergency_step(state: dict, d: dict, plan: dict, burn, runs, runs_fn, orders, now: float) -> bool:
+    """Step 3: the emergency order, then the pause. -> True to go on with the switch, False on a HOLD. A pass that died
+    in the pause finds its start in the state and waits only what is left."""
+    if (state.get("account_end") or {}).get("account") != d["account"]:
+        state["account_end"] = {"account": d["account"], "warn_line": d.get("warn_line"), "warned_at": iso(now)}
+    ep = state["account_end"]
+    em, first = ep.get("emergency"), False
+    if not em:
+        first = True
+        secs = AE.pause_s(burn if "blind meter" not in str(d.get("why")) else AE.stale_burn("the meter is blind"),
+                          plan["account_end"])
+        em = ep["emergency"] = {"at": now, "pause_s": secs}
+        save_state(state)
+    last = d["do"] == "stop"
+    text = AE.emergency_text(d["account"], d.get("pct_left"), burn, em["pause_s"], last)
+    t0 = clock()
+    sent, err = send_orders(state, d, "emergency", "write_now", text, runs, orders, now, em["at"] + em["pause_s"])
+    if first:
+        record_step(state, "emergency", facts(d, plan, burn, runs) + f"; pause {em['pause_s']} s; ordered: "
+                    f"{', '.join(sent) or 'none'}" + (f"; {err}" if err else ""), now)
+    while True:
+        left_s = em["at"] + em["pause_s"] - (now + clock() - t0)
+        if left_s <= 0:
+            break
+        try:
+            still_live = runs_fn()
+        except Exception:  # noqa: BLE001  unreadable counts as live
+            still_live = None
+        if still_live is not None and not still_live:
+            break       # the last run ended: nothing is left to wait for
+        sleep(min(5, left_s))
+        if (OUT / "HOLD").exists():
+            break
+    return not (OUT / "HOLD").exists()
+
+
+def saved_lines(state: dict, orders) -> str:
+    """What each ordered run had saved, read before the switch stops it."""
+    ep = state.get("account_end") or {}
+    got = ep.get("ordered") or {}
+    if not got or orders is None:
+        return "no run was ordered"
+    return "; ".join("%s: %s" % (u, orders.saved(u, min(v.values()))) for u, v in sorted(got.items()))
+
+
+def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs, burn_fn=default_burn, orders=None) -> int:
     global DRY
     DRY = dry
     t0 = clock()
@@ -1043,14 +1239,24 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs) -> int:
         runs = runs_fn()
     except Exception:  # noqa: BLE001  unreadable runs count as live
         runs = None
-    d = decide(meter, live, now, plan, state, read_markers(), manual=manual_now(), live_runs=runs)
+    orders = orders or default_orders()
+
+    def burn_now():
+        try:
+            return burn_fn(live, now, plan["account_end"])
+        except Exception as e:  # noqa: BLE001  could not read is the safe value, never a slow burn
+            return AE.stale_burn("%s: %s" % (type(e).__name__, e))
+    burn = burn_now()
+    d = decide(meter, live, now, plan, state, read_markers(), manual=manual_now(), live_runs=runs, burn=burn)
     pre = None
     if d.get("poll"):
         last = epoch(state.get("last_poll")) or 0
-        if not dry and now - last >= plan["fresh"]["max_age_min"] * 60:
+        gap = plan["account_end"]["poll_min"] if d.get("warn_line") is not None and d.get("pct_left") is not None and (
+            d["pct_left"] <= d["warn_line"] + 1) else plan["fresh"]["max_age_min"]
+        if not dry and now - last >= gap * 60 - 5:  # 5 s: a repeat each 60 s must not miss its poll by the pass's own time
             # the poll can take minutes: if this pass would brake on what it already sees, the brake goes out first
             pre = decide(meter, live, now, plan, state, read_markers(), polled=True, manual=manual_now(),
-                         live_runs=runs)
+                         live_runs=runs, burn=burn)
             if ((pre["do"] == "stop" and (state.get("stopped") or {}).get("account") != live)
                     or (pre["do"] == "switch" and pre.get("under"))):
                 d = pre  # a brake on a spent account is never deferred behind a slow poll (agents keep burning)
@@ -1065,11 +1271,13 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs) -> int:
                 meter = meter_fn()
                 t_now = clock()
                 now += t_now - t1  # time moved during the poll: windows and resets are judged at the new time
+                burn = burn_now()
                 if (OUT / "HOLD").exists():
                     log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared during the poll"})
                     return 0
         if d is not pre:
-            d = decide(meter, live, now, plan, state, read_markers(), polled=True, manual=manual_now(), live_runs=runs)
+            d = decide(meter, live, now, plan, state, read_markers(), polled=True, manual=manual_now(), live_runs=runs,
+                       burn=burn)
     d.update(next_refill(meter, plan, now))
     if state.get("stopped"):
         d["stopped_at"] = state["stopped"].get("at")
@@ -1082,6 +1290,23 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs) -> int:
         log({**rec, "acted": False})
         return 0
     rc = 0
+    ep = state.get("account_end") or {}
+    if ep and ep.get("account") != live:
+        end_episode(state, d, orders, f"{live} is live now")
+    elif ep and d.get("pct_left") is not None and d["pct_left"] > (ep.get("warn_line") or 0) + plan["account_end"]["clear_pct"]:
+        end_episode(state, d, orders, f"{live} reads {d['pct_left']}%: it has reset")
+    if d.get("account_end") and d["do"] == "soft":
+        write_notice(d, now)    # first: nothing new starts while the orders go out
+        warn_step(state, d, plan, burn, runs, orders, now)
+    if d.get("emergency") and (state.get("stopped") or {}).get("account") != live:
+        write_notice({**d, "do": "soft", "drain": True, "account_end": True}, now)
+        t_e = clock()
+        if not emergency_step(state, d, plan, burn, runs, runs_fn, orders, now):
+            log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared in the pause"})
+            return 0
+        now += clock() - t_e
+        t_now = clock()
+    saved = saved_lines(state, orders) if d["do"] in ("switch", "stop") and state.get("account_end") else None
     t2 = clock()
     brake = {}
 
@@ -1096,7 +1321,7 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs) -> int:
             return False
         m2, n2 = meter_fn(), now + clock() - t2
         d2 = decide(m2, live, n2, plan, state, mk, polled=True, manual=manual_switch(last_switch(), mk, live),
-                    live_runs=runs)
+                    live_runs=runs, burn=burn)
         d2.update(next_refill(m2, plan, n2))
         same = d2["do"] == d["do"] and d2.get("to") == d.get("to")
         if same and d2.get("under"):  # exhaustion seen on the recheck latches into the marker
@@ -1141,6 +1366,11 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs) -> int:
             state.pop("stopped", None)
             save_state(state)
             write_notice({**d, "do": "normal"}, now)
+            if saved is not None:
+                record_step(state, "switch", f"{live} -> {d['to']}; {facts(d, plan, burn, runs)}; before the switch: "
+                            f"{saved}", now + clock() - t2)
+                state.pop("account_end", None)
+                save_state(state)
         rec["result"], rc = res, 0 if ok else 1
         if not ok and not lapsed and d.get("under") and (state.get("stopped") or {}).get("account") != live:
             # a failed switch off a spent account never leaves it burning: stop now, retry the switch from the stop
@@ -1155,6 +1385,9 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs) -> int:
             write_notice(brake, now)
             if braked:
                 record_stop(state, brake, now + clock() - t2)
+                if saved is not None:
+                    record_step(state, "stop in place of the switch", f"{facts(d, plan, burn, runs)}; before the stop: "
+                                f"{saved}", now + clock() - t2)
             rc = 0 if braked else 1
     elif d["do"] == "stop":
         write_notice(d, now)
@@ -1162,6 +1395,11 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs) -> int:
         rec["result"], rc = res, 0 if (res.get("fleet-stop") or (1,))[0] == 0 else 1
         if not rc:  # recorded only once the fleet is stopped: a pass that died mid-call retries the stop
             record_stop(state, d, now + clock() - t2)
+            if saved is not None:
+                record_step(state, "stop, no account has headroom", f"{facts(d, plan, burn, runs)}; before the stop: {saved}",
+                            now + clock() - t2)
+                state.pop("account_end", None)
+                save_state(state)
     elif d["do"] == "start":
         res = armed_call(st, ["fleet-start"], still)
         if (res.get("fleet-start") or (1,))[0] == 0:
@@ -1189,8 +1427,9 @@ def status(rate=None, model=None) -> int:
     live = switcher_status().get("live")
     hold = (OUT / "HOLD").exists()
     mk = read_markers()
+    burn = default_burn(live, now, plan["account_end"])
     d = decide(meter, live, now, plan, state, mk, polled=True, manual=manual_switch(last_switch(), mk, live),
-               live_runs=default_runs())
+               live_runs=default_runs(), burn=burn)
     pl = pool(meter, now, plan, live)
     rate = rate if rate is not None else pl.get("rate_pct_h")
     print(json.dumps({"live": live, "hold": hold, "level_model": model or plan.get("level_model"),
@@ -1198,6 +1437,9 @@ def status(rate=None, model=None) -> int:
                                      "model_weeks_left": r.get("model_weeks_left")} for n, r in meter.items()},
                       "next_pass": {"do": "passive", "why": f"{OUT / 'HOLD'} present",
                                                                 "would_do": d} if hold else d,
+                      "account_end": {"burn": burn, "warn_line": d.get("warn_line"),
+                                             "pause_s": AE.pause_s(burn, plan["account_end"]),
+                                             "episode": state.get("account_end")},
                       "pool": pl, "notice": read_json(OUT / "notice.json"), "stopped": state.get("stopped")},
                      indent=1, sort_keys=True))
     print(f"\nThe week ahead at {rate} %/h (the engine's own pick run forward on the meter's reset times; "
@@ -1220,7 +1462,7 @@ def main(argv=None) -> int:
                    "lower of all-models and its own weekly limit); acts on nothing")
     a = ap.parse_args(argv)
     if a.cmd == "check":
-        return check(dry=a.dry_run)
+        return check(dry=a.dry_run, passes=5)
     return status(a.rate, a.model)
 
 

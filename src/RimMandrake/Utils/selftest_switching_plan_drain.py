@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""selftest: an account drains at its soft line; only its hard line stops live runs
+"""selftest: a switch or a stop that falls due waits for live runs (how an account ends: selftest_account_end.py)
 (RIMMANDRAKE_LAUNCH_SIX_CONTEXT_KEEPING_CHANGES_FROM_THE_SCAN, report change 3; page
 design/specs/2026-11-20-account-drain/boundary.md). Planted meter readings, a fake switcher and scratch dirs only: it
 never reads the live meter, the live runs or the real switcher.
@@ -43,8 +43,11 @@ def R(left, h, src="MEASURED", age=1.0):
 OFF = {"steven": R(90, 100)}     # steven outside his 48 h window: the plan never goes to him
 
 
-def D(meter, live, runs=(), plan=PLAN, state=None):
-    return SP.decide(meter, live, NOW, plan, dict(state or {}), markers={}, polled=True, live_runs=runs)
+ORD = {"rate": 0.067, "stale": False, "age_s": 0, "span_min": 45, "why": ""}     # an ordinary burn
+
+
+def D(meter, live, runs=(), plan=PLAN, state=None, burn=ORD):
+    return SP.decide(meter, live, NOW, plan, dict(state or {}), markers={}, polled=True, live_runs=runs, burn=burn)
 
 
 RUN = ["rm-detached-bench-rimmandrake-some-builder-1795180000"]
@@ -53,26 +56,15 @@ RUN = ["rm-detached-bench-rimmandrake-some-builder-1795180000"]
 def t_a_spent_account_drains_while_runs_live():
     # system, standing: line 1 (switch-away), soft 3, hard 1. lukas has budget. steven: line 52, hard 50.
     d = D({"steven": R(51, 150), "system": R(40, 100), "lukas": R(98, 120)}, "steven", RUN)
-    check("steven at 51% (under 52, over its 50 hard line) with a live run: no switch",
+    check("steven at 51% (under 52) with a live run: no switch",
           d["do"] == "soft" and d.get("drain") is True, d)
-    check("the drain names the run and the hard line", RUN[0] in d["why"] and "50" in d["why"], d.get("why"))
+    check("the drain names the run and the warning line", RUN[0] in d["why"] and "52" in d["why"], d.get("why"))
     check("the drain still names where the switch goes", d.get("to") == "system", d)
     # the last account (no target): a stop is due at its line, and it drains too
     plan = dict(PLAN, floors=dict(PLAN["floors"], wait_pct_left=4))
     d = D({**OFF, "system": R(0.5, 100), "lukas": R(3, 120)}, "lukas", RUN, plan=plan)
-    check("the last account under its 4% wait line, over its hard line, with a live run: no stop",
+    check("the last account under its 4% wait line, over 1%, with a live run: no stop",
           d["do"] == "soft" and d.get("drain") is True, d)
-
-
-def t_the_hard_line_stops_every_live_run():
-    d = D({"steven": R(50, 150), "system": R(40, 100), "lukas": R(98, 120)}, "steven", RUN)
-    check("steven at its 50% hard line with a live run: switch", d["do"] == "switch" and d["to"] == "system", d)
-    d = D({**OFF, "system": R(1, 100), "lukas": R(98, 120)}, "system", RUN)
-    check("system at its 1% hard line with a live run: switch to lukas", d["do"] == "switch" and d["to"] == "lukas", d)
-    d = D({**OFF, "system": R(0.5, 100), "lukas": R(1, 120)}, "lukas", RUN)
-    check("the last account at its hard line with a live run: stop", d["do"] == "stop", d)
-    d = D({**OFF, "system": R(0.8, 100, src="ESTIMATE", age=30), "lukas": R(98, 120)}, "system", RUN)
-    check("a blind 0% live account with a live run: switch, no drain", d["do"] == "switch", d)
 
 
 def t_no_live_run_means_no_wait():
@@ -82,32 +74,22 @@ def t_no_live_run_means_no_wait():
     d = D({**OFF, "system": R(0.5, 100), "lukas": R(3, 120)}, "lukas", [], plan=plan)
     check("the last account under its line and no live run: stop at once", d["do"] == "stop", d)
     d = D({"steven": R(53, 150), "system": R(40, 100), "lukas": R(98, 120)}, "steven", RUN)
-    check("steven at 53% (soft zone, over the line): soft, no new starts, nothing stopped", d["do"] == "soft", d)
+    check("steven at 53% (soft zone, over the line): soft, nothing stopped", d["do"] == "soft" and not d.get("drain"), d)
 
 
 def t_unreadable_runs_count_as_live():
     d = D({"steven": R(51, 150), "system": R(40, 100), "lukas": R(98, 120)}, "steven", None)
     check("runs unreadable at 51%: drain, never read as no runs", d["do"] == "soft" and d.get("drain") is True, d)
     check("and the why says UNMEASURED", "UNMEASURED" in d.get("why", ""), d.get("why"))
-    d = D({"steven": R(50, 150), "system": R(40, 100), "lukas": R(98, 120)}, "steven", None)
-    check("runs unreadable at the hard line: switch", d["do"] == "switch", d)
-
-
-def t_the_hard_line_keeps_his_lines():
-    line = {"steven": 52, "system": 1, "lukas": 2}
-    check("steven's hard line is 50", SP.hard_line(PLAN, line, "steven") == 50, SP.hard_line(PLAN, line, "steven"))
-    check("system's hard line is 1", SP.hard_line(PLAN, line, "system") == 1)
-    check("a 2% wait line's hard line is 1, never 0", SP.hard_line(PLAN, line, "lukas") == 1)
-    check("a 0% line is lifted to 1", SP.hard_line(PLAN, {"x": 0}, "x") == 1)
+    d = D({**OFF, "system": R(1, 100), "lukas": R(98, 120)}, "system", None)
+    check("runs unreadable at 1%: the emergency, then the switch", d["do"] == "switch" and d.get("emergency") is True, d)
 
 
 def t_the_floors_never_reach_zero():
     fl = SHIPPED["floors"]
     check("switch-away floor is 1", fl.get("switch_away_pct_left") == 1, fl)
-    check("hard floor is 1", fl.get("hard_pct_left") == 1, fl)
-    check("drain is 2", fl.get("drain_pct") == 2, fl)
-    check("every floor is at least 1", all(fl[k] >= 1 for k in ("switch_away_pct_left", "wait_pct_left",
-                                                                  "hard_pct_left")), fl)
+    check("the emergency line is 1", SHIPPED["account_end"]["emergency_pct"] == 1, SHIPPED["account_end"])
+    check("every floor is at least 1", all(fl[k] >= 1 for k in ("switch_away_pct_left", "wait_pct_left")), fl)
     check("steven's leave line is still 52", SHIPPED["accounts"]["steven"]["leave_pct_left"] == 52)
     check("the order is still steven, system, lukas", SHIPPED["order"] == ["steven", "system", "lukas"])
     check("no exception sets a line under 1", all((a.get("leave_pct_left") or 1) >= 1 for e in SHIPPED["exceptions"]
@@ -206,14 +188,13 @@ def t_a_new_launch_goes_at_the_soft_line():
     p = TMP / "out" / "notice.json"
     p.parent.mkdir(parents=True, exist_ok=True)
     name = "a-new-launch-goes-at-the-soft-line"
-    for left in (3, 2):     # system: line 1, soft 3
-        for runs in ([], RUN):
-            d = D({**OFF, "system": R(left, 100), "lukas": R(98, 120)}, "system", runs)
-            check("%s: system at %s%%, %d live run(s), lukas full: soft, no drain, and no switch that a refusal could wait "
-                  "for" % (name, left, len(runs)), d["do"] == "soft" and not d.get("drain"), d)
-            SP.write_notice(d, NOW)
-            check("%s: a new run starts at %s%% with %d live run(s)" % (name, left, len(runs)),
-                  DH.drain_refusal(NOW, {}, None, path=str(p)) is None, d)
+    for runs in ([], RUN):     # system: line 1, warning line 2 at an ordinary burn, soft 3
+        d = D({**OFF, "system": R(3, 100), "lukas": R(98, 120)}, "system", runs)
+        check("%s: system at 3%%, %d live run(s), lukas full: soft, no drain" % (name, len(runs)),
+              d["do"] == "soft" and not d.get("drain"), d)
+        SP.write_notice(d, NOW)
+        check("%s: a new run starts at 3%% with %d live run(s)" % (name, len(runs)),
+              DH.drain_refusal(NOW, {}, None, path=str(p)) is None, d)
     d = D({**OFF, "system": R(40, 100), "lukas": R(98, 120)}, "system", RUN)
     SP.write_notice({**d, "do": "soft", "drain": True}, NOW)
     check("%s: the same notice as a drain refuses (the probe can see a refusal)" % name,
@@ -221,8 +202,8 @@ def t_a_new_launch_goes_at_the_soft_line():
 
 
 def main():
-    for t in (t_a_spent_account_drains_while_runs_live, t_the_hard_line_stops_every_live_run,
-              t_no_live_run_means_no_wait, t_unreadable_runs_count_as_live, t_the_hard_line_keeps_his_lines,
+    for t in (t_a_spent_account_drains_while_runs_live,
+              t_no_live_run_means_no_wait, t_unreadable_runs_count_as_live,
               t_the_floors_never_reach_zero, t_a_pull_switch_waits_for_live_runs,
               t_a_new_launch_waits_while_the_account_drains, t_a_new_launch_goes_at_the_soft_line):
         try:
