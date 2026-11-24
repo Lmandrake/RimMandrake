@@ -1688,20 +1688,20 @@
    },
    "hash": "b2515b60521492ef",
    "last_run": {
-    "at": "2026-11-23T13:41:01Z",
+    "at": "2026-11-24T18:18:10Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "one_m_pit_open_look    expect recorded got pass      EXPECTED",
+    "out": "one_m_pit_open_look    expect recorded got refuse    ODD",
     "results": [
      {
       "expect": "refuse",
-      "first_noticed": "A huge flat blue-grey square with a thick black border and no detail, which looks like one texture stretched across the whole thing",
+      "first_noticed": "the thick solid black outline boxing in the pool",
       "got": "refuse",
       "id": "brim_pit_open_look",
       "image": "crop_pit6.png",
       "look": "ODD",
       "pass": 1,
-      "where": "Large square blue-grey slab with a black border filling the centre of the view, with two small hooks on its top edge"
+      "where": "the large square pool filling the view: its thick, untextured black border on all four sides (heaviest at the bottom), and the two small curled handrails at the middle of the top edge that are cut off at that border with no ladder below"
      },
      {
       "expect": "refuse",
@@ -1710,7 +1710,7 @@
       "image": "crop_pit6.png",
       "pass": 2,
       "verdict": "NO",
-      "why": "Only two small hook-shaped tops show above the black rim at the north edge; no ladder rails or rungs are drawn across the tan north wall band, and nothing reaches down to the blue water."
+      "why": "Only the tops of the north ladder's two hooks show above the pit's black rim, and the tan north wall face below them is bare down to the water, with no ladder rails or rungs drawn in front of it."
      },
      {
       "expect": "pass",
@@ -1719,17 +1719,17 @@
       "image": "crop_pit3.png",
       "pass": 2,
       "verdict": "YES",
-      "why": "The north ladder is drawn on top of the black rim line and the brown pit-wall strip, and its rails run down until they meet the top edge of the grey-blue water."
+      "why": "At the pit's north edge the ladder's rails and rungs are fully visible over the tan wall face and black rim, with its hooks above the rim, and it runs unbroken down to the top edge of the water."
      },
      {
       "expect": "recorded",
-      "first_noticed": "the ladder leading down into the flat grey square with a forbidden wood stack in it",
-      "got": "pass",
+      "first_noticed": "the big bright log stack sitting on top of the blue-grey surface as if it were solid floor, with its left end covering the pit wall",
+      "got": "refuse",
       "id": "one_m_pit_open_look",
       "image": "crop_pit3.png",
-      "look": "EXPECTED",
+      "look": "ODD",
       "pass": 1,
-      "where": "square grey pit with a ladder on its top edge; forbidden wood stack (39) on the left side inside it"
+      "where": "the stack of 39 forbidden wood logs at the left side of the pit, lying on the flat blue-grey fill and overlapping the pit's left wall"
      }
     ]
    },
@@ -1753,7 +1753,7 @@
     }
    ],
    "reset_at": "2026-11-24T06:50:09Z",
-   "status": "UNTESTED",
+   "status": "CALIBRATED",
    "timeout_s": 1200,
    "was": "CALIBRATED"
   }
