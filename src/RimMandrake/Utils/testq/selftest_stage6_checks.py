@@ -472,7 +472,8 @@ def t_a_visit_row_is_written_once():
     d = os.path.join(root, "design", "concepts", "FlowWorks", "version")
     os.makedirs(d)
     json.dump({"tests": TAB}, open(os.path.join(d, "test_table.json"), "w"))
-    real = VR._rf
+    real, realt = VR._rf, VR.tier_lists
+    VR.tier_lists = lambda: (lambda t: (ID["active_mods"], None))
 
     class M:
         stage, opens = "in_game", 9
@@ -484,7 +485,7 @@ def t_a_visit_row_is_written_once():
         @classmethod
         def ingame_openings(cls, rec):
             return {i: "t" for i in range(cls.opens)}
-    VR._rf = lambda name: M
+    VR._rf = lambda name: M if name == "maturation" else real(name)
     try:
         a = VR.ingest(vrec({"sc_a": "PASS", "sc_b": "FAIL"}), root)
         b = VR.ingest(vrec({"sc_a": "PASS", "sc_b": "FAIL"}), root)
@@ -504,7 +505,7 @@ def t_a_visit_row_is_written_once():
         check(VR.ingest(vrec({"sc_c": "PASS"}), root)["visit_rows"] == 0, n + "a closed visit gets no row")
         check(VR.ingest(vrec({"sc_c": "PASS"}, visit=None), root) is None, n + "a job of no visit writes nothing")
     finally:
-        VR._rf = real
+        VR._rf, VR.tier_lists = real, realt
     src = open(os.path.join(HERE, "ingest.py")).read()
     check("VR.ingest(rec, REPO)" in src and "visit_row_paths(git) if shard_rel" in src, n + "ingest writes and lands them")
     check("visit_*/rows.jsonl merge=union" in open(os.path.join(ROOT, ".gitattributes")).read(), n + "the lane and a driver append to one file")
@@ -537,6 +538,18 @@ def t_could_not_look_never_replaces_a_row():
         x = rows(r)["sc_a"]
         check(x["verdict"] == "COULD NOT LOOK" and LK.spoiled(x) and LK.later({"test": "sc_a", "verdict": "PASS"}, x)["verdict"] == "PASS",
               n + "%s" % label)
+    tiers = lambda t: (["x", "cherry"], None) if t == "flowworks" else (None, "no tier")
+    tiers.others = lambda t: []
+    bad, why = VR.matched(ID, tiers)
+    check(bad is None and "list" in why and VR.matched(dict(ID, active_mods=["X", "cherry"]), tiers)[0]
+          and VR.matched(dict(ID, tier="gone"), tiers)[0] is None and VR.matched(None, tiers)[0] is None,
+          n + "a list that is not its tier's on Archmagi counts nothing (%s)" % why)
+    tiers.others = lambda t: [("ArchSmall", ["x"], None)]
+    check(VR.matched(ID, tiers)[0] == ID, n + "the list as another Archmagi install gives it counts")
+    r = rec(["a"], {"a": "PASS"}, fin=NOW - 100)
+    r["ingested"] = {"visit": {"no_look": "its list is not its tier's"}}
+    w, _, bo = feed({"a": {"tier": "flowworks", "build": "release"}}, [r])
+    check(w == {} and bo["FlowWorks"]["a"] > 0, n + "and it does not drain the check: the feed sends it again after its wait")
     f = rows(vrec({"sc_a": "FAIL"}))["sc_a"]
     check(f["verdict"] == "FAIL" and LK.outcome(f)[0] == LK.UNRESOLVED, n + "a FAIL is UNRESOLVED until someone classes it")
     c = {"job": {"id": "J3", "mod": "FlowWorks", "selector": {"chains": ["z"]}, "visit": 9},

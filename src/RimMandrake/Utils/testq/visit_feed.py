@@ -251,7 +251,8 @@ def waiting_scripts(now, blk, recs):
                 continue
             v = {r.get("row"): r.get("verdict") for r in res.get("rows") or [] if isinstance(r, dict)}
             for k in sel["checks"]:
-                ok = res.get("outcome") == "DONE" and v.get(k) in ("PASS", "FAIL")
+                ok = res.get("outcome") == "DONE" and v.get(k) in ("PASS", "FAIL") and not (
+                    (rec.get("ingested") or {}).get("visit") or {}).get("no_look")     # its rows count nothing
                 ends.setdefault(k, []).append((fin, ok, not ok and FC.of_testq(rec).counts and res.get("outcome") != "DONE"))
         groups = {}
         for k, s in sorted(e["scripts"].items()):

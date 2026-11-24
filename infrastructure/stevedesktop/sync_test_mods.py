@@ -21,6 +21,7 @@ The companion is compared by sha256.
 
     python3 infrastructure/stevedesktop/sync_test_mods.py            # plan: what would go where
     python3 infrastructure/stevedesktop/sync_test_mods.py --apply    # stream each folder over ssh
+    ... --only PACKAGEID --also-mods <Steve2's Mods>                 # one mod, into both Steve games' Mods
 
 Runs on Archmagi WSL. Target: `$STEVE_WSL` (default mandrake@stevedesktop-wsl) and
 `$STEVE_GAME_WSL` (default /mnt/d/SteamLibrary/steamapps/common/RimWorld). A folder already
@@ -69,6 +70,15 @@ def wanted(path=None):
             continue
         out.append(i)
     return out
+
+
+def sync_ids():
+    """The MINIMAL list's third-party ids and the one mod that modset_builder adds to every tier where it is installed
+    (CHERRY): without it SteveDesktop built each tier one mod short of Archmagi's, so the build match counted no row made
+    there (2026-11-24)."""
+    import modset_builder
+    ids = wanted()
+    return ids + [i for i in (modset_builder.CHERRY,) if i not in ids]
 
 
 def locate(ids):
@@ -253,17 +263,20 @@ def main():
     ap.add_argument("--sites", action="store_true", help="only the registered test-site saves (test_site_saves.json)")
     ap.add_argument("--also-saves", action="append", default=[], help="another Saves folder on SteveDesktop (WSL form) "
                                                                       "that gets the same site saves (Steve2's)")
+    ap.add_argument("--only", action="append", default=[], metavar="PACKAGEID", help="only these mods; no companion")
+    ap.add_argument("--also-mods", action="append", default=[], help="another Mods folder on SteveDesktop (WSL form) that "
+                                                                     "gets the same mods (Steve2's)")
     a = ap.parse_args()
     if a.sites:
         rc = site_saves(a.apply, extra=a.also_saves)
         if not a.apply:
             print("\nplan only; --apply copies")
         return rc
-    ids = wanted()
+    ids = [i.lower() for i in a.only] or sync_ids()
     found = locate(ids)
     missing = [i for i in ids if i not in found]
-    jobs = [(found[i], GAME + "/Mods", os.path.basename(found[i]), i) for i in ids if i in found]
-    bad = companion(a.apply)
+    jobs = [(found[i], d, os.path.basename(found[i]), i) for d in [GAME + "/Mods"] + a.also_mods for i in ids if i in found]
+    bad = 0 if a.only else companion(a.apply)
     for src, parent, name, label in jobs:
         if not os.path.isdir(src):          # an absent source tallies (0, 0) and would read 'same' as an absent target
             print("MISSING %s: source folder %s does not exist here" % (label, src))

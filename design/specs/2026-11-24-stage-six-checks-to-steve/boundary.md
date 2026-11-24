@@ -55,7 +55,8 @@ Each promise has a test of its name in `src/RimMandrake/Utils/testq/selftest_sta
   visit that ended without its exit block, so the Dispatch step paused FlowWorks. A row of another writer, a torn row or
   another file beside them is a record, as before.
 - **could-not-look-never-replaces-a-row.** An UNMEASURED row, a job that did not end DONE, and a row with no readable
-  identity read COULD NOT LOOK. A FAIL reads UNRESOLVED until someone classes it.
+  identity read COULD NOT LOOK. So does a row whose mod list is not its tier's list on an Archmagi install: the feed then
+  sends the check again after its wait. A FAIL reads UNRESOLVED until someone classes it.
 - **the-proof-build-never-touches-the-clone.** A job with `proof_build` builds with `-p:RmProofs=true` into the Windows
   stage, copies the DLL into the game only, and leaves the clone's `Assemblies` byte-identical. A build that fails is
   INVALID/DEPLOY, never a verdict. The next job without it deploys the release DLL again.

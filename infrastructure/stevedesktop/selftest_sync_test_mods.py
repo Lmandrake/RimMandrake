@@ -43,6 +43,9 @@ try:
     w = S.wanted(cfg)
     check("wanted: activeMods third-party ids, lowercased, once", w == ["brrainz.harmony", "some.mod"], w)
     check("sanity: the real MINIMAL list yields ids", len(S.wanted()) > 0, S.wanted())
+    import modset_builder as MB
+    check("sync_ids: the mod that every tier loads is sent too (a tier without it is another list: 2026-11-24)",
+          MB.CHERRY in S.sync_ids() and len(S.sync_ids()) == len(set(S.sync_ids())), S.sync_ids())
 
     # remote_tally(): a failed or garbled ssh is None, not (0, 0)
     S.SSH = stub("print('3 40')")
@@ -71,6 +74,7 @@ try:
         f.write("abc")
     S.ARTIFACT = os.path.join(tmp, "artifact")                 # no build here yet
     S.wanted = lambda path=None: ["some.mod"]
+    S.sync_ids = S.wanted
     S.locate = lambda ids: {"some.mod": mod}
     pushed = []
     S.push = lambda *a: pushed.append(a)

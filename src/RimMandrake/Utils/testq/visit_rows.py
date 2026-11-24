@@ -126,6 +126,31 @@ def identity_of(res):
     return d if isinstance(d, dict) and not d.get("why") else None
 
 
+def tier_lists():
+    """-> build_match's tier lister on this machine (one scan of the installed mods)."""
+    return _rf("build_match").tier_lister({})
+
+
+def matched(identity, tiers):
+    """-> (identity, None) when its mod list is its tier's as an Archmagi install builds it, else (None, why). The build
+    match counts no other list, and a later row that cannot count would hide an earlier one that does (2026-11-24:
+    SteveDesktop lacked Cherry Picker, so each tier there was one mod short)."""
+    if not identity:
+        return None, "no identity could be read"
+    BM = _rf("build_match")
+    if not identity.get("tier"):
+        return None, "the run names no tier"
+    ref, why = tiers(identity["tier"])
+    if ref is None:
+        return None, "tier %s gives no list here: %s" % (identity["tier"], why)
+    if BM.same_list(identity.get("active_mods"), ref):
+        return identity, None
+    game, said = BM.other_tier_match(identity["tier"], identity.get("active_mods"), tiers)
+    if game:
+        return identity, None
+    return None, "its mod list is not tier %s's: %s%s" % (identity["tier"], BM._first_diff(identity.get("active_mods"), ref), said)
+
+
 def ingest(rec, root):
     job, res = rec.get("job") or {}, rec.get("result") or {}
     if job.get("visit") is None:
@@ -137,7 +162,14 @@ def ingest(rec, root):
     p = os.path.join(root, "design", "concepts", mod, "version", "test_table.json")
     with open(p, encoding="utf-8") as f:
         table = {k: t for k, t in (json.load(f).get("tests") or {}).items() if isinstance(t, dict) and str(t.get("stage")) == "6"}
-    rows = rows_of(rec, table, identity_of(res))
+    ident, why = identity_of(res), None
+    if ident:
+        ident, why = matched(ident, tier_lists())
+    rows = rows_of(rec, table, ident)
+    if why:
+        for r in rows:
+            if r["verdict"] == NO_LOOK:
+                r["detail"] = ("%s | %s" % (why, r["detail"]))[:1500]
     rel = "design/concepts/%s/version/in_game/visit_%d" % (mod, n)
-    return {"visit_rows": write(os.path.join(root, rel), rows) if rows else 0, "path": rel + "/rows.jsonl",
+    return {"visit_rows": write(os.path.join(root, rel), rows) if rows else 0, "path": rel + "/rows.jsonl", "no_look": why,
             "verdicts": {v: sum(1 for r in rows if r["verdict"] == v) for v in sorted({r["verdict"] for r in rows})}}
