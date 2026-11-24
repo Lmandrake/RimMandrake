@@ -1,0 +1,17 @@
+now pyrelandsEnabled False
+now burnLineEnabled True
+now windCarriesFireEnabled True
+now fireHawkSpreadEnabled True
+now fireClockEnabled True
+now furnaceThermalEnabled True
+now gate False shell True wind=121.0;carries=False;carried=0;fires=0
+True
+{"success": true, "action": "set", "field": "enabled", "fieldKind": "instance", "key": "Pyrelands", "presentBefore": true, "valueBefore": "True", "valueAfter": "True", "typeIdentity": {"resolvedVia": "GenTypes(cached)", "copiesInAppDomain": 1, "assembly": "RimMandrake.Biomes"}, "ticksGame": 429001, 
+after pyrelandsEnabled True
+after burnLineEnabled True
+after windCarriesFireEnabled True
+after fireHawkSpreadEnabled True
+after fireClockEnabled True
+after furnaceThermalEnabled True
+after gate True shell True wind=121.0;carries=True;carried=0;fires=0
+[bridge split] 2.8 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.9 / outside calls 1.9 s

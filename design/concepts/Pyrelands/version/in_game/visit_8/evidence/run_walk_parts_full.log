@@ -1,0 +1,9 @@
+[modcheck] chain walk_season START 09:59:55Z
+[pyre-note] walk: ailments the colonists were generated with, taken off: {"Human77510": ["VTE_HigherBleedingRate", "HeartArteryBlockage@Heart", "GR_FeatherdustAddiction", "Heatstroke"], "Human77514": ["DBHDehydration", "Heatstroke"], "Human77517": ["Heatstroke"]}
+[pyre-note] colony vitals after walk_reload_keeps_the_state: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 01:59:57 walk_reload_keeps_the_state UNMEASURED UNMEASURED: PYRE_WALK_PARTS_ONLY=1: the two weeks are skipped in a planted run of the walk's later parts
+[pyre-note] colony vitals after walk_second_pass_and_switches: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 01:59:58 walk_second_pass_and_switches UNMEASURED UNMEASURED: PYRE_WALK_PARTS_ONLY=1: the two weeks are skipped in a planted run of the walk's later parts
+[pyre-note] heat guard (every 6000 ticks, row walk_gate_off_then_on): {"cleared": [["Human77510", 0.039], ["Human77514", 0.039], ["Human77517", 0.039]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row walk_gate_off_then_on): {"cleared": [["Human77510", 0.0379], ["Human77514", 0.0376], ["Human77517", 0.036]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row walk_gate_off_then_on): {"cleared": [["Human77510", 0.0375], ["Human77514", 0.0379], ["Human77517", 0.0375]], "failed": [], "read": true}

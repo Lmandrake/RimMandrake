@@ -64,3 +64,55 @@ START tier9d 2026-11-23 23:14:20
 DONE animal_census reload_rc=0 rc=1 26s 23:14:46
 DONE burn_line@burn_line3 reload_rc=0 rc=1 1492s 23:39:38
 END tier9d 2026-11-23 23:39:38
+DONE walk_season@walk_season (full list) reload_rc=0 rc=1 799s 00:32:07
+DONE walk_season@walk_season2 (full list) reload_rc=0 rc=1 4830s 01:58:29
+STOPPED walk_parts_full 02:00:55: the owner ruled sc_walk out (077f18f8b0); three small scenes replace it
+START full1 2026-11-24 02:01:08
+DONE full_list_smoke reload_rc=0 rc=1 108s 02:02:56
+DONE PYRE_PLANT_SMOKE=no_front:full_list_smoke@smoke_planted_no_front reload_rc=0 rc=1 109s 02:04:45
+DONE PYRE_PLANT_SMOKE=log_error:full_list_smoke@smoke_planted_log_error reload_rc=0 rc=1 117s 02:06:42
+END full1 2026-11-24 02:06:42
+START full2 2026-11-24 02:07:03
+DONE script:src/RimMandrake/Pyrelands/wind_burn_live.py@wind_burn_full reload_rc=0 rc=1 57s 02:08:00
+END full2 2026-11-24 02:08:00
+START full3 2026-11-24 02:08:35
+DONE full_list_smoke@full_list_smoke2 reload_rc=0 rc=1 88s 02:10:03
+END full3 2026-11-24 02:10:03
+START full4 2026-11-24 02:10:15
+DONE script:design/concepts/Pyrelands/version/in_game/visit_8/scripts/walk_save.py reload_rc=0 rc=0 69s 02:11:25
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_8/scripts/walk_closeups.py reload_rc=skipped rc=1 1s 02:11:26
+END full4 2026-11-24 02:11:26
+START full5 2026-11-24 02:11:42
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_8/scripts/walk_closeups.py reload_rc=skipped rc=0 14s 02:11:56
+END full5 2026-11-24 02:11:56
+START full6 2026-11-24 02:12:38
+DONE script:design/concepts/Pyrelands/version/in_game/visit_8/scripts/walk_save.py reload_rc=0 rc=0 72s 02:13:50
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_8/scripts/walk_closeups.py reload_rc=skipped rc=0 12s 02:14:02
+END full6 2026-11-24 02:14:02
+START full7 2026-11-24 02:18:23
+DONE script:design/concepts/Pyrelands/version/in_game/visit_8/scripts/walk_save.py reload_rc=0 rc=0 82s 02:19:45
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_8/scripts/walk_closeups.py reload_rc=skipped rc=0 16s 02:20:01
+END full7 2026-11-24 02:20:01
+START tier10 2026-11-24 02:24:08
+DONE reload_keeps_the_burn reload_rc=0 rc=1 123s 02:26:11
+DONE fire_sense reload_rc=0 rc=1 215s 02:29:46
+DONE firehawk_first_sighting_letter@letter2 reload_rc=0 rc=1 83s 02:31:09
+DONE PYRE_PLANT_RELOAD=front_lost:reload_keeps_the_burn@reload_planted_front_lost reload_rc=0 rc=1 137s 02:33:26
+DONE PYRE_PLANT_RELOAD=old_save:reload_keeps_the_burn@reload_planted_old_save reload_rc=0 rc=1 112s 02:35:18
+END tier10 2026-11-24 02:35:18
+START tier11 2026-11-24 02:35:20
+DONE fire_sense@fire_sense2 reload_rc=0 rc=1 162s 02:38:02
+DONE PYRE_PLANT_EAT_FIRST_GATE_OFF=1:fire_sense@fire_sense_planted reload_rc=0 rc=1 145s 02:40:27
+DONE firehawk_first_sighting_letter@letter3 reload_rc=0 rc=1 52s 02:41:19
+END tier11 2026-11-24 02:41:19
+START full8 2026-11-24 03:28:59
+DONE full_list_smoke@full_list_smoke3 reload_rc=0 rc=1 103s 03:30:42
+END full8 2026-11-24 03:30:42
+START full9 2026-11-24 03:31:12
+DONE full_list_smoke@full_list_smoke4 reload_rc=0 rc=1 85s 03:32:37
+DONE PYRE_PLANT_SMOKE=no_front:full_list_smoke@smoke4_planted_no_front reload_rc=0 rc=1 93s 03:34:10
+DONE PYRE_PLANT_SMOKE=log_error:full_list_smoke@smoke4_planted_log_error reload_rc=0 rc=1 82s 03:35:32
+END full9 2026-11-24 03:35:32
+START tier12 2026-11-24 03:40:07
+DONE reload_keeps_the_burn@reload2 reload_rc=0 rc=1 90s 03:41:37
+END tier12 2026-11-24 03:41:37

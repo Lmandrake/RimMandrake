@@ -9,7 +9,7 @@ sys.path.insert(0, r"src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 SAVES = os.path.join(os.environ["RM_GAME_USERDATA"], "Saves") if os.environ.get("RM_GAME_USERDATA") else \
     os.path.expandvars(r"%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves")
-NAME = sys.argv[1] if len(sys.argv) > 1 else "PYRELANDS_0.1.0_VISIT8_WALK"   # his full list: ..._VISIT8_WALK_FULL
+NAME = sys.argv[1] if len(sys.argv) > 1 else "PYRELANDS_0.1.0_VISIT8_WALK_FULL"   # his full list: ..._VISIT8_WALK_FULL
 SHOTS = r"Transient\pv8\shots"
 TAG = "pyre_visit8"
 h, p, tk = resolve_endpoint()
@@ -54,6 +54,8 @@ with RimBridge(h, p, tk) as rb:
     # 4. ember grass under a constructed roof (it withers within about a day), beside an open patch
     call("jawa/set_plants", ops="RM_FE_Plant_EmberGrass:%d,%d,5,5;RM_FE_Plant_EmberGrass:%d,%d,5,5" % (rx + 3, rz + 5, rx + 12, rz + 5), growth=1.0)
     call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,5,5" % (rx + 3, rz + 5))
+    # a fire lit on a paused map is not drawn before its first ticks (visit 8): the save must show the burn front at once
+    out["advance"] = (call("jawa/safe_advance", ticks=600) or {}).get("message")
     # 5. the map's own charred ruin
     # limit 2000 truncated on this grass-carpeted map and returned one charred wall (2026-11-21); read past it
     ex = call("jawa/export_things", rect="0,0,250,250", includePawns=False, includeItems=False, limit=100000)
@@ -97,4 +99,4 @@ with RimBridge(h, p, tk) as rb:
                    "changed": [f for f in before if f in after and after[f] != before[f]],
                    "bytes": os.path.getsize(os.path.join(SAVES, NAME + ".rws")) if os.path.exists(os.path.join(SAVES, NAME + ".rws")) else None}
 print(json.dumps(out, indent=1))
-json.dump(out, open(r"design\concepts\Pyrelands\version\in_game\visit_7\evidence\walk_save%s.json" % ("_full" if NAME.endswith("_FULL") else ""), "w"), indent=1)
+json.dump(out, open(r"design\concepts\Pyrelands\version\in_game\visit_8\evidence\walk_save.json", "w"), indent=1)

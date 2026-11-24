@@ -1,0 +1,9 @@
+Human108919 125 125 [["Mood", 0.45], ["Food", 0.96], ["Rest", 0.98], ["Hygiene", 0.75], ["Joy", 0.58], ["Beauty", 0.45], ["Comfort", 0.48], ["Outdoors", 0.99], ["DrugDesire", 0.5], ["RoomSize", 0.0], ["AM_TeaNeed", 0.49], ["AM_CoffeeNeed", 0.49], ["Bladder", 0.98], ["DBHThirst", 0.82], ["VME_Desserts", 0.49], ["VME_Anonymity", 0.49], ["VME_Corruption", 0.5], ["SEX_Intimacy", 0.36], ["RM_Thirst", 0.78]]
+    null
+Human108922 115 118 [["Mood", 0.45], ["Food", 0.6], ["Rest", 0.98], ["Hygiene", 0.5], ["Joy", 0.66], ["Beauty", 0.45], ["Comfort", 0.48], ["Outdoors", 1.0], ["DrugDesire", 0.5], ["RoomSize", 1.0], ["AM_TeaNeed", 0.49], ["AM_CoffeeNeed", 0.49], ["Bladder", 0.98], ["DBHThirst", 0.82], ["VME_Desserts", 0.49], ["VME_Anonymity", 0.49], ["VME_Corruption", 0.5], ["SEX_Intimacy", 0.53], ["RM_Thirst", 0.77]]
+    null
+Human108925 118 117 [["Mood", 0.45], ["Food", 0.96], ["Rest", 0.98], ["Hygiene", 0.67], ["Joy", 0.79], ["Beauty", 0.45], ["Comfort", 0.48], ["Outdoors", 1.0], ["DrugDesire", 0.5], ["RoomSize", 1.0], ["AM_TeaNeed", 0.49], ["AM_CoffeeNeed", 0.49], ["Bladder", 0.98], ["DBHThirst", 0.83], ["VME_Desserts", 0.49], ["VME_Anonymity", 0.49], ["VME_Corruption", 0.5], ["SEX_Intimacy", 0.49], ["RM_Thirst", 0.77]]
+    null
+[(('RSW_Zeer', None), 9), (('RM_Ashwallow', None), 8), (('RSW_Gizka', None), 5), (('RM_FireHawk', None), 5), (('Colonist', 'PlayerColony'), 3)]
+{}
+[bridge split] 42.6 s wall: load 0.0 / ticks 7.2 / reads 12.3 / other 0.9 / outside calls 22.3 s

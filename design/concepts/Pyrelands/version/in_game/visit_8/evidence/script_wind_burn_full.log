@@ -1,0 +1,36 @@
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\Utils\modcheck\save_uncompress.py", line 190, in expand_fresh
+    new, census, stacks = expand_text(text, extra)
+                          ~~~~~~~~~~~^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\Utils\modcheck\save_uncompress.py", line 148, in expand_text
+    names = resolve({v for v in vals if v}, table)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\Utils\modcheck\save_uncompress.py", line 83, in resolve
+    raise ValueError("cannot name the compressed hashes: %s" % "; ".join(bad))
+ValueError: cannot name the compressed hashes: 40222 -> no known compressible def; 64117 -> no known compressible def
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\Pyrelands\wind_burn_live.py", line 218, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\Pyrelands\wind_burn_live.py", line 167, in main
+    with scene_snapshot(lambda tool, **kw: rb.call(tool, kw), "wind_burn_live_pre_") as snap:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\Pyrelands\..\Utils\modcheck\scene_snapshot.py", line 125, in scene_snapshot
+    snap.take(reload=reload)
+    ~~~~~~~~~^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\Pyrelands\..\Utils\modcheck\scene_snapshot.py", line 95, in take
+    self.evidence["save"] = self._do_save(self.name)
+                            ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\Pyrelands\..\Utils\modcheck\scene_snapshot.py", line 85, in _do_save
+    return T.save_site(self.call, name, d, sleep=self.sleep)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\Utils\modcheck\test_site_saves.py", line 379, in save_site
+    expanded = save_uncompress.expand_fresh(path)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT.det\src\RimMandrake\Utils\modcheck\save_uncompress.py", line 193, in expand_fresh
+    raise RuntimeError("%s deleted, not a portable fixture: %s" % (path, e))
+RuntimeError: C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\wind_burn_live_pre_4912f01277bd.rws deleted, not a portable fixture: cannot name the compressed hashes: 40222 -> no known compressible def; 64117 -> no known compressible def
+[bridge split] 7.5 s wall: load 1.4 / ticks 0.0 / reads 0.0 / other 0.7 / outside calls 5.5 s

@@ -16,7 +16,7 @@ for s in SPEC:
     if s.get("script"):
         p = os.path.join(E, s["script"]); txt = open(p, errors="replace").read()
         v = "PASS" if re.search(r"^PASS", txt, re.M) else "FAIL" if re.search(r"^FAIL", txt, re.M) else "UNMEASURED"
-        det = [l for l in txt.splitlines() if l.startswith(("PASS", "FAIL"))][-1]
+        det = ([l for l in txt.splitlines() if l.startswith(("PASS", "FAIL"))] or [""])[-1]
     else:
         p = os.path.join(E, "pv8_%s.json" % lab)
         m = re.search(r"--chains (\S+)", cmd); ch = m.group(1).split(",")
@@ -32,6 +32,8 @@ for s in SPEC:
     for k in ("class", "note", "repair", "mod_fix", "unrepaired", "owner", "unfixed", "filed"):
         if s.get(k):
             row[k] = s[k]
+    if s.get("verdict_is"):   # a probe script with no verdict line: its reading is the row's detail
+        row["verdict"] = s["verdict_is"]
     if row["outcome"] not in ("SUCCESS", "MOD FAILURE"):
         row["verdict"] = "UNMEASURED"
     row.update(ident)
