@@ -1287,7 +1287,7 @@
       "requirement": [
         "repeat_walk"
       ],
-      "cheaper_why": "one patient and one reload; forty colonists at work add contention, which is his walk",
+      "cheaper_why": "one patient and one reload; forty colonists at work add only contention",
       "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
     },
     {

@@ -627,7 +627,7 @@
    "scenario_informed_by": [],
    "needs_instrument": null,
    "oracle_proposed": "after the reload the Burn clock, touched severity and gestation deadline are the saved ones; both orders give the same batch and letters; that the sky and the body tell one story is judged at his walk",
-   "tier_reason": "the script's part is one save and load and one order check, on the small list; a lived-in colony on his full list is his walk",
+   "tier_reason": "the proof is one save and load and one order check, on the small list",
    "cannot_show": null,
    "wall_expect_h": null,
    "id": "walk_red_lid",
@@ -640,7 +640,7 @@
    "leaf_kind": "walk",
    "clause_kind": "preserve",
    "experience": "The player walks a lived-in Contagion colony through a Bloom day, a natural Burn with a dash, a Repulsor Burn and a gestation, and the sky and the body tell one story.",
-   "scenario": "Script: touch a colonist, inject a host, jump the Burn clock to mid-tells, save, reload and compare; then, from one checkpoint, a Repulsor Burn and a birth in both orders. His walk: a lived-in Contagion colony on his full list through a Bloom day, a Burn with a dash and a gestation.",
+   "scenario": "Script: touch a colonist, inject a host, jump the Burn clock to mid-tells, save, reload and compare; then, from one checkpoint, a Repulsor Burn and a birth in both orders.",
    "false_pass": [
     "a reload compared with itself",
     "one order run twice"

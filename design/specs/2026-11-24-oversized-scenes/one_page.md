@@ -34,7 +34,7 @@ Work of 2026-11-24. Pyrelands has its own run. Every claim is tagged. The full t
 | Graffiti | 7 scenes | 0 | three weeks, six raids | design in `table.md` | waits: your hold, and the lock |
 | LeaningScrub | 2 scenes | 0 | forty colonists, 30 cycles | design in `table.md` | waits: your hold, and the lock |
 
-**What leaves the scripts.** A played week, a season and a colony at work go to your walk. How often a chance event comes is felt there too.
+**What leaves the scripts.** A played week, a season and a colony at work are play testing (your ruling of 2026-11-24). They are no part of passing, and no part of your walk. The list: `D:\Luke\dev\RimMandrake\design\RimMandrake\play_testing_list.md`.
 
 **One bar clause needs the Conductor.** On 2026-11-16 your card set a frame row in Explosive Knockback's walk.
 The small save scene does not read frames. `sc_barrage_perf` reads frames with the mod on and off. [measured, read]

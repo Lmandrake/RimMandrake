@@ -364,7 +364,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": "scene_observer",
-   "oracle_proposed": "the state before the save is read again after the reload; an emptied cave stays empty; both orders end with the same provisions and paid costs; the expedition itself is judged at his walk",
+   "oracle_proposed": "the state before the save is read again after the reload; an emptied cave stays empty; both orders end with the same provisions and paid costs",
    "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -376,7 +376,7 @@
    "leaf_kind": "walk",
    "clause_kind": "preserve",
    "experience": "The tester can carry out the expedition and resupply loop, reload a save made midway and repeat the core action, then complete the main actions in a second order without losing work, discoveries or persistent consequences.",
-   "scenario": "walk_accept: one save and reload mid-work with a pour and a warning. emptied_cave_stays_empty. workshop_before_or_after_cave: both orders from one checkpoint. His walk: the expedition and resupply loop.",
+   "scenario": "walk_accept: one save and reload mid-work with a pour and a warning. emptied_cave_stays_empty. workshop_before_or_after_cave: both orders from one checkpoint.",
    "false_pass": [
     "Only a finished showcase is reloaded",
     "The test injects completed output after load",

@@ -572,7 +572,7 @@
    "leaf_kind": "walk",
    "clause_kind": "preserve",
    "experience": "The player repeats ordinary branch work after a save made mid-consequence and reload; the save retains the active rescue and pool memory rather than forgiving them. In a second order the player returns a young before taking shore work, and outstanding gifts and delayed lure or maturation work still finish once.",
-   "scenario": "ordinary_reload_walk: one real seizure, saved and reloaded. reload_owed_obligations: one save with six obligations, each read before and after. return_before_or_after_shore: both orders from one checkpoint. His walk: repeated branch work.",
+   "scenario": "ordinary_reload_walk: one real seizure, saved and reloaded. reload_owed_obligations: one save with six obligations, each read before and after. return_before_or_after_shore: both orders from one checkpoint.",
    "false_pass": [
     "Reload only an idle map or recreate all expected state from fixture inputs after loading."
    ],

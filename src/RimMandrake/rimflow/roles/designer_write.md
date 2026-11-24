@@ -59,7 +59,8 @@ propose only the oracle and the tier.) Then run `lint <dir>`.
   `concept_tree.py lint` asks for a `tier_reason` on every tier except `offline`. Skills
   `rimworld-debug-testing` and `live-debugging-proof-harness` say what a quicktest, a bridge read or a live proof can show.
 - One `walk` leaf per mod: reload a mid-way save, repeat the core action, and reorder the main actions.
-  A walk leaf lists what the observer does, not only what they see.
+  A walk leaf lists what the observer does, not only what they see. A walk leaf asks for no weeks and no season of play
+  (`design/RimMandrake/standing_rulings.md` §Season-long play is play testing).
 - When the mod needs a measurement that no instrument can make yet, write an `instrument` leaf. Other leaves depend on
   the instrument leaf through `needs_instrument`.
 - The tree has no field for a leaf's origin, and `lint` refuses unknown leaf fields. The sheet line carries the origin.

@@ -59,10 +59,10 @@ here? Should it even be tested? And if so, what's the MINIMUM test necessary to 
 RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS).** No bar, leaf, sheet line or id moved: `tree.json` and `sheet.md`
 keep their bytes. Bar `walk_season_on_the_pyre` keeps its sentence, because the sentence says what a player does and promises no
 scripted two-week play. Its deciders moved in `test_table.json`: `sc_walk` out; `sc_reload_keeps_the_burn`, `sc_fire_sense`,
-`sc_full_list_smoke` and his walk (`LOOK_STAGE8`) in; `proves_at` 6 to 8. `scenes.json` lost `sc_walk`, gained the two new
+`sc_full_list_smoke` in; `proves_at` stays 6; `LOOK_STAGE8` stays a support and carries no long play. `scenes.json` lost `sc_walk`, gained the two new
 scenes, and names `sc_fire_sense` for the `pyrelandsEnabled` switch; `record.json` `parts_covered_by` and `plan.md` drop
-`sc_walk`. Blobs before: `23172252f9` (scenes), `19f596e0d2` (record), `b33e7b97b1` (plan); now `b81af87d03`, `49a05e36a3`,
-`2d96be4008`. Lost: a scripted two-week play with the roster and master switches, roof, thirst and bed fire read live in it.
+`sc_walk`. Blobs before: `23172252f9` (scenes), `19f596e0d2` (record), `b33e7b97b1` (plan); now `b81af87d03`, `a775ca25a2`,
+`0a34d9f583` (item RIMMANDRAKE_ENACT_SEASON_PLAY_IS_PLAYTEST_NOT_ACCEPTANCE_NOR_HIS_WALK took the long play off his walk). Lost: a scripted two-week play with the roster and master switches, roof, thirst and bed fire read live in it.
 Undo: revert the commit that names this item. The helper that made the change relays the Conductor's brief; the ledger event is the Conductor's to write.
 
 Tree hash (`concept_tree.py hash`): `5abc9d2718dc9ccfd08d29370d986260c19675a198dc310be5329d34f062cf31` (measured 2026-11-16 after

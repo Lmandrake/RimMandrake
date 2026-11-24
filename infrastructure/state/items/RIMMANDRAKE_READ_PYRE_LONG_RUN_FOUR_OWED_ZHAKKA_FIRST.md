@@ -24,7 +24,7 @@ free ArchBig; parts 3 and 4 run on any free game with the pyrelands tier.
    (walk_season_on_the_pyre): "The scorchfruit makes it worthwhile: rich abundance from the ashes, and your freezer stuffed
    if you're prepared with room." Pods seed on burned cells under a map cap of 40 standing pods; sc_scorchfruit proves the
    harvest feeds, not the amount. Read over a season of burns how much fruit a ready colony can store; an amount is
-   evidence for his walk, never a bar (CLAUDE.md §A passing bar is an experience).
+   evidence for play testing, never a bar and never his walk (CLAUDE.md §A passing bar is an experience).
 
 ## Acceptance test
 

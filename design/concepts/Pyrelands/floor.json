@@ -12,7 +12,7 @@
   "memory": {
    "status": "applicable",
    "evidence_mode": "compressed",
-   "establishes": "heap and texture MB measured before and after the walk's two weeks; flatness over a 30-day soak stays inferred"
+   "establishes": "no scene reads it today (the scene named here, sc_walk, is gone); growth over a long stretch stays inferred"
   },
   "load_time": {
    "status": "applicable"
@@ -20,7 +20,7 @@
   "save_size": {
    "status": "applicable",
    "evidence_mode": "compressed",
-   "establishes": "save size on the walk's mid-way save and at its end; growth over a longer soak stays inferred"
+   "establishes": "no scene reads it today (the scene named here, sc_walk, is gone); growth over a long stretch stays inferred"
   },
   "save_compat": {
    "status": "applicable"

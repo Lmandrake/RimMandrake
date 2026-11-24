@@ -1749,7 +1749,8 @@ of `infrastructure/agents/CHARTER.md`).
 
 4. **No script plays a season, and an oversized scene carries its evidence** (owner, 2026-11-24; item
    `RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS`).
-   - Give each scene one claim (`claims` in the test table). How a season of play feels belongs to his walk.
+   - Give each scene one claim (`claims` in the test table). A season of play is play testing
+     (§Season-long play is play testing).
    - "The full list might break it" is one short scene: load, one event of the mod, a clean log.
    - A live scene is oversized when it plays more than one game day, runs on the full list, or holds several claims. An
      oversized scene carries `cheaper_why`. `src/RimMandrake/rimflow/scene_size.py` finds an oversized scene, and `./publish`
@@ -1775,6 +1776,33 @@ Earlier the same evening:
 His words, 2026-11-24, about 1:15 AM PST (of Pyrelands' `sc_walk`):
 
 > "So here we are again. This time, it's not raiders, but a seasons-long playthrough that has unbearably large numbers of environmental confounding forces. WHAT is being actually tested here? Should it even be tested? And if so, what's the MINIMUM test necessary to show it? This seems needlessly ornate and clearly doesn't work. Let's please learn from this! What other mods have these elaborate, oversized tests like this? Let's fix them now. But first this one."
+
+## Season-long play is play testing, not acceptance and not his walk — owner, 2026-11-24
+
+Item `RIMMANDRAKE_ENACT_SEASON_PLAY_IS_PLAYTEST_NOT_ACCEPTANCE_NOR_HIS_WALK`.
+
+His words, 2026-11-24, about 8:05 AM PST:
+
+> "Does this play well over a season" is NOT an acceptance test, that is play testing well beyond acceptance testing. Not even appropriate for a human walk-through.
+
+- **The rule.** "A long stretch of ordinary play goes well" is play testing. It is no part of passing a Design Version. No
+  bar, scene, check or script decides it. His walk does not decide it. Do not move it from one of them to another.
+- **Why.** A long stretch of play holds too many other forces to decide anything, and it costs more than the evidence is
+  worth (§The cheapest test that decides the bar, point 4).
+- **His walk** is what it was: his judgement of gameplay, fun, theme and UI (§Only five acts stay his), on prepared
+  sittings and a dense, labelled savegame (`design/specs/2026-11-13-maturation-pipeline.md` Stage 8). Where a walk line
+  asks for weeks or a season of play, remove that part of the line.
+- **Where the claim goes.** Write it on `design/RimMandrake/play_testing_list.md`, or drop it. No ticket.
+- **What this replaces.** The lines of 2026-11-24 that gave a played week, a season or a colony at work to his walk
+  (Pyrelands `LOOK_STAGE8`, the walk leaves of six held mods, point 4 of §The cheapest test), and the Designer's rule that the
+  whole bar runs a season.
+- **What this does not change.**
+  - A bar's sentence. A bar that says only that long play goes well goes to the Conductor, who decides it by name.
+  - An offline model that runs a season of a mechanic (growth, fire, weather). It reads a mechanism, not play.
+  - A slow thing (a crop, a burn, a regrowth) that one staged scene reads, with its time set ahead where that can be done.
+  - His walk's other looks: gameplay, fun, theme and UI at the stations.
+- **The test.** A search for lines on a walk that name weeks or a season of play finds only his words, this section and the
+  play testing list.
 
 ## What Python cannot reach goes into the bridge's C#; tests stay in Python — owner, 2026-11-23
 

@@ -221,10 +221,11 @@ Enjoyment is a prediction: say it as one, never as a bar.
 Every mod has exactly one **whole** bar: the first version running complete.
 
 - Every kept mechanic is on at shipped default settings, with next-version extras off and nothing locked.
-- The run lasts long enough to see the mod's cycle: for a biome, a season on a full map.
+- The run is short and staged. No bar asks for weeks or a season of play (`design/RimMandrake/standing_rulings.md` §Season-long
+  play is play testing). A model below reads a longer cycle, or the scene sets the cycle's state ahead.
 - The run may compress time when the bar says what the compression keeps true.
 - The run includes a reload from a save made mid-way, and the main actions done in a second order.
-- The whole bar names what the player sees over that stretch. The bar also says what would be a flood, a desert, a
+- The whole bar names what the player sees in that run. The bar also says what would be a flood, a desert, a
   stall or an error storm.
 
 A biome's first version usually fits in six to ten bars. Past twelve, write one line per further bar on why the mod

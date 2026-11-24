@@ -112,7 +112,7 @@
       "requirement": [
         "branch_home"
       ],
-      "cheaper_why": "two workers and one blocked branch decide the routes; forty workers add only crowding, which is his walk",
+      "cheaper_why": "two workers and one blocked branch decide the routes; forty workers add only crowding",
       "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
     },
     {

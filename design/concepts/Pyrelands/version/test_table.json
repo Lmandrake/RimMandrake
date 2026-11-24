@@ -1667,7 +1667,7 @@
    "kind": "look",
    "stage": "8",
    "file": "(his walk)",
-   "observes": "his walk of a fresh map: the burn line walking across deep ash, scorch-fruit right behind it, the grass greening a few days later (vision line 9); and about two weeks of ordinary play on his full list: picking fruit from a scar, sowing on a fresh burn and on watered ash, a second burn that fruits again, sheltering with a furnace-beast through an ash fall (the season of walk_season_on_the_pyre, which no script plays)",
+   "observes": "his walk of a fresh map: the burn line walking across deep ash, scorch-fruit right behind it, the grass greening a few days later (vision line 9)",
    "reads": [],
    "runs_today": {
     "ran": false,
@@ -2171,12 +2171,11 @@
    "id": "walk_season_on_the_pyre",
    "source": "tree.json",
    "kind": "walk",
-   "proves_at": "8",
+   "proves_at": "6",
    "decides": [
     "sc_reload_keeps_the_burn",
     "sc_fire_sense",
-    "sc_full_list_smoke",
-    "LOOK_STAGE8"
+    "sc_full_list_smoke"
    ],
    "supports": [
     "T_WALK_SMALL",
@@ -2185,7 +2184,8 @@
     "sc_scorchfruit",
     "sc_burn_compounds",
     "sc_ash_watered",
-    "sc_furnace"
+    "sc_furnace",
+    "LOOK_STAGE8"
    ],
    "held": [],
    "offline_decides": [],

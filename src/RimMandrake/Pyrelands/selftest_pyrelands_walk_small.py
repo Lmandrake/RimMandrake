@@ -9,7 +9,7 @@ that replaced sc_walk decide what they claim, offline.
      names Pyrelands; undecided on a short list, an unread list or a short watch; another mod's error is not ours.
   3. the shipped chains, run against a scripted game: PASS on the real state, and each planted switch (PYRE_PLANT_RELOAD,
      PYRE_PLANT_SMOKE) FAILs.
-  4. scenes.json and the table carry the scenes, sc_walk is gone, and his walk decides the season.
+  4. scenes.json and the table carry the scenes, sc_walk is gone, the three scenes alone decide the bar, and his walk carries no long play.
 
 Run: python3 <this file>   exit 0 = every check PASS
 """
@@ -240,9 +240,10 @@ check("sc_walk is gone from the scenes and the table", "sc_walk" not in sc and "
 for s in NEW:
     check("%s is a scene of the bar and a kind A test" % s, BAR in (sc.get(s) or {}).get("requirement", []) and
           (tt["tests"].get(s) or {}).get("test_kind", "A") == "A" and s in tt["tests"], s)
-check("the three scenes and his walk decide the bar", sorted(bar["decides"]) == sorted(NEW + ("LOOK_STAGE8",)), bar["decides"])
+check("the three scenes, and not his walk, decide the bar", sorted(bar["decides"]) == sorted(NEW), bar["decides"])
 check("only the smoke uses his full list", [k for k, t in tt["tests"].items() if t.get("kind") == "live_full"] == ["sc_full_list_smoke"])
-check("his walk names the season", "two weeks" in tt["tests"]["LOOK_STAGE8"]["observes"])
+check("his walk names no season and no weeks (season-long play is play testing)",
+      not any(w in tt["tests"]["LOOK_STAGE8"]["observes"] for w in ("week", "season")), tt["tests"]["LOOK_STAGE8"]["observes"])
 
 print("%s: %d of %d checks failed" % (NAME, N["bad"], N["run"]))
 sys.exit(1 if N["bad"] else 0)

@@ -5,7 +5,7 @@ arrives as its own weather.
 Owner, 2026-11-13 (RIMMANDRAKE_PROVE_PYRELANDS_IN_FOUR_SCENES, walk_season_on_the_pyre): "And I won't miss having to sweep
 the ash away from all my paths to keep walking clear, or the choking smoke that sometimes come as its own weather..."
 
-Offline, over the defs and source the mod ships (the live "it chokes" is the season walk's beat, not this test). Rows:
+Offline, over the defs and source the mod ships (the live "it chokes" is a short staged scene's, not this test). Rows:
   smoke_weather_defined        a WeatherDef in Pyrelands/Defs whose label holds "smoke"          RED on a68d89e622 (none)
   smoke_weather_in_biome_table RM_Pyrelands' baseWeatherCommonalities lists it with weight > 0   RED on a68d89e622
   smoke_weather_has_effect     it does more than look: its defName is read by Pyrelands C#, or the def carries

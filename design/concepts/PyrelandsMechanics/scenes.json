@@ -344,7 +344,7 @@
    },
    "restore": "nothing: offline",
    "hold": "immediate",
-   "cheaper_why": "an offline call of the roll replaces waiting on his full list for a rite to come by itself; how often one comes is felt on his walk",
+   "cheaper_why": "an offline call of the roll replaces waiting on his full list for a rite to come by itself",
    "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
    "split_from": "sc_walk_tribes_season"
   },

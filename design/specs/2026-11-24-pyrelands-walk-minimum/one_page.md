@@ -13,7 +13,7 @@ The other six claims belong to other bars, or to no bar. [measured, text read]
 | A reload gives back the front, the scar, its bonus and the fruit | **this bar** | nothing else | small scene |
 | Colonists step away from fire, and eat before fire duty | **this bar** | `sc_fire_sense`, which was in no table | small scene |
 | Your full list does not break the burn, and the log is clean | **this bar** | nothing else | small scene |
-| About two weeks of play feel right | **this bar** | your walk | your walk |
+| About two weeks of play feel right | the bar's sentence | nothing | play testing: no part of passing |
 | A second fire gives fruit again | scorch-fruit | `T_FUZZ` and `sc_scorchfruit` | offline |
 | The roster toggle stops and starts the burn | settings | `T_SETTINGS_SWEEP_OFFLINE`, `P_gate` | offline |
 | "Mod enabled" stops and starts the burn | settings | `T_SETTINGS_SWEEP_OFFLINE`, `sc_fire_sense` | offline |
@@ -30,7 +30,7 @@ The other six claims belong to other bars, or to no bar. [measured, text read]
 ## 2. Should a script test it?
 
 - **Yes, three claims.** Each one needs a game, and each one can be staged on demand.
-- **No, the season.** A script cannot say how two weeks feel. Your walk decides that part now.
+- **No, the season.** A season of play is play testing (your ruling of 2026-11-24). Neither a script nor your walk decides it.
 - **No, the other six clauses.** Other tests decide them, so the walk only spoiled itself on them.
 
 A long scene meets wild animals, thirst and visitors. They spoiled `sc_walk` in visits 2, 5 and 8. [measured]
@@ -58,7 +58,7 @@ So even the good run could not decide its own scene. The four parts that failed 
 - No new scene has run in the game. They are **UNRUN**. This run had no game.
 
 **The bar.** Its sentence did not change. The sentence says what a player does; it promises no scripted play.
-The bar now passes when the three scenes pass and your walk passes.
+The bar now passes when the three scenes pass. Its words "about two weeks" are with the Conductor.
 
 ## What we learned, and what stops it next time
 

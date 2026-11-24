@@ -6,7 +6,7 @@ and closing the five owed builds, not rebuilding it. The tree is `tree.json`, th
 ## Structure and reuse
 
 - Every scene runs from the saved Contagion site v3 (`src/RimMandrake/Contagion/prep_site.py`, `site_spec.py`) on the
-  minimal list plus all five DLC, except the walk, which needs a lived-in save on the full list.
+  minimal list plus all five DLC.
 - The scenes are new named entry points `scene_<name>` in `src/RimMandrake/Contagion/validation.py`, built on its
   existing chains (`burn_forced`, `burn_natural`, `uv`, `touched`, `coalescence`, `genome`, `repulsor_clear`,
   `spawner`, `zhool_haze`, `settings_chain`) and their helpers (`_jump`, `_spawn`, `_burn_report`). Each scene adds the

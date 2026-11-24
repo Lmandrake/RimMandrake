@@ -517,7 +517,7 @@
    },
    "restore": "a throwaway test map and its own saves; nothing restores in place",
    "hold": "immediate",
-   "cheaper_why": "the mod's own load path and the game's map load decide this, so it needs one real save and one real load; they are the proof's one save and load, which run anyway. No offline test loads a RimWorld save. A week of play, a second order and the switch by hand add nothing that this reads; they are his walk"
+   "cheaper_why": "the mod's own load path and the game's map load decide this, so it needs one real save and one real load; they are the proof's one save and load, which run anyway. No offline test loads a RimWorld save. A week of play, a second order and the switch by hand add nothing that this reads"
   },
   {
    "id": "sc_shock_restring",

@@ -34,8 +34,8 @@ rows, strange things and pictures of visit 8 (`D:\Luke\dev\RimMandrake\design\co
 
 - **Look first** at station 1, unpaused, for a day or two at speed 3: the fire walking, the scar behind it, the fruit in the
   scar. That is the mod's flagship. Then the natives: 5 fire-hawks, 2 flamefangs and 9 zeer are on the map.
-- Your judgement also decides one bar, `walk_season_on_the_pyre` (ordinary play). The long scripted walk is gone on your
-  words of 2026-11-24 ("what's the MINIMUM test necessary to show it?"). Three small scenes replaced it and pass: the burn
+- No bar waits on your judgement of long play: a season of play is play testing (your words of 2026-11-24). The long
+  scripted walk is gone on your words of the same day ("what's the MINIMUM test necessary to show it?"). Three small scenes replaced it and pass: the burn
   survives a reload, colonists step away from fire and eat first, and the fire runs on your full list with no error of ours.
 
 ## What changed since his last look

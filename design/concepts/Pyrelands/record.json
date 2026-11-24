@@ -671,7 +671,7 @@
     "by": [
      "sc_fire_sense"
     ],
-    "why": "part: people keep clear of fire and eat before fire duty; sc_fire_sense stages a colonist beside a lit fire and an urgently hungry one given fire duty, reads RM_PyreStepAwayFromFire and the Ingest-before-BeatFire order, and its control turns the roster toggle (PyrelandsMechanicsGate) both sit behind off; his Stage 8 walk is ordinary play on top"
+    "why": "part: people keep clear of fire and eat before fire duty; sc_fire_sense stages a colonist beside a lit fire and an urgently hungry one given fire duty, reads RM_PyreStepAwayFromFire and the Ingest-before-BeatFire order, and its control turns the roster toggle (PyrelandsMechanicsGate) both sit behind off"
    }
   },
   {

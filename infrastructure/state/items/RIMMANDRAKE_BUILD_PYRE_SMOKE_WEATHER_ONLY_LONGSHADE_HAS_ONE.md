@@ -10,7 +10,7 @@ baseWeatherCommonalities) holds no smoke weather. Cinderfall only tints its fog 
 allowed only there. Build a Pyrelands choking-smoke weather that rolls on its own, reads as smoke, and hampers or harms pawns out
 in it with a readable sign (owner: no pawn suffers without one). Keep RM_FE_BlackRain the only rain-rated weather in the table
 (the table's own comment: the x15 rain-on-fire roll is the mechanism). Mod Setting per the superb-settings rule (on/off, weight).
-The exact effect (breathing hediff, mood, vision) is the builder's call within that; the season walk reads it live.
+The exact effect (breathing hediff, mood, vision) is the builder's call within that; one short staged scene reads it live.
 Census and walk criteria: `D:\ClaudeWork\rimmandrake\conductor\cards_20261113_am\walk_season_criteria.md`.
 
 Acceptance test: `python3 src/RimMandrake/rimflow/acceptance/pyre_smoke_weather_accept.py` exits 0 with `PASS 6/6`.

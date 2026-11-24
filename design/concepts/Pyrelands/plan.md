@@ -47,7 +47,7 @@ built; this plan is the proof work and two owed changes, nothing new.
    an unburned twin pad; `heat_dome` asserts no fire on its pad and stands as its own scene (`sc_heat_dome`), with
    the dome switch off as its control.
 4. The three showcases and the walk (item `PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES`): `sc_reload_keeps_the_burn`,
-   `sc_fire_sense` and `sc_full_list_smoke` (short scenes), and his Stage 8 walk for the season.
+   `sc_fire_sense` and `sc_full_list_smoke` (short scenes).
 5. Close or re-bucket the stale items: `PYRE_OPENING_FRONT_BUILD_SMOKE_ON_ARRIVAL` (resolved by `sc_burn_line_walks`
    reading the opening front), `PYRELANDS_GREEN_MINIMAL_1`, `PYRELANDS_GREEN_FULL_1`, `PYRELANDS_NORTHSTAR_TRIAL_1`
    (FOUNDRY-era; Relentless's game_prove lane).

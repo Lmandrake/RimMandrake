@@ -184,7 +184,7 @@ in the design's Scope section.
   den quest, sarlacc seep and three cave kinds; loomma dung seeding. Not moves.
 - **Kept as the cleanse recommended (retire):** sun lance, delayed horizon arrivals, extra fossil scatter, cooling
   draught, the legacy heat regime.
-- **Forty-colonist harbour and the full-season walk:** first version → later.
+- **Forty-colonist harbour:** first version → later. **The full-season walk:** play testing, no part of any version's passing.
 - **New, not in any source:** the Jawa's confidence as the joke; the Empire's probe as a droid the sand ignores
   and its troopers as water the sand wants (a reading of the built rule that swimmers skip bodies with no water);
   the thumper used against a siege; a gale as the biome's only cover from orbit (a reading of his partial-cover
@@ -411,7 +411,8 @@ three* = `biomes/stillsand_turn3_development_2026-09-30.md`; *cast bible* =
 |---|---|---|---|---|
 | The tree's eleven leaves and its "does not" list | tree | kept as the pipeline holds them; not edited | A later Designer run reconciles them with this design. | |
 | The cleanse's signature (cross, secure a cave, resupply) | cleanse owner_pages | kept as the spine of 0.1.0 | | |
-| Forty-colonist harbour; the full-season walk with reload | cleanse; tree | moved (first version → later) | Colony scale. | |
+| Forty-colonist harbour | cleanse; tree | moved (first version → later) | Colony scale. | |
+| The full-season walk with reload | cleanse; tree | out of every version | Season-long play is play testing (`design/RimMandrake/standing_rulings.md` §Season-long play is play testing). The reload stays a short scene. | |
 | The four offline models | cleanse owner_pages | kept | | |
 | Tickets and switch-offs | cleanse next_version | kept as they stand, except where a feature moved | | |
 | Eight proposed bars | cleanse owner_pages | kept as history; the fourteen promises in the design are the proposal to argue from | | |

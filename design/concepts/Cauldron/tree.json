@@ -448,7 +448,7 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "The player whose people are sheltered, geared and supplied gets ordinary shelter, forestry, hauling and water work done through a bloom without unavoidable new ambient injury or silent production loss. An exposed expedition still carries its danger.",
-   "scenario": "routine_day runs one compressed bloom over two prepared workers and one bare one with three orders. His walk: an ordinary settlement through a bloom.",
+   "scenario": "routine_day runs one compressed bloom over two prepared workers and one bare one with three orders.",
    "false_pass": [
     "Invulnerable need-free actors make the routine look dependable",
     "One debug-spawned reagent proves a forty-worker livelihood",
@@ -474,7 +474,7 @@
    "leaf_kind": "walk",
    "clause_kind": "change",
    "experience": "The player can resume midway through Cauldron work, repeat the core action and perform the main actions in a second order without losing protection, grove binding, vent state, health, stored fluids or completed discovery. Returning still offers dependable work and risky expeditions.",
-   "scenario": "resume_walk saves midway through warning and tap production and reloads; resume_walk_second_order takes the main jobs in both orders from one checkpoint; metal_purge and gas_chain decide the purge and the mid-flame reload. His walk: returning to the colony.",
+   "scenario": "resume_walk saves midway through warning and tap production and reloads; resume_walk_second_order takes the main jobs in both orders from one checkpoint; metal_purge and gas_chain decide the purge and the mid-flame reload.",
    "false_pass": [
     "A new map after load is substituted for the saved state",
     "Only static finished products reload while active state is lost"
