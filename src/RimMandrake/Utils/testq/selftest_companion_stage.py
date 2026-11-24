@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import types
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FAILS = []
@@ -46,6 +47,44 @@ def check(ok, msg):
 def git(repo, *args):
     return subprocess.run(["git", "-C", repo, "-c", "user.name=t", "-c", "user.email=t@t"] + list(args),
                           capture_output=True, text=True, check=True).stdout.strip()
+
+
+def t_a_chains_job_follows_origin_main(e):
+    j = e.pending(e.sha1, "BENCH")
+    e.T.admit({})
+    got = e.ran_at(j["id"])
+    check(e.same(got, e.sha_new), "a chains job whose companion left origin/main runs at origin/main: %s" % got)
+
+def t_a_follower_waits_for_its_companion(e):
+    e.started.clear()
+    sha_next = e.commit(e.tool, "class G {}\n")
+    j = e.pending(e.sha1, "BENCH")
+    e.T.admit({})
+    check(not e.started and e.T.where(j["id"]) == "pending" and "not on SteveDesktop" in str(e.T.read_json(e.T.q(e.T.ADMISSION_WAITS))),
+          "a follower waits while origin/main's companion is not staged")
+    rec = e.C.run_pass()
+    e.T.admit({})
+    got = e.started == [j["id"]] and e.ran_at(j["id"])
+    check(got and e.same(got, sha_next), "and runs at origin/main once it is staged: %s %s" % (rec["state"], e.started))
+    return sha_next
+
+def t_a_build_tied_job_keeps_its_sha(e):
+    git(e.repo, "checkout", "-q", "-b", "side", e.sha1)
+    with open(os.path.join(e.repo, "side.txt"), "w") as f:
+        f.write("x")
+    git(e.repo, "add", "-A")
+    git(e.repo, "commit", "-q", "-m", "side")
+    side = git(e.repo, "rev-parse", "--short", "HEAD")
+    git(e.repo, "checkout", "-q", "main")
+    for what, sha, kw in (("a visit's job", e.sha1, {"visit": "v"}), ("a proof build", e.sha1, {"proof_build": ["Mock"]}),
+                          ("a checks job", e.sha1, {"selector": {"checks": ["c"]}}),
+                          ("a proofs job", e.sha1, {"selector": {"proofs": ["A1"]}}), ("a job at an unpublished sha", side, {})):
+        j = e.S.make_job("Mock", {"chains": ["c1"]}, "guard", "BENCH", sha)
+        j.update(kw)
+        e.S.dump(j, e.T.q("pending", j["id"] + ".json"))
+        e.T.admit({})
+        got = e.ran_at(j["id"])
+        check(got == sha, "%s keeps its own sha: %s" % (what, got))
 
 
 def main():
@@ -94,6 +133,9 @@ def main():
         git(repo, "commit", "-q", "-m", "c")
         git(repo, "update-ref", "refs/remotes/origin/main", "HEAD")
         return git(repo, "rev-parse", "--short", "HEAD")
+
+    def same(a, b):
+        return git(repo, "rev-parse", a) == git(repo, "rev-parse", b)
 
     def count(k):
         return os.path.getsize(flags[k]) if os.path.exists(flags[k]) else 0
@@ -288,6 +330,20 @@ def main():
     T.admit({})
     check(started == [j["id"]], "a hand job is not the gate's: the worker judges it")
     os.remove(T.q("running", j["id"] + ".json"))
+    started.clear()
+
+    # RIMMANDRAKE_DIAGNOSE_FLOWWORKS_PUMPS_GIVE_NO_PRESSURE_FOUR_RUNS: two FlowWorks jobs of 2026-11-24 waited behind
+    # others, a newer companion was staged, and both died INVALID DEPLOY at an older sha that was on origin/main
+    def ran_at(jid):
+        sha = T.read_json(T.q("running", jid + ".json"))["job"]["source_sha"]
+        os.remove(T.q("running", jid + ".json"))
+        return sha
+
+    e = types.SimpleNamespace(T=T, S=S, C=C, repo=repo, tool=tool, sha1=sha1, sha_new=sha_new, started=started, pending=pending,
+                              commit=commit, same=same, ran_at=ran_at)
+    t_a_chains_job_follows_origin_main(e)
+    sha_new = t_a_follower_waits_for_its_companion(e)
+    t_a_build_tied_job_keeps_its_sha(e)
     started.clear()
     j = pending(sha_new, T.FILLER)
     T.admit({})

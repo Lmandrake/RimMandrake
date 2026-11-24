@@ -616,7 +616,8 @@ def admit(status, host=STEVE):
     (companion_unready) would only die at deploy: a filler job is cancelled (the filler picks again); any other job
     whose companion is origin/main's, which the stager stages by itself, WAITS, named in ADMISSION_WAITS and
     `testq.py list`, and the next one is weighed; it is admitted once that companion is staged. A hand job whose
-    companion left origin/main will never be staged: it is admitted and the worker judges it, as before
+    companion left origin/main will never be staged: a chains job runs at origin/main instead (follow_main); any other
+    is admitted and the worker judges it, as before
     (RIMMANDRAKE_HOLD_PENDING_BATCH_AFTER_DELIVERY_DEATH: 17 helper jobs of 5 mods, at shas that all wanted one companion, died
     `companion STALE` one after another, 2026-11-12 17:13-18:03 UTC, when the gate covered the filler alone)."""
     remote = worker_for(host)       # noqa: F811 - the same verbs, on this game's worker
@@ -658,7 +659,18 @@ def admit(status, host=STEVE):
             break
         import companion_stage as CS
         if not main_wants() or CS.wanted(cand["source_sha"]) != main_wants():
-            job = cand          # its companion left origin/main: the stager will never stage it; the worker judges
+            head = follow_main(cand)
+            if not head:
+                job = cand      # its companion left origin/main: the stager will never stage it; the worker judges
+                break
+            why = companion_unready(dict(cand, source_sha=head), read_once)
+        else:
+            head = None
+        if head and not why:
+            log("%s: companion of %s left origin/main while it waited; runs at origin/main %s, which holds it"
+                % (cand["id"], cand["source_sha"][:10], head[:10]))
+            job = dict(cand, source_sha=head)
+            S.dump(job, q("pending", cand["id"] + ".json"))
             break
         waits[cand["id"]] = {"reason": why, "since": (before.get(cand["id"]) or {}).get("since") or S.utcnow()}
         if (before.get(cand["id"]) or {}).get("reason") != why:
@@ -1348,6 +1360,17 @@ def same_request(a, b):
     keys = ("mod", "selector", "purpose", "source_sha", "item", "profile", "lane", "deploy", "canary", "validity",
             "owner_gate", "not_before", "gate", "proof_build", "visit")
     return all(a.get(k) == b.get(k) for k in keys)
+
+
+def follow_main(job):
+    """origin/main's sha when JOB may run there instead of at its own sha, or None. Its --sha is a commit the run must
+    INCLUDE, so any descendant serves; a visit's job, a proof build, a checks or proofs job is tied to its build."""
+    if job.get("visit") or job.get("proof_build") or not (job.get("selector") or {}).get("chains") \
+            or S.is_checks(job) or S.is_proofs(job) or not published(job["source_sha"]):
+        return None
+    r = subprocess.run(["git", "-C", REPO, "rev-parse", "origin/main"], capture_output=True, text=True,
+                       timeout=60)      # a hang guard on a local read
+    return r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else None
 
 
 def published(sha):
