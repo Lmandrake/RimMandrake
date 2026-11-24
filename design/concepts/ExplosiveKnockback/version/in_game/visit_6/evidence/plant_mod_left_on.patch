@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/validation.py b/src/RimMandrake/ExplosiveKnockback/validation.py
+index 06bdd74494..571de4f310 100644
+--- a/src/RimMandrake/ExplosiveKnockback/validation.py
++++ b/src/RimMandrake/ExplosiveKnockback/validation.py
+@@ -1128,7 +1128,7 @@ class _Walk:
+                             {"why": "baseline reload failed (%s)" % why})
+                     continue
+                 if tag in ("C", "FRAME_OFF"):
+-                    self.kp("Settings", "enabled=False")
++                    self.kp("Settings", "enabled=True")
+                 fn()
+         finally:
+             self.kp("Plant", "reset")

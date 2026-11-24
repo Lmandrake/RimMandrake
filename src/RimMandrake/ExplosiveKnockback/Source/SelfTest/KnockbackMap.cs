@@ -1220,6 +1220,10 @@ internal static class KnockbackMap
             "c:sandbag:1:0;c:sandbag:0:1;t:a:steel2:1:1;b:gas:1.9",
             "c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:bomb:2.9",
             "c:wall:1:0;t:a:steel2:2:0;b:bomb:2.9",
+            // a taken pit cell (his card 2026-11-22): the far end of the trench takes the stack; a full trench bounces it out; a gas hop; a crossed pit
+            "c:pit:3:0;c:pit:3:1;c:pit:3:2;c:pit:3:3;t:o:wood50:3:0;t:p:wood50:3:1;t:q:wood50:3:2;t:a:steel2:1:0;b:bomb:2.9",
+            "c:pit:3:0;c:pit:3:1;t:o:wood50:3:0;t:p:wood50:3:1;t:a:steel2:1:0;b:bomb:2.9",
+            "c:pit:2:1;t:a:steel2:1:1;b:bomb:2.9",
         });
         var inv = System.Globalization.CultureInfo.InvariantCulture;
         using (var f = new System.IO.StreamWriter(path))
