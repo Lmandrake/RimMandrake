@@ -1691,12 +1691,47 @@ def t_a_ledger_landing_that_loses_a_push_race_keeps_both_lines(a, b):
     assert sha and show(a, LSHARD) == "seed\npeer\nmine\n", show(a, LSHARD)
 
 
+def t_a_ledger_landing_whose_lines_another_landing_carried_says_published(a, b):
+    # two writers in one clone's shard: the first landing carries both lines. The second was told "nothing to publish" and
+    # its rimflow write exited 4, WRITTEN NOT PUBLISHED, for a line that is on origin
+    seed_ledger(a, b)
+    append(a, LSHARD, "first\nsecond\n")
+    one, _log = ledger(a, [LSHARD])
+    two, log = ledger(a, [LSHARD])
+    assert two == one and "PUBLISHED " + one in log, (one, two, log)
+    # the same in a held clone, which waits for no peer
+    append(a, LSHARD, "third\n")
+    old, P.LOCK_TIMEOUT = P.LOCK_TIMEOUT, 1
+    try:
+        with P.clone_lock(a):
+            three, _log = ledger(a, [LSHARD])
+            four, log = ledger(a, [LSHARD])
+    finally:
+        P.LOCK_TIMEOUT = old
+    assert four == three and "PUBLISHED " + three in log, log
+    # a line taken out of the shard here is no append: the ordinary route commits it
+    write(a, LSHARD, "seed\nsecond\n")
+    assert P.land_ledger(a, [LSHARD], "x\n") is None
+
+
 def t_a_ledger_landing_never_puts_back_a_line_origin_removed(a, b):
     seed_ledger(a, b, "seed\nbad\n")
     peer_push(b, LSHARD, "seed\n")
     append(a, LSHARD, "mine\n")
     ledger(a, [LSHARD])
     assert "bad" not in show(a, LSHARD) and "mine" in show(a, LSHARD), show(a, LSHARD)
+
+
+def t_a_ledger_landing_of_a_torn_line_or_with_no_origin_takes_the_ordinary_route(a, b):
+    seed_ledger(a, b)
+    append(a, LSHARD, "whole\nhalf a li")
+    assert P.land_ledger(a, [LSHARD], "x\n") is None and show(a, LSHARD) == "seed\n"
+    append(a, LSHARD, "ne\n")
+    url = sh(a, "remote", "get-url", "origin")
+    sh(a, "remote", "set-url", "origin", url + "-gone")
+    assert P.land_ledger(a, [LSHARD], "x\n") is None
+    sh(a, "remote", "set-url", "origin", url)
+    assert P.land_ledger(a, [LSHARD], "x\n") and show(a, LSHARD) == "seed\nwhole\nhalf a line\n"
 
 
 def t_a_ledger_landing_of_another_path_goes_the_ordinary_way(a, b):

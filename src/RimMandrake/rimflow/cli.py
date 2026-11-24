@@ -2831,7 +2831,7 @@ def _close_gate(args, it, sha, no_code):
 
 def _close_evidence(args, seat, evs, sha):
     """`close --evidence`: the level-tagged pass a hand close once owed as a command of its own, as one event.
-    -> (the verify event or None, the item as it reads with that pass). Nothing is written here."""
+    -> (the verify event or None, the world as it reads with that pass). Nothing is written here."""
     ev = {"seat": seat, "event": "verify", "id": args.id, "result": "pass", "config": args.config or "close",
           "evidence": args.evidence.strip(), "sha": sha, "level": args.level or "L0"}
     try:
@@ -2841,7 +2841,7 @@ def _close_evidence(args, seat, evs, sha):
         print("close: %s: --evidence is not recorded as a run (%s); the close goes on without it" % (args.id, e),
               file=sys.stderr)
         return None, None
-    return ev, w2.items.get(args.id)
+    return ev, w2
 
 
 def cmd_close(args, seat):
@@ -2888,7 +2888,7 @@ def cmd_close(args, seat):
     if it is not None:
         args.seat_is_owner = seat == "OWNER"
         ran, as_passed = _close_evidence(args, seat, evs, sha) if evidence and not no_code else (None, None)
-        _close_gate(args, as_passed if ran else it, sha, no_code)
+        _close_gate(args, as_passed.items.get(args.id) if ran else it, sha, no_code)
     ev = {"seat": seat, "event": "close", "id": args.id, "sha": sha}
     if getattr(args, "unchecked_lifted", False):
         ev["uncheckedLifted"] = True
@@ -2912,6 +2912,10 @@ def cmd_close(args, seat):
     if line:
         ev["live"] = line
     if ran:
+        try:        # the close is checked over the pass first: one that the ledger refuses (done already) writes neither
+            model.check(ev, as_passed)
+        except model.LedgerError as e:
+            die(str(e))
         _emit(ran, w, quiet=True)
     _emit(ev, w, quiet=True)
     if holder and holder != seat:

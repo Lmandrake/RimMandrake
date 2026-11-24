@@ -719,18 +719,26 @@ def land_ledger(top, named, msg):
             return r.stdout.decode().strip()
         try:
             plumb("read-tree", up)
-            changed = False
+            changed, taken_out = False, False
             for p in named:
-                ours, theirs = seat_sync._read_shard(g, p), blob(up, p)
-                new = None if ours is None else _owed_lines(ours, blob(base, p), theirs)
+                ours, theirs, was = seat_sync._read_shard(g, p), blob(up, p), blob(base, p)
+                new = None if ours is None else _owed_lines(ours, was, theirs)
                 if new is None:
                     return None
+                taken_out |= bool(collections.Counter(was.splitlines(True)) - collections.Counter(ours.splitlines(True)))
                 if new:
                     changed = True
                     sha = plumb("hash-object", "-w", "--stdin", inp=theirs + new)
                     plumb("update-index", "--add", "--cacheinfo", "100644,%s,%s" % (sha, p))
             if not changed:
-                return None
+                if taken_out:                            # a line removed here is no append: the ordinary route commits it
+                    return None
+                # another writer's landing in this clone carried our lines: they are on origin, in the commit that says so
+                held = out(top, "log", "-1", "--format=%H", up, "--", *named)
+                if held:
+                    print("already on %s/%s: another landing carried these lines" % (REMOTE, BRANCH))
+                    _level_if_free(top)
+                return held or None
             tip = plumb("commit-tree", plumb("write-tree"), "-p", up, "-F", "-", inp=msg.encode())
         finally:
             for f in (idx, idx + ".lock"):

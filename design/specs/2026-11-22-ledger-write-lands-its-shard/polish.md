@@ -8,3 +8,7 @@
 - `selftest_no_bare_cuts.py` is red on origin/main with 154 bare cuts in other files (none in this component).
 - `maturation.py`'s steward section says "commit and publish it [OWNER.jsonl] too". True; pointing it at `--publish` changes
   the calibrated `maturation_advance` brief hash, so it waits for that brief's next calibration.
+- `publish.py` `land_ledger` `blob`: not handled: a `git cat-file` that fails on a shard that exists reads as an empty shard.
+  The pre-push `ledger_lint` refuses the commit that would follow.
+- `publish.py` `split_pre_existing`: the second `try` block, after `return still, pre`, never runs.
+- `publish.py` `warn_owner_shard`: in a held clone, the WARNING can name OWNER.jsonl lines that are already on origin.

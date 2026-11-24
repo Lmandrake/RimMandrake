@@ -39,7 +39,8 @@ that a card stamp writes or that `close` moves. The CLI knows what it wrote, so 
 - **a-ledger-write-waits-for-no-peer-and-takes-no-peer-commit.** A write whose every path is a ledger shard lands its
   shards' new lines on origin/main by plumbing: it lands while another `./publish` holds the clone's lock, the landed
   commit holds the named shards alone, and a held clone's branch does not move. A free clone is levelled as `./sync` does.
-  Any other path, a torn last line, or an origin that cannot be fetched takes the ordinary `./publish` route. A line that
+  Any other path, a torn last line, or an origin that cannot be fetched takes the ordinary `./publish` route. A write whose
+  lines another landing already carried prints `PUBLISHED` and the commit that holds them. A line that
   origin removed is not put back, a push race keeps both lines, and a pre-push refusal is raised with its text (each
   one a `t_a_ledger_landing_…` case of `src/RimMandrake/Utils/selftest_publish.py`). Why: 1,146 ledger landings of
   2026-11-22 1 PM to 11-23 6 PM PST waited 17 s (p50), 96 s (p90) and 677 s (p99) between the event and its commit

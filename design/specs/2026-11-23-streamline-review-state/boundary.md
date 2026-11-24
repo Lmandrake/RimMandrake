@@ -18,7 +18,7 @@ Code: `src/RimMandrake/rimflow/cli.py` (`cmd_close`, `_close_evidence`). Item
 ## PROMISES
 
 - **close-records-its-evidence.** The close writes a level-tagged pass on that sha with the evidence, and then the close,
-  which is not marked `uncheckedLifted`. A close that is refused (an owed criterion, say) writes neither. A
-  pass after a fail clears the fail, as a separate `verify` did. Blank
-  evidence is no pass. With `--no-code`, the evidence is added to the `--no-code` words and no run is written. Evidence that
+  which is not marked `uncheckedLifted`. A close that is refused (an owed criterion, or an item
+  that is done already) writes neither. A pass after a fail clears the fail, as a separate `verify` did. Blank evidence
+  is no pass. With `--no-code`, the evidence is added to the `--no-code` words and no run is written. Evidence that
   the ledger cannot record as a run (the item is another seat's) is said in one line, and the close goes on unchecked.

@@ -202,6 +202,13 @@ def t_close_records_its_evidence(a, b):
     check(rc == 0 and item(i).state == "done" and (item(i).runs and not last.get("uncheckedLifted") or "not recorded as a run" in out
           and last.get("uncheckedLifted")), "another seat's close with evidence goes, recorded or said (rc %d %s)" % (rc, out[-300:]))
 
+    i = new("EVIDENCE_TWICE")
+    ok("close", i, "--sha", a, "--evidence", "PASS")
+    n = len(events())
+    rc, out = cli("close", i, "--sha", a, "--evidence", "PASS again")
+    check(rc != 0 and len(events()) == n, "a close refused because the item is done already writes neither event (rc %d, %d new: %s)"
+          % (rc, len(events()) - n, out[-200:]))
+
     i = new("EVIDENCE_AFTER_FAIL")
     ok("verify", i, "--sha", a, "--level", "L0", "--result", "fail", "--config", "fixture", "--evidence", "broke")
     rc, out = cli("close", i, "--sha", a, "--evidence", "rerun: PASS")
