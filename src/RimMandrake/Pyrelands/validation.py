@@ -6761,11 +6761,122 @@ def _r6_master_day(t, on):
     return {"fires": fires, "beds": beds, "ashGain": None if a0 is None or a1 is None else a1 - a0, "history": hist}
 
 
+PLANT_BED_MASTER_ENV = "PYRE_PLANT_BED_MASTER"   # planted states for walk_master_bed_fire_resumes: "left_off" or "left_on"
+R8_PAD_WALK_BED = (95, 225)    # the walk's own bed pad: free of every other pad (nearest PAD_VENOM and TEN_PAD_GRASS, 65 cells)
+
+
+def walk_bed_resume_verdict(off, on, step=SLEEP_POLL_TICKS, grace=SLEEP_GRACE_TICKS,
+                            off_roll=SLEEP_CONTROL_ROLL_TICKS, fail_roll=SLEEP_FAIL_ROLL_TICKS):
+    """walk_master_bed_fire_resumes over one sleeper's polls (ProbeSleep fields plus 'fire', the Fire count within 2 cells),
+    master off then on -> (verdict, why, spans), verdict 'PASS', 'FAIL' or None (not decided). Pure. Restarts of sleep pay
+    the grace again; the span is counted here and not by restingTicks, which the master off stops. Off: any fire or sleep
+    light FAILS, and off_roll ticks asleep on grass past the grace are owed. On: the sleep roll's own record with a Fire by
+    the next poll PASSES; fail_roll ticks past the grace with no light FAIL."""
+    def rolled(polls):
+        tot, run = 0, 0
+        for prev, cur in zip(polls, polls[1:]):
+            ok = (prev.get("awake") == "False" and cur.get("awake") == "False" and prev.get("cell") == cur.get("cell")
+                  and prev.get("flammablePlant") == "True")
+            run = run + step if ok else 0
+            tot += step if run > grace else 0
+        return tot
+
+    def lit(polls):
+        return next((i for i, p in enumerate(polls) if _kv_int(p.get("litAfterTicks")) >= 0), None)
+    first = lit(on)
+    spans = {"offRolled": rolled(off), "onRolled": rolled(on[:first + 1] if first is not None else on), "onLitPoll": first}
+    if lit(off) is not None or any(p.get("fire", 0) for p in off):
+        return "FAIL", "master off: the bed was alight (%r)" % next(
+            p for p in off if p.get("fire", 0) or _kv_int(p.get("litAfterTicks")) >= 0), spans
+    if spans["offRolled"] < off_roll:
+        return None, "master off: slept %d of %d ticks on grass past the grace" % (spans["offRolled"], off_roll), spans
+    if first is not None:
+        seen = [p.get("fire", 0) for p in on[first:first + 2]]
+        if any(seen):
+            return "PASS", "master on: the bed caught after %s ticks asleep; off, %d ticks and no fire" % (
+                on[first].get("litAfterTicks"), spans["offRolled"]), spans
+        if len(seen) < 2:
+            return None, "master on: lit, fire not yet read", spans
+        return "FAIL", "master on: the sleep roll lit but no Fire stood by the next poll", spans
+    if spans["onRolled"] >= fail_roll:
+        return "FAIL", "master back on: %d ticks asleep on grass past the grace and the bed never caught" % spans["onRolled"], spans
+    return None, "master on: slept %d of %d ticks on grass past the grace" % (spans["onRolled"], fail_roll), spans
+
+
+def _walk_bed_fire_resumes(t):
+    """SITE repair (visit 8, 2026-11-23): the part read whichever furnace-beast slept on grass over the on-day, and none did
+    in two full-list walks (visit 5), so it was UNMEASURED by design. Now one wild beast is laid on a 5x5 of ember grass on a
+    concrete pad: master off first (walk_bed_resume_verdict's control span, no fire), then on (the sleep roll lights it).
+    Planted: PYRE_PLANT_BED_MASTER=left_off|left_on, a master that does not resume / does not stop; each must FAIL."""
+    plant = os.environ.get(PLANT_BED_MASTER_ENV) or ""
+    if plant:
+        _note(t, "PLANTED FAULT", "%s=%s" % (PLANT_BED_MASTER_ENV, plant))
+    _extinguish(t)
+    _pad(t, R8_PAD_WALK_BED)
+    t.clear_area(size=TEST_SIZE)
+    x, z = t.anchor
+    pad, plot = (x - 6, z - 6, 13, 13), (x - 2, z - 2, 5, 5)
+    t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+    t.bridge_call("jawa/set_terrain", x=pad[0], z=pad[1], terrainDef=FIREBREAK, width=pad[2], height=pad[3], layer="top")
+    t.bridge_call("jawa/set_plants", ops="CLEAR:%s" % _rs(pad))
+    _soil(t, plot)
+    _plants(t, "RM_FE_Plant_EmberGrass", plot)
+    _set(t, {"furnaceThermalEnabled": True, "pyrelandsEnabled": plant == "left_on"})
+    pid = _spawn_wild(t, "RM_FurnaceBeast", x, z)
+    polls, orders = {"off": [], "on": []}, []
+
+    def lay_down():
+        t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
+        t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Rest", level=0.05)
+        r = t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="LayDown", targetAX=x, targetAZ=z, waitTicks=0)
+        orders.append(dict((f, (r or {}).get(f)) for f in ("success", "accepted", "afterJobDef", "message")))
+
+    def phase(name):
+        lay_down()
+        asked = 1
+        for i in range(SLEEP_WAIT_TICKS // SLEEP_POLL_TICKS):
+            _wait(t, SLEEP_POLL_TICKS)
+            if not _live(t):
+                return
+            kv = parse_kv(_ten_static(t, FURNACE_BED, "ProbeSleep", pid) or "")
+            c = xz_of(kv.get("cell"))
+            if kv.get("spawned") != "true" or c is None:
+                _unmeasured(t, "the staged furnace-beast is not on the map: %r" % kv)
+            kv["fire"] = _count(t, "Fire", "%d,%d,5,5" % (c[0] - 2, c[1] - 2)) or 0
+            kv["tick"] = (i + 1) * SLEEP_POLL_TICKS
+            polls[name].append(kv)
+            verdict, _why, spans = walk_bed_resume_verdict(polls["off"], polls["on"])
+            if verdict or (name == "off" and spans["offRolled"] >= SLEEP_CONTROL_ROLL_TICKS):
+                return
+            off_bed = kv.get("awake") != "False" and kv.get("job") != "LayDown" or kv.get("flammablePlant") != "True"
+            if off_bed and _kv_int(kv.get("litAfterTicks")) < 0 and not kv["fire"] and asked <= SLEEP_REORDERS:
+                _plants(t, "RM_FE_Plant_EmberGrass", plot)
+                lay_down()
+                asked += 1
+    try:
+        phase("off")
+        _set(t, {"pyrelandsEnabled": plant != "left_off"})
+        phase("on")
+    finally:
+        _set(t, {"pyrelandsEnabled": True})
+    verdict, why, spans = walk_bed_resume_verdict(polls["off"], polls["on"])
+    if _live(t):
+        _note(t, "bed fire, master off then on: spans, orders, polls (tick, awake, job, cell, plant, litAfterTicks, fire)",
+              {"spans": spans, "orders": orders, "why": why,
+               "polls": dict((k, [(p.get("tick"), p.get("awake"), p.get("job"), p.get("cell"), p.get("plant"),
+                                   p.get("litAfterTicks"), p.get("fire")) for p in v]) for k, v in polls.items())})
+    t.screenshot(rect=(pad[0], pad[1], pad[2], pad[3]))
+    if _live(t):
+        if verdict == "FAIL":
+            _fail(why)
+        if verdict != "PASS":
+            _unmeasured(t, why)
+
+
 def _r6_walk_season(t):
     """sc_walk (g4; PYRE_WALK=1 only): the Mod enabled master (pyrelandsEnabled) off a day, the map extinguished first:
     no fire, no ash laid (ProbeAsh), no bed fire (ProbeSleep fireOnCell on every furnace-beast); then on a day: the
-    front walks again and ash is laid. A bed fire on the on-day needs a beast asleep on grass, so its absence there is
-    UNMEASURED in its own row, never a FAIL."""
+    front walks again and ash is laid. The bed fire's resumption has its own staged part (_walk_bed_fire_resumes)."""
     walk = os.environ.get("PYRE_WALK") == "1"
     _independent(t)
     with _comp(t, "walk_master_off_then_on"):
@@ -6774,7 +6885,6 @@ def _r6_walk_season(t):
         _extinguish(t)
         off = _r6_master_day(t, False)
         on = _r6_master_day(t, True)
-        _GEN["r6_walk_on_beds"] = on["beds"]
         if _live(t):
             _note(t, "pyrelandsEnabled off a day, then on a day", {"off": off, "on": on})
             if any(off["fires"]) or any(off["beds"]):
@@ -6789,9 +6899,7 @@ def _r6_walk_season(t):
     with _comp(t, "walk_master_bed_fire_resumes"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
-        beds = _GEN.get("r6_walk_on_beds") or []
-        if _live(t) and not any(beds):
-            _unmeasured(t, "no furnace-beast's bed lit over the on-day (none slept on grass): resumption unread")
+        _walk_bed_fire_resumes(t)
 
 
 # ---- new chains ----
