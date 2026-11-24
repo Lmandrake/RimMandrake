@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 12:59 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 6:00 PM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 12:59 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 6:00 PM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -586,4 +586,13 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Steward confirms: Read blind_challenge/cycle_1 of 0.2.0 (judge rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1795461095): exit_met true, problems_open 0, offline bars no_hose and no_hose_in_gss green; verdict met. Diffs of both tests edited read (650bdab37b adds scans and two mutants; cf5a867a53 keeps the 5 ms and one-third bounds, each frame's best of 4 passes, assertion kept): nothing weakened, skipped or deleted. Rerun here: T_NO_HOSE green, plants NH_HOSE_PICTURE_UNDER_INNOCENT_NAME and NH_DESCRIPTION_PROMISES_HOSE red, RT_SLOW_FRAME red (23.92 ms against 5 ms); certificate to in_game OK. Lane-1 FAIL rows are Polish: SWAY_STAYS_HANGING_SLIDER_VANILLA_WIND_GUST only past the shipped strength, FALLEN_STRANDS_ONE_PER_WIRE and FALLEN_WIRE_LIES_ON_OPEN_GROUND (0.047 cell) are stricter than any bar's words. The 30 not_kernel bars each name a Stage 6 decider in test_table.json (walk_scavenger_base also the Stage 8 look), owed there.
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-23 10:38 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 10:38 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-23 6:00 PM PST, stage change: In-game acceptance (Stage 6) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: visit 1: 206 of 206 PASS, its one mod fix 01c8191ac9 read sound (fix_reviews.jsonl), no line classed wrong, no bar undecided. The owner-sighting fix 1e926ebe4c (CordBuilder.cs) landed after the rows were made, so the change relation sends all 206 checks to run again on its build (build_match, 294942e..9820c9eb8f); the next visit deploys the source first, reruns them, and takes the UNRUN live look of unrun.jsonl (review/wall_plug_look.py).
+- Checks passed: order, by, version, hold.
+- Steward confirms: read visit_1/SUMMARY.md, rows.jsonl, the diffs of 01c8191ac9 and 1e926ebe4c with their tests red at the parent and green at the fix; both sound; check-only re-run on another build than his walk's
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 12:59 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 12:59 PM PST).
 - Record: `version/stage_record.json`.

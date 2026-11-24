@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "d46c5e264a284b1d0434d207f545a127ff4c1287ccd62d1bbac9690bdbc6bb53",
+  "body_sha256": "9b0407364da14bee8cf6d92df21a7b78a65584e95c5c58d58b510111f435571c",
   "reducer": 1,
   "shards": {
    "BACKFILL": 440876,
-   "DISPATCH": 17648,
+   "DISPATCH": 17986,
    "HOLDER.run-1794828190": 994,
    "JUDGE.judge-1794822790": 13753,
    "JUDGE.judge-1794822890": 2037
@@ -1037,7 +1037,7 @@
     "ts": "2026-11-19T23:47:37Z"
    }
   },
-  "events": 637,
+  "events": 638,
   "exit_claims": [],
   "fenced": [],
   "findings": {

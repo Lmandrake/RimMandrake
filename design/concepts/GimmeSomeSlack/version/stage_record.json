@@ -4,7 +4,7 @@
   "version": "0.2.0",
   "stage": "in_game",
   "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-23T12:59:36-08:00",
+  "since": "2026-11-23T18:00:42-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -88,6 +88,23 @@
         "steward_confirms",
         "exit_met",
         "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-23T18:00:42-08:00",
+      "by": "BENCH",
+      "why": "visit 1: 206 of 206 PASS, its one mod fix 01c8191ac9 read sound (fix_reviews.jsonl), no line classed wrong, no bar undecided. The owner-sighting fix 1e926ebe4c (CordBuilder.cs) landed after the rows were made, so the change relation sends all 206 checks to run again on its build (build_match, 294942e..9820c9eb8f); the next visit deploys the source first, reruns them, and takes the UNRUN live look of unrun.jsonl (review/wall_plug_look.py).",
+      "unit": "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1795484190",
+      "confirmed": {
+        "steward_confirms": "read visit_1/SUMMARY.md, rows.jsonl, the diffs of 01c8191ac9 and 1e926ebe4c with their tests red at the parent and green at the fix; both sound; check-only re-run on another build than his walk's"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ]
