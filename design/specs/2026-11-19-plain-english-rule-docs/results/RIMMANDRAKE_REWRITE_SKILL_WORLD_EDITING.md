@@ -10,7 +10,7 @@ Also: skills/rimworld-world-editing/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 25,228 | 29,138 |
+| bytes | 25,228 | 29,129 |
 | words in linted prose | 2,644 | 3,195 |
 | STE violations per 100 words | 4.46 | 2.35 |
 | sentences over 20 words | 45 | 27 |

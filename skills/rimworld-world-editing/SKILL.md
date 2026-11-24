@@ -267,7 +267,7 @@ factions unless you pass `includeHidden`. Read `isCompleteList`.
 
 📌 **The Configure Factions page is already behind you at
 `Page_SelectStartingSite`.** Audit early. If the roster is wrong at this screen, an edit of the page is no longer
-possible. Regenerate, or add a missing faction with `jawa/faction_create`. The "audit the roster" step (row S7) of
+possible. Regenerate, or add a missing faction with `jawa/faction_create`. The "audit the roster" step of
 `design/RimMandrake/world_remake_2026-10-19/06_remake_runbook.md` says who decides.
 
 ---
