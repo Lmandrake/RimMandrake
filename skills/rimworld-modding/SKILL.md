@@ -99,7 +99,6 @@ Pick the source by the QUESTION, not by habit:
 
 - The offline scan (`src/RimMandrake/Utils/animal_inventory.py`) answers "what did the author write, and where do I patch it". Only this source has provenance (mod, file, xpath).
   - ⚠️ The offline scan selects an animal by the `<race>` element of the def ITSELF. A ThingDef that inherits its whole `<race>` block is dropped in silence (§ animal_inventory.py drops defs that inherit <race>).
-  - ⚠️ The offline scan lets a child's `<li>` list replace the parent's list. The game appends the child's list (§4). So take inherited lists (`comps`, `tools`) from the live dump.
 - The live dump (`src/RimMandrake/RimDefDump`, a C# startup mod) answers "what exists at runtime", after patches and after overrides.
 - `Player.log` shows only what is broken. A full load had ~15 dangling cross-references and ~22 config errors. `Player.log` does not list defs. The huge `[Source: X]/[File: Y]` blocks are the "Possible Matches" hint under each error, not a load trace.
 - Join the sources with `src/RimMandrake/Utils/animal_live_diff.py`.

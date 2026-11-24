@@ -59,7 +59,7 @@
       <FilthRate>1.5</FilthRate>
       <Wildness>1.0</Wildness>
     </statBases>
-    <tools>
+    <tools Inherit="False">
       <li>
         <label>left claw</label>
         <labelNoLocation>claw</labelNoLocation>

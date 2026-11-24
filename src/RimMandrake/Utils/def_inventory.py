@@ -2,11 +2,13 @@
 """
 def_inventory.py — the whole modded def database, offline, inheritance resolved.
 
-VERSION 1.0  (2026-08-10)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
+VERSION 1.1  (2026-11-24)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 Docs/manifest: src/RimMandrake/Utils/README.md  ("def_inventory.py" section)
 Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 
 CHANGELOG
+  1.1  the merge follows the engine: a child's <li> list is APPENDED to the parent's
+       (1.0 let it replace the list, so inherited comps, tools and life stages were lost).
   1.0  first cut. Layer 1 of a three-layer design: this module is the generic,
        category-agnostic machinery lifted out of animal_inventory.py v1.4 —
        load-set resolution, the two-pass scan, and the <ParentName> resolver —
@@ -192,20 +194,17 @@ def walk_xml(root_dir):
 # been read, so a parent may sit anywhere in load order relative to its
 # children — which is why the scan below is two-pass.
 #
-# Merge rule, mirroring XmlInheritance.RecursiveNodeCopyOverwriteElements:
-#   * the CHILD's own value always wins; a parent value only fills a gap;
-#   * a node whose children are <li> items — tools, comps, lifeStageAges,
-#     tradeTags, any List<> — is REPLACED WHOLESALE by a child that declares
-#     it. It is NOT merged element-wise. Getting this wrong invents list
-#     entries the def does not have;
-#   * a node whose children are named elements — race, statBases, wildBiomes —
-#     merges per child name, recursively;
-#   * a leaf value node replaces its parent's outright;
-#   * Inherit="False" forces wholesale replacement regardless.
-#
-# These semantics are byte-for-byte the ones animal_inventory.py v1.4 shipped
-# and were verified against 1,243 animals. Do not "improve" them without
-# re-running src/RimMandrake/Utils/def_inventory verification against observed/2026-08-13/inventory/animals.csv.
+# Merge rule: XmlInheritance.RecursiveNodeCopyOverwriteElements (1.6.4871), node for
+# node. Each child element of the child node is taken in order:
+#   * an <li> item (tools, comps, lifeStageAges, tradeTags, any List<>) is
+#     APPENDED to the parent's items. So is every element under a field that
+#     allows duplicate nodes (ALLOW_DUPLICATE_FIELDS);
+#   * any other element merges into the parent's element of the same name,
+#     recursively, or is added when the parent has none;
+#   * a child node with TEXT replaces the parent node's content;
+#   * an EMPTY child node keeps the parent's elements, and clears a text leaf;
+#   * Inherit="False" replaces the parent node's content, a list included.
+# selftest_def_inventory_merge.py holds each rule.
 INHERIT_MAX_DEPTH = 20
 
 # Name/ParentName/Abstract describe a node's own place in the graph and must
@@ -213,44 +212,45 @@ INHERIT_MAX_DEPTH = 20
 _INHERIT_ATTRS = ("Name", "ParentName", "Abstract")
 
 
-def _is_list_node(el):
-    """True when this node's children are <li> items, i.e. a RimWorld List<>."""
-    return any(ch.tag == "li" for ch in el)
+# The fields marked [XmlInheritanceAllowDuplicateNodes] in the 1.6 source: Def, PawnKindDef,
+# ThoughtDef, MemeDef. The engine collects them by name, for every def type.
+ALLOW_DUPLICATE_FIELDS = frozenset((
+    "descriptionHyperlinks", "forcedTraits", "disallowedTraitsWithDegree", "nullifyingTraitDegrees",
+    "agreeableTraits", "disagreeableTraits"))
 
 
-def _overwrite(child, cur):
-    """cur takes the child's content wholesale: text, children, attributes."""
-    cur.text = child.text
-    cur[:] = [copy.deepcopy(ch) for ch in child]
-    cur.attrib.update(child.attrib)
+def _is_list_item(el, parent):
+    """True when the engine appends this element instead of merging it by name."""
+    return el.tag == "li" or parent.tag in ALLOW_DUPLICATE_FIELDS
 
 
 def _merge_into(child, cur):
     """Lay one child node over the already-resolved parent node cur, in place."""
-    if (child.get("Inherit") or "").strip().lower() == "false":
-        _overwrite(child, cur)
+    if (child.get("Inherit") or "").lower() == "false":
+        cur.text = child.text
+        cur[:] = [copy.deepcopy(ch) for ch in child]
+        cur.attrib.update((k, v) for k, v in child.attrib.items() if k != "Inherit")
         return
-    # Either side being a text leaf, or either side being a <li> list, means the
-    # child replaces the node outright. Everything else is an element container
-    # and merges per child name — including a child that is EMPTY, which is a
-    # no-op, not a wipe. (Clearing an inherited list needs Inherit="False";
-    # that is the whole reason the attribute exists.)
-    if ((child.text or "").strip() or (cur.text or "").strip()
-            or _is_list_node(child) or _is_list_node(cur)):
-        _overwrite(child, cur)
-        return
+    cur.attrib.clear()
     cur.attrib.update(child.attrib)
+    texts = [t for t in [child.text] + [ch.tail for ch in child] if (t or "").strip()]
+    if texts:
+        cur.text = texts[-1]
+        cur[:] = []
+        return
+    if not len(child):
+        if not len(cur):
+            cur.text = None
+        return
     for ce in child:
-        match = cur.find(ce.tag)
+        match = None if _is_list_item(ce, child) else cur.find(ce.tag)
         if match is None:
             cur.append(copy.deepcopy(ce))
         else:
+            # cur.find() is the FIRST match, as the engine's current[name] is. So a def that
+            # declares one container twice (three Mythic Ages animals declare <comps> twice)
+            # appends both lists to the one node.
             _merge_into(ce, match)
-            # NOTE: cur.find() returns the FIRST match, so a def that declares
-            # the same container twice (three Mythic Ages animals declare
-            # <comps> twice) folds the second onto the first and the second
-            # wins — which is what RimWorld does, since it assigns the field
-            # once per node. Do not "fix" this into a merge.
 
 
 def _walk_chain(node, by_name):

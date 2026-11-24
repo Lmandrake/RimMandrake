@@ -127,7 +127,7 @@ live RimBridge dump gives you post-resolution values but hides their origin.
 So: this is the authoring tool; a live dump is the verification tool.
 
 What this CANNOT see (documented honestly, do not forget it):
-  * PatchOperation results. Patches apply at load; this reads base XML.
+  * PatchOperation results. Patches apply before inheritance; this reads base XML.
     Mitigation: scan_patches() scans Patches/ and reports every operation whose
     xpath touches an animal/biome, so you at least know where to look.
   * Mod-vs-mod override winners for identical defNames (flagged, not resolved).
@@ -142,9 +142,9 @@ carries a Name attribute in the whole load set is indexed, cross-mod, including
 abstract bases that carry no <race> at all (BasePawn). Each animal's ParentName
 chain is walked to the root and merged with RimWorld's XmlInheritance rules: the
 child's own value always wins, named-child nodes (race, statBases, wildBiomes)
-merge per name, and <li> list nodes (tools, comps, lifeStageAges, tradeTags,
-litterSizeCurve/points) are REPLACED wholesale by any child that declares them.
-Inherit="False" forces replacement. Cycles and runaway chains are capped; a
+merge per name, and the child's <li> items (tools, comps, lifeStageAges,
+tradeTags, litterSizeCurve/points) are APPENDED to the parent's items.
+Inherit="False" replaces the parent's content. Cycles and runaway chains are capped; a
 ParentName with no matching Name lands in the unresolvedParent column instead of
 vanishing. The merge semantics live in def_inventory.py — read them there.
 
@@ -163,7 +163,8 @@ STILL APPROXIMATE:
   * Which ThingDefs count as animals is still decided on the def's OWN <race>
     element, before merging. A def that inherits <race> and declares none is
     not listed. Deliberate: it keeps the row set identical to v1.2's.
-  * Patches still run after inheritance in the real game; see above.
+  * The game runs every patch BEFORE it resolves inheritance, so a patch on an
+    abstract base reaches every child. No patch is applied here; see above.
 
 OUTPUTS
   animals.csv          one row per animal, ~90 columns (see COLUMN GROUPS)
