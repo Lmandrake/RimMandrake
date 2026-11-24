@@ -1,7 +1,7 @@
 # Pyrelands 0.1.0: walk brief, arrival 2
 written_by: rm-detached-bench-rimmandrake-steward-pyrelands-pre-human-1795561517
 
-Written 2026-11-24, 3:25 PM PST, by a fresh reader. This reader made none of this version's evidence writes (no stage
+Written 2026-11-24, 3:20 PM PST, by a fresh reader. This reader made none of this version's evidence writes (no stage
 move, no in-game row). Sources: the stage record, the summary, rows, strange things and pictures of visit 9
 (`D:\Luke\dev\RimMandrake\design\concepts\Pyrelands\version\in_game\visit_9\`), `build_match.py check --mod Pyrelands`,
 `D:\Luke\dev\RimMandrake\design\concepts\Pyrelands\journal.md`, `git log` on `src\RimMandrake\Pyrelands`, the open items,
