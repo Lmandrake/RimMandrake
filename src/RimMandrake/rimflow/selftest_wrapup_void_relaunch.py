@@ -14,6 +14,8 @@ aged past DEBT_AGE_S and stood until a hand `resolve`, though the game process h
   V6  clock-skew margin: a debt owed within VOID_MARGIN_S before the relaunch stands; a non-object debt file never
       crashes sweep
   V5  World.game_relaunched reads the file RM_WRAPUP_PREV_LOG names: its mtime; '' or missing = None
+  V7  new scene and setting debts carry the game's letter, including when filed in an open record
+  V8  only that game's previous log can void a registered or filed debt; an absent log leaves it standing
 """
 import glob
 import json
@@ -27,6 +29,9 @@ sys.path.insert(0, HERE)
 TMP = tempfile.mkdtemp(prefix="selftest_wrapup_void_")
 os.environ["RM_WRAPUP_DIR"] = os.path.join(TMP, "state")
 os.environ["RM_WRAPUP_PREV_LOG"] = ""
+os.environ["RM_HOST"] = "archmagi"
+os.environ["RM_GAME_INSTANCE"] = "a"
+os.environ["RM_INSTANCES_ROOT"] = os.path.join(TMP, "instances")
 
 import wrapup  # noqa: E402
 
@@ -46,7 +51,7 @@ class Fake(wrapup.World):
     def game_a_hold(self):
         return None
 
-    def game_relaunched(self):
+    def game_relaunched(self, game="a"):
         if self.raises:
             raise OSError("drive gone")
         return self.relaunched
@@ -152,5 +157,67 @@ check(wrapup.World().game_relaunched() is None, "V5 missing file: None")
 os.environ["RM_WRAPUP_PREV_LOG"] = ""
 check(wrapup.World().game_relaunched() is None, "V5 empty name: None")
 
-print("selftest_wrapup_void_relaunch: %s (%d fail)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
-sys.exit(1 if FAILS else 0)
+def t_debts_keep_the_games_letter():
+    os.environ["RM_GAME_INSTANCE"] = "ArchSmall"
+    try:
+        scene = wrapup.owe("scene", "staged scene", owner="unit:v7")
+        setting = wrapup.owe("setting", "forced setting", owner="unit:v7", extra={"key": "debug_settings:x"})
+    finally:
+        os.environ["RM_GAME_INSTANCE"] = "a"
+    debts = [wrapup._read_json(wrapup._p("debts", tok + ".json")) for tok in (scene, setting)]
+    check(all(d.get("game") == "b" for d in debts), "V7 owe stamps the process game's letter on settings and scenes")
+    ctx = wrapup.unit_ctx("v7", "BENCH", None)
+    rec = wrapup.run(Fake(), ctx)
+    rows = [r for r in rec["rows"] if r["kind"] == "debt"]
+    check(len(rows) == 2 and all(r.get("game") == "b" for r in rows), "V7 filed rows keep the debt's game")
+    reset()
+
+
+def t_only_the_debts_game_can_void_it():
+    a_log = os.path.join(TMP, "Player-prev.log")
+    b_log = os.path.join(os.environ["RM_INSTANCES_ROOT"], "b", "Player.log.prev")
+    os.makedirs(os.path.dirname(b_log))
+    open(a_log, "w").close()
+    os.utime(a_log, (launch, launch))
+    os.environ["RM_WRAPUP_PREV_LOG"] = a_log
+    try:
+        named = put_debt(old, "pid:1")
+        path = wrapup._p("debts", named + ".json")
+        wrapup.amend(named, {"game": "b"})
+        filed = {"kind": "debt", "act": "filed", "token": "filed-b", "game": "b", "at": wrapup._iso(old)}
+        wrapup._write_json(wrapup._p("open", "unit-v8.json"), {"rows": [filed]})
+        check(standing_tokens(wrapup.World(), now) == sorted([named, "filed-b"]),
+              "V8 an unreadable ArchSmall log leaves its aged debt and filed row standing after ArchBig relaunched")
+        wrapup.sweep()
+        check(os.path.isfile(path) and os.path.isfile(wrapup._p("open", "unit-v8.json")),
+              "V8 sweep leaves ArchSmall's debts when only ArchBig relaunched")
+        os.mkdir(b_log)
+        os.utime(b_log, (launch, launch))
+        check(standing_tokens(wrapup.World(), now) == sorted([named, "filed-b"]),
+              "V8 a directory at ArchSmall's log path cannot void a debt")
+        os.rmdir(b_log)
+        reset()
+        put_debt(old, "pid:1")
+        wrapup.amend(named, {"game": "b"})
+        wrapup._write_json(wrapup._p("open", "unit-v8.json"), {"rows": [filed]})
+        os.utime(a_log, (old - 60, old - 60))
+        open(b_log, "w").close()
+        os.utime(b_log, (launch, launch))
+        legacy = put_debt(old, "pid:2")
+        wrapup.sweep()
+        check(standing_tokens(wrapup.World(), now) == [legacy] and not os.path.isfile(path),
+              "V8 ArchSmall's own relaunch voids its debts and leaves legacy ArchBig debts standing")
+    finally:
+        os.environ["RM_WRAPUP_PREV_LOG"] = ""
+        reset()
+
+
+def main():
+    t_debts_keep_the_games_letter()
+    t_only_the_debts_game_can_void_it()
+    print("selftest_wrapup_void_relaunch: %s (%d fail)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
+    return 1 if FAILS else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -3662,19 +3662,26 @@ def _bridge_hold(hk):
     return holder, tok
 
 
-def _restore_owed_settings(seat, holder):
+def _restore_owed_settings(seat, holder, hk=model.DEFAULT_BRIDGE_HOST):
     """RIMMANDRAKE_WIRE_WRAPUP_RESTORE_ORPHANED_BY_RETIRED_TICK: before a seat gives back its OWN hold, the settings the
     wrap-up register still owes go back through it (wrapup.restore_at_release; outside the bridge lock, which a 90 s
     replay must not hold, so the hold is re-read just before it). A crossed release never replays: the real holder may
     still be working. A take that crosses this seat DURING the replay is an override its taker chose. Never stops the
     release. -> the line printed, or None when not asked."""
-    if not holder or holder != seat:
-        return None
-    if _bridge_hold(model.DEFAULT_BRIDGE_HOST)[0] != seat:     # re-read just before: it changed hands since the top read
-        return None
     try:
+        machine, inst = model.split_bridge_host(hk)
+        local = host_guard.local_machine()
+        if hk == model.DEFAULT_BRIDGE_HOST:
+            if local not in (None, machine) or holder != seat or _bridge_hold(hk)[0] != seat:
+                return None
+        else:
+            if local != machine:
+                return None
+            r = lock_reading(hk)                 # the local driver lock, before the release takes the bridge lock
+            if not r or not r.get("mine") or lock_holder(r) != seat:
+                return None
         import wrapup
-        code, line = wrapup.restore_at_release()
+        code, line = wrapup.restore_at_release(game=inst or game_lock.GAME_A)
     except Exception as e:  # noqa: BLE001
         code, line = None, "%s: %s" % (type(e).__name__, str(e))
     if line.startswith("not run: "):
@@ -4305,9 +4312,9 @@ def cmd_bridge(args, seat):
                 print("bridge release --mine: this process tree does not hold the %s bridge (%s) - nothing released"
                       % (hk, r["line"]))
                 return 0
+            _restore_owed_settings(seat, seat, hk)
             if hk != model.DEFAULT_BRIDGE_HOST:
                 return _bridge_other_host(args, seat, w, hk)
-            _restore_owed_settings(seat, seat)
             return _bridge_release(seat, w, seat)
         now, tok = _bridge_hold(hk)          # no lock readable here: the ledger's hold, as before
         if now != seat:
@@ -4335,6 +4342,8 @@ def cmd_bridge(args, seat):
     if args.action == "who" and seat == "OWNER" and not _relayed_owner_command():
         unrecorded = _stamp_bare_bridge(w)
     if hk != model.DEFAULT_BRIDGE_HOST:
+        if args.action == "release":
+            _restore_owed_settings(seat, holder, hk)
         return _bridge_other_host(args, seat, w, hk)
     if args.action == "who":
         return _bridge_who() or unrecorded

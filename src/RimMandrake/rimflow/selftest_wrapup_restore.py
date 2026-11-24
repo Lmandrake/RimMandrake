@@ -66,7 +66,7 @@ class World(wrapup.World):
     def doing_claims(self, seat, since, session=None):
         return []
 
-    def game_relaunched(self):
+    def game_relaunched(self, game="a"):
         return self.relaunched
 
     def owner_alive(self, debt):

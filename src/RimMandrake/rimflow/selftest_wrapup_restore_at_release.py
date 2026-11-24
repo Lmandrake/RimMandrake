@@ -14,6 +14,8 @@ release` now replays the owed settings while the releasing seat still holds the 
   W7  a release on a throwaway ledger (RIMFLOW_LEDGER) never replays the real register (RM_WRAPUP_DIR unset): its hold
       is a fixture, the game it would write is real. RIMMANDRAKE_HOLD_WRAPUP_RESTORE_OFF_A_LIVE_OWNERS_DEBT: on
       2026-11-23 ./publish's run of selftest_conductor_acts.py replayed live debts onto ArchBig this way
+  W8  release preflight and actual replay use the same game, and door writes settle only that game's keys
+  W9  an explicit local game release passes that game to python.exe before giving up its hold
 
 Runs the real cli on a throwaway ledger, wrap-up register and fake python.exe; touches nothing real."""
 import os
@@ -29,6 +31,8 @@ FAILS = []
 TMP = tempfile.mkdtemp(prefix="st_wrapup_release_")
 os.environ["RM_WRAPUP_DIR"] = os.path.join(TMP, "wrapup")
 os.environ["RM_WRAPUP_PREV_LOG"] = ""           # the real game's relaunch never voids a test debt
+os.environ["RM_GAME_INSTANCE"] = "a"
+os.environ["RM_INSTANCES_ROOT"] = os.path.join(TMP, "instances")
 sys.path[:0] = [HERE, os.path.join(RIM, "Utils")]
 import wrapup  # noqa: E402
 
@@ -43,12 +47,13 @@ BIN = os.path.join(TMP, "bin")
 MARK = os.path.join(TMP, "python_exe_calls.txt")
 
 
-def fake_bin(rc=0):
+def fake_bin(rc=0, mark_game=False):
     os.makedirs(BIN, exist_ok=True)
     with open(os.path.join(BIN, "python.exe"), "w") as f:
         # each call records its args and how many `released` events the ledger held as it started (0 = still held)
-        f.write("#!/bin/sh\necho \"$@ released=$(cat \"$(dirname \"$RIMFLOW_LEDGER\")\"/events/*.jsonl | grep -c '\"released\"')\" >> %s\necho 'wrapup restore: 1 restored, 0 failed, 0 without a plan, 0 void; "
-                "sweep 0 cleared, 0 open'\nexit %d\n" % (MARK, rc))
+        game_arg = " game=${RM_GAME_INSTANCE:-a} port=${GABP_SERVER_PORT:-unset}" if mark_game else ""
+        f.write("#!/bin/sh\necho \"$@ released=$(cat \"$(dirname \"$RIMFLOW_LEDGER\")\"/events/*.jsonl | grep -c '\"released\"')%s\" >> %s\necho 'wrapup restore: 1 restored, 0 failed, 0 without a plan, 0 void; "
+                "sweep 0 cleared, 0 open'\nexit %d\n" % (game_arg, MARK, rc))
     with open(os.path.join(BIN, "wslpath"), "w") as f:
         f.write("#!/bin/sh\necho \"$2\"\n")
     for n in ("python.exe", "wslpath"):
@@ -82,7 +87,7 @@ class Rig:
             "RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDECODE", "RIMFLOW_RAN_BY", "RM_DRIVER_PID",
             "RIMFLOW_BRIDGE_SEAT", "RELENTLESS_SUPERVISOR", "RM_HOST_GUARD_GEN", "RM_UNDER_SELFTEST")}
         self.base.update(RIMFLOW_LEDGER=os.path.join(self.tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(self.tmp, "items"),
-                         RIMFLOW_PROBE="no-reading",
+                         RIMFLOW_PROBE="no-reading", RM_HOST="archmagi", RM_CONTROL_DB=os.path.join(self.tmp, "control.db"),
                          RIMFLOW_DISPATCH_LOCK=os.path.join(self.tmp, "dispatch.lock"),
                          RIMFLOW_BRIDGE_LOCK=os.path.join(self.tmp, "bridge.lock"),
                          RIMFLOW_OWNER_ACT_STAMP=os.path.join(self.tmp, "act.json"),
@@ -156,7 +161,7 @@ class World:
     def __init__(self, relaunched=None):
         self.t = relaunched
 
-    def game_relaunched(self):
+    def game_relaunched(self, game="a"):
         return self.t
 
 
@@ -195,10 +200,94 @@ def unit_rows():
     check(len(ran) == 2, "W7 a throwaway ledger with its own register still replays it (wslpath + python.exe: %d)" % len(ran))
 
 
+def t_replay_is_limited_to_the_released_game():
+    clear_register()
+    b = owe_planned()
+    wrapup.amend(b, {"game": "b"})
+    ran = []
+
+    def runner(args, **kw):
+        ran.append((args[0], kw.get("env", {}).get("RM_GAME_INSTANCE")))
+        return subprocess.CompletedProcess(args, 0, "", "")
+
+    code, line = wrapup.restore_at_release(runner=runner, world=World(), env={"RM_GAME_INSTANCE": "a"})
+    check(not ran and code is None and "no planned setting debt" in line,
+          "W8 releasing ArchBig with only ArchSmall debt skips the restore subprocess")
+    ran.clear()
+    code, _ = wrapup.restore_at_release(runner=runner, world=World(), env={"RM_GAME_INSTANCE": "b"})
+    check(code == 0 and ran == [("wslpath", None), ("python.exe", "b")],
+          "W8 releasing ArchSmall starts the restore subprocess for ArchSmall")
+
+    a = owe_planned()
+    a_path = wrapup._p("debts", a + ".json")
+    legacy = wrapup._read_json(a_path)
+    legacy.pop("game", None)
+    wrapup._write_json(a_path, legacy)
+    os.environ["RM_GAME_INSTANCE"] = "b"
+    try:
+        out = wrapup.restore(lambda tool, params: {"success": True, "valueAfter": params["value"]}, World())
+    finally:
+        os.environ["RM_GAME_INSTANCE"] = "a"
+    check(out["restored"] == [b] and os.path.isfile(a_path),
+          "W8 ArchSmall replay leaves a legacy ArchBig plan untouched (%d replayed)" % len(out["restored"]))
+
+
+def t_answered_writes_pay_only_the_current_games_debt():
+    clear_register()
+    d = wrapup._door()
+    tool = "jawa/debug_settings"
+    params = {"action": "set", "field": "logRaidInfo"}
+    force = {"success": True, "valueBefore": False, "valueAfter": True}
+    restore = {"success": True, "valueBefore": True, "valueAfter": False}
+    d.settings_write(tool, params, force)
+    a, = wrapup.debts_of(wrapup.owner_key())
+    os.environ["RM_GAME_INSTANCE"] = "b"
+    try:
+        acts = d.settings_write(tool, params, force)
+        check(acts == [("owed", "debug_settings:logRaidInfo")],
+              "W8 forcing the same key in ArchSmall opens an independent debt")
+        d.settings_write(tool, params, restore)
+        check(wrapup.debts_of(wrapup.owner_key()) == [a],
+              "W8 putting a key back in ArchSmall leaves ArchBig's keyed debt owed")
+    finally:
+        os.environ["RM_GAME_INSTANCE"] = "a"
+
+
+def t_release_passes_the_selected_game_to_python():
+    clear_register()
+    fake_bin(mark_game=True)
+    b = owe_planned()
+    wrapup.amend(b, {"game": "b"})
+    g = Rig("w9")
+    g.base["GABP_SERVER_PORT"] = "5174"             # the ambient game's endpoint must not follow the release
+    take = ("bridge", "take", "--host", "ArchSmall", "--for", "selftest")
+    release = ("bridge", "release", "--host", "ArchSmall")
+    for flags in ((), ("--mine",)):
+        rc, out = g.rf("BENCH", *take)
+        check(rc == 0, "W9 setup: BENCH holds ArchSmall (%s)" % out.strip()[-160:])
+        rc, out = g.rf("BENCH", *release, *flags)
+        want = " restore released=%d game=b port=unset" % bool(flags)
+        check(rc == 0 and calls() == [os.path.join(HERE, "wrapup.py") + want],
+              "W9 explicit ArchSmall release%s runs its restore before release: %s" %
+              (" --mine" if flags else "", calls()))
+        if os.path.exists(MARK):
+            os.remove(MARK)
+    owe_planned()
+    g = Rig("w9a")
+    g.rf("BENCH", "bridge", "take", "--for", "selftest")
+    g.base.update(RM_GAME_INSTANCE="b", GABP_SERVER_PORT="5175")
+    rc, out = g.rf("BENCH", "bridge", "release", "--host", "ArchBig")
+    check(rc == 0 and calls() == [os.path.join(HERE, "wrapup.py") + " restore released=0 game=a port=unset"],
+          "W9 explicit ArchBig release from an ArchSmall shell targets ArchBig: %s" % calls())
+
+
 def main():
     try:
         unit_rows()
         release_rows()
+        t_replay_is_limited_to_the_released_game()
+        t_answered_writes_pay_only_the_current_games_debt()
+        t_release_passes_the_selected_game_to_python()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
     print("selftest_wrapup_restore_at_release: %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))

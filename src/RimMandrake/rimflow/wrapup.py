@@ -42,7 +42,7 @@ line to <dir>/runs.jsonl, an error included: the wrap-up itself never fails sile
     wrapup.py owe --kind setting|scene --what TEXT [--undo TEXT] [--owner KEY]    -> prints the token
     wrapup.py paid TOKEN
     wrapup.py list | sweep | resolve KEY --why TEXT
-    wrapup.py restore [--probe]     (python.exe, bridge held) replay every owed setting's `plan`, then sweep;
+    wrapup.py restore [--probe]     (python.exe, bridge held) replay this game's owed setting plans, then sweep;
                                     `rimflow bridge release` runs it before a seat gives back its own hold
 
 State dir: RM_WRAPUP_DIR (default D:\\ClaudeWork\\rimmandrake\\wrapup). Names no host or account.
@@ -59,6 +59,11 @@ import time
 import uuid
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+UTILS = os.path.join(os.path.dirname(HERE), "Utils")
+if UTILS not in sys.path:
+    sys.path.insert(0, UTILS)
+import game_instance  # noqa: E402
+
 DEFAULT_DIR = "/mnt/d/ClaudeWork/rimmandrake/wrapup"
 GIT_TIMEOUT_S = 30
 STANDING = ("filed",)
@@ -76,7 +81,7 @@ DEBT_AGE_S = 6 * 3600       # a debt older than this stands whoever owes it: an 
 # process that had since exited, voided by hand each time. Every debt is in-process state: DebugSettings, the loaded
 # game's difficulty, a ModSettings static (jawa/mod_settings_field never calls WriteSettings), a staged scene on a
 # disposable map. So a debt owed before the game's last launch died with that process. Unity rotates Player.log to
-# Player-prev.log at launch, keeping its mtime: that mtime is the end of the previous process, before the current one.
+# Player-prev.log for game a; game_instance.launch saves Player.log.prev for named games. Both keep the mtime.
 # VOID_MARGIN_S: the log's mtime is the Windows clock, a debt's `at` often WSL's, which lags after a sleep; a debt must
 # predate the relaunch by this much to be void (one owed by the running game inside the lag must still stand).
 VOID_MARGIN_S = 300
@@ -163,7 +168,7 @@ def owner_key(env=None):
 
 
 def owe(kind, what, undo=None, owner=None, extra=None):
-    """Record that this agent left the game changed (a setting forced, a scene staged) -> token for paid().
+    """Record that this agent left its current game changed (a setting forced, a scene staged) -> token for paid().
     `extra` adds fields (the bridge door's `key` and `orig`). Best effort for the caller: a register that cannot be
     written prints and returns None, never raises."""
     tok = "%s-%s" % (time.strftime("%Y%m%dT%H%M%S", time.gmtime()), uuid.uuid4().hex[:8])
@@ -171,8 +176,9 @@ def owe(kind, what, undo=None, owner=None, extra=None):
     body.update({"token": tok, "kind": kind, "what": what, "undo": undo, "owner": owner or owner_key(),
                  "at": _iso(_now()), "ns": time.time_ns(), "cwd": os.getcwd()})
     try:
+        body["game"] = game_instance.current()
         _write_json(_p("debts", tok + ".json"), body)
-    except OSError as e:
+    except (OSError, game_instance.InstanceError) as e:
         sys.stderr.write("wrapup: could not record debt %r: %s\n" % (what, e))
         return None
     return tok
@@ -213,12 +219,17 @@ def _held(row):
     return bool(row.get("token") and (row.get("keyed") or row.get("plan")))
 
 
+def _debt_game(debt):
+    return debt.get("game", "a")               # legacy debts belong to ArchBig
+
+
 def debts_keyed(key):
-    """Open debts carrying this `key` (the bridge door's setting identity), whoever owes them."""
+    """Open debts carrying this `key` on the current game, whoever owes them."""
+    game = game_instance.current()
     out = []
     for f in sorted(glob.glob(_p("debts", "*.json")) + glob.glob(_p("debts", "filed", "*.json"))):
         d = _read_json(f)
-        if isinstance(d, dict) and d.get("key") == key:
+        if isinstance(d, dict) and d.get("key") == key and _debt_game(d) == game:
             out.append(d)
     return out
 
@@ -396,15 +407,20 @@ class World(object):
             return False
         return bool(at is None or started <= at + 1.0)
 
-    def game_relaunched(self):
-        """-> epoch seconds the previous game process last wrote its log (every process older than the running one
-        had ended by then), or None when unmeasured: a debt is never voided on ignorance. Env RM_WRAPUP_PREV_LOG
-        names the file ('' = unmeasured)."""
-        p = os.environ.get("RM_WRAPUP_PREV_LOG", PREV_LOG_WIN if os.name == "nt" else PREV_LOG_WSL)
+    def game_relaunched(self, game="a"):
+        """-> epoch seconds the previous process of this game last wrote its log, or None when unmeasured.
+        RM_WRAPUP_PREV_LOG overrides ArchBig's file ('' = unmeasured)."""
         try:
-            return os.path.getmtime(p) if p else None
-        except OSError:
-            return None
+            if game == "a":
+                p = os.environ.get("RM_WRAPUP_PREV_LOG", PREV_LOG_WIN if os.name == "nt" else PREV_LOG_WSL)
+            else:
+                p = game_instance.log_path(game_instance.check_name(game)) + ".prev"
+            if p:
+                with open(p, "rb") as log:
+                    return os.fstat(log.fileno()).st_mtime
+        except (OSError, game_instance.InstanceError):
+            pass
+        return None
 
 
 def own_event(e, seat, session=None):
@@ -513,7 +529,7 @@ def census(world, ctx):
         rows.append({"kind": "debt", "what": "%s: %s" % (d.get("kind"), d.get("what")), "act": "filed",
                      "why": "still owed at the agent's end; undo: %s" % (d.get("undo") or "none recorded"),
                      "token": d.get("token"), "keyed": bool(d.get("key")), "plan": bool(d.get("plan")),
-                     "at": d.get("at")})
+                     "at": d.get("at"), "game": _debt_game(d)})
     for c in ctx["clones"]:
         rows.append(check_clone(world, c, ctx.get("carried", False)))
     if ctx["kind"] == "session" and ctx.get("seat"):
@@ -569,10 +585,11 @@ def run(world, ctx):
 
 # ---------------------------------------------------------------- re-measure what is filed (ops_watch, sweep)
 
-def void_debt(world, at):
-    """-> the relaunch time (ISO) when a debt owed at `at` died with an exited game process, else None."""
+def void_debt(world, debt, fallback_at=None):
+    """-> the relaunch time (ISO) when the debt died with its game's exited process, else None."""
+    at = debt.get("at") or fallback_at
     try:
-        t = world.game_relaunched()
+        t = world.game_relaunched(_debt_game(debt))
     except Exception:  # noqa: BLE001  unmeasured: the debt stands
         return None
     if t is None or not at:
@@ -584,7 +601,7 @@ def void_debt(world, at):
 def row_standing(world, row, rec):
     """Is this filed row's debris still there?"""
     k = row.get("kind")
-    if k == "debt" and void_debt(world, row.get("at") or rec.get("at")):
+    if k == "debt" and void_debt(world, row, rec.get("at")):
         return False                            # owed to a game process that has exited
     if k == "clone":
         if check_clone(world, row["what"], False)["act"] not in ("filed", "unmeasured"):
@@ -624,7 +641,7 @@ def aged_debts(now=None, world=None):
         d = _read_json(f)
         if not isinstance(d, dict):
             d = None                            # unreadable or not an object: stands as unreadable
-        if d is not None and world is not None and void_debt(world, d.get("at")):
+        if d is not None and world is not None and void_debt(world, d):
             continue
         if d is None or str(d.get("at") or "") < cut:
             out.append(d or {"token": os.path.basename(f)[:-5], "what": "unreadable debt file"})
@@ -637,11 +654,12 @@ def pay_void_debts(world):
     n = 0
     for f in sorted(glob.glob(_p("debts", "*.json")) + glob.glob(_p("debts", "filed", "*.json"))):
         d = _read_json(f)
-        rel = void_debt(world, d.get("at")) if isinstance(d, dict) else None
+        rel = void_debt(world, d) if isinstance(d, dict) else None
         if not rel:
             continue
-        d["resolved"] = {"at": _iso(_now()), "why": "void: owed at %s to a game process that exited by %s "
-                                                     "(Player-prev.log)" % (d.get("at"), rel)}
+        log = "Player-prev.log" if _debt_game(d) == "a" else "Player.log.prev"
+        d["resolved"] = {"at": _iso(_now()), "why": "void: owed at %s to a game process that exited by %s (%s)"
+                                                     % (d.get("at"), rel, log)}
         _write_json(_p("resolved", "debt-" + os.path.basename(f)), d)
         try:
             os.remove(f)
@@ -766,7 +784,6 @@ def _process_started(pid):
 
 
 def _door():
-    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
     import wrapup_debt
     return wrapup_debt
 
@@ -781,12 +798,13 @@ def restore(call, world=None):
     A void debt (owed to an exited game) is never replayed: sweep pays it. A debt with no plan is left, named.
     -> {"restored": [token], "failed": [(token, why)], "left": [(token, why)], "void": n, "swept": [cleared, open]}"""
     world = world or World()
+    game = game_instance.current()
     D = _door()
     out = {"restored": [], "failed": [], "left": [], "void": 0}
     debts = []
     for f in glob.glob(_p("debts", "*.json")) + glob.glob(_p("debts", "filed", "*.json")):
         d = _read_json(f)
-        if isinstance(d, dict) and d.get("kind") == "setting" and d.get("token"):
+        if isinstance(d, dict) and d.get("kind") == "setting" and d.get("token") and _debt_game(d) == game:
             debts.append(d)
     # exact plans first, newest first; then the plans that CHECK a forced value is gone (a legacy debt kept no
     # pre-value), so every exact write has run before a check is asked
@@ -796,7 +814,7 @@ def restore(call, world=None):
     D.RESTORING[0] += 1                         # the door pays what these writes put back and owes nothing
     try:
         for d in debts:
-            if void_debt(world, d.get("at")):
+            if void_debt(world, d):
                 out["void"] += 1
                 continue
             try:
@@ -841,25 +859,27 @@ RESTORE_AT_RELEASE_S = 90
 WINDOWS_DIRS = ("/mnt/c/WINDOWS/system32", "/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0")
 
 
-def owed_plans(world=None):
-    """-> tokens of the setting debts restore() would replay now (a plan, not void). Read on this side: no bridge."""
+def owed_plans(world=None, game=None):
+    """-> tokens of this game's planned, non-void setting debts. Read on this side: no bridge."""
     world = world or World()
+    game = game or game_instance.current()
     D = _door()
     out = []
     for f in glob.glob(_p("debts", "*.json")) + glob.glob(_p("debts", "filed", "*.json")):
         d = _read_json(f)
-        if (isinstance(d, dict) and d.get("kind") == "setting" and d.get("token") and D.plan_of(d)
-                and not void_debt(world, d.get("at"))):
+        if (isinstance(d, dict) and d.get("kind") == "setting" and d.get("token") and _debt_game(d) == game
+                and D.plan_of(d) and not void_debt(world, d)):
             out.append(d["token"])
     return out
 
 
-def restore_at_release(runner=subprocess.run, world=None, timeout=None, env=None):
+def restore_at_release(runner=subprocess.run, world=None, timeout=None, env=None, game=None):
     """RIMMANDRAKE_WIRE_WRAPUP_RESTORE_ORPHANED_BY_RETIRED_TICK: `rimflow bridge release` calls this while the releasing
     seat still holds the bridge, so a setting a run forced and still owes goes back at the end of every hold (the retired
     Relentless tick did it from relentless_live.run; nothing did after). Spawns `python.exe wrapup.py restore` (the one
-    interpreter here that reaches the bridge) only when a planned debt is owed. Never raises; never a verdict on the
-    release. -> (exit, line): exit None = not run or timed out, the line says which."""
+    interpreter here that reaches the bridge) only when a planned debt is owed to the released game. `game` is the
+    release's selected game, defaulting to the child environment's game. Never raises; never a verdict on the release.
+    -> (exit, line): exit None = not run or timed out, the line says which."""
     env = dict(os.environ if env is None else env)
     if env.get("RM_UNDER_SELFTEST") and runner is subprocess.run:
         return None, "not run: under a selftest"
@@ -868,11 +888,29 @@ def restore_at_release(runner=subprocess.run, world=None, timeout=None, env=None
         # real game (RIMMANDRAKE_HOLD_WRAPUP_RESTORE_OFF_A_LIVE_OWNERS_DEBT: ./publish's selftest_conductor_acts.py did)
         return None, "not run: a throwaway ledger (RIMFLOW_LEDGER) never replays the real register"
     try:
-        toks = owed_plans(world)
+        ambient_game = game_instance.check_name(env.get(game_instance.INSTANCE_ENV, "").strip() or "a")
+        game = game_instance.check_name(game) if game is not None else ambient_game
+        toks = owed_plans(world, game)
     except Exception as e:  # noqa: BLE001  unreadable register: say so, the release goes on
         return None, "UNMEASURED: the debt register could not be read: %s: %s" % (type(e).__name__, str(e))
     if not toks:
         return None, "not run: no planned setting debt is owed"
+    if game != ambient_game:
+        # The old game's endpoint and guard overrides must not follow an explicit release of another game.
+        for k in ("GABP_SERVER_PORT", "GABP_TOKEN", "RIMBRIDGE_HOST", "RM_GAME_LOGDIR", "RM_GAME_USERDATA",
+                  "RIMFLOW_DRIVER_LOCK", "RM_HOST_GUARD_GEN"):
+            env.pop(k, None)
+        if game == "a" and env.get("RM_GAME_A_LOGDIR"):
+            env["RM_GAME_LOGDIR"] = env["RM_GAME_A_LOGDIR"]
+    env[game_instance.INSTANCE_ENV] = game
+    wslenv = [k for k in env.get("WSLENV", "").split(":") if k]
+    names = {k.split("/", 1)[0] for k in wslenv}
+    for entry in ("RM_GAME_INSTANCE", "RM_GAME_LOGDIR/p", "RM_INSTANCES_ROOT/p", "RM_DATA_ROOT/p", "RM_WRAPUP_DIR/p",
+                  "RM_WRAPUP_PREV_LOG/p"):
+        name = entry.split("/", 1)[0]
+        if name in env and name not in names:
+            wslenv.append(entry)
+    env["WSLENV"] = ":".join(wslenv)
     script, timeout = os.path.join(HERE, "wrapup.py"), timeout or RESTORE_AT_RELEASE_S
     have = [d for d in (env.get("PATH") or "").split(os.pathsep) if d]
     env["PATH"] = os.pathsep.join(have + [d for d in WINDOWS_DIRS + tuple(sorted(glob.glob(
@@ -892,7 +930,6 @@ def restore_at_release(runner=subprocess.run, world=None, timeout=None, env=None
 
 def _bridge_call():
     """A call(tool, params) through the one Python door (rimbridge_client.RimBridge; python.exe on this host)."""
-    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
     import rimbridge_client as RC
     host, port, token = RC.resolve_endpoint()
     if not token:
