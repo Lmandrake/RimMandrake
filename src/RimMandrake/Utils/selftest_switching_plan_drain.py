@@ -201,11 +201,30 @@ def t_a_new_launch_waits_while_the_account_drains():
     check("an unreadable notice refuses nothing", DH.drain_refusal(NOW, {}, None, path=str(p)) is None)
 
 
+def t_a_new_launch_goes_at_the_soft_line():
+    import detached_helper as DH
+    p = TMP / "out" / "notice.json"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    name = "a-new-launch-goes-at-the-soft-line"
+    for left in (3, 2):     # system: line 1, soft 3
+        for runs in ([], RUN):
+            d = D({**OFF, "system": R(left, 100), "lukas": R(98, 120)}, "system", runs)
+            check("%s: system at %s%%, %d live run(s), lukas full: soft, no drain, and no switch that a refusal could wait "
+                  "for" % (name, left, len(runs)), d["do"] == "soft" and not d.get("drain"), d)
+            SP.write_notice(d, NOW)
+            check("%s: a new run starts at %s%% with %d live run(s)" % (name, left, len(runs)),
+                  DH.drain_refusal(NOW, {}, None, path=str(p)) is None, d)
+    d = D({**OFF, "system": R(40, 100), "lukas": R(98, 120)}, "system", RUN)
+    SP.write_notice({**d, "do": "soft", "drain": True}, NOW)
+    check("%s: the same notice as a drain refuses (the probe can see a refusal)" % name,
+          bool(DH.drain_refusal(NOW, {}, None, path=str(p))))
+
+
 def main():
     for t in (t_a_spent_account_drains_while_runs_live, t_the_hard_line_stops_every_live_run,
               t_no_live_run_means_no_wait, t_unreadable_runs_count_as_live, t_the_hard_line_keeps_his_lines,
               t_the_floors_never_reach_zero, t_a_pull_switch_waits_for_live_runs,
-              t_a_new_launch_waits_while_the_account_drains):
+              t_a_new_launch_waits_while_the_account_drains, t_a_new_launch_goes_at_the_soft_line):
         try:
             t()
         except Exception as e:  # noqa: BLE001

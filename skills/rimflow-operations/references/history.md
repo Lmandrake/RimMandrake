@@ -13,7 +13,7 @@ Each line below is a record, not a rule.
   still checks a draw against a 10% safety floor, which is an agent proposal.
 - Until 2026-11-23 the soft line row said that the allocator gives 0 new helpers and that `detached_helper.launch` refuses
   a new run. Token pacing became advisory on 2026-11-02, so the allocator only reports that 0. The launch refuses only
-  during a drain.
+  during a drain. Until 2026-11-24 the row said that no new run starts at the soft line; no program ever enforced that.
 - The owner's pause of 2026-10-28 (HOLD set, timer stopped) was lifted (`HOLD.lifted-2026-11-05`,
   `HOLD.lifted-2026-11-06` in the output dir). The timer runs.
 - The rule "Blind meter = 0%" has the source "relayed rule 11:2x": the coordinator of 2026-10-28.

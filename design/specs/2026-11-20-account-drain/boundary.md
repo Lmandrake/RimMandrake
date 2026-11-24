@@ -32,7 +32,9 @@ endpoint) hold no fraction. A 0.1% line cannot be seen until a meter reads tenth
 - **a-window-helper.** A subagent of an interactive window is not a detached run and is not waited for; the soft
   notice already gives each seat 0 new helpers (`slot_allocator`), and the switch relaunches the windows.
 - **a-run-launched-outside-detached-helper.** A run that does not start through `detached_helper.launch` is not
-  refused at the soft line.
+  refused in a drain.
+- **a-line-that-is-its-hard-line.** An account with a 1% line has a 1% hard line, so it has no drain: at 1% the switch
+  kills its live runs (item `RIMMANDRAKE_REFUSE_NEW_RUN_AT_SOFT_LINE_DRAIN_TOO_LATE`, the Conductor's choice).
 
 ## PROMISES (each one is owed a check of the same name)
 
@@ -51,6 +53,9 @@ endpoint) hold no fraction. A 0.1% line cannot be seen until a meter reads tenth
 - **a-new-launch-waits-while-the-account-drains.** While a fresh notice reads `soft` with `drain` true,
   `detached_helper.launch` refuses a new run with a reason that names the drain. A continuation of a live run
   (`continued_from`) or a resume of its session is the run finishing, and is let through.
+- **a-new-launch-goes-at-the-soft-line.** Between the soft line and the line, with no drain, a new run starts. The plan
+  switches at the line and not before, live run or not, so a refusal there would leave the account with no run to
+  bring it to the line, and a full account unused.
 
 ## LIMITS
 
