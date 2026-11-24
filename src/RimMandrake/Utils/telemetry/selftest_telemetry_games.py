@@ -281,15 +281,21 @@ def t_one_games_alarm_state_never_mixes_with_anothers(W):
     W.step()
     al = json.load(open(os.path.join(W.c["state"], "alerts.json")))["alerts"]
     hit = [a for a in al if a["id"].startswith("stall")]
-    check("Steve1's stall names Steve1", len(hit) == 1 and "Steve1" in hit[0]["text"] and "Steve1" in hit[0]["id"], al)
+    check("Steve1's stall raises no alarm of the store's own game", not hit, al)
+    check("it is an event of Steve1's", W.d.con.execute("SELECT COUNT(*) FROM events WHERE kind='incident' AND "
+          "game='Steve1' AND detail LIKE '%\"gapS\":40%'").fetchone()[0] == 1)
+    a0 = "00aaaaaaarchmagi"
+    w(W.seg("archmagi", a0, 11), [{"kind": "incident", "utc": iso(W.now - 5), "session": a0, "type": "stall", "gapS": 30}])
+    W.step()
+    al = json.load(open(os.path.join(W.c["state"], "alerts.json")))["alerts"]
+    check("ArchBig's stall still alarms, once", len([a for a in al if a["id"].startswith("stall")]) == 1, al)
     check("ArchBig's own state holds no stall of Steve1's",
           not any(i.get("gapS") == 40 for i in W.d.latest.get("incidents", [])), W.d.latest.get("incidents"))
-    W.d.latest["games"]["Steve1"]["tps_hist"].clear()      # the healthy window of four_games is not in this stretch
     low = [sample(W.now - 130 + 5 * i, s, 10, ratio=0.1) for i in range(26)]
     w(W.seg("stevedesktop", s, 33), low)
     W.step()
-    al = json.load(open(os.path.join(W.c["state"], "alerts.json")))["alerts"]
-    check("Steve1's low speed names Steve1 only", [a["id"] for a in al if "tps_low" in a["id"]] == ["tps_low:Steve1"], al)
+    check("Steve1's low speed is not in ArchBig's speed history",
+          not any(h[1] == 0.1 for h in W.d.latest["tps_hist"]), W.d.latest["tps_hist"][-2:])
     import analysis
     lat = {"game_running": True, "game_running_since": W.now - 4000}
     quiet = {"tps": {"last_row_ts": W.now - 4000}, "tps.archmagi.b": {"last_row_ts": W.now - 5}}
@@ -403,6 +409,35 @@ def t_the_tps_report_takes_a_game_name_too(W):
     check("a game with no record is no data yet", rc == 4 and "no data yet" in o, (rc, o))
 
 
+def t_a_backlog_being_read_is_a_live_daemon(W):
+    """The heartbeat moves between files, so a long first pass is never read as a dead telemetryd."""
+    for i in range(3):
+        w(W.seg("stevedesktop", f"b{i}", 33, f"tps_20261124T00000{i}Z_b{i}_33_000.jsonl"), [sample(W.now - 9, f"b{i}", 50)])
+    beats = []
+    hb = os.path.join(W.c["state"], "heartbeat.json")
+    real = W.d.beat
+    W.d.tailer.beat = lambda: (setattr(W.d, "beaten", 0.0), real(), beats.append(os.path.exists(hb)))
+    W.d.tailer.pass_source([s for s in W.d.sources if s.game == "Steve1"][0])
+    check("a beat before each file of a pass, with no step ended", beats == [True] * 3, beats)
+    import telemetryd
+    keep = telemetryd.write_json_atomic
+
+    def denied(*a):
+        raise PermissionError(5, "Access is denied")
+    telemetryd.write_json_atomic = denied
+    W.d.beaten = 0.0
+    try:
+        real()
+        check("a heartbeat a reader holds open stops nothing and is tried again", W.d.beaten == 0.0)
+    except OSError as e:
+        check("a heartbeat a reader holds open stops nothing and is tried again", False, e)
+    telemetryd.write_json_atomic = keep
+    W.d.beaten = time.time()
+    os.remove(hb)
+    real()
+    check("at most one write a period", not os.path.exists(hb))
+
+
 def t_no_machine_path_or_game_is_hard_wired(W):
     import game_names
     import games
@@ -464,6 +499,7 @@ def main():
             t_one_games_alarm_state_never_mixes_with_anothers,
             t_a_pull_copies_each_byte_once,
             t_the_tps_report_takes_a_game_name_too,
+            t_a_backlog_being_read_is_a_live_daemon,
             t_no_machine_path_or_game_is_hard_wired,
             t_a_machine_without_the_store_asks_the_one_that_has_it,
     ):

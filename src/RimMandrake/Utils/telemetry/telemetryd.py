@@ -45,6 +45,8 @@ class Daemon:
         self.latest: dict = {}
         self.tailer = ingest.Tailer(self.con, self.vm, self.latest)
         self.sources = ingest.make_sources()
+        self.tailer.beat = self.beat        # a backlog (the first 136 MB took 7 min, 2026-11-23) is a live daemon
+        self.beaten = 0.0
         self.due: dict[str, float] = {}
         self.change_fp = store.kv_get(self.con, "change_fp")
         self.code = code_hash()
@@ -53,6 +55,20 @@ class Daemon:
     def tier_armed(self) -> bool:
         views = [self.latest, *(self.latest.get("games") or {}).values()]
         return any(t.get("tier") == "test" and now() - t.get("ts", 0) < 30 for t in (v.get("tps") or {} for v in views))
+
+    def beat(self, period: float = 15.0) -> None:
+        """The heartbeat, at most once a period: at each step's end, and between files while a step drains a backlog."""
+        if now() - self.beaten < period:
+            return
+        t = now()
+        try:
+            write_json_atomic(os.path.join(cfg()["state"], "heartbeat.json"),
+                              {"at": t, "pid": os.getpid(), "code": self.code, "started": self.started,
+                               "tier_armed": self.tier_armed(), "vm_sent": self.vm.sent, "vm_spooled": self.vm.spooled,
+                               "vm_error": self.vm.last_error})
+        except OSError:     # Windows refuses the replace while a reader has the file open (2026-11-23): the next beat
+            return          # tries again, and an old heartbeat reads as old; it never stops the pass it is called from
+        self.beaten = t
 
     def every(self, key: str, period: float, t: float) -> bool:
         if t >= self.due.get(key, 0):
@@ -112,10 +128,7 @@ class Daemon:
             analysis.write_state(self.latest, alerts, srcs,
                                  {"tier_armed": fast, "game_running": self.latest.get("game_running"),
                                   "vm_error": self.vm.last_error, "code": self.code}, t)
-        write_json_atomic(os.path.join(c["state"], "heartbeat.json"),
-                          {"at": t, "pid": os.getpid(), "code": self.code, "started": self.started,
-                           "tier_armed": fast, "vm_sent": self.vm.sent, "vm_spooled": self.vm.spooled,
-                           "vm_error": self.vm.last_error})
+        self.beat(0.0)
 
     def run(self) -> None:
         log = os.path.join(cfg()["logs"], "telemetryd.log")

@@ -45,74 +45,6 @@ RULES = {  # thresholds (design §8); one place, quoted by the skill
 HOST_FRESH_S = 300     # host samples every host_every_s (60 s); five missed is a stopped sampler
 
 
-def _game_alerts(latest: dict, now: float, name: str | None) -> list[dict]:
-    """The alarms of one game, from that game's own live view. name: None for the store's own first game, whose alarm
-    ids keep the form their graded history has; any other game is named in the id and the text."""
-    R, out = RULES, []
-
-    def alert(aid, level, text, since, **kw):
-        out.append(_alert(f"{aid}:{name}" if name else aid, level, f"{name}: {text}" if name else text, since, **kw))
-    # TPS ratio low at NORMAL speed for 2 minutes, unpaused (owner card 2026-10-11; speed 3 on the full
-    # list is CPU-bound by design). Bridge delay spikes must not trigger it (owner, same day): windows
-    # where the bridge held the main thread >10 % are skipped, and the verdict is a median over >= 12
-    # remaining windows. Every firing is logged (`alert_fired`) so `telemetry label` can grade it.
-    hist = [h for h in latest.get("tps_hist", []) if now - h[0] <= R["ratio_low_window_s"] + 15]
-    run = [h for h in hist if h[2] == "run" and h[3] == R["ratio_low_mult"] and h[1] is not None]
-    calm = [h for h in run if (h[4] if len(h) > 4 else 0) <= R["ratio_bridge_busy_frac"]]
-    if run and len(run) == len(hist) and hist[-1][0] - hist[0][0] >= R["ratio_low_window_s"] - 10 \
-            and len(calm) >= R["ratio_min_windows"]:
-        med = statistics.median(h[1] for h in calm)
-        if med < R["ratio_low"]:
-            alert("tps_low", "amber", f"game at {med:.2f}x its target speed for 2 min (normal speed)",
-                              calm[0][0], detail={"median": med, "windows": len(calm),
-                                                  "skipped_bridge_busy": len(run) - len(calm)})
-    for inc in latest.get("incidents", []):
-        if now - inc["ts"] < R["stall_recent_s"] and (inc.get("gapS") or 0) >= R["stall_s"]:
-            # a freeze that a bridge call spent holding the main thread (save load, map generation, big step) is
-            # an expected epoch, not a hitch: the TPS row's br.mainMs covers the gap (live 2026-10-14 20:34, 2 x 10-11 s)
-            if any(abs(h[0] - inc["ts"]) <= R["stall_bridge_pad_s"] and h[1] >= R["stall_bridge_frac"] * inc["gapS"] * 1000
-                   for h in latest.get("bridge_holds", [])):
-                continue
-            alert(f"stall:{int(inc['ts'])}", "amber",
-                              f"game froze {inc['gapS']:.0f} s ({inc.get('type')}) at {iso(inc['ts'])[11:16]}",
-                              inc["ts"])
-    t = latest.get("tps") or {}
-    # a handful of errors in a sub-second real-time window reads as hundreds/s (live 2026-10-14: 24 geyser errors);
-    # a storm needs a minimum count AND a window long enough to be a rate
-    if t.get("exc") and t.get("dReal") and now - t["ts"] < 120 \
-            and t["exc"] >= R["exc_min_n"] and t["dReal"] >= R["exc_min_window_s"]:
-        rate = t["exc"] / max(t["dReal"], 0.1)
-        if rate > R["exc_per_s"]:
-            alert("exc_storm", "amber", f"exception storm: {rate:.0f}/s in game log", t["ts"])
-    # test-state monitor alarms: alive colonists 0, a colonist hostile, hostiles on a test map, a modal stuck
-    vt = latest.get("vitals") or {}
-    if vt.get("ts") and now - vt["ts"] < R["vitals_fresh_s"]:
-        row = vt.get("row") or "unnamed row"
-        if vt.get("had_colonists") and vt.get("colonistsAlive") == 0:
-            alert("vitals:colony_dead", "red", f"no living colonist on the test map ({row})", vt["ts"])
-        if (vt.get("colonistsHostile") or 0) > 0:
-            alert("vitals:colonist_hostile", "red",
-                              f"{vt['colonistsHostile']} colonist(s) hostile to the colony ({row})", vt["ts"])
-        if (vt.get("hostiles") or 0) > 0 and vt.get("armed", True):
-            alert("vitals:hostiles", "amber", f"{vt['hostiles']} hostile pawn(s) on the test map ({row})", vt["ts"])
-    # latched triggers catch what a once-a-minute look at the latest rollup misses (live 2026-10-13: alive colonists hit 0
-    # for 160 ticks inside a 0.3 s advance, then a Man in Black joined; the rollup alarm never saw it)
-    ids = {a["id"].removesuffix(f":{name}") for a in out}
-    for t in latest.get("vitals_triggers") or []:
-        if now - t["ts"] >= R["vitals_fresh_s"] or t.get("kind") not in ("colony_loss", "colonist_hostile"):
-            continue
-        aid = "vitals:colony_dead" if t["kind"] == "colony_loss" else "vitals:colonist_hostile"
-        if aid not in ids:
-            ids.add(aid)
-            alert(aid, "red", f"{t['kind'].replace('_', ' ')} latched on {t.get('row') or 'unnamed row'}: "
-                              f"{t.get('detail') or t.get('subject')}", t["ts"])
-    hb = latest.get("vitals_hb") or {}
-    if hb.get("ts") and now - hb["ts"] < R["vitals_fresh_s"] and (hb.get("modalMaxAgeS") or 0) >= R["modal_stuck_s"]:
-        alert("vitals:modal_stuck", "amber", f"a blocking window has been open {hb['modalMaxAgeS']:.0f} s "
-                          f"({hb.get('row') or 'unnamed row'})", hb["ts"])
-    return out
-
-
 def _alert(aid, level, text, since, link=None, detail=None):
     a = {"id": aid, "level": level, "text": text, "since": since, "link": link}
     if detail:
@@ -133,6 +65,9 @@ def log_firings(con, alerts: list, now: float) -> int:
     return n
 
 
+# The alarms read the store's own first game only (latest's top level). Another game's live view is kept apart
+# (latest["games"]) and alarms nothing: a lane game freezes 10-15 s at each step by design, and alarming on it raised 15
+# alarms in one pass (measured 2026-11-23, ArchSmall). Its incidents stay events: `telemetry events --game`.
 def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float) -> list[dict]:
     R = RULES
     out = []
@@ -158,14 +93,69 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
         pct = 100.0 * mem["commit_total"] / mem["commit_limit"]
         if pct > R["commit_pct"]:
             out.append(_alert("commit", "amber", f"Windows commit charge at {pct:.0f}% of the limit", host["ts"]))
+    # TPS ratio low at NORMAL speed for 2 minutes, unpaused (owner card 2026-10-11; speed 3 on the full
+    # list is CPU-bound by design). Bridge delay spikes must not trigger it (owner, same day): windows
+    # where the bridge held the main thread >10 % are skipped, and the verdict is a median over >= 12
+    # remaining windows. Every firing is logged (`alert_fired`) so `telemetry label` can grade it.
+    hist = [h for h in latest.get("tps_hist", []) if now - h[0] <= R["ratio_low_window_s"] + 15]
+    run = [h for h in hist if h[2] == "run" and h[3] == R["ratio_low_mult"] and h[1] is not None]
+    calm = [h for h in run if (h[4] if len(h) > 4 else 0) <= R["ratio_bridge_busy_frac"]]
+    if run and len(run) == len(hist) and hist[-1][0] - hist[0][0] >= R["ratio_low_window_s"] - 10 \
+            and len(calm) >= R["ratio_min_windows"]:
+        med = statistics.median(h[1] for h in calm)
+        if med < R["ratio_low"]:
+            out.append(_alert("tps_low", "amber", f"game at {med:.2f}x its target speed for 2 min (normal speed)",
+                              calm[0][0], detail={"median": med, "windows": len(calm),
+                                                  "skipped_bridge_busy": len(run) - len(calm)}))
+    for inc in latest.get("incidents", []):
+        if now - inc["ts"] < R["stall_recent_s"] and (inc.get("gapS") or 0) >= R["stall_s"]:
+            # a freeze that a bridge call spent holding the main thread (save load, map generation, big step) is
+            # an expected epoch, not a hitch: the TPS row's br.mainMs covers the gap (live 2026-10-14 20:34, 2 x 10-11 s)
+            if any(abs(h[0] - inc["ts"]) <= R["stall_bridge_pad_s"] and h[1] >= R["stall_bridge_frac"] * inc["gapS"] * 1000
+                   for h in latest.get("bridge_holds", [])):
+                continue
+            out.append(_alert(f"stall:{int(inc['ts'])}", "amber",
+                              f"game froze {inc['gapS']:.0f} s ({inc.get('type')}) at {iso(inc['ts'])[11:16]}",
+                              inc["ts"]))
+    t = latest.get("tps") or {}
+    # a handful of errors in a sub-second real-time window reads as hundreds/s (live 2026-10-14: 24 geyser errors);
+    # a storm needs a minimum count AND a window long enough to be a rate
+    if t.get("exc") and t.get("dReal") and now - t["ts"] < 120 \
+            and t["exc"] >= R["exc_min_n"] and t["dReal"] >= R["exc_min_window_s"]:
+        rate = t["exc"] / max(t["dReal"], 0.1)
+        if rate > R["exc_per_s"]:
+            out.append(_alert("exc_storm", "amber", f"exception storm: {rate:.0f}/s in game log", t["ts"]))
     since = now - R["recent_event_s"]
     for r in con.execute("SELECT ts,kind,subject FROM events WHERE ts>? AND kind='log_milestone' ORDER BY ts",
                          (since,)):
         if "cap" in str(r["subject"]).lower():
             out.append(_alert(f"logcap:{int(r['ts'])}", "amber", "game log hit its message cap", r["ts"]))
-    out += _game_alerts(latest, now, None)
-    for name, lat in (latest.get("games") or {}).items():
-        out += _game_alerts(lat, now, name)
+    # test-state monitor alarms: alive colonists 0, a colonist hostile, hostiles on a test map, a modal stuck
+    vt = latest.get("vitals") or {}
+    if vt.get("ts") and now - vt["ts"] < R["vitals_fresh_s"]:
+        row = vt.get("row") or "unnamed row"
+        if vt.get("had_colonists") and vt.get("colonistsAlive") == 0:
+            out.append(_alert("vitals:colony_dead", "red", f"no living colonist on the test map ({row})", vt["ts"]))
+        if (vt.get("colonistsHostile") or 0) > 0:
+            out.append(_alert("vitals:colonist_hostile", "red",
+                              f"{vt['colonistsHostile']} colonist(s) hostile to the colony ({row})", vt["ts"]))
+        if (vt.get("hostiles") or 0) > 0 and vt.get("armed", True):
+            out.append(_alert("vitals:hostiles", "amber", f"{vt['hostiles']} hostile pawn(s) on the test map ({row})", vt["ts"]))
+    # latched triggers catch what a once-a-minute look at the latest rollup misses (live 2026-10-13: alive colonists hit 0
+    # for 160 ticks inside a 0.3 s advance, then a Man in Black joined; the rollup alarm never saw it)
+    ids = {a["id"] for a in out}
+    for t in latest.get("vitals_triggers") or []:
+        if now - t["ts"] >= R["vitals_fresh_s"] or t.get("kind") not in ("colony_loss", "colonist_hostile"):
+            continue
+        aid = "vitals:colony_dead" if t["kind"] == "colony_loss" else "vitals:colonist_hostile"
+        if aid not in ids:
+            ids.add(aid)
+            out.append(_alert(aid, "red", f"{t['kind'].replace('_', ' ')} latched on {t.get('row') or 'unnamed row'}: "
+                              f"{t.get('detail') or t.get('subject')}", t["ts"]))
+    hb = latest.get("vitals_hb") or {}
+    if hb.get("ts") and now - hb["ts"] < R["vitals_fresh_s"] and (hb.get("modalMaxAgeS") or 0) >= R["modal_stuck_s"]:
+        out.append(_alert("vitals:modal_stuck", "amber", f"a blocking window has been open {hb['modalMaxAgeS']:.0f} s "
+                          f"({hb.get('row') or 'unnamed row'})", hb["ts"]))
     # blindness: the instrument itself
     if vm_error:
         out.append(_alert("blind:vm", "amber", "telemetry: VictoriaMetrics unreachable (points spooled)", now))

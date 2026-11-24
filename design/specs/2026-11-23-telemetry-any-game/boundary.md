@@ -46,8 +46,11 @@ into `<root>/inbox/games/<machine>/`, and read from there. Every point, event an
   newest row is gone: "down", with the age. An unread process list reads "process unread".
 - **every-answer-carries-its-age.** The answer names the age of the game's newest row and of the last look at it; a row
   older than the fresh line of a game that is up reads STALE. The age is corrected for the other machine's clock.
-- **one-games-alarm-state-never-mixes-with-anothers.** A stall or a low speed of Steve1 fires an alarm that names Steve1
-  and leaves ArchBig's state unchanged; a second game that is up does not read as "the record of the first is silent".
+- **one-games-alarm-state-never-mixes-with-anothers.** The alarms read the store's own first game. A stall or a low
+  speed of another game is kept as that game's event, raises no alarm, and leaves the first game's alarm state
+  unchanged; a second game that is up does not read as "the record of the first is silent".
+- **a-backlog-being-read-is-a-live-daemon.** The heartbeat is written between files, so a daemon that drains a long
+  backlog is not read as a dead one.
 - **a-pull-copies-each-byte-once.** A pull appends what is new; a rename-rotated file is renamed, not copied again; a cut
   transfer is resumed at the next pull; a replaced file is copied whole.
 - **the-tps-report-takes-a-game-name-too.** `tps_record.py --game Steve1` reads that game's record, and answers an

@@ -651,6 +651,7 @@ class Tailer:
         self.raw_pending: dict[tuple[str, str], int] = {}
         self.raw_last_flush = time.time()
         self.stats: dict[str, dict] = {}
+        self.beat = None        # called between files
         restore_tail_state(con, vm, latest)
 
     def _file_key(self, st, path) -> str:
@@ -672,6 +673,8 @@ class Tailer:
         backlog = False     # a file read only up to MAX_READ this pass: its bridge buckets are not complete yet
         cursor_moved = False    # a reset or a first fingerprint must be committed even by a pass that read no rows
         for path in files:
+            if self.beat:
+                self.beat()
             try:    # identity from the open handle: a rotation between stat and open must not read the new file
                 with open(path, "rb") as f:     # under the old file's cursor
                     st = os.fstat(f.fileno())

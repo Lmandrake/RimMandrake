@@ -190,7 +190,7 @@ def status(con, text, now: float | None = None) -> dict:
         return {"name": name, "key": key, "rc": EX_COULD_NOT_LOOK, "state": "could_not_look", "line": line,
                 "held": newest is not None}
     if newest is None:
-        why = "it has no record folder" if lk["absent"] else "its record holds no rows"
+        why = "it has no record folder" if lk["absent"] else "no row of its record has been read yet"
         return {"name": name, "key": key, "rc": EX_NO_DATA, "state": "no_data", "held": False,
                 "line": f"{name}: no data yet ({why}) · {lookage}"}
     pid = row.get("pid")
