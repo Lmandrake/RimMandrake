@@ -379,7 +379,7 @@ The rest are discipline. Each trap gives what happens, then what to do instead.
 **`git commit && git pull --rebase && git push` in ONE Bash call**
 - What happens: the pre-push/PreToolUse ledger hook judges HEAD BEFORE the compound runs. So the hook refuses the call
   with NOT_APPEND, even though the rebase would fix it.
-- Do instead: use `./publish`. It commits, replays the commit onto origin and pushes, without a pull and without a stash.
+- Do instead: use `./publish`. `./publish` commits, replays the commit onto origin and pushes, without a pull and without a stash.
 
 **A real merge commit**
 - What happens: the blanket-stage hook refuses `git commit --no-edit` mid-merge (no pathspec is possible).
