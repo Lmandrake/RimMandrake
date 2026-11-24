@@ -434,11 +434,27 @@ def manual_switch(sw, markers: dict, live, history=None):
     return sw
 
 
-def marker_lifted(raw: dict, plan: dict, name, m: dict, meter: dict) -> bool:
+def refilled(plan: dict, name, m: dict, then, meter: dict, now: float) -> bool:
+    """The account refilled after the marker was written, its weekly reset unmoved (steven's spare reset of
+    2026-11-21..24: left at 5%, then 97% MEASURED). Usage only grows inside a week, so a level well above the most it
+    could read when left proves a refill. Read from a MEASURED, non-stale figure taken after the marker only, never an
+    estimate. 'Well above': over its fast warning line for `then` (the most a switch away leaves it at,
+    account_end.warning_line) plus the plan's soft margin, so a refilled account is never a target inside its soft zone
+    (RIMMANDRAKE_CLEAR_STEVEN_MARKER_HIS_REFILL_READS_AS_SPENT)."""
+    r, t = meter.get(name), epoch(m.get("at"))
+    age = (r or {}).get("age_min")
+    if not usable(r) or t is None or not isinstance(age, (int, float)) or now - age * 60 <= t or then is None:
+        return False
+    return r["week_pct_left"] > AE.warning_line(then, None, plan["account_end"]) + plan["soft_margin_pct"]
+
+
+def marker_lifted(raw: dict, plan: dict, name, m: dict, meter: dict, now: float | None = None) -> bool:
     """A marker keeps an account out at the line it was left at. A dated exception standing now that gives it a LOWER
     line opened budget the marker never saw (owner, by card 2026-11-17: steven left at 52% on 11-12, then 'switch to
     Steve' down to 35%), so the marker stops keeping it out while that exception stands; it binds again after. The
-    line left at is the marker's own `line`, else the leave line of the plan in force when it was written."""
+    line left at is the marker's own `line`, else the leave line of the plan in force when it was written. Inside such
+    an exception a MEASURED refill after the marker lifts it too (refilled; owner, by card 2026-11-24: 'Use Steve down
+    to 5% left'); the standing plan's markers keep their meaning."""
     cfg = plan["accounts"].get(name) or {}
     if not plan.get("_exception") or not str(cfg.get("_leave_pct_left", "")).startswith("exception"):
         return False
@@ -446,7 +462,8 @@ def marker_lifted(raw: dict, plan: dict, name, m: dict, meter: dict) -> bool:
     if not isinstance(then, (int, float)) or isinstance(then, bool):
         t = epoch(m.get("at"))
         then = None if t is None else (at(raw, t, meter)["accounts"].get(name) or {}).get("leave_pct_left")
-    return then is not None and cfg["leave_pct_left"] < then
+    return then is not None and (cfg["leave_pct_left"] < then
+                                 or (now is not None and refilled(plan, name, m, then, meter, now)))
 
 
 # ------------------------------------------------------------------ the decision (pure)
@@ -519,7 +536,7 @@ def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dic
         # a pending marker whose target is live now is a switch that landed before its pass could record it
         landed = m.get("phase") == "done" or (m.get("phase") == "pending" and m.get("to") == live)
         if (landed and m.get("under") and rs is not None and (epoch(m.get("at")) or 0) > rs - WEEK
-                and not marker_lifted(raw, plan, f, m, meter)):
+                and not marker_lifted(raw, plan, f, m, meter, now)):
             kept_out.add(f)
     line, elig = lines(meter, plan, now, kept_out)
     lr = meter.get(live) or {}

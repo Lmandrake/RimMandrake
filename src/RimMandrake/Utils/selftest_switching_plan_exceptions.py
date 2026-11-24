@@ -52,6 +52,57 @@ def plan_with(*exc):
     return {**copy.deepcopy(BASE), "exceptions": [copy.deepcopy(e) for e in exc]}
 
 
+def refill_cases(mk):
+    """RIMMANDRAKE_CLEAR_STEVEN_MARKER_HIS_REFILL_READS_AS_SPENT: the live case of 2026-11-24. Under
+    SYSTEM_THEN_STEVEN_TO_FLOOR_2026_11_20 (system 3, steven 5, order system, steven, lukas) steven was left at 5% on
+    11-21 17:45 (marker line 5); he then used a spare reset and read 97% MEASURED with his weekly reset unmoved; lukas
+    live at 21%, system at its 3% line. The marker kept him out until 11-25 and the fleet would go DARK at lukas' 2%."""
+    e5 = {"id": "T_EXC5", "from": SP.iso(NOW - 70 * H), "until": SP.iso(NOW + 26 * H), "ends_at_reset_of": A,
+          "order": [B, A, C], "accounts": {A: {"leave_pct_left": 5, "window_h_after_reset": None},
+                                           B: {"leave_pct_left": 3}}, "_why": "test"}
+    P5 = plan_with(e5)
+
+    def M(a_left, src="MEASURED", age=1.0, stale=False, c_left=21):
+        return {A: {**R(a_left, 24.7), "source": src, "age_min": age, "stale": stale}, B: R(3, 22.7), C: R(c_left, 25.8)}
+    left5 = mk(A, C, -67.5, line=5)  # use_steven_to_lukas_20261125: at 11-21 17:45, about 67.5 h before 11-24 13:15
+    d = SP.decide(M(97), C, NOW, P5, {}, left5, polled=True)
+    check(d["do"] == "switch" and d["to"] == A,
+          f"refill: {A} left at 5% reads 97% MEASURED after the marker: the marker lifts, switch to {A} "
+          f"({d['do']} {d.get('to')}: {d['why']})")
+    d = SP.decide(M(97), C, NOW, P5, {}, {}, polled=True)
+    check(d["do"] == "switch" and d["to"] == A, f"control, no marker: switch to {A} ({d['do']} {d.get('to')})")
+    # the bar: the most the account can read when left is its fast warning line (5 -> 6), and a refill must clear its
+    # soft margin (2) above that: 8 still keeps it out, 9 lifts it
+    ceil = SP.AE.warning_line(5, None, P5["account_end"]) + P5["soft_margin_pct"]
+    for p, out in ((6, True), (7, True), (ceil, True), (ceil + 1, False), (50, False)):
+        d = SP.decide(M(p), C, NOW, P5, {}, left5, polled=True)
+        kept = d.get("to") != A
+        check(kept == out, f"refill bar {ceil}%: {A} reads {p}% after the marker: "
+                           f"{'kept out' if out else 'lifted'} ({d['do']} {d.get('to')})")
+    # a refill is read from a MEASURED level only, never an estimate, a stale figure or one taken before the marker
+    for kw, what in (({"src": "ESTIMATE"}, "an ESTIMATE"), ({"stale": True}, "a stale MEASURED figure"),
+                     ({"age": 67.5 * 60 + 5}, "a MEASURED figure taken before the marker"),
+                     ({"age": None}, "a MEASURED figure with no age")):
+        d = SP.decide(M(97, **kw), C, NOW, P5, {}, left5, polled=True)
+        check(d.get("to") != A, f"{what} of 97% lifts no marker ({d['do']} {d.get('to')}: {d['why']})")
+    # the same, on refilled() itself (an ESTIMATE or stale account is also not eligible, which hides it in decide)
+    eff = SP.at(P5, NOW, M(97))
+    for kw, want in (({}, True), ({"src": "ESTIMATE"}, False), ({"stale": True}, False)):
+        got = SP.refilled(eff, A, left5["k"], 5, M(97, **kw), NOW)
+        check(got is want, f"refilled() on 97% {kw or 'MEASURED'}: {got} (want {want})")
+    # the standing plan is unchanged: outside the exception a refilled account stays kept out by its marker
+    d = SP.decide(M(97), C, NOW, BASE, {}, left5, polled=True)
+    check(d.get("to") != A, f"standing plan: the refill lifts nothing ({d['do']} {d.get('to')})")
+    # after the lift: burnt again to 5% it is left again, and the new marker binds (no flap back at 5-8%)
+    d = SP.decide(M(5), A, NOW + 20 * H, P5, {}, left5, polled=True)
+    check(d["do"] == "switch" and d["to"] == C and d.get("under"),
+          f"{A} live at 5% after the refill: switch away to {C} ({d['do']} {d.get('to')})")
+    again = mk(A, C, 20, line=5)
+    for p in (5, 7):
+        d = SP.decide(M(p), C, NOW + 20.5 * H, P5, {}, again, polled=True)
+        check(d.get("to") != A, f"left again at 5%, {A} re-reads {p}%: kept out ({d['do']} {d.get('to')})")
+
+
 def main():
     # ---- the guard: every broken shape is refused, with its reason; a good one passes
     check(SP.exception_problems(plan_with(EXC)) == [], f"a well-formed exception passes the guard "
@@ -150,10 +201,16 @@ def main():
                                                          f"never picked ({d['do']} {d.get('to')}: {d['why']})")
     d = SP.decide({**m0, A: R(36, 27.3)}, A, NOW, P, {}, left_a, polled=True)
     check(d["do"] == "soft" and d.get("to") is None, f"{A} live at 36% with the marker: burns on, soft ({d['do']} {d.get('to')})")
-    d = SP.decide({**m0, A: R(40, 27.3)}, B, NOW, P, {}, mk(A, B, -5, line=35), polled=True)
+    # A re-reads 38%: above the 35% line, and the most it can read when left there (fast warning line 36 + soft margin
+    # 2). These two read 40% until 2026-11-24; 40% after a leave at 35% is a MEASURED refill (usage only grows inside a
+    # week; no upward re-read under 26 points in 5,319 plan-log records), which lifts the marker (refill_cases)
+    d = SP.decide({**m0, A: R(38, 27.3)}, B, NOW, P, {}, mk(A, B, -5, line=35), polled=True)
     check(d["do"] == "stop", f"a marker left at the exception's own 35% line still excludes {A} ({d['do']} {d.get('to')})")
-    d = SP.decide({**m0, A: R(40, 27.3)}, B, NOW, P, {}, mk(A, B, -0.5), polled=True)
+    d = SP.decide({**m0, A: R(38, 27.3)}, B, NOW, P, {}, mk(A, B, -0.5), polled=True)
     check(d["do"] == "stop", f"a legacy marker written inside the exception reads its line (35): {A} excluded ({d['do']})")
+    d = SP.decide({**m0, A: R(40, 27.3)}, B, NOW, P, {}, mk(A, B, -5, line=35), polled=True)
+    check(d["do"] == "switch" and d["to"] == A, f"left at 35%, {A} reads 40% MEASURED: a refill, switch to {A} "
+                                                f"({d['do']} {d.get('to')})")
     # the marker's meaning is unchanged outside the exception: A in its window, left at 52%, re-reads 60%
     inwin = {A: R(60, 150), B: R(40, 25.3), C: R(30, 28.3)}
     d = SP.decide(inwin, B, NOW, BASE, {}, mk(A, B, -10), polled=True)
@@ -166,6 +223,8 @@ def main():
     # a marker for an account whose line the exception does not lower keeps its meaning inside the exception
     d = SP.decide({A: R(50, 27.3), B: R(1, 25.3), C: R(2, 28.3)}, A, NOW, P, {}, mk(B, A, -1), polled=True)
     check(d["do"] == "normal" and d.get("to") is None, f"{B} left at its floor re-reads 1%: no flap back ({d['do']} {d.get('to')})")
+
+    refill_cases(mk)
 
     # ---- the pool counts the exception's budget only while it stands
     pl = SP.pool(meter, NOW, P)
