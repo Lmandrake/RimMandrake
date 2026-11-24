@@ -142,7 +142,9 @@ def main():
     h4 = health(pid)
     want = {"NOT_ONE_HOP": act("jawa/pawn_use_ability", pawn=pid), "UNKNOWN_TOOL": act("rimworld/get_ui_state"), "NESTED_HAND": act("jawa/run_until"), "BAD_ARGS": act("jawa/map_info", nonsense=1)}
     got = {k: batch(hit(), w).get("refused") for k, w in want.items()}
-    waits = batch(hit(), act("jawa/ordered_job", pawn=pid)).get("refused")
+    waits = batch(hit(), act("jawa/ordered_job", pawnId=pid, jobDef="Wait")).get("refused")
+    nowait = batch(act("jawa/ordered_job", pawnId=pid, jobDef="Wait", waitTicks=0))
+    print("     ordered_job with waitTicks 0: %s" % [(m.get("state"), str(m.get("error"))[:200]) for m in nowait.get("acts") or [nowait]])
     row("5 refusals by name, nothing done", None if None in got.values() else all(k == g for k, g in got.items()) and waits == "NOT_ONE_HOP" and health(pid) == h4, "%s, ordered_job with its wait: %s" % (got, waits))
     c = W.call("jawa/act_batch", action="census")
     row("6 the census", None if not c.get("success") else c["tools"] > 400 and 0 < len(c["notOneHop"]) < 40, "%s tools, not one hop %s, only with no wait %s" % (c.get("tools"), c.get("notOneHop"), c.get("oneHopWithNoWait")))

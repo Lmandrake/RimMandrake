@@ -304,7 +304,7 @@ namespace JawaBench.BridgeTools
                 else if (of == "map") { root = TheMap(); if (root == null) bad = PathValue.Bad("gone", "map " + MapId + " is gone"); }
                 else if (of.StartsWith("static:", StringComparison.Ordinal))
                 {
-                    staticOf = GenTypes.GetTypeInAnyAssembly(of.Substring(7));
+                    staticOf = TypeOf(of.Substring(7));
                     if (staticOf == null) bad = PathValue.Bad("error", "no type '" + of.Substring(7) + "' is loaded");
                     return staticOf != null;
                 }
@@ -347,6 +347,25 @@ namespace JawaBench.BridgeTools
                     else Live(a[n], out root, out bad);
                 }
                 return root != null;
+            }
+
+            private readonly Dictionary<string, Type> _types = new Dictionary<string, Type>(StringComparer.Ordinal);
+
+            /// <summary>A type by name: the game's and the mods' first (GenTypes searches only those), then every loaded assembly, for
+            /// an engine or a companion type. Null is not kept: an assembly may be loaded later.</summary>
+            private Type TypeOf(string name)
+            {
+                Type t;
+                if (_types.TryGetValue(name, out t)) return t;
+                t = GenTypes.GetTypeInAnyAssembly(name);
+                if (t == null)
+                    foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+                    {
+                        try { t = a.GetType(name, false); } catch (Exception) { t = null; }
+                        if (t != null) break;
+                    }
+                if (t != null) _types[name] = t;
+                return t;
             }
 
             /// <summary>The thing, or gone with its cause: dead, destroyed, left the map, of another game.</summary>
@@ -509,8 +528,11 @@ namespace JawaBench.BridgeTools
                 left.Remove(p.Name);
                 if (!has)
                 {
-                    if (!p.HasDefaultValue) return "argument '" + p.Name + "' is missing";
-                    bound[i] = p.DefaultValue;
+                    if (p.HasDefaultValue) { bound[i] = p.DefaultValue; continue; }
+                    var pa = p.GetCustomAttribute<ToolParameterAttribute>(false);       // the host fills a default that only the attribute gives
+                    if (pa == null || pa.DefaultValue == null) return "argument '" + p.Name + "' is missing";
+                    string bad = Convert1(pa.DefaultValue is string || pa.DefaultValue is bool ? pa.DefaultValue : (object)System.Convert.ToDouble(pa.DefaultValue, CultureInfo.InvariantCulture), p.ParameterType, out bound[i]);
+                    if (bad != null) return "argument '" + p.Name + "' is missing and its default is not usable: " + bad;
                     continue;
                 }
                 string why = Convert1(v, p.ParameterType, out bound[i]);

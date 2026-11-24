@@ -300,7 +300,7 @@ def main():
     c = read(*probe)
     row("9 1,000 reads change nothing", None if len(many.get("values") or []) != 1000 or any(v["state"] != "ok" for v in b[:3]) else [v["v"] for v in b] == [v["v"] for v in c], "%d reads; before %s after %s" % (len(many.get("values") or []), [v["v"] for v in b], [v["v"] for v in c]))
 
-    st = read(("static:JawaBench.BridgeTools.JawaBenchSceneTick", "_serial"), ("col", "hitPoints"), ("thing:NoSuchThing", "Position"), ("def:ThingDef/Wall", "passability"))
+    st = read(("static:JawaBench.BridgeTools.JawaBenchTpsWriter", "_seq"), ("col", "hitPoints"), ("thing:NoSuchThing", "Position"), ("def:ThingDef/Wall", "passability"))
     no = W.call("jawa/read_paths", reads=json.dumps([{"of": "col", "path": "LabelShort"}]))
     row("10 statics, a wrong name, a property", None if len(st) != 4 else st[0]["state"] == "ok" and st[1]["state"] == "error" and "hitPointsInt" in st[1].get("detail", "") and st[2]["state"] == "unbound" and st[2]["v"] is None and st[3]["v"] == "Impassable" and no.get("refused") == "PATH_CALLS_METHOD",
         "%s | %s" % ([(v["state"], v["v"], str(v.get("detail"))[:60]) for v in st], brief(no)))
