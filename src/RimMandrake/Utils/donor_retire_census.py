@@ -23,7 +23,7 @@ standin  every element text in src/ Defs+Patches XML that starts `StandIn/` (ANY
       pollutedTexturePath, leaflessGraphicPath ... — srctex's walk sees only tags containing "texpath" and misses
       terrain), joined to the artpipe queue (item STANDINS_RETIRE_AS_OUR_COATS_ARRIVE). A text is
         QUEUED    a pending/active dregen_ job targets it (its path, slot, install_to, or a def that draws it);
-        RENDERED  a done job with status ok and a PNG in _artsrc/<id>/ targets it (the installer places it and
+        RENDERED  a done job with status ok and a PNG in _artsrc/<id>/ or the art store targets it (the installer places it and
                   points the XML back: art_accept_finished.py);
         LANDED    the un-StandIn counterpart already exists in the same mod's Textures (repoint owed, not a render);
         FAILED    only failed jobs target it (requeue owed);   UNCOVERED  nothing targets it (file a job).
@@ -301,9 +301,18 @@ def _mods_of(files: list) -> list:
     return sorted({f.split("/Defs/")[0].split("/Patches/")[0] for f in files})
 
 
+def stored_jobs() -> set:
+    """Jobs whose render is in the art store (newest ledger variant, not purged). artpiped prunes _artsrc/<job>/ 14 days
+    after the job ends, so a finished render nobody installed by then is found only here."""
+    import artledger as AL
+    sha = {e["job"]: e["sha"] for e in AL.read_events()
+           if e.get("type") == "variant" and e.get("job") and e.get("sha")}
+    return {j for j, s in sha.items() if AL.store_has(s)}
+
+
 def artpipe_jobs(art: Path) -> list:
     """Every dregen_ job in pending/active/done/failed: {id, state, ok, keys} where keys are the paths it covers."""
-    jobs = []
+    jobs, held = [], None
     for st in ("pending", "active", "done", "failed"):
         d = art / st
         if not d.is_dir():
@@ -342,7 +351,10 @@ def artpipe_jobs(art: Path) -> list:
                     ok = json.loads(man.read_text()).get("status") == "ok"
                 except (OSError, ValueError):
                     ok = False
-                ok = ok and any((art / "_artsrc" / f.stem).glob("*.png"))
+                if ok and not any((art / "_artsrc" / f.stem).glob("*.png")):    # pruned after 14 days: the store has it
+                    if held is None:
+                        held = stored_jobs()
+                    ok = f.stem in held
             jobs.append({"id": f.stem, "state": st, "ok": ok, "def": j.get("target_def"), "keys": keys})
     return jobs
 

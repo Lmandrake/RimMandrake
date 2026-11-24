@@ -148,6 +148,20 @@ def census():
             job(art, "done", "dregen_RM_Tree_B_v2", target_def="RM_Tree",
                 install_to="src/RimMandrake/ModA/Textures/Plants/AB_Tree/AB_TreeB.png")
             check(run(t, art)["StandIn/Plants/AB_Tree"]["state"] == "RENDERED", "every picture rendered -> RENDERED")
+            # artpiped prunes _artsrc/<job>/ 14 days after the job ends; the bytes stay in the art store under the
+            # ledger's sha. 32 finished Alpha Biomes replacements read FAILED this way and were never installed.
+            import shutil
+            shutil.rmtree(art / "_artsrc" / "dregen_RM_Tree_B_v2")
+            keep_stored = getattr(DRC, "stored_jobs", None)
+            DRC.stored_jobs = lambda: {"dregen_RM_Tree_B_v2"}
+            check(run(t, art)["StandIn/Plants/AB_Tree"]["state"] == "RENDERED",
+                  "a finished render pruned from _artsrc but held by the art store is still RENDERED")
+            DRC.stored_jobs = lambda: set()
+            check(run(t, art)["StandIn/Plants/AB_Tree"]["state"] == "FAILED",
+                  "a finished render in neither _artsrc nor the store is no render")
+            if keep_stored is not None:
+                DRC.stored_jobs = keep_stored
+            png(art / "_artsrc" / "dregen_RM_Tree_B_v2" / "dregen_RM_Tree_B_v2.png")
             # GPT review 2026-11-01: a single-file job covers no facing; one landed facing hides no other
             (art / "pending" / "dregen_RM_Beast_v1.json").unlink()
             job(art, "pending", "dregen_RM_Beast_single_v1", target_def="RM_Beast",

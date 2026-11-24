@@ -11,7 +11,7 @@
     <defName>RM_FineForsakenSand</defName>
     <label>fine forsaken sand</label>
     <texturePath>Terrain/Surfaces/AB_FineForsakenSands</texturePath>
-    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_FineForsakenSands_Polluted</pollutedTexturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_FineForsakenSands_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>350</renderPrecedence>
@@ -47,7 +47,7 @@
     <defName>RM_ForsakenSand</defName>
     <label>forsaken sand</label>
     <texturePath>Terrain/Surfaces/AB_ForsakenSands</texturePath>
-    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_ForsakenSands_Polluted</pollutedTexturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_ForsakenSands_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>340</renderPrecedence>

@@ -376,7 +376,7 @@
     <defName>RM_AlienSand</defName>
     <label>red-tinged ground</label>
     <texturePath>Terrain/Surfaces/GU_AlienSand</texturePath>
-    <pollutedTexturePath>StandIn/Terrain/Surfaces/GU_AlienSand_Polluted</pollutedTexturePath>
+    <pollutedTexturePath>Terrain/Surfaces/GU_AlienSand_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>350</renderPrecedence>
@@ -403,7 +403,7 @@
     <defName>RM_RichAlienSand</defName>
     <label>rich red-tinged ground</label>
     <texturePath>Terrain/Surfaces/GU_AlienSand</texturePath>
-    <pollutedTexturePath>StandIn/Terrain/Surfaces/GU_AlienSand_Polluted</pollutedTexturePath>
+    <pollutedTexturePath>Terrain/Surfaces/GU_AlienSand_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
     <color>(160,140,140)</color>
     <edgeType>FadeRough</edgeType>
@@ -431,7 +431,7 @@
     <defName>RM_AlienSandFine</defName>
     <label>fine red sand</label>
     <texturePath>Terrain/Surfaces/GU_AlienSandFine</texturePath>
-    <pollutedTexturePath>StandIn/Terrain/Surfaces/GU_AlienSandFine_Polluted</pollutedTexturePath>
+    <pollutedTexturePath>Terrain/Surfaces/GU_AlienSandFine_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>335</renderPrecedence>

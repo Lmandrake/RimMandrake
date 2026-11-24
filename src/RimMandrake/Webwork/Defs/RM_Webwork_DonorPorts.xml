@@ -13,7 +13,7 @@
     <label>deep jungle tree</label>
     <description>A towering, ancient tree with dense foliage and thick, twisting roots—its canopy forms part of the near-impenetrable roof of the deep jungle.\n\nBased on concept art for plants for Guild Wars.</description>
     <graphicData>
-      <texPath>StandIn/Things/Plants/RM_JungleTree</texPath>
+      <texPath>Things/Plants/RM_JungleTree</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.18, 0.3, 0.15)</volume>
@@ -25,7 +25,7 @@
       <Nutrition>1.2</Nutrition>
     </statBases>
     <plant>
-      <leaflessGraphicPath>StandIn/Things/Plants/AB_JungleTreeLeafless</leaflessGraphicPath>
+      <leaflessGraphicPath>Things/Plants/AB_JungleTreeLeafless</leaflessGraphicPath>
       <growDays>14</growDays>
       <harvestWork>550</harvestWork>
       <harvestYield>18</harvestYield>
@@ -110,7 +110,7 @@
     <defName>RM_DenseMud</defName>
     <label>dense mud</label>
     <texturePath>Terrain/Surfaces/AB_DenseMud</texturePath>
-  <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_DenseMud_Polluted</pollutedTexturePath>
+  <pollutedTexturePath>Terrain/Surfaces/AB_DenseMud_Polluted</pollutedTexturePath>
   <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
     <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>
     <pollutionColor>(1, 1, 1, 1)</pollutionColor>
@@ -150,7 +150,7 @@
     <defName>RM_DenseGrass</defName>
     <label>dense grass</label>
     <texturePath>Terrain/Surfaces/AB_DenseGrass</texturePath>
-  <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_DenseGrass_Polluted</pollutedTexturePath>
+  <pollutedTexturePath>Terrain/Surfaces/AB_DenseGrass_Polluted</pollutedTexturePath>
    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMarsh</pollutionOverlayTexturePath>
     <pollutionColor>(1, 1, 1, 0.15)</pollutionColor>
     <edgeType>FadeRough</edgeType>

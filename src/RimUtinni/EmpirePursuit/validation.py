@@ -14,7 +14,7 @@ data), `HarmonyPatches.cs` (the single postfix on
 investigation's switches and dials) -- plus the
 mod's own `Defs/Scenarios/ScenParts_EmpirePursuit.xml` (the shipped
 `RUT_RuthlessPursuingMechanoids` def: `surveyShadowMultiplier=4`,
-`surveyShadowBiomes=[RM_Abyss, AB_RockyCrags]`) and `About.xml` (Odyssey +
+`surveyShadowBiomes=[RM_Abyss]`) and `About.xml` (Odyssey +
 brrainz.harmony deps, `incompatibleWith matathias.ruthlessmechanoids` --
 the upstream mod this REPLACES via an identical namespace/defName/
 scenPartClass, per that file's own header comment).
@@ -62,13 +62,11 @@ themselves as UNCONFIRMED against any other grounded source in this repo
 -- a first live run may need to correct the parameter names.
 
 WHAT THIS SUITE CANNOT COVER, per the walk doc's own step 11, and why:
-the `AB_RockyCrags` (Alpha Biomes "Abyss") survey-shadow multiplier
-itself needs a live map generated on that specific biome, which needs
-Alpha Biomes active -- outside `minimal+harmony`, the walk doc's own
-declared environment for this mod (Odyssey is an owned DLC, Harmony is the
-one genuine third-party dependency; Alpha Biomes is neither). `ShadowMultiplier`
-returning `1f` for every OTHER biome is implicitly exercised by every other
-chain below (none of them touch `AB_RockyCrags`), but the x4 branch itself
+the `RM_Abyss` survey-shadow multiplier itself needs a live map generated on
+that specific biome, which needs `mandrake.rm.biomes` active -- outside
+`minimal+harmony`, the walk doc's own declared environment for this mod.
+`ShadowMultiplier` returning `1f` for every OTHER biome is implicitly exercised
+by every other chain below (none of them touch `RM_Abyss`), but the x4 branch itself
 is UNCOVERED here -- a genuine gap, not an oversight. `DebugUtility.DebugLog`
 is also gated behind `RFPSettings.printDebug` (default off, no known bridge
 control to flip a log VERBOSITY setting mid-run distinct from the settings
@@ -145,11 +143,11 @@ def scen_part_def_readback(t):
                 "%s.surveyShadowMultiplier = %r, expected 4" % (SCEN_DEF, got_mult))
 
         got_biomes = fields.get("surveyShadowBiomes", "")
-        ok_biomes = all(b in str(got_biomes) for b in ("RM_Abyss", "AB_RockyCrags"))
+        ok_biomes = "RM_Abyss" in str(got_biomes)
         t._record("surveyShadowBiomes -> %r" % got_biomes, ok_biomes)
         if not ok_biomes:
             raise ExpectationFailed(
-                "%s.surveyShadowBiomes = %r, expected to contain RM_Abyss and AB_RockyCrags"
+                "%s.surveyShadowBiomes = %r, expected to contain RM_Abyss"
                 % (SCEN_DEF, got_biomes))
 
 

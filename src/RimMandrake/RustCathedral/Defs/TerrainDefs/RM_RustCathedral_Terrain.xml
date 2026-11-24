@@ -51,7 +51,7 @@
     <defName>RM_RustCathedral_PolymerFloor</defName>
     <label>polymer flooring</label>
     <texturePath>Terrain/Surfaces/AB_Polymer</texturePath>
-    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_Polymer_Polluted</pollutedTexturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_Polymer_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionFloorSmooth</pollutionOverlayTexturePath>
     <pollutionColor>(1, 1, 1, 0.1)</pollutionColor>
     <edgeType>FadeRough</edgeType>

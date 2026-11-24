@@ -102,7 +102,7 @@
     <defName>RM_PackedSnow</defName>
     <label>packed snow</label>
     <texturePath>Terrain/Surfaces/AB_Snow</texturePath>
-    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_Snow_Polluted</pollutedTexturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_Snow_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionIce</pollutionOverlayTexturePath>
     <pollutionColor>(1, 1, 1, 1)</pollutionColor>
     <pollutionCloudColor>(1, 1, 1, 0.66)</pollutionCloudColor>
@@ -133,7 +133,7 @@
     <defName>RM_PackedIce</defName>
     <label>packed ice</label>
     <texturePath>Terrain/Surfaces/AB_WhiteIce</texturePath>
-    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_WhiteIce_Polluted</pollutedTexturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_WhiteIce_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionIce</pollutionOverlayTexturePath>
     <pollutionColor>(1, 1, 1, 1)</pollutionColor>
     <pollutionCloudColor>(1, 1, 1, 0.66)</pollutionCloudColor>

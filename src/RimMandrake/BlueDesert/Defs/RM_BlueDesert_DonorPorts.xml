@@ -20,7 +20,7 @@
       <Nutrition>0.30</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/RM_ToxiGrass</texPath>
+      <texPath>Things/Plants/RM_ToxiGrass</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>

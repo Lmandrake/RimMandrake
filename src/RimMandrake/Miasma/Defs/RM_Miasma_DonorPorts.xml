@@ -11,7 +11,7 @@
     <defName>RM_FertileMud</defName>
     <label>fertile mud</label>
     <texturePath>Terrain/Surfaces/AB_FertileMud</texturePath>
-    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_FertileMud_Polluted</pollutedTexturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_FertileMud_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
     <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>
     <edgeType>FadeRough</edgeType>

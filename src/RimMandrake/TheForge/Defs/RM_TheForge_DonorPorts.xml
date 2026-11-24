@@ -37,7 +37,7 @@
     <defName>RM_HardenedGrass</defName>
     <label>hardened grass</label>
     <texturePath>Terrain/Surfaces/AB_HardenedGrass</texturePath>
-    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_HardenedGrass_Polluted</pollutedTexturePath>
+    <pollutedTexturePath>Terrain/Surfaces/AB_HardenedGrass_Polluted</pollutedTexturePath>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
     <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>
     <pollutionColor>(214, 140, 234, 0.15)</pollutionColor>
