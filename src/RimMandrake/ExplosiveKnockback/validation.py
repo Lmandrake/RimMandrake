@@ -1043,20 +1043,28 @@ class _Walk:
         rb = self.c("jawa/list_things", rect="%d,%d,%d,%d" % self.room, group="BuildingArtificial", limit=500).get("things") or []
         return sorted("%s@%s" % (t.get("def"), _pos(t)) for t in rb)
 
+    def solid_at(self, cell):
+        """The solid things whose footprint covers the cell (a shelf is two cells wide); None when it could not be read."""
+        return ((self.c("rimworld/get_cell_info", x=cell[0], z=cell[1]) or {}).get("cell") or {}).get("solidThingDefs")
+
     def control(self):
         """The mod off (run() turns it off inside its try, whose finally puts every setting back)."""
         start = self.haulables(self.room)
         before = dict((_num(t.get("id")), _pos(t)) for t in start)
         names = dict((_num(t.get("id")), t.get("def")) for t in start)
         standing = self.store_buildings()
+        held = dict((i, self.solid_at(p)) for i, p in before.items())
         cells, recs, ok_all, _m = self.mortars("C")
         after = dict((_num(t.get("id")), _pos(t)) for t in self.haulables(self.room))
         now = self.store_buildings()
         # a shelf that the shells destroyed drops its own stacks (vanilla; small list, 4 of 4 on 2026-11-23, 0 throw lines):
-        # a stack that stood on a destroyed building's cell did not move by our hand, and the throw lines still decide
-        lost = set(b.rsplit("@", 1)[1] for b in standing if b not in now)
+        # a stack that stood on a destroyed building (any cell of it) did not move by our hand, and the throw lines still decide
         moved = [i for i, p in after.items() if i in before and before[i] != p]
-        dropped = [i for i in moved if str(before[i]) in lost]
+        dropped = []
+        for i in moved:
+            here = self.solid_at(before[i])
+            if here is not None and set(held[i] or []) - set(here):     # both cells read, and a solid thing of the first is gone
+                dropped.append(i)
         moved = [i for i in moved if i not in dropped]
         thrown = [r for r in recs if r.get("type") in ("launch", "item_move")]
         self.ev["off_dropped_by_destroyed_storage"] = dropped

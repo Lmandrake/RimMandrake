@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "05bcfd0ed94f538af74923a98ab54461bdcf68e19d152f611836a2c11a580a34",
+  "body_sha256": "5d07470f7170ab06639c53d3de8dab26219e362797dc0af62e9e621184595375",
   "reducer": 1,
   "shards": {
    "BACKFILL": 341359,
@@ -19,7 +19,7 @@
    "HOLDER.run-1795478277": 3184,
    "HOLDER.run-1795485747": 1414,
    "HOLDER.run-1795487290": 2197,
-   "HOLDER.run-1795510833": 290,
+   "HOLDER.run-1795510833": 1450,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -880,7 +880,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 673,
+  "events": 677,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2486,7 +2486,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-24T09:13:19Z",
+   "last": "2026-11-24T10:33:24Z",
    "lease": "run-1795510833",
    "released": false,
    "token": 24

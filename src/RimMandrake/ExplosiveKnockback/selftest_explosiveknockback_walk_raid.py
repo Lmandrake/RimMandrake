@@ -142,6 +142,10 @@ class Fake:
             g = next((k for k, p in self.w["goods"].items() if p == [11, 11]), None)
             if self.brk.get("shelf_bursts") and g:
                 self.w["burst"], self.w["goods"][g] = True, [11, 12]
+            # the shelf is two cells wide (its root 11,11 and 12,11, in this plant): live 2026-11-24 its second cell's silver read as moved
+            g2 = next((k for k, p in self.w["goods"].items() if p == [12, 11]), None)
+            if self.brk.get("shelf_bursts") == "wide" and g2:
+                self.w["burst"], self.w["goods"][g2] = True, [12, 12]
             if self.brk.get("off_moves_bare") and self.w["goods"].get("103") == [12, 11]:
                 self.w["goods"]["103"] = [12, 12]
             return
@@ -278,6 +282,11 @@ class Fake:
             if w["cover"] and inr((13, 19)):
                 return {"success": True, "things": [{"id": "Cover1", "def": "RM_PitCover_WovenFrame", "position": {"x": 13, "z": 19}}]}
             return {"success": True, "things": []}
+        if tool == "rimworld/get_cell_info":
+            c = (kw["x"], kw["z"])
+            solid = ["Shelf"] if (c == (11, 11) or c == (12, 11) and self.brk.get("shelf_bursts") == "wide") and not (self.brk.get("shelf_bursts") and w.get("burst")) else \
+                ["LWM_WeaponsLocker"] if c == (15, 15) else []
+            return {"success": True, "cell": {"x": c[0], "z": c[1], "solidThingDefs": solid}}
         if tool == "jawa/explosion_at":
             self.blast(tuple(int(v) for v in kw["at"].split(",")), kw["radius"])
             return {"success": True}
@@ -586,6 +595,10 @@ def main():
     code, rows, txt = run(n_mods=SMALL_MODS, shelf_bursts=True)
     check("W46", rows.get("C_OFF_IMPACTS_NO_THROWS") == "PASS" and "1 dropped by their own destroyed storage" in txt,
           "mod off: the stack that its own destroyed vanilla shelf dropped is no throw (small list 2026-11-23, 4 of 4): %s"
+          % rows.get("C_OFF_IMPACTS_NO_THROWS"))
+    code, rows, txt = run(n_mods=SMALL_MODS, shelf_bursts="wide")
+    check("W48", rows.get("C_OFF_IMPACTS_NO_THROWS") == "PASS" and "2 dropped by their own destroyed storage" in txt,
+          "mod off: the stack on the second cell of its own destroyed shelf is no throw (visit 6, 2026-11-24): %s"
           % rows.get("C_OFF_IMPACTS_NO_THROWS"))
     code, rows, txt = run(n_mods=SMALL_MODS, args=["--frames-only"])
     check("W47", code == 0 and sorted(rows) == ["FRAME_BUDGET", "W_PRECONDITIONS"], "--frames-only still runs the pairs alone: %s" % rows)

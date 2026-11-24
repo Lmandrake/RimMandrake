@@ -102,5 +102,18 @@
   "patch_sha": "415bef62cef18df1",
   "rc": 1,
   "test_blob": "1e9359c92c547242e855a9f72b580c1262f832f6"
+ },
+ "T_STAGE3_SCENES": {
+  "at": "2026-11-24T09:32:03Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
+  "last": "FAIL stage3 scenes: 1 failed",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs\nindex db7692a8ca..fa7f0767a9 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs\n@@ -325,7 +325,7 @@ namespace RimMandrake.ExplosiveKnockback\n                     bool jolt = line.Count == 1 && (string)line[0][\"action\"] == \"jolt\";\n                     bool held = k == \"sec\" || GoodsOn(b).Count == (int)sc.numbers[\"goods_\" + k];\n                     float drawn = RM_MapComponent_Knockback.JoltDrawn.TryGetValue(b.thingIDNumber, out float jd) ? jd : 0f;\n-                    bool row = stayed && jolt && held && drawn > 0f;\n+                    bool row = stayed && jolt && held;\n                     ok &= row;\n                     rows.Add(k + \"=\" + (row ? \"jolted\" : \"FAIL\") + \" stayed=\" + stayed + \" held=\" + held + \" lines=\" + line.Count\n                         + \" action=\" + (line.Count > 0 ? (string)line[0][\"action\"] : \"none\") + \" drawnOffset=\" + drawn.ToString(\"0.000\"));\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs"
+  ],
+  "patch_sha": "a9b544872e0dcf27",
+  "rc": 1,
+  "test_blob": "3790029d0cb6e1a62b0cc2057c92ada3e08edbb1"
  }
 }
