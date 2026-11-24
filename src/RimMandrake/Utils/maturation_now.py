@@ -361,6 +361,8 @@ def read_mod(root, folder, names, live=True):
     m["disagree"] = disagreements(m, v, s, tt, j)
     m["ivs"], m["iv_bad"] = parse_interventions(jtext, "journal")
     m["jquestions"] = journal_questions(jtext)
+    if jtext is None:
+        m["unread"].append("journal.md: could not be read, so its open questions are not known")
     m["dcycles"] = designer_cycles(s) if s is not None else UNM
     m["_journal"] = j
     m["files"] = [os.path.join("design", "concepts", folder, p) for p in
@@ -691,9 +693,25 @@ def designer_cycles(s):
     return out
 
 
+def item_answered(body):
+    """True when a question item (whitespace-joined) carries its own answer: ~~title~~ then "answered by", or
+    "**Answered ...:**" followed by at least one word."""
+    if re.match(r"~~.+?~~\W*answered\b", body, re.I):
+        return True
+    a = re.search(r"\*\*Answered\b[^*]*\*\*\s*(.*)$", body, re.I)
+    if a:
+        return bool(re.search(r"\w", a.group(1)))
+    return False
+
+
 def journal_questions(text):
     """The numbered items under any "### Questions" heading -> [{n, who, text, answered}]. "for the Conductor" in an
-    item routes it to the Conductor; "answers question N" anywhere in the journal marks N answered."""
+    item routes it to the Conductor; an item is answered by any of three forms found in the real journals: "answers
+    question N" anywhere in the journal, a struck-through title ("~~title~~: answered by ..."), or a line
+    "**Answered DATE by WHO:** text" inside the item with text after it (an empty one is not an answer: still open).
+    None in (the journal could not be read) -> None out: could not look, not "no questions"."""
+    if text is None:
+        return None
     if not text:
         return []
     answered = {int(x) for x in re.findall(r"(?i)answer(?:s|ed|ing)?\s+questions?\s+(\d+)", text)}
@@ -704,7 +722,7 @@ def journal_questions(text):
             b = re.match(r"\*\*(.+?)\*\*", body)
             title = strip_md(b.group(1)).rstrip(":") if b else clip(strip_md(body), 110)
             out.append({"n": int(q.group(1)), "who": "conductor" if re.search(r"(?i)(?:for the Conductor|^\W*\(?to the Conductor\b)", body) else "mandrake",
-                        "text": clip(title, 140), "answered": int(q.group(1)) in answered})
+                        "text": clip(title, 140), "answered": int(q.group(1)) in answered or item_answered(body)})
     return out
 
 

@@ -153,8 +153,14 @@ def t_repeats_collapse():
     assert len([x for x in co if "stale_clone" in x]) == 1 and "×2" in joined(co), co
 
 
+def t_answered_journal_question_is_not_a_need():
+    """The journal's own answer (three forms) hides the question; see selftest_journal_answered.py (11 checks)."""
+    import selftest_journal_answered as J
+    assert J.main() == 0, "selftest_journal_answered failed: %s" % J.BAD
+
+
 def main():
-    tests = [t_ended_run_superseded_is_history, t_open_need_stays, t_spend_and_void_lines_are_records,
+    tests = [t_answered_journal_question_is_not_a_need, t_ended_run_superseded_is_history, t_open_need_stays, t_spend_and_void_lines_are_records,
              t_held_mod_lines_wait, t_hand_acts_one_line, t_unreadable_intervention_is_a_page_defect, t_repeats_collapse]
     failed = 0
     for t in tests:

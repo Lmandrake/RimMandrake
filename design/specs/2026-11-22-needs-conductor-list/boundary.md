@@ -51,6 +51,12 @@ card (its stage box, the "Runs on no stage" row, or the "Records (not needs)" ro
   Tested by `t_unreadable_intervention_is_a_page_defect`.
 - **repeats-collapse.** Ended runs of one stage with one outcome collapse to one line with the count and the newest
   time. Two equal lines collapse to one with "(×N)". Tested by `t_repeats_collapse`.
+- **answered-journal-question-is-not-a-need.** A journal question whose item carries its own answer is not listed under
+  "Needs Mandrake" or "Needs Conductor". The answer forms read: "answers question N" elsewhere in the journal, a
+  struck-through title followed by "answered", and a line "**Answered DATE by WHO:** text" with text after it. An
+  Answered line with nothing after it is still open. A journal that cannot be read goes on the mod's "Could not read" row,
+  never as "no questions". Item `RIMMANDRAKE_HIDE_ANSWERED_JOURNAL_QUESTION_PAGE_SHOWED_HIM_ONE`. Tested by
+  `t_answered_journal_question_is_not_a_need` (runs `selftest_journal_answered.py`).
 
 ## LIFE CYCLES
 
