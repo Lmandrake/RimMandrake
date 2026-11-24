@@ -1,8 +1,8 @@
 # Judges that find flaws, not polish: the 2026-11-17 review
 
 **Status: the four rules in file 6 were ADOPTED by the owner by question card, 2026-11-17, about 5:17 PM PST
-("Adopt the four rules (Recommended)").** The build is still owed: the rules bind once the judge and Designer prompts are
-edited and the judge is recalibrated, not before. GPT's nine rulings and ten edits in file 4 were NOT adopted; file 4 is
+("Adopt the four rules (Recommended)").** Built: the prompts are edited and the coverage judge read CALIBRATED on
+2026-11-18, so the rules bind. GPT's nine rulings and ten edits in file 4 were NOT adopted; file 4 is
 a record of what was weighed. Standing ruling: `design/RimMandrake/standing_rulings.md` §The judge refuses flaws, not
 polish.
 

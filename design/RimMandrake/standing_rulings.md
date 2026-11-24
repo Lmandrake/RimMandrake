@@ -1058,53 +1058,60 @@ The games. Each game has its own install, its own bridge and its own lock:
 The names of the games (owner, by card, 2026-11-22 about 2:35 AM PST). His question: *"How should we call the
 different games on each computer? A and b lower case are very hard to read and recognize. We should also remark them
 for which computer they are on since stevedesktop can also run games."* His answer on the card: *"Let's go with
-ArchBig, ArchSmall, Steve1 & Steve2."* (item `RIMMANDRAKE_RENAME_GAMES_ARCHBIG_ARCHSMALL_STEVE1_STEVE2_LETTERS_UNREADABLE`).
+ArchBig, ArchSmall, Steve1 & Steve2."* (Item `RIMMANDRAKE_RENAME_GAMES_ARCHBIG_ARCHSMALL_STEVE1_STEVE2_LETTERS_UNREADABLE`.)
 
-- ArchBig is the old `game a`, ArchSmall the old `game b`, Steve1 the lock `stevedesktop`, Steve2 the lock
-  `stevedesktop.b`. The machine is still SteveDesktop; Steve1 and Steve2 are names of games only.
+- ArchBig is the old `game a`. ArchSmall is the old `game b`. Steve1 is the lock `stevedesktop`. Steve2 is the lock
+  `stevedesktop.b`. The machine is still SteveDesktop. Steve1 and Steve2 are names of games only.
 - Every line that a person or an agent reads names a game by its name. Every input takes the name in any letter case.
-  The old inputs (`a`, `b`, `game:a`, `archmagi`, `archmagi.b`, `stevedesktop`, `stevedesktop.b`) stay valid as
-  aliases, so live runs, old briefs and old ledger events keep working. An unknown name is refused by name, never read
-  as a default game.
-- A letter names a game on its own machine: `b` on Archmagi is ArchSmall, on SteveDesktop it is Steve2. A name of
-  another machine's game is refused there by name.
-- The internal keys do not change: lock keys, instance letters and folders, `RM_GAME_INSTANCE`, control-store scopes
-  (`game:a`) and ledger history. One map, `src/RimMandrake/rimflow/game_names.py`, turns a key into its name. Its
-  promises are on `design/specs/2026-11-20-per-game-hold-own-install/boundary.md`; its test is
+- The old inputs stay valid as aliases: `a`, `b`, `game:a`, `archmagi`, `archmagi.b`, `stevedesktop` and
+  `stevedesktop.b`. So live runs, old briefs and old ledger events keep working.
+- A tool refuses an unknown name by name. A tool never reads an unknown name as a default game.
+- A letter names a game on its own machine: `b` on Archmagi is ArchSmall, and `b` on SteveDesktop is Steve2. A tool
+  refuses the name of another machine's game there, by name.
+- The internal keys do not change. The internal keys are the lock keys, the instance letters and folders,
+  `RM_GAME_INSTANCE`, the control-store scopes (`game:a`) and the ledger history.
+- One map, `src/RimMandrake/rimflow/game_names.py`, turns a key into its name. The promises of the map are on
+  `design/specs/2026-11-20-per-game-hold-own-install/boundary.md`. The test of the map is
   `src/RimMandrake/rimflow/selftest_game_names.py`.
 
 The bridge holder:
 
-- A bridge holder is the one process that drives one game: its lock names it. Two holders may drive two games at
-  the same time; one holder never drives two games.
-- `game_lock.py query|claim|release|run ArchBig|ArchSmall` and `rimflow bridge who|take|release --host <lock>` act on one game's
-  lock; with no `--host` rimflow acts on ArchBig. `RM_GAME_INSTANCE=b` points a tool and the bridge client at ArchSmall.
-- Every rule of "The bridge is passed through one file" (below) applies to each lock.
+- A bridge holder is the one process that drives one game. The lock of that game names the process.
+- Two holders may drive two games at the same time. One holder never drives two games.
+- `game_lock.py query|claim|release|run ArchBig|ArchSmall` and `rimflow bridge who|take|release --host <lock>` act on
+  one game's lock. With no `--host`, rimflow acts on ArchBig.
+- `RM_GAME_INSTANCE=b` points a tool and the bridge client at ArchSmall.
+- Every rule of "The bridge is passed through one file" (the next section) applies to each lock.
 
 The policies:
 
 - Choose the game by the work. Work that a tier mod list can prove goes to any free game. If ArchBig is busy or held,
-  the work goes to ArchSmall or to SteveDesktop. A seat that needs ArchSmall starts it
-  (`python3 src/RimMandrake/Utils/game_instance.py launch ArchSmall --wait`) and does not ask.
-- Only a check that needs the full mod list must use ArchBig. The full list on ArchSmall beside ArchBig does not fit in
-  Archmagi's memory (about 17.5 GB needed against 19.6 GB of headroom over a 12 GB floor, measured 2026-11-20). A wait
-  for ArchBig names those checks.
+  that work goes to ArchSmall or to SteveDesktop.
+- A seat that needs ArchSmall starts it and does not ask:
+  `python3 src/RimMandrake/Utils/game_instance.py launch ArchSmall --wait`.
+- Only a check that needs the full mod list must use ArchBig. A wait for ArchBig names those checks.
+- The full list on ArchSmall beside ArchBig does not fit in Archmagi's memory. The list needs about 17.5 GB. The headroom
+  was 19.6 GB, and a 12 GB floor of it must stay free (measured 2026-11-20).
 - His walk holds ArchBig only (`./pipe off game:ArchBig`). In-game runs then go to ArchSmall.
 - Never write or say "waiting for the live game", "needs the live game" or "the game is busy". Name the game. Say why no
   other game can take the work.
-- A tick line, brief, refusal or status page that says work needs a game while a game is free, or while ArchSmall could
-  take it, is a pipeline defect. Fix it in the same run (§The pipeline fixes its own defects).
-- The pipeline picks the game with `pick_game` (`src/RimMandrake/rimflow/maturation_dispatch.py`): the in-game visit,
-  the Stage 6 holder, and the holder on a spent offline road back of game-only items. Detail:
-  `design/specs/2026-11-20-per-game-hold-own-install/boundary.md`,
-  `design/specs/2026-11-20-tick-game-only-exit/boundary.md` and `design/RimMandrake/two_rimworld_instances_2026-11-07.md`.
+- A tick line, brief, refusal or status page says that work needs a game. If a game is free, or ArchSmall could take the
+  work, that line is a pipeline defect. Fix the defect in the same run (§The pipeline fixes its own defects).
+- The pipeline picks the game with `pick_game` (`src/RimMandrake/rimflow/maturation_dispatch.py`) for three runs:
+  - the in-game visit;
+  - the Stage 6 holder;
+  - the holder on a spent offline road back of game-only items (a pilot mod at an offline stage: each of its open
+    offline Problems has had its automatic fixer run, and its open road-back items all need a game).
+- Detail: `design/specs/2026-11-20-per-game-hold-own-install/boundary.md`,
+  `design/specs/2026-11-20-tick-game-only-exit/boundary.md` and
+  `design/RimMandrake/two_rimworld_instances_2026-11-07.md`.
 
 ## The bridge is passed through one file
 
-**RELENTLESS** was the retired Relentless Pipeline's bridge holder (`model.bridge_identity`), not a seat: only old `bridge` events carry it.
+**RELENTLESS** was the bridge holder of the retired Relentless Pipeline (`model.bridge_identity`). RELENTLESS was not a
+seat. Only old `bridge` events carry that name.
 
-One process drives each game at a time, not for ownership but for attributability. The one file is that game's
-driver lock (owner, 2026-11-21, about 3:35 AM PST: *"A single point of reference and truth? And most importantly, a
+One process drives each game at a time. The reason is attributability, not ownership. The one file is that game's driver lock (owner, 2026-11-21, about 3:35 AM PST: *"A single point of reference and truth? And most importantly, a
 token free lightning fast way to query, claim, and release."*). Design and measurements:
 `design/specs/2026-11-21-one-game-lock/boundary.md`.
 
@@ -1115,59 +1122,80 @@ python3 src/RimMandrake/rimflow/game_lock.py release ArchSmall              the 
 python3 src/RimMandrake/rimflow/game_lock.py run ArchSmall --for "<what>" -- CMD  hold it for CMD's life
 ```
 
-Exit 0 free or done, 75 held, 3 his hold, 2 could not look. `rimflow bridge who|take|release` and `./bridge` read and
-write the same lock, and write the ledger's history; nothing decides from the ledger.
+Exit 0 is free or done, 75 is held, 3 is his hold, 2 is could not look. `rimflow bridge who|take|release` and `./bridge`
+read and write the same lock. The same commands write the ledger's history. Nothing decides from the ledger.
 
-🔑 **It errs toward ALLOWING, never toward mutual lockout** (owner, 2026-09-02). A holder whose process has ended holds
-nothing. A live holder holds; `--force` cuts it and is recorded.
+**It errs toward ALLOWING, never toward mutual lockout** (owner, 2026-09-02). Here "It" names the driver lock. A
+holder whose process has ended holds nothing. A live holder holds. `--force` cuts a live holder, and the cut is
+recorded.
 
-⭐ **The owner overrides both of you with `./bridge conductor|free`**, and his word
-lands in the same file you already read.
+**The owner overrides every holder with `./bridge conductor|free`.**
+His word lands in the driver lock, the same file that you already read.
 
-🔴 **His presence at the machine is not an event** (owner, 2026-10-30, verbatim: *"I really, really need you to strip "when I come back to the machine" as an event for anything changing. It's causing so many problems and I don't need it."*). Nothing reads his
-keyboard or mouse clock, and his touching, leaving or returning to the machine never gates, delays, yields,
-requeues or aborts anything: a bridge take, deploy, restart, dispatcher ring, seat restart, arena lane, TestPilot or
-runner. A seat MAY take the bridge, deploy and restart the game on its own when it is free or ours
-(`rimflow bridge idle --for "<what>"` reports it;
-`rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...` do it), and lists each act in his daily digest (class `bridge idle`). Still
-binding: his OWNER hold (below) and `./bridge` override, never a flyer's flight (`--flyer` or flight wording refuses),
-and the game is never fullscreened or focused, so it does not steal his screen. The arena lane config key `owner_playing` is ignored and dropped.
+**His presence at the machine is not an event** (owner, 2026-10-30, verbatim: *"I really, really need you to strip "when I come back to the machine" as an event for anything changing. It's causing so many problems and I don't need it."*).
 
-🔴 **Any role that needs the live game to finish a fix takes it when it is free** (owner, 2026-11-20, about 4:50 AM
+- Nothing reads his keyboard or mouse clock. His touching, leaving or returning to the machine never gates, delays,
+  yields, requeues or aborts anything: a bridge take, deploy, restart, dispatcher ring, seat restart, TestPilot or
+  runner.
+- When the game is free or ours, a seat MAY take the bridge, deploy and restart the game on its own.
+  - `rimflow bridge idle --for "<what>"` reports if the bridge can be taken.
+  - `rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...` do it.
+  - The seat lists each act in his daily digest (class `bridge idle`).
+- These still bind: his OWNER hold (below in this section) and his `./bridge` override. Never test a flyer's flight:
+  `--flyer` or flight wording refuses. Never put the game in fullscreen or in focus, so that it does not steal his
+  screen.
+
+**Any role that needs the live game to finish a fix takes it when it is free** (owner, 2026-11-20, about 4:50 AM
 PST: *"And yes... if a live game is available, of course a judge (or any role!) should be able to just grab it and use
-it to get something done! IT's an unused resource otherwise... the worst case."*). A judge, a driver or a fixer
-takes the bridge with `rimflow bridge take --idle-ok --for "<what>"` when it is free or ours, starts the game with `./game --idle-ok --why "<what>" up`, does the fix, and releases the bridge the moment the
-work stops. A mod does not wait a stage for a game that sits unused. The briefs that carry it are the in-game driver's,
-the blind judge's and the live fixer's (`FREE_GAME_RULE` in `maturation.py`). An offline-stage fixer gets only offline
-items, because a game-only item goes back to Stage 6, so its brief keeps "Never take the bridge or a game". The same limits bind as above. Measured
-2026-11-20: neither `cli.py bridge take --idle-ok` nor `./game --idle-ok` reads a role key; a BENCH take under the role
-units of a driver, a blind judge and a coverage judge succeeded.
+it to get something done! IT's an unused resource otherwise... the worst case."*).
 
-🔴 **His OWNER hold is takeable 45 minutes after his last interaction** (owner, by question card 2026-10-30, "Should
+- When the bridge is free or ours, a judge, a driver or a fixer takes it: `rimflow bridge take --idle-ok --for
+  "<what>"`. Then that role starts the game with `./game --idle-ok --why "<what>" up` and does the fix. The role
+  releases the bridge the moment the work stops.
+- A mod does not wait a stage for a game that sits unused.
+- Three briefs carry this rule: the in-game driver's, the blind judge's and the live fixer's (`FREE_GAME_RULE` in
+  `maturation.py`).
+- An offline-stage fixer gets only offline items, because a game-only item goes back to Stage 6. So the brief of an
+  offline-stage fixer keeps "Never take the bridge or a game".
+- The same limits bind as under "His presence at the machine is not an event".
+- Measured 2026-11-20: neither `cli.py bridge take --idle-ok` nor `./game --idle-ok` reads a role key. A BENCH take
+  under the role units of a driver, a blind judge and a coverage judge succeeded.
+
+**His OWNER hold is takeable 45 minutes after his last interaction** (owner, by question card 2026-10-30, "Should
 agents ever be allowed to take your hold?", typed: *"45 minutes after my last interaction, or I deliberately release
-it"*). Interaction means his deliberate acts only: any OWNER-attributed ledger event (his `./game`, his
-`./bridge conductor|free`, anything run on his words, card or ruling), a bare `./bridge`, his chat prompt to any
-seat window (the human-input signal `block_agent_over_slots.py` uses), and the hold's own events. Never his keyboard,
-mouse or presence. Until then every take refuses, `--force` included, naming his last interaction; an unmeasured
-signal refuses. The one exception is the Conductor's mindful cut (owner 2026-11-19, §Only five acts stay his): from the
-Conductor window, `rimflow bridge take|release --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why
-"<why>; lost: <what his sitting loses if this is wrong>; undo: <how he gets it back>"`, never for a flyer's flight. Code: `src/RimMandrake/rimflow/owner_interaction.py`, gate in `rimflow/cli.py` `_take_decision`.
-Seat OWNER is his authority, not his activity: an agent's `--owner-said`, `--by-card`, `--per-ruling` or `--why`
-restarts nothing (`is_his_act`). `host_guard` holds the same line across clones: a live OWNER lock takes no `--force`
-without the cli's verdict.
+it"*).
 
-🔴 **Holding the bridge is blanket authorization — never ask what to do with it** (owner,
+- An interaction is one of his deliberate acts only:
+  - a ledger event that his own hands wrote (his `./game`, his `./bridge conductor|free`);
+  - a bare `./bridge`;
+  - his chat prompt to any seat window (the human-input signal that `block_agent_over_slots.py` uses);
+  - a question card that he answers in a seat window;
+  - the hold's own events.
+- His keyboard, his mouse and his presence are never an interaction.
+- Until the 45 minutes end, every take refuses, `--force` included. The refusal names his last interaction. An
+  unmeasured signal also refuses.
+- The one exception is the Conductor's mindful cut (owner 2026-11-19, §Only five acts stay his). The command, from the
+  Conductor window: `rimflow bridge take|release --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why
+  "<why>; lost: <what his sitting loses if this is wrong>; undo: <how he gets it back>"`. Never cut the hold for a
+  flyer's flight.
+- Seat OWNER is his authority, not his activity. An agent's `--owner-said`, `--by-card`, `--per-ruling` or `--why` event
+  restarts nothing (`is_his_act`).
+- Code: `src/RimMandrake/rimflow/owner_interaction.py`. The gate is `_take_decision` in `rimflow/cli.py`. `host_guard`
+  holds the same line across clones: a live OWNER lock takes no `--force` without the cli's verdict.
+
+**Holding the bridge is blanket authorization — never ask what to do with it** (owner,
 2026-09-19, verbatim: *"Never ask that. If you have bridge, you may start steam, launch
-game, anything you need."*). Once the lock says it's yours, starting
-Steam, launching the game, running a cold load, anything the session needs — none of it
-needs a question first.
+game, anything you need."*). When the lock says that the bridge is yours, you may start Steam, launch the
+game, run a cold load, or do anything else that the session needs. Ask no question first.
 
-`src/RimMandrake/Utils/broadcast.py` is the owner's tool and the Conductor's (owner 2026-11-19, §Only five acts stay
-his; no other seat or helper runs it); the game-state relay above is its only other carve-out, and since 2026-09-29 that relay is STAMP-ONLY — a seat running it writes the
-ledger event and messages no window (owner: game-state broadcasts between agents *"burn tokens
-unnecessarily and rarely inform"*; `rimflow next` measures the game itself).
-🔴 Run commands yourself — a `!`-prefixed paste handed to the owner is the defect
-(hook-enforced on Stop); anything he must LOOK at comes with the complete native path.
+`src/RimMandrake/Utils/broadcast.py` is the owner's tool and the Conductor's (owner 2026-11-19, §Only five acts stay his).
+No other seat or helper runs it. The only other carve-out is the game-state relay. In that relay, he says a game state to
+an agent, and the agent runs `./game` with his words. Since 2026-09-29 that relay is STAMP-ONLY. A seat that runs the
+relay writes the ledger event and messages no window. The owner said that game-state broadcasts between agents *"burn tokens
+unnecessarily and rarely inform"*. `rimflow next` measures the game itself.
+
+Run commands yourself. A `!`-prefixed paste handed to the owner is the defect (a hook enforces this on Stop). Anything
+that he must LOOK at comes with the complete native path.
 
 ## The Conductor has no closed sources — owner, 2026-10-31
 
@@ -1177,24 +1205,51 @@ unnecessarily and rarely inform"*; `rimflow next` measures the game itself).
   closed to the Conductor and to its helper (record `conversations/2026-10-31-1440-7d9f8e12.md`).
 - No design, gate or role file closes a journal, log, ledger, record or tool to the Conductor window. A page that shows
   no spend figure is not a closed source, because the Conductor reads the figures elsewhere.
-- "Redo that analysis" was an order for that morning. It is done and binds nothing now.
+- "Redo that analysis" was an order for that morning. That order is done and binds nothing now.
 
 ## The Test Pilot is a permanent way of working — owner, 2026-10-31
 
 *"Ok, so the "test pilot" agent is a real idea we should simply implement and accept, period."*
 
-His earlier words: *"a "Test Pilot" type agent to sit down with the raiders and do a deep debug live with the game, trying things experimentally through bridge, rather than just code changes and long, slow testing procedures"*. Adopted regardless of the arena trial verdict. An item with 3 non-pass runs in a row, or a defect that needs live observation, goes to an `rm-testpilot` agent (`.claude/agents/rm-testpilot.md`) instead of more code-and-retest cycles. The rule and its measurement are in `src/RimMandrake/rimflow/testpilot_route.py`; `rimflow pilot` prints the ticket. Each sitting ends by writing what it learned, false theories included, into the mod's functional script.
+His earlier words: *"a "Test Pilot" type agent to sit down with the raiders and do a deep debug live with the game, trying things experimentally through bridge, rather than just code changes and long, slow testing procedures"*.
+
+- The Test Pilot was adopted whatever the verdict of the arena trial was. (The arena trial compared pipeline
+  architectures. The arena trial is retired.)
+- Two things go to an `rm-testpilot` agent (`.claude/agents/rm-testpilot.md`) instead of more code-and-retest cycles:
+  - an item with 3 non-pass runs in a row;
+  - a defect that needs live observation.
+- The rule and its measurement are in `src/RimMandrake/rimflow/testpilot_route.py`. `rimflow pilot` prints the ticket.
+- Each sitting ends with an update to the mod's functional script. The update says what the sitting learned, false
+  theories included.
 
 ## Retest only after a code change — owner, by card 2026-10-31
 
-Card: "Retest rule → Retest only after a code change". An item is tested once per code version; a harness-invalid run is repaired, never counted. Two kinds of run repeat on one code version: the budgeted runs of a kind B scene and the steps of a kind C hunt (§Live tests have three kinds).
+Card: "Retest rule → Retest only after a code change".
 
-A code version is `gate.code_version`: the chain's runtime hash, the runtime hash of every mod composed with it, its code slice and its declared inputs, without the harness and without a driver's result files. Every kind of verdict counts, GAP included: a row owed a live check stays owed however often it runs. A chain the harness stopped gets no verify at all, and one `HARNESS_REPAIR_CAUSE_<HEX>` item per distinct cause holds it until the repair closes. A chain (a named group of checks in a mod's `validation.py`) can change its verdict with no code change. That chain is reported, not repeated: each run of the chain is classed by outcome (§Live tests have three kinds, section 2). `testq.py submit --retest-why REASON` is the human override, and a `--rows` job asks no permission. Code: `src/RimMandrake/Utils/testq/retest.py`, `gaps.settled`.
+- An item is tested once per code version. A harness-invalid run is repaired, never counted.
+- Two kinds of run repeat on one code version (§Live tests have three kinds):
+  - the budgeted runs of a kind B scene;
+  - the steps of a kind C hunt.
+- A code version is `gate.code_version`. A code version holds four things:
+  - the chain's runtime hash;
+  - the runtime hash of every mod composed with the chain;
+  - the chain's code slice;
+  - the chain's declared inputs.
+- The harness and a driver's result files are not in a code version.
+- Every kind of verdict counts, GAP included. A row that is owed a live check stays owed, however often the row runs.
+- A chain that the harness stopped gets no verify at all. One `HARNESS_REPAIR_CAUSE_<HEX>` item per distinct cause holds
+  that chain until the repair closes.
+- A chain is a named group of checks in a mod's `validation.py`. A chain can change its verdict with no code change.
+  That chain is reported, not repeated. Each run of the chain is classed by outcome (§Live tests have three kinds,
+  section 2).
+- `testq.py submit --retest-why REASON` is the human override. A `--rows` job asks no permission.
+- Code: `src/RimMandrake/Utils/testq/retest.py`, `gaps.settled`.
 
 ## No limit without the danger it guards; parallel work is the default — owner, 2026-10-31 to 2026-11-17
 
 *"In general, any decision we make that is shown to simply limit progress, productivity, or parallel construction should be immediately attacked to force it to defend its requirement. Parallel subagent development must be maximized so long as it's reliable, work is fairly checked, etc. That's true of ALL architectural comparisons, ok? They MUST support this. And our handoff procedures and context management must be robust to this."* · *"Trial gets priority, not exclusion."* (2026-10-31.) The trial was the retired architecture trial of that week (card on
-`ARENA_DAYZERO_PROVE_GAME_DEV_BAR_LIFTS`); that sentence binds nothing now. An architectural comparison that does not exercise parallel work does not decide which design is best. Review: `design/RimMandrake/parallel_review_2026-10-31/`.
+`ARENA_DAYZERO_PROVE_GAME_DEV_BAR_LIFTS`). That sentence binds nothing now. An architectural comparison that does not
+exercise parallel work does not decide which design is best. Review: `design/RimMandrake/parallel_review_2026-10-31/`.
 
 **His test for any guard** (record `conversations/2026-11-16-0055-2020153c.md`, a session begun Sun 2026-11-15 4:55 PM
 PST; said of deterministic checks before a model reads a ticket): *"I don't mean to create needless ceremony (and please
@@ -1224,62 +1279,79 @@ name is its session start in UTC; the PST start is beside it):
 - `2026-11-17-1807-c041be2c.md`: *"Drop 11-14 limits, old rule."*, quoted whole in §A limit from before the Maturation
   Pipeline is suspect, below.
 
-Each limit was removed one at a time while new code kept adding new ones; Crystallize 2026-W47 adopted the rule below
-as its one change (delegated: evidence-for-ask; report
+Each limit was removed one at a time, while new code kept adding new limits. Crystallize 2026-W47 (the weekly
+Crystallize pass of 2026 week 47) adopted the rule below as its one change (delegated: evidence-for-ask; report
 `D:\ClaudeWork\rimmandrake\conductor\crystallize_2026W47\sweeps.md` §3 item 2, §5 cluster 8, §9 candidate 1).
 
 **The rule, for every agent and every program.**
 - **Scope:** every cap, pause, wait, timeout, wall time, retry or attempt bound, rate or per-tick count, concurrency
   count, grant expiry and text cut in our code, configs, role files and briefs. A limit inside a mod's gameplay is a
-  design promise and is judged by that mod's design (his "No caps please" above removed one).
-- **Each limit names two things where it is set** (the comment beside the number, the component's boundary page under
-  LIMITS, or the brief): the **danger** it guards, meaning what goes wrong without it; and the **evidence** that the
-  danger happens, meaning an incident, measurement, record or lesson, with its date or path.
-- **A limit that cannot name both is removed, not tuned.** A bigger number is not a fix. When the danger is real but
-  nothing measured supports the LEVEL, the level is the defect, and the launcher picks the bound for the job it is
-  launching. Example: `detached_helper.py`'s default spend cap of $15, removed 2026-11-19: `launch` now requires
-  `--budget-usd` and `--resume` carries the earlier run's cap
-  (`RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS`, `design/specs/2026-11-19-launch-spend-cap/boundary.md`).
+  design promise. That mod's design judges such a limit (his "No caps please" above removed one).
+- **Each limit names two things where it is set.**
+  The place is the comment beside the number, the component's boundary page under LIMITS, or the brief. The two things:
+  - the **danger** that the limit guards: what goes wrong without the limit;
+  - the **evidence** that the danger happens: an incident, measurement, record or lesson, with its date or path.
+- **A limit that cannot name both is removed, not tuned.** A bigger number is not a fix.
+- The danger can be real while nothing measured supports the LEVEL. Then the level is the defect, and the launcher
+  picks the bound for the job that it launches. Example: the default spend cap of $15 of `detached_helper.py`, removed
+  2026-11-19. Now `launch` requires `--budget-usd`, and `--resume` carries the earlier run's cap
+  (`RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS`,
+  `design/specs/2026-11-19-launch-spend-cap/boundary.md`).
 - **When the evidence exists, the guard stays and is cheap** (his "protect cheaply!"). This rule removes no guard that
   has its danger and evidence.
-- **Found in the wild:** a limit with no named danger in pipeline machinery is a pipeline defect (§The pipeline fixes
-  its own defects): file it with its acceptance test and remove it in the same run, or hand it off with the evidence
-  when removing it is outside your tools.
-- **Where limits are born:** a boundary page lists each limit the component enforces under LIMITS (§A boundary page
-  before pipeline code), and a helper brief that sets a limit says what it guards
+- **Found in the wild:** a limit in pipeline machinery with no named danger is a pipeline defect. (§The pipeline fixes
+  its own defects.) File the defect with its acceptance test and remove the limit in the same run. When the removal is
+  outside your tools, hand the defect off with the evidence.
+- **Where limits are born:** a boundary page lists each limit that the component enforces under LIMITS (§A boundary page
+  before pipeline code). A helper brief that sets a limit says what the limit guards
   (`src/RimMandrake/rimflow/roles/conductor.md`, helper launches).
 
-**What this does not lift.** His own rulings already name their danger by his word, and change only by his act or the
-Conductor's mindful act in their own sections: his holds (the six biome mods held on 2026-11-16, his OWNER bridge hold's
-45 minutes, his stops such as the 8:22 PM stop of pipeline reviews on 2026-11-18); the hard per-run spend stop he
-ordered (*"Don't let any burn go to 90M this time ok?"*, 2026-11-12, §No launched agent is told its spend; only a
-DEFAULT level with no evidence is in scope); the account order and leave lines (§Account and capacity budget); the
-machine-safety brakes (the clone pool's 16 clones and its disk floor, §Git); and no live flyer flight test without him.
+**What this does not lift.** His own rulings already name their danger by his word. Those rulings change only by his
+act, or by the Conductor's mindful act in their own sections. The rulings are:
+- his holds:
+  - the six biome mods held on 2026-11-16;
+  - his OWNER bridge hold's 45 minutes;
+  - his stops, such as the 8:22 PM stop of pipeline reviews on 2026-11-18;
+- the hard per-run spend stop that he ordered (*"Don't let any burn go to 90M this time ok?"*, 2026-11-12, §No launched
+  agent is told its spend). Of that stop, only a DEFAULT level with no evidence is in scope of this rule;
+- the account order and leave lines (§Account and capacity budget);
+- the machine-safety brakes (the clone pool's 16 clones and its disk floor, §Git);
+- no live flyer flight test without him.
 
 **Measured, so any later date can judge it.** `python3 src/RimMandrake/Utils/owner_objections.py conversations <start>
-<end>` reports `arbitrary_limit` **≤ 2 blocks** for the 14 days after 2026-11-19 (2026-11-20 to 2026-12-03).
-Baseline: 8 blocks in 7 records for 2026-11-05 to 2026-11-19 [measured; pinned by
-`src/RimMandrake/Utils/selftest_owner_objections.py` at `338b3cae50`]; the 14 days before that (2026-10-22 to
-2026-11-04) read 2, so part of the spike belongs to the retired pipelines and a fall is not all this rule's doing.
-Review date: 2026-12-03 (any 14-day window after adoption works).
+<end>` counts his objections by class. The target is `arbitrary_limit` **≤ 2 blocks** for the 14 days after 2026-11-19
+(2026-11-20 to 2026-12-03).
+- Baseline: 8 blocks in 7 records for 2026-11-05 to 2026-11-19 [measured; pinned by
+  `src/RimMandrake/Utils/selftest_owner_objections.py` at `338b3cae50`].
+- The 14 days before that (2026-10-22 to 2026-11-04) read 2. So part of the spike belongs to the retired pipelines,
+  and a fall is not all this rule's doing.
+- Review date: 2026-12-03 (any 14-day window after adoption works).
 
 ## Wrap-up is a script, never a request — owner, 2026-11-03
 
-🔑 *"asking an agent to do something will NEVER assure it gets done, so there will be debris that piles up if it leaves a trace. That's bitten us many times, and writing even more urgently "no really, please check" does nothing. We need a deterministic check that ALWAYS happens after the agent finishes to ensure that any wrap-up occurs. Period."* A wrap-up that matters is a scripted step or a check that runs after the agent, never an instruction to it. Mechanism: item `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED`. Designer and debug-process wording: `design/RimMandrake/debug_process.md` ("Test disturbances").
+*"asking an agent to do something will NEVER assure it gets done, so there will be debris that piles up if it leaves a trace. That's bitten us many times, and writing even more urgently "no really, please check" does nothing. We need a deterministic check that ALWAYS happens after the agent finishes to ensure that any wrap-up occurs. Period."*
+
+A wrap-up that matters is a scripted step, or a check that runs after the agent. Such a wrap-up is never an
+instruction to the agent. Mechanism: item `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED`. Designer and debug-process
+wording:
+`design/RimMandrake/debug_process.md` ("Test disturbances").
 
 ## Every mod's test script matures at first touch — owner, 2026-11-03
 
-🔑 *"We do (2) but only for the mods we're touching recently. Baroque Biomes, GSS, FlowWorks, Solar. After that, it's "the first time an item names a mod, it gets a deep Designer pass to read out its code/spec, expand the spec and validation strategies, certifies it with the user/clarifies confusion, then writes it all out for Relentless. That way we learn as we go, getting better and better at it incrementally rather than pretending we know what we're doing right now.""* 
+*"We do (2) but only for the mods we're touching recently. Baroque Biomes, GSS, FlowWorks, Solar. After that, it's "the first time an item names a mod, it gets a deep Designer pass to read out its code/spec, expand the spec and validation strategies, certifies it with the user/clarifies confusion, then writes it all out for Relentless. That way we learn as we go, getting better and better at it incrementally rather than pretending we know what we're doing right now.""*
 
-- "(2)" is option 2 of the card question "How far should the Designer go?". The items below carry it out for the mods that
-  he names: the Designer reads each proof script and names each scene's missing site preparation and control case.
+- "(2)" is option 2 of the card question "How far should the Designer go?". The items below carry it out for the mods
+  that he names. In each item, the Designer reads each proof script and names each scene's missing site preparation
+  and control case.
 - For every other mod, the deep Designer pass runs when the mod is first worked. The Designer reads the code and the
   spec, expands the spec and the validation strategies, and clears up confusion.
-- "Certifies it with the user": the Conductor certifies the pass (his ruling of 2026-11-19, `delegation_policy.md` §2),
-  and brings him only a question that carries its evidence (§Evidence-for-Ask).
+- "Certifies it with the user": the Conductor certifies the pass (his ruling of 2026-11-19, `delegation_policy.md` §2).
+  The Conductor brings him only a question that carries its evidence (§Evidence-for-Ask).
 - "Writes it all out for Relentless": Relentless is retired. The Designer writes for the Maturation Pipeline.
 
-Items: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; trigger `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`. Role wording: `src/RimMandrake/rimflow/roles/designer.md`.
+Items: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`,
+`FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`, `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`. Trigger:
+`FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`. Role wording: `src/RimMandrake/rimflow/roles/designer.md`.
 
 ## A passing bar is an experience, never a tuning number — owner, 2026-11-16
 
@@ -1288,26 +1360,36 @@ The mod passing bars should not specify flora and fauna yield rates! That would 
 mod must repass its bars... drop that! How do we get the Judges to not demand pendantic stuff like this? Who cares the
 halfmade tree has more than one graphic? There's variants all the time. Defer Helix trade to next version."*
 (OWNER.jsonl note on `RIMMANDRAKE_APPLY_CONTAGION_JUDGE_FIXES_EIGHT_REFUSALS_HALTED`, 2026-11-16T15:14:15Z, about 7:14 AM
-PST, after reading the Contagion coverage judge's 25 refusals; "pendantic" is his phone's "pedantic".)
+PST, after he read the Contagion coverage judge's 25 refusals; "pendantic" is his phone's "pedantic".)
 
-- **The rule, for every mod:** a passing bar states an experience a player would notice. It never pins a yield rate, a
-  stat value or any other tuning number a renormalization pass changes, never an asset-variant count, and never "every
-  field of every row" of a def.
+- **The rule, for every mod:** a passing bar states an experience that a player would notice. A passing bar never pins:
+  - a yield rate, a stat value or any other tuning number that a renormalization pass changes;
+  - an asset-variant count;
+  - "every field of every row" of a def.
 - **The test, one sentence a judge applies:** would this bar have to be re-passed after we renormalize numbers or add an
   art variant? Then it is not a bar.
 - **Named non-gaps** (the Contagion look, `design/concepts/Contagion/coverage_verdict.json` g16 and g18): "the selftest
   covers every rostered plant's ingestible and yield fields"; "the Halfmade Tree resolves more than one graphic
   variant"; "one row per inventory special, each with its field and expected value".
-- **Enforced in code:** `src/RimMandrake/rimflow/bar_rule.py` (the rule text and the gate). The coverage judge's prompt
-  carries it, every gap names its `bar_kind`, and only an `experience` gap blocks; a gap that pins a tuning number, a
-  variant count or a declared field (by the judge's word, the second reader's or the gate's detector) is advisory:
-  stored and shown, blocking nothing. A new gap at a later look on material that did not change is the earlier look's
-  miss: advisory too (folds in `DESIGNER_GAPJUDGE_FIX_ONE_BATCH_PER_ROUND`). The Designer's leaf rule:
-  `src/RimMandrake/rimflow/roles/designer_write.md`. Regression set: `selftest_bar_rule_tuning_numbers.py`.
-- **What it does not change:** behaviour is still tested (a comparison a player sees, "gunfire leaves less mulch than a
-  burn", is an experience); a mod's selftest may still read its declared numbers as a regression check, which is not a
-  passing bar; north-star bars that already pin a number are his to change (census:
-  `design/RimMandrake/bars_pinning_tuning_numbers_census_2026-11-16.md`, brought to him by the Conductor).
+- **Enforced in code:** `src/RimMandrake/rimflow/bar_rule.py` (the rule text and the gate).
+  - The coverage judge's prompt carries the rule text. Every gap names its `bar_kind`, and only an `experience` gap
+    blocks.
+  - A gap that pins a tuning number, a variant count or a declared field is advisory. An advisory gap is stored and
+    shown, and it blocks nothing. The judge's word, the second reader's word or the gate's detector can class a gap
+    so.
+  - A new gap at a later look on material that did not change is the earlier look's miss. That gap is advisory too
+    (folds in `DESIGNER_GAPJUDGE_FIX_ONE_BATCH_PER_ROUND`).
+  - The Designer's leaf rule: `src/RimMandrake/rimflow/roles/designer_write.md`. Regression set:
+    `selftest_bar_rule_tuning_numbers.py`.
+- **What it does not change:**
+  - Behaviour is still tested. A comparison that a player sees is an experience ("gunfire leaves less mulch than a
+    burn").
+  - A mod's selftest may still read the mod's declared numbers as a regression check. A regression check is not a
+    passing bar.
+  - A north-star bar that already pins a number is his to change. The Conductor may also change it, as a mindful act
+    (owner 2026-11-19, §Only five acts stay his). If the change makes the bar looser or removes it, the act names
+    `lost:` and `undo:`. The census is `design/RimMandrake/bars_pinning_tuning_numbers_census_2026-11-16.md`. The
+    Conductor brings the census to him.
 - **The rest of the same ruling is Contagion's scope:** the Coalescence, the Grown Limbs and the Helix trade move to
   Contagion's next Design Version (the re-scope of `design/concepts/Contagion/`).
 
@@ -1315,14 +1397,20 @@ Item: `RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS`.
 
 ## Aim at a playable version, and build on what already exists — owner, 2026-11-08
 
-He said it of the retired Artisan loop, after a live sitting closed in hours what the loop had ground at for two days:
+He said it of the retired Artisan loop. A live sitting closed in hours what that loop had ground at for two days.
+
 *"We've got to get out of the "endless checklists grinding against the last 20% closure" experience."* · *"we're
 trying to get a Playable v1 right now, not determine the "ultimate perfect mod" right now."* · *"It also seems like
 we're biased towards building our own solutions rather than building off of existing game infrastructure (e.g. sand),
 open source projects, etc. We should more aggressively leverage existing work that's already proven whenever
-possible."* Work one issue at a time to a look, against the version's promise, not against frozen thresholds; before
-building a mechanism, look for a vanilla, DLC or proven open-source one to stand on. The judge rule below is the
-pipeline's form of the first half. (Source: the Conductor's seed for `RIMMASTER_REDESIGN_ARTISAN_JUDGMENT_NOT_CHECKLIST_GRIND`,
+possible."*
+
+- Work one issue at a time to a look (a look at the fix in the game). Work against the version's promise, not against
+  frozen thresholds.
+- Before you build a mechanism, look for a vanilla, DLC or proven open-source mechanism to stand on.
+- §The judge refuses flaws, not polish is the pipeline's form of the first half of this ruling.
+
+(Source: the Conductor's seed for `RIMMASTER_REDESIGN_ARTISAN_JUDGMENT_NOT_CHECKLIST_GRIND`,
 `git show f2ce40bac8:design/RimMandrake/artisan_judgment_seed_2026-11-08.md`.)
 
 ## The judge refuses flaws, not polish — owner, by card 2026-11-17
@@ -1332,43 +1420,66 @@ tuning because we keep asking a judge 'how could it be better?'"* (2026-11-17 ab
 5 took nine recorded looks.) He then ruled by question card, answered about 5:17 PM PST: "Adopt the four rules
 (Recommended)" (OWNER.jsonl tsn 1794964642498221334). GPT's nine rulings were not adopted.
 
-- **Rule 1, three reasons to refuse:** a promise is not kept; nobody would notice if a promise were broken (no test, or
-  a test that cannot fail; the judge describes the broken mod that would get through); or the test or paperwork is
-  itself wrong. Every refusal quotes the promise it rests on. Anything else ("prove it more thoroughly", "test more
-  cases", polish, tuning) is advice and does not block.
-- **Rule 2, one full inspection, then one check of the repairs:** the second look checks only whether the listed
-  problems were fixed, by reading the fix, never by whether a form was filed. It raises something new only when a
-  repair itself broke something, quoting the changed passage. Then it stops; what is left goes to the owner as a short
-  list, not to another judge.
-- **Rule 3, a refusal creates no new requirement:** it binds only "close this hole". Its numbers, day counts, bearings
-  and methods are one way to close it; a number binds only if the owner said it. The mod is never changed to hit a
-  test's number: that is a question for the owner. (The 2026-11-12 path to pass stands, as a suggestion.)
-- **Rule 4, only the owner's promises must be proven:** a Designer "must not read as" line ("it must not read as…") that is neither his words
-  nor the plain opposite of the promise is a tip for finding broken mods, never a separate thing to test.
-- **The two dials:** who must confirm a refusal (today only late findings get a second reader; one step up: every
-  refusal), and the number of looks (starts at 2). A third, the Designer's tips per promise, starts at 1.
-- **Two bug fixes land whatever else happens:** a finding the judge rated polish blocks nothing, and a carried gap the
-  look found repaired closes without a claim form.
-- **When it binds:** once the judge's and Designer's prompts are edited and the judge is recalibrated, not before. Until
-  then the judge runs as it stands. The rules are not applied backwards: Pyrelands stays covered.
+- **Rule 1, three reasons to refuse:**
+  - a promise is not kept;
+  - nobody would notice if a promise were broken: there is no test, or the test cannot fail. The judge then describes
+    the broken mod that would get through;
+  - the test or the paperwork is itself wrong.
+- Every refusal quotes the promise that it rests on. Anything else ("prove it more thoroughly", "test more cases",
+  polish, tuning) is advice and does not block.
+- **Rule 2, one full inspection, then one check of the repairs:**
+  - The second look checks only whether the listed problems were fixed. The second look decides that by a read of
+    the fix, never by whether a form was filed.
+  - The second look raises something new only when a repair itself broke something, and quotes the changed passage.
+  - Then the judge stops. What is left goes to the owner as a short list, not to another judge.
+- **Rule 3, a refusal creates no new requirement:**
+  - A refusal binds only "close this hole". Its numbers, day counts, bearings and methods are one way to close the hole.
+    A number binds only if the owner said it.
+  - The mod is never changed to hit a test's number. A test that seems to need such a change is a question for the
+    owner. (Since 2026-11-19 the Conductor may take it: §Only five acts stay his.)
+  - (The 2026-11-12 path to pass stands, as a suggestion.)
+- **Rule 4, only the owner's promises must be proven.**
+  - A Designer can add a "must not read as" line ("it must not read as…").
+  - If such a line is neither his words nor the plain opposite of the promise, it is a tip for finding broken mods. That
+    line is never a separate thing to test.
+- **The two dials:**
+  - who must confirm a refusal. Its setting: today only late findings get a second reader (`bar_rule.py`). One step up:
+    every refusal;
+  - the number of looks (starts at 2).
+- A third dial, the Designer's tips per promise, starts at 1.
+- **Two bug fixes land whatever else happens:** a finding that the judge rated polish blocks nothing. A carried gap that
+  the look found repaired closes without a claim form (a claim in the concept's `coverage_fixes.json`).
+- **When it binds:** once the judge's and Designer's prompts are edited and the judge is recalibrated, not before. Both
+  are done: the coverage judge read CALIBRATED on 2026-11-18, so the rules bind. The status of the judge's brief now:
+  `infrastructure/state/judge_calibration.json`.
+- The rules are not applied backwards: Pyrelands stays covered.
 
 Full text: `design/specs/2026-11-17-judge-flaws-not-polish/6_proposed_ruling_plain.md`. Item:
 `RIMMANDRAKE_RETHINK_JUDGE_STRICTNESS_BARS_LOOSE_PROOFS_ORNATE`.
 
 ## The pipeline proposes a Fable Rescue; it never launches one — owner, 2026-11-16
 
-Asked "Shall I file that as the next step of the work order, with its tests?" about the Conductor's criteria for when a
-mod is going round the same ground (both rescues of 2026-11-16, Gimme Some Slack and Pyrelands, were launched by hand),
-he answered *"yup. Then we'll watch stats to see if we need to tune that."* (about 10:10 PM PST). The Dispatch tick runs
-`src/RimMandrake/rimflow/maturation_rescue.py`, which reads five criteria from records (a check flipping pass/fail
-across builds; a tuning number changed twice in opposite directions; the same bar refused two cycles running; the stage
-spend ceiling reached without a green certificate; a bar with no test that runs the real mechanic) and writes one
-`RESCUE PROPOSED:` line per new piece of evidence to the Conductor log, marked RAISE FIRST. It never launches a rescue, it
-proposes nothing for a mod the owner holds or one under or just out of a rescue, and a criterion it cannot read is
-reported UNMEASURED. Its thresholds are one settings block, tuned only from the stats (`rescue_proposals.jsonl` in the
-Dispatch state dir; `maturation_rescue.py status`). This supersedes "No stall detector" in
-`RIMMANDRAKE_ENACT_INVENTION_WHEN_BARS_CONFLICT_GRADIENT_TOO_EASY`. Item:
-`RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED`.
+The Conductor had written criteria for when a mod is going round the same ground. (Both rescues of 2026-11-16, Gimme Some
+Slack and Pyrelands, were launched by hand.) The Conductor asked him about those criteria: "Shall I file that as the next
+step of the work order, with its tests?" He answered *"yup. Then we'll watch stats to see if we need to tune that."*
+(about 10:10 PM PST).
+
+- The Dispatch tick runs `src/RimMandrake/rimflow/maturation_rescue.py`. That program reads five criteria from records:
+  - a check that flips pass/fail across builds;
+  - a tuning number that changed twice in opposite directions;
+  - the same bar refused two cycles running;
+  - the stage spend ceiling reached without a green certificate (`maturation.py certificate`);
+  - a bar with no test that runs the real mechanic.
+- The program writes one `RESCUE PROPOSED:` line per new piece of evidence to the Conductor log, marked RAISE FIRST.
+  The program never launches a rescue.
+- The program proposes nothing for a mod that the owner holds. The program proposes nothing for a mod under a rescue or
+  just out of one. The program reports a
+  criterion that it cannot read as UNMEASURED.
+- The thresholds are one settings block. Tune them only from the stats (`rescue_proposals.jsonl` in the Dispatch state
+  dir; `maturation_rescue.py status`).
+- This supersedes "No stall detector" in `RIMMANDRAKE_ENACT_INVENTION_WHEN_BARS_CONFLICT_GRADIENT_TOO_EASY`.
+
+Item: `RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED`.
 
 ## Every mod builder builds the offline model from the first build — owner, 2026-11-17
 
@@ -1377,14 +1488,22 @@ something that should be instructed to the mod builder in general, yes, from the
 had, but maybe it hadn't had a chance to benefit from that yet."* (about 10:50 AM PST, after the Explosive Knockback
 rescue; "Rescurer" in his words is "Rescuer".) Enacted by the Conductor.
 
-- **What it says:** keep a mod's decision logic Verse-free so an offline test runs the shipped decision; before any
-  fix or tuning, build a generator of the situations the mod can be in, read by the bars' own checks; declare the range
-  (what it varies, how many cases, what it leaves out), never "every case"; a mod with no decision logic says so in one
-  line. It extends his 2026-11-16 "Hunt parameter regimes and regions, not examples" from the rescue to every builder.
-- **One source:** the `offline-model` block in `src/RimMandrake/rimflow/roles/fable_rescue.md` step 2. The rescue reads it
-  in place; `maturation.OFFLINE_MODEL` reads it into the offline builder's brief (`brief_text`, from a mod's first
-  build) and the road-back fixer's (`maturation_autonomy.fixer_brief`). Edit the block, never a copy.
-- **What it does not change:** no spend, cap or budget goes in it; the bars, stages and judges are as before.
+- **What it says:**
+  - Keep a mod's decision logic Verse-free: no Verse types, so the logic does not depend on the game. Then an offline
+    test runs the shipped decision.
+  - Before any fix or tuning, build a generator of the situations that the mod can be in. The bars' own checks read that
+    generator.
+  - Declare the range: what it varies, how many cases, what it leaves out. Never write "every case".
+  - A mod with no decision logic says so in one line.
+  - This extends his 2026-11-16 "Hunt parameter regimes and regions, not examples" from the rescue to every builder.
+- **One source:** the `offline-model` block in `src/RimMandrake/rimflow/roles/fable_rescue.md` step 2. Edit the block,
+  never a copy. Its readers:
+  - the rescue reads the block in place;
+  - `maturation.OFFLINE_MODEL` reads the block into the offline builder's brief (`brief_text`, from a mod's first
+    build);
+  - `maturation.OFFLINE_MODEL` also reads the block into the road-back fixer's brief
+    (`maturation_autonomy.fixer_brief`).
+- **What it does not change:** no spend, cap or budget goes in it. The bars, stages and judges are as before.
 
 Item: `RIMMANDRAKE_TEACH_OFFLINE_MODEL_FIRST_BUILD`; selftest `selftest_offline_model_rule.py`.
 
@@ -1394,10 +1513,12 @@ Item: `RIMMANDRAKE_TEACH_OFFLINE_MODEL_FIRST_BUILD`; selftest `selftest_offline_
 have been "reported up" for fix and repair."* · *"This is horrible. We must be tolerant to broken testing and acceptance
 tests. This will be very common and expected. ... make our system more rigorously capable in terms of debugging test,
 validation, and acceptance tests at the same time as testing code. ... Pretending that lower productivity and cyclic loops
-is rigorous checking is self denial."* The proof, harness, site, sandbox and contract are suspects alongside the code;
-a failure is attributed before any rework, and an instrument fault becomes repair work while the item waits without a
-strike. A false close is still worse than a wait. Design input: GPT consult at
-`D:\ClaudeWork\rimmandrake\conductor\test_tolerance_consult\`.
+is rigorous checking is self denial."*
+
+- The proof, harness, site, sandbox and contract are suspects alongside the code.
+- Attribute a failure before any rework. An instrument fault becomes repair work, and the item waits without a strike.
+- A false close is still worse than a wait.
+- Design input: GPT consult at `D:\ClaudeWork\rimmandrake\conductor\test_tolerance_consult\`.
 
 ## One Codex door, one sign-in — owner, 2026-11-23
 
@@ -1408,36 +1529,50 @@ image reprocessing, running agents... everything."* *"confirm that a single log-
 
 - All Codex work goes through Dispatch's door: `gpt_door.py ask`, `image` and `agent`. Page:
   `~/dev/Dispatch/design/specs/2026-11-23-one-codex-door/boundary.md`.
-- One sign-in folder (`~/.codex`) serves all of it, at the same time. The door renews the login a day early, by one process
-  at a time. Never copy an `auth.json`, and never make a second sign-in folder: copies killed the logins on 2026-11-20.
+- One sign-in folder (`~/.codex`) serves all of it, at the same time. The door renews the login a day early, by one
+  process at a time. Never copy an `auth.json`, and never make a second sign-in folder: copies killed the logins on
+  2026-11-20.
 - No API key pays for anything. The door removes key variables from Codex's environment.
 - The Windows `codex.exe` route is retired. A call to it is refused by name and logged as `WINDOWS_RETIRED`.
-- The ChatGPT desktop app stays until he says otherwise: its `.codex` folder must stay, because the app's next start without
-  it raises the Windows consent dialog.
+- The ChatGPT desktop app stays until he says otherwise. Its `.codex` folder must stay, because without the folder the
+  app's next start raises the Windows consent dialog.
 
 ## Codex agents run with full machine access — owner, 2026-11-09
 
-*"Please grant that authority to all agents immediately."* It was asked when Codex ran on Windows and its sandbox could not reach WSL. Every agent environment now carries
-`CODEX_SANDBOX=danger-full-access` (`~/.config/environment.d/50-codex-sandbox.conf`, `~/.zshenv`, `~/.profile`; the
-runner is `src/RimMandrake/Utils/agent_runner.py`). It changes nothing else: Claude stays the default runner, results are
-still validated by the existing checks, and the quota gate and the rule against falling back to Claude still hold.
+*"Please grant that authority to all agents immediately."* He gave this order when Codex ran on Windows and Codex's
+sandbox could not reach WSL.
+
+- Every agent environment now carries `CODEX_SANDBOX=danger-full-access`
+  (`~/.config/environment.d/50-codex-sandbox.conf`, `~/.zshenv`, `~/.profile`; the runner is
+  `src/RimMandrake/Utils/agent_runner.py`).
+- That setting changes nothing else. Claude stays the default runner. The existing checks still validate results. The
+  quota gate (`quota_gate` in that runner) still holds, and so does the rule against a fall back to Claude.
 
 ## The test is built with the item, offline and live — owner, 2026-11-13
 
 *"Yes, from now on, we build the test at the same time as the item, both offline and online versions. then they get consolidated into the formal tests."*
-The run that builds an item also writes its offline test (red-first selftest) and its live test (a bridge script that stages the case and reads state). A live test that could not be run is recorded on the item as UNRUN with its exact command. Both are later consolidated into the mod's formal tests (its functional script and north-star bars). Item: `RIMMANDRAKE_BUILD_TESTS_WITH_ITEM_OFFLINE_AND_LIVE`.
+
+- The run that builds an item also writes its two tests:
+  - the offline test, a red-first selftest;
+  - the live test, a bridge script that stages the case and reads state.
+- A live test that could not be run is recorded on the item as UNRUN, with its exact command.
+- Both tests are later consolidated into the mod's formal tests (its functional script and north-star bars).
+
+Item: `RIMMANDRAKE_BUILD_TESTS_WITH_ITEM_OFFLINE_AND_LIVE`.
 
 ## Live tests have three kinds — owner, 2026-11-23
 
 Item `RIMMANDRAKE_ENACT_THREE_TEST_KINDS_FORCED_COUNTED_HUNTED_NOT_STARS_ALIGNED`. He approved this text on 2026-11-23
-(*"Approve updated draft 3."*). Sections 1 to 8 below are the approved text, with one later ruling of his in section 3 (a
-scene short of its X of Y; his words are at the end). The reasons and the examples:
+(*"Approve updated draft 3."*). Sections 1 to 8 below are the approved text. Section 3 also holds one later ruling of his
+(a scene short of its X of Y). His words on that ruling are at the end of this section. The reasons and the examples:
 `design/specs/2026-11-23-three-test-kinds/draft.md`.
 
-Two cases of 2026-11-23 started the rule. In Explosive Knockback visit 4, the spared-carrier scene failed once because
-the carrier walked out of the blast; the one failure blocked the exit of the visit. In FlowWorks, a raider was lifted
-out of a pit once in 18 free runs; when the rescue was ordered, the rescue happened 2 of 2 times, and the bug was fixed
-that morning.
+Two cases of 2026-11-23 started the rule:
+
+- In Explosive Knockback visit 4, the spared-carrier scene failed once, because the carrier walked out of the blast. The
+  one failure blocked the exit of the visit.
+- In FlowWorks, a raider was lifted out of a pit once in 18 free runs. When the rescue was ordered, the rescue happened 2
+  of 2 times. The bug was fixed that morning.
 
 The Principle of Impactful Evidence is at the top of `infrastructure/agents/CHARTER.md`, in his exact words. Minimum
 Force (section 7) is also in the live-testing skills: `skills/live-debugging-proof-harness/SKILL.md`,
@@ -1476,14 +1611,16 @@ A scene with no tag is kind A.
     opportunities. X and Y come from the intended yield and from the testing budget, and are written before the first
     run. Check the rate itself offline where that is possible, because offline runs are free.
   - **Short of X of Y (his ruling, 2026-11-23).** A scene that ends with fewer than X successes escalates to the Conductor.
-    The program raises it: one RAISE FIRST line in the Conductor log and a note on the item of the mod's in-game run, with
-    the scene, X, Y, the count reached and the tag evidence. The Conductor decides whether the mod's function needs X of
-    Y, or X was a guess that guarded against environmental fluctuation. The scene's pass is held until the call is
-    recorded (`src/RimMandrake/rimflow/shortfall.py call`). "The mod needs X of Y": the scene reads MOD FAILURE, and
-    the mod goes back to an earlier pipeline stage for a fix, as for any MOD FAILURE (the road back of Stage 6 in
-    `design/specs/2026-11-13-maturation-pipeline.md`); the call stands while X of Y stands. "X was a guess": a new X goes on the scene before its next run, and
-    the scene is judged again. The opportunities already run on the same build count. Nobody else changes X or Y. This
-    changes nothing for a scene with no X of Y, and no rule of kind A or C.
+    - The program raises it with two records: one RAISE FIRST line in the Conductor log, and a note. The note is on the item
+      of the mod's in-game run. Both hold the scene, X, Y, the count reached and the tag evidence.
+    - The Conductor decides whether the mod's function needs X of Y, or X was a guess that guarded against environmental
+      fluctuation. The scene's pass is held until the call is recorded (`src/RimMandrake/rimflow/shortfall.py call`).
+    - "The mod needs X of Y": the scene reads MOD FAILURE. As for any MOD FAILURE, the mod goes back to an earlier pipeline
+      stage for a fix. (The road back of Stage 6 is in `design/specs/2026-11-13-maturation-pipeline.md`.) The call stands
+      while X of Y stands.
+    - "X was a guess": a new X goes on the scene before its next run, and the scene is judged again. The opportunities
+      already run on the same build count.
+    - Nobody else changes X or Y. This ruling changes nothing for a scene with no X of Y, and no rule of kind A or C.
 - **Kind C, intermittent hunt.** A temporary hunt for a fault that shows only sometimes. A hunt looks for evidence of failure.
   A hunt is never part of a mod's final acceptance tests. A hunt may use kind A or B scenes to get exposure; their verdicts
   stay their own.
@@ -1578,10 +1715,11 @@ The ruling on a scene short of its X of Y (about 3:00 PM PST; item
 Item `RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST`. This ruling extends the Principle of Impactful Evidence (top
 of `infrastructure/agents/CHARTER.md`).
 
-1. **The cheapest test that decides the bar is the test.** The designer of a test shows, on the scene or the check
-   (`cheaper_why` in the test table), why a cheaper, faster, simpler test cannot decide the same bar. Without that evidence,
-   the cheaper test is the test. From cheap to dear: an offline test; a state read; one spawned or held pawn and one order; a
-   staged event; a scene with many pawns; a raid. A smaller mod list is cheaper than the full list.
+1. **The cheapest test that decides the bar is the test.**
+   - The designer of a test shows why a cheaper, faster, simpler test cannot decide the same bar. The evidence stands on the
+     scene or the check (`cheaper_why` in the test table). Without that evidence, the cheaper test is the test.
+   - From cheap to dear: an offline test; a state read; one spawned or held pawn and one order; a staged event; a scene with
+     many pawns; a raid. A smaller mod list is cheaper than the full list.
 2. **A test that we cannot afford is replaced.** When a test costs more time and tokens than its evidence is worth, replace
    it by a less expensive test of the same bar, or of the part of the bar that matters. Do not keep running it.
 3. **No raid in a test unless the mod's own function is about raiders.** A raid is hostile pawns that attack by their own
@@ -1589,24 +1727,30 @@ of `infrastructure/agents/CHARTER.md`).
    scene can use. A hostile pawn that a scene spawns, holds or orders is not a raid.
    - **Raid tests are paused.** Until the test tools can hold a raid still (the Bridge 2 scene library,
      `design/specs/2026-11-23-bridge-v2/`), no pipeline run stages a raid. The switch is
-     `src/RimMandrake/rimflow/raid_pause.json`. `raid_pause.py lift --why "..."` lifts the pause, and it is the Conductor's act
-     or the owner's. The machinery, and what it does not stop: `design/specs/2026-11-23-raid-tests-paused/boundary.md`.
+     `src/RimMandrake/rimflow/raid_pause.json`.
+   - `raid_pause.py lift --why "..."` lifts the pause. The lift is the Conductor's act or the owner's. The machinery, and what
+     it does not stop: `design/specs/2026-11-23-raid-tests-paused/boundary.md`.
    - A test that stages a raid carries `stages_raid` (what it stages) and `cheaper_why` in its test table. While the pause is
-     on, nothing starts that test. The paused test reads `PAUSED: raid tests wait for the tools`, which is not PASS, not FAIL
-     and not UNMEASURED. The paused test spends none of its mod's trials, turns, looks or
-     cycles (§Stops that the work did not cause), and does not pause its mod.
+     on, nothing starts that test.
+   - The paused test reads `PAUSED: raid tests wait for the tools`. That reading is not PASS, not FAIL and not UNMEASURED. The
+     paused test spends none of its mod's trials, turns, looks or cycles (§Stops that the work did not cause). The paused
+     test does not pause its mod.
    - The bar of a paused scene stays open on the mod's record. The mod may go on to its walk brief, which names the open bar.
      The version does not pass until the bar is decided, or the Conductor decides by name what becomes of the bar.
-   - The work that builds the raid tools may stage a raid: its item is in the `allow` list of the switch, and its run sets
-     `RM_RAID_FOR` to that item.
+   - The work that builds the raid tools may stage a raid. The item of that work is in the `allow` list of the switch, and
+     its run sets `RM_RAID_FOR` to that item.
    - FlowWorks has a real need (raiders on ladders and at moats). Its raid scenes wait for the tools.
      Each part of their bars that one ordered pawn can decide has its own scene now (`sc_moat_walkers`,
      `sc_trench_cover_pawns`, `sc_islands_walker`).
    - Explosive Knockback did not need a raid: no row of `sc_walk_raid` read a raider. `sc_walk_blasts` replaced it, with no
      raid, on the small list. `sc_barrage_perf` does not need the full list either.
 
-**What this does not change.** The bars (a bar about raiders is still a bar about raiders); the kinds of live test and the
-seven outcomes of a live run (§Live tests have three kinds, section 2); his walk, where he may play a raid; a live flight test of a flyer; offline tests of raid code.
+**What this does not change.**
+- The bars. A bar about raiders is still a bar about raiders.
+- The kinds of live test, and the seven outcomes of a live run (§Live tests have three kinds, section 2).
+- His walk, where he may play a raid.
+- A live flight test of a flyer.
+- Offline tests of raid code.
 
 **His words, 2026-11-23, about 9:15 PM PST** (his answer to a card):
 
@@ -1629,13 +1773,13 @@ This ruling has two halves. Quote the two halves together.
   of Python's reach through the bridge today. Examples: a capture or an act on each tick, a hidden or private value, a
   live write of a value, an event between two ticks. Each such wall is enough reason to add generic C# to the bridge.
   - No agent asks the owner or the Conductor first.
-  - The agent that hits the wall builds the new bridge function, test first, or files a ticket for the new bridge function.
+  - The agent that hits the wall builds the new bridge function, test first. Or that agent files a ticket for it.
   - Do not poll from Python around the wall. A poll can miss an event that lasts one tick.
   - First check that no bridge tool reaches the thing already (`skills/rimbridge-companion/SKILL.md` §0).
 - **Half two: unchanged.** Tests, scene steps and verdicts stay in Python. The C# that an agent adds is a generic
   instrument that any test can call. The C# is never a test, a scene or a check of one mod.
 - **The question that tells an instrument from a test:** could a scene of another mod call the C# function unchanged?
-  Yes: an instrument, so add it to the bridge. No: a test, so keep it in Python.
+  Yes: the function is an instrument, so add it to the bridge. No: it is a test, so keep it in Python.
 - **Not changed:** the driver lock, the gates of `build.py`, the live flight test of a flyer (one of his five acts), and
   the ordinary work on tools that Python can reach already.
 
@@ -1656,9 +1800,11 @@ A cleansed design is a mod's design after the pass that strips out extras. The c
 `RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`) asked: *"Which checks must a cleansed design pass when the
 held biome mods return?"* He picked *"All three, as today (Recommended)"*: *"Why: it keeps the strongest check before
 any build. Buys: nothing changes in the pipeline, and no weak design slips through to a build. Recommended: your later
-card kept both gates and did not withdraw the whole-mod check."* The three are the whole-mod check
-(`designer_cleanse.py review`), the cold-reader exam (stage 4, `exam.json`) and the coverage judge (stage 5). No agent
-switches one of them off for a cleansed design.
+card kept both gates and did not withdraw the whole-mod check."*
+
+- The three checks are the whole-mod check (`designer_cleanse.py review`), the cold-reader exam (stage 4, `exam.json`) and
+  the coverage judge (stage 5).
+- No agent switches one of the three off for a cleansed design.
 
 ## Mod Design Versions use Semantic Versioning — owner, 2026-11-13
 

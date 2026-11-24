@@ -3,8 +3,7 @@
 
 Owner, 2026-10-29: "there would be a Burden of proof required to trigger a reload." By card the same day: the pilot
 decides by a written rule, and each reload logs the rule it met. Design: testpilot_merged_2026-10-29.md M1. Numbers:
-testpilot_reload_rule.json. This is the permanent sitting agent's rule (.claude/agents/rm-testpilot.md), not the arena
-trio lane's (src/RimMandrake/Utils/arena/testpilot.py), which is a trial arm with its own rule file.
+testpilot_reload_rule.json. This is the permanent sitting agent's rule (.claude/agents/rm-testpilot.md).
 
 Checked in this order; the first that holds decides:
   R0 no game is up: a cold start.

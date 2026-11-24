@@ -1,8 +1,7 @@
 """testpilot_route.py -- which items go to a Test Pilot instead of another code-and-retest cycle.
 
 Owner, 2026-10-31: "Ok, so the "test pilot" agent is a real idea we should simply implement and accept, period."
-This is the PERMANENT sitting agent (.claude/agents/rm-testpilot.md, one live debugging session on one item). It is not
-the arena's `trio` lane, src/RimMandrake/Utils/arena/testpilot.py, which is a trial arm and has its own rules.
+This is the PERMANENT sitting agent (.claude/agents/rm-testpilot.md, one live debugging session on one item).
 
 THE RULE: an open item goes to a Test Pilot when any of these holds (since its last TESTPILOT_SAT note):
   streak    3 or more non-pass runs (fail or partial) in a row, over the whole item or within one criterion or config;

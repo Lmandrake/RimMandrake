@@ -214,3 +214,8 @@ Windows Codex route (`standing_rulings.md` §One Codex door, one sign-in). Do no
   the ext4 clones only with `danger-full-access`.
 - `codex.exe` needed staging in `D:\ClaudeWork\rimmandrake\scratch\codex\`. `gpt_consult.py` and `codex_image.py` did that
   staging.
+
+## The arena lane's `owner_playing` key (the arena was removed at `1f0e666566`)
+
+Moved 2026-11-24 from `standing_rulings.md` §The bridge is passed through one file. The line there read: "The arena lane
+config key `owner_playing` is ignored and dropped." The arena lane is gone, so the line binds nothing now.
