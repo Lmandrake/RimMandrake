@@ -123,8 +123,9 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 - **the_reset_day_rule_is_plan_data.** Inside the reset-day hours, Codex's line is 0 and a Claude account's line is
   its floor, for the accounts that the plan lists; Steve's account keeps its line.
 - **measures_count_erased_points_and_switches.** `measures` gives, per account and week, the points above the line at
-  the reset from the reader's series, and the switches of the week from the switcher's log. A week with no reading
-  before its reset reads UNMEASURED, not 0.
+  the reset from the reader's series, and the switches of the week from the switcher's log, and the live runs at each
+  switch that this plan decided, from its own log (a pass whose runs could not be read is counted apart). A week with
+  no reading before its reset reads UNMEASURED, not 0.
 
 ### The old actuator, shadow and replay
 

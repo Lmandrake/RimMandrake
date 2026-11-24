@@ -807,6 +807,21 @@ def t_measures_count_erased_points_and_switches():
           str(w["erased"]["system"]).startswith("UNMEASURED"), w)
     check(n + ": both switches of the week are counted", w["switches"] == 2, w)
     check(n + ": no reading at all is an empty answer, not zeros", AP.measures([], [], lambda a, t: 1) == {})
+    log = [{"at": AP.iso(r1 - 5000), "do": "switch", "to": "lukas", "runs": 0}, {"at": AP.iso(r1 + 5000), "do": "switch",
+           "to": "steven", "runs": 3}, {"at": AP.iso(r1 + 5300), "do": "normal", "runs": 4},
+           {"at": AP.iso(r1 + 5600), "do": "switch", "to": "x", "runs": None}, {"at": AP.iso(r1), "do": "switch", "shadow": True, "runs": 9}]
+    got = AP.runs_at_switches(log)
+    check(n + ": the runs live at the plan's own switches are summed by week from its log; a shadow pass and an unread "
+              "count are not counted as runs", got.get(AP.week_of(r1)) == {"switches": 3, "runs": 3, "unread": 1}, got)
+    fresh(BASE, {**F("lukas", FAR), "series": rows, "switches": sws})
+    (TMP / "plan" / "log.jsonl").write_text("\n".join(json.dumps(x) for x in log) + "\n")
+    os.environ["RM_ACCOUNT_PLAN_NOW"] = repr(r1 + 6000)
+    try:
+        rc, text = acct("measures", frame={**F("lukas", FAR, now=r1 + 6000), "series": rows, "switches": sws})
+    finally:
+        os.environ["RM_ACCOUNT_PLAN_NOW"] = repr(NOW)
+    check(n + ": the command prints them beside the switches", rc == 0 and "3 live runs at the plan's 3 switches" in text
+          and "1 of them with the runs unread" in text, text)
 
 
 # ------------------------------------------------------------------ the old actuator, shadow and replay

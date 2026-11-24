@@ -1172,6 +1172,36 @@ def measures(rows, switches, line_at, since=None):
     return dict(sorted(out.items()))
 
 
+def runs_at_switches(log) -> dict:
+    """{week: {"switches": n, "runs": the live runs at those passes, "unread": passes whose runs could not be read}}
+    from this tool's own log: the passes where it decided a switch (not a shadow pass). Work wasted by switching."""
+    out = {}
+    for r in log:
+        t = stamp(r.get("at"))
+        if t is None or r.get("do") != "switch" or r.get("shadow"):
+            continue
+        w = out.setdefault(week_of(t), {"switches": 0, "runs": 0, "unread": 0})
+        w["switches"] += 1
+        if is_num(r.get("runs")):
+            w["runs"] += r["runs"]
+        else:
+            w["unread"] += 1
+    return out
+
+
+def own_log() -> list:
+    out = []
+    try:
+        for ln in (plan_dir() / "log.jsonl").read_text().splitlines():
+            try:
+                out.append(json.loads(ln))
+            except ValueError:
+                continue
+    except FileNotFoundError:
+        pass
+    return out
+
+
 # ------------------------------------------------------------------ the old plan file, read once
 def convert_legacy(legacy: dict, seed: dict, now=None) -> dict:
     """switching_plan.json as a plan of this schema: each standing account a step, each dated exception a temporary
@@ -1953,10 +1983,15 @@ def measures_cmd(plan, f, weeks) -> int:
         print("NONE: no reset and no switch in the last %d weeks of the series" % weeks)
         return NONE
     print("ALLOWANCE ERASED AT RESETS and SWITCHES, per week (Monday), against the lines of the plan as it is now")
+    mine = runs_at_switches(own_log())
     for w, v in m.items():
         er = "; ".join("%s %s" % (a, x if isinstance(x, str) else "%s points (%s%% left at its reset)" % (
             g(x), g(v["left_at_reset"][a]))) for a, x in sorted(v["erased"].items())) or "no reset seen"
-        print("  week of %s: %d switches; erased: %s" % (w, v["switches"], er))
+        k = mine.get(w)
+        print("  week of %s: %d switches; %s; erased: %s" % (w, v["switches"], (
+            "%d live runs at the plan's %d switches%s" % (k["runs"], k["switches"], ", %d of them with the runs unread"
+                                                          % k["unread"] if k["unread"] else "")) if k else
+            "the plan made no switch (its log has none)", er))
     wa = week_ahead(plan, f)
     print("FORECAST for the plan now: " + (say(wa) if wa else "COULD NOT LOOK: no burn rate, live account or reset time"))
     return OK
