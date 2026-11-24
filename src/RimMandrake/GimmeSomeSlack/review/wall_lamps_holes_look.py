@@ -48,8 +48,8 @@ def stage(B):
         for name, into, rot in FACES:
             for a, look in zip(ALONG, S.LOOK_NAMES):
                 c = [at(sq, into, a + k, -3) for k in (0, 1)]
-                out["%s %s %s" % (sq[0], name, look)] = B.ap("cline:PowerConduit:%s:%d,%d:%d,%d:god" % ((look,) + c[0] + c[1])).get("success")
-                b, heat, lamp = at(sq, into, a - 1, -3), at(sq, into, a + 2, 1), at(sq, into, a, -1)
+                out["%s %s %s" % (sq[0], name, look)] = B.ap("cline:PowerConduit:%s:%d,%d:%d,%d:god" % (({"Modern": "Modern_Orange"}.get(look, look),) + c[0] + c[1])).get("success")
+                b, heat, lamp = at(sq, into, a - (2 if into == (1, 0) else 1), -3), at(sq, into, a + 2, 1), at(sq, into, a, -1)
                 B.call("jawa/build_batch", ops="Battery:%d,%d,0;Heater:%d,%d,0" % (b + heat), faction="player", wipeExisting=False)
                 if sq[0] == "wall":
                     B.call("jawa/build_batch", ops="WallLamp:%d,%d,%d" % (lamp + (rot,)), faction="player", wipeExisting=False)
@@ -61,7 +61,8 @@ def stage(B):
     S._fill(B, SITE)
     B.ap("cprocess")
     B.probe("rebuild")
-    B.ticks(3)
+    B.ticks(250)                # the lamps and heaters take their power in: the no-power bolt would cover each lamp (first live run)
+    S._fill(B, SITE)
     return out, lamps
 
 

@@ -25,7 +25,8 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>Round 5 (owner 2026-10-04, station 4: "need to make the wires thinner"): 0.11 -> 0.08, shadow 0.17 -> 0.13.</summary>
         public const float StrandWidth = 0.08f;
         public const float ShadowWidth = 0.13f;
-        public const float FaceLift = 0.01f;
+        /// <summary>The wall faces' pieces against BuildingOnTop: just under it, over every wall, so a wall lamp hangs in front of a plate in its cell.</summary>
+        public const float FaceLift = -0.02f;
         public static int LastPrintedVerts;
         /// <summary>Hole leads printed into section meshes since the session began (state read: the probe's holes).</summary>
         public static int LeadsPrinted;
@@ -102,7 +103,7 @@ namespace RimMandrake.GimmeSomeSlack
                 float baseY = AltitudeLayer.Conduits.AltitudeFor();
                 // face pieces sit ABOVE the wall/rock sprite: a stub drawn at Building altitude was
                 // hidden by the wall (live pass 2). BuildingOnTop is the engine's own layer for things
-                // drawn on top of a building (Building_MechCharger, CompRitualFireOverlay).
+                // drawn on top of a building (Building_MechCharger, CompRitualFireOverlay); FaceLift sets them just under it.
                 float faceY = AltitudeLayer.BuildingOnTop.AltitudeFor() + FaceLift;
                 int k = 0;
                 bool whip = GimmeSomeSlackSettings.whip && GimmeSomeSlackSettings.breakReadout;

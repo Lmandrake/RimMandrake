@@ -45,6 +45,12 @@ def main():
     check(not validation.spark_budget_verdict(bud(2, 1, 2, 1, 1, 1, 1, 2)), "planted: two ends spark with the cap at 1: refused")
     check(not validation.spark_budget_verdict(bud(1, 1, 1, 1, 1, 1, 1, 1)), "planted: one live end in all cannot tell which is chosen: refused")
     check(not validation.spark_budget_verdict(bud(2, 1, 1, 1, 1, 1, 1, 1)), "planted: at cap 24 one of two live ends does not spark: refused")
+    good = {"success": True, "holes": 3, "ends": 3, "notIn": 0, "noBlack": 0, "bare": 0, "leadsPrinted": 3}
+    check(validation.holes_verdict(good)[0] == "PASS", "every cord drawn into its hole's black passes (owner's walk of 2026-11-24)")
+    check(validation.holes_verdict(dict(good, notIn=3))[0] == "FAIL", "planted: cords cut off at the plate (the walked build) are refused")
+    check(validation.holes_verdict(dict(good, noBlack=1))[0] == "FAIL", "planted: a plate that shows no black is refused")
+    check(validation.holes_verdict(dict(good, leadsPrinted=0))[0] == "FAIL", "planted: leads worked out and none printed is refused")
+    check(validation.holes_verdict(dict(good, ends=0))[0] == "UNMEASURED" and validation.holes_verdict({"success": False})[0] == "UNMEASURED", "no hole read, or a blind probe, is no pass")
     src = open(os.path.join(MOD, "validation.py"), encoding="utf-8").read()
     check('row(rows, "B4_downed_wire_bursts"' not in src, "the downed-wire row is gone from the script")
     cs = "".join(open(os.path.join(MOD, "Source", f), encoding="utf-8").read() for f in ("GimmeSomeSlackMod.cs", "RM_MapComponent_CordGraph.cs"))

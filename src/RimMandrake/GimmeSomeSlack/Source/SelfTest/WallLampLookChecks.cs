@@ -272,6 +272,12 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             string off = LookIconChecks.Body(picker, "internal static class Patch_Thing_Graphic_LampMasterOff");
             Check(off.Contains("GimmeSomeSlackSettings.enabled || !ConduitStylePicker.IsLamp(__instance.def)") && off.Contains("__result = __instance.DefaultGraphic;"),
                   "with the master switch off every lamp def in one of our looks draws its def's own (vanilla) graphic");
+            // a wall lamp (BuildingOnTop) hangs in front of a cord's plate in the same wall cell: the plates, holes and what is drawn on them (up to FaceLift + 0.004)
+            // lie under that layer (the walked build drew the plate over the lamp's base, station 33)
+            string sec = File.ReadAllText(Path.Combine(Path.GetDirectoryName(dir), "SectionLayer_RM_MessyCords.cs"));
+            Match lift = Regex.Match(sec, @"public const float FaceLift = (-?[0-9.]+)f;");
+            Check(lift.Success && double.Parse(lift.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture) + 0.004 < 0 && sec.Contains("AltitudeLayer.BuildingOnTop.AltitudeFor() + FaceLift"),
+                  "a wall plate is drawn behind a wall lamp in its cell (FaceLift " + (lift.Success ? lift.Groups[1].Value : "not found") + ", want under -0.004)");
             var named = new List<string>();
             foreach (string f in Directory.GetFiles(dir, "*.cs"))
                 foreach (Match m in Regex.Matches(File.ReadAllText(f), "\"(StandingLamp|WallLamp)\""))
