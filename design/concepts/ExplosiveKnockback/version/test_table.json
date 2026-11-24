@@ -507,6 +507,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code (RM_KnockbackProof_StoreroomBombPit.cs, with its control lane)"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_mortar_throw": {
@@ -531,6 +538,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_over_sandbags": {
@@ -555,6 +569,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_pawn_arc": {
@@ -579,6 +600,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_spared": {
@@ -603,6 +631,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_mass_and_power": {
@@ -627,6 +662,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_recovery": {
@@ -651,6 +693,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_hose_drop": {
@@ -675,6 +724,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_settings_off": {
@@ -699,6 +755,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_settings_sweep": {
@@ -723,6 +786,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_wall_stop": {
@@ -747,6 +817,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_pawn_hits_pawn": {
@@ -771,6 +848,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_door_water": {
@@ -795,6 +879,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_shield": {
@@ -819,6 +910,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_storeroom_mortar": {
@@ -843,6 +941,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_all_fly_no_cap": {
@@ -867,6 +972,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_open_storage": {
@@ -891,6 +1003,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_closed_containers": {
@@ -915,6 +1034,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_heavy_knock": {
@@ -939,6 +1065,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_blast_kinds": {
@@ -963,6 +1096,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_only_explosions": {
@@ -987,6 +1127,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_lookup": {
@@ -1011,6 +1158,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_gas_chain": {
@@ -1035,6 +1189,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_cauldron_gas": {
@@ -1059,6 +1220,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_cover_breaks": {
@@ -1083,6 +1251,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_pit_fall": {
@@ -1107,6 +1282,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_pit_enemy": {
@@ -1131,6 +1313,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_no_careless_fall": {
@@ -1155,6 +1344,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_pit_fetch": {
@@ -1179,6 +1375,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_frame_probe_check": {
@@ -1203,6 +1406,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_barrage_perf": {
@@ -1256,7 +1466,14 @@
    "why_full_list": null,
    "cheaper_why": "the whole walk is the cheapest place where two orders of blasts, a save in the air and the mod-off control share one colony; no row reads a raider, so the raid and the full list were dropped (owner, 2026-11-23)",
    "partial": "shells and grenade are GenExplosion calls at the HE shell's and frag grenade's numbers; the plan row reads each journal line's own planned and kernel cells, not a fresh kernel run; on the small list A_GAS_CLUMP_BY_CLUMP read one straggler cell in 1 of 8 runs (road_back_2026-11-23/README.md): a sighting, not classed",
-   "owed_under": "RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST"
+   "owed_under": "RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST",
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_gas_shove_into_pit": {
    "id": "sc_gas_shove_into_pit",
@@ -1280,6 +1497,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_killed_thrown": {
@@ -1304,6 +1528,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_goods_obstacles": {
@@ -1328,6 +1559,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_heavy_skip": {
@@ -1349,6 +1587,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_emp_no_throw": {
@@ -1370,6 +1615,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_fire_half": {
@@ -1391,6 +1643,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_harmful_unpatched": {
@@ -1412,6 +1671,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_items": {
@@ -1433,6 +1699,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_shelf": {
@@ -1454,6 +1727,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_in_pit_skip": {
@@ -1475,6 +1755,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_no_cross": {
@@ -1496,6 +1783,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_corpse_into_pit": {
@@ -1517,6 +1811,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_body_override": {
@@ -1538,6 +1839,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_impact_factor": {
@@ -1559,6 +1867,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_lookup_zero_wins": {
@@ -1580,6 +1895,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_goods_fly_midair": {
@@ -1601,6 +1923,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_goods_fly_lands": {
@@ -1622,6 +1951,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_goods_fly_wall": {
@@ -1643,6 +1979,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_goods_fly_rebound": {
@@ -1664,6 +2007,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_goods_fly_off": {
@@ -1685,6 +2035,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_container_thrown": {
@@ -1706,6 +2063,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_land_no_bump": {
@@ -1727,6 +2091,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_land_no_bump_pit": {
@@ -1748,6 +2119,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_gas_clumps": {
@@ -1769,6 +2147,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "LOOK_STAGE8": {

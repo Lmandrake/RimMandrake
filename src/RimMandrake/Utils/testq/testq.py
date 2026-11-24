@@ -1275,7 +1275,7 @@ def cmd_archmagi_report(a):
 
 def same_request(a, b):
     keys = ("mod", "selector", "purpose", "source_sha", "item", "profile", "lane", "deploy", "canary", "validity",
-            "owner_gate", "not_before", "gate")
+            "owner_gate", "not_before", "gate", "proof_build", "visit")
     return all(a.get(k) == b.get(k) for k in keys)
 
 
@@ -1421,6 +1421,12 @@ def cmd_submit(a):
         sel["full"] = True
     if getattr(a, "proofs", None):
         sel["proofs"] = [x for x in a.proofs.split(",") if x]
+    if getattr(a, "checks", None):
+        sel["checks"] = [x for x in a.checks.split(",") if x]
+        why = fill_checks(a, sel["checks"])
+        if why:
+            print("REFUSED: %s" % why)
+            return 2
     kw = {k: v for k, v in (("item", a.for_item), ("profile", a.profile), ("priority", a.priority),
                             ("not_before", a.not_before), ("supersedes", a.supersedes), ("owner_gate", a.owner_gate),
                             ("lane", a.lane), ("timeout_s", a.timeout), ("gate", getattr(a, "gate", None))) if v is not None}
@@ -1431,7 +1437,8 @@ def cmd_submit(a):
             print("REFUSED: --row-item wants ROW_OR_CHAIN=ITEM, got %r" % pair)
             return 2
         ri[k] = v
-    kw.update(row_items=ri, deploy=a.deploy or [], canary=not a.no_canary, validity=not a.no_validity,
+    kw.update(row_items=ri, proof_build=getattr(a, "proof_build", None) or [], visit=getattr(a, "visit", None),
+              deploy=a.deploy or [], canary=not a.no_canary, validity=not a.no_validity,
               situational=bool(getattr(a, "situational", False)))
     try:
         job = S.make_job(a.mod, sel, a.purpose, a.by, a.sha, **kw)
@@ -1446,7 +1453,8 @@ def cmd_submit(a):
     if why:
         print("REFUSED: --deploy %s; the worker would die INVALID/DEPLOY on a booked slot" % why)
         return 2
-    if S.is_proofs(job):        # an exact-tier proofs job: no modcheck plan to preview, no chain verdict to repeat
+    tiered = S.is_proofs(job) or S.is_checks(job)
+    if tiered:                  # an exact-tier job: no modcheck plan to preview, no chain verdict to repeat
         why = tier_problem(S.tier_of(job))
         if why:
             print("REFUSED: %s" % why)
@@ -1458,11 +1466,11 @@ def cmd_submit(a):
     if bad:
         print("REFUSED: %s (checked before queueing: a bad row id would burn a runner slot)" % bad)
         return 2
-    stale = None if S.is_proofs(job) else already_tested(a, sel, pv)
+    stale = None if tiered else already_tested(a, sel, pv)
     if stale:
         print("REFUSED: %s" % stale)
         return 2
-    again = None if S.is_proofs(job) or (getattr(a, "retest_why", None) or "").strip() else repeat_refusal(a.mod, sel)
+    again = None if tiered or (getattr(a, "retest_why", None) or "").strip() else repeat_refusal(a.mod, sel)
     if again:
         print("REFUSED: %s; --retest-why REASON overrides" % again)
         return 2
@@ -1511,6 +1519,42 @@ def tier_problem(tier):
         return None if isinstance(e, ImportError) else "modset_builder unreadable: %s" % e
     if modset_builder.tier_def(tier) is None:
         return "tier:%s is no modset_builder.py tier (--list names them)" % tier
+    return None
+
+
+def fill_checks(a, ids):
+    """Fill a checks job's tier, deploy list and proof build from the mod's test table (stage6_checks.route); a value the
+    caller gave stands. -> why the checks cannot be one job, or None."""
+    import stage6_checks as SC
+    try:
+        with open(os.path.join(REPO, "design", "concepts", a.mod, "version", "test_table.json"), encoding="utf-8") as f:
+            tests = json.load(f).get("tests") or {}
+    except (OSError, ValueError) as e:
+        return "the test table of %s cannot be read (%s)" % (a.mod, e)
+    tiers, builds = set(), set()
+    for t in ids:
+        spec = tests.get(t)
+        if not isinstance(spec, dict) or str(spec.get("stage")) != "6":
+            return "%s is no stage-6 check of %s" % (t, a.mod)
+        why = SC.not_the_lanes(spec)
+        if why:
+            return "%s is not the lane's: %s" % (t, why)
+        r, why = SC.route(a.mod, t, spec, REPO)
+        if r is None:
+            return "%s: could not look: %s" % (t, why)
+        tiers.add(r["tier"])
+        builds.add(r["build"])
+    if len(tiers) > 1 or len(builds) > 1:
+        return "one job runs one tier and one build; these need %s and %s" % (sorted(tiers), sorted(builds))
+    tier = tiers.pop()
+    a.profile = a.profile or "tier:" + tier
+    if not a.deploy:
+        try:
+            a.deploy = SC.deploys(a.mod, tier, REPO)
+        except Exception as e:      # noqa: BLE001 - a deploy list that cannot be read would test a stale mod
+            return "the mods of ours on tier %s cannot be read (%s: %s)" % (tier, type(e).__name__, e)
+    if builds == {"proof"} and not getattr(a, "proof_build", None):
+        a.proof_build = [a.mod]
     return None
 
 
@@ -2092,7 +2136,10 @@ def fill_rank(mod, n, now, today=None, exclude=()):
     recs = records("done")
     hist = chain_history(mod, recs)
     repeat = repeat_holds(mod, None, recs)
-    g = gaps.rank(mod, n, now, recs, lambda c: is_dry(hist.get(c) or [], now), exclude=set(exclude) | set(repeat))
+    # the other Steve game's job has no verdict yet: ranked again, its chains ran twice at one code version (2026-11-24)
+    flight = {c for st in ("running", "pending") for j in map(job_of, records(st)) if j.get("mod") == mod
+              for c in (j.get("selector") or {}).get("chains") or []}
+    g = gaps.rank(mod, n, now, recs, lambda c: is_dry(hist.get(c) or [], now), exclude=set(exclude) | set(repeat) | flight)
     plan = {k: g[k] for k in ("rank", "purpose", "row_items", "dry", "held", "ident", "counts", "flaky", "blind",
                               "why")}
     plan["repeat_hold"] = repeat
@@ -2334,6 +2381,10 @@ def main(argv=None):
     s.add_argument("--profile", type=profile_arg, help="targeted | full-list | tier:<modset_builder tier>")
     s.add_argument("--proofs", help="an exact-tier job: the --for-item's live-proof clauses, e.g. A1,A2 (with "
                                     "--profile tier:<name>)")
+    s.add_argument("--checks", help="stage-6 checks by id, each run by its own script on its tier (stage6_checks.py); the "
+                                    "tier, deploy list and proof build are filled from the test table")
+    s.add_argument("--proof-build", action="append", metavar="MOD", help="run on MOD's proof build (-p:RmProofs=true)")
+    s.add_argument("--visit", type=int, help="write the result into this in-game visit's rows.jsonl")
     s.add_argument("--priority", type=int)
     s.add_argument("--not-before")
     s.add_argument("--supersedes")

@@ -73,10 +73,10 @@ def run_checks():
     got, why = B.derive("Mod", TESTS, CHAINS, SCRIPTS)
     check(got.get("sc_entry") == "c_entry", "an entry that IS a modcheck chain names that chain")
     check(got.get("sc_driver") == "c_one", "a file a one-chain live driver runs names that driver's chain")
-    check(got.get("sc_two") is None and "2 chains" in why.get("sc_two", ""),
+    check(got.get("sc_two") is None and "could not look" in why.get("sc_two", ""),
           "a driver serving several chains names none, and says so")
     check(got.get("sc_full") is None, "a live_full check is not SteveDesktop's (it runs the minimal tier)")
-    check(got.get("sc_scene") is None and "no modcheck chain" in why.get("sc_scene", ""),
+    check(got.get("sc_scene") is None and "could not look" in why.get("sc_scene", ""),
           "an entry no chain or driver runs is unmapped with its reason")
     check("T_OFF" not in got, "an offline (stage 4-5) entry is not a stage-6 check")
 

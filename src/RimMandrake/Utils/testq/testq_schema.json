@@ -12,11 +12,13 @@
     "owner_gate": null,
     "priority": 50,
     "profile": "targeted",
+    "proof_build": [],
     "row_items": {},
     "situational": false,
     "supersedes": null,
     "timeout_s": 2700,
-    "validity": true
+    "validity": true,
+    "visit": null
    },
    "properties": {
     "canary": {
@@ -88,6 +90,13 @@
       }
      ]
     },
+    "proof_build": {
+     "items": {
+      "pattern": "^[A-Za-z0-9_.-]+$",
+      "type": "string"
+     },
+     "type": "array"
+    },
     "purpose": {
      "enum": [
       "fix",
@@ -117,6 +126,13 @@
      "minProperties": 1,
      "properties": {
       "chains": {
+       "items": {
+        "pattern": "^[A-Za-z0-9_.-]+$",
+        "type": "string"
+       },
+       "type": "array"
+      },
+      "checks": {
        "items": {
         "pattern": "^[A-Za-z0-9_.-]+$",
         "type": "string"
@@ -175,6 +191,13 @@
     },
     "validity": {
      "type": "boolean"
+    },
+    "visit": {
+     "minimum": 1,
+     "type": [
+      "integer",
+      "null"
+     ]
     }
    },
    "required": [
@@ -238,10 +261,20 @@
      },
      "type": "object"
     },
+    "checks": {
+     "description": "a checks job's identity and each check's site, command",
+     "type": [
+      "object",
+      "null"
+     ]
+    },
     "counts": {
      "additionalProperties": {
       "type": "integer"
      },
+     "type": "object"
+    },
+    "deploy_memo": {
      "type": "object"
     },
     "deployed": {
@@ -288,9 +321,6 @@
       "INTERRUPTED",
       "REFUSED"
      ]
-    },
-    "deploy_memo": {
-     "type": "object"
     },
     "phase_s": {
      "type": "object"

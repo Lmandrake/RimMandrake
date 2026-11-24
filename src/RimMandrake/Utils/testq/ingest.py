@@ -61,6 +61,7 @@ import invalid_class as IC  # noqa: E402
 import retest as R  # noqa: E402
 import schema as S  # noqa: E402
 import testq as T  # noqa: E402
+import visit_rows as VR  # noqa: E402
 
 REPO = T.REPO
 CLI = os.path.join(REPO, "src", "RimMandrake", "rimflow", "cli.py")
@@ -447,11 +448,30 @@ def ingest_proofs(job, res):
     return {"run": run, "result": verdict(res)}
 
 
+def visit_row_paths(git):
+    """-> the visits' rows.jsonl with lines not yet committed here (visit_rows.py wrote them): they travel in the shard's
+    commit."""
+    r = git("status", "--porcelain", "--untracked-files=all", "--", "design/concepts")
+    if getattr(r, "returncode", 1) != 0:
+        return []
+    return sorted(p for p in (ln[3:].strip().strip('"') for ln in r.stdout.splitlines())
+                  if re.match(r"^design/concepts/[^/]+/version/in_game/visit_\d+/rows\.jsonl$", p))
+
+
 def ingest_one(rec):
+    """The record's ledger events, after its rows in the in-game visit it was sent for (BENCH.visit: visit_rows.py)."""
+    vr = VR.ingest(rec, REPO)
+    out = ledger_one(rec)
+    return dict(out, **{"visit": vr}) if vr else out
+
+
+def ledger_one(rec):
     job, res = rec["job"], rec["result"]
     if rec.get("fault_window"):
         res = dict(res, fault_window=rec["fault_window"])
-    if S.is_proofs(job):
+    if S.is_checks(job) and not job.get("item"):
+        return {"skipped": "a checks job with no item: its verdicts are its visit's rows"}
+    if S.is_proofs(job) or S.is_checks(job):
         return ingest_proofs(job, res)
     item, att = job.get("item"), res["attempt"]
     lane = lane_finding(job, res)
@@ -860,7 +880,7 @@ def _publish(n, shard_rel=SHARD_REL, message=None):
             if r.returncode == 0 or "index.lock" not in (r.stderr or "") or i == INDEX_LOCK_TRIES - 1:
                 return r
             time.sleep(INDEX_LOCK_WAIT_S)
-    paths = [shard_rel] + (repair_prose_paths(git) if shard_rel == SHARD_REL else [])
+    paths = [shard_rel] + (repair_prose_paths(git) + visit_row_paths(git) if shard_rel == SHARD_REL else [])
     a = git_index("add", "--", *paths)
     if a.returncode != 0:
         return "add failed (the lines stay in the working tree; the next ingest retries): " + a.stderr.strip()[-200:]
@@ -1073,6 +1093,8 @@ def unpublished(shard_rel=SHARD_REL):
         return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=60).stdout.strip()
     return bool(git("status", "--porcelain", "--", shard_rel)) \
         or (shard_rel == SHARD_REL and bool(repair_prose_paths(lambda *a: subprocess.run(
+            ["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=60)))) \
+        or (shard_rel == SHARD_REL and bool(visit_row_paths(lambda *a: subprocess.run(
             ["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=60)))) \
         or git("rev-list", "--count", "origin/main..HEAD") \
         not in ("", "0")

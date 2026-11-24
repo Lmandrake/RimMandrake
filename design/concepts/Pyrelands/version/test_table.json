@@ -884,7 +884,13 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in validation.py"
    },
-   "command_note": "minimal list + mandrake.rm.biomes"
+   "command_note": "minimal list + mandrake.rm.biomes",
+   "testq": {
+    "chains": [
+     "ullai_and_giant"
+    ],
+    "by": "testq_blocks.py"
+   }
   },
   "sc_three_skies": {
    "id": "sc_three_skies",
@@ -1548,6 +1554,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in firefoam_aim_live_proof.py"
+   },
+   "testq": {
+    "check": {
+     "tier": "pyrelands",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_gate": {
@@ -1566,6 +1579,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: this run is offline only; entry exists in gate_live_proof.py"
+   },
+   "testq": {
+    "check": {
+     "tier": "pyrelands",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "firehawk_first_sighting_letter": {

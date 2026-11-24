@@ -7,9 +7,12 @@ already runs, by one rule, no judgement:
 
   a stage-6 entry of kind live_minimal (SteveDesktop runs modcheck's minimal tier) names chain C when
     1. its `entry` IS a chain of the mod's modcheck suite (FlowWorks' extensions, Pyrelands' validation chains), or
-    2. its `file` is the script of a live driver (suite.live_drivers) that serves exactly ONE chain, which is C.
-  Anything else (concept_scenes.py, a C# proof, a driver serving several chains) gets no block and is listed as
-  unmapped with its reason: it runs on Archmagi in the visit, or a chain is built for it first.
+    2. its `file` is the script of a live driver (suite.live_drivers) that serves exactly ONE chain, which is C, or
+    3. its `command` names chains of that suite (`--chains C`).
+  Else the check goes by its own script, when stage6_checks.py holds a route for it: the block is
+  {"check": {"tier", "build"}} and a `checks` job runs it on that tier (page
+  design/specs/2026-11-24-stage-six-checks-to-steve/boundary.md). What is left is not the lane's, or could not look, each
+  with its cause (`stage6_checks.py place MOD`).
 
 A derived block carries "by": "testq_blocks.py" and is rewritten on every apply; a block without that mark was written
 by hand and is never touched. Blocks are written only for mods pipeline_admit.standing() already counts as past the
@@ -24,11 +27,13 @@ Selftest: selftest_testq_blocks.py.
 import argparse
 import json
 import os
+import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import pipeline_admit as PA  # noqa: E402
+import stage6_checks as SC  # noqa: E402
 
 BY = "testq_blocks.py"
 KINDS = ("live_minimal",)
@@ -54,14 +59,25 @@ def suite_facts(mod, root):
     return chains, scripts
 
 
-def derive(mod, tests, chains, scripts):
-    """-> {test id: chain or None}, {test id: why unmapped}, over the stage-6 entries of TESTS."""
+def derive(mod, tests, chains, scripts, root=None):
+    """-> {test id: chain, {"check": ...} or None}, {test id: why unmapped}, over the stage-6 entries of TESTS."""
     got, why = {}, {}
+    ours = derive_chains(tests, chains, scripts)
+    for tid, (st, x) in SC.place(mod, tests, {t: [c] for t, c in ours.items()}, root or PA.repo_root()).items():
+        if st == SC.TAKEABLE:
+            got[tid] = x["chains"][0] if "chains" in x else x
+        else:
+            got[tid], why[tid] = None, x if st == SC.NOT_LANE else "%s: %s" % (st, x)
+    return got, why
+
+
+def derive_chains(tests, chains, scripts):
+    """-> {test id: chain} for the stage-6 entries a modcheck chain decides."""
+    got = {}
     for tid, t in tests.items():
         if not isinstance(t, dict) or str(t.get("stage")) not in PA.BAR_STAGES:
             continue
         if t.get("kind") not in KINDS:
-            got[tid], why[tid] = None, "kind %s: SteveDesktop runs the minimal tier" % t.get("kind")
             continue
         entry, f = t.get("entry"), (t.get("file") or "").replace("\\", "/")
         if entry in chains:
@@ -70,11 +86,11 @@ def derive(mod, tests, chains, scripts):
         served = sorted(set(scripts.get(os.path.normpath(f).replace(os.sep, "/")) or []))
         if len(served) == 1:
             got[tid] = served[0]
-        else:
-            got[tid] = None
-            why[tid] = ("%s's driver serves %d chains (%s)" % (f, len(served), ",".join(served)) if served else
-                        "entry %s of %s is no modcheck chain and no live driver runs that file" % (entry, f))
-    return got, why
+            continue
+        named = re.search(r"--chains (\w+)(?![\w,])", str(t.get("command") or ""))
+        if named and named.group(1) in chains:
+            got[tid] = named.group(1)
+    return got
 
 
 def table_path(root, mod):
@@ -116,7 +132,7 @@ def wanted(tt, got):
         if not hand:
             t.pop("testq", None)
             if got.get(k):
-                t["testq"] = {"chains": [got[k]], "by": BY}
+                t["testq"] = dict({"chains": [got[k]]} if isinstance(got[k], str) else got[k], by=BY)
         out[k] = t
     return out
 
@@ -127,16 +143,18 @@ def plan(mod, root=None):
     st = PA.standing(mod, root)
     tt = load(root, mod)
     chains, scripts = suite_facts(mod, root)
-    got, why = derive(mod, tt.get("tests") or {}, chains, scripts)
-    return {"mod": mod, "standing": st, "got": got, "why": why, "tt": tt, "tests": wanted(tt, got)}
+    tests = tt.get("tests") or {}
+    got, why = derive(mod, tests, chains, scripts, root)
+    placed = SC.place(mod, tests, {t: [c] for t, c in derive_chains(tests, chains, scripts).items()}, root)
+    return {"mod": mod, "standing": st, "got": got, "why": why, "tt": tt, "tests": wanted(tt, got), "placed": placed}
 
 
 def cmd_derive(a):
     p = plan(a.mod)
     for k, c in p["got"].items():
-        print("  %-28s %s" % (k, c if c else "-  " + p["why"][k]))
+        print("  %-28s %s" % (k, c if isinstance(c, str) else json.dumps(c, sort_keys=True) if c else "-  " + p["why"][k]))
     n = sum(1 for c in p["got"].values() if c)
-    print("%s: %d of %d stage-6 checks name a chain SteveDesktop can run%s" % (
+    print("%s: %d of %d stage-6 checks have a route to SteveDesktop%s" % (
         a.mod, n, len(p["got"]), "" if p["standing"][0] else "; NOT past blind: " + p["standing"][1]))
     return 0
 

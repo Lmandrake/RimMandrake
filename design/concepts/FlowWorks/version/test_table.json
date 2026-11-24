@@ -3270,6 +3270,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_fill_tiers": {
@@ -3316,6 +3323,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_source_pays": {
@@ -3336,6 +3350,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_canal_fire": {
@@ -3408,6 +3429,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_pit_reads": {
@@ -3526,6 +3554,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_one_network": {
@@ -3571,6 +3606,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written 2026-11-23 to decide, with no raid, the parts of sc_trench_cover that need no raider; seen FAIL on planted faults on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_hung_bridge": {
@@ -3617,6 +3659,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_river": {
@@ -3656,6 +3705,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written 2026-11-23 to decide, with no raid, the parts of sc_moat_raid that need no raider; seen FAIL on planted faults on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_hole_prison": {
@@ -3676,6 +3732,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_toss_flame": {
@@ -3696,6 +3759,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_islands_walker": {
@@ -3715,6 +3785,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written 2026-11-23 to decide, with no raid, the parts of sc_islands that need no raider; seen FAIL on planted faults on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_walk": {
@@ -3755,6 +3832,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "LOOK_STAGE8": {
@@ -3828,7 +3912,14 @@
     "why": "ran live on visit 2 (2026-11-19): FAIL on the draft reads, rewired since; offline_proof green; the rewired scene is UNRUN in the game"
    },
    "offline_proof": "python3 src/RimMandrake/FlowWorks/northstar/selftest_geyser_tub_scene.py",
-   "note": "RIMMANDRAKE_POINT_FLOWWORKS_GEYSER_CHECK_AT_VISIT_ONE_RUNNER (2026-11-20): visit 2 FAILed the draft, which inspected the geyser's own cell and waited for a need the mod never writes; scene_geyser_tub now makes geyser_tub_live.py's reads (ProofPitLabel on the pool floor, the dry pit before its fill as control, a wet pit off the pool, an ordered RM_SoakInGeyserPool giving RM_HotPoolSoak then RM_HotPoolAfterglow), proven on a fake map by offline_proof."
+   "note": "RIMMANDRAKE_POINT_FLOWWORKS_GEYSER_CHECK_AT_VISIT_ONE_RUNNER (2026-11-20): visit 2 FAILed the draft, which inspected the geyser's own cell and waited for a need the mod never writes; scene_geyser_tub now makes geyser_tub_live.py's reads (ProofPitLabel on the pool floor, the dry pit before its fill as control, a wet pit off the pool, an ordered RM_SoakInGeyserPool giving RM_HotPoolSoak then RM_HotPoolAfterglow), proven on a fake map by offline_proof.",
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "T_LIQUID_COATING_OFFLINE": {
    "id": "T_LIQUID_COATING_OFFLINE",
@@ -3874,6 +3965,13 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "T_PIT_LOOK_1114": {

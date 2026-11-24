@@ -12,6 +12,8 @@ JOB (immutable once submitted; a change is a new job that names the old one in `
   selector      {"item": [ids], "chains": [names], "rows": [ids], "full": bool}; at least one of them.
                 Passed to `modcheck run <mod>` as --item/--chains/--rows/--full. "full" only for purpose=sweep.
                 Or {"proofs": [clause ids]} alone: a Relentless exact-tier job (below), no modcheck.
+                Or {"checks": [stage-6 check ids]} alone: each check's own script on its tier (stage6_checks.py;
+                design/specs/2026-11-24-stage-six-checks-to-steve/boundary.md); `mod` is the mod, no item is needed.
   profile       "targeted" (modcheck's own minimal-list swap) or "full-list" (the owner's whole list), or
                 "tier:<modset_builder tier>" (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD; owner by card 2026-11-05, SteveDesktop is
                 the exact-tier host): the worker loads exactly that tier as the whole list (all five DLC), records the
@@ -30,7 +32,9 @@ JOB (immutable once submitted; a change is a new job that names the old one in `
   gate          null (modcheck default) or on/off/shadow: passed to modcheck run --gate
   owner_gate    null, or the reason it waits for the owner; such a job never dispatches until cleared
   lane          "stevedesktop" (default) | "archmagi" | "any"
+  visit         null, or the number of the mod's in-game visit whose rows this job's result becomes (visit_rows.py)
   deploy        extra mod folders to deploy with `mod` (list)
+  proof_build   mods whose PROOF build (-p:RmProofs=true) replaces the deployed release DLL for this job only (list)
   canary        bool (default true): modcheck --canary
   situational   bool (default false): modcheck --situational --policy abort; the result carries the suite's digest
                 (NORTHSTAR_SITUATIONAL_ROLLOUT_1, modcheck/live_queue/situational_pass.py)
@@ -85,7 +89,7 @@ NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+$")
 SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
 DEFAULTS = {"item": None, "profile": "targeted", "priority": 50, "not_before": None, "supersedes": None,
             "owner_gate": None, "lane": "stevedesktop", "deploy": [], "canary": True, "validity": True, "situational": False,
-            "timeout_s": 2700, "row_items": {}, "gate": None}
+            "timeout_s": 2700, "row_items": {}, "gate": None, "proof_build": [], "visit": None}
 
 
 class SchemaError(ValueError):
@@ -118,6 +122,11 @@ def profile_ok(p):
 def is_proofs(job):
     """True for a Relentless exact-tier job: the worker runs live-proof lines, not modcheck."""
     return bool(((job or {}).get("selector") or {}).get("proofs"))
+
+
+def is_checks(job):
+    """True for a stage-6 checks job: the worker runs each check's own script on the job's tier (stage6_checks.py run)."""
+    return bool(((job or {}).get("selector") or {}).get("checks"))
 
 
 # The proof line grammar of rimflow/proof_lines.PROOF_LINE (a selftest holds the two to the same parse): the
@@ -160,18 +169,22 @@ def validate_job(job):
     need(isinstance(job.get("id"), str) and JOB_ID_RE.match(job["id"]), "bad id")
     need(isinstance(job.get("mod"), str) and NAME_RE.match(job["mod"]), "bad mod folder name")
     sel = job.get("selector")
-    need(isinstance(sel, dict) and set(sel) <= {"item", "chains", "rows", "full", "proofs"},
-         "selector keys: item/chains/rows/full/proofs")
-    for k in ("item", "chains", "rows", "proofs"):
+    need(isinstance(sel, dict) and set(sel) <= {"item", "chains", "rows", "full", "proofs", "checks"},
+         "selector keys: item/chains/rows/full/proofs/checks")
+    for k in ("item", "chains", "rows", "proofs", "checks"):
         need(isinstance(sel.get(k, []), list) and all(isinstance(x, str) and NAME_RE.match(x) for x in sel.get(k, [])),
              "selector.%s must be a list of names" % k)
     need(sel.get("full") in (None, True, False), "selector.full must be a boolean")
-    need(any(sel.get(k) for k in ("item", "chains", "rows", "full", "proofs")),
+    need(any(sel.get(k) for k in ("item", "chains", "rows", "full", "proofs", "checks")),
          "selector selects nothing (no --full by default)")
     need(job.get("purpose") in PURPOSES, "purpose must be one of %s" % ", ".join(PURPOSES))
     need(not sel.get("full") or job["purpose"] == "sweep", "selector.full is for purpose=sweep only")
     need(profile_ok(job.get("profile")), "profile must be one of %s or tier:<modset tier>" % ", ".join(PROFILES))
-    if tier_of(job) or sel.get("proofs"):
+    if sel.get("checks"):
+        need(bool(tier_of(job)) and set(sel) == {"checks"},
+             "a checks selector goes with a tier:<name> profile, and the selector holds nothing else")
+        need(job.get("lane") == "stevedesktop", "a tier job runs on lane stevedesktop only")
+    elif tier_of(job) or sel.get("proofs"):
         # an exact-tier proof runs on SteveDesktop alone: Archmagi keeps its own list (owner by card 2026-11-05)
         need(bool(tier_of(job)) and bool(sel.get("proofs")) and set(sel) == {"proofs"},
              "a tier:<name> profile and a proofs selector go together, and the selector holds nothing else")
@@ -195,6 +208,9 @@ def validate_job(job):
                                       for k, v in ri.items()), "row_items must map a row id or chain name to an item id")
     need(isinstance(job.get("deploy"), list) and all(NAME_RE.match(str(m)) for m in job["deploy"]),
          "deploy must be a list of mod folder names")
+    need(job.get("visit") is None or (isinstance(job["visit"], int) and job["visit"] >= 1), "visit must be a visit number")
+    need(isinstance(job.get("proof_build", []), list) and all(NAME_RE.match(str(m)) for m in job.get("proof_build", [])),
+         "proof_build must be a list of mod folder names")
     for k in ("canary", "validity"):
         need(isinstance(job.get(k), bool), "%s must be a boolean" % k)
     need(isinstance(job.get("situational", False), bool), "situational must be a boolean")   # an older record has none
@@ -354,13 +370,14 @@ def json_schema():
             "item": {"type": ["string", "null"]}, "mod": name,
             "selector": {"type": "object", "additionalProperties": False, "minProperties": 1,
                          "properties": {"item": names, "chains": names, "rows": names, "full": {"type": "boolean"},
-                                        "proofs": names}},
+                                        "proofs": names, "checks": names}},
             "profile": {"anyOf": [{"enum": list(PROFILES)}, {"type": "string", "pattern": TIER_RE.pattern}]}, "purpose": {"enum": list(PURPOSES)},
             "priority": {"type": "integer"}, "not_before": nullable_ts, "requested_by": name,
             "source_sha": {"type": "string", "pattern": SHA_RE.pattern},
             "supersedes": {"type": ["string", "null"], "pattern": JOB_ID_RE.pattern},
             "gate": {"enum": [None] + list(GATES)}, "owner_gate": {"type": ["string", "null"]}, "lane": {"enum": list(LANES)},
-            "deploy": names, "canary": {"type": "boolean"}, "validity": {"type": "boolean"}, "situational": {"type": "boolean"},
+            "visit": {"type": ["integer", "null"], "minimum": 1},
+            "deploy": names, "proof_build": names, "canary": {"type": "boolean"}, "validity": {"type": "boolean"}, "situational": {"type": "boolean"},
             "timeout_s": {"type": "integer", "minimum": 60, "maximum": 21600},
             "row_items": {"type": "object", "additionalProperties": name},
             "submitted": {"type": "string", "description": "UTC time make_job stamped"},
@@ -392,6 +409,7 @@ def json_schema():
             # STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: a known harness condition, named for machines (retest.job_cause)
             "harness_cause": {"type": "string"}, "stale_load_bounced": {"type": "string"},
             "situational": {"type": ["object", "null"], "description": "a situational job's suite digest"},
+            "checks": {"type": ["object", "null"], "description": "a checks job's identity and each check's site, command"},
         },
         "description": "a non-DONE outcome needs a cause; attempt is <job>.a<n>",
     }

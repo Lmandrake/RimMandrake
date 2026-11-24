@@ -2120,7 +2120,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_cords_slack": {
    "id": "sc_cords_slack",
@@ -2141,7 +2148,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_no_sharp_turn": {
    "id": "sc_no_sharp_turn",
@@ -2162,7 +2176,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_walls": {
    "id": "sc_walls",
@@ -2183,7 +2204,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_junction_strips": {
    "id": "sc_junction_strips",
@@ -2204,7 +2232,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_dense_tangle": {
    "id": "sc_dense_tangle",
@@ -2225,7 +2260,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_no_repeat": {
    "id": "sc_no_repeat",
@@ -2246,7 +2288,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_true_to_grid": {
    "id": "sc_true_to_grid",
@@ -2267,7 +2316,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack_flowworks"
+   "tier": "gimmesomeslack_flowworks",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack_flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_cords_under_items": {
    "id": "sc_cords_under_items",
@@ -2289,6 +2345,13 @@
    "runs_today": {
     "ran": false,
     "why": "UNRUN: offline only, never the game in this run; entry built 2026-11-14 (scene_rows.cords_under_items, probe under:), its offline half northstar/selftest_gss_cords_under_items.py green, its pit row a Stage 6 driver"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack_flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_cut_ends": {
@@ -2310,7 +2373,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_rewire_cost": {
    "id": "sc_rewire_cost",
@@ -2331,7 +2401,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_spans": {
    "id": "sc_spans",
@@ -2352,7 +2429,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_fallen_span": {
    "id": "sc_fallen_span",
@@ -2373,7 +2457,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_shock": {
    "id": "sc_shock",
@@ -2394,7 +2485,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_floor_end_shock": {
    "id": "sc_floor_end_shock",
@@ -2415,7 +2513,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_shock_reach": {
    "id": "sc_shock_reach",
@@ -2436,7 +2541,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack_flowworks"
+   "tier": "gimmesomeslack_flowworks",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack_flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_restring": {
    "id": "sc_restring",
@@ -2457,7 +2569,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_tap_theft": {
    "id": "sc_tap_theft",
@@ -2478,7 +2597,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_four_looks": {
    "id": "sc_four_looks",
@@ -2499,7 +2625,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_settings": {
    "id": "sc_settings",
@@ -2520,7 +2653,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack_flowworks"
+   "tier": "gimmesomeslack_flowworks",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack_flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_gravship": {
    "id": "sc_gravship",
@@ -2541,7 +2681,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_walk": {
    "id": "sc_walk",
@@ -2584,7 +2731,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_owner_change": {
    "id": "sc_owner_change",
@@ -2605,7 +2759,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_fuel_ignition": {
    "id": "sc_fuel_ignition",
@@ -2626,7 +2787,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_statics_new_game": {
    "id": "sc_statics_new_game",
@@ -2647,7 +2815,14 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack",
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
   },
   "sc_removal_consequence": {
    "id": "sc_removal_consequence",
@@ -2711,6 +2886,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: offline-only run; entry exists in the code"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_pole_icons_loaded": {
@@ -2732,6 +2914,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: offline-only run; entry exists in the code"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_pole_south_of_tree": {
@@ -2753,6 +2942,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: offline-only run; entry exists in the code"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_no_roof_over_pole": {
@@ -2775,6 +2971,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: offline-only run; entry exists in the code"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_switch_light": {
@@ -2797,6 +3000,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: offline-only run; entry exists in the code"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_restyle_whole_line": {
@@ -2820,6 +3030,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: offline-only run; entry exists in the code"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_look_menu_icons": {
@@ -2843,6 +3060,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: offline-only run; entry exists in the code"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "sc_wall_lamp_looks": {
@@ -2866,6 +3090,13 @@
    "runs_today": {
     "ran": false,
     "why": "live: offline-only run; entry exists in the code"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "LOOK_STAGE8": {
@@ -2909,6 +3140,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_D05_n10_S1": {
@@ -2934,6 +3172,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_D10_n100_S2": {
@@ -2959,6 +3204,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_D15_n1000_S3": {
@@ -2985,6 +3237,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_C00_empty": {
@@ -3010,6 +3269,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F00_T0_S0": {
@@ -3036,6 +3302,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F04_T1_S0": {
@@ -3061,6 +3334,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F11_T2_S3": {
@@ -3086,6 +3366,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F13_T3_S1": {
@@ -3112,6 +3399,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F18_T4_S2": {
@@ -3137,6 +3431,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F21_T5_S1": {
@@ -3163,6 +3464,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F25_T6_S1": {
@@ -3188,6 +3496,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F30_T7_S2": {
@@ -3213,6 +3528,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F33_T8_S1": {
@@ -3238,6 +3560,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F39_T9_S3": {
@@ -3263,6 +3592,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F42_T10_S2": {
@@ -3288,6 +3624,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F47_T11_S3": {
@@ -3313,6 +3656,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F51_T12_S3": {
@@ -3338,6 +3688,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F54_T13_S2": {
@@ -3363,6 +3720,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F56_T14_S0": {
@@ -3388,6 +3752,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_F60_T15_S0": {
@@ -3413,6 +3784,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_A04_N3_R12_fallen": {
@@ -3438,6 +3816,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_A05_N3_R19_up": {
@@ -3462,6 +3847,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_A06_N5_R6_fallen": {
@@ -3486,6 +3878,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_A07_N5_R12_up": {
@@ -3510,6 +3909,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_A08_N5_R19_cut": {
@@ -3535,6 +3941,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_A09_N2_R6_cut": {
@@ -3560,6 +3973,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_A10_N2_R12_fallen": {
@@ -3584,6 +4004,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_A11_N2_R19_up": {
@@ -3608,6 +4035,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_MX_A12_N3_R6_fallen": {
@@ -3632,6 +4066,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M1_conduit_transparent": {
@@ -3657,6 +4098,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M1_cords_exist": {
@@ -3683,6 +4131,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M1_node_census": {
@@ -3709,6 +4164,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M1c_end_pieces": {
@@ -3735,6 +4197,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M2b_no_vertex_unwalkable": {
@@ -3760,6 +4229,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M2c_no_sharp_bends": {
@@ -3785,6 +4261,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "FAIL in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M6_overlay_lines_intact": {
@@ -3810,6 +4293,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M5_local_invalidation": {
@@ -3835,6 +4325,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M8_break_two_ends_live_dead": {
@@ -3860,6 +4357,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M2_cords_only_within_net": {
@@ -3885,6 +4389,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B1_rope_settle": {
@@ -3910,6 +4421,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B6_tangle_lit_strips": {
@@ -3935,6 +4453,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B3c_spark_rides_whip": {
@@ -3960,6 +4485,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B3_whip_live_ends": {
@@ -3985,6 +4517,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SW3_break_readout_off_no_glow_no_whip": {
@@ -4011,6 +4550,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SW4_sparks_only_overlay_shut_no_glow": {
@@ -4037,6 +4583,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B4b_sparks_thrown_ticking": {
@@ -4062,6 +4615,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B4c_spark_intensity_scales_downed": {
@@ -4087,6 +4647,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B4d_spark_budget_shared_visible_first": {
@@ -4113,6 +4680,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M1e_machine_on_inwall_run_draws_a_cord": {
@@ -4139,6 +4713,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M1f_machine_on_hidden_conduit_draws_none": {
@@ -4164,6 +4745,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B7_ground_cords_never_sway": {
@@ -4190,6 +4778,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B5_selection_highlight": {
@@ -4216,6 +4811,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SW1_highlight_off_draws_no_ring": {
@@ -4241,6 +4843,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SW2_lod_off_far_zoom_draws_full": {
@@ -4266,6 +4875,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B8_lod_far_zoom": {
@@ -4292,6 +4908,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B9_cutscene_guard_idle": {
@@ -4317,6 +4940,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B6b_strips_dark_when_dead": {
@@ -4343,6 +4973,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M10_tangle_threshold_setting": {
@@ -4369,6 +5006,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M11_dive_through_setting": {
@@ -4395,6 +5039,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M12a_slide_under_off_plug_on_cell_centre": {
@@ -4421,6 +5072,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M12b_slide_under_on_plug_off_centre": {
@@ -4447,6 +5105,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_B13_hidden_conduit_hookup_not_drawn": {
@@ -4471,6 +5136,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SW5_hide_hookup_off_leaves_vanilla_wire": {
@@ -4495,6 +5167,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SW6_needless_loops_off_reaches_builder": {
@@ -4520,6 +5199,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_P1B_perf_rebuild": {
@@ -4545,6 +5231,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_A8_same_frame_dirty_not_dropped": {
@@ -4569,6 +5262,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_ST1_styles_textures_load": {
@@ -4594,6 +5294,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_ST2_switch_changes_textures": {
@@ -4620,6 +5327,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_ST3_extcord_colour_modes": {
@@ -4646,6 +5360,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_ST4_settings_roundtrip": {
@@ -4671,6 +5392,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_ST5_restore_default_and_master": {
@@ -4696,6 +5424,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M8c_source_off_reads_dead_250": {
@@ -4721,6 +5456,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M7_off_restores_vanilla": {
@@ -4746,6 +5488,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M7b_on_again_invisible": {
@@ -4772,6 +5521,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M13a_linked_one_net_across_gap": {
@@ -4798,6 +5554,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M13b_far_consumer_powered": {
@@ -4823,6 +5586,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M13c_unlink_two_nets_relink_one": {
@@ -4848,6 +5618,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M13d_refusals": {
@@ -4873,6 +5650,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M13e_hostile_mast_not_autolinked": {
@@ -4898,6 +5682,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_R1_span_altitude_above_pawns_below_blueprints": {
@@ -4923,6 +5714,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_R2_spans_and_heads_drawn": {
@@ -4948,6 +5746,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M14_gap_control_without_fix": {
@@ -4974,6 +5779,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M14a_remove_middle_both_ends_resolve": {
@@ -5000,6 +5812,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M14b_dead_pole_drops_live_and_dead_cords": {
@@ -5025,6 +5844,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M14c_live_tip_glows": {
@@ -5051,6 +5877,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M15_explosion_cuts_span": {
@@ -5076,6 +5909,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M15a_wire_down_alert_lists_cut": {
@@ -5101,6 +5941,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M15b_restring_rejoins": {
@@ -5126,6 +5973,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M15c_wire_down_alert_clears_on_restring": {
@@ -5151,6 +6005,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M15e_restring_is_a_colonist_job": {
@@ -5176,6 +6037,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M15f_restring_joined_run_one_look": {
@@ -5202,6 +6070,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M15d_diagonal_cut_halves_meet_on_line": {
@@ -5226,6 +6101,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_R3_sway_proxy": {
@@ -5252,6 +6134,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_R3b_sway_looks_each_draw": {
@@ -5278,6 +6167,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M19_tap_drains_one_way": {
@@ -5303,6 +6199,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M19n_taps_off_control": {
@@ -5329,6 +6232,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M19m_tap_mixed_net_connects_own_conduit": {
@@ -5354,6 +6264,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M17_owner_change_cuts_cross_owner_wires": {
@@ -5378,6 +6295,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M20a_fallen_wire_shock_flip": {
@@ -5404,6 +6328,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M20b_fallen_wire_knockback_flip": {
@@ -5430,6 +6361,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M20c_fallen_wire_ignites_flip": {
@@ -5456,6 +6394,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M20e_shock_cells_die_with_wire": {
@@ -5481,6 +6426,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M20d_keep_wires_setting_roundtrip": {
@@ -5507,6 +6459,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M21a_cut_wires_on_owner_change_off_keeps_link": {
@@ -5533,6 +6492,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M21b_cut_wires_on_owner_change_on_cuts_link": {
@@ -5559,6 +6525,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M21c_drip_loops_off_plain_curve": {
@@ -5585,6 +6558,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M21d_drip_loops_on_loop_samples": {
@@ -5611,6 +6591,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M22a_kinetic_sway_on_swings_never_cuts": {
@@ -5637,6 +6624,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M22b_kinetic_sway_off_does_nothing": {
@@ -5662,6 +6656,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M21e_keep_wires_on_gravship_off_setting_state": {
@@ -5688,6 +6689,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_M21f_keep_wires_on_gravship_on_setting_state": {
@@ -5714,6 +6722,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S1_pick_reaches_blueprint": {
@@ -5739,6 +6754,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S2_blueprint_frame_building": {
@@ -5764,6 +6786,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S3_god_mode": {
@@ -5789,6 +6818,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S4_copy_carries_look": {
@@ -5814,6 +6850,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S5_reinstall_keeps_look": {
@@ -5839,6 +6882,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S8_legacy_unstyled_draws_default": {
@@ -5864,6 +6914,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S8b_legacy_joined_to_styled_stores_look": {
@@ -5889,6 +6946,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S6_spans_in_pole_look": {
@@ -5915,6 +6979,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S9a_two_runs_two_styles": {
@@ -5940,6 +7011,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S9b_bridge_largest_wins": {
@@ -5965,6 +7043,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S9c_split_keeps_styles": {
@@ -5990,6 +7075,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S9d_restyle_and_materials": {
@@ -6015,6 +7107,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S10_legacy_default_materials": {
@@ -6040,6 +7139,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S11_lamp_master_off_vanilla": {
@@ -6066,6 +7172,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S12a_D1_legacy_run_one_look": {
@@ -6091,6 +7204,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S12b_D7_bulk_spawn_cost": {
@@ -6117,6 +7237,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S12c_D5_multilink_one_frame": {
@@ -6142,6 +7269,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S12e_batched_links_merge": {
@@ -6167,6 +7301,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S7_save_load_styles": {
@@ -6193,6 +7334,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_S12d_D4_pending_queue_save": {
@@ -6219,6 +7367,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_doorway_run_is_one_cord": {
@@ -6243,6 +7398,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_cut_never_powered_both_dead": {
@@ -6267,6 +7429,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_cut_battery_each_side_both_live": {
@@ -6291,6 +7460,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_bend_draws_no_joint_tee_draws_one": {
@@ -6316,6 +7492,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_sparse_room_no_tangle": {
@@ -6340,6 +7523,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_cords_all_slack": {
@@ -6364,6 +7554,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_no_two_cords_alike": {
@@ -6390,6 +7587,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "FAIL in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_restring_drafted_no_job": {
@@ -6414,6 +7618,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_restring_work_scheduler_takes_it": {
@@ -6438,6 +7649,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_splicer_spared_bystander_shocked": {
@@ -6463,6 +7681,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_dead_wire_shocks_nobody": {
@@ -6488,6 +7713,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_floor_end_live_shocks": {
@@ -6511,6 +7743,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_floor_end_dead_spares": {
@@ -6535,6 +7774,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_floor_end_cord_behind_spares": {
@@ -6558,6 +7804,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_floor_end_unfinished_run_bites": {
@@ -6581,6 +7834,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_floor_end_bites_aerial_master_off": {
@@ -6604,6 +7864,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_floor_end_every_end_over_spark_budget": {
@@ -6627,6 +7894,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_floor_end_fixer_spared_other_builder_shocked": {
@@ -6651,6 +7925,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_shock_reach_default_all": {
@@ -6674,6 +7955,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_shock_reach_three_values": {
@@ -6697,6 +7985,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_shock_reach_deck_cord_per_value": {
@@ -6721,6 +8016,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_dead_wire_lights_no_fuel": {
@@ -6745,6 +8047,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_under_battery_dry": {
@@ -6768,6 +8077,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_under_item_stack_dry": {
@@ -6791,6 +8107,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_under_furniture_dry": {
@@ -6814,6 +8137,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_under_junction_piece_dry": {
@@ -6837,6 +8167,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_under_liquid_pit": {
@@ -6861,6 +8198,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_cord_end_one_kind": {
@@ -6885,6 +8229,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_box_stub_slope": {
@@ -6909,6 +8260,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_D1_zero_tick_rereads_same": {
@@ -6934,6 +8292,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_D2_fresh_builder_same": {
@@ -6959,6 +8324,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SL1_save_landed_new_file_only": {
@@ -6983,6 +8355,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SL2_save_names_no_class_of_ours": {
@@ -7007,6 +8386,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SL3_after_load_census_equal": {
@@ -7032,6 +8418,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_Z_log_budget": {
@@ -7057,6 +8450,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_SC_statics_clear_between_games": {
@@ -7082,6 +8482,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_GS1_keep_wires_on_gravship_on_aboard_span_flies": {
@@ -7105,6 +8512,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS (gravship_scene on/off, same job)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "P_GS1_keep_wires_on_gravship_off_aboard_span_taken_down": {
@@ -7128,6 +8542,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS (gravship_scene on/off, same job)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   },
   "T_CORDS_UNDER_ITEMS_OFFLINE": {

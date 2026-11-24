@@ -195,6 +195,7 @@ class TestqResult(Strict):
     tier: dict[str, Any] | None = None      # an exact-tier job's load check (testq/tier_load.py): want, running, exact, why
     situational: dict[str, Any] | None = None   # a situational job's suite digest (situational_rerun.digest)
     running: list[str] | None = None        # the packageIds that run actually loaded (an exact-tier job)
+    checks: dict[str, Any] | None = None    # a checks job: the build identity, each check's site and command (stage6_checks.py)
 
     @model_validator(mode="after")
     def _rules(self):

@@ -4130,6 +4130,13 @@ def _strange_settled(x):
     return len(str(text or "").split()) >= EXPLAIN_WORDS
 
 
+def _known_game(g):
+    """True when a row names a game: a machine (GAMES), or one of the four games by name or key (game_names.py)."""
+    t = str(g or "").strip().lower()
+    import game_names as GN
+    return t in GAMES or any(t in (n.lower(), k) for n, k, _m, _l in GN.GAMES)
+
+
 def _site_shown(root, r):
     """site_checked is backed by a non-empty `site` reading or an `evidence` file on disk (repo-relative or native)."""
     if isinstance(r.get("site"), dict) and r["site"]:
@@ -4630,7 +4637,7 @@ def read_ingame_exit(root, mod, n, tt=None):
         elif not _site_shown(root, r):
             why.append("in-game check %s: site_checked true with nothing to show it (a non-empty `site` reading, or an "
                        "`evidence` file on disk)" % t)
-        if str(r.get("game", "")).lower() not in GAMES:
+        if not _known_game(r.get("game")):
             why.append("in-game check %s: its row names no game (%s)" % (t, " or ".join(GAMES)))
         if not r.get("mod_sha"):
             why.append("in-game check %s: its row names no mod_sha (the build it ran)" % t)
@@ -5406,8 +5413,8 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
          "The spec (§4 Stage 6, \"Which game runs what\"; his card of 2026-11-14, 18a): either game may give a bar's "
          "scripted verdict; exploring and screenshots run on Archmagi. SteveDesktop's queue takes any mod's token-free "
          "checks whatever its stage (the owner dropped the 2026-11-14 pipeline-only limit on 2026-11-17); it refuses only "
-         "a mod on his hold (`src/RimMandrake/Utils/testq/pipeline_admit.py`). It runs modcheck chains, which a stage-6 "
-         "entry's `testq` block names: %s." % (
+         "a mod on his hold (`src/RimMandrake/Utils/testq/pipeline_admit.py`). It runs what a stage-6 entry's `testq` block "
+         "names (modcheck chains, or the check's own script: `testq.py submit --checks`): %s." % (
              "%d of %d of this mod's checks carry one (%s); queue those with `testq.py submit` if SteveDesktop is "
              "free, and run the rest here" % (len(f.get("testq") or []), len(checks), ", ".join(f["testq"]))
              if f.get("testq") else "none of this mod's %d checks carries one, so this visit runs them on Archmagi "

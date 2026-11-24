@@ -3858,7 +3858,8 @@ def ingame_testq(root, facts, holds):
     """-> {mod: entry} for every in-game mod this tick read (the reading's `ingame_testq` block; page
     design/specs/2026-11-22-steve-idle-takeable/boundary.md): visit, opened, owed, blocked, held (the owner's hold),
     hold_unreadable, ran_in_visit (testq checks with a row in this visit's own folder) and checks {id: [chains]}: the
-    checks the visit runs (to_run) that carry a testq block with chains, less those with a row of this visit. ops_watch
+    checks the visit runs (to_run) that carry a testq block with chains, less those with a row of this visit; scripts {id: {tier, build}}: those that go by
+    their own script (testq/stage6_checks.py). ops_watch
     reads it each beat (ingame_facts costs 5-16 s a mod, measured 2026-11-22; the tick already pays it). A mod that
     could not be read carries `error`, never an empty list."""
     out = {}
@@ -3870,20 +3871,22 @@ def ingame_testq(root, facts, holds):
             tt, terr = M.read_json(root, mod, "version/test_table.json")
             tests = (tt or {}).get("tests") or {}
             ran = {t for t, r in M.BM.carried_rows(root, mod, n).items()
-                   if t and isinstance(r, dict) and r.get("_visit") == n}
+                   if t and isinstance(r, dict) and r.get("_visit") == n and not M.BM.LK.spoiled(r)}
             tq = set(f.get("testq") or [])
-            waiting = {}
+            waiting, scripts = {}, {}
             for k in f.get("to_run") or []:
                 q = (tests.get(k) or {}).get("testq") if isinstance(tests.get(k), dict) else None
                 if k in tq and isinstance(q, dict) and k not in ran:
                     ch = [c for c in q.get("chains") or [] if isinstance(c, str) and c]
                     if ch:
                         waiting[k] = ch
+                    elif isinstance(q.get("check"), dict) and q["check"].get("tier"):
+                        scripts[k] = {"tier": str(q["check"]["tier"]), "build": str(q["check"].get("build") or "release")}
             h = (holds or {}).get(OH.key(mod))
             out[mod] = {"visit": n, "opened": f.get("opened"), "owed": f.get("owed"),
                         "blocked": list(f.get("blocked") or []), "held": bool(h),
                         "hold_unreadable": bool(h and h.get("unreadable")), "ran_in_visit": sorted(ran & tq),
-                        "checks": waiting}
+                        "checks": waiting, "scripts": scripts}
             if tt is None:
                 out[mod]["error"] = "version/test_table.json: %s" % terr
         except Exception as e:      # noqa: BLE001  one mod unread is said, the others still read

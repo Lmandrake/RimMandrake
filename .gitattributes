@@ -17,3 +17,5 @@ infrastructure/state/art/events/*.jsonl merge=union
 # prints it again.
 design/concepts/*/ledger/*.jsonl merge=union
 design/concepts/*/ledger/views/** rm-derived
+# An in-game visit's rows: append-only, by the visit's driver and by the test lane (testq/visit_rows.py).
+design/concepts/*/version/in_game/visit_*/rows.jsonl merge=union

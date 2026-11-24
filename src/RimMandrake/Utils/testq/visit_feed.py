@@ -220,6 +220,77 @@ def waiting(now, blk, recs=None):
     return out, spent, backoff, faults
 
 
+def runs_per_job():
+    """How many script runs one visit job holds (stage6_checks.py runs each once). Guards a lane job that dies late: its
+    unread runs are lost, and 94 of 248 asked jobs were killed by a setup fault in 21 days (study, 2026-11-23)."""
+    return int(os.environ.get("TESTQ_VISIT_RUNS", "10"))
+
+
+def waiting_scripts(now, blk, recs):
+    """-> ({mod: {"opened", "visit", "groups": {(tier, build): [check ids]}}}, spent, backoff) for the checks of open visits
+    that go by their own script (the reading's `scripts`). Drained: a DONE checks job since the opening read PASS or FAIL.
+    A job that could not look holds its checks back BOUNCE_BACKOFF_S, doubled for each in a row. A job refused for its own
+    form (failure_class: it counts) FAILS_TO_STOP times spends the check."""
+    T, FC = _T(), _failure_class()
+    out, spent, backoff = {}, {}, {}
+    for mod, e in sorted(blk.items()):
+        if not isinstance(e, dict) or e.get("error") or e.get("hold_unreadable") or e.get("held") \
+                or e.get("blocked") or e.get("owed") == "exit met" or not isinstance(e.get("scripts"), dict):
+            continue
+        t0 = _parse(e.get("opened"))
+        if t0 is None or not e["scripts"]:
+            continue
+        ends = {}
+        for rec in recs:
+            j, res = T.job_of(rec), rec.get("result") or {}
+            sel = j.get("selector") if isinstance(j.get("selector"), dict) else {}
+            if j.get("mod") != mod or rec.get("cancelled") or not sel.get("checks"):
+                continue
+            fin = _parse(rec.get("finished") or res.get("finished"))
+            if fin is None or fin < t0:
+                continue
+            v = {r.get("row"): r.get("verdict") for r in res.get("rows") or [] if isinstance(r, dict)}
+            for k in sel["checks"]:
+                ok = res.get("outcome") == "DONE" and v.get(k) in ("PASS", "FAIL")
+                ends.setdefault(k, []).append((fin, ok, not ok and FC.of_testq(rec).counts and res.get("outcome") != "DONE"))
+        groups = {}
+        for k, s in sorted(e["scripts"].items()):
+            runs = sorted(ends.get(k, []))
+            if any(ok for _, ok, _ in runs):
+                continue
+            bad = sum(1 for _, _, own in runs if own)
+            if bad >= FAILS_TO_STOP:
+                spent.setdefault(mod, {})[k] = bad
+                continue
+            if runs:
+                due = runs[-1][0] + min(FAULT_BACKOFF_MAX_S, BOUNCE_BACKOFF_S * 2 ** min(len(runs) - 1, 20))
+                if due > now:
+                    backoff.setdefault(mod, {})[k] = int(due - now)
+                    continue
+            groups.setdefault((s.get("tier"), s.get("build") or "release"), []).append(k)
+        if groups:
+            out[mod] = {"opened": t0, "visit": e.get("visit"), "groups": groups}
+    return out, spent, backoff
+
+
+def pick_checks(mod, groups, root, n):
+    """-> the checks of one job: one tier and build, at most N runs (checks of one run go together)."""
+    import stage6_checks as SC
+    with open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json"), encoding="utf-8") as f:
+        tests = json.load(f).get("tests") or {}
+    tier = sorted(groups)[0]
+    keys, out = {}, []
+    for k in groups[tier]:
+        r, _ = SC.route(mod, k, tests.get(k) or {}, root)
+        if r is None or r["tier"] != tier[0] or (k in tests and SC.not_the_lanes(tests[k])):
+            continue            # this checkout's table no longer sends it: never a job refused every tick
+        if r["key"] not in keys and len(keys) >= n:
+            continue
+        keys[r["key"]] = True
+        out.append(k)
+    return out
+
+
 def _order(w, recs):
     """The earliest-opened visit first; after that, the mod whose last visit job was submitted longest ago."""
     T = _T()
@@ -263,7 +334,11 @@ def step(now=None, n=None, dry=False):
         return {"state": "unmeasured", "why": why}
     recs = T.records("done")
     w, spent, backoff, faults = waiting(now, blk, recs)
-    if not w:
+    ws, spent2, backoff2 = waiting_scripts(now, blk, recs)
+    for a, b in ((spent, spent2), (backoff, backoff2)):
+        for m, x in b.items():
+            a.setdefault(m, {}).update(x)
+    if not w and not ws:
         if spent.get("unread"):
             return {"state": "unmeasured", "why": "nothing readable waits, but not read: %s" % spent["unread"]}
         if backoff:     # {mod: {chain: seconds left}}: refused (LANE_REFUSALS) or at fault just now; never `quiet`
@@ -274,9 +349,16 @@ def step(now=None, n=None, dry=False):
     if r.returncode != 0:
         return {"state": "unmeasured", "why": "no origin/main in %s: %s" % (T.REPO, r.stderr.strip()[-200:])}
     sha = r.stdout.strip()
-    refused = {}
-    for mod in _order(w, recs):
+    refused, passed = {}, []
+    for mod in _order(dict(w, **ws), recs):
         if mod in inflight:     # its job runs on the other game: never a second job for one mod
+            passed.append(mod)
+            continue
+        if mod in ws:           # a script check's row can count in the visit (its tier's list); a chain's cannot
+            got = _send_scripts(T, mod, ws[mod], sha, dry, refused)
+            if got:
+                return dict(got, spent=spent, backoff=backoff, faults=faults)
+        if mod not in w:
             continue
         e = w[mod]
         chains = []
@@ -304,16 +386,42 @@ def step(now=None, n=None, dry=False):
                     "backoff": backoff, "faults": faults,
                     "waiting": {m: len(v["checks"]) for m, v in w.items()}}
         refused[mod] = text.strip()[-300:]
+    if not refused:             # what waits belongs to mods whose job runs now: busy, never "refused" with no refusal
+        return {"state": "busy", "mod": ",".join(passed), "why": "each waiting mod's visit job runs now", "spent": spent}
     T.log("visit feed: every waiting mod refused: %s" % json.dumps(refused)[:400])
     return {"state": "refused", "refused": refused, "spent": spent}
 
 
-def _submit(T, mod, chains, sha, e):
+def _send_scripts(T, mod, e, sha, dry, refused):
+    """Queue ONE checks job of MOD -> the step's record, or None (REFUSED carries why)."""
+    try:
+        ids = pick_checks(mod, e["groups"], T.REPO, runs_per_job())
+    except (OSError, ValueError) as x:
+        refused[mod] = "the test table cannot be read: %s" % x
+        return None
+    if not ids:
+        return None
+    if dry:
+        return {"state": "would_queue", "mod": mod, "checks": ids, "visit": e["visit"]}
+    rc, text = _submit(T, mod, None, sha, e, checks=ids)
+    if rc != 0:
+        refused[mod] = text.strip()[-300:]
+        return None
+    try:
+        job = json.loads(text.strip().splitlines()[-1]).get("job")
+    except (ValueError, IndexError, AttributeError):
+        job = None
+    T.log("visit feed: %s visit %s checks %s -> %s" % (mod, e["visit"], ",".join(ids), job))
+    return {"state": "queued", "job": job, "mod": mod, "checks": ids, "visit": e["visit"]}
+
+
+def _submit(T, mod, chains, sha, e, checks=None):
     """testq.py submit for MOD's waiting CHAINS -> (exit code, its printed text)."""
     import contextlib
     import io
     sub = argparse.Namespace(
-        mod=mod, chains=",".join(chains), rows=None, item=None, full=False, purpose="commission", by=BY, sha=sha,
+        mod=mod, chains=",".join(chains) if chains else None, checks=",".join(checks) if checks else None,
+        visit=e["visit"], proof_build=None, rows=None, item=None, full=False, purpose="commission", by=BY, sha=sha,
         for_item=None, profile=None, proofs=None, priority=PRIORITY, not_before=None, supersedes=None,
         owner_gate=None, lane="stevedesktop", gate=None, deploy=None, timeout=7200, no_canary=False,
         no_validity=False, situational=False, no_sha_check=False, row_item=[],
