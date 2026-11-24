@@ -5680,6 +5680,25 @@ def ingame_to_run(root, mod, n, tt):
     return run, counted
 
 
+def unclassed_lines(root, mod, n, tt):
+    """-> the Stage 6 brief's lines for the runs of earlier visits that hold a check of the table under any later PASS: one
+    that reads UNRESOLVED with no usable `classed`, or whose words cannot be read (live_kinds.reading). [] when none."""
+    out = []
+    try:
+        runs = BM.check_runs(root, mod, n - 1) if n > 1 else {}
+    except ValueError as e:
+        return ["- could not look: %s" % e]
+    for t, spec in ingame_tests(tt or {}):
+        for v, r in runs.get(t) or []:
+            w, why = LK.outcome(r, spec)
+            if w in (LK.UNRESOLVED, LK.REFUSED):
+                out.append("- `%s`: a run of visit %d (%s, build %s, evidence `%s`) reads %s%s. Its row: "
+                           "`%s`." % (t, v, r.get("at") or "no time", str(r.get("mod_sha"))[:10],
+                                        r.get("evidence") or r.get("job") or "none named", w,
+                                        " (%s)" % why if why else "", rel(mod, "%s/visit_%d/rows.jsonl" % (INGAME_DIR, v))))
+    return out
+
+
 def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
     """-> (the mechanical half of an in-game acceptance brief, ingame_facts). Never refuses; launch_mod does."""
     f = ingame_facts(root, mod)
@@ -5777,6 +5796,14 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
     L += ["", "## Owed from the road back (UNRUN until this visit, `design/concepts/%s/%s`)" % (mod, UNRUN_FILE), "",
           "Each item below closed at an offline stage on its offline test; its in-game check never ran. Run each "
           "command and give it a row in `rows.jsonl`."] + unrun_lines(root, mod)
+    held_runs = unclassed_lines(root, mod, n, tt)
+    if held_runs:
+        L += ["", "## Earlier runs nobody classed: each holds its check under any later PASS", "",
+              "The exit of this visit cannot be met while one stands, whatever this visit reads. Class each in the sitting, from "
+              "its evidence and from your own runs of that check: add to that row `classed`: `{\"outcome\": one of the other six, "
+              "\"why\": six words at least, \"by\": your unit}` (a run whose words cannot be read: repair its words). When the evidence "
+              "cannot tell what happened, leave the row, and write a note on your item that starts `CLASS OWED:` with the "
+              "evidence for and against each cause: the Conductor classes it."] + held_runs
     raids = paused_lines(root, mod, n, tt)
     if raids:
         L += ["", "## Raid scenes: paused", "", "No run stages a raid (standing_rulings.md §The cheapest test that decides the "

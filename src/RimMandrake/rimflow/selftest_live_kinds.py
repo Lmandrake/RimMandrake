@@ -329,6 +329,28 @@ def t_briefs_name_the_fields():
     return not lacks, lacks
 
 
+def t_brief_names_unclassed_runs():
+    why = "the job trace shows the carrier left for food"
+    un = lambda **kw: o(LK.UNRESOLVED, "UNMEASURED", evidence="ev/run_7.json", **kw)  # noqa: E731
+    def brief(rows):            # visit 2's brief, after a visit 1 that holds `rows`
+        N[0] += 1
+        root = S.visit("k%d" % N[0], rows + OTHERS)
+        keep = M.ingame_openings
+        M.ingame_openings = lambda rec: {1: "2026-11-23T00:00:00-08:00", 2: "2026-11-24T00:00:00-08:00"}
+        try:
+            return " ".join(M.ingame_brief_text(root, MOD)[0].split())
+        finally:
+            M.ingame_openings = keep
+    head = "## Earlier runs nobody classed"
+    held = brief([un(), good()])
+    bad = brief([o("SUCESS", "PASS"), good()])
+    clear = [brief([good()]), brief([un(classed={"outcome": LK.APPARATUS, "why": why, "by": "x"}), good()]),
+             brief([dict(un(), test="gone")])]
+    part = held.split(head, 1)[-1].split("## ", 1)[0]
+    return (head in held and all(w in part for w in ("`c1`", "visit 1", "ev/run_7.json", "`classed`", "CLASS OWED"))
+            and head in bad and not any(head in x for x in clear)), (part[:600], head in bad, [head in x for x in clear])
+
+
 def t_hunt_open_tells_both():
     import hunt_open as H
     d = tempfile.mkdtemp(prefix="hunt_")
@@ -667,6 +689,7 @@ def _mutants():
     yield "a raised shortfall is raised again", SF, "seen", lambda st, key: {}
     yield "the Conductor window is not asked", SF, "may", lambda why, env: (True, "ok")
     yield "a new X that stays short is written", SF, "stays_short", lambda spec, runs: False
+    yield "a brief names no unclassed run", M, "unclassed_lines", lambda *a: []
     yield "one word classes an UNRESOLVED run", LK, "WHY_WORDS", 1
 
 
@@ -692,7 +715,7 @@ def main():
              t_random_miss_only_by_design, t_kind_b_one_success, t_kind_b_x_of_y,
              t_inconclusive_is_not_pass_or_fail, t_tag_without_evidence_refused, t_hunt_is_never_in_the_exit,
              t_per_scene_run_list, t_a_spoiled_fail_is_no_refused_bar, t_briefs_name_the_fields,
-             t_hunt_open_tells_both, t_budgeted_runs_repeat, t_shortfall_escalates,
+             t_brief_names_unclassed_runs, t_hunt_open_tells_both, t_budgeted_runs_repeat, t_shortfall_escalates,
              t_shortfall_escalates_from_the_tick, t_shortfall_holds_until_call,
              t_call_needed_is_mod_failure, t_call_guess_judges_again, t_conductor_records_the_call]
     fails, missed = run(tests), []

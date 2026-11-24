@@ -113,6 +113,10 @@ with fewer than X successes. The **Conductor's call** answers whether the mod's 
   refused a bar.
 - **briefs-name-the-fields.** The driver's brief, the steward's brief and `roles/designer_scene_contract.md` name the
   fields, and the steward's brief sends a spoiled, INCONCLUSIVE or unresolved scene to no earlier stage.
+- **brief-names-unclassed-runs.** The driver's brief names each run of an earlier visit that reads UNRESOLVED with no usable
+  `classed`, or whose words cannot be read, on a check of the table: the check, the visit, the evidence, the `classed` to
+  write, and the `CLASS OWED:` note when the evidence cannot tell. With none, the section is absent. Measured 2026-11-24:
+  FlowWorks visit 10's `sc_hung_bridge` run held the exit of visit 11, and its brief did not say so.
 - **hunt-open-tells-both.** `hunt_open.py ITEM --what --why-it-matters --next-step --cost` writes one `HUNT OPENED` line
   (RAISE FIRST) in the Conductor log and a note on the item. Exit 0 both written; 2 a blank field, nothing written; 3 the
   log line was not written (no note tried); 4 the log line stands and the note did not land, named.
