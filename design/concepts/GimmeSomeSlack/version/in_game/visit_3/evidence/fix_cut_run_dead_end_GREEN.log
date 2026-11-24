@@ -1,0 +1,80 @@
+  switch off: 644 off/on pairs (88 arm layouts split into 2+ nets when off), 1832 pieces laid off; cut ends within 1.5 cells of a switch 0 (limit 0); fray/spark decals beside a switch 0 (limit 0); switches carrying fewer cords off than on 0 (limit 0); off lays differing in shape from on 0 (limit 0); nearest cut end to a switch none laid
+switch light: 1048/1048 checks passed (T_SWITCH_LIGHT_OFFLINE)
+no kink: station 1 (Scrapper): 16 strands, 1 kinks (limp=1), unforced 0, S-jogs 0
+no kink: station 2 (Industrial): 16 strands, 1 kinks (limp=1), unforced 0, S-jogs 0
+no kink: station 3 (Modern, his walk 2026-11-22): 12 strands, 1 kinks (limp=1), unforced 0, S-jogs 0
+no kink: station 4 (Futuristic): 16 strands, 1 kinks (limp=1), unforced 0, S-jogs 0
+no kink: region round station 3: 128 worlds, 1722 strands, 120 kinks (hidden=32 limp=88), unforced 0, S-jogs 0 (a stub join's notch, polish.md; not a sharp turn)
+  stub joins, owner's review map: 9 builds (as dumped; four default looks, nets live and dead) in 12.6 s, 3381 stubs, 3567 cords
+  stub joins, far wall lamps: 240 scenes, 240 device plugs, 0 not at their lamp; 1890 cords at stubs, 0 off line, 0 off slope, 0 bare
+  stub joins, near wall lamps: 480 scenes, 480 device plugs, 0 not at their lamp
+  stub joins: 524 scenes; box T: 258 cords on 198 stubs, 0 off line, 0 off slope, 0 bare, box X: 132 cords on 96 stubs, 0 off line, 0 off slope, 0 bare, device box: 3 cords on 3 stubs, 0 off line, 0 off slope, 0 bare, plug: 1044 cords on 1044 stubs, 0 off line, 0 off slope, 0 bare, rock hole: 126 cords on 120 stubs, 0 off line, 0 off slope, 0 bare, strip lead: 31 cords on 31 stubs, 0 off line, 0 off slope, 0 bare, strip plug: 68 cords on 68 stubs, 0 off line, 0 off slope, 0 bare, switch: 432 cords on 404 stubs, 0 off line, 0 off slope, 0 bare, wall outlet: 12 cords on 12 stubs, 0 off line, 0 off slope, 0 bare, wall plate: 168 cords on 162 stubs, 0 off line, 0 off slope, 0 bare, wall plug: 42 cords on 42 stubs, 0 off line, 0 off slope, 0 bare
+  stub joins: live ends 36 tails x frames 3240: 0 turn at the join, 0 pinched, 0 jump; worst 0 deg, min radius 0.314
+  stub joins: device stub scene nodes HiddenEnd@(12,10) StubDevice@(11,10) Battery@(4,10) | decals Plug/0.55 JunctionTin/0.60
+  wall plugs: plug: 3082 cords, median 0.0 deg, p99 0.0, worst 2.7; over 3: 0, over 12: 0
+  wall plugs: strip plug: 1552 cords, median 0.0 deg, p99 2.7, worst 2.7; over 3: 0, over 12: 0
+  wall plugs: wall outlet: 772 cords, median 0.0 deg, p99 2.9, worst 3.0; over 3: 0, over 12: 0
+  wall plugs: wall plug: 2316 cords, median 0.0 deg, p99 2.7, worst 2.9; over 3: 0, over 12: 0
+  wall plugs: 1560 scenes, 2316 plugs, 3088 cords at a wall plug or outlet, 0 slanted, 0 off line, 0 bare, 0 stacked, 0 unforced kinks; worst 3.0 deg, 0.000 cell
+  wall plugs, 2 cords per run: 780 scenes, 1544 cords, 0 slanted, 0 off line, 0 bare, 0 stacked, 0 unforced kinks; worst 3.0 deg, 0.000 cell
+  wall plugs: bends within 1.5 cells of a wall plug: 156; by the bar's class: hidden 14, loop 23, unforced 53, wall 66
+  plugs (Modern): plug: 3082 cords, worst 0.000 cell off the stub's end (limit 0.02), worst 2.7 deg off its axis (limit 3); 0 over
+  plugs (Modern): strip plug: 1552 cords, worst 0.000 cell off the stub's end (limit 0.02), worst 2.7 deg off its axis (limit 3); 0 over
+  plugs (Modern): wall outlet: 772 cords, worst 0.000 cell off the stub's end (limit 0.02), worst 3.0 deg off its axis (limit 3); 0 over
+  plugs (Modern): wall plug: 2316 cords, worst 0.000 cell off the stub's end (limit 0.02), worst 2.9 deg off its axis (limit 3); 0 over
+  plugs (Industrial): plug: 1541 cords, worst 0.000 cell off the stub's end (limit 0.02), worst 0.0 deg off its axis (limit 3); 0 over
+  plugs (Futuristic): plug: 1541 cords, worst 0.000 cell off the stub's end (limit 0.02), worst 0.0 deg off its axis (limit 3); 0 over
+  plugs (Scrapper): plug: 1541 cords, worst 0.000 cell off the stub's end (limit 0.02), worst 0.0 deg off its axis (limit 3); 0 over
+  wall plugs, unforced bend: lamp (1,0) dx-4 s71 wall plug@(23.2,19.5): an unforced bend 180 deg over 1.72 cell, 0.54 from the plug (lay dive)
+  wall plugs, unforced bend: lamp (1,0) dx-3 s71 wall plug@(23.2,19.5): an unforced bend 180 deg over 1.72 cell, 0.54 from the plug (lay dive)
+  wall plugs, unforced bend: lamp (1,0) dx-2 s71 wall plug@(23.2,19.5): an unforced bend 180 deg over 1.72 cell, 0.54 from the plug (lay dive)
+  wall plugs, unforced bend: lamp (1,0) dx-1 s71 wall plug@(23.2,19.5): an unforced bend 180 deg over 1.72 cell, 0.54 from the plug (lay dive)
+  wall plugs, unforced bend: lamp (1,0) dx0 s71 wall plug@(23.2,21.5): an unforced bend 180 deg over 1.72 cell, 0.54 from the plug (lay dive)
+  wall plugs, unforced bend: lamp (1,0) dx1 s71 wall plug@(23.2,21.5): an unforced bend 180 deg over 1.72 cell, 0.54 from the plug (lay dive)
+  wall plugs, unforced bend: lamp (1,0) dx2 s71 wall plug@(23.2,21.5): an unforced bend 180 deg over 1.72 cell, 0.54 from the plug (lay dive)
+  wall plugs, unforced bend: lamp (1,0) dx3 s71 wall plug@(23.2,21.5): an unforced bend 180 deg over 1.72 cell, 0.54 from the plug (lay dive)
+  wall plugs, unforced bend: lamp (1,0) dx4 s71 wall plug@(23.2,21.5): an unforced bend 180 deg over 1.72 cell, 0.54 from the plug (lay dive)
+  wall plugs, unforced bend: across (1,0) dx-5 dz3 near3 s71 wall plug@(24.2,16.5): an unforced bend 98 deg over 1.00 cell, 0.80 from the plug (lay dive)
+  wall plugs, unforced bend: across (0,-1) dx-5 dz5 near1 s71 wall plug@(20.5,20.3): an unforced bend 446 deg over 2.39 cell, 0.81 from the plug (lay dive+fit+fit)
+  wall plugs, unforced bend: across (0,-1) dx-4 dz3 near1 s71 wall plug@(20.5,20.3): an unforced bend 446 deg over 2.39 cell, 0.81 from the plug (lay dive+fit+fit)
+  live end sweep: 2816 worlds, 4391 live ends: 1620 kept as handed, 2759 joined, 98 short pigtails whipping whole, 12 lying still, 0 tied loops, 0 unlaid; 0 not straight, 0 pinched, 0 tails off length; tightest bend 0.184
+  live end placements: 2382 worlds, 2722 live ends, 742 with their fitting under 2 cells off (nearest 0.60): 576 kept as handed, 2146 joined, 58 short pigtails whipping whole, 0 lying still, 0 tied loops, 0 unlaid; 0 not straight, 0 pinched, 0 tails off length; tightest bend 0.180
+  live end placements, a heap of cable as the far fitting: 40 worlds, 70 live ends, 56 joined, 14 kept, 0 lying still, 0 unlaid
+  live end placements, a run that goes under water at the far cell: 44 worlds, 97 live ends, 84 joined, 13 kept, 0 lying still, 0 unlaid
+  live end placements, a wall right ahead of the end besides its fitting: 1186 worlds, 1250 live ends, 959 joined, 291 kept, 0 lying still, 0 unlaid
+  live end challenge cases: 775 worlds (oracle scenes x looks, 40 random sequences), 342 live ends: 0 unlaid, 0 not straight, 0 pinched, 0 tails off length, 0 tied loops, 33 lying still
+  junction strips: 48 over 24 seeds, 0 faults
+rebuild-per-dig: E=178 first Build 882.2 ms, all-reused Build 0.19 ms (one graph reduce alone 2.71 ms)
+rebuild-per-dig: reach soundness 427 worlds, 7176 out-of-reach cells changed, 0 altered
+rebuild-per-dig: live scene E=248 all-reused Build 0.37 ms = inputs 0.09 + reduce/reuse 0.00 + edges 0.25 (keys 0.03, cache+corridor check 0.16) + nodes 0.01 + reach 0.02
+slice: cold E=248 planned over 97 Builds, worst 25.0 ms (budget 8 ms)
+slice: all-keys-changed re-lay worst 23.6 ms at best over 1 re-lay(s) over 95 Builds (bound 30 ms)
+async: cold E=248 over 72 Builds / 1 batches, worst frame Build 3.06 ms, all-reused Build 0.59 ms, laid on caller 0
+alloc budget: E=980 changed-graph hand-off 320 bytes, all-reused Build 15256 bytes
+graph worker: spawn over 109 Builds, 27 waited, 26 jobs, 1 adopted
+graph worker gate: 1 attempt(s), caller work 0; spawn frame Build worst (GC-excluded) / p95: beside 0 lattices 2.78 / 0.57 ms, beside 8 (E=1984) 4.78 / 3.92 ms
+sustained change: 120 changing frames, 120 jobs, 0 adopted, 120 stale frames (675 cords shown whole); quiet: 0 new job, 1 adopted, fresh after 2 Builds
+coalesce: cold build rebuilds per-frame 244, coalesced 38 (214 frames held)
+gate: farSkips 3, regenSkips 1, relevant 4
+rebuild tail (elig off): 113 frames, 4923 section-frames, 991 dirtied, seeds and dirty decisions identical: True
+rebuild tail (elig on): 113 frames, 4914 section-frames, 4640 dirtied, seeds and dirty decisions identical: True
+rebuild tail k=8: 3393 pieces, 132 frames; former tail worst 22.08 ms mean 5.57 ms 7452 KB/frame; new tail worst 12.10 ms (no GC 12.10) mean 1.35 ms 94 KB/frame; first frame (memos fill) 4.22 ms
+tail scale: pass 1 over the time bound (12.10 ms vs former 22.08 ms, best per frame so far), retrying
+rebuild tail k=8: 3393 pieces, 133 frames; former tail worst 29.08 ms mean 5.23 ms 7446 KB/frame; new tail worst 2.35 ms (no GC 1.54) mean 1.22 ms 94 KB/frame; first frame (memos fill) 4.22 ms
+probe read: 574 cases (0 cuts with fewer than 2 ends skipped), 574 with both cut ends listed by the complete build; owed 492; raw published set wrong in 492; settled read wrong in 0 (limit 0); needless builds 0 (limit 0)
+probe read: by state: GraphRunning 82 (raw stale 82, read wrong 0), GraphLanded 82 (raw stale 82, read wrong 0), LaysNone 82 (raw stale 82, read wrong 0), LaysOne 82 (raw stale 82, read wrong 0), LaysAllButOne 82 (raw stale 82, read wrong 0), StaleNoBuild 82 (raw stale 82, read wrong 0), Settled 82 (raw stale 0, read wrong 0)
+snapshot-pool: bytes per snapshot copy, 325 map: clone 952352, pooled 0
+astar heap PASS H1 12000 searches identical to the SortedSet reference (3847 walk routes, 344 cut by a cap; diverged 0); time new 745 ms, reference 1230 ms
+astar heap PASS H2 routes unchanged across the stamp wrap and map-size changes (scratch field found)
+astar heap PASS H3 40 warmed searches on a 120x120 rock field allocate 0 bytes (bar 0; walk routed True, 172 cells; dive 172 cells)
+MEASURE A10 2,500-cell field: first build 48 ms (1 pieces), unchanged rebuild 0 ms (1 pieces)
+  D8 lamp through a wall: way round 24.9 cells, now 3.0 with 1 dive; door beside 4.2 with 0 dive
+MEASURE A3 8x8 conduit ring, no device: 0 terminal nodes, 0 fray decals
+MEASURE A2 20x20 pile: 14 junction boxes, 0 idle, 0 loose ends
+MEASURE A6 block-kind swap incremental==fresh: True; A7 home moved incremental==fresh: True
+fuzz (approach B): scale 1
+  fuzz cords      120 cases      3057 steps   42.87 s   digest 237e413aac738eeb, closest strand to its limit: over by -5.63
+  fuzz aerial    5000 cases    165292 steps    0.34 s
+fuzz total: 5120 cases, 168349 steps, 43.21 s
+5861/5861 checks passed
+rc=0

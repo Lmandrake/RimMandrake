@@ -1,0 +1,61 @@
+{
+ "label": "gravship_on",
+ "order": 2,
+ "source": "/mnt/d/ClaudeWork/rimmandrake/scratch/gss_020_v3/gravship2_on.json",
+ "mode": "live",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.patches"
+  ],
+  "tier": {
+   "name": "gimmesomeslack",
+   "written_for": "gimmesomeslack",
+   "source": "ModsConfig.xml activeMods",
+   "active": 12,
+   "active_equals_running": true,
+   "matched_list": "gimmesomeslack"
+  }
+ },
+ "active_mods": [
+  "brrainz.harmony",
+  "ludeon.rimworld",
+  "ludeon.rimworld.royalty",
+  "ludeon.rimworld.ideology",
+  "ludeon.rimworld.biotech",
+  "ludeon.rimworld.anomaly",
+  "ludeon.rimworld.odyssey",
+  "brrainz.rimbridgeserver",
+  "owlchemist.cherrypicker",
+  "ray1203.simplecamerasetting",
+  "mandrake.rm.gimmesomeslack",
+  "mandrake.rm.patches"
+ ],
+ "game_build": "1.6.4871 rev590",
+ "run_identity": null,
+ "mod_hash": null,
+ "rows": [
+  {
+   "id": "GS1_keep_wires_on_gravship_on_aboard_span_flies",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "{'setting': 'keepWiresOnGravship', 'value': True, 'netBefore': [['Battery9864', 886832682], ['StandingLamp9865', 886832682], ['StandingLamp9866', 886832682]], 'mode': 'on', 'before': {'spansUp': 2}, 'after': {'spansUp': 1, 'spansCut': 0}, 'aboardSpanUp': True, 'groundLinkKept': False, 'cords': {'cordEdges': 5, 'cordsAcrossNets': 0, 'verticesInUnwalkable': 16, 'conduitCells': 8, 'inBracketWalls': [16, 0]}, 'links': [[9852, 9853, 'Up'], [9853, 9852, 'Up']], 'ids': [9852, 9853, 9854, 9855], 'netAfter': [['Battery9864', 1716888678], ['StandingLamp9866', 1716888678], ['StandingLamp9865', 1716888678"
+  },
+  {
+   "id": "GS2_prelaunch_cords_fail_on_landed_map",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": "{'prelaunchCords': 5, 'failByName': [['consumer:39,55|battery:36,56', 'ends outside the landed net: [(39, 55), (36, 56)]'], ['consumer:42,55|battery:36,56', 'ends outside the landed net: [(42, 55), (36, 56)]'], ['junction:36,56|battery:36,56', 'ends outside the landed net: [(36, 56), (36, 56)]'], ['junction:36,56|terminal:40,56', 'ends outside the landed net: [(36, 56), (40, 56)]']], 'faults': 5}"
+  }
+ ]
+}

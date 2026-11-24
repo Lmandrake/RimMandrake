@@ -1,0 +1,2 @@
+real []
+planted (a lamp with no picked end loses its power parent) ['D2 a lamp without a picked end keeps its power parent']

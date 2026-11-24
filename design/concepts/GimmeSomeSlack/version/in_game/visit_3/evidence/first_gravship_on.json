@@ -1,0 +1,113 @@
+{
+ "mod": "GimmeSomeSlack",
+ "script": "gravship_scene.py",
+ "mode": "live",
+ "started": "2026-11-24T05:33:08",
+ "rows": [
+  {
+   "id": "GS1_keep_wires_on_gravship_on_aboard_span_flies",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "setting": "keepWiresOnGravship",
+    "value": true,
+    "netBefore": [
+     [
+      "Battery24367",
+      2144860920
+     ],
+     [
+      "StandingLamp24368",
+      2144860920
+     ],
+     [
+      "StandingLamp24369",
+      2144860920
+     ]
+    ],
+    "mode": "on",
+    "before": {
+     "spansUp": 2
+    },
+    "after": {
+     "spansUp": 1,
+     "spansCut": 0
+    },
+    "aboardSpanUp": true,
+    "groundLinkKept": false,
+    "cords": {
+     "cordEdges": 5,
+     "cordsAcrossNets": 0,
+     "verticesInUnwalkable": 15,
+     "conduitCells": 8
+    },
+    "links": [
+     [
+      24355,
+      24356,
+      "Up"
+     ],
+     [
+      24356,
+      24355,
+      "Up"
+     ]
+    ],
+    "ids": [
+     24355,
+     24356,
+     24357,
+     24358
+    ],
+    "netAfter": [
+     [
+      "Battery24367",
+      909992682
+     ],
+     [
+      "StandingLamp24369",
+      909992682
+     ],
+     [
+      "StandingLamp24368",
+      909992682
+     ]
+    ],
+    "cordsRead": 5,
+    "whyNot": [
+     "consumer:101,120|battery:95,121: ends outside the landed net: [(101, 120)]",
+     "consumer:98,120|battery:95,121: ends outside the landed net: [(98, 120)]",
+     "15 cord vertices in a wall"
+    ],
+    "verdict": "FAIL"
+   }
+  },
+  {
+   "id": "GS2_prelaunch_cords_fail_on_landed_map",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "prelaunchCords": 5,
+    "failByName": [
+     [
+      "consumer:39,55|battery:36,56",
+      "ends outside the landed net: [(39, 55), (36, 56)]"
+     ],
+     [
+      "consumer:42,55|battery:36,56",
+      "ends outside the landed net: [(42, 55), (36, 56)]"
+     ],
+     [
+      "junction:36,56|battery:36,56",
+      "ends outside the landed net: [(36, 56), (36, 56)]"
+     ],
+     [
+      "junction:36,56|terminal:40,56",
+      "ends outside the landed net: [(36, 56), (40, 56)]"
+     ]
+    ],
+    "faults": 5
+   }
+  }
+ ]
+}

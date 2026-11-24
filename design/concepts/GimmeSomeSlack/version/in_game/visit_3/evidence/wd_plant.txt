@@ -1,0 +1,71 @@
+{
+ "uncut_whole": [],
+ "down": true,
+ "midway_refused": [],
+ "real_same_game": [
+  [
+   "WD_reload_true_to_grid",
+   "PASS",
+   "MOD",
+   {
+    "cords": 4,
+    "ends": 3,
+    "poles": 2,
+    "faults": []
+   }
+  ],
+  [
+   "WD_reload_live_dead_ends_equal",
+   "PASS",
+   "MOD",
+   {
+    "cords": 4,
+    "ends": 3,
+    "poles": 2,
+    "faults": []
+   }
+  ]
+ ],
+ "planted_cell_lost": [
+  [
+   "WD_reload_true_to_grid",
+   "FAIL",
+   "MOD",
+   {
+    "cords": 4,
+    "ends": 3,
+    "poles": 2,
+    "faults": [
+     "cord terminal:67,212|consumer:72,212: gone after the load",
+     "cord terminal:69,212|consumer:67,212: not there before the save",
+     "cord terminal:71,212|terminal:72,212: not there before the save"
+    ]
+   }
+  ],
+  [
+   "WD_reload_live_dead_ends_equal",
+   "FAIL",
+   "MOD",
+   {
+    "cords": 4,
+    "ends": 3,
+    "poles": 2,
+    "faults": [
+     "floor end ((67, 212), False, False)",
+     "floor end ((69, 212), False, False)",
+     "floor end ((71, 212), False, False)",
+     "floor end ((72, 212), False, False)"
+    ]
+   }
+  ]
+ ],
+ "planted_no_battery_whole": [
+  "the lamp at (72, 213) is not lit"
+ ],
+ "planted_no_battery_row": [
+  "UNMEASURED",
+  "SITE"
+ ]
+}
+[bridge split] 22.3 s wall: load 0.0 / ticks 1.6 / reads 0.1 / other 6.3 / outside calls 14.3 s
+[bridge split] WARN 104 calls of jawa/mod_settings_fields (4.7 s): batch them

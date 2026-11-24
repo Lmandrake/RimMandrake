@@ -1,0 +1,52 @@
+{
+ "cords": [
+  "consumer:123,126|battery:120,127",
+  "consumer:126,126|battery:120,127",
+  "junction:120,127|battery:120,127",
+  "junction:120,127|terminal:124,127",
+  "junction:120,127|transmitter:117,127"
+ ],
+ "real": [],
+ "walls_real": [
+  16,
+  [
+   16,
+   0,
+   0
+  ],
+  0
+ ],
+ "walls_planted_bracket_wall_not_its_own": [
+  "16 cord vertices in a wall"
+ ],
+ "planted_battery_gone": [
+  [
+   "consumer:123,126|battery:120,127",
+   "ends outside the landed net: [(120, 127)]"
+  ],
+  [
+   "consumer:126,126|battery:120,127",
+   "ends outside the landed net: [(120, 127)]"
+  ],
+  [
+   "junction:120,127|battery:120,127",
+   "ends outside the landed net: [(120, 127), (120, 127)]"
+  ],
+  [
+   "junction:120,127|terminal:124,127",
+   "ends outside the landed net: [(120, 127)]"
+  ],
+  [
+   "junction:120,127|transmitter:117,127",
+   "ends outside the landed net: [(120, 127)]"
+  ]
+ ],
+ "planted_verdict": [
+  "consumer:123,126|battery:120,127: ends outside the landed net: [(120, 127)]",
+  "consumer:126,126|battery:120,127: ends outside the landed net: [(120, 127)]",
+  "junction:120,127|battery:120,127: ends outside the landed net: [(120, 127), (120, 127)]",
+  "junction:120,127|terminal:124,127: ends outside the landed net: [(120, 127)]",
+  "junction:120,127|transmitter:117,127: ends outside the landed net: [(120, 127)]"
+ ]
+}
+[bridge split] 5.2 s wall: load 0.0 / ticks 0.2 / reads 0.0 / other 2.5 / outside calls 2.5 s

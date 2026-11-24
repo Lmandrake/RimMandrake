@@ -1,0 +1,102 @@
+{
+ "mod": "GimmeSomeSlack",
+ "script": "gravship_scene.py",
+ "mode": "live",
+ "started": "2026-11-24T05:35:31",
+ "rows": [
+  {
+   "id": "GS1_keep_wires_on_gravship_off_aboard_span_taken_down",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "setting": "keepWiresOnGravship",
+    "value": false,
+    "netBefore": [
+     [
+      "Battery18563",
+      2146074314
+     ],
+     [
+      "StandingLamp18564",
+      2146074314
+     ],
+     [
+      "StandingLamp18565",
+      2146074314
+     ]
+    ],
+    "mode": "off",
+    "before": {
+     "spansUp": 2
+    },
+    "after": {
+     "spansUp": 0,
+     "spansCut": 0
+    },
+    "aboardSpanUp": false,
+    "groundLinkKept": false,
+    "cords": {
+     "cordEdges": 5,
+     "cordsAcrossNets": 0,
+     "verticesInUnwalkable": 15,
+     "conduitCells": 8
+    },
+    "links": [],
+    "ids": [
+     18551,
+     18552,
+     18553,
+     18554
+    ],
+    "netAfter": [
+     [
+      "Battery18563",
+      676399570
+     ],
+     [
+      "StandingLamp18564",
+      676399570
+     ],
+     [
+      "StandingLamp18565",
+      676399570
+     ]
+    ],
+    "cordsRead": 5,
+    "whyNot": [
+     "consumer:137,94|battery:134,95: ends outside the landed net: [(137, 94)]",
+     "consumer:140,94|battery:134,95: ends outside the landed net: [(140, 94)]",
+     "15 cord vertices in a wall"
+    ],
+    "verdict": "FAIL"
+   }
+  },
+  {
+   "id": "GS2_prelaunch_cords_fail_on_landed_map",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "prelaunchCords": 5,
+    "failByName": [
+     [
+      "consumer:111,55|battery:108,56",
+      "ends outside the landed net: [(111, 55), (108, 56)]"
+     ],
+     [
+      "consumer:114,55|battery:108,56",
+      "ends outside the landed net: [(114, 55), (108, 56)]"
+     ],
+     [
+      "junction:108,56|battery:108,56",
+      "ends outside the landed net: [(108, 56), (108, 56)]"
+     ],
+     [
+      "junction:108,56|terminal:112,56",
+      "ends outside the landed net: [(108, 56), (112, 56)]"
+     ]
+    ],
+    "faults": 5
+   }
+  }
+ ]
+}

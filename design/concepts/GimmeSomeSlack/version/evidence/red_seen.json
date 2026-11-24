@@ -1,14 +1,14 @@
 {
  "T_CORE": {
-  "at": "2026-11-24T05:25:50Z",
+  "at": "2026-11-24T14:14:56Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
   "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
-  "last": "5811/5812 checks passed",
-  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\nindex 9365b76ef9..d41e6f05c0 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -3870,7 +3870,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                         if (site.Bends(q, ties) > bends || site.Kinks(q, ties) > kinks) continue;\n                         // (and none of the bar's sharp turns from a bend's arc before the join to the plug: an ease that only lost the dive's kink kept its\n                         // 91-95 degree turn within 0.65 cell, the count above unchanged, in 156 of WallPlugChecks' ends)\n-                        if (bendsPast(q, ties, at - CordShapeAudit.BendArc) > 0) continue;\n+                        \n                         return q;\n                     }\n             }\n",
+  "last": "5849/5859 checks passed",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs\nindex eb85622bbd..11d25c403f 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs\n@@ -60,7 +60,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n             var res = new List<Cell> { end.Value };\n             Dictionary<Cell, int> runs = null;\n             if (parentCell.HasValue && w.IsConduit(parentCell.Value) && Degree(w, parentCell.Value) <= 1\n-                && (w.IsBuried(end.Value) || RunOf(w, parentCell.Value, ref runs) != RunOf(w, end.Value, ref runs))) res.Add(parentCell.Value);\n+                && true) res.Add(parentCell.Value);\n             return res;\n         }\n \n",
   "patch_files": [
-   "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs"
   ],
-  "patch_sha": "752d5b4ce1d5de49",
+  "patch_sha": "5dc37ad00bf6b8c5",
   "rc": 1,
   "test_blob": "3a50c0cdf340cbbd4985b7dafa6e157c6ef241c4"
  },
@@ -24,6 +24,19 @@
   "patch_sha": "66d950162f08850a",
   "rc": 1,
   "test_blob": "130d8579e10c3a3de37bae17294cbd7944651256"
+ },
+ "T_H_SMALL_SCENES": {
+  "at": "2026-11-24T13:49:58Z",
+  "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_small_scenes.py",
+  "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_small_scenes.py",
+  "last": "gss small scenes: 81/82 passed",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py b/src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py\nindex 4f5b859cd9..7fd7df920d 100644\n--- a/src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py\n+++ b/src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py\n@@ -78,7 +78,7 @@ def in_other_walls(total, own):\n     (the cord of a wall bracket ends at its foot on that wall, under the bracket). None: a count could not be read.\"\"\"\n     if total is None or any(v is None for v in own):\n         return None\n-    return total - sum(own)\n+    return 0\n \n \n def control_verdict(before_edges, net_of):\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py"
+  ],
+  "patch_sha": "85a5304bf67f2fa9",
+  "rc": 1,
+  "test_blob": "5d0069fb7fe6cbd69522ce9439dc99b416b0f48b"
  },
  "T_LINE_RESTYLE_OFFLINE": {
   "at": "2026-11-24T11:01:23Z",

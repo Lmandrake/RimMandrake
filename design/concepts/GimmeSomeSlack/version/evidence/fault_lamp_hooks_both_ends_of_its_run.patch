@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs
+index eb85622bbd..11d25c403f 100644
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs
+@@ -60,7 +60,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
+             var res = new List<Cell> { end.Value };
+             Dictionary<Cell, int> runs = null;
+             if (parentCell.HasValue && w.IsConduit(parentCell.Value) && Degree(w, parentCell.Value) <= 1
+-                && (w.IsBuried(end.Value) || RunOf(w, parentCell.Value, ref runs) != RunOf(w, end.Value, ref runs))) res.Add(parentCell.Value);
++                && true) res.Add(parentCell.Value);
+             return res;
+         }
+ 

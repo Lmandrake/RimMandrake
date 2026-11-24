@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py b/src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py
+index 4f5b859cd9..7fd7df920d 100644
+--- a/src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py
++++ b/src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py
+@@ -78,7 +78,7 @@ def in_other_walls(total, own):
+     (the cord of a wall bracket ends at its foot on that wall, under the bracket). None: a count could not be read."""
+     if total is None or any(v is None for v in own):
+         return None
+-    return total - sum(own)
++    return 0
+ 
+ 
+ def control_verdict(before_edges, net_of):

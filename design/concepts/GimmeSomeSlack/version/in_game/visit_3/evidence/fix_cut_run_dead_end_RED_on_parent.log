@@ -1,0 +1,50 @@
+sliced rebuild callers: ok
+probe read wiring: ok
+staging src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RimMandrakeGimmeSomeSlack.SelfTest.csproj -> D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest
+  src/RimMandrake/_Shared/StylePicker/
+  src/RimMandrake/GimmeSomeSlack/Defs/
+  src/RimMandrake/_Shared/SlackGeometry/
+  src/RimMandrake/GimmeSomeSlack/Source/
+  src/RimMandrake/GimmeSomeSlack/Patches/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\CordSlideUnderChecks.cs(73,68): warning CS0219: The variable 'offCentreOld' is assigned but its value is never used [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\AerialSelfTest.cs(251,56): warning CS0219: The variable 'prev' is assigned but its value is never used [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(23,25): warning CS0649: Field 'SliceRecord.Gc1' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\CordBuilder.cs(5479,45): warning CS0649: Field 'CordBuilder.HeapWalkOff' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(24,21): warning CS0649: Field 'SliceRecord.HeapDelta' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(27,20): warning CS0649: Field 'SliceRecord.Landed' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(27,28): warning CS0649: Field 'SliceRecord.Pending' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(26,30): warning CS0649: Field 'SliceRecord.GraphBusy' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(23,30): warning CS0649: Field 'SliceRecord.Gc2' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(26,21): warning CS0649: Field 'SliceRecord.LayBusy' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+  RimMandrakeGimmeSomeSlack.SelfTest -> D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\bin\Release\net8.0\RimMandrakeGimmeSomeSlack.SelfTest.dll
+
+Build succeeded.
+
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\CordSlideUnderChecks.cs(73,68): warning CS0219: The variable 'offCentreOld' is assigned but its value is never used [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\AerialSelfTest.cs(251,56): warning CS0219: The variable 'prev' is assigned but its value is never used [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(23,25): warning CS0649: Field 'SliceRecord.Gc1' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\CordBuilder.cs(5479,45): warning CS0649: Field 'CordBuilder.HeapWalkOff' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(24,21): warning CS0649: Field 'SliceRecord.HeapDelta' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(27,20): warning CS0649: Field 'SliceRecord.Landed' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(27,28): warning CS0649: Field 'SliceRecord.Pending' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(26,30): warning CS0649: Field 'SliceRecord.GraphBusy' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(23,30): warning CS0649: Field 'SliceRecord.Gc2' is never assigned to, and will always have its default value 0 [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\Core\SliceWindow.cs(26,21): warning CS0649: Field 'SliceRecord.LayBusy' is never assigned to, and will always have its default value false [D:\ClaudeWork\rimmandrake\build\GimmeSomeSlackSelfTest\src\RimMandrake\GimmeSomeSlack\Source\SelfTest\RimMandrakeGimmeSomeSlack.SelfTest.csproj]
+    10 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.54
+FAIL phantom-spark: run of 2 cut off at a lamp's parent: the lamp hooks the end beside it, not both ends
+FAIL phantom-spark: run of 2 cut off at a lamp's parent: the cut draws its one end (0)
+FAIL phantom-spark: run of 3 cut off at a lamp's parent: the lamp hooks the end beside it, not both ends
+FAIL phantom-spark: run of 3 cut off at a lamp's parent: the cut draws its one end (0)
+FAIL phantom-spark: run of 4 cut off at a lamp's parent: the lamp hooks the end beside it, not both ends
+FAIL phantom-spark: run of 4 cut off at a lamp's parent: the cut draws its one end (0)
+FAIL phantom-spark: run of 5 cut off at a lamp's parent: the lamp hooks the end beside it, not both ends
+FAIL phantom-spark: run of 5 cut off at a lamp's parent: the cut draws its one end (0)
+FAIL phantom-spark: run of 6 cut off at a lamp's parent: the lamp hooks the end beside it, not both ends
+FAIL phantom-spark: run of 6 cut off at a lamp's parent: the cut draws its one end (0)
+23/33 checks passed (phantom spark only)

@@ -1,0 +1,5455 @@
+{
+ "mod": "GimmeSomeSlack",
+ "script": "proof_all.py",
+ "tier": "gimmesomeslack",
+ "mode": "partial",
+ "started": "2026-11-24T04:44:35",
+ "no_shots": true,
+ "rows": [
+  {
+   "id": "P1_fresh_map",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "fresh": false,
+    "mapMode": "save",
+    "start": true,
+    "programState": "Playing",
+    "map": {
+     "sizeX": 250,
+     "sizeZ": 250,
+     "mapBiome": "AridShrubland",
+     "longitude": -8.651214
+    },
+    "wait_s": 0.3,
+    "wait": "reached map_ready after 0.2s",
+    "siteSave": {
+     "save": "RM_TestSite_calm_v3",
+     "load_s": 5.7,
+     "ready_s": 12.6,
+     "verified": true,
+     "problems": []
+    }
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "P2_tier_running_startup_log_clean",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "running": 12,
+    "mod_on": true,
+    "assembly_matches": 1,
+    "modSettingsEntries": [
+     "RimMandrake: Gimme Some Slack"
+    ],
+    "modHandles": 2,
+    "startupErrorsNamingMod": [],
+    "warnPlusEntries": 255,
+    "sanity_RimBridge_line_seen": true,
+    "startupLogSource": "bridge"
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "P3_probes_site_pinned_region_empty",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "channels": {
+     "cord": true,
+     "aerial": true
+    },
+    "weatherLocked": true,
+    "local_hour_before": 6,
+    "pinned_noon": true,
+    "nonColonistsDestroyed": 0,
+    "hostileBuildingsDestroyed": [],
+    "fogTriggersDisarmed": {
+     "found": 0,
+     "byDef": {},
+     "destroyed": 0,
+     "left": 0,
+     "verified": true,
+     "error": null
+    },
+    "fogTriggersAfterQuiet": {
+     "found": 0,
+     "byDef": {},
+     "destroyed": 0,
+     "left": 0,
+     "verified": true,
+     "error": null
+    },
+    "hostilePawnsLeft": [],
+    "mapFogCleared": {
+     "hostilesBefore": [],
+     "foggedBefore": 0,
+     "foggedNow": 0,
+     "releasedByUnfog": [],
+     "sweepPasses": 0,
+     "hostilesAfter": [],
+     "verified": true,
+     "error": null
+    },
+    "colonistsMoved": [],
+    "colonistsDrafted": [
+     475,
+     478,
+     483
+    ],
+    "pawnsInRegion": [],
+    "boardPitch": "no boards, every plot pair >= GAP 12 apart"
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "M13a_linked_one_net_across_gap",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "nets": {
+     "m1": 152356864,
+     "m2": 152356864,
+     "m3": 152356864
+    },
+    "gapCells": 12,
+    "spansUp": 2,
+    "autoLinks": 2,
+    "postfixAppends": 7,
+    "m1Live": true
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M13b_far_consumer_powered",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lamp": [
+     {
+      "id": 24637,
+      "def": "StandingLamp",
+      "faction": "New Arrivals",
+      "net": 152356864,
+      "compNet": 152356864,
+      "powerOn": true,
+      "outputW": -30,
+      "wantsOn": true,
+      "needsPowerOverlay": false,
+      "connectParent": 24636
+     }
+    ],
+    "net": -1,
+    "live": null,
+    "note": "the lamp hooks to M3, 24 cells from the battery, across a walled ROOFED room (spans may pass over roofs)"
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M13c_unlink_two_nets_relink_one",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "afterUnlink": {
+     "m1": 1214325672,
+     "m2": 1214325672,
+     "m3": 439771838
+    },
+    "lampOffAfterUnlink": true,
+    "afterRelink": {
+     "m1": 721368092,
+     "m2": 721368092,
+     "m3": 721368092
+    }
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M13d_refusals",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "m1->m3 (24 cells)": "OutOfRange",
+    "m3->hostile mast": "Foreign",
+    "m1->battery": "NotAnchor"
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M13e_hostile_mast_not_autolinked",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "hostileMastLinks": []
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "R1_span_altitude_above_pawns_below_blueprints",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "pawn": 8.4146,
+    "pawnState": 9.1463,
+    "span": 9.3293,
+    "top": 9.2927,
+    "blueprint": 9.5122,
+    "weather": 11.3415
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "R2_spans_and_heads_drawn",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spanDraws": 2,
+    "topDraws": 4,
+    "spanMeshes": 2,
+    "groundVerts": 100
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M14_gap_control_without_fix",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "registeredNets": {
+     "m1": -1,
+     "m2": null,
+     "m3": -1
+    },
+    "compNets(stale pointer)": {
+     "m1": 721368092,
+     "m3": 721368092
+    },
+    "meaning": "PASS = the despawn gap is real: with the re-seed OFF both sides are left on NO registered net (their CompPower.transNet still points at the same deleted net: a same-net read alone looks healthy)"
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M14a_remove_middle_both_ends_resolve",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "nets": {
+     "m1": 1621693146,
+     "m2": null,
+     "m3": 847139312
+    },
+    "fallenCords(dismantle coils)": 0,
+    "netRepairs": [
+     0,
+     0
+    ],
+    "watchdogRuns": 5
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M14b_dead_pole_drops_live_and_dead_cords",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "m1Fallen": [
+     {
+      "toward": [
+       104,
+       185
+      ],
+      "cutPartner": -1,
+      "pts": 122,
+      "wireStart": [
+       92.658,
+       188.672
+      ],
+      "breakAt": [
+       104.5,
+       185.5
+      ],
+      "laidLen": 11.9666,
+      "tip": [
+       95.628,
+       190.7111
+      ],
+      "blocked": true,
+      "wires": 3,
+      "wireEnds": [
+       {
+        "laid": [
+         95.862,
+         180.046
+        ],
+        "now": [
+         95.6729,
+         180.057
+        ],
+        "grounded": true
+       },
+       {
+        "laid": [
+         95.628,
+         190.7111
+        ],
+        "now": [
+         95.7052,
+         190.6626
+        ],
+        "grounded": true
+       },
+       {
+        "laid": [
+         95.561,
+         191.8716
+        ],
+        "now": [
+         95.4508,
+         191.8543
+        ],
+        "grounded": true
+       }
+      ],
+      "wireStarts": [
+       [
+        91.962,
+        188.797
+       ],
+       [
+        92.658,
+        188.672
+       ],
+       [
+        93.117,
+        188.648
+       ]
+      ]
+     }
+    ],
+    "m1Live": true,
+    "m3Fallen": [
+     {
+      "toward": [
+       104,
+       185
+      ],
+      "cutPartner": -1,
+      "pts": 153,
+      "wireStart": [
+       116.658,
+       188.672
+      ],
+      "breakAt": [
+       104.5,
+       185.5
+      ],
+      "laidLen": 21.2491,
+      "tip": [
+       106.6937,
+       186.2355
+      ],
+      "blocked": false,
+      "wires": 3,
+      "wireEnds": [
+       {
+        "laid": [
+         106.6312,
+         187.5018
+        ],
+        "now": [
+         106.6312,
+         187.5018
+        ],
+        "grounded": true
+       },
+       {
+        "laid": [
+         106.6937,
+         186.2355
+        ],
+        "now": [
+         106.6937,
+         186.2355
+        ],
+        "grounded": true
+       },
+       {
+        "laid": [
+         106.697,
+         185.2195
+        ],
+        "now": [
+         106.697,
+         185.2195
+        ],
+        "grounded": true
+       }
+      ],
+      "wireStarts": [
+       [
+        115.962,
+        188.797
+       ],
+       [
+        116.658,
+        188.672
+       ],
+       [
+        117.117,
+        188.648
+       ]
+      ]
+     }
+    ],
+    "m3Live": false,
+    "nets": {
+     "m1": 685511840,
+     "m2": null,
+     "m3": 2058441654
+    }
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M14c_live_tip_glows",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "look only (owner 2026-10-02): no shock; glow per frame at the live tip",
+   "block": "aerial"
+  },
+  {
+   "id": "M15_explosion_cuts_span",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "cuts": 1,
+    "spansCut": 1,
+    "halves": [
+     {
+      "toward": [
+       110,
+       185
+      ],
+      "cutPartner": 24636,
+      "pts": 82,
+      "wireStart": [
+       104.658,
+       188.672
+      ],
+      "breakAt": [
+       110.5,
+       185.5
+      ],
+      "laidLen": 12.1231,
+      "tip": [
+       109.5693,
+       186.2176
+      ],
+      "blocked": false,
+      "wires": 3,
+      "wireEnds": [
+       {
+        "laid": [
+         109.3316,
+         182.7553
+        ],
+        "now": [
+         109.3081,
+         182.8642
+        ],
+        "grounded": true
+       },
+       {
+        "laid": [
+         109.5693,
+         186.2176
+        ],
+        "now": [
+         109.301,
+         186.328
+        ],
+        "grounded": true
+       },
+       {
+        "laid": [
+         110.0341,
+         186.565
+        ],
+        "now": [
+         109.9772,
+         186.5252
+        ],
+        "grounded": true
+       }
+      ],
+      "wireStarts": [
+       [
+        103.962,
+        188.797
+       ],
+       [
+        104.658,
+        188.672
+       ],
+       [
+        105.117,
+        188.648
+       ]
+      ]
+     },
+     {
+      "toward": [
+       110,
+       185
+      ],
+      "cutPartner": 24644,
+      "pts": 109,
+      "wireStart": [
+       116.658,
+       188.672
+      ],
+      "breakAt": [
+       110.5,
+       185.5
+      ],
+      "laidLen": 14.7066,
+      "tip": [
+       111.2897,
+       186.1318
+      ],
+      "blocked": false,
+      "wires": 3,
+      "wireEnds": [
+       {
+        "laid": [
+         111.4002,
+         187.6048
+        ],
+        "now": [
+         111.4002,
+         187.6048
+        ],
+        "grounded": true
+       },
+       {
+        "laid": [
+         111.2897,
+         186.1318
+        ],
+        "now": [
+         111.2897,
+         186.1318
+        ],
+        "grounded": true
+       },
+       {
+        "laid": [
+         111.8311,
+         183.3136
+        ],
+        "now": [
+         111.8311,
+         183.3136
+        ],
+        "grounded": true
+       }
+      ],
+      "wireStarts": [
+       [
+        115.962,
+        188.797
+       ],
+       [
+        116.658,
+        188.672
+       ],
+       [
+        117.117,
+        188.648
+       ]
+      ]
+     }
+    ],
+    "nets": {
+     "m1": 1697851918,
+     "m2": 1697851918,
+     "m3": 324922104
+    },
+    "m2Live": true,
+    "m3Live": false
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M15a_wire_down_alert_lists_cut",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "down": 2,
+    "ids": [
+     24644,
+     24636
+    ],
+    "enabledOff": false
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M15b_restring_rejoins",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "nets": {
+     "m1": 368078890,
+     "m2": 368078890,
+     "m3": 368078890
+    }
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M15c_wire_down_alert_clears_on_restring",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "down": 0
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M15e_restring_is_a_colonist_job",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "order": {
+     "success": true,
+     "cmd": "restringorder:24644",
+     "designated": true,
+     "cut": 1,
+     "jobsDone": 0,
+     "spansRestrung": 0,
+     "_probeSerial": 47
+    },
+    "before": {
+     "success": true,
+     "cmd": "restringstate:24644",
+     "designated": true,
+     "cut": 1,
+     "jobsDone": 0,
+     "spansRestrung": 0,
+     "_probeSerial": 48
+    },
+    "after": {
+     "success": true,
+     "cmd": "restringstate:24644",
+     "designated": false,
+     "cut": 0,
+     "jobsDone": 1,
+     "spansRestrung": 1,
+     "_probeSerial": 57
+    },
+    "by": "Human478",
+    "nets": {
+     "m1": 770171814,
+     "m2": 770171814,
+     "m3": 770171814
+    },
+    "jobDef": "RM_RestringSpan",
+    "meaning": "PASS = the order alone leaves the span cut; the colonist's job restores it, clears the order and rejoins the nets"
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M15f_restring_joined_run_one_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "schema": 1,
+    "jobDef": "RM_RestringSpan",
+    "readings": [
+     {
+      "cmd": "colonists",
+      "reply": {
+       "success": true,
+       "cmd": "colonists",
+       "pawns": [
+        {
+         "id": 475,
+         "name": "Rowan",
+         "pos": [
+          115,
+          115
+         ],
+         "drafted": true,
+         "downed": false,
+         "job": null
+        },
+        {
+         "id": 478,
+         "name": "Ellison",
+         "pos": [
+          118,
+          116
+         ],
+         "drafted": true,
+         "downed": false,
+         "job": null
+        },
+        {
+         "id": 483,
+         "name": "Shiki",
+         "pos": [
+          121,
+          116
+         ],
+         "drafted": true,
+         "downed": false,
+         "job": null
+        }
+       ]
+      }
+     },
+     {
+      "cmd": "cstyles",
+      "reply": {
+       "success": true,
+       "cmd": "cstyles",
+       "defaultLook": "Scrapper",
+       "defaultKey": "Scrapper",
+       "missingStyleDefs": [],
+       "notStylable": [],
+       "globalMissing": [],
+       "lookStrands": {
+        "Scrapper": [
+         "Strand_ScrapTaped"
+        ],
+        "Industrial": [
+         "Strand_BlackRubber",
+         "Strand_CorrugatedSteel",
+         "Strand_CoiledBlack"
+        ],
+        "Modern": [
+         "Strand_Orange",
+         "Strand_Green",
+         "Strand_Brown",
+         "Strand_Yellow",
+         "Strand_Blue"
+        ],
+        "Futuristic": [
+         "Strand"
+        ]
+       },
+       "counters": {
+        "processed": 7,
+        "adopted": 0,
+        "bridges": 0,
+        "linkBridges": 0,
+        "repainted": 0,
+        "materialised": 0,
+        "unpainted": 0,
+        "legacyKept": 0,
+        "restyles": 0,
+        "pending": 0,
+        "lampsFollowed": 0,
+        "lampsKeptOwn": 0,
+        "lampRestyles": 0,
+        "runOfVisits": 36
+       },
+       "lamps": [
+        {
+         "id": 24637,
+         "def": "StandingLamp",
+         "rot": 0,
+         "x": 117,
+         "z": 187,
+         "rawStyle": null,
+         "look": null,
+         "run": 24634,
+         "runLook": "Scrapper",
+         "drawnPath": "Things/Building/Furniture/LampStanding",
+         "lit": false
+        }
+       ],
+       "lastMessage": null,
+       "switchPaths": {},
+       "members": [
+        {
+         "id": 24634,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 185,
+         "rawStyle": null,
+         "look": null,
+         "colour": null,
+         "run": 24634,
+         "runArea": 0
+        },
+        {
+         "id": 24636,
+         "def": "RM_AerialMast",
+         "x": 116,
+         "z": 185,
+         "rawStyle": null,
+         "look": null,
+         "colour": null,
+         "run": 24634,
+         "runArea": 0
+        },
+        {
+         "id": 24638,
+         "def": "RM_AerialMast",
+         "x": 110,
+         "z": 195,
+         "rawStyle": null,
+         "look": null,
+         "colour": null,
+         "run": 24638,
+         "runArea": 0
+        },
+        {
+         "id": 24644,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 185,
+         "rawStyle": null,
+         "look": null,
+         "colour": null,
+         "run": 24634,
+         "runArea": 0
+        }
+       ],
+       "pieces": [],
+       "legacyPieces": 0,
+       "legacySameMaterials": 0,
+       "printedTex": {},
+       "_probeSerial": 59
+      }
+     },
+     {
+      "cmd": "cut:24644,24636",
+      "reply": {
+       "success": true,
+       "cmd": "cut:24644,24636",
+       "done": true,
+       "_probeSerial": 60
+      }
+     },
+     {
+      "cmd": "cprocess",
+      "reply": {
+       "success": true,
+       "cmd": "cprocess",
+       "processed": 0,
+       "_probeSerial": 61
+      }
+     },
+     {
+      "cmd": "census",
+      "reply": {
+       "success": true,
+       "cmd": "census",
+       "ticksGame": 16516,
+       "queues": {
+        "overhead": 3006,
+        "spanMat": 3006
+       },
+       "anchors": [
+        {
+         "id": 24634,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 760928898,
+         "compNet": 760928898,
+         "gridNet": 760928898,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24636,
+         "def": "RM_AerialMast",
+         "x": 116,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 232395336,
+         "compNet": 232395336,
+         "gridNet": 232395336,
+         "netLive": false,
+         "fallenLive": false,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Cut",
+           "hp": 0
+          }
+         ],
+         "fallen": [
+          {
+           "toward": [
+            110,
+            185
+           ],
+           "cutPartner": 24644,
+           "pts": 109,
+           "wireStart": [
+            116.658,
+            188.672
+           ],
+           "breakAt": [
+            110.5,
+            185.5
+           ],
+           "laidLen": 14.7066,
+           "tip": [
+            111.2897,
+            186.1318
+           ],
+           "blocked": false,
+           "wires": 3,
+           "wireEnds": [
+            {
+             "laid": [
+              111.4002,
+              187.6048
+             ],
+             "now": [
+              111.4002,
+              187.6048
+             ],
+             "grounded": true
+            },
+            {
+             "laid": [
+              111.2897,
+              186.1318
+             ],
+             "now": [
+              111.2897,
+              186.1318
+             ],
+             "grounded": true
+            },
+            {
+             "laid": [
+              111.8311,
+              183.3136
+             ],
+             "now": [
+              111.8311,
+              183.3136
+             ],
+             "grounded": true
+            }
+           ],
+           "wireStarts": [
+            [
+             115.962,
+             188.797
+            ],
+            [
+             116.658,
+             188.672
+            ],
+            [
+             117.117,
+             188.648
+            ]
+           ]
+          }
+         ]
+        },
+        {
+         "id": 24638,
+         "def": "RM_AerialMast",
+         "x": 110,
+         "z": 195,
+         "faction": "Bookoulbah Union",
+         "net": 915922856,
+         "compNet": 915922856,
+         "gridNet": 915922856,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [],
+         "fallen": []
+        },
+        {
+         "id": 24644,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 760928898,
+         "compNet": 760928898,
+         "gridNet": 760928898,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24634,
+           "state": "Up",
+           "hp": 30
+          },
+          {
+           "other": 24636,
+           "state": "Cut",
+           "hp": 0
+          }
+         ],
+         "fallen": [
+          {
+           "toward": [
+            110,
+            185
+           ],
+           "cutPartner": 24636,
+           "pts": 82,
+           "wireStart": [
+            104.658,
+            188.672
+           ],
+           "breakAt": [
+            110.5,
+            185.5
+           ],
+           "laidLen": 12.1231,
+           "tip": [
+            109.5693,
+            186.2176
+           ],
+           "blocked": false,
+           "wires": 3,
+           "wireEnds": [
+            {
+             "laid": [
+              109.3316,
+              182.7553
+             ],
+             "now": [
+              109.3264,
+              182.7946
+             ],
+             "grounded": true
+            },
+            {
+             "laid": [
+              109.5693,
+              186.2176
+             ],
+             "now": [
+              109.505,
+              186.2568
+             ],
+             "grounded": true
+            },
+            {
+             "laid": [
+              110.0341,
+              186.565
+             ],
+             "now": [
+              109.9965,
+              186.5376
+             ],
+             "grounded": true
+            }
+           ],
+           "wireStarts": [
+            [
+             103.962,
+             188.797
+            ],
+            [
+             104.658,
+             188.672
+            ],
+            [
+             105.117,
+             188.648
+            ]
+           ]
+          }
+         ]
+        }
+       ],
+       "spansUp": 1,
+       "spansCut": 1,
+       "fallenCords": 2,
+       "shockCells": 23,
+       "shockOrphans": 0,
+       "shockCellsFresh": 23,
+       "externalContacts": 0,
+       "shockCellList": [
+        [
+         105,
+         184
+        ],
+        [
+         106,
+         184
+        ],
+        [
+         106,
+         185
+        ],
+        [
+         105,
+         185
+        ],
+        [
+         107,
+         185
+        ],
+        [
+         107,
+         184
+        ],
+        [
+         107,
+         183
+        ],
+        [
+         108,
+         183
+        ],
+        [
+         108,
+         182
+        ],
+        [
+         109,
+         182
+        ],
+        [
+         108,
+         184
+        ],
+        [
+         108,
+         185
+        ],
+        [
+         109,
+         185
+        ],
+        [
+         109,
+         186
+        ],
+        [
+         105,
+         187
+        ],
+        [
+         106,
+         187
+        ],
+        [
+         106,
+         186
+        ],
+        [
+         107,
+         186
+        ],
+        [
+         107,
+         187
+        ],
+        [
+         108,
+         187
+        ],
+        [
+         108,
+         188
+        ],
+        [
+         109,
+         187
+        ],
+        [
+         110,
+         186
+        ]
+       ],
+       "netRepairs": 0,
+       "watchdogRuns": 13,
+       "roofCuts": 0,
+       "explosionCuts": 1,
+       "kineticSways": 0,
+       "autoLinks": 6,
+       "orphanRelinks": 2,
+       "liveWirePriced": 23,
+       "postfixAppends": 59,
+       "spanDraws": 1,
+       "swayDraws": 1,
+       "swayReason": "cpu",
+       "swayLook": "Gust",
+       "topDraws": 4,
+       "dropDraws": 2,
+       "look": "Scrapper",
+       "spanPath": "RimMandrake/GimmeSomeSlack/Strand_Jawa",
+       "spanWidth": 0.14,
+       "poleTex": {
+        "RM_AerialMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+        "RM_AerialLampMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialLampMast",
+        "RM_AerialWallBracket": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/WallBracket"
+       },
+       "hookupCablesPrinted": 0,
+       "glowDraws": 3,
+       "spanMeshes": 1,
+       "lampMasts": [],
+       "groundVerts": 62,
+       "groundFallenPrinted": 2,
+       "groundShadowsPrinted": 1,
+       "altitudes": {
+        "pawn": 8.4146,
+        "pawnState": 9.1463,
+        "span": 9.3293,
+        "top": 9.2927,
+        "blueprint": 9.5122,
+        "weather": 11.3415
+       },
+       "taps": [],
+       "tapGuardRefused": 0,
+       "tapEventsRaised": 0,
+       "wind": 1.5533,
+       "plantSwayPref": true,
+       "settings": {
+        "enabled": "True",
+        "maxSpan": "20",
+        "sag": "0.06",
+        "autoLink": "True",
+        "maxStrands": "3",
+        "sway": "Auto",
+        "swayStrength": "1",
+        "swayLook": "Gust",
+        "explosionsCut": "True",
+        "kineticSway": "True",
+        "tapsEnabled": "True",
+        "tapRate": "500",
+        "tapEvents": "True",
+        "theftGoodwill": "True",
+        "theftGoodwillPerDay": "2",
+        "theftSightRange": "12",
+        "keepWiresOnGravship": "True",
+        "shockReach": "All",
+        "fallenWireShock": "True",
+        "fallenWireIgnites": "True",
+        "fallenWireKnockback": "2",
+        "wireDownAlert": "True",
+        "cutWiresOnOwnerChange": "True",
+        "dripLoops": "False",
+        "DripDepth": "0.12",
+        "DripReach": "0.45"
+       },
+       "_probeSerial": 62
+      }
+     },
+     {
+      "cmd": "crestyle:104,185:Modern_Orange",
+      "reply": {
+       "success": true,
+       "cmd": "crestyle:104,185:Modern_Orange",
+       "changed": 2,
+       "message": "Restyled this run (2 pieces, 2 changed) to Modern: orange.",
+       "_probeSerial": 63
+      }
+     },
+     {
+      "cmd": "crestyle:116,185:Industrial",
+      "reply": {
+       "success": true,
+       "cmd": "crestyle:116,185:Industrial",
+       "changed": 1,
+       "message": "Restyled this run (1 pieces, 1 changed) to Industrial; lamps on it: 1 changed.",
+       "_probeSerial": 64
+      }
+     },
+     {
+      "cmd": "cstyles",
+      "reply": {
+       "success": true,
+       "cmd": "cstyles",
+       "defaultLook": "Scrapper",
+       "defaultKey": "Scrapper",
+       "missingStyleDefs": [],
+       "notStylable": [],
+       "globalMissing": [],
+       "lookStrands": {
+        "Scrapper": [
+         "Strand_ScrapTaped"
+        ],
+        "Industrial": [
+         "Strand_BlackRubber",
+         "Strand_CorrugatedSteel",
+         "Strand_CoiledBlack"
+        ],
+        "Modern": [
+         "Strand_Orange",
+         "Strand_Green",
+         "Strand_Brown",
+         "Strand_Yellow",
+         "Strand_Blue"
+        ],
+        "Futuristic": [
+         "Strand"
+        ]
+       },
+       "counters": {
+        "processed": 7,
+        "adopted": 0,
+        "bridges": 0,
+        "linkBridges": 0,
+        "repainted": 3,
+        "materialised": 3,
+        "unpainted": 0,
+        "legacyKept": 0,
+        "restyles": 2,
+        "pending": 0,
+        "lampsFollowed": 1,
+        "lampsKeptOwn": 0,
+        "lampRestyles": 0,
+        "runOfVisits": 44
+       },
+       "lamps": [
+        {
+         "id": 24637,
+         "def": "StandingLamp",
+         "rot": 0,
+         "x": 117,
+         "z": 187,
+         "rawStyle": "StandingLamp_Industrial",
+         "look": "Industrial",
+         "run": 24636,
+         "runLook": "Industrial",
+         "drawnPath": "RimMandrake/GimmeSomeSlack/Styles/Industrial/StandingLamp",
+         "lit": false
+        }
+       ],
+       "lastMessage": "Restyled this run (1 pieces, 1 changed) to Industrial; lamps on it: 1 changed.",
+       "switchPaths": {},
+       "members": [
+        {
+         "id": 24634,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 185,
+         "rawStyle": "RM_AerialMast_Modern",
+         "look": "Modern",
+         "colour": null,
+         "run": 24634,
+         "runArea": 0
+        },
+        {
+         "id": 24636,
+         "def": "RM_AerialMast",
+         "x": 116,
+         "z": 185,
+         "rawStyle": "RM_AerialMast_Industrial",
+         "look": "Industrial",
+         "colour": null,
+         "run": 24636,
+         "runArea": 0
+        },
+        {
+         "id": 24638,
+         "def": "RM_AerialMast",
+         "x": 110,
+         "z": 195,
+         "rawStyle": null,
+         "look": null,
+         "colour": null,
+         "run": 24638,
+         "runArea": 0
+        },
+        {
+         "id": 24644,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 185,
+         "rawStyle": "RM_AerialMast_Modern",
+         "look": "Modern",
+         "colour": null,
+         "run": 24634,
+         "runArea": 0
+        }
+       ],
+       "pieces": [],
+       "legacyPieces": 0,
+       "legacySameMaterials": 0,
+       "printedTex": {},
+       "_probeSerial": 65
+      }
+     },
+     {
+      "cmd": "restringorder:24644",
+      "reply": {
+       "success": true,
+       "cmd": "restringorder:24644",
+       "designated": true,
+       "cut": 1,
+       "jobsDone": 1,
+       "spansRestrung": 1,
+       "_probeSerial": 66
+      }
+     },
+     {
+      "cmd": "pawn:475=undraft",
+      "reply": {
+       "success": true,
+       "cmd": "pawn:475=undraft",
+       "pawn": {
+        "id": 475,
+        "name": "Rowan",
+        "pos": [
+         115,
+         115
+        ],
+        "drafted": false,
+        "downed": false,
+        "job": null
+       }
+      }
+     },
+     {
+      "cmd": "pawn:478=undraft",
+      "reply": {
+       "success": true,
+       "cmd": "pawn:478=undraft",
+       "pawn": {
+        "id": 478,
+        "name": "Ellison",
+        "pos": [
+         118,
+         116
+        ],
+        "drafted": false,
+        "downed": false,
+        "job": null
+       }
+      }
+     },
+     {
+      "cmd": "pawn:483=undraft",
+      "reply": {
+       "success": true,
+       "cmd": "pawn:483=undraft",
+       "pawn": {
+        "id": 483,
+        "name": "Shiki",
+        "pos": [
+         121,
+         116
+        ],
+        "drafted": false,
+        "downed": false,
+        "job": null
+       }
+      }
+     },
+     {
+      "cmd": "restringjob:24644",
+      "reply": {
+       "success": true,
+       "cmd": "restringjob:24644",
+       "designated": true,
+       "cut": 1,
+       "jobsDone": 1,
+       "spansRestrung": 1,
+       "by": "Human478",
+       "_probeSerial": 67
+      }
+     },
+     {
+      "cmd": "colonists",
+      "reply": {
+       "success": true,
+       "cmd": "colonists",
+       "pawns": [
+        {
+         "id": 475,
+         "name": "Rowan",
+         "pos": [
+          115,
+          115
+         ],
+         "drafted": false,
+         "downed": false,
+         "job": null
+        },
+        {
+         "id": 478,
+         "name": "Ellison",
+         "pos": [
+          118,
+          116
+         ],
+         "drafted": false,
+         "downed": false,
+         "job": "RM_RestringSpan"
+        },
+        {
+         "id": 483,
+         "name": "Shiki",
+         "pos": [
+          121,
+          116
+         ],
+         "drafted": false,
+         "downed": false,
+         "job": null
+        }
+       ]
+      }
+     },
+     {
+      "cmd": "restringstate:24644",
+      "reply": {
+       "success": true,
+       "cmd": "restringstate:24644",
+       "designated": true,
+       "cut": 1,
+       "jobsDone": 1,
+       "spansRestrung": 1,
+       "_probeSerial": 68
+      }
+     },
+     {
+      "cmd": "restringstate:24644",
+      "reply": {
+       "success": true,
+       "cmd": "restringstate:24644",
+       "designated": true,
+       "cut": 1,
+       "jobsDone": 1,
+       "spansRestrung": 1,
+       "_probeSerial": 69
+      }
+     },
+     {
+      "cmd": "restringstate:24644",
+      "reply": {
+       "success": true,
+       "cmd": "restringstate:24644",
+       "designated": true,
+       "cut": 1,
+       "jobsDone": 1,
+       "spansRestrung": 1,
+       "_probeSerial": 70
+      }
+     },
+     {
+      "cmd": "restringstate:24644",
+      "reply": {
+       "success": true,
+       "cmd": "restringstate:24644",
+       "designated": true,
+       "cut": 1,
+       "jobsDone": 1,
+       "spansRestrung": 1,
+       "_probeSerial": 71
+      }
+     },
+     {
+      "cmd": "restringstate:24644",
+      "reply": {
+       "success": true,
+       "cmd": "restringstate:24644",
+       "designated": true,
+       "cut": 1,
+       "jobsDone": 1,
+       "spansRestrung": 1,
+       "_probeSerial": 72
+      }
+     },
+     {
+      "cmd": "restringstate:24644",
+      "reply": {
+       "success": true,
+       "cmd": "restringstate:24644",
+       "designated": true,
+       "cut": 1,
+       "jobsDone": 1,
+       "spansRestrung": 1,
+       "_probeSerial": 73
+      }
+     },
+     {
+      "cmd": "restringstate:24644",
+      "reply": {
+       "success": true,
+       "cmd": "restringstate:24644",
+       "designated": true,
+       "cut": 1,
+       "jobsDone": 1,
+       "spansRestrung": 1,
+       "_probeSerial": 74
+      }
+     },
+     {
+      "cmd": "restringstate:24644",
+      "reply": {
+       "success": true,
+       "cmd": "restringstate:24644",
+       "designated": false,
+       "cut": 0,
+       "jobsDone": 2,
+       "spansRestrung": 2,
+       "_probeSerial": 75
+      }
+     },
+     {
+      "cmd": "cprocess",
+      "reply": {
+       "success": true,
+       "cmd": "cprocess",
+       "processed": 0,
+       "_probeSerial": 76
+      }
+     },
+     {
+      "cmd": "census",
+      "reply": {
+       "success": true,
+       "cmd": "census",
+       "ticksGame": 18519,
+       "queues": {
+        "overhead": 3006,
+        "spanMat": 3006
+       },
+       "anchors": [
+        {
+         "id": 24634,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24636,
+         "def": "RM_AerialMast",
+         "x": 116,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": false,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24638,
+         "def": "RM_AerialMast",
+         "x": 110,
+         "z": 195,
+         "faction": "Bookoulbah Union",
+         "net": 915922856,
+         "compNet": 915922856,
+         "gridNet": 915922856,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [],
+         "fallen": []
+        },
+        {
+         "id": 24644,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24634,
+           "state": "Up",
+           "hp": 30
+          },
+          {
+           "other": 24636,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        }
+       ],
+       "spansUp": 2,
+       "spansCut": 0,
+       "fallenCords": 0,
+       "shockCells": 0,
+       "shockOrphans": 0,
+       "shockCellsFresh": 0,
+       "externalContacts": 0,
+       "shockCellList": [],
+       "netRepairs": 0,
+       "watchdogRuns": 21,
+       "roofCuts": 0,
+       "explosionCuts": 1,
+       "kineticSways": 0,
+       "autoLinks": 6,
+       "orphanRelinks": 2,
+       "liveWirePriced": 0,
+       "postfixAppends": 64,
+       "spanDraws": 2,
+       "swayDraws": 2,
+       "swayReason": "cpu",
+       "swayLook": "Gust",
+       "topDraws": 4,
+       "dropDraws": 0,
+       "look": "Scrapper",
+       "spanPath": "RimMandrake/GimmeSomeSlack/Strand_Jawa",
+       "spanWidth": 0.14,
+       "poleTex": {
+        "RM_AerialMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+        "RM_AerialLampMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialLampMast",
+        "RM_AerialWallBracket": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/WallBracket"
+       },
+       "hookupCablesPrinted": 0,
+       "glowDraws": 0,
+       "spanMeshes": 2,
+       "lampMasts": [],
+       "groundVerts": 100,
+       "groundFallenPrinted": 0,
+       "groundShadowsPrinted": 2,
+       "altitudes": {
+        "pawn": 8.4146,
+        "pawnState": 9.1463,
+        "span": 9.3293,
+        "top": 9.2927,
+        "blueprint": 9.5122,
+        "weather": 11.3415
+       },
+       "taps": [],
+       "tapGuardRefused": 0,
+       "tapEventsRaised": 0,
+       "wind": 1.2094,
+       "plantSwayPref": true,
+       "settings": {
+        "enabled": "True",
+        "maxSpan": "20",
+        "sag": "0.06",
+        "autoLink": "True",
+        "maxStrands": "3",
+        "sway": "Auto",
+        "swayStrength": "1",
+        "swayLook": "Gust",
+        "explosionsCut": "True",
+        "kineticSway": "True",
+        "tapsEnabled": "True",
+        "tapRate": "500",
+        "tapEvents": "True",
+        "theftGoodwill": "True",
+        "theftGoodwillPerDay": "2",
+        "theftSightRange": "12",
+        "keepWiresOnGravship": "True",
+        "shockReach": "All",
+        "fallenWireShock": "True",
+        "fallenWireIgnites": "True",
+        "fallenWireKnockback": "2",
+        "wireDownAlert": "True",
+        "cutWiresOnOwnerChange": "True",
+        "dripLoops": "False",
+        "DripDepth": "0.12",
+        "DripReach": "0.45"
+       },
+       "_probeSerial": 77
+      }
+     },
+     {
+      "cmd": "cstyles",
+      "reply": {
+       "success": true,
+       "cmd": "cstyles",
+       "defaultLook": "Scrapper",
+       "defaultKey": "Scrapper",
+       "missingStyleDefs": [],
+       "notStylable": [],
+       "globalMissing": [],
+       "lookStrands": {
+        "Scrapper": [
+         "Strand_ScrapTaped"
+        ],
+        "Industrial": [
+         "Strand_BlackRubber",
+         "Strand_CorrugatedSteel",
+         "Strand_CoiledBlack"
+        ],
+        "Modern": [
+         "Strand_Orange",
+         "Strand_Green",
+         "Strand_Brown",
+         "Strand_Yellow",
+         "Strand_Blue"
+        ],
+        "Futuristic": [
+         "Strand"
+        ]
+       },
+       "counters": {
+        "processed": 7,
+        "adopted": 0,
+        "bridges": 1,
+        "linkBridges": 1,
+        "repainted": 4,
+        "materialised": 3,
+        "unpainted": 0,
+        "legacyKept": 0,
+        "restyles": 2,
+        "pending": 0,
+        "lampsFollowed": 2,
+        "lampsKeptOwn": 0,
+        "lampRestyles": 0,
+        "runOfVisits": 54
+       },
+       "lamps": [
+        {
+         "id": 24637,
+         "def": "StandingLamp",
+         "rot": 0,
+         "x": 117,
+         "z": 187,
+         "rawStyle": "StandingLamp_Modern",
+         "look": "Modern",
+         "run": 24634,
+         "runLook": "Modern",
+         "drawnPath": "RimMandrake/GimmeSomeSlack/Styles/Modern/StandingLamp",
+         "lit": false
+        }
+       ],
+       "lastMessage": "Joined a Industrial run to a larger Modern run (0 conduit cells): the Industrial run is now Modern.",
+       "switchPaths": {},
+       "members": [
+        {
+         "id": 24634,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 185,
+         "rawStyle": "RM_AerialMast_Modern",
+         "look": "Modern",
+         "colour": null,
+         "run": 24634,
+         "runArea": 0
+        },
+        {
+         "id": 24636,
+         "def": "RM_AerialMast",
+         "x": 116,
+         "z": 185,
+         "rawStyle": "RM_AerialMast_Modern",
+         "look": "Modern",
+         "colour": null,
+         "run": 24634,
+         "runArea": 0
+        },
+        {
+         "id": 24638,
+         "def": "RM_AerialMast",
+         "x": 110,
+         "z": 195,
+         "rawStyle": null,
+         "look": null,
+         "colour": null,
+         "run": 24638,
+         "runArea": 0
+        },
+        {
+         "id": 24644,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 185,
+         "rawStyle": "RM_AerialMast_Modern",
+         "look": "Modern",
+         "colour": null,
+         "run": 24634,
+         "runArea": 0
+        }
+       ],
+       "pieces": [],
+       "legacyPieces": 0,
+       "legacySameMaterials": 0,
+       "printedTex": {},
+       "_probeSerial": 78
+      }
+     },
+     {
+      "cmd": "crestyle:104,185:Scrapper",
+      "reply": {
+       "success": true,
+       "cmd": "crestyle:104,185:Scrapper",
+       "changed": 3,
+       "message": "Restyled this run (3 pieces, 3 changed) to Scrapper; lamps on it: 1 changed.",
+       "_probeSerial": 79
+      }
+     },
+     {
+      "cmd": "crestyle:116,185:Scrapper",
+      "reply": {
+       "success": true,
+       "cmd": "crestyle:116,185:Scrapper",
+       "changed": 0,
+       "message": "Restyled this run (3 pieces, 0 changed) to Scrapper; lamps on it: 0 changed.",
+       "_probeSerial": 80
+      }
+     },
+     {
+      "cmd": "cprocess",
+      "reply": {
+       "success": true,
+       "cmd": "cprocess",
+       "processed": 0,
+       "_probeSerial": 81
+      }
+     }
+    ],
+    "cleanup": [
+     {
+      "colonists": [
+       {
+        "success": true,
+        "cmd": "pawn:475=draft",
+        "pawn": {
+         "id": 475,
+         "name": "Rowan",
+         "pos": [
+          114,
+          140
+         ],
+         "drafted": true,
+         "downed": false,
+         "job": "Wait_Combat"
+        }
+       },
+       {
+        "success": true,
+        "cmd": "pawn:475=tp:115,115",
+        "pawn": {
+         "id": 475,
+         "name": "Rowan",
+         "pos": [
+          115,
+          115
+         ],
+         "drafted": true,
+         "downed": false,
+         "job": null
+        }
+       },
+       {
+        "success": true,
+        "cmd": "pawn:478=draft",
+        "pawn": {
+         "id": 478,
+         "name": "Ellison",
+         "pos": [
+          106,
+          185
+         ],
+         "drafted": true,
+         "downed": false,
+         "job": "Wait_Combat"
+        }
+       },
+       {
+        "success": true,
+        "cmd": "pawn:478=tp:118,116",
+        "pawn": {
+         "id": 478,
+         "name": "Ellison",
+         "pos": [
+          118,
+          116
+         ],
+         "drafted": true,
+         "downed": false,
+         "job": null
+        }
+       },
+       {
+        "success": true,
+        "cmd": "pawn:483=draft",
+        "pawn": {
+         "id": 483,
+         "name": "Shiki",
+         "pos": [
+          99,
+          173
+         ],
+         "drafted": true,
+         "downed": false,
+         "job": "Wait_Combat"
+        }
+       },
+       {
+        "success": true,
+        "cmd": "pawn:483=tp:121,116",
+        "pawn": {
+         "id": 483,
+         "name": "Shiki",
+         "pos": [
+          121,
+          116
+         ],
+         "drafted": true,
+         "downed": false,
+         "job": null
+        }
+       },
+       {
+        "success": true,
+        "cmd": "colonists",
+        "pawns": [
+         {
+          "id": 475,
+          "name": "Rowan",
+          "pos": [
+           115,
+           115
+          ],
+          "drafted": true,
+          "downed": false,
+          "job": null
+         },
+         {
+          "id": 478,
+          "name": "Ellison",
+          "pos": [
+           118,
+           116
+          ],
+          "drafted": true,
+          "downed": false,
+          "job": null
+         },
+         {
+          "id": 483,
+          "name": "Shiki",
+          "pos": [
+           121,
+           116
+          ],
+          "drafted": true,
+          "downed": false,
+          "job": null
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "parkBeforeCut": [
+     {
+      "success": true,
+      "cmd": "pawn:475=draft",
+      "pawn": {
+       "id": 475,
+       "name": "Rowan",
+       "pos": [
+        115,
+        115
+       ],
+       "drafted": true,
+       "downed": false,
+       "job": null
+      }
+     },
+     {
+      "success": true,
+      "cmd": "pawn:475=tp:115,115",
+      "pawn": {
+       "id": 475,
+       "name": "Rowan",
+       "pos": [
+        115,
+        115
+       ],
+       "drafted": true,
+       "downed": false,
+       "job": null
+      }
+     },
+     {
+      "success": true,
+      "cmd": "pawn:478=draft",
+      "pawn": {
+       "id": 478,
+       "name": "Ellison",
+       "pos": [
+        118,
+        116
+       ],
+       "drafted": true,
+       "downed": false,
+       "job": null
+      }
+     },
+     {
+      "success": true,
+      "cmd": "pawn:478=tp:118,116",
+      "pawn": {
+       "id": 478,
+       "name": "Ellison",
+       "pos": [
+        118,
+        116
+       ],
+       "drafted": true,
+       "downed": false,
+       "job": null
+      }
+     },
+     {
+      "success": true,
+      "cmd": "pawn:483=draft",
+      "pawn": {
+       "id": 483,
+       "name": "Shiki",
+       "pos": [
+        121,
+        116
+       ],
+       "drafted": true,
+       "downed": false,
+       "job": null
+      }
+     },
+     {
+      "success": true,
+      "cmd": "pawn:483=tp:121,116",
+      "pawn": {
+       "id": 483,
+       "name": "Shiki",
+       "pos": [
+        121,
+        116
+       ],
+       "drafted": true,
+       "downed": false,
+       "job": null
+      }
+     },
+     {
+      "success": true,
+      "cmd": "colonists",
+      "pawns": [
+       {
+        "id": 475,
+        "name": "Rowan",
+        "pos": [
+         115,
+         115
+        ],
+        "drafted": true,
+        "downed": false,
+        "job": null
+       },
+       {
+        "id": 478,
+        "name": "Ellison",
+        "pos": [
+         118,
+         116
+        ],
+        "drafted": true,
+        "downed": false,
+        "job": null
+       },
+       {
+        "id": 483,
+        "name": "Shiki",
+        "pos": [
+         121,
+         116
+        ],
+        "drafted": true,
+        "downed": false,
+        "job": null
+       }
+      ]
+     }
+    ],
+    "splitNets": [
+     760928898,
+     232395336
+    ],
+    "before": [
+     [
+      "Modern",
+      null,
+      "RM_AerialMast_Modern"
+     ],
+     [
+      "Industrial",
+      null,
+      "RM_AerialMast_Industrial"
+     ]
+    ],
+    "splitRuns": [
+     24634,
+     24636
+    ],
+    "order": {
+     "success": true,
+     "cmd": "restringorder:24644",
+     "designated": true,
+     "cut": 1,
+     "jobsDone": 1,
+     "spansRestrung": 1,
+     "_probeSerial": 66
+    },
+    "job": {
+     "success": true,
+     "cmd": "restringjob:24644",
+     "designated": true,
+     "cut": 1,
+     "jobsDone": 1,
+     "spansRestrung": 1,
+     "by": "Human478",
+     "_probeSerial": 67
+    },
+    "worker": {
+     "success": true,
+     "count": 1,
+     "pawns": [
+      {
+       "thingId": "Human478",
+       "thingIdNumber": 478,
+       "name": "Ivo Ellison",
+       "nameShort": "Ellison",
+       "title": "conceptual artist",
+       "kindDef": "Colonist",
+       "faction": "PlayerColony",
+       "factionName": "New Arrivals",
+       "gender": "Male",
+       "ageBiologicalYears": 45,
+       "ageChronologicalYears": 308,
+       "developmentalStage": "Adult",
+       "xenotype": "Baseliner",
+       "ideo": "Cell of Faith",
+       "childhood": "FrightenedChild43",
+       "adulthood": "ConceptualArtist39",
+       "headType": "Male_NarrowPointy",
+       "bodyType": "Male",
+       "hair": "Mohawk",
+       "beard": "Boxed",
+       "position": {
+        "x": 118,
+        "z": 116
+       },
+       "traits": [
+        {
+         "def": "GreatMemory",
+         "degree": 0,
+         "label": "Great memory",
+         "forced": false
+        },
+        {
+         "def": "NightOwl",
+         "degree": 0,
+         "label": "Night owl",
+         "forced": false
+        },
+        {
+         "def": "DislikesWomen",
+         "degree": 0,
+         "label": "Misogynist",
+         "forced": false
+        }
+       ],
+       "skills": [
+        {
+         "skill": "Shooting",
+         "levelRaw": 0,
+         "levelEffective": 0,
+         "passion": "None",
+         "xpSinceLastLevel": 0.0,
+         "disabled": true
+        },
+        {
+         "skill": "Melee",
+         "levelRaw": 0,
+         "levelEffective": 0,
+         "passion": "None",
+         "xpSinceLastLevel": 0.0,
+         "disabled": true
+        },
+        {
+         "skill": "Construction",
+         "levelRaw": 5,
+         "levelEffective": 5,
+         "passion": "None",
+         "xpSinceLastLevel": 16.3799648,
+         "disabled": false
+        },
+        {
+         "skill": "Mining",
+         "levelRaw": 5,
+         "levelEffective": 5,
+         "passion": "None",
+         "xpSinceLastLevel": 0.0,
+         "disabled": false
+        },
+        {
+         "skill": "Cooking",
+         "levelRaw": 5,
+         "levelEffective": 5,
+         "passion": "None",
+         "xpSinceLastLevel": 0.0,
+         "disabled": false
+        },
+        {
+         "skill": "Plants",
+         "levelRaw": 1,
+         "levelEffective": 1,
+         "passion": "None",
+         "xpSinceLastLevel": 0.0,
+         "disabled": false
+        },
+        {
+         "skill": "Animals",
+         "levelRaw": 6,
+         "levelEffective": 6,
+         "passion": "Major",
+         "xpSinceLastLevel": 0.0,
+         "disabled": false
+        },
+        {
+         "skill": "Crafting",
+         "levelRaw": 2,
+         "levelEffective": 2,
+         "passion": "None",
+         "xpSinceLastLevel": 0.0,
+         "disabled": false
+        },
+        {
+         "skill": "Artistic",
+         "levelRaw": 11,
+         "levelEffective": 11,
+         "passion": "Major",
+         "xpSinceLastLevel": -1.50000024,
+         "disabled": false
+        },
+        {
+         "skill": "Medicine",
+         "levelRaw": 0,
+         "levelEffective": 0,
+         "passion": "None",
+         "xpSinceLastLevel": 0.0,
+         "disabled": true
+        },
+        {
+         "skill": "Social",
+         "levelRaw": 0,
+         "levelEffective": 0,
+         "passion": "None",
+         "xpSinceLastLevel": 0.0,
+         "disabled": true
+        },
+        {
+         "skill": "Intellectual",
+         "levelRaw": 0,
+         "levelEffective": 0,
+         "passion": "None",
+         "xpSinceLastLevel": 0.0,
+         "disabled": false
+        }
+       ],
+       "apparel": [
+        {
+         "def": "Apparel_BasicShirt",
+         "defName": "Apparel_BasicShirt",
+         "stuff": "Synthread",
+         "hp": 130
+        },
+        {
+         "def": "Apparel_Pants",
+         "defName": "Apparel_Pants",
+         "stuff": "Synthread",
+         "hp": 130
+        }
+       ],
+       "equipment": [],
+       "hediffs": [
+        {
+         "def": "Stab",
+         "part": "Leg",
+         "severity": 3.0
+        },
+        {
+         "def": "AlcoholAddiction",
+         "severity": 0.8956638
+        },
+        {
+         "def": "AlcoholTolerance",
+         "severity": 0.110822193
+        },
+        {
+         "def": "Cirrhosis",
+         "part": "Liver",
+         "severity": 0.001
+        },
+        {
+         "def": "PsychiteAddiction",
+         "severity": 0.601099253
+        }
+       ],
+       "needs": [
+        {
+         "need": "Mood",
+         "level": 0.61,
+         "pct": 0.61
+        },
+        {
+         "need": "Food",
+         "level": 0.715999842,
+         "pct": 0.715999842
+        },
+        {
+         "need": "Rest",
+         "level": 0.930323541,
+         "pct": 0.930323541
+        },
+        {
+         "need": "Joy",
+         "level": 0.5505077,
+         "pct": 0.5505077
+        },
+        {
+         "need": "Beauty",
+         "level": 0.4,
+         "pct": 0.4
+        },
+        {
+         "need": "Outdoors",
+         "level": 1.0,
+         "pct": 1.0
+        },
+        {
+         "need": "DrugDesire",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "RoomSize",
+         "level": 1.0,
+         "pct": 1.0
+        },
+        {
+         "need": "Chemical_Alcohol",
+         "level": 0.833825052,
+         "pct": 0.833825052
+        },
+        {
+         "need": "Chemical_Psychite",
+         "level": 0.850269556,
+         "pct": 0.850269556
+        }
+       ]
+      }
+     ],
+     "ticksGame": 16516,
+     "operation": {
+      "OperationId": "op_547a62e686e34120885aad0e82f1f258",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 40
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 16516
+     }
+    },
+    "completion": {
+     "success": true,
+     "cmd": "restringstate:24644",
+     "designated": false,
+     "cut": 0,
+     "jobsDone": 2,
+     "spansRestrung": 2,
+     "_probeSerial": 75
+    },
+    "joinedNets": [
+     1206425526,
+     1206425526
+    ],
+    "after": [
+     [
+      "Modern",
+      null,
+      "RM_AerialMast_Modern"
+     ],
+     [
+      "Modern",
+      null,
+      "RM_AerialMast_Modern"
+     ]
+    ],
+    "joinedRuns": [
+     24634,
+     24634
+    ]
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M15d_diagonal_cut_halves_meet_on_line",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "breakAt": [
+     97.2651,
+     158.8356
+    ],
+    "same": true,
+    "t": 0.477,
+    "perpToLine": 0.0,
+    "tipsNearBreakApart": true,
+    "tips": [
+     [
+      97.0488,
+      158.0026
+     ],
+     [
+      98.3038,
+      158.9366
+     ]
+    ],
+    "isCellCentre(old aim)": false,
+    "cuts": 1,
+    "halves": 2,
+    "linkedBefore": true,
+    "masts": [
+     [
+      92,
+      155
+     ],
+     [
+      102,
+      162
+     ]
+    ],
+    "blast": [
+     97,
+     158
+    ]
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "R3_sway_proxy",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "on": {
+     "swayReason": "cpu",
+     "swayDraws": 2,
+     "wind": 1.2067,
+     "plantSwayPref": true
+    },
+    "off": {
+     "swayReason": "setting off",
+     "swayDraws": 0
+    }
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "R3b_sway_looks_each_draw",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "Pendulum": {
+     "swayLook": "Pendulum",
+     "swayDraws": 2,
+     "swayReason": "cpu",
+     "wind": 1.2067
+    },
+    "Rope": {
+     "swayLook": "Rope",
+     "swayDraws": 2,
+     "swayReason": "cpu",
+     "wind": 1.2067
+    },
+    "Gust": {
+     "swayLook": "Gust",
+     "swayDraws": 2,
+     "swayReason": "cpu",
+     "wind": 1.2067
+    }
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M19_tap_drains_one_way",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "built": [
+     1,
+     2,
+     2,
+     1,
+     1
+    ],
+    "victimStoredSet": 600.0,
+    "tap": {
+     "id": 24659,
+     "ourNet": 977337196,
+     "victimNet": 990812202,
+     "victimFaction": "Bookoulbah Union",
+     "outputW": 500,
+     "powerOn": true,
+     "lastStolenW": 500,
+     "stolenTotalWd": 6.7916,
+     "connected": true,
+     "connectFaction": "New Arrivals"
+    },
+    "ourLamp": [
+     {
+      "id": 24658,
+      "def": "StandingLamp",
+      "faction": "New Arrivals",
+      "net": 977337196,
+      "compNet": 977337196,
+      "powerOn": true,
+      "outputW": -30,
+      "wantsOn": true,
+      "needsPowerOverlay": false,
+      "connectParent": 24657
+     }
+    ],
+    "victimStored": [
+     599.9579,
+     598.1891,
+     593.1354
+    ],
+    "victimDrop600": 5.054,
+    "expectedDrop600~": 5.0,
+    "victimNet": 990812202,
+    "ourNet": 977337196,
+    "guardRefused": 0,
+    "tapEvents": 3
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M19n_taps_off_control",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ourLampDark": true,
+    "victimDrop600": 0.036599999999907595,
+    "note": "battery self-discharge only (5 W ~ 0.05 Wd/600 ticks)"
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M19m_tap_mixed_net_connects_own_conduit",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "built": [
+     3,
+     1,
+     1
+    ],
+    "mixedNet": true,
+    "tap": {
+     "id": 24666,
+     "ourNet": 882573456,
+     "victimNet": 882573456,
+     "victimFaction": "Bookoulbah Union",
+     "outputW": 0,
+     "powerOn": true,
+     "lastStolenW": 0,
+     "stolenTotalWd": 0,
+     "connected": true,
+     "connectFaction": "New Arrivals"
+    },
+    "ourFaction": "New Arrivals",
+    "guardRefused_t0": 0,
+    "guardRefused_t300": 0
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M17_owner_change_cuts_cross_owner_wires",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "linkedBefore": true,
+    "cutWhenToggleOff": 0,
+    "cutWhenOn": 1,
+    "provisional": true
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M20a_fallen_wire_shock_flip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "off": {
+     "id": "Muffalo24673",
+     "shocked": false,
+     "dead": false,
+     "start": [
+      98,
+      134
+     ],
+     "end": [
+      98,
+      134
+     ]
+    },
+    "on": {
+     "id": "Muffalo24675",
+     "shocked": true,
+     "dead": false,
+     "start": [
+      98,
+      134
+     ],
+     "end": [
+      98,
+      134
+     ]
+    }
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M20b_fallen_wire_knockback_flip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "knockback0": {
+     "id": "Muffalo24676",
+     "shocked": true,
+     "dead": false,
+     "start": [
+      98,
+      134
+     ],
+     "end": [
+      98,
+      134
+     ]
+    },
+    "knockback3": [
+     {
+      "id": "Muffalo24679",
+      "shocked": true,
+      "dead": false,
+      "start": [
+       98,
+       134
+      ],
+      "end": [
+       98,
+       132
+      ]
+     }
+    ]
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M20c_fallen_wire_ignites_flip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "fireWhenOff_12sweeps": 0,
+    "fireWhenOn": 1,
+    "sweepsToIgnite": 4,
+    "offObservations": [
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     }
+    ],
+    "onObservations": [
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 0
+     },
+     {
+      "fuel": true,
+      "fires": 1
+     }
+    ],
+    "note": "ignite is a 35% roll per 250-tick sweep; P(miss in 12) = 0.6%"
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M20e_shock_cells_die_with_wire",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": {
+     "shockCells": 15,
+     "orphans": 0
+    },
+    "after": {
+     "shockCells": 0,
+     "orphans": 0,
+     "onSite": []
+    },
+    "tip": [
+     98,
+     134
+    ],
+    "trial": {
+     "id": "Muffalo24711",
+     "shocked": false,
+     "dead": false,
+     "start": [
+      98,
+      134
+     ],
+     "end": [
+      98,
+      134
+     ]
+    }
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M20d_keep_wires_setting_roundtrip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "off": "False",
+    "on": "True",
+    "behaviourOwed": "gravship launch rig; wiring only"
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M21a_cut_wires_on_owner_change_off_keeps_link",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "linkedBefore": true,
+    "readback": "False",
+    "ownerSet": 3,
+    "sweepCut": 0,
+    "f1Links": [
+     {
+      "other": 24713,
+      "state": "Up",
+      "hp": 30
+     }
+    ],
+    "f2Links": [
+     {
+      "other": 24712,
+      "state": "Up",
+      "hp": 30
+     }
+    ],
+    "factions": [
+     "New Arrivals",
+     "Bookoulbah Union"
+    ]
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M21b_cut_wires_on_owner_change_on_cuts_link",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "linkedBefore": true,
+    "readback": "True",
+    "ownerSet": 3,
+    "sweepCut": 1,
+    "f1Links": [],
+    "f2Links": [],
+    "factions": [
+     "New Arrivals",
+     "Bookoulbah Union"
+    ]
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M21c_drip_loops_off_plain_curve",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "readback": "False",
+    "spans": 1,
+    "checks": [
+     {
+      "pts": 31,
+      "want": 31,
+      "other": 48,
+      "ok": true
+     },
+     {
+      "pts": 31,
+      "want": 31,
+      "other": 48,
+      "ok": true
+     },
+     {
+      "pts": 31,
+      "want": 31,
+      "other": 48,
+      "ok": true
+     }
+    ],
+    "verts": [
+     186
+    ],
+    "depth": 0.12,
+    "reach": 0.45
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M21d_drip_loops_on_loop_samples",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "readback": "True",
+    "spans": 1,
+    "checks": [
+     {
+      "pts": 48,
+      "want": 48,
+      "other": 31,
+      "ok": true
+     },
+     {
+      "pts": 48,
+      "want": 48,
+      "other": 31,
+      "ok": true
+     },
+     {
+      "pts": 48,
+      "want": 48,
+      "other": 31,
+      "ok": true
+     }
+    ],
+    "verts": [
+     288
+    ],
+    "depth": 0.12,
+    "reach": 0.45
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M22a_kinetic_sway_on_swings_never_cuts",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "schema": 1,
+    "setting": "kineticSway",
+    "enabled": true,
+    "damageSelector": "kinetic",
+    "damageDef": "Bomb",
+    "readings": [
+     {
+      "cmd": "set:kineticSway=True",
+      "reply": {
+       "success": true,
+       "cmd": "set:kineticSway=True",
+       "value": "True",
+       "_probeSerial": 167
+      }
+     },
+     {
+      "cmd": "census",
+      "reply": {
+       "success": true,
+       "cmd": "census",
+       "ticksGame": 25509,
+       "queues": {
+        "overhead": 3006,
+        "spanMat": 3006
+       },
+       "anchors": [
+        {
+         "id": 24634,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24636,
+         "def": "RM_AerialMast",
+         "x": 116,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": false,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24638,
+         "def": "RM_AerialMast",
+         "x": 110,
+         "z": 195,
+         "faction": "Bookoulbah Union",
+         "net": 915922856,
+         "compNet": 915922856,
+         "gridNet": 915922856,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [],
+         "fallen": []
+        },
+        {
+         "id": 24644,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24634,
+           "state": "Up",
+           "hp": 30
+          },
+          {
+           "other": 24636,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24719,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 135,
+         "faction": "New Arrivals",
+         "net": 453360902,
+         "compNet": 453360902,
+         "gridNet": 453360902,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [
+          {
+           "other": 24720,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24720,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 135,
+         "faction": "New Arrivals",
+         "net": 453360902,
+         "compNet": 453360902,
+         "gridNet": 453360902,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [
+          {
+           "other": 24719,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        }
+       ],
+       "spansUp": 3,
+       "spansCut": 0,
+       "fallenCords": 0,
+       "shockCells": 0,
+       "shockOrphans": 0,
+       "shockCellsFresh": 0,
+       "externalContacts": 0,
+       "shockCellList": [],
+       "netRepairs": 0,
+       "watchdogRuns": 49,
+       "roofCuts": 0,
+       "explosionCuts": 3,
+       "kineticSways": 0,
+       "autoLinks": 12,
+       "orphanRelinks": 2,
+       "liveWirePriced": 0,
+       "postfixAppends": 88,
+       "spanDraws": 2,
+       "swayDraws": 2,
+       "swayReason": "cpu",
+       "swayLook": "Gust",
+       "topDraws": 4,
+       "dropDraws": 0,
+       "look": "Scrapper",
+       "spanPath": "RimMandrake/GimmeSomeSlack/Strand_Jawa",
+       "spanWidth": 0.14,
+       "poleTex": {
+        "RM_AerialMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+        "RM_AerialLampMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialLampMast",
+        "RM_AerialWallBracket": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/WallBracket"
+       },
+       "hookupCablesPrinted": 0,
+       "glowDraws": 0,
+       "spanMeshes": 3,
+       "lampMasts": [],
+       "groundVerts": 100,
+       "groundFallenPrinted": 0,
+       "groundShadowsPrinted": 2,
+       "altitudes": {
+        "pawn": 8.4146,
+        "pawnState": 9.1463,
+        "span": 9.3293,
+        "top": 9.2927,
+        "blueprint": 9.5122,
+        "weather": 11.3415
+       },
+       "taps": [
+        {
+         "id": 24659,
+         "ourNet": 977337196,
+         "victimNet": 990812202,
+         "victimFaction": "Bookoulbah Union",
+         "outputW": 500,
+         "powerOn": true,
+         "lastStolenW": 500,
+         "stolenTotalWd": 52.6457,
+         "connected": true,
+         "connectFaction": "New Arrivals"
+        }
+       ],
+       "tapGuardRefused": 0,
+       "tapEventsRaised": 26,
+       "wind": 0.6974,
+       "plantSwayPref": true,
+       "settings": {
+        "enabled": "True",
+        "maxSpan": "20",
+        "sag": "0.06",
+        "autoLink": "True",
+        "maxStrands": "3",
+        "sway": "Auto",
+        "swayStrength": "1",
+        "swayLook": "Gust",
+        "explosionsCut": "True",
+        "kineticSway": "True",
+        "tapsEnabled": "True",
+        "tapRate": "500",
+        "tapEvents": "True",
+        "theftGoodwill": "True",
+        "theftGoodwillPerDay": "2",
+        "theftSightRange": "12",
+        "keepWiresOnGravship": "True",
+        "shockReach": "All",
+        "fallenWireShock": "True",
+        "fallenWireIgnites": "True",
+        "fallenWireKnockback": "2",
+        "wireDownAlert": "True",
+        "cutWiresOnOwnerChange": "True",
+        "dripLoops": "True",
+        "DripDepth": "0.12",
+        "DripReach": "0.45"
+       },
+       "_probeSerial": 168
+      }
+     },
+     {
+      "cmd": "explode:98,135,2.5,50,kinetic",
+      "reply": {
+       "success": true,
+       "cmd": "explode:98,135,2.5,50,kinetic",
+       "cuts": 0,
+       "sways": 1,
+       "damageDef": "Bomb",
+       "synthetic": true,
+       "kinetic": true,
+       "harmsHealth": true,
+       "spansReached": 1,
+       "_probeSerial": 169
+      }
+     },
+     {
+      "cmd": "census",
+      "reply": {
+       "success": true,
+       "cmd": "census",
+       "ticksGame": 25512,
+       "queues": {
+        "overhead": 3006,
+        "spanMat": 3006
+       },
+       "anchors": [
+        {
+         "id": 24634,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24636,
+         "def": "RM_AerialMast",
+         "x": 116,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": false,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24638,
+         "def": "RM_AerialMast",
+         "x": 110,
+         "z": 195,
+         "faction": "Bookoulbah Union",
+         "net": 915922856,
+         "compNet": 915922856,
+         "gridNet": 915922856,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [],
+         "fallen": []
+        },
+        {
+         "id": 24644,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24634,
+           "state": "Up",
+           "hp": 30
+          },
+          {
+           "other": 24636,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24719,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 135,
+         "faction": "New Arrivals",
+         "net": 453360902,
+         "compNet": 453360902,
+         "gridNet": 453360902,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [
+          {
+           "other": 24720,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24720,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 135,
+         "faction": "New Arrivals",
+         "net": 453360902,
+         "compNet": 453360902,
+         "gridNet": 453360902,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [
+          {
+           "other": 24719,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        }
+       ],
+       "spansUp": 3,
+       "spansCut": 0,
+       "fallenCords": 0,
+       "shockCells": 0,
+       "shockOrphans": 0,
+       "shockCellsFresh": 0,
+       "externalContacts": 0,
+       "shockCellList": [],
+       "netRepairs": 0,
+       "watchdogRuns": 49,
+       "roofCuts": 0,
+       "explosionCuts": 3,
+       "kineticSways": 1,
+       "autoLinks": 12,
+       "orphanRelinks": 2,
+       "liveWirePriced": 0,
+       "postfixAppends": 88,
+       "spanDraws": 2,
+       "swayDraws": 2,
+       "swayReason": "cpu",
+       "swayLook": "Gust",
+       "topDraws": 4,
+       "dropDraws": 0,
+       "look": "Scrapper",
+       "spanPath": "RimMandrake/GimmeSomeSlack/Strand_Jawa",
+       "spanWidth": 0.14,
+       "poleTex": {
+        "RM_AerialMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+        "RM_AerialLampMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialLampMast",
+        "RM_AerialWallBracket": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/WallBracket"
+       },
+       "hookupCablesPrinted": 0,
+       "glowDraws": 0,
+       "spanMeshes": 3,
+       "lampMasts": [],
+       "groundVerts": 100,
+       "groundFallenPrinted": 0,
+       "groundShadowsPrinted": 2,
+       "altitudes": {
+        "pawn": 8.4146,
+        "pawnState": 9.1463,
+        "span": 9.3293,
+        "top": 9.2927,
+        "blueprint": 9.5122,
+        "weather": 11.3415
+       },
+       "taps": [
+        {
+         "id": 24659,
+         "ourNet": 977337196,
+         "victimNet": 990812202,
+         "victimFaction": "Bookoulbah Union",
+         "outputW": 500,
+         "powerOn": true,
+         "lastStolenW": 500,
+         "stolenTotalWd": 52.6707,
+         "connected": true,
+         "connectFaction": "New Arrivals"
+        }
+       ],
+       "tapGuardRefused": 0,
+       "tapEventsRaised": 26,
+       "wind": 0.6972,
+       "plantSwayPref": true,
+       "settings": {
+        "enabled": "True",
+        "maxSpan": "20",
+        "sag": "0.06",
+        "autoLink": "True",
+        "maxStrands": "3",
+        "sway": "Auto",
+        "swayStrength": "1",
+        "swayLook": "Gust",
+        "explosionsCut": "True",
+        "kineticSway": "True",
+        "tapsEnabled": "True",
+        "tapRate": "500",
+        "tapEvents": "True",
+        "theftGoodwill": "True",
+        "theftGoodwillPerDay": "2",
+        "theftSightRange": "12",
+        "keepWiresOnGravship": "True",
+        "shockReach": "All",
+        "fallenWireShock": "True",
+        "fallenWireIgnites": "True",
+        "fallenWireKnockback": "2",
+        "wireDownAlert": "True",
+        "cutWiresOnOwnerChange": "True",
+        "dripLoops": "True",
+        "DripDepth": "0.12",
+        "DripReach": "0.45"
+       },
+       "_probeSerial": 170
+      }
+     }
+    ],
+    "anchors": [
+     24719,
+     24720
+    ],
+    "censusSwayDelta": 1,
+    "censusCutDelta": 0,
+    "spanStillUp": true,
+    "synthetic": true,
+    "kinetic": true,
+    "harmsHealth": true,
+    "spansReached": 1,
+    "settingBefore": "True",
+    "settingAfter": "True",
+    "hpBefore": [
+     30,
+     30
+    ],
+    "hpAfter": [
+     30,
+     30
+    ]
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M22b_kinetic_sway_off_does_nothing",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "schema": 1,
+    "setting": "kineticSway",
+    "enabled": false,
+    "damageSelector": "kinetic",
+    "damageDef": "Bomb",
+    "readings": [
+     {
+      "cmd": "set:kineticSway=False",
+      "reply": {
+       "success": true,
+       "cmd": "set:kineticSway=False",
+       "value": "False",
+       "_probeSerial": 174
+      }
+     },
+     {
+      "cmd": "census",
+      "reply": {
+       "success": true,
+       "cmd": "census",
+       "ticksGame": 25518,
+       "queues": {
+        "overhead": 3006,
+        "spanMat": 3006
+       },
+       "anchors": [
+        {
+         "id": 24634,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24636,
+         "def": "RM_AerialMast",
+         "x": 116,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": false,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24638,
+         "def": "RM_AerialMast",
+         "x": 110,
+         "z": 195,
+         "faction": "Bookoulbah Union",
+         "net": 915922856,
+         "compNet": 915922856,
+         "gridNet": 915922856,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [],
+         "fallen": []
+        },
+        {
+         "id": 24644,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24634,
+           "state": "Up",
+           "hp": 30
+          },
+          {
+           "other": 24636,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24724,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 135,
+         "faction": "New Arrivals",
+         "net": 1343184324,
+         "compNet": 1343184324,
+         "gridNet": 1343184324,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [
+          {
+           "other": 24725,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24725,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 135,
+         "faction": "New Arrivals",
+         "net": 1343184324,
+         "compNet": 1343184324,
+         "gridNet": 1343184324,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [
+          {
+           "other": 24724,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        }
+       ],
+       "spansUp": 3,
+       "spansCut": 0,
+       "fallenCords": 0,
+       "shockCells": 0,
+       "shockOrphans": 0,
+       "shockCellsFresh": 0,
+       "externalContacts": 0,
+       "shockCellList": [],
+       "netRepairs": 0,
+       "watchdogRuns": 49,
+       "roofCuts": 0,
+       "explosionCuts": 3,
+       "kineticSways": 1,
+       "autoLinks": 13,
+       "orphanRelinks": 2,
+       "liveWirePriced": 0,
+       "postfixAppends": 92,
+       "spanDraws": 2,
+       "swayDraws": 2,
+       "swayReason": "cpu",
+       "swayLook": "Gust",
+       "topDraws": 4,
+       "dropDraws": 0,
+       "look": "Scrapper",
+       "spanPath": "RimMandrake/GimmeSomeSlack/Strand_Jawa",
+       "spanWidth": 0.14,
+       "poleTex": {
+        "RM_AerialMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+        "RM_AerialLampMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialLampMast",
+        "RM_AerialWallBracket": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/WallBracket"
+       },
+       "hookupCablesPrinted": 0,
+       "glowDraws": 0,
+       "spanMeshes": 3,
+       "lampMasts": [],
+       "groundVerts": 100,
+       "groundFallenPrinted": 0,
+       "groundShadowsPrinted": 2,
+       "altitudes": {
+        "pawn": 8.4146,
+        "pawnState": 9.1463,
+        "span": 9.3293,
+        "top": 9.2927,
+        "blueprint": 9.5122,
+        "weather": 11.3415
+       },
+       "taps": [
+        {
+         "id": 24659,
+         "ourNet": 977337196,
+         "victimNet": 990812202,
+         "victimFaction": "Bookoulbah Union",
+         "outputW": 500,
+         "powerOn": true,
+         "lastStolenW": 500,
+         "stolenTotalWd": 52.7207,
+         "connected": true,
+         "connectFaction": "New Arrivals"
+        }
+       ],
+       "tapGuardRefused": 0,
+       "tapEventsRaised": 26,
+       "wind": 0.6969,
+       "plantSwayPref": true,
+       "settings": {
+        "enabled": "True",
+        "maxSpan": "20",
+        "sag": "0.06",
+        "autoLink": "True",
+        "maxStrands": "3",
+        "sway": "Auto",
+        "swayStrength": "1",
+        "swayLook": "Gust",
+        "explosionsCut": "True",
+        "kineticSway": "False",
+        "tapsEnabled": "True",
+        "tapRate": "500",
+        "tapEvents": "True",
+        "theftGoodwill": "True",
+        "theftGoodwillPerDay": "2",
+        "theftSightRange": "12",
+        "keepWiresOnGravship": "True",
+        "shockReach": "All",
+        "fallenWireShock": "True",
+        "fallenWireIgnites": "True",
+        "fallenWireKnockback": "2",
+        "wireDownAlert": "True",
+        "cutWiresOnOwnerChange": "True",
+        "dripLoops": "True",
+        "DripDepth": "0.12",
+        "DripReach": "0.45"
+       },
+       "_probeSerial": 175
+      }
+     },
+     {
+      "cmd": "explode:98,135,2.5,50,kinetic",
+      "reply": {
+       "success": true,
+       "cmd": "explode:98,135,2.5,50,kinetic",
+       "cuts": 0,
+       "sways": 0,
+       "damageDef": "Bomb",
+       "synthetic": true,
+       "kinetic": true,
+       "harmsHealth": true,
+       "spansReached": 1,
+       "_probeSerial": 176
+      }
+     },
+     {
+      "cmd": "census",
+      "reply": {
+       "success": true,
+       "cmd": "census",
+       "ticksGame": 25521,
+       "queues": {
+        "overhead": 3006,
+        "spanMat": 3006
+       },
+       "anchors": [
+        {
+         "id": 24634,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24636,
+         "def": "RM_AerialMast",
+         "x": 116,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": false,
+         "links": [
+          {
+           "other": 24644,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24638,
+         "def": "RM_AerialMast",
+         "x": 110,
+         "z": 195,
+         "faction": "Bookoulbah Union",
+         "net": 915922856,
+         "compNet": 915922856,
+         "gridNet": 915922856,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [],
+         "fallen": []
+        },
+        {
+         "id": 24644,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 185,
+         "faction": "New Arrivals",
+         "net": 1206425526,
+         "compNet": 1206425526,
+         "gridNet": 1206425526,
+         "netLive": true,
+         "fallenLive": true,
+         "links": [
+          {
+           "other": 24634,
+           "state": "Up",
+           "hp": 30
+          },
+          {
+           "other": 24636,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24724,
+         "def": "RM_AerialMast",
+         "x": 92,
+         "z": 135,
+         "faction": "New Arrivals",
+         "net": 1343184324,
+         "compNet": 1343184324,
+         "gridNet": 1343184324,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [
+          {
+           "other": 24725,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        },
+        {
+         "id": 24725,
+         "def": "RM_AerialMast",
+         "x": 104,
+         "z": 135,
+         "faction": "New Arrivals",
+         "net": 1343184324,
+         "compNet": 1343184324,
+         "gridNet": 1343184324,
+         "netLive": false,
+         "fallenLive": null,
+         "links": [
+          {
+           "other": 24724,
+           "state": "Up",
+           "hp": 30
+          }
+         ],
+         "fallen": []
+        }
+       ],
+       "spansUp": 3,
+       "spansCut": 0,
+       "fallenCords": 0,
+       "shockCells": 0,
+       "shockOrphans": 0,
+       "shockCellsFresh": 0,
+       "externalContacts": 0,
+       "shockCellList": [],
+       "netRepairs": 0,
+       "watchdogRuns": 49,
+       "roofCuts": 0,
+       "explosionCuts": 3,
+       "kineticSways": 1,
+       "autoLinks": 13,
+       "orphanRelinks": 2,
+       "liveWirePriced": 0,
+       "postfixAppends": 92,
+       "spanDraws": 2,
+       "swayDraws": 2,
+       "swayReason": "cpu",
+       "swayLook": "Gust",
+       "topDraws": 4,
+       "dropDraws": 0,
+       "look": "Scrapper",
+       "spanPath": "RimMandrake/GimmeSomeSlack/Strand_Jawa",
+       "spanWidth": 0.14,
+       "poleTex": {
+        "RM_AerialMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+        "RM_AerialLampMast": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialLampMast",
+        "RM_AerialWallBracket": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/WallBracket"
+       },
+       "hookupCablesPrinted": 0,
+       "glowDraws": 0,
+       "spanMeshes": 3,
+       "lampMasts": [],
+       "groundVerts": 100,
+       "groundFallenPrinted": 0,
+       "groundShadowsPrinted": 2,
+       "altitudes": {
+        "pawn": 8.4146,
+        "pawnState": 9.1463,
+        "span": 9.3293,
+        "top": 9.2927,
+        "blueprint": 9.5122,
+        "weather": 11.3415
+       },
+       "taps": [
+        {
+         "id": 24659,
+         "ourNet": 977337196,
+         "victimNet": 990812202,
+         "victimFaction": "Bookoulbah Union",
+         "outputW": 500,
+         "powerOn": true,
+         "lastStolenW": 500,
+         "stolenTotalWd": 52.7457,
+         "connected": true,
+         "connectFaction": "New Arrivals"
+        }
+       ],
+       "tapGuardRefused": 0,
+       "tapEventsRaised": 26,
+       "wind": 0.6967,
+       "plantSwayPref": true,
+       "settings": {
+        "enabled": "True",
+        "maxSpan": "20",
+        "sag": "0.06",
+        "autoLink": "True",
+        "maxStrands": "3",
+        "sway": "Auto",
+        "swayStrength": "1",
+        "swayLook": "Gust",
+        "explosionsCut": "True",
+        "kineticSway": "False",
+        "tapsEnabled": "True",
+        "tapRate": "500",
+        "tapEvents": "True",
+        "theftGoodwill": "True",
+        "theftGoodwillPerDay": "2",
+        "theftSightRange": "12",
+        "keepWiresOnGravship": "True",
+        "shockReach": "All",
+        "fallenWireShock": "True",
+        "fallenWireIgnites": "True",
+        "fallenWireKnockback": "2",
+        "wireDownAlert": "True",
+        "cutWiresOnOwnerChange": "True",
+        "dripLoops": "True",
+        "DripDepth": "0.12",
+        "DripReach": "0.45"
+       },
+       "_probeSerial": 177
+      }
+     }
+    ],
+    "anchors": [
+     24724,
+     24725
+    ],
+    "censusSwayDelta": 0,
+    "censusCutDelta": 0,
+    "spanStillUp": true,
+    "synthetic": true,
+    "kinetic": true,
+    "harmsHealth": true,
+    "spansReached": 1,
+    "settingBefore": "False",
+    "settingAfter": "False",
+    "hpBefore": [
+     30,
+     30
+    ],
+    "hpAfter": [
+     30,
+     30
+    ]
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M21e_keep_wires_on_gravship_off_setting_state",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "readback": "False",
+    "censusRead": "False",
+    "behaviourObserved": false,
+    "owed": "gravship launch keeps spans aboard: engine-only path, offline AerialSelfTest PlanRemoval"
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "M21f_keep_wires_on_gravship_on_setting_state",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "readback": "True",
+    "censusRead": "True",
+    "behaviourObserved": false,
+    "owed": "gravship launch keeps spans aboard: engine-only path, offline AerialSelfTest PlanRemoval"
+   },
+   "block": "aerial"
+  },
+  {
+   "id": "S1_pick_reaches_blueprint",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "meaning": "PASS = each picked look is the designator's style (getter patch, any game mode) and is stored on the blueprint"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S2_blueprint_frame_building",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "finishbuild": {
+     "success": true,
+     "cmd": "finishbuild",
+     "worker": "Rowan",
+     "workerHasIdeo": true,
+     "frames": 4,
+     "built": 4,
+     "errors": [],
+     "_probeSerial": 197
+    },
+    "frameStyleRestored": 0,
+    "meaning": "PASS = the engine carried each look blueprint -> frame -> building, and each mast DRAWS its look's art"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S3_god_mode",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "meaning": "PASS = god mode writes the picked look straight onto the building"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S4_copy_carries_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "copy": {
+     "success": true,
+     "cmd": "copy:24740:80,128",
+     "godMode": false,
+     "designatorStyle": "RM_AerialMast_Industrial",
+     "made": {
+      "id": 24744,
+      "def": "Blueprint_RM_AerialMast",
+      "x": 80,
+      "z": 128,
+      "rot": 0,
+      "rawStyle": "RM_AerialMast_Industrial",
+      "style": "RM_AerialMast_Industrial",
+      "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast",
+      "drawnTex": "AerialMast",
+      "kind": "blueprint"
+     },
+     "_probeSerial": 205
+    },
+    "built": "RM_AerialMast_Industrial",
+    "lastPicked": {
+     "RM_AerialMast": "Modern",
+     "RM_AerialLampMast": null,
+     "RM_AerialWallBracket": null
+    },
+    "meaning": "PASS = copying an Industrial mast builds Industrial although the button's last pick is Futuristic"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S5_reinstall_keeps_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reinstall": {
+     "success": true,
+     "cmd": "reinstall:24738:80,120",
+     "styleBefore": "RM_AerialMast_Futuristic",
+     "minifiedStyle": "RM_AerialMast_Futuristic",
+     "installBlueprint": 24748,
+     "installStyle": "RM_AerialMast_Futuristic",
+     "_probeSerial": 208
+    },
+    "after": {
+     "id": 24738,
+     "rawStyle": "RM_AerialMast_Futuristic",
+     "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMast"
+    }
+   },
+   "block": "style"
+  },
+  {
+   "id": "S8_legacy_unstyled_draws_default",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": true,
+    "legacy": {
+     "rawStyle": null,
+     "style": "RM_AerialMast_Scrapper",
+     "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast"
+    },
+    "defaultLook": "Scrapper",
+    "meaning": "PASS = an unstyled mast stores NO style (an older save is unchanged) yet draws the default look"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S8b_legacy_joined_to_styled_stores_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "verdict": "Ok",
+    "stored": "RM_AerialMast_Futuristic",
+    "partner": "RM_AerialMast_Futuristic",
+    "meaning": "PASS = strung to a styled run, an unstyled mast stores that run's look"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S6_spans_in_pole_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spans": 8,
+    "sameLook": 8,
+    "mixedLook": 0,
+    "bad": [],
+    "lookSpans": {
+     "Scrapper": {
+      "tex": "Strand_Jawa",
+      "path": "RimMandrake/GimmeSomeSlack/Strand_Jawa",
+      "width": 0.14
+     },
+     "Industrial": {
+      "tex": "Strand_BlackRubber",
+      "path": "RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_BlackRubber",
+      "width": 0.1
+     },
+     "Modern": {
+      "tex": "Strand_BlackRubber",
+      "path": "RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_BlackRubber",
+      "width": 0.095
+     },
+     "Futuristic": {
+      "tex": "Strand",
+      "path": "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand",
+      "width": 0.095
+     }
+    },
+    "meaning": "PASS = a same-look span draws that look's cable, and auto-link strung no span between two looks (stage 2)"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S9a_two_runs_two_styles",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "runs": 2,
+    "piecesChecked": 2,
+    "pieceBad": [],
+    "switchDrawn": "PowerSwitch_p8",
+    "errors": [],
+    "meaning": "PASS = each run stores its picked style on every cell (the switch adopts its Modern run) and its cords print that look"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S9b_bridge_largest_wins",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "wrong": [],
+    "switch": "PowerSwitch_Industrial",
+    "switchDrawn": "PowerSwitch_p2",
+    "message": "Joined a Modern run to a larger Industrial run (6 conduit cells): the Modern run is now Industrial.",
+    "counters": {
+     "processed": 53,
+     "adopted": 8,
+     "bridges": 10,
+     "linkBridges": 9,
+     "repainted": 13,
+     "materialised": 4,
+     "unpainted": 0,
+     "legacyKept": 0,
+     "restyles": 4,
+     "pending": 0,
+     "lampsFollowed": 3,
+     "lampsKeptOwn": 0,
+     "lampRestyles": 0,
+     "runOfVisits": 130
+    },
+    "pieceBad": [],
+    "meaning": "PASS = bridging Industrial(6) and Modern(3) with a Futuristic cell: one run, all Industrial incl. the switch, a message naming both"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S9c_split_keeps_styles",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "deconstruct": {
+     "success": true,
+     "cmd": "cdeconstruct:65,149",
+     "destroyed": "PowerConduit",
+     "_probeSerial": 229
+    },
+    "left": [
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial"
+    ],
+    "right": [
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerSwitch_Industrial"
+    ],
+    "meaning": "PASS = deconstructing the middle leaves two runs, each still Industrial"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S9d_restyle_and_materials",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "restyle": {
+     "success": true,
+     "cmd": "crestyle:67,149:Modern_Mix",
+     "changed": 7,
+     "message": "Restyled this run (7 pieces, 7 changed) to Modern: random mix of colours.",
+     "_probeSerial": 232
+    },
+    "build": {
+     "line": true,
+     "finish": {
+      "success": true,
+      "cmd": "cfinishbuild",
+      "workerHasIdeo": true,
+      "built": 4,
+      "errors": [],
+      "_probeSerial": 235
+     }
+    },
+    "rightColours": [
+     "Strand_Blue",
+     "Strand_Brown",
+     "Strand_Orange"
+    ],
+    "pieceBad": [],
+    "unprintedStrands": [],
+    "printedTex": {
+     "EndFrayed_Dead": 24,
+     "PlugTop": 8,
+     "PowerStrip_Off": 4,
+     "Strand": 376,
+     "Strand(lod)": 128,
+     "Strand_Blue": 278,
+     "Strand_Blue(lod)": 94,
+     "Strand_Brown": 236,
+     "Strand_Brown(lod)": 80,
+     "Strand_CoiledBlack": 224,
+     "Strand_CoiledBlack(lod)": 76,
+     "Strand_Orange": 338,
+     "Strand_Orange(lod)": 114,
+     "StrandShadow": 1452
+    },
+    "switchDrawn": "PowerSwitch_p4",
+    "mixPieceTex": [
+     "Strand_Orange",
+     "Strand_Blue",
+     "Strand_Brown"
+    ],
+    "spur": true,
+    "conds": {
+     "restyle": true,
+     "right": true,
+     "left": true,
+     "futuristic": true,
+     "piecesChecked": 5,
+     "mixPieces": 3,
+     "eachPieceOneColour": true,
+     "spurMix": true,
+     "mixed": true,
+     "lodMissing": []
+    },
+    "meaning": "PASS = Restyle repaints only its own run (Mix; switch Modern); each mix piece node to node is ONE colour and the run's >= 3 pieces show >= 2 colours (round 5), build mode keeps Futuristic, every piece prints its run's look and the section meshes hold every piece's strand"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S10_legacy_default_materials",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": true,
+    "rawStyles": [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    "pieces": 1,
+    "sameMaterials": 1,
+    "defaultLook": "Scrapper",
+    "defaultKey": "Scrapper",
+    "materialisedBefore": 4,
+    "materialisedAfter": 4,
+    "meaning": "PASS = an unstyled line stores nothing, processing writes nothing, and every piece chooses the SAME Material objects as the pre-stage-2 default-look set (older saves look unchanged)"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S11_lamp_master_off_vanilla",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "on": {
+     "id": 24785,
+     "def": "StandingLamp",
+     "rot": 0,
+     "x": 80,
+     "z": 155,
+     "rawStyle": "StandingLamp_Modern",
+     "look": "Modern",
+     "run": null,
+     "runLook": null,
+     "drawnPath": "RimMandrake/GimmeSomeSlack/Styles/Modern/StandingLamp",
+     "lit": false
+    },
+    "off": {
+     "id": 24785,
+     "def": "StandingLamp",
+     "rot": 0,
+     "x": 80,
+     "z": 155,
+     "rawStyle": "StandingLamp_Modern",
+     "look": "Modern",
+     "run": null,
+     "runLook": null,
+     "drawnPath": "Things/Building/Furniture/LampStanding",
+     "lit": false
+    },
+    "onAgain": {
+     "id": 24785,
+     "def": "StandingLamp",
+     "rot": 0,
+     "x": 80,
+     "z": 155,
+     "rawStyle": "StandingLamp_Modern",
+     "look": "Modern",
+     "run": null,
+     "runLook": null,
+     "drawnPath": "RimMandrake/GimmeSomeSlack/Styles/Modern/StandingLamp",
+     "lit": false
+    },
+    "placedOff": {
+     "id": 24786,
+     "def": "StandingLamp",
+     "rot": 0,
+     "x": 82,
+     "z": 155,
+     "rawStyle": "Morbid_StandingLamp",
+     "look": null,
+     "run": null,
+     "runLook": null,
+     "drawnPath": "Things/Building/BuildingStyles/Morbid/MorbidLampStanding",
+     "lit": false
+    },
+    "place": [
+     true,
+     true
+    ],
+    "meaning": "PASS = master off: the styled lamp draws vanilla art at once (style kept), master on: its look again; a lamp built while off gets no GSS style"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S12a_D1_legacy_run_one_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "looksBefore": [
+     "Scrapper"
+    ],
+    "looksAfterDefaultChange": [
+     "Industrial"
+    ],
+    "mast": true,
+    "missingCells": [
+     [],
+     []
+    ],
+    "meaning": "PASS = a styled mast built onto an unstyled run leaves ONE look on the run, and a later default change cannot split it (D1 refuted); FAIL = D1 confirmed"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S12b_D7_bulk_spawn_cost",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "visitsN": 35,
+    "visits2N": 59,
+    "ratio": 1.6857142857142857,
+    "meaning": "PASS = doubling a styled line about doubles RunOf visits (linear); ~4x = the suspected O(N^2) flood per placement (D7 confirmed)"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S12c_D5_multilink_one_frame",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "built": true,
+    "lookBefore": [
+     [
+      "Industrial",
+      "Modern"
+     ],
+     [
+      "Industrial",
+      "Modern"
+     ]
+    ],
+    "multilink": {
+     "success": true,
+     "error": null,
+     "ids": [
+      24804,
+      24807,
+      24808
+     ],
+     "linked": [
+      [
+       24804,
+       24807
+      ],
+      [
+       24807,
+       24808
+      ]
+     ],
+     "pendingBefore": 0,
+     "pendingAfter": 2
+    },
+    "planPairs": [
+     [
+      24813,
+      24814
+     ],
+     [
+      24810,
+      24813
+     ]
+    ],
+    "controlVerdicts": [
+     "Ok",
+     "Ok"
+    ],
+    "looksMulti": [
+     "Industrial"
+    ],
+    "looksControl": [
+     "Industrial"
+    ],
+    "runsMulti": [
+     24804
+    ],
+    "runsControl": [
+     24810
+    ],
+    "meaning": "PASS = linking >= 3 anchors of two runs in ONE call leaves the joined run ONE look, the same as linking the planned pairs one per cprocess (D5 refuted); FAIL = two looks on one run or a different winner (D5 confirmed)"
+   },
+   "block": "style"
+  },
+  {
+   "id": "S12e_batched_links_merge",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "built": true,
+    "planPairs": [
+     [
+      24816,
+      24823
+     ],
+     [
+      24822,
+      24823
+     ]
+    ],
+    "linked": [
+     [
+      24816,
+      24823
+     ],
+     [
+      24822,
+      24823
+     ]
+    ],
+    "looksBefore": [
+     "Industrial",
+     "Modern"
+    ],
+    "looksAfter": [
+     "Industrial"
+    ],
+    "runs": [
+     24816
+    ],
+    "meaning": "PASS = two spans strung in one call onto an already-joined pair leave ONE look on the run"
+   },
+   "block": "style"
+  },
+  {
+   "id": "SL1_save_landed_new_file_only",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "new": [
+     "RM_gss_proof_20261124044815.rws"
+    ],
+    "changed": [],
+    "gone": [],
+    "size": [
+     6279410,
+     1795524511
+    ],
+    "tool": true
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "WD_save_before_cut_refused",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "uncutScene": [
+     "the lamp at (72, 213) is not lit",
+     "the lamp at (78, 222) is not lit"
+    ],
+    "refused": [
+     "no cut span",
+     "no live and dead fallen half",
+     "no live and dead floor end beside the cut cell"
+    ],
+    "cutLinksInSave": [
+     0,
+     4
+    ]
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "SL2_save_names_no_class_of_ours",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "counts": {
+     "GimmeSomeSlack": 0,
+     "RM_MapComponent_Aerial": 0,
+     "RM_MapComponent_CordGraph": 0,
+     "MessyConduit": 0,
+     "restringJobDriver_allowed": 0
+    },
+    "first": []
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "SL3_after_load_census_equal",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "differs": {},
+    "emptyBefore": [],
+    "loadSeconds": 2,
+    "relaidEdges": 0,
+    "edges": 16,
+    "sizes": {
+     "aerialLinks": 11,
+     "aerialFallen": 4,
+     "masts": 19,
+     "runCells": 42
+    },
+    "spawned": "ConduitTransparent"
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "WD_reload_true_to_grid",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "refused": [
+     "no live and dead floor end beside the cut cell"
+    ]
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "WD_reload_live_dead_ends_equal",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "refused": [
+     "no live and dead floor end beside the cut cell"
+    ]
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "S12d_D4_pending_queue_save",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "built": true,
+    "csavenow": {
+     "success": true,
+     "error": null,
+     "pendingAtSave": 1,
+     "saved": true
+    },
+    "liveAfterSave": {
+     "ctrl": [
+      "Industrial"
+     ],
+     "ctrlCells": 4,
+     "staged": [
+      "Industrial"
+     ],
+     "stagedCells": 4,
+     "pending": 0
+    },
+    "afterLoad": {
+     "ctrl": [
+      "Industrial"
+     ],
+     "ctrlCells": 4,
+     "staged": [
+      "Industrial"
+     ],
+     "stagedCells": 4,
+     "pending": 0
+    },
+    "meaning": "PASS = a member saved while still in the run rule's pending queue reads, after reload, ONE look on its run and the same looks as the control processed before the save (D4 refuted); FAIL = the pending resolution was lost (D4 confirmed)"
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "PT_daily_call_unseen_costs_nothing",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "moved": {},
+    "charged": 0,
+    "armed": {
+     "ok": true,
+     "reply": {
+      "success": true,
+      "before": "60",
+      "after": "60000",
+      "message": null,
+      "error": null
+     }
+    },
+    "step": null,
+    "caught": 0,
+    "victim": "OutlanderCivil/Andia",
+    "perDay": 2,
+    "stolenW": 500.0,
+    "cleared": true
+   },
+   "block": "tap_goodwill"
+  },
+  {
+   "id": "PT_daily_call_seen_costs_goodwill",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "moved": {
+     "OutlanderCivil/Andia": [
+      0,
+      -2
+     ]
+    },
+    "charged": -2,
+    "armed": {
+     "ok": true,
+     "reply": {
+      "success": true,
+      "before": "95",
+      "after": "60000",
+      "message": null,
+      "error": null
+     }
+    },
+    "step": null,
+    "caught": 0,
+    "victim": "OutlanderCivil/Andia",
+    "perDay": 2,
+    "stolenW": 500.0,
+    "seenOnce": true,
+    "witnesses": [
+     "Human30989",
+     "Human30993"
+    ],
+    "witnessesInSight": [
+     "Human30989",
+     "Human30993"
+    ],
+    "lord": {
+     "success": true,
+     "message": null,
+     "error": null
+    }
+   },
+   "block": "tap_goodwill"
+  },
+  {
+   "id": "PT_daily_call_removed_costs_nothing",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "moved": {},
+    "charged": 0,
+    "armed": {
+     "ok": true,
+     "reply": {
+      "success": true,
+      "before": "145",
+      "after": "60000",
+      "message": null,
+      "error": null
+     }
+    },
+    "step": [],
+    "caught": 0,
+    "victim": "OutlanderCivil/Andia",
+    "perDay": 2,
+    "stolenW": 500.0,
+    "clampLeft": []
+   },
+   "block": "tap_goodwill"
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errors": [],
+    "throwers": [],
+    "gssFrames": [],
+    "newWarnings": 0,
+    "siteClearErrorsExcluded": 0,
+    "donorMapInitErrorsExcluded": 0,
+    "controlNoiseExcluded": 0,
+    "controlNoiseThrowers": [],
+    "foreignSourceExcluded": 0,
+    "foreignSources": [],
+    "sinceSequence": 335,
+    "readBack": 0,
+    "tap": {
+     "polls": 181,
+     "lost": 0,
+     "kept": 0
+    }
+   },
+   "block": "session"
+  },
+  {
+   "id": "SC_statics_clear_between_games",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": {
+     "success": true,
+     "cmd": "statics",
+     "resets": 16,
+     "taps": 1,
+     "conduitPick": "Industrial",
+     "skipReseed": false
+    },
+    "after": {
+     "success": true,
+     "cmd": "statics",
+     "resets": 17,
+     "taps": 0,
+     "conduitPick": "",
+     "skipReseed": false
+    }
+   },
+   "block": "statics"
+  }
+ ],
+ "blocks": {
+  "preflight": {
+   "wall_s": 52.1,
+   "rows": 3,
+   "raised": null,
+   "nonColonistsDestroyedFirst": null
+  },
+  "aerial": {
+   "wall_s": 108.1,
+   "rows": 37,
+   "raised": null,
+   "nonColonistsDestroyedFirst": 0
+  },
+  "style": {
+   "wall_s": 40.5,
+   "rows": 19,
+   "raised": null,
+   "nonColonistsDestroyedFirst": 3
+  },
+  "save_load": {
+   "wall_s": 25.9,
+   "rows": 6,
+   "raised": null,
+   "nonColonistsDestroyedFirst": 0
+  },
+  "d4_save": {
+   "wall_s": 10.3,
+   "rows": 0,
+   "raised": null,
+   "nonColonistsDestroyedFirst": 0
+  },
+  "tap_goodwill": {
+   "wall_s": 10.3,
+   "rows": 3,
+   "raised": null,
+   "nonColonistsDestroyedFirst": 0
+  },
+  "log_budget": {
+   "wall_s": 0.1,
+   "rows": 1,
+   "raised": null,
+   "nonColonistsDestroyedFirst": null
+  },
+  "statics": {
+   "wall_s": 8.4,
+   "rows": 1,
+   "raised": null,
+   "nonColonistsDestroyedFirst": 0
+  }
+ },
+ "doc": "design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md",
+ "offline": null,
+ "bridge_run": "9ce16e989a10",
+ "run_identity": {
+  "run_id": "20261124T044435",
+  "job": "proof_all",
+  "host_os": "nt",
+  "started": "2026-11-24T04:44:35",
+  "git": {
+   "source": "git",
+   "sha": "b9ea7132512a1ed5dd199aa139cce5a62dec6804"
+  },
+  "deploy_start": {
+   "mod": "GimmeSomeSlack",
+   "at": "2026-11-24T04:44:35",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/GimmeSomeSlack",
+   "src_hash": "0dcb8bfe65118e05",
+   "deployed_hash": "0dcb8bfe65118e05",
+   "n_src": 378,
+   "n_deployed": 378,
+   "n_held": 162,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeGimmeSomeSlack.dll",
+     "sha": "cee38352a687031b",
+     "srchash": "# project: RimMandrake/GimmeSomeSlack/Source/RimMandrake_GimmeSo"
+    }
+   ],
+   "src_dirty": true
+  },
+  "settings_files": {
+   "dir": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Config",
+   "stale_sidecar_put_back": [],
+   "found": {
+    "Mod_GimmeSomeSlack_AerialLinesMod.xml": "(no <style>: the shipped default)",
+    "Mod_GimmeSomeSlack_FireHosesMod.xml": "(no <style>: the shipped default)",
+    "Mod_GimmeSomeSlack_GimmeSomeSlackMod.xml": "(no <style>: the shipped default)"
+   },
+   "at_end": {
+    "Mod_GimmeSomeSlack_AerialLinesMod.xml": "(no <style>: the shipped default)",
+    "Mod_GimmeSomeSlack_FireHosesMod.xml": "(no <style>: the shipped default)",
+    "Mod_GimmeSomeSlack_GimmeSomeSlackMod.xml": "(no <style>: the shipped default)"
+   },
+   "rewritten": [],
+   "after": {
+    "Mod_GimmeSomeSlack_AerialLinesMod.xml": "(no <style>: the shipped default)",
+    "Mod_GimmeSomeSlack_FireHosesMod.xml": "(no <style>: the shipped default)",
+    "Mod_GimmeSomeSlack_GimmeSomeSlackMod.xml": "(no <style>: the shipped default)"
+   }
+  },
+  "deploy_end": {
+   "mod": "GimmeSomeSlack",
+   "at": "2026-11-24T04:49:11",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/GimmeSomeSlack",
+   "src_hash": "0dcb8bfe65118e05",
+   "deployed_hash": "0dcb8bfe65118e05",
+   "n_src": 378,
+   "n_deployed": 378,
+   "n_held": 162,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeGimmeSomeSlack.dll",
+     "sha": "cee38352a687031b",
+     "srchash": "# project: RimMandrake/GimmeSomeSlack/Source/RimMandrake_GimmeSo"
+    }
+   ],
+   "src_dirty": true
+  }
+ },
+ "site_save": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v3",
+  "utc": "2026-11-24T12:44:54Z",
+  "problems": [],
+  "load_s": 5.7,
+  "quietMap": {
+   "profile": "quiet_site",
+   "suite": "isolated",
+   "row": "test_site_saves_load_calm",
+   "topic": null,
+   "controls": [
+    {
+     "name": "threat_structures_cleared",
+     "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+     "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+     "readBack": {
+      "removed": [],
+      "threatsAfter": 0,
+      "kept": 0,
+      "errors": []
+     }
+    },
+    {
+     "name": "hostiles_removed",
+     "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+     "hides": "combat interactions with the mod's things",
+     "readBack": {
+      "acted": 0,
+      "residue": []
+     }
+    },
+    {
+     "name": "proximity_letters_sent",
+     "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+     "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+     "readBack": {
+      "letters": [
+       [
+        "VoidMonolith",
+        "Fallen monolith",
+        true
+       ]
+      ],
+      "unsentAfter": 0
+     }
+    },
+    {
+     "name": "modal_broker",
+     "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+     "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+     "readBack": {
+      "handled": [],
+      "unknown": []
+     }
+    }
+   ],
+   "notSuppressed": [
+    "active quests and their parts (never ended by default: ending a quest changes the world)",
+    "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+    "existing game conditions, map/world/game components and mod tickers",
+    "hives and other pawn-spawning structures, births, egg hatching, breeders",
+    "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+    "weather transitions, fires, existing hostile behaviour"
+   ],
+   "keepDefs": [],
+   "events": [],
+   "problems": [],
+   "verify": null,
+   "arrivals": [],
+   "note": "enableStoryteller is not saved with the game: re-apply after any load"
+  },
+  "sky": {
+   "weather": [
+    {
+     "after": "Clear",
+     "ok": true
+    },
+    {
+     "after": "Clear",
+     "ok": true
+    }
+   ],
+   "extinguished": 0,
+   "strayFires": 0,
+   "verified": true,
+   "error": null
+  },
+  "check": {
+   "site": "calm",
+   "utc": "2026-11-24T12:45:05Z",
+   "problems": [],
+   "map": {
+    "tile": 112579,
+    "mapId": 0,
+    "sizeX": 250,
+    "sizeZ": 250,
+    "mapBiome": "AridShrubland",
+    "outdoorTempNow": 13.9428368
+   },
+   "foggedCells": 0,
+   "triggers": 0,
+   "danger": [],
+   "ruins": 0,
+   "hostiles": [],
+   "threatStructures": [],
+   "fires": 0,
+   "weather": {
+    "current": "Clear",
+    "rainRate": 0.0
+   },
+   "colonists": [
+    [
+     "Human475",
+     false
+    ],
+    [
+     "Human478",
+     false
+    ],
+    [
+     "Human483",
+     false
+    ]
+   ],
+   "verified": true
+  },
+  "ready_s": 12.6,
+  "verified": true
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "8df273a92998c0f56b1814631b132c7a4eb749a638a0c53f18a3ffc84d77d414",
+  "assembly_matches": 1,
+  "assembly_sha256": "cee38352a687031b3449be7cab4690261fc3f383f1046e977c8792f07a3ad7dc",
+  "tier": {
+   "name": "gimmesomeslack",
+   "written_for": "gimmesomeslack",
+   "source": "ModsConfig.xml activeMods",
+   "active": 12,
+   "active_equals_running": true,
+   "matched_list": "gimmesomeslack"
+  }
+ },
+ "mod_hash": "f067c1ab87c5cd2bcf8decec6aae1aa0e4b1e5987731e78743ad6f79532611d7",
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1795524328843",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "control_noise_calm": {
+  "calm": true,
+  "fogTriggers": {
+   "found": 0,
+   "byDef": {},
+   "destroyed": 0,
+   "left": 0,
+   "verified": true,
+   "error": null
+  },
+  "nonColonistsDestroyed": 0,
+  "hostileBuildingsDestroyed": [],
+  "mapFog": {
+   "hostilesBefore": [],
+   "foggedBefore": 0,
+   "foggedNow": 0,
+   "releasedByUnfog": [],
+   "sweepPasses": 0,
+   "hostilesAfter": [],
+   "verified": true,
+   "error": null
+  }
+ },
+ "control_noise": {
+  "save": "RM_gss_control_20261124044530.rws",
+  "loaded": true,
+  "loadSeconds": 2,
+  "errors": 0,
+  "distinct": []
+ },
+ "quiet_site": {
+  "profile": "quiet_site",
+  "suite": "isolated",
+  "row": "gss_proof_all",
+  "topic": null,
+  "controls": [
+   {
+    "name": "storyteller_off",
+    "what": "DebugSettings.enableStoryteller=false, threatScale 0, no big threats, incident queue cleared",
+    "hides": "storyteller-fired incidents incl. the mod's own IncidentDefs and conditions (seasonal flooding, cinderfall), pacing, threat-point scaling",
+    "readBack": {
+     "enableStoryteller": false,
+     "enableRandomMentalStates": false,
+     "enableRandomDiseases": false,
+     "logRaidInfo": true,
+     "threatScale": 0.0,
+     "allowBigThreats": false
+    }
+   },
+   {
+    "name": "random_events_off",
+    "what": "random mental states and diseases off",
+    "hides": "mood-break and disease interactions with the mod",
+    "readBack": "read back in storyteller_off readBack"
+   },
+   {
+    "name": "wild_spawner_off",
+    "what": "wild-animal replenishment blocked (jawa/wild_spawner_block, dead-man)",
+    "hides": "the mod's effect on ongoing wildlife arrival; mapgen wildlife is untouched",
+    "readBack": "blocked (read back)"
+   },
+   {
+    "name": "threat_structures_cleared",
+    "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+    "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+    "readBack": {
+     "removed": [],
+     "threatsAfter": 0,
+     "kept": 0,
+     "errors": []
+    }
+   },
+   {
+    "name": "hostiles_removed",
+    "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+    "hides": "combat interactions with the mod's things",
+    "readBack": {
+     "acted": 0,
+     "residue": []
+    }
+   },
+   {
+    "name": "toxic_sources_cleared",
+    "what": "toxic sources removed at setup and read back: toxic game conditions ended, ToxGas cleared, POLLUTED terrain within TOXIC_SCAN_RADIUS of every colonist repainted to its clean counterpart (Biotech pollution gives ToxicBuildup to a pawn standing on it); the receipt also counts stacked 'Forced weather' controllers",
+    "hides": "the mod's interaction with pollution, toxic fallout and tox gas near the colonists",
+    "readBack": {
+     "conditionsEnded": [],
+     "gasCleared": [
+      "ToxGas"
+     ],
+     "pollutedRepainted": 0,
+     "pollutedLeft": 0,
+     "stackedWeatherControllers": 2,
+     "unavailable": []
+    }
+   },
+   {
+    "name": "proximity_letters_sent",
+    "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+    "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+    "readBack": {
+     "letters": [
+      [
+       "VoidMonolith",
+       "Fallen monolith",
+       true
+      ]
+     ],
+     "unsentAfter": 0
+    }
+   },
+   {
+    "name": "queue_drain",
+    "what": "named queued incidents removed at every drain (default StrangerInBlackJoin: the colony-loss rescue is QUEUED by StorytellerComp_Triggered on the death and fires 180 ticks later through IncidentQueueTick, which runs even with the storyteller off)",
+    "hides": "the end-of-colony rescue; a row ABOUT that rescue must not use this control",
+    "readBack": {
+     "defs": [
+      "StrangerInBlackJoin",
+      "SeasonalFlooding"
+     ],
+     "atApply": []
+    }
+   },
+   {
+    "name": "modal_broker",
+    "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+    "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+    "readBack": {
+     "handled": [],
+     "unknown": []
+    }
+   }
+  ],
+  "notSuppressed": [
+   "active quests and their parts (never ended by default: ending a quest changes the world)",
+   "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+   "existing game conditions, map/world/game components and mod tickers",
+   "hives and other pawn-spawning structures, births, egg hatching, breeders",
+   "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+   "weather transitions, fires, existing hostile behaviour"
+  ],
+  "keepDefs": [],
+  "events": [],
+  "problems": [],
+  "verify": null,
+  "arrivals": [],
+  "note": "enableStoryteller is not saved with the game: re-apply after any load"
+ },
+ "wall_s": 283.8,
+ "out": "D:\\ClaudeWork\\rimmandrake\\scratch\\gss_020_v3\\runB.json",
+ "site_notes": [
+  {
+   "id": "A0_scene_built",
+   "detail": {
+    "walls": 45,
+    "roof": true,
+    "battery": "Battery24633",
+    "stored": 600.0,
+    "masts": 3,
+    "lamp": 1,
+    "hostileMast": 1,
+    "anchors": [
+     [
+      92,
+      185
+     ],
+     [
+      104,
+      185
+     ],
+     [
+      110,
+      195
+     ],
+     [
+      116,
+      185
+     ]
+    ]
+   }
+  },
+  {
+   "id": "M20_flip_scene_built",
+   "detail": {
+    "tipCell": [
+     98,
+     134
+    ],
+    "cuts": 1
+   }
+  }
+ ],
+ "certifiable": false,
+ "huge_plants_cleared": {
+  "aerial": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "style": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "save_load": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "d4_save": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "tap_goodwill": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "statics": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  }
+ },
+ "save": "RM_gss_proof_20261124044815.rws",
+ "save_load_notes": {
+  "aerialCut": {
+   "success": true,
+   "cmd": "cut:24644,24636",
+   "done": true,
+   "_probeSerial": 305
+  },
+  "wireDownCut": true
+ },
+ "save_d4": "RM_gss_proof_20261124044842_d4.rws",
+ "d4_save_notes": [
+  {
+   "id": "S7_save_load_styles",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "anchors": 19,
+    "differs": [],
+    "loadSeconds": 2
+   }
+  }
+ ],
+ "quiet_site_restore": null,
+ "situational": {
+  "bland": true,
+  "companion": true,
+  "surprises": [],
+  "source": "run end, no Watch"
+ }
+}
