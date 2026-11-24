@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":37168,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=bf5d4051acd8ac7f9caa7257fca7aa53be03b30b64e8ca60d8b0ac492b1feeac -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":37869,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=e97f9676641be78dcb846fbda79d3897c6db75612db2ce5ae8585ac3660da4c8 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 685 events in 20 shards · reducer 1
+version 0.1.0 · stage in_game · 687 events in 20 shards · reducer 1
 holder lease run-1795510833, token 24, last active 2026-11-24T13:03:16Z
-holder session e33fe682-2992-493a-b294-ef9eeaf3bf6b, context 281787 of ceiling 400000
+holder session e33fe682-2992-493a-b294-ef9eeaf3bf6b, context 635144 of ceiling 400000 — ROTATE DUE
 
 ## Last checkpoint (HOLDER.run-1795510833, 2026-11-24T13:03:16Z)
 - done: Visit 6: 56 of 56 PASS on e089dc2573; fixes 1acc05e0ed, d61b1e2b31, e089dc2573; walk save EK_VISIT6_WALK_20261124_C
@@ -237,6 +237,6 @@ spend recorded: USD 178.61, 171672717 tokens
 - tests: 106, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 1 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 39 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 685 events (views/history.md; never read whole)
+- the full history: 687 events (views/history.md; never read whole)
 
-cursor: t=2026-11-24T13:03:16Z.1795525396675743146 (modledger.py since --mod ExplosiveKnockback t=2026-11-24T13:03:16Z.1795525396675743146 prints what changed after this packet)
+cursor: t=2026-11-24T13:10:39Z.1795525839232729607 (modledger.py since --mod ExplosiveKnockback t=2026-11-24T13:10:39Z.1795525839232729607 prints what changed after this packet)
