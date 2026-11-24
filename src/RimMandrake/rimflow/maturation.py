@@ -77,6 +77,7 @@ import scene_size as SZ          # noqa: E402  an oversized live scene carries i
 import live_kinds as LK          # noqa: E402  the kinds of a live scene and the outcomes of its runs
 import refusal_contract as RC   # noqa: E402
 import judge_certificate as JC   # noqa: E402  the pre-judgement certificate (PRE_JUDGEMENT_CERTIFICATE)
+import own_cgroup               # noqa: E402  a history read is file cache outside the tick's memory limit
 import build_match as BM         # noqa: E402  the Stage 6 exit's build match (owner, 2026-11-17)
 
 UNM = "UNMEASURED"
@@ -5427,8 +5428,10 @@ def unrun_owed(root, mod, tt=None, carried=None, git=None):
 def _git_log(root, since, until, path):
     """-> [(commit, [files])] oldest first, committed in (since, until] under path; raises OSError when git cannot say."""
     try:
-        r = subprocess.run(["git", "-C", root, "log", "--reverse", "--no-merges", "--format=%x00%H %ct", "--name-only", "--",
-                            path], capture_output=True, text=True, timeout=120)
+        # --since ends git's walk: the whole history of a path reads 900 MB of pack. A day early, for commit clocks that
+        # run back; the exact line is drawn below.
+        r = own_cgroup.run(["git", "-C", root, "log", "--reverse", "--no-merges", "--format=%x00%H %ct", "--name-only",
+                            "--since=%d" % (int(since) - 86400), "--", path], capture_output=True, text=True, timeout=120)
     except subprocess.SubprocessError as e:
         raise OSError("git cannot list the commits of %s: %s" % (path, e)) from e
     if r.returncode:

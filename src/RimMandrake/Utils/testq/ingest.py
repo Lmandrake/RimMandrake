@@ -59,6 +59,7 @@ sys.path.append(os.path.join(HERE, "..", "..", "rimflow"))
 import failure_class as FC  # noqa: E402
 import fault_monitor as FM  # noqa: E402
 import invalid_class as IC  # noqa: E402
+import own_cgroup  # noqa: E402  a ledger write outside a timed caller's memory limit
 import retest as R  # noqa: E402
 import schema as S  # noqa: E402
 import testq as T  # noqa: E402
@@ -78,7 +79,7 @@ def shard_path():
 
 def rimflow(*args):
     env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO)
-    r = subprocess.run([sys.executable, CLI] + list(args), env=env, capture_output=True, text=True, timeout=120)
+    r = own_cgroup.run([sys.executable, CLI] + list(args), env=env, capture_output=True, text=True, timeout=120)
     return r.returncode, (r.stdout + r.stderr).strip()
 
 

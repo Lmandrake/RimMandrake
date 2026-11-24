@@ -178,6 +178,67 @@ def t_clone_and_landing_children_use_it():
         OC.run = keep
 
 
+def t_history_reads_and_the_filing_use_it():
+    base = os.environ.get("OWN_CGROUP_BASE_DIR")
+    if base:
+        sys.path.insert(0, base)
+    import importlib.util
+    import build_match as BM
+    import maturation as M
+    import maturation_rescue as MR
+    ing_py = os.path.join(base or HERE, "ingest.py") if base else os.path.join(HERE, "..", "Utils", "testq", "ingest.py")
+    sys.path.insert(0, os.path.join(HERE, "..", "Utils", "testq"))
+    spec = importlib.util.spec_from_file_location("own_cgroup_ingest", ing_py)
+    ing = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ing)
+    root = os.path.join(TMP, "hist")
+    os.makedirs(os.path.join(root, "src", "RimMandrake", "M"))
+    subprocess.run(["git", "init", "-q", root], check=True)
+    DAY, T0 = 86400, 1790000000
+
+    def commit(n, t):
+        with open(os.path.join(root, "src", "RimMandrake", "M", "a.xml"), "w") as f:
+            f.write("<a>%d</a>\n" % n)
+        env = dict(os.environ, GIT_COMMITTER_DATE="%d +0000" % t, GIT_AUTHOR_DATE="%d +0000" % t)
+        subprocess.run(["git", "-C", root, "add", "-A"], check=True)
+        subprocess.run(["git", "-C", root, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", str(n)], env=env, check=True)
+        return subprocess.run(["git", "-C", root, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    for i in range(30):         # an old history: what the read must not walk
+        commit(i, T0 - (60 - i) * DAY)
+    at_line = commit(100, T0)
+    a, skew, b = commit(101, T0 + 60), commit(102, T0 - 3600), commit(103, T0 + 120)      # skew: a clock an hour back
+    late = commit(104, T0 + 999)
+    seen, keep = [], OC.run
+
+    def spy(argv, **kw):
+        r = subprocess.run(argv, **kw)
+        seen.append((list(argv), r.stdout))
+        return r
+    OC.run = spy
+    try:
+        got = M._git_log(root, T0, T0 + 120, "src/RimMandrake/M/")
+        ok("history-reads-and-the-filing-use-it: the window is the same as a whole walk's",
+           got == [(c, ["src/RimMandrake/M/a.xml"]) for c in (a, b)], (got, at_line, skew, late))
+        ok("history-reads-and-the-filing-use-it: _git_log goes through run", len(seen) == 1, seen)
+        ok("history-reads-and-the-filing-use-it: git does not walk the old history",
+           len(seen) == 1 and 2 <= seen[0][1].count("\0") <= 5, [x[1].count("\0") for x in seen])
+        del seen[:]
+        n = MR.read_nudges(root, "M", T0)
+        ok("history-reads-and-the-filing-use-it: read_nudges goes through run", len(seen) == 1 and len(n) >= 1, (seen, n))
+        del seen[:]
+        s = BM.source_sha(root, "M")
+        ok("history-reads-and-the-filing-use-it: source_sha goes through run", len(seen) == 1 and s and late.startswith(s), (seen, s))
+        del seen[:]
+        rc, out = ing.rimflow("--help")
+        ok("history-reads-and-the-filing-use-it: the ledger write goes through run, and answers",
+           len(seen) == 1 and rc == 0 and "usage" in out, (len(seen), rc, out[:80]))
+        del seen[:]
+        MR.read_nudges(root, "M", T0, runner=lambda *x, **k: subprocess.CompletedProcess(x, 0, "", ""))
+        ok("history-reads-and-the-filing-use-it: a test's own runner is used as given", not seen, seen)
+    finally:
+        OC.run = keep
+
+
 def tick_lines(peak, wall, launched=None, n=0):
     u, t = TPA.UNIT, "2026-11-24T04:%02d:%02d-08:00 A" % (n // 60, n % 60)
     out = ["%s systemd[1]: Starting %s - x..." % (t, u)]
@@ -211,6 +272,7 @@ def main():
     t_outside_a_service_runs_plain()
     t_scope_refused_runs_plain()
     t_clone_and_landing_children_use_it()
+    t_history_reads_and_the_filing_use_it()
     t_outcome_check()
     shutil.rmtree(TMP, ignore_errors=True)
     print("%d of %d checks failed" % (len(FAILS), len(SEEN)))

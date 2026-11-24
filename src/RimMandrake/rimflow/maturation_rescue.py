@@ -276,6 +276,9 @@ def read_unrun(tt, newest):
 
 
 def _git(root, args, runner=subprocess.run):
+    if runner is subprocess.run:    # log -p of a mod's fourteen days reads 350 to 650 MB of pack
+        import own_cgroup
+        runner = own_cgroup.run
     r = runner(["git", "-C", root] + args, capture_output=True, text=True, timeout=120)
     return r.stdout if r.returncode == 0 else ""
 

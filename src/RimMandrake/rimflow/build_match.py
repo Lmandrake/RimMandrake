@@ -57,6 +57,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 import live_kinds as LK
+import own_cgroup
 import rerun_relation as RR
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -287,7 +288,7 @@ def _mod_folder(root, mod, mods_dir):
 
 def source_sha(root, mod):
     try:
-        r = subprocess.run(["git", "-C", root, "log", "-1", "--format=%h", "--", "src/RimMandrake/%s" % mod],
+        r = own_cgroup.run(["git", "-C", root, "log", "-1", "--format=%h", "--", "src/RimMandrake/%s" % mod],
                            capture_output=True, text=True, timeout=60)
         return r.stdout.strip() or None
     except (OSError, subprocess.SubprocessError):
