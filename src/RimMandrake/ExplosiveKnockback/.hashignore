@@ -5,3 +5,4 @@ validation.py
 knockback_runner.py
 proof_build_gate.py
 proof
+.hashignore
