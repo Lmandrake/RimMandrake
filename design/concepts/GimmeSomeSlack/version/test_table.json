@@ -3097,14 +3097,14 @@
     "ran": false,
     "why": "live: offline-only run; entry exists in the code"
    },
+   "cheaper_why": "The rows read one site staged once (a few ticks, the small list). The offline T_WALL_LAMP_LOOKS_OFFLINE reads the pixels, the def and the rule, but not what the running Graphic class hands the renderer; the points-out row reads that (drawn picture, mirror, offset) from the same cstyles answer the other rows read, at no extra staging. A scene of its own would stage the same wall and lamps again.",
    "testq": {
     "check": {
      "tier": "gimmesomeslack",
      "build": "release"
     },
     "by": "testq_blocks.py"
-   },
-   "cheaper_why": "The rows read one site staged once (a few ticks, the small list). The offline T_WALL_LAMP_LOOKS_OFFLINE reads the pixels, the def and the rule, but not what the running Graphic class hands the renderer; the points-out row reads that (drawn picture, mirror, offset) from the same cstyles answer the other rows read, at no extra staging. A scene of its own would stage the same wall and lamps again."
+   }
   },
   "LOOK_STAGE8": {
    "id": "LOOK_STAGE8",
@@ -8785,6 +8785,13 @@
     "ran": false,
     "why": "live: offline-only run",
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   },
+   "testq": {
+    "check": {
+     "tier": "gimmesomeslack",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
    }
   }
  },
