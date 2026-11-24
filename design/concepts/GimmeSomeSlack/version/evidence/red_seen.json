@@ -180,5 +180,18 @@
   "patch_sha": "a32014f05cd7cde8",
   "rc": 1,
   "test_blob": "2a515be5bda3bce53f48ef941c42788ed3d26bd7"
+ },
+ "T_WALL_PLUG_STRAIGHT_OFFLINE": {
+  "at": "2026-11-24T00:50:23Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --wallplugs-only",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallPlugChecks.cs",
+  "last": "2/5 checks passed (wall plugs only)",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\nindex fe75a4561f..31dda4029b 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -3742,7 +3742,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                     // and where its ease turns sharp past the plug: the seat's own slope keeps Unkink off it)\n                     int EndKinks(List<V2> q) => CordShapeAudit.Kinks(q).Count(a => (atStart ? a : Geo.Length(q) - a) < KinkedEnd && CordShapeAudit.KinkWhy(w, piece.EndA, piece.EndB, q, a) == \"unforced\");\n                     int kinked = st != null && (s.DiveA || s.DiveB) && (IsWallFitting(st) || st.Kind == \"strip plug\") ? EndKinks(s.Pts) : 0;\n-                    if (dive && st != null && kinked == 0 && OnStub(s.Pts, atStart, st, IsWallFitting(st) ? FitTol(st) : CordEndAudit.SlopeMaxDeg)) continue;\n+                    if (dive && st != null && OnStub(s.Pts, atStart, st, CordEndAudit.SlopeMaxDeg)) continue;\n                     // (a cord that comes back over its own box after leaving it is laid again from past where it does)\n                     if (st == null || (kinked == 0 && OnStub(s.Pts, atStart, st, FitTol(st)) && s.Pts.All(ownClear))) continue;\n                     double runLen = StubRun(atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], st);\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
+  ],
+  "patch_sha": "f0938e7752cf5aac",
+  "rc": 1,
+  "test_blob": "f19064511f699e3cf986102e3aa22a593e0523c8"
  }
 }

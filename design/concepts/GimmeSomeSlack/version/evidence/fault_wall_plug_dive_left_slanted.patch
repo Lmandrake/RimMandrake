@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs
+index fe75a4561f..31dda4029b 100644
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs
+@@ -3742,7 +3742,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
+                     // and where its ease turns sharp past the plug: the seat's own slope keeps Unkink off it)
+                     int EndKinks(List<V2> q) => CordShapeAudit.Kinks(q).Count(a => (atStart ? a : Geo.Length(q) - a) < KinkedEnd && CordShapeAudit.KinkWhy(w, piece.EndA, piece.EndB, q, a) == "unforced");
+                     int kinked = st != null && (s.DiveA || s.DiveB) && (IsWallFitting(st) || st.Kind == "strip plug") ? EndKinks(s.Pts) : 0;
+-                    if (dive && st != null && kinked == 0 && OnStub(s.Pts, atStart, st, IsWallFitting(st) ? FitTol(st) : CordEndAudit.SlopeMaxDeg)) continue;
++                    if (dive && st != null && OnStub(s.Pts, atStart, st, CordEndAudit.SlopeMaxDeg)) continue;
+                     // (a cord that comes back over its own box after leaving it is laid again from past where it does)
+                     if (st == null || (kinked == 0 && OnStub(s.Pts, atStart, st, FitTol(st)) && s.Pts.All(ownClear))) continue;
+                     double runLen = StubRun(atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], st);
