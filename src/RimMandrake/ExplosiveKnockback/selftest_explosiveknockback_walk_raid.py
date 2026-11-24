@@ -194,6 +194,10 @@ class Fake:
         if tool == "jawa/time_clock":
             if w.get("speed", 0) > 0:
                 w["tick"] += 30                     # a running clock moves between reads
+            if w.get("late"):
+                w["late"] -= 1
+                if not w["late"]:
+                    self.tick()
             return {"success": True, "ticksGame": w["tick"]}
         if tool == "jawa/list_pawns":
             x, z, ww, hh = (int(v) for v in kw["rect"].split(","))
@@ -298,6 +302,8 @@ class Fake:
                 self.w["loaded_pause"] = 2
             if self.brk.get("step_cut") and "MIDAIR" in kw["saveName"]:
                 self.w["cut"] = self.brk["step_cut"]
+            if self.brk.get("late_load_tick") and "MIDAIR" in kw["saveName"]:
+                self.w["late"] = 3                  # PauseOnLoad's tick lands after the load reads Playing
             if self.brk.get("load_tick"):
                 self.tick()                         # Prefs.PauseOnLoad: Game.LoadGame runs one DoSingleTick
             return {"success": True}
@@ -402,6 +408,9 @@ def main():
                                                              {"step_cut": "dead"})]
     check("W35", got == ["PASS", "FAIL", "UNMEASURED"], "a step cut short by the load's pause is stepped to the target, a twin "
           "still FAILs, a dead clock is UNMEASURED (got %s)" % got)
+    got = [run(**b)[1].get("A_RELOAD_NO_DUP_LOST") for b in ({"late_load_tick": True}, {"late_load_tick": True, "dup_on_reload": True})]
+    check("W40", got == ["PASS", "FAIL"], "the load's own tick landing after Playing (live, visit 5: arm B ended one tick past its "
+          "target) is waited out, and a twin still FAILs there (got %s)" % got)
     code, rows, txt = run(rider_killed_first=True)
     check("W36", [rows.get(r) for r in cover] == ["PASS"] * 2 and txt.count("throw 2 of") == 2,
           "rider killed on the first throw only: %s" % [rows.get(r) for r in cover])

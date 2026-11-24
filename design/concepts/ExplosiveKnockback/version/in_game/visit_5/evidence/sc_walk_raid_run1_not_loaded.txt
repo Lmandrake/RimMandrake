@@ -1,0 +1,21 @@
+ROW                          STATUS     DETAIL
+W_PRECONDITIONS              INVALID    no open shelf (Shelf,ShelfSmall) in the storeroom; no closed container in the storeroom (defs []); 0 haulable stacks in the storeroom (want >= 3); no RM_PitCover* on the cover cell 102,36
+A_IMPACTS_IN_ROOM            UNMEASURED UNMEASURED: preconditions not met
+A_SAVE_MIDAIR                UNMEASURED UNMEASURED: preconditions not met
+A_RELOAD_NO_DUP_LOST         UNMEASURED UNMEASURED: preconditions not met
+A_COVER_BROKEN_ONE_DESCENT   UNMEASURED UNMEASURED: preconditions not met
+A_GAS_CLUMP_BY_CLUMP         UNMEASURED UNMEASURED: preconditions not met
+A_GAS_GOODS_MOVED            UNMEASURED UNMEASURED: preconditions not met
+A_REQUESTS_MATCH_PLAN        UNMEASURED UNMEASURED: preconditions not met
+A_REACHED_ACCOUNTED          UNMEASURED UNMEASURED: preconditions not met
+B_GAS_CLUMP_BY_CLUMP         UNMEASURED UNMEASURED: preconditions not met
+B_GAS_GOODS_MOVED            UNMEASURED UNMEASURED: preconditions not met
+B_IMPACTS_IN_ROOM            UNMEASURED UNMEASURED: preconditions not met
+B_COVER_BROKEN_ONE_DESCENT   UNMEASURED UNMEASURED: preconditions not met
+B_REQUESTS_MATCH_PLAN        UNMEASURED UNMEASURED: preconditions not met
+B_REACHED_ACCOUNTED          UNMEASURED UNMEASURED: preconditions not met
+C_OFF_IMPACTS_NO_THROWS      UNMEASURED UNMEASURED: preconditions not met
+CARRIER_TICK_COST            UNMEASURED UNMEASURED: preconditions not met
+FRAME_BUDGET                 UNMEASURED UNMEASURED: preconditions not met
+evidence: design\concepts\ExplosiveKnockback\version\in_game\visit_5\evidence\sc_walk_raid.json   throwaway saves: None
+[bridge split] 1.9 s wall: load 0.0 / ticks 0.0 / reads 0.1 / other 0.1 / outside calls 1.7 s

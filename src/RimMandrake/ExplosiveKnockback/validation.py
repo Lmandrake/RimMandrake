@@ -697,7 +697,7 @@ class _Walk:
                     walk.step(t0 + n - now)
         self.ev.setdefault("saves", []).append(name)
         try:
-            tr = VC.saveload_triplet(_TB(), census, ticks=VC.TRIPLET_MIN_TICKS, save_name=name, wait_playing=self.wait,
+            tr = VC.saveload_triplet(_TB(), census, ticks=VC.TRIPLET_MIN_TICKS, save_name=name, wait_playing=self.wait_settled,
                                      **TRIPLET_SEAMS)
         except Exception as e:  # noqa: BLE001 - a bridge fault inside the triplet is an unread row, never a verdict
             tr = {"verdict": "UNMEASURED", "why": "saveload_triplet raised %r" % e, "arms": {}}
@@ -723,6 +723,23 @@ class _Walk:
         else:
             # LOAD_NONDETERMINISTIC (two loads of one save disagree: the census is not the save's alone) or unread
             self.row("A_RELOAD_NO_DUP_LOST", "UNMEASURED", "%s: %s" % (tr.get("verdict"), det))
+
+    def wait_settled(self, B):
+        """Playing, and the load's own PauseOnLoad tick done: four equal clock reads half a second apart. Live, visits 4 and 5
+        on the full list: the load read Playing at the saved tick and its tick landed during the step that followed, so an
+        arm ended 9 ticks short once and 1 tick over once."""
+        import time
+        import validation_core as VC
+        ok, why = self.wait(B)
+        last, same = None, 0
+        for _ in range(40 if ok else 0):            # a hang guard: a clock that keeps moving is the triplet's to refuse
+            now = VC.ticks_game(B)
+            same = same + 1 if now is not None and now == last else 0
+            last = now
+            if same >= 3:
+                break
+            (SLEEP or time.sleep)(0.5)
+        return ok, why
 
     def pawns_at(self, rect, corpses=False):
         r = self.c("jawa/list_pawns", rect="%d,%d,%d,%d" % tuple(rect), includeCorpses=corpses, limit=200)
