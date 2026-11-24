@@ -218,8 +218,8 @@ carried mtime **17:26**, the game ran **17:30 → 21:10**, and the mtime was
 session, wrote nothing. RimWorld writes that file when the **mod list is changed
 in-game**, not on shutdown. **Consequence: `ModsConfig.xml` on disk IS
 authoritative while the game runs, and an edit made mid-session is not going to
-be clobbered at exit — it is going to be ignored until the next start.** The
-thing that *does* silently rewrite it is RimSort; read the mtime before writing.
+be clobbered at exit — it is going to be ignored until the next start.** RimSort
+rewrites it on a Save or another owner action (`skills/rimworld-start-prep/SKILL.md` §2); read the mtime before writing.
 _(Last of six copies of this claim; the three skills files were fixed in
 `a43b610`, this one was missed because the mod list is BUILD's exclusively.)_
 

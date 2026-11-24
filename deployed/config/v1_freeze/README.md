@@ -59,8 +59,8 @@ plus these seven, deliberately.
 - **The 624 installed-but-inactive mods are out of scope** (owner, 2026-08-14).
   Not to be swept. They stay available as a research reference — "does a mod
   already do X" — but nothing in them is v1 work.
-- **Load ORDER is not pinned.** Six `loadBottom` + `loadAfter` userRules are
-  correct today but ride a tie-break rather than a constraint (BUILD B25a).
+- **Load ORDER is not pinned** by this copy. RimSort's `loadAfter` userRules hold only
+  the pairs they name (BUILD B25a; `skills/rimworld-start-prep/SKILL.md` §2). The rest is sort level and mod name.
 - `ModsConfig.xml` is also written by RimSort. If it moves, diff it against this
   copy before assuming the change was ours.
 

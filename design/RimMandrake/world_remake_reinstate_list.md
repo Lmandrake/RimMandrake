@@ -70,8 +70,8 @@ only covers the mod list. Hold the bridge (`rimflow bridge take --for "world rem
    (plan; `--apply` only after reading it).
 5. **Checkpoints, then install the list.** `python3 src/RimMandrake/Utils/remake/checkpoint.py make --ids C1,C2,C3`
    (Saves folder, live ModsConfig, mod settings). Then copy the chosen list file over the live
-   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml` (game down; RimSort
-   closed). `modset_builder.py` and `modlist_swap.py` have **no "install this file" mode** (`15_conductor_plan.md` line 53);
+   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml` (the next start
+   reads it; if RimSort is open, hit Refresh). `modset_builder.py` and `modlist_swap.py` have **no "install this file" mode** (`15_conductor_plan.md` line 53);
    an atomic copy is the route. Verify with gate G2's one-liner (`06_remake_runbook.md` line 88): count and sorted sha equal
    the file's.
 6. **Cherry Picker:** `python3 src/RimMandrake/Utils/cherrypicker_swap.py --status` (gate G4). A reinstated Wave-4 mod's
@@ -92,7 +92,8 @@ only covers the mod list. Hold the bridge (`rimflow bridge take --for "world rem
     then `python3 src/RimMandrake/Utils/mod_archive.py check`. Correct this file if anything here proved wrong.
 
 **Do NOT:**
-- edit the live `ModsConfig.xml` with the game up (the game rewrites it on exit; the edit is lost) or while RimSort is open;
+- expect a running game to see an edit of the live `ModsConfig.xml` (the next start reads it), or leave RimSort with a stale
+  view after the edit (tell him to hit Refresh);
 - run `modcheck run <Mod>` during the sitting — it rewrites the live ModsConfig;
 - stamp `world/ASHKARR_WORLDMAP_*.csv` (the frozen RECORD, w9_run's default inputs): it carries pre-port donor names
   (`AB_*`, `sw_*`, pre-rename biomes) that need retired mods, and an 08-23 road/mutator lineage;

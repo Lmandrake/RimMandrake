@@ -230,21 +230,21 @@ signatures down BEFORE launching.**
 ⚠️ **While RimWorld is running, disk state is NOT authoritative.** The game holds its list in memory. Steam does not remove
 a folder that the game holds open. So a listed mod can be unsubscribed already, and a present folder proves nothing.
 
-🔴 **RimWorld does NOT rewrite `ModsConfig.xml` on exit.** Two cases are known in which RimWorld rewrites the
-file: the list changes **in-game**, or a failed load causes the recovery reset (§0).
+🔴 **RimWorld does NOT rewrite `ModsConfig.xml` on exit.** RimWorld writes the file when the list changes **in-game**, when
+a failed load causes the recovery reset (§0), and in four start cases (`skills/rimworld-start-prep/SKILL.md` §3).
 
 - **Before you reason about the list or the order at all, read `skills/rimworld-start-prep/SKILL.md`.** Three programs that
   do not coordinate (RimWorld, RimSort, Steam) write different parts of this state. That skill names the parts.
 
-⚠️ **"Safe after a clean exit" is CONDITIONAL.** After a clean exit, `ModsConfig.xml` says **what the game loaded**. The
-file never says **what is on disk now**. An unsubscribe in Steam or RimSort does not reach the game, and the exit writes
+⚠️ **"Safe after a clean exit" is CONDITIONAL.** After a clean exit, `ModsConfig.xml` says **what the game loaded**, unless someone
+edited the file during the session. The file never says **what is on disk now**. An unsubscribe in Steam or RimSort does not reach the game, and the exit writes
 nothing. **So check the entry, the folder, and the mtime:**
 
 ```bash
 # ArchBig's paths. ArchSmall has its own (§0).
 CFG="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml"
 WORKSHOP="/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
-# activeMods ONLY. `grep -c "<li>"` counts LINES and returns 6, not a count of mods;
+# activeMods ONLY. `grep -c "<li>"` counts LINES (6 when the ids share one line, mods + 5 when each has its own);
 # `grep -o "<li>" | wc -l` returns activeMods + the 5 knownExpansions. Parse it.
 # Never quote a remembered total — print it, and quote the command with it.
 python3 -c "import sys,xml.etree.ElementTree as ET;print(len(ET.parse(sys.argv[1]).getroot().find('activeMods')))" "$CFG"

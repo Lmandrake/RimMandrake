@@ -43,11 +43,11 @@ is:
   graph, and a topological sort cannot violate it. **This is the one you want.**
 - **`loadBottom`** is neither a hint nor a stronger constraint. It compiles to
   membership in a **tier**, and RimSort sorts four tiers independently then
-  concatenates them. ⚠️ **The tier split silently DELETES any `loadAfter` /
-  `loadBefore` edge that crosses a tier boundary** (`app/sort/dependencies.py`
-  intersects each tier's subgraph with `& tier_mods`). Nothing is logged.
-  🔑 Read out of RimSort's own source, 2026-08-19 — see
-  `skills/rimworld-start-prep/SKILL.md`, which owns this and carries the code.
+  concatenates them. ⚠️ **The bottom tier spreads:** every mod that loads after a
+  bottom mod goes to the bottom with it, so no edge between active mods is lost. Two
+  bottom mods with no edge are ordered by a tie-break (the mod's name).
+  🔑 Read out of RimSort's own source (v1.13.1) — see
+  `skills/rimworld-start-prep/SKILL.md`, which owns this and names the code.
 
 Write one `loadAfter` edge per mod you patch. After that the manager produces the
 right order unaided and your assertion becomes a cheap safety net rather than a

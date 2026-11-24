@@ -20,8 +20,8 @@ Measured on 2026-08-13, in our own mods:
 
 That block had constrained nothing, for as long as it had existed. It was found by
 a seat reading the file, not by any check — and it was one of **seven** silent
-failures found that day: mods deployed but never enabled, `loadBottom` defeating
-`loadAfter`, a weapon whose failure cannot log, an export dropping cells, floors
+failures reported that day: mods deployed but never enabled, `loadBottom` read as
+defeating `loadAfter` (RimSort's code shows that it does not), a weapon whose failure cannot log, an export dropping cells, floors
 not surviving a mid-game spawn. **All of them looked exactly like success.**
 
 `check_refs.py` already does this for prose — it verifies that paths named in our
@@ -40,10 +40,9 @@ For every `About.xml` under `src/`, every packageId named in `loadAfter`,
 enabled is legitimate — it is how an optional-compat declaration is written. A
 MISSING one never is.
 
-⚠️ **This checks DECLARATIONS, not ORDER.** A correct, resolvable `loadAfter` can
-still be defeated at runtime by `loadBottom` in the same RimSort rule. That is a
-different check and a real one: on 2026-08-13, six of our thirteen User Rules
-carried both.
+⚠️ **This checks DECLARATIONS, not ORDER.** RimWorld loads in the order of
+`ModsConfig.xml`, and nothing here reads that order. A hand-placed or stale list can
+break a correct, resolvable `loadAfter` (skills/rimworld-start-prep/SKILL.md section 2).
 """
 import glob
 import os

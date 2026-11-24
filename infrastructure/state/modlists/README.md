@@ -16,8 +16,9 @@ print(len(ET.parse(sys.argv[1]).getroot().find('activeMods').findall('li')))" \
   infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml
 ```
 
-⚠️ `grep -c '<li>'` does NOT work on these files — the elements are not one per line,
-and it also counts the 5 `knownExpansions`. On the live file it returns **6**.
+⚠️ `grep -c '<li>'` does NOT work on these files. It counts lines, and the line layout
+depends on the program that wrote the file: the live file has returned **6** (2026-08-15)
+and 320 for 315 mods (2026-11-23, with the 5 `knownExpansions`).
 Timestamped siblings are history; `LATEST` is the one to restore.
 
 ```
@@ -26,15 +27,15 @@ python3 src/RimMandrake/Utils/modlist_swap.py --minimal    # swap to the test li
 python3 src/RimMandrake/Utils/modlist_swap.py --restore    # put the owner's list back
 ```
 
-⚠️ **RimSort and RimWorld both write this file and neither tells the other.** Do the swap
-with the game DOWN and RimSort not mid-edit, and re-capture FULL if the owner has changed
-his list since the timestamp above.
+⚠️ **RimSort and RimWorld both write this file and neither tells the other.** A swap waits for
+neither (owner, 2026-08-15; `skills/rimworld-start-prep/SKILL.md` §3). If RimSort is open, say
+"hit Refresh". Re-capture FULL if the owner has changed his list since the timestamp above.
 
 🔴 **A packageId rename does not change the mod SET, so nothing here warns you.**
 Both saved lists are plain id lists with no folder, name or version beside them: an id
 that no longer exists is dropped by RimWorld at startup **silently**, and every count in
-this directory still reads 585. `modlist_swap.py --status` shows `UNRECOGNISED`, which is
-the same thing it says when the owner adds a mod — indistinguishable. ⇒ **After any
+this directory stays the same. `modlist_swap.py --status` shows `FULL` or `MINIMAL` if no
+list was updated, and `UNRECOGNISED` if only one side was — the same word it shows when the owner adds a mod. ⇒ **After any
 `packageId` change, re-capture `FULL.LATEST` from live and hand-map `MINIMAL`, in the
 same commit as the rename.** The check that actually proves it is resolving every id in
 a list against the `<packageId>` in every installed `About/About.xml` (Workshop root

@@ -2721,8 +2721,8 @@ def main() -> int:
             # a different mod set answers "does this def exist" about a game that is
             # not the one about to run — and it answers it CONFIDENTLY, which is the
             # whole problem. Say so rather than letting a stale dump pass as ground
-            # truth. Counting activeMods specifically: `grep -c "<li>"` returns 6
-            # because the file is ~11 long lines, and `grep -o | wc -l` over-counts
+            # truth. Counting activeMods specifically: `grep -c "<li>"` counts
+            # lines, whose layout depends on the last writer, and `grep -o | wc -l` over-counts
             # by exactly the 5 knownExpansions.
             try:
                 import xml.etree.ElementTree as _ET

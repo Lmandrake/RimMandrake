@@ -5,7 +5,7 @@
 Write one line for each fact. When a fact is superseded, replace its line. Never append a correction under a line.
 This file is unbudgeted, like everything in `facts/`.
 
-- **RimSort never blocks a config write.** RimSort writes only on a Save that the owner announces. `ModsConfig.xml`, load
+- **RimSort never blocks a config write.** RimSort writes only on an owner action (`skills/rimworld-start-prep/SKILL.md` §2), and the owner announces each Save. `ModsConfig.xml`, load
   order and user rules are writable game-up or game-down. After you edit, write one sentence: "RimSort is open, hit
   Refresh". Then move on.
 - **Nothing outside the repo is precious** (owner, 2026-08-15): maps, saves, colonies, deployed mod folders, live game

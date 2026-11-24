@@ -363,7 +363,7 @@ let a wet storm anywhere near the Pyrelands.
    `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`.
    🔴 **Do NOT remove `regrowth.botr.core`** — R-B3 depends on it, and so do
    Biomes! Polluted Lands and Comigo's Greater Swamps. Route it through
-   `skills/rimworld-start-prep`; a mod-list edit while the game runs is thrown away.
+   `skills/rimworld-start-prep`; a running game does not see a mod-list edit; the next start reads it.
 6. Deploy `Jawa_Patches` with `src/RimMandrake/Utils/deploy_custom_mods.py`
    a bare dry run first. **The repo copy is not what the game loads.**
 

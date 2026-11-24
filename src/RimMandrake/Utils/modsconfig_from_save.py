@@ -22,9 +22,9 @@ newest savegame you care about.
     python3 modsconfig_from_save.py <save.rws> --out FILE.xml  # write a ModsConfig
 
 ⚠️ This writes a FILE. It deliberately does NOT install over the live
-Config/ModsConfig.xml — RimWorld rewrites that from memory on exit, so installing it
-while the game is running is discarded, and swapping a mod list under a running game
-is its own hazard. Install it with the game closed.
+Config/ModsConfig.xml — a running game does not see a new list, and an in-game list
+change writes over it (skills/rimworld-start-prep/SKILL.md section 3). The next start
+reads what is installed.
 """
 import argparse
 import os

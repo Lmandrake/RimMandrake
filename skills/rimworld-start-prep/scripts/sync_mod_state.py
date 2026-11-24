@@ -37,8 +37,8 @@ SAFETY
 ------
 · Dry-run by DEFAULT. `--apply` writes. There is no `--plan` flag; running it bare
   IS the plan. (Same convention as deploy_custom_mods.py, and the same reason.)
-· Refuses to run while RimWorld is up. The game holds these files and rewrites
-  Config on exit paths, so an edit made now is either lost or fighting the game.
+· Refuses to run while any RimWorld is up (it cannot tell ArchBig from ArchSmall).
+  A running game can save over these records, and it does not see an edit made now.
 · Backs up every file before touching it, next to the original.
 · Saves are spliced at the BYTE level: only the bytes between <meta> and </meta>
   are rebuilt, everything else is copied through untouched. A .rws is up to ~50 MB
@@ -400,15 +400,15 @@ def main():
     ap.add_argument("--quiet", action="store_true",
                     help="one summary line instead of the table")
     ap.add_argument("--force-running", action="store_true",
-                    help="proceed even though RimWorld appears to be up. Almost "
-                         "always wrong -- the game rewrites these files.")
+                    help="proceed even though RimWorld appears to be up. Right "
+                         "only when ArchBig is down and another game is the one running.")
     a = ap.parse_args()
 
     running = game_is_running()
     if running and not a.force_running:
-        die("RimWorld is RUNNING. These files are held by the game and a write "
-            "now is lost or fought over. Close it, then re-run. "
-            "(--force-running overrides, and you should not need it.)")
+        die("RimWorld is RUNNING. The game can save over these records, and it does "
+            "not see a write now. Close it, then re-run. (--force-running overrides: "
+            "use it only when ArchBig is down and another game, ArchSmall, runs.)")
     # 🔴 --quiet must NEVER hide this. It is the guard admitting it could not
     # check, and the pre-load offer runs `--apply --quiet` -- exactly the path
     # where an unverified "the game is down" gets acted on.
