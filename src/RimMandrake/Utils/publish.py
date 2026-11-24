@@ -1379,14 +1379,19 @@ def _publish(top, paths, msg, cwd=None):
     return sha
 
 
-def main(argv=None):
+def build_parser():
+    """The parser of main(), apart so that brief_commands.py fills a run's command lines from it."""
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0],
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("paths", nargs="*")
     ap.add_argument("-m", "--message")
     ap.add_argument("--ledger", action="store_true", help="land only the named ledger shards' new lines")
     ap.add_argument("-F", "--file", help="read the message from a file ('-' = stdin)")
-    a = ap.parse_args(argv)
+    return ap
+
+
+def main(argv=None):
+    a = build_parser().parse_args(argv)
     # Progress goes to stdout and REFUSED to stderr. Under a pipe stdout is block-buffered, so `2>&1 | tail` printed the
     # progress AFTER the refusal and hid it (RIMMANDRAKE_FLUSH_PUBLISH_OUTPUT_SO_TAIL_SHOWS_REFUSAL): line-buffer it.
     sys.stdout.reconfigure(line_buffering=True)

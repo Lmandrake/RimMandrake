@@ -1137,7 +1137,7 @@ def test_hook_points_here():
 
 def test_owed_close():
     """RIMMANDRAKE_FLAG_DETACHED_SUCCESS_LEAVING_ITEM_OPEN: a run that ends success with its item still open says so."""
-    foot = DH.FOOTER.format(clone="C", item="SOME_ITEM_TO_BUILD", seat="BENCH", bound_text="b", budget=5)
+    foot = DH.brief_message("b", "SOME_ITEM_TO_BUILD", "BENCH", "C")
     check("cli.py claim SOME_ITEM_TO_BUILD" in foot and "cli.py close SOME_ITEM_TO_BUILD --sha" in foot
           and DH.LEFT_OPEN in foot, "owed: the brief says claim at start, close or note LEFT OPEN: at the end")
     check("cli.py wait SOME_ITEM_TO_BUILD --until" in foot and "left_open_continue.py" in foot,

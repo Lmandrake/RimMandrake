@@ -283,7 +283,8 @@ def render():
     return VIEW, len(files)
 
 
-def main():
+def build_parser():
+    """The parser of main(), apart so that brief_commands.py fills a run's command lines from it."""
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     a = sub.add_parser("add", help="file one lesson as its own file")
@@ -297,7 +298,11 @@ def main():
     sub.add_parser("render", help="rebuild the gitignored (untracked) LESSONS_INBOX.md view")
     sub.add_parser("stats", help="counts by seat, age, home; oldest undrained lesson")
     sub.add_parser("list", help="count lessons and show the newest")
-    args = ap.parse_args()
+    return ap
+
+
+def main():
+    args = build_parser().parse_args()
     if args.cmd == "add":
         p = add(args.text, args.seat, args.slug, home=args.home, item=args.item, merge=args.merge, distinct=args.distinct)
         print(os.path.relpath(p, ROOT))

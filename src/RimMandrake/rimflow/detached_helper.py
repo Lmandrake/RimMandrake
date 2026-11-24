@@ -120,25 +120,23 @@ FOOTER = """
 ---
 You are a DETACHED helper: you run in your own systemd unit, outside any window, in the clone {clone} (your cwd).
 Ledger item: {item}. Seat: {seat}. {bound_text}.
-- Work only in that clone. Land code with `./publish -m "subject" <explicit paths>` (never git add -A, never --force).
+- Work only in that clone. Land code with `./publish` and explicit paths (never git add -A, never --force). The command
+  lines named below (claim, note, wait, close, publish) stand filled in at the end of this brief.
 - Pass `--publish` on every rimflow write (claim, note, wait, close, file): the write lands exactly the files it wrote,
   OWNER.jsonl included when the event is the owner's, and prints `PUBLISHED <sha>`. Exit 4 means written but not
   landed: the line names the cause and the command that passes.
-- First, claim your item: `python3 src/RimMandrake/rimflow/cli.py claim {item} --seat {seat} --why "detached run" --publish`.
-- At the end, close it with the sha ./publish printed: `python3 src/RimMandrake/rimflow/cli.py close {item} --sha <sha>
-  --evidence "<what ran and its result>" --seat {seat} --why "..." --publish` (an operational item also takes `--live`), or, when anything is left, write a note whose
-  text starts `LEFT OPEN:` and says exactly what. A run that ends success with its item open and no such note is
+- First, claim your item (the claim line).
+- At the end, close it with the sha ./publish printed (the close line; an operational item also takes `--live`), or, when
+  anything is left, write a note whose text starts `LEFT OPEN:` and says exactly what. A run that ends success with its item open and no such note is
   flagged to the Conductor.
 - A `LEFT OPEN:` note relaunches this brief in a fresh session (left_open_continue.py). When what is left is not a
   helper's to do (the owner's decision, an act of the Conductor's, a date), also put a dated wait on the item, so it
-  is not relaunched for nothing: `python3 src/RimMandrake/rimflow/cli.py wait {item} --until <YYYY-MM-DD> --reason
-  "<who acts next and on what>" --seat {seat} --why "detached run" --publish`.
+  is not relaunched for nothing (the wait line).
 - Before you stop, and at least every 20 minutes: write your state, evidence paths and one imperative NEXT as
-  `python3 src/RimMandrake/rimflow/cli.py note {item} --text "..." --seat {seat} --why "detached run" --publish`.
+  a note (the note line).
 - After each experiment or step that changes what you know, write your progress record as a note whose text starts
-  `PROGRESS:` and names the theory, the experiment, the reading and the next action (`cli.py note {item} --text
-  "PROGRESS: theory: ... | experiment: ... | reading: ... | next: ..." --seat {seat} --why "detached run" --publish`). A stopped
-  run with a large context is carried on by a fresh session that has only this brief and those notes.
+  `PROGRESS:` and names the theory, the experiment, the reading and the next action (`"PROGRESS: theory: ... |
+  experiment: ... | reading: ... | next: ..."`). A stopped run with a large context is carried on by a fresh session that has only this brief and those notes.
 - This run ends when your turn ends: a helper or command still running in the background then is killed and its work
   is lost. Run helpers and long commands in the foreground and take their results before your last message; never end
   "waiting" for anything.
@@ -1226,6 +1224,24 @@ def card_footer(item, events_dir=None):
             % "; ".join(owed))
 
 
+def command_lines(item, seat):
+    """-> the run's command lines (brief_commands.filled). A launch never fails on them: what raised is said in the text."""
+    try:
+        import brief_commands
+        return brief_commands.filled(item, seat)["text"]
+    except Exception as e:  # noqa: BLE001
+        return ("- could not look: the command lines of this run could not be made (%s: %s): run "
+                "`python3 src/RimMandrake/rimflow/cli.py --help`\n" % (type(e).__name__, e))
+
+
+def brief_message(brief, item, seat, clone, max_s=None):
+    """-> the whole text a detached run is given: the brief, the footer, its cards' owed work, its command lines."""
+    return (brief.rstrip()
+            + FOOTER.format(clone=clone, item=item, seat=seat,
+                            bound_text=("Wall-time bound: %d s" % max_s) if max_s else "no wall-time bound")
+            + card_footer(item) + command_lines(item, seat))
+
+
 def launch_check_refusal(item_text, cwd, runner=subprocess.run, timeout_s=120):
     """-> (refusal text or None, notes): the item's `## launch-checks` block run in the run's clone before the unit starts
     (GATE_FIRST, RIMMANDRAKE_RUN_LAUNCH_CHECKS_FIVE_STEWARDS_HIT_GATES). notes: one "launch check did not run: ..." line
@@ -1456,9 +1472,7 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
         write_record(rec, root)
     except OSError:
         rec.pop("brief_src", None)
-    msg = brief.rstrip() + FOOTER.format(clone=clone, item=item, seat=seat,
-                                         bound_text=("Wall-time bound: %d s" % max_s) if max_s else "no wall-time bound")
-    msg += card_footer(item)
+    msg = brief_message(brief, item, seat, clone, max_s)
     if runner is subprocess.run:        # its own TMPDIR, deleted by run_tmp.sweep when the unit is gone
         rec["tmp"] = run_tmp.prepare(unit)
         write_record(rec, root)

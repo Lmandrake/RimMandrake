@@ -5476,7 +5476,8 @@ def print_refusal(res):
                                               r["smallest_fix"]["what"]))
 
 
-def main(argv=None):
+def build_parser():
+    """The parser of main(), apart so that brief_commands.py fills a run's command lines from it."""
     ap = argparse.ArgumentParser(description="The Maturation Pipeline's spine: stage record, next step, advance.")
     ap.add_argument("--root", default=REPO)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -5579,6 +5580,11 @@ def main(argv=None):
     la.add_argument("--item", required=True, help="the ledger item the run works under (filed on origin/main)")
     la.add_argument("--model", default="opus", choices=("fable", "opus", "sonnet"))
     la.add_argument("--seat", default="BENCH")
+    return ap
+
+
+def main(argv=None):
+    ap = build_parser()
     o = ap.parse_args(argv)
     root = os.path.abspath(o.root)
 
