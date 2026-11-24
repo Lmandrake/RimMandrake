@@ -1,6 +1,6 @@
 # Agent work that Python can do: one page
 
-For Mandrake. 2026-11-23. Full table: `analysis.md` beside this page. Nothing is built or filed. This is a proposal.
+For Mandrake. 2026-11-23. Full table: `analysis.md` beside this page. Nothing is built. The ten changes are filed as items (`acceptance/` holds their tests).
 
 **How to read the numbers.** Spend is in weighted tokens. M means million. `[measured]` is read from records.
 `[guess ~N%]` is my guess with my confidence. The week is the 7 days to 2026-11-23, 7:56 PM PST.
@@ -22,7 +22,7 @@ earlier study named this.
 | 4 | **Tests.** One call runs a test on the old code, the new code and a planted fault. | 20M `[guess ~50%]` | medium | It can read the wrong build. It must print which build it read. |
 | 5 | **Conductor wake.** The wake carries the run's result and the state. Today 408 turns a week open result files `[measured]`. | 18M `[guess ~55%]` | small | A long result fills the window. Nothing decisive may be cut. |
 | 6 | **Item history.** The launcher puts the item's history in the brief. | 15M `[guess ~50%]` | small | The packet can omit the one decisive note. It must say what it left out. |
-| 7 | **Waits.** One wait of two hours replaces many waits of ten minutes. | 12M `[guess ~60%]` | small | A hung job looks like a long job. The wait must check that it lives. |
+| 7 | **Waits.** One wait of up to 55 minutes replaces many waits of ten minutes. A wait over 59 minutes rebuilt the whole cache in 17 of 18 cases `[measured]`. | 8M `[guess ~40%]` | small | A hung job looks like a long job. The wait must check that it lives. |
 | 8 | **Stage moves.** A program advances a mod when every row counts. It files a skeleton ticket for each failed row. | 10M `[guess ~50%]` | medium | It can advance on checks that are wrong together. A steward still reads any look. |
 | 9 | **Alarms.** A program gathers the facts of an alarm and answers the steady ones. | 10M `[guess ~50%]` | medium | A slow rise inside the normal band is seen late. |
 | 10 | **Sign of life.** The lease and the 20-minute note come from the running process. | 8M `[guess ~55%]` | small | A hung run keeps its lease. Tie the lease to the process. |

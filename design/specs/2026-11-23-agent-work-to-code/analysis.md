@@ -309,7 +309,9 @@ the rewrite wave is nearly over); a pre-review check of quotes and ids for the c
    must say what it left out and print the command that shows it.
 7. **Long waits.** A `claude -p` run ends with its turn, so a wait blocks in a call with a 10-minute limit. Raising the
    limit (the `BASH_MAX_TIMEOUT_MS` setting; not set in `settings.json` or `claude_bounded.sh`
-   `[measured]`) makes one turn serve a 2-hour wait. The effect of this setting in a detached run is untested: try it on
+   `[measured]`) makes one turn serve a longer wait. It must stay under 59 minutes: of 18 gaps over 59 minutes in detached runs, 17
+   rebuilt the whole prompt cache, about 895k each, and twelve 10-minute waits cost about 290k `[measured, scan2.pkl]`. So
+   the saving is about 8M `[guess ~40%]`, not 12M. The effect of this setting in a detached run is untested: try it on
    one run first. Risk: a hang that a 10-minute call would have caught. `waitfor.py` must carry its own timeout and
    liveness check.
 8. **Stage confirm and road back.** The tick advances when the exit program reads "met" with no unclassed row, files a
