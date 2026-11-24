@@ -370,7 +370,7 @@ for _fam in list(OW.COLLECTORS):
     if _fam not in ("flow", "testing"):
         OW.COLLECTORS[_fam] = lambda now, rules, ctx: {}
 OW.steve_release_start = lambda: {}
-PC.read_ledger = lambda: list(_events)
+PC.read_ledger = lambda **_kw: list(_events)
 # the live phase table hands rm-ops-watch.timer to the metronome, and a pass without --metronome-gen then files nothing;
 # that fence is selftest_ops_watch_compose's. Here the filing path itself runs, so no phase owns the old clock.
 import metronome  # noqa: E402
