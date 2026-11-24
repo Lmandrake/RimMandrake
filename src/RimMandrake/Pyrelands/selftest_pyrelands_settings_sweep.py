@@ -33,6 +33,8 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
                    both wind patches call Governs (blind cycle 4: Governs without WindCarries carried fire with every switch off)
   own_switch_stops a mechanic stopped by its own switch only (not by "Mod enabled") opens its tick with `if (!switch ...) return;`
                    (blind cycle 6: a sprayer carrier that foamed with its switch off stayed green, the probe's read counted as `read`)
+  job_ends_off     a job a switch starts fails in every toil once the gate or that switch goes off (in-game visit 8: a fire-hawk
+                   with an ember in its beak dropped it and lit grass 500 ticks after "Mod enabled" went off; 236 fires a day on)
   wind_tooltip     "The wind carries the fire" does not promise one cell a fire, no sideways step or a line no wider than it was lit:
                    the kernel's CarryPlan heals a cell aside and its FlankPlan opens and closes the flanks
   master_tooltip   the "Mod enabled" tooltip names every switch that ships on and is not declared under it
@@ -90,6 +92,8 @@ ENTRY_POINTS = [("PyrelandsAshField.cs", "PyrelandsAshFieldPatches", "FertilityP
 ENTRY_PROPERTIES = [("MapComponent_BurnLine.cs", "WindCarries", "windCarriesFireEnabled")]
 # (file, class, method, switch): the entry point of a mechanic only its own switch stops; its first statement returns on that switch.
 SWITCH_GUARDS = [("PyrelandsFoamPath.cs", "MapComponent_RM_FoamPath", "MapComponentTick", "sprayerFoamsPathEnabled")]
+# (file, job driver class, switch): a job a switch starts ends when that switch or the gate goes off, so no job lands an effect after it.
+JOB_GUARDS = [("JobDriver_RUT_FireHawkCarryEmber.cs", "JobDriver_RUT_FireHawkCarryEmber", "fireHawkSpreadEnabled")]
 # A switch "Mod enabled" does not stop, and the words its tooltip names it by.
 MASTER_LEAVES = {"sandShovelEnabled": "sand shovelling", "furnaceBeastGiant": "giant furnace-beast", "ullaiEnabled": "ullai spawning",
                  "sprayerFoamsPathEnabled": "firefoam sprayer"}
@@ -304,6 +308,15 @@ def facts(mod):
         if "!RM_PyrelandsSettings.%s" % switch not in terms:
             bad.append("%s.%s does not return first on %s off" % (cls, meth, switch))
     fact("own_switch_stops", bad, "%d mechanics stop on their own switch" % len(SWITCH_GUARDS))
+    bad = []
+    for f, cls, switch in JOB_GUARDS:
+        body = re.sub(r"\s+", "", _method_body(code.get(f, ""), cls, "MakeNewToils") or "")
+        head = body.split("yieldreturn", 1)[0]   # before the first toil: every toil of the job fails on it
+        ends = [set(m.group(1).split("||")) for m in re.finditer(r"this\.FailOn\(\(\)=>([^;&?]+)\);", head)]
+        want = {"!" + GATE, "!RM_PyrelandsSettings.%s" % switch}
+        if want not in ends:
+            bad.append("%s does not fail every toil on %s off or %s off" % (cls, GATE, switch))
+    fact("job_ends_off", bad, "%d job(s) in flight end when their switch or the gate goes off" % len(JOB_GUARDS))
     return out
 
 
@@ -394,6 +407,10 @@ MUTANTS = [
     ("master tooltip drops the sprayer", S + SETTINGS, "the firefoam sprayer carrier's own foam, ", ""),
     ("sprayer carrier ignores its switch", S + "PyrelandsFoamPath.cs", "if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled || SprayerDef == null) return;", "if (SprayerDef == null) return;"),
     ("sprayer carrier needs both", S + "PyrelandsFoamPath.cs", "if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled || SprayerDef == null) return;", "if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled && SprayerDef == null) return;"),
+    # in-game visit 8
+    ("ember carry outlives the switches", S + "JobDriver_RUT_FireHawkCarryEmber.cs", "this.FailOn(() => !PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.fireHawkSpreadEnabled);", ""),
+    ("ember carry outlives the gate", S + "JobDriver_RUT_FireHawkCarryEmber.cs", "!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.fireHawkSpreadEnabled);", "!RM_PyrelandsSettings.fireHawkSpreadEnabled);"),
+    ("ember carry needs both off", S + "JobDriver_RUT_FireHawkCarryEmber.cs", "On || !RM_PyrelandsSettings.fireHawkSpreadEnabled);", "On && !RM_PyrelandsSettings.fireHawkSpreadEnabled);"),
 ]
 
 

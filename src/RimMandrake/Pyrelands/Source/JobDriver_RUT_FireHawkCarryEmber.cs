@@ -69,6 +69,8 @@ namespace RimMandrake.Pyrelands
                 job.SetTarget(SourceCellInd, job.GetTarget(SourceFireInd).Thing.Position);
             }
             this.FailOn(() => !job.GetTarget(SourceCellInd).IsValid);
+            // A hawk already carrying when a switch goes off lets the ember die: no fire is lit after "Mod enabled" or the spread switch.
+            this.FailOn(() => !PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.fireHawkSpreadEnabled);
 
             yield return Toils_Goto.GotoCell(SourceCellInd, PathEndMode.Touch);
 
