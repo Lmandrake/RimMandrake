@@ -1,0 +1,126 @@
+{
+ "mod": "GimmeSomeSlack",
+ "script": "gravship_scene.py",
+ "mode": "live",
+ "started": "2026-11-24T13:17:45",
+ "rows": [
+  {
+   "id": "GS1_keep_wires_on_gravship_on_aboard_span_flies",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "setting": "keepWiresOnGravship",
+    "value": true,
+    "netBefore": [
+     [
+      "Battery17679",
+      634712530
+     ],
+     [
+      "StandingLamp17680",
+      634712530
+     ],
+     [
+      "StandingLamp17681",
+      634712530
+     ]
+    ],
+    "mode": "on",
+    "before": {
+     "spansUp": 2
+    },
+    "after": {
+     "spansUp": 1,
+     "spansCut": 0
+    },
+    "aboardSpanUp": true,
+    "groundLinkKept": false,
+    "cords": {
+     "cordEdges": 5,
+     "cordsAcrossNets": 0,
+     "verticesInUnwalkable": 15,
+     "conduitCells": 8,
+     "inBracketWalls": [
+      15,
+      0
+     ]
+    },
+    "links": [
+     [
+      17667,
+      17668,
+      "Up"
+     ],
+     [
+      17668,
+      17667,
+      "Up"
+     ]
+    ],
+    "ids": [
+     17667,
+     17668,
+     17669,
+     17670
+    ],
+    "netAfter": [
+     [
+      "Battery17679",
+      1318751040
+     ],
+     [
+      "StandingLamp17680",
+      1318751040
+     ],
+     [
+      "StandingLamp17681",
+      1318751040
+     ]
+    ],
+    "cordsRead": 5,
+    "whyNot": [],
+    "verdict": "PASS"
+   }
+  },
+  {
+   "id": "GS2_prelaunch_cords_fail_on_landed_map",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "prelaunchCords": 5,
+    "failByName": [
+     [
+      "consumer:39,55|battery:36,56",
+      "ends outside the landed net: [(39, 55), (36, 56)]"
+     ],
+     [
+      "consumer:42,55|battery:36,56",
+      "ends outside the landed net: [(42, 55), (36, 56)]"
+     ],
+     [
+      "junction:36,56|battery:36,56",
+      "ends outside the landed net: [(36, 56), (36, 56)]"
+     ],
+     [
+      "junction:36,56|terminal:40,56",
+      "ends outside the landed net: [(36, 56), (40, 56)]"
+     ]
+    ],
+    "faults": 5
+   }
+  },
+  {
+   "id": "GS4_ground_wire_snaps_at_launch",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "fallenBefore": [
+     0,
+     0
+    ],
+    "groundAnchorAfterLaunch": 0,
+    "shipPoleAfterLanding": 1
+   }
+  }
+ ]
+}

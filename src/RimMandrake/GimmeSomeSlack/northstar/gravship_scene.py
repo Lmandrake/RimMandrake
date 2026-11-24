@@ -119,6 +119,29 @@ def flight_verdict(mode, up_aboard, to_ground, spans_up, grid, edges, net_ok, un
     return out
 
 
+SNAP_ROW = "GS4_ground_wire_snaps_at_launch"     # bar ship_to_ground_wire_snaps (0.2.0); its own row, beside ROW_IDS: no other check reads it
+
+
+def fallen_of(census, aid):
+    """How many fallen wires hang from one anchor in an aerial census. None: the census did not answer or does not hold the anchor."""
+    if not (census or {}).get("success"):
+        return None
+    got = [q for q in census.get("anchors") or [] if q.get("id") == aid]
+    return len(got[0].get("fallen") or []) if got else None
+
+
+def snap_verdict(before, left_behind, stump):
+    """-> (status, class, detail). before: fallen wires at (ground anchor, ship pole) before the launch; left_behind: at the ground anchor
+    right after the ship's things lifted, None when it could not be read; stump: at the ship's pole after the landing. The wire from the
+    ship to the ground snaps: one half lies at the ground anchor, the other hangs from the ship's pole where the ship lands."""
+    d = {"fallenBefore": before, "groundAnchorAfterLaunch": left_behind, "shipPoleAfterLanding": stump}
+    if None in before or left_behind is None or stump is None:
+        return "UNMEASURED", "HARNESS", dict(d, why="a fallen-wire count could not be read")
+    if before != (0, 0):
+        return "UNMEASURED", "SITE", dict(d, why="a fallen wire hung there before the launch")
+    return ("PASS" if left_behind == 1 and stump == 1 else "FAIL"), "MOD", d
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=("on", "off", "off_autolink"))
@@ -141,9 +164,11 @@ def main():
         if a.out:
             st, cl = {0: ("PASS", "MOD"), 1: ("FAIL", "MOD")}.get(rc, ("UNMEASURED", "HARNESS"))
             c_st, c_cl, c_det = det.pop("control", None) or ("UNMEASURED", "HARNESS", "the flight did not reach its landed read")
+            s_st, s_cl, s_det = det.pop("snap", None) or ("UNMEASURED", "HARNESS", "the flight did not reach its landed read")
             with open(a.out, "w", encoding="utf-8") as f:
                 json.dump({"mod": "GimmeSomeSlack", "script": "gravship_scene.py", "mode": "live", "started": started,
-                           "rows": [{"id": ROW_IDS[a.mode], "status": st, "class": cl, "detail": det}, {"id": ROW_IDS["control"], "status": c_st, "class": c_cl, "detail": c_det}]},
+                           "rows": [{"id": ROW_IDS[a.mode], "status": st, "class": cl, "detail": det}, {"id": ROW_IDS["control"], "status": c_st, "class": c_cl, "detail": c_det},
+                                    {"id": SNAP_ROW, "status": s_st, "class": s_cl, "detail": s_det}]},
                           f, indent=1, default=str)
             print("wrote", a.out)
     return rc
@@ -219,7 +244,13 @@ def scene(a, det):
             B.ap("set:autoLink=True")
         g["call"]("rimworld/step_game_ticks", ticks=60)
         tail = "# -- 5. launch" + rest.split("# -- 6. land", 1)[0] + "# -- 6. land" + rest.split("# -- 6. land", 1)[1].split("for part in", 1)[0]
-        exec(compile(tail, PROVE, "exec"), g)                    # launch, travel, land
+        lift, cut, travel = tail.partition("deadline = time.time()")     # the ship's things have despawned, the origin map still stands
+        exec(compile(lift, PROVE, "exec"), g)                    # launch
+        try:
+            left = B.ap("census")                                # the map left behind: what hangs from the ground anchor now
+        except Exception as e:   # noqa: BLE001  (the flight's own verdict does not rest on this read)
+            left = {"success": False, "error": str(e)[:200]}
+        exec(compile(cut + travel, PROVE, "exec"), g)            # travel, land
         B = st["B"] = RL.LiveBridge()
         B.ticks(30)
         B.probe("rebuild")
@@ -238,6 +269,8 @@ def scene(a, det):
             print("UNMEASURED: census failed or the spans were not up before launch: %s" % json.dumps(why))
             det["unmeasured"] = why
             return 2
+        det["snap"] = snap_verdict((fallen_of(before, ids[3]), fallen_of(before, ids[2])), fallen_of(left, ids[3]), fallen_of(after, ids[2]))
+        print("snap", json.dumps(det["snap"], default=str), {k: left.get(k) for k in ("error", "fallenCords")})
         cache = {}
 
         def net_of(c):

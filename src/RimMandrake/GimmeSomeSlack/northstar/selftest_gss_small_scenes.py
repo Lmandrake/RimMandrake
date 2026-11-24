@@ -288,6 +288,12 @@ check("ship planted: a lamp on another net than its battery", GS.true_to_grid([(
 check("ship control: fails by name on the landed map", GS.control_verdict(E1, lambda c: None)[0] == "PASS")
 check("ship control: a read that cannot fail is not a pass", GS.control_verdict(E1, lambda c: 1)[0] == "UNMEASURED")
 check("ship control: no pre-launch cord is UNMEASURED", GS.control_verdict([], lambda c: None)[0] == "UNMEASURED")
+AN = lambda aid, n: {"success": True, "anchors": [{"id": aid, "fallen": [{}] * n}]}
+check("ship snap: a half lies at the ground anchor and one hangs from the ship's pole", GS.snap_verdict((0, 0), 1, 1)[0] == "PASS")
+check("ship snap planted: the wire coiled (nothing fell anywhere)", GS.snap_verdict((0, 0), 0, 0)[0] == "FAIL")
+check("ship snap planted: the ship keeps no half", GS.snap_verdict((0, 0), 1, 0)[0] == "FAIL")
+check("ship snap: a count that could not be read is UNMEASURED, never 0", GS.snap_verdict((0, 0), None, 1)[0] == "UNMEASURED" and GS.fallen_of({"success": False}, 3) is None
+      and GS.fallen_of(AN(4, 1), 3) is None and GS.fallen_of(AN(3, 1), 3) == 1)
 check("ship: one net needs the battery and both consumers", GS.one_net([("b", 1), ("l", 1)])[0] is None and GS.one_net([("b", 1), ("l", 1), ("m", 1)])[0]
       and GS.one_net([("b", 1), ("l", 1), ("m", 2)])[0] is False and GS.one_net([("b", -1), ("l", -1), ("m", -1)])[0] is False)
 

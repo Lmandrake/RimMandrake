@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs
+index 13bcaf80c7..0ca8cf520e 100644
+--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs
++++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs
+@@ -472,7 +472,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
+                     else
+                     {
+                         if (!plan.Grounded.Contains(partner)) plan.Grounded.Add(partner);
+-                        snapped = st == SpanState.Up;
++                        snapped = false;
+                     }
+                 }
+                 if (!plan.Reseed.Contains(partner)) plan.Reseed.Add(partner);

@@ -1,0 +1,115 @@
+{
+ "mod": "GimmeSomeSlack",
+ "script": "gravship_scene.py",
+ "mode": "live",
+ "started": "2026-11-24T13:23:22",
+ "rows": [
+  {
+   "id": "GS3_auto_link_on_keep_wires_off_span_stays_down",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "setting": "keepWiresOnGravship",
+    "value": false,
+    "netBefore": [
+     [
+      "Battery22737",
+      771630196
+     ],
+     [
+      "StandingLamp22738",
+      771630196
+     ],
+     [
+      "StandingLamp22739",
+      771630196
+     ]
+    ],
+    "mode": "off_autolink",
+    "before": {
+     "spansUp": 2
+    },
+    "after": {
+     "spansUp": 0,
+     "spansCut": 0
+    },
+    "aboardSpanUp": false,
+    "groundLinkKept": false,
+    "cords": {
+     "cordEdges": 5,
+     "cordsAcrossNets": 0,
+     "verticesInUnwalkable": 15,
+     "conduitCells": 8,
+     "inBracketWalls": [
+      15,
+      0
+     ]
+    },
+    "links": [],
+    "ids": [
+     22725,
+     22726,
+     22727,
+     22728
+    ],
+    "netAfter": [
+     [
+      "Battery22737",
+      330484178
+     ],
+     [
+      "StandingLamp22738",
+      330484178
+     ],
+     [
+      "StandingLamp22739",
+      330484178
+     ]
+    ],
+    "cordsRead": 5,
+    "whyNot": [],
+    "verdict": "PASS"
+   }
+  },
+  {
+   "id": "GS2_prelaunch_cords_fail_on_landed_map",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "prelaunchCords": 5,
+    "failByName": [
+     [
+      "consumer:135,55|battery:132,56",
+      "ends outside the landed net: [(135, 55), (132, 56)]"
+     ],
+     [
+      "consumer:138,55|battery:132,56",
+      "ends outside the landed net: [(138, 55), (132, 56)]"
+     ],
+     [
+      "junction:132,56|battery:132,56",
+      "ends outside the landed net: [(132, 56), (132, 56)]"
+     ],
+     [
+      "junction:132,56|terminal:136,56",
+      "ends outside the landed net: [(132, 56), (136, 56)]"
+     ]
+    ],
+    "faults": 5
+   }
+  },
+  {
+   "id": "GS4_ground_wire_snaps_at_launch",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "fallenBefore": [
+     0,
+     0
+    ],
+    "groundAnchorAfterLaunch": 0,
+    "shipPoleAfterLanding": 1
+   }
+  }
+ ]
+}

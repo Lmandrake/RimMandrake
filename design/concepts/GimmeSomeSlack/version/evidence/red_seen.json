@@ -13,17 +13,17 @@
   "test_blob": "39ea3b4360cbee8337798b179acd787553dfd7e3"
  },
  "T_CORE": {
-  "at": "2026-11-24T14:14:56Z",
+  "at": "2026-11-24T20:49:02Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
   "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
-  "last": "5849/5859 checks passed",
-  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs\nindex eb85622bbd..11d25c403f 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs\n@@ -60,7 +60,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n             var res = new List<Cell> { end.Value };\n             Dictionary<Cell, int> runs = null;\n             if (parentCell.HasValue && w.IsConduit(parentCell.Value) && Degree(w, parentCell.Value) <= 1\n-                && (w.IsBuried(end.Value) || RunOf(w, parentCell.Value, ref runs) != RunOf(w, end.Value, ref runs))) res.Add(parentCell.Value);\n+                && true) res.Add(parentCell.Value);\n             return res;\n         }\n \n",
+  "last": "5910/5912 checks passed",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs\nindex 13bcaf80c7..0ca8cf520e 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs\n@@ -472,7 +472,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial\n                     else\n                     {\n                         if (!plan.Grounded.Contains(partner)) plan.Grounded.Add(partner);\n-                        snapped = st == SpanState.Up;\n+                        snapped = false;\n                     }\n                 }\n                 if (!plan.Reseed.Contains(partner)) plan.Reseed.Add(partner);\n",
   "patch_files": [
-   "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs"
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs"
   ],
-  "patch_sha": "5dc37ad00bf6b8c5",
+  "patch_sha": "b9d23f08afdbf914",
   "rc": 1,
-  "test_blob": "3a50c0cdf340cbbd4985b7dafa6e157c6ef241c4"
+  "test_blob": "fb5928fb89719ded2385283f3d677868c9556be4"
  },
  "T_H_PLAYTEST_RUNNER": {
   "at": "2026-11-20T15:51:20Z",
