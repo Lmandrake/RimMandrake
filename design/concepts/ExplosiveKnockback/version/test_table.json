@@ -229,11 +229,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.15,
+    "seconds": 0.26,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-24T03:39:53Z",
+    "at": "2026-11-24T06:59:57Z",
     "result": "PASS",
-    "build": "8b14e546ac0babcce6cc",
+    "build": "cc5202aa9e41701838a3",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py",
     "margins": []
    }
@@ -253,11 +253,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.25,
+    "seconds": 11.23,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-24T03:39:57Z",
+    "at": "2026-11-24T07:00:09Z",
     "result": "PASS",
-    "build": "4dea16a15320201f4ee3",
+    "build": "761647fe0c7f1a92fe88",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
     "margins": []
    }
@@ -452,9 +452,9 @@
     "rc": 0,
     "seconds": 0.03,
     "last": "PASS stage3 scenes: 0 failed",
-    "at": "2026-11-23T22:40:50Z",
+    "at": "2026-11-24T07:00:09Z",
     "result": "PASS",
-    "build": "e734f16a7eb60a7a9183",
+    "build": "2b7230b42b66ead3c264",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
     "margins": []
    }
@@ -1797,11 +1797,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.05,
     "last": "FRAME_BUDGET offline selftest: PASS (8 case(s), 0 failed)",
-    "at": "2026-11-24T03:39:57Z",
+    "at": "2026-11-24T07:00:09Z",
     "result": "PASS",
-    "build": "eff04725f4f4417a68ca",
+    "build": "82b462ca802b25a35dd7",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/validation.py --selftest",
     "margins": []
    }
@@ -1820,11 +1820,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.29,
+    "seconds": 4.29,
     "last": "ALL PASS",
-    "at": "2026-11-23T10:30:24Z",
+    "at": "2026-11-24T07:00:13Z",
     "result": "PASS",
-    "build": "a260f972e8524835fd27",
+    "build": "8cc347acb6d2bc33b712",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_barrage_p99.py",
     "margins": []
    }
@@ -1989,11 +1989,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.43,
+    "seconds": 0.72,
     "last": "PASS walk_storeroom_raid leaf: 0 failed",
-    "at": "2026-11-24T03:43:33Z",
+    "at": "2026-11-24T07:00:14Z",
     "result": "PASS",
-    "build": "32f37bc49dde49db0ee2",
+    "build": "4f289670719a666475c8",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_walk_raid.py",
     "margins": []
    }
