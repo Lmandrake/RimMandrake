@@ -2261,6 +2261,8 @@ def main(argv=None):
     a.add_argument("--continue-on-cap", type=int, default=0, metavar="N",
                    help="a stop by the spend watchdog is carried on by itself up to N times (left_open_continue.py); "
                         "default 0: a cap stop ends the work")
+    a.add_argument("--host", metavar="NAME", help="start the run on this host (SteveDesktop) as a systemd user unit in its "
+                                                   "own clone under ~/rm/list/; default: this machine (run_host.py)")
     a.add_argument("--next-act-owner", metavar="NAME",
                    help="the program that reads this run's LEFT OPEN: note and decides its next run (list_dispatch: the "
                         "List Pipeline's two-run rule); left_open_continue.py does not continue such a run")
@@ -2287,6 +2289,16 @@ def main(argv=None):
         if args.agent:
             env[AGENT_ENV] = args.agent
         bad = [k for k in env if not re.match(r"^RM_[A-Z0-9_]+$", k)]
+        if args.host and args.host.strip().lower() not in ("archmagi", "local"):
+            import run_host
+            facts = run_host.read_facts(args.host, "~/rm/list/%s" % args.item, os.environ.get("RM_PICKED_ACCOUNT"))
+            pl = run_host.plan(args.host, args.item, "~/rm/list/%s.brief.md" % args.item, facts)
+            print("%s: %s" % (pl["verdict"], pl["why"]))
+            if pl["verdict"] != "REMOTE":
+                return 2 if pl["verdict"] == "REFUSED" else 5
+            r = subprocess.run(pl["argv"], capture_output=True, text=True, timeout=300)
+            print((r.stdout + r.stderr).strip())
+            return r.returncode
         budget, carried = args.budget_usd, ""
         if budget is None and args.resume:
             budget, src = earlier_cap(args.resume)

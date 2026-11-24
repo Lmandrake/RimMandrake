@@ -5,8 +5,8 @@ It must come back after reboots, Windows Update and power cuts, stay reachable a
 from Archmagi (192.168.86.221), and keep itself up to date (git pull, apt, winget, Claude Code).
 
 **Plan this serves:** `design/RimMandrake/stevedesktop_bringup_plan_2026-10-24.md` (Phase 1 plus
-the unattended part of Phase 2). The principle stands: SteveDesktop is a token-free runner, not a
-second agent farm.
+the unattended part of Phase 2). Since 2026-11-24 (owner's order) SteveDesktop also works open non-mod list tickets:
+`detached_helper.py launch --host SteveDesktop` starts a run as a user unit in `~/rm/list/<ITEM>`, never in the test lane's clones.
 
 **Its games:** SteveDesktop runs two games, **Steve1** (lock key `stevedesktop`) and **Steve2** (lock key
 `stevedesktop.b`). Name them so in every line you write; the machine is still SteveDesktop. Every tool takes the names
