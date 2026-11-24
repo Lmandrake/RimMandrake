@@ -4508,7 +4508,7 @@ def _walk_steady_colonists(t):
     if not _live(t):
         return
     got = {}
-    for q in _ok(r, "list_pawns").get("pawns") or []:
+    for q in _ok(r, "the colonist listing").get("pawns") or []:
         if q.get("intelligence") == "Humanlike" and q.get("isPlayer") and not q.get("dead"):
             h = t.bridge_call("jawa/pawn_health", pawn=q["id"], action="healAll", confirmDestructive=True)
             got[q["id"]] = (h or {}).get("removed") if (h or {}).get("success") else "refused: %r" % (h or {}).get("message")
