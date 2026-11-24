@@ -16,6 +16,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -163,6 +164,7 @@ def t_a_check_that_already_holds_is_refused_at_attach_unless_seen_failing_at_fil
         f.write("the plan runs to 2026-11-29\n")
     _git("commit", "-q", "-am", "two", env={"GIT_COMMITTER_DATE": "2026-11-10T00:00:00Z",
                                              "GIT_AUTHOR_DATE": "2026-11-10T00:00:00Z"})
+    _git("update-ref", "refs/remotes/origin/main", "HEAD")
     import calendar
     t_between = float(calendar.timegm((2026, 11, 6, 0, 0, 0)))     # after commit one, before commit two
     t_after = float(calendar.timegm((2026, 11, 15, 0, 0, 0)))
@@ -391,16 +393,84 @@ def t_closed_reads_item_states_for_a_check():
     chk(lambda: rc != 0, "closed: an unreadable ledger never reads 0 (got %s)" % rc)
 
 
+def t_both_ticks_keep_an_operational_item_open_until_its_live_promise_holds():
+    import list_dispatch as LD
+
+    missing, plain, declared, blind = ["RIMMANDRAKE_TEST_CHECK_CLOSE_" + s for s in
+                                       ("LIVE_MISSING", "PLAIN_WORK", "UNIT_DECLARES", "GIT_UNREADABLE")]
+    check = "path-has:check-close.txt::READY"
+    directory = "src/RimMandrake/Utils/systemd"
+    line = "unit=y.timer max_age=1h"
+    for iid in (missing, plain, declared, blind):
+        chk(lambda iid=iid: file_item(iid, check)[0] == 0, "filed fixture item " + iid)
+    with patch.dict(X, root=X["git"]):
+        for name, body, subject in ((directory + "/x.timer", "[Timer]\n", missing),
+                                     ("plain.py", "# ordinary work\n", plain),
+                                     (directory + "/y.timer", "# Live: " + line + "\n[Timer]\n", declared),
+                                     (directory + "/other.timer", "[Timer]\n", plain + "_OTHER\n\n" + plain)):
+            page(name, body)
+            _git("add", name)
+            _git("commit", "-qm", subject)
+        _git("update-ref", "refs/remotes/origin/main", "HEAD")
+        page(directory + "/local.timer", "[Timer]\n")
+        _git("add", directory + "/local.timer")
+        _git("commit", "-qm", plain)
+    fake_bin = os.path.join(X["state"], "bin")
+    os.mkdir(fake_bin)
+    systemctl = os.path.join(fake_bin, "systemctl")
+    with open(systemctl, "w", encoding="utf-8") as f:
+        f.write('#!/bin/sh\ncase "$2" in\nis-enabled) echo enabled;;\nis-active) echo active;;\n'
+                'show) date +%s;;\n*) exit 2;;\nesac\n')
+    os.chmod(systemctl, 0o755)
+    fx = {"pause": lambda now: None, "blocked": lambda iid: None, "need": no_hand}
+
+    def dispatch():
+        facts = {"items": {missing: {"state": "open", "effect": check, "verdict": "holds", "events": 1}}, "runs": {}}
+        return LD.tick(LD.load_cfg(), apply=True, fx={"facts": lambda st: facts, "account": lambda: (True, ""),
+            "close": lambda iid, text, why: LD.close(iid, text, why, publish=False)})["items"][missing]
+
+    with patch.dict(os.environ, PATH=fake_bin + os.pathsep + os.environ["PATH"],
+                    RM_LIST_DISPATCH_DIR=os.path.join(X["state"], "dispatch")):
+        with patch.dict(os.environ):
+            row = dispatch()
+        chk(lambda: world().items[missing].open, "list_dispatch leaves the timer item open without a live line (got %s)"
+            % row["decision"])
+        page("check-close.txt", "READY\n")
+        _git("update-ref", "-d", "refs/remotes/origin/main")
+        rows = LE().tick(apply=True, publish=False, root=X["root"], fx=fx)["items"]
+        chk(lambda: world().items[blind].open and "could not look" in rows[blind]["why"].lower(),
+            "a failed origin/main read is could_not_look and closes nothing (got %s)" % rows[blind]["decision"])
+        _git("update-ref", "refs/remotes/origin/main", "HEAD^")
+        LE().tick(apply=True, publish=False, root=X["root"], fx=fx)
+        chk(lambda: world().items[missing].open, "list_effect also leaves the timer item open without a live line")
+        chk(lambda: world().items[plain].state == "done" and not world().items[plain].live,
+            "a plain item closes without a promise even if a body, another id or a local commit touches a timer")
+        chk(lambda: world().items[declared].live == line, "a holding live line from the item's committed timer is recorded")
+        notes = [e["text"] for e in events() if e.get("id") == missing and e.get("event") == "note"]
+        chk(lambda: len(notes) == 1 and directory + "/x.timer" in notes[0] and "rimflow close " + missing in notes[0]
+            and "--live" in notes[0], "the two ticks write one note naming the timer and the command to pass")
+        item_line = "unit=x.timer reading=%s max_age=1h" % os.path.join(X["root"], "timer-reading")
+        with open(os.path.join(os.environ["RIMFLOW_ITEMS"], missing + ".md"), "w", encoding="utf-8") as f:
+            f.write("## live\n" + item_line + "\n")
+        rows = LE().tick(apply=True, publish=False, root=X["root"], fx=fx)["items"]
+        chk(lambda: world().items[missing].open and "reading" in rows[missing]["why"],
+            "a declared promise whose reading fails leaves the item open")
+        page("timer-reading", "fresh\n")
+        LE().tick(apply=True, publish=False, root=X["root"], fx=fx)
+        chk(lambda: world().items[missing].state == "done" and world().items[missing].live == item_line,
+            "the later tick records the item's own live line once it holds")
+
+
 def main():
     top = tempfile.mkdtemp(prefix="selftest_list_effect_")
     X.update(root=os.path.join(top, "root"), git=os.path.join(top, "git"), state=os.path.join(top, "state"))
     os.makedirs(X["root"])
     os.makedirs(X["state"])
-    keys = ("RIMFLOW_LEDGER", "RIMFLOW_ITEMS", "RIMFLOW_GITINDEX", "RIMFLOW_PROBE", "RM_LIST_EFFECT_DIR",
+    keys = ("RIMFLOW_LEDGER", "RIMFLOW_ITEMS", "RIMFLOW_GITINDEX", "RIMFLOW_GIT_CWD", "RIMFLOW_PROBE", "RM_LIST_EFFECT_DIR",
             "RM_LIST_EFFECT_ROOT", "RM_CONTROL_DB", "RM_PIPELINE_PAUSE_FILE", "RM_DISPATCHER_STATE", "RM_ROLE_UNIT")
     saved = {k: os.environ.get(k) for k in keys}
     os.environ.update(RIMFLOW_LEDGER=os.path.join(top, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(top, "items"),
-                      RIMFLOW_GITINDEX="off", RIMFLOW_PROBE="no-reading", RM_LIST_EFFECT_DIR=X["state"],
+                      RIMFLOW_GITINDEX="off", RIMFLOW_GIT_CWD=X["git"], RIMFLOW_PROBE="no-reading", RM_LIST_EFFECT_DIR=X["state"],
                       RM_LIST_EFFECT_ROOT=X["root"], RM_CONTROL_DB=os.path.join(top, "control.db"),
                       RM_PIPELINE_PAUSE_FILE=os.path.join(top, "pause.json"),
                       RM_DISPATCHER_STATE=os.path.join(top, "dstate"))
@@ -423,7 +493,7 @@ def main():
                   t_the_tick_launches_nothing_and_files_nothing,
                   t_a_refused_close_is_not_sent_again_unchanged,
                   t_a_close_of_an_item_already_done_is_not_a_refusal, t_a_dry_beat_writes_nothing,
-                  t_closed_reads_item_states_for_a_check):
+                  t_closed_reads_item_states_for_a_check, t_both_ticks_keep_an_operational_item_open_until_its_live_promise_holds):
             try:
                 t()
             except Exception as e:  # noqa: BLE001

@@ -65,6 +65,9 @@ Why: on 2026-11-23 Fleet Now listed 4 things for him and Maturation Now's "Needs
   `owner_queue.one_view`. `maturation_now.live_facts` writes the view it built (`write_view`);
   `running_now` reads that view and the shared count through its own file reader, shows the view while it is younger
   than `VIEW_FRESH_S`, and else draws the same block from its own fleet reading.
+- **the-live-promise-follows-the-shared-view-file.** The item's `## live` line names the timer that builds Maturation
+  Now and the `owner_view/view.json` it writes. The line holds when the timer is enabled and active and the file is
+  within `VIEW_FRESH_S` (five minutes, Fleet Now's refresh period). A firing alone cannot prove that the view was written.
 - **each-limit-names-its-danger.** `WINDOW_S`, `TTL_S`, `NAMES_SHOWN` and `VIEW_FRESH_S` are written beside their
   dangers.
 

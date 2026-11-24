@@ -164,6 +164,24 @@ def _git(root, *args):
     return PR.value(r.stdout)
 
 
+def live_changes(iid, root):
+    """One log for the item being closed. Return the published changes that oblige a live line, newest first."""
+    import live_line
+    import probe_result as PR
+    got = _git(root, "log", "origin/main", "--format=%x1e%H%x00%ct%x00%s", "--name-status", "-z",
+               "--no-renames", "--diff-merges=first-parent", "-F", "--grep=" + iid)
+    if not got.ok:
+        return got
+    named = re.compile(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(iid))
+    changes = []
+    for chunk in got.value.split("\x1e")[1:]:
+        sha, at, subject, *files = chunk.rstrip("\0").split("\0")
+        if named.search(subject):
+            changes.extend((path, sha, int(at), status.strip()) for status, path in zip(files[::2], files[1::2])
+                           if live_line.needs_line([path]))
+    return PR.value(changes) if changes else PR.empty()
+
+
 def at_commit(text, root, filed_ts):
     """-> (verdict, rev) of a path check over the repo as it stood when the item was filed; (None, why) when that cannot
     be read (a cmd check, no git, no commit before the filing)."""
@@ -275,6 +293,10 @@ def _blocked(iid):
     return C.blocked({"family": FAMILY, "item": iid})
 
 
+LIVE_WAIT, LIVE_BLIND = 5, 6          # shared close results for both ticks, separate from a refused close
+LIVE_WAIT_PREFIX = "close: live promise pending: "
+
+
 def close_item(iid, text, why, publish):
     """`rimflow close <iid> --no-code <text>` as the pipeline's act. -> (rc, output). An item that is already done is
     closed (rc 0): its own run closed it between the tick's read and this close."""
@@ -291,6 +313,9 @@ def close_item(iid, text, why, publish):
     except (OSError, subprocess.TimeoutExpired) as e:
         return 99, "%s: %s" % (type(e).__name__, e)
     said = ((r.stdout or "") + (r.stderr or "")).strip()
+    pending = next((line for line in (r.stdout or "").splitlines() if line.startswith(LIVE_WAIT_PREFIX)), None)
+    if pending and r.returncode in (0, 4):   # the note can be published through the normal success path
+        return LIVE_WAIT, said
     if r.returncode and ("%s is already `done`" % iid) in said:     # model's SECOND-close refusal: its run closed it first
         return 0, said
     return r.returncode, said
@@ -399,6 +424,9 @@ def _tick(apply, publish, root, fx, now, d):
         if rc == 0:
             put("closed_by_check", "closed: %s" % _one(out, 200))
             s.pop("refused", None)
+            continue
+        if rc in (LIVE_WAIT, LIVE_BLIND):
+            put("blind" if rc == LIVE_BLIND else "close_refused", _one(said, 600))
             continue
         why = _one(said, 600) or "rc %s" % rc
         s["refused"] = {"fp": fp, "why": why, "at": now}

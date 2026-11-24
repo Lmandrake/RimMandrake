@@ -34,7 +34,7 @@ oldest item that another waits on, then oldest filing, one decision:
   system_wait     the last run died of a cause outside the work, or max_never_started launches in a row never started:
                   nothing is spent (failure_class), the next launch waits SYSTEM_WAIT_S
   disabled | pipeline_paused | account_hold | chain_stop | slots_full | pool_full   the gates
-                  slots_full: max_live lane runs are live, and the load average plus this tick's launches is at load_line
+                  slots_full: the own slots are full and load plus recent and same-tick launches leaves no spare room
   launch          one detached helper (detached_helper.py launch --next-act-owner list_dispatch), sonnet when the check
                   runs a selftest or acceptance script, else opus
 A run's end is read from the item: closed (done), a wait (Waiting), a `LEFT OPEN:` note (its next act: one more run),
@@ -202,9 +202,9 @@ def pick_model(cfg, effect):
 
 # ---- the decision ---------------------------------------------------------------------------------------------------
 
-def slot_free(cfg, live_total, new, load):
+def slot_free(cfg, live_total, new, load, *, recent=0):
     """-> (free, why not). The lane's own max_live slots always; past them, spare room on the machine: the load average
-    plus load_per_run for each launch of this tick stays under load_line. load None: it could not be read, no spare."""
+    plus load_per_run for each recent or same-tick launch stays under load_line. None means no reading and no spare."""
     most = int(cfg.get("max_live", 2))
     if live_total < most:
         return True, None
@@ -214,11 +214,13 @@ def slot_free(cfg, live_total, new, load):
         return False, why
     if load is None:
         return False, why + "; the load average could not be read, so no spare room is counted"
-    est = load + float(cfg.get("load_per_run", 0)) * new
+    if recent is None:
+        return False, why + "; recent launch records could not be read, so no spare room is counted"
+    est = load + float(cfg.get("load_per_run", 0)) * (new + recent)
     if est < float(line):
         return True, None
-    return False, "%s; load average %.1f and %d launch(es) of this tick reach the machine's line of %g" % (
-        why, load, new, float(line))
+    return False, "%s; load average %.1f plus %d recent and %d same-tick launches reaches the machine's line of %g" % (
+        why, load, recent, new, float(line))
 
 
 def load_now():
@@ -247,6 +249,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
     live_total = sum(len((runs.get(i) or {}).get("live") or []) for i in lane
                      if (lane[i] or {}).get("effect") or (lane[i] or {}).get("shape_due"))
     paused, pool = facts.get("paused"), facts.get("pool")
+    recent = facts.get("recent")
     max_runs = int(cfg.get("max_runs_per_item", 2))
     max_never = int(cfg.get("max_never_started", 2))
     rows, launches = [], []
@@ -429,7 +432,10 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("chain_stop", "its chain of causes already holds %s lane runs; %s is the most" % (
                 it.get("depth"), cfg.get("max_chain_depth", 2)))
             continue
-        free, full = slot_free(cfg, live_total, len(launches), (facts or {}).get("load"))
+        free, full = slot_free(cfg, live_total, len(launches), facts.get("load"),
+                               recent=0 if recent is None else recent.value if recent.ok else None)
+        if not free and recent is not None and not recent.ok:
+            full += " (%s)" % recent
         if not free:
             put("slots_full", full)
             continue
@@ -514,19 +520,32 @@ def _clone_exists(iid):
     return os.path.isdir(os.path.join(DH.pool_root(), "clones", iid + ".det"))
 
 
-def _runs(ids):
+def _runs(ids, now, lag):
     import detached_helper as DH
-    out = {}
-    for rec in DH.all_records():
-        if rec.get("item") not in ids:
-            continue
-        stt = DH.live_status(rec)
-        r = out.setdefault(rec["item"], {"live": [], "ended": []})
-        r["live" if stt in ("launching", "running") else "ended"].append(rec["unit"])
-        fc = FC.of_run(rec)
-        if stt not in ("launching", "running") and not fc.counts:
-            r.setdefault("system", {})[rec["unit"]] = "%s (%s)" % (fc.word, fc.why)
-    return out
+    import probe_result as PR
+    out, unreadable, recent = {}, [], 0
+    try:
+        for rec in DH.all_records(unreadable=unreadable.append):
+            item = rec.get("item")
+            lane = rec.get("next_act_owner") == FAMILY
+            if item not in ids and not lane:
+                continue
+            live = DH.live_status(rec) in ("launching", "running")
+            if live and lane:
+                at = rec.get("at")
+                if type(at) not in (int, float) or not 0 < at < float("inf"):
+                    unreadable.append("%s has no readable launch time" % rec["unit"])
+                elif 0 < now - at < lag:
+                    recent += 1
+            if item in ids:
+                r = out.setdefault(item, {"live": [], "ended": []})
+                r["live" if live else "ended"].append(rec["unit"])
+                fc = FC.of_run(rec)
+                if not live and not fc.counts:
+                    r.setdefault("system", {})[rec["unit"]] = "%s (%s)" % (fc.word, fc.why)
+    except OSError as e:
+        unreadable.append(str(e))
+    return out, PR.could_not_look(unreadable[0]) if unreadable else PR.value(recent)
 
 
 def _paused(now):
@@ -569,7 +588,7 @@ def block_facts(world, x, now):
     return waits, not waits
 
 
-def gather(st, now=None, root=None):
+def gather(st, now=None, root=None, load_lag_s=None):
     import list_effect as LE
     now = time.time() if now is None else now
     root = root or LE.check_root()
@@ -623,7 +642,7 @@ def gather(st, now=None, root=None):
                 d["accept_why"] = ((st.get("items") or {}).get(iid) or {}).get("accept_timed", {}).get("why")
         items[iid] = d
     ordered = {i: items[i] for i in order_ids(items)}
-    runs = _runs(set(ordered))
+    runs, recent = _runs(set(ordered), now, cfg["load_lag_s"] if load_lag_s is None else load_lag_s)
     _read_next(st, ordered, runs)
     paused = _paused(now)
     for iid, d in ordered.items():
@@ -646,7 +665,7 @@ def gather(st, now=None, root=None):
     live = sum(len(r["live"]) for r in runs.values())
     load = load_now()
     return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused,
-            "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None}
+            "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent}
 
 
 def account_gate(gate=None, drain=None, now=None):
@@ -760,6 +779,7 @@ def _need_text(n):
 
 
 def execute(cfg, st, rows, launches, facts, now, fx=None):
+    import list_effect as LE
     fx = fx or {}
     do_launch, do_need = fx.get("launch", launch), fx.get("need", conductor_need)
     do_close, do_attach = fx.get("close", close), fx.get("effect", attach)
@@ -783,6 +803,8 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
                 row["decision"] = "closed_by_check"
                 if rc:
                     row["why"] = "closed; the event is written, not landed yet: %s" % _one(said, 200)
+            elif rc in (LE.LIVE_WAIT, LE.LIVE_BLIND):
+                row.update(decision="blind" if rc == LE.LIVE_BLIND else "close_refused", why=_one(said, 600))
             else:
                 s["close_refused"] = {"fp": [it.get("effect"), it.get("events")], "why": _one(said, 600), "at": now}
                 row.update(decision="close_refused", why=_one(said, 300))
@@ -827,7 +849,7 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         fcntl.flock(lock, fcntl.LOCK_EX)
     try:
         st = _read(os.path.join(d, "state.json"), {})     # a dry tick reads it and writes nothing
-        facts = fx["facts"](st) if "facts" in fx else gather(st, now)
+        facts = fx["facts"](st) if "facts" in fx else gather(st, now, load_lag_s=cfg.get("load_lag_s"))
         account = fx["account"]() if "account" in fx else account_gate()
         gone = []
         if only and facts.get("items") is not None:     # the Conductor's run-now: these items, every gate

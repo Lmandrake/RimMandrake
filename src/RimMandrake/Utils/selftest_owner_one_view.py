@@ -10,6 +10,7 @@ import datetime as dt
 import json
 import os
 import re
+import subprocess
 import sys
 import tempfile
 
@@ -224,11 +225,38 @@ def t_each_limit_names_its_danger():
             assert m and "Danger" in m.group(1) and "Evidence" in m.group(1), "%s has no danger and evidence" % n
 
 
+def t_the_live_promise_follows_the_shared_view_file():
+    import doorbell
+    import live_line
+
+    iid = "RIMMANDRAKE_BUILD_ONE_OWNER_VIEW_NO_HOME_COUNT_BESIDE"
+    path = os.path.join(REPO, "infrastructure/state/items/closed", iid + ".md")
+    with open(path, encoding="utf-8") as f:
+        match = re.search(r"^## live\n(\S[^\n]*)", f.read(), re.M)
+    assert match, "the owner-view item has no live line"
+    line = match[1]
+    p = live_line.parse(line)
+    assert p["unit"] == "rm-maturation-page.timer" and p["max_age_s"] == OQ.VIEW_FRESH_S, p
+    assert live_line.local_path(p["reading"]) == os.path.join(doorbell.DEFAULT_STATE, "owner_view", "view.json"), p
+    path = OQ.view_path()
+    assert OQ.write_view([], [], HOME, NOW) is None
+    os.utime(path, (NOW, NOW))
+
+    def systemctl(argv, **kw):
+        assert argv[-1] == p["unit"], argv
+        return subprocess.CompletedProcess(argv, 0, {"is-enabled": "enabled", "is-active": "active"}[argv[2]], "")
+
+    line = line.replace(p["reading"], path)
+    assert live_line.check(line, now=NOW + 60, runner=systemctl) is None
+    assert "old" in live_line.check(line, now=NOW + OQ.VIEW_FRESH_S + 1, runner=systemctl)
+
+
 def main():
     tests = [t_count_sums_the_readable_sources, t_no_readable_source_is_none_never_zero, t_an_unanswered_card_is_a_need,
              t_an_ended_run_with_no_later_act_is_a_need, t_the_reading_is_shared_and_cached,
              t_a_test_never_writes_the_shared_files,
-             t_one_view_shows_his_ours_and_the_count, t_not_his_before_its_turn, t_both_pages_build_from_one_view, t_each_limit_names_its_danger]
+             t_one_view_shows_his_ours_and_the_count, t_not_his_before_its_turn, t_both_pages_build_from_one_view,
+             t_the_live_promise_follows_the_shared_view_file, t_each_limit_names_its_danger]
     failed = 0
     for t in tests:
         try:

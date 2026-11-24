@@ -59,6 +59,7 @@ import datetime
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import time
@@ -2685,6 +2686,64 @@ def _live_gate(verb, args, it, sha):
     return line
 
 
+def _check_close_live(args, it, evs, seat):
+    """The shared List Pipeline close gate. Return (line, None), or (None, the CLI result that leaves it open)."""
+    import fcntl
+    import list_effect as LE
+    import live_line
+
+    root = os.environ.get("RIMFLOW_GIT_CWD") or model.ROOT
+    got = LE.live_changes(it.id, root)
+    if not got.ok:
+        print("close: could not look at %s's published changes: %s" % (it.id, got.cause))
+        return None, LE.LIVE_BLIND
+    changes = got.value
+    line = args.live or it.live
+    declared = next((body for name, body in read_prose(it.id) if name.lower() == "live" and body), None) if not line else None
+    if not changes and not declared:
+        return _live_gate("close", args, it, None), None
+
+    line = line or declared
+    candidates = [line] if line else []
+    seen = set()
+    for path, sha, _, status in changes if not line else ():
+        if path in seen:
+            continue
+        seen.add(path)
+        if status == "D" or not path.endswith((".service", ".timer")):
+            continue
+        unit = LE._git(root, "show", sha + ":" + path)
+        if not unit.ok:
+            print("close: could not look at %s's %s: %s" % (it.id, path, unit.cause))
+            return None, LE.LIVE_BLIND
+        candidates.extend(m.strip() for m in re.findall(r"^#\s*Live:[ \t]*(.+)$", unit.value, re.M))
+    since = max((at for _, _, at, _ in changes), default=0)
+    why = "no live line was declared"
+    for line in candidates:
+        why = live_line.check(line, not_before=since)
+        if not why:
+            return line, None
+
+    where = changes[0][0] if changes else "the item's promise"
+    repair = line or "<live line that holds>"
+    if not line and where.endswith(".timer"):
+        repair = "unit=%s max_age=<cadence>" % os.path.basename(where)
+    note = "Live promise needed for %s: %s. To pass once it holds, run `rimflow close %s --no-code 'outcome check holds' --live %s`." % (
+        where, why, it.id, shlex.quote(repair))
+
+    def noted(events):
+        return any(e.get("id") == it.id and e.get("event") == "note" and
+                   str(e.get("text") or "").startswith("Live promise needed for ") for e in events)
+
+    if not noted(evs):
+        with open(os.path.join(LE.sdir(), "live-close-note.lock"), "a") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            if not noted(model.read()):
+                _emit({"seat": seat, "event": "note", "id": it.id, "text": note}, quiet=True)
+    print(LE.LIVE_WAIT_PREFIX + note)
+    return None, 0      # publish the note, if written. The close caller reads the pending line above.
+
+
 def cmd_live(args, seat):
     """The sweep's reading of a promise (deadman_check.py). RUNNER only, by the verb table."""
     _, w = load()
@@ -3009,7 +3068,13 @@ def cmd_close(args, seat):
         ev["form_notes"] = form_notes
     ev.update(rest[0])
     try:
-        line = _live_gate("close", args, it, None if no_code else sha)
+        if no_code and it is not None and it.open and os.environ.get("RM_ROLE_UNIT") in (
+                "rm-list-dispatch.service", "rm-list-effect.service"):
+            line, pending = _check_close_live(args, it, evs, seat)
+            if pending is not None:
+                return pending
+        else:
+            line = _live_gate("close", args, it, None if no_code else sha)
     except SystemExit:
         if getattr(args, "shadow_owed", False):
             _evidence_shadow(args, sha, no_code, [("live", "the live gate refused the close")], None)

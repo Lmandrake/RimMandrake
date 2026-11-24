@@ -42,3 +42,6 @@ show that it goes red (2026-11-22; the reference was deleted and is not in the r
 python3 design/specs/2026-11-22-coordination-every-agent-must-use/acceptance/step3b_stage_view_accept.py   # exit 0, PASS 17/17
 Acceptance test: watched failing on 87a18efda498: 17 of 17 fail, because list_pipeline.py does not exist. Expected: 17 pass.
 Shown to pass 16 of 17 against a throwaway reference (the last row needs the real files) and to go red on a planted fault.
+
+## live
+unit=rm-maturation-page.timer reading=/mnt/d/ClaudeWork/rimmandrake/dispatcher/owner_view/view.json max_age=5m

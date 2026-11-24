@@ -2,7 +2,7 @@
 
 Code: `src/RimMandrake/rimflow/list_effect.py` (all of it), `src/RimMandrake/rimflow/model.py` (the `effect` field of
 `file`, the `effect` verb, `Item.effect` and `Item.effect_seen`), `src/RimMandrake/rimflow/cli.py` (`file --effect`,
-`effect`), `src/RimMandrake/Utils/systemd/rm-list-effect.{service,timer}`.
+`effect`, the shared live gate on a List Pipeline check-close), `src/RimMandrake/Utils/systemd/rm-list-effect.{service,timer}`.
 Item: `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED`, step 1 of
 `design/specs/2026-11-22-coordination-every-agent-must-use/plan.md`. Why: 7 of the 48 Conductor debts in the census of
 2026-11-22 were done and never closed. Each promise has a test of its name in
@@ -48,19 +48,26 @@ Item: `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED`, step 1 of
   write the check and the attach reading on the ledger; `Item.effect` and `Item.effect_seen` replay them;
   `rimflow effect <ID> --clear` removes the check. A refused attach writes nothing.
 - **the-tick-closes-a-passing-item-as-the-pipelines-act-with-the-output.** A beat with `--apply` closes an open item whose
-  check holds: a `close` with `noCode` naming the check, the head sha and the check's output, a `role_unit` (the timer's
+  check holds and whose live gate allows the close: a `close` with `noCode` naming the check, the head sha and the check's output, a `role_unit` (the timer's
   unit), seat BENCH, and no `ownerSaid`, `byCard` or `perRuling`. The output is also kept whole in the evidence folder.
+- **both-ticks-keep-an-operational-item-open-until-its-live-promise-holds.** A check-close by either tick reads
+  `origin/main` for commits naming the item in their subject. If `live_line.needs_line` wants a promise for a changed
+  path, the close needs a live line that holds now and is current for the change. It can come from the item (an existing
+  promise or `## live`) or a `# Live:` declaration on a changed systemd unit. The close records the line. An item that
+  still owes a live line stays open with a single note naming the repair command. An unreadable git read leaves the item
+  open as `blind`. The next tick can close an item after the live line starts holding. Ordinary non-operational items
+  with no live line close as before.
 - **the-tick-closes-nothing-on-fails-unmeasured-or-no-check.** An item whose check fails or is unmeasured is not closed,
   and an item with no check is not looked at. A note on an item closes nothing.
 - **the-tick-obeys-pause-and-pipe-off.** Under the pipeline's pause (`pipeline_pause.blocks`), under `pipe off all`,
   `pipe off family:list_effect` or `pipe off item:<ID>`, and when the control store cannot be read, the beat closes
   nothing (the item reads `pipeline_paused`, `off` or `blind`).
-- **the-tick-launches-nothing-and-files-nothing.** A beat writes no `file`, `spawn` or `start` and starts no unit. Its
-  only ledger write is `close`. (That `close` itself files the remainder that the item's last note names as not built:
+- **the-tick-launches-nothing-and-files-nothing.** A beat writes no `file`, `spawn` or `start` and starts no unit. It
+  writes `close` or the one note for an operational item that still owes a live promise. (A `close` itself files the remainder that the item's last note names as not built:
   `design/specs/2026-11-24-close-files-its-remainder/boundary.md`.)
 - **a-refused-close-is-not-sent-again-unchanged.** When `rimflow close` refuses, the beat records the refusal with the
   item's event count, says it once on the Needs Conductor line, and sends no close for that item until the item or its
-  check changes.
+  check changes. A pending live line or an unreadable git read is checked again because either can recover between beats.
 - **a-close-of-an-item-already-done-is-not-a-refusal.** `close_item` returns 0 when `rimflow close` refuses because that
   item is already done. An item already dropped, another item's name in the text, and every other refusal stay refusals.
   Why: on 2026-11-23 a run closed its item while the beat was at work, and the beat raised a Needs Conductor line.

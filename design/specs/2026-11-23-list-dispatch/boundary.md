@@ -20,7 +20,7 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   `cmd:python3 <path>` as its check through `rimflow effect` (the step-1 gate: it must be seen failing). It launches
   nothing on that tick.
 - **the-detached-run-records.** `detached_helper.all_records()` and `live_status`: a unit is live while it is
-  `launching` or `running`.
+  `launching` or `running`. The lane asks `all_records` to report unreadable records during that same scan.
 - **the-gates.** The pipeline's pause (`pipeline_pause.blocks`), the control store (`control.blocked` with family
   `list_dispatch`, the item and the item's mod), the owner's mod holds (`mod_owner_hold`), the switching plan's drain (`detached_helper.drain_refusal`),
   the Dispatcher's account pick (`maturation_dispatch.account_gate`), the clone pool's admission (`scratch_clone.pool_admit`).
@@ -40,7 +40,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   only `st`, and returns one row per item with a non-empty `why`. A ledger that could not be read (`facts["items"]` is
   None) is one `blind` row and no launch.
 - **the-check-runs-before-every-attempt.** An item whose check holds reads `close`, whatever its runs; the tick closes it
-  as the pipeline's act (`list_effect.close_item`, role unit `rm-list-dispatch.service`) and launches nothing on it. An
+  as the pipeline's act (`list_effect.close_item`, role unit `rm-list-dispatch.service`) if its live gate allows it,
+  and launches nothing on it. Both ticks share the live gate on the outcome-check boundary page. An
   unmeasured check reads `blind`. An item with no check reads `no_effect`, unless it is routed (`routed`) or due for
   Shape (`shape`); those two are promised on the Shape page, `design/specs/2026-11-23-list-shape/boundary.md`.
 - **one-work-run-then-one-more-only-on-a-named-next-act.** An item gets a first Work run. After a run ended with the check
@@ -75,9 +76,12 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   control store that cannot be read) also stop its closes and its adoptions, and the tick runs no check under the pause.
 - **the-lane-has-its-own-slots-and-chain-rule.** The lane keeps `max_live` slots for lane items at any load. Past them it
   launches only while the larger of the 1 and 5 minute load averages, plus `load_per_run` for each launch of the same
-  tick, is under `load_line`; a load that cannot be read is no spare room. Mod and nightly-test runs do not count. An item whose chain of causes (its `caused_by` ancestors) already holds `max_chain_depth` lane runs reads
+  tick and each recent lane launch, is under `load_line`; a load that cannot be read is no spare room. Mod and nightly-test runs do not count. An item whose chain of causes (its `caused_by` ancestors) already holds `max_chain_depth` lane runs reads
   `chain_stop`. Live runs on items that carry no check do not fill the lane's slots, except Shape runs on items due for
   Shape, which do.
+- **the-tick-counts-recent-lane-launches-before-taking-spare-room.** For the load gate, the tick counts live detached
+  records marked `next_act_owner=list_dispatch` whose launch time is within `load_lag_s` before the tick, including
+  records outside the tick's item selection. An unreadable record or launch time means no spare room.
 - **a-lane-run-on-a-mod-takes-no-mod-slot.** The mod tick (`maturation_dispatch.occupancy`) does not count a live run that
   this lane launched (`next_act_owner` list_dispatch) in its own `max_live`. The run is still live on its mod, so no mod
   run starts beside it on the same files. Measured 2026-11-24: lane runs on FlowWorks held the Gimme Some Slack walk brief
@@ -98,8 +102,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   landed: another writer moved origin during the publish) stands. The row reads `closed_by_check` or `adopted` and says
   it is not landed yet; it is never recorded as a refusal. Measured 2026-11-23: two of the first ticks' writes exited
   4 and landed on origin minutes later.
-- **the-tick-files-nothing.** A tick writes no `file` or `spawn` event. Its ledger writes are `close` (a check that holds)
-  and `effect` (an adopted acceptance script).
+- **the-tick-files-nothing.** A tick writes no `file` or `spawn` event. It writes `close` for a check that holds,
+  `effect` for an adopted acceptance script, or the one shared note when a required live line is missing or fails.
 - **a-dry-tick-writes-nothing.** A tick without `--apply` launches nothing, closes nothing, attaches nothing and writes no
   state.
 - **only-narrows-the-items-never-the-gates.** `tick --only ID...` (the Conductor's run-now) decides only the named

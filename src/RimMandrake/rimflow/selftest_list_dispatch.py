@@ -9,6 +9,7 @@ import json
 import os
 import sys
 import tempfile
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -295,6 +296,49 @@ def t_the_lane_has_its_own_slots_and_chain_rule():
         "chain depth counts spent lane runs on the ancestors only")
 
 
+def t_the_tick_counts_recent_lane_launches_before_taking_spare_room():
+    import detached_helper as DH
+    import list_effect as LE
+    import model as LM
+    import probe_result as PR
+
+    ld = LD()
+    ids = ["RIMMANDRAKE_TEST_LOAD_" + c for c in "ABC"]
+    world = LM.replay([{"id": iid, "event": "file", "for": "BENCH", "seat": "BENCH", "kind": "task",
+                        "title": iid, "effect": "cmd:false", "ts": "2026-11-22T00:00:00Z"} for iid in ids])
+    cfg = dict(CFG, load_line=28, load_per_run=2, load_lag_s=90)
+    fx = {"account": lambda: (True, "")}
+    with tempfile.TemporaryDirectory(prefix="ld_load_") as d, patch.dict(os.environ, RM_DISPATCHER_STATE=d), \
+            patch.object(LE, "_world", return_value=world), patch.object(ld, "_mods", return_value=[]), \
+            patch.object(ld, "_off", return_value=(None, None)), patch.object(ld, "_paused", return_value=None), \
+            patch.object(ld, "_held", return_value=None), patch.object(ld, "_pool", return_value=None), \
+            patch.object(ld, "_clone_exists", return_value=False), \
+            patch.object(DH, "live_status", lambda rec, *a: rec["status"]), \
+            patch.object(ld, "load_now", return_value=PR.value(20)):
+        def record(n, age, lane="list_dispatch", status="running"):
+            DH.write_record({"unit": "u%d" % n, "item": ids[n] if n < 2 else "CLOSED%d" % n, "at": NOW - age,
+                             "status": status, "next_act_owner": lane})
+
+        def row():
+            return ld.tick(cfg, apply=False, fx=fx, now=NOW, only=[ids[2]])["items"][ids[2]]
+
+        for n, age in enumerate((1, 2, 3, 91)):
+            record(n, age)
+        record(4, 4, lane="quiet_scan")
+        record(5, 5, status="done")
+        chk(lambda: row()["decision"] == "would_launch", "three recent launches leave room; old, ended and other-lane runs do not count")
+        record(3, 89)
+        r = row()
+        chk(lambda: r["decision"] == "slots_full" and "28" in r["why"],
+            "the tick refuses spare room at load 20 plus four recent lane launches (got %s)" % r["decision"])
+        with open(DH.record_path("unreadable"), "w", encoding="utf-8") as f:
+            f.write("{")
+        record(3, 91)
+        r = row()
+        chk(lambda: r["decision"] == "slots_full" and "could not be read" in r["why"],
+            "unreadable detached records are no spare room (got %s)" % r["decision"])
+
+
 def t_a_lane_run_on_a_mod_takes_no_mod_slot():
     import maturation_dispatch as MD
     sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
@@ -472,6 +516,7 @@ def main():
               t_a_block_whose_predecessor_is_done_is_not_a_block,
               t_the_gates_launch_nothing,
               t_the_lane_has_its_own_slots_and_chain_rule,
+              t_the_tick_counts_recent_lane_launches_before_taking_spare_room,
               t_a_raised_item_goes_first,
               t_a_lane_run_on_a_mod_takes_no_mod_slot,
               t_a_passed_wait_gets_one_second_look,

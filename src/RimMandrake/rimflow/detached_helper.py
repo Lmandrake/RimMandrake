@@ -366,13 +366,15 @@ def live_status(rec, runner=subprocess.run, now=None):
     return "dead" if RL.unit_state(rec["unit"], runner=runner) in DEAD_STATES else st
 
 
-def all_records(root=None):
+def all_records(root=None, unreadable=None):
     d = runs_dir(root)
     for n in sorted(os.listdir(d)):
         if n.endswith(".json") and not n.endswith(".out.json"):
             rec = read_record(n[:-5], root)
-            if rec and rec.get("unit"):
+            if isinstance(rec, dict) and rec.get("unit"):
                 yield rec
+            elif unreadable is not None:
+                unreadable(n)
 
 
 def clone_holders(dest, runner=subprocess.run, now=None, root=None, kept_ok=False):
