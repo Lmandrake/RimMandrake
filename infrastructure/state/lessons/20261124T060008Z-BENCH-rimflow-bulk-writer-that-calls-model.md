@@ -1,0 +1,1 @@
+A rimflow bulk writer that calls model.append without model.check must run 'del model.OVERRIDE_NOTICES[:]' first: the replay leaves old events' notices on the module, and _stamp_owner_and_override then records a false OWNER override on every event (1,105 home events, caught before landing 2026-11-23).
