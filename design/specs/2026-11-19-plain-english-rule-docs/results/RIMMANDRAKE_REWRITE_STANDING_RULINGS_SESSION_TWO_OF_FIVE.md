@@ -5,6 +5,14 @@ Session 2 of 5 of batch `RIMMANDRAKE_REWRITE_STANDING_RULINGS_LARGEST_HOME_FILE`
 
 Base: d039c3af322ad51de53e603427ba8178f5901223
 
+Also: design/RimMandrake/CLAUDE.history.md
+
+The `Also:` line is for another run's change, not for this rewrite. The item's check read HOLDS on the published text of
+`fb7bc2acbd`. Then `c2a994649c` (item `RIMMANDRAKE_MOVE_ALL_CODEX_WORK_TO_WSL_ONE_DISPATCH_DOOR_ONE_LOGIN`) removed the
+retired Windows Codex lines from sections outside this scope, and the check read FAILS on 3 spans of those lines
+(`Wsl/Service/E_ACCESSDENIED`, `codex_image.py`, the staging folder). Both readings were right. This run put the retired
+finding in the history file, and did not put the lines back. The byte-for-byte comparison below was made before that change.
+
 Scope: the 9 `## ` sections from `## Code is clean when its promises are tested` up to, but not including,
 `## There are several live games`. The text before and after the scope is byte for byte the same as the base (compared by
 a script: True, True). Every `## ` heading of the file is unchanged.

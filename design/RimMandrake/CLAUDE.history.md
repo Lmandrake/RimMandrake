@@ -203,3 +203,14 @@ are already being worked non system work can be selected. Keeps system work at m
 wait pointlessly."* By card 2026-11-05: *"What should happen to mod work while
 the system is unhealthy?"* → **Pause only what it touches.** The section's full text:
 `git show 4e19c34bf6:design/RimMandrake/standing_rulings.md`.
+
+## Codex on Windows, before the one Codex door (retired 2026-11-24)
+
+Moved 2026-11-24 from `standing_rulings.md`. Commit `c2a994649c` took these lines out, because the owner retired the
+Windows Codex route (`standing_rulings.md` §One Codex door, one sign-in). Do not act on them.
+
+- The finding that his words of 2026-11-09 answered (§Codex agents run with full machine access): on Archmagi, Codex's
+  Windows workspace-write sandbox could not reach WSL (`Wsl/Service/E_ACCESSDENIED`). So a Codex-run agent could work on
+  the ext4 clones only with `danger-full-access`.
+- `codex.exe` needed staging in `D:\ClaudeWork\rimmandrake\scratch\codex\`. `gpt_consult.py` and `codex_image.py` did that
+  staging.
