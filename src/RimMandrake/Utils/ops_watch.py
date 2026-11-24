@@ -3249,6 +3249,107 @@ def c_wrapup(now, rules, ctx):
 
 
 MATURATION_READING_MAX_AGE_S = 1800     # the Dispatch step ticks every 60 s; 30 missed ticks is a dead step (30 min, kept)
+INGAME_VISIT_OWED_KEY = "maturation.ingame_visit_owed_no_driver_min"
+INGAME_LOCK_QUERY_S = 0.25              # a local snapshot, below the 15 s sense beat even for a lock caught mid-write
+
+
+def ingame_visit_owed(now, rd, last, rules):
+    """Longest observed wait with bridge checks owed and no Arch lock holder or live pipeline driver."""
+    unit = "min of visit with bridge checks owed"
+    at = epoch(rd.get("at"))
+    if at is None or at > now + 300 or now - at > MATURATION_READING_MAX_AGE_S:
+        return U("the dispatch reading has no current timestamp", unit)
+    entries = rd.get("ingame_testq")
+    if not isinstance(entries, dict):
+        return U("no in-game visit block: %s" % (rd.get("ingame_testq_error") or "dispatch has not written it"), unit)
+    waiting = {}
+    for mod, e in entries.items():
+        if not isinstance(e, dict) or e.get("hold_unreadable") or e.get("error"):
+            return U("%s: %s" % (mod, _obj(e).get("error") or "visit or hold unreadable"), unit)
+        if e.get("blocked") or e.get("held") or e.get("owed") == "exit met":
+            continue
+        checks = e.get("bridge_checks")
+        if not isinstance(checks, list):
+            return U("%s: %s" % (mod, e.get("bridge_checks_error") or "no bridge checks reading"), unit)
+        if checks:
+            opened = epoch(e.get("opened"))
+            if opened is None or opened > now:
+                return U("%s: visit opening unreadable (%r)" % (mod, e.get("opened")), unit)
+            waiting[mod] = opened, e.get("visit"), len(checks)
+    if not waiting:
+        return M(0, unit, state="quiet")
+
+    import game_names
+    if game_names.machine() != "archmagi":
+        return U("could not look at Arch locks on this host", unit)
+    deadline = beat_deadline()
+    timeout = INGAME_LOCK_QUERY_S if deadline is None else min(INGAME_LOCK_QUERY_S, deadline - time.time())
+    if timeout <= 0:
+        return U("could not look at Arch locks: sense beat out of time", unit)
+    query_until = time.monotonic() + timeout
+
+    def probe(cmd, *, timeout, **kw):
+        left = min(timeout, query_until - time.monotonic())
+        if left <= 0:
+            raise subprocess.TimeoutExpired(cmd, 0)
+        return subprocess.run(cmd, timeout=left, **kw)
+
+    cmd = [sys.executable, str(HERE.parent / "rimflow" / "game_lock.py"), "query", "all", "--json"]
+    try:
+        r = probe(cmd, capture_output=True, text=True, timeout=timeout)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return U("could not look at Arch locks: %s" % e, unit)
+    if r.returncode not in (0, 2):
+        return U("Arch lock query failed (exit %s): %s" % (r.returncode, r.stderr.strip()), unit)
+    locks = [g for g in json.loads(r.stdout)["games"] if g.get("game") in ("a", "b")]
+    if {g.get("game") for g in locks} != {"a", "b"}:
+        return U("could not look at both Arch locks", unit)
+    for g in locks:
+        if g.get("code") == 2 or g.get("state") not in ("FREE", "HELD", "HIS_HOLD"):
+            return U(g.get("line") or "could not look at an Arch lock", unit)
+    purposes = [g.get("purpose") or "" for g in locks if g["state"] == "HELD" or g.get("owner_hold")]
+    waiting = {mod: v for mod, v in waiting.items() if not any(
+        re.search(r"(?<![A-Za-z0-9])%s(?![A-Za-z0-9])" % re.escape(mod), purpose, re.I) for purpose in purposes)}
+    for mod, (_, visit, _) in list(waiting.items()):
+        row = _obj(_obj(rd.get("mods")).get(mod))
+        live = row.get("live")
+        if row.get("stage") != "in_game" or not isinstance(live, list):
+            return U("%s: dispatch could not read the in-game running units" % mod, unit)
+        if row.get("visit") not in (None, visit):
+            continue
+        if row.get("decision") == "launched" and _obj(row.get("launch")).get("rule") == "decide_ingame":
+            live = live + [row.get("unit")]
+        if live:
+            import role_launch
+            import run_alive
+            lives = {name: run_alive.unit_fact(role_launch.unit_state(name, runner=probe))
+                     for name in live if isinstance(name, str) and name}
+            if "active" in lives.values():
+                del waiting[mod]
+            elif "unknown" in lives.values() or any(not isinstance(name, str) or not name for name in live):
+                return U("%s: could not read the life of an in-game run (%s)" % (mod, live), unit)
+    if not waiting:
+        return M(0, unit, state="busy")
+    prior = {}
+    last_at = epoch(last.get("t"))
+    if last_at is not None and 0 <= now - last_at <= compose_max_age_s(rules)[0]:
+        p = _obj(last["points"].get(INGAME_VISIT_OWED_KEY))
+        x = _obj(p.get("x"))
+        if p.get("m") == "MEASURED" and x.get("state") == "waiting":
+            prior = _obj(x.get("waiting_since"))
+    waiting_since = {}
+    for mod, (opened, visit, _) in waiting.items():
+        old = _obj(prior.get(mod))
+        start = epoch(old.get("at"))
+        if old.get("visit") != visit or old.get("opened") != opened or start is None or not opened <= start <= last_at:
+            start = now
+        waiting_since[mod] = {"visit": visit, "opened": opened, "at": start}
+    mod = min(waiting_since, key=lambda m: waiting_since[m]["at"])
+    _, visit, n = waiting[mod]
+    minutes = (now - waiting_since[mod]["at"]) / 60
+    return M(minutes, unit, state="waiting", waiting={m: v[2] for m, v in waiting.items()},
+             waiting_since=waiting_since,
+             said="%s visit %s has %d bridge check(s) owed and no driver (waiting %d min)" % (mod, visit, n, minutes))
 
 
 def c_maturation(now, rules, ctx):
@@ -3284,12 +3385,18 @@ def c_maturation(now, rules, ctx):
                                                level=c.get("level_pac")) if c.get("measured") else U(
             "the dispatch clone: %s" % (c.get("why") or "no clone reading in %s" % p))
     except Exception as e:  # noqa: BLE001
+        out[INGAME_VISIT_OWED_KEY] = U("%s: %s" % (type(e).__name__, e))
         out["maturation.clone_behind_min"] = U("%s: %s" % (type(e).__name__, str(e)))
         out["maturation.hand_acts_overdue"] = U("%s: %s" % (type(e).__name__, str(e)))
         out["maturation.idle_owed_max_min"] = U("%s: %s" % (type(e).__name__, str(e)))
         out["maturation.needs_conductor"] = U("%s: %s" % (type(e).__name__, str(e)))
         out["maturation.paused"] = U("%s: %s" % (type(e).__name__, str(e)))
         out["maturation.stalled"] = U("%s: %s" % (type(e).__name__, str(e)))
+    else:
+        try:
+            out[INGAME_VISIT_OWED_KEY] = ingame_visit_owed(now, rd, ctx.get("last_record") or {}, rules)
+        except (ValueError, KeyError, AttributeError, TypeError) as e:
+            out[INGAME_VISIT_OWED_KEY] = U("in-game visit reading unreadable: %s: %s" % (type(e).__name__, e))
     return out
 
 
@@ -5036,6 +5143,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
             continue
         old = read_series(fam, since)
         prev[fam] = old
+        ctx["last_record"] = old[-1] if old else {}
         sense_stage("collector %s" % fam)
         c0 = time.time()
         try:

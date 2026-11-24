@@ -250,6 +250,9 @@
   "skip": ["*._collector", "roles.*"]
  },
  "targets": [
+  {"key": "maturation.ingame_visit_owed_no_driver_min", "op": ">", "value": 30, "alarm": true, "tag": "INGAME_VISIT_NO_DRIVER", "name": "OPS_INGAME_VISIT_DRIVE", "marks": ["MEASURED"], "title_field": "said",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "RIMMANDRAKE_WATCH_INGAME_VISIT_OWED_NO_DRIVER_UNSEEN: a visit has owed bridge checks and had no driver for over 30 observed minutes. Read the visit and running units in maturation_dispatch.py status and the Arch driver locks in game_lock.py query all."},
  {
   "key": "maturation.idle_owed_max_min",
   "op": ">",

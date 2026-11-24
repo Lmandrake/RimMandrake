@@ -3867,9 +3867,9 @@ def ingame_testq(root, facts, holds):
     design/specs/2026-11-22-steve-idle-takeable/boundary.md): visit, opened, owed, blocked, held (the owner's hold),
     hold_unreadable, ran_in_visit (testq checks with a row in this visit's own folder) and checks {id: [chains]}: the
     checks the visit runs (to_run) that carry a testq block with chains, less those with a row of this visit; scripts {id: {tier, build}}: those that go by
-    their own script (testq/stage6_checks.py). ops_watch
-    reads it each beat (ingame_facts costs 5-16 s a mod, measured 2026-11-22; the tick already pays it). A mod that
-    could not be read carries `error`, never an empty list."""
+    their own script (testq/stage6_checks.py). bridge_checks lists checks with no testq block and no row in this visit.
+    ops_watch reads this block (ingame_facts costs 5-16 s a mod, measured 2026-11-22; the tick already pays it).
+    A mod that could not be read carries `error`, never an empty list."""
     out = {}
     for mod, f in sorted((facts or {}).items()):
         if not isinstance(f, dict) or f.get("stage") != "in_game":
@@ -3897,6 +3897,20 @@ def ingame_testq(root, facts, holds):
                         "checks": waiting, "scripts": scripts}
             if tt is None:
                 out[mod]["error"] = "version/test_table.json: %s" % terr
+                continue
+            try:
+                bridge = [k for k in f["to_run"] if "testq" not in tests[k]]
+                if bridge:
+                    path = os.path.join(M.mod_dir(root, mod), M.INGAME_DIR, "visit_%s" % n, "rows.jsonl")
+                    try:
+                        with open(path, encoding="utf-8") as rows:
+                            recorded = M.BM.last_rows(json.loads(line) for line in rows if line.strip())
+                    except FileNotFoundError:
+                        recorded = {}     # a visit without rows has yet to record its checks
+                    bridge = [k for k in bridge if k not in recorded]
+                out[mod]["bridge_checks"] = bridge
+            except (OSError, ValueError, KeyError, AttributeError, TypeError) as e:
+                out[mod]["bridge_checks_error"] = "%s: %s" % (type(e).__name__, e)
         except Exception as e:      # noqa: BLE001  one mod unread is said, the others still read
             out[mod] = {"error": "%s: %s" % (type(e).__name__, e)}
     return out
@@ -4070,7 +4084,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=False):
         if x not in rd["pipeline_pause"]["said"]:
             rd["pipeline_pause"]["said"].append(x)
     rd["voids"] = RV.status_lines(st, record)
-    try:    # the in-game checks SteveDesktop could take (ops_watch steve.idle_with_takeable_min reads this block)
+    try:    # in-game checks owed to SteveDesktop and the Arch drivers (ops_watch reads this block)
         rd["ingame_testq"] = ingame_testq(root, facts, holds)
     except Exception as e:      # noqa: BLE001  this reading failing never costs the tick; ops_watch reads UNMEASURED
         rd["ingame_testq_error"] = "%s: %s" % (e.__class__.__name__, str(e))
