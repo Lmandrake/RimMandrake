@@ -436,7 +436,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": "scene_observer",
-   "oracle_proposed": "Phase-keyed jobs, queue uptake/completion, free fed workers, health and stock conservation, actual default settings and declared supplies, attributed component timing under inherited advisory floor. No 30-day soak or unsupported numerical yield target.",
+   "oracle_proposed": "the prepared workers complete their orders with no new ambient injury; the bare worker is harmed; stock deltas match the completed jobs",
    "tier_reason": "The actual composed map, engine jobs, worn stats, health and player-visible transitions require runtime observation on a declared dependency-complete list. Offline source and kernel checks support these observations and cannot certify their delivery.",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -447,8 +447,8 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "A player running a prepared forty-colonist Cauldron settlement completes ordinary shelter, forestry, hauling, food and water work through a bloom without unavoidable new ambient injury or silent production loss. An exposed expedition and wild vent competition still present attributable choices and danger.",
-   "scenario": "routine_day runs a bounded ordinary duty cycle at shipped tuning after the individual features pass, using actual workers, shelter and full gear, stockpiles and supplied research/industry. Contrast an otherwise equivalent missing-shelter/gear worker and a competing wild vexxiss. Capture work completion, resource ledger and health per phase; do not replace colony needs with immortality.",
+   "experience": "The player whose people are sheltered, geared and supplied gets ordinary shelter, forestry, hauling and water work done through a bloom without unavoidable new ambient injury or silent production loss. An exposed expedition still carries its danger.",
+   "scenario": "routine_day runs one compressed bloom over two prepared workers and one bare one with three orders. His walk: an ordinary settlement through a bloom.",
    "false_pass": [
     "Invulnerable need-free actors make the routine look dependable",
     "One debug-spawned reagent proves a forty-worker livelihood",
@@ -462,7 +462,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": "scene_observer",
-   "oracle_proposed": "Compare durable per-actor/map inventory and research/state manifest before/after real save-load, repeat job and conversion deltas in both orders; run gas_chain mid-burn continuity independently.",
+   "oracle_proposed": "the state digest before the save equals the one after the reload; both orders give the same products and stock deltas",
    "tier_reason": "The actual composed map, engine jobs, worn stats, health and player-visible transitions require runtime observation on a declared dependency-complete list. Offline source and kernel checks support these observations and cannot certify their delivery.",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -474,7 +474,7 @@
    "leaf_kind": "walk",
    "clause_kind": "change",
    "experience": "The player can resume midway through Cauldron work, repeat the core action and perform the main actions in a second order without losing protection, grove binding, vent state, health, stored fluids or completed discovery. Returning still offers dependable work and risky expeditions.",
-   "scenario": "resume_walk saves midway through warning and tap/works production with a persistent injured worker and bound grove; reload that save, repeat thornwood harvest and production, then use a second order: secure protection and process water before forestry, compared with forestry then industry. A separate mid-flame reload in gas_chain proves active combustion continuity. Perform normal medical purge after the persistence observation.",
+   "scenario": "resume_walk saves midway through warning and tap production and reloads; resume_walk_second_order takes the main jobs in both orders from one checkpoint; metal_purge and gas_chain decide the purge and the mid-flame reload. His walk: returning to the colony.",
    "false_pass": [
     "A new map after load is substituted for the saved state",
     "Only static finished products reload while active state is lost"

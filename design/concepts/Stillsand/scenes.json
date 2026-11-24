@@ -698,15 +698,16 @@
       "kind": "acceptance",
       "staged_by": "script",
       "entry_point": "src/RimMandrake/Stillsand/validation.py::scene_workshop_jobs",
-      "entry_point_item": "STILLSAND_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_STILLSAND_SMALL_WALK_SCENES_NOT_THE_LOOP",
       "start": [
         "Assert scene id, disposable fixture/save identity, RM_Stillsand biome, all DLC, actual running package list and source/deployed/loaded assembly hashes. Record exact settings and their application timing. Use the composed mandrake.rm.biomes route and required dependency closure.",
         "Before any persistent change, write scene-begin recovery with durable save/snapshot paths. Snapshot map/global state, entry settings, terrain/roofs/sand, weather/clock, actors/health/needs/inventories, bills/areas/reservations, queued incidents/plumes/visits, wet/attraction state, ledger/faith/goodwill and held world pawns. Assert the scene-specific actor, input and path preconditions.",
         "Read back each setup call, maintain lossless log tap and live sentinel, and attach unique tick/camera-stamped captures to state. Mark selected rows, spawned actors, forced incidents, seeded random outcomes and compressed timings as arrangements. Missing preconditions or unreadable instruments yield UNMEASURED.",
-        "Assert construction/research/cost permissions, ordinary work priorities, home-area sand, limited sieves/tools and shared stockpiles for first-use and 40-colonist fixtures. Include all glass/lens/oven recipes, plain/pearl lens arms and optional canon krayt-lens trade route."
+        "Assert construction/research/cost permissions, ordinary work priorities, home-area sand, limited sieves/tools and shared stockpiles for two workers. Include all glass/lens/oven recipes, plain/pearl lens arms and optional canon krayt-lens trade route.",
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)"
       ],
-      "action": "Construct and run ordinary sifting, drift clearing with shipped tool requirement, furnace/lens/oven bills, brine and still jobs. Compete for tools/inputs at 40-colonist scale, interrupt an active bill with roof/shade/gale, restore sun and reload midway. Track Crafting learning, input consumption, yield and final output.",
-      "expect": "Orders are acknowledged, tool fetch happens before work, reservations release, batches pay actual inputs and finish or refuse clearly. Interrupted work preserves valid progress/resources and resumes without duplicate outputs. Crest oven retains glass capability and relative sun-work behaviour. No processing building is added for carried sieving.",
+      "action": "Two workers: one ordinary sieve job, one clearing job with the shipped tool, one furnace bill, one brine job and one still job, each ordered once; then a second order for the same tool while it is held.",
+      "expect": "Each order is acknowledged, the tool is fetched before the work, the batch pays its inputs and finishes or refuses clearly; the second order waits or is refused until the tool is free.",
       "control": {
         "case": "No tool, outside home area, no input, recipe disabled and ineligible sun, then restore the missing prerequisite.",
         "expect": "The appropriate job is refused or waits with truthful feedback. Restoring the prerequisite allows ordinary completion. A no-yield sibling rules out unrelated dropped glass sand.",
@@ -726,9 +727,49 @@
       "observation_status": "unrun",
       "entry_point_status": "planned",
       "requirement": [
-        "ordinary_work",
-        "practical_fortune"
-      ]
+        "ordinary_work"
+      ],
+      "cheaper_why": "one order of each job and one contest for a tool; forty workers add only a longer queue, which is his walk",
+      "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+    },
+    {
+      "id": "workshop_bill_interrupted",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Stillsand/validation.py::scene_workshop_bill_interrupted",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_STILLSAND_SMALL_WALK_SCENES_NOT_THE_LOOP",
+      "start": [
+        "Assert scene id, disposable fixture/save identity, RM_Stillsand biome, all DLC, actual running package list and source/deployed/loaded assembly hashes. Record exact settings and their application timing. Use the composed mandrake.rm.biomes route and required dependency closure.",
+        "Before any persistent change, write scene-begin recovery with durable save/snapshot paths. Snapshot map/global state, entry settings, terrain/roofs/sand, weather/clock, actors/health/needs/inventories, bills/areas/reservations, queued incidents/plumes/visits, wet/attraction state, ledger/faith/goodwill and held world pawns. Assert the scene-specific actor, input and path preconditions.",
+        "Read back each setup call, maintain lossless log tap and live sentinel, and attach unique tick/camera-stamped captures to state. Mark selected rows, spawned actors, forced incidents, seeded random outcomes and compressed timings as arrangements. Missing preconditions or unreadable instruments yield UNMEASURED.",
+        "one sun-fed bill at mid-bar (asserted)"
+      ],
+      "action": "Roof the bench; run 250 ticks; take the roof off; save and reload; let the bill finish.",
+      "expect": "The bill stops without sun, keeps its progress across the reload and makes one batch.",
+      "control": {
+        "case": "The same bill never roofed.",
+        "expect": "It does not stop.",
+        "rules_out": "A bill that stops on its own."
+      },
+      "restore": "Restore the durable entry fixture/save and exact original global settings, then read back the map/global/settings/held-pawn and save-file manifests against the entry snapshot. Restore scene-specific changes listed below, remove only scene-created files/actors and close scene-end after equality. An interruption or failed comparison leaves recovery open and blocks subsequent scenes. Restore constructed fixtures, research/cost state, bills, tools, areas, reservations, skills, stocks and sun/clock/weather.",
+      "hold": "immediate",
+      "tier_proposed": "live_minimal",
+      "capabilities": [
+        "sifting",
+        "glass_materials",
+        "sun_tables",
+        "solar_ovens",
+        "brine",
+        "solar_still"
+      ],
+      "observation_status": "unrun",
+      "entry_point_status": "planned",
+      "requirement": [
+        "ordinary_work"
+      ],
+      "cheaper_why": "one bill, one roof, one reload",
+      "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+      "split_from": "workshop_jobs"
     },
     {
       "id": "settings_effects",
@@ -985,19 +1026,20 @@
       "kind": "acceptance",
       "staged_by": "script",
       "entry_point": "src/RimMandrake/Stillsand/validation.py::scene_walk_accept",
-      "entry_point_item": "STILLSAND_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_STILLSAND_SMALL_WALK_SCENES_NOT_THE_LOOP",
       "start": [
         "Assert scene id, disposable fixture/save identity, RM_Stillsand biome, all DLC, actual running package list and source/deployed/loaded assembly hashes. Record exact settings and their application timing. Use the composed mandrake.rm.biomes route and required dependency closure.",
         "Before any persistent change, write scene-begin recovery with durable save/snapshot paths. Snapshot map/global state, entry settings, terrain/roofs/sand, weather/clock, actors/health/needs/inventories, bills/areas/reservations, queued incidents/plumes/visits, wet/attraction state, ledger/faith/goodwill and held world pawns. Assert the scene-specific actor, input and path preconditions.",
         "Read back each setup call, maintain lossless log tap and live sentinel, and attach unique tick/camera-stamped captures to state. Mark selected rows, spawned actors, forced incidents, seeded random outcomes and compressed timings as arrangements. Missing preconditions or unreadable instruments yield UNMEASURED.",
-        "Assert the expedition-loop fixture with next-undertaking supply target, active real work, an unexpired pour and a pending horizon warning. Snapshot a save before the loop and identify its mid-work checkpoint."
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+        "one active work bill at mid-bar, one unexpired pour, one pending horizon warning (each asserted)"
       ],
-      "action": "Do the prepared-harbour departure, sparse crossing, island exploration/security, useful cave return, workshop provisioning and next departure. Save mid-way during return work with an active wet interval and pending warning, reload and finish. Repeat the core expedition/resupply action with the emptied-cave variant. In a second order prepare the workshop before exploration, then discover/secure/resupply. Compare resulting items, bills, reservations, wet expiry, warnings and harbour state.",
-      "expect": "Both action orders reach their declared provisioned next undertaking with actual paid costs. Mid-work reload retains items, work, cave/harbour identity, wet expiry, attraction and warning lifecycle. Repeating the empty cave gives no reset treasure.",
+      "action": "Read the state; save; run 60 ticks; reload; read it again.",
+      "expect": "Bill progress, items, cave and harbour identity, wet expiry, attraction and the warning are the saved ones.",
       "control": {
-        "case": "Use the same fixture without reload and compare the mid-state identity census. Deliberately omit an input or keep the cave threat unresolved in separate arms.",
-        "expect": "No-reload sibling agrees with the restored path, while missing input or unresolved security prevents the claimed next step.",
-        "rules_out": "Finished-scene reload, regenerated reward or silently injected work/output after load."
+        "case": "Reload the save made before the pour and the warning.",
+        "expect": "The states differ.",
+        "rules_out": "A comparison that reads equal whatever was saved."
       },
       "restore": "Restore the durable entry fixture/save and exact original global settings, then read back the map/global/settings/held-pawn and save-file manifests against the entry snapshot. Restore scene-specific changes listed below, remove only scene-created files/actors and close scene-end after equality. An interruption or failed comparison leaves recovery open and blocks subsequent scenes. Restore both order fixtures, checkpoint saves, reservations, discoveries, wet state, queue and exact entry settings.",
       "hold": "immediate",
@@ -1015,7 +1057,91 @@
       "entry_point_status": "planned",
       "requirement": [
         "stillsand_walk"
-      ]
+      ],
+      "cheaper_why": "one save and load decides persistence; the expedition itself is expedition_loop, his look",
+      "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+    },
+    {
+      "id": "emptied_cave_stays_empty",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Stillsand/validation.py::scene_emptied_cave_stays_empty",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_STILLSAND_SMALL_WALK_SCENES_NOT_THE_LOOP",
+      "start": [
+        "Assert scene id, disposable fixture/save identity, RM_Stillsand biome, all DLC, actual running package list and source/deployed/loaded assembly hashes. Record exact settings and their application timing. Use the composed mandrake.rm.biomes route and required dependency closure.",
+        "Before any persistent change, write scene-begin recovery with durable save/snapshot paths. Snapshot map/global state, entry settings, terrain/roofs/sand, weather/clock, actors/health/needs/inventories, bills/areas/reservations, queued incidents/plumes/visits, wet/attraction state, ledger/faith/goodwill and held world pawns. Assert the scene-specific actor, input and path preconditions.",
+        "Read back each setup call, maintain lossless log tap and live sentinel, and attach unique tick/camera-stamped captures to state. Mark selected rows, spawned actors, forced incidents, seeded random outcomes and compressed timings as arrangements. Missing preconditions or unreadable instruments yield UNMEASURED.",
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+        "a cave whose find was taken (asserted)"
+      ],
+      "action": "Save, reload, and enter the cave again.",
+      "expect": "No treasure comes back.",
+      "control": {
+        "case": "The same cave before the find was taken.",
+        "expect": "The find is there.",
+        "rules_out": "A cave that never held one."
+      },
+      "restore": "Restore the durable entry fixture/save and exact original global settings, then read back the map/global/settings/held-pawn and save-file manifests against the entry snapshot. Restore scene-specific changes listed below, remove only scene-created files/actors and close scene-end after equality. An interruption or failed comparison leaves recovery open and blocks subsequent scenes. Restore both order fixtures, checkpoint saves, reservations, discoveries, wet state, queue and exact entry settings.",
+      "hold": "immediate",
+      "tier_proposed": "live_minimal",
+      "capabilities": [
+        "terrain",
+        "rock_island",
+        "cave_table",
+        "sun_tables",
+        "solar_still",
+        "wet_line",
+        "horizon"
+      ],
+      "observation_status": "unrun",
+      "entry_point_status": "planned",
+      "requirement": [
+        "stillsand_walk"
+      ],
+      "cheaper_why": "one cave and one reload",
+      "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+      "split_from": "walk_accept"
+    },
+    {
+      "id": "workshop_before_or_after_cave",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Stillsand/validation.py::scene_workshop_before_or_after_cave",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_STILLSAND_SMALL_WALK_SCENES_NOT_THE_LOOP",
+      "start": [
+        "Assert scene id, disposable fixture/save identity, RM_Stillsand biome, all DLC, actual running package list and source/deployed/loaded assembly hashes. Record exact settings and their application timing. Use the composed mandrake.rm.biomes route and required dependency closure.",
+        "Before any persistent change, write scene-begin recovery with durable save/snapshot paths. Snapshot map/global state, entry settings, terrain/roofs/sand, weather/clock, actors/health/needs/inventories, bills/areas/reservations, queued incidents/plumes/visits, wet/attraction state, ledger/faith/goodwill and held world pawns. Assert the scene-specific actor, input and path preconditions.",
+        "Read back each setup call, maintain lossless log tap and live sentinel, and attach unique tick/camera-stamped captures to state. Mark selected rows, spawned actors, forced incidents, seeded random outcomes and compressed timings as arrangements. Missing preconditions or unreadable instruments yield UNMEASURED.",
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+        "one checkpoint save: one workshop batch ready and one find ready to haul (asserted)"
+      ],
+      "action": "Arm one: the batch, then the haul; reload the checkpoint; arm two: the haul first.",
+      "expect": "Both arms end with the same provisions and the same paid costs.",
+      "control": {
+        "case": "A third arm with an input missing.",
+        "expect": "The batch does not finish.",
+        "rules_out": "Provisions added by the test."
+      },
+      "restore": "Restore the durable entry fixture/save and exact original global settings, then read back the map/global/settings/held-pawn and save-file manifests against the entry snapshot. Restore scene-specific changes listed below, remove only scene-created files/actors and close scene-end after equality. An interruption or failed comparison leaves recovery open and blocks subsequent scenes. Restore both order fixtures, checkpoint saves, reservations, discoveries, wet state, queue and exact entry settings.",
+      "hold": "immediate",
+      "tier_proposed": "live_minimal",
+      "capabilities": [
+        "terrain",
+        "rock_island",
+        "cave_table",
+        "sun_tables",
+        "solar_still",
+        "wet_line",
+        "horizon"
+      ],
+      "observation_status": "unrun",
+      "entry_point_status": "planned",
+      "requirement": [
+        "stillsand_walk"
+      ],
+      "cheaper_why": "two ordered jobs per arm",
+      "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+      "split_from": "walk_accept"
     },
     {
       "id": "expedition_loop",

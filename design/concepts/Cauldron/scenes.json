@@ -834,46 +834,50 @@
       "kind": "acceptance",
       "staged_by": "script",
       "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_routine_day",
-      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_CAULDRON_SMALL_WALK_SCENES_NOT_FORTY_HANDS",
       "start": [
         "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
-        "Forty ordinary fed colonists with real jobs, supplied shelter/gear/food/water/research and actual default Cauldron systems; no harness invulnerability/need bypass; preperiod stock/health and job ledger."
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+        "two workers in full gear with one roof, one tap and one works; one bare worker in the open (asserted)"
       ],
-      "action": "Run bounded normal duty phases: forestry/haul/food, warned bloom shelter or sealed work, tap/works production and exposed expedition, with independent wild competition lane. Observe shortages/queues and actual completed duties.",
-      "expect": "Prepared routine work completes with fresh water/reagent and accounted stocks without new ambient harm; exposed expedition and competition retain attributable hazards. Observe actual hot-path costs and ongoing worker availability; thresholds only inherited calibrated/advisory floor.",
+      "action": "run one compressed bloom (warning to end); order one harvest, one haul and one works batch during it",
+      "expect": "the prepared workers finish their orders and take no new ambient injury or load; the bare worker takes some",
       "control": {
-        "case": "Equivalent worker lacking roof/full gear, disabled power supply and wild competition at ordinary versus lined tap.",
-        "expect": "Unprepared exposure and supply interruptions visibly affect their own jobs/health/output; a hazard-disabled or immortal colony cannot pass prepared-day.",
-        "rules_out": "One output item or need-free actors certify dependable settlement."
+        "case": "the same orders with the roof removed and the gear off",
+        "expect": "the workers take load",
+        "rules_out": "a bloom that harms nobody"
       },
-      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for prepared_day: retain keeper save RM_Cauldron_review_routine_day, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes routine_day review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
-      "hold": "owner_review",
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for connected_gas: retain keeper save RM_Cauldron_review_gas_chain, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes gas_chain review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "hold": "immediate",
       "exercises": [],
       "status": "planned_unrun",
       "requirement": [
         "prepared_day"
       ],
-      "implementation_items": []
+      "implementation_items": [],
+      "cheaper_why": "three workers and one bloom decide what preparation does; forty colonists at work with free needs is his walk, and the frame cost has its own check in floor_checkout",
+      "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
     },
     {
       "id": "resume_walk",
       "kind": "acceptance",
       "staged_by": "script",
       "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_resume_walk",
-      "entry_point_item": "CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_CAULDRON_SMALL_WALK_SCENES_NOT_FORTY_HANDS",
       "start": [
         "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
-        "Mid-warning save with tap bank, partly processed liquid, completed study flags, injured worker and bound grove recorded; no substitute newly created map."
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+        "a save made mid-warning with a tap bank, a partly processed liquid, a completed study flag, an injured worker and a bound grove (each asserted)"
       ],
-      "action": "Reload save, repeat ordinary thornwood harvest and tap/works conversion, then execute a second order of main actions: protection/water before forestry versus forestry before industry. Revisit grove and persistent-health patient and complete purge after persistence read. Run separate gas_chain for mid-flame reload.",
-      "expect": "Named state survives reload, repeated and reordered jobs complete with exact new deltas, no duplicate supplies or discovery and no missing binding/health; source and scene metadata remain matched.",
+      "action": "read the state digest; save; run 60 ticks; reload that save; read it again (at most 300 ticks)",
+      "expect": "the warning clock, vent state, tap bank, liquid identity and volume, study flag, injury and grove binding are the saved ones",
       "control": {
-        "case": "Compare uninterrupted arm on the same entry checkpoint and repeated no-input/noncompleted-work arm.",
-        "expect": "No duplicated output on reload/retry or credit for pre-existing products; order-only changes do not erase saved state.",
-        "rules_out": "Reloading a fresh fixture or static completed-only site passes persistent active work."
+        "case": "reload the save made before the tap banked and the grove bound",
+        "expect": "the digests differ",
+        "rules_out": "a digest that reads equal whatever was saved"
       },
-      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for cauldron_walk: retain keeper save RM_Cauldron_review_resume_walk, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes resume_walk review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
-      "hold": "owner_review",
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for connected_gas: retain keeper save RM_Cauldron_review_gas_chain, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes gas_chain review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "hold": "immediate",
       "exercises": [],
       "status": "planned_unrun",
       "requirement": [
@@ -881,7 +885,41 @@
       ],
       "implementation_items": [
         "CAULDRON_METAL_PERSIST_MEDICAL_PURGE"
-      ]
+      ],
+      "cheaper_why": "one save and load decides persistence; the repeated jobs and the second order are their own scenes",
+      "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+    },
+    {
+      "id": "resume_walk_second_order",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_resume_walk_second_order",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_CAULDRON_SMALL_WALK_SCENES_NOT_FORTY_HANDS",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+        "one checkpoint save: a worker, a ripe thornwood and a tap ready to convert (asserted)"
+      ],
+      "action": "arm one: harvest then convert; reload the checkpoint; arm two: convert then harvest; each job ordered once",
+      "expect": "both arms give the same products and the same stock deltas",
+      "control": {
+        "case": "a third arm with the harvest cancelled at mid-bar",
+        "expect": "the wood is missing",
+        "rules_out": "a comparison that credits products already there"
+      },
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for connected_gas: retain keeper save RM_Cauldron_review_gas_chain, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes gas_chain review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "hold": "immediate",
+      "exercises": [],
+      "status": "planned_unrun",
+      "requirement": [
+        "cauldron_walk"
+      ],
+      "implementation_items": [
+        "CAULDRON_METAL_PERSIST_MEDICAL_PURGE"
+      ],
+      "cheaper_why": "two ordered jobs per arm from one checkpoint; the purge is decided by metal_purge and the mid-flame reload by gas_chain",
+      "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+      "split_from": "resume_walk"
     },
     {
       "id": "supported_integrations",

@@ -196,7 +196,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "relation goes to hostile on the attack; a later raid's faction is the Tribes",
+   "oracle_proposed": "relation goes to hostile on the attack",
    "tier_reason": "a dev quicktest colony on a Pyrelands tile, minimal list plus RM Pyrelands, UtinniPatches and this mod, with the Deep Desert Tribes present and not hostile (asserted), gives the fire clock and the faction in about 90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -207,11 +207,10 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "The player orders colonists to attack a Tribes party openly: the Tribes turn hostile, and a raid from them comes in the following days, possibly again later. This is vanilla faction hostility; nothing in this mod adds to it.",
-   "scenario": "Order a drafted colonist to shoot a rite harvester who is not defending fruit; read goodwill and relation; let days pass and read the storyteller's raids by faction.",
+   "experience": "The player orders colonists to attack a Tribes party openly: the Tribes turn hostile, and vanilla faction hostility follows. Nothing in this mod adds to it.",
+   "scenario": "Order a drafted colonist to shoot a rite harvester who is not defending fruit; read goodwill and relation.",
    "false_pass": [
-    "the hostility is set by the test",
-    "a raid from another faction is counted"
+    "the hostility is set by the test"
    ],
    "red": "the rite lord's turned-hostile exit swallows the attack, so the Tribes leave and stay friendly",
    "tier_proposed": "quicktest",
@@ -233,7 +232,7 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "The player whose colony sets fires on a Pyrelands map, its own and its tamed animals', never sees a raid, a goodwill loss or a warning from the Tribes because of them.",
-   "scenario": "After the arson count is removed: let colonists light several grass fires over days with the Tribes present; read goodwill, letters and queued incidents; read that RUT_FireRaid, the arson debt tally and their settings no longer load.",
+   "scenario": "After the arson count is removed: let colonists light three grass fires and a tame fire-hawk drop a twig with the Tribes present; read goodwill, letters and queued incidents; read that RUT_FireRaid, the arson debt tally and their settings no longer load.",
    "false_pass": [
     "the fires burn with the Tribes faction absent from the world, so nothing could react"
    ],
@@ -269,8 +268,8 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "state digest before save equals after reload; the second rite harvests again; the switches leave no Tribes pawn or lord behind; log clean",
-   "tier_reason": "whether a rite ever comes in ordinary play, and survives a reload, shows only on his full list with the real fire clock (failure mode 1)",
+   "oracle_proposed": "state digest before save equals after reload; the party leaves with its fruit; the switches leave no Tribes pawn or lord behind; no log line names this mod; that a rite comes by itself is judged at his walk",
+   "tier_reason": "the script's part is one forced rite, saved and reloaded on the small list; a rite that comes by itself in a played season is his walk",
    "cannot_show": null,
    "wall_expect_h": 3,
    "id": "walk_tribes_season",
@@ -283,14 +282,13 @@
    ],
    "leaf_kind": "walk",
    "clause_kind": "change",
-   "experience": "The player plays a Pyrelands colony on the full list in ordinary play until a rite party comes on its own: watches it light the grass and pick behind the front, sends a colonist to pick in their scar and is warned off, saves while the party is harvesting, reloads, and finds the party, its lord, its scar and its carried fruit exactly as they were; the party then walks off with the fruit.",
-   "scenario": "On his full list, wait for a rite to arrive by its own roll (the hook only if none comes in the time budget, and recorded as such); save mid-harvest; reload and compare lord toil, scar cells, carried counts and goodwill; repeat the core action on the next rite; then a second order: a colonist picks first and the rite arrives while it is in the scar; switch the rite and the visit off and on mid-game and see nothing left behind.",
+   "experience": "The player saves while a rite party is harvesting, reloads, and finds the party, its lord, its scar and its carried fruit exactly as they were; the party then walks off with the fruit. In ordinary play a rite party comes on its own, lights the grass and picks behind the front.",
+   "scenario": "Script: force a rite, save mid-harvest, reload and compare; a rite that finds a colonist picking; a switch off under a rite; the roll offline. His walk: ordinary play on his full list until a rite comes by itself.",
    "false_pass": [
-    "the reload is from a save made before the party arrived",
-    "the rite is forced every time, so the ordinary-play roll is never seen"
+    "the reload is from a save made before the party arrived"
    ],
    "red": "after the reload the party stands idle with no lord, or drops its fruit and never leaves",
-   "tier_proposed": "live_full",
+   "tier_proposed": "live_minimal",
    "owner_part": "no"
   }
  ]

@@ -63,7 +63,7 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "The player at play zoom sees ordinary workers harvest and haul between inhabited crown destinations along actual bough routes; marsh refuses heavy construction and a built stilt platform supplies the alternative. Walking onto or off the crown works for colonists and raiders without ascent gates.",
-   "scenario": "Authored FeverWood site using the real local terrain passes: two crown work destinations, connected boles, marsh shortcut, registered pool and alternate branch lane. Repeat with a route interrupted and with 40 routine workers; compare build orders on marsh and completed stilts. Before furnishing, generated_terrain checks real ordered pass outputs, soil-to-marsh conversion, bole anchoring, allowlisted painting and per-cell pool registration/cluster membership, with generation-off paired maps.",
+   "scenario": "Authored FeverWood site using the real local terrain passes: two crown work destinations, connected boles, marsh shortcut, registered pool and alternate branch lane. Repeat with a route interrupted; compare build orders on marsh and completed stilts. Before furnishing, generated_terrain checks real ordered pass outputs, soil-to-marsh conversion, bole anchoring, allowlisted painting and per-cell pool registration/cluster membership, with generation-off paired maps.",
    "false_pass": [
     "Branch textures cover a normal freely buildable plain.",
     "Pawns are teleported between destinations or follow a forced corridor unrelated to FeverWood terrain."
@@ -329,7 +329,7 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "The player at play zoom sees an armed tank escapee enter a particular registered pool and establish there for several days before the adult returns. During that interval only the right poison at that pool prevents maturity; treating another pool or holding no reagent does not. Arrival alone does not erase a prior adult victory.",
-   "scenario": "Armed escape, wild-born, faction-gained and deliberate-return arrivals; defeated adult before entry. No treatment, correct treatment, wrong pool, wrong reagent and absent reagent arms; reload just before maturity and treatment completion. Verify free crafting and campaign acquisition separately. Campaign-only RUT_FeverWoodRadioactiveSalvage is a proposed missing output of the existing irradiated-wreck salvage lane under the filed water/captive items. Prove normal acquisition before local treatment, with a campaign-patch-absent control.",
+   "scenario": "Armed escape arrival at A, with wild-born and deliberate-return controls; its deadline set ahead. Treatment choice, wrong pool, wrong reagent and none from one checkpoint. Campaign reagent acquisition is campaign_reagent_lane's.",
    "false_pass": [
     "Water arrival immediately clears adult defeat, or an unsaved timer resets after every load."
    ],
@@ -365,7 +365,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": "observation",
-   "oracle_proposed": "Trace normal designation to nonlethal work, haul, live restraint and value. Record each actual faction/entry/tick, ongoing jobs/targets and pending schedule through delayed or absent second-wave, blocked-edge and reload cases. Available bait draws continuing approaches; a first goto alone is insufficient. Corpse/invalid/disabled bait is refused and post-trigger release respects its configured lock.",
+   "oracle_proposed": "Trace normal designation to nonlethal work, haul, live restraint and value. The scheduler gives a later, single, separated second front and refuses a blocked edge (offline). One pawn of a first faction targets the bait. Corpse, invalid and disabled bait is refused and post-trigger release respects its configured lock.",
    "tier_reason": "Actual terrain, jobs, damage, sound, pawn state and save callbacks must agree in the running game; pure kernels establish only their own arithmetic.",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -377,7 +377,7 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "The player at play zoom designates living bait, has it nonlethally subdued, hauled and staked through normal work, and watches either first faction converge on it. A possible second front comes later from a separated reachable approach; a lone front remains dangerous and triggered release can lock. Bait is not merely an initial goto before an unrelated assault.",
-   "scenario": "Eligible and invalid/corpse bait, normal designation/workgiver flow and voluntary release before/after trigger. Either first faction, second-wave present/absent, blocked preferred edge, bait lost and reload while a wave is pending. Observe jobs through approach and clash, with ordinary workers as competing targets.",
+   "scenario": "Eligible and invalid bait, normal designation and work, release before and after the trigger. The schedule of a second front is read offline; one pawn of the first faction shows the pull of the bait. Two factions at the bait are his walk.",
    "false_pass": [
     "Fixture-only downing, simultaneous fronts or a Kurreth-only hostile filter hides the alternate first wave."
    ],
@@ -559,7 +559,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": "observation",
-   "oracle_proposed": "Compare independent snapshots before save and after reload for an actual active shore deadline, agitation/grievance, product clock, pool maturity, hush reasons, owed gift and pending wave. Complete or expire each once without restaging, repeat the normal branch trip/rescue and run return-before-shore versus shore-before-return. Idle-only reload and copied saves missing an obligation cannot pass.",
+   "oracle_proposed": "Each saved identity and absolute due tick after the reload is the saved one; each obligation ends once; both orders end alike. Idle-only reload and a copied save that misses an obligation cannot pass.",
    "tier_reason": "Actual terrain, jobs, damage, sound, pawn state and save callbacks must agree in the running game; pure kernels establish only their own arithmetic.",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -572,7 +572,7 @@
    "leaf_kind": "walk",
    "clause_kind": "preserve",
    "experience": "The player repeats ordinary branch work after a save made mid-consequence and reload; the save retains the active rescue and pool memory rather than forgiving them. In a second order the player returns a young before taking shore work, and outstanding gifts and delayed lure or maturation work still finish once.",
-   "scenario": "Do branch harvest/haul, actual shore seizure, save mid-rescue, reload and repeat the core action with a nearby helper. Save distinct occupied-tank, establishing-young, owed-gift, hush and pending-wave branches; reload each. Run a second order: peaceful return, branch haul, shore rescue, then collect the gift, compared with shore work before return.",
+   "scenario": "ordinary_reload_walk: one real seizure, saved and reloaded. reload_owed_obligations: one save with six obligations, each read before and after. return_before_or_after_shore: both orders from one checkpoint. His walk: repeated branch work.",
    "false_pass": [
     "Reload only an idle map or recreate all expected state from fixture inputs after loading."
    ],

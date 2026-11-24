@@ -337,7 +337,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": "scene_observer",
-   "oracle_proposed": "Record ordinary actions and exact saved/resumed identities, item/health/job counts, next-order uptake and continuing routine. Capture player-readable urgency and record contention/performance against the advisory inherited floor.",
+   "oracle_proposed": "saved identities, clocks and item counts are read again after the reload; a spent dose is refused; both orders give the same products; that the body stays useful and its costs legible is judged at his walk",
    "tier_reason": "Actual jobs, saved identities and player-visible transitions require the running composed Biomes package and its declared dependencies with all DLC. Offline probes establish wiring and observer sensitivity.",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -349,7 +349,7 @@
    "leaf_kind": "walk",
    "clause_kind": "preserve",
    "experience": "At ordinary play zoom, the player can resume a mid-journey save, repeat the chosen-gene rescue and carry on with a prepared colony. The body stays useful and its costs stay legible through a different order of the main actions.",
-   "scenario": "Save mid-way with a primed/loaded seeker and active patient, reload and complete extraction/injection/friend rescue. Repeat the core chosen-gene action with fresh accounted items. Use a second order of main actions, production before expedition and expedition before production. Resume a representative 40-colonist routine with shared-friend contention, native activity and alerts.",
+   "scenario": "walk_reload_repeat: one patient saved mid-absorption and reloaded. repeat_with_fresh_dose: the core action again. production_and_expedition_order: both orders from one checkpoint. His walk: a working colony with a patient in it.",
    "false_pass": [
     "Only a fresh two-pawn save works",
     "A repeated job reuses a consumed sample or loses the injected flag on reload",

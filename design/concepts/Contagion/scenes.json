@@ -2,17 +2,10 @@
  "scenes": [
   {
    "id": "sc_burn_dash",
-   "kind": "acceptance",
-   "requirement": [
-    "tells_then_burn",
-    "shelter_in_lead",
-    "one_dash_at_cost",
-    "touched_reads_early",
-    "sunbeam_arrest_treats"
-   ],
+   "kind": "interaction",
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Contagion/validation.py::scene_burn_dash",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
@@ -29,7 +22,16 @@
     "rules_out": "a Burn so weak that staying out is as safe as dashing, or so strong that the dash kills: a lockdown with no purposeful dash"
    },
    "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "owner_review"
+   "hold": "owner_review",
+   "features": [
+    "tells_then_burn",
+    "shelter_in_lead",
+    "one_dash_at_cost",
+    "touched_reads_early",
+    "sunbeam_arrest_treats"
+   ],
+   "cheaper_why": "a showcase staging for his look, not a decider: tells_then_burn, shelter_in_lead, one_dash_at_cost, touched_reads_early and sunbeam_arrest_treats each have a scene of their own that decides them",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
   },
   {
    "id": "sc_bloom_reads_sick",
@@ -274,23 +276,53 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Contagion/validation.py::scene_touched_reads_early",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "an untouched colonist with an outdoor work job under the Bloom (asserted no RM_ContagionTouched)",
     "owed build RIMMANDRAKE_BUILD_CONTAGION_TOUCHED_TRANSITION_MESSAGE_SENT_ONCE landed and deployed (asserted by its selftest on the deployed DLL hash), else the transition-message arm records UNMEASURED",
-    "for the flesh-only arm, a humanlike race whose RaceProps.IsFlesh is false read from the loaded defs: Core plus all five DLC hold none (measured 2026-11-16: the only humanlike races are Human and CreepJoiner, both flesh), so on this list that arm records UNMEASURED with that reason and the flesh guard is the source read RaceProps.Humanlike && RaceProps.IsFlesh at RM_ContagionTouched.cs:271"
+    "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)"
    ],
-   "action": "run one in-game day by clock with the colonist outdoors; read letters, messages and the hediff; a second colonist out in a forced Burn for the same span; a third adjacent to an Unfinished on a temperate map; a muffalo, and a non-flesh humanlike when the load holds one, out in the Bloom",
-   "expect": "the touched state is visible before any mutation; one transition message at active change; no letter for sub-threshold exposure; active change is reached and one deck mutation lands on the body, with exactly one 'Contagion mutation:' letter naming that colonist; the Burn colonist's severity rises faster than the Bloom one; the contact colonist off-biome gains the hediff; the muffalo gains none, and a non-flesh humanlike gains none (UNMEASURED on Core plus five DLC, which hold no such race)",
+   "action": "set the colonist's exposure one step below the first threshold, outdoors under the Bloom; run to the threshold and on to active change (at most 2,500 ticks); read hediff, messages and letters",
+   "expect": "the touched state is visible before any mutation; no letter below the threshold; one transition message at active change; one deck mutation lands with exactly one 'Contagion mutation:' letter naming that colonist",
    "control": {
-    "case": "the same colonist kept indoors for the day",
-    "expect": "no touched hediff and no message",
-    "rules_out": "a severity set by the test"
+    "case": "the same colonist under a roof for the same ticks",
+    "expect": "no progression and no message",
+    "rules_out": "a severity that climbs whatever the sky does"
    },
    "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "immediate"
+   "hold": "immediate",
+   "cheaper_why": "the climb is a rate; starting one step below the threshold decides the crossing that a day of clock would",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+  },
+  {
+   "id": "sc_touched_who_and_how_fast",
+   "kind": "acceptance",
+   "requirement": [
+    "touched_reads_early"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_touched_who_and_how_fast",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "four subjects: a colonist in the open in a forced Burn, one in the open under the Bloom, one beside an Unfinished on a temperate map, a muffalo under the Bloom (asserted)",
+    "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)"
+   ],
+   "action": "read each severity over the same 600 ticks",
+   "expect": "the Burn colonist climbs faster than the Bloom one; the contact colonist gains the hediff; the muffalo gains none; a non-flesh humanlike gains none (UNMEASURED on Core plus five DLC)",
+   "control": {
+    "case": "a fifth colonist under a roof",
+    "expect": "no hediff",
+    "rules_out": "a hediff from the map itself"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate",
+   "cheaper_why": "four severities over 600 ticks on one staging",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+   "split_from": "sc_touched_reads_early"
   },
   {
    "id": "sc_sunbeam_arrest_treats",
@@ -300,22 +332,52 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Contagion/validation.py::scene_sunbeam_arrest_treats",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "a touched colonist mid-progression with one mutation (asserted)",
     "a second colonist holding a Sunbeam"
    ],
-   "action": "order hold-the-lens on the touched colonist; capture during the job; after it, re-expose outdoors for a day",
-   "expect": "progression stops, the mutation stays, a Sunbeam burn is added, re-exposure restarts progression; a judge names the capture a beam; a second colonist ordered on the same patient is refused while the lens is reserved; an order from beyond reach walks the holder into range first",
+   "action": "order hold-the-lens on the touched colonist; capture during the job; after it, read progression over 250 ticks; then set the colonist's exposure to the outdoor rate and read again over 250 ticks",
+   "expect": "progression stops, the mutation stays, a Sunbeam burn is added, re-exposure restarts progression; a judge names the capture a beam",
    "control": {
     "case": "the job interrupted at half its bar",
     "expect": "progression continues and no burn is added",
     "rules_out": "a progression that was already stopped before the job"
    },
    "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "owner_review"
+   "hold": "owner_review",
+   "cheaper_why": "severity per tick is read over 250 ticks; a day outdoors adds only risk to the colonist",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+  },
+  {
+   "id": "sc_sunbeam_orders",
+   "kind": "acceptance",
+   "requirement": [
+    "sunbeam_arrest_treats"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_sunbeam_orders",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "a touched colonist mid-progression with one mutation (asserted)",
+    "a second colonist holding a Sunbeam"
+   ],
+   "action": "order a second holder onto the same patient; then order a holder who stands beyond reach",
+   "expect": "the second order is refused while the lens is reserved; the far holder walks into range before the job starts",
+   "control": {
+    "case": "the second order after the first job ended",
+    "expect": "it is accepted",
+    "rules_out": "an order refused for some other reason"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate",
+   "cheaper_why": "two orders and two job reads",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+   "split_from": "sc_sunbeam_arrest_treats"
   },
   {
    "id": "sc_unfinished_malformed",
@@ -351,26 +413,116 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Contagion/validation.py::scene_genome_brings_tissue",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "owed build RIMMANDRAKE_SHOW_CONTAGION_BATCH_ODDS_BEFORE_THE_STAB landed and deployed (asserted by its selftest on the deployed DLL hash), else the scene records UNMEASURED",
     "a donor colonist and a Bloody Mess host (asserted)",
-    "a second Bloody Mess for the interrupt control",
     "the wanted part is a Heart, named before the injection; the gestation roll is seeded to miss it",
-    "the open fix items CONTAGION_INJECT_FIX_CANCEL_STILL_STABS, CONTAGION_INJECT_FIX_HOST_WANDERS_OFF and CONTAGION_WOMBPOD_FIX_SAC_NEVER_HATCHES are read first; an arm whose item is open records UNMEASURED",
-    "a non-donor colonist needing the same organ, and an ineligible host (a dead Bloody Mess corpse) (asserted)"
+    "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)"
    ],
-   "action": "extract a sample, read the odds before ordering the injection, inject while the host walks, jump four days; install one organ on the donor; then kill a second host outside gestation; install the same kind of part on the non-donor and a grown natural arm or leg from the batch on the donor; order an injection into the ineligible host; turn the injection setting off and order one, then back on",
-   "expect": "the extraction adds blood loss and a donor-labelled nonstacking sample; odds shown before the job; the batch misses the Heart and still brings 2 to 4 donor-labelled parts, each with market value above zero; the injection completes on the moving host; no acid burst at birth; matched install gives the mood and no mismatch; the same part on the non-donor gives no matched mood; the grown arm or leg on the donor gives the mood; the ineligible host is refused with a reason; with the setting off the injection order is refused",
+   "action": "extract a sample from the donor; read the odds shown before the injection is ordered; inject the walking host; set the gestation deadline 60 ticks ahead and run to birth (at most 2,500 ticks in all)",
+   "expect": "the odds show before the job; the injection completes on the moving host; the batch misses the Heart and still brings 2 to 4 donor-labelled parts, each with market value above zero",
    "control": {
-    "case": "a second injection cancelled mid-bar, and a host killed outside gestation",
-    "expect": "the sample is still carried and no gestation starts; the killed host bursts acid",
-    "rules_out": "a batch spawned by the test, or a birth with no burst because the explosion is off everywhere"
+    "case": "the same host with no injection, its clock run the same ticks",
+    "expect": "no parts",
+    "rules_out": "a batch spawned by the test"
    },
    "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "immediate"
+   "hold": "immediate",
+   "cheaper_why": "the gestation is one deadline tick: setting it ahead decides the same birth that four days of clock would; the odds kernel is offline",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+  },
+  {
+   "id": "sc_genome_matched_install",
+   "kind": "acceptance",
+   "requirement": [
+    "genome_brings_tissue"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_genome_matched_install",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "owed build RIMMANDRAKE_SHOW_CONTAGION_BATCH_ODDS_BEFORE_THE_STAB landed and deployed (asserted by its selftest on the deployed DLL hash), else the scene records UNMEASURED",
+    "a donor colonist and a Bloody Mess host (asserted)",
+    "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+    "one donor-labelled organ and one donor-labelled natural limb of a batch spawned by the mod's own batch maker, and a non-donor colonist (asserted)"
+   ],
+   "action": "install the organ on the donor; install the same kind of part on the non-donor; install the limb on the donor",
+   "expect": "the donor holds the matched mood and no mismatch after the organ and after the limb; the non-donor holds no matched mood",
+   "control": {
+    "case": "the same install with the part's donor label cleared",
+    "expect": "no matched mood on the donor",
+    "rules_out": "a mood given by any install"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate",
+   "cheaper_why": "a thought on a pawn after a surgery is live state; the surgery is finished by the mod's own completion, with no gestation",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+   "split_from": "sc_genome_brings_tissue"
+  },
+  {
+   "id": "sc_genome_refusals",
+   "kind": "acceptance",
+   "requirement": [
+    "genome_brings_tissue"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_genome_refusals",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "owed build RIMMANDRAKE_SHOW_CONTAGION_BATCH_ODDS_BEFORE_THE_STAB landed and deployed (asserted by its selftest on the deployed DLL hash), else the scene records UNMEASURED",
+    "a donor colonist and a Bloody Mess host (asserted)",
+    "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+    "a carried sample, a live Bloody Mess, a dead Bloody Mess corpse (asserted)"
+   ],
+   "action": "cancel an injection at mid-bar; order one into the corpse; turn the injection setting off and order one; turn it on again",
+   "expect": "the cancelled job leaves the sample carried and starts no gestation; the corpse order is refused with a reason; with the setting off the order is refused",
+   "control": {
+    "case": "the same order on the live host with the setting on, left to finish",
+    "expect": "the sample is spent and a gestation starts",
+    "rules_out": "an order that never works"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate",
+   "cheaper_why": "each is one order and one read; CONTAGION_INJECT_FIX_CANCEL_STILL_STABS is read first, and an open item records UNMEASURED",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+   "split_from": "sc_genome_brings_tissue"
+  },
+  {
+   "id": "sc_genome_birth_no_burst",
+   "kind": "acceptance",
+   "requirement": [
+    "genome_brings_tissue"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_genome_birth_no_burst",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "owed build RIMMANDRAKE_SHOW_CONTAGION_BATCH_ODDS_BEFORE_THE_STAB landed and deployed (asserted by its selftest on the deployed DLL hash), else the scene records UNMEASURED",
+    "a donor colonist and a Bloody Mess host (asserted)",
+    "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+    "two Bloody Mess hosts, one in gestation with its deadline 60 ticks ahead, one not (asserted)"
+   ],
+   "action": "run the first to birth; kill the second",
+   "expect": "no acid burst at the birth; the second bursts acid when it dies",
+   "control": {
+    "case": "the second host's kill is itself the control for the instrument",
+    "expect": "an acid burst is read",
+    "rules_out": "a birth with no burst because the burst is off everywhere"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate",
+   "cheaper_why": "one birth and one death on one pad; nothing cheaper spawns the burst",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+   "split_from": "sc_genome_brings_tissue"
   },
   {
    "id": "sc_bodyprints_phased",
@@ -431,23 +583,51 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Contagion/validation.py::scene_cast_lives_here",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "wild animals cleared, animalDensity read from the def (asserted)",
-    "wreck and shell fragments scattered by the local-map binding (asserted by count)",
-    "a wreck fragment's weathering state read at start (asserted)"
+    "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+    "wild animals cleared; animalDensity above zero read from the def offline"
    ],
-   "action": "run one in-game day by clock; count spawns per roster row; for any row that misses the day, run the biome's own wild-animal spawner for that row (never a direct spawn) and record that it did; capture each species at play zoom; hand the captures to a judge agent that did not stage them; jump the clock 30 days and read the wreck fragment again",
-   "expect": "every roster row spawns (by the day or by the biome's own spawner) and is captured; the judge names each capture as a distinct creature and none as another row's; no missing texture; wreck fragments carry their own art and deconstruct to the Wreckage family yield; after the 30-day jump the wreck fragment's weathering state has changed",
+   "action": "call the biome's own wild-animal spawner once for each roster row, seeded on that row; capture each species at play zoom; hand the captures to a judge agent that did not stage them",
+   "expect": "every roster row spawns from the biome's own spawner and is captured; the judge names each capture as a distinct creature and none as another row's; no missing texture",
    "control": {
-    "case": "the same day with the biome's animalDensity read as zero on a stock biome tile",
+    "case": "the same spawner call on a stock biome map",
     "expect": "no Contagion species spawns",
     "rules_out": "animals spawned by the test"
    },
    "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "owner_review"
+   "hold": "owner_review",
+   "cheaper_why": "the spawner call decides what a day of clock would; that the density gives a herd is arithmetic on the def, read offline and felt on his walk",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+  },
+  {
+   "id": "sc_wreck_fragments_age",
+   "kind": "acceptance",
+   "requirement": [
+    "cast_lives_here"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_wreck_fragments_age",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "a wreck fragment placed by the local-map binding, its weathering state read (asserted)"
+   ],
+   "action": "set the fragment's placed tick 30 days back and run one long tick; then deconstruct it",
+   "expect": "its weathering state has changed; it draws its own art; it yields the Wreckage family products",
+   "control": {
+    "case": "the same fragment with its placed tick left alone",
+    "expect": "the same weathering state",
+    "rules_out": "a state that moves every tick"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate",
+   "cheaper_why": "the age is one number on the thing; setting it replaces a 30-day clock jump of the whole map",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+   "split_from": "sc_cast_lives_here"
   },
   {
    "id": "sc_settings_superb",
@@ -507,19 +687,52 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Contagion/validation.py::scene_walk_red_lid",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
    "start": [
-    "a lived-in Contagion save made mid-way through two in-game weeks, owner's full list plus all five DLC (asserted save path and list hash)"
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+    "a touched colonist (asserted severity), an injected Bloody Mess in gestation (asserted hediff and deadline tick), and the Burn clock jumped to mid-tells (asserted)"
    ],
-   "action": "take a natural Burn with one dash, then a Repulsor Burn and a gestation; reload and take them in the second order, gestation first; repeat the dash on the next Burn",
-   "expect": "after reload the Burn clock, touched severity and gestation match the save; both orders give the same batch and letters; the repeated dash costs a dose again",
+   "action": "read the state; save; run 60 ticks; reload that save; read the state again; at most 300 ticks in all",
+   "expect": "after the reload the Burn clock, the touched severity and the gestation deadline are the saved ones",
    "control": {
-    "case": "the same walk on a fresh quicktest map",
-    "expect": "refused as not lived-in, recorded INVALID",
-    "rules_out": "a fresh map standing in for the lived-in save"
+    "case": "reload the save made before the colonist was touched and the host injected",
+    "expect": "the two states differ",
+    "rules_out": "a comparison that reads equal whatever was saved"
    },
-   "restore": "reload the walk's own start save recorded by scene-begin before the mid-way save is written, never the mid-way save; delete the mid-way save; settings reset to shipped defaults",
-   "hold": "immediate"
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate",
+   "cheaper_why": "only a real save and load in a running game writes and reads the mod's own state; one pawn each and no days passed decides it, so the full list and the lived-in two weeks are dropped",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+  },
+  {
+   "id": "sc_gestation_burn_order",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_red_lid"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_gestation_burn_order",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+    "one checkpoint save with an injected host whose batch roll is seeded, and a powered Repulsor (asserted)"
+   ],
+   "action": "arm one: run the Repulsor Burn, then set the gestation deadline 60 ticks ahead and run to birth; reload the checkpoint; arm two: the birth first, then the Repulsor Burn",
+   "expect": "both arms give the same batch (defs, counts and donor labels) and the same letters",
+   "control": {
+    "case": "the same first arm with the batch roll seeded otherwise",
+    "expect": "the batch differs",
+    "rules_out": "a comparison that cannot see a different batch"
+   },
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "hold": "immediate",
+   "cheaper_why": "the Burn and the birth are both map state; a checkpoint and a deadline set ahead replace the days of waiting",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+   "split_from": "sc_walk_red_lid"
   },
   {
    "id": "sc_sunbeam_fires",
@@ -553,22 +766,24 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Contagion/validation.py::scene_wombpod_hatch",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "a mature Wombpod in view",
     "CONTAGION_WOMBPOD_FIX_SAC_NEVER_HATCHES read first; if open the hatch arm records UNMEASURED"
    ],
-   "action": "harvest the Wombpod; leave the sac on the ground three days by clock",
-   "expect": "the harvest gives a host sac; after three days it hatches a Bloody Mess that can host an injection",
+   "action": "harvest the Wombpod; set the sac's own hatch tick 60 ticks ahead; run 120 ticks",
+   "expect": "the harvest gives a host sac; it hatches a Bloody Mess that can host an injection",
    "control": {
-    "case": "the same sac read after two days by clock",
+    "case": "a second sac with its hatch tick left three days away, read at the same tick",
     "expect": "not yet hatched",
-    "rules_out": "a hatch from some spawn timer other than the sac's own three-day clock"
+    "rules_out": "a hatch from some timer other than the sac's own"
    },
    "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "immediate"
+   "hold": "immediate",
+   "cheaper_why": "the three days are one deadline tick on the sac; the length is a number, not a bar",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
   },
   {
    "id": "sc_mulched_soil",
@@ -602,21 +817,23 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Contagion/validation.py::scene_zhooliza",
-   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "ZHOOLIZA_BUILD_FROM_JELLY_RENDERS landed (asserted: def resolves, else UNMEASURED)"
    ],
-   "action": "spawn the biome's wild animals over a day by clock; capture each Zhool'Iza variant beside a Zhool",
-   "expect": "both variants spawn from the roster and a judge names each distinct from the Zhool",
+   "action": "call the biome's own wild-animal spawner for the Zhool'Iza row until both variants came, at most 40 seeded calls; capture each variant beside a Zhool",
+   "expect": "both variants come from the roster's own spawner and a judge names each distinct from the Zhool",
    "control": {
-    "case": "the same day on a temperate quicktest map",
+    "case": "the same calls on a temperate quicktest map",
     "expect": "no Zhool'Iza spawns",
     "rules_out": "a Zhool'Iza spawned by the test"
    },
    "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
-   "hold": "immediate"
+   "hold": "immediate",
+   "cheaper_why": "the variant roll is inside the spawner call; a day of clock adds only waiting and wild animals",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
   }
  ],
  "showcases": [

@@ -85,23 +85,54 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::fruit_defence",
-   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_TRIBES_RITE_SMALL_SCENES_NOT_A_SEASON",
    "start": [
     "Pyrelands home map, burn line and fire clock running (asserted)",
     "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
-    "colony vitals and pending incidents recorded",
+    "small list: every DLC, RM Pyrelands, UtinniPatches and this mod; incident queue emptied; needs and wild animals held still (asserted)",
     "a forced rite under way, its scar recorded",
-    "one colonist able to harvest, a second able to fight"
+    "one colonist able to harvest (asserted)"
    ],
-   "action": "order the colonist to harvest scorch-fruit inside the scar and keep it picking; in a second run let it fight back",
-   "expect": "a message naming the Tribes, then a harvester walks to the colonist; picking on, nearby harvesters attack only that colonist; they stop and go back to the fruit once it leaves the scar; goodwill before equals after; no Tribes raid queued over three game days, fighting back included",
+   "action": "order the colonist to harvest scorch-fruit inside the scar and keep picking past the warning; then order the colonist out of the scar",
+   "expect": "a message naming the Tribes, then a harvester walks to the colonist; picking on, nearby harvesters attack only that colonist; they stop and go back to the fruit once the colonist leaves the scar; goodwill before equals after",
    "control": {
     "case": "the colonist stops picking at the warning and walks out",
     "expect": "no attack follows",
     "rules_out": "a faction-wide hostility flip, which would also attack a colonist who complied"
    },
    "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
-   "hold": "owner_review"
+   "hold": "owner_review",
+   "cheaper_why": "the warning and the lord's behaviour are live; no day passes",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+  },
+  {
+   "id": "sc_fruit_fightback",
+   "kind": "acceptance",
+   "requirement": [
+    "fruit_defence_warns_then_drives"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::scene_fruit_fightback",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_TRIBES_RITE_SMALL_SCENES_NOT_A_SEASON",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "small list: every DLC, RM Pyrelands, UtinniPatches and this mod; incident queue emptied; needs and wild animals held still (asserted)",
+    "a forced rite under way, its scar recorded",
+    "one colonist able to fight, under attack for picking (asserted)"
+   ],
+   "action": "order the colonist to fight back for one exchange of blows; read goodwill, relation and the incident queue at once",
+   "expect": "goodwill and relation unchanged and no Tribes incident queued",
+   "control": {
+    "case": "a drafted colonist shoots a harvester who is not defending fruit (sc_attack_raids)",
+    "expect": "the relation goes hostile",
+    "rules_out": "a relation that never moves"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate",
+   "cheaper_why": "the queue and the goodwill are read right after the act that could change them; three days of waiting only lets other things queue",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+   "split_from": "sc_fruit_defence"
   },
   {
    "id": "sc_defence_reach",
@@ -137,22 +168,24 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::attack_raids",
-   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_TRIBES_RITE_SMALL_SCENES_NOT_A_SEASON",
    "start": [
     "Pyrelands home map, burn line and fire clock running (asserted)",
     "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
-    "colony vitals and pending incidents recorded",
-    "a forced rite under way"
+    "small list: every DLC, RM Pyrelands, UtinniPatches and this mod; incident queue emptied; needs and wild animals held still (asserted)",
+    "a forced rite under way, its scar recorded"
    ],
-   "action": "order a drafted colonist to shoot a harvester who is not defending fruit; advance days under a vitals and incident guard",
-   "expect": "the Tribes relation goes hostile on the attack; a later raid's faction is the Tribes",
+   "action": "order a drafted colonist to shoot a harvester who is not defending fruit; read the relation and the goodwill within 250 ticks",
+   "expect": "the Tribes relation goes hostile on the attack",
    "control": {
     "case": "a colonist fighting back during the fruit defence (sc_fruit_defence's second run)",
     "expect": "relation stays not hostile and goodwill unchanged",
     "rules_out": "every fight with the party reading as an open attack"
    },
    "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
-   "hold": "immediate"
+   "hold": "immediate",
+   "cheaper_why": "the raid that follows is vanilla faction hostility and nothing in this mod adds to it, so no raid is staged or awaited; the relation is the mod's part",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
   },
   {
    "id": "sc_no_arson_tally",
@@ -162,14 +195,14 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::no_arson_tally",
-   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_TRIBES_RITE_SMALL_SCENES_NOT_A_SEASON",
    "start": [
     "Pyrelands home map, burn line and fire clock running (asserted)",
     "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
-    "colony vitals and pending incidents recorded",
-    "the arson count removed (RUT_FireRaid and the tally absent, asserted by DefDatabase and the settings fields)"
+    "small list: every DLC, RM Pyrelands, UtinniPatches and this mod; incident queue emptied; needs and wild animals held still (asserted)",
+    "the arson count removed (RUT_FireRaid and the tally absent: an offline read of the loaded defs and the settings fields)"
    ],
-   "action": "colonists light several grass fires over three game days; a tame fire-hawk drops twigs",
+   "action": "colonists light three grass fires; a tame fire-hawk drops one twig; run until each fire is out (at most 5,000 ticks); read goodwill, letters and the incident queue",
    "expect": "goodwill unchanged; no Tribes letter or incident in the queue",
    "control": {
     "case": "an open attack on a Tribes harvester in the same window",
@@ -177,7 +210,9 @@
     "rules_out": "a goodwill reader that never moves"
    },
    "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
-   "hold": "immediate"
+   "hold": "immediate",
+   "cheaper_why": "a tally would move on each fire; three days add only other incidents",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
   },
   {
    "id": "sc_no_animal_blame",
@@ -213,20 +248,105 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::walk_tribes_season",
-   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_TRIBES_RITE_SMALL_SCENES_NOT_A_SEASON",
    "start": [
-    "his full list, a Pyrelands colony in ordinary play (asserted)",
-    "Deep Desert Tribes present, not hostile"
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "small list: every DLC, RM Pyrelands, UtinniPatches and this mod; incident queue emptied; needs and wild animals held still (asserted)",
+    "a rite forced by rite_force_hook, its party picking (asserted)"
    ],
-   "action": "play until a rite comes by its own roll (hook only after the time budget, recorded); pick in their scar; save mid-harvest; reload; next rite; second order; switches off and on",
-   "expect": "the digest before save equals after reload; the second rite harvests again; no Tribes pawn or lord left behind by the switches; log clean",
+   "action": "read the digest (lord toil, party pawns, scar cells, carried counts, goodwill); save; run 60 ticks; reload; read it again; then run until the party leaves (at most 15,000 ticks)",
+   "expect": "the digest after the reload equals the saved one; the party then walks off with its fruit; no Tribes pawn or lord is left; no log line names this mod",
    "control": {
     "case": "the reload compared against a save made before the party arrived",
     "expect": "the digests differ, so the comparison can see a change",
     "rules_out": "a digest that reads equal whatever the state"
    },
    "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
-   "hold": "immediate"
+   "hold": "immediate",
+   "cheaper_why": "only a real reload of a live lord decides it; the season, the full list and the waiting add other mods' incidents, not evidence about the lord",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+  },
+  {
+   "id": "sc_rite_second_order",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_tribes_season"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::scene_rite_second_order",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_TRIBES_RITE_SMALL_SCENES_NOT_A_SEASON",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "small list: every DLC, RM Pyrelands, UtinniPatches and this mod; incident queue emptied; needs and wild animals held still (asserted)",
+    "a colonist already picking in the burned ground (asserted)"
+   ],
+   "action": "force the rite so that it arrives while the colonist is in the scar; watch to the warning (at most 5,000 ticks)",
+   "expect": "the colonist is warned and the party goes on with its harvest",
+   "control": {
+    "case": "the same rite with the colonist outside the scar",
+    "expect": "no warning",
+    "rules_out": "a warning sent with every rite"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate",
+   "cheaper_why": "one forced rite and one colonist",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+   "split_from": "sc_walk_tribes_season"
+  },
+  {
+   "id": "sc_rite_switch_off_cleans",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_tribes_season"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::scene_rite_switch_off_cleans",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_TRIBES_RITE_SMALL_SCENES_NOT_A_SEASON",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "small list: every DLC, RM Pyrelands, UtinniPatches and this mod; incident queue emptied; needs and wild animals held still (asserted)",
+    "a forced rite under way (asserted)"
+   ],
+   "action": "switch the rite and the visit off; run 2,500 ticks; switch them on again",
+   "expect": "no Tribes pawn or lord of the mod is left behind, and a rite can be forced again",
+   "control": {
+    "case": "the same 2,500 ticks with the switches on",
+    "expect": "the party is still there",
+    "rules_out": "a party that left on its own"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate",
+   "cheaper_why": "one rite and one switch; sc_settings_switches reads the other switches",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+   "split_from": "sc_walk_tribes_season"
+  },
+  {
+   "id": "sc_rite_own_roll",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_tribes_season"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::scene_rite_own_roll",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_TRIBES_RITE_SMALL_SCENES_NOT_A_SEASON",
+   "start": [
+    "offline: the rite roll's own function, the shipped fireRiteFraction, a seeded random source"
+   ],
+   "action": "call the roll over a fixed list of fire-clock fronts",
+   "expect": "some fronts bring a rite and some do not; the fraction setting at zero brings none",
+   "control": {
+    "case": "the same list with the fraction at zero",
+    "expect": "no rite",
+    "rules_out": "a roll that ignores the setting"
+   },
+   "restore": "nothing: offline",
+   "hold": "immediate",
+   "cheaper_why": "an offline call of the roll replaces waiting on his full list for a rite to come by itself; how often one comes is felt on his walk",
+   "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+   "split_from": "sc_walk_tribes_season"
   },
   {
    "id": "sc_thornvine_tier",

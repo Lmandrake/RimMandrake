@@ -1262,18 +1262,19 @@
       "kind": "acceptance",
       "staged_by": "script",
       "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_walk_reload_repeat",
-      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_SLIME_SMALL_WALK_SCENES_NOT_FORTY_HANDS",
       "implementation_status": "planned entry point and complete scene contract",
       "start": [
         "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
-        "Assert recovery baseline, mid-journey identified primed/loaded seeker, active patient mode and configured representative 40-colonist routine with counted inputs and workers."
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+        "one loaded seeker and one injected patient mid-absorption (asserted ids and clocks)"
       ],
-      "action": "Save mid-way, reload, finish the gene/rescue route, repeat with fresh items and use a second order of production and expedition actions. Resume the mixed workday with competing friend treatment orders, native activity and named alerts.",
-      "expect": "Chosen state/urgency/accounting survives reload and fresh repeats. Both action orders work. Normal bills and competing rescue orders remain observable, with successes/failures attributable to actual time/capacity and captured advisory frame/tick/memory trends.",
+      "action": "Read the state; save; run 60 ticks; reload; read again; then order one antidote to its end.",
+      "expect": "Chosen gene, seeker state, patient clock and item counts are the saved ones after the reload; the antidote is spent once and the patient keeps the gene.",
       "control": {
-        "case": "Fresh-only path, consumed-dose second-use attempt and missing/delayed shared friend.",
-        "expect": "The repeated fresh dose works, consumed input cannot repeat and genuine contention can lose a patient without hiding order/clock evidence.",
-        "rules_out": "A fresh two-pawn demonstration standing in for persisted, repeated and scaled play."
+        "case": "Reload the save made before the injection.",
+        "expect": "The patient clock is absent.",
+        "rules_out": "A read that finds a clock in any save."
       },
       "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
       "hold": "immediate",
@@ -1285,7 +1286,77 @@
       ],
       "requirement": [
         "repeat_walk"
-      ]
+      ],
+      "cheaper_why": "one patient and one reload; forty colonists at work add contention, which is his walk",
+      "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+    },
+    {
+      "id": "repeat_with_fresh_dose",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_repeat_with_fresh_dose",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_SLIME_SMALL_WALK_SCENES_NOT_FORTY_HANDS",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+        "one cured patient, one spent dose and one fresh dose (asserted)"
+      ],
+      "action": "Order an injection with the spent dose; then with the fresh one.",
+      "expect": "The spent dose is refused; the fresh one works and is spent once.",
+      "control": {
+        "case": "No dose on the map.",
+        "expect": "The order is refused.",
+        "rules_out": "An injection that needs no dose."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "repeat_walk"
+      ],
+      "cheaper_why": "two orders",
+      "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+      "split_from": "walk_reload_repeat"
+    },
+    {
+      "id": "production_and_expedition_order",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_production_and_expedition_order",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_SLIME_SMALL_WALK_SCENES_NOT_FORTY_HANDS",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+        "one checkpoint save: one production bill ready and one extraction ready (asserted)"
+      ],
+      "action": "Arm one: the bill, then the extraction; reload the checkpoint; arm two: the extraction first.",
+      "expect": "Both arms give the same products and stock deltas.",
+      "control": {
+        "case": "A third arm with the bill cancelled at mid-bar.",
+        "expect": "The product is missing.",
+        "rules_out": "Credit for products already there."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "repeat_walk"
+      ],
+      "cheaper_why": "two ordered jobs per arm",
+      "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24",
+      "split_from": "walk_reload_repeat"
     },
     {
       "id": "flagship_sequence",

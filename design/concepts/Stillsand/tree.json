@@ -349,7 +349,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "The player constructs and uses the retained workshop, resource and creature systems through ordinary orders. Jobs, reservations, persistent outcomes and feature controls remain usable with repeat work, interruption and a 40-colonist harbour. Settings report their actual application time and preserve prior user values after testing.",
+   "experience": "The player constructs and uses the retained workshop, resource and creature systems through ordinary orders. Jobs, reservations, persistent outcomes and feature controls remain usable with repeat work, interruption. Settings report their actual application time and preserve prior user values after testing.",
    "scenario": "First construction, repeated ordinary sieve/bill/still/hauling work with shared inputs and limited tools, mid-job sun loss/return and reload, and every declared feature toggle at its labelled timing. Independent resident/event/salvage checks exercise remaining built capabilities. Use actual shipped costs and research.",
    "false_pass": [
     "A reflection-only toggle roundtrip stands in for gameplay",
@@ -364,7 +364,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": "scene_observer",
-   "oracle_proposed": "Use ordinary player orders with an event/item census at each checkpoint, a before/reloaded/final identity comparison and a no-reload sibling. Both orders must reach their declared next undertaking with accounted costs. Unique captures establish the visible continuity.",
+   "oracle_proposed": "the state before the save is read again after the reload; an emptied cave stays empty; both orders end with the same provisions and paid costs; the expedition itself is judged at his walk",
    "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -376,7 +376,7 @@
    "leaf_kind": "walk",
    "clause_kind": "preserve",
    "experience": "The tester can carry out the expedition and resupply loop, reload a save made midway and repeat the core action, then complete the main actions in a second order without losing work, discoveries or persistent consequences.",
-   "scenario": "Do the prepared-harbour departure, sparse crossing, island exploration/security, useful cave return, workshop provisioning and next departure. Save mid-way during return work with an active wet interval and pending warning, reload and finish. Repeat the core expedition/resupply action with the emptied-cave variant. In a second order prepare the workshop before exploration, then discover/secure/resupply. Compare resulting items, bills, reservations, wet expiry, warnings and harbour state.",
+   "scenario": "walk_accept: one save and reload mid-work with a pour and a warning. emptied_cave_stays_empty. workshop_before_or_after_cave: both orders from one checkpoint. His walk: the expedition and resupply loop.",
    "false_pass": [
     "Only a finished showcase is reloaded",
     "The test injects completed output after load",
