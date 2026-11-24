@@ -73,8 +73,12 @@ def _gss_scene(tid, spec):
 _GSS_SCENES = {}
 
 
-def _gss_offline_rows(tid):
-    """-> the offline-gate rows (O1..O8) that scene TID's verdict reads; [] none, or the scenes could not be read here."""
+# proof rows that need FlowWorks loaded (proof_all says so itself on the plain tier: Steve2, 2026-11-24)
+GSS_FLOWWORKS_ROWS = ("P_SC_shock_reach_deck_cord_per_value", "P_SC_under_liquid_pit")
+
+
+def _gss_other_rows(tid, rx):
+    """-> the rows matching RX that scene TID's verdict reads; [] none, or the scenes could not be read here."""
     if not _GSS_SCENES:
         _GSS_SCENES["V"] = None
         try:
@@ -89,7 +93,7 @@ def _gss_offline_rows(tid):
         except Exception:       # noqa: BLE001 - a host without its imports (SteveDesktop): the committed blocks decide
             pass
     try:
-        return [r for r in _GSS_SCENES["V"].scene_rows_for(tid) if re.match(r"O\d", r)]
+        return [r for r in _GSS_SCENES["V"].scene_rows_for(tid) if re.match(rx, r)]
     except Exception:       # noqa: BLE001
         return []
 
@@ -98,10 +102,13 @@ def _gss_proof(tid, spec):
     if "proof_all.py --live" not in _cmd(spec) and not (
             _cmd(spec) == GSS + "validation.py" and str(spec.get("entry") or "").startswith("scene_")):
         return None
-    tier = spec.get("tier") or "gimmesomeslack"
+    tier = spec.get("tier") or ("gimmesomeslack_flowworks" if tid in GSS_FLOWWORKS_ROWS else "gimmesomeslack")
     if not tier.startswith("gimmesomeslack"):
         return "its tier %s is a list without the mod: it reads a save that an earlier run on the mod's tier made" % tier
-    rows = _gss_offline_rows(tid) if tid.startswith("sc_") else []
+    rows = _gss_other_rows(tid, r"GS\d") if tid.startswith("sc_") else []
+    if rows:
+        return "its verdict joins the proof's rows with another script's (%s): no one run decides it" % ", ".join(rows)
+    rows = _gss_other_rows(tid, r"O\d") if tid.startswith("sc_") else []
     if rows:
         return "its verdict reads offline gate rows (%s), and the gate's C# selftest takes over 15 min on SteveDesktop" % (
             ", ".join(rows))
@@ -116,7 +123,7 @@ def _gss_gravship(tid, spec):
     mode = "off_autolink" if e.startswith("GS3_") else m.group(1) if m else None     # gravship_scene.ROW_IDS
     if not mode:
         return None
-    return {"key": "gss_gravship:" + mode, "read": "exit012", "tier": spec.get("tier") or "gimmesomeslack",
+    return {"key": "gss_gravship:" + mode, "read": "rowfile", "tier": spec.get("tier") or "gimmesomeslack",
             "build": "release", "site": "game",
             "steps": ["python.exe -u %snorthstar/gravship_scene.py %s --out {wout}" % (GSS, mode)]}
 
@@ -376,7 +383,22 @@ def read_exit012(tids, specs, text, rcs, out):
     return {t: (v, "exits %s: %s" % (rcs, _tail(text)), None) for t in tids}
 
 
-READERS = {"concept": read_concept, "status": read_status, "gss_proof": read_gss_proof, "ek_scenes": read_ek_scenes,
+def read_rowfile(tids, specs, text, rcs, out):
+    """A result file of rows: the check's verdict is the row of its entry's id. A stop of the game's clock exits 1 as a FAIL
+    does (the gravship script), so the exit code decides nothing."""
+    d = _load(out)
+    rows = [r for r in (d or {}).get("rows") or [] if isinstance(r, dict)] if isinstance(d, dict) else []
+    got = {}
+    for t in tids:
+        hit = [r for r in rows if r.get("id") == specs[t].get("entry")]
+        v = _verdict_of(r.get("status") for r in hit) if hit else "UNMEASURED"
+        det = "; ".join(json.dumps(r.get("detail"), default=str)[-600:] for r in hit) or "no row of its name (exits %s): %s" % (
+            rcs, _tail(text))
+        got[t] = (v, det[:900], None)
+    return got
+
+
+READERS = {"rowfile": read_rowfile, "concept": read_concept, "status": read_status, "gss_proof": read_gss_proof, "ek_scenes": read_ek_scenes,
            "ek_walk": read_ek_walk, "exit012": read_exit012}
 
 

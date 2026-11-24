@@ -2679,14 +2679,7 @@
    "claims": [
     "a flight keeps, or takes down, the wires by the switch"
    ],
-   "cheaper_why": "the engine's lift and landing move the ship's things; no offline test runs them, and one flight reads one switch value",
-   "testq": {
-    "check": {
-     "tier": "gimmesomeslack",
-     "build": "release"
-    },
-    "by": "testq_blocks.py"
-   }
+   "cheaper_why": "the engine's lift and landing move the ship's things; no offline test runs them, and one flight reads one switch value"
   },
   "sc_save_reload_wire_down": {
    "id": "sc_save_reload_wire_down",
@@ -8025,7 +8018,7 @@
    },
    "testq": {
     "check": {
-     "tier": "gimmesomeslack",
+     "tier": "gimmesomeslack_flowworks",
      "build": "release"
     },
     "by": "testq_blocks.py"
@@ -8207,7 +8200,7 @@
    },
    "testq": {
     "check": {
-     "tier": "gimmesomeslack",
+     "tier": "gimmesomeslack_flowworks",
      "build": "release"
     },
     "by": "testq_blocks.py"

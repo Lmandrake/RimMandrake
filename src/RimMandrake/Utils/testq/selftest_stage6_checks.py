@@ -219,6 +219,19 @@ def t_the_verdict_is_the_checks_own_row():
     check([walk("ROW STATUS DETAIL\nFRAME_BUDGET PASS x\n", 0), walk("FRAME_BUDGET FAIL x\n", 1),
            walk("FRAME_BUDGET UNMEASURED x\n", 1), walk("REFUSED walk", 2)] == ["PASS", "FAIL", "UNMEASURED", "UNMEASURED"],
           n + "the walk leaf's rows are read")
+    spec = {"P_GS1_on": {"entry": "GS1_x_gravship_on_y"}}
+    gj = os.path.join(TMP, "g.json")
+
+    def grav(rows, rc, text=""):
+        if rows is None:
+            os.path.exists(gj) and os.remove(gj)
+        else:
+            json.dump({"rows": [{"id": i, "status": s, "detail": {}} for i, s in rows]}, open(gj, "w"))
+        return SC.read_rowfile(["P_GS1_on"], spec, text, [rc], gj)["P_GS1_on"][0]
+    check([grav([("GS1_x_gravship_on_y", "PASS")], 0), grav([("GS1_x_gravship_on_y", "FAIL")], 1), grav(None, 1, "GovernorStop"),
+           grav([("GS2", "PASS")], 1), grav([("GS1_x_gravship_on_y", "UNMEASURED")], 2)] == [
+               "PASS", "FAIL", "UNMEASURED", "UNMEASURED", "UNMEASURED"],
+          n + "a flight's verdict is its own row, never its exit code (a stop exits 1 too)")
     r = SC.read_exit012(["p"], {"p": {}}, "Traceback (most recent call last):\nX", [1], None)
     check(r["p"][0] == "UNMEASURED" and SC.read_exit012(["p"], {"p": {}}, "no", [0, 1], None)["p"][0] == "FAIL"
           and SC.read_exit012(["p"], {"p": {}}, "no", [0, 2], None)["p"][0] == "UNMEASURED", n + "exit 1 from a crash is no FAIL")
@@ -249,6 +262,10 @@ def t_one_run_serves_all_its_checks():
     p = SC.place("GimmeSomeSlack", {"sc_spans": gss("sc_spans", "scene_spans", tier="gimmesomeslack")}, root=ROOT)
     check(p["sc_spans"][0] == SC.NO_LOOK and "offline gate" in p["sc_spans"][1],
           "no-entry-point-is-could-not-look: a scene that reads offline-gate rows is not sent (%s)" % p["sc_spans"][1])
+    p = SC.place("GimmeSomeSlack", {"sc_gravship": gss("sc_gravship", "scene_gravship", tier="gimmesomeslack"),
+                                    "P_SC_under_liquid_pit": gss("P_SC_under_liquid_pit", "SC_under_liquid_pit")}, root=ROOT)
+    check(p["sc_gravship"][0] == SC.NO_LOOK and p["P_SC_under_liquid_pit"][1]["check"]["tier"] == "gimmesomeslack_flowworks",
+          "no-entry-point-is-could-not-look: a scene of rows from two runs is not sent; a pit row goes to the FlowWorks tier (%s)" % p)
     check(sum("proof_all" in x for x in lines) == 1, "one-run-serves-all-its-checks: the proof ran once")
     check({k: v["verdict"] for k, v in rows.items()} == {"P_A": "PASS", "P_B": "FAIL", "P_GONE": "UNMEASURED", "sc_walls": "PASS"},
           "one-run-serves-all-its-checks: each check its own row %s" % {k: v["verdict"] for k, v in rows.items()})
