@@ -44,6 +44,6 @@ C# strings naming the package or its defs: `EnvironmentalHazards/Source/RM_WarmG
 2. `ALPHA_BIOMES_MIGRATE_DISEASES_AND_CODE`: Miasma needs three disease incidents of our own (`RM_` IncidentDefs using vanilla disease hediffs, or drop the three rows by his say), and the C# strings above change.
 3. `ALPHA_BIOMES_INSTALL_UNINSTALLED_RENDERS`: sheet and `art.py install` for Tinkle grass, Firevine tree and the waiting `rotvar_*` variants.
 4. `ALPHA_BIOMES_CENSUS_THE_REST_OF_IT`: every other name decided, `design/RimMandrake/alpha_biomes_census_2026-11-01.md`.
-5. Then the SWAC/AA gate (kickoff 0.5.5): rosters, references, art, save, live round, list.
+5. Then the SWAC/AA gate (kickoff 0.5.5): rosters, references, art, save, live round, list. Done 2026-11-24: `alpha_biomes_retired_live.py` passed 8 of 8 rows on the full list.
 
 Facings and sizes for any art still owed: plants take no facings (`facings` empty, one job per variant, 256 px, 512 for `visualSizeRange` max 5 and up). Donor variant counts: GiantAgarilux 6, Arbuscular 4, DribblingCap 4, SlimyPholiota 3, LilacBeacon 3, others 1, Firevine 4 (+ a leafless frame no XML uses).
