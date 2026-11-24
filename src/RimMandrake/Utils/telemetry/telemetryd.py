@@ -87,7 +87,7 @@ class Daemon:
         if force or self.every("host", c["host_every_s"], t):
             E = ingest.Emit(self.con, self.vm, self.latest)
             host.sample_host(E, t)
-            pids = host.process_pids({"rimworldwin64.exe"})
+            pids = host.process_pids({"rimworldwin64.exe"}) or {}
             running = bool(pids.get("rimworldwin64.exe"))
             if running and not self.latest.get("game_running"):
                 self.latest["game_running_since"] = t

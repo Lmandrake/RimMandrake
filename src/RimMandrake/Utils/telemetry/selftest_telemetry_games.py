@@ -244,6 +244,21 @@ def t_an_unreachable_machine_reads_could_not_look_with_its_cause(W):
         check(f"{argv[0]}: could not look, exit 3, with the cause",
               rc == 3 and "COULD NOT LOOK" in o and "connect timed out" in o, (rc, o))
         check(f"{argv[0]}: no zero and no empty list", not re.search(r"\b0 (shown|series|completed|calls)|\(0\)", o), o)
+    quiet = W.now - 30
+    w(W.seg("stevedesktop", "quiet", 33), [sample(quiet, "quiet", 102)])
+    W.pulled(pids=(33,))
+    W.step()
+    W.pulled(error="ssh exit 255: connect timed out", last_ok=W.now - 60)
+    rc, o = W.cli("events", "--game", "Steve1", "--kind", "incident", "--since", "5m")
+    check("events with held TPS and no incidents: unavailable without a zero count",
+          rc == 3 and "connect timed out" in o and re.search(r"held from before: newest row \d+s ago", o)
+          and "UNMEASURED" in o and "0 shown" not in o, (rc, o))
+    moment = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(quiet))
+    rc, o = W.cli("at", moment, "--game", "Steve1")
+    check("at with held TPS: both empty history sections are unavailable without zero counts",
+          rc == 3 and "connect timed out" in o and re.search(r"held from before: newest row \d+s ago", o)
+          and "med=102" in o and "events: UNMEASURED" in o and "bridge calls: UNMEASURED" in o
+          and "events (0)" not in o and "bridge calls: 0" not in o, (rc, o))
     four_games(W)
     s = "22aaaaaastevedesktop"
     w(W.seg("stevedesktop", s, 33), [
@@ -261,6 +276,8 @@ def t_an_unreachable_machine_reads_could_not_look_with_its_cause(W):
         rc, o = W.cli(*argv, "--game", "Steve1")
         check(f"{argv[0]} returns exit 3 after showing held rows", rc == 3 and held in o
               and "connect timed out" in o and "held from before: newest row" in o, (rc, o))
+        if argv[0] == "at":
+            check("at keeps held events and bridge calls after a failed pull", "incident" in o and "bridge calls: 1" in o, o)
     import store
     with mock.patch.object(store, "vm_get", return_value=b'{"data":["rm_game_tps"]}'):
         rc, o = W.cli("series", "--game", "Steve1")
@@ -305,6 +322,8 @@ def t_a_game_with_no_data_yet_reads_no_data_yet(W):
 
 
 def t_a_game_that_is_down_reads_down_with_the_age_of_its_last_row(W):
+    import host
+    probe = host.process_pids
     four_games(W)
     W.pulled(pids=())
     rc, o = W.cli("games", "Steve1")
@@ -313,13 +332,26 @@ def t_a_game_that_is_down_reads_down_with_the_age_of_its_last_row(W):
     W.pulled(pids=None)
     rc, o = W.cli("games", "Steve1")
     check("an unread process list is not down", rc == 0 and "process unread" in o and "down" not in o, (rc, o))
-    import host
     host.process_pids = lambda names: {"rimworldwin64.exe": [22]}
     W.step()
     rc, o = W.cli("games", "ArchBig")
     check("a local game's process is read too", rc == 0 and "down" in o, (rc, o))
     rc, o = W.cli("games", "ArchSmall")
     check("and its neighbour stays up", rc == 0 and "up" in o and "down" not in o, (rc, o))
+    kernel = mock.Mock()
+    kernel.CreateToolhelp32Snapshot.return_value = host.ctypes.c_void_p(-1).value
+    with mock.patch.object(host, "process_pids", probe), mock.patch.object(host, "IS_WIN", True), \
+            mock.patch.object(host.ctypes, "windll", SimpleNamespace(kernel32=kernel), create=True), \
+            mock.patch.object(os, "name", "nt"):
+        rc, o = W.cli("games", "ArchBig")
+        check("a refused Windows snapshot reads process unread for the held writer",
+              rc == 0 and "process unread" in o and "down" not in o and re.search(r"newest row \d+s ago", o), (rc, o))
+        kernel.CreateToolhelp32Snapshot.return_value = 1
+        kernel.Process32FirstW.side_effect = lambda snap, entry: setattr(entry._obj, "szExeFile", "notepad.exe") or 1
+        kernel.Process32NextW.return_value = 0
+        rc, o = W.cli("games", "ArchBig")
+        check("a successful Windows snapshot with no matches reads down with the row age",
+              rc == 0 and "down (pid 11" in o and re.search(r"newest row \d+s ago", o), (rc, o))
 
 
 def t_every_answer_carries_its_age(W):
@@ -483,6 +515,35 @@ def t_a_pull_copies_each_byte_once(W):
     check("what was pulled is ingested as that game's", n is not None and n[0] == 3 and n[1] == "Steve1", n and tuple(n))
     S = {s.name: s for s in ingest.make_sources()}
     check("its points carry the game", any(x["metric"].get("game") == "Steve1" for x in W.vm.lines), sorted(S))
+
+    from tcommon import cfg
+    race = os.path.join(W.tmp, "rotating")
+    root, stub = far(race)
+    seg = os.path.join(root, "a", "JawaBench", "tps", os.path.basename(seg))
+    bc = os.path.join(root, "data", "scratch", "bridge_calls.jsonl")
+    w(seg, [sample(W.now - 9, "s1", 50)])
+    os.utime(seg, (W.now - 9, W.now - 9))    # the backlog is sent first
+    w(bc, [{"ev": "start", "cid": "old", "tool": "t" * 200}])
+    w(bc + ".next", [{"ev": "start", "cid": "new"}])
+    with open(os.path.join(stub, "tasklist.exe"), "w") as f:
+        # The serve calls tasklist after recording both paths' stats and before opening their slices.
+        f.write("#!/bin/sh\ncd ../data/scratch || exit 1\n"
+                "if [ -f bridge_calls.jsonl.next ]; then\n"
+                "  mv bridge_calls.jsonl bridge_calls.jsonl.1 && mv bridge_calls.jsonl.next bridge_calls.jsonl || exit 1\n"
+                "fi\necho 'INFO: No tasks are running'\n")
+    inbox = os.path.join(race, "inbox")
+    dst = os.path.join(inbox, "games", "stevedesktop")
+    mine = os.path.join(dst, "a", "tps", os.path.basename(seg))
+    mbc = os.path.join(dst, "machine", "bridge_calls.jsonl")
+    with mock.patch.dict(cfg(), inbox=inbox, state=os.path.join(race, "state")):
+        r = pull(stub)
+        check("an in-flight rotation cuts the pull after the earlier file arrived",
+              r["error"] and open(mine, "rb").read() == open(seg, "rb").read(), r)
+        r = pull(stub)
+    rotated, active = open(mbc + ".1", "rb").read(), open(mbc, "rb").read()
+    check("after a rotation during the pull, both bridge logs match byte for byte",
+          r["error"] is None and rotated == open(bc + ".1", "rb").read() and active == open(bc, "rb").read(),
+          (r["error"], rotated[:40], active[:40]))
 
 
 def t_the_tps_report_takes_a_game_name_too(W):

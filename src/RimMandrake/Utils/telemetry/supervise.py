@@ -55,7 +55,7 @@ def specs() -> dict:
 def _alive(pid: int | None, exe: str) -> bool:
     if not pid:
         return False
-    names = host.process_pids({os.path.basename(exe).lower()})
+    names = host.process_pids({os.path.basename(exe).lower()}) or {}
     return pid in names.get(os.path.basename(exe).lower(), [])
 
 

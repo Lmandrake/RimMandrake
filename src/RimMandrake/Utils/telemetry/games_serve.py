@@ -87,6 +87,8 @@ left = CUT_AFTER
 for f in send:
     n = f["size"] - f["off"]
     with open(f["path"], "rb") as fh:
+        if os.fstat(fh.fileno()).st_ino != f["ino"]:
+            sys.exit("file changed since listing: " + f["path"])
         fh.seek(f["off"])
         while n:
             b = fh.read(min(n, 1 << 20 if left is None else max(left, 1)))

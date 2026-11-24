@@ -156,7 +156,7 @@ def look(key: str, now: float, daemon: bool = True) -> dict:
         if not out["error"]:
             import host
             p = host.process_pids({"rimworldwin64.exe"})
-            out["pids"] = p.get("rimworldwin64.exe", []) if p else ([] if os.name == "nt" else None)
+            out["pids"] = p.get("rimworldwin64.exe", []) if p is not None else None
         out["absent"] = not os.path.isdir(os.path.join(record_dir(key), "tps"))
         return out
     m, letter = split(key)

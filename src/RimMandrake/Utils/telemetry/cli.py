@@ -106,13 +106,14 @@ class Reading:
         self.rc = self.st["rc"]
         print(self.st["line"])
 
-    def empty(self, why: str) -> int:
+    def empty(self, why: str, prefix: str = "") -> int:
         """Nothing to show. The reason is never "zero" when the game could not be looked at or has written nothing."""
         if self.name is None or self.st["rc"] == 0:
-            print(f"  {why}")
+            print(f"  {prefix}{why}")
             return 0
-        print("  UNMEASURED (could not look at this game: no row held for this question)"
-              if self.st["rc"] == games.EX_COULD_NOT_LOOK else "  no data yet from this game")
+        why = ("UNMEASURED (could not look at this game: no row held for this question)"
+               if self.st["rc"] == games.EX_COULD_NOT_LOOK else "no data yet from this game")
+        print(f"  {prefix}{why}")
         return self.st["rc"]
 
     def blank(self) -> bool:
@@ -282,13 +283,19 @@ def cmd_at(a) -> int:
     rows = con.execute("SELECT ts,kind,subject,game FROM events WHERE ts BETWEEN ? AND ? AND kind NOT IN "
                        f"('art_job','art_queued','art_registered','art_validated','ledger') AND {w} ORDER BY ts",
                        (t - span, t + span, *wa)).fetchall()
-    print(f"  events ({len(rows)}):")
+    if not rows and g.rc:
+        g.empty("", prefix="events: ")
+    else:
+        print(f"  events ({len(rows)}):")
     for r in rows[:60]:
         print(f"    {iso(r['ts'])[11:]}  {r['kind']:<14} {(r['game'] or '') if not g.name else ''} {str(r['subject'] or '')[:90]}")
     w, wa = ("game=?", [g.name]) if g.name else ("1", [])
     calls = con.execute(f"SELECT COUNT(*), AVG(ms), MAX(ms) FROM bridge_calls WHERE ts BETWEEN ? AND ? AND {w}",
                         (t - span, t + span, *wa)).fetchone()
-    print(f"  bridge calls: {calls[0]}" + (f", mean {calls[1]:.0f} ms, max {calls[2]:.0f} ms" if calls[0] else ""))
+    if not calls[0] and g.rc:
+        g.empty("", prefix="bridge calls: ")
+    else:
+        print(f"  bridge calls: {calls[0]}" + (f", mean {calls[1]:.0f} ms, max {calls[2]:.0f} ms" if calls[0] else ""))
     return g.rc
 
 
@@ -308,7 +315,8 @@ def cmd_events(a) -> int:
         q += " AND (subject LIKE ? OR detail LIKE ?)"
         args += [f"%{a.grep}%"] * 2
     rows = con.execute(q + " ORDER BY ts DESC LIMIT ?", (*args, a.limit)).fetchall()
-    print(f"events DB · last {a.since}" + (f" · kind {a.kind}" if a.kind else "") + f" · {len(rows)} shown")
+    if rows or not g.rc:
+        print(f"events DB · last {a.since}" + (f" · kind {a.kind}" if a.kind else "") + f" · {len(rows)} shown")
     if not rows and g.name:
         return g.empty("no such event of this game in the window")
     for r in reversed(rows):

@@ -1,8 +1,8 @@
 # BOUNDARY: telemetry takes a game name, Design Version 0.1.0
 
 Code: `src/RimMandrake/Utils/telemetry/games.py`, `pull_games.py` and `games_serve.py` (all of each), and the parts of
-`ingest.py`, `store.py`, `analysis.py`, `telemetryd.py` and `cli.py` there that name a game, and `game_record` in
-`src/RimMandrake/Utils/tps_record.py`. Item:
+`ingest.py`, `store.py`, `analysis.py`, `telemetryd.py` and `cli.py` there that name a game, `process_pids` in `host.py`,
+and `game_record` in `src/RimMandrake/Utils/tps_record.py`. Item:
 `RIMMASTER_WIRE_STEVEDESKTOP_TELEMETRY_FLYING_BLIND`. Each promise has a test of its name in
 `src/RimMandrake/Utils/telemetry/selftest_telemetry_games.py`. The rest of those files has its own tests
 (`selftest_telemetry.py`) and no page.
@@ -43,11 +43,13 @@ into `<root>/inbox/games/<machine>/`, and read from there. Every point, event an
 - **an-unknown-game-is-refused-by-name.** Exit 2, the name typed and the four names known in the refusal; no default game.
 - **an-unreachable-machine-reads-could-not-look-with-its-cause.** Exit 3 and the cause when the machine, the pull, or the
   daemon could not be read; never a count of zero and never an empty list. Rows held from before are shown with their age,
-  still with exit 3.
+  still with exit 3. Empty `events` results and empty event or bridge sections of `at` read UNMEASURED even when TPS rows
+  are held.
 - **a-game-with-no-data-yet-reads-no-data-yet.** Reached, and it has written no row: exit 4, never "could not look" and
   never zero.
 - **a-game-that-is-down-reads-down-with-the-age-of-its-last-row.** The machine was read, and the process that wrote the
-  newest row is gone: "down", with the age. An unread process list reads "process unread".
+  newest row is gone: "down", with the age. An unread process list, including a refused local Windows snapshot, reads
+  "process unread". A successful empty process list reads "down" when the newest row names a writer.
 - **every-answer-carries-its-age.** The answer names the age of the game's newest row and of the last look at it; a row
   older than the fresh line of a game that is up reads STALE. The age is corrected for the other machine's clock.
   A failed game check keeps that game's last successful look, even if a game on the same machine was just read.
@@ -60,7 +62,8 @@ into `<root>/inbox/games/<machine>/`, and read from there. Every point, event an
 - **a-backlog-being-read-is-a-live-daemon.** The heartbeat is written between files, so a daemon that drains a long
   backlog is not read as a dead one.
 - **a-pull-copies-each-byte-once.** A pull appends what is new; a rename-rotated file is renamed, not copied again; a cut
-  transfer is resumed at the next pull; a replaced file is copied whole.
+  transfer is resumed at the next pull; a replaced file is copied whole. A rotation between listing and opening a file
+  cuts that transfer before it sends any bytes from the replacement. The next pull copies both logs byte for byte.
 - **the-tps-report-takes-a-game-name-too.** `tps_record.py --game Steve1` reads that game's record, and answers an
   unknown name, an unreachable machine and a game with no record as the CLI does (exit 2, 3, 4).
 - **no-machine-path-or-game-is-hard-wired.** The telemetry code names no game and no path of another machine: a fifth game

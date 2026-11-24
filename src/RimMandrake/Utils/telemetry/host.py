@@ -208,11 +208,11 @@ def detect_changes(con, E, ts: float, prev: dict | None) -> dict:
 
 # ------------------------------------------------------------------ processes (Windows, Toolhelp32)
 
-def process_pids(names: set[str]) -> dict[str, list[int]]:
-    """exe name (lower) -> pids, without spawning tasklist (no console flash from pythonw)."""
+def process_pids(names: set[str]) -> dict[str, list[int]] | None:
+    """exe name (lower) -> pids, or None when no snapshot is available. No tasklist (no console flash from pythonw)."""
     out: dict[str, list[int]] = {}
     if not IS_WIN:
-        return out
+        return None
     from ctypes import wintypes
 
     class PE32(ctypes.Structure):
@@ -226,7 +226,7 @@ def process_pids(names: set[str]) -> dict[str, list[int]]:
     k.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
     snap = k.CreateToolhelp32Snapshot(0x2, 0)
     if not snap or snap == wintypes.HANDLE(-1).value:
-        return out
+        return None
     try:
         e = PE32()
         e.dwSize = ctypes.sizeof(PE32)
