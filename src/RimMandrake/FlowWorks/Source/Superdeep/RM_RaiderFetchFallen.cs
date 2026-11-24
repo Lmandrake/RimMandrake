@@ -311,7 +311,6 @@ namespace RimMandrake.FlowWorks
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
-			this.FailOnDespawnedOrNull(TargetIndex.A);
 			this.FailOn(() => !RM_RaiderFetchFallen.On);
 			this.FailOn(() => RM_RaiderFetchFallen.UnderFire(pawn));
 			AddFinishAction(cond =>
@@ -329,6 +328,7 @@ namespace RimMandrake.FlowWorks
 			// The rescuer goes DOWN to him: onto his square, by a real way (a ladder, a climbable step). A touch from the rim
 			// is no fetch (live 2026-11-23, save TP_FETCH_LIFTS_FROM_RIM_4M: a downed man lifted out of a 4 m pit, no ladder).
 			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.OnCell)
+				.FailOnDespawnedOrNull(TargetIndex.A)
 				.FailOn(() => !Fallen.Downed);
 			Toil lift = ToilMaker.MakeToil("RM_RaiderFetchFallen_MayLift");
 			lift.initAction = delegate
@@ -341,15 +341,17 @@ namespace RimMandrake.FlowWorks
 			};
 			lift.defaultCompleteMode = ToilCompleteMode.Instant;
 			yield return lift;
-			yield return Toils_Haul.StartCarryThing(TargetIndex.A);
-			yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
+			yield return Toils_Haul.StartCarryThing(TargetIndex.A).FailOnDespawnedOrNull(TargetIndex.A);
+			// StartCarryThing despawns the pawn into the carry tracker and keeps that pawn as target A.
+			bool LostFallen() => !RM_RaiderTrenchMath.FetchCarriesFallen(Fallen, pawn.carryTracker?.CarriedThing);
+			yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell).FailOn(LostFallen);
 			Toil drop = ToilMaker.MakeToil("RM_RaiderFetchFallen_Drop");
 			drop.initAction = delegate
 			{
 				pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Thing _);
 			};
 			drop.defaultCompleteMode = ToilCompleteMode.Instant;
-			yield return drop;
+			yield return drop.FailOn(LostFallen);
 		}
 	}
 }

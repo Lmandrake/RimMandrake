@@ -393,5 +393,11 @@ namespace RimMandrake.FlowWorks
 		{
 			return fallenDepth - rescuerDepth <= System.Math.Max(1, climbLimit);
 		}
+
+		/// <summary>After pickup the casualty is despawned and must be in this rescuer's carry container.</summary>
+		internal static bool FetchCarriesFallen(object fallen, object carried)
+		{
+			return fallen != null && ReferenceEquals(fallen, carried);
+		}
 	}
 }

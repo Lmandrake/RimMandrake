@@ -54,7 +54,7 @@ Generated 2026-11-23T23:23:42-08:00 from `test_table.json` (the record; this is 
 | `pawn_height_follows_depth` | tree | 6 | T_SWIM, PY_SWIM_SHORE_REACH, sc_pawn_height | - | all | yes |
 | `pit_reads_as_hole` | tree | 6 | T_PIT_DRAW, PY_FLOWWORKS_PIT_DRAW_CENSUS, PY_FLOWWORKS_PIT_FLOOR_GROUND, PY_FLOWWORKS_REVIEW1022_SUPERDEEP, T_PIT_LABEL, sc_pit_reads, LOOK_BLIND_READER | OL_OWNER_LOOK_READS | all | yes |
 | `covered_pit_springs` | tree | 6 | T_PIT_COVER, PY_FLOWWORKS_COVER_BREAKS, PY_SPIKE_FLOAT32_PARITY, sc_covered_pit, LOOK_BLIND_READER | - | all | yes |
-| `ways_in_and_out` | tree | 6 | T_PIT_ACCESS, PY_FLOWWORKS_DRAFTED_MOVE_PIT, PY_FLOWWORKS_PIT_TRAVEL_TAGS, sc_ways_out | T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE, T_PLAYER_TRUTHS_ART_OFFLINE | all | yes |
+| `ways_in_and_out` | tree | 6 | T_PIT_ACCESS, PY_FLOWWORKS_DRAFTED_MOVE_PIT, PY_FLOWWORKS_PIT_TRAVEL_TAGS, sc_ways_out | T_PIT_LOOK_1114, PIT_LOOK_1114_LIVE, T_PLAYER_TRUTHS_ART_OFFLINE, sc_pit_crowd | all | yes |
 | `sluice_drains_on_command` | tree | 6 | T_DOORS, PY_FW_GATE_LIFT, sc_sluice | - | all | yes |
 | `hose_reads_as_hose` | tree | 6 | T_HOSE, PY_HOSE_OFFLINE, PY_HOSE_PORTS, PY_HOSE_LAY_SETTLE, PY_HOSE_FITTINGS, sc_hose_look, LOOK_BLIND_READER | T_HOSE_PIPE_SADDLE_OFFLINE, T_HOSE_PORT_OFFLINE | all | yes |
 | `one_liquid_network` | tree | 6 | T_NET, PY_PUMP_STATION_PORTS, PY_FLOWWORKS_TANK_DRINK_RECHECK, PY_PIPE_SEAT, sc_one_network | sc_garden, T_REVIEW1022_LIQUIDNET_OFFLINE, T_PUMP_STATION_PORTS_COMPILED_OFFLINE | all | yes |
@@ -179,6 +179,7 @@ Generated 2026-11-23T23:23:42-08:00 from `test_table.json` (the record; this is 
 | `sc_hung_bridge` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py` | not run (offline only); entry exists |
 | `sc_ice` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `sc_river` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/river_scenes_walk.py` | not run (offline only); entry exists |
+| `sc_pit_crowd` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/pit_crowd_live.py` | UNRUN |
 | `sc_moat_walkers` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `sc_hole_prison` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |
 | `sc_toss_flame` | live_minimal | 6 | `src/RimMandrake/FlowWorks/northstar/concept_scenes.py` | not run (offline only); entry exists |

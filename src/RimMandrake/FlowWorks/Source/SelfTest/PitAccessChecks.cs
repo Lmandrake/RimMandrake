@@ -26,6 +26,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            PitRecoveryChecks.Run(Case);   // run from here: Program.cs is read by ten deciders
             Case("PitAccess_rescue_reads_no_way_out_and_a_reachable_spare", () =>
             {
                 // RIMMANDRAKE_RESCUE_FLOWWORKS_STRANDED_COLONIST_REACHABLE_LADDER: a colonist stranded on his feet in a sealed 4 m

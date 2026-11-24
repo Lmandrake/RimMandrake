@@ -240,6 +240,21 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(f, @"if \(!RM_RaiderFetchFallen\.MayLift\(pawn, Fallen\)\)", "the pickup asks the lift rule where the two stand");
                 RiverSwitchFlipChecks.Has(f, @"RecentlyRefused\(fallen\)", "a refused lift is not handed out again at once");
             });
+            Case("RaiderTrench_fetch_carries_same_pawn_after_pickup", () =>
+            {
+                object fallen = new object();
+                Assert(RM_RaiderTrenchMath.FetchCarriesFallen(fallen, fallen), "the despawned casualty in the carry container can be taken to the lip");
+                Assert(!RM_RaiderTrenchMath.FetchCarriesFallen(fallen, null), "an empty carry container aborts the climb");
+                Assert(!RM_RaiderTrenchMath.FetchCarriesFallen(fallen, new object()), "a different carried thing cannot complete the rescue");
+                Assert(!RM_RaiderTrenchMath.FetchCarriesFallen(null, null), "a missing target never counts as carried");
+                string driver = Src("Superdeep", "RM_RaiderFetchFallen.cs");
+                driver = driver.Substring(driver.IndexOf("class JobDriver_RM_RaiderFetchFallen", StringComparison.Ordinal));
+                Assert(!driver.Contains("this.FailOnDespawnedOrNull(TargetIndex.A)"), "the pickup despawns him: a job-wide spawn check drops him in the pit");
+                Assert(driver.Contains("Toils_Haul.StartCarryThing(TargetIndex.A).FailOnDespawnedOrNull(TargetIndex.A)"), "he is spawned up to the pickup");
+                Assert(driver.Contains("bool LostFallen() => !RM_RaiderTrenchMath.FetchCarriesFallen(Fallen, pawn.carryTracker?.CarriedThing);")
+                    && driver.Contains("Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell).FailOn(LostFallen)")
+                    && driver.Contains("yield return drop.FailOn(LostFallen);"), "from the pickup on, he is the one carried");
+            });
             Case("RaiderTrench_wiring", () =>
             {
                 string r = Src("Superdeep", "RM_RaiderTrench.cs");

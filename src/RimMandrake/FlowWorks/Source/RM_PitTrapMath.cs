@@ -111,6 +111,15 @@ namespace RimMandrake.FlowWorks
 			return heldHere && toDepth < Superdeep;
 		}
 
+		/// <summary>RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_DRAINED_MOAT: may vanilla's collision recovery shuffle a pawn over
+		/// this cardinal edge (RM_Patch_PitRecovery)? Crowding is not a climb, so nothing joins the edge (no ramp, ladder or gear):
+		/// relative, a step this body takes by itself; absolute, a held pawn stays on the D = 4 floor and nobody is crowded into it.</summary>
+		public static bool RecoveryShuffleAllowed(bool relative, bool heldHere, int fromDepth, int toDepth, int k)
+		{
+			return relative ? BodyTakesStep(fromDepth, toDepth, k, false, 0, 0, false, false)
+				: !StepBlocked(heldHere, toDepth) && !IsPitDescent(fromDepth, toDepth);
+		}
+
 		// ── FLOWWORKS_PIT_FALL_ONLY_FORCED_1 (owner, 2026-10-06): who falls ─────────
 		// "You can't fall in by careless colonist pathing. Only if they get blown/forced in do they
 		// fall. Enemies can fall if the pit is concealed or they are forced/blown in."

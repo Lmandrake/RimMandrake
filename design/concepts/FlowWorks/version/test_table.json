@@ -1948,7 +1948,7 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-   "observes": "ways in and out: wall ladders on rails, rescue ladders, ramps, climbing gear, wall reach, pocket grids, drafted moves into a pit (95 C# cases)",
+   "observes": "ways in and out: wall ladders on rails, rescue ladders, ramps, climbing gear, wall reach, pocket grids, drafted moves into a pit, crowded pawns stay in their hole (99 C# cases)",
    "reads": [
     "src/RimMandrake/FlowWorks/Source/SelfTest/ExcavationTickChecks.cs",
     "src/RimMandrake/FlowWorks/Source/SelfTest/FwFix2Checks.cs",
@@ -1956,6 +1956,7 @@
     "src/RimMandrake/FlowWorks/Source/SelfTest/LadderParityChecks.cs",
     "src/RimMandrake/FlowWorks/Source/SelfTest/LadderWallChecks.cs",
     "src/RimMandrake/FlowWorks/Source/SelfTest/PitAccessChecks.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/PitRecoveryChecks.cs",
     "src/RimMandrake/FlowWorks/Source/SelfTest/PocketGridChecks.cs",
     "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
     "src/RimMandrake/FlowWorks/Source/SelfTest/RulingsWetDoorWakeBottleChecks.cs",
@@ -1964,7 +1965,7 @@
     "src/RimMandrake/FlowWorks/Source/SelfTest/WallReachReadChecks.cs",
     "src/RimMandrake/FlowWorks/Source/SelfTest/WallReachSliceChecks.cs"
    ],
-   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Climb*,Diagonal*,LadderClimb*,LadderInspect*,LadderParity*,LadderRails*,LadderWall*,PitAccess*,PitRamp*,PitRescue*,PitRoute*,PitTravel*,Pocket*,PocketGrid*,Step*,WallClimb*,WallReach*",
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Climb*,Diagonal*,LadderClimb*,LadderInspect*,LadderParity*,LadderRails*,LadderWall*,PitAccess*,PitRamp*,PitRecovery*,PitRescue*,PitRoute*,PitTravel*,Pocket*,PocketGrid*,Step*,WallClimb*,WallReach*",
    "runs_today": {
     "ran": true,
     "rc": 0,
@@ -3686,6 +3687,27 @@
     "ran": false,
     "entry_exists": true,
     "why": "offline only: never the game in this run"
+   }
+  },
+  "sc_pit_crowd": {
+   "id": "sc_pit_crowd",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/pit_crowd_live.py",
+   "entry": "scene_pit_crowd",
+   "observes": "two pawns on one square in a fight: vanilla's recovery never sets one over a pit wall (1x1 cut, long cut, rim, flat control, switch-off plant)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/pit_crowd_live.py",
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\pit_crowd_live.py --out <json>  (bridge held; minimal list + FlowWorks)",
+   "why_game": "only the game shows that its own search calls the patch; the rule and the search are read offline (PitRecovery_*, 5,760 cases)",
+   "cheaper_why": "the cheapest: one real PatherTick per case on a quicktest map, no raid, no wait; offline the search is a copy of vanilla's",
+   "owed_under": "RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_DRAINED_MOAT",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written 2026-11-24 in an offline run; its verdicts read on known readings by selftest_pit_crowd.py"
    }
   },
   "sc_moat_walkers": {
@@ -5885,7 +5907,8 @@
    "supports": [
     "T_PIT_LOOK_1114",
     "PIT_LOOK_1114_LIVE",
-    "T_PLAYER_TRUTHS_ART_OFFLINE"
+    "T_PLAYER_TRUTHS_ART_OFFLINE",
+    "sc_pit_crowd"
    ],
    "held": [
     "2026-11-12#4",
