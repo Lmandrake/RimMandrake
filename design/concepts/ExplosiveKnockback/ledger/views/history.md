@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":32032,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=d294dfb3a780d450df3c891cc8b9db9b77a417947741e6dfa6c07ae5e2a41f58 -->
-# ExplosiveKnockback — mod ledger history (643 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":344431,"DISPATCH":32032,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=0c5034ef2a42051e47a609e6919088914b261f6838ce22d78cde775e3785b512 -->
+# ExplosiveKnockback — mod ledger history (652 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -644,3 +644,12 @@
 - 2026-11-23T22:36:52Z DISPATCH#89 session.id session v0.1.0: 
 - 2026-11-23T23:59:46Z DISPATCH#90 lease.grant lease v0.1.0: 
 - 2026-11-23T23:59:47Z DISPATCH#91 run.start run v0.1.0: 
+- 2026-11-24T00:17:22Z HOLDER.run-1795478277#1 lease.renew lease v0.1.0: 
+- 2026-11-24T00:38:14Z HOLDER.run-1795478277#2 lease.renew lease v0.1.0: 
+- 2026-11-24T00:49:32Z HOLDER.run-1795478277#3 lease.renew lease v0.1.0: 
+- 2026-11-24T01:03:47Z HOLDER.run-1795478277#4 lease.renew lease v0.1.0: 
+- 2026-11-24T01:07:08Z HOLDER.run-1795478277#5 lease.renew lease v0.1.0: 
+- 2026-11-24T01:17:24Z HOLDER.run-1795478277#6 lease.renew lease v0.1.0: 
+- 2026-11-24T01:25:57Z HOLDER.run-1795478277#7 lease.renew lease v0.1.0: 
+- 2026-11-24T01:57:11Z HOLDER.run-1795478277#8 trap.noted trap:load-tick-lands-after-playing v0.1.0: After a load the PauseOnLoad tick can land after the game reads Playing: a step then ends short (visit 4) or one over (visit 5). Wait for a still clock before the first step.
+- 2026-11-24T01:57:11Z HOLDER.run-1795478277#9 session.checkpoint session v0.1.0: 

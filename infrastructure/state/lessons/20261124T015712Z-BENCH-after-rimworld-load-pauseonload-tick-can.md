@@ -1,0 +1,1 @@
+After a RimWorld load the PauseOnLoad tick can land after the game already reads Playing: a step right then ends short or one tick over (EK visits 4 and 5). Wait until TicksGame is still for 4 reads before the first step of a loaded arm.

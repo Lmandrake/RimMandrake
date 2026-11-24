@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "59f85d3e9a2bc2131ae0489a0e1fc0148d200fe8b3ddd5512f2b3caf38aa4e36",
+  "body_sha256": "a015126720f01d8a5fad6dcf54dd6ba2d5c6c2b65ad31b67658be59a52644bd2",
   "reducer": 1,
   "shards": {
    "BACKFILL": 344431,
@@ -16,6 +16,7 @@
    "HOLDER.run-1795448832": 5159,
    "HOLDER.run-1795461416": 958,
    "HOLDER.run-1795464425": 3294,
+   "HOLDER.run-1795478277": 3184,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -685,11 +686,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795464425",
-   "done": "FRAME_BUDGET PASS -7.3%/-1.0% small list, plant FAIL +14.5%; sc_spared held; landed b710076da6 805379254192 159c28a2dd5a",
-   "next": "Visit 5 on ArchBig: run the two UNRUN full-list rows (sc_walk_raid with --frame-evidence, sc_barrage_perf), then all 56 checks",
-   "ruled_out": "C_OFF moved stack and gas straggler are small-list check noise (0 of 18 full-list orders)",
-   "ts": "2026-11-23T22:33:55Z"
+   "by": "HOLDER.run-1795478277",
+   "done": "Visit 5 exit met: 56 of 56, walk 18 of 18, barrage p99 22.1 ms; reload arm repaired fa3f95313d; relation fix 6dfc987697",
+   "next": "Steward: read visit_5/SUMMARY.md and advance to pre_human, or send a line back",
+   "ruled_out": "barrage run 1 pause was a vanilla Ancient danger letter, not the mod",
+   "ts": "2026-11-24T01:57:11Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -885,7 +886,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 643,
+  "events": 652,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2507,7 +2508,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-23T23:59:46Z",
+   "last": "2026-11-24T01:57:11Z",
    "lease": "run-1795478277",
    "released": false,
    "token": 21
@@ -2547,6 +2548,7 @@
    "HOLDER.run-1795448832",
    "HOLDER.run-1795461416",
    "HOLDER.run-1795464425",
+   "HOLDER.run-1795478277",
    "JUDGE.judge-1794890427",
    "JUDGE.judge-1795437145",
    "OWNER"
@@ -3655,6 +3657,14 @@
     "ts": "2026-11-23T14:20:21Z",
     "version": "0.1.0",
     "where": "blind_challenge/cycle_6/SUMMARY.md ## Exit"
+   },
+   "trap:load-tick-lands-after-playing": {
+    "by": "HOLDER.run-1795478277",
+    "status": "noted",
+    "text": "After a load the PauseOnLoad tick can land after the game reads Playing: a step then ends short (visit 4) or one over (visit 5). Wait for a still clock before the first step.",
+    "ts": "2026-11-24T01:57:11Z",
+    "version": "0.1.0",
+    "where": "validation.py wait_settled; saveload_triplet"
    },
    "trap:melee-shove-into-pit-contest-is-out-of": {
     "by": "BACKFILL",
