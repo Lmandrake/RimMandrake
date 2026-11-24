@@ -5,15 +5,12 @@
     python3 src/RimMandrake/Utils/gpt_consult.py --prompt-file ask.md -f a.py --out review.md
 
 This is a thin shim over Dispatch's GPT door (`~/dev/Dispatch/providers/chatgpt/bin/gpt_door.py`, loaded by
-dispatch_door.py): the door finds Codex, picks the sign-in home, inlines nothing on its own, runs the call, keeps
-the outcomes apart, retries once on a rotated sign-in, refuses a Windows launch whose sandbox state is not proven
-current (that launch would raise the Windows setup dialog), and logs every consult. This file keeps RimMandrake's
+dispatch_door.py): the door finds Codex, uses the one sign-in folder, inlines nothing on its own, runs the call, keeps
+the outcomes apart, retries once on a rotated sign-in, and logs every consult. This file keeps RimMandrake's
 own rules: the Codex advice gate, receipts, rounds and the call log. Sign-in status and renewal:
 `python3 ~/dev/Dispatch/providers/chatgpt/bin/gpt_door.py status --probe` / `renew` (the chatgpt-consult skill).
 
-The named files are inlined into the prompt. On Archmagi/WSL the Linux CLI is the default;
---codex win (or RM_CODEX_SIDE=win) selects Windows with drive-local staging and Windows paths.
-CODEX_HOME defaults to the selected runtime's login; --codex-home uses an existing isolated login.
+The named files are inlined into the prompt. --codex-home uses another folder that has its own sign-in.
 Default model and effort: the door's PURPOSES table (CODEX_CONSULT_MODEL overrides the model).
 
 Every call is metered in gpt_call_log (job, model, rc, real tokens, seconds, files inlined, and its review ROUND:
@@ -35,7 +32,6 @@ the GPT door's (Dispatch providers/chatgpt/bin/gpt_door.py EXIT):
     20  AUTH: no usable login (no CODEX_HOME, 401/invalid_grant)  -> the agent renews it: gpt_door.py renew
     21  ALLOWANCE: usage limit, 429, quota                                 -> wait for the reset
     22  TRANSPORT: the route is broken (no interpreter, bad flag, 400 model_not_found, container down)
-    22  SANDBOX_UNPROVEN: Windows sandbox state not proven current; codex.exe was not launched
     23  DEADLINE: the call timed out
     1   no answer, cause unclassified (the catch-all; it means READ THE LOG, not "nothing to say")
 
@@ -57,7 +53,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(Path(__file__).resolve().parent))          # review_identity (job receipts)
 import codex_advice  # noqa: E402  (the Codex HOLD/EXHAUSTED gate)
-import codex_side  # noqa: E402  (RM_CODEX_SIDE: wsl|win)
 import dispatch_door  # noqa: E402
 
 EXIT_AUTH, EXIT_ALLOWANCE, EXIT_TRANSPORT, EXIT_DEADLINE, EXIT_UNCLASSIFIED = 20, 21, 22, 23, 1
@@ -75,7 +70,6 @@ else:
                           REFUSED_TOOL_RE, TOKENS_RE, real_tokens, events_tokens)
 
 DEFAULT_CONSULT_MODEL, DEFAULT_EFFORT = door.defaults("consult") if door else ("gpt-6.1-sol", "high")
-SIDE = {"wsl": "linux", "win": "windows"}
 
 
 def verdict(name, code):
@@ -85,14 +79,10 @@ def verdict(name, code):
 
 
 def scratch_root():
-    """Job folders, where they have always been: ext4 state on Linux, the data root's scratch on Windows (codex.exe
-    fails from an ext4 cwd). CODEX_SCRATCH overrides."""
+    """Job folders, where they have always been (ext4 state). CODEX_SCRATCH overrides."""
     if os.environ.get("CODEX_SCRATCH"):
         return Path(os.environ["CODEX_SCRATCH"]).expanduser()
-    if codex_side.codex_side() == "wsl":
-        return Path.home() / ".local/state/rimmandrake/scratch/codex"
-    from rmpaths import rm_str
-    return Path(rm_str("scratch", "codex"))
+    return Path.home() / ".local/state/rimmandrake/scratch/codex"
 
 
 def build_prompt(question, files, inlined=None):
@@ -151,7 +141,6 @@ def main(argv=None):
     ap.add_argument("--effort", default=DEFAULT_EFFORT, help="model_reasoning_effort (default %s)" % DEFAULT_EFFORT)
     ap.add_argument("--timeout", type=int, default=1500)
     ap.add_argument("--keep", action="store_true", help="keep the scratch job dir")
-    ap.add_argument("--codex", choices=("wsl", "win"), help="override RM_CODEX_SIDE (Archmagi/WSL default: wsl)")
     ap.add_argument("--codex-home", help="run codex with this CODEX_HOME (must already hold a login; never seeded here)")
     ap.add_argument("--lockdown", action="store_true",
                     help="no tools: --ephemeral, every tool feature disabled, web search off, strict config")
@@ -160,9 +149,7 @@ def main(argv=None):
     ap.add_argument("--required", help="the rule that requires this review round: lets it run while the Codex "
                                        "advice is HOLD (never while EXHAUSTED)")
     a = ap.parse_args(argv)
-    if a.codex:
-        os.environ["RM_CODEX_SIDE"] = codex_side.codex_side(a.codex)
-    side = SIDE[codex_side.codex_side()]
+    side = door.resolve_side(None)
     if a.round is not None and not ROUND_RE.match(a.round):
         ap.error("--round %r: 1-80 chars of A-Z a-z 0-9 _ . : - (starting alphanumeric)" % a.round)
     refused = codex_advice.gate("gpt_consult", a.required)
@@ -195,11 +182,8 @@ def main(argv=None):
     answered = ans.outcome in ("ANSWERED", "MODEL_REFUSED")     # an answer file with text arrived
     _receipt(job_name, a.model, answered, inlined, ans.rc)
     if events:
-        meta = {"job_win": door.codex_path(side, job) if job else None, "job": str(job) if job else None,
-                "rc": ans.rc, "lockdown": bool(a.lockdown),
-                "codex_home_win": door.codex_path(side, Path(ans.home)) if side == "windows" and ans.home else None,
-                "codex_home": door.codex_path(side, Path(ans.home)) if ans.home else None,
-                "codex_side": codex_side.codex_side(), "refused_tool_calls": ans.refused_tool_calls}
+        meta = {"job": str(job) if job else None, "rc": ans.rc, "lockdown": bool(a.lockdown),
+                "codex_home": ans.home or None, "refused_tool_calls": ans.refused_tool_calls}
         Path(str(events) + ".meta.json").write_text(json.dumps(meta, indent=1) + "\n", encoding="utf-8")
     _log_call(job_name, a.model, prompt, ans.text if answered else "", ans.rc, None, ans.tokens,
               round_name=a.round, secs=ans.seconds, files=[p for p, _ in inlined])

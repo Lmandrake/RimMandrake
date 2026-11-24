@@ -6,7 +6,6 @@ set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"; REPO="$(cd "$HERE/../../../../.." && pwd)"
 LOOK="$1"; shift; TANK="$REPO/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Tank/$LOOK/RM_LiquidTank.png"
 CI="${RM_IMAGE_SKILLS_ROOT:-$HOME/dev/MandrakeWorkflows/skills}/generating-images/scripts/codex_image.py"; mkdir -p "$HERE/raw"
-RMS="$(python3 "$REPO/src/RimMandrake/Utils/rmpaths.py" scratch)" || exit 2
 case "$LOOK" in
  Scrapper) MAT="weathered grey-brown salvaged timber, mismatched planks, patched with rusty riveted scrap-metal plates, frayed rope lashings - the same rust, worn steel and old wood as image 2";;
  Industrial) MAT="bare unpainted poured concrete with formwork board-marks, stains and rust bleeds from form-tie holes: ugly, utilitarian, colourless (owner 2026-11-06, 2026-10-23: industrial is brutalist). Take no colour from image 2";;
@@ -28,7 +27,7 @@ run() {
   [ "$1" = baffle3q ] && REF="$HERE/raw/${LOOK}_baffle.png"
   [ -s "$HERE/raw/${LOOK}_$1.png" ] && { echo "$LOOK $1 cached"; return 0; }
   python3 "$CI" edit --model gpt-6.1-sol --out "$HERE/raw/${LOOK}_$1.png" --image "$G" --image "$REF" \
-    --codex-home "$RMS/codex/home_riverworks_${LOOK}_$1" --timeout 480 --prompt "$COMMON $(prompt_for "$1")" > "$HERE/raw/${LOOK}_$1.log" 2>&1
+    --timeout 480 --prompt "$COMMON $(prompt_for "$1")" > "$HERE/raw/${LOOK}_$1.log" 2>&1
   echo "$LOOK $1 exit=$?"
 }
 PIECES="${*:-post ridge_h ridge_v baffle}"

@@ -45,57 +45,8 @@ ITEM = "BRIDGE_ART_REDRAW_CABINETS_GROW_SADDLES"
 import os
 IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
 CI = [sys.executable, str(IMAGE_SKILLS / "generating-images/scripts/codex_image.py")]
-HOMES = Path("/mnt/c/Users/Mandrake/.codex_workers")
 LOOKS = ["Scrapper", "Industrial", "Modern", "Futuristic"]
 # already-seeded worker homes (a NEW home cannot be seeded while the sandbox seed template lags the codex build)
-WORKER_HOMES = ["bench_lad1", "bench_lad2", "bench_lad3", "bench_lad4", "bench_lad5", "bench_spk1", "bench_spk2",
-                "bench_spk3", "bench_spk4"]  # dw1-4, pyr0-3: 401 unauthorized
-
-
-def done_png(job):
-    return AP / "_artsrc" / job / f"{job}.png"
-
-
-# ------------------------------------------------------------------------------------------------ the shared language
-LOOK = {
-    "Scrapper": "SCRAPPER look: salvaged scavenger work - mismatched weathered warm-brown timber, a few LARGE rusty "
-                "orange-brown scrap-steel sheets, chunky tan rope lashings; warm 1970s earth-brown palette",
-    "Industrial": "INDUSTRIAL look: dark gunmetal-grey steel plate and heavy beams, a few LARGE bolts, yellow-and-black "
-                  "hazard paint used only as one or two broad bands",
-    "Modern": "MODERN look: clean light-grey galvanised steel and smooth grey panels framed by bold glossy RED painted "
-              "steel channels, a few zinc fittings",
-    "Futuristic": "FUTURISTIC look: matte off-white and pale-grey composite panels, dark charcoal recessed seams, at most "
-                  "one or two thin teal accent strips - matte, never glowing",
-    "Timber": "base TIMBER: weathered warm-brown timber with dark iron nail heads and broad iron strap plates",
-    "Steel": "base STEEL: plain mid-grey riveted steel plate and dark iron fittings, regular engineered framing",
-    "Base": "the base set: weathered warm-brown timber, mid-grey steel plate, dark iron fittings, tan hemp rope",
-}
-TIER = {
-    "Heavy": "HEAVY tier: massive and over-built - a broad thick structural frame, chunky members, lots of mass",
-    "Steel": "STEEL tier: lighter all-metal construction - a SLIM frame, thinner members, visibly less mass than heavy",
-    "Timber": "TIMBER tier: the body is unmistakably WOOD - broad wooden boards or beams with visible grain, held by the "
-              "look's metal fittings",
-}
-READ = ("It must read at 32 pixels per cell: a few big bold shapes and strong value contrast; no fine mesh, no rows of "
-        "tiny rivets, no thin chains, no hairline detail. Clean painterly vanilla-RimWorld rendering, matte surfaces, "
-        "soft overhead-front light, a thin dark edge line around each part.")
-ALPHA = ("Fully transparent background with real alpha: nothing painted on the ground around it, no cast shadow, no "
-         "backdrop.")
-CAM = ("Orthographic RimWorld building camera, about 35 degrees above horizontal: top faces clearly visible and lit, "
-       "the front face short and foreshortened, square-on to the viewer (never a diagonal three-quarter view).")
-TOP = "Seen from straight above, flat like a floor, no perspective, no taper."
-
-
-def tile_prompt(what, layout_img=True):
-    lay = (" Same layout as image 1: the walking surface down the middle and a side band down each of the left and right "
-           "edges (each about one ninth of the width)." if layout_img else "")
-    return (f"Paint ONE seamless square tile of a suspension-bridge walkway deck for RimWorld, 1 cell. {TOP} The walking "
-            f"surface runs top-to-bottom in the direction of travel and repeats seamlessly top to bottom.{lay} {what} "
-            f"{READ} The tile fills the whole square edge to edge.")
-
-
-# ------------------------------------------------------------------------------------------------------- the job table
-JOBS: list[dict] = []
 ROWS: dict[str, dict] = {}
 
 
@@ -515,27 +466,19 @@ def guides():
 
 # --------------------------------------------------------------------------------------------------------------- gen
 def gen(wave, only, workers, timeout, budget=120):
-    """Run every pending job of the wave on a pool of worker homes (one job per home at a time). A job not STARTED within
-    `budget` seconds is deferred, so one call ends inside the 600 s silence limit; run again to continue."""
-    import queue
+    """Run every pending job of the wave, `workers` at a time (the image door queues them on the one sign-in). A job not
+    STARTED within `budget` seconds is deferred, so one call ends inside the 600 s silence limit; run again to continue."""
     RAW.mkdir(parents=True, exist_ok=True)
     js = [j for j in JOBS if (wave is None or j["wave"] == wave) and (not only or j["id"] in only)]
     js = [j for j in js if not (RAW / f"{j['id']}.png").is_file()]
-    workers = max(1, min(workers, len(WORKER_HOMES)))   # a thread beyond the seeded homes would block on homes.get() forever
-    homes = queue.Queue()
-    for h in WORKER_HOMES[:workers]:
-        homes.put(h)
+    workers = max(1, workers)
     t0 = time.time()
     print(f"gen: {len(js)} job(s), {workers} workers, start budget {budget}s", flush=True)
 
     def one(j):
-        h = homes.get()
-        try:
-            if time.time() - t0 > budget:
-                return j["id"], "deferred"
-            return _run_slot(j, h, timeout)
-        finally:
-            homes.put(h)
+        if time.time() - t0 > budget:
+            return j["id"], "deferred"
+        return _run_slot(j, timeout)
 
     left = 0
     with ThreadPoolExecutor(workers) as ex:
@@ -546,12 +489,12 @@ def gen(wave, only, workers, timeout, budget=120):
     print(f"gen: {left} deferred — run again" if left else "gen: wave complete", flush=True)
 
 
-def _run_slot(j, home, timeout):
+def _run_slot(j, timeout):
     out = RAW / f"{j['id']}.png"
     w, h = j["gen"]
     prompt = j["prompt"] + f" Output size {w}x{h} pixels."
     cmd = CI + (["edit"] if j["images"] else ["generate"]) + ["--model", "gpt-6.1-sol", "--timeout", str(timeout),
-                                                             "--codex-home", str(HOMES / home), "--out", str(out),
+                                                             "--out", str(out),
                                                              "--prompt", prompt]
     missing = [i for i in j["images"] if not Path(i).is_file()]
     if missing:
@@ -565,7 +508,7 @@ def _run_slot(j, home, timeout):
     except subprocess.TimeoutExpired:
         return j["id"], "TIMEOUT"
     ok = out.is_file() and out.stat().st_size > 0
-    return j["id"], f"{'OK' if ok else 'FAIL rc=%d' % rc} {time.time() - t1:.0f}s ({home})"
+    return j["id"], f"{'OK' if ok else 'FAIL rc=%d' % rc} {time.time() - t1:.0f}s"
 
 
 # ---------------------------------------------------------------------------------------------------------- finalize

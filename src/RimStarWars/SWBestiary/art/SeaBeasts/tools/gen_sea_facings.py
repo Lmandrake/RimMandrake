@@ -36,25 +36,6 @@ TIMEOUT = "600"
 ATTEMPTS = 3
 WORKERS = 3
 
-# Each concurrent worker gets its own CODEX_HOME. A shared one puts three
-# codex.exe processes on one thread-writer lock, and - worse - makes the
-# wrapper's before/after diff of generated_images/ able to harvest a SIBLING's
-# image. Must live under /mnt/<drive>/: codex.exe is a Windows binary.
-sys.path.insert(0, str(_RM_ROOT / "src/RimMandrake/Utils"))
-from codex_side import codex_side
-WORKER_HOMES = str(Path.home() / ".codex_workers") if codex_side() == "wsl" else "/mnt/c/Users/Mandrake/.codex_workers"
-_slot = threading.local()
-_slots = iter(range(WORKERS))
-_slot_lock = threading.Lock()
-
-
-def my_codex_home() -> str:
-    """A stable per-thread worker home, so retries reuse the same seeded dir."""
-    if not hasattr(_slot, "n"):
-        with _slot_lock:
-            _slot.n = next(_slots)
-    return f"{WORKER_HOMES}/sea{_slot.n}"
-
 
 def one(job):
     slug, facing = job
@@ -69,8 +50,7 @@ def one(job):
         t0 = time.time()
         r = subprocess.run(
             [sys.executable, GEN, "edit", "--out", str(out), "--prompt", prompt,
-             "--image", str(mock), "--codex-home", my_codex_home(),
-             "--timeout", TIMEOUT],
+             "--image", str(mock), "--timeout", TIMEOUT],
             capture_output=True, text=True)
         dt = int(time.time() - t0)
         if r.returncode == 0 and out.exists():

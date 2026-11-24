@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Codex transport for role workers. Task acceptance belongs to the caller.
+"""Codex transport for role workers, through Dispatch's Codex door (door_agent). Task acceptance belongs to the caller.
 
-Linux Codex works directly in the clone. Windows Codex uses drive-local scratch
-and wsl.exe commands against the original clone (GIT_WORKFLOW.md).
+The door starts Codex in the clone, keeps answered, failed, no answer in time and could not start apart, and streams
+the events. This file keeps RimMandrake's own part: the weekly meter gate, the agent definition, the spend envelope.
 """
 import argparse
 import json
@@ -10,17 +10,13 @@ import math
 import os
 from pathlib import Path
 import re
-import shlex
 import subprocess
 import sys
 import time
-import uuid
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import image_skills  # noqa: E402  (the image skills live in MandrakeWorkflows)
-image_skills.add_to_path()
-import codex_image as CX
+import dispatch_door  # noqa: E402
 
 
 class Refused(RuntimeError):
@@ -94,18 +90,6 @@ def quota_gate(points=None, probe=None, reader=None):
     return points
 
 
-def launch_argv(cwd, result, model=None, effort=None, sandbox=None, exe=None):
-    argv = [str(exe or CX.find_codex_cli()), "exec", "--sandbox",
-            sandbox or os.environ.get("CODEX_SANDBOX", "workspace-write"),
-            "--skip-git-repo-check", "-C", CX.codex_path(Path(cwd)),
-            "-o", CX.codex_path(Path(result)), "--json",
-            "-c", 'model_reasoning_effort="%s"' % (effort or os.environ.get("CODEX_EFFORT", "high"))]
-    model = model or os.environ.get("CODEX_MODEL")
-    if model:
-        argv += ["-m", model]
-    return argv + ["-"]
-
-
 def event_usage(stream):
     """Sum completed turns. A malformed/missing usage is unknown, never zero."""
     total = {"input_tokens": 0, "output_tokens": 0}
@@ -143,7 +127,7 @@ def rollout_usage(stream, home=None):
     if not tid or not re.fullmatch(r"[0-9a-f-]{8,64}", str(tid)):
         return "UNMEASURED"
     try:
-        root = Path(home) if home else CX.codex_home(None)
+        root = Path(home) if home else dispatch_door.load().default_home("linux")
         files = sorted((root / "sessions").glob("*/*/*/rollout-*-%s.jsonl" % tid))
         text = files[-1].read_text(encoding="utf-8", errors="replace") if files else ""
     except (OSError, IndexError, AttributeError):
@@ -183,97 +167,43 @@ def usage_of_files(spend, events, home=None):
     return u if isinstance(u, dict) else rollout_usage(stream, home)
 
 
-def event_error(stream):
-    last_message = ""
-    for line in stream.splitlines():
-        try:
-            ev = json.loads(line)
-        except ValueError:
-            continue
-        if isinstance(ev, dict) and ev.get("type") in ("error", "turn.failed"):
-            return str(ev)
-        item = ev.get("item") if isinstance(ev, dict) else None
-        if isinstance(item, dict) and item.get("type") == "agent_message":
-            last_message = item.get("text") or ""
-    # Do not mistake source code or an expected failing test quoted in a tool
-    # event for an authentication failure. Inspect only a final failure report.
-    if re.match(r"(?:Blocked|Failed|Error|You've hit|Not logged)", last_message, re.I) and re.search(
-            r"setup refresh had errors|Wsl/Service/E_ACCESSDENIED|usage_limit_reached|authentication_failed|quota|auth", last_message):
-        return "Codex quota, authentication or sandbox setup failure (see event stream)"
-    return None
-
-
-def run(cwd, prompt, result, events, spend, *, model=None, effort=None,
-        sandbox=None, timeout=7200, invoke=subprocess.run, meter=None, agent=None, codex_home=None):
+def run(cwd, prompt, result, events, spend, *, model=None, effort=None, sandbox=None, timeout=7200, call=None,
+        meter=None, agent=None, codex_home=None):
     """Always persist a runner-specific spend/result envelope, including refused runs.
 
-    stdout is retained verbatim as events; -o is only the final message. The
-    envelope is transport status, never a Designer result or a Judge verdict.
+    The events file streams during the run; `result` gets the last message only of a run that answered. The envelope
+    is transport status, never a Designer result or a Judge verdict. `call` replaces door_agent.agent in tests.
     """
     cwd, result, events, spend = map(lambda p: Path(p).resolve(), (cwd, result, events, spend))
     for p in (result, events, spend):
         p.parent.mkdir(parents=True, exist_ok=True)
     rec = {"runner": "codex", "usage": "UNMEASURED", "state": "failed"}
-    stream, answer, error, rc = "", "", None, 1
+    answer, error, rc = "", None, 1
     try:
         rec["quota"] = quota_gate(meter)
         if agent:
             p = cwd / ".claude/agents" / (agent + ".md")
             prompt = p.read_text(encoding="utf-8") + "\n\n" + prompt
-        work = cwd
-        target = result
-        if CX.codex_side() == "win" and not CX.on_windows_drive(cwd):
-            work = CX.CODEX_SCRATCH / ("agent-" + uuid.uuid4().hex)
-            work.mkdir(parents=True, exist_ok=False)
-            target = work / "last-message.txt"
-            rec["staging_cwd"] = str(work)
-        if CX.codex_side() == "win" and CX.in_wsl():
-            # Windows shell tools enter WSL explicitly: every read/write/test/git
-            # operates on the leased clone, never on a mirror or copied snapshot.
-            prefix = ("Runtime adapter: your shell is Windows. The repository is in WSL Ubuntu at %s. "
-                      "For ALL repository reads, writes, git, Python and tests, call "
-                      "wsl.exe -d Ubuntu -e bash -lc %s (append your command after cd). "
-                      "Do not use UNC file tools or Windows git. Preserve LF. rg is not installed; use find/grep. "
-                      "The task below and its result paths refer to that WSL tree.\n\n") % (
-                          cwd, shlex.quote("cd %s && <command>" % shlex.quote(str(cwd))))
-            runtime_keys = ("AGENT_SEAT", "RIMFLOW_SEAT", "RIMFLOW_BRIDGE_SEAT", "RELENTLESS_ROOT",
-                            "RELENTLESS_RULES", "RELENTLESS_GEN", "RELENTLESS_HELP_NONCE")
-            exports = " ".join("%s=%s" % (k, shlex.quote(os.environ[k])) for k in runtime_keys if k in os.environ)
-            if exports:
-                prefix += "Preserve the worker lease and seat in every WSL command: export %s\n\n" % exports
-            prompt = prefix + prompt
-        rec["sandbox"] = sandbox or os.environ.get("CODEX_SANDBOX", "workspace-write")
-        rec["model"] = model or os.environ.get("CODEX_MODEL") or "config"
-        rec["effort"] = effort or os.environ.get("CODEX_EFFORT", "high")
-        rec["codex_side"] = CX.codex_side()
-        home = CX.codex_home(codex_home)
-        rec["codex_home"] = str(home)
-        target.unlink(missing_ok=True)
-        argv = launch_argv(work, target, model, effort, sandbox)
-        # stdout goes straight to the events file, so a run killed from outside (a role's run_max_s stop) leaves
-        # every completed turn's usage on disk (RIMMANDRAKE_READ_CODEX_SPEND_OF_A_KILLED_DESIGNER_RUN)
-        with open(events, "w", encoding="utf-8") as live:
-            proc = invoke(argv, input=prompt, cwd=str(work), stdout=live, stderr=subprocess.PIPE,
-                          text=True, errors="replace", timeout=timeout, env=CX.child_env(home))
-        stream = proc.stdout if isinstance(proc.stdout, str) else events.read_text(encoding="utf-8", errors="replace")
-        rc = proc.returncode
-        error = event_error(stream)
-        if rc:
-            error = error or (proc.stderr or "Codex exited %s" % rc)
-        if target.is_file():
-            answer = target.read_text(encoding="utf-8", errors="replace")
-            if target != result:
-                result.write_text(answer, encoding="utf-8")
-        if not answer.strip():
-            error = error or "Codex produced no last message"
+        # "inherit" leaves the model to the sign-in folder's config.toml, as before
+        model = model or os.environ.get("CODEX_MODEL") or "inherit"
+        effort = effort or os.environ.get("CODEX_EFFORT") or "high"
+        if call is None:
+            door = dispatch_door.load("door_agent")
+            call = door.agent
+            timeout = door.DEFAULT_TIMEOUT_S if timeout is None else timeout
+        result.unlink(missing_ok=True)              # a result of an earlier run is never this run's answer
+        r = call(prompt, cwd, result=result, events=events, model=model, effort=effort, sandbox=sandbox,
+                 home=codex_home, timeout=timeout, caller="rimmandrake/agent_runner")
+        rc = r.rc
+        rec.update(sandbox=r.sandbox, model="config" if model == "inherit" else model, effort=effort,
+                   codex_side="wsl", codex_home=r.home, outcome=r.outcome, kind=r.kind, job=r.job)
+        answer = r.text
+        if not r.answered:
+            error = "Codex %s (%s): %s" % (r.kind, r.outcome, (r.detail or "").strip()[-1500:])
         rec["state"] = "failed" if error else "done"
-    except subprocess.TimeoutExpired as e:
-        stream = e.stdout or (events.read_text(encoding="utf-8", errors="replace") if events.is_file() else "")
-        if isinstance(stream, bytes):
-            stream = stream.decode("utf-8", errors="replace")
-        error = "Codex timeout: %s" % timeout
     except Exception as e:
         error = "%s: %s" % (type(e).__name__, e)
+    stream = events.read_text(encoding="utf-8", errors="replace") if events.is_file() and rec.get("kind") else ""
     usage = event_usage(stream)
     if not isinstance(usage, dict) and stream:
         usage = rollout_usage(stream, rec.get("codex_home"))
@@ -293,14 +223,12 @@ def main(argv=None):
     ap.add_argument("--result", required=True)
     ap.add_argument("--events", required=True)
     ap.add_argument("--spend", required=True)
-    ap.add_argument("--codex", choices=("wsl", "win"), help="override RM_CODEX_SIDE (Archmagi/WSL default: wsl)")
-    ap.add_argument("--codex-home", help="isolated home, seeded from the selected runtime if new")
+    ap.add_argument("--codex-home", help="another sign-in folder that has its own sign-in (default: the one folder)")
     ap.add_argument("--model")
     ap.add_argument("--effort")
     ap.add_argument("--sandbox", choices=("read-only", "workspace-write", "danger-full-access"))
     ap.add_argument("--timeout", type=int, default=7200)
     a = ap.parse_args(argv)
-    CX.select_codex(a.codex)
     prompt = a.prompt if a.prompt is not None else sys.stdin.read()
     res = run(a.cwd, prompt, a.result, a.events, a.spend,
               model=a.model, effort=a.effort, sandbox=a.sandbox, timeout=a.timeout, agent=a.agent, codex_home=a.codex_home)

@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Parallel driver for gen_matrix.py's job set (DESERT_WRAPS_ART_COMMISSION_1).
 
-Serially the 60-job matrix is ~2 hours at the measured 123 s/job. codex_image.py
-supports concurrent workers explicitly via --codex-home (each worker gets its own
-seeded CODEX_HOME so they cannot collide over the thread-writer lock or harvest
-each other's images), so this runs N workers over the same job dict.
+Serially the 60-job matrix is ~2 hours at the measured 123 s/job. The image door lets
+calls run side by side on the one sign-in (each takes only its own thread's picture),
+so this runs N workers over the same job dict.
 
 Quota wall: the Codex imagegen quota is what stopped the first wave
 (rc=1 "resets in about 3 hours 34 minutes", 2026-09-18 ~14:18Z-local). This driver
@@ -27,7 +26,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gen_matrix as G  # noqa: E402
 
 WORKERS = int(os.environ.get("DW_WORKERS", "4"))
-HOMES = Path("/mnt/c/Users/Mandrake/.codex_workers")
 QUOTA_RE = re.compile(r"resets in about|quota|usage limit|rate limit", re.I)
 
 quota_hit = threading.Event()
@@ -35,7 +33,7 @@ lock = threading.Lock()
 results = {}
 
 
-def one(name, prompt, home, attempts=2, timeout=200):
+def one(name, prompt, attempts=2, timeout=200):
     dest = G.OUT / f"{name}.png"
     if dest.exists() and dest.stat().st_size > 20000:
         return "SKIP", ""
@@ -46,7 +44,7 @@ def one(name, prompt, home, attempts=2, timeout=200):
         p = subprocess.run(
             [sys.executable, str(G.CODEX), "generate", "--out", str(dest),
              "--prompt", prompt, "--timeout", str(timeout),
-             "--codex-home", str(home), "--force"],
+             "--force"],
             capture_output=True, text=True)
         el = time.time() - t0
         if dest.exists() and dest.stat().st_size > 20000:
@@ -61,13 +59,12 @@ def one(name, prompt, home, attempts=2, timeout=200):
 
 
 def worker(wid, q):
-    home = HOMES / f"dw{wid}"
     while not quota_hit.is_set():
         try:
             name = q.get_nowait()
         except queue.Empty:
             return
-        status, detail = one(name, G.ALL_JOBS[name], home)
+        status, detail = one(name, G.ALL_JOBS[name])
         with lock:
             results[name] = status
             print(f"[w{wid}] {status:5s} {name}  {detail}", flush=True)

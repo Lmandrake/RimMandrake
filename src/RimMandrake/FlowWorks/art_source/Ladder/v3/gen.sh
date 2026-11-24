@@ -6,7 +6,6 @@ set -u
 R=/home/mandrake/rm/bench
 FA=$R/src/RimMandrake/FlowWorks/art_source
 CI="python3 ${RM_IMAGE_SKILLS_ROOT:-$HOME/dev/MandrakeWorkflows/skills}/generating-images/scripts/codex_image.py edit --model gpt-6.1-sol --timeout 560"
-H=/mnt/c/Users/Mandrake/.codex_workers
 LMAT=$FA/Ladder/raw/B_hung_north.png
 SMAT=$R/src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Canals/RM_Spikes.png
 OREF=$R/Transient/pile_2026-10-21/walk/spikes_reference_owner_2026-10-21.png
@@ -14,11 +13,11 @@ STYLE="RimWorld building sprite, hand-painted, warm 1970s earth-brown palette, m
 LADMAT="A crude scavenger ladder of weathered grey-brown timber poles, rungs lashed to the poles with tan rope, dark riveted iron bands at the joints and two forged black iron hooks at its top end: exactly the material, colours and brushwork of image 2."
 SPKMAT="Each stake is a single slender pole of charred, weathered dark timber, whittled to a long needle-sharp fire-blackened point; the palette and painterly brushwork of image 2."
 
-run() { # name outdir home prompt images...
-  local name=$1 dir=$2 home=$3 prompt=$4; shift 4
+run() { # name outdir prompt images...
+  local name=$1 dir=$2 prompt=$3; shift 3
   local args=(); for i in "$@"; do args+=(--image "$i"); done
   for try in 1 2; do
-    $CI --codex-home $H/$home --out $dir/$name.png "${args[@]}" --prompt "$prompt" > $dir/$name.log 2>&1 && [ -s $dir/$name.png ] && { echo "OK $name"; return 0; }
+    $CI --out $dir/$name.png "${args[@]}" --prompt "$prompt" > $dir/$name.log 2>&1 && [ -s $dir/$name.png ] && { echo "OK $name"; return 0; }
     echo "$name try $try failed" >&2
   done
 }
@@ -35,14 +34,14 @@ L=$FA/Ladder/v3/raw; S=$FA/Spikes/v3/raw; G=$FA/Ladder/v3/guides; SG=$FA/Spikes/
 want() { [ $# -eq 0 ] && return 0; return 1; }
 ALL=("$@")
 sel() { [ ${#ALL[@]} -eq 0 ] && return 0; for a in "${ALL[@]}"; do [ "$a" = "$1" ] && return 0; done; return 1; }
-sel lnA && run north_A $L bench_lad1 "$NORTH" $G/guide_north.png $LMAT &
-sel lnB && run north_B $L bench_lad2 "$NORTH Keep it very flat and tight to the wall." $G/guide_north.png $LMAT &
-sel leA && run east_A $L bench_lad3 "$EAST" $G/guide_east.png $LMAT &
-sel leB && run east_B $L bench_lad4 "$EASTB" $G/guide_east.png $LMAT &
-sel leC && run east_C $L bench_lad5 "$EAST The rope lashings and hooks are crisp and readable." $G/guide_east.png $LMAT &
-sel sA && run spikes_A $S bench_spk1 "$SPK" $SG/guide_stakes_6.png $SMAT $OREF &
-sel sB && run spikes_B $S bench_spk2 "$SPK" $SG/guide_stakes_8.png $SMAT $OREF &
-sel sC && run spikes_C $S bench_spk3 "$SPKC" $SG/guide_stakes_8.png $SMAT $OREF &
-sel sD && run spikes_D $S bench_spk4 "$SPKD" $SMAT $OREF &
+sel lnA && run north_A $L "$NORTH" $G/guide_north.png $LMAT &
+sel lnB && run north_B $L "$NORTH Keep it very flat and tight to the wall." $G/guide_north.png $LMAT &
+sel leA && run east_A $L "$EAST" $G/guide_east.png $LMAT &
+sel leB && run east_B $L "$EASTB" $G/guide_east.png $LMAT &
+sel leC && run east_C $L "$EAST The rope lashings and hooks are crisp and readable." $G/guide_east.png $LMAT &
+sel sA && run spikes_A $S "$SPK" $SG/guide_stakes_6.png $SMAT $OREF &
+sel sB && run spikes_B $S "$SPK" $SG/guide_stakes_8.png $SMAT $OREF &
+sel sC && run spikes_C $S "$SPKC" $SG/guide_stakes_8.png $SMAT $OREF &
+sel sD && run spikes_D $S "$SPKD" $SMAT $OREF &
 wait
 ls -la $L/*.png $S/*.png 2>/dev/null

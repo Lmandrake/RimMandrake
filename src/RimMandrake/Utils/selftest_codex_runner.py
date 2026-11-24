@@ -109,15 +109,44 @@ class CodexRunnerTests(unittest.TestCase):
             with self.assertRaises(AR.Refused):
                 AR.quota_gate(self.stale())
 
-    def test_codex_argv(self):
-        with patch.object(AR.CX, "wsl_to_win", side_effect=lambda p: "WIN:" + str(p)), patch.dict(os.environ, {"RM_CODEX_SIDE": "win"}, clear=True):
-            a = AR.launch_argv(Path("/work"), Path("/out"), exe="codex.exe")
-            self.assertEqual(a, ["codex.exe", "exec", "--sandbox", "workspace-write", "--skip-git-repo-check",
-                                 "-C", "WIN:/work", "-o", "WIN:/out", "--json", "-c",
-                                 'model_reasoning_effort="high"', "-"])
-            a = AR.launch_argv(Path("/work"), Path("/out"), "configured-model", "medium", "read-only", "codex.exe")
-            self.assertEqual(a[-3:], ["-m", "configured-model", "-"])
-            self.assertIn('model_reasoning_effort="medium"', a)
+    @staticmethod
+    def result(outcome="ANSWERED", **kw):
+        """A door result (Dispatch's door_agent.AgentResult), planted."""
+        door = AR.dispatch_door.load("door_agent")
+        return door.AgentResult(outcome, door.D.EXIT[outcome], **kw)
+
+    def test_arguments_reach_the_door(self):
+        with tempfile.TemporaryDirectory() as d:
+            seen = {}
+            def call(prompt, cwd, **kw):
+                seen.update(kw, prompt=prompt, cwd=cwd)
+                return self.result(text="done")
+            with patch.dict(os.environ, {"CODEX_MODEL": "", "CODEX_EFFORT": ""}):
+                res = AR.run(d, "native prompt", Path(d)/"last", Path(d)/"events", Path(d)/"spend", call=call, meter=meter())
+            self.assertFalse(res["is_error"], res)
+            self.assertEqual((seen["prompt"], seen["cwd"], seen["model"], seen["effort"], seen["home"], seen["timeout"]),
+                             ("native prompt", Path(d).resolve(), "inherit", "high", None, 7200))
+            AR.run(d, "p", Path(d)/"last", Path(d)/"events", Path(d)/"spend", call=call, meter=meter(),
+                   model="configured-model", effort="medium", sandbox="read-only")
+            self.assertEqual((seen["model"], seen["effort"], seen["sandbox"]), ("configured-model", "medium", "read-only"))
+
+    def test_an_old_result_is_never_this_runs_answer(self):
+        with tempfile.TemporaryDirectory() as d:
+            Path(d, "last").write_text("yesterday's answer")
+            AR.run(d, "p", Path(d)/"last", Path(d)/"events", Path(d)/"spend", meter=meter(),
+                   call=lambda *a, **k: self.result("DEADLINE"))
+            self.assertFalse(Path(d, "last").exists())
+
+    def test_door_failure_kinds_are_errors_by_name(self):
+        for outcome, kw, kind in (("AUTH", {}, "failed"), ("DEADLINE", {}, "no_answer_in_time"),
+                                  ("BAD_INPUT", {"started": False}, "could_not_start"), ("MODEL_REFUSED", {}, "failed")):
+            with tempfile.TemporaryDirectory() as d:
+                res = AR.run(d, "p", Path(d)/"last", Path(d)/"events", Path(d)/"spend", meter=meter(),
+                             call=lambda *a, **k: self.result(outcome, detail="why", **kw))
+                self.assertTrue(res["is_error"])
+                self.assertIn(outcome, res["result"])
+                sp = json.loads((Path(d)/"spend").read_text())
+                self.assertEqual((sp["outcome"], sp["kind"], sp["state"]), (outcome, kind, "failed"))
 
     def test_usage(self):
         ev = lambda i, o: json.dumps({"type": "turn.completed", "usage": {"input_tokens": i, "output_tokens": o}})
@@ -128,15 +157,12 @@ class CodexRunnerTests(unittest.TestCase):
     def test_no_fallback(self):
         with tempfile.TemporaryDirectory() as d:
             calls = []
-            def fail(argv, **kw):
-                calls.append((argv, kw))
-                return subprocess.CompletedProcess(argv, 1, '{"type":"turn.failed","error":{"message":"quota/auth"}}', '401')
-            with patch.object(AR.CX, "on_windows_drive", return_value=True), patch.object(AR, "launch_argv", return_value=["codex.exe", "exec", "-"]):
-                res = AR.run(d, "injected", Path(d)/"last", Path(d)/"events", Path(d)/"spend", invoke=fail, meter=meter())
+            def fail(prompt, cwd, **kw):
+                calls.append(prompt)
+                return self.result("ALLOWANCE", detail="usage limit", rc=1)
+            res = AR.run(d, "injected", Path(d)/"last", Path(d)/"events", Path(d)/"spend", call=fail, meter=meter())
             self.assertTrue(res["is_error"])
-            self.assertEqual(len(calls), 1)
-            self.assertTrue(calls[0][1]["input"].endswith("injected"))
-            self.assertEqual(calls[0][0][0], "codex.exe")
+            self.assertEqual(calls, ["injected"])
             self.assertEqual(json.loads((Path(d)/"spend").read_text())["usage"], "UNMEASURED")
             self.assertEqual(res["runner"], "codex")
             cfg = {"chain_stages":True, "ledger_item":"fixture"}
@@ -148,7 +174,7 @@ class CodexRunnerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             def unexpected(*a, **kw):
                 self.fail("quota refusal still launched a process")
-            res = AR.run(d, "prompt", Path(d)/"last", Path(d)/"events", Path(d)/"spend", invoke=unexpected, meter={})
+            res = AR.run(d, "prompt", Path(d)/"last", Path(d)/"events", Path(d)/"spend", call=unexpected, meter={})
             self.assertTrue(res["is_error"])
             self.assertIn("unreadable", res["result"])
 
@@ -196,12 +222,10 @@ class CodexRunnerTests(unittest.TestCase):
         printed its result line, still reads the usage of every turn it completed."""
         ev = json.dumps({"type": "turn.completed", "usage": {"input_tokens": 70, "output_tokens": 9}}) + "\n"
         with tempfile.TemporaryDirectory() as d:
-            def slow(argv, **kw):
-                kw["stdout"].write(ev)
-                kw["stdout"].flush()
-                raise subprocess.TimeoutExpired(argv, 5)
-            with patch.object(AR.CX, "on_windows_drive", return_value=True), patch.object(AR, "launch_argv", return_value=["codex", "exec", "-"]):
-                res = AR.run(d, "p", Path(d)/"last", Path(d)/"events", Path(d)/"spend", invoke=slow, meter=meter())
+            def slow(prompt, cwd, **kw):
+                Path(kw["events"]).write_text(ev)
+                return self.result("DEADLINE", rc=124)
+            res = AR.run(d, "p", Path(d)/"last", Path(d)/"events", Path(d)/"spend", call=slow, meter=meter())
             self.assertTrue(res["is_error"])
             self.assertEqual(res["codex_usage"], {"input_tokens": 70, "output_tokens": 9})
             self.assertEqual(json.loads((Path(d)/"spend").read_text())["usage"], {"input_tokens": 70, "output_tokens": 9})
@@ -329,6 +353,49 @@ class CodexRunnerTests(unittest.TestCase):
         sch = json.load(open(HERE.parent / "rimflow" / "dispatcher_schedule.json"))
         dc = [r for r in sch["roles"] if r.get("name") == "DesignerCodex"][0]
         self.assertEqual((dc["runner"], dc["sweeps_runner"], dc["codex_stop_week_left_pct"]), ("codex", "codex", 25))
+
+    def test_quota_uses_newest_account_reading_from_either_home(self):
+        """The account meter is the newest reading in any known session folder; readings are never added."""
+        import time
+        import ops_watch as ow
+        with tempfile.TemporaryDirectory() as td, patch.dict(os.environ, {
+                "RM_CODEX_SESSIONS": td + "/one:" + td + "/two", "RM_OPS_WATCH_DIR": td}):
+            now = int(time.time())
+            for name, age, used in (("one", 2, 66), ("two", 1, 67)):
+                folder = Path(td) / name
+                folder.mkdir()
+                payload = {"primary": {"used_percent": 1, "window_minutes": 300, "resets_at": now + 3600},
+                           "secondary": {"used_percent": used, "window_minutes": 10080, "resets_at": now + 86400}}
+                (folder / "rollout-test.jsonl").write_text(json.dumps({"timestamp": now - age,
+                                                                       "payload": {"rate_limits": payload}}) + "\n")
+            self.assertEqual(ow.c_codex(now, ow.load_rules(), {})["codex.week_used_pct"]["v"], 67)
+            # the gate's own reader, with nothing injected (a missing import here refused every real run)
+            self.assertEqual(AR.quota_gate()["codex.week_used_pct"]["v"], 67)
+            p = Path(td) / "one/rollout-test.jsonl"
+            row = json.loads(p.read_text())
+            row["timestamp"] = now
+            row["payload"]["rate_limits"]["secondary"]["used_percent"] = 68
+            p.write_text(json.dumps(row) + "\n")
+            self.assertEqual(ow.c_codex(now, ow.load_rules(), {})["codex.week_used_pct"]["v"], 68)
+
+    def test_consult_lockdown_through_the_door(self):
+        """gpt_consult --lockdown asks the door with no tools, in the job folder, on the named sign-in."""
+        import gpt_consult as gc
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "auth.json").write_text('{}')
+            def invoke(argv, **kw):
+                self.assertEqual(kw["env"]["CODEX_HOME"], str(root))
+                for flag in ("--ephemeral", "--strict-config", "image_generation"):
+                    self.assertIn(flag, argv)
+                self.assertEqual(argv[argv.index("-C") + 1], kw["cwd"])
+                Path(argv[argv.index("-o") + 1]).write_text("ok")
+                return subprocess.CompletedProcess(argv, 0)
+            with patch.dict(os.environ, {"CODEX_SCRATCH": td + "/scratch", "GPT_DOOR_LOG_DIR": td + "/log",
+                                         "GPT_DOOR_SIDE": "linux"}), \
+                    patch.object(gc.door, "find_codex", return_value="codex"), patch.object(gc.codex_advice, "gate", return_value=0), \
+                    patch.object(gc, "_receipt"), patch.object(gc, "_log_call"), patch.object(gc.door, "RUNNER", invoke):
+                self.assertEqual(gc.main(["q", "--codex-home", td, "--lockdown", "--effort", "low"]), 0)
 
 
 if __name__ == "__main__":

@@ -5,7 +5,6 @@ from pathlib import Path
 IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
 
 GEN = "/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/gen3"
-HOME = "/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/codexhome_w%d"
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))
 
 BASE = ("Fully transparent background, real alpha. Seen straight on, flat. Real paint on a wall, photographed and cut out, with no wall in the picture. "
@@ -239,7 +238,7 @@ def gen(workers):
                 return
             for attempt in range(2):
                 r = subprocess.run([sys.executable, f"{IMAGE_SKILLS}/generating-images/scripts/codex_image.py", "generate", "--out", f"{GEN}/{n}.png",
-                                    "--codex-home", HOME % w, "--timeout", "900", "--prompt", m["prompt"]], capture_output=True, text=True, cwd=REPO)
+                                    "--timeout", "900", "--prompt", m["prompt"]], capture_output=True, text=True, cwd=REPO)
                 if r.returncode == 0:
                     break
             print(n, "rc", r.returncode, (r.stderr or "")[-200:] if r.returncode else "", flush=True)

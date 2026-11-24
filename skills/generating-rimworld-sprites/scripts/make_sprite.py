@@ -26,8 +26,8 @@ because the tool still ignores the size you ask for.
   python3 .../make_sprite.py --prompt "..." --out final.png \
       --reference original_south.png
 
-Flags: --keep-raw (keep the pre-conform image), --codex-home DIR (isolate this
-call's CODEX_HOME so parallel workers cannot collide), --timeout S.
+Flags: --keep-raw (keep the pre-conform image), --timeout S. Calls may run in parallel: the image
+door queues them on the one sign-in and gives each call only its own picture.
 
 For a channel with NO native alpha - `gemini_image.py` - cut the background
 locally with `rembg_cut.py` under ~/.venvs/rwgfx instead.
@@ -58,7 +58,6 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--edit-image", action="append", help="reference image(s) for an edit; repeatable")
     ap.add_argument("--reference", help="conform the result to this sprite's canvas/registration")
-    ap.add_argument("--codex-home", help="isolate this call's CODEX_HOME (parallel workers)")
     ap.add_argument("--timeout", help="seconds before the wrapper stops waiting")
     ap.add_argument("--keep-raw", action="store_true")
     a = ap.parse_args()
@@ -73,8 +72,6 @@ def main():
             cmd += ["--image", img]
     else:
         cmd = ["python3", CODEX, "generate", "--out", raw, "--prompt", a.prompt]
-    if a.codex_home:
-        cmd += ["--codex-home", a.codex_home]
     if a.timeout:
         cmd += ["--timeout", a.timeout]
     run(cmd)

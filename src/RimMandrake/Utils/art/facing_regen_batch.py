@@ -156,28 +156,6 @@ def feet_off(m) -> dict:
             if f in m and "east" in m and abs(m[f]["bottom"] - m["east"]["bottom"]) > L.FEET_TOL}
 
 
-SANDBOX_BASE = [0]
-STOP = threading.Event()
-
-
-def sandbox_setup_count(home: Path) -> int:
-    n = 0
-    for f in (home / ".sandbox").glob("sandbox.*.log"):
-        try:
-            n += f.read_text(errors="replace").count("sandbox setup required")
-        except OSError:
-            pass
-    return n
-
-
-def sandbox_guard(home: Path) -> None:
-    """A new 'sandbox setup required' in the home's sandbox log = Codex is provisioning (UAC on his screen): stop all."""
-    if sandbox_setup_count(home) > SANDBOX_BASE[0]:
-        STOP.set()
-        log({"event": "STOP", "why": f"sandbox setup required logged in {home}"})
-        raise RuntimeError(f"STOP: sandbox setup required in {home}/.sandbox")
-
-
 def due(v: dict) -> bool:
     """A picture this run draws. A render that died (the Codex call failed or raised) spends no attempt (failure_class);
     one `run` tries each picture once, so it is tried again only by the next `run`."""
@@ -188,13 +166,11 @@ def due(v: dict) -> bool:
     return not FC.read(v["outcome"]).counts if v.get("outcome") else v["attempts"] < MAX_ATTEMPTS
 
 
-def run_one(key: str, row: dict, home: Path) -> None:
+def run_one(key: str, row: dict) -> None:
     st = load()["items"][key]
-    env_home = str(home)
-    os.environ  # noqa: B018
     out = WORK / R.slug(row)
     out.mkdir(parents=True, exist_ok=True)
-    update(key, status="in_progress", attempts=st["attempts"] + 1, worker=home.name)
+    update(key, status="in_progress", attempts=st["attempts"] + 1)
     t0 = time.time()
     facings = [f for f in ("north", "south") if f in st["facings"]]
     for f in facings:                                 # a fresh attempt redraws from scratch
@@ -209,9 +185,7 @@ def run_one(key: str, row: dict, home: Path) -> None:
             for _ in range(GEN_TRIES):
                 p = subprocess.run([sys.executable, str(HERE / "facing_regen.py"), "gen", "--row", row["texPath"],
                                     "--facing", f, "--out", str(out), "--rows", str(ROWS), "--timeout", "170"],
-                                   capture_output=True, text=True, env=dict(os.environ, FACING_REGEN_CODEX_HOME=env_home),
-                                   timeout=300)
-                sandbox_guard(home)
+                                   capture_output=True, text=True, timeout=300)
                 if p.returncode == 0:
                     ok = True
                     break
@@ -249,8 +223,7 @@ def run_one(key: str, row: dict, home: Path) -> None:
             if jid.endswith("_east") or not any(jid.endswith("_" + f) for f in facings):
                 continue
             r = C.check_one(jid, done=common.DEFAULT_DONE, failed=common.DEFAULT_FAILED, artsrc=common.DEFAULT_ARTSRC,
-                            force=True, dry_run=False, home=home)
-            sandbox_guard(home)
+                            force=True, dry_run=False)
             c = C.normalize(r.get("check")) or {}
             canon[jid] = {"status": r.get("status"), "verdict": c.get("verdict") or c.get("status"),
                           "score": c.get("score"), "flags": (c.get("flags") or [])[:4], "note": r.get("note", "")}
@@ -333,29 +306,14 @@ def run(jobs: int) -> int:
     todo = [k for k, v in st["items"].items()
             if due(v)]
     print(f"{len(todo)} to run; {status()}", flush=True)
-    # ONE worker on the SHARED home (coordinator 2026-10-16): an isolated per-worker home whose sandbox seed predates
-    # the current codex.exe re-runs Codex's Windows sandbox setup -> a UAC dialog on the owner's screen.
-    if jobs != 1:
-        sys.exit("refused: -j must be 1 (parallel isolated codex homes raise UAC sandbox dialogs)")
-    homes = [Path(R.CODEX_HOME)]
-    SANDBOX_BASE[0] = sandbox_setup_count(homes[0])
-    free = list(homes)
-    flock = threading.Lock()
     pending_paths, since = [], [0]
 
     def work(key):
-        if STOP.is_set():
-            return
-        with flock:
-            home = free.pop()
         try:
-            run_one(key, rows[key], home)
+            run_one(key, rows[key])
         except Exception as exc:  # noqa: BLE001 — recorded, never fatal to the batch
-            update(key, status="pending" if STOP.is_set() else "retryable_failure", outcome=FC.LK.APPARATUS, why=f"{type(exc).__name__}: {exc}"[:300])
+            update(key, status="retryable_failure", outcome=FC.LK.APPARATUS, why=f"{type(exc).__name__}: {exc}"[:300])
             log({"key": key, "event": "exception", "err": repr(exc)[:300]})
-        finally:
-            with flock:
-                free.append(home)
         with LOCK:
             since[0] += 1
             n_ready = sum(1 for v in load()["items"].values() if v["status"] == "ready")

@@ -37,7 +37,7 @@ print("SCRATCH=" + str(GC.scratch_root()))
 
 def run(home, env_extra):
     env = {k: v for k, v in os.environ.items() if k not in ("CODEX_HOME", "CODEX_SCRATCH", "GPT_DOOR_CODEX")}
-    env.update(HOME=str(home), RM_CODEX_SIDE="wsl", PATH="/usr/bin:/bin", RM_DISPATCH_ROOT=DISPATCH, **env_extra)
+    env.update(HOME=str(home), PATH="/usr/bin:/bin", RM_DISPATCH_ROOT=DISPATCH, **env_extra)
     return subprocess.run([sys.executable, "-c", PROBE, str(HERE)], capture_output=True, text=True, env=env,
                           timeout=60)
 

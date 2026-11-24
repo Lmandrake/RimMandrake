@@ -5,7 +5,6 @@
 set -u
 cd /home/mandrake/rm/bench || exit 2
 L=$1; ST=$2; F=$3; O=$4; W=$5
-RMS="$(python3 src/RimMandrake/Utils/rmpaths.py scratch)" || exit 2
 HT=src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Hose
 G=$O/guides
 case $L in
@@ -37,6 +36,6 @@ else
 fi
 mkdir -p "$O/raw"
 export CODEX_MODEL=gpt-6.1-sol
-python3 ${RM_IMAGE_SKILLS_ROOT:-$HOME/dev/MandrakeWorkflows/skills}/generating-images/scripts/codex_image.py edit --codex-home "$RMS/codexhome_reel$W" --timeout 540 \
+python3 ${RM_IMAGE_SKILLS_ROOT:-$HOME/dev/MandrakeWorkflows/skills}/generating-images/scripts/codex_image.py edit --timeout 540 \
   --image "$GU" --image "$REF" --out "$OUT" --prompt "$PR" > "$O/raw/$(basename "$OUT" .png).log" 2>&1
 echo "$? $OUT"

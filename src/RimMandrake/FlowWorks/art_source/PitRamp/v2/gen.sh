@@ -1,10 +1,10 @@
 #!/bin/bash
 # One candidate style per worker: north first, then south and east with north as the sibling.
-# usage: gen.sh <tag> <codexhome> "<material sentence>"
+# usage: gen.sh <tag> "<material sentence>"
 set -u
-tag=$1; home=$2; mat=$3
+tag=$1; mat=$2
 R=/home/mandrake/rm/bench
-CI="python3 ${RM_IMAGE_SKILLS_ROOT:-$HOME/dev/MandrakeWorkflows/skills}/generating-images/scripts/codex_image.py edit --model gpt-6.1-sol --codex-home $home --timeout 900"
+CI="python3 ${RM_IMAGE_SKILLS_ROOT:-$HOME/dev/MandrakeWorkflows/skills}/generating-images/scripts/codex_image.py edit --model gpt-6.1-sol --timeout 900"
 LAD=$R/src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Canals/RM_Ladder.png
 OLD=$R/src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Excavation/RM_PitRamp_north.png
 COMMON="RimWorld top-down building sprite, hand-painted, warm 1970s earth-brown palette (ochre, umber, sand, weathered timber), soft painterly texture like image 2 (a RimWorld ladder sprite) and the wood/earth material of image 3. Orthographic RimWorld building camera, light overhead and from the front, no cast shadow, no outline. Fully transparent background with real alpha; the ramp occupies the image exactly where the grey shape in image 1 does, same silhouette, same proportions."

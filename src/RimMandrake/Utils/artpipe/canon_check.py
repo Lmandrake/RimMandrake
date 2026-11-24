@@ -29,10 +29,8 @@ read on the sheet / in chat; it never blocks, never files a job failed, and neve
 Evidence: Transient/art_review_2026-10-15/pipeline_review.md §3 (FAIL predicted 0 of 64 owner rejections).
 
 ROUTE
-  Codex exec, read-only sandbox, `--output-schema` JSON, images via `-i`, prompt on stdin. Linux uses native
-  paths and scratch; RM_CODEX_SIDE=win retains drive-local staging (codex.exe fails from an ext4 cwd and hangs on \\\\wsl.localhost
-  reads — same staging gpt_consult.py uses). Model: $ARTPIPE_CANON_MODEL, else gpt_consult's consult default
-  (gpt-6.1-sol); effort high. In the daemon it runs on the job's leased codex home (artpiped's slot pool).
+  One question with pictures and a JSON answer schema through Dispatch's Codex door (dispatch_door.py, gpt_door.ask).
+  Model: $ARTPIPE_CANON_MODEL, else gpt_consult's consult default (gpt-6.1-sol); effort high.
 
 CLI (retroactive grading of finished renders; it never requeues anything)
     python3 canon_check.py <job_id> [...]          grade these done/ (or failed/) renders
@@ -46,12 +44,10 @@ import argparse
 import json
 import os
 import re
-import shutil
-import subprocess
 import sys
+import tempfile
 import threading
 import time
-import uuid
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
@@ -291,42 +287,18 @@ def build_prompt(spec: dict) -> str:
 
 def codex_vision(prompt: str, images: list[Path], *, model: str = DEFAULT_MODEL, effort: str = DEFAULT_EFFORT,
                  timeout: int = DEFAULT_TIMEOUT_S, home: Path | None = None, schema: dict | None = None) -> str:
-    """One selected Codex exec turn with images; returns the -o last-message text. Raises CanonCheckError."""
-    import codex_image  # noqa: E402 — imported lazily so selftests never need codex.exe
-    job = codex_image.CODEX_SCRATCH / f"canoncheck-{time.strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}"
-    job.mkdir(parents=True, exist_ok=True)
-    try:
-        staged = []
-        for i, img in enumerate(images):
-            dst = job / f"img{i}{Path(img).suffix.lower() or '.png'}"
-            shutil.copyfile(img, dst)
-            staged.append(dst)
-        (job / "schema.json").write_text(json.dumps(schema or RESPONSE_SCHEMA))
-        (job / "prompt.md").write_text(prompt)
-        answer = job / "answer.json"
-        cmd = [str(codex_image.find_codex_cli()), "exec", "--sandbox", "read-only", "--skip-git-repo-check",
-               "-o", codex_image.codex_path(answer),
-               "--output-schema", codex_image.codex_path(job / "schema.json"),
-               "-c", f'model_reasoning_effort="{effort}"']
-        if model and model != "inherit":
-            cmd += ["-m", model]
-        for s in staged:
-            cmd += ["-i", codex_image.codex_path(s)]
-        cmd += ["--", "-"]  # `-i` is variadic: terminate it, then read the prompt from stdin
-        env = codex_image.child_env(home or codex_image.base_codex_home())
-        try:
-            with open(job / "prompt.md", "rb") as fin, open(job / "codex.log", "wb") as log:
-                rc = subprocess.run(cmd, cwd=str(job), stdin=fin, stdout=log, stderr=subprocess.STDOUT,
-                                    timeout=timeout, env=env).returncode
-        except subprocess.TimeoutExpired:
-            rc = 124
-        text = answer.read_text(errors="replace").strip() if answer.is_file() else ""
-        if not text:
-            tail = (job / "codex.log").read_text(errors="replace")[-600:] if (job / "codex.log").is_file() else ""
-            raise CanonCheckError(f"no answer from codex (exit {rc}): {tail.strip()[-400:]}")
-        return text
-    finally:
-        shutil.rmtree(job, ignore_errors=True)
+    """One question with pictures through Dispatch's Codex door; returns the answer text. Raises CanonCheckError."""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    import dispatch_door  # noqa: E402 - lazily, so selftests never need the door
+    door = dispatch_door.load()
+    with tempfile.TemporaryDirectory(prefix="canoncheck-") as td:
+        sch = Path(td) / "schema.json"
+        sch.write_text(json.dumps(schema or RESPONSE_SCHEMA))
+        a = door.ask(prompt, images=[str(i) for i in images], model=model, effort=effort, purpose="vision",
+                     timeout=timeout, home=home, schema=sch, caller="rimmandrake/canon_check")
+    if not a.answered:
+        raise CanonCheckError(f"no answer from codex ({a.kind}: {a.outcome}, exit {a.rc}): {a.detail.strip()[-400:]}")
+    return a.text.strip()
 
 
 def parse_answer(text: str, lines: list[str]) -> list[dict]:

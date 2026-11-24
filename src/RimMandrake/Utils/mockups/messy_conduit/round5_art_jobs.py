@@ -2,13 +2,12 @@
 
     python3 src/RimMandrake/Utils/mockups/messy_conduit/round5_art_jobs.py wave1|wave2 [--only name ...]
 
-Runs Codex $imagegen (~/dev/MandrakeWorkflows/skills/generating-images/scripts/codex_image.py) 6 at a time, each worker on its own CODEX_HOME.
+Runs Codex $imagegen (~/dev/MandrakeWorkflows/skills/generating-images/scripts/codex_image.py) 6 at a time (the image door queues them on the one sign-in).
 Inputs/outputs live outside git at D:\\ClaudeWork\\rimmandrake\\scratch\\mc_r5\\{in,raw}. Report: Transient/mc_art_round5_report.md.
 Conform + install: round5_art_install.py (same folder).
 """
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
-from codex_side import codex_side
 from pathlib import Path
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import os, subprocess, sys, threading, queue, time
@@ -129,10 +128,10 @@ def jobs(wave):
     return J
 
 
-def run(job, home, log):
+def run(job, log):
     name, mode, imgs, prompt = job
     out = R + "/raw/" + name + ".png"
-    cmd = [sys.executable, CI, mode, "--out", out, "--prompt", prompt, "--codex-home", home, "--timeout", "600", "--force"]
+    cmd = [sys.executable, CI, mode, "--out", out, "--prompt", prompt, "--timeout", "600", "--force"]
     for i in imgs:
         cmd += ["--image", i]
     t = time.time()
@@ -154,14 +153,12 @@ if __name__ == "__main__":
         q.put(j)
     log = open(R + "/" + wave + ".log", "a")
     def worker(i):
-        home_root = str(Path.home() / ".codex_workers/mc_r5") if codex_side() == "wsl" else R + "/homes"
-        home = home_root + "/w%d" % (i + int(os.environ.get("R5_HOME_OFFSET", "0")))
         while True:
             try:
                 j = q.get_nowait()
             except queue.Empty:
                 return
-            run(j, home, log)
+            run(j, log)
     ts = [threading.Thread(target=worker, args=(i,)) for i in range(6)]
     [t.start() for t in ts]
     [t.join() for t in ts]

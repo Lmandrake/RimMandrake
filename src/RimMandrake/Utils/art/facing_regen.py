@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
-from codex_side import codex_side
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import hashlib
@@ -37,8 +36,7 @@ DEFAULT_ROWS = REPO / "Transient/facing_rescale_2026-10-16/after2.json"
 sys.path.insert(0, str(HERE.parent))
 import image_skills  # noqa: E402  (the image skills live in MandrakeWorkflows)
 CODEX = image_skills.CODEX_IMAGE
-MODEL = os.environ.get("CODEX_MODEL", "gpt-5.6-sol")      # what rm-artpiped runs; codex_image's gpt-5.5 default 400s on ChatGPT auth
-CODEX_HOME = os.environ.get("FACING_REGEN_CODEX_HOME", str(Path.home() / ".codex_workers/facing_regen") if codex_side() == "wsl" else rm_str("scratch", "codex_home_facing_regen"))   # own home (one per parallel worker): never harvest the daemon's renders
+MODEL = os.environ.get("CODEX_MODEL", "gpt-5.6-sol")      # what rm-artpiped runs
 
 SURFACE = {
     "north": ("REAR view", "seen from directly behind: its back, hindquarters, tail base and the backs of its legs "
@@ -99,7 +97,7 @@ def gen(row, facing, out: Path, extra: str, pose: str, timeout: int) -> int:
     t0 = time.time()
     p = subprocess.run([sys.executable, str(CODEX), "edit", "--out", str(raw), "--prompt", prompt,
                         "--image", f["east"], "--image", img2, "--timeout", str(timeout),
-                        "--model", MODEL, "--codex-home", CODEX_HOME],
+                        "--model", MODEL],
                        capture_output=True, text=True, timeout=float(timeout) + 60)
     dt = round(time.time() - t0, 1)
     rec = {"texPath": row["texPath"], "facing": facing, "raw": (str(raw.relative_to(REPO)) if raw.is_relative_to(REPO) else str(raw)), "seconds": dt,
