@@ -29,6 +29,10 @@
    "n": 1,
    "why": "a wait after a failed catalog build, no count"
   },
+  "src/RimMandrake/Utils/game_watcher.py::_state::hb['frameFaultStreak'] > 1": {
+   "n": 1,
+   "why": "throwing frames of a running game; a broken reading refuses a scene start or is confirmed for a stop, and spends no outcome of the work"
+  },
   "src/RimMandrake/Utils/maturation_now.py::boxes_html::x['cycled'] > 1": {
    "n": 2,
    "why": "the page shows every run of the stage; nothing is escalated by it"

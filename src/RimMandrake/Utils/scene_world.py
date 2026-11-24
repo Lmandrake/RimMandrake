@@ -157,6 +157,9 @@ class RealWorld(object):
     def connect(self, letter):
         return RealBridge(letter)
 
+    def game_health(self, letter):
+        return _import("game_watcher", HERE).read(letter)
+
     # ---- who drives
     def me(self):
         return _import("host_guard", RIMFLOW).self_identity()

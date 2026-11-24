@@ -47,12 +47,40 @@ namespace JawaBench.BridgeTools
         private static long _multBits = BitConverter.DoubleToInt64Bits(double.NaN);
         private static volatile int _speed = -1;
         private static readonly string[] SpeedNames = { "Paused", "Normal", "Fast", "Superfast", "Ultrafast" };   // Verse.TimeSpeed 0..4
+        private static volatile string _scene = "";
+        private static long _sceneSinceTicks, _lastTickChange = -1, _frameResult, _frameFaultSince;
+        [ThreadStatic] private static bool _rootException;
+
+        internal static void NoteRootException(string text)
+        {
+            // Verse catches this inside Root.Update (FlowWorks ee0fbaa8); the finalizer sees a normal return.
+            if (text != null && text.StartsWith("Root level exception in Update():", StringComparison.Ordinal))
+                _rootException = true;
+        }
+
+        internal static void SetScene(string scene)
+        {
+            if (_scene == scene) return;
+            Interlocked.Exchange(ref _sceneSinceTicks, W.Clock.ElapsedTicks);
+            _scene = scene;
+        }
+
+        internal static void FrameEnded(bool threw)
+        {
+            // Pack count and streak so the watchdog cannot read them from different frames.
+            long previous = Interlocked.Read(ref _frameResult);
+            uint frames = (uint)(previous >> 32) + 1;
+            uint streak = threw || _rootException ? (uint)previous + 1 : 0;
+            if (streak == 1) Interlocked.Exchange(ref _frameFaultSince, W.Clock.ElapsedTicks);
+            Interlocked.Exchange(ref _frameResult, ((long)frames << 32) | streak);
+        }
 
         internal static void SetFrameState(bool paused, double mult, int speed, int ticksGame)
         {
             LastPaused = paused;
             Interlocked.Exchange(ref _multBits, BitConverter.DoubleToInt64Bits(mult));
             _speed = speed;
+            if (LastTicksGame != ticksGame) Interlocked.Exchange(ref _lastTickChange, W.Clock.ElapsedTicks);
             LastTicksGame = ticksGame;
         }
 
@@ -77,6 +105,7 @@ namespace JawaBench.BridgeTools
         internal static void Beat()
         {
             Interlocked.Exchange(ref _beatTicks, W.Clock.ElapsedTicks);
+            _rootException = false;
             _depth = 0;                       // a phase left open by an exception never outlives its frame
             Set(PUpdate);
         }
@@ -255,6 +284,8 @@ namespace JawaBench.BridgeTools
             {
                 long seq = ++_hbSeq;
                 double beatMono = Seconds(Interlocked.Read(ref _beatTicks));
+                long frameResult = Interlocked.Read(ref _frameResult);
+                long tickChange = Interlocked.Read(ref _lastTickChange);
                 DateTime utcNow = DateTime.UtcNow;
                 string iso(DateTime t) => t.ToString("yyyy-MM-dd'T'HH:mm:ss.fff'Z'", System.Globalization.CultureInfo.InvariantCulture);
                 var sb = new StringBuilder(512);
@@ -271,6 +302,14 @@ namespace JawaBench.BridgeTools
                   .Append(",\"silentS\":").Append(M.F(quiet, 1))
                   .Append(",\"phase\":\"").Append(PhaseName).Append('"')
                   .Append(",\"ticksGame\":").Append(LastTicksGame)
+                  .Append(",\"scene\":").Append(W.Json(_scene))
+                  .Append(",\"sceneSinceMono\":").Append(M.F(Seconds(Interlocked.Read(ref _sceneSinceTicks)), 3))
+                  .Append(",\"paused\":").Append(_speed < 0 ? "null" : LastPaused ? "true" : "false")
+                  .Append(",\"lastTickMono\":").Append(tickChange < 0 ? "null" : M.F(Seconds(tickChange), 3))
+                  .Append(",\"frames\":").Append((uint)(frameResult >> 32))
+                  .Append(",\"frameFaultStreak\":").Append((uint)frameResult)
+                  .Append(",\"frameFaultSinceMono\":").Append((uint)frameResult == 0 ? "null" :
+                      M.F(Seconds(Interlocked.Read(ref _frameFaultSince)), 3))
                   .Append(",\"segment\":").Append(W.Json(Path.GetFileName(W.CurrentPath ?? "")))
                   .Append(",\"hbErrors\":").Append(Interlocked.Read(ref _hbErrors))
                   .Append(",\"hbLastError\":").Append(M.Json(_hbLastError))

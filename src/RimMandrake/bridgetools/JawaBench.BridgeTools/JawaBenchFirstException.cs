@@ -95,7 +95,12 @@ namespace JawaBench.BridgeTools
         private static void ErrorPre(string text, out bool __state)
         {
             __state = false;
-            try { Roads.EnterError(); __state = true; Tap.Note("Log.Error", text, false, false, Fill); } catch { }
+            try
+            {
+                JawaBenchTpsWatchdog.NoteRootException(text);
+                Roads.EnterError(); __state = true; Tap.Note("Log.Error", text, false, false, Fill);
+            }
+            catch { }
         }
         private static void ErrorFin(bool __state)
         {

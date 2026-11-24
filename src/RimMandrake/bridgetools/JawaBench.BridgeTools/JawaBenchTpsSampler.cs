@@ -453,7 +453,11 @@ namespace JawaBench.BridgeTools
                 // bare `new Game()` in the load's PreLoadAct (decompiled 1.6) while ProgramState still reads Playing;
                 // C3 live run 2026-10-10 saw that transient object take the load's save label (game 3, no windows)
                 // and the real loaded game arrive as an unlabelled game 4.
-                bool playing = game != null && Current.ProgramState == ProgramState.Playing && game.World != null;
+                var programState = Current.ProgramState;
+                bool playing = game != null && programState == ProgramState.Playing && game.World != null;
+                WD.SetScene(programState == ProgramState.MapInitializing ? "loading" :
+                            programState == ProgramState.Entry ? "menu" :
+                            playing ? (game.CurrentMap == null ? "no_map" : "map") : "");
                 var ev = Life.OnFrame(game, playing, now);
                 if (ev != JawaBenchTpsLifecycle.Event.None) WD.LastSave = "";     // game-scoped (MUST 6)
                 if (ev == JawaBenchTpsLifecycle.Event.Menu)
@@ -518,6 +522,7 @@ namespace JawaBench.BridgeTools
             {
                 if (!__state.Valid) { GRoot.Exit(__state); return; }
                 GRoot.Exit(__state);
+                WD.FrameEnded(__exception != null);
                 if (__exception != null) { GRoot.NoteThrew(); return; }
                 if (RuntimeError != null) return;
                 bool waiting = LongEventHandler.ShouldWaitForEvent;

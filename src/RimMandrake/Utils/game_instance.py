@@ -11,6 +11,7 @@ process means, and game_paths, rimbridge_client and driver_lock follow that name
     python3 src/RimMandrake/Utils/game_instance.py pid [b]          the pid, or nothing when it is not running
     python3 src/RimMandrake/Utils/game_instance.py stop [PID] [--force] [--instance b] [--for "why"]   taskkill /PID, never /IM; only
                                                                     when `rimflow bridge idle` says TAKEABLE
+    python3 src/RimMandrake/Utils/game_instance.py stop --broken --instance b  confirm broken disk health, then stop by PID
     python3 src/RimMandrake/Utils/game_instance.py prepare b        seed the folder and its own install (safe while another
                                                                     game runs)
     python3 src/RimMandrake/Utils/game_instance.py install b [--refresh]   copy the install into <root>/b/game (game a's
@@ -20,7 +21,7 @@ process means, and game_paths, rimbridge_client and driver_lock follow that name
     python3 src/RimMandrake/Utils/game_instance.py free [--busy a] [--for "why"]   the first game a run may take, else 3
     python3 src/RimMandrake/Utils/game_instance.py leftovers        games up with nobody holding them (may be stopped)
 
-Exit 0 ok; 2 BLIND (the process list could not be read, so nothing was acted on); 3 REFUSED, with the reason.
+Exit 0 ok; 1 confirmed stop failed; 2 BLIND (could not look); 3 REFUSED, with the reason.
 
 Whose game is it? Only the process's command line can say, because both games have one image name and one window title:
 `-savedatafolder=...\instances\<letter>` is that instance, and anything else is `a` (Steam's launch, a direct launch with
@@ -557,29 +558,54 @@ def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None):
 
 
 @_named
-def stop(pid_=None, force=False, name=None, purpose=None, despite=None, seat=None):
+def stop(pid_=None, force=False, name=None, purpose=None, despite=None, seat=None, broken=False):
     """taskkill by process id -> (exit code, text). With no pid, every game of this instance; a pid must be this
     instance's, or Refused. Raises Blind when ownership cannot be read: nothing is signalled on a guess. Refused too
     while the bridge is not this seat's to act on (bridge_refusal): a stop is a reboot, the agent's to call only when
-    the bridge is free, ours, or stale (owner, 2026-09-02; his OWNER hold by card 2026-10-30)."""
+    the bridge is free, ours, or stale (owner, 2026-09-02; his OWNER hold by card 2026-10-30). A confirmed broken game
+    uses the emergency stop rule (CLAUDE.md §Facts you cannot guess), including held games."""
     name = check_name(name or current())
-    mine = pids(name)
+    if broken:
+        import game_watcher
+        reading, confirmed = game_watcher.confirm(name)
+        if reading.state == "could_not_look":
+            raise Blind("%s: %s" % (_n(name), reading.detail))
+        if not confirmed or (pid_ is not None and pid_ != reading.pid):
+            raise Refused("%s: this stop needs a confirmed broken process (%s: %s)" %
+                          (_n(name), reading.state, reading.detail))
+        if procs(name) != [{"pid": reading.pid, "start": reading.start}]:
+            raise Refused("%s: the confirmed process changed before stop" % _n(name))
+        pid_, force = reading.pid, True
+        mine = [pid_]
+    else:
+        mine = pids(name)
     if pid_ is not None and pid_ not in mine:
         raise Refused("pid %s is not %s's (%s: %s)" % (pid_, _n(name), _n(name), mine or "not running"))
     targets = [pid_] if pid_ is not None else mine
     if not targets:
         return 0, "%s is not running" % _n(name)
-    held = hold_refusal(name, despite)
-    if held:
-        raise Refused(held)
-    why = bridge_refusal(name, purpose, seat=seat)
-    if why:
-        raise Refused(why)
+    if not broken:
+        held = hold_refusal(name, despite)
+        if held:
+            raise Refused(held)
+        why = bridge_refusal(name, purpose, seat=seat)
+        if why:
+            raise Refused(why)
     rc, out = 0, []
     for p in targets:
-        r = _run([_exe("taskkill.exe")] + (["/F"] if force else []) + ["/PID", str(p)])
+        try:
+            r = _run([_exe("taskkill.exe")] + (["/F"] if force else []) + ["/PID", str(p)])
+        except (OSError, subprocess.SubprocessError) as e:
+            if not broken:
+                raise
+            rc, out = 1, [str(e)]
+            break
         rc = rc or r.returncode
         out.append(((r.stdout or "") + (r.stderr or "")).strip() or "taskkill /PID %d" % p)
+    if broken:
+        out.insert(0, "%s %s pid %d: %s (%s)" %
+                   ("STOP FAILED" if rc else "STOPPED", _n(name), pid_, reading.state, reading.detail))
+        rc = int(rc != 0)
     return rc, "\n".join(out)
 
 
@@ -964,6 +990,7 @@ def _driver(name):
 
 
 def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
     ap = argparse.ArgumentParser(prog="game_instance.py", description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     for verb in ("env", "pid", "prepare"):
@@ -981,6 +1008,10 @@ def main(argv=None):
     s.add_argument("--instance", default=None)
     s.add_argument("--for", dest="purpose", default=None, help="what the stop is for (the bridge check records it)")
     s.add_argument("--despite-hold", dest="despite", default=None, help="act on a held game on purpose: why")
+    # Emergency stop requires the full flag. Keep ordinary help and parse errors as before.
+    options = argv[:argv.index("--")] if "--" in argv else argv
+    if "--broken" in options:
+        s.add_argument("--broken", action="store_true", help="confirm broken disk health before a forced stop, including held games")
     sub.add_parser("status")
     s = sub.add_parser("free")
     s.add_argument("--busy", action="append", default=[], help="a game a live run already drives (repeatable)")
@@ -1013,8 +1044,11 @@ def main(argv=None):
                 print("%s  pid %d  up, nobody holds it: may be stopped (game_instance.py stop --instance %s)" % (
                     _n(g["instance"]), g["pid"], _n(g["instance"])))
         else:
-            rc, text = (stop(a.pid, a.force, a.instance, a.purpose, a.despite) if a.cmd == "stop" else
-                        launch(a.name, a.wait, despite=a.despite))
+            if a.cmd == "stop":
+                emergency = {"broken": True} if getattr(a, "broken", False) else {}
+                rc, text = stop(a.pid, a.force, a.instance, a.purpose, a.despite, **emergency)
+            else:
+                rc, text = launch(a.name, a.wait, despite=a.despite)
             print(text)
             return rc
     except Blind as e:

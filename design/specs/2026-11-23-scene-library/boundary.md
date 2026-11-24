@@ -11,6 +11,9 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
 ## WHAT A NAME REACHES
 
 - **The game**, by name (`game_names.py`) and never by the shell's environment: the port and the token of that game.
+- **The game's disk health.** `scene.open` and `s.run` check the named process and its heartbeat before reaching the
+  bridge. A broken or gone game is refused. A blind reading adds one `could_not_look` line to the receipt and the call
+  continues through its normal checks. The [watcher boundary](../2026-11-23-bridge-v2-watcher/boundary.md) names its test.
 - **The driver lock** of that game (`game_lock.py`). A take that this process inherited (`game_lock.py run`), or that the
   window of this clone holds, is kept. His switch can still refuse a new scene. A Windows python cannot claim, so a WSL
   child (`game_lock.py run <g> -- cat`) holds the lock. Its input closes when the script's process ends, and the lock is

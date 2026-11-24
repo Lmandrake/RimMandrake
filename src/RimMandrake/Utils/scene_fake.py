@@ -6,6 +6,7 @@ boundary.md); they are not recorded. A fake proves what the Python does, never w
 import copy
 import json
 import os
+from types import SimpleNamespace
 
 from scene_core import CallFailed, Fault, ReplyLost
 
@@ -249,6 +250,9 @@ class FakeWorld(object):
         if letter not in self.games:
             raise Fault("NO_GAME", detail="the bridge did not answer")
         return FakeBridge(self.games[letter])
+
+    def game_health(self, letter):
+        return SimpleNamespace(state="paused")
 
     def me(self):
         return {"pid": 4242, "platform": "fake"}

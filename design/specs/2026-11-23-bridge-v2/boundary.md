@@ -94,3 +94,11 @@ sample order and coverage, observation names and alias continuity before classif
 row and the first failed condition with recorded values. A keeper can be judged again from the same evidence.
 The first verdict stays in place and an accepted rejudgement appends one history line. The named tests and the
 offline input contract are on the [scene judge boundary](../2026-11-23-scene-judge/boundary.md).
+## GAME WATCHER
+
+`src/RimMandrake/Utils/game_watcher.py` reads the existing TPS heartbeat and the named game's process identity.
+It names ticking, paused, stopped frames, consecutive frame exceptions, a stuck load, menu, no map and process gone.
+A missing, unreadable or old-format heartbeat is COULD NOT LOOK and adds one line to the scene receipt. Scene
+admission checks the disk reading before connecting and before starting a run, and refuses a game read as broken
+or gone. A broken-game stop goes through `game_instance.py stop --broken` after two independent readings.
+The [watcher boundary](../2026-11-23-bridge-v2-watcher/boundary.md) names the tests, limits and stop evidence.

@@ -245,6 +245,18 @@ class Session(object):
         return self._dir
 
     # ---- the six phases of open
+    def _require_game_health(self):
+        from game_watcher import BROKEN
+        r = self.W.game_health(self.letter)
+        if r.state in BROKEN:
+            raise Refused("GAME_BROKEN", "%s: %s (%s). The Conductor must clear the broken game before a run." %
+                          (self.game, r.state, r.detail))
+        if r.state == "process_gone":
+            raise Refused("NO_GAME", "%s: %s. Start the game before opening a scene." % (self.game, r.detail))
+        if r.state == "could_not_look":
+            return ["%s game watcher: %s" % (self.game, r.detail)]
+        return []
+
     def _lock(self, p):
         r = self.W.lock_take(self.letter, "scene.open %s (%s)" % (self.id, LAUNCH["script"] or LAUNCH["mode"]))
         if r["code"] == 75:
@@ -257,6 +269,7 @@ class Session(object):
         p["did"].append("took the driver lock of %s" % self.game if self._locked else "drives under a take that was there: %s" % r["line"])
 
     def _identify(self, p, wanted, where, rec):
+        rec.could_not_look += self._require_game_health()
         self.bridge = self.W.connect(self.letter)
         try:
             descriptors = self.bridge.tools()
@@ -596,7 +609,9 @@ class Session(object):
                 raise Refused("BAD_PATH", "%s (`help read`)" % why)
             tracks.append(t)
         tree, ticks = cond.compile_until(until)
+        health_notes = self._require_game_health()
         rec = self._begin("s.run")
+        rec.could_not_look += health_notes
         if self.hand is None:
             raise Fault("NO_HAND", detail="the game has neither %s nor %s" % (hands.RUN_UNTIL, hands.SLICE))
         try:
