@@ -63,8 +63,8 @@ ruling, first art walk, 2026-09-14).
 
 ⚠️ **Neither verdict is durable on its own.** The owner said "call those done" of creatures that he saw in game. When he
 saw the same creatures on a sheet, he reversed that verdict to rerender. Bolotaur and Gualaar both went that way in one
-sitting (2026-09-15). So a shot that reads fine in the moment does not close the review. Before you call a wave
-finished, serve the sheet too.
+sitting (2026-09-15). So a shot that reads fine in the moment does not close the review. Before you call a batch of
+creatures finished, serve the sheet too.
 
 More traps for this section: [references/traps.md](references/traps.md) § This vs a review sheet — and why neither verdict is final.
 
@@ -254,8 +254,8 @@ Two calls for the map and its subjects:
 - The cause is not fog and not night. The control that proves it: on the same connection, switch to a map that you
   entered normally (`jawa/set_current_map`). That map renders fine seconds later.
 - `jawa/colony_found` does **not** generate a map; its own response says so. So no known bridge route enters a
-  tile-generated map the way a player does. `jawa/settlement_attack` (GM build only) sends a caravan into another
-  faction's settlement. Whether a map entered that way renders is UNMEASURED.
+  tile-generated map the way a player does. `jawa/settlement_attack` (only in a companion DLL that was built
+  with `build.py --gm`) sends a caravan into another faction's settlement. Whether a map entered that way renders is UNMEASURED.
 - Is the bar of a review "see it on screen", on a map that the bridge authored from a tile? If the map renders black,
   the review is **blocked** until a companion tool takes that entry path. Say so. Do not ship a black screenshot as a
   negative result.
