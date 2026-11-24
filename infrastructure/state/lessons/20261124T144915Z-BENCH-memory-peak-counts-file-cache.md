@@ -1,0 +1,2 @@
+A systemd 'memory peak' line counts file cache. The Dispatch tick's peaks of 800-900 MB on 2026-11-24 were at most 421 MB anon; the rest was git log reading the dispatch clone's 10.6 GB pack, which the kernel takes back. Split anon from file (memory.stat every 0.5 s, with the cgroup's processes) before you blame a unit's memory, and read swap peak and a hit limit as the harm.
+item: RIMMANDRAKE_SLIM_TICK_MEMORY_PAGE_BUILD_HITS_ONE_GIG_TICK_TOOK_FIVE_MIN
