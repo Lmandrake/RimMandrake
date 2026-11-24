@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Selftest: the calm map's pure rules (JawaBenchCalmCore.cs). Page: design/specs/2026-11-23-calm-map/boundary.md; one test
-per promise. Each test runs its unit group clean (all green) and with a planted fault (at least one red).
+"""Selftest: the calm map's rules and lease lifecycle. Page: design/specs/2026-11-23-calm-map/boundary.md; one test
+per promise. Rule groups also run with a planted fault (at least one red).
 No game, no bridge. Without dotnet.exe it FAILS as UNMEASURED. Run: python3 src/RimMandrake/Utils/selftest_calm_core.py"""
 import os
 import sys
@@ -33,10 +33,23 @@ def t_every_breach_is_counted():
     return L.group("breach", ["breach"])
 
 
+def t_lease_expires_while_paused():
+    return L.group("paused_expiry", [])
+
+
+def t_release_restores_proximity_letters():
+    return L.group("letter_restore", [])
+
+
+def t_reassert_keeps_the_lease():
+    return L.group("reassert_lease", [])
+
+
 def main():
     try:
         res = [t_calm_only_when_every_control_was_read(), t_each_thing_not_calm_is_named(), t_not_calm_outranks_could_not_read(),
-               t_an_exception_is_shown_and_checked(), t_the_gate_holds_all_but_the_allowed(), t_every_breach_is_counted()]
+               t_an_exception_is_shown_and_checked(), t_the_gate_holds_all_but_the_allowed(), t_every_breach_is_counted(),
+               t_lease_expires_while_paused(), t_release_restores_proximity_letters(), t_reassert_keeps_the_lease()]
     except L.Unmeasured as e:
         print("FAIL calm core UNMEASURED: %s" % e)
         return 1

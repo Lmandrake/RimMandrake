@@ -2078,7 +2078,7 @@ def brake_tail(mine):
 def fill_plan(mod, n, cap, *, now=None):   # now keyword-only: an old (.., day_s, now) call fails loudly
     """-> {"verdict", "text", ...}: what `fill MOD` would do now, without doing it. Shared by `cmd_fill` and the
     steward (steward.py), so the lane's brakes are read from ONE place. verdict:
-      stopped  fill.stop exists          paused  the lane is paused       busy    a ready pending or a running job
+      stopped  fill.stop exists          paused  the lane is paused       busy    ready work waits or no game is free
       cap      the daily job backstop                                     brake   last two filler jobs not DONE (a cancel is not counted: brake_tail),
                                                                           and no DONE+canary job since (lane_proven_after)
       nohist   no history, no catalogue  dry      every chain is DRY       exhausted  nothing may be filler
@@ -2093,10 +2093,10 @@ def fill_plan(mod, n, cap, *, now=None):   # now keyword-only: an old (.., day_s
     if paused():
         return {"verdict": "paused", "text": "lane paused; no fill"}
     # an owner-gated, not-yet-due or other-lane job cannot run, so it does not keep Steve busy
-    # busy while a ready job waits, or while every live Steve game runs one (an archmagi job is not Steve's): with
-    # Steve2 switched on, Steve1 running and Steve2 idle, the filler picks for Steve2
+    # busy while a ready job waits or every eligible Steve game runs one; a draining game occupies only its own host
     pend, run = [j for j in records("pending") if ready(j, now)], steve_running()
-    if pend or len(run) >= len(steve_lanes()):
+    busy_hosts = {host_of(r) for r in run}
+    if pend or busy_hosts.issuperset(steve_lanes()):
         return {"verdict": "busy", "text": "busy: %d pending/running" % (len(pend) + len(run))}
     off = held_fill(mod)
     if off:         # the owner's hold (mod_owner_hold.json): the filler is off for a held mod
@@ -2159,7 +2159,7 @@ def fill_rank(mod, n, now, today=None, exclude=()):
 
 
 def cmd_fill(a):
-    """Never let Steve's lane idle, with no LLM in the loop: when nothing is pending or running, queue up to `--n`
+    """Never let Steve's lane idle, with no LLM in the loop: when no ready job waits and a game is free, queue up to `--n`
     chains of MOD from the first non-empty rank of the evidence-gap order (gaps.py: a FAIL whose fix has landed, an
     item owing a live level, UNMEASURED/NOT_RUN at the current identity, never run at it). A chain that PASSED at the
     current identity is never filler. Brakes (`fill_plan`): the stop file, a daily job backstop, a paused

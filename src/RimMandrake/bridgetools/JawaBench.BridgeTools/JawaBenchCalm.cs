@@ -39,8 +39,11 @@ namespace JawaBench.BridgeTools
         private static long _placed;
         private static bool _owed;                                           // a restore is owed (the calm changed something)
         private static readonly Dictionary<string, bool> Saved = new Dictionary<string, bool>();
+        private static readonly HashSet<CompProximityLetter> SavedLetters = new HashSet<CompProximityLetter>();
+        private static Map _letterMap;
         private static GameCondition _ours;
         private static bool _wildOurs;
+        private static double _calmMinutes = JawaBenchSafetyCore.QuietBlock.DefaultMinutes;
         private static bool _probing;
         private static long _probeHeld, _probeQueueHeld;
         internal static List<string> LastRestore = new List<string>();
@@ -48,15 +51,17 @@ namespace JawaBench.BridgeTools
         private static double Now => JawaBenchTpsWatchdog.Now;
         private static int Tick() { try { return Find.TickManager != null ? Find.TickManager.TicksGame : -1; } catch { return -1; } }
 
-        internal static bool Active()
+        internal static bool Active() => Active(Now);
+
+        private static bool Active(double now)
         {
             if (!Lease.On) return false;
             if (!JawaBenchCompanionSafety.CurrentPolicy.WildSpawnerBlock) { Lease.Release("campaign-profile"); return false; }
-            return Lease.Active(Current.Game, Now);
+            return Lease.Active(Current.Game, now);
         }
 
         // ------------------------------------------------------------------ hooks
-        /// <summary>Main thread only. null when the three hooks are in place, read from Harmony (a hook that somebody removed
+        /// <summary>Main thread only. null when the hooks are in place, read from Harmony (a hook that somebody removed
         /// is put back), else why not.</summary>
         internal static string EnsurePatched()
         {
@@ -68,11 +73,13 @@ namespace JawaBench.BridgeTools
                 var exec = AccessTools.Method(typeof(IncidentWorker), "TryExecute", new[] { typeof(IncidentParms) });
                 var queue = AccessTools.Method(typeof(IncidentQueue), "IncidentQueueTick", Type.EmptyTypes);
                 var spawn = AccessTools.DeclaredMethod(typeof(Pawn), "SpawnSetup", new[] { typeof(Map), typeof(bool) });
-                if (exec == null || queue == null || spawn == null)
-                    return PatchStatus = "not found:" + (exec == null ? " IncidentWorker.TryExecute" : "") + (queue == null ? " IncidentQueue.IncidentQueueTick" : "") + (spawn == null ? " Pawn.SpawnSetup" : "");
+                var frame = AccessTools.Method(typeof(Root_Play), "Update", Type.EmptyTypes);
+                if (exec == null || queue == null || spawn == null || frame == null)
+                    return PatchStatus = "not found:" + (exec == null ? " IncidentWorker.TryExecute" : "") + (queue == null ? " IncidentQueue.IncidentQueueTick" : "") + (spawn == null ? " Pawn.SpawnSetup" : "") + (frame == null ? " Root_Play.Update" : "");
                 if (!Mine(exec)) h.Patch(exec, prefix: Hm(nameof(GatePre), Priority.First));
                 if (!Mine(queue)) h.Patch(queue, prefix: Hm(nameof(QueuePre), Priority.First));
                 if (!Mine(spawn)) h.Patch(spawn, postfix: Hm(nameof(SpawnPost), Priority.Normal));
+                if (!Mine(frame)) h.Patch(frame, prefix: Hm(nameof(FramePre), Priority.First));
                 PatchStatus = "patched";
                 return null;
             }
@@ -121,6 +128,16 @@ namespace JawaBench.BridgeTools
             }
             catch { }
             return true;
+        }
+
+        private static void FramePre()
+        {
+            try
+            {
+                // Root_Play.Update runs on the main thread even when the game tick is paused.
+                if (_owed && !Active()) Restore("lease ended: " + (Lease.LastRelease ?? "unknown"));
+            }
+            catch { }
         }
 
         private static void SpawnPost(Pawn __instance, Map map, bool respawningAfterLoad, bool __runOriginal)
@@ -276,7 +293,7 @@ namespace JawaBench.BridgeTools
 
         // ------------------------------------------------------------------ set
         /// <summary>Set every control that the scene did not except. Errors are returned by control name, never swallowed.</summary>
-        internal static List<string> Apply(Map map, bool newBaseline, bool clear, double minutes, string by)
+        internal static List<string> Apply(Map map, bool newBaseline, bool clear, double? minutes, string by)
         {
             var errors = new List<string>();
             void Do(string control, Action a)
@@ -286,7 +303,8 @@ namespace JawaBench.BridgeTools
             }
             var p = EnsurePatched();
             if (p != null) errors.Add(C.Gate + ": hooks: " + p);
-            bool fresh = newBaseline || !Active() || MapId != map.uniqueID;
+            double now = Now;
+            bool fresh = newBaseline || !Active(now) || MapId != map.uniqueID;
             if (fresh)
             {
                 if (_owed) Restore("set again");
@@ -295,7 +313,9 @@ namespace JawaBench.BridgeTools
             }
             EverArmed = true;
             _owed = true;
-            Lease.Block(Current.Game, Now, minutes, by);
+            if (newBaseline) _calmMinutes = minutes ?? JawaBenchSafetyCore.QuietBlock.DefaultMinutes;
+            double? renewal = fresh ? (minutes ?? _calmMinutes) : minutes;
+            if (renewal.HasValue) Lease.Block(Current.Game, now, renewal.Value, by);
             Do(C.Storyteller, () => Off("enableStoryteller", () => DebugSettings.enableStoryteller, v => DebugSettings.enableStoryteller = v));
             Do(C.MentalSwitch, () => Off("enableRandomMentalStates", () => DebugSettings.enableRandomMentalStates, v => DebugSettings.enableRandomMentalStates = v));
             Do(C.Diseases, () => Off("enableRandomDiseases", () => DebugSettings.enableRandomDiseases, v => DebugSettings.enableRandomDiseases = v));
@@ -303,11 +323,19 @@ namespace JawaBench.BridgeTools
             {
                 var err = AW.EnsureWildPatch();
                 if (err != null) throw new InvalidOperationException(err);
-                if (!AW.Wild.Active(Current.Game, Now)) _wildOurs = true;
-                AW.Wild.Block(Current.Game, Now, minutes, by);
+                if (!AW.Wild.Active(Current.Game, now)) _wildOurs = true;
+                AW.Wild.Block(Current.Game, now, renewal ?? (Lease.UntilS - now) / 60.0, by);
             });
             Do(C.Weather, () => SetWeather(map));
-            Do(C.Letters, () => { foreach (var l in UnsentLetters(map)) l.letterSent = true; });
+            Do(C.Letters, () =>
+            {
+                _letterMap = map;
+                foreach (var letter in UnsentLetters(map))
+                {
+                    SavedLetters.Add(letter);
+                    letter.letterSent = true;
+                }
+            });
             if (clear)
             {
                 Do(C.Conditions, () => { foreach (var c in OtherConditions(map)) { c.suppressEndMessage = true; c.End(); } });
@@ -386,6 +414,17 @@ namespace JawaBench.BridgeTools
             Back("enableRandomMentalStates", () => DebugSettings.enableRandomMentalStates, v => DebugSettings.enableRandomMentalStates = v);
             Back("enableRandomDiseases", () => DebugSettings.enableRandomDiseases, v => DebugSettings.enableRandomDiseases = v);
             Saved.Clear();
+            try
+            {
+                int restored = 0;
+                if (SavedLetters.Count > 0 && Current.Game != null && Find.Maps.Contains(_letterMap))
+                    foreach (var letter in SavedLetters)
+                        if (letter.parent.Map == _letterMap) { letter.letterSent = false; restored++; }
+                if (restored > 0) o.Add(restored + " proximity letter(s) restored");
+            }
+            catch (Exception e) { o.Add("COULD NOT RESTORE proximity letters: " + e.Message); }
+            SavedLetters.Clear();
+            _letterMap = null;
             try { var w = EndOurWeather(); if (w != null) o.Add(w); } catch (Exception e) { o.Add("COULD NOT END the forced weather: " + e.Message); }
             try
             {

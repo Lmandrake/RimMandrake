@@ -39,6 +39,7 @@ namespace JawaBench.BridgeTools
             }
             Receipt();
             Calm();
+            CalmLifecycleUnits.Run();
             FirstException();
             CanonicalGuardUnits.Run();
             Console.WriteLine("U-count " + _n);

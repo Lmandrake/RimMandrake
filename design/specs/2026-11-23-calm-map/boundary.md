@@ -7,7 +7,8 @@ Item: `RIMMANDRAKE_BUILD_BRIDGE_RECEIPT_CALM_AND_TAP_EITHER_WAY`; needs design
 
 `jawa/quiet_site` gets four actions. `calm` sets every control and reads each one back. `reassert` sets again what
 drifted, with the arguments of the last `calm`, and names what was repaired and what could not be repaired. `read`
-changes nothing. `release` puts back every value that `calm` changed. The old actions (`status`, `apply`) are unchanged.
+changes nothing. `release` restores the switches and proximity-letter flags changed by `calm`, ends the forced weather
+condition it installed, and releases its incident, queue and spawner holds. The old actions (`status`, `apply`) are unchanged.
 
 Each control reads HELD (its source is stopped, read back), CALM (looked, found none), EXCEPTED (the scene took it off),
 NOT_CALM (each thing named) or COULD_NOT_READ (with the cause). The verdict is CALM only when no control reads NOT_CALM
@@ -20,15 +21,16 @@ or COULD_NOT_READ. The reply always lists `notCovered`: the influences that no c
 | incident_queue | frozen, kept | a probe queue must be held; the queued incidents are listed |
 | wild_spawner | `jawa/wild_spawner_block`'s own block | its patch, switch, policy and lease |
 | weather | a forced weather (`weather`, default Clear), settled at once | current, forced, rain and snow rates |
-| game_conditions, hostiles, predators, arrivals, threat_structures, fires | removed only with `clear=true` | each one named |
-| proximity_letters | marked as sent | unsent ones named |
+| game_conditions, hostiles, predators, arrivals, threat_structures, fires | permanently removed only with `clear=true` | each one named |
+| proximity_letters | unsent ones marked as sent until release or expiry | unsent ones named |
 | mental_states, force_pause_windows | never changed | each one named |
 
 ## LIMITS
 
 - **The lease: 30 minutes, at most 240** (`minutes`; the same lease as `jawa/wild_spawner_block`). Danger: a driver that
   dies leaves a game with no raids, weather or wild animals, and the next user tests a game that is not the real game.
-  `wild_spawner_block` has had this lease since 2026-10-12 for that reason. When the lease ends, every value goes back.
+  `wild_spawner_block` has had this lease since 2026-10-12 for that reason. When the lease ends, the same restoration
+  runs on the next frame, even while paused. Explicit `minutes` on `reassert` renews the lease.
 - **200 breach rows kept; the count is exact.** Danger: a mod that tries one incident each tick fills the memory.
 
 ## DOES NOT SURVIVE (not promised)
@@ -56,6 +58,12 @@ or COULD_NOT_READ. The reply always lists `notCovered`: the influences that no c
   case); with the calm off, or ended, nothing is held.
 - **every-breach-is-counted.** The count of held attempts and arrivals is exact past the kept rows, and the number of rows
   that were dropped is stated.
+- **lease-expires-while-paused.** At expiry the storyteller switch is restored and the forced weather condition ends
+  while the game tick stays fixed.
+- **release-restores-proximity-letters.** On the same loaded map, release puts back the unsent flags that calm changed.
+  Letters that had already been sent stay sent.
+- **reassert-keeps-the-lease.** With no `minutes` argument, repairing an active calm on the same map preserves the calm
+  and wild spawner deadlines. Rearming uses the last `calm` duration. Explicit `minutes` sets a new deadline for both.
 
 **LIVE PROOF** (2026-11-23): ArchSmall, all rows of `prove_three_tools.py` at 9d022c7087 PASS (45 of 45 with the other two tools); Steve1 testq `J20261124T011611Z-348324`, all calm rows PASS.
 

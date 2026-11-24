@@ -2,7 +2,8 @@
 
   <!-- Offline unit harness for the receipt, the calm map, the first-exception tap and the canonical-save guard
        (design/specs/2026-11-23-loaded-receipt, -calm-map, -first-exception-tap, -canonical-save-guard). Plain net8.0, zero RimWorld/Unity references: the Core files are the PRODUCTION files the
-       companion compiles. Run by Utils/live_tools_units.py. -->
+       companion compiles. The calm lifecycle also links the production actions and supplies an in-memory map and clock.
+       Run by Utils/live_tools_units.py. -->
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -20,6 +21,8 @@
   <ItemGroup>
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchReceiptCore.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchCalmCore.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchCalm.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchQuietSiteTools.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchFirstExceptionCore.cs" />
     <!-- the canonical-save guard (design/specs/2026-11-23-canonical-save-guard) -->
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchSafetyCore.cs" />
@@ -30,6 +33,7 @@
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsLifecycle.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsTierCore.cs" />
     <Compile Include="UnitsCanonicalGuard.cs" />
+    <Compile Include="UnitsCalmLifecycle.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

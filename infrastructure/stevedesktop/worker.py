@@ -1070,7 +1070,7 @@ class Attempt:
             return self.fail("REFUSED", "LOAD", refused_line(tail))
         if rc != 0:
             return self.fail("INVALID", "LOAD", "game load failed: " + tail)
-        m = last_pid_line(r"started pid (\d+)", tail)      # rw_game.sh up: a fresh process, not "already running"
+        m = fresh_pid_line(tail)
         if not m:
             kept = last_pid_line(r"already running \(pid \d+\)", tail)
             wedged = kept and self.kept_game_wedged()
@@ -1105,7 +1105,7 @@ class Attempt:
                 rc, tail = self.sh(cmd, timeout=LOAD_TIMEOUT_S)
                 if rc != 0:
                     return self.fail("INVALID", "LOAD", "game reload failed, %s: %s" % (why, tail))
-                m = last_pid_line(r"started pid (\d+)", tail)
+                m = fresh_pid_line(tail)
                 if not m:
                     return self.fail("INVALID", "LOAD", "restarted the game, %s, but load did not report a fresh "
                                      "process: %s" % (why, tail[-200:]))
@@ -1140,7 +1140,7 @@ class Attempt:
                 rc, tail = self.sh(cmd, timeout=LOAD_TIMEOUT_S)
                 if rc != 0:
                     return self.fail("INVALID", "LOAD", "game reload after the marker restart failed: " + tail)
-                m = last_pid_line(r"started pid (\d+)", tail)
+                m = fresh_pid_line(tail)
                 if not m:
                     return self.fail("INVALID", "LOAD", "restarted the game for stale bridge marker(s) %s, but load "
                                      "did not report a fresh process: %s" % (" ".join(stale), tail[-200:]))
@@ -1854,6 +1854,11 @@ def last_pid_line(rx, text):
     for found in re.finditer(rx, text[echoes[-1].end():] if echoes else text):
         pass
     return found
+
+
+def fresh_pid_line(text):
+    """Read the fresh PID from rw_game.sh's Steam or named-game launch line."""
+    return last_pid_line(r"(?m)^started (?:\S+, )?pid (\d+)\b", text)
 
 
 FIRST_CAUSE_RE = re.compile(r"^.*(?:\bREFUSED\b|Traceback|Exception|Error:).*$", re.M)

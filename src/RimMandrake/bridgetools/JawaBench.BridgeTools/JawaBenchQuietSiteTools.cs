@@ -43,7 +43,8 @@ namespace JawaBench.BridgeTools
                 "THE CALM MAP IN ONE CALL: action=calm sets and reads back every control (storyteller, random mental states and diseases, every incident " +
                 "at IncidentWorker.TryExecute except allowIncidents, the incident queue frozen, wild-animal arrivals, forced weather, proximity letters; with clear=true it also " +
                 "VANISHES hostiles, wild predators, arrivals, threat structures and fires and ends other game conditions, sparing keepDefs/keepIds). action=reassert " +
-                "sets again what drifted, with the last calm's arguments (run it after every load). action=read changes nothing. action=release puts every value back. " +
+                "sets again what drifted, with the last calm's arguments (run it after every load). action=read changes nothing. action=release restores " +
+                "the switches and proximity-letter flags, ends its forced weather condition and releases its holds. " +
                 "verdict is CALM only when every control was READ and none is off; notCalm[] and notRead[] name each thing; notCovered[] lists what no control reads. " +
                 "The calm is for ONE game and releases itself after `minutes` (default 30, max 240). Its forced weather is saved with the map: release before a save.",
             ResultDescription =
@@ -61,7 +62,7 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "calm: comma list of controls the scene takes off (each reads EXCEPTED)", DefaultValue = null)] string except = null,
             [ToolParameter(Description = "calm/reassert: also remove hostiles, wild predators, arrivals, threat structures, fires and other game conditions (DESTRUCTIVE)", DefaultValue = false)] bool clear = false,
             [ToolParameter(Description = "calm: comma list of pawn ids (ThingID or number) never counted or removed (the cast)", DefaultValue = null)] string keepIds = null,
-            [ToolParameter(Description = "calm/reassert: minutes until the calm releases itself unless renewed (default 30, max 240)", DefaultValue = 30)] double minutes = 30,
+            [ToolParameter(Description = "calm/reassert: lease minutes (calm defaults to 30, max 240). Omit on reassert to keep the deadline or rearm for the last calm's duration.", DefaultValue = null)] double? minutes = null,
             [ToolParameter(Description = "calm/reassert/read: map uniqueID. -1 = current map", DefaultValue = -1)] int mapId = -1,
             [ToolParameter(Description = "calm/reassert/read: return breach rows with seq above this", DefaultValue = 0L)] long sinceSeq = 0)
         {
@@ -146,7 +147,7 @@ namespace JawaBench.BridgeTools
         }
 
         private static object CalmAction(string a, string weather, string allowIncidents, string except, bool clear, string keepDefs,
-                                         string keepIds, double minutes, int mapId, long sinceSeq)
+                                         string keepIds, double? minutes, int mapId, long sinceSeq)
         {
             if (a == "release")
             {

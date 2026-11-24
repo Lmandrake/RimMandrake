@@ -9,6 +9,7 @@ sleeps MOCK_SLEEP seconds, so two attempts can be seen alive at the same time.
 import glob
 import json
 import os
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -64,7 +65,7 @@ class Rig:
             TESTQ_SHEET_DIR=p("sheets"), TESTQ_MODS_DIR=p("mods"), TESTQ_SKIP_PULL="1", TESTQ_NO_SYSTEMD="1",
             TESTQ_CMD_DEPLOY="true", TESTQ_CMD_LOAD="true", TESTQ_CMD_DOWN="true", TESTQ_CMD_RUN=mock,
             TESTQ_CMD_STATUS="echo 'running pid=4242'", TESTQ_CMD_PROBE="true", TESTQ_CMD_MAPS="true",
-            TESTQ_CMD_RESETREPAIR="true", TESTQ_CMD_DUMP="true",
+            TESTQ_CMD_RESETREPAIR="true", TESTQ_CMD_DUMP="true", TESTQ_CMD_BRIDGE="true",
             RIMFLOW_LEDGER=p("ledger", "events.jsonl"), RM_HOST="archmagi", RM_GAME_USERDATA=self.tmp,
             TESTQ_LEDGER_EVENTS=p("ledger"), MOCK_SLEEP="4")
         sha = subprocess.run(["git", "-C", REPO, "merge-base", "HEAD", "origin/main"], capture_output=True,
@@ -257,6 +258,15 @@ def t_filler_fills_an_idle_game(r):
     check(v_off == "busy" and v_on not in ("busy", None) and not isinstance(v_on, dict) and v_both == "busy",
           "filler-fills-an-idle-game: Steve1 busy, Steve2 off -> busy (%s); Steve2 on and idle -> not busy (%s); "
           "both running -> busy (%s)" % (v_off, v_on, v_both))
+    os.remove(r.p("queue", "running", "J_PLANT.json"))
+    open(r.p("queue", "steve2.stop"), "w").close()
+    draining = r.py("import testq, gaps\n"
+                    "gaps.owed_items = lambda world=None: {}\n"
+                    "gaps.probe = lambda mod, items, since: {'chains': ['c1']}\n"
+                    "p = testq.fill_plan('Mock', 4, 200)\n"
+                    "print(json.dumps([p['verdict'], p.get('pick'), p['text']]))")
+    check(isinstance(draining, list) and draining[:2] == ["pick", ["c1"]],
+          "filler-fills-an-idle-game: Steve2 draining under steve2.stop, Steve1 idle -> pick c1 (%s)" % (draining,))
     for f in glob.glob(r.p("queue", "running", "*.json")):
         os.remove(f)
     r.reset()
@@ -335,6 +345,26 @@ def t_steve2_worker_is_a_steve_lane(r):
           % (b,))
     check(isinstance(a, list) and a[0] is False and a[1] == os.path.join(r.p("home_a"), "companion", CI.DLL_NAME),
           "steve2-worker-is-a-steve-lane: the archmagi worker is not, and reads its own home's inbox (%s)" % (a,))
+
+    stopped = shlex.quote(r.p("recycle_down"))
+    load = ("if [ -f %s ]; then echo 'started Steve2, pid 4242, bridge on port 5175 after 90 s'; "
+            "else echo 'already running (pid 1234)'; echo 'running pid=1234 age_s=29000'; fi" % stopped)
+    recycled = r.py("import os, worker as W\n"
+                    "W.ensure_dirs()\n"
+                    "job = W.S.make_job('Mock', {'rows': ['r1']}, 'commission', 'BENCH', %r)\n"
+                    "aid = job['id'] + '.a1'\nd = W.p('attempts', aid)\nos.makedirs(d)\n"
+                    "W.S.dump(job, os.path.join(d, 'job.json'))\n"
+                    "a = W.Attempt(aid)\na.run()\n"
+                    "print(json.dumps([a.res['outcome'], a.res['cause'], a.game_pid, "
+                    "a.res.get('recycled_kept_game'), a.res.get('counts', {}).get('PASS', 0), "
+                    "a.res['note'].partition(': ')[0]]))"
+                    % r.sha,
+                    TESTQ_WORKER_HOST="stevedesktop.b", TESTQ_HOME=r.p("home_w"), RM_HOST="stevedesktop",
+                    RM_GAME_INSTANCE="b", RIMFLOW_DRIVER_LOCK=r.p("LOCK_B.json"), MOCK_SLEEP="0",
+                    TESTQ_CMD_LOAD=load, TESTQ_CMD_DOWN="touch " + stopped)
+    check(isinstance(recycled, list) and recycled[:3] == ["DONE", None, "4242"]
+          and "h old" in (recycled[3] or "") and recycled[4] == 1,
+          "steve2-worker-is-a-steve-lane: an old Steve2 restarts with its fresh PID and runs rows (%s)" % (recycled,))
 
 
 def t_steve2_reads_its_own_install(r):
