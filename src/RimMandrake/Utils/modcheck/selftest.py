@@ -1147,7 +1147,7 @@ def t_site_reloaded_after_a_chain_kills_its_colonist():
                     late["n"] -= 1
                     return {"programState": "Playing" if late["n"] < 0 else "MapInitializing"}
                 seen.append(tool)
-                started = "rimworld/start_debug_game_ready" in seen
+                started = tool == "jawa/map_info" and "rimworld/start_debug_game_ready" in seen
                 return ({"success": False, "message": "No current map"} if started and late["n"] >= 0
                         else {"success": True, "tile": 7, "mapId": 0, "mapBiome": "Tundra"})
             s.call = slow
