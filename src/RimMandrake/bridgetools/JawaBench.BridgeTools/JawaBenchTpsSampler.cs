@@ -892,6 +892,9 @@ namespace JawaBench.BridgeTools
             // initializer. Install() is idempotent (_attempted gate), so JawaBenchInit's call is then a no-op.
             try { JawaBenchLogAutoOpenSuppress.Install(); }
             catch { }
+            // RIMMANDRAKE_FIX_BRIDGE_STEPPED_PAWNS_DRAWN_ON_OLD_SQUARE: a pawn stepped under pause is drawn on its own square.
+            try { JawaBenchDrawSettle.Install(); }
+            catch { }
             // the first-exception tap (jawa/first_exception): armed before any call can arrive. Never throws.
             try { JawaBenchFirstException.Install("bridge-registration"); }
             catch { }

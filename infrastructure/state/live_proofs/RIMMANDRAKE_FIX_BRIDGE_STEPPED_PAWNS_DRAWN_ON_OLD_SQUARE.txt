@@ -1,0 +1,4 @@
+# A pawn that walked while the bridge stepped ticks under pause is drawn on its own square (JawaBenchDrawSettle). A scratch quicktest map; no save is read or written.
+# The companion must hold jawa/drawn_positions; an older one reads UNMEASURED.
+live-tier: flowworks
+live-proof A1: python.exe src/RimMandrake/bridgetools/prove_drawn_positions.py < /dev/null

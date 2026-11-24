@@ -10,7 +10,8 @@ simulation. This helper is the paused barrier instead:
     pause -> read ticksGame -> clear_ui -> jawa/settle_tweens -> take_screenshot -> read ticksGame
 
 and it REFUSES (ShotSettleError) when the two ticksGame reads differ, so a picture never silently
-cost ticks. `call` is any `call(tool, **params) -> dict` (rimdrive/rimbench Session.call); wrap a
+cost ticks. Since RIMMANDRAKE_FIX_BRIDGE_STEPPED_PAWNS_DRAWN_ON_OLD_SQUARE the companion also settles a
+stepped pawn on its next draw by itself (JawaBenchDrawSettle), for every capture tool. `call` is any `call(tool, **params) -> dict` (rimdrive/rimbench Session.call); wrap a
 rimbridge_client with `lambda t, **p: rb.call(t, p)`.
 """
 
