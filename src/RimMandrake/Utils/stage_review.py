@@ -8,10 +8,11 @@ debug log window over the subject. Every one of those has ruined a review shot.
 
 It composes tools that already exist (nothing here is new engine capability):
   jawa/list_pawns + T:Damage To Death   -> remove hostiles first
-  jawa/list_things + jawa/destroy_batch -> clear chunks / filth / (opt) buildings
+  jawa/list_things + jawa/destroy_batch -> clear chunks (only) / filth / (opt) buildings
   rimworld/get_cell_info                 -> VERIFY each spawn cell is open+right terrain
   jawa/spawn_pawn faction:"none"         -> WILD subjects (no combat, no fleeing)
-  jawa/weather_set + step_game_ticks     -> midday+clear, then signature weather
+  jawa/glow_at + jawa/time_set_ticks     -> a local hour in 10-14 h, read back
+  jawa/weather_set + step_game_ticks     -> clear weather, then signature weather
   jawa/set_fog unfog                     -> a subject in unseen fog photographs as nothing
   jawa/clear_ui + rimworld/frame_cell_rect + take_screenshot
   rimworld/save_game                     -> a keeper the owner can walk later
@@ -145,20 +146,55 @@ def prep_worker(rb, x, z, name=None):
 
 def clear(rb, kinds, rect):
     """kinds: subset of {chunks,filth,buildings,plants,items}. rect 'x,z,w,h' or
-    None for whole map. Buildings/structures are cleared only when asked -- that
+    None for whole map. `chunks` takes chunks only; `items` takes every loose item. Buildings/structures are cleared only when asked -- that
     is the destructive one, and the point of clearing before a structure test is
     to stop the map's own ruins interacting with what you build."""
-    catmap = {"chunks": "Item", "filth": "Filth", "items": "Item",
-              "buildings": "Building", "plants": "Plant"}
+    catmap = {"filth": "Filth", "items": "Item", "buildings": "Building", "plants": "Plant"}
     rects = rect or "0,0,250,250"
     out = {}
     for k in kinds:
+        if k == "chunks":
+            out[k] = clear_chunks(rb, rect)
+            continue
         cat = catmap.get(k)
         if not cat:
             continue
-        d = rb.call("jawa/destroy_batch", {"rects": rects, "category": cat})
+        d = rb.call("jawa/destroy_batch", {"rects": rects, "categories": cat})
         out[k] = d.get("destroyed", d.get("message"))
     return out
+
+
+def _list_group(rb, group, rect):
+    p = {"group": group, "limit": 100000}
+    if rect:
+        p["rect"] = rect
+    r = rb.call("jawa/list_things", p)
+    if not (isinstance(r, dict) and r.get("success")) or r.get("isCompleteList") is False:
+        raise RuntimeError("list_things group=%s unreadable or cut short: %s" % (group, str(r)[:300]))
+    return r.get("things") or []
+
+
+def clear_chunks(rb, rect=None):
+    """Destroy loose rock and slag chunks, and nothing else, with a read-back.
+
+    destroy_batch filters by category, and a chunk's category is Item, so it is asked for the chunk's own cells only. A
+    cell that also holds another item is left alone (its chunk stays, and the report counts it)."""
+    chunks = _list_group(rb, "Chunk", rect)
+    if not chunks:
+        return {"destroyed": 0, "left_beside_items": 0}
+    ids = {t["id"] for t in chunks}
+    # every other loose item: HaulableEver holds items, chunks and corpses
+    shared = {(t["x"], t["z"]) for t in _list_group(rb, "HaulableEver", rect) if t["id"] not in ids}
+    cells = sorted({(t["x"], t["z"]) for t in chunks} - shared)
+    for i in range(0, len(cells), 4000):     # destroy_batch takes at most 4096 rects
+        d = rb.call("jawa/destroy_batch", {"rects": ";".join("%d,%d" % c for c in cells[i:i + 4000]), "categories": "Item"})
+        if not d.get("success"):
+            raise RuntimeError("destroy_batch on chunk cells failed: %s" % d.get("message"))
+    left = _list_group(rb, "Chunk", rect)
+    stuck = [t for t in left if (t["x"], t["z"]) not in shared]
+    if stuck:
+        raise RuntimeError("%d chunk(s) survived the clear, e.g. %s" % (len(stuck), str(stuck[0])[:200]))
+    return {"destroyed": len(chunks) - len(left), "left_beside_items": len(left)}
 
 
 def cell_open(rb, x, z, want_terrain_prefix=None):
@@ -273,33 +309,65 @@ def face(rb, direction="south", who="all"):
     return r.get("turned"), r.get("notVisible")
 
 
-def daylight(rb, target_hour=12):
-    """Step to ~midday so true colour reads. Safe here because the map is a home
-    map (colonists present) and will not be culled mid-step -- see the SKILL."""
-    # 2500 ticks/hour; step in <=2000 chunks so no single call frame-times out.
-    for _ in range(30):
-        gi = rb.call("rimworld/get_game_info", {})
-        # RimWorld has no cheap "hour" read here; step a bounded amount and stop.
-        try:
-            rb.call("rimworld/step_game_ticks", {"ticks": 2000})
-        except Exception as exc:
-            print("  WARNING: step_game_ticks failed during daylight: %s" % exc, file=sys.stderr)
-        # crude: 6 steps ~ 12000 ticks ~ half a day; good enough for lighting.
-        break_after = 6
-        if _ >= break_after:
-            break
-    return rb.call("rimworld/get_game_info", {}).get("ticksGame")
+DAY_FROM, DAY_TO = 10.0, 14.0     # the hours whose light shows true colour
+TRANSITION_TICKS = 4000           # WeatherManager: a new weather is fully in after 4000 ticks
+
+
+def local_hour(rb):
+    """(local hour, ticksGame) of the current map. Raises when the hour cannot be read: an unread hour is not midday."""
+    r = rb.call("jawa/glow_at", {"cells": "0,0"})
+    h, t = r.get("hour"), r.get("ticksGame")
+    if not r.get("success") or h is None or t is None:
+        raise RuntimeError("the local hour cannot be read (jawa/glow_at): %s" % str(r)[:300])
+    return float(h) % 24, int(t)
+
+
+def daylight(rb, ticks_after=0):
+    """Bring the map to an hour in 10-14 h and read it back -> ticksGame. A map that is there already is left alone.
+
+    ticks_after: ticks the caller will run before its shot (a weather settle). The hour is picked so that those ticks
+    still end by 14 h, as far as a start at 10 h allows.
+
+    The clock is JUMPED forward (jawa/time_set_ticks), never stepped, and never set back:
+      * from 14 h the next 10 h is 50,000 ticks away, over the 30,000 that an unprotected colony may be stepped;
+      * a jump simulates nothing: nobody starves or fights, animals stay where they were spawned, no map is culled;
+      * a clock set back freezes the cached sun glow (infrastructure/state/facts/instrument_traps.md).
+    The cost: anything dated by an absolute tick (filth, loose ash) ages by the jump, always under a day. A scene whose
+    time-dated things are under test sets its clock before the map exists, and does not use this."""
+    hour, tick = local_hour(rb)
+    last = max(DAY_FROM + 0.5, DAY_TO - ticks_after / 2500.0)
+    if DAY_FROM <= hour <= last:
+        return tick
+    target = min(12.0, (DAY_FROM + last) / 2)
+    jump = int(round(((target - hour) % 24) * 2500))
+    r = rb.call("jawa/time_set_ticks", {"ticks": tick + jump, "timeException": True,
+                                        "why": "stage_review --daylight: %.1f h to %.1f h for a still shot" % (hour, target)})
+    if not r.get("success"):
+        raise RuntimeError("time_set_ticks refused the jump to %.1f h: %s" % (target, r.get("message")))
+    got, tick = local_hour(rb)
+    if not DAY_FROM <= got <= last + 0.1:
+        raise RuntimeError("the clock was jumped to %.1f h, but the map reads %.1f h" % (target, got))
+    print("  daylight: %.1f h -> %.1f h (jumped %d ticks; time-dated filth and ash aged by that)" % (hour, got, jump))
+    return tick
 
 
 def settle_weather(rb, weather, ticks):
-    rb.call("jawa/weather_set", {"weather": weather, "lockWeather": True})
+    """Force and lock a weather, then run `ticks`. Raises when the weather did not take or the ticks did not run."""
+    r = rb.call("jawa/weather_set", {"weather": weather, "lockWeather": True})
+    if not r.get("success") or r.get("after", weather) != weather:
+        raise RuntimeError("weather_set %s did not take: %s" % (weather, str(r)[:300]))
+    start = rb.call("rimworld/get_game_info", {}).get("ticksGame")
     stepped = 0
     while stepped < ticks:
+        n = min(2000, ticks - stepped)
         try:
-            rb.call("rimworld/step_game_ticks", {"ticks": min(2000, ticks - stepped)})
+            rb.call("rimworld/step_game_ticks", {"ticks": n})
         except Exception as exc:
             print("  WARNING: step_game_ticks failed while settling weather: %s" % exc, file=sys.stderr)
-        stepped += 2000
+        stepped += n
+    ran = rb.call("rimworld/get_game_info", {}).get("ticksGame", 0) - (start or 0)
+    if ran < ticks:
+        raise RuntimeError("the weather settle ran %d of %d ticks" % (ran, ticks))
 
 
 def shoot(rb, frame, name):
@@ -373,7 +441,8 @@ def main():
     ap = argparse.ArgumentParser(description="Clean-stage a live map for review.")
     ap.add_argument("--map", type=int, default=None, help="Map.uniqueID to make current")
     ap.add_argument("--kill-hostiles", action="store_true")
-    ap.add_argument("--clear", default="", help="comma list: chunks,filth,buildings,plants,items")
+    ap.add_argument("--clear", default="", help="comma list: chunks,filth,buildings,plants,items "
+                    "(chunks: loose rock and slag only; items: every loose item, chunks included)")
     ap.add_argument("--clear-rect", default=None, help="'x,z,w,h' (default whole map)")
     ap.add_argument("--spawn", default="", help="'Kind:count,Kind:count' -- spawned WILD")
     ap.add_argument("--at", default="125,125", help="anchor cell 'x,z' for spawns")
@@ -381,15 +450,17 @@ def main():
     ap.add_argument("--layout", choices=("grid", "cluster"), default="grid",
                     help="grid=spaced, legible for art review (default); cluster=dense herd vibe")
     ap.add_argument("--terrain", default=None, help="require spawn terrain to start with this (e.g. RM_FE_Ground)")
-    ap.add_argument("--daylight", action="store_true", help="step toward midday before shooting")
+    ap.add_argument("--daylight", action="store_true", help="jump the clock forward to 10-14 h (local hour "
+                    "read before and after; nothing is simulated, but filth and ash age by the jump); --two-pass implies it")
     ap.add_argument("--face", default=None, choices=("south", "north", "east", "west"),
                     help="turn+lock ALL spawned pawns to this facing; 'south' faces the camera (front view for art review)")
-    ap.add_argument("--weather", default=None, help="force+lock a weather def before shooting")
+    ap.add_argument("--weather", default=None, help="force+lock a weather def before shooting "
+                    "(with --two-pass: the weather of the first shot, default Clear)")
     ap.add_argument("--settle", type=int, default=0, help="ticks to run after forcing weather (drifts/growth)")
     ap.add_argument("--frame", default=None, help="'x,z,w,h' rect to frame the shot on")
     ap.add_argument("--shot", default=None, help="screenshot base name")
     ap.add_argument("--two-pass", default=None, metavar="WEATHER",
-                    help="ruled default capture in ONE call: shoot midday+clear as "
+                    help="ruled default capture in ONE call: settle clear weather, jump to 10-14 h, shoot as "
                          "<shot>_clear, then force+settle WEATHER and shoot <shot>_<weather>. "
                          "Saves an LLM round trip vs two separate runs.")
     ap.add_argument("--settle-weather", type=int, default=4000,
@@ -416,21 +487,21 @@ def main():
             spawn_failed = spawn_failed or not row[3]
     if args.face:
         print("faced:", face(rb, args.face))
-    if args.daylight:
-        print("daylight tick:", daylight(rb))
-        pause(rb)
-    if args.weather:
-        settle_weather(rb, args.weather, args.settle)
-        pause(rb)
     if args.two_pass:
-        # ruled default capture, both passes in one invocation
-        if args.daylight is False:
-            print("daylight tick:", daylight(rb)); pause(rb)
-        print("clear shot:", shoot(rb, args.frame, (args.shot or "review") + "_clear"))
+        # ruled default capture, both passes in one invocation: clear weather settles in first, then the clock, so the
+        # clear shot is at midday and the signature weather's settle still ends by 14 h
+        settle_weather(rb, args.weather or "Clear", max(args.settle, TRANSITION_TICKS)); pause(rb)
+        print("daylight tick:", daylight(rb, args.settle_weather)); pause(rb)
+        print("clear shot:", shoot(rb, args.frame, (args.shot or "review") + "_clear"), "at %.1f h" % local_hour(rb)[0])
         settle_weather(rb, args.two_pass, args.settle_weather); pause(rb)
         wname = args.two_pass.split("_")[-1].lower()
-        print("weather shot:", shoot(rb, args.frame, (args.shot or "review") + "_" + wname))
-    elif args.frame or args.shot:
+        print("weather shot:", shoot(rb, args.frame, (args.shot or "review") + "_" + wname), "at %.1f h" % local_hour(rb)[0])
+    else:
+        if args.daylight:
+            print("daylight tick:", daylight(rb, args.settle if args.weather else 0)); pause(rb)
+        if args.weather:
+            settle_weather(rb, args.weather, args.settle); pause(rb)
+    if not args.two_pass and (args.frame or args.shot):
         shot_path = shoot(rb, args.frame, args.shot)
         print("shot:", shot_path)
     rc = 1 if spawn_failed else 0

@@ -8,11 +8,10 @@ line below is a record, not a rule. Every correction below is of 2026-11-23.
 - The skill once called the paused barrier for a settled shot PLANNED (item `SHOTSETTLE_BUILD_PAUSED_BARRIER`). The tool
   is `jawa/settle_tweens`, built 2026-11-05 at 044b33fa8c. A live run passed on 2026-11-06.
 - §2 once pointed at §4 for plants, weather and ash drifts. §5 holds them.
-- §5 and the comments of the command block once said that `--daylight` steps toward midday. `stage_review.py` steps
-  seven chunks of 2000 ticks and reads no hour. The comments also called the first `--two-pass` shot clear; the script
-  sets no weather before it.
+- Before 2026-11-23, `--daylight` stepped seven chunks of 2000 ticks and read no hour, and `--two-pass` set no weather
+  before its `_clear` shot. An older `_clear` picture can show any hour and any weather.
 - §1 once said that `--kill-hostiles` clears every hostile. The code stops after six rounds and reports what is left.
-- §1 once said that `--clear chunks` clears loose rock. Its category is Item, so it destroys every loose item in the rect.
+- Before 2026-11-23, `--clear chunks` destroyed every loose item in the rect (its category was Item).
 - §5 and §8a both told the two traps of 2026-09-18 (`rimworld/take_screenshot` ignores `x`/`z`/`zoom`; the debug log
   window). §5 now holds them.
 - §8 once said that `resolve_endpoint` scrapes the endpoint from Player.log. Player.log is now one of several sources.

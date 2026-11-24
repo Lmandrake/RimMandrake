@@ -127,14 +127,14 @@ python.exe src/RimMandrake/Utils/stage_review.py --map 1 \
     --at 40,235 --spread 12 --terrain RM_FE_Ground --layout grid \
     --frame 30,228,160,16 --shot pyre_artgrid --save PYRELANDS_REVIEW
 
-# ruled default capture in ONE call — daylight shot in the running weather THEN signature-weather shot:
+# ruled default capture in ONE call — midday + clear shot THEN signature-weather shot:
 python.exe src/RimMandrake/Utils/stage_review.py --map 1 \
     --kill-hostiles --clear chunks,filth \
     --spawn "RUT_FireHawk:1,Anooba:1,Gizka:1" --at 40,235 --spread 12 \
     --terrain RM_FE_Ground --daylight \
     --frame 30,228,160,16 --shot pyre --two-pass RM_FE_Weather_AshFall \
     --save PYRELANDS_REVIEW
-#   -> pyre_clear.png (the running weather) + pyre_ashfall.png (signature), one invocation
+#   -> pyre_clear.png (Clear, 10-14 h) + pyre_ashfall.png (signature), one invocation
 ```
 
 `--layout` is the most important framing choice that you make, because it picks art or mood:
@@ -169,10 +169,11 @@ The sweep never touches player colonists (your map anchor, §3) or wild animals.
 
 Then clear what the subject can collide with:
 
-- **Rosters and biomes:** `--clear chunks,filth` removes loose rock and ash drifts, which clutter the frame. In
-  `stage_review.py`, `chunks` destroys every loose item in the rect, not only rock. `chunks` and `items` both map to the
-  category Item. `src/RimMandrake/Utils/rimbench/clear_chunks.py` is the standalone version, proven by read-back. That
-  version clears only the cells that hold a chunk.
+- **Rosters and biomes:** `--clear chunks,filth` removes loose rock and ash drifts, which clutter the frame. `chunks`
+  destroys rock and slag chunks only, with a read-back. A chunk that shares its cell with another item stays, and the
+  report counts it (`left_beside_items`). `items` destroys every loose item, chunks included.
+  `src/RimMandrake/Utils/rimbench/clear_chunks.py` is the standalone version for the whole map. That version also takes
+  an item that shares a cell with a chunk.
 - **Structures and gravships:** first run `--clear buildings,chunks` over the build rect. The map's own ruins and rock
   **interact** with what you place. A foundation refuses to go on an existing floor. Walls merge. A designator queues
   against existing work. So a structure test on ground that is not clear tests the collision, not your build. Clear the
@@ -292,11 +293,12 @@ shows true colour and density. The signature pass (ashfall, blackrain, cinderfal
 biome.
 
 - **Time of day:** shoot at midday so that colour reads. A dawn or dusk shot reads muddy and undersells density.
-  `--daylight` does not find midday. The flag steps about 14,000 ticks (5.6 hours) from the hour that you start at,
-  and reads no hour. Read `hour` from `jawa/glow_at` (pass any `cells`) before you shoot (§8b sets the clock). The
-  step also needs a map that survives it (§3).
-- **Weather:** `jawa/weather_set {weather, lockWeather:true}` forces the weather and holds it. `--two-pass` does not
-  set clear weather before its `_clear` shot. To get a clear first pass, add `--weather Clear`.
+  `--daylight` reads the local hour (`jawa/glow_at`), jumps the clock forward to 10–14 h and reads the hour back. An
+  hour that it cannot read stops the run. The jump simulates nothing, so it needs no safe colony and culls no map. But
+  filth and loose ash age by the jump (under a day; §8b). `--two-pass` does the same without the flag.
+- **Weather:** `jawa/weather_set {weather, lockWeather:true}` forces the weather and holds it. A new weather is fully in
+  after 4,000 ticks. `--two-pass` forces `Clear` and runs those ticks before its `_clear` shot. With `--two-pass`,
+  `--weather X` names the weather of that first shot.
   `--settle N` runs N ticks, so drifts and effects build before the shutter.
 - **Fog:** first run `jawa/set_fog unfog` on the frame. **A subject in unvisited fog photographs as black nothing.**
 - **UI:** call `jawa/clear_ui` before every shot. The dev log window sits exactly where the camera centres. That window
