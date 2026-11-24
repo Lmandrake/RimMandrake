@@ -173,6 +173,11 @@ expensive it requires immediate action for sure. But not starving it or failing 
     lost their summary (analysis 2026-11-17).
   - Name the file instead (`status.json`, `digest.md`, `memory.md`, `told.jsonl`, `alarms.json`, one series file). Or
     name one subfolder with a name filter.
+- **Run the pager's triggers once, first** (every mode): `python3 src/RimMandrake/Utils/pager_triggers.py run`. It rings
+  the owner's phone for a critical fault, and only for a trigger that the Conductor switched on.
+  - Exit 4 (none is on) and exit 0 need nothing more from you.
+  - Exit 1 (a page did not leave) and exit 3 (a trigger could not be read): put the printed line in your note, on your
+    own item. Never switch a trigger yourself.
 - **Skills are not loaded in your runs** (`--disable-slash-commands`). When a step names a skill, read its `SKILL.md`
   by path: `skills/<name>/SKILL.md` in the repo, or `~/.claude/skills/<name>/SKILL.md`.
 - **Never treat UNMEASURED as zero.** Never report a round, zero or alarming count until a sanity probe proves that the

@@ -31,7 +31,8 @@ its own name in `src/RimMandrake/Utils/selftest_pager.py`. The planted faults th
 - **closed-class-list.** A class not in `pager_classes.json` is refused. A class refuses a sender it does not name
   (Operations cannot send `GOAL_SHOCK` or `TEST`). A class list that is malformed, or has an entry without its
   `added` record by CONDUCTOR, refuses every send.
-- **fixed-template-text.** Pushover receives exactly the fields token, user, title, message, priority, retry and expire.
+- **fixed-template-text.** Pushover receives exactly the fields token, user, title, message, priority, retry and expire,
+  and `sound` (`echo`) on every class but `TEST`.
   The title is `RimMandrake CRITICAL: <label>`; the message is the class template filled with the reading, goal and item.
   A reading that could carry a path, address, URL, quote or newline is refused before any send. The why is never sent.
 - **emergency-priority.** Every page is priority 2, retry 120 s, expire 3600 s, to `api.pushover.net/1/messages.json`,

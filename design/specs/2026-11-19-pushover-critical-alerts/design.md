@@ -15,8 +15,8 @@ shocking inability to achieve a stated goal. Conductor or Operations only."*
   asks for critical pages only, from two senders. So this design keeps one level (emergency), a closed list of classes
   and a dedupe. The rest stays in the 2026-11-08 file as candidate next-version work. Todoist stays retired as an alert
   route (`design/RimMandrake/standing_rulings.md` §Todoist is for to-do lists only).
-- **No automatic trigger is wired.** §8 lists the proposed triggers. The Conductor switches each one on after one real
-  test page has reached his phone.
+- **Every trigger is OFF until the Conductor switches it on.** §8 lists the triggers. The test page of 2026-11-23, 11:08
+  AM PST reached his phone.
 
 ## 2. Who may send, and how the caller is proved
 
@@ -152,19 +152,33 @@ The trial's end date is UNMEASURED: it counts from the day he installed the app,
 pages. He had it on 2026-11-19, so the trial ends on 2026-12-19 or earlier. **The purchase is his act (money). Nothing
 here buys it.**
 
-## 8. Proposed triggers (not wired)
+## 8. The triggers
 
-Each trigger reads a reading that exists now and calls `pager.py send` from an Operations run or the Conductor window.
-The Conductor switches each one on after one real test page reaches his phone (§9). Last readings are from the ops
-watch pass of 2026-11-20T03:01Z unless stated.
+`src/RimMandrake/Utils/pager_triggers.py` reads each trigger and pages through `pager.py send`. Its promises are in
+`triggers_boundary.md`. Every Operations run calls `pager_triggers.py run` (`roles/operations.md` §Run hygiene); the
+Conductor window may call it too. Every trigger is OFF until the Conductor window switches it on, one at a time:
+
+    python3 src/RimMandrake/Utils/pager_triggers.py status
+    python3 src/RimMandrake/Utils/pager_triggers.py on <name> --why "<why>"
+
+Two triggers cannot ring as designed (measured 2026-11-24):
+
+- **`steve_stuck`**: the fault monitor is PASSIVE (advisory), and a passive monitor never sets STUCK. The trigger reads
+  COULD_NOT_LOOK.
+- **`fleet_stop`**: while the fleet is stopped, no Operations run and no Conductor window runs, so nobody calls the
+  pager. It needs a sender with no AI, which §2 refuses; that is the Conductor's choice. The log holds 4 stops from
+  2026-11-11 to 2026-11-20; a switch ended the last one after 5 min.
+
+The names are `whea_severe`, `steve_stuck`, `disk_root`, `disk_c`, `disk_d`, `switch_failed` and `fleet_stop`.
+`GOAL_SHOCK` has no trigger. Last readings are from the ops watch pass of 2026-11-20T03:01Z unless stated.
 
 | class | cause (the reading) | fires when | last reading | why this line |
 |---|---|---|---|---|
 | HARDWARE_FAILURE | `disk.whea_severe_24h` (WHEA-Logger 18 or 20, Critical or Error, on the D: NVMe) | > 0, MEASURED | 0; 0 of 793 readings since 2026-11-06 were above 0 | a fatal hardware error is data at risk now |
 | HARDWARE_FAILURE | `steve.fault_stuck` (`D:\ClaudeWork\rimmandrake\testq\fault_state.json`, phase `STUCK`) | phase is STUCK | PASSIVE (2026-11-20T03:16Z) | SteveDesktop's SIMD fault is back after a reboot, or the reboot cap is spent: a reboot no longer clears it |
 | HARDWARE_FAILURE | `disk.root_free_gb`, `disk.c_free_gb`, `disk.d_free_gb` | < 50, MEASURED | 564.8, 2228.0, 1625.3 | the worst measured day grew scratch by 207 GB (2026-10-26); 50 GB is about 6 h at that rate, so a write fails soon. The 210/200 GB lines stay Operations' ordinary alarm |
-| ACCOUNT_SWITCH_FAILURE | `switching_plan:<marker>` (`D:\ClaudeWork\rimmandrake\switching_plan\markers\*.json`) | a marker in phase `failed`, with no later `done` for the same transition | 4 markers, all `done`, 0 `failed` | the plan tried to switch and could not: every window on the spent account stops |
-| ACCOUNT_SWITCH_FAILURE | `switching_plan:fleet_stop` (`switching_plan\log.jsonl`) | a record `do: stop` with `acted: true` | none seen | the fleet is dark: no account is left to run on |
+| ACCOUNT_SWITCH_FAILURE | `switching_plan:<marker>` (`D:\ClaudeWork\rimmandrake\switching_plan\markers\*.json`) | a marker in phase `failed`, under 6 h old, with no later `done` marker of any transition (the plan writes the time again at each retry) | 4 markers, all `done`, 0 `failed` | the plan tried to switch and could not: every window on the spent account stops |
+| ACCOUNT_SWITCH_FAILURE | `switching_plan:fleet_stop` (`switching_plan\state.json`) | `stopped` is set (a `do: stop` log line stays after the stop ends) | none seen | the fleet is dark: no account is left to run on |
 | GOAL_SHOCK | `goal:<short name>` | the Conductor's judgment (§3) | none | never a program |
 
 Two readings are named and deliberately not triggers:
@@ -175,17 +189,13 @@ Two readings are named and deliberately not triggers:
   a fatal error, the Conductor adds a line with that evidence.
 - **`disk.whea_blind`** (the event log query failed): that is "could not look", not a failure. It stays Operations'.
 
-## 9. The live send (UNRUN)
+## 9. The live send
 
-The live send has not run: the credentials do not exist yet. After he saves the file, the Conductor window runs:
-
-    python3 src/RimMandrake/Utils/pager.py check-credentials
-    python3 src/RimMandrake/Utils/pager.py test --why "first real page: proves Pushover emergency priority reaches his iPhone"
-    python3 src/RimMandrake/Utils/pager.py ack
-
-The test passes when his phone rings with the phone on silent and Do Not Disturb on, it rings again every 2 minutes
-until he taps acknowledge, and `ack` prints `ACKNOWLEDGED` with a time. Then the Conductor switches on the triggers in
-§8, one at a time.
+The test page went out at 2026-11-23, 11:08:08 AM PST and was acknowledged at 11:08:20 (`pager.py ack`, receipt
+`rxfuj2jk91jt2aurw15z6zzziop7s9`). The owner: *"I received it successfully, the phone made a custom noise and was loud.
+It was a very brief sound though, so a real alert should use one of the louder noises I had indicated previously."* A
+real page now sends the sound `echo`; a `TEST` page keeps the default. Whether the phone was on silent and Do Not
+Disturb for that page is UNMEASURED.
 
 ## 10. When the item closes
 

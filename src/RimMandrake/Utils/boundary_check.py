@@ -129,6 +129,8 @@ PAGES = {
     "design/specs/2026-11-21-never-refuse-the-conductor/boundary.md":
         "src/RimMandrake/rimflow/selftest_never_refuse_conductor.py",
     "design/specs/2026-11-19-pushover-critical-alerts/boundary.md": "src/RimMandrake/Utils/selftest_pager.py",
+    "design/specs/2026-11-19-pushover-critical-alerts/triggers_boundary.md":
+        "src/RimMandrake/Utils/selftest_pager_triggers.py",
     "design/specs/2026-11-19-incident-news-and-program-routes/boundary.md": "src/RimMandrake/rimflow/selftest_incident_news.py",
     "design/specs/2026-11-19-incident-clerk/boundary.md": "src/RimMandrake/rimflow/selftest_incident_clerk.py",
     "design/specs/2026-11-19-positive-steps-one-source/boundary.md": "src/RimMandrake/Utils/selftest_positive_steps_one_source.py",
