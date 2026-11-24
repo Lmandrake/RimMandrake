@@ -796,12 +796,12 @@
      "planted (code_review_calibration.py): the 21 claims that are a rare failure the page lists as not handled, or polish, by the same rule; must not be admitted as Problems"
     ]
    },
-   "hash": "f5fc230be16849e5",
+   "hash": "e4e11112e343453b",
    "last_run": {
-    "at": "2026-11-19T13:54:07Z",
-    "cases": "came out the other way: c2.9, c3.4, c4.1, c4.14",
+    "at": "2026-11-24T08:51:09Z",
+    "cases": "came out the other way: c2.9, c3.4, c4.1, c4.10, c4.14",
     "exit": 0,
-    "out": "pass mark FAIL: agreed real caught 2 of 3 (limit all); agreed polish called problem 1 of 9 (limit 1); unscored: 31 of 35 as labelled",
+    "out": "pass mark FAIL: agreed real caught 2 of 3 (limit all); agreed polish called problem 1 of 9 (limit 1); unscored: 30 of 35 as labelled",
     "results": "35 case rows"
    },
    "model_check": [
@@ -952,8 +952,8 @@
      "id": "c4.15"
     }
    ],
-   "reset_at": "2026-11-23T17:28:17Z",
-   "status": "UNTESTED",
+   "reset_at": "2026-11-24T08:48:24Z",
+   "status": "FAILED",
    "timeout_s": 540,
    "was": "UNTESTED"
   },
@@ -979,16 +979,18 @@
      "planted (coverage_calibration.py): good_one_kind_enough, his promise that a lit lantern keeps the beasts away, tested with one animal kind and a control: \"test it against every roster kind\" is advice (rule 1)"
     ]
    },
-   "hash": "74bd06973476df0e",
+   "hash": "a89f53a9cd6c3647",
    "last_run": {
-    "at": "2026-11-18T21:33:57Z",
+    "at": "2026-11-24T08:48:24Z",
     "cases": "12 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "good_one_kind_enough   expect pass   got pass   covered",
     "results": [
      {
-      "advisory": [],
-      "cost_usd": 0.4969362,
+      "advisory": [
+       "sc_light adds an upper cap of 10% glow at 3 cells, which no promise, leaf or inventory line states. A lantern with longer reach would fail it."
+      ],
+      "cost_usd": 0.514394,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -998,7 +1000,7 @@
      },
      {
       "advisory": [],
-      "cost_usd": 0.539714,
+      "cost_usd": 0.5591076,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -1011,7 +1013,7 @@
       "answered": [
        "g1"
       ],
-      "cost_usd": 0.4916764,
+      "cost_usd": 0.4220644,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -1021,7 +1023,7 @@
      },
      {
       "advisory": [],
-      "cost_usd": 0.4959574,
+      "cost_usd": 0.42309620000000003,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -1031,11 +1033,11 @@
      },
      {
       "advisory": [],
-      "cost_usd": 0.49904859999999995,
+      "cost_usd": 0.44514159999999997,
       "expect": "refuse",
       "gaps": [
-       "The oil_out leaf and the inv_oil capability have no acceptance scene. Nothing tests that an unfuelled lantern goes dark when its oil runs out.",
-       "Showcase lantern_night is the owner's flagship, \"a lantern lighting a dark room and then going out\". It contains only the lighting scene and exercises only inv_light. inv_oil sits in no showcase and n"
+       "No acceptance or interaction scene exercises the oil_out leaf or the inv_oil capability: nothing tests that a burning lantern uses its oil and goes dark when it runs dry. Broken mod that gets through:",
+       "The flagship showcase omits half of the face he picked: it shows the lantern lighting a dark room but never going out, and inv_oil is in neither a showcase nor coverage_rest. Broken mod that gets thro"
       ],
       "got": "refuse",
       "id": "bad_leaf_no_scene",
@@ -1052,7 +1054,7 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "The oil_out leaf and the inv_oil capability have no acceptance scene. Nothing tests that an unfuelled lantern goes dark "
+        "what": "No acceptance or interaction scene exercises the oil_out leaf or the inv_oil capability: nothing tests that a burning la"
        },
        {
         "criterion_verdict": "sound",
@@ -1063,131 +1065,113 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "Showcase lantern_night is the owner's flagship, \"a lantern lighting a dark room and then going out\". It contains only th"
+        "what": "The flagship showcase omits half of the face he picked: it shows the lantern lighting a dark room but never going out, a"
+       }
+      ],
+      "verdict": "not_covered"
+     },
+     {
+      "advisory": [
+       "sc_light's upper bound of 10% glow at 3 cells is a tuning number that no promise states. Advisory only."
+      ],
+      "cost_usd": 0.48347539999999994,
+      "expect": "refuse",
+      "gaps": [
+       "sc_light, the only acceptance scene for leaf light and inv_light, has no control. Nothing shows the cells are dark without the lit lantern, so the scene cannot tie the glow to the lantern being lit.",
+       "sc_light does not assert the dark start the leaf and the owner's face describe. It asserts neither night, nor a roofed dark room, nor a fuelled lantern, so a dark room being lit is not exercised."
+      ],
+      "got": "refuse",
+      "id": "bad_scene_no_control",
+      "routes": [
+       {
+        "criterion_verdict": "sound",
+        "ids": [
+         "inv_light",
+         "light"
+        ],
+        "judge_criterion_verdict": "sound",
+        "late_confirmed": null,
+        "new_since": "first",
+        "return_to": 3,
+        "route": "designer",
+        "severity": "problem",
+        "what": "sc_light, the only acceptance scene for leaf light and inv_light, has no control. Nothing shows the cells are dark witho"
+       },
+       {
+        "criterion_verdict": "sound",
+        "ids": [
+         "inv_light",
+         "light"
+        ],
+        "judge_criterion_verdict": "sound",
+        "late_confirmed": null,
+        "new_since": "first",
+        "return_to": 3,
+        "route": "designer",
+        "severity": "problem",
+        "what": "sc_light does not assert the dark start the leaf and the owner's face describe. It asserts neither night, nor a roofed d"
+       }
+      ],
+      "verdict": "not_covered"
+     },
+     {
+      "advisory": [
+       "inv_never_dark is in scope and built, but no showcase exercises it and coverage_rest is empty.",
+       "The sc_light expect adds an upper light bound at 3 cells that no promise, leaf or capability states."
+      ],
+      "cost_usd": 0.652724,
+      "expect": "refuse",
+      "gaps": [
+       "Two of the owner's promises demand opposite outcomes for the same hung lantern at 0 oil, and both are in scope with leaves and acceptance scenes. No mod can pass both, and no decision says which one r",
+       "sc_never_dark takes one light reading, a full day after its start and so at the same hour, and does not check that the lantern is still empty. A lantern that goes dark part of the day passes."
+      ],
+      "got": "refuse",
+      "id": "bad_conflict_routing",
+      "routes": [
+       {
+        "criterion_verdict": "unattainable",
+        "ids": [
+         "inv_light",
+         "inv_oil",
+         "inv_never_dark",
+         "light",
+         "oil_out",
+         "never_dark"
+        ],
+        "judge_criterion_verdict": "sound",
+        "late_confirmed": null,
+        "new_since": "first",
+        "return_to": 2,
+        "route": "criteria",
+        "severity": "problem",
+        "what": "Two of the owner's promises demand opposite outcomes for the same hung lantern at 0 oil, and both are in scope with leav"
+       },
+       {
+        "criterion_verdict": "sound",
+        "ids": [
+         "inv_never_dark",
+         "never_dark"
+        ],
+        "judge_criterion_verdict": "sound",
+        "late_confirmed": null,
+        "new_since": "first",
+        "return_to": 3,
+        "route": "designer",
+        "severity": "problem",
+        "what": "sc_never_dark takes one light reading, a full day after its start and so at the same hour, and does not check that the l"
        }
       ],
       "verdict": "not_covered"
      },
      {
       "advisory": [],
-      "cost_usd": 1.1804014,
+      "cost_usd": 0.48188000000000003,
       "expect": "refuse",
       "gaps": [
-       "sc_light, the only acceptance scene for the light leaf and inv_light, has no control and no asserted dark/night start, so it cannot tell the lantern's light from daylight, the map's own lighting or an"
-      ],
-      "got": "refuse",
-      "id": "bad_scene_no_control",
-      "reasked": [
-       "coverage: given inputs in no passed or refused evidence: floor.json"
-      ],
-      "routes": [
-       {
-        "criterion_verdict": "sound",
-        "ids": [
-         "light",
-         "inv_light"
-        ],
-        "judge_criterion_verdict": "sound",
-        "late_confirmed": null,
-        "new_since": "first",
-        "return_to": 3,
-        "route": "designer",
-        "severity": "problem",
-        "what": "sc_light, the only acceptance scene for the light leaf and inv_light, has no control and no asserted dark/night start, s"
-       }
-      ],
-      "verdict": "not_covered"
-     },
-     {
-      "advisory": [
-       "inv_never_dark is built and approved, but no showcase lists it in exercises and coverage_rest is empty, so the showcase set leaves this unit uncovered (sc_never_dark does exercise it as a scene)."
-      ],
-      "cost_usd": 1.4722038,
-      "expect": "refuse",
-      "gaps": [
-       "Two owner promises contradict each other and the scenes encode both: sc_oil_out requires a hung lantern at 0 oil to go dark, and sc_never_dark requires a hung lantern at 0 oil to stay lit. No mod can ",
-       "sc_light's control uses a hung lantern with 0 oil, ordered lit, and expects glow 0. A mod that keeps the never_dark promise lights that lantern, so the control fails a correct mod, and the light leaf'",
-       "sc_never_dark checks glow once, after a day, and never checks the oil level again. A lantern that goes dark for some hours and relights by the sampling time passes, and so does one that a pawn or auto",
-       "The sheet a player reads, and the flagship showcase he picked, promise contradictory experiences. The sheet's title says the lantern \"needs oil\" and a leaf says it \"goes dark when its oil is gone\", wh"
-      ],
-      "got": "refuse",
-      "id": "bad_conflict_routing",
-      "reasked": [
-       "coverage: given inputs in no passed or refused evidence: floor.json"
-      ],
-      "routes": [
-       {
-        "criterion_verdict": "sound",
-        "ids": [
-         "oil_out",
-         "never_dark",
-         "inv_oil",
-         "inv_never_dark"
-        ],
-        "judge_criterion_verdict": "unattainable",
-        "late_confirmed": null,
-        "new_since": "first",
-        "return_to": 2,
-        "route": "criteria",
-        "severity": "problem",
-        "what": "Two owner promises contradict each other and the scenes encode both: sc_oil_out requires a hung lantern at 0 oil to go d"
-       },
-       {
-        "criterion_verdict": "sound",
-        "ids": [
-         "light",
-         "inv_light"
-        ],
-        "judge_criterion_verdict": "flawed",
-        "late_confirmed": null,
-        "new_since": "first",
-        "return_to": 3,
-        "route": "criteria",
-        "severity": "problem",
-        "what": "sc_light's control uses a hung lantern with 0 oil, ordered lit, and expects glow 0. A mod that keeps the never_dark prom"
-       },
-       {
-        "criterion_verdict": "sound",
-        "ids": [
-         "never_dark",
-         "inv_never_dark"
-        ],
-        "judge_criterion_verdict": "sound",
-        "late_confirmed": null,
-        "new_since": "first",
-        "return_to": 3,
-        "route": "designer",
-        "severity": "problem",
-        "what": "sc_never_dark checks glow once, after a day, and never checks the oil level again. A lantern that goes dark for some hou"
-       },
-       {
-        "criterion_verdict": "sound",
-        "ids": [],
-        "judge_criterion_verdict": "sound",
-        "late_confirmed": null,
-        "new_since": "first",
-        "return_to": 2,
-        "route": "owner",
-        "severity": "problem",
-        "what": "The sheet a player reads, and the flagship showcase he picked, promise contradictory experiences. The sheet's title says"
-       }
-      ],
-      "verdict": "not_covered"
-     },
-     {
-      "advisory": [
-       "inv_refuel cites OWNER:1 as its source, but the sheet's quotation of OWNER:1 says nothing about refuelling, so the 'approved' scope of refuel may not rest on his words."
-      ],
-      "cost_usd": 1.2510766,
-      "expect": "refuse",
-      "gaps": [
-       "The built, approved refuel capability (a pawn refuels a hung lantern from stockpiled oil and it lights again) is exercised by no scene, no showcase, no coverage_rest entry and no tree leaf."
+       "The approved refuelling capability has no coverage: no leaf, no acceptance or interaction scene, no showcase, no coverage_rest entry, no exam scenario and no sheet line tests a pawn refuelling a lante"
       ],
       "got": "refuse",
       "id": "bad_mixed_row",
-      "reasked": [
-       "refusal 0 (inv_refuel): evidence 'designer_scene_contract.md:67-70,84-88' is not one of the inputs the judge was given"
-      ],
       "routes": [
        {
         "criterion_verdict": "sound",
@@ -1200,7 +1184,7 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "The built, approved refuel capability (a pawn refuels a hung lantern from stockpiled oil and it lights again) is exercis"
+        "what": "The approved refuelling capability has no coverage: no leaf, no acceptance or interaction scene, no showcase, no coverag"
        }
       ],
       "verdict": "not_covered"
@@ -1210,15 +1194,15 @@
       "answered": [
        "g1"
       ],
-      "cost_usd": 1.0715881999999999,
+      "cost_usd": 0.6295842,
       "expect": "refuse",
       "gaps": [
-       "sc_oil_out now expects the emptied lantern to keep glowing, so it passes a lantern that never goes out and fails one that does"
+       "The round 2 edit turned sc_oil_out's expectation around: it now requires the empty lantern to stay lit, so the scene passes a lantern that burns forever on an empty tank and fails a correct mod."
       ],
       "got": "refuse",
       "id": "bad_late_serious",
       "reasked": [
-       "evidence 'coverage_verdict.json (round-1 entry_text scene:sc_oil_out: \"its cells read glow 0\")' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)"
+       "evidence 'coverage_verdict.json' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)"
       ],
       "routes": [
        {
@@ -1233,21 +1217,19 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "sc_oil_out now expects the emptied lantern to keep glowing, so it passes a lantern that never goes out and fails one tha"
+        "what": "The round 2 edit turned sc_oil_out's expectation around: it now requires the empty lantern to stay lit, so the scene pas"
        }
       ],
       "verdict": "not_covered"
      },
      {
-      "advisory": [
-       "sc_burn_line_walks's new flood check uses the mod's own wind-off run as its positive control. That makes the leaf's pass depend on an untested guess that the burn line floods the map when windCarriesF"
-      ],
+      "advisory": [],
       "answered": [
        "g1",
        "g2",
        "g3"
       ],
-      "cost_usd": 0.9540082,
+      "cost_usd": 0.8857865999999999,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -1256,17 +1238,16 @@
       "verdict": "covered"
      },
      {
-      "advisory": [],
-      "cost_usd": 1.2638022,
+      "advisory": [
+       "inv_straw is in no showcase and coverage_rest is empty, so the showcase bookkeeping lists the capability nowhere."
+      ],
+      "cost_usd": 0.6264206000000001,
       "expect": "refuse",
       "gaps": [
-       "The straw-safety promise is never exercised. sc_straw_safe hangs a lantern in a stone room with no straw anywhere and never knocks it down, so its 'no fire' expectation cannot fail. Its control (the l"
+       "The only scene for the straw promise has no straw and never knocks the lantern down, so the promise has no test that can fail. A mod whose fallen lit lantern ignites straw every time passes sc_straw_s"
       ],
       "got": "refuse",
       "id": "bad_fire_never_touched",
-      "reasked": [
-       "coverage: given inputs in no passed or refused evidence: floor.json"
-      ],
       "routes": [
        {
         "criterion_verdict": "sound",
@@ -1280,16 +1261,14 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "The straw-safety promise is never exercised. sc_straw_safe hangs a lantern in a stone room with no straw anywhere and ne"
+        "what": "The only scene for the straw promise has no straw and never knocks the lantern down, so the promise has no test that can"
        }
       ],
       "verdict": "not_covered"
      },
      {
-      "advisory": [
-       "inv_beasts is an approved, built inventory capability. No showcase exercises it, and scenes.json's coverage_rest is empty, so the showcase-set paperwork leaves it unlisted. It is fully covered by the "
-      ],
-      "cost_usd": 0.5949928000000001,
+      "advisory": [],
+      "cost_usd": 0.4507306,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -1354,8 +1333,8 @@
      "id": "good_one_kind_enough"
     }
    ],
-   "reset_at": "2026-11-24T06:50:09Z",
-   "status": "UNTESTED",
+   "reset_at": "2026-11-24T08:48:24Z",
+   "status": "CALIBRATED",
    "timeout_s": 1800,
    "was": "UNTESTED"
   },
@@ -1380,7 +1359,7 @@
    ],
    "hash": "0ee972edfd0c3f9c",
    "last_run": {
-    "at": "2026-11-24T07:38:54Z",
+    "at": "2026-11-24T08:38:50Z",
     "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
@@ -1651,7 +1630,7 @@
    ],
    "hash": "14a0c2dd50b1ff77",
    "last_run": {
-    "at": "2026-11-24T07:38:54Z",
+    "at": "2026-11-24T08:38:50Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
