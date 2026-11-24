@@ -1,0 +1,3195 @@
+[
+ {
+  "text": "**Acceptance test:** none, playtest tuning judged in play; no bar names a frequency.",
+  "src": "design/concepts/PyrelandsMechanics/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 539,
+  "ms": 144,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.34,
+    "p": {
+     "significant": 0.33,
+     "minor": 0.67
+    }
+   },
+   "concrete_case": {
+    "noul": 0.04,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.36,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS_HEAVY_B_CHOSEN_TWO_PICKS_OPEN` (stations 61-64): the four steel-bridge looks share one suspension silhouette (twin posts, sagging main cable, hangers); the GPT art judge failed \"the four looks read differently\". He picked Scrapper C, Industrial A, Modern A and Futuristic A knowing this (2026-11-22). A different structure for the Modern (and perhaps Futuristic) bridge is a Designer question.",
+  "src": "design/concepts/FlowWorks/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 639,
+  "ms": 156,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.8,
+    "p": {
+     "significant": 0.9,
+     "minor": 0.1
+    }
+   },
+   "concrete_case": {
+    "noul": 0.95,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.94,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "The steward's brief carries the fresh-reader rule, so a steward run gets no packet (about 23 recorded offline-build briefs).",
+  "src": "design/specs/2026-11-23-item-packet/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 546,
+  "ms": 144,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.6,
+    "p": {
+     "significant": 0.8,
+     "minor": 0.2
+    }
+   },
+   "concrete_case": {
+    "noul": 0.73,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.9,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`next_version` reads the record outside `_mod_lock` and calls `commit_move` without `expect`: a stage move landing",
+  "src": "design/specs/2026-11-19-maturation-record/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 544,
+  "ms": 148,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.78,
+    "p": {
+     "significant": 0.89,
+     "minor": 0.11
+    }
+   },
+   "concrete_case": {
+    "noul": 0.28,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.65,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`skills/using-rimflow/SKILL.md` and `references/traps.md` say that the owner flags write OWNER.jsonl, to commit by hand. Skills are edited only in curation sessions.",
+  "src": "design/specs/2026-11-22-ledger-write-lands-its-shard/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 563,
+  "ms": 160,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.4,
+    "p": {
+     "significant": 0.3,
+     "minor": 0.7
+    }
+   },
+   "concrete_case": {
+    "noul": 0.17,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.32,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`SKILL_PATH` has no left boundary: `myskills/x/` or a URL's `.../skills/x/` counts as a skill path (two looks, 2026-11-19).",
+  "src": "design/specs/2026-11-19-brief-skill-paths/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 566,
+  "ms": 146,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.06,
+    "p": {
+     "significant": 0.53,
+     "minor": 0.47
+    }
+   },
+   "concrete_case": {
+    "noul": 0.45,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.86,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "2026-11-23 liquid pump: a HOSE coupled on the pump's south still ends under the drawn cap (hoses draw below the building; read from code, not seen live); only a pipe is drawn over it (PumpSouthSocket). Recommended: next version.",
+  "src": "design/concepts/FlowWorks/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 583,
+  "ms": 147,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.24,
+    "p": {
+     "significant": 0.62,
+     "minor": 0.38
+    }
+   },
+   "concrete_case": {
+    "noul": 0.9,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.14,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`RIMMANDRAKE_CUT_FLOWWORKS_CORPSE_WOUNDS_FLOAT_ON_TAR`: the red splotches over tar in visit 8's big-pit shots are vanilla BloodSplash hit flecks (0.15 s of game ticks) of the scene's own killing blow, held by the pause; the corpses' real wounds are hidden under tar and tinted under water. `big_pit_scene.py` ticks no time after the kills, so a shot of it can show them; no bar reads it.",
+  "src": "design/concepts/FlowWorks/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 632,
+  "ms": 147,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.28,
+    "p": {
+     "significant": 0.36,
+     "minor": 0.64
+    }
+   },
+   "concrete_case": {
+    "noul": 0.77,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.92,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`effect --clear` on a shaped item leaves it \"shaped already\", so `shape --enter` says it needs no Shape run. Shape it",
+  "src": "design/specs/2026-11-23-list-shape/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 550,
+  "ms": 123,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.72,
+    "p": {
+     "significant": 0.86,
+     "minor": 0.14
+    }
+   },
+   "concrete_case": {
+    "noul": 0.86,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.87,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "(run two's fresh reader) Entries 3 to 5 quote the option labels as his words; he typed them in his answer text.",
+  "src": "design/specs/2026-11-21-guiding-principles/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 546,
+  "ms": 119,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.1,
+    "p": {
+     "significant": 0.55,
+     "minor": 0.45
+    }
+   },
+   "concrete_case": {
+    "noul": 0.87,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "FlowWorks (15 of 24 entries named) and Gimme Some Slack (4 of 202 named, 22 scenes not found) are `scene_check: off` (2026-11-24). Their names are not judged. The act that turns one on: read each NAMED line, declare it or give it a `left_out` reason, then delete the `scene_check` line.",
+  "src": "design/specs/2026-11-24-declaration-check/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 611,
+  "ms": 165,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.44,
+    "p": {
+     "significant": 0.72,
+     "minor": 0.28
+    }
+   },
+   "concrete_case": {
+    "noul": 0.61,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.92,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`census/window.py`: `runs` counts a transcript whose turns all repeat another's (as the baseline's 1,908 does).",
+  "src": "design/specs/2026-11-23-brief-commands/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 550,
+  "ms": 121,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.8,
+    "p": {
+     "significant": 0.9,
+     "minor": 0.1
+    }
+   },
+   "concrete_case": {
+    "noul": 0.77,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.91,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "RM_WallReach paused frames (fresh read 2026-11-24): after 30 still frames each paused frame re-reads the door print (cheap); StillFrames counts frames, not time, so a high frame rate shortens the soak margin; the slice sweep's scheduler and AnyStale are replayed copies tied by source pins.",
+  "src": "design/concepts/FlowWorks/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 599,
+  "ms": 119,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.36,
+    "p": {
+     "significant": 0.32,
+     "minor": 0.68
+    }
+   },
+   "concrete_case": {
+    "noul": 0.27,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.93,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "walk_storeroom_raid (2026-11-23): GAS_CLUMP_BY_CLUMP's mean-distance order FAILs on one late straggler cell (1 of 8 orders on the small list, 0 of 18 on the full list); not touched.",
+  "src": "design/concepts/ExplosiveKnockback/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 581,
+  "ms": 144,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.06,
+    "p": {
+     "significant": 0.47,
+     "minor": 0.53
+    }
+   },
+   "concrete_case": {
+    "noul": 0.7,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.97,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`simulate()` and `pool()` still model an account as burning to its own line, not to its warning line (at most 2 points a week).",
+  "src": "design/specs/2026-11-24-account-end/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 551,
+  "ms": 136,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.8,
+    "p": {
+     "significant": 0.9,
+     "minor": 0.1
+    }
+   },
+   "concrete_case": {
+    "noul": 0.17,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.58,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL, 2026-11-21: in `venom_wait_out` a patient killed by RM_FlamefangVenom itself reads RESTART (UNMEASURED, the governor's death stop), not FAIL. A mod fault that makes the venom lethal loses its verdict there but never passes. The wounds are now cleared after the bite, so a death on that row can only be the venom.",
+  "src": "design/concepts/Pyrelands/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 628,
+  "ms": 133,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.54,
+    "p": {
+     "significant": 0.77,
+     "minor": 0.23
+    }
+   },
+   "concrete_case": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.79,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`VALIDATION_UNPOISON_AUDIT_STATEFUL_CHAINS`: validation.py chain-latch resets after an UNMEASURED row in 19 mods can make a later stateful row FAIL on an unbuilt fixture; audit per mod (Bacta fixed).",
+  "src": "design/concepts/FlowWorks/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 579,
+  "ms": 113,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.84,
+    "p": {
+     "significant": 0.92,
+     "minor": 0.08
+    }
+   },
+   "concrete_case": {
+    "noul": 0.78,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.75,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "C# relates by source file only: a one-line call added to RM_MapComponent_CordGraph.cs reruns every check that declares that file (sc_switch_off_ends on 2026-11-21). A member-level C# relation would be finer; not worth the touch now.",
+  "src": "design/specs/2026-11-21-rerun-only-related/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 586,
+  "ms": 118,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.72,
+    "p": {
+     "significant": 0.14,
+     "minor": 0.86
+    }
+   },
+   "concrete_case": {
+    "noul": 0.46,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.82,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "RIMMANDRAKE_HARDEN_PYRE_DECIDERS_FOUR_PLANTS_SLIPPED_PAST: two of four planted faults are caught since blind cycle 2; the other two (renamed firebreak and fulgurite C# constants) re-add no def, text or setting that T_CUT_STAYS_CUT reads.",
+  "src": "design/concepts/Pyrelands/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 590,
+  "ms": 139,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.82,
+    "p": {
+     "significant": 0.91,
+     "minor": 0.09
+    }
+   },
+   "concrete_case": {
+    "noul": 0.68,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.94,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`RIMMANDRAKE_NOTE_FLOWWORKS_FUZZ_BLIND_TO_ONE_SINK_PATH` (inv_flow_level): the kernel fuzz's volume law does not see an unreported sink drain on `RM_FlowKernel.cs:851` (planted `CHANGED_FUZZ_SINK_UNREPORTED`, rc 0).",
+  "src": "design/concepts/FlowWorks/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 595,
+  "ms": 139,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.34,
+    "p": {
+     "significant": 0.67,
+     "minor": 0.33
+    }
+   },
+   "concrete_case": {
+    "noul": 0.82,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.38,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "build_match.py: \"X is not deployed in <Mods>\" is also the text when the folder is there and its hash could not be read (measured once in five readings, Pyrelands, 2026-11-24, ArchBig in use). The tick takes no act either way and reads again.",
+  "src": "design/specs/2026-11-21-rerun-only-related/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 588,
+  "ms": 143,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.78,
+    "p": {
+     "significant": 0.89,
+     "minor": 0.11
+    }
+   },
+   "concrete_case": {
+    "noul": 0.94,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.98,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`run_alive.facts`: `START_S` covers a unit that is up. A record under 120 s old whose unit has not started reads",
+  "src": "design/specs/2026-11-23-run-alive/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 550,
+  "ms": 133,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.02,
+    "p": {
+     "significant": 0.49,
+     "minor": 0.51
+    }
+   },
+   "concrete_case": {
+    "noul": 0.46,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.83,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "2026-11-22 RIMMANDRAKE_JUDGE_PYRE_ULLAI_HERD_READS_AS_GREY_RUBBLE (HARNESS, not worth a ticket): visit 5 `scripts/herd_look.py` shot `screenshot_cell_rect` with no rootSize, and its \"flat grey blobs and bent grey sticks\" are RimWorld's zoomed-out pawn silhouettes (SilhouetteUtility: ZoomRootSize >= 0.9 x max; the live Prefs.xml reads HighlightAll + Silhouettes), not the ullai texture. No bar went undecided: `walk_station_creatures.jpg` shows the real texture. A shot a judge reads takes `modcheck/play_zoom.py`'s measured rootSize.",
+  "src": "design/concepts/Pyrelands/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 698,
+  "ms": 134,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.64,
+    "p": {
+     "significant": 0.18,
+     "minor": 0.82
+    }
+   },
+   "concrete_case": {
+    "noul": 0.89,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.92,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "walk_storeroom_raid, small list only (2026-11-23): C_OFF_IMPACTS_NO_THROWS counts a stack dropped by its own destroyed vanilla shelf as moved (0 of 11 on every full-list run, so no bar needs the touch; `ev.off_moved` now names it).",
+  "src": "design/concepts/ExplosiveKnockback/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 589,
+  "ms": 137,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.24,
+    "p": {
+     "significant": 0.38,
+     "minor": 0.62
+    }
+   },
+   "concrete_case": {
+    "noul": 0.86,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.92,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Second run, meaning read, left as is: the moved incident paragraph in `CLAUDE.history.md` still says \"This section repairs the class.\"; it was moved word for word, so \"this section\" now reads as the history entry.",
+  "src": "design/specs/2026-11-21-crystallize-rule-files/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 568,
+  "ms": 121,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.88,
+    "p": {
+     "significant": 0.06,
+     "minor": 0.94
+    }
+   },
+   "concrete_case": {
+    "noul": 0.91,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.93,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "**From:** coverage gap g3 of rm-coverage-judge-1794750987 (2026-11-15). Proposed by the round-6 sort, 2026-11-15 (Evidence-for-Ask, a Conductor sort). Least-sure call: it could be a Problem if a hawk is seen dropping embers on scraps.",
+  "src": "design/concepts/Pyrelands/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 609,
+  "ms": 118,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.82,
+    "p": {
+     "significant": 0.09,
+     "minor": 0.91
+    }
+   },
+   "concrete_case": {
+    "noul": 0.18,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.11,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "**From:** `sheet.md` advisory: \"A week-old scar is about 60% green, inside his card thresholds; nearly-all-green is playtest tuning\".",
+  "src": "design/concepts/Pyrelands/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 553,
+  "ms": 129,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.58,
+    "p": {
+     "significant": 0.21,
+     "minor": 0.79
+    }
+   },
+   "concrete_case": {
+    "noul": 0.31,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.8,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "**Art judge, 2026-11-24**: the Modern battery's north end face is a little shallower than its east front face; not visible at play",
+  "src": "design/concepts/GimmeSomeSlack/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 558,
+  "ms": 136,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.82,
+    "p": {
+     "significant": 0.09,
+     "minor": 0.91
+    }
+   },
+   "concrete_case": {
+    "noul": 0.38,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.75,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`spend_talk.strip` keeps the \"needs X\" phrase of a sentence that it takes out, so \"It needs a bigger budget.\" keeps the word.",
+  "src": "design/specs/2026-11-23-item-packet/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 552,
+  "ms": 143,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.46,
+    "p": {
+     "significant": 0.73,
+     "minor": 0.27
+    }
+   },
+   "concrete_case": {
+    "noul": 0.82,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.88,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`driver_lock._fence_identity` records no distro, so a Windows caller judges a WSL fence by its age only (60 s)",
+  "src": "design/specs/2026-11-21-one-game-lock/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 550,
+  "ms": 152,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.64,
+    "p": {
+     "significant": 0.82,
+     "minor": 0.18
+    }
+   },
+   "concrete_case": {
+    "noul": 0.79,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.61,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "A role run (`rm-role-*`) gets the orders but is not waited for; the drain waits for `rm-detached-*` only, as before.",
+  "src": "design/specs/2026-11-24-account-end/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 550,
+  "ms": 141,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.8,
+    "p": {
+     "significant": 0.9,
+     "minor": 0.1
+    }
+   },
+   "concrete_case": {
+    "noul": 0.9,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.91,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER`: pump_outflow_live.py and tank_theft_live.py reset liquidPumpEnabled to True rather than its prior value (waived at the setter, 9d3e4c2725).",
+  "src": "design/concepts/FlowWorks/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 587,
+  "ms": 154,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.3,
+    "p": {
+     "significant": 0.65,
+     "minor": 0.35
+    }
+   },
+   "concrete_case": {
+    "noul": 0.74,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.69,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS`: FlowWorks proof: ProofOverlays reads the law's decisions, not the alpha drawn last; the battery bar and GenDraw lines stay unseen (676c5cd131 partial).",
+  "src": "design/concepts/FlowWorks/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 586,
+  "ms": 120,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.7,
+    "p": {
+     "significant": 0.85,
+     "minor": 0.15
+    }
+   },
+   "concrete_case": {
+    "noul": 0.74,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.78,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`sc_roof_withers` (SITE: the gate-off patch went from 25 plants to 0 at once near hour 41). It decided no bar. The gate-on row showed the wither.",
+  "src": "design/concepts/Pyrelands/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 564,
+  "ms": 116,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.9,
+    "p": {
+     "significant": 0.95,
+     "minor": 0.05
+    }
+   },
+   "concrete_case": {
+    "noul": 0.9,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.95,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`RIMMANDRAKE_NOTE_FLOWWORKS_CONVERTER_PARTIAL_MOVE_UNCHARGED` (inv_converters): in `CompLiquidConverter.CompTickRare` a part-made move (0 < moved < n batches) leaves the batches it made uncharged (budget, totals, fuel, rotation).",
+  "src": "design/concepts/FlowWorks/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 590,
+  "ms": 134,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.86,
+    "p": {
+     "significant": 0.93,
+     "minor": 0.07
+    }
+   },
+   "concrete_case": {
+    "noul": 0.9,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.65,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`seed_mod` writes the record without `_mod_lock`, only when no record exists yet (two first seeds at once).",
+  "src": "design/specs/2026-11-19-maturation-record/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 543,
+  "ms": 123,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.12,
+    "p": {
+     "significant": 0.56,
+     "minor": 0.44
+    }
+   },
+   "concrete_case": {
+    "noul": 0.77,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.84,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "**Acceptance test:** `python3 -c \"import json,sys;x=[c for c in json.load(open('design/concepts/Pyrelands/scenes.json'))['scenes'] if c['id']=='sc_three_skies'][0];c=json.dumps(x['control']).lower();e=x['expect'].lower();sys.exit(0 if 'ash patch' in c and 'clear' in c and any(w in e for w in ('margin','exceeds','more than')) else 1)\"` \u2014 exit 0 passes, 1 fails; **watched it fail** on 237b791167. Coarse (text, not behaviour): the live read comes with the scene.",
+  "src": "design/concepts/Pyrelands/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 670,
+  "ms": 139,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.84,
+    "p": {
+     "significant": 0.92,
+     "minor": 0.08
+    }
+   },
+   "concrete_case": {
+    "noul": 0.82,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`seat_dirt.classify` runs one `git cat-file` per dirty safe-class path (`replaces_nothing_newer`, `on_origin`,",
+  "src": "design/specs/2026-11-22-disk-sense-reads-only/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 552,
+  "ms": 156,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.52,
+    "p": {
+     "significant": 0.24,
+     "minor": 0.76
+    }
+   },
+   "concrete_case": {
+    "noul": 0.06,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.78,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "RIMMANDRAKE_RETAKE_KNOCKBACK_EXAM_NO_SCENARIO_READS_LEAF: the Designer's stage 4 Cold Reader exam is frozen against the tree from before the barrage p99 rewording. No exam scenario reads that leaf, and nothing refuses on it (`maturation.py next`, 2026-11-22). Retake it when the next version's Designer pass opens.",
+  "src": "design/concepts/ExplosiveKnockback/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 610,
+  "ms": 139,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.28,
+    "p": {
+     "significant": 0.64,
+     "minor": 0.36
+    }
+   },
+   "concrete_case": {
+    "noul": 0.72,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.94,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "After a HOLD of hours in the pause, a resumed emergency gives new runs no pause.",
+  "src": "design/specs/2026-11-24-account-end/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 536,
+  "ms": 125,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.26,
+    "p": {
+     "significant": 0.63,
+     "minor": 0.37
+    }
+   },
+   "concrete_case": {
+    "noul": 0.59,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.76,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`fault_repair_step` files a new item on each refused repair launch; `form_repair_step` reuses its filed item (a-refused-repair-launch-reuses-its-filed-item), the fault-loop one does not yet.",
+  "src": "design/specs/2026-11-21-repair-at-the-refusal/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 570,
+  "ms": 125,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.42,
+    "p": {
+     "significant": 0.71,
+     "minor": 0.29
+    }
+   },
+   "concrete_case": {
+    "noul": 0.72,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.87,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`cli.py` `_bridge_other_host_locked`: the refusal prints the taker's own `--for` as the holder's.",
+  "src": "design/specs/2026-11-22-ledger-write-lands-its-shard/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 545,
+  "ms": 126,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.68,
+    "p": {
+     "significant": 0.84,
+     "minor": 0.16
+    }
+   },
+   "concrete_case": {
+    "noul": 0.71,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.86,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "`COVER_BLAST_FIX_DECK_LEFT_INTACT`: A blast that destroys a pit cover's first cell can leave the rest of the deck standing (GPT review FC_pits_superdeep_1.8).",
+  "src": "design/concepts/FlowWorks/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 563,
+  "ms": 123,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.36,
+    "p": {
+     "significant": 0.68,
+     "minor": 0.32
+    }
+   },
+   "concrete_case": {
+    "noul": 0.65,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.81,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "visit_feed: chain jobs' rows (modcheck's own list) can never count; each writes COULD NOT LOOK rows.",
+  "src": "design/specs/2026-11-24-stage-six-checks-to-steve/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 545,
+  "ms": 130,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.6,
+    "p": {
+     "significant": 0.8,
+     "minor": 0.2
+    }
+   },
+   "concrete_case": {
+    "noul": 0.71,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.61,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "RIMMANDRAKE_DROP_PYRE_REVIEW_PAVED_STATIONS: human_review.py still has the paved-strip stations, but his walk is staged by the visit scripts (visit_5/scripts/walk_save.py), not human_review.py; renumber when the file is next changed.",
+  "src": "design/concepts/Pyrelands/version/polish.md",
+  "label": 0,
+  "ok": true,
+  "tok": 578,
+  "ms": 124,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.96,
+    "p": {
+     "significant": 0.02,
+     "minor": 0.98
+    }
+   },
+   "concrete_case": {
+    "noul": 0.2,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.75,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "testq.py ask and host_facts.py landed (3b6525ea42ea) and their item closed, but by the run's own report: host_facts.py refresh has never run against SteveDesktop; nothing schedules the hourly refresh; no timer raises the login alarm; the filler and the visit feed do not read the facts; testq.py ask never passes a companion so a job is never held for it; no fresh reader read the changed files. Acceptance test: host_facts.py refresh run live against SteveDesktop exits 0 and writes facts younger than 1 h; a timer unit for the refresh is active; selftest shows the visit feed refusing a check on a stale or absent fact (red today)",
+  "src": "RIMMANDRAKE_WIRE_ASK_LANE_HOST_FACTS_CLOSED_WITH_FIVE_PARTS_UNWIRED",
+  "label": 1,
+  "ok": true,
+  "tok": 676,
+  "ms": 123,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.98,
+    "p": {
+     "significant": 0.99,
+     "minor": 0.01
+    }
+   },
+   "concrete_case": {
+    "noul": 0.8,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.89,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Three corrected rule lines now tell a reader nothing, measured 0 of 5 correct acts each in the weak-reader pilot (design/specs/2026-11-23-weak-reader-trial/result.md, CORRECTION): 'build his daily digest' (readers still build it by hand), the Jawa/ tier (pointer to a file the reader cannot open), broadcast.py (says who may, not when). State the true rule where each stands. Acceptance test: rerun the pilot's three cases on the new text with 5 fresh Sonnet readers each; base 0 of 15 correct, pass at 12 or more of 15 (delegated: a failure that happened, measured by the pilot)",
+  "src": "RIMMANDRAKE_STATE_THREE_RULES_THE_CORRECTION_LEFT_SILENT_READERS_SCORED_ZERO",
+  "label": 1,
+  "ok": true,
+  "tok": 678,
+  "ms": 166,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 1.0,
+    "p": {
+     "significant": 1.0,
+     "minor": 0.0
+    }
+   },
+   "concrete_case": {
+    "noul": 0.84,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.98,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "FlowWorks: no in-game check declares a C# file, so the build match counts sc_pit_reads and sc_covered_pit from a build before the pit redraw (walk-brief reader: measured; set down because the fix decides which in-game verdicts count at the walk door, the Conductor's call)",
+  "src": "RIMMANDRAKE_DECLARE_FLOWWORKS_SCENE_CSHARP_PIT_REDRAW_UNSEEN",
+  "label": 1,
+  "ok": true,
+  "tok": 587,
+  "ms": 148,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.92,
+    "p": {
+     "significant": 0.96,
+     "minor": 0.04
+    }
+   },
+   "concrete_case": {
+    "noul": 0.75,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.84,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Curation session: the skills still tell agents to use the retired Windows Codex or per-worker sign-in folders. Exact lines. (1) ~/dev/Dispatch/skills/chatgpt-consult/SKILL.md: the description's 'selectable codex.exe on Windows/WSL'; lines 110-127 (codex win / RM_CODEX_SIDE / both sides); line 137 (gpt_door.py sandbox, removed); '--side linux' flags; 144-145 (codex.exe login); 'One sign-in per side is enough' -> one sign-in serves questions, images and agent runs at once, renewed a day early under a lock (design/specs/2026-11-23-one-codex-door/boundary.md); delete 'The Windows dialog' and 'On Windows/other WSL hosts' (keep the pointer to references/windows-wsl-codex.md). (2) ~/dev/MandrakeWor",
+  "src": "RIMMANDRAKE_CURATE_SKILLS_ONE_CODEX_DOOR_NO_WINDOWS_ROUTE_LEFT",
+  "label": 1,
+  "ok": true,
+  "tok": 735,
+  "ms": 135,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.36,
+    "p": {
+     "significant": 0.68,
+     "minor": 0.32
+    }
+   },
+   "concrete_case": {
+    "noul": 0.49,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.91,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "selftest_codex_runner test_concept_runner_and_lanes is red: the codex lane reads [] where [('/c/M','codex')] is expected; red on base 2026-11-20 4:45 PM PST, evidence D:\\ClaudeWork\\rimmandrake\\conductor\\night_20261120\\cr.txt (red on base while testing the game-only exit fix; not mine)",
+  "src": "RIMMANDRAKE_FIX_CODEX_RUNNER_SELFTEST_CONCEPT_LANE_READS_EMPTY",
+  "label": 1,
+  "ok": true,
+  "tok": 618,
+  "ms": 134,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.88,
+    "p": {
+     "significant": 0.94,
+     "minor": 0.06
+    }
+   },
+   "concrete_case": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.97,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Two more programs read the BRIDGE glance file: handoff.py and preflight_flowworks.py (P-B1) (detached run: found while retiring the two named readers; not in this group's files)",
+  "src": "RIMMANDRAKE_MOVE_TWO_MORE_GLANCE_READERS_CENSUS_MISSED",
+  "label": 1,
+  "ok": true,
+  "tok": 565,
+  "ms": 185,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.4,
+    "p": {
+     "significant": 0.3,
+     "minor": 0.7
+    }
+   },
+   "concrete_case": {
+    "noul": 0.1,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.9,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "telemetry ingest.py Tailer.commit_durable writes vm.points into kv tail_state on every pass with rows; with VM down AND the 2 GB spool refusing, that list grows to MAX_PENDING (500k) and is re-serialised each pass (tens of MB). Also each pass now POSTs to VM (10 s timeout), so a hung VM slows every pass. Bound it (save only on change, or cap). (review of the TELEMETRY_CURSOR_FIX_AFTER_VM_DURABLE fix (opus rm-consult, 2026-11-06): RISK, double-failure mode only)",
+  "src": "TAILSTATE_SHRINK_WHEN_SPOOL_FULL_BLOATS",
+  "label": 1,
+  "ok": true,
+  "tok": 656,
+  "ms": 131,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.78,
+    "p": {
+     "significant": 0.89,
+     "minor": 0.11
+    }
+   },
+   "concrete_case": {
+    "noul": 0.83,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.65,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Plain-English rewrite batch of design/specs/2026-11-19-plain-english-rule-docs/batch_plan.md: the row named RIMMANDRAKE_REWRITE_CHARTER_AND_AGENT_POLICY_EVERY_SEAT_READS. Acceptance test: both no-loss checks of the plan find 0 lost after failing on a planted loss, the STE target of the plan is met, the tests that read the files pass, and a fresh reader finds no changed meaning (batch of the plan; his words are on the parent item)",
+  "src": "RIMMANDRAKE_REWRITE_CHARTER_AND_AGENT_POLICY_EVERY_SEAT_READS",
+  "label": 1,
+  "ok": true,
+  "tok": 639,
+  "ms": 135,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.24,
+    "p": {
+     "significant": 0.62,
+     "minor": 0.38
+    }
+   },
+   "concrete_case": {
+    "noul": 0.14,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.91,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "FlowWorks dry pit floors at 3, 4, 6 and 8 m draw ONE colour in game (mean RGB 33.1/23.7/15.4, 33.4/23.9/15.9, 32.8/23.8/16.7, 33.6/24.6/17.6; ArchSmall, DLL 2026-11-22 01:07, after e2288f4c84) although RM_PitReliefMath.FloorShade promises 22 % darker per doubling past 2 m ('two depths never draw alike'). His station-39 shot agrees (shallow 24.7/18.5 vs deep 23.6/17.8). Suspect: the black tint quad (SectionLayer_RMExcavationWalls.FloorShade, TintMat = ShaderDatabase.VertexColor) does not blend its vertex alpha, or draws under the floor. Acceptance test (live, red 2026-11-22): run design/specs/2026-11-22-stepped-pit-floor-look/stage_stepped_pits.py and capture_stepped_pits.py on a tier game, t",
+  "src": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+  "label": 1,
+  "ok": true,
+  "tok": 821,
+  "ms": 149,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.98,
+    "p": {
+     "significant": 0.99,
+     "minor": 0.01
+    }
+   },
+   "concrete_case": {
+    "noul": 0.97,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.95,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "The retire census found five things the rules promise that are not happening (the no-AI check of closed items since 2026-11-01, the art judge since 2026-11-08, a reader for Operations' forecasts, an alarm to his phone, 11 unfolded hand acts) and 348 built or validated items untouched since 2026-11-13: make each run again with a promise that is rechecked, or set it down with evidence (delegated: promises broken in ordinary operation, measured by the census)",
+  "src": "RIMMANDRAKE_REVIVE_FIVE_PROMISED_THINGS_SILENTLY_NOT_HAPPENING",
+  "label": 1,
+  "ok": true,
+  "tok": 647,
+  "ms": 134,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 1.0,
+    "p": {
+     "significant": 1.0,
+     "minor": 0.0
+    }
+   },
+   "concrete_case": {
+    "noul": 0.48,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.97,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "canon_gapfill labels a Legends page CANON when its title has no /Legends suffix (Found by the blind check of CANON_LATE_ENTRIES_VET_ARRIVED_AFTER_PARTY; the 119-entry review and later gapfill entries were not scanned.)",
+  "src": "CANON_GAPFILL_FIX_SLOT_TRUSTS_THE_TITLE",
+  "label": 1,
+  "ok": true,
+  "tok": 576,
+  "ms": 159,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.4,
+    "p": {
+     "significant": 0.7,
+     "minor": 0.3
+    }
+   },
+   "concrete_case": {
+    "noul": 0.53,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.79,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "standing_rulings.md after its five rewrite sessions (last 7f4f01c981): each session left its last edits unread and its tests unrun on the final bytes. One fresh reader reads the whole finished file once against its parent before session one and fixes each lost or changed rule; the tests that read the file run once on the final bytes; the stale line the maturation-spec rewrite left is fixed. From RIMMANDRAKE_CLEAR_CONDUCTOR_PROMISES_FROM_NOV_24_RUN_END_WAKES parts 4 and 11. Acceptance test: the reader's table, one row for each section (kept, changed, lost) with the fix for each changed or lost row, is committed beside the rewrite pages, and the tests that name standing_rulings.md are green on",
+  "src": "RIMMANDRAKE_READ_STANDING_RULINGS_ONCE_WHOLE_AFTER_FIVE_REWRITES",
+  "label": 1,
+  "ok": true,
+  "tok": 694,
+  "ms": 121,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.88,
+    "p": {
+     "significant": 0.94,
+     "minor": 0.06
+    }
+   },
+   "concrete_case": {
+    "noul": 0.62,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.79,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "A pit holding water shows a pale frame over its wall art (review stations 5-6, strongest in 1 m of water over spikes): the drowned wall strips are drawn opaque and lit with a cream wash (255,248,232) under the sheet, and RM_ExcavationWalls.SideUnder (:547-550) draws its face and wash the full cell height but its sheet only to wetTop, so the north corners stay lit and unsheeted. Acceptance test: none, a look (his eye or a judge on a zoomed capture of the dry and wet twins) (detached run RIMMANDRAKE_SORT_FLOWWORKS_WALK_REPORT_KNOWN_OR_NEW: his walk 2026-11-20, sorted offline; record design/RimMandrake/validation_holding/flowworks_walk_20261120.md)",
+  "src": "RIMMANDRAKE_DIM_FLOWWORKS_DROWNED_WALLS_PALE_FRAME_IN_WATER",
+  "label": 1,
+  "ok": true,
+  "tok": 723,
+  "ms": 147,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.24,
+    "p": {
+     "significant": 0.38,
+     "minor": 0.62
+    }
+   },
+   "concrete_case": {
+    "noul": 0.92,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.95,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "build_match resolves a tier's reference list from the reader's own install only (ArchBig), so a row made on ArchSmall, whose deployed About.xml names another dependency, never counts: Pyrelands visit 7 read '37 to run' at 09:17 and 09:30 PST 2026-11-23 (reference 17 mods, ArchBig's RimMandrake.Biomes About.xml of Nov 7 lacks mandrake.rm.hugethings; ArchSmall's of 04:55 has it) where the driver under RM_GAME_INSTANCE=b read 0 to run. Acceptance test: python3 src/RimMandrake/rimflow/selftest_build_match.py --default (2 of 76 fail on the base; 0 on the fix) and selftest_rerun_relation.py (1 of 22 fails on the base) (steward run: pipeline defect, red test seen)",
+  "src": "RIMMANDRAKE_READ_TIER_LIST_FROM_EVERY_GAME_INSTALL_HERE",
+  "label": 1,
+  "ok": true,
+  "tok": 731,
+  "ms": 114,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.98,
+    "p": {
+     "significant": 0.99,
+     "minor": 0.01
+    }
+   },
+   "concrete_case": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "art_eval runner.accepted_masters picks a flyer's wing-layer derive_from master from decisions.jsonl only: an owner sheet ruling or art.py enact that deletes/overrides the accepted body never reaches it (master_finished drops a master only once its artpipe render is gone); and a body REGEN from an audit/wholeset run withdraws a live master. Read the art ledger's owner verdicts before using a master (review finding on ARTEVAL_WIRE_FLYER_MASTER_NOBODY_WRITES_IT diff (opus reviewer))",
+  "src": "FLYERMASTER_VET_OWNER_SHEETS_UNREAD",
+  "label": 1,
+  "ok": true,
+  "tok": 632,
+  "ms": 149,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.82,
+    "p": {
+     "significant": 0.91,
+     "minor": 0.09
+    }
+   },
+   "concrete_case": {
+    "noul": 0.41,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.59,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "The Stage 6 exit reader, the rows and the steward read the three test kinds and the seven outcomes: kind tag with evidence on a test-table row, outcome on a row, INCONCLUSIVE, spoiled run runs that scene again, hunt out of the exit and announced. Acceptance test: design/specs/2026-11-23-three-test-kinds/accept_exit_reader_kinds.py, 13 of 16 rows red (filed by the enact run: the change list of step 5)",
+  "src": "RIMMANDRAKE_TEACH_EXIT_READER_KINDS_KNOWS_THREE_WORDS_ONLY",
+  "label": 1,
+  "ok": true,
+  "tok": 632,
+  "ms": 159,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.98,
+    "p": {
+     "significant": 0.99,
+     "minor": 0.01
+    }
+   },
+   "concrete_case": {
+    "noul": 0.25,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "selftest_game_driver_readers P-B1 ArchSmall case red ('PASS','PASS'), blocks maturation_dispatch.py review",
+  "src": "RIMMANDRAKE_MEND_GLANCE_READER_ARCHSMALL_LOCK_READS_WRONG",
+  "label": 1,
+  "ok": true,
+  "tok": 545,
+  "ms": 165,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.44,
+    "p": {
+     "significant": 0.72,
+     "minor": 0.28
+    }
+   },
+   "concrete_case": {
+    "noul": 0.46,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.82,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Live tests get three declared kinds (A deterministic, B stochastic judged by evidence of success, C intermittent judged by evidence of failure), forced situations, per-scene verdicts and environment faults that are removed not rerun. Steps: draft with him, GPT deep review, final plain-language rule text, then the in-game stage rules and scenes. Acceptance test: none yet, the design is open",
+  "src": "RIMMANDRAKE_ENACT_THREE_TEST_KINDS_FORCED_COUNTED_HUNTED_NOT_STARS_ALIGNED",
+  "label": 1,
+  "ok": true,
+  "tok": 599,
+  "ms": 143,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.46,
+    "p": {
+     "significant": 0.27,
+     "minor": 0.73
+    }
+   },
+   "concrete_case": {
+    "noul": 0.03,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.42,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "rerun_relation: a whole-mod check ignores the mod's .hashignore, so review docs send the full-list walk back (pipeline defect found in GSS visit 3; fixed in the same run, test first)",
+  "src": "RIMMANDRAKE_SKIP_HASHIGNORED_FILES_IN_WHOLE_MOD_RERUN_DOCS_SENT_WALK_BACK",
+  "label": 1,
+  "ok": true,
+  "tok": 564,
+  "ms": 132,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.86,
+    "p": {
+     "significant": 0.93,
+     "minor": 0.07
+    }
+   },
+   "concrete_case": {
+    "noul": 0.84,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.95,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "FlowWorks review map: sprinkler stations never get their four looks (choose_look None 4/4), row capture off-frame, trench shooters unarmed (detached run: visit 4 review-map stations read before his look)",
+  "src": "RIMMANDRAKE_FIX_FLOWWORKS_REVIEW_MAP_SPRINKLER_LOOKS_NEVER_CHOSEN",
+  "label": 1,
+  "ok": true,
+  "tok": 569,
+  "ms": 274,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.88,
+    "p": {
+     "significant": 0.94,
+     "minor": 0.06
+    }
+   },
+   "concrete_case": {
+    "noul": 0.83,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.93,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Plan step 4: the follow-through audit for 2026-11-29: a seeded sample of needs from his talk and from the pipeline, a fresh reader's verdict on each, two rates, the lower one the headline (plan step filed by the plan run, with its acceptance test; not built in this run)",
+  "src": "RIMMANDRAKE_BUILD_FOLLOW_THROUGH_AUDIT_LOWER_RATE_IS_HEADLINE",
+  "label": 1,
+  "ok": true,
+  "tok": 589,
+  "ms": 243,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.26,
+    "p": {
+     "significant": 0.37,
+     "minor": 0.63
+    }
+   },
+   "concrete_case": {
+    "noul": 0.05,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.19,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Build the standing scan his card of 2026-11-19 orders: when idle, a Sonnet 5.5 helper reads code files unchanged for 7 days or more, mod content first, under the review method of RIMMANDRAKE_ENACT_REVIEWER_FIXES_ONE_REREAD_THEN_FLAG. Acceptance test: written first by the run (a file changed in the last 7 days is never picked; a picked file ends CLEAN, FLAGGED or with a noted reason; the job yields to a live mod step); operational: closes only with --live",
+  "src": "RIMMANDRAKE_BUILD_STANDING_SCAN_OF_QUIET_FILES_ON_SONNET",
+  "label": 1,
+  "ok": true,
+  "tok": 645,
+  "ms": 207,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.04,
+    "p": {
+     "significant": 0.48,
+     "minor": 0.52
+    }
+   },
+   "concrete_case": {
+    "noul": 0.1,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.23,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Maturation Pipeline page: a section for the pipeline that handles work that is not mod work, shown truthfully as it is today (its steps, which are programs and which are the Conductor's hand), with what is running and why, what is next, what closed, what is open and why, what is escalated, what is ready for his review (his words of 2026-11-22 10:47 PM PST on that item: include it now on the Maturation Pipeline sheet as its own pipeline)",
+  "src": "RIMMANDRAKE_SHOW_NON_MOD_PIPELINE_ON_MATURATION_PAGE_AS_IT_IS_TODAY",
+  "label": 1,
+  "ok": true,
+  "tok": 637,
+  "ms": 188,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.28,
+    "p": {
+     "significant": 0.36,
+     "minor": 0.64
+    }
+   },
+   "concrete_case": {
+    "noul": 0.06,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.55,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "A dedicated process that checks the owner's own quoted statements in the rule files for imprecise language: each quote is read as a cold reader would; a quote with one reading gets a precise rule line beside it; a quote with more than one reading that leads to different acts becomes an exact question to him. His words are never rewritten. The same check runs when a new ruling of his is recorded",
+  "src": "RIMMANDRAKE_CHECK_HIS_QUOTED_RULINGS_FOR_IMPRECISE_WORDS_TOO",
+  "label": 1,
+  "ok": true,
+  "tok": 599,
+  "ms": 192,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.38,
+    "p": {
+     "significant": 0.31,
+     "minor": 0.69
+    }
+   },
+   "concrete_case": {
+    "noul": 0.04,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.37,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Check every Codex fix and ticket of the night of 2026-11-23 is on origin and properly closed; land or list what is not",
+  "src": "RIMMANDRAKE_AUDIT_CODEX_NIGHT_FIXES_INTEGRATED_AND_TICKETS_CLOSED",
+  "label": 1,
+  "ok": true,
+  "tok": 553,
+  "ms": 212,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.1,
+    "p": {
+     "significant": 0.45,
+     "minor": 0.55
+    }
+   },
+   "concrete_case": {
+    "noul": 0.05,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.14,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "One reader of claude-account status for all six callers; prove equal; retire the five parsers (delegated: build group from the sweep report d14e71762f; acceptance: bash design/specs/2026-11-22-pipeline-single-source-sweep/acceptance.sh ACCOUNT (red today per the sweep, 1 GREEN line expected))",
+  "src": "RIMMANDRAKE_MERGE_LIVE_ACCOUNT_READERS_SIX_PARSE_ONE_STATUS",
+  "label": 1,
+  "ok": true,
+  "tok": 604,
+  "ms": 169,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.38,
+    "p": {
+     "significant": 0.69,
+     "minor": 0.31
+    }
+   },
+   "concrete_case": {
+    "noul": 0.25,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.63,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "A wholly covered concealed pit (review station 47, planks) still shows its walls and black outline through its ground print: the pit faces, light and outline draw at render queues 2440-2449 (RM_FaceMaterial.cs:28-46), after the cover's print in the terrain's own material (queue 2000+, Building_PitCover.cs:276-281), and RM_ExcavationWalls never skips a covered square. Breaks bar covered_pit_springs. Acceptance test: a live zoomed capture of a covered 3x3 pit beside bare ground shows no outline or wall pixels inside the cover; red today by his picture 6, not yet watched red by a test (the game was his) (detached run RIMMANDRAKE_SORT_FLOWWORKS_WALK_REPORT_KNOWN_OR_NEW: his walk 2026-11-20, sort",
+  "src": "RIMMANDRAKE_HIDE_FLOWWORKS_PIT_WALLS_UNDER_CONCEALED_COVER",
+  "label": 1,
+  "ok": true,
+  "tok": 729,
+  "ms": 146,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.96,
+    "p": {
+     "significant": 0.98,
+     "minor": 0.02
+    }
+   },
+   "concrete_case": {
+    "noul": 0.98,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Send the clean-house advice back to GPT: skeptical re-examination, one GPT agent per alternative viewpoint, a rebuttal round, then one more robust plan (design/specs/2026-11-22-clean-house-advice/debate/plan.md). Acceptance test: none, a study judged by him.",
+  "src": "RIMMANDRAKE_DEBATE_CLEAN_HOUSE_ADVICE_WITH_GPT_ONE_AGENT_PER_VIEWPOINT",
+  "label": 1,
+  "ok": true,
+  "tok": 590,
+  "ms": 130,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.16,
+    "p": {
+     "significant": 0.42,
+     "minor": 0.58
+    }
+   },
+   "concrete_case": {
+    "noul": 0.08,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.08,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Plain-English rewrite batch of design/specs/2026-11-19-plain-english-rule-docs/batch_plan.md: the row named RIMMANDRAKE_REWRITE_SUBAGENT_FILES_SHARED_BLOCK_SIX_COPIES. Acceptance test: both no-loss checks of the plan find 0 lost after failing on a planted loss, the STE target of the plan is met, the tests that read the files pass, and a fresh reader finds no changed meaning (batch of the plan; his words are on the parent item)",
+  "src": "RIMMANDRAKE_REWRITE_SUBAGENT_FILES_SHARED_BLOCK_SIX_COPIES",
+  "label": 1,
+  "ok": true,
+  "tok": 638,
+  "ms": 115,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.0,
+    "p": {
+     "significant": 0.5,
+     "minor": 0.5
+    }
+   },
+   "concrete_case": {
+    "noul": 0.13,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.9,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "'Needs Mandrake' listed items whose turn has not come: a review dated 2026-12-05 and a flight session behind an unbuilt ticket. Acceptance test: selftest_owner_one_view.py t_not_his_before_its_turn and the later rows of selftest_owner_queue.py (red before the fix) (detached run: paperwork settle (RIMMANDRAKE_SETTLE_OWNER_PAPERWORK_ONE_TRUE_LIST_OF_WHAT_WAITS_ON_HIM))",
+  "src": "RIMMANDRAKE_HIDE_HIS_ROWS_BEFORE_THEIR_DATE",
+  "label": 1,
+  "ok": true,
+  "tok": 625,
+  "ms": 124,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.92,
+    "p": {
+     "significant": 0.96,
+     "minor": 0.04
+    }
+   },
+   "concrete_case": {
+    "noul": 0.81,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.8,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Explosive Knockback: review the 5 DIRTY files, then deploy so the game copy loses the closed-tag patch on Cold Storage lockers",
+  "src": "RIMMANDRAKE_DEPLOY_KNOCKBACK_DRAWING_STORAGE_OPEN",
+  "label": 1,
+  "ok": true,
+  "tok": 549,
+  "ms": 131,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.64,
+    "p": {
+     "significant": 0.82,
+     "minor": 0.18
+    }
+   },
+   "concrete_case": {
+    "noul": 0.8,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.16,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "A stochastic scene that ends short of its X of Y escalates to the Conductor, who decides whether the mod needs X of Y or X was a guess; write it in the rule text and the exit reader (Ruling of 2026-11-23 about 3:00 PM PST. Today the exit reader (cccb6c08f973) reads such a scene INCONCLUSIVE with no escalation. Enact: CLAUDE.md \u00a7A live test declares its kind, standing_rulings.md \u00a7Live tests have three kinds, the live-testing skills, and the reader: the shortfall raises one RAISE FIRST line to the Conductor with X, Y, the count reached and the scene's tag evidence; the scene's pass is held until the Conductor's call is recorded. Acceptance test: owed by the builder, a row red on cccb6c08f973 (",
+  "src": "RIMMANDRAKE_ENACT_SHORT_OF_X_OF_Y_ESCALATES_CONDUCTOR_CALLS_IT",
+  "label": 1,
+  "ok": true,
+  "tok": 723,
+  "ms": 162,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.94,
+    "p": {
+     "significant": 0.97,
+     "minor": 0.03
+    }
+   },
+   "concrete_case": {
+    "noul": 0.66,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.82,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "selftest_settings_screens.py RED on origin/main 7ec1b04602: WreckedMachines 5 groups found, expected 4; WasteRun 4 found, expected 3 (screens gained a group, audit not updated) (found running selftests for ASHPULSE_READERS_PRUNE_NOBODY_LEFT; failure is in files that item did not touch)",
+  "src": "SETTINGS_AUDIT_REFRESH_ONE_GROUP_TOO_MANY",
+  "label": 1,
+  "ok": true,
+  "tok": 604,
+  "ms": 114,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.86,
+    "p": {
+     "significant": 0.93,
+     "minor": 0.07
+    }
+   },
+   "concrete_case": {
+    "noul": 0.93,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Read and class 25 old list tickets (stevedesktop) by reader_brief.md: done, replaced, dead, not worth the touch, or real work (the old-ticket sort: the plan's batches (design/specs/2026-11-23-sort-old-list-tickets/plan.md))",
+  "src": "RIMMANDRAKE_SORT_OLD_STEVEDESKTOP_TICKETS_IN_ONE_PART",
+  "label": 1,
+  "ok": true,
+  "tok": 589,
+  "ms": 145,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.66,
+    "p": {
+     "significant": 0.17,
+     "minor": 0.83
+    }
+   },
+   "concrete_case": {
+    "noul": 0.05,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.69,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Find every GPT consult point, consolidate them behind one door in Dispatch (sign-in status and self-renewal included), prove coverage, retire the duplicates; do not disturb the Codex sandbox",
+  "src": "RIMMANDRAKE_ROUTE_EVERY_GPT_CONSULT_THROUGH_DISPATCH_ONE_DOOR_CAREFULLY",
+  "label": 1,
+  "ok": true,
+  "tok": 556,
+  "ms": 130,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.0,
+    "p": {
+     "significant": 0.5,
+     "minor": 0.5
+    }
+   },
+   "concrete_case": {
+    "noul": 0.06,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.25,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Gimme Some Slack 0.1.1: two false lines in hashed files (review generator sway line, dripLoops comment); land when his walk ends (detached ticket sweep of GimmeSomeSlack, 2026-11-22)",
+  "src": "RIMMANDRAKE_CORRECT_SLACK_TWO_FALSE_LINES_AFTER_HIS_WALK",
+  "label": 1,
+  "ok": true,
+  "tok": 576,
+  "ms": 135,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.82,
+    "p": {
+     "significant": 0.09,
+     "minor": 0.91
+    }
+   },
+   "concrete_case": {
+    "noul": 0.64,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.89,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Study, build nothing: map the art pipeline, split generic Codex graphics requests from RimMandrake art, explain the sandbox and its modal dialog and find a better way, say whether Dispatch can carry it, give a stepwise migration plan",
+  "src": "RIMMANDRAKE_STUDY_ART_PIPELINE_SPLIT_CODEX_GRAPHICS_FROM_RIMMANDRAKE_ART",
+  "label": 1,
+  "ok": true,
+  "tok": 568,
+  "ms": 138,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.02,
+    "p": {
+     "significant": 0.51,
+     "minor": 0.49
+    }
+   },
+   "concrete_case": {
+    "noul": 0.06,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.11,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Generate the owed FlowWorks tank designs (Futuristic x3, Industrial x2, Modern x2) with real image generation; the first run only repainted the shipped art because it stopped at a revoked sign-in (delegated: the generation half of the owner's tank art request of 2026-11-22; own item because the first run's review-sheet server pins that item's clone. Acceptance test: none, art judged by a second agent and picked by him)",
+  "src": "RIMMANDRAKE_GENERATE_FLOWWORKS_TANK_DESIGNS_FIRST_RUN_ONLY_REPAINTED",
+  "label": 1,
+  "ok": true,
+  "tok": 625,
+  "ms": 132,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.9,
+    "p": {
+     "significant": 0.95,
+     "minor": 0.05
+    }
+   },
+   "concrete_case": {
+    "noul": 0.94,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.94,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "selftest_artpipe.py writes a .codex_sandbox_backup_<stamp> folder into the real C:\\Users\\Mandrake on every run (169 of 170 such folders are its fixtures _codex_sandbox_base/_template): its --sync-sandbox test runs with RM_CODEX_SIDE=win and adopt_current_sandbox_state() backs up to windows_home(), not the test's temp dir. Fix: the backup root comes from the caller; the test passes its temp dir. Acceptance test: n0=$(ls -d /mnt/c/Users/Mandrake/.codex_sandbox_backup_* | wc -l); python3 src/RimMandrake/Utils/artpipe/selftest_artpipe.py >/dev/null 2>&1; n1=$(ls -d /mnt/c/Users/Mandrake/.codex_sandbox_backup_* | wc -l); test $n0 -eq $n1 (1 check; seen failing on base from the record: the pair 20",
+  "src": "RIMMANDRAKE_FENCE_ARTPIPE_SELFTEST_OUT_OF_PROFILE_169_LEAKS",
+  "label": 1,
+  "ok": true,
+  "tok": 737,
+  "ms": 120,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.9,
+    "p": {
+     "significant": 0.95,
+     "minor": 0.05
+    }
+   },
+   "concrete_case": {
+    "noul": 0.94,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.97,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Read and class 28 old list tickets (ops alarms) by reader_brief.md: done, replaced, dead, not worth the touch, or real work (the old-ticket sort: the plan's batches (design/specs/2026-11-23-sort-old-list-tickets/plan.md))",
+  "src": "RIMMANDRAKE_SORT_OLD_OPS_ALARMS_TICKETS_IN_ONE_PART",
+  "label": 1,
+  "ok": true,
+  "tok": 586,
+  "ms": 147,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.54,
+    "p": {
+     "significant": 0.23,
+     "minor": 0.77
+    }
+   },
+   "concrete_case": {
+    "noul": 0.04,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.63,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Read and class 34 old list tickets (pipeline tools) by reader_brief.md: done, replaced, dead, not worth the touch, or real work (the old-ticket sort: the plan's batches (design/specs/2026-11-23-sort-old-list-tickets/plan.md))",
+  "src": "RIMMANDRAKE_SORT_OLD_PIPELINE_TOOLS_PART_ONE_OF_FOUR",
+  "label": 1,
+  "ok": true,
+  "tok": 586,
+  "ms": 1125,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.5,
+    "p": {
+     "significant": 0.25,
+     "minor": 0.75
+    }
+   },
+   "concrete_case": {
+    "noul": 0.04,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.6,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "A second reader, who made none of the edits, reads every repair and late edit that the plain-English rewrite batches made after their meaning read, old text against new, and repairs any line whose meaning moved. Acceptance test: each result file in design/specs/2026-11-19-plain-english-rule-docs/results/ carries a 'Second read of the repairs' section with a row per repaired line; red today (grep finds the section in 2 of the files at most), green when every file has it",
+  "src": "RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM",
+  "label": 1,
+  "ok": true,
+  "tok": 634,
+  "ms": 108,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.58,
+    "p": {
+     "significant": 0.79,
+     "minor": 0.21
+    }
+   },
+   "concrete_case": {
+    "noul": 0.17,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.63,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "testq ingest skips every exact-tier job's verdict for a retired reader; nothing records it on its item (detached run: found while running the Rot A/B on the lane)",
+  "src": "RIMMANDRAKE_READ_TIER_JOB_VERDICTS_THE_READER_RETIRED_FIRST",
+  "label": 1,
+  "ok": true,
+  "tok": 555,
+  "ms": 110,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.84,
+    "p": {
+     "significant": 0.92,
+     "minor": 0.08
+    }
+   },
+   "concrete_case": {
+    "noul": 0.87,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "modcheck/reviewmap.py watches the Saves folder of the game it drives: on game b save_keeper wrote its keeper and reported ok False, new [] (it read game a's Saves; its never-overwrite guard too). Acceptance test: python3 src/RimMandrake/Utils/modcheck/selftest_reviewmap_game_saves.py (red on 08b3ba8881: 2 FAIL; green after: all PASS) (delegated: pipeline fixes its own defects (found in the visit run))",
+  "src": "RIMMANDRAKE_POINT_REVIEWMAP_AT_GAME_B_SAVES_KEEPER_BLIND",
+  "label": 1,
+  "ok": true,
+  "tok": 638,
+  "ms": 130,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.98,
+    "p": {
+     "significant": 0.99,
+     "minor": 0.01
+    }
+   },
+   "concrete_case": {
+    "noul": 0.95,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Send the two GPT questions skipped while the Codex sign-in was revoked (stepped pit floor, colonist in liquid), add GPT's ideas as mockups, and renew the Windows-side Codex sign-in without asking him",
+  "src": "RIMMANDRAKE_RESEND_GPT_QUESTIONS_AFTER_CODEX_SIGN_IN_AND_RENEW_WINDOWS_SIDE",
+  "label": 1,
+  "ok": true,
+  "tok": 563,
+  "ms": 114,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.46,
+    "p": {
+     "significant": 0.73,
+     "minor": 0.27
+    }
+   },
+   "concrete_case": {
+    "noul": 0.53,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.62,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Codex sign-in was revoked on WSL and Windows: every gpt_consult.py call returns VERDICT=AUTH (detached run: a failure happened and blocked a deliverable)",
+  "src": "RIMMANDRAKE_RESTORE_CODEX_LOGIN_REVOKED_ON_BOTH_SIDES",
+  "label": 1,
+  "ok": true,
+  "tok": 557,
+  "ms": 137,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 1.0,
+    "p": {
+     "significant": 1.0,
+     "minor": 0.0
+    }
+   },
+   "concrete_case": {
+    "noul": 0.81,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "A ring of pale whole squares (about radius 6) surrounds the native steam geyser above review stations 20-22, with paler squares even over station 21's water sheet; not steam (round drifting puffs) and not drawn by FlowWorks (no FlowWorks code touches undug ground round a geyser). Same size as EnvironmentalHazards' vapor-column field (RM_MapComponent_VaporColumns.cs:59), which has no drawer. Acceptance test: one live read names the drawer: hover a ring square (terrain line), list active overlays and mods drawing there; then the ring is gone on the review map (detached run RIMMANDRAKE_SORT_FLOWWORKS_WALK_REPORT_KNOWN_OR_NEW: his walk 2026-11-20, sorted offline; record design/RimMandrake/valida",
+  "src": "RIMMANDRAKE_TRACE_FLOWWORKS_GEYSER_PALE_RING_NOT_STEAM",
+  "label": 1,
+  "ok": true,
+  "tok": 713,
+  "ms": 145,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.6,
+    "p": {
+     "significant": 0.8,
+     "minor": 0.2
+    }
+   },
+   "concrete_case": {
+    "noul": 0.91,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.92,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Rename the four games for every reader and every input: ArchBig (Archmagi Steam, his full list), ArchSmall (Archmagi second install), Steve1, Steve2; old names stay as input aliases",
+  "src": "RIMMANDRAKE_RENAME_GAMES_ARCHBIG_ARCHSMALL_STEVE1_STEVE2_LETTERS_UNREADABLE",
+  "label": 1,
+  "ok": true,
+  "tok": 563,
+  "ms": 126,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.8,
+    "p": {
+     "significant": 0.1,
+     "minor": 0.9
+    }
+   },
+   "concrete_case": {
+    "noul": 0.13,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.11,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Write his two cards of 2026-11-21 into the rule files: the conditions rule is a default not a ban, no offline test owed, a stated load exception is allowed, three principles adopted, the file binds (his card answers and typed ruling of 2026-11-21 (notes on the parent item); Acceptance test: none, rule prose; a fresh reader checks it against his words)",
+  "src": "RIMMANDRAKE_ENACT_PRINCIPLES_CARDS_RULE_IS_DEFAULT_NOT_A_BAN",
+  "label": 1,
+  "ok": true,
+  "tok": 613,
+  "ms": 114,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.08,
+    "p": {
+     "significant": 0.46,
+     "minor": 0.54
+    }
+   },
+   "concrete_case": {
+    "noul": 0.06,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.13,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Codex Designer dry runs (stages 0-1) on 22 Baroque biomes + AtmosphericBase: outputs in D:\\ClaudeWork\\rimmandrake\\designer_codex\\<Mod>\\; commit them to design/, then put each mod's first two questions to the owner",
+  "src": "RIMMASTER_RUN_CODEX_DESIGNER_TO_QUESTIONS_23_MODS",
+  "label": 1,
+  "ok": true,
+  "tok": 585,
+  "ms": 102,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.42,
+    "p": {
+     "significant": 0.29,
+     "minor": 0.71
+    }
+   },
+   "concrete_case": {
+    "noul": 0.1,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.46,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Move the last two readers of the BRIDGE glance file to the game lock; retire the file's readers (delegated: build group from the sweep report d14e71762f; acceptance: bash design/specs/2026-11-22-pipeline-single-source-sweep/acceptance.sh BRIDGE (red today per the sweep, 1 GREEN line expected))",
+  "src": "RIMMANDRAKE_MOVE_GAME_DRIVER_READERS_OFF_BRIDGE_FILE_TWO_LEFT",
+  "label": 1,
+  "ok": true,
+  "tok": 608,
+  "ms": 113,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.36,
+    "p": {
+     "significant": 0.68,
+     "minor": 0.32
+    }
+   },
+   "concrete_case": {
+    "noul": 0.37,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.58,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Pyrelands: bare t.screenshot() captures show one fixed east-edge frame, not the row's subject (no furnace-beast in giant_furnace_beast, no herd in herd_follows_two_day_old_burn) (visit 2 capture review)",
+  "src": "RIMMANDRAKE_FRAME_PYRE_CHAIN_SHOTS_ON_THEIR_SUBJECT",
+  "label": 1,
+  "ok": true,
+  "tok": 575,
+  "ms": 119,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.96,
+    "p": {
+     "significant": 0.98,
+     "minor": 0.02
+    }
+   },
+   "concrete_case": {
+    "noul": 0.95,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.96,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "A trial of whether the rewritten rule text makes a reader act more correctly: fresh Sonnet readers each get one rule text (old or new) and one real situation and say what to do; a blind grader scores each answer against a key written from the source of truth; style, binding and correction changes are scored apart, with an unchanged control. Pilot first. Acceptance test: none, it is a measurement; its prediction is committed before the first reader runs",
+  "src": "RIMMANDRAKE_TRIAL_WEAK_READER_ACTS_ON_OLD_AND_NEW_RULE_TEXT",
+  "label": 1,
+  "ok": true,
+  "tok": 612,
+  "ms": 123,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.06,
+    "p": {
+     "significant": 0.53,
+     "minor": 0.47
+    }
+   },
+   "concrete_case": {
+    "noul": 0.04,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.26,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Three new static caches (Pyrelands burn line, FlowWorks fetch lips) hold per-game state unreviewed (detached run: seen red while running the selftests that read the vitals files; not this item's files)",
+  "src": "RIMMANDRAKE_GUARD_STATIC_GAME_STATE_THREE_NEW_CACHES_UNREVIEWED",
+  "label": 1,
+  "ok": true,
+  "tok": 568,
+  "ms": 175,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.54,
+    "p": {
+     "significant": 0.23,
+     "minor": 0.77
+    }
+   },
+   "concrete_case": {
+    "noul": 0.58,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.64,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Pipeline: nothing after Stage 6 read the UNRUN rows, the build match or a reader owed for a mod change landed at Stage 7 (Pyrelands reached his walk on 2026-11-24 with ten checks not run). Acceptance test: python3 src/RimMandrake/rimflow/selftest_walk_owes_checks.py (15 tests; 11 of the first 12 red on 5e1ee7c2d0) and selftest_rerun_relation.py (71 checks; 4 red on ef8c1da1d7) (the brief asks for one ticket with its acceptance test)",
+  "src": "RIMMANDRAKE_KEEP_MOD_OFF_HIS_WALK_WHILE_ITS_CHECKS_ARE_OWED",
+  "label": 1,
+  "ok": true,
+  "tok": 662,
+  "ms": 153,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.98,
+    "p": {
+     "significant": 0.99,
+     "minor": 0.01
+    }
+   },
+   "concrete_case": {
+    "noul": 0.83,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.97,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "Take the retired v3 roles (Producer, Auditor, and any other v3 or Relentless seat still standing in live rule text) out of the active rules: role files, schedule rows, every live reference, and the alarms and incidents that exist only for them. Keep the Codex versions of modern roles. Acceptance test: the retired-era remnant check names each retired role; red on the parent, green after",
+  "src": "RIMMANDRAKE_REMOVE_RETIRED_V3_ROLES_FROM_ACTIVE_RULES_STILL_LISTED",
+  "label": 1,
+  "ok": true,
+  "tok": 605,
+  "ms": 143,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.64,
+    "p": {
+     "significant": 0.82,
+     "minor": 0.18
+    }
+   },
+   "concrete_case": {
+    "noul": 0.25,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.25,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "FlowWorks OL: two rows read BLOCKED although their readers landed 2026-11-13 (detached run: visit 3 needed check not counted (HARNESS))",
+  "src": "RIMMANDRAKE_WIRE_FLOWWORKS_OL_TO_READERS_LANDED_EIGHT_DAYS_AGO",
+  "label": 1,
+  "ok": true,
+  "tok": 560,
+  "ms": 129,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "significant",
+    "conf": 0.48,
+    "p": {
+     "significant": 0.74,
+     "minor": 0.26
+    }
+   },
+   "concrete_case": {
+    "noul": 0.86,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.95,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ },
+ {
+  "text": "FlowWorks review map: pale square blocks in the 2 m water pit (station 21) (detached run: visit 3 strange thing, filed for a judge)",
+  "src": "RIMMANDRAKE_JUDGE_FLOWWORKS_PALE_BLOCKS_IN_TWO_METRE_PIT",
+  "label": 1,
+  "ok": true,
+  "tok": 556,
+  "ms": 113,
+  "ans": {
+   "verdict": {
+    "noul": null,
+    "choice": "minor",
+    "conf": 0.2,
+    "p": {
+     "significant": 0.4,
+     "minor": 0.6
+    }
+   },
+   "concrete_case": {
+    "noul": 0.55,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   },
+   "measured": {
+    "noul": 0.9,
+    "choice": null,
+    "conf": null,
+    "p": {}
+   }
+  }
+ }
+]
