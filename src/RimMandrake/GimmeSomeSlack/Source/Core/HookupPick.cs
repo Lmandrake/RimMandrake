@@ -11,7 +11,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
     /// only the connectParent left that conduit end free: a second, sparking cord. Rule: a connector whose connectParent cell
     /// is not under or beside it, but which has a same-net conduit END (at most one conduit neighbour) under or beside its
     /// footprint, hooks that end instead -- one cord into the machine. A parent conduit that is itself an end stays hooked
-    /// too, so the swap never strands it. Verse-free so the selftest runs the production rule.</summary>
+    /// too, so the swap never strands it -- unless it is the other end of the run already hooked by a cord in sight: that one is a real loose end (a
+    /// cut's), and hooking it too drew a loop at the device and no end at the cut (seen live 2026-11-24). Verse-free so the selftest runs the production rule.</summary>
     public static class HookupPick
     {
         /// <summary>A missing cord's authoritative connectParent, within six cells of the nearest occupied footprint
@@ -57,7 +58,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
             Cell? end = PickEnd(m, parentCell, w.IsConduit, c => Degree(w, c), sameNet);
             if (!end.HasValue) return null;
             var res = new List<Cell> { end.Value };
-            if (parentCell.HasValue && w.IsConduit(parentCell.Value) && Degree(w, parentCell.Value) <= 1) res.Add(parentCell.Value);
+            Dictionary<Cell, int> runs = null;
+            if (parentCell.HasValue && w.IsConduit(parentCell.Value) && Degree(w, parentCell.Value) <= 1
+                && (w.IsBuried(end.Value) || RunOf(w, parentCell.Value, ref runs) != RunOf(w, end.Value, ref runs))) res.Add(parentCell.Value);
             return res;
         }
 

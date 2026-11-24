@@ -30,6 +30,16 @@ ROWS = ["WD_save_before_cut_refused", "WD_reload_true_to_grid", "WD_reload_live_
 CUT_MARK = b"<state>Cut</state>"     # SpanLink.ExposeData: the state is written when it is not Up; a cut span is written at both poles
 
 
+# LIMIT: danger, vanilla's power net switches a new lamp on some ticks after it is built (dark at 8 ticks, lit at 258, seen live
+# 2026-11-24), so a short wait read the uncut scene as unlit. A lamp with no power stays dark to the end of the wait and refuses the row.
+LIT_WAIT = (20, 50)
+
+
+def lamp_on(B, at):
+    t = [x for x in B.ap("net:%d,%d" % at).get("things") or [] if x.get("def") == "StandingLamp"]
+    return t[0].get("powerOn") if t else None
+
+
 def stage(B, V):
     r = "%d,%d,%d,%d" % RECT
     B.call("jawa/destroy_batch", rects=r, categories="All")
@@ -46,7 +56,10 @@ def stage(B, V):
     pos = {(a["x"], a["z"]): a for a in B.ap("census").get("anchors") or []}
     if POLE_A in pos and POLE_B in pos and not any(q.get("other") == pos[POLE_B]["id"] for q in pos[POLE_A].get("links") or []):
         B.ap("link:%d,%d" % (pos[POLE_A]["id"], pos[POLE_B]["id"]))
-    B.ticks(5)
+    for _ in range(LIT_WAIT[0]):
+        B.ticks(LIT_WAIT[1])
+        if all(lamp_on(B, at) is True for at in (FLOOR_LAMP, SPAN_LAMP)):
+            break
 
 
 def wire_down(B):
@@ -78,8 +91,7 @@ def read(B, sleep=time.sleep, ticks=0):
                                     "links": sorted((here.get(k.get("other"), (-1, -1)), k.get("state")) for k in q.get("links") or [])}
     lamps = {}
     for at in (FLOOR_LAMP, SPAN_LAMP):
-        t = [x for x in B.ap("net:%d,%d" % at).get("things") or [] if x.get("def") == "StandingLamp"]
-        lamps[at] = t[0].get("powerOn") if t else None
+        lamps[at] = lamp_on(B, at)
     return {"cords": sorted(c.get("edgeHashes") or {}), "across": c.get("cordsAcrossNets"), "noNet": c.get("cordEndsWithoutNet"),
             "inWall": c.get("verticesInUnwalkable"), "edges": c.get("cordEdges"),
             "ends": sorted((tuple(e["cell"]), e.get("registryLive"), e.get("netLive")) for e in c.get("ends") or []),

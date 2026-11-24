@@ -74,6 +74,26 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(HookupPick.PickCarrier(w4, new List<Cell> { new Cell(3, 9), new Cell(8, 9) }, ref runs).Count == 2, "both ends of one run beside it: both hook, neither is left a free end");
         }
 
+        /// <summary>Seen live 2026-11-24 (visit 3 of 0.2.0, the wire-down plot): a lamp stands at one end of a run and vanilla's parent is the run's other end (the cut
+        /// cell's neighbour). It hooked both ends of its one run: the cut's far side drew a loop at the lamp and no dead end.</summary>
+        private static void CutRunKeepsItsDeadEnd()
+        {
+            for (int len = 2; len <= 6; len++)
+            {
+                var w = new CordWorld(30, 30);
+                for (int x = 11 - len; x <= 10; x++) w.SetConduit(new Cell(x, 9));
+                w.SetBlocked(new Cell(10, 10), BlockKind.Device);
+                var lamp = new MachineInfo { Id = "clamp", Kind = MachineKind.Consumer, X0 = 10, Z0 = 10, W = 1, H = 1 };
+                var cut = new Cell(11 - len, 9);
+                List<Cell> pk = HookupPick.Pick(w, lamp, cut, c => true);
+                Check(pk != null && pk.Count == 1 && pk[0].Equals(new Cell(10, 9)), "run of " + len + " cut off at a lamp's parent: the lamp hooks the end beside it, not both ends");
+                lamp.Hookups.AddRange(pk ?? new List<Cell>());
+                w.Machines.Add(lamp);
+                int ends = FreeEnds(w);
+                Check(ends == 1, "run of " + len + " cut off at a lamp's parent: the cut draws its one end (" + ends + ")");
+            }
+        }
+
         public static void Run()
         {
             CarrierHookups();
@@ -111,6 +131,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             w5.SetConduit(new Cell(9, 9));
             List<Cell> pk5 = HookupPick.Pick(w5, p5, new Cell(9, 9), c => true);
             Check(pk5 != null && pk5.Count == 2 && pk5.Contains(new Cell(9, 9)), "a far parent end stays hooked beside the adopted end");
+
+            CutRunKeepsItsDeadEnd();
 
             // WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: a ruin has no net, so sameNet is not asked; one cord per run touching it
             CordWorld r1 = Scene(out MachineInfo rp1, out _);
