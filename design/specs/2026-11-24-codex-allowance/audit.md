@@ -68,9 +68,9 @@ Review fixes with no ticket, on main: `bde6d4ae9d`, `9f5835b8ef`, `7aa1752ee4`, 
 
 - `gss4`: landed whole as `f4d5517ca1`; not a remainder.
 - `fw_pit_hold`: the moat run landed a wider fix. `fw_rivers` weir part and `pyr` automatic foam: dropped by the helper
-  (rare; a vanilla patch).
+  (rare; a vanilla patch). Their polish lines were missing; this audit wrote them.
 - `launch_perm` publish selector (a launch line in a non-pipeline file is not checked at `./publish`): put on the polish
-  list by the first run. The daily reader still sees it.
+  list by the first run. The nightly look still sees it.
 - `leftovers`, `telem4`, `mkdirtrace`: test lines only.
 
 ## Fresh read of the lane's pipeline fixes (owed by the second run)
