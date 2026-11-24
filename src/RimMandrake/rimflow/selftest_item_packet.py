@@ -65,6 +65,12 @@ def t_holds_the_item():
         chk(lambda s=s: s in t, "holds-the-item: %s" % s)
     chk(lambda: t.index("first note") < t.index("last note"), "holds-the-item: the notes stay oldest first")
     chk(lambda: pk()["left_out"] == [] and "Nothing was left out" in t, "holds-the-item: under the limit nothing goes")
+    linked = "RIMMANDRAKE_OTHER_ITEM_HERE"
+    r = pk(linked=[{"id": linked, "state": "done", "title": "Check the account-level guard. Keep the work visible."}])
+    chk(lambda: "- %s [done] Keep the work visible." % linked in r["text"],
+        "holds-the-item: a linked item keeps its ID and [done] after title redaction")
+    chk(lambda: "account-level" not in r["text"] and any("linked item " + linked in x for x in r["left_out"]),
+        "holds-the-item: a linked title redaction is counted")
     run = {"ts": "2026-10-30T20:45:21Z", "result": "partial",
            "config": "BENCH independent offline e2e through real writers (bfeed.py 17/18: MEASURED, units exact, dedup ok, "
                      "judge spend off-arm, 8 broken feeds UNMEASURED) + 14 mutants all killed (mutB.txt); FAIL probe d1: "
@@ -293,6 +299,7 @@ BLIND = (("blind judge", "You are the blind judge: you did not build this mod.")
 
 
 def t_blind_roles_get_none():
+    import card_capture
     import control
     import coverage_judge
     import detached_helper as DH
@@ -359,6 +366,31 @@ def t_blind_roles_get_none():
         chk(lambda: (rec.get("env") or {}).get(IP.ROLE_ENV) == "examiner" and "You start fresh (examiner)" in msg
             and "ITEM PACKET" not in msg and "cli.py show" not in msg,
             "blind-roles-get-none: a converted manual resume keeps the examiner role and no packet or show command")
+    with tempfile.TemporaryDirectory() as d:
+        unit = "rm-detached-blind-judge"
+        at = DH._epoch(EVENTS[2]["ts"])
+        rec = {"unit": unit, "item": IT, "seat": "BENCH", "at": at, "result": "success (exited 0)",
+               "env": {"RM_CONTROL_STAGE": "blind_challenge"}}
+        opened = {"state": "doing", "notes": [ev("note", 7, text="LEFT OPEN: finish the remaining checks")]}
+        gates = dict.fromkeys(LOC.GATES, lambda _: None)
+        rec["continue_plan"] = LOC.plan(rec, opened, {}, now=at + 8, gates=gates, root=d)
+        DH.write_record(rec, d)
+        launched = {}
+
+        def capture(seat, item, brief, model, max_s, budget, **kw):
+            launched.update(kw)
+            launched["brief"] = DH.brief_message(brief, item, seat, d, env=kw["env"])
+            return 0, "DETACHED rm-detached-blind-continued"
+
+        with patch.object(card_capture, "item_cards", return_value=[]):
+            r = LOC.run(unit, now=at + 9, launch_fn=capture, gates=gates, root=d, reader=lambda _: opened,
+                        log_path=os.path.join(d, "conductor.md"), projects=os.path.join(d, "projects"))
+        msg = launched.get("brief", "")
+        chk(lambda: r["act"] == "continued" and not launched.get("resume_session")
+            and launched["extra"]["continue_how"] == "fresh" and opened["notes"][0]["text"] in msg,
+            "blind-roles-get-none: a blind_challenge with a LEFT OPEN note continues fresh")
+        chk(lambda: "You start fresh (blind judge)" in msg and "ITEM PACKET" not in msg and "cli.py show" not in msg,
+            "blind-roles-get-none: a blind_challenge continuation has no item packet or show command")
     maker = {}
     DH.mark_fresh(maker, "Build it.")
     chk(lambda: maker == {}, "blind-roles-get-none: a maker's record gets no role")

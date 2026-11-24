@@ -1,7 +1,8 @@
 # BOUNDARY: the item packet in each detached brief (item_packet.py), Design Version 0.1.0
 
 Code: `src/RimMandrake/rimflow/item_packet.py` (all of it), and `brief_message`, `item_history` and `mark_fresh` of
-`src/RimMandrake/rimflow/detached_helper.py`. Item: `RIMMANDRAKE_PASTE_ITEM_HISTORY_INTO_BRIEFS_1503_SHOWS_CUT`. Why: in
+`src/RimMandrake/rimflow/detached_helper.py`, and the packet hint in `src/RimMandrake/rimflow/left_open_continue.py`.
+Item: `RIMMANDRAKE_PASTE_ITEM_HISTORY_INTO_BRIEFS_1503_SHOWS_CUT`. Why: in
 the week to 2026-11-23 agents ran `cli.py show` in 1,615 turns, and cut its output by hand in 1,503 of them. Each promise
 has a test of its name in `src/RimMandrake/rimflow/selftest_item_packet.py`. Acceptance:
 `design/specs/2026-11-23-agent-work-to-code/acceptance/rank6_item_packet_accept.py`.
@@ -32,6 +33,7 @@ has a test of its name in `src/RimMandrake/rimflow/selftest_item_packet.py`. Acc
   items with their states, the open criteria, the commits that name the item, and the time of the reading. An item spawned
   from a finding links to the source item once, with its state, even when the finding names a run and the prose never names
   the source. A run keeps its time, result and clean evidence when spend language is removed from its configuration.
+  A linked item keeps its ID and state when spend language is removed from its title. The redaction is counted in `left_out`.
 - **decisive-notes-are-kept.** Over the budget these are never dropped: the last note, each note with the owner's words,
   each `LEFT OPEN:`, `PROGRESS:`, `RULING` and `REFUSED` note, each run that is not a pass, the open criteria.
 - **oldest-routine-notes-go-first.** Over the budget the oldest routine notes go first, then the oldest commits, then the
@@ -50,7 +52,7 @@ has a test of its name in `src/RimMandrake/rimflow/selftest_item_packet.py`. Acc
   no packet and no `show` command from this module, and neither does its resume or its continuation (the first launch leaves
   the role on the run's env as `RM_FRESH_ROLE`). A manual resume converted to a fresh session carries that role from the
   earlier run and omits the packet and its `show` command. The pipeline stages `blind_challenge` and `pre_human` hold none
-  either.
+  either. An automatic continuation from `blind_challenge` following a `LEFT OPEN:` note starts fresh and omits both.
 - **every-detached-launch-carries-the-packet.** `detached_helper.brief_message` holds the packet of every other run, and
   `_launch_locked` makes its message with it.
 - **a-launch-never-fails-on-the-packet.** When `gather` or `packet` raises, the brief still goes out. It says could not look,

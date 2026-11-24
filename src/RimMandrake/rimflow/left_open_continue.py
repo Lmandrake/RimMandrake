@@ -447,10 +447,13 @@ def header(rec, p, now):
                          "; it was saved in %s (HEAD, diff.patch, untracked.tar, deleted)" % rec["bundle"]
                          if rec.get("bundle") else ""))
         return "\n".join(lines) + "\n"
+    import item_packet
+    role = item_packet.role_of(brief_of(rec), rec.get("env"))
+    packet_hint = "" if role else (" and the ITEM PACKET below (no packet, or a part left out: `%s`)"
+                                   % (item_packet.SHOW % p["target"]))
     lines.append("This is a fresh session with no memory of the previous one. Your clone stands on origin/main. First "
-                 "read `git log --oneline -15` and the ITEM PACKET below (no packet, or a part left out: `python3 "
-                 "src/RimMandrake/rimflow/cli.py show %s`); do not redo work that is already published. Then carry on from where it stopped%s." % (
-                     p["target"], ", as the progress record below says" if p.get("progress") else ""))
+                 "read `git log --oneline -15`%s; do not redo work that is already published. Then carry on from where "
+                 "it stopped%s." % (packet_hint, ", as the progress record below says" if p.get("progress") else ""))
     return "\n".join(lines) + "\n" + ("\n" + progress_block(p.get("progress")) if p.get("progress") else "")
 
 

@@ -109,6 +109,13 @@ def _run(r):
     return text, config_lost + evidence_lost
 
 
+def _linked_row(x):
+    title, lost = clean(x.get("title"))
+    text = "%s [%s]%s%s" % (x.get("id"), x.get("state") or COULD_NOT, " " + title if title else "",
+                            " (%s)" % x["how"] if x.get("how") else "")
+    return text, lost
+
+
 def _ranges(nums):
     """[1, 2, 3, 7] -> "1-3, 7"."""
     out = []
@@ -143,9 +150,8 @@ def _parts(facts, budget):
         out["notes"] = None
     rows = (("commits", lambda c: clean("%s %s" % (c.get("sha"), c.get("subject"))), lambda c: "commit %s" % c.get("sha"),
              lambda c: (False, 1)),
-            ("linked", lambda x: clean("%s [%s] %s%s" % (x.get("id"), x.get("state") or COULD_NOT, x.get("title") or "",
-                                                        " (%s)" % x["how"] if x.get("how") else "")),
-             lambda x: "linked item %s" % x.get("id"), lambda x: (False, 2 if x.get("state") in CLOSED else 4)),
+            ("linked", _linked_row, lambda x: "linked item %s" % x.get("id"),
+             lambda x: (False, 2 if x.get("state") in CLOSED else 4)),
             ("runs", _run, lambda r: "run of %s (%s)" % (r.get("ts"), r.get("result")), lambda r: (r.get("result") != "pass", 3)),
             ("criteria", lambda c: clean(str(c)), lambda c: "criterion", lambda c: (True, 9)))
     for kind, say, name, how in rows:
