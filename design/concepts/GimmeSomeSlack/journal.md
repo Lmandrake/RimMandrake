@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stage 8, his live walk, since 2026-11-24 2:58 PM PST (`version/stage_record.json`).
+- **Stage now:** Version passed on his word, since 2026-11-24 3:01 PM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 2:58 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 3:01 PM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -659,4 +659,13 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Checks passed: order, by, version, hold, walk_checks_stand, walk_brief, walk_items_closed.
 - Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-24 2:55 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 2:55 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-24 3:01 PM PST, stage change: His live walk (Stage 8) to Version passed (Passed) (by BENCH)
+
+- Why: RIMMANDRAKE_RECORD_SLACK_VERSION_PASS_AFTER_HIS_WALK_ALL_STATIONS_PASSED: he walked GSS_020_CLOSE_WALK_20261124 and passed every station
+- Checks passed: order, by, version, hold, owner_said, walk_build, raid_bars_decided, pass_record_new.
+- Owner said: OWNER:1795551645304319538
+- Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-24 2:58 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 2:58 PM PST).
 - Record: `version/stage_record.json`.

@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "GimmeSomeSlack",
   "version": "0.2.0",
-  "stage": "his_walk",
-  "stage_label": "His live walk (Stage 8)",
-  "since": "2026-11-24T14:58:44-08:00",
+  "stage": "passed",
+  "stage_label": "Version passed (Passed)",
+  "since": "2026-11-24T15:01:50-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -215,6 +215,27 @@
         "walk_checks_stand",
         "walk_brief",
         "walk_items_closed"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "passed",
+      "at": "2026-11-24T15:01:50-08:00",
+      "by": "BENCH",
+      "why": "RIMMANDRAKE_RECORD_SLACK_VERSION_PASS_AFTER_HIS_WALK_ALL_STATIONS_PASSED: he walked GSS_020_CLOSE_WALK_20261124 and passed every station",
+      "unit": "rm-detached-bench-rimmandrake-record-slack-version-pass-af-1795560142",
+      "confirmed": {
+        "owner_said": "OWNER:1795551645304319538"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "owner_said",
+        "walk_build",
+        "raid_bars_decided",
+        "pass_record_new"
       ]
     }
   ]
