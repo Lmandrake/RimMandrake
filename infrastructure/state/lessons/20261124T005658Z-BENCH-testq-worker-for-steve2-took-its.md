@@ -1,0 +1,1 @@
+A testq worker for Steve2 took its Mods and companion folder from RM_STEAMAPPS (Steve1's install): every Steve2 job before 2026-11-23 16:50 attested Steve1's files. Fixed in worker.mods_dir (3bfaf78cd0). A 'FRESH' companion line names a path: read the path, and ask the running game (jawa/running_mods loadedOf=ours) what it loaded.

@@ -108,7 +108,7 @@ def receipt(out):
     asm = [a for m in mods for a in m.get("assemblies") or []]
     row("receipt.every_assembly_has_its_id", bool(asm) and all(a.get("mvid") and a.get("fileHoldsLoadedCode") is not None for a in asm),
         "%d assemblies; states %s" % (len(asm), {k: len(v) for k, v in states.items()}))
-    row("receipt.clean_load_is_loaded", not any(k not in ("LOADED", "NO_ASSEMBLY") for k in states), states.get("LOADED"))
+    row("receipt.clean_load_is_loaded", bool(mods) and not any(k not in ("LOADED", "NO_ASSEMBLY") for k in states), states.get("LOADED"))
     return next((m for m in mods if m.get("state") == "LOADED" and m.get("assemblies")), None)
 
 
@@ -154,7 +154,8 @@ def calm():
     r = qs("read")
     row("calm.read_before_is_not_calm", r.get("verdict") == "NOT_CALM" and r.get("calm") is False and status(r, "incident_gate") == "NOT_CALM"
         and status(r, "arrivals") == "COULD_NOT_READ", "%s | %s" % (r.get("verdict"), r.get("notCalm")))
-    row("calm.reassert_before_calm_is_refused", qs("reassert").get("success") is False, "refused")
+    r = qs("reassert")
+    row("calm.reassert_before_calm_is_refused", r.get("success") is False and "calm first" in str(r), str(r)[:120])
     r = qs("calm", clear=True, minutes=60, **{"except": "wether"})
     row("calm.unknown_except_is_refused", r.get("success") is False and "wether" in str(r), str(r)[:160])
     r = qs("calm", clear=True, minutes=60)
@@ -217,8 +218,11 @@ def calm():
     r = qs("calm", allowIncidents="raidenemy", minutes=60)
     f = call("jawa/fire_incident", incidentDef="RaidEnemy", forced=True, points=200)
     call("jawa/fire_incident", incidentDef="ManhunterPack", forced=True, points=200)
-    step(60)
-    r = qs("read")
+    for _ in range(12):                          # the arrival mode is the raid's own: walkers read at +60, drop pods later
+        step(60)
+        r = qs("read")
+        if status(r, "hostiles") == "NOT_CALM":
+            break
     row("calm.allowed_raid_runs_and_is_named", f.get("fired") is True and (status(r, "hostiles") == "NOT_CALM" or f.get("blockedByDialog")) and
         ((r.get("breaches") or {}).get("counts") or {}).get("incident_held", 0) == 1, "fired=%s hostiles=%s held=%s" % (
             f.get("fired"), (things(r, "hostiles") or [])[:2], (r.get("breaches") or {}).get("counts")))
@@ -276,6 +280,7 @@ def tap():
     r = fe("read")
     row("tap.clean_window_is_none_seen", r.get("state") == "NONE_SEEN", "%s blind=%s first=%s" % (
         r.get("state"), r.get("blind"), ((r.get("window") or {}).get("firstException") or {}).get("text")))
+    fe("arm", label="plain error")               # its own window: another mod's plain error may be the first in the last one
     call("jawa/static_call", type="Verse.Log", method="Error", args="a plain error of the proof")
     r = fe("read")
     row("tap.plain_error_is_not_an_exception", r.get("state") == "NONE_SEEN" and "plain error" in str((r.get("window") or {}).get("firstError")), (r.get("window") or {}).get("errors"))
@@ -296,7 +301,7 @@ def tap():
     r = fe("arm", label="while capped")
     row("tap.capped_log_is_partial_never_none", r.get("state") == "NONE_SEEN_PARTIAL", "%s %s" % (r.get("state"), r.get("blind")))
     s = (r.get("session") or {}).get("firstException") or {}
-    row("tap.arm_keeps_the_sessions_first", s.get("seq") == (s0 or first).get("seq"), "seq %s" % s.get("seq"))
+    row("tap.arm_keeps_the_sessions_first", s.get("seq") is not None and s.get("seq") == (s0 or first).get("seq"), "seq %s" % s.get("seq"))
     call("jawa/static_call", type="Verse.Log", method="ResetMessageCount")
     r = fe("arm", label="unity")
     row("tap.revived_log_is_none_seen", r.get("state") == "NONE_SEEN", r.get("blind"))
