@@ -142,5 +142,16 @@ for k in ("draws", "dries", "walls"):
 for k in ("pressure", "switch", "thick", "brine", "effects", "reserve"):
     expect("no biomes (not IsSoaked rows)", res, IDS[k], "PASS")
 
+# ---- (6) RIMMANDRAKE_DIAGNOSE_FLOWWORKS_PUMPS_GIVE_NO_PRESSURE_FOUR_RUNS: a site with no power, or a probe that answers
+# nothing, is never a verdict on the mod (the live rows read [MOD] FAIL in 14 runs)
+for fault, cls in (("no_charge", "SITE"), ("dead_battery", "SITE"), ("probe_refused", "SITE")):
+    code, res, B, _ = run(faults=(fault,))
+    bad = [(r["id"], r["status"], r["class"]) for r in res["rows"] if r["status"] == "FAIL"]
+    check("fault %s: no row FAILs" % fault, not bad and len(res["rows"]) == len(declared) and code == 2, (bad, len(res["rows"]), code))
+    for k in ("pressure", "thick", "switch", "effects"):
+        s_, c_ = st(res, IDS[k])
+        check("fault %s: %s is not a MOD FAIL" % (fault, IDS[k]), s_ == "UNMEASURED" and c_ == cls or
+              (s_ == "PASS" and k == ("effects" if fault == "probe_refused" else "switch")), (s_, c_))   # effects reads no tank; switch no power
+
 print("\n%s" % ("selftest_sprinkler_live: ALL OK" if not FAILS else "selftest_sprinkler_live: %d FAILED: %s" % (len(FAILS), FAILS)))
 sys.exit(1 if FAILS else 0)

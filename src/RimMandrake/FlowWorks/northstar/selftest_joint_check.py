@@ -171,24 +171,25 @@ check(J.judge(a5)[0] == "UNMEASURED", "a strand never drawn is UNMEASURED for th
 
 
 class GateB(object):
-    """One map; the probe answers through mod_settings_field: serial bumps on each request."""
+    """One map; the probe answers through mod_settings_fields: serial bumps on each request."""
     def __init__(self, joints, crossings):
         self.serial, self.req = 0, ""
         self.joints, self.crossings = joints, crossings
 
     def call(self, tool, kw):
-        if tool == "jawa/mod_settings_field":
-            if kw.get("action") == "set":
-                self.req = kw.get("value")
+        if tool == "jawa/mod_settings_fields":
+            before = str(self.serial)
+            if kw.get("setField"):
+                self.req = kw.get("setValue")
                 self.serial += 1
-                return {"success": True}
-            if kw.get("field") == "serial":
-                return {"value": self.serial}
+                return {"success": True, "values": {"serial": before}, "set": {"field": kw["setField"]}}
             if self.req == "joints":
-                return {"value": json.dumps({"success": True, "tolerance": 0.05, "reels": 1, "joints": self.joints, "crossings": self.crossings})}
-            if self.req == "census":
-                return {"value": json.dumps({"success": True, "hoses": [{"id": 1, "laid": True, "wallCross": 0, "reel": [0, 0], "footprint": [0, 0, 2, 2], "centreCells": [[3, 3]]}]})}
-            return {"value": json.dumps({"success": False, "error": "no liquid machine"})}
+                ans = {"success": True, "tolerance": 0.05, "reels": 1, "joints": self.joints, "crossings": self.crossings}
+            elif self.req == "census":
+                ans = {"success": True, "hoses": [{"id": 1, "laid": True, "wallCross": 0, "reel": [0, 0], "footprint": [0, 0, 2, 2], "centreCells": [[3, 3]]}]}
+            else:
+                ans = {"success": False, "error": "no liquid machine"}
+            return {"success": True, "values": {"serial": before, "result": json.dumps(ans)}}
         if tool == "jawa/list_things":
             return {"success": True, "countMatched": 0, "things": []}
         return {"success": False}

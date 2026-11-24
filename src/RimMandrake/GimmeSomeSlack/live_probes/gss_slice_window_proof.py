@@ -21,14 +21,15 @@ def call(tool, **kw):
     return json.loads(r["content"][0]["text"]) if isinstance(r, dict) and r.get("content") else r
 PROBE = "RimMandrake.GimmeSomeSlack.GimmeSomeSlackProbe"
 def probe(cmd, wait_s=20.0):
-    before = call("jawa/mod_settings_field", typeName=PROBE, action="get", field="serial").get("value")
-    call("jawa/mod_settings_field", typeName=PROBE, action="set", field="request", value=cmd)
+    r = call("jawa/mod_settings_fields", typeName=PROBE, fields="serial", setField="request", setValue=cmd)   # _field refuses a probe type
+    before = (r.get("values") or {}).get("serial")
+    if before is None or not r.get("success"): return {"success": False, "error": "probe not posted", "raw": r}
     t0 = time.time()
     while time.time() - t0 < wait_s:
-        if call("jawa/mod_settings_field", typeName=PROBE, action="get", field="serial").get("value") != before:
-            res = call("jawa/mod_settings_field", typeName=PROBE, action="get", field="result").get("value")
-            try: return json.loads(res)
-            except Exception: return {"success": False, "raw": res}
+        v = call("jawa/mod_settings_fields", typeName=PROBE, fields="serial,result").get("values") or {}
+        if v.get("serial") not in (None, before):
+            try: return json.loads(v.get("result"))
+            except Exception: return {"success": False, "raw": v.get("result")}
         time.sleep(0.05)
     return {"success": False, "error": "probe timed out"}
 BAR_MS, SIZE, STEP, LAMP = 20.0, 37, 6, 3

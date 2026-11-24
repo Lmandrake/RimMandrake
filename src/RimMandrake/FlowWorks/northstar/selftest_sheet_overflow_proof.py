@@ -110,6 +110,13 @@ def main():
         for k, r in got.items():
             if r["detail"].get("mock") == "FAIL" or r["class"] == "MOD" and r["detail"].get("mock") == "PASS":
                 fails.append("noclock: %s read %s/%s" % (k, r["detail"].get("mock"), r["class"]))
+        # a hose probe that answers nothing is "could not look" for the pump row and for the whole-run books (2026-11-23: the
+        # books read [MOD] FAIL on a transfer whose source was never read)
+        _, got, _, _ = run(d, "probe_refused", "--mock-faults", "probe_refused", "--only",
+                           "PUMP_FULL_CANAL_SPILLS_SHEET,SHEET_RETURNS_TO_PIT,LEDGER_CONSERVES_TO_THE_DL")
+        for k in ("PUMP_FULL_CANAL_SPILLS_SHEET", "LEDGER_CONSERVES_TO_THE_DL"):
+            if got.get(k, {}).get("detail", {}).get("mock") != "UNMEASURED":
+                fails.append("probe_refused: %s mock %s, want UNMEASURED" % (k, got.get(k)))
     # every RM_SheetProofs method the rows call is in the owed table
     src = open(os.path.join(HERE, "sheet_overflow_proof.py"), encoding="utf-8").read()
     called = set(re.findall(r'sp\("(Proof\w+)"', src)) | set(re.findall(r'method="(ProofSheet\w+)"', src))

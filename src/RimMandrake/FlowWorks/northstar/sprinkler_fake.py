@@ -20,6 +20,9 @@ faults (name -> intended effect):
   no_reserve            the drinking reserve is ignored                         -> T21_drinking_reserve FAIL
   no_drink              a thirsty colonist never drinks at the tank             -> T21_drinking_reserve FAIL
   spawn_fail            jawa/spawn_pawn gives no pawn                           -> the driver RAISES (never a MOD verdict)
+  no_charge             jawa/battery_set refuses                                -> every pump row UNMEASURED SITE
+  dead_battery          battery_set says charged, the pump gets no power        -> every pump row UNMEASURED SITE
+  probe_refused         the hose probe answers nothing                          -> no row is a MOD verdict (UNMEASURED)
   no_biomes             mandrake.rm.biomes absent; IsSoaked unavailable         -> draws / dries / walls UNMEASURED SITE
 """
 import re
@@ -206,6 +209,14 @@ class SprinklerFakeBridge(object):
         return r if r is not None else {"success": True}
 
     def hp(self, cmd, wait_s=20.0):
+        if "probe_refused" in self.faults:
+            return {"success": False, "error": "probe set failed"}
+        m = re.match(r"pump:(-?\d+),(-?\d+)", cmd)
+        if m:
+            for t in self._of("RM_LiquidPump"):
+                if (t["x"], t["z"]) == (int(m.group(1)), int(m.group(2))):
+                    return {"success": True, "powered": bool(self.powered.get(t["id"]))}
+            return {"success": False, "error": "no pump"}
         m = re.match(r"tank:(-?\d+),(-?\d+)", cmd)
         if m:
             x, z = int(m.group(1)), int(m.group(2))
@@ -256,10 +267,13 @@ class SprinklerFakeBridge(object):
             n += 1
         return {"success": True, "survived": n, "failed": 0}
 
-    def t_jawa_gss_stage(self, ops="", **kw):
-        kv = dict(p.split("=", 1) for p in str(ops).split("|"))
-        if kv.get("kind") == "gss_charge":
-            self.charged.add((int(kv["x"]), int(kv["z"])))
+    def t_jawa_battery_set(self, thing=None, mode="setPct", value=0.0, **kw):
+        t = self.things.get(thing)
+        if t is None or t["def"] != "Battery" or "no_charge" in self.faults:
+            return {"success": False, "error": "no battery"}
+        if "dead_battery" not in self.faults:
+            self.charged.add((t["x"], t["z"]))
+        return {"success": True, "storedEnergyPctAfter": float(value)}
 
     def t_jawa_list_things(self, defName=None, rect=None, limit=100, **kw):
         r = _rect(rect) if rect else None

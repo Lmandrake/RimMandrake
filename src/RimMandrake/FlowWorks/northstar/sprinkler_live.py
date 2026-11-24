@@ -121,8 +121,10 @@ def main(argv=None, bridge=None):
     ctx = {"broken": [], "setfail": []}   # net layout not built / a bool setting that did not read back: rows below could not ask
 
     def row(rid, st, cls, det):
-        if st == "FAIL" and (ctx["broken"] or ctx["setfail"]):    # "could not ask" is UNMEASURED, never a MOD FAIL
-            det = dict(det, couldNotAsk=ctx["broken"] + ctx["setfail"])
+        blind = ["%s read None" % k for k in ("units", "brineUnits", "trace") if k in det and (
+            any(t[0] is None for t in det[k]) if k == "trace" else None in det[k])]
+        if st == "FAIL" and (ctx["broken"] or ctx["setfail"] or blind):    # "could not ask" is UNMEASURED, never a MOD FAIL
+            det = dict(det, couldNotAsk=ctx["broken"] + ctx["setfail"] + blind)
             st, cls = "UNMEASURED", "SITE" if ctx["broken"] else "HARNESS"
         ctx["setfail"] = []
         rows.append({"id": rid, "status": st, "class": cls, "detail": det})
@@ -178,8 +180,8 @@ def main(argv=None, bridge=None):
     def fill(x, z, liquid, units):
         r = B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
                    args="%d,%d;Store;%s;%d" % (x, z, liquid, units)) or {}
-        if r.get("success") is False:
-            ctx["broken"].append("ProofTank Store %s refused" % liquid)
+        if r.get("success") is False or str(r.get("result")).startswith("REFUSED"):
+            ctx["broken"].append("ProofTank Store %s refused: %s" % (liquid, str(r)[:160]))
         return str(r.get("result"))
 
     def units(x, z):
@@ -210,9 +212,12 @@ def main(argv=None, bridge=None):
         s1 = build(["RM_LiquidTank:%d,%d" % (ox, oz)] + ["RM_UniversalPipe:%d,%d" % (x, oz) for x in range(ox + 2, ox + 6)])
         s2 = build(["RM_LiquidPump:%d,%d" % (ox + 3, oz), "RM_SprinklerHead:%d,%d" % (ox + 5, oz),
                     "PowerConduit:%d,%d" % (ox + 3, oz - 1), "PowerConduit:%d,%d" % (ox + 3, oz - 2), "Battery:%d,%d,0" % (ox + 3, oz - 4)])
-        B.call("jawa/gss_stage", ops="kind=gss_charge|x=%d|z=%d" % (ox + 3, oz - 4))
+        # battery_set, and its answer read: jawa/gss_stage belongs to Gimme Some Slack, and its refusal was never looked at
+        # (RIMMANDRAKE_DIAGNOSE_FLOWWORKS_PUMPS_GIVE_NO_PRESSURE_FOUR_RUNS)
+        bid = thing_at("Battery", ox + 3, oz - 4)
+        chg = (B.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0) or {}) if bid else {}
         n = {"tank": (ox, oz), "pump": (ox + 3, oz), "head": (ox + 5, oz), "covered": (ox + 6, oz + 1), "far": (ox + 10, oz + 4),
-             "build": [s1, s2]}
+             "build": [s1, s2], "charge": chg.get("storedEnergyPctAfter") or str(chg)[:160]}
         n["headId"] = thing_at("RM_SprinklerHead", ox + 5, oz)
         n["pumpId"] = thing_at("RM_LiquidPump", ox + 3, oz)
         ctx["broken"] = [w_ for w_, v in (("head", n["headId"]), ("pump", n["pumpId"]), ("tank", thing_at("RM_LiquidTank", ox, oz))) if not v]
@@ -223,7 +228,13 @@ def main(argv=None, bridge=None):
         # unpowered for up to 200 ticks after the build. A pulse landing in that gap reads NoPressure and holds for 2,500
         # ticks; whenever the phase put it after +130 the T22 read (fill, 2,500 + 130) WAS that cold pulse (the fresh tank
         # then paid two pulses, 180 dL, against one, 90 dL, in the PASS runs). Let the cold pulse go before the fill.
+        if not chg.get("storedEnergyPctAfter"):
+            ctx["broken"].append("net %d: the battery was not charged (%s)" % (i, str(chg)[:160]))
         ticks(COLD_WAIT)
+        # a pump with no power is the site's fault, not the sprinkler's; the pump answers for itself (HoseNetProbe pump:x,z)
+        n["powered"] = B.hp("pump:%d,%d" % n["pump"]).get("powered")
+        if COLD_WAIT and n["powered"] is not True:
+            ctx["broken"].append("net %d: the pump reads powered %s" % (i, n["powered"]))
         return n
 
     def until_pulse():
@@ -469,7 +480,7 @@ def main(argv=None, bridge=None):
                 until_pulse()
                 ticks(130)
                 trace.append([units(tx, tz), inspect(n["headId"])])
-            low = min(u for u, _ in trace if u is not None) if trace else None
+            low = min((u for u, _ in trace if u is not None), default=None)
             last = trace[-1][1] if trace else None
             r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=tx - 2, z=tz + 3, count=1, faction="PlayerColony") or {}
             pid = ((r.get("pawns") or [{}])[0]).get("id")

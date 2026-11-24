@@ -306,12 +306,16 @@ def _probe(B, cmd, wait=30.0):
             return B.call(n, kw) or {}
         except Exception as e:  # noqa: BLE001
             return {"success": False, "error": str(e)[:300]}
-    before = call("jawa/mod_settings_field", typeName=HP, action="get", field="serial").get("value")
-    call("jawa/mod_settings_field", typeName=HP, action="set", field="request", value=cmd)
+    # the batch tool: jawa/mod_settings_field `set` refuses a type that is no settings class (selftest_hose_probe_route.py)
+    r = call("jawa/mod_settings_fields", typeName=HP, fields="serial", setField="request", setValue=cmd)
+    before = (r.get("values") or {}).get("serial")
+    if before is None or not r.get("success"):
+        return {"success": False, "error": "probe timeout: the request was not posted: %s" % str(r)[:200]}
     t0 = time.time()
     while time.time() - t0 < wait:
-        if call("jawa/mod_settings_field", typeName=HP, action="get", field="serial").get("value") != before:
-            raw = call("jawa/mod_settings_field", typeName=HP, action="get", field="result").get("value")
+        v = call("jawa/mod_settings_fields", typeName=HP, fields="serial,result").get("values") or {}
+        if v.get("serial") not in (None, before):
+            raw = v.get("result")
             try:
                 return json.loads(str(raw))
             except ValueError:

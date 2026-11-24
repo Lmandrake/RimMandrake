@@ -74,21 +74,9 @@ class H(V.Bridge):
     probe_type = HPROBE
 
     def hp(self, cmd, wait_s=20.0):
-        before = self.call("jawa/mod_settings_field", typeName=HPROBE, action="get", field="serial").get("value")
-        s = self.call("jawa/mod_settings_field", typeName=HPROBE, action="set", field="request", value=cmd)
-        if not s.get("success"):
-            return {"success": False, "error": "hose probe set failed", "raw": s}
-        t0 = time.time()
-        while time.time() - t0 < wait_s:
-            now = self.call("jawa/mod_settings_field", typeName=HPROBE, action="get", field="serial").get("value")
-            if now != before:
-                res = self.call("jawa/mod_settings_field", typeName=HPROBE, action="get", field="result").get("value")
-                try:
-                    return json.loads(res)
-                except Exception:  # noqa: BLE001
-                    return {"success": False, "raw": res}
-            time.sleep(0.25)
-        return {"success": False, "error": "hose probe timed out (no frame serviced it)"}
+        """The hose probe. Through probe_of (jawa/mod_settings_fields): jawa/mod_settings_field `set` refuses HoseProbe, which
+        is no settings class (selftest_hose_probe_route.py)."""
+        return self.probe_of(HPROBE, cmd, wait_s)
 
     def shot_rect(self, name, rect):
         global SHOT

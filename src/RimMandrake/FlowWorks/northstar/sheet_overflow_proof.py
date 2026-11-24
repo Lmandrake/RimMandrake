@@ -922,8 +922,12 @@ def conserve(ctx):
               cls="HARNESS")
     bal = res["balances"]
     V.require(len(bal) >= 1, "at least one transfer was booked this run", bal)
-    bad = [b for b in bal if not b["ok"]]
+    # a transfer whose source or sink was never read is "could not look", not a wrong balance
+    blind = [b for b in bal if b["sourceLoss"] is None or any(v is None for v in b["arrived"].values())]
+    bad = [b for b in bal if not b["ok"] and b not in blind]
     good = l1["closes"] and d_in == (d_st or 0) + (d_out or 0) and ld(L0, l1, "destroyedDl") == 0 and not bad
+    if good:          # a measured wrong balance stays a FAIL; an unread one only withholds the PASS
+        V.require(not blind, "every booked transfer was read at both ends", blind[:4], cls="HARNESS")
     row("LEDGER_CONSERVES_TO_THE_DL", "PASS" if good else "FAIL",
         {"in": d_in, "standing": d_st, "exits": d_out, "destroyed": ld(L0, l1, "destroyedDl"), "closes": l1["closes"],
          "balances": len(bal), "badBalances": bad[:4], "ledgerEnd": l1["_txt"]})
@@ -1083,7 +1087,7 @@ class FakeBridge(object):
     FAULTS = ("no_proofs", "noclock", "canal_not_full", "pump_no_spill", "pump_leaks", "rain_no_spill", "fillin_destroys",
               "no_return", "unbounded", "cap_destroys", "door_seals", "door_open", "off_still_spills", "off_purges",
               "no_freeze", "ice_loses", "never_cold", "ledger_open", "load_drift", "crops_built", "crop_never_dies",
-              "cap_setting_built", "cap_lower_cuts")
+              "cap_setting_built", "cap_lower_cuts", "probe_refused")
     RET, QMIN, PULSE, SOAK = 200, 100, 250, 3   # dL (the kernel Params: retention 1 cm, q_min 0.5 cm); soak a pulse
 
     def __init__(self, faults=(), origin=(30, 30)):
@@ -1481,6 +1485,8 @@ class FakeBridge(object):
 
     def hp(self, cmd, wait_s=20.0):
         verb, _, rest = cmd.partition(":")
+        if "probe_refused" in self.f:
+            return {"success": False, "error": "probe set failed"}
         if verb == "filltank":
             at, _, what = rest.partition("=")
             c = self._xz(at)

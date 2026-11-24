@@ -1646,12 +1646,17 @@ class Review(object):
     def hose_probe(self, cmd, wait_s=20.0):
         """HoseProbe's request/serial channel (validation_hose.H.hp): answered on the next frame, paused or not."""
         hp = "RimMandrake.FlowWorks.Hose.HoseProbe"
-        before = self.B.call("jawa/mod_settings_field", typeName=hp, action="get", field="serial").get("value")
-        self.B.call("jawa/mod_settings_field", typeName=hp, action="set", field="request", value=cmd)
+        # the batch tool: jawa/mod_settings_field `set` refuses a type that is no settings class (selftest_hose_probe_route.py)
+        r = self.B.call("jawa/mod_settings_fields", typeName=hp, fields="serial", setField="request", setValue=cmd) or {}
+        before = (r.get("values") or {}).get("serial")
+        if before is None or not r.get("success"):
+            self.notes.append("hose probe %s: not posted: %s" % (cmd, json.dumps(r)[:160]))
+            return ""
         t0 = time.time()
         while time.time() - t0 < wait_s:
-            if self.B.call("jawa/mod_settings_field", typeName=hp, action="get", field="serial").get("value") != before:
-                return str(self.B.call("jawa/mod_settings_field", typeName=hp, action="get", field="result").get("value"))
+            v = (self.B.call("jawa/mod_settings_fields", typeName=hp, fields="serial,result") or {}).get("values") or {}
+            if v.get("serial") not in (None, before):
+                return str(v.get("result"))
             time.sleep(0.25)
         self.notes.append("hose probe %s: timed out (no frame serviced it)" % cmd)
         return ""
