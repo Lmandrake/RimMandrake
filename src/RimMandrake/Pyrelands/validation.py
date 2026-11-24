@@ -1172,6 +1172,23 @@ def _teardown(fire=False, weather=False):
     return deco
 
 
+PLANT_EAT_FIRST_ENV = "PYRE_PLANT_EAT_FIRST_GATE_OFF"   # planted state for fire_sense_hungry_eats_first: the mod's insert off
+
+
+@contextlib.contextmanager
+def _unfed(t):
+    """The harness's feeder off for a row that is about hunger. HARNESS (visit 8, 2026-11-24; visit 2's F9, once): t.feed topped
+    H's Food from 0.08 to 1.0 in the first chunk, so H beat the fire and never ate, and the mod read as broken."""
+    prior = [(o, o.feed) for o in (t, getattr(t, "watch", None)) if o is not None and hasattr(o, "feed")]
+    try:
+        for o, _v in prior:
+            o.feed = False
+        yield
+    finally:
+        for o, v in prior:
+            o.feed = v
+
+
 def _wildlife_shielded(fn):
     """A chain whose days read ground, not animals, runs inside _wildlife_shield (visit 8: a wild barbslinger downing a
     fire-hawk stopped fresh_burn_bonus on day 1)."""
@@ -4887,16 +4904,25 @@ def fire_sense(t):
                 _fail("P ended %r cells from the fire, under SafeClear %d" % (clear, TEN_SAFE_CLEAR))
         _extinguish(t)
     _independent(t)
-    with _comp(t, "fire_sense_hungry_eats_first"):
+    with _unfed(t), _comp(t, "fire_sense_hungry_eats_first"):
+        planted = os.environ.get(PLANT_EAT_FIRST_ENV) == "1"
+        if planted:
+            _note(t, "PLANTED FAULT", "%s=1: pyrelandsEnabled off for this row, so the core order stands (fire before food)" % PLANT_EAT_FIRST_ENV)
+            _set(t, {"pyrelandsEnabled": False})
         h = _spawn_colonist(t, x - 8, z + 6)
         t.bridge_call("jawa/set_work_priority", pawnId=h, workType="Firefighter", priority=1)
         t.bridge_call("jawa/paint_area", area="home", ops=_rs(_rect(t)), value=True)
         t.bridge_call("jawa/spawn_batch", ops="MealSimple:%d,%d,1" % (x + 2, z + 6))
         t.bridge_call("jawa/pawn_need", pawn=h, action="need", need="Food", level=0.08)   # UrgentlyHungry
         _ten_lit_plot(t, (x + 6, z + 5, 2, 2))
+        food = _need(t, h, "Food")
         seq = _ten_jobs(t, h, 50, 60)
+        if planted:
+            _set(t, {"pyrelandsEnabled": True})
         if _live(t):
-            _note(t, "H urgently hungry, a fire on the home area: jobs in order", seq)
+            _note(t, "H urgently hungry, a fire on the home area: Food at the start, jobs in order", [food, seq])
+            if food is None or food > 0.12:
+                _unmeasured(t, "H was not urgently hungry at the start (Food %r): no opportunity" % food)
             if "Ingest" not in seq:
                 _fail("urgently hungry H never ate (no Ingest) with a fire burning: %r" % seq)
             if "BeatFire" in seq and seq.index("BeatFire") < seq.index("Ingest"):

@@ -222,6 +222,24 @@ for chain in ("fresh_burn_bonus", "embergrass_regrow"):
     check("burn line's shield: chain %s runs inside it" % chain,
           "@_wildlife_shielded\ndef %s(t):" % chain in open(V.__file__, encoding="utf-8").read())
 
+# ---- 6. the hunger row runs unfed (visit 8, 2026-11-24): the harness's feeder turned an urgently hungry colonist full
+class Fed(object):
+    feed = True
+
+
+class TF(Fed):
+    watch = Fed()
+
+
+tf = TF()
+UNFED = getattr(V, "_unfed", None)
+if UNFED:
+    with UNFED(tf):
+        inside = (tf.feed, tf.watch.feed)
+check("unfed: the suite's and the watch's feeder are off inside and back on after",
+      UNFED is not None and inside == (False, False) and (tf.feed, tf.watch.feed) == (True, True))
+check("unfed: the hunger row runs inside it", 'with _unfed(t), _comp(t, "fire_sense_hungry_eats_first")' in open(V.__file__, encoding="utf-8").read())
+
 n = sum(RESULTS)
 print("\n%d/%d passed" % (n, len(RESULTS)))
 sys.exit(0 if n == len(RESULTS) else 1)
