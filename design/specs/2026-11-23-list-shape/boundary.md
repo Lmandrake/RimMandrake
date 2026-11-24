@@ -48,7 +48,8 @@ skills or models, or the run needs help. Asking for help (a `LEFT OPEN:` note, a
   shape` again, the route replaced by a check, or dropped); until then the item's check fails and the lane reads it
   as routed or failing.
 - **a-reshape-after-a-dated-wait.** An item whose dated wait passed and whose check still fails reads `reshape` in the
-  lane and is not launched (a date never launches old work). A Shape run for that second look is not built.
+  lane and is not launched (a date never launches old work). A Shape run for that second look is not built. (An item
+  with no check is different: see a-passed-wait-never-keeps-a-due-item-out-of-shape.)
 - **the-fresh-reader-of-pipeline-code.** A Shape-and-Work run that changes pipeline code owes one fresh reader (CLAUDE.md
   §Code is clean). The lane does not launch that reader.
 - **old-items-unnamed.** An item filed before `shape_from` never enters Shape by itself (plan: no hand migration of
@@ -87,14 +88,24 @@ skills or models, or the run needs help. Asking for help (a `LEFT OPEN:` note, a
   with the Shape brief, kind `shape`, model opus. The lane's gates (disabled, pause, `pipe off`, the owner's mod hold,
   a claim, a wait, the account, the chain rule, the slots, the clone pool) stop it as they stop a Work run.
 - **a-shape-run-that-left-neither-check-nor-route-is-stopped.** When a Shape run ended and the item still has no check
-  and no route, the item reads `stopped`, with its Needs Conductor line once. No second Shape run is launched by
+  and no route, the item reads `stopped`, with its Needs Conductor line once. The line says that the item has neither. No second Shape run is launched by
   itself.
 - **a-large-shape-run-is-not-a-work-run.** When the Shape run recorded `large`, it is not counted against
   `max_runs_per_item`, and its end without a `LEFT OPEN:` note does not stop the item: the lane launches the first Work
   run. A `small` Shape run counts as Work run 1.
+- **a-due-item-enters-shape-when-its-adoption-cannot-happen.** A due item whose `## verify` acceptance script was refused
+  as its check, or is too heavy to adopt, reads `shape`. A script that can be adopted is adopted first. An item that is
+  not due reads `adopt_refused` or `adopt_too_heavy`.
+- **a-passed-wait-never-keeps-a-due-item-out-of-shape.** A due item with no check whose dated wait passed reads `shape`
+  (the plan's second look). A Shape run that left only a wait buys no second Shape run: the item reads `stopped`.
+- **a-reshape-by-another-party-starts-the-run-count-again.** When a party that is no run of this item writes its split
+  (the answer to a route, or the hand shape that a stop asks for), the runs launched before that split are not counted:
+  Work run 1 launches. A split that a run of this item writes starts nothing again.
+- **status-lists-every-item-due-for-shape.** `list_shape.py status` with no ids lists each open item that is shaped, named
+  or due, by age too.
 - **the-shape-brief-asks-for-the-need.** The brief names the item, the worth-the-touch test, the four routes, the
   `fooled_by` line, the size rule, and the `rimflow shape` command.
 - **each-limit-names-its-danger.** `shape_grace_h` and `shape_from` in `list_dispatch.json` each have a `_<name>_doc`
   that names the danger it guards.
 
-Later lists beside this page: `polish.md` (none yet).
+Later lists beside this page: `polish.md`.

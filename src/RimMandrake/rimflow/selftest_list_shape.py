@@ -60,11 +60,13 @@ def page(name, text):
     return p
 
 
-def cli(*args, seat="BENCH"):
+def cli(*args, seat="BENCH", unit=None):
     env = dict(os.environ)
     for k in ("CLAUDE_SESSION_ID", "CLAUDE_CODE_SESSION_ID", "RM_ROLE_UNIT"):
         env.pop(k, None)
     env["RIMFLOW_SEAT"] = seat
+    if unit:
+        env["RM_ROLE_UNIT"] = unit
     r = subprocess.run([sys.executable, CLI] + list(args), cwd=REPO, env=env, capture_output=True, text=True,
                        timeout=180, stdin=subprocess.DEVNULL)
     return r.returncode, r.stdout + r.stderr
@@ -331,6 +333,8 @@ def t_a_shape_run_that_left_neither_check_nor_route_is_stopped():
     chk(lambda: rows["A"]["decision"] == "stopped" and not launches, "the item reads stopped (%s)" % rows["A"])
     chk(lambda: n.get("outcome") and n.get("why_not_recovered") and n.get("smallest_act"),
         "the stop names the outcome, the reason and the smallest act")
+    chk(lambda: "None" not in n["outcome"] and "neither" in n["outcome"],
+        "the outcome says that the item has neither, never that a check 'None' fails (%s)" % n.get("outcome"))
     st["items"]["A"]["attempts"][0]["next"] = "LEFT OPEN: try again"
     rows, launches, _ = decide({"A": lane_it()}, runs=runs, st=st)
     chk(lambda: rows["A"]["decision"] == "stopped" and not launches,
@@ -360,6 +364,108 @@ def t_a_large_shape_run_is_not_a_work_run():
     rows, launches, _ = decide({"A": lane_it(shape_size="small", **eff)}, runs=runs, st=st)
     chk(lambda: rows["A"]["decision"] == "launch" and rows["A"].get("run_n") == 2,
         "a small Shape-and-Work run counts as Work run 1 (%s)" % rows["A"])
+
+
+def t_a_due_item_enters_shape_when_its_adoption_cannot_happen():
+    acc = "src/x_accept.py"
+    rows, launches, _ = decide({"A": lane_it(accept=acc, accept_s=None, accept_why="it did not end inside 120s")})
+    chk(lambda: rows["A"]["decision"] == "shape" and launches == ["A"],
+        "a due item whose acceptance script is too heavy to adopt enters Shape (%s)" % rows["A"]["decision"])
+    st = {"items": {"A": {"adopt_refused": {"fp": [acc, 5], "why": "it holds now"}}}}
+    rows, launches, _ = decide({"A": lane_it(accept=acc, accept_s=1.0, events=5)}, st=st)
+    chk(lambda: rows["A"]["decision"] == "shape" and launches == ["A"],
+        "a due item whose adoption was refused enters Shape (%s)" % rows["A"]["decision"])
+    for s, kw, want in (({}, {"accept_s": None}, "adopt_too_heavy"),
+                        ({"adopt_refused": {"fp": [acc, 5], "why": "r"}}, {"accept_s": 1.0}, "adopt_refused")):
+        rows, launches, _ = decide({"A": lane_it(accept=acc, events=5, shape_due=False, **kw)}, st={"items": {"A": s}})
+        chk(lambda: rows["A"]["decision"] == want and not launches,
+            "an item that is not due still reads %s (%s)" % (want, rows["A"]["decision"]))
+    rows, launches, _ = decide({"A": lane_it(accept=acc, accept_s=1.0)})
+    chk(lambda: rows["A"]["decision"] == "adopt" and not launches,
+        "a due item whose script can be adopted is adopted first (%s)" % rows["A"]["decision"])
+    iid = "RIMMANDRAKE_TEST_SHAPE_GATHER_HEAVY_ACCEPT_IS_DUE"
+    file_item(iid)
+    cli("shape", iid, "--enter", "--why", "selftest: named")
+    with open(os.path.join(os.environ["RIMFLOW_ITEMS"], iid + ".md"), "w", encoding="utf-8") as f:
+        f.write("## verify\npython3 src/RimMandrake/rimflow/acceptance/step4_shape_accept.py\n")
+    ld = LD()
+    keep = ld.timed_accept
+    ld.timed_accept = lambda *a, **k: None
+    try:
+        g = ld.gather({"items": {}})
+    finally:
+        ld.timed_accept = keep
+    it = (g["items"] or {}).get(iid) or {}
+    chk(lambda: it.get("accept") and it.get("accept_s", 0) is None and it.get("shape_due") is True,
+        "gather keeps a named item due beside its heavy script (%s)" % it)
+
+
+def t_a_passed_wait_never_keeps_a_due_item_out_of_shape():
+    past = {"wait_until": NOW - 3600, "wait_reason": "r"}
+    rows, launches, _ = decide({"A": lane_it(**past)})
+    chk(lambda: rows["A"]["decision"] == "shape" and launches == ["A"],
+        "a due item with no check whose wait passed enters Shape (%s)" % rows["A"]["decision"])
+    rows, launches, _ = decide({"A": lane_it(effect="cmd:false", verdict="fails", shape_due=False, **past)})
+    chk(lambda: rows["A"]["decision"] == "reshape" and not launches,
+        "an item with a failing check whose wait passed still launches nothing (%s)" % rows["A"]["decision"])
+    st = {"items": {"A": {"attempts": [{"at": NOW - 7200, "unit": "u1", "kind": "shape", "next": None}]}}}
+    rows, launches, _ = decide({"A": lane_it(**past)}, runs={"A": {"live": [], "ended": ["u1"]}}, st=st)
+    chk(lambda: rows["A"]["decision"] == "stopped" and not launches,
+        "a Shape run that left only a wait buys no second Shape run when the wait passes (%s)" % rows["A"]["decision"])
+
+
+def t_a_reshape_by_another_party_starts_the_run_count_again():
+    eff = dict(effect="cmd:false", verdict="fails", shape_due=False, shape_size="small")
+    runs = {"A": {"live": [], "ended": ["u1", "u2"]}}
+
+    def go(atts, **kw):
+        return decide({"A": lane_it(**dict(eff, **kw))}, runs=runs, st={"items": {"A": {"attempts": atts}}})
+    sh = {"at": NOW - 7200, "unit": "u1", "kind": "shape", "next": None}
+    rows, launches, _ = go([dict(sh)], shape_at=NOW - 60, shape_unit=None)
+    chk(lambda: rows["A"]["decision"] == "launch" and rows["A"].get("run_n") == 1,
+        "the party that answered a route shapes the item again: Work run 1 launches (%s)" % rows["A"])
+    rows, launches, _ = go([dict(sh), dict(sh, unit="u2", kind="work")], shape_at=NOW - 60, shape_unit="rm-detached-other")
+    chk(lambda: rows["A"]["decision"] == "launch" and rows["A"].get("run_n") == 1,
+        "so does a helper that is no run of this item (%s)" % rows["A"])
+    rows, launches, _ = go([dict(sh)], shape_at=NOW - 7000, shape_unit="u1")
+    chk(lambda: rows["A"]["decision"] == "stopped",
+        "the item's own run writing its shape starts nothing again (%s)" % rows["A"]["decision"])
+    rows, launches, _ = go([dict(sh)], shape_at=NOW - 7000, shape_unit="u2")
+    chk(lambda: rows["A"]["decision"] == "stopped",
+        "nor does a detached run of this item that the lane did not launch (%s)" % rows["A"]["decision"])
+    rows, launches, _ = go([dict(sh)], shape_at=NOW - 9000, shape_unit=None)
+    chk(lambda: rows["A"]["decision"] == "stopped",
+        "a run launched after the re-shape counts (%s)" % rows["A"]["decision"])
+    iid = "RIMMANDRAKE_TEST_SHAPE_FACTS_CARRY_WHO_AND_WHEN"
+    file_item(iid)
+    page("sh/page.md", "nothing yet\n")
+    cli("shape", iid, "--parts", json.dumps([part("a")]), "--why", "selftest")
+    f = LS().facts(world().items.get(iid))
+    chk(lambda: isinstance(f.get("shape_at"), (int, float)) and f["shape_at"] > 0 and "shape_unit" in f
+        and f["shape_unit"] is None, "facts() carries when the item was shaped and by which unit (%s)" % f)
+    cli("shape", iid, "--parts", json.dumps([part("a")]), "--why", "selftest", unit="rm-detached-x")
+    f = LS().facts(world().items.get(iid))
+    chk(lambda: f.get("shape_unit") == "rm-detached-x", "a re-shape by a run replays its unit (%s)" % f)
+    g = LD().gather({"items": {}})
+    d = (g["items"] or {}).get(iid) or {}
+    chk(lambda: d.get("shape_at") and "shape_unit" in d, "gather hands both to decide (%s)" % d)
+
+
+def t_status_lists_every_item_due_for_shape():
+    iid = "RIMMANDRAKE_TEST_SHAPE_STATUS_DUE_BY_AGE"
+    file_item(iid)
+    ld, out = LD(), []
+    keep = ld.load_cfg
+    ld.load_cfg = lambda *a, **k: {"shape_from": 0.5, "shape_grace_h": 0}
+    import builtins
+    real = builtins.print
+    builtins.print = lambda *a, **k: out.append(" ".join(str(x) for x in a))
+    try:
+        LS().status_main([])
+    finally:
+        builtins.print, ld.load_cfg = real, keep
+    chk(lambda: any(ln.startswith(iid) and " due " in ln for ln in out),
+        "status with no ids lists an item due by age, never named (%s)" % out[-1:])
 
 
 def t_the_shape_brief_asks_for_the_need():
@@ -405,6 +511,10 @@ def main():
                   t_the_lane_launches_a_shape_run_through_every_gate,
                   t_a_shape_run_that_left_neither_check_nor_route_is_stopped,
                   t_a_large_shape_run_is_not_a_work_run,
+                  t_a_due_item_enters_shape_when_its_adoption_cannot_happen,
+                  t_a_passed_wait_never_keeps_a_due_item_out_of_shape,
+                  t_a_reshape_by_another_party_starts_the_run_count_again,
+                  t_status_lists_every_item_due_for_shape,
                   t_the_shape_brief_asks_for_the_need,
                   t_each_limit_names_its_danger):
             try:

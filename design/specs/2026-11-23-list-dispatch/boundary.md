@@ -44,7 +44,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   Shape (`shape`); those two are promised on the Shape page, `design/specs/2026-11-23-list-shape/boundary.md`.
 - **one-work-run-then-one-more-only-on-a-named-next-act.** An item gets a first Work run. After a run ended with the check
   failing, it gets one more run only when that run left a `LEFT OPEN:` note (its next act) and did not put a wait on the
-  item. `max_runs_per_item` (2) runs is the most. Every other end reads `stopped`.
+  item. `max_runs_per_item` (2) runs is the most. Every other end reads `stopped`. A re-shape by another party starts the
+  count again (the Shape page).
 - **a-launch-that-never-started-is-not-spent.** A launch that returned no unit is recorded with `failed` set and is not
   counted as a run. After `max_never_started` such launches in a row the item reads `system_wait`, is said once, and the
   next launch waits `SYSTEM_WAIT_S`, so a launch that cannot start is not sent again on every tick. A launch refused for
@@ -55,7 +56,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   Conductor line, and not again until the item changes.
 - **waits-are-not-launched.** An item that waits on an open item reads `waits_on` and names that item. An item with a
   dated wait in the future reads `waiting`. An item whose dated wait has passed and whose check still fails reads
-  `reshape` (plan: a date never launches old work; the Shape stage, step 4, takes it). A blocked item reads `blocked`.
+  `reshape` (plan: a date never launches old work; the Shape stage, step 4, takes it), and an item with no check that is
+  due for Shape goes on to `shape`. A blocked item reads `blocked`.
 - **the-gates-launch-nothing.** The lane launches nothing when it is disabled, under the pause, under `pipe off` (all,
   `family:list_dispatch`, the item or its mod), on an item whose mod is held by the owner, under an account hold (the plan's drain or the Dispatcher's pick), when
   the control store cannot be read, or when the clone pool refuses a new clone. Each reads its own decision. Disabled, the pause and `pipe off` (or a
@@ -72,7 +74,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   not continue such a run, so its `LEFT OPEN:` note is read by the lane alone and the two-run rule holds.
 - **a-heavy-acceptance-script-is-not-adopted.** Before it adopts an acceptance script, the tick runs it once, bounded by
   `max_adopt_check_s`, and keeps the reading per item state. A script that does not end inside the bound reads
-  `adopt_too_heavy` and is not attached, because an attached check runs on every beat of two timers.
+  `adopt_too_heavy` (or `shape`, when the item is due for Shape) and is not attached, because an attached check runs on
+  every beat of two timers.
 - **a-write-that-stands-unlanded-is-not-a-refusal.** A `rimflow close` or `rimflow effect` that exits 4 (written, not
   landed: another writer moved origin during the publish) stands. The row reads `closed_by_check` or `adopted` and says
   it is not landed yet; it is never recorded as a refusal. Measured 2026-11-23: two of the first ticks' writes exited

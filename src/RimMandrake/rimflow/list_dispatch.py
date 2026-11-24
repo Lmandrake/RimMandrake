@@ -19,12 +19,14 @@ oldest filing first, one decision:
   shape           no check and no route, and due for Shape (list_shape.due: named, or filed after shape_from and older
                   than shape_grace_h): one Shape run (opus, the brief roles/list_shape.md), through every gate below. It
                   shapes the item and, when the item is small, does its work in the same run. A `large` Shape run is not
-                  counted as a Work run. A Shape run that left neither check nor route reads stopped.
+                  counted as a Work run. A Shape run that left neither check nor route reads stopped. A due item whose
+                  acceptance script was refused or is too heavy to adopt also reads shape
   routed          a part routed to judge, owner, conductor or review and not yet answered (with or without a check):
                   nothing launches; the party that answers shapes the item again (list_shape.py)
   live            a detached run is live on it
   waits_on | blocked | waiting | reshape   it waits on an open item | is blocked | has a dated wait ahead | its dated
-                  wait passed and the check fails (a date never launches old work; Shape, step 4, takes it)
+                  wait passed and the check fails (a date never launches old work; Shape, step 4, takes it). A due item
+                  with no check whose wait passed reads shape
   held | off      its mod is held by the owner | a `pipe off` (all, family:list_dispatch, family:detached, item, mod)
   stopped         a run ended on its own merits and the check fails with no named next act, or after max_runs_per_item
                   such runs, or a launch refused for its form: a Needs Conductor line, once
@@ -196,7 +198,8 @@ def pick_model(cfg, effect):
 # ---- the decision ---------------------------------------------------------------------------------------------------
 
 def _need(iid, it, why, smallest):
-    return {"outcome": "%s: its outcome check %s still fails (%s)" % (iid, it.get("effect"), _one(it.get("out"), 160)),
+    return {"outcome": "%s: its outcome check %s still fails (%s)" % (iid, it.get("effect"), _one(it.get("out"), 160))
+            if it.get("effect") else "%s: no program can close it; it has neither an outcome check nor a route" % iid,
             "why_not_recovered": why, "smallest_act": smallest}
 
 
@@ -258,13 +261,18 @@ def decide(cfg, st, facts, now, account=(True, "")):
                 put("claimed", "%s; the holder works it, so its check is not attached" % claimed)
                 continue
             ref = s.get("adopt_refused") or {}
-            if acc and ref.get("fp") == [acc, it.get("events")]:
+            refused = bool(acc) and ref.get("fp") == [acc, it.get("events")]
+            heavy = bool(acc) and "accept_s" in it and it["accept_s"] is None
+            if (refused or heavy) and it.get("shape_due") and not it.get("route"):
+                shape = True        # its script cannot be its check, so a due item gets one from Shape
+            elif refused:
                 put("adopt_refused", "attaching %s was refused: %s" % (acc, _one(ref.get("why"), 200)))
-            elif acc and "accept_s" in it and it["accept_s"] is None:
+            elif heavy:
                 put("adopt_too_heavy", "its ## verify runs %s: %s; a check runs on every beat of two timers, so it is "
-                                       "not attached (Shape, step 4, gives it a lighter check)"
+                                       "not attached (a Shape run gives it a lighter check when the item is due for Shape: `rimflow "
+                                       "shape %s --enter`)"
                     % (acc, it.get("accept_why") or "it did not end inside %ss" % cfg.get(
-                        "max_adopt_check_s", _shipped().get("max_adopt_check_s"))))
+                        "max_adopt_check_s", _shipped().get("max_adopt_check_s")), iid))
             elif acc:
                 put("adopt", "no outcome check; its ## verify runs %s, attached as its check this tick" % acc)
                 row["accept"] = acc
@@ -309,10 +317,11 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if wu:
             if wu > now:
                 put("waiting", "it waits until %s: %s" % (pac(wu), it.get("wait_reason") or "no reason given"))
-            else:
+            elif not shape:     # a due item with no check goes on to Shape: that is the second look
                 put("reshape", "its wait to %s passed and the check still fails; a date never launches old work, so the "
                                "Shape stage (plan step 4) looks at it again" % pac(wu))
-            continue
+            if wu > now or not shape:
+                continue
         if it.get("held"):
             put("held", it["held"])
             continue
@@ -320,8 +329,13 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("system_wait", "run %s did not count: %s; the next launch from %s" % (
                 att[-1].get("unit"), _one(att[-1]["void"], 200), pac(att[-1]["void_at"] + SYSTEM_WAIT_S)))
             continue
+        # A split written by a party that is no run of this item (an answered route, a hand shape) starts the count again
+        # (boundary a-reshape-by-another-party-starts-the-run-count-again); the item's own run never does.
+        sat = it.get("shape_at")
+        own = set(a.get("unit") for a in att) | set(run.get("live") or []) | set(run.get("ended") or [])
+        fresh = [a for a in done if a.get("at", 0) > sat] if sat and it.get("shape_unit") not in own else done
         # A `large` Shape run only shaped: it is not a Work run (list_shape.py; boundary a-large-shape-run-is-not-a-work-run)
-        work = [a for a in done if not (a.get("kind") == "shape" and it.get("shape_size") == "large")]
+        work = [a for a in fresh if not (a.get("kind") == "shape" and it.get("shape_size") == "large")]
         if done:
             last = done[-1]
             if last.get("unit") not in (run.get("ended") or []):
@@ -528,8 +542,8 @@ def gather(st, now=None, root=None):
         d = {"state": x.state, "blocked": bool(x.blocked) and not waits, "blocked_reason": x.blocked_reason,
              "effect": x.effect, "waits_on": waits, "events": len(x.history), "title": x.title,
              "filed": LM.epoch(x.created_at) if x.created_at else None, "blocks_others": iid in waited_on,
-             "caused_by": x.caused_by, "shape_due": sdue and not acc, "shape_why": swhy, "route": sf["route"],
-             "shape_size": sf["size"]}
+             "caused_by": x.caused_by, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
+             "shape_size": sf["size"], "shape_at": sf["shape_at"], "shape_unit": sf["shape_unit"]}
         if x.state == "doing" and LM.lease_status(x, now) == "live":
             d["claimed"] = "doing under %s, whose lease is live to %s" % (x.owner, (x.lease or {}).get("expires"))
         if x.wait_until:

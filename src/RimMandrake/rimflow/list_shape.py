@@ -140,8 +140,9 @@ def _pac(t):
 
 
 def facts(item):
-    """model.Item -> {"effect", "route", "parts", "size", "weak", "named", "filed"}: the Shape facts the lane and the
-    stage view read. The route is the first part that is routed and has no check."""
+    """model.Item -> {"effect", "route", "parts", "size", "weak", "named", "filed", "shape_at", "shape_unit"}: the Shape
+    facts the lane and the stage view read. The route is the first part that is routed and has no check. shape_at and
+    shape_unit: when the last split was written, and by which unit (None: a window)."""
     sh = getattr(item, "shape", None) or {}
     parts = sh.get("parts")
     named = getattr(item, "shape_named", None)
@@ -149,7 +150,8 @@ def facts(item):
     created = getattr(item, "created_at", None)
     return {"effect": getattr(item, "effect", None), "route": first_route(parts), "parts": parts,
             "size": sh.get("size"), "weak": shaped(parts)["weak"] if parts else [],
-            "named": _epoch(named) if named else None, "filed": LM.epoch(created) if created else None}
+            "named": _epoch(named) if named else None, "filed": LM.epoch(created) if created else None,
+            "shape_at": LM.epoch(sh["at"]) if sh.get("at") else None, "shape_unit": sh.get("unit")}
 
 
 # ---- the write (cli.cmd_shape) -------------------------------------------------------------------------------------
@@ -297,7 +299,8 @@ def status_main(ids):
         cfg = {}
     w = LE._world()
     now = time.time()
-    picked = ids or [i for i, x in w.items.items() if x.state not in CLOSED and (x.shape or x.shape_named)]
+    picked = ids or [i for i, x in w.items.items() if x.state not in CLOSED and (
+        x.shape or x.shape_named or due(facts(x), cfg, now)[0])]
     counts = {}
     for iid in picked:
         x = w.items.get(iid)

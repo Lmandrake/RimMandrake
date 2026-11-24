@@ -1815,7 +1815,7 @@ class Item(object):
         self.released_dependents = False    # a `drop --release-dependents`: blocks on it end (priority.follow)
         self.walks = []                 # `walk` events, in ledger order: [{ts, seat, phase, save, found, findings, detail}]
         self.effect = self.effect_seen = None   # the outcome check and its attach reading (list_effect.py)
-        self.shape = None               # the last `shape` split: {parts, size, at, seat} (list_shape.py)
+        self.shape = None               # the last `shape` split: {parts, size, at, seat, unit} (list_shape.py)
         self.shape_named = None         # ts of the first `shape --enter`: named for a Shape run
         self.raised_tsn = 0             # tsn of that same first `raise` (0 when absent): `ts` is to the
         #                                 second, so a run raising C, A, B in one run needs it for order
@@ -2810,7 +2810,8 @@ def _apply_item_verb(ev, index, item, seat, world):
         if ev.get("enter") and not item.shape_named:
             item.shape_named = ev["ts"]
         if isinstance(ev.get("parts"), list):
-            item.shape = {"parts": ev["parts"], "size": ev.get("size") or "small", "at": ev["ts"], "seat": seat}
+            item.shape = {"parts": ev["parts"], "size": ev.get("size") or "small", "at": ev["ts"], "seat": seat,
+                          "unit": ev.get("role_unit")}
             chk = ev.get("check") if isinstance(ev.get("check"), str) and ev["check"].strip() else None
             item.effect, item.effect_seen = chk, (ev.get("seen") if chk else None)
     elif verb == "note":
