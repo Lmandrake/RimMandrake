@@ -2,12 +2,15 @@
 """fault_monitor.py - SteveDesktop's uptime SIMD fault: time its onset, quarantine its results, reboot it away
 (STEVE_FAULT_MONITOR_ONSET_BEFORE_RESULTS; the measurements are on STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO).
 
-The fault: a logical CPU starts computing wrong SIMD results some hours into a boot; a reboot clears it; root cause
-unmeasured. The canary is watch2.ps1, a scheduled task on Steve: every 300 s, a 4 s pinned `stevecheck core` per logical
-CPU, one CYCLE line in C:\\SteveDesktop\\diag\\logs\\watch.log. This module is the half on Archmagi that reads it
-(rm-steve-fault.timer, `tick`, every 2 min).
+The fault: a logical CPU loses the upper halves of its AVX registers while the ASUS audio driver AVoluteSS3Vad is loaded
+(off since 2026-11-21); a reboot clears it. This module with the register probe is the ONE tracker of it (owner,
+2026-11-23: "We should only have whatever the most modern tracker installed to monitor the situation, that's IT."). The
+probe (steve_cpu_retest/regprobe.c, task "SteveDiag Register Probe", every 300 s, its own planted-fault CONTROL at each
+start) writes C:\\SteveDesktop\\diag\\logs\\regprobe.log; this half on Archmagi (rm-steve-fault.timer, `tick`, every 2 min)
+mirrors and reads it. The older probe watch2.ps1, the heat sampler, the CPU soak and the CPU retest are retired;
+fault_watch.log stays as the frozen history of watch2's cycles, which analyse() still reads.
 
-  analyse()   the watch log -> one fault window per faulty boot, a pure function of the log (so history backfills itself).
+  analyse()   the cycles -> one fault window per faulty boot, a pure function of the log (so history backfills itself).
               A window runs from the last clean cycle before the first bad one (the boot, if none) to the next boot.
               A clean cycle after the first bad one closes nothing: only a reboot is known to clear it (the cycles wander
               between CPUs and include clean ones, measured 2026-11-03).
@@ -19,32 +22,26 @@ CPU, one CYCLE line in C:\\SteveDesktop\\diag\\logs\\watch.log. This module is t
               The train's idle RimWorld does not hold a reboot (the CPU retest's rule that it should cost 9.5 h, 11-01).
               STUCK (sticky until a new boot): the fault is back within MIN_UPTIME_S of a boot, or the reboot cap is spent:
               the lane stays paused and its pause's expiry escalates through the steward.
-              PASSIVE: QHOME/fault_monitor.stop, or steve_cpu_retest owns the machine: windows and gate go on, no act.
+              PASSIVE: QHOME/fault_monitor.stop, or the advisory ruling: windows and gate go on, no act.
               A pause by someone else holds the reboot; an auto pause born inside the window (a red canary) does not.
   report      the onset table: boot, uptime at onset, CPUs, jobs under it; check: the reading is honest (exit 0/1).
-  deploy-watch  copy watch2.ps1 to Steve and restart its task.
   regprobe    (RIMMANDRAKE_BUILD_STEVE_REGISTER_PROBE_SEES_UPPER_HALF_LOSS) the register probe's verdict and per-boot table
               from QHOME/regprobe.log, which tick mirrors from Steve's regprobe.log; exit 0 CLEAN, 1 FAULT, 2 UNMEASURED.
               `report` prints the same section. Parser: regprobe_log.py; probe: steve_cpu_retest/regprobe.c.
-  heat        (STEVE_HEAT_MEASURE_BEFORE_THE_SCREWDRIVER) one row per boot: CPU temperature over the boot and at the onset,
-              so a fault window says whether heat climbed before it, and an open-case boot can be set against closed ones.
-              Each CYCLE line ends with the sampler's reading (HEAT_RE) or heat=UNMEASURED(<why>); lines from before the
-              sampler carry neither and count as no reading, not as cool.
-  deploy-heat put PawnIO (the signed driver LibreHardwareMonitor reads the Intel sensors through) and LibreHardwareMonitor
-              on Steve, build stevetemp.exe there from steve_cpu_retest/stevetemp.cs, run it once, print its line.
-
   audio driver  (RIMMANDRAKE_DISABLE_STEVE_SONIC_STUDIO_DRIVER_SOUND_IS_UNUSED) each tick also reads the ASUS Sonic Studio
               kernel audio driver AVoluteSS3Vad (the fault needs it; turned off for good 2026-11-21) and writes
               steve_audio_driver.json: OFF, ABSENT, LOADED (SCM Running), ENABLED (registry Start not 4: loads at the next
               boot) or UNMEASURED. `check` fails on LOADED or ENABLED, so a silent return by Windows Update or Armoury Crate
               is seen. The lane's preflight (infrastructure/stevedesktop/preflight.py audio_driver) refuses jobs on the same.
 
-Files in QHOME: fault_state.json (the reading), fault_windows.json (what gate reads), fault_watch.log (the mirror),
+Files in QHOME: fault_state.json (the reading), fault_windows.json (what gate reads), regprobe.log (the probe's mirror),
+fault_watch.log (frozen history of the retired probe),
 fault_snapshots/<window>.txt (cause evidence), quarantined/<job>.json (results that must not count, kept).
 """
 import argparse
 import base64
 import calendar
+import contextlib
 import fcntl
 import json
 import os
@@ -60,12 +57,8 @@ import testq as T  # noqa: E402
 S = T.S
 STEVE_WIN = os.environ.get("STEVE_WIN", "stevedesktop")
 SSH = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15", "-o", "LogLevel=ERROR", STEVE_WIN]
-RETEST_STATE = os.environ.get("STEVE_RETEST_HOME", "/mnt/d/ClaudeWork/rimmandrake/steve_diag/retest") + "/state.json"
-RETEST_IDLE = ("DONE_CLEAN", "END_FAULT", "ABORTED", "DISARMED")
-WATCH_LOG = r"C:\SteveDesktop\diag\logs\watch.log"
 REGPROBE_LOG = r"C:\SteveDesktop\diag\logs\regprobe.log"
 REGPROBE_TAIL = 400                 # lines per tick; the probe writes ~1 a cycle, up to ~70 in a faulty one; ticks are 2 min
-WATCH_PS1 = r"C:\SteveDesktop\diag\watch2.ps1"
 MARK = "STEVE_FAULT_MONITOR:"       # a pause of ours says so; only ours is lifted
 PAUSE_HOURS = 6
 QUIET_TICKS = 2
@@ -82,21 +75,6 @@ _TS = r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d)Z"
 CYCLE_RE = re.compile("^" + _TS + r" CYCLE uptime_h=([\d.]+) bad_cpus=\[([\d,\s]*)\]")
 START_RE = re.compile("^" + _TS + r" WATCH START boot=" + _TS)
 CONTROL_RE = re.compile("^" + _TS + r" CONTROL inject_exit=(-?\d+) clean_exit=(-?\d+)")
-HEAT_RE = re.compile(r" pkg_c=(\d+)/(\d+) core_max_c=(\d+) hot_core=(-?\d+) cores_max_c=\[([\d,]*)\]")
-VCORE_RE = re.compile(r" vcore_v=([\d.]+)")
-HEAT_UNM_RE = re.compile(r" heat=UNMEASURED\(([^)]*)\)")
-HEAT_PRE_S = 3600                   # "did heat climb before the onset": the hottest cycle this long before the first bad one
-
-# What deploy-heat installs, pinned by digest (the GitHub release assets' own sha256, read 2026-11-04).
-HEAT_HOME = os.environ.get("STEVE_HEAT_HOME", "/mnt/d/ClaudeWork/rimmandrake/steve_diag/heat")
-HEAT_ASSETS = {
-    "LibreHardwareMonitor.zip": ("https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/releases/download/v0.9.6/"
-                                 "LibreHardwareMonitor.zip",
-                                 "086d9f1b5a99e643edc2cfaaac16051685b551e4c5ac0b32a57c58c0e529c001"),
-    "PawnIO_setup.exe": ("https://github.com/namazso/PawnIO.Setup/releases/download/2.2.0/PawnIO_setup.exe",
-                         "1f519a22e47187f70a1379a48ca604981c4fcf694f4e65b734aaa74a9fba3032"),
-}
-STEVE_HEAT_DIR = r"C:\SteveDesktop\diag\heat"
 
 
 def epoch(ts):
@@ -113,22 +91,21 @@ def norm(ts):
 
 
 def analyse(lines, live_boot=None):
-    """The watch log's lines, oldest first, -> {windows, boot, last_cycle, clean_through, clean_cycles, unparsed, control}.
+    """The cycle lines (from_probe, after the frozen history), oldest first, -> {windows, boot, last_cycle, clean_through, clean_cycles, unparsed, control}.
     live_boot (epoch) is the machine's own boot: newer than the log's, it closes what is open and starts an empty boot."""
     wins, boot, unparsed, control = [], None, 0, None
     last_clean = last_cycle = open_w = None
     clean_cycles = 0
-    boots, heat = [], []        # heat: this boot's [(t, uptime_h, reading or None, bad)]
 
     def new_boot(t):
-        nonlocal boot, last_clean, open_w, clean_cycles, heat
+        nonlocal boot, last_clean, open_w, clean_cycles, unparsed
         if boot is not None and t <= boot:
             return
         if open_w:
             open_w["end"] = stamp(t)
         if boot is not None:
-            boots.append(heat_boot(boot, heat))
-        boot, last_clean, open_w, clean_cycles, heat = t, None, None, 0, []
+            unparsed = 0        # an older boot's torn lines (NUL runs of the fault itself) say nothing of the probe now
+        boot, last_clean, open_w, clean_cycles = t, None, None, 0
 
     for line in lines:
         m = START_RE.match(line)
@@ -149,7 +126,6 @@ def analyse(lines, live_boot=None):
             new_boot(int(t - up * 3600))
         last_cycle = t
         cpus = [int(c) for c in m.group(3).replace(" ", "").split(",") if c]
-        heat.append((t, up, heat_of(line), bool(cpus)))
         if not cpus:
             clean_cycles += 1
             last_clean = t
@@ -161,7 +137,6 @@ def analyse(lines, live_boot=None):
                       "start": stamp(last_clean if last_clean is not None else boot), "first_bad": stamp(t),
                       "onset_uptime_h": up, "first_cpus": cpus, "bad_cycles": 0, "clean_after": 0, "cpus": {},
                       "end": None}
-            open_w["heat"] = heat_window(heat)
             wins.append(open_w)
         open_w["bad_cycles"] += 1
         open_w["last_bad"] = stamp(t)
@@ -169,59 +144,36 @@ def analyse(lines, live_boot=None):
             open_w["cpus"][str(c)] = open_w["cpus"].get(str(c), 0) + 1
     if live_boot is not None and (boot is None or live_boot > boot + 600):     # an inferred boot rounds: not a reboot
         new_boot(int(live_boot))
-    if boot is not None:
-        boots.append(heat_boot(boot, heat))
     return {"windows": wins, "boot": boot, "last_cycle": last_cycle, "open": open_w, "clean_cycles": clean_cycles,
-            "clean_through": last_clean if not open_w else None, "unparsed": unparsed, "control": control,
-            "boots": boots, "last_heat": heat[-1][2] if heat else None}
+            "clean_through": last_clean if not open_w else None, "unparsed": unparsed, "control": control}
 
 
-def heat_of(line):
-    """A CYCLE line -> {pkg0, pkg, core, hot, cores} (degrees C, the cycle's maxima; pkg0 the package at its start),
-    {"unmeasured": why}, or None when the line carries no heat at all (written before the sampler existed)."""
-    m = HEAT_RE.search(line)
-    if m:
-        v = VCORE_RE.search(line)
-        return dict({"pkg0": int(m.group(1)), "pkg": int(m.group(2)), "core": int(m.group(3)), "hot": int(m.group(4)),
-                     "cores": [int(c) for c in m.group(5).split(",") if c]}, **({"vcore": float(v.group(1))} if v else {}))
-    m = HEAT_UNM_RE.search(line)
-    return {"unmeasured": m.group(1)} if m else None
-
-
-def _measured(rows):
-    return [r for r in rows if r[2] and "core" in r[2]]
-
-
-def heat_window(rows):
-    """This boot's cycles up to and including the first bad one -> what heat did before the onset."""
-    t_bad, _, at, _ = rows[-1]
-    meas = _measured(rows[:-1])
-    pre = [r for r in meas if t_bad - r[0] <= HEAT_PRE_S]
-    last = meas[-1] if meas else None
-    return {"at_onset": at.get("core") if at else None, "at_onset_pkg": at.get("pkg") if at else None,
-            "at_onset_vcore": at.get("vcore") if at else None,
-            "at_onset_unmeasured": at.get("unmeasured") if at else "no reading",
-            "last_clean": last[2]["core"] if last else None,
-            "pre_max": max(r[2]["core"] for r in pre) if pre else None,
-            "pre_mean": round(sum(r[2]["core"] for r in pre) / float(len(pre)), 1) if pre else None,
-            "boot_max_before": max(r[2]["core"] for r in meas) if meas else None,
-            "boot_mean_before": round(sum(r[2]["core"] for r in meas) / float(len(meas)), 1) if meas else None,
-            "cycles_measured_before": len(meas), "cycles_before": len(rows) - 1}
-
-
-def heat_boot(boot, rows):
-    """One boot's cycles -> its heat row: how hot it ran, and whether and when it faulted."""
-    meas = _measured(rows)
-    cores = sorted(r[2]["core"] for r in meas)
-    bad = [r for r in rows if r[3]]
-    return {"boot": stamp(boot), "cycles": len(rows), "measured": len(meas),
-            "unmeasured": sum(1 for r in rows if r[2] and "unmeasured" in r[2]),
-            "core_max": cores[-1] if cores else None, "core_median": cores[len(cores) // 2] if cores else None,
-            "core_p90": cores[min(len(cores) - 1, int(len(cores) * 0.9))] if cores else None,
-            "pkg_max": max(r[2]["pkg"] for r in meas) if meas else None,
-            "vcore_max": max([r[2]["vcore"] for r in meas if "vcore" in r[2]] or [None]) if meas else None,
-            "uptime_h": rows[-1][1] if rows else 0.0,
-            "onset_uptime_h": bad[0][1] if bad else None}
+def from_probe(lines, after=None):
+    """The register probe's lines newer than AFTER (epoch; None: all) -> the cycle lines analyse() reads. A cycle counts
+    only under a passing CONTROL of a normal build; a partial or unmeasured cycle is no cycle (the CPU it could not look
+    at may be the faulty one), so a probe that cannot look goes blind and never reads clean."""
+    import regprobe_log as RP
+    out, build, ok = [], None, None
+    for line in lines:
+        m = RP.LINE_RE.match(line.rstrip("\r\n"))
+        if not m:
+            if after is None or line[:20] > stamp(after).replace("T", " "):
+                out.append(line)            # not understood: analyse counts it
+            continue
+        ts, kind, f = m.group(1), m.group(2), RP.kv(m.group(3))
+        new = after is None or epoch(ts) > after
+        if kind == "RPSTART":
+            build, ok = f.get("build"), None
+            if new:
+                out.append("%sZ WATCH START boot=%sZ probe=register" % (ts, f.get("boot", "").rstrip("Z")))
+        elif kind == "RPCONTROL":
+            ok = f.get("ok") == "1"
+            if new and build == "normal":
+                out.append("%sZ CONTROL inject_exit=%d clean_exit=0" % (ts, 1 if ok else 0))
+        elif kind == "RPCYCLE" and new and build == "normal" and ok and f.get("result") in ("fault", "clean"):
+            bad = [b.partition(":")[0] for b in RP.blist(f.get("bad"))] if f["result"] == "fault" else []
+            out.append("%sZ CYCLE uptime_h=%s bad_cpus=[%s] probe=register" % (ts, f.get("uptime_h", "0"), ",".join(bad)))
+    return out
 
 
 def job_span(rec):
@@ -348,27 +300,22 @@ def ps(script, timeout=120):
 
 
 def steve_read():
-    """-> {boot, cpus, rimworld, lines} or None when unreachable."""
+    """-> {boot, cpus, rimworld, rp_lines, audio} or None when unreachable."""
     rc, out = ps(r"""$ad=Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\%s' -EA 0; $dv=Get-CimInstance Win32_SystemDriver -Filter "Name='%s'" -EA 0
 "AUDIODRV "+$(if($ad){$ad.Start}else{'none'})+" "+$(if($dv){$dv.State}else{'ABSENT'})
 $o=Get-CimInstance Win32_OperatingSystem
 $b=([DateTimeOffset]$o.LastBootUpTime).ToUnixTimeSeconds(); $n=(Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
 $rw=@(Get-Process RimWorldWin64 -EA 0).Count
 "FACTS $b $n $rw"
-if(Test-Path '%s'){Get-Content '%s' -Tail 600}
-'REGPROBE_TAIL'
-if(Test-Path '%s'){Get-Content '%s' -Tail %d}""" % (AUDIO_DRIVER, AUDIO_DRIVER, WATCH_LOG, WATCH_LOG, REGPROBE_LOG, REGPROBE_LOG,
-                                                       REGPROBE_TAIL))
+if(Test-Path '%s'){Get-Content '%s' -Tail %d}""" % (AUDIO_DRIVER, AUDIO_DRIVER, REGPROBE_LOG, REGPROBE_LOG, REGPROBE_TAIL))
     if rc is None:
         return None
     lines = out.splitlines()
     for i, line in enumerate(lines):
         p = line.split()
         if line.startswith("FACTS ") and len(p) == 4:
-            rest = lines[i + 1:]
-            cut = rest.index("REGPROBE_TAIL") if "REGPROBE_TAIL" in rest else len(rest)
-            return {"boot": int(p[1]), "cpus": int(p[2]), "rimworld": int(p[3]), "lines": rest[:cut],
-                    "rp_lines": rest[cut + 1:], "audio": audio_of(lines[:i])}
+            return {"boot": int(p[1]), "cpus": int(p[2]), "rimworld": int(p[3]),
+                    "rp_lines": lines[i + 1:], "audio": audio_of(lines[:i])}
     return None
 
 
@@ -417,13 +364,13 @@ $c=Get-ItemProperty 'HKLM:\HARDWARE\DESCRIPTION\System\CentralProcessor\0'; $u=$
 '== system events since 15 min before the window ('+$since.ToString('s')+' local; probe: '+@(Get-WinEvent -FilterHashtable @{LogName='System';StartTime=(Get-Date).AddHours(-24)} -MaxEvents 200 -EA 0).Count+' events of any level in the last 24 h, capped 200)'; Get-WinEvent -FilterHashtable @{LogName='System';StartTime=$since;Level=1,2,3} -EA 0|Select -First 60|%{$_.TimeCreated.ToUniversalTime().ToString('s')+'Z '+$_.ProviderName+' '+$_.Id+' '+(($_.Message -split "`n")[0])}
 '== application crashes in it'; Get-WinEvent -FilterHashtable @{LogName='Application';StartTime=$since;Id=1000,1001,1026} -EA 0|Select -First 40|%{$_.TimeCreated.ToUniversalTime().ToString('s')+'Z '+$_.Id+' '+(($_.Message -split "`n")[0])}
 '== power and sleep'; Get-WinEvent -FilterHashtable @{LogName='System';StartTime=$since;ProviderName='Microsoft-Windows-Kernel-Power','Microsoft-Windows-Power-Troubleshooter','Microsoft-Windows-WHEA-Logger'} -EA 0|Select -First 30|%{$_.TimeCreated.ToUniversalTime().ToString('s')+'Z '+$_.ProviderName+' '+$_.Id}
-'== the canary, last cycles'; Get-Content '@LOG@' -Tail 8
+'== the probe, last cycles'; Get-Content '@LOG@' -Tail 8
 """
 
 
 def snapshot(window):
     """Cause evidence, taken while the faulty boot is still up -> the file, or None when Steve would not answer."""
-    rc, out = ps(SNAPSHOT_PS.replace("@SINCE@", window["start"]).replace("@LOG@", WATCH_LOG), timeout=180)
+    rc, out = ps(SNAPSHOT_PS.replace("@SINCE@", window["start"]).replace("@LOG@", REGPROBE_LOG), timeout=180)
     if rc is None:
         return None
     os.makedirs(T.q("fault_snapshots"), exist_ok=True)
@@ -460,11 +407,6 @@ def lane_resume(reason):
 
 # ---------------------------------------------------------------- the state machine
 
-def retest_active():
-    st = T.read_json(RETEST_STATE)
-    return bool(st) and st.get("state") not in RETEST_IDLE
-
-
 def pause_is_ours(pz, windows):
     """A pause of ours, or an auto pause (a red canary, it names a job) born inside a window: the fault's own doing."""
     if not pz:
@@ -482,7 +424,7 @@ def step(st, a, fx, now):
     """One move of the machine. st is mutated; effects go through the module's functions."""
     phase = st.get("phase", "CLEAN")
     opened, windows = a["open"], a["windows"]
-    if os.path.exists(T.q("fault_monitor.stop")) or retest_active() or advisory():
+    if os.path.exists(T.q("fault_monitor.stop")) or advisory():
         st["phase"] = "PASSIVE"      # advisory(): the window is recorded; periodic_reboot() owns the reboots
         return
     if phase == "PASSIVE":      # back in charge: a pause of ours still on means a recovery was under way
@@ -558,6 +500,16 @@ def step(st, a, fx, now):
 
 
 PR_MARK = "STEVE_PERIODIC_REBOOT:"
+PR_FAULT_S = 48 * 3600      # the danger a periodic reboot guards is the fault; none seen for this long = none guarded
+
+
+def fault_shown(a, now):
+    """Did the tracker see the fault, or its driver, inside PR_FAULT_S? The periodic reboot runs only while this is true:
+    it costs lane time and both Claude seats twice a day, and the fault's driver is off since 2026-11-21 (owner,
+    2026-11-23: "we THINK we may have fixed the faults")."""
+    if any(now - epoch(w.get("last_bad") or w["first_bad"]) < PR_FAULT_S for w in a.get("windows") or []):
+        return True
+    return (T.read_json(T.q("steve_audio_driver.json")) or {}).get("verdict") in ("LOADED", "ENABLED")
 
 
 def periodic_reboot(st, a, now):
@@ -571,6 +523,8 @@ def periodic_reboot(st, a, now):
         return
     uptime = now - a["boot"]
     pz = T.paused()
+    if not pr.get("state") and not a.get("open") and not fault_shown(a, now):
+        return
     if pr.get("state") == "WAIT_BOOT":
         if a["boot"] > pr["boot_before"]:
             if worker_busy() is not None:           # the new boot's worker answers
@@ -607,7 +561,7 @@ def periodic_reboot(st, a, now):
         st["pr"] = {"state": "DRAIN", "quiet": 0, "n": pr.get("n", 0)}
 
 
-def merge_mirror(lines, name="fault_watch.log"):
+def merge_mirror(lines, name="regprobe.log"):
     """Union of the mirror and what Steve just gave, by timestamp, so Steve's log can rotate and we still hold history."""
     path = T.q(name)
     old = []
@@ -628,6 +582,16 @@ def merge_mirror(lines, name="fault_watch.log"):
     return out
 
 
+def cycle_lines(probe):
+    """The frozen history of the retired probe, then the register probe's cycles after it."""
+    hist = []
+    with contextlib.suppress(FileNotFoundError):
+        with open(T.q("fault_watch.log"), encoding="utf-8") as f:
+            hist = f.read().splitlines()
+    last = max([epoch(m.group(1)) for m in map(CYCLE_RE.match, hist) if m] or [None], key=lambda t: t or 0)
+    return hist + from_probe(probe, after=last)
+
+
 def tick(now=None):
     now = time.time() if now is None else now
     T.ensure_dirs()
@@ -639,9 +603,7 @@ def tick(now=None):
             return 0
         st = T.read_json(T.q("fault_state.json")) or {"phase": "CLEAN"}
         fx = steve_read()
-        lines = merge_mirror(fx["lines"] if fx else [])
-        if fx and fx.get("rp_lines"):
-            merge_mirror(fx["rp_lines"], "regprobe.log")
+        lines = cycle_lines(merge_mirror((fx or {}).get("rp_lines") or []))
         # the highest boot ever seen, or a window a reboot closed would reopen when ssh fails before the next watch line
         a = analyse(lines, live_boot=max(fx["boot"] if fx else 0, st.get("boot") or 0) or None)
         anno = {w["id"]: w for w in T.read_json(T.q("fault_windows.json")) or []}
@@ -651,7 +613,7 @@ def tick(now=None):
         st.pop("blind", None)
         if fx:
             if a["boot"] and now - a["boot"] > BLIND_S and now - (a["last_cycle"] or 0) > BLIND_S:
-                st["blind"] = "no canary cycle since %s" % (stamp(a["last_cycle"]) if a["last_cycle"] else "ever")
+                st["blind"] = "no probe cycle since %s" % (stamp(a["last_cycle"]) if a["last_cycle"] else "ever")
             step(st, a, fx, now)
             periodic_reboot(st, a, now)
         elif st.get("phase") == "WAIT_BOOT" and now - st.get("reboot_t0", now) > BOOT_TIMEOUT_S:
@@ -660,9 +622,8 @@ def tick(now=None):
                   boot_iso=stamp(a["boot"]) if a["boot"] else None, last_cycle=stamp(a["last_cycle"]) if a["last_cycle"] else None,
                   clean_through=stamp(a["clean_through"]) if a["clean_through"] else None,
                   clean_through_s=a["clean_through"], open_window=a["open"]["id"] if a["open"] else None,
-                  windows=len(a["windows"]), unparsed=a["unparsed"], control=a["control"], last_heat=a["last_heat"])
+                  windows=len(a["windows"]), unparsed=a["unparsed"], control=a["control"])
         write_json("steve_audio_driver.json", audio_reading(fx, now))
-        write_json("fault_heat.json", a["boots"])
         write_json("fault_windows.json", a["windows"])      # before the state: gate never reads a state ahead of its windows
         write_json("fault_state.json", st)
         print(json.dumps({k: st.get(k) for k in ("phase", "open_window", "last_cycle", "clean_through", "alarm", "blind")}))
@@ -699,7 +660,6 @@ def report(_a=None):
         jobs = jobs_in(w)
         under = [j for j in jobs if j[3] != "quarantined"]
         print("    %d jobs inside (%d not yet quarantined): %s" % (len(jobs), len(under), ", ".join(sorted({str(j[1]) for j in jobs}))))
-        print("    heat: " + heat_line(w.get("heat")))
         if w.get("snapshot"):
             print("    cause evidence: %s" % w["snapshot"])
     print("\n".join(regprobe_section()[1]))
@@ -723,41 +683,6 @@ def regprobe(_a=None):
     return {"CLEAN": 0, "FAULT": 1}.get(word, 2)
 
 
-def _c(v):
-    return "-" if v is None else "%s C" % v
-
-
-def heat_line(h):
-    """A window's heat dict -> one line a person can judge "did it climb" from."""
-    if not h:
-        return "UNMEASURED (window older than the heat reading)"
-    if not h["cycles_measured_before"] and h["at_onset"] is None:
-        return "UNMEASURED (no cycle of this boot carried a temperature: %s)" % (h["at_onset_unmeasured"] or "pre-sampler")
-    return ("hottest core at onset %s (package %s, vcore max %s V); last clean cycle %s; hour before: max %s, mean %s; boot before onset: "
-            "max %s, mean %s over %d/%d measured cycles" % (
-                _c(h["at_onset"]), _c(h["at_onset_pkg"]), h.get("at_onset_vcore") or "-", _c(h["last_clean"]), _c(h["pre_max"]), _c(h["pre_mean"]),
-                _c(h["boot_max_before"]), _c(h["boot_mean_before"]), h["cycles_measured_before"], h["cycles_before"]))
-
-
-def heat(_a=None):
-    """One row per boot from the mirrored watch log: an open-case boot is judged against the closed ones here."""
-    path = T.q("fault_heat.json")
-    boots = T.read_json(path)
-    if boots is None:
-        print("UNMEASURED: no %s (the monitor has not ticked since the heat reading landed)" % path)
-        return 1
-    print("%-21s %6s %8s %8s %6s %6s %6s %6s %6s %9s" % ("boot", "cycles", "measured", "uptime_h", "core50", "core90",
-                                                         "coremax", "pkgmax", "vcore", "onset_h"))
-    for b in boots:
-        print("%-21s %6d %8d %8.2f %6s %6s %6s %6s %6s %9s" % (
-            b["boot"], b["cycles"], b["measured"], b["uptime_h"], b["core_median"] or "-", b["core_p90"] or "-",
-            b["core_max"] or "-", b["pkg_max"] or "-", b.get("vcore_max") or "-",
-            "%.2f" % b["onset_uptime_h"] if b["onset_uptime_h"] is not None else "clean"))
-    print("core50/core90/coremax: the hottest core per cycle (max over the cycle's 500 ms samples), median/p90/max over the "
-          "boot's measured cycles; clean = no bad cycle on that boot (yet, for the live one)")
-    return 0
-
-
 def check(_a=None, now=None):
     """Exit 0 when the reading is fresh and true to the queue; 1 with the reason on each failed line."""
     now = time.time() if now is None else now
@@ -770,14 +695,11 @@ def check(_a=None, now=None):
     if age > STALE_S:
         bad.append("reading %d s old" % age)
     if st.get("unparsed"):
-        bad.append("%d watch lines not understood: the parser no longer reads the canary" % st["unparsed"])
+        bad.append("%d probe lines of this boot not understood: the parser no longer reads the probe" % st["unparsed"])
     if st.get("reachable") and st.get("blind"):
-        bad.append("canary blind: %s" % st["blind"])
+        bad.append("probe blind: %s" % st["blind"])
     if st.get("alarm"):
         bad.append("alarm: %s" % st["alarm"])
-    lh = st.get("last_heat") or {}
-    if lh.get("unmeasured"):        # a cycle with no heat field at all predates the sampler: not a failure
-        bad.append("heat blind: the newest cycle says heat=UNMEASURED(%s)" % lh["unmeasured"])
     if os.path.exists(T.q("regprobe.log")):     # installed: it must keep looking (no mirror = not installed, not a failure)
         word, rl = regprobe_section(now)
         if word == "UNMEASURED":
@@ -797,46 +719,11 @@ def check(_a=None, now=None):
         bad.append("%d done records inside a fault window are not quarantined" % nleft)
     for line in bad:
         print("FAIL " + line)
-    print("%s phase=%s reading_age=%ds windows=%d open=%s quarantined=%d last_cycle=%s heat=%s audio_driver=%s" % (
+    print("%s phase=%s reading_age=%ds windows=%d open=%s quarantined=%d last_cycle=%s audio_driver=%s" % (
         "BAD" if bad else "OK", st.get("phase"), age, len(windows), st.get("open_window"),
         len(os.listdir(T.q("quarantined"))) if os.path.isdir(T.q("quarantined")) else 0, st.get("last_cycle"),
-        ("core_max %s C" % lh["core"]) if lh.get("core") is not None else (lh.get("unmeasured") or "none"),
         ad.get("verdict") + ("(%s)" % ad["why"] if ad.get("why") else "")))
     return 1 if bad else 0
-
-
-def deploy_watch(_a=None):
-    """Copy watch2.ps1 to Steve and restart its task, which starts a new watcher (its control line first)."""
-    src = os.path.join(HERE, "..", "steve_cpu_retest", "watch2.ps1")
-    with open(src, "rb") as f:
-        body = base64.b64encode(f.read()).decode()
-    rc, out = ps(r"""[IO.File]::WriteAllBytes('%s',[Convert]::FromBase64String('%s'))
-Stop-ScheduledTask -TaskName 'SteveDiag Fault Watch' -EA 0
-Get-CimInstance Win32_Process -Filter "Name='powershell.exe'"|?{$_.CommandLine -match 'watch2\.ps1'}|%%{Stop-Process -Id $_.ProcessId -Force -EA 0}
-Start-ScheduledTask -TaskName 'SteveDiag Fault Watch'
-Get-ScheduledTask -TaskName 'SteveDiag Fault Watch'|%%{'TASK '+$_.State}""" % (WATCH_PS1, body))
-    print(rc, out.strip()[-200:])
-    return 0 if rc == 0 else 1
-
-
-def heat_fetch():
-    """The pinned installers in HEAT_HOME, downloaded once and digest-checked every time -> {name: path}."""
-    import hashlib
-    import urllib.request
-    os.makedirs(HEAT_HOME, exist_ok=True)
-    out = {}
-    for name, (url, digest) in HEAT_ASSETS.items():
-        path = os.path.join(HEAT_HOME, name)
-        if not os.path.exists(path):
-            with urllib.request.urlopen(url, timeout=120) as r, open(path + ".part", "wb") as f:
-                f.write(r.read())
-            os.replace(path + ".part", path)
-        with open(path, "rb") as f:
-            got = hashlib.sha256(f.read()).hexdigest()
-        if got != digest:
-            raise SystemExit("FAIL %s sha256 %s, pinned %s: delete it and rerun, or re-pin from the release page" % (path, got, digest))
-        out[name] = path
-    return out
 
 
 def scp_to(local, remote_dir):
@@ -844,33 +731,6 @@ def scp_to(local, remote_dir):
                         "%s:%s/" % (STEVE_WIN, remote_dir.replace("\\", "/"))], capture_output=True, text=True, timeout=300)
     if r.returncode:
         raise SystemExit("FAIL scp %s: %s" % (local, r.stderr.strip()[-300:]))
-
-
-DEPLOY_HEAT_PS = r"""$h='@DIR@'; $ErrorActionPreference='Stop'
-if(-not (Get-Service PawnIO -EA 0)){ $p=Start-Process "$h\PawnIO_setup.exe" -ArgumentList '-install','-silent' -Wait -PassThru; 'PAWNIO_SETUP exit '+$p.ExitCode }
-'PAWNIO '+((Get-Service PawnIO -EA 0).Status)
-Expand-Archive -Force "$h\LibreHardwareMonitor.zip" "$h"
-Copy-Item -Force "$h\LibreHardwareMonitor.exe.config" "$h\stevetemp.exe.config"; $ErrorActionPreference='Continue'
-$csc="$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
-$o=& $csc /nologo /optimize /target:exe "/out:$h\stevetemp.exe" "/reference:$h\LibreHardwareMonitorLib.dll" "$h\stevetemp.cs" 2>&1
-'CSC exit '+$LASTEXITCODE; $o|Select -Last 5
-'SAMPLE '+(& "$h\stevetemp.exe" 3 500 | Select -Last 1)
-"""
-
-
-def deploy_heat(_a=None):
-    """PawnIO + LibreHardwareMonitor + stevetemp.exe onto Steve, then one 3 s sample. Exit 0 only on a numeric reading."""
-    files = heat_fetch()
-    rc, out = ps("New-Item -ItemType Directory -Force '%s' | Out-Null; 'MKDIR ok'" % STEVE_HEAT_DIR)
-    if rc != 0:
-        print("FAIL Steve unreachable or mkdir refused (%s): %s" % (rc, out.strip()[-200:]))
-        return 1
-    for path in list(files.values()) + [os.path.join(HERE, "..", "steve_cpu_retest", "stevetemp.cs")]:
-        scp_to(os.path.abspath(path), STEVE_HEAT_DIR)
-    rc, out = ps(DEPLOY_HEAT_PS.replace("@DIR@", STEVE_HEAT_DIR), timeout=300)
-    print(out.strip()[-1500:])
-    sample = [li for li in out.splitlines() if li.startswith("SAMPLE ")]
-    return 0 if rc == 0 and sample and HEAT_RE.search(sample[-1]) else 1
 
 
 def release(a=None):
@@ -894,11 +754,10 @@ def release(a=None):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("cmd", choices=("tick", "report", "check", "deploy-watch", "heat", "deploy-heat", "release", "regprobe"))
+    ap.add_argument("cmd", choices=("tick", "report", "check", "release", "regprobe"))
     ap.add_argument("prefix", nargs="?", help="release: only job ids starting with this (default: all)")
     a = ap.parse_args()
-    return {"release": lambda: release(a), "tick": tick, "report": report, "check": check, "deploy-watch": deploy_watch, "heat": heat,
-            "deploy-heat": deploy_heat, "regprobe": regprobe}[a.cmd]() or 0
+    return {"release": lambda: release(a), "tick": tick, "report": report, "check": check, "regprobe": regprobe}[a.cmd]() or 0
 
 
 if __name__ == "__main__":

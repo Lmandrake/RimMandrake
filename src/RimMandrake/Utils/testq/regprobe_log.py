@@ -72,6 +72,7 @@ def analyse(lines):
                 cur = by_boot[b] = _boot()
                 cur["boot"] = b
                 boots.append(cur)
+                unparsed = 0        # an older boot's torn line says nothing of the probe now
             cur["starts"] += 1
             cur["build"] = f.get("build")
             cur["control_ok"] = None           # each start must prove itself again

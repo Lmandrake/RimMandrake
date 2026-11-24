@@ -106,6 +106,18 @@ def runner_withdraw(base):
               % (why, (msg or "NOT REFUSED")[:120]))
 
 
+def runner_wakes(base):
+    """runner-wakes-only-a-block-that-names-its-reading: the fault tracker lifts the sleep of the fault ticket, nothing else."""
+    item = "SOME_ITEM_FIX_IT"
+    block = lambda why: ev(seat="BENCH", event="block", id=item, reason=why, kind="external")  # noqa: E731
+    wake = ev(seat="RUNNER", event="unblock", id=item, reason="fault window F1")
+    w = model.replay(base + [block("WAKES ON steve-fault: asleep"), wake], strict=True)
+    check(not w.items[item].blocked, "RUNNER lifts a block whose reason starts WAKES ON")
+    for evs, why in (([block("waits on the owner; WAKES ON nothing")], "a block with another reason"), ([], "an item with no block")):
+        msg = refusal(base + evs + [wake])
+        check(msg is not None and "RUNNER lifts only" in msg, "RUNNER may not unblock %s: %s" % (why, (msg or "NOT REFUSED")[:90]))
+
+
 def pipeline_ingame_spawn():
     """RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP: the maturation dispatch spawns its in-game visit item as
     RUNNER, for BENCH, needs game-up, from its own item. That one spawn is admitted; a game-up spawn from any other
@@ -157,6 +169,7 @@ def main():
     steward_escalation(base, item)
     pipeline_ingame_spawn()
     runner_withdraw(base)
+    runner_wakes(base)
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0
 

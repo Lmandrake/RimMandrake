@@ -285,6 +285,13 @@ DISPATCHER_VERBS = ("note",)
 # 🔑 RUNNER may also `drop`, but only a HARNESS_REPAIR_ item it spawned itself and nobody has started: testq ingest
 # withdraws a repair whose every sighting a fault window invalidated (TESTQ_QUARANTINE_BUILD_WITHDRAW_UNSUPPORTED).
 RUNNER_DROPS = "HARNESS_REPAIR_"
+# RUNNER may also `unblock` an item whose block names a program's reading as what wakes it (`block --kind external
+# --reason "WAKES ON <reading>: ..."`): the SteveDesktop fault tracker wakes the sleeping fault ticket this way.
+RUNNER_WAKES = "WAKES ON "
+
+
+def runner_may_wake(item):
+    return item is not None and item.blocked and str(item.blocked_reason or "").startswith(RUNNER_WAKES)
 
 
 def runner_may_withdraw(item):
@@ -2933,7 +2940,10 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
     if seat == "RUNNER" and verb == "drop" and not runner_may_withdraw(item):
         raise PermissionError_("RUNNER drops only a repair it spawned itself (%s…, still proposed or ready), when "
                                "fault windows leave it no valid sighting; %s is not one." % (RUNNER_DROPS, iid))
-    if seat == "RUNNER" and verb not in RUNNER_VERBS + ("drop",):    # above `file`, which `_may` never sees
+    if seat == "RUNNER" and verb == "unblock" and not runner_may_wake(item):
+        raise PermissionError_("RUNNER lifts only a block whose reason starts %r (a program's reading wakes it); %s has "
+                               "none." % (RUNNER_WAKES, iid))
+    if seat == "RUNNER" and verb not in RUNNER_VERBS + ("drop", "unblock"):    # above `file`, which `_may` never sees
         raise PermissionError_("RUNNER records test runs only (%s); `%s` is a window's verb."
                                % (", ".join(RUNNER_VERBS), verb))
     if seat == "DISPATCHER" and verb not in DISPATCHER_VERBS:

@@ -6,10 +6,9 @@ clean cycle, a clean cycle after it closes nothing, only a new boot does; histor
 quarantined, one with no clean cycle read since it finished is held, one after a clean cycle counts; the whole round
 onset -> pause -> drain -> one reboot -> two clean cycles -> resume; a fault back at once is STUCK, not a reboot loop; a
 foreign pause holds the reboot and a red canary inside the window does not; ingest writes no verdict from a window,
-notes what it already wrote and queues the item job again; `check` fails on what it says it fails on, and the formats
-the parser reads are the ones watch2.ps1 writes. Heat (STEVE_HEAT_MEASURE_BEFORE_THE_SCREWDRIVER): the sampler's line on a
-CYCLE parses, a window says how hot the boot ran before its onset, a pre-sampler line is no reading (not cool), a
-heat=UNMEASURED cycle fails check, and stevetemp.cs prints the format HEAT_RE reads. Audio driver
+notes what it already wrote and queues the item job again; `check` fails on what it says it fails on, and the retired probe's history still reads. One tracker (owner, 2026-11-23): the
+register probe's lines make the windows, a cycle that could not look is no cycle, an old boot's torn line is not a
+blind parser, and the periodic reboot runs only while the fault or its driver was seen. Audio driver
 (RIMMANDRAKE_DISABLE_STEVE_SONIC_STUDIO_DRIVER_SOUND_IS_UNUSED): the AUDIODRV line parses, each tick writes
 steve_audio_driver.json, and `check` fails on LOADED or ENABLED and passes on OFF.
 """
@@ -74,122 +73,65 @@ def analyse_checks():
     check(a7["open"] is not None, "a machine boot within rounding of the inferred one is the same boot: the window stays open")
     a6 = FM.analyse([start(), start(), cyc(5), start(), cyc(10)])
     check(a6["clean_cycles"] == 2, "a restarted watcher on the same boot is the same boot")
-    with open(os.path.join(HERE, "..", "steve_cpu_retest", "watch2.ps1"), encoding="utf-8") as f:
-        ps1 = f.read()
-    check("CYCLE uptime_h=$up bad_cpus=[$($fails -join ',')]" in ps1 and "WATCH START boot=" in ps1 and "CONTROL inject_exit=$ia clean_exit=$ic" in ps1, "the formats parsed are the ones watch2.ps1 writes")
     check("ToUniversalTime().AddMinutes" not in FM.SNAPSHOT_PS and "probe:" in FM.SNAPSHOT_PS, "the snapshot asks the event log in local time, and says the log can be seen")
     c = FM.analyse(["2026-11-03 20:00:00Z CONTROL inject_exit=1 clean_exit=0"])["control"]
     check(c["ok"], "a control with an injected fault seen is ok")
     check(not FM.analyse(["2026-11-03 20:00:00Z CONTROL inject_exit=0 clean_exit=0"])["control"]["ok"], "a control that misses it is not")
 
 
-def hcyc(minutes, core, bad=(), pkg=None, boot=BOOT):
-    pkg = core - 3 if pkg is None else pkg
-    return cyc(minutes, bad, boot) + " exits=[] pkg_c=%d/%d core_max_c=%d hot_core=4 cores_max_c=[%d,%d] samples=150 vcore_v=1.298" % (
-        pkg - 10, pkg, core, core - 5, core)
+def rp(minutes, bad=(), boot=BOOT, result=None):
+    t = FM.epoch(boot) + minutes * 60
+    result = result or ("fault" if bad else "clean")
+    return "%sZ RPCYCLE uptime_h=%.2f result=%s cpus_measured=18/18 holds=396 bad_holds=%d bad=[%s] unmeasured=[] secs=8.5" % (
+        FM.stamp(t).replace("T", " ").rstrip("Z"), minutes / 60.0, result, len(bad),
+        ",".join("%d:upper_half_loss" % c for c in bad))
 
 
-def heat_checks(tmp):
-    h = FM.heat_of(hcyc(5, 71))
-    check(h == {"pkg0": 58, "pkg": 68, "core": 71, "hot": 4, "cores": [66, 71], "vcore": 1.298}, "the sampler's line on a CYCLE parses")
-    check("vcore" not in FM.heat_of(hcyc(5, 71).replace(" vcore_v=1.298", "")), "vcore is optional: a board that does not report it still gives heat")
-    check(FM.heat_of(cyc(5) + " exits=[] heat=UNMEASURED(pawnio_not_installed)") == {"unmeasured": "pawnio_not_installed"},
-          "heat=UNMEASURED parses with its reason")
-    check(FM.heat_of(cyc(5)) is None, "a line from before the sampler carries no reading")
-    a = FM.analyse([start(), cyc(5), hcyc(60, 60), hcyc(110, 70), hcyc(150, 84), hcyc(170, 88), hcyc(175, 91, [0]), hcyc(180, 60)])
-    w = a["windows"][0]["heat"]
-    check(w["at_onset"] == 91 and w["last_clean"] == 88 and w["pre_max"] == 88 and w["boot_max_before"] == 88,
-          "a window says the hottest core at onset, at the last clean cycle, in the hour before and over the boot")
-    check(w["cycles_measured_before"] == 4 and w["cycles_before"] == 5 and w["pre_mean"] == 86.0,
-          "the pre-sampler cycle is not averaged in as cool; the hour before is the hour before")
-    check("91 C" in FM.heat_line(w) and "hour before: max 88 C" in FM.heat_line(w), "report's heat line carries the numbers")
-    old = FM.analyse([start(), cyc(170), cyc(175, [0])])["windows"][0]["heat"]
-    check(FM.heat_line(old).startswith("UNMEASURED") and FM.heat_line(None).startswith("UNMEASURED"),
-          "a window with no reading says UNMEASURED, never a temperature")
+def rpstart(boot=BOOT, build="normal", ok=1):
+    ts = FM.stamp(FM.epoch(boot) + 10).replace("T", " ").rstrip("Z")
+    return ["%sZ RPSTART boot=%sZ logical_cpus=18 cycle=300s build=%s mode=loop pid=3060 version=1" % (ts, boot, build),
+            "%sZ RPCONTROL cpu=3 upper_seen=1 lower_seen=1 sse_seen=1 scalar_seen=1 clean_seen=1 ok=%d" % (ts, ok)]
+
+
+def one_tracker_checks(tmp):
+    """the-register-probe-alone-opens-and-closes-the-window, and what it must not call clean."""
+    a = FM.analyse(FM.from_probe(rpstart() + [rp(5), rp(10), rp(15, [4, 7]), rp(20)]))
+    w = a["open"]
+    check(w and w["first_bad"] == at(15) and w["first_cpus"] == [4, 7] and w["start"] == at(10) and w["clean_after"] == 1,
+          "the-register-probe-alone-opens-the-window: last clean cycle to first bad one, CPUs kept")
     b2 = "2026-11-04 03:00:00"
-    a2 = FM.analyse([start(), hcyc(170, 80), hcyc(175, 92, [0]), start(b2), hcyc(5, 50, boot=b2), hcyc(10, 54, boot=b2)])
-    b = a2["boots"]
-    check(len(b) == 2 and b[0]["onset_uptime_h"] == round(175 / 60.0, 2) and b[0]["core_max"] == 92
-          and b[1]["onset_uptime_h"] is None and b[1]["core_max"] == 54 and b[1]["vcore_max"] == 1.298 and b[1]["core_median"] == 54 and b[1]["measured"] == 2,
-          "one heat row per boot: how hot it ran and when (or whether) it faulted, for the open-case comparison")
-    check(a2["last_heat"]["core"] == 54, "the newest cycle's reading is kept for check")
+    a = FM.analyse(FM.from_probe(rpstart() + [rp(15, [4])] + rpstart(b2) + [rp(5, boot=b2)]))
+    check(a["open"] is None and a["windows"][0]["end"] == FM.stamp(FM.epoch(b2)) and a["clean_cycles"] == 1 and a["control"]["ok"],
+          "the next boot's clean cycle closes it")
+    for name, lines in (("a failed control", rpstart(ok=0) + [rp(5)]), ("a planted build", rpstart(build="inject_vz") + [rp(5, [1])]),
+                        ("a partial cycle", rpstart() + [rp(5, result="partial")]), ("no start line", [rp(5)]),
+                        ("an unmeasured cycle", rpstart() + [rp(5, result="unmeasured")])):
+        a = FM.analyse(FM.from_probe(lines))
+        check(a["clean_through"] is None and not a["windows"] and a["last_cycle"] is None, "%s is no cycle: neither clean nor bad" % name)
+    torn = "2026-11-03 20:30\x00\x00\x00\x00e_h=15.96 bad=[2]"
+    a = FM.analyse(FM.from_probe(rpstart() + [torn, rp(60)]))
+    check(a["unparsed"] == 1, "a torn line on this boot is counted")
+    a = FM.analyse(FM.from_probe(rpstart() + [torn] + rpstart(b2) + [rp(5, boot=b2)]))
+    check(a["unparsed"] == 0, "a torn line of an older boot is not a blind parser")
+    import regprobe_log as RPL
+    check(RPL.analyse(rpstart() + [torn] + rpstart(b2) + [rp(5, boot=b2)])["unparsed"] == 0
+          and RPL.analyse(rpstart() + [rp(5), torn])["unparsed"] == 1, "the probe report's unparsed count is this boot's too")
     saved = T.QHOME
     T.QHOME = tempfile.mkdtemp(dir=tmp)
     try:
         T.ensure_dirs()
-        st = {"at": FM.stamp(BOOT_S), "phase": "CLEAN", "last_heat": {"unmeasured": "sampler_hung"}}
-        T.S.dump(st, T.q("fault_state.json"))
-        check(FM.check(now=BOOT_S + 60) == 1, "check fails when the newest cycle says heat=UNMEASURED")
-        T.S.dump(dict(st, last_heat=None), T.q("fault_state.json"))
-        check(FM.check(now=BOOT_S + 60) == 0, "a cycle with no heat field (pre-sampler) does not fail check")
-        T.S.dump(a2["boots"], T.q("fault_heat.json"))
-        check(FM.heat() == 0, "the heat table prints from fault_heat.json")
-        # report() itself prints each window's heat line (the blind check's mutant deleted that print and stayed green).
-        hot = dict(a["windows"][0], id="W_HOT")
-        cold = dict(FM.analyse([start(), cyc(170), cyc(175, [0])])["windows"][0], id="W_COLD")
-        T.S.dump([hot, cold], T.q("fault_windows.json"))
-        T.S.dump(dict(st, phase="CLEAN"), T.q("fault_state.json"))
-        import io
-        import contextlib
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            rc = FM.report()
-        lines = buf.getvalue().splitlines()
-        heat_rows = [ln.strip() for ln in lines if ln.strip().startswith("heat: ")]
-        check(rc == 0 and len(heat_rows) == 2 and "hottest core at onset 91 C" in heat_rows[0]
-              and "last clean cycle 88 C" in heat_rows[0] and heat_rows[1].startswith("heat: UNMEASURED"),
-              "report prints every window's heat line: the onset temperature for a heated window, UNMEASURED for an old one")
-        hot_i = next((i for i, ln in enumerate(lines) if ln.startswith("W_HOT")), None)
-        cold_i = next((i for i, ln in enumerate(lines) if ln.startswith("W_COLD")), None)
-        check(hot_i is not None and cold_i is not None
-              and any("91 C" in ln for ln in lines[hot_i:cold_i]) and not any("91 C" in ln for ln in lines[cold_i:]),
-              "the heat line sits under its own window, not another's")
+        with open(T.q("fault_watch.log"), "w") as f:
+            f.write("\n".join([start(), cyc(5), cyc(10, [3])]) + "\n")
+        got = FM.cycle_lines(rpstart() + [rp(3, [9]), rp(20)] + rpstart(b2) + [rp(5, boot=b2)])
+        a = FM.analyse(got)
+        check(len(a["windows"]) == 1 and a["windows"][0]["first_cpus"] == [3] and a["windows"][0]["clean_after"] == 1
+              and a["windows"][0]["end"] == FM.stamp(FM.epoch(b2)) and a["clean_through"] == FM.epoch(b2) + 300,
+              "the frozen history stands, the probe's cycles carry on after it and never rewrite it")
     finally:
         T.QHOME = saved
-    with open(os.path.join(HERE, "..", "steve_cpu_retest", "stevetemp.cs"), encoding="utf-8") as f:
-        cs = f.read()
-    check('"pkg_c={0:0}/{1:0} core_max_c={2:0} hot_core={3} cores_max_c=[{4}] samples={5}"' in cs and '" vcore_v={0:0.000}"' in cs
-          and 'StartsWith("CPU Core #"' in cs
-          and '"heat=UNMEASURED(' in cs, "stevetemp.cs prints the format HEAT_RE reads")
-    with open(os.path.join(HERE, "..", "steve_cpu_retest", "watch2.ps1"), encoding="utf-8") as f:
-        ps1 = f.read()
-    check("exits=[$($rcs -join ',')] order=[$($ord -join ',')] $heat\"" in ps1 and "$heat='heat=UNMEASURED(no_sampler)'" in ps1,
-          "watch2.ps1 ends every CYCLE with the CPU order, then the sampler's line or heat=UNMEASURED")
-    check("Get-Random -Count $n" in ps1 and "foreach($cpu in $ord)" in ps1, "watch2.ps1 checks the CPUs in a fresh random order")
-    line = cyc(5, bad=(3,)) + " exits=[1] order=[3,0,1,2] pkg_c=40/44 core_max_c=45 hot_core=2 cores_max_c=[40,45]"
-    check(FM.CYCLE_RE.match(line) and FM.heat_of(line).get("core") == 45, "a CYCLE line with order=[...] still parses, heat too")
-    live_fixture_checks()
-
-
-# Verbatim lines 360-374 of SteveDesktop's fault_watch.log (mirror D:\ClaudeWork\rimmandrake\testq\fault_watch.log),
-# copied 2026-11-04 after deploy-heat (PawnIO + LibreHardwareMonitor stevetemp.exe): the live evidence, committed so a
-# checker without the D: mirror or ssh can see the machine really logs core temperatures each cycle.
-LIVE_FIXTURE = os.path.join(HERE, "fixtures", "steve_fault_watch_heat_2026-11-04.log")
-
-
-def live_fixture_checks():
-    with open(LIVE_FIXTURE, encoding="utf-8") as f:
-        lines = f.read().splitlines()
-    cycles = [ln for ln in lines if " CYCLE " in ln]
-    heated = [(ln, FM.heat_of(ln)) for ln in cycles if FM.heat_of(ln)]
-    check(len(cycles) >= 10 and all(h is None for h in map(FM.heat_of, cycles[:8])),
-          "live fixture: the cycles before deploy-heat carry no reading")
-    check(len(heated) >= 3 and all("core" in h and 20 <= h["core"] <= 105 and 20 <= h["pkg"] <= 105
-                                   and len(h["cores"]) >= 8 and max(h["cores"]) == h["core"] for _, h in heated),
-          "live fixture: every CYCLE after deploy-heat on SteveDesktop carries numeric package and per-core temperatures")
-    check([ln[:20] for ln, _ in heated] == ["2026-11-04 03:45:56Z", "2026-11-04 03:50:57Z", "2026-11-04 04:00:11Z"]
-          and heated[0][1]["core"] == 67 and heated[0][1]["hot"] == 7 and heated[0][1]["vcore"] == 1.301,
-          "live fixture: the first heated cycle is CPU 2 faulting at a 67 C hottest core (core 7), vcore 1.301 V")
-    a = FM.analyse(lines)
-    check(a["last_heat"] and a["last_heat"]["core"] == 65 and a["unparsed"] == 0,
-          "live fixture: analyse keeps the newest real reading for check, and parses every line")
-    b = a["boots"]
-    check(len(b) == 2 and b[0]["core_max"] == 67 and b[0]["measured"] == 2 and b[0]["onset_uptime_h"] == 0.96
-          and b[1]["core_max"] == 65 and b[1]["onset_uptime_h"] is None,
-          "live fixture: one heat row per real boot (the faulting boot ran to 67 C, the fresh boot clean at 65 C)")
-    w = a["windows"][0]["heat"]
-    check(w["at_onset"] is None and w["cycles_measured_before"] == 0 and FM.heat_line(w).startswith("UNMEASURED"),
-          "live fixture: the 03:43 fault began before the sampler, so its window says UNMEASURED, never a guess")
+    src = open(os.path.join(HERE, "fault_monitor.py")).read()
+    check("logs\\watch.log" not in src and "deploy-watch" not in src and not os.path.exists(os.path.join(HERE, "..", "steve_cpu_retest", "watch2.ps1")),
+          "one tracker: nothing here reads or deploys the retired probe")
 
 
 def rec(started, finished, item=None, host="stevedesktop", ingested=None, jid=None):
@@ -255,10 +197,22 @@ def periodic_checks():
         FM.T.cmd_pause = lambda a: box.update(pz={"reason": a.reason}) or log.append("pause")
         FM.T.cmd_resume = lambda a: box.update(pz=None) or log.append("resume")
         st, B = {}, 1000000
-        young = {"boot": B}
+        shown = [{"first_bad": FM.stamp(B), "last_bad": FM.stamp(B + 3600)}]
+        young = {"boot": B, "windows": shown}
         FM.periodic_reboot(st, young, B + 11 * 3600)
         check(not log and not st.get("pr"), "periodic: a boot younger than reboot_every_h is left alone")
-        old = {"boot": B}
+        FM.periodic_reboot(st, {"boot": B, "windows": []}, B + 13 * 3600)
+        check(not log, "periodic: no fault seen and no driver back, an old boot is left alone")
+        FM.periodic_reboot(st, {"boot": B, "windows": [{"first_bad": FM.stamp(B - FM.PR_FAULT_S)}]}, B + 13 * 3600)
+        check(not log, "periodic: a fault older than PR_FAULT_S no longer reboots")
+        FM.S.dump({"verdict": "LOADED"}, FM.T.q("steve_audio_driver.json"))
+        st1 = {}
+        FM.periodic_reboot(st1, {"boot": B, "windows": []}, B + 13 * 3600)
+        check(log == ["pause"], "periodic: the fault's driver loaded again reboots as before")
+        log.clear()
+        box.update(pz=None)
+        FM.S.dump({"verdict": "OFF"}, FM.T.q("steve_audio_driver.json"))
+        old = {"boot": B, "windows": shown}
         FM.periodic_reboot(st, old, B + 13 * 3600)
         check(log == ["pause"] and st["pr"]["state"] == "DRAIN", "periodic: an old boot pauses the lane")
         for _ in range(3):
@@ -313,12 +267,12 @@ class Machine:
     """The fake SteveDesktop."""
 
     def __init__(self):
-        self.boot, self.lines, self.up = BOOT_S, [start()], True
+        self.boot, self.lines, self.up = BOOT_S, rpstart(), True
         self.busy, self.snaps, self.reboots = False, 0, 0
         self.audio = None
 
     def install(self):
-        FM.steve_read = lambda: dict({"boot": self.boot, "cpus": 18, "rimworld": 1, "lines": list(self.lines)},
+        FM.steve_read = lambda: dict({"boot": self.boot, "cpus": 18, "rimworld": 1, "rp_lines": list(self.lines)},
                                      **({"audio": self.audio} if self.audio else {})) if self.up else None
         FM.worker_busy = lambda: self.busy
         FM.snapshot = self._snap
@@ -352,8 +306,7 @@ def quiet_tick(now):
 
 
 def machine_checks(tmp):
-    saved = T.QHOME, FM.steve_read, FM.worker_busy, FM.snapshot, FM.reboot, FM.RETEST_STATE
-    FM.RETEST_STATE = os.path.join(tmp, "no_retest.json")
+    saved = T.QHOME, FM.steve_read, FM.worker_busy, FM.snapshot, FM.reboot
 
     def fresh():
         T.QHOME = tempfile.mkdtemp(dir=tmp)
@@ -363,10 +316,10 @@ def machine_checks(tmp):
 
     try:
         m = fresh()
-        m.lines += [cyc(5), cyc(10)]
+        m.lines += [rp(5), rp(10)]
         st = quiet_tick(BOOT_S + 11 * 60)
         check(st["phase"] == "CLEAN" and not T.paused() and st["clean_through_s"] == BOOT_S + 600, "clean: lane alone, the reading says clean through")
-        m.lines += [cyc(175, [0])]
+        m.lines += [rp(175, [0])]
         m.busy = True
         st = quiet_tick(BOOT_S + 176 * 60)
         check(st["phase"] == "DRAIN" and T.paused() and FM.MARK in T.paused()["reason"] and m.snaps == 1, "onset: cause snapshot, lane paused, draining")
@@ -390,16 +343,16 @@ def machine_checks(tmp):
         st = quiet_tick(FM.epoch(b2) + 150)
         check(st["open_window"] is None and T.read_json(T.q("fault_windows.json"))[0]["end"], "ssh lost before the next watch line: the closed window stays closed")
         m.up = True
-        m.lines += [start(b2), cyc(5, boot=b2)]
+        m.lines += rpstart(b2) + [rp(5, boot=b2)]
         st = quiet_tick(FM.epoch(b2) + 6 * 60)
         check(st["phase"] == "VERIFY" and T.paused(), "one clean cycle is not enough")
-        m.lines += [cyc(10, boot=b2)]
+        m.lines += [rp(10, boot=b2)]
         st = quiet_tick(FM.epoch(b2) + 11 * 60)
         check(st["phase"] == "CLEAN" and not T.paused() and not st.get("alarm"), "two clean cycles: lane resumed, clean")
         windows = T.read_json(T.q("fault_windows.json"))
         check(len(windows) == 1 and windows[0]["end"] == FM.stamp(FM.epoch(b2)) and windows[0]["snapshot"], "the window keeps its end and its snapshot")
 
-        m.lines += [cyc(15, [4], boot=b2)]
+        m.lines += [rp(15, [4], boot=b2)]
         st = quiet_tick(FM.epoch(b2) + 16 * 60)
         check(st["phase"] == "DRAIN" and len(T.read_json(T.q("fault_windows.json"))) == 2, "a second onset on the new boot is a new window")
         quiet_tick(FM.epoch(b2) + 18 * 60)
@@ -413,7 +366,7 @@ def machine_checks(tmp):
         check(st["phase"] == "VERIFY" and not st.get("alarm"), "a new boot by any hand ends STUCK")
 
         m = fresh()
-        m.lines += [cyc(170), cyc(175, [0])]
+        m.lines += [rp(170), rp(175, [0])]
         T.S.dump({"since": S.utcnow(), "job": None, "reason": "remote hardware tests", "until": None}, T.pause_path())
         quiet_tick(BOOT_S + 176 * 60)
         st = quiet_tick(BOOT_S + 178 * 60)
@@ -426,18 +379,13 @@ def machine_checks(tmp):
         check(st["phase"] == "WAIT_BOOT" and m.reboots == 1, "a red canary born in the window does not hold it")
         b4 = "2026-11-03 23:30:00"
         m.boot = FM.epoch(b4)
-        m.lines += [start(b4), cyc(5, boot=b4), cyc(10, boot=b4)]
+        m.lines += rpstart(b4) + [rp(5, boot=b4), rp(10, boot=b4)]
         st = quiet_tick(FM.epoch(b4) + 11 * 60)
         st = quiet_tick(FM.epoch(b4) + 12 * 60)
         check(st["phase"] == "CLEAN" and not T.paused(), "and that pause is lifted with ours")
 
         m = fresh()
-        m.lines += [cyc(170), cyc(175, [0])]
-        with open(FM.RETEST_STATE, "w") as f:
-            json.dump({"state": "RUNNING"}, f)
-        st = quiet_tick(BOOT_S + 176 * 60)
-        check(st["phase"] == "PASSIVE" and not T.paused() and m.reboots == 0 and st["open_window"], "the CPU retest owns the machine: window yes, act no")
-        os.remove(FM.RETEST_STATE)
+        m.lines += [rp(170), rp(175, [0])]
         open(T.q("fault_monitor.stop"), "w").close()
         st = quiet_tick(BOOT_S + 178 * 60)
         check(st["phase"] == "PASSIVE" and not T.paused(), "the stop file too")
@@ -445,13 +393,13 @@ def machine_checks(tmp):
         b5 = "2026-11-03 23:50:00"
         m.boot = FM.epoch(b5)
         T.S.dump({"since": S.utcnow(), "job": None, "reason": FM.MARK + " x", "until": None}, T.pause_path())
-        m.lines += [start(b5), cyc(5, boot=b5), cyc(10, boot=b5)]
+        m.lines += rpstart(b5) + [rp(5, boot=b5), rp(10, boot=b5)]
         st = quiet_tick(FM.epoch(b5) + 11 * 60)
         st = quiet_tick(FM.epoch(b5) + 12 * 60)
         check(st["phase"] == "CLEAN" and not T.paused(), "back from PASSIVE with our pause on: recovery resumes, the pause is lifted")
 
         m = fresh()
-        m.lines += [cyc(170), cyc(175, [0])]
+        m.lines += [rp(170), rp(175, [0])]
         now = BOOT_S + 176 * 60
         st = T.read_json(T.q("fault_state.json")) or {}
         T.S.dump(dict(st, phase="CLEAN", reboots=[now - 3600 * i for i in range(FM.MAX_REBOOTS_DAY)]), T.q("fault_state.json"))
@@ -461,11 +409,11 @@ def machine_checks(tmp):
         check(st["phase"] == "STUCK" and m.reboots == 0 and "reboots" in st["stuck"], "the reboot cap is STUCK too")
 
         m = fresh()
-        m.lines += [cyc(5)]
+        m.lines += [rp(5)]
         st = quiet_tick(BOOT_S + 60 * 60)
-        check("no canary cycle" in st.get("blind", ""), "reachable and no recent cycle: blind")
-        check(FM.check(now=BOOT_S + 60 * 60) == 1, "check fails on a blind canary")
-        m.lines += [cyc(58)]
+        check("no probe cycle" in st.get("blind", ""), "reachable and no recent cycle: blind")
+        check(FM.check(now=BOOT_S + 60 * 60) == 1, "check fails on a blind probe")
+        m.lines += [rp(58)]
         quiet_tick(BOOT_S + 60 * 60)
         check(FM.check(now=BOOT_S + 60 * 60) == 0, "check passes on a fresh clean reading")
         check(FM.check(now=BOOT_S + 60 * 60 + FM.STALE_S + 60) == 1, "check fails on a stale reading")
@@ -486,7 +434,7 @@ def machine_checks(tmp):
         m.up = True
 
         m = fresh()
-        m.lines += [cyc(170), cyc(175, [0])]
+        m.lines += [rp(170), rp(175, [0])]
         quiet_tick(BOOT_S + 176 * 60)
         os.makedirs(T.q("done"), exist_ok=True)
         r = rec(at(172), at(174))
@@ -495,9 +443,9 @@ def machine_checks(tmp):
         check(FM.check(now=BOOT_S + 190 * 60) == 1, "check fails on a done record left inside a window")
         T.S.dump(dict(T.read_json(T.q("fault_state.json")), at=FM.stamp(BOOT_S + 190 * 60), unparsed=2, alarm=None), T.q("fault_state.json"))
         os.remove(T.q("done", r["job"]["id"] + ".json"))
-        check(FM.check(now=BOOT_S + 190 * 60) == 1, "check fails when the parser stops reading the canary")
+        check(FM.check(now=BOOT_S + 190 * 60) == 1, "check fails when the parser stops reading the probe")
     finally:
-        T.QHOME, FM.steve_read, FM.worker_busy, FM.snapshot, FM.reboot, FM.RETEST_STATE = saved
+        T.QHOME, FM.steve_read, FM.worker_busy, FM.snapshot, FM.reboot = saved
 
 
 def ingest_checks(tmp):
@@ -569,6 +517,30 @@ def ingest_checks(tmp):
     S.dump({"phase": "CLEAN", "clean_through_s": FM.epoch(soon) + 1, "boot_iso": b2, "at": S.utcnow()}, os.path.join(queue, "fault_state.json"))
     ingest()
     check(T.read_json(os.path.join(queue, "done", held + ".json")).get("ingested", {}).get("result") == "pass", "and counted when one does")
+    # a-fault-return-wakes-the-sleeping-ticket-once
+    def unblocks():
+        return events("unblock")
+    r = subprocess.run([sys.executable, CLI, "block", ITEM, "--kind", "external", "--reason", "WAKES ON steve-fault: asleep",
+                        "--seat", "BENCH"], env=env, capture_output=True, text=True, timeout=120)
+    check(r.returncode == 0, "the fault ticket is put to sleep: %s" % r.stderr[-200:])
+    S.dump({"verdict": "OFF"}, os.path.join(queue, "steve_audio_driver.json"))
+    ingest()
+    check(not unblocks(), "the windows that were there before the sleep wake nothing")
+    S.dump({"verdict": "UNMEASURED"}, os.path.join(queue, "steve_audio_driver.json"))
+    ingest()
+    check(not unblocks(), "a driver reading that could not look wakes nothing")
+    b3 = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(FM.epoch(b2) + 60 * 60))
+    a3 = FM.analyse([start_(), cyc_(170), cyc_(175, [0]), start_(b2), cyc_(5, boot=b2), start_(b3), cyc_(5, [2], boot=b3)])
+    S.dump(a3["windows"], os.path.join(queue, "fault_windows.json"))
+    ingest()
+    check(len(unblocks()) == 1 and a3["windows"][-1]["id"] in unblocks()[0].get("reason", ""), "a new window wakes it, and says which")
+    ingest()
+    check(len(unblocks()) == 1, "once, not every pass")
+    subprocess.run([sys.executable, CLI, "block", ITEM, "--kind", "external", "--reason", "WAKES ON steve-fault: asleep",
+                    "--seat", "BENCH"], env=env, capture_output=True, text=True, timeout=120)
+    S.dump({"verdict": "ENABLED"}, os.path.join(queue, "steve_audio_driver.json"))
+    ingest()
+    check(len(unblocks()) == 2 and "AVoluteSS3Vad is ENABLED" in unblocks()[1].get("reason", ""), "the driver enabled again wakes it too")
     # a-quarantined-job-is-queued-again: a machine fault spends no re-run, however often it struck
     saved = T.QHOME
     T.QHOME = queue
@@ -591,7 +563,7 @@ def main():
         machine_checks(tmp)
         audio_checks()
         ingest_checks(tmp)
-        heat_checks(tmp)
+        one_tracker_checks(tmp)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("FAILED %d" % len(FAILS) if FAILS else "PASS")

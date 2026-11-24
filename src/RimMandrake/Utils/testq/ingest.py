@@ -702,6 +702,38 @@ def fault_note(state):
             note_once(host, needle, "%s %s" % (needle, text))
 
 
+FAULT_WOKE = "fault_woke.json"      # what already woke the fault's ticket: {"seen": [window ids], "driver": verdict}
+
+
+def wake_fault_ticket():
+    """The fault's own ticket sleeps with no date (a block that starts model.RUNNER_WAKES); a NEW fault window, or its audio
+    driver loaded or enabled again, wakes it, once per return. The first run takes every window there is as old news.
+    -> the cause it woke for, or None. A refused unblock (the ticket is awake, ended, or held by another block) is logged
+    and not asked again for that cause."""
+    path, old = T.q(FAULT_WOKE), T.read_json(T.q(FAULT_WOKE))
+    ids = [w["id"] for w in FM.load()[0]]
+    driver = (T.read_json(T.q("steve_audio_driver.json")) or {}).get("verdict")
+    now_ = {"seen": ids, "driver": driver if driver in ("LOADED", "ENABLED") else None}
+    if driver in (None, "UNMEASURED"):      # could not look: the last thing seen of the driver stands
+        now_["driver"] = (old or {}).get("driver")
+    if old == now_:
+        return None
+    cause = None
+    if old is not None:
+        new = [i for i in ids if i not in old["seen"]]
+        if new:
+            cause = "fault window %s" % new[-1]
+        elif now_["driver"] and not old.get("driver"):
+            cause = "audio driver %s is %s" % (FM.AUDIO_DRIVER, now_["driver"])
+    if cause:
+        host = os.environ.get("TESTQ_FAULT_ITEM", "STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO")
+        rc, out = rimflow("unblock", host, "--reason", "the fault tracker saw the fault return: " + cause)
+        T.log("fault ticket %s %s: %s%s" % (host, "woken" if rc == 0 else "NOT woken", cause,
+                                            "" if rc == 0 else " (%s)" % out[-200:]))
+    T.S.dump(now_, path)
+    return cause
+
+
 _HELD = []      # non-empty while this process holds the clone lock (main holds it across ingest + publish)
 
 
@@ -1093,6 +1125,7 @@ def _ingest_locked():
             n += 1
         if fstate:
             fault_note(fstate)
+            n += bool(wake_fault_ticket())
         if n:
             withdraw()      # a drop refused earlier is tried again whenever the pass did anything
         if push and (n or unpublished()):

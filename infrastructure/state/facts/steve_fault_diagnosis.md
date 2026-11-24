@@ -17,7 +17,7 @@ Terms in this file:
 - `RPCONTROL ok=1` in `regprobe.log` means that the probe's control passed on a CPU. The control plants faults at each
   probe start. The control passes when the probe classes each planted fault, and a clean hold, correctly.
 - An `RPFAULT` line in `regprobe.log` is one wrong register.
-- The watch is the fault watch (`watch2.ps1`, log `watch.log`).
+- The watch is the old fault watch (`watch2.ps1`, log `watch.log`). It is retired since 2026-11-23.
 - The lane is the SteveDesktop test lane.
 
 ## 🔴 `AVoluteSS3Vad` is OFF for good (2026-11-21): the cure is in place
@@ -60,10 +60,17 @@ Terms in this file:
     2 UNMEASURED).
   - Source: `src/RimMandrake/Utils/steve_cpu_retest/regprobe.c`. RED/GREEN readings:
     `infrastructure/state/facts/stevedesktop_cpu_fault_2026-11-19/regprobe_red_green/README.md`.
-- The watch's `heat=UNMEASURED(no_output)` in the 72 h soak had one cause. The soak's step cleanup killed every
-  `stevetemp` started since the step began, the watch's own sampler included.
-  - The repo's `steve_cpu_soak.ps1` has the fix: it kills only its own sampler.
-  - Steve's copy is older and was not replaced. So the next soak deploy carries the fix.
+- **The register probe is the one tracker** (owner, 2026-11-23: *"We should only have whatever the most modern tracker
+  installed to monitor the situation, that's IT."*).
+  - The monitor (`rm-steve-fault.timer`) makes the fault windows from the probe's cycles.
+  - The watch (`watch2.ps1`), its heat sampler, the CPU soak and the CPU retest are retired: their tasks are gone from
+    Steve, their code is gone from the repo, their logs stay as evidence.
+  - While both probes ran (2026-11-20 20:05Z to 2026-11-21 20:48Z), 19 boots faulted. The register probe saw 17 of them
+    and the watch saw 16 [measured]. Each missed boot had one or two bad cycles. A lasting fault (the 14 boots to
+    2026-11-21 03:29Z) the probe saw 14 of 14 times. A single short fault may pass unseen in one boot.
+  - A new window, or the driver loaded again, wakes the sleeping ticket `STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO`
+    (`ingest.wake_fault_ticket`).
+  - The 12 h periodic reboot runs only while a fault or the driver was seen in the last 48 h (`fault_monitor.fault_shown`).
 
 ## Live catch, boot 2026-11-20 20:05:07Z (read 2026-11-20 20:21-20:26Z over ssh, read-only)
 
@@ -141,20 +148,11 @@ boot: `infrastructure/state/facts/stevedesktop_cpu_fault_2026-11-19/package/dige
   did between windows (one pre-raise boot ran 44 cycles / 3.6 h with 1 bad). The counting window set by the item runs
   to **2026-11-20T15:33Z**. Only then is zero meaningful.
 
-## The 72 h Prime95 soak (started 2026-11-18T01:29Z, planned end 2026-11-21T01:29Z)
+## The 72 h Prime95 soak (2026-11-18 to 2026-11-20, retired)
 
-- To read the soak, run `python3 src/RimMandrake/Utils/steve_cpu_retest/soak_read.py` (exit 0 proven / 1 instrument
-  unproven / 2 stalled or unplanned / 3 unreachable / 4 the script exited and took no step / 5 ended
-  with no reason recorded).
-- The task is `SteveDiag CPU Soak` (SYSTEM, boot trigger). The log is `C:\SteveDesktop\diag\soak\soak.log`.
-- The testq lane is paused to 2026-11-21T03:29Z, so no game job or reboot of ours lands in the soak.
-- A reboot resumes the same run and logs `SOAK REBOOT` (proven by a deliberate reboot at 01:34Z).
-- The 2026-11-17 six-hour soak was **not** cut by a fault. A Conductor helper wrote the soak's STOP file at 19:16:56Z to
-  free Steve for testq jobs (32 steps, all PASS). The fault window at 19:35Z came after, in the Pyrelands job.
-  The log of that soak is kept at `C:\SteveDesktop\diag\soak\soak_20261117T185136Z_interrupted.log`.
-- The soak's "worker busy" yield is blind under SYSTEM (`worker_probe=blind`, measured). Only a running RimWorld makes the
-  soak wait (`RIMMANDRAKE_UNBLIND_SOAK_WORKER_PROBE_SYSTEM_SEES_NO_DISTRO`).
-- The fault watch (watch2.ps1) keeps running in the soak. Its 4 s checks share CPUs with Prime95 every 5 min.
+- The soak and its reader are retired (2026-11-23). Its log stays at `C:\SteveDesktop\diag\soak\soak.log`; the code is in
+  git history (`src/RimMandrake/Utils/steve_cpu_retest/`, before 2026-11-23).
+- The 2026-11-17 six-hour soak was **not** cut by a fault. A Conductor helper wrote the soak's STOP file at 19:16:56Z.
 
 ## The RAM test: done, clean (MEASURED 2026-10-31)
 

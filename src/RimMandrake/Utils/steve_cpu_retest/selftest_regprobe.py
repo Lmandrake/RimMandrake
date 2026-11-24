@@ -11,7 +11,7 @@ the test exits 2, never passes.
 3. The log reader (testq/regprobe_log.py): fault / clean / partial / unmeasured / unproven / planted stay apart; a missing,
    stale, control-failed or inject-build log is UNMEASURED, never CLEAN; a planted fault in a clean log reads FAULT; the
    formats parsed are the ones regprobe.c writes; two reader mutants must fail.
-4. fault_monitor.py: steve_read splits the probe's tail from the watch's, the mirror feeds `regprobe`, and `check` fails on a
+4. fault_monitor.py: steve_read takes the probe's tail, the mirror feeds `regprobe`, and `check` fails on a
    blind installed probe.
 """
 import os
@@ -247,10 +247,10 @@ def monitor_part():
     tmp = tempfile.mkdtemp()
     try:
         T.QHOME = tmp
-        FM.ps = lambda script, timeout=120: (0, "FACTS 1795200000 18 1\n2026-11-20 20:00:00Z CYCLE uptime_h=1.00 bad_cpus=[] "
-                                                "n_ok=18\nREGPROBE_TAIL\n" + "\n".join([start(), control(), cyc(5)]) + "\n")
+        FM.ps = lambda script, timeout=120: (0, "AUDIODRV 4 Stopped\nFACTS 1795200000 18 1\n"
+                                                + "\n".join([start(), control(), cyc(5)]) + "\n")
         fx = FM.steve_read()
-        check(fx and len(fx["lines"]) == 1 and len(fx["rp_lines"]) == 3, "steve_read keeps the watch lines and the probe tail apart")
+        check(fx and len(fx["rp_lines"]) == 3 and fx["audio"]["verdict"] == "OFF", "steve_read takes the probe's tail whole")
         w, _ = FM.regprobe_section(now=T0)
         check(w == "UNMEASURED", "no mirror: the probe section is UNMEASURED")
         FM.merge_mirror(fx["rp_lines"], "regprobe.log")
