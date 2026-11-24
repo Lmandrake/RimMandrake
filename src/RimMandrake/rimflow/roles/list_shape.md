@@ -59,3 +59,5 @@ Steps:
 An example of --parts:
 [{"name": "rule_in_pages", "effect": "path-has:CLAUDE.md::<the rule's line>", "fooled_by": "the line is in a section that agents do not read", "route": null},
  {"name": "his_pick", "effect": null, "fooled_by": null, "route": {"who": "owner", "ask": "pick A or B (evidence: <paths>)", "resumes": "his card answer; then shape the item again"}}]
+
+Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation.

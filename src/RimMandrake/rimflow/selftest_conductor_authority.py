@@ -281,6 +281,10 @@ OWNER_ONLY = {
                                                      "(evidence for a backfill), authorizes nothing",
     "src/RimMandrake/Utils/modcheck/northstar.py": "record_validation only persists the words its caller (modcheck/cli, "
                                                    "via CA.words) already gated",
+    "src/RimMandrake/bridgetools/build.py": "reads the game's driver lock holder (his OWNER hold) to refuse a deploy; "
+                                            "authorizes nothing",
+    "src/RimMandrake/rimflow/wake_words.py": "reads OWNER-shard events that carry his words from the ledger; "
+                                             "authorizes nothing",
     "design/RimStarWars/canon_references/gpt_review/check_review_complete.py": "compares a review row's disposition "
                                                                               "'OWNER' (a work verdict), not a seat",
 }

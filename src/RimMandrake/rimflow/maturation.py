@@ -4754,7 +4754,8 @@ def walk_result(root, mod, to, by, why, owner=None, conductor=None, item=None, f
         if ev is None:
             return {"ok": False, "why": "his walk ends on his event: %s" % owhy}
     elif not conductor:
-        return {"ok": False, "why": "a walk result needs --owner-said OWNER:<tsn> (his words ending the walk) or "
+        return {"ok": False, "why": "a walk result needs --owner-said OWNER:<tsn> (his words ending the walk), or the "
+                                    "Conductor's route: --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM, or "
                                     "--conductor-decision"}
     p = walk_result_rel(n)
     if not _absent(os.path.join(mod_dir(root, mod), p)):
@@ -5514,6 +5515,7 @@ def main(argv=None):
     w.add_argument("--why", required=True)
     w.add_argument("--owner-said", help="OWNER:<tsn>, his event ending the walk")
     w.add_argument("--conductor-decision")
+    w.add_argument("--per-ruling", help="CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: the Conductor's instruction, carried as his words; --why holds its text")
     w.add_argument("--item", help="the route item that records the walk (the tick's road back is caused by it)")
     for k in ("fix", "pick", "scene", "next"):
         w.add_argument("--" + k, default="", help="ID[,ID...]")
@@ -5726,7 +5728,8 @@ def main(argv=None):
         return 0 if res["ok"] else 1
     if o.cmd == "walk-result":
         sp = lambda v: [x.strip() for x in (v or "").split(",") if x.strip()]    # noqa: E731
-        res = walk_result(root, o.mod, o.to, o.by, o.why, owner=o.owner_said, conductor=o.conductor_decision,
+        res = walk_result(root, o.mod, o.to, o.by, o.why, owner=o.owner_said,
+                          conductor=o.conductor_decision or (("per-ruling %s: %s" % (o.per_ruling, o.why)) if o.per_ruling else None),
                           item=o.item, fix=sp(o.fix), pick=sp(o.pick), scene=sp(o.scene), next_version=sp(o.next),
                           groups=[[x.strip() for x in g.split("+") if x.strip()] for g in o.group],
                           passes=o.passes, walked=o.walked)
