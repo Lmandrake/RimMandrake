@@ -2300,6 +2300,14 @@ def lane_fault_since(now):
     return since if hb is not None and now - hb <= 30 * 60 and since is not None and since <= now else None
 
 
+def _lane_ticket():
+    """testq/lane_ticket.py, loaded by path: putting testq/ on sys.path would shadow modules named like its own."""
+    spec = importlib.util.spec_from_file_location("lane_ticket", os.path.join(HERE, "testq", "lane_ticket.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def steve_incident_unclaimed(world, model, now, rules, fault_since=None):
     """steve.incident_unclaimed_min: the age of the OLDEST open steward incident item (id prefix
     rules steve_incident.prefix) that no seat holds: still proposed/ready (not doing/built/validated) (claim/start), no live lease, not blocked. The steward
@@ -2327,7 +2335,8 @@ def steve_incident_unclaimed(world, model, now, rules, fault_since=None):
             return U("incident %s has no readable creation time" % it.id)
         if t > now + 300:
             return U("incident %s is dated %.0f min in the future" % (it.id, (t - now) / 60.0))
-        ages.append(max(0.0, (now - (max(t, fault_since) if it.blocked else t)) / 60.0))
+        began = max(t, fault_since) if (it.blocked or fault_since is not None) else t     # the incident's clock, not the ticket's
+        ages.append(max(0.0, _lane_ticket().unclaimed_s({"k": {"open": {"began": began}}}, "k", now) / 60.0))
         names.append(it.id)
     if not ages:
         return M(0.0, "min the oldest unclaimed steward incident has waited", why="no unclaimed steward incident")

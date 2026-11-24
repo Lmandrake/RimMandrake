@@ -108,6 +108,7 @@ import failure_class as FC  # noqa: E402
 import schema as S  # noqa: E402
 import testq as T  # noqa: E402
 import brake_release as BR  # noqa: E402
+import lane_ticket as LT  # noqa: E402
 
 RIMFLOW_DIR = os.path.join(T.REPO, "src", "RimMandrake", "rimflow")
 STEWARD_ITEM = os.environ.get("TESTQ_STEWARD_ITEM", "STEVE_STEWARD_BUILD_NO_LLM_OWNER")
@@ -799,9 +800,14 @@ def item_open(item_id, w):
     return bool(it and it.open)
 
 
-def mint(w, tag, who):
+def mint(w, tag, who, cause=None):
+    """A cause (lane_ticket.cause_key) names the ticket, so one cause is one name; no cause: a random suffix."""
     model, wd = w
     known = set(wd.items)
+    if cause:
+        name = "STEVE_LANE_UNSTICK_%s_%s_%s" % (tag, who, cause)
+        if name not in known and not model.mint_problems(name, known):
+            return name          # a name already in the ledger (a dropped ticket cannot reopen) takes a random suffix below
     for _ in range(20):
         name = "STEVE_LANE_UNSTICK_%s_%s_%s" % (tag, who, secrets.token_hex(2).upper())
         if not model.mint_problems(name, known):
@@ -875,7 +881,7 @@ def _escalate(inc, ls, now, last_item, src):
         elif nobody_for(ALARM_SEAT, "offline"):     # T2: never an item nobody picks up; the error is on the incident
             rc, out = 1, "no receiver: " + nobody_for(ALARM_SEAT, "offline")
         else:
-            item = mint(w, tag, "UNOWNED")
+            item = mint(w, tag, "UNOWNED", LT.cause_key(inc["state"], ls["reason"]))
             rc, out = rimflow("spawn", "--from", STEWARD_ITEM, "--for", ALARM_SEAT, "--needs", "offline", "--name", item,
                               "--title", ("SteveDesktop lane %s, unowned %d min: %s" % (inc["state"], u // 60,
                                                                                         ls["reason"]))[:160])
