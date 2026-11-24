@@ -50,7 +50,7 @@ LIVE_LEVELS = ("L1", "L2", "GREEN-MIN")       # the levels one testq run can giv
 SITE_HOLD_ROW = "<site hold"
 TIERS = ("RimMandrake", "RimStarWars", "RimUtinni")
 GIT_TIMEOUT_S = 30
-PROBE_TIMEOUT_S = 120
+PROBE_TIMEOUT_S = 480     # a hang guard. A FlowWorks probe took 78 to 118 s at load 20 (2026-11-24); at 120 the ranking went blind
 
 
 # ---------------------------------------------------------------- runs and identity
