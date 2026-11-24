@@ -38,6 +38,7 @@ for _p in (HERE, os.path.join(REPO, "src", "RimMandrake", "Utils")):
 
 FAMILY = "quiet_scan"
 CFG_PATH = os.path.join(HERE, "quiet_scan.json")
+CFG_REL = os.path.relpath(CFG_PATH, REPO)
 ROLE = os.path.join(HERE, "roles", "quiet_scan.md")
 # The closed item each scan run is launched on: a detached run needs one on the ledger, and a closed one asks no close of it.
 RUN_ITEM = "RIMMANDRAKE_RESTART_QUIET_FILE_SCAN_3580_NEVER_READ"
@@ -158,6 +159,14 @@ def last_commit(root, path):
     if not out:
         raise Blind("no commit on origin/main touches %s" % path)
     return int(out)
+
+
+def landed_cfg(root):
+    """The settings on origin/main: the run's own clone was taken before it started and misses a later `enabled: false`."""
+    try:
+        return json.loads(git(root, "show", "origin/main:" + CFG_REL))
+    except ValueError as e:
+        raise Blind("quiet_scan.json on origin/main: %s" % e)
 
 
 def mod_dirs(root, tracked):
@@ -628,12 +637,13 @@ def main(argv=None):
         if open_:
             print("READ %s" % open_[0])     # its last pick has no outcome yet: the same file, never a second one
             return 0
-        word, what = next_word(cfg, st, gather(cfg, st, now), args.run, mine, now)
-        if word == "READ":
-            try:
+        try:
+            facts = gather(cfg, st, now)        # fetches
+            word, what = next_word(landed_cfg(REPO), st, facts, args.run, mine, now)
+            if word == "READ":
                 record_pick(args.run, what, REPO, now)
-            except Blind as e:
-                word, what = "YIELD", str(e)
+        except Blind as e:
+            word, what = "YIELD", str(e)
         if word != "READ":
             record_answer(args.run, word, what, now)
         print("%s %s" % (word, what))

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """selftest_quiet_scan.py: quiet_scan.py over fake facts and a temp git repo. Nothing is launched; no model.
 Page design/specs/2026-11-24-quiet-scan/boundary.md: one test per promise, of its name. Exit 0 all pass, 1 any fail."""
+import contextlib
+import io
 import json
 import os
 import subprocess
@@ -78,6 +80,22 @@ def repo():
     return root, t
 
 
+def printed(argv):
+    """-> (exit code, what main printed)."""
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = QS.main(argv)
+    return rc, out.getvalue().strip()
+
+
+def own_state(st=None):
+    """A fresh state directory for one block; the shared one comes back after it."""
+    d = tempfile.mkdtemp(dir=TMP)
+    if st is not None:
+        json.dump(st, open(os.path.join(d, "state.json"), "w"))
+    return mock.patch.dict(os.environ, {"RM_QUIET_SCAN_DIR": d})
+
+
 def t_a_file_changed_in_the_last_seven_days_is_never_picked():
     root, t = repo()
     ch = QS.changed_since(root, 7, t)
@@ -103,6 +121,27 @@ def t_a_file_changed_in_the_last_seven_days_is_never_picked():
         raise AssertionError("a shallow clone read as a full history")
     d = QS.decide(CFG, {}, facts(files=None, blind="git log failed"), NOW)
     eq(d["decision"], "blind", "tick when git cannot answer")
+    # gather asks git for origin/main now, and says so when git cannot answer
+    for dead in ("fetch", "log"):
+        def g(r, *a):
+            if a[0] == dead:
+                raise QS.Blind("git %s failed" % dead)
+            return "" if a[0] == "fetch" else GIT(r, *a)
+        with mock.patch.object(QS, "git", g), mock.patch.object(QS, "_flags", dict), \
+                mock.patch.object(QS, "_records", dict), mock.patch.object(QS, "_holds", dict):
+            f = QS.gather(CFG, {}, t, root)
+        assert "git %s failed" % dead in (f["blind"] or ""), "git %s could not answer and gather is not blind: %s" % (dead, f["blind"])
+    # a commit landed on origin/main that this clone's HEAD does not hold; an old-dated commit on top hides nothing under it
+    git(root, "checkout", "-q", "-b", "landed")
+    for days, n in ((2, "edge8.cs"), (40, "About/About.xml")):
+        open(os.path.join(root, p, n), "a").write("z\n")
+        when = "%d +0000" % (t - days * DAY)
+        git(root, "add", "-A")
+        git(root, "commit", "-q", "-m", n, GIT_AUTHOR_DATE=when, GIT_COMMITTER_DATE=when)
+    git(root, "update-ref", "refs/remotes/origin/main", "HEAD")
+    git(root, "checkout", "-q", "main")
+    ch = QS.changed_since(root, 7, t)
+    eq((p + "edge8.cs" in ch, p + "About/About.xml" in ch), (True, False), "origin/main, not HEAD; past an old-dated commit")
 
 
 def t_mod_content_first():
@@ -140,6 +179,8 @@ def t_a_file_that_needs_no_read_is_not_picked():
        "the live gather over a real repo")
     old, e8 = "src/RimMandrake/M/old.cs", "src/RimMandrake/M/edge8.cs"
     h = QS.sha256(os.path.join(root, old))
+    f = QS.gather_files(root, 7, t, readers={"flags": dict, "records": lambda: {e8: {"hash": "0" * 64}}, "holds": dict})
+    eq(QS.candidates(f)[:2], [old, e8], "an out-of-date record, gathered, comes after a file never read")
     for ent, want in (({"hash": h, "status": "clean"}, set([old])), ({"hash": h}, set([old])),
                       ({"hash": h, "status": "dirty"}, set()), ({"hash": "0" * 64}, set())):
         f = QS.gather_files(root, 7, t, readers={"flags": lambda: {}, "records": lambda: {old: ent}, "holds": lambda: {}})
@@ -199,6 +240,25 @@ def t_a_picked_file_ends_clean_flagged_or_with_a_noted_reason():
     f = QS.gather_files(root, 7, t, readers={"flags": lambda: {}, "records": lambda: {}, "holds": lambda: {}})
     assert p in QS.candidates(f), "new bytes are a new file to read"
     eq(f["picked"], {}, "a file whose picks all ended is not behind the others when it is owed a new read")
+    # the run's own two words, through main: the pick is recorded, the same file until it ends, the end's refusal is its exit
+    c = p
+    with own_state({"run": {"unit": "m1"}}), mock.patch.object(QS, "REPO", root), \
+            mock.patch.object(QS, "landed_cfg", lambda r: CFG), \
+            mock.patch.object(QS, "gather", lambda cfg, st_, now, root=None: facts(files=files_facts(tracked=[c, q]))):
+        eq(printed(["next", "--run", "m1"]), (0, "READ " + q), "next")
+        eq([(x["run"], x["path"]) for x in QS.picks()], [("m1", q)], "the pick is recorded")
+        eq(printed(["next", "--run", "m1"]), (0, "READ " + q), "a file with no outcome is given again, never a second one")
+        eq(len(QS.picks()), 1, "and picked once")
+        rc, text = printed(["end", q, "--run", "m1", "--outcome", "noted"])
+        assert rc == 2 and "--reason" in text, "a refused end exits 2: %s %s" % (rc, text)
+        eq(printed(["end", q, "--run", "m1", "--outcome", "noted", "--reason", "x"])[0], 0, "end")
+        eq([e["path"] for e in QS.ends()], [q], "the end is recorded")
+        eq(printed(["next", "--run", "m1"]), (0, "READ " + c), "then the next file")
+
+        def dark(*a, **k):
+            raise QS.Blind("fetch failed")
+        with mock.patch.object(QS, "end", dark):
+            eq(printed(["end", c, "--run", "m1", "--outcome", "clean"])[0], 3, "could not look is not ended")
     # look_at, for real: a record line and the file's bytes are landed only when origin/main holds them
     rec = os.path.join(root, QS.REC)
     os.makedirs(rec + "/flags")
@@ -251,6 +311,11 @@ def t_a_system_death_releases_the_file():
     assert not s.get("stopped"), s
     eq(QS.decide(CFG, s, facts(), NOW + 60)["decision"], "system_wait", "waits")
     eq(QS.decide(CFG, s, facts(), NOW + 3601)["decision"], "launch", "then goes")
+    with own_state({"run": {"unit": "u3"}}):        # tick waits its setting after a run that did not count
+        fx = {"facts": lambda cfg, st, now: facts(runs={"u3": {"live": False, "counts": False, "result": "killed"}}),
+              "account": lambda: (True, ""), "launch": lambda cfg: (0, "", "u3c")}
+        eq(QS.tick(CFG, True, fx, NOW)["decision"], "system_wait", "tick after a killed run")
+        eq(QS._state()["wait_until"], NOW + CFG["system_wait_s"], "system_wait_s")
     eq(QS.candidates(files_facts(picked={"src/RimMandrake/ModA/Src/c.cs": 1}))[-1], "src/RimMandrake/ModA/Src/c.cs",
        "a released file goes behind the files picked fewer times")
     s = {"run": {"unit": "u3b"}}
@@ -343,6 +408,33 @@ def t_the_gates_launch_nothing():
     eq(D(pool="pool full")["decision"], "pool_full", "")
     eq(D(st={"run": {"unit": "u"}}, runs={"u": {"live": True}})["decision"], "live", "")
     eq(D(files=files_facts(tracked=[]))["decision"], "none_left", "")
+    # tick asks the account and hands --hand to the decision and to the run it launches
+    def ticked(hand=None, account=(True, ""), **kw):
+        sent = []
+        with own_state():
+            fx = {"facts": lambda cfg, st_, now: facts(**kw), "account": lambda: account,
+                  "launch": lambda cfg: sent.append(1) or (0, "", "u")}
+            return QS.tick(CFG, True, fx, NOW, hand)["decision"], len(sent), (QS._state().get("run") or {}).get("hand")
+    eq(ticked(account=(False, "HOLD")), ("account_hold", 0, None), "tick under an account hold")
+    eq(ticked(busy="b"), ("yields", 0, None), "tick beside a mod step")
+    eq(ticked(hand="why", busy="b"), ("launched", 1, "why"), "tick --hand beside a mod step")
+    eq(ticked(), ("launched", 1, None), "tick")
+    # the settings that `next` obeys are origin/main's, not those of the run's own clone, which was taken before it started
+    cfg = os.path.join(root, QS.CFG_REL)
+    os.makedirs(os.path.dirname(cfg))
+    json.dump(dict(CFG, enabled=False), open(cfg, "w"))
+    git(root, "add", "-A")
+    git(root, "commit", "-q", "-m", "off")
+    git(root, "update-ref", "refs/remotes/origin/main", "HEAD")
+    json.dump(CFG, open(cfg, "w"))
+    with own_state({"run": {"unit": "u"}}), mock.patch.object(QS, "REPO", root), mock.patch.object(QS, "load_cfg", lambda: CFG), \
+            mock.patch.object(QS, "gather", lambda cfg_, st_, now, root=None: facts(
+                files=files_facts(tracked=["src/RimMandrake/M/old.cs"]))):
+        rc, text = printed(["next", "--run", "u"])
+        assert text.startswith("YIELD") and "enabled" in text, "disabled on origin/main mid-run: %s" % text
+        git(root, "update-ref", "refs/remotes/origin/main", "HEAD~1")
+        rc, text = printed(["next", "--run", "u"])
+        assert text.startswith("YIELD"), "settings that cannot be read: %s" % text
     # --hand skips the mod step and nothing else
     eq(QS.decide(CFG, {}, facts(busy="b"), NOW, hand="why")["decision"], "launch", "hand")
     for kw in ({"off": "x"}, {"paused": "x"}, {"pool": "x"}, {"blind": "x"}):
@@ -390,8 +482,13 @@ def t_a_run_that_ends_no_file_stops_the_scan():
     try:
         json.dump({"run": {"unit": "u7"}}, open(os.path.join(d, "state.json"), "w"))
         fx = {"facts": lambda cfg, st, now: facts(runs={"u7": {"live": False, "counts": True, "result": "success (0)"}}),
-              "account": lambda: (True, ""), "launch": lambda cfg: (0, "", "u8"), "need": lambda text, now: None}
+              "account": lambda: (True, ""), "launch": lambda cfg: (0, "", "u8"), "need": lambda text, now: told.append(text)}
+        del told[:]
         eq(QS.tick(CFG, True, fx, NOW)["decision"], "stopped", "tick")
+        eq(QS.tick(CFG, True, fx, NOW + 600)["decision"], "stopped", "tick again")
+        eq(len(told), 1, "tick says it to the Conductor, once")
+        eq(printed(["clear", "--why", "fixed"])[0], 0, "clear")
+        eq(QS.tick(CFG, False, fx, NOW + 1200)["decision"], "would_launch", "`clear` starts the scan again")
         # the run's own two words, through main: the answer is recorded, the file is picked once, then ended
         st = {"run": {"unit": "u9"}}
         json.dump(st, open(os.path.join(d, "state.json"), "w"))
@@ -406,6 +503,16 @@ def t_the_run_is_sonnet_and_knows_the_method():
     argv = QS.launch_argv(CFG, "/b.md")
     eq(argv[argv.index("--model") + 1], "sonnet", "model")
     assert "--max-budget-usd" not in argv
+    calls = []
+
+    def run(argv, **kw):
+        calls.append(argv)
+        return subprocess.CompletedProcess(argv, 0, "DETACHED rm-x\n  item\n", "")
+    with mock.patch.object(QS.subprocess, "run", run):
+        eq(QS.launch(CFG)[::2], (0, "rm-x"), "the unit launch read")
+    with mock.patch.object(QS.subprocess, "run", lambda argv, **kw: subprocess.CompletedProcess(argv, 3, "DETACHED rm-x\n", "")):
+        eq(QS.launch(CFG)[2], None, "a refused launch has no unit")
+    eq(calls, [QS.launch_argv(CFG, QS.ROLE)], "the launch sends the sonnet argv with the role file as its brief")
     b = QS.brief_text()
     for s in ("roles/code_review.md", "fresh reader", "quiet_scan.py next", "quiet_scan.py end", "mark-clean", "flag",
               "polish.md", "Do not claim", "concrete case"):
@@ -441,6 +548,11 @@ def t_a_dry_tick_writes_nothing():
         assert json.load(open(os.path.join(d, "s", "reading.json")))["at"] == NOW
         fx["facts"] = lambda cfg, st, now: facts()
         fx["launch"] = lambda cfg: (2, "refused: x", None)
+        calls = []
+        with mock.patch.object(QS, "tick", lambda cfg, apply, **kw: calls.append((apply, kw["hand"])) or r):
+            for argv in (["tick"], ["tick", "--apply"], ["tick", "--apply", "--hand", "why"]):
+                printed(argv)
+        eq(calls, [(False, None), (True, None), (True, "why")], "the command line acts only with --apply")
         st["run"] = None
         json.dump(st, open(os.path.join(d, "s", "state.json"), "w"))
         r = QS.tick(CFG, True, fx, NOW + 5)
