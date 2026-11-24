@@ -2331,6 +2331,7 @@ def login_obs(sch):
             return None, None
     return {"probe": lambda: LW.probe(claude_exe(), cfg["probe_timeout_s"]), "account": account,
             "deadlines": lambda: LW.login_deadlines(cfg["vault_root"]),
+            "host_deadlines": LW.host_login_deadlines,
             "stranded": lambda sessions: LW.stranded(sch, cfg, sessions, time.time())}
 
 

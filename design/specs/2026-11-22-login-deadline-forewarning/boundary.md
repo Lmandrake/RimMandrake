@@ -1,7 +1,7 @@
 # BOUNDARY: a login's fixed deadline is warned before it kills the machine's sessions, Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/login_watch.py` (`login_deadlines`, `_deadline_step`, the deadline call in `step`) and
-`src/RimMandrake/rimflow/dispatcher.py` (`login_obs`, key `deadlines`).
+Code: `src/RimMandrake/rimflow/login_watch.py` (`login_deadlines`, `host_login_deadlines`, the deadline call in
+`step`) and `src/RimMandrake/rimflow/dispatcher.py` (`login_obs`, keys `deadlines` and `host_deadlines`).
 Item: `RIMMANDRAKE_TRACE_WINDOW_LOGIN_EXPIRED_HE_THOUGHT_IT_FIXED`, written 2026-11-22.
 Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_login_deadline.py`.
 
@@ -22,6 +22,9 @@ login after it dies. This page adds the warning before the deadline.
 - **a-vault.** claude-account's vault (`vault_root`, default `~/.claude-accounts`): one `<account>/.credentials.json`
   per enrolled login, and `live.json` naming the live account. The capture timer keeps the live login's vault copy
   current.
+- **a-remote-vault.** SteveDesktop's `~/.claude-accounts`, read by `login_deadlines` itself over SSH. Only account
+  names, the live name and deadline epochs come back, never a token. `health.json` there holds no deadline (read
+  2026-11-24).
 
 ## DOES NOT SURVIVE (not promised)
 
@@ -33,9 +36,9 @@ login after it dies. This page adds the warning before the deadline.
 ## PROMISES (each one is owed a check of the same name)
 
 - **a-login-near-its-deadline-alarms.** A login whose deadline is within `deadline_warn_s` raises one alarm kind,
-  `login:deadline:<account>:<deadline epoch>`, into the ledger and the Conductor log. The alarm gives the deadline in
+  `login:deadline:<host>:<account>:<deadline epoch>`, into the ledger and the Conductor log. The alarm gives the deadline in
   Pacific time and the way to renew. The Dispatcher repeats the kind every `alarm_every_s` until the login is renewed.
-- **the-live-login-renews-from-a-plain-terminal.** For the live account, the alarm says so and names
+- **the-live-login-renews-from-a-plain-terminal.** For the local live account, the alarm says so and names
   `claude auth login` from a plain terminal, not /login in a window. A vault account is told to use
   `claude-account enroll <account>`.
 - **a-past-deadline-says-expired.** A login past its deadline alarms with EXPIRED and the time. A switch to that
@@ -51,9 +54,17 @@ login after it dies. This page adds the warning before the deadline.
   `login:deadline:watch` and the probe of the live login runs as before.
 - **the-dispatcher-wires-the-reader.** `dispatcher.login_obs` gives `step` a `deadlines` reader whenever login_watch
   is enabled.
+- **each-vault-host-warns-of-its-own-deadlines.** The Dispatcher checks Archmagi and SteveDesktop, with distinct
+  alarm kinds even for equal account names and deadlines. SteveDesktop's alarm names the host and how to enroll
+  there.
+- **an-unreadable-host-names-its-cause.** An unreadable host gives no reading (`None`) and an UNMEASURED alarm
+  with its cause. A failed command or invalid reply is distinct from unavailable access. An empty vault is quiet
+  and zero is a measured epoch.
 
 ## LIMITS
 
 - `deadline_warn_s` = 3 days. Danger: a login dies mid-session, and every window and run on it stops until he signs in
   again. Evidence: 2026-11-22, the lukas login, dead 10:42 to 11:21 AM PST (above). Three days gives him several
   sittings to renew the login at a time he picks.
+- The SSH read has an 8-second connection timeout and a 10-second total timeout so SteveDesktop cannot indefinitely
+  delay the local login probe. The connection timeout matches the account usage poller's.

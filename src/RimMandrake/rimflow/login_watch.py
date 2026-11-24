@@ -42,8 +42,11 @@ gate above holds it until the login works; each outage that ends starts the per-
 """
 import json
 import datetime
+import inspect
+import math
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -340,12 +343,65 @@ def login_deadlines(root):
     return out
 
 
+def remote_reader():
+    """login_deadlines itself, to run on the other host: one rule, and only names and epochs come back, never a token."""
+    return ("import json, os, sys\n\n" + inspect.getsource(login_deadlines) +
+            "\nr = login_deadlines(sys.argv[1])\n"
+            "print(json.dumps({'_unmeasured': 'could not look: the vault cannot be listed'} if r is None else r))\n")
+
+
+def host_login_deadlines(host, run=None, *, on_unmeasured=None):
+    """The remote vault's deadlines, or None with a cause sent to on_unmeasured."""
+    if host.lower() == "stevedesktop":
+        target = os.environ.get("STEVE_WSL", "mandrake@stevedesktop-wsl")
+        argv = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=8", target,
+                shlex.join(["python3", "-c", remote_reader(), "~/.claude-accounts"])]
+        try:
+            raw = run(argv, 10) if run else subprocess.check_output(argv, text=True, timeout=10, stderr=subprocess.DEVNULL)
+            r = json.loads(raw)
+            if isinstance(r, dict) and "_unmeasured" in r:
+                why = r["_unmeasured"]
+            elif isinstance(r, dict) and all(
+                    (v is None or isinstance(v, str)) if a == "_live" else
+                    isinstance(v, dict) and isinstance(v.get("why"), str) and "deadline" in v
+                    and (v["deadline"] is None or type(v["deadline"]) in (int, float) and math.isfinite(v["deadline"]))
+                    for a, v in r.items()):
+                return r
+            else:
+                why = "failed: invalid deadline reply"
+        except subprocess.TimeoutExpired:
+            why = "could not look: SSH read timed out"
+        except subprocess.CalledProcessError as e:
+            why = ("could not look: ssh exited 255" if e.returncode == 255
+                   else "failed: remote deadline reader exited %d" % e.returncode)
+        except OSError as e:
+            why = "could not look: %s" % e
+        except (TypeError, ValueError, OverflowError):
+            why = "failed: invalid deadline reply"
+    else:
+        why = "could not look: no vault address for this host"
+    if on_unmeasured:
+        on_unmeasured(why)
+    return None
+
+
 def _deadline_step(cfg, lo, now, act):
-    """Forewarn a login's fixed deadline (RIMMANDRAKE_TRACE_WINDOW_LOGIN_EXPIRED_HE_THOUGHT_IT_FIXED). One alarm kind
-    per account and deadline, so a new sign-in ends the old warning; the Dispatcher repeats a kind every alarm_every_s."""
     if not lo.get("deadlines"):
         return
-    r = lo["deadlines"]()
+    local = "SteveDesktop" if (machine(cfg) or "").lower() == "stevedesktop" else "Archmagi"
+    _deadline_alarms(cfg, lo["deadlines"](), now, act, local)
+    if local == "Archmagi" and lo.get("host_deadlines"):
+        def unmeasured(why):
+            act(do="alarm", kind="login:deadline:blind:SteveDesktop", note=True, conductor_log=False,
+                why="SteveDesktop login deadlines are UNMEASURED (%s)" % why,
+                raise_first="SteveDesktop login deadline check is blind.")
+        r = lo["host_deadlines"]("SteveDesktop", on_unmeasured=unmeasured)
+        if r is not None:
+            _deadline_alarms(cfg, r, now, act, "SteveDesktop", remote=True)
+
+
+def _deadline_alarms(cfg, r, now, act, host, remote=False):
+    """One alarm kind per host, account and deadline. A new sign-in ends the old warning."""
     if r is None:
         act(do="alarm", kind="login:deadline:blind", note=True, conductor_log=False,
             why="the login vault %s cannot be listed: a login near its deadline would go unwarned" % cfg["vault_root"],
@@ -355,23 +411,26 @@ def _deadline_step(cfg, lo, now, act):
     for a in sorted(k for k in r if not k.startswith("_")):
         dl, why = r[a]["deadline"], r[a]["why"]
         if dl is None:
-            act(do="alarm", kind="login:deadline:unmeasured:%s" % a, note=True, conductor_log=False,
-                why="%s's login deadline is UNMEASURED: %s" % (a, why),
-                raise_first="Login deadline of %s unknown." % a)
+            key = "%s:%s" % (host, a) if remote else a
+            who = "%s on %s" % (a, host) if remote else a
+            act(do="alarm", kind="login:deadline:unmeasured:%s" % key, note=True, conductor_log=False,
+                why="%s's login deadline is UNMEASURED: %s" % (who, why),
+                raise_first="Login deadline of %s unknown." % who)
             continue
         left = dl - now
         if left > cfg["deadline_warn_s"]:
             continue
         is_live = a == live
-        how = ("`claude auth login` from a plain terminal, not /login in a window" if is_live
+        how = ("`claude-account enroll %s` on %s (http://stevedesktop-wsl:8765/)" % (a, host) if remote
+               else "`claude auth login` from a plain terminal, not /login in a window" if is_live
                else "`claude-account enroll %s` from a plain terminal (the account's owner signs in)" % a)
         when = ("EXPIRED %s" % _local(dl)) if left <= 0 else ("dies %s, in %.1f h" % (_local(dl), left / 3600.0))
-        act(do="alarm", kind="login:deadline:%s:%d" % (a, int(dl)), note=True, conductor_log=True,
-            why="%s login %s %s. A refresh cannot move this deadline (the CLI keeps the earlier one); only a new sign-in"
-                " does.%s" % ("the live" if is_live else "vault", a, when,
+        act(do="alarm", kind="login:deadline:%s:%s:%d" % (host, a, int(dl)), note=True, conductor_log=True,
+            why="%s login %s on %s %s. A refresh cannot move this deadline (the CLI keeps the earlier one); only a new"
+                " sign-in does.%s" % ("the live" if is_live else "vault", a, host, when,
                               " Every window and run on it stops then." if is_live and left > 0 else
                               " A switch to it is refused." if not is_live else ""),
-            raise_first="LOGIN %s %s. Renew: %s." % (a, when, how))
+            raise_first="LOGIN %s on %s %s. Renew: %s." % (a, host, when, how))
 
 
 def step(sch, st, obs, now, act, iso):
