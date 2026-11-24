@@ -1,0 +1,12 @@
+{
+ "ok": true,
+ "rc": 1,
+ "why": "fill_queue exit 1",
+ "tail": "yQueen_r3_south.json\nREFUSED duplicate: arteval_RM_ThozzikColonyQueen_r3_east already exists at /mnt/d/ClaudeWork/rimmandrake/artpipe/done/arteval_RM_ThozzikColonyQueen_r3_east.json\nREFUSED duplicate: arteval_RM_ThozzikColonyQueen_r3_north already exists at /mnt/d/ClaudeWork/rimmandrake/artpipe/active/arteval_RM_ThozzikColonyQueen_r3_north.json\nREFUSED duplicate: arteval_RSW_Clodhopper_r3_south already exists at /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RSW_Clodhopper_r3_south.json\nREFUSED duplicate: arteval_RSW_Clodhopper_r3_east already exists at /mnt/d/ClaudeWork/rimmandrake/artpipe/active/arteval_RSW_Clodhopper_r3_east.json\nREFUSED duplicate: arteval_RSW_Clodhopper_r3_north already exists at /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RSW_Clodhopper_r3_north.json\n",
+ "filed": [
+  "arteval_RM_ThozzikColonyQueen_r3",
+  "arteval_RSW_Clodhopper_r3",
+  "arteval_RSW_Gizka_r3"
+ ],
+ "unfiled": []
+}

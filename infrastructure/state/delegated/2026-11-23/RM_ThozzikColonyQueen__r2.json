@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_ThozzikColonyQueen",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth FLAG (facing_scale_lint gate, plan insect): south feet 0.0703 (band -0.03..0.03); north feet 0.0391 (band -0.03..0.03)"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a7a75f8f2de9921f9bab9cd9b66e990c6535b78cf02af88e2059d872081d8d28",
+  "east.png": "b26176d53fbc87359e54674ceacf12e43860e4e75bfc7ef0533bf7c6b2256fc3",
+  "north.png": "02c8ee992502f9fa12291128c524674665b45f4be5004c5a57123e791318a748",
+  "scale.png": "1187c71e788312b3576314effe76db4fe6c4b70e8542e33c0f8060c31619467f",
+  "facings.png": "3b84eee42ec25b5fd3d65cd5469e1cbed94ccdfb908c43c549d0969c06af5735"
+ }
+}

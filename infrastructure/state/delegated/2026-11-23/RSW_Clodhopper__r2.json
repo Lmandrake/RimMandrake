@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Clodhopper",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth FLAG (facing_scale_lint gate, plan quadruped): north d_north 1.431 (band 0.63..1.20); south feet 0.0781 (band -0.03..0.03); north feet 0.1172 (band -0.03..0.03)"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "5996273076abbcb17e14f2745d212425239272cb6fffa0d1662573ba6e20cfff",
+  "east.png": "65f3ef94cf6de65552149759239e5b5b03dbc1d23640c109941dd6a6a1c2f140",
+  "north.png": "4075c989c882d575827dae9150eab0b0aeeb2c6b51b7f518d8ab2d972b20870a",
+  "scale.png": "d8140005ab9a4b781f4cbd7d058a918fda6d6f220f53e182c4cdc03546a66a0a",
+  "facings.png": "32100c472e16c1ba611139b2ac71be1ef780d63b59e9beb6a55b7f434c3f7a22"
+ }
+}

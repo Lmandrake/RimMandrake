@@ -1,0 +1,65 @@
+[
+ {
+  "id": "arteval_RM_ThozzikColonyQueen_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_ThozzikColonyQueen",
+  "prompt": "thozzik queen: A domesticated matriarch, the kurreth's armoured body swollen around a spore-bearing brood chamber. Nearly as fast as her spawn, with a more potent neurotoxin sting; the colony's thozzik answer to her alone. It is NOT an Earth animal: armoured body; body swollen around a spore-bearing brood chamber. The north view stands with its feet on the same row as the east view's feet (measured: feet row +0.039 of canvas height from east's). The south view stands with its feet on the same row as the east view's feet (measured: feet row +0.070 of canvas height from east's). Painterly vanilla RimWorld style, realistic, no outlines, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261123_1853",
+  "drawsize": 2.25,
+  "module": "flyer",
+  "target_texpath": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+ },
+ {
+  "id": "arteval_RSW_Clodhopper_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Clodhopper",
+  "prompt": "clodhopper: A small, wingless, four-limbed forager native to Naboo, with tough brown skin, a crimson neck and a pale beak. Clodhoppers breed rapidly and feed in swarms, using powerful clawed forelegs to forage and hop. Off-world export is forbidden after accidental introductions devastated farmland. It is NOT an Earth animal: a pale beak instead of a wide amphibian mouth; a crimson neck against the brown body; powerful clawed forelegs; tough brown skin rather than smooth moist amphibian skin. The north view is drawn at the same body height as the east view (measured: common S+N factor (keeps N:S width)). The south view is drawn at the same body height as the east view (measured: common S+N factor (keeps N:S width)). Painterly vanilla RimWorld style, realistic, no outlines, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261123_1853",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/Clodhopper/Clodhopper"
+ },
+ {
+  "id": "arteval_RSW_Gizka_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gizka",
+  "prompt": "A single sprite of a gizka for RimWorld: a small bipedal reptile with a lean, horizontal theropod-style torso balanced on two hind legs, a blunt, short-snouted head, tiny forelimbs held close to the chest, and a thick balancing tail growing straight from the pelvis as a continuation of the spine and tapering to a rounded tip. Slim build throughout: a narrow torso, modest hind legs of even thickness, small feet, and a head only slightly wider than the neck. Muted olive-green scaled skin with a paler belly, small dark eyes set in the head, and a calm, alert expression. The same animal keeps one consistent size and build, with a fixed standing height, hind-leg width and foot size. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_INCONSISTENT, F_SIZE_JUMP, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261123_1853",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.87,
+  "module": "walker",
+  "target_texpath": "RimStarWars/SWBestiary/Gizka/Gizka"
+ }
+]
