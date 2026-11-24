@@ -424,11 +424,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 577.74,
-    "last": "5809/5809 checks passed",
-    "at": "2026-11-24T02:21:02Z",
+    "seconds": 408.82,
+    "last": "5810/5810 checks passed",
+    "at": "2026-11-24T03:03:20Z",
     "result": "PASS",
-    "build": "31055f53336d027b94b0",
+    "build": "db2443471d092a4a6d20",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
     "margins": []
    }
@@ -448,11 +448,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 35.18,
+    "seconds": 26.28,
     "last": "11/11 checks passed (stub joins only)",
-    "at": "2026-11-24T02:21:37Z",
+    "at": "2026-11-24T03:03:47Z",
     "result": "PASS",
-    "build": "02f7b0dc69a0eab6afec",
+    "build": "61370321ff3a1e5596c1",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
     "margins": []
    }
@@ -472,11 +472,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.9,
+    "seconds": 0.61,
     "last": "PASS",
-    "at": "2026-11-24T02:21:39Z",
+    "at": "2026-11-24T03:03:47Z",
     "result": "PASS",
-    "build": "51fec182ac8c195b2181",
+    "build": "38e804628d78108c0186",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py",
     "margins": []
    }
@@ -552,11 +552,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.22,
+    "seconds": 4.63,
     "last": "PASS  G0_clean_copy  want=green got=[]",
-    "at": "2026-11-24T02:30:10Z",
+    "at": "2026-11-24T03:03:52Z",
     "result": "PASS",
-    "build": "a4969f255ce7db642a6c",
+    "build": "76c62bf30314fa8f3255",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
     "margins": []
    }
@@ -759,9 +759,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "gss end-heap budget: ok",
-    "at": "2026-11-24T02:30:10Z",
+    "at": "2026-11-24T03:03:52Z",
     "result": "PASS",
-    "build": "5fd2ef6269c6f6b30342",
+    "build": "bf35b5dbfd18de4b81a1",
     "command": "python3 src/RimMandrake/Utils/selftest_gss_end_heap_budget.py",
     "margins": []
    }
@@ -1403,11 +1403,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 425.72,
-    "last": "5818/5818 checks passed",
-    "at": "2026-11-24T02:37:19Z",
+    "seconds": 415.74,
+    "last": "5819/5819 checks passed",
+    "at": "2026-11-24T03:10:48Z",
     "result": "PASS",
-    "build": "0351e92e603ad63f20d6",
+    "build": "f0aefbd38197b50c8206",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry",
     "margins": []
    }
@@ -1561,11 +1561,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.21,
+    "seconds": 0.23,
     "last": "PASS",
-    "at": "2026-11-24T02:37:19Z",
+    "at": "2026-11-24T03:10:48Z",
     "result": "PASS",
-    "build": "5f6335620e8d36888024",
+    "build": "5b4098267c98516098b4",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_main_thread_textures.py",
     "margins": []
    }
@@ -1720,11 +1720,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.13,
+    "seconds": 0.17,
     "last": "PASS",
-    "at": "2026-11-24T02:37:19Z",
+    "at": "2026-11-24T03:10:48Z",
     "result": "PASS",
-    "build": "90f3c6870083df78877e",
+    "build": "4c8006b183062fc5f600",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py",
     "margins": []
    }
@@ -1772,11 +1772,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 417.3,
-    "last": "5809/5809 checks passed",
-    "at": "2026-11-24T02:44:17Z",
+    "seconds": 433.79,
+    "last": "5810/5810 checks passed",
+    "at": "2026-11-24T03:18:02Z",
     "result": "PASS",
-    "build": "29f70ddd6e19c5616889",
+    "build": "d7e23f9b159fbdb9105b",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
     "margins": []
    }
@@ -1824,11 +1824,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.61,
+    "seconds": 3.96,
     "last": "1058/1058 checks passed (switch light only)",
-    "at": "2026-11-24T02:44:21Z",
+    "at": "2026-11-24T03:18:06Z",
     "result": "PASS",
-    "build": "0ec5d8c119fb6c5c36cb",
+    "build": "9554314d6725364c6094",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --switchlight-only",
     "margins": []
    }
@@ -1875,11 +1875,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 31.39,
+    "seconds": 29.72,
     "last": "11/11 checks passed (no kink only)",
-    "at": "2026-11-24T02:44:53Z",
+    "at": "2026-11-24T03:18:36Z",
     "result": "PASS",
-    "build": "56c4ddbbaa3963e200d9",
+    "build": "ea7b315c8decafc25dc6",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --kinks-only",
     "margins": []
    }
@@ -1926,11 +1926,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 76.02,
-    "last": "6/6 checks passed (wall plugs only)",
-    "at": "2026-11-24T02:46:09Z",
+    "seconds": 63.4,
+    "last": "7/7 checks passed (wall plugs only)",
+    "at": "2026-11-24T03:19:39Z",
     "result": "PASS",
-    "build": "d7e977f7cc1c1c3d500e",
+    "build": "d9c7cf9e729a9d1d1958",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --wallplugs-only",
     "margins": []
    }
