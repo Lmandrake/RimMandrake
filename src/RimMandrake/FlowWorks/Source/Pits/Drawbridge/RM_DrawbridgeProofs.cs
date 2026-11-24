@@ -53,6 +53,22 @@ namespace RimMandrake.FlowWorks.Pits
 
 		private static string NoSpaces(string s) => (s ?? "-").Replace(' ', '_');
 
+		/// <summary>"x,z" (a deck square): what the leaf's readout says of its order and its worker (RM_Drawbridges.OrderStatusLine), and the
+		/// two buttons' labels. 'ORDERLINE line | raise label | lower label'.</summary>
+		public static string ProofOrderLine(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !Cell(arg ?? "", out IntVec3 c) || !(RM_MapComponent_SuspensionBridges.Of(map)?.RecordAt(c) is SuspensionBridgeRecord r)
+				|| !r.TryIndexOf(c, out _, out int i) || !(RM_Drawbridges.LeafOf(r, i) is DrawbridgeLeaf l))
+			{
+				return "REFUSED: arg must be x,z of a drawbridge deck square";
+			}
+			int full = RM_Drawbridges.FullTicks(r, l);
+			return "ORDERLINE " + (RM_Drawbridges.OrderStatusLine(map, r, l) ?? "none") + " | " + RM_DrawbridgeMath.OrderButton(true, l.pendingOrder, l.targetRaised, l.progress, full)
+				+ " | " + RM_DrawbridgeMath.OrderButton(false, l.pendingOrder, l.targetRaised, l.progress, full);
+		}
+
+
 		/// <summary>DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: "x1,z1;x2,z2;timber|steel[;other]": the production drawbridge button's
 		/// drag (Designator_Drawbridge_*.ProofDesignate, god mode so the parts are built at once) from x1,z1 to x2,z2, the mouse
 		/// going down on x1,z1; 'other' = Q/E (the winch on the other side). Then reads what the one drag made: per leaf its hinge
@@ -67,16 +83,28 @@ namespace RimMandrake.FlowWorks.Pits
 			string[] a = (arg ?? "").Split(';');
 			if (map == null || a.Length < 3 || !Cell(a[0], out IntVec3 c1) || !Cell(a[1], out IntVec3 c2) || (a[2] != "timber" && a[2] != "steel"))
 			{
-				return "REFUSED: arg must be x1,z1;x2,z2;timber|steel[;other] on the current map";
+				return "REFUSED: arg must be x1,z1;x2,z2;timber|steel[;other][;<Look>] on the current map";
 			}
 			string Fail(string why, int leaves = 0) => "ONEDRAG ok=False leaves=" + leaves + " hinges=- hingeAt=- winches=0 linked=0 winchAt=- gates=0 reason=" + NoSpaces(why);
 			Designator_Drawbridge des = a[2] == "steel" ? (Designator_Drawbridge)new Designator_Drawbridge_Steel() : new Designator_Drawbridge_Timber();
+			bool other = false;
+			for (int i = 3; i < a.Length; i++)
+			{
+				if (Machinery.PipeStyles.IsLook(a[i]))
+				{
+					Machinery.PipeLook.Core.Pick(des, a[i]);
+				}
+				else
+				{
+					other |= a[i] == "other";
+				}
+			}
 			bool was = DebugSettings.godMode;
 			DebugSettings.godMode = true;
 			string reason;
 			try
 			{
-				reason = des.ProofDesignate(CellRect.FromLimits(c1, c2).Cells.ToList(), c1, a.Length > 3 && a[3] == "other");
+				reason = des.ProofDesignate(CellRect.FromLimits(c1, c2).Cells.ToList(), c1, other);
 			}
 			finally
 			{
