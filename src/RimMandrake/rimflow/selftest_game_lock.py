@@ -247,6 +247,30 @@ def t_his_hold_refuses_with_exit_3():
     r = bx.gl("query", "b")
     check(r.returncode == 0, "pipe off game:a leaves game b free", r.stdout)
     s = sleeper()
+    args = ("claim", "ArchBig", "--for", "staging", "--despite-hold")
+    r = bx.gl(*args, "", pid=s.pid)
+    check(r.returncode == 3 and bx.lock() is None, "an empty --despite-hold reason leaves the claim refused",
+          r.stdout + r.stderr)
+    r = bx.gl(*args, "why", pid=s.pid)
+    check(r.returncode == 0 and "acting anyway: why" in r.stderr,
+          "claim ArchBig --despite-hold why exits 0 and records why", r.stdout + r.stderr)
+    q = bx.gl("query", "ArchBig", "--json")
+    d = json.loads(q.stdout)
+    check(q.returncode == 3 and d.get("seat") == "BENCH" and (d.get("holder") or {}).get("pid") == s.pid
+          and "his walk on game a" in d.get("pipe_hold", ""),
+          "query names the driver while the pipe hold stays set", q.stdout)
+    d_lock = bx.lock()
+    r = bx.gl(*args, "why")
+    check(r.returncode == 75 and bx.lock() == d_lock, "--despite-hold leaves another live driver's lock alone",
+          r.stdout + r.stderr)
+    write_lock(bx.a, "OWNER", s.pid, "his walk")
+    owner_lock = bx.lock()
+    r = bx.gl(*args, "why")
+    check(r.returncode == 3 and "OWNER" in r.stdout and bx.lock() == owner_lock,
+          "--despite-hold leaves his OWNER lock alone", r.stdout + r.stderr)
+    r = bx.gl(*args, "why", RM_CONTROL_DB=bx.d)
+    check(r.returncode == 2 and "COULD NOT LOOK" in r.stdout, "--despite-hold needs a readable control store",
+          r.stdout + r.stderr)
     write_lock(bx.b, "OWNER", s.pid, "his walk")
     for verb in (["query", "b"], ["claim", "b", "--for", "x"]):
         r = bx.gl(*verb)

@@ -13,7 +13,7 @@ A holder is a PROCESS (pid + start time + boot). When it is gone, the game is fr
 an old-style release frees it.
 
     game_lock.py query   [ArchBig|ArchSmall|all] [--json]     who drives it, since when, for what; or FREE
-    game_lock.py claim   ArchBig|ArchSmall --for "<what>" [--seat S] [--force WHY] [--flyer]
+    game_lock.py claim   ArchBig|ArchSmall --for "<what>" [--seat S] [--force WHY] [--flyer] [--despite-hold WHY]
     game_lock.py release ArchBig|ArchSmall [--force WHY]      release what this process tree holds
     game_lock.py run     ArchBig|ArchSmall --for "<what>" [--seat S] -- CMD [ARGS...]     hold for CMD's life
 
@@ -308,7 +308,7 @@ def default_seat():
     return (os.environ.get("RIMFLOW_SEAT") or "BENCH").strip().upper()
 
 
-def claim(g, purpose, seat=None, force=None, flyer=False, identity=None, path=None):
+def claim(g, purpose, seat=None, force=None, flyer=False, identity=None, path=None, despite=None):
     """Take game g for `identity` (default: this process tree's owner, the window or run; driver_lock.owner_pid).
     -> {ok, code, line, ...}. His rules are read, not re-invented: `pipe off game:<g>`, his OWNER hold (measured by
     host_guard's owner gate, owner_interaction), and a flyer's flight (never claimed but by him)."""
@@ -325,8 +325,10 @@ def claim(g, purpose, seat=None, force=None, flyer=False, identity=None, path=No
     if cause:
         return _res(False, EX_BLIND, g, "COULD NOT LOOK: " + cause)
     if hold:
-        return _res(False, EX_HIS, g, "HIS HOLD: pipe off game:%s: %s (what passes: `./pipe on game:%s --why "
-                    "\"...\"`)" % (game_names.show(g), hold, game_names.show(g)))
+        if not despite:
+            return _res(False, EX_HIS, g, "HIS HOLD: pipe off game:%s: %s (what passes: `./pipe on game:%s --why "
+                        "\"...\"`)" % (game_names.show(g), hold, game_names.show(g)))
+        sys.stderr.write("game_lock: %s is held (%s); acting anyway: %s\n" % (game_names.show(g), hold, despite))
     if (flyer or flight_purpose(purpose)) and seat != "OWNER":
         return _res(False, EX_HIS, g, "HIS HOLD: a flyer's flight is his act, never claimed without him present")
     cur, problem = _read_lock(path)
@@ -506,6 +508,8 @@ def main(argv=None):
         if name != "release":
             s.add_argument("--for", dest="purpose", required=True)
             s.add_argument("--flyer", action="store_true", help="the work flies a flyer: his act only")
+        if name == "claim":
+            s.add_argument("--despite-hold", dest="despite", metavar="WHY", help="claim despite the pipe game hold")
     cmd = []
     if argv[:1] == ["run"] and "--" in argv:     # everything after `--` is CMD, whatever flags it carries
         i = argv.index("--")
@@ -519,7 +523,7 @@ def main(argv=None):
         sys.stderr.write("REFUSED: %s\n" % e)
         return EX_BLIND
     if a.cmd == "claim":
-        r = claim(a.game, a.purpose, seat=a.seat, force=a.force, flyer=a.flyer)
+        r = claim(a.game, a.purpose, seat=a.seat, force=a.force, flyer=a.flyer, despite=a.despite)
         _emit(r, a.json)
         return r["code"]
     if a.cmd == "release":

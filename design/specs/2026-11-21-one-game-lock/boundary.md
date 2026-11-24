@@ -75,6 +75,9 @@ Before: `rimflow bridge who` 5.0 s for ArchBig, 1.8 s for ArchSmall.
   leaves the game FREE at once.
 - **his-hold-refuses-with-exit-3.** `pipe off game:<g>`, his OWNER lock (live, or with its process gone, which a query
   cannot measure), and a flyer's flight each make `query` or `claim` exit 3 by name. His own claim for a flight passes.
+  `claim --despite-hold WHY` with a nonempty reason passes the pipe hold, reports the hold and the reason on stderr,
+  and leaves the switch set. A successful claim still records the driver for `query` to name. Another live driver's
+  lock, his OWNER lock, and an unreadable control store still refuse the claim.
 - **an-old-style-hold-is-seen-and-an-old-style-release-frees-it.** A take made through `host_guard.py take` or
   `driver_lock.acquire` (what `rimflow bridge take` calls) reads HELD with its purpose; `host_guard.py release` frees it;
   `host_guard.py status` reads a claim made here.
