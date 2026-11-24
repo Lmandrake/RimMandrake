@@ -214,6 +214,10 @@ check("burn line: can-fail: an arrival or a critical subject is not taken",
 check("burn line: the days run inside the shield",
       "with _wildlife_shield(t):\n        _r6_burn_line(t)" in open(V.__file__, encoding="utf-8").read())
 
+check("a wild animal's 'info' death riding with a wild downing reads ok",
+      ok_of([WILD], NUNA, [trig("death", "died: Burn", 75687, "info")]) is True)
+check("can-fail: a death above 'info' (a colonist's) is not ok", ok_of([WILD], NUNA, [trig("death", "died: Burn", 75687, "threat")]) is False)
+
 for chain in ("fresh_burn_bonus", "embergrass_regrow"):
     check("burn line's shield: chain %s runs inside it" % chain,
           "@_wildlife_shielded\ndef %s(t):" % chain in open(V.__file__, encoding="utf-8").read())

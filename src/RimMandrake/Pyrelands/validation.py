@@ -4426,7 +4426,11 @@ def walk_wildlife_harm(trig):
 def walk_ordinary_ok(trig, pawn):
     """Pure. One matched trigger and its subject's list_pawns row (None when not listed): ok for a pawn that is not the
     player's (wildlife, the biome's cast, visitors), or a colonist's panic flight; never a colonist's harm, never a subject
-    that cannot be read (a dead pawn is not listed, so a death stop stands)."""
+    that cannot be read (a dead pawn is not listed, so a colonist's death, never 'info', stands)."""
+    # a wild death riding along (visit 8: a flamefang burned to death beside a nuna's downing): the companion marks a death
+    # 'info' only when the dead pawn is no colonist on a map and not critical (JawaBenchVitalsCore.DeathSeverity)
+    if pawn is None and trig.get("kind") == "death" and trig.get("severity") == "info" and not trig.get("critical"):
+        return True
     if pawn is None or not isinstance(pawn.get("isPlayer"), bool):   # a row that does not say whose pawn it is: refuse
         return False
     if trig.get("kind") == "mental" and any(("mental state %s" % m) == str(trig.get("detail") or "").strip()
