@@ -1,0 +1,2 @@
+Pyrelands in-game rows say 'held: weather: Clear locked at the site's start', but the reloaded site save (NS_Pyrelands_site_1_417df172fdb5_visit7.rws) holds an empty activeConditions: no lock survives the reload, and settle_site does not lock again. The weather stays Clear only because the save's storyteller is Tutor, under which WeatherDecider.ChooseNextWeather returns Clear. A scene that swaps the storyteller without its own weather_set lock rolls the biome table (DryThunderstorm 20, Cinderfall 4: lightning).
+item: RIMMANDRAKE_CLASS_PYRE_CONTROL_PAD_BURN_NOBODY_LIT

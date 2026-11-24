@@ -87,8 +87,8 @@ Current version, open:
   shows them. Walk a colonist over bare ash. `RIMMANDRAKE_SHOW_PYRE_HIS_WALK_FOUR_PICKS_ULLAI_FIRST` (part 3).
 - **The crestfeather still wears vanilla's thrumbo horn picture**, and the 17 art and text entries added after your
   2026-10-16 sheet have no judge verdict. `RIMMANDRAKE_JUDGE_PYRE_POST_SHEET_ART_CRESTFEATHER_A_HORN`.
-- **One visit 7 burn stamp nobody explained** on a control pad. The same check passed in visit 8 on the newer fire code.
-  `RIMMANDRAKE_CLASS_PYRE_CONTROL_PAD_BURN_NOBODY_LIT`.
+- **One visit 7 burn stamp on a control pad**: classed a fault of the test scene, not of the mod, which had its fire mechanics
+  switched off. Who lit that pad is unknown. The same check passed in visits 8 and 9. `RIMMANDRAKE_CLASS_PYRE_CONTROL_PAD_BURN_NOBODY_LIT`.
 - **The tree item** stays open until the version passes: `RIMMANDRAKE_FINISH_PYRELANDS_AGAINST_TREE_FURNACE_GREW_TO_NINE`.
 
 Not this mod, but on your list:
