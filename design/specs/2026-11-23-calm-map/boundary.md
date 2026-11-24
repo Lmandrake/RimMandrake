@@ -57,4 +57,6 @@ or COULD_NOT_READ. The reply always lists `notCovered`: the influences that no c
 - **every-breach-is-counted.** The count of held attempts and arrivals is exact past the kept rows, and the number of rows
   that were dropped is stated.
 
+**LIVE PROOF** (2026-11-23): ArchSmall, all rows of `prove_three_tools.py` at 9d022c7087 PASS (45 of 45 with the other two tools); Steve1 testq `J20261124T011611Z-348324`, all calm rows PASS.
+
 Later lists beside this page: `polish.md`, `next_version.md` (none yet).

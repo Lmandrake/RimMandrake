@@ -41,4 +41,6 @@ visit); the session's first is kept. `action=plant` throws a known exception, in
   still counts, as silenced, and can be the first.
 - **memory-is-bounded.** Kept entries, keys and text lengths stay inside the limits; what was not kept is counted.
 
+**LIVE PROOF** (2026-11-23): ArchSmall, all rows of `prove_three_tools.py` at 9d022c7087 PASS (45 of 45 with the other two tools). On Steve1 (testq `J20261124T011611Z-348324`) the tap also caught a real exception of RM_Dustveil (`RIMMANDRAKE_FIX_THREE_WEIRD_EATERS_WITH_NO_THINK_TREE`).
+
 Later lists beside this page: `polish.md`, `next_version.md` (none yet).

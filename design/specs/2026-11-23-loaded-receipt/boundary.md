@@ -47,4 +47,6 @@ nothing about the running game.
 - **could-not-look-is-never-match.** A failed reply, a reply without `loaded`, a mod that is not in the running list and
   an unreadable DLL each give a verdict that is not MATCH and a non-zero exit, each with its own cause.
 
+**LIVE PROOF** (2026-11-23): Steve1, testq `J20261124T011611Z-348324` (receipt rows 6 of 6) and ArchSmall (45 of 45, all three tools, `prove_three_tools.py` at 9d022c7087). On ArchSmall `build_match.py loaded` read MATCH for LuminousPigment and WeatherSuite, WRONG_BUILD for FlowWorks, GimmeSomeSlack, Pyrelands and HugeThings (their deployed DLLs were older than the commit: sha256 differs), NOT_LOADED for Graffiti and WRONG_GAME when asked for ArchBig. A Steve2 job on an old companion read every row red.
+
 Later lists beside this page: `polish.md`, `next_version.md` (none yet).
