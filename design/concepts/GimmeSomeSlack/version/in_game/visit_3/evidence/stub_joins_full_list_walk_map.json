@@ -1,0 +1,92 @@
+{
+ "row": "sc_stub_joins",
+ "result": "PASS",
+ "save": "(map on screen)",
+ "rect": "0,0,400,400",
+ "probe": {
+  "success": true,
+  "cmd": "joins",
+  "stubs": 387,
+  "taken": 411,
+  "offLine": 0,
+  "offSlope": 0,
+  "empty": 0,
+  "worstDeg": 10.112,
+  "worstPos": 0.046,
+  "byKind": {
+   "box T": [
+    141,
+    151,
+    0,
+    0,
+    0
+   ],
+   "box X": [
+    28,
+    40,
+    0,
+    0,
+    0
+   ],
+   "plug": [
+    168,
+    168,
+    0,
+    0,
+    0
+   ],
+   "rock hole": [
+    2,
+    2,
+    0,
+    0,
+    0
+   ],
+   "strip lead": [
+    6,
+    6,
+    0,
+    0,
+    0
+   ],
+   "strip plug": [
+    13,
+    13,
+    0,
+    0,
+    0
+   ],
+   "switch": [
+    12,
+    14,
+    0,
+    0,
+    0
+   ],
+   "wall plate": [
+    15,
+    15,
+    0,
+    0,
+    0
+   ],
+   "wall plug": [
+    2,
+    2,
+    0,
+    0,
+    0
+   ]
+  },
+  "liveTails": 16,
+  "liveOffSlope": 0,
+  "livePinched": 0,
+  "liveWorstDeg": 0.156,
+  "liveMinR": 0.225,
+  "liveUnlaid": 0,
+  "liveStill": 0,
+  "wallTerminalsLoose": 0,
+  "bad": []
+ },
+ "utc": "2026-11-24T14:27:43Z"
+}

@@ -1,0 +1,7 @@
+joins {'taken': None, 'offLine': None, 'offSlope': None, 'empty': None, 'bad': None}
+on {'enabled': True, 'invisibleApplied': True, 'spawnedConduitTexture': 'ConduitTransparent', 'cordEdges': 188, 'layerVisible': True, 'strands': 215}
+off {'enabled': False, 'invisibleApplied': False, 'spawnedConduitTexture': 'PowerConduit_Atlas', 'cordEdges': None, 'layerVisible': False, 'strands': None}
+C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\gss_v3_master_off.png
+on again {'enabled': True, 'invisibleApplied': True, 'spawnedConduitTexture': 'ConduitTransparent', 'cordEdges': 188, 'layerVisible': True, 'strands': 215}
+wd [] [((65, 212), True, True), ((67, 212), False, False), ((78, 221), False, False)] ['battery:60,221|transmitter:63,221', 'terminal:65,212|battery:60,212', 'terminal:67,212|consumer:72,212', 'terminal:78,221|transmitter:75,221']
+[bridge split] 13.3 s wall: load 0.0 / ticks 1.6 / reads 0.0 / other 4.2 / outside calls 7.5 s
