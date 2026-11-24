@@ -102,7 +102,7 @@ DEADLOCK  one round each ─► card to him; meanwhile the disputed check runs a
 In one line, the separation is: **he owns a versioned contract; builders maintain checks; the Arbiter judges; the
 Auditor reviews passes and anything that discards blocking evidence; the Producer advises on intent and Operations
 on cost.** **Ruled:** regression checks against approved bars land without him, and new bars are delegated too.
-Owner, 2026-10-26 23:0x PDT, answering (a) and (b): *"Both autonomy questions are yes, it has authorization for autonomy."* Loosening a bar stays his.
+Owner, 2026-10-26 23:0x PDT, answering (a) and (b): *"Both autonomy questions are yes, it has authorization for autonomy."*
 
 GPT second opinion (`gpt_consult.py`, 2026-10-26; `D:\ClaudeWork\rimmandrake\resp_register\gpt_review.md`), folded
 in above: `floor` coverage is not detection; delegating all tightening ratchets scope; the deadline, not the budget,

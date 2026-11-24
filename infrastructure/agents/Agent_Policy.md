@@ -109,7 +109,8 @@ here.
   | `rm-judge` | art/taste judging of work it did not make | opus |
   | `rm-testpilot` | one live sitting on one item (`rimflow pilot`) | fable (the exception in the Fable row) |
 
-- **Unattended seats: at most 3 helpers per seat** (the allocator's limit).
+- **Unattended runs: the spawn hook holds the limit** (`.claude/hooks/block_agent_over_slots.py`). The numbers are in
+  `src/RimMandrake/Utils/slot_rules.json`.
 - **The Conductor window has no helper limit only for work started within 20 min of the owner's last typed message.**
   After that, the limit is two helpers, and a helper that runs over an hour raises an alarm. Detached runs are not counted
   (`roles/conductor.md` §Session mode). Owner, 2026-10-29: "...only for work

@@ -12,7 +12,7 @@ while helpers run does this, through `seat_restart.py checkpoint` (this file is 
     seat_restart.py checkpoint --seat BENCH          # lists live helpers, records a deadline, prints ORDER per helper
     (SendMessage each helper: to=<agentId>, message=ORDER)
     seat_restart.py checkpoint --seat BENCH --wait   # bounded poll; re-run until DONE or LOST (deadline is recorded)
-    commit + ./publish your shard, then `seat_restart.py request` as usual
+    `seat_restart.py request` as usual (the request publishes the seat's shard itself)
 
 At the deadline every helper still alive is LOST: the record names it and its item, a `rimflow note` goes on the item
 (so `next` / a fresh run picks it up), and seat_restart.helpers_of reads it as retired, so the Dispatcher's kill no
@@ -222,7 +222,7 @@ def wait(seat, tx_path, session_id, cap_s=POLL_CAP_S, now_fn=time.time, sleep=ti
         live = live_helpers(tx_path, now)
         still = None if live is None else [h for h in rec["helpers"] if h["id"] in {x["id"] for x in live}]
         if still == []:
-            return 0, "CHECKPOINT DONE: all %d helper(s) stopped. Publish your shard, then request the restart." % len(ids)
+            return 0, "CHECKPOINT DONE: all %d helper(s) stopped. Request the restart." % len(ids)
         if now >= rec["deadline"]:
             # live None: blind at the deadline. Every recorded helper not known to have stopped is lost: the restart
             # proceeds anyway (that is the bound), and over-reporting a loss costs one re-run, never work.
@@ -233,7 +233,7 @@ def wait(seat, tx_path, session_id, cap_s=POLL_CAP_S, now_fn=time.time, sleep=ti
                 write_record(rec, root)
             names = "; ".join("%s (item %s)" % (h["agent_id"], ", ".join(h["items"]) or "UNKNOWN") for h in rec["lost"])
             return 1, ("CHECKPOINT DEADLINE: %d helper(s) LOST: %s. Each item got a note; the kill no longer waits on "
-                       "them. Commit + ./publish your shard, then request the restart." % (len(rec["lost"]), names))
+                       "them. Request the restart." % (len(rec["lost"]), names))
         if now - t0 >= cap_s:
             return 3, "CHECKPOINT WAITING: %d helper(s) still running, %d s to the deadline. Run --wait again." % (
                 len(still or ids), rec["deadline"] - now)

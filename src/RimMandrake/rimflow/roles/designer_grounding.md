@@ -51,7 +51,8 @@ launcher refuses stage 0 until each required line is accounted for. One of these
 
 A ledger that cannot be read is UNMEASURED and refuses done (end `blocked`). An unread ledger never means "nothing built".
 A built capability is clarified, never put up for keeping. The launcher refuses an ask in two cases:
-- the ask is about a `present` capability whose scope he has not opened. Its wording offers to keep, cut, drop or
+- the ask is about a `present` capability whose `scope` is not `opened_by_owner` or `opened_by_conductor`. Its wording
+  offers to keep, cut, drop or
   remove something. The launcher refuses such an ask whatever its `offers_removal` flag says.
 - the ask offers to keep, cut, drop or remove something, and the ask names no inventory entry. The launcher refuses such
   an ask outright.

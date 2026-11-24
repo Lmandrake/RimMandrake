@@ -122,28 +122,32 @@ The four batches that were done before this run (subagent files, Conductor files
 Operations, rescue and walk) stay done: their files were compressed without a rewrite, and their lint did not get
 worse except the root by one violation (128 to 129) `[measured]`.
 
-## Conflicts between rules (not decided here; for the Conductor)
+## Conflicts between rules: settled 2026-11-23
 
-Both sides of each are untouched.
+Item `RIMMANDRAKE_DECIDE_TWELVE_RULE_CONFLICTS_THE_COMPRESSION_LISTED`. "Earlier" names the commit of another run.
 
-1. `roles/operations.md` "two helpers at once across ALL roles" against `Agent_Policy.md` lines 105-107 (3 per
-   unattended seat). The item that the line waits on, `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES`, is dropped.
+1. Two helpers across all roles: deleted earlier (`032f29fdc8ce`). `Agent_Policy.md` "3 per unattended seat" was stale
+   too: it now names the spawn hook and `slot_rules.json`.
 2. Settled: `roles/innovator.md` was deleted 2026-11-23 (the role is retired).
 3. Settled: `roles/producer.md` was deleted 2026-11-23 (the role is retired).
-4. `CHARTER.md` "Loosening a bar stays his" against the root and `standing_rulings.md` (the Conductor may, mindfully).
-5. `CHARTER.md` §Git "seat clone only" against the root §Git (helper clones and the pool).
-6. The root sends program-read output to `/tmp`; the user-level file says never `/tmp`.
-7. A cold load is about 15 minutes in `CHARTER.md` and about 25 in the load-round skill. `CHARTER.md` names 2
-   helper types and `Agent_Policy.md` names 5.
-8. `roles/conductor_restart.md`: "publish the shard" at the checkpoint against "the shard is never the window's job
-   at the kill"; and its line 3 says `conductor.md` states each rule once, which is not yet true.
-9. `roles/designer.md` and `designer_grounding.md` forbid a removal ask "whose scope he has not opened";
-   `designer_dialogue.md` also allows it when the Conductor opened the scope.
-10. `selftest_flagship_contract.py` requires "first-touch certification stays his and is never delegated"; the brief
-    says "his or the Conductor window's act" since 2026-11-19. That test has been red since `e2ea372ebf`.
-11. `standing_rulings.md` §Direct Sun says no biome has an exception, and its Scald bullet is one.
-12. Smaller ones, on `polish.md`: two pairs of lines in the Conductor files; the fresh-reader wording in the root
-    (the fix, or the fixed file); the worldgen toggle label.
+4. Loosening a bar: the Conductor may, mindfully (his ruling of 2026-11-19). `CHARTER.md` earlier (`3c98eed8162c`); the
+   same sentence in `role_responsibilities_2026-10-26.md` is now deleted.
+5. `CHARTER.md` §Git now says what the root says: the seat clone, or the helper clone that the brief names.
+6. Program-read output goes to scratch under the agent storage root (his ruling of 2026-10-19). The root earlier
+   (`131dbbc5a6a8`); the `/tmp` path in `runner_options.md` is now scratch.
+7. A full-list cold load is about 15 minutes (14.5 measured 2026-11-21). `GAME_STATE_WORKFLOW.md`,
+   `connect-and-claim.md` and `rimworld-load-round` no longer say 25. Helper types: earlier (`3c98eed8162c`).
+8. The restart publishes the shard itself (code of 2026-11-15). The "publish your shard" lines of
+   `conductor_restart.md` and `helper_checkpoint.py` and the "states each rule once" line are deleted.
+9. `opened_by_conductor` also opens a scope (`designer_stage.py` `OPENED_SCOPES`, 2026-11-18). `designer.md` and
+   `designer_grounding.md` now say so.
+10. `selftest_flagship_contract.py` follows the 2026-11-19 ruling since `f4f9d7e11d`: red on a planted "stays his",
+    green on the tree.
+11. Hot water is physics, not a Scald exception (his card of 2026-11-21). No text states the exception as a rule.
+12. Conductor pairs: earlier (`032f29fdc8ce`). Fresh reader: two scopes, each now named. Worldgen label: the
+    label names a newly generated map, as the item that asked for it says; there is no worldgen feature.
+
+Also settled, from the second run below: the root self-fix case now points at the list in §Touching code has a cost.
 
 Three more findings that are not conflicts: no program reads the `on_request` entry of the Designer manifest, so no
 run ever receives `designer_examples.md`; `infrastructure/agents/CONDUCTOR.md` has a copy of "Start of turn" without
@@ -221,7 +225,6 @@ Both `[measured]` with `wc -l`, base `cea8d0bae6`. The sum went from 2,497 to 2,
   `acceptance/code_review_brief_accept.py` fails before and after. Two tests changed in the same commit, because they
   read only `##` headings: `selftest_self_fix_rule.py` and `selftest_rule_homes_in_briefs.py`. Each was seen to fail
   on a planted loss and pass on the real files.
-- **A conflict, not decided here.** The root self-fix case says "Hand off only when the fix is unknown, is outside your
-  tools, or would change a north-star bar". Its home in `standing_rulings.md` also allows "touches files another live
-  run holds", and test 2 of §Touching code has a cost lists more. The difference was there before this run.
+- **A conflict found here** (the root self-fix case listed fewer reasons to hand off than its home) was settled 2026-11-23:
+  the root points at §Touching code has a cost.
 

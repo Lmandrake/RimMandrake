@@ -76,7 +76,7 @@ These gates still apply to a reboot:
 | gate | why |
 |---|---|
 | **The bridge must be free** (or yours) | Someone else may be mid-drive. Run `rimflow bridge who`. Then take the bridge *for the reboot*, so the reason is in the file that the others read. |
-| **The window still costs ~25 min** | So spend the load well: `rimworld-load-round` §2/§3. Before the game starts, write the decision strings and one signature per assembly. |
+| **The window still costs ~15 min** (full list, measured 2026-11-21) | So spend the load well: `rimworld-load-round` §2/§3. Before the game starts, write the decision strings and one signature per assembly. |
 | **`preflight_bridge.py` says GREEN** | Before the launch, run `python3 src/RimMandrake/Utils/preflight_bridge.py --tier full --deep`. It checks for a wrong list, a stale deploy, load-killer lint, wedgers and the lease. In the first five minutes after the launch, run it with `--live`. A NO-GO names the check that failed. Detail: `skills/rimbridge/references/preflight.md`. |
 
 Still run `./game --said "<his verbatim words>"` for each transition, exactly as the next section says. The 2026-09-02

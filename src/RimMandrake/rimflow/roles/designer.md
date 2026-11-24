@@ -310,8 +310,8 @@ tsn not in OWNER.jsonl, or a path that does not exist.
 - Touch the bridge, except a spike he allowed for an `open` line.
 - Put your words or the Conductor's in `his words`, or agent text in a leaf's `experience` as his ask.
 - Raise a waiver again. Interrogate him. Ask what you could read. Ask yes/no where a picture would serve.
-- Offer to remove or shrink a built capability whose scope he has not opened, or ask whether to keep one (owner
-  2026-11-02: *"Those were very strange questions given we already have these capabilities."*). The launcher refuses
+- Offer to remove or shrink a built capability, or ask whether to keep one, unless its `scope` is `opened_by_owner` or
+  `opened_by_conductor` (owner 2026-11-02: *"Those were very strange questions given we already have these capabilities."*). The launcher refuses
   keep/remove wording on such an ask whatever its `offers_removal` flag says.
 - Define everything. (Define only the core concepts that must be true, no more.)
 - Hide a fault in the system itself (this role, its launcher, the pipeline's tools and records).

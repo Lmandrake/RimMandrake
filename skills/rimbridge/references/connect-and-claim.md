@@ -46,8 +46,8 @@ Two seats (then named CHECK and BUILD) called the bridge at the same time and it
 ⭐ **It did NOT crash, and the game did not need reloading.** It was **stuck**,
 and it came back on its own the instant BUILD's call finished. That distinction
 is worth a cold load: **if the bridge stops answering, find out who else is on it
-and wait for them to release — do not restart the game.** A reload costs ~25–30
-minutes and would have bought nothing here.
+and wait for them to release — do not restart the game.** A reload costs ~15
+minutes (full list, measured 2026-11-21) and would have bought nothing here.
 
 ---
 

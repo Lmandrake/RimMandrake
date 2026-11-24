@@ -253,7 +253,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - tuning where a number is the experience;
   - defaults that equal the shipped behaviour;
   - a game that still works when every switch is off;
-  - a label on each toggle that affects worldgen.
+  - a label on each toggle that acts only on a newly generated map.
 - The switch for a mechanic is a plain on/off, default on, with no biome in it. When a mod with an "Enable outside
   this biome" switch converts, that switch becomes this plain on/off (§A mechanic works by its physical conditions).
 - Full text: `design/RimMandrake/standing_rulings.md` §Every mod ships superb Mod Settings.
@@ -368,8 +368,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   covers defects in the pipeline's own machinery: code, tools, records, tests and the status page.
   - When the fix is known, file the ticket with its acceptance test. Do the fix in the same run, tests first. Then
     publish, and say so.
-  - Hand off only when the fix is unknown, is outside your tools, or would change a north-star bar. Put the evidence
-    on the ticket.
+  - Hand off only with the evidence that §Touching code has a cost lists. Put the evidence on the ticket.
   - A hand workaround without the permanent fix is not allowed. A mod's gaps still go through the stages.
 - **The Evidence-for-Ask rule** applies to every agent that would pause for the owner, for every question and choice.
   - Take the obvious answer instead of the pause. Log it with `--per-ruling
@@ -636,8 +635,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   break a stated promise or cause a failure. A prediction with no concrete case is not significant.
 - The reviewer fixes a significant finding in the same job. First write a test and see it fail. Then fix it and see
   the test pass.
-- After a fix, one fresh reader who did not make the fix reads the fixed file once. If that reader finds nothing
-  significant, the review is over.
+- After a fix in a code review, one fresh reader who did not make the fix reads the fixed file once. If that reader
+  finds nothing significant, the review is over.
 - If that reader also finds a significant thing, the reader fixes it (same test rule). Then the reader flags the file
   with `code_review_status.py flag <path> --why "…"`. Nobody reviews a FLAGGED file again. There is no third read.
 - Flagged files are examined about weekly (`code_review_status.py list --flagged`). The question for each file: must

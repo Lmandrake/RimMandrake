@@ -89,7 +89,8 @@ CLAUDE.md owns the rules: its "Git" section and its Transient rule. `design/RimM
 operating doc. The charter adds only two rules:
 
 - Commit when a unit of work exists.
-- Work only in your seat clone (`/home/mandrake/rm/<seat>`). `D:\Luke\dev\RimMandrake` is a read-only mirror.
+- Work in your seat clone (`/home/mandrake/rm/bench`) or the helper clone that your brief names.
+  `D:\Luke\dev\RimMandrake` is a read-only mirror.
 
 Worktrees are OFF, and helpers write in the window's clone: CLAUDE.md "Git" and `Agent_Policy.md` "Helpers in this
 repo".

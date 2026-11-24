@@ -125,7 +125,7 @@ run in Windows Python. WSL Python runs offline checks and orchestration.
 
    ```sh
    python.exe "$(wslpath -w "$PWD/src/RimMandrake/FlowWorks/northstar/concept_scenes.py")" \
-     --out "$(wslpath -w "/tmp/concept_scenes_result.json")"
+     --out "$(wslpath -w "$(python3 ~/dev/Lodestar/bin/lib/agent_storage.py)/scratch/concept_scenes_result.json")"
    ```
 
    - Use an existing disposable registered save, never worldgen or a canonical save.

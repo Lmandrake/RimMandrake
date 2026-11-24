@@ -1,7 +1,6 @@
 # Conductor window restarts: goodbye, reset switch, context backstop, handoff, checkpoint
 
-This file holds the mechanics behind `conductor.md` "When you run". `conductor.md` states each rule once. This file
-says how the code carries out each rule, the settings that it reads, and the rulings behind it.
+This file holds the mechanics behind `conductor.md` "When you run". This file says how the code carries out each rule, the settings that it reads, and the rulings behind it.
 
 One goodbye ruling replaced another. He first asked for a 30-second countdown (2026-11-01). The countdown is now
 `goodbye_quiet_s` 0, instant (owner 2026-11-01).
@@ -80,7 +79,7 @@ stop the countdown. And the countdown should be thirty seconds."*
 - No input cancels or delays the goodbye, his or any machine's. If need be, the window is killed mid-reply. What he
   sent after the goodbye lands in the Conductor log and the wake.
 - Live helpers never refuse a goodbye. The window takes no ticket and spawns nothing.
-- When the last helper is done, publish your shard and end the turn. The kill holds for both.
+- When the last helper is done, end the turn. The restart publishes your shard itself (§Held or refused).
 
 **Checkpoint, so a drain never freezes him** (owner 2026-11-02: *"a context-draining agent be able to redirect
 long-running subagents to just write out their results to their tickets"*; CONDUCTOR_RESTART_REDESIGN_NEVER_FREEZE_HIM).
@@ -92,7 +91,7 @@ A helper cannot outlive this window. So a drain with long helpers has four steps
    imperative NEXT as a note on your item, commit and publish what is done, then stop."*
 3. Run `seat_restart.py checkpoint --seat CONDUCTOR --wait`. Run it again until it says DONE or LOST. At the deadline,
    a helper that is still alive is LOST. Its item gets a note, the kill stops waiting on it, and the wake lists it.
-4. Publish the shard and request.
+4. Request. The request publishes the shard.
 
 Work expected to run over ~20 min goes to a detached helper: `src/RimMandrake/rimflow/roles/conductor.md` §When you run.
 - The command runs the work in its own unit (pool clone, bounded time and spend).

@@ -204,7 +204,7 @@ called from a shell script without any API key."*
   - tuning where a number is the experience;
   - defaults that equal the shipped behavior;
   - a mod that degrades gracefully when every switch is off: the game still works;
-  - a label on each toggle that affects worldgen.
+  - a label on each toggle that acts only on a newly generated map.
 - TESTING: a biome mechanic is tested in game only on its home biome. No test away from the home biome is owed.
 - That testing ruling is the owner's, 2026-10-15, kept by his card of 2026-11-21:
   *"I would like to release the … requirement that the biome mechanics
@@ -535,8 +535,8 @@ and 9 of 15 later claims pointed at lines the last fix had just written.
   result), to break a stated promise or cause a failure. A prediction with no concrete case is not significant.
 - **The reviewer fixes a significant finding on the spot**, in the same job. The reviewer first writes a test and sees
   it fail, then fixes, then sees it pass. No ticket carries the finding to a separate builder.
-- **Precisely one blind reread checks a fix.** After a fix, one fresh reader who did not make the fix reads the fixed
-  file once. The reader gets the file, not the diff and not the earlier findings. If the reader finds nothing
+- **Precisely one blind reread checks a fix in a code review.** (A mod fault fixed in a sitting: §Touching code has a
+  cost; that reader reads only the fix.) One fresh reader who did not make the fix reads the fixed file once. The reader gets the file, not the diff and not the earlier findings. If the reader finds nothing
   significant, the review is over. If the reader also finds a significant thing, the reader fixes it (same test rule)
   and flags the file: `code_review_status.py flag <path> --why "…"`. Nobody reviews a FLAGGED file again. There is no
   third read.

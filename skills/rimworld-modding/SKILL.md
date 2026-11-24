@@ -361,7 +361,7 @@ Use C# only when tier (c) is truly required (§3). Then read `references/csharp-
 - tuning where a number is the experience;
 - defaults that equal the shipped behaviour;
 - a game that still works when every switch is off;
-- a label on each toggle that affects worldgen.
+- a label on each toggle that acts only on a newly generated map.
 
 The switch for a mechanic is a plain on/off, default on, with no biome in it (owner's card of 2026-11-21; `design/RimMandrake/standing_rulings.md` §Every mod ships superb Mod Settings). The mechanic works by its physical conditions.
 

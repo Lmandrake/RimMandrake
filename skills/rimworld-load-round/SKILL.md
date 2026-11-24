@@ -39,7 +39,7 @@ So never spend a load on one question. Never spend a load to learn a thing that 
 - ⇒ **The whole edit → build → deploy → launch → test cycle is about ONE MINUTE.**
 - The rules below about a scarce load still apply to the owner's full list. For *tool and mechanism* work, a load is not
   scarce.
-- Do not spend a 25-minute load to prove a thing that a 22-second load can prove.
+- Do not spend a full-list load to prove a thing that a 22-second load can prove.
 - The full list held 576 mods on 2026-08-20. Read `ModsConfig.FULL.LATEST.xml` for the size, never a number in a doc.
 
 ⛔ **An XML-only change is proven by a MINIMAL-LIST RESTART, not by hot-reload (owner's ruling 2026-09-03).**

@@ -27,3 +27,4 @@
 - Second run, meaning read, left as is: the moved incident paragraph in `CLAUDE.history.md` still says "This section repairs the class."; it was moved word for word, so "this section" now reads as the history entry.
 - Second run, meaning read, left as is: root §A fault of form has one Full text pointer at its end for its own rules and the His-word case, and a second pointer inside the refusal case.
 
+- `biomeRarityFactor` sliders (Scarlands `RM_WarscarMod.cs`, Rust Cathedral `RM_RustCathedralMod.cs`, both held) change world generation; `standing_rulings.md` §There is no worldgen feature allows no setting that could roll a second world. Both mods are held: read when one next advances.
