@@ -43,3 +43,9 @@ With a guarded save loaded, the profile is CAMPAIGN and the companion refuses th
 - **a-document-it-cannot-read-is-not-an-empty-list.** A document that is absent, has no `guard` block, or has an empty or
   malformed one is refused by name; nothing is written.
 - **a-companion-build-brings-the-list-up-to-date.** `build.py` writes the list again before it compiles, and says so.
+
+## The live proof
+
+`src/RimMandrake/bridgetools/prove_canonical_guard.py`, on a game after its companion deploy: UNRUN.
+
+Later lists beside this page: `polish.md`.
