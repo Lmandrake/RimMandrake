@@ -7398,24 +7398,14 @@ def herd_thirst(t):
 # file so this one is not a merge point; register() adds them to this suite with this module's helpers.
 def _register_firehawk_rewards():
     import types
-    spec = importlib.util.spec_from_file_location(
-        "pyrelands_firehawk_rewards_live", os.path.join(os.path.dirname(os.path.abspath(__file__)), "firehawk_rewards_live.py"))
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    mod.register(suite, types.SimpleNamespace(**globals()))
+    # walk_small_live.py: the two small scenes that replaced the two-week walk. It is loaded here, not by a line of its own:
+    # a new module-level statement touches every check of this file (rerun_relation, 2026-11-24)
+    for name in ("firehawk_rewards_live", "walk_small_live"):
+        spec = importlib.util.spec_from_file_location(
+            "pyrelands_" + name, os.path.join(os.path.dirname(os.path.abspath(__file__)), name + ".py"))
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        mod.register(suite, types.SimpleNamespace(**globals()))
 
 
 _register_firehawk_rewards()
-
-
-# the two small scenes that replaced the two-week walk, in their own file for the same reason
-def _register_walk_small():
-    import types
-    spec = importlib.util.spec_from_file_location(
-        "pyrelands_walk_small_live", os.path.join(os.path.dirname(os.path.abspath(__file__)), "walk_small_live.py"))
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    mod.register(suite, types.SimpleNamespace(**globals()))
-
-
-_register_walk_small()

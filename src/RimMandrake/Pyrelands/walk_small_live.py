@@ -186,6 +186,7 @@ def register(suite, V):
         V._pad(t, V.PAD_FIRE_BORN)
         t.clear_area(size=V.TEST_SIZE)
         x, z, w, h = V._rect(t)
+        V._walk_steady_colonists(t)   # SITE (visit 8): a colonist's generated ailment from another mod downed him in the walk
         with V._walk_shield(t), V._comp(t, "full_list_one_front_walks_clean_log"):
             plant = os.environ.get(PLANT_SMOKE_ENV) or ""
             if plant:

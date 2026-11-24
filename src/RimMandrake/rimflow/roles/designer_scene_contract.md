@@ -86,12 +86,6 @@ A smaller mod list is cheaper than the full list.
 
 - A scene that is not the cheapest carries `cheaper_why` (on `tests.<id>` of the test table). That field says why a
   cheaper, faster, simpler test cannot decide the same bar. Without that evidence, write the cheaper scene.
-- Write `claims` on the entry: each claim of the scene as one plain sentence about what the player sees. Give each scene one
-  claim. A clause that another check decides is not a claim of this scene. A claim about how a season of play feels belongs to
-  his walk, and no script plays a season.
-- An oversized scene carries `cheaper_why`. A scene is oversized when it plays more than one game day, runs on the full list,
-  or holds more than one claim. `python3 src/RimMandrake/rimflow/scene_size.py check` finds it, and `./publish` refuses a new one
-  with no `cheaper_why`. "The full list might break it" is one short scene: load, one event of the mod, a clean log.
 - Do not write a raid into a scene unless the mod's own function is about raiders. A hostile pawn that the scene spawns,
   holds or orders is not a raid.
 - Raid scenes are paused. A scene that must stage a raid carries `stages_raid` (what it stages) in the test table. The

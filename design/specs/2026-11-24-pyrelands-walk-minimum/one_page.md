@@ -34,7 +34,14 @@ The other six claims belong to other bars, or to no bar. [measured, text read]
 - **No, the other six clauses.** Other tests decide them, so the walk only spoiled itself on them.
 
 A long scene meets wild animals, thirst and visitors. They spoiled `sc_walk` in visits 2, 5 and 8. [measured]
-Stage 6 of Pyrelands ran 39 times. [measured] Its first valid pass of the reload came on 2026-11-24 at 1:10 AM PST. [measured]
+Stage 6 of Pyrelands ran 39 times. [measured]
+
+Visit 8 ended its second full-list walk at 1:58 AM PST on 2026-11-24. [measured]
+- Four of the eight parts read PASS: reload, second pass, thirst and colonists, bed fire. [measured]
+- Four parts read UNMEASURED: the two "Mod enabled" days, the roster day, the roof. [measured]
+- The cause was one colonist. The colonist went down from a drug habit and a bad heart that other mods gave the colonist. [measured]
+
+So even the good run could not decide its own scene. The four parts that failed to read are not the bar's.
 
 ## 3. What is the minimum test?
 
@@ -57,6 +64,8 @@ The bar now passes when the three scenes pass and your walk passes.
 
 - `./publish` now refuses a new oversized scene that gives no evidence for its size. [measured]
 - A scene is oversized over one game day, on the full list, or with several claims.
+- This study almost repeated the old waste. One new line in `validation.py` marked at least 20 of 40 checks for a rerun. [measured]
+  The line moved. Now only the three scenes and two other checks read as touched. [measured]
 - The check reads red on the old `sc_walk` and green on the three scenes. [measured]
 - The check finds 16 other oversized scenes in five mods. [measured] Another run works on the mods other than Pyrelands.
 

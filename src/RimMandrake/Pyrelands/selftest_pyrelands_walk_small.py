@@ -186,7 +186,7 @@ def run(chain, game, env=None, still=False):
         _teardown=lambda **k: (lambda fn: fn), _comp=lambda t, n, **k: Comp(), _live=lambda t: True, _pad=lambda t, xz: setattr(t, "anchor", xz),
         _wildlife_shield=lambda t: contextlib.nullcontext(), _walk_shield=lambda t: contextlib.nullcontext(),
         _rect=V._rect, _rs=V._rs, _note=lambda t, n, v: out["notes"].append((n, v)), _wait=wait, _fire=fire, _plants=plants,
-        _extinguish=lambda t: game.st.update(fires=[]), _clear_scorchfruit=lambda t: game.st.update(fruit=[]),
+        _extinguish=lambda t: game.st.update(fires=[]), _walk_steady_colonists=lambda t: None, _clear_scorchfruit=lambda t: game.st.update(fruit=[]),
         _firebreak=lambda *a: None, _soil=lambda *a: None, _things=things, fire_cells=V.fire_cells, _probe=probe,
         _load_site_save=lambda t, n: game.load(n), _unmeasured=stop("UNMEASURED"), _fail=stop("FAIL"), _r6_fires=lambda t: things(t, "Fire") and
         [tuple(c) for c in game.st["fires"]], _log_mark=lambda t: "m", _log_since=lambda t, m: game.log, front_walks=V.front_walks,
