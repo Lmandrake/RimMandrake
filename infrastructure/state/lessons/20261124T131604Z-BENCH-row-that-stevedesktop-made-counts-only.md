@@ -1,0 +1,2 @@
+A row that SteveDesktop made counts only when its mod list equals the tier's list on an Archmagi install: SteveDesktop lacked Cherry Picker, which modset_builder adds to every tier where it is installed, so each tier there was one mod short and 13 PASS rows counted nothing and hid rows that did (fixed: sync_test_mods.sync_ids, visit_rows.matched).
+item: RIMMANDRAKE_SEND_STAGE_SIX_CHECKS_TO_STEVE_GAMES_NONE_CARRY_A_BLOCK
