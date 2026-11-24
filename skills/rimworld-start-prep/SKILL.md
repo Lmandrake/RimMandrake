@@ -7,7 +7,7 @@ description: Getting the mod list and load order into the state you actually int
 
 Plan 15 to 30 minutes for a cold load of the owner's full list (the top of `skills/rimworld-load-round/SKILL.md`). A
 launch with the wrong mod list is the most expensive way to spend a cold load. The wrong list is a list that is not
-the list you thought you had. This skill covers the work *before* the launch. It covers only the *list* and the
+the list you thought you had. This skill covers the work *before* the launch. The skill covers only the *list* and the
 *order* of the mods.
 
 - **How to spend the load once it is running**: `skills/rimworld-load-round/SKILL.md`. That skill covers batches,
@@ -65,8 +65,8 @@ directions.
 
 - Three other actions write `ModsConfig.xml`: the **Save and Run** button of the prompt below; an import in the
   Troubleshooting tab; and the clear-mods action of that tab.
-- 🔴 The clear-mods action **deletes everything in the game's `Mods` folder** and resets the list to Core only. It leaves
-  `ModsConfig.xml.backup` beside the list.
+- 🔴 The clear-mods action **deletes everything in the game's `Mods` folder** and resets the list to Core only. The
+  action leaves `ModsConfig.xml.backup` beside the list.
 - The same tab can delete the game config files, `ModsConfig.xml` included.
 - RimSort creates the file when the file is missing.
 
@@ -136,7 +136,7 @@ patch runs.
 from RimSort's own code, v1.13.1, the version installed here:
 
 - `loadAfter` compiles to a real edge in `deps_graph`. `loadBefore` compiles to the same edge, read from the other side.
-- `loadBottom` compiles to no edge. It compiles only to membership in `tier_three_mods`
+- `loadBottom` compiles to no edge. `loadBottom` compiles only to membership in `tier_three_mods`
   (`app/models/metadata/metadata_structure.py`).
 - The sort splits the active list into **four tiers, sorts each tier independently, and concatenates the tiers**
   (`app/controllers/sort_controller.py`). `loadBottom` mods are in the last tier. `loadTop` mods are in the second tier.
@@ -145,7 +145,7 @@ from RimSort's own code, v1.13.1, the version installed here:
 - Each tier drops the edges that point outside the tier: `full_graph.get(mod_id, set()) & tier_mods` in
   `app/sort/dependencies.py`. Because the tiers spread first, no edge between two active mods is violated in the result.
 
-So these are the results:
+The rules give these results:
 
 | rules on mod X | result |
 |---|---|
@@ -182,7 +182,8 @@ shows a sorted list with a green light.
 
 **`loadAfter` does not have this problem.**
 
-- `loadAfter` names a specific mod. So it constrains a *pair*, and it does not compete for an absolute position.
+- `loadAfter` names a specific mod. So `loadAfter` constrains a *pair*, and it does not compete for an absolute
+  position.
 - Ten mods can each load after their own target with no contention. `loadAfter` promises after, not next to.
 - Reserve `loadBottom` for the genuine case: a mod that must observe the fully assembled game, like a def dumper. Then
   expect to share the bottom with other mods, and expect to order that group by hand.
@@ -307,7 +308,7 @@ Traps 1 and 2 bite any script that walks the mod roots, reads each `About/About.
      So a regex scan reports Alpha Biomes absent while it is on disk.
    - **Fix: take the direct child only**: `ET.parse(ax).getroot().find('packageId')` on `<ModMetaData>`.
 
-2. 🔴 **Core and the DLCs are not under `Mods\`.** They are in the data directory of the game:
+2. 🔴 **Core and the DLCs are not under `Mods\`.** Core and the DLCs are in the data directory of the game:
    `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\{Core,Royalty,Ideology,Biotech,Anomaly,Odyssey}`.
    - A census without that root reports **six** false missing hits: `ludeon.rimworld` and the five `ludeon.rimworld.*`
      expansions, near the top of `<activeMods>`.
@@ -340,8 +341,8 @@ A rename of a packageId also invalidates every saved copy of the list. These fil
 - The content of the dropped mod does not load. There is no error and no red text.
 - A count of `activeMods` sees no change.
 - `modlist_swap.py --status` compares the live ids with the saved ids. If nobody updated any list, it reads FULL or
-  MINIMAL. If only one side was updated, it reads UNRECOGNISED. That is the exact same word that it prints when the
-  owner adds a genuinely new mod. So neither reading is evidence about a rename.
+  MINIMAL. If only one side was updated, it reads UNRECOGNISED. UNRECOGNISED is the exact same word that the tool
+  prints when the owner adds a genuinely new mod. So neither reading is evidence about a rename.
 - The old id in `userRules.json` matches nothing. The next Sort loses that rule.
 
 **After any rename, resolve every id in every saved list against every installed `About/About.xml` packageId.** Do not
@@ -386,7 +387,7 @@ Refresh."* (§3).
    ```
 
    ⚠️ Count `activeMods` specifically (§4 trap 3). **Print the number; never quote a remembered one.**
-8. 🔴 **Decide on the mod-state sync. This is the last thing before launch.** See §5a.
+8. 🔴 **Decide on the mod-state sync. The decision is the last thing before launch.** See §5a.
 9. **Then, and only then, spend the load.** Go to `skills/rimworld-load-round/SKILL.md`.
 
 **Announce the change if you are not the only window.** Another window or a test run can write the same file. A blind

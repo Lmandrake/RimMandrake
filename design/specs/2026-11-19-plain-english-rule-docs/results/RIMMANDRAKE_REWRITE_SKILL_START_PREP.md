@@ -10,11 +10,11 @@ Also: skills/rimworld-start-prep/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 26,486 | 31,030 |
-| words in linted prose | 3,385 | 3,948 |
+| bytes | 26,486 | 31,105 |
+| words in linted prose | 3,385 | 3,955 |
 | STE violations per 100 words | 4.76 | 1.52 |
 | sentences over 20 words | 71 | 23 |
-| flagged lines (mechanical) | 30 | 27 |
+| flagged lines (mechanical) | 30 | 25 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 11 | 0 |
 
 The long sentences that stay are of these kinds: an owner quote (line of the ruling of 2026-08-15); a sentence that holds paths or a
@@ -82,6 +82,8 @@ The same reader then read each repair and the whole of both files again. Three p
 clear-mods and `_delete_game_configs` code before the repair.
 No reader read these last repairs, nor the split of five long sentences after them (the opening paragraph, §5 step 5, and the
 Scribe and `Version.txt` lines of §5a), nor the rewrap (the words of the rewrap were compared by program: identical).
+After the first landing (6b46bbb33636), the prose check of `./publish` named eight lines. The writer put the noun in each. No reader
+read those.
 
 ## Conflicts and stale lines: settled
 
