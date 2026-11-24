@@ -20,7 +20,8 @@ tickets are routed correctly" is the right check.
 Steps:
 0. Start the item, before anything else:
    python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "list lane Shape run (list_dispatch.py)" --publish
-1. Read it whole: python3 src/RimMandrake/rimflow/cli.py show {item}, and the files that it names.
+1. Read it whole: the ITEM PACKET below, and the files that it names. Run python3 src/RimMandrake/rimflow/cli.py show {item}
+   only for a part that the packet left out or could not read, or when this brief holds no packet.
 2. Is it worth the touch (CLAUDE.md §Touching code has a cost)? If nobody would care, or other work already did it, or
    another item does it: drop it (`cli.py drop {item} --reason "not worth the touch: <why>" --seat BENCH --publish`) or
    close it with the sha of the work that did it. Then stop.

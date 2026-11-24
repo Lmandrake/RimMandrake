@@ -1002,16 +1002,11 @@ def run_session(unit, root=None, projects=None):
     return os.path.basename(p)[:-len(".jsonl")], context_tokens(p), "its clone's transcript %s" % p
 
 
-def earlier_cap(session, root=None):
-    """-> (cap, unit) of the newest run record of `session` (its `session`, its `resume_session`, or the session_id in a
-    result file of a record from before `session` was kept), or (None, why) when no record holds it or the newest one
-    has no numeric budget_usd. Never a fallback number: a resume that cannot read its cap is refused by its caller."""
-    best = None
-    try:
-        recs = list(all_records(root))
-    except OSError as e:
-        return None, "the run records are unreadable (%s)" % e
-    for r in recs:
+def session_records(session, root=None):
+    """-> the run records of `session` (their `session`, their `resume_session`, or the session_id in a result file of a
+    record from before `session` was kept), oldest first. OSError when the records cannot be read."""
+    out = []
+    for r in all_records(root):
         sid = r.get("session") or None
         if sid is None and r.get("out"):
             try:
@@ -1020,10 +1015,22 @@ def earlier_cap(session, root=None):
                 sid = m.group(1) if m else None
             except OSError:
                 sid = None
-        if session in (sid, r.get("resume_session")) and _num(r.get("at")) and (best is None or r["at"] > best["at"]):
-            best = r
-    if best is None:
+        if session in (sid, r.get("resume_session")) and _num(r.get("at")):
+            out.append(r)
+    return sorted(out, key=lambda r: r["at"])
+
+
+def earlier_cap(session, root=None):
+    """-> (cap, unit) of the newest run record of `session` (session_records), or (None, why) when no record holds it or
+    the newest one has no numeric budget_usd. Never a fallback number: a resume that cannot read its cap is refused by
+    its caller."""
+    try:
+        recs = session_records(session, root)
+    except OSError as e:
+        return None, "the run records are unreadable (%s)" % e
+    if not recs:
         return None, "no run record holds session %s" % session
+    best = recs[-1]
     if not _num(best.get("budget_usd")):
         return None, "the newest run record of session %s (%s) has no numeric budget_usd" % (session, best["unit"])
     return float(best["budget_usd"]), best["unit"]
@@ -1234,9 +1241,46 @@ def command_lines(item, seat):
                 "`python3 src/RimMandrake/rimflow/cli.py --help`\n" % (type(e).__name__, e))
 
 
-def brief_message(brief, item, seat, clone, max_s=None):
-    """-> the whole text a detached run is given: the brief, the footer, its cards' owed work, its command lines."""
-    return (brief.rstrip()
+def mark_fresh(rec, brief, session=None, root=None):
+    """Leave the run's fresh-start role on its record's env: a resume or a continuation, whose text no longer says it, gets
+    no history either. session: the one this launch resumes (`launch --resume` by hand carries no env): the role is then
+    read from that session's earlier runs on this item. A role that cannot be read marks nothing and is said."""
+    try:
+        import item_packet
+        role = item_packet.role_of(brief, rec.get("env"))
+        for r in session_records(session, root) if session and not role else ():
+            if r.get("item") != rec.get("item") or role:
+                continue
+            first = ""
+            if r.get("brief_src") and os.path.isfile(r["brief_src"]):
+                with open(r["brief_src"], encoding="utf-8", errors="replace") as fh:
+                    first = fh.read()
+            role = item_packet.role_of(first, r.get("env"))
+        if role:
+            rec["env"] = dict(rec.get("env") or {}, **{item_packet.ROLE_ENV: role})
+    except Exception as e:  # noqa: BLE001
+        print("launch: the fresh-start role could not be read (%s: %s)" % (type(e).__name__, e), file=sys.stderr)
+
+
+def item_history(brief, item, clone, env=None):
+    """-> the item packet (item_packet.packet) of this run, or one line for a role that starts fresh (blind judge, fresh reader,
+    examiner, challenger, coverage judge): no history for it. A launch never fails on it: what raised is said in the text.
+    Page design/specs/2026-11-23-item-packet/boundary.md."""
+    try:
+        import item_packet
+        role = item_packet.role_of(brief, env)
+        if role:
+            return "\n\n---\nYou start fresh (%s): this brief holds no history of the item.\n" % role
+        return "\n\n---\n" + item_packet.packet(item, item_packet.gather(item, clone))["text"]
+    except Exception as e:  # noqa: BLE001
+        return ("\n\n---\nITEM PACKET of %s: could not look (%s: %s): run "
+                "`python3 src/RimMandrake/rimflow/cli.py show %s`\n" % (item, type(e).__name__, e, item))
+
+
+def brief_message(brief, item, seat, clone, max_s=None, env=None):
+    """-> the whole text a detached run is given: the brief, the item's history (item_history: item_packet), the footer, its
+    cards' owed work, its command lines."""
+    return (brief.rstrip() + item_history(brief, item, clone, env)
             + FOOTER.format(clone=clone, item=item, seat=seat,
                             bound_text=("Wall-time bound: %d s" % max_s) if max_s else "no wall-time bound")
             + card_footer(item) + command_lines(item, seat))
@@ -1453,6 +1497,7 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     if env:
         rec["env"] = dict(env)
         brief = agent_repair(rec, clone, brief)
+    mark_fresh(rec, brief, resume_session, root)
     if resume_session:
         moved = carry_session(resume_session, clone, projects)
         if not moved:
@@ -1472,7 +1517,7 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
         write_record(rec, root)
     except OSError:
         rec.pop("brief_src", None)
-    msg = brief_message(brief, item, seat, clone, max_s)
+    msg = brief_message(brief, item, seat, clone, max_s, rec.get("env"))
     if runner is subprocess.run:        # its own TMPDIR, deleted by run_tmp.sweep when the unit is gone
         rec["tmp"] = run_tmp.prepare(unit)
         write_record(rec, root)

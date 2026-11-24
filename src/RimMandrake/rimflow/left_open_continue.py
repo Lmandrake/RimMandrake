@@ -403,8 +403,8 @@ def conductor_resume(session, item, brief, projects=None, reader=None):
         return {"session": session, "brief": brief, "extra": {"continue_resume_why": why}, "line": ""}
     orig = brief_of(mine[0])          # the session's first run holds the original brief; a resume's is its short prompt
     text = (brief.rstrip() + "\n\nThis is a FRESH session, not a resume of session %s (%s). Your clone stands on "
-            "origin/main. First read `git log --oneline -15` and `python3 src/RimMandrake/rimflow/cli.py show %s`; do "
-            "not redo work that is already published. Then carry on from the progress record below.\n\n" % (
+            "origin/main. First read `git log --oneline -15` and the ITEM PACKET below (no packet, or a part left out: `python3 "
+            "src/RimMandrake/rimflow/cli.py show %s`); do not redo work that is already published. Then carry on from the progress record below.\n\n" % (
                 session, why, item)) + progress_block(progress)
     if orig.strip():
         text += "\n---- the previous run's brief ----\n" + orig.rstrip() + "\n"
@@ -443,8 +443,8 @@ def header(rec, p, now):
                          if rec.get("bundle") else ""))
         return "\n".join(lines) + "\n"
     lines.append("This is a fresh session with no memory of the previous one. Your clone stands on origin/main. First "
-                 "read `git log --oneline -15` and `python3 src/RimMandrake/rimflow/cli.py show %s`; do not redo work "
-                 "that is already published. Then carry on from where it stopped%s." % (
+                 "read `git log --oneline -15` and the ITEM PACKET below (no packet, or a part left out: `python3 "
+                 "src/RimMandrake/rimflow/cli.py show %s`); do not redo work that is already published. Then carry on from where it stopped%s." % (
                      p["target"], ", as the progress record below says" if p.get("progress") else ""))
     return "\n".join(lines) + "\n" + ("\n" + progress_block(p.get("progress")) if p.get("progress") else "")
 

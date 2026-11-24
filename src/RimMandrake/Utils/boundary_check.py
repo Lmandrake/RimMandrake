@@ -53,6 +53,7 @@ PAGES = {
     "design/specs/2026-11-23-old-tickets-by-home/boundary.md": "src/RimMandrake/rimflow/selftest_list_home.py",
     "design/specs/2026-11-23-list-shape/boundary.md": "src/RimMandrake/rimflow/selftest_list_shape.py",
     "design/specs/2026-11-23-brief-commands/boundary.md": "src/RimMandrake/rimflow/selftest_brief_commands.py",
+    "design/specs/2026-11-23-item-packet/boundary.md": "src/RimMandrake/rimflow/selftest_item_packet.py",
     "design/specs/2026-11-22-list-outcome-checks/boundary.md": "src/RimMandrake/rimflow/selftest_list_effect.py",
     "design/specs/2026-11-23-follow-through-audit/boundary.md": "src/RimMandrake/Utils/selftest_follow_through.py",
     "design/specs/2026-11-22-art-worker-own-signin/boundary.md": "src/RimMandrake/Utils/artpipe/selftest_artpipe_signin.py",

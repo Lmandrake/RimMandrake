@@ -611,7 +611,9 @@ The check is the judge of "done". The item is done when the check holds on origi
 Steps:
 0. Start the item, before anything else:
    python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "list lane Work run (list_dispatch.py)" --publish
-1. Read it whole: python3 src/RimMandrake/rimflow/cli.py show {item}  (its prose, its notes, what earlier runs left).
+1. Read it whole: the ITEM PACKET below holds its prose, its notes and what earlier runs left. Run
+   python3 src/RimMandrake/rimflow/cli.py show {item}
+   only for a part that the packet left out or could not read, or when this brief holds no packet.
 2. Do the work the item asks for. The need is what the item says, not only the check's text: a check that you can pass
    while the need stays unmet is wrong, and you say so in a note instead of passing it.
 3. Run the check in your clone until it reads holds:
