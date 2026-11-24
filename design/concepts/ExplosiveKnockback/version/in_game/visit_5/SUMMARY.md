@@ -29,6 +29,9 @@ The reload arm now waits until the load's own PauseOnLoad tick is done. This lin
 - Two full-list loads (one only for the plant: my list swap was refused because the game had not exited, and one force stop).
 - Saves backup is partial: 430 files copied before the 5-minute limit, of 682 saves; save_keeper reported nothing changed.
 
+## After the exit: the gas-corner fix (db80fab783, 2026-11-23 19:20 PST)
+The mod's code changed. Build match: 54 of 56 count (rerun on ArchSmall, all PASS); sc_barrage_perf and sc_walk_raid are owed on ArchBig (RIMMANDRAKE_RUN_KNOCKBACK_FULL_LIST_CHECKS_AFTER_GAS_CORNER_FIX). Record: `gas_corner_fix/README.md`. The Exit block below is visit 5's, on 2993ae853e.
+
 ## Exit
 ```
 ingame_rows: {sc_spared: pass, sc_frame_probe_check: pass, sc_barrage_perf: pass, sc_walk_raid: pass, sc_all_fly_no_cap: pass}
