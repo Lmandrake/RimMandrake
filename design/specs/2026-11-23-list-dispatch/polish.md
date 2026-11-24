@@ -1,0 +1,1 @@
+- The tick's close by outcome check carries no `--live` promise: an operational item whose criteria ask for one closes without it (seen 2026-11-23 10:07 PM PST on `RIMMANDRAKE_CARRY_RESULT_IN_CONDUCTOR_WAKE_408_FILES_OPENED`; its hook was already promised by an earlier item).
