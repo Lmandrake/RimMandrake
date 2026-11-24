@@ -1,0 +1,115 @@
+{
+ "mod": "GimmeSomeSlack",
+ "script": "gravship_scene.py",
+ "mode": "live",
+ "started": "2026-11-24T13:37:35",
+ "rows": [
+  {
+   "id": "GS3_auto_link_on_keep_wires_off_span_stays_down",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "setting": "keepWiresOnGravship",
+    "value": false,
+    "netBefore": [
+     [
+      "Battery9913",
+      850962444
+     ],
+     [
+      "StandingLamp9914",
+      850962444
+     ],
+     [
+      "StandingLamp9915",
+      850962444
+     ]
+    ],
+    "mode": "off_autolink",
+    "before": {
+     "spansUp": 2
+    },
+    "after": {
+     "spansUp": 0,
+     "spansCut": 0
+    },
+    "aboardSpanUp": false,
+    "groundLinkKept": false,
+    "cords": {
+     "cordEdges": 5,
+     "cordsAcrossNets": 0,
+     "verticesInUnwalkable": 15,
+     "conduitCells": 8,
+     "inBracketWalls": [
+      15,
+      0
+     ]
+    },
+    "links": [],
+    "ids": [
+     9901,
+     9902,
+     9903,
+     9904
+    ],
+    "netAfter": [
+     [
+      "Battery9913",
+      1903167560
+     ],
+     [
+      "StandingLamp9915",
+      1903167560
+     ],
+     [
+      "StandingLamp9914",
+      1903167560
+     ]
+    ],
+    "cordsRead": 5,
+    "whyNot": [],
+    "verdict": "PASS"
+   }
+  },
+  {
+   "id": "GS2_prelaunch_cords_fail_on_landed_map",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "prelaunchCords": 5,
+    "failByName": [
+     [
+      "consumer:39,55|battery:36,56",
+      "ends outside the landed net: [(39, 55), (36, 56)]"
+     ],
+     [
+      "consumer:42,55|battery:36,56",
+      "ends outside the landed net: [(42, 55), (36, 56)]"
+     ],
+     [
+      "junction:36,56|battery:36,56",
+      "ends outside the landed net: [(36, 56), (36, 56)]"
+     ],
+     [
+      "junction:36,56|terminal:40,56",
+      "ends outside the landed net: [(36, 56), (40, 56)]"
+     ]
+    ],
+    "faults": 5
+   }
+  },
+  {
+   "id": "GS4_ground_wire_snaps_at_launch",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "fallenBefore": [
+     0,
+     0
+    ],
+    "groundAnchorAfterLaunch": 1,
+    "shipPoleAfterLanding": 1
+   }
+  }
+ ]
+}

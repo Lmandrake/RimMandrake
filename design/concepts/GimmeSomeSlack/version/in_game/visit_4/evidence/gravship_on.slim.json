@@ -1,0 +1,62 @@
+{
+ "label": "gravship_on",
+ "order": 1,
+ "source": "/mnt/d/ClaudeWork/rimmandrake/scratch/gss_020_v4/gravship_on.json",
+ "mode": "live",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.patches"
+  ],
+  "tier": {
+   "active_equals_running": true
+  }
+ },
+ "active_mods": [
+  "brrainz.harmony",
+  "ludeon.rimworld",
+  "ludeon.rimworld.royalty",
+  "ludeon.rimworld.ideology",
+  "ludeon.rimworld.biotech",
+  "ludeon.rimworld.anomaly",
+  "ludeon.rimworld.odyssey",
+  "brrainz.rimbridgeserver",
+  "owlchemist.cherrypicker",
+  "ray1203.simplecamerasetting",
+  "mandrake.rm.gimmesomeslack",
+  "mandrake.rm.patches"
+ ],
+ "game_build": "1.6.4871 rev590",
+ "run_identity": null,
+ "mod_hash": null,
+ "rows": [
+  {
+   "id": "GS1_keep_wires_on_gravship_on_aboard_span_flies",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "{'setting': 'keepWiresOnGravship', 'value': True, 'netBefore': [['Battery15800', 2129387710], ['StandingLamp15801', 2129387710], ['StandingLamp15802', 2129387710]], 'mode': 'on', 'before': {'spansUp': 2}, 'after': {'spansUp': 1, 'spansCut': 0}, 'aboardSpanUp': True, 'groundLinkKept': False, 'cords': {'cordEdges': 5, 'cordsAcrossNets': 0, 'verticesInUnwalkable': 15, 'conduitCells': 8, 'inBracketWalls': [15, 0]}, 'links': [[15788, 15789, 'Up'], [15789, 15788, 'Up']], 'ids': [15788, 15789, 15790, 15791], 'netAfter': [['Battery15800', 662526288], ['StandingLamp15801', 662526288], ['StandingLamp158"
+  },
+  {
+   "id": "GS2_prelaunch_cords_fail_on_landed_map",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": "{'prelaunchCords': 5, 'failByName': [['consumer:39,55|battery:36,56', 'ends outside the landed net: [(39, 55), (36, 56)]'], ['consumer:42,55|battery:36,56', 'ends outside the landed net: [(42, 55), (36, 56)]'], ['junction:36,56|battery:36,56', 'ends outside the landed net: [(36, 56), (36, 56)]'], ['junction:36,56|terminal:40,56', 'ends outside the landed net: [(36, 56), (40, 56)]']], 'faults': 5}"
+  },
+  {
+   "id": "GS4_ground_wire_snaps_at_launch",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "{'fallenBefore': [0, 0], 'groundAnchorAfterLaunch': 1, 'shipPoleAfterLanding': 1}"
+  }
+ ]
+}

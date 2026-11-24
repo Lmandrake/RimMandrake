@@ -1,0 +1,53 @@
+{
+ "scene": "scene_pole_south_of_tree",
+ "status": "UNMEASURED",
+ "rows": [
+  {
+   "id": "SC_pole_prints_on_common_layer",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reads": [
+     {
+      "success": true,
+      "cmd": "drawlayer:20,169",
+      "mast": "RM_AerialMast",
+      "layer": "BuildingOnTop",
+      "_probeSerial": 769
+     },
+     {
+      "success": true,
+      "cmd": "drawlayer:28,171",
+      "mast": "RM_AerialMast",
+      "layer": "BuildingOnTop",
+      "_probeSerial": 770
+     }
+    ]
+   }
+  },
+  {
+   "id": "SC_pole_south_of_tree_shot",
+   "status": "UNMEASURED",
+   "class": "LOOK",
+   "detail": {
+    "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_RECORD_SLACK_VERSION_PASS_AFTER_HIS_WALK_ALL_STATIONS_PASSED.det\\Transient\\messy_conduit_live_20261002\\sc_pole_south_of_tree.png",
+    "judge": "mast at (20, 169) in front of the tree north of it; mast at (28, 171) behind the tree south of it"
+   }
+  },
+  {
+   "id": "SCENE_sc_pole_south_of_tree",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "rows": {
+     "SC_pole_prints_on_common_layer": [
+      "PASS"
+     ],
+     "SC_pole_south_of_tree_shot": [
+      "UNMEASURED"
+     ]
+    }
+   }
+  }
+ ]
+}

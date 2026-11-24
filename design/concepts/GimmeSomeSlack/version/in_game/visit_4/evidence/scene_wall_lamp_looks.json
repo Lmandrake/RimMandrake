@@ -1,0 +1,108 @@
+{
+ "scene": "scene_wall_lamp_looks",
+ "status": "UNMEASURED",
+ "rows": [
+  {
+   "id": "SC_wall_lamp_draws_each_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "wrong": [],
+    "refusedByMod": [],
+    "siteErrors": [],
+    "lamps": 9
+   }
+  },
+  {
+   "id": "SC_wall_lamp_every_facing",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "wrong": [],
+    "rots": {
+     "(39, 169)": 1,
+     "(41, 169)": 3,
+     "(20, 174)": 2
+    },
+    "refusedByMod": []
+   }
+  },
+  {
+   "id": "SC_wall_lamp_points_out",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "wrong": [],
+    "facings": 4,
+    "refusedByMod": []
+   }
+  },
+  {
+   "id": "SC_wall_lamp_follows_line_restyle",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "restyle": {
+     "success": true,
+     "cmd": "crestyle:21,171:Modern",
+     "changed": 23,
+     "message": "Restyled this run (23 pieces, 23 changed) to Modern; lamps and batteries on it: 4 changed, 5 kept their own look.",
+     "_probeSerial": 847
+    },
+    "wrong": [],
+    "standingLampLook": "Modern"
+   }
+  },
+  {
+   "id": "SC_wall_lamp_master_off_vanilla",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "set": {
+     "success": true,
+     "cmd": "set:enabled=False",
+     "value": "False"
+    },
+    "wallLamps": 8,
+    "wrong": [],
+    "refusedByMod": []
+   }
+  },
+  {
+   "id": "SC_wall_lamp_shot",
+   "status": "UNMEASURED",
+   "class": "LOOK",
+   "detail": {
+    "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_RECORD_SLACK_VERSION_PASS_AFTER_HIS_WALK_ALL_STATIONS_PASSED.det\\Transient\\messy_conduit_live_20261002\\sc_wall_lamp_looks.png",
+    "judge": "each wall lamp reads as its look's wall lamp, hung on its wall, from north, east, west and south"
+   }
+  },
+  {
+   "id": "SCENE_sc_wall_lamp_looks",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "rows": {
+     "SC_wall_lamp_draws_each_look": [
+      "PASS"
+     ],
+     "SC_wall_lamp_every_facing": [
+      "PASS"
+     ],
+     "SC_wall_lamp_points_out": [
+      "PASS"
+     ],
+     "SC_wall_lamp_follows_line_restyle": [
+      "PASS"
+     ],
+     "SC_wall_lamp_master_off_vanilla": [
+      "PASS"
+     ],
+     "SC_wall_lamp_shot": [
+      "UNMEASURED"
+     ]
+    }
+   }
+  }
+ ]
+}

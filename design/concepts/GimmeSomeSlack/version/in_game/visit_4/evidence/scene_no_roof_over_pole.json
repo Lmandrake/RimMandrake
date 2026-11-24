@@ -1,0 +1,88 @@
+{
+ "scene": "scene_no_roof_over_pole",
+ "status": "PASS",
+ "rows": [
+  {
+   "id": "SC_roof_designator_refuses_pole_cell",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "success": true,
+    "cmd": "roofgate:22,170",
+    "mast": "scrap power mast",
+    "accepted": false,
+    "reason": "No roof over a scrap power mast: it stands too tall for a roof.",
+    "buildRoof": false,
+    "roofed": false,
+    "_probeSerial": 771
+   }
+  },
+  {
+   "id": "SC_auto_roof_skips_pole_cell",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "poleCell": {
+     "success": true,
+     "cmd": "roofpaint:22,170",
+     "mast": "scrap power mast",
+     "accepted": false,
+     "reason": "No roof over a scrap power mast: it stands too tall for a roof.",
+     "buildRoof": false,
+     "roofed": false,
+     "_probeSerial": 772
+    },
+    "neighbour": {
+     "success": true,
+     "cmd": "roofpaint:23,170",
+     "mast": "",
+     "accepted": false,
+     "reason": "",
+     "buildRoof": true,
+     "roofed": false,
+     "_probeSerial": 773
+    }
+   }
+  },
+  {
+   "id": "SC_forced_roof_still_cuts_spans",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "upBefore": 2,
+    "roofedAfterForce": true,
+    "ticksWaited": 262,
+    "afterForcedRoof": [
+     {
+      "other": 19297,
+      "state": "Cut",
+      "hp": 0
+     },
+     {
+      "other": 19296,
+      "state": "Cut",
+      "hp": 0
+     }
+    ]
+   }
+  },
+  {
+   "id": "SCENE_sc_no_roof_over_pole",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "rows": {
+     "SC_roof_designator_refuses_pole_cell": [
+      "PASS"
+     ],
+     "SC_auto_roof_skips_pole_cell": [
+      "PASS"
+     ],
+     "SC_forced_roof_still_cuts_spans": [
+      "PASS"
+     ]
+    }
+   }
+  }
+ ]
+}

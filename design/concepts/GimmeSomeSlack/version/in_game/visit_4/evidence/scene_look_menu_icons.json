@@ -1,0 +1,68 @@
+{
+ "scene": "scene_look_menu_icons",
+ "status": "UNMEASURED",
+ "rows": [
+  {
+   "id": "SC_look_icons_build_menu",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "entries": 150,
+    "wrong": [],
+    "blind": []
+   }
+  },
+  {
+   "id": "SC_look_icons_restyle_menus",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "wrong": [],
+    "blind": []
+   }
+  },
+  {
+   "id": "SC_look_icons_same_picture",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lookWithManyPictures": {}
+   }
+  },
+  {
+   "id": "SC_look_icons_shot",
+   "status": "UNMEASURED",
+   "class": "LOOK",
+   "detail": {
+    "shot": [
+     "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sc_look_icon_Scrapper.png",
+     "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sc_look_icon_Industrial.png",
+     "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sc_look_icon_Modern.png",
+     "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sc_look_icon_Futuristic.png"
+    ],
+    "judge": "the Restyle button in each capture wears its look's own icon, the four tell apart before the label is read"
+   }
+  },
+  {
+   "id": "SCENE_sc_look_menu_icons",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "rows": {
+     "SC_look_icons_build_menu": [
+      "PASS"
+     ],
+     "SC_look_icons_restyle_menus": [
+      "PASS"
+     ],
+     "SC_look_icons_same_picture": [
+      "PASS"
+     ],
+     "SC_look_icons_shot": [
+      "UNMEASURED"
+     ]
+    }
+   }
+  }
+ ]
+}

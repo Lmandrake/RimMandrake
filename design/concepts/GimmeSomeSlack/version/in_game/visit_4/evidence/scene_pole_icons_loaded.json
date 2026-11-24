@@ -1,0 +1,45 @@
+{
+ "scene": "scene_pole_icons_loaded",
+ "status": "PASS",
+ "rows": [
+  {
+   "id": "SC_pole_icons_main_thread_log",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "log": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Player.log",
+    "lines": [],
+    "modInLog": true
+   }
+  },
+  {
+   "id": "SC_pole_icons_loaded",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "success": true,
+    "cmd": "icons",
+    "link": true,
+    "unlink": true,
+    "linkName": "TryReconnect",
+    "unlinkName": "Cancel",
+    "_probeSerial": 768
+   }
+  },
+  {
+   "id": "SCENE_sc_pole_icons_loaded",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "rows": {
+     "SC_pole_icons_main_thread_log": [
+      "PASS"
+     ],
+     "SC_pole_icons_loaded": [
+      "PASS"
+     ]
+    }
+   }
+  }
+ ]
+}

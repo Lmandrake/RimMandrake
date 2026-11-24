@@ -1,0 +1,92 @@
+{
+ "row": "sc_stub_joins",
+ "result": "PASS",
+ "save": "GSS_OWNER_LOOK_20261116",
+ "rect": "0,0,400,400",
+ "probe": {
+  "success": true,
+  "cmd": "joins",
+  "stubs": 375,
+  "taken": 398,
+  "offLine": 0,
+  "offSlope": 0,
+  "empty": 0,
+  "worstDeg": 10.112,
+  "worstPos": 0.046,
+  "byKind": {
+   "box T": [
+    123,
+    133,
+    0,
+    0,
+    0
+   ],
+   "box X": [
+    36,
+    48,
+    0,
+    0,
+    0
+   ],
+   "plug": [
+    160,
+    160,
+    0,
+    0,
+    0
+   ],
+   "rock hole": [
+    2,
+    2,
+    0,
+    0,
+    0
+   ],
+   "strip lead": [
+    6,
+    6,
+    0,
+    0,
+    0
+   ],
+   "strip plug": [
+    13,
+    13,
+    0,
+    0,
+    0
+   ],
+   "switch": [
+    11,
+    12,
+    0,
+    0,
+    0
+   ],
+   "wall plate": [
+    22,
+    22,
+    0,
+    0,
+    0
+   ],
+   "wall plug": [
+    2,
+    2,
+    0,
+    0,
+    0
+   ]
+  },
+  "liveTails": 15,
+  "liveOffSlope": 0,
+  "livePinched": 0,
+  "liveWorstDeg": 0.15,
+  "liveMinR": 0.254,
+  "liveUnlaid": 0,
+  "liveStill": 0,
+  "wallTerminalsLoose": 0,
+  "bad": []
+ },
+ "utc": "2026-11-24T21:41:42Z"
+}

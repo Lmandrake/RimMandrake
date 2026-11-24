@@ -244,12 +244,22 @@ def scene(a, det):
             B.ap("set:autoLink=True")
         g["call"]("rimworld/step_game_ticks", ticks=60)
         tail = "# -- 5. launch" + rest.split("# -- 6. land", 1)[0] + "# -- 6. land" + rest.split("# -- 6. land", 1)[1].split("for part in", 1)[0]
-        lift, cut, travel = tail.partition("deadline = time.time()")     # the ship's things have despawned, the origin map still stands
-        exec(compile(lift, PROVE, "exec"), g)                    # launch
-        try:
-            left = B.ap("census")                                # the map left behind: what hangs from the ground anchor now
-        except Exception as e:   # noqa: BLE001  (the flight's own verdict does not rest on this read)
-            left = {"success": False, "error": str(e)[:200]}
+        lift, cut, travel = tail.partition("deadline = time.time()")
+        exec(compile(lift, PROVE, "exec"), g)                    # launch: the cutscene starts; the ship's things despawn a few frames on
+        left, t0, polls = {"success": False, "error": "the ship's pole never left the origin map in 60 s"}, time.time(), []
+        while time.time() - t0 < 60:                             # a hang guard: the lift is a few seconds of wall clock
+            try:
+                c = B.ap("census")
+            except Exception as e:   # noqa: BLE001  (the flight's own verdict does not rest on this read)
+                c = {"success": False, "error": str(e)[:200]}
+            polls.append((round(time.time() - t0, 1), fallen_of(c, ids[3]), fallen_of(c, ids[2])))
+            if fallen_of(c, ids[3]) is not None and fallen_of(c, ids[2]) is None:
+                left = c                                         # the ground anchor still stands, the ship's pole is gone
+                break
+            if fallen_of(c, ids[3]) is None:
+                break                                            # the origin map is no longer the current map: not read
+            time.sleep(0.5)
+        print("snap polls (s, ground anchor, ship pole)", polls[:1] + polls[-3:], len(polls))
         exec(compile(cut + travel, PROVE, "exec"), g)            # travel, land
         B = st["B"] = RL.LiveBridge()
         B.ticks(30)

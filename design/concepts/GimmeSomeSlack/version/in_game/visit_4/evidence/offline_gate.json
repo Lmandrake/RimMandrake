@@ -1,0 +1,73 @@
+{
+ "red": [],
+ "steps": {
+  "validation_offline": {
+   "rows": 9,
+   "not_pass": [],
+   "statuses": {
+    "O8_lamp_mast_vanilla_register": "PASS",
+    "O7_gpt_read_fixes": "PASS",
+    "O1_mod_files": "PASS",
+    "O2_settings_defaults": "PASS",
+    "O5_style_art_sane": "PASS",
+    "O6_review_round1": "PASS",
+    "O3_core_selftest": "PASS",
+    "O3n_selftest_can_fail": "PASS",
+    "O4_python_oracle": "PASS"
+   },
+   "wall_s": 444.7
+  },
+  "matrix_selftest": {
+   "exit": 0,
+   "fail": [],
+   "summary": [
+    "63/63 checks passed (19 negative controls among them)"
+   ],
+   "wall_s": 8.6
+  },
+  "human_review_plan": {
+   "exit": 0,
+   "tail": [
+    "layout ok: 31 stations (1-11 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RECORD_SLACK_VERSION_PASS_AFTER_HIS_WALK_ALL_STATIONS_PASSED.det/Transient/mc_human_review"
+   ],
+   "wall_s": 0.1
+  },
+  "selftest_human_review": {
+   "exit": 0,
+   "tail": [
+    "41/41 checks passed"
+   ],
+   "wall_s": 0.1
+  },
+  "selftest_proof_all": {
+   "exit": 0,
+   "tail": [
+    "settings files found: {'Mod_GimmeSomeSlack_AerialLinesMod.xml': '(no <style>: the shipped default)', 'Mod_GimmeSomeSlack_FireHosesMod.xml': '(no <style>: the shipped default)', 'Mod_GimmeSomeSlack_GimmeSomeSlackMod.xml': '(no <style>: the shipped default)'}"
+   ],
+   "wall_s": 25.9
+  },
+  "selftest_gss_stub_art_census": {
+   "exit": 0,
+   "tail": [
+    "PASS"
+   ],
+   "wall_s": 0.5
+  },
+  "selftest_gss_statics_census": {
+   "exit": 0,
+   "tail": [
+    "PASS"
+   ],
+   "wall_s": 0.1
+  },
+  "design_spec": {
+   "exit": 0,
+   "tail": [
+    "wrote /mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json"
+   ],
+   "wall_s": 0.4
+  }
+ },
+ "spec_posix": "/mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json",
+ "spec_win": "D:\\ClaudeWork\\rimmandrake\\scratch\\gss_proof\\scenes_design.json"
+}
