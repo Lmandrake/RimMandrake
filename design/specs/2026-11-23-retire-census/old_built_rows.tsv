@@ -1,0 +1,356 @@
+id	state	last_run	landed	close_set	min_commit_survival	suspect	open_levels	home	flag	refusals
+ABYSS_FIRST_SCRIPT_1	validated	pass	no	False			GREEN-MIN	mod:Abyss	CANNOT TELL	owed
+ABYSS_HIDDEN_SHIP_PROBES_1	built	none	msg	True	0.98	False	L1,L2,L2	mod:Abyss	LOOKS CURRENT	owed
+ABYSS_LIGHTFALL_BROOD_WRECK_1	validated	pass	msg	True	1.0	False	L2,L2,L2,L2,L3	mod:Abyss	LOOKS CURRENT	owed
+ABYSS_SHEET_DONOR_PORT_1	validated	pass	msg	True	0.89	False	L3	mod:Abyss	LOOKS CURRENT	owed
+AMBROSYX_SOURCE_BUILD_DISH_BEFORE_SHROOM	built	none	no	False			L1,L1,L1	mod:TheRot	LOOKS CURRENT	owed
+ARMOURY_JUMPPACK_INVALID_IL_1	validated	pass	msg	True	1.0	False	L2,L2	mod:Armoury	CANNOT TELL	owed
+ARMOURY_PROJECTILE_DAMAGE_TOOL_1	validated	pass	msg	True	0.98	False	GREEN-FULL	mod:Armoury	LOOKS CURRENT	owed
+ART_OVERRIDE_FAMILY_SCRIPT_1	built	fail	msg	False			L2	game:art-canon	LOOKS OVERTAKEN	fail,owed
+ART_RESOLUTION_MEASURE_AT_MAX_ZOOM	built	fail	msg	False			L1	pipeline:art-pipeline	LOOKS CURRENT	fail,owed
+ASSAILANT_SALVAGE_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:AssailantSalvage	CANNOT TELL	owed
+ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP	built	pass	msg	True	0.98	False	L2	mod:AtmosphericBase	CANNOT TELL	fail,owed
+AURORAL_UMBRA_RENAME_BACK_TO_DARK	validated	pass	msg	True	0.86	False	L2	mod:Umbra	CANNOT TELL	owed
+AXIS_SURGE_CLAMP_DRIFT_1	built	none	msg	True	1.0	False	L1	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+BACTA_FIRST_SCRIPT_1	built	none	msg	True	0.96	False	GREEN-MIN,GREEN-MIN	mod:Bacta	CANNOT TELL	owed
+BACTA_REVIVAL_MECHANIC_1	built	none	msg	True	0.98	False	L2,L2,L2	mod:Bacta	LOOKS CURRENT	owed
+BACTA_TANK_CORE_1	validated	pass	msg	True	0.92	False	L2,L2,L3	mod:Bacta	LOOKS CURRENT	owed
+BAZAAR_PRICE_ENGINE_1	validated	pass	msg	True	0.97	False	L2	mod:TheBazaar	LOOKS CURRENT	owed
+BEER_DIAGNOSE_NON_DRUG_3200_LOG_ERRORS	built	none	msg	True	1.0	False	L2	game:load-errors	LOOKS CURRENT	owed
+BELT_WATER_HARNESS_1	built	none	msg	True	1.0	False	L2,L2,L2	pipeline:test-lane	LOOKS CURRENT	owed
+BILEWORM_CORPSE_ROT_1	built	none	msg	True	0.95	False	L2	mod:Scarlands	LOOKS CURRENT	owed
+BIOME_ARRIVAL_LETTERS_ALL_1	validated	pass	msg	True	0.94	False	L2,L4			owed
+BIOME_DEFNAME_MIGRATION_WAVE_1	built	none	msg	True	0.97	False	L1,L1			owed
+BLOWER_ROOM_COOLER_1	validated	partial	msg	False			L2,L4	mod:Greentide	LOOKS CURRENT	owed
+BLUE_DESERT_FIRST_SCRIPT_1	built	none	msg	True	0.93	False	GREEN-MIN,GREEN-MIN	mod:BlueDesert	CANNOT TELL	owed
+BRAIN_WORMS_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:BrainWorms	CANNOT TELL	owed
+CAGE_CROP_SNAPSHOT_FIDELITY_1	built	none	no	False			L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+CARGO_FLOAT_LAUNCH_PUSH_1	built	none	no	False			L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+CATHEDRAL_EXPOSURE_COMPLETION_1	built	none	msg	True	0.93	False	L1,L2,L2,L4	mod:CathedralPass	LOOKS CURRENT	owed
+CATHEDRAL_FORCEDOFF_FIX_SAVED_AS_CHOICE	built	none	msg	True	1.0	False	L1,L1	mod:RustCathedral	LOOKS CURRENT	owed
+CATHEDRAL_MECHANOID_PASS_VERBS_1	validated	pass	msg	True	0.96	False	L2	mod:CathedralPass	LOOKS CURRENT	owed
+CATHEDRAL_REGARD_BLACKBOARD_1	built	none	msg	True	0.93	False	L2,L2	mod:CathedralPass	LOOKS CURRENT	owed
+CATHEDRAL_STAGE_COMMENTARY_POOLS_1	built	none	msg	True	0.98	False	L2	mod:CathedralPass	LOOKS CURRENT	owed
+CATHEDRAL_STAGE_HUM_BRIDGE_1	built	none	msg	True	0.94	False	L2,L2	mod:CathedralPass	LOOKS CURRENT	owed
+CAULDRON_ENRICHMENT_VISUALS_1	validated	pass	msg	True	0.9	False	L3,L4			owed
+CHANNEL_CURRENT_CADENCE_FIDELITY_1	built	none	no	False			L2,L3	mod:TerminalBiomes	LOOKS CURRENT	owed
+CHILL_AIR_PUMP_1	built	pass	msg	True	0.96	False	L1,L2,L2,L2,L4	mod:TheChill	LOOKS CURRENT	owed
+CHILL_AURORA_UNATTENDED_SOURCE_1	built	none	no	False			L2	mod:DivingInteraction	LOOKS CURRENT	owed
+CHILL_SUIT_SHELTER_RULE_1	built	partial	msg	False			L1	mod:DivingInteraction	LOOKS CURRENT	owed
+CHOTRIX_HUNT_TARGET_REVALIDATE_1	built	none	no	False			L2	mod:Scarlands	LOOKS CURRENT	owed
+CHUNKS_FIX_SAVE_ERRORS_NOT_DEAD_NAMES	built	none	msg	True	0.99	False	L2,L2	game:load-errors	CANNOT TELL	owed
+CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD	built	none	msg	True	1.0	False	L1	game:load-errors	CANNOT TELL	owed
+CONFIGERRORS_FIX_THREE_LEFTOVER_CLASSES	built	none	msg	True	1.0	False	L1	game:load-errors	CANNOT TELL	owed
+CONTACT_VENOM_NONLETHAL_ORDER_1	built	none	no	False			L2	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING	built	fail	no	False			L1			fail,owed
+CONTAGION_CLAWS_FIX_ABSTRACT_VERB	built	none	no	False			L1			owed
+CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS	built	none	no	False			L1			owed
+CONTAGION_INJECT_FIX_CANCEL_STILL_STABS	built	none	no	False			L1			owed
+CONTAGION_INJECT_FIX_HOST_WANDERS_OFF	built	none	no	False			L1			owed
+CONTAGION_RULED_CONTENT_1	built	none	msg	True	0.75	True	L1,L2,L2,L2,L4			owed
+CONTAGION_SINKERS_FIX_RESET_AFTER_LOAD	built	none	no	False			L1			owed
+CONTAGION_WOMBPOD_FIX_SAC_NEVER_HATCHES	built	none	no	False			L1			owed
+CRACKEDLANDS_ENRICHMENT_QUICKTEST_1	built	partial	msg	False			L2,L2	mod:CrackedLands	LOOKS CURRENT	owed
+CRACKEDLANDS_FIVE_BEATS_AUDIO_1	built	partial	item_path	False			L2,L4	game:audio	LOOKS CURRENT	owed
+CRACKEDLANDS_FULL_RENAME_1	built	pass	msg	True	0.85	False	L1	mod:CrackedLands	CANNOT TELL	owed
+CREATURE_ALARM_ORIGIN_SHARE_1	built	none	item_path	True	1.0	False	L2	mod:CreatureBehaviors	LOOKS CURRENT	owed
+CREATURE_BEHAVIORS_FIRST_SCRIPT_1	validated	pass	no	False			GREEN-MIN	mod:CreatureBehaviors	CANNOT TELL	owed
+CREATURE_BEHAVIORS_SETTINGS_SCREEN_1	built	none	msg	True	0.97	False	L1,L2	mod:CreatureBehaviors	LOOKS CURRENT	owed
+CREATURE_BEHAVIOR_LAST_OUTCOME_1	validated	pass	msg	True	1.0	False	L1	mod:CreatureBehaviors	LOOKS CURRENT	owed
+CREATURE_JOB_INTERRUPTION_POLICY_1	built	none	no	False			L2,L2,L2	mod:CreatureBehaviors	LOOKS CURRENT	owed
+CUT_FALLOUT_GENERATED_DATA_1	built	none	msg	True	0.0	True	GREEN-FULL,L4			owed
+DANGER_CLOCK_ALERTS_1	built	none	item_path	True	1.0	False	L2	mod:DivingInteraction	LOOKS CURRENT	owed
+DEAD_OR_INERT_SETTINGS_1	built	none	no	False			L2	game:mod-settings	LOOKS CURRENT	owed
+DECOY_SHADE_TARP_1	validated	fail	msg	False			L2	mod:CreatureBehaviors	LOOKS CURRENT	fail,owed
+DEEPFIRE_SETTINGS_LIGHT_REFRESH_1	built	none	no	False			L2	mod:LuminousPigment	LOOKS CURRENT	owed
+DEEPS_FAUNA_MECHANICS_1	built	none	msg	True	0.13	True	L2,L2,L2			owed
+DEEPS_FAUNA_MECHANICS_2	built	none	msg	True	0.98	False	L2,L2,L2			owed
+DEEP_DRILL_HOME_BIOME_1	validated	pass	no	False			L2	mod:DeepDrill	LOOKS CURRENT	owed
+DEF_ALIAS_CHAIN_HASH_1	validated	pass	no	False			L2	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+DIVING_INTERACTION_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:DivingInteraction	CANNOT TELL	owed
+DIVING_SETTINGS_CONTRACT_1	validated	pass	no	False			L2	mod:DivingInteraction	LOOKS CURRENT	owed
+DONOR_FOUR_RETIRE_JUST_GET_IT_DONE	validated	partial	no	False			L2,L4	game:dependencies	CANNOT TELL	owed
+DONOR_MUTATORS_MIGRATE_TWENTY_TWO_CAME_HOME	built	none	no	False			L1,L2	game:world-map	LOOKS CURRENT	owed
+DONOR_PACK_TEX_REPAIR_SEVEN_LEFT_BEHIND	built	none	msg	True	1.0	False	L1,L1	mod:SWBestiary	LOOKS CURRENT	owed
+DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1	built	none	msg	True	1.0	False	L2,L2	mod:Droidworks	LOOKS CURRENT	owed
+DROIDWORKS_PRIMITIVE_TIER_1	built	none	msg	True	0.94	False	L4	mod:Droidworks	LOOKS CURRENT	owed
+DROIDWORKS_WIPE_SEVERITY_1	validated	pass	msg	True	0.16	True	GREEN-MIN,L2,L2	mod:Droidworks	LOOKS CURRENT	owed
+DUNE_MOVED_EVENT_1	validated	pass	msg	True	1.0	False	L2	mod:MovingDunes	LOOKS CURRENT	owed
+DUNE_TRACK_ERASE_ACCUMULATE_1	built	none	no	False			L2			owed
+DUNG_HATCH_WILDLIFE_CAP_1	built	none	item_path	True	1.0	False	L2	mod:CreatureBehaviors	LOOKS CURRENT	owed
+DURASTEEL_DONORS_MERGE_ONE_DEF	built	none	msg	True	1.0	False	L2,L2	mod:Minerals	LOOKS CURRENT	owed
+DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED	built	none	no	False			L1,L2,L4,L4	mod:TheRot	LOOKS CURRENT	owed
+DUST_SETTLED_LETTER_1	built	partial	msg	False			L2	game:campaign-events	LOOKS CURRENT	owed
+EGROSTER_DEAD_ROWS_PRUNE_SILENT_SKIPS	built	none	msg	True	1.0	False	L1,L1	mod:ExplosiveGrowth	LOOKS CURRENT	owed
+EGROWTH_MASTER_FIX_SPARES_THE_BANDS	built	none	msg	True	1.0	False	L1	mod:ExplosiveGrowth	LOOKS CURRENT	owed
+EGROWTH_RELOAD_FIX_FREE_CHARGE_PASS	built	none	msg	True	0.93	False	L1	mod:ExplosiveGrowth	LOOKS CURRENT	owed
+ELDER_DISCHARGE_STUN_LIVING_1	built	none	no	False			L2	mod:DivingInteraction	LOOKS CURRENT	owed
+ELDER_TRADE_TRANSACTIONAL_PAYOUT_1	built	none	msg	True	1.0	False	L1	mod:DivingInteraction	LOOKS CURRENT	owed
+EMPIRE_ESCALATION_LADDER_1	validated	pass	msg	True	0.92	False	L2,L2,L2,L2,L2,L4	mod:EmpirePursuit	LOOKS CURRENT	owed
+ENVHAZARDS_HAZARD_CLOCK_READOUTS_1	built	none	msg	True	1.0	False	L2	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+ENVHAZARDS_SETTINGS_SCREEN_1	built	none	msg	True	0.97	False	L1,L2	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+ENVIRONMENTAL_HAZARDS_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:EnvironmentalHazards	CANNOT TELL	owed
+ENV_WEATHER_GATE_SCOPE_1	built	none	no	False			L2	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+EXPLOSIVE_GROWTH_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN			owed
+EXPLOSIVE_GROWTH_MERGE_COMES_HOME	built	none	no	False			GREEN-MIN,L1,L1			owed
+FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1	validated	pass	msg	True	0.24	True	L2	mod:FallLineArrivals	LOOKS CURRENT	owed
+FEVERWOOD_LIMB_LINGER_CAP_1	validated	pass	msg	True	1.0	False	L1,L4			owed
+FEVERWOOD_RM_CAST_COMPLETION_1	validated	pass	msg	True	0.75	True	L2,L2			owed
+FEVERWOOD_WATER_TOPOLOGY_SERVICE_1	built	none	no	False			L2,L2			owed
+FEVER_WOOD_FIRST_SCRIPT_1	built	none	msg	True	0.98	False	GREEN-MIN,GREEN-MIN			owed
+FIRE_RITE_FIX_DEFENDERS_MISS_THE_WAR	built	none	msg	True	1.0	False	L2	mod:PyrelandsMechanics	CANNOT TELL	owed
+FISH_BESTIARY_BUILD_1	built	none	msg	True	0.6	True	L2,L2,L2	game:seas	LOOKS CURRENT	owed
+FLAME_STATUES_MOD_BUILD_1	built	none	item_path	True	0.28	True	L1,L2,L2	mod:FlameStatues	LOOKS CURRENT	owed
+FORCE_DISTURBANCE_REFLAVOR_1	validated	pass	msg	True	0.74	True	L2,L4	mod:StarWarsPatches	LOOKS CURRENT	owed
+FORGE_DHOKKUR_WAYS_1	validated	pass	msg	True	0.88	False	L2,L4	mod:TheForge	LOOKS CURRENT	owed
+FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND	validated	pass	msg	True	1.0	False	L1,L2,L2	mod:TheForge	LOOKS CURRENT	owed
+FOUL_POOL_SUPPRESSION_SCOPE_1	built	none	no	False			L2,L2			owed
+FULL_LOAD_RESIDUE_TRIAGE_1	built	none	msg	True	0.57	True	GREEN-FULL			owed
+FUNGAL_SOIL_TRADE_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:FungalSoilTrade	CANNOT TELL	owed
+GAMECOMP_STALL_HUNT_SEVEN_SECONDS	built	fail	msg	False			L2	game:performance	CANNOT TELL	fail,owed
+GARDEN_ESCALATION_PROGRESS_FIX_1	built	partial	msg	False			L1	mod:DivingInteraction	LOOKS CURRENT	owed
+GELATINOUSSLIME_PIT_SOLVENT_1	built	none	msg	True	1.0	False	L1,L2,L2			owed
+GELATINOUSSLIME_TITAN_CHUNK_BOMB_1	validated	pass	no	False			L2,L2,L3			owed
+GELATINOUSSLIME_VAULT_SEAL_BREACH_1	built	none	item_path	True	0.94	False	L2,L2			owed
+GELATINOUS_SLIME_FIRST_SCRIPT_1	built	none	msg	True	0.92	False	GREEN-MIN			owed
+GENERATOR_MODS_PROVE_INERT_AFTER_CREATION	built	pass	msg	True	0.23	True	L1	game:dependencies	CANNOT TELL	fail,owed
+GIZKA_STOWAWAY_FIRST_SCRIPT_1	validated	pass	no	False			GREEN-MIN,GREEN-MIN	mod:GizkaStowaway	CANNOT TELL	owed
+GIZKA_STOWAWAY_UNMEASURED_ROWS_1	built	pass	msg	True	0.96	False	L2	mod:GizkaStowaway	CANNOT TELL	owed
+GLOWTANK_CROP_FIX_FROZEN_FRESH_MAP	built	fail	msg	False			L2	mod:LanternDeeps	CANNOT TELL	fail,owed
+GLOW_TANK_SEED_LIVE_SOW_1	validated	pass	item_path	True	0.71	True	L2	mod:LanternDeeps	CANNOT TELL	owed
+GM_BLACKBOARD_SHADOW_M4_1	built	none	msg	True	0.92	False	L2,L2	game:campaign-events	CANNOT TELL	owed
+GRAFFITI_DESIGNATOR_MARK_CHOICE_1	built	none	no	False			L2			owed
+GRAFFITI_IMPERIAL_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN			owed
+GRAFFITI_NORTHSTAR_BRIDGE_TOOLS_1	validated	pass	msg	True	1.0	False	GREEN-MIN			owed
+GRAFFITI_NORTHSTAR_GREEN_MINIMAL_1	built	none	no	False			GREEN-MIN,L4			owed
+GRAFFITI_SIGIL_FRAMES_ART_1	built	none	msg	True	0.78	True	L4			owed
+GRAFFITI_V1_LIVE_PROOF_1	validated	pass	msg	True	0.04	True	L2			owed
+GRAFFITI_WALLFACE_BUILD_NO_NEW_THING_CLASS	built	none	item_path	True	0.76	True	L1,L2,L4			owed
+GRAVSHIP_ACOUSTIC_SCANNER_1	validated	pass	msg	True	0.91	False	L2,L4	mod:AcousticScanner	LOOKS CURRENT	owed
+GRAVSHIP_LANDING_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN	mod:GravshipLanding	CANNOT TELL	owed
+GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1	validated	pass	msg	True	0.99	False	L2,L2	mod:Greentide	LOOKS CURRENT	owed
+GREENTIDE_BASE_PORT_BUILD_1	validated	partial	msg	False			L2	mod:Greentide	LOOKS CURRENT	owed
+GREENTIDE_HUMMING_GROVE_1	built	none	msg	True	1.0	False	L2,L4	mod:Greentide	LOOKS CURRENT	owed
+GREENTIDE_MECHANICS_2	built	none	msg	True	0.41	True	L1,L2,L2,L2			owed
+GREENTIDE_STELLOCK_LACE_BUILD_1	validated	pass	item_path	True	0.72	True	GREEN-MIN,L2,L2,L2,L2,L2,L3	mod:Greentide	LOOKS CURRENT	owed
+GREENTIDE_THURROCK_HERD_BUILD_1	validated	pass	no	False			L2,L2,L2,L3	mod:Greentide	LOOKS CURRENT	owed
+GREYSEA_FLOOR_FLORA_ZERO_1	built	none	no	False			L2,L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+GREY_LAMP_ANSWER_RETRY_1	built	none	no	False			L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+GREY_TWILIGHT_SEABED_BIOME_GATE_1	validated	partial	no	False			L1	mod:TerminalBiomes	LOOKS CURRENT	owed
+HAZARD_CLOCK_INSPECT_LINES_1	validated	pass	msg	True	0.97	False	L1	mod:TerminalBiomes	LOOKS CURRENT	owed
+HEDIFF_GLOW_MOVING_PROXY_1	built	none	no	False			L2,L2	mod:LuminousPigment	LOOKS CURRENT	owed
+HEDIFF_GLOW_TARGETING_PULSE_1	built	none	no	False			L2,L2	mod:LuminousPigment	LOOKS CURRENT	owed
+HORIZON_WARNING_DROP_RAIDS_1	built	none	no	False			L2			owed
+HORRORS_RAIDING_FACTION_1	built	fail	msg	False			L2	mod:UtinniPatches	LOOKS CURRENT	fail,owed
+HOSTILE_FLORA_FIRST_SCRIPT_1	built	fail	no	False			GREEN-MIN,L2	mod:HostileFlora	CANNOT TELL	fail,owed
+HUTT_SLAVE_PIT_TEST_SITE_1	built	none	no	False			L2,L2,L2	game:dungeons-and-wreckage	LOOKS CURRENT	owed
+ISHKO_LANDMARKS_CORRECT_DOCTRINE_NOT_GEOLOGY	built	none	no	False			L2	mod:AshkarrLandmarkArt	LOOKS CURRENT	owed
+JAWA_SWIM_HOOD_KEEP_1	validated	pass	msg	True	0.9	False	L2,L4	mod:StarWarsRaces	LOOKS CURRENT	fail,owed
+KHORRAK_STEEL_DIET_TIER_1	built	none	msg	True	0.98	False	L2	mod:LongShade	LOOKS CURRENT	owed
+KINETIC_BLAST_WEAPONS_1	validated	pass	msg	True	0.86	False	L2,L2,L2,L2,L2,L2,L2,L2,L4,L4	mod:Armoury	LOOKS CURRENT	owed
+KYBER_TRADE_PLOT_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:KyberTradePlot	CANNOT TELL	owed
+LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP	built	none	item_path	True	1.0	False	L2	mod:FlowWorks	LOOKS CURRENT	owed
+LANTERNDEEPS_ANSWERING_RITE_BUILD_1	validated	pass	msg	True	0.23	True	L2	mod:Rites	LOOKS CURRENT	owed
+LANTERNDEEPS_SHEET_ART_REDO_1	built	none	msg	True	NO_TEXT_LINES	True	L3	mod:LanternDeeps	LOOKS CURRENT	owed
+LASSO_CHERRYPICKER_REMOVAL_1	validated	fail	msg	False			L1	mod:UtinniPatches	LOOKS CURRENT	fail,owed
+LAUNCH_HELD_COLONIST_WARNING_1	validated	pass	msg	True	0.99	False	L2,L2	game:ship	LOOKS CURRENT	owed
+LEANINGSCRUB_CROWN_MOB_LIVE_1	built	none	msg	True	0.99	False	L2			owed
+LEANINGSCRUB_SWEETLINE_VISITORS_1	validated	pass	item_path	True	0.86	False	L3,L4			owed
+LEATHERFACTORS_FIX_KEEP_OWN_STATS	built	none	msg	True	0.99	False	L1,L1	mod:Armoury	LOOKS CURRENT	owed
+LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR	built	none	msg	True	0.97	False	L2	mod:FlowWorks	CANNOT TELL	owed
+LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT	built	fail	msg	False			L2	mod:FlowWorks	CANNOT TELL	fail,owed
+LIGHT_LEDGER_ONE_1	validated	pass	msg	True	0.95	False	L1,L1,L1,L1	game:light	LOOKS CURRENT	owed
+LIVE_ROUND2_FIXES_PROOF_1	validated	pass	no	False			L2,L2	mod:Stillsand	CANNOT TELL	owed
+LONGSHADE_BEDAZZLE_CONTENT_1	built	none	msg	True	0.82	False	L2,L3,L3,L4	mod:LongShade	LOOKS CURRENT	owed
+LONGSHADE_BEDAZZLE_MECHANICS_1	built	none	msg	True	0.12	True	L2,L2,L2,L2			owed
+LONGSHADE_ENRICHMENT_QUICKTEST_1	built	none	no	False			L2,L2,L2,L2,L4	mod:LongShade	CANNOT TELL	owed
+LONGSHADE_MASTER_SWITCH_FIX_SHIPFALL_IGNORES	built	none	msg	True	0.94	False	L1,L1	mod:LongShade	LOOKS CURRENT	owed
+LONGSHADE_MIDDENS_SPENT_BUILD_1	validated	pass	msg	True	0.99	False	L3	mod:LongShade	LOOKS CURRENT	owed
+LONGSHADE_SCENE_LIVECHECK_1	built	pass	msg	True	0.98	False	L2,L2,L2,L2,L2,L2,L2,L2,L2,L2,L2	mod:LongShade	CANNOT TELL	owed
+LONGSHADE_STAMPEDE_LIVECHECK_1	built	fail	msg	False			L2,L2,L2,L2	mod:LongShade	CANNOT TELL	fail,owed
+LONG_SHADE_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:LongShade	CANNOT TELL	owed
+LORE_STAGES_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:LoreStages	CANNOT TELL	owed
+LOVIN_LOGSPAM_DIAGNOSE_IN_PLAY_EVICTIONS	built	fail	msg	False			L2	game:load-errors	LOOKS CURRENT	owed
+MACRO_GENERATOR_V0_1	built	none	msg	True	0.88	False	L4	game:map-generation	CANNOT TELL	owed
+MAP_AWARENESS_PROVE_ON_A_QUIET_MAP	validated	pass	msg	True	0.98	False	L2,L2	pipeline:bridge	CANNOT TELL	owed
+MAP_SILENCE_SINGLE_OWNER_1	built	none	msg	True	0.99	False	L2	game:audio	LOOKS CURRENT	owed
+MAT_DISCOVERY_SIGHT_RULE_1	built	none	no	False			L2,L2	mod:LuminousPigment	LOOKS CURRENT	owed
+MIASMA_FIRST_SCRIPT_1	built	partial	no	False			GREEN-MIN,GREEN-MIN	mod:Miasma	CANNOT TELL	owed
+MIASMA_MECHANICS_1	built	none	msg	True	0.5	True	L2,L2,L2			owed
+MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED	built	fail	msg	False			L2	mod:FlowWorks	LOOKS CURRENT	fail,owed
+MINERAL_POLICY_CODE_STARTUP_ZEROING	built	none	msg	True	0.97	False	L1,L1,L1,L1,L1,L1,L1,L1	mod:Minerals	LOOKS CURRENT	owed
+MINERAL_QUARRY_WIRE_LOCAL_POOL	built	none	msg	True	0.98	False	L1,L1,L2	mod:Minerals	LOOKS CURRENT	owed
+MIRRELBOLE_FIX_TICK_NRE_THIRTY_FIVE_TIMES	built	none	msg	True	1.0	False	L2	mod:ExplosiveGrowth	CANNOT TELL	owed
+MIRROR_BEAM_SUN_POLICY_1	built	none	no	False			L2			owed
+MOVINGDUNES_WATER_BANKS_SAND_1	built	none	msg	True	1.0	False	L2	mod:MovingDunes	LOOKS CURRENT	owed
+MOVING_DUNES_BUILD_1	validated	pass	msg	True	0.89	False	L2,L2,L3	mod:MovingDunes	LOOKS CURRENT	owed
+MOVING_DUNES_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:MovingDunes	CANNOT TELL	owed
+MYCOID_COLOSSUS_LIVE_LOOK_1	built	none	no	False			L2,L3,L4	game:art-canon	CANNOT TELL	owed
+NIGHTSIDEICE_SHEET_ART_REDO_1	built	none	item_path	True	1.0	False	L3	mod:SleepingIce	LOOKS CURRENT	owed
+NINEFOLD_FAVOUR_ODDS_BUILD_1	validated	pass	msg	True	0.92	False	L2	mod:Rites	LOOKS CURRENT	owed
+NINEFOLD_LOUDNESS_FRONT_1	built	none	msg	True	0.93	False	L2,L2,L2	mod:Rites	LOOKS CURRENT	owed
+NINEFOLD_MERGE_NINE_GODS_ONE_ROOF	built	none	no	False			L2,L2	mod:Rites	LOOKS CURRENT	owed
+NORTHSTAR_ISHKO_PILOT_1	validated	pass	no	False			L4	mod:AshkarrLandmarkArt	CANNOT TELL	owed
+OASIS_MAKER_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:OasisMaker	CANNOT TELL	owed
+ORDNANCE_TRIGGER_REAL_SHOT_1	built	none	no	False			L2	mod:Scarlands	LOOKS CURRENT	owed
+PAWN_ORIGIN_BUILD_SAY_ORIGIN_UNKNOWN	validated	pass	item_path	True	0.98	False	L2,L2	pipeline:bridge	CANNOT TELL	fail,owed
+PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK	built	none	msg	True	0.98	False	L1,L2	pipeline:bridge	LOOKS CURRENT	owed
+PIGMENT_JOB_PAYMENT_ALLOCATION_1	built	none	msg	True	1.0	False	L2	mod:LuminousPigment	LOOKS CURRENT	owed
+PIT_LIP_FIX_MUFFALO_OVERHANGS_RIM	built	none	msg	True	0.99	False	L2,L2,L2	mod:FlowWorks	CANNOT TELL	owed
+PIT_SINK_FIX_SOIL_STRIP_OVER_WALL	built	none	msg	True	0.96	False	L2	mod:FlowWorks	CANNOT TELL	owed
+PLANET_ATMOSPHERE_CLOUD_COST_1	validated	pass	msg	True	0.03	True	L1,L1	game:dependencies	LOOKS CURRENT	owed
+PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT	validated	pass	item_path	True	0.96	False	L1	game:dependencies	LOOKS CURRENT	owed
+PLASTEEL_AUDIT_EXPLICIT_MINEABLE_LISTS	built	none	msg	True	1.0	False	L1,L1	mod:Minerals	LOOKS CURRENT	owed
+PLAYER_START_SITE_1	built	fail	msg	False			L2	game:campaign	LOOKS CURRENT	fail,owed
+PORTABLE_LADDER_REDRAW_NORTH_TOO_FLAT	built	none	no	False			L2,L4	mod:FlowWorks	LOOKS CURRENT	owed
+PRECIOUS_CAVE_DEN_OCCUPANT_1	built	none	no	False			L2			owed
+PRESS_GATE_BUILDABLE_RESEARCH_1	built	none	no	False			L2	mod:LuminousPigment	LOOKS CURRENT	owed
+PROMISED_GIFT_NEVER_LOST_1	built	none	item_path	True	0.62	True	L2	mod:FeverWood	LOOKS CURRENT	owed
+PROOF_REELS_FIX_STILL_STAGED_WEST	built	fail	msg	False			L2			fail,owed
+PROPANE_LAKE_MECHANICS_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN			owed
+PYRELANDS_STRUCK_GLASS_RITE_BUILD_1	validated	partial	item_path	False			L2,L4			fail,owed
+PYRINTH_FIRST_SCRIPT_1	validated	pass	no	False			GREEN-MIN	mod:Pyrinth	CANNOT TELL	owed
+QUARRYSHARE_FIX_ZEROED_GOVERNED_WEIGHTS	built	none	msg	True	1.0	False	L1,L1	mod:Minerals	LOOKS CURRENT	owed
+RAKATAN_ARCHOTECH_MACHINES_1	validated	pass	msg	True	0.9	False	L2,L4	mod:WreckedMachines	LOOKS CURRENT	owed
+RECKONING_HISTORYEVENT_REWIRE_OFF_QUESTEND	built	none	item_path	True	0.28	True	L1,L1	mod:EggReckoning	CANNOT TELL	owed
+RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT	built	none	msg	True	0.99	False	L1	mod:StructureInjectionsRUT	LOOKS CURRENT	owed
+REGEN_RENDERS_INSTALL_AS_THEY_LAND	validated	pass	msg	True	1.0	False	L4	pipeline:art-pipeline	CANNOT TELL	owed
+ROTCORE_RECLAIM_FIX_FINDERS_KEEPERS	built	none	msg	True	0.96	False	L2,L2	mod:TheRot	LOOKS CURRENT	owed
+ROT_FAUNA_KIN_WIRING_1	built	none	msg	True	0.76	True	L1,L1,L2	mod:TheRot	LOOKS CURRENT	owed
+ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD	built	none	no	False			L1,L2,L2,L2,L2,L2,L4	mod:TheRot	CANNOT TELL	owed
+ROT_WOUNDLINK_FIX_DROPPED_AT_THE_DOOR	built	fail	no	False			L1,L2	mod:TheRot	LOOKS CURRENT	fail,owed
+RUSTCATHEDRAL_BASE_FINISH_BUILD_1	validated	partial	msg	False			L2,L2,L2,L2,L2,L3	mod:RustCathedral	LOOKS CURRENT	owed
+RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1	validated	pass	msg	True	0.92	False	L2,L2,L2,L2,L4	mod:RustCathedral	LOOKS CURRENT	owed
+RUSTCATHEDRAL_GOODWILL_FLOOR_1	validated	partial	msg	False			L2	mod:RustCathedral	LOOKS CURRENT	owed
+RUSTCATHEDRAL_HULL_BOLTS_BUILD_1	validated	pass	msg	True	1.0	False	L2,L2,L2,L2,L2,L2,L2,L2	mod:RustCathedral	LOOKS CURRENT	owed
+RUSTCATHEDRAL_SHEET_ART_REDO_1	built	none	item_path	True	0.58	True	L3	mod:RustCathedral	LOOKS CURRENT	owed
+RUST_CATHEDRAL_MECHANICS_1	validated	pass	msg	True	0.61	True	GREEN-MIN,L2,L3,L4			owed
+RUST_CATHEDRAL_ROACHES_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:RustCathedral	CANNOT TELL	owed
+SALT_TRAVELS_WITH_DOOR_1	built	none	item_path	True	1.0	False	L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+SALVAGE_WRECKAGE_EVERYWHERE_1	validated	partial	msg	False			L2,L2,L4	mod:Wreckage	LOOKS CURRENT	owed
+SANGUOPHAGE_KEPT_UNREACHABLE_1	built	none	msg	True	0.99	False	L1,L1,L1,L2,L2,L2,L2	game:factions	LOOKS CURRENT	owed
+SARLACC_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:Sarlacc	CANNOT TELL	owed
+SAVE_RELIC_PRECEPTS_REPAIR_VWE_NULLS	built	none	no	False			L1	game:canonical-save	LOOKS CURRENT	owed
+SCALD_WATER_AGITATION_FLECKS_1	validated	pass	msg	True	0.52	True	L2,L4	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+SCARLANDS_FIRST_SCRIPT_1	validated	pass	no	False			GREEN-MIN	mod:Scarlands	CANNOT TELL	owed
+SCARLANDS_LADDER_FIRST_SCRIPT_1	validated	pass	no	False			GREEN-MIN	mod:ScarlandsLadder	CANNOT TELL	owed
+SCARLANDS_MECHANICS_2	validated	pass	msg	True	0.4	True	L2,L2,L2,L2,L3			owed
+SCARLANDS_RELOAD_MIDSTATE_1	built	none	msg	True	0.98	False	L2	mod:Scarlands	LOOKS CURRENT	owed
+SCAVENGER_EVENTS_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:ScavengerEvents	CANNOT TELL	owed
+SCRAPNEST_BIRD_BASE_THEFT_1	built	none	msg	True	0.27	True	L2,L2,L2,L2	mod:SWBestiary	LOOKS CURRENT	owed
+SCRAPPER_PIPE_REDRAW_ASKED_TWICE_NOW	built	none	msg	True	0.95	False	L2,L4			owed
+SCRAPPER_PIPE_REDRAW_BLURRY_AT_ZOOM	built	none	msg	True	1.0	False	L2,L4	mod:FlowWorks	LOOKS CURRENT	owed
+SCRUB_BLOOM_FIX_ERUPTOR_FLEES_GROUNDED	built	none	no	False			L1			owed
+SCRUB_GENSTEP_FIX_TIDIES_THEN_QUITS	built	none	no	False			L1			owed
+SCRUB_PYRE_FIX_FIVE_FIRES_FIVE_ISLANDS	built	none	no	False			L1			owed
+SCRUB_SETTINGS_WIRE_MASTER_CANNOT_GREY	built	none	no	False			L2			owed
+SCRUB_WIND_BUILD_LEAN_ON_PURPOSE	validated	pass	item_path	True	1.0	False	L4			owed
+SEABED_FAUNA_SINGLE_SEEDER_1	built	none	no	False			L2	mod:DivingInteraction	LOOKS CURRENT	owed
+SEA_DIVE_FLOOR_TERRAIN_1	built	none	msg	True	0.95	False	L2,L2	game:seas	LOOKS CURRENT	owed
+SETTLEMENT_VERBS_WAVE_1	built	none	msg	True	0.66	True	L2,L2,L2,L2,L2,L2	mod:RimProperty	LOOKS CURRENT	owed
+SHADE_LESSONS_BUILD_WATCH_THE_HERD_CROSS	built	none	msg	True	0.99	False	L2	mod:LongShade	LOOKS CURRENT	owed
+SHADOW_SHEET_FIX_SHOWS_ONLY_THE_INSTALLED	built	none	msg	True	0.94	False	L2	pipeline:art-pipeline	CANNOT TELL	owed
+SHIELD_MODS_LEVERAGE_1	validated	pass	msg	True	0.78	True	GREEN-MIN,L2,L3	mod:ShipShields	LOOKS CURRENT	owed
+SHIPFALL_LADDER_FIX_STALE_ARRIVAL_WHILE_OFF	built	none	msg	True	1.0	False	L1	mod:LongShade	LOOKS CURRENT	owed
+SHIPVERMIN_FREE_TIER_BEASTS_1	validated	pass	msg	True	0.97	False	L2,L4	mod:ShipVermin	LOOKS CURRENT	owed
+SHIP_ALLOY_FORGE_1	built	pass	msg	True	0.72	True	L1,L4	mod:WreckedMachines	LOOKS CURRENT	owed
+SHIP_TOW_LINE_1	validated	pass	msg	True	0.98	False	L2	game:ship	LOOKS CURRENT	owed
+SHIP_VERMIN_FIRST_SCRIPT_1	validated	pass	no	False			GREEN-MIN	mod:ShipVermin	CANNOT TELL	owed
+SHOKK_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:Shokk	CANNOT TELL	owed
+SOLAR_MIRRORS_BUILD_1	validated	pass	msg	True	0.96	False	L2,L2,L2,L2,L2,L4	mod:SolarMirrors	LOOKS CURRENT	owed
+SPECIMEN_CABINET_DISPLAY_1	built	none	msg	True	1.0	False	L2	mod:DivingInteraction	LOOKS CURRENT	owed
+SPRINKLER_HEAD_FIX_FLOATS_OFF_CURVE	built	none	msg	True	0.94	False	L1,L1	mod:FlowWorks	LOOKS CURRENT	owed
+SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES	built	none	msg	True	1.0	False	L2			owed
+STILLSAND_CAVE_AS_PLACE_1	validated	pass	item_path	True	0.98	False	L2,L2,L3,L4			owed
+STILLSAND_DUNE_GALE_LIVE_1	built	fail	msg	False			L2,L2,L2,L2			fail,owed
+STILLSAND_EVENT_CREATURES_LIVE_1	built	fail	item_path	False			L2,L2,L2,L2,L2,L2			fail,owed
+STILLSAND_FIRST_SCRIPT_1	built	none	msg	True	0.9	False	GREEN-MIN			owed
+STILLSAND_GEOPHONE_1	validated	pass	item_path	True	0.9	False	L2,L3			owed
+STILLSAND_GLASS_CHAIN_REMAINDER_1	built	partial	msg	False			L2,L2,L2			fail,owed
+STILLSAND_PRECIOUS_CAVES_LIVE_1	validated	pass	item_path	True	0.98	False	L2,L2,L2,L2,L4			owed
+STILLSAND_ROOF_COVER_EXPOSURE_1	built	none	msg	True	0.88	False	L2			owed
+STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1	built	fail	msg	False			L2			fail,owed
+STILLSAND_SAND_SIEVE_CHORE_1	validated	pass	item_path	True	0.9	False	L2,L2,L3			owed
+STILLSAND_SAND_SWIM_REMAINDER_1	validated	pass	msg	True	0.9	False	L2,L2,L2,L2			owed
+STILLSAND_SKELETONS_REMAINDER_1	validated	pass	msg	True	0.46	True	L2,L2,L3			owed
+STILLSAND_SOLAR_STILL_1	built	none	item_path	True	0.9	False	L1,L2,L2,L2,L2			owed
+STILLSAND_SUN_LANCE_1	validated	pass	item_path	True	0.9	False	L2,L2,L3			owed
+SUMP_NOOTHELM_B_PLANT_1	built	none	msg	True	0.9	False	L1,L4	mod:TheSump	LOOKS CURRENT	owed
+SUMP_TAR_NASTINESS_1	validated	pass	msg	True	0.63	True	GREEN-MIN,L2,L2,L2,L2,L2	mod:TheSump	LOOKS CURRENT	owed
+SUMP_WALKWAYS_1	built	partial	msg	False			L2,L2,L2	mod:TheSump	LOOKS CURRENT	owed
+SURFACE_HOME_MAP_HELPER_1	built	partial	no	False			L1	game:seas	LOOKS CURRENT	owed
+TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO	validated	pass	msg	True	1.0	False	L2,L2	mod:SWBestiary	LOOKS CURRENT	owed
+TAR_BEAST_SETTINGS_CONSISTENCY_1	built	none	no	False			L2,L2	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+TECHPRINT_FACTION_GATING_1	built	none	msg	True	0.97	False	L1,L2	game:research-tree	LOOKS CURRENT	owed
+TERMINALBIOMES_REVIEW_FIXES_1	built	none	msg	True	0.31	True	L2,L2	mod:TerminalBiomes	CANNOT TELL	owed
+TERMINAL_BIOMES_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:TerminalBiomes	CANNOT TELL	owed
+TERMINAL_SETTINGS_CONSUMERS_WIRE_1	built	none	no	False			L2,L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+TETHER_PRODUCTION_REEL_PROOF_1	built	partial	no	False			L2	mod:CreatureBehaviors	LOOKS CURRENT	owed
+THE_BAZAAR_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN	mod:TheBazaar	CANNOT TELL	owed
+THE_FORGE_FIRST_SCRIPT_1	built	none	msg	True	0.94	False	GREEN-MIN,GREEN-MIN	mod:TheForge	CANNOT TELL	owed
+THE_ROT_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:TheRot	CANNOT TELL	owed
+THE_SUMP_FIRST_SCRIPT_1	validated	pass	item_path	True	0.79	True	GREEN-MIN,GREEN-MIN	mod:TheSump	CANNOT TELL	owed
+THING_LOOKUP_BUILD_OWNER_IS_NOT_PAINTER	built	none	item_path	True	0.98	False	L2,L2,L2,L2	pipeline:bridge	CANNOT TELL	owed
+THORNBUG_FEAR_SCOPE_1	built	none	no	False			L2	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+THROAT_CASK_ITEM_1	built	none	msg	True	0.98	False	L1,L1,L2,L2	mod:WasteRun	LOOKS CURRENT	owed
+TICKER_NEVER_FIRES_FIX_1	validated	pass	msg	True	0.94	False	L1	game:load-errors	CANNOT TELL	owed
+TILE_STRUCTURE_DESIGNS_1	built	none	msg	True	0.28	True	L2	game:dungeons-and-wreckage	CANNOT TELL	owed
+TIMBER_LEAF_DIAGNOSE_UP_AND_INVISIBLE	built	none	msg	True	0.9	False	L2	mod:FlowWorks	LOOKS CURRENT	owed
+TREE_GRAPHICS_OWNERSHIP_1	built	none	msg	True	0.18	True	L2,L3,L4	game:art-canon	LOOKS CURRENT	owed
+TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS	built	none	msg	True	1.0	False	L2,L2	mod:FlowWorks	CANNOT TELL	owed
+TWILIGHTSEA_FLORA_PASS_1	built	none	msg	True	0.86	False	L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+TWILIGHT_SEABED_WELLS_MISSING_1	built	none	no	False			L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+TWILIGHT_SEA_FIX_IT_RAINS_UNDERWATER	built	none	msg	True	0.88	False	L1,L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+TWILIGHT_WELL_AVOIDS_CURRENT_1	built	none	item_path	True	1.0	False	L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+TWILIGHT_WELL_LIGHT_STATE_1	built	none	msg	True	1.0	False	L2,L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+TWO_FRONT_BAIT_TARGETING_1	built	none	no	False			L2			owed
+UNPROVEN_LIVE_LEGS_TRIAGE_1	built	fail	msg	False			L2,L2			fail,owed
+UTINNI_DISCOVERY_ACHIEVEMENTS_1	built	none	msg	True	0.98	False	GREEN-MIN,L3,L4	mod:Atlas	LOOKS CURRENT	owed
+UTINNI_WORLDMAP_FLIGHT_ICON_1	validated	pass	msg	True	0.99	False	L3,L4	game:ship	LOOKS CURRENT	owed
+UVAK_WINGS_RESKIN_TO_CANON	built	none	no	False			L1	mod:SWBestiary	LOOKS CURRENT	owed
+VAULISK_LURE_REVEAL_TRIGGER_1	built	none	no	False			L2	mod:TerminalBiomes	LOOKS CURRENT	owed
+VAULT_DUNGEON_BUILD_1	built	none	msg	True	0.27	True	L2,L2,L4,L4	mod:StructureInjectionsRUT	LOOKS CURRENT	owed
+VAULT_THAW_QUEST_FAMILY_1	validated	pass	msg	True	0.44	True	L2,L2,L2,L2,L4	mod:StructureInjectionsRUT	LOOKS CURRENT	owed
+VEE_DEEP_ORES_MIGRATE_RICH_AND_POOR	built	none	no	False			L1,L2,L2,L2,L3	mod:DeepDrill	LOOKS CURRENT	owed
+VEE_FLORA_VENTS_BUILD_XML_FIRST	built	none	msg	True	0.98	False	L1,L2,L2,L3	mod:TileFeatures	LOOKS CURRENT	owed
+VEE_SOLAR_REWIRE_GEOMETRY_PAINTS_IT	built	none	item_path	True	0.28	True	L1,L2,L2	mod:SolarMirrors	LOOKS CURRENT	owed
+VERMIN_EAT_BREEDING_FOOD_1	validated	pass	msg	True	1.0	False	L2	mod:CreatureBehaviors	LOOKS CURRENT	owed
+VISITOR_DETECTORS_MEND_NAME_THE_STRANGER	validated	partial	item_path	False			L2,L2	pipeline:bridge	CANNOT TELL	owed
+WARBLING_GLOW_BASELINE_1	built	none	msg	True	1.0	False	L1	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+WARCASKET_FIRST_SCRIPT_1	validated	pass	msg	True	1.0	False	GREEN-MIN	mod:Warcasket	CANNOT TELL	owed
+WARCASKET_JUNKER_KINDS_BUILD_1	built	none	msg	True	0.96	False	L1,L1,L2,L2	mod:Warcasket	LOOKS CURRENT	owed
+WARCASKET_WASTE_RUN_REMAINDER_1	validated	pass	no	False			L2	mod:WasteRun	LOOKS CURRENT	owed
+WARDEN_MOTHER_LAND_RECOVERY_1	built	none	no	False			L2	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+WARSCAR_CHOTRIX_SIGNS_1	validated	pass	msg	True	0.95	False	L2,L4	mod:Scarlands	LOOKS CURRENT	owed
+WARSCAR_OLD_TONGUE_1	built	none	item_path	True	1.0	False	L2,L2,L2,L2,L2,L3,L3	mod:Scarlands	LOOKS CURRENT	owed
+WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1	built	none	msg	True	0.95	False	L2,L4	mod:Scarlands	LOOKS CURRENT	owed
+WARSCAR_RAINBOW_POOLS_1	validated	pass	no	False			L2,L2,L2,L4	mod:Scarlands	LOOKS CURRENT	owed
+WARSCAR_SHEET_DONOR_PORT_1	validated	pass	msg	True	0.95	False	L3	mod:Scarlands	LOOKS CURRENT	owed
+WARSCAR_TOTCHAK_WAKES_1	validated	pass	no	False			L2,L2,L2,L3	mod:Scarlands	LOOKS CURRENT	owed
+WARSCAR_TURRETS_TRACK_1	validated	pass	no	False			L2,L2	mod:Scarlands	LOOKS CURRENT	owed
+WARSCAR_VALIDATION_FIDELITY_1	built	none	no	False			L2	mod:Scarlands	LOOKS CURRENT	owed
+WAR_LAB_CRATER_HOOK_1	built	none	msg	True	0.8	False	L2,L2,L2,L2,L3,L4	mod:StructureInjectionsRUT	LOOKS CURRENT	owed
+WASTELAND_FIRST_SCRIPT_1	built	none	msg	True	0.94	False	GREEN-MIN,GREEN-MIN,GREEN-MIN	mod:Wastes	CANNOT TELL	owed
+WASTELAND_GPT_ENRICHMENT_1	validated	partial	msg	False			L2,L2	mod:Wastes	LOOKS CURRENT	owed
+WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1	built	fail	msg	False			L2,L2	mod:Wastes	CANNOT TELL	fail,owed
+WASTELAND_MECHANICS_BUILD_1	validated	fail	msg	False			L2,L2,L2			fail,owed
+WATER_LEDGER_DOUBLE_CHARGE_1	built	none	msg	True	0.99	False	L2			owed
+WAVE1_MODLIST_RETIRE_37_IN_ONE_LOAD	validated	pass	no	False			L2	game:dependencies	CANNOT TELL	owed
+WEBWORK_FIRST_SCRIPT_1	validated	pass	no	False			GREEN-MIN	mod:Webwork	CANNOT TELL	owed
+WEBWORK_TERRAIN_WEATHER_PASS_1	built	pass	msg	True	1.0	False	L4	mod:Webwork	LOOKS CURRENT	owed
+WEEPINGSTONES_CONDENSER_QUESTS_1	built	none	msg	True	0.93	False	L1,L2,L2,L2	mod:WeepingStones	LOOKS CURRENT	owed
+WEEPINGSTONES_NET_FLEEING_FLIER_1	built	none	no	False			L2	mod:WeepingStones	LOOKS CURRENT	owed
+WEEPINGSTONES_STOCK_JOB_LOOP_1	built	none	msg	True	0.77	True	GREEN-MIN,L2,L2	mod:WeepingStones	LOOKS CURRENT	owed
+WEEPING_STONES_FIRST_SCRIPT_1	built	none	msg	True	0.97	False	GREEN-MIN,GREEN-MIN	mod:WeepingStones	CANNOT TELL	owed
+WETBULB_FOLD_INTO_HEAT_1	validated	pass	msg	True	0.9	False	L2,L4	mod:EnvironmentalHazards	LOOKS CURRENT	owed
+WILDSTEAM_EGG_BOUNTY_FIRST_SCRIPT_1	built	none	no	False			GREEN-MIN,GREEN-MIN	mod:WildsteamEggBounty	CANNOT TELL	owed
+WORLD_BEAUTY_VERIFY_OFFLINE_BEAT_THE_GAME	built	none	msg	True	1.0	False	GREEN-FULL,GREEN-FULL	game:world-map	CANNOT TELL	owed
+WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE	built	fail	msg	False			L1	game:world-map	LOOKS CURRENT	fail,owed
+WORLD_FACES_REDRAW_ABYSS_ROT_RUST	validated	pass	no	False			L2	game:world-map	LOOKS CURRENT	owed
+WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS	validated	pass	no	False			L2	game:world-map	LOOKS CURRENT	owed
+WORLD_STARS_REPAIR_STILL_SPINNING_FOR_NOBODY	validated	pass	msg	True	0.8	False	L2	game:world-map	LOOKS CURRENT	owed
+WORN_DARKNESS_PROXY_POSITION_1	built	none	no	False			L2	mod:LuminousPigment	LOOKS CURRENT	owed
+WOUNDLINK_INJURY_IDENTITY_1	built	none	no	False			L2	mod:CreatureBehaviors	LOOKS CURRENT	owed
+WYYYSCHOKK_FANG_PENDANT_1	validated	pass	msg	True	0.93	False	GREEN-MIN,L2,L2,L2,L3	mod:TrophyCraft	LOOKS CURRENT	owed
+ZRRIK_VAMPIRIC_STAB_REBUILD_OWN_BLOODLUST	built	none	msg	True	1.0	False	L1,L1	mod:CreatureBehaviors	LOOKS CURRENT	owed
+ZUURRIK_GROWTH_BY_FEEDING_1	built	none	no	False			L2,L2			owed
