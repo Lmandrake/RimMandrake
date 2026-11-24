@@ -252,10 +252,28 @@ def t_the_disk_reads_overlap():
     check(calls == [{"cached_sizes": True}], "the-disk-reads-overlap: the pool is read with its recent sizes (%s)" % calls)
 
 
+def _shard_test(fn, promise, *a):
+    """Run one function of selftest_seat_dirt_ledger_append and take its fails as this promise's."""
+    import selftest_seat_dirt_ledger_append as S
+    S.FAILS.clear()
+    getattr(S, fn)(*a)
+    check(not S.FAILS, "%s: %s%s" % (promise, fn, (" %s" % S.FAILS) if S.FAILS else ""))
+
+
+def t_the_tidy_lands_a_shards_lines_never_the_whole_shard():
+    _shard_test("race", "the-tidy-lands-a-shards-lines-never-the-whole-shard", "exit 0")
+    _shard_test("race", "the-tidy-lands-a-shards-lines-never-the-whole-shard",
+                "echo 'pre-push REFUSED (ledger_lint) on x: NOT_APPEND' >&2; exit 1")
+
+
+def t_a_ring_names_its_paths():
+    _shard_test("names", "a-ring-names-its-paths")
+
+
 def main():
     for t in (t_the_disk_sense_starts_no_fetch_and_no_landing, t_the_seat_tidy_runs_in_its_own_unit,
               t_a_safe_path_the_tidy_left_counts_as_dirt, t_a_closed_items_leftover_copy_is_removed_not_landed,
-              t_the_disk_reads_overlap):
+              t_the_disk_reads_overlap, t_the_tidy_lands_a_shards_lines_never_the_whole_shard, t_a_ring_names_its_paths):
         try:
             t()
         except (Exception, SystemExit) as e:  # noqa: BLE001  a test that raises (argparse exits) is a red, named

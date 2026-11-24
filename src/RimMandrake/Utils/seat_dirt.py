@@ -33,6 +33,8 @@ reading (RIMMANDRAKE_UNBLIND_OPS_DISK_FAMILY_TWENTY_OVERRUNS_STRAIGHT, 11:02-16:
     seat_dirt.py tidy --all --apply          the same for every clone (clones()); exit 1 when any clone's tidy failed
 """
 import argparse
+import contextlib
+import io
 import json
 import os
 import re
@@ -159,21 +161,6 @@ def ledger_tail(clone, st, path):
     return tail if (not tail or tail.endswith(b"\n")) else None
 
 
-def merged_ledger(clone, st, path, ref="origin/main"):
-    """-> origin's copy of the shard plus the clone's appended lines that origin does not hold yet (bytes), or None when
-    the shard is not an append over HEAD. Origin's lines are kept whole: only the clone's own lines are added."""
-    tail = ledger_tail(clone, st, path)
-    if tail is None:
-        return None
-    r = subprocess.run(["git", "-C", clone, "cat-file", "blob", "%s:%s" % (ref, path)], capture_output=True, timeout=60)
-    base = r.stdout if r.returncode == 0 else b""
-    if base and not base.endswith(b"\n"):
-        return None
-    have = set(base.splitlines())
-    new = [ln for ln in tail.splitlines(True) if ln.rstrip(b"\n") not in have]
-    return base + b"".join(new)
-
-
 def closed_copy(clone, path, ref="origin/main"):
     """For an items/<ID>.md path: "same" when origin holds items/closed/<ID>.md with these exact bytes, "differs" when it
     holds that file with other bytes, None when origin has no closed prose for the item. A closed item's prose never
@@ -190,18 +177,6 @@ def closed_copy(clone, path, ref="origin/main"):
             return "same" if f.read() == r.stdout else "differs"
     except OSError:
         return "differs"
-
-
-def p_ok(clone, path, own):
-    """True when the land already realigned this shard to origin (its tree copy equals origin's tip and holds every line
-    of `own`): nothing to restore. False otherwise: put the clone's own bytes back."""
-    try:
-        with open(os.path.join(clone, path), "rb") as f:
-            cur = f.read()
-    except OSError:
-        return False
-    o = subprocess.run(["git", "-C", clone, "cat-file", "blob", "origin/main:" + path], capture_output=True, timeout=60)
-    return o.returncode == 0 and cur == o.stdout and set(own.splitlines()) <= set(cur.splitlines())
 
 
 def clones(seat=None, role_root=None):
@@ -290,8 +265,8 @@ def reading(clone=SEAT_CLONE, now=None):
 
 
 def tidy(clone=SEAT_CLONE, now=None, land=LAND, settle_min=SETTLE_MIN, fetch_timeout=120):
-    """Land the safe classes in one land.sh -m commit (a temp index from origin/main: the clone's index, HEAD and a
-    peer's edits are never touched). -> "PUBLISHED <sha>" | "nothing to land" | "not landed: fetch past ..." | raises RuntimeError on a refusal."""
+    """Land the safe classes: a ledger shard's appended lines with publish.land_ledger, the rest in one land.sh -m commit
+    (a temp index from origin/main: the clone's index, HEAD and a peer's edits are never touched). -> "PUBLISHED <sha>" | "nothing to land" | "not landed: fetch past ..." | raises RuntimeError on a refusal."""
     if not dirty(clone):   # a clean clone has nothing to classify, so it costs no network
         return "nothing to land"
     try:   # classify against the origin land.sh will build on
@@ -314,36 +289,28 @@ def tidy(clone=SEAT_CLONE, now=None, land=LAND, settle_min=SETTLE_MIN, fetch_tim
     msg = ("seat_dirt: land %d safe path(s) left in the %s (conversation records, appended ledger lines, filed item prose, "
            "settled concept folders)\n\n"
            "RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR (seat_dirt.py tidy)." % (len(paths), where))
-    swapped = {}     # ledger shard -> the clone's own bytes: the land sees origin's lines plus the clone's, never less
-    for q in paths:
-        if LEDGER_SHARD_RE.match(q):
-            full = os.path.join(clone, q)
-            st = dict((pp, s_) for s_, pp in dirty(clone)).get(q, " M")
-            m = merged_ledger(clone, st, q)
-            if m is None:
-                continue
-            with open(full, "rb") as f:
-                swapped[q] = f.read()
-            tmp = full + ".tidy"
-            with open(tmp, "wb") as f:
-                f.write(m)
-            os.replace(tmp, full)
-    try:
-        p = subprocess.run(["sh", land, "-m", msg] + paths, cwd=clone, capture_output=True, text=True, timeout=600,
+    said_paths = []
+    shards = [q for q in paths if LEDGER_SHARD_RE.match(q)]
+    rest = [q for q in paths if q not in shards]
+    if shards:
+        # Lines, rebuilt on the newest origin at each try. A shard landed as a whole file dropped every line that origin
+        # gained between this tidy's fetch and land.sh's own (RELAPSE_WORK_BELT_FIX_DIED_TWICE).
+        if HERE not in sys.path:
+            sys.path.insert(0, HERE)
+        import publish
+        with contextlib.redirect_stdout(io.StringIO()):
+            sha = publish.land_ledger(clone, shards, msg + "\n")
+        if not sha:
+            raise RuntimeError("the ledger lines did not land (publish.land_ledger gave no sha): %s" % " ".join(shards))
+        said_paths.append("PUBLISHED %s" % sha)
+    if rest:
+        p = subprocess.run(["sh", land, "-m", msg] + rest, cwd=clone, capture_output=True, text=True, timeout=600,
                            env=dict(os.environ, LAND_REPO=clone))
-    finally:
-        for q, own in swapped.items():       # a refused or failed land leaves the clone's own copy as it was
-            full = os.path.join(clone, q)
-            if p_ok(clone, q, own):
-                continue
-            with open(full + ".tidy", "wb") as f:
-                f.write(own)
-            os.replace(full + ".tidy", full)
-    if p.returncode == 0:
-        return said + (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
-    if "nothing to land" in p.stderr:
-        return said + "nothing to land"
-    raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-400:]))
+        if p.returncode == 0:
+            said_paths.append((p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1])
+        elif "nothing to land" not in p.stderr:
+            raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-400:]))
+    return said + ("; ".join(said_paths) or "nothing to land")
 
 
 def main(argv=None):

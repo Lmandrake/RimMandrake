@@ -752,9 +752,12 @@ def land_ledger(top, named, msg):
             _level_if_free(top)
             return tip
         err = (r.stderr or r.stdout).strip()
-        if re.search(r"^pre-push REFUSED", err, re.M):
+        # origin moved since this try's fetch: the failure is the race, whatever words it took (git's "[remote rejected]
+        # cannot lock ref", or the lint's NOT_APPEND against the newer tip). A verdict on the lines repeats on the next try.
+        moved = ref_exists(top, track) and out(top, "rev-parse", track) != up
+        if not moved and re.search(r"^pre-push REFUSED", err, re.M):
             raise Refuse("push refused by the pre-push hook (nothing pushed):\n%s" % err)
-        if not re.search(r"non-fast-forward|fetch first|\[rejected\]|failed to update ref", err):
+        if not moved and not re.search(r"non-fast-forward|fetch first|\[rejected\]|failed to update ref", err):
             return None                                  # the ordinary route retries it and names the cause
         time.sleep(0.5 * (attempt + 1))
     return None

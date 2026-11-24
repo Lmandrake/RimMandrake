@@ -49,5 +49,12 @@ a test of its name in `src/RimMandrake/Utils/selftest_disk_sense.py`.
   same time, and the seat_dirt reading reads its clones at the same time. The family's wall time is then the slowest
   read, not the sum. In series the reads took 21 to 29 s at load 45 on 2026-11-22. The pool is read with
   `cached_sizes=True` (the clone pool page's `the-sense-reading-walks-few-clones-a-pass`).
+- **the-tidy-lands-a-shards-lines-never-the-whole-shard.** The tidy lands a ledger shard's appended lines with
+  `publish.land_ledger`, which rebuilds them on the newest origin at each try. A line that a peer lands during the
+  tidy's push stays on origin, and the clone's line lands once. A push that fails while origin moved is tried again,
+  also when the pre-push lint is what refused it. A refusal with origin unmoved fails the tidy with the hook's words,
+  and the clone keeps its line. (Landed as a whole file, 6 of 32 tidies were refused on 2026-11-23 and 24.)
+- **a-ring-names-its-paths.** The filing of a `disk.seat_dirt` ring names the first path in its title. Each path that
+  the title does not name, and each path that joins later, is told in a note on the ring's item.
 
 Later lists beside this page: `polish.md`.
