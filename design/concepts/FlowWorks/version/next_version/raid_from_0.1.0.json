@@ -1,0 +1,937 @@
+{
+ "moved_on": "2026-11-23",
+ "by": "owner, typed 2026-11-23 about 11:05 PM PST (OWNER:1795504867390195471): 'Can we move the raid item in Flowworks into the next version and handle it then, so FlowWorks can pass otherwise now?'",
+ "from": "FlowWorks 0.1.0 (tree.json, record.json, scenes.json, version/test_table.json, version/exercises.json)",
+ "undo": "put `tree_leaves_whole`, `as_they_stood` (tree leaves and inventory row), `inventory`, `scenes`, `showcases`, `coverage_rest_added_in_0.1.0` (remove them), `tests`, `bars` and `exercises` back into the 0.1.0 files, drop the bar moat_drains_and_burns and its scenes entries, `maturation.py lock-bars FlowWorks --add/--remove` with a source, re-pin bars.md",
+ "tree_leaves_whole": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "per step: swim state and rest drop, moat litres fall to the drain, raiders' paths out refused, prisoner status after capture, chemfuel litres leave the tank into the moat, fire on moat cells; capture sequence for him",
+   "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "cannot_show": null,
+   "wall_expect_h": 2,
+   "id": "moat_raid_sequence",
+   "root": [
+    "deep_water_pawn_swims",
+    "sluice_gate_state_legible",
+    "pit_trapped_reads_as_trapped",
+    "canal_burning_reads_as_burning_liquid"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player defending a fortress watches the whole moat sequence at play zoom: raiders swim a deep water moat under a raised drawbridge and tire; the sluice opens and the moat drains fast; the raiders are held in the pit, cannot climb out, and are taken as prisoners from the rim; then chemfuel is pumped in from above and lit, and the moat burns. It must not read as raiders walking across, a moat that empties by magic, or fire that is not the liquid.",
+   "scenario": "The flagship map: fortress, one deep D4 water moat fed from a pond, a raised drawbridge, a sluice to a drain pit, a chemfuel tank and pump at the rim; a raid of 6 arrives; the player opens the sluice, captures two, pumps chemfuel and tosses a flame.",
+   "false_pass": [
+    "the raid is spawned already in the drained pit",
+    "chemfuel is spawned in the moat, not pumped",
+    "the fire is lit by dev tool, not by the order"
+   ],
+   "red": "the raiders walk across the moat bed, or climb out once it is drained",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: the moat sequence capture, played at play zoom",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "raider job sequence: chop, carry, ladder placed into the pit, climb down to a fallen; under fire, retreat with fallen left; capture",
+   "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "raiders_fetch_their_fallen",
+   "root": [
+    "pit_trapped_reads_as_trapped",
+    "portable_ladder_leans_on_its_wall"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player whose pit trap has caught two raiders watches the rest chop wood, make a ladder and go down for their fallen; when the defenders drive them off they retreat and leave the fallen behind.",
+   "scenario": "A covered spiked pit on a passage to the door, saplings beside it, defenders across the pit; a raid of 6.",
+   "false_pass": [
+    "raiders cross the trench with the ladder instead of fetching anyone",
+    "raiders retreat without trying"
+   ],
+   "red": "raiders whose comrades fell ignore them and attack the door",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no",
+   "by": "concept"
+  }
+ ],
+ "as_they_stood": {
+  "tree_leaves": [
+   {
+    "bundle": null,
+    "scenario_informed_by": [],
+    "needs_instrument": null,
+    "oracle_proposed": "cover value read for the trench pawn; raider shelter cells never in the D4 pit; capture of the cover indicator",
+    "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+    "cannot_show": null,
+    "wall_expect_h": null,
+    "id": "trench_gives_cover",
+    "root": [
+     "trench_wall_cover_shown",
+     "raiders_never_shelter_in_a_cage"
+    ],
+    "leaf_kind": "experience",
+    "clause_kind": "change",
+    "experience": "The player sees a pawn in a dug trench covered by the higher ground beside it, like a sandbag, and shown as covered; raiders shelter only in trenches they can climb out of, never in a cage-like pit.",
+    "scenario": "A D2 trench and a D4 pit both near a raid's path; a colonist in the trench under fire; raiders pick shelter.",
+    "false_pass": [
+     "the cover number changes but no cover is shown",
+     "raiders hide in the D4 pit"
+    ],
+    "red": "a pawn in the trench takes hits as though standing in the open",
+    "tier_proposed": "quicktest",
+    "owner_part": "no",
+    "by": "concept"
+   },
+   {
+    "bundle": null,
+    "scenario_informed_by": [],
+    "needs_instrument": null,
+    "oracle_proposed": "drawbridge state per tick, raider paths refused while raised, winch destroyed then drawbridge lowered, raiders leave; capture",
+    "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+    "cannot_show": null,
+    "wall_expect_h": null,
+    "id": "island_bridges_trap_and_fail",
+    "root": [
+     "suspension_bridge_reads_hung"
+    ],
+    "leaf_kind": "experience",
+    "clause_kind": "change",
+    "experience": "The player watches raiders walking a long bridge between islands get trapped on the span when both drawbridges rise; they reach a winch and destroy it, the drawbridge falls back and they escape; the defence still counts as a success.",
+    "scenario": "Two islands joined by a long bridge with a drawbridge at each end and a winch at each; a raid of 6 on the span; both raised.",
+    "false_pass": [
+     "the raiders are stuck because pathing breaks, not because the bridges are up",
+     "the winch dies and nothing falls"
+    ],
+    "red": "destroying the winch leaves the drawbridge up, or the raiders walk off a raised drawbridge",
+    "tier_proposed": "live_minimal",
+    "owner_part": "no",
+    "by": "concept"
+   }
+  ],
+  "inventory": [
+   {
+    "id": "inv_trench_cover",
+    "what": "Dug ground gives cover: a pawn in a hole is covered by higher neighbouring ground like a sandbag; raiders shelter only where they can climb out",
+    "impl": "present",
+    "impl_evidence": [
+     "src/RimMandrake/FlowWorks/Source/RM_TrenchCover.cs",
+     "src/RimMandrake/FlowWorks/Source/RM_TrenchCoverMath.cs"
+    ],
+    "proof": "stale",
+    "scope": "approved",
+    "source": [
+     "design/validation_walks/RimMandrake/FlowWorks.md"
+    ],
+    "speaker": "agent",
+    "proof_evidence": [
+     "src/RimMandrake/FlowWorks/northstar/trench_cover_proof.py",
+     "src/RimMandrake/FlowWorks/northstar/raid_trench_proof.py"
+    ],
+    "note": "live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+   }
+  ]
+ },
+ "tree_leaves_split_raider_half": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "raider shelter cells never in the D4 pit",
+   "tier_reason": "only raiders choose where raiders shelter: a raid in a played map",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "raiders_shelter_only_where_they_can_climb_out",
+   "root": [
+    "raiders_never_shelter_in_a_cage"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees raiders shelter only in trenches they can climb out of, never in a cage-like pit.",
+   "scenario": "A D2 trench and a D4 pit both near a raid's path; raiders pick shelter.",
+   "false_pass": [
+    "raiders hide in the D4 pit"
+   ],
+   "red": "a raider shelters in the D4 pit",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "drawbridge state per tick, raider paths refused while raised, winch destroyed then drawbridge lowered, raiders leave; capture",
+   "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "raiders_break_a_winch_and_escape",
+   "root": [
+    "suspension_bridge_reads_hung"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player watches raiders walking a long bridge between islands get trapped on the span when both drawbridges rise; they reach a winch and destroy it, the drawbridge falls back and they escape; the defence still counts as a success.",
+   "scenario": "Two islands joined by a long bridge with a drawbridge at each end and a winch at each; a raid of 6 on the span; both raised.",
+   "false_pass": [
+    "the raiders are stuck because pathing breaks, not because the bridges are up",
+    "the winch dies and nothing falls"
+   ],
+   "red": "destroying the winch leaves the drawbridge up, or the raiders walk off a raised drawbridge",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no",
+   "by": "concept"
+  }
+ ],
+ "inventory": [
+  {
+   "id": "inv_raider_fetch_fallen",
+   "what": "Raiders whose comrades fell into a pit chop wood, make a ladder and go down for them; driven off, they retreat and leave the fallen",
+   "text": "Raiders fetch their fallen from a pit with a chopped-wood ladder, and give up under fire",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs (crossing only, line 488) and RM_PitAccess (colonists only): no raider rescue of fallen comrades found",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": [
+    "OWNER:1793794392567351532"
+   ],
+   "source": [
+    "OWNER:1793794392567351532",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs:488"
+   ],
+   "speaker": "agent"
+  }
+ ],
+ "scenes": [
+  {
+   "id": "sc_trench_cover",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_trench_cover",
+   "start": [
+    "a D2 trench and a D4 pit beside a raid path, a colonist in the trench (asserted)"
+   ],
+   "action": "a raid of 4 arrives and fires",
+   "expect": "the trench pawn is covered and shown so; no raider shelters in the pit",
+   "control": {
+    "case": "the same colonist on open ground",
+    "expect": "no cover",
+    "rules_out": "cover granted by a flag rather than the higher neighbour"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "trench_gives_cover"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_moat_raid",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_moat_raid",
+   "start": [
+    "the flagship fortress map: D4 (4 m) water moat, four squares wide, its water a metre below the rim, drawbridge raised, sluice shut to a dry drain pit, chemfuel tank and pump at the rim (each asserted)",
+    "a raid of 6 at the map edge"
+   ],
+   "action": "the raiders swim; open the sluice while they swim (game time runs on); capture two from the rim; pump chemfuel; order toss a flame",
+   "expect": "swim and tire, drain fast, held and captured, chemfuel pumped from the tank, moat burns",
+   "control": {
+    "case": "the same raid with the drawbridge lowered",
+    "expect": "the raiders walk over the bridge and never swim",
+    "rules_out": "the raiders swimming because of a forced path rather than the raised drawbridge"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "owner_review",
+   "requirement": [
+    "moat_raid_sequence"
+   ],
+   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+  },
+  {
+   "id": "sc_fetch_fallen",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_fetch_fallen",
+   "start": [
+    "a covered spiked pit on the passage, saplings beside it, defenders across (asserted)",
+    "a raid of 6"
+   ],
+   "action": "two fall; the rest act; defenders fire",
+   "expect": "chop, ladder into the pit, climb down to a fallen; retreat under fire",
+   "control": {
+    "case": "the same raid with no one fallen",
+    "expect": "no ladder goes into the pit",
+    "rules_out": "the crossing-ladder raid mistaken for a rescue"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "raiders_fetch_their_fallen"
+   ],
+   "entry_point_item": "FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN"
+  },
+  {
+   "id": "sc_islands",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_islands",
+   "start": [
+    "two islands, a long bridge, a drawbridge and winch at each end (asserted lowered)",
+    "a raid of 6 on the span"
+   ],
+   "action": "raise both drawbridges; let the raiders act",
+   "expect": "trapped, a winch destroyed, that drawbridge falls, they escape",
+   "control": {
+    "case": "the winches made indestructible",
+    "expect": "the raiders stay trapped",
+    "rules_out": "pathing failure rather than the raised drawbridges"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "owner_review",
+   "requirement": [
+    "island_bridges_trap_and_fail"
+   ],
+   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+  },
+  {
+   "id": "sc_pit_trap_raid",
+   "kind": "interaction",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_pit_trap_raid",
+   "start": [
+    "his pit-trap passage: covered spiked pit before the door, saplings, defenders across with bows (asserted)",
+    "a raid of 6"
+   ],
+   "action": "the raid runs; defenders fire; capture the fallen from the rim",
+   "expect": "two fall onto spikes, the rest try a ladder under arrows, are driven off, the fallen become prisoners in the pit",
+   "control": {
+    "case": "the cover left off (an open pit)",
+    "expect": "the raiders path round it and no one falls",
+    "rules_out": "falls caused by spawning raiders on the pit"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "owner_review",
+   "features": [
+    "covered_pit_springs",
+    "raiders_fetch_their_fallen",
+    "drained_hole_is_a_prison",
+    "trench_gives_cover"
+   ],
+   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+  }
+ ],
+ "showcases": [
+  {
+   "id": "pit_trap",
+   "scenes": [
+    "sc_pit_trap_raid",
+    "sc_fetch_fallen"
+   ],
+   "exercises": [
+    "inv_pit_access",
+    "inv_raider_fetch_fallen",
+    "inv_trench_cover",
+    "inv_pits",
+    "inv_prison_no_bed"
+   ],
+   "source": [
+    "OWNER:1793794392567351532"
+   ],
+   "decision": "d_scene_pittrap",
+   "overlap_why": {
+    "inv_pits": "his scene is a covered pit trap: the pit is the stage the rescue ladder goes into",
+    "inv_prison_no_bed": "his scene ends with the fallen as prisoners in the pit; capture is how the raid ends"
+   }
+  }
+ ],
+ "showcase_moat_scenes_as_they_stood": [
+  "sc_moat_raid",
+  "sc_hole_prison",
+  "sc_toss_flame",
+  "sc_sluice"
+ ],
+ "coverage_rest_added_in_0.1.0": [
+  {
+   "capability": "inv_pit_access",
+   "by": [
+    "sc_ways_out",
+    "ways_in_and_out"
+   ],
+   "why": "the pit_trap showcase left 0.1.0 for 0.2.0 (a raid, by his word 2026-11-23); ladders, climbing gear and jumps are checked by their own scene"
+  },
+  {
+   "capability": "inv_trench_cover",
+   "by": [
+    "sc_trench_cover_pawns",
+    "trench_gives_cover"
+   ],
+   "why": "the pit_trap showcase left 0.1.0 for 0.2.0 (a raid, by his word 2026-11-23); two placed shooters check the cover"
+  }
+ ],
+ "tests": {
+  "sc_moat_raid": {
+   "id": "sc_moat_raid",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_moat_raid",
+   "observes": "swim and tire, drain fast, held and captured, chemfuel pumped from the tank, moat burns",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_moat_raid --out <json>  (bridge held; minimal list + FlowWorks)",
+   "why_game": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "stages_raid": "six raiders under an assault lord at a moat",
+   "cheaper_why": "only raiders decide that raiders choose to swim, are held by the drained moat, are taken from the rim as enemies, and stab no warden; sc_moat_walkers, sc_hole_prison, sc_sluice and sc_toss_flame decide every other part with no raid",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
+  },
+  "sc_trench_cover": {
+   "id": "sc_trench_cover",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_trench_cover",
+   "observes": "the trench pawn is covered and shown so; no raider shelters in the pit",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_trench_cover --out <json>  (bridge held; minimal list + FlowWorks)",
+   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "stages_raid": "a raid of about four at a trench and a pit",
+   "cheaper_why": "only raiders choose where raiders shelter (row TR_no_raider_shelters_in_pit); sc_trench_cover_pawns decides the cover rows with placed shooters",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
+  },
+  "sc_islands": {
+   "id": "sc_islands",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_islands",
+   "observes": "trapped, a winch destroyed, that drawbridge falls, they escape",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_islands --out <json>  (bridge held; minimal list + FlowWorks)",
+   "why_game": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "stages_raid": "six sappers under an assault lord on a span",
+   "cheaper_why": "only raiders decide that raiders go for a winch and break it; sc_islands_walker decides the trap, the dropped leaf and the way off with one ordered colonist",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
+  },
+  "sc_pit_trap_raid": {
+   "id": "sc_pit_trap_raid",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_pit_trap_raid",
+   "observes": "two fall onto spikes, the rest try a ladder under arrows, are driven off, the fallen become prisoners in the pit",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_pit_trap_raid --out <json>  (bridge held; minimal list + FlowWorks)",
+   "why_game": "an interaction scene of a showcase (scenes.json kind interaction): a raid or a season of play runs only in a played map",
+   "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "stages_raid": "a raid of 700 points through a pit trap",
+   "cheaper_why": "it supports bars and decides none alone; the ladder attempt and the retreat under fire are what raiders choose",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
+  },
+  "sc_fetch_fallen": {
+   "id": "sc_fetch_fallen",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_fetch_fallen",
+   "observes": "chop, ladder into the pit, climb down to a fallen; retreat under fire",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_fetch_fallen --out <json>  (bridge held; minimal list + FlowWorks)",
+   "why_game": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "owed_under": "FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "stages_raid": "a raid of 700 points through a covered spiked pit",
+   "cheaper_why": "the bar is that raiders fetch their fallen with a ladder and give up under fire: a choice of raiders, which no ordered pawn can make",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
+  }
+ },
+ "bars": [
+  {
+   "id": "inv_trench_cover",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_TRENCH",
+    "sc_trench_cover",
+    "sc_trench_cover_pawns"
+   ],
+   "supports": [
+    "sc_pit_trap_raid",
+    "T_TRENCH_COVER_CSHARP_OFFLINE"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_TRENCH"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "inv_raider_fetch_fallen",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_FETCH_FALLEN_OFFLINE",
+    "sc_fetch_fallen"
+   ],
+   "supports": [
+    "sc_pit_trap_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_FETCH_FALLEN_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "trench_gives_cover",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_TRENCH",
+    "sc_trench_cover",
+    "sc_trench_cover_pawns"
+   ],
+   "supports": [
+    "sc_pit_trap_raid",
+    "T_TRENCH_COVER_CSHARP_OFFLINE"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_TRENCH"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "moat_raid_sequence",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "sc_moat_raid",
+    "sc_moat_walkers",
+    "sc_hole_prison",
+    "sc_sluice",
+    "sc_toss_flame"
+   ],
+   "supports": [
+    "T_SWIM",
+    "PY_SWIM_SHORE_REACH",
+    "T_DOORS",
+    "PY_FW_GATE_LIFT",
+    "T_PRISON",
+    "T_FIRE",
+    "PY_FLOWWORKS_FUEL_MOAT",
+    "T_BRIDGES",
+    "PY_FLOWWORKS_DRAWBRIDGE_POSE",
+    "PY_FLOWWORKS_SUSPENSION_LINKED",
+    "LOOK_STAGE8"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "raiders_fetch_their_fallen",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_FETCH_FALLEN_OFFLINE",
+    "sc_fetch_fallen"
+   ],
+   "supports": [
+    "sc_pit_trap_raid"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_FETCH_FALLEN_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "island_bridges_trap_and_fail",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "T_BRIDGES",
+    "PY_FLOWWORKS_DRAWBRIDGE_POSE",
+    "PY_FLOWWORKS_SUSPENSION_LINKED",
+    "sc_islands",
+    "sc_islands_walker"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_BRIDGES",
+    "PY_FLOWWORKS_DRAWBRIDGE_POSE",
+    "PY_FLOWWORKS_SUSPENSION_LINKED"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
+  }
+ ],
+ "bars_they_supported": {
+  "inv_dig_depth": [
+   "sc_moat_raid"
+  ],
+  "inv_flow_level": [
+   "sc_moat_raid"
+  ],
+  "inv_stock": [
+   "sc_moat_raid"
+  ],
+  "inv_liquid_roster": [
+   "sc_moat_raid"
+  ],
+  "inv_fire": [
+   "sc_moat_raid"
+  ],
+  "inv_pits": [
+   "sc_moat_raid",
+   "sc_pit_trap_raid"
+  ],
+  "inv_pit_access": [
+   "sc_pit_trap_raid"
+  ],
+  "inv_doors": [
+   "sc_moat_raid"
+  ],
+  "inv_bridges": [
+   "sc_moat_raid",
+   "sc_islands"
+  ],
+  "inv_trench_cover": [
+   "sc_pit_trap_raid"
+  ],
+  "inv_swim": [
+   "sc_moat_raid"
+  ],
+  "inv_liquid_net": [
+   "sc_moat_raid"
+  ],
+  "inv_prison_no_bed": [
+   "sc_moat_raid",
+   "sc_pit_trap_raid"
+  ],
+  "inv_toss_flame": [
+   "sc_moat_raid"
+  ],
+  "inv_raider_fetch_fallen": [
+   "sc_pit_trap_raid"
+  ],
+  "covered_pit_springs": [
+   "sc_pit_trap_raid"
+  ],
+  "sluice_drains_on_command": [
+   "sc_moat_raid"
+  ],
+  "trench_gives_cover": [
+   "sc_pit_trap_raid"
+  ],
+  "drained_hole_is_a_prison": [
+   "sc_moat_raid"
+  ],
+  "toss_flame_from_rim": [
+   "sc_moat_raid"
+  ],
+  "raiders_fetch_their_fallen": [
+   "sc_pit_trap_raid"
+  ]
+ },
+ "exercises": {
+  "checks": {
+   "sc_moat_raid": [
+    "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorks_DefOf.cs",
+    "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs",
+    "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_ExcavationDepth.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_DigDepthMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_TerrainWriteBudget.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_EngineSwitch.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_RelativeRulesMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LevelSolve.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LevellingMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LevelPour.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LevelRunWalk.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidStock.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_Volume.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidBody.cs",
+    "src/RimMandrake/FlowWorks/Source/FluidDef.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_FluidIdentity.cs",
+    "src/RimMandrake/FlowWorks/Source/Flood_FlowWorks.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_FloodReleaseMath.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/LiquidDef.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidProperties.cs",
+    "src/RimMandrake/FlowWorks/Source/Swimming/",
+    "src/RimMandrake/FlowWorks/Source/RM_SwimMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_WetCostMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_PromotionProofs.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_FlowDoors.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_FlowDoorFacingMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNet.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidNetKernel.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/LiquidJoinRule.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidJoins.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidPipeAdapter.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/PipeLook.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LineCrossing.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LineCrossingMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_Levelling.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidTransfer.cs",
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_MachinerySettings.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidPump.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidTank.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidTankUtility.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_PumpMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_FireMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_FuelFireMath.cs",
+    "src/RimMandrake/FlowWorks/Source/LiquidTypes/LiquidIgnition.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitScorch.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Drawbridge/",
+    "src/RimMandrake/FlowWorks/Source/RM_DrawbridgeMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Suspension/",
+    "src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_SpanMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Building_SpanDeck.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrenchMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_Patch_SuperdeepShooting.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PocketGrid.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_PocketGridMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitStepCost.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimb.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimbMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_WallReachMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderUtility.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderParity.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderParityMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderWallMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_FallRailMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_FallRails.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_TossFlame.cs"
+   ],
+   "sc_trench_cover": [
+    "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorks_DefOf.cs",
+    "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs",
+    "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_ExcavationDepth.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_DigDepthMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_TerrainWriteBudget.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_EngineSwitch.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_RelativeRulesMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrenchMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_Patch_SuperdeepShooting.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_TrenchCover.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_TrenchCoverMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_TrenchStride.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_TrenchStrideMath.cs"
+   ],
+   "sc_islands": [
+    "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorks_DefOf.cs",
+    "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs",
+    "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_ExcavationDepth.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_DigDepthMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_TerrainWriteBudget.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_EngineSwitch.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_RelativeRulesMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Drawbridge/",
+    "src/RimMandrake/FlowWorks/Source/RM_DrawbridgeMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Suspension/",
+    "src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_SpanMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Building_SpanDeck.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PocketGrid.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_PocketGridMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitStepCost.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimb.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimbMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_WallReachMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderUtility.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderParity.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderParityMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderWallMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_FallRailMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_FallRails.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrenchMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_Patch_SuperdeepShooting.cs"
+   ],
+   "sc_pit_trap_raid": [
+    "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorks_DefOf.cs",
+    "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs",
+    "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_ExcavationDepth.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_DigDepthMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_TerrainWriteBudget.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_EngineSwitch.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_RelativeRulesMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/RM_PitCoverBeneath.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/RM_PitCoverBeneathMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/RM_PitCoverLookMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Trigger/",
+    "src/RimMandrake/FlowWorks/Source/Pits/TerrainMimic/",
+    "src/RimMandrake/FlowWorks/Source/RM_PitTrapMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_PromotionProofs.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_Spikes.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SpikeDrawMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SpikeStakes.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPrisonCare.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PocketGrid.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_PocketGridMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitStepCost.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimb.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimbMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_WallReachMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderUtility.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderParity.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderParityMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderWallMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_FallRailMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_FallRails.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrenchMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_Patch_SuperdeepShooting.cs"
+   ],
+   "sc_fetch_fallen": [
+    "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorks_DefOf.cs",
+    "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlowWorksTools.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_NorthstarProofs.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_ExcavationDepth.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_DigDepthMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_TerrainWriteBudget.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_EngineSwitch.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_RelativeRulesMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/RM_PitCoverBeneath.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/RM_PitCoverBeneathMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/RM_PitCoverLookMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Pits/Trigger/",
+    "src/RimMandrake/FlowWorks/Source/Pits/TerrainMimic/",
+    "src/RimMandrake/FlowWorks/Source/RM_PitTrapMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_PromotionProofs.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_Spikes.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SpikeDrawMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SpikeStakes.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PocketGrid.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_PocketGridMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitStepCost.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimb.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimbMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_WallReachMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderUtility.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderParity.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderParityMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_LadderWallMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_FallRailMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_FallRails.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrenchMath.cs",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_Patch_SuperdeepShooting.cs"
+   ]
+  },
+  "why": {
+   "sc_moat_raid": "raiders swim a moat that is drained, burned and bridged: swim, flow, doors, pump and tank, fire, drawbridge, capture and raider logic",
+   "sc_trench_cover": "a raid shoots at a pawn in a trench: the trench cover patches and the raider trench logic",
+   "sc_islands": "raiders are trapped on islands by drawbridges and destroy a winch: the drawbridge and raid code, and pit travel",
+   "sc_pit_trap_raid": "a raid falls into covered pits onto spikes and the fallen become prisoners: covers, spikes, capture, pit travel and the raider code",
+   "sc_fetch_fallen": "raiders fall through a cover and their comrades set a ladder to fetch them: covers, spikes, pit travel and the raider fetch"
+  }
+ }
+}

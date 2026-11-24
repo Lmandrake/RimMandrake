@@ -344,15 +344,15 @@
    "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
   },
   {
-   "id": "sc_trench_cover",
+   "id": "sc_trench_cover_pawns",
    "kind": "acceptance",
    "staged_by": "script",
-   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_trench_cover",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_trench_cover_pawns",
    "start": [
-    "a D2 trench and a D4 pit beside a raid path, a colonist in the trench (asserted)"
+    "a D2 trench with a colonist in it, a placed shooter ten squares off (asserted)"
    ],
-   "action": "a raid of 4 arrives and fires",
-   "expect": "the trench pawn is covered and shown so; no raider shelters in the pit",
+   "action": "read the cover of the colonist from the shooter; capture",
+   "expect": "the trench pawn is covered and shown so",
    "control": {
     "case": "the same colonist on open ground",
     "expect": "no cover",
@@ -363,7 +363,7 @@
    "requirement": [
     "trench_gives_cover"
    ],
-   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+   "entry_point_item": "RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST"
   },
   {
    "id": "sc_hung_bridge",
@@ -432,27 +432,27 @@
    "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
   },
   {
-   "id": "sc_moat_raid",
+   "id": "sc_moat_walkers",
    "kind": "acceptance",
    "staged_by": "script",
-   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_moat_raid",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_moat_walkers",
    "start": [
     "the flagship fortress map: D4 (4 m) water moat, four squares wide, its water a metre below the rim, drawbridge raised, sluice shut to a dry drain pit, chemfuel tank and pump at the rim (each asserted)",
-    "a raid of 6 at the map edge"
+    "no hostile on the map; one colonist on the bank"
    ],
-   "action": "the raiders swim; open the sluice while they swim (game time runs on); capture two from the rim; pump chemfuel; order toss a flame",
-   "expect": "swim and tire, drain fast, held and captured, chemfuel pumped from the tank, moat burns",
+   "action": "order the colonist across; open the sluice; order a second colonist over the drained moat; pump chemfuel; order toss a flame",
+   "expect": "he swims and tires; the moat drains fast; the drained moat is not walked over; chemfuel pumped from the tank; the moat burns",
    "control": {
-    "case": "the same raid with the drawbridge lowered",
-    "expect": "the raiders walk over the bridge and never swim",
-    "rules_out": "the raiders swimming because of a forced path rather than the raised drawbridge"
+    "case": "the same order with the drawbridge lowered",
+    "expect": "he crosses dry over the leaf and never swims",
+    "rules_out": "the swim coming from a forced path rather than the raised drawbridge"
    },
    "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
-   "hold": "owner_review",
+   "hold": "immediate",
    "requirement": [
-    "moat_raid_sequence"
+    "moat_drains_and_burns"
    ],
-   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+   "entry_point_item": "RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST"
   },
   {
    "id": "sc_hole_prison",
@@ -499,50 +499,27 @@
    "entry_point_item": "FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM"
   },
   {
-   "id": "sc_fetch_fallen",
+   "id": "sc_islands_walker",
    "kind": "acceptance",
    "staged_by": "script",
-   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_fetch_fallen",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_islands_walker",
    "start": [
-    "a covered spiked pit on the passage, saplings beside it, defenders across (asserted)",
-    "a raid of 6"
+    "two islands, a long bridge, a drawbridge and winch at each end (asserted lowered)",
+    "one colonist on the span"
    ],
-   "action": "two fall; the rest act; defenders fire",
-   "expect": "chop, ladder into the pit, climb down to a fallen; retreat under fire",
+   "action": "raise both drawbridges; order him off; destroy one winch; order him off again",
+   "expect": "held on the span while both are raised; the lost winch drops its own leaf alone; he walks off over it",
    "control": {
-    "case": "the same raid with no one fallen",
-    "expect": "no ladder goes into the pit",
-    "rules_out": "the crossing-ladder raid mistaken for a rescue"
+    "case": "the other leaf, whose winch stands",
+    "expect": "it stays raised",
+    "rules_out": "both leaves falling for a reason other than the lost winch"
    },
    "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
    "hold": "immediate",
    "requirement": [
-    "raiders_fetch_their_fallen"
-   ],
-   "entry_point_item": "FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN"
-  },
-  {
-   "id": "sc_islands",
-   "kind": "acceptance",
-   "staged_by": "script",
-   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_islands",
-   "start": [
-    "two islands, a long bridge, a drawbridge and winch at each end (asserted lowered)",
-    "a raid of 6 on the span"
-   ],
-   "action": "raise both drawbridges; let the raiders act",
-   "expect": "trapped, a winch destroyed, that drawbridge falls, they escape",
-   "control": {
-    "case": "the winches made indestructible",
-    "expect": "the raiders stay trapped",
-    "rules_out": "pathing failure rather than the raised drawbridges"
-   },
-   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
-   "hold": "owner_review",
-   "requirement": [
     "island_bridges_trap_and_fail"
    ],
-   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+   "entry_point_item": "RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST"
   },
   {
    "id": "sc_walk",
@@ -563,32 +540,6 @@
    "hold": "immediate",
    "requirement": [
     "walk_moat_season"
-   ],
-   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
-  },
-  {
-   "id": "sc_pit_trap_raid",
-   "kind": "interaction",
-   "staged_by": "script",
-   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_pit_trap_raid",
-   "start": [
-    "his pit-trap passage: covered spiked pit before the door, saplings, defenders across with bows (asserted)",
-    "a raid of 6"
-   ],
-   "action": "the raid runs; defenders fire; capture the fallen from the rim",
-   "expect": "two fall onto spikes, the rest try a ladder under arrows, are driven off, the fallen become prisoners in the pit",
-   "control": {
-    "case": "the cover left off (an open pit)",
-    "expect": "the raiders path round it and no one falls",
-    "rules_out": "falls caused by spawning raiders on the pit"
-   },
-   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
-   "hold": "owner_review",
-   "features": [
-    "covered_pit_springs",
-    "raiders_fetch_their_fallen",
-    "drained_hole_is_a_prison",
-    "trench_gives_cover"
    ],
    "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
   },
@@ -621,7 +572,7 @@
   {
    "id": "moat",
    "scenes": [
-    "sc_moat_raid",
+    "sc_moat_walkers",
     "sc_hole_prison",
     "sc_toss_flame",
     "sc_sluice"
@@ -660,28 +611,6 @@
     "inv_converters",
     "inv_liquid_net"
    ]
-  },
-  {
-   "id": "pit_trap",
-   "scenes": [
-    "sc_pit_trap_raid",
-    "sc_fetch_fallen"
-   ],
-   "exercises": [
-    "inv_pit_access",
-    "inv_raider_fetch_fallen",
-    "inv_trench_cover",
-    "inv_pits",
-    "inv_prison_no_bed"
-   ],
-   "source": [
-    "OWNER:1793794392567351532"
-   ],
-   "decision": "d_scene_pittrap",
-   "overlap_why": {
-    "inv_pits": "his scene is a covered pit trap: the pit is the stage the rescue ladder goes into",
-    "inv_prison_no_bed": "his scene ends with the fallen as prisoners in the pit; capture is how the raid ends"
-   }
   }
  ],
  "coverage_rest": [
@@ -722,6 +651,22 @@
     "walk_moat_season"
    ],
    "why": "the walk turns the master switch off and on mid-game; per-toggle checks are the floor's mod_settings line"
+  },
+  {
+   "capability": "inv_pit_access",
+   "by": [
+    "sc_ways_out",
+    "ways_in_and_out"
+   ],
+   "why": "the pit_trap showcase left 0.1.0 for 0.2.0 (a raid, by his word 2026-11-23); ladders, climbing gear and jumps are checked by their own scene"
+  },
+  {
+   "capability": "inv_trench_cover",
+   "by": [
+    "sc_trench_cover_pawns",
+    "trench_gives_cover"
+   ],
+   "why": "the pit_trap showcase left 0.1.0 for 0.2.0 (a raid, by his word 2026-11-23); two placed shooters check the cover"
   }
  ]
 }

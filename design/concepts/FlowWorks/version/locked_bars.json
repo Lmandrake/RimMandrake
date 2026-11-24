@@ -30,7 +30,6 @@
   "inv_looks",
   "inv_prison_no_bed",
   "inv_toss_flame",
-  "inv_raider_fetch_fallen",
   "canal_reads_as_dug",
   "fill_flows_along_canal",
   "fill_level_legible",
@@ -49,10 +48,8 @@
   "hung_bridge_spans",
   "ice_cuts_and_melts",
   "river_flows_endless",
-  "moat_raid_sequence",
   "drained_hole_is_a_prison",
   "toss_flame_from_rim",
-  "raiders_fetch_their_fallen",
   "island_bridges_trap_and_fail",
   "no_liquid_on_open_ground",
   "no_full_source_after_draw",
@@ -60,7 +57,8 @@
   "no_impossible_plumbing",
   "walk_moat_season",
   "inv_geyser_tub",
-  "inv_liquid_coating"
+  "inv_liquid_coating",
+  "moat_drains_and_burns"
  ],
  "history": [
   {
@@ -72,6 +70,22 @@
    "added": [],
    "removed": [],
    "count": 57
+  },
+  {
+   "at": "2026-11-24T07:25:16Z",
+   "by": "BENCH",
+   "why": "his word 2026-11-23 ~11:05 PM PST: the raid proof moves to FlowWorks 0.2.0. lost: FlowWorks 0.1.0 passes with no real raid ever assaulting a moat, trench, island or pit; the walker scenes show that pawns path, cross and climb, not that raider AI chooses to. undo: move the listed bars and scenes back from next_version into the 0.1.0 locked bars and test table and re-pin",
+   "how": "changed by his card",
+   "source": "OWNER:1795504867390195471",
+   "added": [
+    "moat_drains_and_burns"
+   ],
+   "removed": [
+    "moat_raid_sequence",
+    "raiders_fetch_their_fallen",
+    "inv_raider_fetch_fallen"
+   ],
+   "count": 55
   }
  ]
 }

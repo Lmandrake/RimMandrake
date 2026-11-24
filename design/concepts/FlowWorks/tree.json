@@ -434,22 +434,20 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "cover value read for the trench pawn; raider shelter cells never in the D4 pit; capture of the cover indicator",
+   "oracle_proposed": "cover value read for the trench pawn; capture of the cover indicator",
    "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
    "id": "trench_gives_cover",
    "root": [
-    "trench_wall_cover_shown",
-    "raiders_never_shelter_in_a_cage"
+    "trench_wall_cover_shown"
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player sees a pawn in a dug trench covered by the higher ground beside it, like a sandbag, and shown as covered; raiders shelter only in trenches they can climb out of, never in a cage-like pit.",
-   "scenario": "A D2 trench and a D4 pit both near a raid's path; a colonist in the trench under fire; raiders pick shelter.",
+   "experience": "The player sees a pawn in a dug trench covered by the higher ground beside it, like a sandbag, and shown as covered.",
+   "scenario": "A D2 trench with a colonist in it under a placed shooter's aim; a twin colonist on open ground under the same aim.",
    "false_pass": [
-    "the cover number changes but no cover is shown",
-    "raiders hide in the D4 pit"
+    "the cover number changes but no cover is shown"
    ],
    "red": "a pawn in the trench takes hits as though standing in the open",
    "tier_proposed": "quicktest",
@@ -536,11 +534,11 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "per step: swim state and rest drop, moat litres fall to the drain, raiders' paths out refused, prisoner status after capture, chemfuel litres leave the tank into the moat, fire on moat cells; capture sequence for him",
-   "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "oracle_proposed": "per step: the ordered pawn's swim state and exhaustion, moat litres fall to the drain, an ordered pawn does not cross the drained moat, prisoner status after capture from the rim, chemfuel litres leave the tank into the moat, fire on moat cells after the order; the twin with the drawbridge lowered; capture sequence for him",
+   "tier_reason": "paths, swimming, a drain in game time and a capture from the rim run only in a played map; the minimal list plus FlowWorks isolates it",
    "cannot_show": null,
    "wall_expect_h": 2,
-   "id": "moat_raid_sequence",
+   "id": "moat_drains_and_burns",
    "root": [
     "deep_water_pawn_swims",
     "sluice_gate_state_legible",
@@ -549,14 +547,14 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player defending a fortress watches the whole moat sequence at play zoom: raiders swim a deep water moat under a raised drawbridge and tire; the sluice opens and the moat drains fast; the raiders are held in the pit, cannot climb out, and are taken as prisoners from the rim; then chemfuel is pumped in from above and lit, and the moat burns. It must not read as raiders walking across, a moat that empties by magic, or fire that is not the liquid.",
-   "scenario": "The flagship map: fortress, one deep D4 water moat fed from a pond, a raised drawbridge, a sluice to a drain pit, a chemfuel tank and pump at the rim; a raid of 6 arrives; the player opens the sluice, captures two, pumps chemfuel and tosses a flame.",
+   "experience": "The player defending a fortress watches the moat at play zoom: a pawn swims a deep water moat under a raised drawbridge and tires; the sluice opens and the moat drains fast; pawns in the drained pit are held, cannot climb out, and are taken as prisoners from the rim; then chemfuel is pumped in from above and lit, and the moat burns. It must not read as a pawn walking across, a moat that empties by magic, or fire that is not the liquid.",
+   "scenario": "The flagship map: fortress, one deep D4 water moat fed from a pond, a raised drawbridge, a sluice to a drain pit, a chemfuel tank and pump at the rim; one colonist is ordered across; the sluice opens; a second colonist is ordered over the drained moat; the player pumps chemfuel and tosses a flame. Beside it, two placed hostiles in a drained moat are captured from the rim.",
    "false_pass": [
-    "the raid is spawned already in the drained pit",
+    "the pawn is spawned already in the drained pit",
     "chemfuel is spawned in the moat, not pumped",
     "the fire is lit by dev tool, not by the order"
    ],
-   "red": "the raiders walk across the moat bed, or climb out once it is drained",
+   "red": "a pawn walks across the moat bed, or climbs out once it is drained",
    "tier_proposed": "live_minimal",
    "owner_part": "yes: the moat sequence capture, played at play zoom",
    "by": "concept"
@@ -615,34 +613,8 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "raider job sequence: chop, carry, ladder placed into the pit, climb down to a fallen; under fire, retreat with fallen left; capture",
-   "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
-   "cannot_show": null,
-   "wall_expect_h": null,
-   "id": "raiders_fetch_their_fallen",
-   "root": [
-    "pit_trapped_reads_as_trapped",
-    "portable_ladder_leans_on_its_wall"
-   ],
-   "leaf_kind": "experience",
-   "clause_kind": "change",
-   "experience": "The player whose pit trap has caught two raiders watches the rest chop wood, make a ladder and go down for their fallen; when the defenders drive them off they retreat and leave the fallen behind.",
-   "scenario": "A covered spiked pit on a passage to the door, saplings beside it, defenders across the pit; a raid of 6.",
-   "false_pass": [
-    "raiders cross the trench with the ladder instead of fetching anyone",
-    "raiders retreat without trying"
-   ],
-   "red": "raiders whose comrades fell ignore them and attack the door",
-   "tier_proposed": "live_minimal",
-   "owner_part": "no",
-   "by": "concept"
-  },
-  {
-   "bundle": null,
-   "scenario_informed_by": [],
-   "needs_instrument": null,
-   "oracle_proposed": "drawbridge state per tick, raider paths refused while raised, winch destroyed then drawbridge lowered, raiders leave; capture",
-   "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "oracle_proposed": "drawbridge state per tick, the ordered pawn's path off refused while raised, winch destroyed then that drawbridge lowered and the other still raised, the pawn walks off; capture",
+   "tier_reason": "paths over live leaves run only in a played map; the minimal list plus FlowWorks isolates it",
    "cannot_show": null,
    "wall_expect_h": null,
    "id": "island_bridges_trap_and_fail",
@@ -651,13 +623,13 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player watches raiders walking a long bridge between islands get trapped on the span when both drawbridges rise; they reach a winch and destroy it, the drawbridge falls back and they escape; the defence still counts as a success.",
-   "scenario": "Two islands joined by a long bridge with a drawbridge at each end and a winch at each; a raid of 6 on the span; both raised.",
+   "experience": "The player watches a pawn walking a long bridge between islands get trapped on the span when both drawbridges rise; when a winch is destroyed, its drawbridge falls back and he walks off.",
+   "scenario": "Two islands joined by a long bridge with a drawbridge at each end and a winch at each; one colonist ordered off the span; both raised; one winch destroyed.",
    "false_pass": [
-    "the raiders are stuck because pathing breaks, not because the bridges are up",
+    "the pawn is stuck because pathing breaks, not because the bridges are up",
     "the winch dies and nothing falls"
    ],
-   "red": "destroying the winch leaves the drawbridge up, or the raiders walk off a raised drawbridge",
+   "red": "destroying the winch leaves the drawbridge up, or the pawn walks off a raised drawbridge",
    "tier_proposed": "live_minimal",
    "owner_part": "no",
    "by": "concept"

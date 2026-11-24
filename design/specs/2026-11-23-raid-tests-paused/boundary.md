@@ -18,6 +18,8 @@ says `"paused": true`.
 - **the-switch.** `raid_pause.json`: `paused` (true or false), `why`, `allow` (a list of item ids), `chains` (`{mod: {chain:
   what it stages}}`, the modcheck chains that stage a raid).
 - **a-tagged-test.** `tests.<id>.stages_raid` of a test table: a text that says what the scene stages.
+- **a-moved-part.** `bars_moved_to_next_version` and `scenes_moved_to_next_version` of a mod's `version/VERSION.json`: the ids
+  of the bars and the scenes that left the version by his word (FlowWorks 0.1.0, 2026-11-23). The scenes are in no test table.
 - **a-bridge-call.** A tool name and its arguments, as `RimBridge.call` takes them.
 
 ## DOES NOT SURVIVE (not promised)
@@ -53,6 +55,10 @@ says `"paused": true`.
   pause on or off. The version does not pass (`advance --to passed`) while a raid bar is open, unless
   `--conductor-decision` names each open bar.
 - **walk-brief-names-it.** A walk brief that does not name each open raid bar is not written yet, and says which bar is missing.
+- **moved-scene-is-owed-nothing.** A scene that moved to the next version is owed nothing, with the pause on or off: its UNRUN lines
+  are left out of the brief, and an item that only its failed rows cite holds no visit (`visit_cited_items`).
+- **walk-brief-names-moved-bars.** A walk brief that does not name each bar that moved to the next version is not written yet, and
+  says which bar is missing.
 - **chain-is-not-run.** A modcheck chain in `chains`, and a chain that meets the refused call, read NOT_RUN with the word, never
   UNMEASURED and never FAIL. The other chains of the run go on. The test lane refuses a job whose every chain is paused.
 - **switch-unreadable-is-paused.** A switch that is missing or cannot be read is a pause, and its reason is named.

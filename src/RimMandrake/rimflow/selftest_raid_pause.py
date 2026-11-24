@@ -185,6 +185,49 @@ def t_walk_brief_names_it():
     assert "clause(\"raid_bars_decided\"" in src, "the pass does not ask"
 
 
+def moved_root(**version):
+    """-> a temp root whose VERSION.json moved bar b9 and scene c9 to the next version (or what `version` says)."""
+    root = K.S.visit("rp_moved%d" % switch.n, list(K.OTHERS) + [
+        K.row("c9", "FAIL", **{"class": "MOD", "owner": "RIMMANDRAKE_TRACE_MOVED_SCENE_ITEM_HELD"}),
+        K.row("c2", "FAIL", **{"class": "MOD", "owner": "RIMMANDRAKE_TRACE_KEPT_SCENE_ITEM_HELD"})], tt=K.table())
+    switch.n += 1
+    M.write_text(root, MOD, "version/VERSION.json", json.dumps(dict({
+        "mod": MOD, "version": "0.1.0", "bars_moved_to_next_version": ["b9"], "scenes_moved_to_next_version": ["c9"]}, **version)))
+    return root
+
+
+def t_moved_scene_is_owed_nothing():
+    switch()
+    root = moved_root()
+    M.write_text(root, MOD, M.UNRUN_FILE, "".join(json.dumps({"item": "I", "check": c, "command": "x", "offline": "o", "sha": "s"}) + "\n"
+                                                  for c in ("c9", "c2")))
+    for on in (True, False):
+        switch(paused=on)
+        lines = "".join(M.unrun_lines(root, MOD))
+        assert "`c9`" not in lines and "`c2`" in lines, lines
+    assert M.visit_cited_items(root, MOD, 1) == ["RIMMANDRAKE_TRACE_KEPT_SCENE_ITEM_HELD"], M.visit_cited_items(root, MOD, 1)
+    both = ["RIMMANDRAKE_TRACE_MOVED_SCENE_ITEM_HELD", "RIMMANDRAKE_TRACE_KEPT_SCENE_ITEM_HELD"]
+    for on in (True, False):
+        switch(paused=on)
+        assert M.paused_scene_items(root, MOD, both) == both[:1], (on, M.paused_scene_items(root, MOD, both))
+    root = moved_root(scenes_moved_to_next_version=[])
+    assert "RIMMANDRAKE_TRACE_MOVED_SCENE_ITEM_HELD" in M.visit_cited_items(root, MOD, 1), "a scene that did not move is cited"
+    assert M.moved_to_next(root, "NoSuchMod", "scenes") == [], "a mod with no VERSION.json moved nothing"
+
+
+def t_walk_brief_names_moved_bars():
+    root = moved_root()
+    why = M.walk_brief_moved_why(root, MOD, "b99 and c9")
+    assert len(why) == 1 and "b9" in why[0] and "next version" in why[0], why
+    assert not M.walk_brief_moved_why(root, MOD, "next version: b9")
+    assert not M.walk_brief_moved_why(moved_root(bars_moved_to_next_version=[]), MOD, "")
+    src = open(os.path.join(HERE, "maturation.py"), encoding="utf-8").read()
+    body = src[src.index("def read_walk_brief("):]
+    assert "walk_brief_moved_why(" in body[:body.index("\ndef ", 5)], "read_walk_brief does not ask"
+    role = open(os.path.join(HERE, "roles", "walk_brief.md"), encoding="utf-8").read()
+    assert "bars_moved_to_next_version" in role, "the walk brief role is not told"
+
+
 def t_chain_is_not_run():
     import suite as SU
     switch(chains={"Visibility": {"c_raid": "a raid"}})
@@ -310,6 +353,8 @@ def main():
              t_a_standing_pass_stands,
              t_open_raid_bar_holds_the_pass,
              t_walk_brief_names_it,
+             t_moved_scene_is_owed_nothing,
+             t_walk_brief_names_moved_bars,
              t_chain_is_not_run,
              t_switch_unreadable_is_paused,
              t_one_command_lifts,

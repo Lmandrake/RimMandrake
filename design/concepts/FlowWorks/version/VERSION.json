@@ -5,14 +5,14 @@
  "locked_on": "2026-11-13",
  "locked_by": "owner",
  "owner_words": "Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of FlowWorks, Gimme Some Slack, Pyrelands, Pyrelands Mechanics)",
- "bars_total": 57,
- "bars_met": 55,
+ "bars_total": 55,
+ "bars_met": 52,
  "judge_rounds": 1,
  "tokens_spent": 3729543,
  "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
  "measured_from": {
-  "bars_total": "coverage_judge.required_ids(): record.json inventory (29) + tree.json leaves (28) = 57; 59 at the lock (28 + 31), his card of 2026-11-14 (OWNER:1794693278631337978) added inv_geyser_tub and inv_liquid_coating (61), and his card of 2026-11-14 ~9:43 PM PST (OWNER:1794721673433243094) moved inv_irrigation, canal_wets_two_squares, wetting_is_not_flood and wetness_probe to 0.2.0 (journal.md interventions); version/test_table.json holds the same 57",
-  "bars_met": "tree.json coverage: the Arbiter signed the 59 bars of the lock covered 2026-11-05T09:03:46Z at tree_hash 572198fed9 and sheet_hash 68f9946f8e; 55 of those are still bars (the 4 wetting bars left), and the 2 bars added 2026-11-14 were never judged, so 55 of 57. The signature names the lock's hashes, not today's (version/bars.md)",
+  "bars_total": "coverage_judge.required_ids(): record.json inventory (28) + tree.json leaves (27) = 55; 59 at the lock (28 + 31), his card of 2026-11-14 (OWNER:1794693278631337978) added inv_geyser_tub and inv_liquid_coating (61), his card of 2026-11-14 ~9:43 PM PST (OWNER:1794721673433243094) moved inv_irrigation, canal_wets_two_squares, wetting_is_not_flood and wetness_probe to 0.2.0 (57), and his word of 2026-11-23 ~11:05 PM PST (OWNER:1795504867390195471) moved moat_raid_sequence, raiders_fetch_their_fallen and inv_raider_fetch_fallen to 0.2.0 and left moat_drains_and_burns, the part of the moat bar that needs no raider, in 0.1.0 (55; journal.md interventions); raiders_shelter_only_where_they_can_climb_out and raiders_break_a_winch_and_escape are the raider halves of trench_gives_cover and island_bridges_trap_and_fail and were never bars of their own; version/test_table.json holds the same 55",
+  "bars_met": "tree.json coverage: the Arbiter signed the 59 bars of the lock covered 2026-11-05T09:03:46Z at tree_hash 572198fed9 and sheet_hash 68f9946f8e; 52 of those are still bars (4 wetting bars and 3 raid bars left); the 2 bars added 2026-11-14 and the 1 left by the 2026-11-23 split were never judged, so 52 of 55. The signature names the lock's hashes, not today's (version/bars.md)",
   "judge_rounds": "one coverage signature (the Arbiter's, tree.json coverage); coverage_judge.rounds() reads 0 because that signing predates round recording and carried no charge",
   "tokens_spent": "stage.json budget.spent (cap 500000); every Designer stage run, helper, review and judge charge on this concept",
   "locked_from_commit": "origin/main when this version was entered, 2026-11-13; per-file blob hashes in bars.md"
@@ -22,12 +22,25 @@
  ],
  "bars_added_after_lock": [
   "inv_geyser_tub",
-  "inv_liquid_coating"
+  "inv_liquid_coating",
+  "moat_drains_and_burns"
  ],
  "bars_moved_to_next_version": [
   "inv_irrigation",
   "canal_wets_two_squares",
   "wetting_is_not_flood",
-  "wetness_probe"
+  "wetness_probe",
+  "moat_raid_sequence",
+  "raiders_fetch_their_fallen",
+  "inv_raider_fetch_fallen",
+  "raiders_shelter_only_where_they_can_climb_out",
+  "raiders_break_a_winch_and_escape"
+ ],
+ "scenes_moved_to_next_version": [
+  "sc_moat_raid",
+  "sc_trench_cover",
+  "sc_islands",
+  "sc_pit_trap_raid",
+  "sc_fetch_fallen"
  ]
 }

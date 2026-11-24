@@ -7,11 +7,10 @@
 - 2026-11-05, by card: "How should pit-held raiders become prisoners? → Drained moat is a prison" and "What lights your moat? → New 'toss a flame' order"
 
 ## does
-- [leaf:moat_raid_sequence] The flagship: raiders swim a deep moat under a raised drawbridge and tire, the sluice drains it, they are held in the pit and taken prisoner, chemfuel is pumped in from above and lit. OWNER:1793794915205594887
+- [leaf:moat_drains_and_burns] The flagship, as far as it needs no raider: a pawn swims a deep moat under a raised drawbridge and tires, the sluice drains it, pawns in it are held and taken prisoner, chemfuel is pumped in from above and lit. OWNER:1793794915205594887; that raiders choose to swim it is 0.2.0, OWNER:1795504867390195471
 - [leaf:drained_hole_is_a_prison] Capture from the rim works in a drained moat or pit with no bed; the hole is the prison. By card 2026-11-05, owed
 - [leaf:toss_flame_from_rim] A colonist walks to the rim and tosses a flame onto the square you pick. By card 2026-11-05, owed
-- [leaf:raiders_fetch_their_fallen] Raiders chop wood for a ladder to fetch comrades who fell in a pit, and leave them when driven off. His pit-trap scene, owed
-- [leaf:island_bridges_trap_and_fail] Raised drawbridges trap raiders on a long bridge; a destroyed winch drops one and they escape; the defence still counts. His island scene
+- [leaf:island_bridges_trap_and_fail] Raised drawbridges trap a pawn on a long bridge; a destroyed winch drops one and he walks off. His island scene; that raiders break the winch is 0.2.0, OWNER:1795504867390195471
 - [leaf:canal_reads_as_dug] A dug canal reads as a channel cut into the ground at every depth, and digging takes hours
 - [leaf:fill_flows_along_canal] Liquid flows along the canal at its own speed, tar behind water, and stays in the channel
 - [leaf:fill_level_legible] How full a canal is, and with what, reads at play zoom; half a metre of water is silty
@@ -26,7 +25,7 @@
 - [leaf:sluice_drains_on_command] A sluice reads open or shut and drains the moat fast when opened; a grate always passes
 - [leaf:hose_reads_as_hose] A hose reads as a hose: plump when flowing, tinted with its liquid, brass fittings, four styles
 - [leaf:one_liquid_network] Pipes, pumps, tanks and hoses are one network that moves real litres
-- [leaf:trench_gives_cover] A trench gives cover like a sandbag; raiders never shelter in a pit they cannot leave
+- [leaf:trench_gives_cover] A trench gives cover like a sandbag
 - [leaf:hung_bridge_spans] A suspension bridge hangs between its anchors and pawns walk under it
 - [leaf:ice_cuts_and_melts] Cutting ice makes crushed ice that melts back
 - [leaf:river_flows_endless] A river is Endless with a current, weirs, ferry and levee; a swept pawn comes back by land
@@ -48,16 +47,15 @@
 - The north star has no line yet for the bed-less prison or the toss-a-flame order; their leaves root at the nearest existing line until an agent adds those bars
 
 ## delegated
-- Showcases 2 and 3: the garden and workshop (sprinklers, hoses, bottles, well, converter) is my pick for the second face, as the most new ground; your pit-trap raid is the third
+- Showcase 2: the garden and workshop (sprinklers, hoses, bottles, well, converter) is my pick for the second face, as the most new ground; your pit-trap raid, the third, is 0.2.0 (OWNER:1795504867390195471)
 - Rivers, slime, quarry finds, map-maker taps and Mod Settings are checked by their own scenes rather than a showcase
-- The island-bridge raid stays a scene, not a showcase: its bridges and drawbridges are already in the moat
+- The island bridges stay a scene, not a showcase: their bridges and drawbridges are already in the moat
 - The drawbridge's look is the FlowWorks Drawbridge concept's; here a drawbridge only has to rise, trap and fall
 
 ## pruning
-- moat_raid_sequence: his flagship, OWNER:1793794915205594887; without it the mod has no reason to exist
+- moat_drains_and_burns: his flagship, OWNER:1793794915205594887; without it the mod has no reason to exist
 - drained_hole_is_a_prison: his card 2026-11-05; the moat cannot hold prisoners otherwise
 - toss_flame_from_rim: his card 2026-11-05; the match from above in his moat scene
-- raiders_fetch_their_fallen: his pit-trap scene OWNER:1793794392567351532
 - island_bridges_trap_and_fail: his island scene OWNER:1793794392567351532
 - canal_reads_as_dug: north star canal_reads_as_dug_channel; a canal that reads as gravel failed the walk before
 - fill_flows_along_canal: north star canal_fill_front_watchable; the walk experience says flows at its viscosity

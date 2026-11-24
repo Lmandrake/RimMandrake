@@ -3989,6 +3989,23 @@ def walk_brief_raid_why(root, mod, n, tt, text):
         if not re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(b), text or "")]
 
 
+def moved_to_next(root, mod, what):
+    """-> the ids of `bars_moved_to_next_version` or `scenes_moved_to_next_version` (what: "bars" | "scenes") of VERSION.json,
+    the parts of the version that left it by his word; [] when it names none or cannot be read (nothing moved: each scene
+    and bar stays owed)."""
+    v, _ = read_json(root, mod, "version/VERSION.json")
+    got = v.get("%s_moved_to_next_version" % what) if isinstance(v, dict) else None
+    return [x for x in got if isinstance(x, str)] if isinstance(got, list) else []
+
+
+def walk_brief_moved_why(root, mod, text):
+    """-> [why] a walk brief does not name a bar that moved to the next version (he does not look for it on this walk)."""
+    left = [b for b in moved_to_next(root, mod, "bars")
+            if not re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(b), text or "")]
+    return ["the brief does not name %s as moved to the next version (VERSION.json bars_moved_to_next_version): say so under "
+            "\"Known, not fixed\"" % ", ".join(left)] if left else []
+
+
 def visit_numbers(root, mod):
     d = os.path.join(mod_dir(root, mod), INGAME_DIR)
     out = []
@@ -4010,10 +4027,10 @@ def visit_cited_items(root, mod, n):
     rows = _jsonl(os.path.join(mod_dir(root, mod), INGAME_DIR, "visit_%s" % n, "rows.jsonl"))
     if rows is None:
         return None
-    out = []
+    out, moved = [], moved_to_next(root, mod, "scenes")
     for r in rows:
-        if not isinstance(r, dict) or str(r.get("verdict") or "").upper() == "PASS":
-            continue
+        if not isinstance(r, dict) or str(r.get("verdict") or "").upper() == "PASS" or (r.get("test") or r.get("id")) in moved:
+            continue        # a scene that moved to the next version holds nothing of this one
         names = []
         for f in (r.get("owner"), r.get("filed")):
             names += f if isinstance(f, list) else [f]
@@ -4025,14 +4042,17 @@ def visit_cited_items(root, mod, n):
 
 
 def paused_scene_items(root, mod, ids, path=None):
-    """-> [the ids whose every citing failed row, over all visits, is of a raid scene that is paused now]: such an item
+    """-> [the ids whose every citing failed row, over all visits, is of a raid scene that is paused now, or of a scene that
+    moved to the next version]: such an item
     makes no road back (raid-tests-paused page, tagged-scene and paused-is-its-own-word; FlowWorks visit 9's moat item).
-    A row cites an item as visit_cited_items reads it. [] when the pause is off, or when a table or a visit's rows
-    cannot be read (could not look is never free)."""
-    if not RP.switch(path)["paused"]:
+    A row cites an item as visit_cited_items reads it. [] when the pause is off and no scene moved, or when a table or a
+    visit's rows cannot be read (could not look is never free)."""
+    tagged = set(moved_to_next(root, mod, "scenes"))
+    if RP.switch(path)["paused"]:
+        tt, _ = read_json(root, mod, "version/test_table.json")
+        tagged |= {k for k, _ in RP.scenes(tt)} if isinstance(tt, dict) else set()
+    if not tagged:
         return []
-    tt, _ = read_json(root, mod, "version/test_table.json")
-    tagged = {k for k, _ in RP.scenes(tt)} if isinstance(tt, dict) else set()
     base = os.path.join(mod_dir(root, mod), INGAME_DIR)
     cites = {i: set() for i in ids}
     for v in sorted(os.listdir(base)) if os.path.isdir(base) else []:
@@ -4888,6 +4908,7 @@ def read_walk_brief(root, mod, rec):
                           "is a fresh read" % m.group(1))
     tt, _ = read_json(root, mod, "version/test_table.json")
     out["why"] += walk_brief_raid_why(root, mod, max(1, len(ingame_openings(rec))), tt, text)
+    out["why"] += walk_brief_moved_why(root, mod, text)
     return out
 
 
@@ -5188,13 +5209,15 @@ def read_unrun(root, mod):
 
 def unrun_lines(root, mod):
     """-> the Stage 6 brief's lines for the road-back items closed offline whose in-game check is still UNRUN."""
-    return unrun_lines_of(read_unrun(root, mod), read_json(root, mod, "version/test_table.json")[0])
+    return unrun_lines_of(read_unrun(root, mod), read_json(root, mod, "version/test_table.json")[0],
+                          moved_to_next(root, mod, "scenes"))
 
 
-def unrun_lines_of(rows, tt):
-    """-> those lines, without the check of a paused raid scene, or of one that another check of the table replaces."""
+def unrun_lines_of(rows, tt, moved=()):
+    """-> those lines, without the check of a paused raid scene, of one that another check of the table replaces, or of one
+    that moved to the next version."""
     tests = (tt or {}).get("tests") or {}
-    gone = {x for t in tests.values() if isinstance(t, dict) for x in t.get("replaces") or []}
+    gone = {x for t in tests.values() if isinstance(t, dict) for x in t.get("replaces") or []} | set(moved)
     rows = [r for r in rows or [] if r.get("check") not in gone and not (RP.paused() and RP.stages(tests.get(r.get("check"))))]
     if not rows:
         return ["- none recorded"]

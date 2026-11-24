@@ -13,9 +13,10 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
 - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 11:28 PM PST (`version/stage_record.json`).
-- **Bars:** 57 = 29 inventory rows of `record.json` + 28 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
+- **Bars:** 55 = 28 inventory rows of `record.json` + 27 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
-  PST moved the four wetting bars to 0.2.0 (interventions below; `version/next_version/README.md`).
+  PST moved the four wetting bars to 0.2.0 (57), and his word of 2026-11-23 ~11:05 PM PST moved the raid proof to 0.2.0
+  (55; interventions below; `version/next_version/README.md`). No 0.1.0 scene stages a raid.
 - **Judge corrections open:** none. FlowWorks has no `coverage_verdict.json` and no `coverage_fixes.json`; the Arbiter
   signed the 59-row checklist covered on 2026-11-05 (`tree.json` coverage). So the pilot's "six corrections" step is
   empty here.
@@ -31,8 +32,9 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 3. Its main job is deadly earthworks: moats, covered pit traps, sluices and drawbridges you fill, drain and set alight when you choose.
 4. Judged first on one raid: raiders swim a deep moat under a raised drawbridge and tire, a sluice drains it, the drained
    hole holds them as prisoners, and chemfuel pumped in from above is lit by a colonist tossing a flame from the rim.
+   (0.1.0 is judged on it with ordered and placed pawns; the raid itself is 0.2.0's proof, OWNER:1795504867390195471.)
 5. A pit reads as a hole with deep walls; ladders, climbing gear and jumps are the only ways in and out; raiders make a
-   ladder to fetch comrades who fell in.
+   ladder to fetch comrades who fell in (built; its proof is 0.2.0).
 6. (Moved: canal-side wetting left 0.1.0 for 0.2.0 by his card 2026-11-14, OWNER:1794721673433243094.)
 7. Pipes, pumps, tanks and hoses are one network moving the same real litres from the same supply.
 8. Every feature has superb Mod Settings; no worldgen, no multiplayer.
@@ -59,9 +61,9 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 
 ### Oddities (things a reader would otherwise get wrong)
 
-1. **Three bar vocabularies.** The 57 checklist rows are the bars of 0.1.0. The sheet's `[floor:…]` lines (mod_settings,
+1. **Three bar vocabularies.** The 55 checklist rows are the bars of 0.1.0. The sheet's `[floor:…]` lines (mod_settings,
    tick_cost, worldgen, multiplayer) and the 22 lines of `floor.json` are floor lines every mod meets, not among the 59.
-   The older north-star bars in `northstar/` and the walk doc are a third list, not reconciled with the 57.
+   The older north-star bars in `northstar/` and the walk doc are a third list, not reconciled with the 55.
 2. **The inventory's `proof` field reads `stale` (20), `missing` (7) or `exercised_unrecorded` (1)**: it records
    proof-run freshness on 2026-11-05, not whether a test exists.
 3. **Three inventory rows are `impl: absent`** at the lock: `inv_prison_no_bed`, `inv_toss_flame`,
@@ -91,6 +93,8 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 10:05 PM PST, kind decision): deferral by his card: bars `inv_irrigation`, `canal_wets_two_squares`, `wetting_is_not_flood` and `wetness_probe` left 0.1.0 for 0.2.0 (61 to 57 bars), with test `T_WETTING_OFFLINE`, `T_WETNESS_PROBE_OFFLINE` and scene `sc_wetting`; `sc_garden` lost its wetting feature, rows and control clause; build items `FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP` and `FLOWWORKS_WETPROBE_BUILD_READ_THE_DAMP_FIRST` aimed at 0.2.0. Objects kept in `version/next_version/wetting_from_0.1.0.json`. Source: owner by card 2026-11-14 ~9:43 PM PST (OWNER:1794721673433243094).
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 10:05 PM PST, kind re-pin): check X4 in `validation_v2.py` rewritten to follow the pit sink of 0.05 per half metre (drawn 4 x 0.05 down at D=4, the wall ratio agreeing with it), a new mock fault `wall_ratio_off` seen turning it red; the C# case `PitDraw_sink_is_monotonic_in_depth_and_follows_the_pit_sink` and `RM_PitDrawMath.DefaultSinkPerLevel` (0.3 to 0.05) follow too; the retired wall-height number is deleted from the north star (`pit_trapped_reads_as_trapped`, re-validated by his card), the pit item, `human_review.py` J04 and seven design docs. Source: owner by card 2026-11-14 ~9:43 PM PST (OWNER:1794721678572743709).
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 10:05 PM PST, kind re-pin): `version/bars.md` re-pinned for tree.json, sheet.md, scenes.json, record.json and plan.md after the wetting move; tree hash now `5b90f4e381`, sheet hash `16533ac4f2`. The Arbiter's coverage signature names the lock's hashes, so `concept_tree.py gate` refuses on hash; nothing in Stage 3 reads that gate. Source: this journal's deferral line above.
+- CONDUCTOR INTERVENED (stage 6, 2026-11-23 11:30 PM PST, kind decision): deferral by his word: bars `moat_raid_sequence`, `raiders_fetch_their_fallen` and `inv_raider_fetch_fallen` left 0.1.0 for 0.2.0, with the raider clauses of `trench_gives_cover`, `inv_trench_cover` (now `raiders_shelter_only_where_they_can_climb_out`) and `island_bridges_trap_and_fail` (now `raiders_break_a_winch_and_escape`), scenes `sc_moat_raid`, `sc_trench_cover`, `sc_islands`, `sc_pit_trap_raid`, `sc_fetch_fallen` and showcase `pit_trap`; bar `moat_drains_and_burns`, the part of the moat bar that needs no raider, takes its place (57 to 55 bars). Objects kept in `version/next_version/raid_from_0.1.0.json`. lost: FlowWorks 0.1.0 passes with no real raid ever assaulting a moat, trench, island or pit; the walker scenes show that pawns path, cross and climb, not that raider AI chooses to. undo: move the listed bars and scenes back from next_version into the 0.1.0 locked bars and test table and re-pin. Source: owner, typed 2026-11-23 ~11:05 PM PST (OWNER:1795504867390195471).
+- CONDUCTOR INTERVENED (stage 6, 2026-11-23 11:30 PM PST, kind re-pin): `version/bars.md` and `version/locked_bars.json` re-pinned for tree.json, sheet.md, scenes.json, record.json and plan.md after the raid move; tree hash now `c5d360b8c9`, sheet hash `6d0efc4bb0`. The Arbiter's coverage signature still names the lock's hashes, so `concept_tree.py gate` refuses on hash, and on north-star line `raiders_never_shelter_in_a_cage`, whose leaf is 0.2.0 now; nothing in Stage 6 reads that gate. Source: this journal's raid deferral line above.
 - CONDUCTOR INTERVENED (stage 6, 2026-11-19 8:41 PM PST, kind decision): route b on RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT: no fifth blind cycle. Source: maturation.py advance by CONDUCTOR, cycle 3.
 - CONDUCTOR INTERVENED (stage 6, 2026-11-21 6:32 PM PST, kind decision): In-game checks that count from a build older than the C# they exercise must run again BEFORE his walk, so that his walk is not the first reader of those bars. Sending FlowWorks back to the in-game stage for exactly those checks is decided: do it. Source: maturation.py advance by BENCH, cycle 3.
 

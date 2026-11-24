@@ -558,7 +558,7 @@
   },
   {
    "id": "inv_trench_cover",
-   "what": "Dug ground gives cover: a pawn in a hole is covered by higher neighbouring ground like a sandbag; raiders shelter only where they can climb out",
+   "what": "Dug ground gives cover: a pawn in a hole is covered by higher neighbouring ground like a sandbag",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/FlowWorks/Source/RM_TrenchCover.cs",
@@ -574,7 +574,8 @@
     "src/RimMandrake/FlowWorks/northstar/trench_cover_proof.py",
     "src/RimMandrake/FlowWorks/northstar/raid_trench_proof.py"
    ],
-   "note": "live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash"
+   "note": "live rows have no result at the current mod hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH open); last core run src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261025T0152_run4.json read 61 PASS / 2 FAIL (L2_tier_live, S5_sticky_limitless) on an older hash",
+   "moved": "its clause 'raiders shelter only where they can climb out' left 0.1.0 for FlowWorks 0.2.0 by his word 2026-11-23 (OWNER:1795504867390195471); version/next_version/raid_from_0.1.0.json"
   },
   {
    "id": "inv_swim",
@@ -882,23 +883,6 @@
    "source": [
     "OWNER:1793862534552097818",
     "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs:15"
-   ],
-   "speaker": "agent"
-  },
-  {
-   "id": "inv_raider_fetch_fallen",
-   "what": "Raiders whose comrades fell into a pit chop wood, make a ladder and go down for them; driven off, they retreat and leave the fallen",
-   "text": "Raiders fetch their fallen from a pit with a chopped-wood ladder, and give up under fire",
-   "impl": "absent",
-   "search_scope": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs (crossing only, line 488) and RM_PitAccess (colonists only): no raider rescue of fallen comrades found",
-   "proof": "missing",
-   "scope": "opened_by_owner",
-   "scope_source": [
-    "OWNER:1793794392567351532"
-   ],
-   "source": [
-    "OWNER:1793794392567351532",
-    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs:488"
    ],
    "speaker": "agent"
   },
