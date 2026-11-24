@@ -1185,6 +1185,8 @@ CANONICAL = {
     "walk":      dict(seat="BUILD", id="A_B_1", phase="staged", save="s.rws"),
     # list_effect.py (selftest_list_effect.py covers the semantics; this fuzzes the field reads)
     "effect":    dict(seat="BUILD", id="A_B_1", check="cmd:test -f x", seen={"verdict": "fails", "at": 1}),
+    # list_home.py (selftest_list_home.py covers the semantics; this fuzzes the field reads)
+    "home":      dict(seat="BUILD", id="A_B_1", home="mod:X", group="g", flag="CANNOT TELL", reason="r"),
     # list_shape.py (selftest_list_shape.py covers the semantics; this fuzzes the field reads)
     "shape":     dict(seat="BUILD", id="A_B_1", enter=True, leave=False, size="small", check="cmd:test -f x",
                       seen={"verdict": "fails", "at": 1},

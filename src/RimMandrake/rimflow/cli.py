@@ -2152,6 +2152,51 @@ def cmd_shape(args, seat):
     return 0
 
 
+def cmd_home(args, seat):
+    """`rimflow home <ID> --home H --group G --flag F [--reason R]` | `--from rows.tsv`: the home of a list ticket
+    (list_home.py). One bad row writes nothing. A row that the ledger already carries, or of a closed item, is skipped."""
+    import list_home
+    _, w = load()
+    if bool(args.from_file) == bool(args.id):
+        die("home refused: give one ID, or --from <rows file>. Nothing was written.")
+    if args.from_file:
+        try:
+            with open(args.from_file, encoding="utf-8") as f:
+                rows, bad = list_home.read_rows(f.read(), lambda i: i in w.items)
+        except OSError as e:
+            rows, bad = [], ["the rows file cannot be read: %s" % e]
+    else:
+        got, why = list_home.fields(args.home, args.group, args.flag, args.reason)
+        if args.id not in w.items:
+            why = "it has never been filed"
+        rows, bad = [(args.id, got)], ["%s: %s" % (args.id, why)] if why else []
+    if bad:
+        die("home refused: %s\nNothing was written. Repair and run the same command again." % "\n".join(bad))
+    n = kept = 0
+    for iid, got in rows:
+        it = w.items[iid]
+        if it.state in model.TERMINAL:
+            print("%s: %s already; a closed item takes no home. Skipped." % (iid, it.state))
+        elif list_home.same(it.home, got):
+            kept += 1
+        else:
+            # the verb moves no state, so one replay above covers every row: a replay for each row is about 5 s each
+            ev = {"seat": seat, "event": "home", "id": iid}
+            ev.update({k: v for k, v in got.items() if v})
+            _stamp_role_unit(ev)
+            _stamp_session(ev)
+            _stamp_owner_and_override(ev)
+            try:
+                model.append(ev)
+            except model.LedgerError as e:
+                die(str(e))
+            n += 1
+    if n:
+        _rerender_queue_views()
+    print("home: %d written, %d already so, of %d row(s)" % (n, kept, len(rows)))
+    return 0
+
+
 def _card_owed_or_die(args, evs):
     """A consequence a card's picked option states ("needs bigger art") is work owed: the close's words must name each
     one, saying where it was done or filed (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART)."""
@@ -4825,6 +4870,14 @@ def build_parser():
                    help="small (default): this run also does the work; large: the lane gives it its own Work runs")
     s.add_argument("--enter", action="store_true", help="name the item for a Shape run (an old item enters only so)")
     s.add_argument("--leave", action="store_true", help="take that naming off, so no Shape run starts because of it")
+
+    s = add("home", "the home, group and flag of a list ticket, kept on the ledger (list_home.py prints the list)", cmd_home)
+    s.add_argument("id", nargs="?")
+    s.add_argument("--home", help="mod:<folder> | pipeline:<part> | game:<need> | machine:<name> | unplaced")
+    s.add_argument("--group", help="a lower-case slug: tickets that one run could read together")
+    s.add_argument("--flag", default="CANNOT TELL", help="LOOKS CURRENT | LOOKS OVERTAKEN | CANNOT TELL (default)")
+    s.add_argument("--reason", help="what overtook it (LOOKS OVERTAKEN), or why no home fits (unplaced)")
+    s.add_argument("--from", dest="from_file", metavar="ROWS", help="a file of rows: ID, HOME, GROUP, FLAG, REASON, tabs between")
 
     s = add("claim", "take it under a LEASE and start it (-> doing); never re-offers it",
             cmd_claim)

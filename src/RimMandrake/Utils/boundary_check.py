@@ -46,6 +46,7 @@ PAGES = {
     "design/specs/2026-11-23-list-stage-view/boundary.md": "src/RimMandrake/rimflow/selftest_list_pipeline.py",
     "design/specs/2026-11-23-owner-one-view/boundary.md": "src/RimMandrake/Utils/selftest_owner_one_view.py",
     "design/specs/2026-11-23-ticket-trend-graph/boundary.md": "src/RimMandrake/Utils/selftest_maturation_trend.py",
+    "design/specs/2026-11-23-old-tickets-by-home/boundary.md": "src/RimMandrake/rimflow/selftest_list_home.py",
     "design/specs/2026-11-23-list-shape/boundary.md": "src/RimMandrake/rimflow/selftest_list_shape.py",
     "design/specs/2026-11-22-list-outcome-checks/boundary.md": "src/RimMandrake/rimflow/selftest_list_effect.py",
     "design/specs/2026-11-23-follow-through-audit/boundary.md": "src/RimMandrake/Utils/selftest_follow_through.py",

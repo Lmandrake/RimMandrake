@@ -599,6 +599,10 @@ VERBS = {
     # (absent when every part is routed, which clears the item's check). One event, never two separately forgettable
     # writes. State does not move. A reader older than this entry refuses the verb into `world.errors`.
     "shape":     {"who": "any",   "req": (), "opt": ("enter", "leave", "parts", "size", "check", "seen")},
+    # `home` (RIMMANDRAKE_GROUP_OLD_TICKETS_BY_HOME_AND_KEEP_THE_LIST_FOR_GOOD; list_home.py): where a list ticket belongs
+    # (mod:<folder>, pipeline:<part>, game:<need>, machine:<name>, unplaced), its group and its flag. The last one stands.
+    # State does not move and nothing launches. A reader older than this entry refuses the verb into `world.errors`.
+    "home":      {"who": "any",   "req": ("home", "group", "flag"), "opt": ("reason",)},
     # 🔑 `raise` (2026-10-26, STEVE_STEWARD_BUILD_NO_LLM_OWNER, design §6.4 T+30): puts an
     # OPEN item at the top of its seat's `next`, ahead of rows and `this_deployment`.
     # Unlike `this_deployment` nothing clears it but the item ending, so an escalation
@@ -1775,7 +1779,7 @@ class Item(object):
                  "built_sha", "built_ref", "built_at", "built_by", "makers", "criteria", "outstanding",
                  "passed", "level_reached", "lease", "raised", "raised_tsn",
                  "held", "done_index", "walks", "released_dependents", "effect", "effect_seen",
-                 "shape", "shape_named")
+                 "shape", "shape_named", "home")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1824,6 +1828,7 @@ class Item(object):
         self.effect = self.effect_seen = None   # the outcome check and its attach reading (list_effect.py)
         self.shape = None               # the last `shape` split: {parts, size, at, seat, unit} (list_shape.py)
         self.shape_named = None         # ts of the first `shape --enter` since the last `--leave`: named for a Shape run
+        self.home = None                # the last `home`: {home, group, flag, reason, at, seat} (list_home.py)
         self.raised_tsn = 0             # tsn of that same first `raise` (0 when absent): `ts` is to the
         #                                 second, so a run raising C, A, B in one run needs it for order
 
@@ -2823,6 +2828,9 @@ def _apply_item_verb(ev, index, item, seat, world):
                           "unit": ev.get("role_unit")}
             chk = ev.get("check") if isinstance(ev.get("check"), str) and ev["check"].strip() else None
             item.effect, item.effect_seen = chk, (ev.get("seen") if chk else None)
+    elif verb == "home":
+        item.home = {"home": ev["home"], "group": ev["group"], "flag": ev["flag"], "reason": ev.get("reason"),
+                     "at": ev["ts"], "seat": seat}
     elif verb == "note":
         for sha in CITED_SHA_RE.findall(str(ev.get("text") or "")):
             if sha not in item.cited_shas:
