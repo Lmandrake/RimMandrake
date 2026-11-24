@@ -2153,6 +2153,7 @@ def fill_plan(mod, n, cap, *, now=None):   # now keyword-only: an old (.., day_s
       cap      the daily job backstop                                     brake   last two filler jobs not DONE (a cancel is not counted: brake_tail),
                                                                           and no DONE+canary job since (lane_proven_after)
       nohist   no history, no catalogue  dry      every chain is DRY       exhausted  nothing may be filler
+      facts   the host lacks what the mod's jobs need, or its facts are too old to say (facts_hold)
       companion  a job at origin/main could only die at deploy: its companion is not staged (companion_hold)
       held     the mod is on the owner's hold, or the hold list cannot be read (pipeline_admit.refusal)
       pick     `pick` would be queued (fill_rank: the evidence-gap order)"""
@@ -2195,7 +2196,20 @@ def fill_plan(mod, n, cap, *, now=None):   # now keyword-only: an old (.., day_s
     if hold:
         since = (read_json(q("companion_stage.json")) or {}).get("since") or now
         return dict(out, verdict="companion", text=hold, since=since)
+    hold = facts_hold(mod, now)
+    if hold:
+        return dict(out, verdict="facts", text=hold, since=now)
     return dict(out, **fill_rank(mod, n, now, today))
+
+
+def facts_hold(mod, now):
+    """Why the filler may not submit MOD at the host's facts (host_facts.py), or None. As companion_hold: no file at all
+    means the reader never ran here, and the worker's own refusal still stands."""
+    if not os.path.exists(q("host_facts.json")):
+        return None
+    import host_facts as HF
+    why = HF.unmet(mod, kept=HF.read(q("host_facts.json"), now))
+    return why and "host facts hold: %s: %s" % (mod, why)
 
 
 def fill_rank(mod, n, now, today=None, exclude=()):
@@ -2452,31 +2466,75 @@ def forward_submit(a, argv):
     return r.returncode
 
 
+def mod_pids():
+    """-> f(name) -> the packageId a live-mods name loads (a folded folder loads the mod it is composed into), or None."""
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck"))
+    import biomes_compose
+    import runner
+    src = os.path.join(REPO, "src")
+    manifest, folded = biomes_compose.load_manifest(src), biomes_compose.folded_sources(src)
+    composed = {manifest["target"]: manifest["about"]["packageId"].lower()} if manifest else {}
+
+    def f(name):
+        name = folded[name][0] if name in folded else name
+        if name in composed:
+            return composed[name]
+        for t in ("RimMandrake", "RimStarWars", "RimUtinni"):
+            if os.path.isfile(os.path.join(src, t, name, "About", "About.xml")):
+                return runner.mod_package_id(os.path.join(src, t, name))
+        return name.lower() if "." in name else None
+    return f
+
+
 def cmd_ask(a):
-    """One line asks the lane: the host's facts, the item's live-proof lines, the tier -> the whole submit. 0 asked, 3 cannot, 4 could not look."""
-    import re
+    """One line asks the lane: the host's facts, the item's live-proof lines, each clause's own tier -> one whole submit per
+    tier. 0 every tier asked (or held for its companion in the queue), 2 a submit was refused, 3 cannot, 4 could not look."""
     import ask as ASK
+    import companion_stage as CS
     import host_facts as HF
+    import stage6_checks as SC
     r = HF.read()
-    proofs, mod = {}, None
+    path = os.path.join(REPO, "infrastructure", "state", "live_proofs", a.item + ".txt")
     try:
-        with open(os.path.join(REPO, "infrastructure", "state", "live_proofs", a.item + ".txt"), encoding="utf-8") as f:
-            for line in f:
-                m = re.match(r"live-proof (\w+):", line)
-                if m:
-                    proofs[m.group(1)] = line
-                m = re.match(r"live-mods:\s*(\w+)", line)
-                mod = mod or (m.group(1) if m else None)
-    except OSError:
-        pass
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+    except FileNotFoundError:
+        text = ""
+    except OSError as e:
+        print("COULD NOT LOOK %s: %s" % (path, e))
+        return 4
+    tiers, why = ASK.tiers_of(text, mod_pids())
+    if why:
+        print("CANNOT %s" % why)
+        return 3
+    only = set(a.clauses.split(",")) if a.clauses else None
     sha = a.sha or subprocess.run(["git", "-C", REPO, "rev-parse", "origin/main"], capture_output=True, text=True, timeout=60).stdout.strip() or "origin/main"
-    p = ASK.plan(a.item, r["facts"], r["stale"], proofs, {}, {a.tier: a.mods or []} if a.tier else {}, mod=mod, sha=sha)
-    print("%s %s" % (p["verdict"], "; ".join(p["why"])))
-    if p["verdict"] in ("ASK", "HOLD"):
-        argv = p["argv"] + ["--purpose", a.purpose, "--by", a.by]
+    codes = []
+    for tier, clauses in sorted(tiers.items()) or [(None, [])]:
+        clauses = [c for c in clauses if not only or c in only]
+        if not clauses and tiers:
+            continue
+        try:
+            need = HF.need_of(a.item, tier) if tier else {"mods": []}
+            deploy = SC.deploys(a.item, tier) if tier else []
+        except Exception as e:  # noqa: BLE001 - what a tier needs could not be read: said, nothing sent
+            print("COULD NOT LOOK at tier %s: %s: %s" % (tier, type(e).__name__, e))
+            codes.append(4)
+            continue
+        p = ASK.plan(a.item, r["facts"], r["stale"], {c: 1 for c in clauses}, {}, {tier: need["mods"]} if tier else {}, sha=sha,
+                     companion=CS.wanted(sha))
+        print("%s %s %s" % (p["verdict"], tier or "", "; ".join(p["why"])))
+        if p["verdict"] not in ("ASK", "HOLD"):
+            codes.append(4 if p["verdict"] == "COULD NOT LOOK" else 3)
+            continue
+        argv = p["argv"] + ["--purpose", a.purpose, "--by", a.by, "--timeout", str(a.timeout)]
+        argv += [x for d in deploy for x in ("--deploy", d)] + (["--priority", str(a.priority)] if a.priority is not None else [])
         print("testq.py " + " ".join(argv))
-        return main(argv) if p["verdict"] == "ASK" and not a.dry else 0
-    return 4 if p["verdict"] == "COULD NOT LOOK" else 3
+        codes.append(0 if a.dry else main(argv))
+    if not codes:
+        print("CANNOT no clause of %s matches %s" % (a.item, a.clauses))
+        return 3
+    return max(codes)
 
 
 def main(argv=None):
@@ -2520,8 +2578,9 @@ def main(argv=None):
     s.add_argument("--purpose", choices=S.PURPOSES, required=True)
     s.add_argument("--by", default="BENCH")
     s.add_argument("--sha")
-    s.add_argument("--tier")
-    s.add_argument("--mods", nargs="*")
+    s.add_argument("--clauses", help="only these clauses, e.g. A1,A2")
+    s.add_argument("--priority", type=int, help="default 50; an in-game visit's checks are 40, the filler 20")
+    s.add_argument("--timeout", type=int, default=2700)
     s.add_argument("--dry", action="store_true")
     s = sub.add_parser("list")
     s.add_argument("--state", choices=STATES)

@@ -6,6 +6,7 @@ import json
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+os.environ["TESTQ_QUEUE"] = tempfile.mkdtemp(prefix="ask_lane_")     # before any import of testq: never the live queue
 sys.path.insert(0, HERE)
 import host_facts as HF  # noqa: E402
 import ask as ASK  # noqa: E402
@@ -62,8 +63,85 @@ def t_a_login_low_on_time_is_named():
     check(HF.logins_low(F) == ["lukas"], "a login low on time is named")
 
 
+GAME = {"mods": ["a.b"], "saves": ["S1"]}
+
+
+def reading(**kw):
+    d = {"games": {"Steve1": GAME, "Steve2": {"mods": ["a.b", "c.d"], "saves": []}}, "unread": [], "python": {"numpy": True}, "free_gb": 5}
+    d.update(kw)
+    return HF.collect(lambda code: "noise\n" + json.dumps(d) + "\n")
+
+
+def t_an_unread_part_is_never_absent():
+    whole, half, torn = reading(), reading(games={"Steve1": GAME, "Steve2": None}), reading(unread=["/x/About/About.xml (ParseError)"])
+    none = reading(games={"Steve1": None, "Steve2": None})
+    need = {"mods": ["z.z"]}
+    words = [HF.lacks(need, f, False)[0][2] for f in (whole, half, torn, none)]
+    check(words == ["absent", "could not look", "could not look", "could not look"] and whole["mods"] == ["a.b", "c.d"]
+          and HF.lacks({"python": ["numpy"]}, reading(python=None), False)[0][2] == "could not look",
+          "an unread part is never absent %s" % words)
+
+
+def t_a_refresh_that_fails_writes_nothing():
+    p = os.path.join(tempfile.mkdtemp(), "f.json")
+
+    def down(code):
+        raise OSError("ssh exit 255")
+    try:
+        HF.refresh(p, run=down)
+        raised = False
+    except OSError:
+        raised = True
+    ok = raised and not os.path.exists(p)
+    f = HF.refresh(p, run=lambda c: json.dumps({"games": {"Steve1": GAME}, "unread": [], "python": {}, "free_gb": 1}), now=5,
+                   companions=lambda: 1 / 0, logins=lambda: {"x": None, "y": 5})
+    check(ok and f["companions"] is None and "companions" in str(f["unread"]) and HF.logins_low(f) == ["y"] and not HF.read(p, 6)["stale"],
+          "a refresh that fails writes nothing")
+
+
+def t_each_clause_goes_to_its_own_list():
+    pid = {"FlowWorks": "mandrake.rm.flowworks"}.get
+    t = "live-mods: FlowWorks  # why\nlive-tier A2: bridge\nlive-proof A1: x\nlive-proof A2: y\nlive-proof A3: z\n"
+    got = [ASK.tiers_of(t, pid), ASK.tiers_of("live-tier: flowworks\nlive-proof A1: x\n", pid), ASK.tiers_of("live-proof A1: x\n", pid),
+           ASK.tiers_of("nothing\n", pid)]
+    bad = [ASK.tiers_of("live-mods: Nope\nlive-proof A1: x\n", pid)[1], ASK.tiers_of("live-menu: q\nlive-proof A1: x\n", pid)[1],
+           ASK.tiers_of("live-tier: a b\nlive-proof A1: x\n", pid)[1]]
+    check(got[0] == ({"mods__mandrake_rm_flowworks": ["A1", "A3"], "bridge": ["A2"]}, None) and got[1][0] == {"flowworks": ["A1"]}
+          and got[2][0] == {"mods__base": ["A1"]} and got[3] == ({}, None) and all(bad), "each clause goes to its own list %s %s" % (got, bad))
+
+
+def t_a_held_companion_is_queued_not_dropped():
+    import testq as T
+    sent, home = [], os.environ["TESTQ_QUEUE"]
+    json.dump({"at": __import__("time").time(), "facts": dict(F, mods=["brrainz.rimbridgeserver", "brrainz.harmony", "owlchemist.cherrypicker"])},
+              open(os.path.join(home, "host_facts.json"), "w"))
+    real, T.cmd_submit = T.cmd_submit, lambda a: sent.append(a) or 0
+    try:
+        rc = T.main(["ask", "RIMMANDRAKE_FIX_BRIDGE_STEPPED_PAWNS_DRAWN_ON_OLD_SQUARE", "--purpose", "fix", "--sha", "HEAD"])
+        dry = T.main(["ask", "RIMMANDRAKE_FIX_BRIDGE_STEPPED_PAWNS_DRAWN_ON_OLD_SQUARE", "--purpose", "fix", "--sha", "HEAD", "--dry"])
+        no = T.main(["ask", "NO_SUCH_ITEM_HAS_A_PROOF", "--purpose", "fix", "--sha", "HEAD"])
+        os.remove(os.path.join(home, "host_facts.json"))
+        blind = T.main(["ask", "RIMMANDRAKE_FIX_BRIDGE_STEPPED_PAWNS_DRAWN_ON_OLD_SQUARE", "--purpose", "fix", "--sha", "HEAD"])
+    finally:
+        T.cmd_submit = real
+    check((rc, dry, no, blind) == (0, 0, 3, 4) and len(sent) == 1 and sent[0].profile == "tier:flowworks" and "FlowWorks" in sent[0].deploy,
+          "a held companion is queued, not dropped; exits %s, sent %d" % ((rc, dry, no, blind), len(sent)))
+
+
+def t_a_check_the_host_cannot_run_is_not_sent():
+    import visit_feed as VF
+    import testq as T
+    w = {"FlowWorks": {"opened": 0, "visit": 1, "checks": {"k": ["c"]}}}
+    json.dump({"at": 100, "facts": F}, open(os.path.join(os.environ["TESTQ_QUEUE"], "host_facts.json"), "w"))
+    got = VF.facts_gate(w, {}, 110, T.REPO)
+    check(not w and "absent" in str(got) and "could not look" not in str(got), "a check the host cannot run is not sent (the rest: selftest_steve_visit_feed.py) %s" % got)
+
+
 def main():
-    for t in (t_old_facts_are_stale, t_absent_is_measured, t_stale_never_says_absent, t_no_driver_is_cannot, t_a_missing_tier_mod_is_cannot,
+    os.environ["TESTQ_QUEUE_SSH"] = ""          # a submit here never leaves this fixture
+    for t in (t_an_unread_part_is_never_absent, t_a_refresh_that_fails_writes_nothing, t_each_clause_goes_to_its_own_list,
+              t_a_held_companion_is_queued_not_dropped, t_a_check_the_host_cannot_run_is_not_sent,
+              t_old_facts_are_stale, t_absent_is_measured, t_stale_never_says_absent, t_no_driver_is_cannot, t_a_missing_tier_mod_is_cannot,
               t_stale_facts_are_could_not_look, t_an_ask_is_the_whole_line, t_a_login_low_on_time_is_named):
         t()
     print("FAIL %d" % len(FAILS) if FAILS else "PASS")

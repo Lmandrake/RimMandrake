@@ -236,6 +236,8 @@ def lane_state(now, mods=None):
     if "companion" in by:   # the stager is failing or behind: the filler holds rather than die at deploy
         m = by["companion"][0]
         return _st("IDLE_EMPTY", "filler held: " + plans[m]["text"][:200], plans[m]["since"] + COMPANION_GRACE_S)
+    if "facts" in by:       # what the host lacks, or facts too old to say: the filler holds rather than die on the load
+        return _st("IDLE_EMPTY", "filler held: " + "; ".join(plans[m]["text"][:160] for m in by["facts"]), 0)
     gaps = [m for v in ("nohist", "dry") for m in by.get(v, [])]
     if gaps:
         return _st("IDLE_EMPTY", "nothing selectable: " + "; ".join(plans[m]["text"][:160] for m in gaps), 0)

@@ -1,0 +1,11 @@
+[Unit]
+Description=SteveDesktop host facts, every 30 minutes
+
+[Timer]
+OnActiveSec=1min
+OnUnitActiveSec=30min
+AccuracySec=1min
+Persistent=false
+
+[Install]
+WantedBy=timers.target

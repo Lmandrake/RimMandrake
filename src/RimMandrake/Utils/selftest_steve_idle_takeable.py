@@ -63,6 +63,16 @@ def reset():
     for m, st in (("Pyrelands", "in_game"), ("FlowWorks", "in_game"), ("CrackedLands", "offline_build")):
         wjson(TMP / "clone" / "design" / "concepts" / m / "version" / "stage_record.json", {"stage": st})
     wjson(os.environ["RM_OWNER_HOLD_FILE"], {"holds": []})
+    facts()
+
+
+FACTS = {"mods": ["brrainz.harmony", "brrainz.rimbridgeserver", "owlchemist.cherrypicker", "lwm.deepstorage"],
+         "saves": ["NS_Pyrelands_site_1_417df172fdb5_visit5"], "python": {"numpy": True, "lxml": True, "PIL": True}}
+
+
+def facts(at=None, **kw):
+    """The host's facts (testq/host_facts.py): fresh and whole unless told otherwise."""
+    wjson(TMP / "testq" / "host_facts.json", {"at": NOW - 600 if at is None else at, "facts": dict(FACTS, **kw)})
 
 
 def job(jid, mod, chains, by="BENCH", **kw):

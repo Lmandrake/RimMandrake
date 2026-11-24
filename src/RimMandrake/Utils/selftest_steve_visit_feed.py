@@ -67,6 +67,39 @@ def visit_jobs():
     return [j for j in pending() if j and j.get("requested_by") != "BENCH.filler"]
 
 
+def t_a_check_the_host_cannot_run_is_not_sent():
+    # ask-lane-after-host-facts: stale and absent are two answers; neither sends the check; whole facts do
+    for what, kw, state, word in (
+            ("stale facts", {"at": NOW - 3 * 3600}, "unmeasured", "could not look"),
+            ("a part of the facts that was not read", {"mods": None}, "unmeasured", "could not look"),
+            ("a mod the games lack", {"mods": ["brrainz.harmony", "brrainz.rimbridgeserver"]}, "refused", "absent"),
+            ("the site save the games lack", {"saves": []}, "refused", "absent"),
+            ("a Python package the host lacks", {"python": {"numpy": True, "lxml": False, "PIL": True}}, "refused", "absent")):
+        F.reset()
+        F.dispatch(F.one())
+        F.facts(**kw)
+        out = step() or {}
+        check(out.get("state") == state and word in json.dumps(out.get("facts")) and not visit_jobs(),
+              "a-check-the-host-cannot-run-is-not-sent: %s -> %s, %s" % (what, out.get("state"), out.get("facts")))
+    F.reset()
+    F.dispatch(F.one())
+    os.remove(str(F.TMP / "testq" / "host_facts.json"))
+    out = step() or {}
+    check(out.get("state") == "unmeasured" and not visit_jobs(), "a-check-the-host-cannot-run-is-not-sent: no facts file -> %s" % out.get("state"))
+    import visit_feed as VF
+    F.facts(mods=["brrainz.harmony", "brrainz.rimbridgeserver", "owlchemist.cherrypicker"])     # no lwm.deepstorage
+    ws = {"ExplosiveKnockback": {"opened": 0, "visit": 1, "groups": {("explosiveknockback_visit", "proof"): ["a"], ("flowworks", "release"): ["b"]}}}
+    got = VF.facts_gate({}, ws, NOW, T.REPO)
+    check(list(got.get("ExplosiveKnockback", {})) == ["a"] and "lwm.deepstorage is absent" in str(got)
+          and list(ws["ExplosiveKnockback"]["groups"]) == [("flowworks", "release")],
+          "a-check-the-host-cannot-run-is-not-sent: only the script check whose tier lacks a mod is held (%s)" % got)
+    F.facts(at=NOW - 3 * 3600)
+    hold, plan = T.facts_hold("FlowWorks", NOW), T.fill_plan("FlowWorks", 4, 200, now=NOW)
+    check("could not look" in str(hold) and plan["verdict"] == "facts", "a-check-the-host-cannot-run-is-not-sent: the filler holds on stale facts (%s)" % plan.get("text"))
+    F.facts()
+    check(T.facts_hold("FlowWorks", NOW) is None, "a-check-the-host-cannot-run-is-not-sent: whole facts hold no filler")
+
+
 def t_a_waiting_check_is_queued_ahead_of_filler():
     # the ticket's case: one waiting check (p0, chain pc0) on Pyrelands visit 6, the lane idle
     F.reset()
@@ -445,7 +478,7 @@ def t_the_feed_runs_after_reconcile_before_admission():
 
 
 def main():
-    for t in (t_a_waiting_check_is_queued_ahead_of_filler, t_a_visit_opening_with_an_offset_reads, t_the_owners_hold_and_gate_still_stop_a_check,
+    for t in (t_a_waiting_check_is_queued_ahead_of_filler, t_a_check_the_host_cannot_run_is_not_sent, t_a_visit_opening_with_an_offset_reads, t_the_owners_hold_and_gate_still_stop_a_check,
               t_nothing_waits_nothing_is_sent, t_a_lane_refusal_does_not_spend_a_check, t_visit_feed_spends_a_chain_only_on_its_own_fault, t_could_not_look_sends_nothing, t_mods_take_turns,
               t_filler_prefers_advancing_mods, t_site_saves_ship_when_the_registry_changes,
               t_the_feed_runs_after_reconcile_before_admission):

@@ -292,6 +292,33 @@ def pick_checks(mod, groups, root, n):
     return out
 
 
+def facts_gate(w, ws, now, root):
+    """Take out of W and WS what the host cannot run at its kept facts (host_facts.py) -> {mod: {check: why}}. Each why
+    says `absent` (looked, not there) or `could not look` (stale facts, or a part that was not read)."""
+    import host_facts as HF
+    out, kept, asked = {}, HF.read(_T().q("host_facts.json"), now), {}
+
+    def why(mod, tier):
+        if (mod, tier) not in asked:
+            try:
+                asked[mod, tier] = HF.unmet(mod, tier, kept, HF.need_of(mod, tier, root))
+            except Exception as e:  # noqa: BLE001 - the need itself could not be read
+                asked[mod, tier] = "could not look: what it needs cannot be read (%s: %s)" % (type(e).__name__, e)
+        return asked[mod, tier]
+    for mod in list(w):
+        no = why(mod, None)
+        if no:
+            out.setdefault(mod, {}).update({k: no for k in w.pop(mod)["checks"]})
+    for mod in list(ws):
+        for key in list(ws[mod]["groups"]):
+            no = why(mod, key[0])
+            if no:
+                out.setdefault(mod, {}).update({k: no for k in ws[mod]["groups"].pop(key)})
+        if not ws[mod]["groups"]:
+            del ws[mod]
+    return out
+
+
 def _order(w, recs):
     """The earliest-opened visit first; after that, the mod whose last visit job was submitted longest ago."""
     T = _T()
@@ -339,12 +366,25 @@ def step(now=None, n=None, dry=False):
     for a, b in ((spent, spent2), (backoff, backoff2)):
         for m, x in b.items():
             a.setdefault(m, {}).update(x)
+    lacking = facts_gate(w, ws, now, T.REPO)
+    if lacking and not w and not ws:
+        blind = any(x.startswith("could not look") for v in lacking.values() for x in v.values())
+        T.log("visit feed: the host facts hold %s" % json.dumps(lacking)[:400])
+        return {"state": "unmeasured" if blind else "refused", "why": "the host facts hold every waiting check",
+                "facts": lacking, "refused": {} if blind else {m: "; ".join(sorted(set(v.values()))) for m, v in lacking.items()},
+                "spent": spent, "backoff": backoff, "faults": faults}
     if not w and not ws:
         if spent.get("unread"):
             return {"state": "unmeasured", "why": "nothing readable waits, but not read: %s" % spent["unread"]}
         if backoff:     # {mod: {chain: seconds left}}: refused (LANE_REFUSALS) or at fault just now; never `quiet`
             return {"state": "backoff", "backoff": backoff, "spent": spent, "faults": faults}
         return {"state": "quiet", "spent": spent}
+    out = _send(T, w, ws, inflight, recs, dry, n, spent, backoff, faults)
+    return dict(out, facts=lacking) if lacking else out
+
+
+def _send(T, w, ws, inflight, recs, dry, n, spent, backoff, faults):
+    """Queue one job of what waits -> the step's record."""
     r = subprocess.run(["git", "-C", T.REPO, "rev-parse", "--short", "origin/main"], capture_output=True, text=True,
                        timeout=60)
     if r.returncode != 0:

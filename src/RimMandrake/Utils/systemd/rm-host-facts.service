@@ -1,0 +1,12 @@
+# SteveDesktop's host facts, read by testq.py ask, the visit feed and the filler (design/specs/2026-11-24-ask-lane-after-host-facts).
+# Install:  cp src/RimMandrake/Utils/systemd/rm-host-facts.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-host-facts.timer
+[Unit]
+Description=RimMandrake SteveDesktop host facts
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/host_facts.py refresh
+WorkingDirectory=/home/mandrake/rm/dispatch
+Nice=10
+TimeoutStartSec=600s
