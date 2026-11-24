@@ -47,6 +47,52 @@ IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser
 CI = [sys.executable, str(IMAGE_SKILLS / "generating-images/scripts/codex_image.py")]
 LOOKS = ["Scrapper", "Industrial", "Modern", "Futuristic"]
 # already-seeded worker homes (a NEW home cannot be seeded while the sandbox seed template lags the codex build)
+
+
+def done_png(job):
+    return AP / "_artsrc" / job / f"{job}.png"
+
+
+# ------------------------------------------------------------------------------------------------ the shared language
+LOOK = {
+    "Scrapper": "SCRAPPER look: salvaged scavenger work - mismatched weathered warm-brown timber, a few LARGE rusty "
+                "orange-brown scrap-steel sheets, chunky tan rope lashings; warm 1970s earth-brown palette",
+    "Industrial": "INDUSTRIAL look: dark gunmetal-grey steel plate and heavy beams, a few LARGE bolts, yellow-and-black "
+                  "hazard paint used only as one or two broad bands",
+    "Modern": "MODERN look: clean light-grey galvanised steel and smooth grey panels framed by bold glossy RED painted "
+              "steel channels, a few zinc fittings",
+    "Futuristic": "FUTURISTIC look: matte off-white and pale-grey composite panels, dark charcoal recessed seams, at most "
+                  "one or two thin teal accent strips - matte, never glowing",
+    "Timber": "base TIMBER: weathered warm-brown timber with dark iron nail heads and broad iron strap plates",
+    "Steel": "base STEEL: plain mid-grey riveted steel plate and dark iron fittings, regular engineered framing",
+    "Base": "the base set: weathered warm-brown timber, mid-grey steel plate, dark iron fittings, tan hemp rope",
+}
+TIER = {
+    "Heavy": "HEAVY tier: massive and over-built - a broad thick structural frame, chunky members, lots of mass",
+    "Steel": "STEEL tier: lighter all-metal construction - a SLIM frame, thinner members, visibly less mass than heavy",
+    "Timber": "TIMBER tier: the body is unmistakably WOOD - broad wooden boards or beams with visible grain, held by the "
+              "look's metal fittings",
+}
+READ = ("It must read at 32 pixels per cell: a few big bold shapes and strong value contrast; no fine mesh, no rows of "
+        "tiny rivets, no thin chains, no hairline detail. Clean painterly vanilla-RimWorld rendering, matte surfaces, "
+        "soft overhead-front light, a thin dark edge line around each part.")
+ALPHA = ("Fully transparent background with real alpha: nothing painted on the ground around it, no cast shadow, no "
+         "backdrop.")
+CAM = ("Orthographic RimWorld building camera, about 35 degrees above horizontal: top faces clearly visible and lit, "
+       "the front face short and foreshortened, square-on to the viewer (never a diagonal three-quarter view).")
+TOP = "Seen from straight above, flat like a floor, no perspective, no taper."
+
+
+def tile_prompt(what, layout_img=True):
+    lay = (" Same layout as image 1: the walking surface down the middle and a side band down each of the left and right "
+           "edges (each about one ninth of the width)." if layout_img else "")
+    return (f"Paint ONE seamless square tile of a suspension-bridge walkway deck for RimWorld, 1 cell. {TOP} The walking "
+            f"surface runs top-to-bottom in the direction of travel and repeats seamlessly top to bottom.{lay} {what} "
+            f"{READ} The tile fills the whole square edge to edge.")
+
+
+# ------------------------------------------------------------------------------------------------------- the job table
+JOBS: list[dict] = []
 ROWS: dict[str, dict] = {}
 
 
