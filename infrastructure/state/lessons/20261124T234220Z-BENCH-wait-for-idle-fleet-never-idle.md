@@ -1,0 +1,3 @@
+'Wait for a moment with no live run' is not a plan on this fleet. Measured from the control store's runs table, 2026-11-18 to 11-24 (783 detached runs): 11.5% of the 5-min passes had no live run, and one stretch of 50.8 h had a run live the whole time. A design that defers an act until the fleet is idle must say what happens when it never is: the account plan's first rule (a rescue switch waits for idle and never refuses a start) erased 43 points in the model of two weeks. Measure the idle share before you design a wait for idle.
+item: RIMMANDRAKE_DESIGN_ACCOUNT_PLAN_ONE_FILE_COMMANDED_IN_ONE_LINE
+home: NONE
