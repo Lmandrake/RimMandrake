@@ -1,0 +1,2 @@
+Editing an offline selftest inside a mod folder reruns the mod's whole-mod live checks (Pyrelands: sc_full_list_smoke, P_mapgen_log), and a docstring edit in validation.py related sc_firehawk_rewards whole. Before publishing text under a live mod, commit locally and read rerun_relation.py --mod <Mod> --old HEAD~1; a selftest that never ships goes in the mod's .hashignore.
+item: RIMMANDRAKE_ENACT_SEASON_PLAY_IS_PLAYTEST_NOT_ACCEPTANCE_NOR_HIS_WALK
