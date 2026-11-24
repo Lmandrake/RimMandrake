@@ -11987,3 +11987,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI_TBVP","result":"broken","detail":"Ops alarm SCRATCH_OUTSIDE_CAP: 14 clones outside the pool cap at the start of the reaper run of 2026-11-24T16:04:06Z -- disk.scratch_outside_distressed = 1 1 wh","ts":"2026-11-24T16:07:55Z","tsn":1795536475667483206}
 {"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI_TBVP","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-24T16:08:04Z","tsn":1795536484967195443}
 {"seat":"RUNNER","event":"note","id":"OPS_TIMER_REPAIR_PRXC_XKGA","text":"ops_watch: cleared at 2026-11-24T16:07:43Z (timers.failed_units now 0)","ts":"2026-11-24T16:08:16Z","tsn":1795536496694250620}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI_TBVP","result":"kept","detail":"sweep: running again","ts":"2026-11-24T16:18:21Z","tsn":1795537101825398725}
