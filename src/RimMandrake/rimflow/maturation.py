@@ -4485,16 +4485,29 @@ def _not_counted_why(r):
     return "unrepaired: %s; owner %s" % (r.get("unrepaired"), r.get("owner"))
 
 
+LANE_ROWS_BY = "testq/visit_rows.py"    # the `by` that the test lane writes on its rows (Utils/testq/visit_rows.py)
+
+
+def lane_rows_only(d):
+    """True when a visit folder holds nothing but the test lane's rows: the lane may write them before any driver opens the
+    visit, so the folder is no driver's record (FlowWorks visit 10, 2026-11-24: 3 rows from Steve1 read as a visit that
+    ended without its exit block, and no driver launched). A row of another writer, a torn row, another file: False."""
+    if os.listdir(d) != ["rows.jsonl"]:
+        return False
+    rows = _jsonl(os.path.join(d, "rows.jsonl"))
+    return bool(rows) and all(isinstance(r, dict) and r.get("by") == LANE_ROWS_BY for r in rows)
+
+
 def read_ingame_exit(root, mod, n, tt=None):
-    """-> {visit, state, why[], claimed, rows}: the program's reading of visit n's exit. state: absent (no visit_n folder)
-    | no_exit_block (no Exit block with the four keys: a visit in progress, or one that ended without writing it) | met |
+    """-> {visit, state, why[], claimed, rows}: the program's reading of visit n's exit. state: absent (no visit_n folder,
+    or one that holds only the test lane's rows, lane_rows_only: its driver is still owed) | no_exit_block (no Exit block with the four keys: a visit in progress, or one that ended without writing it) | met |
     not_met. See the record layout above this section."""
     if tt is None:
         tt, _ = read_json(root, mod, "version/test_table.json")
     base = "%s/visit_%d" % (INGAME_DIR, n)
     d = os.path.join(mod_dir(root, mod), base)
     out = {"visit": n, "record": rel(mod, base), "why": [], "rows": {}}
-    if not os.path.isdir(d):
+    if not os.path.isdir(d) or lane_rows_only(d):
         out["state"] = "absent"
         return out
     blk = ingame_exit_block(read_text(root, mod, base + "/SUMMARY.md"))
@@ -5236,7 +5249,7 @@ def unrun_lines_of(rows, tt, moved=()):
 def ingame_facts(root, mod):
     """-> what in-game acceptance owes now: visit (the moves into in_game so far), exit (read_ingame_exit of visit_N),
     checks (the stage-6 ids), testq (those carrying a testq block: what SteveDesktop's queue may admit), and owed:
-    "run" (no visit_N folder: a live driver is owed) | "no exit block" | "exit met" | "exit not met" | "blocked" (a
+    "run" (no visit_N folder, or only the test lane's rows in it: a live driver is owed) | "no exit block" | "exit met" | "exit not met" | "blocked" (a
     hold, a version mismatch, an unreadable table, no stage-6 check, a folder past the record)."""
     rec = load(root, mod)
     if rec is None:

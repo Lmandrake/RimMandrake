@@ -510,6 +510,20 @@ def t_a_visit_row_is_written_once():
     check("visit_*/rows.jsonl merge=union" in open(os.path.join(ROOT, ".gitattributes")).read(), n + "the lane and a driver append to one file")
 
 
+def t_a_lane_row_never_opens_a_visit():
+    n = "a-lane-row-never-opens-a-visit: "
+    M = VR._rf("maturation")
+    root = tempfile.mkdtemp(dir=TMP)
+    d = os.path.join(root, "design", "concepts", "FlowWorks", "version", "in_game", "visit_9")
+    state = lambda: M.read_ingame_exit(root, "FlowWorks", 9, {"tests": TAB})["state"]
+    VR.write(d, VR.rows_of(vrec({"sc_a": "PASS", "sc_b": "FAIL"}), TAB, ID))
+    check(len(open(os.path.join(d, "rows.jsonl")).read().splitlines()) == 2 and state() == "absent",
+          n + "the rows that the lane writes open no visit: the driver is still owed (%s)" % state())
+    with open(os.path.join(d, "rows.jsonl"), "a") as f:
+        f.write('{"test": "sc_a", "verdict": "PASS"}\n')
+    check(state() == "no_exit_block", n + "a driver's row beside them is a record (%s)" % state())
+
+
 def t_could_not_look_never_replaces_a_row():
     n = "could-not-look-never-replaces-a-row: "
     LK = SC._rimflow("live_kinds")
@@ -582,6 +596,7 @@ def main():
               t_no_entry_point_is_could_not_look, t_a_paused_raid_is_never_sent, t_the_verdict_is_the_checks_own_row,
               t_one_run_serves_all_its_checks, t_the_job_form_is_checked, t_the_worker_publishes_each_check,
               t_the_proof_build_never_touches_the_clone, t_the_feed_sends_one_tier_at_a_time, t_a_visit_row_is_written_once,
+              t_a_lane_row_never_opens_a_visit,
               t_could_not_look_never_replaces_a_row, t_the_filler_does_not_repeat_a_chain_in_flight):
         t()
     shutil.rmtree(TMP, ignore_errors=True)

@@ -50,6 +50,10 @@ Each promise has a test of its name in `src/RimMandrake/Utils/testq/selftest_sta
   doubles its wait.
 - **a-visit-row-is-written-once.** A finished visit job adds one row per check to the open visit's `rows.jsonl`, once,
   with the game's name, the job and the build identity. A visit that moved on or closed gets no row.
+- **a-lane-row-never-opens-a-visit.** A visit folder that holds only the lane's rows reads as no visit: its live driver
+  is still owed (`maturation.lane_rows_only`). Measured 2026-11-24: 3 rows of Steve1 in FlowWorks `visit_10` read as a
+  visit that ended without its exit block, so the Dispatch step paused FlowWorks. A row of another writer, a torn row or
+  another file beside them is a record, as before.
 - **could-not-look-never-replaces-a-row.** An UNMEASURED row, a job that did not end DONE, and a row with no readable
   identity read COULD NOT LOOK. A FAIL reads UNRESOLVED until someone classes it.
 - **the-proof-build-never-touches-the-clone.** A job with `proof_build` builds with `-p:RmProofs=true` into the Windows

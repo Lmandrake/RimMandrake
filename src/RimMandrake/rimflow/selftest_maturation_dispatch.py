@@ -1611,6 +1611,50 @@ def ingame_main():
             return dec(rd[0]) == "visit_unfinished" and need(rd[0], "Pyrelands") and len(launches()) == 1
         chk(t_unfinished, "a visit record with no exit block and nothing live: a Needs Conductor line, no launch")
 
+        # RIMMANDRAKE_UNPAUSE_FLOWWORKS_VISIT_TEN_SUMMARY_HAS_NO_EXIT_BLOCK: the test lane (testq/visit_rows.py) wrote
+        # FlowWorks visit_10/rows.jsonl before any driver was launched, and the visit read "visit_unfinished"
+        vdir = os.path.join(root, "design", "concepts", "Pyrelands", "version", "in_game", "visit_1")
+
+        def lane_rows(*rows, **files):
+            shutil.rmtree(vdir, ignore_errors=True)
+            os.makedirs(vdir)
+            with open(os.path.join(vdir, "rows.jsonl"), "w") as f:
+                f.write("".join((r if isinstance(r, str) else json.dumps(r)) + "\n" for r in rows))
+            for name, text in files.items():
+                with open(os.path.join(vdir, name), "w") as f:
+                    f.write(text)
+        lane = {"test": "sc_no_rain", "verdict": "PASS", "by": "testq/visit_rows.py", "job": "J1", "game": "Steve1"}
+
+        def t_lane_opens():
+            reset()
+            lane_rows(lane, dict(lane, test="sc_four_looks"))
+            rd[0] = tick(on)
+            return dec(rd[0]) == "launched" and len(launches()) == 1
+        chk(t_lane_opens, "a visit folder that holds only the test lane's rows is no driver's record: the visit is owed "
+                          "its driver, and one launches")
+
+        def t_lane_stop():
+            unit = json.load(open(os.path.join(sd, "state.json")))["mods"]["Pyrelands"]["ingame_auto"][0]["unit"]
+            world["live"] = {}
+            world["runs"]["Pyrelands"] = [{"unit": unit, "item": filed[0][0], "live": False, "at": T0}]
+            world["last_end"]["Pyrelands"] = T0 + 100
+            rd[0] = tick(on, at=1200)
+            return dec(rd[0]) == "stopped" and len(launches()) == 1
+        chk(t_lane_stop, "that driver ended and only the lane's rows stand there: stopped, no second automatic try")
+
+        def t_lane_not_alone():
+            out = []
+            for rows, files in (((lane, {"test": "sc_x", "verdict": "PASS"}), {}), ((lane, '{"torn'), {}),
+                                ((lane,), {"SUMMARY.md": "# visit 1\n"}), ((), {})):
+                reset()
+                lane_rows(*rows, **files)
+                out.append(dec(tick(on)) == "visit_unfinished" and not launches())
+            return all(out)
+        chk(t_lane_not_alone, "a driver's row, a torn row, a SUMMARY.md or an empty rows file beside the lane's rows still "
+                              "reads visit_unfinished: a record that a run left is never launched over")
+        shutil.rmtree(vdir, ignore_errors=True)
+        reset()
+
         # ---- gates before a launch -----------------------------------------------------------------------------------
         def t_bridge():
             reset()
