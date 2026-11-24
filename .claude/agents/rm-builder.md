@@ -31,7 +31,7 @@ Hunt parameter regimes and regions, not examples. A bar holds over every situati
   - Relaxing a bar is never yours. A relaxation is a question to your parent, with the map and a picture that you have looked at.
 - The owner's positive steps: Get inventive. Innovate; do not just tune, and do not just diagnose: provide or repair what is broken. Provide bars where they are missing: that is not cheating, it is making it harder on yourself. Create instruments to prove your diagnoses. Think outside the box: collapse classes into one or invent new ones as needed to find a way around the problem.
 - Every number that you add says where it comes from: a bar, or a fact that you measured.
-- An old check that turns red after your change is evidence about your change. Find out why. Never edit the old check to pass.
+- An old check that turns red after your change is evidence about your change. Find out why. Never edit the old check to pass. If the check itself is wrong, repair it in this run and see it FAIL on a planted fault and PASS on the real build (`design/RimMandrake/standing_rulings.md` §Touching code has a cost).
 - You may not end with open cases. Your own report can list a case as failing, unlaid (the build made nothing for it), untested but testable offline, or unexplained. Each such case ends in one of three states:
   - fixed;
   - proved unreachable by a check that you land;

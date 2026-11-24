@@ -98,8 +98,9 @@ remark.
 ## plan.md
 
 `plan.md` holds structure, reuse, order (instrument leaves first), risks, and three designs if there is a real choice.
-The proof obligations of `plan.md` are not disposable. Every scene lives in `scenes.json` (checked). Every missing script entry point,
-control or restoration step is a filed build item, named in that scene's `entry_point_item`. You write no code.
+The proof obligations of `plan.md` are not disposable. Every scene lives in `scenes.json` (checked). Every missing script entry point
+or control step is a filed build item, named in that scene's `entry_point_item`. A missing restoration step is never a
+build item, because a reset is the harness's job (`designer_scene_contract.md`, "Reset is housekeeping"). You write no code.
 
 When the coverage judge's gaps return a run here, the run ends by writing `coverage_fixes.json`. The file holds one claim
 with evidence per gap that the run fixed (`designer_lock.md` item 3). An unclaimed gap is judged still open.

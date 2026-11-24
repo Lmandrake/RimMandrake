@@ -22,7 +22,7 @@ Before you touch code, apply test 1 to your ticket ("Touching code has a cost" b
   - Then resolve the two into one thing, or invent something that satisfies both.
   - If you cannot, the change is no longer a well-defined fix. Report the map to your parent.
 - The owner's positive steps: Get inventive. Innovate; do not just tune, and do not just diagnose: provide or repair what is broken. Provide bars where they are missing: that is not cheating, it is making it harder on yourself. Create instruments to prove your diagnoses. Think outside the box: collapse classes into one or invent new ones as needed to find a way around the problem.
-- Every number that you add says where it comes from. Never edit an old check to pass.
+- Every number that you add says where it comes from. Never edit an old check to pass. If the check itself is wrong, repair it in this run and see it FAIL on a planted fault and PASS on the real build (`design/RimMandrake/standing_rulings.md` §Touching code has a cost).
 - You may not end with open cases that your own report lists and that you could settle offline.
 
 ## Read first: the skills for this kind of work, by path

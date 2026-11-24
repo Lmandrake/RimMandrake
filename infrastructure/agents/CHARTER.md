@@ -263,7 +263,8 @@ The windows are **the Conductor** (with the owner; `CONDUCTOR.md`) and the helpe
 
 - Spawn subagents freely, always with `model`.
 - A subagent's return is evidence, never a finding.
-- No subagent writes shared state.
+- A helper writes the ledger events of its own item (claim, note, close) and the files that its brief names. It writes
+  no other shared state.
 - Queue views render on every `rimflow` write: no loop, no publisher, no staleness.
 
 **Rebooting a window is prepared, not improvised** (owner, 2026-09-06).
