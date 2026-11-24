@@ -1469,7 +1469,8 @@ of `infrastructure/agents/CHARTER.md`).
      or the owner's. The machinery, and what it does not stop: `design/specs/2026-11-23-raid-tests-paused/boundary.md`.
    - A test that stages a raid carries `stages_raid` (what it stages) and `cheaper_why` in its test table. While the pause is
      on, nothing starts that test. The paused test reads `PAUSED: raid tests wait for the tools`, which is not PASS, not FAIL
-     and not UNMEASURED. The paused test spends no trial, turn, look or cycle, and does not pause its mod.
+     and not UNMEASURED. The paused test spends none of its mod's trials, turns, looks or
+     cycles (§Stops that the work did not cause), and does not pause its mod.
    - The bar of a paused scene stays open on the mod's record. The mod may go on to its walk brief, which names the open bar.
      The version does not pass until the bar is decided, or the Conductor decides by name what becomes of the bar.
    - The work that builds the raid tools may stage a raid: its item is in the `allow` list of the switch, and its run sets
