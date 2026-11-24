@@ -1,0 +1,1 @@
+maturation.py red-seen refuses its record when any file outside the test's reads becomes dirty during the run: T_CORE of Gimme Some Slack lost a full run on 2026-11-23 because another file of the clone was edited meanwhile. Make every edit in that clone before red-seen starts, or edit in another clone.
