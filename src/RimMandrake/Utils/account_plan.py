@@ -11,6 +11,7 @@ run and never refuses a start. Each decision says its reason in one line.
     ./acct status | next | plan | readings | forecast | measures | burn-mode | can-use A
     ./acct order A B C · line A N · step add|set|rm|move · switch A · pin · unpin · hold --for 2h · release
     ./acct set numbers.K=V · undo [REV] · whatif -- <a write> · import-legacy · tick [--shadow]
+    ./acct driver [old|new] · pass        which engine the timer's pass runs; the pass itself
 
 The plan file: $RM_ACCOUNT_PLAN_DIR/plan.json (default ~/.local/state/rimmandrake/account_plan), outside every clone:
 a write binds at the next read. Levels are read only through account_usage.py; the switch, the save orders and the
@@ -297,6 +298,8 @@ def problems(plan) -> list:
     for a, c in accts.items():
         if not isinstance(c, dict) or c.get("kind") not in ("claude", "meter"):
             out.append(f"account {a}: `kind` must be claude or meter")
+    if plan.get("driver", "old") not in ("old", "new"):
+        out.append("`driver` must be old or new; repair: ./acct driver old")
     N = plan.get("numbers")
     if not isinstance(N, dict):
         return out + ["`numbers` is missing; repair: ./acct undo"]
@@ -589,6 +592,7 @@ def gather(now=None, slow=False) -> dict:
             "burn_h": fleet_burn(series, now, dig(plan or {}, "numbers.forecast.burn_window_h") or 24,
                                  accounts=set(rows)),
             "switches": sws, "hand": bool(SP.manual_switch((sws or [None])[-1], markers, live)) if sws else False,
+            "draining": draining(SP),
             "markers": markers, "state": SP.load_state(), "hold_file": (SP.OUT / "HOLD").exists(),
             "codex": codex, "genai": cache.get("genai"), "slow_at": cache.get("at"), "entry": entry,
             "load": load, "ncpu": os.cpu_count() or 1}
@@ -843,6 +847,12 @@ def decide(plan, f, polled=True) -> dict:
               age=lambda a: (rd.get(a) or {}).get("age_min"), burn=f.get("burn_h"),
               runs=None if f.get("runs") is None else len(f["runs"]), entry=lambda a: (f.get("entry") or {}).get(a))
     accts = claude_accounts(plan)
+    if live not in accts:       # somebody put the machine there by hand: the plan has no line for it and leaves it alone
+        return {"do": "normal", "account": live, "to": None, "line": None, "warn_line": None,
+                "pct_left": (rd.get(live) or {}).get("last_left"),
+                "why": "%s is live and is no account of the plan: it is left alone, with no line and no warning; repair: "
+                       "./acct step add %s --use %s --leave <percent> (after adding it to the plan's accounts), or "
+                       "./acct switch <account>" % (live, live, live)}
     rules = {a: rule_of(plan, a, env) for a in accts}
     order = order_now(plan, rules)
     state, markers, runs = f.get("state") or {}, f.get("markers") or {}, f.get("runs")
@@ -887,12 +897,13 @@ def decide(plan, f, polled=True) -> dict:
         return SP.drained(d, {"account_end": cfg}, runs)
 
     # ---- fresh readings before any act
-    need = []
+    need, near_old = [], False
     if not lr["ok"] and not blind:
         need.append("%s (live) reads %s" % (live, lr["state"]))
     elif lr["ok"] and warn is not None and pl - warn <= fr["near_pct"]:
         old = cfg["poll_min"] if pl <= warn + 1 else fr["max_age_min"]
         if lr["age_min"] is None or lr["age_min"] > old:
+            near_old = pl > warn
             need.append("%s at %s%% is within %s of its %s%% warning line on a %s-min-old reading" % (
                 live, g(pl), g(fr["near_pct"]), g(warn), lr["age_min"]))
     for a in accts:
@@ -942,7 +953,7 @@ def decide(plan, f, polled=True) -> dict:
 
     # ---- the live account is finished: which account is next
     if under or until:
-        ch = choices(plan, f, can, stay=False) if (rate is not None and len(can) > 1) else {}
+        ch = choices(plan, f, can, stay=False) if len(can) > 1 else {}
         nxt = best_of(ch, order) if ch else (can[0] if can else None)
         for q in open_requests(plan, f):
             if q["to"] in can:
@@ -983,6 +994,10 @@ def decide(plan, f, polled=True) -> dict:
     # ---- the live account is not finished: it stays
     if need and not polled:
         return {**base, "do": "poll", "poll": True, "why": "; ".join(need)}
+    if near_old and lr["age_min"] is not None and lr["age_min"] > fr["max_age_min"]:
+        return {**base, "do": "soft", "why": "%s at %s%% on a %s-min-old reading, within %s points of its %s%% warning "
+                                             "line: the level cannot be confirmed after a poll, so no new start until "
+                                             "it is read" % (live, g(pl), g(lr["age_min"]), g(fr["near_pct"]), g(warn))}
     if stopped_here:
         if pl <= warn + N["entry_margin_pct"]:
             return {**base, "do": "stopped", "why": "stopped on %s: no start inside its warning zone" % live}
@@ -1002,14 +1017,14 @@ def decide(plan, f, polled=True) -> dict:
                 "why": "%s. The requested switch to %s goes at the first pass with no live run (%s)" % (
                     head, q["to"], runs_say(runs))}
     pin = [p for p in active(plan["pins"], now) if p["account"] == live]
-    ch = choices(plan, f, can) if rate is not None else {}
+    ch = choices(plan, f, can)      # {} with no burn rate: week_ahead is the one place that says so
     stay = ch.get(None)
     nxt_ev = next((e for e in (stay or {}).get("events", []) if e["kind"] == "switch"), None)
     nxt = nxt_ev["to"] if nxt_ev else (can[0] if can and not stay else None)
     tail = ". Next: %s" % (nxt or "none (no account can take over: it waits for a reset)")
     if nxt_ev:
         tail += " at about %s" % pacific(nxt_ev["at"])
-    if rate is None:
+    if stay is None:
         return {**base, "do": "normal", "next": nxt, "why": head + tail + ". No burn rate is measured: no week ahead, "
                                                                           "and the next account is by step order"}
     best = best_of(ch, order)
@@ -1038,7 +1053,8 @@ def decide(plan, f, polled=True) -> dict:
         live, best, g(gain), say(ch[best]), say(stay))
     if idle:
         return switch_to(best, False, rescue + "; no run is live", week=ch[best])
-    if drain_h is not None and gain >= N["switch_cost_pts"] + delayed:
+    # a drain that the actuator has started goes on while the rescue is still worth a switch: no stop and start
+    if drain_h is not None and gain >= N["switch_cost_pts"] + (0.0 if f.get("draining") else delayed):
         return switch_to(best, False, rescue + "; %s: no new start while they finish, at most %s h, then the switch "
                          "(the wait delays about %s points of work)" % (runs_say(runs), g(drain_h), g(delayed)),
                          week=ch[best])
@@ -1492,6 +1508,12 @@ def change_of(a, now):
         return fn, {"hold": "hold", "pin": "pin %s" % getattr(a, "account", ""),
                     "switch": "switch to %s%s" % (getattr(a, "account", ""), " now" if getattr(a, "now", False) else
                                                   " when no run is live")}[c]
+    if c == "driver":
+        def fn(p):
+            p["driver"] = a.which
+            return p
+        return fn, "driver %s (the timer's pass runs %s)" % (a.which, "this plan" if a.which == "new" else
+                                                             "the old engine, with this plan's pick logged beside it")
     if c in ("release", "unpin"):
         kind = "holds" if c == "release" else "pins"
 
@@ -1627,7 +1649,7 @@ def tick(shadow=False, dry=False, seams=None) -> int:
     saved = SP.decide, SP.load_plan
     SP.decide, SP.load_plan = new_decide, new_load_plan
     try:
-        rc = SP.check(dry=dry, **({"passes": 5} if not seams else seams))
+        rc = SP.check(dry=dry, **({"passes": 5} if not seams else {k: v for k, v in seams.items() if k != "frame"}))
     finally:
         SP.decide, SP.load_plan = saved
     if last:
@@ -1644,6 +1666,25 @@ def tick(shadow=False, dry=False, seams=None) -> int:
     return rc
 
 
+def timer_pass(seams=None) -> int:
+    """What the timer runs. The plan file names the driver: `new` runs tick(); `old` (and a plan file that is missing or
+    refused) runs the old engine as it is, and then logs this tool's pick beside it (shadow). The shadow never breaks
+    the pass."""
+    import switching_plan as SP
+    plan, why = load_plan()
+    if plan is not None and plan.get("driver", "old") == "new":
+        return tick(seams=seams)
+    if plan is None:
+        print("account_plan: %s; the old engine runs" % why)
+    rc = SP.check(**({"passes": 5} if not seams else {k: v for k, v in seams.items() if k != "frame"}))
+    if plan is not None:
+        try:
+            tick(shadow=True, seams=seams)
+        except Exception as e:  # noqa: BLE001  a shadow that broke is said, and the old pass stands
+            print("account_plan: the shadow pass broke: %s: %s" % (type(e).__name__, e), file=sys.stderr)
+    return rc
+
+
 def gather_light(SP) -> dict:
     import account_usage as AU
     now = time.time()
@@ -1656,7 +1697,35 @@ def frame_for_pass(SP, meter, live, now, state, markers, manual, live_runs, burn
     return {"now": now, "live": live, "runs": None if live_runs is None else list(live_runs), "rows": meter,
             "burn_live": burn, "burn_h": fleet_burn(series, now, plan["numbers"]["forecast"]["burn_window_h"],
                                                     accounts=set(meter)),
-            "switches": sws, "hand": bool(manual), "markers": markers, "state": state, "entry": entry}
+            "switches": sws, "hand": bool(manual), "markers": markers, "state": state, "entry": entry,
+            "draining": draining(SP)}
+
+
+def draining(SP) -> bool:
+    """The old actuator's notice says that a drain before a switch above the line is in flight (not an account end)."""
+    nt = SP.read_json(SP.OUT / "notice.json", {})
+    return isinstance(nt, dict) and nt.get("state") == "soft" and bool(nt.get("drain")) and not nt.get("account_end")
+
+
+def not_alive(old, new, f) -> str:
+    """The steps that a write added and that give no rule now, each with its cause; '' when each is alive."""
+    rd = readings_of(f)
+    env = Env(f["now"], lambda a: (rd.get(a) or {}).get("left"), lambda a: (rd.get(a) or {}).get("reset"),
+              age=lambda a: (rd.get(a) or {}).get("age_min"), burn=f.get("burn_h"),
+              entry=lambda a: (f.get("entry") or {}).get(a))
+    had, out = {s["name"] for s in old["steps"]}, []
+    for s in new["steps"]:
+        if s["name"] in had or step_alive(s, env):
+            continue
+        ra = s.get("ends_at_reset_of")
+        if ra and env.reset(ra) is None and stamp(s.get("ends")) is None:
+            why = "the reset of %s is not measured, so its end is unknown" % ra
+        elif s.get("when") and truth(parse(s["when"]), env, s["use"]) is not True:
+            why = "`%s` is %s now" % (s["when"], "unknown" if truth(parse(s["when"]), env, s["use"]) is None else "false")
+        else:
+            why = "now is outside its life"
+        out.append("%s: %s" % (s["name"], why))
+    return "; ".join(out)
 
 
 def flush_ledger(plan) -> None:
@@ -1686,9 +1755,14 @@ def flush_ledger(plan) -> None:
 
 
 # ------------------------------------------------------------------ the command line
+class Parser(argparse.ArgumentParser):
+    def error(self, message):       # argparse would exit 2, which here means could not look
+        raise Refused("%s; repair: ./acct --help" % message)
+
+
 def parser():
-    ap = argparse.ArgumentParser(prog="acct", description="The account plan: one file, one-line commands.")
-    sub = ap.add_subparsers(dest="cmd", required=True)
+    ap = Parser(prog="acct", description="The account plan: one file, one-line commands.")
+    sub = ap.add_subparsers(dest="cmd", required=True, parser_class=Parser)
     who = argparse.ArgumentParser(add_help=False)
     for flag in ("--why", "--owner-said", "--by-card", "--per-ruling"):
         who.add_argument(flag, default=None)
@@ -1743,10 +1817,13 @@ def parser():
     sub.add_parser("unpin", parents=[who])
     sub.add_parser("hold", parents=[who, ends])
     sub.add_parser("release", parents=[who])
+    sub.add_parser("pass")
+    p = sub.add_parser("driver", parents=[who])
+    p.add_argument("which", nargs="?", choices=("old", "new"))
     return ap
 
 
-WRITES = ("order", "line", "step", "set", "switch", "pin", "unpin", "hold", "release")
+WRITES = ("order", "line", "step", "set", "switch", "pin", "unpin", "hold", "release", "driver")
 
 
 def main(argv=None) -> int:
@@ -1769,6 +1846,8 @@ def run(argv) -> int:
     now = clock()
     if a.cmd == "tick":
         return tick(shadow=a.shadow, dry=a.dry_run)
+    if a.cmd == "pass":
+        return timer_pass()
     if a.cmd == "import-legacy":
         legacy, seed = json.loads(Path(a.src).read_text()), json.loads(SEED.read_text())
         old, _w = load_plan()
@@ -1798,6 +1877,10 @@ def run(argv) -> int:
     if plan is None:
         print(why if why.startswith(("NONE", "COULD NOT LOOK")) else "REFUSED: " + why)
         return NONE if why.startswith("NONE") else COULD_NOT_LOOK if why.startswith("COULD") else REFUSED
+    if a.cmd == "driver" and a.which is None:
+        print("%s: the timer's pass (./acct pass) runs %s" % (plan.get("driver", "old"), "this plan" if plan.get(
+            "driver") == "new" else "the old engine, with this plan's pick logged beside it"))
+        return OK
     if a.cmd in WRITES:
         if a.cmd == "pin" and not a.account:
             a.account = gather(now).get("live")
@@ -1807,7 +1890,9 @@ def run(argv) -> int:
         fn, what = change_of(a, now)
         rev, new = commit(fn, meta_of(a, argv))
         f = gather(now)
-        print("DONE rev %s: %s\n%s\nundo: ./acct undo %s" % (rev, what, next_line(new, f), rev))
+        dead = not_alive(plan, new, f)
+        print("DONE rev %s: %s%s\n%s\nundo: ./acct undo %s" % (
+            rev, what, " (NOT ALIVE NOW: %s)" % dead if dead else "", next_line(new, f), rev))
         return OK
     if a.cmd == "whatif":
         rest = [x for x in a.rest if x != "--"]

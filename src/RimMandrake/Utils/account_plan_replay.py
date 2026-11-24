@@ -265,9 +265,10 @@ def synth(left, nxt, t):
             "hours_to_week_reset": (nxt - t) / 3600 if nxt else None}
 
 
-def model(series, switches, plans, today, seed, t0, t1, rule, idle=True):
+def model(series, switches, plans, today, seed, t0, t1, rule, idle=True, drain_h="plan"):
     """One run of the days t0..t1 under `rule` ('old' or 'new'). -> {erased: {account: points}, erased_total,
-    switches, early (switches off an account above its line), idle_pts, burn}."""
+    switches, early (switches off an account above its line), idle_pts, burn}. drain_h: another rescue.drain_h than
+    the seed's (None: a rescue never refuses a start)."""
     import switching_plan as SP
     burn, refill = burn_stream(series, t0, t1)
     resets = reset_times(series)
@@ -288,6 +289,8 @@ def model(series, switches, plans, today, seed, t0, t1, rule, idle=True):
     for t, _k, kind, x in events:
         legacy = plan_at(plans, t, today)
         plan = AP.convert_legacy(legacy, seed)
+        if drain_h != "plan":
+            plan["numbers"]["rescue"]["drain_h"] = drain_h
         if kind == "reset":
             env = AP.Env(t - 1, lambda a: left.get(a), lambda a: x and t)
             rl = AP.rule_of(plan, x, env)
@@ -398,16 +401,19 @@ def main(argv=None) -> int:
     act = actual(series, switches, old_log, plans, today, seed, t0, t1)
     runs = {"old rule": model(series, switches, plans, today, seed, t0, t1, "old"),
             "new plan, idle": model(series, switches, plans, today, seed, t0, t1, "new", idle=True),
-            "new plan, busy": model(series, switches, plans, today, seed, t0, t1, "new", idle=False)}
+            "new plan, busy": model(series, switches, plans, today, seed, t0, t1, "new", idle=False),
+            "new plan, busy, a rescue never refuses a start (rescue.drain_h null)":
+                model(series, switches, plans, today, seed, t0, t1, "new", idle=False, drain_h=None)}
     out += ["", "## Measures", "",
             "| run | points erased at resets | by account | switches | of them off an unfinished account | burn that "
             "found no account | refused-start minutes for a switch above the line |", "|---|---|---|---|---|---|---|",
             "| actual (measured) | %s | %s | %d | not recorded | not recorded | %d (%d drain passes) |" % (
                 act["erased_total"], act["erased"], act["switches"], act["refused_start_min"], act["drain_passes"])]
     for name, r in runs.items():
-        out.append("| %s (modelled) | %s | %s | %d | %d | %s of %s | 0 by rule%s |" % (
+        out.append("| %s (modelled) | %s | %s | %d | %d | %s of %s | %s |" % (
             name, r["erased_total"], r["erased"], r["switches"], r["early"], r["idle_pts"], r["burn"],
-            "" if name != "old rule" else " not modelled"))
+            "not modelled" if name == "old rule" else "0" if (name.endswith("idle") or "null" in name) else
+            "at most %d x 2 h (one drain for each rescue)" % r["early"]))
     if act["unmeasured"]:
         out += ["", "UNMEASURED in the actual row (not counted as 0): " + "; ".join(act["unmeasured"])]
     text = "\n".join(out) + "\n"

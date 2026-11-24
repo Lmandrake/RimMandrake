@@ -33,8 +33,9 @@ hand-written hold to stop a wrong switch). This design replaces the rule.
 2. **Next.** When the live account is finished, the next account is chosen among the accounts that can take over
    (measured, fresh, a step uses it now, above its entry line). The choice is the one with the best week ahead (rule 4).
    With an unknown burn rate, or with equal weeks ahead, the choice is the first one in the step order.
-3. **No refused start for a preference.** The notice that refuses new runs is written only when the live account is
-   at its own warning line (the account-end sequence of 2026-11-24, kept as it is), or in a switcher call.
+3. **No refused start for a preference.** The notice that refuses new runs is written when the live account is at
+   its own warning line (the account-end sequence of 2026-11-24, kept as it is), in a switcher call, and for a rescue
+   that is worth it (rule 5). The step order, a reset that is near, and a small rescue refuse nothing.
 4. **Resets are planned for.** The tool runs the week ahead for each choice that it has now: stay, or switch to each
    account that can take over. One run of the week ahead is `forecast()`: the same step rules, the measured burn rate,
    each account refilled at its reset. It counts two things:
@@ -42,11 +43,17 @@ hand-written hold to stop a wrong switch). This design replaces the rule.
    - **switches**: each change of the live account.
    The cost of a choice is `erased + switch_cost_pts x switches + idle points` (idle: burn that found no account).
    The lowest cost wins. A tie goes to fewer switches, then to stay, then to the step order.
-5. **A switch that rescues allowance never stops a run and never refuses a start.** When the best choice is to leave a
-   live account that is not finished (a rescue), the switch goes at the first pass that measures no live run. Until
-   then the status line says how many points are at risk, and names the one command that goes at once
-   (`./acct switch <account> --now`). A rescue is taken only when it betters the week ahead by at least
-   `switch_cost_pts`. One number, off by default, lets a rescue stop live runs (`boundary.md` LIMITS).
+5. **A rescue is weighed.** A rescue is to leave a live account that is not finished, because the week ahead of that
+   switch is better. It is taken only when it betters the week ahead by at least `switch_cost_pts`.
+   - With no run live, the switch goes at once.
+   - With a run live, the switch must also pay for the wait: `switch_cost_pts` plus the burn rate times
+     `rescue.drain_h` hours (the work that the wait delays). Then no new run starts while the live runs finish, for at
+     most `rescue.drain_h` hours, and the switch goes. The reason line says all three numbers.
+   - A smaller rescue refuses nothing and waits for a pass with no live run. The status line says how many points are
+     at risk and names the command that goes at once (`./acct switch <account> --now`).
+   - Why not "never refuse a start": measured 2026-11-18 to 11-24, the fleet had a run live for 50.8 h without a
+     break; the model of 2026-11-10 to 11-24 with no idle moment erases 43 points of Steve's account under that rule
+     and none under this one. `./acct set numbers.rescue.drain_h=null` gives the strict rule.
 6. **A hand switch is respected.** When the last switch in the switcher's log was not made by this tool, no rescue
    switch leaves that account. It stays until it is finished. `./acct pin` does the same on purpose, with an end.
 7. **The reason is one line that a person can check.** Every decision prints: the live account, its level and line,
@@ -147,7 +154,9 @@ each such case as a wanted difference.
 ./acct undo [REV]              the plan as it was before that change
 ./acct can-use A               exit 0 yes, 1 no, 2 could not look
 ./acct burn-mode               the Burn Mode state now
-./acct tick [--shadow]         the timed pass
+./acct driver [old|new]        which engine the timer's pass runs (the cut-over and its undo)
+./acct pass                    what the timer runs: the old engine with a shadow, or this plan
+./acct tick [--shadow]         one pass of this plan (or only its pick, logged)
 ./acct replay --from T --to T  both engines over the recorded readings
 ./acct import-legacy           the plan file from switching_plan.json
 ```
@@ -207,9 +216,13 @@ A level that could not be read prints `UNMEASURED: <cause>`, never 0. An account
   stop and start (`switching_plan._check`, `account_end.py`). `./acct tick` runs that same code and gives it this
   design's decision in place of `switching_plan.decide`, and the numbers of the plan file in place of
   `switching_plan.json`. No line of `switching_plan.py` changes.
-- Before the cut-over the timer runs the old engine, and `./acct tick --shadow` only logs both picks.
-- The cut-over is one drop-in for `account-plan.service` that makes its `ExecStart` `account_plan.py tick`. The undo
-  removes the drop-in. Both are the Conductor's act.
+- The cut-over has two steps, both the Conductor's act.
+  1. The timer's unit runs `account_plan.py pass` in place of `switching_plan.py check`. With `driver` old (the value
+     of a new plan file) that pass runs the old engine as it is, and logs this tool's pick beside it: this step changes
+     no decision, and it is the shadow.
+  2. `./acct driver new --why "..."` makes the plan decide. `./acct driver old` (or the undo that the command prints)
+     gives the old engine back at the next pass. Each is one line and binds at once.
+- With a plan file that is missing or refused, `pass` runs the old engine and says why.
 
 ## What the tool never does
 
@@ -235,4 +248,4 @@ marker that decides eligibility, or refuse the owner's or the Conductor's write 
 | The readings reader answers in about 15 ms and the live account in about 0.1 s; Codex's reader takes about 1.8 s | measured 2026-11-24; so `status` reads Codex from `frame.json` |
 | The series holds the readings of 2026-10-26 on (9,030 lines) | measured 2026-11-24 |
 | One point of a week is the same amount of work on each Claude account | assumed; the replay says so beside its scores |
-| The fleet has moments with no live run often enough for a rescue switch | UNMEASURED; the replay scores both cases (idle at each pass, never idle) |
+| The fleet has moments with no live run often enough for a rescue switch | measured false, 2026-11-18 to 11-24 (control store, 783 detached runs): 11.5% of passes idle, longest busy stretch 50.8 h. So rule 5 has the weighed drain |
