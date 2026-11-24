@@ -9,7 +9,8 @@ namespace RimMandrake.FlowWorks.Machinery
     /// right? It should cover the cap but leave the bolted rim visible just like the other directions show." The pump's art
     /// draws its south arm end-on: a round cap inside a bolted rim. The pipes draw below the pump, so a pipe from the south
     /// passed behind that cap. This is the piece of that pipe drawn over the pump: from the shared cell edge up onto the cap,
-    /// its width going from the pipe's own to the cap's, its end the top half of the cap's outline. Only while a pipe is there.
+    /// its width going from the pipe's own to the cap's, its end the top half of the cap's outline. Only while a pipe or a hose is
+    /// there (a pipe: SectionLayer_RM_PipeCentreStubs; a hose: RM_UnderCouplers.DrawSouthSocket, per frame, in the pump's look).
     /// Cell units, from the pump cell's south-west corner.
     /// </summary>
     public static class PumpSouthSocket
@@ -37,6 +38,10 @@ namespace RimMandrake.FlowWorks.Machinery
         };
 
         public static bool TryCap(string look, out Cap cap) => Caps.TryGetValue(look ?? "", out cap) || Caps.TryGetValue("Scrapper", out cap);
+
+        /// <summary>Does a hose coupled with the unit step (sx, sz) from its end into the thing cover the cap: the liquid pump,
+        /// from its south.</summary>
+        public static bool HoseCovers(bool isLiquidPump, int sx, int sz) => isLiquidPump && sx == 0 && sz == 1;
 
         /// <summary>One corner of a quad: position in the cell and position on the pipe's straight tile.</summary>
         public struct Vert

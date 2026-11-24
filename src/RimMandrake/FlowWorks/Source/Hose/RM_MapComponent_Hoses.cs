@@ -2192,6 +2192,8 @@ namespace RimMandrake.FlowWorks.Hose
                 V2 portAtEdge = pts[n - 1] + dp * 0.5;
                 if (!RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.Draw(fe.Port, portAtEdge.X, portAtEdge.Z, fe.PortSide.X, fe.PortSide.Z, y - 0.001f))
                     DrawPortStub(r, fe, hm, vis, y - 0.001f, pts[n - 1], onSaddle ? saddleFace : (V2?)null);
+                // owner 2026-11-23: a line joined to a pump's south covers its drawn cap, inside the bolted rim
+                RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.DrawSouthSocket(fe.Port, fe.PortSide.X, fe.PortSide.Z);
                 lastPortCouplings++;
             }
             else if (lying && r.carry != HoseCarryState.Retracting && RelayOf(r) != null)
@@ -2747,6 +2749,7 @@ namespace RimMandrake.FlowWorks.Hose
                 // REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH: on the drawn nozzle it rides over the tip, as the laid hose's coupling does
                 Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, face, axis, vis, HoseJoints.NozzleFittingOnTop(r.Rect.Rot) ? NozzleTopY(y - 0.0006f) : y - 0.0006f, wrapTint, rec: r, role: "feed_nozzle");
             }
+            RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.DrawSouthSocket(r.Port(), r.portSide.X, r.portSide.Z);   // a reel against a pump's south
             lastFeedDraws++;
         }
 

@@ -55,6 +55,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(PumpSouthSocket.TryCap(null, out PumpSouthSocket.Cap un) && PumpSouthSocket.TryCap("Scrapper", out PumpSouthSocket.Cap sc) && un.Z == sc.Z,
                     "an unstyled pump reads the Scrapper art");
             });
+            Case("PumpSocket_a_hose_on_the_south_covers_the_cap_too", () =>
+            {
+                for (int sx = -1; sx <= 1; sx++)
+                    for (int sz = -1; sz <= 1; sz++)
+                        Assert(PumpSouthSocket.HoseCovers(true, sx, sz) == (sx == 0 && sz == 1), $"a hose stepping ({sx},{sz}) into the pump: only the south one covers the cap");
+                Assert(!PumpSouthSocket.HoseCovers(false, 0, 1), "a tank or another machine has no cap");
+                string hoses = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+                Assert(hoses.Contains("RM_UnderCouplers.DrawSouthSocket(fe.Port, fe.PortSide.X, fe.PortSide.Z);"), "a laid hose's coupled end draws the piece");
+                Assert(hoses.Contains("RM_UnderCouplers.DrawSouthSocket(r.Port(), r.portSide.X, r.portSide.Z);"), "a reel standing against the pump draws the piece");
+            });
             Case("PumpSocket_drawn_by_the_pipe_layer_only_with_a_pipe", () =>
             {
                 string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));

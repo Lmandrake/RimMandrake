@@ -188,17 +188,18 @@ namespace RimMandrake.FlowWorks.Machinery
 
         private static readonly Dictionary<string, Material> straightMats = new Dictionary<string, Material>();
 
-        /// <summary>PUMP_ON_TANK_FIX_NO_COUPLER: the universal pipe's straight east-west tile in one look (its linked atlas,
-        /// PipeStyles.AtlasPath), for pipe drawn where no pipe thing stands (the machine-to-tank drop); null when the atlas is
-        /// not installed.</summary>
-        public static Material PipeStraightMat(string look)
+        /// <summary>PUMP_ON_TANK_FIX_NO_COUPLER: the universal pipe's straight tile (east-west, or north-south) in one look (its
+        /// linked atlas, PipeStyles.AtlasPath), for pipe drawn where no pipe thing stands (the machine-to-tank drop, a hose on a
+        /// pump's south); null when the atlas is not installed.</summary>
+        public static Material PipeStraightMat(string look, bool eastWest = true)
         {
             look = PipeStyles.DefaultLook(look);
-            if (straightMats.TryGetValue(look, out Material m)) return m;
+            string key = eastWest ? look : look + "/NS";
+            if (straightMats.TryGetValue(key, out Material m)) return m;
             Texture2D t = ContentFinder<Texture2D>.Get(PipeStyles.AtlasPath(look), reportFailure: false);
             m = t == null ? null : MaterialAtlasPool.SubMaterialFromAtlas(MaterialPool.MatFrom(t, ShaderDatabase.Cutout, Color.white),
-                (LinkDirections)(LiquidJoinRule.LinkLeft | LiquidJoinRule.LinkRight));
-            straightMats[look] = m;
+                (LinkDirections)(eastWest ? LiquidJoinRule.LinkLeft | LiquidJoinRule.LinkRight : LiquidJoinRule.LinkUp | LiquidJoinRule.LinkDown));
+            straightMats[key] = m;
             return m;
         }
 

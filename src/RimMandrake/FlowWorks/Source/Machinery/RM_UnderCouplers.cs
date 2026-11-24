@@ -24,11 +24,52 @@ namespace RimMandrake.FlowWorks.Machinery
             { "RM_PumpingStation_Repaired", "Modern" },
         };
 
-        public static void ResetFrame() => lastDraws = 0;
+        /// <summary>State read: pieces drawn over a pump's south cap last frame, for a hose (probe / live look).</summary>
+        public static int lastSockets;
+
+        public static void ResetFrame() => lastDraws = lastSockets = 0;
 
         /// <summary>True when a hose coupled to <paramref name="port"/> gets an under-coupler (any spawned non-pipe port).</summary>
         public static bool Wanted(Thing port) =>
             RM_MachinerySettings.joinFittings && port != null && port.Spawned && !RM_LiquidNet.IsPipe(port);
+
+        private static readonly System.Collections.Generic.Dictionary<string, Mesh> socketMeshes = new System.Collections.Generic.Dictionary<string, Mesh>();
+
+        /// <summary>A hose on a liquid pump's south covers the drawn cap and leaves the bolted rim visible, as a pipe there does
+        /// (<see cref="PumpSouthSocket"/>; owner 2026-11-23): the same piece, on the pump look's own pipe tile, over the pump.
+        /// (sx, sz) = unit step from the hose's end (or the reel) into <paramref name="port"/>. Drawn per frame, only while the
+        /// hose is coupled. True when drawn.</summary>
+        public static bool DrawSouthSocket(Thing port, int sx, int sz)
+        {
+            if (!Wanted(port) || !PumpSouthSocket.HoseCovers(RM_LiquidJoins.DrawsOwnFlanges(port), sx, sz)) return false;
+            string look = RM_LiquidJoins.LookOf(port) ?? "";
+            Material m = RM_LiquidJoins.PipeStraightMat(look, false);
+            if (m == null || !PumpSouthSocket.TryCap(look, out PumpSouthSocket.Cap cap)) return false;
+            if (!socketMeshes.TryGetValue(look, out Mesh mesh) || mesh == null) socketMeshes[look] = mesh = SocketMesh(PumpSouthSocket.Quads(cap));
+            Graphics.DrawMesh(mesh, new Vector3(port.Position.x, AltitudeLayer.BuildingOnTop.AltitudeFor(), port.Position.z), Quaternion.identity, m, 0);
+            lastSockets++;
+            return true;
+        }
+
+        private static Mesh SocketMesh(System.Collections.Generic.List<PumpSouthSocket.Vert> q)
+        {
+            var v = new Vector3[q.Count];
+            var uv = new Vector2[q.Count];
+            var tr = new int[q.Count / 4 * 6];
+            for (int i = 0; i < q.Count; i++)
+            {
+                v[i] = new Vector3((float)q[i].X, 0f, (float)q[i].Z);
+                uv[i] = new Vector2((float)q[i].U, (float)q[i].V);
+            }
+            for (int k = 0, t = 0; k < q.Count; k += 4)
+            {
+                tr[t++] = k; tr[t++] = k + 1; tr[t++] = k + 2;
+                tr[t++] = k; tr[t++] = k + 2; tr[t++] = k + 3;
+            }
+            var mesh = new Mesh { name = "RM_PumpSouthSocket", vertices = v, uv = uv, triangles = tr };
+            mesh.RecalculateBounds();
+            return mesh;
+        }
 
         /// <summary>Draw the under-coupler of a hose coupled at port point (px, pz), (sx, sz) = unit step from the hose's end cell
         /// into <paramref name="port"/>. False = nothing drawn (the caller keeps its own stub).</summary>

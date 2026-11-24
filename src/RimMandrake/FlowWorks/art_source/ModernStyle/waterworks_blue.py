@@ -19,8 +19,8 @@ hand-fitted shapes in source px (fitted by eye on 6x crops, checked with --overl
 is darkened (FLANGE_VAL) and deepened (FLANGE_SAT), gated by the red weight so silver bolts inside do not move; under a "valve"
 mask the final pixel becomes galvanised grey (its luminance, a faint cool tint), so the red's pinkish specular dots go grey
 too and silver, already grey, stays put. Both masks are feathered one pixel.
-Pieces without masks (the pipe atlas, menu icon, saddle, span, the sprinkler head) are recoloured exactly as before. The pump's
-masks stay on its four end flanges, outside the round core the sprinkler head is cut from.
+Pieces without masks (the pipe atlas, menu icon, saddle, span, the sprinkler head) are recoloured exactly as before. The Modern
+pump is no longer a piece: its 2026-11-23 oblique art (PumpOblique/v2) is a new drawing, not a recolour.
 
 The red originals live in red/ (same relative paths), so the installed art can always be re-derived and the selftest pins
 installed == recolour(red original) pixel for pixel.
@@ -48,7 +48,6 @@ PIECES = (
     "Joins/Modern/Flange.png",
     "Joins/Modern/Coupler.png",
     "PipePole/Modern/PipeSpan.png",
-    "Pump/Modern/RM_LiquidPump.png",
     "Faucet/Modern/RM_PipeFaucet.png",
     "Hose/Styles/Modern/Reel_Deployed.png",
     "Hose/Styles/Modern/Reel_Deployed_north.png",
@@ -77,8 +76,6 @@ _REEL = "Hose/Styles/Modern/%s.png"
 PART_MASKS = {
     "Joins/Modern/Flange.png": {"flange": [("rect", 0, 0, 128, 128)]},    # the whole piece is a flange ring
     "Joins/Modern/Coupler.png": {"flange": [("rect", 0, 0, 128, 128)]},   # two mated flange rings
-    "Pump/Modern/RM_LiquidPump.png": {"flange": [("rect", 178, 26, 338, 80), ("rect", 178, 413, 338, 482),
-                                                 ("rect", 10, 176, 76, 336), ("rect", 435, 176, 502, 336)]},
     "Faucet/Modern/RM_PipeFaucet.png": {"valve": [("rect", 94, 68, 164, 113)]},   # the cross handle (arm tips reach the corners)
     _REEL % "Reel_Deployed": {"valve": [("ell", 205, 76, 16, 10)]},
     _REEL % "Reel_Deployed_north": {"valve": [("ell", 127.5, 128, 17, 10)]},

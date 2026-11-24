@@ -1,4 +1,5 @@
-"""joined.py <out.png> [--no-socket]: the four installed pumps as the game draws them with a pipe on every side, offline.
+"""joined.py <out.png> [--no-socket] [--hose]: the four installed pumps as the game draws them with a pipe on every side (--hose: a
+laid hose on the south), offline.
 Draw order as RM_LiquidJoins: pipe tiles and under-runs, the pipes' end flanges, the pump, then the south socket piece
 (PumpSouthSocket.cs, whose numbers this reads). 512 px per cell. Not a live capture: the game decides."""
 import os, re, sys
@@ -73,9 +74,30 @@ def socket_piece(look):
     return Image.fromarray(np.clip(np.rint(np.concatenate([rgb, A], -1)), 0, 255).astype(np.uint8), "RGBA")
 
 
+def hosed(look, socket=True):
+    """A 3x3-cell picture of the pump with a laid hose coupled on its south (hose, coupling, under-coupler, pump, then the
+    socket piece on the pump look's own pipe tile). socket None = the pump alone. Sizes: HoseMath / UnderCouplerGeometry."""
+    im = Image.new("RGBA", (3 * C, 3 * C), (176, 150, 112, 255))
+    hose = os.path.join(TEX, "Hose") if look == "Scrapper" else os.path.join(TEX, "Hose/Styles", look)
+    size, cl, cw, pw, reach, edge = 0.5611, 0.0984, 0.21875, 0.1875, 0.30, 2.0
+
+    def put(path, z, along, across):
+        t = Image.open(path).convert("RGBA").resize((round(along * C), round(across * C)), Image.LANCZOS).rotate(90, expand=True)
+        im.alpha_composite(t, (round(1.5 * C - t.width / 2), round(z * C - t.height / 2)))
+    if socket is not None:
+        put(os.path.join(hose, "Strand_Flat.png"), edge + .49, .98, .2)
+        put(os.path.join(hose, "Coupling_Bare.png"), edge + .46 * size, size, size)
+        put(os.path.join(TEX, "Joins", look, "UnderPipe.png"), edge - (cl / 2 + reach) / 2, reach - cl / 2, pw)
+        put(os.path.join(TEX, "Joins", look, "UnderCollar.png"), edge - cl / 2, cl, cw)
+    im.alpha_composite(pump(look).resize((C, C), Image.LANCZOS), (C, C))
+    if socket and look in sockets():
+        im.alpha_composite(socket_piece(look), (C, C))
+    return im
+
+
 if __name__ == "__main__":
-    sock = "--no-socket" not in sys.argv; fl = "--no-flange" not in sys.argv
+    sock = "--no-socket" not in sys.argv; fl = "--no-flange" not in sys.argv; hose = "--hose" in sys.argv
     out = Image.new("RGB", (4 * 2 * C, 2 * C))
     for k, l in enumerate(LOOKS):
-        out.paste(joined(l, sock, fl).crop((C // 2, C // 2, 5 * C // 2, 5 * C // 2)), (k * 2 * C, 0))
+        out.paste((hosed(l, sock) if hose else joined(l, sock, fl)).crop((C // 2, C // 2, 5 * C // 2, 5 * C // 2)), (k * 2 * C, 0))
     out.save(sys.argv[1])

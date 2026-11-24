@@ -6,7 +6,7 @@ problems. Like the pump is viewed."
 
 A head seen from above is a round, centred, four-fold symmetric part, so the same drawing sits on any pipe cell (straight,
 elbow, end, tee, cross) with no side-view clamp to line up: drawOffset (0,0,0), RM_PipeSeatMath still moves it onto an
-elbow's arc. Each look's head is that look's pump (RM_LiquidPump textures, the owner's "like the pump") reduced to its round
+elbow's arc. Each look's head is that look's plan-view pump of 2026-10-24 (PumpOblique/plan, the owner's "like the pump") reduced to its round
 hub: the hub disc with its four bolts, its fan grille replaced by a sprinkler's face -- a recessed plate, a ring of six
 large spray nozzles (light rims, wet blue-dark bores) and the pump's own centre boss as the rotor cap. The plate is the
 hub's median colour, except where a naive judge found the head lost its look (2026-10-24 r1, r2): the Scrapper pump hub
@@ -25,11 +25,9 @@ from PIL import Image, ImageDraw, ImageFilter
 
 HERE = Path(__file__).resolve().parent
 TEX = HERE.parent.parent / "Textures"
-PUMP = {"Scrapper": "Things/Building/FlowWorks/Machinery/RM_LiquidPump",
-        "Industrial": "RimMandrake/FlowWorks/Pump/Industrial/RM_LiquidPump",
-        "Modern": "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump",
-        "Futuristic": "RimMandrake/FlowWorks/Pump/Futuristic/RM_LiquidPump"}
-LOOKS = tuple(PUMP)
+# The plan-view pumps the heads were cut from. The installed pumps are oblique since 2026-11-23 and have no flat hub to cut.
+PLAN = HERE.parent / "PumpOblique" / "plan"
+LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 CANVAS = 256
 HUB_R = 100          # px of the 512 px pump: the round hub with its four bolts
 GRILLE_R = 58        # px of the 512 px pump: the fan grille, replaced
@@ -50,7 +48,7 @@ def _disc(n, r, cx=None, cy=None):
 
 def head(look, scale=4):
     """-> RGBA CANVAS x CANVAS: the look's top-down head, centred."""
-    pump = Image.open(TEX / (PUMP[look] + ".png")).convert("RGBA")
+    pump = Image.open(PLAN / (look + ".png")).convert("RGBA")
     assert pump.size == (512, 512), (look, pump.size)
     if look in TONE_TO_PIPE:
         pp = np.asarray(Image.open(TEX / (TONE_TO_PIPE[look] + ".png")).convert("RGBA"), np.float32).reshape(-1, 4)

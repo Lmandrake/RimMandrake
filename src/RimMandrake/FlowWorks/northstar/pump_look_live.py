@@ -1,8 +1,10 @@
 """LIQUID_PUMP_REDRAW_PLAN_VIEW_HUB: stage the four pump looks, each with a pipe on every side and with none, beside its tank,
 and photograph each one (kind A; run it when the game is ours).
 
-  python.exe src/RimMandrake/FlowWorks/northstar/pump_look_live.py --out-dir DIR [--origin X,Z] [--fresh-map] [--save NAME]
+  python.exe src/RimMandrake/FlowWorks/northstar/pump_look_live.py --out-dir DIR [--origin X,Z] [--fresh-map] [--save NAME] [--hose]
 
+--hose: the pumps with no pipe get a laid hose coupled on their south instead. Claim: that hose covers the cap and leaves the
+bolted rim visible, as the pipe does; the probe's pumpSockets says how many were drawn.
 Claim: a pipe on a pump's south covers the drawn cap and leaves the bolted rim visible; with no pipe the cap shows.
 Entry point: build_batch, then the engine's own section meshes. Success: the captures, read by eye and by a judge; this script
 only proves that the scene is what it says (defs, styles, drawn textures, sockets printed). Forbidden: any other thing on the
@@ -37,7 +39,13 @@ def main():
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--save")
     ap.add_argument("--close-root-size", type=float, default=1.6)
+    ap.add_argument("--hose", action="store_true")
     a = ap.parse_args()
+    H = 16 if a.hose else globals()["H"]
+    PUMP, TANK = ((3, 12), (6, 12)) if a.hose else (globals()["PUMP"], globals()["TANK"])
+    PIPES = [(x, z + PUMP[1] - 4) for x, z in globals()["PIPES"]]
+    REEL, END = (3, 1), (3, 11)      # the hose's reel, and its end's cell: the pump's south port cell
+    other = "hosed" if a.hose else "alone"
     import proof_hose as PH
     B, V = PH.PB(), PH.V
     os.makedirs(a.out_dir, exist_ok=True)
@@ -79,18 +87,24 @@ def main():
             ops = ["RM_LiquidPump:%d,%d" % (px + PUMP[0], pz + PUMP[1]), "RM_LiquidTank:%d,%d" % (px + TANK[0], pz + TANK[1])]
             if piped:
                 ops += ["RM_UniversalPipe:%d,%d" % (px + x, pz + z) for x, z in PIPES]
+            elif a.hose:
+                B.call("jawa/build_batch", ops=V.reel_toward((px + REEL[0], pz + REEL[1]), (px + END[0], pz + END[1])), faction="player", wipeExisting=False)
             B.call("jawa/build_batch", ops=";".join(ops), faction="player", wipeExisting=False, readBack=0)
             places.append((look, piped, px, pz, len(ops)))
     B.call("rimworld/step_game_ticks", ticks=2, pauseFirst=True, timeoutMs=60000)
     for look, piped, px, pz, want in places:
         r = B.call("jawa/thing_graphic", rect="%d,%d,%d,%d" % (px, pz, W, H), defs="RM_LiquidPump,RM_LiquidTank,RM_UniversalPipe", limit=100) or {}
         things = r.get("things") or []
-        say(len(things) == want, "%s %s: %d of %d things" % (look, "piped" if piped else "alone", len(things), want))
+        say(len(things) == want, "%s %s: %d of %d things" % (look, "piped" if piped else other, len(things), want))
         done = 0
         for g in things:
             s = B.call("jawa/set_thing_props", thing=g.get("id"), style="%s_%s" % (g.get("defName"), look)) or {}
             done += s.get("styleDefAfter") == "%s_%s" % (g.get("defName"), look)
         say(done == want, "%s: %d styled" % (look, done))
+    for look, piped, px, pz, _ in places:
+        if a.hose and not piped:
+            lay = B.hp("lay:%d,%d,%d,%d" % (px + REEL[0], pz + REEL[1], px + END[0], pz + END[1])) or {}
+            say(lay.get("success") is True and lay.get("layOk") is True, "%s: hose laid to the pump's south (%s)" % (look, lay.get("reason")))
     B.call("rimworld/step_game_ticks", ticks=30, pauseFirst=True, timeoutMs=60000)
     g = B.call("jawa/thing_graphic", rect="%d,%d,%d,%d" % rect, defs="RM_LiquidPump", limit=20) or {}
     res["pumps"] = [t.get("variantPath") or t.get("resolvedPath") or t.get("graphicPath") for t in g.get("things") or []]
@@ -106,7 +120,7 @@ def main():
     shot_dir = None
     for look, piped, px, pz, _ in places:
         B.call("jawa/clear_ui", all=True)
-        fn = "pump_%s_%s_block" % (look, "piped" if piped else "alone")
+        fn = "pump_%s_%s_block" % (look, "piped" if piped else other)
         B.call("rimworld/set_camera_zoom", rootSize=8)
         B.call("rimworld/jump_camera_to_cell", x=px + W // 2, z=pz + H // 2)
         time.sleep(0.7)     # the camera eases to its place over real frames
@@ -116,6 +130,13 @@ def main():
             shutil.copyfile(src, os.path.join(a.out_dir, fn + ".png"))
             shot_dir = local(s.get("screenshotFolder"))
         say(bool(src) and os.path.isfile(src), "capture %s" % fn)
+    if a.hose:
+        B.call("rimworld/set_camera_zoom", rootSize=8)
+        B.call("rimworld/jump_camera_to_cell", x=ox + PUMP[0], z=oz + H + PUMP[1])
+        time.sleep(0.7)
+        live = (B.hp("census") or {}).get("live") or {}
+        res["hose_live"] = live
+        say(live.get("pumpSockets") == len(LOOKS), "%s of %d hose pieces drawn over the caps" % (live.get("pumpSockets"), len(LOOKS)))
     if a.save:
         sv = B.call("rimworld/save_game", saveName=a.save) or {}
         path = local(sv.get("path"))
@@ -137,7 +158,7 @@ def main():
             B.call("jawa/clear_ui", all=True)
             B.call("rimworld/jump_camera_to_cell", x=px + PUMP[0], z=pz + PUMP[1])
             time.sleep(1.2)
-            fn = "pump_%s_%s_close" % (look, "piped" if piped else "alone")
+            fn = "pump_%s_%s_close" % (look, "piped" if piped else other)
             s = B.call("rimworld/take_screenshot", fileName=fn, suppressMessage=True) or {}
             src = local(s.get("path"))
             time.sleep(0.5)

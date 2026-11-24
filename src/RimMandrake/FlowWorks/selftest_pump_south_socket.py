@@ -83,5 +83,47 @@ body = src[src.find("private int PrintSouthSocket("):][:1500]
 check("the socket has a mesh of its own, over the pump", "SocketMat(StraightMat(pipe, false))" in body and "new Material(pipe)" in src)
 check("the socket is at the couplers' altitude", "float y = AltitudeLayer.BuildingOnTop.AltitudeFor();" in body)
 check("no loose flange is laid beside the pump's own", "if (RM_LiquidJoins.DrawsOwnFlanges(b)) continue;" in src)
+
+def hose_faults(hoses, coup, joins):
+    """What stops a hose on the pump's south from covering the cap as a pipe does: the missing pieces, [] = none."""
+    draw = coup[coup.find("public static bool DrawSouthSocket("):] if "public static bool DrawSouthSocket(" in coup else ""
+    ends = hoses[hoses.find("private void DrawEnds("):hoses.find("internal bool PortEnd(")]
+    port = ends[ends.find("else if (fe.Kind == HoseEndKind.Port)"):ends.find("RelayOf(r) != null")]
+    feed = hoses[hoses.find("private void DrawFeed("):hoses.find("private static Mesh PipeStrip(")]
+    want = (
+        ("a coupled hose end draws the piece", "RM_UnderCouplers.DrawSouthSocket(fe.Port, fe.PortSide.X, fe.PortSide.Z);" in port),
+        ("a reel against the pump draws the piece", "RM_UnderCouplers.DrawSouthSocket(r.Port(), r.portSide.X, r.portSide.Z);" in feed),
+        ("only at a pump's south, by the rule", "PumpSouthSocket.HoseCovers(RM_LiquidJoins.DrawsOwnFlanges(port), sx, sz)" in draw),
+        ("the pipe's own piece", "PumpSouthSocket.Quads(cap)" in draw and "PumpSouthSocket.TryCap(look," in draw),
+        ("on the pump look's north-south pipe tile", "RM_LiquidJoins.PipeStraightMat(look, false)" in draw
+         and "eastWest ? LiquidJoinRule.LinkLeft | LiquidJoinRule.LinkRight : LiquidJoinRule.LinkUp | LiquidJoinRule.LinkDown" in
+         joins[joins.find("Material PipeStraightMat("):][:1400]),
+        ("over the pump", "AltitudeLayer.BuildingOnTop.AltitudeFor()" in draw),
+        ("on the pump's cell", "port.Position.x" in draw and "port.Position.z" in draw),
+    )
+    return [n for n, ok in want if not ok]
+
+
+srcs = [open(os.path.join(HERE, "Source", *p), encoding="utf-8-sig").read() for p in
+        (("Hose", "RM_MapComponent_Hoses.cs"), ("Machinery", "RM_UnderCouplers.cs"), ("Machinery", "RM_LiquidJoins.cs"))]
+got = hose_faults(*srcs)
+check("a hose on the pump's south covers the cap as a pipe does", not got, "; ".join(got))
+for k, a, b in ((0, "RM_UnderCouplers.DrawSouthSocket(fe.Port,", "RM_UnderCouplers.NoDraw(fe.Port,"),
+                (0, "RM_UnderCouplers.DrawSouthSocket(r.Port(),", "RM_UnderCouplers.NoDraw(r.Port(),"),
+                (1, "AltitudeLayer.BuildingOnTop.AltitudeFor()", "AltitudeLayer.Shadows.AltitudeFor()"),
+                (1, "RM_LiquidJoins.PipeStraightMat(look, false)", "RM_LiquidJoins.PipeStraightMat(look)"),
+                (1, "DrawsOwnFlanges(port), sx, sz)", "DrawsOwnFlanges(port), 0, 1)")):
+    planted = list(srcs)
+    planted[k] = srcs[k].replace(a, b)
+    check("can-fail: %s" % b, planted[k] != srcs[k] and hose_faults(*planted) != got)
+# the picture: the hose's end at a pump, composed; with no piece the cap shows
+for look in sorted(caps):
+    plain, hosed, pump_only = (np.array(joined.hosed(look, p)).astype(int) for p in (False, True, None))
+    e, dx, dz = ellipse(caps[look])
+    inner, rim = e < 0.95, (e > 1.12) & (e < 1.32) & (dz > -0.2 * caps[look][3])
+    on_pump = lambda im: (np.abs(im - pump_only).max(-1) <= 2)[joined.C:2 * joined.C, joined.C:2 * joined.C]  # noqa: E731
+    check("%s hose: the cap is covered" % look, on_pump(hosed)[inner].mean() < 0.15, "%.1f%% still cap" % (100 * on_pump(hosed)[inner].mean()))
+    check("%s hose: the bolted rim stays visible" % look, on_pump(hosed)[rim].mean() > 0.97, "%.1f%%" % (100 * on_pump(hosed)[rim].mean()))
+    check("%s can-fail: with no piece the hose leaves the cap showing" % look, on_pump(plain)[inner].mean() > 0.95)
 print("selftest_pump_south_socket.py: %d failure(s)" % fails)
 sys.exit(1 if fails else 0)

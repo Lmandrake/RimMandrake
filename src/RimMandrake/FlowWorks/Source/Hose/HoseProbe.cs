@@ -220,7 +220,7 @@ namespace RimMandrake.FlowWorks.Hose
               .Append(",\"retracts\":").Append(RM_MapComponent_Hoses.Retracts)
               .Append(",\"live\":{\"carryDraws\":").Append(comp.lastCarryDraws).Append(",\"clipDraws\":").Append(comp.lastClipDraws)
               .Append(",\"ghostDraws\":").Append(comp.lastGhostDraws).Append(",\"ghosts\":").Append(comp.GhostCount)
-              .Append(",\"portCouplings\":").Append(comp.lastPortCouplings).Append(",\"prefixBuilds\":").Append(comp.carryPrefixBuilds)
+              .Append(",\"portCouplings\":").Append(comp.lastPortCouplings).Append(",\"pumpSockets\":").Append(RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.lastSockets).Append(",\"prefixBuilds\":").Append(comp.carryPrefixBuilds)
               .Append(",\"far\":").Append(B(comp.lastFar)).Append(",\"placed\":").Append(HoseEvents.Placed).Append(",\"lifted\":").Append(HoseEvents.Lifted).Append('}')
               .Append(",\"hoses\":[");
             bool first = true;

@@ -22,10 +22,11 @@ Each check must FAIL on the art he rejected (the shipped code, emulated as BEFOR
     for every head look on every pipe look (the seat follows the pipe's look in game)
   parity: fw_scenes_sprinkler.seat == RM_PipeSeatMath.Seat for all 16 masks x every look (k, r and the stub read from the
           C# source via selftest_pipe_seat's parser); the installed head PNGs' alpha == top_heads.head(look)'s pixel for pixel
-          (the footprint; a repaint he picked may change the colours) and each head == the art ledger's latest live install,
+          (the footprint, cut from PumpOblique/plan; a repaint he picked may change the colours) and each head == the art ledger's latest live install,
           and every RM_SprinklerHead drawSize == (1,1) and drawOffset z (the four styles and the base ThingDef) == 0
           -- together: the centred head lands on the seat.
-  Modern waterworks blue, every recoloured piece + the Modern head (MODERN_PIPE_REDRAW_FIRETRUCK_RED_RETIRED):
+  Modern waterworks blue, every recoloured piece + the Modern head and pump (MODERN_PIPE_REDRAW_FIRETRUCK_RED_RETIRED; the
+  pump is the oblique redraw he accepted 2026-11-23, so it is held to the colour and to the art ledger, not to the recolour):
     no saturated red          FAIL on the red originals (ModernStyle/red), PASS installed (and on the top-down Modern head)
     alpha unchanged           installed alpha == the red original's byte for byte: every fit (atlas, joins, seat, ports) holds
     pinned                    installed == waterworks_blue.recolour(red original) pixel for pixel (the reels: see below)
@@ -121,6 +122,7 @@ sys.path.insert(0, str(HERE.parent / "art_source" / "LiquidContainers"))
 import modern_soda_pail as msp  # noqa: E402
 
 PX = 40
+PUMP = "Pump/Modern/RM_LiquidPump.png"
 fails = []
 
 
@@ -178,7 +180,7 @@ def latest_live_art_sha():
     best = {}
     for p in sorted((HERE.parents[3] / "infrastructure/state/art/events").glob("*.jsonl")):
         for line in p.read_text().splitlines():
-            if '"type":"live"' not in line or "FlowWorks/Sprinkler" not in line:
+            if '"type":"live"' not in line or ("FlowWorks/Sprinkler" not in line and "RM_LiquidPump" not in line):
                 continue
             e = json.loads(line)
             if e.get("mod") != "src/RimMandrake/FlowWorks":
@@ -286,6 +288,15 @@ def modern_blue():
     head = wb.saturated_red_share(Image.open(wb.TEX / wb.SPRINKLER).convert("RGBA"))
     want(head < 0.002, "modern blue: %s installed (top-down, cut from the Modern pump) has no saturated red (%.4f < 0.002)"
          % (wb.SPRINKLER, head))
+    path = wb.TEX / PUMP
+    pump = Image.open(path).convert("RGBA")
+    share, old = wb.saturated_red_share(pump), wb.saturated_red_share(Image.open(wb.RED / PUMP).convert("RGBA"))
+    want(share < 0.002, "modern blue: %s installed (oblique) has no saturated red (%.4f < 0.002)" % (PUMP, share))
+    want(old > 0.3, "modern blue: %s red original is saturated red (%.3f > 0.3): the check can fail" % (PUMP, old))
+    live = latest_live_art_sha()
+    got, led = hashlib.sha256(path.read_bytes()).hexdigest(), live.get("RimMandrake/FlowWorks/" + PUMP)
+    want(led == got, "pinned: installed %s == the art ledger's latest live install (%s vs %s)" % (PUMP, got[:12], (led or "none")[:12]))
+    want(hashlib.sha256((wb.RED / PUMP).read_bytes()).hexdigest() != led, "pinned can-fail: the red original is not that install")
     reels = {fr.REL % n: n for n in fr.MASKS}
 
     def redrawn(rel, shape):
@@ -361,8 +372,8 @@ def modern_blue_parts(pairs):
     finally:
         wb.PART_MASKS.update(saved)
     reels = {fr.REL % n for n in fr.MASKS}
-    want(sum("flange" in v for v in saved.values()) >= 3 and sum("valve" in v for v in saved.values()) >= 7,
-         "modern parts: flange masks on Flange, Coupler, Pump; valve masks on the faucet and all six reels")
+    want(sum("flange" in v for v in saved.values()) >= 2 and sum("valve" in v for v in saved.values()) >= 7,
+         "modern parts: flange masks on Flange, Coupler; valve masks on the faucet and all six reels")
     for rel, red, path in pairs:
         if rel not in saved:
             continue

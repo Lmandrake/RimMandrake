@@ -2,7 +2,8 @@
 
 The four RM_LiquidPump looks redrawn from plan-view medallions to the oblique building camera.
 
-- `plan/` holds a copy of the 2026-10-23 installed plan art: the parts reference, and the revert.
+- `plan/` holds a copy of the 2026-10-23 installed plan art: the parts reference, and the revert. The sprinkler heads are
+  cut from it (`art_source/Sprinkler/top_heads.py`).
 - `oblique_pump.py` is the 2026-11-05 attempt. It squashes the flat plan picture, adds a synthetic wall and pastes the
   flat pipe arms back. The owner rejected its output on 2026-11-23 ("the rest of the graphics have just been crudely
   distorted to match it. Entirely wrong."). Do not install its output.
@@ -30,7 +31,9 @@ raw renders, exact prompts, GPT's advice, the judge's answer and `pump_pick_shee
 He accepted all four; they went in through `art.py install --owner-said`. `plan/` is the revert.
 
 - The south arm ends in a drawn cap. `Source/Machinery/PumpSouthSocket.cs` prints a connected south pipe's end over that
-  cap. `v2/south_socket.py --write` measures the cap from the installed art. `v2/joined.py` draws the offline composite.
+  cap. A hose coupled there gets the same piece (`RM_UnderCouplers.DrawSouthSocket`, per frame). Its live look is UNRUN:
+  `python.exe src/RimMandrake/FlowWorks/northstar/pump_look_live.py --out-dir DIR --fresh-map --save NAME --hose`.
+  `v2/south_socket.py --write` measures the cap from the installed art. `v2/joined.py` draws the offline composite.
 - `selftest_pump_south_socket.py` checks the cap table, the cover, the visible rim and the sixteen ports.
 - After any new pump art: run `v2/south_socket.py --write`, then
   `art_source/UnderCouplers/under_coupler_reach.py --write`, then `selftest_hose_fittings.py`.

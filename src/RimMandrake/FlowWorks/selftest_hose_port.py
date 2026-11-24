@@ -4,8 +4,9 @@ rows). No game, no bridge, no dotnet. Each row has a can-fail beside it.
 
   P1 no defName is defined in BOTH Gimme Some Slack and FlowWorks (a cross-mod duplicate is silent: the later load wins)
   P2 Gimme Some Slack's C# names no FlowWorks hose code (GSS ends up cables/conduits/electricity only and must not depend on
-     FlowWorks); the only FlowWorks mention allowed outside comments is RM_FallenWireShock's soft by-name ignition lookup
-     (design §7 "soft cross-mod niceties stay soft"); no Source/Hose folder, no hose def, texture or SelfTest suite left in GSS
+     FlowWorks); the only FlowWorks mentions allowed in shipped C# outside comments are the soft by-name
+     lookups in P2_SOFT (design §7 "soft cross-mod niceties stay soft"); a SelfTest file may name a FlowWorks thing as a
+     bystander, never use its code; no Source/Hose folder, no hose def, texture or SelfTest suite left in GSS
   P3 the essential patches (save-skip, type alias) are applied by RM_HoseEssentials, never by attribute, and the hose map
      component removes itself when the save-skip is missing (FINAL §3.9)
   P4 every moved harness script imports with Gimme Some Slack's folder absent from sys.path
@@ -354,6 +355,28 @@ def code_lines(text):
     return out
 
 
+# RM_FallenWireShock: the soft ignition lookup; LegacyName(+Checks): the MessyConduit -> GSS rename table, whose
+# FireHosesMod handle still renames the oldest hose settings file so FlowWorks can import it (data, not a dependency);
+# CordUnderLiquid: the soft by-name lookup of FlowWorks' floor reader (RM_SubmergeDraw.FloorSeen), absent = no fade
+P2_SOFT = ("RM_FallenWireShock.cs", "LegacyName.cs", "LegacyNameChecks.cs", "CordUnderLiquid.cs")
+HOSE_CODE = re.compile(r"\bHose(Math|Relay|Styles|Settings|Probe|Look)\b|CompHoseReel|RM_MapComponent_Hoses")
+
+
+def p2_hits(rel, text):
+    """The lines of one GSS C# file that depend on FlowWorks. Shipped code: any mention of FlowWorks or of hose code. A SelfTest
+    file ships nothing and may model a FlowWorks thing as a bystander by its defName, in names and messages of its own (LineRestyleChecks'
+    pipe pole): there only a use of FlowWorks code counts, its namespace or its hose types."""
+    if rel.endswith(P2_SOFT):
+        return []
+    test = rel.replace(os.sep, "/").startswith("Source/SelfTest/")
+    out = []
+    for ln in code_lines(text):
+        code = re.sub(r'"(?:\\.|[^"\\])*"', '""', ln) if test else ln
+        if HOSE_CODE.search(code) or (re.search(r"RimMandrake\s*\.\s*FlowWorks|\bFlowWorks\s*\.", code) if test else "FlowWorks" in ln):
+            out.append(ln.strip()[:100])
+    return out
+
+
 def main():
     # P1
     both, g, f = p1_duplicates(GSS, HERE)
@@ -364,21 +387,24 @@ def main():
     # P2
     hits = []
     for p in glob.glob(os.path.join(GSS, "Source", "**", "*.cs"), recursive=True):
-        # RM_FallenWireShock: the soft ignition lookup; LegacyName(+Checks): the MessyConduit -> GSS rename table, whose
-        # FireHosesMod handle still renames the oldest hose settings file so FlowWorks can import it (data, not a dependency);
-        # CordUnderLiquid: the soft by-name lookup of FlowWorks' floor reader (RM_SubmergeDraw.FloorSeen), absent = no fade;
-        # ShockRuleChecks: the shock rule's own cases, which name a dropped FlowWorks deck cord in their messages only
-        if "/bin/" in p or "/obj/" in p or p.endswith(("RM_FallenWireShock.cs", "LegacyName.cs", "LegacyNameChecks.cs",
-                                                      "CordUnderLiquid.cs", "ShockRuleChecks.cs")):
+        if "/bin/" in p or "/obj/" in p:
             continue
-        for ln in code_lines(open(p, encoding="utf-8").read()):
-            if "FlowWorks" in ln or re.search(r"\bHose(Math|Relay|Styles|Settings|Probe|Look)\b|CompHoseReel|RM_MapComponent_Hoses", ln):
-                hits.append("%s: %s" % (os.path.relpath(p, GSS), ln.strip()[:100]))
+        hits += ["%s: %s" % (os.path.relpath(p, GSS), x) for x in p2_hits(os.path.relpath(p, GSS), open(p, encoding="utf-8").read())]
     leftovers = [x for x in ("Source/Hose", "Defs/Hose", "Textures/RimMandrake/GimmeSomeSlack/Hose", "Source/SelfTest/HoseSelfTest.cs",
                              "validation_hose.py", "validation_style_hose.py") if os.path.exists(os.path.join(GSS, x))]
     check("P2 GSS C# names no FlowWorks hose code; no hose folder/def/art/suite left", not hits and not leftovers, (hits + leftovers)[:6])
-    check("P2 can-fail: a planted FlowWorks reference is seen", any("FlowWorks" in ln for ln in code_lines('x = "RimMandrake.FlowWorks.Hose.HoseProbe";')))
-    check("P2 can-fail: a comment-only mention is not a dependency", not any("FlowWorks" in ln for ln in code_lines("    // moved to FlowWorks")))
+    ship, test = os.path.join("Source", "X.cs"), os.path.join("Source", "SelfTest", "XChecks.cs")
+    check("P2 can-fail: a planted FlowWorks reference in shipped C# is seen, by name or by type",
+          len(p2_hits(ship, 'x = "RimMandrake.FlowWorks.Hose.HoseProbe";')) == 1 and len(p2_hits(ship, "bool IsFlowWorks;")) == 1
+          and len(p2_hits(ship, "var r = new CompHoseReel();")) == 1)
+    check("P2 can-fail: a SelfTest file that uses FlowWorks code is seen", all(len(p2_hits(test, x)) == 1 for x in (
+          "using RimMandrake.FlowWorks.Hose;", "FlowWorks.PipeMath.Go();", "double w = HoseMath.FlatVisible;", "CompHoseReel r;")))
+    check("P2 a SelfTest file may name a FlowWorks thing as a bystander (its defName, its own names, its messages)", not p2_hits(test,
+          'public bool IsFlowWorks => Def == "RM_PipePole";\nConsole.WriteLine("FlowWorks taken");'))
+    check("P2 can-fail: a comment-only mention is not a dependency", not p2_hits(ship, "    // moved to FlowWorks"))
+    csproj = [os.path.relpath(x, GSS) for x in glob.glob(os.path.join(GSS, "Source", "**", "*.csproj"), recursive=True)
+              if "FlowWorks" in re.sub(r"(?s)<!--.*?-->", "", open(x, encoding="utf-8-sig").read())]
+    check("P2 no GSS project compiles or references FlowWorks", not csproj, csproj)
     # P3
     ess = open(os.path.join(HERE, "Source", "Hose", "RM_HoseLegacy.cs"), encoding="utf-8").read()
     mc = open(os.path.join(HERE, "Source", "Hose", "RM_MapComponent_Hoses.cs"), encoding="utf-8").read()
