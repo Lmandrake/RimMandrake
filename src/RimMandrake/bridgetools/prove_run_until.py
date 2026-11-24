@@ -272,12 +272,13 @@ def main():
     ids = [animal(*c) for c in cells]
     if all(i[0] for i in ids):
         W.call("jawa/session", action="bind", driver=DRIVER, bindings=json.dumps({"herd": [i[0] for i in ids]}))
-        kill = {"id": req("kill"), "tool": "jawa/damage", "args": {"damageDef": "Cut", "amount": 5000, "thingId": ids[0][0], "armorPenetration": 9, "bodyPart": "Torso"}, "at": 40}
+        kill = {"id": req("kill"), "tool": "jawa/damage", "args": {"damageDef": "Cut", "amount": 5000, "thingId": ids[0][0], "armorPenetration": 9, "bodyPart": "Body"}, "at": 40}
         rep = run(value("herd[0]", "Position.x", "<", -1), 400, record=[{"of": "herd", "path": "Position"}], acts=[kill])
         replies["unknown"] = rep
         u = rep.get("unknownValue") or {}
-        dead = [x_ for x_ in rep.get("acts") or [] if x_.get("state") == "done"]
-        row("5 an unreadable value ends as unknown", None if not dead else rep.get("why") == "unknown" and rep.get("tick") == rep.get("tickFrom") + 41 and u.get("status") == "gone" and "herd[0]" in str(u.get("value")), brief(rep) if not dead else "%s at +%s: %s" % (rep.get("why"), rep.get("tick") - rep.get("tickFrom"), u))
+        # the scene is staged only when the tool itself says that the victim died (a cut rolls dice)
+        dead = [x_ for x_ in rep.get("acts") or [] if x_.get("state") == "done" and any(t_.get("dead") for t_ in (x_.get("reply") or {}).get("targets") or [])]
+        row("5 an unreadable value ends as unknown", None if not dead else rep.get("why") == "unknown" and rep.get("tick") == rep.get("tickFrom") + 41 and u.get("status") == "gone" and "herd[0]" in str(u.get("value")), "the victim did not die: %s" % (rep.get("acts") or brief(rep)) if not dead else "%s at +%s: %s" % (rep.get("why"), rep.get("tick") - rep.get("tickFrom"), u))
         vals = rep.get("values") or {}
         row("6 a group keeps its dead member", None if not dead else sorted(k for k in vals if k.endswith(".Position")) == ["herd[0].Position", "herd[1].Position"] and vals["herd[0].Position"]["state"] == "gone" and vals["herd[0].Position"].get("v") is None and vals["herd[1].Position"]["state"] == "ok", vals)
     else:
