@@ -363,7 +363,9 @@ When you test every biome in turn, the reset rule is simple (owner, 2026-09-17):
 
 - **If you changed files** (a def, a biome XML, an assembly): the running game holds the old defs in memory. A deploy to
   the Mods folder is not enough on its own. **Restart the game**, so that it parses the files at startup, then re-stage.
-  Use `skills/rimworld-load-round` and `modlist_swap.py`. The combined review list loads in ~80 s.
+  Use `skills/rimworld-load-round` for the restart. Load the mod's small list: `modset_builder.py --tier <tier> --apply`
+  (run while the game is down). The tier is in `design/concepts/<Mod>/version/small_list.json`. If the mod has no such
+  file, choose a tier from `modset_builder.py --list`.
 - **If you changed nothing on disk** (you only move to the next biome): **reload or regenerate**. Either re-tile the
   current tile to the next biome and `world_tile_map_generate` a fresh map, or reload the clean base save. No restart is
   necessary.
@@ -388,7 +390,7 @@ When you test every biome in turn, the reset rule is simple (owner, 2026-09-17):
 | `rimbench/render_terrain.py` | offline terrain→PNG when you want a map render, not a screenshot |
 | `game_focus.py` | `preflight()` — turn on Run-in-background or every game call times out |
 | `system_screenshot.py` | OS-level desktop capture (`python.exe`), for when you need the whole screen incl. dialogs, not the game's own shot |
-| `modlist_swap.py` | swap to the minimal/review list before a load; leave the list on the tier that serves your work |
+| `modset_builder.py` | `--tier <tier> --apply` swaps to a small list before a load; leave the list on the tier that serves your work |
 
 More traps for this section: [references/traps.md](references/traps.md) § 8. The scripts this composes.
 
