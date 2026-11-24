@@ -72,6 +72,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import maturation_now as MN     # noqa: E402  the journal readers: one parser, never a second one
+import raid_pause as RP          # noqa: E402  raid tests are paused (owner, 2026-11-23)
 import live_kinds as LK          # noqa: E402  the kinds of a live scene and the outcomes of its runs
 import refusal_contract as RC   # noqa: E402
 import judge_certificate as JC   # noqa: E402  the pre-judgement certificate (PRE_JUDGEMENT_CERTIFICATE)
@@ -1131,6 +1132,15 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                            "name no single build is re-run" % mod, cost="rerun",
                        why_sound="RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD: a pass record names the build it passed "
                                  "(skeptical review 2026-11-15, claims_checked.md A12)")
+                tt6, _ = read_json(root, mod, "version/test_table.json")
+                rb_ok, rb_why = raid_bars_decided(root, mod, max(1, len(ingame_openings(rec))), tt6, conductor)
+                clause("raid_bars_decided", "no bar that a raid scene decides is open when the version passes", rb_ok,
+                       [req_ref, rec_ref], observed=rb_why,
+                       would_pass="the raid scene, or the cheaper test that replaces it, passes; or --conductor-decision "
+                                  "names each open bar and says what becomes of it",
+                       fix="lift the raid pause when the tools can hold a raid still, and run the scene", cost="rerun",
+                       why_sound="his ruling of 2026-11-23: raid tests wait for the tools; a paused scene is no pass "
+                                 "(standing_rulings.md, The cheapest test that decides the bar)")
                 prp = "%s/%s.json" % (PASS_RECORD_DIR, rec.get("version"))
                 clause("pass_record_new", "this version has no pass record yet (a pass record is written once, never "
                        "rewritten)", not os.path.lexists(os.path.join(mod_dir(root, mod), prp)), [rec_ref, rel(mod, prp)],
@@ -2122,6 +2132,9 @@ WRONG_CHECK_RULE = "\n".join([
 LIVE_KINDS_RULE = "\n".join([
     "Full text: `design/RimMandrake/standing_rulings.md` §Live tests have three kinds. How to write each row: "
     "`skills/live-debugging-proof-harness/SKILL.md` §The scene contract.",
+    "- The cheapest test that decides the bar is the test, and no run stages a raid (standing_rulings.md §The cheapest test "
+    "that decides the bar). A scene that turns out to stage a raid gets no row: tag its test-table entry `stages_raid` (what "
+    "it stages), say in its `cheaper_why` why a cheaper test cannot decide the bar, or write that cheaper test.",
     "- A scene with no tag is kind A: one valid run decides PASS or FAIL. Never repeat an unchanged run to get a PASS.",
     "- Kind B (stochastic) and kind C (an intermittent hunt) carry their evidence on the scene. Kind B passes on one "
     "SUCCESS, with no MOD FAILURE and no UNRESOLVED run on the same claim and build. A result that is random by design "
@@ -2182,6 +2195,7 @@ HOW_A_BAR_HOLDS = "\n".join([
     "offline, or unexplained is fixed; or proved unreachable by a check you land; or written as a question to the "
     "Conductor with its picture. Only what truly needs the live game or the owner may stay open, each with its command "
     "or its question.",
+    RP.RULE,
 ])
 # The offline model, from a mod's first build (owner, 2026-11-17 ~10:50 AM PST: "it feels like the Fable Rescuer again
 # found that offline modeling is REALLY informative and useful. Sounds like something that should be instructed to the
@@ -3945,10 +3959,34 @@ OWNER_STAGE6 = ("In-game acceptance testing with setup maps, proper acceptance t
 
 def ingame_tests(tt):
     """-> [(test id, test)] for the table's stage-6 in-game checks (kind live*, stage 6), in table order. A kind C scene
-    (a hunt) is never one (owner, 2026-11-23; live_kinds.table_flaws names a bar that this would leave undecided)."""
+    (a hunt) is never one (owner, 2026-11-23; live_kinds.table_flaws names a bar that this would leave undecided), nor is
+    a raid scene while raid tests are paused (raid_pause.py): the exit reads it apart (`paused_raids`)."""
     return [(k, t) for k, t in ((tt or {}).get("tests") or {}).items()
             if isinstance(t, dict) and str(t.get("kind", "")).startswith("live") and str(t.get("stage")) == "6"
-            and LK.kind(t) != "C"]
+            and LK.kind(t) != "C" and not (RP.stages(t) and RP.paused())]
+
+
+def paused_lines(root, mod, n, tt):
+    """-> the driver's brief lines for the raid scenes: what each reads, and that a paused one is not started."""
+    return ["- **`%s`** (%s): %s%s; decides %s. %s" % (
+        t, x["stages"], x["read"] or "owed", " (%s)" % x["why"] if x["why"] else "", ", ".join(x["bars"]) or "no bar",
+        "Do not start it and write no row for it." if x["read"] == RP.WORD else "It is not owed.")
+        for t, x in RP.read_scenes(root, mod, n, tt).items() if x["read"]]
+
+
+def raid_bars_decided(root, mod, n, tt, conductor):
+    """-> (ok, why): no bar that a raid scene decides is open, or the Conductor's decision names each open one."""
+    bars = RP.open_bars(RP.read_scenes(root, mod, n, tt))
+    left = sorted(b for b in bars if not re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(b), str(conductor or "")))
+    return not left, "; ".join("bar %s is open: raid scene %s has no standing pass" % (b, ", ".join(bars[b])) for b in left) or \
+        ("no open raid bar" if not bars else "the Conductor's decision names each open raid bar: %s" % ", ".join(sorted(bars)))
+
+
+def walk_brief_raid_why(root, mod, n, tt, text):
+    """-> [why] a walk brief does not name a raid bar that is open (he reads it under what is known, not fixed)."""
+    return ["the brief does not name the open raid bar %s (scene %s; %s): say so under \"Known, not fixed\"" % (
+        b, ", ".join(s), RP.WORD) for b, s in sorted(RP.open_bars(RP.read_scenes(root, mod, n, tt)).items())
+        if not re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(b), text or "")]
 
 
 def visit_numbers(root, mod):
@@ -4448,6 +4486,7 @@ def read_ingame_exit(root, mod, n, tt=None):
         runs = {}
         why.append("the rows of every visit could not be read (%s): no run's outcome is known to be clear" % e)
     kinds = {t: LK.reading(x, runs.get(t)) for t, x in checks}
+    out["paused_raids"] = RP.read_scenes(root, mod, n, tt)
     lines_ = out["lines"] = {}
     for t, _ in checks:
         r, k = last.get(t), kinds[t]
@@ -4610,10 +4649,11 @@ def read_ingame_exit(root, mod, n, tt=None):
     if not why:
         nc = sorted(t for t, ln in lines_.items() if ln["count"] == "not_counted")
         rep = sorted(t for t, ln in lines_.items() if ln["count"] == "pass" and ln.get("repair"))
-        why.append("%d of %d in-game checks PASS on checked sites%s%s; strange things all explained or filed; savegame %s"
+        why.append("%d of %d in-game checks PASS on checked sites%s%s; strange things all explained or filed; savegame %s%s"
                    % (len(checks) - len(nc), len(checks), "; repaired in the sitting and shown both ways: %s" % ", ".join(
                        rep) if rep else "", "; not counted, every bar still decided: %s" % ", ".join(
-                       "%s (%s)" % (t, lines_[t]["why"]) for t in nc) if nc else "", sv))
+                       "%s (%s)" % (t, lines_[t]["why"]) for t in nc) if nc else "", sv,
+                   "; " + RP.said(out["paused_raids"]) if RP.said(out["paused_raids"]) else ""))
     return out
 
 
@@ -4817,6 +4857,8 @@ def read_walk_brief(root, mod, rec):
     elif m.group(1).lower() in evidence_writers(root, mod, rec):
         out["why"].append("written_by %s made evidence writes for this version (a move or an in-game row): the brief "
                           "is a fresh read" % m.group(1))
+    tt, _ = read_json(root, mod, "version/test_table.json")
+    out["why"] += walk_brief_raid_why(root, mod, max(1, len(ingame_openings(rec))), tt, text)
     return out
 
 
@@ -5117,7 +5159,14 @@ def read_unrun(root, mod):
 
 def unrun_lines(root, mod):
     """-> the Stage 6 brief's lines for the road-back items closed offline whose in-game check is still UNRUN."""
-    rows = read_unrun(root, mod)
+    return unrun_lines_of(read_unrun(root, mod), read_json(root, mod, "version/test_table.json")[0])
+
+
+def unrun_lines_of(rows, tt):
+    """-> those lines, without the check of a paused raid scene, or of one that another check of the table replaces."""
+    tests = (tt or {}).get("tests") or {}
+    gone = {x for t in tests.values() if isinstance(t, dict) for x in t.get("replaces") or []}
+    rows = [r for r in rows or [] if r.get("check") not in gone and not (RP.paused() and RP.stages(tests.get(r.get("check"))))]
     if not rows:
         return ["- none recorded"]
     return ["- Item `%s` (closed offline on `%s` at %s): in-game check `%s` is UNRUN; run `%s`." % (
@@ -5359,6 +5408,10 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
     L += ["", "## Owed from the road back (UNRUN until this visit, `design/concepts/%s/%s`)" % (mod, UNRUN_FILE), "",
           "Each item below closed at an offline stage on its offline test; its in-game check never ran. Run each "
           "command and give it a row in `rows.jsonl`."] + unrun_lines(root, mod)
+    raids = paused_lines(root, mod, n, tt)
+    if raids:
+        L += ["", "## Raid scenes: paused", "", "No run stages a raid (standing_rulings.md §The cheapest test that decides the "
+              "bar). The bridge client refuses the calls."] + raids
     L += ["", "## Beyond the checks", "",
           "Explore past the bars on the same maps: plentiful screenshots (`src/RimMandrake/Utils/system_screenshot.py` "
           "for the desktop, the bridge's capture for the map), looked at, not only taken. Every strange thing no bar "

@@ -134,12 +134,31 @@ def _refuse(mod, observed, would_pass, fix, why):
     return r
 
 
+def raid_refusal(mod, sel):
+    """-> a refusal record when every chain that SEL names is a paused raid chain (rimflow/raid_pause.py), else None."""
+    names = (sel or {}).get("chains") if isinstance(sel, dict) else None
+    if not names:
+        return None
+    d = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow")
+    if d not in sys.path:
+        sys.path.append(d)
+    import raid_pause as RP
+    what = [RP.chain_paused(mod, c) for c in names]
+    if not all(what):
+        return None
+    return _refuse(mod, "%s: each chain named stages a raid (%s)" % (RP.WORD, "; ".join(what)),
+                   "the raid pause is lifted (%s)" % RP.switch()["why"], "queue a chain that stages no raid", "raid")
+
+
 def refusal(mod, sel, by, root=None):
     """-> None when the job may be queued, else a refusal record (fields of the refusal contract, plus `text`).
     SEL and ROOT are accepted for the callers' signature; no selection and no pipeline stage is refused."""
     if by in OPS_REQUESTERS:
         return None
     moh = _moh()
+    raid = raid_refusal(mod, sel)
+    if raid:
+        return raid
     try:
         h = held_by_owner(mod)
     except moh.Unreadable as e:

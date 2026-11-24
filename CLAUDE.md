@@ -23,7 +23,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 | topic | full text |
 |---|---|
 | biome, roster, sea and naming-tier rulings | `design/RimMandrake/biome_rulings.md` |
-| north star, LLM transport, pits, DLC, git, code review, art, bridge, savegame options, delegation, pipeline, judges, spend | `design/RimMandrake/standing_rulings.md` |
+| north star, LLM transport, pits, DLC, git, code review, art, bridge, savegame options, delegation, pipeline, judges, spend, tests | `design/RimMandrake/standing_rulings.md` |
 | measurements and owner words moved out of this file | `design/RimMandrake/CLAUDE.history.md` |
 | instruments that return a confident wrong number | `infrastructure/state/facts/instrument_traps.md` |
 | tools with surprising side effects | `infrastructure/state/facts/tool_traps.md` |
@@ -613,6 +613,12 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   thing still.
 - Use Minimum Force: the least force that makes the scene affordable and reliable, and that leaves to the mod every
   decision that the scene claims to test.
+- The cheapest test that decides the bar is the test. Show on the scene or check why a cheaper, faster, simpler test cannot
+  decide the same bar (`cheaper_why` in the test table). Without that evidence, use the cheaper test.
+- Replace a test that we cannot afford by a less expensive test of the same bar. Do not keep running it.
+- Do not stage a raid in a test unless the function of the mod itself is about raiders. Raid tests are paused. A scene that stages a
+  raid carries `stages_raid` in its test table, and nothing starts it while the pause is on (`raid_pause.py show`).
+  Full text: `design/RimMandrake/standing_rulings.md` §The cheapest test that decides the bar.
 - A verdict on a scene stands until a change touches what the scene reads or exercises. The exit condition of
   Stage 6 (in-game acceptance in the Maturation Pipeline) never asks for every scene in one in-game visit, or for one
   scene several times in a row.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline test of validation.py's walk_storeroom_raid leaf (scene sc_walk_raid) against a fake bridge
+"""Offline test of validation.py's walk_storeroom_raid leaf (check sc_walk_blasts, which stages no raid) against a fake bridge
 (RIMMANDRAKE_GIVE_WALK_RAID_LIVE_MODE_STATIC_EXITS_ZERO). The fake is a tiny world: goods in a storeroom, a shelf and a
 closed locker, a covered pit cell, a vent-gas cloud; a blast requests and moves every good in its radius, a lit cloud
 bursts one cell a tick outward from the lit cell, saves and loads copy the world. Each planted break must flip ITS row:
@@ -57,6 +57,8 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
   it is the best idea"), so W19-W30 and W23 run --frames-only on 34 active mods, and W0 is the two-step walk:
   W31 --frames-only on the small list judges only W_PRECONDITIONS and FRAME_BUDGET, in 3 interleaved pairs, no order acts
   W32 --frames-only on the full list: W_PRECONDITIONS INVALID, FRAME_BUDGET UNMEASURED, no arm run
+  W44 one run on the small list decides every row, FRAME_BUDGET too, with no raid; W45 each planted fault turns its own row
+      there; W46 a stack dropped by its own destroyed shelf is no throw; W47 --frames-only still runs the pairs alone
   W33 the full-list walk with no --frame-evidence: FRAME_BUDGET UNMEASURED naming the small list, no mod-off frame arm on
       the full list (one unjudged on arm reads CARRIER_TICK_COST), every other row PASS
   W34 --frame-evidence carries a small-list FAIL as FAIL; a frames file from the full list, another deployed DLL, a missing
@@ -86,7 +88,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import validation as V  # noqa: E402
 
-ARGS = ["--storeroom", "10,10,7,7", "--cover", "13,19", "--gas", "26,13", "--lit", "24,13", "--raid-points", "300",
+ARGS = ["--storeroom", "10,10,7,7", "--cover", "13,19", "--gas", "26,13", "--lit", "24,13",
         "--out", os.devnull, "--stamp", "T"]
 
 
@@ -136,6 +138,12 @@ class Fake:
                 self.rec(type="skip", exp=exp, thing="Human900", reason="in_pit", **{"def": "Human"})
             return
         if not self.w["enabled"] and not self.brk.get("off_throws"):
+            # vanilla: the blast destroys a shelf, and the stack on its cell drops beside it; nothing is thrown
+            g = next((k for k, p in self.w["goods"].items() if p == [11, 11]), None)
+            if self.brk.get("shelf_bursts") and g:
+                self.w["burst"], self.w["goods"][g] = True, [11, 12]
+            if self.brk.get("off_moves_bare") and self.w["goods"].get("103") == [12, 11]:
+                self.w["goods"]["103"] = [12, 12]
             return
         for gid, (x, z) in sorted(self.w["goods"].items()):
             d = math.hypot(x - at[0], z - at[1])
@@ -259,6 +267,8 @@ class Fake:
             inr = lambda p: x <= p[0] < x + ww and z <= p[1] < z + hh  # noqa: E731
             if kw.get("group") == "BuildingArtificial":
                 b = [{"id": "Shelf1", "def": "Shelf", "position": {"x": 11, "z": 11}}]
+                if self.brk.get("shelf_bursts") and w.get("burst"):
+                    b = []
                 if not self.brk.get("no_closed"):
                     b.append({"id": "Locker1", "def": "LWM_WeaponsLocker", "position": {"x": 15, "z": 15}})
                 return {"success": True, "things": [t for t in b if inr((t["position"]["x"], t["position"]["z"]))]}
@@ -288,6 +298,8 @@ class Fake:
         if tool == "rimworld/save_game":
             w["savedAt"] = w["tick"]
             self.saves[kw["saveName"]] = copy.deepcopy({k: v for k, v in w.items() if k != "journal"})
+            if self.brk.get("cover_gone") and "BASE" in kw["saveName"]:     # gone after the preconditions, before any act
+                w["cover"] = self.saves[kw["saveName"]]["cover"] = False
             return {"success": True}
         if tool == "rimworld/load_game":
             j = w["journal"]                        # the journal is a static class: a load keeps it
@@ -318,9 +330,7 @@ class Fake:
         if tool == "jawa/mod_settings_field":
             return {"success": True, "value": "True"}
         if tool == "jawa/fire_raid":
-            if self.brk.get("cover_gone_at_raid"):
-                w["cover"] = False                  # the raid broke the cover before any act of the walk
-            return {"success": True, "executed": True, "pawnsArrivedTotal": 4}
+            raise AssertionError("the walk staged a raid (owner, 2026-11-23: no raid test unless the mod is about raiders)")
         return {"success": True}
 
 
@@ -430,7 +440,7 @@ def main():
     check("W15", [rows.get(r) for r in cover] == ["PASS"] * 2,
           "a storeroom shell that breaks the cover cannot pre-empt the grenade, thrown first (live 2026-11-16): %s"
           % [rows.get(r) for r in cover])
-    code, rows, txt = run(cover_gone_at_raid=True)
+    code, rows, txt = run(cover_gone=True)
     check("W16", [rows.get(r) for r in cover] == ["UNMEASURED"] * 2 and txt.count("already gone") >= 2,
           "the cover already gone when the grenade comes: UNMEASURED naming it, not FAIL: %s" % [rows.get(r) for r in cover])
     code, rows, txt = run(reid_after_save=True)
@@ -558,6 +568,27 @@ def main():
           and ids[3] is None and V.src_id_of(os.path.join(tmp, "nope.dll")) is None,
           "the same sources at another commit read as the same build; other sources, no source id, or a srchash that is not "
           "this DLL's do not (got %s, ids %s)" % (got, ids))
+    # W44-W47 (owner, 2026-11-23: no raid test unless the mod is about raiders): one run on the small list decides every
+    # row, FRAME_BUDGET included, and stages no raid (the fake refuses jawa/fire_raid); each planted fault still bites there
+    code, rows, txt = run(n_mods=SMALL_MODS)
+    f = LAST[-1]
+    bad = sorted(r for r in V.WALK_ROWS if rows.get(r) != "PASS")
+    check("W44", code == 0 and not bad and f.frame_order[-6:] == ["on", "off"] * 3,
+          "one small-list run, no raid, no --frame-evidence: every row PASS (code %s, not PASS %s, arms %s)" % (code, bad, f.frame_order))
+    got = {}
+    for brk, rid in (("slow_frames", "FRAME_BUDGET"), ("off_throws", "C_OFF_IMPACTS_NO_THROWS"),
+                     ("unjournalled", "A_REACHED_ACCOUNTED"), ("orphan", "B_REQUESTS_MATCH_PLAN"),
+                     ("dup_on_reload", "A_RELOAD_NO_DUP_LOST"), ("gas_at_once", "B_GAS_CLUMP_BY_CLUMP"),
+                     ("cover_stays", "A_COVER_BROKEN_ONE_DESCENT"), ("off_moves_bare", "C_OFF_IMPACTS_NO_THROWS")):
+        code, rows, txt = run(n_mods=SMALL_MODS, **{brk: True})
+        got[brk] = (code, rows.get(rid))
+    check("W45", all(v == (1, "FAIL") for v in got.values()), "on the small list each planted fault turns its own row: %s" % got)
+    code, rows, txt = run(n_mods=SMALL_MODS, shelf_bursts=True)
+    check("W46", rows.get("C_OFF_IMPACTS_NO_THROWS") == "PASS" and "1 dropped by their own destroyed storage" in txt,
+          "mod off: the stack that its own destroyed vanilla shelf dropped is no throw (small list 2026-11-23, 4 of 4): %s"
+          % rows.get("C_OFF_IMPACTS_NO_THROWS"))
+    code, rows, txt = run(n_mods=SMALL_MODS, args=["--frames-only"])
+    check("W47", code == 0 and sorted(rows) == ["FRAME_BUDGET", "W_PRECONDITIONS"], "--frames-only still runs the pairs alone: %s" % rows)
     code, rows, txt = run(perf_blind=True)
     check("W21", code == 1 and rows.get("CARRIER_TICK_COST") == "UNMEASURED",
           "a tick-cost instrument that reads 0.0 leaves CARRIER_TICK_COST UNMEASURED (code %s, got %s)" % (code, rows.get("CARRIER_TICK_COST")))

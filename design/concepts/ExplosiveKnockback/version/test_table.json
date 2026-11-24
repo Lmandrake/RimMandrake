@@ -1207,51 +1207,56 @@
   },
   "sc_barrage_perf": {
    "id": "sc_barrage_perf",
-   "kind": "live_full",
+   "kind": "live_minimal",
    "stage": "6",
    "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
    "entry": "barrage_perf",
-   "observes": "the 99th-percentile frame inside the barrage-and-gas-chain window (0.9-8.25 s) is at most 50 ms; the worst frame is reported, not judged",
+   "observes": "the 99th-percentile frame inside the barrage-and-gas-chain window (0.9-8.25 s) is at most 50 ms, and the full list's measured mod-off p99 (21.7 ms, visit 5, ArchBig) plus the mod's own cost (this p99 less the same session's mod-off p99) is at most 50 ms; the worst frame is reported, not judged",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
     "design/concepts/ExplosiveKnockback/scenes.json",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25   (proof build, the owner's full list on Archmagi)",
-   "why_game": "frame time is meaningful only on the real list and machine (leaf barrage_frame_budget)",
-   "why_full_list": "frame time is meaningful only on the real list and machine (leaf barrage_frame_budget)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25   (proof build, tier explosiveknockback_visit, a game on Archmagi; any list)",
+   "why_game": "frames exist only in a running game on Archmagi",
+   "why_full_list": null,
    "entry_exists": true,
-   "partial": "the 40-cell cloud is a radius-3 seed (the seed's own cell count is printed, not asserted); the machine name is printed, not asserted (the bar says Archmagi); a full-list run is asserted as 60 or more active mods",
+   "partial": "the 40-cell cloud is a radius-3 seed (the seed's own cell count is printed, not asserted); the machine name is printed, not asserted (the bar says Archmagi); the full list's mod-off p99 is a recorded reading, not read again",
    "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
    "runs_today": {
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
-   }
+   },
+   "cheaper_why": "the full list's share of a frame is not the mod's: the mod-off arm measures it (visit 5: 22.1 ms on, 21.7 ms off), so the tier list decides the mod's share and the sum decides the bar (owner, 2026-11-16: the smallest list to observe it is the best idea)"
   },
-  "sc_walk_raid": {
-   "id": "sc_walk_raid",
-   "kind": "live_full",
+  "sc_walk_blasts": {
+   "id": "sc_walk_blasts",
+   "kind": "live_minimal",
    "stage": "6",
    "file": "src/RimMandrake/ExplosiveKnockback/validation.py",
    "entry": "walk_storeroom_raid",
-   "observes": "mortar impacts and throws recorded inside the storeroom rect; the pit trap's cover broken by the scripted grenade with one descent; the lit gas cloud bursts on many ticks, one per clump cell, ordered by distance from the lit edge, with good",
+   "observes": "(no raid staged) mortar impacts and throws recorded inside the storeroom rect; the pit trap's cover broken by the scripted grenade with one descent; the lit gas cloud bursts on many ticks, one per clump cell, ordered by distance from the lit edge, with good",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/validation.py",
     "design/concepts/ExplosiveKnockback/scenes.json",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live walk_storeroom_raid --storeroom x,z,w,h --cover x,z --gas x,z [--save NAME]   (proof build, the full list, a staged throwaway colony)",
-   "why_game": "the walk is the full list, played (leaf walk_storeroom_raid)",
-   "why_full_list": "the walk is the full list, played (leaf walk_storeroom_raid)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\proof\\stage_walk_colony.py --save EK_WALK_SMALL_COLONY_<stamp>   then   python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live walk_storeroom_raid --storeroom 97,37,7,7 --cover 102,36 --gas 100,41 --save EK_WALK_SMALL_COLONY_<stamp> --frame-pairs 21   (proof build, tier explosiveknockback_visit, AridShrubland quicktest, any free game; no raid, no --frame-evidence)",
+   "why_game": "throws, gas and a mid-air save and reload need a running map; the tier list shows the mod",
    "entry_exists": true,
-   "partial": "FRAME_BUDGET is UNMEASURED until RM_FrameProbe has a bridge read; the plan row reads each journal line's own planned and kernel cells, not a fresh kernel run; shells and grenade are GenExplosion calls at the HE shell's and frag grenade's numbers",
-   "item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
-   }
+    "why": "UNRUN: replaced sc_walk_raid on 2026-11-23; offline oracle selftest_explosiveknockback_walk_raid.py W44-W47 (red on the parent, green); never the game in this form"
+   },
+   "replaces": [
+    "sc_walk_raid"
+   ],
+   "why_full_list": null,
+   "cheaper_why": "the whole walk is the cheapest place where two orders of blasts, a save in the air and the mod-off control share one colony; no row reads a raider, so the raid and the full list were dropped (owner, 2026-11-23)",
+   "partial": "shells and grenade are GenExplosion calls at the HE shell's and frag grenade's numbers; the plan row reads each journal line's own planned and kernel cells, not a fresh kernel run; on the small list A_GAS_CLUMP_BY_CLUMP read one straggler cell in 1 of 8 runs (road_back_2026-11-23/README.md): a sighting, not classed",
+   "owed_under": "RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST"
   },
   "sc_gas_shove_into_pit": {
    "id": "sc_gas_shove_into_pit",
@@ -2642,7 +2647,7 @@
    "kind": "walk",
    "proves_at": "8",
    "decides": [
-    "sc_walk_raid",
+    "sc_walk_blasts",
     "LOOK_STAGE8"
    ],
    "supports": [

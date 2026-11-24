@@ -55,6 +55,7 @@ PASS, FAIL, UNMEASURED = "PASS", "FAIL", "UNMEASURED"
 # runner from the chain's catalogue after a StopAfter, never by a component. Not a verdict on the mod and not "could
 # not measure" -- `Component.execution` says "not_run" beside it.
 NOT_RUN = "NOT_RUN"
+RAID_PAUSED = "PAUSED: raid tests wait for the tools"      # raid_pause.WORD (the selftest compares the two)
 
 
 def _kv_in_line(line, field, value):
@@ -1049,6 +1050,12 @@ class _ComponentCtx(object):
             c.detail = "%s: %s" % (exc_type.__name__, exc)
             self.ctx.upstream_failed = True
             self.ctx.upstream_reason = "an UNMEASURED component ended this chain earlier: " + c.detail[:200]
+        elif exc is not None and RAID_PAUSED in str(exc):
+            # raid tests are paused (rimflow/raid_pause.py; owner, 2026-11-23): not run, never a verdict and never a fault
+            c.verdict = NOT_RUN
+            c.detail = str(exc)[:400]
+            self.ctx.upstream_failed = True
+            self.ctx.upstream_reason = "a paused raid call ended this chain earlier: " + c.detail[:200]
         elif exc is not None and _is_harness_error(exc_type):
             # The script or the transport broke: no answer about the mod came back, so this is no finding against it.
             c.verdict = UNMEASURED

@@ -251,5 +251,21 @@ for fault, label in (('far', 'a raid that never came'), ('nobody', 'a raid of no
     check('%s: %s UNMEASURED, never PASS' % (label, RAID_ROW), r.get(RAID_ROW) == 'UNMEASURED' and o['status'] != 'PASS', r)
 r, o, _ = run(mod='shelter', fault='far')
 check('a raid that never came cannot FAIL or PASS the pit row on its own', r.get(RAID_ROW) == 'UNMEASURED', r)
+
+
+# sc_trench_cover_pawns: the same two pawns and their shooters, and no raid (owner, 2026-11-23)
+def run_pawns(mod='cover'):
+    F = Fake(mod, None, 'lenient')
+    tools, call = [], F.call
+    F.call = lambda tool, **kw: (tools.append(tool), call(tool, **kw))[1]
+    o = C.scene_trench_cover_pawns(F, lambda: F.save('begin'), lambda: F.load('begin'), {'calls': []})
+    return {x['id']: x['status'] for x in o['rows']}, tools
+
+
+r, tools = run_pawns()
+check('sc_trench_cover_pawns: the cover rows PASS with no raid call and no shelter row',
+      r and set(r.values()) == {'PASS'} and len(r) == 3 and not [t for t in tools if 'raid' in t or 'lord' in t], (r, sorted(set(tools))))
+check('sc_trench_cover_pawns can FAIL: a trench that covers nobody', any(run_pawns(m)[0].get('TR_trench_pawn_covered') == 'FAIL'
+                                                                      for m in ('nocover', 'none', 'flat', 'off')), [run_pawns(m)[0] for m in ('nocover',)])
 print('selftest_trench_cover_scene: %s (%d failed)' % ('FAIL' if FAILS else 'ok', len(FAILS)))
 sys.exit(1 if FAILS else 0)

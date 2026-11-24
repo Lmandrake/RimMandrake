@@ -726,19 +726,20 @@ namespace RimMandrake.ExplosiveKnockback
             return null;
         }
 
-        /// <summary>barrage_perf (and barrage_perf_off, the mod off: the baseline). On the owner's full list: a 10x10
-        /// stockpile, one stack on every cell, and a 40-cell cloud of the Cauldron's vent gas; six Bomb shells (radius 2.9,
+        private const float FullListOffP99Ms = 21.7f;   // measured: sc_barrage_perf visit 5, ArchBig, 314 mods, 2026-11-23
+
+        /// <summary>barrage_perf (and barrage_perf_off, the mod off: the baseline). On any list (the tier is enough: owner
+        /// 2026-11-16, "the smallest list to observe it is the best idea"; the cheapest test that decides the bar, 2026-11-23),
+        /// barrage_perf_off first in the same session: a 10x10 stockpile, one stack on every cell, and a 40-cell cloud of the Cauldron's vent gas; six Bomb shells (radius 2.9,
         /// damage 50) into the stockpile half a second apart, then the cloud lit. The 99th-percentile unpaused frame inside
         /// the barrage-and-chain window (BarrageWindowLoS-HiS) at most 50 ms; the worst frame is reported, not judged.
+        /// The bar is worded on the full list, so this run must also clear it there: the mod's own cost (this p99 less the same
+        /// session's mod-off p99) added to the full list's measured mod-off p99 (FullListOffP99Ms) is at most 50 ms.
         /// Run frame_probe_selfcheck first in the same session; then --ticks 0 --real-seconds 25.</summary>
         private static string BarragePerf(Scene s)
         {
             bool off = s.name.EndsWith("_off");
             int mods = ModsConfig.ActiveModsInLoadOrder.Count();
-            if (mods < 60)
-            {
-                return "not the owner's full list: " + mods + " active mods";
-            }
             if (!probeSelfCheckPassed)
             {
                 return "the frame probe's self-check has not passed this session: run frame_probe_selfcheck first";
@@ -808,7 +809,14 @@ namespace RimMandrake.ExplosiveKnockback
                 {
                     return "INVALID " + sc.name + " nothing was thrown: " + detail;
                 }
-                return Result(sc, within, detail + " baselineWorstMs=" + (barrageBaselineWorst < 0 ? "UNMEASURED (run barrage_perf_off first)" : barrageBaselineWorst.ToString("0.0"))
+                if (barrageBaselineP99 < 0)
+                {
+                    return "INVALID " + sc.name + " no mod-off baseline this session (run barrage_perf_off first): " + detail;
+                }
+                float ours = Math.Max(0f, g.windowP99Ms - barrageBaselineP99);
+                bool onFullList = FullListOffP99Ms + ours <= 50f;
+                detail += " oursMs=" + ours.ToString("0.0") + " fullListP99Ms=" + (FullListOffP99Ms + ours).ToString("0.0") + (onFullList ? "" : " OVER 50");
+                return Result(sc, within && onFullList, detail + " baselineWorstMs=" + (barrageBaselineWorst < 0 ? "UNMEASURED (run barrage_perf_off first)" : barrageBaselineWorst.ToString("0.0"))
                     + " baselineWindowP99Ms=" + (barrageBaselineP99 < 0 ? "UNMEASURED" : barrageBaselineP99.ToString("0.0")));
             };
             return null;

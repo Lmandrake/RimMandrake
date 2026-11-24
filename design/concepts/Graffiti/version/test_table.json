@@ -979,7 +979,10 @@
     "ran": false,
     "entry_exists": true,
     "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
-   }
+   },
+   "stages_raid": "four raiders under an assault lord (RM_GraffitiProof.RaidStart)",
+   "cheaper_why": "the mod makes leaving raiders tag walls; an ordered pawn has no raid lord to leave with",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
   },
   "sc_hostile_thought": {
    "id": "sc_hostile_thought",
@@ -1037,7 +1040,10 @@
     "ran": false,
     "entry_exists": true,
     "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
-   }
+   },
+   "stages_raid": "the same raid, then its marks are scrubbed",
+   "cheaper_why": "its marks are raid exit marks; a placed-mark probe would decide it cheaper, and does not exist",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
   },
   "sc_going_over": {
    "id": "sc_going_over",
@@ -1095,7 +1101,10 @@
     "ran": false,
     "entry_exists": true,
     "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
-   }
+   },
+   "stages_raid": "a raid exit of each of two factions",
+   "cheaper_why": "its marks are raid exit marks; the raid points and the return tick are reads that need no raid, so a placed-mark probe would decide it cheaper, and does not exist",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
   },
   "sc_visitors": {
    "id": "sc_visitors",
@@ -1356,7 +1365,10 @@
     "ran": false,
     "entry_exists": true,
     "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
-   }
+   },
+   "stages_raid": "the same raid, then its marks are aged",
+   "cheaper_why": "its marks are raid exit marks; a placed-mark probe would decide it cheaper, and does not exist",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
   },
   "sc_breach_bias_raid": {
    "id": "sc_breach_bias_raid",
@@ -1385,7 +1397,10 @@
     "ran": false,
     "entry_exists": true,
     "why": "Stage 6 game test; Stage 2 checks only that its entry exists"
-   }
+   },
+   "stages_raid": "a breaching raid whose first target is read",
+   "cheaper_why": "the pick itself (BreachingGrid.FindBuildingToBreach) is a read that needs no raid; only the lord's first target does",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
   },
   "P_A9": {
    "id": "P_A9",

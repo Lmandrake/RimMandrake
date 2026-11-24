@@ -879,6 +879,24 @@ class RetiredToolError(RimBridgeError):
     """The tool exists on the bridge and the owner has retired it. See RETIRED_TOOLS."""
 
 
+class RaidPausedError(RimBridgeError):
+    """A call that stages a raid, while raid tests are paused (rimflow/raid_pause.py; owner, 2026-11-23)."""
+
+
+def _raid_refusal(tool, params):
+    """raid_pause's refusal text for this call, or None. A module that cannot be read refuses a call that names a raid."""
+    try:
+        rimflow_dir = str(_rm_pl.Path(__file__).resolve().parents[1] / "rimflow")
+        if rimflow_dir not in sys.path:
+            sys.path.append(rimflow_dir)
+        import raid_pause
+        return raid_pause.refuse_call(tool, params)
+    except Exception as ex:  # noqa: BLE001
+        if "raid" in str(tool) or "lord_assault" in str(tool):
+            return "PAUSED: raid tests wait for the tools (and raid_pause.py could not be read: %s: %s)" % (type(ex).__name__, ex)
+        return None
+
+
 # MODCHECK_DRIVERS_HARDEN_OWN_TIMEOUT_MIDCALL: a process that will be hard-killed at a known time (modcheck drivers.py
 # sets this to the epoch second of its subprocess timeout) gets no NEW mutating call that could still be in flight
 # then: a kill mid call strands an UNKNOWN-outcome marker that refuses every later mutation of the run.
@@ -1393,6 +1411,9 @@ class RimBridge:
         why = _retired(tool)
         if why is not None:
             raise RetiredToolError("%s is RETIRED - refusing to call it.\n  %s" % (tool, why))
+        raid = _raid_refusal(tool, params)
+        if raid is not None:
+            raise RaidPausedError(raid)
         if check:
             unchecked = self.check_params(tool, params)
             if unchecked:

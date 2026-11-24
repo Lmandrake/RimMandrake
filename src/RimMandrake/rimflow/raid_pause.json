@@ -1,0 +1,24 @@
+{
+ "paused": true,
+ "why": "owner, 2026-11-23: \"no raid tests until we have better tools, pause them for now\"; lifted when the Bridge 2 scene library holds a raid still (design/specs/2026-11-23-bridge-v2/)",
+ "lift": "python3 src/RimMandrake/rimflow/raid_pause.py lift --why \"...\"",
+ "allow": [
+  "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
+ ],
+ "chains": {
+  "Visibility": {
+   "raid_points_scale_with_visibility_band": "a RaidEnemy incident at 100 points for each visibility band",
+   "settings_gate_the_multiplier_reversibly": "a RaidEnemy incident with the multiplier off and on",
+   "strength_slider_zero_neutralises_the_curve": "a RaidEnemy incident with the strength slider at zero"
+  },
+  "Aftermath": {
+   "battle_lifecycle_repelled": "a RaidEnemy incident that the battle record opens on"
+  },
+  "Graffiti": {
+   "scene_breach_bias_raid": "a breaching raid whose first target is read",
+   "scene_raid_retaken": "a raid (RM_GraffitiProof.RaidStart)",
+   "scene_raider_pressure": "a raid exit of each of two factions",
+   "scene_weathered_raid_mark": "a raid (RM_GraffitiProof.RaidStart)"
+  }
+ }
+}

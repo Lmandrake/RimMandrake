@@ -459,6 +459,12 @@ def t_steward_runs_read_the_store():
             st = {"fixers": fixers}
         go, got = AUT._gate(cfg, st, row, 0, "0.1.0")
         return bool(got) and got[0] == "steward_spent"
+    # a program's own act (a game_only key: no unit ever launched, `landed` set) is no run: FlowWorks read 12 of 12 on 10
+    acts = {"steward": dict({"0.1.0|k%d" % i: {"unit": "rm-s-%d" % i} for i in range(10)},
+                            **{"0.1.0|offline_build|game_only|%d" % i: {"unit": None, "item": None, "failed": None,
+                                                                       "landed": "PUBLISHED x"} for i in range(2)})}
+    go, got = AUT._gate(cfg, acts, {"mod": "Fx", "aut": "steward", "steward_key": "0.1.0|new"}, 0, "0.1.0")
+    check("_gate counts no program act as a steward run", not (got and got[0] == "steward_spent"), got)
     fixers = {"RIMMANDRAKE_FX_%d" % i: {"unit": "rm-f-%d" % i} for i in range(12)}
     put_books("Fx", fixers=fixers)      # pipe's measure of fixer_runs reads the tick's books: 12 here too
     honours("_gate (steward)", lambda: gate("steward"), "Fx", 1, 13, "steward_runs")

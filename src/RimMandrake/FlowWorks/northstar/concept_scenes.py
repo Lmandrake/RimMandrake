@@ -1056,7 +1056,9 @@ def _tr_watch(S, trench, pit):
     return seen
 
 
-def _trench_cover(S):
+def _trench_cover(S, raid=True):
+    """sc_trench_cover. raid False (sc_trench_cover_pawns, the cheaper test: owner, 2026-11-23, no raid in a test unless the mod's
+    own function is about raiders) stops after the two placed shooters' cover reads; only the shelter row asks for raiders."""
     TC = _tc()
     for k, v in TR_SETTINGS:
         S.setting(k, v)
@@ -1081,6 +1083,8 @@ def _trench_cover(S):
     c, ctxt = _tr_read(S, TC, ctl, cgun)
     S.row('TR_control_open_ground_no_cover', c is not None and TC.near_verdict(c, 'trench', 0.0, 1e-3) == 'PASS',
           {'reply': ctxt}, unmeasured=c is None)
+    if not raid:
+        return
     _fire_raid(S, TR_RAID_POINTS, TR_RAID_AT)
     prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON  # the raid this scene fired is waived for every tick of it
     try:
@@ -1383,8 +1387,8 @@ def _moat_send(S, G, spots):
     G['raiders'] += new
 
 
-def _moat_stage(S, raised=True):
-    """Ring, drain pit, shut sluice, drawbridge (raised or lowered, read back), the west-bank pump plant, one colonist in the
+def _moat_stage(S, raised=True, raiders=True):
+    """raiders False (sc_moat_walkers) stages the same map and spawns no hostile. Ring, drain pit, shut sluice, drawbridge (raised or lowered, read back), the west-bank pump plant, one colonist in the
     plot and six raiders on the south bank under an assault lord; over the LOWERED leaf they come one at a time (the first now,
     the rest in G['later'], sent by _moat_watch as each one before has crossed): a raider on the deck costs the one behind him
     175 in vanilla's path (PathFinderJob.Cost_Blocked), a swim square beside him 60, so six at once swim round each other, which
@@ -1433,7 +1437,10 @@ def _moat_stage(S, raised=True):
     require(bid is not None, 'no battery at %s' % (G['battery'],))
     S.call('jawa/battery_set', thing=bid, mode='setPct', value=1.0)
     G['colonist'] = S.pawn('Colonist', G['col'], 'player')
-    G['faction'], G['raiders'] = _isl_hostile_faction(S), []
+    G['later'], G['raiders'] = [], []
+    if not raiders:
+        return G
+    G['faction'] = _isl_hostile_faction(S)
     first = len(G['raiders_at']) if raised else 1
     _moat_send(S, G, G['raiders_at'][:first])
     G['later'] = list(G['raiders_at'][first:])
@@ -1707,7 +1714,19 @@ def _moat_rows(S, G):
           {'hitsByHeldRaiders': {w: h for w, h in stabs.items() if h}, 'wardens': len(caught),
            'wardensDowned': len([c for c in caught if c['wardenAbleAfter'] is False])},
           unmeasured=not caught or any(not isinstance(h, list) for h in S.r['moatWardenHits'].values()))
-    # chemfuel from the Dump tank, through the powered pump, into the drained moat
+    _moat_fuel(S, G, dry_at, 'MOAT')
+    # control: the same raid with the leaf lowered -- they walk over the bridge, one after the other, and nobody swims
+    S.again()
+    G = _moat_stage(S, raised=False)
+    c = _moat_watch(S, G, until_swimmers=0, until_crossed=2)
+    S.row('MOAT_control_bridge_down_no_swim', len(c['crossed']) >= 2 and not c['swam'],
+          {'swimmers': sorted(c['swam']), 'crossedToThePlot': sorted(c['crossed']), 'reachedTheRing': sorted(c['reached']),
+           'read': sorted(c['read']), 'polls': c['polls'], 'leafDown': c['leafDown']},
+          unmeasured=not c['read'] or not c['leafDown'] or (not c['swam'] and len(c['crossed']) < 2))
+
+
+def _moat_fuel(S, G, dry_at, tag):
+    """Chemfuel from the Dump tank, through the powered pump, into the drained moat; then the toss-flame order lights it."""
     _poll_ticks(S, lambda: 'running=True' in S.sc(NSP, 'ProofPump', '%d,%d' % G['pump']), 400)
     p0 = S.sc(NSP, 'ProofPump', '%d,%d;pour' % G['pump'])
     S.ticks(4 * 250); S.pulse(10)
@@ -1718,21 +1737,98 @@ def _moat_rows(S, G):
     units = [int(t.rsplit(':', 1)[1]) if t.rsplit(':', 1)[-1].isdigit() else None for t in (t0, t1)]
     blind = (_vacuous(p0) or _vacuous(p1) or 'running=True' not in p0 or None in units or not rows
              or all(not q for q in rows) or dry_at is None)
-    S.row('MOAT_chemfuel_pumped', bool(fuel) and units[1] < units[0],
+    S.row(tag + '_chemfuel_pumped', bool(fuel) and units[1] < units[0],
           {'pumpBefore': p0, 'pumpAfter': p1, 'chemfuelSquares': len(fuel), 'drained': dry_at is not None}, unmeasured=blind)
     if fuel:
         near = next((c for c in fuel if _moat_lip(G, c)), fuel[0])      # a chemfuel square a colonist on solid ground can stand by
-        _toss(S, near, 'MOAT_moat_burns', at=_moat_lip(G, near))
+        _toss(S, near, tag + '_moat_burns', at=_moat_lip(G, near))
     else:
-        S.row('MOAT_moat_burns', False, 'no chemfuel square in the moat to light', unmeasured=True)
-    # control: the same raid with the leaf lowered -- they walk over the bridge, one after the other, and nobody swims
+        S.row(tag + '_moat_burns', False, 'no chemfuel square in the moat to light', unmeasured=True)
+
+
+# sc_moat_walkers (owner, 2026-11-23: no raid in a test unless the mod's own function is about raiders; the cheapest test that
+# decides the bar, standing_rulings.md): each part of moat_raid_sequence that one ordered colonist can decide, on sc_moat_raid's
+# own map. What only raiders decide (they choose to swim, they are held and taken from the rim as enemies, they stab no
+# warden) stays with sc_moat_raid, which is paused. The rim capture with no raid is sc_hole_prison's.
+MW_POLL, MW_POLLS = 30, 120          # a swim of four squares is watched every 30 ticks, at most 3,600 ticks
+MW_BLOCK_TICKS = 1500                # an order that a drained moat refuses is given this long to be wrong
+
+
+def _at(S, pid):
+    """(x, z) of a pawn on the map (jawa/site_state), or None when the read does not name it."""
+    p = next((q for q in S.call('jawa/site_state').get('pawns') or [] if q.get('id') == pid), None)
+    return None if p is None or p.get('x') is None else (p['x'], p['z'])
+
+
+def _mw_in_plot(G, at):
+    return at is not None and O[0] + MOAT_W <= at[0] < O[0] + MOAT_N - MOAT_W and O[1] + MOAT_W <= at[1] < O[1] + MOAT_N - MOAT_W
+
+
+def _mw_cross(S, G, pid, to):
+    """One drafted colonist is ordered across; every MW_POLL ticks his square and ProofSwim under him are read. -> what was seen."""
+    r = S.call('jawa/order_pawn', pawnId=pid, x=to[0], z=to[1], waitTicks=0, draft=True)
+    seen = {'order': r.get('success'), 'start': _at(S, pid), 'reads': 0, 'swam': False, 'tired': None, 'arrived': False, 'last': None,
+            'refused': 0}
+    ring = set(G['ring'])
+    for _ in range(MW_POLLS):
+        S.ticks(MW_POLL)
+        at = _at(S, pid)
+        if at is None:
+            seen['refused'] += 1
+            continue
+        seen['last'], seen['reads'] = at, seen['reads'] + 1
+        txt = S.sc(SWIMP, 'ProofSwim', '%d,%d' % at)
+        if txt.startswith('SWIM ' + pid + ' '):
+            d = kv(txt)
+            if d.get('deepCell') == 'True' and at in ring:
+                seen['swam'] = True
+            if seen['swam']:
+                try:
+                    seen['tired'] = max(seen['tired'] or 0.0, float(d.get('exhaustion')))
+                except (TypeError, ValueError):
+                    pass
+        if _mw_in_plot(G, at):
+            seen['arrived'] = True
+            break
+    return seen
+
+
+def _moat_walkers(S):
+    G = _moat_stage(S, raised=True, raiders=False)
+    bank, plot = G['raiders_at'][0], (G['col'][0], G['col'][1] + 1)
+    w = S.pawn('Colonist', bank, 'player')
+    c = _mw_cross(S, G, w, plot)
+    # raised leaf: the way over is through the water. Across with no swim read is the bar's false pass ("walking across")
+    S.row('MW_raised_leaf_swims_and_tires', c['swam'] and (c['tired'] or 0) > 0, c,
+          unmeasured=not c['reads'] or (not c['swam'] and not c['arrived']) or (c['swam'] and c['tired'] is None))
+    up = S.sc(DOORS, 'ProofSetGate', 'current|%d,%d|true' % G['sluice'])
+    require('lifted=True' in up, 'the sluice did not lift: %s' % up)
+    dry_at, dl = None, None
+    for k in range(1, MOAT_DRAIN_TICKS // (4 * MOAT_POLL) + 1):
+        S.ticks(4 * MOAT_POLL)
+        dl = S.dl(G['ring'])
+        if None not in dl and not any(dl):
+            dry_at = k * 4 * MOAT_POLL
+            break
+    S.row('MW_drains_fast', dry_at is not None, {'dryAfterTicks': dry_at, 'bound': MOAT_DRAIN_TICKS,
+                                                 'wetSquares': None if dl is None else sum(1 for v in dl if v)},
+          unmeasured=dl is None or None in dl)
+    # drained, leaf up, no ladder: a colonist ordered over a 4 m wall stays where he is
+    g = S.pawn('Colonist', bank, 'player')
+    S.call('jawa/order_pawn', pawnId=g, x=plot[0], z=plot[1], waitTicks=0, draft=True)
+    S.ticks(MW_BLOCK_TICKS)
+    at = _at(S, g)
+    S.row('MW_drained_moat_is_not_walked_over', not _mw_in_plot(G, at), {'from': bank, 'to': plot, 'at': at, 'dry': dry_at is not None},
+          unmeasured=at is None or dry_at is None)
+    _moat_fuel(S, G, dry_at, 'MW')
     S.again()
-    G = _moat_stage(S, raised=False)
-    c = _moat_watch(S, G, until_swimmers=0, until_crossed=2)
-    S.row('MOAT_control_bridge_down_no_swim', len(c['crossed']) >= 2 and not c['swam'],
-          {'swimmers': sorted(c['swam']), 'crossedToThePlot': sorted(c['crossed']), 'reachedTheRing': sorted(c['reached']),
-           'read': sorted(c['read']), 'polls': c['polls'], 'leafDown': c['leafDown']},
-          unmeasured=not c['read'] or not c['leafDown'] or (not c['swam'] and len(c['crossed']) < 2))
+    G = _moat_stage(S, raised=False, raiders=False)
+    w = S.pawn('Colonist', bank, 'player')
+    c = _mw_cross(S, G, w, plot)
+    leaf = kv(S.sc(DPROOF, 'ProofLeaf', '%d,%d' % G['deck']))
+    down = leaf.get('progress') == '0' and leaf.get('target') == 'lowered'
+    S.row('MW_lowered_leaf_bears_him_dry', c['arrived'] and not c['swam'], dict(c, leafDown=down),
+          unmeasured=not c['reads'] or not down or (not c['swam'] and not c['arrived']))
 
 
 def _toss(S, target, rid, want_fire=True, at=None):
@@ -2169,8 +2265,8 @@ def _isl_hostile_faction(S):
     return fac
 
 
-def _isl_stage(S):
-    """Dig the channel, build both drawbridges (winches on the outer islands) and the steel span, read them back lowered,
+def _isl_stage(S, raiders=True):
+    """raiders False (sc_islands_walker) puts one colonist on the span and spawns no hostile. Dig the channel, build both drawbridges (winches on the outer islands) and the steel span, read them back lowered,
     put two colonists on the west island and six sappers on the span, then raise both leaves. -> the staged state."""
     S.dig(_isl_channel(), ISL_DEEP)
     winch = []
@@ -2192,6 +2288,10 @@ def _isl_stage(S):
         ids.append((t[0]['id'], t[0].get('maxHitPoints')))
     for dz in (-1, 1):
         S.pawn('Colonist', (O[0] - 3, O[1] + dz), 'player')
+    if not raiders:
+        walker = S.pawn('Colonist', _isl_xz(10), 'player')
+        _isl_raise(S)
+        return {'winch': winch, 'winch_ids': ids, 'walker': walker}
     fac = _isl_hostile_faction(S)
     raiders = []
     for k in range(ISL_RAIDERS):
@@ -2210,10 +2310,14 @@ def _isl_stage(S):
     S.call('jawa/lord_assault_spawn', pawns=','.join(raiders), sappers=True)
     good = [p for p in raiders if S.sc('RimWorld.SappersUtility', 'IsGoodSapper', p) == 'True']
     require(good, 'no raider IsGoodSapper (none gets the Sapper duty, so none would go for a winch): %s' % raiders)
+    _isl_raise(S)
+    return {'winch': winch, 'winch_ids': ids, 'raiders': raiders, 'sappers': good}
+
+
+def _isl_raise(S):
     for dx in ISL_LEAVES:
         txt = S.sc(DPROOF, 'ProofDevSet', '%d,%d;raise;instant' % _isl_xz(dx))
         require(kv(txt).get('target') == 'raised' and kv(txt).get('progress', '0') != '0', 'leaf %d did not go up: %s' % (dx, txt))
-    return {'winch': winch, 'winch_ids': ids, 'raiders': raiders, 'sappers': good}
 
 
 def _isl_counter(S):
@@ -2316,6 +2420,35 @@ def _islands(S):
               ctl['held'], ctl['escaped'], [l.get('progress') for l in up],
               None if c0 is None or c1 is None else c1 - c0, ctl['polls']),
           unmeasured=not ctl['on_span'] or leaky)
+
+
+# sc_islands_walker (owner, 2026-11-23: the cheapest test that decides the bar): the bridges' half of
+# island_bridges_trap_and_fail, with one ordered colonist on the span and no raider. That raiders go for a winch and break it
+# stays with sc_islands, which is paused.
+ISLW_WAIT = 1500
+
+
+def _islands_walker(S):
+    st = _isl_stage(S, raiders=False)
+    home = (O[0] - 3, O[1])
+    S.call('jawa/order_pawn', pawnId=st['walker'], x=home[0], z=home[1], waitTicks=0, draft=True)
+    S.ticks(ISLW_WAIT)
+    at, up = _at(S, st['walker']), [_isl_leaf(S, dx) for dx in ISL_LEAVES]
+    raised = all(l.get('target') == 'raised' and l.get('progress', '0') != '0' for l in up)
+    S.row('ISLW_raised_leaves_hold_him_on_the_span', at is not None and O[0] < at[0] < O[0] + 21, {'at': at, 'leaves': up},
+          unmeasured=at is None or not raised)
+    gone = S.call('jawa/destroy_batch', rects='%d,%d,1,1' % st['winch'][0], categories='Building')
+    require(int(gone.get('destroyed') or 0) >= 1, 'the staged winch loss destroyed nothing: %s' % gone)
+    S.ticks(10)                                          # the crash lands on the next drive step
+    leaf, other = _isl_leaf(S, ISL_LEAVES[0]), _isl_leaf(S, ISL_LEAVES[1])
+    n, _, m = (leaf.get('standing') or '').partition('/')
+    down = leaf.get('progress') == '0' and n.isdigit() and n == m and int(m) > 0
+    S.row('ISLW_lost_winch_drops_its_leaf_alone', down and other.get('progress', '0') != '0' and leaf.get('winch') != 'True',
+          {'lost': leaf, 'other': other})
+    S.call('jawa/order_pawn', pawnId=st['walker'], x=home[0], z=home[1], waitTicks=0, draft=True)
+    S.ticks(ISLW_WAIT)
+    at = _at(S, st['walker'])
+    S.row('ISLW_he_walks_off_over_the_dropped_leaf', at is not None and at[0] <= O[0], {'at': at}, unmeasured=at is None or not down)
 
 
 def _vacuous(v):
@@ -2879,19 +3012,23 @@ scene_source_pays = _run('scene_source_pays', _source_pays)
 scene_pawn_height = _run('scene_pawn_height', _pawn_height)
 scene_hose_look = _run('scene_hose_look', _hose_look)
 scene_trench_cover = _run('scene_trench_cover', _trench_cover)
+scene_trench_cover_pawns = _run('scene_trench_cover_pawns', lambda S: _trench_cover(S, raid=False))
 scene_ice = _run('scene_ice', _ice)
 scene_moat_raid = _run('scene_moat_raid', _moat_raid)
+scene_moat_walkers = _run('scene_moat_walkers', _moat_walkers)
 scene_toss_flame = _run('scene_toss_flame', _toss_flame)
 scene_wetting = _run('scene_wetting', _wetting)
 scene_fetch_fallen = _run('scene_fetch_fallen', _fetch_fallen_scene)
 scene_islands = _run('scene_islands', _islands)
+scene_islands_walker = _run('scene_islands_walker', _islands_walker)
 scene_walk_moat_season = _run('scene_walk_moat_season', _walk)
 scene_pit_trap_raid = _run('scene_pit_trap_raid', _pit_trap_raid)
 scene_garden = _run('scene_garden', _garden)
 scene_geyser_tub = _run('scene_geyser_tub', _geyser_tub)
 scene_coating_wash = _run('scene_coating_wash', _coating_wash)
 STAGE3_SCENES = {f.__name__: f for f in (scene_fill_front, scene_one_surface, scene_source_pays, scene_pawn_height,
-                 scene_hose_look, scene_trench_cover, scene_ice, scene_moat_raid, scene_toss_flame, scene_wetting,
+                 scene_hose_look, scene_trench_cover, scene_ice, scene_moat_raid, scene_moat_walkers,
+                 scene_trench_cover_pawns, scene_islands_walker, scene_toss_flame, scene_wetting,
                  scene_fetch_fallen, scene_islands, scene_walk_moat_season, scene_pit_trap_raid, scene_garden,
                  scene_geyser_tub, scene_coating_wash)}
 

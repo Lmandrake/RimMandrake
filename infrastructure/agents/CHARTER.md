@@ -7,6 +7,11 @@ rule.** A rewrite that adds no rule may use more words.*
 
 > "**Testing is spent where it is likely to change what we do with appropriate resource cost.** Our resources are fixed. A test earns its place by the future value of the evidence it is likely to give weighed against the cost to (re)generate that evidence. Coverage for its own sake should be reserved for essentially free testing (offline and computationally cheap). These values and costs change as the system and our knowledge of it change, so a test's place must be periodically reviewed, and a test that no longer earns is retired."
 
+The owner extended the Principle on 2026-11-23 (his words and the rule: `standing_rulings.md` §The cheapest test that decides
+the bar). The cheapest test that decides the bar is the test: whoever designs a dearer one shows why a cheaper, faster,
+simpler test cannot decide the same bar. A test that we cannot afford is replaced by a less expensive one. No test stages a
+raid unless the mod's own function is about raiders, and raid tests are paused until the tools can hold a raid still.
+
 Two rules keep the Principle honest:
 
 - Weigh a test by what its evidence could change: how bad the fault is for the player, how often play reaches the fault,

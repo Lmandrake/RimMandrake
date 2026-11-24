@@ -65,6 +65,19 @@ The fields are on `tests.<id>` of `version/test_table.json`, and the Stage 6 exi
 
 A kind C scene is never in a bar's `decides` alone. Do not tag a new scene B or C on a guess: the tester tags it on evidence.
 
+## The cheapest scene that decides the bar
+
+The rule: `design/RimMandrake/standing_rulings.md` §The cheapest test that decides the bar. From cheap to dear: an offline
+test; a state read; one spawned or held pawn and one order; a staged event; a scene with many pawns; a raid. A smaller mod
+list is cheaper than the full list.
+
+- A scene that is not the cheapest says in `cheaper_why` (on `tests.<id>` of the test table) why a cheaper, faster, simpler
+  test cannot decide the same bar. Without that evidence, write the cheaper scene.
+- Do not write a raid into a scene unless the mod's own function is about raiders. A hostile pawn that the scene spawns,
+  holds or orders is not a raid. Raid scenes are paused: a scene that must stage a raid carries `stages_raid` (what it
+  stages) in the test table, its bar stays open until the tools can hold a raid still, and each part of the bar that one
+  ordered pawn can decide gets its own cheaper scene.
+
 ## The showcase set
 
 A mod's face is an **ordered list of showcases**, not one first-judged scene. A showcase is a group of scenes from this

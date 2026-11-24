@@ -10,8 +10,8 @@ land / descent records) plus map state. A component PASSes only on a PASS verdic
 a pit scene) records UNMEASURED, never PASS. The same scenes run standalone via knockback_runner.py.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
-LIVE leaf: `python.exe validation.py --live walk_storeroom_raid --storeroom x,z,w,h --cover x,z --gas x,z` (sc_walk_raid, the
-full list; see walk_storeroom_raid below). `--live` with no game, no bridge or an unknown leaf refuses non-zero.
+LIVE leaf: `python.exe validation.py --live walk_storeroom_raid --storeroom x,z,w,h --cover x,z --gas x,z` (check sc_walk_blasts, any
+list with the three mods; see walk_storeroom_raid below). `--live` with no game, no bridge or an unknown leaf refuses non-zero.
 """
 import collections
 import json
@@ -81,7 +81,8 @@ NOT_DRIVEN = [
     ("hose_carry_drops_at_takeoff", "needs a laid hose reel and a colonist mid CarryHoseEnd job; DropCarriedHose is wired "
      "(RM_KnockbackCompat) but no scene stages a carry yet"),
     ("save_mid_flight", "save with a flyer in the air, reload, pawn exists once: needs a save/load half"),
-    ("raid_lord_resumes_duty", "a real assault raid hit by a mortar: needs a raid site"),
+    ("raid_lord_resumes_duty", "a raider thrown by a blast goes back to his lord's duty: raiders are not staged (owner, 2026-11-23; "
+     "standing_rulings.md §The cheapest test that decides the bar); the suspended job's resume is spared_states' and pawn_arc's row"),
     ("vef_active_same_results", "VEF patches PawnFlyer.MakeFlyer/RecomputePosition; needs a VEF tier (ship gate)"),
     ("barrage_perf_ms_per_tick", "performance has no Boolean check (debug_process §4); counts are in the caps chain"),
     ("save_mid_flight_keeps_the_stack", "a save taken with a goods carrier in the air, then a reload: driven by "
@@ -337,15 +338,18 @@ def mock_run():
 
 
 
-# ============================================================================ walk_storeroom_raid (leaf, scene sc_walk_raid)
-# design/concepts/ExplosiveKnockback/scenes.json sc_walk_raid; leaf walk_storeroom_raid in tree.json. FULL LIST, python.exe,
-# bridge held, the proof build deployed, a throwaway colony whose storeroom, covered pit trap and vent-gas cell are named by
+# ============================================================================ walk_storeroom_raid (leaf, check sc_walk_blasts)
+# Test table check sc_walk_blasts (design/concepts/ExplosiveKnockback/version/test_table.json), which replaced sc_walk_raid on
+# 2026-11-23 (owner: no raid test unless the mod's own function is about raiders; standing_rulings.md §The cheapest test that
+# decides the bar). scenes.json sc_walk_raid still words the acts as a raid; no row ever read a raider, so no raid is staged:
+# a blast throws what stands in it, whoever that is, and colonists and goods stand in it here. Leaf walk_storeroom_raid in
+# tree.json. ANY list that holds MODS_NEEDED (the tier explosiveknockback_visit on any free game), python.exe, bridge held, the proof build deployed, a throwaway colony whose storeroom, covered pit trap and vent-gas cell are named by
 # the flags below (each asserted from the live map; INVALID, so UNMEASURED rows, otherwise).
 #   python.exe src\RimMandrake\ExplosiveKnockback\validation.py --live walk_storeroom_raid --storeroom x,z,w,h --cover x,z
-#       --gas x,z [--lit x,z] [--save NAME] [--site x,z,w,h] [--raid-points 300] [--out evidence.json]
+#       --gas x,z [--lit x,z] [--save NAME] [--site x,z,w,h] [--frame-pairs 21] [--out evidence.json]
 # Shells are GenExplosion calls at the HE mortar shell's numbers (Bullet_Shell_HighExplosive: Bomb, radius 2.9) and the
-# grenade at the frag grenade's (Proj_GrenadeFrag: Bomb, radius 1.9), so the config lookup resolves on the damageDef path;
-# the raid itself is real (jawa/fire_raid) so raiders are on the map. Orders: A mortars, mid-air save + reload, grenade,
+# grenade at the frag grenade's (Proj_GrenadeFrag: Bomb, radius 1.9), so the config lookup resolves on the damageDef path.
+# Orders: A mortars, mid-air save + reload, grenade,
 # gas; B (from the baseline save) gas, mortars, grenade; C the mortars with the mod off. The baseline save is reloaded at
 # the end and the player's settings put back. Exit 0 only if every row PASSes; 2 = refused (no game, no bridge); 3 = PROOF
 # BUILD REQUIRED. FRAME_BUDGET (RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED): the orders step paused
@@ -358,11 +362,11 @@ def mock_run():
 # The frame arms run on the SMALLEST list that shows the mod, never the full list (owner, 2026-11-16 5:43 AM PST: "The game
 # pause has been a consistent issue well beyond this mod. While it's laudable to try and figure it out, it really is
 # different than getting this mod to pass. And the smallest list to observe it is the best idea."): the full list's own
-# 50-300 ms freezes decided runs 4-7's p99s. So the walk is two runs of this leaf. On the Explosive Knockback tier
-# (visit 3's env_minimal2, every DLC) `--frames-only` loads the colony and runs only the interleaved arm pairs and
-# FRAME_BUDGET; on the full list the behaviour rows run as before, one unjudged mod-on arm reads CARRIER_TICK_COST, and
-# FRAME_BUDGET is read from `--frame-evidence <the frames-only run's json>` (UNMEASURED unless that file is a frames-only
-# run below --full-min active mods with the same deployed DLL).
+# 50-300 ms freezes decided runs 4-7's p99s. So on a small list (below --full-min active mods: the Explosive Knockback tier,
+# every DLC) ONE run of this leaf does it all: the behaviour rows, CARRIER_TICK_COST, then the interleaved arm pairs and
+# FRAME_BUDGET in the same run. `--frames-only` runs the pairs alone. On the full list, which no check needs, the behaviour
+# rows run and FRAME_BUDGET is read from `--frame-evidence <the frames-only run's json>` (UNMEASURED unless that file is a
+# frames-only run below --full-min active mods with the same deployed DLL).
 # Learned live, Test Pilot 2026-11-16 (SteveDesktop, 34 mods, visit_3/pilot_walk_raid_20261116/SUMMARY.md): the full-list walk save will not load on
 # the small list (World.ExposeData, its planet layers), so the storeroom is rebuilt cell for cell on a quicktest. The mod's
 # cost there was thrown PAWNS: with the 5 colonists removed the arms read +1.2%. Each landing spent 19-25 ms in vanilla
@@ -579,10 +583,9 @@ class _Walk:
             if self.a.frames_only and len(mods) >= self.a.full_min:
                 miss.append("%d active mods: the frame arms run on the smallest list that shows the mod, not the full "
                             "list (owner 2026-11-16; --full-min %d)" % (len(mods), self.a.full_min))
-            elif not self.a.frames_only and len(mods) < self.a.full_min:
-                miss.append("%d active mods: not the full list (--full-min %d)" % (len(mods), self.a.full_min))
+            self.small = len(mods) < self.a.full_min
             self.ev["active_mods"] = len(mods)
-        self.ev["mode"] = "frames_only" if self.a.frames_only else "full"
+        self.ev["mode"] = "frames_only" if self.a.frames_only else "small" if self.small else "full"
         self.ev["dll_md5"] = deployed_dll_md5()
         self.ev["src_id"] = deployed_src_id()
         if self.a.frames_only:              # the frame arms need only the stocked storeroom the shells go off over
@@ -752,7 +755,7 @@ class _Walk:
         miss, UNMEASURED; a living rider without exactly one descent is the mod's FAIL.
         RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES, live run 3 (2026-11-16): the same rider fell once on a fresh
         load of the base save, but read 0 descents in the walk: the cover was not read before the grenade, and the journal
-        was cleared first, so a cover the order's shells or raid broke earlier (its rider falling then) read as the mod's
+        was cleared first, so a cover the order's shells broke earlier (its rider falling then) read as the mod's
         FAIL. The cover is read before the grenade; gone already is a SITE miss, UNMEASURED, naming the earlier descents."""
         before = [r.get("thing") for r in self.journal()
                   if r.get("type") == "descent" and list(r.get("at") or []) == list(self.cover)]
@@ -879,9 +882,6 @@ class _Walk:
     def judge_impacts(self, tag, cells, recs, ok_all):
         inside = [r for r in recs if r.get("type") == "request" and _in_rect(tuple(r.get("centre") or ()), self.room)]
         thrown = [r for r in recs if r.get("type") in ("launch", "item_move")]
-        if not self.ev.get("raid", {}).get("success", True):
-            self.row(tag + "_IMPACTS_IN_ROOM", "UNMEASURED", "the raid did not fire: %s" % self.ev["raid"])
-            return
         self.row(tag + "_IMPACTS_IN_ROOM", ok_all and inside and thrown,
                  "%d shell(s) at %s; %d request(s) centred in the storeroom, %d throw(s)" % (len(cells), cells, len(inside), len(thrown)))
 
@@ -1051,13 +1051,21 @@ class _Walk:
         standing = self.store_buildings()
         cells, recs, ok_all, _m = self.mortars("C")
         after = dict((_num(t.get("id")), _pos(t)) for t in self.haulables(self.room))
+        now = self.store_buildings()
+        # a shelf that the shells destroyed drops its own stacks (vanilla; small list, 4 of 4 on 2026-11-23, 0 throw lines):
+        # a stack that stood on a destroyed building's cell did not move by our hand, and the throw lines still decide
+        lost = set(b.rsplit("@", 1)[1] for b in standing if b not in now)
         moved = [i for i, p in after.items() if i in before and before[i] != p]
+        dropped = [i for i in moved if str(before[i]) in lost]
+        moved = [i for i in moved if i not in dropped]
         thrown = [r for r in recs if r.get("type") in ("launch", "item_move")]
+        self.ev["off_dropped_by_destroyed_storage"] = dropped
         self.ev["off_moved"] = dict((i, {"from": before[i], "to": after[i], "def": names.get(i)}) for i in moved)
-        self.ev["off_buildings"] = {"before": standing, "after": self.store_buildings()}
+        self.ev["off_buildings"] = {"before": standing, "after": now}
         self.row("C_OFF_IMPACTS_NO_THROWS", ok_all and not thrown and not moved and before,
-                 "mod off: %d shell(s) went off (%s), %d throw line(s), %d of %d storeroom stack(s) moved" % (
-                     len(cells), "all" if ok_all else "NOT all", len(thrown), len(moved), len(before)))
+                 "mod off: %d shell(s) went off (%s), %d throw line(s), %d of %d storeroom stack(s) moved, %d dropped by "
+                 "their own destroyed storage" % (len(cells), "all" if ok_all else "NOT all", len(thrown), len(moved),
+                                                  len(before), len(dropped)))
 
     def run(self):
         if self.a.save:
@@ -1070,7 +1078,8 @@ class _Walk:
             return 3
         self.row("W_PRECONDITIONS", "INVALID" if miss else "PASS", "; ".join(miss) or (
             "small list, %s active mods, storeroom stocked (frame arms only)" % self.ev.get("active_mods")
-            if self.a.frames_only else "full list, FlowWorks, Cauldron gas, shelves, closed container, cover"))
+            if self.a.frames_only else "%s active mods, FlowWorks, Cauldron gas, shelves, closed container, cover"
+            % self.ev.get("active_mods")))
         if miss:
             self.unmeasured(FRAME_ONLY_ROWS if self.a.frames_only else WALK_ROWS, "UNMEASURED: preconditions not met")
             return 1
@@ -1084,20 +1093,15 @@ class _Walk:
             self.kp("Settings", "reset")
             self.save(base)
             self.ev["tick_rest"] = self.perf()
-            if self.a.raid_points > 0:
-                rr = self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
-                self.ev["raid"] = {k: rr.get(k) for k in ("success", "blockedByDialog", "pawnsArrivedTotal", "exc")}
             def fresh():
                 got, reason = self.load(base)
                 if got:
                     self.kp("Settings", "reset")
-                    if self.a.raid_points > 0:              # B and the control C face the same raid
-                        self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
                 return got, reason
             self.fresh = fresh
             # the frame arms run as interleaved pairs (on, off, on, off, ...): one pair's p99 is decided by one random
             # stall (live 2026-11-16, runs 4-6: the off arm alone read 80.2, 37.1 and 38.1 ms); frame_row takes medians.
-            # They run only with --frames-only (the small list); the full list runs one unjudged on arm for the tick cost.
+            # They run on the small list, with or without --frames-only; the full list runs one unjudged on arm for the tick cost.
             arms = [("FRAME_ON", lambda: self.frame_act("on")), ("FRAME_OFF", lambda: self.frame_act("off"))]
             if self.a.frames_only:
                 steps = arms * max(1, self.a.frame_pairs)
@@ -1105,6 +1109,8 @@ class _Walk:
                 self.order("A", gas_first=False)
                 steps = [("B", lambda: self.order("B", gas_first=True)), ("C", self.control),
                          ("TICK", lambda: self.frame_act("on", key="tick_arm_unjudged"))]
+                if self.small:
+                    steps += arms * max(1, self.a.frame_pairs)
             for tag, fn in steps:
                 ok, why = fresh()
                 if not ok:
@@ -1130,7 +1136,10 @@ class _Walk:
                  "meanTickTime %s ms at rest, %s ms 1 s after the shells with %s carrier(s) in the air, clock running "
                  "(recorded, not judged)%s" % (rest, air, self.ev.get("in_air_at_tick_read"),
                                                 "" if seen else ": a reading of 0 or none is a blind instrument"))
-        self.frame_row_from_evidence()
+        if self.small:
+            self.frame_row()
+        else:
+            self.frame_row_from_evidence()
         return 0
 
 
@@ -1154,8 +1163,7 @@ def _walk_args(argv):
     ap.add_argument("--frame-evidence", default=None,
                     help="the full-list run: FRAME_BUDGET is read from this --frames-only run's json")
     ap.add_argument("--gas-ticks", type=int, default=900)
-    ap.add_argument("--raid-points", type=float, default=300.0, help="0 skips the real raid")
-    ap.add_argument("--full-min", type=int, default=100, help="active mods below this are not the full list")
+    ap.add_argument("--full-min", type=int, default=100, help="active mods below this are a small list: the frame arms run in this run")
     ap.add_argument("--out", default=None)
     ap.add_argument("--stamp", default=datetime.datetime.now().strftime("%Y%m%dT%H%M%S"))
     return ap.parse_args(argv)

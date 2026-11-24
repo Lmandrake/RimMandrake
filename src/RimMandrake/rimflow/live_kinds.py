@@ -30,7 +30,10 @@ STEWARD_RULE = (
     "line reads MOD FAILURE: route it as any mod wrong line. An UNRESOLVED run is classed by whoever reads "
     "its evidence: add to that row `classed`: `{\"outcome\": <one of the other six>, \"why\": <six words at least>, "
     "\"by\": <your unit>}` (and `spoiled_by` for an ENVIRONMENT FAULT); class it only on evidence. A `refused` or `tag` "
-    "line is a fault of form in the row or the table: repair the words, never the reading.")
+    "line is a fault of form in the row or the table: repair the words, never the reading.\n"
+    "- A raid scene that reads PAUSED (`paused_raids` of the exit) is no line: file nothing for it and send nothing back for it. "
+    "Its open bars go in the walk brief and hold only the version's pass (standing_rulings.md §The cheapest test that decides "
+    "the bar).")
 
 
 def norm(word):
@@ -163,7 +166,10 @@ def _word(raw, r, spec, rec):
 
 def spoiled(r):
     """True when the run speaks for nobody. An APPARATUS FAULT or COULD NOT LOOK row that says the check itself is wrong
-    (class HARNESS or SITE, `repair`, `unrepaired`) is read as an old row is."""
+    (class HARNESS or SITE, `repair`, `unrepaired`) is read as an old row is. A row voided as a system failure
+    (`void_system`) is no reading, whatever its class."""
+    if isinstance(r, dict) and r.get("void_system") is True:
+        return True
     w = outcome(r)[0]
     if w == ENVIRONMENT:
         return True

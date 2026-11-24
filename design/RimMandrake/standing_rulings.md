@@ -1403,7 +1403,8 @@ A scene with no tag is kind A.
 
 The ladder, from most force to least, for "a raider crosses a covered pit": teleport it onto the cover; give it a path
 over the cover; a corridor with no other way and bait beyond; a ring of pits round a base and a natural raid. Say which
-step the scene uses and, in one line, why not a lighter one. Trying every lighter step first is not required.
+step the scene uses and, in one line, why not a lighter one. Trying every lighter step first is not required. (The natural
+raid is not to be had now: raid tests are paused, §The cheapest test that decides the bar.)
 
 ### 8. Verdicts keep, per scene
 - A scene's verdict stands until a change touches what the scene reads or exercises. The record names the build that the
@@ -1447,6 +1448,48 @@ The ruling on a scene short of its X of Y (about 3:00 PM PST; item
 `RIMMANDRAKE_ENACT_SHORT_OF_X_OF_Y_ESCALATES_CONDUCTOR_CALLS_IT`):
 
 > *"I can also rule too: It means escallation is required. Does the mod REQUIRE X of Y to be true, or was X of Y a guess and (X-1) of Y is just as good? Depends on whether the mod's actual function requires X of Y or whether X of Y was just guarding environmental variable fluctuation. That's a Conductor call."*
+
+## The cheapest test that decides the bar — owner, 2026-11-23
+
+Item `RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST`. It extends the Principle of Impactful Evidence (top
+of `infrastructure/agents/CHARTER.md`).
+
+1. **The cheapest test that decides the bar is the test.** The designer of a test shows, on the scene or the check
+   (`cheaper_why` in the test table), why a cheaper, faster, simpler test cannot decide the same bar. Without that evidence,
+   the cheaper test is the test. From cheap to dear: an offline test; a state read; one spawned or held pawn and one order; a
+   staged event; a scene with many pawns; a raid. A smaller mod list is cheaper than the full list.
+2. **A test that we cannot afford is replaced.** When a test costs more time and tokens than its evidence is worth, replace
+   it by a less expensive test of the same bar, or of the part of the bar that matters. Do not keep running it.
+3. **No raid in a test unless the mod's own function is about raiders.** A raid is hostile pawns that attack by their own
+   will: a raid incident, a mech cluster, or pawns under an assault or siege lord. A raid is the most complex stage that a
+   scene can use. A hostile pawn that a scene spawns, holds or orders is not a raid.
+   - **Raid tests are paused.** Until the test tools can hold a raid still (the Bridge 2 scene library,
+     `design/specs/2026-11-23-bridge-v2/`), no pipeline run stages a raid. The switch is
+     `src/RimMandrake/rimflow/raid_pause.json`. `raid_pause.py lift --why "..."` lifts the pause, and it is the Conductor's act
+     or the owner's. The machinery, and what it does not stop: `design/specs/2026-11-23-raid-tests-paused/boundary.md`.
+   - A test that stages a raid carries `stages_raid` (what it stages) and `cheaper_why` in its test table. While the pause is
+     on, nothing starts that test. It reads `PAUSED: raid tests wait for the tools`, which is not PASS, not FAIL and not
+     UNMEASURED. It spends no trial, turn, look or cycle, and it does not pause its mod.
+   - The bar of a paused scene stays open on the mod's record. The mod may go on to its walk brief, which names the open bar.
+     The version does not pass until the bar is decided, or the Conductor decides by name what becomes of the bar.
+   - The work that builds the raid tools may stage a raid: its item is in the `allow` list of the switch, and its run sets
+     `RM_RAID_FOR` to that item.
+   - FlowWorks has a real need (raiders on ladders and at moats). Its raid scenes wait for the tools.
+     Each part of their bars that one ordered pawn can decide has its own scene now (`sc_moat_walkers`,
+     `sc_trench_cover_pawns`, `sc_islands_walker`).
+   - Explosive Knockback did not need a raid: no row of `sc_walk_raid` read a raider. `sc_walk_blasts` replaced it, with no
+     raid, on the small list. `sc_barrage_perf` does not need the full list either.
+
+**What this does not change.** The bars (a bar about raiders is still a bar about raiders); the kinds of live test and the
+seven outcomes; his walk, where he may play a raid; a live flight test of a flyer; offline tests of raid code.
+
+**His words, 2026-11-23, about 9:15 PM PST** (his answer to a card):
+
+> "Two principles. 1) no raid tests until we have better tools, pause them for now. 2) YOU LIKELY DON'T NEED RAID TESTS! That's almost like saying "make the test build a whole colony and then survive a raid." It's overkill for testing almost anything except a raid-centric mod capability. I would strongly urge you NOT to test using raids unless forced. Flowworks I know you want to test their ability to use ladders, attack moats, etc so that's a real need. Explosive Knockback... I do not think needs a raid. That's another testing principle revealed out of this: A test designer must provide evidence that any level of test cannot be satisfied with a cheaper, faster, simpler test. That's a corollary to the "every test should be weighed by its importance for the future divided by its cost in time and tokens." We should add an extension of that existing guidance principle: a test that we can't afford may simply need to be replaced be a less expensive test (simplify this language, improve it). SO... I CHALLENGE Explosive Knockback to defend its need for a raid test!"
+
+Earlier the same evening:
+
+> "Bringing in raiders for a test like Flowworks is doing is one of the most complex testing maneuvers possible. ... we may not be currently ready for complex raider testing until we upgrade our testing apparatus and methodology and BRIDGE and python harness"
 
 ## What Python cannot reach goes into the bridge's C#; tests stay in Python — owner, 2026-11-23
 

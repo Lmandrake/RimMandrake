@@ -2789,8 +2789,10 @@ def to_run_text(mod, root=None):
         n = max(1, len(M.ingame_openings(rec)))
         tt, _ = M.read_json(root, name, "version/test_table.json")
         run, counted = M.ingame_to_run(root, name, n, tt)
-        return " | in-game visit %d runs %d of %d checks: %s" % (n, len(run), len(run) + len(counted),
-                                                                 ", ".join(run) or "none")
+        import raid_pause as RP
+        raids = RP.said(RP.read_scenes(root, name, n, tt))
+        return " | in-game visit %d runs %d of %d checks: %s%s" % (n, len(run), len(run) + len(counted),
+                                                                   ", ".join(run) or "none", " | " + raids if raids else "")
     except Exception as e:      # noqa: BLE001  a reading that cannot run is UNMEASURED, never an empty list
         return " | checks to run UNMEASURED (%s: %s)" % (type(e).__name__, e)
 

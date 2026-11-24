@@ -315,5 +315,45 @@ o = C.scene_islands(F, lambda: F.save('begin'), lambda: F.load('begin'), {'calls
 r = {x['id']: x['status'] for x in o['rows']}
 check('a REFUSED leaf read mid-watch is never a lost winch: the scene stops UNMEASURED, no row PASS',
       'PASS' not in r.values() and r.get('scene_islands_staging') == 'UNMEASURED', r)
+
+
+# sc_islands_walker: the bridges' half, with one ordered colonist and no raider (owner, 2026-11-23)
+class Walker(Fake):
+    def call(self, tool, _answer=False, **kw):
+        g = self.g
+        if tool in ('jawa/lord_assault_spawn', 'jawa/fire_raid'):
+            self.bad('a raid call in sc_islands_walker: %s' % tool)
+        if tool == 'jawa/order_pawn':
+            g['pawns'][kw['pawnId']]['to'] = (kw['x'], kw['z'])
+            return {'success': True}
+        if tool == 'jawa/site_state':
+            return {'success': True, 'pawns': [{'id': k, 'x': p['x'], 'z': p['z']} for k, p in g['pawns'].items()]}
+        return Fake.call(self, tool, _answer=_answer, **kw)
+
+    def ticks(self, n):
+        out = Fake.ticks(self, n)
+        west = [l for dx, l in self.g['leaves'].items() if dx < 10]
+        for p in self.g['pawns'].values():
+            if p.get('to') and n >= 60 and (self.fault == 'leaky' or (west and west[0]['progress'] == 0 and self.fault != 'stuck')):
+                p['x'], p['z'] = p['to']
+        return out
+
+
+def walker(mod='healthy', fault=None):
+    F = Walker(mod, fault)
+    o = C.scene_islands_walker(F, lambda: F.save('begin'), lambda: F.load('begin'), {'calls': []})
+    return {x['id']: x['status'] for x in o['rows']}, o, F
+
+
+r, o, F = walker()
+check('sc_islands_walker: held on the span, the lost winch drops its leaf alone, he walks off: every row PASS, no raid call',
+      len(r) == 3 and set(r.values()) == {'PASS'} and not F.contract, (r, F.contract, [x['detail'] for x in o['rows']]))
+r, o, F = walker(fault='leaky')
+check('sc_islands_walker can FAIL: he walks off over a raised leaf', r.get('ISLW_raised_leaves_hold_him_on_the_span') == 'FAIL', r)
+r, o, F = walker(mod='nodrop')
+check('sc_islands_walker can FAIL: the leaf stays up after its winch is lost',
+      r.get('ISLW_lost_winch_drops_its_leaf_alone') == 'FAIL' and r.get('ISLW_he_walks_off_over_the_dropped_leaf') == 'UNMEASURED', r)
+r, o, F = walker(fault='stuck')
+check('sc_islands_walker can FAIL: the dropped leaf does not bear him', r.get('ISLW_he_walks_off_over_the_dropped_leaf') == 'FAIL', r)
 print('selftest_islands_scene: %s' % ('FAIL' if FAILS else 'ok'))
 sys.exit(1 if FAILS else 0)

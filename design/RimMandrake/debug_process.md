@@ -137,6 +137,9 @@ Walk the ladder in order. Stop at the first rung that settles the bug.
 script does not lead. **Every bench session leaves a test behind whenever a machine can check the lesson.** Write the
 test in that sitting, or file it as a named item before the session ends.
 
+**The cheapest test that decides the bar is the test, and no test stages a raid** unless the mod's own function is about
+raiders; raid tests are paused (`standing_rulings.md` §The cheapest test that decides the bar).
+
 **A live test earns its place.** The Principle of Impactful Evidence (top of `infrastructure/agents/CHARTER.md`) decides
 which tests stay. A live check that was made for one fixed fault stays only while the fault is likely to return.
 Otherwise the check moves to the offline tests, or is retired with its record (`standing_rulings.md` §Live tests have

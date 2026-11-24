@@ -136,6 +136,14 @@ def t_spoiled_run_speaks_for_nobody():
             and cnt(hidden) == "unclassed"), ([x["why"] for x in outs if x["state"] != "met"], alone["why"], hidden["why"])
 
 
+def t_voided_run_speaks_for_nobody():
+    """A row marked `void_system` (no trial is spent by a system failure) is no reading, whatever its class: FlowWorks visit 9
+    read its sc_moat_raid from a run the host's shell budget had killed (class HARNESS, 2026-11-23)."""
+    dead = o(LK.APPARATUS, **{"class": "HARNESS", "void_system": True})
+    ok, bad = read([good(), dead]), read([o(LK.MOD_FAILURE, "FAIL", **{"class": "MOD"}), dead])
+    return cnt(ok) == "pass" and cnt(bad) == "mod" and bad["rows"]["c1"] == "FAIL", (ok["why"], bad["rows"])
+
+
 def t_last_run_spoiled_runs_again():
     ex = [read([w]) for w in (env("FAIL"), env("UNMEASURED"), o(LK.APPARATUS), o(LK.NO_LOOK))]
     wrong = {"class": "HARNESS", "unrepaired": "the probe the reading needs does not exist", "owner": "RIMMANDRAKE_MEND_W_X"}

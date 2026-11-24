@@ -57,6 +57,7 @@ with fewer than X successes. The **Conductor's call** answers whether the mod's 
   itself.
 - **spoiled-run-speaks-for-nobody.** A spoiled row neither passes nor fails a check, whatever its verdict word: a SUCCESS
   before it or after it stands, and the block's claim for that check is not held against it.
+- **voided-run-speaks-for-nobody.** A row marked `void_system` is read as a spoiled row, whatever its class or verdict.
 - **last-run-spoiled-runs-again.** A check with only spoiled rows reads `spoiled` ("run that scene again"), never
   unclassed, never an undecided bar. An APPARATUS FAULT or COULD NOT LOOK row that also carries class HARNESS or SITE, a
   `repair` or an `unrepaired` says that the check itself is wrong: it keeps the reading of an old row

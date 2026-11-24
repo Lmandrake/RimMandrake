@@ -3572,6 +3572,28 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "stages_raid": "a raid of about four at a trench and a pit",
+   "cheaper_why": "only raiders choose where raiders shelter (row TR_no_raider_shelters_in_pit); sc_trench_cover_pawns decides the cover rows with placed shooters",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
+  },
+  "sc_trench_cover_pawns": {
+   "id": "sc_trench_cover_pawns",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_trench_cover_pawns",
+   "observes": "a colonist in a trench is covered and shown so against a placed shooter; open ground gives no cover",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_trench_cover_pawns --out <json>  (bridge held; minimal list + FlowWorks)",
+   "why_game": "the cover read of a live pawn against a live shooter; minimal list",
+   "owed_under": "RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written 2026-11-23 to decide, with no raid, the parts of sc_trench_cover that need no raider; seen FAIL on planted faults on a fake bridge; never the game"
    }
   },
   "sc_hung_bridge": {
@@ -3658,6 +3680,28 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "stages_raid": "six raiders under an assault lord at a moat",
+   "cheaper_why": "only raiders decide that raiders choose to swim, are held by the drained moat, are taken from the rim as enemies, and stab no warden; sc_moat_walkers, sc_hole_prison, sc_sluice and sc_toss_flame decide every other part with no raid",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
+  },
+  "sc_moat_walkers": {
+   "id": "sc_moat_walkers",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_moat_walkers",
+   "observes": "one ordered colonist: raised leaf, he swims and tires; the sluice drains the moat fast; the drained moat is not walked over; chemfuel pumped from the tank; the toss order burns it; lowered leaf, it bears him dry",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_moat_walkers --out <json>  (bridge held; minimal list + FlowWorks)",
+   "why_game": "an ordered pawn, paths, swimming and a drain in game time need a running map; the minimal list plus FlowWorks isolates it",
+   "owed_under": "RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written 2026-11-23 to decide, with no raid, the parts of sc_moat_raid that need no raider; seen FAIL on planted faults on a fake bridge; never the game"
    }
   },
   "sc_hole_prison": {
@@ -3718,7 +3762,10 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
-   }
+   },
+   "stages_raid": "a raid of 700 points through a covered spiked pit",
+   "cheaper_why": "the bar is that raiders fetch their fallen with a ladder and give up under fire: a choice of raiders, which no ordered pawn can make",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
   },
   "sc_islands": {
    "id": "sc_islands",
@@ -3738,6 +3785,28 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+   },
+   "stages_raid": "six sappers under an assault lord on a span",
+   "cheaper_why": "only raiders decide that raiders go for a winch and break it; sc_islands_walker decides the trap, the dropped leaf and the way off with one ordered colonist",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
+  },
+  "sc_islands_walker": {
+   "id": "sc_islands_walker",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_islands_walker",
+   "observes": "both leaves raised hold an ordered colonist on the span; a lost winch drops its own leaf alone; he walks off over it",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_islands_walker --out <json>  (bridge held; minimal list + FlowWorks)",
+   "why_game": "paths over live leaves; minimal list",
+   "owed_under": "RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written 2026-11-23 to decide, with no raid, the parts of sc_islands that need no raider; seen FAIL on planted faults on a fake bridge; never the game"
    }
   },
   "sc_walk": {
@@ -3778,7 +3847,10 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
-   }
+   },
+   "stages_raid": "a raid of 700 points through a pit trap",
+   "cheaper_why": "it supports bars and decides none alone; the ladder attempt and the retreat under fire are what raiders choose",
+   "open_bar_owner": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
   },
   "sc_garden": {
    "id": "sc_garden",
@@ -5107,7 +5179,8 @@
    "proves_at": "6",
    "decides": [
     "T_TRENCH",
-    "sc_trench_cover"
+    "sc_trench_cover",
+    "sc_trench_cover_pawns"
    ],
    "supports": [
     "sc_pit_trap_raid",
@@ -5981,7 +6054,8 @@
    "proves_at": "6",
    "decides": [
     "T_TRENCH",
-    "sc_trench_cover"
+    "sc_trench_cover",
+    "sc_trench_cover_pawns"
    ],
    "supports": [
     "sc_pit_trap_raid",
@@ -6071,7 +6145,11 @@
    "kind": "experience",
    "proves_at": "6",
    "decides": [
-    "sc_moat_raid"
+    "sc_moat_raid",
+    "sc_moat_walkers",
+    "sc_hole_prison",
+    "sc_sluice",
+    "sc_toss_flame"
    ],
    "supports": [
     "T_SWIM",
@@ -6084,9 +6162,6 @@
     "T_BRIDGES",
     "PY_FLOWWORKS_DRAWBRIDGE_POSE",
     "PY_FLOWWORKS_SUSPENSION_LINKED",
-    "sc_hole_prison",
-    "sc_toss_flame",
-    "sc_sluice",
     "LOOK_STAGE8"
    ],
    "held": [],
@@ -6167,7 +6242,8 @@
     "T_BRIDGES",
     "PY_FLOWWORKS_DRAWBRIDGE_POSE",
     "PY_FLOWWORKS_SUSPENSION_LINKED",
-    "sc_islands"
+    "sc_islands",
+    "sc_islands_walker"
    ],
    "supports": [],
    "held": [],

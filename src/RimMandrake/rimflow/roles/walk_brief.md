@@ -61,6 +61,8 @@ What the version changed, in his words where he gave them, each with its commit.
 
 ## Known, not fixed: you need not report these
 Each known fault still open, with its ticket id, so he does not spend his walk finding it.
+Each open raid bar, by its bar id (`paused_raids` of the Stage 6 exit; `maturation.py next <Mod>` lists them): the scene is paused until the
+tools can hold a raid still, so no test decided that bar, and he may play it. The brief is not written while one is missing.
 
 ## What I noticed first
 What you, reading cold, noticed first. A thing worth fixing also carries its ticket id.

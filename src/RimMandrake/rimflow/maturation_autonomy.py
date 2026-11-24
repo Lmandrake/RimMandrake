@@ -1583,6 +1583,12 @@ def _retriable(x, cfg, mod=None):
     return (transient(x["failed"]) or fresh_code) and tries_left(cfg, mod, x.get("tries"))
 
 
+def is_run(entry):
+    """False for a book entry that is a program's own act (a game_only key: no unit launched, its `landed` line set). It is
+    no run, so it spends none of the version's count (FlowWorks 2026-11-23: 12 of 12 with 10 runs launched)."""
+    return not (isinstance(entry, dict) and not entry.get("unit") and entry.get("landed"))
+
+
 def _gate(cfg, s, row, live_total, ver, live=None):
     """-> (go, (decision, why)) for a steward or fixer launch: once per key, the version's count, the cap, the slots.
     A run of this key whose unit is still among the mod's live units (`live`) is waited on, never read spent
@@ -1609,7 +1615,8 @@ def _gate(cfg, s, row, live_total, ver, live=None):
         row["retry_of"] = dict(x, tries=tries)
     if not cfg.get("steward_enabled", True):
         return False, ("steward_off", "steward_enabled is off in maturation_dispatch.json")
-    n = len([k for k in done if k != key and (row["aut"] != "steward" or str(k).startswith(str(ver)))])
+    n = len([k for k, x in done.items() if k != key and is_run(x)
+             and (row["aut"] != "steward" or str(k).startswith(str(ver)))])
     # through the control store: `pipe set|limit <Mod> steward_runs|fixer_runs ...`
     if row["aut"] == "steward":
         n, most = PC.used(row["mod"], "steward_runs", n), PC.limit(row["mod"], "steward_runs",

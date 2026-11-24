@@ -536,7 +536,9 @@ def m_steward(ctx, mod):
     if ver == UNM:
         return UNM, None
     done = ctx.mstate(mod).get("steward") or {}
-    return len([k for k in done if str(k).startswith(str(ver))]), int(ctx.cfg().get("steward_max_per_version", 12))
+    import maturation_autonomy as AUT
+    return len([k for k, x in done.items() if str(k).startswith(str(ver)) and AUT.is_run(x)]), int(
+        ctx.cfg().get("steward_max_per_version", 12))
 
 
 def m_fixer(ctx, mod):

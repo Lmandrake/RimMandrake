@@ -44,6 +44,23 @@ SHEET_DIR = os.path.join(ROOT, "Transient", "modcheck")
 QUICKTEST_STARTER = os.path.join(os.path.dirname(_UTILS), "bridgetools", "prove_quicktest_world.py")
 
 
+def chain_paused(mod, chain):
+    """-> what this chain stages when it is a paused raid chain, else None (rimflow/raid_pause.py; owner, 2026-11-23)."""
+    d = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow")
+    if d not in sys.path:
+        sys.path.append(d)
+    import raid_pause
+    return raid_pause.chain_paused(mod, chain)
+
+
+def raid_component(what):
+    """-> the one NOT_RUN component of a paused raid chain."""
+    from suite import Component, NOT_RUN, RAID_PAUSED  # noqa: E402
+    comp = Component("<raid chain, not run>", None, False)
+    comp.verdict, comp.detail = NOT_RUN, "%s: the chain stages %s" % (RAID_PAUSED, what)
+    return comp
+
+
 def _wsl_path(p):
     """`D:\\Luke\\dev\\x` -> `/mnt/d/Luke/dev/x` (a POSIX path passes through unchanged)."""
     import re
@@ -1041,6 +1058,13 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             if canary_res is not None and not canary_res["ok"] and name not in getattr(suite, "offline_chains", ()):
                 import validity as _V  # noqa: E402 - an offline chain touches no game: a red canary does not void it
                 chains_out.append({"name": name, "components": [_V.canary_component(canary_res).as_dict()],
+                                   "situational": None, "modal_check": None, "site_hold": None, "env_reset": None,
+                                   "phase_s": {"hold": 0.0, "body": 0.0, "teardown": 0.0}})
+                continue
+            _raid = chain_paused(mod or suite.name, name)
+            if _raid:
+                print("[modcheck] chain %s NOT RUN: %s" % (name, _raid), file=sys.stderr, flush=True)
+                chains_out.append({"name": name, "components": [raid_component(_raid).as_dict()],
                                    "situational": None, "modal_check": None, "site_hold": None, "env_reset": None,
                                    "phase_s": {"hold": 0.0, "body": 0.0, "teardown": 0.0}})
                 continue

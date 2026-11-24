@@ -157,6 +157,12 @@ def main():
     src = open(os.path.join(HERE, "Source", "RM_KnockbackProof_StageThree.cs")).read()
     check("T5", "BarrageWindowLoS = 0.9f" in src and "BarrageWindowHiS = 8.25f" in src
           and "RM_FrameProbe.Stop(BarrageWindowLoS, BarrageWindowHiS)" in src, "BarragePerf stops the probe with the 0.9-8.25 s window")
+    body = src[src.index("private static string BarragePerf("):]
+    body = body[:body.index("private static string Summary(")]
+    check("T6", "mods < 60" not in body and "FullListOffP99Ms + ours <= 50f" in body and "within && onFullList" in body
+          and body.index("barrageBaselineP99 < 0)") < body.index("FullListOffP99Ms + ours"),
+          "BarragePerf runs on any list, refuses without a mod-off baseline, and adds the mod's own cost to the full list's "
+          "measured mod-off p99 (the cheapest test that decides the bar, owner 2026-11-23)")
     print("%d failed" % len(fails) if fails else "ALL PASS")
     return 1 if fails else 0
 

@@ -492,5 +492,70 @@ if hasattr(C, '_moat_send'):
     C._moat_stage = stage
     check('the old control staging (six at once on a 1-wide deck): a raider swims round the one who holds it, the control FAILs',
           r.get('MOAT_control_bridge_down_no_swim') == 'FAIL', r)
+
+
+# sc_moat_walkers: one ordered colonist on the same map, and no raider (owner, 2026-11-23)
+class Walk(Fake):
+    """mod adds: 'refuse' (the colonist never enters the water), 'dryshod' (he crosses the raised moat with no swim square),
+    'climber' (a drained 4 m moat does not stop him), 'deckwet' (the lowered leaf does not bear him: he swims)."""
+
+    def call(self, tool, _answer=False, **kw):
+        g = self.g
+        if tool in ('jawa/lord_assault_spawn', 'jawa/fire_raid'):
+            self.bad('a raid call in sc_moat_walkers: %s' % tool)
+        if tool == 'jawa/order_pawn':
+            g['pawns'][kw['pawnId']]['to'] = (kw['x'], kw['z'])
+            return {'success': True}
+        return Fake.call(self, tool, _answer=_answer, **kw)
+
+    def deep(self, c):
+        return self.mod != 'dryshod' and Fake.deep(self, c)
+
+    def decked(self, c):
+        return self.mod != 'deckwet' and Fake.decked(self, c)
+
+    def ticks(self, n):
+        out = Fake.ticks(self, n)
+        lf = self.g['leaf']
+        for _ in range(n // 15):
+            for p in self.g['pawns'].values():
+                if not p.get('to'):
+                    continue
+                c, to = (p['x'], p['z']), p['to']
+                deck = lf['deck'][0][0] if lf and lf['progress'] == 0 else None
+                if deck is not None and c[1] < O[1] + C.MOAT_W and c[0] != deck:
+                    nxt = (c[0] + (1 if c[0] < deck else -1), c[1])
+                elif c[1] != to[1]:
+                    nxt = (c[0], c[1] + (1 if c[1] < to[1] else -1))
+                else:
+                    nxt = (c[0] + (0 if c[0] == to[0] else 1 if c[0] < to[0] else -1), c[1])
+                if self.mod == 'refuse' and Fake.deep(self, nxt):
+                    continue
+                if self.mod != 'climber' and not Fake.deep(self, nxt) and self.climb(nxt) - self.climb(c) > 2:
+                    continue
+                p['x'], p['z'] = nxt
+                if self.deep(nxt):
+                    p['exh'] = round(p['exh'] + 0.02, 3)
+        return out
+
+
+def walkers(mod='healthy', fault=None):
+    F = Walk(mod, fault)
+    o = C.scene_moat_walkers(F, lambda: F.save('begin'), lambda: F.load('begin'), {'calls': []})
+    return {x['id']: x['status'] for x in o['rows']}, o, F
+
+
+MW = ('MW_raised_leaf_swims_and_tires', 'MW_drains_fast', 'MW_drained_moat_is_not_walked_over', 'MW_chemfuel_pumped', 'MW_moat_burns',
+      'MW_lowered_leaf_bears_him_dry')
+r, o, F = walkers()
+check('sc_moat_walkers: swims and tires, drains, the drained moat stops him, pumped, burns, the leaf bears him: every row PASS',
+      all(r.get(x) == 'PASS' for x in MW) and len(r) == len(MW), (r, [x['detail'] for x in o['rows'] if x['status'] != 'PASS'][:3]))
+check('sc_moat_walkers stages no raid and keeps its tool contracts', not F.contract, F.contract)
+for mod, rid, want in (('dryshod', MW[0], 'FAIL'), ('refuse', MW[0], 'UNMEASURED'), ('nodrain', MW[1], 'FAIL'), ('nodrain', MW[2], 'UNMEASURED'),
+                       ('climber', MW[2], 'FAIL'), ('deckwet', MW[5], 'FAIL')):
+    r, o, _ = walkers(mod)
+    check('sc_moat_walkers, plant %s: %s %s' % (mod, rid, want), r.get(rid) == want, (r, [x['detail'] for x in o['rows'] if x['id'] == rid]))
+r, o, _ = walkers(fault='nopower')
+check('sc_moat_walkers, a pump that never runs: chemfuel and burn UNMEASURED', r.get(MW[3]) == 'UNMEASURED' and r.get(MW[4]) == 'UNMEASURED', r)
 print('selftest_moat_scene: %s' % ('FAIL' if FAILS else 'ok'))
 sys.exit(1 if FAILS else 0)
