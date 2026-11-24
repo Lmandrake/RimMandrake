@@ -145,12 +145,12 @@ def s0b_offline(rows):
             if n.startswith("StandingLamp_") and tp != "RimMandrake/GimmeSomeSlack/Styles/%s/StandingLamp" % n.split("_", 1)[1]:
                 probs.append("%s: lamp must draw its own look's art, got %s" % (n, tp))
         elif n.startswith("WallLamp_"):
-            # 0.2.0 wall_lamp_takes_looks: Graphic_Multi, a picture per facing it draws (west mirrors east)
+            # 0.2.0 wall_lamp_takes_looks: a picture per facing it draws (west mirrors east), each lamp pointing away from its wall
             tp = e.findtext("graphicData/texPath") or ""
             if tp != "RimMandrake/GimmeSomeSlack/Styles/%s/WallLamp" % n.split("_", 1)[1]:
                 probs.append("%s: lamp must draw its own look's art, got %s" % (n, tp))
-            if (e.findtext("graphicData/graphicClass") or "") != "Graphic_Multi":
-                probs.append("%s: a wall lamp faces its wall: Graphic_Multi" % n)
+            if (e.findtext("graphicData/graphicClass") or "") != "RimMandrake.GimmeSomeSlack.Aerial.Graphic_WallLampLook":
+                probs.append("%s: a wall lamp points away from its wall: Graphic_WallLampLook" % n)
             for f in ("north", "east", "south"):
                 if not os.path.exists(os.path.join(TEX, tp + "_%s.png" % f)):
                     probs.append("%s: art missing %s_%s" % (n, tp, f))

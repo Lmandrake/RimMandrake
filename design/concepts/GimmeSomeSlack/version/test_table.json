@@ -2067,7 +2067,7 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallLampLookChecks.cs",
-   "observes": "WallLamp is a lamp def of the picker with one style def per look, each look's texture exists for every facing it draws, the wall lamp follows its line as the standing lamp does, and the master switch off draws vanilla; planted: a look with a missing facing goes red (bar wall_lamp_takes_looks)",
+   "observes": "WallLamp is a lamp def of the picker with one style def per look, each look's texture exists for every facing it draws, read from its pixels each look's lamp has its base on its wall's face and its head out of the wall at all four facings (the walked build ad72a3cec3: 16 of 16 red, e.g. wall to the north: base 0.494 inside the wall face's line, head 0.056; the fix: base 0.200, head -0.261), the wall lamp follows its line as the standing lamp does, and the master switch off draws vanilla; planted: a look with a missing facing, the walked build's graphic class and vanilla's offsets each go red (bar wall_lamp_takes_looks)",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs",
@@ -2087,7 +2087,11 @@
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Scrapper/WallLamp_north.png",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Scrapper/WallLamp_south.png",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/Program.cs",
-    "src/RimMandrake/Utils/selftest_gimmesomeslack.py"
+    "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/Graphic_WallLampLook.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/WallLampFacing.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/PngAlpha.cs"
    ],
    "new": true,
    "built_in_stage": "3",
@@ -2207,10 +2211,11 @@
    "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
    "entry": "scene_walls",
    "entry_exists": true,
-   "observes": "no sampled point on an impassable cell except wall-face stubs; a stub on both faces of each crossing; two plates on the pocket's dive",
+   "observes": "no sampled point on an impassable cell except wall-face stubs; a stub on both faces of each crossing; two plates on the pocket's dive; every cord at a wall plate or rock hole is drawn into its black (M1h_cords_drawn_into_holes, probe holes)",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/validation.py",
-    "design/concepts/GimmeSomeSlack/scenes.json"
+    "design/concepts/GimmeSomeSlack/scenes.json",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/HoleEntry.cs"
    ],
    "command": "src/RimMandrake/GimmeSomeSlack/validation.py",
    "why_game": "walkability and the drawn curves exist only in game; a quicktest colony gives both",
@@ -3077,11 +3082,13 @@
    "entry": "scene_wall_lamp_looks",
    "entry_exists": true,
    "new": true,
-   "observes": "wall lamps on a wall in each look beside a standing lamp, captured at play zoom; a restyle of the line they hook to repaints them as it does the standing lamp; the master switch off draws vanilla wall lamps without a restart",
+   "observes": "wall lamps on a wall in each look beside a standing lamp, captured at play zoom; a restyle of the line they hook to repaints them as it does the standing lamp; the master switch off draws vanilla wall lamps without a restart; each lamp draws the picture that points away from its wall, its base on the face, at all four facings (SC_wall_lamp_points_out; red on the walked build by the fake game's planted wall_lamp_into_wall)",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyleProbe.cs",
-    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py"
+    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/Graphic_WallLampLook.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/WallLampFacing.cs"
    ],
    "why_game": "the drawn picture of a style def exists only in the running renderer",
    "for_bar": "wall_lamp_takes_looks",
@@ -3096,7 +3103,8 @@
      "build": "release"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "cheaper_why": "The rows read one site staged once (a few ticks, the small list). The offline T_WALL_LAMP_LOOKS_OFFLINE reads the pixels, the def and the rule, but not what the running Graphic class hands the renderer; the points-out row reads that (drawn picture, mirror, offset) from the same cstyles answer the other rows read, at no extra staging. A scene of its own would stage the same wall and lamps again."
   },
   "LOOK_STAGE8": {
    "id": "LOOK_STAGE8",
@@ -8711,6 +8719,73 @@
     },
     "by": "testq_blocks.py"
    }
+  },
+  "T_CORD_ENTERS_HOLE_OFFLINE": {
+   "id": "T_CORD_ENTERS_HOLE_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/HoleEntryChecks.cs",
+   "observes": "the production builder over runs through and into walls and rock, far-side lamps and devices across a wall, every face, one and two cords per run: every cord that ends at a wall plate or rock hole is DRAWN into the hole's black (what is drawn over the plate, not where the strand is laid), the black shows, no hole is bare; and the black is black in all 16 Stub pictures; planted: nothing drawn over the plate (the walked build ad72a3cec3: 766 of 766 cords drawn to 0.000, the black 0.137..0.192 / 0.101..0.221 on a south wall / rock face) goes red; the fix: 0 of 766, drawn to 0.178 / 0.191 south, 0.044 / 0.063 side, 0.032 / 0.036 north (bar cords_meet_walls_at_face)",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitPlacementGate.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitTargets.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordLiveEnd.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordReach.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordShape.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordShapeAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordSlacken.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/HoleEntry.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/LegacyName.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/ProbeRead.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildGate.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/RebuildTail.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SettingsPrint.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SliceWindow.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLampArt.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchLight.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/SwitchNode.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/TexPath.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/WallLampFacing.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/PngAlpha.cs"
+   ],
+   "new": true,
+   "built_in_stage": "3",
+   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --holes-only"
+  },
+  "P_M1h_cords_drawn_into_holes": {
+   "id": "P_M1h_cords_drawn_into_holes",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
+   "entry": "M1h_cords_drawn_into_holes",
+   "entry_exists": true,
+   "observes": "older proof row, evidence for cords_meet_walls_at_face (proof_leaves.ROW_LEAVES), not the scene contract",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/validation.py",
+    "src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py"
+   ],
+   "support_only": true,
+   "leaves": [
+    "cords_meet_walls_at_face"
+   ],
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live",
+   "why_game": "a live state read through the bridge on the gimmesomeslack tier",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run",
+    "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   }
   }
  },
  "bars": [
@@ -9829,6 +9904,7 @@
    "kind": "experience",
    "proves_at": "6",
    "decides": [
+    "T_CORD_ENTERS_HOLE_OFFLINE",
     "sc_walls"
    ],
    "supports": [
@@ -9839,10 +9915,13 @@
     "P_M2b_no_vertex_unwalkable",
     "P_M1e_machine_on_inwall_run_draws_a_cord",
     "P_M11_dive_through_setting",
-    "P_SC_cord_end_one_kind"
+    "P_SC_cord_end_one_kind",
+    "P_M1h_cords_drawn_into_holes"
    ],
    "held": [],
-   "offline_decides": [],
+   "offline_decides": [
+    "T_CORD_ENTERS_HOLE_OFFLINE"
+   ],
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,

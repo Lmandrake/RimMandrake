@@ -88,6 +88,14 @@ class Fake:
         art = "StandingLamp" if self.plant == "wall_lamp_standing_art" else lamp["def"]
         return "RimMandrake/GimmeSomeSlack/Styles/%s/%s" % (lamp["look"], art)
 
+    def drawn_as(self, lamp):
+        rot = lamp.get("rot") or 0
+        if self.plant == "wall_lamp_into_wall":     # the walked build: the picture of its own facing, hung at vanilla's 0.9
+            return {"drawnTex": ("WallLamp_north", "WallLamp_east", "WallLamp_south", "WallLamp_east")[rot], "flipped": rot == 3,
+                    "off": ([0, 0.9], [0.9, 0], [0, -0.9], [-0.9, 0])[rot]}
+        pic, flip, off = S.LAMP_DRAWS[rot]
+        return {"drawnTex": pic, "flipped": flip, "off": list(off)}
+
     # ---- probes
     def probe(self, cmd):
         if self.blind:
@@ -167,7 +175,7 @@ class Fake:
             for t in inside:
                 if t["def"] in MEMBERS:
                     members.append(dict(t, run=min(m["id"] for m in self.run_of(t))))
-            lamps = [dict(t, drawnPath=self.drawn(t)) for t in inside if t["def"] in LAMPS
+            lamps = [dict(t, drawnPath=self.drawn(t), **self.drawn_as(t)) for t in inside if t["def"] in LAMPS
                      and not (t["def"] == "WallLamp" and self.plant == "wall_lamp_not_a_lamp")]
             return {"success": True, "members": members, "lamps": lamps}
         if verb == "clookicons":
@@ -214,7 +222,7 @@ SCENES = [("restyle_whole_line", S.RESTYLE_LINE_ROWS, lambda B, rows: S.restyle_
 # each planted wrong game, and the scene that must catch it
 PLANTS = [("stops_at_pole", "restyle_whole_line"), ("crosses_cut", "restyle_whole_line"), ("lamps_never_follow", "restyle_whole_line"),
           ("lamps_never_follow", "wall_lamp_looks"), ("wall_lamp_not_a_lamp", "wall_lamp_looks"), ("wall_lamp_standing_art", "wall_lamp_looks"),
-          ("master_off_ignored", "wall_lamp_looks"), ("strand_icon", "look_menu_icons")]
+          ("master_off_ignored", "wall_lamp_looks"), ("wall_lamp_into_wall", "wall_lamp_looks"), ("strand_icon", "look_menu_icons")]
 
 
 def play(name, plant=None, blind=False):

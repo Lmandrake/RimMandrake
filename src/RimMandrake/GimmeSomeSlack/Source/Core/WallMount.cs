@@ -35,8 +35,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
         // never drawn now: the real cord meets the plate straight.
         public const double WallU0 = 0.25, WallU1 = 0.80, WallV0 = 0.24, WallV1 = 0.77;
         public const double RockU0 = 0.30, RockU1 = 0.84, RockV0 = 0.18, RockV1 = 0.82;
-        /// <summary>An edge-on (side / hidden north) plate shows only the far strip of the plate: its edge seen side-on.</summary>
+        /// <summary>An edge-on (side / hidden north) wall outlet shows only the far strip of its art: its edge seen side-on.</summary>
         public const double EdgeU0 = 0.56;
+        /// <summary>An edge-on plate or rock hole is cut at the near edge of its black, so the hole opens on the face line where the cord comes in and the cord
+        /// runs into it (owner's walk of 2026-11-24; cut at 0.56 a plate showed 0.001 cell of its black).</summary>
+        public const double EdgeWallU0 = 0.455, EdgeRockU0 = 0.47;
+        /// <summary>The hidden north face's sliver is too thin for a whole half plate: cut here too, so its black still shows.</summary>
+        public const double NorthWallU1 = 0.72;
         /// <summary>The plate's size across the cord, cells.</summary>
         public const double PlateAcross = 0.36;
         /// <summary>Gap kept between the face line and the plate, cells, so no texel lands on the open floor.</summary>
@@ -46,15 +51,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// into its band; a side or north face shows a thin strip of it.</summary>
         public static double PlateDepth(WallFaceKind f) => f == WallFaceKind.South ? SouthBand - 0.06 : f == WallFaceKind.Side ? 0.10 : 0.06;
 
+        /// <summary>The depth of a plate or rock hole a cord goes into: a side one wears more of its bevel, so that its black reads.</summary>
+        public static double EntryDepth(WallFaceKind f) => f == WallFaceKind.Side ? 0.14 : f == WallFaceKind.North ? NorthSliver - FaceMargin : PlateDepth(f);
+
         /// <summary>The decal for a cord's entry into a wall (rock = false) or rock (true) face: centred inside the wall,
         /// art +X along into, ScaleX = depth, Scale = across, cropped to the plate/hole.</summary>
         internal static CordDecal EntryDecal(DecalKind kind, V2 face, V2 into)
         {
             WallFaceKind f = FaceOf(into);
             bool rock = kind == DecalKind.StubRock;
-            double depth = PlateDepth(f);
+            double depth = EntryDepth(f);
             double u0 = rock ? RockU0 : WallU0, u1 = rock ? RockU1 : WallU1;
-            if (f != WallFaceKind.South) u0 = Math.Max(u0, EdgeU0);
+            if (f != WallFaceKind.South) u0 = rock ? EdgeRockU0 : EdgeWallU0;
+            if (f == WallFaceKind.North && !rock) u1 = NorthWallU1;
             var d = new CordDecal(kind, face + into * (FaceMargin + depth / 2), Math.Atan2(into.Z, into.X), PlateAcross)
             {
                 Squash = depth / PlateAcross,

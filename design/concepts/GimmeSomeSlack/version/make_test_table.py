@@ -179,6 +179,15 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
                  "of its stub's end and 3 degrees of its axis, a planted decal offset goes red "
                  "(bars cords_join_stubs_on_position_and_slope, no_unforced_sharp_turn)",
         reads=CORE),
+    # his walk of 2026-11-24, stations 33 and 12: RIMMANDRAKE_FIX_SLACK_WALL_LAMPS_FACE_INTO_WALL_CORDS_STOP_AT_HOLE
+    "T_CORD_ENTERS_HOLE_OFFLINE": dict(
+        stage="4-5", file=G + "Source/SelfTest/HoleEntryChecks.cs",
+        observes="the production builder over runs through and into walls and rock, far-side lamps and devices across a wall, every face, one and two cords per "
+                 "run: every cord that ends at a wall plate or rock hole is DRAWN into the hole's black (what is drawn over the plate, not where the strand is "
+                 "laid), the black shows, no hole is bare; and the black is black in all 16 Stub pictures; planted: nothing drawn over the plate (the walked "
+                 "build ad72a3cec3: 766 of 766 cords drawn to 0.000, the black 0.137..0.192 / 0.101..0.221 on a south wall / rock face) goes red; the fix: 0 of 766, "
+                 "drawn to 0.178 / 0.191 south, 0.044 / 0.063 side, 0.032 / 0.036 north (bar cords_meet_walls_at_face)",
+        reads=CORE + [G + "Source/SelfTest/PngAlpha.cs"]),
     "T_POLE_SOUTH_DRAWS_FRONT_OFFLINE": dict(
         stage="4-5", file=G + "selftest_gss_pole_south_draws_front.py",
         observes="over the SouthDrawsFront rule (MandrakePatches) and the mast def: the mast is drawn above every plant or "
@@ -206,8 +215,10 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
     "T_WALL_LAMP_LOOKS_OFFLINE": dict(
         stage="4-5", file=G + "Source/SelfTest/WallLampLookChecks.cs",
         observes="WallLamp is a lamp def of the picker with one style def per look, each look's texture exists for every facing it draws, "
+                 "read from its pixels each look's lamp has its base on its wall's face and its head out of the wall at all four facings (the walked build "
+                 "ad72a3cec3: 16 of 16 red, e.g. wall to the north: base 0.494 inside the wall face's line, head 0.056; the fix: base 0.200, head -0.261), "
                  "the wall lamp follows its line as the standing lamp does, and the master switch off draws vanilla; planted: a look with a "
-                 "missing facing goes red (bar wall_lamp_takes_looks)",
+                 "missing facing, the walked build's graphic class and vanilla's offsets each go red (bar wall_lamp_takes_looks)",
         reads=[G + "Source/Aerial/ConduitStyles.cs", G + "Source/Aerial/ConduitStylePicker.cs", G + "Source/Aerial/RM_MapComponent_ConduitRuns.cs",
                G + "Defs/Aerial/RM_ConduitStyles.xml", G + "Patches/RM_ConduitStyleable.xml"]
               + sorted(glob.glob(G + "Textures/RimMandrake/GimmeSomeSlack/Styles/*/WallLamp_*.png"))
@@ -255,6 +266,7 @@ OFF_DECIDES = {
     "restyle_whole_line": ["T_LINE_RESTYLE_OFFLINE"],
     "look_menu_icons": ["T_LOOK_ICONS_OFFLINE"],
     "wall_lamp_takes_looks": ["T_WALL_LAMP_LOOKS_OFFLINE"],
+    "cords_meet_walls_at_face": ["T_CORD_ENTERS_HOLE_OFFLINE"],
 }
 OFF_DECIDES["poles_draw_in_front_when_south"].append("T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE")
 OFF_SUPPORTS = {
@@ -369,6 +381,7 @@ NEW_CMD = {"T_CORD_GEOMETRY_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesome
            "T_SWITCH_LIGHT_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--switchlight-only"],
            "T_NO_KINK_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--kinks-only"],
            "T_WALL_PLUG_STRAIGHT_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--wallplugs-only"],
+           "T_CORD_ENTERS_HOLE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py", "--no-export", "--holes-only"],
            "T_SHOCK_RULE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],
            # 0.2.0: a SelfTest .cs is run by T_CORE once Stage 3 writes it
            "T_LINE_RESTYLE_OFFLINE": ["src/RimMandrake/Utils/selftest_gimmesomeslack.py"],

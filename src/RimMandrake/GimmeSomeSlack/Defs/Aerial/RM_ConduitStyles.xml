@@ -186,23 +186,23 @@
     </graphicData>
   </ThingStyleDef>
   <!-- WallLamp (vanilla wall lamp; 0.2.0, bar wall_lamp_takes_looks): styled by the same picker as the standing lamp, NOT a run
-       member. Graphic_Multi: north, east and south pictures, west is east mirrored (vanilla ships no west either). The draw
-       offsets are Core WallLamp's own (graphicData drawOffsetNorth/South/East/West, read 2026-11-23), so each look hangs on
-       the wall where the vanilla lamp does; the art keeps vanilla's anchor on the wall edge (art/install_vea_art.py). -->
+       member. North, east and south pictures; west is east mirrored. The pictures are named for the way the lamp points, a wall
+       attachment's facing is the side its wall is on: Graphic_WallLampLook draws the opposite facing's picture (Core/WallLampFacing).
+       The offsets set each lamp's base on its wall's face and its head out over the floor; vanilla's own 0.9 hung them inside the wall. -->
   <ThingStyleDef>
     <defName>WallLamp_Scrapper</defName>
     <label>scrapper</label>
     <graphicData>
       <texPath>RimMandrake/GimmeSomeSlack/Styles/Scrapper/WallLamp</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <graphicClass>RimMandrake.GimmeSomeSlack.Aerial.Graphic_WallLampLook</graphicClass>
       <damageData>
         <rect>(0.2,0.2,0.6,0.6)</rect>
         <enabled>false</enabled>
       </damageData>
-      <drawOffsetNorth>(0,0,0.9)</drawOffsetNorth>
-      <drawOffsetSouth>(0,0,-0.9)</drawOffsetSouth>
-      <drawOffsetWest>(-0.9,0,0)</drawOffsetWest>
-      <drawOffsetEast>(0.9,0,0)</drawOffsetEast>
+      <drawOffsetNorth>(0,0,0.2)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.196)</drawOffsetSouth>
+      <drawOffsetWest>(-0.04,0,0)</drawOffsetWest>
+      <drawOffsetEast>(0.04,0,0)</drawOffsetEast>
     </graphicData>
   </ThingStyleDef>
   <ThingStyleDef>
@@ -210,15 +210,15 @@
     <label>industrial</label>
     <graphicData>
       <texPath>RimMandrake/GimmeSomeSlack/Styles/Industrial/WallLamp</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <graphicClass>RimMandrake.GimmeSomeSlack.Aerial.Graphic_WallLampLook</graphicClass>
       <damageData>
         <rect>(0.2,0.2,0.6,0.6)</rect>
         <enabled>false</enabled>
       </damageData>
-      <drawOffsetNorth>(0,0,0.9)</drawOffsetNorth>
-      <drawOffsetSouth>(0,0,-0.9)</drawOffsetSouth>
-      <drawOffsetWest>(-0.9,0,0)</drawOffsetWest>
-      <drawOffsetEast>(0.9,0,0)</drawOffsetEast>
+      <drawOffsetNorth>(0,0,0.2)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.196)</drawOffsetSouth>
+      <drawOffsetWest>(-0.04,0,0)</drawOffsetWest>
+      <drawOffsetEast>(0.04,0,0)</drawOffsetEast>
     </graphicData>
   </ThingStyleDef>
   <ThingStyleDef>
@@ -226,15 +226,15 @@
     <label>modern</label>
     <graphicData>
       <texPath>RimMandrake/GimmeSomeSlack/Styles/Modern/WallLamp</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <graphicClass>RimMandrake.GimmeSomeSlack.Aerial.Graphic_WallLampLook</graphicClass>
       <damageData>
         <rect>(0.2,0.2,0.6,0.6)</rect>
         <enabled>false</enabled>
       </damageData>
-      <drawOffsetNorth>(0,0,0.9)</drawOffsetNorth>
-      <drawOffsetSouth>(0,0,-0.9)</drawOffsetSouth>
-      <drawOffsetWest>(-0.9,0,0)</drawOffsetWest>
-      <drawOffsetEast>(0.9,0,0)</drawOffsetEast>
+      <drawOffsetNorth>(0,0,0.2)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.196)</drawOffsetSouth>
+      <drawOffsetWest>(-0.04,0,0)</drawOffsetWest>
+      <drawOffsetEast>(0.04,0,0)</drawOffsetEast>
     </graphicData>
   </ThingStyleDef>
   <ThingStyleDef>
@@ -242,15 +242,15 @@
     <label>futuristic</label>
     <graphicData>
       <texPath>RimMandrake/GimmeSomeSlack/Styles/Futuristic/WallLamp</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <graphicClass>RimMandrake.GimmeSomeSlack.Aerial.Graphic_WallLampLook</graphicClass>
       <damageData>
         <rect>(0.2,0.2,0.6,0.6)</rect>
         <enabled>false</enabled>
       </damageData>
-      <drawOffsetNorth>(0,0,0.9)</drawOffsetNorth>
-      <drawOffsetSouth>(0,0,-0.9)</drawOffsetSouth>
-      <drawOffsetWest>(-0.9,0,0)</drawOffsetWest>
-      <drawOffsetEast>(0.9,0,0)</drawOffsetEast>
+      <drawOffsetNorth>(0,0,0.2)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.196)</drawOffsetSouth>
+      <drawOffsetWest>(-0.04,0,0)</drawOffsetWest>
+      <drawOffsetEast>(0.04,0,0)</drawOffsetEast>
     </graphicData>
   </ThingStyleDef>
 </Defs>

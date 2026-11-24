@@ -27,6 +27,8 @@ namespace RimMandrake.GimmeSomeSlack
         public const float ShadowWidth = 0.13f;
         public const float FaceLift = 0.01f;
         public static int LastPrintedVerts;
+        /// <summary>Hole leads printed into section meshes since the session began (state read: the probe's holes).</summary>
+        public static int LeadsPrinted;
         private const int MaxMeshVerts = 65000;
         /// <summary>Ribbons/quads dropped because a sub-mesh hit MaxMeshVerts (cumulative; probe-readable).</summary>
         public static int OverflowDrops;
@@ -167,6 +169,15 @@ namespace RimMandrake.GimmeSomeSlack
                             ? Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y, (float)d.U0, (float)d.U1, (float)d.V0, (float)d.V1)
                             : Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y);
                     }
+                    // a cord that goes into a plate's or a rock's hole runs on over it into the black (HoleEntry)
+                    if (strandFace != null)
+                        foreach (HoleEntry.Lead l in HoleEntry.Leads(p))
+                        {
+                            int ln = WetRibbon(CordMaterials.OverFaceOf(strandFace), l.Pts, StrandWidth, faceY + 0.003f,
+                                               l.S0 + l.Shift / (4.0 * StrandWidth * CordMaterials.Aspect(strandFace)), Vector2.zero);
+                            if (ln > 0) LeadsPrinted++;
+                            verts += ln;
+                        }
                 }
             }
             LastPrintedVerts = verts;

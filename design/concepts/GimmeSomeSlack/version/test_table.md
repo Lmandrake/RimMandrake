@@ -53,7 +53,7 @@ Generated 2026-11-23T18:16:12-08:00 from `test_table.json` (the record; this is 
 | `conduit_invisible` | tree | 6 | sc_conduit_invisible | T_GATE | 7 | all |
 | `cords_lie_slack` | tree | 6 | T_CORE, T_CORD_GEOMETRY_OFFLINE, sc_cords_slack | T_MATRIX, T_END_HEAP, T_NO_GROUND_WIND_OFFLINE | 20 | all |
 | `no_unforced_sharp_turn` | tree | 6 | T_CORD_GEOMETRY_OFFLINE, T_NO_KINK_OFFLINE, T_WALL_PLUG_STRAIGHT_OFFLINE, sc_no_sharp_turn | - | 2 | all |
-| `cords_meet_walls_at_face` | tree | 6 | sc_walls | T_CORE, T_END_HEAP | 6 | all |
+| `cords_meet_walls_at_face` | tree | 6 | T_CORD_ENTERS_HOLE_OFFLINE, sc_walls | T_CORE, T_END_HEAP | 6 | all |
 | `strip_at_every_junction` | tree | 6 | T_CORE, sc_junction_strips | T_JUNCTION_ART, T_STRIP_ART | 3 | all |
 | `dense_block_tangle` | tree | 6 | T_CORE, sc_dense_tangle | T_MATRIX | 8 | all |
 | `cord_shape_variation_probe` | tree | 6 | T_CORE, sc_no_repeat | - | 1 | all |

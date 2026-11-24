@@ -986,7 +986,7 @@ def no_roof_over_pole(B, V, rows):
 RESTYLE_LINE_ROWS = ["SC_restyle_line_staged", "SC_restyle_whole_line_from_pole", "SC_restyle_whole_line_from_switch",
                      "SC_restyle_whole_line_from_bracket", "SC_restyle_whole_line_from_cord", "SC_restyle_cut_span_ends_line"]
 LOOK_ICON_ROWS = ["SC_look_icons_build_menu", "SC_look_icons_restyle_menus", "SC_look_icons_same_picture", "SC_look_icons_shot"]
-WALL_LAMP_ROWS = ["SC_wall_lamp_draws_each_look", "SC_wall_lamp_every_facing", "SC_wall_lamp_follows_line_restyle",
+WALL_LAMP_ROWS = ["SC_wall_lamp_draws_each_look", "SC_wall_lamp_every_facing", "SC_wall_lamp_points_out", "SC_wall_lamp_follows_line_restyle",
                   "SC_wall_lamp_master_off_vanilla", "SC_wall_lamp_shot"]
 LOOK_NAMES = ("Scrapper", "Industrial", "Modern", "Futuristic")
 
@@ -1142,10 +1142,32 @@ def wall_lamp_verdict(lamps, want):
     return bad
 
 
+# facing (the side the wall is on: 0 N, 1 E, 2 S, 3 W) -> the picture the lamp must draw (named for the way it points), mirrored or not, and the offset that
+# sets its base on the wall's face; read from the pixels over every look and facing by T_WALL_LAMP_LOOKS_OFFLINE
+LAMP_DRAWS = {0: ("WallLamp_south", False, (0.0, 0.2)), 1: ("WallLamp_east", True, (0.04, 0.0)),
+              2: ("WallLamp_north", False, (0.0, -0.196)), 3: ("WallLamp_east", False, (-0.04, 0.0))}
+
+
+def wall_lamp_points_verdict(lamps):
+    """lamps: cstyles lamp rows by cell. -> [(cell, rot, drawn, want)] of the styled wall lamps that do not draw the picture that points away from their wall;
+    None when a lamp's drawn picture was not read."""
+    bad = []
+    for c, l in lamps.items():
+        if l.get("def") != "WallLamp" or not l.get("look"):
+            continue
+        if l.get("drawnTex") is None or not l.get("off"):
+            return None
+        pic, flip, off = LAMP_DRAWS[l.get("rot")]
+        if l["drawnTex"].rsplit("/", 1)[-1] != pic or bool(l.get("flipped")) != flip or max(abs(a - b) for a, b in zip(l["off"], off)) > 0.005:
+            bad.append((c, l.get("rot"), [l["drawnTex"], l.get("flipped"), l["off"]], [pic, flip, off]))
+    return bad
+
+
 def wall_lamp_looks(B, V, rows, log):
     """sc_wall_lamp_looks (bar wall_lamp_takes_looks): a steel wall with a floor cord along it; four wall lamps on it, one per look (the
     build menu's pick, cplace), a fifth in Industrial and a standing lamp in Industrial on the same cord; wall lamps facing east, west and
-    south on their own walls, each given a look by its Restyle (clamp). Reads (cstyles lamps): each draws its look's wall lamp; the cord
+    south on their own walls, each given a look by its Restyle (clamp). Reads (cstyles lamps): each draws its look's wall lamp, the picture
+    that points away from its wall, base on the face; the cord
     restyled All connected Industrial -> Modern takes the two Industrial lamps along and leaves the Scrapper and Futuristic ones; the
     master switch off draws every wall lamp vanilla (then restored). A capture is kept for the judge. Rows: WALL_LAMP_ROWS."""
     x, z = SC0
@@ -1183,6 +1205,10 @@ def wall_lamp_looks(B, V, rows, log):
     rots = {c: (lamps.get(c) or {}).get("rot") for c in facing}
     V.row(rows, "SC_wall_lamp_every_facing", st(badf), "MOD" if site_ok else "SITE",
           {"wrong": badf, "rots": {str(k): v for k, v in rots.items()}, "refusedByMod": mod_refused})
+    badp = wall_lamp_points_verdict(lamps)
+    nrot = len({l.get("rot") for l in lamps.values() if l.get("def") == "WallLamp" and l.get("look")})
+    V.row(rows, "SC_wall_lamp_points_out", "UNMEASURED" if badp is None or not site_ok or (nrot < 4 and not mod_refused) else "FAIL" if badp or mod_refused else "PASS",
+          "SITE" if not site_ok else "HARNESS" if badp is None else "MOD", {"wrong": badp, "facings": nrot, "refusedByMod": mod_refused})
     rr = B.ap("crestyle:%d,%d:Modern" % cord[5])
     B.ap("cprocess")
     B.ticks(2)

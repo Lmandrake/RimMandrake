@@ -964,6 +964,9 @@ def live_battery(B, fresh_map=False, rows=None):
     row(rows, "M1c_end_pieces", "PASS" if dc.get("Plug", 0) > 0 and dc.get("StubWall", 0) > 0 and
         (dc.get("JunctionTape", 0) + dc.get("JunctionTin", 0)) > 0 and (dc.get("FrayDead", 0) + dc.get("FrayLive", 0)) > 0 else "FAIL",
         "MOD", {"decals": dc})
+    # owner's walk of 2026-11-24 (stations 33 and 12): a cord at a wall plate or rock hole is DRAWN into its black, not cut off at the plate
+    st_h, why_h = holes_verdict(B.probe("holes"))
+    row(rows, "M1h_cords_drawn_into_holes", st_h, "MOD" if st_h in ("PASS", "FAIL") else "HARNESS", why_h)
     # ---------------------------------------------------------------- M2: connected only, floor rule
     # M2 is written after the break (M8) so it is evaluated on the post-break census too -- see there.
     row(rows, "M2b_no_vertex_unwalkable", "PASS" if c0.get("verticesInUnwalkable") == 0 and c0.get("interiorVertices", 0) > 0 else "FAIL",
@@ -1075,6 +1078,15 @@ def live_battery(B, fresh_map=False, rows=None):
 # loose end at the wall's face, nothing hanging out of it to sway). Run after M8 (the break), so the west end of the gap is a LIVE floor terminal (whip) on screen.
 # BAT2 / FIELD / RUN2 / WALL2 are set by _set_origin with the rest of the scene.
 SHOTS = os.path.join(REPO, "Transient", "messy_conduit_live_20261002")
+
+
+def holes_verdict(r):
+    """The probe "holes" -> (status, detail): every cord that ends at a wall plate or a rock hole is drawn into its black. No hole or no printed lead read: UNMEASURED."""
+    r = r or {}
+    d = {k: r.get(k) for k in ("holes", "ends", "notIn", "noBlack", "bare", "leadsPrinted", "by", "bad", "error")}
+    if not r.get("success") or not r.get("ends"):
+        return "UNMEASURED", d
+    return ("PASS" if r.get("notIn") == 0 and r.get("noBlack") == 0 and r.get("bare") == 0 and (r.get("leadsPrinted") or 0) > 0 else "FAIL"), d
 
 
 def node_census_verdict(node_types, ends):
@@ -2004,6 +2016,7 @@ ROW_SHOWS = {
     "M7b_on_again_invisible": ["conduit_reads_invisible"],
     "B1_rope_settle": ["cord_lies_slack_in_loops", "never_taut_straight_cord"],
     "M1c_end_pieces": ["cord_meets_wall_at_its_face"],
+    "M1h_cords_drawn_into_holes": ["cord_meets_wall_at_its_face"],
     "M2b_no_vertex_unwalkable": ["never_cord_across_impassable"],
     "M1e_machine_on_inwall_run_draws_a_cord": ["conduit_reads_invisible", "cord_meets_wall_at_its_face"],
     "B6_tangle_lit_strips": ["dense_grid_reads_as_tangle"],

@@ -110,6 +110,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd.StartsWith("ends:")) return EndsNear(comp, cmd.Substring(5));
             if (cmd.StartsWith("endkind:")) return EndKind(comp, cmd.Substring(8));   // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO
             if (cmd.StartsWith("joins:")) return Joins(comp, cmd.Substring(6));       // RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK
+            if (cmd == "holes" || cmd.StartsWith("holes:")) return Holes(comp, cmd.Length > 6 ? cmd.Substring(6) : "");   // owner's walk of 2026-11-24: a cord is drawn into its hole
             if (cmd.StartsWith("under:")) return UnderAt(map, comp, cmd.Substring(6));   // sc_cords_under_items (bar cords_draw_under_things)
             if (cmd == "motion") return Motion(map, comp);
             if (cmd == "motionreset")
@@ -837,6 +838,20 @@ namespace RimMandrake.GimmeSomeSlack
             F("wallTerminalsLoose", e.WallTerminalsLoose.ToString());
             F("bad", J.Arr(j.Bad.Concat(l.Bad).Concat(e.Bad.Where(x => x.Contains("inside the wall or rock"))).Take(16).Select(J.S)));
             return sb.Append('}').ToString();
+        }
+
+        /// <summary>"holes" or "holes:x,z,w,h": every wall plate and rock hole drawn (in the rect), and how deep each cord that ends there is drawn into its black
+        /// (HoleEntry.Audit over the leads the section layer prints).</summary>
+        private static string Holes(RM_MapComponent_CordGraph comp, string args)
+        {
+            double[] a = args.Length == 0 ? null : args.Split(',').Select(t => double.Parse(t, CultureInfo.InvariantCulture)).ToArray();
+            var r = new HoleEntry.Read();
+            foreach (LaidPiece p in comp.Pieces)
+                HoleEntry.Audit(r, p, HoleEntry.Leads(p), d => a == null || d.Pos.X >= a[0] && d.Pos.X <= a[0] + a[2] && d.Pos.Z >= a[1] && d.Pos.Z <= a[1] + a[3]);
+            return "{\"success\":true,\"cmd\":\"holes\",\"holes\":" + r.Holes + ",\"ends\":" + r.Ends + ",\"notIn\":" + r.NotIn + ",\"noBlack\":" + r.NoBlack + ",\"bare\":" + r.Bare +
+                   ",\"leadsPrinted\":" + SectionLayer_RM_MessyCords.LeadsPrinted +
+                   ",\"by\":{" + string.Join(",", r.By.Select(kv => J.S(kv.Key) + ":{\"cords\":" + kv.Value.Count + ",\"drawnTo\":[" + J.D(kv.Value.Min(x => x.End)) + "," + J.D(kv.Value.Max(x => x.End)) +
+                   "],\"black\":[" + J.D(kv.Value.Min(x => x.Near)) + "," + J.D(kv.Value.Max(x => x.Far)) + "]}")) + "},\"bad\":" + J.Arr(r.Bad.Take(12).Select(J.S)) + "}";
         }
 
         private static string ArtFit(Map map, RM_MapComponent_CordGraph comp)

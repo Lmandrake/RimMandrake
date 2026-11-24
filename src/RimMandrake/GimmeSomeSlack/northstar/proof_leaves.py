@@ -50,6 +50,7 @@ ROW_LEAVES = dict(_MATRIX, **{
     "M1_cords_exist": ["conduit_invisible", "drawing_true_to_grid"],
     "M1_node_census": ["drawing_true_to_grid", "cords_meet_walls_at_face"],
     "M1c_end_pieces": ["cords_meet_walls_at_face", "strip_at_every_junction"],
+    "M1h_cords_drawn_into_holes": ["cords_meet_walls_at_face"],
     "M2b_no_vertex_unwalkable": ["cords_meet_walls_at_face"],
     "M2c_no_sharp_bends": ["no_unforced_sharp_turn"],
     "M6_overlay_lines_intact": ["conduit_invisible"],

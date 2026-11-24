@@ -43,6 +43,10 @@
     <Compile Include="CordEndKindChecks.cs" />
     <Compile Include="StubJoinChecks.cs" />
     <Compile Include="WallPlugChecks.cs" />
+    <Compile Include="HoleEntryChecks.cs" />
+    <Compile Include="PngAlpha.cs" />
+    <Compile Include="..\Core\WallLampFacing.cs" />
+    <Compile Include="..\Core\HoleEntry.cs" />
     <Compile Include="SwitchOffChecks.cs" />
     <Compile Include="SwitchLightChecks.cs" />
     <Compile Include="KinkChecks.cs" />

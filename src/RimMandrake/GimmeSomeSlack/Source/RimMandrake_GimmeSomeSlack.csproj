@@ -38,6 +38,9 @@
     <Compile Include="..\..\_Shared\SlackGeometry\CordWorld.cs" Link="Shared\SlackGeometry\CordWorld.cs" />
     <Compile Include="TipSparks.cs" />
     <Compile Include="SwitchLightDraw.cs" />
+    <Compile Include="Core\HoleEntry.cs" />
+    <Compile Include="Core\WallLampFacing.cs" />
+    <Compile Include="Aerial\Graphic_WallLampLook.cs" />
     <Compile Include="Core\SwitchLight.cs" />
     <Compile Include="Core\SwitchLampArt.cs" />
     <Compile Include="CordUnderLiquid.cs" />

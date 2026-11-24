@@ -282,6 +282,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return AerialProbe.Ok("cfinishbuild", "\"workerHasIdeo\":" + B(w.Ideo != null) + ",\"built\":" + built + ",\"errors\":[" + string.Join(",", errors.Select(S)) + "]");
         }
 
+        /// <summary>What the engine draws for a lamp at its facing: the picture, whether it is mirrored, and its offset in cells (sc_wall_lamp_looks).</summary>
+        private static string DrawnAs(Thing l)
+        {
+            Graphic g = l.Graphic;
+            if (g == null) return "";
+            UnityEngine.Vector3 o = g.DrawOffset(l.Rotation);
+            bool flip = (l.Rotation == Rot4.West && g.WestFlipped) || (l.Rotation == Rot4.East && g.EastFlipped);
+            return ",\"drawnTex\":" + S(TexName(g.MatAt(l.Rotation, l))) + ",\"flipped\":" + B(flip) +
+                   ",\"off\":[" + o.x.ToString("0.###", CultureInfo.InvariantCulture) + "," + o.z.ToString("0.###", CultureInfo.InvariantCulture) + "]";
+        }
+
         private static string TexName(Material m) => m == null ? null : m.mainTexture == null ? "<none>" : m.mainTexture.name;
 
         private static string Styles(Map map, RM_MapComponent_ConduitRuns runs, string cmd)
@@ -336,7 +347,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     lampRows.Add("{\"id\":" + l.thingIDNumber + ",\"def\":" + S(l.def.defName) + ",\"rot\":" + l.Rotation.AsInt + ",\"x\":" + l.Position.x + ",\"z\":" + l.Position.z + ",\"rawStyle\":" + S(StylePicker.RawStyle(l)?.defName) +
                                  ",\"look\":" + S(ConduitStylePicker.RawLook(l)) + ",\"run\":" + (lr == null ? "null" : lr[0].thingIDNumber.ToString()) +
                                  ",\"runLook\":" + S(lr == null ? null : RM_MapComponent_ConduitRuns.Info(lr).Look ?? StylePicker.DefaultLook) +
-                                 ",\"drawnPath\":" + S(drawn) + ",\"lit\":" + B(l.TryGetComp<CompGlower>()?.Glows ?? false) + "}");
+                                 ",\"drawnPath\":" + S(drawn) + DrawnAs(l) + ",\"lit\":" + B(l.TryGetComp<CompGlower>()?.Glows ?? false) + "}");
                 }
             }
             // ---- pieces owned in the rect
