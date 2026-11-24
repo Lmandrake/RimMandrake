@@ -99,7 +99,11 @@ class RealWorld(object):
         if q["state"] == "HELD":
             cur, _problem = gl.driver_lock._read(gl.lock_path(letter))
             mine = os.environ.get(hg.ENV_GEN) and cur and str(cur.get("generation")) == os.environ[hg.ENV_GEN]
-            if mine or q.get("mine") or (os.name == "nt" and cur and hg._windows_in_holders_clone(cur)):
+            # a take of this clone's window is ours to drive under; the take of another scene of this clone is not: it ends with it
+            window = os.name == "nt" and cur and hg._windows_in_holders_clone(cur) and not str(cur.get("purpose")).startswith("scene.open ")
+            if cur is None:                         # freed between the two reads
+                q = gl.query(letter)
+            elif mine or q.get("mine") or window:
                 return {"code": 0, "line": "drives under the take of %s" % q["line"], "inherited": True}
         if q["code"] != 0:
             return {"code": q["code"], "line": q["line"], "inherited": False}

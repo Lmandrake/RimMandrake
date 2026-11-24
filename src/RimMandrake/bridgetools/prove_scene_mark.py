@@ -8,6 +8,7 @@ Exit 0 = every row PASS, 1 = a FAIL, 2 = a row is UNMEASURED."""
 import os
 import subprocess
 import sys
+import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils"))
 import scene  # noqa: E402
@@ -76,7 +77,12 @@ else:
     row("a new session in the marked process carries the stamp", stamps_of_a_new_session() == ["EXPLORED"], "")
     p = subprocess.run([sys.executable, os.path.abspath(__file__), "--die"], capture_output=True, text=True, timeout=300)
     row("a driver was killed in an open session", "DYING IN" in p.stdout and p.returncode == 9, p.stdout + p.stderr[-200:])
-    got = refusal()
+    for waited in range(20):                    # the WSL child that held its lock sees the closed pipe a moment later
+        got = refusal()
+        if got[0] != "GAME_HELD":
+            break
+        time.sleep(0.5)
+    row("the dead driver's lock is free in seconds", waited < 19, "%.1f s" % (waited * 0.5))
     row("the dead driver's session is found, and its driver is dead", got[0] == "SESSION_OPEN" and "is dead" in got[1], got)
     rc = scene.main(["end-session", GAME])
     row("end-session ends it, and the mark stays", rc == 0 and stamps_of_a_new_session() == ["EXPLORED"], rc)

@@ -11,7 +11,10 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
 ## WHAT A NAME REACHES
 
 - **The game**, by name (`game_names.py`) and never by the shell's environment: the port and the token of that game.
-- **The driver lock** of that game (`game_lock.py`). A take that this process inherited (`game_lock.py run`) is kept.
+- **The driver lock** of that game (`game_lock.py`). A take that this process inherited (`game_lock.py run`), or that the
+  window of this clone holds, is kept. A Windows python cannot claim, so a WSL child (`game_lock.py run <g> -- cat`) holds the
+  lock; its input closes when the script's process ends, and the lock is free within about a second. The take of another scene is
+  never inherited.
 - **The process mark and the session record.** One text in the environment block of the game's own process
   (`System.Environment`, through `jawa/static_call`), with the game's process id in it. It dies with the process. A
   process that the game starts inherits the text, and the id in it then names another process, so it is not read as a mark.
@@ -61,5 +64,13 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
   could not be put back is named.
 - **a-name-not-built-says-so.** The other seven names refuse `NOT_BUILT` with the ticket that builds them.
 - **help-equals-the-code.** Help prints the ten names; each built page takes the arguments that the function takes.
+
+**LIVE PROOF** (2026-11-23, ArchSmall, companion `6ac9a7490885`, so every run was played by `jawa/scene_slice`):
+- `scene.py accept src/RimMandrake/bridgetools/scene_smoke_run.py` at commit 67e5c46ec0f4: 11 of 11 rows PASS, exit 0.
+- `src/RimMandrake/bridgetools/prove_scene_mark.py`: 12 PASS, 1 FAIL (the lock of a killed driver was read between two states; the
+  lock reading was repaired after it).
+- UNRUN: that row again (`python.exe src/RimMandrake/bridgetools/prove_scene_mark.py`); a restarted game carries no stamp
+  (`... prove_scene_mark.py --unmarked`, after a restart); a run played by `jawa/run_until` (the smoke run on a companion that has
+  it); `WRONG_BUILD`, `OWNER_HOLD`, a lost reply, and a game that ran on, each from a real game (offline only).
 
 Later lists beside this page: `polish.md`.
