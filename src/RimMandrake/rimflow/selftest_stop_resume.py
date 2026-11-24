@@ -248,11 +248,15 @@ def main():
     set_plan([plan_line("switch", T3, acted=True, to="system"), plan_line("normal", T3 + 300)])
     tries = []
 
-    def refuse(*a_, **kw):
+    def refuse(seat, item, *a_, **kw):
         tries.append(1)
-        return 2, "refused: test"
+        unit = rec("rf-refused", item, kw["now"], status="refused", why="item pipe off")
+        return 2, "REFUSED %s by control: item pipe off" % unit
     for k in range(SR.MAX_TRIES + 2):
         sweep(refuse, T3 + 310 + k * 300)
+    resumed_by = DH.read_record(rf, STATE).get("resumed_by")
+    check("a-refused-resume-is-tried-again: a refused sibling is never marked as the successor",
+          not resumed_by, "resumed_by=%s" % resumed_by)
     check("a-refused-resume-is-tried-again: after MAX_TRIES refusals it waits", len(tries) == SR.MAX_TRIES,
           "%d tries, cap %d" % (len(tries), SR.MAX_TRIES))
     T3b = T3 + 310 + (SR.MAX_TRIES - 1) * 300 + getattr(SR, "REFUSED_WAIT_S", 3600) + 5
@@ -263,6 +267,12 @@ def main():
           "%d tries, %s" % (len(tries), took))
     said = (DH.read_record(rf, STATE) or {}).get("resume_refused_said")
     check("a-refused-resume-is-tried-again: said once, when it was refused MAX_TRIES times", bool(said), said)
+    T3c = T3b + SR.REFUSED_WAIT_S
+    set_plan([plan_line("switch", T3, acted=True, to="system"), plan_line("normal", T3c - 10)])
+    took = [c for c in sweep(Launcher(), T3c) if c.get("unit") == rf]
+    check("a-refused-resume-is-tried-again: once the hold clears a successful launch is the successor",
+          len(took) == 1 and took[0]["act"] == "resumed" and DH.read_record(rf, STATE).get("resumed_by") == took[0]["new"],
+          str(took))
     review_cases()
 
     wiring()

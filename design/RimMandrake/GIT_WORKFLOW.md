@@ -9,7 +9,7 @@ This file states what IS. The reasons and the measurements are in two places:
 | place | what it is |
 |---|---|
 | `/home/mandrake/rm/bench` | The seat clone: ext4, plain git, **one writer** (the seat's own window, and the helpers that it runs in that clone). The seat launches from its clone. (FOUNDRY is retired, and its clone is deleted.) |
-| `D:\Luke\dev\RimMandrake` (`/mnt/d/Luke/dev/RimMandrake`) | The **read-only mirror** of origin/main. `rm-mirror.timer` refreshes it every 5 min (`./mirror sync`). The mirror has no `.git`. Never write the mirror. Windows tools read it: the game deploy, Explorer, python.exe. `MIRROR_HEAD` names its commit. `MIRROR_STALE` appears if a refresh failed. |
+| `D:\Luke\dev\RimMandrake` (`/mnt/d/Luke/dev/RimMandrake`) | The **read-only mirror** of origin/main. `rm-mirror.timer` refreshes it every 5 min (`./mirror sync`). The mirror has no `.git`. Never write the mirror. Windows tools such as Explorer and python.exe read it. `MIRROR_HEAD` names its commit. `MIRROR_STALE` appears if a refresh failed. |
 | `/home/mandrake/rm/mirror.git` | The mirror's bare, fetch-only repo. |
 | `D:\ClaudeWork\rimmandrake\artpipe\` | The artpipe queue and state (not in git): `pending/ active/ done/ failed/ _artsrc/ registry.jsonl` |
 | `D:\ClaudeWork\rimmandrake\build\` | Build staging. |
@@ -169,7 +169,9 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
 - `artpipe_state.py find <term>` searches finished jobs.
 
 **Other Windows-facing work.**
-- From WSL, run anything bridge-facing or game-facing under `python.exe`, against the **mirror** path.
+- From WSL, run `python3 src/RimMandrake/Utils/deploy_custom_mods.py --apply` from the source checkout so it can read the
+  game hold store. Read the plan first and carry over the same target options.
+- Run other bridge-facing or game-facing Windows tools under `python.exe` against the **mirror** path.
 - Selftests that run Windows `dotnet.exe` fail from an ext4 clone with MSB3101/MSB3030/MSB1009. Those failures are not
   regressions. `src/RimMandrake/Utils/selftest_winstage.py` stages those selftests on the Windows drive.
 

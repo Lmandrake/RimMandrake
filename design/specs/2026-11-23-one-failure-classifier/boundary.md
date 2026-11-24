@@ -68,7 +68,8 @@ request gives the same refusal).
 - **a-quarantined-job-is-queued-again** (`testq/selftest_testq_fault_monitor.py`). A job quarantined by a machine fault
   is queued again however often that happened, inside 48 h.
 - **a-refused-resume-is-tried-again** (`rimflow/selftest_stop_resume.py`). A resume whose launch was refused is never
-  given up. It is tried again after `REFUSED_WAIT_S`, and said once when it has been refused `MAX_TRIES` times.
+  given up. It is tried again after `REFUSED_WAIT_S`, and said once when it has been refused `MAX_TRIES` times. A saved
+  refusal record leaves the stopped run eligible for retry. The successful relaunch is recorded as its successor.
 - **a-red-fixer-that-died-spends-no-attempt** (`rimflow/selftest_red_dispatch.py`). A launch that never started and a run
   that died of a system cause do not stop the red item. The next try waits `SYSTEM_WAIT_S` and stays inside the night cap.
 - **a-list-run-that-died-spends-no-run** (`rimflow/selftest_list_dispatch.py`). A Work or Shape run that died of a system
@@ -91,8 +92,8 @@ request gives the same refusal).
 - **a-killed-continuation-spends-no-slot** (`rimflow/selftest_left_open_continue.py`). A continuation that died of a system
   cause is none of the three a day.
 - **a-dead-wake-is-tried-after-its-cooldown** (`testq/selftest_testq_steward.py`). A wake of the lane's steward that died on
-  the login after its quick retries, or was killed from outside, is tried again after its cooldown. A wake that ended in
-  its own error is told and not tried again, as before.
+  the login after its quick retries, or was killed from outside, is tried again after its cooldown. A surviving wake
+  wrapper records the child's signal in the exit file. A wake that ended in its own error is told and not tried again.
 - **a-dead-render-spends-no-attempt** (`Utils/art/selftest_facing_regen_batch_trailer.py`,
   `Utils/artpipe/selftest_requeue_flakes.py`). A render that died spends no attempt and no requeue.
 - **the-lint-refuses-a-new-counter** (`Utils/selftest_failure_counter_lint.py`). A new counter in pipeline machinery whose file does not call the function, and that

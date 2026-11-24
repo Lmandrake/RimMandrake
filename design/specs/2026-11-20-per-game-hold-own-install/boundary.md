@@ -57,9 +57,11 @@ A game's name (ArchBig, ArchSmall, Steve1, Steve2) and the map from its letter a
   `GAME_DATA` lie under ArchSmall's own install; `WORKSHOP` and `A_GAME_DIR` stay Steam's. With no game named they are
   Steam's, as before.
 - **a-deploy-for-game-b-writes-only-under-game-b.** `deploy_custom_mods.py --instance ArchSmall` plans into ArchSmall's own `Mods`;
-  with no instance it plans into ArchBig's, as before.
-- **a-deploy-into-a-held-game-refuses-and-writes-nothing.** `deploy_custom_mods.py --apply` into a held game exits
-  non-zero naming the hold, before any write.
+  with no instance it plans into ArchBig's, as before. A composed def-guard repair for a stale SandLion and a folded-mod
+  redirect both include the resolved instance in the printed command.
+- **a-deploy-into-a-held-game-refuses-and-writes-nothing.** From WSL, `deploy_custom_mods.py --apply` into a held game
+  exits non-zero naming the hold, before any write. Native Windows `--apply` refuses before any write, names the target,
+  and prints the equivalent WSL command so that the authoritative hold store is consulted. Native Windows dry runs are allowed.
 - **a-companion-build-for-game-b-writes-only-under-game-b.** `bridgetools/build.py` aimed at ArchSmall deploys into ArchSmall's
   own `BridgeTools/JawaBench`; aimed at ArchBig it keeps Steam's.
 - **the-in-game-gate-reads-the-runs-own-game.** `companion_current(game=b)` reads ArchSmall's own companion DLL, and

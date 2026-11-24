@@ -20,13 +20,13 @@ So: "the file is written" and "the game can see it" are two different claims.
 This script is what turns the first into the second, and what proves it.
 
 USAGE
-  python src/RimMandrake/Utils/deploy_custom_mods.py                  # plan only; changes NOTHING (default)
-  python src/RimMandrake/Utils/deploy_custom_mods.py --apply          # repo -> game, then verify
-  python src/RimMandrake/Utils/deploy_custom_mods.py --apply --mod Jawa_Patches
-  python src/RimMandrake/Utils/deploy_custom_mods.py --apply --prune  # also delete ALL game-only files (repo-deleted ones are pruned by --apply alone)
-  python src/RimMandrake/Utils/deploy_custom_mods.py --pull Jawa_Patches   # game -> repo, rescue a hand-edit
-  python src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes       # plan the composed Baroque Biomes mod
-  python src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --apply
+  python3 src/RimMandrake/Utils/deploy_custom_mods.py                  # plan only; changes NOTHING (default)
+  python3 src/RimMandrake/Utils/deploy_custom_mods.py --apply          # repo -> game, then verify
+  python3 src/RimMandrake/Utils/deploy_custom_mods.py --apply --mod Jawa_Patches
+  python3 src/RimMandrake/Utils/deploy_custom_mods.py --apply --prune  # also delete ALL game-only files (repo-deleted ones are pruned by --apply alone)
+  python3 src/RimMandrake/Utils/deploy_custom_mods.py --pull Jawa_Patches   # game -> repo, rescue a hand-edit
+  python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes       # plan the composed Baroque Biomes mod
+  python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --apply
 
 COMPOSED MODS (BAROQUE_BIOMES_COMPOSE_1)
 ========================================
@@ -38,7 +38,8 @@ manifest's current compose_wave folds in is REMOVED from ordinary discovery:
 `--mod Contagion` refuses and points here, so a folded biome is never
 redeployed standalone by habit.
 
-Runs from WSL or native Windows; the game paths are auto-detected.
+Plans run from WSL or native Windows. Use WSL python3 for --apply so the
+deploy can read the machine's game holds.
 Exit code is 0 when repo and game agree, 1 when they do not — so it doubles as a
 pre-flight check ("am I about to test what I think I am testing?").
 
@@ -60,6 +61,7 @@ import argparse
 import fnmatch
 import errno
 import os
+import shlex
 import shutil
 import sys
 import time
@@ -68,6 +70,7 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 SRC_ROOT = os.path.join(ROOT, "src")
+DEPLOY_COMMAND = "python3 src/RimMandrake/Utils/deploy_custom_mods.py"
 # plan §4 dep 2. `custom_patches/` was flat; the two-tier split puts mods under
 # src/Jawa/ AND src/RimMandrake/, so discovery gains one level. The deployed
 # folder name is still the bare mod name — the game never sees the tier.
@@ -93,10 +96,9 @@ def folded_refusal(names):
     if hit:
         sys.exit("deploy_custom_mods.py: %s %s folded into %s (src/RimMandrake/"
                  "Biomes.compose.json) and is no longer deployed standalone.\n"
-                 "  deploy it with: python3 src/RimMandrake/Utils/deploy_custom_mods.py "
-                 "--compose biomes [--apply]"
+                 "  deploy it with: %s --instance %s --compose biomes [--apply]"
                  % (", ".join(hit), "is" if len(hit) == 1 else "are",
-                    f[hit[0]][0]))
+                    f[hit[0]][0], DEPLOY_COMMAND, _game_name()))
 
 
 def mod_dirs():
@@ -143,6 +145,12 @@ def _instance_arg(argv):
         if a.startswith("--instance="):
             return a.split("=", 1)[1]
     return None
+
+
+def _game_name():
+    from game_instance import current
+    from game_names import show
+    return show(current())
 
 
 if __name__ == "__main__" and _instance_arg(sys.argv[1:]):
@@ -642,6 +650,14 @@ def main():
                  "(use --with MOD to deploy an ordinary mod alongside it)")
     if args.with_mods and not args.compose:
         ap.error("--with only combines with --compose; use --mod for ordinary mods")
+    if args.apply and os.name == "nt":
+        game = _game_name()
+        argv = sys.argv[1:]
+        if not _instance_arg(argv):
+            argv = ["--instance", game] + argv
+        sys.exit("deploy_custom_mods.py: REFUSING native Windows --apply into %s: "
+                 "the authoritative game hold store is in WSL.\n"
+                 "  from the repo root in WSL, run: %s %s" % (game, DEPLOY_COMMAND, shlex.join(argv)))
     for n in (args.mod or []) + (args.with_mods or []) + ([args.pull] if args.pull else []):
         folded_refusal([n])
 
@@ -998,7 +1014,7 @@ def _run(args, targets, holds, mods_dir, active):
 
 def _fix_cmd(mods, prune, ctarget):
     """The one command that deploys `mods` together (composed target via --compose)."""
-    base = "python3 src/RimMandrake/Utils/deploy_custom_mods.py"
+    base = "%s --instance %s" % (DEPLOY_COMMAND, _game_name())
     fold = folded()
     names = sorted({fold[m][0] if m in fold else m for m in mods})
     others = [m for m in names if m != ctarget]

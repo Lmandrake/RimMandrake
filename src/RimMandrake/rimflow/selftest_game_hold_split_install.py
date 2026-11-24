@@ -12,13 +12,18 @@ Offline: fake folders, a throwaway control store, stand-in bridge readings; no g
 code; seen failing on the base commit d309e9d2f6 (32 FAIL, the 5 must-stay-green cases passing), and each of 10
 planted faults turned it red by its own case.
 """
+import contextlib
+import io
 import json
 import os
+import shlex
 import shutil
 import subprocess
 import sys
 import tempfile
 import types
+from pathlib import Path
+from unittest import mock
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -241,12 +246,72 @@ def _plan_line(X, *args):
     return r, next((x for x in (r.stdout or "").splitlines() if x.startswith("game :")), "")
 
 
+def _write(path, text):
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(text, encoding="utf-8")
+
+
 def t_a_deploy_for_game_b_writes_only_under_game_b(X):
     r, line = _plan_line(X, "--gate", "--mod", "FlowWorks", "--instance", "b")
     chk(lambda: line and under(line[6:].strip(), os.path.join(X.b_dir, "game", "Mods")),
         "deploy: --instance b plans into b's own Mods (%s)" % (line or (r.stderr or "")[-160:]))
     r, line = _plan_line(X, "--gate", "--mod", "FlowWorks")
     chk(lambda: line and under(line[6:].strip(), X.a_dir), "deploy: no instance plans into game a's Mods (unchanged)")
+
+    repo = os.path.join(X.top, "repair_repo")
+    src = os.path.join(repo, "src")
+    tier = os.path.join(src, "RimMandrake")
+    tools = os.path.join(tier, "Utils")
+    os.makedirs(tools)
+    subprocess.run(["git", "init", "-q"], cwd=repo, check=True, timeout=30)
+    dep = os.path.join(tools, "deploy_custom_mods.py")
+    shutil.copyfile(os.path.join(UTILS, "deploy_custom_mods.py"), dep)
+    manifest = {
+        "target": "RimMandrake.Biomes", "compose_wave": 1,
+        "entries": [{"key": "Stillsand", "source": "Stillsand", "wave": 1, "label": "Stillsand"}],
+        "shell": {"source": "BiomesShell", "assemblies": []},
+        "about": {"name": "Baroque Biomes", "packageId": "mandrake.rm.biomes", "author": "test",
+                  "supportedVersions": ["1.6"], "description": "Deploy repair fixture"},
+    }
+    _write(os.path.join(tier, "Biomes.compose.json"), json.dumps(manifest))
+    about = "<ModMetaData><packageId>%s</packageId></ModMetaData>"
+    _write(os.path.join(tier, "Stillsand", "About", "About.xml"), about % "mandrake.rm.stillsand")
+    _write(os.path.join(tier, "Stillsand", "Defs", "Vekka.xml"),
+          "<Defs><ThingDef><defName>RM_Vekka</defName></ThingDef>"
+          "<RimMandrake.EnvironmentalHazards.RM_DefAliasDef><defName>SandLionAlias</defName><aliases>"
+          "<li><from>RSW_SandLion</from><to>RM_Vekka</to><defType>ThingDef</defType></li>"
+          "</aliases></RimMandrake.EnvironmentalHazards.RM_DefAliasDef></Defs>")
+    b_mods = os.path.join(X.b_dir, "game", "Mods")
+    for d in (os.path.join(src, "RimStarWars"), b_mods):
+        _write(os.path.join(d, "SWBestiary", "About", "About.xml"), about % "mandrake.sw.bestiary")
+    _write(os.path.join(b_mods, "SWBestiary", "Defs", "SandLion.xml"),
+          "<Defs><ThingDef><defName>RSW_SandLion</defName></ThingDef></Defs>")
+    env = sub_env(X.top, RM_CONTROL_DB=X.db, RM_HOST="archmagi", RM_COMPOSE_TMP=X.top,
+                  PYTHONPATH=os.pathsep.join((UTILS, HERE)))
+
+    def plan(*args):
+        return subprocess.run([sys.executable, dep, *args], cwd=repo, env=env,
+                              capture_output=True, text=True, timeout=60)
+
+    r = plan("--compose", "biomes", "--instance", "ArchSmall")
+    fix = next((line.partition("fix: ")[2] for line in r.stdout.splitlines()
+                if line.strip().startswith("fix: python3 ")), "")
+    words = shlex.split(fix)
+    repair = ("ALIAS-STALE ThingDef RSW_SandLion -> RM_Vekka" in r.stdout
+              and {"--compose", "--with", "SWBestiary", "--apply", "--prune"} <= set(words))
+    chk(lambda: repair, "deploy: ArchSmall's stale SandLion triggers a composed repair with SWBestiary and --prune"
+        + ("" if repair else " (%s)" % (r.stderr.strip() or r.stdout.strip())[-500:]))
+    if repair:
+        retry = plan(*(arg for arg in words[2:] if arg != "--apply"))
+        line = next((line[6:].strip() for line in retry.stdout.splitlines() if line.startswith("game :")), "")
+        chk(lambda: line and under(line, b_mods),
+            "deploy: replaying ArchSmall's repair selects ArchSmall (got %s)" %
+            ("ArchBig" if line and under(line, X.a_dir) else line or retry.stderr.strip()))
+
+    r = plan("--mod", "Stillsand", "--instance", "ArchSmall")
+    chk(lambda: r.returncode != 0 and "deploy it with:" in r.stderr and "--instance ArchSmall" in r.stderr,
+        "deploy: ArchSmall's folded-mod retry command names ArchSmall")
 
 
 def t_a_deploy_into_a_held_game_refuses_and_writes_nothing(X):
@@ -259,6 +324,42 @@ def t_a_deploy_into_a_held_game_refuses_and_writes_nothing(X):
                 r.returncode, (r.stdout + r.stderr).strip()[-160:]))
     finally:
         _hold(X, "b", False, "planted hold lifted")
+
+    import control as C
+    with mock.patch.dict(os.environ, sub_env(X.top)):
+        import deploy_custom_mods as D
+    src = os.path.join(X.top, "native_src")
+    _write(os.path.join(src, "RimMandrake", "NativeProbe", "About", "About.xml"),
+          "<ModMetaData><packageId>mandrake.nativeprobe</packageId></ModMetaData>")
+    mods = os.path.join(X.a_dir, "Mods")
+    config = os.path.join(X.top, "low", "Config", "ModsConfig.xml")
+    native_os = types.SimpleNamespace(**vars(os))
+    native_os.name = "nt"
+    _hold(X, "a", True, "his walk")
+    try:
+        with mock.patch.dict(os.environ, RM_HOST="archmagi"), mock.patch.object(
+                C, "DEFAULT_DB", os.path.join(X.top, "windows_profile", "control.db")), mock.patch.object(
+                C, "test_process", return_value=False), mock.patch.multiple(
+                D, os=native_os, SRC_ROOT=src, LOCAL_MODS=mods, _MODS=[mods], _CONFIG=[config]), mock.patch.object(
+                D, "copy", return_value=(0, 0, 0)) as copy:
+            os.environ.pop("RM_CONTROL_DB")
+            os.environ.pop("RM_GAME_INSTANCE", None)
+            argv = ["deploy_custom_mods.py", "--mod", "NativeProbe"]
+            with mock.patch.object(sys, "argv", argv + ["--apply"]), contextlib.redirect_stdout(io.StringIO()):
+                try:
+                    rc = D.main()
+                except SystemExit as e:
+                    rc = e.code
+            chk(lambda: isinstance(rc, str) and "REFUSING" in rc and "ArchBig" in rc and "WSL" in rc
+                and "python3 src/RimMandrake/Utils/deploy_custom_mods.py --instance ArchBig --mod NativeProbe --apply"
+                in rc and not copy.called,
+                "deploy: native --apply refuses before writes for ArchBig (copy called: %s)" % copy.called)
+            with mock.patch.object(sys, "argv", argv), contextlib.redirect_stdout(io.StringIO()) as out:
+                D.main()
+            chk(lambda: "plan only" in out.getvalue() and "+  About/About.xml" in out.getvalue(),
+                "deploy: native dry run still reports the pending file")
+    finally:
+        _hold(X, "a", False, "planted hold lifted")
 
 
 def t_a_companion_build_for_game_b_writes_only_under_game_b(X):

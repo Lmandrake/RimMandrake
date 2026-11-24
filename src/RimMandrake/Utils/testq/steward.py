@@ -398,8 +398,8 @@ def wake_login():
 
 
 def wake_outcome(rec):
-    """-> (ok | auth | died, text) for a finished wake. Its log, short and naming the login, is an auth death whatever
-    the exit code says: that is all 20261030T085851Z.log held. No exit file: systemd killed it at its cap."""
+    """-> (ok | auth | died, text) for a finished wake. A negative exit code records a signal. Otherwise a short log
+    naming the login is an auth death: that is all 20261030T085851Z.log held. No exit file: systemd killed it at its cap."""
     try:
         with open(rec["exit"], encoding="utf-8") as f:
             code = f.read().strip()
@@ -411,6 +411,8 @@ def wake_outcome(rec):
     except OSError:
         log = ""
     tail = " ".join(log[-200:].split())
+    if code and code.startswith("-") and code[1:].isdigit():
+        return "died", "signal %s: %s" % (code[1:], tail or "empty log")
     if len(log) <= WAKE_AUTH_TEXT_MAX and WAKE_AUTH_RX.search(log):
         return "auth", tail
     if code == "0":
@@ -451,7 +453,15 @@ def settle_wake(inc, now, src="steward"):
         mine = bool(inc) and inc.get("item") == rec.get("item")
         said = "the wake started %s died: %s" % (rec.get("ts"), text)
         again = False
-        out = FC.read(FC.ACCOUNT if verdict == "auth" else FC.TIMED_OUT if text.startswith("exit unrecorded") else FC.ENDED)
+        if verdict == "auth":
+            cause = FC.ACCOUNT
+        elif text.startswith("signal "):
+            cause = FC.KILLED
+        elif text.startswith("exit unrecorded"):
+            cause = FC.TIMED_OUT
+        else:
+            cause = FC.ENDED
+        out = FC.read(cause)
         if verdict == "auth":
             again = mine and inc.get("wake_retries", 0) < int(os.environ.get("TESTQ_WAKE_RETRIES", "2"))
             if again or not mine:
@@ -480,8 +490,15 @@ def launch_wake(clone, brief_path, log_path, budget, max_s):
     exe = os.environ.get("TESTQ_WAKE_CLAUDE") or shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
     sys.path.insert(0, RIMFLOW_DIR)
     import spend_watchdog
-    cmd = "%s%s > %s 2>&1; echo $? > %s" % (
-        spend_watchdog.wrap_shell("%s -p \"$(cat %s)\" --dangerously-skip-permissions" % (shlex.quote(exe), shlex.quote(brief_path)), budget),
+    # Record the watchdog's signed return code on fd 3, falling back to the shell status if Python fails.
+    record_exit = (
+        "import os, runpy, sys\n"
+        "status = runpy.run_path(sys.argv[1])['main'](sys.argv[2:])\n"
+        "os.write(3, str(status).encode('ascii'))"
+    )
+    claude = "%s -p \"$(cat %s)\" --dangerously-skip-permissions" % (shlex.quote(exe), shlex.quote(brief_path))
+    cmd = 'status=$(%s%s 3>&1 > %s 2>&1); echo "${status:-$?}" > %s' % (
+        spend_watchdog.wrap_shell(claude, budget, python="python3 -c " + shlex.quote(record_exit)),
         (" --model " + shlex.quote(os.environ["TESTQ_WAKE_MODEL"])) if os.environ.get("TESTQ_WAKE_MODEL") else "",
         shlex.quote(log_path), shlex.quote(exit_path(log_path)))
     try:

@@ -458,6 +458,23 @@ def main():
         subprocess.run(seen["argv"][seen["argv"].index("/bin/bash"):], timeout=30)
         check(open(W.exit_path(log_f)).read().strip() == "7" and "said" in open(log_f).read(),
               "the unit records the session's own exit code")
+        # Exercise the real watchdog and shell for both a signal and the ordinary exit it used to look like.
+        cool = int(os.environ.get("TESTQ_WAKE_COOLDOWN_S", "14400"))
+        for end, retry in (("kill -TERM $$", True), ("exit 241", False)):
+            with open(fake, "w") as f:
+                f.write("#!/bin/bash\necho partial output\n%s\n" % end)
+            subprocess.run(seen["argv"][seen["argv"].index("/bin/bash"):], timeout=30)
+            winc = {"state": "BRAKED", "level": 2, "item": item, "unowned_s": 1800, "wake": "started"}
+            S.dump({"ts": W.iso(t1), "epoch": t1, "item": item, "log": log_f, "exit": W.exit_path(log_f)}, T.q("wake.json"))
+            W.settle_wake(winc, t1 + 60)
+            settled = winc["wake"]
+            n_wakes = len(wakes)
+            W.maybe_wake(winc, {"reason": "r"}, t1 + cool - 1)
+            waited = len(wakes) == n_wakes
+            wake_ends[:] = ["0", "a session that worked"]
+            W.maybe_wake(winc, {"reason": "r"}, t1 + cool)
+            check(waited and len(wakes) == n_wakes + int(retry),
+                  "a-dead-wake-is-tried-after-its-cooldown: %s: %s" % (end, settled))
         W.rimflow = real_rimflow
         wake_ends[:] = ["0", "a session that worked"]
         os.remove(T.q("wake.json"))

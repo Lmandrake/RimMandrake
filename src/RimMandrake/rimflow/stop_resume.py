@@ -271,7 +271,7 @@ def relaunch_of(rec, stop, siblings, victim=lambda x: False):
     killed too is a twin, never a relaunch, and one resumed from another stopped run is that run's relaunch."""
     died = rec.get("ended") or (stop["ts"] - BEFORE_S)
     later = sorted((x for x in siblings if x["unit"] != rec["unit"] and (x.get("at") or 0) > max(rec.get("at") or 0, died - 60)
-                    and x.get("status") != "launch_failed" and x.get("resumed_from") in (None, rec["unit"])
+                    and x.get("status") not in ("launch_failed", "refused") and x.get("resumed_from") in (None, rec["unit"])
                     and not victim(x)),
                    key=lambda x: x.get("at") or 0)
     return later[0]["unit"] if later else None

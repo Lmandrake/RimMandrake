@@ -237,7 +237,7 @@ that looks like a different bug:
 | script | interpreter | what the wrong one does |
 |---|---|---|
 | **`extract_bundle.py`** | **the venv `python`** | system `python3` exits `UnityPy is required: pip install UnityPy Pillow`, which reads as "install a package", not "wrong interpreter" |
-| `deploy_custom_mods.py` | `python3` or `python.exe` | — |
+| `deploy_custom_mods.py` | WSL `python3` for `--apply`; either interpreter for a plan | Native Windows refuses `--apply` and prints the WSL command |
 | `refresh.py` | **`python.exe` only** | `python3` fails `cannot read ModsConfig`, which reads as "the config is gone" (it hardcodes `C:\Users\…`; closed, `29c89f0`) |
 
 ⚠️ **Every one of those wrong-interpreter failures names something else as the
