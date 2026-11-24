@@ -70,8 +70,9 @@ def rows_of(rec, table, identity):
             det = "; ".join("%s %s%s" % (r.get("row"), r.get("verdict"), ": " + str(r["detail"])[:300] if r.get("detail") else "")
                             for r in show)[:1200] or "the job has no row of this check"
         if lacks and v != NO_LOOK:
-            v, det = NO_LOOK, "the build identity could not be read (%s), so this reading counts nothing: it read %s" % (
-                ", ".join(lacks), det)
+            v, det = NO_LOOK, "%s, so this reading counts nothing: it read %s" % (
+                "the build identity could not be read (%s)" % ", ".join(lacks) if t in (sel.get("checks") or []) else
+                "a chain job runs on modcheck's own mod list, which is no tier's list (the visit's driver runs this check)", det)
         x = facts.get(t) or {}
         row = {"test": t, "verdict": v, "outcome": {"PASS": "SUCCESS", "FAIL": "UNRESOLVED"}.get(v, NO_LOOK), "forbidden": [],
                "game": game_of(rec), "job": job.get("id"), "attempt": res.get("attempt"), "detail": det,

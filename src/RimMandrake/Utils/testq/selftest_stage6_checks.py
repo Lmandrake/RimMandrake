@@ -597,6 +597,8 @@ def t_could_not_look_never_replaces_a_row():
     c = {"job": {"id": "J3", "mod": "FlowWorks", "selector": {"chains": ["z"]}, "visit": 9},
          "result": {"outcome": "DONE", "rows": [{"chain": "z", "row": "z1", "verdict": "PASS"}]}}
     check(rows(c)["ch"]["verdict"] == "COULD NOT LOOK", n + "a chain job's row (no tier's list) counts nothing")
+    d = rows(c)["ch"]["detail"]     # 2026-11-24: five FlowWorks rows said "could not be read", and a readiness run hunted a fault
+    check("chain job" in d and "could not be read" not in d, n + "and says it is a chain job's, never an unreadable build identity")
 
 
 MUTANTS = {
