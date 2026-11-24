@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "057952ecd1fad97b31c3f141404581cf2f450803519eccfd13eb95ce5f0f5e36",
+  "body_sha256": "a7ba655703b65680f75a7c15f694171cc800db6d0e14a3f7b4277d8e76276a38",
   "reducer": 1,
   "shards": {
    "BACKFILL": 341359,
@@ -21,6 +21,7 @@
    "HOLDER.run-1795487290": 2197,
    "HOLDER.run-1795510833": 4164,
    "HOLDER.run-1795525975": 3126,
+   "HOLDER.run-1795538786": 1751,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -681,11 +682,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795525975",
-   "done": "Steward read visit 6: 56 of 56 PASS, no mod-wrong line, no undecided bar; three mod fixes read once, sound (fix_reviews.jsonl); T_SITUATION_MAP_OFFLINE red seen; pipeline fixes 599234a5da and 9f802d6866",
-   "next": "Let the tick deploy the walk build to ArchBig (autodeploy), then advance to pre_human with steward_confirms",
-   "ruled_out": "The rebound is no miss: bar_lists_map reads 70 percent of the cells left. A deploy onto a running ArchBig writes no DLL (locked); an r+b open does not show the lock",
-   "ts": "2026-11-24T15:55:33Z"
+   "by": "HOLDER.run-1795538786",
+   "done": "Steward re-read visit 6: 56 of 56 PASS and count on the walk build, three mod fixes read sound, no undecided bar, nothing filed against the mod. The launch came from a machine read fault (ENOMEM on two DLC About.xml read as DLC missing), fixed 340dade85e",
+   "next": "Let the tick deploy the walk build to ArchBig (autodeploy) when Pyrelands visit 9 frees it, then advance to pre_human with steward_confirms",
+   "ruled_out": "The tier explosiveknockback_visit is not short of Biotech or Anomaly: it resolves to 24 mods, none missing, none refused; no in-game check is owed a re-run",
+   "ts": "2026-11-24T17:39:17Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -881,7 +882,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 702,
+  "events": 706,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2487,7 +2488,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-24T16:50:10Z",
+   "last": "2026-11-24T17:39:17Z",
    "lease": "run-1795538786",
    "released": false,
    "token": 26
@@ -2532,6 +2533,7 @@
    "HOLDER.run-1795487290",
    "HOLDER.run-1795510833",
    "HOLDER.run-1795525975",
+   "HOLDER.run-1795538786",
    "JUDGE.judge-1794890427",
    "JUDGE.judge-1795437145",
    "OWNER"
