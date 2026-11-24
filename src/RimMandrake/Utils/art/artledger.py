@@ -1977,11 +1977,23 @@ def ban_refusal(hit: dict, sha: str | None = None) -> str:
             f"art.py unban {b['sha'][:12]} --owner-said \"…\" | --per-ruling <ruling> --why \"…\"")
 
 
+def x_delete_pending_slots(idx: Index, sha: str, bid: str) -> list[tuple[str, str]]:
+    """Slots this ✕ recorded as removed that still hold its bytes after an interrupted unlink."""
+    root = src_root().resolve().parent
+    pending = []
+    for (mod, rel), ev in idx._retired.items():
+        if ev.get("reason") == "x-delete" and ev.get("ban") == bid and ev.get("prev") == sha:
+            target = root / mod / "Textures" / rel
+            if target.is_file() and sha256_file(target) == sha:
+                pending.append((mod, rel))
+    return pending
+
+
 def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MARKS_WHY) -> dict:
     """His ✕ enacted: every game file holding `sha` is removed through the ledger (`live` sha None, reason
     `x-delete`, carrying the mark the art guard checks), keeps of his OLDER than the mark are released, a `ban` is
-    appended FIRST (flushed before any deletion), then the store bytes are deleted under a `purge` event naming the
-    mark and the ban. Refused when the mark is not a stamped owner click listing this sha under purge, or a keep of his is NEWER than it (newest mark wins).
+    appended FIRST, then the `live`, release and `purge` events are flushed before either copy is deleted. Refused
+    when the mark is not a stamped owner click listing this sha under purge, or a keep of his is NEWER than it.
     The caller (enact) guarantees no game file is left drawing nothing (archive_hole); this never checks defs."""
     mark = {**mark, "kind": "x"}
     bad = mark_in_sheet(mark, sha)
@@ -1998,6 +2010,7 @@ def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MAR
     data = store_get(sha) if store_has(sha) else None
     root = src_root().resolve().parent
     slots = [(root / m / "Textures" / r, ev) for (m, r), ev in list(idx.live.items()) if ev.get("sha") == sha]
+    targets = [root / m / "Textures" / r for m, r in x_delete_pending_slots(idx, sha, bid)] if sha in idx.bans else []
     if data is None:         # store lacks the bytes: the game file may hold them - hash that, or the ban loses its ph
         for target, _ev in slots:
             if target.is_file():
@@ -2022,11 +2035,9 @@ def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MAR
         wb.flush()
         _absorb([ban])
     w = Writer({e["id"] for e in idx.events} | {bid})
-    removed_files = []
     for target, ev in slots:
         if target.is_file():
-            target.unlink()
-            removed_files.append(str(target))
+            targets.append(target)
         w.add({"type": "live", "mod": ev["mod"], "rel": ev["rel"], "sha": None, "prev": sha, "reason": "x-delete",
                "mark": mark, "ban": bid, "why": why})
     released = []
@@ -2036,11 +2047,8 @@ def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MAR
               "at": mark["at"], "mark": mark, "why": why}
         w.add(rl)
         released.append(rl["id"])
-    bytes_removed = False
     p = store_path(sha)
-    if p.is_file():
-        p.unlink()
-        bytes_removed = True
+    bytes_removed = p.is_file()
     pev = {"type": "purge", "id": det_id("purge", sha), "sha": sha, "by": "owner", "via": mark["via"], "mark": mark,
            "ban": bid, "why": why, "bytes_removed": bytes_removed}
     un = idx.unpurged.get(sha)
@@ -2051,6 +2059,17 @@ def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MAR
     added = list(w.buf)
     w.flush()
     _absorb(added)
+    removed_files = []
+    for target in targets:
+        try:
+            if sha256_file(target) != sha:
+                continue
+            target.unlink()
+        except FileNotFoundError:
+            continue
+        removed_files.append(str(target))
+    if bytes_removed:
+        p.unlink(missing_ok=True)
     return {"status": "deleted", "sha": sha, "ban": bid, "files_removed": removed_files,
             "bytes_removed": bytes_removed, "released": released}
 

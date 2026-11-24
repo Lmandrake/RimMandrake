@@ -1865,12 +1865,23 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             x_at = I.ts(x_raw)
             lifted = [u for u in idx.lifted.values() if u.get("sha") == sha
                       and (not x_at or (I.ts(u.get("ts")) is not None and I.ts(u.get("ts")) >= x_at))]
-            # banned but still in a game file or the store = an x_delete cut short after its ban (it writes the ban
-            # first): not done, the ✕ is carried out again (the ban dedups by id)
-            if lifted or (sha in idx.bans and not idx.live_anywhere(sha) and not L.store_has(sha)):
+            if lifted:
                 P["x_done_already"] += 1
                 continue
             live = idx.live_anywhere(sha)
+            if sha in idx.bans and not live:
+                # A flush can record a slot removal before unlinking its bytes. Resume the recorded removal even
+                # when the store is empty and the slot has already left idx.live.
+                bid = L.det_id("ban", sha, x_raw) if x_raw else None
+                pending = L.x_delete_pending_slots(idx, sha, bid) if bid else []
+                if pending:
+                    P["x_delete"].append({"row": row, "sha": sha, "slots": [f"{m}/Textures/{r}" for m, r in pending],
+                                          "mark": {"sheet": sheet, "row": row, "at": x_raw,
+                                                   "via": I.rel_via(decisions), "kind": "x"}})
+                    continue
+                if not L.store_has(sha):
+                    P["x_done_already"] += 1
+                    continue
             if live and (sha, x_at) in x_done:
                 P["x_done_already"] += 1     # this ✕ archived it (19:06 rule) and his words restored it since
                 continue
@@ -2479,8 +2490,9 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                                       f"with no texture; it is deleted + banned once a replacement is in the game")
                 continue
             try:
-                L.x_delete(ar["sha"], ar["mark"], subject=ar["row"])
+                res = L.x_delete(ar["sha"], ar["mark"], subject=ar["row"])
                 touched_mods.update(m for m, _r in slots)
+                touched_mods.update(mod_of(f) for f in res["files_removed"])
                 R["x_banned" if ar.get("ban_only") and not slots else "x_deleted"] += 1
             except L.Refused as e:
                 R["conflicts"].append(f"{ar['row']}: ✕ {ar['sha'][:12]} not deleted - {e}")

@@ -20,6 +20,7 @@ import os
 import shutil
 import sys
 from pathlib import Path
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -69,6 +70,79 @@ def archived_live(L):
     check(s in L.archived_shas(L.Index(evs[1:])), "archived_shas still lists an archive-ruled picture in no game file")
 
 
+def t_x_delete_flushes_receipts_before_unlink(L, sha, tex, mark):
+    keep = "keep_before_x_delete"
+    L.append({"type": "ruling", "id": keep, "target": {"sha": sha}, "verdict": "keep", "by": "owner",
+              "trust": "ruled", "at": "2026-10-26T19:00:00Z", "via": mark["via"]})
+    real_flush = L.Writer.flush
+
+    def failing_flush(self):
+        if any(e.get("type") != "ban" for e in self.buf):
+            raise OSError("simulated: disk full while appending the ledger")
+        return real_flush(self)
+
+    with patch.object(L.Writer, "flush", failing_flush):
+        try:
+            L.x_delete(sha, mark, subject="RM_Ban")
+            check(False, "fixture: the simulated append failure raised")
+        except OSError as e:
+            check(str(e).startswith("simulated:"), "fixture: the receipt append was interrupted")
+    idx = L.Index()
+    check(sha in idx.bans or (tex.is_file() and L.store_has(sha)),
+          "an x_delete cut short by a failed append leaves the picture either present or BANNED, never deleted "
+          f"and unbanned (file {tex.is_file()}, store {L.store_has(sha)}, banned {sha in idx.bans})")
+    check(tex.is_file() and L.store_has(sha), "x_delete keeps the game file and store bytes when the receipt flush fails")
+    check(sha in idx.bans and not idx.is_purged(sha) and keep in {k["id"] for k in idx.protected(sha)},
+          "only the ban is recorded when the receipt flush fails")
+    res = L.x_delete(sha, mark, subject="RM_Ban")
+    idx = L.Index()
+    check(res["status"] == "deleted" and not tex.exists() and not L.store_has(sha) and sha in idx.bans
+          and idx.is_purged(sha) and sum(1 for e in idx.events if e.get("type") == "ban") == 1,
+          "re-running the ✕ finishes it: file and bytes gone, purged, one ban")
+    check(res["files_removed"] == [str(tex)] and res["bytes_removed"] and not idx.protected(sha),
+          "the rerun reports both removals and releases the older keep")
+
+
+def t_enact_retries_a_recorded_x_delete(L, F, sha, tex, replacement, mark):
+    import enact as E
+    decisions = F["decisions"]
+    via = E.I.rel_via(decisions)
+    mark_root = F["root"] if Path(via).is_absolute() else L.REPO_ROOT
+    keep = "keep_before_storeless_x_delete"
+    L.append({"type": "ruling", "id": keep, "target": {"sha": sha}, "verdict": "keep", "by": "owner",
+              "trust": "ruled", "at": "2026-10-26T19:00:00Z", "via": via})
+    other = tex.with_name("RM_Ban2_west.png")
+    L.install_bytes(other, tex.read_bytes(), reason=WHY)
+    L.store_path(sha).unlink(missing_ok=True)
+    real_unlink = Path.unlink
+
+    def failing_unlink(path, *a, **kw):
+        if path == tex:
+            raise OSError("simulated: interrupted before removing the game file")
+        return real_unlink(path, *a, **kw)
+
+    with patch.object(L, "MARK_ROOT", mark_root):
+        with patch.object(Path, "unlink", failing_unlink):
+            try:
+                L.x_delete(sha, {**mark, "via": via}, subject="RM_Ban2")
+                check(False, "fixture: the simulated unlink failure raised")
+            except OSError as e:
+                check(str(e).startswith("simulated:"), "fixture: the game unlink was interrupted")
+        idx = L.Index()
+        bid = L.det_id("ban", sha, mark["at"])
+        receipts = [e for e in idx.events if e.get("reason") == "x-delete" and e.get("prev") == sha]
+        purge = idx.purged.get(sha) or {}
+        check(len(receipts) == 2 and all(e.get("ban") == bid for e in receipts) and not idx.live_anywhere(sha)
+              and purge.get("ban") == bid and purge.get("bytes_removed") is False and not idx.protected(sha),
+              "x_delete records both slot removals, the keep release, and the purge before the first unlink")
+        other.write_bytes(replacement)
+        rerun = E.enact(decisions, apply=True, no_deploy=True, redo_jobs_out=F["root"] / "redo-jobs.json")
+    after = [e for e in L.read_events() if e.get("reason") == "x-delete" and e.get("prev") == sha]
+    check(rerun.get("x_deleted") == 1 and rerun.get("touched_mods") == ["TestMod"] and not tex.exists()
+          and other.read_bytes() == replacement and len(after) == len(receipts),
+          "enact retries an interrupted x_delete without store bytes, preserves a replacement, and adds no slot receipt")
+
+
 def main():
     import artledger as L
     fold_order(L)
@@ -96,30 +170,7 @@ def main():
         F["decisions"].write_text(json.dumps(doc))
         mark = {"sheet": "test_sheet", "row": "RM_Ban", "at": at, "via": via, "kind": "x"}
 
-        # ── a ledger append failing after the ban: his picture must never be deleted yet unbanned
-        real_flush = L.Writer.flush
-
-        def failing_flush(self):
-            if any(e.get("type") != "ban" for e in self.buf):
-                raise OSError("simulated: disk full while appending the ledger")
-            return real_flush(self)
-        L.Writer.flush = failing_flush
-        try:
-            L.x_delete(sha, mark, subject="RM_Ban")
-            check(False, "fixture: the simulated append failure raised")
-        except OSError:
-            pass
-        finally:
-            L.Writer.flush = real_flush
-        idx = L.Index()
-        check(sha in idx.bans or (tex.is_file() and L.store_has(sha)),
-              "an x_delete cut short by a failed append leaves the picture either present or BANNED, never deleted "
-              f"and unbanned (file {tex.is_file()}, store {L.store_has(sha)}, banned {sha in idx.bans})")
-        res = L.x_delete(sha, mark, subject="RM_Ban")
-        idx = L.Index()
-        check(res["status"] == "deleted" and not tex.exists() and not L.store_has(sha) and sha in idx.bans
-              and idx.is_purged(sha) and sum(1 for e in idx.events if e.get("type") == "ban") == 1,
-              "re-running the ✕ finishes it: file and bytes gone, purged, one ban")
+        t_x_delete_flushes_receipts_before_unlink(L, sha, tex, mark)
 
         # ── restore cannot bring back a near-duplicate of a banned picture
         try:
@@ -174,10 +225,10 @@ def main():
         check(not L.store_has(sha2) and tex2.is_file(), "fixture: bytes only in the game file")
         at2 = "2026-10-26T20:10:00.000Z"
         doc = json.loads(F["decisions"].read_text())
-        doc["decisions"]["RM_Ban2"] = {"decision": "redo", "at": at2, "decidedAt": at2, "purge": [sha2]}
+        doc["decisions"] = {"RM_Ban2": {"decision": "redo", "at": at2, "decidedAt": at2, "purge": [sha2]}}
         F["decisions"].write_text(json.dumps(doc))
         mark2 = {"sheet": "test_sheet", "row": "RM_Ban2", "at": at2, "via": via, "kind": "x"}
-        L.x_delete(sha2, mark2, subject="RM_Ban2")
+        t_enact_retries_a_recorded_x_delete(L, F, sha2, tex2, other_b, mark2)
         b2 = L.Index().bans.get(sha2) or {}
         check(bool(b2.get("ph")) and bool(b2.get("ph_mirror")),
               f"x_delete hashes the live game file when the store lacks the bytes (ph {b2.get('ph')}, mirror {b2.get('ph_mirror')})")
