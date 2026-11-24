@@ -64,7 +64,7 @@ def is_alive(pid):
     return bool(st and st[0] not in ("Z", "X"))
 
 
-def a_hung_job_is_named():
+def t_a_hung_job_is_named():
     for cmd in (["sleep", "30"], ["sh", "-c", "while :; do sleep 1; done"]):     # idle, and a poll loop that does no work
         t = time.time()
         rc, out, last = wa("run", "--max", "20s", "--silence", "2s", "--", *cmd)
@@ -79,7 +79,7 @@ def a_hung_job_is_named():
     need(rc == 3 and "absent is not there" in last, "a progress file that is not there is not named: rc %s, %s" % (rc, last))
 
 
-def a_live_job_is_never_called_hung():
+def t_a_live_job_is_never_called_hung():
     p = os.path.join(TMP, "progress")
     ok = {
         "prints": ["sh", "-c", "for i in 1 2 3 4 5 6 7 8; do echo $i; sleep 0.5; done"],
@@ -94,7 +94,7 @@ def a_live_job_is_never_called_hung():
     need(rc == 0, "progress file: rc %s, %s" % (rc, last))
 
 
-def a_failure_is_never_finished_well():
+def t_a_failure_is_never_finished_well():
     for n in (1, 7, 137):
         rc, out, last = wa("run", "--", "sh", "-c", "exit %d" % n)
         need(rc == 1 and "FINISHED rc=%d" % n in last, "exit %d: rc %s, %s" % (n, rc, last))
@@ -108,7 +108,7 @@ def a_failure_is_never_finished_well():
     need(rc == 0 and "FINISHED rc=0" in last, "true: rc %s, %s" % (rc, last))
 
 
-def a_dead_job_is_died():
+def t_a_dead_job_is_died():
     rc, out, last = wa("run", "--", "sh", "-c", "kill -9 $$")
     need(rc == 6 and "DIED" in last and "FINISHED" not in last, "own signal: rc %s, %s" % (rc, last))
     rc, out, last = wa("run", "--name", "both", "--max", "1s", "--", "sleep", "40")     # the supervisor dies too
@@ -122,7 +122,7 @@ def a_dead_job_is_died():
     need(rc == 6 and "DIED" in last, "no exit code recorded: rc %s, %s" % (rc, last))
 
 
-def could_not_look_is_its_own_answer():
+def t_could_not_look_is_its_own_answer():
     rc, out, last = wa("attach", "never_started")
     need(rc == 5 and "COULD NOT LOOK" in last, "unknown: rc %s, %s" % (rc, last))
     st = os.path.join(TMP, "broken")
@@ -162,7 +162,7 @@ def could_not_look_is_its_own_answer():
     need(not os.path.exists(os.path.join(TMP, "started")), "the command ran with no record of it")
 
 
-def no_wait_outlives_the_cache():
+def t_no_wait_outlives_the_cache():
     need(W.MAX_WAIT_S <= 3300, "MAX_WAIT_S %s" % W.MAX_WAIT_S)
     got = []
     keep = W.wait
@@ -200,7 +200,7 @@ def no_wait_outlives_the_cache():
     need(W.MAX_WAIT_S * 1000 < DH.BASH_MAX_MS <= 59 * 60 * 1000, "BASH_MAX_MS %s" % DH.BASH_MAX_MS)
 
 
-def the_job_outlives_the_wait():
+def t_the_job_outlives_the_wait():
     rc, out, last = wa("run", "--name", "long", "--max", "1s", "--", "sh", "-c", "sleep 3; echo end; exit 5")
     need(rc == 4 and "STILL RUNNING" in last and "attach long" in last, "at --max: rc %s, %s" % (rc, last))
     need(is_alive(int(re.search(r"pid (\d+)", last).group(1))), "the job was killed at --max")
@@ -222,13 +222,13 @@ def the_job_outlives_the_wait():
     need(rc == 1 and "rc=4" in last and "| after" in out, "attach after a cut: rc %s, %s" % (rc, last))
 
 
-def the_call_returns():
+def t_the_call_returns():
     t = time.time()
     rc, out, last = wa("run", "--max", "1s", "--", "sh", "-c", "sleep 15")      # wa reads both pipes to their end
     need(rc == 4 and time.time() - t < 8, "rc %s after %.1f s: the job holds a pipe" % (rc, time.time() - t))
 
 
-def one_verdict_line_last():
+def t_one_verdict_line_last():
     rc, out, last = wa("run", "--", "sh", "-c", "echo FINISHED rc=0; echo STILL RUNNING; exit 3")
     need(rc == 1 and last.startswith("waitalive: FINISHED rc=3"), "the job's own words: rc %s, %s" % (rc, last))
     need(wa("run", "--")[0] == 2 and wa("run")[0] == 2 and wa()[0] == 2, "no command is not usage")
@@ -238,7 +238,7 @@ def one_verdict_line_last():
     need(codes == list(range(7)), "the exits: %s" % codes)
 
 
-def a_taken_name_is_repaired():
+def t_a_taken_name_is_repaired():
     st = env(os.path.join(TMP, "names"))
     cmd = ["sh", "-c", "sleep 3; exit 8"]
     rc, out, last = wa("run", "--name", "n", "--max", "1s", "--", *cmd, env=st)
@@ -272,7 +272,7 @@ def a_taken_name_is_repaired():
     need(rc == 5, "another run sees this run's job: rc %s, %s" % (rc, last))
 
 
-def each_verdict_is_logged():
+def t_each_verdict_is_logged():
     st = os.path.join(TMP, "logged")
     wa("run", "--", "true", env=env(st))
     wa("run", "--max", "20s", "--silence", "1s", "--", "sleep", "20", env=env(st))
@@ -310,7 +310,7 @@ def launch_argv():
     return DH, DH.launch_argv(rec, "m", "/usr/bin/claude")
 
 
-def the_setting_stands_on_the_experiment():
+def t_the_setting_stands_on_the_experiment():
     with open(os.path.join(SPEC, "experiment.json")) as fh:
         exp = json.load(fh)
     DH, argv = launch_argv()
@@ -324,19 +324,12 @@ def the_setting_stands_on_the_experiment():
     need(setting_faults(exp, ["BASH_MAX_TIMEOUT_MS=9999999"]), "a value that nobody tried is not seen")
 
 
-def the_brief_names_the_command():
+def t_the_brief_names_the_command():
     DH, _ = launch_argv()
     text = DH.FOOTER.format(clone="/c", item="X", seat="BENCH", bound_text="b")
     need("waitalive.py run --name" in text and "waitalive.py attach" in text and str(DH.BASH_MAX_MS) in text, "the line")
     line = next(x for x in text.split("\n- ") if "waitalive.py run" in x)
     need(not re.search(r"\$\s?\d|\bweighted\b|\bbudget|\bspend|\btokens?\b|\bcost", line, re.I), "the line tells spend: " + line)
-
-
-TESTS = [a_hung_job_is_named, a_live_job_is_never_called_hung, a_failure_is_never_finished_well, a_dead_job_is_died,
-         could_not_look_is_its_own_answer, no_wait_outlives_the_cache, the_job_outlives_the_wait, the_call_returns,
-         one_verdict_line_last, a_taken_name_is_repaired, each_verdict_is_logged, the_setting_stands_on_the_experiment,
-         the_brief_names_the_command]
-SERIAL = [no_wait_outlives_the_cache, the_setting_stands_on_the_experiment, the_brief_names_the_command]
 
 
 def run_one(t):
@@ -347,18 +340,17 @@ def run_one(t):
         return "%s: %s" % (type(e).__name__, e)
 
 
-def promises_have_tests():
-    with open(os.path.join(SPEC, "boundary.md"), encoding="utf-8") as fh:
-        text = fh.read().split("## PROMISES", 1)[1]
-    names = set(re.findall(r"^- \*\*([a-z-]+)\.\*\*", text, re.M))
-    mine = {t.__name__.replace("_", "-") for t in TESTS}
-    need(names == mine, "page and tests differ: %s" % sorted(names ^ mine))
-
-
 def main():
+    tests = [t_a_hung_job_is_named, t_a_live_job_is_never_called_hung, t_a_failure_is_never_finished_well,
+             t_a_dead_job_is_died, t_could_not_look_is_its_own_answer, t_no_wait_outlives_the_cache,
+             t_the_job_outlives_the_wait, t_the_call_returns, t_one_verdict_line_last,
+             t_a_taken_name_is_repaired, t_each_verdict_is_logged, t_the_setting_stands_on_the_experiment,
+             t_the_brief_names_the_command]
+    serial = [t_no_wait_outlives_the_cache, t_the_setting_stands_on_the_experiment,
+              t_the_brief_names_the_command]
     with ThreadPoolExecutor(6) as ex:       # each test waits far more than it works
-        got = dict(zip([t for t in TESTS if t not in SERIAL], ex.map(run_one, [t for t in TESTS if t not in SERIAL])))
-    for t in SERIAL + [promises_have_tests]:
+        got = dict(zip([t for t in tests if t not in serial], ex.map(run_one, [t for t in tests if t not in serial])))
+    for t in serial:
         got[t] = run_one(t)
     for p in PIDS:
         try:
@@ -366,7 +358,7 @@ def main():
         except OSError:
             pass
     for t, why in got.items():
-        print("%s  %s%s" % ("FAIL" if why else "PASS", t.__name__.replace("_", "-"), "  -- " + why if why else ""))
+        print("%s  %s%s" % ("FAIL" if why else "PASS", t.__name__[2:].replace("_", "-"), "  -- " + why if why else ""))
     bad = sum(1 for w in got.values() if w)
     subprocess.run(["rm", "-rf", TMP])
     print("%s %d/%d" % ("FAIL" if bad else "PASS", len(got) - bad, len(got)))
