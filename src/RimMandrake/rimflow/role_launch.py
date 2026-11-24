@@ -1101,10 +1101,13 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 tok, raw = weigh(transcript_result(tu)), raw_tokens({"usage": tu})
                 mu = tu.get("model_usage")
                 run["token_source"] = "transcript"
+        tok = session_part(rs, run, tok, res)   # a resumed mend: its own part of the session (designer_mend)
         run["tokens"] = tok                     # weighted_v2 (MODEL_PRICES): what caps and spend read
         run["raw_tokens"] = raw                 # the unweighted sum, for the record only
         run["token_unit"] = TOKEN_UNIT          # a run without it predates the weighting (its tokens are raw)
-        if mu:
+        if mu and "session_tokens" in run:
+            run["session_model_usage"] = mu     # the whole session's fields, never read as this run's own
+        elif mu:
             run["model_usage"] = mu             # raw per-model fields: any later unit is recomputed from these
         if unknown and tok is None:
             run["unknown_model"] = unknown
@@ -1790,6 +1793,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         unit = "rm-role-%s-%d" % (name.lower(), int(now))
         concept = (job.get("manual") or {}).get("concept")
         packet = None
+        mend = {}
         if concept:
             # a stage-machine role (the Designer): the launcher, not the model, picks the instructions, holds the
             # task budget and refuses a run the state does not allow (designer_stage.py; GPT review 2026-11-03 §2-3)
@@ -1803,12 +1807,17 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             pre = (obs.get("coverage_pre") or coverage_pre)(concept)
             if pre:
                 job = dict(job, pre_launch=pre)
+            else:       # after the coverage judge's refusal: the session that holds the design mends it (designer_mend)
+                mend = mend_plan(rs, cfg, job, concept, now, obs.get("projects"))
         # built before anything is consumed: a raise here leaves the slot due (review V, V7)
         message = prompt(cfg, job["mode"], job["trigger"], r, budget, job["cap"] or 0, spent, unit,
                          rows=job.get("rows"), reasons=job.get("reasons"),
                          scope=launch_scope(job))
         if packet:
             message += "\n\n" + packet
+        if mend.get("session"):
+            import designer_mend as DM
+            message = DM.head(mend, unit) + "\n\n" + message
         tick_launch[name] = unit
         # what the launch consumes, so execute can give it back if the launch does not happen (review U, N6)
         rs["pending_launch"] = {"unit": unit, "mode": job["mode"], "key": job["key"],
@@ -1845,7 +1854,10 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             slot=job["key"], seat=role["seat"], run_max_s=max_s_of({}, cfg), account=pk.get("account"),
             why="%s %s, budget %d, %d used today, unit %s, model %s%s" % (
                 name, job["trigger"], budget, spent, unit, job_model(cfg, job),
-                (", account %s (%s)" % (pk["account"], pk["state"])) if pk.get("account") else ""),
+                (", account %s (%s)" % (pk["account"], pk["state"])) if pk.get("account") else "") + (
+                    "" if not mend.get("owed") else "; mend resumes session %s: %s" % (mend["session"], mend["why"])
+                    if mend.get("session") else "; the mend starts fresh: %s" % mend["why"]),
+            **({"resume": mend["session"], "resume_of": mend["of"]} if mend.get("session") else {}),
             # the blind item's note: role, mode, unit and a fixed outcome; execute swaps the outcome for the true one
             # (held / failed: review V, V4), never for a reason or an error text (review dispatcher-full #2)
             blind=blind(name, "launched", job["mode"], unit),
@@ -2160,6 +2172,50 @@ def coverage_pre(concept):
         return None
     return [["python3", "src/RimMandrake/rimflow/role_launch.py", "stage5-judge", concept],
             ["python3", "src/RimMandrake/rimflow/role_launch.py", "stage5-program", concept]]
+
+
+def mend_plan(rs, cfg, job, concept, now, projects=None):
+    """designer_mend.plan for the Designer run `job` asks on `concept`: the session it resumes after the coverage judge's
+    refusal, or why it starts fresh. Never raises: a state it cannot read starts the run fresh, and the launch says so."""
+    import designer_mend as DM
+    import designer_stage as DS
+    try:
+        st = DS.load_state(concept)
+        last = ([r for r in st.get("results") or [] if isinstance(r, dict)] or [{}])[-1]
+        if last.get("stage") != DM.JUDGE or last.get("outcome") != "return":
+            return {"owed": False}
+        runner = (job.get("manual") or {}).get("runner") or cfg.get("runner", "claude")
+        import concept_tree as CT
+        try:
+            tree = CT.tree_hash(CT.load(concept))
+        except (OSError, ValueError):
+            tree = None     # the verdict then stands unchecked against the tree, as program_result reads it
+        verdict = DS.read_json(os.path.join(concept, "coverage_verdict.json"))
+        if runner != "claude":
+            return dict(DM.plan([], concept, st, verdict, now, None, tree=tree), session=None,
+                        why="a %s run has no claude session to resume" % runner)
+        import mod_model as MM
+        role = MM.role_for(dict(cfg, model=job_model(cfg, job)), os.path.basename(os.path.normpath(str(concept))))
+        return DM.plan(rs.get("runs"), concept, st, verdict, now, role["model"], projects=projects, tree=tree)
+    except Exception as e:  # noqa: BLE001 - said on the launch; the run starts fresh, as before
+        if not os.path.exists(os.path.join(str(concept), "stage.json")):
+            return {"owed": False}
+        return {"owed": True, "session": None, "why": "could not look: %s: %s" % (type(e).__name__, e)}
+
+
+def session_part(rs, run, tok, res):
+    """-> the weighted tokens `run` itself spent, when it resumed another run's session (a concept run with resume_of). A
+    claude result of a resumed session is the whole session so far (detached_helper.own_part, 26 of 26); a transcript
+    measure and a spend_watchdog stop already count this launch only. None = UNMEASURED."""
+    if not (run.get("concept") and run.get("resume_of")) or tok is None or run.get("token_source") == "transcript":
+        return tok
+    import detached_helper as DH
+    had = [r.get("session_tokens") if finite(r.get("session_tokens")) else r.get("tokens")
+           for r in rs.get("runs") or [] if r is not run and r.get("session") and r.get("session") == run.get("session")]
+    had = [x for x in had if finite(x)]
+    part, run["session_tokens"] = DH.session_part(tok, max(had) if had else None,
+                                                  isinstance(res, dict) and res.get("stopped_by") == "spend_watchdog")
+    return part
 
 
 def stage5_judge(concept, runner=None):
