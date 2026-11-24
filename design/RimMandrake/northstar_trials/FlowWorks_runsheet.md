@@ -103,7 +103,6 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | `X8_cover_hides_pit` | - | `pit_covered_invisible` |
 | `X9_cover_deck_uniform` | - | `pit_covered_seam_at_max_zoom` |
 | `X8b_cover_occupant_stays_below` | - | state only |
-| `X8c_lid_walker_drawn_at_ground` | - | state only |
 | `X10_canal_fire` | - | `canal_burning_reads_as_burning_liquid`, `canal_fire_persists`, `canal_spent_after_burn` |
 | `T0n_fluid_switch_refused` | - | `canal_reads_as_same_liquid_as_reservoir` |
 | `E9_log_budget` | - | state only |

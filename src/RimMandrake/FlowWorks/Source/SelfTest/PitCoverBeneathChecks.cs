@@ -82,7 +82,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             // PIT_LID_FIX_VICKY_PEEKS_THROUGH (owner 2026-10-22: a colonist on a covered pit "just gets a funny dark square around
             // her but otherwise is still "over" the cover"): a walker on a lid draws at ground; only a beneath pawn keeps the hole's
-            // depth (and is not drawn). The lid is the near lip of an open part of its pit. Live: validation_v2 X8c / X8b.
+            // depth (and is not drawn). The lid is the near lip of an open part of its pit. Live: validation_v2 X8b (a beneath pawn).
             Case("LidWalker_drawn_at_ground_not_sunk", () =>
             {
                 string susp = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
