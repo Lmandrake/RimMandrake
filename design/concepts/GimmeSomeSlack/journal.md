@@ -18,7 +18,7 @@ mods read alike.
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 7:18 AM PST).
+- **Waiting on:** the walk brief run (Stage 7), which the Dispatch tick launches. Visit 3 is met: 207 of 207 checks, fix ad72a3cec3 read sound; walk save `GSS_020_VISIT3_WALK_20261124`.
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
