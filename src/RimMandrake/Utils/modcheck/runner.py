@@ -934,9 +934,12 @@ def _load_site_again(session):
             rb._set_call_timeout(full)
     if r.get("success") is False:
         raise RuntimeError("start_debug_game_ready refused: %s" % str(r.get("message") or r)[:160])
+    # the start answers while the map is still being made (live, J20261124T203948Z-2d68ea: "No current map", state
+    # MapInitializing): what decides is a Playing map that answers. 420 s: the budget of every loader here (load_site)
+    if T._wait(lambda: T._state(session.call) == "Playing"
+               and (session.call("jawa/map_info") or {}).get("tile") is not None, 420, time.sleep) is None:
+        raise RuntimeError("no Playing map within 420 s of start_debug_game_ready: %s" % str(r)[:160])
     mi = session.call("jawa/map_info") or {}
-    if mi.get("success") is False or mi.get("tile") is None:
-        raise RuntimeError("no map after start_debug_game_ready: %s" % str(mi.get("message") or mi)[:160])
     return "fresh debug map, tile %s (no registered save made the old one)" % mi["tile"]
 
 

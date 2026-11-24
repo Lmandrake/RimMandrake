@@ -1139,10 +1139,28 @@ def t_site_reloaded_after_a_chain_kills_its_colonist():
             check("reload: a registered site goes through its own loader",
                   runner._load_site_again(s) == "save SAVE" and seen == ["pyrelands"], seen)
             del seen[:]
-            s.call = lambda tool, **p: (seen.append(tool), {"success": True, "tile": 7, "mapId": 0, "mapBiome": "Tundra"})[1]
-            check("reload: a map that no save made goes to the menu and a fresh debug map",
-                  "fresh debug map" in runner._load_site_again(s)
-                  and seen == ["jawa/map_info", "menu", "rimworld/start_debug_game_ready", "jawa/map_info"], seen)
+            # the map is not ready when the start answers (live J20261124T203948Z-2d68ea): three reads say so first
+            late = {"n": 3}
+
+            def slow(tool, **p):
+                if tool == "rimworld/get_ui_state":
+                    late["n"] -= 1
+                    return {"programState": "Playing" if late["n"] < 0 else "MapInitializing"}
+                seen.append(tool)
+                started = "rimworld/start_debug_game_ready" in seen
+                return ({"success": False, "message": "No current map"} if started and late["n"] >= 0
+                        else {"success": True, "tile": 7, "mapId": 0, "mapBiome": "Tundra"})
+            s.call = slow
+            real_poll, T.POLL_S = T.POLL_S, 0.0
+            try:
+                got = runner._load_site_again(s)
+            except RuntimeError as e:
+                got = str(e)
+            finally:
+                T.POLL_S = real_poll
+            check("reload: a map that no save made goes to the menu and a fresh debug map, waited for until it answers",
+                  "fresh debug map" in got and late["n"] < 0
+                  and seen[:3] == ["jawa/map_info", "menu", "rimworld/start_debug_game_ready"], (got, seen))
             s.call = lambda tool, **p: {"success": False, "message": "No current map"}
             try:
                 raised = runner._load_site_again(s)
