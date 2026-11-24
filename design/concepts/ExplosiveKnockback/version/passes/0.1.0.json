@@ -1,0 +1,275 @@
+{
+ "bars": {
+  "locked": [
+   "inv_kernel",
+   "inv_hook",
+   "inv_pawn_flyer",
+   "inv_which_blasts",
+   "inv_items_teleport",
+   "inv_shelf_skip",
+   "inv_who_is_spared",
+   "inv_shield",
+   "inv_recovery",
+   "inv_caps",
+   "inv_settings",
+   "inv_pits_receive",
+   "inv_pit_floor_haul",
+   "inv_hose_drop",
+   "inv_proof_scenes",
+   "inv_gas_chain",
+   "inv_goods_fly",
+   "inv_closed_guard",
+   "inv_container_shove",
+   "inv_heavy_knock",
+   "inv_gas_tags",
+   "inv_perf_all_fly",
+   "inv_weapon_ext_fields",
+   "inv_killed_corpse",
+   "inv_pit_floor_goods_stay",
+   "inv_big_corpse_spared",
+   "inv_mass_limit_skip",
+   "inv_too_weak_skip",
+   "inv_creature_mass_limit",
+   "inv_blast_power_damage",
+   "people_thrown_three_cells",
+   "pawn_flight_arc",
+   "the_spared",
+   "heavier_flies_less",
+   "recovery_immunity",
+   "hose_drops_at_takeoff",
+   "wall_stops_dead",
+   "pawn_hits_pawn_stops",
+   "doors_and_deep_water_stop",
+   "shield_belt_holds",
+   "goods_arc_spin_rebound",
+   "every_good_moves",
+   "open_shelf_scatters",
+   "closed_container_holds",
+   "heavy_stack_knocks",
+   "every_harmful_blast_throws",
+   "only_explosions_throw",
+   "per_weapon_tuning",
+   "gas_goes_clump_by_clump",
+   "our_gases_burn",
+   "blast_breaks_pit_cover",
+   "thrown_into_pit_falls",
+   "pit_goods_fetched",
+   "no_teleport",
+   "no_careless_fall",
+   "settings_scale_and_switch",
+   "barrage_frame_budget",
+   "frame_time_probe",
+   "walk_storeroom_raid"
+  ],
+  "read": null,
+  "record": "design/concepts/ExplosiveKnockback/version/locked_bars.json"
+ },
+ "build": {
+  "active_mods": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "adaptive.storage.framework",
+   "brrainz.rimbridgeserver",
+   "lwm.deepstorage",
+   "neronix17.toolbox",
+   "owlchemist.cherrypicker",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ebsg.framework",
+   "neronix17.outerrim.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.explosiveknockback",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rsw.armoury",
+   "mandrake.rsw.swbestiary"
+  ],
+  "game": "archmagi",
+  "game_build": "1.6.4871 rev590",
+  "mod_hash": "sha256:ed6a11c8d7b2a175851c39193c9759c7aad153f56d3c73939698433be84dbf06",
+  "mod_sha": "e089dc2573",
+  "savegame": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Saves\\EK_VISIT6_WALK_20261124_C.rws",
+  "visit": 6,
+  "visit_record": "design/concepts/ExplosiveKnockback/version/in_game/visit_6"
+ },
+ "commit": "39c6f6d35e287f4b069077ef8ede93f5e321e34d",
+ "cost": {
+  "by_stage": {
+   "blind_challenge": {
+    "entries": 10,
+    "estimates": 0,
+    "tokens": 1112294,
+    "tokens_other": {
+     "weighted_v1": 18013029
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 5,
+    "usd": 40.0397036,
+    "wall_s": 25283
+   },
+   "blind_challenge+in_game": {
+    "entries": 2,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 3589329
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 0,
+    "usd": 9.5644936,
+    "wall_s": 2516
+   },
+   "designer": {
+    "entries": 4,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 100908062
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 2,
+    "usd": 18.6,
+    "wall_s": 4280
+   },
+   "designer+preflight": {
+    "entries": 1,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 1645334
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 1,
+    "usd": "UNMEASURED",
+    "wall_s": 1214
+   },
+   "in_game": {
+    "entries": 17,
+    "estimates": 0,
+    "tokens": 15915764,
+    "tokens_other": {
+     "weighted_v1": 22289847
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 3,
+    "usd": 99.16567200000001,
+    "wall_s": 83565
+   },
+   "in_game+offline_build": {
+    "entries": 4,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 5755856
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 1,
+    "usd": 13.8018466,
+    "wall_s": 2652
+   },
+   "offline_build": {
+    "entries": 4,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 16569026
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 1,
+    "usd": 32.71004440000001,
+    "wall_s": 18576
+   },
+   "offline_build+blind_challenge": {
+    "entries": 5,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 5492336
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 1,
+    "usd": 14.2293588,
+    "wall_s": 7526
+   },
+   "offline_build+in_game": {
+    "entries": 3,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 3656355
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 1,
+    "usd": 29.38244420000001,
+    "wall_s": 9137
+   },
+   "pre_human": {
+    "entries": 2,
+    "estimates": 0,
+    "tokens": 1706441,
+    "tokens_other": {},
+    "unit": "weighted_v2",
+    "unmeasured": 0,
+    "usd": 6.825759800000002,
+    "wall_s": 4548
+   },
+   "preflight+blind_challenge": {
+    "entries": 1,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 1364184
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 0,
+    "usd": 3.734312799999999,
+    "wall_s": 694
+   },
+   "preflight+blind_challenge+in_game": {
+    "entries": 1,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 1414149
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 0,
+    "usd": 4.0930268,
+    "wall_s": 744
+   }
+  },
+  "entries": 54,
+  "tokens_other": {
+   "weighted_v1": 180697507
+  },
+  "tokens_unmeasured": 2,
+  "unit": "weighted_v2",
+  "weighted_tokens": 18734499
+ },
+ "cycles": {
+  "pre_human_arrivals": 2,
+  "total": 6,
+  "visit": 2
+ },
+ "evidence": [
+  "design/concepts/ExplosiveKnockback/version/stage_record.json",
+  "design/concepts/ExplosiveKnockback/version/in_game/visit_6",
+  "design/concepts/ExplosiveKnockback/version/walk_brief/arrival_2.md",
+  "design/concepts/ExplosiveKnockback/version/test_table.json"
+ ],
+ "mod": "ExplosiveKnockback",
+ "owner_said": {
+  "event": "OWNER:1795563826491035058",
+  "tsn": "1795563826491035058",
+  "words": "Explosive Knockback live walkthrough PASS! Great job! Very fun!"
+ },
+ "passed_on": "2026-11-24T15:44:08-08:00",
+ "version": "0.1.0"
+}

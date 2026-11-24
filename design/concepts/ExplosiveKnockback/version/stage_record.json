@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.1.0",
-  "stage": "his_walk",
-  "stage_label": "His live walk (Stage 8)",
-  "since": "2026-11-24T14:58:53-08:00",
-  "since_from": "advance by BENCH",
+  "stage": "passed",
+  "stage_label": "Version passed (Passed)",
+  "since": "2026-11-24T15:44:08-08:00",
+  "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -366,6 +366,27 @@
         "walk_checks_stand",
         "walk_brief",
         "walk_items_closed"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "passed",
+      "at": "2026-11-24T15:44:08-08:00",
+      "by": "CONDUCTOR",
+      "why": "his live walk of Explosive Knockback 0.1.0 on ArchSmall, save EK_VISIT6_WALK_20261124_C, walk brief arrival_2.md, 2026-11-24; item RIMMANDRAKE_RECORD_KNOCKBACK_VERSION_PASS_HE_CALLED_THE_WALK_VERY_FUN",
+      "unit": null,
+      "confirmed": {
+        "owner_said": "OWNER:1795563826491035058"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "owner_said",
+        "walk_build",
+        "raid_bars_decided",
+        "pass_record_new"
       ]
     }
   ],
