@@ -127,7 +127,6 @@ Left as dated records: `design/RimMandrake/bridge_system.md` (2026-10-10, labell
 | "provisional findings ⚠️" | many ⚠️ lines are measured warnings, so the mark has two senses | the author of the skill head |
 | "`saveName` … state-dependent" | which state decides it | a live run of `rimworld/save_game` |
 | "`ResolvePawn` accepts player-controlled colonists only" | still true in today's RimBridgeServer; its source is not on this machine | a live call |
-| "needs no save, no deck" | which deck (text of 2026-08-15) | item `RIMMANDRAKE_DEFINE_DECK_IN_RIMBRIDGE_NOT_FOUND` |
 | "16.7 ms floor … cause of the spread is unknown" | the cause | `bridge_latency_bench.py` |
 
 ## What this run did not test

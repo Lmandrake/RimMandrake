@@ -200,8 +200,8 @@ about a **cell** with `PathEndMode.OnCell`. The game's own launch gate passes th
 * Where no engine call exists to copy, score a **null baseline**. A number with no baseline cannot tell "my method
   worked" from "anything would have scored that".
 * **Prefer testing the MECHANISM synthetically over testing your artifact.** For example, build a sealed room from
-  nothing on a throwaway map. That room tests the rule every derived claim rests on. The test needs no save, no deck and no
-  import.
+  nothing on a throwaway map. That room tests the rule every derived claim rests on. The test needs no save, no gravship deck
+  and no import of an exported gravship layout.
 
 ---
 
