@@ -159,6 +159,8 @@ def ingest(rec, root):
     n, why = open_visit(root, mod, job["visit"])
     if n is None:
         return {"visit_rows": 0, "why": why}
+    if res.get("outcome") != "DONE":    # no check ran: 197 rows of one stale-companion job said so, once each (2026-11-24)
+        return {"visit_rows": 0, "no_look": "the job ended %s/%s before its checks ran" % (res.get("outcome"), res.get("cause"))}
     p = os.path.join(root, "design", "concepts", mod, "version", "test_table.json")
     with open(p, encoding="utf-8") as f:
         table = {k: t for k, t in (json.load(f).get("tests") or {}).items() if isinstance(t, dict) and str(t.get("stage")) == "6"}

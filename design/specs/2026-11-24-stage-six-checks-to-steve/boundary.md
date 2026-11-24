@@ -49,7 +49,8 @@ Each promise has a test of its name in `src/RimMandrake/Utils/testq/selftest_sta
   check that ran since the visit opened with PASS or FAIL is not sent again. A check that could not look waits and
   doubles its wait.
 - **a-visit-row-is-written-once.** A finished visit job adds one row per check to the open visit's `rows.jsonl`, once,
-  with the game's name, the job and the build identity. A visit that moved on or closed gets no row.
+  with the game's name, the job and the build identity. A visit that moved on or closed gets no row. A job that
+  did not end DONE ran no check, so it writes no row: its record in the queue says why.
 - **a-lane-row-never-opens-a-visit.** A visit folder that holds only the lane's rows reads as no visit: its live driver
   is still owed (`maturation.lane_rows_only`). Measured 2026-11-24: 3 rows of Steve1 in FlowWorks `visit_10` read as a
   visit that ended without its exit block, so the Dispatch step paused FlowWorks. A row of another writer, a torn row or

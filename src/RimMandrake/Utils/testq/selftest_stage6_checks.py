@@ -499,6 +499,9 @@ def t_a_visit_row_is_written_once():
         open(p, "a").write('{"test": "by_hand"}')                # a torn last line is not glued to ours
         VR.write(os.path.dirname(p), [{"job": "J2", "test": "sc_a"}])
         check(len(open(p).read().splitlines()) == 4, n + "a row never joins a torn line")
+        x = VR.ingest(vrec({"sc_c": "UNMEASURED"}, "INVALID"), root)
+        check(x["visit_rows"] == 0 and "INVALID" in x["no_look"] and len(open(p).read().splitlines()) == 4,
+              n + "a job that ended before it ran is no run of its checks: no row (%s)" % x)
         M.opens = 10
         check(VR.ingest(vrec({"sc_c": "PASS"}), root)["visit_rows"] == 0, n + "a visit that moved on gets no row")
         M.opens, M.stage = 9, "passed"
