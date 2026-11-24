@@ -4524,6 +4524,42 @@ def lane_rows_only(d):
     return bool(rows) and all(isinstance(r, dict) and r.get("by") == LANE_ROWS_BY for r in rows)
 
 
+# Owner, 2026-11-24 ("go"): full-list testing is retired until the integration phase, and a walk save stands on the mod's small
+# list. The rule binds a visit that opens after it: a save staged before keeps its list.
+SMALL_LIST_FROM = "2026-11-24T09:00:00-08:00"
+
+
+def walk_small_list_why(root, mod, n, walk):
+    """-> None, or why visit n's walk savegame is not on the mod's small list (small_list.py). A visit that opened before
+    SMALL_LIST_FROM, a stand-in walk and a mod with no small_list.json are not judged; a list that cannot be read is said."""
+    if not walk or walk.get("standin") or not walk.get("active_mods"):
+        return None
+    rec = load(root, mod)
+    at = ingame_openings(rec).get(n) or rec.get("since")
+    try:
+        if dt.datetime.fromisoformat(at) < dt.datetime.fromisoformat(SMALL_LIST_FROM):
+            return None
+    except (TypeError, ValueError) as e:
+        return "when visit %d opened could not be read (%r: %s), so the walk savegame's list is not checked" % (n, at, e)
+    try:
+        import small_list as SL
+        return SL.walk_save_why(root, mod, walk["active_mods"])
+    except Exception as e:      # noqa: BLE001  (a list that cannot be read counts nothing)
+        return "the mod's small list could not be read (%s: %s), so the walk savegame's list is not checked" % (
+            type(e).__name__, e)
+
+
+def walk_letter(root, mod):
+    """-> the letter of the game he walks the mod on: the game that holds the last in-game visit's walk savegame
+    (build_match.walk_letter), else "a"."""
+    ns = visit_numbers(root, mod)
+    for k in reversed(ns):
+        blk = ingame_exit_block(read_text(root, mod, "%s/visit_%d/SUMMARY.md" % (INGAME_DIR, k)))
+        if blk and blk.get("savegame"):
+            return BM.walk_letter(blk["savegame"])
+    return "a"
+
+
 def read_ingame_exit(root, mod, n, tt=None):
     """-> {visit, state, why[], claimed, rows}: the program's reading of visit n's exit. state: absent (no visit_n folder,
     or one that holds only the test lane's rows, lane_rows_only: its driver is still owed) | no_exit_block (no Exit block with the four keys: a visit in progress, or one that ended without writing it) | met |
@@ -4756,6 +4792,10 @@ def read_ingame_exit(root, mod, n, tt=None):
         why.append("the savegame %s is not on disk" % sv)
     elif not _is_savegame(native_to_here(sv)):
         why.append("the savegame %s is not a RimWorld save (an .rws file whose head is XML holding <savegame>)" % sv)
+    elif not (bm and bm.get("walk_why")):      # an unreadable walk is said above, once
+        small = walk_small_list_why(root, mod, n, (bm or {}).get("walk"))
+        if small:
+            why.append(small)
     out["state"] = "not_met" if why else "met"
     if not why:
         nc = sorted(t for t, ln in lines_.items() if ln["count"] == "not_counted")

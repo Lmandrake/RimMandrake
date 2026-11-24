@@ -1405,14 +1405,14 @@ def _mark_worked(s, ver, stage, live, now, ended=None):
             v["worked_after"] = max(later)
 
 
-def walk_game():
-    """-> None when nothing guards a look on ArchBig, else the line that says what does (his hold, a stop, or a record
-    that cannot be read)."""
+def walk_game(letter="a"):
+    """-> None when nothing guards a look on the game that holds the walk savegame (ArchBig unless it is ArchSmall's), else
+    the line that says what does (his hold, a stop, or a record that cannot be read)."""
     try:
         import game_lock as GL
-        r = GL.query("archbig")
+        r = GL.query(letter)
     except Exception as e:      # noqa: BLE001
-        return "who holds ArchBig could not be read (%s: %s)" % (type(e).__name__, e)
+        return "who holds the walk game could not be read (%s: %s)" % (type(e).__name__, e)
     return r.get("line") if r.get("code") in (GL.EX_HIS, GL.EX_BLIND) else None
 
 
@@ -1428,7 +1428,7 @@ def _walk_owed(root, s, row, ver, owed=None, game=None):
             row["walk_note"] = "Whether an in-game check is owed could not be read: %s" % "; ".join(wo["why"])
         return False
     said = "%d in-game check(s) owed before he walks: %s" % (len(checks), ", ".join(checks))
-    guard = (game or walk_game)() if stage == "his_walk" else None
+    guard = ((game or (lambda: walk_game(M.walk_letter(root, mod))))()) if stage == "his_walk" else None
     if guard:
         row["walk_note"] = "%s; the visit waits, because it would move the mod from under his look (%s)" % (said, guard)
         return False
@@ -1448,12 +1448,14 @@ def _stale_walk(f):
 
 
 def deploy_walk(root, mod, now=None, seat="BENCH"):
-    """-> (state, text) of the deploy of the mod's walk build to ArchBig, the game he walks on: ok, wait (another run or
-    his hold has the game; nothing done) or fail (the cause named). M.deploy_repair: the game down, deployed, up again."""
-    reading = M.deploy_state(root, mod, game="a")
+    """-> (state, text) of the deploy of the mod's walk build to the game that holds the walk savegame (M.walk_letter):
+    ok, wait (another run or his hold has the game; nothing done) or fail (the cause named). M.deploy_repair: the game
+    down, deployed, up again."""
+    game = M.walk_letter(root, mod)
+    reading = M.deploy_state(root, mod, game=game)
     if reading["state"] != "drift":
         return "fail", reading["why"]
-    return M.deploy_repair(root, mod, "a", reading, M._game_ops(), "deploy %s's walk build" % mod, seat=seat)
+    return M.deploy_repair(root, mod, game, reading, M._game_ops(), "deploy %s's walk build" % mod, seat=seat)
 
 
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,

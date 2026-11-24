@@ -374,6 +374,41 @@ def _foreign_checkout(root):
         return True
 
 
+def walk_letter(savegame):
+    """-> the letter of the game he walks this savegame on: the game whose instance folder holds it (ArchSmall reads its own
+    Saves folder), else "a" (ArchBig's Saves folder, and a path that names no game). Owner, 2026-11-24: full-list testing is
+    retired, so a walk save stands on a small list, on any game of Archmagi."""
+    sys.path.insert(0, UTILS) if UTILS not in sys.path else None
+    import game_instance
+    p = str(savegame or "").replace("\\", "/")
+    m = re.match(r"^([A-Za-z]):/(.*)$", p)
+    p = "/mnt/%s/%s" % (m.group(1).lower(), m.group(2)) if m else p
+    try:
+        top = game_instance.root().replace("\\", "/")
+    except Exception:       # no instance root on this machine: no named game's save can be here
+        return "a"
+    m = re.match(r"^([A-Za-z]):/(.*)$", top)
+    top = "/mnt/%s/%s" % (m.group(1).lower(), m.group(2)) if m else top
+    m = re.match(re.escape(top.rstrip("/")) + r"/([a-z])/Saves/", p, re.I)
+    return m.group(1).lower() if m else "a"
+
+
+def _game_name(letter):
+    import game_names
+    return game_names.show(letter)
+
+
+def walk_paths(savegame):
+    """-> (Mods folder, Version.txt) of the game that holds the walk savegame."""
+    letter = walk_letter(savegame)
+    if letter == "a":
+        m, _, v = _paths()
+        return m, v
+    import game_instance
+    d = game_instance.game_dir(letter)
+    return os.path.join(d, "Mods"), os.path.join(d, "Version.txt")
+
+
 def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, cache_dir=None):
     """The build he will walk: {game, mod_hash, game_build, active_mods, why[]} (why non-empty: unreadable here)."""
     sp = os.environ.get(STANDIN_ENV)
@@ -397,8 +432,9 @@ def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, 
         out["why"].append("the walk build is read on %s, where he walks; this is %s" % (WALK_HOST, out["game"]))
         return out
     if mods_dir is None or version_txt is None:
-        m, _, v = _paths()
+        m, v = walk_paths(savegame)
         mods_dir, version_txt = mods_dir or m, version_txt or v
+    out["walk_game"] = walk_letter(savegame)
     _, folder = _mod_folder(root, mod, mods_dir)
     out["deployed_folder"] = folder
     out["mod_hash"] = deployed_hash(folder, cache_dir=cache_dir)
@@ -698,6 +734,7 @@ def walk_source(root, mod, walk):
         # a composed member's DLL stamp is deployed at Biomes/<key>/Assemblies; the shell's own Assemblies holds only
         # the shell's stamp (Pyrelands visit 2, 2026-11-21: read there, a deploy was owed forever)
         folder = os.path.join(folder, "Biomes", mod)
+    inst = "" if walk.get("walk_game", "a") == "a" else " --instance %s" % _game_name(walk["walk_game"])
     dep = srchash_files(folder)
     src = srchash_files(os.path.join(root, "src", "RimMandrake", mod))
     if dep is None or src is None:
@@ -705,8 +742,8 @@ def walk_source(root, mod, walk):
             folder, mod, sha)), sha
     if src and dep != src:
         return ("the deployed walk folder %s is not the source at %s (its .srchash differs): deploy it "
-                "(`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s --apply`); the deploy itself reruns no check"
-                % (folder, sha, mod)), sha
+                "(`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s%s --apply`); the deploy itself reruns no check"
+                % (folder, sha, mod, inst)), sha
     # the stamps agree; the DLL beside each must be the one it names too: a deploy onto a running game wrote the new stamp
     # beside the old, locked DLL, and this read met (RIMMANDRAKE_KEEP_STAMP_OFF_A_DLL_THE_DEPLOY_COULD_NOT_WRITE)
     for nm in src:
@@ -714,8 +751,8 @@ def walk_source(root, mod, walk):
         want = _file_sha256(os.path.join(root, "src", "RimMandrake", mod, "Assemblies", dll))
         if want and _file_sha256(os.path.join(folder, "Assemblies", dll)) != want:
             return ("the deployed walk folder %s holds the source's stamp at %s beside another %s, or none: deploy it "
-                    "with the game down (`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s --apply`)"
-                    % (folder, sha, dll, mod)), sha
+                    "with the game down (`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s%s --apply`)"
+                    % (folder, sha, dll, mod, inst)), sha
     return None, sha
 
 

@@ -766,6 +766,21 @@ TIERS["flowworks_hugethings"] = {
     "dlc": True,
 }
 
+# FlowWorks' one small list (design/concepts/FlowWorks/version/small_list.json): the `flowworks` tier plus each mod that
+# FlowWorks patches or names. small_list.py check fails when a mod that FlowWorks patches is absent here. The stage-6 checks
+# keep the 13-mod `flowworks` tier; his walk, its walk save and sc_walk run on this one.
+TIERS["flowworks_list"] = {
+    "why": "FlowWorks' small list (owner, 2026-11-24: 'Development of the mods is 100% small mod list'): the flowworks tier, "
+           "Baroque Biomes (its liquids and soils), Vanilla Chemfuel Expanded, Dubs Bad Hygiene Lite (the one he plays) and More Ritual Seats, which "
+           "FlowWorks' patches and MayRequire lines name.",
+    "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.patches", "mandrake.rm.biomes",
+             "oskarpotocki.vanillafactionsexpanded.core", "vanillaexpanded.vchemfuele", "dubwise.dubsbadhygiene.lite",
+             "toastyman.moreritualseats"],
+    "forbid": ["mandrake.rm.pits", "sarg.alphabiomes"],
+    "forbid_substr": ["manywaters"],
+    "dlc": True,
+}
+
 TIERS["flowworks_vepipe"] = {
     "why": "FLOWWORKS_TABS_RECONCILE_PIPES_WITH_PIPES A2: the `flowworks` tier plus one Vanilla Expanded PipeSystem mod "
            "(Vanilla Chemfuel Expanded, which brings VEF and the shared VCHE_PipeNetworks designation category), so the "

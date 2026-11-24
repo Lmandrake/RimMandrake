@@ -26,6 +26,8 @@ TOP = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "
 # page -> its tests file, repo-relative. A new boundary page is added here.
 PAGES = {
     "design/specs/2026-11-24-run-on-steve/boundary.md": "src/RimMandrake/rimflow/selftest_run_host.py",
+    "design/specs/2026-11-24-full-list-walk-not-per-mod/boundary.md":
+        "src/RimMandrake/rimflow/selftest_walk_small_list.py",
     "design/specs/2026-11-24-walk-owes-its-checks/boundary.md": "src/RimMandrake/rimflow/selftest_walk_owes_checks.py",
     "design/specs/2026-11-24-designer-mends-in-its-session/boundary.md":
         "src/RimMandrake/rimflow/selftest_designer_mend.py",
