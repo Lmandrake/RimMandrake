@@ -71,6 +71,9 @@ namespace JawaBench.BridgeTools
         private static readonly List<M.StreakWindow> Streak = new List<M.StreakWindow>();   // unbroken run windows
 
         internal static bool Installed;
+        /// <summary>The LoadGame hook is in place. It is an optional target: without it the sampler runs "partial" and
+        /// every loaded game carries no save name, so the campaign gate must read the save as unknown.</summary>
+        internal static bool LoadHooked;
         internal static string InstallError, RuntimeError, StartedUtc, StartedBy, RecordDir, SettingsNote;
         /// <summary>complete | partial | failed | disabled (MUST 16), with the per-target detail.</summary>
         internal static string InstallStatus = "not-attempted", InstallDetail;
@@ -146,7 +149,7 @@ namespace JawaBench.BridgeTools
                             case "Root.Update": h.Patch(mi, prefix: hm(nameof(RootPrefix)), finalizer: hm(nameof(RootFinalizer))); break;
                             case "LongEventsUpdate": h.Patch(mi, prefix: hm(nameof(LePrefix)), finalizer: hm(nameof(LeFinalizer))); break;
                             case "SaveGame": h.Patch(mi, prefix: hm(nameof(SavePrefix)), finalizer: hm(nameof(SaveFinalizer))); break;
-                            case "LoadGame": h.Patch(mi, prefix: hm(nameof(LoadPrefix)), finalizer: hm(nameof(LoadFinalizer))); break;
+                            case "LoadGame": h.Patch(mi, prefix: hm(nameof(LoadPrefix)), finalizer: hm(nameof(LoadFinalizer))); LoadHooked = true; break;
                         }
                     }, () => h.UnpatchAll(hid), out InstallDetail);
                     if (InstallStatus == "failed")

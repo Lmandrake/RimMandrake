@@ -15,10 +15,12 @@
 //   * Cheap always-on recorders stay ON in campaign, INCLUDING the TPS attribution that says where a slowdown comes
 //     from, so a slowdown is explained, not hidden. Each profile DECLARES its recorder budget (share of game speed the
 //     recorders may cost) as data in Policies below - never as a constant inside a hook.
-//   * JawaBench/companion_profile.json names the canonical saves ("campaignSaves") and says "profile": "test" ("gm" is
-//     an alias). CAMPAIGN holds when the loaded save is on that list, when the loaded save is unknown while the list is
-//     not empty, when no readable file gives the list, or when the file itself says campaign. A new game was loaded
-//     from no save, so it is TEST without a file. "expiresUtc" ends nothing. Nothing a bridge client sends raises it.
+//   * The canonical saves are compiled in: JawaBenchCanonicalSaves.cs, generated from CANONICAL_SAVE.md
+//     (design/specs/2026-11-23-canonical-save-guard/boundary.md). JawaBench/companion_profile.json says "profile": "test"
+//     ("gm" is an alias) and may add names ("campaignSaves"). CAMPAIGN holds when the loaded save is canonical or on that
+//     list, when the loaded save is unknown, when there is no readable file, or when the file itself says campaign. A new
+//     game was loaded from no save, so it is TEST without a file. "expiresUtc" ends nothing. Nothing a bridge client sends
+//     raises it.
 //   * Every jawa tool belongs to a FAMILY (CampaignDenied names each denied tool and its family + reason; the rest are
 //     authoring or read). The unit test fails when a must-stay-available authoring tool is denied or a must-be-off
 //     tool is allowed. The compile-time GM flag (JAWA_GM_TOOLS) still decides whether the GM tools EXIST.
@@ -149,7 +151,8 @@ namespace JawaBench.BridgeTools
             string reason = FamilyReasons.TryGetValue(fam, out var r) ? r : fam;
             return "REFUSED in the CAMPAIGN profile: " + tool + " is " + fam + " (" + reason + "); profile: " + why + ". " +
                    "Authoring tools stay available. Test/diagnostic tools run on a new game, and on a loaded save when <SaveData>/JawaBench/" +
-                   ProfileFileName + " says {\"profile\": \"test\"} and does not list that save in campaignSaves (the canonical world saves). " +
+                   ProfileFileName + " says {\"profile\": \"test\"} and that save is not canonical (CANONICAL_SAVE.md, or campaignSaves in the file). " +
+                   "To work on a canonical save, load a copy under another name. " +
                    "Call jawa/companion_handshake to see the profile.";
         }
 
@@ -199,28 +202,63 @@ namespace JawaBench.BridgeTools
 
         /// <summary>The effective profile, with the reason. CAMPAIGN guards the canonical world saves only.
         /// <paramref name="loadedSave"/>: "" = no game or a new game (nothing was loaded, so nothing to guard), a name =
-        /// the save loaded, null = UNKNOWN (unreadable, or the tracker missed the load): with canonical saves listed,
-        /// unknown is CAMPAIGN, because a canonical save the tracker failed to see must not run under TEST. With no
-        /// readable list, a loaded save may be canonical: CAMPAIGN. An old expiresUtc changes nothing.</summary>
+        /// the save loaded, null or blank = UNKNOWN (unreadable, or the tracker missed the load). An unknown save is
+        /// CAMPAIGN: a canonical save the tracker failed to see must not run under TEST. The canonical saves are the ones
+        /// compiled in (JawaBenchCanonicalSaves, from CANONICAL_SAVE.md); campaignSaves in the file only adds names. With
+        /// no readable file, a loaded save is CAMPAIGN. An old expiresUtc changes nothing.</summary>
         internal static string Effective(ProfileFile f, DateTime nowUtc, string loadedSave, out string why, string unknownWhy = null)
+            => Effective(f, nowUtc, loadedSave, JawaBenchCanonicalSaves.Names, JawaBenchCanonicalSaves.Starts, out why, unknownWhy);
+
+        internal static string Effective(ProfileFile f, DateTime nowUtc, string loadedSave, string[] names, string[] starts, out string why, string unknownWhy = null)
         {
             if (f != null && f.Present && f.Error == null && f.Profile == Campaign) { why = "profile file says campaign"; return Campaign; }
             if (loadedSave != null && loadedSave.Length == 0) { why = "no save was loaded, so no canonical save to guard: test"; return Test; }
             if (f == null || !f.Present) { why = "no profile file, so the loaded save may be canonical: campaign"; return Campaign; }
             if (f.Error != null) { why = f.Error + ": campaign"; return Campaign; }
             if (f.Profile != Test) { why = "unknown profile '" + f.Profile + "': campaign"; return Campaign; }
-            if (loadedSave == null && f.CampaignSaves.Length > 0)
+            if (names == null || names.Length == 0) { why = "the companion holds no list of canonical saves, so the loaded save may be canonical: campaign"; return Campaign; }
+            if (SaveStem(loadedSave).Length == 0)
             {
-                why = "loaded save unknown (" + (unknownWhy ?? "not readable") + ") while canonical saves are listed: campaign";
+                why = "loaded save unknown (" + (unknownWhy ?? "not readable") + "), so it may be canonical: campaign";
                 return Campaign;
             }
-            if (loadedSave != null && f.CampaignSaves.Any(c => string.Equals(c, loadedSave.Trim(), StringComparison.OrdinalIgnoreCase)))
+            if (IsCanonical(loadedSave, names, starts) || IsCanonical(loadedSave, f.CampaignSaves, null))
             {
                 why = "loaded save '" + loadedSave + "' is a listed canonical save: campaign";
                 return Campaign;
             }
             why = "profile file says test, and the loaded save is not a listed canonical save";
             return Test;
+        }
+
+        /// <summary>The name a save is compared by: no folder, no .rws ending, no outer spaces. "" = no name.</summary>
+        internal static string SaveStem(string save)
+        {
+            string s = (save ?? "").Trim();
+            s = s.Substring(s.LastIndexOfAny(new[] { '/', '\\' }) + 1).Trim();
+            return s.EndsWith(".rws", StringComparison.OrdinalIgnoreCase) ? s.Substring(0, s.Length - 4).Trim() : s;
+        }
+
+        internal static bool IsCanonical(string save, string[] names, string[] starts)
+        {
+            string s = SaveStem(save);
+            return s.Length > 0
+                   && ((names ?? new string[0]).Any(n => string.Equals(SaveStem(n), s, StringComparison.OrdinalIgnoreCase))
+                       || (starts ?? new string[0]).Any(p => p.Length > 0 && s.StartsWith(p, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        /// <summary>The loaded save from what the tracker knows: "" = no game or a new game, a name, or null = UNKNOWN with
+        /// the reason. Without the LoadGame hook a loaded game looks like a new one, so it is UNKNOWN.</summary>
+        internal static string LoadedSave(bool hasGame, bool samplerInstalled, bool loadHooked, bool tracked, bool saveUnknown, string saveName, out string unknownWhy)
+        {
+            unknownWhy = null;
+            if (!hasGame) return "";
+            if (!tracked)
+                unknownWhy = samplerInstalled ? "the TPS lifecycle has not entered this game (still loading, or the sampler faulted)"
+                                              : "the TPS sampler is not installed, so loads are not seen";
+            else if (!loadHooked) unknownWhy = "the LoadGame hook is not installed, so loads are not seen";
+            else if (saveUnknown) unknownWhy = "a load request expired before this game arrived, or carried no name";
+            return unknownWhy != null ? null : saveName ?? "";
         }
 
         // ------------------------------------------------------------------ game epochs (identity, not ticks)

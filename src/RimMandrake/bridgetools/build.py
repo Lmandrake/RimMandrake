@@ -602,6 +602,21 @@ def plan_deploy(dll, apply_it, allow_removal=False, ignore_hold=False):
     return True
 
 
+def regenerate_canonical_saves():
+    """The compiled-in list of canonical world saves is what CANONICAL_SAVE.md says now, for every game this builds for
+    (design/specs/2026-11-23-canonical-save-guard/boundary.md). A document it cannot read stops the build: an old list
+    could lack a save."""
+    utils = os.path.join(REPO_ROOT, "src", "RimMandrake", "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import canonical_saves as cs
+    try:
+        wrote = cs.write(REPO_ROOT)
+    except cs.Unreadable as e:
+        sys.exit("CANONICAL SAVES UNREADABLE: %s" % e)
+    print("canonical saves: %s" % ("list written again from %s; commit %s" % (cs.DOC, cs.GENERATED) if wrote else "list is current"))
+
+
 def source_dirty():
     """-> the `git status --porcelain` lines for the companion's sources (its project folder plus any repo-local
     *_MOD_DIR it stages), [] when they are clean, or None when this tree is not a git checkout (a `git archive`
@@ -671,6 +686,7 @@ def main(argv=None):
     DESPITE_HOLD = args.despite_hold
     aim(args.instance)
 
+    regenerate_canonical_saves()
     dirty = source_dirty()
     if dirty:
         print("*** companion sources are DIRTY in %s:\n  %s" % (REPO_ROOT, "\n  ".join(dirty)))

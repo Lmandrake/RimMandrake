@@ -7,9 +7,9 @@ Items: `COMPANION_HANDSHAKE_BUILD_SAY_WHAT_LOADED`, `COMPANION_PROFILE_ENFORCE_S
 `JawaBenchSafetyCore.cs` (pure rules, unit-tested in `bridgetools/AwarenessSelfTest/UnitsSafety.cs`) and
 `JawaBenchCompanionSafety.cs` (Harmony gate, binder check, the tool).
 
-**State: the gate runs in the live companions.** The rule of 2026-11-23 (§1: the profile guards a canonical world save
-only) is built and unit-tested. It is live in a game from that game's next companion deploy. Until then that game's
-companion still refuses on an old `expiresUtc`.
+**State: the gate runs in the live companions.** Two rules of 2026-11-23 are built and unit-tested. The profile guards a
+canonical world save only (§1), and the list of canonical saves is compiled in. Each is live in a game from that game's next
+companion deploy. Until then that game's companion still refuses on an old `expiresUtc`, and guards only its own `campaignSaves`.
 
 ## 1. The profile: CAMPAIGN guards a canonical world save, and nothing else
 
@@ -24,7 +24,7 @@ protected saves are the canonical world saves.
 | layer | what decides it | values |
 |---|---|---|
 | compile profile | `build.py` (`JAWA_GM_TOOLS`) | `gm` (the world-acting GM tools exist; the default) or `standard` (`--no-gm`) |
-| runtime profile | `<SaveData>\JawaBench\companion_profile.json` | `test` (`gm` is an alias) or `campaign`, and `campaignSaves`: the canonical saves. **Absent, invalid or unknown = campaign on a loaded save** |
+| runtime profile | `<SaveData>\JawaBench\companion_profile.json` | `test` (`gm` is an alias) or `campaign`, and `campaignSaves`: more saves to guard, beside the canonical ones. **Absent, invalid or unknown = campaign on a loaded save** |
 | effective | both, plus the loaded save | `campaign` or `test` |
 
 ### Policy per profile (`JawaBenchSafetyCore.CampaignPolicy` / `TestPolicy`: data, read by the installers and hooks)
@@ -61,16 +61,18 @@ slowdown it explains. The real verdict needs the C0-C5 restart protocol
   must-be-off tools are refused.
 - `jawa/awareness action=arm` still arms disk rows in campaign. Only the `GeneratePawn` hook stays off.
 - A new game was loaded from no save, so it is **test** with no file. A loaded save is **test** when the file says test
-  and does not list that save. Nothing a bridge client sends can change the profile.
-- A loaded save named in `campaignSaves` is **campaign** even when the file says test. So is a loaded save whose name is
-  unknown while the list is not empty. A file that says `campaign` is campaign everywhere. The save name comes from
-  the TPS lifecycle (the `LoadGame` hook).
+  and the save is not canonical. Nothing a bridge client sends can change the profile.
+- The canonical saves are compiled in, from `infrastructure/state/CANONICAL_SAVE.md`
+  (`design/specs/2026-11-23-canonical-save-guard/boundary.md`). A loaded canonical save is **campaign** even when the file
+  says test. So is a save named in `campaignSaves`, and a loaded save whose name is unknown. A file that says `campaign` is
+  campaign everywhere. The save name comes from the TPS lifecycle (the `LoadGame` hook).
+- To work on a canonical save with the test tools, load a copy of it under another name.
 - The file is re-read at most every 2 s, on any jawa call. The policy hot hooks read (`CurrentPolicy`) is refreshed
   by the same calls, so a profile change reaches `GeneratePawn` and the wild spawner on the next jawa call.
 - `rimworld/*` tools belong to RimBridgeServer and are not gated.
 
 ```json
-{"profile": "test", "expiresUtc": "2036-01-01T00:00:00Z", "campaignSaves": "CANONICAL_ASHKARR_START_2026-09-12"}
+{"profile": "test", "expiresUtc": "2036-01-01T00:00:00Z", "campaignSaves": ""}
 ```
 
 `expiresUtc` ends nothing in the companion. A companion built before 2026-11-23 and the host checks
@@ -147,7 +149,7 @@ Other persistent switches, from the 2026-10-10 audit. These are **not** auto-rel
    recorded (the cost of patching about 400 methods on Mono is UNMEASURED). `jawa/spawn_pawn` must run and
    `jawa/static_call` must refuse. `jawa/awareness action=arm` must arm and leave `generationHook` not installed.
 2. Write a test file: within 2 s the handshake reads test and `static_call` runs. Then list the loaded save in
-   `campaignSaves`: the handshake reads campaign.
+   `campaignSaves`: the handshake reads campaign. Load the canonical start: the handshake reads campaign with an empty list.
 3. Capture `game.epoch`, reload the same save, and send any call with the old `expectGameEpoch`: it must be
    refused. Same for `expectMapId` after a map is abandoned.
 4. Block the wild spawner, load a save, and read `lastRelease:"new-game"`. Block again with `minutes=1` and read

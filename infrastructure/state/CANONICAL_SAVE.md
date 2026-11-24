@@ -5,6 +5,19 @@
 `infrastructure/state/canon.yml` (owner card 2026-10-25, last section below). This doc's frozen
 block is the owner's 09-12 record, a different file, which is no longer `planet.start_savegame`.
 
+## What the companion guards (a program reads this)
+
+`src/RimMandrake/Utils/canonical_saves.py` makes the companion's list from this document. The list is every line of the
+block below, and every complete `.rws` file name that this document writes. A line that ends with `*` is the start of a name.
+When a new save becomes canonical, add its name here and run `python3 src/RimMandrake/Utils/canonical_saves.py write`.
+`./publish` refuses when the list and this document differ. To work on a canonical save, load a copy under another name.
+Do not write the `.rws` name of a test save in this document. Rules: `design/specs/2026-11-23-canonical-save-guard/boundary.md`.
+
+```guard
+ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3
+CANONICAL_*
+```
+
 ## The frozen record
 
 ```

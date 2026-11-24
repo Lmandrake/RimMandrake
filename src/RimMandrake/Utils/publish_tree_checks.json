@@ -4,6 +4,7 @@
   "timeout_s": 60,
   "skip_when_only": ["infrastructure/state/ledger/events/*.jsonl", "infrastructure/state/lessons/*.md"],
   "checks": [
+    {"test": "src/RimMandrake/Utils/selftest_canonical_saves_current.py", "seconds": 0.1, "fix": "run python3 src/RimMandrake/Utils/canonical_saves.py write and publish the generated file; when canon.yml names a new start, name it in the guard block of infrastructure/state/CANONICAL_SAVE.md first"},
     {"test": "src/RimMandrake/rimflow/selftest_modledger_tree.py", "seconds": 0.3, "fix": "never edit a mod ledger shard or view by hand: append with modledger.py append, then modledger.py views --mod <Mod>; run modledger.py lint --mod <Mod> to see the line"},
     {"test": "src/RimMandrake/rimflow/selftest_game_names_prose.py", "seconds": 0.1, "fix": "name the game ArchBig, ArchSmall, Steve1 or Steve2; an old key may stay only inside a `code span` (an alias) or an owner quote"},
     {"test": "src/RimMandrake/rimflow/selftest_bench_word_prose.py", "seconds": 1.2, "fix": "say Conductor, or keep BENCH only on a held path or key (the test's ALLOWED)"},

@@ -114,16 +114,8 @@ namespace JawaBench.BridgeTools
             try
             {
                 var game = Current.Game;
-                if (game == null) return "";
                 var life = JawaBenchTpsSampler.Life;
-                if (!life.Tracks(game))
-                {
-                    unknownWhy = JawaBenchTpsSampler.Installed ? "the TPS lifecycle has not entered this game (still loading, or the sampler faulted)"
-                                                               : "the TPS sampler is not installed, so loads are not seen";
-                    return null;
-                }
-                if (life.SaveUnknown) { unknownWhy = "a load request expired before this game arrived"; return null; }
-                return life.SaveName ?? "";
+                return S.LoadedSave(game != null, JawaBenchTpsSampler.Installed, JawaBenchTpsSampler.LoadHooked, life.Tracks(game), life.SaveUnknown, life.SaveName, out unknownWhy);
             }
             catch (Exception e) { unknownWhy = "save name unreadable (" + e.GetType().Name + ")"; return null; }
         }

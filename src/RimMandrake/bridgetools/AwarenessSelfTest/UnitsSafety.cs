@@ -29,7 +29,7 @@ namespace JawaBench.BridgeTools
             check(S.Effective(none, t0, "", out var why0n) == S.Test, "no_file_new_game_has_no_canonical_save_is_test", why0n);
             var tst = S.ProfileFile.Parse("{\"profile\": \"test\"}", t0);
             check(S.Effective(tst, t0, "test save", out var why1) == S.Test, "profile_file_test_is_test", why1);
-            check(S.Effective(S.ProfileFile.Parse("{\"profile\": \"gm\"}", t0), t0, null, out _) == S.Test, "profile_gm_is_alias_for_test");
+            check(S.Effective(S.ProfileFile.Parse("{\"profile\": \"gm\"}", t0), t0, "test save", out _) == S.Test, "profile_gm_is_alias_for_test");
             var exp = S.ProfileFile.Parse("{\"profile\": \"test\", \"expiresUtc\": \"2026-10-10T11:00:00Z\"}", t0);
             check(S.Effective(exp, t0, "my test save", out var why2) == S.Test, "expired_grant_on_a_non_canonical_save_stays_test", why2);
             var expc = S.ProfileFile.Parse("{\"profile\": \"test\", \"expiresUtc\": \"2026-10-10T11:00:00Z\", \"campaignSaves\": \"CANONICAL_ASHKARR_START\"}", t0);
@@ -53,7 +53,7 @@ namespace JawaBench.BridgeTools
             check(!S.SettingsTypeWritable(false, false, true, "RimMandrake.FlowWorks.SomeSettings"), "settings_instance_non_modsettings_refused");
             check(!S.SettingsTypeWritable(false, true, true, "RimMandrake.FlowWorks.RM_FlowKernel"), "settings_static_non_settings_name_refused");
             check(!S.SettingsTypeWritable(false, true, true, null), "settings_null_name_refused");
-            check(S.Effective(tst, t0, null, out _) == S.Test, "unknown_save_without_campaign_list_keeps_test");
+            check(S.Effective(tst, t0, null, out _) == S.Campaign, "unknown_save_without_campaign_list_is_campaign");
             var bad = S.ProfileFile.Parse("{\"profile\": gm", t0);
             check(S.Effective(bad, t0, null, out var why4) == S.Campaign && why4.Contains("invalid"), "invalid_profile_file_is_campaign", why4);
             var odd = S.ProfileFile.Parse("{\"profile\": \"godmode\"}", t0);

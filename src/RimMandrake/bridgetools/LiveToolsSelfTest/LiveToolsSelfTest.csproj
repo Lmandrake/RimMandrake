@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- Offline unit harness for the receipt, the calm map and the first-exception tap (design/specs/2026-11-23-loaded-receipt, -calm-map,
-       -first-exception-tap). Plain net8.0, zero RimWorld/Unity references: the Core files are the PRODUCTION files the
+  <!-- Offline unit harness for the receipt, the calm map, the first-exception tap and the canonical-save guard
+       (design/specs/2026-11-23-loaded-receipt, -calm-map, -first-exception-tap, -canonical-save-guard). Plain net8.0, zero RimWorld/Unity references: the Core files are the PRODUCTION files the
        companion compiles. Run by Utils/live_tools_units.py. -->
 
   <PropertyGroup>
@@ -21,6 +21,15 @@
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchReceiptCore.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchCalmCore.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchFirstExceptionCore.cs" />
+    <!-- the canonical-save guard (design/specs/2026-11-23-canonical-save-guard) -->
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchSafetyCore.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchCanonicalSaves.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsSettings.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsMath.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsStages.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsLifecycle.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsTierCore.cs" />
+    <Compile Include="UnitsCanonicalGuard.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

@@ -15,9 +15,9 @@ namespace JawaBench.BridgeTools
     internal static class Program
     {
         static int _n, _bad;
-        static readonly string Plant = Environment.GetEnvironmentVariable("RM_PLANT") ?? "";
+        internal static readonly string Plant = Environment.GetEnvironmentVariable("RM_PLANT") ?? "";
 
-        static void Check(string name, Func<bool> f)
+        internal static void Check(string name, Func<bool> f)
         {
             _n++;
             bool ok; string w = "";
@@ -40,6 +40,7 @@ namespace JawaBench.BridgeTools
             Receipt();
             Calm();
             FirstException();
+            CanonicalGuardUnits.Run();
             Console.WriteLine("U-count " + _n);
             return _bad == 0 ? 0 : 1;
         }

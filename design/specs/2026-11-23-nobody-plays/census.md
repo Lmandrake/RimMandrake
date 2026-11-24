@@ -66,8 +66,9 @@ handoffs, conversations, closed items and dated evidence were not read row by ro
 
 1. The live `companion_profile.json` on Archmagi lists `CANONICAL_ASHKARR_START_2026-09-12, Ashkarr, Ashkarr autosave`.
    The current canonical start `ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3` is not on the list, so CAMPAIGN does not
-   guard it, and the two other names are no save on disk. Should R3 and the other `CANONICAL_*` saves be listed? It would
-   refuse the test tools in a game that loaded one. Left as it is.
+   guard it, and the two other names are no save on disk. Closed by
+   `RIMMANDRAKE_LIST_CANONICAL_SAVES_IN_COMPANION_PROFILE_CURRENT_START_MISSING`: the list is compiled in from
+   `CANONICAL_SAVE.md`.
 2. `companion_grant.py`, `ensure_test_profile` and the ops alarm still treat an old `expiresUtc` as a stop. A companion
    built before this change needs it. Remove them when all four games run a companion with the new rule.
 3. `testq/archmagi_phases.py` never stops or deploys to ArchBig, so a wedged ArchBig under that lane is reported, not
