@@ -6,6 +6,7 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py submit MOD --chains a,b | --rows r1,r2 | --item ID | --full   --purpose P --by SEAT --sha SHA [...]
   testq.py list [--state pending|running|done|cancelled]
   testq.py show JOB                  at most 20 lines: state, selection, attempt, outcome, the failing rows
+  testq.py wait JOB [--timeout S]    wait on local queue files, then print the outcome and failing rows
   testq.py cancel JOB --reason R     pending -> cancelled; running -> the worker is told to stop
   testq.py resume --reason R         lift a lane pause (paused.json) once its cause is dealt with
   testq.py sweep MOD [--by SEAT]     queue today's one full sweep of MOD (purpose=sweep, origin/main), unless a sweep
@@ -41,7 +42,8 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
 The queue is plain files under TESTQ_QUEUE (default /mnt/d/ClaudeWork/rimmandrake/testq):
   pending/<job>.json   the job record
   running/<job>.json   {"job", "attempt", "sent", "attempts", "auto_retries", "cancel"}
-  done/<job>.json      {"job", "result", "attempts", "finished"}   - the last attempt's testq.result/1
+  done/<job>.json      {"job", "result", "attempts", "finished", "cancelled", "cancel_reason" (if set)}
+                       the last attempt's testq.result/1
   cancelled/<job>.json {"job", "reason", "at"}
   orphans/<attempt>.json  a worker result for a job this queue never sent (kept, acked)
   quarantined/<job>.json  a done record from inside a Steve SIMD fault window: must not count (fault_monitor.py, ingest.py)
@@ -209,6 +211,73 @@ def heartbeat(job_id):
         os.utime(q("running", job_id + ".json"))
     except FileNotFoundError:
         pass
+
+
+# An orphan stops getting the 60 s tick's heartbeat (OPS_TESTQ_UNSTICK_ECPK). Ticks stalled 7-15 min
+# on Nov 21 and 23 (done_once). Use the steward's five-minute guard so a missed tick alone is not a hang.
+HUNG_S = 300
+
+
+def _wait_record(job_id):
+    active = None
+    # Read active paths first so a terminal record published during the scan takes precedence.
+    for state in ("running", "pending", "cancelled", "quarantined", "done"):
+        path = q(state, job_id + ".json")
+        try:
+            if state in ("running", "pending"):
+                active = state, os.stat(path).st_mtime, None
+            else:
+                with open(path, encoding="utf-8") as f:
+                    return state, None, json.load(f)
+        except FileNotFoundError:
+            continue
+    return active
+
+
+def wait_for(job_id, timeout=None, *, now=None, sleep=time.sleep):
+    """Read one job locally. A timeout of zero takes a reading without sleeping."""
+    def reading(state, why=None, outcome=None, rows=None):
+        return dict(state=state, why=why, outcome=outcome, rows=rows)
+
+    job_id = job_id.strip()
+    if not S.JOB_ID_RE.fullmatch(job_id):
+        return reading("unknown", "invalid job id")
+    clock = now or time.monotonic
+    now = now or time.time
+    deadline = clock() + timeout if timeout is not None else float("inf")
+    while True:
+        try:
+            entry = _wait_record(job_id)
+            if entry is None:
+                os.stat(q())
+                entry = _wait_record(job_id)  # a running job may have moved back to pending during the scan
+        except (OSError, ValueError) as exc:
+            return reading("unreadable", str(exc))
+        if entry is None:
+            return reading("unknown", "job is absent from the queue")
+        state, beat, rec = entry
+        if state in ("done", "cancelled", "quarantined") and not isinstance(rec, dict):
+            return reading("unreadable", "%s record is not an object" % state)
+        if state == "quarantined":
+            return reading("unreadable", "result was quarantined")
+        if state == "cancelled":
+            return reading("cancelled", rec.get("reason"))
+        if state == "done":
+            res = rec.get("result")
+            res = res if isinstance(res, dict) else {}
+            if rec.get("cancelled"):
+                return reading("cancelled", rec.get("cancel_reason") or res.get("note"), res.get("outcome"))
+            rows = res.get("rows")
+            if res.get("outcome") not in S.OUTCOMES or not isinstance(rows, list) or any(
+                    not isinstance(row, dict) or not {"chain", "row", "verdict"} <= row.keys() for row in rows):
+                return reading("unreadable", "done record has an invalid outcome or rows")
+            return reading("done", res.get("cause"), res["outcome"], rows)
+        if state == "running" and now() - beat >= HUNG_S:
+            return reading("hung", "no heartbeat for at least %ds" % HUNG_S)
+        remaining = deadline - clock()
+        if remaining <= 0:
+            return reading("timeout", "job is still %s" % state)
+        sleep(min(1, remaining))
 
 
 _DONE_TEXT = [None]     # done_once(): {path: text} while one plan loop runs; None: every read goes to the disk
@@ -435,6 +504,8 @@ def finish(rec, res):
     host = host_of(rec)
     done = {"job": rec["job"], "result": res, "attempts": rec.get("attempts") or [res["attempt"]],
             "cancelled": bool(rec.get("cancel")), "finished": S.utcnow()}
+    if done["cancelled"] and rec.get("cancel_reason"):
+        done["cancel_reason"] = rec["cancel_reason"]
     if rec.get("sent"):
         done["sent"] = rec["sent"]      # when it was admitted: its span, for nonfault_cause
     if host != STEVE:
@@ -2259,6 +2330,25 @@ def cmd_show(a):
     return 0
 
 
+def cmd_wait(a):
+    if a.timeout is not None and not 0 <= a.timeout < float("inf"):
+        print("REFUSED: --timeout must be a finite, non-negative number of seconds")
+        return 2
+    result = wait_for(a.job, a.timeout)
+    state, rows = result["state"], result["rows"]
+    parts = [a.job.strip(), "could not look" if state == "unreadable" else state, result["outcome"], result["why"]]
+    bad = [r for r in rows if r["verdict"] != "PASS"] if rows is not None else []
+    if rows is not None:
+        parts.append("%d non-PASS rows" % len(bad) if rows else "empty rows")
+    print(" ".join(" ".join(str(p).split()) for p in parts if p))
+    for row in bad[:37]:
+        line = "%s %s/%s %s" % (row["verdict"], row["chain"], row["row"], row.get("detail") or "")
+        print("  " + " ".join(line.split()))
+    if len(bad) > 37:
+        print("  %d more rows omitted" % (len(bad) - 37))
+    return {"done": 0, "unreadable": 2, "cancelled": 3, "unknown": 4, "hung": 5, "timeout": 6}[state]
+
+
 DISPATCH = os.path.expanduser("~/rm/dispatch")
 
 
@@ -2402,6 +2492,9 @@ def main(argv=None):
     s.add_argument("--state", choices=STATES)
     s = sub.add_parser("show")
     s.add_argument("job")
+    s = sub.add_parser("wait", help="wait for one job using the local queue")
+    s.add_argument("job")
+    s.add_argument("--timeout", type=float)
     s = sub.add_parser("cancel")
     s.add_argument("job")
     s.add_argument("--reason", required=True)
@@ -2434,14 +2527,14 @@ def main(argv=None):
     sub.add_parser("steward", help="the lane steward pass (the tick runs it)")
     sub.add_parser("steward-watch", help="the steward's heartbeat watcher (its own timer)")
     a = ap.parse_args(argv)
-    if getattr(a, "job", None) and not S.JOB_ID_RE.match(a.job):
+    if a.cmd != "wait" and getattr(a, "job", None) and not S.JOB_ID_RE.match(a.job):
         print("REFUSED: %r is not a job id" % a.job)
         return 2
     if a.cmd == "submit":
         fwd = forward_submit(a, sys.argv[1:] if argv is None else list(argv))
         if fwd is not None:
             return fwd
-    return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "cancel": cmd_cancel, "resume": cmd_resume,
+    return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "wait": cmd_wait, "cancel": cmd_cancel, "resume": cmd_resume,
             "sweep": cmd_sweep, "fill": cmd_fill,
             "tick": cmd_tick, "visit-feed": cmd_visit_feed, "pause": cmd_pause, "maintenance": cmd_maintenance, "steward": cmd_steward, "steward-watch": cmd_steward_watch,
             "archmagi-report": cmd_archmagi_report}[a.cmd](a)

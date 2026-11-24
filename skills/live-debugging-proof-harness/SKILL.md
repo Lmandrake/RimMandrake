@@ -468,6 +468,8 @@ proof is written for Lightspeed:
 - Declare the smallest tier (the smallest mod-list tier that holds the mod).
 - `hot_reload_defs` is not a speed path.
 
+After submitting a lane job, wait on Archmagi with `python3 src/RimMandrake/Utils/testq/testq.py wait JOB [--timeout S]`.
+
 `rimflow file`/`close` print a warning for each proof line that the proof-line lint marks as refused
 (`rimflow/proof_lint.py`). The warning does not stop the filing or the close. `rimflow lint --proofs <ID>` runs the same lint, and
 exits 1 on a bad line. The full rules, their reasons, and the PLANNED tools with today's fallback are in

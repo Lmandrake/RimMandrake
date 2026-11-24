@@ -8,8 +8,10 @@ result fetched and acked, ssh down -> no sends and a timed probe, cancel, supers
 retried once (attempt id asked first), a red canary pausing the lane until resume --reason, a game dead
 mid-run -> GAME_DIED retried once without a pause, orphan results kept, show within 20 lines, a concurrent tick refused.
 """
+import contextlib
 import fcntl
 import glob
+import io
 import json
 import os
 import shutil
@@ -17,6 +19,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
@@ -553,7 +556,98 @@ def t_forward_submit():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+WAIT_JOB = "J20261123T000000Z-aaaaaa"
+
+
+@contextlib.contextmanager
+def wait_queue():
+    import testq as T
+    with tempfile.TemporaryDirectory() as tmp, patch.object(T, "QHOME", tmp):
+        T.ensure_dirs()
+        yield T
+
+
+def wait_command(T):
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out), contextlib.redirect_stderr(out):
+        try:
+            rc = T.main(["wait", WAIT_JOB, "--timeout", "0"])
+        except SystemExit as ex:
+            rc = ex.code
+    return rc, out.getvalue()
+
+
+def t_wait_returns_recorded_rows():
+    with wait_queue() as T:
+        job = {"id": WAIT_JOB}
+        rows = [{"chain": "c", "row": "r", "verdict": "FAIL", "detail": "d"}]
+        S.dump(job, T.q("pending", WAIT_JOB + ".json"))
+        clock = [0]
+
+        def finish_after_sleep(seconds):
+            clock[0] += seconds
+            T.move(WAIT_JOB, "pending", "done", {"job": job, "result": {"outcome": "DONE", "rows": rows}})
+
+        check(hasattr(T, "wait_for") and T.wait_for(WAIT_JOB, 1, now=lambda: clock[0], sleep=finish_after_sleep)
+              == {"state": "done", "outcome": "DONE", "rows": rows, "why": None} and clock[0] == 1,
+              "wait wakes on completion and returns the recorded failing row")
+
+
+def t_wait_detects_a_stale_heartbeat():
+    with wait_queue() as T:
+        path = T.q("running", WAIT_JOB + ".json")
+        S.dump({"job": {"id": WAIT_JOB}}, path)
+        check(wait_command(T)[0] == 6, "a fresh heartbeat at the deadline reads timeout")
+        os.utime(path, (time.time() - 7200,) * 2)
+        rc, out = wait_command(T)
+        check(rc == 5 and "hung" in out and "heartbeat" in out, "a stale heartbeat reads hung at the deadline")
+
+
+def t_wait_stops_on_unknown_or_cancelled():
+    with wait_queue() as T:
+        rc, out = wait_command(T)
+        check(rc == 4 and "unknown" in out, "an unknown id returns immediately")
+        job = {"id": WAIT_JOB}
+        path = T.q("cancelled", WAIT_JOB + ".json")
+        S.dump({"job": job, "reason": "no longer needed"}, path)
+        rc, out = wait_command(T)
+        check(rc == 3 and "no longer needed" in out, "pending cancellation returns its reason")
+        os.remove(path)
+        with patch.object(T, "worker_for"), contextlib.redirect_stdout(io.StringIO()):
+            T.finish({"job": job, "host": T.ARCHMAGI, "cancel": True, "cancel_reason": "stop this attempt"},
+                     {"attempt": WAIT_JOB + ".a1", "outcome": "INTERRUPTED", "cause": "HARNESS", "rows": []})
+        rc, out = wait_command(T)
+        check(rc == 3 and "stop this attempt" in out, "a cancelled running job stored in done stays cancelled")
+
+
+def t_wait_distinguishes_unreadable_empty_and_zero():
+    with wait_queue() as T:
+        path = T.q("done", WAIT_JOB + ".json")
+        S.dump({"result": {"outcome": "DONE"}}, path)
+        rc, out = wait_command(T)
+        check(rc == 2 and "could not look" in out and "empty" not in out and T.wait_for(WAIT_JOB, 0)["rows"] is None,
+              "missing rows read could not look")
+        for rows, want in (([], "empty rows"), ([{"chain": "c", "row": "r", "verdict": "PASS"}], "0 non-PASS rows")):
+            S.dump({"result": {"outcome": "DONE", "rows": rows}}, path)
+            rc, out = wait_command(T)
+            check(rc == 0 and want in out and T.wait_for(WAIT_JOB, 0)["rows"] == rows,
+                  "wait reports %s distinctly" % want)
+
+
+def t_wait_prints_a_short_result():
+    with wait_queue() as T:
+        row = {"chain": "c", "row": "r", "verdict": "FAIL", "detail": "bad\nrow"}
+        S.dump({"result": {"outcome": "DONE", "rows": [row] * 50}, "private": "whole record"},
+               T.q("done", WAIT_JOB + ".json"))
+        rc, out = wait_command(T)
+        check(rc == 0 and len(out.splitlines()) < 40 and all(x in out for x in ("DONE", "FAIL", "c/r", "omitted"))
+              and "whole record" not in out, "wait prints the outcome and failing rows within 39 lines")
+
+
 def main():
+    for test in (t_wait_returns_recorded_rows, t_wait_detects_a_stale_heartbeat, t_wait_stops_on_unknown_or_cancelled,
+                 t_wait_distinguishes_unreadable_empty_and_zero, t_wait_prints_a_short_result):
+        test()
     try:
         t_forward_submit()
         t_running_heartbeat()
