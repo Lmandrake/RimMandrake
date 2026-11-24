@@ -16,7 +16,8 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
 - **a-test-table-check.** A check is a test-table entry (`tests.<id>`) with any of `exercises` (a list of paths, or
   `"*"` for the whole mod), `reads` (paths) and `file` (its script). A path that ends in `/`, or names a folder, covers
   every file under it. A path followed by prose in brackets (`src/RimMandrake (every storage ThingDef)`) covers the
-  path before the bracket.
+  path before the bracket. In `exercises`, `F.cs::Type,member` names parts of a C# file, `F.cs::~` the members of that
+  file that the check's other declared C# names, and `none` says that the check was read and exercises no C# of the mod.
 - **row-commits-git-knows.** A row names the source commit it ran on (`mod_sha`); the commit now is the repository's
   HEAD. A commit git cannot resolve gives no relation.
 - **the-mod-scope.** The change is the files that differ between the two commits under `src/RimMandrake/<Mod>/`,
@@ -30,6 +31,10 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   check exercises that it does not declare and whose types no declared C# file names, such as a class a def's XML
   names or one reached through a member of a type the check never names). The guards are the whole-mod checks, the next visit of the related checks,
   and the owner's walk. No full rerun is added to cover it.
+- **a-wrong-declaration.** A check that exercises a changed file and whose list leaves the file out, or says `none`, reads
+  untouched, and nothing in the relation sees it (measured 2026-11-24 on Pyrelands a6f05380df: 4 planted of 4 missed). Only
+  when every check leaves the file out is it listed as undeclared. Two things outside the relation still hold: an UNRUN row
+  of the run that made the change (`unrun_owed`), and the whole-mod checks.
 - **a-dll-with-no-srchash.** A shipped DLL that no `.srchash` describes (a third-party library) changes nothing in the
   relation.
 - **lookup-by-a-computed-key.** A dict read with a key the code computes is related through the keys the check's own
@@ -83,6 +88,22 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   `exercises` is related by that list: a change in a file that the list does not name does not touch it. A check with
   no such list still relates whole. (Gimme Some Slack, 2026-11-23: csharp-reads-the-types-it-names sent 75 listed rows
   back for CordBuilder.cs, which their lists leave out on purpose, so 206 of 206 reran.)
+- **csharp-part-relates-by-its-members.** A check that declares parts of a C# file (`F.cs::Type,member`) is touched when a
+  changed member is one of those types' or members, or one that they name in the same file, to a fixed point. A member
+  that the engine calls, an attribute or an unnamed member touches the checks that declare its type; an instance field's
+  initializer touches those that declare any member of it. A using line, a file that does not read, and a recompiled file
+  whose text did not change relate whole. The file or a folder over it declared beside a part is the whole file. (Pyrelands
+  a6f05380df, 2026-11-24: 38 of 40 by whole files, because the settings file, one file of seven patches and the ash field
+  are in nearly every list; 17 by parts.)
+- **unknown-part-relates-whole.** A declared part that the file holds at neither commit relates the whole file, and the
+  reading names it. A part that the change renames touches the check.
+- **reached-part-follows-the-declared-csharp.** `F.cs::~` is touched by a changed member that the check's other declared
+  C# names, at either commit, through `F.cs` to a fixed point: a setting, a tuning number or a kernel. With no other C#
+  that reads, it relates whole.
+- **changed-member-no-check-declares-is-listed.** In a C# file that checks declare only by parts, the changed members that
+  no check reaches rerun nothing and are listed (`F.cs::member`). A file that one check declares whole lists nothing.
+- **declared-none-is-read-as-no-csharp.** A live check whose `exercises` says `none` keeps its row on a change of shipped
+  C#. `none` hides no declared C# beside it, and its scene script still relates.
 - **python-relates-by-symbol.** In a changed Python file, only the top-level names that changed count, and they
   touch a check only when the names its entry and id reach (across its declared Python files) include one of them; a
   dict literal relates key by key. A shipped def name (RM_, RSW_, RUT_) is never read as a row id. A top-level call that

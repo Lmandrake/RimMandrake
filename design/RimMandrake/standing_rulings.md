@@ -2187,7 +2187,8 @@ approve your changes to the Step 6->Step 7 transition and preparation."*
   that for every stage: `src/RimMandrake/rimflow/rerun_relation.py` (page
   `design/specs/2026-11-21-rerun-only-related/boundary.md`).
 - A check declares its `exercises`, `reads` and `file`. When the mod's test table is locked, write the
-  declaration in `version/exercises.json` beside the table.
+  declaration in `version/exercises.json` beside the table. A path there may name parts of a C# file
+  (`F.cs::Type,member`, `F.cs::~`) or say `none` (`design/specs/2026-11-21-rerun-only-related/boundary.md`).
 - How a changed file relates:
   - a Python file by top-level name;
   - a JSON file by the check's own entry;

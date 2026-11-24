@@ -8,6 +8,7 @@ main() checks that infrastructure/state/ledger/events/ is byte-for-byte unchange
 
   --mutate relation_ignored   plants the fault "the build match ignores the relation" (the rule before 2026-11-21:
                               any change to the mod reruns every row); the run must go red
+  --mutate parts_untouched    plants "a declared part is never touched"; the run must go red
   --mutate all_untouched      plants "the relation says untouched for every check"; the run must go red
 """
 import hashlib
@@ -887,6 +888,172 @@ def t_python_imports_read_once_per_commit():
         tr.close()
 
 
+HUB_CS = """namespace P {
+class Fire {
+    static int Roll() { return Spot() + Settings.alpha; }
+    static int Spot() { return 1; }
+    int made = 1;
+    public override void ExposeData() { int e = 0; }
+}
+class Rain {
+    static int Douse() { return Settings.beta; }
+    static int Wet() { return Help.Both(); }
+}
+class Help { static int Both() { return 7; } }
+}
+"""
+SETTINGS_CS = """namespace P {
+class Settings {
+    static int alpha = 1;
+    static int beta = 2;
+    static int gamma = 3;
+    static int Reset() { return 4; }
+    public override void ExposeData() { int e = 0; }
+}
+}
+"""
+
+
+def _part_tree(checks):
+    """A planted mod with two hub C# files; `checks` {id: exercises} declared beside the table."""
+    src = "src/RimMandrake/Planted/"
+    tests = table({t: {"id": t, "kind": "live_minimal", "stage": "6", "tier": "t", "file": src + "validation.py",
+                       "entry": "scene_a"} for t in checks})
+    tr = Tree()
+    tr.write(src + "Source/H.cs", HUB_CS)
+    tr.write(src + "Source/S.cs", SETTINGS_CS)
+    tr.write(src + "Assemblies/P.dll.srchash", "# dll: 0\n00 A.cs\n00 B.cs\n00 C.cs\n00 H.cs\n00 S.cs\n")
+    tr.set_table(tests)
+    tr.write("design/concepts/Planted/version/exercises.json", json.dumps({"checks": checks}))
+    return tr, tr.commit("hubs"), tests
+
+
+def _part_case(checks, *edits):
+    """relate() after `edits` (file under Source/, old text, new text)."""
+    tr, base, tests = _part_tree(checks)
+    try:
+        for f, a, b in edits:
+            tr.edit("src/RimMandrake/Planted/Source/" + f, a, b)
+        tr.commit("the change")
+        return relate(tr, all_rows(base, tests), tests)
+    finally:
+        tr.close()
+
+
+H, S = "src/RimMandrake/Planted/Source/H.cs", "src/RimMandrake/Planted/Source/S.cs"
+
+
+def _states(res, checks):
+    return {t: res["rows"][t]["state"] for t in checks}
+
+
+def t_csharp_part_relates_by_its_members():
+    name = "csharp-part-relates-by-its-members"
+    ck = {"fire": [H + "::Fire"], "rain": [H + "::Rain"], "both": [H + "::Fire,Rain"], "spot": [H + "::Spot"],
+          "wet": [H + "::Wet"], "file": [H], "split": [H + "::Rain", H + "::Fire"]}
+    got = _states(_part_case(ck, ("H.cs", "return 1;", "return 2;")), ck)
+    ok(name + ": a changed member touches the checks that declare its type, itself or the file, and no other",
+       got == {"fire": "touched", "rain": "untouched", "both": "touched", "spot": "touched", "wet": "untouched",
+               "file": "touched", "split": "touched"}, got)
+    got = _states(_part_case(ck, ("H.cs", "return 7;", "return 8;")), ck)
+    ok(name + ": a helper that a declared part calls in the same file touches the check",
+       got["rain"] == "touched" and got["wet"] == "touched" and got["fire"] == "untouched", got)
+    got = _states(_part_case(ck, ("H.cs", "int e = 0", "int e = 1")), ck)
+    ok(name + ": a member the engine calls touches the checks that declare its type, not one that declares another member",
+       got["fire"] == "touched" and got["rain"] == "untouched" and got["spot"] == "untouched", got)
+    got = _states(_part_case(ck, ("H.cs", "made = 1", "made = 2")), ck)
+    ok(name + ": an instance field's initializer runs with its type, so it touches a check that declares any member of it",
+       got["spot"] == "touched" and got["fire"] == "touched" and got["rain"] == "untouched", got)
+    got = RR.run_key({"exercises": [H + "::Fire"]}, "exercises") != RR.run_key({"exercises": [H + "::Rain"]}, "exercises")
+    ok(name + ": a table entry whose declared part changed is a changed entry", got)
+    got = _states(_part_case(ck, ("H.cs", "namespace P {\nclass Fire", "using System;\nnamespace P {\nclass Fire")), ck)
+    ok(name + ": a using line touches every check that declares a part of the file", set(got.values()) == {"touched"}, got)
+    got = _states(_part_case({"a": [H + "::Rain", H]}, ("H.cs", "return 1;", "return 2;")), ["a"])
+    ok(name + ": the whole file declared beside a part is the whole file", got["a"] == "touched", got)
+    got = _states(_part_case({"a": [H + "::Rain", "src/RimMandrake/Planted/Source/"]}, ("H.cs", "return 1;", "return 2;")), ["a"])
+    ok(name + ": a folder declared beside a part is the whole file", got["a"] == "touched", got)
+    res = _part_case(ck, ("H.cs", "class Help {", "class Help { /* unclosed"))
+    ok(name + ": a file that does not read relates whole", set(_states(res, ck).values()) == {"touched"}, _states(res, ck))
+    tr, base, tests = _part_tree({"rain": [H + "::Rain"]})
+    try:
+        tr.write("src/RimMandrake/Planted/Assemblies/P.dll.srchash", "# dll: 1\n00 A.cs\n00 B.cs\n00 C.cs\n11 H.cs\n00 S.cs\n")
+        tr.commit("recompiled, its text landed before")
+        res = relate(tr, all_rows(base, tests), tests)
+        ok(name + ": a recompiled file whose text did not change relates whole", res["rows"]["rain"]["state"] == "touched",
+           res["rows"]["rain"])
+    finally:
+        tr.close()
+
+
+def t_unknown_part_relates_whole():
+    name = "unknown-part-relates-whole"
+    ck = {"typo": [H + "::Rian"], "gone": [H + "::Help"], "half": [H + "::Rain,Rian"]}
+    res = _part_case(ck, ("H.cs", "return 1;", "return 2;"))
+    got = _states(res, ck)
+    ok(name + ": a declared part that the file holds at neither commit relates the whole file, and the reading says so",
+       got["typo"] == "touched" and got["half"] == "touched" and "Rian" in res["rows"]["typo"]["why"], res["rows"]["typo"])
+    got = _states(_part_case(ck, ("H.cs", "class Help {", "class Aid {")), ck)
+    ok(name + ": a declared part that the change renames touches the check", got["gone"] == "touched", got)
+
+
+def t_reached_part_follows_the_declared_csharp():
+    name = "reached-part-follows-the-declared-csharp"
+    ck = {"fire": [H + "::Fire", S + "::~"], "rain": [H + "::Rain", S + "::~"], "file": [H, S + "::~"]}
+    got = _states(_part_case(ck, ("S.cs", "alpha = 1", "alpha = 5")), ck)
+    ok(name + ": a member of a ~ file touches only the checks whose declared C# names it",
+       got == {"fire": "touched", "rain": "untouched", "file": "touched"}, got)
+    got = _states(_part_case(ck, ("S.cs", "gamma = 3", "gamma = 5"), ("S.cs", "return 4;", "return 5;")), ck)
+    ok(name + ": a member no declared C# names touches none", set(got.values()) == {"untouched"}, got)
+    got = _states(_part_case(ck, ("S.cs", "int e = 0", "int e = 1")), ck)
+    ok(name + ": a member the engine calls, on a type the declared C# names, touches the check",
+       set(got.values()) == {"touched"}, got)
+    got = _states(_part_case({"only": [S + "::~"]}, ("S.cs", "gamma = 3", "gamma = 5")), ["only"])
+    ok(name + ": a ~ file with no other declared C# has nothing to follow and relates whole", got["only"] == "touched", got)
+    tr, base, tests = _part_tree({"a": [H + "::Fire", "src/RimMandrake/Planted/Source/A.cs", S + "::~"]})
+    try:
+        tr.write("src/RimMandrake/Planted/Source/A.cs", "class A { /* unclosed\n")
+        base = tr.commit("a declared file that does not read, at both commits")
+        tr.edit("src/RimMandrake/Planted/Source/S.cs", "gamma = 3", "gamma = 5")
+        tr.commit("the change")
+        res = relate(tr, all_rows(base, tests), tests)
+        ok(name + ": declared C# that does not read leaves nothing to follow, and ~ relates whole",
+           res["rows"]["a"]["state"] == "touched", res["rows"]["a"])
+    finally:
+        tr.close()
+    got = _states(_part_case(ck, ("H.cs", "Settings.beta", "Settings.gamma"), ("S.cs", "gamma = 3", "gamma = 5")), ck)
+    ok(name + ": a name that the change starts to use is followed", got["rain"] == "touched" and got["fire"] == "untouched", got)
+    ck = {"sc": [H + "::Rain", S + "::~,gamma"]}
+    got = [_states(_part_case(ck, ("S.cs", a, b)), ck)["sc"] for a, b in
+           (("gamma = 3", "gamma = 5"), ("beta = 2", "beta = 5"), ("alpha = 1", "alpha = 5"))]
+    ok(name + ": ~ and a named member of one file are both read", got == ["touched", "touched", "untouched"], got)
+
+
+def t_changed_member_no_check_declares_is_listed():
+    name = "changed-member-no-check-declares-is-listed"
+    ck = {"fire": [H + "::Fire", S + "::~"], "rain": [H + "::Rain"]}
+    res = _part_case(ck, ("S.cs", "return 4;", "return 5;"))
+    ok(name + ": the member is listed with its file", res["undeclared"] == [S + "::P/Settings/Reset()"] or
+       res["undeclared"] == [S + "::Settings/Reset()"], res["undeclared"])
+    res = _part_case(ck, ("S.cs", "alpha = 1", "alpha = 5"))
+    ok(name + ": a member that a check reaches is not listed", res["undeclared"] == [], res["undeclared"])
+    res = _part_case(dict(ck, file=[S]), ("S.cs", "return 4;", "return 5;"))
+    ok(name + ": a file that another check declares whole lists nothing", res["undeclared"] == [], res["undeclared"])
+
+
+def t_declared_none_is_read_as_no_csharp():
+    name = "declared-none-is-read-as-no-csharp"
+    ck = {"none": ["none"], "blank": []}
+    got = _states(_part_case(ck, ("H.cs", "return 1;", "return 2;")), ck)
+    ok(name + ": a live check declared to exercise no C# keeps its row on a C# change; one that declares nothing reruns",
+       got == {"none": "untouched", "blank": "unreadable"}, got)
+    ok(name + ": none is no path: a check that declares it and nothing else declares nothing it reads",
+       RR.declared({"exercises": ["none"]}, MOD) == ([], False), RR.declared({"exercises": ["none"]}, MOD))
+    got = _states(_part_case({"none": ["none", H + "::Fire"]}, ("H.cs", "return 1;", "return 2;")), ["none"])
+    ok(name + ": none beside a C# part does not hide the part", got["none"] == "touched", got)
+    got = _states(_part_case({"none": ["none"]}, ("../validation.py", "helper_a(1)", "helper_a(2)")), ["none"])
+    ok(name + ": its scene script still relates", got["none"] == "touched", got)
+
+
 def _ledger_digest():
     h = hashlib.sha256()
     d = os.path.join(REPO, "infrastructure", "state", "ledger", "events")
@@ -902,9 +1069,11 @@ def _mutate(kind):
     """Plant one fault in the code under test, in this process only."""
     if kind == "relation_ignored":
         real = BM.judge_row
-        BM.judge_row = lambda test, spec, r, walk, tiers, relation=None: real(test, spec, r, walk, tiers, None)
+        BM.judge_row = lambda test, spec, r, walk, tiers, relation=None, deploy=None: real(test, spec, r, walk, tiers, None, deploy)
     elif kind == "all_untouched":
         RR.Relation.touches = lambda self, tid, old: ("untouched", "planted", [])
+    elif kind == "parts_untouched":
+        RR.Relation.part_hits = lambda self, tid, f, o: (False, "planted", set(), set())
     else:
         raise SystemExit("unknown mutation %s" % kind)
 
@@ -938,6 +1107,11 @@ def main():
     t_full_list_is_the_mods_the_game_can_load()
     t_a_path_outside_the_repo_is_not_in_the_change()
     t_python_imports_read_once_per_commit()
+    t_csharp_part_relates_by_its_members()
+    t_unknown_part_relates_whole()
+    t_reached_part_follows_the_declared_csharp()
+    t_changed_member_no_check_declares_is_listed()
+    t_declared_none_is_read_as_no_csharp()
     ok("the run left infrastructure/state/ledger/events/ unchanged", _ledger_digest() == before)
     print("%d of %d checks failed" % (len(FAILS), len(SEEN)))
     return 1 if FAILS else 0

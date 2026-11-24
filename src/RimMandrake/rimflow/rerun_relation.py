@@ -30,6 +30,9 @@ check (kind live_full) declares the whole mod. How a changed file relates, by ki
          .srchash names): there a member touches the check only when the check reaches its name and its type's name,
          by name alone (no string, label or list value), and an engine-called member when the check names its type. A
          check that anchors in no C# and lists C# in its `exercises` is related by that list alone.
+         A path may name parts: `F.cs::Type,member` (those types and members, and what they name in F.cs) and `F.cs::~`
+         (the members of F.cs that the check's other declared C# names: a settings or tuning file). "none" in exercises
+         says that the check was read and exercises no C#.
          A file whose .srchash line differs between OLD and NEW changed in the DLL, whatever its text: it relates whole.
          A check that runs in the game and declares no C# that ships has no readable relation to a change of shipped C#.
          The DLL's bytes relate to nothing by themselves.
@@ -55,6 +58,9 @@ IDENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 # made every def that names the creature part of the check)
 ROW_ID = re.compile(r"^(?!(?:RM|RSW|RUT)_)[A-Za-z][A-Za-z0-9]*_[A-Za-z0-9_]{4,}$")
 WHOLE = "*"
+NONE = "none"       # in `exercises`: the check was read, and it exercises no C# of the mod
+PART = "::"         # F.cs::Type,member
+REACHED = "~"       # F.cs::~ : the members of F.cs that the check's other declared C# names
 
 
 # ---- git, cached ----------------------------------------------------------------------------------------------------
@@ -104,10 +110,19 @@ def head_sha(root, runner=subprocess.run):
 
 # ---- what a check declares ------------------------------------------------------------------------------------------
 
+def part_names(p):
+    """The types and members that a declared path names (`F.cs::Type,member`, `F.cs::~`); None for a whole path."""
+    raw = re.split(r"\s+\(", str(p or "").strip(), maxsplit=1)[0]
+    if PART not in raw:
+        return None
+    return {x.strip() for x in raw.split(PART, 1)[1].split(",") if x.strip()}
+
+
 def _clean(p):
-    """A declared path, without prose in brackets and without a leading ./ ; '' when nothing is left."""
+    """A declared path, without its parts, prose in brackets and a leading ./ ; '' when nothing is left."""
     p = str(p or "").strip()
     p = re.split(r"\s+\(", p, maxsplit=1)[0].strip()
+    p = p.split(PART, 1)[0].strip()
     p = p.replace("\\", "/")
     return p[2:] if p.startswith("./") else p
 
@@ -119,7 +134,7 @@ def run_key(spec, k):
     if k == "command" and isinstance(v, str):
         return re.sub(r"\s+\([^()]*\)\s*$", "", v).strip()
     if k in ("reads", "exercises") and isinstance(v, list):
-        return sorted({_clean(x) for x in v if x})
+        return sorted({_clean(x) if part_names(x) is None else _clean(x) + PART + ",".join(sorted(part_names(x))) for x in v if x})
     return v
 
 
@@ -171,13 +186,25 @@ def declared(spec, mod):
             whole = True
             continue
         p = _clean(r)
-        if not p:
+        if not p or p == NONE:
             continue
         if (root + "/").startswith(p.rstrip("/") + "/"):        # the mod folder or a parent of it
             whole = True
             continue
         paths.append(p)
     return sorted(set(paths)), whole
+
+
+def declared_parts(spec):
+    """{C# file: the types and members declared of it}, for a file that the check declares by its parts only: a path that
+    covers the file whole (itself or a folder) is the whole file."""
+    raw = [x for k in ("exercises", "reads") for x in _aslist((spec or {}).get(k))] + _aslist((spec or {}).get("file"))
+    parts = {}
+    for r in raw:
+        if part_names(r) is not None:
+            parts.setdefault(_clean(r), set()).update(part_names(r))
+    wholes = [_clean(r) for r in raw if part_names(r) is None and str(r).strip() not in (WHOLE, NONE)]
+    return {f: n for f, n in parts.items() if not any(w and covers(w, f) for w in wholes)}
 
 
 def covers(decl, path):
@@ -1143,6 +1170,107 @@ class Relation:
                     names = names | ({w for k in r for w in u[k].refs} if u is not None else set())
         return names, anchored
 
+    def part_hits(self, tid, f, o):
+        """-> (hit, why, changed, reached) for a changed C# file that check `tid` declares by its parts: the changed units,
+        and those of them that the declared parts reach. Not readable, a part the file holds at neither commit, a `~` with
+        nothing to follow, or a changed using or namespace line: the whole file (reached is every changed unit)."""
+        spec = self.tests.get(tid) or {}
+        parts = self._parts(tid, spec)
+        a, b = self._cs(o, f), self._cs(self.new, f)
+        if a is None or b is None:
+            return True, "does not read at one commit (related whole)", {"<file>"}, {"<file>"}
+        chg = cs_changed(a, b)
+        if not chg:
+            return False, "", set(), set()
+        for k in list(chg):                                     # an instance field's initializer runs with its type
+            for u in (a.get(k), b.get(k)):
+                if u is not None and "instance initializer" in u.flags and u.parent is not None:
+                    chg.add(u.parent.key)
+        lost = sorted(n for n in parts[f] - {REACHED} if not any(u.name == n for x in (a, b) for u in x.values()))
+        if lost:
+            return True, "it declares %s, which the file does not hold (related whole)" % ", ".join(lost), chg, chg
+        for k in sorted(chg):
+            if any(x[k].kind == "file" for x in (a, b) if k in x):
+                return True, "%s changed (related whole)" % ("a using or namespace line" if k == "<file>" else k), chg, chg
+        words = set()
+        if REACHED in parts[f]:
+            words = self._part_words(tid, o)
+            if not words:
+                return True, "it declares ~ and no other C# that reads, to follow (related whole)", chg, chg
+        got = set()
+        for sha, u, prev in ((o, a, None), (self.new, b, o)):
+            r = self._part_reach(sha, f, parts[f] - {REACHED}, frozenset(words), prev)
+            whole = {k for k, x in u.items() if x.kind == "type" and x.name in (parts[f] | words)}
+            for k in chg & set(u):
+                x = u[k]
+                if k in r:
+                    got.add(k)
+                elif x.flags & {"attribute", "called by the engine", "unnamed"}:     # no name in the code leads to it
+                    t = x.parent
+                    while t is not None and t.kind != "type":
+                        t = t.parent
+                    if t is None or t.key in whole:
+                        got.add(k)
+        return bool(got), ", ".join(sorted(got)[:6]) + (" ..." if len(got) > 6 else ""), chg, got
+
+    def _part_reach(self, sha, f, names, words, prev=None):
+        """The units of `f` at a commit that the declared names (a type: all it holds) and the words of the check's other
+        declared C# (`~`) reach inside the file."""
+        k = ("partreach", sha, f, tuple(sorted(names)), words, prev)
+        if k not in self._py:
+            u = self._cs(sha, f)
+            got, seeds = set(), set(words)
+            if u is None:                                       # absent at this commit; one that does not read never gets here
+                self._py[k] = got
+                return got
+            for key, x in u.items():
+                t = x
+                while t is not None and t.name not in names:
+                    t = t.parent
+                if t is not None and x.kind != "file":
+                    got.add(key)
+            for key in got:
+                t = u[key]
+                while t is not None:                            # its own type's members by name: Spot() inside Fire
+                    seeds |= t.refs | ({t.name} if t.kind == "type" else set())
+                    t = t.parent
+            before = self._cs(prev, f) if prev else None
+            added = {x for x, v in u.items() if v.kind == "elem" and before is not None and x not in before}
+            self._py[k] = got | cs_reach(u, seeds, self._owned(), added, True)[0] if seeds else got
+        return self._py[k]
+
+    def _part_words(self, tid, o):
+        """Every word of the C# that the check declares apart from its `~` files, and then of what they reach in those."""
+        k = ("partwords", tid, o)
+        if k not in self._py:
+            spec = self.tests.get(tid) or {}
+            parts = self._parts(tid, spec)
+            paths, _ = self._paths(tid, spec)
+            words = set()
+            for sha in (o, self.new):
+                for f in {p for p in paths if p.endswith(".cs")} | {f for f in self._cs_own(sha) if any(
+                        covers(p, f) for p in paths)}:
+                    if self._cs_unreadable(sha, f):              # what it names is unknown: nothing to follow
+                        words = set()
+                        self._py[k] = words
+                        return words
+                    u = self._cs(sha, f)
+                    if u is None:                                # absent at this commit
+                        continue
+                    names = parts.get(f)
+                    keys = set(u) if names is None else self._part_reach(sha, f, names - {REACHED}, frozenset())
+                    words |= {w for x in keys for w in u[x].refs}
+            size = -1 if words else 0
+            while size != len(words):
+                size = len(words)
+                for f in [f for f, n in parts.items() if REACHED in n]:
+                    for sha in (o, self.new):
+                        u = self._cs(sha, f)
+                        words |= {w for x in self._part_reach(sha, f, parts[f] - {REACHED}, frozenset(words))
+                                  for w in u[x].refs}            # an absent file reaches nothing
+            self._py[k] = words
+        return self._py[k]
+
     def _cs_unreadable(self, sha, path):
         """True when the file is at the commit and does not read as C# (absent is not unreadable)."""
         return self._cs(sha, path) is None and self.git.show(sha, path) is not None
@@ -1169,7 +1297,7 @@ class Relation:
         if st != "untouched" or whole or not str(spec.get("kind", "")).startswith("live") or o == self.new:
             return st, why, files
         ships, recompiled = self.shipped_cs(o)
-        if any(covers(p, f) for p in paths for f in ships):
+        if any(covers(p, f) for p in paths for f in ships) or NONE in self._declared_exercises(tid, spec):
             return st, why, files
         cs = sorted({f for f in self.change(o) if f in ships} | recompiled)
         if not cs:
@@ -1177,8 +1305,14 @@ class Relation:
         return "unreadable", "it runs in the game and declares no C# file, and C# that ships changed (%s%s)" % (
             ", ".join(cs[:6]), " and %d more" % (len(cs) - 6) if len(cs) > 6 else ""), cs
 
+    def _declared_exercises(self, tid, spec):
+        return _aslist(spec.get("exercises")) + self.extra.get(tid, [])
+
     def _paths(self, tid, spec):
-        return declared(dict(spec, exercises=_aslist(spec.get("exercises")) + self.extra.get(tid, [])), self.mod)
+        return declared(dict(spec, exercises=self._declared_exercises(tid, spec)), self.mod)
+
+    def _parts(self, tid, spec):
+        return declared_parts(dict(spec, exercises=self._declared_exercises(tid, spec)))
 
     def _touches(self, tid, old):
         spec = self.tests.get(tid) or {}
@@ -1223,7 +1357,8 @@ class Relation:
             return "untouched", "no changed file is one it declares or its Python imports", []
         seeds = {tid, spec.get("entry")}
         # the C# the check lists as exercised: for a check that anchors in no C#, that list is the relation
-        listed = any(str(p).endswith(".cs") for p in _aslist(spec.get("exercises")) + self.extra.get(tid, []))
+        listed = any(_clean(p).endswith(".cs") for p in self._declared_exercises(tid, spec))
+        parts = self._parts(tid, spec)
         hits, why = [], []
         pys = [f for f in mine if f.endswith(".py")]
         if pys:
@@ -1269,6 +1404,8 @@ class Relation:
                         continue
                     got, how = ((True, "a C# file it names a type of, and it anchors in none of its own (related "
                                  "whole)") if not anchored else self.cs_touches(f, o, names, named=True))
+                elif f in parts:
+                    got, how = self.part_hits(tid, f, o)[:2]
                 else:
                     got, how = self.cs_touches(f, o, seeds)
                 if got:
@@ -1289,13 +1426,29 @@ class Relation:
         return "untouched", "declared file(s) changed only in parts it does not reach (%s)" % ", ".join(mine), []
 
     def undeclared(self, old):
-        """Changed files under the mod's source that no check declares (derived files left out), for declaring."""
+        """Changed files under the mod's source that no check declares (derived files left out), for declaring; of a C# file
+        that checks declare only by its parts, the changed members that none of them reaches (`F.cs::member`)."""
         ch = self.change(old) or []
-        decl = set()
+        o = self.git.rev(old)
+        decl, by_part = set(), {}
         for t, s in self.tests.items():
-            decl.update(declared(dict(s, exercises=_aslist(s.get("exercises")) + self.extra.get(t, [])), self.mod)[0])
-        return [f for f in ch if covers(mod_root(self.mod), f) and not derived(f)
-                and not any(covers(p, f) for p in decl)]
+            parts = self._parts(t, s or {})
+            decl.update(p for p in self._paths(t, s or {})[0] if p not in parts)
+            for f in parts:
+                by_part.setdefault(f, []).append(t)
+        out = []
+        for f in ch:
+            if not covers(mod_root(self.mod), f) or derived(f) or any(covers(p, f) for p in decl):
+                continue
+            if f not in by_part:
+                out.append(f)
+                continue
+            left = None
+            for t in by_part[f]:
+                _, _, chg, got = self.part_hits(t, f, o)
+                left = (chg if left is None else left) - got
+            out.extend("%s%s%s" % (f, PART, k) for k in sorted(left or ()))
+        return out
 
 
 def relate(root, mod, tests, last_rows, new=None, runner=subprocess.run, old_tests=None):
