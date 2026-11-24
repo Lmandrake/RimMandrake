@@ -143,15 +143,15 @@
   "test_blob": "10c54cd9026dde1be615cdef1f6d38e3d91add14"
  },
  "T_STUB_JOINS": {
-  "at": "2026-11-24T05:10:56Z",
+  "at": "2026-11-24T08:44:59Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
   "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
-  "last": "9/11 checks passed (stub joins only)",
-  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\nindex 9365b76ef9..6dfcd457cf 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -3744,7 +3744,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                     int kinked = st != null && (s.DiveA || s.DiveB) && (IsWallFitting(st) || st.Kind == \"strip plug\") ? EndKinks(s.Pts) : 0;\n                     if (dive && st != null && kinked == 0 && OnStub(s.Pts, atStart, st, IsWallFitting(st) ? FitTol(st) : CordEndAudit.SlopeMaxDeg)) continue;\n                     // (a cord that comes back over its own box after leaving it is laid again from past where it does)\n-                    if (st == null || (kinked == 0 && OnStub(s.Pts, atStart, st, FitTol(st)) && s.Pts.All(ownClear))) continue;\n+                    if (st == null || st != null) continue;\n                     double runLen = StubRun(atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], st);\n                     if (runLen <= 0) continue;\n                     // the far end's own: a live cut end's run, tail and the window its pinch bar reads; a dead end's limp curl; a dive's\n",
+  "last": "11/12 checks passed (stub joins only)",
+  "patch": "diff --git b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\nindex 98fd11f2fc..9365b76ef9 100644\n--- b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -5066,10 +5066,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                 else if (mi != null)\n                 {\n                     double RectD(V2 q) => Math.Max(Math.Max(mi.X0 - q.X, q.X - (mi.X0 + mi.W)), Math.Max(mi.Z0 - q.Z, q.Z - (mi.Z0 + mi.H)));\n-                    // a wall lamp's cord ends in its wall cell, half a cell outside its footprint, and the strip socket it comes from can stand nearer\n-                    // that footprint (in-game visit 2 of 0.2.0): its end is the one at its home\n-                    V2 home = Home(mi);\n-                    atS = mi.HasHome ? V2.Dist(first[0], home) <= V2.Dist(first[first.Count - 1], home) : RectD(first[0]) <= RectD(first[first.Count - 1]);\n+                    atS = RectD(first[0]) <= RectD(first[first.Count - 1]);\n                 }\n                 tip = atS ? first[0] : first[first.Count - 1];\n                 V2 a = atS ? first[Math.Min(first.Count - 1, 1)] : first[Math.Max(0, first.Count - 2)];\n",
   "patch_files": [
    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
   ],
-  "patch_sha": "020e91491a636b41",
+  "patch_sha": "37ed953c4d33d01e",
   "rc": 1,
   "test_blob": "3a50c0cdf340cbbd4985b7dafa6e157c6ef241c4"
  },

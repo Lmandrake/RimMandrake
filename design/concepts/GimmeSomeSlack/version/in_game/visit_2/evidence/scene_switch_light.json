@@ -1,0 +1,179 @@
+{
+ "scene": "scene_switch_light",
+ "status": "PASS",
+ "rows": [
+  {
+   "id": "SC_switch_light_dark_unpowered",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lamp": {
+     "pos": [
+      24,
+      170
+     ],
+     "lamp": "Dark",
+     "closed": true,
+     "powered": false
+    },
+    "want": "Dark",
+    "setting": true,
+    "batteries": [
+     {
+      "success": true,
+      "cmd": "battery",
+      "storedWd": 0
+     },
+     {
+      "success": true,
+      "cmd": "battery",
+      "storedWd": 0
+     }
+    ]
+   }
+  },
+  {
+   "id": "SC_switch_light_green_closed_powered",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lamp": {
+     "pos": [
+      24,
+      170
+     ],
+     "lamp": "Green",
+     "closed": true,
+     "powered": true
+    },
+    "want": "Green",
+    "setting": true,
+    "west": {
+     "success": true,
+     "cmd": "battery",
+     "storedWd": 600
+    }
+   }
+  },
+  {
+   "id": "SC_switch_light_red_open_powered",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lamp": {
+     "pos": [
+      24,
+      170
+     ],
+     "lamp": "Red",
+     "closed": false,
+     "powered": true
+    },
+    "want": "Red",
+    "setting": true,
+    "flick": {
+     "success": true,
+     "cmd": "flick",
+     "on": false,
+     "thing": "PowerSwitch"
+    }
+   }
+  },
+  {
+   "id": "SC_switch_light_dark_after_power_lost",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lamp": {
+     "pos": [
+      24,
+      170
+     ],
+     "lamp": "Dark",
+     "closed": false,
+     "powered": false
+    },
+    "want": "Dark",
+    "setting": true,
+    "west": {
+     "success": true,
+     "cmd": "battery",
+     "storedWd": 0
+    }
+   }
+  },
+  {
+   "id": "SC_switch_light_red_far_side",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lamp": {
+     "pos": [
+      24,
+      170
+     ],
+     "lamp": "Red",
+     "closed": false,
+     "powered": true
+    },
+    "want": "Red",
+    "setting": true,
+    "east": {
+     "success": true,
+     "cmd": "battery",
+     "storedWd": 600
+    }
+   }
+  },
+  {
+   "id": "SC_switch_light_setting_off_dark",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lamp": {
+     "pos": [
+      24,
+      170
+     ],
+     "lamp": "Dark",
+     "closed": true,
+     "powered": true
+    },
+    "want": "Dark",
+    "setting": false,
+    "set": {
+     "success": true,
+     "cmd": "set:switchLight=false",
+     "value": "False"
+    }
+   }
+  },
+  {
+   "id": "SCENE_sc_switch_light",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "rows": {
+     "SC_switch_light_dark_unpowered": [
+      "PASS"
+     ],
+     "SC_switch_light_green_closed_powered": [
+      "PASS"
+     ],
+     "SC_switch_light_red_open_powered": [
+      "PASS"
+     ],
+     "SC_switch_light_dark_after_power_lost": [
+      "PASS"
+     ],
+     "SC_switch_light_red_far_side": [
+      "PASS"
+     ],
+     "SC_switch_light_setting_off_dark": [
+      "PASS"
+     ]
+    }
+   }
+  }
+ ]
+}
