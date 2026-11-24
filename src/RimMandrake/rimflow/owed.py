@@ -11,6 +11,8 @@ per-prompt notice, .claude/hooks/conductor_goodbye.py), `evidence_ok()` the disc
 
   OWED <n> (actionable <a>, waiting <w>), oldest <age> <ID>
     <age>  [LATE]  <ID>  <title>  [for <caused_by>]       actionable, oldest first; LATE past 2 h
+  YOURS BY A WAIT (<k>):                                 not owed items: a dated wait that names the Conductor
+    until|PASSED <date>  <ID>  <title>: <reason>
   WAITING (<w>):
     <age>  <ID>  <title>  until <date>: <reason>         under a running `rimflow wait`
   … <k> more: rimflow queue CONDUCTOR --owed --all        at most 40 lines in all
@@ -30,6 +32,7 @@ except ImportError:                                  # a hook or script: priorit
     from rimflow import model, priority
 
 KIND = "owed"
+NAMES_CONDUCTOR = re.compile(r"\bConductor\b", re.I)     # the launcher's wait line says "who acts next and on what"
 LATE_S = 2 * 3600
 MAX_LINES = 40
 TITLE_MAX = 110
@@ -91,8 +94,22 @@ def split(world, seat="BENCH", now=None):
     return [i for i in mine if i.id not in wids], waiting
 
 
+def named_waits(world, seat="BENCH", now=None):
+    """-> [item], the soonest date first: the seat's open items that are not owed items and whose dated wait names the
+    Conductor. Nothing else starts such an item: the List Pipeline reads a wait as Waiting, and no owed item exists. Pure."""
+    seat = model.canonical(seat)
+    return sorted((i for i in world.items.values()
+                   if i.owner == seat and i.open and i.kind not in (KIND, "standing") and i.wait_until
+                   and NAMES_CONDUCTOR.search(i.wait_reason or "")), key=lambda i: (str(i.wait_until), i.id))
+
+
 def banner(world, seat="BENCH", now=None):
-    """-> the view's first line: `OWED n (actionable a, waiting w), oldest <age> <ID>`."""
+    """-> the view's first line: `OWED n (actionable a, waiting w), oldest <age> <ID>[ · k waits name you]`."""
+    k = len(named_waits(world, seat, now))
+    return _banner(world, seat, now) + ("" if not k else " · 1 wait names you" if k == 1 else " · %d waits name you" % k)
+
+
+def _banner(world, seat, now):
     now = model.epoch_now() if now is None else now
     act, wait = split(world, seat, now)
     n = len(act) + len(wait)
@@ -114,6 +131,13 @@ def view(world, seat="BENCH", now=None, show_all=False):
         extra = ("  for %s" % i.caused_by if i.caused_by else "") + \
                 ("  (blocked: %s)" % (i.blocked_reason or "unexplained") if i.blocked else "")
         body.append((i, "  %-6s %s  %s  %s%s" % (age, late, i.id, _title(i), extra)))
+    named = named_waits(world, seat, now)
+    if named:
+        body.append((None, "YOURS BY A WAIT (%d): a ticket whose dated wait names the Conductor; nothing else starts it" % len(named)))
+        for i in named:
+            e = model.iso_epoch(str(i.wait_until))
+            body.append((i, "  %s%s  %s  %s: %s" % ("PASSED " if e is not None and e <= now else "until ", str(i.wait_until)[:10],
+                                                   i.id, _title(i), i.wait_reason)))
     if wait:
         body.append((None, "WAITING (%d):" % len(wait)))
         for i in wait:
