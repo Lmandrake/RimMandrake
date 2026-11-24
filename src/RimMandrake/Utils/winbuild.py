@@ -253,6 +253,9 @@ def win(path):
     return subprocess.run(["wslpath", "-w", path], capture_output=True, text=True, timeout=30).stdout.strip()
 
 
+STAGE_TIMEOUT_S = 3000      # hang guard only. 600 cut a live copy at 600.97 s under load, and FlowWorks' T_ROSTER read red
+
+
 def rsync_stage(rels, stage, cwd, excl=()):
     """rsync repo-relative rels into stage, deciding "changed" by CONTENT (--checksum), not mtime+size.
 
@@ -262,7 +265,7 @@ def rsync_stage(rels, stage, cwd, excl=()):
     Returns the CompletedProcess (stdout holds the itemize lines)."""
     r = subprocess.run(["rsync", "-rR", "-c", "-i", "--delete", "--no-perms", "--no-owner", "--no-group",
                         *excl, *rels, stage + "/"], cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                       universal_newlines=True, timeout=600)
+                       universal_newlines=True, timeout=STAGE_TIMEOUT_S)
     if r.stderr:
         sys.stderr.write(r.stderr)      # kept for rsync_retry_wait, still shown to the caller
     now = time.time()

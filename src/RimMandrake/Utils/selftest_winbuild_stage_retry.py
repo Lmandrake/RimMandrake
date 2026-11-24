@@ -55,6 +55,23 @@ def stage_with(results, td):
     return rc, record, calls, built
 
 
+def slow_stage(td):
+    """RIMMANDRAKE_RAISE_STAGE_COPY_LIMIT_A_SLOW_COPY_READ_RED: a copy that needs 601 s of machine time (FlowWorks T_ROSTER,
+    2026-11-24, under load) is slow, not hung: the deadline must let it, and one twice as slow, end."""
+    def run(cmd, **kw):
+        if kw.get("timeout") is not None and kw["timeout"] < 1202:
+            raise subprocess.TimeoutExpired(cmd, kw["timeout"])
+        return types.SimpleNamespace(returncode=0, stdout="", stderr="")
+    real, WB.subprocess.run = WB.subprocess.run, run
+    try:
+        rc = WB.rsync_stage(["src/"], os.path.join(td, "stage"), td).returncode
+    except subprocess.TimeoutExpired as e:
+        rc = "cut at %s s" % e.timeout
+    finally:
+        WB.subprocess.run = real
+    check(rc == 0, "a stage copy that takes 1202 s under load ends; it is not cut", rc)
+
+
 def real_stderr_capture(td):
     """rsync_stage itself must keep stderr: a stub cannot show that, and without it ENOMEM is never recognised."""
     bindir = os.path.join(td, "bin")
@@ -182,6 +199,7 @@ def main():
         check([WB.rsync_retry_wait(types.SimpleNamespace(returncode=23, stderr=ENOMEM), a) for a in range(3)]
               == [WB.RSYNC_ENOMEM_WAIT_S * n for n in (1, 2, 3)], "the ENOMEM wait grows with the attempt")
         real_stderr_capture(td)
+        slow_stage(td)
     print("\n%s" % ("FAILED %d" % len(FAILS) if FAILS else "all passed"))
     return 1 if FAILS else 0
 
