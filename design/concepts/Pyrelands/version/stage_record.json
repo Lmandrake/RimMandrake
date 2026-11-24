@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-23T15:46:03-08:00",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-24T04:28:32-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -18,7 +18,7 @@
     "visit": 1,
     "total": 6
   },
-  "pre_human_arrivals": 0,
+  "pre_human_arrivals": 1,
   "moves": [
     {
       "from": "offline_build",
@@ -348,6 +348,26 @@
         "steward_confirms",
         "exit_met",
         "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-24T04:28:32-08:00",
+      "by": "BENCH",
+      "why": "in-game visit 8 exit met: 40 of 40 stage-6 checks PASS on checked sites on the walk build; the one mod fix of the sitting (4a9d62cae0) read sound by its fresh reader",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-eight-1795522206",
+      "confirmed": {
+        "steward_confirms": "Read visit_8/SUMMARY.md, all 29 rows, strange.jsonl, polish.md, the diffs of the sitting's test edits (177a585e57, 694d79e5b8, f83b30b60a, 05d3da7407, 6e9257a1af: no assertion weakened; each repaired check has a planted FAIL beside its real PASS), and the fix: red at its parent (job_ends_off, rc 1), green at 4a9d62cae0 (35 of 35 mutants red), engine order read in Verse.AI.JobDriver. No line is mod wrong, undecided, spoiled or unresolved. Verdict: met."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match"
       ]
     }
   ],
