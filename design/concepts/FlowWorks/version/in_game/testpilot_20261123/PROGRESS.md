@@ -135,7 +135,7 @@ Host: ArchBig (archmagi), bridge taken 06:06 PST 2026-11-23. Clone: .../RIMMANDR
   nothing" for a raider on a first-row pit square. The line is vanilla's for ANY path not found. No raider of t6 is named Arkady.
 - t6 stray: free raider Human21297 (Bagdark, Thrasher) stood at the rim 60,59 to t=602, on pit square 60,60 from t=632 to 1052
   (AttackMelee on a far colonist), then walked out over the strip. Explained 2026-11-24: each stand is one 450-tick step of a
-  climber in gear (vanilla MaxMoveTicks; Thrasher wears RM_ClimbingGear 8 %). gear_climber.py on ArchBig: in 480, out 450, never
+  climber in gear (vanilla MaxMoveTicks; Thrasher wears RM_ClimbingGear 8 %). gear_climber.py (ArchBig g3, ArchSmall g4): in 480, out 450, never
   held; without gear he never enters and is held if put in. His own gear in t6 was not read.
 ## The melee rule of this sitting was replaced (owner ruling, 2026-11-23, RIMMANDRAKE_ENACT_PIT_MELEE_REACH_EQUALS_CLIMB_SIZE_DECIDES)
 - "No melee across a pit's edge" (3 m pit rooms, both ways, every size) is gone. Melee reach is now the climb criterion:

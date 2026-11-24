@@ -15,7 +15,7 @@ lid gone after the fall.
 
 Cause (2026-11-24): a raider in climbing gear, by design (vision line 5: ladders, climbing gear and jumps are the ways in and
 out). Human21297 is Bagdark, a Thrasher (8 % wear RM_ClimbingGear); each of his two stands is one 450-tick step (vanilla
-MaxMoveTicks, the cap on the gear's price for a 4 m step). `gear_climber.py`, live on ArchBig, no raid: in gear he steps in and
+MaxMoveTicks, the cap on the gear's price for a 4 m step). `gear_climber.py`, live on ArchBig and ArchSmall, no raid: in gear he steps in and
 out in 450 to 480 ticks and is never held, and walks round an open pit on a fresh path; without gear he never enters, and is held
 when put in. Human21297's own gear in t6 was not read [guess ~95%]. The "no nodes" line names Arkady, who is no raider of t6, and
 is vanilla's line for any path not found.

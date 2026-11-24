@@ -1,0 +1,1195 @@
+{
+ "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_TRACE_FLOWWORKS_RAIDER_IN_OPEN_PIT_WALKED_OUT.det\\src/RimMandrake/FlowWorks/northstar\\concept_scenes.py",
+ "started": 1795555669.2696638,
+ "mode": "live",
+ "site": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v3",
+  "utc": "2026-11-24T21:27:49Z",
+  "problems": [],
+  "load_s": 8.7,
+  "quietMap": {
+   "profile": "quiet_site",
+   "suite": "isolated",
+   "row": "test_site_saves_load_calm",
+   "topic": null,
+   "controls": [
+    {
+     "name": "threat_structures_cleared",
+     "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+     "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+     "readBack": {
+      "removed": [],
+      "threatsAfter": 0,
+      "kept": 0,
+      "errors": []
+     }
+    },
+    {
+     "name": "hostiles_removed",
+     "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+     "hides": "combat interactions with the mod's things",
+     "readBack": {
+      "acted": 0,
+      "residue": []
+     }
+    },
+    {
+     "name": "proximity_letters_sent",
+     "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+     "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+     "readBack": {
+      "letters": [
+       [
+        "VoidMonolith",
+        "Fallen monolith",
+        true
+       ]
+      ],
+      "unsentAfter": 0
+     }
+    },
+    {
+     "name": "modal_broker",
+     "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+     "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+     "readBack": {
+      "handled": [],
+      "unknown": []
+     }
+    }
+   ],
+   "notSuppressed": [
+    "active quests and their parts (never ended by default: ending a quest changes the world)",
+    "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+    "existing game conditions, map/world/game components and mod tickers",
+    "hives and other pawn-spawning structures, births, egg hatching, breeders",
+    "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+    "weather transitions, fires, existing hostile behaviour"
+   ],
+   "keepDefs": [],
+   "events": [],
+   "problems": [],
+   "verify": null,
+   "arrivals": [],
+   "note": "enableStoryteller is not saved with the game: re-apply after any load"
+  },
+  "sky": {
+   "weather": [
+    {
+     "after": "Clear",
+     "ok": true
+    },
+    {
+     "after": "Clear",
+     "ok": true
+    }
+   ],
+   "extinguished": 0,
+   "strayFires": 0,
+   "verified": true,
+   "error": null
+  },
+  "check": {
+   "site": "calm",
+   "utc": "2026-11-24T21:28:01Z",
+   "problems": [],
+   "map": {
+    "tile": 112579,
+    "mapId": 0,
+    "sizeX": 250,
+    "sizeZ": 250,
+    "mapBiome": "AridShrubland",
+    "outdoorTempNow": 13.9428368
+   },
+   "foggedCells": 0,
+   "triggers": 0,
+   "danger": [],
+   "ruins": 0,
+   "hostiles": [],
+   "threatStructures": [],
+   "fires": 0,
+   "weather": {
+    "current": "Clear",
+    "rainRate": 0.0
+   },
+   "colonists": [
+    [
+     "Human475",
+     false
+    ],
+    [
+     "Human478",
+     false
+    ],
+    [
+     "Human483",
+     false
+    ]
+   ],
+   "verified": true
+  },
+  "ready_s": 13.5,
+  "verified": true
+ },
+ "scene": "scene_pit_trap_raid",
+ "rows": [
+  {
+   "id": "GEAR_steps_in",
+   "status": "PASS",
+   "kind": "MOD",
+   "detail": "(480, (60, 60), False, 'Goto', False)"
+  },
+  {
+   "id": "GEAR_reads_climber",
+   "status": "PASS",
+   "kind": "MOD",
+   "detail": "CLIMBER"
+  },
+  {
+   "id": "GEAR_climbs_out_unheld",
+   "status": "PASS",
+   "kind": "MOD",
+   "detail": "(540, (61, 62), False, 'Goto', False)"
+  },
+  {
+   "id": "PLAIN_never_enters_open_pit",
+   "status": "PASS",
+   "kind": "MOD",
+   "detail": "(600, (60, 59), False, 'Wait', False)"
+  },
+  {
+   "id": "PLAIN_in_pit_is_held",
+   "status": "PASS",
+   "kind": "MOD",
+   "detail": "(900, (60, 60), True, 'Wait', False)"
+  },
+  {
+   "id": "PLANT_switch_off_reads_onpit",
+   "status": "PASS",
+   "kind": "MOD",
+   "detail": "{'gear': 'CLIMBER', 'plain': 'HELD', 'plant': 'ONPIT'}"
+  }
+ ],
+ "TRACE": {
+  "gear_in": {
+   "order": "{'success': True, 'accepted': True, 'interruptibleBefore': True, 'requestedJobDef': 'Goto', 'afterJobDef': 'Goto', 'nowRunningRequested': True, 'ticksElapsed': ",
+   "trace": [
+    [
+     0,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     30,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     60,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     90,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     120,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     150,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     180,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     210,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     240,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     270,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     300,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     330,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     360,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     390,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     420,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     450,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     480,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ]
+   ]
+  },
+  "gear_out": {
+   "order": "{'success': True, 'accepted': True, 'interruptibleBefore': True, 'beforeJobDef': 'Goto', 'requestedJobDef': 'Goto', 'afterJobDef': 'Goto', 'nowRunningRequested'",
+   "trace": [
+    [
+     0,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     30,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     60,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     90,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     120,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     150,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     180,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     210,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     240,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     270,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     300,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     330,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     360,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     390,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     420,
+     [
+      60,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     450,
+     [
+      60,
+      59
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     480,
+     [
+      61,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     510,
+     [
+      61,
+      61
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     540,
+     [
+      61,
+      62
+     ],
+     false,
+     "Goto",
+     false
+    ]
+   ]
+  },
+  "gear_past_open_pit": {
+   "order": "{'success': True, 'accepted': True, 'interruptibleBefore': True, 'requestedJobDef': 'Goto', 'afterJobDef': 'Goto', 'nowRunningRequested': True, 'ticksElapsed': ",
+   "trace": [
+    [
+     0,
+     [
+      60,
+      57
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     30,
+     [
+      60,
+      58
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     60,
+     [
+      61,
+      60
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     90,
+     [
+      61,
+      61
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     120,
+     [
+      61,
+      63
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     150,
+     [
+      61,
+      65
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     180,
+     [
+      61,
+      66
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     210,
+     [
+      61,
+      68
+     ],
+     false,
+     "Goto",
+     false
+    ],
+    [
+     240,
+     [
+      60,
+      70
+     ],
+     false,
+     "Goto",
+     false
+    ]
+   ],
+   "onPit": []
+  },
+  "plain_in": {
+   "order": "{'success': False, 'accepted': True, 'interruptibleBefore': True, 'requestedJobDef': 'Goto', 'afterJobDef': 'Wait', 'nowRunningRequested': False, 'ticksElapsed'",
+   "trace": [
+    [
+     0,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     30,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     60,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     90,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     120,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     150,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     180,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     210,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     240,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     270,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     300,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     330,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     360,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     390,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     420,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     450,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     480,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     510,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     540,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     570,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ],
+    [
+     600,
+     [
+      60,
+      59
+     ],
+     false,
+     "Wait",
+     false
+    ]
+   ]
+  },
+  "plain_out": {
+   "order": "{'success': False, 'accepted': True, 'interruptibleBefore': True, 'requestedJobDef': 'Goto', 'afterJobDef': 'Wait', 'nowRunningRequested': False, 'ticksElapsed'",
+   "trace": [
+    [
+     0,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     30,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     60,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     90,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     120,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     150,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     180,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     210,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     240,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     270,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     300,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     330,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     360,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     390,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     420,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     450,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     480,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     510,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     540,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     570,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     600,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     630,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     660,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     690,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     720,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     750,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     780,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     810,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     840,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     870,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ],
+    [
+     900,
+     [
+      60,
+      60
+     ],
+     true,
+     "Wait",
+     false
+    ]
+   ]
+  }
+ },
+ "geometry": {
+  "foot": [
+   60,
+   59
+  ],
+  "sq": [
+   60,
+   60
+  ],
+  "strip": [
+   61,
+   62
+  ]
+ },
+ "labels": {
+  "gear": "CLIMBER",
+  "plain": "HELD",
+  "plant": "ONPIT"
+ },
+ "reach": "REFUSED: no result {'success': False, 'message': 'No public static ProofReach with 0 params.', 'details': {'available': ['System.String ProofReach(System.String)']}, 'operation': {'OperationId': 'op_7ef201cb0bd4465c83d877eda0516cc7', 'Status': 'Completed', 'Success': True, 'DurationMs': 9}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 2947}}",
+ "status": "PASS",
+ "finished": 1795555842.527158,
+ "note": "calls left out; whole receipt: D:/ClaudeWork/rimmandrake/testpilot_open_pit_raider/g4.json; ArchSmall 2026-11-24 13:30 PST"
+}
