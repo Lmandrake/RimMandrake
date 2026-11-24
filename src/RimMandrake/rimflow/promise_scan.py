@@ -16,8 +16,8 @@ item's title words (`covered`). A target item's id alone, with no owed item on i
 named its item and was still lost).
 Quoted text is not the Conductor's: a `>` block and the wake's `<<< … >>>` reprint of the old reply are dropped first.
 
-Readers: .claude/hooks/conductor_goodbye.py prints the last reply's hits on the next prompt; seat_restart.py queues a
-backstop kill's hits (no next turn exists) and owed.py sync-sources files each as `UNTRACKED promise: <sentence>`.
+Reader: .claude/hooks/conductor_goodbye.py prints the last reply's hits on the next prompt. A window killed for its size
+has no next prompt: the next window's wake prints its last reply whole (seat_restart.py wake).
 """
 import argparse
 import re

@@ -3,7 +3,7 @@
 design/specs/2026-11-15-conductor-restart-loses-nothing.md §3 E2 as amended by §4, and §5 ticket 2). Written by the
 filing seat; the builder does not edit it (a wrong clause goes to the Conductor).
 
-    python3 src/RimMandrake/rimflow/acceptance/owed_promise_scan_accept.py     # exit 0 and "PASS 21/21" when built
+    python3 src/RimMandrake/rimflow/acceptance/owed_promise_scan_accept.py     # exit 0 and "PASS 20/20" when built
 
 THE CONTRACT (advisory first: nothing blocks a turn; GPT's read, §4)
   src/RimMandrake/rimflow/promise_scan.py
@@ -17,9 +17,8 @@ THE CONTRACT (advisory first: nothing blocks a turn; GPT's read, §4)
   Not promises: past-tense reports ("I launched", "I filed"), text quoted from him or from a reprint (a `>` block,
   the wake's `<<< … >>>` reprint of the old reply), a sentence about someone else's run ("The helper will report"),
   and "Nothing is waiting on you".
-  Wiring (static checks): .claude/hooks/conductor_goodbye.py (the per-prompt notice) imports promise_scan, and so does
-  src/RimMandrake/rimflow/seat_restart.py (at a backstop kill the last reply's hits are filed as `kind: owed` items
-  titled `UNTRACKED promise: <sentence>`; a backstop is never refused for them).
+  Wiring (static check): .claude/hooks/conductor_goodbye.py (the per-prompt notice) imports promise_scan. The queue that
+  a backstop kill wrote is retired (RIMMANDRAKE_RETIRE_OR_REPAIR_OWED_SOURCES_KILLED_EVERY_TICK), and its check with it.
 """
 import os
 import subprocess
@@ -30,7 +29,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 RIMFLOW = os.path.dirname(HERE)
 REPO = os.path.abspath(os.path.join(RIMFLOW, "..", "..", ".."))
 sys.path.insert(0, RIMFLOW)
-TOTAL = 21
+TOTAL = 20
 RESULTS = []
 OWED = "RIMMANDRAKE_LAUNCH_FLOWWORKS_REALIGNMENT_WHEN_SLOT_FREES"
 TARGET = "RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW"
@@ -90,10 +89,7 @@ def main():
     check(r.returncode == 1 and len(hits) == 1 and "slots frees" in hits[0],
           "CLI: exit 1 and exactly one PROMISE line on a mixed reply (got rc %s, %d lines)" % (r.returncode, len(hits)))
     hook = open(os.path.join(REPO, ".claude/hooks/conductor_goodbye.py"), encoding="utf-8").read()
-    rs = open(os.path.join(RIMFLOW, "seat_restart.py"), encoding="utf-8").read()
     check("promise_scan" in hook, "the per-prompt notice hook uses promise_scan")
-    check("promise_scan" in rs and "UNTRACKED promise" in rs,
-          "seat_restart files a backstop kill's untracked promises as owed items")
     passed = sum(ok for ok, _ in RESULTS)
     for ok, what in RESULTS:
         print("%s  %s" % ("ok  " if ok else "FAIL", what))

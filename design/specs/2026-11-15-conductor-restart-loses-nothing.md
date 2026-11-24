@@ -138,14 +138,12 @@ Each element names the loss it stops:
   tracked if it names an open owed id, names the item an open owed item acts on, or holds most of an open owed item's
   title words. A target item's id alone, with no owed item on it, does not: T16 named its item and was lost. The
   per-prompt notice prints the last reply's untracked promises as a note (`NOTE, nothing blocked: …`), so the window
-  can file a real one on its next turn. Nothing blocks a turn in this version. At a backstop kill, where no next turn exists,
-  `seat_restart.py` files each one as `owed` titled `UNTRACKED promise: <sentence>`, before the shard-publish path runs.
+  can file a real one on its next turn. Nothing blocks a turn in this version. After a backstop kill, the next window's wake prints the dead window's last reply (the kill queue is
+  retired: `design/specs/2026-11-23-owed-sources-retired/boundary.md`).
   Blocking at the Stop hook is a later decision, taken only after a week's false-positive count.
-- **E3 — explicit Conductor hand steps become owed items at their source** (stops M3: row 26). The Dispatcher tick runs
-  `owed.py sync-sources`. It files one owed item for each maturation row whose next step says the Conductor decides
-  (three blind cycles) or that a card goes to him, and for each detached run record carrying `owed_close` whose item is
-  still open. Each item is keyed by its source and serialized through the ledger writer, so a key is never filed twice,
-  even by two runs at once. Plain failed runs are not sources (noise, §4).
+- **E3 — explicit Conductor hand steps become owed items at their source** (stops M3: row 26). Retired 2026-11-23: the
+  step was killed on almost every pass. Its sources' homes now are in
+  `design/specs/2026-11-23-owed-sources-retired/boundary.md`.
 
 Not changed: the goodbye close-out (no goodbye fired in 7 days, so it gets E1's view and nothing else), the held and
 refused restart fixes (built), the context limits, the handoff prose, and the full queue.
@@ -167,7 +165,7 @@ Verbatim, with the question: `design/specs/2026-11-15-conductor-restart-loses-no
 - **E2 advisory first**: per-sentence matching, a target id alone not counting, no blocking during goodbye, handoff
   or backstop, and capture before the shard publish (its B.4).
 - **E3 narrowed** to the explicit Conductor hand steps the code already names, with a stable key and serialized,
-  concurrency-proof filing (its B.5). The acceptance test runs two `sync-sources` at once.
+  concurrency-proof filing (its B.5).
 - **E4 a validator**: pointers cite owed ids, and `--check` mutates nothing (its B.6).
 - **Build order**: E1 first (its D.8).
 
@@ -189,8 +187,8 @@ Each ticket has a runnable acceptance test written at filing. I watched each one
 |---|---|---|---|---|---|
 | 1 | `RIMMANDRAKE_LIST_CONDUCTOR_OWES_FIRST_AT_EVERY_WAKE` (E1) | M1; seeds the 2 open debts | `python3 src/RimMandrake/rimflow/acceptance/owed_view_accept.py` | FAIL 2/17 | PASS 17/17 |
 | 2 | `RIMMANDRAKE_REFUSE_HANDOFF_POINTER_WITHOUT_OWED_ID` (E4) | M2 | `python3 src/RimMandrake/rimflow/acceptance/owed_pointers_accept.py` | FAIL 0/7 | PASS 7/7 |
-| 3 | `RIMMANDRAKE_SHOW_UNTRACKED_PROMISES_NEXT_PROMPT_FILE_AT_KILL` (E2) | the prose promises (6 of 9 losses) | `python3 src/RimMandrake/rimflow/acceptance/owed_promise_scan_accept.py` | FAIL 0/21 | PASS 21/21 |
-| 4 | `RIMMANDRAKE_FILE_OWED_WHERE_RUNS_PARK_FOR_THE_CONDUCTOR` (E3) | M3 | `python3 src/RimMandrake/rimflow/acceptance/owed_sources_accept.py` | FAIL 2/10 | PASS 10/10 |
+| 3 | `RIMMANDRAKE_SHOW_UNTRACKED_PROMISES_NEXT_PROMPT_FILE_AT_KILL` (E2) | the prose promises (6 of 9 losses) | `python3 src/RimMandrake/rimflow/acceptance/owed_promise_scan_accept.py` | FAIL 0/21 | PASS 20/20 (21/21 before the kill queue was retired) |
+| 4 | `RIMMANDRAKE_FILE_OWED_WHERE_RUNS_PARK_FOR_THE_CONDUCTOR` (E3) | M3 | retired with E3 (2026-11-23) | FAIL 2/10 | PASS 10/10 |
 
 The tickets are ordered by dependency: 2–4 file or read `kind: owed` items, and 1 makes them visible and dischargeable.
 Ticket 3's positive cases are the measured sentences themselves.

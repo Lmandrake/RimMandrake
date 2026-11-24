@@ -20,8 +20,7 @@ the status page read the steward journal's prose `Next:` line. Each reader of th
 - `by`: who does the next act (the text in `NEXT (...)`). `next_act`: the act.
 - `next`: always `"NEXT (%s): %s" % (by, next_act)`.
 - `tick`: what the tick's last reading says of the mod (`line`, `decision`, `klass`, `at_pac`), or why it says nothing.
-- With `gate=True`: `gate_next`, the stage record's own NEXT line before any hold, switch, pause or tick (the Conductor
-  hand steps that `owed.py` files are read from it), and every key of `maturation.gate_step` (the stage record's exit tests: `stage`, `refusals`,
+- With `gate=True`: `gate_next`, the stage record's own NEXT line before any hold, switch, pause or tick, and every key of `maturation.gate_step` (the stage record's exit tests: `stage`, `refusals`,
   `hand_steps`, `spend`, `launch`, `blind`, `ingame`, ...). `maturation.next_step` is `next_for` with `gate=True`.
 - With `gate=False`: no exit test runs (a mod at the owner's walk costs about a minute of exit tests, measured
   2026-11-22: FlowWorks 64 s). `stage` comes from the stage record file alone.

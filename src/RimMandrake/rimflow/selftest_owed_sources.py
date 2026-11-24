@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Regression checks for owed.py sync-sources and its Dispatcher hook (RIMMANDRAKE_FILE_OWED_WHERE_RUNS_PARK_FOR_THE_
-CONDUCTOR), one per hole Codex's review found on 2026-11-18; the contract itself is acceptance/owed_sources_accept.py.
+"""Offline selftest of the retired Dispatcher step `owed_sources` (owed.py sync-sources) and of the homes that do its work
+now: one test per promise on design/specs/2026-11-23-owed-sources-retired/boundary.md
+(RIMMANDRAKE_RETIRE_OR_REPAIR_OWED_SOURCES_KILLED_EVERY_TICK: killed on 210 of 210 passes on 2026-11-22 UTC).
 
     python3 src/RimMandrake/rimflow/selftest_owed_sources.py      # exit 0 and "PASS n/n"
 """
@@ -11,12 +12,17 @@ import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-import owed  # noqa: E402
+sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import dispatcher as D  # noqa: E402
+import detached_helper as DH  # noqa: E402
+import maturation_autonomy as AUT  # noqa: E402
+import maturation_now as MN  # noqa: E402
+import seat_restart as SR  # noqa: E402
 
 RESULTS = []
+OLD_QUEUE = "untracked_" + "promises"       # spelled apart: this file is under src, which must not name it
 
 
 def check(ok, what):
@@ -24,123 +30,122 @@ def check(ok, what):
 
 
 class It:
-    def __init__(self, open_=True):
-        self.open = open_
+    def __init__(self, state):
+        self.state = state
+        self.open = state not in ("done", "dropped", "superseded")
 
 
-def keys_round_trip():
-    rows = [{"mod": "Example", "version": "0.1.0+build", "stage": "his_walk", "blind": None,
-             "next": "NEXT (OWNER, a card in the Conductor log): his words"},
-            {"mod": "Other", "version": None, "stage": None, "blind": {"visit": 3},
-             "next": "NEXT (PAUSED: three cycles, the Conductor decides): bring the findings"}]
-    for key, _, title, _, _ in owed.maturation_sources(rows):
-        got = owed.SOURCE_RX.findall("%s [%s %s]" % (title, owed.SOURCE_TAG, key))
-        check(got == [key], "a key reads back whole from its title (%s -> %s)" % (key, got))
-    a, b = (owed.maturation_sources([dict(rows[0], version=v)])[0][0] for v in ("0.1.0+build", "0.1.0-build"))
-    check(a != b, "two versions never share a key (%s, %s)" % (a, b))
-    quoted = [{"mod": "Q", "version": "0.1.0", "stage": "blind_challenge", "blind": None,
-               "next": "NEXT (automatic: one steward run): the steward says the Conductor decides later"}]
-    check(owed.maturation_sources(quoted) == [], "words quoted after the NEXT tag are not a hand step")
+def t_no_step_in_the_dispatcher():
+    sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8"))
+    check("owed_sources_every_s" not in sch, "dispatcher_schedule.json does not hold owed_sources_every_s")
+    for key in (300, None):
+        started, journalled = [], []
+        saved = D.subprocess.Popen, D.subprocess.run, D.journal
 
+        def spy(argv, *a, **k):
+            started.append(" ".join(map(str, argv)) if isinstance(argv, (list, tuple)) else str(argv))
+            raise OSError("the test starts no child")
 
-def names_never_run_out():
-    known = set()
-    recs = [{"unit": "rm-detached-bench-x-%d" % i, "item": "RIMMANDRAKE_FIX_SAME_PREFIX_ITEM_OPEN", "owed_close": "open"}
-            for i in range(40)]
-    srcs = owed.detached_sources(recs, {"RIMMANDRAKE_FIX_SAME_PREFIX_ITEM_OPEN": It()})
-    names = []
-    for key, bases, _, _, _ in srcs:
-        n = owed._free_name(bases, known)
-        names.append(n)
-        if n:
-            known.add(n)
-    check(len(srcs) == 40 and None not in names and len(set(names)) == 40,
-          "40 runs on one item prefix each get their own name (%d named)" % len([n for n in names if n]))
-
-
-def holds_on_every_path():
-    rows = [{"mod": "Graffiti"}, {"mod": "Pyrelands"}]
-    recs = [{"item": "RIMMANDRAKE_AUTOBUILD_GRAFFITI_THIRTY_THINGS"}, {"item": "RIMMANDRAKE_JUDGE_PYRELANDS_BLIND"},
-            {"item": "RIMMANDRAKE_FIX_GRAFFITIPAINT_OTHER"}]
-    r2, c2 = owed.held_filter(rows, recs, {"Graffiti": {"mod": "Graffiti", "said": "stop", "date": "2026-11-18"}})
-    check([r["mod"] for r in r2] == ["Pyrelands"], "a held mod's row is dropped, the other kept")
-    check([r["item"] for r in c2] == ["RIMMANDRAKE_JUDGE_PYRELANDS_BLIND", "RIMMANDRAKE_FIX_GRAFFITIPAINT_OTHER"],
-          "a held mod's run is dropped by its word, a longer word is not that mod")
-
-
-def unread_records_said():
-    tmp = tempfile.mkdtemp(prefix="owed_selftest_")
-    det = os.path.join(tmp, "det")
-    items = os.path.join(tmp, "items")
-    os.makedirs(det)
-    os.makedirs(items)
-    open(os.path.join(det, "rm-detached-torn.json"), "w").write("{\"unit\": ")
-    mj = os.path.join(tmp, "m.json")
-    json.dump([{"mod": "Pyrelands", "version": "0.1.0", "stage": "blind_challenge", "blind": {"visit": 3},
-                "next": "NEXT (PAUSED: three cycles, the Conductor decides): x"}], open(mj, "w"))
-    env = {k: v for k, v in os.environ.items() if not k.startswith("RIMFLOW_")}
-    env.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=items, RIMFLOW_SEAT="BENCH",
-               RIMFLOW_PROBE="no-reading", PYTHONDONTWRITEBYTECODE="1")
-    r = subprocess.run([sys.executable, os.path.join(HERE, "owed.py"), "sync-sources", "--maturation-json", mj,
-                        "--detached-dir", det], cwd=REPO, env=env, capture_output=True, text=True, timeout=300)
-    check(r.returncode == 2 and "could not read 1 detached record" in r.stdout and "FILED " in r.stdout,
-          "a torn record exits 2 naming it, and the readable source is still filed (rc %d)" % r.returncode)
-
-
-def one_filing_a_pass():
-    tmp = tempfile.mkdtemp(prefix="owed_max_")
-    det, items = os.path.join(tmp, "det"), os.path.join(tmp, "items")
-    os.makedirs(det)
-    os.makedirs(items)
-    mj = os.path.join(tmp, "m.json")
-    json.dump([{"mod": m, "version": "0.1.0", "stage": "blind_challenge", "blind": {"visit": 3},
-                "next": "NEXT (PAUSED: three cycles, the Conductor decides): x"} for m in ("Pyrelands", "FlowWorks")],
-              open(mj, "w"))
-    env = {k: v for k, v in os.environ.items() if not k.startswith("RIMFLOW_")}
-    env.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=items, RIMFLOW_SEAT="BENCH",
-               RIMFLOW_PROBE="no-reading", PYTHONDONTWRITEBYTECODE="1")
-    argv = [sys.executable, os.path.join(HERE, "owed.py"), "sync-sources", "--maturation-json", mj, "--detached-dir", det,
-            "--max-file", "1"]
-    outs = [subprocess.run(argv, cwd=REPO, env=env, capture_output=True, text=True, timeout=300) for _ in range(3)]
-    filed = [o.stdout.count("FILED ") for o in outs]
-    check(filed == [1, 1, 0] and all(o.returncode == 0 for o in outs) and "WAITS " in outs[0].stdout,
-          "--max-file 1 files one a pass, says the other waits, exits 0 (filed %s)" % filed)
-
-
-def dispatcher_gates():
-    calls = []
-    sch = {"owed_sources_every_s": 300, "ledger_notes": False, "publish": True}
-
-    def run(paused=None, fence=None, last=None):
-        st = {"alarms": {}}
-        if last is not None:
-            st["owed_sources_at"] = last
-        calls.clear()
-        fx = {"owed_sources": lambda t, d: calls.append(t) or "sync-sources: 0 filed",
-              "lock": lambda: open(os.devnull, "w"), "paused": lambda: paused, "publish": lambda n: None}
-        root = tempfile.mkdtemp(prefix="owed_disp_")
+        old = {"ledger_notes": False, "publish": True}       # the note and publish path on, as in a live pass
+        if key:
+            old["owed_sources_every_s"] = key
+        fx = {"lock": lambda: open(os.devnull, "w"), "paused": lambda: None, "publish": lambda n: None,
+              "owed_sources": lambda *a: started.append("owed_sources ran") or "ran"}
+        D.subprocess.Popen, D.subprocess.run = spy, spy
+        D.journal = lambda root, rec: journalled.append(rec)
         try:
-            D.execute([], sch, st, root, True, 1000.0, fx=fx, deadline=10 ** 12, fence=fence)
-        except D.Fenced:
-            return "fenced", st
-        return len(calls), st
+            D.execute([], old, {"alarms": {}}, tempfile.mkdtemp(prefix="owed_disp_"), True, 1000.0, fx=fx,
+                      deadline=10 ** 12)
+            err = None
+        except Exception as e:  # noqa: BLE001 - said in the check
+            err = "%s: %s" % (type(e).__name__, e)
+        finally:
+            D.subprocess.Popen, D.subprocess.run, D.journal = saved
+        check(err is None, "an applied pass ends (old key %s): %s" % (key, err))
+        check(not [s for s in started if "owed" in s] and not [r for r in journalled if r.get("do") == "owed_sources"],
+              "an applied pass starts no owed.py and journals no owed_sources (old key %s): %s" % (key, started))
+    check(not hasattr(D, "owed_sources"), "dispatcher.py has no owed_sources")
 
-    n, st = run()
-    check(n == 1 and st.get("owed_sources_at") == 1000.0, "an applied tick runs sync-sources once and stamps it")
-    check(run(last=900.0)[0] == 0, "within owed_sources_every_s it does not run again")
-    check(run(paused="paused")[0] == 0, "a PAUSE skips it")
-    check(run(fence=lambda what: False)[0] == "fenced", "a moved metronome generation fences it")
-    n, st = run()
-    check(n == 1 and calls and calls[0] <= D.OWED_SOURCES_CAP_S, "its child gets at most OWED_SOURCES_CAP_S")
+
+def t_old_command_is_refused():
+    tmp = tempfile.mkdtemp(prefix="owed_old_cmd_")            # a throwaway ledger: a regressed copy never files for real
+    env = dict(os.environ, RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=tmp, RIMFLOW_SEAT="BENCH")
+    try:
+        r = subprocess.run([sys.executable, os.path.join(HERE, "owed.py"), "sync-sources"], cwd=REPO, env=env,
+                           capture_output=True, text=True, timeout=60)     # hang guard: the old read ran past 110 s
+        rc, out = r.returncode, r.stdout + r.stderr
+    except subprocess.TimeoutExpired:
+        rc, out = "still running at 60 s", ""
+    check(rc == 2 and "check-pointers" in out and "OWED " not in out,
+          "owed.py sync-sources exits 2 naming the commands that exist (rc %s: %s)" % (rc, out[-160:].strip()))
+
+
+def t_a_size_kill_writes_no_queue():
+    tmp = tempfile.mkdtemp(prefix="owed_kill_")
+    tx = os.path.join(tmp, "t.jsonl")
+    with open(tx, "w") as f:
+        f.write(json.dumps({"type": "assistant", "message": {"role": "assistant", "content": [
+            {"type": "text", "text": "When the slot frees I will launch it."}]}}) + "\n")
+    sch = {"seat_restart": {"enabled": True, "seats": {"BENCH": {"kind": "conductor", "backstop": True}}}}
+    st = {"seat_restart": {"BENCH": {"state": "claimed", "source": "backstop", "start": 77, "ts": 1.0, "tx_path": tx}}}
+    a = {"do": "restart_kill", "seat": "BENCH", "pid": 4242, "session_id": "S", "session_name": "CONDUCTOR",
+         "argv": ["claude"]}
+    queued = []
+    fx = {"session_file": lambda pid: {"sessionId": "S", "name": "CONDUCTOR", "status": "idle"},
+          "recheck": lambda *x: [], "start": lambda pid: 77, "write_killed": lambda *x: None,
+          "final": lambda *x: [], "kill": lambda pid, start=None: "SIGTERM, exited",
+          "promises": lambda seat, rs: queued.append(seat) or "queued 1"}
+    res = SR.execute(a, sch, st, True, 100.0, fx)
+    check(str(res).startswith("killed"), "a backstop kill still kills the window (%s)" % str(res)[:80])
+    check(not queued and "promises" not in st["seat_restart"]["BENCH"], "a backstop kill queues no promise (%s)" % queued)
+    named, looked = [], 0
+    for top in ("src", ".claude"):
+        for d, dirs, files in os.walk(os.path.join(REPO, top)):
+            dirs[:] = [x for x in dirs if x not in ("__pycache__", "bin", "obj", "Textures")]
+            for n in files:
+                if n.endswith((".py", ".sh", ".json", ".md")):
+                    looked += 1
+                    with open(os.path.join(d, n), encoding="utf-8", errors="replace") as f:
+                        if OLD_QUEUE in f.read():
+                            named.append(os.path.join(top, n))
+    check(looked > 100 and not named, "no code file names the old queue (%d read): %s" % (looked, named))
+
+
+def t_cycle_limit_is_paused():
+    row = {"mod": "Pyrelands", "decision": "cycle_limit", "why": "three blind cycles in this visit ended not met"}
+    AUT._klass({}, {}, row, 1000.0, {})
+    rd = AUT.annotate({"mods": {}}, [row])
+    check(row.get("klass") == "paused" and len(rd["paused"]) == 1 and rd["paused"][0].startswith("Pyrelands: "),
+          "a cycle_limit row is paused and listed (%s, %s)" % (row.get("klass"), rd["paused"]))
+
+
+def t_his_card_is_in_the_log():
+    wrote, st = [], {}
+    rows = [{"mod": "FlowWorks", "klass": "owner", "card": "FlowWorks 0.1.0 stands at his walk."},
+            {"mod": "Other", "klass": "wait", "card": "not his"}]
+    for _ in range(2):
+        AUT.post_cards(rows, st, 1000.0, {"card": wrote.append})
+    check(len(wrote) == 1 and "FlowWorks 0.1.0 stands at his walk." in wrote[0],
+          "an owner card is written to the Conductor log once (%d)" % len(wrote))
+
+
+def t_run_left_open_is_a_need():
+    rec = {"unit": "rm-detached-x-1", "item": "RIMMANDRAKE_X_LEFT_OPEN", "result": "success (exited 0)", "at": 1.0,
+           "owed_close": "open"}
+    for state, want in (("doing", 1), ("done", 0)):
+        lines = DH.owed_lines([rec], {"RIMMANDRAKE_X_LEFT_OPEN": It(state)}, [])
+        got = MN.conductor_needs([], {}, 1000.0, owed=lines)["conductor"]
+        check(len(got) == want and all("rm-detached-x-1" in g for g in got),
+              "a run left open with its item %s is %d need(s): %s" % (state, want, got))
 
 
 def main():
-    keys_round_trip()
-    names_never_run_out()
-    holds_on_every_path()
-    unread_records_said()
-    one_filing_a_pass()
-    dispatcher_gates()
+    t_no_step_in_the_dispatcher()
+    t_old_command_is_refused()
+    t_a_size_kill_writes_no_queue()
+    t_cycle_limit_is_paused()
+    t_his_card_is_in_the_log()
+    t_run_left_open_is_a_need()
     passed = sum(ok for ok, _ in RESULTS)
     for ok, what in RESULTS:
         print("%s  %s" % ("ok  " if ok else "FAIL", what))

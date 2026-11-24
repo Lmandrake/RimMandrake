@@ -8,7 +8,6 @@ The OLD paths are the code at BASE (read with `git show`, never a copy kept here
      Dispatch tick recorded in ticks.jsonl (the counts are in recorded_inputs.json beside the page).
   2. control.why (`./pipe why`) against the control store at every revision of the committed acts export
      (infrastructure/state/control/acts.jsonl), for every mod those acts name.
-  3. owed.not_held (its word match) against every run record's item id, under every hold set of 2.
 
 Each difference is classed in CLASSED below with the case and why the new verdict stands; an unclassed difference is
 a failure. Nothing here reads a live store: the recorded inputs are committed, the control store is a temp file.
@@ -22,7 +21,6 @@ import collections
 import importlib.util
 import json
 import os
-import re
 import shutil
 import subprocess
 import sys
@@ -48,8 +46,6 @@ CLASSED = {
     ("why", "none", "off"): "old wrong: a stage switch (`pipe off stage:<stage>`) blocks a mod that stands at that stage; "
                             "the old why ignored it. Seen 2026-11-22 when FlowWorks went back to in_game (revs 76 and "
                             "79 hold stage:in_game off): the case reads each mod's live stage record",
-    ("owed", "kept", "dropped"): "the identity home's rule (item_identity.item_mod): a held mod named by its initials "
-                                 "or a 7+ letter word of its name is that mod; the old word match missed it",
 }
 
 
@@ -240,33 +236,6 @@ def t_pipe_why(tmp, diffs):
     return states, mods
 
 
-# ---- 3. owed's hold filter ----------------------------------------------------------------------------------------------
-
-def t_owed_filter(fx, states, diffs):
-    import owed
-    not_held = old_function("src/RimMandrake/rimflow/owed.py", "not_held", {"re": re})
-    items = [{"item": i, "mod": m or None} for i, m, _ in fx["records"]["items"]]
-    n, sets = 0, set()
-    for rev, sw in states:
-        held = tuple(sorted({s[0][4:] for s in sw if s[0].startswith("mod:") and "/" not in s[0]}))
-        if held in sets:
-            continue
-        sets.add(held)
-        holds = {m: {"mod": m, "said": "rec", "date": ""} for m in held}
-        names = {re.sub(r"[^A-Z0-9]", "", m.upper()) for m in held}
-        _, old_kept = not_held([], items, names)
-        _, new_kept = owed.held_filter([], items, holds)
-        ok_ = {id(r) for r in old_kept}
-        nk = {id(r) for r in new_kept}
-        for r in items:
-            n += 1
-            o, w = ("kept" if id(r) in ok_ else "dropped"), ("kept" if id(r) in nk else "dropped")
-            if o != w:
-                diffs[("owed", o, w)].append("%s under %s" % (r["item"], "+".join(held)))
-    check(n > 0, "owed's filter compared on %d (hold set, run item) pairs: %d hold sets, %d run items from %d records" % (
-        n, len(sets), len(items), fx["records"]["records"]))
-
-
 def main(argv):
     if "--record" in argv:
         record()
@@ -278,8 +247,7 @@ def main(argv):
     diffs = collections.defaultdict(list)
     try:
         t_tick_overlay(fx, diffs)
-        states, _ = t_pipe_why(tmp, diffs)
-        t_owed_filter(fx, states, diffs)
+        t_pipe_why(tmp, diffs)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     for k in sorted(diffs):

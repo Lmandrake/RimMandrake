@@ -12,7 +12,7 @@ built. OVERTAKEN: a later ruling of his decides it. Each reading is [measured] u
 | 1 git publication off the metadata path | PARTLY | `74d8295d69` (a write lands its own shards); `8d9160362d` this run: `./publish --ledger` lands shards alone, past the clone lock, with no peer's commit; `dfe46ca961` repairs what the fresh read found. Batch two's measure (§Batch two): p50 18.4 s before, 6.4 s after (30 landings) | a ledger write still costs one fetch and one push, and the `rimflow` write itself about 15 s at load 42 |
 | 2 close consumes evidence | DONE | no close is refused for a missing pass since 2026-11-21 (`design/specs/2026-11-21-repair-at-the-refusal`); `8d9160362d`: `close --evidence` writes the pass with the close (`dfe46ca961`: a refused close now writes neither). Before: 357 of 364 code closes marked `uncheckedLifted` | none |
 | 3 cards by reference | DONE | `3e224420d1` (`card_repair`: the launch adds the card's text and never refuses) | none |
-| 4 delete sentence-based owed detection | PARTLY, the rest not recommended | the demand became a note (`3e224420d1`, `covered`). The note works: of 176 turns that showed it, 35 (20%) filed an owed item; of 1,860 other turns, 130 (7%) did. I read all 35: about 25 filed the act that the note named. His one-list rule of 2026-11-22 says that a debt in a reply must be filed | the kill queue half: 2 rows ever, both false, none filed. It goes with `RIMMANDRAKE_RETIRE_OR_REPAIR_OWED_SOURCES_KILLED_EVERY_TICK` |
+| 4 delete sentence-based owed detection | PARTLY, the rest not recommended | the demand became a note (`3e224420d1`, `covered`). The note works: of 176 turns that showed it, 35 (20%) filed an owed item; of 1,860 other turns, 130 (7%) did. I read all 35: about 25 filed the act that the note named. His one-list rule of 2026-11-22 says that a debt in a reply must be filed | none: the kill queue (2 rows ever, both false) is deleted with the `owed_sources` step (`design/specs/2026-11-23-owed-sources-retired/boundary.md`) |
 | 5 readable titles and machine ids | OVERTAKEN, done as he ruled | his card: "Keep grammar, never refuse"; `9e5768e86f` | none |
 | 6 executable delegation | OVERTAKEN | his card did not pick "Let helpers do Conductor acts"; he picked "Small acts directly" (`1cc795be16`). `CLAUDE.md` §Only five acts: no helper does these acts. Restamps: `repin` (`789e331d85`) and `concept_tree.py carry` exist, on his card or the Conductor's act | none |
 | 7 enforcement at the operation's boundary | NOT DONE, low value | 15 PreToolUse hooks read each Bash call, 15 to 26 ms each; 4 of the checks also run in the git pre-push hook | a list of false blocks by hook would decide. No count exists |
@@ -105,7 +105,7 @@ Measured from the subagent transcripts of 14 days (`Agent` runs of each kind):
 
 ## Recommended order for the rest
 
-1. `RIMMANDRAKE_RETIRE_OR_REPAIR_OWED_SOURCES_KILLED_EVERY_TICK` (a failure that happens every tick; filed).
+1. Done 2026-11-23: `RIMMANDRAKE_RETIRE_OR_REPAIR_OWED_SOURCES_KILLED_EVERY_TICK` (the step and the kill queue are retired).
 2. Change 13: an early checkpoint signal before the spend stop.
 3. Change 7: count the false blocks of each hook for one week, then move only the worst.
 4. Change 12: count runs on two items with one cause for one week.

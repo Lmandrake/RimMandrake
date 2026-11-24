@@ -15,14 +15,14 @@ HOW (the doorbell's pattern, doorbell.py, with no Dispatcher in the path):
     in armed.json and leaves); it dies with its window and gives up after MAX_WAIT_S.
   * `detached_helper.finish` calls post() for a run of the Conductor's seat (BENCH): with a live armed window it writes
     ONE pending/<unit>.json carrying the run id, its terminal state and the full result path; with none it writes
-    nothing (the Conductor log line is the record, and a run left open is an owed item: owed.py sync-sources).
+    nothing (the Conductor log line is the record; left_open_continue.py and MATURATION_NOW carry a run left open).
   * Nothing is delivered while the window's restart drain stands (seat_restart.handoff_drain): the pending file waits
     for the next window, which arms on its first Stop.
 Only the Conductor window arms: AGENT_SEAT BENCH, a session named CONDUCTOR (or its alias), and an interactive
 `claude` (session entrypoint `cli`; a detached `claude -p` run reads `sdk-cli`, measured 2026-11-18), so a detached run on
 seat BENCH never arms and can never take a delivery meant for him. Arming, the owner check and the consume share one
 lock, so a superseded waiter never delivers; a waiter that gives up (MAX_WAIT_S) or outlives its window disarms, so no
-run end is posted to a window nobody waits in (after 23 h idle the log line and the owed item are the record).
+run end is posted to a window nobody waits in (after 23 h idle the log line is the record).
 """
 import fcntl
 import json

@@ -2508,48 +2508,7 @@ def execute(a, sch, st, apply, now, fx=None):
     rs.update(state="killed", killed_at=kt, kill=how, window_s=rec["window_s"])
     if goodbye:
         _log_after_goodbye(seat, config(sch).get(seat), rs)
-    # a backstop kill leaves no next turn to file the dead window's promises: queue them (E2; a test's fx only by name)
-    promises_after_kill(seat, sch, rs, fx)
     return "killed pid %s (%s)" % (a["pid"], how)
-
-
-def promises_after_kill(seat, sch, rs, fx):
-    """Queue the dead window's untracked promises when the kill was a backstop (size) kill of a Conductor window: a
-    goodbye or a handoff had its close-out turn, a backstop had none. A test's fx runs it only by name. -> the result,
-    also kept in rs["promises"], or None when this kill queues nothing."""
-    qp = fx.get("promises") or (None if fx else queue_untracked_promises)
-    if not qp or rs.get("source") not in FORCED or (config(sch).get(seat) or {}).get("kind") != "conductor":
-        return None
-    rs["promises"] = qp(seat, rs)
-    return rs["promises"]
-
-
-def queue_untracked_promises(seat, rs, root=None):
-    """At a backstop kill, the dead Conductor window's last reply's untracked promises (promise_scan.py) are each queued
-    as one `UNTRACKED promise: <sentence>` line in <state>/untracked_promises.jsonl; `owed.py sync-sources` (the
-    Dispatcher tick) files each as a `kind: owed` item for the Conductor, one a pass, never twice. Queued, not filed
-    here: one filing replays the ledger in 4-10 s (measured 2026-11-18) and the kill runs inside a ~20 s beat
-    (RIMMANDRAKE_SHOW_UNTRACKED_PROMISES_NEXT_PROMPT_FILE_AT_KILL). -> what it did, for the restart state. Never raises:
-    the window is already dead, and a backstop is never refused for its promises."""
-    try:
-        import promise_scan
-        path = rs.get("tx_path")
-        text = last_assistant_text(path, tail_bytes=8 << 20, skip=REPLY_SKIP) if path else ""
-        if not text.strip():
-            return "UNMEASURED: no last reply could be read from %s" % (path or "(no transcript recorded)")
-        hits = promise_scan.scan(text)
-        if not hits:
-            return "no untracked promise in the last reply"
-        q = os.path.join(root or doorbell.state_dir(), "untracked_promises.jsonl")
-        now = time.time()
-        with open(q, "a", encoding="utf-8") as f:
-            for h in hits:
-                f.write(json.dumps({"at": _iso(now), "seat": seat, "session_id": rs.get("session_id"),
-                                    "tx_path": path, "sentence": h, "title": "UNTRACKED promise: %s" % " ".join(h.split())},
-                                   ensure_ascii=False) + "\n")
-        return "queued %d untracked promise(s) in %s" % (len(hits), q)
-    except Exception as e:  # noqa: BLE001 - said in the restart state, never raised past a done kill
-        return "promise queue FAILED (%s: %s)" % (type(e).__name__, e)
 
 
 def _log_after_goodbye(seat, cfg, rs):

@@ -8,3 +8,4 @@
   `build_match.check_visit` -> `rerun_relation.relate`). `next_for(gate=False)` avoids it for the page and `pipe why`.
 - `maturation_rescue.observe` and `ops_watch` read holds as `set(OH.load())` by key. The keys are already
   `mod_owner_hold.key`, so they agree with `OH.held`; not a second rule.
+- `maturation.next_step` of FlowWorks (in_game) took 116 s on 2026-11-23 at load 7.5 (4379 subprocess runs, 9114 stats); the boundary page says 64 s on 2026-11-22.

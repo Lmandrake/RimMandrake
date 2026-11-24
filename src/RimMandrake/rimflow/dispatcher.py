@@ -1588,25 +1588,6 @@ def publish_bounded(n, timeout, argv=None, kill_wait=10, env=None):
     return None if out == "None" else (out.splitlines() or [""])[-1]
 
 
-OWED_SOURCES_MIN_S = 4          # sync-sources reads in ~1.7 s (measured 2026-11-18); it defers its push past its deadline
-OWED_SOURCES_CAP_S = 10         # one filing replays the ledger (4-10 s measured): one a pass, never the whole beat
-OWED_SOURCES_MARGIN_S = 2       # the child's own deadline is this far before its kill: it stops and says so, never killed
-OWED_SOURCES_RESERVE_S = 4      # left for the tick's publish and helper budget (the first live pass, 22:05 UTC
-                                # 2026-11-18, ran 11.6 s and cut the helper budget)
-
-
-def owed_sources(timeout, deadline=None):
-    """`owed.py sync-sources --publish --max-file 1` as RUNNER (a program seat spawns; `file` is a window's verb), in a
-    child killed at `timeout` (publish_bounded's guard). -> its last line: `sync-sources: N filed, …`, or what stopped
-    it. A killed child's spawns stay in the RUNNER shard, which the RUNNER ingest publishes (ingest.unpublished): the
-    first live pass's one spawn reached origin that way, d8c1ff0482."""
-    argv = [sys.executable, os.path.join(HERE, "owed.py"), "sync-sources", "--publish", "--max-file", "1"]
-    argv += ["--deadline", "%.3f" % deadline] if deadline is not None else []
-    env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO)
-    out = publish_bounded(0, timeout, argv=argv, env=env) or "sync-sources: no output"
-    return out.replace("publish KILLED", "sync-sources KILLED", 1)
-
-
 def git_lock(wait_s=90):
     """testq's ingest.lock: the RUNNER ingest commits, pull --rebases and pushes in this same dispatch clone. Our note
     appends (an unstaged DISPATCHER.jsonl) and our publish must not interleave with its pull --rebase, or each makes
@@ -2128,24 +2109,6 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                    % (len(deferred), ", ".join(sorted({str(x.get("do")) for x in deferred})), ", ".join(back) or "none")}
             journal(root, rec)
             actions.append(rec)
-        # the explicit Conductor hand steps become owed items where they park (owed.py sync-sources, spec
-        # 2026-11-15-conductor-restart-loses-nothing.md E3), so no window has to be alive when a run's result lands;
-        # under the ingest.lock held here, at most every owed_sources_every_s. A test's fx runs it only by name.
-        do_owed = fx.get("owed_sources") or (None if fx else owed_sources)
-        if (apply and ledger_ok and do_owed is not None and sch.get("owed_sources_every_s")
-                and now - st.get("owed_sources_at", -1e18) >= sch["owed_sources_every_s"]
-                and deadline - time.time() - OWED_SOURCES_RESERVE_S >= OWED_SOURCES_MIN_S and not do_paused()):
-            if fence is not None and not fence("owed_sources"):
-                raise Fenced("fenced before owed_sources: the metronome generation moved on")
-            t0 = time.time()
-            st["owed_sources_at"] = now
-            try:
-                budget = min(OWED_SOURCES_CAP_S, deadline - time.time() - OWED_SOURCES_RESERVE_S)
-                out = do_owed(budget, time.time() + budget - OWED_SOURCES_MARGIN_S)
-            except Exception as e:  # noqa: BLE001
-                out = "error: %s: %s" % (type(e).__name__, str(e))
-            timing["owed_sources"] = round(time.time() - t0, 3)
-            journal(root, {"at": iso(now), "do": "owed_sources", "result": out})
         if apply and ledger_ok and sch.get("publish") and not published_early:
             publish_step(notes)
     finally:
