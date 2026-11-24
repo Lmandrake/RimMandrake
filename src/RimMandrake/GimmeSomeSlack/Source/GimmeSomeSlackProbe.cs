@@ -676,7 +676,7 @@ namespace RimMandrake.GimmeSomeSlack
                              ",\"powered\":" + J.B(powered) + "}");
                 }
             return "{\"success\":true,\"cmd\":\"switchlights\",\"setting\":" + J.B(GimmeSomeSlackSettings.switchLight) + ",\"switches\":[" +
-                   string.Join(",", rows) + "],\"drawnGreen\":" + SwitchLightDraw.LastGreen + ",\"drawnRed\":" + SwitchLightDraw.LastRed +
+                   string.Join(",", rows) + "],\"drawnGlowOut\":" + SwitchLightDraw.LastGlowOut + ",\"drawnGreen\":" + SwitchLightDraw.LastGreen + ",\"drawnRed\":" + SwitchLightDraw.LastRed +
                    ",\"drawnDark\":" + SwitchLightDraw.LastDark + "}";
         }
 

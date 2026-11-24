@@ -33,10 +33,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             bool round = names.All(n => ConduitStyles.TryParseStyleDefName(n, out string d, out string l, out string c) &&
                                         ConduitStyles.StyleDefName(d, l, c) == n);
             // 0.2.0 (bar wall_lamp_takes_looks): the wall lamp's 4 looks join the roster (28 -> 32)
-            Check(names.Count == 32 && names.Distinct().Count() == 32 && round && ConduitStyles.KeysFor("PowerConduit").Count == 10 &&
+            // 0.2.0 by his order of 2026-11-24 (RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP): the battery's 4 looks join (32 -> 36)
+            Check(names.Count == 36 && names.Distinct().Count() == 36 && round && ConduitStyles.KeysFor("PowerConduit").Count == 10 &&
                   ConduitStyles.KeysFor("PowerSwitch").Count == 4 && ConduitStyles.KeysFor("StandingLamp").Count == 4 &&
-                  ConduitStyles.KeysFor("WallLamp").Count == 4 && names.Contains("StandingLamp_Futuristic") && names.Contains("WallLamp_Futuristic"),
-                  $"naming: 2 conduit defs x 10 keys (4 looks + 5 Modern colours + Mix) + switch x 4 + floor lamp x 4 + wall lamp x 4 looks = {names.Count} distinct style defs (want 32), each parses back");
+                  ConduitStyles.KeysFor("WallLamp").Count == 4 && ConduitStyles.KeysFor("Battery").Count == 4 && ConduitStyles.IsLampDef("Battery") && !ConduitStyles.IsRunMemberDef("Battery", true) &&
+                  names.Contains("StandingLamp_Futuristic") && names.Contains("WallLamp_Futuristic") && names.Contains("Battery_Futuristic"),
+                  $"naming: 2 conduit defs x 10 keys (4 looks + 5 Modern colours + Mix) + switch x 4 + floor lamp x 4 + wall lamp x 4 + battery x 4 looks = {names.Count} distinct style defs (want 36), each parses back");
+            // polish 2026-11-22: the reach menu said "1 lamps"
+            Check(ConduitStyles.FixtureCount(1, 0) == ", 1 lamp" && ConduitStyles.FixtureCount(2, 0) == ", 2 lamps" && ConduitStyles.FixtureCount(0, 0) == "" &&
+                  ConduitStyles.FixtureCount(0, 1) == ", 1 battery" && ConduitStyles.FixtureCount(3, 2) == ", 3 lamps, 2 batteries" && ConduitStyles.Count(1, "piece", "pieces") == "1 piece" && ConduitStyles.Count(8, "piece", "pieces") == "8 pieces",
+                  "menu counts read \"1 lamp\", \"2 lamps\", \"1 battery\", \"1 piece\" (never \"1 lamps\")");
+            // polish 2026-11-22: no entry of the look menu was marked as the current look
+            Check(ConduitStyles.IsCurrentKey("Industrial", "Industrial", null, false) && !ConduitStyles.IsCurrentKey("Modern", "Industrial", null, false) &&
+                  ConduitStyles.IsCurrentKey("Modern_Orange", "Modern", "Orange", false) && !ConduitStyles.IsCurrentKey("Modern_Green", "Modern", "Orange", false) &&
+                  ConduitStyles.IsCurrentKey("Modern", "Modern", null, false) && !ConduitStyles.IsCurrentKey("Industrial", "Industrial", null, true) && !ConduitStyles.IsCurrentKey("Industrial", null, null, false),
+                  "the look menu marks the look the reach wears now as (current); a mixed-look reach marks none");
             Check(ConduitStyles.IsLampDef("StandingLamp") && !ConduitStyles.IsSwitchDef("StandingLamp") && !ConduitStyles.IsConduitDef("StandingLamp") &&
                   !ConduitStyles.TryParseStyleDefName("StandingLamp_Modern_Orange", out _, out _, out _),
                   "lamp (round 5): styled by look only (no Modern colour), and not a switch/conduit so it never joins a run");

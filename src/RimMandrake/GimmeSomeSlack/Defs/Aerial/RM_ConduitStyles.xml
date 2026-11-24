@@ -253,4 +253,66 @@
       <drawOffsetEast>(0.04,0,0)</drawOffsetEast>
     </graphicData>
   </ThingStyleDef>
+  <!-- Battery (vanilla battery; 0.2.0, owner 2026-11-24): styled by the same picker as the lamps, NOT a run member; it follows the
+       run it touches unless given a look of its own. North and east pictures: south draws north, west draws east mirrored. -->
+  <ThingStyleDef>
+    <defName>Battery_Scrapper</defName>
+    <label>scrapper</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Styles/Scrapper/Battery</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>Battery_Industrial</defName>
+    <label>industrial</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Styles/Industrial/Battery</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>Battery_Modern</defName>
+    <label>modern</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Styles/Modern/Battery</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>Battery_Futuristic</defName>
+    <label>futuristic</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Styles/Futuristic/Battery</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+  </ThingStyleDef>
 </Defs>

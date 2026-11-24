@@ -100,7 +100,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public List<FallenSpec> Fallen = new List<FallenSpec>();
         /// <summary>GS-1: partners flying with this anchor on the same gravship; their span is kept, not taken down.</summary>
         public List<int> Kept = new List<int>();
-        /// <summary>GS-1: partners left on the ground while this anchor flies off; their span was taken down and coiled.</summary>
+        /// <summary>GS-1: partners left on the ground while this anchor flies off; their span snapped at launch (an UP span's half is in Fallen).</summary>
         public List<int> Grounded = new List<int>();
     }
 
@@ -302,18 +302,22 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return LinkVerdict.Ok;
         }
 
-        /// <summary>Auto-link on build: the nearest anchor this one may link to, or -1. Ties break on the lower id.</summary>
+        /// <summary>Auto-link on build: the nearest anchor this one may link to, or -1. Ties break on the lower id.
+        /// An anchor that is already wired to a neighbour at least as near as that pick links nothing more: anchors built
+        /// together in a row each get linked BY their neighbour first, and the last one's nearest is then "already linked",
+        /// so the pick used to fall through to the far anchor and draw a span through the middle pole (walk station 32).</summary>
         public static int AutoLinkPick(AnchorInfo self, IList<AnchorInfo> others, double range)
         {
             int best = -1;
-            long bestD = long.MaxValue;
+            long bestD = long.MaxValue, linkedD = long.MaxValue;
             foreach (AnchorInfo o in others)
             {
-                if (CanLink(self, o, range) != LinkVerdict.Ok) continue;
                 long dx = o.X - self.X, dz = o.Z - self.Z, d = dx * dx + dz * dz;
+                if (o.Id != self.Id && (self.Linked.Contains(o.Id) || o.Linked.Contains(self.Id))) { if (d < linkedD) linkedD = d; continue; }
+                if (CanLink(self, o, range) != LinkVerdict.Ok) continue;
                 if (d < bestD || (d == bestD && o.Id < best)) { bestD = d; best = o.Id; }
             }
-            return best;
+            return linkedD <= bestD ? -1 : best;
         }
 
         /// <summary>An exact orphan, or the uniquely closest orphan within one cell (diagonals included).</summary>
@@ -448,22 +452,31 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static RemovalPlan PlanRemoval(int id, bool killed, IList<(int, SpanState)> spans) => PlanRemoval(id, killed, spans, null);
 
         /// <summary>aboard: non-null while this anchor is being lifted onto a gravship (DeSpawn WillReplace inside
-        /// GravshipUtility.GenerateGravship); it holds the partners flying with it. A span to one of them is kept
-        /// (both ends land together, the comp objects survive the flight); a span to a partner left behind is taken
-        /// down and coiled (never dropped: nothing died).</summary>
-        public static RemovalPlan PlanRemoval(int id, bool killed, IList<(int, SpanState)> spans, ICollection<int> aboard)
+        /// GravshipUtility.GenerateGravship); it holds the anchors flying with it. A span to one of them is kept when
+        /// <paramref name="keepAboard"/> (both ends land together, the comp objects survive the flight), else taken down and
+        /// coiled. A span to a partner left on the ground SNAPS (owner 2026-11-24: "Yes, the wire should snap ship-to-ground. Of
+        /// course it would."): an UP span's half falls at the ground anchor, as when a pole dies; a span already cut drops nothing new.</summary>
+        public static RemovalPlan PlanRemoval(int id, bool killed, IList<(int, SpanState)> spans, ICollection<int> aboard, bool keepAboard = true)
         {
             var plan = new RemovalPlan();
             foreach ((int partner, SpanState st) in spans)
             {
                 if (partner == id) continue;
+                bool snapped = false;
                 if (aboard != null && !killed)
                 {
-                    if (aboard.Contains(partner)) { if (!plan.Kept.Contains(partner)) plan.Kept.Add(partner); continue; }
-                    if (!plan.Grounded.Contains(partner)) plan.Grounded.Add(partner);
+                    if (aboard.Contains(partner))
+                    {
+                        if (keepAboard) { if (!plan.Kept.Contains(partner)) plan.Kept.Add(partner); continue; }
+                    }
+                    else
+                    {
+                        if (!plan.Grounded.Contains(partner)) plan.Grounded.Add(partner);
+                        snapped = st == SpanState.Up;
+                    }
                 }
                 if (!plan.Reseed.Contains(partner)) plan.Reseed.Add(partner);
-                if (killed && st == SpanState.Up) plan.Fallen.Add(new FallenSpec { Survivor = partner, TowardDead = true });
+                if ((killed || snapped) && st == SpanState.Up) plan.Fallen.Add(new FallenSpec { Survivor = partner, TowardDead = true });
             }
             return plan;
         }
@@ -749,9 +762,64 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 }
                 if (sPos >= reach - 1e-9) break;
             }
+            RoundTouchdown(lay);
             lay.Tip = lay.Pts[lay.Pts.Count - 1];
             lay.TipNow = lay.Tip;
             return lay;
+        }
+
+        /// <summary>The hanging part, drawn again as one smooth drop. The lay above adds a height that falls off by the square to the
+        /// ground path, and where that path sets off up the screen the two made a tight V at the foot of the drop: the wire "falls
+        /// straight, turns by about 90 degrees on the ground, and runs straight again" (walk brief 2026-11-24). Here the wire leaves
+        /// its insulator straight down, as a hanging wire does, and comes into the touchdown along the ground path's own heading: one
+        /// cubic curve between the two, its ends the same two points, so the ground part and the tip are untouched.</summary>
+        private static void RoundTouchdown(FallenLay lay)
+        {
+            List<P2> p = lay.Pts;
+            int g = lay.GroundFrom;
+            if (g < 2 || g > p.Count - 2) return;
+            // the ground path's first 0.6 cell eased first (it sets off with its sharpest bend), each point to the mean of the line
+            // 0.3 cell either side of it, less toward the far edge; the touchdown point itself and everything past stay put
+            {
+                int m = p.Count;
+                var arc = new double[m];
+                for (int i = 1; i < m; i++) arc[i] = arc[i - 1] + P2.Dist(p[i - 1], p[i]);
+                var src = p.ToArray();
+                for (int i = g + 1; i < m - 1 && arc[i] - arc[g] < 0.6; i++)
+                {
+                    double w = Math.Min(Math.Min(0.3, arc[i] - arc[g]), 0.3 * (1 - (arc[i] - arc[g]) / 0.6));
+                    if (w < 1e-6) continue;
+                    double sx = 0, sz = 0, sw = 0;
+                    for (int k = g; k < m && arc[k] <= arc[i] + w; k++)
+                    {
+                        if (arc[k] < arc[i] - w) continue;
+                        double q = 1 - Math.Abs(arc[k] - arc[i]) / w + 1e-3; sx += q * src[k].X; sz += q * src[k].Z; sw += q;
+                    }
+                    p[i] = new P2(sx / sw, sz / sw);
+                }
+            }
+            int ahead = g + 1;
+            while (ahead < p.Count - 1 && P2.Dist(p[g], p[ahead]) < 0.3) ahead++;
+            P2 a = p[0], d = p[g], next = p[ahead];
+            double tx = next.X - d.X, tz = next.Z - d.Z, tl = Math.Sqrt(tx * tx + tz * tz), span = P2.Dist(a, d);
+            if (tl < 1e-9 || span < 1e-6) return;
+            // a touchdown right beside the insulator (the ground path came up the screen to it): no drop to draw, the wire runs on
+            if (span < 0.35) { p.RemoveRange(1, g - 1); lay.GroundFrom = 1; return; }
+            tx /= tl; tz /= tl;
+            double drop = Math.Sign(a.Z - d.Z) == 0 ? 1 : Math.Sign(a.Z - d.Z);     // the insulator is drawn above its touchdown
+            var b = new P2(a.X, a.Z - drop * 0.45 * span);
+            var c = new P2(d.X - tx * 0.45 * span, d.Z - tz * 0.45 * span);
+            int n = Math.Max(8, (int)Math.Ceiling(1.6 * span / 0.07));
+            var hang = new List<P2>(n);
+            for (int i = 1; i < n; i++)
+            {
+                double t = (double)i / n, u = 1 - t;
+                hang.Add(new P2(u * u * u * a.X + 3 * u * u * t * b.X + 3 * u * t * t * c.X + t * t * t * d.X,
+                                u * u * u * a.Z + 3 * u * u * t * b.Z + 3 * u * t * t * c.Z + t * t * t * d.Z));
+            }
+            p.RemoveRange(1, g - 1);
+            p.InsertRange(1, hang);
+            lay.GroundFrom = 1 + hang.Count;
         }
 
         /// <summary>The slack a fallen wire tries, widest first; each level the bends one way and then mirrored.</summary>
@@ -759,7 +827,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>The turns off the break's own line a fallen wire tries, its own side first (radians: 0, 12, 24, 36, 50 degrees).</summary>
         private static readonly double[] AimTurns = { 0, 0.21, -0.21, 0.42, -0.42, 0.63, -0.63, 0.87, -0.87 };
 
-        private static double Geo2Clamp(double v, double lim) => Math.Max(-lim, Math.Min(lim, v));
+        /// <summary>The sideways bend of a fallen wire held within <paramref name="lim"/>, SOFTLY: a hard min/max cut the summed bends
+        /// off flat, so the wire ran straight along the limit between two corners and read as a bent rod (walk brief 2026-11-24).</summary>
+        internal static double Geo2Clamp(double v, double lim) => lim <= 1e-9 ? 0 : lim * Math.Tanh(v / lim);
 
         private static double Smooth01(double x) { x = Math.Max(0, Math.Min(1, x)); return x * x * (3 - 2 * x); }
 

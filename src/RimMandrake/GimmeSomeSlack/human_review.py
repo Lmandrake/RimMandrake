@@ -241,7 +241,7 @@ def ground_station(mk, n, x, look):
        # 2026-10-05 (doc section 4, 'new: U_motion_look ... add as notes on 13->(1)'): the live row left the proof and lands
        # here, on the station that now covers the cut powered line (old 13, whose card asked him to watch the sway)
        notes=["U_motion_look (moved off the live proof 2026-10-05): UNPAUSE and judge the LOOK of motion here: the cord's "
-              "whip, the live end's drip / spark rhythm, the sway in the wind. Motion is not a Northstar bar; state proxies "
+              "whip, the live end's drip / spark rhythm. Motion is not a Northstar bar; state proxies "
               "cover the state, so only your eye judges this."] if look == "Scrapper" else [])
 
 

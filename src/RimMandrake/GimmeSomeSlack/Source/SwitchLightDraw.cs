@@ -96,13 +96,40 @@ namespace RimMandrake.GimmeSomeSlack
         private static bool CapsBakedLed(Building_PowerSwitch sw) =>
             ConduitVisuals.Applied && Aerial.ConduitStylePicker.RawLook(sw) == "Industrial" && (sw.GetComp<CompFlickable>()?.SwitchIsOn ?? true);
 
+        private static readonly Dictionary<string, Material> unlit = new Dictionary<string, Material>();
+        /// <summary>Glows put out last frame (the probe's switchlights read reports it).</summary>
+        public static int LastGlowOut;
+
+        /// <summary>The Futuristic closed switch with no power: its unlit picture over its lit one (Core/SwitchLight.GlowOut).</summary>
+        private static void DrawGlowOut(Building_PowerSwitch sw, Map map, Vector3 c, bool powered)
+        {
+            if (!ConduitVisuals.Applied) return;
+            if (!SwitchLight.GlowOut(Aerial.ConduitStylePicker.RawLook(sw), sw.GetComp<CompFlickable>()?.SwitchIsOn ?? true, powered)) return;
+            int drawn = SwitchStubs.All;
+            if (sw.def.size.x == 1 && sw.def.size.z == 1) drawn = map.GetComponent<RM_MapComponent_CordGraph>()?.SwitchDrawnMask(sw.Position) ?? SwitchStubs.All;
+            string path = CordMaterials.StyleDir + "Futuristic/" + SwitchLight.UnlitName(drawn);
+            if (!unlit.TryGetValue(path, out Material m))
+            {
+                Texture2D tex = SafeTex.Get(path, false);
+                GraphicData gd = sw.def.graphicData;
+                if (tex != null) tex.wrapMode = TextureWrapMode.Clamp;
+                unlit[path] = m = tex == null || gd == null ? null : MaterialPool.MatFrom(new MaterialRequest(tex, (gd.shaderType ?? ShaderTypeDefOf.Cutout).Shader));
+            }
+            if (m == null) return;
+            Vector2 size = sw.def.graphicData.drawSize;
+            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3(c.x, sw.def.altitudeLayer.AltitudeFor() + Altitudes.AltInc * 0.5f, c.z), Quaternion.identity,
+                new Vector3(size.x, 1f, size.y)), m, 0);
+            LastGlowOut++;
+        }
+
         /// <summary>Draw the lamp of every switch in view on the current map. Called every frame.</summary>
         internal static void Draw(Map map)
         {
-            LastGreen = LastRed = LastDark = 0;
-            if (!GimmeSomeSlackSettings.switchLight || Find.CurrentMap != map) return;
+            LastGreen = LastRed = LastDark = LastGlowOut = 0;
+            if (Find.CurrentMap != map) return;
             if (RimWorld.Planet.WorldRendererUtility.WorldSelected || SectionLayer_RM_MessyCords.CutsceneHides) return;
-            if (!Art()) return;
+            bool lamps = GimmeSomeSlackSettings.switchLight && Art();
+            if (!lamps && !ConduitVisuals.Applied) return;
             liveThisFrame.Clear();
             CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(1);
             float yLens = AltitudeLayer.BuildingOnTop.AltitudeFor(), yHalo = yLens - Altitudes.AltInc * 0.5f;   // under the lens, so the glow rings it and never washes it out
@@ -110,8 +137,10 @@ namespace RimMandrake.GimmeSomeSlack
                 foreach (Thing t in map.listerThings.ThingsOfDef(d))
                 {
                     if (!(t is Building_PowerSwitch sw) || !sw.Spawned || !view.Contains(sw.Position) || map.fogGrid.IsFogged(sw.Position)) continue;
-                    SwitchLamp lamp = LampOf(sw, true, out _, out _);
+                    SwitchLamp lamp = LampOf(sw, true, out _, out bool powered);
                     Vector3 c = sw.TrueCenter();
+                    DrawGlowOut(sw, map, c, powered);
+                    if (!lamps) continue;
                     var pos = new Vector3(c.x + SwitchLampArt.OffX, yLens, c.z + SwitchLampArt.OffZ);
                     if (halo[(int)lamp] != null)
                         Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3(pos.x, yHalo, pos.z), Quaternion.identity,

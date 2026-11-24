@@ -33,5 +33,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (!settingOn || !powered) return SwitchLamp.Dark;
             return closed ? SwitchLamp.Green : SwitchLamp.Red;
         }
+
+        /// <summary>Does this switch draw its glow out? The Futuristic look's closed art carries its own cyan glow; with no power on
+        /// any side that glow is put out (the unlit picture is drawn over it), whatever the lamp setting says.</summary>
+        public static bool GlowOut(string look, bool closedArt, bool powered) => look == "Futuristic" && closedArt && !powered;
+
+        /// <summary>The unlit picture's file name for a switch that draws the stubs in <paramref name="drawn"/> (SwitchStubs mask).</summary>
+        public static string UnlitName(int drawn) => "PowerSwitch_Unlit" + SwitchStubs.Suffix(drawn);
     }
 }

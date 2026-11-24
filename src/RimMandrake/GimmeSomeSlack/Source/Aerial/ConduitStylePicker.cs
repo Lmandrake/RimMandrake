@@ -89,7 +89,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool IsOurs(ThingDef d) => d != null && byDef.ContainsKey(d);
         public static bool IsMember(ThingDef d) => d != null && members.Contains(d);
         public static bool IsConduit(ThingDef d) => IsOurs(d) && ConduitStyles.IsConduitDef(d.defName);
-        /// <summary>A styled floor lamp (registered: it carries the style field). Round 6: gets "Restyle this lamp".</summary>
+        /// <summary>A styled lamp or battery (ConduitStyles.LampDefs; registered: it carries the style field): it gets "Restyle...".</summary>
         public static bool IsLamp(ThingDef d) => IsOurs(d) && ConduitStyles.IsLampDef(d.defName);
         public static IReadOnlyList<ThingDef> MemberDefs => memberList;
 
@@ -310,7 +310,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 defaultDesc = "Give this " + b.def.label + " another look (" + (cur ?? (lamp ? "vanilla" : StylePicker.DefaultLook)) + " now). " +
                               "First choose how far: this item only, everything connected to it, or everything you own on the map. " +
                               "Art only: it costs nothing and changes nothing else.\n\n" +
-                              "Floor and wall lamps hooked to a run change with it on \"All connected\", unless a lamp wears a look no piece of the run had.",
+                              "Lamps and batteries hooked to a run change with it on \"All connected\", unless one wears a look no piece of the run had.",
                 icon = lamp ? Icon(b.def, cur ?? StylePicker.DefaultLook)
                             : Icon(DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit") ?? b.def, ConduitStyles.Key(cur ?? StylePicker.DefaultLook, RawColour(b))),
                 action = () => Find.WindowStack.Add(new FloatMenu(ReachMenu(b)))
@@ -331,12 +331,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 opts.Add(new FloatMenuOption(ConduitStyles.ReachLabel(ConduitStyles.Reach.Connected) + ": not hooked to a cable run", null));
             else
             {
-                int lamps = runs.LampsOf(run).Count;
-                opts.Add(new FloatMenuOption(ConduitStyles.ReachLabel(ConduitStyles.Reach.Connected) + ": " + run.Count + " pieces" + (lamps > 0 ? ", " + lamps + " lamps" : ""),
+                List<Thing> fixtures = runs.LampsOf(run);
+                int batteries = fixtures.Count(f => f.def.defName == ConduitStyles.BatteryDef);
+                opts.Add(new FloatMenuOption(ConduitStyles.ReachLabel(ConduitStyles.Reach.Connected) + ": " + ConduitStyles.Count(run.Count, "piece", "pieces") + ConduitStyles.FixtureCount(fixtures.Count - batteries, batteries),
                     () => Find.WindowStack.Add(new FloatMenu(LookMenu(b, ConduitStyles.Reach.Connected)))));
             }
-            runs.CountMap(god, out int mp, out int ml);
-            opts.Add(new FloatMenuOption(ConduitStyles.ReachLabel(ConduitStyles.Reach.Map) + ": " + mp + " pieces, " + ml + " lamps" + (god ? " (god mode: every faction)" : " you own"),
+            runs.CountMap(god, out int mp, out int ml, out int mb);
+            opts.Add(new FloatMenuOption(ConduitStyles.ReachLabel(ConduitStyles.Reach.Map) + ": " + ConduitStyles.Count(mp, "piece", "pieces") + ConduitStyles.FixtureCount(ml, mb) + (god ? " (god mode: every faction)" : " you own"),
                 () => Find.WindowStack.Add(new FloatMenu(LookMenu(b, ConduitStyles.Reach.Map)))));
             return opts;
         }
@@ -349,7 +350,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             RM_MapComponent_ConduitRuns runs = b.Map?.GetComponent<RM_MapComponent_ConduitRuns>();
             if (runs == null) return opts;
             bool lamp = IsLamp(b.def);
-            string cur = RawLook(b), curKey = cur == null ? null : ConduitStyles.Key(cur, IsConduit(b.def) ? RawColour(b) : null);
+            string cur = RawLook(b);
             if (lamp && reach == ConduitStyles.Reach.Item)
             {
                 foreach (string look in AerialStyles.Looks)
@@ -363,6 +364,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
             ThingDef pc = DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit");
             bool piece = reach == ConduitStyles.Reach.Item;
+            // the "(current)" mark: this piece's own look, or the one look its whole connected run draws; the map reach marks none
+            string nowLook = cur, nowColour = IsConduit(b.def) ? RawColour(b) : null;
+            bool nowMixed = reach == ConduitStyles.Reach.Map;
+            if (reach == ConduitStyles.Reach.Connected)
+            {
+                List<Thing> run = lamp ? runs.RunOfLamp(b) : runs.RunOf(b);
+                ConduitStyles.Run info = run == null || run.Count == 0 ? null : RM_MapComponent_ConduitRuns.Info(run);
+                nowMixed = info == null || info.Mixed;
+                nowLook = info == null ? null : info.Look ?? StylePicker.DefaultLook;
+                nowColour = info?.Colour;
+            }
             foreach (string key in MenuKeys(piece ? IsConduit(b.def) : true))
             {
                 string k = key;
@@ -370,7 +382,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 if (reach == ConduitStyles.Reach.Item) act = () => runs.RestyleOne(b, k, true);
                 else if (reach == ConduitStyles.Reach.Connected) act = lamp ? (Action)(() => runs.RestyleLampRun(b, k, true)) : () => runs.RestyleRun(b, k, true);
                 else act = () => runs.RestyleAll(k, true, DebugSettings.godMode);
-                opts.Add(new FloatMenuOption(Label(key) + (piece && key == curKey ? " (current)" : ""), act, Icon(piece ? b.def : pc, key), Color.white));
+                opts.Add(new FloatMenuOption(Label(key) + (ConduitStyles.IsCurrentKey(key, nowLook, nowColour, nowMixed) ? " (current)" : ""), act, Icon(piece ? b.def : pc, key), Color.white));
             }
             return opts;
         }

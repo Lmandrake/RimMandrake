@@ -46,4 +46,15 @@
       </value>
     </nomatch>
   </Operation>
+  <!-- Battery (0.2.0, owner 2026-11-24: the battery takes the four looks as the standing lamp does): vanilla's battery has no
+       style field, so this adds it, guarded as above. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="Battery"]/comps/li[@Class="CompProperties_Styleable"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="Battery"]/comps</xpath>
+      <value>
+        <li Class="CompProperties_Styleable" />
+      </value>
+    </nomatch>
+  </Operation>
 </Patch>

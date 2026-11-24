@@ -74,8 +74,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool wireDownAlert = true;
         /// <summary>GOS GS-5: when a pole changes owner, wires to the other owner's poles are coiled (a captured pole never fuses two grids).</summary>
         public static bool cutWiresOnOwnerChange = true;
-        /// <summary>Design 2.5: each strand dips into a small drip loop below its insulator. Default ON (owner by card 2026-10-15; built OFF 2026-10-10):
-        /// the spans reviewed before had none.</summary>
+        /// <summary>Design 2.5: each strand dips into a small drip loop below its insulator. Default OFF
+        /// (AerialMath.DripLoopsDefault, his sitting of 2026-11-08).</summary>
         public static bool dripLoops = AerialMath.DripLoopsDefault;
         public const double DripDepth = 0.12, DripReach = 0.45;
 
@@ -185,8 +185,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 "slack at a pole. Off: the wire runs straight off the insulator. Applies now.");
             }
             list.CheckboxLabeled("Wires strung between two anchors on a gravship stay up through the flight", ref keepWiresOnGravship,
-                "On: a wire with both anchors aboard lands still strung and still carrying power; a wire to an anchor left on the ground " +
-                "is taken down and coiled at launch, with a message. Off: every wire on the ship is taken down and coiled at launch.");
+                "On: a wire with both anchors aboard lands still strung and still carrying power. Off: every wire between two anchors on the " +
+                "ship is taken down and coiled at launch. Either way, a wire from the ship to an anchor left on the ground snaps at launch, with a message.");
                 list.GapLine();
             }
 

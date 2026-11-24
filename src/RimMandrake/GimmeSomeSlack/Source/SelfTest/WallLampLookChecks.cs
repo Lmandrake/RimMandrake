@@ -130,8 +130,44 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   && gr.Contains("MatSouth => Pic(2)") && gr.Contains("MatWest => Pic(3)") && gr.Contains("EastFlipped => Flip(1)") && gr.Contains("WestFlipped => Flip(3)"), "the mod's graphic draws by the rule read here (WallLampFacing.PictureRot)");
         }
 
+        /// <summary>RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP: each look's battery is a Graphic_Multi style def at the battery's own
+        /// draw size on its own art, north and east pictures present (south draws north, west draws east mirrored), and the guarded
+        /// style-field patch covers Battery (vanilla's battery has no style field).</summary>
+        internal static List<string> BatteryFaults(string root, string tex, Func<string, bool> exists)
+        {
+            var faults = new List<string>();
+            string defs = File.ReadAllText(Path.Combine(root, "Defs", "Aerial", "RM_ConduitStyles.xml"));
+            foreach (string look in AerialStyles.Looks)
+            {
+                Match m = Regex.Match(defs, @"<ThingStyleDef>\s*<defName>Battery_" + look + @"</defName>(.*?)</ThingStyleDef>", RegexOptions.Singleline);
+                if (!m.Success) { faults.Add("no ThingStyleDef Battery_" + look); continue; }
+                string body = m.Groups[1].Value, path = "RimMandrake/GimmeSomeSlack/Styles/" + look + "/Battery";
+                if (!body.Contains("<texPath>" + path + "</texPath>")) faults.Add("Battery_" + look + ": texPath is not " + path);
+                if (!body.Contains("<graphicClass>Graphic_Multi</graphicClass>")) faults.Add("Battery_" + look + ": not a Graphic_Multi");
+                if (!Regex.IsMatch(body, @"<drawSize>\(2,\s*3\)</drawSize>")) faults.Add("Battery_" + look + ": drawSize is not the battery's (2,3)");
+                foreach (string f in new[] { "north", "east" })
+                    if (tex == null || !exists(Path.Combine(tex, "RimMandrake", "GimmeSomeSlack", "Styles", look, "Battery_" + f + ".png"))) faults.Add("Battery_" + look + ": no " + f + " picture");
+            }
+            if (!File.ReadAllText(Path.Combine(root, "Patches", "RM_ConduitStyleable.xml")).Contains("Defs/ThingDef[defName=\"Battery\"]/comps/li[@Class=\"CompProperties_Styleable\"]"))
+                faults.Add("the guarded CompProperties_Styleable patch does not cover Battery");
+            return faults;
+        }
+
+        private static void Battery()
+        {
+            string root = LookIconChecks.ModRoot();
+            if (root == null) { Check(false, "battery looks: found the mod root"); return; }
+            List<string> faults = BatteryFaults(root, LookIconChecks.TexturesDir(), p => File.Exists(p));
+            foreach (string f in faults) Check(false, f);
+            Check(faults.Count == 0, "battery: every look is a Graphic_Multi style def at (2,3) on its own art, north and east pictures, style field patched (" + faults.Count + " faults)");
+            string hide = Path.Combine(LookIconChecks.TexturesDir() ?? "", "RimMandrake", "GimmeSomeSlack", "Styles", "Modern", "Battery_north.png");
+            List<string> planted = BatteryFaults(root, LookIconChecks.TexturesDir(), p => !string.Equals(Path.GetFullPath(p), Path.GetFullPath(hide), StringComparison.OrdinalIgnoreCase) && File.Exists(p));
+            Check(planted.Any(x => x.Contains("Modern") && x.Contains("north")), "can fail: the Modern battery with its north picture missing reads red (" + planted.Count + " faults)");
+        }
+
         public static void Run()
         {
+            Battery();
             // 1. the wall lamp is a lamp of the picker, styled per look, never a run member
             Check(ConduitStyles.IsLampDef("WallLamp") && ConduitStyles.IsLampDef("StandingLamp"), "WallLamp and StandingLamp are lamp defs of the picker (ConduitStyles.LampDefs)");
             Check(!ConduitStyles.IsRunMemberDef("WallLamp", true), "a wall lamp is not a run member (a lamp ends a run)");
@@ -280,7 +316,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   "a wall plate is drawn behind a wall lamp in its cell (FaceLift " + (lift.Success ? lift.Groups[1].Value : "not found") + ", want under -0.004)");
             var named = new List<string>();
             foreach (string f in Directory.GetFiles(dir, "*.cs"))
-                foreach (Match m in Regex.Matches(File.ReadAllText(f), "\"(StandingLamp|WallLamp)\""))
+                foreach (Match m in Regex.Matches(File.ReadAllText(f), "\"(StandingLamp|WallLamp|Battery)\""))
                     if (!(Path.GetFileName(f) == "ConduitStyles.cs" && m.Index < File.ReadAllText(f).IndexOf("IsConduitDef(string d)", StringComparison.Ordinal))) named.Add(Path.GetFileName(f));
             Check(named.Count == 0, "no lamp rule in Source/Aerial names a lamp def outside ConduitStyles.LampDefs (" + string.Join(", ", named) + ")");
         }

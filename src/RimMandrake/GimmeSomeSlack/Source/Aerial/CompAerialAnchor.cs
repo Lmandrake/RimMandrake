@@ -210,7 +210,19 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             bool killed = mode == DestroyMode.KillFinalize || mode == DestroyMode.KillFinalizeLeavingsOnly;
             var spans = links.Where(l => l.other != null).Select(l => (l.other.thingIDNumber, l.state)).ToList();
             HashSet<int> aboard = mode == DestroyMode.WillReplace ? GravshipAboardIds() : null;
-            RemovalPlan plan = AerialMath.PlanRemoval(thingIDNumber, killed, spans, aboard);
+            RemovalPlan plan = AerialMath.PlanRemoval(thingIDNumber, killed, spans, aboard, AerialSettings.keepWiresOnGravship);
+            // the ship's own half of each snapped span: kept as an offset from this anchor, laid again where the ship lands
+            launchSnapped.Clear();
+            if (aboard != null)
+                foreach (SpanLink l in links)
+                    if (l.other != null && l.state == SpanState.Up && plan.Grounded.Contains(l.other.thingIDNumber))
+                        launchSnapped.Add(new FallenCord
+                        {
+                            wires = WiresBetween(this, l.other),
+                            toward = l.other.Position - Position,
+                            length = Mathf.Min(Vector3.Distance(l.other.BasePoint, BasePoint) * 0.5f, SnappedStumpCells),
+                            seed = (int)AerialMath.Hash(thingIDNumber, l.other.thingIDNumber, 11),
+                        });
             var partners = links.Where(l => l.other != null && !plan.Kept.Contains(l.other.thingIDNumber)).Select(l => l.other).ToList();
             foreach (CompAerialAnchor p in partners)
             {
@@ -257,7 +269,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// instances on landing. Non-null only inside that despawn loop, with the setting on: the anchor ids aboard.</summary>
         private static HashSet<int> GravshipAboardIds()
         {
-            if (!AerialSettings.keepWiresOnGravship || !GravshipUtility.generatingGravship) return null;
+            if (!GravshipUtility.generatingGravship) return null;     // the keep-wires setting decides only spans ABOARD (PlanRemoval)
             Gravship g = Current.Game?.Gravship;
             if (g == null) return null;
             if (aboardCacheFor != g)
@@ -268,6 +280,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return aboardCache;
         }
 
+        /// <summary>The ship's halves of spans that snapped at launch, while the ship flies: `toward` holds the OFFSET to the
+        /// partner left behind. Laid as fallen cable at landing (PostSwapMap). Saved: a flight can be saved.</summary>
+        private List<FallenCord> launchSnapped = new List<FallenCord>();
+        /// <summary>How much cable the ship keeps of a snapped span, in cells (the rest stays with the ground anchor).</summary>
+        public const float SnappedStumpCells = 4f;
+        public int LaunchSnappedCount => launchSnapped.Count;
+
         private static Gravship aboardCacheFor;
         private static HashSet<int> aboardCache;
         private static int groundedMessageTick = -1;
@@ -277,7 +296,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             int now = Find.TickManager?.TicksGame ?? 0;
             if (groundedMessageTick == now) return;     // one message per launch, not one per anchor
             groundedMessageTick = now;
-            Messages.Message("Overhead wires to anchors left on the ground were taken down and coiled at launch.", MessageTypeDefOf.NeutralEvent, false);
+            Messages.Message("Overhead wires from the ship to anchors on the ground snapped at launch.", MessageTypeDefOf.NegativeEvent, false);
         }
 
         /// <summary>GS-1: called once every ship thing has landed (GravshipPlacementUtility.PostSwapMap); both ends of a
@@ -286,6 +305,16 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             base.PostSwapMap();
             if (!Spawned) return;
+            // the ship's half of each span that snapped at launch hangs from this anchor and lies toward where its partner stood
+            foreach (FallenCord f in launchSnapped)
+            {
+                IntVec3 t = Position + f.toward;
+                f.toward = new IntVec3(Mathf.Clamp(t.x, 0, Map.Size.x - 1), 0, Mathf.Clamp(t.z, 0, Map.Size.z - 1));
+                fallen.Add(f);
+            }
+            bool snapped = launchSnapped.Count > 0;
+            launchSnapped.Clear();
+            if (snapped) { RM_MapComponent_Aerial c0 = Map.GetComponent<RM_MapComponent_Aerial>(); c0?.DirtyGround(this); c0?.Notify_SpansChanged(); }
             links.RemoveAll(l => l.other == null || l.other.parent.Destroyed);
             if (links.Count == 0) return;
             Reseed(this);
@@ -302,6 +331,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             base.PostExposeData();
             Scribe_Collections.Look(ref links, "rmAerialLinks", LookMode.Deep);
             Scribe_Collections.Look(ref fallen, "rmAerialFallen", LookMode.Deep);
+            Scribe_Collections.Look(ref launchSnapped, "rmAerialLaunchSnapped", LookMode.Deep);
             if (Scribe.mode == LoadSaveMode.Saving)
                 autoLinkPendingSaved = parent.Spawned && (parent.Map.GetComponent<RM_MapComponent_Aerial>()?.IsAutoLinkPending(this) ?? false);
             Scribe_Values.Look(ref autoLinkPendingSaved, "rmAerialAutoLinkPending", false);
@@ -309,6 +339,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
                 links ??= new List<SpanLink>();
                 fallen ??= new List<FallenCord>();
+                launchSnapped ??= new List<FallenCord>();
                 links.RemoveAll(l => l == null || l.other == null);
             }
         }

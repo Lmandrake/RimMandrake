@@ -213,7 +213,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 look = run == null ? null : Info(run).Look ?? StylePicker.DefaultLook;
                 if (look == null)
                 {
-                    lastMessage = "This lamp is not hooked to a cable run.";
+                    lastMessage = "This " + lamp.def.label + " is not hooked to a cable run.";
                     // GPT source read 2026-10-06 A20: this used to return before any message was shown
                     if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, new LookTargets(lamp), MessageTypeDefOf.RejectInput, historical: false);
                     return false;
@@ -223,7 +223,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             bool changed = SetStyle(lamp, look);
             lampRestyles++;
             Finish();
-            lastMessage = "Restyled this lamp to " + look + (key == LampMatchRun ? " (its run's look)" : "") + ".";
+            lastMessage = "Restyled this " + lamp.def.label + " to " + look + (key == LampMatchRun ? " (its run's look)" : "") + ".";
             if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, new LookTargets(lamp), MessageTypeDefOf.SilentInput, historical: false);
             return changed;
         }
@@ -445,7 +445,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Finish();
             int n = repainted - before;
             lastMessage = "Restyled everything on the map" + (everyFaction ? " (god mode: every faction)" : " that you own") + " to " + ConduitStylePicker.Label(key) + ": " +
-                          runCount + " runs, " + n + " pieces changed, " + lampsChanged + " of " + lampList.Count + " lamps changed.";
+                          runCount + " runs, " + n + " pieces changed, " + lampsChanged + " of " + lampList.Count + " lamps and batteries changed.";
             if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, MessageTypeDefOf.SilentInput, historical: false);
             return n + lampsChanged;
         }
@@ -455,16 +455,16 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             ConduitStyles.ReachTakes(ConduitStyles.Reach.Map, false, false, t.Faction == Faction.OfPlayer, everyFaction);
 
         /// <summary>What the map reach would repaint now: run members and floor lamps (the reach menu's counts).</summary>
-        public void CountMap(bool everyFaction, out int pieces, out int lamps)
+        public void CountMap(bool everyFaction, out int pieces, out int lamps, out int batteries)
         {
-            pieces = lamps = 0;
+            pieces = lamps = batteries = 0;
             foreach (ThingDef d in ConduitStylePicker.MemberDefs)
                 foreach (Thing t in map.listerThings.ThingsOfDef(d)) if (t.Spawned && MapTakes(t, everyFaction)) pieces++;
             foreach (string dn in ConduitStyles.LampDefs)
             {
                 ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
                 if (d != null && ConduitStylePicker.IsLamp(d))
-                    foreach (Thing t in map.listerThings.ThingsOfDef(d)) if (t.Spawned && MapTakes(t, everyFaction)) lamps++;
+                    foreach (Thing t in map.listerThings.ThingsOfDef(d)) if (t.Spawned && MapTakes(t, everyFaction)) { if (dn == ConduitStyles.BatteryDef) batteries++; else lamps++; }
             }
         }
 
@@ -500,7 +500,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             string look = ConduitStyles.TryParseKey(key, out string l, out _) ? l : "Modern";
             bool changed = SetStyle(lamp, look);
             Finish();
-            lastMessage += " This lamp: " + look + ".";
+            lastMessage += " This " + lamp.def.label + ": " + look + ".";
             if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, new LookTargets(lamp), MessageTypeDefOf.SilentInput, historical: false);
             return true;
         }
@@ -531,7 +531,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Finish();
             int n = repainted - before;
             lastMessage = "Restyled this run (" + run.Count + " pieces, " + n + " changed) to " + ConduitStylePicker.Label(ConduitStyles.Key(look, colour)) +
-                          (lamps.Count > 0 ? "; lamps on it: " + lampsChanged + " changed" + (lampsKept > 0 ? ", " + lampsKept + " kept their own look" : "") : "") + ".";
+                          (lamps.Count > 0 ? "; lamps and batteries on it: " + lampsChanged + " changed" + (lampsKept > 0 ? ", " + lampsKept + " kept their own look" : "") : "") + ".";
             if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, new LookTargets(t), MessageTypeDefOf.SilentInput, historical: false);
             return n;
         }

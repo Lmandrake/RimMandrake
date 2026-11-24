@@ -125,6 +125,12 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             q.Side[0] = Src.Live;
             Check(rule(q) == SwitchLamp.Red, "power back while open: red again");
 
+            // polish (art judge 2026-11-20): the Futuristic closed art's own cyan glow stayed lit on a switch with no power
+            Check(SwitchLight.GlowOut("Futuristic", true, false) && !SwitchLight.GlowOut("Futuristic", true, true) && !SwitchLight.GlowOut("Futuristic", false, false) &&
+                  !SwitchLight.GlowOut("Modern", true, false) && !SwitchLight.GlowOut(null, true, false),
+                  "the Futuristic closed switch draws its glow out when no side has power, and only then");
+            Check(SwitchLight.UnlitName(15) == "PowerSwitch_Unlit" && SwitchLight.UnlitName(5) == "PowerSwitch_Unlit_p5", "the unlit picture follows the stubs drawn (PowerSwitch_Unlit, PowerSwitch_Unlit_p5)");
+
             var u = new Scene { Closed = true, Side = new Src?[] { Src.None, null, Src.None, null } };
             Check(rule(u) == SwitchLamp.Dark, "flick while unpowered: closed, dark");
             u.Closed = false;

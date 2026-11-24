@@ -3683,6 +3683,164 @@
    "render_match": "Cybertek|futuristic"
   },
   {
+   "key": "GSS_31_Battery_0Scrapper",
+   "part": "Battery",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "battery in a look \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Scrapper/Battery"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     3.0
+    ],
+    "footprint": [
+     2,
+     3
+    ],
+    "source": "Defs/Aerial/RM_ConduitStyles.xml Battery_<Look>: Graphic_Multi, drawSize (2,3) as vanilla's battery; the east picture is drawn turned"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Scrapper/Battery"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_31_Battery_1Industrial",
+   "part": "Battery",
+   "look": "Industrial",
+   "variant": "",
+   "section": "GSS",
+   "label": "battery in a look \u2014 Industrial",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Industrial/Battery"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     3.0
+    ],
+    "footprint": [
+     2,
+     3
+    ],
+    "source": "Defs/Aerial/RM_ConduitStyles.xml Battery_<Look>: Graphic_Multi, drawSize (2,3) as vanilla's battery; the east picture is drawn turned"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Industrial/Battery"
+   ],
+   "render_match": "StarWars|industrial"
+  },
+  {
+   "key": "GSS_31_Battery_2Modern",
+   "part": "Battery",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "battery in a look \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Modern/Battery"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     3.0
+    ],
+    "footprint": [
+     2,
+     3
+    ],
+    "source": "Defs/Aerial/RM_ConduitStyles.xml Battery_<Look>: Graphic_Multi, drawSize (2,3) as vanilla's battery; the east picture is drawn turned"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Modern/Battery"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_31_Battery_3Futuristic",
+   "part": "Battery",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "battery in a look \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/Battery"
+   ],
+   "size": {
+    "drawSize": [
+     2.0,
+     3.0
+    ],
+    "footprint": [
+     2,
+     3
+    ],
+    "source": "Defs/Aerial/RM_ConduitStyles.xml Battery_<Look>: Graphic_Multi, drawSize (2,3) as vanilla's battery; the east picture is drawn turned"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Futuristic/Battery"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
+   "key": "GSS_32_PowerSwitch_Unlit_3Futuristic",
+   "part": "PowerSwitch_Unlit",
+   "look": "Futuristic",
+   "variant": "",
+   "section": "GSS",
+   "label": "power switch, on, its glow out (no power) \u2014 Futuristic",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p1",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p10",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p11",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p12",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p13",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p14",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p2",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p3",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p4",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p5",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p6",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p7",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p8",
+    "RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p9"
+   ],
+   "size": {
+    "drawSize": [
+     1.0,
+     1.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SwitchLightDraw.DrawGlowOut: drawn over the Futuristic closed switch at the switch's own size"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p1",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p10",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p11",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p12",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p13",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p14",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p2",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p3",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p4",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p5",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p6",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p7",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p8",
+    "RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch_Unlit_p9"
+   ],
+   "render_match": "Cybertek|futuristic"
+  },
+  {
    "key": "ZFW_00_Strand_Flat_0Scrapper",
    "part": "Strand_Flat",
    "look": "Scrapper",
@@ -4603,6 +4761,6 @@
    "render_match": "Cybertek|futuristic"
   }
  ],
- "textures_seen": 421,
- "lead_html": "<div style='border:2px solid #c9a227;padding:10px 14px;margin:0 0 12px;font-size:15px;line-height:1.5'><b>1. What this is:</b> every picture Gimme Some Slack draws in the game \u2014 124 rows, one per part per look (Scrapper, Industrial, Modern, Futuristic; Modern cords also per colour), each at its true in-game size beside a human, the same part's looks banded together. The power-tap clamp is first; the last 40 rows are hose art that <b>moved to FlowWorks</b>.<br><b>2. What you rule on:</b> for each picture in each look, keep it or redo it (say why in the note). The clamp rows also hold the new clamp candidates \u2014 pick one per look.<br><b>3. Your clicks save automatically.</b> The blue IN GAME frame is only the agent's starting point (a prefill, counted separately), never your choice; nothing installs until you say the sheet is done.</div>"
+ "textures_seen": 444,
+ "lead_html": "<div style='border:2px solid #c9a227;padding:10px 14px;margin:0 0 12px;font-size:15px;line-height:1.5'><b>1. What this is:</b> every picture Gimme Some Slack draws in the game \u2014 129 rows, one per part per look (Scrapper, Industrial, Modern, Futuristic; Modern cords also per colour), each at its true in-game size beside a human, the same part's looks banded together. The power-tap clamp is first; the last 40 rows are hose art that <b>moved to FlowWorks</b>.<br><b>2. What you rule on:</b> for each picture in each look, keep it or redo it (say why in the note). The clamp rows also hold the new clamp candidates \u2014 pick one per look.<br><b>3. Your clicks save automatically.</b> The blue IN GAME frame is only the agent's starting point (a prefill, counted separately), never your choice; nothing installs until you say the sheet is done.</div>"
 }

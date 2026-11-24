@@ -28,8 +28,24 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>Styled by the same picker (4 looks, build menu, copy, Frame guard) but NOT a run member: a lamp is a
         /// machine, and machines end a run (design 2.1), so a lamp keeps its own picked look (art round 5, 2026-10-04).
         /// 0.2.0 (bar wall_lamp_takes_looks, T_WALL_LAMP_LOOKS_OFFLINE): the vanilla wall lamp takes the looks as the standing
-        /// lamp does; every lamp rule here and in RM_MapComponent_ConduitRuns reads this list, never a def name.</summary>
-        public static readonly string[] LampDefs = { "StandingLamp", "WallLamp" };
+        /// lamp does; every lamp rule here and in RM_MapComponent_ConduitRuns reads this list, never a def name.
+        /// The vanilla Battery joins this list by the owner's order of 2026-11-24 ("the battery takes the four looks and follows its
+        /// run, as the standing lamp does"): it is styled, restyled and follows its run by every lamp rule; only the words differ.</summary>
+        public static readonly string[] LampDefs = { "StandingLamp", "WallLamp", "Battery" };
+        public const string BatteryDef = "Battery";
+
+        /// <summary>"1 piece" / "8 pieces": a count with its noun (the reach menu said "1 lamps", polish 2026-11-22).</summary>
+        public static string Count(int n, string one, string many) => n + " " + (n == 1 ? one : many);
+
+        /// <summary>The lamps and batteries a reach repaints, as the tail of a menu line: ", 1 lamp", ", 2 lamps, 1 battery", or nothing.</summary>
+        public static string FixtureCount(int lamps, int batteries) =>
+            (lamps > 0 ? ", " + Count(lamps, "lamp", "lamps") : "") + (batteries > 0 ? ", " + Count(batteries, "battery", "batteries") : "");
+
+        /// <summary>Is menu entry <paramref name="key"/> the look the reach wears now (its "(current)" mark)? <paramref name="look"/> and
+        /// <paramref name="colour"/>: the one look every piece of the reach draws (colour only for Modern conduit that stores one);
+        /// a mixed-look reach, or one with no look read, marks nothing.</summary>
+        public static bool IsCurrentKey(string key, string look, string colour, bool mixed) =>
+            !mixed && look != null && key == Key(look, colour);
 
         /// <summary>Modern (extension cord) colours, in CordMaterials' strand order.</summary>
         public static readonly string[] Colours = { "Orange", "Green", "Brown", "Yellow", "Blue" };

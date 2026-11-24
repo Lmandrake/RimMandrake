@@ -69,6 +69,8 @@ PARTS = {
     # new parts go at the END: a row's key holds its part's rank here, and his decisions are filed under row keys
     "WallLamp":        ("wall lamp", [1.0, 1.0], "Defs/Aerial/RM_ConduitStyles.xml WallLamp_<Look>: Graphic_WallLampLook, no drawSize set (1x1), Graphic_Multi per facing"),
     "LookIcon":        ("look icon (menu picture, never drawn on the map)", [1.0, 1.0], "ConduitStyles.LookIconPath, a float-menu icon: it has no size in cells; shown at 1 cell"),
+    "Battery":         ("battery in a look", [2.0, 3.0], "Defs/Aerial/RM_ConduitStyles.xml Battery_<Look>: Graphic_Multi, drawSize (2,3) as vanilla's battery; the east picture is drawn turned"),
+    "PowerSwitch_Unlit": ("power switch, on, its glow out (no power)", [1.0, 1.0], "SwitchLightDraw.DrawGlowOut: drawn over the Futuristic closed switch at the switch's own size"),
 }
 # FlowWorks hoses (moved there 2026-10-11): HoseMath / RM_MapComponent_Hoses constants (selftest_gss_art_manifest_sizes.py
 # re-reads the width, wrap, lip and fitting constants from the C#, so a retune there fails the test instead of silently
@@ -137,7 +139,7 @@ def classify_gss(rel: str):
             look, variant, name = "Modern", p[2], p[3]
         else:
             look, name = FAMILY_LOOK[fam], p[2]
-        if name.startswith("WallLamp_"):          # Graphic_Multi: the facings are one picture's row
+        if name.startswith("WallLamp_") or name.startswith("Battery_"):          # Graphic_Multi: the facings are one picture's row
             name, res = (re.sub(r"_(north|east|south|west)$", "", x) for x in (name, res))
         name = re.sub(r"_p\d+$", "", name)
         if name.startswith("Strand_"):

@@ -222,7 +222,10 @@ namespace RimMandrake.GimmeSomeSlack
                 Thing pt = parent?.parent;
                 if (pt == null || !pt.Spawned) continue;
                 HookupDraw how = ConduitVisuals.HookupTo(pt);
-                if (how == HookupDraw.PatchCable) continue;
+                // a device wired straight to a pole keeps its drop wire and gets no cord of its own, EXCEPT when a same-net conduit run
+                // ends under or beside it: that end is its cord too, never a loose live end that sparks and shocks beside a lit lamp
+                // (seen live 2026-11-24, RIMMANDRAKE_HOOK_SLACK_POLE_LAMP_TO_CORD_END_BESIDE_IT)
+                bool patchCable = how == HookupDraw.PatchCable;
                 Thing th = c.parent;
                 var m = new MachineInfo { Id = "c" + th.thingIDNumber, Kind = KindOf(c, false) };
                 CellRect r = th.OccupiedRect();
@@ -239,6 +242,7 @@ namespace RimMandrake.GimmeSomeSlack
                     foreach (Cell hk in near) if (world.IsConduit(hk) && !m.Hookups.Contains(hk)) m.Hookups.Add(hk);
                     world.Machines.Add(m);
                 }
+                else if (patchCable) continue;
                 else if (how == HookupDraw.ConduitCell)
                 {
                     if (!world.IsConduit(C(pt.Position))) continue;     // a fogged conduit cell is not in the snapshot
@@ -265,8 +269,7 @@ namespace RimMandrake.GimmeSomeSlack
             Thing parent = c?.connectParent?.parent;
             PowerNet net = c?.PowerNet;
             if (parent?.Spawned != true || net == null || !net.connectors.Contains(c)) return parent;
-            HookupDraw how = ConduitVisuals.HookupTo(parent);
-            if (how == HookupDraw.PatchCable) return parent;
+            HookupDraw how = ConduitVisuals.HookupTo(parent);     // a pole parent too: a same-net conduit end beside the lamp is its drawn cord (AddPower)
 
             Map map = lamp.Map;
             Thing ConduitAt(Cell cell)

@@ -86,6 +86,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (args.Contains("--switchlight-only")) { SwitchLightChecks.Run(); SwitchLightChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchlight-plant")) { SwitchLightChecks.Plant(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch light plant)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--switchoff-only")) { SwitchOffChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (switch off only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--aerial-only")) { AerialSelfTest.Run(Check); Console.WriteLine($"{checks - fails}/{checks} checks passed (aerial only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--looks-only")) { LookIconChecks.Run(); WallLampLookChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (look icons + wall lamp looks only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--line-restyle-only")) { LineRestyleChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (line restyle only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--reach-only")) { StyleStage2Checks.Run(); StyleReachChecks.Run(); BatchedLinkStyleMergeChecks.Run(); LineRestyleChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (style reach only)"); return fails == 0 ? 0 : 1; }

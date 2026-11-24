@@ -333,6 +333,12 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var others = new List<AnchorInfo> { A(2, 15, 0), A(3, 6, 0), A(4, 3, 0, 5), A(5, 2, 0, 0, 1, 77), A(6, 40, 0) };
             C(AerialMath.AutoLinkPick(A(1, 0, 0), others, 20) == 3, "auto-link picks the nearest VALID anchor (skips foreign 4, full 5)");
             C(AerialMath.AutoLinkPick(A(1, 0, 0), new List<AnchorInfo> { A(6, 40, 0) }, 20) == -1, "auto-link with nothing in range picks none");
+            // RIMMANDRAKE_STOP_AUTOLINK_SPANNING_PAST_NEAR_POLE (walk station 32, 2026-11-24): three anchors in a row built together.
+            // The last one is already wired to its nearest neighbour; it must not fall through to the far one (a span through the middle pole).
+            C(AerialMath.AutoLinkPick(A(3, 14, 0, 0, 4, 2), new List<AnchorInfo> { A(1, 0, 0, 0, 4, 2), A(2, 9, 0, 0, 4, 1, 3) }, 20) == -1,
+                "auto-link: an anchor already wired to its nearest neighbour links no farther one (three in a row stay a line, 2 spans)");
+            C(AerialMath.AutoLinkPick(A(3, 14, 0, 0, 4, 1), new List<AnchorInfo> { A(1, 0, 0, 0, 4, 3), A(2, 9, 0) }, 20) == 2,
+                "auto-link: a link to a FARTHER anchor does not stop the pick of a nearer one");
             C(AerialMath.Owns(3, 9) && !AerialMath.Owns(9, 3), "a span is owned by the lower thing id");
         }
 
@@ -367,7 +373,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         }
 
         /// <summary>GS-1: a gravship launch despawns every ship thing with DestroyMode.WillReplace (decompiled 1.6,
-        /// GravshipUtility.GenerateGravship). A span with both ends aboard is kept; a span to the ground comes down coiled.</summary>
+        /// GravshipUtility.GenerateGravship). A span with both ends aboard is kept; a span to the ground snaps.</summary>
         private static void GravshipLaunch()
         {
             var spans = new List<(int, SpanState)> { (2, SpanState.Up), (3, SpanState.Up), (4, SpanState.Cut) };
@@ -375,12 +381,18 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             RemovalPlan g = AerialMath.PlanRemoval(1, false, spans, aboard);
             C(g.Kept.OrderBy(x => x).SequenceEqual(new[] { 2, 4 }), "launch: spans to anchors aboard (up or cut) are kept (" + string.Join(",", g.Kept) + ")");
             C(g.Grounded.SequenceEqual(new[] { 3 }) && g.Reseed.SequenceEqual(new[] { 3 }), "launch: the span to the grounded anchor comes down and only it is re-seeded");
-            C(g.Fallen.Count == 0, "launch: nothing falls (the grounded half is coiled, nothing died)");
+            // RIMMANDRAKE_SNAP_SLACK_GROUND_CORD_AT_TAKEOFF_IT_COILS_TODAY (owner 2026-11-24: "the wire should snap ship-to-ground")
+            C(g.Fallen.Count == 1 && g.Fallen[0].Survivor == 3 && g.Fallen[0].TowardDead, "launch: the UP span to the grounded anchor snaps and its half falls at that anchor (it was coiled before 2026-11-24)");
+            RemovalPlan gc = AerialMath.PlanRemoval(1, false, new List<(int, SpanState)> { (3, SpanState.Cut) }, aboard);
+            C(gc.Fallen.Count == 0 && gc.Grounded.SequenceEqual(new[] { 3 }), "launch: a span to the ground that was already cut drops nothing new");
+            RemovalPlan gOff = AerialMath.PlanRemoval(1, false, spans, aboard, false);
+            C(gOff.Kept.Count == 0 && gOff.Fallen.Count == 1 && gOff.Fallen[0].Survivor == 3 && gOff.Reseed.Count == 3,
+                "launch with keep-wires OFF: spans aboard are taken down and coiled, the span to the ground still snaps");
             // both ends despawn in an unspecified order: whichever goes first, neither drops the shared span
             RemovalPlan first = AerialMath.PlanRemoval(2, false, new List<(int, SpanState)> { (1, SpanState.Up) }, aboard);
             C(first.Kept.SequenceEqual(new[] { 1 }) && first.Grounded.Count == 0 && first.Reseed.Count == 0, "launch: the other end, despawning first, keeps the span too");
             RemovalPlan off = AerialMath.PlanRemoval(1, false, spans, null);
-            C(off.Kept.Count == 0 && off.Reseed.Count == 3, "setting off / no launch: today's behaviour, every span taken down");
+            C(off.Kept.Count == 0 && off.Reseed.Count == 3 && off.Fallen.Count == 0, "no launch (a dismantle): every span taken down, nothing falls");
             RemovalPlan boom = AerialMath.PlanRemoval(1, true, spans, aboard);
             C(boom.Kept.Count == 0 && boom.Fallen.Count == 2, "killed during a launch: spans fall exactly as any kill");
         }
@@ -456,8 +468,55 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         }
 
         // ------------------------------------------------------------------ a fallen / cut wire is ONE cable (B11/B21)
+        /// <summary>The sharpest turn of a fallen wire's DRAWN line where it lands: the most its heading turns over any 0.15 cell of
+        /// line of its hanging part and its first 0.6 cell on the ground, in degrees (walk brief of 2026-11-24: "falls straight, turns by about
+        /// 90 degrees on the ground, and runs straight again, so it reads as a bent rod").</summary>
+        private static double TouchdownTurn(FallenLay f)
+        {
+            if (f.GroundFrom < 2 || f.GroundFrom >= f.Pts.Count - 2) return 0;
+            var arc = new double[f.Pts.Count];
+            for (int i = 1; i < f.Pts.Count; i++) arc[i] = arc[i - 1] + P2.Dist(f.Pts[i - 1], f.Pts[i]);
+            double at = arc[f.GroundFrom], worst = 0;
+            for (int i = 1; i < f.Pts.Count - 1; i++)
+            {
+                if (arc[i] > at + 0.6) continue;     // the hanging part and the first 0.6 cell on the ground
+                int j = i;
+                while (j < f.Pts.Count - 2 && arc[j] - arc[i] < 0.15) j++;
+                double h0 = Math.Atan2(f.Pts[i].Z - f.Pts[i - 1].Z, f.Pts[i].X - f.Pts[i - 1].X), h1 = Math.Atan2(f.Pts[j + 1].Z - f.Pts[j].Z, f.Pts[j + 1].X - f.Pts[j].X);
+                double d = Math.Abs(h1 - h0); if (d > Math.PI) d = 2 * Math.PI - d;
+                worst = Math.Max(worst, d * 180 / Math.PI);
+            }
+            return worst;
+        }
+
+        private static void FallenTouchdown()
+        {
+            // a 2-cell mast, its wire down toward a break 7 cells off in each of 8 directions, 40 seeds, both sides
+            double worst = 0; int over = 0, over75 = 0, over100 = 0, n = 0; string where = "";
+            for (int dir = 0; dir < 8; dir++)
+                for (int seed = 1; seed <= 40; seed++)
+                    foreach (int side in new[] { -1, 1 })
+                    {
+                        double a = dir * Math.PI / 4;
+                        var basePt = new P2(30.5, 30.5); var top = new P2(30.5 + 0.3 * side, 32.4);
+                        FallenLay f = AerialMath.LayFallen(top, basePt, new P2(30.5 + 7 * Math.Cos(a), 30.5 + 7 * Math.Sin(a)), 7.35, seed, (x, z) => true, side);
+                        double t = TouchdownTurn(f); n++;
+                        if (t > 50) over++;
+                        if (t > 75) over75++; if (t > 100) over100++;
+                        if (t > worst) { worst = t; where = "dir " + dir + " seed " + seed + " side " + side; }
+                    }
+            // the sideways bend is held softly: more bend still moves the wire out, never onto a flat line along the limit
+            C(AerialMath.Geo2Clamp(2.0, 2.6) < AerialMath.Geo2Clamp(3.0, 2.6) && AerialMath.Geo2Clamp(3.0, 2.6) < AerialMath.Geo2Clamp(5.0, 2.6) && AerialMath.Geo2Clamp(50, 2.6) <= 2.6 && AerialMath.Geo2Clamp(-50, 2.6) >= -2.6,
+                "fallen wire: the sideways limit is soft (no flat stretch along the limit between two corners; walk brief 2026-11-24)");
+            // measured 2026-11-24: before the soft limit and the one-curve drop 426 / 254 / 160 of 640 lays turned over 50 / 75 / 100 deg in
+            // 0.15 cell there; after, 227 / 40 / 13. Not zero: a ground path that doubles back at the foot of its drop still turns tightly.
+            C(over100 <= 20 && over75 <= 60, "fallen wire: few hard corners where it lands (heading turn in 0.15 cell of line, from the insulator to 0.6 cell past the touchdown): "
+                + over + " / " + over75 + " / " + over100 + " of " + n + " over 50 / 75 / 100 deg (bar: at most 60 over 75 and 20 over 100), worst " + worst.ToString("0") + " deg at " + where);
+        }
+
         private static void Fallen()
         {
+            FallenTouchdown();
             Func<int, int, bool> open = (x, z) => true;
             var basePt = new P2(10.5, 10.5);
             var top = new P2(10.5 + 0.087, 10.5 + 3.22);                 // the middle insulator, 3.22 cells up
