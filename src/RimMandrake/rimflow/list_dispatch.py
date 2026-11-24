@@ -10,8 +10,8 @@ items waited for the Conductor's hand, because no program launched them. The sha
     python3 src/RimMandrake/rimflow/list_dispatch.py status              the last reading
     python3 src/RimMandrake/rimflow/list_dispatch.py clear ITEM --why "..."   the Conductor lifts a stop: one more run
 
-Per open list item that carries an outcome check (step 1, list_effect.py), oldest item that another waits on first, then
-oldest filing first, one decision:
+Per open list item that carries an outcome check (step 1, list_effect.py), raised items first (`rimflow raise`), then
+oldest item that another waits on, then oldest filing, one decision:
   close           the check holds (work already done): closed as the pipeline's act; nothing launches
   blind | no_effect  the check is unmeasured | the item has no check
   adopt           no check, but its ## verify names an existing *_accept.py: attached as `cmd:python3 <path>` (seen
@@ -119,8 +119,9 @@ def _one(s, n):
 # ---- pure helpers ---------------------------------------------------------------------------------------------------
 
 def order_ids(items):
-    """-> item ids: an item another open item waits on first, then the oldest filing, then the id."""
-    return sorted(items, key=lambda i: (not (items[i] or {}).get("blocks_others"),
+    """-> item ids: raised items first in raise order (`rimflow raise`, model.raise_key), then an item another open item
+    waits on, then the oldest filing, then the id."""
+    return sorted(items, key=lambda i: ((items[i] or {}).get("raised") or (1, "", 0), not (items[i] or {}).get("blocks_others"),
                                         (items[i] or {}).get("filed") or 9e18, i))
 
 
@@ -603,6 +604,7 @@ def gather(st, now=None, root=None):
              "filed": LM.epoch(x.created_at) if x.created_at else None, "blocks_others": iid in waited_on,
              "caused_by": x.caused_by, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
              "shape_size": sf["size"], "shape_at": sf["shape_at"], "shape_unit": sf["shape_unit"],
+             "raised": LM.raise_key(x) if x.raised is not None else None,
              "second_look": bool(sf["named"] or (sf["filed"] and cfg.get("shape_from")
                                                  and sf["filed"] >= LS._epoch(cfg["shape_from"])))}
         if x.state == "doing" and LM.lease_status(x, now) == "live":

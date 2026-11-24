@@ -499,6 +499,10 @@ def t_a_reshape_by_another_party_starts_the_run_count_again():
     d = (g["items"] or {}).get(iid) or {}
     chk(lambda: d.get("shape_at") and "shape_unit" in d, "gather hands both to decide (%s)" % d)
     chk(lambda: d.get("second_look") is True, "gather: an item filed since shape_from may have a second look (%s)" % d)
+    chk(lambda: "raised" in d and d["raised"] is None, "gather: an item never raised has no raise order (%s)" % d.get("raised"))
+    cli("raise", iid, "--reason", "selftest", "--why", "selftest")
+    d = (LD().gather({"items": {}})["items"] or {}).get(iid) or {}
+    chk(lambda: d.get("raised") and d["raised"][0] == 0, "gather: a raised item carries its raise order (%s)" % (d.get("raised"),))
     chk(lambda: isinstance(g.get("load"), float), "gather hands the load average to decide (%s)" % g.get("load"))
 
 

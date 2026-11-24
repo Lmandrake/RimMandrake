@@ -329,6 +329,14 @@ def t_a_claimed_item_is_not_the_lanes():
         "the lane's own run's lease does not stop its second run")
 
 
+def t_a_raised_item_goes_first():
+    items = {"OLD": it(filed=1.0), "WAITED_ON": it(filed=2.0, blocks_others=True),
+             "SECOND": it(filed=9.0, raised=(0, "2026-11-24T17:02:00Z", 0)),
+             "FIRST": it(filed=8.0, raised=(0, "2026-11-24T17:01:00Z", 0))}
+    chk(lambda: LD().order_ids(items) == ["FIRST", "SECOND", "WAITED_ON", "OLD"],
+        "raised items first, in the order they were raised (%s)" % LD().order_ids(items))
+
+
 def t_oldest_blocking_item_first():
     items = {"NEW": {"filed": 30, "blocks_others": False}, "OLD": {"filed": 10, "blocks_others": False},
              "BLK": {"filed": 20, "blocks_others": True}}
@@ -464,6 +472,7 @@ def main():
               t_a_block_whose_predecessor_is_done_is_not_a_block,
               t_the_gates_launch_nothing,
               t_the_lane_has_its_own_slots_and_chain_rule,
+              t_a_raised_item_goes_first,
               t_a_lane_run_on_a_mod_takes_no_mod_slot,
               t_a_passed_wait_gets_one_second_look,
               t_a_claimed_item_is_not_the_lanes,

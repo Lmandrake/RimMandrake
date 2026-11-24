@@ -84,7 +84,9 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   at slots_full.
 - **a-claimed-item-is-not-the-lanes.** An item that is `doing` under a live lease, with no lane run on it, reads
   `claimed`: it is not launched and not adopted. The lease of the lane's own run does not stop its second run.
-- **oldest-blocking-item-first.** Items are taken in this order: an item that another open item waits on first, then the
+- **a-raised-item-goes-first.** Items that `rimflow raise` raised come before every other item, in the order they were
+  raised (`model.raise_key`, the rule of every offer path).
+- **oldest-blocking-item-first.** Items not raised are taken in this order: an item that another open item waits on first, then the
   oldest filing first.
 - **the-run-owns-no-continuation.** A lane launch passes `--next-act-owner list_dispatch`; `left_open_continue.plan` does
   not continue such a run, so its `LEFT OPEN:` note is read by the lane alone and the two-run rule holds.
