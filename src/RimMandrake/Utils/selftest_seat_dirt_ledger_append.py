@@ -9,7 +9,7 @@ Fixture: a bare origin with ledger shard BENCH.jsonl (2 lines); a clone two hour
   (b) OWNER.jsonl with one line removed        -> stale (never a safe class: a lost line)
   (c) DISPATCHER.jsonl, origin has since appended a line the clone lacks, and the clone appends its own
       -> landable (the clone's lines are an append over its own HEAD; the tidy lands lines, never the whole file)
-Expected after the fix: 3 ok, 0 FAIL. Base (2026-11-23): (a) and (c) FAIL.
+Expected after the fix: 6 ok, 0 FAIL. Base (2026-11-23): (a) and (c) FAIL.
 """
 import os
 import subprocess
@@ -78,6 +78,14 @@ def main():
         check(L + "OWNER.jsonl" in r["stale"], "(b) a ledger shard that lost a line is stale, never landable")
         check(L + "DISPATCHER.jsonl" in r["landable"],
               "(c) an append over a HEAD that origin has since appended to is still landable")
+        # tidy-level: origin's newer line (9) and the clone's appended lines both reach origin; nothing is lost
+        res = seat_dirt.tidy(c, settle_min=0)
+        shows = lambda sh: subprocess.run(["git", "-C", o, "show", "main:" + L + sh + ".jsonl"], capture_output=True,  # noqa: E731
+                                          text=True).stdout
+        d = shows("DISPATCHER")
+        check(d == ev(1) + ev(2) + ev(9) + ev(4), "tidy keeps origin's newer line and lands the clone's: %r (%s)" % (d, res))
+        check(shows("BENCH") == ev(1) + ev(2) + ev(3), "tidy lands the appended BENCH line")
+        check(shows("OWNER") == ev(1) + ev(2), "tidy never lands a shard that lost a line")
     print("%d FAIL" % len(FAILS))
     return 1 if FAILS else 0
 

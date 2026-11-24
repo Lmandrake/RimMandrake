@@ -53,6 +53,7 @@ LEDGER = "infrastructure/state/ledger/"
 LAND = os.path.join(HERE, "land.sh")
 ITEM_RE = re.compile(r"^infrastructure/state/items/([A-Z0-9_]+)\.md$")
 CONCEPT_RE = re.compile(r"^design/concepts/([^/]+)/")
+LEDGER_SHARD_RE = re.compile(r"^infrastructure/state/ledger/events/[A-Za-z0-9_.-]+\.jsonl$")
 CONCEPT_SETTLE_MIN = 30  # a concept folder lands only this long after its last change, and only with no run open
 
 
@@ -136,6 +137,43 @@ def replaces_nothing_newer(clone, st, path, ref="origin/main"):
     return False
 
 
+def ledger_tail(clone, st, path):
+    """-> the bytes a ledger events shard appended over the clone's HEAD copy, or None when the path is not a shard that
+    only gained lines (RIMMANDRAKE_LAND_APPENDED_LEDGER_LINES_IN_TIDY_FIFTH_RING: a window's unlanded rimflow append rang
+    disk.seat_dirt five times). None for a shard that lost or changed a byte, is untracked, deleted or unmerged, whose HEAD
+    copy lacks a final newline, or whose new bytes are not whole lines. An unchanged shard gives b''."""
+    if not LEDGER_SHARD_RE.match(path) or "?" in st or "D" in st or "U" in st:
+        return None
+    r = subprocess.run(["git", "-C", clone, "cat-file", "blob", "HEAD:" + path], capture_output=True, timeout=60)
+    if r.returncode != 0:
+        return None
+    try:
+        with open(os.path.join(clone, path), "rb") as f:
+            mine = f.read()
+    except OSError:
+        return None
+    head = r.stdout
+    if not mine.startswith(head) or (head and not head.endswith(b"\n")):
+        return None
+    tail = mine[len(head):]
+    return tail if (not tail or tail.endswith(b"\n")) else None
+
+
+def merged_ledger(clone, st, path, ref="origin/main"):
+    """-> origin's copy of the shard plus the clone's appended lines that origin does not hold yet (bytes), or None when
+    the shard is not an append over HEAD. Origin's lines are kept whole: only the clone's own lines are added."""
+    tail = ledger_tail(clone, st, path)
+    if tail is None:
+        return None
+    r = subprocess.run(["git", "-C", clone, "cat-file", "blob", "%s:%s" % (ref, path)], capture_output=True, timeout=60)
+    base = r.stdout if r.returncode == 0 else b""
+    if base and not base.endswith(b"\n"):
+        return None
+    have = set(base.splitlines())
+    new = [ln for ln in tail.splitlines(True) if ln.rstrip(b"\n") not in have]
+    return base + b"".join(new)
+
+
 def closed_copy(clone, path, ref="origin/main"):
     """For an items/<ID>.md path: "same" when origin holds items/closed/<ID>.md with these exact bytes, "differs" when it
     holds that file with other bytes, None when origin has no closed prose for the item. A closed item's prose never
@@ -152,6 +190,18 @@ def closed_copy(clone, path, ref="origin/main"):
             return "same" if f.read() == r.stdout else "differs"
     except OSError:
         return "differs"
+
+
+def p_ok(clone, path, own):
+    """True when the land already realigned this shard to origin (its tree copy equals origin's tip and holds every line
+    of `own`): nothing to restore. False otherwise: put the clone's own bytes back."""
+    try:
+        with open(os.path.join(clone, path), "rb") as f:
+            cur = f.read()
+    except OSError:
+        return False
+    o = subprocess.run(["git", "-C", clone, "cat-file", "blob", "origin/main:" + path], capture_output=True, timeout=60)
+    return o.returncode == 0 and cur == o.stdout and set(own.splitlines()) <= set(cur.splitlines())
 
 
 def clones(seat=None, role_root=None):
@@ -188,7 +238,8 @@ def classify(clone, now=None, settle_min=SETTLE_MIN):
             out["closed_copies"].append(p)
             continue
         # a deletion (staged or not) or an unmerged path is never a safe class
-        safe = (p.startswith("conversations/") and p.endswith(".md") and "D" not in st and "U" not in st
+        safe = (ledger_tail(clone, st, p) is not None) or \
+               (p.startswith("conversations/") and p.endswith(".md") and "D" not in st and "U" not in st
                 and replaces_nothing_newer(clone, st, p)) or \
                (st == "??" and m and m.group(1) in filed and closed is None and not on_origin(clone, p)) or \
                bool(c and c.group(1) in settled)
@@ -260,11 +311,34 @@ def tidy(clone=SEAT_CLONE, now=None, land=LAND, settle_min=SETTLE_MIN, fetch_tim
     if not paths:
         return said + "nothing to land"
     where = "seat clone" if clone == SEAT_CLONE else "role clone " + os.path.basename(os.path.normpath(clone))
-    msg = ("seat_dirt: land %d safe path(s) left in the %s (conversation records, filed item prose, "
+    msg = ("seat_dirt: land %d safe path(s) left in the %s (conversation records, appended ledger lines, filed item prose, "
            "settled concept folders)\n\n"
            "RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR (seat_dirt.py tidy)." % (len(paths), where))
-    p = subprocess.run(["sh", land, "-m", msg] + paths, cwd=clone, capture_output=True, text=True, timeout=600,
-                       env=dict(os.environ, LAND_REPO=clone))
+    swapped = {}     # ledger shard -> the clone's own bytes: the land sees origin's lines plus the clone's, never less
+    for q in paths:
+        if LEDGER_SHARD_RE.match(q):
+            full = os.path.join(clone, q)
+            st = dict((pp, s_) for s_, pp in dirty(clone)).get(q, " M")
+            m = merged_ledger(clone, st, q)
+            if m is None:
+                continue
+            with open(full, "rb") as f:
+                swapped[q] = f.read()
+            tmp = full + ".tidy"
+            with open(tmp, "wb") as f:
+                f.write(m)
+            os.replace(tmp, full)
+    try:
+        p = subprocess.run(["sh", land, "-m", msg] + paths, cwd=clone, capture_output=True, text=True, timeout=600,
+                           env=dict(os.environ, LAND_REPO=clone))
+    finally:
+        for q, own in swapped.items():       # a refused or failed land leaves the clone's own copy as it was
+            full = os.path.join(clone, q)
+            if p_ok(clone, q, own):
+                continue
+            with open(full + ".tidy", "wb") as f:
+                f.write(own)
+            os.replace(full + ".tidy", full)
     if p.returncode == 0:
         return said + (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
     if "nothing to land" in p.stderr:
