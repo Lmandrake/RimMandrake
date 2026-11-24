@@ -178,8 +178,8 @@ All in `src/RimMandrake/rimflow/maturation.py`:
 
 One stage, by his card of 2026-11-13 ("One stage, tests first").
 
-- **Who**: one blind judge per cycle (Opus; `JUDGE_MODELS` allows opus or fable). Dispatch launches one cycle per visit
-  (`blind_auto_cycles_per_visit` 1, cap `blind_cap_usd` 20) under an item named
+- **Who**: one blind judge per cycle (Opus; `JUDGE_MODELS` allows opus or fable). Dispatch launches at most three cycles per visit
+  (`blind_auto_cycles_per_visit` 3 since 2026-11-15, cap `blind_cap_usd` 20), each under an item named
   `RIMMANDRAKE_JUDGE_<MOD>_BLIND_CYCLE_<N>_TESTS_FIRST`; any further cycle is the Conductor's.
 - **Input**: the brief `maturation.py brief <Mod>` writes. It lists what is closed to the judge until its lane 1 is
   committed (the journal, `exam.json`, `version/evidence/`, the test table, the mod's selftests and validation scripts,
@@ -205,7 +205,7 @@ One stage, by his card of 2026-11-13 ("One stage, tests first").
 ### Stage 6: In-game acceptance
 
 - **Who**: one live-game driver (Opus, cap `ingame_cap_usd`, 30 since 2026-11-15) on Archmagi through the bridge.
-  Only one in-game run on any mod at a time, and only when `rimflow bridge idle` says the bridge can be taken.
+  Only one in-game run per game at a time, and only when `rimflow bridge idle` says that game's bridge can be taken.
   `ingame_enabled` in `maturation_dispatch.json` shipped false (the Conductor ran the first visit by hand with
   `maturation.py launch`, which refuses a held bridge); the Conductor set it true on 2026-11-15 about 13:30 UTC after
   Pyrelands visit 1 (cap 20 -> 30 to match the hand launches; that visit spent about USD 18). From then on Dispatch
@@ -312,7 +312,8 @@ A `hold` blocks every advance until a later `release`.
 
 - **Dispatch**: `src/RimMandrake/rimflow/maturation_dispatch.py tick --apply`, on `rm-maturation-dispatch.timer` every
   60 s, from the dispatch clone. Settings: `src/RimMandrake/rimflow/maturation_dispatch.json`. No model, no tokens.
-  The advancing list: Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands, Graffiti.
+  The advancing list: `advancing` in that file (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands, Graffiti,
+  Contagion). A mod on his hold (`mod_owner_hold.json`) gets nothing.
   - At the offline build it launches one capped builder (Opus, `cap_usd` 15) when the mod has build work owed and
     nothing live on it. After a run ends, the next starts only if the count of refused bars fell. It stops on a mod, with
     one "Needs Conductor" line, when the count did not fall, when the mod's dollars at the stage pass
@@ -322,9 +323,9 @@ A `hold` blocks every advance until a later `release`.
     --usd <dollars> --why "..."`: one more launch on that mod at that stage, then it pauses at the next ceiling. The
     Conductor releases without asking, told after (owner, by card 2026-11-15); `releases` lists each with its spend,
     and each reaches the daily digest as a `ceiling release` line (mod, stage, who; the page is token-blind).
-  - At the blind challenge: one judge per visit (section 4). At in-game acceptance: one driver per owed visit (section 4), on since
+  - At the blind challenge: one judge per owed cycle (section 4). At in-game acceptance: one driver per owed visit (section 4), on since
     2026-11-15 about 13:30 UTC.
-  - At most `max_live` 2 live runs on advancing mods, the Conductor's own included; the Dispatcher's account hold stops it.
+  - At most `max_live` live runs on advancing mods (the settings file holds the number and each change), the Conductor's own included; the Dispatcher's account hold stops it.
   - It never judges, rejects, sends a mod back, advances, takes the bridge or runs a game.
 - **Status page**: `src/RimMandrake/Utils/maturation_now.py` writes `D:\ClaudeWork\rimmandrake\conductor\MATURATION_NOW.md`
   (regenerated every Dispatch tick): where each mod stands, its "Needs Conductor" list, files that disagree. It reads
@@ -346,7 +347,7 @@ A `hold` blocks every advance until a later `release`.
 | Stage record, `next`, `advance`, `spend`, `seed` | `maturation.py` | `selftest_maturation.py` |
 | Offline-build brief and capped launch | `maturation.py brief`, `launch` | `selftest_maturation.py --launch` |
 | Dispatch step, idle alarm, cap reserved before launch, spend rows of ended runs | `maturation_dispatch.py` | `selftest_maturation_dispatch.py` |
-| Blind challenge brief, launcher (one per visit), exit reader | `maturation.py`, `maturation_dispatch.py` | `selftest_maturation.py` |
+| Blind challenge brief, launcher (up to three cycles per visit), exit reader | `maturation.py`, `maturation_dispatch.py` | `selftest_maturation.py` |
 | In-game brief, launcher (shipped off; on since 2026-11-15), exit reader | `maturation.py`, `maturation_dispatch.py` | `selftest_maturation.py`, `selftest_maturation_dispatch.py` |
 | SteveDesktop owner-hold refusal | `Utils/testq/pipeline_admit.py` | `Utils/testq/selftest_testq_pipeline_admit.py` |
 | Status page | `Utils/maturation_now.py` | `Utils/selftest_maturation_now.py` |

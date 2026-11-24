@@ -112,7 +112,7 @@ def hold(repo, item, mods, state_of, mapping, tree=tree_gates):
 
 def pass_title(mod):
     return ("Designer deep pass on %s (first touch): read its code and spec, expand the spec and validation strategies "
-            "(site prep and controls per scene), certify with the owner, write it out for Relentless as build items"
+            "(site prep and controls per scene), certify with the owner, write it out as build items"
             % mod.split("/")[-1])
 
 

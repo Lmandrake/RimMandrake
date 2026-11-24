@@ -30,8 +30,8 @@ Runs on rm-maturation-dispatch.timer (every 60 s, from the dispatch clone); its 
 so a slow ledger read never cuts a Dispatcher beat. Settings: maturation_dispatch.json beside this file.
 
 Per mod on the advancing list, in order, one decision:
-  not_offline   the mod's record is at neither the offline build nor the blind challenge (no record, the Designer, any
-                later stage): nothing; the Designer stays his and the stages after the blind challenge are hand steps
+  not_offline   the mod's record is at none of the offline build, the blind challenge and in-game acceptance (no record,
+                the Designer, any later stage): nothing here; the Designer stays his
   live          a detached run is live on the mod (maturation_now maps runs to mods by item id): nothing; the run is
                 watched, and its refused count when first seen is kept
   stopped       the last run on the mod ended and the count of refused bars did NOT fall, or the mod's dollars at the
@@ -93,13 +93,13 @@ design/RimMandrake/pipeline_interventions_census_2026-11-15.md; selftest_maturat
   launch        spawn a ledger item under this one (seat RUNNER, as ops_watch files), publish the shard, `maturation.py launch` it (opus, the cap)
 At the blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED), per advancing mod, one of:
   launch        cycle N (the record's cycles.total) is owed (no cycle_N folder), nothing live or just ended, no blind run
-                since it opened, and no automatic cycle yet this visit: one judge (opus, blind_cap_usd), item
+                since it opened, and an automatic cycle of this visit left: one judge (opus, blind_cap_usd), item
                 RIMMANDRAKE_JUDGE_<MOD>_BLIND_CYCLE_<N>_TESTS_FIRST spawned the same way as a build item
   live | settling   a run is live on it, or one ended under settle_s ago: nothing
   exit_met | exit_not_met | cycle_unfinished   cycle N is recorded (maturation.read_exit): a Needs Conductor line each;
                 the steward confirms or opens the next cycle by hand, never the program
   stopped | auto_spent | hand_run_seen   the visit's automatic cycle ended with no record or failed to launch, or was
-                already spent (blind_auto_cycles_per_visit, 1), or a hand-launched blind run worked on the cycle and wrote
+                already spent (blind_auto_cycles_per_visit), or a hand-launched blind run worked on the cycle and wrote
                 nothing: a Needs Conductor line, never a second automatic cycle
   launch_retry  the launch never started on a transient fault (a git lock, its item not yet on origin/main): not the
                 visit's cycle; the next tick publishes the filed item again and launches it, up to launch_tries (3),
@@ -1914,7 +1914,7 @@ def cert_wait(f, put, mod, to, what, rerun=None, red=None):
 def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
     """One decision for an advancing mod at the blind challenge -> True to launch its judge. The owner's condition, 2026-11-14
     ~9 PM PST: "As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble."
-    So at most blind_auto_cycles_per_visit (1) automatic cycles per visit (a visit is keyed by the version and the visit's
+    So at most blind_auto_cycles_per_visit automatic cycles per visit (a visit is keyed by the version and the visit's
     first cycle number); a cycle already in a cycle_N folder, live, ended under settle_s ago, or worked by a blind run
     that wrote nothing is never launched again; every ended cycle (exit met, not met, or no exit block) is a Needs
     Conductor line, and the program never advances: the steward's confirmation stays a hand step."""
