@@ -81,6 +81,16 @@ def main():
                 code, out = bridge(*argv)
                 check(refused(code, out, 3, "a"), "hold on a: bridge %s refused exit 3 naming hold and pass (exit %s: %s)" % (label, code, out.strip()[:90]))
             check(bridge_events() == n0 and not locks_written(), "hold on a: no bridge event, no lock written")
+            # --despite-hold (the Conductor staging his walk on purpose, as game_lock.claim --despite-hold): the hold is
+            # named and passed, for idle and take alike; game_instance stop/launch --despite-hold reach it through idle
+            for label, argv in (("idle", ["idle", "--for", "x"]), ("take", ["take", "--for", "x"])):
+                code, out = bridge(*(argv + ["--despite-hold", "staging his walk"]))
+                check(code != 3 and "acting anyway: staging his walk" in out,
+                      "hold on a: bridge %s --despite-hold passes the hold, naming it (exit %s: %s)" % (label, code, out.strip()[:90]))
+            bridge("release")
+            for f in locks_written():
+                os.remove(f)
+            n0 = bridge_events()
             code, out = bridge("release")
             check("HIS HOLD" not in out and code != 3, "hold on a: release is not refused (exit %s)" % code)
             code, out = bridge("who")

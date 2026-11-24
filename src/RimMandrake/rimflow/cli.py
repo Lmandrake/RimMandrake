@@ -4386,10 +4386,12 @@ def _stamp_bare_bridge(w):
     return 1
 
 
-def _refuse_pipe_hold(hk):
+def _refuse_pipe_hold(hk, despite=None):
     """A take of a game under his `./pipe off game:<g>` is refused before any lock or event, --force too (his switch, as
     game_lock.claim does; the one rule is game_lock.pipe_hold). A store that cannot be read is COULD NOT LOOK (exit 2).
-    Another machine's game keeps its own guard: nothing is checked here for it."""
+    Another machine's game keeps its own guard: nothing is checked here for it. despite (--despite-hold WHY): the
+    caller acts on the held game on purpose, as game_lock.claim --despite-hold; the hold is named, and passed
+    (game_instance stop --despite-hold reached `bridge idle` with no way through, 2026-11-24 staging his walk)."""
     try:
         g = game_lock.check_game(hk)
     except ValueError:
@@ -4398,6 +4400,9 @@ def _refuse_pipe_hold(hk):
     nm = game_lock.game_names.show(g)
     if cause:
         die("bridge NOT taken: COULD NOT LOOK: " + cause, code=game_lock.EX_BLIND)
+    if hold and despite:
+        sys.stderr.write("rimflow: %s is held (pipe off game:%s: %s); acting anyway: %s\n" % (nm, nm, hold, despite))
+        return
     if hold:
         die("bridge NOT taken: HIS HOLD: pipe off game:%s: %s\n  what passes: ./pipe on game:%s --why \"...\"\n"
             "  (--force does not cut his switch)" % (nm, hold, nm), code=game_lock.EX_HIS)
@@ -4426,7 +4431,7 @@ def cmd_bridge(args, seat):
     except model.SchemaError as e:          # a typo'd --host: a refusal naming the known hosts, not a traceback
         die(str(e))
     if args.action in ("take", "idle"):
-        _refuse_pipe_hold(hk)
+        _refuse_pipe_hold(hk, getattr(args, "despite", None))
     if getattr(args, "mine", False):
         # `release --mine` (ralph_a loop, ralph_loop_design §1.2): free the bridge ONLY if this seat holds it. A
         # plain release frees anyone's hold (recorded); a loop's after-every-pass release must never cut across
@@ -5229,8 +5234,11 @@ def build_parser():
     s.add_argument("--mine", action="store_true",
                    help="release only: free the bridge only if THIS seat holds it; another's hold is left alone "
                         "and nothing is written (exit 0). For loops that release after every pass")
+    s.add_argument("--despite-hold", dest="despite", metavar="WHY", default=None,
+                   help="take/idle only: pass his `./pipe off game:<g>` on purpose (the Conductor staging his walk), "
+                        "as game_lock.py claim --despite-hold; the hold is named on stderr. Other holds still apply")
 
-    s = add("game", "OWNER only — announce the game state", cmd_game)
+    s = add("game","OWNER only — announce the game state", cmd_game)
     s.add_argument("state", nargs="?", choices=model.GAME_STATES,
                    help="omit to MEASURE the game and correct the record from it")
     # 🔑 GAME_STATE_HAS_NO_STAMPER_1's second half. The prose the old game.json

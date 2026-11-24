@@ -523,7 +523,7 @@ def bridge_host_args(name):
     return ["--host", machine] if machine in model.BRIDGE_HOSTS and machine != model.DEFAULT_BRIDGE_HOST else []
 
 
-def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None):
+def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None, despite=None):
     """None when this seat may stop game `name`, else why not and what would pass. RIMMANDRAKE_GUARD_GAME_STOP_BY_BRIDGE_HOLD
     (GPT review p2.F2: stop used to taskkill with no bridge check). The verdict is rimflow's own, not a second copy:
     `rimflow bridge idle` (the delegated gate) passes a bridge that is free, ours, or stale by the 45-min rule, and his
@@ -541,7 +541,8 @@ def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None):
     host = bridge_host_args(name)
     try:
         r = subprocess.run([sys.executable, RIMFLOW_CLI, "bridge", "idle"] + host + ["--for", purpose]
-                           + (["--seat", seat] if seat else []), env=env,
+                           + (["--seat", seat] if seat else [])
+                           + (["--despite-hold", despite] if despite else []), env=env,
                            capture_output=True, text=True, timeout=timeout, encoding="utf-8", errors="replace")
         rc, out, text = r.returncode, r.stdout or "", ((r.stdout or "") + (r.stderr or "")).strip()
     except (OSError, subprocess.SubprocessError) as e:
@@ -588,7 +589,7 @@ def stop(pid_=None, force=False, name=None, purpose=None, despite=None, seat=Non
         held = hold_refusal(name, despite)
         if held:
             raise Refused(held)
-        why = bridge_refusal(name, purpose, seat=seat)
+        why = bridge_refusal(name, purpose, seat=seat, despite=despite)   # his pipe hold, passed on purpose there too
         if why:
             raise Refused(why)
     rc, out = 0, []
