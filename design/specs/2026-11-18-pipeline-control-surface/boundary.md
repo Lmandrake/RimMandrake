@@ -9,6 +9,9 @@ added. Code cut to it 2026-11-19 by `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_
 
 ## ACCEPTS (the only inputs the store is built for)
 
+The ledger's `append` writes whole criterion text inline when an `implemented` event fits. An oversize event can keep
+long criteria in the fulltext store with bounded previews on the ledger (`selftest_model.py`, `selftest_prooflint_at_filing.py`).
+
 - **launch-through-one-door.** A launch is `launch_unit(args, spec)`. `args` are systemd-run's arguments: its
   options, `--`, then the payload; they are never read. The unit's name is the field `spec["unit"]`, and `spec` names
   one of the 9 launch families. Only `launch_unit` writes `systemd-run`: an `args` that starts with it, or has no `--`,

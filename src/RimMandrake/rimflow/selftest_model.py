@@ -88,6 +88,17 @@ def t_atomicity_guard():
             "guarantee is gone and a concurrent writer can tear the line in half.")
 
 
+def t_criterion_text_survives_ledger():
+    text = "First observation. " * 20 + "Final observation."
+    criteria, untagged = model.parse_criteria("- A1 L1: " + text + "\n- A2 L0: short\n- no tag")
+    assert criteria[0]["text"] == text, "parse_criteria cut the final observation"
+    assert criteria[1]["text"] == "short" and untagged == ["- no tag"]
+    p = os.path.join(TMP, "criteria.jsonl")
+    model.append(ev(seat="BUILD", event="implemented", id="X_Y_1", sha="598dec613",
+                    needs="bridge", criteria=criteria), p)
+    assert model.read(p)[0]["criteria"] == criteria, "criteria that fit must stay whole on the ledger"
+
+
 def t_append_returns_growing_offset():
     p = os.path.join(TMP, "idx.jsonl")
     a = model.append(filed("FIRST_ITEM_HERE_1"), p)

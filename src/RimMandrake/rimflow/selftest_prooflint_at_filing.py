@@ -34,6 +34,8 @@ import re
 import subprocess
 import sys
 import tempfile
+from pathlib import Path
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
@@ -262,6 +264,32 @@ prose = "- A1 L1: " + cut + " and the rest of the line\n"
 ok("A1" not in dict(L.lint_item(LR, item, "t", {}, None, prose)), "4 prose holding the whole line clears it")
 ok(dict(L.lint_item(LR, dict(item, outstanding=None), "t", {}, None, "")).keys() >= {"A1", "A2"},
    "4 no ledger state: every live clause read")
+ok(L.whole_criterion(dict(item["criteria"][0], text=cut + " whole"), "") ==
+   dict(item["criteria"][0], text=cut + " whole"), "4 whole inline text beyond the old cap stays readable")
+
+with tempfile.TemporaryDirectory() as td, patch.dict(os.environ, RM_FULLTEXT_DIR=td):
+    path = Path(td, "criteria.jsonl")
+    texts = ["🪴" * 1200 + " final", "Observe this plant. " * 12, "short"]
+    criteria = [dict(id="A%d" % i, level="L1", text=text) for i, text in enumerate(texts, 1)]
+    event = dict(seat="BUILD", event="implemented", id="X_Y_1", sha="598dec613", needs="bridge")
+    legacy = [dict(c, text=c["text"][:L.CUT_AT]) for c in criteria]
+    L.model.append(dict(event, criteria=legacy), path)
+    try:
+        L.model.append(dict(event, criteria=criteria), path)
+    except L.model.EventTooLargeError:
+        ok(False, "4 an event that legacy truncation admitted must still fit with whole criterion text")
+    else:
+        ok(all(len(row) < L.model.PIPE_BUF for row in path.read_bytes().splitlines(keepends=True)),
+           "4 spilled criterion leaves the ledger below PIPE_BUF in bytes")
+        stored = L.model.read(path)[-1]["criteria"]
+        built = dict(item, criteria=[L.whole_criterion(c, "") for c in stored],
+                     state="built", built_sha=event["sha"], id=event["id"])
+        ok(L.owed(built, "A1") == ("L1", texts[0]) and stored[1:] == criteria[1:],
+           "4 the proof reads the whole spilled criterion and the other criteria stay inline")
+        for side in Path(td).glob("*.txt"):
+            side.unlink()
+        bad = dict(L.lint_item(LR, dict(item, criteria=stored), "t", {}, None, ""))
+        ok("could not read" in bad.get("A1", ""), "4 a missing criterion spill is reported as unreadable")
 
 
 # 5. preflight
@@ -293,6 +321,8 @@ finally:
 
 # 7. cli
 import cli as C                     # noqa: E402
+card_event = dict(event, criteria=criteria, card={"questions": [{"question": "One?"}, {"question": "Two?"}]})
+ok(C._split_card(card_event) == (None, []), "7 a spillable criterion does not split an otherwise fitting card")
 with tempfile.TemporaryDirectory() as root:
     os.makedirs(os.path.join(root, "infrastructure/state/live_proofs"))
     os.makedirs(os.path.join(root, "src/a"))

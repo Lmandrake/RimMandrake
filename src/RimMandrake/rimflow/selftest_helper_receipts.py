@@ -245,6 +245,21 @@ def unreadable():
         check(True, "an unreadable sessions dir raises, it never reads as nobody alive")
 
 
+def t_foreground_result_needs_assistant():
+    sid = "3333aaaa-foreground-unread"
+    call = asst("", "tool_use", [{"type": "tool_use", "id": "tu10", "name": "Agent", "input": {}}])
+    result = user([{"type": "tool_result", "tool_use_id": "tu10", "content": "report"}])
+    helper(sid, "fg2", FINISHED, tool_use="tu10")
+    records = [call, result, user("still there?")]
+    write(tx(sid), records, tail='{"type":"assistant"')
+    rec = HR.harvest(tx(sid), SEAT)
+    check([h["id"] for h in rec["unread"]] == ["fg2"] and "THE FINAL REPORT" in rec["unread"][0]["report"],
+          "foreground-result-needs-assistant: the unread foreground report is receipted")
+    write(tx(sid), records + [asst("read it")])
+    check(not HR.has_findings(HR.harvest(tx(sid), SEAT)),
+          "foreground-result-needs-assistant: a later assistant record clears the finding")
+
+
 def t_empty_markers_are_not_reread():
     """empty-markers-are-not-reread: 783 of 801 live receipts were empty markers read by every Dispatcher beat; on the
     D: drive that read (2.6 s warm) cut the observe step 25 times on 2026-11-23 and starved the beat. An empty marker is
@@ -285,6 +300,7 @@ def main():
     os.makedirs(CLONE)
     real_kill()
     _, a, e = scenarios()
+    t_foreground_result_needs_assistant()
     t_empty_markers_are_not_reread()
     readers(a, e)
     unreadable()

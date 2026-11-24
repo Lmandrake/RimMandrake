@@ -350,7 +350,8 @@ LEVELS = ("L0", "L1", "L2", "GREEN-MIN", "GREEN-FULL", "L3", "L4")
 LEVEL_NEEDS = {"L0": "offline", "L1": "bridge", "L2": "bridge", "GREEN-MIN": "bridge",
                "GREEN-FULL": "bridge", "L3": "bridge", "L4": "owner"}
 CRITERION_ID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]{0,23}$")
-CRITERION_TEXT_MAX = 160          # chars kept on the ledger; the full text lives in prose
+CRITERION_TEXT_MAX = 160          # legacy cut length, also a size budget for a spilled criterion
+CRITERION_SPILL_PREFIX = "\n[whole criterion: "
 # One criterion line: `- A1 L1: defs resolve on the minimal list`. The bullet, the colon
 # and the text are optional; the id and the level are not.
 CRITERION_LINE_RE = re.compile(
@@ -390,7 +391,7 @@ def parse_criteria(text):
         m = CRITERION_LINE_RE.match(line)
         if m:
             crit.append({"id": m.group("cid"), "level": m.group("level"),
-                         "text": m.group("text").strip()[:CRITERION_TEXT_MAX]})
+                         "text": m.group("text").strip()})
         elif BULLET_RE.match(line):
             untagged.append(line.strip())
     return crit, untagged
@@ -1486,15 +1487,26 @@ def _spill_prose(ev, line, blob):
     """An event over the line bound keeps its prose WHOLE in a side file instead of being refused or cut: the largest
     free-text field (SPILL_FIELDS; never an owner quote, an id or a sha) becomes its head plus
     `[+N chars; whole text (M chars): <path>]` until the line fits (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS, spec T9).
+    Long criteria can also spill. Their preview and store-relative reference fit in the old cut's byte budget.
     -> (ev, line, blob), still too large when the rest of the event is."""
     try:
         from . import fulltext
     except ImportError:
         import fulltext  # noqa: E402
     ev = dict(ev)
-    for key in sorted((k for k in SPILL_FIELDS if isinstance(ev.get(k), str) and len(ev[k]) > SPILL_KEEP),
-                      key=lambda k: -len(ev[k].encode("utf-8"))):
-        ev[key] = fulltext.fit(ev[key], SPILL_KEEP)
+    fields = [(ev, k, SPILL_KEEP) for k in SPILL_FIELDS]
+    if ev.get("event") == "implemented" and ev.get("criteria"):
+        ev["criteria"] = [dict(c) for c in ev["criteria"]]
+        fields.extend((c, "text", CRITERION_TEXT_MAX) for c in ev["criteria"])
+    spillable = [(row, key, limit) for row, key, limit in fields
+                 if isinstance(row.get(key), str) and len(row[key]) > limit]
+    for row, key, limit in sorted(spillable, key=lambda field: (field[0] is ev, -len(field[0][field[1]].encode("utf-8")))):
+        text = row[key]
+        if row is ev:
+            row[key] = fulltext.fit(text, limit)
+        else:
+            ref = os.path.basename(fulltext.keep(text))
+            row[key] = text[:limit // 2] + CRITERION_SPILL_PREFIX + ref + "]"
         line = json.dumps(ev, separators=(",", ":"), ensure_ascii=False) + "\n"
         blob = line.encode("utf-8")
         if len(blob) < PIPE_BUF:

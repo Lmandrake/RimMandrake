@@ -113,21 +113,33 @@ def live_rules(r):
     return out
 
 
-# ---------------------------------------------------------------- pure checks
+# ---------------------------------------------------------------- criterion and proof checks
 
 sys.path.insert(0, HERE)
-import model                                   # noqa: E402  the ledger's own cap and criterion line, not a copy
+import model                                   # noqa: E402  the ledger's legacy cap and criterion line
 import live_observe                            # noqa: E402  the RMOBS measurement protocol; the regexes are its fallback
 
 CUT_AT = model.CRITERION_TEXT_MAX
 CRIT_LINE = model.CRITERION_LINE_RE
+CRIT_SPILL = re.compile(re.escape(model.CRITERION_SPILL_PREFIX) + r"([0-9a-f]{20}\.txt)\]\Z")
 
 
 def whole_criterion(c, prose):
-    """The ledger cuts a criterion's text at CUT_AT; the item's prose may hold the whole line. -> a copy with the
-    whole text, or marked `cut` when the ledger copy is at the cap and no prose line extends it."""
+    """Read whole inline or spilled text. A legacy row at CUT_AT still needs its prose copy."""
     c, text = dict(c), c.get("text") or ""
-    if len(text) < CUT_AT:
+    spill = CRIT_SPILL.search(text)
+    if spill:
+        path = os.path.join(fulltext.side_dir(), spill.group(1))
+        try:
+            whole = fulltext.read(path)
+            if len(whole) <= CUT_AT or not whole.startswith(text[:spill.start()]):
+                raise ValueError("the side file does not match the ledger preview")
+            c["text"] = whole
+            c.pop("text_error", None)
+        except (OSError, ValueError) as e:
+            c["text_error"] = "could not read spilled criterion text at %s (%s)" % (path, e)
+        return c
+    if len(text) != CUT_AT:
         return c
     for line in (prose or "").splitlines():
         m = CRIT_LINE.match(line)
@@ -154,6 +166,8 @@ def owed(item, criterion):
     if criterion not in (item.get("outstanding") or []):
         raise ValueError("%s %s is not owed" % (item["id"], criterion))
     level = crit[criterion]["level"]
+    if crit[criterion].get("text_error"):
+        raise ValueError("%s %s: %s" % (item["id"], criterion, crit[criterion]["text_error"]))
     if crit[criterion].get("cut") and crit[criterion].get("retiered"):
         raise ValueError("%s %s is cut at %d chars on the ledger and the item's criteria now say something else under "
                          "that id (re-tiered): re-record them (`rimflow implemented --criteria-file`, the supervisor's "
@@ -486,16 +500,19 @@ def lint_lines(lr, title, lines, has=None, texts=None):
 
 
 def lint_item(lr, item, title, lines, has=None, prose=""):
-    """lint_lines plus the criterion checks owed() makes that need no build: a live clause whose ledger text is cut at
-    CUT_AT with no prose line extending it (97 REFUSED rows, 72 of them GRAFFITI_NORTHSTAR_GREEN_FULL_1, retried
-    unchanged). item: {"criteria": [{"id", "level", "text"}], "outstanding"?: [ids]} or None (a filing has none yet).
+    """lint_lines plus the criterion checks owed() makes that need no build: unreadable spill or legacy cut text.
+    item: {"criteria": [{"id", "level", "text"}], "outstanding"?: [ids]} or None (a filing has none yet).
     -> [(cid, why)]."""
     texts, out = {}, []
     left = (item or {}).get("outstanding")       # None: every live clause (no ledger state yet); a list: only those owed
     for c in (item or {}).get("criteria") or []:
         w = whole_criterion(c, prose)
         texts[c["id"]] = w.get("text") or ""
-        if w.get("cut") and c.get("level") in LIVE_LEVELS and (left is None or c["id"] in left):
+        if c.get("level") not in LIVE_LEVELS or (left is not None and c["id"] not in left):
+            continue
+        if w.get("text_error"):
+            out.append((c["id"], w["text_error"]))
+        elif w.get("cut"):
             out.append((c["id"], "%s is cut at %d chars on the ledger and %s: a proof cannot be judged against it; write "
                         "the whole line in live_proofs/<ID>.criteria or the item's prose" % (
                             c["id"], CUT_AT, "a line of that id now says something else (re-tiered)"
@@ -863,9 +880,7 @@ class Fx(object):
                 "outstanding": list(it.outstanding or [])}
 
     def prose(self, item_id):
-        """The item's prose, then its live_proofs/<ID>.criteria: the game mode adds its clauses to the ledger from that
-        file (`rimflow implemented`), which cuts them at CUT_AT; the file still holds each whole line. Without it every
-        long game clause read as cut and each round was REFUSED before the bridge (RELENTLESS_LIVE_REPAIR_QUITS_BEFORE_THE_LOAD)."""
+        """The item's prose, then its live_proofs/<ID>.criteria, which may hold whole lines for legacy cut rows."""
         out = []
         for d in ("infrastructure/state/items", "infrastructure/state/items/closed"):
             p = os.path.join(self.books, d, item_id + ".md")

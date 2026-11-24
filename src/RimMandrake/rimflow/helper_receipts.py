@@ -108,6 +108,7 @@ def _read_main(path):
     """One pass over a parent transcript -> what it knows of its helpers, by line position. A /clear queued after the
     last assistant record is how that window ended: /clear starts a new session, so the old file just stops."""
     rows = {"last_assistant": -1, "last_at": None, "cleared": False, "notes": {}, "pending": [], "bg": {}, "done": set()}
+    pending_results = set()
     with open(path, errors="replace") as f:
         for pos, line in enumerate(f):
             if line.startswith('{"type":"api-request'):
@@ -120,6 +121,8 @@ def _read_main(path):
             rows["last_at"] = _ts(r.get("timestamp")) or rows["last_at"]
             if t == "assistant":
                 rows["last_assistant"], rows["cleared"] = pos, False
+                rows["done"].update(pending_results)
+                pending_results.clear()
             if t == "queue-operation":
                 op, body = r.get("operation"), str(r.get("content") or "")
                 if "/clear" in body[:20]:
@@ -146,7 +149,7 @@ def _read_main(path):
                         got, out = BG_ID.search(body), BG_OUT.search(body)
                         rows["bg"][tu].update(id=got.group(1) if got else None, output=out.group(1) if out else None)
                     if "Async agent launched" not in body:
-                        rows["done"].add(tu)     # a foreground Agent's result is its report
+                        pending_results.add(tu)     # a foreground report still needs a later assistant record
     return rows
 
 

@@ -308,6 +308,10 @@ def _line_probe(ev):
     for k in model.SPILL_FIELDS:
         if isinstance(probe.get(k), str):
             probe[k] = probe[k][:model.SPILL_KEEP]
+    if ev.get("event") == "implemented" and ev.get("criteria"):
+        # Criterion text can spill at append, so keep the same budget for deciding whether to split a card.
+        probe["criteria"] = [dict(c, text=c["text"][:model.CRITERION_TEXT_MAX]) if isinstance(c.get("text"), str) else c
+                             for c in ev["criteria"]]
     return len(json.dumps(probe, separators=(",", ":"), ensure_ascii=False).encode("utf-8"))
 
 

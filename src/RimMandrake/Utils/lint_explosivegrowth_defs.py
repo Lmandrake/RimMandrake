@@ -52,11 +52,14 @@ def all_defnames():
     for p in glob.glob(os.path.join(SRC, "*", "*", "**", "Defs", "**", "*.xml"), recursive=True) + \
             glob.glob(os.path.join(SRC, "*", "*", "Defs", "**", "*.xml"), recursive=True):
         try:
-            txt = open(p, encoding="utf-8-sig", errors="replace").read()
-        except OSError:
+            with open(p, encoding="utf-8-sig", errors="replace") as f:
+                root = ET.fromstring(f.read())
+        except (OSError, ET.ParseError):
             continue
-        for m in re.finditer(r"<(\w[\w.]*)(?:\s[^>]*)?>\s*<defName>([^<]+)</defName>", txt):
-            names.setdefault(m.group(2).strip(), set()).add(m.group(1).split(".")[-1])
+        for d in root:
+            name = (d.findtext("defName") or "").strip()
+            if name:
+                names.setdefault(name, set()).add(d.tag.split(".")[-1])
     return names
 
 
@@ -240,6 +243,24 @@ def plant_check():
     import shutil
     import subprocess
     import tempfile
+    from pathlib import Path
+    from unittest.mock import patch
+
+    with tempfile.TemporaryDirectory() as td:
+        defs = Path(td, "Tier", "Mod", "Defs")
+        defs.mkdir(parents=True)
+        (defs / "plants.xml").write_text("""<Defs>
+            <ThingDef ParentName="Plant"><!-- catalog note --><defName>RM_Commented</defName></ThingDef>
+            <Mod.Custom_Def><label>a plant</label><defName>RM_Late</defName></Mod.Custom_Def>
+            <!-- <ThingDef><defName>RM_Disabled</defName></ThingDef> -->
+            </Defs>""", encoding="utf-8")
+        (defs / "torn.xml").write_text("<Defs><ThingDef><defName>RM_Torn</defName>", encoding="utf-8")
+        with patch.dict(globals(), SRC=td):
+            names = all_defnames()
+    defnames_ok = names == {"RM_Commented": {"ThingDef"}, "RM_Late": {"Custom_Def"}}
+    print("PASS defName children across comments and fields" if defnames_ok else
+          f"FAIL defName children across comments and fields: {names}")
+
     mod = os.path.join(SRC, "RimMandrake", "ExplosiveGrowth")
     caught = 0
     for name, rel, old, new in PLANTS:
@@ -259,7 +280,7 @@ def plant_check():
             print(("CAUGHT  " if hit else "MISSED  ") + name + ("  " + hit[0] if hit else ""))
             caught += bool(hit)
     print(f"{caught}/{len(PLANTS)} planted defects caught")
-    return 0 if caught == len(PLANTS) else 1
+    return 0 if defnames_ok and caught == len(PLANTS) else 1
 
 
 if __name__ == "__main__":
