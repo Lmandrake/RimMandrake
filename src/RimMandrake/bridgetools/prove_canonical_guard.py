@@ -24,10 +24,10 @@ def profile(name, save, want):
     """The handshake names the loaded save and the profile, and a test tool agrees."""
     h = P.call("jawa/companion_handshake")
     got, seen = h.get("effectiveProfile"), (h.get("game") or {}).get("save")
-    if got not in ("test", "campaign") or seen != save:
+    if got not in ("test", "campaign") or (seen or "") != save:
         return P.row(name, None, "handshake save %r, profile %r: %s" % (seen, got, h.get("_error")))
     r = P.call("jawa/quiet_site", action="read")
-    refused = "CAMPAIGN" in str(r)
+    refused = r.get("refused") is True or "REFUSED in the CAMPAIGN" in str(r)
     return P.row(name, got == want and refused == (want == "campaign"), "%s (%s); quiet_site refused: %s" % (got, h.get("profileWhy"), refused))
 
 
