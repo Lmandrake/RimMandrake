@@ -53,6 +53,18 @@ Setting of RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE). No leaf 
 (origin/main 42483a7578): `91eaf9e048` (tree), `45bf69e360` (sheet), `a31005845b` (scenes); the table carries the new ones
 (it had still shown the 2026-11-14 blobs for these three, which were no longer true).
 
+**Re-pinned 2026-11-24 (owner, about 1:15 AM PST, his words: "So here we are again. This time, it's not raiders, but a
+seasons-long playthrough that has unbearably large numbers of environmental confounding forces. WHAT is being actually tested
+here? Should it even be tested? And if so, what's the MINIMUM test necessary to show it?"; item
+RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS).** No bar, leaf, sheet line or id moved: `tree.json` and `sheet.md`
+keep their bytes. Bar `walk_season_on_the_pyre` keeps its sentence, because the sentence says what a player does and promises no
+scripted two-week play. Its deciders moved in `test_table.json`: `sc_walk` out; `sc_reload_keeps_the_burn`, `sc_fire_sense`,
+`sc_full_list_smoke` and his walk (`LOOK_STAGE8`) in; `proves_at` 6 to 8. `scenes.json` lost `sc_walk`, gained the two new
+scenes, and names `sc_fire_sense` for the `pyrelandsEnabled` switch; `record.json` `parts_covered_by` and `plan.md` drop
+`sc_walk`. Blobs before: `23172252f9` (scenes), `19f596e0d2` (record), `b33e7b97b1` (plan); now `b81af87d03`, `49a05e36a3`,
+`2d96be4008`. Lost: a scripted two-week play with the roster and master switches, roof, thirst and bed fire read live in it.
+Undo: revert the commit that names this item. The helper that made the change relays the Conductor's brief; the ledger event is the Conductor's to write.
+
 Tree hash (`concept_tree.py hash`): `5abc9d2718dc9ccfd08d29370d986260c19675a198dc310be5329d34f062cf31` (measured 2026-11-16 after
 this re-pin; before it, at origin/main 42483a7578, it measured `2c1e467c7e`, not the `3ffd15d1aa` this line had said).
 

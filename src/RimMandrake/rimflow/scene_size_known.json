@@ -1,0 +1,95 @@
+{
+ "_doc": "Oversized live tests with no cheaper_why on 2026-11-24, the day scene_size.py was made. RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE empties it. Nothing adds to it; a listed test that grows is new.",
+ "tests": {
+  "ExplosiveKnockback": {
+   "sc_all_fly_no_cap": {
+    "days": null,
+    "full": false,
+    "claims": 5
+   },
+   "sc_lookup": {
+    "days": null,
+    "full": false,
+    "claims": 6
+   }
+  },
+  "FlowWorks": {
+   "sc_moat_walkers": {
+    "days": null,
+    "full": false,
+    "claims": 6
+   },
+   "sc_walk": {
+    "days": null,
+    "full": true,
+    "claims": 1
+   }
+  },
+  "GimmeSomeSlack": {
+   "sc_restring": {
+    "days": 0.0,
+    "full": false,
+    "claims": 5
+   },
+   "sc_walk": {
+    "days": 0.0,
+    "full": true,
+    "claims": 5
+   }
+  },
+  "Graffiti": {
+   "sc_lived_in_soak": {
+    "days": 0.0,
+    "full": true,
+    "claims": 1
+   },
+   "sc_rereads": {
+    "days": 2.0,
+    "full": false,
+    "claims": 1
+   },
+   "sc_walk": {
+    "days": 0.59,
+    "full": true,
+    "claims": 5
+   }
+  },
+  "Pyrelands": {
+   "P_scorchfruit_spoils": {
+    "days": 4.5,
+    "full": false,
+    "claims": 1
+   },
+   "sc_ash_watered": {
+    "days": 5.087,
+    "full": false,
+    "claims": 1
+   },
+   "sc_burn_compounds": {
+    "days": 2.292,
+    "full": false,
+    "claims": 1
+   },
+   "sc_burn_line_walks": {
+    "days": 7.185,
+    "full": false,
+    "claims": 1
+   },
+   "sc_grass_regreens": {
+    "days": 12.252,
+    "full": false,
+    "claims": 1
+   },
+   "sc_heat_dome": {
+    "days": 0.033,
+    "full": false,
+    "claims": 5
+   },
+   "sc_three_skies": {
+    "days": 0.683,
+    "full": false,
+    "claims": 5
+   }
+  }
+ }
+}

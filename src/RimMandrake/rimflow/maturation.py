@@ -73,6 +73,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import maturation_now as MN     # noqa: E402  the journal readers: one parser, never a second one
 import raid_pause as RP          # noqa: E402  raid tests are paused (owner, 2026-11-23)
+import scene_size as SZ          # noqa: E402  an oversized live scene carries its evidence (owner, 2026-11-24)
 import live_kinds as LK          # noqa: E402  the kinds of a live scene and the outcomes of its runs
 import refusal_contract as RC   # noqa: E402
 import judge_certificate as JC   # noqa: E402  the pre-judgement certificate (PRE_JUDGEMENT_CERTIFICATE)
@@ -5330,6 +5331,8 @@ def _check_lines(tt, ids, root):
                 os.path.join(root, f)) else " (NOT ON DISK in this tree)"))
         if x.get("why_full_list"):
             out.append("  - full list, because: %s" % x["why_full_list"])
+        if x.get("cheaper_why"):
+            out.append("  - no cheaper test decides it, because: %s" % x["cheaper_why"])
         if LK.kind(x) != "A":
             xy = LK.x_of_y(x)
             out.append("  - kind %s: budget %s run(s)%s; evidence: %s%s" % (
@@ -5464,6 +5467,14 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
     if raids:
         L += ["", "## Raid scenes: paused", "", "No run stages a raid (standing_rulings.md §The cheapest test that decides the "
               "bar). The bridge client refuses the calls."] + raids
+    try:
+        big = SZ.brief_lines(root, mod, tt)
+    except Exception as e:  # noqa: BLE001 - a size that could not be read never stops a brief; the line says so
+        big = ["- could not look at the scenes' size: %s: %s" % (type(e).__name__, e)]
+    if big:
+        L += ["", "## Oversized scenes: shrink one before you run it again", "", "Each of these owes its evidence that no "
+              "cheaper test decides its bar (standing_rulings.md §The cheapest test that decides the bar; "
+              "`src/RimMandrake/rimflow/scene_size.py`). A row that stands is not run again for this."] + big
     L += ["", "## Beyond the checks", "",
           "Explore past the bars on the same maps: plentiful screenshots (`src/RimMandrake/Utils/system_screenshot.py` "
           "for the desktop, the bridge's capture for the map), looked at, not only taken. Every strange thing no bar "

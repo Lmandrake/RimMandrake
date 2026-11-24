@@ -444,33 +444,52 @@
    "live_command": "modcheck run Pyrelands --chains no_ordinary_rain"
   },
   {
-   "id": "sc_walk",
+   "id": "sc_reload_keeps_the_burn",
    "kind": "acceptance",
    "requirement": [
     "walk_season_on_the_pyre"
    ],
    "staged_by": "script",
-   "entry_point": "src/RimMandrake/Pyrelands/validation.py::walk_season",
+   "entry_point": "src/RimMandrake/Pyrelands/walk_small_live.py::reload_keeps_the_burn",
    "start": [
-    "fresh Pyrelands map on his full list",
-    "state digest recorded"
+    "a Pyrelands site on the tier list, weather locked Clear, one firebreak-ringed pad split by a strip of concrete: ember grass on both halves, no fire and no fruit on it; that state is saved (pyre_reload_pre)",
+    "then the first half is burned to a fresh scar (each read scar cell carries a burn bonus, asserted) with three scorch-fruit on it, and a front is lit on the second half (fire count above 0 at the save, asserted)"
    ],
-   "action": "play two weeks: harvest from a scar, sow on a fresh burn and on watered ash, raise a roofed room on the grass carpet, shelter with a furnace-beast through ash fall; save mid-way while the front walks; reload; let the line pass a second field; second order: sow first and let the fire come to it; read the fire cast's thirst and each herd's water visits; turn the Baroque Biomes roster toggle (PyrelandsMechanicsGate) off for a day, reading the burn line, ash depth (ProbeAsh) and furnace-bed fires, then on again for a day; then turn the Mod enabled master (pyrelandsEnabled) off for a day, reading the same three, and on again",
-   "expect": "the digest after reload equals the one before; the second pass yields fruit again; no colonist takes a burn standing in fire and none starves at fire duty; the grass under the new roof withers within days; herds reach the water one at a time and none dehydrates; with the roster toggle off, and again with the Mod enabled master (pyrelandsEnabled) off, no new front, no ash laid and no bed fire over the day, and all three resume once it is back on; switches leave nothing behind; log clean",
+   "action": "save while the front burns; read the fire cells, the fruit cells and three scar cells (ProbeCell: fertility, bonus, burn stamp, bonus days left); reload that save; read the same again; reload the save made before any fire and read it too",
+   "expect": "after the reload the front burns in the same cells, the same fruit stands, and each scar cell has the same burn stamp, bonus and fertility",
    "control": {
-    "case": "a reload from a save made before the front lit; the roster toggle's on day over the same length",
-    "expect": "the digest differs from the mid-way digest; with the toggle on the front walks and ash is laid",
-    "rules_out": "a reload test that compares two empty states, and a quiet day with no fire passing for the toggle stopping the mechanics"
+    "case": "the save made before any fire, read the same way",
+    "expect": "no fire, no fruit and no burn bonus on the pad, so it differs from the save made during the fire",
+    "rules_out": "a reload test that compares two empty states, and a reload of a save made before the front lit"
    },
-   "restore": "a save is made before the walk starts (pre_walk) and every walk save is kept for his review; the walk's colony is disposable and nothing is restored into it; his canonical world saves are never loaded or written",
-   "hold": "owner_review",
-   "entry_point_item": "PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES",
-   "owed_parts_item": [
-    "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
-    "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN"
-   ],
+   "restore": "the site fixture is reloaded; the two saves are disposable",
+   "hold": "immediate",
    "live_run": "UNRUN",
-   "live_command": "modcheck run Pyrelands --chains walk_season"
+   "live_command": "modcheck run Pyrelands --chains reload_keeps_the_burn"
+  },
+  {
+   "id": "sc_full_list_smoke",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_season_on_the_pyre"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/walk_small_live.py::full_list_smoke",
+   "start": [
+    "a Pyrelands site on his full list (the running list read from the game and compared with ModsConfig.FULL.LATEST.xml, asserted; RM_Pyrelands asserted)",
+    "weather locked Clear, the map extinguished, one pad of ember grass with a fire lit on its west edge; a mark in the log"
+   ],
+   "action": "play three game hours; read the fire cells each hour; read the log lines since the mark",
+   "expect": "fire burns at every hour, its centre has moved at least 3 cells, and no error since the mark names Pyrelands",
+   "control": {
+    "case": "the fire put out after the first hour (PYRE_PLANT_SMOKE=no_front), and an error line that names Pyrelands written to the log (log_error)",
+    "expect": "each reads FAIL",
+    "rules_out": "a scene that passes on a map where no front walks, and a log read that cannot see an error"
+   },
+   "restore": "the site fixture is reloaded",
+   "hold": "immediate",
+   "live_run": "UNRUN",
+   "live_command": "modcheck run Pyrelands --chains full_list_smoke"
   },
   {
    "id": "sc_fire_sense",
@@ -488,7 +507,7 @@
    "action": "light one Fire on a cell next to P (the test's own spark); every 30 ticks for 600 ticks read P's current job def, P's cell and whether a Fire is attached to P; then light a Fire in the home area 15 cells from H and read H's job defs in order until H reaches the fire or 2,500 ticks pass",
    "expect": "P's job turns RM_PyreStepAwayFromFire within the window and P ends on a cell at least 3 cells (PyrelandsFireSense.SafeClear) from every fire, with no Fire attached to P at any poll; H's first job is Ingest of the meal (RM_PyreEatBeforeFireDuty) and only after it a firefight job (BeatFire); log clean",
    "control": {
-    "case": "the same two stagings with the roster toggle (PyrelandsMechanicsGate) off: fire sense and RM_PyreEatBeforeFireDuty both sit behind it",
+    "case": "the first staging with the Mod enabled master (pyrelandsEnabled) off, and the same two stagings with the roster toggle (PyrelandsMechanicsGate) off: fire sense and RM_PyreEatBeforeFireDuty both sit behind them",
     "expect": "P never takes RM_PyreStepAwayFromFire over the same polls; H takes the firefight job (BeatFire) before any Ingest (vanilla runs emergency firefighting before food short of starving)",
     "rules_out": "a colonist never placed beside fire or never urgently hungry at fire duty passing for fire sense and eat-before-duty, and vanilla's own flee or food logic passing for the mod's"
    },
@@ -874,13 +893,13 @@
   {
    "capability": "inv_settings_gate",
    "by": [
-    "sc_walk",
+    "sc_fire_sense",
     "walk_season_on_the_pyre"
    ],
-   "why": "every Scribe'd setting of RM_PyrelandsSettings is mapped in settings_map: a scene id means that scene's action or control turns the switch off and reads its mechanic stop (the roster toggle PyrelandsMechanicsGate and the Mod enabled master pyrelandsEnabled by sc_walk for a day each); T_SETTINGS_SWEEP_OFFLINE (python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py) reads for every setting that it is scribed once, its default equals the shipped behaviour and his ruled numbers, it is read by its mechanic outside the settings file, and every switch the master stops consults the gate; T_SITE reads the world switch ships off and labelled unsupported; T_SELF_CONTAINED_OFFLINE reads the cross-biome section's Unsupported label, and the sweep that the four cross-biome settings ship off. A setting mapped only to the sweep has its off state checked statically (read by its mechanic, behind the master), not in play; that stays inferred",
+   "why": "every Scribe'd setting of RM_PyrelandsSettings is mapped in settings_map: a scene id means that scene's action or control turns the switch off and reads its mechanic stop (the roster toggle PyrelandsMechanicsGate and the Mod enabled master pyrelandsEnabled by sc_fire_sense's gate-off controls); T_SETTINGS_SWEEP_OFFLINE (python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py) reads for every setting that it is scribed once, its default equals the shipped behaviour and his ruled numbers, it is read by its mechanic outside the settings file, and every switch the master stops consults the gate; T_SITE reads the world switch ships off and labelled unsupported; T_SELF_CONTAINED_OFFLINE reads the cross-biome section's Unsupported label, and the sweep that the four cross-biome settings ship off. A setting mapped only to the sweep has its off state checked statically (read by its mechanic, behind the master), not in play; that stays inferred",
    "settings_map": {
     "pyrelandsEnabled": [
-     "sc_walk",
+     "sc_fire_sense",
      "T_SETTINGS_SWEEP_OFFLINE"
     ],
     "ashDustingEnabled": [

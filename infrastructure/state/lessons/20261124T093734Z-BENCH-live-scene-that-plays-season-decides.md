@@ -1,0 +1,2 @@
+A live scene that plays a season decides nothing reliably: Pyrelands sc_walk (two game weeks, his 315-mod list, ten claims) was spoiled by arrivals, predators or thirst in visits 2, 5 and 8, while four of its ten claims were its bar's and other checks decided the rest. Before you run a long scene again, list its claims, name the check that already decides each, and stage only what is left (one claim, the least list, hours not days); scene_size.py refuses a new oversized scene with no cheaper_why at ./publish.
+item: RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS

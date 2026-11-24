@@ -1745,6 +1745,16 @@ of `infrastructure/agents/CHARTER.md`).
    - Explosive Knockback did not need a raid: no row of `sc_walk_raid` read a raider. `sc_walk_blasts` replaced it, with no
      raid, on the small list. `sc_barrage_perf` does not need the full list either.
 
+4. **No script plays a season, and an oversized scene carries its evidence** (owner, 2026-11-24; item
+   `RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS`).
+   - Give each scene one claim (`claims` in the test table). How a season of play feels belongs to his walk.
+   - "The full list might break it" is one short scene: load, one event of the mod, a clean log.
+   - A live scene is oversized when it plays more than one game day, runs on the full list, or holds several claims. An
+     oversized scene carries `cheaper_why`. `src/RimMandrake/rimflow/scene_size.py` finds an oversized scene, and `./publish`
+     refuses a new one with no `cheaper_why`. Page: `design/specs/2026-11-24-scene-size/boundary.md`.
+   - The case is Pyrelands `sc_walk`: two weeks on his full list, ten claims, spoiled in visits 2, 5 and 8
+     (`design/specs/2026-11-24-pyrelands-walk-minimum/one_page.md`).
+
 **What this does not change.**
 - The bars. A bar about raiders is still a bar about raiders.
 - The kinds of live test, and the seven outcomes of a live run (§Live tests have three kinds, section 2).
@@ -1759,6 +1769,10 @@ of `infrastructure/agents/CHARTER.md`).
 Earlier the same evening:
 
 > "Bringing in raiders for a test like Flowworks is doing is one of the most complex testing maneuvers possible. ... we may not be currently ready for complex raider testing until we upgrade our testing apparatus and methodology and BRIDGE and python harness"
+
+His words, 2026-11-24, about 1:15 AM PST (of Pyrelands' `sc_walk`):
+
+> "So here we are again. This time, it's not raiders, but a seasons-long playthrough that has unbearably large numbers of environmental confounding forces. WHAT is being actually tested here? Should it even be tested? And if so, what's the MINIMUM test necessary to show it? This seems needlessly ornate and clearly doesn't work. Let's please learn from this! What other mods have these elaborate, oversized tests like this? Let's fix them now. But first this one."
 
 ## What Python cannot reach goes into the bridge's C#; tests stay in Python — owner, 2026-11-23
 

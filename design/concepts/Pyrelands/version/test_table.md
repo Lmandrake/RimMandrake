@@ -31,7 +31,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `three_skies` | tree | 6 | sc_three_skies | T_BURN_ECOLOGY, P_ashfall_weather_accumulation, P_ashfall_drifts, P_blackrain | all |
 | `no_ordinary_rain` | tree | 6 | T_DEFS_OFFLINE, sc_no_rain | - | all |
 | `ash_fertility_probe` | tree | 4-5 | T_ASH_PROBE_OFFLINE | T_FUZZ, sc_burn_compounds | all |
-| `walk_season_on_the_pyre` | tree | 6 | sc_walk | LOOK_STAGE8 | all |
+| `walk_season_on_the_pyre` | tree | 8 | sc_reload_keeps_the_burn, sc_fire_sense, sc_full_list_smoke, LOOK_STAGE8 | T_WALK_SMALL, T_FUZZ, sc_burn_line_walks, sc_scorchfruit, sc_burn_compounds, sc_ash_watered, sc_furnace | all |
 | `firefoam_sprayer_reaches_the_fruit` | tree | 6 | sc_firefoam_sprayer | T_FIREFOAM_SCENE, P_firefoam_aim | all |
 | `sand_shovel_yields_glass_sand` | tree | 6 | sc_sand_shovel | T_DEFS_OFFLINE | all |
 | `fire_rite_hook_silent_alone` | tree | 6 | sc_rite_hook_alone | - | all |
@@ -55,7 +55,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `inv_sand_shovel` | record | 6 | sc_sand_shovel | T_DEFS_OFFLINE | all |
 | `inv_lightning_breaker` | record | 4-5 | T_CUT_STAYS_CUT | - | all |
 | `inv_fire_rite_hook` | record | 6 | sc_rite_hook_alone | - | all |
-| `inv_settings_gate` | record | 4-5 | T_SETTINGS_SWEEP_OFFLINE, T_SETTINGS_SCREENS, T_SITE | sc_walk, P_gate, T_SELF_CONTAINED_OFFLINE | all |
+| `inv_settings_gate` | record | 4-5 | T_SETTINGS_SWEEP_OFFLINE, T_SETTINGS_SCREENS, T_SITE | sc_fire_sense, P_gate, T_SELF_CONTAINED_OFFLINE | all |
 | `inv_art_and_text` | record | 4-5 | RECORD_ART_SHEET, T_DEFS_OFFLINE | sc_three_skies, T_BARBSLINGER, T_TRACKS, T_REVIEW_MAP | all |
 | `inv_firehawk_hunt_rewards` | record | 6 | T_FH_LETTER, T_FH_CRESTFEATHER, firehawk_first_sighting_letter, firehawk_crestfeather_yield | T_FUZZ, LOOK_STAGE8 | all |
 | `ullai_cross_the_map_as_vanilla_herds` | tree | 6 | T_ULLAI_HERD_MIGRATES, sc_foreign_arrivals, T_CUT_STAYS_CUT | - | all |
@@ -102,7 +102,9 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `sc_ullai` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: herd_follows_drive | live: this run is offline only; entry exists in validation.py |
 | `sc_three_skies` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: cinderfall | live: this run is offline only; entry exists in validation.py |
 | `sc_no_rain` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: no_ordinary_rain | live: this run is offline only; entry exists in validation.py |
-| `sc_walk` | live_full | 6 | `src/RimMandrake/Pyrelands/validation.py` :: walk_season | live: this run is offline only; entry exists in validation.py |
+| `sc_reload_keeps_the_burn` | live_minimal | 6 | `src/RimMandrake/Pyrelands/walk_small_live.py` :: reload_keeps_the_burn | UNRUN |
+| `sc_fire_sense` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: fire_sense | UNRUN on this build |
+| `sc_full_list_smoke` | live_full | 6 | `src/RimMandrake/Pyrelands/walk_small_live.py` :: full_list_smoke | UNRUN |
 | `sc_firefoam_sprayer` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: firefoam_sprayer | live: this run is offline only; entry exists in validation.py |
 | `sc_sand_shovel` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: sand_shovel | live: this run is offline only; entry exists in validation.py |
 | `sc_rite_hook_alone` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: rite_hook_alone | live: this run is offline only; entry exists in validation.py |
@@ -145,7 +147,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 
 ## The settings move
 
-inv_settings_gate was proven only by the two-week walk (coverage_rest). Its defaults, readers and gate checks are now decided offline by T_SETTINGS_SWEEP_OFFLINE (specified), T_SETTINGS_SCREENS and T_SITE (built); sc_walk keeps only the gate-off read in play, as support. No bar text is edited.
+inv_settings_gate was proven only by the two-week walk (coverage_rest). Its defaults, readers and gate checks are now decided offline by T_SETTINGS_SWEEP_OFFLINE (specified), T_SETTINGS_SCREENS and T_SITE (built); sc_fire_sense keeps the gate-off read live, as support (sc_walk is gone: RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS). No bar text is edited.
 
 ## Held look statements
 

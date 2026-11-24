@@ -10,7 +10,7 @@
   "8": "his live walk"
  },
  "rule": "a bar passes when every test in decides passes; proves_at is the highest stage among them; supports add evidence but decide nothing",
- "settings_move": "inv_settings_gate was proven only by the two-week walk (coverage_rest). Its defaults, readers and gate checks are now decided offline by T_SETTINGS_SWEEP_OFFLINE (specified), T_SETTINGS_SCREENS and T_SITE (built); sc_walk keeps only the gate-off read in play, as support. No bar text is edited.",
+ "settings_move": "inv_settings_gate was proven only by the two-week walk (coverage_rest). Its defaults, readers and gate checks are now decided offline by T_SETTINGS_SWEEP_OFFLINE (specified), T_SETTINGS_SCREENS and T_SITE (built); sc_fire_sense keeps the gate-off read live, as support (sc_walk, which also read it, is gone: RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS). No bar text is edited.",
  "coverage_leaves": {
   "firehawk_hunt_rewards": {
    "bar": "inv_firehawk_hunt_rewards",
@@ -942,27 +942,96 @@
     "by": "testq_blocks.py"
    }
   },
-  "sc_walk": {
-   "id": "sc_walk",
-   "kind": "live_full",
+  "sc_reload_keeps_the_burn": {
+   "id": "sc_reload_keeps_the_burn",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Pyrelands/walk_small_live.py",
+   "entry": "reload_keeps_the_burn",
+   "observes": "after the reload the front burns in the same cells, the same fruit stands, and each scar cell has the same burn stamp, bonus and fertility",
+   "claims": [
+    "a reload gives back the front, the scar's age and bonus, and the fruit exactly as they were at the save"
+   ],
+   "reads": [
+    "src/RimMandrake/Pyrelands/walk_small_live.py",
+    "src/RimMandrake/Pyrelands/validation.py",
+    "design/concepts/Pyrelands/scenes.json"
+   ],
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains reload_keeps_the_burn",
+   "why_game": "the game's own save and load",
+   "why_full_list": null,
+   "cheaper_why": "no offline test writes and reads a game save, so the mod's scribed burn stamps, vanilla's fires and the plants meet only in a load; one staged pad on the tier list, two saves, about 5,500 ticks; a smaller pad or no lit front would leave the front or the bonus unread",
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS",
+   "runs_today": {
+    "ran": false,
+    "why": "UNRUN: replaced sc_walk's reload part on 2026-11-24; offline T_WALK_SMALL (every planted fault FAILs). sc_walk's reload part PASSed on his full list, visit 8 run 2, 2026-11-24 1:10 AM PST"
+   },
+   "testq": {
+    "chains": [
+     "reload_keeps_the_burn"
+    ],
+    "by": "testq_blocks.py"
+   }
+  },
+  "sc_fire_sense": {
+   "id": "sc_fire_sense",
+   "kind": "live_minimal",
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
-   "entry": "walk_season",
-   "observes": "the digest after reload equals the one before; the second pass yields fruit again; no colonist takes a burn standing in fire and none starves at fire duty; the grass under the new roof withers within days; herds reach the water one at a time and none dehydrates; with the roster toggle off, and again with the Mod enabled master (pyrelandsEnabled) off, no new front, no ash laid and no bed fire over the day, and all three resume once it is back on; switches leave nothing behind; log clean",
+   "entry": "fire_sense",
+   "observes": "P's job turns RM_PyreStepAwayFromFire within the window and P ends on a cell at least 3 cells (PyrelandsFireSense.SafeClear) from every fire, with no Fire attached to P at any poll; H's first job is Ingest of the meal (RM_PyreEatBeforeFireDuty) and only after it a firefight job (BeatFire); log clean",
+   "claims": [
+    "a colonist beside a fire steps away from it",
+    "an urgently hungry colonist eats before it fights a fire"
+   ],
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains walk_season",
-   "why_game": "two weeks of ordinary play with a mid-way reload: clocks, saves and the whole list together",
-   "why_full_list": "the walk is ordinary play on his list (leaf walk_season_on_the_pyre, tier live_full)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains fire_sense",
+   "why_game": "pawn think trees run only in a game",
+   "why_full_list": null,
+   "cheaper_why": "the two job orders are vanilla think-tree decisions with the mod's two givers inserted, which no offline test runs; one spawned colonist and one lit plot each, under 5,000 ticks on the tier list; the two halves share one pad because a load costs more than the second half",
    "entry_exists": true,
-   "item": "PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES",
+   "item": "RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS",
    "runs_today": {
     "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
+    "why": "UNRUN on this build: visit 2 read steps_away PASS, gate-off control PASS and hungry_eats_first FAIL once, not reproduced on a clean reload (visit_2/findings.md F9)"
    },
-   "command_note": "full list"
+   "testq": {
+    "chains": [
+     "fire_sense"
+    ],
+    "by": "testq_blocks.py"
+   }
+  },
+  "sc_full_list_smoke": {
+   "id": "sc_full_list_smoke",
+   "kind": "live_full",
+   "stage": "6",
+   "file": "src/RimMandrake/Pyrelands/walk_small_live.py",
+   "entry": "full_list_smoke",
+   "observes": "fire burns at every hour, its centre has moved at least 3 cells, and no error since the mark names Pyrelands",
+   "claims": [
+    "on his full list one lit fire walks as a front and Pyrelands writes no error"
+   ],
+   "reads": [
+    "src/RimMandrake/Pyrelands/walk_small_live.py",
+    "src/RimMandrake/Pyrelands/validation.py",
+    "design/concepts/Pyrelands/scenes.json"
+   ],
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains full_list_smoke",
+   "why_game": "his whole list runs only in a game",
+   "why_full_list": "the one claim is that his full list does not break the burn: a patch of another mod on fire, plants or weather shows only where that mod is loaded",
+   "cheaper_why": "no smaller list can hold the other mods, and no offline test loads them; three game hours of one lit fire is the shortest read of a front that moves, and too short for thirst, hunger or an arrival to spoil it",
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS",
+   "runs_today": {
+    "ran": false,
+    "why": "UNRUN: replaced sc_walk's full-list play on 2026-11-24; offline T_WALK_SMALL (every planted fault FAILs)"
+   },
+   "command_note": "full list; run it last, in one load"
   },
   "sc_firefoam_sprayer": {
    "id": "sc_firefoam_sprayer",
@@ -1578,7 +1647,7 @@
    "kind": "look",
    "stage": "8",
    "file": "(his walk)",
-   "observes": "his walk of a fresh map: the burn line walking across deep ash, scorch-fruit right behind it, the grass greening a few days later (vision line 9)",
+   "observes": "his walk of a fresh map: the burn line walking across deep ash, scorch-fruit right behind it, the grass greening a few days later (vision line 9); and about two weeks of ordinary play on his full list: picking fruit from a scar, sowing on a fresh burn and on watered ash, a second burn that fruits again, sheltering with a furnace-beast through an ash fall (the season of walk_season_on_the_pyre, which no script plays)",
    "reads": [],
    "runs_today": {
     "ran": false,
@@ -1728,6 +1797,24 @@
     "build": "a9480944eede928a911a",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_dose.py",
     "margins": []
+   }
+  },
+  "T_WALK_SMALL": {
+   "id": "T_WALK_SMALL",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_walk_small.py",
+   "observes": "the verdicts of the two small scenes that replaced sc_walk: PASS on a kept state and a walking front, FAIL on each planted fault (front gone, half gone or moved, fruit gone, scar old, bonus reset, stamp lost; front dead or still, an error of ours), undecided with no opportunity; the shipped chains on a scripted game PASS and FAIL on every planted switch",
+   "reads": [
+    "src/RimMandrake/Pyrelands/walk_small_live.py",
+    "src/RimMandrake/Pyrelands/validation.py",
+    "design/concepts/Pyrelands/scenes.json"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_walk_small.py",
+   "item": "RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS",
+   "runs_today": {
+    "ran": false,
+    "why": "not run yet"
    }
   }
  },
@@ -2056,12 +2143,21 @@
    "id": "walk_season_on_the_pyre",
    "source": "tree.json",
    "kind": "walk",
-   "proves_at": "6",
+   "proves_at": "8",
    "decides": [
-    "sc_walk"
+    "sc_reload_keeps_the_burn",
+    "sc_fire_sense",
+    "sc_full_list_smoke",
+    "LOOK_STAGE8"
    ],
    "supports": [
-    "LOOK_STAGE8"
+    "T_WALK_SMALL",
+    "T_FUZZ",
+    "sc_burn_line_walks",
+    "sc_scorchfruit",
+    "sc_burn_compounds",
+    "sc_ash_watered",
+    "sc_furnace"
    ],
    "held": [],
    "offline_decides": [],
@@ -2532,7 +2628,7 @@
     "T_SITE"
    ],
    "supports": [
-    "sc_walk",
+    "sc_fire_sense",
     "P_gate",
     "T_SELF_CONTAINED_OFFLINE"
    ],

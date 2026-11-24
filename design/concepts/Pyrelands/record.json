@@ -519,10 +519,9 @@
    "parts_covered_by": {
     "by": [
      "sc_roof_withers",
-     "sc_walk",
      "sc_populations"
     ],
-    "why": "parts: grass withering under a new roof (sc_roof_withers: a roofed patch against the unroofed one beside it, and both with the roster toggle off; sc_walk raises a room in play), the wild-plant allowlist (sc_populations' on/off pair)"
+    "why": "parts: grass withering under a new roof (sc_roof_withers: a roofed patch against the unroofed one beside it, and both with the roster toggle off), the wild-plant allowlist (sc_populations' on/off pair)"
    }
   },
   {
@@ -588,10 +587,9 @@
      "sc_foreign_arrivals",
      "sc_populations",
      "sc_herd_thirst",
-     "sc_walk",
      "sc_flamefang_venom"
     ],
-    "why": "parts: no foreign arrivals (sc_foreign_arrivals), the fire-cast top-up (sc_populations' hawk and ashwallow counts against a same-seed map with the genstep's gate off), the slow thirst and one-at-a-time water visits (sc_herd_thirst: the ullai against a vanilla muffalo with the same water, and the herds' staggered starts against a toggle-off map; sc_walk in play), the venom bite tool (sc_flamefang_venom)"
+    "why": "parts: no foreign arrivals (sc_foreign_arrivals), the fire-cast top-up (sc_populations' hawk and ashwallow counts against a same-seed map with the genstep's gate off), the slow thirst and one-at-a-time water visits (sc_herd_thirst: the ullai against a vanilla muffalo with the same water, and the herds' staggered starts against a toggle-off map), the venom bite tool (sc_flamefang_venom)"
    }
   },
   {
@@ -671,10 +669,9 @@
    ],
    "parts_covered_by": {
     "by": [
-     "sc_fire_sense",
-     "sc_walk"
+     "sc_fire_sense"
     ],
-    "why": "part: people keep clear of fire and eat before fire duty; sc_fire_sense stages a colonist beside a lit fire and an urgently hungry one given fire duty, reads RM_PyreStepAwayFromFire and the Ingest-before-BeatFire order, and its control turns the roster toggle (PyrelandsMechanicsGate) both sit behind off; sc_walk's two weeks beside the front is ordinary play on top"
+    "why": "part: people keep clear of fire and eat before fire duty; sc_fire_sense stages a colonist beside a lit fire and an urgently hungry one given fire duty, reads RM_PyreStepAwayFromFire and the Ingest-before-BeatFire order, and its control turns the roster toggle (PyrelandsMechanicsGate) both sit behind off; his Stage 8 walk is ordinary play on top"
    }
   },
   {

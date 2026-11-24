@@ -7406,3 +7406,16 @@ def _register_firehawk_rewards():
 
 
 _register_firehawk_rewards()
+
+
+# the two small scenes that replaced the two-week walk, in their own file for the same reason
+def _register_walk_small():
+    import types
+    spec = importlib.util.spec_from_file_location(
+        "pyrelands_walk_small_live", os.path.join(os.path.dirname(os.path.abspath(__file__)), "walk_small_live.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod.register(suite, types.SimpleNamespace(**globals()))
+
+
+_register_walk_small()

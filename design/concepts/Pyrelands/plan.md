@@ -39,15 +39,15 @@ built; this plan is the proof work and two owed changes, nothing new.
    (charge, heat immunity against an ullai in the same fire, bed smoulder; control furnace thermal off); `cinderfall`
    gains lightning counts, the black-rain ash wash and clear-sky and vanilla-rain fire pads; `firefoam_sprayer`,
    `sand_shovel` and `rite_hook_alone` become acceptance scenes with controls. Each scene's `restore` now says what it
-   puts back; `sc_no_rain` runs on a disposable map, `sc_walk` keeps a pre-walk save.
+   puts back; `sc_no_rain` runs on a disposable map.
    Item `PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME` (coverage judge rm-coverage-judge-1793981105): new
    `flamefang_venom` (bite applies RM_FlamefangVenom, severity rises; control a non-venomous bite of like size);
    `ullai_and_giant` gains a live body-size read of RM_FurnaceBeast (6) and a classic-restore control (3.2) instead of
    echoing the XML; `fire_tick_effects` asserts a clean, clear-weather pad and runs the ash-dusting-off control against
    an unburned twin pad; `heat_dome` asserts no fire on its pad and stands as its own scene (`sc_heat_dome`), with
    the dome switch off as its control.
-4. The three showcases and the walk (item `PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES`): `walk_season` on his full
-   list with a mid-way reload, a second pass and a second order.
+4. The three showcases and the walk (item `PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES`): `sc_reload_keeps_the_burn`,
+   `sc_fire_sense` and `sc_full_list_smoke` (short scenes), and his Stage 8 walk for the season.
 5. Close or re-bucket the stale items: `PYRE_OPENING_FRONT_BUILD_SMOKE_ON_ARRIVAL` (resolved by `sc_burn_line_walks`
    reading the opening front), `PYRELANDS_GREEN_MINIMAL_1`, `PYRELANDS_GREEN_FULL_1`, `PYRELANDS_NORTHSTAR_TRIAL_1`
    (FOUNDRY-era; Relentless's game_prove lane).
