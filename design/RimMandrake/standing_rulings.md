@@ -2543,7 +2543,8 @@ Design: `design/specs/2026-11-18-pipeline-control-surface/03-merged.md`.
   - The store reserves that look before its judge runs. The store charges the look only at a valid verdict.
   - When there is no verdict, or the judge run raises, or the holder is dead, the store releases the look as a system
     fault (meter and alarm `control:system_faults:<mod>`).
-  - `pipe void <run>` gives a run's charges back once, and tells the dispatch books (`run_void.py`).
+  - `pipe void <run>` gives a run's charges back once, and tells the dispatch books, which are the tick's
+    `state.json` (`run_void.py`).
   - A void never moves a stage. `pipe show` flags a stage that advanced on a voided run.
 - **Unreadable store:** nothing launches, and `pipe show` says `CONTROL UNREADABLE: <cause>`. `pipe doctor` names the
   fix. `pipe stop <unit> --kill` still works by unit name.
@@ -2662,8 +2663,9 @@ mod right now. They are poorly defined builds right now and the system choked at
   biome mods.
 - **One list, one file:** `src/RimMandrake/rimflow/mod_owner_hold.json` (code `mod_owner_hold.py`). A hold has these
   effects:
-  - The Dispatch tick (the timed run of `maturation_dispatch.py`) launches nothing on a held mod: no builder, judge,
-    live driver, steward, fixer or holder. The tick does not seed a discovered concept of a held mod.
+  - The Dispatch tick (the timed run of `maturation_dispatch.py`) launches nothing on a held mod: no builder, judge, live driver or fixer. The tick
+    also launches no steward (a run that `maturation_autonomy` starts) and no holder (one run on all of a mod's open road-back
+    items). The tick does not seed a discovered concept of a held mod.
   - The sweeps that start the next Designer or DesignerCodex run skip a held mod. So do the chain at the harvest of a
     Designer run and a pending run-now (a run that someone asked for by hand).
   - A held mod is on no idle, paused, stalled or Designer-stall reading. So a held mod raises no alarm and no incident.

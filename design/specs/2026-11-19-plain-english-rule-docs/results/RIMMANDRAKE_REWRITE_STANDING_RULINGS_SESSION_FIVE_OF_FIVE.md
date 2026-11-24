@@ -61,7 +61,7 @@ Some rule sentences of 21 to 27 words stay as one sentence.
 | `selftest_scene_snapshot.py`, `selftest_scene_runner_driver.py` | after the docstring edit | 41 of 41; 22 of 22 |
 
 Names of people and roles, counted by a script in the scope on an early draft: none is lower. All 45 owner and card quotes
-are word for word. The prose check of `./publish` was run by hand four times. Each named fault was repaired.
+are word for word. The prose check of `./publish` was run by hand four times, and `./publish` ran it once. Each named fault was repaired.
 
 ## What the meaning read found
 
@@ -89,7 +89,9 @@ The same reader then read each repair and the later edits (16 places). 15 were S
 and took the reader's wording.
 
 Lines that no reader read in place: that last wording; "retired" on the two FOUNDRY lines; the `*south*` line (its source is
-`instrument_traps.md`); the lines that were only re-wrapped.
+`instrument_traps.md`); the lines that were only re-wrapped; and, after the first landing,
+the meanings of the dispatch books, of a steward and of a holder (from `run_void.py`, `maturation_autonomy.py` and
+`maturation_dispatch.py` `pilot_holders`).
 
 ## Conflicts and stale lines: decided
 
