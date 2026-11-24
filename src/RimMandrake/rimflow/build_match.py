@@ -512,9 +512,11 @@ def _first_diff(a, b):
     return "none"
 
 
-def judge_row(test, spec, r, walk, tiers, relation=None):
+def judge_row(test, spec, r, walk, tiers, relation=None, deploy=None):
     """-> (counts, why) for one check's last row. relation: rerun_relation.relate's reading; a row whose mod hash
-    differs from the walk's counts only when it reads this check untouched."""
+    differs from the walk's counts only when it reads this check untouched. deploy (the walk folder is not the current
+    source): a row on the folder's own hash is judged by the relation to the source too, never counted on a stale
+    folder (GimmeSomeSlack visit 1, 2026-11-23: 206 count, 0 to run, with 206 touched)."""
     if walk.get("why"):
         return False, "the walk build is unreadable, so nothing counts yet: %s" % "; ".join(walk["why"])
     if not r:
@@ -526,6 +528,14 @@ def judge_row(test, spec, r, walk, tiers, relation=None):
     if r.get("game_build") != walk.get("game_build"):
         return False, "the game build differs: the row ran on %s, he walks %s" % (r.get("game_build"),
                                                                                   walk.get("game_build"))
+    if deploy and r.get("mod_hash") == walk.get("mod_hash"):
+        rel = ((relation or {}).get("rows") or {}).get(test) or {}
+        if rel.get("state") == "touched":
+            return False, "the walk folder is stale, and the change since %s to the source touches it: %s" % (
+                rel.get("old"), rel["why"])
+        if rel.get("state") == "unreadable":
+            return False, "the walk folder is stale, and no readable change relation (%s): declare what it exercises" % (
+                rel["why"])
     if r.get("mod_hash") != walk.get("mod_hash"):
         rel = ((relation or {}).get("rows") or {}).get(test)
         if not rel:
@@ -568,7 +578,7 @@ def compare(tests, last_rows, walk, tiers, relation=None, deploy=None):
            "deploy": deploy, "undeclared": list((relation or {}).get("undeclared") or []),
            "unreadable": list((relation or {}).get("unreadable") or []), "new": (relation or {}).get("new")}
     for t, spec in tests:
-        ok, why = judge_row(t, spec, last_rows.get(t), walk, tiers, relation)
+        ok, why = judge_row(t, spec, last_rows.get(t), walk, tiers, relation, deploy)
         out["rows"][t] = {"counts": ok, "why": why, "full": is_full(spec)}
         if not ok:
             out["rerun"].append(t)
@@ -684,7 +694,7 @@ def walk_source(root, mod, walk):
             folder, mod, sha)), sha
     if src and dep != src:
         return ("the deployed walk folder %s is not the source at %s (its .srchash differs): deploy it "
-                "(`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s --apply`); no check reruns for this"
+                "(`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s --apply`); the deploy itself reruns no check"
                 % (folder, sha, mod)), sha
     return None, sha
 

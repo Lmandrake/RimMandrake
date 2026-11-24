@@ -573,6 +573,23 @@ def t_walk_not_the_source_is_one_deploy():
         shutil.rmtree(d, ignore_errors=True)
 
 
+def t_stale_walk_folder_still_reads_the_source_change():
+    """GimmeSomeSlack in-game visit 1, 2026-11-23: the folder still held the rows' build while CordBuilder.cs had changed
+    at HEAD; the match read "206 count, 0 to run ... no check reruns for this", and the relation read 206 touched."""
+    rows = {t: {"mod_sha": "abc1234", "mod_hash": "sha256:old", "game_build": "1.6", "active_mods": ["x"], "tier": "t"}
+            for t in ("sc_a", "sc_b", "sc_c", "sc_d")}
+    walk = {"mod_hash": "sha256:old", "game_build": "1.6", "active_mods": ["x"]}
+    rel = {"rows": {"sc_a": {"state": "touched", "why": "A.cs", "old": "abc1234"},
+                    "sc_b": {"state": "untouched", "why": "", "old": "abc1234"},
+                    "sc_c": {"state": "unreadable", "why": "no declared path", "old": "abc1234"}}}
+    tests = [(t, dict(table()["sc_a"])) for t in sorted(rows)]
+    stale = BM.compare(tests, rows, walk, lambda t: (["x"], None), relation=rel, deploy="deploy it")
+    cur = BM.compare(tests, rows, walk, lambda t: (["x"], None), relation=rel, deploy=None)
+    ok("stale-walk-folder-still-reads-the-source-change: while a deploy is owed, a row made on the folder's own build "
+       "reruns when the change to the source touches it or cannot be read, the others count; a current folder's equal "
+       "hash counts every row", stale["rerun"] == ["sc_a", "sc_c"] and cur["rerun"] == [], (stale["rerun"], cur["rerun"]))
+
+
 def t_tier_list_of_any_install_here_counts():
     """RIMMANDRAKE_READ_TIER_LIST_FROM_EVERY_GAME_INSTALL_HERE (Pyrelands visit 7, 2026-11-23): 37 ArchSmall rows read "to
     run" because the reference came from ArchBig's older About.xml."""
@@ -654,6 +671,7 @@ TESTS = [t_declared_paths_are_exercises_reads_and_file, t_untouched_row_counts, 
          t_whole_mod_check_reruns_on_any_change, t_whole_mod_check_skips_hashignored,
          t_csharp_relates_by_source_file, t_python_relates_by_symbol,
          t_json_relates_by_entry, t_spec_change_reruns, t_rows_from_several_builds, t_walk_not_the_source_is_one_deploy,
+         t_stale_walk_folder_still_reads_the_source_change,
          t_tier_list_of_any_install_here_counts, t_full_list_is_the_mods_the_game_can_load,
          t_a_path_outside_the_repo_is_not_in_the_change]
 
@@ -728,6 +746,7 @@ def main():
     t_spec_change_reruns()
     t_rows_from_several_builds()
     t_walk_not_the_source_is_one_deploy()
+    t_stale_walk_folder_still_reads_the_source_change()
     t_tier_list_of_any_install_here_counts()
     t_full_list_is_the_mods_the_game_can_load()
     t_a_path_outside_the_repo_is_not_in_the_change()

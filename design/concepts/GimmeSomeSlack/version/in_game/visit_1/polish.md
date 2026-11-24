@@ -4,3 +4,4 @@
 - human_review.py --fresh-map on the full list asks jawa/map_info while the new map is still in a long event and stops; --build on the map that then stands works.
 - sc_walk's observes text names a 20 ms per-rewire frame time the runner's journal does not record (sc_rewire_cost reads it).
 - ConduitStyleProbe clookicons:...:open opens a FloatMenu that closes at once when the game window is not under the mouse; nothing reads it any more.
+- Core/CordBuilder.cs: the summary comment of OnStub stands above WallPlugMaxDeg since 1e926ebe4c (comment only).
