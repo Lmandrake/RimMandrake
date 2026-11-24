@@ -71,7 +71,7 @@ def load_rows(paths: list) -> list:
 
 
 def spec_of(row: dict) -> dict:
-    s = C.pilot_spec(row["pilot"]) if row.get("pilot") else json.loads((ROOT / row["spec"]).read_text())
+    s = C.pilot_spec(row["pilot"]) if row.get("pilot") else C.load_spec(ROOT / row["spec"])
     C.apply_brief(s)                        # as production specs do (pilot_spec, fauna_spec.py, build_card)
     s.pop("depends_on", None)
     s["owner_kept"] = False                 # a race judges the picture, never the kept-art routing

@@ -1,0 +1,103 @@
+{
+ "versions_key": "departures_brief@v3#50b472+gpt_targeted_second_look@v2#4640d0+opus_first_pass@v3#d22c47+preamble@v4#815246+regen_prompt_edit@v2#209449+severity@v4#3e1892+creature@v4#3a3bc2",
+ "run": "regress_plain_english_final_20261124",
+ "at": "2026-11-24T07:38:20-08:00",
+ "passed": 6,
+ "total": 11,
+ "unmeasured": 0,
+ "rows": [
+  {
+   "subject": "RM_Shadefern",
+   "expect": "ACCEPT",
+   "got": "REGEN",
+   "pass": false,
+   "unmeasured": false,
+   "why": "owner kept Shadefern B on 2026-10-10.",
+   "known_miss": "CL-049"
+  },
+  {
+   "subject": "RM_Huldu",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  },
+  {
+   "subject": "RM_Ssurr",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  },
+  {
+   "subject": "RM_Vellak",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  },
+  {
+   "subject": "RM_Murrin",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "guard: the relaxation must still reject an owner REDO swimmer"
+  },
+  {
+   "subject": "RM_Dewblade",
+   "expect": "ACCEPT",
+   "got": "REGEN",
+   "pass": false,
+   "unmeasured": false,
+   "why": "owner kept Dewblade B 2026-10-10; incumbent REGEN, V1cal ACCEPT.",
+   "known_miss": "CL-049"
+  },
+  {
+   "subject": "RM_DecayDrake",
+   "expect": "ACCEPT",
+   "got": "REGEN",
+   "pass": false,
+   "unmeasured": false,
+   "why": "owner PICKED DecayDrake column C (r2) on owner_escalations_cauldron_sheet_2026-10-24; pipeline REGEN on F_SIZE_JUMP (CL-035)",
+   "known_miss": "CL-035"
+  },
+  {
+   "subject": "RM_Durrok",
+   "expect": "ACCEPT",
+   "got": "REGEN",
+   "pass": false,
+   "unmeasured": false,
+   "why": "owner POOLED Durrok column B (r2) on owner_escalations_leaningscrub_1_sheet_2026-10-24; pipeline REGEN on F_SIZE_JUMP. His pick was a style call (owner 2026-11-17, asked about Durrok r2 and Gawpsack shown beside Peeper r2: \"I was undoubtedly expressing style decisions.\"), and C2 lets the judge refuse its facing size jump (owner 2026-11-19: \"Allow the Judge to bounce incorrectly sized creatures\"), so it is no planted case",
+   "known_miss": "CL-021"
+  },
+  {
+   "subject": "RM_Gawpsack",
+   "expect": "ACCEPT",
+   "got": "REGEN",
+   "pass": false,
+   "unmeasured": false,
+   "why": "owner PICKED live Gawpsack (column A) on owner_escalations_contagion_sheet_2026-10-24; pipeline REALLY_BAD on DEPARTURE_MISSING. His pick was a style call (owner 2026-11-17: \"I was undoubtedly expressing style decisions.\"), and C2 lets the judge refuse its facing size jump (owner 2026-11-19: \"Allow the Judge to bounce incorrectly sized creatures\"), so it is no planted case; his keep is planted as kept_RM_Gawpsack_live (E3)",
+   "known_miss": "CL-030"
+  },
+  {
+   "subject": "RM_Peeper",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner PURGED Peeper r2 on owner_escalations_contagion_sheet_2026-10-24 because he no longer wanted that animal (owner 2026-11-17, asked whether he refused it for its facing size: \"Correct, not size.\"; 2026-11-19: \"it was because I didn't want those animals anymore\"); C2 refuses it blind on its facing size jump (height 1.45x), and guard: an F_SIZE_JUMP relaxation passes it (replay 2026-10-24)"
+  },
+  {
+   "subject": "RM_Danglemaw",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner PURGED Danglemaw r1 on owner_escalations_contagion_sheet_2026-10-24; guard: a DEPARTURE_MISSING confidence floor passes it (replay 2026-10-24)"
+  }
+ ]
+}

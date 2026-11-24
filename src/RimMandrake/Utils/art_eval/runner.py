@@ -1102,6 +1102,20 @@ def write_brief(defname: str, rev_call=None) -> dict:
 
 
 # ------------------------------------------------------------------ regression
+def regress_row(row: dict, subject: str, d: str) -> dict:
+    """One row's result. A HOLD_* (transport error, missing panel, kept art) decided nothing: it is UNMEASURED, never a
+    pass. (2026-10-23: a session-limit outage made every row HOLD_ERROR and the NOT_ACCEPT rows "passed".)
+    A row's `known_miss` names the OPEN criteria-ledger entry of a miss that the judge already had. The row still fails;
+    the name only tells it apart from a row that a change broke."""
+    measured = d == "ACCEPT" or d in ("REGEN", "ESCALATE", "REGEN_AFTER_SOURCE")
+    ok = measured and (d == "ACCEPT") == (row["expect"] == "ACCEPT")
+    out = {"subject": subject, "expect": row["expect"], "got": d, "pass": ok,
+           "unmeasured": not measured, "why": row.get("why")}
+    if measured and not ok and row.get("known_miss"):
+        out["known_miss"] = row["known_miss"]
+    return out
+
+
 def regress(rev: Reviewers | None = None, run_id: str | None = None, max_new: int | None = None) -> dict:
     """Re-run every regression row on the current prompt versions; a row passes when the decision lands in its
     expected class (ACCEPT vs not). Writes infrastructure/state/art_eval/regression_runs/<run>.json.
@@ -1109,7 +1123,7 @@ def regress(rev: Reviewers | None = None, run_id: str | None = None, max_new: in
     call and returns {"incomplete": n} while judgeable rows remain. Missing pictures hold a row unmeasured and
     can be retried on resume. A resumed run on other prompt versions is refused."""
     rows = [json.loads(l) for l in (STATE / "regression.jsonl").read_text().splitlines() if l.strip()]
-    specs = [C.pilot_spec(r["pilot"]) if r.get("pilot") else json.loads((ROOT / r["spec"]).read_text()) for r in rows]
+    specs = [C.pilot_spec(r["pilot"]) if r.get("pilot") else C.load_spec(ROOT / r["spec"]) for r in rows]
     rid = run_id or "regress_" + dt.datetime.now().strftime("%Y%m%dT%H%M%S")
     rdir = STATE / "runs" / rid
     vk = versions_key(prompt_versions("creature"))
@@ -1132,13 +1146,7 @@ def regress(rev: Reviewers | None = None, run_id: str | None = None, max_new: in
     res = []
     for row, s in zip(rows, specs):
         absent = blocked.get(spec_key(s))
-        d = "HOLD_INPUT" if absent else recs[spec_key(s)]["decision"]
-        # A HOLD_* (transport error, missing panel, kept art) decided nothing: it is UNMEASURED, never a pass.
-        # (2026-10-23: a session-limit outage made every row HOLD_ERROR and the NOT_ACCEPT rows "passed".)
-        measured = d == "ACCEPT" or d in ("REGEN", "ESCALATE", "REGEN_AFTER_SOURCE")
-        ok = measured and (d == "ACCEPT") == (row["expect"] == "ACCEPT")
-        res.append({"subject": s["subject"], "expect": row["expect"], "got": d, "pass": ok,
-                    "unmeasured": not measured, "why": row.get("why")})
+        res.append(regress_row(row, s["subject"], "HOLD_INPUT" if absent else recs[spec_key(s)]["decision"]))
         if absent:
             res[-1]["missing_images"] = absent
     out = {"versions_key": versions_key(prompt_versions("creature")), "run": rid, "at": now(),
@@ -1223,10 +1231,13 @@ def main(argv=None):
         for row in o["rows"]:
             if row.get("missing_images"):
                 print(f"{row['subject']}: UNMEASURED (missing {', '.join(row['missing_images'])})")
+            elif not row["pass"] and not row["unmeasured"]:
+                print(f"{row['subject']}: expected {row['expect']}, got {row['got']}"
+                      + (f" (known miss {row['known_miss']})" if row.get("known_miss") else " (NOT a known miss)"))
         print(f"regression {o['passed']}/{o['total']} on {o['versions_key']}"
               + (f" — UNMEASURED {o['unmeasured']}/{o['total']} (HOLD_*: nothing decided; not a pass)" if o["unmeasured"] else ""))
         return 0 if o["passed"] == o["total"] else 1
-    specs = [C.pilot_spec(x) for x in a.pilot] + [json.loads(Path(x).read_text()) for x in a.spec]
+    specs = [C.pilot_spec(x) for x in a.pilot] + [C.load_spec(x) for x in a.spec]
     recs = run(specs, a.run_id, test=a.test, record=a.record, file_regens=a.file_regens)
     for x in recs:
         print(f"{x['subject']}\t{x['decision']}")

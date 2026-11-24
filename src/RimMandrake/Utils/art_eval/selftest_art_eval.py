@@ -539,6 +539,33 @@ def tuning_checks():
         check(f"regress: {name} paths identify the original pictures by SHA",
               images == {p: ("artstore", sha[:2], sha + ".png") for p, sha in shas[spec["subject"]].items()})
 
+    # RIMMANDRAKE_RESTORE_ART_EVAL_REGRESSION_PICTURES_...: every other row's picture is a committed file with the bytes
+    # that were judged. He purged the Peeper and Danglemaw facings from the artstore, so those two rows hold the judge's
+    # own copy (image_sha256: pixel-identical, encoded again); every other file is the original (source_sha256).
+    import cards as C
+    recs = {(r["subject"], r["candidate"]): r for r in map(json.loads, history.read_text().splitlines())}
+    for row in map(json.loads, (state / "regression.jsonl").read_text().splitlines()):
+        spec = C.pilot_spec(row["pilot"]) if row.get("pilot") else C.load_spec(P.ROOT / row["spec"])
+        if any("artstore" in str(p) for p in C.source_files(spec).values()):
+            continue
+        rec, bad = recs[(spec["subject"], spec["candidate"])], []
+        for panel, f in C.source_files(spec).items():
+            f = Path(f)
+            if not f.is_absolute() or P.ROOT / "infrastructure" not in f.parents or not f.is_file() \
+                    or C.sha256_file(f) not in (rec["source_sha256"][panel], rec["image_sha256"][panel + ".png"]):
+                bad.append((panel, str(f)))
+        check(f"regress: {spec['subject']} {spec['candidate']} pictures are committed and are the judged ones", not bad, bad)
+
+    # a known miss is still a failed row; regress names it apart from a row that fails for a new reason
+    row = {"expect": "ACCEPT", "known_miss": "CL-900"}
+    check("regress: a known miss never passes", runner.regress_row(row, "X", "REGEN")["pass"] is False
+          and runner.regress_row(row, "X", "REGEN")["known_miss"] == "CL-900")
+    check("regress: a known miss that is now judged right passes and is no miss",
+          runner.regress_row(row, "X", "ACCEPT")["pass"] is True and "known_miss" not in runner.regress_row(row, "X", "ACCEPT"))
+    check("regress: an unmeasured known miss is unmeasured, not a miss",
+          runner.regress_row(row, "X", "HOLD_ERROR")["unmeasured"] and "known_miss" not in runner.regress_row(row, "X", "HOLD_ERROR"))
+    check("regress: a wrong row with no known_miss names none", "known_miss" not in runner.regress_row({"expect": "ACCEPT"}, "X", "REGEN"))
+
 def departures_checks():
     """ARTEVAL_DEPARTURES_TUNE_ALMOST_EVERYTHING: a departure the description does not state never reaches a card."""
     import cards as C

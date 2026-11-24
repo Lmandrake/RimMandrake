@@ -8,7 +8,12 @@
   "RM_Ssurr",
   "RM_Vellak",
   "RM_Murrin",
-  "RM_Dewblade"
+  "RM_Dewblade",
+  "RM_DecayDrake",
+  "RM_Durrok",
+  "RM_Gawpsack",
+  "RM_Peeper",
+  "RM_Danglemaw"
  ],
  "versions_key": "departures_brief@v3#50b472+gpt_targeted_second_look@v2#4640d0+opus_first_pass@v3#d22c47+preamble@v4#815246+regen_prompt_edit@v2#209449+severity@v4#3e1892+creature@v4#3a3bc2"
 }

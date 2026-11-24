@@ -78,7 +78,7 @@
   "id": "arteval_RM_Murrin__C_r1",
   "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
   "target_def": "RM_Murrin",
-  "prompt": "A RimWorld creature sprite of the Murrin, a hand-length freshwater pool fish, in painterly vanilla RimWorld style, realistic, on a fully transparent background. The body is deep-keeled: tall from keel to back and narrow from one flank to the other. A single tall comb-like dorsal fin stands upright along the midline of the back, the fish's one standout feature, with slender fin rays joined by thin translucent membrane. The fish is gentle and natural: a natural fish head with small round eyes, a small neutral mouth, a forked tail fin, and small pectoral fins. The body and fins are the only things shown, with clear empty space all around them; the water is not drawn. Soft painted edges on the body and fins; value and colour contrast against the ground carry the silhouette. The deep-keeled body and the tall comb fin keep the same body scale and the same height from keel to dorsal fin tip throughout.",
+  "prompt": "A RimWorld creature sprite of the Murrin, a hand-length freshwater pool fish, in painterly vanilla RimWorld style, realistic, on a fully transparent background. The body is deep-keeled: tall from keel to back and narrow from one flank to the other. A single tall comb-like dorsal fin stands upright on the midline of the back, the fish's one standout feature. The fish is gentle and natural: a natural fish head with small paired eyes and a small neutral mouth, a forked tail fin, and small pectoral fins. Only the fish's body and fins are shown, with clear empty space all around it; the water is not drawn. The body and fins have soft painted edges, and value and colour contrast against the ground carry the silhouette. The deep-keeled body, the tall upright comb fin on the midline of the back, and the forked tail fin share one consistent body scale, with the keel-to-dorsal-fin-tip height staying the same throughout.",
   "canvas_w": 256,
   "canvas_h": 256,
   "facings": [
@@ -108,5 +108,105 @@
   "source_run": "regress_plain_english_final_20261124",
   "drawsize": 1,
   "module": "ground_cover"
+ },
+ {
+  "id": "arteval_RM_DecayDrake_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_DecayDrake",
+  "prompt": "A fermatalis: a heavy, flightless drake with stunted wings folded tight over a bloated, sour-sweet belly. Its drab green-brown scales are broken by amber and cream tones along the underbelly. It has thick, pillar-like legs ending in heavy claws, a thick tail, and a broad head with sleepy, half-lidded eyes. A faint, living haze of yeasts hangs around the body, and soft, slumped, bubbling mounds of mash lie on the ground near its feet. The animal is tall, massive and heavy, standing high on thick legs. It has a long body, with the deep, bloated belly hanging low between the legs. Its back stands about 350 px above the feet, from spine top to claws, and the body fills most of the canvas height. The vapour haze and mash mounds sit around the body and are not counted in its height. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. No outlines.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_plain_english_final_20261124",
+  "drawsize": 2.75,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake"
+ },
+ {
+  "id": "arteval_RM_Durrok_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Durrok",
+  "prompt": "A single RimWorld creature sprite, painterly vanilla RimWorld style, realistic, transparent background, soft painted edges; value and colour contrast against the ground carry the silhouette. The durrok: a low, barrel-bodied quadruped on four short, thick legs, so buried under long, pale, glossy, wet-looking white hair that no head or neck shows, only a blunt front end and a tail-like fall of white cords behind. The hair hangs in heavy ropes to the ground. Mats of grey-green lichen cling in drifts across its back, shoulders and legs, and grow over the blunt front end where a head and neck would be, with strands trailing where they slip. It looks like a drowned haystack plodding through scrub. Size and proportion are fixed and identical in every facing: the standing body is a compact barrel about 1.4 body-lengths long and about 0.55 body-lengths tall at the shoulder, with four short thick legs of the same length and thickness, shown at one shared scale. Side view (east): the full barrel in profile, blunt lichen-covered front end on one side and the fall of white cords on the other. Front view (south): the blunt front end seen head-on, its width about 0.7 of the side view's body length and its height equal to the side view's shoulder height, so the animal is the same size as in the side view. Rear view (north): the rear seen from behind, the tail-like fall of white cords hanging over the haunches, at the same width, height and barrel volume as the front view. Same animal, same size, same hair and lichen pattern in all three views.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_plain_english_final_20261124",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Durrok/RM_Durrok"
+ },
+ {
+  "id": "arteval_RM_Gawpsack__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gawpsack",
+  "prompt": "A RimWorld creature sprite, a gawpsack: a small drifting bag, about the size of a hare, made of a thin, pale, see-through membrane. The membrane is clear and watery, with a faint cool tint, and light passes through its edges and glows through its thin walls. It looks like a delicate translucent sac, with at most a few hair-fine pale vessels. The bag is stuffed with many eyes of different sizes that do not match each other. The eyes float at different depths inside the bag: some press against the surface, some sit deeper and appear softly veiled by the membrane in front of them. Each eye differs in size, iris colour (amber, grey-green, pale blue, brown, milky yellow) and pupil shape (round, slit, horizontal bar, oval). Every eye is open, and every iris and pupil sits high in its eyeball with white showing below, so the whole crowd of eyes looks up at the sky together. This holds for the large central eye as well. Front view: the eyes cluster across the face of the bag, all gazing upward. Side view: the profile of the bag with the eyes along the visible flank, all gazing upward. Rear view, seen from behind: the bag's back, with the eyes seen through the membrane at depth, and the same upward gaze. The bag hangs low and slack, with a gathered, puckered neck at the top and a soft sagging underside, drifting just above the ground with no legs. Soft painted edges; value and colour contrast carry the silhouette. Transparent background, painterly vanilla RimWorld style, realistic.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DESC_MISS, DEPARTURE_MISSING, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_plain_english_final_20261124",
+  "drawsize": 0.7,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack"
+ },
+ {
+  "id": "arteval_RM_Peeper_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Peeper",
+  "prompt": "RimWorld creature sprite, a peeper: a once-predator gone soft, now a docile mid-sized browser of the goo margins, its hide opened with many extra eyes so that watching has replaced hunting. Original alien body plan: a blunt, earless, noseless browsing head with a broad soft mouth, its skull shaped by swollen eye sockets; a soft slumped hairless torso with smooth mottled pinkish-grey and olive-brown hide; thick unfamiliar limbs ending in padded blunt feet; a short heavy tapering tail. Clusters of eyes with pale eye whites and dark pupils swell from the skull, the back and the flanks, and they define its silhouette. The head hangs low and forward at grazing height, the back is rounded and slumped, and the creature stands calm. The figure is about 0.9 cell tall overall, centred with equal margins. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, F_SIZE_JUMP, STYLE_EARTHLY, F_SIZE_JUMP, F_NORTH_FACE; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_plain_english_final_20261124",
+  "drawsize": 0.9,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Peeper/RM_Peeper"
+ },
+ {
+  "id": "arteval_RM_Danglemaw_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Danglemaw",
+  "prompt": "RimWorld creature sprite, one danglemaw: a mouth on a tendon. The whole creature is a single thick, muscular cord with a free-hanging jaw at its lower end, slack and limp as if waiting for something to walk underneath. No torso, no head, no limbs. The top of the cord ends in a compact gripping holdfast: tendons wrap tightly around a short piece of Eyebark branch with a few leaves of foliage, so the creature clearly hangs from the canopy and the branch supports the whole weight. The jaw is one connected form with an upper half and a lower half around a solid throat, with rows of teeth along the inside of the mouth. The same jaw appears in every view, turned consistently with the cord. Front view (south), seen from the front: the open mouth faces the viewer, upper and lower jaw around the throat, teeth visible. Side view (east): the cord hangs from the branch, the jaw in profile, upper and lower halves joined at the throat. Rear view (north), seen from behind: the closed, muscular outer back of the jaw bulb at the end of the cord, solid smooth flesh, with the mouth opening and teeth on the far side, hidden from the viewer. Transparent background, painterly vanilla RimWorld style, realistic. Soft painted edges; value and colour contrast against the ground carry the silhouette. Keep the palette and the muscular cord and jaw look of the previous render.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_NORTH_FACE, F_INCONSISTENT, DEPARTURE_MISSING, F_NORTH_FACE, F_INCONSISTENT, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_plain_english_final_20261124",
+  "drawsize": 1.7,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw"
  }
 ]

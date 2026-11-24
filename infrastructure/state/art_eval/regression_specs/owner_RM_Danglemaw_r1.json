@@ -17,10 +17,10 @@
  "source": "RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
  "owner_kept": false,
  "images": {
-  "south": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Danglemaw_r1/south.png",
-  "east": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Danglemaw_r1/east.png",
-  "north": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Danglemaw_r1/north.png",
-  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Danglemaw_r1/scale.png"
+  "south": "infrastructure/state/art_eval/regression_images/RM_Danglemaw_r1/south.png",
+  "east": "infrastructure/state/art_eval/regression_images/RM_Danglemaw_r1/east.png",
+  "north": "infrastructure/state/art_eval/regression_images/RM_Danglemaw_r1/north.png",
+  "scale": "infrastructure/state/art_eval/regression_images/RM_Danglemaw_r1/scale.png"
  },
  "departures": [
   "The body is a bare muscular cord like a stretched tendon: no scales, no torso, and no thickening into a trunk anywhere along it",

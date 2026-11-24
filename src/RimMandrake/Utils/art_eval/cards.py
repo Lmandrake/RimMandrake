@@ -279,6 +279,17 @@ def _pilot_dir(defname: str) -> Path:
     return hits[0]
 
 
+REGRESSION_IMAGES = ROOT / "infrastructure/state/art_eval/regression_images"
+
+
+def load_spec(path) -> dict:
+    """A spec file. A relative picture path in it is relative to the repo root, so a committed picture is found from
+    every clone and every working directory."""
+    spec = json.loads(Path(path).read_text())
+    spec["images"] = {k: str(ROOT / v) if isinstance(v, str) else v for k, v in spec.get("images", {}).items()}
+    return spec
+
+
 MODULE_OF_CLASS = {"fauna/walker": "walker", "fauna/walker_pack": "pack", "fauna/swimmer": "swimmer",
                    "fauna/amphibious": "amphibious", "fauna/flyer": "flyer", "item/catch": "catch",
                    "flora/ground_cover": "ground_cover", "flora/bush": "bush", "flora/tree": "tree",
@@ -297,6 +308,11 @@ def pilot_spec(ref: str) -> dict:
     template = "plant" if c["class"].startswith("flora/") else "creature"
     imgs = {f: str(d / v["file"]) for f, v in cand["files"].items()}
     imgs["scale"] = str(d / cand["true_scale_panel"])
+    # the bundle's pictures are untracked (Transient): a regression row reads its committed copy, in every clone
+    for panel in imgs:
+        kept = REGRESSION_IMAGES / f"{defname}_{letter}" / f"{panel}.png"
+        if kept.is_file():
+            imgs[panel] = str(kept)
     spec = {"subject": defname, "label": c.get("label"), "template": template, "module": module,
             "candidate": letter, "provenance": cand.get("provenance_label_shown_to_owner"),
             "description": c.get("description"), "tier": c.get("tier"),
