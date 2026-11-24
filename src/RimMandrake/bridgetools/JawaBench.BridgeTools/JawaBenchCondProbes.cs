@@ -196,12 +196,31 @@ namespace JawaBench.BridgeTools
                 case "thing.pos":
                 case "thing.field":
                     return BindThing(p, out why);
+                case "value":
+                case "value.state":
+                    return BindValue(p, out why);
                 case "ring.count":
                     why = "ring.count is not wired yet (RINGPROBES_WIRE_EVENT_CURSORS)";
                     return null;
             }
             why = "no Verse read for probe " + p.Name;
             return null;
+        }
+
+        // ---------------------------------------------------------------- any value path (JawaBenchPathCore)
+        static Reader BindValue(JawaBenchCondCore.Probe p, out string why)
+        {
+            string of = Arg(p, "of"), path = Arg(p, "path");
+            var first = JawaBenchHands.ReadValue(of, path);
+            why = first.Refused == null ? null : first.Detail;
+            if (why != null) return null;
+            if (p.Name == "value.state") return (x, z) => Ok(JawaBenchPathCore.StateOf(JawaBenchHands.ReadValue(of, path)));
+            return (x, z) =>
+            {
+                var r = JawaBenchHands.ReadValue(of, path);
+                if (r.State != "ok") return St(r.State, r.Detail);
+                return r.V is double ? Ok((double)r.V) : new CondRead(r.V, "ok", "");
+            };
         }
 
         // ---------------------------------------------------------------- FlowWorks

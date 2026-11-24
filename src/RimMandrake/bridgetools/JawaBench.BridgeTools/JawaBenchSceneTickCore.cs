@@ -32,6 +32,28 @@ namespace JawaBench.BridgeTools
         internal const string Schema = "scene_trace_v1";
         internal const double DrainMs = 60000;      // boundary page, LIMITS
 
+        /// <summary>The numbering of one trace. A run has its own, or it shares its session's, so that the rows of several runs
+        /// are one series with no gap.</summary>
+        internal sealed class Trace
+        {
+            public int N, Rows, Dropped;
+            public string Session;                  // null: the trace of one run outside any session
+
+            /// <summary>One row. Returns the line's sequence number, or -1 when the writer dropped it.</summary>
+            public long Emit(ISceneHost h, string run, long tick, string phase, string rec, string fields)
+            {
+                N++;
+                var sb = new StringBuilder(128);
+                if (Session != null) sb.Append("\"sess\":").Append(JawaBenchCondCore.Canon(Session)).Append(',');
+                sb.Append("\"run\":").Append(JawaBenchCondCore.Canon(run)).Append(",\"n\":").Append(N).Append(",\"tick\":").Append(tick)
+                  .Append(",\"phase\":\"").Append(phase).Append("\",\"rec\":\"").Append(rec).Append('"');
+                if (!string.IsNullOrEmpty(fields)) sb.Append(',').Append(fields);
+                long seq = h.Enqueue(sb.ToString());
+                if (seq < 0) Dropped++; else Rows++;
+                return seq;
+            }
+        }
+
         internal sealed class Act
         {
             public readonly string Name;
@@ -47,6 +69,10 @@ namespace JawaBench.BridgeTools
             public JawaBenchCondCore.Probe Probe;
             public bool Has;
             public CondRead Last;
+            public long Reads;                      // samples taken, the first and the last included
+            public int BadTicks;                    // samples that were not ok
+            public long BadFrom;
+            public string BadState, BadDetail;      // of the first of them
         }
 
         /// <summary>null, or why these act steps cannot be part of a run of maxTicks.</summary>
@@ -72,9 +98,11 @@ namespace JawaBench.BridgeTools
             readonly List<Track> _tracks = new List<Track>();
             readonly List<Act> _acts;
             readonly string _mode, _speed;
-            int _n, _rows, _dropped, _randFaults, _skipped, _emitted;
+            readonly Trace _trace;
+            readonly List<string> _faults = new List<string>();
+            int _rows, _dropped, _randFaults, _skipped, _emitted;
             long _from, _endTick;
-            bool _ended, _lastTaken, _paused;
+            bool _ended, _lastTaken, _paused, _drained;
             double _settleFrom = -1;
             long _steady, _steadyBytes, _steadyDirty, _gc;
             string _forced, _forcedWhy;
@@ -89,12 +117,34 @@ namespace JawaBench.BridgeTools
             public long? HitTick { get { return _cond.HitTick; } }
             public string Why { get { return _forcedWhy; } }
             public Dictionary<string, object> Result() { return _cond.Result(); }
+            public long FromTick { get { return _from; } }
+            public bool Drained { get { return _drained; } }
+            public IList<string> Faults { get { return _faults; } }
+            public IList<Track> Tracks { get { return _tracks; } }
+
+            /// <summary>The probe of the condition value that could not be read, with its state; null when there is none.</summary>
+            public Dictionary<string, object> UnknownValue()
+            {
+                var u = _cond.Result()["unknown"] as Dictionary<string, object>;
+                if (u == null) return null;
+                var d = new Dictionary<string, object>(u);
+                var n = Find(_c.Tree, u["id"] as string);
+                d["value"] = n != null && n.Probe != null ? n.Probe.Key : null;
+                return d;
+            }
+
+            static JawaBenchCondCore.Node Find(JawaBenchCondCore.Node n, string id)
+            {
+                if (n.Id == id) return n;
+                foreach (var c in n.Children) { var f = Find(c, id); if (f != null) return f; }
+                return null;
+            }
 
             /// <summary>The compiled spec's `sample` probes are the tracks: they are read here, once a tick, and not by the
             /// condition run.</summary>
-            public SceneRun(string id, JawaBenchCondCore.Compiled c, IProbeSource src, IList<Act> acts, ISceneHost h, string mode, string speed)
+            public SceneRun(string id, JawaBenchCondCore.Compiled c, IProbeSource src, IList<Act> acts, ISceneHost h, string mode, string speed, Trace trace = null)
             {
-                Id = id; _h = h; _c = c; _mode = mode; _speed = speed;
+                Id = id; _trace = trace ?? new Trace(); _h = h; _c = c; _mode = mode; _speed = speed;
                 _acts = new List<Act>(acts);
                 if (c.Sample != null) foreach (var kv in c.Sample) _tracks.Add(new Track { Name = kv.Key, Probe = kv.Value });
                 c.Sample = null;
@@ -105,12 +155,8 @@ namespace JawaBench.BridgeTools
             // ------------------------------------------------------------------------------------------ records
             long Emit(long tick, string phase, string rec, string fields)
             {
-                _n++; _emitted++;
-                var sb = new StringBuilder(128);
-                sb.Append("\"run\":").Append(S(Id)).Append(",\"n\":").Append(_n).Append(",\"tick\":").Append(tick)
-                  .Append(",\"phase\":\"").Append(phase).Append("\",\"rec\":\"").Append(rec).Append('"');
-                if (!string.IsNullOrEmpty(fields)) sb.Append(',').Append(fields);
-                long seq = _h.Enqueue(sb.ToString());
+                _emitted++;
+                long seq = _trace.Emit(_h, Id, tick, phase, rec, fields);
                 if (seq < 0) _dropped++; else _rows++;
                 return seq;
             }
@@ -119,6 +165,7 @@ namespace JawaBench.BridgeTools
 
             void Fault(long tick, string phase, string what, string detail)
             {
+                _faults.Add(what + ": " + detail);
                 Emit(tick, phase, "fault", "\"what\":" + S(what) + ",\"detail\":" + S(detail));
             }
 
@@ -128,6 +175,8 @@ namespace JawaBench.BridgeTools
                 {
                     var t = _tracks[i];
                     var r = _read.ReadProbe(t.Probe);
+                    t.Reads++;
+                    if (r.Status != "ok" && phase != "last" && t.BadTicks++ == 0) { t.BadFrom = tick; t.BadState = r.Status; t.BadDetail = r.Detail; }
                     if (!all && t.Has && r.Status == t.Last.Status && JawaBenchCondCore.SameValue(r.V, t.Last.V)) continue;
                     t.Has = true; t.Last = r;
                     Emit(tick, phase, "track", "\"name\":" + S(t.Name) + ",\"st\":" + S(r.Status) + ",\"v\":" + S(r.V) +
@@ -206,7 +255,7 @@ namespace JawaBench.BridgeTools
                 var r = _cond.Result();
                 var cov = (Dictionary<string, object>)r["coverage"];
                 Emit(tick, phase, "end", "\"state\":" + S(State) + ",\"why\":" + S(_forcedWhy) + ",\"hitTick\":" + S(r["hitTick"]) + ",\"executed\":" + (tick - _from) +
-                                         ",\"triggers\":" + S(r["triggers"]) + ",\"unknown\":" + S(r["unknown"]) + ",\"complete\":" + S(cov["complete"]) + ",\"cost\":" + S(r["cost"]));
+                                         ",\"triggers\":" + S(r["triggers"]) + ",\"unknown\":" + S(UnknownValue()) + ",\"complete\":" + S(cov["complete"]) + ",\"cost\":" + S(r["cost"]));
                 Stage = "settling";
             }
 
@@ -240,6 +289,7 @@ namespace JawaBench.BridgeTools
                 foreach (var a in _acts) if (!a.Done) left.Add(a.Name);
                 string alloc = _steady == 0 && _gc == 0 ? "null"
                     : "{\"steadyTicks\":" + _steady + ",\"bytes\":" + _steadyBytes + ",\"ticksThatAllocated\":" + _steadyDirty + ",\"ticksWithGc\":" + _gc + "}";
+                _drained = drained;
                 Emit(tick, "last", "close", "\"rows\":" + _rows + ",\"dropped\":" + _dropped + ",\"drained\":" + (drained ? "true" : "false") +
                                             ",\"paused\":" + (_paused ? "true" : "false") + ",\"tickAfter\":" + tick + ",\"skipped\":" + _skipped +
                                             ",\"randFaults\":" + _randFaults + ",\"actsNotDone\":" + S(left) + ",\"alloc\":" + alloc);

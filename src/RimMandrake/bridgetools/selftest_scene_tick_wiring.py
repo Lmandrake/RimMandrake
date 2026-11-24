@@ -24,8 +24,8 @@ class Unmeasured(Exception):
     pass
 
 
-def units(text):
-    """Build the harness with this core text, run it -> {unit: "ok" | "FAIL why"}."""
+def units(text, *args):
+    """Build the harness with this core text, run it -> {unit: "ok" | "FAIL why"}. args: `session` = each run in a session."""
     import winbuild
     fd, p = tempfile.mkstemp(prefix="SceneTickCore_", suffix=".cs", dir=winbuild.BUILD_ROOT)
     with os.fdopen(fd, "w", encoding="utf-8") as f:
@@ -49,7 +49,7 @@ def units(text):
     if rc:
         raise Unmeasured("the harness build failed (rc %s), log %s" % (rc, log))
     dll = winbuild.staged_win(rec, os.path.dirname(PROJ)) + "\\bin\\Release\\net8.0\\SceneTickSelfTest.dll"
-    pr = winbuild.run_interop_captured([winbuild.dotnet_exe(), dll], capture_output=True, text=True, cwd="/mnt/d/Luke/dev", timeout=180)
+    pr = winbuild.run_interop_captured([winbuild.dotnet_exe(), dll] + list(args), capture_output=True, text=True, cwd="/mnt/d/Luke/dev", timeout=180)
     out = {}
     for ln in pr.stdout.splitlines():
         if ln.startswith("U "):

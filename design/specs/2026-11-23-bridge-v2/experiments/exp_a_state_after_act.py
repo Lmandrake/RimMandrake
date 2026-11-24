@@ -9,7 +9,8 @@
 --scene pocket   FlowWorks state. A person of no faction stands stunned on flat ground; its own cell is dug, 20 ticks after an
                  earlier dig 4 cells away. Arms: R (the dig call lands on the RUNNING game, between two frames, as a game-side write does:
                  no paused frame sees it), RP (R, then a bare pause of --dwell s one or more ticks later), P (the dig call on
-                 the paused game), Read 10 and 100 ticks after the dig:
+                 the paused game), G (act and go: the dig is an act at 0 of jawa/run_until, done in the hop that starts the clock), T (the
+                 dig is an act on a tick inside one jawa/run_until); G and T: --arms R,P,RP,G,T. Read 10 and 100 ticks after the dig:
                  is the person held (RM_NorthstarProofs.ProofTrap), and on which tick the pocket grid was rebuilt (ProofEdge).
                  --quiet makes the earlier dig 200 ticks older, so that the 60-tick throttle has run out: the predicted SAME
                  case, and the control that the reads are not simply blind.
@@ -17,8 +18,8 @@
                  blast destroys the ramp on the next tick; against the same kill from Python on the paused game.
 --selfcheck      the comparison on hand-made series; no game.
 
-The slice (jawa/scene_slice) can only do a cut inside the tick, so an in-tick DIG needs the instrument of the
-widened slice (not built): R is the stand-in for it. The blast scene shows that a write made inside a tick is throttled as R's is.
+The slice (jawa/scene_slice) can only do a cut inside the tick. Arms G and T do a DIG inside the hop and inside the tick, by
+jawa/run_until; R was the stand-in for them. The blast scene shows that a write made inside a tick is throttled as R's is.
 Run as exp_a_python_act_vs_kernel_act.py. Exit 0 all agree, 1 differ, 2 could not measure."""
 import argparse
 import json
@@ -205,12 +206,31 @@ def edge(W, pid):
             "pocket": g(r"pocket=(\w+)", e), "ownReachesEdge": g(r"own=(\w+)", e), "held": g(r"held=(\w+)", t), "raw": e + " || " + t}
 
 
+def hand_dig(arm, W, t0, wait, dig, speed):
+    """The dig by the hands, then on to +10. G: run to the tick, then act and go. T: one run, the act on its tick. -> (tick of the dig, the tool's reply)."""
+    import prove_run_until as R
+    R.open_session()
+    rid = R.req("dig")
+    act = {"id": rid, "tool": "jawa/flowworks_excavation_drive", "args": dig, "at": 0}
+    if arm == "G":
+        r = R.run(R.at_tick(t0 + wait), wait + 50, speed=speed)
+        if r.get("why") == "hit":
+            r = R.run(R.at_tick(t0 + wait + 10), 60, speed=speed, acts=[act])
+    else:
+        r = R.run(R.at_tick(t0 + wait + 10), wait + 60, speed=speed, acts=[dict(act, at=wait)])
+    done = [x for x in r.get("acts") or [] if x.get("id") == rid and x.get("state") == "done"]
+    R.end_session()
+    if r.get("why") != "hit" or not done:
+        return None, R.brief(r) or r
+    return int(done[0]["tick"]), done[0]["reply"]
+
+
 def pocket(W, a):
     pids = colonists(W)
     info = W.call("jawa/map_info")
     rows = []
     for i in range(a.trials):
-        for arm in ("R", "P", "RP"):
+        for arm in a.arms.split(","):
             # one fresh 3x3 station per run, 12 cells apart
             n = len(rows)
             x, z = a.x0 + 10 * (n % 12), a.z0 + 10 * (n // 12)
@@ -240,6 +260,12 @@ def pocket(W, a):
                 row["gap_s"] = round(time.time() - g, 3)
                 tact = tick(W)
                 row["digTick"] = (d.get("ticksGame"), tact)
+            elif arm in ("G", "T"):
+                tact, d = hand_dig(arm, W, t0, wait, dig, speed)
+                row["digTick"] = (tact, None)
+                if tact is None:
+                    print("UNMEASURED: %s" % d)
+                    return 2
             else:
                 # the dig lands on the running game: start a run that outlasts it, watch the clock, dig
                 W.call("jawa/scene_slice", action="start", pawn=pids[0], speed=speed, maxTicks=2000, tracks=json.dumps({"depth": {"p": "fw.depth", "cell": [x, z]}}),
@@ -260,7 +286,7 @@ def pocket(W, a):
             row["digOk"] = d.get("success")
             row["depth"] = d.get("depth")
             row["digOnPaused"] = (d.get("state") or {}).get("paused")
-            row["void"] = arm != "P" and row["digOnPaused"] is not False       # the run had ended before the call landed: not arm R
+            row["void"] = arm not in ("P", "G", "T") and row["digOnPaused"] is not False       # the run had ended before the call landed: not arm R
             if arm == "P":
                 seg(W, pids[0], tact + 10, 100, speed)
             row["t_first"] = tick(W) - tact
@@ -355,6 +381,7 @@ def main():
     ap.add_argument("--trials", type=int, default=5)
     ap.add_argument("--speed", default="Normal")
     ap.add_argument("--dwell", type=float, default=0.25)
+    ap.add_argument("--arms", default="R,P,RP")
     ap.add_argument("--quiet", action="store_true")
     ap.add_argument("--kind", default="SpaceRefugee")
     ap.add_argument("--levels", type=int, default=4)

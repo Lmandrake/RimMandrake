@@ -243,11 +243,8 @@ def main():
     os.makedirs(a.out, exist_ok=True)
     connect()
     call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
-    for _ in range(240):
-        if call("rimworld/get_ui_state").get("programState") == "Playing":
-            break
-        time.sleep(1)
-    else:
+    from await_lifecycle import await_lifecycle
+    if not await_lifecycle(call, "map_ready", deadline_s=240):
         row("map", None, "no quicktest map reached Playing")
         return 2
     time.sleep(3)

@@ -71,6 +71,8 @@ PROBES = {
     "thing.exists": ("bool", ("thing",), ()), "thing.spawned": ("bool", ("thing",), ()),
     "thing.pos": ("num", ("thing", "f"), ()), "thing.field": ("any", ("thing", "path"), ()),
     "ring.count": ("num", ("source",), ("filter",)),
+    "value": ("value", ("of", "path"), ()),         # any value path (the C# JawaBenchPathCore); null is a value
+    "value.state": ("str", ("of", "path"), ()),
 }
 F_VALUES = {"pawn.pos": ("x", "z"), "pawn.job": ("def", "id"), "pawn.state": ("downed", "dead", "mental", "drafted"),
             "thing.pos": ("x", "z")}
@@ -81,7 +83,7 @@ NODE_KINDS = ("all", "any", "not", "cmp", "changed", "edge", "stays", "alarm")
 NODE_KEYS = {"all": (), "any": (), "not": (), "cmp": ("tol",), "changed": (), "edge": ("dir",), "stays": ("ticks",),
              "alarm": ()}
 # Arg check order is fixed (and mirrored in C#).
-ARG_ORDER = ("cell", "rect", "reduce", "where", "mapId", "def", "pawn", "thing", "f", "path", "source", "filter")
+ARG_ORDER = ("cell", "rect", "reduce", "where", "mapId", "def", "pawn", "thing", "of", "f", "path", "source", "filter")
 RUN_KEYS = ("every", "mapId", "max_events", "max_ticks", "on_unknown", "runKey", "sample", "snapshot_on_hit", "until", "watch")
 EVAL_KEYS = ("mapId", "tree")
 
@@ -237,7 +239,7 @@ class Probe(object):
             return "bool" if self.reduce in ("any", "all") else "num"
         if self.ptype == "job":
             return "str" if self.args.get("f") == "def" else "num"
-        return self.ptype
+        return "any" if self.ptype == "value" else self.ptype
 
 
 class Node(object):
@@ -702,7 +704,9 @@ class Evaluator(object):
         if status != "ok":
             return None, status, detail
         t = jtype(v)
-        if ptype == "any":
+        if ptype in ("any", "value"):
+            if ptype == "value" and t == "null":
+                return None, "ok", ""
             if t not in ("num", "bool", "str"):
                 return None, "error", "type: got " + t
         elif t != ptype:
@@ -738,7 +742,7 @@ class Evaluator(object):
                 return all(hits), "ok", ""
             return sum(1 for b in hits if b), "ok", ""
         vt = p.vtype()
-        v, st, de = self.raw(p.key, vt)
+        v, st, de = self.raw(p.key, "value" if p.ptype == "value" else vt)
         if p.name == "ring.count" and st == "ok":
             b = self.ring_base.get(p.key)
             if b is None:

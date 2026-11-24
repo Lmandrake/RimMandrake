@@ -2265,6 +2265,147 @@
    }
   },
   {
+   "name": "value_null_is_a_reading_and_gone_is_not",
+   "tags": [
+    "types",
+    "value"
+   ],
+   "spec": {
+    "until": {
+     "all": [
+      {
+       "cmp": [
+        {
+         "p": "value.state",
+         "of": "raider",
+         "path": "CurJobDef"
+        },
+        "!=",
+        "gone"
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "value",
+         "of": "raider",
+         "path": "CurJobDef"
+        },
+        "==",
+        "Wait"
+       ]
+      }
+     ]
+    },
+    "max_ticks": 3,
+    "on_unknown": "continue"
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "value of=raider path=CurJobDef": [
+       null,
+       "ok"
+      ],
+      "value.state of=raider path=CurJobDef": [
+       "null",
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "value of=raider path=CurJobDef": [
+       null,
+       "gone",
+       "dead"
+      ],
+      "value.state of=raider path=CurJobDef": [
+       "gone",
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "value of=raider path=CurJobDef": [
+       "Wait",
+       "ok"
+      ],
+      "value.state of=raider path=CurJobDef": [
+       "ok",
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1002,
+    "coverage": {
+     "gaps": [
+      [
+       1000,
+       1000
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "name": "value_changed_from_null",
+   "tags": [
+    "types",
+    "value"
+   ],
+   "spec": {
+    "until": {
+     "changed": {
+      "p": "value",
+      "of": "raider",
+      "path": "CurJobDef"
+     }
+    },
+    "max_ticks": 3
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "value of=raider path=CurJobDef": [
+       null,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "value of=raider path=CurJobDef": [
+       null,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "value of=raider path=CurJobDef": [
+       "Wait",
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1002
+   }
+  },
+  {
    "name": "rect_max",
    "tags": [
     "rect"

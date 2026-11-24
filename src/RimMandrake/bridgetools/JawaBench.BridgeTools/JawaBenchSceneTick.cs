@@ -109,6 +109,12 @@ namespace JawaBench.BridgeTools
         /// <summary>Once a frame (the monitor's driver), armed or not.</summary>
         internal static void Frame()
         {
+            FrameRun();
+            try { JawaBenchHands.Frame(); } catch (Exception e) { LastFault = "session frame: " + e.GetType().Name + ": " + e.Message; }
+        }
+
+        private static void FrameRun()
+        {
             var r = Cur;
             if (r == null || r.Stage == "closed") return;
             try
@@ -168,6 +174,7 @@ namespace JawaBench.BridgeTools
                     return SceneTickStatus();
                 }
                 if (a != "start") return Fail("action is start, status or cancel, not '" + action + "'");
+                if (JawaBenchHands.Busy) return Fail("a session is open: its driver runs jawa/run_until");
                 string why = JawaBenchSceneTick.Refuse();
                 if (why != null) return Fail(why);
                 TimeSpeed sp;

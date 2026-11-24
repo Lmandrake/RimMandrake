@@ -56,11 +56,8 @@ def call(tool, **p):
 
 
 def playing(limit=240):
-    for _ in range(limit):
-        if call("rimworld/get_ui_state").get("programState") == "Playing":
-            return True
-        time.sleep(1)
-    return False
+    from await_lifecycle import await_lifecycle
+    return bool(await_lifecycle(call, "map_ready", deadline_s=limit))
 
 
 def quicktest():

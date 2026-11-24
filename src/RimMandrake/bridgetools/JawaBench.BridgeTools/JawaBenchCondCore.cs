@@ -66,7 +66,7 @@ namespace JawaBench.BridgeTools
         internal static readonly string[] WhereOps = { "==", "!=", "<", "<=", ">", ">=" };
         internal static readonly string[] NodeKinds = { "all", "any", "not", "cmp", "changed", "edge", "stays", "alarm" };
         internal static readonly string[] ArgOrder = { "cell", "rect", "reduce", "where", "mapId", "def", "pawn", "thing",
-                                                       "f", "path", "source", "filter" };
+                                                       "of", "f", "path", "source", "filter" };
         internal static readonly string[] RunKeys = { "every", "mapId", "max_events", "max_ticks", "on_unknown", "runKey",
                                                       "sample", "snapshot_on_hit", "until", "watch" };
         internal static readonly string[] EvalKeys = { "mapId", "tree" };
@@ -97,6 +97,8 @@ namespace JawaBench.BridgeTools
             { "thing.pos", new ProbeInfo("num", new[] { "thing", "f" }, None0) },
             { "thing.field", new ProbeInfo("any", new[] { "thing", "path" }, None0) },
             { "ring.count", new ProbeInfo("num", new[] { "source" }, new[] { "filter" }) },
+            { "value", new ProbeInfo("value", new[] { "of", "path" }, None0) },         // any value path (JawaBenchPathCore); null is a value
+            { "value.state", new ProbeInfo("str", new[] { "of", "path" }, None0) },
         };
         internal static readonly Dictionary<string, string[]> FValues = new Dictionary<string, string[]>
         {
@@ -406,7 +408,7 @@ namespace JawaBench.BridgeTools
             {
                 if (Rect != null && In(Spatial, Name)) return Reduce == "any" || Reduce == "all" ? "bool" : "num";
                 if (PType == "job") return (Args.ContainsKey("f") && (string)Args["f"] == "def") ? "str" : "num";
-                return PType;
+                return PType == "value" ? "any" : PType;
             }
         }
 
@@ -464,6 +466,8 @@ namespace JawaBench.BridgeTools
             readonly string _mode;
             int _nodes, _idn, _cells, _mapId;
             readonly HashSet<string> _ids = new HashSet<string>();
+            /// <summary>The most nodes of one spec. A caller that repeats a node for each member of a group sets its own.</summary>
+            public int NodeCap = MaxNodes;
 
             public Compiler(IProbeSource src, string mode) { _src = src; _mode = mode; }
 
@@ -593,7 +597,7 @@ namespace JawaBench.BridgeTools
                         canonical["snapshot_on_hit"] = ProbeMapCanon(c.Snapshot);
                     }
                 }
-                if (_nodes > MaxNodes) throw Refuse("cap_nodes", "$", _nodes + " > " + MaxNodes);
+                if (_nodes > NodeCap) throw Refuse("cap_nodes", "$", _nodes + " > " + NodeCap);
                 if (_cells > MaxCells) throw Refuse("cap_cells", "$", _cells + " > " + MaxCells);
                 c.Canonical = canonical;
                 return c;
@@ -937,8 +941,9 @@ namespace JawaBench.BridgeTools
                 if (!In(Statuses, g.Status)) return new CondRead(null, "error", "bad status " + (g.Status ?? "None"));
                 if (g.Status != "ok") return new CondRead(null, g.Status, g.Detail);
                 string t = JType(g.V);
-                if (ptype == "any")
+                if (ptype == "any" || ptype == "value")
                 {
+                    if (ptype == "value" && t == "null") return new CondRead(null, "ok", "");
                     if (t != "num" && t != "bool" && t != "str") return new CondRead(null, "error", "type: got " + t);
                 }
                 else if (t != ptype) return new CondRead(null, "error", "type: want " + ptype + ", got " + t);
@@ -979,7 +984,7 @@ namespace JawaBench.BridgeTools
                     if (p.Reduce == "all") return new CondRead(hits == vals.Count, "ok", "");
                     return new CondRead((double)hits, "ok", "");
                 }
-                var rr = Raw(p.Key, p, p.Cell != null ? p.Cell[0] : -1, p.Cell != null ? p.Cell[1] : -1, p.VType());
+                var rr = Raw(p.Key, p, p.Cell != null ? p.Cell[0] : -1, p.Cell != null ? p.Cell[1] : -1, p.PType == "value" ? "value" : p.VType());
                 if (p.Name == "ring.count" && rr.Status == "ok")
                 {
                     CondRead b;

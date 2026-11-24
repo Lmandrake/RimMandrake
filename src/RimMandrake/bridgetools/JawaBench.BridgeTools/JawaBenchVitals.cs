@@ -315,8 +315,12 @@ namespace JawaBench.BridgeTools
         }
 
         // ------------------------------------------------------------------ per-frame (main thread)
+        /// <summary>Frames seen by the driver: a counter that no tool writes.</summary>
+        internal static long FrameSerial;
+
         internal static void Frame()
         {
+            FrameSerial++;
             if (Armed) FrameArmed();
             // Pumped armed or not, ready or not: a disarm, a TTL or an unready game must still let a running advance end
             // (cancel / wall / coverage lost). Gated behind Armed it stayed "running" forever (night review 2026-10-13).

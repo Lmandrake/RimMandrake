@@ -90,6 +90,7 @@ namespace JawaBench.BridgeTools
     internal static class Program
     {
         static int _n, _bad;
+        static bool _session;            // `session`: each run is part of a session, as jawa/run_until makes it
 
         static void Check(string name, Action f)
         {
@@ -115,7 +116,7 @@ namespace JawaBench.BridgeTools
             var c = new C.Compiler(w, "run").CompileSpec(spec);
             string why = T.RefuseActs(acts, max);
             if (why != null) throw new Exception("refused: " + why);
-            return new T.SceneRun("r1", c, w, acts, w, "PLAY", "Ultrafast");
+            return new T.SceneRun("r1", c, w, acts, w, "PLAY", "Ultrafast", _session ? new T.Trace { Session = "S1" } : null);
         }
 
         static string AtTick(long t) { return "{\"cmp\":[{\"p\":\"game.tick\"},\">=\"," + t + "]}"; }
@@ -129,8 +130,9 @@ namespace JawaBench.BridgeTools
             if (r.Running) w.PausedNow = false;
         }
 
-        static int Main()
+        static int Main(string[] args)
         {
+            _session = args.Length > 0 && args[0] == "session";
             Check("a_hit_on_tick_t_executes_t", () =>
             {
                 foreach (int per in new[] { 1, 6, 30 })
