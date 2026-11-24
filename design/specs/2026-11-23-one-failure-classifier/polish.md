@@ -4,3 +4,7 @@
 - `testq/archmagi_switch.py` latches the Archmagi lane on INVALID runs of class TEST too, which are not the lane's fault.
 - `testq/visit_feed.py` logs "every waiting mod refused: {}" when the only waiting mod is in flight.
 - `failure_counter_lint.py` does not read shell or PowerShell counters.
+- `testq/ingest.py` `tries_after`: an ingest that crashes the same way on one record every time is tried every `RETRY_S` forever, and `ops_watch` `testing.ingest_gave_up_7d` never sees it (0 such crashes in 1297 done records, 2026-11-23). not handled: no count of crash retries per record.
+- `testq/steward.py` `settle_wake`: a wake killed at its spend or wall cap is tried again after each 4 h cooldown for the whole incident (at most about $30 a day on one stuck lane; 1 such wake in 5268 steward lines); the `maybe_wake` docstring still says "at most once per incident".
+- `rimflow verify --outcome` takes any word: a misspelt one reads UNCLASSED and leaves the run out of the pilot streak without a word at the command (its only writer, `testq/ingest.py`, sends COULD NOT LOOK).
+- `rimflow/stop_resume.py`: the give-up branch can no longer be reached by a launch refusal (`of_launch` never counts), so that branch is dead code; a resume that the launcher refuses every time (its item still open) is tried every `REFUSED_WAIT_S` with no end, as the page promises.
