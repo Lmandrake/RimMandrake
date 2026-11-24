@@ -115,7 +115,7 @@ actionable"*. `execute_debug_action` is the only route to a row.
 
 An older form of this section said "there is no way to target a world tile". That statement is false now. The companion
 `[Tool]` methods (25 at the first landing) reach `Find.WorldGrid[tile]`, `Find.World.landmarks`, `Find.WorldObjects` and
-`Find.World.features` directly. They use no cursor. No person has to click tile by tile.
+`Find.World.features` directly. These methods use no cursor. No person has to click tile by tile.
 
 ```
 READ      world_layers · world_tile_get · world_links_get · world_mutators_get
@@ -156,7 +156,7 @@ histogram. The histogram is independent of the writer.
   `CaveLakes` displaces `Caves`. Ask whether the tile carries ANY def from the family. Never ask whether the tile carries
   the exact def that you wrote.
 * ⛔ **The setter does not enforce a mutator's own gates** (`needs no river`, `requires
-  coastline`, hilliness, biome). The gates are in the roster's `note`. An illegal write lands and then misbehaves. Full
+  coastline`, hilliness, biome). The gates are in the `note` field of the mutator roster (`world/_organic/_mutator_roster.json`). An illegal write lands and then misbehaves. Full
   treatment: `references/river-networks.md`.
 
 ### The four traps that replaced the wall
@@ -200,7 +200,7 @@ histogram. The histogram is independent of the writer.
    through `AddMutator` and displace other mutators. After each landmark pass, diff the LOSSES of the whole planet.
    ⚠️ A **remove does not restore** what an add displaced. So a probe that adds and removes is destructive.
 4. **The 45 `GL_*` defs of Geological Landforms cannot be written, and that is correct.** Geological Landforms
-   computes them at display time. They never enter `mutatorsNullable`. So a "never used"
+   computes them at display time. The `GL_*` defs never enter `mutatorsNullable`. So a "never used"
    count over them measures nothing. Landforms are assigned at MAP generation from
    hilliness/topology/elevation. A landform never appears on the world-tile pane.
 5. **`elevation <= 0` is water and generates NO ROCK** (`GenStep_RocksFromGrid` returns on
@@ -208,7 +208,7 @@ histogram. The histogram is independent of the writer.
    not in the world tile. To deepen a chasm, change the hilliness of the tile.
 6. **A mutator's own biome whitelist can silently block a LANDMARK's auto-rolled
    companion mutator.** This happened even on a biome that the whitelist patch already covered. `AddLandmark` tests `IsValidTile` of each
-   companion mutator. It skips that test only for a required companion with `forced`. A direct `Tile.AddMutator` call has
+   companion mutator. `AddLandmark` skips that test only for a required companion with `forced`. A direct `Tile.AddMutator` call has
    no such test. Also, the tile count in the header of a spec can be stale. One spec claimed 236 tiles of a
    biome. A fresh `world_tile_export` measured 223.
 
@@ -244,7 +244,7 @@ same way. **Save and reload is the reset that works.**
 window under `remaining`. In the code today, the default call closes windows of type `Window_Dev`. `Dialog_Debug` is one.
 A page or a game dialog is not one. `remaining` lists every window that is still open, the landing page included. Close
 only the dialog that you opened, with `close_window` and its exact type. ⛔ Never close `Page_SelectStartingSite`.
-⛔ Never use `clear_ui {all:true}` at the world screen. It closes the landing page, and the world is lost.
+⛔ Never use `clear_ui {all:true}` at the world screen. That call closes the landing page, and the world is lost.
 
 ---
 
@@ -267,8 +267,8 @@ factions unless you pass `includeHidden`. Read `isCompleteList`.
 
 📌 **The Configure Factions page is already behind you at
 `Page_SelectStartingSite`.** Audit early. If the roster is wrong at this screen, an edit of the page is no longer
-possible. Regenerate, or add a missing faction with `jawa/faction_create`. Step S7 of
-`design/RimMandrake/world_remake_2026-10-19/06_remake_runbook.md` says how that is decided.
+possible. Regenerate, or add a missing faction with `jawa/faction_create`. The "audit the roster" step (row S7) of
+`design/RimMandrake/world_remake_2026-10-19/06_remake_runbook.md` says who decides.
 
 ---
 
@@ -286,18 +286,18 @@ frozen-world biome that has no worker.**
 `BiomeDef.Worker.GetScore` is called only from `WorldGenStep_Terrain` (MEASURED,
 RimSage). This campaign runs no worldgen. The planet is authored, not
 generated. The rule is `CLAUDE.md` §A biome with zero tiles is not a defect. A
-self-placing BiomeDef can never paint itself here. That is not a
-defect in the def. The world gets its biomes from our paint.
+self-placing BiomeDef can never paint itself here. The def has no
+defect. The world gets its biomes from our paint.
 
 ## 5b. Sparse is correct — a landmark-density pass is not owed to every biome
 
-Deserts, wasteland and seas SHOULD read barren on the worldmap. Landmarks
+Deserts, wasteland and seas must read barren on the worldmap. Landmarks
 everywhere are the defect, not the fix. Only dense or dramatic biomes want a
 landmark-density pass.
 
 ## 6. Repainting biomes — measured 2026-09-07, closing out two vanilla survivors
 
-Our planet, Ash'karr, was recorded as "fully repainted". It still carried 262 vanilla `SeaIce`
+Our planet, Ash'karr, was recorded as "fully repainted". Ash'karr still carried 262 vanilla `SeaIce`
 and 10 vanilla `Lake` tiles. The next two parts say why those tiles survived, and what the engine
 reads.
 
@@ -353,7 +353,7 @@ per game tick. A full regrow census then costs ~1000 ticks instead of a million.
 
 Before you strip or reformat names in bulk, check what the live data does. Examples are leading articles, spelling and plurals. 68 of Ash'karr's 71 features carry no
 leading article. Three carry one (`The Abandoned Mines`, `The Breaks`, `The
-Verge`). Two other differences of the painter were a SPELLING difference
+Verge`). Two other differences between the paint script's names and the live names were a SPELLING difference
 (Gray/Grey Sea) and a plural (Ashen Waste/Wastes), not articles. A blanket strip
 rule would write three new wrong names.
 
@@ -373,8 +373,8 @@ that the engine reads, or delete the column.**
 ### ⚠️ Sibling CSVs exported "together" are not the same vintage
 
 Two CSVs that lie side by side can have different export dates. Check each file's own export date before you join them.
-`ASHKARR_WORLDMAP_tiles.csv` carries the 2026-09-12 frozen marker.
-`ASHKARR_WORLDMAP_landmarks.csv` beside it is dated 2026-08-23. The landmarks file comes from a different
+`world/ASHKARR_WORLDMAP_tiles.csv` is a frozen record (marker: `ASHKARR_WORLDMAP_tiles.csv.frozen.json`), last changed 2026-09-12.
+`ASHKARR_WORLDMAP_landmarks.csv` beside it was last changed 2026-08-23. The landmarks file comes from a different
 lineage, and its def mix shares almost nothing with the live one.
 
 ### ⚠️ Two encodings that make a correct diff look like total failure
@@ -389,7 +389,7 @@ lineage, and its def mix shares almost nothing with the live one.
 ### ✅ Decide a landform per adjacency CLUSTER, not per tile
 
 A vote for each ex-lake tile alone, by neighbour majority, scattered **three biomes
-across one five-tile basin**. It also left a **117 m lump** inside the basin. Each tile saw a
+across one five-tile basin**. The vote also left a **117 m lump** inside the basin. Each tile saw a
 different rim. So:
 
 1. Flood-fill the patch first.
@@ -413,7 +413,7 @@ dry land. That nearly happened here twice.
   assign/update/delete needs that `uniqueID` value. Pass the value in the parameter `featureId`. A wrong field name in a
   read returns `None` silently.
 
-`rimbridge_client`'s parameter guard caught both faults. The guard refuses an undeclared name. The raw bridge
+`rimbridge_client`'s parameter guard caught the `world_view` fault and the `world_neighbors` fault. The guard refuses an undeclared name. The raw bridge
 discards an undeclared name and reports success in two cases. One is the first `jawa/` call of a session. The other is a
 tool that is not a `jawa/` tool. Other `jawa/` calls refuse an undeclared name (`JawaBenchArgGuard.cs`). Drive the bridge through that
 client, never raw.

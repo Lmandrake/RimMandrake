@@ -10,10 +10,10 @@ Also: skills/rimworld-world-editing/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 25,228 | 28,868 |
-| words in linted prose | 2,644 | 3,169 |
-| STE violations per 100 words | 4.46 | 2.43 |
-| sentences over 20 words | 45 | 26 |
+| bytes | 25,228 | 29,138 |
+| words in linted prose | 2,644 | 3,195 |
+| STE violations per 100 words | 4.46 | 2.35 |
+| sentences over 20 words | 45 | 27 |
 | flagged lines (mechanical) | 46 | 44 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 11 | 0 |
 
@@ -71,7 +71,9 @@ A fresh Opus reader (rm-judge, read-only) read every line of both texts without 
 | "did or did not land" lost | restored |
 
 The same reader then read each repair and found none wrong. After that read the writer split three sentences to reach the STE
-target (the first paragraph, the cache reset, the two cases of the raw bridge). No reader read those three splits.
+target (the first paragraph, the cache reset, the two cases of the raw bridge). After the first landing (`02855348ba3b`)
+the prose check of `./publish` named 13 lines, and the writer repaired each one. One repair corrects a false date: the frozen marker
+of the tiles CSV says 2026-09-07. No reader read the three splits or those 13 repairs.
 
 ## Conflicts and stale lines: settled
 

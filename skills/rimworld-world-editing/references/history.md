@@ -47,6 +47,7 @@ The old §8 said: ~~If a world-tile targeting tool ever lands, §3 is what has t
 | `Tile.AddMutator`, "which a landmark placement uses", bypasses the gate | `AddLandmark` tests `IsValidTile` of each companion mutator first; a required companion with `forced` skips the test | `WorldLandmarks.AddLandmark` |
 | "`BiomeDef` has no ice or freezing field at all"; only `terrainsByFertility` can give ice | no freezing field; terrain fields and `terrainPatchMakers` can also name `Ice` | `BiomeDef` |
 | the raw bridge discards every undeclared name | `jawa/` tools refuse it, except the first call of a session (since 2026-11-15) | `JawaBenchArgGuard.cs` |
+| the tiles CSV "carries the 2026-09-12 frozen marker" | the marker file says 2026-09-07; git last changed the CSV on 2026-09-12 | `ASHKARR_WORLDMAP_tiles.csv.frozen.json` |
 | `CLAUDE.md`'s "world remake is the last step" ruling | now `CLAUDE.md` §A biome with zero tiles is not a defect | `CLAUDE.md` |
 | `traps.md`: at the landing page the world is in `Current.CreatingWorld`, `Current.Game` is null | `Current.Game.World` holds the world; `CreatingWorld` is null after generation | `Page_CreateWorldParams`, `WorldGenerator.GenerateWorld` |
 
