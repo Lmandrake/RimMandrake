@@ -69,7 +69,7 @@ The one flag that stays: "The older level words (L0 to L4, GREEN-MIN, GREEN-FULL
 | check 1 (`checkable.py compare`) | the same copy | 1 lost, exit 1 |
 | check 2 | the final rewrite | 272 spans, 0 lost, exit 0 |
 | check 1 | the final rewrite | 158 items, 0 unfindable, exit 0 |
-| `guiding_prose.py check --base` | the drafts | 8 faults, then 3, then 3 or more; each fault that it printed in view is repaired; the final text was not checked again by the model reader before `./publish` |
+| `guiding_prose.py check --base` | the drafts | 8 faults, then 3, then 3 or more (the last lines were in view), then 2 at `./publish`; each fault in view is repaired |
 | `selftest_retired_era_gone.py` | a draft that split the line about the retired Artisan loop | red (2 era-text lines); green after the repair |
 | `selftest_self_fix_rule.py`, `selftest_touching_code_cost_rule.py`, `selftest_offline_stage_road_back.py`, `selftest_retired_era_gone.py`, `selftest_maturation_now.py`, `selftest_maturation_dispatch.py`, `selftest_maturation_autonomy.py`, `selftest_first_touch.py` | the final text (`selftest_first_touch.py`: after its own edit) | PASS, each one |
 
@@ -98,7 +98,8 @@ checked each correction against the code, the rulings and the ledger. Readers 2 
 
 No reader read these last lines, each one written with the words that reader 3 gave: the two road-back sentences and
 "pilot mod" (§5 Dispatch), the sentence about a visit with no exit block, the order of "Such a thing" (§6), the pointer
-in question 16, and the two clauses in `maturation_dispatch.json`.
+in question 16, and the two clauses in `maturation_dispatch.json`. Two edits came after the first landing, from the prose check at
+`./publish`: "(Stage 2)" and "(Stage 7)" in the steward-run line, and what the entry rule admits (§6).
 
 ## Conflicts and stale lines: settled
 
