@@ -2185,6 +2185,7 @@ def cmd_home(args, seat):
             ev.update({k: v for k, v in got.items() if v})
             _stamp_role_unit(ev)
             _stamp_session(ev)
+            del model.OVERRIDE_NOTICES[:]       # the replay above left old events' notices; this write crosses no boundary
             _stamp_owner_and_override(ev)
             try:
                 model.append(ev)

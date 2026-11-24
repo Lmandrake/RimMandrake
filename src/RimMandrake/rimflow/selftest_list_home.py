@@ -87,6 +87,12 @@ def t_the_ledger_carries_the_home():
     it = world().items[i]
     chk(lambda: it.home["home"] == "pipeline:bridge" and it.home["reason"] == "driver lock", "the last event stands")
     chk(lambda: it.state == "proposed", "the state does not move")
+    cli("reassign", i, "--to", "DECIDE", "--owner-said", "give it to them, please")     # an act across a seat boundary
+    cli("home", "--from", rows("%s\tmod:X\tg\tCANNOT TELL\t\n" % i), "--why", "t")
+    evs = [e for e in events() if e.get("id") == i]
+    chk(lambda: any(e.get("override") for e in evs if e["event"] == "reassign"), "the planted override is on the ledger")
+    chk(lambda: evs[-1]["event"] == "home" and not evs[-1].get("override"),
+        "a home event never carries an override that an older event made (%s)" % evs[-1])
 
 
 def t_a_bad_row_writes_nothing_and_names_the_repair():
