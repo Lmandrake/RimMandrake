@@ -31,10 +31,11 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   check exercises that it does not declare and whose types no declared C# file names, such as a class a def's XML
   names or one reached through a member of a type the check never names). The guards are the whole-mod checks, the next visit of the related checks,
   and the owner's walk. No full rerun is added to cover it.
-- **a-wrong-declaration.** A check that exercises a changed file and whose list leaves the file out, or says `none`, reads
-  untouched, and nothing in the relation sees it (measured 2026-11-24 on Pyrelands a6f05380df: 4 planted of 4 missed). Only
-  when every check leaves the file out is it listed as undeclared. Two things outside the relation still hold: an UNRUN row
-  of the run that made the change (`unrun_owed`), and the whole-mod checks.
+- **a-wrong-declaration-no-scene-names.** A check that exercises a changed file and whose list leaves the file out, where no
+  string of its scene names anything in that file, reads untouched. (What a scene names is caught:
+  `design/specs/2026-11-24-declaration-check/boundary.md`.) Only when every check leaves the file out is it listed as
+  undeclared. Two things outside the relation still hold: an UNRUN row of the run that made the change (`unrun_owed`), and
+  the whole-mod checks.
 - **a-dll-with-no-srchash.** A shipped DLL that no `.srchash` describes (a third-party library) changes nothing in the
   relation.
 - **lookup-by-a-computed-key.** A dict read with a key the code computes is related through the keys the check's own

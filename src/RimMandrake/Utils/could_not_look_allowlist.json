@@ -258,6 +258,7 @@
   "src/RimMandrake/rimflow/spend_watchdog.py::run::or-empty": 1,
   "src/RimMandrake/rimflow/build_match.py::carried_rows::or-empty": 2,
   "src/RimMandrake/rimflow/build_match.py::srchash_files::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/declaration_check.py::Evidence.left_out::except-returns-empty": 1,
   "src/RimMandrake/rimflow/rerun_relation.py::Git._git::except-returns-empty": 1,
   "src/RimMandrake/rimflow/rerun_relation.py::py_symbols::except-returns-empty": 1,
   "src/RimMandrake/rimflow/rerun_relation.py::json_touches::except-returns-empty": 1,
@@ -1106,6 +1107,9 @@
   ],
   "src/RimMandrake/rimflow/build_match.py::srchash_files::except-returns-empty": [
    "NOT A COLLAPSE: returns None, which walk_source reads as unreadable and names the deploy act; {} only when there is no Assemblies folder (a mod with no DLL)"
+  ],
+  "src/RimMandrake/rimflow/declaration_check.py::Evidence.left_out::except-returns-empty": [
+   "NOT A COLLAPSE: None is could not look ({} is none left out); its cause is kept in blind, which the command prints as COULD NOT LOOK and exits 2"
   ],
   "src/RimMandrake/rimflow/rerun_relation.py::Git._git::except-returns-empty": [
    "NOT A COLLAPSE: returns None, which every caller reads as git-cannot-say: the check is unreadable and runs"

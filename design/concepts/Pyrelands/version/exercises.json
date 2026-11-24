@@ -1,5 +1,5 @@
 {
-  "what": "What each in-game check exercises beyond its test-table reads and file (rerun_relation.py; root CLAUDE.md, After a change, only the checks that the change touches run again). Declared by item RIMMANDRAKE_DECLARE_PYRE_CHECKS_CSHARP_SO_TEN_RERUN_NOT_FORTY from each check's chain (validation.py, walk_small_live.py, firehawk_rewards_live.py, wind_burn_live.py, gate_live_proof.py, firefoam_aim_live_proof.py) and the mod's source. A list names the code that produces or changes what the check reads, and the code its scene drives. F.cs::Type,member names parts of a file; F.cs::~ is the members of F.cs that the check's other declared C# names (settings, tuning, kernels). The fire tick's patch (burn stamp, scar ash, fruit) is named by the checks that read ash laid by fire, fruit, burn stamps or fertility, regrowth, or how far a fire spreads; a check that uses fire only as a lure or a hazard (fire-hawk, ashwallow, fire sense, sprayer, herd) does not name it. P_mapgen_log reads the log of the whole load, so it is the whole mod. sc_full_list_smoke is a full-list check and so already the whole mod. sc_flamefang_venom is vanilla hediffs on XML defs: no C# of the mod.",
+  "what": "What each in-game check exercises beyond its test-table reads and file (rerun_relation.py; root CLAUDE.md, After a change, only the checks that the change touches run again). Declared by item RIMMANDRAKE_DECLARE_PYRE_CHECKS_CSHARP_SO_TEN_RERUN_NOT_FORTY from each check's chain (validation.py, walk_small_live.py, firehawk_rewards_live.py, wind_burn_live.py, gate_live_proof.py, firefoam_aim_live_proof.py) and the mod's source. A list names the code that produces or changes what the check reads, and the code its scene drives. F.cs::Type,member names parts of a file; F.cs::~ is the members of F.cs that the check's other declared C# names (settings, tuning, kernels). The fire tick's patch (burn stamp, scar ash, fruit) is named by the checks that read ash laid by fire, fruit, burn stamps or fertility, regrowth, or how far a fire spreads; a check that uses fire only as a lure or a hazard (fire-hawk, ashwallow, fire sense, sprayer, herd) does not name it. P_mapgen_log reads the log of the whole load, so it is the whole mod. sc_full_list_smoke is a full-list check and so already the whole mod. sc_flamefang_venom is vanilla hediffs on XML defs: no C# of the mod. left_out names what a check's scene names and its entry leaves out on purpose, each with its reason (design/specs/2026-11-24-declaration-check/boundary.md; `declaration_check.py --mod Pyrelands` reads the two against the scenes; item RIMMANDRAKE_CATCH_WRONG_CHECK_DECLARATION_FOUR_PLANTS_MISSED).",
   "checks": {
     "P_ambient_ash_drift": [
       "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
@@ -349,6 +349,7 @@
     "sc_populations": [
       "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs::CountBurnedOutside",
       "src/RimMandrake/Pyrelands/Source/GenStep_PyrelandsFireCast.cs",
+      "src/RimMandrake/Pyrelands/Source/GenStep_PyrelandsStandingWater.cs::GenStep_PyrelandsGreenRing",
       "src/RimMandrake/Pyrelands/Source/WildPlantAllowlist.cs",
       "src/RimMandrake/Pyrelands/Source/RM_PyrelandsDensityEnforcer.cs",
       "src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs::RM_PyrelandsGiants",
@@ -417,6 +418,7 @@
     "sc_three_skies": [
       "src/RimMandrake/Pyrelands/Source/PyrelandsWeatherOverlays.cs",
       "src/RimMandrake/Pyrelands/Source/PyrelandsAshSand.cs",
+      "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs::Patch_FireTick_BlackRainDouses",
       "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs::FireEcologyBiomeGate",
       "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs::~",
       "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs::~",
@@ -435,5 +437,69 @@
       "src/RimMandrake/Pyrelands/Source/Kernel/RM_FurnaceKernel.cs::~",
       "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs"
     ]
+  },
+  "left_out": {
+    "P_ashfall_drifts": {
+      "src/RimMandrake/Pyrelands/Source/PyrelandsWeatherOverlays.cs": "draws the weather; the scene reads the ground"
+    },
+    "P_ashfall_weather_accumulation": {
+      "src/RimMandrake/Pyrelands/Source/PyrelandsWeatherOverlays.cs": "draws the weather; the scene reads the ground"
+    },
+    "P_furnace_room": {
+      "src/RimMandrake/Pyrelands/Source/CompFurnaceBedIgnition.cs": "lights the bed of a sleeping beast; the scene reads the room's warmth",
+      "src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs": "the beast's body size and wildness; the scene reads the room's warmth"
+    },
+    "firehawk_crestfeather_yield": {
+      "src/RimMandrake/Pyrelands/Source/CompFireHawkSpread.cs": "the sighting-letter chain of the same register() function reads it; this chain butchers",
+      "src/RimMandrake/Pyrelands/Source/JobGiver_RUT_FireHawkCarryEmber.cs": "the sighting-letter chain of the same register() function reads it; this chain butchers"
+    },
+    "sc_ashwallow": {
+      "src/RimMandrake/Pyrelands/Source/GenStep_PyrelandsFireCast.cs": "places ashwallows at map generation; the scene spawns its own"
+    },
+    "sc_burn_compounds": {
+      "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs::PyrelandsYesterdayFire": "lays yesterday's fire at map generation; the scene burns its own pad",
+      "src/RimMandrake/Pyrelands/Source/PyrelandsWeatherOverlays.cs": "draws the weather; the scene reads the ground"
+    },
+    "sc_fire_dusts_ash": {
+      "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs::PyrelandsYesterdayFire": "lays yesterday's fire at map generation; the scene burns its own pad"
+    },
+    "sc_fire_walks_with_wind": {
+      "src/RimMandrake/Pyrelands/Source/GenStep_PyrelandsStandingWater.cs": "lays water at map generation; the scene paints its own ground",
+      "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs::RM_AshFieldExtension": "the fertility of watered ash; the scene reads where fire walks",
+      "src/RimMandrake/Pyrelands/Source/PyrelandsWeatherOverlays.cs": "draws the weather; the scene reads where fire walks"
+    },
+    "sc_firefoam_sprayer": {
+      "src/RimMandrake/Pyrelands/Source/RM_FirefoamAimProof.cs": "the aim proof, which P_firefoam_aim alone calls"
+    },
+    "sc_furnace": {
+      "src/RimMandrake/Pyrelands/Source/CompFurnaceBedIgnition.cs": "lights the bed of a sleeping beast; the scene reads its warmth and its charge",
+      "src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs": "the beast's body size and wildness; the scene reads its warmth and its charge"
+    },
+    "sc_grass_regreens": {
+      "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs::PyrelandsYesterdayFire": "lays yesterday's fire at map generation; the scene burns its own pad",
+      "src/RimMandrake/Pyrelands/Source/PyrelandsAshDust.cs": "draws ash on a plant; the scene counts and measures growth"
+    },
+    "sc_heat_dome": {
+      "src/RimMandrake/Pyrelands/Source/GenStep_PyrelandsFireCast.cs": "places ashwallows at map generation; the scene spawns its own",
+      "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs::NudgeBurrowers": "starts a burrow beside a free fire; the pad holds no ground fire, only the heat hit"
+    },
+    "sc_populations": {
+      "src/RimMandrake/Pyrelands/Source/CompWithersUnderRoof.cs": "withers grass under a roof; the census map has none",
+      "src/RimMandrake/Pyrelands/Source/PlantGrowthStages.cs": "draws a plant's growth stage; the census reads def names",
+      "src/RimMandrake/Pyrelands/Source/PyrelandsAshDust.cs": "draws ash on a plant; the census reads def names",
+      "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs::ProbeRegrowth": "a probe the census does not call",
+      "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs::PyrelandsYesterdayFire": "burns grass and lays ash at map generation; it adds no def to the census",
+      "src/RimMandrake/Pyrelands/Source/RM_BurrowOnFireExtension.cs": "the burrow's data; the census counts ashwallows",
+      "src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs": "the burrow; the census counts ashwallows"
+    },
+    "sc_reload_keeps_the_burn": {
+      "src/RimMandrake/Pyrelands/Source/GenStep_PyrelandsStandingWater.cs": "lays water at map generation; the scene burns its own pad"
+    },
+    "sc_rite_hook_alone": {
+      "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs::LayYesterdayFire": "lays yesterday's fire at map generation or on RearmOpening; the scene forces a beat"
+    },
+    "sc_scorchfruit": {
+      "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs::PyrelandsYesterdayFire": "lays yesterday's fire at map generation; the scene burns its own pad"
+    }
   }
 }

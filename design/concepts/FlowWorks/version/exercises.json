@@ -1,5 +1,6 @@
 {
   "what": "What each in-game check exercises beyond its test-table reads and file (rerun_relation.py; root CLAUDE.md, After a change, only the checks that the change touches run again). Each list names the C# its scene really drives, read from the scene script (its bridge calls, static proofs, spawned defs and settings) by item RIMMANDRAKE_DECLARE_FLOWWORKS_SCENE_CSHARP_PIT_REDRAW_UNSEEN. A path ending in / is a folder. sc_walk is a full-list check (kind live_full) and so already the whole mod.",
+  "scene_check": "off: the names declaration_check.py prints for this table are not judged one by one yet (2026-11-24: 15 of 24 entries named)",
   "checks": {
     "sc_dig_and_read": [
       "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorks_DefOf.cs",

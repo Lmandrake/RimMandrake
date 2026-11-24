@@ -346,7 +346,7 @@ def _cache_key(mod, chain, old, new, tests, g):
         return None
     rel = _relation(mod, tests, new)
     paths = {root, "design/concepts/%s/version/test_table.json" % mod, "design/concepts/%s/version/exercises.json" % mod,
-             "src/RimMandrake/rimflow/rerun_relation.py"}
+             "src/RimMandrake/rimflow/rerun_relation.py", "src/RimMandrake/rimflow/declaration_check.py"}
     for t, spec in tests.items():
         paths.update(p.rstrip("/") for p in rel._paths(t, spec)[0] if not p.startswith(root + "/") and not os.path.isabs(p))
     out = g("ls-tree", new, "--", *sorted(paths))

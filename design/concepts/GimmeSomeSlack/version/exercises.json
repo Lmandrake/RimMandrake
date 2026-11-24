@@ -1,5 +1,6 @@
 {
   "what": "What each in-game check exercises beyond its test-table reads and file (rerun_relation.py; root CLAUDE.md, After a change, only the checks that the change touches run again). Declared by item RIMMANDRAKE_DECLARE_GSS_SCENE_CSHARP_SWITCH_LAMP_SETTING_UNSEEN from each row's block and function in the scene scripts. The mod's C# is one connected runtime (each file reaches every other by type), so a list names the code that produces or changes what the row observes, and the code the scene drives (its probe verbs, the settings it flips or resets, the things it places, the save it loads). Code that only runs beside the scene (the per-frame update over things the scene does not place, the shared site reveal) is not named: P_Z_log_budget (\"*\") and sc_save_reload_wire_down (it reads the log budget) read the whole mod. A scene check names the union of the rows that decide it. \"*\" is the whole mod.",
+  "scene_check": "off: the entries leave out on purpose the code that only runs beside a scene, and the check finds no scene for 22 rows (2026-11-24)",
   "checks": {
     "P_A8_same_frame_dirty_not_dropped": [
       "src/RimMandrake/GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs",

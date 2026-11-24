@@ -37,6 +37,8 @@ check (kind live_full) declares the whole mod. How a changed file relates, by ki
          A check that runs in the game and declares no C# that ships has no readable relation to a change of shipped C#.
          The DLL's bytes relate to nothing by themselves.
   other  by file.
+An entry is read against its check's scene (declaration_check.py): one that leaves out C# the scene names is touched by a
+change there, and one that says none while its scene names C# has no readable relation.
 A check whose own test-table entry changed in what it runs (RUN_KEYS) is touched. A check with no declared path, or a
 row whose commit git cannot resolve, has no readable relation: it alone runs again, and it is listed.
 """
@@ -149,12 +151,19 @@ def declarations(root, mod):
     """{check id: [paths or "*"]}: what a check exercises, declared beside the test table (`exercises.json`, field
     `checks`) so that a declaration never edits the locked table. Absent: {}. A file that does not parse raises: a
     declaration that cannot be read is never read as none."""
-    p = os.path.join(root, DECLARATIONS % mod)
+    return read_declarations(os.path.join(root, DECLARATIONS % mod))[0]
+
+
+def read_declarations(p):
+    """-> ({check id: [paths]}, {check id: {path: why}}, why off): the `checks`, the `left_out` (what an entry leaves out on
+    purpose, declaration_check.py) and the `scene_check` ("off: <why>": a left-out name reruns nothing) of an
+    exercises.json. Absent: empty."""
     if not os.path.isfile(p):
-        return {}
+        return {}, {}, ""
     with open(p, encoding="utf-8") as f:
         d = json.load(f)
-    return {k: _aslist(v) for k, v in (d.get("checks") or {}).items()}
+    return {k: _aslist(v) for k, v in (d.get("checks") or {}).items()}, dict(d.get("left_out") or {}), str(
+        d.get("scene_check") or "")
 
 
 def mod_root(mod):
@@ -193,6 +202,11 @@ def declared(spec, mod):
             continue
         paths.append(p)
     return sorted(set(paths)), whole
+
+
+def declared_cs(paths):
+    """True when a declared list names a C# file."""
+    return any(_clean(p).endswith(".cs") for p in paths)
 
 
 def declared_parts(spec):
@@ -878,7 +892,11 @@ class Relation:
         self._scope = {}
         self._py = {}
         self.old_tests = old_tests          # {old sha: {id: spec}} for a test; else read from git
-        self.extra = declarations(root, mod)
+        self._evidence = None
+        self.declare(read_declarations(os.path.join(root, DECLARATIONS % mod)))
+
+    def declare(self, d):
+        self.extra, self.left_out_why, self.scene_check_off = d
 
     def _scope_for(self, old):
         if old not in self._scope:
@@ -1297,6 +1315,9 @@ class Relation:
         if st != "untouched" or whole or not str(spec.get("kind", "")).startswith("live") or o == self.new:
             return st, why, files
         ships, recompiled = self.shipped_cs(o)
+        wrong = self._left_out_touched(tid, spec, o, sorted({f for f in self.change(o) if f in ships} | recompiled), recompiled)
+        if wrong:
+            return wrong
         if any(covers(p, f) for p in paths for f in ships) or NONE in self._declared_exercises(tid, spec):
             return st, why, files
         cs = sorted({f for f in self.change(o) if f in ships} | recompiled)
@@ -1304,6 +1325,40 @@ class Relation:
             return st, why, files
         return "unreadable", "it runs in the game and declares no C# file, and C# that ships changed (%s%s)" % (
             ", ".join(cs[:6]), " and %d more" % (len(cs) - 6) if len(cs) > 6 else ""), cs
+
+    def left_out(self, tid, o=None, changed=()):
+        """declaration_check's reading of one check: {(file, unit): why} its entry leaves out; None when it could not look."""
+        import declaration_check as DC
+        if self._evidence is None:
+            self._evidence = DC.Evidence(self)
+        return self._evidence.left_out(tid, o, changed)
+
+    def _left_out_touched(self, tid, spec, o, cs, recompiled):
+        """The answer for a check whose entry leaves out C# that its scene names, when shipped C# changed (`cs`): an entry
+        that says `none` is refuted and has no readable relation; else the check is touched by a change in a type that it
+        left out. None: the entry holds, or the change is elsewhere."""
+        if not cs or self.scene_check_off.startswith("off:"):
+            return None
+        left = self.left_out(tid, o, cs)
+        if not left:
+            return None
+        import declaration_check as DC
+        named = "its entry leaves out C# that its scene names: %s" % "; ".join(DC.lines(left)[:4])
+        if NONE in self._declared_exercises(tid, spec) and not declared_cs(self._declared_exercises(tid, spec)):
+            return "unreadable", "it says none, and " + named, cs
+        hit = []
+        for f in cs:
+            keys = {k for g, k in left if g == f}
+            if not keys:
+                continue
+            a, b = self._cs(o, f), self._cs(self.new, f)
+            if a is None or b is None or f in recompiled:
+                hit.append(f)
+                continue
+            heads = {k.split("/")[0] if "/" in k else k for k in keys}
+            if any(k == "<file>" or k.split("/")[0] in heads for k in cs_changed(a, b)):
+                hit.append(f)
+        return ("touched", "%s changed, and %s" % (", ".join(hit), named), hit) if hit else None
 
     def _declared_exercises(self, tid, spec):
         return _aslist(spec.get("exercises")) + self.extra.get(tid, [])

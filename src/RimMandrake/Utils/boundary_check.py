@@ -27,6 +27,7 @@ TOP = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "
 PAGES = {
     "design/specs/2026-11-24-close-files-its-remainder/boundary.md":
         "src/RimMandrake/rimflow/selftest_close_remainder.py",
+    "design/specs/2026-11-24-declaration-check/boundary.md": "src/RimMandrake/rimflow/selftest_declaration_check.py",
     "design/specs/2026-11-24-run-on-steve/boundary.md": "src/RimMandrake/rimflow/selftest_run_host.py",
     "design/specs/2026-11-24-full-list-walk-not-per-mod/boundary.md":
         "src/RimMandrake/rimflow/selftest_walk_small_list.py",
