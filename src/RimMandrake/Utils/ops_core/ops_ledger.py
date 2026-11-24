@@ -7,8 +7,11 @@ known_reds, streams, testing_metrics, usage. The ledger key is `id`, NOT `item`.
 """
 from __future__ import annotations
 
+import io
 import json
 import os
+import subprocess
+import tarfile
 from pathlib import Path
 
 HOME = Path.home()
@@ -38,6 +41,10 @@ def read_jsonl_tail(path: Path, tail_bytes: int = 1 << 20, strict: bool = False,
         if strict:
             raise
         return []
+    return _parse_jsonl(chunk, path, strict)
+
+
+def _parse_jsonl(chunk: str, path: Path, strict: bool) -> list[dict]:
     out, bad = [], 0
     for line in chunk.splitlines():
         try:
@@ -59,16 +66,36 @@ def _model():
     return model
 
 
-def read_ledger(clones: list[Path] = CLONES) -> list[dict]:
+def _origin_jsonl(root: Path, shard_dir: str):
+    """Read history and shards from one immutable, locally available origin/main tree."""
+    ref = "refs/remotes/origin/main"
+    ledger = Path("infrastructure/state/ledger")
+    r = subprocess.run(["git", "--git-dir", str(root / ".git"), "archive", "--format=tar", ref, ledger.as_posix()],
+                       capture_output=True, timeout=5, env={**os.environ, "GIT_NO_LAZY_FETCH": "1"})
+    if r.returncode:
+        raise RuntimeError(f"{root} {ref}: git archive: {r.stderr.decode(errors='replace').strip()}")
+    with tarfile.open(fileobj=io.BytesIO(r.stdout), mode="r:") as archive:
+        files = [f for f in archive if Path(f.name) == ledger / "events.jsonl"
+                 or (Path(f.name).parent == ledger / shard_dir and f.name.endswith(".jsonl"))]
+        if not files:
+            raise RuntimeError(f"{root} {ref}: no ledger history or shards")
+        for f in files:
+            if not f.isfile():
+                raise ValueError(f"{root} {ref}: {f.name} is not a regular file")
+            with archive.extractfile(f) as fh:
+                yield from _parse_jsonl(fh.read().decode("utf-8", "replace"), Path(f.name), strict=True)
+
+
+def read_ledger(clones: list[Path] = CLONES, *, origin: Path | None = None) -> list[dict]:
     """Union of every clone's shards (each seat's own shard is freshest in its own clone), deduped and
     ordered by rimflow's reader invariant (identity = content, never file position). WHOLE files: a
     tail would drop the `file` events and rimflow's replay would lose the items (FOUNDRY.jsonl was
     1.9 MB on 2026-10-10 and the old tail was 4 MB). A torn line is skipped here, not raised - a
-    window mid-append must not blank the widget."""
-    model, out = _model(), []
-    for f in ledger_files(clones):
-        out.extend(model.from_disk(e) for e in read_jsonl_tail(f, 1 << 40, strict=True, allow_missing=False))
-    return model.canonical_order(out)     # from_disk: CONDUCTOR/RELENTLESS on disk are seat BENCH (model.WRITE_NAMES)
+    window mid-append must not blank the widget. With `origin`, read only that clone's local origin/main."""
+    model = _model()
+    events = (_origin_jsonl(origin, model.SHARD_DIR) if origin is not None else
+              (e for f in ledger_files(clones) for e in read_jsonl_tail(f, 1 << 40, strict=True, allow_missing=False)))
+    return model.canonical_order(model.from_disk(e) for e in events)     # model.WRITE_NAMES folds CONDUCTOR/RELENTLESS to BENCH
 
 
 def ledger_files(clones: list[Path] = CLONES) -> list[Path]:

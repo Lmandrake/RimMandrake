@@ -21,7 +21,7 @@ rimflow/dispatcher_schedule.json "measure":
                          (the last line of rm-scratch-reap's runs.jsonl, written hourly: no 160 s dry run here)
                          clones outside the pool cap (scratch_outside: the reaper's sanity record, read only)
              timers      systemctl --user: failed units, timers overdue
-             flow        the rimflow ledger (ops_ledger.read_ledger, the union of clones): untriaged findings,
+             flow        the rimflow ledger (the dispatch clone's local origin/main): untriaged findings,
                          closes and verify passes in 24 h, lapsed leases
              process     process-commit share (git log, the resp_register PROC regex) over 24 h and 7 d
              tps         tps_record.py --json: tick ratio, stalls, coverage
@@ -798,7 +798,7 @@ def incident_unowned(inc):
         return True
     try:
         import ops_ledger as pc
-        it = pc._model().replay(pc.read_ledger()).items.get(item)
+        it = pc._model().replay(pc.read_ledger(origin=rerun_root())).items.get(item)
     except Exception:  # noqa: BLE001
         return False
     return it is None or not it.open
@@ -1475,8 +1475,7 @@ def _git(root, *args, timeout=60):
 
 
 def rerun_root() -> Path:
-    """The clone reruns happen in: the dispatch clone rm-ops-watch runs from and testq already pulls, never the
-    clone a hand-run ops_watch happens to sit in (a seat clone must not be pulled under its owner)."""
+    """The dispatch clone testq-tick already pulls, used for reruns and origin/main ledger reads."""
     return Path(os.environ.get("RM_OPS_RERUN_ROOT", "/home/mandrake/rm/dispatch"))
 
 
@@ -2247,7 +2246,7 @@ def untriaged_reading(events):
 def c_flow(now, rules, ctx):
     import ops_ledger as pc
     model = pc._model()
-    events = pc.read_ledger()
+    events = pc.read_ledger(origin=rerun_root())
     ctx["events"] = events
     world = model.replay(events)
     ctx["known_ids"] = set(world.items)
@@ -2567,7 +2566,7 @@ def tt_texts(now, rules, ctx):
         events = ctx.get("events")
         if events is None:
             import ops_ledger as pc
-            events = pc.read_ledger()
+            events = pc.read_ledger(origin=rerun_root())
         if not events:
             raise RuntimeError("ledger read gave no events")
         for ev in events:
@@ -2753,7 +2752,7 @@ def c_roles(now, rules, ctx):
     events = ctx.get("events")
     if events is None:
         import ops_ledger as pc
-        events = pc.read_ledger()
+        events = pc.read_ledger(origin=rerun_root())
     if not events:
         return {"roles._collector": U("the ledger read empty")}
     span, ms, pts = cfg["week_days"] * DAY, ranges_of(rules), {}
@@ -5037,6 +5036,10 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
             last = old[-1]["points"] if old else {}
             pts = {k: U(why, p.get("unit") if isinstance(p, dict) else None) for k, p in last.items()
                    if not k.endswith("._collector")}
+            if fam == "flow":      # these ledger points are known even before the first successful read
+                for k in ("flow.untriaged_findings", "flow.closes_24h", "flow.verify_pass_24h", "flow.lapsed_leases",
+                          "steve.incident_unclaimed_min"):
+                    pts.setdefault(k, U(why))
             pts["%s._collector" % fam] = U(why)
         unfit += stamp_ranges(pts, rules)
         rec = {"schema": SCHEMA, "t": now, "at": iso(now), "family": fam, "points": pts,

@@ -21,6 +21,7 @@ import sys
 import tempfile
 import time
 from pathlib import Path
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -367,13 +368,13 @@ check("steve: ladder_blind wants the steward's exact prefix and no item",
 _pc_real = sys.modules.get("ops_ledger")
 _led_items = {"OPEN_ONE": types.SimpleNamespace(open=True), "SHUT_ONE": types.SimpleNamespace(open=False)}
 _pc = types.ModuleType("ops_ledger")
-_pc.read_ledger = lambda: []
+_pc.read_ledger = lambda **kw: []
 _pc._model = lambda: types.SimpleNamespace(replay=lambda evs: types.SimpleNamespace(items=_led_items))
 sys.modules["ops_ledger"] = _pc
 check("steve: an item the readable ledger never heard of owns nothing", OW.incident_unowned({"item": "NOT_THERE"}) is True, "")
 check("steve: a closed item owns nothing", OW.incident_unowned({"item": "SHUT_ONE"}) is True, "")
 check("steve: an open item owns the stall", OW.incident_unowned({"item": "OPEN_ONE"}) is False, "")
-_pc.read_ledger = lambda: 1 / 0
+_pc.read_ledger = lambda **kw: 1 / 0
 check("steve: an unreadable ledger does not say unowned (c_flow says it aloud)",
       OW.incident_unowned({"item": "OPEN_ONE"}) is False, "")
 if _pc_real is not None:
@@ -1918,6 +1919,42 @@ _genv = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMIT
 
 def _g(*a, cwd=None):
     subprocess.run(["git", *a], cwd=str(cwd or _rg), env=_genv, check=True, capture_output=True, text=True, timeout=60)
+
+
+# The dispatch timer has fetched the claim; both worktrees and Bench's own ref still predate it.
+_dispatch, _bench = TMP / "ledger-dispatch", TMP / "ledger-bench"
+_ledger = _dispatch / "infrastructure/state/ledger"
+_ledger.mkdir(parents=True)
+_g("init", "-q", "-b", "main", cwd=_dispatch)
+_incident = "STEVE_LANE_UNSTICK_FIXTURE_9A40"
+_file = dict(event="file", id=_incident, seat="CONDUCTOR", title="Steve lane braked", kind="task",
+             ts=OW.iso(NOW - 60 * 60), **{"for": "CONDUCTOR"})
+(_ledger / "events.jsonl").write_text(json.dumps(_file) + "\n")
+_g("add", "infrastructure/state/ledger/events.jsonl", cwd=_dispatch)
+_g("commit", "-qm", "file incident", cwd=_dispatch)
+_g("clone", "-q", str(_dispatch), str(_bench), cwd=TMP)
+(_ledger / "events").mkdir()
+_claim = dict(event="claim", id=_incident, seat="CONDUCTOR", ts=OW.iso(NOW - 60))
+_lease = dict(_claim, event="lease", action="take", token="BENCH.fixture", expires=OW.iso(NOW + 3600))
+(_ledger / "events/BENCH.jsonl").write_text("".join(json.dumps(e) + "\n" for e in (_lease, _claim, dict(_claim, event="start"))))
+_g("add", "infrastructure/state/ledger/events/BENCH.jsonl", cwd=_dispatch)
+_g("commit", "-qm", "claim incident", cwd=_dispatch)
+_g("update-ref", "refs/remotes/origin/main", "HEAD", cwd=_dispatch)
+_g("checkout", "-q", "--detach", "HEAD^", cwd=_dispatch)
+_key = "steve.incident_unclaimed_min"
+with patch.dict(os.environ, {"RM_OPS_RERUN_ROOT": str(_dispatch), "RM_OPS_WATCH_DIR": str(TMP / "ledger-ops")}), \
+        patch.object(OW, "lane_fault_since", return_value=None), patch.object(OW, "ghost_runs_reading", return_value=OW.M(0)), \
+        patch.object(_pc.read_ledger, "__defaults__", ([_bench],)):
+    _reading = OW.c_flow(NOW, RULES, {})[_key]
+    check("flow: the claim on dispatch origin/main reads 0 min through the collector",
+          _reading["m"] == "MEASURED" and _reading["v"] == 0.0, _reading)
+    _g("update-ref", "-d", "refs/remotes/origin/main", cwd=_dispatch)
+    OW.run(now=NOW, rules=rules(targets=[]), families={"flow"})
+    _points = OW.read_json(OW.ops_dir() / "status.json")["points"]
+    _reading = _points.get(_key, {})
+    check("flow: missing dispatch origin/main is UNMEASURED even on the first pass",
+          _reading.get("m") == "UNMEASURED" and _reading.get("v") is None
+          and "origin/main" in _reading.get("why", ""), _reading)
 
 
 _g("init", "-q", "--bare", "-b", "main", str(_rg / "origin.git"), cwd=TMP)

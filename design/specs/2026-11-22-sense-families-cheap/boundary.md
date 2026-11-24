@@ -47,7 +47,8 @@ written Sun 2026-11-22, 8:40 PM PST. Each promise has a test of its name in
 - **the-beat-argv.** `ops_watch.py run --compose --file-alarms --metronome-gen N --family F [--family G]` from the
   metronome's sense phase, killed by SIGTERM (then SIGKILL) at the phase limit.
 - **the-live-sources.** The seat clone `/home/mandrake/rm/bench` (git), the series and stores under the ops_watch
-  folder, the TPS record folder, the Codex session trees, the queue folders and the ledger.
+  folder, the TPS record folder, the Codex session trees and the queue folders. The shared ops ledger reader uses
+  `/home/mandrake/rm/dispatch`'s local `refs/remotes/origin/main`, refreshed by `testq-tick`.
 
 ## DOES NOT SURVIVE (not promised)
 
