@@ -2,7 +2,7 @@
 
 A live test of a mod is a Python script. The script imports one module, `scene`, and uses these ten names. The bridge's
 563 tools are the hands behind the names. The design is `design/specs/2026-11-23-bridge-v2/11_design.md`. Design Version of the library:
-**0.1.0**. **Built: `scene.open`, `s.run` and `s.raw`** (with `scene.tools`, `s.state`, `s.cancel_run`). The other seven names
+**0.2.0**. **Built: `scene.open`, `s.run`, `scene.judge` and `s.raw`** (with `scene.tools`, `s.state`, `s.cancel_run`). The other six names
 refuse `NOT_BUILT` and name the ticket that builds them. Each example is written from a real scene of ours and has not run.
 What the names share, the limits and what is not promised: `design/specs/2026-11-23-scene-library/boundary.md`.
 

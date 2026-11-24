@@ -86,3 +86,11 @@ links; the plan and checker versions; the reviewed list of readers (a track may 
 - **a-draw-in-the-sample-phase-is-reported.** A random draw there is a `fault` record and is counted.
 
 Later lists beside this page: `polish.md`, `next_version.md` (none yet).
+
+## Offline judge
+
+The judge uses this trace and the matching `s.run` receipt from the kept folder. It checks the envelope, loss,
+sample order and coverage, observation names and alias continuity before classifying. It reports the classifier
+row and the first failed condition with recorded values. A keeper can be judged again from the same evidence.
+The first verdict stays in place and an accepted rejudgement appends one history line. The named tests and the
+offline input contract are on the [scene judge boundary](../2026-11-23-scene-judge/boundary.md).

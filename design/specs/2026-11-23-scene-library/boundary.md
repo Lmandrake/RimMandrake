@@ -1,4 +1,4 @@
-# BOUNDARY: the scene library, its skeleton, Design Version 0.1.0
+# BOUNDARY: the scene library, its skeleton, Design Version 0.2.0
 
 Code: `src/RimMandrake/Utils/scene.py`, `src/RimMandrake/Utils/scene_core.py`, `src/RimMandrake/Utils/scene_cond.py`,
 `src/RimMandrake/Utils/scene_hands.py`, `src/RimMandrake/Utils/scene_world.py` (all of each). The contract of each name is
@@ -75,7 +75,7 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
 - **close-puts-back.** Close puts back the session record, the calm and the lock after a normal end and after an error.
   It holds the take while it waits for the companion session to report `closed` or `aborted`. If the wait fails, close
   names the unfinished session and continues cleanup (`test_close_waits_for_the_session_writer`).
-- **a-name-not-built-says-so.** The other seven names refuse `NOT_BUILT` with the ticket that builds them.
+- **a-name-not-built-says-so.** The six names still owed refuse `NOT_BUILT` with the ticket that builds them.
 - **help-equals-the-code.** Help prints the ten names; each built page takes the arguments that the function takes.
 
 **LIVE PROOF** (2026-11-23, ArchSmall, companion `6ac9a7490885`, so every run was played by `jawa/scene_slice`):

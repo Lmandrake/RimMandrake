@@ -731,13 +731,13 @@ def test_end_session_ends_a_dead_driver_only():
 
 def test_names_not_built_say_so():
     W, s = opened()
-    for n in ("contract", "judge", "attach"):
+    for n in ("contract", "attach"):
         e = refused("NOT_BUILT", getattr, scene, n)
         must("RIMMANDRAKE_" in e.repair, "no ticket")
     for n in ("stage", "act", "read", "shot"):
         refused("NOT_BUILT", getattr, s, n)
     must(not hasattr(s, "act") and not hasattr(s, "nothing"), "hasattr")
-    must(sorted(scene.BUILT + ("contract", "judge", "attach", "stage", "act", "read", "shot")) == sorted(scene.NAMES), "the ten names")
+    must(sorted(scene.BUILT + ("contract", "attach", "stage", "act", "read", "shot")) == sorted(scene.NAMES), "the ten names")
 
 
 def test_tools_and_raw_census():

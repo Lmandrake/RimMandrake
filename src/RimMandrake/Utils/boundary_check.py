@@ -35,6 +35,7 @@ PAGES = {
     "design/specs/2026-11-24-wrapup-game-release/boundary.md": "src/RimMandrake/rimflow/selftest_wrapup_restore_at_release.py",
     "design/specs/2026-11-23-launch-permissions/boundary.md": "src/RimMandrake/Utils/selftest_launch_permissions.py",
     "design/specs/2026-11-23-scene-library/boundary.md": "src/RimMandrake/Utils/selftest_scene_library.py",
+    "design/specs/2026-11-23-scene-judge/boundary.md": "src/RimMandrake/rimflow/selftest_scene_judge.py",
     "design/specs/2026-11-24-scene-size/boundary.md": "src/RimMandrake/rimflow/selftest_scene_size.py",
     "design/specs/2026-11-24-owed-view-named-waits/boundary.md": "src/RimMandrake/rimflow/selftest_owed_view.py",
     "design/specs/2026-11-23-owed-sources-retired/boundary.md": "src/RimMandrake/rimflow/selftest_owed_sources.py",

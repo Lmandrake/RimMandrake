@@ -2,6 +2,7 @@
 """scene - the scene library: ten names on which a live test of a mod is written. Read `scene.py help` first.
 
     python3   scene.py help [<name>]             the contract page of a name (no game)
+    python3   scene.py judge <run_dir> [--rejudge] judge a kept call (no game)
     python.exe scene.py accept <script.py>       run a committed script: clean tree, commit hash on each receipt, no keyboard
     python.exe scene.py explore <game> [--map M] an interactive prompt on an open session; each run is EXPLORED
     python.exe scene.py end-session <game>       end the session of a driver that died (until scene.attach is built)
@@ -27,13 +28,12 @@ import scene_cond as cond  # noqa: E402
 import scene_hands as hands  # noqa: E402
 from scene_core import (CallFailed, Fault, NotBuilt, Receipt, Refused, Reply, ReplyLost, RunResult, Value, text)  # noqa: E402,F401
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 PAGES = os.path.join(HERE, "scene_contracts")
 NAMES = ("contract", "open", "stage", "run", "act", "read", "judge", "shot", "attach", "raw")
-BUILT = ("open", "run", "raw")
+BUILT = ("open", "run", "judge", "raw")
 CONVERT = "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
-OWED = {"judge": "RIMMANDRAKE_BUILD_SCENE_JUDGE_OUTSIDE_GAME_FROM_KEPT_TRACE",
-        "attach": "RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK"}
+OWED = {"attach": "RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK"}
 GAME_STATE = "RM_SCENE_STATE"           # the text in the game process: {"pid", "stamps", "session"}
 EXPLORED = "EXPLORED"
 SPEEDS = ("Normal", "Fast", "Superfast", "Ultrafast")
@@ -63,7 +63,7 @@ def _world():
 
 
 def __getattr__(name):
-    if name in ("contract", "judge", "attach"):
+    if name in ("contract", "attach"):
         raise _not_built(name)
     raise AttributeError("module 'scene' has no attribute %r; the ten names: %s" % (name, ", ".join(NAMES)))
 
@@ -851,7 +851,7 @@ def page(name):
 
 def signature(name):
     """-> the argument names that a built name takes (its own self left out)."""
-    fn = {"open": open, "run": Session.run, "raw": Session.raw, "tools": tools}[name]
+    fn = {"open": open, "run": Session.run, "judge": judge, "raw": Session.raw, "tools": tools}[name]
     return [p for p in inspect.signature(fn).parameters if p != "self"]
 
 
@@ -945,6 +945,19 @@ def check_accept(script, repo, git):
     return out.strip()
 
 
+def _judge_module():
+    folder = os.path.join(HERE, "..", "rimflow")
+    if folder not in sys.path:
+        sys.path.insert(0, folder)
+    import scene_judge
+    return scene_judge
+
+
+def judge(run_dir, rejudge=False):
+    """Read a kept run from disk and return its verdict."""
+    return _judge_module().judge(run_dir, rejudge)
+
+
 def accept(script):
     """Run a committed script as an acceptance run. -> exit code."""
     import runpy
@@ -972,7 +985,7 @@ def accept(script):
     _rc2, dirty = W.git("status", "--porcelain")
     if after.strip() != commit or dirty.strip():
         word, rc = word + "; THE TREE CHANGED DURING THE RUN, so the run has no identity", max(rc, 1)
-    print("ACCEPT %s: %s. Not judged: scene.judge is not built (%s)" % (LAUNCH["script"], word, OWED["judge"]), flush=True)
+    print("ACCEPT %s: %s. For a kept run, use scene.py judge." % (LAUNCH["script"], word), flush=True)
     return rc
 
 
@@ -1077,6 +1090,8 @@ def main(argv):
             return 0
         if verb == "accept" and len(rest) == 1:
             return accept(rest[0])
+        if verb == "judge":
+            return _judge_module().main(rest)
         if verb == "explore" and rest:
             return explore(rest[0], rest[2] if rest[1:2] == ["--map"] and len(rest) > 2 else None)
         if verb == "end-session" and len(rest) == 1:

@@ -141,3 +141,31 @@ def compile_until(until):
             if why:
                 raise Refused("UNRECORDED_VALUE", "%s (`help cond`)" % why)
     return tree, None
+
+
+def _taps(op, names, where=None):
+    """A recorded tap probe for scene.judge, with an optional equality filter for count."""
+    p = {"p": op, "taps": list(names)}
+    if where:
+        p["where"] = where
+    return Expr(p, "num" if op == "count" else "bool")
+
+
+def count(tap, **where):
+    """Number of matching records of an armed tap."""
+    return _taps("count", (tap,), where)
+
+
+def seq(*taps):
+    """The named taps occurred in this entry order."""
+    return _taps("seq", taps)
+
+
+def before(first, second):
+    """The first occurrence of one tap entered before the first occurrence of another."""
+    return _taps("before", (first, second))
+
+
+def after(first, second):
+    """The first occurrence of one tap entered after the first occurrence of another."""
+    return _taps("after", (first, second))
