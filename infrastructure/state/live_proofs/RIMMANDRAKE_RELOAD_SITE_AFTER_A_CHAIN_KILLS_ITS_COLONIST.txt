@@ -1,0 +1,4 @@
+# A1: on a map that no registered save made; A2: on the registered Pyrelands site. A chain kills a colonist, the next one runs.
+live-tier: pyrelands
+live-proof A1: python.exe src/RimMandrake/Utils/modcheck/site_reload_live.py fresh < /dev/null
+live-proof A2: python.exe src/RimMandrake/Utils/modcheck/site_reload_live.py pyrelands < /dev/null
