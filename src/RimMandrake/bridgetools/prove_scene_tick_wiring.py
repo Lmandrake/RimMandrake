@@ -261,7 +261,7 @@ def main():
 
     # a condition whose names do not resolve is refused before a tick runs
     r = call("jawa/scene_slice", action="start", pawn=pid, until=json.dumps({"cmp": [{"p": "pawn.state", "pawn": "NoSuchPawn", "f": "dead"}, "==", True]}))
-    row("0 an unknown name is refused", r.get("success") is False and r.get("refused") == "bind", {k: r.get(k) for k in ("refused", "detail", "message")})
+    row("0 an unknown name is refused", None if r.get("_error") else r.get("success") is False and r.get("refused") == "bind", {k: r.get(k) for k in ("refused", "detail", "message", "_error")})
 
     for sp, n in (("Normal", 137), ("Ultrafast", 1370)):
         t0 = call("jawa/map_info").get("ticksGame")

@@ -162,6 +162,7 @@ REVIEWED = {
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVitals.cs::SpecimensUnresolved": "re-resolved in EnsureEpoch",
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVitals.cs::Prev": "nulled in EnsureEpoch",
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVitals.cs::_threats": "cleared in EnsureEpoch",
+    "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSceneTick.cs::RunGame": "the Game a scene run was armed in, set at each arm and only ever compared by reference with Current.Game: a replaced game ends the run as `epoch`",
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVitals.cs::LastSampleTick": "diagnostic stamp, re-written each sample",
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchAwareness.cs::Open": "keyed by our own monotonic context ids, never game ids",
     "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTpsSampler.cs::_game": "the sampler's own Game guard",

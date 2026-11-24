@@ -333,6 +333,23 @@ def t_steve2_worker_is_a_steve_lane(r):
           "steve2-worker-is-a-steve-lane: the archmagi worker is not, and reads its own home's inbox (%s)" % (a,))
 
 
+def t_steve2_reads_its_own_install(r):
+    """J20261124T001426Z-9581b9: Steve2's worker checked and installed the companion in Steve1's Steam install, said FRESH,
+    and the game loaded the old one."""
+    code = ("import worker as W\na = W.Attempt.__new__(W.Attempt)\n"
+            "print(json.dumps([a.mods_dir(), a.companion_dir()]))")
+    steam = dict(TESTQ_MODS_DIR=None, TESTQ_COMPANION_DIR=None, RM_STEAMAPPS="/steam")
+    b = r.py(code, TESTQ_WORKER_HOST="stevedesktop.b", RM_GAME_INSTANCE="b", RM_GAME_USERDATA="/inst/b", **steam)
+    a = r.py(code, TESTQ_WORKER_HOST="stevedesktop", RM_GAME_INSTANCE=None, RM_GAME_USERDATA=None, **steam)
+    blind = r.py(code, TESTQ_WORKER_HOST="stevedesktop.b", RM_GAME_INSTANCE="b", RM_GAME_USERDATA=None, **steam)
+    check(b == ["/inst/b/game/Mods", "/inst/b/game/BridgeTools/JawaBench"],
+          "steve2-reads-its-own-install: Steve2's Mods and companion are its own install's (%s)" % (b,))
+    check(a == ["/steam/common/RimWorld/Mods", "/steam/common/RimWorld/BridgeTools/JawaBench"],
+          "steve2-reads-its-own-install: Steve1's are Steam's, unchanged (%s)" % (a,))
+    check(isinstance(blind, list) and not any(x.startswith("/steam") for x in blind),
+          "steve2-reads-its-own-install: Steve2 with no data folder named never answers Steve1's install (%s)" % (blind,))
+
+
 def t_site_saves_reach_steve2(r):
     """sync_test_mods.site_saves copies each registered save into every target Saves folder it is given, and the tick
     asks for Steve2's folder too while Steve2 is switched on."""
@@ -399,7 +416,7 @@ def t_a_proof_that_crashes_is_unmeasured_not_fail(r):
 def main():
     tmp = tempfile.mkdtemp(prefix="testq_steve2_")
     r = Rig(tmp)
-    for t in (t_site_saves_reach_steve2, t_steve2_command_carries_its_game, t_steve2_worker_is_a_steve_lane, t_steve2_results_are_steve_results,
+    for t in (t_steve2_reads_its_own_install, t_site_saves_reach_steve2, t_steve2_command_carries_its_game, t_steve2_worker_is_a_steve_lane, t_steve2_results_are_steve_results,
               t_fault_drain_waits_for_both_workers, t_filler_fills_an_idle_game, t_visit_feed_one_mod_per_game,
               t_steve2_off_by_default, t_two_jobs_run_at_once_one_per_game,
               t_steve2_respects_the_machine_pause_and_its_own, t_steve2_stop_file_wins,

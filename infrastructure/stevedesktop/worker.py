@@ -1303,8 +1303,14 @@ class Attempt:
                                                                                           " ".join(cleared)))
 
     def mods_dir(self):
-        return os.environ.get("TESTQ_MODS_DIR") or os.path.join(os.environ.get("RM_STEAMAPPS", ""),
-                                                                "common", "RimWorld", "Mods")
+        """The Mods folder the game of THIS worker loads. A named game (Steve2: `game_instance.py env b`) has its own install
+        under its data folder; with no data folder named the answer does not exist, never Steve1's (J20261124T001426Z-9581b9
+        read Steve1's companion, said FRESH, and Steve2 loaded the old one)."""
+        if os.environ.get("TESTQ_MODS_DIR"):
+            return os.environ["TESTQ_MODS_DIR"]
+        if (os.environ.get("RM_GAME_INSTANCE") or "a") != "a":
+            return os.path.join(os.environ.get("RM_GAME_USERDATA") or "/no-RM_GAME_USERDATA", "game", "Mods")
+        return os.path.join(os.environ.get("RM_STEAMAPPS", ""), "common", "RimWorld", "Mods")
 
     def attest(self):
         mods_dir = self.mods_dir()
