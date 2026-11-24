@@ -475,6 +475,41 @@ def t_csharp_reads_the_types_it_names():
             tr.close()
 
 
+def t_declared_exercises_bound_the_types_named():
+    """A check that anchors in no C# (a scene driven from Python) and lists the C# it exercises is related by that list,
+    not whole through every file the list's types name (Gimme Some Slack, 2026-11-23: the CordBuilder.cs fix sent 75 more
+    rows back, the aerial ones among them, past a declaration written so that it would not: 206 of 206 reran)."""
+    src = "src/RimMandrake/Planted/Source/"
+    cases = [
+        ("a changed type of an undeclared file reruns the check with no list alone", "Verd.cs", ("() => 2;", "() => 3;"),
+         ["sc_bare"]),
+        ("a using line there reruns the check with no list alone", "Verd.cs",
+         ("namespace Planted\n", "using System;\nnamespace Planted\n"), ["sc_bare"]),
+        ("a change in the listed file itself reruns both", "Proof.cs", ("Helper(1)", "Helper(2)"), ["sc_bare", "sc_listed"]),
+    ]
+    for why, name, (a, b), want in cases:
+        tr = Tree()
+        try:
+            tr.write(src + "Proof.cs", PROOF_CS.replace("s.a = Helper(1);", "s.a = Helper(1) + Verd.Off(1);"))
+            tr.write(src + "Planted.csproj", "<Project />\n")
+            tr.write("src/RimMandrake/Planted/Assemblies/Planted.dll.srchash",
+                     "# project: RimMandrake/Planted/Source/Planted.csproj\n# dll: 00\n11 Proof.cs\n")
+            tr.write(src + "Verd.cs", VERD_CS)
+            tr.write(src + "Deep.cs", DEEP_CS)
+            spec = {"kind": "live_minimal", "stage": "6", "tier": "t", "file": "src/RimMandrake/Planted/validation.py",
+                    "entry": "no_such_entry"}
+            tests = {"sc_listed": dict(spec, id="sc_listed", exercises=[src + "Proof.cs"]),
+                     "sc_bare": dict(spec, id="sc_bare", reads=[src + "Proof.cs"])}
+            tr.set_table(tests)
+            base = tr.commit("listed base")
+            tr.edit(src + name, a, b)
+            tr.commit("listed edit")
+            got = sorted(relate(tr, all_rows(base, tests), tests)["touched"])
+            ok("declared-exercises-bound-the-types-named: %s" % why, got == want, "got %s, want %s" % (got, want))
+        finally:
+            tr.close()
+
+
 def t_python_relates_by_symbol():
     tr = Tree()
     try:
@@ -741,6 +776,7 @@ def main():
     t_csharp_relates_by_source_file()
     t_csharp_relates_by_scene_section()
     t_csharp_reads_the_types_it_names()
+    t_declared_exercises_bound_the_types_named()
     t_python_relates_by_symbol()
     t_json_relates_by_entry()
     t_spec_change_reruns()

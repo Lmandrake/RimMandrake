@@ -35,6 +35,18 @@ certificate refused 18 of 26 bars on `red_seen` after two fixers edited its deci
 - **a-new-set-gets-its-own-try.** "The same set" means a set that shares a test with the last try's set (red or
   `red_seen` kind). A refused set that shares no test with it launches its own try. A set that still holds a test of the
   last try, and is not a strict subset of it, reads `stopped`.
+- **a-proof-recorded-since-the-try-is-a-new-debt.** A decider of the last try whose newest red proof is later than that
+  try (the certificate row's `proof_at`) was paid, so its refusal now is of a later edit. A `red_seen` set that shares
+  only paid deciders with the last try launches. A proof older than the try, no proof, or a time that cannot be read
+  pays nothing. Measured 2026-11-23 7:20 PM PST: a try of 2026-11-21 stopped Gimme Some Slack on new debts of T_CORE and
+  T_STUB_JOINS (`RIMMANDRAKE_UNBLOCK_SLACK_FOUR_RED_DECIDERS_PAUSED_THE_MOD`).
+- **the-certificate-row-carries-the-proof-time.** A `red_seen` row of `judge_certificate.certify` carries `proof_at`, the
+  time of the decider's newest red proof, or None.
+- **the-stop-says-what-is-owed.** The stop of a `red_seen` set says that a red proof is owed and never that a decider
+  is red. The stop of a red set still says "still red".
+- **clear-lifts-the-red-seen-stop.** `maturation_dispatch.py clear <Mod>`, which the stop names, lifts it.
+- **a-voided-run-gives-its-try-back.** A voided or killed red-proof run takes its `cert_red_seen` entry out with its
+  launch.
 - **warm-editor-is-resumed.** `cert_launch` of the `red_seen` kind passes the session of the one run whose window holds
   the last commit to the decider's file, when that run ended under 55 min ago; ended 2 h ago, two runs in the window,
   or a file git cannot read, it launches fresh.

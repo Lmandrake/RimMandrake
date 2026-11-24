@@ -4,14 +4,18 @@ each named as the promise is. A certificate that refuses on red_seen alone used 
 from 2:14 AM to about 4:50 AM PST on 2026-11-20); now it launches one run that records the proof, resuming the run that
 edited the decider when that run is warm (item RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION). No game,
 no network, no real launch."""
+import datetime
+import json
 import os
 import sys
 import tempfile
+import types
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 TMP = tempfile.mkdtemp(prefix="red_seen_owner_")
 os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "_dispatcher")
+import judge_certificate as JC  # noqa: E402
 import maturation_dispatch as MD  # noqa: E402
 import probe_result as PR  # noqa: E402
 
@@ -73,6 +77,95 @@ def t_a_new_set_gets_its_own_try():
         (new, redn, kept, kput)
 
 
+def cert_proved(*rows):
+    return {"ok": False, "rows": [dict(status="REFUSED", bar=b, test=t, clause="red_seen", proof_at=at)
+                                  for t, b, at in rows]}
+
+
+def t_a_proof_recorded_since_the_try_is_a_new_debt():
+    """Gimme Some Slack, 2026-11-23 7:20 PM PST: a try of 2026-11-21 on T_CORE, T_STUB_JOINS and T_SWITCH_LIGHT_OFFLINE
+    was paid (each red proof recorded on 11-23, after the try), the wall-plug fix then edited the test files again, and
+    the tick read the new debt as "the same reds" and stopped the mod."""
+    old = {"tests": ["T_CORE", "T_STUB_JOINS", "T_LIGHT"], "unit": "u-old", "at": NOW - 200000, "failed": None,
+           "stage": "offline_build"}
+    since, before = PR_ISO(NOW - 3600), PR_ISO(NOW - 300000)
+
+    def one(*rows):
+        got, _, put = decide({"certificate": cert_proved(*rows)}, {"cert_red_seen": dict(old)})
+        return got, put
+    paid = one(("T_CORE", "b1", since), ("T_STUB_JOINS", "b2", since), ("T_NEW", "b3", None))
+    unpaid = one(("T_CORE", "b1", before), ("T_NEW", "b3", None))         # the proof is older than the try
+    none = one(("T_CORE", "b1", None), ("T_NEW", "b3", None))             # the try recorded nothing
+    part = one(("T_CORE", "b1", since), ("T_STUB_JOINS", "b2", None), ("T_NEW", "b3", None))
+    bad = one(("T_CORE", "b1", "not a time"), ("T_NEW", "b3", None))      # an unreadable time pays nothing
+    return (paid[0] == "launch" and all(x[0] == "decided" and any(p[0] == "stopped" for p in x[1])
+                                        for x in (unpaid, none, part, bad))), (paid, unpaid, none, part, bad)
+
+
+def PR_ISO(t):
+    return datetime.datetime.fromtimestamp(t, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def t_the_certificate_row_carries_the_proof_time():
+    """The row cert_red_decide reads is the one judge_certificate.certify writes: a decider whose red proof is of another
+    version of its file carries proof_at; one never proved carries None."""
+    root = os.path.join(TMP, "repo")
+    d = os.path.join(root, "design", "concepts", MOD, "version")
+    os.makedirs(os.path.join(d, "evidence"), exist_ok=True)
+    for n in ("t_a.py", "t_b.py"):
+        with open(os.path.join(root, n), "w") as fh:
+            fh.write("print('x')\n")
+    run = {"ran": True, "rc": 0, "result": "PASS", "last": "PASS", "build": "x", "command": "c"}
+    table = {"tests": {"T_A": {"id": "T_A", "kind": "offline", "file": "t_a.py", "command": "c", "reads": [],
+                               "runs_today": run},
+                       "T_B": {"id": "T_B", "kind": "offline", "file": "t_b.py", "command": "c", "reads": [],
+                               "runs_today": run}},
+             "bars": [{"id": "b1", "proves_at": "4-5", "offline_decides": ["T_A", "T_B"], "decides": ["T_A", "T_B"]}]}
+    with open(os.path.join(d, "test_table.json"), "w") as fh:
+        json.dump(table, fh)
+    with open(os.path.join(d, "evidence", "red_seen.json"), "w") as fh:
+        json.dump({"T_A": {"rc": 1, "at": "2026-11-23T15:03:10Z", "test_blob": "old", "command": "c"}}, fh)
+    with open(os.path.join(d, "evidence", "red_seen_grandfather.json"), "w") as fh:
+        json.dump({}, fh)
+    rows = {r["test"]: r for r in JC.certify(root, MOD)["rows"] if r["clause"] == "red_seen"}
+    return (rows["T_A"]["status"] == "REFUSED" and rows["T_A"].get("proof_at") == "2026-11-23T15:03:10Z"
+            and rows["T_B"]["status"] == "REFUSED" and rows["T_B"].get("proof_at") is None), rows
+
+
+def t_the_stop_says_what_is_owed():
+    """The stop of a red_seen set never says the deciders are red: the four of 2026-11-23 were green, and the Conductor
+    filed an item to repair four red deciders."""
+    s = {"cert_red_seen": {"tests": ["T_CORE", "T_STUB_JOINS"], "unit": "u1", "at": NOW - 3600, "failed": None}}
+    _, _, put = decide({"certificate": RS}, s)
+    why = " ".join(str(x) for p in put if p[0] == "stopped" for x in p)
+    _, _, rput = decide({"certificate": cert(("T_A", "b", "green"))},
+                        {"cert_red": {"tests": ["T_A"], "unit": "u1", "at": NOW - 3600, "failed": None}})
+    rwhy = " ".join(str(x) for p in rput if p[0] == "stopped" for x in p)
+    return ("still red" not in why and "red proof" in why and "still red" in rwhy), (why, rwhy)
+
+
+def t_clear_lifts_the_red_seen_stop():
+    """The stop's own line names `maturation_dispatch.py clear <Mod>`; clear popped cert_red alone, so a red_seen stop
+    came back on the next tick."""
+    d = MD.sdir()
+    os.makedirs(d, exist_ok=True)
+    book = {"tests": ["T_CORE", "T_STUB_JOINS"], "unit": "u1", "at": NOW - 3600, "failed": None}
+    p = os.path.join(d, "state.json")
+    with open(p, "w") as fh:
+        json.dump({"mods": {MOD: {"cert_red_seen": book, "cert_red": dict(book)}}}, fh)
+    rc = MD._clear(types.SimpleNamespace(mod=MOD, why="test"))
+    with open(p) as fh:
+        s = json.load(fh)["mods"][MOD]
+    return rc == 0 and "cert_red_seen" not in s and "cert_red" not in s, (rc, s)
+
+
+def t_a_voided_run_gives_its_try_back():
+    """A run that died of a system cause or was voided spends no try: the red_seen book goes out with its launch, as
+    cert_red does."""
+    import run_void as RV
+    return ("cert_red_seen" in RV.ONE_BOOKS and "cert_red_seen" in RV.FOLLOW_LAUNCH), (RV.ONE_BOOKS, RV.FOLLOW_LAUNCH)
+
+
 REC_U = {"unit": "rm-detached-bench-mend-slack-1", "session": "11111111-2222-3333-4444-555555555555",
          "at": NOW - 3000, "ended": NOW - 1500}
 REC_V = {"unit": "rm-detached-bench-other-run-2", "session": "66666666-7777-8888-9999-000000000000",
@@ -117,7 +210,9 @@ def t_brief_names_the_proof():
 
 def main():
     tests = [t_red_seen_only_launches, t_mixed_refusal_keeps_its_route, t_one_try_per_set, t_warm_editor_is_resumed,
-             t_brief_names_the_proof, t_a_new_set_gets_its_own_try]
+             t_brief_names_the_proof, t_a_new_set_gets_its_own_try, t_a_proof_recorded_since_the_try_is_a_new_debt,
+             t_the_certificate_row_carries_the_proof_time, t_the_stop_says_what_is_owed,
+             t_clear_lifts_the_red_seen_stop, t_a_voided_run_gives_its_try_back]
     fails = []
     for fn in tests:
         try:

@@ -63,9 +63,13 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   names (an offline SelfTest program is not one). In such a file a changed member touches a check only when the names
   the check reaches include the member's name and its type's name; strings, case labels and list values do not reach
   there. An engine-called member there touches the checks that name its type. A using line there relates it whole; a
-  check that anchors in none of its declared files relates it whole. (ExplosiveKnockback, 2026-11-23:
+  check that anchors in none of its declared files, and lists no C# in `exercises`, relates it whole. (ExplosiveKnockback, 2026-11-23:
   sc_frame_probe_check's RM_FrameProbe lives in RM_KnockbackProof_StageThree.cs, which no check declares; with the
   section relation alone its change reran nothing, and with this it reruns sc_frame_probe_check, 4 of 56 in all.)
+- **declared-exercises-bound-the-types-named.** A check that anchors in none of its declared C# and lists C# files in its
+  `exercises` is related by that list: a change in a file that the list does not name does not touch it. A check with
+  no such list still relates whole. (Gimme Some Slack, 2026-11-23: csharp-reads-the-types-it-names sent 75 listed rows
+  back for CordBuilder.cs, which their lists leave out on purpose, so 206 of 206 reran.)
 - **python-relates-by-symbol.** In a changed Python file, only the top-level names that changed count, and they
   touch a check only when the names its entry and id reach (across its declared Python files) include one of them; a
   dict literal relates key by key. A file that does not parse at either commit relates whole.

@@ -28,7 +28,8 @@ check (kind live_full) declares the whole mod. How a changed file relates, by ki
          that uses a shared static the check reaches touches it too. A declared C# file reads the mod's C# files that
          define a type it names (a partial class's other parts among them; to a fixed point; of the project a
          .srchash names): there a member touches the check only when the check reaches its name and its type's name,
-         by name alone (no string, label or list value), and an engine-called member when the check names its type.
+         by name alone (no string, label or list value), and an engine-called member when the check names its type. A
+         check that anchors in no C# and lists C# in its `exercises` is related by that list alone.
          The DLL and its .srchash are derived: they relate to nothing by themselves.
   other  by file.
 A check whose own test-table entry changed in what it runs (RUN_KEYS) is touched. A check with no declared path, or a
@@ -1114,6 +1115,8 @@ class Relation:
         if not mine:
             return "untouched", "no changed file is one it declares or its Python imports", []
         seeds = {tid, spec.get("entry")}
+        # the C# the check lists as exercised: for a check that anchors in no C#, that list is the relation
+        listed = any(str(p).endswith(".cs") for p in _aslist(spec.get("exercises")) + self.extra.get(tid, []))
         hits, why = [], []
         pys = [f for f in mine if f.endswith(".py")]
         if pys:
@@ -1148,6 +1151,8 @@ class Relation:
             if f.endswith(".cs"):
                 if f in cs_named and not any(covers(p, f) for p in paths):
                     names, anchored = self._cs_names(decl_cs, sorted(cs_named), o, {s for s in seeds if s})
+                    if not anchored and listed:
+                        continue
                     got, how = ((True, "a C# file it names a type of, and it anchors in none of its own (related "
                                  "whole)") if not anchored else self.cs_touches(f, o, names, named=True))
                 else:

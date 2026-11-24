@@ -52,14 +52,14 @@ DICT_BOOKS = ("steward", "fixers")
 # off the ceiling too). A hand void leaves it spent.
 RELEASE_BOOK = "releases_used"
 LIST_BOOKS = ("blind_auto", "ingame_auto", "launches", "holder_road_back", "pilot_launches", "ledger_runs")
-ONE_BOOKS = ("last_run", "cert_rerun", "cert_red")
+ONE_BOOKS = ("last_run", "cert_rerun", "cert_red", "cert_red_seen")
 # books the automatic class reads: a run there that died of a system cause would otherwise count as its trial. Not
 # ledger_runs: it is end_ledger_runs' bookkeeping (every unit in it sits in another book too), and its entry must stay
 # for the run.end; not cert_rerun: its unit has no detached record (cert_rerun_decide retries it on its own)
 SYSTEM_BOOKS = DICT_BOOKS + ("blind_auto", "ingame_auto", "launches", "holder_road_back", "pilot_launches")
 # single entries that go out (and come back) with their unit's `launches` entry: the builder's last run, and the
-# red-decider builder cert_red_decide reads as "ended and still red"
-FOLLOW_LAUNCH = ("last_run", "cert_red")
+# red-decider builder (or red-proof run) cert_red_decide reads as "ended and still red" (or "still owe their red proof")
+FOLLOW_LAUNCH = ("last_run", "cert_red", "cert_red_seen")
 UNM = "UNMEASURED"
 
 

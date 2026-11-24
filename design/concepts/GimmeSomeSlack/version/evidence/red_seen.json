@@ -1,16 +1,16 @@
 {
  "T_CORE": {
-  "at": "2026-11-23T15:03:10Z",
+  "at": "2026-11-24T05:25:50Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
   "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
-  "last": "5802/5803 checks passed",
-  "patch": "--- a/src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs\n@@ -583,14 +583,14 @@\n             // the same way, so b keeps the first re-lay's state for the reuse checks below.\n             double first2 = worst2;\n             int relays = 1;\n-            while (worst2 > SyncLayBoundMs && relays < SliceAttempts)\n+            while (worst2 > 0.5 && relays < SliceAttempts)\n             {\n                 var bb = new CordBuilder();\n                 Converge(bb, RebuildPerDigChecks.LiveScene(), opt, dead);\n                 worst2 = Math.Min(worst2, Converge(bb, RebuildPerDigChecks.LiveScene(), opt2, dead).worst);\n                 relays++;\n             }\n-            Program.Check(worst2 <= SyncLayBoundMs && slices2 > 1, $\"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms at best over {relays} re-lay(s), first {first2:0.0} ms, over {slices2} Builds\");\n+            Program.Check(worst2 <= 0.5 && slices2 > 1, $\"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms at best over {relays} re-lay(s), first {first2:0.0} ms, over {slices2} Builds\");\n             Console.WriteLine($\"slice: all-keys-changed re-lay worst {worst2:0.0} ms at best over {relays} re-lay(s) over {slices2} Builds (bound {SyncLayBoundMs} ms)\");\n             Program.Check(GssFuzz.Digest(last2) == wantLit, \"slice: the all-keys-changed re-lay did not end bit-identical to one unbudgeted Build\");\n             Program.Check(minEdges2 == edges, $\"slice: a mid-re-lay Build showed {minEdges2} of {edges} cords (a deferred edge must keep its previous piece)\");\n",
+  "last": "5811/5812 checks passed",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\nindex 9365b76ef9..d41e6f05c0 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -3870,7 +3870,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                         if (site.Bends(q, ties) > bends || site.Kinks(q, ties) > kinks) continue;\n                         // (and none of the bar's sharp turns from a bend's arc before the join to the plug: an ease that only lost the dive's kink kept its\n                         // 91-95 degree turn within 0.65 cell, the count above unchanged, in 156 of WallPlugChecks' ends)\n-                        if (bendsPast(q, ties, at - CordShapeAudit.BendArc) > 0) continue;\n+                        \n                         return q;\n                     }\n             }\n",
   "patch_files": [
-   "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs"
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
   ],
-  "patch_sha": "56960ebbbd3b6776",
+  "patch_sha": "752d5b4ce1d5de49",
   "rc": 1,
-  "test_blob": "4297a2fc5ff6dae9e52972107a3d38f3858f326e"
+  "test_blob": "3a50c0cdf340cbbd4985b7dafa6e157c6ef241c4"
  },
  "T_H_PLAYTEST_RUNNER": {
   "at": "2026-11-20T15:51:20Z",
@@ -129,18 +129,31 @@
   "rc": 1,
   "test_blob": "c1d29774595ccbf53c8886b0e2d157202ecedc1d"
  },
- "T_STUB_JOINS": {
-  "at": "2026-11-23T23:10:48Z",
-  "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
-  "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
-  "last": "9/11 checks passed (stub joins only)",
-  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\nindex 72c41c3758..d68f3884ac 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -3563,7 +3563,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                 // a plug's seat keeps exactly the plug's own run and the slope rule's chord past it (CordEndAudit.SlopeChord), not the shaping passes'\n                 // margin: the lamp-plug kinks the region sweep left lay 0.03-0.08 cell past the chord, inside that margin\n                 double seat = SeatedPin(piece, opt, s.Pts, atStart, anyLength: true);\n-                double k = (atStart ? s.DiveA : s.DiveB) ? Math.Max(FairPin(nd, isLive), seat - SeatPinMargin)\n+                double k = (atStart ? s.DiveA : s.DiveB) ? FairPin(nd, isLive)\n                     : nd.Type == NodeType.Terminal && !nd.Seam ? CutPin(nd, isLive)\n                     : seat > 0 ? seat - SeatPinMargin : FairPin(nd, isLive);\n                 int whip = atStart ? s.WhipA : s.WhipB;\n@@ -3582,7 +3582,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                     if (last >= 0) k = Math.Max(k, (atStart ? cum[last] : cum[n - 1] - cum[n - 1 - last]) + UnderMachineKeep);\n                 }\n                 if (!stubRead) { stubOf = StubPicker(w, g, e, piece, na, nb, opt); stubRead = true; }\n-                if (stubOf != null)\n+                if (stubOf != null && !(atStart ? s.DiveA : s.DiveB))\n                 {\n                     StubArt.Stub st = stubOf(s, atStart);\n                     // the stub's own run and the slope rule's chord past its tip (StubRun, its sample of margin each side included)\n@@ -3703,12 +3703,9 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                 if (s.Pts == null || s.Pts.Count < 3 || s.OverFace || s.Lifted) continue;\n                 foreach (bool atStart in new[] { false, true })\n                 {\n-                    bool dive = atStart ? s.DiveA : s.DiveB;\n-                    if (!dive && (atStart ? cutA : cutB)) continue;\n-                    if (!dive && UnderOwnMachine(atStart ? na : nb, atStart ? nb : na)) continue;\n+                    if (atStart ? s.DiveA || cutA : s.DiveB || cutB) continue;\n+                    if (UnderOwnMachine(atStart ? na : nb, atStart ? nb : na)) continue;\n                     StubArt.Stub st = Pick(s, atStart);\n-                    // a dive's end holds its slope by its own lay (the overrun, the seated plug); it is laid again only where that broke the rule\n-                    if (dive && st != null && OnStub(s.Pts, atStart, st, CordEndAudit.SlopeMaxDeg)) continue;\n                     // (a cord that comes back over its own box after leaving it is laid again from past where it does)\n                     if (st == null || (OnStub(s.Pts, atStart, st, CordEndAudit.SlopeMaxDeg / 2) && s.Pts.All(ownClear))) continue;\n                     double runLen = StubRun(atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], st);\n@@ -4876,8 +4873,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                                      Func<Cell, bool> isLive)\n         {\n             if (piece.Strands.Count == 0) return;\n-            CordStrand firstStrand = piece.Strands.FirstOrDefault(s => !(atStart ? s.DiveA : s.DiveB)) ?? piece.Strands[0];\n-            List<V2> first = firstStrand.Pts;\n+            List<V2> first = (piece.Strands.FirstOrDefault(s => !(atStart ? s.DiveA : s.DiveB)) ?? piece.Strands[0]).Pts;\n             V2 tip = atStart ? first[0] : first[first.Count - 1];\n             if (nd.IsMachine)\n             {\n@@ -4891,10 +4887,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                 // a power switch's own stub is the connector the cord goes into (owner 2026-11-16): no plug of ours beside it\n                 if (mi != null && mi.SidePorts) return;\n                 bool atS = atStart;\n-                // an end that goes into a",
+ "T_STUB_ART_CENSUS": {
+  "at": "2026-11-24T05:07:36Z",
+  "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py",
+  "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py",
+  "last": "FAIL",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\nindex 9365b76ef9..268a45c770 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -3280,7 +3280,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n         /// ... Match position AND slope, and match the slope where your adapter plug ENDS... that's the point that must agree.\" Where the side-view\n         /// plug's strain-relief boot ends (ExtCord Plug.png's opaque tail end, art u = -ExtPlugBootU in plug widths from the texture centre), and how\n         /// far along the cord past that point (cells) the cord eases from the plug's own axis back onto its laid course.</summary>\n-        public const double ExtPlugBootU = 0.102, SeatBlend = 0.4, SeatStiff = 1.6;\n+        public const double ExtPlugBootU = 0.132, SeatBlend = 0.4, SeatStiff = 1.6;\n         /// <summary>How short (cells) the laid course left past a seated plug's ease may be before the ease runs on to the far end.</summary>\n         private const double SeatTail = 0.2;\n         /// <summary>How far past the boot a seated cord stays on the plug's axis before its ease turns it: past the slope rule's chord.</summary>\n",
   "patch_files": [
    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
   ],
-  "patch_sha": "c2ad79ae394bca8b",
+  "patch_sha": "d2f8b3bb68f69c06",
   "rc": 1,
-  "test_blob": "4297a2fc5ff6dae9e52972107a3d38f3858f326e"
+  "test_blob": "10c54cd9026dde1be615cdef1f6d38e3d91add14"
+ },
+ "T_STUB_JOINS": {
+  "at": "2026-11-24T05:10:56Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
+  "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+  "last": "9/11 checks passed (stub joins only)",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\nindex 9365b76ef9..6dfcd457cf 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -3744,7 +3744,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                     int kinked = st != null && (s.DiveA || s.DiveB) && (IsWallFitting(st) || st.Kind == \"strip plug\") ? EndKinks(s.Pts) : 0;\n                     if (dive && st != null && kinked == 0 && OnStub(s.Pts, atStart, st, IsWallFitting(st) ? FitTol(st) : CordEndAudit.SlopeMaxDeg)) continue;\n                     // (a cord that comes back over its own box after leaving it is laid again from past where it does)\n-                    if (st == null || (kinked == 0 && OnStub(s.Pts, atStart, st, FitTol(st)) && s.Pts.All(ownClear))) continue;\n+                    if (st == null || st != null) continue;\n                     double runLen = StubRun(atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], st);\n                     if (runLen <= 0) continue;\n                     // the far end's own: a live cut end's run, tail and the window its pinch bar reads; a dead end's limp curl; a dive's\n",
+  "patch_files": [
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
+  ],
+  "patch_sha": "020e91491a636b41",
+  "rc": 1,
+  "test_blob": "3a50c0cdf340cbbd4985b7dafa6e157c6ef241c4"
  },
  "T_SWITCH_LIGHT_OFFLINE": {
   "at": "2026-11-23T14:49:27Z",
@@ -182,16 +195,16 @@
   "test_blob": "2a515be5bda3bce53f48ef941c42788ed3d26bd7"
  },
  "T_WALL_PLUG_STRAIGHT_OFFLINE": {
-  "at": "2026-11-24T00:50:23Z",
+  "at": "2026-11-24T05:09:19Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --wallplugs-only",
   "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/WallPlugChecks.cs",
-  "last": "2/5 checks passed (wall plugs only)",
-  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\nindex fe75a4561f..31dda4029b 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -3742,7 +3742,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                     // and where its ease turns sharp past the plug: the seat's own slope keeps Unkink off it)\n                     int EndKinks(List<V2> q) => CordShapeAudit.Kinks(q).Count(a => (atStart ? a : Geo.Length(q) - a) < KinkedEnd && CordShapeAudit.KinkWhy(w, piece.EndA, piece.EndB, q, a) == \"unforced\");\n                     int kinked = st != null && (s.DiveA || s.DiveB) && (IsWallFitting(st) || st.Kind == \"strip plug\") ? EndKinks(s.Pts) : 0;\n-                    if (dive && st != null && kinked == 0 && OnStub(s.Pts, atStart, st, IsWallFitting(st) ? FitTol(st) : CordEndAudit.SlopeMaxDeg)) continue;\n+                    if (dive && st != null && OnStub(s.Pts, atStart, st, CordEndAudit.SlopeMaxDeg)) continue;\n                     // (a cord that comes back over its own box after leaving it is laid again from past where it does)\n                     if (st == null || (kinked == 0 && OnStub(s.Pts, atStart, st, FitTol(st)) && s.Pts.All(ownClear))) continue;\n                     double runLen = StubRun(atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], st);\n",
+  "last": "6/7 checks passed (wall plugs only)",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\nindex 9365b76ef9..d41e6f05c0 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -3870,7 +3870,7 @@ namespace RimMandrake.GimmeSomeSlack.Core\n                         if (site.Bends(q, ties) > bends || site.Kinks(q, ties) > kinks) continue;\n                         // (and none of the bar's sharp turns from a bend's arc before the join to the plug: an ease that only lost the dive's kink kept its\n                         // 91-95 degree turn within 0.65 cell, the count above unchanged, in 156 of WallPlugChecks' ends)\n-                        if (bendsPast(q, ties, at - CordShapeAudit.BendArc) > 0) continue;\n+                        \n                         return q;\n                     }\n             }\n",
   "patch_files": [
    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
   ],
-  "patch_sha": "f0938e7752cf5aac",
+  "patch_sha": "752d5b4ce1d5de49",
   "rc": 1,
-  "test_blob": "f19064511f699e3cf986102e3aa22a593e0523c8"
+  "test_blob": "7376279e40ced6bf0f669525214dc89f81d3c2eb"
  }
 }

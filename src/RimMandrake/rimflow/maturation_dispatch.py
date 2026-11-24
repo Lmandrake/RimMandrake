@@ -1248,6 +1248,24 @@ def red_seen_owed(f):
 CERT_BOOK = {"red": "cert_red", "red_seen": "cert_red_seen"}     # the state each kind books its one try in
 
 
+def red_seen_paid(f, since):
+    """-> the deciders refused on red_seen whose newest red proof was recorded after SINCE (epoch s): a try launched at
+    SINCE was paid, so the refusal is of a later edit and is new work (Gimme Some Slack, 2026-11-23 7:20 PM PST: a try of
+    2026-11-21 stopped the mod on deciders proved on 11-23 and edited after). An absent or unreadable time pays nothing."""
+    paid, cv = set(), f.get("certificate")
+    for r in (cv.get("rows") or [] if isinstance(cv, dict) else []):
+        if r.get("status") != "REFUSED" or r.get("clause") != "red_seen" or not r.get("test"):
+            continue
+        try:
+            at = dt.datetime.strptime(str(r.get("proof_at")), "%Y-%m-%dT%H:%M:%SZ").replace(
+                tzinfo=dt.timezone.utc).timestamp()
+        except ValueError:
+            continue
+        if at > since:
+            paid.add(r["test"])
+    return paid
+
+
 def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases=None, to="blind_challenge",
                     what="the move into the blind challenge"):
     """At the offline build waiting on its certificate, with deciders recorded red (FlowWorks, 2026-11-16 1:36 AM PST:
@@ -1289,12 +1307,18 @@ def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases
                      cfg.get("_code") and prior.get("code") != cfg["_code"])))
     # "the same reds" share a test with the last try; a disjoint set is new work that try never saw (Pyrelands' T_SITE
     # after a 2026-11-22 try on T_FUZZ and T_SETTINGS_SCREENS read as the same, 2026-11-23: test a-new-set-gets-its-own-try)
-    if (prior and not retry and set(reds) & set(prior.get("tests") or [])
-            and not set(reds) < set(prior.get("tests") or [])):
-        why = ("the builder %s on red deciders %s ended and %s still red" % (
-            prior["unit"], ", ".join(prior.get("tests") or []), ", ".join(reds)) if prior.get("unit") else
-            "the launch on red deciders %s failed: %s" % (", ".join(prior.get("tests") or []), prior.get("failed")))
-        put("stopped", why, "stopped, %s; never a second automatic try at the same reds (items %s; "
+    same = set(reds) & set((prior or {}).get("tests") or [])
+    if same and kind == "red_seen" and prior.get("unit"):
+        same -= red_seen_paid(f, float(prior.get("at") or 0))
+    if prior and not retry and same and not set(reds) < set(prior.get("tests") or []):
+        # a red_seen set is green: its stop never says "red" (2026-11-23: the Conductor filed four red deciders to repair)
+        on = "red deciders" if kind == "red" else "edited deciders (green, red proof owed)"
+        why = ("the %s %s on %s %s ended and %s %s" % (
+            "builder" if kind == "red" else "red-proof run", prior["unit"], on, ", ".join(prior.get("tests") or []),
+            ", ".join(reds), "still red" if kind == "red" else
+            "still owe a recorded red proof (maturation.py red-seen)") if prior.get("unit") else
+            "the launch on %s %s failed: %s" % (on, ", ".join(prior.get("tests") or []), prior.get("failed")))
+        put("stopped", why, "stopped, %s; never a second automatic try at the same deciders (items %s; "
             "`maturation_dispatch.py clear %s --why ...` lifts it)" % (
                 why, ", ".join(sorted(set((prior.get("items") or {}).values()))) or "none filed", mod))
         return "decided"
@@ -4674,9 +4698,10 @@ def _clear(o):
         return 1
     s = (st.get("mods") or {}).get(o.mod) or {}
     was = s.pop("stopped", None)
-    if s.get("cert_red"):       # a stop on red deciders (cert_red_decide) lifts the same way
-        was = was or {"cert_red": s.pop("cert_red")}
-        s.pop("cert_red", None)
+    for book in CERT_BOOK.values():     # a stop on red deciders or on red proofs owed (cert_red_decide) lifts the same way
+        if s.get(book):
+            gone = s.pop(book)
+            was = was or {book: gone}
     if s.get("cert_rerun"):     # a certificate rerun spent on a build (cert_rerun_decide) may run once more
         was = was or {"cert_rerun": s.pop("cert_rerun")}
         s.pop("cert_rerun", None)

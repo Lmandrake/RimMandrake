@@ -576,6 +576,8 @@ def certify(root, mod, to="blind_challenge"):
                     "plant a fault the test must catch and prove it: python3 src/RimMandrake/rimflow/maturation.py "
                     "red-seen %s %s --patch <fault.patch> (applied, run, reversed; recorded only when the test goes red)"
                     % (mod, d))
+                # when its newest red proof was made: cert_red_decide reads whether the last try paid its debt
+                rows[-1]["proof_at"] = seen.get("at") if seen.get("rc") not in (0, None) else None
     if to == "in_game":
         try:
             _asks_on_empty_game(root, tt, row, out["did_not_run"])
