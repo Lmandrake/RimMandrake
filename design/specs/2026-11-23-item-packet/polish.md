@@ -12,3 +12,5 @@ From the one fresh read, 2026-11-23:
 - `_launch_locked` is tested by its source text only.
 - The `git log` command that the packet prints also lists the `ledger:` commits, which the packet leaves out.
 - `clean` counts a line as one that lost a sentence when the match spans two sentences and nothing was taken out.
+- Codex review 2026-11-24, not significant in ordinary operation (redacted_commit_has_no_recovery_command, `item_packet.py:220`): The packet for RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE removes the full subject of commit 35aaf354ea because it contains `budget 1800 s`. It counts the omission and prints only the ledger show command, which cannot recover that subject.
+- Codex review 2026-11-24, not significant in ordinary operation (closed_links_before_passed_runs_untested, `selftest_item_packet.py:90`): A change that swaps the drop priorities of closed links and passing runs passes the read-only packet tests that exercise budget pruning. In an accepted packet with one closed link, one passed run and room for only one, that change drops the run and leaves the closed link.
