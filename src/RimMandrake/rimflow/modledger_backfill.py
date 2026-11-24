@@ -908,7 +908,7 @@ def landed_sha(root, sha):
     if len(hit) == 1:
         return hit[0][:12]
     r = subprocess.run(["git", "-C", root, "log", "--no-walk", "--format=%aI%x09%s", sha, "--"], capture_output=True,
-                       text=True, timeout=30)
+                       text=True, timeout=60)  # budget: danger=a hung git read (a stuck drvfs read) holds its caller; longest=3.8s (210 local git calls sampled at load 20 to 52, 2026-11-24)
     parts = r.stdout.strip().split("\t", 1) if r.returncode == 0 else []
     t = twin.get(tuple(parts)) if len(parts) == 2 else None
     return t[0][:12] if t and len(t) == 1 else None

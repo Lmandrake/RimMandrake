@@ -2790,7 +2790,7 @@ def state_paths(d, repo):
     return out
 
 
-def land_state(d, run, timeout=120):
+def land_state(d, run, timeout=21600):  # budget: class=publish
     """DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE: close_run advances stage.json and renames result.json in the Designer's
     clone; nothing committed them, so origin/main kept reading the old stage (3906e2b306 landed three by hand). This
     lands exactly those paths with land.sh -m (a temp index from origin/main: the clone's index, HEAD and a peer's

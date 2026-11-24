@@ -10,5 +10,6 @@ WorkingDirectory=/home/mandrake/rm/dispatch
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/metronome.py apart --phase sense
 Nice=10
 MemoryMax=1G
-# A hang guard for the metronome process itself: above the phase's 120 s limit and 5 s cleanup.
-TimeoutStartSec=150s
+# A hang guard for the metronome process itself: above the phase's 1300 s limit and 5 s cleanup.
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=126s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=1800

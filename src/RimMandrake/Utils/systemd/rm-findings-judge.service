@@ -10,5 +10,6 @@ Type=oneshot
 WorkingDirectory=/home/mandrake/rm/bench
 Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
 Nice=15
-TimeoutStartSec=90min
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=637.2s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=7200
 ExecStart=/home/mandrake/rm/bench/src/RimMandrake/Utils/findings_judge.sh

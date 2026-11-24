@@ -7,4 +7,5 @@ Description=Seat restart --now: tick the Dispatcher until the ready window is re
 Type=oneshot
 WorkingDirectory=/home/mandrake/rm/dispatch
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/seat_restart.py now-run
-TimeoutStartSec=420
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=272.9s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=3000

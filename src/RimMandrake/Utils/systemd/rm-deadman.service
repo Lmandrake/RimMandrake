@@ -6,5 +6,6 @@ Description=Recheck every live promise, and the Dispatcher and ops_watch stamps
 Type=oneshot
 WorkingDirectory=/home/mandrake/rm/dispatch
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/deadman_check.py run --file-alarms
-TimeoutStartSec=300s
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=156.7s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=1800
 Nice=10

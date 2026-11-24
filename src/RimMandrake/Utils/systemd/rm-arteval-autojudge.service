@@ -22,4 +22,5 @@ ExecStart=/bin/bash -lc 'exec python3 src/RimMandrake/Utils/art_eval/auto_judge.
 Nice=10
 IOSchedulingClass=idle
 MemoryMax=4G
-TimeoutStartSec=55min
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=489.4s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=5400

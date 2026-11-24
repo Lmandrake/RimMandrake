@@ -1,7 +1,7 @@
 {
   "_doc": "The Maturation Pipeline's own tests, checked AT THE DOOR, not nightly (item RIMMANDRAKE_PAUSE_NIGHTLY_SWEEP_WRONG_PHASE_UNTIL_MOD_FINISHED). The owner, by card 2026-11-15: nightly tests check mods with finished versions, 'not mods in production. Code is too fluid otherwise. Wrong phase.' He then asked 'Keep nightly tests for Pipeline elements perhaps though?'; the Conductor's answer, his to overrule: the pipeline's machinery is the most fluid code in the repo, so the nightly is the wrong phase for it too. So: when a publish's local commits touch a pipeline_files path, ./publish runs every test below whose inputs the change touches (the test, the repo .py files it imports or names, transitively, each one's same-stem .json beside it, and any path matching the test's own `inputs` globs, as a boundary page for boundary_check) and refuses on a red, as it does for publish_tree_checks.json. A change touching no pipeline file adds no tests. live_excluded tests read live state and never run at the door. nightly: false keeps this set out of the nightly sweep; true puts it back in (one line). Bypass once: RM_PUBLISH_SKIP_PIPELINE_CHECKS='<why>' (printed). Code: publish.py pipeline_checks(). seconds = one run alone on archmagi 2026-11-15 (measured).",
   "nightly": false,
-  "timeout_s": 180,
+  "_timeout_s": "danger=a test in an endless loop holds a landing with no end; longest=599s (selftest_maturation_autonomy.py PASS at load 45, 2026-11-24). The backstop only: a check that does nothing ends on progress_guard.SILENCE_S. A check that is ended reads UNMEASURED and is not refused.", "timeout_s": 6000,
   "pipeline_files": [
     "src/RimMandrake/Utils/scene.py", "src/RimMandrake/Utils/scene_co*.py", "src/RimMandrake/Utils/scene_hands.py",
     "src/RimMandrake/Utils/scene_world.py", "src/RimMandrake/Utils/scene_fake.py", "src/RimMandrake/Utils/scene_recorded.json",
@@ -102,6 +102,9 @@
     "src/RimMandrake/rimflow/selftest_list_home.py",
     "src/RimMandrake/rimflow/brief_commands.py",
     "src/RimMandrake/Utils/waitalive.py",
+    "src/RimMandrake/Utils/time_budget*.py", "src/RimMandrake/Utils/time_budgets.json", "src/RimMandrake/Utils/progress_guard.py",
+    "src/RimMandrake/Utils/selftest_time_budget_lint.py", "src/RimMandrake/Utils/selftest_progress_guard.py",
+    "design/specs/2026-11-24-time-budgets/*.md", "design/specs/2026-11-24-progress-guard/*.md",
     "src/RimMandrake/Utils/selftest_waitalive.py",
     "design/specs/2026-11-23-agent-work-to-code/acceptance/rank7_long_waits_accept.py",
     "src/RimMandrake/rimflow/item_packet.py",
@@ -274,6 +277,8 @@
     {"test": "src/RimMandrake/rimflow/selftest_brief_commands.py", "seconds": 1, "inputs": ["src/RimMandrake/rimflow/brief_commands.py", "src/RimMandrake/rimflow/detached_helper.py", "src/RimMandrake/rimflow/cli.py", "src/RimMandrake/rimflow/maturation.py", "src/RimMandrake/Utils/lessons.py", "src/RimMandrake/Utils/publish.py", "design/specs/2026-11-23-brief-commands/boundary.md"]},
     {"test": "design/specs/2026-11-23-agent-work-to-code/acceptance/census_window_accept.py", "seconds": 5, "inputs": ["design/specs/2026-11-23-agent-work-to-code/census/window.py", "src/RimMandrake/rimflow/role_launch.py"]},
     {"test": "design/specs/2026-11-23-agent-work-to-code/acceptance/rank3_filled_commands_accept.py", "seconds": 1, "inputs": ["src/RimMandrake/rimflow/brief_commands.py", "src/RimMandrake/rimflow/detached_helper.py", "src/RimMandrake/rimflow/cli.py", "src/RimMandrake/rimflow/maturation.py", "src/RimMandrake/Utils/lessons.py", "src/RimMandrake/Utils/publish.py", "design/specs/2026-11-23-brief-commands/boundary.md"]},
+    {"test": "src/RimMandrake/Utils/selftest_progress_guard.py", "seconds": 40, "inputs": ["src/RimMandrake/Utils/waitalive.py", "design/specs/2026-11-24-progress-guard/boundary.md"]},
+    {"test": "src/RimMandrake/Utils/selftest_time_budget_lint.py", "seconds": 4.4, "inputs": ["src/RimMandrake/Utils/time_budgets.json", "design/specs/2026-11-24-time-budgets/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_waitalive.py", "seconds": 18, "inputs": ["src/RimMandrake/Utils/waitalive.py", "src/RimMandrake/rimflow/detached_helper.py", "design/specs/2026-11-23-long-waits/boundary.md", "design/specs/2026-11-23-long-waits/experiment.json"]},
     {"test": "design/specs/2026-11-23-agent-work-to-code/acceptance/rank7_long_waits_accept.py", "seconds": 15, "inputs": ["src/RimMandrake/Utils/waitalive.py", "src/RimMandrake/rimflow/detached_helper.py", "design/specs/2026-11-23-long-waits/boundary.md", "design/specs/2026-11-23-long-waits/experiment.json"]},
     {"test": "src/RimMandrake/rimflow/selftest_ledger_landing.py", "seconds": 6.0, "inputs": ["src/RimMandrake/rimflow/ledger_landing.py", "src/RimMandrake/rimflow/selftest_ledger_landing_recorded.jsonl", "src/RimMandrake/rimflow/cli.py", "src/RimMandrake/rimflow/model.py", "src/RimMandrake/Utils/publish.py", "design/specs/2026-11-22-ledger-write-lands-its-shard/boundary.md"]},

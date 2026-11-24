@@ -56,8 +56,8 @@ N = 20                      # needs per stream: the plan's number. Danger: too f
 RIPE_S = 86400              # a debt is a drop when ripe over a day (census of 2026-11-22); younger reads as in flight
 HOMELESS_S = 3 * 86400      # typed messages with no home are read over 3 days (the census's window)
 READER_CAP_USD = 12         # runaway reader spend, stopped from outside (list_dispatch.json opus_cap_usd); never in a brief
-LAUNCH_TIMEOUT_S = 900      # hang guard: one detached_helper.py launch (a clone sync, a fetch)
-CLI_TIMEOUT_S = 600         # hang guard: one rimflow write with --publish
+LAUNCH_TIMEOUT_S = 10800      # hang guard: one detached_helper.py launch (a clone sync, a fetch) # budget: class=launch
+CLI_TIMEOUT_S = 21600         # hang guard: one rimflow write with --publish # budget: class=publish
 VERDICTS = ("outcome", "disposed", "moved", "nothing", "not_a_need")
 FOLLOWED = ("outcome", "disposed")
 WINDOW_HANDS = ("BENCH", "CONDUCTOR", "AGENT")

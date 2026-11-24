@@ -9,4 +9,5 @@ Description=fast-forward the pulse-deploy checkout to origin/main
 Type=oneshot
 Environment=RM_PULSE_DEPLOY=/home/mandrake/rm/pulse-deploy
 ExecStart=/usr/bin/python3 /home/mandrake/rm/pulse-deploy/src/RimMandrake/Utils/ops_core/deploy_update.py update
-TimeoutStartSec=120s
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=86.3s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=900

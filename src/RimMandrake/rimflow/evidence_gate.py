@@ -74,7 +74,7 @@ import evidence                                                 # noqa: E402
 DEFAULT_ROOT = "/home/mandrake/rm/relentless"       # relentless.DEFAULT_ROOT, not imported: cli.py must stay light
 SHADOW = "evidence_shadow.jsonl"
 SAMPLE = 30                 # redesign_final.md: the shadow ends on a sample count, not on days
-GIT_TIMEOUT_S = 5
+GIT_TIMEOUT_S = 60  # budget: danger=a hung git read (a stuck drvfs read) holds its caller; longest=3.8s (210 local git calls sampled at load 20 to 52, 2026-11-24)
 CORPUS = os.path.join(HERE, "evidence_gate_corpus.json")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 AUDITS = os.path.join(REPO, "infrastructure", "state", "close_audits.jsonl")

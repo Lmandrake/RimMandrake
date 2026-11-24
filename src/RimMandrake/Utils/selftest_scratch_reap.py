@@ -1564,12 +1564,12 @@ def third_review_cases(td: Path, origin: Path):
                 (proc / "task" / str(i) / "stat").write_text(f"{i} (a) b) {st} 1 1\n")
             check(R.dead(str(proc)) is want, says)
             shutil.rmtree(proc)
-        real_run, R.subprocess.run = R.subprocess.run, lambda *a, **k: (_ for _ in ()).throw(subprocess.TimeoutExpired("find", 900))
+        real_run, R.progress_guard.run = R.progress_guard.run, lambda *a, **k: (_ for _ in ()).throw(R.progress_guard.Hung("find", 1800, "hung"))
         try:
             late = R.Borrows()
         finally:
-            R.subprocess.run = real_run
-        check(late.hold and "partial" in late.hold[0], "a borrower walk that times out is a hold, not a crash")
+            R.progress_guard.run = real_run
+        check(late.hold and "partial" in late.hold[0], "a borrower walk that hangs is a hold, not a crash")
         real_of, R.Borrows.of = R.Borrows.of, lambda self, p: ["a borrower arrived"]
         check("a borrower arrived" in R.pinned_holds(cr, pin, row, ctx), "a borrower found at the last look holds")
         R.Borrows.of = real_of

@@ -336,7 +336,7 @@ def launch(item, model, cap, brief, seat):
         f.write(brief)
     argv = [sys.executable, os.path.join(HERE, "detached_helper.py"), "launch", "--seat", seat, "--item", item,
             "--brief-file", path, "--model", model, "--budget-usd", "%g" % cap]
-    r = subprocess.run(argv, capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
+    r = subprocess.run(argv, capture_output=True, text=True, timeout=10800, stdin=subprocess.DEVNULL)  # budget: class=launch
     out = ((r.stdout or "") + (r.stderr or "")).strip()
     m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)
     return r.returncode, out, (m.group(1) if m and not r.returncode else None)

@@ -464,7 +464,7 @@ def _submit(T, mod, chains, sha, e, checks=None):
         mod=mod, chains=",".join(chains) if chains else None, checks=",".join(checks) if checks else None,
         visit=e["visit"], proof_build=None, rows=None, item=None, full=False, purpose="commission", by=BY, sha=sha,
         for_item=None, profile=None, proofs=None, priority=PRIORITY, not_before=None, supersedes=None,
-        owner_gate=None, lane="stevedesktop", gate=None, deploy=None, timeout=7200, no_canary=False,
+        owner_gate=None, lane="stevedesktop", gate=None, deploy=None, timeout=21600, no_canary=False,  # budget: danger=a hung run holds one game of the lane with no end; longest=2554s of 430 runs with this bound (testq done records, phase_s, 14 days to 2026-11-24); stays=a worker at an older commit refuses a job over 21600 s before it syncs; raise it when every lane's worker runs schema.py of 2026-11-24
         no_validity=False, situational=False, no_sha_check=False, row_item=[],
         retest_why="in-game visit %s of %s (opened %s) owes these checks; sent by the visit feed "
                    "(RIMMANDRAKE_ROUTE_VISIT_TESTQ_CHECKS_AHEAD_OF_FILLER)" % (

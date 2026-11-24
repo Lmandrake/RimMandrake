@@ -196,6 +196,11 @@ def t_the_round_bound_reads_the_sense_unit():
     want = math.ceil(21 / 2) * (60 + 5 + 120 + 1)
     check("the-round-bound-reads-the-sense-unit: gap from the sense timer, pass length limit+cleanup, no retry beats",
           b == want, (b, want, why))
+    tb = json.loads(p.read_text())
+    tb["phases"]["sense"].update(limit_s=1300, pass_s=120)
+    p.write_text(json.dumps(tb))
+    b, why = OW.compose_round_bound_s(phases=p, sense_timer=tm, n_families=21)
+    check("the-round-bound-reads-the-real-pass: pass_s, not the hang guard, is a healthy pass", b == want, (b, want, why))
 
 
 def main():

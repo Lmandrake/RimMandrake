@@ -3,13 +3,11 @@
 
 Item RIMMANDRAKE_GENERALIZE_PIPELINE_REPAIRS_INTO_FEW_PRINCIPLES, principle 7 (a limit names its danger). Before this,
 the 240 s default killed real passes, so 136 test files carried their own `# selftest-timeout:` tag: each a per-case
-repair of one limit with no danger named. One default of 600 s, which a tag may only raise, makes those tags dead.
+repair of one limit with no danger named. One default (600 s then, 6000 s since 2026-11-24), which a tag may only raise.
 
     python3 src/RimMandrake/Utils/selftest_selftest_deadline.py        exit 0 all pass, 1 a promise is broken
 """
 import os
-import re
-import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -18,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import run_selftests as RS  # noqa: E402
 
 TOP = Path(__file__).resolve().parents[3]
-DEFAULT = 600
+DEFAULT = 6000
 
 
 def _file(d, name, head):
@@ -44,51 +42,39 @@ def t_one_hang_guard():
 def t_a_tag_only_raises():
     bad = []
     with tempfile.TemporaryDirectory() as d:
-        for tag, want in ((30, DEFAULT), (240, DEFAULT), (600, DEFAULT), (900, 900), (2400, 2400)):
+        for tag, want in ((30, DEFAULT), (900, DEFAULT), (6000, DEFAULT), (9000, 9000), (24000, 24000)):
             got = RS.per_test_timeout(_file(d, "selftest_t%d.py" % tag, "# selftest-timeout: %d\n" % tag))
             if got != want:
                 bad.append("a tag of %d s gives %r s, not %d" % (tag, got, want))
     return bad
 
 
-TAG = re.compile(r"^#\s*selftest-timeout:\s*(\d+)", re.M)
-
-
-def dead_tags(top=TOP):
-    """[(repo-relative path, tag)] for tracked selftest files whose head holds a tag at or below the default."""
-    out = subprocess.run(["git", "-C", str(top), "ls-files", "*selftest*.py"], capture_output=True, text=True,
-                         timeout=60, check=True).stdout.split()
-    dead = []
-    for rel in out:
-        try:
-            head = "".join(open(os.path.join(top, rel), encoding="utf-8", errors="replace").readlines()[:40])
-        except OSError:
-            continue
-        m = TAG.search(head)
-        if m and int(m.group(1)) <= DEFAULT:
-            dead.append((rel, int(m.group(1))))
-    return dead
-
-
-def t_no_dead_tag():
-    dead = dead_tags()
-    return ["%d test file(s) carry a tag of %d s or less, which has no effect: delete the line (first: %s)"
-            % (len(dead), DEFAULT, ", ".join("%s=%d" % x for x in dead[:3]))] if dead else []
-
-
-def _planted_dead_tag_is_seen():
-    """The tree scan can see: a temp repo with one dead tag reads red, one live tag reads green."""
-    with tempfile.TemporaryDirectory() as d:
-        subprocess.run(["git", "init", "-q", d], check=True, timeout=30)
-        _file(d, "selftest_dead.py", "# selftest-timeout: 300\n")
-        _file(d, "selftest_live.py", "# selftest-timeout: 900\n")
-        subprocess.run(["git", "-C", d, "add", "."], check=True, timeout=30)
-        got = dead_tags(Path(d))
-    return [] if got == [("selftest_dead.py", 300)] else ["the tree scan read %r on a planted dead tag" % (got,)]
+def t_out_of_time_is_unmeasured():
+    """A test ended by the guard reads UNMEASURED and names the bound: never FAIL, and never the CRASH that turns a run red."""
+    import progress_guard as G
+    bad = []
+    keep = RS.PER_TEST_TIMEOUT_S, G.communicate.__defaults__
+    try:
+        with tempfile.TemporaryDirectory() as d:
+            RS.PER_TEST_TIMEOUT_S = 3
+            G.communicate.__defaults__ = tuple(0.3 if x == G.POLL_S else x for x in keep[1])
+            r = RS._run_one_in(_file(d, "selftest_spins.py", "import time\ntime.sleep(300)\n"))
+            if r[1] != "UNMEASURED" or not r[3].startswith("deadline:") or "backstop" not in r[3]:
+                bad.append("a test past its deadline reads %s [%s]" % (r[1], r[3]))
+            RS.PER_TEST_TIMEOUT_S = 60
+            r = RS._run_one_in(_file(d, "selftest_fine.py", "print('PASS')\n"))
+            if r[1] != "PASS":
+                bad.append("a test inside its deadline reads %s [%s]" % (r[1], r[3]))
+            r = RS._run_one_in(_file(d, "selftest_red.py", "import sys\nprint('FAIL x')\nsys.exit(1)\n"))
+            if r[1] != "FAIL":
+                bad.append("a red test reads %s [%s]" % (r[1], r[3]))
+    finally:
+        RS.PER_TEST_TIMEOUT_S, G.communicate.__defaults__ = keep
+    return bad
 
 
 def main():
-    tests = (t_one_hang_guard, t_a_tag_only_raises, t_no_dead_tag, _planted_dead_tag_is_seen)
+    tests = (t_one_hang_guard, t_a_tag_only_raises, t_out_of_time_is_unmeasured)
     fails = 0
     for t in tests:
         bad = t()

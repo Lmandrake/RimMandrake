@@ -925,7 +925,7 @@ def _run_pipeline_checks(top, changed, cfg, base=(None, "not asked"), committed=
     if not sel:
         print("pipeline checks: a pipeline file changed, no pipeline test reads it")
         return 0.0
-    wall = _run_tree_checks(top, {"checks": sel, "timeout_s": cfg.get("timeout_s", 180)}, what="pipeline check",
+    wall = _run_tree_checks(top, {"checks": sel, "timeout_s": cfg.get("timeout_s", CHECK_CAP_S)}, what="pipeline check",
                             base=base, committed=committed)
     return wall
 
@@ -1166,6 +1166,12 @@ GAME_CHOICE = ("RM_GAME_INSTANCE", "RM_GAME_USERDATA", "RM_GAME_LOGDIR", "GABP_S
 ENOMEM_RX = re.compile(r"^OSError: \[Errno 12\]|^MemoryError\b")
 
 
+# The backstop of one door check that spins; a check that does nothing ends sooner (progress_guard.SILENCE_S).
+# budget: danger=a test in an endless loop holds a landing with no end; evidence=none measured, the loop of any new test;
+# budget: longest=599s (selftest_maturation_autonomy.py PASS at load 45, 2026-11-24; 36 s alone)
+CHECK_CAP_S = 6000
+
+
 def died_on_enomem(rc, output):
     last = (output.strip().splitlines() or [""])[-1]
     return rc not in (0, None) and bool(ENOMEM_RX.match(last))
@@ -1174,7 +1180,9 @@ def died_on_enomem(rc, output):
 def _run_tree_checks(top, cfg, what="tree check", base=None, committed=False):
     """base: (sha, why) from door_base for the pipeline checks, whose reds are re-run on it (split_pre_existing); None
     for the whole-tree checks, which refuse on any red."""
-    limit = cfg.get("timeout_s", 60)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import progress_guard       # a hung check ends on no progress; a slow one on a loaded machine does not
+    limit = cfg.get("timeout_s", CHECK_CAP_S)
     env = {k: v for k, v in os.environ.items() if k not in LEDGER_IDENTITY + GAME_CHOICE}
 
     def one(c, tree=top):
@@ -1184,11 +1192,10 @@ def _run_tree_checks(top, cfg, what="tree check", base=None, committed=False):
         tdir = tempfile.mkdtemp(prefix="publish_check_")
         try:
             argv = [sys.executable, os.path.join(tree, c["test"])] + [str(x) for x in c.get("args") or []]
-            r = subprocess.run(argv, cwd=tree, capture_output=True, text=True,
-                               timeout=limit, stdin=subprocess.DEVNULL, env=dict(env, TMPDIR=tdir))
+            r = progress_guard.run(argv, cwd=tree, cap_s=limit, env=dict(env, TMPDIR=tdir))
             return c, r.returncode, (r.stdout or "") + (r.stderr or ""), time.monotonic() - t0
-        except subprocess.TimeoutExpired:
-            return c, None, "", time.monotonic() - t0
+        except subprocess.TimeoutExpired as e:      # a Hung of the guard: it names which bound ended the check
+            return c, None, str(e), time.monotonic() - t0
         finally:
             shutil.rmtree(tdir, ignore_errors=True)
     t0 = time.monotonic()
@@ -1199,13 +1206,13 @@ def _run_tree_checks(top, cfg, what="tree check", base=None, committed=False):
             print("%s %s died on out of memory (it measured nothing): ran again, alone" % (what, c["test"]))
             res[i] = one(c)
     wall = time.monotonic() - t0
-    slow = [c["test"] for c, rc, _o, _t in res if rc is None]
+    slow = [(c["test"], o) for c, rc, o, _t in res if rc is None]
     for c, _rc, o, _t in res:   # a shadow check is shown, never refused
         if c.get("shadow"):
             print("shadow %s %s: %s" % (what, c["test"], (o.strip().splitlines() or ["(no output)"])[-1]))
     red = [(c, o, rc) for c, rc, o, _t in res if rc not in (0, None) and not c.get("shadow")]
-    for t in slow:
-        print("WARNING: %s %s ran past %d s: UNMEASURED, not refused" % (what, t, limit))
+    for t, why in slow:
+        print("WARNING: %s %s was ended (%s): UNMEASURED, not refused" % (what, t, why))
     notes, pre, flaky = {}, [], []
     if red and base is not None:
         red, pre = split_pre_existing(top, base, red, one, committed=committed, flaky=flaky)

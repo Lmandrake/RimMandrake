@@ -7,4 +7,5 @@ Type=oneshot
 ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/mirror.py sync --timer
 Nice=10
 IOSchedulingClass=idle
-TimeoutStartSec=30min
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=235s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=2400

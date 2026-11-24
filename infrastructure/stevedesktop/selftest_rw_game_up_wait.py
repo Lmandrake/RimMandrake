@@ -26,10 +26,10 @@ up = subprocess.run(["sed", "-n", "/^up() {/,/^}/p", SH], capture_output=True, t
 m = re.search(r'-lt "?\$\{RW_UP_WAIT_S:-(\d+)\}"?', up)
 check("up --wait reads its cap from RW_UP_WAIT_S", bool(m))
 wait = int(m.group(1)) if m else 600
-check("default wait %d s >= 2x the longest DONE cold load (%d s)" % (wait, 2 * LONGEST_DONE_LOAD_S), wait >= 2 * LONGEST_DONE_LOAD_S)
+check("default wait %d s >= 10x the longest DONE cold load (%d s)" % (wait, 10 * LONGEST_DONE_LOAD_S), wait >= 10 * LONGEST_DONE_LOAD_S)
 check("the TIMEOUT line names the wait it used", "RW_UP_WAIT_S" in up.split("TIMEOUT", 1)[-1].split("\n", 1)[0])
 src = open(WORKER).read()
-lm = re.search(r'^LOAD_TIMEOUT_S = (\d+)$', src, re.M)
+lm = re.search(r'^LOAD_TIMEOUT_S = (\d+)\b', src, re.M)
 check("worker has LOAD_TIMEOUT_S", bool(lm))
 wt = int(lm.group(1)) if lm else 0
 check("every load in worker.py uses LOAD_TIMEOUT_S", "self.sh(cmd, timeout=LOAD_TIMEOUT_S)" in src

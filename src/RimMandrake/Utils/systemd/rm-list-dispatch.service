@@ -22,4 +22,5 @@ Nice=10
 MemoryMax=2G
 # Hang guard: a tick is a ledger replay, each item's check (list_effect.CMD_TIMEOUT_S each), and at most 2 launches
 # (LAUNCH_TIMEOUT_S each).
-TimeoutStartSec=60min
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=895.7s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=10800

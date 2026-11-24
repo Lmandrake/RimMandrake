@@ -66,6 +66,10 @@ import subprocess
 import sys
 import tempfile
 import time
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import progress_guard  # noqa: E402
+
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from pathlib import Path
 
@@ -73,9 +77,12 @@ from pathlib import Path
 REPO_ROOT = Path(os.environ.get("RM_SELFTEST_REPO_ROOT") or Path(__file__).resolve().parents[3]).resolve()
 # One hang guard for every test, never a speed bar: its danger, evidence and value are the LIMITS entry of
 # design/specs/2026-11-22-selftest-deadline/boundary.md. Speed is selftest.slow_test_flag_s, not this.
-PER_TEST_TIMEOUT_S = 600
+# It is the backstop for a test that spins: a test that does nothing ends sooner (progress_guard.SILENCE_S).
+# budget: danger=a test in an endless loop holds a worker, and the run, with no end; evidence=the page's LIMITS entry;
+# budget: longest=599s (selftest_maturation_autonomy.py PASS at load 45, 2026-11-24)
+PER_TEST_TIMEOUT_S = 6000
 # A test that is slower than that declares a higher deadline in its first 40 lines, e.g.
-#   # selftest-timeout: 1800
+#   # selftest-timeout: 9000
 # A tag only raises the deadline; one at or below the default has no effect.
 _TIMEOUT_TAG = re.compile(r"^#\s*selftest-timeout:\s*(\d+)", re.M)
 
@@ -525,7 +532,7 @@ def _run_capped(path: Path, timeout: int, cap: int = 0, est: int = 0, env=None):
                          start_new_session=True)
     _RUNNING[p.pid] = est
     try:
-        out, err = p.communicate(timeout=timeout)
+        out, err = progress_guard.communicate(p, cap_s=timeout)
     except subprocess.TimeoutExpired:
         cg = _cgroup_of(p.pid)
         if _HARNESS and _in_harness(cg):
@@ -561,7 +568,7 @@ def _run_capped(path: Path, timeout: int, cap: int = 0, est: int = 0, env=None):
 #   PASS        exit 0, the unmeasured phrase never printed, no cap kill
 #   FAIL        the test ran to a verdict and the verdict is failure
 #   UNMEASURED  the test printed UNMEASURED_PHRASE (at ANY exit code) and no FAIL line
-#   CRASH       no verdict was reached: signal death, timeout, memory-cap kill, an
+#   CRASH       no verdict was reached: signal death, memory-cap kill, an
 #               uncaught non-assertion exception, or a harness error/refusal. The
 #               reason is the detail's first line (CRASH_REASONS).
 #   SKIPPED     not run: excluded by name, outside the selected tier, or reused from
@@ -730,9 +737,10 @@ def _run_one_in(path: Path, cap: int = 0, est: int = 0, env=None) -> tuple[Path,
         cut = out.strip().splitlines()[:-len(shown)]
         lost = [ln.strip() for ln in cut if ln.lstrip().startswith("FAIL")][:10]
         return path, state, elapsed, "\n".join([why] + shown + lost)
-    except subprocess.TimeoutExpired:
+    except subprocess.TimeoutExpired as exc:
         elapsed = time.monotonic() - start
-        return path, "CRASH", elapsed, f"timeout: exceeded {per_test_timeout(path)}s"
+        # out of time is not a verdict: it never reads FAIL, and never turns the run red as a CRASH does
+        return path, "UNMEASURED", elapsed, f"deadline: {exc}"
     except Exception as exc:  # harness-side failure: OSError, ENOMEM, bad interpreter
         # Never let this escape into as_completed — one raised future would abort the
         # whole loop and print NO summary at all, which is the truncation this file

@@ -1445,7 +1445,7 @@ def sized_timeout(requested_s, drivers):
         t = max(int(requested_s), WORKER_DRIVER_CAP_S * WORKER_DRIVER_SHARE)
         warn = ("the planned drivers need %d s but the worker caps the driver budget at %d s: the drivers past it "
                 "will be SKIPPED_BUDGET and their chains read UNMEASURED" % (need, WORKER_DRIVER_CAP_S))
-    return min(t, 6 * 3600), need, warn
+    return min(t, 12 * 3600), need, warn
 
 
 def split_sweep(drivers, driver_chains, chains, cap_s=WORKER_DRIVER_CAP_S):
@@ -1946,7 +1946,7 @@ def cmd_sweep(a):
                                  item=None, full="full" in sel, purpose="sweep", by=a.by,
                                  sha=r.stdout.strip(), for_item=a.for_item, profile=None, priority=a.priority,
                                  not_before=None, supersedes=None, owner_gate=None, lane="stevedesktop", deploy=None,
-                                 timeout=14400, no_canary=False, no_validity=False, no_sha_check=True)
+                                 timeout=21600, no_canary=False, no_validity=False, no_sha_check=True)  # budget: danger=a hung run holds one game of the lane with no end; longest=4073s of 10 runs with this bound (testq done records, phase_s, 14 days to 2026-11-24); stays=a worker at an older commit refuses a job over 21600 s before it syncs; raise it when every lane's worker runs schema.py of 2026-11-24
         rc = cmd_submit(sub) or rc
     return rc
 
@@ -2311,7 +2311,7 @@ def fill_once(a):
     sub = argparse.Namespace(mod=a.mod, chains=",".join(pick), rows=None, item=None, full=False,
                              purpose=plan["purpose"], by=FILLER, sha=r.stdout.strip(), for_item=None, profile=None,
                              priority=20, not_before=None, supersedes=None, owner_gate=None, lane="stevedesktop",
-                             deploy=None, timeout=7200, no_canary=False, no_validity=False, no_sha_check=True,
+                             deploy=None, timeout=21600, no_canary=False, no_validity=False, no_sha_check=True,  # budget: danger=a hung run holds one game of the lane with no end; longest=2554s of 430 runs with this bound (testq done records, phase_s, 14 days to 2026-11-24); stays=a worker at an older commit refuses a job over 21600 s before it syncs; raise it when every lane's worker runs schema.py of 2026-11-24
                              row_item=["%s=%s" % kv for kv in sorted((plan.get("row_items") or {}).items())])
     return cmd_submit(sub)
 
@@ -2604,7 +2604,7 @@ def main(argv=None):
     s.add_argument("--sha")
     s.add_argument("--clauses", help="only these clauses, e.g. A1,A2")
     s.add_argument("--priority", type=int, help="default 50; an in-game visit's checks are 40, the filler 20")
-    s.add_argument("--timeout", type=int, default=2700)
+    s.add_argument("--timeout", type=int, default=21600)  # budget: danger=a hung run holds one game of the lane with no end; longest=2103s of 58 runs with this bound (testq done records, phase_s, 14 days to 2026-11-24)
     s.add_argument("--dry", action="store_true")
     s = sub.add_parser("list")
     s.add_argument("--state", choices=STATES)

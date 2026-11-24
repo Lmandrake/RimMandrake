@@ -459,7 +459,7 @@ def make_site(r, log, sh_=sh):
     return site, None
 
 
-def run(mod, tier, ids, outdir, timeout=7200, root=REPO, sh_=sh, tests=None, identity=None):
+def run(mod, tier, ids, outdir, timeout=28800, root=REPO, sh_=sh, tests=None, identity=None):  # budget: danger=a hung run holds one game of the lane with no end; longest=2554s of 430 runs with this bound (testq done records, phase_s, 14 days to 2026-11-24)
     """Run each check's route once per key -> {check: row}. The caller has the tier loaded and proven exact."""
     if tests is None:
         with open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json"), encoding="utf-8") as f:
@@ -534,7 +534,7 @@ def main(argv=None):
     r = sp.add_parser("run")
     for k in ("--mod", "--tier", "--checks", "--out"):
         r.add_argument(k, required=True)
-    r.add_argument("--timeout", type=int, default=7200)
+    r.add_argument("--timeout", type=int, default=28800)  # budget: danger=a hung run holds one game of the lane with no end; longest=2554s of 430 runs with this bound (testq done records, phase_s, 14 days to 2026-11-24)
     a = ap.parse_args(argv)
     if a.cmd == "place":
         import testq_blocks as B

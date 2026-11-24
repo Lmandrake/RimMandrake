@@ -39,7 +39,7 @@ JOB (immutable once submitted; a change is a new job that names the old one in `
   situational   bool (default false): modcheck --situational --policy abort; the result carries the suite's digest
                 (NORTHSTAR_SITUATIONAL_ROLLOUT_1, modcheck/live_queue/situational_pass.py)
   validity      bool (default true): modcheck --validity
-  timeout_s     the run phase's watchdog (default 2700)
+  timeout_s     the run phase's watchdog (default 21600)
 
 RESULT (written once per ATTEMPT by the worker into its outbox; the dispatcher keeps the last one per job):
   schema        "testq.result/1"
@@ -90,7 +90,7 @@ NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+$")
 SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
 DEFAULTS = {"item": None, "profile": "targeted", "priority": 50, "not_before": None, "supersedes": None,
             "owner_gate": None, "lane": "stevedesktop", "deploy": [], "canary": True, "validity": True, "situational": False,
-            "timeout_s": 2700, "row_items": {}, "gate": None, "proof_build": [], "visit": None}
+            "timeout_s": 21600, "row_items": {}, "gate": None, "proof_build": [], "visit": None}
 
 
 class SchemaError(ValueError):
@@ -215,7 +215,7 @@ def validate_job(job):
     for k in ("canary", "validity"):
         need(isinstance(job.get(k), bool), "%s must be a boolean" % k)
     need(isinstance(job.get("situational", False), bool), "situational must be a boolean")   # an older record has none
-    need(isinstance(job.get("timeout_s"), int) and 60 <= job["timeout_s"] <= 6 * 3600, "timeout_s 60..21600")
+    need(isinstance(job.get("timeout_s"), int) and 60 <= job["timeout_s"] <= 12 * 3600, "timeout_s 60..43200")
     return job
 
 
@@ -379,7 +379,7 @@ def json_schema():
             "gate": {"enum": [None] + list(GATES)}, "owner_gate": {"type": ["string", "null"]}, "lane": {"enum": list(LANES)},
             "visit": {"type": ["integer", "null"], "minimum": 1},
             "deploy": names, "proof_build": names, "canary": {"type": "boolean"}, "validity": {"type": "boolean"}, "situational": {"type": "boolean"},
-            "timeout_s": {"type": "integer", "minimum": 60, "maximum": 21600},
+            "timeout_s": {"type": "integer", "minimum": 60, "maximum": 43200},
             "row_items": {"type": "object", "additionalProperties": name},
             "submitted": {"type": "string", "description": "UTC time make_job stamped"},
         },

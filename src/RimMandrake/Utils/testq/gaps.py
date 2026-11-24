@@ -49,7 +49,7 @@ PURPOSE = {"fix_landed": "fix", "item_owed": "guard", "unmeasured": "guard", "ne
 LIVE_LEVELS = ("L1", "L2", "GREEN-MIN")       # the levels one testq run can give an item (minimal list, live)
 SITE_HOLD_ROW = "<site hold"
 TIERS = ("RimMandrake", "RimStarWars", "RimUtinni")
-GIT_TIMEOUT_S = 30
+GIT_TIMEOUT_S = 60  # budget: danger=a hung git read (a stuck drvfs read) holds its caller; longest=3.8s (210 local git calls sampled at load 20 to 52, 2026-11-24)
 PROBE_TIMEOUT_S = 480     # a hang guard. A FlowWorks probe took 78 to 118 s at load 20 (2026-11-24); at 120 the ranking went blind
 
 

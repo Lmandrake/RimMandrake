@@ -9,5 +9,6 @@ WorkingDirectory=/home/mandrake/rm/dispatch
 Nice=19
 IOSchedulingClass=idle
 CPUSchedulingPolicy=batch
-TimeoutStartSec=5400
-ExecStart=/usr/bin/python3 src/RimMandrake/Utils/scratch_reap.py --apply --max-seconds 1800
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=3707.4s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=39600
+ExecStart=/usr/bin/python3 src/RimMandrake/Utils/scratch_reap.py --apply

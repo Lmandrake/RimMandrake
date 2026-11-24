@@ -39,7 +39,7 @@ import time
 import check_margin as CM
 
 TABLE = "version/test_table.json"
-RUN_TIMEOUT_S = 1800      # the slowest measured offline decider is FlowWorks' C# suite, 531 s
+RUN_TIMEOUT_S = 6000      # the slowest measured offline decider is FlowWorks' C# suite, 531 s # budget: danger=a hung deciding test holds the certificate; longest=599s (the slowest offline PASS on a loaded machine, 2026-11-24)
 # how long red_seen's no-fault probe waits before it reads the command as started. Danger: a probe as long as the test
 # doubles every red proof (live commands run for minutes); evidence: a start-up death (import, shell syntax) ends in
 # under 2 s, measured on the 46 Pyrelands live commands, 2026-11-20 (table_commands_start.py)
@@ -163,16 +163,17 @@ def run_offline(root, mod, runner=subprocess.run, now=None, resume=False):
         try:
             r = runner(t["command"], shell=True, cwd=root, capture_output=True, text=True, timeout=RUN_TIMEOUT_S,
                        env=_run_env())
-            rc, last = r.returncode, _last_line(r.stdout, r.stderr)
+            rc, last, cut = r.returncode, _last_line(r.stdout, r.stderr), False
             margins = CM.parse(r.stdout)      # T2: [] when it printed none
         except subprocess.TimeoutExpired:
-            rc, last, margins = -1, "timed out after %d s" % RUN_TIMEOUT_S, None
+            rc, last, margins, cut = -1, "timed out after %d s" % RUN_TIMEOUT_S, None, True    # no verdict: never FAIL
         except OSError as e:
-            rc, last, margins = -1, "could not start: %s" % e, None
+            rc, last, margins, cut = -1, "could not start: %s" % e, None, True
         secs = round(time.time() - t0, 2)
         at = now if now is not None else datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         t["runs_today"] = {"ran": True, "rc": rc, "seconds": secs, "last": last, "at": at,
-                           "result": "PASS" if rc == 0 else "FAIL", "build": build, "command": t["command"]}
+                           "result": "PASS" if rc == 0 else "UNMEASURED" if cut else "FAIL", "build": build,
+                           "command": t["command"]}
         if margins is not None:         # a run that never finished read no margin: no key, never []
             t["runs_today"]["margins"] = margins
         ran += 1

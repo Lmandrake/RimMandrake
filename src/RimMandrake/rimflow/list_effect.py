@@ -62,7 +62,7 @@ CMD_TIMEOUT_S = 600
 # evidence file, so the line carries only its head.
 OUT_IN_EVENT = 400
 # Hang guard for the `rimflow close` subprocess (a publish retries a push; minutes at worst).
-CLOSE_TIMEOUT_S = 900
+CLOSE_TIMEOUT_S = 21600  # budget: class=publish
 VACUOUS = re.compile(r"^\s*(?:true|/bin/true|/usr/bin/true|:|exit(?:\s+0)?|echo\b.*|printf\b.*|test\s+1|\[\s+1\s+\])"
                      r"\s*;?\s*$")
 

@@ -16,4 +16,5 @@ Environment=PYTHONUNBUFFERED=1
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/maturation_dispatch.py tick --apply
 Nice=10
 MemoryMax=1G
-TimeoutStartSec=20min
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=997.7s (user journal, 14 days to 2026-11-24; one tick ran a biomes deploy)
+TimeoutStartSec=10800

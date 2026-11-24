@@ -21,4 +21,5 @@ Nice=10
 MemoryMax=1G
 # A hang guard, not a speed bar: a build stuck on a dead drvfs read or a git call never ends, and a oneshot that never
 # ends never fires again. Measured 2026-11-23: 46 s. The tick's old subprocess bound for the same build was 600 s.
-TimeoutStartSec=10min
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=124.3s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=1800

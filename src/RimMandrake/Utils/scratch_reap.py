@@ -100,6 +100,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import progress_guard  # noqa: E402
 import leftovers  # noqa: E402  (archive root, canonical marks: one definition, leftovers.py's)
 
 HOME = Path.home()
@@ -126,7 +127,6 @@ UNIX_SOCKETS = "/proc/net/unix"
 # A clone's config may tell git to look less hard than this job must: it answers for the bytes on disk, on this filesystem.
 HONEST_STATUS = [w for k in ("core.ignorecase=false", "core.trustctime=true", "core.checkStat=default", "core.fileMode=true",
                                     "core.symlinks=true", "core.ignoreStat=false", "core.fsmonitor=false", "core.untrackedCache=false") for w in ("-c", k)]
-SANITY_DU_S = 240           # 94 GB took 18 s on 2026-11-01
 FIXTURE_TTL_S = 24 * 3600   # owner-authority brief 2026-11-01: disposable selftest_* a day old may go
 WALK_CAP = 3_000_000        # entries; a tree bigger than this is not aged (REFUSE: too big to age)
 DIRTY_CAP = 2 * 1024 ** 3   # dirty/untracked bytes we will tar; more is skipped and reported
@@ -851,9 +851,9 @@ class Borrows:
 
     @staticmethod
     def _walk(tops: list[str]) -> tuple[int, bytes, list[str]]:
-        p = subprocess.run(["find", *tops, "(", "-path", "*.git/objects/[0-9a-f][0-9a-f]", "-o", "-path", "*.git/objects/pack",
+        p = progress_guard.run(["find", *tops, "(", "-path", "*.git/objects/[0-9a-f][0-9a-f]", "-o", "-path", "*.git/objects/pack",
                             ")", "-prune", "-o", "(", "-path", "*/objects/info/alternates", "-o", "(", "-name", ".git",
-                            "-type", "f", ")", ")", "-print0"], capture_output=True, timeout=900)
+                            "-type", "f", ")", ")", "-print0"], text=False)
         return p.returncode, p.stdout, [ln for ln in p.stderr.decode("utf-8", "replace").splitlines() if ln.strip()]
 
     def __init__(self):
@@ -882,8 +882,11 @@ class Borrows:
                 out += more
                 lines += tail
         except subprocess.TimeoutExpired:
-            # A hold, not a crash: the run refuses from here on and still writes its record of what it freed.
-            self.hold.append("find outran 900 s: the borrower map is partial")
+            # A hold, not a crash: the run refuses from here on and still writes its record of what it freed. Only a find
+            # that shows no sign of life is ended: the 900 s deadline before it ended a live one at load 30 to 40, and
+            # that run (2026-11-24 9:00 AM PST) freed nothing.
+            self.hold.append("find hung (%d s with no output and no CPU time): the borrower map is partial"
+                             % progress_guard.SILENCE_S)
             return
         for ln in lines:
             if "No such file" in ln:
@@ -2518,7 +2521,7 @@ def unique_gb(p: Path) -> float | None:
     if not p.is_dir():
         return 0.0
     try:
-        r = subprocess.run(["du", "-s", "-B1", str(p)], capture_output=True, text=True, timeout=SANITY_DU_S)
+        r = progress_guard.run(["du", "-s", "-B1", str(p)])
     except subprocess.TimeoutExpired:
         return None
     if r.returncode != 0:       # du prints the total of what it could read: a partial sum under-reports the limit
@@ -2812,7 +2815,7 @@ def prune_orphan_bundles() -> dict:
     origin/main (orphan_bundles.py; 357 had piled up, 7.7 GB, by 2026-11-16). Never raises: -> {"summary"|"error": ...}."""
     tool = Path(__file__).resolve().parent / "orphan_bundles.py"
     try:
-        r = subprocess.run([sys.executable, str(tool), "prune", "--apply"], capture_output=True, text=True, timeout=900)
+        r = progress_guard.run([sys.executable, str(tool), "prune", "--apply"])
         lines = [ln for ln in r.stdout.splitlines() if ln.startswith(("SUMMARY", "pruned"))]
         return {"rc": r.returncode, "summary": lines} if r.returncode == 0 else {"rc": r.returncode, "error": r.stderr[-300:]}
     except Exception as e:  # noqa: BLE001 - the reap goes on; the record says why the prune did not

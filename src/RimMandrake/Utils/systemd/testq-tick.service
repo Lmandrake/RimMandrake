@@ -12,4 +12,5 @@ ExecStart=-/bin/bash -c 'for m in $(/usr/bin/python3 /home/mandrake/rm/dispatch/
 ExecStart=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/testq.py steward
 ExecStart=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/ingest.py
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/findings_fold.py run
-TimeoutStartSec=900
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=1386.2s (user journal, 14 days to 2026-11-24; 4 of 6 reaches cut a live tick)
+TimeoutStartSec=14400

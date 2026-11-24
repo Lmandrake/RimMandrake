@@ -4,4 +4,5 @@ Description=Claude account usage poll (claude /usage per account; account_usage.
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/account_usage.py poll
-TimeoutStartSec=420s
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=50.6s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=600

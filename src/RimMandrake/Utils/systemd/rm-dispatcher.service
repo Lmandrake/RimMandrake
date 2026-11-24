@@ -11,4 +11,5 @@ Type=oneshot
 WorkingDirectory=/home/mandrake/rm/dispatch
 Environment=GIT_CONFIG_COUNT=2 GIT_CONFIG_KEY_0=gc.autoDetach GIT_CONFIG_VALUE_0=false GIT_CONFIG_KEY_1=maintenance.autoDetach GIT_CONFIG_VALUE_1=false
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/dispatcher.py tick --apply
-TimeoutStartSec=600
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=111.5s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=1200

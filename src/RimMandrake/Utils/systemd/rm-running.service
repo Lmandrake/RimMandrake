@@ -14,4 +14,5 @@ Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/running_now.py
 Nice=10
 MemoryMax=512M
-TimeoutStartSec=90
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=90.3s (user journal, 14 days to 2026-11-24; 660 reaches of 90 s cut a live page build (83 s of CPU in 90 s))
+TimeoutStartSec=1800

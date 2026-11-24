@@ -23,4 +23,5 @@ ExecStart=/bin/bash -lc 'exec python3 src/RimMandrake/Utils/artpipe/idle_fill.py
 Nice=10
 IOSchedulingClass=idle
 MemoryMax=4G
-TimeoutStartSec=75min
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=1353.5s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=13800

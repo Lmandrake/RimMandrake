@@ -115,7 +115,7 @@ def ensure(name, runner=subprocess.run):
         env = dict(os.environ, RM_SCRATCH_ROOT=os.path.dirname(ROOT), RM_SEAT=os.path.basename(ROOT))
         r = runner(["python3", os.path.join(UTILS, "scratch_clone.py"), "clone", "role clone for " + name, "--name",
                     os.path.basename(part), "--checkout", "--fetch", "--dissociate"], env=env, capture_output=True,
-                   text=True, timeout=1800, stdin=subprocess.DEVNULL)
+                   text=True, timeout=10800, stdin=subprocess.DEVNULL)  # budget: class=launch
         if r.returncode or not os.path.isdir(os.path.join(part, ".git")):
             shutil.rmtree(part, ignore_errors=True)
             return False, "scratch_clone failed (exit %d): %s" % (
@@ -213,7 +213,7 @@ def level(clone, land_sh=None):
             if len(row["parents"]) != 1 or not row["touched"] or not all(SHARD_RE.match(t) for t in row["touched"]):
                 continue
             p = subprocess.run(["sh", tool, row["sha"]] + row["touched"], cwd=clone, capture_output=True, text=True,
-                               timeout=600, stdin=subprocess.DEVNULL, env=dict(os.environ, LAND_REPO=clone))
+                               timeout=21600, stdin=subprocess.DEVNULL, env=dict(os.environ, LAND_REPO=clone))  # budget: class=publish
             m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", p.stdout or "")
             if p.returncode or not m:
                 refused[row["sha"]] = "land.sh exit %d: %s" % (p.returncode, ((p.stdout or "") + (p.stderr or "")).strip()[-200:])
@@ -255,7 +255,7 @@ def land(clone, seat, runner=subprocess.run, tidy=_tidy, exists=os.path.isdir, l
             out["shard"] = "clean"
         else:
             p = runner(["./publish", "-m", "ledger: %s role run (role clone %s)" % (seat, os.path.basename(clone)), shard],
-                       cwd=clone, capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL)
+                       cwd=clone, capture_output=True, text=True, timeout=21600, stdin=subprocess.DEVNULL)  # budget: class=publish
             said = ((p.stdout or "") + (p.stderr or "")).strip()
             m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", said)
             if p.returncode or not m:

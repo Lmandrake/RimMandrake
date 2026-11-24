@@ -5031,9 +5031,10 @@ def compose_round_bound_s(phases=None, timer=None, n_families=None, sense_timer=
         sense = tab["phases"][SENSE_PHASE]
         per = int(sense["per_beat"])
         apart = bool(sense.get("apart"))
-        # apart (its own unit): a pass lasts at most its limit and cleanup, the gap is its own timer's, and a kill is no
-        # longer a normal turn (the limit is a hang guard), so no retry beats are counted
-        budget = float(sense["limit_s"]) + float(sense["cleanup_s"]) if apart else float(tab["budget_s"])
+        # apart (its own unit): the gap is its own timer's, and a kill is no longer a normal turn (the limit is a hang
+        # guard), so no retry beats are counted. pass_s is the longest real pass: the hang guard is 10 times that, and a
+        # healthy round read off the hang guard would carry a dead family for 4 h
+        budget = float(sense.get("pass_s") or sense["limit_s"]) + float(sense["cleanup_s"]) if apart else float(tab["budget_s"])
         timer = (sense_timer or METRONOME_SENSE_TIMER) if apart else timer
         unit = {"ms": 0.001, "s": 1, "sec": 1, "min": 60, "m": 60, "h": 3600}
         tmr = {}

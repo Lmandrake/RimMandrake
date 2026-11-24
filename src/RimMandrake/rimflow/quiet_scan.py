@@ -51,7 +51,7 @@ OUTCOMES = ("clean", "flagged", "noted")
 PAC = dt.timezone(dt.timedelta(hours=-8), "PST")
 # Hang guards (the class of call_deadline_lint.py), far above a real run: the week's `git log` took 6 s (2026-11-24).
 GIT_TIMEOUT_S = 300
-LAUNCH_TIMEOUT_S = 900
+LAUNCH_TIMEOUT_S = 10800  # budget: class=launch
 REC = "infrastructure/state/code_review"
 
 

@@ -14,6 +14,7 @@ Type=oneshot
 WorkingDirectory=/home/mandrake/rm/dispatch
 Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
 Nice=15
-TimeoutStartSec=8h
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=3271.7s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=36000
 # Sundays add the law proof (each law family must go red under its planted break)
 ExecStart=/bin/sh -c 'if [ "$(date +%%u)" = 7 ]; then exec python3 src/RimMandrake/Utils/vv_matrix_clock.py --prove; else exec python3 src/RimMandrake/Utils/vv_matrix_clock.py; fi'

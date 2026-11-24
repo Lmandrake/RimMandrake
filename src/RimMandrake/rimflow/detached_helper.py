@@ -572,7 +572,7 @@ def take_clone(item, runner=subprocess.run, name=None):
     if os.path.isdir(dest) and not (os.path.isdir(os.path.join(dest, ".git")) and os.path.isfile(os.path.join(dest, "sync"))):
         replaced = "half-made clone replaced: " + move_half_made_aside(dest, name, runner) + "; "
     if os.path.isdir(os.path.join(dest, ".git")):
-        r = runner(["./sync"], cwd=dest, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)
+        r = runner(["./sync"], cwd=dest, capture_output=True, text=True, timeout=1800, stdin=subprocess.DEVNULL)  # budget: class=call
         said = ((r.stdout or "") + (r.stderr or "")).strip()
         if r.returncode:    # a stale clone builds stale code: refused, as a new clone that fails is
             # (RIMMANDRAKE_REFUSE_STALE_DET_CLONE_WHEN_SYNC_FAILS)
@@ -581,7 +581,7 @@ def take_clone(item, runner=subprocess.run, name=None):
     env = dict(os.environ, RM_SCRATCH_ROOT=pool_root(), RM_SEAT="clones")
     r = runner(["python3", os.path.join(REPO, "src", "RimMandrake", "Utils", "scratch_clone.py"), "clone",
                 "detached run for " + item, "--name", name, "--checkout", "--fetch"],
-               env=env, capture_output=True, text=True, timeout=540, stdin=subprocess.DEVNULL)
+               env=env, capture_output=True, text=True, timeout=10800, stdin=subprocess.DEVNULL)  # budget: class=launch
     if r.returncode or not os.path.isdir(os.path.join(dest, ".git")):
         raise RuntimeError("scratch_clone failed (exit %d): %s" % (r.returncode, ((r.stdout or "") + (r.stderr or ""))))
     return dest, replaced + "made " + dest
@@ -1811,7 +1811,7 @@ def file_remainder(rec, got, report, runner=subprocess.run):
                  ["note", rest["name"], "--text", "Filed at the end of %s, which closed %s. Its report:\n%s"
                   % (rec["unit"], item, spend_talk.strip(report))]):
         r = runner(["python3", cli] + argv + ["--seat", rec["seat"], "--why", "a run closed its item with parts unbuilt"],
-                   cwd=rec["clone"], capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+                   cwd=rec["clone"], capture_output=True, text=True, timeout=1800, stdin=subprocess.DEVNULL)  # budget: class=call
         if r.returncode:
             return "remainder FAILED (%s exit %d: %s)" % (argv[0], r.returncode,
                                                           ((r.stderr or "") + (r.stdout or "")).strip()[-200:])
@@ -2205,7 +2205,7 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         own = "infrastructure/state/ledger/events/%s.jsonl" % seat
         r = runner(["./publish", "-m", "ledger: detached run on %s ended" % item, own]
                    + [p for p in dirty_shards(clone, seat) if p != own],
-                   cwd=clone, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)
+                   cwd=clone, capture_output=True, text=True, timeout=21600, stdin=subprocess.DEVNULL)  # budget: class=publish
         pub = ((r.stdout or "") + (r.stderr or "")).strip()
         m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", pub)
         steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub)))

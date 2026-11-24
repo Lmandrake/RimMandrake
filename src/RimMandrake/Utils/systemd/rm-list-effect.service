@@ -20,4 +20,5 @@ ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/li
 Nice=10
 MemoryMax=2G
 # Hang guard: a beat is a ledger replay plus each check (CMD_TIMEOUT_S each) and a close per passing item.
-TimeoutStartSec=60min
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=583.9s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=6000

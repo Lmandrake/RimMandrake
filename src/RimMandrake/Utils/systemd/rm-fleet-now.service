@@ -13,4 +13,5 @@ ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/flee
 Environment=RM_DATA_ROOT=/mnt/d/ClaudeWork/rimmandrake
 Nice=10
 MemoryMax=256M
-TimeoutStartSec=30
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=3.4s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=60

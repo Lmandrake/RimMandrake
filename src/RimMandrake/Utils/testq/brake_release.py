@@ -172,7 +172,7 @@ def submit(mod, req):
         return 2, "no origin/main in %s: %s" % (T.REPO, r.stderr.strip()[-200:])
     a = argparse.Namespace(mod=mod, chains=",".join(chains), rows=None, item=None, full=False, purpose=purpose, by=BY,
                            sha=r.stdout.strip(), for_item=None, profile=None, priority=30, not_before=None,
-                           supersedes=None, owner_gate=None, lane=T.STEVE, deploy=None, timeout=7200, no_canary=False,
+                           supersedes=None, owner_gate=None, lane=T.STEVE, deploy=None, timeout=21600, no_canary=False,  # budget: danger=a hung run holds one game of the lane with no end; longest=2554s of 430 runs with this bound (testq done records, phase_s, 14 days to 2026-11-24); stays=a worker at an older commit refuses a job over 21600 s before it syncs; raise it when every lane's worker runs schema.py of 2026-11-24
                            no_validity=False, no_sha_check=True, retest_why=why,
                            row_item=["%s=%s" % kv for kv in sorted(rows.items())])
     out = io.StringIO()

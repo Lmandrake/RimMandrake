@@ -648,7 +648,7 @@ def after_launch(brief, item=None):
 
 # ---- the one list of meanings that nobody finds --------------------------------------------------------------------
 def _cli(argv):
-    r = subprocess.run([sys.executable, os.path.join(RIMFLOW, "cli.py")] + argv, cwd=TOP, capture_output=True, text=True, timeout=600)  # hang guard: a rimflow write that publishes takes 30-120 s
+    r = subprocess.run([sys.executable, os.path.join(RIMFLOW, "cli.py")] + argv, cwd=TOP, capture_output=True, text=True, timeout=21600)  # hang guard: a rimflow write that publishes takes 30-120 s # budget: class=publish
     return r.returncode, (r.stdout + r.stderr).strip()
 
 

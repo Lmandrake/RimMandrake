@@ -1380,7 +1380,7 @@ def cert_red_waits(row, ahead=()):
 # unattended burn, owner 2026-11-12): at most twice the visit's cap.
 INGAME_CONTINUE_ON_CAP = 1
 
-RERUN_MAX_S = 4 * 3600     # a certificate rerun unit's bound (RuntimeMaxSec); FlowWorks' C# suite alone ran 531 s
+RERUN_MAX_S = 15 * 3600     # a certificate rerun unit's bound (RuntimeMaxSec); FlowWorks' C# suite alone ran 531 s # budget: danger=a hung rerun holds the one pool clone; longest=5325s (control.db, 31 cert_rerun runs, 14 days to 2026-11-24)
 
 
 def stale_key(cv):
@@ -1588,7 +1588,7 @@ def cert_rerun_worker(mod, key, unit, runner=subprocess.run, take=None, now=time
         g = runner(["git", "status", "--porcelain", "--", rel], cwd=clone, timeout=120, **kw)
         if (g.stdout or "").strip():
             p = runner(["./publish", "-m", "maturation: %s certificate rerun on its build (dispatch, zero tokens)" % mod,
-                        rel], cwd=clone, timeout=900, **kw)
+                        rel], cwd=clone, timeout=21600, **kw)  # budget: class=publish
             m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", (p.stdout or "") + (p.stderr or ""))
             out = (p.stdout or "") + (p.stderr or "")
             hit = re.search(r"stopped on a conflict in: (\S+?)\.?\s", out + " ")
@@ -1617,7 +1617,7 @@ def cert_rerun_worker(mod, key, unit, runner=subprocess.run, take=None, now=time
 # on 2026-11-24, and no other mod could start. One book per mod, s["game_deploy"]: {unit, game, kind, key, at, tries,
 # ended, result, stale}. Only the tick writes it; the unit writes its result file.
 
-DEPLOY_MAX_S = 10 * 998    # the unit's hang guard: a hung deploy would hold the game's lock for good; the one measured ran 998 s
+DEPLOY_MAX_S = 10 * 998    # the unit's hang guard: a hung deploy would hold the game's lock for good; the one measured ran 998 s  # budget: class=deploy
 
 
 def game_deploy_dir():
@@ -1644,7 +1644,7 @@ def game_deploy_unit(mod, game, kind, purpose, seat="BENCH", now=None):
     import control as C     # the one admission point (control.py)
     try:
         r = C.launch_unit(argv, {"family": "game_deploy", "unit": unit, "mod": mod}, capture_output=True, text=True,
-                          timeout=60, stdin=subprocess.DEVNULL)
+                          timeout=1800, stdin=subprocess.DEVNULL)  # budget: class=call
     except (OSError, subprocess.SubprocessError) as e:
         return 1, "systemd-run failed: %s: %s" % (type(e).__name__, e), None
     if r.returncode:
@@ -3648,7 +3648,7 @@ def land_spend(root, paths, fx=None):
         import designer_stage as DS
         p = own_cgroup.run([DS.LAND, "-m", (fx or {}).get("land_msg") or "maturation: spend rows of ended runs (Dispatch step)"]
                            + paths, cwd=root,
-                           capture_output=True, text=True, timeout=300, env=dict(os.environ, LAND_REPO=root))
+                           capture_output=True, text=True, timeout=21600, env=dict(os.environ, LAND_REPO=root))  # budget: class=publish
     except (OSError, subprocess.SubprocessError) as e:
         return "land failed: %s: %s" % (type(e).__name__, e)
     if p.returncode and "nothing to land" not in p.stderr:
@@ -4959,7 +4959,7 @@ def _void(o):
         paths = [p for p in paths if p not in same]
     if paths and not o.no_land:
         r = subprocess.run([os.path.join(root, "publish"), "-m", "%s: %d run(s), %s" % (
-            o.cmd, len(lines), o.why[:80])] + paths, cwd=root, capture_output=True, text=True, timeout=900)
+            o.cmd, len(lines), o.why[:80])] + paths, cwd=root, capture_output=True, text=True, timeout=21600)  # budget: class=publish
         last = [x for x in (r.stdout or "").splitlines() if x.startswith("PUBLISHED")]
         if r.returncode != 0 or not last:
             print("%s WRITTEN, NOT LANDED: ./publish exited %d; land these by hand: %s\n%s" % (

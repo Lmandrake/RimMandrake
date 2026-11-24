@@ -616,7 +616,7 @@ def cmd_start(retry):
 
 # `init && up --wait`: rw_game.sh waits up to RW_UP_WAIT_S (1200 s) for the bridge, after init and Steam. This outer limit
 # guards a load command that hangs past its own wait (selftest_rw_game_up_wait.py keeps the two in order).
-LOAD_TIMEOUT_S = 1500
+LOAD_TIMEOUT_S = 6300  # budget: danger=a hung game load holds the lane; longest=602s (testq done records, phase_s, 14 days to 2026-11-24)
 PF = None   # the preflight module, once preflight_job has imported it
 
 
@@ -953,7 +953,7 @@ class Attempt:
                 return self.fail("INVALID", "DEPLOY", "game down before the proof build failed: " + tail)
             cmd = os.environ.get("TESTQ_CMD_PROOFBUILD") or PROOF_BUILD
             rc, tail = self.sh("%s --mod %s --mods-dir %s" % (cmd, shlex.quote(m), shlex.quote(self.mods_dir())),
-                               log_name="proof_build.log", timeout=1200)
+                               log_name="proof_build.log", timeout=10800)  # budget: class=deploy
             if rc != 0:
                 return self.fail("INVALID", "DEPLOY", "proof build of %s failed: %s" % (m, tail[-300:]))
             self.memo_mods = None       # the game's DLL is no longer what any memo recorded
@@ -974,7 +974,7 @@ class Attempt:
             self.say("deploy: with the mods of ours its composed list names: " + ", ".join(extra))
         mods += [m for m in extra if m not in mods]
         if override:
-            rc, tail = self.sh(override + " " + " ".join(shlex.quote(m) for m in mods), timeout=1200)
+            rc, tail = self.sh(override + " " + " ".join(shlex.quote(m) for m in mods), timeout=10800)  # budget: class=deploy
             if rc != 0 and refused_line(tail):     # a lane that may not deploy here (archmagi_phases.py): not a fault
                 return self.fail("REFUSED", "DEPLOY", refused_line(tail))
             return (rc == 0 or self.fail("INVALID", "DEPLOY", "deploy failed: " + tail)) and self.companion()
@@ -983,7 +983,7 @@ class Attempt:
         # a folded source (Pyrelands) or the composed target (RimMandrake.Biomes) is `--compose biomes`, never `--mod`
         args = " ".join(f + " " + shlex.quote(v) for f, v in S.deploy_flags(mods, os.path.join(RUNNER, "src")))
         plan = "python3 src/RimMandrake/Utils/deploy_custom_mods.py " + args
-        rc, _ = self.sh(plan + " > %s 2>&1" % shlex.quote(os.path.join(self.d, "deploy_plan.txt")), timeout=600)
+        rc, _ = self.sh(plan + " > %s 2>&1" % shlex.quote(os.path.join(self.d, "deploy_plan.txt")), timeout=10800)  # budget: class=deploy
         if rc == 0:
             self.say("deploy: no drift, game kept")
             return self.companion()
@@ -993,7 +993,7 @@ class Attempt:
         rc, tail = self.sh(self.cmd_down(), timeout=300)
         if rc != 0:
             return self.fail("INVALID", "DEPLOY", "game down before deploy failed: " + tail)
-        rc, tail = self.sh(plan + " --apply", timeout=1200)
+        rc, tail = self.sh(plan + " --apply", timeout=10800)  # budget: class=deploy
         return (rc == 0 or self.fail("INVALID", "DEPLOY", "deploy --apply failed: " + tail)) and self.companion()
 
     def memo_state(self, mods):
@@ -1442,7 +1442,7 @@ class Attempt:
     def tier_reading(self, tier):
         """tier_load.py check -> its JSON reading; a check that printed none is a reading that measured nothing."""
         cmd = (os.environ.get("TESTQ_CMD_TIERCHECK") or TIER_CHECK) + " " + shlex.quote(tier)
-        rc, tail = self.sh(cmd, log_name="tier_check.log", timeout=180)
+        rc, tail = self.sh(cmd, log_name="tier_check.log", timeout=2500)  # budget: danger=a hung tier check holds the lane; longest=241s (the whole attest phase, an upper bound) (testq done records, phase_s, 14 days to 2026-11-24)
         for line in reversed((tail or "").splitlines()):
             line = line.strip()
             if line.startswith("{"):
@@ -1476,7 +1476,7 @@ class Attempt:
             return self.fail("INVALID", "LOAD", "game down before the tier swap failed: " + tail)
         swap = os.environ.get("TESTQ_CMD_TIERSWAP") or TIER_SWAP % shlex.quote(
             "testq %s on SteveDesktop: the worker holds this machine's game guard" % self.aid)
-        rc, tail = self.sh(swap + " " + shlex.quote(tier), log_name="tier_swap.log", timeout=600)
+        rc, tail = self.sh(swap + " " + shlex.quote(tier), log_name="tier_swap.log", timeout=10800)  # budget: class=deploy
         if rc != 0:
             return self.fail("INVALID", "LOAD", "modset_builder --tier %s --apply failed: %s" % (tier, tail[-300:]))
         if not self.load():
@@ -1501,7 +1501,7 @@ class Attempt:
         path = os.path.join(os.environ["TESTQ_PROOFS_DIR"], self.job["item"] + ".txt") if os.environ.get(
             "TESTQ_PROOFS_DIR") else os.path.join(CLONE, rel)
         lines = S.proof_lines(read_text(path) or "")
-        budget = int(os.environ.get("TESTQ_RUN_TIMEOUT_S") or self.job.get("timeout_s", 2700))
+        budget = int(os.environ.get("TESTQ_RUN_TIMEOUT_S") or self.job.get("timeout_s", 21600))
         per = max(60, budget // max(1, len(clauses)))
         rows = []
         for c in clauses:
@@ -1542,7 +1542,7 @@ class Attempt:
         if not r.get("exact"):
             return none_ran(r.get("why") or "the tier-exact load check did not read", "INVALID", "LOAD")
         out = os.path.join(self.d, "checks")
-        budget = int(os.environ.get("TESTQ_RUN_TIMEOUT_S") or self.job.get("timeout_s", 2700))
+        budget = int(os.environ.get("TESTQ_RUN_TIMEOUT_S") or self.job.get("timeout_s", 21600))
         cmd = os.environ.get("TESTQ_CMD_CHECKS") or CHECKS_RUN
         rc, tail = self.sh("%s --mod %s --tier %s --checks %s --out %s --timeout %d" % (
             cmd, shlex.quote(self.job["mod"]), shlex.quote(S.tier_of(self.job)), shlex.quote(",".join(ids)),
@@ -1571,7 +1571,7 @@ class Attempt:
 
     def run_modcheck(self):
         args = S.modcheck_args(self.job)
-        timeout = int(os.environ.get("TESTQ_RUN_TIMEOUT_S") or self.job.get("timeout_s", 2700))
+        timeout = int(os.environ.get("TESTQ_RUN_TIMEOUT_S") or self.job.get("timeout_s", 21600))
         base = os.environ.get("TESTQ_CMD_RUN") or (driver_budget_export(timeout) + RUN_BASE)
         cmd = base + " " + " ".join(shlex.quote(a) for a in args)
         for attempt_no in (1, 2):

@@ -175,7 +175,7 @@ def seed_and_land(root, mod):
     try:
         p = subprocess.run([DS.LAND, "-m", "maturation: seed %s's stage record (Dispatch step, a Designer concept with "
                             "no record)" % mod, "design/concepts/%s/%s" % (mod, M.RECORD)], cwd=root,
-                           capture_output=True, text=True, timeout=300, env=dict(os.environ, LAND_REPO=root))
+                           capture_output=True, text=True, timeout=21600, env=dict(os.environ, LAND_REPO=root))  # budget: class=publish
     except subprocess.TimeoutExpired as e:      # the same cleanup as a refusal (RIMMANDRAKE_CLEAN_SEED_RECORD_WHEN_LANDING_TIMES_OUT)
         p = subprocess.CompletedProcess(e.cmd, 124, "", "timed out after %ss" % e.timeout)
     except OSError as e:    # land.sh could not start (RIMMANDRAKE_CLEAN_SEED_RECORD_WHEN_LAND_CANNOT_START)
@@ -458,7 +458,7 @@ def unblock_and_land(root, mod, items, now=None, land=None, unblock=None):
         (unblock or DS.unblock)(d, why)
         if land:
             return land(subject, [rel])
-        p = subprocess.run([DS.LAND, "-m", subject, rel], cwd=root, capture_output=True, text=True, timeout=300,
+        p = subprocess.run([DS.LAND, "-m", subject, rel], cwd=root, capture_output=True, text=True, timeout=21600,  # budget: class=publish
                            env=dict(os.environ, LAND_REPO=root))
         if p.returncode:
             raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()))
@@ -570,7 +570,7 @@ def _move_and_land(root, mod, what, move, subject, land=None):
             raise RuntimeError("%s of %s wrote no file" % (what, mod))
         if land:
             return land(subject, rels)
-        p = subprocess.run([DS.LAND, "-m", subject] + rels, cwd=root, capture_output=True, text=True, timeout=300,
+        p = subprocess.run([DS.LAND, "-m", subject] + rels, cwd=root, capture_output=True, text=True, timeout=21600,  # budget: class=publish
                            env=dict(os.environ, LAND_REPO=root))
         if p.returncode:
             raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()))
@@ -768,7 +768,7 @@ def autolock_and_land(root, mod, now=None, land=None):
         if land:
             return land(subject, [vrel, drel])
         import designer_stage as DS
-        p = subprocess.run([DS.LAND, "-m", subject, vrel, drel], cwd=root, capture_output=True, text=True, timeout=300,
+        p = subprocess.run([DS.LAND, "-m", subject, vrel, drel], cwd=root, capture_output=True, text=True, timeout=21600,  # budget: class=publish
                            env=dict(os.environ, LAND_REPO=root))
         if p.returncode:
             raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()))
@@ -822,7 +822,7 @@ def repin_and_land(root, mod, sources, now=None, land=None, repin=None):
         (repin or DS.repin)(d, list(sources), why, repo=root)
         if land:
             return land(subject, [rel])
-        p = subprocess.run([DS.LAND, "-m", subject, rel], cwd=root, capture_output=True, text=True, timeout=300,
+        p = subprocess.run([DS.LAND, "-m", subject, rel], cwd=root, capture_output=True, text=True, timeout=21600,  # budget: class=publish
                            env=dict(os.environ, LAND_REPO=root))
         if p.returncode:
             raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()))
@@ -2145,7 +2145,7 @@ def launch_brief(item, text, model, cap, seat="BENCH", runner=subprocess.run, en
         argv += ["--env", "%s=%s" % (k, v)]
     if session:     # a pilot holder's recorded session (modledger.resume_plan), resumed
         argv += ["--resume", session, "--planned-resume"]     # resume_plan decided it: not the 150k continuation rule
-    r = runner(argv, capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
+    r = runner(argv, capture_output=True, text=True, timeout=10800, stdin=subprocess.DEVNULL)  # budget: class=launch
     m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)
     return r.returncode, ((r.stdout or "") + (r.stderr or "")).strip(), (m.group(1) if m and not r.returncode else None)
 

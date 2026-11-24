@@ -5,4 +5,5 @@ Description=testq steward heartbeat watcher (STEVE_STEWARD_BUILD_NO_LLM_OWNER)
 Type=oneshot
 WorkingDirectory=/home/mandrake/rm/dispatch
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/testq.py steward-watch
-TimeoutStartSec=300
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=81.7s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=900

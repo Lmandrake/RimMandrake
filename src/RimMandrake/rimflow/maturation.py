@@ -2597,7 +2597,7 @@ def deploy_state(root, mod, runner=subprocess.run, game="a"):
     fix = "python3 src/RimMandrake/Utils/deploy_custom_mods.py %s --apply" % " ".join(args)
     out = {"state": "could_not_look", "loaded": [], "ignored": [], "args": args, "fix": fix}
     try:
-        r = runner(_plan_cmd(args), capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
+        r = runner(_plan_cmd(args), capture_output=True, text=True, timeout=10800, stdin=subprocess.DEVNULL)  # budget: class=deploy
     except (OSError, subprocess.SubprocessError) as e:
         return dict(out, why="the deploy plan could not read the game copy (%s: %s)" % (type(e).__name__, e))
     text = ((r.stdout or "") + (r.stderr or "")).strip()
@@ -2774,7 +2774,7 @@ def _deploy_repair_held(root, mod, game, reading, gi, purpose, runner=subprocess
 
     def run(cmd):
         try:
-            r = runner(cmd, capture_output=True, text=True, timeout=1800, stdin=subprocess.DEVNULL)
+            r = runner(cmd, capture_output=True, text=True, timeout=10800, stdin=subprocess.DEVNULL)  # budget: class=deploy
             return r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()
         except (OSError, subprocess.SubprocessError) as e:
             return 1, "%s: %s" % (type(e).__name__, e)
@@ -2839,7 +2839,7 @@ def game_repair(root, mod, game, kind, purpose, seat="BENCH", game_ops=None, com
     gi = game_ops or _game_ops()
     out = {"mod": mod, "game": game, "kind": kind, "generation": None, "sha": None, "paths": deploy_paths(root, mod)}
     try:
-        r = subprocess.run(["git", "-C", REPO, "rev-parse", "HEAD"], capture_output=True, text=True, timeout=60)
+        r = subprocess.run(["git", "-C", REPO, "rev-parse", "HEAD"], capture_output=True, text=True, timeout=1800)  # budget: class=call
         r.check_returncode()
     except (OSError, subprocess.SubprocessError) as e:
         return dict(out, state="fail", text="could not read this tree's commit, so nothing is deployed: %s: %s" % (
@@ -3073,7 +3073,7 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
                **({"RM_CONTROL_STAGE": f["stage"]} if f.get("stage") else {}))     # admission's scopes (control.py)
     for k, v in sorted((env or {}).items()):
         argv += ["--env", "%s=%s" % (k, v)]
-    r = runner(argv, capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
+    r = runner(argv, capture_output=True, text=True, timeout=10800, stdin=subprocess.DEVNULL)  # budget: class=launch
     out = ((r.stdout or "") + (r.stderr or "")).strip()
     m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)
     return r.returncode, out, (m.group(1) if m and not r.returncode else None)
@@ -4417,7 +4417,7 @@ def tag_pass(root, mod, version, paths=None):
             return fail("land", "git add: %s" % (add.stderr or "").strip()[-300:])
         try:
             r = subprocess.run([pub, "-m", "%s %s PASSED: pass record, stage record and journal (maturation.py)"
-                                % (mod, version)] + list(paths), cwd=root, capture_output=True, text=True, timeout=480)
+                                % (mod, version)] + list(paths), cwd=root, capture_output=True, text=True, timeout=21600)  # budget: class=publish
         except (OSError, subprocess.TimeoutExpired) as e:
             return fail("land", "publish: %r" % (e,))
         m = re.search(r"^PUBLISHED ([0-9a-f]{7,40})", r.stdout or "", re.M)

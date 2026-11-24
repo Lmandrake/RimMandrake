@@ -23,4 +23,5 @@ Nice=10
 MemoryMax=2G
 # Danger: a hung run blocks every later page. Measured 2026-11-19: a full run with all 32 boundary tests files took
 # 98 s; a cached run 1 s. One tests file is cut at 600 s by code_review_status.TESTS_TIMEOUT_S.
-TimeoutStartSec=20min
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=1108.2s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=11400

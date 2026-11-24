@@ -3156,7 +3156,7 @@ def publish_shard(seat, clone=None):
     try:
         r = subprocess.run([pub if os.path.exists(pub) else os.path.join(REPO, "publish"), "-m",
                             "ledger: %s shard" % seat, shard], cwd=clone,
-                           capture_output=True, text=True, timeout=240)
+                           capture_output=True, text=True, timeout=21600)  # budget: class=publish
     except (OSError, subprocess.SubprocessError) as e:
         return "./publish failed to run: %s" % e
     if r.returncode:

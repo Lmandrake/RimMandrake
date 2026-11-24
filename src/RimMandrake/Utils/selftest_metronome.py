@@ -144,9 +144,11 @@ def write_table(path, t):
 
 # 1. the shipped table, and a table whose reserve cannot fit
 t = m.load_table()
-ok(t["budget_s"] == 45, "shipped table: the beat's total budget is 45 s")
+ok(t["budget_s"] >= 10 * 40.2, "shipped table: the beat's budget is a hang guard, 10 times the longest real beat or more")
+ok(sum(p["limit_s"] + p["cleanup_s"] for p in t["phases"].values() if not p.get("apart")) <= t["budget_s"],
+   "shipped table: one beat holds every phase at its limit, so a slow phase never defers a sibling")
 res = sum(t["phases"][n]["limit_s"] + t["phases"][n]["cleanup_s"] for n in m.RESERVED)
-ok(m.RESERVED == ("raise", "ring") and res <= 45, "shipped table: raise and ring are reserved and fit (%.0f s)" % res)
+ok(m.RESERVED == ("raise", "ring") and res <= t["budget_s"], "shipped table: raise and ring are reserved and fit (%.0f s)" % res)
 src = (HERE / "ops_watch.py").read_text()
 fams = None
 for node in ast.parse(src).body:

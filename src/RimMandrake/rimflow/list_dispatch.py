@@ -73,9 +73,9 @@ PAC = dt.timezone(dt.timedelta(hours=-8), "PST")
 ACCEPT_RX = re.compile(r"python3\s+((?:design|src)/[^\s'\"`]+?_accept\.py)\b")
 WRITTEN_NOT_LANDED = 4      # a rimflow write's --publish exit: the event stands, its landing failed (ledger_landing.py)
 # Hang guard (the class of call_deadline_lint.py) for one `detached_helper.py launch` (a clone sync, a fetch).
-LAUNCH_TIMEOUT_S = 900
+LAUNCH_TIMEOUT_S = 10800  # budget: class=launch
 # Hang guard for `rimflow effect` (it runs the check once, then publishes).
-EFFECT_TIMEOUT_S = 900
+EFFECT_TIMEOUT_S = 6000  # budget: danger=a hung outcome check holds the list tick; longest=584s (rm-list-effect.service, user journal, 14 days to 2026-11-24)
 
 
 def load_cfg(path=CFG_PATH):

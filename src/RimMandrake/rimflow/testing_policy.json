@@ -85,7 +85,7 @@
    "signal": "raise if a night gives up on restarts alone; lower if repeated tries hurt the machine"
   },
   "selftest.per_test_timeout_s": {
-   "value": 600,
+   "value": 6000,
    "unit": "seconds (a `# selftest-timeout: N` tag above it raises it per file; a lower tag has no effect)",
    "why": "run_selftests.py PER_TEST_TIMEOUT_S, a hang guard and never a speed bar: design/specs/2026-11-22-selftest-deadline/boundary.md LIMITS",
    "provenance": "D",

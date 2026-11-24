@@ -36,6 +36,8 @@ PAGES = {
         "src/RimMandrake/rimflow/selftest_designer_mend.py",
     "design/specs/2026-11-24-first-pass-calibration/boundary.md":
         "src/RimMandrake/rimflow/selftest_art_first_pass_calibration.py",
+    "design/specs/2026-11-24-time-budgets/boundary.md": "src/RimMandrake/Utils/selftest_time_budget_lint.py",
+    "design/specs/2026-11-24-progress-guard/boundary.md": "src/RimMandrake/Utils/selftest_progress_guard.py",
     "design/specs/2026-11-24-quiet-scan/boundary.md": "src/RimMandrake/rimflow/selftest_quiet_scan.py",
     "design/specs/art-x-delete/boundary.md": "src/RimMandrake/Utils/art/selftest_art_x_ban_hardening.py",
     "design/specs/static-call-thing-id/boundary.md": "src/RimMandrake/Utils/selftest_static_call_args_core.py",

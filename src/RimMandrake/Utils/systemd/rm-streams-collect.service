@@ -9,5 +9,6 @@ Type=oneshot
 Environment=RM_PULSE_DEPLOY=/home/mandrake/rm/pulse-deploy
 ExecStart=-/usr/bin/python3 /home/mandrake/rm/pulse-deploy/src/RimMandrake/Utils/ops_core/testing_metrics.py
 ExecStart=/usr/bin/python3 /home/mandrake/rm/pulse-deploy/src/RimMandrake/Utils/ops_core/streams.py collect
-TimeoutStartSec=420s
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=288.6s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=3000
 Nice=10

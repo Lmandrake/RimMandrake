@@ -5,4 +5,5 @@ Description=RimMandrake telemetry health check
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/telemetry/health.py --kick
-TimeoutStartSec=30s
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=5.7s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=120

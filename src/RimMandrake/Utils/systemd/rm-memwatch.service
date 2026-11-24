@@ -17,4 +17,5 @@ Type=oneshot
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/memwatch.py --no-host
 Nice=10
 MemoryMax=256M
-TimeoutStartSec=50s
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=50.1s (user journal, 14 days to 2026-11-24; 52 reaches of 50 s on 2026-11-18)
+TimeoutStartSec=600

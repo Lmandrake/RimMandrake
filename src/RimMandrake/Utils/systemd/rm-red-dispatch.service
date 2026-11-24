@@ -16,4 +16,5 @@ Environment=PYTHONUNBUFFERED=1
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/red_dispatch.py tick --apply
 Nice=10
 MemoryMax=2G
-TimeoutStartSec=20min
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=187.5s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=1920

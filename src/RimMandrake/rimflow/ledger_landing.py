@@ -19,7 +19,7 @@ import sys
 LANDING_FAILED = 4      # the write stands, the landing did not happen; distinct from a refused verb (1) and argparse (2)
 PUBLISH_PY = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Utils", "publish.py")
 GIT_TIMEOUT_S = 60      # hang guard on one `git rev-parse`/`ls-files` (a local read takes well under 1 s)
-PUBLISH_TIMEOUT_S = 3600  # hang guard on one ./publish: its own git calls are bounded at 300 s each, its checks run on top
+PUBLISH_TIMEOUT_S = 21600  # hang guard on one ./publish: its own git calls are bounded at 300 s each, its checks run on top # budget: class=publish
 
 # One list per process, whichever name imported this module (`rimflow.ledger_landing` from cli.py, bare `ledger_landing`
 # from a tool that put rimflow/ on sys.path): two lists would make `--publish` miss the writes the other copy saw.

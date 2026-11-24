@@ -12,4 +12,5 @@ ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/ops_
 Nice=10
 MemoryMax=4G
 # The new-group budget is 120 s. Then one closed fix gets 600 s, with room for git pulls and ledger reads.
-TimeoutStartSec=900s
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=126.8s (user journal, 14 days to 2026-11-24)
+TimeoutStartSec=1800
