@@ -1785,7 +1785,7 @@ His words, 2026-11-24, about 8:05 AM PST:
 
 > "Does this play well over a season" is NOT an acceptance test, that is play testing well beyond acceptance testing. Not even appropriate for a human walk-through.
 
-- **The rule.** "A long stretch of ordinary play goes well" is play testing. It is no part of passing a Design Version. No
+- **The rule.** "A long stretch of ordinary play goes well" is play testing. Such play is no part of passing a Design Version. No
   bar, scene, check or script decides it. His walk does not decide it. Do not move it from one of them to another.
 - **Why.** A long stretch of play holds too many other forces to decide anything, and it costs more than the evidence is
   worth (§The cheapest test that decides the bar, point 4).
@@ -1794,15 +1794,15 @@ His words, 2026-11-24, about 8:05 AM PST:
   asks for weeks or a season of play, remove that part of the line.
 - **Where the claim goes.** Write it on `design/RimMandrake/play_testing_list.md`, or drop it. No ticket.
 - **What this replaces.** The lines of 2026-11-24 that gave a played week, a season or a colony at work to his walk
-  (Pyrelands `LOOK_STAGE8`, the walk leaves of six held mods, point 4 of §The cheapest test), and the Designer's rule that the
+  (Pyrelands `LOOK_STAGE8`, the `tree.json` leaves of six held mods, point 4 of §The cheapest test), and the Designer's rule that the
   whole bar runs a season.
 - **What this does not change.**
   - A bar's sentence. A bar that says only that long play goes well goes to the Conductor, who decides it by name.
-  - An offline model that runs a season of a mechanic (growth, fire, weather). It reads a mechanism, not play.
+  - An offline model that runs a season of a mechanic (growth, fire, weather). Such a model reads a mechanism, not play.
   - A slow thing (a crop, a burn, a regrowth) that one staged scene reads, with its time set ahead where that can be done.
-  - His walk's other looks: gameplay, fun, theme and UI at the stations.
-- **The test.** A search for lines on a walk that name weeks or a season of play finds only his words, this section and the
-  play testing list.
+  - His walk's other looks: gameplay, fun, theme and UI at the labelled places of the savegame.
+- **The test.** Search for lines on a walk that name weeks or a season of play. The search finds only his words, this section
+  and the play testing list.
 
 ## What Python cannot reach goes into the bridge's C#; tests stay in Python — owner, 2026-11-23
 
