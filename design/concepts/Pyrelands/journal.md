@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 8, his live walk, since 2026-11-24 4:50 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-24 7:14 AM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,7 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 4:50 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 7:14 AM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -552,4 +552,12 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Checks passed: order, by, version, hold, walk_brief, walk_items_closed.
 - Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-24 4:28 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 4:28 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-24 7:14 AM PST, stage change: His live walk (Stage 8) to In-game acceptance (Stage 6) (by DISPATCH)
+
+- Why: in-game checks are owed before he walks (P_ambient_ash_drift, P_blackrain, P_gate, P_grass_cover, P_mapgen_log, sc_ash_watered, sc_ashwallow, sc_burn_compounds, sc_burn_line_walks, sc_fire_dusts_ash, sc_fire_walks_with_wind, sc_full_list_smoke, sc_grass_regreens, sc_heat_dome, sc_no_rain, sc_reload_keeps_the_burn, sc_scorchfruit, sc_ullai): the Maturation tick opens the next visit for only these (RIMMANDRAKE_FIX_CHANGE_RELATION_BLIND_TO_CSHARP_NINE_ROWS_MISSED)
+- Checks passed: order, by, version, hold.
+- Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-24 4:50 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 4:50 AM PST).
 - Record: `version/stage_record.json`.
