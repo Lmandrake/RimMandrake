@@ -33,6 +33,26 @@ FlowWorks drawbridges: carry out his 2026-11-03 rulings (one leaf only, no plank
 
 - on `DRAWBRIDGE_LEAF_PRUNE_NO_TWINS_NO_PILE`: owner stopped the 2026-11-05 sitting: the staged build ignored his 11-03 rulings (plank pile, upright leaves)
 
+## what blocks his in-game look (offline check of each 2026-11-03 ruling, 2026-11-23, HEAD be6f6ba0e3)
+
+Not built, and each one is visible in the picture, so `DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS` was not staged:
+1. The option B gate frame (posts and lintel as one frame, all widths 1 to 4). The gate is still one door picture per lane
+   (`RM_DrawbridgeArt.DrawGate`); no frame code exists.
+2. The near-side lines, taut from the leaf to the winch (his words: "The NEAR (friendly) side stays taut"). No code draws a
+   line from a raised leaf. `Building_SuspensionAnchor.Print` lays BOTH banks' ropes slack when the deck square ahead is raised
+   (`AnchorPrint.slack = deck.leafRaised`), so the friendly bank is slack too.
+3. The far side slack or disconnected on STEEL. `RM_DrawbridgeCableMath.Art` has 0 Steel rows since b7e8e8f1cc, so
+   `AnchorPrintFor` returns null and a steel drawbridge prints the suspension tower with its painted cables on both banks,
+   raised or lowered. Those cables point at the open gap.
+4. The steel leaf changes picture at the first tick: the lowered deck is tan planks (`RM_SuspensionDeck_Steel`), the raised
+   leaf is grey plate (`RM_DrawbridgeLeafUp_Steel_Face`). The build spec asks for no pop at angle 0.
+
+Acceptance test for 2 and 3 (write it first; it must be red on be6f6ba0e3): a Verse-free selftest that gives, for both materials,
+all 4 directions, widths 1 to 4 and leaf lengths 1 to the maximum, at the hold: each near line runs from a point on the drawn tip edge
+to the winch; no line piece on the far bank reaches past its own anchor square; Steel and Timber give the same answer.
+Plant a fault (near line slack; a steel taut far cable) and see the selftest fail. For 1 the test is the same geometry on the frame:
+two posts outside lanes 0 and width-1, one lintel, and an interior with no drawn pixel. The look itself is judged on captures.
+
 ## verify
 
 Acceptance test (the one-leaf and no-plank-stack half, built at 5d9004b9ce by the sweep): `python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only 'Drawbridge*'`
