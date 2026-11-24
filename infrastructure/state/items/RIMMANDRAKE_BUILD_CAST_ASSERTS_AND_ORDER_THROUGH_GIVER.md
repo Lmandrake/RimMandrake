@@ -5,17 +5,21 @@ One ticket of the Bridge v2.0 build order. Read `design/specs/2026-11-23-bridge-
 
 ## spec
 
-- **Builds:** the capability asserts of the stage phase (can do a work type, has a ranged attack, can reach, is
-  hostile, is awake); the act op "order through the giver" on the body of `jawa/ordered_job`, with the giver's
-  refusal returned as a fact; the act op "motive" (a lord and a duty, from the `jawa/lord_*` bodies); the force level
-  of each actor on the deviation record. Second scene as data: FlowWorks' ordered rescue.
+**Split by pass three (2026-11-23, `design/specs/2026-11-23-bridge-v2/11_design.md`).** The Python part of this ticket
+is no longer here: the capability asserts are reads (`can=` of `s.stage`, `s.read`), and
+the order is the verb `s.act.order` (`contracts/act.md`); each is built by the ticket whose scene first needs it. This ticket keeps the C# duty only.
+
+- **Builds (C# only):** the order through the game's own giver code, on the body of `jawa/ordered_job`, with the
+  giver's refusal returned as a fact and the giver's name on the job tap's "given by" field; the motive act (a lord and
+  a duty, from the `jawa/lord_*` bodies); the force level of each actor on the deviation record. Python never copies a
+  giver's rules.
 - **Needs:** the stage map ticket; the cast tracks ticket.
 
 Depends on: `RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS`, `RIMMANDRAKE_BUILD_CAST_TRACKS_AND_JOB_TAPS_FIRST_FAMILY`.
 
 ## verify
 
-Acceptance test (offline), 6 checks printed as passed, exit 0:
+Acceptance test (offline), 4 checks printed as passed, exit 0:
 
 ```
 python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/bridgetools/selftest_scene_force.py
@@ -23,8 +27,10 @@ python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/bridgetool
 
 Seen red on base `adfddcb1f8` on 2026-11-23: exit 1 ("--only names no such file"): the selftest file does not exist yet. Expected after the build: exit 0.
 
-- **Offline test:** `python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/bridgetools/selftest_scene_force.py`, 6 checks: a plan whose entry line
-  steps past its own claim is refused (1); each assert's refusal by name (5).
+- **Offline test (pass three):** `python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/bridgetools/selftest_scene_force.py`, 4 checks on the C# core:
+  an order declared "through the giver" that the giver refuses returns `given=False` with the giver's reason, and starts
+  no job (1); the force level written to the record is the level that was used, not the level that was asked (1); a
+  motive for a pawn with no lord is refused by name (1); a raw job is recorded as raw (1).
 
 - **Live test (UNRUN):** `python.exe src\RimMandrake\bridgetools\prove_ordered_rescue.py`, 5 rows: the rescue
   completes (SUCCESS); a rescuer whose work type is disabled fails its assert before a tick is spent; a hostile with no
@@ -36,7 +42,7 @@ Live state at filing: UNRUN: its script `prove_ordered_rescue.py` does not exist
 
 ## criteria
 
-- The acceptance test prints 6 checks passed and exits 0.
+- The acceptance test prints 4 checks passed and exits 0.
 - Each plant below was seen red before the ticket closes.
 - **Wrong code that must go red (live):** an executor that always starts a raw job and copies the declared level onto
   the receipt. GPT named this: the offline checks of my first draft would have passed it.

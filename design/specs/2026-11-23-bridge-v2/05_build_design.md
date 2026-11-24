@@ -5,6 +5,14 @@ The needs are `02_needs_design.md` (pass one). The build order is `06_build_orde
 `07_for_the_owner.md`. The GPT review of this file and what it changed are at the end, and its two rounds are kept in
 `census_sources/gpt_pass2_round1_answer.md` and `census_sources/gpt_pass2_round2_answer.md`.
 
+**Corrected 2026-11-23 after pass three** (`11_design.md` is the design; the Conductor enacted its pick). A scene is a
+Python script on the scene library, not a scene file, and no plan interpreter is built unless experiment A asks for
+one. The lines of this file that described a scene file, its compiler, a run plan and the plug-in attributes are
+corrected below, each in its place. What this file says about the trace, the judge outside the game, the evidence
+contract, the taps and their certificate, the stage with no bystanders, the deviation record, the mod hooks and the
+verdict ledger stands. Where this file says "the kernel" for a run of several phases, read "the session of
+`scene.open` and the hands it calls": the phases are the same, and Python calls them one at a time.
+
 Every claim carries a tag. **READ**: I read the named code in this run (the RimWorld 1.6 source through RimSage, or a
 file of this repo). **MEASURED**: a record on disk holds the number, and the record is named. **GUESS n%**: not read,
 not measured. Nothing in this file was measured in a game: this run touched no game.
@@ -133,12 +141,13 @@ it can happen for small methods; the tap certificate of decision 4 tests it inst
 ### Way A: join in place (the pick)
 
 A scene kernel is added to the present companion as a few new files. It reuses the frame-slice loop, the end-of-tick
-dispatcher, the condition evaluator, the taps and the disk writer. A scene is **data**: a scene file is compiled by
-Python into a **run plan** (JSON), and one new tool, `jawa/run_plan`, runs it. The judge is Python.
+dispatcher, the condition evaluator, the taps and the disk writer. A scene is a **Python script** on the scene library
+(`11_design.md`); the new tools are generic hands (`jawa/run_until`, `jawa/act_batch`, `jawa/read_paths`). The judge is
+Python.
 
-- **Cost** `[GUESS 65%]`: about 1,500 lines of new C# (the plan interpreter, the staging ops that call the bodies of
-  present tools, the per-tick wiring, the new taps), about 2,500 lines of Python (the compiler, the lint, the judge, the
-  verdict ledger). The tickets are in `06_build_order.md`; the first three give one scene with a recorded trace and a verdict.
+- **Cost** `[GUESS 65%]`: about 1,500 lines of new C# (the per-tick wiring, the session, the act batch, the path
+  reads, the new taps), about 2,500 lines of Python (the scene library, the judge, the verdict ledger). This guess was
+  made for the plan interpreter and the compiler; it has not been made again for the library `[GUESS 50%]`. The tickets are in `06_build_order.md`; the first three give one scene with a recorded trace and a verdict.
 - **Risk.** The companion is one flat partial class of 177 files; a fault in a new file can break tool registration
   for all (a duplicate tool name kills the whole provider `[READ: rimbridge-companion skill §1]`). Guard: kernel logic
   lives in pure `*Core.cs` files with offline harnesses, as the present cores do, and in a class of its own (the
@@ -212,18 +221,21 @@ Way B is reopened with the pure cores moved into a mod.
 ### The parts
 
 ```
-scene file (YAML, in the mod)                      OUTSIDE THE GAME (Python, our repo)
-   | scene_compile.py: lint against the frozen def dump, expand defaults, hash
+scene script (Python, in the mod)                  OUTSIDE THE GAME (Python, our repo)
+   | scene.contract: lint against the frozen def dump, hash; scene.open, s.stage, s.run, s.act, s.read
    v
-run plan (JSON)  ---- jawa/run_plan ---->          INSIDE THE GAME (companion, TEST profile only)
+one call for each step ---- the hands ---->        INSIDE THE GAME (companion, TEST profile only)
                                                      admit -> calm -> stage -> arm -> act and run -> settle -> leave
                                                      writes: trace (JSONL, by the disk writer), receipt core (JSON)
-   <---- handle, then the two file paths ----
-scene_judge.py: trace + plan -> one of the seven outcomes, the first failed condition
+   <---- each reply with its receipt ----
+scene.judge: trace + contract -> one of the seven outcomes, the first failed condition
 scene_verdicts.py: the runs of one claim on one build -> the scene's verdict (the policy's rules)
 ```
 
 ### What runs inside the game, and only that
+
+The phases below are the duties of the game side. Under pass three, Python asks for each phase by a call of the scene
+library, and "the plan" in a row means "what the script asked for in that call". The order of the acts is the script's.
 
 | phase | what the kernel does | built from |
 |---|---|---|
@@ -335,9 +347,10 @@ The kernel has three time modes. Each receipt names the one used.
   that reads the camera is not covered, and the receipt says so.
 - **Staying alive.** PLAY needs nothing. STEP yields every frame already and reports "no new frame in 15 s" as a
   stall `[READ: SceneFrameStallMs]`.
-- **Long scenes.** `jawa/run_plan` returns a handle at once when the plan's tick limit is over a threshold. The run
+- **Long scenes.** `jawa/run_until` returns a request id at once when the tick limit is over a threshold. The run
   goes on inside the game (driven per frame by a hidden `MonoBehaviour`, the playtest runner's pattern). The receipt
-  core and the trace are files; `jawa/run_status` reads the state. A caller that dies loses nothing.
+  core and the trace are files; the session's status reads the state. A caller that dies leaves a paused game and a
+  session that `scene.attach` takes over.
 - **The comparison that proves a faster mode** is the trace itself: the two runs start from one save (both reloaded),
   and the judge's inputs (tracks and taps of the cast) must be equal tick by tick up to the first random draw that
   differs; the first difference is reported, as pass one's divergence finder.
@@ -426,15 +439,10 @@ No script engine is added. The exploring layer keeps what it has: the 427 tools,
 `jawa/cond_eval`. A test pilot who needs new logic in the game writes a public static method in a C# file of the
 mod's PROOF build or of the companion, as today.
 
-**A script becomes a plug-in by an attribute.** A probe plug-in is a public static method with an attribute whose
-type name is `RMProbeAttribute` (name, version), found by reflection exactly as `RMTestAttribute` is found today, so no
-mod references the bridge. A plan may name a plug-in as a track (`plugin:<name>@<version>`); the receipt lists it. A
-plug-in that lives in a PROOF build is refused for an acceptance run (fault 1); a plug-in for acceptance ships in the
-companion, or in the mod's release DLL behind the trace interface of decision 8.
-
-**A compiled fixture** (for staging or an act that data cannot express) is a public static method with the attribute
-`RMFixtureAttribute` (name, version) in the companion. A plan calls it as a stage op or an act op. It stages or acts
-through the kernel, writes records to the same trace, and returns no verdict: the judge decides, as for a data scene.
+**No plug-in attribute is built.** A probe is a field path (private fields and statics included) or a property from
+the reviewed list (`contracts/read.md`). A fixture is Python (`s.stage`, or a fixture save). A value that no path
+reaches gets a trace point in the mod (decision 8). A call of a PROOF-build method goes through `s.raw` and marks the
+run EXPLORED, so it cannot be evidence for a bar.
 
 `[RMTest]` scenes stay valid as an exploring tool. Their rows are never a bar's
 evidence while they need the PROOF build.
@@ -464,7 +472,7 @@ view-rectangle postfix that makes the game submit the draws `[READ: JawaBenchArt
   for that map), bare ground of one terrain, no roof, no plant.
 - A scene that needs a colonist casts one. A cast colonist is built for the scene and removed at clean.
 - **The stage is chosen by what the claim needs, not by what is cheap (GPT; my first draft chose a pocket map first, by
-  cost).** A scene file states `needs.map`:
+  cost).** A scene states `needs["map"]` in `scene.open`:
   - `settlement` (the default): the stage is an ordinary settlement map of the player's on a temperate tile, with map
     edges, a home status and normal incident targets. A raid arrives at an edge as it does in play.
   - `pocket`: allowed only for a claim that needs no map edge, no home status, no incident and no sun or weather of a
@@ -503,7 +511,7 @@ file compiled into each mod, and discovery by name through reflection.
     the same state. Reset verification compares it.
 - **The kernel finds them** in every loaded assembly whose name starts with `RimMandrake`, by attribute type name. It
   sets each `Sink` at arm and clears it at leave. A mod with no hook is listed on the receipt as "no reset hook".
-- A "mod says" record is evidence of a branch only. The compiler refuses a success condition that stands on it alone
+- A "mod says" record is evidence of a branch only. `scene.contract` refuses a success condition that stands on it alone
   (pass one's rule).
 
 This adds test-only code to shipped mods. Pass one sent that to the Conductor (allow, recommended). I agree: the code
@@ -515,7 +523,7 @@ Under the agent storage root (on Archmagi `D:\ClaudeWork`), never in the repo:
 
 ```
 <root>\rimmandrake\scenes\<game name>\<yyyymmdd>\<run id>\
-    plan.json            the run plan as sent (its hash is the scene's identity)
+    contract.json        the scene's contract, with its hash; beside it the commit hash of the script's clean tree
     receipt.json         written by the kernel (facts) and completed by the judge (outcome); schema versioned
     trace.jsonl          the tracks, taps and marks, in order, with ticks
     keeper.rws.txt       the name of the keeper save, when one was written (the save stays in the game's Saves folder)
@@ -636,14 +644,14 @@ UNDONE, the save).
   (pass one §10). A NOT UNDONE entry is handled by its reach, as above.
 - **The stamp and the taint mark** are properties of the record: a receipt reads `overlay: none` only when no overlay
   entry is live, and `tainted: true` from the first overlay write until the process restarts.
-- **A sweep is a list of run plans** that differ in their `overlay:` block. The kernel needs only "run this list";
-  the repeated baseline, the shuffled order and the cold confirmation of the winner are the driver's.
+- **A sweep is a Python loop over one script** with a different `s.act.tune` value in each pass; the repeated
+  baseline, the shuffled order and the cold confirmation of the winner are the loop's.
 - **The verdict ledger enforces the three rungs.** A stamped run is TUNED, never PASS.
 - **Overlay entries arm on any game.** They are refused only while a canonical world save is loaded (the CAMPAIGN
   profile, as for `jawa/mod_settings_field set`), and while his hold guards a look `[READ: JawaBenchSafetyCore.cs]`.
 
 The build order of `04_live_tuning.md` is kept inside the kernel's order: first `jawa/mod_settings_field` joins the
-store (our settings are pokeable today), then def-field writes with recipes, then the sweep on the run plan, then
+store (our settings are pokeable today), then def-field writes with recipes, then the sweep as a Python loop, then
 export and the absorbed check, then tuning classes in the mods as each advances, then formula slots and patch
 switches, then the load-time overlay. Mutants need only the first step for a settings switch, and the patch switch
 for a patch.

@@ -136,6 +136,8 @@ and the verdict ledger counts it for no bar. The first scenes are built and comp
   inside one tick is in the trace by its taps.
 
 ### `RIMMANDRAKE_BUILD_RUN_PLAN_ONE_CALL_SCENE_AS_DATA`
+
+**Held on 2026-11-23, not built** (the last section of this file): it waits on experiment A.
 - **Builds:** `JawaBenchSceneKernelCore.cs` (pure: the plan parser, the phase order, the closed list of act ops) and
   `JawaBenchSceneKernel.cs` (the tools `jawa/run_plan` and `jawa/run_status`, TEST profile only). The phases admit,
   arm, act and run, settle, leave on the present plot grid, with a small set of stage ops only (spawn a thing, spawn a
@@ -321,6 +323,9 @@ and the verdict ledger counts it for no bar. The first scenes are built and comp
   an UNRESOLVED run standing.
 
 ### `RIMMANDRAKE_BUILD_SCENE_FILE_COMPILER_AND_LINT_NO_GAME`
+
+**Dropped on 2026-11-23** (the last section of this file). No scene file is built. The lint checks below now belong to
+`scene.contract`, and `RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP` carries them.
 - **Builds:** `src/RimMandrake/Utils/scene_compile.py`: the scene file of `02_needs_design.md` §11 -> a run plan;
   defaults expanded and printed; the hash of the expanded contract; lint against the frozen def dump
   (`observed/inventory/DefDump_OFFICIAL/`); `needs.map`; fixtures by name. The three worked examples as real files.
@@ -473,83 +478,64 @@ They are not the owner's (only five acts stay his), and "not his" does not mean 
    Recommended: the code review role, as for any pipeline code.
 6. The wording of the policy's sentence on a forbidden effect caused by another mod (pass one's item, still open).
 
-## Pass three: what the pick of `08_where_tests_live.md` changes (proposed; the Conductor enacts)
+## Pass three: the enacted order (2026-11-23)
 
-Written 2026-11-23 by `RIMMANDRAKE_DESIGN_BRIDGE_TWO_PYTHON_TESTS_FEW_RICH_ENTRY_POINTS`, repaired after one GPT round.
-Pass three's pick: a scene is a Python script on the scene library (`09_entry_points.md`); the game holds generic
-instruments and execution facilities; no scene file. **Nothing above this section is changed by this pass, and no
-ticket was closed, dropped or filed by it.** The tickets above stay as filed until the Conductor acts on this table.
-The pick waits on a live experiment (`08_where_tests_live.md`, "The experiment"), which is UNRUN.
+The Conductor enacted the pick of pass three on 2026-11-23 (delegated; on the item
+`RIMMANDRAKE_DESIGN_BRIDGE_TWO_PYTHON_TESTS_FEW_RICH_ENTRY_POINTS`). The design is `11_design.md`; the contracts are in
+`contracts/`. A scene is a Python script on the scene library; the game holds generic hands; no scene file. This
+section is the order. Where a section above speaks of a scene file, a compiler or a run plan as a thing to build, this
+section is right. Each act below was made through `rimflow` on 2026-11-23 and is on the ledger.
 
-| ticket | under the pick | why |
+### What was done to the tickets
+
+| act | ticket | detail |
 |---|---|---|
-| `RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED` | **stays; its live proof runs first** | landed offline (`5cebf3567fe1`). It is the instrument that the pick needs: a run that stops the game on the tick of a condition and writes a trace. Its act step stays as the comparison arm of the experiment |
-| `RIMMANDRAKE_BUILD_SCENE_JUDGE_OUTSIDE_GAME_FROM_KEPT_TRACE` | stays | the verdict was Python already. "Plan" in its text becomes "the commit hash, the contract and the game-side journal of acts" |
-| `RIMMANDRAKE_BUILD_GAME_WATCHER_NAMES_THE_BROKEN_STATE` | stays | Python, no change |
-| `RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK` | stays, and gains scope | the run lock lets the session's own driver act while the game is paused between two runs, and refuses every other caller; the gate writes every changing call of the session into the trace; a request id makes a repeated act a refusal; a session whose driver is silent past its lease can be attached to again, closed or aborted, and the game stays paused |
-| `RIMMANDRAKE_BUILD_RUN_PLAN_ONE_CALL_SCENE_AS_DATA` | **held, not built** | dropped when scenes 1 and 3 of the experiment agree; reopened in part (a bounded rule or a schedule of act batches, never a scene language) when scene 3 or the benchmark says so |
-| `RIMMANDRAKE_BUILD_SCENE_FILE_COMPILER_AND_LINT_NO_GAME` | **dies as a YAML compiler** | its lint duties are kept: they move into `scene.contract`, and the library ticket's test carries them |
-| `RIMMANDRAKE_BUILD_STAGE_OPS_READ_BACK_NEVER_ECHO` | **split** | Python: `s.stage`. C# keeps one duty: each staging tool replies from a read-back made **in the same main-thread hop** as the write, so no frame runs between making a thing and checking it |
-| `RIMMANDRAKE_BUILD_CAST_ASSERTS_AND_ORDER_THROUGH_GIVER` | **split** | Python: the asserts by reads, `s.act.order`. C# keeps the order through the game's own giver code (`jawa/ordered_job`); Python never copies a giver's rules. The live check "the job tap's given-by field names the giver" stays |
-| `RIMMANDRAKE_BUILD_LOAD_CROSSING_ACT_REBINDS_ALIASES` | **split** | Python: `s.act.reload` binds aliases by saved id. C# keeps the **load barrier**: a load inside a session ends paused, and the recorders and the session's epoch are armed again before any tick can run |
-| `RIMMANDRAKE_MEASURE_PLAY_AGAINST_PAUSED_STEP_NEVER_COMPARED` | stays, more arms | "PLAY, paused only for acts from Python" and "pause only" are compared with the reference like the others |
-| `RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS` | stays | instruments and Python |
-| `RIMMANDRAKE_BUILD_CAST_TRACKS_AND_JOB_TAPS_FIRST_FAMILY`, `RIMMANDRAKE_BUILD_WORLD_EVENT_TAPS_SECOND_FAMILY`, `RIMMANDRAKE_BUILD_INCIDENT_QUEST_MENTAL_GATES_BEFORE_CERTIFICATE`, `RIMMANDRAKE_BUILD_CALM_PROFILE_BREACH_LOG_AND_LEASE` | stay | generic instruments. Recorders are armed for a **session** from the contract, so one trace covers every run and every act between them. The standard cast taps (spawn, death, damage) are always armed, so an act that nobody planned cannot hide a forbidden effect |
-| `RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE` | stays, one more line | its patch inventory also lists every patch on the setter of `TickManager.CurTimeSpeed` and on `TickManager.TogglePaused`, because a session pauses and unpauses many times |
-| `RIMMANDRAKE_BUILD_SCENE_VERDICT_LEDGER_RECEIPT_IS_NOT_VERDICT` | stays, one more rule | a run stamped EXPLORED (made at the interactive prompt, or with a raw changing call), and a run that `scene.py accept` did not start, count for no bar |
-| `RIMMANDRAKE_BUILD_DEVIATION_RECORD_SETTINGS_FIELD_JOINS_FIRST`, `RIMMANDRAKE_BUILD_MOD_TRACE_AND_RESET_HOOKS_BY_REFLECTION`, `RIMMANDRAKE_BUILD_MUTANTS_BY_OVERLAY_AUTHOR_DOES_NOT_CHOOSE`, `RIMMANDRAKE_BUILD_STAMP_AGAIN_REPEATS_WITH_RESET_DIGEST`, `RIMMANDRAKE_BUILD_FLIGHT_PROBES_STATE_AND_FRAME_NO_PICTURES` | stay | "plan" becomes "session" or "script". `RMProbe` and `RMFixture` plug-ins are not built: a probe is a field path or a reviewed reader, and a fixture is Python |
-| the later tickets | stay | the sweep and the repeats are Python loops over a script |
+| **dropped** | `RIMMANDRAKE_BUILD_SCENE_FILE_COMPILER_AND_LINT_NO_GAME` | no scene file is built. Its lint duties live in `scene.contract`; the conversion ticket's test carries those four checks. Successor: `RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP` |
+| **held, with a wait to 2026-12-07** | `RIMMANDRAKE_BUILD_RUN_PLAN_ONE_CALL_SCENE_AS_DATA` | waits on experiment A (`RIMMANDRAKE_RUN_BRIDGE_EXPERIMENT_PYTHON_ACT_AGAINST_IN_GAME_ACT`), scenes 1 and 3. Dropped when they agree; reopened in part (a batch schedule or a bounded rule, never a scene language) only for the scene shape that scene 3 shows to differ |
+| **split** | `RIMMANDRAKE_BUILD_STAGE_OPS_READ_BACK_NEVER_ECHO` | keeps the C# duty: each staging tool replies from a read-back made in the same main-thread hop as the write. 6 checks. The Python part is `s.stage` |
+| **split** | `RIMMANDRAKE_BUILD_CAST_ASSERTS_AND_ORDER_THROUGH_GIVER` | keeps the C# duty: the order through the game's own giver code, the motive act, the force level on the record. 4 checks. The Python part is `can=` of `s.stage` and `s.act.order` |
+| **split** | `RIMMANDRAKE_BUILD_LOAD_CROSSING_ACT_REBINDS_ALIASES` | keeps the C# duty: the load barrier. 4 checks. The Python part is `s.act.reload` |
+| **filed** | `RIMMANDRAKE_WIDEN_SLICE_INTO_RUN_UNTIL_AND_ACT_BATCH` | the instruments: `jawa/run_until` (exact stop, per-tick recorder of any value path, session), `jawa/read_paths` (hidden reads), `jawa/act_batch` with request ids. 18 checks |
+| **filed** | `RIMMANDRAKE_BUILD_SCENE_LIBRARY_TEN_NAMES_FIVE_LAYERS_TODAY` | the skeleton of `scene.py`: receipts, refusals, the process mark, help from the contract pages, and the first two entry points `scene.open` and `s.run`, plus `s.raw`. 22 checks |
+| **filed** | `RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP` | FlowWorks `sc_moat_raid`, Explosive Knockback's storeroom bomb pit, Gimme Some Slack `sc_wall_lamp_looks`, on the library; each remaining name is built when a scene needs it; old against new is measured. 17 checks |
+| **blocks moved** | calm profile, cast tracks, deviation record, flight probes, load crossing, mod hooks, window adapters, the play-against-step measurement, staging ops | each was blocked on the plan ticket; each is now blocked on the instruments ticket |
 
-Two new tickets, to file only when the Conductor enacts the pick. Each is drafted with its test; neither test file
-exists, so each command is red today for that reason (exit 1 on a missing file, as measured for the tickets above).
-The first is needed by pass two's route as well, so it can be built before the experiment decides anything.
+Each acceptance test is in the ticket's prose (`infrastructure/state/items/<ID>.md`). Each of the six commands (three
+new, three split) was seen red on 2026-11-23: exit 1, because its selftest file does not exist yet `[MEASURED]`.
 
-**`RIMMANDRAKE_WIDEN_SLICE_INTO_RUN_UNTIL_AND_ACT_BATCH`**
-- **Builds:** `jawa/run_until` from `jawa/scene_slice`: any condition tree, any tracks, the taps of the session, no
-  pawn argument, no built-in act; `session` actions open, attach, close and abort, so that one trace and one run lock
-  span several runs; `jawa/act_batch`: a list of acts (a present tool's name and its arguments, each with a request id)
-  done in order in one main-thread hop, one reply per act, a start and an end record per act in the trace with the
-  tick and the frame count; a repeated request id is refused. If the present tool bodies cannot be called inside one
-  hop without a rewrite, the ticket says so with the count and stops there.
-- **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_run_until.py`, 12 checks: the eleven promises of
-  `boundary.md` still pass with no act step (1); two runs of one session write one trace with no gap in `n` (1); an act
-  between two runs is two records with its tick (1); a caller that is not the session's driver is refused while the
-  session is open (1); the driver is allowed (1); a session past its lease is not closed by itself, can be attached to,
-  and the game is paused (1); a run started with no open session is refused by name (1); `scene_slice` keeps working
-  until its proof script converts (1); an act batch of two acts writes no frame count change between them (1); a
-  repeated request id is refused and does nothing (1); a batch whose second act throws reports the first as done and
-  the second as failed (1); a sample after the pause that differs from the end-of-tick sample is a record (1).
-- **Wrong code that must go red:** a second run that starts a new trace; a run lock that refuses the session's own
-  driver; a lease that unpauses; a batch that hops once per act; a repeated id that is done twice.
-- **Live test (UNRUN):** `python.exe design\specs\2026-11-23-bridge-v2\experiments\exp_a_python_act_vs_kernel_act.py
-  --trials 10`, then the same with `--speed Ultrafast`: SAME in 10 of 10 each; then scene 3 of `08` (two FlowWorks cuts
-  on one tick: two calls, one batch, two kernel acts), whose script this ticket writes.
-
-**`RIMMANDRAKE_BUILD_SCENE_LIBRARY_TEN_NAMES_FIVE_LAYERS_TODAY`**
-- **Builds:** `src/RimMandrake/Utils/scene.py` with the ten names of `09_entry_points.md`, by extraction from
-  `validation_core.py`, `modcheck/helpers.py`, `modcheck/quiet_site.py` and `scenes/scenelib.py`; the two launchers
-  `accept` and `explore`; each name's docstring page, the catalogs and `scene.py help`; the first scene on it
-  (Explosive Knockback's spared carrier). No scene converts before scenes 1 and 3 of the experiment have run.
-- **Offline test:** `SELF src/RimMandrake/Utils/selftest_scene_library.py`, 19 checks against a fake bridge that
-  replays recorded replies: each of the ten names refuses its bad input by name (10); `scene.contract` refuses a
-  success with no exposure, a kind B scene with no budget, a def name that is not in the frozen dump, and a condition
-  on a value that nothing records, all with no bridge call made (4); `scene.open` returns a phase report that names the
-  refusing phase and what was put back (1); `s.stage` builds its reply from the read-back and reports a replaced pawn
-  kind as a staging fault (1); `accept` refuses a tree that is not clean (1); a run from `explore`, and a run with a raw
-  changing call, are stamped EXPLORED (1); `help` prints ten names, every page has the seven parts, and each page's
-  arguments equal the function's signature (1).
-- **Wrong code that must go red:** a `stage` that echoes the request; an `act` that writes no trace record; a `read`
-  that returns 0 for a gone thing; a `contract` that is checked after the load; a docstring that names an argument the
-  function does not take.
-- **Live test (UNRUN):** `python.exe src\RimMandrake\Utils\scene.py accept
-  src\RimMandrake\ExplosiveKnockback\proof\spared_carrier_scene.py`: SUCCESS on the release build; MOD FAILURE under the
-  compiled mutant "the carried pawn is not spared".
-
-The order at a glance, under the pick:
+### The order
 
 ```
-the slice's live proof ── RUN_UNTIL_AND_ACT_BATCH ── the experiment (scenes 1, 3, the benchmark) ─┬─ SCENE_LIBRARY ── the first scene
-SCENE_JUDGE, GAME_WATCHER (no game)                  RUN_LIFE_CYCLE ───────────────────────────────┘
-then, as above: STAGE_MAP, the tap families, GATES, TAP_CERTIFICATE, CALM_PROFILE, VERDICT_LEDGER, DEVIATION_RECORD, ...
-RUN_PLAN: held until the experiment; SCENE_FILE_COMPILER: dropped when the library ticket is filed
+buildable now, side by side (one is C#, one is Python):
+  1. WIDEN_SLICE_INTO_RUN_UNTIL_AND_ACT_BATCH     the instruments: per-tick recorder, exact stop, hidden read, act batch
+  2. BUILD_SCENE_LIBRARY_TEN_NAMES                the skeleton, scene.open, s.run, s.raw
+then:
+  3. CONVERT_THREE_SCENES                         needs 1, 2 and SCENE_JUDGE; shows whether ten names help
+
+beside them, no game needed:   SCENE_JUDGE (needs the slice), GAME_WATCHER (free now)
+live, the Conductor's:         the slice's live proof, then experiment A (scene 1 needs only landed code; scene 3 needs 1)
+
+after 1, one companion build at a time:
+  RUN_LIFE_CYCLE (the session that outlives its driver; scene.attach)
+  STAGE_OPS (C# duty) ── STAGE_MAP ──┬─ CAST_ASSERTS_AND_ORDER (C# duty)
+  CAST_TRACKS_AND_JOB_TAPS ──────────┘  └─ WORLD_EVENT_TAPS ── GATES;  TAP_CERTIFICATE
+  CALM_PROFILE;  MOD_TRACE_AND_RESET_HOOKS;  MEASURE_PLAY_AGAINST_PAUSED_STEP
+  DEVIATION_RECORD ── DEF_FIELD_OVERLAY           (the hands behind s.act.tune)
+  SCENE_JUDGE ── SCENE_VERDICT_LEDGER ── MUTANTS_BY_OVERLAY
+  STAGE_MAP ── STAMP_AGAIN_REPEATS ── SWEEP_RUNNER (a Python loop over a script)
+  FLIGHT_PROBES;  WINDOW_ADAPTERS;  LOAD_CROSSING (C# duty);  KEEPER_SAVE
+held:    RUN_PLAN, until experiment A
+dropped: SCENE_FILE_COMPILER
 ```
+
+### What the Conductor still owes
+
+- `RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED` and
+  `RIMMANDRAKE_FILE_BRIDGE_TWO_BUILD_ORDER_THEN_WIRE_FIRST_SLICE` wait to 2026-11-25 "on the owner's discussion with the
+  Conductor". That discussion is settled. `SCENE_JUDGE` is blocked on the first of them, so it cannot start before that
+  wait ends (`rimflow unwait`).
+- The slice's live proof and experiment A are UNRUN. Their commands are in `08_where_tests_live.md`, "The experiment".
+- The tickets that stay keep their text, in which "plan" now means "what the script asked for in a call"
+  (`05_build_design.md`, corrected at its top). `RMProbe` and `RMFixture` plug-ins are not built.
+- The sweep ticket's name still says "run plan list". The name stays (a name states what was meant at filing); its work
+  is a Python loop.
