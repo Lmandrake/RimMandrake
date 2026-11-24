@@ -82,6 +82,12 @@ def main():
     check(G.untouched("M", "b", old, cs) is True, "the same bytes are not read twice (the tick asks every minute)")
     put(M + "Source/B.cs", "class B { void Run() { int x = 3; } }\n")
     check(ask("b", commit()) is False, "a kept answer does not outlive its bytes")
+    G._REL.clear()
+    subprocess.run(["git", "-C", R, "branch", "-f", "moving", doc], check=True)
+    before = G.untouched("M", "a", old, "moving")
+    subprocess.run(["git", "-C", R, "branch", "-f", "moving", cs], check=True)
+    after = G.untouched("M", "a", old, "moving")
+    check((before, after) == (True, False), "a ref that moved in one process is read again %s" % ((before, after),))
     print("FAIL %d" % len(FAILS) if FAILS else "PASS")
     return 1 if FAILS else 0
 

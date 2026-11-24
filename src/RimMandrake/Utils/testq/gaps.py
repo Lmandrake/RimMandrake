@@ -380,6 +380,7 @@ def untouched(mod, chain, old_sha, new_sha, changed=None, tests=None, g=git):
 
 def _related(mod, chain, checks, old_sha, new_sha, tests, g):
     import testq as T
+    new_sha = (g("rev-parse", "--verify", "-q", new_sha + "^{commit}") or "").strip() if new_sha else None   # a ref moves
     if not old_sha or not new_sha:
         return None
     path = T.q(RELATION_CACHE)

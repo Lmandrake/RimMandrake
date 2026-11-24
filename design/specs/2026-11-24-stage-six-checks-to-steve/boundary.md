@@ -64,8 +64,9 @@ Each promise has a test of its name in `src/RimMandrake/Utils/testq/selftest_sta
 - **the-filler-does-not-repeat-a-chain-in-flight.** The filler leaves out the chains of the mod that a job runs or
   waits to run. Measured 2026-11-24: the filler gave Steve1 the four Pyrelands chains that Steve2 was still running
   (J20261124T051635Z, J20261124T053209Z), four times since 2026-11-22.
-- **a-passed-guard-stands-on-the-one-relation.** A chain's PASS stays settled only when `rerun_relation.py` reads every
-  stage-6 check of the chain as untouched since the PASS. A changed C# file that a check exercises, or a relation that
+- **a-passed-guard-stands-on-the-one-relation.** A chain's PASS at another code version stays settled only when `rerun_relation.py`
+  reads every stage-6 check of the chain as untouched since the PASS. A verdict at the same code version, or at the same
+  identity for a run with no code versions, stands by the retest rule (`retest.py`), as before. A changed C# file that a check exercises, or a relation that
   cannot be read, runs the chain again. A kept answer (`relation_cache.json`) holds only for the same bytes. Tested in
   `selftest_guard_relation.py`. Measured 2026-11-24: path-only `reads` (the first rule) named only the test script, so
   a C# change left a guard settled; of 37 passed chains with a check, that rule settled 7 and the relation settles 26.
