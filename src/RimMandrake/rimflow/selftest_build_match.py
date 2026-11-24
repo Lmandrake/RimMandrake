@@ -205,6 +205,13 @@ def io_checks(tmp):
     walk_c = {"deployed_folder": biomes}
     check(B.walk_source(root2, "Comp", walk_c)[0] is None,
           "a composed member whose deployed stamp (Biomes/<key>/Assemblies) equals its source owes no deploy")
+    # a stamp copied beside a DLL the running game had locked is no deploy (Explosive Knockback, 2026-11-24)
+    write(os.path.join(root2, "src", "RimMandrake", "Comp", "Assemblies", "Comp.dll"), "new build")
+    write(os.path.join(biomes, "Biomes", "Comp", "Assemblies", "Comp.dll"), "old build")
+    check("Comp.dll" in (B.walk_source(root2, "Comp", walk_c)[0] or ""),
+          "the source's stamp beside another build's DLL owes a deploy, named by the DLL")
+    write(os.path.join(biomes, "Biomes", "Comp", "Assemblies", "Comp.dll"), "new build")
+    check(B.walk_source(root2, "Comp", walk_c)[0] is None, "the source's stamp beside the source's DLL owes nothing")
     write(os.path.join(biomes, "Biomes", "Comp", "Assemblies", "Comp.dll.srchash"), "# project: comp\n# dll: cc\n")
     owed = B.walk_source(root2, "Comp", walk_c)[0]
     check(bool(owed) and "deploy" in owed, "a composed member whose deployed stamp differs owes a deploy: %r" % (owed,))

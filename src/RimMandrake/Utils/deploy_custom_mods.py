@@ -596,8 +596,14 @@ def copy(src, dst, rels):
         print("  ! fix the file, then re-run. Nothing was copied for this mod.")
         return 0, True, []
     copied, failed = 0, []
-    for rel in rels:
+    # a stamp goes after its DLL, and only with it: a stamp beside a DLL that could not be written names a build that is
+    # not there (RIMMANDRAKE_KEEP_STAMP_OFF_A_DLL_THE_DEPLOY_COULD_NOT_WRITE)
+    for rel in sorted(rels, key=lambda r: r.endswith(".dll.srchash")):
         target = os.path.join(dst, rel)
+        if rel.endswith(".dll.srchash") and rel[:-len(".srchash")] in [f[0] for f in failed]:
+            failed.append((rel, "its DLL was not written"))
+            print("  ! NOT written %s: its DLL was not written" % rel)
+            continue
         try:
             os.makedirs(os.path.dirname(target), exist_ok=True)
             shutil.copy2(os.path.join(src, rel), target)

@@ -119,6 +119,7 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   such paths is unreadable alone and reruns.
 - **walk-not-the-source-is-one-deploy.** When the deployed walk folder is not the current source (its `.srchash`
   differs from the source's), the build match names one act, a deploy, and reruns no check for it.
+  A stamp that agrees beside a DLL whose bytes are not the source's owes the same deploy.
 - **stale-walk-folder-still-reads-the-source-change.** While that deploy is owed, a row made on the folder's own build
   counts only when the change to the source does not touch its check and can be read. (Measured 2026-11-23:
   GimmeSomeSlack visit 1 read "206 count, 0 to run" while the relation read 206 touched; item

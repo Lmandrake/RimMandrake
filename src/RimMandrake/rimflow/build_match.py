@@ -675,6 +675,15 @@ def srchash_files(folder):
         return None
 
 
+def _file_sha256(path):
+    """-> the sha256 of a file's bytes; None when there is no such file. A file that cannot be read raises: the Stage 6
+    exit then reads refused by its cause, never met."""
+    if not os.path.isfile(path):
+        return None
+    with open(path, "rb") as f:
+        return hashlib.sha256(f.read()).hexdigest()
+
+
 def walk_source(root, mod, walk):
     """-> (deploy, source): deploy None when the deployed walk folder's .srchash files equal the source's at HEAD (or
     the mod has none), else the one act owed: a deploy, named; source: the source commit the relation reads to."""
@@ -698,6 +707,15 @@ def walk_source(root, mod, walk):
         return ("the deployed walk folder %s is not the source at %s (its .srchash differs): deploy it "
                 "(`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s --apply`); the deploy itself reruns no check"
                 % (folder, sha, mod)), sha
+    # the stamps agree; the DLL beside each must be the one it names too: a deploy onto a running game wrote the new stamp
+    # beside the old, locked DLL, and this read met (RIMMANDRAKE_KEEP_STAMP_OFF_A_DLL_THE_DEPLOY_COULD_NOT_WRITE)
+    for nm in src:
+        dll = nm[:-len(".srchash")]
+        want = _file_sha256(os.path.join(root, "src", "RimMandrake", mod, "Assemblies", dll))
+        if want and _file_sha256(os.path.join(folder, "Assemblies", dll)) != want:
+            return ("the deployed walk folder %s holds the source's stamp at %s beside another %s, or none: deploy it "
+                    "with the game down (`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s --apply`)"
+                    % (folder, sha, dll, mod)), sha
     return None, sha
 
 
