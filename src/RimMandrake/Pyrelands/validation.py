@@ -1485,7 +1485,8 @@ def burn_line(t):
         # The walk does not start from this reseed: it puts the map out and re-arms the opening front (visit 2's 0 fires at
         # every hour were its reader, blind to the bridge's x/z rows, not this front; RIMMANDRAKE_REORDER_PYRE_BURN_WALK_
         # BEFORE_ITS_FRONT_DIES). _teardown puts the map out at the chain's end.
-    _r6_burn_line(t)
+    with _wildlife_shield(t):
+        _r6_burn_line(t)
 
 
 OPENING_WAIT_TICKS = 6 * BURN_WATCH_TICKS   # PYRE_OPENING_FRONT: lit on the first watch interval; a few for slack
@@ -4459,6 +4460,30 @@ def _walk_shield(t):
             _note(t, "walk shield: harm to pawns not the player's, or colonist panic flight, resumed past", wl)
 
 
+BURN_WILDLIFE = "burn line: harm to a wild animal or another faction's pawn, read back"
+
+
+def burn_wildlife_harm(trig):
+    """Pure. walk_wildlife_harm without any mental state: the burn line's days read the burned share of the ground, and a
+    wild animal bitten, downed, starved or killed by another moves no ground. A manhunter or a colonist's state still stops."""
+    return walk_wildlife_harm(trig) and trig.get("kind") != "mental"
+
+
+@contextlib.contextmanager
+def _wildlife_shield(t):
+    """Visit 8 (2026-11-23): a barbslinger downed a fire wasp on day 4 of burn_line's eight days and safe_advance's stop
+    spoiled burn_line_burned_share. A stop whose every subject list_pawns reads as not the player's resumes, noted."""
+    import clockgate  # noqa: E402 - on sys.path via the modcheck package
+    n0 = len(clockgate.BENIGN_STOPS)
+    try:
+        with clockgate.expected_disturbance(BURN_WILDLIFE, burn_wildlife_harm, repair=_walk_wildlife_check):
+            yield
+    finally:
+        got = [b for b in clockgate.BENIGN_STOPS[n0:] if b.get("why") == "expected: " + BURN_WILDLIFE]
+        if got and t.session is not None:
+            _note(t, "burn line shield: harm to pawns not the player's, resumed past", got)
+
+
 @suite.chain("walk_season")
 @_teardown(fire=True)
 def walk_season(t):
@@ -4473,7 +4498,7 @@ def walk_season(t):
         with _comp(t, "walk_reload_keeps_the_state"):
             if os.environ.get("PYRE_WALK") != "1":
                 _unmeasured(t, "the two-week walk runs only with PYRE_WALK=1 (full list, Stage 6)")
-            if os.environ.get(WALK_PARTS_ONLY_ENV) == "1":
+            if os.environ.get(WALK_PARTS_ONLY_ENV) == "1" or os.environ.get(WALK_ONLY_ENV):
                 _unmeasured(t, "%s=1: the two weeks are skipped in a planted run of the walk's later parts" % WALK_PARTS_ONLY_ENV)
             t.bridge_call("rimworld/save_game", saveName=WALK_SAVE + "_pre")
             _wait(t, WALK_DAYS * 60000)
@@ -4491,7 +4516,7 @@ def walk_season(t):
                 if not digests_match(mid, again):
                     _fail("the digest after the reload differs from the one before: %r vs %r" % (mid, again))
         with _comp(t, "walk_second_pass_and_switches"):
-            if os.environ.get(WALK_PARTS_ONLY_ENV) == "1":
+            if os.environ.get(WALK_PARTS_ONLY_ENV) == "1" or os.environ.get(WALK_ONLY_ENV):
                 _unmeasured(t, "%s=1: the two weeks are skipped in a planted run of the walk's later parts" % WALK_PARTS_ONLY_ENV)
             _wait(t, WALK_DAYS * 60000)
             fruit_born = _count(t, FRUIT_PLANT) or 0
@@ -4917,6 +4942,15 @@ def _ten_plant_census(t):
 PLANT_GATE_IGNORED_ENV = "PYRE_PLANT_GATE_IGNORED"   # planted state for walk_gate_off_then_on: the master switch left on
 
 
+WALK_ONLY_ENV = "PYRE_WALK_ONLY"   # a planted run of one walk part: the part's name; every other part reads UNMEASURED by name
+
+
+def _walk_only(t, name):
+    only = os.environ.get(WALK_ONLY_ENV)
+    if only and only != name:
+        _unmeasured(t, "%s=%s: this part is not in that run" % (WALK_ONLY_ENV, only))
+
+
 def _ten_walk_season(t):
     """sc_walk (PYRE_WALK=1 only): the gate off a day then on; a roofed room on ember grass withers; fire-cast thirst
     (RM_Thirst, no RM_Dehydration); no colonist burned (Burn) or starved (Malnutrition)."""
@@ -4925,6 +4959,7 @@ def _ten_walk_season(t):
     with _comp(t, "walk_gate_off_then_on"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        _walk_only(t, "walk_gate_off_then_on")
         planted = os.environ.get(PLANT_GATE_IGNORED_ENV) == "1"
         if planted:
             _note(t, "PLANTED FAULT", "%s=1: pyrelandsEnabled is left on, as if the switch did nothing" % PLANT_GATE_IGNORED_ENV)
@@ -4954,6 +4989,7 @@ def _ten_walk_season(t):
     with _comp(t, "walk_roster_toggle"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        _walk_only(t, "walk_roster_toggle")
         _ten_roster_set(t, False)
         try:
             _extinguish(t)   # as the gate-off day: a fire after the day was lit in it, never the walk's spread
@@ -4979,6 +5015,7 @@ def _ten_walk_season(t):
     with _comp(t, "walk_roofed_grass_withers"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        _walk_only(t, "walk_roofed_grass_withers")
         _pad(t, TEN_PAD_ROOF)
         x, z = t.anchor
         room = (x - 4, z - 4, 9, 9)
@@ -5000,6 +5037,7 @@ def _ten_walk_season(t):
     with _comp(t, "walk_firecast_thirst_and_colonists"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        _walk_only(t, "walk_firecast_thirst_and_colonists")
         thirst, bad = {}, []
         for _ in range(4):
             r = t.bridge_call("jawa/list_pawns", limit=1000, includeHealth=True)
@@ -6882,6 +6920,7 @@ def _r6_walk_season(t):
     with _comp(t, "walk_master_off_then_on"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        _walk_only(t, "walk_master_off_then_on")
         _extinguish(t)
         off = _r6_master_day(t, False)
         on = _r6_master_day(t, True)
@@ -6899,6 +6938,7 @@ def _r6_walk_season(t):
     with _comp(t, "walk_master_bed_fire_resumes"):
         if not walk:
             _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        _walk_only(t, "walk_master_bed_fire_resumes")
         _walk_bed_fire_resumes(t)
 
 

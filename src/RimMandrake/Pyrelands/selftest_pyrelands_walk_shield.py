@@ -204,6 +204,16 @@ check("can-fail: a colonist's Berserk beside a wild downing is not ok", ok_of([W
 check("can-fail: a subject list_pawns does not list (a dead pawn) is not ok", ok_of([], NUNA) is False)
 check("can-fail: a failed listing is not ok", ok_of([WILD], NUNA, list_ok=False) is False)
 
+# ---- 5. the burn line's shield (visit 8, 2026-11-23): a wild animal's harm resumes, any mental state or colonist harm stands
+BH = getattr(V, "burn_wildlife_harm", None)
+check("burn line: a wild animal's downing is taken", BH is not None and bool(BH(NUNA)))
+check("burn line: can-fail: a mental state is never taken (a manhunter, a colonist's panic)",
+      BH is not None and not BH(BERSERK) and not BH(PANIC))
+check("burn line: can-fail: an arrival or a critical subject is not taken",
+      BH is not None and not BH(SAURID) and not BH(trig("downed", "x", 1, critical=True)))
+check("burn line: the days run inside the shield",
+      "with _wildlife_shield(t):\n        _r6_burn_line(t)" in open(V.__file__, encoding="utf-8").read())
+
 n = sum(RESULTS)
 print("\n%d/%d passed" % (n, len(RESULTS)))
 sys.exit(0 if n == len(RESULTS) else 1)
