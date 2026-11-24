@@ -53,6 +53,7 @@ import shutil
 import socket
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -127,25 +128,30 @@ def cmd_find(args) -> int:
     terms = [t.lower() for t in args.terms]
     hits: dict[str, list[str]] = {t: [] for t in terms}
     scanned = 0
-    for d in SEARCH_DIRS:
-        p = root / d
-        if not p.is_dir():
-            continue
-        for f in p.iterdir():
-            scanned += 1
-            name = f.name.lower()
-            body = None
-            for t in terms:
-                if t in name:
-                    hits[t].append(f"{d}/{f.name}")
-                elif not args.names_only and f.suffix == ".json":
-                    if body is None:
-                        try:
-                            body = f.read_text(errors="replace").lower()
-                        except OSError:
-                            body = ""
-                    if t in body:
-                        hits[t].append(f"{d}/{f.name} (content)")
+
+    def job_hits(f):
+        name = f.name.lower()
+        body = ""
+        if not args.names_only and f.suffix == ".json" and any(t not in name for t in terms):
+            try:
+                body = f.read_text(errors="replace").lower()
+            except OSError:
+                pass
+        return [(t, f.name if t in name else f"{f.name} (content)") for t in terms if t in name or t in body]
+
+    # Serial opens of 4,942 job/manifest files at 15 ms per read reproduce the 60 s swale timeout.
+    # Match subject.World.job_targets' worker count to overlap opens without opening the whole queue at once.
+    with ThreadPoolExecutor(16) as pool:
+        for d in SEARCH_DIRS:
+            p = root / d
+            if not p.is_dir():
+                continue
+            entries = p.iterdir()
+            matches = map(job_hits, entries) if args.names_only else pool.map(job_hits, entries)
+            for found in matches:
+                scanned += 1
+                for t, label in found:
+                    hits[t].append(f"{d}/{label}")
     artsrc = root / "_artsrc"
     if artsrc.is_dir():
         for sub in artsrc.iterdir():

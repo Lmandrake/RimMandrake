@@ -145,6 +145,33 @@ def test_find_legacy(tmp: Path):
           "MISSING" in run("--legacy", str(tmp / "absent")))
 
 
+def test_find_slow_reads(tmp: Path):
+    import contextlib
+    import io
+    from threading import Barrier, BrokenBarrierError
+    from unittest.mock import patch
+
+    _job(tmp / "done", "job", brief="swale")
+    _job(tmp / "done", "job.manifest", note="swale")
+    # Hold each read until the other starts. The guard releases a serial scan so the test can report red.
+    both = Barrier(2, timeout=2)
+    read_text = Path.read_text
+
+    def slow_read(path, *args, **kwargs):
+        try:
+            both.wait()
+        except BrokenBarrierError:
+            raise OSError("slow job reads did not overlap") from None
+        return read_text(path, *args, **kwargs)
+
+    buf = io.StringIO()
+    with patch.object(Path, "read_text", slow_read), contextlib.redirect_stdout(buf):
+        rc = AS.main(["--state", str(tmp), "find", "swale", "--no-legacy", "--no-resolve"])
+    check("find returns job and manifest hits when slow body reads need to overlap",
+          rc == 0 and "swale: 2 raw text hit" in buf.getvalue()
+          and all(f"done/{name} (content)" in buf.getvalue() for name in ("job.json", "job.manifest.json")))
+
+
 def test_migrate(tmp: Path):
     src, dst = tmp / "old", tmp / "new"
     _job(src / "done", "j1")                 # advanced past dst's pending copy
@@ -445,8 +472,8 @@ def test_migrate_audit(tmp: Path):
 def main() -> int:
     with tempfile.TemporaryDirectory() as t:
         tmp = Path(t)
-        for i, fn in enumerate((test_resolver, test_collect, test_find_legacy, test_migrate, test_requeue,
-                                  test_owner_accepted, test_twins, test_migrate_audit)):
+        for i, fn in enumerate((test_resolver, test_collect, test_find_legacy, test_find_slow_reads, test_migrate,
+                                  test_requeue, test_owner_accepted, test_twins, test_migrate_audit)):
             sub = tmp / str(i)
             sub.mkdir()
             fn(sub)

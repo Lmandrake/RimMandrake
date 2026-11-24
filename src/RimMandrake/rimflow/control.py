@@ -1145,6 +1145,10 @@ def undo(act_id, why, owner_said=None, per_ruling=None, p=None, now=None, base=0
     r = _undo(act_id, why, owner_said, per_ruling, p, now, base)
     if r["ok"] and r["act"]["scope"] == "all":   # the permit follows an undone all-switch too (permit-never-ghosts)
         permit_sync(p=p, now=now)
+    for unit, order in r.pop("timers", ()):   # after withdrawal commits, even an already-fired timer sees it
+        warning = _disarm_escalation(unit, order)
+        if warning:
+            r["line"] += "; " + warning
     return r
 
 
@@ -1242,7 +1246,9 @@ def _undo(act_id, why, owner_said, per_ruling, p, now, base):
                 else:
                     c.execute("DELETE FROM switches WHERE scope=? AND layer='control'", (a["scope"],))
             told = [r["unit"] for r in wd if r["state"] == "seen"]
-            return {"ok": True, "why": None, "act": u, "after": "withdrawn", "line": "%s: stop %s withdrawn: %s%s%s" % (
+            return {"ok": True, "why": None, "act": u, "after": "withdrawn",
+                    "timers": [(r["unit"], r["id"]) for r in wd if r["deadline"] is not None],
+                    "line": "%s: stop %s withdrawn: %s%s%s" % (
                 a["scope"], act_id, ", ".join(r["unit"] for r in wd) or "no order was live",
                 "; new starts allowed again" if sw else "",
                 "; %s already read it and is told on its next tool call that it is withdrawn" % ", ".join(told)
@@ -2267,6 +2273,17 @@ def _finish_kill(r, res, act, why, store, p, reaper, books):
     return row
 
 
+def _escalation_name(unit, order):
+    return "rm-control-escalate-%s%s" % (unit[-60:], "-o%d" % order if order else "")
+
+
+def _disarm_escalation(unit, order):
+    name = _escalation_name(unit, order) + ".timer"
+    rc, out = _systemctl(["stop", name])
+    if rc not in (0, 5):   # systemctl returns 5 when the timer is no longer loaded
+        return "timer %s NOT disarmed (exit %d: %s)" % (name, rc, " ".join(out.split())[:80])
+
+
 def schedule_escalation(unit, deadline_s, p=None, order=None, runner=subprocess.run):
     """A transient timer (bookkeeping, not pipeline work): at the deadline, `escalate` kills the run if it has not
     ended. -> line. The writer of the order may stand in a pool clone that is returned before the deadline, so the
@@ -2276,7 +2293,7 @@ def schedule_escalation(unit, deadline_s, p=None, order=None, runner=subprocess.
     the order states (deadline-is-wall-clock): an `--on-active` timer counts monotonic time, which on this WSL2 VM falls
     behind the wall clock, and a 2-minute deadline fired 105 s late (control_agent_drill.py, 2026-11-19)."""
     import math
-    name = "rm-control-escalate-%s%s" % (unit[-60:], "-o%d" % order if order else "")
+    name = _escalation_name(unit, order)
     due = time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime(math.ceil(time.time() + deadline_s)))
     import detached_helper as DH
     import wrapup
@@ -2289,8 +2306,12 @@ def schedule_escalation(unit, deadline_s, p=None, order=None, runner=subprocess.
                    capture_output=True, text=True, timeout=10)
     except (OSError, subprocess.SubprocessError) as e:
         return "escalation timer NOT set (%s)" % e
-    return "timer %s" % name if r.returncode == 0 else "escalation timer NOT set (exit %d: %s)" % (
-        r.returncode, (r.stderr or "").strip()[:80])
+    if r.returncode:
+        return "escalation timer NOT set (exit %d: %s)" % (r.returncode, (r.stderr or "").strip()[:80])
+    # The order commits before the timer is armed. If undo got there first, stop the newly armed timer too.
+    if order and _q("SELECT id FROM stops WHERE id=? AND state LIKE 'withdrawn%'", (order,), p, one=True):
+        return _disarm_escalation(unit, order) or "timer %s disarmed (order withdrawn)" % name
+    return "timer %s" % name
 
 
 def escalate(unit, p=None, now=None, killer=None, reaper=None):

@@ -28,7 +28,7 @@ namespace JawaBench.BridgeTools
                 "time in the bridge pumps + queue-delay upper bound), tps.capability-inventory. NOTHING records until " +
                 "action=arm minutes=N (default 30, max 240); disarm makes the hooks inert. action=switch metric=<id> on=bool. " +
                 "action=probe starts Unity ProfilerRecorder counters for the inventory; probe_end disposes them. " +
-                "sinceMinutes merges the retained minute windows of that span.",
+                "Each arm starts fresh frame histograms. sinceMinutes merges the retained minute windows of that span.",
             ResultDescription = "success, armed, install, switches, frameHist, gc, log, bridge, inventory, cost.")]
         public static async Task<object> Health(
             IRimBridgeContext ctx, CancellationToken cancellationToken,
@@ -89,7 +89,7 @@ namespace JawaBench.BridgeTools
                     merged = "{" + "\"windows\":" + windows + ",\"plusOpenWindow\":true,\"hist\":" + merged.Json() + "}",
                     p50 = p50Text, p99 = p99Text,
                     session = HL.Session.Json(),
-                    measures = "interval between successive Root.Update prefixes (update cadence, NOT displayed FPS)",
+                    measures = "interval between successive Root.Update prefixes in the same playing game, outside long events (update cadence, NOT displayed FPS)",
                     ringEvicted = HL.Ring.Evicted,
                 },
                 gc = new { reading = HL.SourceReading(H.MGc).Render(), text = HL.Gc.Text(), recentGaps = HL.Gc.Events().ConvertAll(e => new { atS = Math.Round(e.AtS, 3), gapMs = Math.Round(e.GapMs, 3), gcCountChangedDuringGap = e.GcDelta > 0, gcCountDelta = e.GcDelta }), evicted = HL.Gc.Evicted },

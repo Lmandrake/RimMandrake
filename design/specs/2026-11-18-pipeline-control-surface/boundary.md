@@ -114,7 +114,7 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **his-hold-refuses-launch.** A launch that names a mod he holds is refused, with his words, until he or the Conductor lifts it.
   `pipe on all` never lifts it. A new hold after a lift holds again. Tested by `t_owner_import`, `t_scope`.
 - **three-named-stops.** `pipe stop` is `--write-now`, `--at-easy-spot` or `--kill`. With none named it uses
-  at-easy-spot and says so. A write-now order becomes a kill at its deadline. Tested by `t_stop`.
+  at-easy-spot and says so. A live write-now order becomes a kill at its deadline. Tested by `t_stop`.
 - **stop-reaches-the-agent.** A writing stop order is shown to the running agent after its next tool call, from the
   run's own clone. Tested by `t_stop_reaches_the_agent`, `t_stop`, `t_hooks_in_run_clone`. Drilled on a real
   `claude -p` (sonnet) in a throwaway unit by `control_agent_drill.py`: it heard `--at-easy-spot` 3.1 s and
@@ -189,6 +189,9 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
   clock jumps ahead of the monotonic one, and a 2-minute `--on-active` deadline fired 105 s late, a 30 s one 58.8 s
   late [measured 2026-11-19]. Added by `RIMMANDRAKE_DRILL_REAL_AGENT_WRITING_STOP_ONLY_STANDIN_TESTED`. Tested by
   `t_deadline_is_wall_clock`.
+- **undo-disarms-escalation.** `pipe undo` of a write-now stop withdraws its order and disarms that order's timer,
+  including when creation of the timer crosses the undo. Other orders keep their timers. If stopping the timer
+  fails, the command reports it and the withdrawn order stays ineligible for escalation.
 - **next-fits-a-screen.** `pipe next` prints fewer than 1,500 characters: each start with its time and rule (five at
   most, then a count), one line per reason the other mods wait naming every mod, and each UNMEASURED part and role cut
   to one short line. `pipe next --full` prints the dispatch tree's text whole. An unreadable forecast is a failure
@@ -235,6 +238,7 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
   crossed. A name that never ran, or a `reuse_name` name whose run is over, may be admitted again under a new run id.
 - **held look:** held → charged or released. charged → voided.
 - **stop order:** pending → seen → done or escalated. escalated → back to pending or seen when the kill failed.
+  On withdrawal, pending → withdrawn and seen → withdrawn_owed → withdrawn once the run's hook tells it.
 - **switch:** on ↔ off, one row per scope and layer (ours, his). His layer moves only with his words, through
   `mod_owner_hold.py`, and each move rewrites his file's mirror. A timed off
   (`maturation_dispatch.py pause --until`) turns on by itself at its time, with no new act.

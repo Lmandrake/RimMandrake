@@ -184,6 +184,8 @@ brk("permit-never-ghosts", "launch_unit() no longer re-writes the permit after a
     ("    permit_sync(p=p)    # admitted means `all` is on", "    pass    # admitted means `all` is on"))
 brk("deadline-is-wall-clock", "schedule_escalation() sets a monotonic --on-active timer again",
     ('"--on-calendar=" + due,', '"--on-active=%d" % int(deadline_s),'))
+brk("undo-disarms-escalation", "undo() leaves the withdrawn order's timer armed",
+    ('    for unit, order in r.pop("timers", ()):', '    for unit, order in ():'))
 brk("next-fits-a-screen", "forecast_brief() gives each waiting mod's whole reason its own line",
     ('groups.setdefault((b.get("decision"), _reason_head(b.get("why"))), []).append(str(b.get("mod")))',
      'groups.setdefault((b.get("decision"), b.get("why"), b.get("mod")), []).append(str(b.get("mod")))'))

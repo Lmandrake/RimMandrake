@@ -77,10 +77,11 @@ namespace JawaBench.BridgeTools
         internal static double NowS => Stopwatch.GetTimestamp() / Freq;
 
         // tps.frame-hist + spike.gc-timing (main thread only: GRoot rejects foreign threads)
-        internal static readonly H.HistRing Ring = new H.HistRing(240);
+        internal static H.HistRing Ring = new H.HistRing(240);
         internal static H.FrameHist Window = new H.FrameHist(), Session = new H.FrameHist();
-        internal static double WindowStartS = double.NaN, SessionStartS = double.NaN;
+        internal static double WindowStartS = double.NaN;
         private static long _lastFrameTs = -1;
+        private static Game _lastFrameGame;
         private static int _lastGc = -1;
         internal static readonly H.GapGc Gc = new H.GapGc();
 
@@ -129,12 +130,16 @@ namespace JawaBench.BridgeTools
                     _installed = true;
                 }
                 if (InstallStatus == "failed") return "not armed: install failed (" + InstallDetail + ")";
-                double m = Arm.Set(NowS, minutes, DefaultArmMinutes, MaxArmMinutes);
+                double nowS = NowS;
+                double m = Arm.Set(nowS, minutes, DefaultArmMinutes, MaxArmMinutes);
                 ArmedBy = by; ArmedAtUtc = DateTime.UtcNow.ToString("o");
                 _lastFrameTs = -1; _lastGc = -1;                        // never span a frame interval across an unarmed stretch
-                if (double.IsNaN(SessionStartS)) SessionStartS = NowS;
-                if (double.IsNaN(OccSinceS)) OccSinceS = NowS;
-                WindowStartS = NowS;
+                _lastFrameGame = null;
+                CloseWindow(nowS);                                     // keep the old partial window in the TPS record
+                Session = new H.FrameHist();
+                Ring = new H.HistRing(240);
+                if (double.IsNaN(OccSinceS)) OccSinceS = nowS;
+                WindowStartS = nowS;
                 SubscribeLog();
                 _live = true;
                 return "armed for " + m + " min";
@@ -147,6 +152,7 @@ namespace JawaBench.BridgeTools
             {
                 _live = false;
                 Arm.Clear();
+                _lastFrameGame = null;
                 CloseWindow(NowS);
                 UnsubscribeLog();
                 JawaBenchHealthCapabilities.StopProbe();
@@ -212,11 +218,15 @@ namespace JawaBench.BridgeTools
                     if (!_live) return;
                     long now = Stopwatch.GetTimestamp();
                     double nowS = now / Freq;
-                    if (!Arm.Live(nowS)) { _live = false; CloseWindow(nowS); return; }
+                    if (!Arm.Live(nowS)) { _live = false; _lastFrameGame = null; CloseWindow(nowS); return; }
+                    // Both ends of a histogram interval must be in the same ready game, outside long events.
+                    Game game = _onFrame ? Current.Game : null;
+                    if (game != null && (Current.ProgramState != ProgramState.Playing || game.World == null ||
+                        LongEventHandler.ShouldWaitForEvent || LongEventHandler.AnyEventNowOrWaiting)) game = null;
                     if (_lastFrameTs >= 0)
                     {
                         double ms = (now - _lastFrameTs) * 1000.0 / Freq;
-                        if (_onFrame)
+                        if (game != null && ReferenceEquals(game, _lastFrameGame))
                         {
                             if (nowS - WindowStartS >= WindowSeconds) CloseWindow(nowS);
                             Window.Add(ms); Session.Add(ms);
@@ -233,6 +243,7 @@ namespace JawaBench.BridgeTools
                         }
                     }
                     else if (_onGc) _lastGc = GC.CollectionCount(0);
+                    _lastFrameGame = game;
                     _lastFrameTs = now;
                 }
                 finally { GRoot.Exit(scope); }          // prefix-only hook: the scope closes here, not in a finalizer

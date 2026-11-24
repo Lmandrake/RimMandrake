@@ -2721,6 +2721,52 @@ def t_deadline_is_wall_clock():
           "pipe stop still states the deadline it set", r)
 
 
+def t_undo_disarms_escalation():
+    """Undo withdraws a write-now order and disarms its timer, including when undo crosses timer creation."""
+    from unittest.mock import patch
+
+    def pipe_cli(*args):
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            rc = C.main(list(args))
+        check(rc == 0, "pipe %s succeeds" % args[0], out.getvalue())
+
+    def undo_latest():
+        order = C._q("SELECT * FROM stops ORDER BY id DESC LIMIT 1", one=True)
+        pipe_cli("undo", order["act"], "--why", "withdraw the stop")
+        return order
+
+    def arm(argv, **kw):
+        if during_arm:
+            undo_latest()
+        armed.add(argv[argv.index("--unit") + 1] + ".timer")
+        return subprocess.CompletedProcess(argv, 0, "", "")
+
+    def disarm(args, timeout=10):
+        assert args[0] == "stop", args
+        armed.difference_update(args[1:])
+        return 0, ""
+
+    unit = "rm-probe-stop-undo"
+    fresh()
+    schedule = C.schedule_escalation
+    armed = set()
+    during_arm = False
+    with patch.object(C, "schedule_escalation", lambda *args: schedule(*args, runner=arm)), \
+            patch.object(C, "_systemctl", disarm):
+        pipe_cli("stop", unit, "--write-now", "--deadline", "1h", "--why", "keep this order")
+        keep = armed.copy()
+        pipe_cli("stop", unit, "--write-now", "--why", "withdraw this order")
+        check(len(keep) == 1 and len(armed) == 2, "write-now stops arm separate timers", armed)
+        order = undo_latest()
+        check(armed == keep, "pipe undo disarms the withdrawn stop's escalation timer", sorted(armed - keep))
+        killed = []
+        line = C.escalate(unit, now=order["deadline"] + 1, killer=lambda units: killed.extend(units) or [])
+        check("nothing to do" in line and not killed, "escalation skips a withdrawn order at its deadline", line)
+        during_arm = True
+        pipe_cli("stop", unit, "--write-now", "--why", "undo during timer creation")
+        check(armed == keep, "a timer armed concurrently with undo is disarmed", sorted(armed - keep))
+
+
 def t_an_off_over_a_live_switch_names_the_one_it_replaces():
     """2026-11-23 4:02 AM PST: a helper's proof ran `pipe off family:list_dispatch` over the Conductor's live switch
     (ct_000112, machine load) and then `pipe on`; the output said only "OFF -> OFF", and the Conductor's switch was gone."""
@@ -2770,7 +2816,7 @@ def main():
               t_permit_never_ghosts, t_before_is_read, t_hold_file_mirrors_the_store,
               t_his_hold_lifts_by_him_or_the_conductor, t_conductor_lift_only_from_its_window,
               t_conductors_lift_is_its_own_act, t_mirror_failure_is_an_alarm, t_held_stays_held_across_the_mirror,
-              t_next_fits_a_screen, t_deadline_is_wall_clock, t_an_unseeded_mod_can_be_switched_off,
+              t_next_fits_a_screen, t_deadline_is_wall_clock, t_undo_disarms_escalation, t_an_unseeded_mod_can_be_switched_off,
               t_an_off_over_a_live_switch_names_the_one_it_replaces,
               t_a_test_process_starts_no_real_unit, t_a_test_process_never_writes_the_real_ledger):
         print("== %s" % t.__name__)
