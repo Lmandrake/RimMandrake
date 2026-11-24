@@ -77,6 +77,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
+import own_cgroup  # noqa: E402  a clone checkout outside the calling unit's memory limit
 import run_tmp  # noqa: E402  (its own TMPDIR: TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP)
 import principal  # noqa: E402  a gate of form never refuses the owner or the Conductor window (principal.form)
 import form_fault as FF  # noqa: E402  the brief line: a refusal that names its repair is an instruction
@@ -562,6 +563,8 @@ def take_clone(item, runner=subprocess.run, name=None):
     died partway) or that is no clone is moved aside and made again, said in one line
     (RIMMANDRAKE_REPLACE_HALF_MADE_POOL_CLONE_LAUNCH_FAILED_THRICE: three launches died on `./sync` missing)."""
     name = name or item + ".det"
+    if runner is subprocess.run:    # a checkout is gigabytes of file cache: never in a timed unit's own memory limit
+        runner = own_cgroup.run
     dest = os.path.join(pool_root(), "clones", name)
     replaced = ""
     if os.path.isdir(dest) and not (os.path.isdir(os.path.join(dest, ".git")) and os.path.isfile(os.path.join(dest, "sync"))):

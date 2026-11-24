@@ -2461,6 +2461,7 @@ NOT_PIPELINE = {
     "Utils/clone_mem_probe.py": "a memory-probe scope (no model)",
     "Utils/run_selftests.py": "the selftest harness scope (no model)",
     "Utils/mutation/run_mutation.py": "mutation-test workers (no model)",
+    "rimflow/own_cgroup.py": "a git child's own memory scope (no model)",
     "rimflow/login_watch.py": "the account login switch (no model)",
     "rimflow/seat_restart.py": "a seat restart timer (no model)",
     "rimflow/control.py": "the primitive itself, its escalation timer and its killed-run bookkeeping unit",

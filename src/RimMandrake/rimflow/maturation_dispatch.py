@@ -154,6 +154,7 @@ import maturation as M          # noqa: E402
 import judge_certificate as JC  # noqa: E402  the pre-judgement certificate, read before a judge or visit launch
 import maturation_now as MN     # noqa: E402
 import maturation_autonomy as AUT   # noqa: E402
+import own_cgroup               # noqa: E402  landings outside the tick's memory limit
 import detached_helper as DH    # noqa: E402
 import modledger                # noqa: E402  the mod ledger: stage runs from its packet; holder sessions (resume_plan)
 import pipeline_pause as PP          # noqa: E402  the pipeline's pause: one switch, a file (pause.json in sdir)
@@ -3405,7 +3406,7 @@ def land_spend(root, paths, fx=None):
         if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(root):
             return "skipped: %s is not a clone's top" % root
         import designer_stage as DS
-        p = subprocess.run([DS.LAND, "-m", (fx or {}).get("land_msg") or "maturation: spend rows of ended runs (Dispatch step)"]
+        p = own_cgroup.run([DS.LAND, "-m", (fx or {}).get("land_msg") or "maturation: spend rows of ended runs (Dispatch step)"]
                            + paths, cwd=root,
                            capture_output=True, text=True, timeout=300, env=dict(os.environ, LAND_REPO=root))
     except (OSError, subprocess.SubprocessError) as e:
