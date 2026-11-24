@@ -16,6 +16,20 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            Case("Pond_bed_return_stops_at_fractional_shore_floor", () =>
+            {
+                var shore = new BedHarness.Excavation();
+                shore.ReturnAtShore();
+                Assert(shore.water[1] == 20000 && shore.water[2] == 25000 && shore.pondStock == 5000,
+                    $"1 m shelf: shore={shore.water[1]} dL, neighbour={shore.water[2]} dL, pond credit={shore.pondStock} dL");
+                shore.ReturnAtShore();
+                Assert(shore.water[1] == 20000 && shore.pondStock == 5000, "no more return at the floor");
+
+                var shallow = new BedHarness.Excavation { pondCapacity = 1600 };
+                shallow.ReturnAtShore();
+                Assert(shallow.water[1] == 23400 && shallow.pondStock == 1600, "pond room caps the return and matches the debit");
+            });
+
             Case("Pond_dug_bed_leaves_and_returns_exactly", () =>
             {
                 // a 10 shallow + 10 deep pond (60 levels); a deep bed square is dug out, then filled back in. POND_CAPACITY_FIX_DOUBLING_BED:

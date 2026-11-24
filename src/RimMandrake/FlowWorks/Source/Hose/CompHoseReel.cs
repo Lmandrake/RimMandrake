@@ -3,6 +3,7 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.FlowWorks.LiquidTypes;
 using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.FlowWorks.Hose
@@ -86,7 +87,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// route through this hose extends it (RM_LiquidNet.Credit). Saved (HOSE_RELOAD_FIX_SPILLS_SAVED_FLOW): unsaved, it loaded as
         /// NoLease and the once-a-cycle drain check (RM_MapComponent_Hoses) read a working hose as stopped and spilled its held
         /// liquid before the pump's next transfer; TicksGame is saved too, so the lease resumes where it was. Cleared when the
-        /// hose leaves Laid, on despawn and on a new lay.</summary>
+        /// hose leaves Laid, on despawn, or when a lay fails or changes its endpoint.</summary>
         public int flowUntil = RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease;
         /// <summary>Saved: the liquid the strand shows (its tint), and the pending candidate with when it started.</summary>
         public RimMandrake.FlowWorks.LiquidTypes.LiquidDef tintLiquid, lastLiquid;
@@ -97,6 +98,8 @@ namespace RimMandrake.FlowWorks.Hose
         public int creditTick = int.MinValue, lastCadence = 250;
         /// <summary>Runtime: the end cell the current lay was made to (a lay to a new end ends the lease).</summary>
         public IntVec3 layEnd = IntVec3.Invalid;
+        /// <summary>A loaded hose with held liquid is waiting for its first lay result.</summary>
+        internal bool restoringLay;
         /// <summary>State read: transfers credited to this hose this session (the probe's real-flow rows).</summary>
         public int creditsSeen, unitsSeen;
 
@@ -130,6 +133,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// until the strand is Flat (it is how the strand last looked).</summary>
         public void EndLease()
         {
+            restoringLay = false;
             flowUntil = RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease;
             debugFedTick = int.MinValue;
             RM_MapComponent_Hoses.LeaseVersion++;   // HOSE_SIGNAL_TAME_WITH_EXPIRY_TICK: a cut ends every lease it fed this tick
@@ -294,6 +298,11 @@ namespace RimMandrake.FlowWorks.Hose
                 laid = HoseCarryLoad.IsLaid(carry);
                 if (laid && !far.IsValid && trail.Count > 0) far = trail[trail.Count - 1];
                 if (laid && !far.IsValid) { carry = HoseCarryState.Stored; laid = false; trail.Clear(); }
+                if (carry == HoseCarryState.Laid)
+                {
+                    layEnd = far;
+                    restoringLay = heldUnits > 0;
+                }
                 if (carry != HoseCarryState.Carrying && carry != HoseCarryState.Retracting) carrier = null;
             }
         }
@@ -443,7 +452,7 @@ namespace RimMandrake.FlowWorks.Hose
             return comp.CheckInstall(this, target);
         }
 
-        /// <summary>Joints study 2026-10-22: aimed AT a port thing (a tank, pump or machine standing on an unwalkable square), the end
+        /// <summary>Joints study 2026-10-22: aimed AT a pump or a port thing standing on an unwalkable square, the end
         /// goes to the free square beside it nearest this reel's mouth that couples to that same thing (HosePorts.FindAt), as an
         /// aim at another reel goes to its intake. Anything else is left unchanged (and judged as before).
         /// HOSE_TANK_LAY_FIX_ENDS_ON_LID: "solid" is read off the LIVE path grid, never the cached CordWorld snapshot -- the
@@ -453,11 +462,13 @@ namespace RimMandrake.FlowWorks.Hose
         private string ApproachIfOnPort(RM_MapComponent_Hoses comp, ref IntVec3 target)
         {
             Map map = parent.Map;
-            if (map == null || !target.InBounds(map) || target.Walkable(map)) return null;
+            if (map == null || !target.InBounds(map)) return null;
+            bool walkable = target.Walkable(map);
             Thing port = null;
             foreach (Thing t in target.GetThingList(map))
             {
-                if (t != parent && HosePorts.Classify(t) != HosePortKind.None) { port = t; break; }
+                // A walkable pump footprint still has its ports on the four sides.
+                if (t != parent && (!walkable || t is Building_LiquidPump) && HosePorts.Classify(t) != HosePortKind.None) { port = t; break; }
             }
             if (port == null) return null;
             CordWorld w = comp.World();
@@ -469,6 +480,7 @@ namespace RimMandrake.FlowWorks.Hose
                 var cell = new Cell(c.x, c.z);
                 if (corner || !c.InBounds(map) || !c.Walkable(map) || !w.IsWalkable(cell) || Rect.Contains(cell)) continue;
                 if (HosePorts.FindAt(map, c, parent, out _, out _) != port) continue;
+                if (port is Building_LiquidPump && comp.CheckInstall(this, c) != null) continue;
                 cells.Add(cell);
             }
             string why = HosePortRule.AimAtSolidPort(true, port.LabelNoCount, cells, Rect.Mouth, out int pick);

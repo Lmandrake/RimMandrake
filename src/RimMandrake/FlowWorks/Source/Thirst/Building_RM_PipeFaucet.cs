@@ -188,6 +188,12 @@ namespace RimMandrake.FlowWorks.Thirst
 			return null;
 		}
 
+		internal static bool BottleStockHeld(Pawn pawn, RM_ContainerSize size, LiquidDef liquid, bool forced)
+		{
+			return !forced && size == RM_ContainerSize.Bottle && RM_ThirstUtility.UseOf(liquid) == RM_DrinkUse.Potable
+				&& RM_BottleStock.Deficit(pawn.Map) <= 0;
+		}
+
 		public override string GetInspectString()
 		{
 			var sb = new StringBuilder(base.GetInspectString());
@@ -290,6 +296,10 @@ namespace RimMandrake.FlowWorks.Thirst
 					refusal = refusal ?? why;
 					continue;
 				}
+				if (Building_RM_PipeFaucet.BottleStockHeld(pawn, size, l, ordered))
+				{
+					continue;
+				}
 				if (!pawn.CanReach(f, PathEndMode.Touch, Danger.Some))
 				{
 					continue;
@@ -387,6 +397,10 @@ namespace RimMandrake.FlowWorks.Thirst
 					}
 					return;
 				}
+				if (Building_RM_PipeFaucet.BottleStockHeld(pawn, ext.size, liquid, job.playerForced))
+				{
+					return;
+				}
 				ThingDef filledDef = liquid.bottled?.FilledDefFor(ext.size);
 				int units = RM_ContainerMaterials.UnitsIn(carried, liquid, ext.size);
 				if (filledDef == null || !Building_RM_PipeFaucet.TryPour(f, liquid, units))
@@ -397,6 +411,10 @@ namespace RimMandrake.FlowWorks.Thirst
 				carried.Destroy();
 				filled.stackCount = 1;
 				RM_LiquidBottleUtility.PlacePaidFor(filled, pawn.Position, Map);   // the net was debited
+				if (ext.size == RM_ContainerSize.Bottle && RM_ThirstUtility.UseOf(liquid) == RM_DrinkUse.Potable)
+				{
+					RM_BottleStock.Notify_Filled(Map, 1);
+				}
 			};
 			finish.defaultCompleteMode = ToilCompleteMode.Instant;
 			yield return finish;

@@ -938,6 +938,7 @@ namespace RimMandrake.FlowWorks.Hose
                     GiveBackLayWorld(job.work.World);
                 }
             }
+            if (r.restoringLay && layQueue.FaultedFor(id, key, r.layEpoch)) r.EndLease();
             la0 = System.Diagnostics.Stopwatch.GetTimestamp() - la0;
             if (GC.CollectionCount(0) == lg0 && la0 > layLaterMax) layLaterMax = la0;
             if (!layFaultLogged && layQueue.LastFault != null)
@@ -1056,6 +1057,7 @@ namespace RimMandrake.FlowWorks.Hose
             Relays++;
             // FINAL §3.2 lifecycle: a refused lay carries nothing, and a hose laid to a NEW end starts without the old lease
             if (lay == null || !lay.Ok || r.layEnd != endCell) r.EndLease();
+            r.restoringLay = false;
             r.layEnd = endCell;
             r.lay = lay != null && lay.Ok ? lay : null;
             LeaseVersion++;   // HOSE_SIGNAL_TAME_WITH_EXPIRY_TICK: whether r passes a debug flag on may have changed
@@ -1367,9 +1369,10 @@ namespace RimMandrake.FlowWorks.Hose
                 if ((r.carry == HoseCarryState.Carrying || r.carry == HoseCarryState.Retracting) && (now + r.parent.thingIDNumber) % 30 == 0)
                     r.HolderCheck();
                 r.ResolveTint(now);
+                if (r.restoringLay) EnsureLay(r, true);
                 // L8 (rev 2 §3.7): a hose holding liquid that no longer carries (switched off, not live, lease run out) empties
                 // out of its open end; checked once per pump cycle per reel
-                if (r.heldUnits > 0 && (now + r.parent.thingIDNumber) % RimMandrake.FlowWorks.RM_PumpMath.CycleTicks == 3
+                if (r.heldUnits > 0 && !r.restoringLay && (now + r.parent.thingIDNumber) % RimMandrake.FlowWorks.RM_PumpMath.CycleTicks == 3
                     && RimMandrake.FlowWorks.Machinery.RM_HoseHold.ShouldDrain(r.heldUnits, RM_HoseSettings.hoseHoldsLiquid, RimMandrake.FlowWorks.Machinery.RM_HoseLinks.Eligible(r),
                         RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.Flowing(r.flowUntil, now)))
                     RimMandrake.FlowWorks.Machinery.RM_LiquidSpill.DrainHeld(r, map, RimMandrake.FlowWorks.Machinery.RM_LiquidSpill.DrainCell(r, map));

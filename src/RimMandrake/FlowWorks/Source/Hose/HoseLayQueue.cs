@@ -146,6 +146,9 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>True while a job for this reel is running (the caller keeps its last lay and builds nothing).</summary>
         internal bool Running(int id) => jobs.TryGetValue(id, out Job j) && !j.done;
 
+        internal bool FaultedFor(int id, string key, int epoch) =>
+            faulted.TryGetValue(id, out KeyValuePair<string, int> fault) && fault.Key == key && fault.Value == epoch;
+
         /// <summary>A finished job to apply under ITS key (job.key: may differ from <paramref name="key"/> -- the reel moved on;
         /// apply it, then ask again), or null: still running, deferred by the budget, just started, or faulted under this key and
         /// epoch. A landed job from an older <paramref name="epoch"/> is dropped (step 6) and the current key asked at once.

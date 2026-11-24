@@ -51,6 +51,26 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            Case("Pump_deploy_click_orders_the_side_port", () =>
+            {
+                var map = new HoseHarness.Map();
+                var reel = new HoseHarness.CompHoseReel { parent = new HoseHarness.Thing { Map = map } };
+                var pump = new HoseHarness.Building_LiquidPump { Map = map, Position = new HoseHarness.IntVec3(12, 0, 5) };
+                map.things.Add(pump);
+                var port = new HoseHarness.IntVec3(11, 0, 5);
+                Assert(reel.OrderDeploy(port) == null && reel.pendingAt == port, "a direct side-port order is accepted");
+
+                string refusal = reel.OrderDeploy(pump.Position);
+                Assert(refusal == null && reel.pendingAt == port,
+                    $"walkable pump click queued ({reel.pendingAt.x},{reel.pendingAt.z}); expected side (11,5), refusal={refusal}");
+
+                map.blocked.UnionWith(new[] { port, new HoseHarness.IntVec3(13, 0, 5),
+                    new HoseHarness.IntVec3(12, 0, 4), new HoseHarness.IntVec3(12, 0, 6) });
+                reel.pending = Hose.HosePendingOrder.None;
+                refusal = reel.OrderDeploy(pump.Position);
+                Assert(refusal != null && reel.pending == Hose.HosePendingOrder.None, "all four blocked ports refuse the order");
+            });
+
             // FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE (bar pump_hose_joins_at_side_port; he typed 2026-10-20: "No. a HOSE must
             // connect at one of the four sides. A solid pipe must only be adjacent and is then drawn undernead to the center of
             // the object as ruled previously.")

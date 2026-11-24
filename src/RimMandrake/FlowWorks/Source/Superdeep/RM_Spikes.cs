@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimMandrake.FlowWorks.Pits;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -220,7 +221,14 @@ namespace RimMandrake.FlowWorks
 
 		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
 		{
-			RM_MapComponent_Excavation eng = Map?.GetComponent<RM_MapComponent_Excavation>();
+			Map map = Map;
+			IntVec3 c = Position;
+			if (RM_PitCoverUtility.CoverAt(map, c)?.FadeKind == RM_CoverFadeMath.SpanLook.PitCoverConcealed
+				&& !RM_MapComponent_SuspensionBridges.FadedAt(map, c))
+			{
+				return;
+			}
+			RM_MapComponent_Excavation eng = map?.GetComponent<RM_MapComponent_Excavation>();
 			if (variant == -2)
 			{
 				Graphic g = Graphic is Graphic_Random r ? r.SubGraphicFor(this) : null;
@@ -232,7 +240,6 @@ namespace RimMandrake.FlowWorks
 					variant = -1;
 				}
 			}
-			IntVec3 c = Position;
 			int d = eng != null ? eng.HollowDepthAt(c) : 0;
 			if (variant < 0 || d <= 0)
 			{
@@ -247,7 +254,6 @@ namespace RimMandrake.FlowWorks
 			int step = RM_UnderLiquid.Step(share);
 			float s = (float)step / RM_UnderLiquid.Steps;
 			int bands = step > 0 ? RM_UnderLiquid.BandsFor(clarity, levelM - s * RM_UnderLiquid.StakeMetres, levelM) : 0;
-			Map map = Map;
 			int north = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.North, d);
 			int south = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.South, d);
 			int west = SectionLayer_RMExcavationWalls.NeighbourLevel(map, eng, c + IntVec3.West, d);

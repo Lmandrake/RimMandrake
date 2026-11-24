@@ -3108,9 +3108,8 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>POND_BED step 2 (design §7 #8, Option B "canal backflow can refill it"): after the kernel's pulse, a dug
 		/// square whose water stands above a neighbouring dry bed square's floor (RM_Volume.RunsIntoBed: a brim-full canal
-		/// always) pours one level into it (exact-level water: up to one level's decilitres, so a thin sheet with no whole notch
-		/// runs in too), and that water is credited to the POND's stock through the return leg, never
-		/// to a dug cell. Refill and Restore then re-wet the bed last-in-first-out. All or nothing per level: the take
+		/// always) pours up to one level of the water above that floor, and that water is credited to the POND's stock through
+		/// the return leg. Refill and Restore then re-wet the bed last-in-first-out. The take
 		/// happens only once the pond is known to accept it, so nothing is created or lost.</summary>
 		private void RunIntoBeds()
 		{
@@ -3155,8 +3154,13 @@ namespace RimMandrake.FlowWorks
 			for (int p = 0; p < pours.Count; p++)
 			{
 				FluidDef fluid = FluidAt(pours[p]) ?? ActiveFluid;
-				// Exact-level water: up to one level's decilitres (a thin sheet gives what it has), all or nothing per pour.
-				long want = System.Math.Min(WaterDlAt(pours[p]), (long)RM_LevelSolve.U);
+				int depth = depthGrid[map.cellIndices.CellToIndex(pours[p])];
+				long floor = System.Math.Max(0, depth - NaturalBedDepthAt(beds[p])) * (long)RM_LevelSolve.U;
+				long want = System.Math.Min(WaterDlAt(pours[p]) - floor, (long)RM_LevelSolve.U);
+				if (want <= 0)
+				{
+					continue;
+				}
 				long room = ReturnRoomDl(beds[p], fluid, want);
 				if (room <= 0)
 				{

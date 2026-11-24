@@ -10,7 +10,7 @@
       <Using Namespace="System.Text"/>
       <Code Type="Fragment" Language="cs"><![CDATA[
         string source = File.ReadAllText(Source);
-        string[] signatures = { "private struct Source", "private bool Drawable(", "private int SourceTake(", "private int TankTake(", "private List<Source> Sources(", "private RM_OutletKind Outlet(", "private static LiquidDef LiquidFor(", "private int OutflowGive(", "public static string ProofDrawCycle(", "private string TryDraw(", "protected override void Tick(" };
+        string[] signatures = { "private struct Source", "private bool Drawable(", "private int SourceTake(", "private int TankTake(", "private List<Source> Sources(", "private RM_OutletKind Outlet(", "private static LiquidDef LiquidFor(", "private int OutflowGive(", "public static string ProofDrawCycle(", "private string TryDraw(", "private string TryPour(", "protected override void Tick(" };
         var text = new StringBuilder("// GENERATED from complete production methods.\nusing System; using System.Collections.Generic; using System.Linq; using RimMandrake.FlowWorks.Machinery;\nnamespace RimMandrake.FlowWorks.SelfTest.PumpHarness { internal partial class Building_LiquidPump {\n");
         foreach (string signature in signatures)
         {

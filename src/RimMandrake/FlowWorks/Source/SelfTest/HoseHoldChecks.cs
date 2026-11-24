@@ -20,6 +20,48 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            foreach (bool rebuildFirst in new[] { true, false })
+            {
+                Case(rebuildFirst ? "HoseHold_reload_keeps_volume_after_rebuild" : "HoseHold_reload_keeps_volume_while_rebuild_pending", () =>
+                {
+                    var map = new HoseHarness.Map();
+                    foreach (int drainTick in new[] { 3, 87, 249 })
+                    {
+                        HoseHarness.CompHoseReel Load()
+                        {
+                            var saved = new HoseHarness.CompHoseReel
+                            {
+                                parent = new HoseHarness.Thing { Map = map, thingIDNumber = RM_PumpMath.CycleTicks + 3 - drainTick },
+                                laid = true,
+                                carry = Hose.HoseCarryState.Laid,
+                                far = new HoseHarness.IntVec3(12, 0, 5),
+                                heldUnits = 500,
+                                flowUntil = RM_LiquidNetKernel.Lease(RM_LiquidNetKernel.NoLease, 0, RM_PumpMath.CycleTicks)
+                            };
+                            saved.PostLoad();
+                            return saved;
+                        }
+                        void Rebuild(HoseHarness.CompHoseReel reel, bool ok)
+                            => map.Hoses.ApplyLay(reel, "restored route", new Hose.HoseLay { Ok = ok }, map.Hoses.World(), reel.far, 0);
+
+                        var reel = Load();
+                        if (rebuildFirst) Rebuild(reel, true);
+                        map.Hoses.DrainOnTick(reel, drainTick);
+                        Assert(reel.heldUnits == 500 && reel.spilled == 0,
+                            $"reload at drain tick {drainTick}, lay ready={rebuildFirst}: held={reel.heldUnits}, spilled={reel.spilled} dL");
+                        if (!rebuildFirst) Rebuild(reel, true);
+                        Assert(RM_LiquidNetKernel.Flowing(reel.flowUntil, drainTick), "the validated endpoint keeps its saved lease");
+                        map.Hoses.DrainOnTick(reel, drainTick + 2 * RM_PumpMath.CycleTicks);
+                        Assert(reel.heldUnits == 0 && reel.spilled == 500, "the validated hose drains when its lease expires");
+
+                        var cut = Load();
+                        Rebuild(cut, false);
+                        map.Hoses.DrainOnTick(cut, drainTick);
+                        Assert(cut.heldUnits == 0 && cut.spilled == 500, "a failed first rebuild clears the lease and drains a cut hose");
+                    }
+                });
+            }
+
             Case("HoseHold_capacity_is_cells_times_units_per_cell", () =>
             {
                 Assert(RM_HoseHold.Capacity(30, 0.2f) == 6 && RM_HoseHold.Capacity(31, 0.2f) == 7 && RM_HoseHold.Capacity(0, 0.2f) == 0 && RM_HoseHold.Capacity(30, 0f) == 0,

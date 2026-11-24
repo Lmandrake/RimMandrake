@@ -49,6 +49,11 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				FluidDef f = LiquidUnder(map, ex, p.Position);
+				// A dry deck ends contact, so the pawn can still gain the coat from liquid it just left.
+				if (f != null && Pits.RM_GrateEffects.SplashShare(Pits.RM_SpanUtility.DeckAt(map, p.Position), p) <= 0f)
+				{
+					f = null;
+				}
 				int id = p.thingIDNumber;
 				if (f != null && f.coats)
 				{

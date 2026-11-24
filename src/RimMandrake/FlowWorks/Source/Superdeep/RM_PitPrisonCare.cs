@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -18,6 +21,12 @@ namespace RimMandrake.FlowWorks
             && RM_PitRooms.HoldsBySize(p);
 
         public static bool LipCare(Pawn p) => RimMandrakeFlowWorksSettings.wardenFromLipEnabled && Kept(p);
+
+        public static bool TryFindMealLip(Pawn worker, Pawn patient, out IntVec3 lip)
+        {
+            return RM_PitRooms.TryFindLipCell(worker, patient.Position, RM_PitRoomMath.LipKind.Touch, out lip)
+                || RM_PitRooms.TryFindLipCell(worker, patient.Position, RM_PitRoomMath.LipKind.Interact, out lip, rimOnly: true);
+        }
     }
 
     [HarmonyPatch(typeof(Room), nameof(Room.IsPrisonCell), MethodType.Getter)]
@@ -69,10 +78,48 @@ namespace RimMandrake.FlowWorks
         }
     }
 
-    // Both the work scanner and the driver's path validation ask this seam. Redirect the target,
-    // then let vanilla and the existing cliff/wall vetoes evaluate the actual route to the rim.
-    // No blanket reachability override: an inaccessible rim still refuses, as does a prisoner
-    // in the middle of a hole too wide for an adjacent lip.
+    // The food work givers already check CanReserveAndReach in JobOnThing. Let them do that check
+    // even when the prisoner's region is outside the scanner's reachable regions.
+    [HarmonyPatch(typeof(WorkGiver_Scanner), nameof(WorkGiver_Scanner.AllowUnreachable), MethodType.Getter)]
+    [RimMandrake.Shared.PatchFeature("Scan for prisoner meals from the rim", typeof(RimMandrakeFlowWorksSettings), "wardenFromLipEnabled")]
+    public static class RM_Patch_PitPrisonMealScanner
+    {
+        [HarmonyPostfix]
+        public static void Postfix(WorkGiver_Scanner __instance, ref bool __result)
+        {
+            if (RimMandrakeFlowWorksSettings.wardenFromLipEnabled && RM_PitRooms.RoomsOn
+                && (__instance is WorkGiver_Warden_Feed || __instance is WorkGiver_Warden_DeliverFood)) __result = true;
+        }
+    }
+
+    // Scope the longer reach to the food work giver's query for its prisoner.
+    [HarmonyPatch]
+    [RimMandrake.Shared.PatchFeature("Find a rim for prisoner meals", typeof(RimMandrakeFlowWorksSettings), "wardenFromLipEnabled")]
+    public static class RM_Patch_PitPrisonMealScan
+    {
+        [ThreadStatic]
+        private static Thing prisoner;
+
+        public static bool IsScanning(Thing target) => target == prisoner;
+
+        private static IEnumerable<MethodBase> TargetMethods()
+        {
+            yield return AccessTools.Method(typeof(WorkGiver_Warden_Feed), nameof(WorkGiver_Warden_Feed.JobOnThing));
+            yield return AccessTools.Method(typeof(WorkGiver_Warden_DeliverFood), nameof(WorkGiver_Warden_DeliverFood.JobOnThing));
+        }
+
+        [HarmonyPrefix]
+        public static void Prefix(Thing t, out Thing __state)
+        {
+            __state = prisoner;
+            prisoner = t;
+        }
+
+        [HarmonyFinalizer]
+        public static void Finalizer(Thing __state) => prisoner = __state;
+    }
+
+    // Redirect the reach check so vanilla and the cliff/wall vetoes can evaluate the real route to the rim.
     [HarmonyPatch(typeof(Reachability), nameof(Reachability.CanReach),
         new[] { typeof(IntVec3), typeof(LocalTargetInfo), typeof(PathEndMode), typeof(TraverseParms) })]
     [RimMandrake.Shared.PatchFeature("Prisoner care reaches the rim", typeof(RimMandrakeFlowWorksSettings), "wardenFromLipEnabled")]
@@ -85,11 +132,30 @@ namespace RimMandrake.FlowWorks
             if (worker == null || !worker.Spawned || worker.Faction != Faction.OfPlayer
                 || !dest.HasThing || !(dest.Thing is Pawn patient) || worker.Map != patient.Map
                 || !RM_PitPrisonCare.LipCare(patient)) return;
-            if (RM_PitRooms.TryFindLipCell(worker, patient.Position, RM_PitRoomMath.LipKind.Touch, out IntVec3 lip))
+            IntVec3 lip;
+            if (peMode == PathEndMode.OnCell && RM_Patch_PitPrisonMealScan.IsScanning(patient)
+                ? RM_PitPrisonCare.TryFindMealLip(worker, patient, out lip)
+                : RM_PitRooms.TryFindLipCell(worker, patient.Position, RM_PitRoomMath.LipKind.Touch, out lip))
             {
                 dest = lip;
                 peMode = PathEndMode.OnCell;
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(ReachabilityImmediate), nameof(ReachabilityImmediate.CanReachImmediate),
+        new[] { typeof(IntVec3), typeof(LocalTargetInfo), typeof(Map), typeof(PathEndMode), typeof(Pawn) })]
+    [RimMandrake.Shared.PatchFeature("Feed pit prisoners within sight of the rim", typeof(RimMandrakeFlowWorksSettings), "wardenFromLipEnabled")]
+    public static class RM_Patch_PitPrisonMealTouch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(IntVec3 start, LocalTargetInfo target, Map map, PathEndMode peMode, Pawn pawn, ref bool __result)
+        {
+            // FeedPatient's chew toil rechecks Touch even after the warden walked to the selected rim.
+            if (!__result && peMode == PathEndMode.Touch && target.Thing is Pawn patient && patient.Map == map
+                && pawn?.CurJob is Job job && job.def == JobDefOf.FeedPatient && job.targetB.Thing == patient && pawn.Faction == Faction.OfPlayer
+                && start == pawn.Position && !start.AdjacentTo8WayOrInside(patient.Position) && RM_PitPrisonCare.LipCare(patient)
+                && RM_PitRooms.InReachFromRim(map, start, patient.Position)) __result = true;
         }
     }
 

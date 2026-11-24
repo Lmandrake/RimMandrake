@@ -1,4 +1,4 @@
-// Complete shipping Tick/TryDraw/source-selection methods are extracted at build time.
+// Complete shipping Tick/TryDraw/TryPour/source-selection methods are extracted at build time.
 // Doubles below model engine boundaries only: fixed reach/adjacency, excavation/body ledgers,
 // outlet capacity/refusal, tank capacity and hose storage. Production PumpNext, PumpMath and
 // LiquidTransfer run unchanged. This does not simulate terrain, topology discovery, Unity or scheduling.
@@ -43,6 +43,14 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
     {
         public static string Translate(this string text, params object[] args) => text;
     }
+    internal static class Messages
+    {
+        public static void Message(string text, Building thing, object type, bool historical) { }
+    }
+    internal static class MessageTypeDefOf
+    {
+        public static readonly object NeutralEvent = new();
+    }
     internal static class Find
     {
         public static Map CurrentMap;
@@ -66,6 +74,7 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
         internal static class RM_HoseSettings
         {
             public static int DumpUnitsPerCycle;
+            public static bool tankModesEnabled = true;
         }
     }
     internal class Power
@@ -97,6 +106,7 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
     internal class RM_MapComponent_Excavation
     {
         public Dictionary<int, long> water = new();
+        public Dictionary<int, long> capacity = new();
         public HashSet<int> refuseTake = new();
         public int takeCalls;
         public FluidDef ActiveFluid = new();
@@ -114,11 +124,18 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
             water[cell.x] -= amount;
             return amount;
         }
-        public bool TryPourDl(IntVec3 cell, FluidDef fluid, int amount)
+        public long RoomDlAt(IntVec3 cell) => capacity.GetValueOrDefault(cell.x, long.MaxValue) - WaterDlAt(cell);
+        public long PourRoomDl(IntVec3 cell, FluidDef fluid, long want) => Math.Min(want, Math.Max(0, RoomDlAt(cell)));
+        public bool TryPourLevel(IntVec3 cell, FluidDef fluid) => TryPourDl(cell, fluid, RM_PumpMath.TankUnitsPerLevel);
+        public void NoteDriverBackedUp(IntVec3 cell) { }
+        public bool TryPourDl(IntVec3 cell, FluidDef fluid, long amount)
         {
+            if (PourRoomDl(cell, fluid, amount) != amount) return false;
+            deliveredFluid = fluid;
             water[cell.x] = WaterDlAt(cell) + amount;
             return true;
         }
+        public FluidDef deliveredFluid;
     }
     internal static class RM_SuperdeepTrap
     {
@@ -131,6 +148,7 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
     }
     internal enum RM_FreeEndRole { Intake, Outflow }
     internal enum RM_OutletKind { Blocked, Channel, Body }
+    internal enum RM_TankMode { Store, Dump }
     internal class RM_NetPort
     {
         public IntVec3? Cell;
@@ -139,23 +157,44 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
     }
     internal class Building_LiquidTank
     {
-        public int room, stored;
+        public int room, storedUnits;
+        public int stored => storedUnits;
+        public LiquidDef storedLiquid;
+        public RM_TankMode EffectiveMode;
         public object mutationActor;
         public bool CanAccept(LiquidDef liquid, int amount) => room >= amount;
+        public bool CanProvide(int amount) => storedLiquid != null && amount > 0 && storedUnits >= amount;
         public bool TryAddLiquid(LiquidDef liquid, int amount)
         {
             if (!CanAccept(liquid, amount)) return false;
             mutationActor = RM_LiquidTheft.Current;
             room -= amount;
-            stored += amount;
+            storedLiquid = liquid;
+            storedUnits += amount;
             return true;
         }
         public bool TryRemoveLiquid(int amount)
         {
+            if (!CanProvide(amount)) return false;
             mutationActor = RM_LiquidTheft.Current;
-            stored -= amount;
+            storedUnits -= amount;
+            if (storedUnits == 0) storedLiquid = null;
             room += amount;
             return true;
+        }
+    }
+    internal static class Sheet
+    {
+        internal static class RM_MapComponent_Sheet
+        {
+            public static bool PumpSpillOutlet(Map map, List<IntVec3> cells, List<(int, bool, FluidDef)> data,
+                int units, FluidDef fluid, out IntVec3 outlet)
+            {
+                outlet = IntVec3.Invalid;
+                return false;
+            }
+            public static RM_TransferLeg SpillLeg(Map map, IntVec3 outlet, FluidDef fluid, RM_SheetMath.Source source)
+                => throw new InvalidOperationException("No sheet outlet in this fixture");
         }
     }
     internal static class RM_LiquidSpill
@@ -214,11 +253,15 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
         private int cycle;
         private bool filledPastOutflow, circle;
         private string lastLiquidLabel, lastStatus, warning;
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, object> toldPourNeedsDump = new();
+        private string LabelCap => "pump";
+        public string Status => lastStatus;
         private IEnumerable<IntVec3> ReachCells() => reach;
         private List<Building_LiquidTank> NetTanks() => new() { tank };
         private void Stamp(int amount) => lastMovedUnits = amount;
         private void NoteNeighbours() { }
-        private string TryPour() => throw new Exception("Draw-only harness");
+        private string PourToPond(RM_MapComponent_Excavation ex, List<Building_LiquidTank> tanks, int units) => null;
+        private string PourToOutflow(RM_MapComponent_Excavation ex, List<Building_LiquidTank> tanks, int units) => null;
         public void Pulse(int atCycle = 0, int levels = 1)
         {
             Ext.levelsPerCycle = levels;
@@ -287,6 +330,42 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
         }
         public static void Run(Action<string, Action> Case)
         {
+            Case("Pump_pour_moves_one_tar_barrel", () =>
+            {
+                var p = Site(0, 0);
+                p.pourMode = true;
+                p.outflows.Clear();
+                p.reach.RemoveAt(1);
+                p.Map.engine.capacity[0] = 10000;
+                p.tank.EffectiveMode = RM_TankMode.Dump;
+                var tar = new FluidDef { label = "tar" };
+                p.tank.storedLiquid = new LiquidDef { canalFluid = tar, label = "tar" };
+                p.tank.storedUnits = 2080;
+
+                p.Pulse();
+                Assert(p.lastMovedUnits == 2080 && p.tank.stored == 0 && p.Map.engine.WaterDlAt(new(0)) == 2080
+                    && p.Map.engine.deliveredFluid == tar && p.Status == "RMFlow_PumpPoured",
+                    $"2080 dL tar: tank={p.tank.stored}, channel={p.Map.engine.WaterDlAt(new(0))}, status={p.Status}");
+                p.Pulse(1);
+                Assert(p.Status == "RMFlow_PumpTankEmpty", "the next cycle reports the depleted tank");
+            });
+
+            Case("Pump_pour_respects_fractional_channel_room", () =>
+            {
+                var p = Site(9700, 0);
+                p.pourMode = true;
+                p.outflows.Clear();
+                p.reach.RemoveAt(1);
+                p.Map.engine.capacity[0] = 10000;
+                p.tank.EffectiveMode = RM_TankMode.Dump;
+                p.tank.storedLiquid = DefDatabase<LiquidDef>.AllDefsListForReading[0];
+                p.tank.storedUnits = 12000;
+
+                p.Pulse();
+                Assert(p.lastMovedUnits == 300 && p.tank.stored == 11700 && p.Map.engine.WaterDlAt(new(0)) == 10000,
+                    $"300 dL room: tank={p.tank.stored}, channel={p.Map.engine.WaterDlAt(new(0))}, status={p.Status}");
+            });
+
             Case("TankTheft_actual_pump_entry_supplies_and_restores_actor", () =>
             {
                 var p = Site(20000, 20000);

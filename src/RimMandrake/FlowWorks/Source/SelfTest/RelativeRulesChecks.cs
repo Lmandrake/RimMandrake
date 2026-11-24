@@ -236,6 +236,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
                 Assert(rooms.Contains("RM_PitRoomMath.CaptureDownNext(RM_PitRooms.CaptureInReach(pawn, Victim), onPit, repaths)"), "the capture job asks the rim reach");
             });
+            Case("PitRoomReach_ordered_melee_at_a_sealed_rim_ends", () =>
+            {
+                Assert(!Reach(1f, 0, 6), "a human on the rim cannot strike the adjacent 3 m floor");
+                Assert(!RM_PitTrapMath.StepAllowed(0, 6, PersonK) && RM_PitTrapMath.StepAllowed(0, 6, PersonK, ladderJoinsForPawn: true),
+                    "raising the only ladder seals the floor; lowering it makes a route without extending melee reach");
+                string src = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_Patch_PitLipMelee.cs"));
+                string walk = DrawbridgeChecks.Body(src, "public static void WalkIn(");
+                const string noRoute = "if (!CanWalkIn(attacker, target))";
+                int blocked = walk.IndexOf(noRoute, StringComparison.Ordinal);
+                Assert(blocked >= 0 && DrawbridgeChecks.Body(walk, noRoute).Contains("EndCurrentJob(JobCondition.Incompletable)")
+                    && DrawbridgeChecks.Body(walk, noRoute).Contains("NoPath"),
+                    "a sealed floor leaves the ordered melee job active at the rim without a hit");
+                Assert(src.Contains("nameof(FloatMenuUtility.GetMeleeAttackAction)") && src.Contains("RM_PitReach.CanWalkIn(pawn, target.Thing)"),
+                    "the drafted menu checks the same route before offering the order");
+                Assert(blocked < walk.IndexOf("attacker.pather.StartPath(target, PathEndMode.OnCell);", StringComparison.Ordinal),
+                    "an open route still walks onto the floor");
+            });
             Case("PitCapture_follows_a_held_pawn_that_moves", () =>
             {
                 // PIT_CAPTURE_FIX_HOSTILE_NOT_PRISONER: the held hostile wandered one cell in the pit (95,167 -> 96,167),
@@ -441,6 +458,28 @@ namespace RimMandrake.FlowWorks.SelfTest
                     && System.Text.RegularExpressions.Regex.Matches(body, @"\brepaths\+\+").Count == 2,
                     "can-fail: the repath count only ever grows, once per repath (no reset re-arms an unbounded chase)");
             });
+            Case("PitPrison_food_reaches_the_centre_of_a_drained_pit", () =>
+            {
+                // The nearest ground cell to the centre of a 3x3 pit is two cells away.
+                Assert(!RM_PitRoomMath.LipCandidate(false, true, 2f, RM_PitRoomMath.RadiusFor(RM_PitRoomMath.LipKind.Touch)),
+                    "the available rim is beyond touch");
+                Assert(RM_PitRoomMath.CaptureReach(false, true, true, 2f) && RM_PitRoomMath.HandFedInPit(true, true, true, false, false),
+                    "capture and bedless feeding eligibility both allow the downed captive");
+                Assert(!RM_PitRoomMath.CaptureReach(false, true, false, 2f) && !RM_PitRoomMath.CaptureReach(false, false, true, 2f)
+                    && !RM_PitRoomMath.CaptureReach(false, true, true, 7f), "the far reach requires sight, a rim and speaking range");
+                string care = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitPrisonCare.cs"));
+                string scan = DrawbridgeChecks.Body(care, "public static void Prefix(ref LocalTargetInfo dest");
+                Assert(scan.Contains("RM_PitPrisonCare.TryFindMealLip(worker, patient, out lip)"),
+                    "the warden reach check has only a touching lip, so the centre prisoner gets no food job");
+                Assert(care.Contains("nameof(WorkGiver_Scanner.AllowUnreachable)") && care.Contains("typeof(WorkGiver_Warden_Feed)"),
+                    "the work scan uses the food giver's own reach check even if the prisoner's region is sealed");
+                string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
+                Assert(rooms.Contains("RM_PitPrisonCare.TryFindMealLip(___pawn, patient, out lip)"), "the food job walks to the same rim used by the scan");
+                string meal = DrawbridgeChecks.Body(care, "public static bool TryFindMealLip(");
+                Assert(meal.Contains("RM_PitRoomMath.LipKind.Interact, out lip, rimOnly: true"), "the far lip uses the bounded, in-sight rim search");
+                Assert(care.Contains("nameof(ReachabilityImmediate.CanReachImmediate)") && care.Contains("RM_PitRooms.InReachFromRim(map, start, patient.Position)"),
+                    "the feed toil's immediate-touch check accepts a warden still in sight and range at the rim");
+            });
             Case("PitStuck_alert_only_for_a_held_colonist_cut_off_from_food_or_bed", () =>
             {
                 // PIT_ALERT_BUILD_RED_MEANS_HELP (owner card Q12, 2026-10-18)
@@ -457,6 +496,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
                 Assert(set.Contains("public static bool pitStuckAlertEnabled = true;") && set.Contains("Scribe_Values.Look(ref pitStuckAlertEnabled, \"pitStuckAlertEnabled\", true);")
                     && set.Contains("ref pitStuckAlertEnabled,"), "setting: on by default, saved, on the screen");
+            });
+            Case("PitStuck_walked_in_colonist_is_alerted_when_the_ladder_is_raised", () =>
+            {
+                Assert(!RM_PitTrapMath.HeldRelative(true, true, false, false, false, true), "default own-faction capture leaves the walker unheld");
+                Assert(!RM_PitTrapMath.StepAllowed(6, 0, PersonK) && RM_PitTrapMath.StepAllowed(6, 0, PersonK, ladderJoinsForPawn: true),
+                    "the walker can leave only while the ladder is lowered");
+                string src = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitStuckAlert.cs"));
+                string culprits = DrawbridgeChecks.Body(src, "private List<Thing> Culprits()");
+                Assert(culprits.Contains("RM_CliffMask.On ? RM_SuperdeepTrap.HasNoWayOut(p) : RM_SuperdeepTrap.IsHeld(p)"),
+                    "the alert skips an unheld colonist stranded by the raised ladder");
+                Assert(culprits.Contains("if (!stuck)") && culprits.IndexOf("if (!stuck)", StringComparison.Ordinal) < culprits.IndexOf("FoodReachable(p)", StringComparison.Ordinal),
+                    "the same gate stops reporting the walker when the ladder is lowered");
             });
             Case("Fall_deep_drops_can_kill_by_metres", () =>
             {

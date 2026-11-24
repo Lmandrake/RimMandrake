@@ -309,7 +309,8 @@ namespace RimMandrake.FlowWorks.SelfTest
               "aim at a tank with no free square in front of its port: refused with a reason naming it (was: end left on the lid) -> " + noSide);
             C(HosePortRule.AimAtSolidPort(false, "x", new List<Cell>(), new V2(5.5, 9.5), out int ap1) == null && ap1 == -1,
               "an aim that is not at a solid port is left to the install check unchanged");
-            C(reelSrc.Contains("target.Walkable(map)) return null;") && !reelSrc.Contains("if (w.IsWalkable(new Cell(target.x, target.z))) return target;"),
+            C(reelSrc.Contains("bool walkable = target.Walkable(map);") && reelSrc.Contains("(!walkable || t is Building_LiquidPump)")
+              && !reelSrc.Contains("if (w.IsWalkable(new Cell(target.x, target.z))) return target;"),
               "'aimed at a solid port' reads the live path grid, not the per-tick CordWorld snapshot (a tank built while paused read walkable)");
             // a straight-line-near target whose only route is long: refused on route length
             CordWorld w2 = Open(40, 40);

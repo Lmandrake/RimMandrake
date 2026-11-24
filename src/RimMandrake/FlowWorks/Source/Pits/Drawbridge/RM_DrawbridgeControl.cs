@@ -199,6 +199,11 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>Does this leaf need a pair of hands, and which way?</summary>
 		public static bool NeedsHands(SuspensionBridgeRecord r, DrawbridgeLeaf l, out bool raise)
 		{
+			if (!RM_DrawbridgeSettings.drawbridgesEnabled)
+			{
+				raise = false;
+				return false;
+			}
 			raise = l.pendingOrder == RM_DrawbridgeMath.OrderRaise || (l.pendingOrder == RM_DrawbridgeMath.OrderNone && l.targetRaised);
 			if (l.pendingOrder != RM_DrawbridgeMath.OrderNone)
 			{
@@ -336,6 +341,7 @@ namespace RimMandrake.FlowWorks.Pits
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
+			this.FailOn(() => !RM_DrawbridgeSettings.drawbridgesEnabled);
 			this.FailOnDespawnedOrNull(TargetIndex.A);
 			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
 			Toil work = ToilMaker.MakeToil("RM_WorkDrawbridge");

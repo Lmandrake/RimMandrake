@@ -216,9 +216,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(deck.Contains("public class Building_SuspensionDeck : Building_SpanDeck"), "a suspension deck is a span deck (extends the base)");
                 Assert(deck.Contains("public override float DeckHeightM => (Record?.deckNotches ?? 0) * RM_SpanMath.NotchM;")
                     && deck.Contains("RM_SpanMath.PassesUnder(RM_SpanMath.SpanKind.SuspensionDeck, RM_SuspensionSettings.suspensionWalkUnder,")
-                    && deck.Contains("eng.ClimbDepthAt(Position), DeckNotches)")
+                    && deck.Contains("eng.HollowDepthAt(Position), DeckNotches)")
                     && Src("RM_SpanMath.cs").Contains("return walkUnderOn && ClearsUnderpass(floorNotches, deckNotches);"),
-                    "a deck's height is its record's (0 = surface) and its floor band passes under at 2 m clearance (UNDERPASS)");
+                    "a deck's height is its record's (0 = surface) and its floor band passes under at 2 m clearance to the physical floor (UNDERPASS)");
                 string patches = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
                 Assert(patches.Contains("\"Use a suspension bridge over dug ground\""), "vanilla bridges refused with the ruled message (Q6)");
                 Assert(patches.Contains("nameof(GenConstruct.CanConstruct)") && patches.Contains("MayBuildDeck"), "build order is enforced on CanConstruct");
@@ -618,6 +618,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             // textures: selftest_flowworks_suspension_art.py (the SelfTest staging copies no Textures folder)
             UnderpassReachChecks.Run(Case);   // UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: reach agrees with A* under decks (UnderpassReachChecks.cs)
+            SpanLiquidContact.SpanLiquidContactChecks.Run(Case);
         }
     }
 }

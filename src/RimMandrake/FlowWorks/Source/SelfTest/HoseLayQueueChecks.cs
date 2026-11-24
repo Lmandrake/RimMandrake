@@ -158,6 +158,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Func<HoseLayQueue.Work> boom = () => new HoseLayQueue.Work { Run = () => { runs++; throw new InvalidOperationException("boom"); } };
                 for (int f = 0; f < 20; f++) { q.BeginFrame(f); Assert(q.Ask(3, "x", 0, boom) == null, "a fault is not handed back"); }
                 Assert(runs == 1 && q.Faulted == 1 && q.LastFault != null && q.LastFault.Contains("boom"), $"one run, fault kept: runs {runs} {q.LastFault}");
+                Assert(q.FaultedFor(3, "x", 0) && !q.FaultedFor(3, "x", 1) && !q.FaultedFor(3, "y", 0),
+                    "only the fault for the current restore attempt can stop it waiting");
                 // review r10 F1: a faulted lay's work is released (not reusable), or its world copy stays lent forever
                 Assert(rel == 1 && relReusable == 0, $"sync fault releases its work once, not reusable: {rel}/{relReusable}");
                 q.BeginFrame(21);

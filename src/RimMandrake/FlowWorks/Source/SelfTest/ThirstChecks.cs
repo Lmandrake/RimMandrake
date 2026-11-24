@@ -141,6 +141,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                        "can-fail: admitting every limited body at the search is caught");
             });
 
+            Case("Thirst_forbidden_river_does_not_hide_pond", () =>
+            {
+                string util = File.ReadAllText(RiverSwitchFlipChecks.SrcPath(Path.Combine("Thirst", "RM_ThirstUtility.cs")));
+                List<string> st = MethodStatements(util, "bool Consider(IntVec3 c)");
+                int forbidden = st.IndexOf("if (c.IsForbidden(pawn))");
+                int reach = st.IndexOf("if (!pawn.CanReach(c, PathEndMode.Touch, Danger.Some))");
+                int budget = st.IndexOf("return ++reachFails <= 40;");
+                Assert(forbidden >= 0 && st[forbidden + 1] == "return true;" && forbidden < reach && reach < budget,
+                    "41 forbidden river cells spend the reachability budget before the allowed pond");
+            });
+
             Case("Thirst_dubs_cut_incompatible", () =>
             {
                 // THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE (owner 2026-10-31): our thirst only; DBH full and its Thirst add-on are
@@ -434,6 +445,33 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string c = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstContainers.cs"));
                 RiverSwitchFlipChecks.Has(c, @"foreach \(Pawn p in map\.mapPawns\.FreeColonistsSpawned\)", "packed bottles count toward the stock");
             });
+            Case("Thirst_faucet_fill_obeys_potable_bottle_stock", () =>
+            {
+                string src = File.ReadAllText(RiverSwitchFlipChecks.SrcPath(Path.Combine("Thirst", "Building_RM_PipeFaucet.cs")));
+                string find = DrawbridgeChecks.Body(src, "public static Building_RM_PipeFaucet FindFaucet(");
+                Assert(RiverSwitchFlipChecks.Flat(find).Contains("if (Building_RM_PipeFaucet.BottleStockHeld(pawn, size, l, ordered)) { continue; }"),
+                    "a faucet still offers automatic fills when potable bottle stock is full");
+                foreach (string entry in new[] { "public override bool HasJobOnThing(", "public override Job JobOnThing(" })
+                {
+                    Assert(DrawbridgeChecks.Body(src, entry).Contains("FindFaucet(pawn, t, ext.size, forced,"),
+                        entry + " must pass forced orders through the gated faucet search");
+                }
+                string gate = DrawbridgeChecks.Body(src, "internal static bool BottleStockHeld(");
+                RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Flat(gate),
+                    @"return !forced && size == RM_ContainerSize\.Bottle && RM_ThirstUtility\.UseOf\(liquid\) == RM_DrinkUse\.Potable && RM_BottleStock\.Deficit\(pawn\.Map\) <= 0;",
+                    "only automatic potable bottle fills stop at the stock target");
+                string driver = DrawbridgeChecks.Body(src, "public class JobDriver_RM_FillAtFaucet");
+                int check = driver.IndexOf("Building_RM_PipeFaucet.BottleStockHeld(pawn, ext.size, liquid, job.playerForced)", StringComparison.Ordinal);
+                int pour = driver.IndexOf("Building_RM_PipeFaucet.TryPour(", StringComparison.Ordinal);
+                Assert(check >= 0 && pour > check, "the finish toil rechecks stock before debiting the tank");
+                RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Flat(driver),
+                    @"if \(Building_RM_PipeFaucet\.BottleStockHeld\(pawn, ext\.size, liquid, job\.playerForced\)\) \{ return; \}",
+                    "a completed competing fill stops this automatic fill");
+                RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Flat(driver),
+                    @"PlacePaidFor\(filled, pawn\.Position, Map\);[^\n]*?if \(ext\.size == RM_ContainerSize\.Bottle && RM_ThirstUtility\.UseOf\(liquid\) == RM_DrinkUse\.Potable\) \{ RM_BottleStock\.Notify_Filled\(Map, 1\); \}",
+                    "a successful potable bottle fill counts immediately toward a concurrent finish");
+            });
+
             Case("Thirst_dehydration_ruled", () =>
             {
                 // T6 offline: need held at 0 for 1 day -> 0.30

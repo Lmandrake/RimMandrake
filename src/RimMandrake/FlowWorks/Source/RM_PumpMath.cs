@@ -95,7 +95,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>
 		/// P1 (hose port step 5; GPT review G1.14): the (tank, cell) pair a pour uses. Tanks in net order; a tank that can
-		/// provide a level and whose liquid has a channel form is paired with the deepest-emptiest COMPATIBLE excavated cell in
+		/// provide liquid with a channel form is paired with the deepest-emptiest COMPATIBLE excavated cell in
 		/// reach (a cell holding another liquid is skipped before ranking, GPT FlowWorks review #20); the first tank with any
 		/// such cell wins. The old rule took the first channel-capable tank and stopped there, so a water tank first on the
 		/// net starved a tar tank beside a tar channel. False when no pair exists.

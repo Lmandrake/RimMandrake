@@ -59,6 +59,20 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            Case("Spikes_hidden_by_an_intact_concealed_cover", () =>
+            {
+                var quads = new List<float>();
+                RM_SpikeDrawMath.FloorRect(4, 0, 0, 0, 0, true, true, out float x0, out float z0, out float x1, out float z1);
+                Assert(RM_SpikeDrawMath.Layout(0, 1, x0, z0, x1, z1, quads) > 0, "the dry 2 m floor has stakes to hide");
+                string src = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_Spikes.cs"));
+                string draw = DrawbridgeChecks.Body(src, "protected override void DrawAt(");
+                string lid = "if (RM_PitCoverUtility.CoverAt(map, c)?.FadeKind == RM_CoverFadeMath.SpanLook.PitCoverConcealed";
+                int gate = draw.IndexOf(lid, StringComparison.Ordinal);
+                Assert(gate >= 0 && gate < draw.IndexOf("base.DrawAt(", StringComparison.Ordinal),
+                    "the dry stake draw runs under an intact concealed lid and shows above its ground print");
+                Assert(DrawbridgeChecks.Body(draw, lid).Contains("!RM_MapComponent_SuspensionBridges.FadedAt(map, c)")
+                    && DrawbridgeChecks.Body(draw, lid).Contains("return;"), "the lid hides stakes until it springs or is faded to show the occupant");
+            });
             Case("Spikes_never_over_the_wall_any_neighbours", () =>
             {
                 int layouts = 0, stakes = 0;

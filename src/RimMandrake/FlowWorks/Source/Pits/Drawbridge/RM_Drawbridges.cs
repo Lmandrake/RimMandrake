@@ -225,7 +225,7 @@ namespace RimMandrake.FlowWorks.Pits
 		/// again once the threat is gone; a lower clears the hold.</summary>
 		public static void Order(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, bool raise)
 		{
-			if (r == null || l == null)
+			if (!RM_DrawbridgeSettings.drawbridgesEnabled || r == null || l == null)
 			{
 				return;
 			}
@@ -264,13 +264,13 @@ namespace RimMandrake.FlowWorks.Pits
 					if (!RM_DrawbridgeSettings.drawbridgesEnabled)
 					{
 						// R11 all off: a suspension bridge stuck lowered; a raised leaf is set down (no crash, nobody hit)
+						l.pendingOrder = RM_DrawbridgeMath.OrderNone;
 						if (l.progress > 0 || l.targetRaised)
 						{
 							l.progress = 0;
 							l.targetRaised = false;
 							l.tipCommitted = false;
 							l.autoLowering = false;
-							l.pendingOrder = RM_DrawbridgeMath.OrderNone;
 							Apply(comp.map, r, l);
 						}
 						continue;
@@ -933,6 +933,10 @@ namespace RimMandrake.FlowWorks.Pits
 		/// null when the leaf is at rest.</summary>
 		public static string OrderStatusLine(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)
 		{
+			if (!RM_DrawbridgeSettings.drawbridgesEnabled)
+			{
+				return null;
+			}
 			int full = FullTicks(r, l);
 			if (l.pendingOrder == RM_DrawbridgeMath.OrderNone && RM_DrawbridgeMath.AtTarget(l.progress, l.targetRaised, full))
 			{
@@ -990,7 +994,11 @@ namespace RimMandrake.FlowWorks.Pits
 					icon = up ? RM_DrawbridgeArt.Icon("RM_DrawbridgeRaise", TexCommand.ForbidOff) : RM_DrawbridgeArt.Icon("RM_DrawbridgeLower", TexCommand.ForbidOn),
 					action = () => OrderByClick(map, r, l, up),
 				};
-				if (RM_DrawbridgeMath.OrderPointless(up, l.pendingOrder, l.targetRaised, l.progress, full))
+				if (!RM_DrawbridgeSettings.drawbridgesEnabled)
+				{
+					order.Disable("Drawbridges are disabled.");
+				}
+				else if (RM_DrawbridgeMath.OrderPointless(up, l.pendingOrder, l.targetRaised, l.progress, full))
 				{
 					order.Disable(up ? "It is already raised." : "It is already lowered.");
 				}

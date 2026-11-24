@@ -1,0 +1,57 @@
+<Project>
+  <!-- Read the production decisions at build time. The harnesses supply only the map and save boundaries. -->
+  <UsingTask TaskName="ExtractHoseAndBed" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourceDir ParameterType="System.String" Required="true"/>
+      <Output ParameterType="System.String" Required="true"/>
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO"/>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        string Block(string source, string signature)
+        {
+            int start = source.IndexOf(signature, StringComparison.Ordinal);
+            int open = start < 0 ? -1 : source.IndexOf('{', start + signature.Length);
+            int depth = 0;
+            for (int i = open; i >= 0 && i < source.Length; i++)
+            {
+                if (source[i] == '{') depth++;
+                if (source[i] == '}' && --depth == 0) return source.Substring(start, i + 1 - start);
+            }
+            throw new InvalidDataException("Missing or unbalanced production block: " + signature);
+        }
+        string reel = File.ReadAllText(Path.Combine(SourceDir, "Hose", "CompHoseReel.cs"));
+        string hoses = File.ReadAllText(Path.Combine(SourceDir, "Hose", "RM_MapComponent_Hoses.cs"));
+        string net = File.ReadAllText(Path.Combine(SourceDir, "Machinery", "RM_LiquidNet.cs"));
+        string excavation = File.ReadAllText(Path.Combine(SourceDir, "RM_MapComponent_Excavation.cs"));
+        string deploy = Block(reel, "private string ApproachIfOnPort(");
+        int drainStart = hoses.IndexOf("if (r.heldUnits > 0 &&", StringComparison.Ordinal);
+        int drainEnd = drainStart < 0 ? -1 : hoses.IndexOf(';', drainStart);
+        if (drainEnd < 0) throw new InvalidDataException("Missing held-liquid drain check");
+        string drain = hoses.Substring(drainStart, drainEnd + 1 - drainStart)
+            .Replace("RimMandrake.FlowWorks.Machinery.RM_HoseLinks", "RM_HoseLinks")
+            .Replace("RimMandrake.FlowWorks.Machinery.RM_LiquidSpill", "RM_LiquidSpill");
+        string generated = "// GENERATED from FlowWorks source.\n"
+            + "using RimMandrake.FlowWorks.Hose; using RimMandrake.Shared.Slack;\n"
+            + "namespace RimMandrake.FlowWorks.SelfTest.HoseHarness {\n"
+            + "partial class CompHoseReel {\n" + deploy + "\n"
+            + Block(reel, "private string ResolveTarget(") + "\n" + Block(reel, "public string OrderDeploy(") + "\n"
+            + "public void PostLoad() {\n" + Block(reel, "if (Scribe.mode == LoadSaveMode.PostLoadInit)") + "\n} }\n"
+            + "static partial class RM_HoseLinks {\n" + Block(net, "internal static bool Eligible(") + "\n}\n"
+            + "partial class RM_MapComponent_Hoses {\n"
+            + Block(hoses, "private void ApplyLay(").Replace("private void ApplyLay(", "internal void ApplyLay(") + "\n"
+            + "internal void DrainOnTick(CompHoseReel r, int now) {\n" + drain + "\n} } }\n"
+            + "namespace RimMandrake.FlowWorks.SelfTest.BedHarness {\n"
+            + "partial class Excavation {\n" + Block(excavation, "private void RunIntoBeds(") + "\n} }\n";
+        Directory.CreateDirectory(Path.GetDirectoryName(Output));
+        File.WriteAllText(Output, generated);
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="ExtractHoseAndBed" BeforeTargets="CoreCompile">
+    <ExtractHoseAndBed SourceDir="$(MSBuildProjectDirectory)/.." Output="$(MSBuildProjectDirectory)/$(IntermediateOutputPath)HoseAndBed.g.cs"/>
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)HoseAndBed.g.cs"/>
+    </ItemGroup>
+  </Target>
+</Project>

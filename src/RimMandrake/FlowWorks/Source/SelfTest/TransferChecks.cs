@@ -304,9 +304,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 return (b, w.Levels + "/" + t, credited, m);
             });
             string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
-            RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg world = RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.RoomDlAt\(cell\) > 0, k => ex\.TryPourLevel\(cell, fluid\)\); if \(RM_LiquidTransfer\.Move\(units, RM_TransferLeg\.Store\(k => tank\.CanProvide\(k\), k => tank\.TryRemoveLiquid\(k\), k => tank\.TryAddLiquid\(poured, k\)\), world, out RM_MoveOutcome mv\) != units\) \{ return [^}]*\} Machinery\.RM_LiquidNet\.Credit\(this, tank, poured, units, RM_PumpMath\.CycleTicks\); // credit site: pump pour",
+            RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg world = RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.RoomDlAt\(cell\) > 0, k => ex\.TryPourDl\(cell, fluid, k\)\); if \(RM_LiquidTransfer\.Move\(units, RM_TransferLeg\.Store\(k => tank\.CanProvide\(k\), k => tank\.TryRemoveLiquid\(k\), k => tank\.TryAddLiquid\(poured, k\)\), world, out RM_MoveOutcome mv\) != units\) \{ return [^}]*\} Machinery\.RM_LiquidNet\.Credit\(this, tank, poured, units, RM_PumpMath\.CycleTicks\); // credit site: pump pour",
                 "pump pour: the tank is removed first and put back if the cell refuses; credit only after the committed move");
-            Assert(!Regex.IsMatch(pump, @"if \(!ex\.TryPourLevel\("), "the old pour-first order is gone");
+            Assert(!Regex.IsMatch(pump, @"if \(!ex\.TryPour(?:Level|Dl)\("), "the old pour-first order is gone");
         }
 
         private static void Converter()

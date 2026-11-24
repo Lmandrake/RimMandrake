@@ -609,6 +609,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Body(db, "public static void OrderByClick(").Contains("Messages.Message("), "can-fail: a click answers at once");
                 Assert(Body(Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs"), "public static void DrawLeaves(Map map, IReadOnlyList<SuspensionBridgeRecord> bridges)").Contains("DrawOrderMark(map, r, l);"),
                     "can-fail: the leaf itself shows the order until it is done");
+
+                // With the drive disabled, a Raise click or a saved order on a lowered leaf must never start work.
+                const string off = "if (!RM_DrawbridgeSettings.drawbridgesEnabled)";
+                string order = Body(db, "public static void Order(");
+                int refuse = order.IndexOf("!RM_DrawbridgeSettings.drawbridgesEnabled", StringComparison.Ordinal);
+                Assert(refuse >= 0 && refuse < order.IndexOf("l.pendingOrder =", StringComparison.Ordinal),
+                    "Raise queues an order with drawbridges disabled, so a colonist can take work the drive cannot finish");
+                string disabled = Body(Body(db, "public static void Tick("), off);
+                Assert(disabled.IndexOf("l.pendingOrder = RM_DrawbridgeMath.OrderNone;", StringComparison.Ordinal) >= 0
+                    && disabled.IndexOf("l.pendingOrder = RM_DrawbridgeMath.OrderNone;", StringComparison.Ordinal) < disabled.IndexOf("if (l.progress > 0 || l.targetRaised)", StringComparison.Ordinal),
+                    "the disabled tick clears a saved pending order even when the leaf has never moved");
+                string control = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
+                Assert(Body(Body(control, "public static bool NeedsHands("), off).Contains("return false;"),
+                    "pending orders are not offered as work while disabled, even before the next bridge tick");
+                string driver = control.Substring(control.IndexOf("public class JobDriver_WorkDrawbridge", StringComparison.Ordinal));
+                Assert(Body(driver, "protected override IEnumerable<Toil> MakeNewToils()").Contains("this.FailOn(() => !RM_DrawbridgeSettings.drawbridgesEnabled);"),
+                    "queued or active work is refused during travel and at the winch");
             });
 
             // DRAWBRIDGE_LOWER_FIX_LIFTS_OCCUPANTS_BENEATH: a raider swimming the moat under a raised leaf was promoted onto the deck

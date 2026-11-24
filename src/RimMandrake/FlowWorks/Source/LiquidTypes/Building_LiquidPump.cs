@@ -495,9 +495,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			var tk = new List<(bool canProvide, FluidDef fluid)>(tanks.Count);
 			foreach (Building_LiquidTank t in tanks)
 			{
-				tk.Add((t.CanProvide(units), t.storedLiquid?.canalFluid));
+				tk.Add((t.CanProvide(1), t.storedLiquid?.canalFluid));
 			}
-			Building_LiquidTank firstProvider = tanks.FirstOrDefault(t => t.CanProvide(units));
+			Building_LiquidTank firstProvider = tanks.FirstOrDefault(t => t.CanProvide(1));
 			if (ex == null || firstProvider == null)
 			{
 				if (Hose.RM_HoseSettings.tankModesEnabled && !NetTanks().Any(t => t.EffectiveMode == RM_TankMode.Dump))
@@ -581,8 +581,13 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			FluidDef fluid = tk[ti].fluid;
 			LiquidDef poured = tank.storedLiquid;   // captured BEFORE the removal: an emptied tank clears storedLiquid
 			IntVec3 cell = cells[ci];
-			// L1 (§4): the tank leg is removed first and put back if the cell refuses (TryPourLevel, never undone, runs last)
-			RM_TransferLeg world = RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.RoomDlAt(cell) > 0, k => ex.TryPourLevel(cell, fluid));
+			units = (int)ex.PourRoomDl(cell, fluid, System.Math.Min(units, tank.storedUnits));
+			if (units <= 0)
+			{
+				return "RMFlow_PumpForeign".Translate();
+			}
+			// L1 (§4): the tank leg is removed first and put back if the cell refuses (TryPourDl runs last).
+			RM_TransferLeg world = RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.RoomDlAt(cell) > 0, k => ex.TryPourDl(cell, fluid, k));
 			if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(poured, k)), world, out RM_MoveOutcome mv) != units)
 			{
 				return mv.DestRefused ? "RMFlow_PumpForeign".Translate() : "RMFlow_PumpTankEmpty".Translate();

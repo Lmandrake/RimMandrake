@@ -286,7 +286,7 @@ namespace RimMandrake.FlowWorks
 		/// the pit: not superdeep, standable, reachable, within the kind's radius (and, for a social
 		/// interaction, in vanilla's interaction position: 6 cells with line of sight). Nearest to the
 		/// worker wins.</summary>
-		public static bool TryFindLipCell(Pawn worker, IntVec3 target, RM_PitRoomMath.LipKind kind, out IntVec3 lip)
+		public static bool TryFindLipCell(Pawn worker, IntVec3 target, RM_PitRoomMath.LipKind kind, out IntVec3 lip, bool rimOnly = false)
 		{
 			lip = IntVec3.Invalid;
 			Map map = worker?.Map;
@@ -308,7 +308,8 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				if (kind == RM_PitRoomMath.LipKind.Interact && !SocialInteractionUtility.IsGoodPositionForInteraction(c, target, map))
+				if (rimOnly ? !InReachFromRim(map, c, target)
+					: kind == RM_PitRoomMath.LipKind.Interact && !SocialInteractionUtility.IsGoodPositionForInteraction(c, target, map))
 				{
 					continue;
 				}
@@ -366,27 +367,30 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			bool touching = warden.Position.AdjacentTo8WayOrInside(victim.Position);
-			if (touching)
+			return warden.Position.AdjacentTo8WayOrInside(victim.Position) || InReachFromRim(warden.Map, warden.Position, victim.Position);
+		}
+
+		public static bool InReachFromRim(Map map, IntVec3 rim, IntVec3 target)
+		{
+			bool atRim = IsRimCell(map, RM_SuperdeepTrap.EngineOf(map), rim);
+			return RM_PitRoomMath.CaptureReach(false, atRim, atRim && GenSight.LineOfSight(rim, target, map, true), rim.DistanceTo(target));
+		}
+
+		private static bool IsRimCell(Map map, RM_MapComponent_Excavation eng, IntVec3 cell)
+		{
+			if (eng == null || IsPitFloor(map, eng, cell))
 			{
-				return true;
+				return false;
 			}
-			Map map = warden.Map;
-			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			bool atRim = false;
-			if (eng != null && !IsPitFloor(map, eng, warden.Position))
+			foreach (IntVec3 offset in GenAdj.AdjacentCells)
 			{
-				foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(warden))
+				IntVec3 c = cell + offset;
+				if (c.InBounds(map) && IsPitFloor(map, eng, c))
 				{
-					if (c.InBounds(map) && IsPitFloor(map, eng, c))
-					{
-						atRim = true;
-						break;
-					}
+					return true;
 				}
 			}
-			return RM_PitRoomMath.CaptureReach(false, atRim, atRim && GenSight.LineOfSight(warden.Position, victim.Position, map, true),
-				warden.Position.DistanceTo(victim.Position));
+			return false;
 		}
 
 		/// <summary>The capture ended with no prisoner: say so (a job that stops with no sign reads as a bug).</summary>
@@ -678,8 +682,18 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			IntVec3 cell = dest.HasThing ? dest.Thing.Position : dest.Cell;
-			if (RM_PitRooms.TryFindLipCell(___pawn, cell, kind, out IntVec3 lip))
+			Job job = ___pawn.CurJob;
+			Pawn patient = job.targetB.Thing as Pawn;
+			bool delivery = job.def == JobDefOf.DeliverFood && dest == job.targetC;
+			bool meal = patient != null && (delivery || (job.def == JobDefOf.FeedPatient && dest.Thing == patient))
+				&& RM_PitPrisonCare.LipCare(patient);
+			IntVec3 lip;
+			if (meal ? RM_PitPrisonCare.TryFindMealLip(___pawn, patient, out lip) : RM_PitRooms.TryFindLipCell(___pawn, cell, kind, out lip))
 			{
+				if (meal && delivery)
+				{
+					job.targetC = patient.Position;
+				}
 				dest = lip;
 				peMode = PathEndMode.OnCell;
 			}

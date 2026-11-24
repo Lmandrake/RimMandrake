@@ -1,0 +1,71 @@
+<Project>
+  <UsingTask TaskName="ExtractSpanLiquidContact" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Source ParameterType="System.String" Required="true"/>
+      <Output ParameterType="System.String" Required="true"/>
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO"/>
+      <Using Namespace="System.Text"/>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        const string ns = "RimMandrake.FlowWorks.SelfTest.SpanLiquidContact";
+        var code = new StringBuilder("using System.Collections.Generic;\nnamespace " + ns + " {\n");
+        void Members(string declaration, string file, params string[] signatures)
+        {
+            string source = File.ReadAllText(Path.Combine(Source, file));
+            code.AppendLine(declaration + " {");
+            foreach (string sig in signatures)
+            {
+                int start = source.IndexOf(sig, StringComparison.Ordinal);
+                int open = start < 0 ? -1 : source.IndexOf('{', start + sig.Length);
+                if (open < 0)
+                    throw new InvalidDataException("Missing span/liquid member: " + sig);
+                int depth = 0;
+                int end = open;
+                for (; end < source.Length; end++)
+                {
+                    if (source[end] == '{') depth++;
+                    else if (source[end] == '}' && --depth == 0) break;
+                }
+                if (depth != 0)
+                    throw new InvalidDataException("Unbalanced span/liquid member: " + sig);
+                code.AppendLine(source.Substring(start, end + 1 - start));
+            }
+            code.AppendLine("}");
+        }
+        Members("internal partial class Building_SuspensionDeck : Building_SpanDeck",
+            "Pits/Suspension/Building_SuspensionDeck.cs", "public override bool FloorBandPassesUnder");
+        Members("internal partial class RM_MapComponent_SuspensionBridges",
+            "Pits/Suspension/RM_MapComponent_SuspensionBridges.cs", "private void SweepUnder()");
+        Members("internal static partial class RM_SuspensionUnderpass",
+            "Pits/Suspension/RM_SuspensionPatches.cs", "public static Building_SpanDeck PassingDeckAt(",
+            "public static bool InFloorBand(", "public static void Entered(");
+        Members("internal static class RM_GrateEffects", "Pits/Suspension/RM_SuspensionPatches.cs",
+            "public static bool UnderDeck(", "public static float SplashShare(");
+        Members("internal static partial class RM_SpanUtility", "Pits/Building_SpanDeck.cs",
+            "public static Building_SpanDeck DeckAt(", "public static float LoadOn(");
+        code.AppendLine("}");
+
+        // Compile the full coating source in the doubles' namespace, including its hediff and text calls.
+        string coating = File.ReadAllText(Path.Combine(Source, "RM_LiquidCoating.cs"));
+        int body = coating.IndexOf("namespace RimMandrake.FlowWorks", StringComparison.Ordinal);
+        int openNamespace = body < 0 ? -1 : coating.IndexOf('{', body);
+        if (openNamespace < 0)
+            throw new InvalidDataException("Missing coating namespace");
+        code.AppendLine("namespace " + ns + " { using Pits = global::" + ns + ";");
+        code.Append(coating.Substring(openNamespace + 1)
+            .Replace("public static class RM_LiquidCoating", "internal static class RM_LiquidCoating")
+            .Replace("public class Hediff_LiquidCoat", "internal class Hediff_LiquidCoat"));
+        Directory.CreateDirectory(Path.GetDirectoryName(Output));
+        File.WriteAllText(Output, code.ToString());
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="ExtractSpanLiquidContact" BeforeTargets="CoreCompile">
+    <ExtractSpanLiquidContact Source="$(MSBuildProjectDirectory)/.." Output="$(MSBuildProjectDirectory)/$(IntermediateOutputPath)SpanLiquidContact.g.cs"/>
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)SpanLiquidContact.g.cs"/>
+      <Compile Include="SpanLiquidContactChecks.cs"/>
+    </ItemGroup>
+  </Target>
+</Project>

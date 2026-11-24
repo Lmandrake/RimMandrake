@@ -533,7 +533,11 @@ namespace RimMandrake.FlowWorks.Thirst
 				{
 					return true;   // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED: a body that cannot pay the drink the job debits gives nothing
 				}
-				if (c.IsForbidden(pawn) || !pawn.CanReach(c, PathEndMode.Touch, Danger.Some))
+				if (c.IsForbidden(pawn))
+				{
+					return true;
+				}
+				if (!pawn.CanReach(c, PathEndMode.Touch, Danger.Some))
 				{
 					return ++reachFails <= 40;
 				}

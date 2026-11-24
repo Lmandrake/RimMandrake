@@ -8,8 +8,8 @@ namespace RimMandrake.FlowWorks
 {
 	/// <summary>
 	/// PIT_ALERT_BUILD_RED_MEANS_HELP (owner card Q12, 2026-10-18: "Stuck alert → standard red alert"): a red alert in the
-	/// corner when one of our colonists is held in a pit (RM_SuperdeepTrap.IsHeld: a jumper, or anyone with "your own pit
-	/// takes your own people" on) and cannot reach food or a bed because of it. Not a marker on the ground (2026-10-12 Q4).
+	/// corner when one of our colonists cannot climb out of a pit and cannot reach food or a bed because of it.
+	/// With cliff masks active this includes walkers stranded by a raised ladder, regardless of the capture policy.
 	/// The decision is RM_PitRoomMath.StuckAlert (selftested); this is its Verse half. Reach is re-measured every 250 ticks.
 	/// </summary>
 	public class Alert_ColonistStuckInPit : Alert_Critical
@@ -41,9 +41,10 @@ namespace RimMandrake.FlowWorks
 			{
 				foreach (Pawn p in m.mapPawns.FreeColonistsSpawned)
 				{
-					if (!RM_SuperdeepTrap.IsHeld(p))
+					bool stuck = RM_CliffMask.On ? RM_SuperdeepTrap.HasNoWayOut(p) : RM_SuperdeepTrap.IsHeld(p);
+					if (!stuck)
 					{
-						continue;   // the cheap test first: almost nobody is ever held
+						continue;
 					}
 					bool needsFood = p.needs?.food != null;
 					bool needsRest = p.needs?.rest != null;

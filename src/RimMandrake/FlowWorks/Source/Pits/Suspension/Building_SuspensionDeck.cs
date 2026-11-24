@@ -125,8 +125,9 @@ namespace RimMandrake.FlowWorks.Pits
 					return false;
 				}
 				RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(Map);
+				// Clearance is measured to the floor. The climb depth can rise with the water.
 				return eng != null && RM_SpanMath.PassesUnder(RM_SpanMath.SpanKind.SuspensionDeck, RM_SuspensionSettings.suspensionWalkUnder,
-					eng.ClimbDepthAt(Position), DeckNotches);
+					eng.HollowDepthAt(Position), DeckNotches);
 			}
 		}
 

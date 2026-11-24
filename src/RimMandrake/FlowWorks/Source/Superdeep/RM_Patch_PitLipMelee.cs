@@ -108,6 +108,15 @@ namespace RimMandrake.FlowWorks
 				!RM_SuperdeepTrap.RelativeVeto(attacker.Map, attacker.Position, to, PathEndMode.OnCell, attacker));
 		}
 
+		public static bool CanWalkIn(Pawn attacker, Thing target)
+		{
+			// Check the floor itself because Touch accepts the rim the pawn is already standing on.
+			return !RM_SuperdeepTrap.RelativeVeto(attacker.Map, attacker.Position, target.Position, PathEndMode.OnCell, attacker)
+				&& attacker.CanReach(target, PathEndMode.OnCell, Danger.Deadly)
+				&& RM_Patch_PathFollower_ReachWalker.As(attacker, () => attacker.Map.reachability.CanReach(attacker.Position,
+					target, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors)));
+		}
+
 		/// <summary>A pawn chasing this target stopped at a rim it cannot strike across, and a ramp, a ladder or an easier step
 		/// leads to the target's floor: walk on, onto the target's own square (vanilla's chase stops at the first touch).</summary>
 		public static void WalkIn(Pawn attacker, Thing target)
@@ -118,11 +127,16 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			// the cheap depth read first; the pawnless read is the one Pawn_PathFollower.StartPath itself fails on
-			if (RM_SuperdeepTrap.RelativeVeto(attacker.Map, attacker.Position, target.Position, PathEndMode.OnCell, attacker)
-				|| !attacker.Map.reachability.CanReach(attacker.Position, target, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors))
-				|| !attacker.CanReach(target, PathEndMode.OnCell, Danger.Deadly))
+			if (!CanWalkIn(attacker, target))
 			{
+				if (job.def == JobDefOf.AttackMelee)
+				{
+					if (job.playerForced && attacker.Faction == Faction.OfPlayer)
+					{
+						Messages.Message("NoPath".Translate(), attacker, MessageTypeDefOf.RejectInput, false);
+					}
+					attacker.jobs.EndCurrentJob(JobCondition.Incompletable);
+				}
 				return;
 			}
 			attacker.pather.StartPath(target, PathEndMode.OnCell);
@@ -137,6 +151,22 @@ namespace RimMandrake.FlowWorks
 				+ " k=" + RM_PocketGrid.NaturalClimbLimitOf(attacker)
 				+ " size=" + attacker.BodySize.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)
 				+ " adjacent=" + attacker.Position.AdjacentTo8WayOrInside(target.Position);
+		}
+	}
+
+	[HarmonyPatch(typeof(FloatMenuUtility), nameof(FloatMenuUtility.GetMeleeAttackAction))]
+	[RimMandrake.Shared.PatchFeature("Melee across a pit's edge needs reach", typeof(RimMandrakeFlowWorksSettings), "pitLipMeleeDeniedEnabled")]
+	public static class RM_Patch_OrderedMelee_PitLip
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Pawn pawn, LocalTargetInfo target, ref string failStr, ref System.Action __result)
+		{
+			if (__result != null && target.Thing is Pawn && pawn.Position.AdjacentTo8WayOrInside(target.Cell)
+				&& !RM_PitReach.Strikes(pawn, target.Thing) && !RM_PitReach.CanWalkIn(pawn, target.Thing))
+			{
+				failStr = "NoPath".Translate();
+				__result = null;
+			}
 		}
 	}
 
