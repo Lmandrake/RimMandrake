@@ -498,7 +498,8 @@ Without the anchor and the exclusion, the watcher's own command text and the bac
 
 A detached run of this seat that ends wakes this window by itself (the `run_end_wake.py` Stop hook;
 RIMMANDRAKE_WAKE_CONDUCTOR_ON_RUN_END_LOG_ONLY_TODAY). The wake holds the whole last message of the run. At its end it
-holds who drives each game, the pipe line and the accounts, each line with the time of its reading. Read the result
+holds who drives each game, the switches and stages of the Maturation Pipeline (`./pipe show`, with the item switches
+that are OFF as one count) and what is left on each account, each line with the time of its reading. Read the result
 there: do not open the `.out.json` file. The result needs no watcher.
 
 **Anything you owe is an owed item, filed when the sentence that creates the debt is written.** Examples of such a
