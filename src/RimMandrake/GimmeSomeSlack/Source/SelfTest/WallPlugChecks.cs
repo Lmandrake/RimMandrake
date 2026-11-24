@@ -27,7 +27,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         internal sealed class Read
         {
-            public int Scenes, Plugs, Cords, Bare, Off, Slant, Stacked, Kinks, BendsNear;
+            public int Scenes, Plugs, Cords, Bare, Off, Slant, Stacked, Kinks, BendsNear, UnforcedEased;
             public readonly SortedDictionary<string, int> BendWhy = new SortedDictionary<string, int>(StringComparer.Ordinal);
             public readonly List<string> Unforced = new List<string>();
             public double WorstDeg, WorstOff;
@@ -69,6 +69,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                             r.BendsNear++;
                             string why = CordShapeAudit.Why(w, p.EndA, p.EndB, s.Pts, b);
                             r.BendWhy[why] = r.BendWhy.TryGetValue(why, out int nw) ? nw + 1 : 1;
+                            if (why == "unforced" && s.Lay.Contains("ease")) r.UnforcedEased++;
                             if (why == "unforced") r.Unforced.Add($"{name} {st.Piece}: an unforced bend {b.Turn:0} deg over {b.Arc:0.00} cell, {fromPlug:0.00} from the plug (lay {s.Lay})");
                         }
                         r.WorstDeg = Math.Max(r.WorstDeg, deg); r.WorstOff = Math.Max(r.WorstOff, off);
@@ -195,6 +196,13 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             foreach (string lk in new[] { "Industrial", "Futuristic", "Scrapper" }) Hold(lk, Sweep(null, 1, 0, firstSeed, lk));
             Program.Check(anchorCords >= 8000 && anchorBad == 0, $"plugs, every look: each cord starts on its plug's stub end and runs along it ({anchorBad} of {anchorCords} over {MaxOff} cell or {MaxDeg} deg: {string.Join(", ", anchorWhy)}; worst {anchorOff:0.000} cell, {anchorDeg:0.0} deg)");
             foreach (string b in r.Unforced.Take(Environment.GetEnvironmentVariable("WP_ALL") != null ? 9999 : 12)) Console.WriteLine("  wall plugs, unforced bend: " + b);
+            // bar no_unforced_sharp_turn (sc_no_sharp_turn) near the plug: the straight exit's ease must not keep a turn of 90 degrees within a cell that
+            // nothing forces. 1e926ebe4c's ease took the dive's own sharp turn whole where it lost the kink (lamp (0,-1) dx+-1: 91-95 deg over 0.45-0.65 cell,
+            // 0.75 from the plug; 156 on eased ends, 199 near a wall plug in all); its parent left 174 near a wall plug, the fix that bars the ease from
+            // keeping one 53 (all measured, fresh read of 1e926ebe4c). The bar is 0: the 53 left (lays dive, dive+fit+fit) are filed apart, and this
+            // holds the line where it stands so no change adds to them.
+            const int HeldUnforced = 53;
+            Program.Check(r.UnforcedEased == 0 && r.Unforced.Count <= HeldUnforced, $"wall plugs: the straight exit's ease keeps no unforced sharp turn ({r.UnforcedEased} on eased ends, limit 0; {r.Unforced.Count} within 1.5 cells of a wall plug, limit {HeldUnforced}: the bar is 0, 53 filed apart)");
             Program.Check(r.Kinks == 0, $"wall plugs: no cord kinks where nothing forces it ({r.Kinks})");
             Program.Check(r.Scenes >= 1000 && r.Plugs >= 1500, $"wall plugs: the sweep reads its scenes ({r.Scenes} scenes, {r.Plugs} plugs)");
             Program.Check(r.Slant == 0 && r.Off == 0 && r.Bare == 0, $"wall plugs: every cord leaves its wall plug straight ({r.Slant} over {MaxDeg} deg, {r.Off} over {MaxOff} cell, {r.Bare} bare, of {r.Cords}; worst {r.WorstDeg:0.0} deg)");

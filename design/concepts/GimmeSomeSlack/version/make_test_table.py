@@ -173,7 +173,8 @@ NEW = {  # specified at this lock; Stage 3 builds each and shows it red first
         stage="4-5", file=G + "Source/SelfTest/WallPlugChecks.cs",
         observes="the production builder over 1560 generated Modern scenes (every wall face; far-side wall lamps, devices across a wall, conduit through a wall, "
                  "runs ending in one; near, far, left, right and the shortest spans; again at 2 cords per run): every cord leaves its wall plug or outlet within 3 "
-                 "degrees of the plug's axis and 0.02 cell of its line, no wall plug is bare, no device plug is drawn on one, no cord kinks where nothing forces it; "
+                 "degrees of the plug's axis and 0.02 cell of its line, no wall plug is bare, no device plug is drawn on one, no cord kinks where nothing forces it, "
+                 "the straight exit's ease keeps no unforced sharp turn within 1.5 cells of the plug (and the rest stay at most the 53 measured); "
                  "and in every look (Modern, Industrial, Futuristic, Scrapper) each device, strip and wall plug and wall outlet cord starts within 0.02 cell "
                  "of its stub's end and 3 degrees of its axis, a planted decal offset goes red "
                  "(bars cords_join_stubs_on_position_and_slope, no_unforced_sharp_turn)",

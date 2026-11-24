@@ -3778,12 +3778,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         Door = q => w.IsDoor(q.Floor),
                         DoorReturns = q => { CordShape.RingReturns(w, q, out int atDoor); return atDoor; }
                     };
+                    // the unforced bends whose sharpest point lies past arc `from` (of P, which runs toward the stub), as the bar classes them
+                    int BendsPast(List<V2> q, List<CordTie> t, double from)
+                    {
+                        List<V2> n = Native(q);
+                        double Lq = Geo.Length(q);
+                        return CordShapeAudit.Bends(n, NativeTies(q, t)).Count(b => (atStart ? Lq - b.S : b.S) >= from && CordShapeAudit.Why(w, piece.EndA, piece.EndB, n, b) == "unforced");
+                    }
                     string why = null;
                     if (FitTrace) CordLiveEnd.FitWhy = x => why = x;
                     List<V2> FitTo(bool unkink) => CordLiveEnd.Fit(P, -st.U, runLen, site, ties, keep, q => OnStub(Native(q), atStart, st, FitTol(st)) && q.All(x => OnRun(x, st, runLen) || ownClear(x))
                         && (!unkink || EndKinks(Native(q)) < kinked), out double _);
                     List<V2> R = (s.DiveA || s.DiveB) && (IsWallFitting(st) || kinked > 0) ? EasePast(P, -st.U, runLen, ties, keep, site, q => OnStub(Native(q), atStart, st, FitTol(st)) && q.All(x => OnRun(x, st, runLen) || ownClear(x))
-                        && EndKinks(Native(q)) <= Math.Max(0, kinked - 1)) : null;
+                        && EndKinks(Native(q)) <= Math.Max(0, kinked - 1), BendsPast) : null;
                     bool eased = R != null;
                     if (!eased) R = FitTo(kinked > 0);
                     if (R == null && kinked > 0)
@@ -3826,7 +3833,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>The least change that brings a cord straight out of its plug: the plug's straight run, then one cubic back onto the cord as laid, the nearest join that
         /// holds. (The round joins of <see cref="CordLiveEnd.Fit"/> start at radius 0.7 and turn a loop to lose 5 degrees of slant.) P runs toward the plug. Null: none holds.</summary>
-        private static List<V2> EasePast(List<V2> P, V2 into, double runLen, List<CordTie> ties, double keep, CordLiveEnd.Site site, Func<List<V2>, bool> holds)
+        private static List<V2> EasePast(List<V2> P, V2 into, double runLen, List<CordTie> ties, double keep, CordLiveEnd.Site site, Func<List<V2>, bool> holds,
+            Func<List<V2>, List<CordTie>, double, int> bendsPast)
         {
             double[] cum = Geo.CumLen(P);
             double L = cum[P.Count - 1], tieEnd = ties != null && ties.Count > 0 ? ties.Max(t => t.S1) + 0.1 : 0;
@@ -3860,6 +3868,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         if (Geo.Length(q) > L + 0.6 || !holds(q) || StubJoins.MinRadius(q.GetRange(Math.Max(0, j - 2), q.Count - Math.Max(0, j - 2))) < StubJoins.MinBendR) continue;
                         if (bends < 0) { bends = site.Bends(P, ties); kinks = site.Kinks(P, ties); }
                         if (site.Bends(q, ties) > bends || site.Kinks(q, ties) > kinks) continue;
+                        // (and none of the bar's sharp turns from a bend's arc before the join to the plug: an ease that only lost the dive's kink kept its
+                        // 91-95 degree turn within 0.65 cell, the count above unchanged, in 156 of WallPlugChecks' ends)
+                        if (bendsPast(q, ties, at - CordShapeAudit.BendArc) > 0) continue;
                         return q;
                     }
             }
