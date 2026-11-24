@@ -1,6 +1,6 @@
 # Gimme Some Slack 0.2.0: test-and-stage table
 
-Generated 2026-11-23T17:24:25-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
+Generated 2026-11-23T16:46:40-08:00 from `test_table.json` (the record; this is its read view) by the throwaway `make_test_table.py`. Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Columns follow Explosive Knockback's table.
 
 ## Counts (measured)
 
