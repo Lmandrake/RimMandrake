@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "GimmeSomeSlack",
   "version": "0.2.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-24T02:26:57-08:00",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-24T07:18:45-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -17,7 +17,7 @@
     "visit": 1,
     "total": 1
   },
-  "pre_human_arrivals": 0,
+  "pre_human_arrivals": 1,
   "spend": [],
   "moves": [
     {
@@ -122,6 +122,27 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-24T07:18:45-08:00",
+      "by": "BENCH",
+      "why": "visit 3: 207 of 207 in-game checks PASS on checked sites on ad72a3cec3 (mod_hash sha256:d4de5c356cc7); its one mod fix read sound by a fresh reader; no mod wrong line, no undecided bar",
+      "unit": "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-t-1795531905",
+      "confirmed": {
+        "steward_confirms": "read visit_3/SUMMARY.md, the sc_save_reload_wire_down rows, strange.jsonl (7 explained, 1 filed), the diffs of ad72a3cec3 and 8d5d5c5740 (no assertion weakened), wd_plant.txt, gravship_plant.txt, red_seen T_CORE and T_H_SMALL_SCENES, the after picture; ran the fix's test red at the parent (10 of 5859) and green at the fix; verdict sound (fix_reviews.jsonl, 131066817b); exit met"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match",
+        "unrun_run"
       ]
     }
   ]
