@@ -1,0 +1,1 @@
+rimworld/set_camera_zoom clamps rootSize at 8 (94 px per cell in a 2559x1500 window) even with the extension on or a save that remembers 1.6; shoot full frames at 8 and enlarge. jawa/power_net thing=<id> forcePowerOn=true on a paused game removes the needs-power icon from an art shot; screenshot_cell_rect right after a zoom change crops a frame still easing, so wait about 1 s.

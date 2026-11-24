@@ -34,3 +34,5 @@ He accepted all four; they went in through `art.py install --owner-said`. `plan/
 - `selftest_pump_south_socket.py` checks the cap table, the cover, the visible rim and the sixteen ports.
 - After any new pump art: run `v2/south_socket.py --write`, then
   `art_source/UnderCouplers/under_coupler_reach.py --write`, then `selftest_hose_fittings.py`.
+- Live: `northstar/pump_look_live.py` stages and captures the four looks, piped and not; `v2/live_sheet.py` makes the
+  owner's picture. Seen 2026-11-23 on ArchBig; showing folder `2026-11-23_in_game_joined`.
