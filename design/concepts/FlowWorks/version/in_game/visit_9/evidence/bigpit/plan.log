@@ -1,0 +1,4 @@
+plan {"origin": [40, 89], "things": 66, "stuffed_defs": 21, "geysers_on_map": 5}
+elapsed_s 6.5
+TOTALS Counter({'PASS': 1})
+[bridge split] 6.3 s wall: load 0.0 / ticks 0.0 / reads 1.4 / other 3.5 / outside calls 1.5 s

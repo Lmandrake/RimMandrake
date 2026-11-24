@@ -1,8 +1,28 @@
-ok    no crushed ice from a frozen cut: the cut FAILs, the melt UNMEASURED (never PASS), the control PASS 
-ok    crushed ice on every cut: the control FAILs 
-ok    warm, the pile never melts: the melt FAILs 
-ok    the work giver refuses the frozen square: the cut FAILs (MOD), the melt UNMEASURED 
-FAIL  healthy fake (swim and tire, drain, hold, capture two, pump chemfuel, it burns; over the lowered leaf they walk): every row PASS ({'scene_moat_raid_stagin
+== selftest_ice_scene.py on the parent scene (before bc7dd578fd)
+FAIL  the first colonist has Mining disabled by backstory: another is spawned and every row PASS {'ICE_control_unfrozen_cut_no_crushed_ice': 'UNMEASURED', 'ICE_cut_leaves_crushed_ice': 'UNMEASURED', '
+selftest_ice_scene: FAIL
+== selftest_moat_scene.py on the parent scene (before bc7dd578fd)
+FAIL  healthy fake (swim and tire, drain, hold, capture two, pump chemfuel, it burns; over the lowered leaf they walk): every row PASS ({'scene_moat_raid_staging': 'UNMEASURED'}, ['AssertionError("jaw
 FAIL  the sluice drains the moat in game time, the raid going on (frozen flow pulses: 0 ticks) None
 FAIL  4 wide but brim-full: it holds too late, the capture never PASSes {'scene_moat_raid_staging': 'UNMEASURED'}
 FAIL  more than a metre of wall above the water: nobody enters, the swim FAILs {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  fire_raid answering success (visit 1): no row PASSes on a REFUSED reply, and the healthy rows still PASS {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  raiders that stop at the bank: the swim FAILs, the capture (nobody swam) UNMEASURED {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  a lifted sluice that drains nothing: the drain FAILs, capture and chemfuel UNMEASURED, none PASS on a wet moat {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  a drained moat whose raiders read not held: the capture FAILs {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  a held raider that stabs a warden on the rim (2026-11-23): MOAT_rim_wardens_not_stabbed FAILs {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  a raid that is gone at the first poll: swim, capture and control UNMEASURED, none of them PASS {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  a REFUSED swim read: the swim and the control UNMEASURED, never PASS {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  a pump that never runs: the chemfuel UNMEASURED and the burn (no chemfuel square) UNMEASURED {'scene_moat_raid_staging': 'UNMEASURED'}
+FAIL  raiders that never choose the lowered deck: the control FAILs (its staging excuses nobody) []
+FAIL  the control leaves a trace of who stood where ['calls', 'rows', 'scene', 'status']
+FAIL  the old control staging (six at once on a 1-wide deck): a raider swims round the one who holds it, the control FAILs {'scene_moat_raid_staging': 'UNMEASURED'}
+selftest_moat_scene: FAIL
+== fixed
+ok    no crushed ice from a frozen cut: the cut FAILs, the melt UNMEASURED (never PASS), the control PASS 
+ok    the first colonist has Mining disabled by backstory: another is spawned and every row PASS 
+ok    every colonist has Mining disabled: every row UNMEASURED, never PASS 
+selftest_ice_scene: ok
+== fixed
+ok    a drained moat whose raiders read not held: the capture FAILs 
+selftest_moat_scene: ok

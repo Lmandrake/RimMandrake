@@ -1,0 +1,12 @@
+reset "RESET cells=0 levels=0 rolled=0 released=0 bodies=0 swim=0 left=0"
+open_sky_before_stage {"ok": true, "rect": [34, 83, 89, 55], "roofCells": [], "rockCells": [], "why": [], "cleared": {"roofOp": {"success": true, "cellsChanged": 233, "cellsFailedVerify": 0}, "rockDestroyed0": 327}}
+cleared {"success": true, "destroyed": 606}
+open_sky_after_clear {"ok": true, "rect": [34, 83, 89, 55], "roofCells": [], "rockCells": [], "why": [], "cleared": null}
+dig_failed_calls 0
+routes {"SculptureGrand": ["spawn_batch ok"], "DoubleBed": ["spawn_batch ok"], "RM_GlowTank": ["spawn_batch ok"], "RM_HoseReel": ["spawn_batch ok"], "Table2x2c": ["spawn_batch ok"], "TableButcher": ["spawn_batch ok"], "HandTailoringBench": ["spawn_batch ok"], "SculptureLarge": ["spawn_batch ok"], "Bed": ["
+labels {"success": false, "added": 7}
+elapsed_s 209.4
+TOTALS Counter({'PASS': 2})
+[bridge split] 209.2 s wall: load 0.0 / ticks 0.9 / reads 3.1 / other 164.6 / outside calls 40.5 s
+[bridge split] WARN 1828 calls of jawa/flowworks_excavation_drive (139.7 s): batch them
+[bridge split] WARN 448 calls of jawa/spawn_batch (21.1 s): batch them
