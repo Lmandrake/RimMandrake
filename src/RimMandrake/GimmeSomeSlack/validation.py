@@ -1098,8 +1098,10 @@ def spark_budget_verdict(bud):
 def shot(B, name, rect, log, pad=1, root=None):
     import shutil
     kw = {} if root is None else {"rootSize": root}
+    # a name the game has not written: the cell-rect crop is made before the new picture lands, so a name used before gives a
+    # crop of the OLD picture (in-game visit 2 of 0.2.0, 2026-11-23: crop stamped 22 ms before its picture, the earlier site in it)
     r = B.call("rimworld/screenshot_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=pad,
-               fileName=name, suppressMessage=True, **kw)
+               fileName="%s_%d" % (name, time.time_ns() // 1000000), suppressMessage=True, **kw)
     src = r.get("path") or r.get("filePath")
     dst = None
     try:

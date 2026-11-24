@@ -3,7 +3,7 @@ owner's sighting of 2026-11-23). python.exe, the bridge of the game held, tier g
 
     python.exe src\\RimMandrake\\GimmeSomeSlack\\review\\wall_plug_look.py [--new] <out dir>
 
---new starts a debug map first. Four walls, one a side of a room; a Modern cord outside each, and beyond the wall a far-side wall lamp, a heater
+--new loads the clean saved site `calm` first. Four walls, one a side of a room; a Modern cord outside each, and beyond the wall a far-side wall lamp, a heater
 against the wall and a heater two cells off it. Reads the probe joins: on the site, then one close capture a stand. Exit 0: joins clean and
 every capture taken; 1: a join off; 2: could not stage or capture."""
 import json
@@ -13,7 +13,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 GSS = os.path.dirname(HERE)
-sys.path[:0] = [GSS, os.path.join(GSS, "northstar"), os.path.join(os.path.dirname(GSS), "Utils")]
+sys.path[:0] = [GSS, os.path.join(GSS, "northstar"), os.path.join(os.path.dirname(GSS), "Utils"), os.path.join(os.path.dirname(GSS), "Utils", "modcheck")]
 import validation as V  # noqa: E402
 import validation_aerial as VA  # noqa: E402
 import scene_rows as S  # noqa: E402
@@ -38,7 +38,7 @@ def stage(B):
         wall = [at(into, k, 0) for k in range(-H, H + 1)]
         cord = [at(into, k, -2) for k in range(-H + 2, H - 1)]
         B.call("jawa/build_batch", ops=V.ops("Wall", wall), stuff="Steel", faction="player", wipeExisting=False)
-        out[name] = B.ap("cline:PowerConduit:Modern:%d,%d:%d,%d:god" % (cord[0] + cord[-1])).get("success")
+        out[name] = B.ap("cline:PowerConduit:Modern_Orange:%d,%d:%d,%d:god" % (cord[0] + cord[-1])).get("success")
         B.call("jawa/build_batch", ops="Battery:%d,%d,0" % at(into, -H + 1, -2), faction="player", wipeExisting=False)
         lamp, near, far = at(into, -5, 1), at(into, 0, 1), at(into, 5, 2)
         B.call("jawa/build_batch", ops="WallLamp:%d,%d,%d;Heater:%d,%d,0;Heater:%d,%d,0" % (lamp + (rot,) + near + far), faction="player", wipeExisting=False)
@@ -56,7 +56,8 @@ def main(argv):
     os.makedirs(out_dir, exist_ok=True)
     B = VA.A()
     if "--new" in argv:
-        print(str(B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000))[:160])
+        import test_site_saves  # Utils/modcheck
+        print("site:", str(test_site_saves.load_site(B.call, "calm"))[:200])
     staged = stage(B)
     r = B.probe("joins:%d,%d,%d,%d" % SITE)
     print(json.dumps({"staged": staged, "joins": {k: r.get(k) for k in ("success", "taken", "offLine", "offSlope", "empty", "byKind", "bad", "error")}}, default=str))
@@ -76,7 +77,8 @@ def main(argv):
             else:
                 print("no capture", n, log[-1:])
     print("captures", got, "in", out_dir)
-    if not r.get("success") or got < 12 or not r.get("taken"):
+    # a cord that was not laid leaves nothing of the stand to read (first live run, 2026-11-23: all four refused, exit 0)
+    if not r.get("success") or got < 12 or not r.get("taken") or not all(staged.values()):
         return 2
     return 1 if r.get("offLine") or r.get("offSlope") or r.get("empty") else 0
 

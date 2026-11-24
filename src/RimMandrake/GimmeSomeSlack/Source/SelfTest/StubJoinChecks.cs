@@ -74,6 +74,42 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return w;
         }
 
+        /// <summary>A wall lamp on the near face of a wall, its cord one cell off along <paramref name="dx"/> (in-game visit 2 of 0.2.0, the wall lamp
+        /// scene): its base is in the wall cell, half a cell outside its own footprint, and a strip socket can stand nearer that footprint.</summary>
+        internal static CordWorld NearWallLampScene(int dx, Cell into)
+        {
+            var w = new CordWorld(40, 40);
+            Cell P(int along, int deep) => new Cell(20 + into.Z * along + into.X * deep, 20 + into.X * along + into.Z * deep);
+            for (int k = -8; k <= 8; k++) { w.SetConduit(P(k, 0)); w.SetBlocked(P(k, 2), BlockKind.Wall); }
+            Cell bat = P(-9, 0), lamp = P(0, 1), home = P(0, 2), from = P(dx, 0);
+            w.SetBlocked(bat, BlockKind.Device);
+            w.Machines.Add(new MachineInfo { Id = "bat", Kind = MachineKind.Battery, X0 = bat.X, Z0 = bat.Z, Hookups = new List<Cell> { P(-8, 0) } });
+            w.Machines.Add(new MachineInfo { Id = "lamp", DefName = "WallLamp", Kind = MachineKind.Consumer, X0 = lamp.X, Z0 = lamp.Z, Hookups = new List<Cell> { from }, HasHome = true, HomeX = home.X, HomeZ = home.Z });
+            return w;
+        }
+
+        /// <summary>A near wall lamp's device plug is drawn at its lamp, never on the strip its cord comes from.</summary>
+        private static void NearWallLamps()
+        {
+            int plugs = 0, away = 0, scenes = 0;
+            foreach (string look in Looks)
+                foreach (Cell into in Dirs)
+                    foreach (int dx in new[] { -2, -1, 0, 1, 2 })
+                        for (int seed = 0; seed < 6; seed++)
+                        {
+                            CordWorld w = NearWallLampScene(dx, into);
+                            MachineInfo lamp = w.Machines.First(m => m.Id == "lamp");
+                            List<LaidPiece> ps = Build(w, Opt(look, (ulong)(71 + seed)), _ => true, out CordGraph g);
+                            scenes++;
+                            var home = new V2(lamp.HomeX + 0.5, lamp.HomeZ + 0.5);
+                            foreach (LaidPiece p in ps.Where(x => (x.EndA + "|" + x.EndB).Contains("consumer")))
+                                foreach (CordDecal d in p.Decals.Where(x => x.Kind == DecalKind.Plug && x.Scale == CordBuilder.PlugScale))
+                                { plugs++; if (V2.Dist(d.Pos, home) > 0.35) away++; }
+                        }
+            Console.WriteLine($"  stub joins, near wall lamps: {scenes} scenes, {plugs} device plugs, {away} not at their lamp");
+            Check(scenes == 480 && plugs >= 400 && away == 0, $"near wall lamps: {away} of {plugs} device plugs drawn away from their lamp ({scenes} scenes)");
+        }
+
         /// <summary>Every device plug is drawn at its machine: none on the wall plate its cord comes through by.</summary>
         private static void FarWallLamps()
         {
@@ -158,6 +194,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             OwnerMap();
             LampsOnTheLine();
             FarWallLamps();
+            NearWallLamps();
             var all = new StubJoins.JoinRead();
             var ends = new CordEndAudit.EndRead();
             var live = new StubJoins.LiveRead();
