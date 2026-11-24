@@ -403,8 +403,8 @@ def stop_tickets(dst, s, items):
     return [{"id": i} for i in out]
 
 
-ACTS = ("autolock", "autorepin", "autounblock", "autogameonly", "autovisit")  # the pipeline's acts on a concept: one landing each,
-# no run, no slot
+# the pipeline's acts on a concept: one landing each (autodeploy: one deploy), no run, no slot
+ACTS = ("autolock", "autorepin", "autounblock", "autogameonly", "autovisit", "autodeploy")
 ITEM_NAME = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){3,}\b")
 
 
@@ -932,7 +932,9 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
                                  "autogameonly": "the pipeline's game-only exit of %s to Stage 6 was tried (%s) and the "
                                                  "record still reads an offline stage; ",
                                  "autovisit": "the pipeline's move of %s back to Stage 6 for its owed checks was tried "
-                                              "(%s) and the record still reads its walk stage; "}[row["aut"]])
+                                              "(%s) and the record still reads its walk stage; ",
+                                 "autodeploy": "the pipeline's deploy of %s's walk build was tried (%s) and the walk "
+                                               "folder still reads stale; "}[row["aut"]])
                            % (mod, str(x.get("failed") or x.get("landed") or "ended")) +
                            "`maturation_dispatch.py clear %s --why ...` un-pauses it" % mod)
                 if row.get("repin_sources") is not None:
@@ -1437,6 +1439,23 @@ def _walk_owed(root, s, row, ver, owed=None, game=None):
     return True
 
 
+def _stale_walk(f):
+    """-> the exit's one reason when an ended in-game visit owes only the deploy of the walk build, else None. A steward
+    may not stop a game, and no DLL is written under a running one (Explosive Knockback, 2026-11-24: a steward waited two
+    hours for an ArchBig that was never both free and down), so that deploy is the tick's (deploy_walk)."""
+    why = [str(x) for x in ((f.get("exit") or {}).get("why") or [])]
+    return why[0] if len(why) == 1 and why[0].startswith(M.STALE_WALK) else None
+
+
+def deploy_walk(root, mod, now=None, seat="BENCH"):
+    """-> (state, text) of the deploy of the mod's walk build to ArchBig, the game he walks on: ok, wait (another run or
+    his hold has the game; nothing done) or fail (the cause named). M.deploy_repair: the game down, deployed, up again."""
+    reading = M.deploy_state(root, mod, game="a")
+    if reading["state"] != "drift":
+        return "fail", reading["why"]
+    return M.deploy_repair(root, mod, "a", reading, M._game_ops(), "deploy %s's walk build" % mod, seat=seat)
+
+
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,
            fx_evidence=None, fx_exam=None, endings=None, fx_version_bugs=None, fx_walk_owed=None, fx_walk_game=None):
     mod, dec, stage = row["mod"], row.get("decision"), row.get("stage")
@@ -1532,6 +1551,11 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
     # a blind cycle's record with no exit block and nothing live: the night of 2026-11-14 each one got a reconcile run
     # by hand. One steward completes the record from its files or says what judging is missing. An unfinished in-game
     # visit stays a hand: the game it left needs a look, and a steward never takes the bridge.
+    if dec == "exit_not_met" and stage == "in_game" and _stale_walk(f):
+        row.update(aut="autodeploy", decision="autodeploy", need=None, why="%s; the pipeline deploys it" % _stale_walk(f),
+                   steward_why=_stale_walk(f), steward_key="%s|%s|autodeploy|%s|%s" % (
+                       ver, stage, row.get("visit"), _h([_stale_walk(f)])))
+        return
     if dec in STEWARD_ON or (dec == "cycle_unfinished" and stage == "blind_challenge"):
         n = row.get("visit") if stage == "in_game" else row.get("cycle") if stage == "blind_challenge" else None
         if dec == "exit_not_met" and stage == "blind_challenge" and (PC.used(mod, "blind_cycles_total", f.get("visit") or 0)
@@ -2169,6 +2193,18 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                     "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
                 row.update(decision="launched", why="the pipeline sent %s back to Stage 6 for %d owed in-game check(s) "
                            "(%s): %s" % (row["mod"], len(row["visit_checks"]), ", ".join(row["visit_checks"]), text))
+                continue
+            if row["aut"] == "autodeploy":   # RIMMANDRAKE_LET_TICK_DEPLOY_STALE_WALK_BUILD_STEWARD_MAY_NOT_STOP_GAME
+                state, text = fx.get("autodeploy", deploy_walk)(root, row["mod"], now=now)
+                if state == "wait":         # no try spent: the next tick reads the game again
+                    row.update(decision="launch_wait", why="the deploy of %s's walk build waits on a cause that ends by "
+                               "itself: %s" % (row["mod"], text))
+                    continue
+                st["mods"][row["mod"]].setdefault("steward", {})[row["steward_key"]] = {
+                    "item": None, "unit": None, "at": now, "failed": None if state == "ok" else text,
+                    "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
+                row.update(decision="launched" if state == "ok" else "launch_failed",
+                           why="the pipeline's deploy of %s's walk build: %s" % (row["mod"], text))
                 continue
             if row["aut"] == "autorepin":    # RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE: an act like the autolock
                 text = fx.get("autorepin", repin_and_land)(root, row["mod"], row["repin_sources"], now=now)

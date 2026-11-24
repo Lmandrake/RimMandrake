@@ -4213,7 +4213,7 @@ def walk_identity(root, mod, rec):
         out["why"].append("visit %d's checks %s do not count on the walk build as deployed now (%s): run only those on "
                           "it" % (n, ", ".join(bm["rerun"][:12]), bm.get("worst")))
     elif bm.get("deploy"):
-        out["why"].append("the walk build is not the current source: %s" % bm["deploy"])
+        out["why"].append("%s%s" % (STALE_WALK, bm["deploy"]))
     for k in ("mod_hash", "game_build", "active_mods", "game", "standin", "deployed_folder"):
         if walk.get(k) is not None:
             out[k] = walk[k]
@@ -4402,6 +4402,7 @@ def tag_line(res):
 
 WRONG_CLASSES = ("HARNESS", "SITE")
 FIX_REVIEWS = "fix_reviews.jsonl"
+STALE_WALK = "the walk build is not the current source: "   # the exit reason the tick's autodeploy act cures
 
 
 def _commit_words(v):
@@ -4732,7 +4733,7 @@ def read_ingame_exit(root, mod, n, tt=None):
     elif not one and not bm:
         why.append("the rows name more than one build (mod_sha %s) and no build match read them" % ", ".join(shas))
     if bm and bm.get("deploy"):
-        why.append("the walk build is not the current source: %s" % bm["deploy"])
+        why.append("%s%s" % (STALE_WALK, bm["deploy"]))
     if bm and bm.get("walk_why"):
         why.append("the walk build is unreadable (%s): no in-game check counts until build_match.py reads it" % "; ".join(
             bm["walk_why"]))

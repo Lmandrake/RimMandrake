@@ -112,6 +112,10 @@ because the composed Baroque Biomes copy differed from the repo, by one dev scri
 - **a-visit-item-name-passes-the-spawn-guard.** `maturation_dispatch.ingame_item_id` names only items the RUNNER spawn
   guard (`model.RUNNER_INGAME_NAME`) takes, also when the visit's two names are taken: after the 7:10 PM clear the bare
   `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT` was refused at its spawn.
+- **a-stale-walk-build-is-the-ticks-deploy.** An ended in-game visit whose one open reason is the stale walk folder
+  launches no steward: the tick deploys it to ArchBig through `deploy_repair` (act `autodeploy`, no slot, no run). A
+  held game is a wait that spends no try; a failed deploy, or a reading still stale after it, pauses the mod by name.
+  With any other reason beside it, the steward reads the visit.
 - **the-tick-waits-on-a-drain.** While the drain notice stands, the tick launches nothing and every row it would have
   launched reads `account_hold`, "waiting: account switch".
 

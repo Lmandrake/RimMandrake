@@ -658,6 +658,63 @@ def t_the_real_repair_lock_takes_and_frees_this_process(fx):
                 os.environ[k] = v
 
 
+STALE = "the walk build is not the current source: the deployed walk folder X is not the source at abc (its .srchash differs)"
+
+
+def stale_tick(st, why, owed="exit not met", dec="exit_not_met"):
+    """One tick's resolve on an in-game visit that ended not met for `why` (its exit's reasons)."""
+    root = tempfile.mkdtemp(prefix="walkdeploy_")
+    os.makedirs(os.path.join(root, "design", "concepts"))
+    facts = {P: {"version": "0.1.0", "visit": 6, "live_units": [], "owed": owed, "exit": {"state": "not_met", "why": why}}}
+    rows = [{"mod": P, "stage": "in_game", "decision": dec, "visit": 6, "why": "; ".join(why[:3]), "need": "n"}]
+    rows, launches = AUT.resolve(root, {"seat": "BENCH", "max_live": 4, "steward_cap_usd": 5.0}, st, facts, rows, [], 1000.0, {
+        "designer_state": lambda m: {}, "version_locked": lambda m: True, "open_items": lambda ids, **kw: [],
+        "version_evidence": lambda m: [], "designer_unit": lambda m: None, "designer_chain": lambda m: None,
+        "live_endings": lambda ids: {}, "version_bugs": lambda *a, **k: [], "ticket_runs": lambda i: []})
+    return rows[0], launches
+
+
+def t_a_stale_walk_build_is_the_ticks_deploy():
+    cfg = {"seat": "BENCH"}
+    known = {"known": lambda: set(), "file": lambda *a, **k: (False, "no filing in a test")}
+    st = {"mods": {}}
+    r, la = stale_tick(st, [STALE])
+    check(r.get("aut") == "autodeploy" and la == [P] and "autodeploy" in MD.NO_SLOT_AUT and not r.get("need"),
+          "a-stale-walk-build-is-the-ticks-deploy: an exit whose one reason is the stale walk folder is the tick's act, no "
+          "steward (read %s / %s)" % (r.get("decision"), la))
+    r2, _ = stale_tick({"mods": {}}, [STALE, "in-game check sc_x: its last row reads FAIL"])
+    check(r2.get("aut") == "steward", "...with any other reason beside it, the steward reads the visit (%s)" % r2.get("aut"))
+    AUT.execute("/nonexistent", dict(cfg), st, [r], la, 1000.0, dict(known, autodeploy=lambda root, mod, now=None: (
+        "wait", "%s ArchBig is held by another run" % M.WAIT_MARK)))
+    check(r["decision"] == "launch_wait" and not (st["mods"][P].get("steward") or {}),
+          "...a game another run holds is a wait that spends no try (%s)" % r["decision"])
+    r, la = stale_tick(st, [STALE])
+    check(r.get("aut") == "autodeploy" and la == [P], "...and the next tick tries it again (%s)" % r.get("decision"))
+    AUT.execute("/nonexistent", dict(cfg), st, [r], la, 1000.0, dict(known, autodeploy=lambda root, mod, now=None: (
+        "ok", "ArchBig stopped; deployed; ArchBig started")))
+    check(r["decision"] == "launched" and "ArchBig stopped" in r["why"], "...a deploy that lands says what it did (%s)" % r["why"])
+    r, la = stale_tick(st, [STALE])
+    check(r.get("decision") == "launch_failed" and la == [], "...a reading still stale after it pauses, never loops (%s)"
+          % r.get("decision"))
+    st = {"mods": {}}
+    r, la = stale_tick(st, [STALE])
+    AUT.execute("/nonexistent", dict(cfg), st, [r], la, 1000.0, dict(known, autodeploy=lambda root, mod, now=None: (
+        "fail", "the deploy exited 1")))
+    check(r["decision"] == "launch_failed" and "exited 1" in r["why"], "...a failed deploy names its cause (%s)" % r["why"])
+    calls, real = [], (M.deploy_state, M.deploy_repair)
+    try:
+        M.deploy_state = lambda root, mod, game="a": {"state": "drift", "why": "w", "args": ["--mod", mod]}
+        M.deploy_repair = lambda root, mod, game, reading, gi, purpose, seat="BENCH": (
+            calls.append((mod, game, reading["state"])) or ("ok", "done"))
+        got = AUT.deploy_walk("/r", P)
+        M.deploy_state = lambda root, mod, game="a": {"state": "stuck", "why": "game-only files"}
+        got2 = AUT.deploy_walk("/r", P)
+    finally:
+        M.deploy_state, M.deploy_repair = real
+    check(got == ("ok", "done") and calls == [(P, "a", "drift")] and got2 == ("fail", "game-only files"),
+          "...through deploy_repair on ArchBig, for drift only (%s, %s)" % (got, got2))
+
+
 def main():
     fx = Fixture()
     try:
@@ -673,7 +730,7 @@ def main():
     finally:
         fx.close()
     for t in (t_drain_refusals_count_no_fault, t_a_never_started_launch_owes_a_repair, t_the_tick_waits_on_a_drain,
-              t_a_visit_item_name_passes_the_spawn_guard):
+              t_a_visit_item_name_passes_the_spawn_guard, t_a_stale_walk_build_is_the_ticks_deploy):
         safe(lambda: t() is None, t.__name__[2:] + " ran")
     print("%d failed" % len(FAILS))
     return 1 if FAILS else 0
