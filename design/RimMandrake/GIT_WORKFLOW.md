@@ -12,7 +12,7 @@ This file states what IS. The reasons and the measurements are in two places:
 | `D:\Luke\dev\RimMandrake` (`/mnt/d/Luke/dev/RimMandrake`) | The **read-only mirror** of origin/main. `rm-mirror.timer` refreshes it every 5 min (`./mirror sync`). The mirror has no `.git`. Never write the mirror. Windows tools read it: the game deploy, Explorer, python.exe. `MIRROR_HEAD` names its commit. `MIRROR_STALE` appears if a refresh failed. |
 | `/home/mandrake/rm/mirror.git` | The mirror's bare, fetch-only repo. |
 | `D:\ClaudeWork\rimmandrake\artpipe\` | The artpipe queue and state (not in git): `pending/ active/ done/ failed/ _artsrc/ registry.jsonl` |
-| `D:\ClaudeWork\rimmandrake\build\`, `D:\ClaudeWork\rimmandrake\scratch\codex\` | Build staging and codex.exe staging (scratch on the Windows drive). |
+| `D:\ClaudeWork\rimmandrake\build\` | Build staging. |
 | `/home/mandrake/rm/store.git` | The shared object store: bare, fetched from `mirror.git`, never pruned. Throwaway clones borrow objects from it, never from a seat clone. |
 | `/home/mandrake/rm/scratch/<SEAT>/` | Throwaway ext4 clones. Make them only with `python3 src/RimMandrake/Utils/scratch_clone.py clone "<purpose>" [--sparse <dirs the task needs>]`. Never make them in `/tmp`: `/tmp` is tmpfs. See "Scratch clones" below for the default tree and `--checkout`. |
 
@@ -153,14 +153,14 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
 - Selftest: `src/RimMandrake/Utils/selftest_publish.py`.
 
 **Codex.**
-- On Archmagi/WSL2, Codex defaults to `~/.local/bin/codex` with `~/.codex`.
-- `RM_CODEX_SIDE=wsl|win` selects the runtime. `gpt_consult.py` and `agent_runner.py` also accept `--codex wsl|win`.
-- Linux calls use Linux paths, and scratch under `~/.local/state/rimmandrake/scratch/codex`. `CODEX_SCRATCH` overrides
-  that scratch path.
-- Other hosts keep their previous default.
-- Both installs share the account quota. The meter reads both histories.
-- On the Windows side, `codex.exe` cannot run from an ext4 cwd. So `codex_image.py` and `gpt_consult.py` stage the call
-  in `D:\ClaudeWork\rimmandrake\scratch\codex\<job>\` and copy the results back.
+- All Codex work goes through one door, Dispatch's `~/dev/Dispatch/providers/chatgpt/bin/gpt_door.py`: questions (`ask`),
+  pictures (`image`) and agent runs (`agent`). Page: `~/dev/Dispatch/design/specs/2026-11-23-one-codex-door/boundary.md`.
+- The door runs the Linux `codex` on one sign-in folder (`~/.codex`). Never copy an `auth.json`. Never make a second
+  sign-in folder. Never start `codex` by hand.
+- In this repo, `dispatch_door.py` loads the door. `gpt_consult.py`, `agent_runner.py`, `canon_check.py` and the art daemon
+  use it.
+- The Windows `codex.exe` route is retired. A call to it is refused by name and logged. The old folders are in an archive
+  until 2026-12-01 (`src/RimMandrake/Utils/windows_codex_archive.py status`).
 
 **artpipe.**
 - The daemon (`rm-artpiped.service`) runs from `/home/mandrake/rm/roles/artpiped` with

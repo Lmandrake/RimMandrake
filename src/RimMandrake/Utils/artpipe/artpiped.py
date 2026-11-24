@@ -1478,11 +1478,8 @@ def _body_plan_clause(job: dict, swimmer_text: str, swimmer_known: str) -> str:
 
 
 def build_job_prompt(job: dict) -> str:
-    """A REAL per-job scratch directory (_artsrc/<job_id>/) is what makes
-    the "your working directory is per-job scratch space" claim in
-    AGENTS.md true — codex_image.py sets its subprocess's cwd to the output
-    file's parent, so out_png living inside _artsrc/<job_id>/ IS that
-    per-job cwd, not the shared _artsrc/ root every job used to collide in."""
+    """The whole prompt of one job. The Codex door runs it in a private folder and puts the finished picture at
+    _artsrc/<job_id>/<job_id>.png."""
     canvas = job["canvas"]
     # ART_VERSION_WRANGLING_1 (owner, 2026-10-04): the retired "Heavy, clean
     # black outline" clause is scrubbed at render time too, so a job filed

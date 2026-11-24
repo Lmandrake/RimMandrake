@@ -1693,11 +1693,7 @@ def test_exit_code_zero_on_clean_drain_with_healthy_meters():
 
 
 def test_per_job_scratch_directory_is_real_not_shared():
-    """Finding: AGENTS.md claimed per-job scratch dirs but codex_image.py
-    sets its workdir to the shared _artsrc/ root — either make the code
-    true or the doc honest. Fixed by giving each job a REAL subdirectory
-    (out lives at _artsrc/<job_id>/<job_id>.png), which IS the worker's
-    cwd (codex_image.py sets workdir = out.parent)."""
+    """Each job's picture lives in its own folder, _artsrc/<job_id>/<job_id>.png."""
     with tempfile.TemporaryDirectory() as td:
         q = Queue(Path(td))
         make_job(q.pending, "scratchA", q.reference)

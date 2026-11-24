@@ -9,21 +9,14 @@ Set `RIMMANDRAKE_ROOT` to this clone and `WORKFLOWS_ROOT` to MandrakeWorkflows. 
 - `codex_sandbox` / `CODEX_SANDBOX` defaults to workspace-write in code. On Archmagi every agent gets
   `CODEX_SANDBOX=danger-full-access` from the environment (owner, 2026-11-09: *"Please grant that authority to all agents immediately."*).
   The setting is in `~/.config/environment.d/50-codex-sandbox.conf`, `~/.zshenv` and `~/.profile`.
-- The existing Windows Codex helpers find the Codex binary and convert paths.
+- The run goes through the one Codex door (Dispatch `door_agent.py`, loaded by `agent_runner.py`), on the one sign-in.
 - The weekly `ops_watch.c_codex` meter must report MEASURED usage and a MEASURED reset. If the meter cannot be read, or reports >90% used,
   the launch is refused.
 - Each Codex run writes `<out>.events.jsonl` and `<out>.spend.json`. The spend file names the runner. Missing usage is
   UNMEASURED. The spend is separate from Claude budgets.
 
-Native Linux Codex works directly in the clone. With Windows Codex, work on an ext4 clone runs from the documented
-drive-local Codex scratch. Then the prompt directs all repository operations through WSL
-against the original clone. UNC `-C` failed at tool execution in the 2026-11-09 probe
-(`design/RimMandrake/roles.history.md` §runner_options.md: Runner selection). No automatic sandbox
-relaxation or Claude fallback is attempted.
-
-On Archmagi the default Windows workspace-write sandbox also denied WSL with `Wsl/Service/E_ACCESSDENIED`. So ext4
-workers require an explicit `codex_sandbox: danger-full-access` selection (or `CODEX_SANDBOX`). Windows-launched WSL
-processes do not inherit Linux systemd filesystem walls. Confinement of a Judge has no live certification here.
+Codex works directly in the clone. No automatic sandbox relaxation or Claude fallback is attempted. Confinement of a Judge
+has no live certification here.
 
 ## Native WSL Codex as the live-game driver (proved 2026-11-10)
 

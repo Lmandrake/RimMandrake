@@ -711,7 +711,7 @@ Transient/              output to LOOK AT, then bin    UNTRACKED (pins only), ~1
 python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name>   dry run; --apply writes
 python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>           C# build, staged on D:\ClaudeWork\rimmandrake\build
 ./mirror sync | status                              D:\…\RimMandrake as a writer-free origin/main export
-python3 src/RimMandrake/Utils/gpt_consult.py "q" -f <file>...  ask GPT via Codex (Archmagi/WSL: Linux default; --codex win); files inlined
+python3 src/RimMandrake/Utils/gpt_consult.py "q" -f <file>...  ask GPT via the one Codex door (Dispatch); files inlined
 ./pipe show|why|log|off|on|stop|void|grant ...     command the pipeline in one line (control.py; conductor.md §Commanding the pipeline)
 python3 src/RimMandrake/Utils/scene.py help         write a live test on the scene library (ten names; `help <name>`)
 python3 src/RimMandrake/Utils/refresh.py            rebuild the offline def dump

@@ -177,10 +177,9 @@ General consult lessons (inlining, size, timeouts, grading) live in the global `
 - a result that makes no sense against the current model of the system.
 
 **Mechanism.** Run `python3 src/RimMandrake/Utils/gpt_consult.py --prompt-file prompt.md -f <file>...`. The tool is a
-shim over Dispatch's GPT door (`~/dev/Dispatch/providers/chatgpt/bin/gpt_door.py`). Do not start `codex` or
-`codex.exe` by hand. The door picks the binary and the sign-in. The door keeps the outcomes apart: each consult ends
-with one named verdict, and no answer is never a success. The door refuses a Windows launch that would raise the
-sandbox-setup dialog.
+shim over Dispatch's GPT door (`~/dev/Dispatch/providers/chatgpt/bin/gpt_door.py`). Do not start `codex` by
+hand. The door picks the binary and the sign-in. The door keeps the outcomes apart: each consult ends with one named
+verdict, and no answer is never a success.
 
 **The brief contains:**
 

@@ -663,7 +663,7 @@ def fleet_readings(meter, live, now, rules, slope_of, plan=None):
 
 
 def codex_dirs():
-    # Both installs share one account: always merge both histories, irrespective of RM_CODEX_SIDE.
+    # One account: the newest reading in any known session folder (the ChatGPT desktop app writes there too).
     import csuite_codex_limits as CX
     env = os.environ.get("RM_CODEX_SESSIONS")
     return env.split(os.pathsep) if env else list(CX.DIRS)

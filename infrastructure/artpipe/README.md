@@ -152,17 +152,13 @@ it will sit refused. Re-funding requires the owner's word and an explicit
 ## Operating the daemon — traps
 
 - 🔴 **`pgrep -af artpipe` for a SECOND daemon before trusting a run of
-  `worker_error`/`failed` entries as a content problem.** Nothing stops a second
-  `artpiped.py -N 3` from starting; two processes compete for the same default
-  `w0/w1/w2` codex-worker slots under one `CODEX_HOME` and both produce "no
-  rollout file found under this CODEX_HOME" errors that look like a codex-side
-  bug but are daemon-count contention. Kill the extra one by PID, never `pkill
-  -f` — it matches your own shell too (2026-09-13).
-- ⛔ **Never create a per-run/throwaway codex home.** Calibration's per-run homes
-  each queued a Windows UAC prompt despite the durable `.codex_sandbox_seed`
-  template existing — ~30 prompts waited on the owner. Reuse the durable
-  worker pool; root-cause any template bypass before an unattended run rather
-  than working around it with a fresh home (`CODEX_UAC_STORM_1`, 2026-09-09).
+  `worker_error`/`failed` entries as a content problem.** Two daemons on one
+  queue double the load on the door's image slots. Stop the extra one by PID,
+  never `pkill -f` (it matches your own shell too, 2026-09-13).
+- **One sign-in serves every worker** (the Codex door, `design/specs/2026-11-24-art-daemon-over-the-one-door/`).
+  Never make a worker sign-in folder and never copy an `auth.json`. A dead login
+  fails no job: the job waits in `pending/`, and the alarm
+  `queues.artpipe.signins_bad` rings.
 - **A long-running daemon does not reload its own source on edit.** Python
   never re-imports a running module — an edit-timeout bump and a
   stdout/stderr-capture fix both silently never took effect until the process
@@ -183,10 +179,6 @@ it will sit refused. Re-funding requires the owner's word and an explicit
   fresh bytes to others in the same batch.** The cure is to read the source
   once and feed it to spawned workers via stdin rather than re-reading the
   path per spawn (`artpiped.py`, 2026-09-10).
-- **Concurrent codex imagegen workers can collide on a shared harvest
-  directory** — one worker has harvested another's render as its own.
-  Serialize generation, or isolate `CODEX_HOME` and the harvest dir per
-  worker (2026-09-14).
 - 🔴 **The quota block is measurable, not guessable.** `throughput.jsonl`'s
   trailing entries carry `meter_after.secondary_resets_at` (a Unix timestamp)
   with both meters near 90%+ used right before generation stops. The daemon's

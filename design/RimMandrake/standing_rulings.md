@@ -483,8 +483,7 @@ it."*
   - Artpipe state is outside git, at `D:\ClaudeWork\rimmandrake\artpipe\`.
 - **Windows-side tools:**
   - Builds go through `winbuild.py <Mod|csproj>`.
-  - `codex.exe` needs staging in `D:\ClaudeWork\rimmandrake\scratch\codex\`. `gpt_consult.py` and `codex_image.py` do
-    that staging.
+  - Codex is not a Windows-side tool: all Codex work goes through one Linux door (§One Codex door, one sign-in).
   - 🔴 A committed mod DLL carries a `.srchash`, and is pushed with it (hook `block_dll_source_mismatch.py`, on push).
   - After a merge that touches the `Source/` of a mod, rebuild. Never pick the DLL of one side.
 - Drained historical work lives in `archive/*` tags on origin.
@@ -1396,11 +1395,25 @@ a failure is attributed before any rework, and an instrument fault becomes repai
 strike. A false close is still worse than a wait. Design input: GPT consult at
 `D:\ClaudeWork\rimmandrake\conductor\test_tolerance_consult\`.
 
+## One Codex door, one sign-in — owner, 2026-11-23
+
+*"But if WSL is simply the superior install now, and it does not raise the terrible modal dialog problem, YES PLEASE let's
+switch to WSL CODEX and be done with the Windows version."* *"NO, you may not use a key to pay for OpenAI images. It must use
+my existing account, period."* *"upgrade the reusable Dispatch library that everyone uses to handle everything: GPT questions,
+image reprocessing, running agents... everything."* *"confirm that a single log-in works for all that"*
+
+- All Codex work goes through Dispatch's door: `gpt_door.py ask`, `image` and `agent`. Page:
+  `~/dev/Dispatch/design/specs/2026-11-23-one-codex-door/boundary.md`.
+- One sign-in folder (`~/.codex`) serves all of it, at the same time. The door renews the login a day early, by one process
+  at a time. Never copy an `auth.json`, and never make a second sign-in folder: copies killed the logins on 2026-11-20.
+- No API key pays for anything. The door removes key variables from Codex's environment.
+- The Windows `codex.exe` route is retired. A call to it is refused by name and logged as `WINDOWS_RETIRED`.
+- The ChatGPT desktop app stays until he says otherwise: its `.codex` folder must stay, because the app's next start without
+  it raises the Windows consent dialog.
+
 ## Codex agents run with full machine access — owner, 2026-11-09
 
-*"Please grant that authority to all agents immediately."* This answered the finding that on Archmagi, Codex's Windows
-workspace-write sandbox cannot reach WSL (`Wsl/Service/E_ACCESSDENIED`), so a Codex-run agent (then a Designer, or a worker of the
-Relentless, Whittle or Artisan loops, all since retired) can work on the ext4 clones only with `danger-full-access`. Every agent environment now carries
+*"Please grant that authority to all agents immediately."* It was asked when Codex ran on Windows and its sandbox could not reach WSL. Every agent environment now carries
 `CODEX_SANDBOX=danger-full-access` (`~/.config/environment.d/50-codex-sandbox.conf`, `~/.zshenv`, `~/.profile`; the
 runner is `src/RimMandrake/Utils/agent_runner.py`). It changes nothing else: Claude stays the default runner, results are
 still validated by the existing checks, and the quota gate and the rule against falling back to Claude still hold.
