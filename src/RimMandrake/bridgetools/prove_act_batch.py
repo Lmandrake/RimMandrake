@@ -105,8 +105,6 @@ def main():
     row = W.row
     if not R.start_map():
         return 2
-    if W.call("jawa/session", action="state").get("stage") == "open":
-        R.end_session("abort")
     s = R.open_session()
     pl = [p for p in W.call("jawa/pawn_get", limit=200).get("pawns") or [] if p.get("faction") == "PlayerColony"][0]
     x, z = pl.get("x"), pl.get("z")
@@ -165,4 +163,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(R.closing(main))

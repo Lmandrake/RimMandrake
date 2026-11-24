@@ -14,6 +14,8 @@ verdict. Each hand is a plain public static method of `JawaBenchHands` (main thr
 ## THE WIRE (what Python sends and gets)
 
 A refusal is `{"success": false, "refused": "NAME", "message": "...", "repair": "..."}`. Nothing was changed.
+The bridge host drops a null member from every reply, so an absent key is null. `state` is always there and says what the
+null means: `ok` with no `v` is a null that was read; `gone`, `unbound` and `error` have no `v` at all.
 
 ### `jawa/session`
 

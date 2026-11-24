@@ -142,15 +142,25 @@ def read_session(st, sess, limit_s=15):
         time.sleep(0.5)
 
 
-def open_session(lease=600):
-    r = W.call("jawa/session", action="open", driver=DRIVER, leaseS=lease)
-    if not r.get("success"):
-        raise SystemExit("UNMEASURED: no session: %s" % r)
-    return r
+def open_session(lease=60):
+    """A short lease: a proof that dies leaves a game that the next one can take. A session that another process left is
+    aborted once its lease has ended."""
+    end = time.time() + 90
+    while True:
+        r = W.call("jawa/session", action="open", driver=DRIVER, leaseS=lease)
+        if r.get("success"):
+            return r
+        if r.get("refused") != "SESSION_OPEN" or time.time() > end:
+            print("UNMEASURED: no session: %s" % brief(r), flush=True)
+            sys.exit(2)
+        W.call("jawa/session", action="abort", driver=DRIVER)
+        time.sleep(2)
 
 
 def end_session(action="close", limit_s=80):
     r = W.call("jawa/session", action=action, driver=DRIVER)
+    if r.get("refused") == "NO_SESSION":
+        return r
     end = time.time() + limit_s
     while r.get("success") and r.get("stage") == "closing" and time.time() < end:
         time.sleep(0.2)
@@ -173,7 +183,9 @@ def run(until, limit, limit_s=240, request=None, **kw):
 
 
 def read(*pairs):
-    return W.call("jawa/read_paths", reads=json.dumps([{"of": o, "path": p} for o, p in pairs])).get("values") or []
+    """The values. The host drops a null from a reply, so an absent `v` is null: it is put back here, and the state says what it means."""
+    r = W.call("jawa/read_paths", reads=json.dumps([{"of": o, "path": p} for o, p in pairs]))
+    return [dict({"v": None}, **v) for v in r.get("values") or []]
 
 
 def at_tick(t):
@@ -218,9 +230,8 @@ def main():
     row = W.row
     if not start_map():
         return 2
-    st0 = W.call("jawa/session", action="state")
-    if st0.get("stage") == "open":
-        end_session("abort")
+    open_session()                                              # a session that an earlier run left is out of the way first
+    end_session("abort")
     r = W.call("jawa/run_until", action="start", driver=DRIVER, request=req("none"), until=json.dumps(at_tick(1)), limit=10)
     row("1 no session, no run", r.get("refused") == "NO_SESSION" if r.get("success") is False and not r.get("_error") else None, brief(r))
 
@@ -268,7 +279,7 @@ def main():
         dead = [x_ for x_ in rep.get("acts") or [] if x_.get("state") == "done"]
         row("5 an unreadable value ends as unknown", None if not dead else rep.get("why") == "unknown" and rep.get("tick") == rep.get("tickFrom") + 41 and u.get("status") == "gone" and "herd[0]" in str(u.get("value")), brief(rep) if not dead else "%s at +%s: %s" % (rep.get("why"), rep.get("tick") - rep.get("tickFrom"), u))
         vals = rep.get("values") or {}
-        row("6 a group keeps its dead member", None if not dead else sorted(k for k in vals if k.endswith(".Position")) == ["herd[0].Position", "herd[1].Position"] and vals["herd[0].Position"]["state"] == "gone" and vals["herd[0].Position"]["v"] is None and vals["herd[1].Position"]["state"] == "ok", vals)
+        row("6 a group keeps its dead member", None if not dead else sorted(k for k in vals if k.endswith(".Position")) == ["herd[0].Position", "herd[1].Position"] and vals["herd[0].Position"]["state"] == "gone" and vals["herd[0].Position"].get("v") is None and vals["herd[1].Position"]["state"] == "ok", vals)
     else:
         row("5 an unreadable value ends as unknown", None, "no animal: %s" % [i[1] for i in ids])
         row("6 a group keeps its dead member", None, "no animal")
@@ -322,5 +333,14 @@ def main():
     return 1 if n["FAIL"] else (2 if n["UNMEASURED"] or not W.ROWS else 0)
 
 
+def closing(body):
+    """The proof, and whatever happens in it the session is not left open."""
+    try:
+        return body()
+    finally:
+        if W.S[0] is not None:
+            end_session("abort")
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(closing(main))

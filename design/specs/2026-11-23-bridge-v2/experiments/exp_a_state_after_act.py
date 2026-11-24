@@ -421,7 +421,11 @@ def main():
     if not ready(W):
         print("UNMEASURED: no map")
         return 2
-    return {"replay": replay, "pocket": pocket, "blast": blast}[a.scene](W, a)
+    import prove_run_until as R
+    if W.call("jawa/session", action="state").get("stage") == "open":       # jawa/scene_slice is refused while a session is open
+        R.open_session()
+        R.end_session("abort")
+    return R.closing(lambda: {"replay": replay, "pocket": pocket, "blast": blast}[a.scene](W, a))
 
 
 if __name__ == "__main__":
