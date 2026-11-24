@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 7, the walk brief, since 2026-11-24 2:44 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 8, his live walk, since 2026-11-24 3:21 PM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,7 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 2:44 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 3:21 PM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -569,4 +569,12 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Steward confirms: Read visit_9/SUMMARY.md, rows.jsonl and strange.jsonl (8 strange things, all explained), and the diff of validation.py and the selftests the visit edited: the regrow row keeps its three claims on exact per-plant growth and gains a positive control, burn-line waits are staged through the saved quiet counter, each repair seen red on a planted fault and green on the build; no assertion lost but the season wording his no-long-play ruling retired. Fresh reader of a6f05380df: sound, its selftest rc 1 on the parent (six facts) and rc 0 at the fix (48 of 48 mutants red), DLL MATCH. The visit 7 control-pad run of sc_burn_compounds is on an older build and is being classed under RIMMANDRAKE_CLASS_PYRE_CONTROL_PAD_BURN_NOBODY_LIT; its reading so far finds no mod ignition. Verdict: exit met.
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-24 7:14 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 7:14 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-24 3:21 PM PST, stage change: Walk brief (Stage 7) to His live walk (Stage 8) (by BENCH)
+
+- Why: walk brief arrival_2 written
+- Checks passed: order, by, version, hold, walk_checks_stand, walk_brief, walk_items_closed.
+- Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-24 2:44 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 2:44 PM PST).
 - Record: `version/stage_record.json`.
