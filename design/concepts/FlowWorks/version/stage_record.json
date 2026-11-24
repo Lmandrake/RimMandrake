@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "in_game",
   "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-23T06:00:20-08:00",
+  "since": "2026-11-23T23:28:19-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -393,6 +393,24 @@
       "confirmed": {
         "steward_confirms": "read visit_8/SUMMARY.md and rows.jsonl (sc_moat_raid 10 rows: 3 MOD FAIL, 1 HARNESS void, 6 PASS with no mod_fix; OL not counted, HARNESS, no bar); verdict: exit not met stands, a REAL MISS on moat_raid_sequence, game-only",
         "game_only": "RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS, RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMER_PAST_LOWERED_LEAF_AGAIN"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-23T23:28:19-08:00",
+      "by": "BENCH",
+      "why": "visit 9 road back: no mod-wrong line sends it back. sc_moat_raid (the one MOD FAIL) is PAUSED (raid tests paused, 661658cd6b, after the visit) and makes no line; its fault stays on RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_DRAINED_MOAT (game-only, raid paused). What is left is a run, not a fault: sc_trench_cover_pawns, sc_moat_walkers and sc_islands_walker were written after the visit and never ran; sc_walk was not run (ArchBig's full list) and leaves inv_settings and walk_moat_season undecided; 15 passing checks and PIT_LOOK_1114_LIVE re-run because the scene files and the drawbridge and hose C# changed since f4971d58fa.",
+      "unit": "rm-detached-bench-rimmandrake-route-flowworks-visit-nine-f-1795503791",
+      "confirmed": {
+        "steward_confirms": "read visit_9/SUMMARY.md, rows.jsonl (64 rows), strange.jsonl, maturation.py next --json: fix_readers_owed [], shortfalls [], undecided_bars inv_settings and walk_moat_season (sc_walk only, COULD NOT LOOK), strange_open 0; verdict: exit not met stands, every line is a check only to run in the next visit",
+        "game_only": "RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_DRAINED_MOAT"
       },
       "checks_passed": [
         "order",
