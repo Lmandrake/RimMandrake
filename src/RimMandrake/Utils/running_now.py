@@ -62,6 +62,8 @@ TESTQ = AGENT + "/testq"
 HIST_CAP = 10200            # one sample a minute: about 7 days and a bit
 TASKLIST_EVERY = 180        # a tasklist.exe call is ~0.6 s wall: cache it
 PROBE_EVERY = 180           # ssh to SteveDesktop at most this often
+# budget: danger=an old figure reads as current; evidence=ten missed 180 s probes; ends no work: withholds old machine, remote and steward readings
+STEVE_STALE = 1800
 STALE_AFTER = 180           # a page older than this is stale
 FENCE_WIDTH = 84            # Typora wraps a code fence at about 87 columns in a 1600 px window
 LEDGER_EVENTS = "/home/mandrake/rm/dispatch/infrastructure/state/ledger/events"
@@ -85,6 +87,22 @@ df -BG / | awk 'NR==2{gsub("G","",$2);gsub("G","",$4);print "disk="$4" "$2}'
 echo claude=$(pgrep -c -x claude)
 if t=$(timeout 5 /mnt/c/Windows/System32/tasklist.exe /FO CSV /NH /FI "IMAGENAME eq RimWorldWin64.exe" </dev/null 2>/dev/null); then echo "game=$(printf "%s\n" "$t" | grep -c RimWorldWin64)"; fi
 timeout 5 /usr/lib/wsl/lib/nvidia-smi --query-gpu=name,utilization.gpu,memory.used,memory.total --format=csv,noheader,nounits </dev/null 2>/dev/null | head -1 | tr -d "\r" | sed s/^/gpu=/
+python3 - <<'PY'
+import json, os, subprocess
+os.environ['RM_HOST'] = 'stevedesktop'
+runner = os.path.expanduser('~/rm/runner')
+# The enclosing ssh's existing 20 s budget bounds these reads: danger is a hung Windows process-list call blocking the next probe.
+for key, argv in (
+    ('locks_json', ['python3', 'src/RimMandrake/rimflow/game_lock.py', 'query', 'all', '--json']),
+    ('status_json', ['python3', 'src/RimMandrake/Utils/game_instance.py', 'status']),
+    ('services_json', ['systemctl', '--user', 'list-units', '--type=service', '--state=running', '--no-pager', '--plain', '--no-legend'])):
+    try:
+        r = subprocess.run(argv, cwd=None if key == 'services_json' else runner, capture_output=True, text=True)
+        d = {'out': r.stdout} if r.returncode == 0 else {'why': '%s exited %s: %s' % (argv[0], r.returncode, (r.stderr or r.stdout).strip())}
+    except Exception as e:
+        d = {'why': '%s: %s' % (type(e).__name__, e)}
+    print(key + '=' + json.dumps(d))
+PY
 """
 
 NEXT_SHOWN, LATEST_SHOWN = 4, 3     # queued and done are too long to list whole: the next few, the latest few, a count of the rest
@@ -661,9 +679,11 @@ def probe_steve(env):
     now = env.now()
     try:
         cache = env.read_json(STEVE_CACHE)
+        if not isinstance(cache, dict):
+            cache = {}
     except Exception:       # noqa: BLE001 - first run or torn cache
         cache = {}
-    if now - cache.get("t", 0) < PROBE_EVERY:
+    if isinstance(cache.get("t"), (int, float)) and now - cache["t"] < PROBE_EVERY:
         return cache
     cache["t"] = now
     routes = {}
@@ -684,6 +704,8 @@ def probe_steve(env):
         d["cpu_pct"] = None
         st = [int(x) for x in d.get("stat", "").split()[1:] if x.isdigit()]
         prev = cache.get("stat")
+        if not isinstance(prev, list) or any(not isinstance(x, int) for x in prev):
+            prev = None
         if st and prev and len(st) >= 8 and len(prev) >= 8 and sum(st[:8]) > sum(prev[:8]):     # guest time is inside user time; I/O wait is not busy
             d["cpu_pct"] = round(100 * (1 - (st[3] + st[4] - prev[3] - prev[4]) / (sum(st[:8]) - sum(prev[:8]))))
         cache["stat"] = st
@@ -693,22 +715,175 @@ def probe_steve(env):
     return cache
 
 
+def steve_jobs(env, now):
+    """Fresh local folder reads, with names as well as counts. A partial read cannot claim a complete list."""
+    import game_names
+    out = {"lane_age": 0, "job_lookup": {}}
+    for folder in ("running", "pending"):
+        rows, why = [], None
+        try:
+            path = TESTQ + "/" + folder
+            for name in sorted(n for n in env.listdir(path) if n.endswith(".json")):
+                rec = env.read_json(path + "/" + name)
+                job = rec.get("job", rec)
+                if not isinstance(job, dict) or not all(job.get(k) for k in ("id", "mod", "purpose")) or not isinstance(job.get("selector"), dict):
+                    raise Unmeasured("%s has a broken job record" % name)
+                stamp = rec.get("sent") if folder == "running" else job.get("submitted")
+                if not stamp or not iso_epoch(stamp):
+                    raise Unmeasured("%s has no readable %s time" % (name, "sent" if folder == "running" else "submitted"))
+                sel = job["selector"]
+                if any(not isinstance(sel[k], list) for k in ("chains", "rows", "proofs", "checks", "item") if sel.get(k)):
+                    raise Unmeasured("%s has a broken selector" % name)
+                runs = "; ".join("%s %s" % (k, ",".join(map(str, sel[k]))) for k in ("chains", "rows", "proofs", "checks", "item") if sel.get(k))
+                if sel.get("full"):
+                    runs = (runs + "; " if runs else "") + "full suite"
+                desc = "%s %s; %s" % (job["mod"], job["purpose"], runs or "selector UNMEASURED: empty selector")
+                host = rec.get("host") or job.get("lane") or "stevedesktop"
+                if folder == "pending":     # a waiting job's lane names the machine: either of its games may take it
+                    game = {"stevedesktop": "either game", "any": "any machine"}.get(job.get("lane"), "lane %s" % (job.get("lane") or "UNMEASURED"))
+                else:
+                    game = game_names.show_key(host) if host in ("stevedesktop", "stevedesktop.b", "archmagi", "archmagi.b") else host
+                rows.append({"text": "%s: %s; %s %s; %s" % (game, desc, "ran" if folder == "running" else "waited", ago(max(0, now - iso_epoch(stamp))), job["id"]),
+                             "desc": desc, "id": job["id"], "attempt": rec.get("attempt")})
+        except Exception as e:      # noqa: BLE001 - missing/broken files are a cause, never an empty queue
+            rows, why = None, "%s: %s" % (folder, e)
+        out[folder + "_jobs"], out[folder + "_why"] = rows, why
+        out[folder] = len(rows) if rows is not None else None
+        for r in rows or []:
+            if folder == "running":
+                for key in (r["id"], r["attempt"]):
+                    if key:
+                        out["job_lookup"][key] = r["desc"]
+    return out
+
+
+def collect_steve_games(cache, now, jobs, source_why=None):
+    """Decode the remote readings independently. Omission means DOWN only after a successful, nonempty status."""
+    import game_names
+    good = cache.get("good") or {}
+    age = now - cache["good_t"] if isinstance(cache.get("good_t"), (int, float)) else None
+    out = {"machine_age": age, "machine": good, "machine_why": source_why, "games": []}
+    if not isinstance(good, dict):
+        good, out["machine"] = {}, {}
+        out["machine_why"] = "broken machine reading"
+    if age is None or age > STEVE_STALE or source_why:
+        cause = source_why or ("no successful probe" if age is None else "probe reading %s old exceeds STEVE_STALE: %s" % (ago(age), cache.get("why") or "probe stopped refreshing"))
+        out["machine"], out["machine_why"] = {}, cause
+    machine = dict(out["machine"])
+    issues = []
+    for key in ("up", "load", "cores", "ram", "disk", "gpu", "game", "cpu_pct"):
+        val = machine.get(key)
+        if key in ("ram", "disk"):
+            valid = isinstance(val, str) and len(val.split()) == 2 and all(x.isdigit() for x in val.split())
+        elif key == "gpu":
+            parts = str(val).split(",")
+            valid = len(parts) == 4 and all(x.strip().isdigit() for x in parts[1:])
+        else:
+            valid = val is not None and re.fullmatch(r"\d+" if key in ("cores", "game") else r"\d+(\.\d+)?", str(val))
+        if not valid:
+            machine.pop(key, None)
+            issues.append("%s UNMEASURED: %s" % (key, "probe did not report a readable value" if key != "cpu_pct" else "two readable CPU samples are needed"))
+    if "cpu_pct" in machine:
+        machine["cpu_pct"] = float(machine["cpu_pct"])
+    out["machine"], out["machine_issues"] = machine, issues
+
+    def read(key):
+        if out["machine_why"]:
+            raise Unmeasured(out["machine_why"])
+        d = json.loads(good.get(key, "{}"))
+        if not isinstance(d, dict):
+            raise Unmeasured("broken " + key + ": expected an object")
+        if d.get("why"):
+            raise Unmeasured(str(d["why"]))
+        if not isinstance(d.get("out"), str):
+            raise Unmeasured("probe did not report readable " + key)
+        return d["out"]
+
+    def statuses():
+        text = read("status_json")
+        rows = dict(re.findall(r"^(Steve[12])\s+(running\b[^\n|]*|stopped\b[^\n|]*)", text, re.M))
+        if not rows:
+            raise Unmeasured("game status succeeded but no game line was read")
+        return rows
+
+    def locks():
+        d = json.loads(read("locks_json"))
+        rows = d["games"]
+        if not isinstance(rows, list) or any(not isinstance(r, dict) or r.get("game") not in ("a", "b") or r.get("state") not in ("HELD", "FREE", "UNKNOWN", "HIS_HOLD")
+                or any(r.get(k) is not None and not isinstance(r[k], str) for k in ("seat", "purpose", "cause", "line")) for r in rows):
+            raise Unmeasured("broken game lock JSON")
+        if len({r["game"] for r in rows}) != len(rows):
+            raise Unmeasured("broken game lock JSON: duplicate game")
+        return {r["game"]: r for r in rows}
+
+    status, status_why = guarded(statuses)
+    drivers, driver_why = guarded(locks)
+    for letter in ("a", "b"):
+        name = game_names.show(letter, "stevedesktop")
+        up = None if status is None else status.get(name, "stopped").startswith("running")
+        driver = (drivers or {}).get(letter)
+        who_why = driver_why or ("probe omitted the driver lock" if driver is None else None)
+        if driver and driver["state"] == "UNKNOWN":
+            who_why = driver.get("cause") or driver.get("line") or "driver lock UNKNOWN"
+        who = "UNMEASURED: " + who_why if who_why else {
+            "HELD": "%s for %s" % (driver.get("seat") or "UNMEASURED: lock has no seat", driver.get("purpose") or "UNMEASURED: lock has no purpose"),
+            "FREE": "FREE", "HIS_HOLD": "HIS_HOLD for %s" % (driver.get("purpose") or driver.get("line") or "owner"),
+        }.get(driver["state"], "UNMEASURED")
+        purpose = (driver or {}).get("purpose") or ""
+        for key, desc in jobs["job_lookup"].items():
+            if re.search(r"(?<![\w.-])" + re.escape(key) + r"(?![\w.-])", purpose):
+                who += "; " + desc
+                break
+        if "testq " in purpose and jobs.get("running_why"):
+            who += "; job details UNMEASURED: " + jobs["running_why"]
+        word = "UNMEASURED: " + status_why if up is None else ("UP" if up else "DOWN")
+        out["games"].append({"game": name, "up": up, "who": who, "text": "%s %s; driver %s" % (name, word, who)})
+    services, why = guarded(read, "services_json")
+    out["services"], out["services_why"] = None, why
+    if services is not None:
+        units = [line.split()[0] for line in services.splitlines() if line.strip()]
+        if any(not u.endswith(".service") for u in units):
+            out["services_why"] = "broken systemctl service list"
+        else:
+            out["services"] = sorted(u for u in units if u != "dbus.service" and not u.startswith("testq-"))
+    return out
+
+
 def collect_steve(env, state):
     now = env.now()
     sj, why = guarded(env.read_json, TESTQ + "/steward.json")
-    if sj is not None and not isinstance(sj.get("epoch"), (int, float)):
-        sj, why = None, "steward.json has no epoch"
+    if sj is not None and (not isinstance(sj, dict) or not isinstance(sj.get("epoch"), (int, float)) or not sj.get("state")):
+        sj, why = None, "steward.json has no readable state or epoch"
+    if sj is None and not why:
+        why = "steward.json is null"
+    if sj is not None and now - sj["epoch"] > STEVE_STALE:
+        sj, why = None, "steward.json %s old: steward stopped refreshing" % ago(now - sj["epoch"])
     # a dead steward costs its own words: the queue, the results and the machine reading are other sources
     out = {"state": None, "reason": "steward UNMEASURED: %s" % why, "age": None, "incident": None} if sj is None else {
         "state": sj.get("state"), "fault": sj.get("fault"), "reason": sj.get("reason") or "", "age": now - sj["epoch"], "incident": sj.get("incident") or None}
     sj = sj or {}
     if sj.get("since"):
-        out["since"] = iso_epoch(sj["since"])
-    for d in ("running", "pending"):
-        v, why = guarded(lambda p: len(env.listdir(p)), TESTQ + "/" + d)
-        out[d] = v
+        out["since"], since_why = guarded(iso_epoch, sj["since"])
+        if since_why:
+            out["reason"] += "; since UNMEASURED: " + since_why
+    out.update(steve_jobs(env, now))
+    cache, cache_why = guarded(env.read_json, STEVE_CACHE)
+    if not isinstance(cache, dict):
+        cache, cache_why = {}, cache_why or "broken probe cache: expected an object"
+    cache_mtime, mtime_why = guarded(env.mtime, STEVE_CACHE)
+    if cache_mtime is None:
+        cache_why = cache_why or mtime_why
+    elif now - cache_mtime > STEVE_STALE:
+        cache_why = "cache file %s old: %s" % (ago(now - cache_mtime), cache.get("why") or "probe stopped refreshing")
+    out.update(collect_steve_games(cache, now, out, cache_why))
+    out["cache"] = cache
+    # the routes are dated by the last attempt, not the last success: a failed ssh is a measured DOWN route
+    tried = now - cache["t"] if isinstance(cache.get("t"), (int, float)) else None
+    out["routes"] = cache.get("routes") if tried is not None and tried <= STEVE_STALE and not cache_why and isinstance(cache.get("routes"), dict) else {}
+    out["routes_age"] = tried
     out["jobs_known"] = False
     names, why = guarded(env.listdir, TESTQ + "/done")
+    out["done_why"] = why
     if names is not None:
         # every result, read once: a job's name dates its birth, and one born a fortnight ago may finish this minute.
         # A job finished over 8 days ago keeps only its finish time, so a later minute need not read it again.
@@ -721,17 +896,20 @@ def collect_steve(env, state):
         for n in keep - set(memo):
             try:
                 j = env.read_json(TESTQ + "/done/" + n)
-            except Exception:       # noqa: BLE001 - being written or bad: the day's counts are unknown, not short
+                r = j.get("result") or {}
+                job = j.get("job") or {}
+                fin, begun = r.get("finished") or j.get("finished"), r.get("started")
+                if not fin or not r.get("outcome"):
+                    raise Unmeasured("result has no finished time or outcome")
+                cnt = r.get("counts") if isinstance(r.get("counts"), dict) else {}
+                memo[n] = {"v": 2, "f": iso_epoch(fin) if fin else 0, "s": iso_epoch(begun) if begun else 0, "o": r.get("outcome") or "?", "c": r.get("cause") or "",
+                           "r": len(r.get("rows") or []), "p": job.get("purpose") or "", "m": job.get("mod") or "", "i": job.get("item") or "",
+                           "k": {k: v for k, v in cnt.items() if isinstance(v, int)},
+                           "b": sorted({"%s/%s" % (x.get("chain"), x.get("row")) for x in (r.get("rows") or []) if isinstance(x, dict) and x.get("verdict") == "FAIL"})}
+            except Exception as e:       # noqa: BLE001 - being written or bad: the day's counts are unknown, not short
                 unread += 1
+                out["done_why"] = "unreadable result %s: %s" % (n, e)
                 continue
-            r = j.get("result") or {}
-            job = j.get("job") or {}
-            fin, begun = r.get("finished") or j.get("finished"), r.get("started")
-            cnt = r.get("counts") if isinstance(r.get("counts"), dict) else {}
-            memo[n] = {"v": 2, "f": iso_epoch(fin) if fin else 0, "s": iso_epoch(begun) if begun else 0, "o": r.get("outcome") or "?", "c": r.get("cause") or "",
-                       "r": len(r.get("rows") or []), "p": job.get("purpose") or "", "m": job.get("mod") or "", "i": job.get("item") or "",
-                       "k": {k: v for k, v in cnt.items() if isinstance(v, int)},
-                       "b": sorted({"%s/%s" % (x.get("chain"), x.get("row")) for x in (r.get("rows") or []) if isinstance(x, dict) and x.get("verdict") == "FAIL"})}
         for n, v in memo.items():
             if v["f"] and now - v["f"] > 8 * 86400:
                 memo[n] = {"v": 2, "f": v["f"]}
@@ -1002,8 +1180,10 @@ def steve_headline(sv):
 
 
 def steve_svg(p):
-    sv, cache, now = p["steve"], p["steve_cache"] or {}, p["now"]
-    W, H = 1040, 332
+    sv, now = p["steve"], p["now"]
+    cache = (sv or {}).get("cache") or {}
+    details = steve_text(p, readings=True) if sv else []
+    W, H = 1040, 342 + sum(34 + 16 * len(lines) for _, lines, _ in details)
     s = Svg(W, H, "SteveDesktop: state, machine stats, test jobs and live testing")
     if not sv:
         s.text(18, 40, "STEVEDESKTOP  UNMEASURED: %s" % clip(p["steve_why"], 90), 16, WARN, "700")
@@ -1022,21 +1202,25 @@ def steve_svg(p):
         since += ": " + ("high, normal not at all" if tone == BAD else (("high" if now - sv["since"] > 3600 else "ok") + ", normal under 1 h" if tone == WARN else "ok, normal any length"))
     s.reading_open("STATE")
     s.text(W - 28, 40, "%s%s" % (since, extra), 12, fg, "600", "end", MONO)
-    s.reading_close()
+    s.parts.append('<g data-item="steward">')
     s.text(18, 73, clip(sv["reason"], 150) or "no reason recorded", 11.5, TEXT if tone != BAD else "#ffb4b0")
+    s.parts.append('</g>')
+    s.reading_close()
 
-    good = cache.get("good") or {}
-    good_age = now - cache["good_t"] if cache.get("good_t") else None
+    good = sv.get("machine") or {}
+    good_age = sv.get("machine_age")
 
     def tile_(x, y, w, label, val, colour=TEXT, bar=None, note=None, note_colour=DIM, hover=None):
+        if val == "?":
+            val, hover = "UNMEASURED", sv.get("machine_why") or "probe did not report a readable " + label
         tile(s, x, y, w, label, val, colour, bar, note, note_colour, hover)
 
     # ---- machine row
     y = 84
-    routes = cache.get("routes") or {}
+    routes = sv.get("routes") or {}
     s.reading_open("ROUTES")
     s.rect(14, y, 148, 62, CARD, None, 5)
-    s.text(22, y + 53, "ok, normal all green" if all((cache.get("routes") or {}).get(k) for k in ("tailscale", "lan", "wsl")) else "low, normal all green", 9, DIM)
+    s.text(22, y + 53, "UNMEASURED, normal all green" if not routes else "ok, normal all green" if all(routes.get(k) for k in ("tailscale", "lan", "wsl")) else "low, normal all green", 9, DIM if routes else WARN)
     s.text(22, y + 14, "ROUTES", 9.5, DIM, "700")
     for i, (k, lab) in enumerate((("tailscale", "tail"), ("lan", "LAN"), ("wsl", "wsl"))):
         v = routes.get(k)
@@ -1046,7 +1230,7 @@ def steve_svg(p):
     cols = [(170, 92), (270, 96), (374, 132), (514, 100), (622, 124), (754, 180), (942, 84)]
 
     def num(k):
-        return good.get(k) or ""
+        return str(good[k]) if good.get(k) is not None else ""
 
     up = num("up")
     up = up if re.fullmatch(r"\d+(\.\d+)?", up) else ""
@@ -1064,7 +1248,7 @@ def steve_svg(p):
     cpu = good.get("cpu_pct")
     tile_(cols[3][0], y, cols[3][1], "CPU", "%d%%" % cpu if cpu is not None else "?", TEXT if cpu is not None else WARN, cpu / 100 if cpu is not None else None, *(against(cpu, 90, "0-90%") if cpu is not None else (None, DIM)))
     disk = num("disk").split()
-    if disk:
+    if disk and disk[0].isdigit():
         tile_(cols[4][0], y, cols[4][1], "DISK FREE", "%s GB" % disk[0], TEXT, None, *(("low, normal over 100 GB", WARN) if int(disk[0]) < 100 else ("ok, normal over 100 GB", DIM)))
     else:
         tile_(cols[4][0], y, cols[4][1], "DISK FREE", "?", WARN)
@@ -1082,12 +1266,12 @@ def steve_svg(p):
     y = 154
     known = sv.get("jobs_known")
     n = lambda v: "?" if v is None else str(v)  # noqa: E731
-    rv = (("low, normal 1", WARN) if run_v == 0 else (("high, normal 1", WARN) if run_v > 1 else ("ok, normal 1", DIM))) if run_v is not None else (None, DIM)
-    tile_(14, y, 80, "RUNNING", n(run_v), BAD if idle else (LIVE if run_v else DIM), None, rv[0], rv[1])
+    rv = (("low, normal 1-2", WARN) if run_v == 0 else (("high, normal 1-2", WARN) if run_v > 2 else ("ok, normal 1-2", DIM))) if run_v is not None else (None, DIM)
+    tile_(14, y, 92, "RUNNING", n(run_v), BAD if idle else (LIVE if run_v else DIM), None, rv[0], rv[1])
     qn = against(q_v, 20, "0-20") if q_v is not None else (None, DIM)
-    tile_(102, y, 96, "QUEUED", n(q_v), WARN if q_v and not run_v else TEXT, None, qn[0], qn[1])
+    tile_(114, y, 96, "QUEUED", n(q_v), WARN if q_v and not run_v else TEXT, None, qn[0], qn[1])
     dn = versus(sv.get("done") or 0, sv.get("usual_done"), False, ROUGH["steve_done"]) if known else (None, DIM)
-    tile_(206, y, 112, "DONE 24 H", n(sv.get("done")) if known else "?", TEXT if known else WARN, None, dn[0], dn[1])
+    tile_(218, y, 100, "DONE 24 H", n(sv.get("done")) if known else "?", TEXT if known else WARN, None, dn[0], dn[1])
     fl = sv.get("failed")
     fn = versus(fl or 0, sv.get("usual_failed"), True, ROUGH["steve_failed"]) if known else (None, DIM)
     tile_(326, y, 112, "FAILED 24 H", n(fl) if known else "?", (BAD if fl else DIM) if known else WARN, None, fn[0], fn[1])
@@ -1105,9 +1289,21 @@ def steve_svg(p):
     else:
         tile_(804, y, 102, "STEWARD WROTE", ago(age) + " ago", BAD if age > 300 else TEXT, None, "high, normal <5 min" if age > 300 else "ok, normal <5 min", BAD if age > 300 else DIM)
     pa = "%s old" % ago(good_age) if good_age is not None else "never"
-    stale = good_age is None or good_age > 900
-    tile_(914, y, 112, "MACHINE READING", pa, WARN if cache.get("why") or stale else DIM, None, "high, normal <15 min" if stale else "ok, normal <15 min", WARN if stale else DIM)
+    stale = bool(sv.get("machine_why"))
+    tile_(914, y, 112, "MACHINE READING", pa, WARN if cache.get("why") or stale else DIM, None, "high, normal <30 min" if stale else "ok, normal <30 min", WARN if stale else DIM)
     live_row(s, 248, sv.get("live"), "Busy: share of 24 h with a finished job running. A job still running counts once it ends.")
+    y = 342
+    for label, lines, note in details:
+        s.reading_open(label)
+        s.text(18, y, label, 10, DIM, "700")
+        s.text(220, y, note, 9, DIM)
+        for line in lines:
+            y += 16
+            s.parts.append('<g data-item="detail"><title>%s</title>' % escape(line))
+            s.text(18, y, clip(line, 160), 10.5, WARN if "UNMEASURED" in line else TEXT, font=MONO)
+            s.parts.append('</g>')
+        y += 34
+        s.reading_close()
     return s.out()
 
 
@@ -1142,18 +1338,47 @@ def archmagi_svg(p):
     return s.out()
 
 
-def steve_text(p):
-    sv, cache = p["steve"], p["steve_cache"] or {}
+def steve_text(p, readings=False):
+    sv = p["steve"]
+    cache = (sv or {}).get("cache") or {}
     if not sv:
         return "STEVEDESKTOP  UNMEASURED (%s)" % p["steve_why"]
-    g = cache.get("good") or {}
+    g = sv.get("machine") or {}
+    age = sv.get("machine_age")
+    remote_age = "%s old" % ago(age) if age is not None else "age UNMEASURED: no successful probe"
+    remote_note = "%s, normal reading under 30 min; %s" % ("high" if sv.get("machine_why") else "ok", remote_age)
+    details = []
+    cause = sv.get("machine_why")
+    machine_line = "machine stats UNMEASURED: " + cause if cause else "machine stats; " + remote_age
+    if not cause and sv.get("machine_issues"):
+        machine_line += "; " + "; ".join(sv["machine_issues"])
+    if cache.get("why"):
+        machine_line += "; last probe failed: " + cache["why"]
+    details.append(("MACHINE SOURCE", [machine_line], remote_note))
+    for game in sv.get("games", []):
+        details.append((game["game"].upper(), [game["text"]], remote_note))
+    for folder, label, limit in (("running", "RUNNING JOBS", 3), ("pending", "QUEUED JOBS", NEXT_SHOWN)):
+        jobs, why = sv.get(folder + "_jobs"), sv.get(folder + "_why")
+        lines = ["UNMEASURED: " + why] if why else [r["text"] for r in (jobs or [])[:limit]] or ["none"]
+        if jobs and len(jobs) > limit:
+            lines.append("+ %d more" % (len(jobs) - limit))
+        details.append((label, lines, "ok, normal fresh folder read; %s old" % ago(sv["lane_age"])))
+    services, why = sv.get("services"), sv.get("services_why")
+    lines = ["UNMEASURED: " + why] if why else (services or [])[:3] or ["none"]
+    if services and len(services) > 3:
+        lines.append("+ %d more" % (len(services) - 3))
+    details.append(("SERVICES", lines, remote_note))
+    done = "done folder UNMEASURED: " + sv["done_why"] if sv.get("done_why") else "done folder read; 0 s old"
+    details.append(("LANE SOURCE", [done, "steward %s: %s" % ("age UNMEASURED" if sv["age"] is None else "%s old" % ago(sv["age"]), sv["reason"])], "ok, normal fresh folder read; %s old" % ago(sv["lane_age"])))
+    if readings:
+        return details
     said = lambda v: "UNMEASURED" if v is None else v  # noqa: E731
     return "\n".join([
         "STEVEDESKTOP  %s  jobs running %s, queued %s, done 24 h %s, failed 24 h %s" % (said(sv.get("state")), said(sv.get("running")), said(sv.get("pending")), sv.get("done") if sv.get("jobs_known") else "UNMEASURED", sv.get("failed") if sv.get("jobs_known") else "UNMEASURED"),
-        "routes %s" % " ".join("%s:%s" % (k, "up" if v else "DOWN") for k, v in (cache.get("routes") or {}).items()),
+        "routes %s; %s old" % (" ".join("%s:%s" % (k, "up" if v else "DOWN") for k, v in sv["routes"].items()), ago(sv["routes_age"])) if sv.get("routes") else "routes UNMEASURED: %s" % (cause or "no probe attempt recorded"),
         "load %s  ram %s  disk %s  gpu %s  game %s" % tuple(g.get(k, "UNMEASURED") for k in ("load", "ram", "disk", "gpu", "game")),
         live_text("live testing", sv.get("live")),
-    ])
+    ] + ["%s: %s; %s" % (label, "; ".join(lines), note) for label, lines, note in details])
 
 
 def live_text(name, d):
@@ -1243,9 +1468,11 @@ def status_strip(p):
     if sv:
         state, idle = steve_headline(sv)
         tone = steve_tone(state)
-        chips.append(("Steve %s%s" % (state, " + IDLE" if idle else ""), 2 if tone == BAD else (1 if tone == WARN else 0)))
+        chips.append(("SteveDesktop lane %s%s" % (state, " + IDLE" if idle else ""), 2 if tone == BAD else (1 if tone == WARN else 0)))
+        for game in sv.get("games", []):
+            chips.append(("%s %s; %s" % (game["game"], "UNMEASURED" if game["up"] is None else "UP" if game["up"] else "DOWN", clip(game["who"], 64)), 1 if game["up"] is None or "UNMEASURED" in game["who"] else 0))
     else:
-        chips.append(("Steve UNMEASURED", 1))
+        chips.extend((name + " UNMEASURED", 1) for name in ("SteveDesktop lane", "Steve1", "Steve2"))
     d = p["dispatcher"]
     if not d:
         chips.append(("Dispatcher UNMEASURED", 1))
@@ -1897,7 +2124,7 @@ def build(env, state, hist, write=True):
          panel("Archmagi", archmagi_svg),
          how_to_read("This machine and its live game. Each number has its verdict underneath; Busy means somebody held the bridge. A proof row that says UNMEASURED or REFUSED ran or was turned away and learned nothing."), "",
          panel("SteveDesktop", steve_svg),
-         how_to_read("The second machine, which only runs test jobs from its queue. The bar under a number shows how full it is; Busy means a job was running. Two jobs in a row not DONE brake the lane, which then reads red here."), "",
+         how_to_read("The second machine. Steve1 and Steve2 are its two games, which take test jobs from one queue; Services are its other runs, such as a list item's. The small grey words after each heading say how old that reading is. The bar under a number shows how full it is; Busy means a job was running. Two jobs in a row not DONE brake the lane, which then reads red here."), "",
          "```", "\n".join(tree), "```",
          how_to_read("Every process has one owner, read down from Dispatch: [n proc] counts a branch, and each line ends with what the processes are. "
                      "Under the Conductor, detached helpers are services and in-process helpers run inside the window with no process of their own."), "",

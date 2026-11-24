@@ -242,8 +242,8 @@ files = {STEWARD: {"state": "BRAKED", "fault": True, "reason": "two filler jobs 
 dirs = {R.TESTQ + "/running": [], R.TESTQ + "/pending": []}
 page = page_of(Fake(files=files, dirs=dirs))
 head = before_svg(page)
-check("braked and idle reads as trouble in the strip", "Steve BRAKED + IDLE" in head)
-check("trouble comes first in the strip", "bridge" in head and head.index("Steve BRAKED") < head.index("bridge"))
+check("braked and idle reads as trouble in the strip", "SteveDesktop lane BRAKED + IDLE" in head)
+check("trouble comes first in the strip", "bridge" in head and head.index("SteveDesktop lane BRAKED") < head.index("bridge"))
 check("the Steve panel says it in words", "BRAKED AND IDLE" in page)
 check("an unreadable Steve job count is not 'idle'", not R.steve_headline({"state": "BRAKED", "running": None})[1])
 check("a working Steve under no brake is not idle", not R.steve_headline({"state": "OK", "running": 0})[1])
@@ -533,7 +533,7 @@ LIVE_TILES = {"BUSY / IDLE", "PROOF ROWS BY RESULT", "BUGS FOUND", "FALSIFIED EX
 EXPECTED = {
     "Archmagi": {"UPTIME", "LOAD", "WSL RAM USED", "EXT4 FREE", "D: FREE", "GAME THIS 24 H"} | LIVE_TILES,
     "SteveDesktop": {"STATE", "ROUTES", "UPTIME", "LOAD", "WSL RAM USED", "CPU", "DISK FREE", "GPU", "GAME", "RUNNING", "QUEUED", "DONE 24 H", "FAILED 24 H", "LAST JOB", "ROWS/HOUR 24 H",
-                     "STEWARD WROTE", "MACHINE READING"} | LIVE_TILES,
+                     "STEWARD WROTE", "MACHINE READING", "MACHINE SOURCE", "STEVE1", "STEVE2", "RUNNING JOBS", "QUEUED JOBS", "SERVICES", "LANE SOURCE"} | LIVE_TILES,
 }
 NOT_A_NUMBER = {"FALSIFIED EXPECTATIONS"}      # nothing records it: nothing to judge
 # a digit outside any reading is a naked number, unless it only names a window or a stage of the axis
@@ -631,10 +631,18 @@ def fixture_env(extreme=False):
              R.LIVE_RUNS: "\n".join(json.dumps(r) for r in rows) + "\n",
              done_dir + "/" + job: {"job": {"purpose": "guard", "mod": "FlowWorks", "item": "A"},
                                     "result": {"outcome": "DONE", "started": iso(NOW - 7700), "finished": iso(NOW - (7100 if extreme else 100)), "rows": [{"chain": "c", "row": "r", "verdict": "PASS"}, {"chain": "c", "row": "s", "verdict": "PASS"}], "counts": {"PASS": 2}}},
-             R.STEVE_CACHE: {"good_t": NOW - (2000 if extreme else 30), "routes": {"tailscale": True, "lan": not extreme, "wsl": True},
+             R.STEVE_CACHE: {"t": NOW - 30, "good_t": NOW - (1700 if extreme else 30), "routes": {"tailscale": True, "lan": not extreme, "wsl": True},
                              "good": {"up": "100" if extreme else "20000", "load": "99.9" if extreme else "0.5", "cores": "18", "ram": "63000 64000" if extreme else "1000 64000", "disk": "50 1000" if extreme else "900 1000",
                                       "gpu": "NVIDIA GeForce RTX 2080 Ti, %s, 4400, 11264" % ("99" if extreme else "27"), "game": "0" if extreme else "1", "cpu_pct": 99 if extreme else 3}}}
     pending = ["p%d.json" % i for i in range(25 if extreme else 1)]
+    files[R.STEVE_CACHE]["good"].update({
+        "locks_json": json.dumps({"out": json.dumps({"games": [lockrow("a", "HELD", "RUNNER", "testq J-run0.a1"), lockrow("b", "FREE")]})}),
+        "status_json": json.dumps({"out": "Steve1 running pid 29576 port 5174\nSteve2 stopped port 5175\n"}),
+        "services_json": json.dumps({"out": "testq-J-run0_a1.service loaded active running lane\ndbus.service loaded active running dbus\nlist-item-FlowWorks.service loaded active running item\n"})})
+    for folder, names in (("running", ["r%d.json" % i for i in range(per)]), ("pending", pending)):
+        for i, name in enumerate(names):
+            lane_job = {"id": "J-%s%d" % ("run" if folder == "running" else "wait", i), "mod": "FlowWorks", "purpose": "guard", "selector": {"chains": ["water", "power"]}, "submitted": iso(NOW - 120)}
+            files[R.TESTQ + "/" + folder + "/" + name] = {"job": lane_job, "sent": iso(NOW - 60), "attempt": lane_job["id"] + ".a1", "host": "stevedesktop.b" if i else "stevedesktop"} if folder == "running" else lane_job
 
     class Full(Fake):
         def local_stats(self):
@@ -771,7 +779,7 @@ MUTANTS = [
     ("the proof rows tile has no verdict", '"%s, %d of %d measured%s; normal over 30%%" % ("low" if low else "ok", measured, total,', '"%s %d of %d measured%s" % ("", measured, total,'),
     ("the Falsified tile is gone", 'tile(s, 864, y, 162, "FALSIFIED EXPECTATIONS",', QUIET + 's, 864, y, 162, "FALSIFIED EXPECTATIONS",'),
     ("Steve loses a machine tile", 'tile_(cols[3][0], y, cols[3][1], "CPU",', QUIET + 'cols[3][0], y, cols[3][1], "CPU",'),
-    ("a tile too narrow clips its verdict", 'tile_(102, y, 96, "QUEUED",', 'tile_(102, y, 60, "QUEUED",'),
+    ("a tile too narrow clips its verdict", 'tile_(114, y, 96, "QUEUED",', 'tile_(114, y, 60, "QUEUED",'),
     ("Steve's how-to-read is gone", 'how_to_read("The second machine', '(lambda t: "")("The second machine'),
     ("FINISHED TODAY drops its receipt rows", '"".join(row(r) for r in rows) or "Nothing yet today."', '"Nothing yet today."'),
     ("RECENT EVENTS prints no rows", "for at, word, txt in rows[:18])", "for at, word, txt in rows[:0])"),
@@ -797,6 +805,166 @@ check("the page's own source passes again after the mutants", not page_problems(
 def built(env):
     page, _, phone = R.build(env, {}, [])
     return page, phone
+
+
+# ---- SteveDesktop's boundary: each promise has its own named, observable check.
+def steve_view(env):
+    sv = R.collect_steve(env, {})
+    p = {"steve": sv, "steve_cache": env.files.get(R.STEVE_CACHE), "now": env.now(), "steve_why": None}
+    return sv, R.steve_text(p), R.steve_svg(p)
+
+
+env, hist = fixture_env()
+sv, text, svg = steve_view(env)
+check("steve-games-up-and-driver: both games, remote process state, driver and enriched job purpose", all(w in text for w in (
+    "Steve1 UP; driver RUNNER for testq J-run0.a1; FlowWorks guard; chains water,power", "Steve2 DOWN; driver FREE"))
+      and all(w in svg for w in ("Steve1 UP", "Steve2 DOWN", "RUNNER", "FlowWorks guard")))
+busy, _ = fixture_env(True)
+sv_busy, text_busy, svg_busy = steve_view(busy)
+check("steve-jobs-by-name: running and pending names, selectors, elapsed time, services and explicit overflow", all(w in text_busy for w in (
+    "Steve2: FlowWorks guard; chains water,power; ran 60 s", "waited 2 min", "lane UNMEASURED: FlowWorks guard", "J-wait0", "+ 21 more", "list-item-FlowWorks.service"))
+      and "testq-J-run0_a1.service" not in text_busy and "dbus.service" not in text_busy and "+ 21 more" in svg_busy)
+rs = readings_of(R_ET.fromstring(svg.removeprefix("<div>").removesuffix("</div>")))
+check("steve-every-reading-has-its-age: machine, each game, services, lane folders and steward", all(
+    label in rs and any(age in w for _, w in rs[label][1]) for label, age in (
+        ("MACHINE SOURCE", "30 s old"), ("STEVE1", "30 s old"), ("STEVE2", "30 s old"),
+        ("SERVICES", "30 s old"), ("RUNNING JOBS", "0 s old"), ("QUEUED JOBS", "0 s old"), ("LANE SOURCE", "10 s old"))))
+missing, _ = fixture_env()
+del missing.files[R.STEVE_CACHE]
+sv_missing, missing_text, missing_svg = steve_view(missing)
+check("steve-unread-is-unmeasured-with-cause: missing cache with independent lane readings", not sv_missing.get("machine")
+      and all(w in missing_text for w in ("UNMEASURED", "no such file", "Steve1 UNMEASURED", "Steve2 UNMEASURED", "FlowWorks guard"))
+      and "Steve1 DOWN" not in missing_text and "driver FREE" not in missing_text and "no such file" in missing_svg)
+check("steve-unread-is-unmeasured-with-cause: routes nobody read are UNMEASURED, not low", "UNMEASURED, normal all green" in missing_svg and "low, normal all green" not in missing_svg)
+check("steve-no-second-connection: build uses cached readings; game, driver and service commands share the one probe", not env.calls
+      and all(w in R.STEVE_SCRIPT for w in ("game_lock.py", "game_instance.py", "services_json", "RM_HOST", "~/rm/runner"))
+      and not re.search(r"^\s*ssh\b", R.STEVE_SCRIPT, re.M) and "Steve1" in page_of(env) and not env.calls)
+strip = before_svg(page_of(env))
+check("steve-panel-names-the-games-right: machine lane and both games have chips and panel rows", all(w in strip for w in (
+    "SteveDesktop lane RUNNING", "Steve1 UP", "Steve2 DOWN")) and all(w in svg for w in ("STEVEDESKTOP", "Steve1", "Steve2"))
+      and not re.search(r"\bSteve (RUNNING|UP|DOWN|UNMEASURED|BRAKED)", strip + svg))
+
+env, _ = fixture_env()
+env.files[R.STEVE_CACHE]["good"].update({"locks_json": json.dumps({"out": "{broken JSON"})})
+sv, text, svg = steve_view(env)
+check("steve-games-up-and-driver: broken game JSON blinds drivers with cause, keeps processes and machine stats", len(sv.get("games", [])) == 2
+      and all("UNMEASURED" in g["who"] and "JSON" in g["who"] for g in sv["games"]) and sv["games"][0]["up"] is True and bool(sv.get("machine")))
+env.files[R.STEVE_CACHE]["good"]["locks_json"] = json.dumps({"out": json.dumps({"games": "broken shape"})})
+sv, text, svg = steve_view(env)
+check("steve-unread-is-unmeasured-with-cause: wrong game JSON shape is not FREE", "broken game lock JSON" in text and "driver FREE" not in text)
+env, _ = fixture_env()
+env.files[R.STEVE_CACHE]["good"]["status_json"] = json.dumps({"out": "Steve1 running pid 29576 port 5174\n"})
+sv, text, svg = steve_view(env)
+check("steve-games-up-and-driver: Steve2 omitted from a successful nonempty status is DOWN", "Steve1 UP" in text and "Steve2 DOWN" in text)
+for output in ({"out": ""}, {"out": "unexpected output"}, {"why": "process list denied"}):
+    env.files[R.STEVE_CACHE]["good"]["status_json"] = json.dumps(output)
+    sv, text, svg = steve_view(env)
+    check("steve-unread-is-unmeasured-with-cause: status %r never becomes DOWN" % output, "Steve1 UNMEASURED" in text
+          and "Steve2 UNMEASURED" in text and "Steve2 DOWN" not in text and ("process list denied" if "why" in output else "no game line") in text)
+env, _ = fixture_env()
+env.files[R.STEVE_CACHE]["good"]["services_json"] = json.dumps({"why": "systemctl exited 1: no bus"})
+sv, text, svg = steve_view(env)
+check("steve-jobs-by-name: failed services retain the cause rather than none", sv.get("services") is None and "systemctl exited 1: no bus" in text and "no bus" in svg)
+env.files[R.STEVE_CACHE]["good"]["services_json"] = json.dumps({"out": None})
+sv, text, svg = steve_view(env)
+check("steve-unread-is-unmeasured-with-cause: null service output cannot claim none", sv.get("services") is None
+      and "readable services_json" in text and "SERVICES: none;" not in text)
+env.files[R.STEVE_CACHE]["good"]["services_json"] = json.dumps({"out": "dbus.service loaded active running bus\n"})
+sv, text, svg = steve_view(env)
+check("steve-jobs-by-name: successfully read services with just dbus say none", sv.get("services") == [] and "SERVICES: none;" in text)
+env.files[R.STEVE_CACHE]["good"]["services_json"] = json.dumps({"out": "\n".join("mutation-%s.service loaded active running run" % i for i in range(6))})
+sv, text, svg = steve_view(env)
+check("steve-jobs-by-name: services have an explicit overflow count", "mutation-0.service" in text and "+ 3 more" in text and "mutation-5.service" not in text)
+
+with tempfile.TemporaryDirectory() as d:
+    cache_path = d + "/running_steve.json"
+    env, _ = fixture_env()
+    with open(cache_path, "w") as f:
+        json.dump(env.files[R.STEVE_CACHE], f)
+    os.utime(cache_path, (NOW - R.STEVE_STALE - 1, NOW - R.STEVE_STALE - 1))
+
+    class OldCache(Fake):
+        def read_json(self, path):
+            return R.Env.read_json(self, cache_path) if path == R.STEVE_CACHE else super().read_json(path)
+
+        def mtime(self, path):
+            return os.stat(cache_path).st_mtime if path == R.STEVE_CACHE else super().mtime(path)
+
+    old = OldCache(files=env.files, dirs=env.dirs)
+    sv, text, svg = steve_view(old)
+    check("steve-unread-is-unmeasured-with-cause: stale cache file hides even young embedded figures", not sv.get("machine")
+          and "cache file 30 min old" in text and "probe stopped refreshing" in text and "Steve2 DOWN" not in text and "900 GB" not in svg)
+
+class FailedProbe(Fake):
+    def steve_probe(self):
+        self.calls.append(("ssh", True))
+        raise R.Unmeasured("ssh exited 255: no route")
+
+    def write_atomic(self, path, data):
+        self.files[path] = json.loads(data)
+
+
+env, _ = fixture_env()
+del env.files[R.STEVE_CACHE]["t"]      # the probe is due
+dead = FailedProbe(files=env.files, dirs=env.dirs, fail=("ssh",))
+cache = R.probe_steve(dead)
+dead.clock += R.STEVE_STALE + 1
+sv, text, svg = steve_view(dead)
+check("steve-unread-is-unmeasured-with-cause: failed probe retains compatibility keys and stale figures become UNMEASURED", all(k in cache for k in ("good", "good_t", "routes", "why"))
+      and cache["routes"]["wsl"] is False and "no route" in cache["why"] and not sv.get("machine")
+      and "no route" in text and "30 min old" in text and "no route" in svg and "900 GB" not in svg)
+dead.files[R.STEVE_CACHE]["t"] = dead.clock - 20
+dead.mtime = lambda path: dead.clock - 20        # each attempt rewrites the file, a failed one too
+sv, text, svg = steve_view(dead)
+check("steve-unread-is-unmeasured-with-cause: a failed ssh keeps its fresh DOWN routes while the old figures are withheld", sv["routes"].get("wsl") is False
+      and "wsl:DOWN; 20 s old" in text and not sv.get("machine"))
+env, _ = fixture_env()
+for lane, word in (("stevedesktop", "either game"), ("any", "any machine")):
+    env.files[R.TESTQ + "/pending/p0.json"]["lane"] = lane
+    sv, text, svg = steve_view(env)
+    check("steve-jobs-by-name: a queued job of lane %s is not promised to one game" % lane, "%s: FlowWorks guard" % word in text and "Steve1: FlowWorks guard; chains water,power; waited" not in text)
+for folder in ("running", "pending"):
+    env.dirs[R.TESTQ + "/" + folder] = []
+sv, text, svg = steve_view(env)
+check("steve-jobs-by-name: looked and empty folders report none and zero", sv["running"] == sv["pending"] == 0
+      and "RUNNING JOBS: none;" in text and "QUEUED JOBS: none;" in text)
+env.dirs.pop(R.TESTQ + "/pending")
+env.dirs[R.TESTQ + "/running"] = ["bad.json"]
+env.files[R.TESTQ + "/running/bad.json"] = {"job": "broken"}
+sv, text, svg = steve_view(env)
+check("steve-unread-is-unmeasured-with-cause: broken job and missing folder cannot claim zero or idle", sv["running"] is None and sv["pending"] is None
+      and "running:" in text and "pending:" in text and "UNMEASURED" in text)
+env, _ = fixture_env()
+env.files[STEWARD]["epoch"] = NOW - R.STEVE_STALE - 1
+sv, text, svg = steve_view(env)
+check("steve-every-reading-has-its-age: old steward words are withheld with age and cause", sv["state"] is None
+      and "steward.json 30 min old" in text and "steward stopped refreshing" in text and bool(sv.get("machine")))
+env, _ = fixture_env()
+env.files[R.STEVE_CACHE] = ["broken cache"]
+sv, text, svg = steve_view(env)
+check("steve-unread-is-unmeasured-with-cause: broken cache object preserves lane readings", "broken probe cache" in text
+      and "Steve1 UNMEASURED" in text and sv["running"] == 1)
+
+# Execute only the added Python body locally, with subprocesses replaced by fixture executables: no ssh, Windows or /mnt/d.
+with tempfile.TemporaryDirectory() as d:
+    os.makedirs(d + "/rm/runner")
+    for name, body in (("python3", "import json, sys\nprint(json.dumps({'games': []}) if 'game_lock.py' in sys.argv[1] else 'Steve1 stopped port 5174')\n"),
+                       ("systemctl", "print('dbus.service loaded active running bus')\n")):
+        with open(d + "/" + name, "w") as f:
+            f.write("#!" + sys.executable + "\n" + body)
+        os.chmod(d + "/" + name, 0o755)
+    body = R.STEVE_SCRIPT.split("python3 - <<'PY'\n", 1)[1].rsplit("\nPY", 1)[0]
+    # Do not repurpose HOME; replace only the fixture runner path in the body being tested.
+    body = body.replace("os.path.expanduser('~/rm/runner')", repr(d + "/rm/runner"))
+    proc = subprocess.run([sys.executable, "-c", body], env=dict(os.environ, PATH=d), capture_output=True, text=True)
+    readings = R.parse_probe(proc.stdout)
+    check("steve-no-second-connection: extended probe emits all three readable envelopes", proc.returncode == 0
+          and all("out" in json.loads(readings.get(k, "{}")) for k in ("locks_json", "status_json", "services_json")))
+    os.rmdir(d + "/rm/runner")
+    proc = subprocess.run([sys.executable, "-c", body], env=dict(os.environ, PATH=d), capture_output=True, text=True)
+    readings = R.parse_probe(proc.stdout)
+    check("steve-unread-is-unmeasured-with-cause: missing runner clone is a cause while service read survives", all("why" in json.loads(readings[k]) for k in ("locks_json", "status_json"))
+          and "out" in json.loads(readings["services_json"]))
 
 
 # --------------------------------------------------------------------------- the fuel gauge
