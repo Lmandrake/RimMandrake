@@ -1,0 +1,234 @@
+{
+ "judge": "independent judge, did not write the miner and did not mine (2026-11-23, Opus); round 5",
+ "sample": "/mnt/d/ClaudeWork/rimmandrake/conductor/mining_samples/ExplosiveKnockback_round5.json",
+ "ledger": "design/concepts/ExplosiveKnockback/ledger/BACKFILL.jsonl",
+ "ledger_sha": "96474969d710",
+ "seed": 2026111905,
+ "reference": "design/specs/2026-11-15-mod-ledger-entry-standard.md rule sheet and \u00a72.2; round-3 verdicts <Mod>_round3.judge.json for the rubric (same standard, so rounds compare)",
+ "standard_applied": "FAITHFUL = true to the ticket's full record and to the repo today, the right kind and state, one fact a holder would act on. WRONG = a claim a holder would act on that the ticket's full record, the repo or the game copy contradicts today (an overtaken trap, a conclusion the record refutes). NARRATION = true but refused by rule 7 or the entry test (lifecycle, restatement, not about the mod). MISSED = right as far as it goes but drops the ticket's deciding fact or proof, or cites the wrong sha for it. Tag/bar slips alone are noted, not ruled (as in round 3).",
+ "totals": {
+  "FAITHFUL": 14,
+  "WRONG": 0,
+  "NARRATION": 3,
+  "MISSED": 3
+ },
+ "verdict": "REFUSED",
+ "pass_rule": ">= 18 FAITHFUL and 0 WRONG of 20; rule per entry FAITHFUL / WRONG / NARRATION / MISSED",
+ "refusal": {
+  "evidence": "14 FAITHFUL of 20 (needs 18); 0 WRONG. Non-FAITHFUL: 47, 77, 196 MISSED; 99, 110, 194 NARRATION. The pass fails even without the two narrowest rulings (194, 196): 16.",
+  "wrong": [],
+  "would_pass": "A sample with >= 18 FAITHFUL and 0 WRONG.",
+  "smallest_fix": {
+   "47": "Drop the tag clause and the Patches locator; say only the Cauldron's Ignite is patched and no gas tag exists.",
+   "77": "Replace the presumed cause with visit 3's explosion-smoke reading.",
+   "99": "Void.",
+   "110": "Void (af3cc76a16c32511 carries it).",
+   "194": "Void.",
+   "196": "Point where at visit_3/pilot_walk_raid_20261116/evidence/ek_frames_small_DECISIVE_21.json.",
+   "miner": "Check a where path exists at mining time; read the close/verify event before copying an item's 'Watch out'; compare a trap with the same ticket's other entries before writing it."
+  }
+ },
+ "entries": [
+  {
+   "index": 0,
+   "id": "BACKFILL:728c2869f0b6be3f",
+   "kind": "finding.open",
+   "subject": "finding:RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED",
+   "ruling": "FAITHFUL",
+   "why": "cycle_1/lane2/faults.json#0 + fixes.jsonl row 1 (red 8292600eec, green 81392aea); RM_KnockbackMath.cs:207 WildCells.",
+   "false_today": false,
+   "notes": "Shipped factor is the constant GoodsThrowWild 1.6 (RM_KnockbackMod.cs:101)."
+  },
+  {
+   "index": 2,
+   "id": "BACKFILL:5273fb0621ae76fb",
+   "kind": "finding.open",
+   "subject": "finding:RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE",
+   "ruling": "FAITHFUL",
+   "why": "cycle_1/lane2/faults.json#1, verbatim content.",
+   "false_today": false,
+   "notes": ""
+  },
+  {
+   "index": 3,
+   "id": "BACKFILL:d8bc075a5c0d1cf8",
+   "kind": "finding.claimed_fixed",
+   "subject": "finding:RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE",
+   "ruling": "FAITHFUL",
+   "why": "fixes.jsonl row 2; RM_KnockbackMath.cs:79 scaleOwnCap, RM_MapComponent_Knockback.cs:1011 sets it false for gas.",
+   "false_today": false,
+   "notes": ""
+  },
+  {
+   "index": 11,
+   "id": "BACKFILL:e39ed30f16f93550",
+   "kind": "finding.open",
+   "subject": "finding:RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS",
+   "ruling": "FAITHFUL",
+   "why": "cycle_2 faults.json#0 and the fixes.jsonl red line list the same files; BENCH:19791 acceptance.",
+   "false_today": false,
+   "notes": ""
+  },
+  {
+   "index": 27,
+   "id": "BACKFILL:6d8fe54eeb9bbdcd",
+   "kind": "finding.open",
+   "subject": "finding:RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER",
+   "ruling": "FAITHFUL",
+   "why": "cycle_2 faults.json#8; fixes.jsonl red 57e61fef0b rc 1 / green 04bb4c93fa rc 0; BENCH:20803 '174/174'.",
+   "false_today": false,
+   "notes": ""
+  },
+  {
+   "index": 43,
+   "id": "BACKFILL:e8f7477ed535cd51",
+   "kind": "trap.noted",
+   "subject": "trap:the-check-script-s-green-side-is-unproven",
+   "ruling": "FAITHFUL",
+   "why": "Item prose: 'Its green side is unproven (no build exists to pass it); the look is a judge agent's call and a live blast'; git grep RM_KnockbackBlast at 96474969d710 and HEAD finds only the check script itself under src/RimMandrake/ExplosiveKnockback.",
+   "false_today": false,
+   "notes": ""
+  },
+  {
+   "index": 47,
+   "id": "BACKFILL:d04036696041aa16",
+   "kind": "trap.noted",
+   "subject": "trap:gas-bursts-never-break-pit-covers-ignore-shield",
+   "ruling": "MISSED",
+   "why": "Copies the item's pre-build 'Watch out'. Dropped deciding fact, BENCH:19610: built 'for the one fitting gas (the Cauldron's vent gas, a defless grid: its Ignite is patched; no thing-gas of ours is flammable, so no DefModExtension was added)'. No gas tag class exists in Source (git grep RM_KnockbackFlammableGas: only selftest gas_census:8,:60), and Patches holds no gas tag, so a PatchOperationFindMod tag would do nothing; gas_census.json:8 'registered by RM_KnockbackCompat patching its Ignite'.",
+   "false_today": true,
+   "notes": "First sentence true (RM_KnockbackMod.cs:132 gasPawnCooldownTicks = 120). Holds two or more facts (rule 1). false_today for the same half: it was already so at the date."
+  },
+  {
+   "index": 68,
+   "id": "BACKFILL:130e6b3855af1f6b",
+   "kind": "trap.noted",
+   "subject": "trap:the-100-hp-ancient-safe-dies-to-any",
+   "ruling": "FAITHFUL",
+   "why": "BENCH:19609 'the 100 HP ancient safe dies to any HE in reach, vanilla'; RM_KnockbackProof.cs:274.",
+   "false_today": false,
+   "notes": "The path reference is the item prose, which lacks the fact; BENCH:19609 holds it."
+  },
+  {
+   "index": 77,
+   "id": "BACKFILL:54984dde45e7845e",
+   "kind": "finding.open",
+   "subject": "finding:RIMMANDRAKE_FIND_DARK_HAZE_EAST_OF_GAS_CHAIN",
+   "ruling": "MISSED",
+   "why": "Files the leftover-vent-gas presumption. Dropped deciding fact, in the repo before the ledger date: visit_3/SUMMARY.md:90-91 'transient explosion smoke: gone 1500 ticks later, measured; very likely what visit 2's open RIMMANDRAKE_FIND_DARK_HAZE_EAST_OF_GAS_CHAIN saw'; visit_3/strange.jsonl:4 status 'explained'; rescue_2026-11-17/tickets_sorted.md:16 'close on that'. The text says 'presumed ... unproven', so MISSED, not WRONG.",
+   "false_today": true,
+   "notes": "BENCH:32244 (2026-11-23) dropped the ticket on that cause."
+  },
+  {
+   "index": 84,
+   "id": "BACKFILL:9b6468b123ed38a0",
+   "kind": "cause.refuted",
+   "subject": "cause:stale-pathing-masks-are-not-the-cause-spawn",
+   "ruling": "FAITHFUL",
+   "why": "BENCH:22495 points (2) and (3).",
+   "false_today": false,
+   "notes": "Evidence cites the file event OWNER:8407, not BENCH:22495. depends_on names ExplosiveKnockback, but the code read is FlowWorks, so it cannot read stale."
+  },
+  {
+   "index": 99,
+   "id": "BACKFILL:232c45ddcb03c35c",
+   "kind": "trap.noted",
+   "subject": "trap:the-judge-s-row-ran-the-check-with",
+   "ruling": "NARRATION",
+   "why": "Entry test and rule 7. The same ticket's finding.claimed_fixed already says 'red on ecd0b23322, green at 587529cee1'; the fixes.jsonl row was rerun and corrected ('re-demonstrated 2026-11-15'), so nothing left misleads a holder. True, but it is the history of one row.",
+   "false_today": false,
+   "notes": ""
+  },
+  {
+   "index": 104,
+   "id": "BACKFILL:4d6bdc5c4570cc9e",
+   "kind": "finding.open",
+   "subject": "finding:RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO",
+   "ruling": "FAITHFUL",
+   "why": "OWNER:8411 and OWNER:8416 ('1 agree.'); bar reworded in 9c8c37aced.",
+   "false_today": false,
+   "notes": ""
+  },
+  {
+   "index": 110,
+   "id": "BACKFILL:22079ca83120560a",
+   "kind": "trap.noted",
+   "subject": "trap:the-steward-s-line-numbers-755-1285-in",
+   "ruling": "NARRATION",
+   "why": "Rule 7, 'restating an earlier entry': the line before it, BACKFILL:af3cc76a16c32511 (cause.refuted, same ticket, same source event BENCH:19791), says 'The ticket's named lines RM_KnockbackProof.cs:755 and :1285 are not leaks'.",
+   "false_today": false,
+   "notes": ""
+  },
+  {
+   "index": 120,
+   "id": "BACKFILL:575b3b796c576c14",
+   "kind": "cause.refuted",
+   "subject": "cause:container-movement-in-the-25-shell-storeroom-was",
+   "ruling": "FAITHFUL",
+   "why": "OWNER:7530 why: 'SC journal empty so movement is vanilla building destruction, not the mod'.",
+   "false_today": false,
+   "notes": "code_sha 357453e609ee is the ledger-only commit (BENCH:19572 'Code bb195048ac51 ..., ledger 357453e609ee'). The mod's tree is identical at both (a797e68ef3), so staleness reads the same: a slip, not ruled."
+  },
+  {
+   "index": 131,
+   "id": "BACKFILL:54b930ccb0278999",
+   "kind": "finding.open",
+   "subject": "finding:RIMMANDRAKE_WRITE_GOODS_OBSTACLES_SCENE_NAMED_NEVER_BUILT",
+   "ruling": "FAITHFUL",
+   "why": "BENCH:21393.",
+   "false_today": false,
+   "notes": ""
+  },
+  {
+   "index": 132,
+   "id": "BACKFILL:f5d22b70b314312c",
+   "kind": "finding.verified",
+   "subject": "finding:RIMMANDRAKE_WRITE_GOODS_OBSTACLES_SCENE_NAMED_NEVER_BUILT",
+   "ruling": "FAITHFUL",
+   "why": "BENCH:21437 and sha 16a4636cf1f8; the live run UNRUN at close later read PASS (visit_2 rows.jsonl:106, visit_3 rows.jsonl:32 and :90).",
+   "false_today": false,
+   "notes": ""
+  },
+  {
+   "index": 175,
+   "id": "BACKFILL:5362602ff901ef03",
+   "kind": "trap.noted",
+   "subject": "trap:the-runner-s-outside-row-haulables-on-pit",
+   "ruling": "FAITHFUL",
+   "why": "Item spec: 'If it does not, that is a finding about one of them, not a reason to edit the count' and 'companions load at bridge start'.",
+   "false_today": false,
+   "notes": "Two facts in one entry (rule 1)."
+  },
+  {
+   "index": 194,
+   "id": "BACKFILL:b55a7ec303fbc351",
+   "kind": "cause.refuted",
+   "subject": "cause:the-bundle-s-instrumented-probe-build-as-the",
+   "ruling": "NARRATION",
+   "why": "Not about the mod (entry test): native Mono crashes of one machine's game. The kind is also off: BENCH:23584 withdraws the claim and says 'the cause of that crash is unknown', and spec line 99 reserves cause.refuted for a thing ruled out. The text itself says 'unproven', so it is not ruled WRONG.",
+   "false_today": false,
+   "notes": ""
+  },
+  {
+   "index": 196,
+   "id": "BACKFILL:c0832a6cf5e8f317",
+   "kind": "trap.noted",
+   "subject": "trap:short-frame-runs-on-the-same-build-swung",
+   "ruling": "MISSED",
+   "why": "Numbers true (BENCH:23381, 23501, 23647). But the proof it sends the holder to is gone: visit_4/ was dropped in 11ff9cdf31 (2026-11-16 12:24 PST), three days before this entry; the file is visit_3/pilot_walk_raid_20261116/evidence/ek_frames_small_DECISIVE_21.json. A wrong pointer to the deciding proof, ruled like a wrong sha.",
+   "false_today": true,
+   "notes": "Only the path is false, at the date and at HEAD. Narrowest of the rulings: if a dead path counts as a note, totals are 15 FAITHFUL and the verdict is the same."
+  },
+  {
+   "index": 241,
+   "id": "BACKFILL:942779bdebb4496f",
+   "kind": "decision",
+   "subject": "finding:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
+   "ruling": "FAITHFUL",
+   "why": "OWNER:7675 ownerSaid, verbatim; no later event in the ticket reverses it.",
+   "false_today": false,
+   "notes": ""
+  }
+ ],
+ "pass_record": null
+}

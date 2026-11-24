@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":17986,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=2745c9ee5cbf42823d3d88063ebcb665b633917fb064838ab181fbbcd1125b19 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":438179,"DISPATCH":17986,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=c539939c81d44ce670856cb023d71e5650586969023082a4fa9cd6f4a4a7e429 -->
 # GimmeSomeSlack — mod ledger packet
-version 0.2.0 · stage in_game · 638 events in 5 shards · reducer 1
+version 0.2.0 · stage in_game · 635 events in 5 shards · reducer 1
 holder lease run-1794835732, token 7, last active 2026-11-16T13:29:05Z
 holder session 18a0c1e9-d471-4254-a766-ca303b1027ec, context 114312 of ceiling 400000
 
@@ -9,8 +9,8 @@ holder session 18a0c1e9-d471-4254-a766-ca303b1027ec, context 114312 of ceiling 4
 - next: Run Stage 6 in-game acceptance: the 46 game-side bars and the 37 live claimed fixes
 - ruled out: no test weakened in cycle 6 (tests_edited none); K_DLL_NO_HOSE_TYPES is not a Problem: the hose names come from _Shared/SlackGeometry and only SelfTest (not shipped) calls LayParams.Hose
 
-## Open findings (82)
-(claimed fixes, awaiting a judge, on one line each with the oldest 39 open findings, named without their 'finding:': `modledger.py show --mod GimmeSomeSlack finding:<NAME>`)
+## Open findings (83)
+(claimed fixes, awaiting a judge, on one line each with the oldest 40 open findings, named without their 'finding:': `modledger.py show --mod GimmeSomeSlack finding:<NAME>`)
 - RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_SPEED_GOES_NEGATIVE [open, polish · bars restring_cut_span]: Polish: AerialMath.RestringTicks(NaN) returns int.MinValue…
 - RIMMANDRAKE_CLEAR_GSS_FALLEN_WIRE_WALL_CLIP_BETWEEN_SAMPLES [open, polish · bars cords_meet_walls_at_face]: Polish: 23 of 2917 random fallen-wire lays put a ground poi…
 - RIMMANDRAKE_WIDEN_GSS_HOSE_SCAN_ONE_TEST_TWO_BARS on 6d2aeb9c3f
@@ -87,6 +87,7 @@ holder session 18a0c1e9-d471-4254-a766-ca303b1027ec, context 114312 of ceiling 4
 - GSS_FALLEN_LINE_REDRAW_FLOATS_OVER_PAWNS on f414c5454a16
 - GSS_LAMP_RUN_FIX_NEIGHBOUR_PAINTS_IT on 28f38c2bbd35
 - GSS_TAP_CLAMP_FIX_NO_OFF_SWITCH on cb7ab069e50f
+- RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT [open, problem]: GSS Stage 6 read USD 72.89 spent before in-game visit 1 ran…
 - GIMMESOMESLACK_NORTHSTAR_VALIDATE_1 on 1a3eab084141
 - GIMMESOMESLACK_RENAME_1 on a0b26bf470c3
 - GSS_RESTRING_DECIDE_FREE_INSTANT_SPLICE on 0bac01111ace
@@ -245,7 +246,7 @@ holder session 18a0c1e9-d471-4254-a766-ca303b1027ec, context 114312 of ceiling 4
 - cause:the-staging-agent-s-claim-that-cords-run: The staging agent's claim that cords run from brackets to the wrong lamps was s… (on 99aa8bdc4c5a)
 - cause:reading-the-two-priors-and-restoring-them-through: Reading the two priors and restoring them through cfg() in the finally was trie… (on ac2ebc01cb6a)
 
-## His answers (26) (each cut to 100 chars, a decision named without its 'decision:': `modledger.py show`)
+## His answers (25) (each cut to 100 chars, a decision named without its 'decision:': `modledger.py show`)
 - q:we-need-to-move-the-gimmesomeslack: We need to move the GimmeSomeSlack hose code/functionality over to FlowWorks. That's the right home…
 - q:if-caught-steady-goodwill-drain-like: If caught, steady goodwill drain (like living too close to a settlement)
 - q:their-own-switch: Their own switch.
@@ -255,7 +256,6 @@ holder session 18a0c1e9-d471-4254-a766-ca303b1027ec, context 114312 of ceiling 4
 - q:every-sparking-end-shocks-but-settable: Every sparking end shocks, but settable in settings to those three options: None, only downed lines…
 - q:i-do-agree-that-cords-take: I do agree that cords take slowly curving paths rather than straight lines often: what they avoid a…
 - q:here-is-a-screenshot-of-a: Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be b…
-- q:hose-route-fix-tunnels-under-walls: No, I meant for connections, we could just have hoses "go under" things like pipes, tanks etc just…
 - q:rimmandrake-advance-gimmesomeslack-offline-beside-the-pilot: Seven save-housekeeping patches belong to no setting: how should the every-patch-has-a-switch bar t…
 - finding:POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK: Power theft numbers → keep 2 goodwill/day, 12-cell notice
 - finding:GSS_STYLE_RUN_PROVE_MIXED_LOOKS_SUSPECTED: GSS lamps keep their copy of the default look → Accept: lamps keep their look
@@ -328,12 +328,12 @@ holder session 18a0c1e9-d471-4254-a766-ca303b1027ec, context 114312 of ceiling 4
 spend recorded: USD 147.58, 73397505 tokens
 
 ## Left out
-- closed findings: 64, oldest first (`modledger.py show --mod GimmeSomeSlack <subject>`)
+- closed findings: 63, oldest first (`modledger.py show --mod GimmeSomeSlack <subject>`)
 - tests: 30, oldest first (`modledger.py show --mod GimmeSomeSlack <subject>`)
 - claimed fixes in brief: 43 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 39 on one line, their fix and accept by `modledger.py show --mod GimmeSomeSlack <subject>`
+- open findings in brief: the oldest 40 on one line, their fix and accept by `modledger.py show --mod GimmeSomeSlack <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars)
-- the full history: 638 events (views/history.md; never read whole)
+- the full history: 635 events (views/history.md; never read whole)
 
 cursor: t=2026-11-24T02:00:42Z.1795485642732890973 (modledger.py since --mod GimmeSomeSlack t=2026-11-24T02:00:42Z.1795485642732890973 prints what changed after this packet)

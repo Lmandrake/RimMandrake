@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "b0dbbbe1c47af1aa506ab9d54013aa49b325ca7844914690428c8b7f2fc3ba1e",
+  "body_sha256": "8f6fa21d3232ade87706e76074394663405d8f6116eda676c4ddd79bc88c8b6f",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 344431,
+   "BACKFILL": 341359,
    "DISPATCH": 34443,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
@@ -649,15 +649,6 @@
     "text": "The 9.4 kg reading was not the locker's real capacity: it was the empty storage filter refusing guns (8 kg locker plus one revolver); LWM's 58 kg cap applies only once the filter is fixed.",
     "ts": "2026-11-16T11:37:20Z"
    },
-   "cause:the-bundle-s-instrumented-probe-build-as-the": {
-    "code_sha": "773b9baea39f",
-    "depends_on": [
-     "src/RimMandrake/ExplosiveKnockback"
-    ],
-    "status": "refuted",
-    "text": "The bundle's instrumented probe build as the cause of a game crash is unproven: SteveDesktop crashed natively in Mono with other builds too.",
-    "ts": "2026-11-19T23:32:59Z"
-   },
    "cause:the-flowworks-reach-veto-relativeveto-or-the-job": {
     "code_sha": "f03d8d4f4a",
     "depends_on": [
@@ -887,7 +878,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 662,
+  "events": 658,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -1336,22 +1327,6 @@
     "tags": [],
     "text": "The sc_closed_containers heavy-locker fill loop in RM_KnockbackProof_StageThree.cs adds the GetStatValueAbstract mass estimate (total += gm) and never re-reads Mass(heavyBox), so the locker can stop short of 76 kg (INVALID once at 74.9 kg).",
     "ts": "2026-11-19T23:33:01Z",
-    "version": "0.1.0"
-   },
-   "finding:RIMMANDRAKE_FIND_DARK_HAZE_EAST_OF_GAS_CHAIN": {
-    "accept": "none, needs a look at the save and a vent-gas density read.",
-    "bars": [],
-    "by": "BACKFILL",
-    "claim": null,
-    "class": "problem",
-    "code_sha": null,
-    "proposed_fix": "Look at the save and take a vent-gas density read to confirm or refute the leftover-gas cause.",
-    "status": "open",
-    "tags": [
-     "code"
-    ],
-    "text": "In the walk save EK_VISIT2_WALK_20261115, dark blotches and haze lie over the four stations east of gas_chain (open_storage, heavy_knock, spared_states, goods_obstacles); presumed leftover Cauldron vent gas or its burn drifting from gas_chain (162,12), unproven.",
-    "ts": "2026-11-16T11:37:19Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN": {
@@ -3631,10 +3606,10 @@
    "trap:gas-bursts-never-break-pit-covers-ignore-shield": {
     "by": "BACKFILL",
     "status": "noted",
-    "text": "Gas bursts never break pit covers, ignore shield belts and shove a person at most once per 2 s. MayRequire on a top-level Operation is ignored; tag other mods' gases through PatchOperationFindMod.",
-    "ts": "2026-11-16T11:37:18Z",
+    "text": "Gas bursts never break pit covers, ignore shield belts and shove a person at most once per 2 s. Only the Cauldron's vent gas joins the chain: its Ignite is patched in C#; no gas carries a tag.",
+    "ts": "2026-11-24T02:27:18Z",
     "version": "0.1.0",
-    "where": "Patches (PatchOperationFindMod)"
+    "where": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs:88"
    },
    "trap:his-wording-card-is-not-a-certificate-an": {
     "by": "BACKFILL",
@@ -3728,9 +3703,9 @@
     "by": "BACKFILL",
     "status": "noted",
     "text": "Short frame runs on the same build swung from -1% to +19%; mod-off arms alone spread 38-51 ms, so 3 pairs flip pass/fail. Only the pre-registered 21-pair cold run is decisive (+3.1%).",
-    "ts": "2026-11-19T23:32:59Z",
+    "ts": "2026-11-24T02:27:18Z",
     "version": "0.1.0",
-    "where": "design/concepts/ExplosiveKnockback/version/in_game/visit_4/evidence/ek_frames_small_DECISIVE_21.json"
+    "where": "design/concepts/ExplosiveKnockback/version/in_game/visit_3/pilot_walk_raid_20261116/evidence/ek_frames_small_DECISIVE_21.json"
    },
    "trap:staging-all-six-scenes-before-verdicts-leaks-lane": {
     "by": "BACKFILL",
@@ -3900,14 +3875,6 @@
     "version": "0.1.0",
     "where": "RM_KnockbackProof_StageThree.cs jolt rows.Add(...)"
    },
-   "trap:the-judge-s-row-ran-the-check-with": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The judge's row ran the check with the failing direction as rc 0; it was rerun as a test whose rc 0 means the fix holds, red on the fix's parent ecd0b23322.",
-    "ts": "2026-11-16T11:37:19Z",
-    "version": "0.1.0",
-    "where": "fix_demos/lint_red.txt, lint_green.txt"
-   },
    "trap:the-launch-check-must-fail-grep-q-cover": {
     "by": "BACKFILL",
     "status": "noted",
@@ -3995,14 +3962,6 @@
     "ts": "2026-11-16T11:37:19Z",
     "version": "0.1.0",
     "where": "item:RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_ACCEPTANCE_FIRST"
-   },
-   "trap:the-steward-s-line-numbers-755-1285-in": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The steward's line numbers (755, 1285) in RM_KnockbackProof.cs were stale and point at no leak.",
-    "ts": "2026-11-16T11:37:20Z",
-    "version": "0.1.0",
-    "where": "RM_KnockbackProof.cs:755, :1285"
    },
    "trap:the-title-lists-the-last-two-faults-truncated": {
     "by": "BACKFILL",

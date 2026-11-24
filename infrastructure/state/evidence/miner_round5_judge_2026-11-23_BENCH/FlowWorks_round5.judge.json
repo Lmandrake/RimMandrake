@@ -1,0 +1,176 @@
+{
+ "judge": "independent BENCH judge, did not write the miner and did not mine, round 5",
+ "sample": "/mnt/d/ClaudeWork/rimmandrake/conductor/mining_samples/FlowWorks_round5.json",
+ "ledger": "design/concepts/FlowWorks/ledger/BACKFILL.jsonl",
+ "ledger_sha": "96474969d710",
+ "seed": 2026111905,
+ "reference": "design/specs/2026-11-15-mod-ledger-entry-standard.md rule sheet and section 2.2, section 5; repo at 96474969d710, events up to 2026-11-20T00:15Z; false_today at HEAD 19f0a8c5f8",
+ "standard_applied": "FAITHFUL = true to the ticket's full record and to the repo today, the right kind and state, one fact a holder would act on. WRONG = a claim a holder would act on that the ticket's full record, the repo or the game copy contradicts today (an overtaken trap, a conclusion the record refutes). NARRATION = true but refused by rule 7 or the entry test (lifecycle, restatement, not about the mod). MISSED = right as far as it goes but drops the ticket's deciding fact or proof, or cites the wrong sha for it. Tag/bar slips alone are noted, not ruled (as in round 3).",
+ "totals": {
+  "FAITHFUL": 16,
+  "WRONG": 2,
+  "NARRATION": 2,
+  "MISSED": 0,
+  "n": 20
+ },
+ "verdict": "FAIL",
+ "pass_rule": ">= 18 FAITHFUL and 0 WRONG of 20; rule per entry FAITHFUL / WRONG / NARRATION / MISSED",
+ "pass_record": null,
+ "refusal": {
+  "evidence": "16 FAITHFUL of 20 (needs >=18) and 2 WRONG (needs 0)",
+  "wrong": "111, 175",
+  "would_pass": ">=18 FAITHFUL and 0 WRONG on a fresh draw",
+  "smallest_fix": "111: reword to the two chains still owed (liquid_drilling, typed_shores), or add claimed_fixed at 13b5f96dbd for four. 175: delete the trap. 275: delete (finding already says it). 308: delete, or keep as a trap.noted reading 'unclassified, probable cascade'."
+ },
+ "entries": [
+  {
+   "index": 1,
+   "id": "BACKFILL:2ea16519c50a696f",
+   "ruling": "FAITHFUL",
+   "why": "OWNER.jsonl:874 ownerSaid matches verbatim.",
+   "false_today": false
+  },
+  {
+   "index": 10,
+   "id": "BACKFILL:07e10a44b924262f",
+   "ruling": "FAITHFUL",
+   "why": "OWNER.jsonl:8096 byCard verbatim; validation_v2.py:2743 at 96474969d710 has X4 following 0.05.",
+   "false_today": false
+  },
+  {
+   "index": 14,
+   "id": "BACKFILL:03a8d32012236b86",
+   "ruling": "FAITHFUL",
+   "why": "lane2/fixes.jsonl:2 red rc 1 at bf8f5c7365, green rc 0 at d80300e83e; case at BlindCycle1Checks.cs:74; faults.json#1 text and fix match.",
+   "false_today": false
+  },
+  {
+   "index": 47,
+   "id": "BACKFILL:5bdabe8994897194",
+   "ruling": "FAITHFUL",
+   "why": "Opening report matches the item prose; sibling claimed_fixed, JUDGE.judge-1794833810 verified 2026-11-16.",
+   "false_today": false,
+   "notes": "PIT_DEEPSTONE verify 2026-11-12 (CLAUDE_STEVEDESKTOP_FWLIVE.jsonl:16) passed both rows by the work scan at tick 26500: the 6000-tick window is part of the cause."
+  },
+  {
+   "index": 111,
+   "id": "BACKFILL:620a3c7c129d2d77",
+   "ruling": "WRONG",
+   "why": "Status `open` at 96474969d710, text says six predicates read 'owed, no predicate yet'. 13b5f96dbd (2026-11-12, 'shooting/ladder/fall/ignition/corrosion rows built (were owed)') built four; at 96474969d710 validation.py:1647-1648 says fallDamage, liquidCorrosion, liquidIgnition, superdeepShootingRule left the owed list; extensions.py:1680/1802/2831 are real components. Only liquid_drilling (extensions.py:2745) and typed_shores (2755) are still owed. HEAD: BENCH.jsonl:32023 '4 of 6 done'.",
+   "false_today": true,
+   "notes": "testq/owed_register.json at that commit still lists all six (stale too)."
+  },
+  {
+   "index": 175,
+   "id": "BACKFILL:5285de0e19f2dbad",
+   "ruling": "WRONG",
+   "why": "Overtaken trap. It says water spills 'as a surface fill, not filth', so the clean half needs another liquid or floor (true 2026-10-12, BENCH.jsonl:1772). At 96474969d710 liquid_checks.py:63-66 says fresh water spills as RM_Filth_WaterSpill and line 817 waits 900 ticks, and the same ticket's A6 verify passed 2026-10-23T16:36:59Z on fed77f423a: 'L5_switched_off_hose_spills + L5_colonists_clean_spill PASS (filth 6->0 in 750 ticks)'. HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS note 2026-10-29: FreshWater, spill filth 6->9, L5_colonists_clean_spill PASS.",
+   "false_today": true,
+   "notes": "Two facts in one entry (rule 1)."
+  },
+  {
+   "index": 190,
+   "id": "BACKFILL:122da67dff1c819c",
+   "ruling": "FAITHFUL",
+   "why": "Item verification text matches (registry:215, RM_FluidIdentity.cs:27, RM_LiquidStock.cs:143,232); sibling claimed_fixed carries the toxic-only fix (BENCH.jsonl:4725, 4727).",
+   "false_today": false
+  },
+  {
+   "index": 275,
+   "id": "BACKFILL:b286892431120930",
+   "ruling": "NARRATION",
+   "why": "Rule 7, 'restating an earlier entry': same ticket's finding.open BACKFILL:1380629a54e41dbf (one entry before) already says ShippedMatrixProbe.cs failures = Math.Max is 'a lower bound exported as a count, so differing failing scenes are understated'. The trap adds only a 4-read-as-2 example. Facts true (ShippedMatrixProbe.cs:268).",
+   "false_today": false,
+   "notes": "`where` :165 is line 268 at the date."
+  },
+  {
+   "index": 308,
+   "id": "BACKFILL:e66d554b6d5c2f13",
+   "ruling": "NARRATION",
+   "why": "Entry test and section 2.2 (cause.refuted text = 'what refuted it'): nothing was refuted. Only source FOUNDRY.jsonl:3705 says 'probable single cascade. Not yet classified individually', and the entry itself says so. A guess filed as a refuted cause reads as 'mod faults ruled out'; RUNNER.jsonl:832 labels the same pulse-0 message [MOD], and FLOWWORKS_RAIN_DIAGNOSE_E6_OUT_OF_SYNC has 'Cause not yet determined'.",
+   "false_today": false
+  },
+  {
+   "index": 338,
+   "id": "BACKFILL:fc404a8756a8cd5d",
+   "ruling": "FAITHFUL",
+   "why": "Item prose and BENCH.jsonl:3152/3193 match (58/3/0 on ccf36a9af7; S3 W4, P3f, P4f); accept = close BENCH.jsonl:3239.",
+   "false_today": false
+  },
+  {
+   "index": 399,
+   "id": "BACKFILL:4e966b81335b1917",
+   "ruling": "FAITHFUL",
+   "why": "Close BENCH.jsonl:2601 confirms C3-F4 and C3-F5 by code and names both selftests.",
+   "false_today": false
+  },
+  {
+   "index": 419,
+   "id": "BACKFILL:e7b2970687898837",
+   "ruling": "FAITHFUL",
+   "why": "Item diagnosis matches (RM_Weir.cs:553-590, FindWeirSite only wetHasFlow); verify BENCH.jsonl:1859 'oldRuleFinds=False'.",
+   "false_today": false,
+   "notes": "Omits the fallback branch of the old Upstream rule."
+  },
+  {
+   "index": 441,
+   "id": "BACKFILL:af6bc6772976a129",
+   "ruling": "FAITHFUL",
+   "why": "BENCH.jsonl:2132 close: live A2 PASS, all 6 cells RM_Channel_Superdeep, temp none, F0 past expiry; 45b2320184f9 is an ancestor and lands that evidence.",
+   "false_today": false,
+   "notes": "Tag reads 'A1 L1'; the live proof is A2. The fix itself is 57b4b412035c."
+  },
+  {
+   "index": 483,
+   "id": "BACKFILL:de13da9a364f4e26",
+   "ruling": "FAITHFUL",
+   "why": "BENCH.jsonl:6770 title and close :6864 match.",
+   "false_today": false,
+   "notes": "kernel_oracle red (a staged-build error) is only in accept."
+  },
+  {
+   "index": 525,
+   "id": "BACKFILL:badec36b0b08eb49",
+   "ruling": "FAITHFUL",
+   "why": "FOUNDRY.jsonl:3909 spec and A1 at :4924 match; verified BENCH.jsonl:4692.",
+   "false_today": false
+  },
+  {
+   "index": 528,
+   "id": "BACKFILL:4b648db8ea90499c",
+   "ruling": "FAITHFUL",
+   "why": "FOUNDRY.jsonl:3903 and A1/A2 at :4875 match; recedeKeepsLastCell = true at RimMandrakeFlowWorksMod.cs:138.",
+   "false_today": false,
+   "notes": "keep-last-cell was a PROVISIONAL auto-decision (FOUNDRY.jsonl:4876)."
+  },
+  {
+   "index": 701,
+   "id": "BACKFILL:5e9f9b0254350474",
+   "ruling": "FAITHFUL",
+   "why": "FOUNDRY.jsonl:6595 verify A3 PASS (flowworks tier (11) quicktest, --only B1,B2); RM_Volume.cs:119 LimitlessMark; validation.py:658-661 chain and bar; a6e1ad1aad3c is an ancestor.",
+   "false_today": false
+  },
+  {
+   "index": 779,
+   "id": "BACKFILL:ff3a4677fffa3d9b",
+   "ruling": "FAITHFUL",
+   "why": "OWNER.jsonl:1433 byCard verbatim; Building_PitCover.cs:183 at 96474969d710 (still at HEAD:234).",
+   "false_today": false,
+   "notes": "The card answer alone does not say deconstruct; the subject does."
+  },
+  {
+   "index": 784,
+   "id": "BACKFILL:ee3bc933ada1121e",
+   "ruling": "FAITHFUL",
+   "why": "OWNER.jsonl:1499 byCard verbatim; WorkGiver_RM_OperateLadder RM_LadderUtility.cs:214 at both commits.",
+   "false_today": false
+  },
+  {
+   "index": 965,
+   "id": "BACKFILL:0ac732427ca2a196",
+   "ruling": "FAITHFUL",
+   "why": "BENCH.jsonl:24494 spec carries the same ~75% guess, not confirmed, and no later event up to 2026-11-20T00:15Z names the caller. False today: BENCH.jsonl:29645 (2026-11-20T16:43Z) names FlowWorks RM_PitAccess.cs:277 SparePortable; at HEAD the loop is ThingsInGroup (RM_PitAccess.cs:279).",
+   "false_today": true
+  }
+ ]
+}

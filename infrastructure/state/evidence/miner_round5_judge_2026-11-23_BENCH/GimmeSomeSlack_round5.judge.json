@@ -1,0 +1,400 @@
+{
+ "judge": "independent judge, did not write the miner and did not mine",
+ "sample": "/mnt/d/ClaudeWork/rimmandrake/conductor/mining_samples/GimmeSomeSlack_round5.json",
+ "ledger": "design/concepts/GimmeSomeSlack/ledger/BACKFILL.jsonl",
+ "ledger_sha": "96474969d710",
+ "seed": 2026111905,
+ "reference": "design/specs/2026-11-15-mod-ledger-entry-standard.md rule 10 and \u00a75; the round-1 verdicts mining_samples/<Mod>.judge.json name the failure shapes",
+ "standard_applied": "FAITHFUL = true to the ticket's full record and to the repo today, the right kind and state, one fact a holder would act on. WRONG = a claim a holder would act on that the ticket's full record, the repo or the game copy contradicts today (an overtaken trap, a conclusion the record refutes). NARRATION = true but refused by rule 7 or the entry test (lifecycle, restatement, not about the mod). MISSED = right as far as it goes but drops the ticket's deciding fact or proof, or cites the wrong sha for it. Tag/bar slips alone are noted, not ruled (as in round 3). Round 5 brief: judged as of the ledger date (repo at 96474969d710, events to 2026-11-20T00:15Z); later change is false_today only.",
+ "totals": {
+  "FAITHFUL": 14,
+  "WRONG": 0,
+  "NARRATION": 3,
+  "MISSED": 3,
+  "n": 20
+ },
+ "verdict": "FAIL",
+ "pass_rule": ">= 18 FAITHFUL and 0 WRONG of 20; rule per entry FAITHFUL / WRONG / NARRATION / MISSED",
+ "pass_record": null,
+ "refusal": {
+  "evidence": "14 FAITHFUL of 20, 0 WRONG; rule needs >= 18 FAITHFUL",
+  "wrong": [],
+  "would_pass": "4 of the 6 non-FAITHFUL repaired (deleting an entry needs a fresh draw)",
+  "smallest_fix": [
+   {
+    "index": 0,
+    "id": "BACKFILL:12bfccf02fc4738d",
+    "fix": "delete from the GSS ledger"
+   },
+   {
+    "index": 7,
+    "id": "BACKFILL:1d5e46aa4f3a6f26",
+    "fix": "replace the 'no cause' sentence with: short leads are drawn from their own per-edge seed (CordSlacken vary passes)"
+   },
+   {
+    "index": 154,
+    "id": "BACKFILL:d589bfd84a5b2151",
+    "fix": "code_sha 35b8ab9858; evidence ledger BENCH.jsonl:6366"
+   },
+   {
+    "index": 262,
+    "id": "BACKFILL:6b6c37ed29a08294",
+    "fix": "delete this entry; the withdrawn carries it"
+   },
+   {
+    "index": 389,
+    "id": "BACKFILL:869f32961398b3d3",
+    "fix": "delete from the GSS ledger; the pipeline boundary page holds it"
+   },
+   {
+    "index": 392,
+    "id": "BACKFILL:d2d7522417c8b5d6",
+    "fix": "say 'A1 (cap=1 stand-in) and A2 L2 PASS'; evidence FOUNDRY.jsonl:4997,4998"
+   }
+  ]
+ },
+ "entries": [
+  {
+   "index": 0,
+   "id": "BACKFILL:12bfccf02fc4738d",
+   "kind": "decision",
+   "subject": "q:hose-route-fix-tunnels-under-walls",
+   "ticket": [
+    "HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS"
+   ],
+   "source": [
+    "infrastructure/state/items/HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS.md"
+   ],
+   "ruling": "NARRATION",
+   "why": "entry test, not about the mod: FlowWorks hose ticket (item file says 'FlowWorks: a laid hose ... drawn under the yellow battery'); fix commits 849b1674ea / cf6d33f7b614 touch only FlowWorks DLL+srchash; the FlowWorks ledger at 96474969d710 holds 6 entries of the ticket, this quote among them. The words match OWNER.jsonl:1822.",
+   "evidence": "entry test, not about the mod: FlowWorks hose ticket (item file says 'FlowWorks: a laid hose ... drawn under the yellow battery'); fix commits 849b1674ea / cf6d33f7b614 touch only FlowWorks DLL+srchash; the FlowWorks ledger at 96474969d710 holds 6 entries of the ticket, this quote among them. The words match OWNER.jsonl:1822.",
+   "note": "GSS is named only as the old code to look at.",
+   "smallest_fix": "delete from the GSS ledger",
+   "false_today": false
+  },
+  {
+   "index": 5,
+   "id": "BACKFILL:83239e2176fa9440",
+   "kind": "finding.claimed_fixed",
+   "subject": "finding:RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER",
+   "ticket": [
+    "RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER"
+   ],
+   "source": [
+    "infrastructure/state/items/closed/RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER.md"
+   ],
+   "ruling": "FAITHFUL",
+   "why": "fixes.jsonl red rc1 / green rc0 at 6d2aeb9c3f; RM_FallenWireShock.cs:67-68,90,161",
+   "evidence": "fixes.jsonl red rc1 / green rc0 at 6d2aeb9c3f; RM_FallenWireShock.cs:67-68,90,161",
+   "note": "",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 7,
+   "id": "BACKFILL:1d5e46aa4f3a6f26",
+   "kind": "finding.claimed_fixed",
+   "subject": "finding:RIMMANDRAKE_VARY_GSS_SHORT_CORDS_TWINS_AT_FOUR_CELLS",
+   "ticket": [
+    "RIMMANDRAKE_VARY_GSS_SHORT_CORDS_TWINS_AT_FOUR_CELLS"
+   ],
+   "source": [
+    "infrastructure/state/items/closed/RIMMANDRAKE_VARY_GSS_SHORT_CORDS_TWINS_AT_FOUR_CELLS.md"
+   ],
+   "ruling": "MISSED",
+   "why": "standard 2.2 requires what changed; entry states no change and no cause beyond the filed guess, yet its own sha 0416599c69 is titled 'GSS cord kernel: cut leads slack and round, short leads drawn from their own seed' and adds CordRng.Of(opt.Seed,'vary'/'varyloop'/'varyloop2',key,si) in CordSlacken",
+   "evidence": "standard 2.2 requires what changed; entry states no change and no cause beyond the filed guess, yet its own sha 0416599c69 is titled 'GSS cord kernel: cut leads slack and round, short leads drawn from their own seed' and adds CordRng.Of(opt.Seed,'vary'/'varyloop'/'varyloop2',key,si) in CordSlacken",
+   "note": "twins were refiled: RIMMANDRAKE_PART_GSS_TWIN_LEADS_THIRD_FILING_SAME_SIX (47f2dac1eb)",
+   "smallest_fix": "replace the 'no cause' sentence with: short leads are drawn from their own per-edge seed (CordSlacken vary passes)",
+   "false_today": false
+  },
+  {
+   "index": 23,
+   "id": "BACKFILL:1763b02aa013e8da",
+   "kind": "finding.open",
+   "subject": "finding:RIMMANDRAKE_RESET_GSS_STEPTRACE_STATIC_CENSUS_CAUGHT_IT",
+   "ticket": [
+    "RIMMANDRAKE_RESET_GSS_STEPTRACE_STATIC_CENSUS_CAUGHT_IT"
+   ],
+   "source": [],
+   "ruling": "FAITHFUL",
+   "why": "faults.json#0; StepTrace added 6f8bfb47c4; reset GssSessionReset.cs:27 at 164931fd94",
+   "evidence": "faults.json#0; StepTrace added 6f8bfb47c4; reset GssSessionReset.cs:27 at 164931fd94",
+   "note": "",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 55,
+   "id": "BACKFILL:038bbfb1dc6e2e99",
+   "kind": "trap.noted",
+   "subject": "trap:the-old-built-sha-101e561a6e06-no-longer-resolves",
+   "ticket": [
+    "GSS_POWER_THEFT_FIX_WRONG_VICTIM"
+   ],
+   "source": [
+    "infrastructure/state/items/GSS_POWER_THEFT_FIX_WRONG_VICTIM.md"
+   ],
+   "ruling": "FAITHFUL",
+   "why": "OWNER.jsonl:6957; 101e561a6e06 is on no branch",
+   "evidence": "OWNER.jsonl:6957; 101e561a6e06 is on no branch",
+   "note": "'current GSS DLL' phrase is dated (blob e8211b0459 at c29007, b2ffc0d55c at the ledger sha); main claim holds",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 87,
+   "id": "BACKFILL:e82ad442bf3fb415",
+   "kind": "trap.noted",
+   "subject": "trap:the-old-built-sha-935d44132b67-no-longer-resolves",
+   "ticket": [
+    "GSS_RESTRING_FIX_STYLES_UNRECONCILED"
+   ],
+   "source": [
+    "infrastructure/state/items/closed/GSS_RESTRING_FIX_STYLES_UNRECONCILED.md"
+   ],
+   "ruling": "FAITHFUL",
+   "why": "OWNER.jsonl:6958, CODEX_ARCHMAGI_FWDRAIN.jsonl:42; 935d44132b67 is on no branch",
+   "evidence": "OWNER.jsonl:6958, CODEX_ARCHMAGI_FWDRAIN.jsonl:42; 935d44132b67 is on no branch",
+   "note": "",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 95,
+   "id": "BACKFILL:d57f14c001cfdb4f",
+   "kind": "finding.verified",
+   "subject": "finding:GSS_SWAY_PROVE_KINETIC_LIVE_ROW",
+   "ticket": [
+    "GSS_SWAY_PROVE_KINETIC_LIVE_ROW"
+   ],
+   "source": [
+    "infrastructure/state/items/closed/GSS_SWAY_PROVE_KINETIC_LIVE_ROW.md"
+   ],
+   "ruling": "FAITHFUL",
+   "why": "CODEX_ARCHMAGI_FWDRAIN.jsonl:29-31; 732415605f",
+   "evidence": "CODEX_ARCHMAGI_FWDRAIN.jsonl:29-31; 732415605f",
+   "note": "",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 137,
+   "id": "BACKFILL:1d0c0a7583cfb2cd",
+   "kind": "trap.noted",
+   "subject": "trap:staleness-is-unbounded-while-the-map-keeps-changing",
+   "ticket": [
+    "GSS_GRAPH_JOB_PROVE_SUSTAINED_CHANGE"
+   ],
+   "source": [],
+   "ruling": "FAITHFUL",
+   "why": "KNOWN_LIMITS.md:14 C2 'adopts no graph until the change stops'; SustainedChange 120 stale frames",
+   "evidence": "KNOWN_LIMITS.md:14 C2 'adopts no graph until the change stops'; SustainedChange 120 stale frames",
+   "note": "rule 1: the ugrep half (RUNNER.jsonl:4158) is a second fact, about the retired contract proof",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 154,
+   "id": "BACKFILL:d589bfd84a5b2151",
+   "kind": "cause.refuted",
+   "subject": "cause:the-44-6-ms-first-slice-after-reset",
+   "ticket": [
+    "GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET"
+   ],
+   "source": [],
+   "ruling": "MISSED",
+   "why": "cited sha does not carry the proof: the refuting numbers are BENCH.jsonl:6366 (verify at 35b8ab9858); entry has code_sha 00e51ffb6275, the later implemented sha, and cites only the file event BENCH.jsonl:6141",
+   "evidence": "cited sha does not carry the proof: the refuting numbers are BENCH.jsonl:6366 (verify at 35b8ab9858); entry has code_sha 00e51ffb6275, the later implemented sha, and cites only the file event BENCH.jsonl:6141",
+   "note": "numbers are true",
+   "smallest_fix": "code_sha 35b8ab9858; evidence ledger BENCH.jsonl:6366",
+   "false_today": false
+  },
+  {
+   "index": 169,
+   "id": "BACKFILL:c59809785483e395",
+   "kind": "finding.open",
+   "subject": "finding:GSS_TOGGLES_FIX_OFF_MEANS_OFF",
+   "ticket": [
+    "GSS_TOGGLES_FIX_OFF_MEANS_OFF"
+   ],
+   "source": [],
+   "ruling": "FAITHFUL",
+   "why": "BENCH.jsonl:2784; FOUNDRY.jsonl:6608",
+   "evidence": "BENCH.jsonl:2784; FOUNDRY.jsonl:6608",
+   "note": "",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 199,
+   "id": "BACKFILL:fd1d6c80d1920843",
+   "kind": "finding.open",
+   "subject": "finding:RIMMASTER_POLISH_GSS_CORD_LEFTOVERS_AFTER_APPROVAL",
+   "ticket": [
+    "RIMMASTER_POLISH_GSS_CORD_LEFTOVERS_AFTER_APPROVAL"
+   ],
+   "source": [],
+   "ruling": "FAITHFUL",
+   "why": "OWNER.jsonl:7298; remaining list matches BENCH.jsonl:19355-19357",
+   "evidence": "OWNER.jsonl:7298; remaining list matches BENCH.jsonl:19355-19357",
+   "note": "false today: BENCH.jsonl:31744 (2026-11-22) and OWNER.jsonl:9716 (2026-11-23) reclassed the plug-join slope as a Problem; entry class is polish. '~20 deferred' was 9 left at the ledger date.",
+   "smallest_fix": "",
+   "false_today": true
+  },
+  {
+   "index": 209,
+   "id": "BACKFILL:23ef0c568fd30725",
+   "kind": "finding.withdrawn",
+   "subject": "finding:GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE",
+   "ticket": [
+    "GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE"
+   ],
+   "source": [
+    "infrastructure/state/items/closed/GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE.md"
+   ],
+   "ruling": "FAITHFUL",
+   "why": "OWNER.jsonl:7309; IsPendingSpan at a47aef70c7 RM_MapComponent_ConduitRuns.cs:123,131",
+   "evidence": "OWNER.jsonl:7309; IsPendingSpan at a47aef70c7 RM_MapComponent_ConduitRuns.cs:123,131",
+   "note": "how_checked reading; the regression test is in sibling trap a7521ae94715e769; text is truncated as in its source",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 220,
+   "id": "BACKFILL:a67257b85ddae897",
+   "kind": "finding.open",
+   "subject": "finding:GSS_MULTILINK_FIX_PIPE_POLE_RANGE",
+   "ticket": [
+    "GSS_MULTILINK_FIX_PIPE_POLE_RANGE"
+   ],
+   "source": [
+    "infrastructure/state/items/closed/GSS_MULTILINK_FIX_PIPE_POLE_RANGE.md"
+   ],
+   "ruling": "FAITHFUL",
+   "why": "closed item FB_hose_gss_2.6: ConduitStyleProbe.cs:99 vs CompAerialAnchor.cs:477-480",
+   "evidence": "closed item FB_hose_gss_2.6: ConduitStyleProbe.cs:99 vs CompAerialAnchor.cs:477-480",
+   "note": "overtaken inside the ledger by withdrawn 2868e935f488b3cb",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 241,
+   "id": "BACKFILL:5726fade54988fdc",
+   "kind": "finding.open",
+   "subject": "finding:GSS_WALK_HOSES_EXCISE_REELED_IN",
+   "ticket": [
+    "GSS_WALK_HOSES_EXCISE_REELED_IN"
+   ],
+   "source": [],
+   "ruling": "FAITHFUL",
+   "why": "OWNER.jsonl:663; BENCH.jsonl:2775-2776",
+   "evidence": "OWNER.jsonl:663; BENCH.jsonl:2775-2776",
+   "note": "",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 262,
+   "id": "BACKFILL:6b6c37ed29a08294",
+   "kind": "cause.refuted",
+   "subject": "cause:gpt-re-read-of-current-code-found-no",
+   "ticket": [
+    "GSS_FRESH_BUILD_ORACLE_FIX_TAP_CLAMPS"
+   ],
+   "source": [
+    "infrastructure/state/items/closed/GSS_FRESH_BUILD_ORACLE_FIX_TAP_CLAMPS.md"
+   ],
+   "ruling": "NARRATION",
+   "why": "rule 7, restating an earlier entry: same close sentence (OWNER.jsonl:7311) already held by finding.withdrawn BACKFILL:007c17e81ad9676e, written 2 s before; it refutes the finding and names no hypothesised cause",
+   "evidence": "rule 7, restating an earlier entry: same close sentence (OWNER.jsonl:7311) already held by finding.withdrawn BACKFILL:007c17e81ad9676e, written 2 s before; it refutes the finding and names no hypothesised cause",
+   "note": "subject slug is shared with 8a55a7ed48062040 (MULTILINK), so state.md:233 shows only that one (rule 4). The repo fact is true, GimmeSomeSlackProbe.cs:375.",
+   "smallest_fix": "delete this entry; the withdrawn carries it",
+   "false_today": false
+  },
+  {
+   "index": 264,
+   "id": "BACKFILL:b5a1d7018c8d4052",
+   "kind": "cause.refuted",
+   "subject": "cause:reading-b-that-the-1-4x-ratio-was",
+   "ticket": [
+    "RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR"
+   ],
+   "source": [
+    "infrastructure/state/items/closed/RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR.md"
+   ],
+   "ruling": "FAITHFUL",
+   "why": "OWNER.jsonl:8046 card; builder fix landed 4c06e66056",
+   "evidence": "OWNER.jsonl:8046 card; builder fix landed 4c06e66056",
+   "note": "",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 292,
+   "id": "BACKFILL:4790120f41a56665",
+   "kind": "trap.noted",
+   "subject": "trap:the-selftest-script-s-own-launch-of-the",
+   "ticket": [
+    "GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS"
+   ],
+   "source": [
+    "infrastructure/state/items/closed/GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS.md"
+   ],
+   "ruling": "FAITHFUL",
+   "why": "RUNNER.jsonl:3844, BENCH.jsonl:16166; selftest_gimmesomeslack.py selftest_cwd the same at ledger sha and HEAD",
+   "evidence": "RUNNER.jsonl:3844, BENCH.jsonl:16166; selftest_gimmesomeslack.py selftest_cwd the same at ledger sha and HEAD",
+   "note": "",
+   "smallest_fix": "",
+   "false_today": "unmeasured"
+  },
+  {
+   "index": 350,
+   "id": "BACKFILL:71fb6a1597ffffc8",
+   "kind": "finding.verified",
+   "subject": "finding:CORD_STATIC_DYNAMIC_HANDOFF_1",
+   "ticket": [
+    "CORD_STATIC_DYNAMIC_HANDOFF_1"
+   ],
+   "source": [],
+   "ruling": "FAITHFUL",
+   "why": "FOUNDRY.jsonl:5016 A1 pass; commit 998badacd5c3 names this ticket",
+   "evidence": "FOUNDRY.jsonl:5016 A1 pass; commit 998badacd5c3 names this ticket",
+   "note": "cited 4954 is the implemented event; the verify is 5016",
+   "smallest_fix": "",
+   "false_today": false
+  },
+  {
+   "index": 389,
+   "id": "BACKFILL:869f32961398b3d3",
+   "kind": "finding.verified",
+   "subject": "finding:RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT",
+   "ticket": [
+    "RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT"
+   ],
+   "source": [],
+   "ruling": "NARRATION",
+   "why": "entry test, not about the mod: true (BENCH.jsonl:27800-27802, 8af7715c2c73) but the change is only src/RimMandrake/rimflow/maturation_dispatch.py (stage spend ceiling, design/specs/2026-11-19-stage-ceiling/boundary.md); no GSS code or test",
+   "evidence": "entry test, not about the mod: true (BENCH.jsonl:27800-27802, 8af7715c2c73) but the change is only src/RimMandrake/rimflow/maturation_dispatch.py (stage spend ceiling, design/specs/2026-11-19-stage-ceiling/boundary.md); no GSS code or test",
+   "note": "",
+   "smallest_fix": "delete from the GSS ledger; the pipeline boundary page holds it",
+   "false_today": false
+  },
+  {
+   "index": 392,
+   "id": "BACKFILL:d2d7522417c8b5d6",
+   "kind": "finding.verified",
+   "subject": "finding:SPARK_EFFECT_BUDGET_REWORK_1",
+   "ticket": [
+    "SPARK_EFFECT_BUDGET_REWORK_1"
+   ],
+   "source": [],
+   "ruling": "MISSED",
+   "why": "drops the deciding proof: entry says 'verified: A2 L2 PASS'; A1, the shared-cap criterion, passed at FOUNDRY.jsonl:4997 ('B4d; cap=1 stands in for 8: 1 of 3 live ends on screen chosen'); no sibling holds it",
+   "evidence": "drops the deciding proof: entry says 'verified: A2 L2 PASS'; A1, the shared-cap criterion, passed at FOUNDRY.jsonl:4997 ('B4d; cap=1 stands in for 8: 1 of 3 live ends on screen chosen'); no sibling holds it",
+   "note": "",
+   "smallest_fix": "say 'A1 (cap=1 stand-in) and A2 L2 PASS'; evidence FOUNDRY.jsonl:4997,4998",
+   "false_today": false
+  }
+ ]
+}

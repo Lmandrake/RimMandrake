@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "9b0407364da14bee8cf6d92df21a7b78a65584e95c5c58d58b510111f435571c",
+  "body_sha256": "85dcd52f6d95706b32a84ca3a3fe0accf79cb92ffa1ea26b45d2915eb29a72a6",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 440876,
+   "BACKFILL": 438179,
    "DISPATCH": 17986,
    "HOLDER.run-1794828190": 994,
    "JUDGE.judge-1794822790": 13753,
@@ -144,14 +144,6 @@
     "answer": "Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit. · The wires are also above the items and furniture otherwise, likely all the same problem. · [Image #8] Also, the GSS cables are now correctly below the items.",
     "authority": {
      "owner_said": "Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit. · The wires are also above the items and furniture otherwise, likely all the same problem. · [Image #8] Also, the GSS cables are now correctly below the items."
-    },
-    "question": null,
-    "ts": "2026-11-16T07:11:06Z"
-   },
-   "decision:q:hose-route-fix-tunnels-under-walls": {
-    "answer": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed.",
-    "authority": {
-     "owner_said": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed."
     },
     "question": null,
     "ts": "2026-11-16T07:11:06Z"
@@ -964,14 +956,6 @@
     "text": "Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit. · The wires are also above the items and furniture otherwise, likely all the same problem. · [Image #8] Also, the GSS cables are now correctly below the items.",
     "ts": "2026-11-16T07:11:06Z"
    },
-   "q:hose-route-fix-tunnels-under-walls": {
-    "authority": {
-     "owner_said": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed."
-    },
-    "by": "BACKFILL",
-    "text": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed.",
-    "ts": "2026-11-16T07:11:06Z"
-   },
    "q:i-do-agree-that-cords-take": {
     "authority": {
      "owner_said": "I do agree that cords take slowly curving paths rather than straight lines often: what they avoid are sharp curves unless they must."
@@ -1037,7 +1021,7 @@
     "ts": "2026-11-19T23:47:37Z"
    }
   },
-  "events": 638,
+  "events": 635,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -3198,9 +3182,9 @@
     "by": "BACKFILL",
     "claim": null,
     "class": "problem",
-    "code_sha": "8af7715c2c73",
+    "code_sha": null,
     "proposed_fix": "Make the stage ceiling count only runs started at or after the mod's latest arrival at that stage.",
-    "status": "verified",
+    "status": "open",
     "tags": [
      "live",
      "test"

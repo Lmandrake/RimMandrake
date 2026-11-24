@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "a2d8597d582c864ab879a50e4da0b44c94d7b77e4c45eb32c7a0863ba599969a",
+  "body_sha256": "708dcdbed13ada1253929c4c50b94851cd156238581ed65d222c3796a9e1113c",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 893183,
+   "BACKFILL": 890449,
    "DISPATCH": 82538,
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
@@ -1109,15 +1109,6 @@
     "text": "The 7 label FAILs were not a fade defect: tops sit exactly at the 1 m line and LabelAlpha=1 by design; the old judge counted share=1 as under.",
     "ts": "2026-11-16T11:42:01Z"
    },
-   "cause:the-e3-e4-e6-g-failure-cluster-all": {
-    "code_sha": "16faf03ad239",
-    "depends_on": [
-     "src/RimMandrake/FlowWorks"
-    ],
-    "status": "refuted",
-    "text": "The E3/E4/E6/G failure cluster all began from 'pulse-0 vector != oracle state', labelled HARNESS (A0_instrument); a probable single cascade, not several mod faults. The record says it was not classified individually.",
-    "ts": "2026-11-16T11:41:36Z"
-   },
    "cause:the-failures-were-not-a-mod-bug-the": {
     "code_sha": "3a2dfdf4b15a",
     "depends_on": [
@@ -1748,7 +1739,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1692,
+  "events": 1688,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -3694,15 +3685,14 @@
     "claim": null,
     "class": "problem",
     "code_sha": null,
-    "proposed_fix": "Write each predicate (stage + read) or retire the chain with its switch named in TOGGLES_NOT_ON_FLOOR (extensions.py _owed; validation.py EXTENSION_TOGGLES_OWED).",
+    "proposed_fix": "Write each of the two predicates (stage + read) in extensions.py in place of _owed, or keep the switch named in validation.py EXTENSION_TOGGLES_OWED.",
     "status": "open",
     "tags": [
      "live",
-     "test",
-     "other-mod"
+     "test"
     ],
-    "text": "Six toggle chains (fall_damage, liquid_corrosion, liquid_drilling, liquid_ignition, superdeep_shooting, typed_shores) have never measured a row; they read 'owed, no predicate yet'.",
-    "ts": "2026-11-16T11:41:25Z",
+    "text": "Two toggle chains of the six still have no predicate: liquid_drilling and typed_shores read 'owed'. The other four (fall_damage, liquid_corrosion, liquid_ignition, superdeep_shooting) were built at 13b5f96dbd.",
+    "ts": "2026-11-24T02:27:34Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_TOGGLE_MEND_MIDGAME_LEFTOVERS": {
@@ -9807,14 +9797,6 @@
     "version": "0.1.0",
     "where": "northstar/depth_rebuild_proofs.py:526"
    },
-   "trap:the-exported-field-is-named-plainly-failures-but": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The exported field is named plainly `failures` but is a lower bound; four failing scenes can report as two. The per-check split is only in the example.",
-    "ts": "2026-11-16T11:41:33Z",
-    "version": "0.1.0",
-    "where": "src/RimMandrake/FlowWorks/Source/SelfTest/VV/ShippedMatrixProbe.cs:165"
-   },
    "trap:the-failing-check-s-name-was-never-found": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10599,14 +10581,6 @@
     "version": "0.1.0",
     "where": "Source/SelfTest/GeyserTubChecks.cs, SubmergeDrawChecks.cs, UnderLiquidParityChecks.cs"
    },
-   "trap:water-spills-as-a-surface-fill-not-filth": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Water spills as a surface fill, not filth, so the clean half of the spill check needs a liquid with spill filth or a cleanable floor. A 300-tick wait is shorter than the 375-tick flow lease (harness).",
-    "ts": "2026-11-16T11:41:28Z",
-    "version": "0.1.0",
-    "where": "liquid_checks L5 rows"
-   },
    "trap:wetting-bars-and-the-swale-rebuild-moved-to": {
     "by": "BACKFILL",
     "status": "noted",
@@ -10630,14 +10604,6 @@
     "ts": "2026-11-16T11:41:36Z",
     "version": "0.1.0",
     "where": "cut_true.png vs cut_false.png"
-   },
-   "trap:z-log-budget-charges-the-error-to-gss": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Z_log_budget charges the error to GSS, but GSS calls ThingsOfDef only with its own conduit, lamp and tap-clamp defs; the caller is guessed (~75%) to be FlowWorks or a bridge tool staging a FlowWorks scene, not confirmed.",
-    "ts": "2026-11-19T23:58:18Z",
-    "version": "0.1.0",
-    "where": "r7_fw_scenes3.json row Z_log_budget"
    },
    "trap:zeros-here-came-from-the-lip-clamp-on": {
     "by": "BACKFILL",

@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":82538,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=7d66b0fe64c36557f0f41fd0e4ee152c8ea867dfe71e0a49d58982cbede5b31c -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":890449,"DISPATCH":82538,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=3b8d7e87650e5c997047681c5ffade22bf195374af5b917d121610b62d0e9bc8 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1692 events in 43 shards · reducer 1
+version 0.1.0 · stage in_game · 1688 events in 43 shards · reducer 1
 holder lease run-1795471235, token 58, last active 2026-11-23T22:31:50Z
 holder session 85c6dc35-a3f0-4f43-bbbb-c3a72b45729b, context 412607 of ceiling 400000 — ROTATE DUE
 
@@ -38,7 +38,6 @@ holder session 85c6dc35-a3f0-4f43-bbbb-c3a72b45729b, context 412607 of ceiling 4
 - FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL [open, problem]
 - FLOWWORKS_SELFTEST_FIX_FOUR_RED_AT_BASE [open, problem]
 - FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED [open, problem]
-- FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED [open, problem]
 - FLOWWORKS_WETPROBE_BUILD_READ_THE_DAMP_FIRST [open, problem]
 - FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP [open, problem]
 - FOUNTAIN_LOOP_BUILD_PUMPS_ITS_OWN_RAIN [open, problem · bars inv_overflow_sheet, inv_liquid_net, source_pays_and_refills]
@@ -189,8 +188,9 @@ holder session 85c6dc35-a3f0-4f43-bbbb-c3a72b45729b, context 412607 of ceiling 4
 - RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_KEEP_THEIR_UNITS [open, problem · bars inv_overflow_sheet]
 - RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN [open, problem · bars inv_converters]
 - RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_READS_SETTING [open, problem · bars inv_drilling]
+- FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED [open, problem]
 
-## Traps (277) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
+## Traps (274) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
 - trap:the-inventory-s-proof-field-reads-stale-20
 - trap:three-inventory-rows-are-impl-absent
 - trap:every-live-scene-s-tier-says-quicktest
@@ -270,7 +270,6 @@ holder session 85c6dc35-a3f0-4f43-bbbb-c3a72b45729b, context 412607 of ceiling 4
 - trap:the-2026-10-19-a3-fail-verify-rerun
 - trap:swim-armour-warned-before-under-can-pass-green
 - trap:the-tar-viscosity-check-reads-as-proving-tar
-- trap:the-exported-field-is-named-plainly-failures-but
 - trap:a-bank-end-s3-outflow-bank-used-by
 - trap:closing-sha-d2c7a3a835-was-replaced-by-the-2026
 - trap:t-pit-cover-had-gone-red-because-gimme
@@ -309,7 +308,6 @@ holder session 85c6dc35-a3f0-4f43-bbbb-c3a72b45729b, context 412607 of ceiling 4
 - trap:t-liquid-coating-offline-is-only-the-offline
 - trap:validation-v2-o2-checks-bool-toggles-only-so
 - trap:tossrange-4-9-is-marked-provisional-auto-decided
-- trap:z-log-budget-charges-the-error-to-gss
 - trap:a-per-square-rounded-fake-hands-back-every-small-take
 - trap:proofsubmerge-nothing-drawn-means-drawn-whole-or-absent
 - trap:water-look-checks-held-old-law-margins
@@ -324,9 +322,9 @@ holder session 85c6dc35-a3f0-4f43-bbbb-c3a72b45729b, context 412607 of ceiling 4
 - trap:packet-bar-verdicts-are-visit-1-backfill-only
 - trap:a-raider-on-the-deck-costs-175-to-the-one-behind
 - trap:red-marks-over-tar-in-a-paused-shot-are-hit-flecks
-- 144 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
+- 143 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
 
-## Causes refuted (49) — do not chase these again
+## Causes refuted (48) — do not chase these again
 - cause:285-shows-lake-floor-1-5184-squares-plains: Mod regression in deep beds: ruled out as SITE. Player_s2_river_load.log:285 sh… (on f518e7c1987b)
 - cause:l5-colonists-clean-spill-unmeasured-on-run-20261018t233414: L5_colonists_clean_spill UNMEASURED on run 20261018T233414 was a harness fault:… (on 97ef816aed51)
 - cause:spores-were-not-the-cause-of-the-later: Spores were not the cause of the later A1 failure: after the spore purge Viking… (on 2ad8ba48157c)
@@ -334,7 +332,6 @@ holder session 85c6dc35-a3f0-4f43-bbbb-c3a72b45729b, context 412607 of ceiling 4
 - cause:c1-f6-hose-link-scan-rm-hoselinks-refresh: C1-F6 hose-link scan: RM_HoseLinks.Refresh runs once per map per tick (checkedT… (on 19b45b92e815)
 - cause:c7a-f8-corridor-hash-rect-bounded-by-maxlength: C7a-F8 corridor hash: rect bounded by maxLength<=80 and checked once per 250 ti… (on 19b45b92e815)
 - cause:c7b-f7-carry-trail-growth-grows-only-while: C7b-F7 carry trail growth: grows only while PulledLength<=MaxLength and revisit… (on 19b45b92e815)
-- cause:the-e3-e4-e6-g-failure-cluster-all: The E3/E4/E6/G failure cluster all began from 'pulse-0 vector != oracle state',… (on 16faf03ad239)
 - cause:the-2026-10-06-save-reload-b-nre: The 2026-10-06 save_reload_b NRE in Verse.TickList.BucketOf after load_game_rea… (on 7efc6040c3c7a74da0cbc1307246efc6ac343e62)
 - cause:c8b-f2-show-find-assigning-a-surfacelook-to: C8b-F2: Show/Find assigning a surfaceLook to a lookless fluid on read was not a… (on 6e9e9ed655d0)
 - cause:s3-was-not-a-classifier-bug-w4-is: S3 was not a classifier bug: W4 is a 40-cell EDGE body, and LAKE_GROUNDWATER_RE… (on 83d872e7f64f)
@@ -507,6 +504,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1692 events (views/history.md; never read whole)
+- the full history: 1688 events (views/history.md; never read whole)
 
-cursor: t=2026-11-24T01:41:06Z.1795484466905576455 (modledger.py since --mod FlowWorks t=2026-11-24T01:41:06Z.1795484466905576455 prints what changed after this packet)
+cursor: t=2026-11-24T02:27:34Z.1795487254954843893 (modledger.py since --mod FlowWorks t=2026-11-24T02:27:34Z.1795487254954843893 prints what changed after this packet)

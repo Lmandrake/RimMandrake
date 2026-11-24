@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":440876,"DISPATCH":17986,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=d6c46772e598834231eaddabe921db93cc270b6785db614281b8775b8a50303e -->
-# GimmeSomeSlack — closed in Design Version 0.1.0 (64)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":438179,"DISPATCH":17986,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=caa42cbd3a1f2538d3e327c2aacaefa443c981f0ede4bac800ac96548a1bad60 -->
+# GimmeSomeSlack — closed in Design Version 0.1.0 (63)
 
 - finding:GSS_ART_MANIFEST_FIX_OVERLAY_SIZES verified 6247fa669d4982a0699d780911eb4556aa591ee1 (2026-11-16T11:37:56Z)
 - finding:GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS verified 7bc25dede9f835d305d5fe26da94246dcf4c27a8 (2026-11-16T11:37:57Z)
@@ -62,6 +62,5 @@
 - finding:RIMMANDRAKE_RESTORE_PIPE_POLE_MENU_PRIORS_TWO_NEW_LEAKS verified ac2ebc01cb6a (2026-11-19T23:47:34Z)
 - finding:RIMMANDRAKE_SIT_GSS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST withdrawn 45c9c5a2d9 (2026-11-19T23:47:34Z)
 - finding:RIMMANDRAKE_STEADY_GSS_FAULTED_GRAPH_JOB_NEVER_SETTLES withdrawn 45c9c5a2d9 (2026-11-19T23:47:34Z)
-- finding:RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT verified 8af7715c2c73 (2026-11-19T23:47:35Z)
 - finding:SPARK_EFFECT_BUDGET_REWORK_1 verified 998badacd5c3 (2026-11-19T23:47:35Z)
 - finding:GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS withdrawn 45c9c5a2d9 (2026-11-19T23:47:37Z)
