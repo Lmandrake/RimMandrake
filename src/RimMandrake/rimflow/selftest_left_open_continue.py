@@ -215,6 +215,14 @@ def test_limit():
     p, res = go(rec, {"state": "claimed", "notes": [dict(note(LEFT, T0 + 500), id=item)]})
     check("D: the fourth in a day is an alarm, not a launch", p["act"] == "alarm" and not LAUNCHES, str(p))
     check("D: the alarm line carries the fixed id", LOC.ALARM_ID in log_text() and item in log_text(), log_text()[-300:])
+    # a-killed-continuation-spends-no-slot (failure_class): three continuations killed by a fleet stop are none of the three
+    kitem = "RIMMANDRAKE_LIMIT_KILLED_ITEM_FLEET_STOP"
+    for i in range(3):
+        make_run(item=kitem, at=T0 - 3000 + i * 100, continued_from="k%d" % i, continue_root_item=kitem, continue_n=i + 1,
+                 status="finished", result="killed: signal (exited 143)")
+    p, _ = go(make_run(item=kitem, at=T0, continued_from="k2", continue_root_item=kitem, continue_n=3),
+              {"state": "claimed", "notes": [dict(note(LEFT, T0 + 500), id=kitem)]})
+    check("D: a-killed-continuation-spends-no-slot", p["act"] == "continue", str(p))
     old = make_run(item="RIMMANDRAKE_LIMIT_OLD_ITEM_DAY_LATER", at=T0)
     for i in range(3):
         make_run(item=old["item"], at=T0 - 90000 - i, continued_from="y", continue_root_item=old["item"])

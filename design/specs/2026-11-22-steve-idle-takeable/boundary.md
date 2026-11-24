@@ -37,7 +37,7 @@ test of its name in `src/RimMandrake/Utils/selftest_steve_visit_feed.py`; the si
 
 - **routing.** This reading says that work waits; it does not send the work. The visit feed sends it (ROUTING
   PROMISES below). The feed drains a check only on a PASS or FAIL row; this reading drains it on any DONE run. So a DONE
-  run that read only UNMEASURED rows reads `quiet` here while the feed sends the check again, at most twice more.
+  run that read only UNMEASURED rows reads `quiet` here while the feed sends the check again after its wait.
 - **the-arch-games.** An in-game visit owed with no Claude driver on ArchBig or ArchSmall is not read here (item
   `RIMMANDRAKE_WATCH_INGAME_VISIT_OWED_NO_DRIVER_UNSEEN`).
 - **a-chain-that-ran-and-failed.** A check counts as drained only when each of its chains has a DONE record for the
@@ -76,13 +76,14 @@ test of its name in `src/RimMandrake/Utils/selftest_steve_visit_feed.py`; the si
 - **the-owners-hold-and-gate-still-stop-a-check.** A mod on his hold (the reading's flag, or the live hold list at
   submit), a blocked visit, a visit whose exit is met, and a chain whose job waits on his gate are never sent.
 - **nothing-waits-nothing-is-sent.** A check is drained when each of its chains ran DONE for the mod since the visit
-  opened, with a PASS or FAIL row. A run before the opening drains nothing. A chain that measured nothing twice since
-  the opening (not DONE, or DONE with only UNMEASURED rows) is named in `spent` and not sent again. `fill.stop` and a
-  pause stop the feed.
+  opened, with a PASS or FAIL row. A run before the opening drains nothing. A chain whose jobs
+  failed twice by their own fault since the opening (`failure_class.py`: BAD REQUEST) is named in `spent` and not sent
+  again. A run whose outcome is not the chain's own (killed, INVALID, DONE with only UNMEASURED rows) spends nothing
+  (`design/specs/2026-11-23-one-failure-classifier/boundary.md`). `fill.stop` and a pause stop the feed.
 - **a-lane-refusal-does-not-spend-a-check.** A run the lane refused before the chain ran (REFUSED for a cause in
   `testq.ARCH_BOUNCE` or SYNC) is not one of those failures: two of them still leave the chain sent. A chain refused so
   within the last 10 min (`BOUNCE_BACKOFF_S`) is held back, named in `backoff`; with nothing else waiting the step reads
-  `backoff`, never `quiet`. A refusal for a cause about the job (PREFLIGHT) still counts.
+  `backoff`, never `quiet`. A refusal for a cause about the job (PREFLIGHT, BLOCKED_SELECTION) still counts.
 - **could-not-look-sends-nothing.** A missing, stale (over 30 min) or blockless dispatch reading sends nothing and
   says why. A queue that is not the live one reads no dispatch reading unless one is named for it
   (`RM_MATURATION_DISPATCH_DIR`).

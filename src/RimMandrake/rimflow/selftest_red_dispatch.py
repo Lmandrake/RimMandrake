@@ -195,16 +195,41 @@ WORLD["items"] = {}
 rd = RD.tick(CFG, apply=False, fx=fx(), now=NOW)
 check("an item the ledger does not hold yet is blind, not launched", all(v["decision"] == "blind" for v in rd["items"].values()))
 
-# a failed launch is the attempt: never retried
+# a-red-fixer-that-died-spends-no-attempt: a launch that never started and a run killed from outside spend nothing
 WORLD.update(items=open_items(), runs={})
 LAUNCH_RC["rc"] = 1
 n0 = len(CALLS["launch"])
 RD.tick(dict(CFG, max_live=1), apply=True, fx=fx(), now=NOW)
 LAUNCH_RC["rc"] = 0
 rd = RD.tick(dict(CFG, max_live=1), apply=True, fx=fx(), now=NOW + 600)
-check("a failed launch stops the item (one Needs Conductor line), the next item gets the slot",
-      rd["items"]["SELFTEST_FIX_ALPHA_AAAA"]["decision"] == "stopped" and
+check("a-red-fixer-that-died-spends-no-attempt: a failed launch waits, the next item gets the slot",
+      rd["items"]["SELFTEST_FIX_ALPHA_AAAA"]["decision"] == "system_wait" and
+      "NEVER STARTED" in rd["items"]["SELFTEST_FIX_ALPHA_AAAA"]["why"] and
       rd["items"]["SELFTEST_FIX_BETA_BBBB"]["decision"] == "launched" and len(CALLS["launch"]) == n0 + 2, rd["items"])
+WORLD["runs"] = {"SELFTEST_FIX_BETA_BBBB": {"live": [], "ended": [U2], "system": {U2: "KILLED"}}}
+n0 = len(CALLS["launch"])
+rd = RD.tick(dict(CFG, max_live=9, max_launches_per_night=9), apply=True, fx=fx(), now=NOW + 1200)
+check("a-red-fixer-that-died-spends-no-attempt: a killed run waits, it never reads stopped",
+      rd["items"]["SELFTEST_FIX_BETA_BBBB"]["decision"] == "system_wait"
+      and "KILLED" in rd["items"]["SELFTEST_FIX_BETA_BBBB"]["why"], rd["items"]["SELFTEST_FIX_BETA_BBBB"])
+rd = RD.tick(dict(CFG, max_live=9, max_launches_per_night=9), apply=True, fx=fx(), now=NOW + 1200 + 3700)
+check("a-red-fixer-that-died-spends-no-attempt: past the wait it launches again",
+      rd["items"]["SELFTEST_FIX_BETA_BBBB"]["decision"] == "launched"
+      and rd["items"]["SELFTEST_FIX_ALPHA_AAAA"]["decision"] == "launched", rd["items"])
+WORLD["runs"] = {"SELFTEST_FIX_BETA_BBBB": {"live": [], "ended": [U2], "system": {}}}
+rd = RD.tick(dict(CFG, max_live=9, max_launches_per_night=9), apply=True, fx=fx(), now=NOW + 1200 + 7500)
+check("a-red-fixer-that-died-spends-no-attempt: a run that ended on its own merits still stops the item",
+      rd["items"]["SELFTEST_FIX_BETA_BBBB"]["decision"] == "stopped", rd["items"]["SELFTEST_FIX_BETA_BBBB"])
+import failure_class as _FC
+import detached_helper as _DH
+_old = (_DH.all_records, _DH.live_status)
+_DH.all_records = lambda: [{"item": "X", "unit": "u1", "status": "finished", "result": "killed: signal"},
+                           {"item": "X", "unit": "u2", "status": "finished", "result": "success (0)"}]
+_DH.live_status = lambda r: "dead"
+got = RD.detached_runs({"X"})
+_DH.all_records, _DH.live_status = _old
+check("a-red-fixer-that-died-spends-no-attempt: the run records name the killed run, and only it",
+      set((got["X"].get("system") or {})) == {"u1"} and "KILLED" in got["X"]["system"]["u1"], got)
 
 # ---- acceptance test (B): started_check over fake ledger events ------------------------------------------------------
 st = {"items": {"SELFTEST_FIX_ALPHA_AAAA": {"attempts": [{"night": "x"}]}, "SELFTEST_FIX_BETA_BBBB": {"attempts": [{}]},

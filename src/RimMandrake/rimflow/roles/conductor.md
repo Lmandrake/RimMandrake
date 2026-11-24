@@ -210,7 +210,9 @@ window. A file never stops a session. The helper limit of a session is in Sessio
   - STALE: a later ruling or item replaced it. Supersede it or drop it.
   - DEAD: its target is gone. Drop it.
   - CANNOT SUCCEED: it needs him, hardware or a flyer test. Hold it.
-  - CHURNING: 3+ returns, or spend over 3M weighted tokens, going in circles. Hold it, with the one thing that unsticks it.
+  - CHURNING: 3+ returns that the work itself caused, or spend over 3M weighted tokens, going in circles. Hold it, with
+    the one thing that unsticks it. A return after a run that was killed, timed out, refused or never started, or whose
+    outcome was not the work's own, does not count (`src/RimMandrake/rimflow/failure_class.py`).
   - NOT WORTH THE TOUCH: it fails test 1 of `standing_rulings.md` §Touching code has a cost (no broken promise in
     ordinary operation, no failure that happened, no failing test; a real chance to void a run always passes). Drop it
     with the reason `not worth the touch: <why>`, and put one line on `polish.md` beside its page where a page exists.

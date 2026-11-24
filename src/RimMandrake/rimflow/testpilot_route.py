@@ -35,6 +35,12 @@ contract with it and with selftest_testpilot_route.py.
 """
 import collections
 import json
+import os
+import sys
+
+if os.path.dirname(os.path.abspath(__file__)) not in sys.path:
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import failure_class as FC  # noqa: E402
 
 STREAK = 3
 OPEN_STATES = ("proposed", "ready", "doing", "built", "validated")      # model.OPEN_STATES (selftest pins them equal)
@@ -94,11 +100,23 @@ HOLDS_LINES = [
 ]
 
 
+def counts(r):
+    """A pass, a run whose writer named no outcome (as before), or an outcome that is the work's own (failure_class)."""
+    return r.result == "pass" or not getattr(r, "outcome", None) or FC.read(r.outcome).counts
+
+
+def left_out(runs):
+    """-> {word: n} of the runs that no streak counts, for the verdict's words."""
+    return FC.count(FC.read(r.outcome) for r in runs if not counts(r))[1]
+
+
 def streaks(runs):
     """-> (non-pass runs in a row at the end of `runs`, the worst such count in one criterion or config, its name).
     Criteria and configs count apart, though they may share a name, and a run with a criterion counts in both."""
     whole, per = 0, collections.Counter()
     for r in runs:
+        if not counts(r):       # no pass, and not the item's own failure: it neither counts nor ends a streak
+            continue
         keys = [("config", r.config)] + ([("criterion", r.criterion)] if r.criterion else [])
         whole = 0 if r.result == "pass" else whole + 1
         for key in keys:
@@ -130,12 +148,16 @@ def voids():
 DEFAULT_RULE = "the streak is %d non-pass runs in a row (`pipe limit <ITEM> pilot_streak N` moves one item's)" % STREAK
 
 
+def _runs(item, evs, void):
+    sat = _last_note(evs, item, SAT)
+    return [r for r in item.runs if r.index > sat and r.config not in NOT_A_TEST and r.name not in void]
+
+
 def streak_count(item, evs, void):
     """-> (the item's streak: the worse of its whole-item and one criterion or config non-pass runs in a row since its
     last sitting, voided runs out; whole; worst; worst's name). The pipeline's own count of the `pilot_streak`
     account (pipeline_control.m_pilot_streak reads it too)."""
-    sat = _last_note(evs, item, SAT)
-    runs = [r for r in item.runs if r.index > sat and r.config not in NOT_A_TEST and r.name not in void]
+    runs = _runs(item, evs, void)
     whole, worst, key = streaks(runs)
     return max(whole, worst), whole, worst, key
 
@@ -162,8 +184,9 @@ def judge(item, evs, void=None, unread=None, adjusted=None):
             u, lim, blind = n, STREAK, "%s: %s" % (type(e).__name__, e)
     if u >= lim:
         where = "in a row" if whole >= worst else "in a row on %s" % key
-        return {"id": item.id, "kind": "streak", "why": "%d non-pass runs %s%s%s%s" % (
-            n, where, "" if (u, lim) == (n, STREAK) else " (account %d of limit %d, pipe pilot_streak)" % (u, lim),
+        out = FC.named(left_out(_runs(item, evs, void)))
+        return {"id": item.id, "kind": "streak", "why": "%d non-pass runs %s%s%s%s%s" % (
+            n, where, "; not counted: %s" % out if out else "", "" if (u, lim) == (n, STREAK) else " (account %d of limit %d, pipe pilot_streak)" % (u, lim),
             "; the void ledger is UNMEASURED (%s): no run was taken out" % unread if unread else "",
             "; the control store is UNMEASURED (%s): the derived count and limit %d stood" % (blind, STREAK)
             if blind else "")}

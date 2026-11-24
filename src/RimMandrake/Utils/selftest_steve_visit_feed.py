@@ -162,11 +162,15 @@ def t_nothing_waits_nothing_is_sent():
     F.done(F.job("J-early", "Pyrelands", ["pc0"]), "DONE", NOW - 2 * 3600)      # before the opening (1 h ago)
     step()
     check(len(visit_jobs()) == 1, "nothing-waits-nothing-is-sent: a run before the opening drains nothing")
-    # two failed runs of a chain since the opening: not sent a third time (the filler brake's two-in-a-row evidence)
+    # two refusals of the job itself since the opening: not sent a third time (the filler brake's two-in-a-row evidence)
     F.reset()
     F.dispatch(F.one())
-    F.done(F.job("J-i1", "Pyrelands", ["pc0"], by="BENCH.visit"), "INVALID", NOW - 40 * 60)
-    F.done(F.job("J-i2", "Pyrelands", ["pc0"], by="BENCH.visit"), "INVALID", NOW - 20 * 60)
+    for jid, at in (("J-i1", NOW - 40 * 60), ("J-i2", NOW - 20 * 60)):
+        F.done(F.job(jid, "Pyrelands", ["pc0"], by="BENCH.visit"), "INVALID", at)
+        p = F.TMP / "testq" / "done" / (jid + ".json")
+        rec = T.read_json(str(p))
+        rec["result"]["cause"] = "BLOCKED_SELECTION"
+        F.wjson(p, rec)
     out = step() or {}
     check(not visit_jobs() and "pc0" in json.dumps(out.get("spent") or {}),
           "nothing-waits-nothing-is-sent: a chain that failed twice since the opening is named, not sent (%s)"
@@ -188,8 +192,9 @@ def t_nothing_waits_nothing_is_sent():
                 "result": {"outcome": "DONE", "started": F.iso(NOW - 900 * k), "finished": F.iso(NOW - 600 * k),
                            "rows": [{"chain": "pc0", "row": "x", "verdict": "UNMEASURED"}]}})
     out = step() or {}
-    check(not visit_jobs() and (out.get("spent") or {}).get("Pyrelands") == {"pc0": 2},
-          "nothing-waits-nothing-is-sent: two DONE runs that measured nothing stop it (%s)" % out.get("spent"))
+    check(not visit_jobs() and out.get("state") == "backoff" and not (out.get("spent") or {}).get("Pyrelands"),
+          "nothing-waits-nothing-is-sent: two DONE runs that measured nothing hold it back, spent nothing (%s %s)"
+          % (out.get("state"), out.get("spent")))
     F.reset()
     F.dispatch(F.one())
     F.wjson(F.TMP / "testq" / "done" / "J-meas.json", {"job": F.job("J-meas", "Pyrelands", ["pc0"]), "result": {
@@ -256,6 +261,62 @@ def t_a_lane_refusal_does_not_spend_a_check():
     out = step() or {}
     check(not visit_jobs() and (out.get("spent") or {}).get("Pyrelands") == {"pc0": 2},
           "a-lane-refusal-does-not-spend-a-check: two REFUSED PREFLIGHT runs still stop it (%s)" % out.get("spent"))
+
+
+def _ran(jid, outcome, cause, at, rows=None, cancelled=False):
+    F.done(F.job(jid, "Pyrelands", ["pc0"], by="BENCH.visit"), outcome, at)
+    p = F.TMP / "testq" / "done" / (jid + ".json")
+    rec = T.read_json(str(p))
+    rec["result"].update(cause=cause, rows=rows or [])
+    if cancelled:
+        rec["cancelled"] = True
+    p.write_text(json.dumps(rec))
+
+
+def t_visit_feed_spends_a_chain_only_on_its_own_fault():
+    """One failure classifier: an outcome that is not the chain's own spends nothing, and is named."""
+    tag = "visit-feed-spends-a-chain-only-on-its-own-fault"
+    dry = [{"chain": "pc0", "row": "r", "verdict": "UNMEASURED"}]
+    for label, kw, word in (("two INTERRUPTED/CRASH", dict(outcome="INTERRUPTED", cause="CRASH"), "KILLED"),
+                            ("two INVALID/GAME_DIED", dict(outcome="INVALID", cause="GAME_DIED"), "UNRESOLVED"),
+                            ("two INVALID/CANARY", dict(outcome="INVALID", cause="CANARY"), "APPARATUS FAULT"),
+                            ("two DONE, every row UNMEASURED", dict(outcome="DONE", cause=None, rows=dry),
+                             "COULD NOT LOOK")):
+        F.reset()
+        F.dispatch({"Pyrelands": F.entry(6, NOW - 6 * 3600, {"p0": ["pc0"]})})
+        _ran("J-x1", at=NOW - 5 * 3600, **kw)
+        _ran("J-x2", at=NOW - 4 * 3600, **kw)
+        out = step() or {}
+        js = visit_jobs()
+        check(out.get("state") == "queued" and len(js) == 1 and "pc0" in js[0]["selector"]["chains"]
+              and "pc0" not in json.dumps(out.get("spent") or {})
+              and ((out.get("faults") or {}).get("Pyrelands") or {}).get("pc0") == {word: 2},
+              "%s: %s spend nothing, named %s (%s, spent %s, faults %s)"
+              % (tag, label, word, out.get("state"), out.get("spent"), out.get("faults")))
+    # each such run in a row doubles the wait, so a chain the lane cannot measure never spins it
+    F.reset()
+    F.dispatch({"Pyrelands": F.entry(6, NOW - 6 * 3600, {"p0": ["pc0"]})})
+    for k, at in enumerate((4 * 3600, 3 * 3600, 25 * 60)):
+        _ran("J-y%d" % k, "INTERRUPTED", "CRASH", NOW - at)
+    out = step() or {}
+    check(not visit_jobs() and out.get("state") == "backoff" and "pc0" in json.dumps(out.get("backoff") or {})
+          and (out.get("faults") or {}).get("Pyrelands", {}).get("pc0") == {"KILLED": 3},
+          "%s: three in a row wait 40 min, named, never `quiet` (%s %s)" % (tag, out.get("state"), out.get("backoff")))
+    F.reset()
+    F.dispatch({"Pyrelands": F.entry(6, NOW - 6 * 3600, {"p0": ["pc0"]})})
+    for k in range(9):
+        _ran("J-z%d" % k, "INTERRUPTED", "CRASH", NOW - 5 * 3600 + k * 600)
+    _ran("J-z9", "INTERRUPTED", "CRASH", NOW - 2 * 3600 - 60)
+    out = step() or {}
+    check(out.get("state") == "queued", "%s: the wait is never longer than FAULT_BACKOFF_MAX_S (%s)" % (tag, out.get("state")))
+    # an outcome nobody can class spends nothing and is named
+    F.reset()
+    F.dispatch({"Pyrelands": F.entry(6, NOW - 6 * 3600, {"p0": ["pc0"]})})
+    _ran("J-w1", "EXPLODED", None, NOW - 5 * 3600)
+    _ran("J-w2", "EXPLODED", None, NOW - 4 * 3600)
+    out = step() or {}
+    check(out.get("state") == "queued" and (out.get("faults") or {}).get("Pyrelands", {}).get("pc0") == {"UNCLASSED": 2},
+          "%s: an unknown outcome spends nothing and is named (%s %s)" % (tag, out.get("state"), out.get("faults")))
 
 
 def t_could_not_look_sends_nothing():
@@ -385,7 +446,7 @@ def t_the_feed_runs_after_reconcile_before_admission():
 
 def main():
     for t in (t_a_waiting_check_is_queued_ahead_of_filler, t_a_visit_opening_with_an_offset_reads, t_the_owners_hold_and_gate_still_stop_a_check,
-              t_nothing_waits_nothing_is_sent, t_a_lane_refusal_does_not_spend_a_check, t_could_not_look_sends_nothing, t_mods_take_turns,
+              t_nothing_waits_nothing_is_sent, t_a_lane_refusal_does_not_spend_a_check, t_visit_feed_spends_a_chain_only_on_its_own_fault, t_could_not_look_sends_nothing, t_mods_take_turns,
               t_filler_prefers_advancing_mods, t_site_saves_ship_when_the_registry_changes,
               t_the_feed_runs_after_reconcile_before_admission):
         try:

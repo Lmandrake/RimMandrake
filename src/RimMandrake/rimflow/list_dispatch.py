@@ -26,8 +26,10 @@ oldest filing first, one decision:
   waits_on | blocked | waiting | reshape   it waits on an open item | is blocked | has a dated wait ahead | its dated
                   wait passed and the check fails (a date never launches old work; Shape, step 4, takes it)
   held | off      its mod is held by the owner | a `pipe off` (all, family:list_dispatch, family:detached, item, mod)
-  stopped         a run ended and the check fails with no named next act, or after max_runs_per_item runs, or after
-                  max_never_started launches that never started: a Needs Conductor line, once
+  stopped         a run ended on its own merits and the check fails with no named next act, or after max_runs_per_item
+                  such runs, or a launch refused for its form: a Needs Conductor line, once
+  system_wait     the last run died of a cause outside the work, or max_never_started launches in a row never started:
+                  nothing is spent (failure_class), the next launch waits SYSTEM_WAIT_S
   disabled | pipeline_paused | account_hold | chain_stop | slots_full | pool_full   the gates
   launch          one detached helper (detached_helper.py launch --next-act-owner list_dispatch), sonnet when the check
                   runs a selftest or acceptance script, else opus
@@ -52,11 +54,17 @@ for _p in (HERE, os.path.join(REPO, "src", "RimMandrake", "Utils")):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
+import failure_class as FC  # noqa: E402
+from form_fault import FORM_HEAD  # noqa: E402
+
 ITEM = "RIMMANDRAKE_BUILD_LIST_LANE_ON_RED_DISPATCH_GOALS_FIRST"
 UNIT = "rm-list-dispatch.service"
 FAMILY = "list_dispatch"
 CFG_PATH = os.path.join(HERE, "list_dispatch.json")
 CLOSED = ("done", "dropped", "superseded")
+# after a run or launches that did not count: the danger is a launch sent again every tick into the same refusal (the
+# night of 2026-11-20, maturation_dispatch.REPAIR_LAUNCH_MOST)
+SYSTEM_WAIT_S = 3600
 PAC = dt.timezone(dt.timedelta(hours=-8), "PST")
 ACCEPT_RX = re.compile(r"python3\s+((?:design|src)/[^\s'\"`]+?_accept\.py)\b")
 WRITTEN_NOT_LANDED = 4      # a rimflow write's --publish exit: the event stands, its landing failed (ledger_landing.py)
@@ -158,7 +166,8 @@ def timed_accept(iid, path, events, st, limit, runner=subprocess.run):
 
 
 def spent(attempts):
-    return [a for a in attempts or [] if not a.get("failed")]
+    """The lane runs that count: launched, and not ended by a cause outside the work (failure_class)."""
+    return [a for a in attempts or [] if not a.get("failed") and not a.get("void")]
 
 
 def chain_depth(iid, parent_of, st):
@@ -208,8 +217,11 @@ def decide(cfg, st, facts, now, account=(True, "")):
         it = items[iid] or {}
         s = sti.get(iid) or {}
         att = s.get("attempts") or []
-        done = spent(att)
         run = runs.get(iid) or {}
+        for a in att:
+            if not a.get("failed") and not a.get("void") and a.get("unit") in (run.get("system") or {}):
+                a.update(void=run["system"][a["unit"]], void_at=now)
+        done = spent(att)
         row = {"item": iid}
         rows.append(row)
 
@@ -304,6 +316,10 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if it.get("held"):
             put("held", it["held"])
             continue
+        if att and att[-1].get("void") and now < (att[-1].get("void_at") or 0) + SYSTEM_WAIT_S:
+            put("system_wait", "run %s did not count: %s; the next launch from %s" % (
+                att[-1].get("unit"), _one(att[-1]["void"], 200), pac(att[-1]["void_at"] + SYSTEM_WAIT_S)))
+            continue
         # A `large` Shape run only shaped: it is not a Work run (list_shape.py; boundary a-large-shape-run-is-not-a-work-run)
         work = [a for a in done if not (a.get("kind") == "shape" and it.get("shape_size") == "large")]
         if done:
@@ -335,7 +351,20 @@ def decide(cfg, st, facts, now, account=(True, "")):
             if not a.get("failed"):
                 break
             tail += 1
-        if tail >= max_never:
+        never = FC.of_launch(att[-1].get("failed")) if tail else None
+        form = bool(tail) and FORM_HEAD in str(att[-1].get("failed"))
+        if tail >= max_never and not form and not never.counts:     # it ran no work: it waits and says so, once
+            due = (att[-1].get("at") or 0) + SYSTEM_WAIT_S
+            if now < due:
+                why = "%d launches in a row never started (%s: %s); the next from %s" % (
+                    tail, never.word, _one(never.why, 200), pac(due))
+                put("system_wait", why)
+                fp = ["never", it.get("events")]
+                if s.get("told_never") != fp:
+                    row["need"] = _need(iid, it, why, "clear the cause the launch names")
+                    row["told_key"], row["told_fp"] = "told_never", fp
+                continue
+        elif tail >= max_never:
             stop("%d launches in a row never started; the last: %s" % (tail, _one(att[-1].get("failed"), 200)),
                  "clear the cause the launch names, then `list_dispatch.py clear %s --why ...`" % iid)
             continue
@@ -434,6 +463,9 @@ def _runs(ids):
         stt = DH.live_status(rec)
         r = out.setdefault(rec["item"], {"live": [], "ended": []})
         r["live" if stt in ("launching", "running") else "ended"].append(rec["unit"])
+        fc = FC.of_run(rec)
+        if stt not in ("launching", "running") and not fc.counts:
+            r.setdefault("system", {})[rec["unit"]] = "%s (%s)" % (fc.word, fc.why)
     return out
 
 
@@ -649,7 +681,7 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
         if row.get("need"):
             try:
                 do_need(_need_text(row["need"]), now)
-                s["told"] = row.pop("told_fp")
+                s[row.pop("told_key", "told")] = row.pop("told_fp")
             except Exception as e:  # noqa: BLE001 - the line stays owed and is said on the row
                 row["need_failed"] = "%s: %s" % (type(e).__name__, e)
         if row["decision"] == "close":

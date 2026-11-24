@@ -1062,6 +1062,24 @@ def test_converge():
         check(DC.STILL_REFUSED_HEAD in pages and REF2["evidence"] in pages and REF["evidence"] not in pages
               and not DC.check_dir(out)[0], "what is still not fixed stays on his pages in the reviewer's words; the "
               "fixed one leaves; check passes the block")
+        # a-dead-author-spends-no-converge-round: a run that died and changed nothing is no round, nor is a reader that
+        # could not be read
+        repo2, out2 = proposal()
+        legacy_review(out2, [REF])
+        fx2 = FX(repo2, codex=[lambda c, p: {"is_error": True, "result": "killed"}], claude=[])
+        fx2.snap()
+        r2 = DC.converge_mod("Demo", fx2)
+        check(r2["state"] == "blocked" and not os.path.exists(os.path.join(out2, "converge.json")),
+              "a-dead-author-spends-no-converge-round: blocked, no round written (%s)" % r2)
+        junk = lambda c, p: {"is_error": False, "result": "not json"}  # noqa: E731
+        repo2, out2 = proposal()
+        legacy_review(out2, [REF])
+        fx2 = FX(repo2, codex=[fix_b1], claude=[junk, junk])
+        fx2.snap()
+        r2 = DC.converge_mod("Demo", fx2)
+        check(r2["state"] == "blocked" and "could not look" in r2["why"] and
+              not os.path.exists(os.path.join(out2, "converge.json")),
+              "a-dead-author-spends-no-converge-round: a verifier unreadable twice is no not_fixed (%s)" % r2)
         n = len(fx.calls)
         rec = DC.converge_mod("Demo", fx)
         check(not [c for c in fx.calls[n:] if c[0] in ("codex", "claude", "gate", "blind")]
@@ -1136,14 +1154,14 @@ def test_converge():
         rec = DC.converge_mod("Demo", fx)
         check(rec["state"] == "blocked" and "codex" not in [c[0] for c in fx.calls],
               "a review whose digest is of other bytes is stale: converge runs nothing (%s)" % rec.get("why"))
-        # a verifier answer with no verdict for a record leaves it open (one retry, then not fixed)
+        # a verifier answer with no verdict for a record decides nothing about it (one retry, then could not look)
         repo, out = proposal()
         legacy_review(out, [REF])
         fx = FX(repo, codex=[fix_b1, fix_b1], claude=[verdict(), verdict(), verdict(), verdict()])
         fx.snap()
         rec = DC.converge_mod("Demo", fx)
-        check(rec["state"] == "open-after-converge" and REF["evidence"] in open(os.path.join(out, "owner_pages.md")).read(),
-              "an unreadable verifier fixes nothing: the record stays open (%s)" % rec["state"])
+        check(rec["state"] == "blocked" and not os.path.exists(os.path.join(out, "converge.json")),
+              "an unreadable verifier decides nothing: no round is spent (%s)" % rec["state"])
         # the hold: a held mod is not converged
         os.environ["RM_OWNER_HOLD_FILE"] = holds_file(["Demo"])
         repo, out = proposal()

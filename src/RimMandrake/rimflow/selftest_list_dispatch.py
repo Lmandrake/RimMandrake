@@ -113,10 +113,36 @@ def t_one_work_run_then_one_more_only_on_a_named_next_act():
 
 
 def t_a_launch_that_never_started_is_not_spent():
-    never = {"unit": None, "failed": "never started: pool full"}
+    never = {"unit": None, "failed": "never started: pool full", "at": NOW - 60}
     chk(lambda: dec({"A": it()}, st=att(never)) == ("launch", ["A"]), "one never-started launch: launch again")
-    chk(lambda: dec({"A": it()}, st=att(never, dict(never))) == ("stopped", []),
-        "max_never_started never-started launches in a row: stopped")
+    chk(lambda: dec({"A": it()}, st=att(never, dict(never))) == ("system_wait", []),
+        "max_never_started never-started launches in a row: it waits, it is not stopped")
+    rows, _, st2 = run({"A": it()}, st=att(never, dict(never)))
+    chk(lambda: rows["A"].get("need") and "pool full" in rows["A"]["need"]["why_not_recovered"], "and says so to the Conductor")
+    old = dict(never, at=NOW - 3700)
+    chk(lambda: dec({"A": it()}, st=att(old, dict(old))) == ("launch", ["A"]), "past SYSTEM_WAIT_S: launch again")
+    form = dict(never, failed="never started: REFUSED (form): no model named\nREPAIR: pass --model")
+    chk(lambda: dec({"A": it()}, st=att(form, dict(form))) == ("stopped", []),
+        "a refusal of form is never sent again unchanged: stopped, its repair named")
+
+
+def t_a_list_run_that_died_spends_no_run():
+    dead = {"A": {"live": [], "ended": ["u1", "u2"], "system": {"u2": "KILLED (killed: signal)"}}}
+    nxt = {"unit": "u1", "failed": None, "next": "go on"}
+    two = att(nxt, {"unit": "u2", "failed": None})
+    rows, l, st2 = run({"A": it()}, st=two, runs=dead)
+    chk(lambda: (rows["A"]["decision"], l) == ("system_wait", []) and "KILLED" in rows["A"]["why"],
+        "a killed second run waits: it is not one of the two, and it does not stop the item")
+    chk(lambda: st2["items"]["A"]["attempts"][1].get("void") and LD().spent(st2["items"]["A"]["attempts"]) == [nxt],
+        "the killed run is marked void and is not spent")
+    st2["items"]["A"]["attempts"][1]["void_at"] = NOW - 3700
+    chk(lambda: dec({"A": it()}, st=st2, runs=dead) == ("launch", ["A"]), "past the wait: one more run")
+    shp = att({"unit": "u2", "failed": None, "kind": "shape"})
+    chk(lambda: dec({"A": it(effect=None, verdict=None, shape_due=True)}, st=shp, runs=dead) == ("system_wait", []),
+        "a killed Shape run does not stop the item")
+    chk(lambda: dec({"A": it()}, st=att({"unit": "u1", "failed": None, "next": None}),
+                    runs={"A": {"live": [], "ended": ["u1"], "system": {}}}) == ("stopped", []),
+        "a run that ended on its own merits with no next act still stops it")
     fx = {"facts": lambda st: {"items": {"A": it()}, "runs": {}, "other_live": 0}, "account": lambda: (True, ""),
           "launch": lambda *a: (2, "REFUSED by control", None), "need": lambda *a: None,
           "close": lambda *a: (0, ""), "effect": lambda *a: (0, "")}
@@ -332,7 +358,7 @@ def main():
     for t in (t_decide_is_pure_and_says_why_on_every_row,
               t_the_check_runs_before_every_attempt,
               t_one_work_run_then_one_more_only_on_a_named_next_act,
-              t_a_launch_that_never_started_is_not_spent,
+              t_a_launch_that_never_started_is_not_spent, t_a_list_run_that_died_spends_no_run,
               t_a_stop_names_the_outcome_the_reason_and_the_smallest_act,
               t_waits_are_not_launched,
               t_the_gates_launch_nothing,

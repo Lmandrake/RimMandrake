@@ -405,7 +405,10 @@ def main():
         wake_ends[:] = ["1", DEATH]
         W.maybe_wake(winc, {"reason": "r"}, t1)
         check(W.settle_wake(winc, t1 + 60) == "auth" and "died" in winc["wake"] and
-              W.maybe_wake(winc, {"reason": "r"}, t1 + 120) is None, "out of retries: the incident says it died, and stops")
+              str(W.maybe_wake(winc, {"reason": "r"}, t1 + 120)).startswith("skipped: cooldown") and wake_rec().get("epoch"),
+              "a-dead-wake-is-tried-after-its-cooldown: out of quick retries, the incident waits out its cooldown")
+        check(str(W.maybe_wake(winc, {"reason": "r"}, t1 + 20000)).startswith("started"),
+              "a-dead-wake-is-tried-after-its-cooldown: past the cooldown it wakes again")
         # a death of another kind is told and not retried; a session past its cap leaves no exit file
         for k, ends, text in ((1, ["3", "Exceeded USD budget"], "exit 3"), (2, [None, "half a session"], "killed at its cap")):
             os.remove(T.q("wake.json"))
@@ -414,6 +417,8 @@ def main():
             W.maybe_wake(winc, {"reason": "r"}, t1 + k)
             check(W.settle_wake(winc, t1 + 60) == "died" and text in winc["wake"] and wake_rec().get("epoch"),
                   "%s: told, and its cooldown stands" % text)
+            check(winc["wake"].startswith("skipped:") == (ends[0] is None),
+                  "a-dead-wake-is-tried-after-its-cooldown: %s: only a wake killed from outside is tried again" % text)
         # long output that quotes the error is a session that ran, not an auth death
         os.remove(T.q("wake.json"))
         winc = {"state": "BRAKED", "level": 2, "item": item, "unowned_s": 1800}

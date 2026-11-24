@@ -10,7 +10,7 @@
 
 STATE (Transient/facing_regen_batch_2026-10-16/state.json, committed) holds one record per picture with a
 semantic status: pending | in_progress | ready | installed | needs_eyes | retryable_failure | skipped.
-Resume runs pending, in_progress (a crash) and retryable_failure (attempts < MAX_ATTEMPTS); never re-runs
+Resume runs pending, in_progress (a crash) and retryable_failure (see due()); never re-runs
 installed/needs_eyes/skipped. Install = art.py install --file <candidate> --owner-said <his words>, only when the
 lint passes, the canon Must-show grader did not FAIL (Star Wars creatures), and the live picture is unchanged since
 plan time (someone else touching it -> needs_eyes). Commits go through ./publish in batches (explicit paths).
@@ -36,6 +36,8 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[3]
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "artpipe"))
+sys.path.append(str(HERE.parents[1] / "rimflow"))
+import failure_class as FC  # noqa: E402
 import facing_regen as R  # noqa: E402
 import facing_scale_lint as L  # noqa: E402
 
@@ -48,7 +50,7 @@ CAND = REPO / "Transient" / BATCH.name / "candidates"     # in-clone copies art.
 WORK = Path(rm_str("scratch", "facing_regen_batch"))   # raw renders: not in the repo
 ROWS = Path(os.environ.get("FACING_REGEN_ROWS") or REPO / "Transient/facing_rescale_2026-10-16/lint_after_reseat.json")
 TAG = "standtall_b1"
-MAX_ATTEMPTS = 2                                 # whole-picture attempts (each = up to GEN_TRIES per facing)
+MAX_ATTEMPTS = 2     # whole-picture attempts (each = up to GEN_TRIES per facing) of an old record, with no outcome
 GEN_TRIES = 3
 QUOTE = ("Can you just please accept the newly redone base standing creatures and move on? That sheet is causing me "
          "a headache. LEt's just get going.")
@@ -176,6 +178,16 @@ def sandbox_guard(home: Path) -> None:
         raise RuntimeError(f"STOP: sandbox setup required in {home}/.sandbox")
 
 
+def due(v: dict) -> bool:
+    """A picture this run draws. A render that died (the Codex call failed or raised) spends no attempt (failure_class);
+    one `run` tries each picture once, so it is tried again only by the next `run`."""
+    if v["status"] in ("pending", "in_progress"):
+        return True
+    if v["status"] != "retryable_failure":
+        return False
+    return not FC.read(v["outcome"]).counts if v.get("outcome") else v["attempts"] < MAX_ATTEMPTS
+
+
 def run_one(key: str, row: dict, home: Path) -> None:
     st = load()["items"][key]
     env_home = str(home)
@@ -205,7 +217,7 @@ def run_one(key: str, row: dict, home: Path) -> None:
                     break
                 time.sleep(20)
             if not ok:
-                update(key, status="retryable_failure", why=f"codex gen failed {GEN_TRIES}x on {f}: "
+                update(key, status="retryable_failure", outcome=FC.LK.APPARATUS, why=f"codex gen failed {GEN_TRIES}x on {f}: "
                        + (p.stderr or p.stdout)[-200:], seconds=round(time.time() - t0))
                 log({"key": key, "event": "gen_fail", "facing": f})
                 return
@@ -319,7 +331,7 @@ def run(jobs: int) -> int:
         rows.setdefault(r["texPath"].lower(), r)
     st = load()
     todo = [k for k, v in st["items"].items()
-            if v["status"] in ("pending", "in_progress") or (v["status"] == "retryable_failure" and v["attempts"] < MAX_ATTEMPTS)]
+            if due(v)]
     print(f"{len(todo)} to run; {status()}", flush=True)
     # ONE worker on the SHARED home (coordinator 2026-10-16): an isolated per-worker home whose sandbox seed predates
     # the current codex.exe re-runs Codex's Windows sandbox setup -> a UAC dialog on the owner's screen.
@@ -339,7 +351,7 @@ def run(jobs: int) -> int:
         try:
             run_one(key, rows[key], home)
         except Exception as exc:  # noqa: BLE001 — recorded, never fatal to the batch
-            update(key, status="pending" if STOP.is_set() else "retryable_failure", why=f"{type(exc).__name__}: {exc}"[:300])
+            update(key, status="pending" if STOP.is_set() else "retryable_failure", outcome=FC.LK.APPARATUS, why=f"{type(exc).__name__}: {exc}"[:300])
             log({"key": key, "event": "exception", "err": repr(exc)[:300]})
         finally:
             with flock:

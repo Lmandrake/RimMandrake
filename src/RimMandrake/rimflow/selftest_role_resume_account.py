@@ -211,6 +211,15 @@ def test_chain_and_limits():
         acts = supervise(sch, st, ob, t + 30)
         check("resume %d's death raises no failed alarm" % n, not failed_alarms(acts))
     check("past RESUME_MAX the chain is given up, said", "resume" not in rs)
+    # an-account-ending-after-work-spends-no-resume: only resumes in a row that did no work are counted
+    for n in (3, 7):
+        rec, why = RL.resume_record({"unit": "U", "tokens": 9000, "session": "s", "resume_of": "U0", "resume_n": n},
+                                    {"result": "usage limit"}, "429", 100.0, {})
+        check("an-account-ending-after-work-spends-no-resume: resume_n %d, real usage -> resumed (%s)" % (n, why),
+              bool(rec) and rec["n"] == 1)
+    rec, why = RL.resume_record({"unit": "U", "tokens": 0, "session": "s", "resume_of": "U0", "resume_n": 3},
+                                {"result": "usage limit"}, "429", 100.0, {})
+    check("an-account-ending-after-work-spends-no-resume: three in a row that did no work are given up (%s)" % why, rec is None)
     # no reset named: RESUME_WAIT_S
     rec, why = RL.resume_record({"unit": "U", "tokens": 9, "session": "s"}, {"result": "rate limited"}, "429", 100.0, {})
     check("no reset in the text: due after RESUME_WAIT_S", rec["due"] == 100.0 + RL.RESUME_WAIT_S)

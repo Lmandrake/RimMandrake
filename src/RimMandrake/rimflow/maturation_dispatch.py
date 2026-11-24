@@ -3636,6 +3636,7 @@ REPAIR_KEEP = {"live", "owner_hold", "pipeline_paused", "control_off", "disabled
 REPAIR_LAUNCH_MOST = 3      # a repair launcher refused this many times names the Conductor (danger: the repair launch
                             # itself refused forever, each tick re-sending it; evidence: the night of 2026-11-20, where
                             # every refused launch was re-sent until a hand came)
+VOID_REPAIR_WAIT_S = 3600   # after a killed repair run (danger and evidence: as REPAIR_LAUNCH_MOST, a launch re-sent each tick)
 FAULT_REPAIRS_MOST = 2      # boundary page LIMITS: two repair runs that did not hold mean the fix is unknown
 
 
@@ -3750,6 +3751,8 @@ def fault_repair_step(root, cfg, st, rows, now, apply, fx=None):
             continue
         hand = max([c.get("at") or 0 for c in s.get("cleared") or [] if isinstance(c, dict)] or [0])
         reps = [x for x in s.get("fault_repairs") or [] if isinstance(x, dict) and (x.get("at") or 0) > hand]
+        dead = reps[-1] if reps and reps[-1].get("state") == "void" else None
+        reps = [x for x in reps if x.get("state") != "void"]     # a killed repair run is none of them (failure_class)
         live = next((x for x in reps if x.get("state") == "running"), None)
         if live:
             r["why"] += "; repairing: repair run %s is on it" % live.get("unit")
@@ -3758,6 +3761,10 @@ def fault_repair_step(root, cfg, st, rows, now, apply, fx=None):
             r["need"] = ("%s: the fault loop tripped again after %d repair runs (%s): the fix is unknown; the Conductor "
                          "reads it" % (r["mod"], len(reps), ", ".join(str(x.get("unit")) for x in reps)))
             r["why"] += "; " + r["need"]
+            continue
+        if dead and now < (dead.get("ended_at") or 0) + VOID_REPAIR_WAIT_S:
+            r["why"] += "; repair run %s did not count (%s): the next one in %d min" % (
+                dead.get("unit"), dead.get("void"), ((dead.get("ended_at") or 0) + VOID_REPAIR_WAIT_S - now) / 60)
             continue
         if not (apply and do):
             r["why"] += "; would start a repair run"

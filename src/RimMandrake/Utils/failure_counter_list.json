@@ -1,0 +1,233 @@
+{
+ "_doc": "failure_counter_lint.py: each counter of bad outcomes in pipeline machinery whose function does not call failure_class, with what it counts and why no outcome of the work is spent by a machine fault. n: how many times the same text stands in that function.",
+ "counters": {
+  "src/RimMandrake/Utils/art_eval/policy.py::shadow_status::streak < need": {
+   "n": 1,
+   "why": "counts consecutive CLEAN owner reviews, not failures"
+  },
+  "src/RimMandrake/Utils/art_eval/policy.py::shadow_status::streak >= need": {
+   "n": 1,
+   "why": "counts consecutive CLEAN owner reviews, not failures"
+  },
+  "src/RimMandrake/Utils/artpipe/artpiped.py::note_meters::weekly >= WEEKLY_REFUSE": {
+   "n": 1,
+   "why": "the weekly quota meter, not a failure"
+  },
+  "src/RimMandrake/Utils/artpipe/artpiped.py::note_wall_clock::streak >= WALL_CLOCK_STREAK": {
+   "n": 1,
+   "why": "machine brake: slow calls cut the concurrency, no job is charged"
+  },
+  "src/RimMandrake/Utils/artpipe/artpiped.py::process_codex_job::attempts > 1": {
+   "n": 1,
+   "why": "words of a note"
+  },
+  "src/RimMandrake/Utils/artpipe/artpiped.py::process_codex_job::attempts >= cap": {
+   "n": 1,
+   "why": "retries of one worker call; the job is parked as worker_error, which requeue_flakes requeues without spending a requeue"
+  },
+  "src/RimMandrake/Utils/artpipe/idle_fill.py::tick::failed_recently < BUILD_BACKOFF_H * 3600": {
+   "n": 1,
+   "why": "a wait after a failed catalog build, no count"
+  },
+  "src/RimMandrake/Utils/maturation_now.py::boxes_html::x['cycled'] > 1": {
+   "n": 2,
+   "why": "the page shows every run of the stage; nothing is escalated by it"
+  },
+  "src/RimMandrake/Utils/maturation_now.py::conductor_needs::len(ran) >= CYCLE_ALARM": {
+   "n": 1,
+   "why": "`ran` holds the runs that are not void and whose run_view `died` (failure_class.of_run) is false"
+  },
+  "src/RimMandrake/Utils/maturation_now.py::mod_row::x['cycled'] > 1": {
+   "n": 3,
+   "why": "the page shows every run of the stage; nothing is escalated by it"
+  },
+  "src/RimMandrake/Utils/maturation_now.py::mod_row::x['cycled'] >= CYCLE_ALARM": {
+   "n": 1,
+   "why": "the colour of the shown run count; the escalation (conductor_needs) leaves killed and void runs out"
+  },
+  "src/RimMandrake/Utils/maturation_now.py::phone_overview::x['cycled'] > 1": {
+   "n": 1,
+   "why": "the page shows every run of the stage; nothing is escalated by it"
+  },
+  "src/RimMandrake/Utils/maturation_now.py::strip::x_['cycled'] > 1": {
+   "n": 1,
+   "why": "the page shows every run of the stage; nothing is escalated by it"
+  },
+  "src/RimMandrake/Utils/maturation_now.py::top_chips::x['cycled'] > 1": {
+   "n": 1,
+   "why": "the page shows every run of the stage; nothing is escalated by it"
+  },
+  "src/RimMandrake/Utils/nightly_catchup.py::decide::tries >= cap": {
+   "n": 1,
+   "why": "machine brake: starts of the nightly sweep itself; no test or mod is charged"
+  },
+  "src/RimMandrake/Utils/nightly_catchup.py::one_pass::for _ in range(SETTLE_TRIES)": {
+   "n": 1,
+   "why": "polls a unit's state after a start"
+  },
+  "src/RimMandrake/Utils/publish.py::land::attempt + 1 < MAX_TRIES": {
+   "n": 1,
+   "why": "the same loop's last try"
+  },
+  "src/RimMandrake/Utils/publish.py::land::for attempt in range(MAX_TRIES)": {
+   "n": 1,
+   "why": "git push races; on giving up the commit stays intact on HEAD and the refusal names the cause, nothing is charged"
+  },
+  "src/RimMandrake/Utils/testq/archmagi_switch.py::decide::(inp.get('arch_invalid_streak') or 0) >= LATCH_STREAK": {
+   "n": 1,
+   "why": "machine brake: INVALID runs latch the Archmagi lane itself; no chain is charged"
+  },
+  "src/RimMandrake/Utils/testq/archmagi_switch.py::s1_reason::share >= INVALID_SHARE_MAX": {
+   "n": 1,
+   "why": "machine brake: Steve's INVALID share opens the second lane; no chain is charged"
+  },
+  "src/RimMandrake/Utils/testq/fault_monitor.py::step::a['clean_cycles'] >= CLEAN_TO_RESUME": {
+   "n": 1,
+   "why": "counts CLEAN canary cycles, not failures"
+  },
+  "src/RimMandrake/Utils/testq/gaps.py::chain_state::{'PASS', 'FAIL'} <= s.pop('seen')": {
+   "n": 1,
+   "why": "a set test, not a count"
+  },
+  "src/RimMandrake/Utils/testq/ingest.py::finding_names::sum((1 for r in fails if r['row'] == row['row'])) > 1": {
+   "n": 1,
+   "why": "twins of one row id, for a unique name"
+  },
+  "src/RimMandrake/Utils/testq/ingest.py::git_index::for i in range(INDEX_LOCK_TRIES)": {
+   "n": 1,
+   "why": "waits for another process's index.lock; the commit stays owed to the next ingest"
+  },
+  "src/RimMandrake/Utils/testq/testq.py::reconcile::rec.get('auto_retries', 0) < 1": {
+   "n": 1,
+   "why": "one automatic retry of a crashed attempt; the job then ends INTERRUPTED, which ingest notes with no verdict and no counter counts"
+  },
+  "src/RimMandrake/rimflow/acceptance/modledger_cutover_accept.py::<module>::len(mods[m]['never_ran']) > 4": {
+   "n": 1,
+   "why": "words of a list"
+  },
+  "src/RimMandrake/rimflow/control.py::_fault_alarm::n >= FAULT_LIMIT": {
+   "n": 1,
+   "why": "the system-fault meter itself: it counts machine faults by design and charges nothing"
+  },
+  "src/RimMandrake/rimflow/control_acts_export.py::run::for attempt in range(1, TRIES + 1)": {
+   "n": 1,
+   "why": "git push races of the control export; FAILED is said, the next tick tries again"
+  },
+  "src/RimMandrake/rimflow/coverage_judge.py::_judge::tries < ROW_REASK_MAX": {
+   "n": 1,
+   "why": "re-asks of one judge session; a re-ask that dies leaves the round void_system (ad019a7e19)"
+  },
+  "src/RimMandrake/rimflow/coverage_judge.py::stop_reason::len(dead) >= JUDGE_FAULT_LIMIT": {
+   "n": 1,
+   "why": "the judge's system-fault meter: run_void rounds only, no look is spent"
+  },
+  "src/RimMandrake/rimflow/designer_stage.py::main::DEFAULT_CAP < 6 * med": {
+   "n": 1,
+   "why": "a spend figure"
+  },
+  "src/RimMandrake/rimflow/designer_stage.py::main::DEFAULT_CAP <= stages[-1]": {
+   "n": 1,
+   "why": "a spend figure"
+  },
+  "src/RimMandrake/rimflow/designer_stage.py::result_errors::len([x for x in lst((rec or {}).get('failure_modes')) if CT.txt(x)]) < 3": {
+   "n": 1,
+   "why": "counts failure modes the design lists, not failures"
+  },
+  "src/RimMandrake/rimflow/detached_helper.py::finish::steps[0].count('FAILED') >= 2": {
+   "n": 1,
+   "why": "words of the finish step's own report line"
+  },
+  "src/RimMandrake/rimflow/detached_helper.py::reserve_record::for n in range(1, tries + 1)": {
+   "n": 1,
+   "why": "tries of a free record name"
+  },
+  "src/RimMandrake/rimflow/detached_helper.py::scan_marked_live::for attempt in range(RL.SCAN_RETRIES + 1)": {
+   "n": 1,
+   "why": "re-reads of a process list; an unread one is said as unread"
+  },
+  "src/RimMandrake/rimflow/dispatcher.py::one_seat::pend['attempt'] >= sch['max_retries'] + 1": {
+   "n": 1,
+   "why": "rings never consumed: an alarm about the seat's doorbell, rung again after a cooldown"
+  },
+  "src/RimMandrake/rimflow/dispatcher.py::one_seat::streak >= n": {
+   "n": 2,
+   "why": "rings a seat did not take: an alarm about the seat, no item is charged and the ring goes on"
+  },
+  "src/RimMandrake/rimflow/left_open_continue.py::plan::len(done) >= MAX_PER_DAY": {
+   "n": 1,
+   "why": "`done` is today(), which leaves out refused, never started and killed continuations (failure_class)"
+  },
+  "src/RimMandrake/rimflow/maturation.py::gate_step::PC.used(mod, 'blind_cycles_total', blind.get('visit') or 0) >= PC.limit(mod, 'blind_cycles_total', CYCLE_LIMIT)": {
+   "n": 1,
+   "why": "blind cycles entered; a blind run that died is retried inside its own cycle (run_void, blind_auto key)"
+  },
+  "src/RimMandrake/rimflow/maturation_autonomy.py::_route::PC.used(mod, 'blind_cycles_total', f.get('visit') or 0) >= PC.limit(mod, 'blind_cycles_total', M.CYCLE_LIMIT)": {
+   "n": 1,
+   "why": "blind cycles entered; a blind run that died is retried inside its own cycle (run_void, blind_auto key)"
+  },
+  "src/RimMandrake/rimflow/maturation_autonomy.py::tries_left::PC.used(mod, 'launch_tries', int(tries or 1)) < PC.limit(mod, 'launch_tries', int((cfg or {}).get('launch_tries', 3)))": {
+   "n": 1,
+   "why": "launches that never started; past the limit run_void classes the entry void_system, no trial is spent"
+  },
+  "src/RimMandrake/rimflow/maturation_dispatch.py::decide_blind::PC.used(mod, 'blind_cycles_visit', len([x for x in ours if x is not retry])) >= per": {
+   "n": 1,
+   "why": "run_void takes killed, timed out and never started runs out of `ours` first"
+  },
+  "src/RimMandrake/rimflow/maturation_dispatch.py::decide_ingame::PC.used(mod, 'ingame_runs_visit', len([x for x in ours if x is not retry])) >= per": {
+   "n": 1,
+   "why": "run_void takes killed, timed out and never started runs out of `ours` first"
+  },
+  "src/RimMandrake/rimflow/maturation_dispatch.py::fault_repair_step::len(reps) >= FAULT_REPAIRS_MOST": {
+   "n": 1,
+   "why": "`reps` leaves out the void repair runs (form_fault.sync_repairs asks failure_class)"
+  },
+  "src/RimMandrake/rimflow/maturation_dispatch.py::form_repair_step::int(rep.get('repair_tries') or 0) >= REPAIR_LAUNCH_MOST": {
+   "n": 1,
+   "why": "refused launches of the repair run: past the limit the Conductor is named, the mod is not charged; a wait refusal spends none (form_fault.fault_class)"
+  },
+  "src/RimMandrake/rimflow/maturation_dispatch.py::land_ledger::for n in range(LAND_VIEW_TRIES + 1)": {
+   "n": 1,
+   "why": "re-reads of the data clone's view after a landing"
+  },
+  "src/RimMandrake/rimflow/model.py::_apply_live::str(ev['ts']) < DEATHS_FROM": {
+   "n": 1,
+   "why": "a date"
+  },
+  "src/RimMandrake/rimflow/model.py::guard_owed::(g.get('deaths', g.get('outages')) or 0) < n": {
+   "n": 1,
+   "why": "deaths of a settled fix read by the promise sweep; a shared outage charges its host only (shared_outage)"
+  },
+  "src/RimMandrake/rimflow/modledger_backfill.py::fit_said::len(' · '.join((sents[j] for j in sorted(trial)))) <= cap": {
+   "n": 1,
+   "why": "length of a text"
+  },
+  "src/RimMandrake/rimflow/refusal_contract.py::submit::n_refused >= most": {
+   "n": 1,
+   "why": "well-formed refusal verdicts of a judge; a dead or malformed round is not submitted (ad019a7e19)"
+  },
+  "src/RimMandrake/rimflow/role_launch.py::_supervise_one::tries >= 2": {
+   "n": 1,
+   "why": "stop signals sent to one run that will not end"
+  },
+  "src/RimMandrake/rimflow/role_launch.py::scan_marked::for attempt in range(SCAN_RETRIES + 1)": {
+   "n": 1,
+   "why": "re-reads of a process list"
+  },
+  "src/RimMandrake/rimflow/role_launch.py::void_held::len(voids) < RV.SYSTEM_FAULT_LIMIT": {
+   "n": 1,
+   "why": "the system-fault meter of a Designer chain, by design"
+  },
+  "src/RimMandrake/rimflow/role_launch.py::void_route::n >= RV.SYSTEM_FAULT_LIMIT": {
+   "n": 1,
+   "why": "the system-fault meter of a Designer chain, by design"
+  },
+  "src/RimMandrake/rimflow/signal_watch.py::_files_step::tries >= cfg['file_tries']": {
+   "n": 1,
+   "why": "an alarm that the filer itself is broken; the filing is tried again each pass"
+  },
+  "src/RimMandrake/rimflow/stage_dispute.py::role_stage_dispute::for _ in range(int(cfg.get('arbiter_tries', 2)))": {
+   "n": 1,
+   "why": "two asks of an arbiter; with no ruling the dispute reads void, nothing is charged (shadow)"
+  }
+ }
+}

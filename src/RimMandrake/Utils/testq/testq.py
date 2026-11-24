@@ -1777,7 +1777,8 @@ FILL_DRY_RETRY_S = 3 * 86400        # ... and is skipped until its latest run is
 def chain_history(mod, recs=None):
     """-> {chain: [(epoch, kind), ...] oldest first} over finished jobs of MOD, kind per run of that chain:
     "measured" (a row read PASS/FAIL/anything but UNMEASURED), "dry" (every row it ran was UNMEASURED: an unwired or
-    unmeasurable chain) or "void" (its only rows were the site hold: the site, not the chain). NOT_RUN rows are not
+    unmeasurable chain) or "void" (its only rows were the site hold: the site, not the chain; or its job was not DONE:
+    a killed or refused run says nothing of it, failure_class). NOT_RUN rows are not
     runs; a chain named only by NOT_RUN rows gets an empty history (it is known, never run)."""
     hist = {}
     for rec in records("done") if recs is None else recs:
@@ -1795,7 +1796,8 @@ def chain_history(mod, recs=None):
             hist.setdefault(c, [])
             if not ran:
                 continue
-            if all(str(r.get("row") or "").startswith(SITE_HOLD_ROW) for r in ran):
+            if res.get("outcome") not in (None, "DONE") or all(
+                    str(r.get("row") or "").startswith(SITE_HOLD_ROW) for r in ran):
                 kind = "void"
             elif all(r.get("verdict") == "UNMEASURED" for r in ran):
                 kind = "dry"

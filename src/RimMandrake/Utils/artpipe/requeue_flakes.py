@@ -6,8 +6,9 @@
                     master is pending, active or done again (never while it sits in failed/)
 
 failed_canon and bad_job_file are never touched: the first already had the daemon's
-corrected retry, the second needs a human fix. Each job is requeued at most --max times,
-counted from its parked manifests in _requeued_manifests/. Same move the 2026-10-05
+corrected retry, the second needs a human fix. A job is requeued at most --max times for failures of its
+own; a worker that died or a master that failed spends none (failure_class.of_artpipe), counted from its parked
+manifests in _requeued_manifests/. An unreadable one is not counted and is named. Same move the 2026-10-05
 triage made by hand (Transient/biome_ffar/failure_triage_2026-10-05.md):
 job json failed/ -> pending/, manifest -> _requeued_manifests/<id>.manifest.<ts>.json.
 Item: ARTPIPE_REQUEUE_AUTOMATION_1.
@@ -21,7 +22,18 @@ import json
 import time
 from pathlib import Path
 
+import sys
+
+sys.path.append(str(Path(__file__).resolve().parents[2] / "rimflow"))
+import failure_class as FC  # noqa: E402
 from state_dir import require  # D:\ClaudeWork\rimmandrake\artpipe; refuses when absent
+
+
+def manifest(p: Path):
+    try:
+        return json.loads(p.read_text())
+    except (OSError, ValueError):
+        return None
 
 
 def main(argv=None) -> int:
@@ -52,7 +64,10 @@ def main(argv=None) -> int:
             continue
         if ws not in moved:
             continue
-        if len(list(parked.glob(f"{jid}.manifest*.json"))) >= a.max:
+        n, left = FC.count(FC.of_artpipe(manifest(p)) for p in parked.glob(f"{jid}.manifest*.json"))
+        if left.get(FC.UNCLASSED):
+            unreadable.append(f"{jid}: {left[FC.UNCLASSED]} parked manifest(s) of no known outcome, not counted")
+        if n >= a.max:
             skipped["cap"] += 1
             continue
         if ws == "master_failed":
@@ -71,7 +86,7 @@ def main(argv=None) -> int:
             job.rename(pending / job.name)
     print(f"requeue_flakes{' (dry run)' if a.dry_run else ''}: requeued {moved}, skipped {skipped}")
     for u in unreadable:
-        print(f"  unreadable, left in failed/: {u}")
+        print(f"  unreadable: {u}")
     return 0
 
 

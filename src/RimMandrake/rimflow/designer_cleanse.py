@@ -65,6 +65,7 @@ for _p in (HERE, UTILS):
         sys.path.insert(0, _p)
 
 import bar_rule            # noqa: E402
+import failure_class as FC  # noqa: E402
 import mod_owner_hold as MH  # noqa: E402
 
 try:                       # the real gate's refusal, so a caught Refused is the gate's own
@@ -1700,7 +1701,7 @@ Your last message is one JSON object and nothing else:
 
 def _verify(fx, mod, clone, rv_runner, rv_model, records, fixes_text, changed, rnd, base):
     """The verifier's answer. -> (verdicts {id: {verdict, evidence}}, regressions, advisory_late, defects). A record the
-    verifier gives no readable verdict for after one retry stays not_fixed."""
+    verifier gives no readable verdict for after one retry has no entry in verdicts: nobody looked (failure_class)."""
     prompt = converge_verify_prompt(mod, records, fixes_text, changed, rnd)
     kw = {"model": rv_model, "tools": "Read,Grep,Glob"} if rv_runner == "claude" else {"sandbox": "read-only"}
     ids = [r["id"] for r in records]
@@ -1721,8 +1722,6 @@ def _verify(fx, mod, clone, rv_runner, rv_model, records, fixes_text, changed, r
         if not missing:
             break
     defects = ["no readable verdict for %s after one retry" % ", ".join(missing)] if missing else []
-    for i in missing:
-        got[i] = {"verdict": "not_fixed", "evidence": "the verifier gave no readable verdict (asked twice)"}
     return got, regs, late, defects
 
 
@@ -1854,6 +1853,10 @@ def converge_mod(mod, fx, clone=None):
         fixes_text = _read(fp)
         changed = changed_entries(before, proposal_entries(lambda n: _read(os.path.join(out, n))))
         names = [c[0] for c in changed]
+        if (res or {}).get("is_error") and not names and fixes_text is None:
+            # it changed nothing: a run that died spends no round (failure_class); the same round runs on the next start
+            return blocked("converge round %d is not spent: the author run %s (%s)" % (
+                rnd, FC.KILLED, " ".join(str(res.get("result")).split())[:200]))
         refs, _ = check_dir(out)
         verdicts = {}
         bars = _dicts(_dict(_json_file(os.path.join(out, "bars.json"))).get("bars"))
@@ -1866,8 +1869,8 @@ def converge_mod(mod, fx, clone=None):
                 items, truth = blind([b for b in bars if b.get("id") == bar], rng)
                 sort, _u = _blind_sort(fx, mod, rv_runner, rv_model, items, base + ".r%d.%s" % (rnd, r["id"]))
                 if sort is None:
-                    verdicts[r["id"]] = {"verdict": "not_fixed", "evidence": "the cold sort was unreadable twice"}
-                    continue
+                    return blocked("converge round %d is not spent: %s (could not look): the cold sort was unreadable "
+                                   "twice" % (rnd, FC.LK.NO_LOOK))
                 _rows, srefs = score_blind(sort, truth)
                 verdicts[r["id"]] = {"verdict": "not_fixed" if srefs else "fixed",
                                      "evidence": srefs[0]["evidence"] if srefs else "a cold reader sorts every picture "
@@ -1882,6 +1885,9 @@ def converge_mod(mod, fx, clone=None):
             fx.status(mod, "running", "converge round %d: verifier on %d records" % (rnd, len(to_verify)))
             got, regs, rlate, defects = _verify(fx, mod, clone, rv_runner, rv_model, to_verify, fixes_text, changed,
                                                 rnd, base + ".r%d" % rnd)
+            if len(got) < len(to_verify):
+                return blocked("converge round %d is not spent: %s (could not look): %s" % (
+                    rnd, FC.LK.NO_LOOK, "; ".join(defects)))
             verdicts.update(got)
             for x in rlate:
                 late.append(dict(x, round=rnd) if isinstance(x, dict) else {"what": x, "round": rnd})

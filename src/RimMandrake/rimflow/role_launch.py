@@ -115,7 +115,9 @@ AUTH_RX = re.compile(r"failed to authenticate|oauth session expired|login expire
 ACCOUNT_ERRORS = ("usage_limit_reached", "rate_limit", "rate_limit_error", "overloaded_error")
 LIMIT_RX = re.compile(r"hit your (?:\w+ )?limit|usage limit|rate limit", re.I)
 RESUME_WAIT_S = 3600        # no reset named: try again after an hour (a still-dead account just waits again)
-RESUME_MAX = 3              # resumes in one chain; past it the run is given up, said
+RESUME_MAX = 3              # resumes in a row that did no work; past it the run is given up, said. A leg that did work
+#                             and then ended on the account spends none (failure_class: ACCOUNT LIMIT). The danger is a
+#                             login that fails only for role runs (10-30: three such runs spent the day's limits)
 # A Cloudflare challenge page ("Please run /login · API Error: 403 Attention Required! | Cloudflare", 2026-11-13) is
 # transient, not a dead login: a run that did work and died on one is resumed ONCE after CLOUDFLARE_RETRY_S; one that did
 # none gets its slot back (auth_failed_back). RIMMANDRAKE_RESCUE_STRANDED_CONDUCTOR_CLOUDFLARE_SAID_LOGIN.
@@ -1238,8 +1240,10 @@ def resume_record(run, res, err, now, cfg, account=None):
         return None, "no session id on record to resume"
     if run.get("concept"):
         return None, "a stage-machine run is reopened by its stage, never resumed"
-    if n >= RESUME_MAX:
-        return None, "it was resumed %d times already (RESUME_MAX)" % n
+    import failure_class as FC
+    worked = bool(run.get("tokens")) and not FC.read(FC.ACCOUNT, err).counts
+    if n >= RESUME_MAX and not worked:
+        return None, "it was resumed %d times in a row with no work done (RESUME_MAX)" % n
     if err == "cloudflare" and run.get("resume_error") == "cloudflare":
         return None, "it died on a Cloudflare challenge once already and was retried once"
     text = str(res.get("result") or "")
@@ -1248,7 +1252,7 @@ def resume_record(run, res, err, now, cfg, account=None):
     return {"of": run.get("resume_of") or run["unit"], "unit": run["unit"], "session": res.get("session_id") or
             run.get("session"), "account": account, "mode": run.get("mode"), "budget": run.get("budget"), "slot": run.get("slot"),
             "item": run.get("item") or cfg.get("ledger_item"), "error": err,
-            "tokens": run.get("tokens"), "n": n + 1, "at": now,
+            "tokens": run.get("tokens"), "n": 1 if worked else n + 1, "at": now,
             "due": reset if reset is not None else now + wait}, None
 
 

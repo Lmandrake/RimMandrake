@@ -190,12 +190,18 @@ def gate_no(rec, item, gates):
 
 def today(rec, now, root=None):
     """-> the continuations of this chain's item (or this item) launched in the last DAY_S, oldest first. A refused or
-    failed launch ran nothing and spends no slot (no trial is spent by a system failure)."""
+    failed launch ran nothing and spends no slot, and nor does a continuation that died of a system cause
+    (failure_class: no trial is spent by a system failure)."""
     import stop_resume as SR
+    import failure_class as FC
+
+    def died(r):
+        fc = FC.of_run(r) if r.get("status") == "finished" else None
+        return bool(fc and fc.classed and not fc.counts)
     key = rec.get("continue_root_item") or rec.get("item")
     return sorted((r for r in SR.recent_records(root, now)
                    if r.get("continued_from") and (r.get("at") or 0) >= now - DAY_S
-                   and r.get("status") not in ("refused", "launch_failed")
+                   and r.get("status") not in ("refused", "launch_failed") and not died(r)
                    and key in (r.get("continue_root_item"), r.get("item"))), key=lambda r: r.get("at") or 0)
 
 

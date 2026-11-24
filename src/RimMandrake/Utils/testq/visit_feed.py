@@ -35,11 +35,14 @@ PRIORITY = 40               # above the filler's 20; under a hand commission's 5
 # The dispatch tick writes its reading every 60 s; one older than this is a dead step (the same line as
 # ops_watch.MATURATION_READING_MAX_AGE_S), and a check read from it may have run already.
 READING_MAX_AGE_S = 1800
-# A chain whose runs measured nothing (not DONE, or DONE with no PASS/FAIL row for it) this many times since the visit
-# opened is not sent again: the lane cannot run
-# it, and sending it every tick spins the lane (the filler brake's evidence: two filler jobs in a row not DONE; 20 h of
-# lane lost 2026-10-25). It is named in the step's `spent` until the visit reopens.
+# A chain whose jobs failed by their own fault (failure_class: BAD REQUEST, the same job is refused again) this many
+# times since the visit opened is not sent again: sending it every tick spins the lane (the filler brake's evidence: two
+# filler jobs in a row not DONE; 20 h of lane lost 2026-10-25). It is named in the step's `spent` until the visit reopens.
 FAILS_TO_STOP = 2
+# A run that held the lane and whose outcome is not the chain's own (killed, INVALID, no verdict read, or nobody can
+# class it) spends nothing (RIMMANDRAKE_SHARE_ONE_FAILURE_CLASSIFIER_EVERY_COUNTER_ROLLED_ITS_OWN): the chain waits
+# BOUNCE_BACKOFF_S, doubled for each such run in a row, this long at most, and is named in `faults`.
+FAULT_BACKOFF_MAX_S = 7200
 # A run the lane refused before the chain ran (REFUSED for a cause in testq.ARCH_BOUNCE - deploy, load, the guard's
 # hold - or SYNC, the runner's pull) measured nothing about the chain and is not one of those failures: live 2026-11-23,
 # four FlowWorks visit jobs refused LOAD on Steve2 (its game was up) spent six chains, and the feed read `quiet` for six
@@ -53,6 +56,14 @@ BOUNCE_BACKOFF_S = 600
 def _T():
     import testq
     return testq
+
+
+def _failure_class():
+    rf = os.path.join(HERE, "..", "..", "rimflow")
+    if rf not in sys.path:
+        sys.path.append(rf)
+    import failure_class
+    return failure_class
 
 
 def _parse(ts):
@@ -124,10 +135,12 @@ def _measured(res):
 
 
 def waiting(now, blk, recs=None):
-    """-> ({mod: {"opened", "visit", "checks": {check: [chains]}}}, {mod: {chain: failures}}, {mod: {chain: seconds}})
-    for the visits whose checks still wait for a lane run; the second map names the chains not sent again
-    (FAILS_TO_STOP), the third the chains the lane refused just now, held back that many seconds (BOUNCE_BACKOFF_S)."""
+    """-> ({mod: {"opened", "visit", "checks": {check: [chains]}}}, {mod: {chain: failures}}, {mod: {chain: seconds}},
+    {mod: {chain: {word: n}}}) for the visits whose checks still wait for a lane run; the second map names the chains not
+    sent again (FAILS_TO_STOP), the third the chains held back that many seconds (BOUNCE_BACKOFF_S, doubled per fault in
+    a row), the fourth the outcomes that did not count against a waiting chain (failure_class), by word."""
     T = _T()
+    FC = _failure_class()
     out, unread = {}, {}
     for mod, e in sorted(blk.items()):
         if not isinstance(e, dict) or e.get("error") or e.get("hold_unreadable") or e.get("held") \
@@ -142,12 +155,12 @@ def waiting(now, blk, recs=None):
             continue
         out[mod] = {"opened": t0, "visit": e.get("visit"), "checks": ch}
     if not out:
-        return {}, ({"unread": unread} if unread else {}), {}
+        return {}, ({"unread": unread} if unread else {}), {}, {}
     gated = {}
     for j in T.records("pending"):
         if j.get("owner_gate") and j.get("mod") in out:
             gated.setdefault(j["mod"], set()).update(_chains(j))
-    ran, fails, bounced = {}, {}, {}
+    ran, runs, bounced = {}, {}, {}
     lane = set(getattr(T, "ARCH_BOUNCE", ())) | LANE_REFUSALS
     for rec in T.records("done") if recs is None else recs:
         j, res = T.job_of(rec), rec.get("result") or {}
@@ -166,7 +179,20 @@ def waiting(now, blk, recs=None):
             if c in measured or "*" in measured:
                 ran.setdefault(m, set()).add(c)
             else:
-                fails.setdefault(m, {})[c] = fails.setdefault(m, {}).get(c, 0) + 1
+                runs.setdefault((m, c), []).append((fin, FC.of_testq(rec, c)))
+    fails, faults, held = {}, {}, {}
+    for (m, c), rs in runs.items():
+        n, left = FC.count(r for _, r in rs)
+        if n:
+            fails.setdefault(m, {})[c] = n
+        if left and c not in ran.get(m, set()):
+            faults.setdefault(m, {})[c] = left
+        rs.sort(key=lambda x: x[0])
+        row = 0
+        while row < len(rs) and not rs[-1 - row][1].counts:
+            row += 1
+        if row:     # the faults in a row at the end: each doubles the wait
+            held.setdefault(m, {})[c] = rs[-1][0] + min(FAULT_BACKOFF_MAX_S, BOUNCE_BACKOFF_S * 2 ** min(row - 1, 20))
     spent, backoff = {}, {}
     for m in list(out):
         keep = {}
@@ -178,8 +204,8 @@ def waiting(now, blk, recs=None):
             if dead:
                 spent.setdefault(m, {}).update({c: fails[m][c] for c in dead})
             left = [c for c in left if c not in dead]
-            wait = {c: int(bounced[m][c] + BOUNCE_BACKOFF_S - now) for c in left
-                    if bounced.get(m, {}).get(c, 0) + BOUNCE_BACKOFF_S > now}
+            due = {c: max(bounced.get(m, {}).get(c, 0) + BOUNCE_BACKOFF_S, held.get(m, {}).get(c, 0)) for c in left}
+            wait = {c: int(t - now) for c, t in due.items() if t > now}
             if wait:
                 backoff.setdefault(m, {}).update(wait)
             left = [c for c in left if c not in wait]
@@ -191,7 +217,7 @@ def waiting(now, blk, recs=None):
             del out[m]
     if unread:
         spent["unread"] = unread
-    return out, spent, backoff
+    return out, spent, backoff, faults
 
 
 def _order(w, recs):
@@ -236,12 +262,12 @@ def step(now=None, n=None, dry=False):
     if blk is None:
         return {"state": "unmeasured", "why": why}
     recs = T.records("done")
-    w, spent, backoff = waiting(now, blk, recs)
+    w, spent, backoff, faults = waiting(now, blk, recs)
     if not w:
         if spent.get("unread"):
             return {"state": "unmeasured", "why": "nothing readable waits, but not read: %s" % spent["unread"]}
-        if backoff:     # {mod: {chain: seconds left}}: the lane refused them just now (LANE_REFUSALS); never `quiet`
-            return {"state": "backoff", "backoff": backoff, "spent": spent}
+        if backoff:     # {mod: {chain: seconds left}}: refused (LANE_REFUSALS) or at fault just now; never `quiet`
+            return {"state": "backoff", "backoff": backoff, "spent": spent, "faults": faults}
         return {"state": "quiet", "spent": spent}
     r = subprocess.run(["git", "-C", T.REPO, "rev-parse", "--short", "origin/main"], capture_output=True, text=True,
                        timeout=60)
@@ -261,7 +287,7 @@ def step(now=None, n=None, dry=False):
         pick = chains[:n]
         if dry:
             return {"state": "would_queue", "mod": mod, "chains": pick, "visit": e["visit"], "spent": spent,
-                    "backoff": backoff,
+                    "backoff": backoff, "faults": faults,
                     "waiting": {m: len(v["checks"]) for m, v in w.items()}}
         rc, text = _submit(T, mod, pick, sha, e)
         gone = T.unknown_chains(text) if rc != 0 else set()
@@ -275,7 +301,7 @@ def step(now=None, n=None, dry=False):
                 job = None
             T.log("visit feed: %s visit %s %s -> %s" % (mod, e["visit"], ",".join(pick), job))
             return {"state": "queued", "job": job, "mod": mod, "chains": pick, "visit": e["visit"], "spent": spent,
-                    "backoff": backoff,
+                    "backoff": backoff, "faults": faults,
                     "waiting": {m: len(v["checks"]) for m, v in w.items()}}
         refused[mod] = text.strip()[-300:]
     T.log("visit feed: every waiting mod refused: %s" % json.dumps(refused)[:400])

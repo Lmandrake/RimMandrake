@@ -20,7 +20,8 @@ Per red item, in due order, one decision:
   live          a detached run is live on the item: nothing
   green         every test of the group passed on the last night: nothing (the build cop clears the alarm)
   attempted     this night's one attempt was made: nothing
-  stopped       an attempt ended and the item is still open: nothing, ever, until `clear`; one Needs Conductor line in
+  system_wait   the last try never started or died of a system cause: it spends no attempt; the next waits SYSTEM_WAIT_S
+  stopped       an attempt ended on its own merits and the item is still open: nothing, ever, until `clear`; one Needs Conductor line in
                 the Conductor log, once. There is no automatic reject-and-retry loop (the owner's condition, 2026-11-14).
   held          no mod has a passed Design Version yet (nightly_scope.py; owner by card 2026-11-15): no fixer at all
   night_cap | slots_full | account_hold | disabled   caps: max_launches_per_night, max_live, the Dispatcher's account pick
@@ -42,12 +43,16 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+import failure_class as FC  # noqa: E402
 
 ITEM = "RIMMANDRAKE_ROUTE_NIGHTLY_REDS_RAISED_INTO_A_RETIRED_POOL"
 CFG_PATH = os.path.join(HERE, "red_dispatch.json")
 PREFIXES = ("SELFTEST_FIX_", "NIGHTLY_COP_FIX_")
 ALARM_PREFIX = "NIGHTLY_RED:testing.red_"
 CLOSED = ("done", "dropped", "superseded")
+# after a try that did not count (it never started, or died of a system cause): the danger is a launch sent again every
+# 10 min into the same refusal (the night of 2026-11-20, maturation_dispatch.REPAIR_LAUNCH_MOST)
+SYSTEM_WAIT_S = 3600
 PAC = dt.timezone(dt.timedelta(hours=-8), "PST")
 NIGHT_START_H = 3
 
@@ -141,6 +146,9 @@ def detached_runs(ids):
         st = DH.live_status(rec)
         r = out.setdefault(rec["item"], {"live": [], "ended": []})
         r["live" if st in ("launching", "running") else "ended"].append(rec["unit"])
+        fc = FC.of_run(rec)
+        if st not in ("launching", "running") and not fc.counts:
+            r.setdefault("system", {})[rec["unit"]] = "%s (%s)" % (fc.word, fc.why)
     return out
 
 
@@ -206,12 +214,25 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if run.get("live"):
             put("live", "%s is live on it" % ", ".join(run["live"]))
             continue
-        att = s.get("attempts") or []
+        att, died = s.get("attempts") or [], None
         if att and not s.get("cleared_after_attempt"):
             last = att[-1]
             if last.get("night") == night and not last.get("failed") and last.get("unit") not in (run.get("ended") or []):
                 put("attempted", "tonight's attempt %s is recorded and its unit is not seen ended yet" % last.get("unit"))
                 continue
+            fc = FC.of_launch(last["failed"]) if last.get("failed") else None
+            died = "%s (%s)" % (fc.word, fc.why) if fc and not fc.counts else (run.get("system") or {}).get(last.get("unit"))
+            if died:        # it spends no attempt (failure_class): the next try waits, and the night cap still binds
+                since = last.setdefault("died_at", last.get("at") if last.get("failed") else now)
+                if now < (since or 0) + SYSTEM_WAIT_S:
+                    put("system_wait", "its last try did not count (%s); the next one from %s" % (
+                        died, pac((since or 0) + SYSTEM_WAIT_S)))
+                    n_died = sum(1 for a in att if a.get("died_at") is not None)
+                    if n_died >= 3 and not s.get("told"):
+                        row["need"] = "%s: %d tries ended without a fixer's answer; the last: %s" % (iid, n_died, died)
+                    continue
+        if att and not s.get("cleared_after_attempt") and not died:
+            last = att[-1]
             why = ("the automatic launch on %s failed: %s" % (last.get("night"), last.get("failed")) if last.get("failed")
                    else "attempt %s (%s, %s) ended and the item is still %s" % (last.get("unit"), last.get("model"),
                                                                                 last.get("night"), led["state"]))

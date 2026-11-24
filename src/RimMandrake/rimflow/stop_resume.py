@@ -34,6 +34,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import detached_helper as DH  # noqa: E402
+import failure_class as FC  # noqa: E402
 
 REPO = DH.REPO
 PLAN_DIR = os.environ.get("RM_SWITCH_PLAN_DIR", "/mnt/d/ClaudeWork/rimmandrake/switching_plan")   # switching_plan.OUT
@@ -50,7 +51,9 @@ LAUNCH_LOOKBACK_S = 10 * 86400   # runs launched longer ago are read only if the
 CUTOFF = datetime.datetime(2026, 11, 17, 16, 30, tzinfo=datetime.timezone.utc).timestamp()
 FRESH_S = 20 * 60      # switching_plan.NOTICE_FRESH_S: an older reading means the plan's timer stopped
 CLAIM_S = 900          # a claim older than this is a sweep that died mid-launch (the later-record check still holds)
-MAX_TRIES = 3          # a resume refused this many times is given up, and said so
+MAX_TRIES = 3          # a resume refused this many times is said so, and then tried every REFUSED_WAIT_S
+# the danger: a launch sent again on every pass into the same refusal (the night of 2026-11-20, REPAIR_LAUNCH_MOST)
+REFUSED_WAIT_S = 3600
 RETURN_GRACE_S = DH.RETURN_WAIT_S + 300     # a return not done by then is not waited for
 # a run's own transcript begins within 64 s of its launch (427 runs on 2026-11-17, measured: clone sync, then claude)
 SESSION_START_S = 300
@@ -58,7 +61,7 @@ SESSION_START_S = 300
 # a run resumed then is killed again by it
 NO_HEADROOM = ("soft", "stop", "stopped", "grace")
 DECISIONS = ("normal", "soft", "switch", "stop", "stopped", "start", "hold", "poll", "passive", "grace")
-ACTIONABLE = ("resume", "park", "mark", "refuse", "give_up")
+ACTIONABLE = ("resume", "park", "mark", "refuse", "give_up", "say_refused")
 SWEEP_UNIT = "rm-stop-resume"
 
 
@@ -313,9 +316,17 @@ def classify(rec, stops, siblings, ctx, now):
     claim = rec.get("resume_claim")
     if claim and now - claim < CLAIM_S:
         return {**base, "act": "wait", "why": "another sweep claimed it at %s" % local(claim)}
-    if int(rec.get("resume_attempts") or 0) >= MAX_TRIES:
-        return {**base, "act": "give_up", "why": "refused %d times (last: %s)" % (
-            MAX_TRIES, str(rec.get("resume_last_refusal") or "")[:200])}
+    n, last = int(rec.get("resume_attempts") or 0), str(rec.get("resume_last_refusal") or "")
+    if n >= MAX_TRIES:
+        why = "refused %d times (last: %s)" % (n, last[:200])
+        if FC.of_launch(last).counts:
+            return {**base, "act": "give_up", "why": why}
+        # a launch that never started spends no resume (failure_class): it is said once, then tried every REFUSED_WAIT_S
+        if not rec.get("resume_refused_said"):
+            return {**base, "act": "say_refused", "why": why}
+        due = (rec.get("resume_refused_at") or 0) + REFUSED_WAIT_S
+        if now < due:
+            return {**base, "act": "wait", "why": "%s; the next try from %s" % (why, local(due))}
     sid = session_of(rec, ctx["projects"])
     brief = None
     if not sid:
@@ -462,6 +473,7 @@ def resume(rec, x, now, root, repo, projects, launch_fn, log_path):
         return {**x, "act": "resumed", "new": new}
     rec["resume_attempts"] = int(rec.get("resume_attempts") or 0) + 1
     rec["resume_last_refusal"] = str(text)[:500]
+    rec["resume_refused_at"] = now
     DH.write_record(rec, root)
     return {**x, "act": "refused_launch", "why": str(text)[:300]}
 
@@ -508,6 +520,11 @@ def sweep(now=None, root=None, plan_dir=None, acct_log=None, repo=None, projects
                 say("NOT resumed %s (%s), stopped %s by %s: %s" % (x["unit"], x["item"], local(x["stop"]["ts"]),
                                                                    how_stopped(x["stop"]), x["why"]), now, log_path)
                 x = {**x, "act": "refused"}
+            elif act == "say_refused":
+                rec["resume_refused_said"] = {"at": now, "why": x["why"]}
+                DH.write_record(rec, root)
+                say("resume of %s (%s) %s; it is tried again every %d min until the cause clears" % (
+                    x["unit"], x["item"], x["why"], REFUSED_WAIT_S // 60), now, log_path)
             elif act == "give_up":
                 rec["resume_gave_up"] = {"at": now, "why": x["why"]}
                 DH.write_record(rec, root)

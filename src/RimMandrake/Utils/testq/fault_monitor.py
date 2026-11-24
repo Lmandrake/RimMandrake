@@ -77,7 +77,6 @@ BLIND_S = 20 * 60                   # reachable, up this long, and no cycle this
 HOLD_S = 2 * 3600                   # a result waits this long for a clean cycle, then counts as unguarded
 STALE_S = 30 * 60                   # a reading older than this says nothing (hold goes on, check fails)
 RERUN_WITHIN_S = 48 * 3600          # older quarantined jobs are not re-queued; the fill's gap scan owns those
-RERUN_DEPTH = 2                     # a job re-queued this many times stays out
 
 _TS = r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d)Z"
 CYCLE_RE = re.compile("^" + _TS + r" CYCLE uptime_h=([\d.]+) bad_cpus=\[([\d,\s]*)\]")
@@ -300,7 +299,7 @@ def quarantine_move(rec, window, extra):
 
 
 def rerun_job(rec, now=None):
-    """-> a new pending job for a quarantined item job, or None (no item, too old, re-queued often enough)."""
+    """-> a new pending job for a quarantined item job, or None (no item, too old, on a hold)."""
     job = rec["job"]
     if not (job.get("item") or job.get("row_items")):
         return None
@@ -311,9 +310,9 @@ def rerun_job(rec, now=None):
     if not span or now - span[1] > RERUN_WITHIN_S:
         return None
     reruns = T.read_json(T.q("fault_reruns.json")) or {}
+    # counted, never a stop: a machine fault spends no re-run (failure_class: ENVIRONMENT FAULT). What bounds it is the
+    # drained and rebooted host of each window (MAX_REBOOTS_DAY, STUCK)
     depth = reruns.get(job["id"], 0) + 1
-    if depth > RERUN_DEPTH:
-        return None
     kw = {k: job[k] for k in S.DEFAULTS if k in job and k not in ("not_before", "supersedes")}
     new = S.make_job(job["mod"], job["selector"], job["purpose"], job["requested_by"], job["source_sha"], **kw)
     reruns[new["id"]] = depth

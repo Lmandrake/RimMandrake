@@ -1006,7 +1006,21 @@ def shared_row_name_checks():
         I.rimflow, I.recorded_run, I.shard_path = saved
 
 
+def tries_checks():
+    """a-verdict-is-not-dropped-by-a-crash: a crash or a timeout of the ingest spends none of the record's tries; a
+    refusal by rimflow does."""
+    sys.path.insert(0, HERE)
+    import ingest as I
+    f = getattr(I, "tries_after", lambda pend, err: (pend.get("tries", 0) + 1, pend.get("tries", 0) + 1 >= I.MAX_TRIES))
+    for err in ("crash: TimeoutExpired: Command 'cli.py verify' timed out after 120 seconds", "crash: OSError: [Errno 5]"):
+        check(f({"tries": 5}, err) == (5, False), "a-verdict-is-not-dropped-by-a-crash: %s (got %s)" % (err[:40], f({"tries": 5}, err)))
+    check(f({"tries": 5}, "verify refused: no item X on the ledger") == (6, True),
+          "a-verdict-is-not-dropped-by-a-crash: the sixth refusal by rimflow marks the record, as before")
+    check(f({}, "verify refused: no item X on the ledger") == (1, False), "a-verdict-is-not-dropped-by-a-crash: the first does not")
+
+
 def main():
+    tries_checks()
     crash_checks()
     review_r1_checks()
     shared_row_name_checks()
@@ -1063,6 +1077,9 @@ def main():
         verifies = [e for e in evs if e["event"] == "verify" and e.get("id") not in (LANE, MANY_A, MANY_B, FILL)]
         check(sorted(e["result"] for e in verifies) == ["fail", "partial", "pass"],
               "one verify per DONE job, results fail/pass/partial: %s" % [e["result"] for e in verifies])
+        check({e["result"]: e.get("outcome") for e in verifies} == {"pass": None, "fail": None, "partial": "COULD NOT LOOK"},
+              "ingest-says-could-not-look: the partial run, unmeasured rows and no FAIL row, says COULD NOT LOOK: %s"
+              % [(e["result"], e.get("outcome")) for e in verifies])
         check(all(e["seat"] == "RUNNER" and e["config"] == "steve-targeted" and e["sha"] == "def5678" and
                   "Mock_1.html" in e["evidence"] for e in verifies), "verifies carry seat, config, sha and the sheet")
         fnd = [e for e in evs if e["event"] == "finding" and e.get("id") != LANE and not e["from"].startswith(("MANY_ROWS", FILL))]

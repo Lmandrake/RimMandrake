@@ -240,7 +240,7 @@ def main():
           and ce[0].get("resume_session") == "66666666-aaaa-bbbb-cccc-000000000006", str(ce)[:200])
     check("E: its note says hard stop", ce and "hard stop" in ce[0]["brief"], (ce[0]["brief"] if ce else "")[:200])
 
-    # a refused launch counts tries and stops at the cap
+    # a-refused-resume-is-tried-again: a refused launch spends nothing; it is said once, and waits between tries
     T3 = T_STOP + 80000
     rf = rec("rf", "ITEM_RF", T3 - 3000, resume_session="77777777-aaaa-bbbb-cccc-000000000007", ended=T3 - 2,
              result="killed: exit-code (exited 143)", returned=T3 + 20)
@@ -253,8 +253,16 @@ def main():
         return 2, "refused: test"
     for k in range(SR.MAX_TRIES + 2):
         sweep(refuse, T3 + 310 + k * 300)
-    check("a refused resume is tried at most MAX_TRIES times", len(tries) == SR.MAX_TRIES,
+    check("a-refused-resume-is-tried-again: after MAX_TRIES refusals it waits", len(tries) == SR.MAX_TRIES,
           "%d tries, cap %d" % (len(tries), SR.MAX_TRIES))
+    T3b = T3 + 310 + (SR.MAX_TRIES - 1) * 300 + getattr(SR, "REFUSED_WAIT_S", 3600) + 5
+    set_plan([plan_line("switch", T3, acted=True, to="system"), plan_line("normal", T3b - 10)])
+    took = [c for c in sweep(refuse, T3b) if c.get("unit") == rf]
+    check("a-refused-resume-is-tried-again: never given up, tried again after REFUSED_WAIT_S",
+          len(tries) == SR.MAX_TRIES + 1 and not (DH.read_record(rf, STATE) or {}).get("resume_gave_up"),
+          "%d tries, %s" % (len(tries), took))
+    said = (DH.read_record(rf, STATE) or {}).get("resume_refused_said")
+    check("a-refused-resume-is-tried-again: said once, when it was refused MAX_TRIES times", bool(said), said)
     review_cases()
 
     wiring()

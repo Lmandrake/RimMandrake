@@ -245,6 +245,17 @@ def t_fill_policy():
     check(not T.is_dry(h["once"], now), "one UNMEASURED run is not yet dry")
     check(not T.is_dry(h["old_dry"], now), "a dry chain is re-tried once its last run is older than the retry window")
     check(not T.is_dry(h["void"], now), "VOID runs (site hold only) never make a chain DRY")
+    # a-dry-chain-is-read-from-done-runs-only: a run that was killed read nothing, whatever rows it left behind
+    killed = [rec("2026-10-20T00:00:00Z", [("kd", "a", "UNMEASURED")]), rec("2026-10-21T00:00:00Z", [("kd", "a", "UNMEASURED")])]
+    for d, (o, c) in zip(killed, (("INTERRUPTED", "CRASH"), ("INVALID", "GAME_DIED"))):
+        d["result"].update(outcome=o, cause=c)
+    kh = T.chain_history("Mock", killed)["kd"]
+    check([k for _, k in kh] == ["void", "void"] and not T.is_dry(kh, now),
+          "a-dry-chain-is-read-from-done-runs-only: killed runs never make a chain DRY: %s" % kh)
+    for d in killed:
+        d["result"].update(outcome="DONE", cause=None)
+    check(T.is_dry(T.chain_history("Mock", killed)["kd"], now),
+          "a-dry-chain-is-read-from-done-runs-only: the same rows from DONE runs still do")
     today = [rec("2026-10-22T01:00:00Z", [], start="2026-10-22T00:56:00Z"),
              rec("2026-10-22T02:00:00Z", [], start="2026-10-22T01:50:00Z")]
     check(T.fill_spent_s(today) == 840, "lane time spent = sum of today's filler walls: %s" % T.fill_spent_s(today))

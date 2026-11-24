@@ -68,7 +68,7 @@ to diagnose and restart the lane. ON by default, with these guards:
   one at a time   a fixed transient unit (systemd-run --user --unit testq-steward-wake); an active one blocks another
   hard caps       spend_watchdog --cap-usd TESTQ_WAKE_BUDGET_USD (5), from outside the agent (never --max-budget-usd:
                   the agent is not told its spend, owner 2026-11-16) and RuntimeMaxSec TESTQ_WAKE_MAX_S (2700 s)
-  no loop         one wake per incident, and TESTQ_WAKE_COOLDOWN_S (4 h) between any two (QHOME/wake.json)
+  no loop         one wake per incident (one that died of no fault of its own is tried again), and TESTQ_WAKE_COOLDOWN_S (4 h) between any two (QHOME/wake.json)
   login           held while `claude auth status` says the login is gone; a wake that dies on auth anyway gives its
                   cooldown back and goes again, at most TESTQ_WAKE_RETRIES (2) times (OPS_ALARM_RETRY_AFTER_AUTH_DEATH:
                   10-30 08:58Z died in seconds, was reported started, and a braked lane sat 14 h)
@@ -103,6 +103,8 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+sys.path.append(os.path.join(HERE, "..", "..", "rimflow"))
+import failure_class as FC  # noqa: E402
 import schema as S  # noqa: E402
 import testq as T  # noqa: E402
 import brake_release as BR  # noqa: E402
@@ -440,14 +442,18 @@ def settle_wake(inc, now, src="steward"):
         mine = bool(inc) and inc.get("item") == rec.get("item")
         said = "the wake started %s died: %s" % (rec.get("ts"), text)
         again = False
+        out = FC.read(FC.ACCOUNT if verdict == "auth" else FC.TIMED_OUT if text.startswith("exit unrecorded") else FC.ENDED)
         if verdict == "auth":
-            rec["epoch"] = None                     # the cooldown paces work done; this did none
             again = mine and inc.get("wake_retries", 0) < int(os.environ.get("TESTQ_WAKE_RETRIES", "2"))
+            if again or not mine:
+                rec["epoch"] = None                 # the cooldown paces work done; this did none
         if mine:
             if again:
                 inc["wake_retries"] = inc.get("wake_retries", 0) + 1
                 inc.pop("wake", None)
                 said += "; it wakes again once the login works"
+            elif not out.counts:        # it did not count (failure_class): not the incident's one wake, tried again
+                inc["wake"] = "skipped: %s; it wakes again after its cooldown" % said
             else:
                 inc["wake"] = said
     S.dump(rec, path("wake.json"))

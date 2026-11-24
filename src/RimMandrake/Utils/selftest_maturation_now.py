@@ -447,6 +447,16 @@ def p9_cycles():
     m["boxes"] = box
     lines = [t for _, t in M.box_lines(m, "1", box["1"])]
     check("9 the box says CYCLED with the count", any("CYCLED: this stage has run 2 times" in x for x in lines), "%r" % lines)
+    # a-killed-run-is-no-cycle-on-the-page: a run that died of a cause outside the work is in the box and no cycle
+    dead = [dict(recs[0], unit="u-k%d" % k, result="killed: signal (exited 143)", status="finished") for k in range(3)]
+    rk = M.runs_for_mods(["FooMod"], dead + [dict(recs[1])], [], {"FooMod": j}, now,
+                         spend=lambda x: ("UNMEASURED", None, "UNMEASURED"))["FooMod"]
+    mk = {"column": "1", "label": "Foo Mod", "name": "FooMod", "runs": rk, "disagree": [], "his": [], "jquestions": [],
+          "ivs": []}
+    mk["boxes"] = M.stage_boxes(mk, rk, [], "1")
+    said = M.conductor_needs([mk], {}, now)["conductor"]
+    check("9 a-killed-run-is-no-cycle-on-the-page: three killed runs and one real one raise no line",
+          mk["boxes"]["1"]["cycled"] == 4 and not any("has run" in x for x in said), "%r" % said)
     check("9 the live run is in Stage 3's box", box["3"]["cycled"] == 1 and box["3"]["runs"][0]["live"])
     check("9 item names: GSS initials, KNOCKBACK word, a tie names none",
           M.item_mod("RIMMANDRAKE_PROVE_GSS_SWITCHBOARD", ["GimmeSomeSlack", "FlowWorks"]) == "GimmeSomeSlack"
@@ -499,7 +509,7 @@ def p10_reactions():
     rel = ivs + M.parse_interventions("- CONDUCTOR INTERVENED (stage 3, 2026-11-14 12:30 PST, kind release): go.", "j")[0]
     m["boxes"] = M.stage_boxes(m, r, rel, "3")
     check("10 a hold followed by a release is no longer held", m["boxes"]["3"]["held"] is None)
-    r3 = M.runs_for_mods(["FooMod"], fake_recs(now)[:2] * 2, [], {"FooMod": j}, now,
+    r3 = M.runs_for_mods(["FooMod"], fake_recs(now)[:1] * 4, [], {"FooMod": j}, now,
                          spend=lambda r: ("UNMEASURED", None, "UNMEASURED"))["FooMod"]
     for x in r3:
         x["stages"] = ["3"]

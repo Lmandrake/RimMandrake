@@ -56,6 +56,7 @@ PAGES = {
     "design/specs/2026-11-22-non-mod-pipeline-section/boundary.md": "src/RimMandrake/Utils/selftest_maturation_nonmod.py",
     "design/specs/2026-11-22-selftest-deadline/boundary.md": "src/RimMandrake/Utils/selftest_selftest_deadline.py",
     "design/specs/2026-11-21-one-game-lock/boundary.md": "src/RimMandrake/rimflow/selftest_game_lock.py",
+    "design/specs/2026-11-23-one-failure-classifier/boundary.md": "src/RimMandrake/rimflow/selftest_failure_class.py",
     "design/specs/2026-11-22-game-names/boundary.md": "src/RimMandrake/rimflow/selftest_game_names.py",
     "design/specs/2026-11-23-tick-names-steve-games/boundary.md": "src/RimMandrake/rimflow/selftest_tick_names_steve_games.py",
     "design/specs/2026-11-23-live-kinds-exit-reader/boundary.md": "src/RimMandrake/rimflow/selftest_live_kinds.py",

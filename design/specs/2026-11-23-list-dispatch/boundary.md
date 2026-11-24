@@ -46,8 +46,10 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   failing, it gets one more run only when that run left a `LEFT OPEN:` note (its next act) and did not put a wait on the
   item. `max_runs_per_item` (2) runs is the most. Every other end reads `stopped`.
 - **a-launch-that-never-started-is-not-spent.** A launch that returned no unit is recorded with `failed` set and is not
-  counted as a run. After `max_never_started` such launches in a row the item reads `stopped`, so a launch that cannot
-  start is not sent again unchanged on every tick.
+  counted as a run. After `max_never_started` such launches in a row the item reads `system_wait`, is said once, and the
+  next launch waits `SYSTEM_WAIT_S`, so a launch that cannot start is not sent again on every tick. A launch refused for
+  its form reads `stopped` with its repair. A run that died of a cause outside the work is not counted either
+  (`design/specs/2026-11-23-one-failure-classifier/boundary.md`).
 - **a-stop-names-the-outcome-the-reason-and-the-smallest-act.** A `stopped` row carries `need` with `outcome` (the
   check that still fails), `why_not_recovered` and `smallest_act`, all non-empty. The tick writes it once as a Needs
   Conductor line, and not again until the item changes.

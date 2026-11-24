@@ -209,6 +209,44 @@ def t_a_repair_that_did_not_hold_counts_once():
           "a-repair-that-did-not-hold-counts-once: faults %d, cause %s" % (RV.faults(s), (causes or ["-"])[-1][:80]))
 
 
+def t_a_killed_repair_run_is_no_repair():
+    """failure_class: a repair run killed from outside repaired nothing. Its refusal coming back is no fault of substance,
+    it is none of the FAULT_REPAIRS_MOST runs, and it resets no count."""
+    dead = {"status": "finished", "result": "killed: signal (exited 143)"}
+    st, s = state_with("steward", never_started("steward", LOCK_FILE))
+    sync(st)
+    _tick_repair(st, [{"mod": "FakeFlow", "decision": "launch"}], ["FakeFlow"])
+    _tick_repair(st, [{"mod": "FakeFlow", "decision": "launch"}], ["FakeFlow"], record=lambda u: dead)
+    s["steward"] = {"k1": never_started("steward", LOCK_FILE)}
+    sync(st)
+    check(RV.faults(s) == 0 and [x["state"] for x in s["form_repairs"]] == ["void", "owed"]
+          and "KILLED" in s["form_repairs"][0].get("void", ""),
+          "a-killed-repair-run-is-no-repair: form: faults %d, %s" % (RV.faults(s), [x["state"] for x in s["form_repairs"]]))
+    s = {"system_faults": [{"at": NOW - 30 * i, "book": "launches", "unit": "rm-u%d" % i, "cause": "it timed out",
+                            "n": 1} for i in range(3)]}
+    st, calls = {"mods": {"FakeFlow": s}}, []
+
+    def tick(rec, now=NOW):
+        def rl(root, cfg, mod, recs, kind="form"):
+            calls.append(kind)
+            return True, "DETACHED rm-fix-%d" % len(calls), "rm-fix-%d" % len(calls)
+        fx = {"repair_launch": rl, "record": rec, "live": lambda r: "running"}
+        MD.repair_sync(st, now, fx)
+        rows = [{"mod": "FakeFlow", "decision": "launch", "why": "owed"}]
+        MD.system_fault_stop({}, st, rows, ["FakeFlow"])
+        MD.fault_repair_step("/nonexistent", {}, st, rows, now, True, fx)
+        return rows[0]
+    tick(lambda u: {"status": "running"})
+    r2 = tick(lambda u: dead)
+    check(RV.faults(s) == 3 and len(calls) == 1 and "KILLED" in r2["why"] and not r2.get("need"),
+          "a-killed-repair-run-is-no-repair: fault loop: the count stands, the next run waits (%s)" % r2["why"][-140:])
+    for k in range(1, 4):
+        tick(lambda u: dead, now=NOW + k * 4000)
+    r5 = tick(lambda u: dead, now=NOW + 5 * 4000)
+    check(len(calls) == 3 and not r5.get("need"), "a-killed-repair-run-is-no-repair: three killed runs name no Conductor "
+          "(%d launched, need %s)" % (len(calls), r5.get("need")))
+
+
 def t_the_trip_starts_a_repair():
     s = {"system_faults": [{"at": NOW - 30 * i, "book": "launches", "unit": "rm-u%d" % i, "cause": "it timed out",
                             "n": 1} for i in range(3)]}
@@ -409,7 +447,7 @@ def main():
               t_a_launch_that_never_started_is_form, t_a_repair_launch_refused_names_the_conductor,
               t_the_launch_refusals_count_no_fault, t_a_dead_run_still_counts_one,
               t_form_refusal_is_repaired_not_resent, t_a_repair_that_did_not_hold_counts_once,
-              t_the_trip_starts_a_repair, t_a_tick_with_stand_ins_launches_nothing_real,
+              t_a_killed_repair_run_is_no_repair, t_the_trip_starts_a_repair, t_a_tick_with_stand_ins_launches_nothing_real,
               t_a_refused_repair_launch_reuses_its_filed_item, t_repairing_is_a_named_wait_never_paused,
               t_a_pool_refusal_is_a_wait, t_a_pool_refused_repair_launch_spends_no_try,
               t_an_owed_pool_refusal_owes_no_repair, t_a_pool_refused_cert_rerun_starts_again,

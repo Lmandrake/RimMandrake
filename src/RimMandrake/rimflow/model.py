@@ -512,7 +512,7 @@ VERBS = {
     # readers from step 2 on strip unknown
     # fields instead (`replay`, UnknownFieldError).
     "verify":    {"who": "owner", "req": ("result", "config"),
-                  "opt": ("evidence", "sha", "level", "criterion", "afterClose")},
+                  "opt": ("evidence", "sha", "level", "criterion", "afterClose", "outcome")},
     # 🔑 `implemented` (rimflow redesign step 2): the implementation is published at `sha`
     # (the CLI refuses a sha that is not an ancestor of `ref`, origin/main) and every L0
     # criterion passes. `criteria` is the level-tagged manifest, [{"id","level","text"}];
@@ -1735,11 +1735,12 @@ class Run(object):
     """
 
     __slots__ = ("item", "n", "config", "result", "evidence", "sha", "ts", "index",
-                 "level", "criterion", "seat")
+                 "level", "criterion", "seat", "outcome")
 
     def __init__(self, item, n, config, result, evidence, sha, ts, index,
-                 level=None, criterion=None, seat=None):
+                 level=None, criterion=None, seat=None, outcome=None):
         self.seat = seat
+        self.outcome = outcome      # a failure_class word, when the writer knew it (an older run: None)
         self.item, self.n, self.config = item, n, config
         self.result, self.evidence, self.sha = result, evidence, sha
         self.ts, self.index = ts, index
@@ -2702,7 +2703,7 @@ def _apply_item_verb(ev, index, item, seat, world):
         level, cid = _verify_target(ev, item)       # refuses BEFORE the run is recorded
         n = sum(1 for r in item.runs if r.config == ev["config"]) + 1
         run = Run(item.id, n, ev["config"], ev["result"], ev.get("evidence"),
-                  ev.get("sha"), ev["ts"], index, level, cid, seat)
+                  ev.get("sha"), ev["ts"], index, level, cid, seat, ev.get("outcome"))
         item.runs.append(run)
         if str(ev["ts"]) >= EARNED_FROM:
             _earned_run(item, cid, level, run, ev)

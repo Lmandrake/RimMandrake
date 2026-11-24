@@ -569,13 +569,13 @@ def ingest_checks(tmp):
     S.dump({"phase": "CLEAN", "clean_through_s": FM.epoch(soon) + 1, "boot_iso": b2, "at": S.utcnow()}, os.path.join(queue, "fault_state.json"))
     ingest()
     check(T.read_json(os.path.join(queue, "done", held + ".json")).get("ingested", {}).get("result") == "pass", "and counted when one does")
-    # depth: a re-run of a re-run of a re-run stays out
+    # a-quarantined-job-is-queued-again: a machine fault spends no re-run, however often it struck
     saved = T.QHOME
     T.QHOME = queue
     try:
         job = rec(soon, soon, item=ITEM)
-        S.dump({job["job"]["id"]: FM.RERUN_DEPTH}, T.q("fault_reruns.json"))
-        check(FM.rerun_job(job) is None, "a job re-queued often enough stays out")
+        S.dump({job["job"]["id"]: 5}, T.q("fault_reruns.json"))
+        check(FM.rerun_job(job) is not None, "a-quarantined-job-is-queued-again: the sixth quarantine queues it again")
         old = rec(at(10), at(20), item=ITEM)
         check(FM.rerun_job(old, now=FM.epoch(at(20)) + FM.RERUN_WITHIN_S + 60) is None, "an old result is quarantined but not re-queued")
     finally:

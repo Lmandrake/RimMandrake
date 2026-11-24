@@ -127,8 +127,16 @@ def _ended(rec, live=None):
     return False
 
 
+def _killed(rec):
+    """-> the Reading of an ended run whose outcome is classed and does not count (failure_class), else None. A run whose
+    unit died with its finish never run is KILLED; a record with no result reads as before."""
+    import failure_class as FC
+    fc = FC.of_run(rec) if rec.get("status") == "finished" else FC.read(FC.KILLED, "its unit died, its finish never ran")
+    return fc if fc.classed and not fc.counts else None
+
+
 def sync_repairs(st, record, now, live=None):
-    """Mark each running repair (form and fault) whose run has ended `done`; a fault repair that ended resets the mod's
+    """Mark each running repair (form and fault) whose run has ended `done`, or `void` when it was killed from outside; a fault repair that ended resets the mod's
     fault count (auto_cleared, read by run_void.faults: the tick's own reset, never a hand `clear`).
     -> [(mod, kind, unit)] ended this call."""
     out = []
@@ -139,8 +147,14 @@ def sync_repairs(st, record, now, live=None):
             for r in s.get(kind) or []:
                 if not (isinstance(r, dict) and r.get("state") == "running" and r.get("unit")):
                     continue
-                e = _ended(record(r["unit"]), live)
+                rec = record(r["unit"])
+                e = _ended(rec, live)
                 if e:
+                    fc = _killed(rec)
+                    if fc:      # a run that died repaired nothing: no repair that did not hold, no reset of the count
+                        r.update(state="void", ended_at=now, void="%s (%s)" % (fc.word, fc.why))
+                        out.append((mod, kind, r["unit"]))
+                        continue
                     r.update(state="done", ended_at=now)
                     out.append((mod, kind, r["unit"]))
                     if kind == "fault_repairs":

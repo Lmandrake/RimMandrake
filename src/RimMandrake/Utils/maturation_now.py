@@ -71,6 +71,7 @@ import xml.etree.ElementTree as ET
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rimflow"))
+import failure_class as FC  # noqa: E402  which run counts against the mod
 from item_identity import item_mod  # noqa: E402  the one rule for the mod an item names
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import maturation_nonmod as MNM  # noqa: E402  the section for work that is not mod work
@@ -619,7 +620,9 @@ def run_view(rec, now, spend=read_spend):
             "tokens": tok if isinstance(tok, int) else UNM, "token_unit": rec.get("token_unit"), "usd": usd,
             "said_usd": said,
             "cap": rec.get("budget_usd") if isinstance(rec.get("budget_usd"), (int, float)) else UNM, "over_cap": over,
-            "stages": [], "placed": ""}
+            "stages": [], "placed": "",
+            # not the mod's own outcome (failure_class): killed, timed out or never started; no outcome reads as before
+            "died": not live and (st == "dead" or bool(res) and not FC.of_run(dict(rec, status="finished")).counts)}
 
 
 def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titles=None):
@@ -810,8 +813,11 @@ def conductor_needs(mods, rd, now, owed=(), closed=None, stale=()):
             sname = "Stage %s" % c if c not in ("intake", "passed") else c
             if x["held"]:
                 held.setdefault((x["held"]["when"], x["held"]["what"]), []).append(sname)
-            if x["cycled"] >= CYCLE_ALARM and order.get(c, -1) >= cur:
-                (co.append if runnable else (lambda t: rec(name, t)))("%s: %s has run %d times" % (L, sname, x["cycled"]))
+            ran = [r for r in x["runs"] if not r.get("died") and r.get("unit") not in voided]
+            if len(ran) >= CYCLE_ALARM and order.get(c, -1) >= cur:
+                (co.append if runnable else (lambda t: rec(name, t)))("%s: %s has run %d times%s" % (
+                    L, sname, len(ran), " (%d more did not count: killed or void)" % (x["cycled"] - len(ran))
+                    if x["cycled"] > len(ran) else ""))
         for (when, what), st in held.items():
             t = "%s: %s %s HELD (since %s): %s" % (L, ", ".join(st), "is" if len(st) == 1 else "are", when, clip(what, 160))
             co.append(t) if runnable else rec(name, t)

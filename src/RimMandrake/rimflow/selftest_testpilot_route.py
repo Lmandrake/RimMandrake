@@ -53,6 +53,25 @@ def t_threshold_two_stays_three_routes():
     assert kind(v) == "streak" and "3 non-pass" in v["why"], "three misses route, fail and partial alike: %r" % v
 
 
+def t_an_unmeasured_run_is_in_no_pilot_streak():
+    """an-unmeasured-run-is-in-no-pilot-streak (failure_class): a run whose outcome is not the work's own neither counts
+    nor ends a streak; a run with no outcome counts as before."""
+    def look(log, outcome, result="partial"):
+        return log.add("verify", config="c1", result=result, evidence="e.txt", sha="a" * 12, outcome=outcome)
+    log = Log()
+    for w in ("COULD NOT LOOK", "ENVIRONMENT FAULT", "KILLED", "a word nobody knows"):
+        look(log, w)
+    assert log.verdict() is None, "four runs nobody could measure are no streak: %r" % log.verdict()
+    log = Log().runs("fail", "fail")
+    look(log, "COULD NOT LOOK")
+    assert log.verdict() is None, "two fails and one unmeasured run are two: %r" % log.verdict()
+    v = log.runs("fail").verdict()
+    assert kind(v) == "streak" and "3 non-pass" in v["why"] and "1 COULD NOT LOOK" in v["why"], (
+        "the third fail routes, and the run left out is named: %r" % v)
+    log = Log().runs("fail", "fail")
+    assert kind(look(log, "MOD FAILURE", "fail").verdict()) == "streak", "an outcome that is the work's own counts"
+
+
 def t_the_number_is_the_measured_one():
     assert R.STREAK == 3, "changing the threshold means re-measuring it from the ledger; see the module docstring"
 

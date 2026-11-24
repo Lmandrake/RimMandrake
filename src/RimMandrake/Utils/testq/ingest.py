@@ -36,7 +36,7 @@ the lane (verify STEVE_LANE_MONITOR_PAUSE_FINDINGS --config steve-lane) plus one
 STEVE_LANE_<CANARY_RED|SYNC_REFUSED>_<JOBHEX6> (design section 6: pause the lane, file a finding).
 The done record gets "ingested" either way, except after an error (typically an item filed in a seat clone that
 has not reached origin yet): that record is retried every TESTQ_INGEST_RETRY_S (600) and marked ingested with the
-error only after TESTQ_INGEST_MAX_TRIES (6) tries. Idempotent: a verify already in the RUNNER shard for that attempt is
+error only after TESTQ_INGEST_MAX_TRIES (6) tries (a crash or a timeout of the ingest spends none: tries_after). Idempotent: a verify already in the RUNNER shard for that attempt is
 reused, never written twice. Then the shard is committed and pushed (TESTQ_INGEST_PUSH=0 skips the git step); a
 pull --rebase that fails is aborted and stops that publication with the commit kept local, never pushed half-rebased;
 any later ingest publishes RUNNER lines left uncommitted or commits left unpushed, even with nothing new to ingest.
@@ -54,6 +54,8 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+sys.path.append(os.path.join(HERE, "..", "..", "rimflow"))
+import failure_class as FC  # noqa: E402
 import fault_monitor as FM  # noqa: E402
 import invalid_class as IC  # noqa: E402
 import retest as R  # noqa: E402
@@ -76,6 +78,13 @@ def rimflow(*args):
     env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO)
     r = subprocess.run([sys.executable, CLI] + list(args), env=env, capture_output=True, text=True, timeout=120)
     return r.returncode, (r.stdout + r.stderr).strip()
+
+
+def tries_after(pend, error):
+    """-> (the tries spent with this error, whether they are all spent). A crash or a timeout of the ingest itself spends
+    none (failure_class.of_error): the record waits and is tried again, for its verdict would be lost with it."""
+    tries = (pend or {}).get("tries", 0) + (1 if FC.of_error(error).counts else 0)
+    return tries, tries >= MAX_TRIES
 
 
 def verdict(res):
@@ -520,9 +529,11 @@ def ingest_group(job, res, item, gres, att, names=None):
     config = config_for(host, item, job.get("profile", "targeted"))
     run = recorded_run(item, att)
     if not run:
+        # a partial holds no FAIL row (verdict()): its non-pass is rows nobody measured, which no streak counts
+        look = ["--outcome", FC.LK.NO_LOOK] if verdict(gres) == "partial" else []
         rc, out = rimflow("verify", item, "--result", verdict(gres), "--config", config,
                           "--evidence", "%s:%s (testq %s)" % (host, sheet_of(res), att),
-                          "--sha", res.get("runner_sha") or job["source_sha"])
+                          "--sha", res.get("runner_sha") or job["source_sha"], *look)
         m = re.search(r"(\S+/run-\d+@\S+) recorded", out)
         if rc != 0 or not m:
             return {"error": out[-300:]}
@@ -1068,8 +1079,8 @@ def _ingest_locked():
                 out = ingest_one(rec)
             except Exception as ex:     # noqa: BLE001 - one bad record (a rimflow timeout) must not stop the rest
                 out = {"error": "crash: %s: %s" % (type(ex).__name__, ex)}
-            tries = pend.get("tries", 0) + 1
-            if "error" in out and tries < MAX_TRIES:
+            tries, spent = tries_after(pend, out.get("error"))
+            if "error" in out and not spent:
                 rec["ingest_pending"] = {"tries": tries, "last": time.time(), "error": out["error"]}
                 T.S.dump(rec, T.q("done", path))
                 T.log("ingest %s: try %d of %d failed, retried in %d s: %s"

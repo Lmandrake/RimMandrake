@@ -3180,6 +3180,8 @@ def cmd_verify(args, seat):
     ev = {"seat": seat, "event": "verify", "id": args.id, "result": args.result,
           "config": args.config, "evidence": args.evidence, "sha": sha,
           "level": level, "criterion": args.criterion}
+    if getattr(args, "outcome", None):
+        ev["outcome"] = args.outcome
     if _after_close(before, sha):
         ev["afterClose"] = True
     _emit(ev, w, quiet=True)
@@ -4866,6 +4868,8 @@ def build_parser():
                                  "git HEAD")
     s.add_argument("--level", choices=model.LEVELS,
                    help="the validation level this run exercised")
+    s.add_argument("--outcome", help="what the run ended in, a word of failure_class.py (COULD NOT LOOK, KILLED, "
+                   "MOD FAILURE, ...); one that is not the work's own is in no pilot streak")
     s.add_argument("--criterion", help="the outstanding criterion this run tests; a "
                    "pass drops it (built -> validated; the last one -> done). Any seat "
                    "may record one on a built item")
