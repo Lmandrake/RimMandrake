@@ -1,0 +1,3 @@
+A staged scene with powered things must run some hundreds of ticks before it is saved or shown: vanilla PowerNetTick switches on ONE wanting part every max(30, 200/n) ticks, so a stand that ticks 2-3 times and pauses leaves every lamp powerOn False beside a full battery (NeedsPower bolts in the capture). GSS 0.2.0 walk stand_020: 10 lamps came on after 450 ticks. Draft the colonists first: on the walk map a wandering colonist was downed by a sparking cord end (RM_FallenWireShock) within 300 ticks. MEASURED 2026-11-24 ArchSmall, relight.py/relight2.txt under D:\ClaudeWork\rimmandrake\scratch\stage_slack_walk.
+item: RIMMANDRAKE_STAGE_SLACK_WALK_SMALL_LIST_ARCHSMALL_NO_FULL_LIST
+home: skills/rimworld-live-review/SKILL.md

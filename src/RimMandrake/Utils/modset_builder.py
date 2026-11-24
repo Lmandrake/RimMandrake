@@ -75,6 +75,13 @@ DATA = GAME_DATA
 CONFIG = os.path.join(LOWDIR, "Config", "ModsConfig.xml")
 PLAYERLOG = os.path.join(LOWDIR, "Player.log")
 BACKUPS = os.path.join(ROOT, "deployed", "config")
+# One swap book per game, as owned_backups already keeps: a marker written on game a (2026-11-12) refused a swap on
+# game b twelve days later, because b's ModsConfig is another file (MEASURED 2026-11-24,
+# RIMMANDRAKE_STAGE_SLACK_WALK_SMALL_LIST_ARCHSMALL_NO_FULL_LIST; selftest_modset_swap_books_per_game.py). Game a keeps
+# the old folder, so its live markers still read.
+_GAME = (os.environ.get("RM_GAME_INSTANCE") or "").strip().lower()
+if _GAME not in ("", "a"):
+    BACKUPS = os.path.join(BACKUPS, "game_" + _GAME)
 # 🔴 Was a dated one-off snapshot (ModsConfig.full-568.2026-08-11.xml, 568 mods)
 # that drifted stale as the owner's real list grew -- measured 2026-09-06: it
 # silently dropped 30 mods (568 vs the then-live 598) on a --restore after a

@@ -251,6 +251,8 @@ infrastructure/state/queue/*.md
 # on every tier swap, so a tracked one is dirt in whichever clone swapped (untracked 2026-11-16).
 deployed/config/ModsConfig.before-tier-*.xml
 deployed/config/ModsConfig.swap-active*.json
+# the same books for a second game (modset_builder.BACKUPS keyed by RM_GAME_INSTANCE, 2026-11-24)
+deployed/config/game_*/
 
 # Derived ortho globe SVGs — regenerate with worldview.py; the PNGs beside them are committed
 world/view/globes_*/*.svg
