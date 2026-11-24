@@ -1,0 +1,6 @@
+site save calm: CLEAN load 4.9s ready 6.9s 
+extensions: {'PASS': 3} in 131.7s -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE.det\design\concepts\FlowWorks\version\in_game\visit_9\evidence\sc_dig_finds_20261123T162850.json
+[modcheck] chain dig_finds START 00:29:46Z
+[modcheck] chain dig_finds END 80s PASS=3 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=10.5s body=67.9s teardown=1.2s
+[bridge split] 132.2 s wall: load 0.0 / ticks 1.8 / reads 1.4 / other 49.1 / outside calls 79.9 s
+[bridge split] WARN 97 calls of jawa/time_clock (0.8 s): batch them

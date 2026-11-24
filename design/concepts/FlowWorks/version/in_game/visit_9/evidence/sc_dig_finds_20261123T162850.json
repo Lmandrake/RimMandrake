@@ -1,0 +1,2041 @@
+{
+ "chains": [
+  {
+   "name": "dig_finds",
+   "components": [
+    {
+     "name": "finds_off_none",
+     "toggle": "digFindsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'digFindsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 0 | gravel 0 | ice 0 | budget unset | first-found 0 | last ",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_cffff6b7b20b4c78a758f2a6ed27e85a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "ARMED: the next pit dug rolls with certainty | DIGFINDS finds 0 | gravel 0 | ice 0 | budget unset | first-found 0 | last ",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_d67a10119bf64b0e8c53f6d7564e0074",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_gear",
+       "result": {
+        "success": true,
+        "action": "inventory",
+        "displaced": [],
+        "notes": [
+         "inventory transferred 1 of 1"
+        ],
+        "pawn": {
+         "thingId": "Human21169",
+         "thingIdNumber": 21169,
+         "name": "Luna Vanguard",
+         "nameShort": "Vanguard",
+         "title": "corporate drone",
+         "kindDef": "Colonist",
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals",
+         "gender": "Female",
+         "ageBiologicalYears": 34,
+         "ageChronologicalYears": 229,
+         "developmentalStage": "Adult",
+         "xenotype": "Baseliner",
+         "ideo": "Cell of Faith",
+         "childhood": "SicklyChild55",
+         "adulthood": "CorporateDrone10",
+         "headType": "Female_NarrowPointy",
+         "bodyType": "Female",
+         "hair": "Victoria",
+         "beard": "NoBeard",
+         "position": {
+          "x": 85,
+          "z": 89
+         },
+         "traits": [
+          {
+           "def": "NightOwl",
+           "degree": 0,
+           "label": "Night owl",
+           "forced": false
+          },
+          {
+           "def": "Kind",
+           "degree": 0,
+           "label": "Kind",
+           "forced": false
+          }
+         ],
+         "skills": [
+          {
+           "skill": "Shooting",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Melee",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Construction",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Mining",
+           "levelRaw": 10,
+           "levelEffective": 10,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Cooking",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Plants",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Animals",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Crafting",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Artistic",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Medicine",
+           "levelRaw": 5,
+           "levelEffective": 5,
+           "passion": "Major",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Social",
+           "levelRaw": 4,
+           "levelEffective": 4,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Intellectual",
+           "levelRaw": 12,
+           "levelEffective": 12,
+           "passion": "Major",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          }
+         ],
+         "apparel": [
+          {
+           "def": "Apparel_BasicShirt",
+           "defName": "Apparel_BasicShirt",
+           "stuff": "Synthread",
+           "hp": 130
+          },
+          {
+           "def": "Apparel_Pants",
+           "defName": "Apparel_Pants",
+           "stuff": "Synthread",
+           "hp": 130
+          }
+         ],
+         "equipment": [],
+         "hediffs": [
+          {
+           "def": "Scarification",
+           "part": "Torso",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Arm",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Eye",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Eye",
+           "severity": 0.5
+          }
+         ],
+         "needs": [
+          {
+           "need": "Mood",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Food",
+           "level": 0.8,
+           "pct": 0.8
+          },
+          {
+           "need": "Rest",
+           "level": 0.998871565,
+           "pct": 0.998871565
+          },
+          {
+           "need": "Joy",
+           "level": 0.5597717,
+           "pct": 0.5597717
+          },
+          {
+           "need": "Beauty",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Outdoors",
+           "level": 1.0,
+           "pct": 1.0
+          },
+          {
+           "need": "DrugDesire",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "RoomSize",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "RM_Thirst",
+           "level": 0.8,
+           "pct": 0.8
+          }
+         ]
+        },
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_dade1904c3244b98a021b2c822a486cb",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 3
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 0,
+        "waterDl": 0,
+        "waterM": 0.0,
+        "isExcavated": false,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_1d9131d513894f57a61f07b061037aca",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 10
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/designate_batch",
+       "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_66e5882f37b04e29aee1c549f68cbfae",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 3
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+         "OperationId": "op_0cd10630030d45bcbdbf8b7b3a202c3d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 15174
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "waterDl": 0,
+        "waterM": 0.0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 502,
+        "operation": {
+         "OperationId": "op_52f8d7ee7f364f9b8a4f0205ec07627f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 0 | gravel 0 | ice 0 | budget 910 | first-found 0 | last ",
+        "thingArgs": [],
+        "ticksGame": 502,
+        "operation": {
+         "OperationId": "op_fb160bf05ef747eb8d37917236780ab3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 502
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "cut_turns_up_local_find",
+     "toggle": "digFindsLocalOnly",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'digFindLetterEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 2,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         }
+        ],
+        "ticksGame": 502,
+        "operation": {
+         "OperationId": "op_f9dfbeab49e6478f83101dfa9ec3e6c8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 0 | gravel 0 | ice 0 | budget 910 | first-found 0 | last ",
+        "thingArgs": [],
+        "ticksGame": 502,
+        "operation": {
+         "OperationId": "op_95a51008f6e941c28c6de2843a11e390",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "ARMED: the next pit dug rolls with certainty | DIGFINDS finds 0 | gravel 0 | ice 0 | budget 910 | first-found 0 | last ",
+        "thingArgs": [],
+        "ticksGame": 502,
+        "operation": {
+         "OperationId": "op_0eb5812dba1144acb57708bd2045787b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_gear",
+       "result": {
+        "success": true,
+        "action": "inventory",
+        "displaced": [],
+        "notes": [
+         "inventory transferred 1 of 1"
+        ],
+        "pawn": {
+         "thingId": "Human21169",
+         "thingIdNumber": 21169,
+         "name": "Luna Vanguard",
+         "nameShort": "Vanguard",
+         "title": "corporate drone",
+         "kindDef": "Colonist",
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals",
+         "gender": "Female",
+         "ageBiologicalYears": 34,
+         "ageChronologicalYears": 229,
+         "developmentalStage": "Adult",
+         "xenotype": "Baseliner",
+         "ideo": "Cell of Faith",
+         "childhood": "SicklyChild55",
+         "adulthood": "CorporateDrone10",
+         "headType": "Female_NarrowPointy",
+         "bodyType": "Female",
+         "hair": "Victoria",
+         "beard": "NoBeard",
+         "position": {
+          "x": 86,
+          "z": 88
+         },
+         "traits": [
+          {
+           "def": "NightOwl",
+           "degree": 0,
+           "label": "Night owl",
+           "forced": false
+          },
+          {
+           "def": "Kind",
+           "degree": 0,
+           "label": "Kind",
+           "forced": false
+          }
+         ],
+         "skills": [
+          {
+           "skill": "Shooting",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Melee",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Construction",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 14.1749744,
+           "disabled": false
+          },
+          {
+           "skill": "Mining",
+           "levelRaw": 10,
+           "levelEffective": 10,
+           "passion": "None",
+           "xpSinceLastLevel": -0.3,
+           "disabled": false
+          },
+          {
+           "skill": "Cooking",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Plants",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Animals",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Crafting",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Artistic",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Medicine",
+           "levelRaw": 5,
+           "levelEffective": 5,
+           "passion": "Major",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Social",
+           "levelRaw": 4,
+           "levelEffective": 4,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Intellectual",
+           "levelRaw": 12,
+           "levelEffective": 12,
+           "passion": "Major",
+           "xpSinceLastLevel": -1.2,
+           "disabled": false
+          }
+         ],
+         "apparel": [
+          {
+           "def": "Apparel_BasicShirt",
+           "defName": "Apparel_BasicShirt",
+           "stuff": "Synthread",
+           "hp": 130
+          },
+          {
+           "def": "Apparel_Pants",
+           "defName": "Apparel_Pants",
+           "stuff": "Synthread",
+           "hp": 130
+          }
+         ],
+         "equipment": [],
+         "hediffs": [
+          {
+           "def": "Scarification",
+           "part": "Torso",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Arm",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Eye",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Eye",
+           "severity": 0.5
+          }
+         ],
+         "needs": [
+          {
+           "need": "Mood",
+           "level": 0.5216,
+           "pct": 0.5216
+          },
+          {
+           "need": "Food",
+           "level": 0.788,
+           "pct": 0.788
+          },
+          {
+           "need": "Rest",
+           "level": 0.991746545,
+           "pct": 0.991746545
+          },
+          {
+           "need": "Joy",
+           "level": 0.5552717,
+           "pct": 0.5552717
+          },
+          {
+           "need": "Beauty",
+           "level": 0.485600024,
+           "pct": 0.485600024
+          },
+          {
+           "need": "Outdoors",
+           "level": 1.0,
+           "pct": 1.0
+          },
+          {
+           "need": "DrugDesire",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "RoomSize",
+           "level": 0.66200006,
+           "pct": 0.66200006
+          },
+          {
+           "need": "RM_Thirst",
+           "level": 0.7928,
+           "pct": 0.7928
+          }
+         ]
+        },
+        "ticksGame": 502,
+        "operation": {
+         "OperationId": "op_481dc79439c44a349e7409464bbe9da2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "waterDl": 0,
+        "waterM": 0.0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 502,
+        "operation": {
+         "OperationId": "op_9efd112bedcf4c32b92deacb1ff3a00d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/designate_batch",
+       "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 502,
+        "operation": {
+         "OperationId": "op_565e135ff0af4327a4a27752447bf483",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": "GotoWander",
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+         "OperationId": "op_6ee8edd85603477e9d9ae92f5b623126",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 15439
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 502
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "waterDl": 0,
+        "waterM": 0.0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 1002,
+        "operation": {
+         "OperationId": "op_f1c9a3d856db4aa98f39daac6050204a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 9
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1002
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "waterDl": 0,
+        "waterM": 0.0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 1502,
+        "operation": {
+         "OperationId": "op_9d1d1322c6a14937958c70c37c5e4ad6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 1 | gravel 0 | ice 0 | budget 885 | first-found 0 | last Steel x25 @87,89 D=2",
+        "thingArgs": [],
+        "ticksGame": 1502,
+        "operation": {
+         "OperationId": "op_919b563cc79a4e26bbd33777a9466187",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 1 | gravel 0 | ice 0 | budget 885 | first-found 0 | last Steel x25 @87,89 D=2",
+        "thingArgs": [],
+        "ticksGame": 1502,
+        "operation": {
+         "OperationId": "op_059d21b6b44b43e795996ccfd5bd85f7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 9
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 2,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         }
+        ],
+        "ticksGame": 1502,
+        "operation": {
+         "OperationId": "op_ac66cd97001b499eaa763395aca7c976",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "first_find_sends_letter",
+     "toggle": "digFindLetterEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 2,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         }
+        ],
+        "ticksGame": 1502,
+        "operation": {
+         "OperationId": "op_44c397ee63c440bd896a67d85413d435",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 1 | gravel 0 | ice 0 | budget 885 | first-found 0 | last Steel x25 @87,89 D=2",
+        "thingArgs": [],
+        "ticksGame": 1502,
+        "operation": {
+         "OperationId": "op_7ca77172062b4346bdb4f84aa60b35d7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "ARMED: the next pit dug rolls with certainty | DIGFINDS finds 1 | gravel 0 | ice 0 | budget 885 | first-found 0 | last Steel x25 @87,89 D=2",
+        "thingArgs": [],
+        "ticksGame": 1502,
+        "operation": {
+         "OperationId": "op_1697c593c24c4111ab77c7d507db32c0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_gear",
+       "result": {
+        "success": true,
+        "action": "inventory",
+        "displaced": [],
+        "notes": [
+         "inventory transferred 1 of 1"
+        ],
+        "pawn": {
+         "thingId": "Human21169",
+         "thingIdNumber": 21169,
+         "name": "Luna Vanguard",
+         "nameShort": "Vanguard",
+         "title": "corporate drone",
+         "kindDef": "Colonist",
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals",
+         "gender": "Female",
+         "ageBiologicalYears": 34,
+         "ageChronologicalYears": 229,
+         "developmentalStage": "Adult",
+         "xenotype": "Baseliner",
+         "ideo": "Cell of Faith",
+         "childhood": "SicklyChild55",
+         "adulthood": "CorporateDrone10",
+         "headType": "Female_NarrowPointy",
+         "bodyType": "Female",
+         "hair": "Victoria",
+         "beard": "NoBeard",
+         "position": {
+          "x": 86,
+          "z": 88
+         },
+         "traits": [
+          {
+           "def": "NightOwl",
+           "degree": 0,
+           "label": "Night owl",
+           "forced": false
+          },
+          {
+           "def": "Kind",
+           "degree": 0,
+           "label": "Kind",
+           "forced": false
+          }
+         ],
+         "skills": [
+          {
+           "skill": "Shooting",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Melee",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Construction",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 42.5249939,
+           "disabled": false
+          },
+          {
+           "skill": "Mining",
+           "levelRaw": 10,
+           "levelEffective": 10,
+           "passion": "None",
+           "xpSinceLastLevel": -0.8000001,
+           "disabled": false
+          },
+          {
+           "skill": "Cooking",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Plants",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Animals",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Crafting",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Artistic",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Medicine",
+           "levelRaw": 5,
+           "levelEffective": 5,
+           "passion": "Major",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Social",
+           "levelRaw": 4,
+           "levelEffective": 4,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Intellectual",
+           "levelRaw": 12,
+           "levelEffective": 12,
+           "passion": "Major",
+           "xpSinceLastLevel": -3.20000029,
+           "disabled": false
+          }
+         ],
+         "apparel": [
+          {
+           "def": "Apparel_BasicShirt",
+           "defName": "Apparel_BasicShirt",
+           "stuff": "Synthread",
+           "hp": 130
+          },
+          {
+           "def": "Apparel_Pants",
+           "defName": "Apparel_Pants",
+           "stuff": "Synthread",
+           "hp": 130
+          }
+         ],
+         "equipment": [],
+         "hediffs": [
+          {
+           "def": "Scarification",
+           "part": "Torso",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Arm",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Eye",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Eye",
+           "severity": 0.5
+          }
+         ],
+         "needs": [
+          {
+           "need": "Mood",
+           "level": 0.572,
+           "pct": 0.572
+          },
+          {
+           "need": "Food",
+           "level": 0.759999931,
+           "pct": 0.759999931
+          },
+          {
+           "need": "Rest",
+           "level": 0.9751215,
+           "pct": 0.9751215
+          },
+          {
+           "need": "Joy",
+           "level": 0.5447716,
+           "pct": 0.5447716
+          },
+          {
+           "need": "Beauty",
+           "level": 0.452000082,
+           "pct": 0.452000082
+          },
+          {
+           "need": "Outdoors",
+           "level": 1.0,
+           "pct": 1.0
+          },
+          {
+           "need": "DrugDesire",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "RoomSize",
+           "level": 1.0,
+           "pct": 1.0
+          },
+          {
+           "need": "RM_Thirst",
+           "level": 0.7758,
+           "pct": 0.7758
+          }
+         ]
+        },
+        "ticksGame": 1502,
+        "operation": {
+         "OperationId": "op_9afcfc4365db4c379aad0d544d32d003",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 11
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "waterDl": 0,
+        "waterM": 0.0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 1502,
+        "operation": {
+         "OperationId": "op_f7b0853d0bca44e3bcae8787943def34",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/designate_batch",
+       "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 1502,
+        "operation": {
+         "OperationId": "op_7559bcf3008649748c4bae33e23ca22d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": "Wait_Wander",
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "operation": {
+         "OperationId": "op_57d8b119317c451f808cbfdb0ab47935",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 15283
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1502
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "waterDl": 0,
+        "waterM": 0.0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 2002,
+        "operation": {
+         "OperationId": "op_8e43f3abbec34694bb948a05bd707630",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2002
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "waterDl": 0,
+        "waterM": 0.0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 2502,
+        "operation": {
+         "OperationId": "op_998d624c0f574dec8d6b109a59a3779b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2502
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 3,
+        "waterDl": 0,
+        "waterM": 0.0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 1,
+        "ticksGame": 3002,
+        "operation": {
+         "OperationId": "op_eedce814e2b340b786b1be14bf9aaf50",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3002
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 2 | gravel 0 | ice 0 | budget 873 | first-found 1 | last Steel x12 @87,89 D=3",
+        "thingArgs": [],
+        "ticksGame": 3002,
+        "operation": {
+         "OperationId": "op_c9805cdcf63e4ce9a2ba8098998aeb3f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 9
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3002
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 3,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": []
+         },
+         {
+          "label": {
+           "RawText": "Found while digging: Steel",
+           "Length": 26,
+           "StrippedLength": 26
+          },
+          "defName": "PositiveEvent",
+          "arrivalTick": 2710,
+          "lookTargets": "Verse.LookTargets",
+          "lookTargetIds": [
+           "Steel21177"
+          ]
+         }
+        ],
+        "ticksGame": 3002,
+        "operation": {
+         "OperationId": "op_0a1650d5d4a143b5a04c943d7d512962",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3002
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 2 | gravel 0 | ice 0 | budget 873 | first-found 1 | last Steel x12 @87,89 D=3",
+        "thingArgs": [],
+        "ticksGame": 3002,
+        "operation": {
+         "OperationId": "op_39c9127821094238a430f4712b57ed61",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 9
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 3002
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 7,
+    "fed": 0,
+    "ticks_spent": 3000,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 3002,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] Found while digging: Steel"
+     },
+     {
+      "tick": 3002,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] Found while digging: Steel"
+     }
+    ],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human21169"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE.det\\Transient\\modcheck\\surprises\\20261123T162946\\FlowWorksExtensions_dig_finds_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   },
+   "site_hold": null,
+   "env_reset": {
+    "log_reset": "ok",
+    "weather": "ok",
+    "map_info": "ok",
+    "unroof": "ok",
+    "gas_ToxGas": "ok",
+    "gas_BlindSmoke": "ok",
+    "gas_RotStink": "ok",
+    "gas_DeadlifeDust": "ok",
+    "gas_things": "ok"
+   },
+   "phase_s": {
+    "hold": 10.531,
+    "body": 67.94,
+    "teardown": 1.176
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "acceptance": {
+  "overall": "GREEN",
+  "rows": [
+   {
+    "row": "dig_finds/finds_off_none",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "dig_finds/cut_turns_up_local_find",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "dig_finds/first_find_sends_letter",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   }
+  ],
+  "spoils": [],
+  "counts": {
+   "PASS": 3,
+   "FAIL": 0,
+   "INDETERMINATE": 0,
+   "UNMEASURED": 0
+  },
+  "classes": []
+ },
+ "reuse": {
+  "reused": [],
+  "reusable": []
+ },
+ "host": "Archmagi",
+ "offline_chains": [],
+ "fresh_green": true,
+ "invalid": [],
+ "leads": [],
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v3",
+  "load_s": 4.9,
+  "ready_s": 6.9,
+  "verified": true
+ },
+ "wall_s": 131.7,
+ "chains_run": [
+  "dig_finds"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "slime_slip",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel",
+  "fuel_moat_propane",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "613f876b209575ffb28a1856fcfe557d5e62335082a13709f804351e3ef25d5c",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "3eebe7166ea600fc9cc9f52714a4b28440a967f9b356540d2949d8dc7649801e",
+  "assembly_sha256": "81fb0d72b9553a5d9845d58ba0de7d57619be6a2c66b7631b80dfa9769eaa276",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}

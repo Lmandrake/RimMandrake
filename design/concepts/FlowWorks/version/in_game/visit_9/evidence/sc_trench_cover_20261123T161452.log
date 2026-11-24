@@ -1,0 +1,4 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE.det\design\concepts\FlowWorks\version\in_game\visit_9\evidence\sc_trench_cover_20261123T161452.json 
+[bridge split] 29.2 s wall: load 0.4 / ticks 7.9 / reads 1.8 / other 0.9 / outside calls 18.2 s
+[bridge split] WARN 76 calls of jawa/list_pawns (0.6 s): batch them
+[bridge split] WARN 70 calls of jawa/safe_advance (7.9 s): batch them

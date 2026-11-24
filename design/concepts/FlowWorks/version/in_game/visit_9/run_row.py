@@ -40,6 +40,9 @@ def env():
                 break
     sha = subprocess.run(["git", "-C", ROOT, "log", "-1", "--format=%H", "--", "src/RimMandrake/FlowWorks"],
                          capture_output=True, text=True).stdout.strip()
+    dep = os.path.join(HERE, 'DEPLOYED_SHA')          # what is deployed, not what the clone has since synced to
+    if os.path.exists(dep):
+        sha = open(dep).read().strip()
     return mods, build, sha
 
 
@@ -122,6 +125,7 @@ def main(argv):
                             "--mod", "FlowWorks"] + tier_args, cwd=ROOT, capture_output=True, text=True)
     try:
         row.update(json.loads(ident.stdout.strip().splitlines()[-1]))
+        row['mod_sha'] = sha                      # identity reads the clone's HEAD
     except (ValueError, IndexError):
         row["identity_error"] = (ident.stdout + ident.stderr)[-400:]
     if isinstance(sub, list):

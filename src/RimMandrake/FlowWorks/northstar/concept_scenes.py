@@ -1526,10 +1526,13 @@ def _moat_drain(S, G, seen):
     """The sluice is open and the raid goes on, in game ticks (never bare flow pulses: they drain in no game time and the
     raiders stand still). Swim reads go on into `seen`. The moment the moat holds a raider, the raiders it did not catch
     leave the map (the pit-trap idiom) and so does the colonist they came for; ends when every ring square reads dry."""
-    d = {'heldAfterTicks': None, 'dryAfterTicks': None, 'dl': None, 'gone': [], 'bait': None}
+    d = {'heldAfterTicks': None, 'dryAfterTicks': None, 'dl': None, 'gone': [], 'bait': None, 'trace': []}
     for k in range(1, MOAT_DRAIN_TICKS // MOAT_POLL + 1):
         S.ticks(MOAT_POLL)
         _moat_read(S, G, seen)
+        # visit 9 (2026-11-23, run T161018): a raider read held=True stood on the plot 1,200 ticks later, the water under 1 m and
+        # the wall over 3 m, and cut a warden; no read said how he got out. Each poll now keeps every raider's square and job.
+        d['trace'].append(_capture_trace_line(S, [{'warden': r, 'pawn': r} for r in G['raiders']]))
         if d['heldAfterTicks'] is None:
             inside = _moat_in_ring(S, G)
             if any('held=True' in v for _, _, v in inside):
@@ -1638,6 +1641,7 @@ def _moat_rows(S, G):
     up = S.sc(DOORS, 'ProofSetGate', 'current|%d,%d|true' % G['sluice'])
     require('lifted=True' in up, 'the sluice did not lift: %s' % up)
     drain = _moat_drain(S, G, w)
+    S.r['moatDrainTrace'] = drain['trace']
     dry_at, dl = drain['dryAfterTicks'], drain['dl']
     swimmers = sorted(w['swam'])
     tired = [p for p in swimmers if (w['swam'][p] or 0) > 0]

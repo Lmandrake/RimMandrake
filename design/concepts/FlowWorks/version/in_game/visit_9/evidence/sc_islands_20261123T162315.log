@@ -1,0 +1,7 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE.det\design\concepts\FlowWorks\version\in_game\visit_9\evidence\sc_islands_20261123T162315.json 
+[bridge split] 101.9 s wall: load 0.5 / ticks 11.4 / reads 6.1 / other 8.7 / outside calls 75.1 s
+[bridge split] WARN 272 calls of jawa/flowworks_excavation_drive (5.8 s): batch them
+[bridge split] WARN 153 calls of jawa/static_call (1.8 s): batch them
+[bridge split] WARN 112 calls of jawa/list_things (1.5 s): batch them
+[bridge split] WARN 66 calls of jawa/list_pawns (0.7 s): batch them
+[bridge split] WARN 57 calls of jawa/safe_advance (11.4 s): batch them

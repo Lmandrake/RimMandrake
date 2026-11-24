@@ -1,0 +1,2167 @@
+{
+ "chains": [
+  {
+   "name": "plot_G_pit",
+   "components": [
+    {
+     "name": "pit_hole_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/flowworks_excavation_rect",
+       "result": {
+        "success": true,
+        "mapId": 0,
+        "rect": {
+         "x": 83,
+         "z": 159,
+         "w": 3,
+         "h": 3
+        },
+        "cellCount": 9,
+        "cellsScanned": 9,
+        "rows": [
+         {
+          "x": 83,
+          "z": 159,
+          "d": 4,
+          "dEff": 4,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 84,
+          "z": 159,
+          "d": 4,
+          "dEff": 4,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 85,
+          "z": 159,
+          "d": 4,
+          "dEff": 4,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 83,
+          "z": 160,
+          "d": 4,
+          "dEff": 4,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 84,
+          "z": 160,
+          "d": 4,
+          "dEff": 4,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 85,
+          "z": 160,
+          "d": 4,
+          "dEff": 4,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 83,
+          "z": 161,
+          "d": 4,
+          "dEff": 4,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 84,
+          "z": 161,
+          "d": 4,
+          "dEff": 4,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         },
+         {
+          "x": 85,
+          "z": 161,
+          "d": 4,
+          "dEff": 4,
+          "dl": 0,
+          "waterM": 0.0,
+          "isExcavated": true,
+          "isSource": false,
+          "isSink": false
+         }
+        ],
+        "sumDl": 0,
+        "excavatedInRect": 9,
+        "sourceInRect": 0,
+        "sinkInRect": 0,
+        "getterDisagreements": 0,
+        "excavatedCellCount": 18,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_1f23962cb26647248e2f83d6c166ebbd",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\pit_hole_look_1795480505620_1__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "pit_reads_as_hole",
+      "pit_reads_at_size",
+      "pit_walls_have_visible_depth"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "pit_not_vanilla_trap",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\pit_not_vanilla_trap_1795480507103_2__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "pit_not_vanilla_trap",
+      "never_reads_as_building"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "pit_captures_hostile",
+     "toggle": "superdeepCaptureEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Pirate in faction TribeRoughNeanderthal.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human21169",
+          "name": "Wolverine",
+          "kindRequested": "Pirate",
+          "kindActual": "Pirate",
+          "kindSubstituted": false,
+          "faction": "TribeRoughNeanderthal",
+          "hostile": true,
+          "x": 80,
+          "z": 159,
+          "spawned": true,
+          "xenotype": "Neanderthal",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_6bd2a695d35d401faa25ae9705c8603a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 10
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofForcedFlyer(System.String)",
+        "result": "FLYER id=Human21169 from=80,159 to=84,159 depth=4 launched=True def=PawnFlyer_Stun",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_451aa553418842daaf355476de49bfc6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 25
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(180) [watched] -> 180 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 180,
+        "requested": 180
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 159
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 1,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 182,
+        "operation": {
+         "OperationId": "op_030265f57eae41a8a290f5de5ef8c70e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 15
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 182
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 160
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 1,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 182,
+        "operation": {
+         "OperationId": "op_0e65776e038846fabfaa42bf07ce1ecd",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 182
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 161
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 1,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 182,
+        "operation": {
+         "OperationId": "op_a3b508dc64624e9bbf66b9a88958580f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 4
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 182
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 84,
+         "z": 159
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [
+         {
+          "id": "Human21169",
+          "def": "Human",
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "faction": "Bookoulbah Union",
+          "bodySize": 1.0,
+          "requiredWidth": 1,
+          "captured": true,
+          "jumper": false,
+          "held": true,
+          "lipCells": 16,
+          "lipReachable": 0,
+          "canReachMapEdge": false
+         }
+        ],
+        "legacyHolders": [],
+        "descentCount": 1,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 182,
+        "operation": {
+         "OperationId": "op_cb29c68e023a421ca2c0067aaa912f05",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 182
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Pirate in faction TribeRoughNeanderthal.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human21179",
+          "name": "Wolf",
+          "kindRequested": "Pirate",
+          "kindActual": "Pirate",
+          "kindSubstituted": false,
+          "faction": "TribeRoughNeanderthal",
+          "hostile": true,
+          "x": 80,
+          "z": 160,
+          "spawned": true,
+          "xenotype": "Neanderthal",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 182,
+        "operation": {
+         "OperationId": "op_55e031091ac644c39ee304c68beb0aaf",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 8
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 182
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofForcedFlyer(System.String)",
+        "result": "FLYER id=Human21179 from=80,160 to=84,160 depth=4 launched=True def=PawnFlyer_Stun",
+        "thingArgs": [],
+        "ticksGame": 182,
+        "operation": {
+         "OperationId": "op_042b943e7ab5420d8292aba91dabbf35",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 10
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 182
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(180) [watched] -> 180 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 180,
+        "requested": 180
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 159
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 2,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3",
+         "Human21179@84,160 t=228 fall=6.3"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 362,
+        "operation": {
+         "OperationId": "op_4c6f1a9c034444b781180d769a7e16ed",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 362
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 160
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [
+         {
+          "id": "Human21169",
+          "def": "Human",
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "faction": "Bookoulbah Union",
+          "bodySize": 1.0,
+          "requiredWidth": 1,
+          "captured": true,
+          "jumper": false,
+          "held": true,
+          "lipCells": 16,
+          "lipReachable": 0,
+          "canReachMapEdge": false
+         }
+        ],
+        "legacyHolders": [],
+        "descentCount": 2,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3",
+         "Human21179@84,160 t=228 fall=6.3"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 362,
+        "operation": {
+         "OperationId": "op_a19068a10aca4731952ac3ce1649dee6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 362
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 161
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 2,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3",
+         "Human21179@84,160 t=228 fall=6.3"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 362,
+        "operation": {
+         "OperationId": "op_d4b30df84acc4a4381d8a9f3456e4ec4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 362
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 84,
+         "z": 159
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 2,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3",
+         "Human21179@84,160 t=228 fall=6.3"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 362,
+        "operation": {
+         "OperationId": "op_da9d35838e064e00ad8bb22305bb5bb6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 4
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 362
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 84,
+         "z": 160
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [
+         {
+          "id": "Human21179",
+          "def": "Human",
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "faction": "Bookoulbah Union",
+          "bodySize": 1.0,
+          "requiredWidth": 1,
+          "captured": true,
+          "jumper": false,
+          "held": true,
+          "lipCells": 16,
+          "lipReachable": 0,
+          "canReachMapEdge": false
+         }
+        ],
+        "legacyHolders": [],
+        "descentCount": 2,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3",
+         "Human21179@84,160 t=228 fall=6.3"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 362,
+        "operation": {
+         "OperationId": "op_97e2200d505f45d18c6898a17d922187",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 362
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Pirate in faction TribeRoughNeanderthal.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human21188",
+          "name": "Caiasbarxada",
+          "kindRequested": "Pirate",
+          "kindActual": "Pirate",
+          "kindSubstituted": false,
+          "faction": "TribeRoughNeanderthal",
+          "hostile": true,
+          "x": 80,
+          "z": 161,
+          "spawned": true,
+          "xenotype": "Neanderthal",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 362,
+        "operation": {
+         "OperationId": "op_1e660d48d9254a8786904c12d4776118",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 8
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 362
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofForcedFlyer(System.String)",
+        "result": "FLYER id=Human21188 from=80,161 to=84,161 depth=4 launched=True def=PawnFlyer_Stun",
+        "thingArgs": [],
+        "ticksGame": 362,
+        "operation": {
+         "OperationId": "op_2fb93031e80b4a2d8157d04a794f1283",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 10
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 362
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(180) [watched] -> 180 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 180,
+        "requested": 180
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 159
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [
+         {
+          "id": "Human21179",
+          "def": "Human",
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "faction": "Bookoulbah Union",
+          "bodySize": 1.0,
+          "requiredWidth": 1,
+          "captured": true,
+          "jumper": false,
+          "held": true,
+          "lipCells": 16,
+          "lipReachable": 0,
+          "canReachMapEdge": false
+         }
+        ],
+        "legacyHolders": [],
+        "descentCount": 3,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3",
+         "Human21179@84,160 t=228 fall=6.3",
+         "Human21188@84,161 t=408 fall=5.5"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 542,
+        "operation": {
+         "OperationId": "op_6fe1a3ebc6e4444199b0c45c62125306",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 3
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 160
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [
+         {
+          "id": "Human21169",
+          "def": "Human",
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "faction": "Bookoulbah Union",
+          "bodySize": 1.0,
+          "requiredWidth": 1,
+          "captured": true,
+          "jumper": false,
+          "held": true,
+          "lipCells": 16,
+          "lipReachable": 0,
+          "canReachMapEdge": false
+         }
+        ],
+        "legacyHolders": [],
+        "descentCount": 3,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3",
+         "Human21179@84,160 t=228 fall=6.3",
+         "Human21188@84,161 t=408 fall=5.5"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 542,
+        "operation": {
+         "OperationId": "op_91b07c7e70404773a0e9e09481d38a2d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 161
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 3,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3",
+         "Human21179@84,160 t=228 fall=6.3",
+         "Human21188@84,161 t=408 fall=5.5"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 542,
+        "operation": {
+         "OperationId": "op_8d8c3a87a0394004a88640d9780773db",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 84,
+         "z": 159
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 3,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3",
+         "Human21179@84,160 t=228 fall=6.3",
+         "Human21188@84,161 t=408 fall=5.5"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 542,
+        "operation": {
+         "OperationId": "op_ba0822e0096a4af986e965753d0126ca",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 4
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 84,
+         "z": 160
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 3,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3",
+         "Human21179@84,160 t=228 fall=6.3",
+         "Human21188@84,161 t=408 fall=5.5"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 542,
+        "operation": {
+         "OperationId": "op_ec53972381cd4ccb906592b877119d9b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 4
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 84,
+         "z": 161
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "waterDl": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 4066,
+         "role": "None",
+         "isPrisonCell": false,
+         "cellCount": 60768,
+         "touchesMapEdge": true
+        },
+        "pawns": [
+         {
+          "id": "Human21188",
+          "def": "Human",
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "faction": "Bookoulbah Union",
+          "bodySize": 1.0,
+          "requiredWidth": 1,
+          "captured": true,
+          "jumper": false,
+          "held": true,
+          "lipCells": 16,
+          "lipReachable": 0,
+          "canReachMapEdge": false
+         }
+        ],
+        "legacyHolders": [],
+        "descentCount": 3,
+        "recentDescents": [
+         "Human21169@84,159 t=48 fall=5.3",
+         "Human21179@84,160 t=228 fall=6.3",
+         "Human21188@84,161 t=408 fall=5.5"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 542,
+        "operation": {
+         "OperationId": "op_21635db2b19d45ba9372823f6d681492",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\pit_captures_hostile_1795480515942_3__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "pit_occupant_below_floor",
+      "pit_trapped_reads_as_trapped",
+      "pit_occupied_distinguishable",
+      "never_snared_standing"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "pit_cover_invisible",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 9 thing(s) of 9 requested across 9 of 9 op(s).",
+        "opsRequested": 9,
+        "spawned": 9,
+        "failed": 0,
+        "thingsRequested": 9,
+        "thingsPlaced": 9,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_PitCover_ReinforcedFrame": 9
+        },
+        "errors": [],
+        "ticksGame": 542,
+        "operation": {
+         "OperationId": "op_b94923c9408b4bf9917e87b4018f4d8e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 11
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_PitCover_ReinforcedFrame21197",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Concealed pit (reinforced)",
+          "x": 92,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame21198",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Concealed pit (reinforced)",
+          "x": 92,
+          "z": 160,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame21199",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Concealed pit (reinforced)",
+          "x": 92,
+          "z": 161,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame21200",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Concealed pit (reinforced)",
+          "x": 93,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame21201",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Concealed pit (reinforced)",
+          "x": 93,
+          "z": 160,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame21202",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Concealed pit (reinforced)",
+          "x": 93,
+          "z": 161,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame21203",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Concealed pit (reinforced)",
+          "x": 94,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame21204",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Concealed pit (reinforced)",
+          "x": 94,
+          "z": 160,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame21205",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Concealed pit (reinforced)",
+          "x": 94,
+          "z": 161,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160
+         }
+        ],
+        "scanned": 14843,
+        "countReturned": 9,
+        "countMatched": 9,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_PitCover_ReinforcedFrame": 9
+        },
+        "ticksGame": 542,
+        "message": "9 of 9 matching thing(s) returned, 14843 examined.",
+        "operation": {
+         "OperationId": "op_22803dca02f94722ad031ce9e980c066",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\pit_cover_invisible_1795480516623_4__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "pit_covered_invisible",
+      "pit_covered_seam_at_max_zoom"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "ladder_state_look",
+     "toggle": "ladderRequiredToExitEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+        "opsRequested": 1,
+        "spawned": 1,
+        "failed": 0,
+        "thingsRequested": 1,
+        "thingsPlaced": 1,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_Ladder": 1
+        },
+        "errors": [],
+        "ticksGame": 542,
+        "operation": {
+         "OperationId": "op_f842be5cf7f64ef78db30f2a898f979e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Ladder21206",
+          "def": "RM_Ladder",
+          "label": "Wooden ladder",
+          "x": 82,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 60,
+          "maxHitPoints": 60
+         }
+        ],
+        "scanned": 14844,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Ladder": 1
+        },
+        "ticksGame": 542,
+        "message": "1 of 1 matching thing(s) returned, 14844 examined.",
+        "operation": {
+         "OperationId": "op_87f26e7c81284c2eb00694ced06e3178",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\ladder_state_look_1795480517395_5__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "ladder_state_legible"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "sluice_state_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+        "opsRequested": 1,
+        "spawned": 1,
+        "failed": 0,
+        "thingsRequested": 1,
+        "thingsPlaced": 1,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_Sluice": 1
+        },
+        "errors": [],
+        "ticksGame": 542,
+        "operation": {
+         "OperationId": "op_720af6a927bd4d81863fc1895939aee8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 9
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+        "opsRequested": 1,
+        "spawned": 1,
+        "failed": 0,
+        "thingsRequested": 1,
+        "thingsPlaced": 1,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_SecurityGrateDoor": 1
+        },
+        "errors": [],
+        "ticksGame": 542,
+        "operation": {
+         "OperationId": "op_dabff4622f3e43bc88bc4bc3fdf6020d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 10
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Sluice21207",
+          "def": "RM_Sluice",
+          "label": "Wooden sluice gate",
+          "x": 82,
+          "z": 160,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 65,
+          "maxHitPoints": 65,
+          "stuff": "WoodLog"
+         }
+        ],
+        "scanned": 14846,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Sluice": 1
+        },
+        "ticksGame": 542,
+        "message": "1 of 1 matching thing(s) returned, 14846 examined.",
+        "operation": {
+         "OperationId": "op_1cac2479f4fe485abd71d7b05df2f1e5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_SecurityGrateDoor21208",
+          "def": "RM_SecurityGrateDoor",
+          "label": "Steel security grate",
+          "x": 82,
+          "z": 161,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 240,
+          "maxHitPoints": 240,
+          "stuff": "Steel"
+         }
+        ],
+        "scanned": 14846,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_SecurityGrateDoor": 1
+        },
+        "ticksGame": 542,
+        "message": "1 of 1 matching thing(s) returned, 14846 examined.",
+        "operation": {
+         "OperationId": "op_0652491367564b59bd3929b7e5fbf9d2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 6
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\sluice_state_look_1795480518386_6__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "sluice_gate_state_legible"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "spikes_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+        "opsRequested": 1,
+        "spawned": 1,
+        "failed": 0,
+        "thingsRequested": 1,
+        "thingsPlaced": 1,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_Spikes": 1
+        },
+        "errors": [],
+        "ticksGame": 542,
+        "operation": {
+         "OperationId": "op_262771993ef34d6dafb8911658b8ba9c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 5
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_Spikes21209",
+          "def": "RM_Spikes",
+          "label": "Pit spikes",
+          "x": 84,
+          "z": 160,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 80,
+          "maxHitPoints": 80
+         }
+        ],
+        "scanned": 14847,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_Spikes": 1
+        },
+        "ticksGame": 542,
+        "message": "1 of 1 matching thing(s) returned, 14847 examined.",
+        "operation": {
+         "OperationId": "op_3d19dfe0230e4bb8b79e23829e2963fb",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 10
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 542
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\spikes_look_1795480518987_7__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "spikes_read_distinct"
+     ],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 4,
+    "fed": 0,
+    "ticks_spent": 540,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Pirate",
+      "returnedIds": [
+       "Human21169"
+      ],
+      "toolKinds": [
+       "Pirate"
+      ],
+      "readBackKinds": [
+       "Pirate"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Pirate",
+      "returnedIds": [
+       "Human21179"
+      ],
+      "toolKinds": [
+       "Pirate"
+      ],
+      "readBackKinds": [
+       "Pirate"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A3",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Pirate",
+      "returnedIds": [
+       "Human21188"
+      ],
+      "toolKinds": [
+       "Pirate"
+      ],
+      "readBackKinds": [
+       "Pirate"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE.det\\Transient\\modcheck\\surprises\\20261123T163457\\FlowWorksExtensions_plot_G_pit_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   },
+   "site_hold": null,
+   "env_reset": {
+    "log_reset": "ok",
+    "weather": "ok",
+    "map_info": "ok",
+    "unroof": "ok",
+    "gas_ToxGas": "ok",
+    "gas_BlindSmoke": "ok",
+    "gas_RotStink": "ok",
+    "gas_DeadlifeDust": "ok",
+    "gas_things": "ok"
+   },
+   "phase_s": {
+    "hold": 5.581,
+    "body": 17.073,
+    "teardown": 1.018
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "acceptance": {
+  "overall": "GREEN",
+  "rows": [
+   {
+    "row": "plot_G_pit/pit_hole_look",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "plot_G_pit/pit_not_vanilla_trap",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "plot_G_pit/pit_captures_hostile",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "plot_G_pit/pit_cover_invisible",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "plot_G_pit/ladder_state_look",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "plot_G_pit/sluice_state_look",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "plot_G_pit/spikes_look",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   }
+  ],
+  "spoils": [],
+  "counts": {
+   "PASS": 7,
+   "FAIL": 0,
+   "INDETERMINATE": 0,
+   "UNMEASURED": 0
+  },
+  "classes": []
+ },
+ "reuse": {
+  "reused": [],
+  "reusable": []
+ },
+ "host": "Archmagi",
+ "offline_chains": [],
+ "fresh_green": true,
+ "invalid": [],
+ "leads": [],
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v3",
+  "load_s": 5.2,
+  "ready_s": 7.2,
+  "verified": true
+ },
+ "wall_s": 60.6,
+ "chains_run": [
+  "plot_G_pit"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "slime_slip",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel",
+  "fuel_moat_propane",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "613f876b209575ffb28a1856fcfe557d5e62335082a13709f804351e3ef25d5c",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "3eebe7166ea600fc9cc9f52714a4b28440a967f9b356540d2949d8dc7649801e",
+  "assembly_sha256": "81fb0d72b9553a5d9845d58ba0de7d57619be6a2c66b7631b80dfa9769eaa276",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}

@@ -8,7 +8,7 @@
   "assembly_matches": 1,
   "config": "min-13",
   "assembly_identical": false,
-  "ticks_per_s": 2192.5,
+  "ticks_per_s": 1257.0,
   "b4_staged": true
  },
  "zones": {
@@ -178,10 +178,10 @@
     ]
    }
   ],
-  "B0": 1.9,
-  "B4_ticks": 10000,
-  "B4": 189.2,
-  "total_s": 191.7
+  "B0": 6.5,
+  "B4_ticks": 11000,
+  "B4": 292.2,
+  "total_s": 299.7
  },
  "rows": [
   {
@@ -205,8 +205,8 @@
    "status": "FAIL",
    "cls": "HARNESS",
    "detail": {
-    "loaded": "3014cb2cc1f7",
-    "repo": "81fb0d72b955",
+    "loaded": "81fb0d72b955",
+    "repo": "19adfbae097c",
     "mvidMatchesFile": true,
     "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll",
     "why": "the running assembly is not the repo's: every MOD row below judges an older or other build -- redeploy and relaunch"
@@ -222,8 +222,8 @@
    "cls": "HARNESS",
    "detail": {
     "ticks": 600,
-    "wall_s": 0.27,
-    "ticks_per_s": 2192.5,
+    "wall_s": 0.48,
+    "ticks_per_s": 1257.0,
     "frameBudgetMs": 150.0
    },
    "block": "B0",
@@ -294,13 +294,13 @@
    "status": "UNMEASURED",
    "cls": "HARNESS",
    "detail": {
-    "trench": 19.83,
-    "open": 30.0,
+    "trench": 26.95,
+    "open": 25.83,
     "n": 6,
     "trials": [
      {
-      "trench": 20.0,
-      "open": 30.0,
+      "trench": 30.0,
+      "open": 20.0,
       "ok": true,
       "healed": [
        true,
@@ -308,34 +308,18 @@
       ],
       "added": {
        "trench": {
-        "Shredded": 20.0
-       },
-       "open": {
-        "Shredded": 30.0
-       }
-      }
-     },
-     {
-      "trench": 20.0,
-      "open": 25.0,
-      "ok": true,
-      "healed": [
-       true,
-       true
-      ],
-      "added": {
-       "trench": {
-        "Shredded": 20.0
-       },
-       "open": {
+        "Shredded": 25.0,
         "Crack": 5.0,
+        "BloodLoss": 0.00269999984
+       },
+       "open": {
         "Shredded": 20.0
        }
       }
      },
      {
-      "trench": 20.0,
-      "open": 30.0,
+      "trench": 30.0,
+      "open": 26.67,
       "ok": true,
       "healed": [
        true,
@@ -343,17 +327,56 @@
       ],
       "added": {
        "trench": {
-        "Shredded": 20.0
-       },
-       "open": {
         "Shredded": 25.0,
         "Crack": 5.0
+       },
+       "open": {
+        "Shredded": 19.99999953,
+        "Crack": 6.66666651
+       }
+      }
+     },
+     {
+      "trench": 26.67,
+      "open": 30.0,
+      "ok": true,
+      "healed": [
+       true,
+       true
+      ],
+      "added": {
+       "trench": {
+        "Shredded": 19.99999951,
+        "Crack": 6.66666651
+       },
+       "open": {
+        "Shredded": 20.0,
+        "Crack": 10.0,
+        "BloodLoss": 0.00119999994
+       }
+      }
+     },
+     {
+      "trench": 30.0,
+      "open": 20.0,
+      "ok": true,
+      "healed": [
+       true,
+       true
+      ],
+      "added": {
+       "trench": {
+        "Crack": 10.0,
+        "Shredded": 20.0
+       },
+       "open": {
+        "Shredded": 19.99999951
        }
       }
      },
      {
       "trench": 20.0,
-      "open": 40.0,
+      "open": 25.0,
       "ok": true,
       "healed": [
        true,
@@ -364,15 +387,13 @@
         "Shredded": 20.0
        },
        "open": {
-        "Crack": 20.0,
-        "Shredded": 20.0,
-        "BloodLoss": 0.00119999994
+        "Shredded": 25.0
        }
       }
      },
      {
-      "trench": 19.0,
-      "open": 25.0,
+      "trench": 25.0,
+      "open": 33.33,
       "ok": true,
       "healed": [
        true,
@@ -380,30 +401,12 @@
       ],
       "added": {
        "trench": {
-        "Shredded": 10.0,
-        "Crack": 9.0
+        "Crack": 5.0,
+        "Shredded": 20.0
        },
        "open": {
-        "Shredded": 20.0,
-        "Crack": 5.0
-       }
-      }
-     },
-     {
-      "trench": 20.0,
-      "open": 30.0,
-      "ok": true,
-      "healed": [
-       true,
-       true
-      ],
-      "added": {
-       "trench": {
-        "Shredded": 19.99999953,
-        "BloodLoss": 0.00119999994
-       },
-       "open": {
-        "Shredded": 30.0
+        "Shredded": 26.66666651,
+        "Crack": 6.66666651
        }
       }
      }
@@ -433,7 +436,7 @@
      ]
     ],
     "note": "mean severity ADDED per blast over 6 paired trials, armorPenetration 10, healAll before each",
-    "statusIfRepoDll": "FAIL"
+    "statusIfRepoDll": "PASS"
    },
    "block": "B4",
    "eyes": false
@@ -458,7 +461,40 @@
      },
      {
       "n": 2,
-      "total": 109.5,
+      "total": 123.3,
+      "depths": [
+       4.0,
+       4.0
+      ],
+      "covers_left": 0
+     }
+    ],
+    "statusIfRepoDll": "PASS"
+   },
+   "block": "B4",
+   "eyes": false
+  },
+  {
+   "id": "B4_cover_220",
+   "item": "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT",
+   "criterion": "A3",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "def_": "RM_PitCover_ReinforcedFrame",
+    "rating": 220.0,
+    "trail": [
+     {
+      "n": 1,
+      "total": 60.8,
+      "depths": [
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 2,
+      "total": 121.6,
       "depths": [
        4.0,
        4.0
@@ -467,8 +503,19 @@
      },
      {
       "n": 3,
-      "total": 170.3,
+      "total": 170.4,
       "depths": [
+       4.0,
+       4.0,
+       4.0
+      ],
+      "covers_left": 6
+     },
+     {
+      "n": 4,
+      "total": 231.2,
+      "depths": [
+       4.0,
        4.0,
        4.0,
        4.0
@@ -497,7 +544,7 @@
      "commonFish": [
       "Fish_Tilapia"
      ],
-     "population": 16.886816
+     "population": 18.5113258
     },
     "fwBody": {
      "id": null,
@@ -506,60 +553,6 @@
      "capacity": null,
      "limitless": null
     },
-    "statusIfRepoDll": "PASS"
-   },
-   "block": "B4",
-   "eyes": false
-  },
-  {
-   "id": "B4_cover_220",
-   "item": "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT",
-   "criterion": "A3",
-   "status": "UNMEASURED",
-   "cls": "HARNESS",
-   "detail": {
-    "def_": "RM_PitCover_ReinforcedFrame",
-    "rating": 220.0,
-    "trail": [
-     {
-      "n": 1,
-      "total": 60.7,
-      "depths": [
-       4.0
-      ],
-      "covers_left": 6
-     },
-     {
-      "n": 2,
-      "total": 121.6,
-      "depths": [
-       4.0,
-       4.0
-      ],
-      "covers_left": 6
-     },
-     {
-      "n": 3,
-      "total": 182.4,
-      "depths": [
-       4.0,
-       4.0,
-       4.0
-      ],
-      "covers_left": 6
-     },
-     {
-      "n": 4,
-      "total": 243.2,
-      "depths": [
-       4.0,
-       4.0,
-       4.0,
-       4.0
-      ],
-      "covers_left": 0
-     }
-    ],
     "statusIfRepoDll": "PASS"
    },
    "block": "B4",
@@ -607,16 +600,16 @@
    "status": "UNMEASURED",
    "cls": "HARNESS",
    "detail": {
-    "gear": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human21183', 'thingIdNumber': 21183, 'name': \"Zoya 'Rubber' Sloan\", 'name",
+    "gear": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human21182', 'thingIdNumber': 21182, 'name': \"Emily 'Coyote' Luckhardt\", ",
     "pawn": {
      "cell": [
-      52,
-      25
+      53,
+      24
      ],
      "depth": 0.0,
      "held": "False",
      "trapped": "False",
-     "raw": "CLIMB k=7 held=False trapped=False cell=52,25 | POCKET k=7 comp=0 pocket=False size=62500 depth=0 gen=1500 built=1500 rebuilds=306"
+     "raw": "CLIMB k=7 held=False trapped=False cell=53,24 | POCKET k=7 comp=0 pocket=False size=62500 depth=0 gen=1500 built=1500 rebuilds=306"
     },
     "orderTaken": true,
     "statusIfRepoDll": "PASS"
@@ -653,8 +646,8 @@
    "status": "UNMEASURED",
    "cls": "HARNESS",
    "detail": {
-    "pack": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human21190', 'thingIdNumber': 211",
-    "jump": "{'success': True, 'action': 'cast', 'accepted': True, 'ticksElapsed': 123, 'timedOut': False, 'speedChanged': True, 'speedRestored': True, 'preCast': {'pawn': {",
+    "pack": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human21188', 'thingIdNumber': 211",
+    "jump": "{'success': True, 'action': 'cast', 'accepted': True, 'ticksElapsed': 124, 'timedOut': False, 'speedChanged': True, 'speedRestored': True, 'preCast': {'pawn': {",
     "pawn": {
      "cell": [
       67,
@@ -666,6 +659,7 @@
      "raw": "CLIMB k=2 held=False trapped=False cell=67,17 | POCKET k=2 comp=3 pocket=True size=9 depth=6 gen=1500 built=1500 rebuilds=306"
     },
     "hediffs": {
+     "WakeUpAddiction": 0.8038176,
      "Scarification": 2.5
     },
     "owed": "jump back out, skip, knockback-still-falls: not read",
@@ -743,9 +737,9 @@
      },
      "size": 96,
      "trackedCells": 96,
-     "population": 16.886816,
+     "population": 18.5113258,
      "maxPopulation": 20.0,
-     "populationPct": 0.8443408,
+     "populationPct": 0.9255663,
      "populationFactor": 0.0306461528,
      "hasFish": true,
      "commonFish": [
@@ -757,23 +751,23 @@
      "pollutionPct": 0.0
     },
     "fishBefore": 0,
-    "fishAfter": 1,
+    "fishAfter": 2,
     "fishOnMap": [
      {
       "def": "Fish_Tilapia",
-      "count": 1,
-      "stacks": 1
+      "count": 2,
+      "stacks": 2
      }
     ],
-    "jobTicks": 8636,
+    "jobTicks": 9875,
     "fishCell": {
-     "x": 117,
-     "z": 32
+     "x": 118,
+     "z": 34
     },
     "standSpot": {
-     "x": 116,
-     "z": 32,
-     "terrain": "WaterShallow"
+     "x": 118,
+     "z": 35,
+     "terrain": "RM_Channel_Mid"
     },
     "whyNot": null,
     "statusIfRepoDll": "PASS"
@@ -789,18 +783,22 @@
    "cls": "HARNESS",
    "detail": {
     "sev": [
-     0.00225,
-     0.0187499933
+     0.003,
+     0.026249988
     ],
-    "ticks": 9500,
-    "projected60k": 0.104210484,
+    "ticks": 10500,
+    "projected60k": null,
     "home": [
      183,
      17
     ],
-    "wandered": [],
-    "how": "INFERRED from the measured rate",
-    "statusIfRepoDll": "FAIL"
+    "wandered": [
+     [
+      182,
+      17
+     ]
+    ],
+    "how": "INFERRED from the measured rate"
    },
    "block": "B4",
    "eyes": false
