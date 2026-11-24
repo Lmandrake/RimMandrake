@@ -14,34 +14,6 @@
    "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
    "test": "src/RimMandrake/FlowWorks/selftest_review_map.py",
    "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
-   "added": "2026-11-13T05:16:17Z",
-   "expires": "2026-11-27T05:16:17Z",
-   "item": "RIMMANDRAKE_REFILE_TWILIGHTSEA_COMMISSION_THREE_YOUNG_COLOCLAWS",
-   "test": "src/RimMandrake/Utils/art/selftest_extra_art_commission.py",
-   "why": "Extra-art commission: RM_TwilightSea owes 3 RSW_ColoClawFish young jobs (east/north/south)"
-  },
-  {
-   "added": "2026-11-13T05:16:19Z",
-   "expires": "2026-11-27T05:16:19Z",
-   "item": "RIMMANDRAKE_REFILE_TWILIGHTSEA_COMMISSION_THREE_YOUNG_COLOCLAWS",
-   "test": "src/RimMandrake/Utils/art/selftest_extra_art_filed_rows_kept.py",
-   "why": "Extra-art commission: RM_TwilightSea owes 3 RSW_ColoClawFish young jobs (east/north/south)"
-  },
-  {
-   "added": "2026-11-13T05:16:25Z",
-   "expires": "2026-11-27T05:16:25Z",
-   "item": "RIMMANDRAKE_CLEAR_DEAD_STANDINS_AND_REFIT_MORAVATHA_PACK",
-   "test": "src/RimStarWars/SWBestiary/selftest_swbestiary_pack_overlays.py",
-   "why": "Art drift: 4 dead shadowed stand-ins under src, and RM_Moravatha north pack overlay no lon"
-  },
-  {
-   "added": "2026-11-13T07:54:16Z",
-   "expires": "2026-11-27T07:54:16Z",
-   "item": "RIMMANDRAKE_RECONCILE_RESEARCHRETAG_WORKSHOP_TREE_WITH_DUMP",
-   "test": "src/RimUtinni/ResearchRetag/selftest_researchretag.py",
-   "why": "filed, too new for the list; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
   }
  ]
 }
