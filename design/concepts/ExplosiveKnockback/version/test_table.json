@@ -375,9 +375,9 @@
     "rc": 0,
     "seconds": 1.51,
     "last": "explosive knockback gas census: PASS (10 sources, tagged grid:RimMandrake.Cauldron.RM_MapComponent_VentGas; 0 faults; 5/5 planted faults caught)",
-    "at": "2026-11-23T10:30:19Z",
+    "at": "2026-11-24T04:13:42Z",
     "result": "PASS",
-    "build": "ebeb1396540d1d7df4f7",
+    "build": "8dab2dc885f80c9c21a9",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py",
     "margins": []
    }
