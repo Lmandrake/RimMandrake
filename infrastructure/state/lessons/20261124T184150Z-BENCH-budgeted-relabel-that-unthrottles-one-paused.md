@@ -1,0 +1,2 @@
+A budgeted relabel that unthrottles one paused frame per write strands every labelling that frame's slice did not reach, until the clock runs. A live scene that stages while paused and reads reach at once can then read a false no. Keep the debt until nothing is stale, and have scenes wait for the mod's own reach read (bounded at two throttles).
+item: RIMMANDRAKE_TRACE_FLOWWORKS_UNDER_DECK_PATH_MISS_ONE_IN_28_RUNS
