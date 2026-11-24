@@ -1821,7 +1821,7 @@ The Conductor weighed it. He answered, 2026-11-24 (ledger, 8:40 AM PST): *"go"*.
   version 0.3.0 of every mod. World painting and world testing take place on the full list, later.
 - **What runs on the small list.** Mod development, every test, every walk savegame and his walks. No test, stage exit, deploy or
   savegame step asks for the full list. `./publish` refuses a test table that does (`src/RimMandrake/rimflow/scene_size.py`).
-- **Each mod's small list has one place:** `design/concepts/<Mod>/version/small_list.json`. It names a `modset_builder` tier. The list
+- **Each mod's small list has one place:** `design/concepts/<Mod>/version/small_list.json`. The file names a `modset_builder` tier. The list
   holds every mod that the mod patches or requires, all five expansions, and the advanced-zoom mod. A test may run on a
   smaller tier of its own.
 - **The check.** A patch that matches nothing logs nothing. So `python3 src/RimMandrake/Utils/small_list.py check` fails when a mod's
@@ -1832,8 +1832,8 @@ The Conductor weighed it. He answered, 2026-11-24 (ledger, 8:40 AM PST): *"go"*.
 - **What waits for the integration phase:** `design/RimMandrake/integration_phase_list.md`. No ticket for a line of it.
 - **What this does not change.** The walk is one of his five acts. A list for a sitting keeps the advanced-zoom mod. Every list holds all
   five expansions. A visit that was live when he ruled keeps its list.
-- **What this replaces.** The rule that only a check that needs the full list must use ArchBig, the rule that his walk is the check of a small-list
-  verdict on his full list, and the full-list smoke scene of §The cheapest test that decides the bar.
+- **What this replaces.** Three rules: ArchBig only for a check that needs the full list; his walk as the check of a small-list verdict on the full
+  list; the full-list smoke scene of §The cheapest test that decides the bar.
 
 ## What Python cannot reach goes into the bridge's C#; tests stay in Python — owner, 2026-11-23
 

@@ -4528,7 +4528,7 @@ def lane_rows_only(d):
 
 # Owner, 2026-11-24 ("go"): full-list testing is retired until the integration phase, and a walk save stands on the mod's small
 # list. The rule binds a visit that opens after it: a save staged before keeps its list.
-SMALL_LIST_FROM = "2026-11-24T09:00:00-08:00"
+SMALL_LIST_FROM = "2026-11-24T10:20:00-08:00"      # the first briefs that say so landed at 9:55 AM (f99cf6b71e)
 
 
 def walk_small_list_why(root, mod, n, walk):

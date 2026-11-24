@@ -464,7 +464,7 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
   - The hold does not depend on your bridge hold. It stays when your bridge hold lapses.
   - Every in-game run that can use ArchSmall goes to ArchSmall. ArchSmall has its own install, Mods and BridgeTools
     (`D:\ClaudeWork\rimmandrake\instances\b\game`), so its deploys never touch ArchBig.
-  - No visit waits for a mod list: full-list testing is retired (`design/RimMandrake/standing_rulings.md` §Mod development runs
+  - No in-game test session (a visit) waits for a mod list: full-list testing is retired (`design/RimMandrake/standing_rulings.md` §Mod development runs
     on small lists). He walks on the game whose Saves folder holds the walk savegame. For an ArchSmall walk, hold ArchSmall
     (`./pipe off game:ArchSmall`).
   - Full text: `design/specs/2026-11-20-per-game-hold-own-install/boundary.md` and
