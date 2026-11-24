@@ -398,16 +398,45 @@ namespace RimMandrake.ExplosiveKnockback
         {
             Direct = 0,       // on the landing cell itself
             NearCell = 1,     // GenPlace's "near" the landing cell
-            PitFloor = 2,     // near the landing cell, on an open pit floor only, within PitSpread of it
+            PitFloor = 2,     // the nearest free floor cell of the pit it came down in (PitAround)
             NearRim = 3,      // beside the pit on the side it came from, never past it
             NearOrigin = 4,   // GenPlace's "near" where it was thrown from
             Fallback = 5,     // spawned on the landing cell whatever is there
         }
 
-        /// <summary>A pit floor cell this far from the landing cell still takes the stack: 1.5 = the eight cells around it, the
-        /// first ring GenPlace's own "near" search reads, so a stack that finds its pit cell taken settles beside it on the
-        /// floor and is never seen to jump along a trench.</summary>
-        public const float PitSpread = 1.5f;
+        /// <summary>The floor of the pit at (x, z): every open pit cell joined to it, corners included, within PitReach. Owner, by card
+        /// 2026-11-22: "Always into the pit somewhere, THEN bounced out of the pit if totally full." A stack whose landing cell is
+        /// taken settles on the nearest free cell of this floor, and is bounced out only when the floor holds no place for it.</summary>
+        public static HashSet<long> PitAround(IKbGrid grid, int x, int z)
+        {
+            var seen = new HashSet<long> { Key(x, z) };
+            var open = new Queue<(int x, int z)>();
+            open.Enqueue((x, z));
+            while (open.Count > 0)
+            {
+                (int cx, int cz) = open.Dequeue();
+                for (int ox = -1; ox <= 1; ox++)
+                {
+                    for (int oz = -1; oz <= 1; oz++)
+                    {
+                        int nx = cx + ox, nz = cz + oz;
+                        if ((nx - x) * (nx - x) + (nz - z) * (nz - z) <= PitReach * PitReach && !seen.Contains(Key(nx, nz))
+                            && grid.At(nx, nz) == KbCell.Pit)
+                        {
+                            seen.Add(Key(nx, nz));
+                            open.Enqueue((nx, nz));
+                        }
+                    }
+                }
+            }
+            return seen;
+        }
+
+        /// <summary>The farthest floor cell asked for: 12.9 = the radius of GenPlace's own last "near" search ring, which never
+        /// looks farther.</summary>
+        public const float PitReach = 12.9f;
+
+        private static long Key(int x, int z) => ((long)x << 32) | (uint)z;
 
         /// <summary>With the pit floor beside it full, a stack is set down on open ground this near its landing cell, on the side
         /// its leg came from (no farther from the leg's start than the landing cell is, so never past the pit). 2.9 = the
@@ -418,8 +447,8 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>Leaf thrown_into_pit_falls ("falls to its floor ... never anything thrown across a pit"; false pass "the
         /// stack lands on the pit rim"). The map (reading M02) found 401 of 2,200 flights that met a pit ending on the rim or
         /// past it: the game holds one stack a cell, and GenPlace's "near" then picked any neighbour, the far rim included. A
-        /// landing on a pit cell that cannot take the stack now goes to the pit floor beside it, and only with that floor full
-        /// to the rim on the side it came from. `wouldBump` = a Direct placement would move a resident stack (never done).</summary>
+        /// landing on a pit cell that cannot take the stack now goes to the floor of that pit, and only with that floor full to the
+        /// rim on the side it came from. `wouldBump` = a Direct placement would move a resident stack (never done).</summary>
         public static KbPlace[] LandingOrder(bool wouldBump, bool destSuperdeep)
         {
             if (destSuperdeep)
@@ -434,17 +463,17 @@ namespace RimMandrake.ExplosiveKnockback
         }
 
         /// <summary>May the stack that came down on pit cell (dx, dz), on a leg flown from (fromX, fromZ), be put on (x, z)
-        /// under `place`? `cell` is the path grid's reading of (x, z) for goods. PitFloor: an open pit floor cell within
-        /// PitSpread. NearRim: open ground within RimSpread of the landing cell and no farther from where the leg began than
+        /// under `place`? `cell` is the path grid's reading of (x, z) for goods. PitFloor: an open floor cell of `pit`, the pit it
+        /// came down in (PitAround). NearRim: open ground within RimSpread of the landing cell and no farther from where the leg began than
         /// the landing cell is (the side it came from). Never a wall, a door, water or sandbags: GenPlace's "near" takes even those when nothing
         /// better is offered.</summary>
-        public static bool PlaceAllows(KbPlace place, int x, int z, int dx, int dz, int fromX, int fromZ, KbCell cell)
+        public static bool PlaceAllows(KbPlace place, int x, int z, int dx, int dz, int fromX, int fromZ, KbCell cell, HashSet<long> pit = null)
         {
             float ex = x - dx, ez = z - dz;
             float d2 = ex * ex + ez * ez;
             if (place == KbPlace.PitFloor)
             {
-                return cell == KbCell.Pit && d2 <= PitSpread * PitSpread;
+                return cell == KbCell.Pit && pit != null && pit.Contains(Key(x, z));
             }
             if (place == KbPlace.NearRim)
             {

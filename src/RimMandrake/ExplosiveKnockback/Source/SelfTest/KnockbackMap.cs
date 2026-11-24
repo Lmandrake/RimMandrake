@@ -214,7 +214,7 @@ internal sealed class MWorld : IKbWorld
 
 internal static class KnockbackMap
 {
-    public const string Version = "map-5";
+    public const string Version = "map-6";
     private static KbRules Q = new KbRules();
 
     public sealed class Blast
@@ -432,7 +432,8 @@ internal static class KnockbackMap
             if (place == KbPlanner.KbPlace.Direct || place == KbPlanner.KbPlace.Fallback) { px = dx; pz = dz; break; }
             int cx = place == KbPlanner.KbPlace.NearOrigin ? t.sx : dx, cz = place == KbPlanner.KbPlace.NearOrigin ? t.sz : dz;
             IKbGrid g = w.Grid(false);
-            Func<int, int, bool> allow = (x, z) => w.In(x, z) && KbPlanner.PlaceAllows(place, x, z, dx, dz, t.legFromX, t.legFromZ, g.At(x, z));
+            HashSet<long> pit = place == KbPlanner.KbPlace.PitFloor ? KbPlanner.PitAround(g, dx, dz) : null;
+            Func<int, int, bool> allow = (x, z) => w.In(x, z) && KbPlanner.PlaceAllows(place, x, z, dx, dz, t.legFromX, t.legFromZ, g.At(x, z), pit);
             if (w.Near(t, cx, cz, allow, out px, out pz)) break;
         }
         t.pitFloorFull = deep && t.placedVia > (int)KbPlanner.KbPlace.PitFloor + 1;
@@ -1025,6 +1026,22 @@ internal static class KnockbackMap
             var w2 = new MWorld(30, 30); w2.deep[13, 10] = true; w2.deep[13, 11] = true; a = Stack(w2, 12, 10, 5f, "a"); b = Stack(w2, 11, 10, 5f, "b");
             Run(w2, Bomb(10, 10));
             Case("two stacks, a two-cell pit: both end on the pit floor", a.inPit && b.inPit, Where(a) + " " + Where(b));
+            // RIMMANDRAKE_LAND_KNOCKBACK_GOODS_IN_PIT_FIRST_BOUNCE_ONLY_WHEN_FULL (owner, 2026-11-22: "Always into the pit somewhere,
+            // THEN bounced out of the pit if totally full"): a trench whose landing end is full takes the stack farther along its floor
+            var w3 = new MWorld(40, 40); for (int z = 10; z <= 15; z++) w3.deep[13, z] = true;
+            for (int z = 10; z <= 14; z++) Stack(w3, 13, z, 5f, "full" + z);
+            MThing c = Stack(w3, 12, 10, 5f, "c");
+            Run(w3, Bomb(10, 10));
+            Case("a part-full pit: the thrown stack lands inside it", c.inPit && c.x == 13 && c.z == 15, Where(c));
+            var w4 = new MWorld(40, 40); for (int z = 10; z <= 15; z++) w4.deep[13, z] = true;
+            for (int z = 10; z <= 15; z++) Stack(w4, 13, z, 5f, "full" + z);
+            MThing d = Stack(w4, 12, 10, 5f, "d");
+            Run(w4, Bomb(10, 10));
+            Case("a totally full pit: the thrown stack is bounced out on the side it came from", !d.inPit && d.x <= 13 && !w4.deep[d.x, d.z], Where(d));
+            var w5 = new MWorld(40, 40); w5.deep[13, 10] = true; w5.deep[13, 13] = true; Stack(w5, 13, 10, 5f, "full");
+            MThing e2 = Stack(w5, 12, 10, 5f, "e2");
+            Run(w5, Bomb(10, 10));
+            Case("a full pit beside another pit: the stack does not jump to the other pit", !w5.deep[e2.x, e2.z], Where(e2));
         }
         {
             // sc_closed_containers: a light 1x1 locker is thrown a short way with its goods; a heavy one jolts; never into a pit

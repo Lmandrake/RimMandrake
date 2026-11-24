@@ -38,6 +38,8 @@ SELFTEST = ("Program.cs", "KnockbackFuzz.cs", "KnockbackSweep.cs", "KnockbackMap
 # The first block are the rules that lived in Verse code until 2026-11-17, where blind cycle 5 planted ten faults and every
 # offline suite stayed green.
 FAULTS = [
+    ("a stack whose pit cell is taken settles only beside it", "RM_KnockbackPlan.cs", "pit != null && pit.Contains(Key(x, z));", "d2 <= 2.25f;"),
+    ("a stack jumps from its full pit into another", "RM_KnockbackPlan.cs", "pit != null && pit.Contains(Key(x, z));", "true;"),
     ("a pawn in bed is thrown", "RM_KnockbackPlan.cs", 'if (f.inBed) return "in_bed";', ""),
     ("a pawn carrying a pawn is thrown", "RM_KnockbackPlan.cs", 'if (f.carryingPawn) return "carrying_pawn";', ""),
     ("an airborne pawn is thrown", "RM_KnockbackPlan.cs", 'if (f.flying) return "flying";', ""),

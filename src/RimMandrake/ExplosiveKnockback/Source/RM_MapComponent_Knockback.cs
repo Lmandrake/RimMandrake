@@ -586,7 +586,8 @@ namespace RimMandrake.ExplosiveKnockback
                 if (place == KbPlanner.KbPlace.PitFloor || place == KbPlanner.KbPlace.NearRim)
                 {
                     KbPlanner.KbPlace pl = place;
-                    allow = c => c.InBounds(map) && KbPlanner.PlaceAllows(pl, c.x, c.z, dest.x, dest.z, from.x, from.z, grid.At(c.x, c.z));
+                    HashSet<long> pit = place == KbPlanner.KbPlace.PitFloor ? KbPlanner.PitAround(grid, dest.x, dest.z) : null;
+                    allow = c => c.InBounds(map) && KbPlanner.PlaceAllows(pl, c.x, c.z, dest.x, dest.z, from.x, from.z, grid.At(c.x, c.z), pit);
                 }
                 if (GenPlace.TryPlaceThing(t, place == KbPlanner.KbPlace.NearOrigin ? origin : dest, map, ThingPlaceMode.Near, out placed, null, allow))
                 {
@@ -873,6 +874,8 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>Proof build: how many jolt frames were drawn and the largest offset drawn (cells), for the jolt's live check.</summary>
         internal static int JoltFrames;
         internal static float JoltMaxOffset;
+        /// <summary>Per container (thingIDNumber): the largest offset its jolt was drawn at (RIMMANDRAKE_MEASURE_KNOCKBACK_JOLT_PER_CONTAINER_NOT_GHOST).</summary>
+        internal static readonly Dictionary<int, float> JoltDrawn = new Dictionary<int, float>();
 #endif
 
         /// <summary>A blocked closed container jolts in place: drawn shaking for JoltTicks, at most MaxJolts at once (the
@@ -914,6 +917,8 @@ namespace RimMandrake.ExplosiveKnockback
 #if RM_PROOFS
                 JoltFrames++;
                 JoltMaxOffset = Mathf.Max(JoltMaxOffset, Mathf.Sqrt(ox * ox + oz * oz));
+                JoltDrawn.TryGetValue(b.thingIDNumber, out float drawn);
+                JoltDrawn[b.thingIDNumber] = Mathf.Max(drawn, Mathf.Sqrt(ox * ox + oz * oz));
 #endif
             }
         }

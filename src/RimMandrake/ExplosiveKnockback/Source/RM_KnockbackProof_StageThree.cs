@@ -279,6 +279,12 @@ namespace RimMandrake.ExplosiveKnockback
                     return "the sealed crate weighs " + s.numbers["crateMass"] + " kg, not under 250";
                 }
             }
+            // a 300-tick advance draws few frames and a jolt lives 20 ticks: draw its frame each tick, through the shipped drawing code
+            RM_MapComponent_Knockback jolter = Map.GetComponent<RM_MapComponent_Knockback>();
+            for (int d = 1; d <= 60; d++)
+            {
+                RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + d, () => jolter.MapComponentUpdate()));
+            }
             Blast(s.o, 2.9f, DamageDefOf.Bomb, 30);
             s.verdict = sc =>
             {
@@ -318,10 +324,11 @@ namespace RimMandrake.ExplosiveKnockback
                     bool stayed = b.Spawned && b.Position == sc.starts[k];
                     bool jolt = line.Count == 1 && (string)line[0]["action"] == "jolt";
                     bool held = k == "sec" || GoodsOn(b).Count == (int)sc.numbers["goods_" + k];
-                    bool row = stayed && jolt && held;
+                    float drawn = RM_MapComponent_Knockback.JoltDrawn.TryGetValue(b.thingIDNumber, out float jd) ? jd : 0f;
+                    bool row = stayed && jolt && held && drawn > 0f;
                     ok &= row;
                     rows.Add(k + "=" + (row ? "jolted" : "FAIL") + " stayed=" + stayed + " held=" + held + " lines=" + line.Count
-                        + " action=" + (line.Count > 0 ? (string)line[0]["action"] : "none") + " drawnOffset=UNMEASURED");
+                        + " action=" + (line.Count > 0 ? (string)line[0]["action"] : "none") + " drawnOffset=" + drawn.ToString("0.000"));
                 }
                 {
                     Thing pn = sc.things["panel"];
