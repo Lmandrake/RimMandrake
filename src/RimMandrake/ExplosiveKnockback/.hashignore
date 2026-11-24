@@ -1,0 +1,7 @@
+# Files that never ship and never change what the mod does: the test scripts. A check that declares one of them (its own
+# script) still reruns when it changes (rerun_relation.py). The shipped set is About, Assemblies, Defs, Patches.
+selftest_*
+validation.py
+knockback_runner.py
+proof_build_gate.py
+proof

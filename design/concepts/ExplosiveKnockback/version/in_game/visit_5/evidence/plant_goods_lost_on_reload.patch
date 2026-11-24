@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs
+index e862fb32a2..9c6879c65f 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs
+@@ -424,6 +424,7 @@ namespace RimMandrake.ExplosiveKnockback
+         {
+             base.ExposeData();
+             Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
++            if (Scribe.mode == LoadSaveMode.PostLoadInit) { innerContainer.ClearAndDestroyContents(); }
+             Scribe_Values.Look(ref startVec, "startVec");
+             Scribe_Values.Look(ref originCell, "originCell");
+             Scribe_Values.Look(ref destCell, "destCell");

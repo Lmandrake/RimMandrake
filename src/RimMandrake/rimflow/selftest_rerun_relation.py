@@ -254,6 +254,20 @@ def t_whole_mod_check_skips_hashignored():
            {"sc_full", "sc_whole"} <= set(res["touched"]), res["touched"])
     finally:
         tr.close()
+    # a check's own script is never skipped: Explosive Knockback visit 5 (2026-11-23), its walk's validation.py never ships
+    # and voided the barrage row that never reads it; ignored, it must still rerun the walk that does
+    tr = Tree()
+    try:
+        tr.write("src/RimMandrake/Planted/.hashignore", "walk.py\nselftest_*\n")
+        tr.write("src/RimMandrake/Planted/walk.py", "v = 0\n")
+        base = tr.commit("walk.py ignored")
+        tr.write("src/RimMandrake/Planted/walk.py", "v = 1\n")
+        tr.commit("the full-list check's own script")
+        res = relate(tr, all_rows(base))
+        ok("whole-mod-check-skips-hashignored: an ignored script reruns the check that declares it, and only that one",
+           set(res["touched"]) & {"sc_full", "sc_whole"} == {"sc_full"}, res["touched"])
+    finally:
+        tr.close()
 
 
 def t_csharp_relates_by_source_file():

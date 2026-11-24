@@ -1,0 +1,24 @@
+ROW                          STATUS     DETAIL
+W_PRECONDITIONS              PASS       full list, FlowWorks, Cauldron gas, shelves, closed container, cover
+A_IMPACTS_IN_ROOM            PASS       3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 40 request(s) centred in the storeroom, 12 throw(s)
+A_SAVE_MIDAIR                PASS       3 carrier(s) in the air; save EK_WALK_RAID_MIDAIR_20261123T173533; triplet SAVE_DROPS_STATE
+A_RELOAD_NO_DUP_LOST         FAIL       MOD: both loads agree and differ from the live game; at tick 13238: live 8, load 5, reload 5 things; dup {}; lost ['38761', '38776', '43812'] new [] (load vs live); both loads agree with each other and differ from the live arm on 6 field(s): the round trip loses it (the writer or a deterministic loader -- read the .rws to tell which)
+A_COVER_BROKEN_ONE_DESCENT   PASS       throw 3 of at most 5 (rider killed on [1, 2]); grenade ok; cover left none; riders ['Human41802'] (killed []); 1 descent(s) {'Human41802': 1}, twice []
+A_GAS_CLUMP_BY_CLUMP         PASS       26 bursts on 5 ticks, 26 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.3, 3.5, 4.3, 4.9]; burst again {}
+A_GAS_GOODS_MOVED            PASS       13 throw(s) from 26 burst(s)
+A_REQUESTS_MATCH_PLAN        PASS       83 requests, 0 mismatch(es): []; answered by a corpse: ['Human41802 as Corpse_Human42827', 'Human38765 as Corpse_Human43812']
+A_REACHED_ACCOUNTED          PASS       0 thing(s) inside a shell's radius with no journal line: []
+B_GAS_CLUMP_BY_CLUMP         PASS       27 bursts on 5 ticks, 27 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.4, 3.4, 4.2, 5.1]; burst again {}
+B_GAS_GOODS_MOVED            PASS       26 throw(s) from 27 burst(s)
+B_IMPACTS_IN_ROOM            PASS       3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 30 request(s) centred in the storeroom, 21 throw(s)
+B_COVER_BROKEN_ONE_DESCENT   PASS       throw 1 of at most 5 (rider killed on none); grenade ok; cover left none; riders ['Human41802'] (killed []); 1 descent(s) {'Human41802': 1}, twice []
+B_REQUESTS_MATCH_PLAN        PASS       115 requests, 0 mismatch(es): []; answered by a corpse: ['Human38762 as Corpse_Human43926', 'Human38765 as Corpse_Human43927']
+B_REACHED_ACCOUNTED          PASS       0 thing(s) inside a shell's radius with no journal line: []
+C_OFF_IMPACTS_NO_THROWS      PASS       mod off: 3 shell(s) went off (all), 0 throw line(s), 0 of 11 storeroom stack(s) moved
+CARRIER_TICK_COST            PASS       meanTickTime 4.68268347 ms at rest, 4.998773 ms 1 s after the shells with 0 carrier(s) in the air, clock running (recorded, not judged)
+FRAME_BUDGET                 UNMEASURED the frame arms run on the small list (owner 2026-11-16): run this leaf with --frames-only on the Explosive Knockback tier, then pass its json as --frame-evidence
+evidence: design\concepts\ExplosiveKnockback\version\in_game\visit_5\evidence\sc_walk_raid_plant.json   throwaway saves: ['EK_WALK_RAID_BASE_20261123T173533', 'EK_WALK_RAID_MIDAIR_20261123T173533']
+[bridge split] 227.4 s wall: load 4.6 / ticks 31.1 / reads 52.3 / other 27.1 / outside calls 112.3 s
+[bridge split] WARN 96 calls of jawa/mod_settings_field (8.2 s): batch them
+[bridge split] WARN 72 calls of jawa/static_call (7.0 s): batch them
+[bridge split] WARN 63 calls of rimworld/get_ui_state (44.8 s): batch them

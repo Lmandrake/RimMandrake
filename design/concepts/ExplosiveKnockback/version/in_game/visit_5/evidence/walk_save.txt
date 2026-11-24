@@ -1,0 +1,20 @@
+SIGN 01 calibration          PASS     at 12,12
+SIGN 02 over_sandbags        PASS     at 27,12
+SIGN 03 wall_stop            PASS     at 42,12
+SIGN 04 door_stop            PASS     at 57,12
+SIGN 05 pawn_hits_pawn       PASS     at 72,12
+SIGN 06 goods_fly_wild       PASS     at 87,12
+SIGN 07 open_storage         PASS     at 102,12
+SIGN 08 closed_containers    PASS     at 117,12
+SIGN 09 heavy_knock          PASS     at 132,12
+SIGN 10 gas_chain            PASS     at 147,12
+SIGN 11 cover_breaks         PASS     at 162,12
+SIGN 12 pit_colonist         PASS     at 177,12
+SIGN 13 killed_by_blast      PASS     at 192,12
+SIGN 14 storeroom_bomb_pit   PASS     at 207,12
+SIGN 15 shield_counter       PASS     at 222,12
+SIGN 16 goods_obstacles      PASS     at 237,12
+signs placed: 16
+{"save": {"ok": true, "new": ["EK_VISIT5_WALK_20261123.rws"], "changed": [], "gone": [], "name": "EK_VISIT5_WALK_20261123", "tool": true, "signs": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\JawaBenchReviewSigns\\EK_VISIT5_WALK_20261123.txt"}, "stations": [["01", "calibration", "PASS", "12,12"], ["02", "over_sandbags", "PASS", "27,12"], ["03", "wall_stop", "PASS", "42,12"], ["04", "door_stop", "PASS", "57,12"], ["05", "pawn_hits_pawn", "PASS", "72,12"], ["06", "goods_fly_wild", "PASS", "87,12"], ["07", "open_storage", "PASS", "102,12"], ["08", "closed_containers", "PASS", "117,12"], ["09", "heavy_knock", "PASS", "132,12"], ["10", "gas_chain", "PASS", "147,12"], ["11", "cover_breaks", "PASS", "162,12"], ["12", "pit_colonist", "PASS", "177,12"], ["13", "killed_by_blast", "PASS", "192,12"], ["14", "storeroom_bomb_pit", "PASS", "207,12"], ["15", "shield_counter", "PASS", "222,12"], ["16", "goods_obstacles", "PASS", "237,12"]]}
+[bridge split] 33.0 s wall: load 1.0 / ticks 4.0 / reads 0.0 / other 7.5 / outside calls 20.4 s
+[bridge split] WARN 96 calls of jawa/mod_settings_field (4.0 s): batch them

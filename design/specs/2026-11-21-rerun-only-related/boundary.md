@@ -48,7 +48,8 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   (`kind` `live_full`), reruns on any change under the mod, the DLL included, except a file the mod's `.hashignore`
   lists (it never ships and the mod hash leaves it out; same grammar as `modcheck/status.py` `mod_hash`).
 - **whole-mod-check-skips-hashignored.** A change only to files the mod's `.hashignore` lists reruns no whole-mod or
-  full-list check; the same change beside a shipped file still reruns them.
+  full-list check; the same change beside a shipped file still reruns them. An ignored file that a whole-mod check
+  declares (its own script) still reruns that check.
 - **csharp-relates-by-source-file.** A C# change relates through the changed `.cs` files; the DLL and its `.srchash`
   are derived and relate to nothing by themselves.
 - **csharp-relates-by-scene-section.** In a changed `.cs` file, only the members and `case "x":` sections that changed

@@ -1097,7 +1097,8 @@ class Relation:
             return "touched", "its test-table entry changed (%s)" % ", ".join(keys), ["test_table.json"]
         if whole:
             under = [f for f in ch if covers(mod_root(self.mod), f)]
-            hit = [f for f in under if not self.unshipped(f)]
+            # an ignored file never ships, but a check that declares it reads it (its own script above all)
+            hit = [f for f in under if not self.unshipped(f) or any(covers(p, f) for p in paths)]
             if hit:
                 return "touched", "a whole-mod check: %d changed file(s) under the mod" % len(hit), hit
             if under:
