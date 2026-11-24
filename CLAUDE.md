@@ -148,7 +148,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Nobody plays the game during development. No game and no save is the owner's. The full list of what is protected:
   - Only the canonical world saves are precious (`infrastructure/state/CANONICAL_SAVE.md`). All other saves are
     disposable. Keep a save that waits for his review until he rules (§Options he must LOOK at).
-  - His OWNER hold and `./pipe off game:ArchBig` guard a look: he looks at staged work on ArchBig.
+  - His OWNER hold and `./pipe off game:<name>` guard a look: he looks at staged work on ArchBig or ArchSmall.
   - Never put the game in fullscreen or in focus. He controls the clock in a sitting.
   - Do not write a rule, a guard or a question that protects his play, his game or his saves. If you find one, delete it.
   - Stop a broken game at once, on any game, and report the stop. A test may remove things on any save that is not
@@ -226,6 +226,16 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 - Every mod list for a sitting with the owner includes the advanced-zoom mod. He uses it to zoom in and study things.
 - Full text: `design/RimMandrake/standing_rulings.md` §Sittings with the owner keep the advanced-zoom mod.
+
+## Mod development runs on small lists
+
+- Full-list testing is retired until the integration phase (about version 0.3.0 of every mod). No test, stage exit,
+  deploy or walk savegame asks for the full mod list.
+- Each mod's small list is in `design/concepts/<Mod>/version/small_list.json`. The list holds every mod that the mod
+  patches or requires, all five expansions and the advanced-zoom mod. Check:
+  `python3 src/RimMandrake/Utils/small_list.py check`.
+- The owner walks a mod on the game whose Saves folder holds the walk savegame: ArchBig or ArchSmall.
+- Full text: `design/RimMandrake/standing_rulings.md` §Mod development runs on small lists.
 
 ## A mechanic works by its physical conditions
 
@@ -742,8 +752,7 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
 
 - Never write or say "waiting for the live game". Name the game. Say why no other game can take the work.
 - The games have four names: ArchBig, ArchSmall, Steve1 and Steve2. Each game has its own bridge lock:
-  - ArchBig on Archmagi: Steam's install. ArchBig holds the full mod list, and the owner looks at staged work there. Lock key
-    `archmagi` (the default).
+  - ArchBig on Archmagi: Steam's install. Lock key `archmagi` (the default).
   - ArchSmall on Archmagi: its own install, Mods and BridgeTools (`D:\ClaudeWork\rimmandrake\instances\b\game`). Lock
     key `archmagi.b`.
   - Steve1 and Steve2 on SteveDesktop: lock keys `stevedesktop` and `stevedesktop.b`. Submit work to them through the
@@ -761,11 +770,9 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
   `--host ArchSmall` for `rimflow bridge`, `--instance ArchSmall` for `deploy_custom_mods.py`. A deploy for ArchSmall
   writes only ArchSmall's folders.
 - Choose the game by the work:
-  - Work that a tier mod list can prove goes to any free game. If ArchBig is busy or held, use ArchSmall or SteveDesktop.
-  - Only a check that needs the full mod list must use ArchBig. The full list on ArchSmall beside ArchBig does not fit in
-    Archmagi's memory. Such a wait names the checks and ArchBig.
-  - His OWNER hold and `./pipe off game:ArchBig` guard a look. The hold and the stop act on ArchBig only. Work then goes to
-    ArchSmall.
+  - Any work goes to any free game. If ArchBig is busy or held, use ArchSmall or SteveDesktop.
+  - His OWNER hold and `./pipe off game:<name>` guard a look, on the game that he looks at. Work then goes to another
+    game.
 - A pipeline stage or tick line that reads "needs the live game" while a game is free is a pipeline defect. Fix it.
 - Full text: `design/RimMandrake/standing_rulings.md` §There are several live games. Code:
   `design/specs/2026-11-20-per-game-hold-own-install/boundary.md`.
