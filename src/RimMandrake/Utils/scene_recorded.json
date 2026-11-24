@@ -1,0 +1,2529 @@
+{
+ "_source": "recorded live on ArchSmall 2026-11-23 9:02 to 9:05 PM PST, companion 6ac9a749088599075ae91d231c0439ecf37b8652; descriptors cut to the fields that scene.py reads",
+ "calm": {
+  "action": "calm",
+  "allowedIncidents": [],
+  "armTick": 1,
+  "breaches": {
+   "counts": {},
+   "dropped": 0,
+   "lastSeq": 0,
+   "rows": []
+  },
+  "calm": true,
+  "controls": [
+   {
+    "detail": "the engine's switch is off",
+    "name": "storyteller",
+    "status": "HELD",
+    "things": []
+   },
+   {
+    "detail": "the engine's switch is off",
+    "name": "random_mental_states",
+    "status": "HELD",
+    "things": []
+   },
+   {
+    "detail": "the engine's switch is off",
+    "name": "random_diseases",
+    "status": "HELD",
+    "things": []
+   },
+   {
+    "detail": "a probe incident was held; 0 real attempts held",
+    "name": "incident_gate",
+    "status": "HELD",
+    "things": []
+   },
+   {
+    "detail": "frozen; 0 queued",
+    "name": "incident_queue",
+    "status": "HELD",
+    "things": []
+   },
+   {
+    "detail": "blocked; 0 spawner ticks skipped so far",
+    "name": "wild_spawner",
+    "status": "HELD",
+    "things": []
+   },
+   {
+    "detail": "now Clear, forced Clear, rain 0, snow 0",
+    "name": "weather",
+    "status": "HELD",
+    "things": []
+   },
+   {
+    "detail": "none",
+    "name": "game_conditions",
+    "status": "CALM",
+    "things": []
+   },
+   {
+    "detail": "none",
+    "name": "hostiles",
+    "status": "CALM",
+    "things": []
+   },
+   {
+    "detail": "none",
+    "name": "predators",
+    "status": "CALM",
+    "things": []
+   },
+   {
+    "detail": "0 arrived in a tick since tick 1; 0 placed by calls",
+    "name": "arrivals",
+    "status": "CALM",
+    "things": []
+   },
+   {
+    "detail": "none",
+    "name": "threat_structures",
+    "status": "CALM",
+    "things": []
+   },
+   {
+    "detail": "none",
+    "name": "proximity_letters",
+    "status": "CALM",
+    "things": []
+   },
+   {
+    "detail": "none",
+    "name": "fires",
+    "status": "CALM",
+    "things": []
+   },
+   {
+    "detail": "none",
+    "name": "mental_states",
+    "status": "CALM",
+    "things": []
+   },
+   {
+    "detail": "none",
+    "name": "force_pause_windows",
+    "status": "CALM",
+    "things": []
+   }
+  ],
+  "couldNotRepair": [],
+  "errors": [],
+  "excepted": [],
+  "lastRestore": [],
+  "mapId": 0,
+  "notCalm": [],
+  "notCovered": [
+   "needs, illness, pregnancy and withdrawal of any pawn",
+   "outdoor temperature, hour and season",
+   "inspirations and goodwill",
+   "quests that run (their incidents meet the gate; their pawns are named under arrivals)",
+   "an incident body that a mod runs without IncidentWorker.TryExecute",
+   "other mods' spawners of things that are not pawns",
+   "plant growth, roofs, explosives, short circuits",
+   "autosave",
+   "the camera and its update rate",
+   "other maps"
+  ],
+  "notRead": [],
+  "operation": {
+   "DurationMs": 90,
+   "OperationId": "op_712c3b5989334cf49f6fd4266adb745e",
+   "Status": "Completed",
+   "Success": true
+  },
+  "queueTicksHeld": 0,
+  "repaired": [
+   "storyteller: the engine's switch is ON [storyteller]",
+   "random_mental_states: the engine's switch is ON [random_mental_states]",
+   "random_diseases: the engine's switch is ON [random_diseases]",
+   "incident_gate: the calm is not on (never set) [any incident can run]",
+   "incident_queue: the calm is not on (never set); 0 queued [the queue can fire]",
+   "wild_spawner: the spawner is not patched (not patched) [wild animals can arrive]",
+   "weather: now Clear, forced none, rain 0, snow 0 [no weather is forced]",
+   "game_conditions: 2 found [RM_SheenExposureLock; RM_MoldyEnvironment]",
+   "predators: 3 found [RM_ThozzikQueen35202 RM_ThozzikQueen (no faction) at 203,214; RM_Illoth35203 RM_Illoth (no faction) at 118,5; RM_ThozzikColonyQueen35204 RM_ThozzikColonyQueen (no faction) at 222,83]",
+   "proximity_letters: 2 found [AncientExostriderRemains35221; VoidMonolith35251]"
+  ],
+  "secondsLeft": 1800.0,
+  "state": {
+   "hasCurrentGame": true,
+   "paused": true,
+   "programState": "Playing",
+   "tick": 1,
+   "timeSpeed": "Paused"
+  },
+  "success": true,
+  "ticksGame": 1,
+  "verdict": "CALM"
+ },
+ "env_null": {
+  "method": "System.String GetEnvironmentVariable(System.String)",
+  "operation": {
+   "DurationMs": 11,
+   "OperationId": "op_c4f4fdf8b7aa4fddbb72658c4acebf67",
+   "Status": "Completed",
+   "Success": true
+  },
+  "result": "null",
+  "state": {
+   "hasCurrentGame": false,
+   "programState": "Entry"
+  },
+  "success": true,
+  "thingArgs": [],
+  "ticksGame": -1
+ },
+ "env_set": {
+  "method": "Void SetEnvironmentVariable(System.String, System.String)",
+  "operation": {
+   "DurationMs": 18,
+   "OperationId": "op_550f94b8999f4579b46c51ce775eddb3",
+   "Status": "Completed",
+   "Success": true
+  },
+  "result": "null",
+  "state": {
+   "hasCurrentGame": false,
+   "programState": "Entry"
+  },
+  "success": true,
+  "thingArgs": [],
+  "ticksGame": -1
+ },
+ "list_saves": {
+  "compatibleCount": 21,
+  "compatibleOnly": false,
+  "count": 170,
+  "incompatibleCount": 149,
+  "metadataUnavailableCount": 0,
+  "missingModsCount": 149,
+  "operation": {
+   "DurationMs": 11816,
+   "OperationId": "op_dd49780c124a449091079658c52fad61",
+   "Status": "Completed",
+   "Success": true
+  },
+  "page": {
+   "hint": "Partial result to stay within the response size budget; call again with offset=22 for the next page.",
+   "nextOffset": 22,
+   "offset": 0,
+   "returned": 22,
+   "total": 170
+  },
+  "saveFolder": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Saves",
+  "saves": [
+   {
+    "name": "rm_proof_three_tools"
+   },
+   {
+    "name": "FW_scene_pawn_height_Begin_20261123T171324"
+   },
+   {
+    "name": "FW_scene_moat_raid_Begin_20261123T170036"
+   },
+   {
+    "name": "FW_scene_moat_raid_Begin_20261123T165526"
+   },
+   {
+    "name": "FW_scene_islands_Begin_20261123T162317"
+   },
+   {
+    "name": "FW_scene_fetch_fallen_Begin_20261123T162118"
+   },
+   {
+    "name": "FW_scene_geyser_tub_Begin_20261123T162017"
+   },
+   {
+    "name": "FW_scene_hose_look_Begin_20261123T161825"
+   },
+   {
+    "name": "FW_scene_garden_Begin_20261123T161632"
+   },
+   {
+    "name": "FW_scene_trench_cover_Begin_20261123T161453"
+   },
+   {
+    "name": "FW_scene_pit_trap_raid_Begin_20261123T161308"
+   },
+   {
+    "name": "FW_scene_moat_raid_Begin_20261123T161020"
+   },
+   {
+    "name": "FW_scene_ice_Begin_20261123T160905"
+   },
+   {
+    "name": "FW_scene_coating_wash_Begin_20261123T160723"
+   },
+   {
+    "name": "WHITTLE_HolePrison_Begin_20261123T160420_Occupied"
+   },
+   {
+    "name": "WHITTLE_HolePrison_Begin_20261123T160420"
+   },
+   {
+    "name": "FW_scene_toss_flame_Begin_20261123T160301"
+   },
+   {
+    "name": "FW_scene_one_surface_Begin_20261123T160156"
+   },
+   {
+    "name": "FW_scene_fill_front_Begin_20261123T160054"
+   },
+   {
+    "name": "FW_scene_source_pays_Begin_20261123T155734"
+   },
+   {
+    "name": "FW_scene_pawn_height_Begin_20261123T153507"
+   },
+   {
+    "name": "FW_scene_source_pays_Begin_20261123T152319"
+   }
+  ],
+  "state": {
+   "hasCurrentGame": false,
+   "programState": "Entry"
+  },
+  "success": true,
+  "totalCount": 170
+ },
+ "pawns": {
+  "count": 5,
+  "listing": true,
+  "operation": {
+   "DurationMs": 9,
+   "OperationId": "op_429e30fddc4e402581a8165f556c5486",
+   "Status": "Completed",
+   "Success": true
+  },
+  "pawns": [
+   {
+    "faction": "PlayerColony",
+    "kindDef": "Colonist",
+    "name": "Morton",
+    "thingId": "Human1078",
+    "thingIdNumber": 1078,
+    "x": 136,
+    "z": 107
+   },
+   {
+    "faction": "PlayerColony",
+    "kindDef": "Colonist",
+    "name": "Alistair",
+    "thingId": "Human1081",
+    "thingIdNumber": 1081,
+    "x": 131,
+    "z": 110
+   }
+  ],
+  "state": {
+   "hasCurrentGame": true,
+   "paused": true,
+   "programState": "Playing",
+   "tick": 1,
+   "timeSpeed": "Paused"
+  },
+  "success": true,
+  "ticksGame": 1,
+  "totalSpawned": 17,
+  "truncated": true
+ },
+ "release": {
+  "action": "release",
+  "operation": {
+   "DurationMs": 13,
+   "OperationId": "op_c78676762bf14644884f6e4bb8cde67f",
+   "Status": "Completed",
+   "Success": true
+  },
+  "released": true,
+  "restored": [
+   "reason: released",
+   "enableStoryteller = True",
+   "enableRandomMentalStates = True",
+   "enableRandomDiseases = True",
+   "forced weather ended",
+   "wild spawner released"
+  ],
+  "state": {
+   "hasCurrentGame": true,
+   "paused": true,
+   "programState": "Playing",
+   "tick": 51,
+   "timeSpeed": "Paused"
+  },
+  "success": true,
+  "ticksGame": 51
+ },
+ "running_mods": {
+  "count": 24,
+  "loaded": {
+   "companion": {
+    "mvid": "c05c0aed-326e-4108-ac19-c45f2afc611e",
+    "srcHash": "09e6ac49b52d6485964ead7d2bc06395fd2f6e1d6f2a3d7eafab7e1205db4899",
+    "version": "0.1.0+6ac9a749088599075ae91d231c0439ecf37b8652"
+   },
+   "dataFolder": "D:\\ClaudeWork\\rimmandrake\\instances\\b",
+   "gameKey": "archmagi.b",
+   "gameVersion": "1.6.4871 rev591",
+   "installFolder": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game",
+   "listCount": 24,
+   "listFingerprint": "sha256:9d48b3f6511a30b9089e20f5b7509be155ce1939c3fabe4f537e29e9da2516aa",
+   "machine": "ARCHMAGI",
+   "mods": [
+    {
+     "assemblies": [
+      {
+       "fileBytes": 926720,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "428372264f68134e6552580d761ec6300ca8662bf394cc68c1dd174ba42058c7",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-24T02:20:40.0000000Z",
+       "informationalVersion": "0.1.0+ee0452b3def219d67c51e6ab01af1f7495fd8da7",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\GimmeSomeSlack\\Assemblies\\RimMandrakeGimmeSomeSlack.dll",
+       "mvid": "673b5c41-e96c-48d3-9e82-638f18566863",
+       "name": "RimMandrakeGimmeSomeSlack"
+      }
+     ],
+     "dllFiles": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\GimmeSomeSlack\\Assemblies\\RimMandrakeGimmeSomeSlack.dll"
+     ],
+     "folder": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\GimmeSomeSlack",
+     "loadOrder": 16,
+     "name": "RimMandrake: Gimme Some Slack",
+     "packageId": "mandrake.rm.gimmesomeslack",
+     "state": "LOADED"
+    },
+    {
+     "assemblies": [
+      {
+       "fileBytes": 2484224,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "4c3df4843bfda52ca5fbf276b3363a561630417160e8dabcb050671de37eb718",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-24T01:59:59.0000000Z",
+       "informationalVersion": "1.0.0+16ae6e2a00b0e0d95a7292db0fa1ff83a218d3c0",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll",
+       "mvid": "1c12b538-3bb2-45f5-8b8e-8d09a7ef04b3",
+       "name": "RimMandrakeFlowWorks"
+      }
+     ],
+     "dllFiles": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll"
+     ],
+     "folder": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\FlowWorks",
+     "loadOrder": 17,
+     "name": "RimMandrake: FlowWorks",
+     "packageId": "mandrake.rm.flowworks",
+     "state": "LOADED"
+    },
+    {
+     "assemblies": [
+      {
+       "fileBytes": 98304,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "ebce69344bd0021a4381d675e621180b4fa68d829c3cfc4713fffab69014ba9b",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-24T03:18:39.0000000Z",
+       "informationalVersion": "1.0.0+9ddadf81616c27a2d314a1e7f3a8987297e11756",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\ExplosiveKnockback\\Assemblies\\RimMandrakeExplosiveKnockback.dll",
+       "mvid": "b43cc58d-69c2-42b2-9eb5-a72a9cb5351f",
+       "name": "RimMandrakeExplosiveKnockback"
+      }
+     ],
+     "dllFiles": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\ExplosiveKnockback\\Assemblies\\RimMandrakeExplosiveKnockback.dll"
+     ],
+     "folder": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\ExplosiveKnockback",
+     "loadOrder": 18,
+     "name": "RimMandrake: Explosive Knockback",
+     "packageId": "mandrake.rm.explosiveknockback",
+     "state": "LOADED"
+    },
+    {
+     "assemblies": [
+      {
+       "fileBytes": 201728,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "cae79652b2ed180bf121d4799199e6969fc8d00bf779857bf032aafbb10a57a6",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-23T10:30:43.0000000Z",
+       "informationalVersion": "1.0.0+240fd6d5aee9860791c01ebb53e93135493637ef",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\HugeThings\\Assemblies\\RM_HugeThings.dll",
+       "mvid": "2eb91384-cc75-4eac-a06d-b9998d0d6d51",
+       "name": "RM_HugeThings"
+      }
+     ],
+     "dllFiles": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\HugeThings\\Assemblies\\RM_HugeThings.dll"
+     ],
+     "folder": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\HugeThings",
+     "loadOrder": 19,
+     "name": "RimMandrake: Huge Things",
+     "packageId": "mandrake.rm.hugethings",
+     "state": "LOADED"
+    },
+    {
+     "assemblies": [
+      {
+       "fileBytes": 212992,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "8f6cf2b9b68aca9937168e8bda813f74b76b66b8582affbd69a4603d93c3cc1e",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-11T17:38:38.0000000Z",
+       "informationalVersion": "0.1.0+f8f882b4e67edcdfa2da83719db1c5216f8d38d5",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\LuminousPigment\\Assemblies\\RimMandrakeLuminousPigment.dll",
+       "mvid": "dab56d02-961e-48e4-a91e-2c72f19ae331",
+       "name": "RimMandrakeLuminousPigment"
+      }
+     ],
+     "dllFiles": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\LuminousPigment\\Assemblies\\RimMandrakeLuminousPigment.dll"
+     ],
+     "folder": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\LuminousPigment",
+     "loadOrder": 20,
+     "name": "RimMandrake: Luminous Pigment",
+     "packageId": "mandrake.rm.luminouspigment",
+     "state": "LOADED"
+    },
+    {
+     "assemblies": [
+      {
+       "fileBytes": 97792,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "ffa1d0e63edcbe3d7634d237d8c7368ce3eeaf55a5f8b17adbe706b0cacf2bc0",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-13T08:22:59.0000000Z",
+       "informationalVersion": "1.0.0+35c44248069c3ea8036ba9828a93f0b1409256ee",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Assemblies\\RimMandrake.Biomes.dll",
+       "mvid": "9cc43136-e4c4-4f0a-b7cb-be6bb3cd7bfc",
+       "name": "RimMandrake.Biomes"
+      },
+      {
+       "fileBytes": 368640,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "13ec5fbd0752fc21de78eafeb22b99e967621b387b89010dc7c1d1b7df5e3f75",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-08T18:02:28.0000000Z",
+       "informationalVersion": "1.0.0+c8a0115e5dc3eb746a49eb40e9ac21cee279cc62",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\_Kits\\CreatureBehaviors\\Assemblies\\RimMandrake.CreatureBehaviors.dll",
+       "mvid": "611634da-827f-4c6d-b6db-c153688af9eb",
+       "name": "RimMandrake.CreatureBehaviors"
+      },
+      {
+       "fileBytes": 128000,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "b999f238612a55df6ce9ed3554d8622dd1ee21ebb824d9c8a8ec235be3fee930",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-22T11:18:10.0000000Z",
+       "informationalVersion": "1.0.0+546cbfc199122437ca3cf81132ffc81d73678a0a",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\_Kits\\ExplosiveGrowth\\Assemblies\\RimMandrake.ExplosiveGrowth.dll",
+       "mvid": "9ddf238b-0fdd-4331-a1d2-9938aa677add",
+       "name": "RimMandrake.ExplosiveGrowth"
+      },
+      {
+       "fileBytes": 379392,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "e4b3c2640f4da34a6a95bdcbf8c67d429fcfe9a020e7464d437d034487a1c508",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-14T10:11:51.0000000Z",
+       "informationalVersion": "1.0.0+964e7001c98aecfeb3e9deabd0088c691f373513",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\_Kits\\EnvironmentalHazards\\Assemblies\\RimMandrake.EnvironmentalHazards.dll",
+       "mvid": "f5bae556-19cf-4963-9dd1-268e2d19b1f1",
+       "name": "RimMandrake.EnvironmentalHazards"
+      },
+      {
+       "fileBytes": 49152,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "32eefcb5fb7e1f0313e883416b4df433eed31cb6bcbb0ff1a14c910e4de9b2a5",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-10-26T16:53:26.0000000Z",
+       "informationalVersion": "1.0.0+6998a865653467aadd743683426163025f293bdd",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\_Kits\\Wreckage\\Assemblies\\RimMandrake.Wreckage.dll",
+       "mvid": "9c481ea8-657e-4d0c-9689-a97ae8cd9930",
+       "name": "RimMandrake.Wreckage"
+      },
+      {
+       "fileBytes": 17920,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "a1c8e403d7e871b505d9f58b125a34472259de6bdeeba95011519ddf48df5515",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-03T15:57:16.0000000Z",
+       "informationalVersion": "1.0.0+9fb9abdb7071d4ab4190f5a768e7aed6e85222a7",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\_Kits\\Bones\\Assemblies\\RimMandrake.Bones.dll",
+       "mvid": "51c4b6ec-15d4-4325-a82e-e683dad2df74",
+       "name": "RimMandrake.Bones"
+      },
+      {
+       "fileBytes": 118784,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "ca70c3c47fbe2863f9db0783514d6a5c3203589d260c7d7a5d04be5341d3c471",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-10-26T16:53:22.0000000Z",
+       "informationalVersion": "1.0.0+afb20d901a376c6a5082812fe56f8792995b2654",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Abyss\\Assemblies\\RimMandrake.Abyss.dll",
+       "mvid": "eb518634-367c-45e5-b782-cbe693227283",
+       "name": "RimMandrake.Abyss"
+      },
+      {
+       "fileBytes": 68608,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "ac98d78a8d54a79feba2606a987877d5ce3996356d14520b26a4e7db60496352",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-03T08:46:05.0000000Z",
+       "informationalVersion": "1.0.0+52661a1505c0b942f74ccebf482e6cdb156764ca",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\BlueDesert\\Assemblies\\RimMandrake.BlueDesert.dll",
+       "mvid": "7c467308-3c47-4cab-96af-443de9cef16d",
+       "name": "RimMandrake.BlueDesert"
+      },
+      {
+       "fileBytes": 130048,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "b2126cf75e820f85856c5ad2b45e109a5bc24fd7d37758fca66f3025718e22c7",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-15T16:52:19.0000000Z",
+       "informationalVersion": "1.0.0+67d5c3f318294d06274058b4766e7edbf8a619a6",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Cauldron\\Assemblies\\RimMandrake.Cauldron.dll",
+       "mvid": "f0ba3339-8ce4-43e4-bb4b-f096ae1b185e",
+       "name": "RimMandrake.Cauldron"
+      },
+      {
+       "fileBytes": 113664,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "5b5b26be554438d53fee8fc31c03436965cc12115cacb6c3f9c46e1fd5c05afb",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-10-23T10:34:18.0000000Z",
+       "informationalVersion": "1.0.0+147206f90f0fd29f0e1f94d613bae6d586b34390",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Contagion\\Assemblies\\RimMandrake.Contagion.dll",
+       "mvid": "f3cabfad-3582-4431-b1ff-646c325b7c3e",
+       "name": "RimMandrake.Contagion"
+      },
+      {
+       "fileBytes": 153088,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "c16944206e9c5011cd01cd357e9482578be409d429df3ed43dac9f5303a89742",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-13T17:38:56.0000000Z",
+       "informationalVersion": "1.0.0+47c72c6ed95617240ce33b77607e90e0e45d726b",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\CrackedLands\\Assemblies\\RimMandrake.CrackedLands.dll",
+       "mvid": "68a4fcc8-dd54-44ca-aae6-ac7c436ec644",
+       "name": "RimMandrake.CrackedLands"
+      },
+      {
+       "fileBytes": 166400,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "5ea7c95c8c8e1315c5a84936312c246aed6f1e281bb7f52daefb1866705db58d",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-03T08:37:50.0000000Z",
+       "informationalVersion": "1.0.0+52661a1505c0b942f74ccebf482e6cdb156764ca",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\FeverWood\\Assemblies\\RimMandrake.FeverWood.dll",
+       "mvid": "41390e53-bafc-4c02-bf10-12ea24c1e17c",
+       "name": "RimMandrake.FeverWood"
+      },
+      {
+       "fileBytes": 122880,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "4cead05e932b678416455001ffaee96e960376d7b7736d5476ec5ca4c582fad3",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-10-26T16:53:23.0000000Z",
+       "informationalVersion": "0.1.0+3ea51c1e0c7fb0ecadc49cf22e1ca251d1e47a9d",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\GelatinousSlime\\Assemblies\\RimMandrakeGelatinousSlime.dll",
+       "mvid": "2d3e6bf0-ca4e-48c7-bbce-f0479fb10b55",
+       "name": "RimMandrakeGelatinousSlime"
+      },
+      {
+       "fileBytes": 88064,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "b3dd848c21408294220eae6132087a79a6a9f9caf193a0e869e4707e1932febc",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-02T16:44:13.0000000Z",
+       "informationalVersion": "1.0.0+0cee53679db922def9957dcfaa450a90a924d0ad",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Greentide\\Assemblies\\RimMandrake.Greentide.dll",
+       "mvid": "2d77579e-191b-4b03-a29b-24f6960977db",
+       "name": "RimMandrake.Greentide"
+      },
+      {
+       "fileBytes": 132608,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "347c5c4612a5798ac59810584db3e9236ffc66eac0d31192a8b6bed7f6846ef8",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-07T09:31:53.0000000Z",
+       "informationalVersion": "1.0.0+9e31188df324f4ab7b3e121af3f67e23b732135b",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\LanternDeeps\\Assemblies\\RimMandrake.LanternDeeps.dll",
+       "mvid": "fbdbd07d-f41f-42ad-88a3-3c172c567e55",
+       "name": "RimMandrake.LanternDeeps"
+      },
+      {
+       "fileBytes": 258048,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "6de131433eb963a654b7baf7f982f0e945ce1e156314a4552d82f77b9f0c7b89",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-05T09:15:23.0000000Z",
+       "informationalVersion": "1.0.0+e44e728e8b29c82ba19e0c94d6c826f2cbc1b1a4",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\LeaningScrub\\Assemblies\\RimMandrake.LeaningScrub.dll",
+       "mvid": "d43c1066-93e1-4eb7-9f82-8775a7b5a157",
+       "name": "RimMandrake.LeaningScrub"
+      },
+      {
+       "fileBytes": 117248,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "cde291f77a7e549ae7f7f4fb7539c836a166c5b1415b150840929beb3ea9c95e",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-03T13:55:07.0000000Z",
+       "informationalVersion": "1.0.0+a1294d54519db034d109131b9a1372e5aaf6450c",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\LongShade\\Assemblies\\RimMandrake.LongShade.dll",
+       "mvid": "5559c33c-048e-482e-a1c3-743876f18323",
+       "name": "RimMandrake.LongShade"
+      },
+      {
+       "fileBytes": 83968,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "977ef6eb27dc5c8e4ffdeb05a5cc677840ebb703a4fc11c77d980924422a6f42",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-02T16:44:13.0000000Z",
+       "informationalVersion": "1.0.0+0cee53679db922def9957dcfaa450a90a924d0ad",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Miasma\\Assemblies\\RimMandrake.Miasma.dll",
+       "mvid": "f10d16fe-5b94-46d8-a009-4e54870e2150",
+       "name": "RimMandrake.Miasma"
+      },
+      {
+       "fileBytes": 249856,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "9fc9cf6c9f4a6b4764d270701c3c98c878d1a6cdc962d06e67bba79a3b320297",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-22T23:26:08.0000000Z",
+       "informationalVersion": "1.0.0+233c1acba68f1bbf8ecda2a588dd1c40c86c5274",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Pyrelands\\Assemblies\\FireEcologyHook.dll",
+       "mvid": "56b900f3-21be-44b0-811f-1f5842cfa005",
+       "name": "FireEcologyHook"
+      },
+      {
+       "fileBytes": 109056,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "086172c1771b76536c7eaa9e172e395f500f1b6dfa79e16ac5f6c2da507f16d3",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-01T13:23:57.0000000Z",
+       "informationalVersion": "1.0.0+8237bb46e685c7bf8242e7d36b701d704947c829",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\RustCathedral\\Assemblies\\RimMandrake.RustCathedral.dll",
+       "mvid": "a0542258-4be8-4a31-ad75-03c2aebd662c",
+       "name": "RimMandrake.RustCathedral"
+      },
+      {
+       "fileBytes": 85504,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "e4dae4a431f982f150b29dc134439280cd3056fd25d0cfeac5c753499b44e17d",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-02T00:29:40.0000000Z",
+       "informationalVersion": "1.0.0+b4eb537f9b3c0a9da2c40af6f7df641c31126666",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\RustCathedral\\Assemblies\\RimMandrake.RustCathedral.Hum.dll",
+       "mvid": "9638a605-6dd2-4b73-a3eb-e90c1cc4e74a",
+       "name": "RimMandrake.RustCathedral.Hum"
+      },
+      {
+       "fileBytes": 21504,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "b849b60409563321c7a2561b648036e0e27dc6778cea2036a866c5816f53da91",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-01T06:30:21.0000000Z",
+       "informationalVersion": "1.0.0+9f6c8e9a87556c1ad01f9f90211f81c146fb00ee",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\RustCathedral\\Assemblies\\RimMandrake.RustCathedral.Walls.dll",
+       "mvid": "33217bbf-8a9a-45ee-99eb-0adfa816fd8b",
+       "name": "RimMandrake.RustCathedral.Walls"
+      },
+      {
+       "fileBytes": 40448,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "9b191a3b38b467509d1472af04931d4153fb68e28fb982ceddb1d23d3ebf8d51",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-10-26T16:53:25.0000000Z",
+       "informationalVersion": "1.0.0+f9214935b1b19f40c7f86ea01b77a18c32f5de94",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\SleepingIce\\Assemblies\\RimMandrake.SleepingIce.dll",
+       "mvid": "90ba3b3c-446f-4bcc-9d3d-610b04bf76c9",
+       "name": "RimMandrake.SleepingIce"
+      },
+      {
+       "fileBytes": 231936,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "082825b201deef499d24e5607fb9f0368fb85d9022c42011da9db9db7c47fe08",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-03T15:13:49.0000000Z",
+       "informationalVersion": "1.0.0+6566276fb2e01aea5f43fe9a0af9976610871ecf",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Stillsand\\Assemblies\\RimMandrake.Stillsand.dll",
+       "mvid": "21dc690a-856d-4dfc-a1fd-cc7ce1939739",
+       "name": "RimMandrake.Stillsand"
+      },
+      {
+       "fileBytes": 166400,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "d772c3e5a50f14e8b4b36a281cb33c38a15a18b89781888513f24001e9b18959",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-02T16:44:13.0000000Z",
+       "informationalVersion": "1.0.0+0cee53679db922def9957dcfaa450a90a924d0ad",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\TerminalBiomes\\Assemblies\\RimMandrake.TerminalBiomes.dll",
+       "mvid": "243b6c08-8580-4244-b619-3b81456d6ab9",
+       "name": "RimMandrake.TerminalBiomes"
+      },
+      {
+       "fileBytes": 126464,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "5a539faa81a985e2e188a81ce9d4694ca8a0ad5f29def98b5592da00a335223a",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-21T21:34:03.0000000Z",
+       "informationalVersion": "1.0.0+013623d9018d3ae4a5b3542915b1a9fd3e5583d6",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\TheForge\\Assemblies\\RimMandrake.TheForge.dll",
+       "mvid": "aca11620-7cbe-4d45-9a1c-dba6e23495f4",
+       "name": "RimMandrake.TheForge"
+      },
+      {
+       "fileBytes": 122880,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "9a4d270c5b87b91e89c6f6b338e070940e8cc2d5af6ea176d878efbed778a4f2",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-07T09:31:55.0000000Z",
+       "informationalVersion": "1.0.0+9e31188df324f4ab7b3e121af3f67e23b732135b",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\TheRot\\Assemblies\\RimMandrake.TheRot.dll",
+       "mvid": "c9337f56-37db-4f32-9fd3-a5041387d5e1",
+       "name": "RimMandrake.TheRot"
+      },
+      {
+       "fileBytes": 59392,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "c3cd996e781506df0543ce3a3a1a8ce92223121a7850d9d4af2faf49a264b4fb",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-07T09:31:56.0000000Z",
+       "informationalVersion": "1.0.0+9e31188df324f4ab7b3e121af3f67e23b732135b",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\TheSump\\Assemblies\\RimMandrake.TheSump.dll",
+       "mvid": "18589fa0-b491-4c2c-999e-29845e3d1cf1",
+       "name": "RimMandrake.TheSump"
+      },
+      {
+       "fileBytes": 215552,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "4f262353f629d2837709aa2ce810e257ac91731188901d01b3c7e0ac7a2eeca6",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-05T20:29:04.0000000Z",
+       "informationalVersion": "1.0.0+7104dc958f4c8c0b95b6d90fe3b2d35f4ecfbeaf",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Warscar\\Assemblies\\RimMandrake.Warscar.dll",
+       "mvid": "7a394189-4c03-4b57-9cdf-1d9b1a4779e3",
+       "name": "RimMandrake.Warscar"
+      },
+      {
+       "fileBytes": 123392,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "87d0a347f8aab410079a13b1348f303aebce44bf7c13303c93583b029e8d72cf",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-10-26T16:53:26.0000000Z",
+       "informationalVersion": "1.0.0+67fa21f5b1e23cdb7ea3138db684b236ceae4e9b",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Wastes\\Assemblies\\RimMandrake.Wastes.dll",
+       "mvid": "29f9e653-fd6e-49b9-9acf-54946c5a0263",
+       "name": "RimMandrake.Wastes"
+      },
+      {
+       "fileBytes": 134144,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "4daf601fc8dfe6befc6eef4d4f61a3a517a865929e7b1606d2a2f4264291159f",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-15T13:49:19.0000000Z",
+       "informationalVersion": "1.0.0+090cd707f5949fe1e979ebc1dd706563817b5630",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Webwork\\Assemblies\\RimMandrake.Webwork.dll",
+       "mvid": "cf2b8890-872c-41e3-8a86-b6a39d33f53a",
+       "name": "RimMandrake.Webwork"
+      },
+      {
+       "fileBytes": 81920,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "6697ca8638046c7446bfec8090ca7da36cba5079d417c1587c294f9b140a957f",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-10-26T16:53:26.0000000Z",
+       "informationalVersion": "1.0.0+e89016b0ade22b1fbd5e9a37dbcabb1b670fae23",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\WeepingStones\\Assemblies\\RimMandrake.WeepingStones.dll",
+       "mvid": "9800b058-243f-4dba-bd9c-d73abcbf6363",
+       "name": "RimMandrake.WeepingStones"
+      },
+      {
+       "fileBytes": 182272,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "398964e8c85dfb71c3f3dcb83e06f298cfb6340cc7d4d2e8bff22ab9020b9a41",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-13T08:22:59.0000000Z",
+       "informationalVersion": "1.0.0+89138de914d310cffc2a61ab6bb6d52d012ecc92",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\DivingInteraction\\Assemblies\\RimMandrake.DivingInteraction.dll",
+       "mvid": "601f46ef-3e18-43ba-ba01-cad842494569",
+       "name": "RimMandrake.DivingInteraction"
+      },
+      {
+       "fileBytes": 74752,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "fa3cb3fbefd004f8cd57ce52c6d81905d45d001c325c65b5d71fd2c01de9a8a7",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-10-25T20:50:59.0000000Z",
+       "informationalVersion": "1.0.0+b1cf86d70916fd932597fcf4e0c5eaa7f8e6635e",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\MovingDunes\\Assemblies\\RimMandrakeMovingDunes.dll",
+       "mvid": "adec5ebb-8af8-4917-82a1-c0ce86087c67",
+       "name": "RimMandrakeMovingDunes"
+      },
+      {
+       "fileBytes": 38912,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "a8fb32c0a5a086e6f8c45e390496f22c4cd003b7b0bb529aa4a6fa64e62100f1",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-02T16:44:13.0000000Z",
+       "informationalVersion": "0.1.0+0cee53679db922def9957dcfaa450a90a924d0ad",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\SeaShores\\Assemblies\\RimMandrakeSeaShores.dll",
+       "mvid": "1b35c09e-4279-44de-9358-e6a0dbaac4dd",
+       "name": "RimMandrakeSeaShores"
+      }
+     ],
+     "dllFiles": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Assemblies\\RimMandrake.Biomes.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\_Kits\\CreatureBehaviors\\Assemblies\\RimMandrake.CreatureBehaviors.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\_Kits\\ExplosiveGrowth\\Assemblies\\RimMandrake.ExplosiveGrowth.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\_Kits\\EnvironmentalHazards\\Assemblies\\RimMandrake.EnvironmentalHazards.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\_Kits\\Wreckage\\Assemblies\\RimMandrake.Wreckage.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\_Kits\\Bones\\Assemblies\\RimMandrake.Bones.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Abyss\\Assemblies\\RimMandrake.Abyss.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\BlueDesert\\Assemblies\\RimMandrake.BlueDesert.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Cauldron\\Assemblies\\RimMandrake.Cauldron.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Contagion\\Assemblies\\RimMandrake.Contagion.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\CrackedLands\\Assemblies\\RimMandrake.CrackedLands.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\FeverWood\\Assemblies\\RimMandrake.FeverWood.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\GelatinousSlime\\Assemblies\\RimMandrakeGelatinousSlime.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Greentide\\Assemblies\\RimMandrake.Greentide.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\LanternDeeps\\Assemblies\\RimMandrake.LanternDeeps.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\LeaningScrub\\Assemblies\\RimMandrake.LeaningScrub.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\LongShade\\Assemblies\\RimMandrake.LongShade.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Miasma\\Assemblies\\RimMandrake.Miasma.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Pyrelands\\Assemblies\\FireEcologyHook.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\RustCathedral\\Assemblies\\RimMandrake.RustCathedral.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\RustCathedral\\Assemblies\\RimMandrake.RustCathedral.Hum.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\RustCathedral\\Assemblies\\RimMandrake.RustCathedral.Walls.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\SleepingIce\\Assemblies\\RimMandrake.SleepingIce.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Stillsand\\Assemblies\\RimMandrake.Stillsand.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\TerminalBiomes\\Assemblies\\RimMandrake.TerminalBiomes.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\TheForge\\Assemblies\\RimMandrake.TheForge.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\TheRot\\Assemblies\\RimMandrake.TheRot.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\TheSump\\Assemblies\\RimMandrake.TheSump.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Warscar\\Assemblies\\RimMandrake.Warscar.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Wastes\\Assemblies\\RimMandrake.Wastes.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\Webwork\\Assemblies\\RimMandrake.Webwork.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\WeepingStones\\Assemblies\\RimMandrake.WeepingStones.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\DivingInteraction\\Assemblies\\RimMandrake.DivingInteraction.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\MovingDunes\\Assemblies\\RimMandrakeMovingDunes.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes\\Biomes\\SeaShores\\Assemblies\\RimMandrakeSeaShores.dll"
+     ],
+     "folder": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\RimMandrake.Biomes",
+     "loadOrder": 21,
+     "name": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "state": "LOADED"
+    },
+    {
+     "assemblies": [
+      {
+       "fileBytes": 94208,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "317741e178316ce30b3223ca31a5d88f1099df9e096d9c348d2552d8a42c58c9",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-04T07:32:54.0000000Z",
+       "informationalVersion": "1.0.0+53cd9f506eeb7703af68e09e89f630889c3e1d1f",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\Armoury\\Assemblies\\JawaArmoury.dll",
+       "mvid": "a016f4c2-40b4-4185-8e3e-e0c2c9915408",
+       "name": "JawaArmoury"
+      }
+     ],
+     "dllFiles": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\Armoury\\Assemblies\\JawaArmoury.dll"
+     ],
+     "folder": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\Armoury",
+     "loadOrder": 22,
+     "name": "Jawa Armoury Rebalance",
+     "packageId": "mandrake.rsw.armoury",
+     "state": "LOADED"
+    },
+    {
+     "assemblies": [
+      {
+       "fileBytes": 13824,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "bdc1a6d65a3b39a0973479186960fb4a866210b4cfc2870ee12d516d95270d02",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-10-24T16:13:37.0000000Z",
+       "informationalVersion": "1.0.0+da5f2b8767d2975e41ef2c2a68fb34d0cb4e2040",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\SWBestiary\\Assemblies\\JawaIkee.dll",
+       "mvid": "c79f81da-62e1-4128-9523-a72c30e8d8d4",
+       "name": "JawaIkee"
+      },
+      {
+       "fileBytes": 73216,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "69acbdcf359a70a96529cf8f419888ab449d5d8ac8856c7eb24a13f59c2b3564",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-11-03T16:49:50.0000000Z",
+       "informationalVersion": "1.0.0+0fa427bbe2a3d2360597a18e081b9d09cb6099c6",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\SWBestiary\\Assemblies\\RimMandrakeBeastMechanicsRSW.dll",
+       "mvid": "286097e5-831a-4cab-800c-7add2803087d",
+       "name": "RimMandrakeBeastMechanicsRSW"
+      },
+      {
+       "fileBytes": 20480,
+       "fileHoldsLoadedCode": true,
+       "fileSha256": "960e2cb65dcc8117272f99ae61f3937a9607c9b9676c576767010905d6a8d9e5",
+       "fileWrittenAfterProcessStart": false,
+       "fileWrittenUtc": "2026-10-10T10:50:52.0000000Z",
+       "informationalVersion": "1.0.0+4d455f2ea5546d434c175b003da75ec2c5969237",
+       "location": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\SWBestiary\\Assemblies\\RimMandrakeLivestockRSW.dll",
+       "mvid": "ffcfa1ea-f9fa-4b4d-8a28-834ec7068136",
+       "name": "RimMandrakeLivestockRSW"
+      }
+     ],
+     "dllFiles": [
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\SWBestiary\\Assemblies\\JawaIkee.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\SWBestiary\\Assemblies\\RimMandrakeBeastMechanicsRSW.dll",
+      "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\SWBestiary\\Assemblies\\RimMandrakeLivestockRSW.dll"
+     ],
+     "folder": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\game\\Mods\\SWBestiary",
+     "loadOrder": 23,
+     "name": "RimMandrake: SW \u2014 Bestiary",
+     "packageId": "mandrake.rsw.swbestiary",
+     "state": "LOADED"
+    }
+   ],
+   "notCovered": "code only: Defs, patches, textures and asset bundles are not identified",
+   "notRunning": [],
+   "pid": 39620,
+   "processStartedUtc": "2026-11-24T04:58:28.4145762Z",
+   "schema": "loaded_receipt/1",
+   "utc": "2026-11-24T05:02:03.2926439Z"
+  },
+  "operation": {
+   "DurationMs": 93,
+   "OperationId": "op_7b0524dd0a2040e587161cc91f1ce2b5",
+   "Status": "Completed",
+   "Success": true
+  },
+  "packageIds": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "adaptive.storage.framework",
+   "brrainz.rimbridgeserver",
+   "lwm.deepstorage",
+   "neronix17.toolbox",
+   "owlchemist.cherrypicker",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ebsg.framework",
+   "neronix17.outerrim.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.explosiveknockback",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rsw.armoury",
+   "mandrake.rsw.swbestiary"
+  ],
+  "state": {
+   "hasCurrentGame": false,
+   "programState": "Entry"
+  },
+  "success": true,
+  "ticksGame": -1
+ },
+ "slice_hit": {
+  "dropped": 0,
+  "endFrameTicks": 2,
+  "endTick": 21,
+  "hitTick": 21,
+  "maxFrameTicks": 2,
+  "operation": {
+   "DurationMs": 15,
+   "OperationId": "op_30c4174a4c6a45e7a9eb987a2e0042bb",
+   "Status": "Completed",
+   "Success": true
+  },
+  "paused": true,
+  "recordDir": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBench\\tps",
+  "result": {
+   "atArm": [
+    {
+     "id": "n0",
+     "pv": 1.0,
+     "status": "ok",
+     "v": false
+    }
+   ],
+   "canonical": {
+    "every": 1.0,
+    "mapId": 0.0,
+    "max_ticks": 200.0,
+    "on_unknown": "stop",
+    "sample": {
+     "degrade": false,
+     "every": 1.0,
+     "on_change_only": false,
+     "probes": {
+      "dead": {
+       "f": "dead",
+       "p": "pawn.state",
+       "pawn": "Human1078"
+      },
+      "downed": {
+       "f": "downed",
+       "p": "pawn.state",
+       "pawn": "Human1078"
+      },
+      "field": {
+       "p": "thing.field",
+       "path": "positionInt.x",
+       "thing": "Human1078"
+      },
+      "hediffs": {
+       "p": "thing.field",
+       "path": "health.hediffSet.hediffs._size",
+       "thing": "Human1078"
+      },
+      "job": {
+       "f": "def",
+       "p": "pawn.job",
+       "pawn": "Human1078"
+      }
+     }
+    },
+    "until": {
+     "cmp": [
+      {
+       "p": "game.tick"
+      },
+      ">=",
+      21.0
+     ],
+     "id": "n0"
+    }
+   },
+   "cost": {
+    "evalMsMax": 1.468,
+    "evalMsTotal": 1.542,
+    "evals": 21.0,
+    "nodeEvals": 21.0,
+    "reads": 21.0
+   },
+   "coverage": {
+    "complete": true,
+    "evals": 21.0,
+    "every": 1.0,
+    "gaps": [],
+    "resolutionTicks": 1.0
+   },
+   "epoch": 1.0,
+   "executed": 20.0,
+   "hitTick": 21.0,
+   "mutations": [],
+   "sample": [],
+   "sampleDropped": 0.0,
+   "state": "hit",
+   "tickFrom": 1.0,
+   "tickTo": 21.0,
+   "triggers": [
+    "cond"
+   ],
+   "trueAtArm": false,
+   "values": [
+    {
+     "id": "n0",
+     "pv": 21.0,
+     "status": "ok",
+     "v": true
+    }
+   ],
+   "watch": [],
+   "watchDropped": 0.0,
+   "watchers": []
+  },
+  "rows": 14,
+  "run": "s20261124T050344_1",
+  "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+  "speed": "Paused",
+  "stage": "closed",
+  "state": "hit",
+  "success": true,
+  "ticksGame": 21
+ },
+ "slice_limit": {
+  "dropped": 0,
+  "endFrameTicks": 3,
+  "endTick": 51,
+  "maxFrameTicks": 14,
+  "operation": {
+   "DurationMs": 8,
+   "OperationId": "op_c216c090ced44527980876de8d4b1f85",
+   "Status": "Completed",
+   "Success": true
+  },
+  "paused": true,
+  "recordDir": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBench\\tps",
+  "result": {
+   "atArm": [
+    {
+     "id": "n0",
+     "pv": 21.0,
+     "status": "ok",
+     "v": false
+    }
+   ],
+   "canonical": {
+    "every": 1.0,
+    "mapId": 0.0,
+    "max_ticks": 30.0,
+    "on_unknown": "stop",
+    "sample": {
+     "degrade": false,
+     "every": 1.0,
+     "on_change_only": false,
+     "probes": {
+      "dead": {
+       "f": "dead",
+       "p": "pawn.state",
+       "pawn": "Human1078"
+      },
+      "downed": {
+       "f": "downed",
+       "p": "pawn.state",
+       "pawn": "Human1078"
+      },
+      "field": {
+       "p": "thing.field",
+       "path": "positionInt.x",
+       "thing": "Human1078"
+      },
+      "hediffs": {
+       "p": "thing.field",
+       "path": "health.hediffSet.hediffs._size",
+       "thing": "Human1078"
+      },
+      "job": {
+       "f": "def",
+       "p": "pawn.job",
+       "pawn": "Human1078"
+      }
+     }
+    },
+    "until": {
+     "cmp": [
+      {
+       "p": "game.tick"
+      },
+      "<",
+      0.0
+     ],
+     "id": "n0"
+    }
+   },
+   "cost": {
+    "evalMsMax": 0.075,
+    "evalMsTotal": 0.166,
+    "evals": 31.0,
+    "nodeEvals": 31.0,
+    "reads": 31.0
+   },
+   "coverage": {
+    "complete": true,
+    "evals": 31.0,
+    "every": 1.0,
+    "gaps": [],
+    "resolutionTicks": 1.0
+   },
+   "epoch": 1.0,
+   "executed": 30.0,
+   "mutations": [],
+   "sample": [],
+   "sampleDropped": 0.0,
+   "state": "done",
+   "tickFrom": 21.0,
+   "tickTo": 51.0,
+   "triggers": [
+    "deadline"
+   ],
+   "trueAtArm": false,
+   "values": [
+    {
+     "id": "n0",
+     "pv": 51.0,
+     "status": "ok",
+     "v": false
+    }
+   ],
+   "watch": [],
+   "watchDropped": 0.0,
+   "watchers": []
+  },
+  "rows": 13,
+  "run": "s20261124T050348_2",
+  "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+  "speed": "Paused",
+  "stage": "closed",
+  "state": "done",
+  "success": true,
+  "ticksGame": 51
+ },
+ "slice_none": {
+  "endFrameTicks": 0,
+  "maxFrameTicks": 0,
+  "operation": {
+   "DurationMs": 8,
+   "OperationId": "op_a29b8867f35c44fca1ec777b6d235fc9",
+   "Status": "Completed",
+   "Success": true
+  },
+  "paused": true,
+  "recordDir": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBench\\tps",
+  "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+  "speed": "Paused",
+  "stage": "none",
+  "success": false,
+  "ticksGame": 1
+ },
+ "slice_refused_bind": {
+  "at": "$.until.cmp[0]",
+  "detail": "no field or property 'noSuchField' on Verse.Pawn",
+  "operation": {
+   "DurationMs": 42,
+   "OperationId": "op_188afadd25b34a5e94d3a815e42c8151",
+   "Status": "Completed",
+   "Success": true
+  },
+  "refused": "bind",
+  "state": {
+   "hasCurrentGame": true,
+   "paused": true,
+   "programState": "Playing",
+   "tick": 21,
+   "timeSpeed": "Paused"
+  },
+  "success": false
+ },
+ "slice_started": {
+  "dropped": 0,
+  "endFrameTicks": 0,
+  "endTick": 1,
+  "maxFrameTicks": 0,
+  "operation": {
+   "DurationMs": 456,
+   "OperationId": "op_80da3f5a4fd44f07a1c45512c18d3fc5",
+   "Status": "Completed",
+   "Success": true
+  },
+  "paused": false,
+  "recordDir": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBench\\tps",
+  "result": {
+   "atArm": [
+    {
+     "id": "n0",
+     "pv": 1.0,
+     "status": "ok",
+     "v": false
+    }
+   ],
+   "canonical": {
+    "every": 1.0,
+    "mapId": 0.0,
+    "max_ticks": 200.0,
+    "on_unknown": "stop",
+    "sample": {
+     "degrade": false,
+     "every": 1.0,
+     "on_change_only": false,
+     "probes": {
+      "dead": {
+       "f": "dead",
+       "p": "pawn.state",
+       "pawn": "Human1078"
+      },
+      "downed": {
+       "f": "downed",
+       "p": "pawn.state",
+       "pawn": "Human1078"
+      },
+      "field": {
+       "p": "thing.field",
+       "path": "positionInt.x",
+       "thing": "Human1078"
+      },
+      "hediffs": {
+       "p": "thing.field",
+       "path": "health.hediffSet.hediffs._size",
+       "thing": "Human1078"
+      },
+      "job": {
+       "f": "def",
+       "p": "pawn.job",
+       "pawn": "Human1078"
+      }
+     }
+    },
+    "until": {
+     "cmp": [
+      {
+       "p": "game.tick"
+      },
+      ">=",
+      21.0
+     ],
+     "id": "n0"
+    }
+   },
+   "cost": {
+    "evalMsMax": 1.468,
+    "evalMsTotal": 1.468,
+    "evals": 1.0,
+    "nodeEvals": 1.0,
+    "reads": 1.0
+   },
+   "coverage": {
+    "complete": true,
+    "evals": 1.0,
+    "every": 1.0,
+    "gaps": [],
+    "resolutionTicks": 1.0
+   },
+   "epoch": 1.0,
+   "executed": 0.0,
+   "mutations": [],
+   "sample": [],
+   "sampleDropped": 0.0,
+   "state": "running",
+   "tickFrom": 1.0,
+   "tickTo": 1.0,
+   "triggers": [],
+   "trueAtArm": false,
+   "values": [
+    {
+     "id": "n0",
+     "pv": 1.0,
+     "status": "ok",
+     "v": false
+    }
+   ],
+   "watch": [],
+   "watchDropped": 0.0,
+   "watchers": []
+  },
+  "rows": 6,
+  "run": "s20261124T050344_1",
+  "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+  "speed": "Normal",
+  "stage": "running",
+  "state": "running",
+  "success": true,
+  "ticksGame": 1
+ },
+ "status_initializing": {
+  "automationReady": false,
+  "hasCurrentGame": true,
+  "inEntryScene": false,
+  "longEventPending": true,
+  "paused": true,
+  "playable": false,
+  "programState": "MapInitializing",
+  "tick": 0,
+  "timeSpeed": "Normal",
+  "visualReady": false
+ },
+ "status_menu": {
+  "automationReady": false,
+  "hasCurrentGame": false,
+  "inEntryScene": true,
+  "longEventPending": false,
+  "paused": false,
+  "playable": false,
+  "programState": "Entry",
+  "visualReady": false
+ },
+ "status_playing": {
+  "automationReady": true,
+  "currentMapId": "Map_0",
+  "hasCurrentGame": true,
+  "inEntryScene": false,
+  "longEventPending": false,
+  "paused": true,
+  "playable": true,
+  "programState": "Playing",
+  "tick": 1,
+  "timeSpeed": "Paused",
+  "visualReady": true
+ },
+ "telemetry_mark": {
+  "operation": {
+   "DurationMs": 7,
+   "OperationId": "op_d60cb715dc16449fa2417a61bf7b144b",
+   "Status": "Completed",
+   "Success": true
+  },
+  "seq": 4,
+  "state": {
+   "hasCurrentGame": false,
+   "programState": "Entry"
+  },
+  "success": true,
+  "tier": "campaign"
+ },
+ "tools": [
+  {
+   "description": "Pause or unpause the game",
+   "inputSchema": {
+    "properties": {
+     "pause": {
+      "type": "boolean"
+     }
+    },
+    "type": "object"
+   },
+   "name": "rimworld/pause_game",
+   "parameters": [
+    {
+     "name": "pause",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "Quiet isolated test-site controls (test fixture, read back). action=status lists the current map's hostile threat struct",
+   "inputSchema": {
+    "properties": {
+     "action": {
+      "type": "string"
+     },
+     "allowIncidents": {
+      "type": "string"
+     },
+     "clear": {
+      "type": "boolean"
+     },
+     "clearThreats": {
+      "type": "boolean"
+     },
+     "except": {
+      "type": "string"
+     },
+     "keepDefs": {
+      "type": "string"
+     },
+     "keepIds": {
+      "type": "string"
+     },
+     "mapId": {
+      "type": "integer"
+     },
+     "minutes": {
+      "type": "number"
+     },
+     "proximityLetters": {
+      "type": "boolean"
+     },
+     "sinceSeq": {
+      "type": "integer"
+     },
+     "weather": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "jawa/quiet_site",
+   "parameters": [
+    {
+     "name": "action",
+     "required": false
+    },
+    {
+     "name": "clearThreats",
+     "required": false
+    },
+    {
+     "name": "keepDefs",
+     "required": false
+    },
+    {
+     "name": "proximityLetters",
+     "required": false
+    },
+    {
+     "name": "weather",
+     "required": false
+    },
+    {
+     "name": "allowIncidents",
+     "required": false
+    },
+    {
+     "name": "except",
+     "required": false
+    },
+    {
+     "name": "clear",
+     "required": false
+    },
+    {
+     "name": "keepIds",
+     "required": false
+    },
+    {
+     "name": "minutes",
+     "required": false
+    },
+    {
+     "name": "mapId",
+     "required": false
+    },
+    {
+     "name": "sinceSeq",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "Get the current bridge and RimWorld state snapshot without mutating game state",
+   "inputSchema": {
+    "properties": {},
+    "type": "object"
+   },
+   "name": "rimbridge/get_bridge_status",
+   "parameters": []
+  },
+  {
+   "description": "Start RimWorld's built-in quick test colony from the main menu, honor RimWorld's Pause on load preference, and wait for ",
+   "inputSchema": {
+    "properties": {
+     "pauseIfNeeded": {
+      "type": "boolean"
+     },
+     "pollIntervalMs": {
+      "type": "integer"
+     },
+     "readiness": {
+      "type": "string"
+     },
+     "targetReadiness": {
+      "type": "string"
+     },
+     "timeoutMs": {
+      "type": "integer"
+     },
+     "waitForVisualReady": {
+      "type": "boolean"
+     }
+    },
+    "type": "object"
+   },
+   "name": "rimworld/start_debug_game_ready",
+   "parameters": [
+    {
+     "name": "timeoutMs",
+     "required": false
+    },
+    {
+     "name": "pollIntervalMs",
+     "required": false
+    },
+    {
+     "name": "readiness",
+     "required": false
+    },
+    {
+     "name": "pauseIfNeeded",
+     "required": false
+    },
+    {
+     "name": "targetReadiness",
+     "required": false
+    },
+    {
+     "name": "waitForVisualReady",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "Write a marker row (kind marker, mark=true, with the current tier) into the TPS record, so a test step can be found on t",
+   "inputSchema": {
+    "properties": {
+     "dump": {
+      "type": "boolean"
+     },
+     "why": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "jawa/telemetry_mark",
+   "parameters": [
+    {
+     "name": "why",
+     "required": false
+    },
+    {
+     "name": "dump",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "Invoke a PUBLIC STATIC method by type FullName + method name, for pure helpers a mod script needs to exercise (e.g. RM_Z",
+   "inputSchema": {
+    "properties": {
+     "args": {
+      "type": "string"
+     },
+     "method": {
+      "type": "string"
+     },
+     "type": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "jawa/static_call",
+   "parameters": [
+    {
+     "name": "type",
+     "required": false
+    },
+    {
+     "name": "method",
+     "required": false
+    },
+    {
+     "name": "args",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "Apply graduated damage to ANY thing or pawn, including hostiles. Closes the gap that made the debug menu's own 'Apply da",
+   "inputSchema": {
+    "properties": {
+     "allowColonists": {
+      "type": "boolean"
+     },
+     "amount": {
+      "type": "number"
+     },
+     "armorPenetration": {
+      "type": "number"
+     },
+     "bodyPart": {
+      "type": "string"
+     },
+     "damageDef": {
+      "type": "string"
+     },
+     "instigatorId": {
+      "type": "string"
+     },
+     "thingId": {
+      "type": "string"
+     },
+     "x": {
+      "type": "integer"
+     },
+     "z": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "name": "jawa/damage",
+   "parameters": [
+    {
+     "name": "damageDef",
+     "required": false
+    },
+    {
+     "name": "amount",
+     "required": false
+    },
+    {
+     "name": "thingId",
+     "required": false
+    },
+    {
+     "name": "x",
+     "required": false
+    },
+    {
+     "name": "z",
+     "required": false
+    },
+    {
+     "name": "armorPenetration",
+     "required": false
+    },
+    {
+     "name": "bodyPart",
+     "required": false
+    },
+    {
+     "name": "allowColonists",
+     "required": false
+    },
+    {
+     "name": "instigatorId",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "Load a named RimWorld save after verifying every recorded mod is active unless ignoreModCompatibility is true, then wait",
+   "inputSchema": {
+    "properties": {
+     "ignoreModCompatibility": {
+      "type": "boolean"
+     },
+     "pauseIfNeeded": {
+      "type": "boolean"
+     },
+     "pollIntervalMs": {
+      "type": "integer"
+     },
+     "readiness": {
+      "type": "string"
+     },
+     "saveName": {
+      "type": "string"
+     },
+     "targetReadiness": {
+      "type": "string"
+     },
+     "timeoutMs": {
+      "type": "integer"
+     },
+     "waitForVisualReady": {
+      "type": "boolean"
+     }
+    },
+    "type": "object"
+   },
+   "name": "rimworld/load_game_ready",
+   "parameters": [
+    {
+     "name": "saveName",
+     "required": true
+    },
+    {
+     "name": "timeoutMs",
+     "required": false
+    },
+    {
+     "name": "pollIntervalMs",
+     "required": false
+    },
+    {
+     "name": "readiness",
+     "required": false
+    },
+    {
+     "name": "pauseIfNeeded",
+     "required": false
+    },
+    {
+     "name": "targetReadiness",
+     "required": false
+    },
+    {
+     "name": "waitForVisualReady",
+     "required": false
+    },
+    {
+     "name": "ignoreModCompatibility",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "List saved RimWorld games with mod-compatibility details and optionally return only saves whose recorded mods are all cu",
+   "inputSchema": {
+    "properties": {
+     "compatibleOnly": {
+      "type": "boolean"
+     },
+     "offset": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "name": "rimworld/list_saves",
+   "parameters": [
+    {
+     "name": "compatibleOnly",
+     "required": false
+    },
+    {
+     "name": "offset",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "Deep read of one or more spawned pawns: identity, faction, ideoligion, xenotype, age, backstories, traits, every skill, ",
+   "inputSchema": {
+    "properties": {
+     "limit": {
+      "type": "integer"
+     },
+     "pawn": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "jawa/pawn_get",
+   "parameters": [
+    {
+     "name": "pawn",
+     "required": false
+    },
+    {
+     "name": "limit",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "Load a named RimWorld save after verifying every recorded mod is active unless ignoreModCompatibility is true",
+   "inputSchema": {
+    "properties": {
+     "ignoreModCompatibility": {
+      "type": "boolean"
+     },
+     "saveName": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "rimworld/load_game",
+   "parameters": [
+    {
+     "name": "saveName",
+     "required": true
+    },
+    {
+     "name": "ignoreModCompatibility",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "The first scene of BRIDGE v2.0, stepped in the game's OWN loop (PLAY): it samples one pawn after every tick, does one da",
+   "inputSchema": {
+    "properties": {
+     "actAt": {
+      "type": "integer"
+     },
+     "action": {
+      "type": "string"
+     },
+     "damage": {
+      "type": "number"
+     },
+     "maxTicks": {
+      "type": "integer"
+     },
+     "path": {
+      "type": "string"
+     },
+     "pawn": {
+      "type": "string"
+     },
+     "speed": {
+      "type": "string"
+     },
+     "tracks": {
+      "type": "string"
+     },
+     "until": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "jawa/scene_slice",
+   "parameters": [
+    {
+     "name": "action",
+     "required": false
+    },
+    {
+     "name": "pawn",
+     "required": false
+    },
+    {
+     "name": "until",
+     "required": false
+    },
+    {
+     "name": "maxTicks",
+     "required": false
+    },
+    {
+     "name": "actAt",
+     "required": false
+    },
+    {
+     "name": "damage",
+     "required": false
+    },
+    {
+     "name": "path",
+     "required": false
+    },
+    {
+     "name": "tracks",
+     "required": false
+    },
+    {
+     "name": "speed",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "READ ONLY. TickManager.TicksGame, .TicksAbs, .TicksSinceSettle and .StartingYear, plus a few adjacent trivially-readable",
+   "inputSchema": {
+    "properties": {},
+    "type": "object"
+   },
+   "name": "jawa/time_clock",
+   "parameters": []
+  },
+  {
+   "description": "The RUNNING mod list from LoadedModManager.RunningModsListForReading (packageId + load order) - what this process actual",
+   "inputSchema": {
+    "properties": {
+     "assembly": {
+      "type": "string"
+     },
+     "details": {
+      "type": "boolean"
+     },
+     "loadedOf": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "jawa/running_mods",
+   "parameters": [
+    {
+     "name": "assembly",
+     "required": false
+    },
+    {
+     "name": "details",
+     "required": false
+    },
+    {
+     "name": "loadedOf",
+     "required": false
+    }
+   ]
+  },
+  {
+   "description": "READ ONLY. Everything about the CURRENT MAP that currently needs five different tools and two round trips: its WORLD TIL",
+   "inputSchema": {
+    "properties": {},
+    "type": "object"
+   },
+   "name": "jawa/map_info",
+   "parameters": []
+  }
+ ],
+ "trace_hit": [
+  {
+   "acts": [],
+   "cond": {
+    "cut": "for size"
+   },
+   "epoch": 1,
+   "kind": "scene",
+   "maxTicks": 200,
+   "mode": "PLAY",
+   "mono": 124.301,
+   "n": 1,
+   "phase": "first",
+   "rec": "open",
+   "run": "s20261124T050344_1",
+   "schema": "scene_trace_v1",
+   "seq": 8,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "speed": "Normal",
+   "tick": 1,
+   "tracks": [
+    "dead",
+    "downed",
+    "field",
+    "hediffs",
+    "job"
+   ],
+   "utc": "2026-11-24T05:03:44.749Z",
+   "v": 2
+  },
+  {
+   "kind": "scene",
+   "mono": 124.303,
+   "n": 2,
+   "name": "dead",
+   "phase": "first",
+   "rec": "track",
+   "run": "s20261124T050344_1",
+   "seq": 9,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 1,
+   "utc": "2026-11-24T05:03:44.751Z",
+   "v": false
+  },
+  {
+   "kind": "scene",
+   "mono": 124.303,
+   "n": 3,
+   "name": "downed",
+   "phase": "first",
+   "rec": "track",
+   "run": "s20261124T050344_1",
+   "seq": 10,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 1,
+   "utc": "2026-11-24T05:03:44.751Z",
+   "v": false
+  },
+  {
+   "kind": "scene",
+   "mono": 124.304,
+   "n": 4,
+   "name": "field",
+   "phase": "first",
+   "rec": "track",
+   "run": "s20261124T050344_1",
+   "seq": 11,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 1,
+   "utc": "2026-11-24T05:03:44.751Z",
+   "v": 136
+  },
+  {
+   "kind": "scene",
+   "mono": 124.304,
+   "n": 5,
+   "name": "hediffs",
+   "phase": "first",
+   "rec": "track",
+   "run": "s20261124T050344_1",
+   "seq": 12,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 1,
+   "utc": "2026-11-24T05:03:44.751Z",
+   "v": 6
+  },
+  {
+   "kind": "scene",
+   "mono": 124.304,
+   "n": 6,
+   "name": "job",
+   "phase": "first",
+   "rec": "track",
+   "run": "s20261124T050344_1",
+   "seq": 13,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 1,
+   "utc": "2026-11-24T05:03:44.751Z",
+   "v": ""
+  },
+  {
+   "kind": "scene",
+   "mono": 124.953,
+   "n": 7,
+   "name": "job",
+   "phase": "end_of_tick",
+   "rec": "track",
+   "run": "s20261124T050344_1",
+   "seq": 14,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 3,
+   "utc": "2026-11-24T05:03:45.400Z",
+   "v": "GotoWander"
+  },
+  {
+   "complete": true,
+   "cost": {
+    "evalMsMax": 1.468,
+    "evalMsTotal": 1.542,
+    "evals": 21,
+    "nodeEvals": 21,
+    "reads": 21
+   },
+   "executed": 20,
+   "hitTick": 21,
+   "kind": "scene",
+   "mono": 125.566,
+   "n": 8,
+   "phase": "end_of_tick",
+   "rec": "end",
+   "run": "s20261124T050344_1",
+   "seq": 15,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "state": "hit",
+   "tick": 21,
+   "triggers": [
+    "cond"
+   ],
+   "unknown": null,
+   "utc": "2026-11-24T05:03:46.013Z",
+   "v": 2,
+   "why": null
+  },
+  {
+   "kind": "scene",
+   "mono": 125.577,
+   "n": 9,
+   "name": "dead",
+   "phase": "last",
+   "rec": "track",
+   "run": "s20261124T050344_1",
+   "seq": 16,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 21,
+   "utc": "2026-11-24T05:03:46.024Z",
+   "v": false
+  },
+  {
+   "kind": "scene",
+   "mono": 125.577,
+   "n": 10,
+   "name": "downed",
+   "phase": "last",
+   "rec": "track",
+   "run": "s20261124T050344_1",
+   "seq": 17,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 21,
+   "utc": "2026-11-24T05:03:46.025Z",
+   "v": false
+  },
+  {
+   "kind": "scene",
+   "mono": 125.577,
+   "n": 11,
+   "name": "field",
+   "phase": "last",
+   "rec": "track",
+   "run": "s20261124T050344_1",
+   "seq": 18,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 21,
+   "utc": "2026-11-24T05:03:46.025Z",
+   "v": 136
+  },
+  {
+   "kind": "scene",
+   "mono": 125.577,
+   "n": 12,
+   "name": "hediffs",
+   "phase": "last",
+   "rec": "track",
+   "run": "s20261124T050344_1",
+   "seq": 19,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 21,
+   "utc": "2026-11-24T05:03:46.025Z",
+   "v": 6
+  },
+  {
+   "kind": "scene",
+   "mono": 125.577,
+   "n": 13,
+   "name": "job",
+   "phase": "last",
+   "rec": "track",
+   "run": "s20261124T050344_1",
+   "seq": 20,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 21,
+   "utc": "2026-11-24T05:03:46.025Z",
+   "v": "GotoWander"
+  },
+  {
+   "actsNotDone": [],
+   "alloc": null,
+   "drained": true,
+   "dropped": 0,
+   "kind": "scene",
+   "mono": 125.582,
+   "n": 14,
+   "paused": true,
+   "phase": "last",
+   "randFaults": 0,
+   "rec": "close",
+   "rows": 13,
+   "run": "s20261124T050344_1",
+   "seq": 21,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "skipped": 0,
+   "tick": 21,
+   "tickAfter": 21,
+   "utc": "2026-11-24T05:03:46.030Z",
+   "v": 2
+  }
+ ],
+ "trace_limit": [
+  {
+   "acts": [],
+   "cond": {
+    "cut": "for size"
+   },
+   "epoch": 1,
+   "kind": "scene",
+   "maxTicks": 30,
+   "mode": "PLAY",
+   "mono": 128.219,
+   "n": 1,
+   "phase": "first",
+   "rec": "open",
+   "run": "s20261124T050348_2",
+   "schema": "scene_trace_v1",
+   "seq": 24,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "speed": "Ultrafast",
+   "tick": 21,
+   "tracks": [
+    "dead",
+    "downed",
+    "field",
+    "hediffs",
+    "job"
+   ],
+   "utc": "2026-11-24T05:03:48.667Z",
+   "v": 2
+  },
+  {
+   "kind": "scene",
+   "mono": 128.219,
+   "n": 2,
+   "name": "dead",
+   "phase": "first",
+   "rec": "track",
+   "run": "s20261124T050348_2",
+   "seq": 25,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 21,
+   "utc": "2026-11-24T05:03:48.667Z",
+   "v": false
+  },
+  {
+   "kind": "scene",
+   "mono": 128.219,
+   "n": 3,
+   "name": "downed",
+   "phase": "first",
+   "rec": "track",
+   "run": "s20261124T050348_2",
+   "seq": 26,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 21,
+   "utc": "2026-11-24T05:03:48.667Z",
+   "v": false
+  },
+  {
+   "kind": "scene",
+   "mono": 128.219,
+   "n": 4,
+   "name": "field",
+   "phase": "first",
+   "rec": "track",
+   "run": "s20261124T050348_2",
+   "seq": 27,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 21,
+   "utc": "2026-11-24T05:03:48.667Z",
+   "v": 136
+  },
+  {
+   "kind": "scene",
+   "mono": 128.219,
+   "n": 5,
+   "name": "hediffs",
+   "phase": "first",
+   "rec": "track",
+   "run": "s20261124T050348_2",
+   "seq": 28,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 21,
+   "utc": "2026-11-24T05:03:48.667Z",
+   "v": 6
+  },
+  {
+   "kind": "scene",
+   "mono": 128.22,
+   "n": 6,
+   "name": "job",
+   "phase": "first",
+   "rec": "track",
+   "run": "s20261124T050348_2",
+   "seq": 29,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 21,
+   "utc": "2026-11-24T05:03:48.667Z",
+   "v": "GotoWander"
+  },
+  {
+   "complete": true,
+   "cost": {
+    "evalMsMax": 0.075,
+    "evalMsTotal": 0.166,
+    "evals": 31,
+    "nodeEvals": 31,
+    "reads": 31
+   },
+   "executed": 30,
+   "hitTick": null,
+   "kind": "scene",
+   "mono": 128.342,
+   "n": 7,
+   "phase": "end_of_tick",
+   "rec": "end",
+   "run": "s20261124T050348_2",
+   "seq": 30,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "state": "done",
+   "tick": 51,
+   "triggers": [
+    "deadline"
+   ],
+   "unknown": null,
+   "utc": "2026-11-24T05:03:48.790Z",
+   "v": 2,
+   "why": null
+  },
+  {
+   "kind": "scene",
+   "mono": 128.35,
+   "n": 8,
+   "name": "dead",
+   "phase": "last",
+   "rec": "track",
+   "run": "s20261124T050348_2",
+   "seq": 31,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 51,
+   "utc": "2026-11-24T05:03:48.797Z",
+   "v": false
+  },
+  {
+   "kind": "scene",
+   "mono": 128.35,
+   "n": 9,
+   "name": "downed",
+   "phase": "last",
+   "rec": "track",
+   "run": "s20261124T050348_2",
+   "seq": 32,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 51,
+   "utc": "2026-11-24T05:03:48.798Z",
+   "v": false
+  },
+  {
+   "kind": "scene",
+   "mono": 128.35,
+   "n": 10,
+   "name": "field",
+   "phase": "last",
+   "rec": "track",
+   "run": "s20261124T050348_2",
+   "seq": 33,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 51,
+   "utc": "2026-11-24T05:03:48.798Z",
+   "v": 136
+  },
+  {
+   "kind": "scene",
+   "mono": 128.351,
+   "n": 11,
+   "name": "hediffs",
+   "phase": "last",
+   "rec": "track",
+   "run": "s20261124T050348_2",
+   "seq": 34,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 51,
+   "utc": "2026-11-24T05:03:48.798Z",
+   "v": 6
+  },
+  {
+   "kind": "scene",
+   "mono": 128.351,
+   "n": 12,
+   "name": "job",
+   "phase": "last",
+   "rec": "track",
+   "run": "s20261124T050348_2",
+   "seq": 35,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "st": "ok",
+   "tick": 51,
+   "utc": "2026-11-24T05:03:48.798Z",
+   "v": "GotoWander"
+  },
+  {
+   "actsNotDone": [],
+   "alloc": null,
+   "drained": true,
+   "dropped": 0,
+   "kind": "scene",
+   "mono": 128.356,
+   "n": 13,
+   "paused": true,
+   "phase": "last",
+   "randFaults": 0,
+   "rec": "close",
+   "rows": 12,
+   "run": "s20261124T050348_2",
+   "seq": 36,
+   "session": "f947b2a4704b4566a998d8b0d4f0b70f",
+   "skipped": 0,
+   "tick": 51,
+   "tickAfter": 51,
+   "utc": "2026-11-24T05:03:48.802Z",
+   "v": 2
+  }
+ ]
+}

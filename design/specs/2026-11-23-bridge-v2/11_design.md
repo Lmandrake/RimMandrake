@@ -59,8 +59,8 @@ real scene of ours; the check that turns red. Each has a last part, its limits. 
 and the code is built to them.
 
 ### 2. Read the contract, not the internals
-The pages live in `design/specs/2026-11-23-bridge-v2/contracts/` until the library ticket lands. That ticket moves them
-beside the code (`src/RimMandrake/Utils/scene_contracts/`) and leaves one pointer line here. One step finds them:
+The pages live beside the code, in `src/RimMandrake/Utils/scene_contracts/` (moved 2026-11-23); `contracts/` here holds one
+pointer line, and `contracts/<name>.md` in this folder's files means the page there. One step finds them:
 `python3 src/RimMandrake/Utils/scene.py help` prints the README, and `help <name>` prints a page. The Tools block of the
 root `CLAUDE.md` gets that one line when the library lands. An author reads at most the README and the pages of the
 names the scene uses; the 563 tool schemas and the five older driver layers are not read.

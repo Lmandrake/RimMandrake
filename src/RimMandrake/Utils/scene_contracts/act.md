@@ -64,7 +64,7 @@ the verdict ledger records it as TUNED, never as PASS. At close, each tuned valu
 | `RELOAD_IN_BATCH` | `reload` inside a batch | do the reload as its own act |
 | `UNKNOWN_ALIAS` | an alias is not bound | stage it or place it first |
 | `TUNE_NOT_LIVE` | the target's write recipe says LOAD ONLY or NEVER LIVE, or the target is a `const` | use a build |
-| `TUNE_NO_RECIPE` | the target has no write recipe, so nobody knows when the game reads it (a mod may have copied it at startup) | add the recipe (`../04_live_tuning.md` §1), or pass `unverified=True`: the write is made and the receipt says UNVERIFIED |
+| `TUNE_NO_RECIPE` | the target has no write recipe, so nobody knows when the game reads it (a mod may have copied it at startup) | add the recipe (`design/specs/2026-11-23-bridge-v2/04_live_tuning.md` §1), or pass `unverified=True`: the write is made and the receipt says UNVERIFIED |
 | `TUNE_CANONICAL_SAVE` | a canonical world save is loaded | use a fixture or a fresh map |
 | `TUNE_UNKNOWN_TARGET` | the def, type or field does not exist | the message lists near names |
 
@@ -101,4 +101,4 @@ repeated request leaves the victim's health as after one hit.
 It cannot act in the middle of a tick. In Design Version 0.1.0 two separate acts on one stop are allowed; the trace
 holds the frame count of each. If experiment A scene 3 shows that the frame between them changes a result, a later
 version of this page refuses that, and says so in its change line. `tune` proves nothing about the shipped build: only a run on a build that holds
-the value, with no stamp, is evidence (`../04_live_tuning.md`).
+the value, with no stamp, is evidence (`design/specs/2026-11-23-bridge-v2/04_live_tuning.md`).

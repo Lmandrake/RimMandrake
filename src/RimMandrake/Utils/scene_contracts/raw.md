@@ -21,11 +21,13 @@ declared read-only); `hands`: that tool, 1 call; `could_not_look`: "the effect o
 
 ## State changes
 
-Whatever the tool does. The game side writes every raw call into the trace, with its tool name and arguments. A raw
+Whatever the tool does. Every raw call is written into the game's own record (the one that holds the trace), with its tool name and
+arguments, before the call is made; a call that could not be written there is a line of `could_not_look`. A raw
 call of a tool that can change the game marks the **game process** EXPLORED until the game restarts: every later
-session in that process carries the stamp, and so does a save written in it. A run with that stamp counts for no bar.
+session in that process carries the stamp (a save written in it does not carry it yet). The mark is set and read back before the
+call; when it does not hold, the call is not made (fault `MARK_NOT_HELD`). A run with that stamp counts for no bar.
 
-A tool is read-only only when its C# declaration says so. A tool with no declaration is treated as changing.
+A tool is read-only only when its C# declaration says so: its description, as the running bridge lists it, begins with READ ONLY. A tool with no declaration is treated as changing.
 `jawa/static_call` can never be declared read-only, because its name does not say what the called method does.
 
 ## Refuses

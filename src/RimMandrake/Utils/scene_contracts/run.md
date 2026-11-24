@@ -31,7 +31,8 @@ state), `r.trace` (the file).
 - **An unreadable value stops the run.** When a value that `until` reads is not `ok` at the end of a tick, the
   condition is neither true nor false. The run stops on that tick with `why = "unknown"`, and names the value. The
   library never counts an unreadable value as false and never as true. A `gone` member that the condition expects
-  (`c.gone_ok(...)`) is readable.
+  (`c.gone_ok(...)`) is readable. `r.hit` raises when `why` is `unknown`, and so does the `.v` of a value that was not read. When
+  the game's own answer is `hit` or `limit` over an unreadable value, the library still answers `unknown` and says so.
 - **A lost reply is handled inside the call.** The library gives the run a request id before it sends it, and asks the
   game for that id's status until the run has ended. The script gets `r` or a fault that carries the id. When the
   script's own process died, `scene.attach` returns the same run.
@@ -89,5 +90,7 @@ the closing record's count.
 
 ## Limits
 
-It observes at the end of a tick. An event inside a tick needs a tap (an event recorder), which `record` can also name.
+When the game has no `jawa/run_until`, the run is played by `jawa/scene_slice`, and the receipt says so: it has no request id, it
+asks for a pawn (the receipt names it), it reads the fields of things only, and it stops on an unreadable value only when the whole
+condition becomes unknown. A run whose clock stands still for 60 s of wall time is cancelled (`why` is `fault`). It observes at the end of a tick. An event inside a tick needs a tap (an event recorder), which `record` can also name.
 It does not act: for an act on tick T, run until T, then `s.act`.

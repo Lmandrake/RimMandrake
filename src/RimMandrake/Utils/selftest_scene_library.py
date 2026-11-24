@@ -1,0 +1,646 @@
+#!/usr/bin/env python3
+"""Selftest of the scene library's skeleton against a fake game (scene_fake.py). No game, no bridge.
+
+The first 22 checks are the acceptance test of RIMMANDRAKE_BUILD_SCENE_LIBRARY_TEN_NAMES_FIVE_LAYERS_TODAY; the rest are the
+other promises of the pages. Pages: scene_contracts/, design/specs/2026-11-23-scene-library/boundary.md (each promise
+a-b-c has the test t_a_b_c here). The plants that each must turn red: scene_library_mutants.py."""
+import contextlib
+import io
+import json
+import os
+import re
+import subprocess
+import sys
+import tempfile
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import scene                                        # noqa: E402
+import scene_fake as F                              # noqa: E402
+import scene_hands                                  # noqa: E402
+c = scene.cond
+
+
+def must(ok, what):
+    if not ok:
+        raise AssertionError(what)
+
+
+def refused(name, fn, *a, **kw):
+    try:
+        got = fn(*a, **kw)
+    except scene.Refused as e:
+        must(e.name == name, "refused %s, want %s: %s" % (e.name, name, e))
+        must(len(e.repair) > 10, "%s carries no repair" % name)
+        return e
+    raise AssertionError("%s was not refused: %r" % (name, got))
+
+
+def faulted(name, fn, *a, **kw):
+    try:
+        got = fn(*a, **kw)
+    except scene.Fault as e:
+        must(e.name == name, "fault %s, want %s: %s" % (e.name, name, e))
+        return e
+    raise AssertionError("no fault %s: %r" % (name, got))
+
+
+def world(**kw):
+    scene.LAUNCH.update(mode="script", commit=None, script=None)
+    scene.WORLD = F.FakeWorld(F.FakeGame(**kw))
+    scene.WORLD.wanted_rows = {"FlowWorks": ("FlowWorks", "mandrake.rm.flowworks", None, {"rimmandrakeflowworks.dll": ["x"]}),
+                               "Absent": ("Absent", "mandrake.rm.absent", None, {"a.dll": ["x"]}),
+                               "XmlOnly": ("XmlOnly", "mandrake.rsw.swbestiary", None, {})}
+    return scene.WORLD
+
+
+def opened(W=None, **needs):
+    W = W or world()
+    return W, scene.open("ArchSmall", needs=needs or None)
+
+
+def untouched(W):
+    """Nothing is left of an open that refused: no lock, no calm, no session record, no load, no game session."""
+    st = json.loads(W.game.env.get(scene.GAME_STATE, "{}"))
+    must(W.lock is None, "the lock is still held")
+    must(not W.game.calm_on, "the calm is still on")
+    must(not W.game.loads, "a map was loaded: %s" % W.game.loads)
+    must(not W.game.session, "the game's session is still open")
+    return st.get("session")
+
+
+# ------------------------------------------------------------------------------- the 22 checks of the ticket
+def test_open_refuses_unknown_game():
+    W = world()
+    e = refused("UNKNOWN_GAME", scene.open, "ArchHuge")
+    must("ArchSmall" in e.repair and "Steve2" in e.repair, "the four names are not in the message")
+    must(not W.game.log and untouched(W) is None, "something was asked of a game")
+
+
+def test_open_refuses_game_held():
+    W = world()
+    W.lock_code = 75
+    e = refused("GAME_HELD", scene.open, "archsmall")
+    must("planted" in e.repair, "the holder is not named")
+    W.lock_code = 0
+    refused("GAME_HELD", scene.open, "Steve1")
+    must(not W.game.log and untouched(W) is None, "something was asked of a game")
+
+
+def test_open_refuses_owner_hold():
+    W = world()
+    W.lock_code = 3
+    refused("OWNER_HOLD", scene.open, "ArchSmall")
+    must(not W.game.log and untouched(W) is None, "something was asked of a game")
+
+
+def test_open_refuses_session_open():
+    W = world()
+    held = json.dumps({"pid": W.game.pid, "stamps": [], "session": {"id": "scn_other", "driver": {"pid": 9}, "script": "x", "calm": False}})
+    W.game.env[scene.GAME_STATE] = held
+    e = refused("SESSION_OPEN", scene.open, "ArchSmall")
+    must("scn_other" in e.repair and "attach" in e.repair, "the session and the repair are not named")
+    must((untouched(W) or {}).get("id") == "scn_other" and W.game.env[scene.GAME_STATE] == held, "the other session's record was changed")
+
+
+def test_open_refuses_mod_not_loaded():
+    W = world()
+    e = refused("MOD_NOT_LOADED", scene.open, "ArchSmall", needs={"mods": ["FlowWorks", "Absent"]})
+    must("Absent" in e.repair and "FlowWorks," not in e.repair and "./game" in e.repair, "the mod and the commands: %s" % e.repair)
+    must(untouched(W) is None, "a session record was left")
+
+
+def test_open_refuses_wrong_build():
+    W = world()
+    W.verdict = {"verdict": "WRONG_BUILD", "why": ["rimmandrakeflowworks.dll: the loaded code is not in the committed file"]}
+    e = refused("WRONG_BUILD", scene.open, "ArchSmall", needs={"mods": ["FlowWorks"]})
+    must("deploy_custom_mods.py --mod FlowWorks" in e.repair, "the deploy command is missing")
+    must(untouched(W) is None, "a session record was left")
+
+
+def test_open_refuses_canonical_save():
+    W = world()
+    for name in ("ASHKARR_WORLDMAP_FULL", "ashkarr_worldmap_full", "Canon_x"):
+        refused("CANONICAL_SAVE", scene.open, "ArchSmall", needs={"map": name})
+    must(not W.game.log and untouched(W) is None, "something was asked of a game")
+
+
+def test_open_refuses_fixture_missing():
+    W = world()
+    e = refused("FIXTURE_MISSING", scene.open, "ArchSmall", needs={"map": "RM_TestSite_river"})
+    must("cp " in e.repair and "RM_TestSite_river" in e.repair, "the copy command is missing")
+    refused("FIXTURE_MISSING", scene.open, "ArchSmall", needs={"map": "fresh:moon"})
+    W.game.saves += ["x%d" % i for i in range(60)] + ["RM_TestSite_river"]      # on the last page of the list
+    W.game.loads = []
+    with scene.open("ArchSmall", needs={"map": "rm_testsite_RIVER"}) as s:
+        must(s.opened[2]["did"], "the fixture was not loaded")
+    must(W.game.loads == ["rm_testsite_RIVER"] and W.lock is None, "loads %s" % W.game.loads)
+
+
+def test_open_phase_report_names_refusing_phase_and_what_was_put_back():
+    W = world()
+    W.game.calm["verdict"] = "NOT_CALM"
+    W.game.calm["controls"][14] = {"name": "mental_states", "status": "NOT_CALM", "detail": "1 found", "things": ["Human12 Berserk"]}
+    e = faulted("NOT_CALM", scene.open, "ArchSmall", needs={"map": "fresh:quicktest", "calm": "standard"})
+    by = {p["phase"]: p for p in e.report}
+    must([p["phase"] for p in e.report] == ["lock", "identify", "load", "settle", "calm", "arm"], "six phases in order")
+    must([p["state"] for p in e.report] == ["done"] * 4 + ["refused", "not reached"], "states %s" % [p["state"] for p in e.report])
+    must(any("released the calm" in x for x in by["calm"]["put_back"]) and any("released" in x for x in by["lock"]["put_back"]), "put back: %r" % e.report)
+    must(any("NOT PUT BACK" in x for x in by["load"]["put_back"]), "the load that stays is not said")
+    must("Human12 Berserk" in str(e) and "calm" in str(e), "the thing is not named in the message")
+    must(W.lock is None and not W.game.calm_on, "the lock or the calm was left")
+
+
+def test_open_receipt_build_comes_from_game():
+    W, s = opened(mods=["FlowWorks"])
+    b, ld = s.receipt.build, W.game.running_mods["loaded"]
+    must(b["list"] == ld["listFingerprint"] and b["version"] == ld["gameVersion"], "the list and the version")
+    must(b["dlls"]["RimMandrakeFlowWorks"]["mvid"] == "1c12b538-3bb2-45f5-8b8e-8d09a7ef04b3", "the DLL is not the loaded one: %s" % b["dlls"])
+    must(b["companion"]["source_hash"] == ld["companion"]["srcHash"] and "the-hash-that-the-repo-holds" not in json.dumps(b), "a hash of the repo is in the build lines")
+    must(b["companion"]["is_source_at_this_commit"] is False, "the difference is not said")
+    must(s.run(until=20, limit=200).receipt.build == b, "the run's receipt has other build lines")
+
+
+def test_run_refuses_no_limit():
+    W, s = opened()
+    n = len(W.game.log)
+    for bad in (None, 0, -5, True, 2.5, "100"):
+        refused("NO_LIMIT", s.run, 20, limit=bad)
+    must(len(W.game.log) == n, "the game was asked")
+
+
+def test_run_refuses_game_running():
+    W, s = opened()
+    W.game.status["paused"] = False
+    refused("GAME_RUNNING", s.run, 20, limit=200)
+    must(W.game.starts == 0, "a run was started")
+
+
+def test_run_refuses_run_active():
+    W, s = opened()
+    s.run(until=20, limit=200)
+    W.game.run["polls"] = 99
+    e = refused("RUN_ACTIVE", s.run, 20, limit=200)
+    must(W.game.run["run"] in e.repair and "cancel_run" in e.repair and W.game.starts == 1, "the live run is not named")
+    must(s.cancel_run() is True and s.run(until=20, limit=200).hit, "after the cancel a run starts")
+
+
+def test_run_refuses_unrecorded_value():
+    W, s = opened()
+    n = len(W.game.log)
+    refused("UNRECORDED_VALUE", s.run, {"cmp": [{"p": "pawn.mood"}, ">", 3]}, limit=9)
+    refused("UNRECORDED_VALUE", s.run, c.value("Human1078", "GetLord()") == "x", limit=9)
+    refused("UNRECORDED_VALUE", s.run, (c.pawn("Human1078").dead == True).optional(), limit=9)  # noqa: E712
+    refused("UNRECORDED_VALUE", s.run, {"all": []}, limit=9)
+    must(len(W.game.log) == n, "the game was asked")
+
+
+def test_run_refuses_bad_path():
+    W, s = opened()
+    n = len(W.game.log)
+    for of, path in (("Human1078", "TakeDamage()"), ("Human1078", ""), ("Human1078", "a..b"), ("Human 1078", "x"), ("Human1078", "x[-1]"), (None, "x")):
+        refused("BAD_PATH", s.run, 20, limit=200, record=[c.track(of, path)])
+    must(len(W.game.log) == n, "the game was asked")
+    refused("BAD_PATH", s.run, 20, limit=200, record=[c.track("static:RimMandrake.X", "on")])   # the slice cannot read it
+    must(W.game.starts == 0, "a run was started")
+    for path in ("positionInt.x", "health.hediffSet.hediffs[0]._size", "comp<RM_CompX>.held", "grid[3,4]"):
+        must(c.bad_path("Human1078", path) is None, "%s is in the grammar" % path)
+
+
+def test_run_refuses_session_closed():
+    W, s = opened()
+    s.close()
+    n = len(W.game.log)
+    refused("SESSION_CLOSED", s.run, 20, limit=200)
+    refused("SESSION_CLOSED", s.raw, "jawa/map_info")
+    must(len(W.game.log) == n, "the game was asked")
+
+
+def test_run_unreadable_value_stops_as_unknown():
+    for state in ("unknown", "hit", "done"):        # the hand says so itself, or says hit or limit over an unreadable value
+        W, s = opened()
+        W.game.script = {"state": state, "ticks": 20, "tracks": {"Human1078.positionInt.x": [(0, "ok", 5), (12, "gone", None)]}}
+        r = s.run(until=c.value("Human1078", "positionInt.x") > 900, limit=20)
+        must(r.why == "unknown" and "Human1078.positionInt.x was gone from tick 13" in r.detail, "%s: why %s, %s" % (state, r.why, r.detail))
+        faulted("CONDITION_UNKNOWN", lambda: r.hit)
+        v = r.values["Human1078.positionInt.x"]
+        must(v.state == "gone", "the value is %r" % v)
+        faulted("VALUE_NOT_READ", lambda: v.v)
+        for op in (lambda: bool(v), lambda: v == 0, lambda: v < 1, lambda: int(v)):
+            try:
+                op()
+            except TypeError:
+                continue
+            raise AssertionError("a gone value was used as a number")
+        must(any("gone on 9 tick(s), first on 13" in x for x in r.receipt.could_not_look), "could_not_look: %s" % r.receipt.could_not_look)
+
+
+def test_run_lost_reply_is_recovered_by_request_id():
+    for ru in (True, False):
+        W = world(run_until=ru)
+        s = scene.open("ArchSmall")
+        tool = scene_hands.RUN_UNTIL if ru else scene_hands.SLICE
+        W.game.script = {"state": "hit", "ticks": 20, "tracks": {}}
+        W.game.lose = {tool + ":start", tool + ":status"} if ru else {tool + ":start"}
+        r = s.run(until=c.game.tick >= 21, limit=200)
+        must(r.why == "hit" and r.tick == 21 and W.game.starts == 1, "%s: %s, %d starts" % (tool, r, W.game.starts))
+        must(any("the reply to the start was lost" in x for x in r.receipt.could_not_look), "the loss is not said")
+        if ru:
+            sent = [a for t, a in W.game.log if t == tool]
+            must(len({a["request"] for a in sent}) == 1 and sent[0]["request"] == r.request, "the id was not given before the call, or it changed")
+        else:
+            must(any("no request id" in x for x in r.receipt.could_not_look), "the slice's limit is not said")
+    W = world(run_until=True)
+    s = scene.open("ArchSmall")
+    real = W.game._run_until
+    W.game._run_until = lambda a: {"success": False, "refused": "UNKNOWN_REQUEST"} if a["action"] == "status" else real(a)
+    W.game.lose = {scene_hands.RUN_UNTIL + ":start"}
+    e = faulted("REPLY_LOST", s.run, 20, limit=200)
+    must(e.request and W.game.starts == 1, "the fault carries no id, or the run was started again")
+
+
+def test_raw_undeclared_tool_marks_the_process_and_a_new_session_carries_it():
+    W, s = opened()
+    must(s.raw("jawa/map_info").receipt.stamps == [], "a declared read-only tool stamped")
+    r = s.raw("jawa/damage", damageDef="Bullet", amount=1, thingId="Human1")
+    must(r.receipt.stamps == ["EXPLORED"] and "does not know what it changed" in r.receipt.did[0], "no stamp: %r" % r.receipt.stamps)
+    i = [t for t, _a in W.game.log].index("jawa/damage")
+    must(any(a.get("method") == "SetEnvironmentVariable" and "EXPLORED" in a["args"] for _t, a in W.game.log[:i]), "the mark was not set before the call")
+    must(s.run(until=20, limit=200).receipt.stamps == ["EXPLORED"], "the run carries no stamp")
+    s.close()
+    s2 = scene.open("ArchSmall")
+    must(s2.receipt.stamps == ["EXPLORED"] and s2.run(until=20, limit=200).receipt.stamps == ["EXPLORED"], "a new session in a marked process has no stamp")
+    s2.close()
+    W.games["b"] = g = F.FakeGame()                     # the game was restarted; its block still holds the old text (a child inherits it)
+    g.env, g.pid = dict(W.game.env), 777
+    g.env[scene.GAME_STATE] = json.dumps({"pid": 39620, "stamps": ["EXPLORED"], "session": {"id": "scn_old"}})
+    g.running_mods["loaded"]["pid"] = 777
+    s3 = scene.open("ArchSmall")
+    must(s3.receipt.stamps == [], "a new process carries the old process's mark")
+
+
+def _tree(files):
+    d = tempfile.mkdtemp()
+    for n, t in files.items():
+        os.makedirs(os.path.dirname(os.path.join(d, n)), exist_ok=True)
+        with open(os.path.join(d, n), "w", encoding="utf-8") as f:
+            f.write(t)
+
+    def git(*a):
+        p = subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", "-C", d] + list(a), capture_output=True, text=True, timeout=60)
+        return p.returncode, p.stdout if p.returncode == 0 else p.stdout + p.stderr
+    git("init", "-q", "-b", "main")
+    git("add", "-A")
+    git("commit", "-qm", "x")
+    return d, git
+
+
+GOOD = "import scene\nfrom scene import cond as c\nwith scene.open('ArchSmall') as s:\n    print('RAN', s.run(until=20, limit=200).receipt.commit)\n"
+
+
+def test_accept_refuses_a_dirty_tree_and_an_older_layer():
+    d, git = _tree({"s/good.py": GOOD, "s/old.py": "import validation_core\n", "s/old2.py": "import scene\ndef f():\n    from scenes import scenelib as S\n",
+                    "s/old3.py": "import importlib\nm = importlib.import_module('rimbridge_client')\n", "s/old4.py": "import scene, mine\n",
+                    "s/mine.py": "from modcheck import helpers\n", "s/near.py": "import scene, helpers\n", "s/helpers.py": "X = 1\n"})
+    p = lambda n: os.path.join(d, "s", n)  # noqa: E731
+    W = world()
+    W.repo, W.git = d, git
+    head = git("rev-parse", "HEAD")[1].strip()
+    for n in ("old.py", "old2.py", "old3.py", "old4.py"):
+        refused("IMPORTS_OLD_LAYER", scene.check_accept, p(n), d, git)
+    must(scene.check_accept(p("near.py"), d, git) == head, "a scene's own helpers.py is no older layer")
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = scene.main(["accept", p("good.py")])
+    must(rc == 0 and "RAN " + head in out.getvalue(), "accept: rc %s, %s" % (rc, out.getvalue()))
+    with open(p("extra.txt"), "w") as f:
+        f.write("x")
+    e = refused("TREE_NOT_CLEAN", scene.check_accept, p("good.py"), d, git)
+    must("extra.txt" in e.repair, "the path is not named")
+    refused("SCRIPT_NOT_IN_REPO", scene.check_accept, __file__, d, git)
+    os.remove(p("extra.txt"))
+    with open(p("good.py"), "a") as f:
+        f.write("# edited\n")
+    refused("TREE_NOT_CLEAN", scene.check_accept, p("good.py"), d, git)
+    n = len(W.game.log)
+    with contextlib.redirect_stdout(io.StringIO()):
+        must(scene.main(["accept", p("good.py")]) == 3 and len(W.game.log) == n, "a refused script ran")
+
+
+def test_explore_run_is_explored():
+    W = world()
+    old, sys.stdin = sys.stdin, io.StringIO("r = s.run(until=20, limit=200)\nprint('STAMPS', r.receipt.stamps)\n")
+    out = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+            rc = scene.main(["explore", "ArchSmall"])
+    finally:
+        sys.stdin = old
+        scene.LAUNCH.update(mode="script")
+    must(rc == 0 and "STAMPS ['EXPLORED']" in out.getvalue(), "rc %s: %s" % (rc, out.getvalue()[-300:]))
+    must(W.lock is None and untouched(W) is None, "the session was not ended")
+
+
+def test_help_prints_ten_names_and_each_built_page_matches_its_signature():
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        must(scene.main(["help"]) == 0, "help")
+    rows = re.findall(r"^\| \d+ \| `(?:scene|s)\.(\w+)` \|", out.getvalue(), re.M)
+    must(rows == list(scene.NAMES) and len(rows) == 10, "the names: %s" % rows)
+    for n in scene.NAMES:
+        must(os.path.isfile(os.path.join(scene.PAGES, n + ".md")) and scene.page("s." + n), "no page for %s" % n)
+    for n in scene.BUILT:
+        for fn, args in scene.page_arguments(n).items():
+            must(sorted(args) == sorted(scene.signature(fn)), "page %s says %s takes %s; the function takes %s" % (n, fn, args, scene.signature(fn)))
+    planted = scene.page("run").replace("| `speed` |", "| `pace` |")
+    must("pace" in scene.page_arguments("run", planted)["run"], "the reader of the page is blind")
+    with contextlib.redirect_stdout(io.StringIO()):
+        must(scene.main(["help", "nothing"]) == 3 and scene.main(["help", "cond"]) == 0, "help of another name")
+
+
+# ------------------------------------------------------------------------------- the other promises of the pages
+def test_run_true_at_start_plays_no_tick():
+    W, s = opened()
+    W.game.script = {"state": "hit", "ticks": 0, "tracks": {}}
+    r = s.run(until=c.game.tick >= 1, limit=200)
+    must(r.hit and r.tick == r.tick_from == 1, "%r from %s" % (r, r.tick_from))
+
+
+def test_run_limit_is_not_a_hit():
+    W, s = opened()
+    W.game.script = {"state": "done", "ticks": 0, "tracks": {}}
+    r = s.run(until=c.game.tick >= 900, limit=30)
+    must(r.why == "limit" and r.hit is False and r.tick == 31, "%r" % r)
+
+
+def test_run_dead_member_stays_in_group_as_gone():
+    """The Python half: a group member that is gone keeps its name in the values; gone_ok makes it readable."""
+    W = world(run_until=True)
+    s = scene.open("ArchSmall")
+    W.game.script = {"state": "hit", "ticks": 20, "tracks": {"raiders[0].positionInt.x": [(0, "ok", 1)], "raiders[1].positionInt.x": [(0, "ok", 2), (5, "gone", None)]}}
+    r = s.run(until=c.gone_ok("raiders[1]", "positionInt.x", c.value("raiders[1]", "positionInt.x") > 9), limit=200)
+    must(r.hit and r.values["raiders[1].positionInt.x"].state == "gone" and r.values["raiders[0].positionInt.x"].v == 1, "%r %r" % (r, r.values))
+
+
+def test_run_stalled_clock_is_cancelled():
+    W, s = opened()
+    W.game.script = {"state": "hit", "ticks": 20, "tracks": {}, "polls": 10 ** 6}
+    r = s.run(until=20, limit=200)
+    must(r.why == "fault" and "stood still" in r.detail, "%r" % r)
+
+
+def test_run_bind_refusal_is_by_name():
+    W, s = opened()
+    W.game.script = {"state": "hit", "ticks": 1, "tracks": {}, "bind": "$.until.cmp[0]"}
+    refused("UNRECORDED_VALUE", s.run, c.value("Human1078", "noSuchField") == 3, limit=9)
+    W.game.script["bind"] = "$.sample.probes.x"
+    refused("BAD_PATH", s.run, 20, limit=9, record=[c.track("Human1078", "noSuchField")])
+
+
+def test_raw_refuses_unknown_tool():
+    W, s = opened()
+    e = refused("UNKNOWN_TOOL", s.raw, "jawa/map_inf")
+    must("jawa/map_info" in e.repair, "the near name is missing")
+
+
+def test_raw_refuses_bad_args():
+    W, s = opened()
+    e = refused("BAD_ARGS", s.raw, "jawa/static_call", kind="X")
+    must("kind" in e.repair and "type" in e.repair, "the argument and the schema: %s" % e.repair)
+
+
+def test_raw_refuses_session_closed():
+    W, s = opened()
+    s.close()
+    refused("SESSION_CLOSED", s.raw, "jawa/map_info")
+
+
+def test_raw_refuses_life_cycle_tool():
+    W, s = opened()
+    n = len(W.game.log)
+    for t in ("rimworld/load_game", "rimworld/load_game_ready", "rimworld/start_debug_game_ready", "rimworld/go_to_main_menu", "jawa/session"):
+        refused("LIFE_CYCLE_TOOL", s.raw, t)
+    must(len(W.game.log) == n, "the game was asked")
+
+
+def test_raw_changing_call_stamps_explored():
+    W, s = opened()
+    r = s.raw("jawa/static_call", type="X", method="Y", args="")
+    must(r.receipt.stamps == ["EXPLORED"] and r["success"] is True, "jawa/static_call left no stamp")
+
+
+def test_raw_undeclared_tool_is_treated_as_changing():
+    must(scene._read_only({"name": "jawa/a", "description": "READ ONLY. x"}), "declared")
+    must(not scene._read_only({"name": "jawa/a", "description": "Read a thing"}) and not scene._read_only({"name": "jawa/a"}), "undeclared")
+    must(not scene._read_only({"name": "jawa/static_call", "description": "READ ONLY."}), "jawa/static_call is never read-only")
+
+
+def test_raw_call_is_in_the_trace():
+    W, s = opened()
+    s.raw("jawa/damage", damageDef="Bullet", amount=1, thingId="H")
+    must(any("scene raw jawa/damage" in m and '"amount": 1' in m for m in W.game.marks), "the game's record: %s" % W.game.marks)
+
+
+def test_raw_call_without_a_mark_is_not_made():
+    W, s = opened()
+    real = W.game._do
+    W.game._do = lambda t, a: F.rec("env_set") if a.get("method") == "SetEnvironmentVariable" else real(t, a)      # the game drops the write
+    faulted("MARK_NOT_HELD", s.raw, "jawa/damage", damageDef="B", amount=1, thingId="H")
+    must(not any(t == "jawa/damage" for t, _a in W.game.log), "the call was made with no mark")
+
+
+def test_lock_that_could_not_be_read_is_a_fault():
+    W = world()
+    W.lock_code = 2
+    faulted("COULD_NOT_LOOK", scene.open, "ArchSmall")
+    must(untouched(W) is None, "left")
+    W = world()
+    W.game.tools = []
+    faulted("COULD_NOT_LOOK", scene.open, "ArchSmall")
+    W = world()
+    W.game.running_mods.pop("loaded")
+    faulted("COULD_NOT_LOOK", scene.open, "ArchSmall", needs={"mods": ["Absent"]})
+    W = world()
+    W.game.deny_static = True
+    faulted("COULD_NOT_LOOK", scene.open, "ArchSmall")
+    W = world()
+    W.game.fail = {"rimworld/list_saves": "broken"}
+    faulted("COULD_NOT_LOOK", scene.open, "ArchSmall", needs={"map": "RM_TestSite_river"})
+    must(W.lock is None, "left")
+    W = world()
+    W.game.running_mods["loaded"]["gameKey"] = "archmagi"
+    faulted("WRONG_GAME", scene.open, "ArchSmall")
+    W, s = opened(mods=["XmlOnly"])
+    must(any("XmlOnly ships no DLL" in x for x in s.receipt.could_not_look), "a mod with no DLL reads as checked")
+    W = world()
+    W.repo = HERE
+    W.git = lambda *a: (128, "fatal: not a git repository")
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = scene.main(["accept", os.path.join(HERE, "scene.py")])
+    must(rc == 2 and "COULD NOT LOOK" in out.getvalue(), "a tree that could not be read: rc %s %s" % (rc, out.getvalue()))
+
+
+def test_trace_that_is_not_whole():
+    for plant in ({"no_close": True}, {"gap": True}, {"dropped": 2}, {"drained": False}):
+        W, s = opened()
+        W.game.script = dict({"state": "hit", "ticks": 20, "tracks": {}}, **plant)
+        e = faulted("TRACE_INCOMPLETE", s.run, 20, limit=200)
+        must(e.request and e.receipt.did, "%s: the fault carries no id or no receipt" % plant)
+    for name in ("trace_hit", "trace_limit"):
+        must(scene_hands.trace_fault(F.rec(name)) is None and scene_hands.ran_on(F.rec(name)) is None, "a real trace reads as faulty")
+    gap = F.rec("trace_hit")
+    gap.pop(5)
+    must("gap" in scene_hands.trace_fault(gap, count_rows=False), "a gap with no count of rows")
+    lost = F.rec("trace_hit")
+    lost[-1]["rows"] += 1
+    must("counts" in scene_hands.trace_fault(lost), "a lost row")
+
+
+def test_game_that_ran_on():
+    for plant, want in (({"ran_on": 2}, "RAN_PAST_END"), ({"paused": False}, "PAUSE_REFUSED"), ({"fault": "ran_past_end"}, "RAN_PAST_END")):
+        W, s = opened()
+        W.game.script = dict({"state": "hit", "ticks": 20, "tracks": {}}, **plant)
+        faulted(want, s.run, 20, limit=200)
+    for after, want in (({"paused": False}, "PAUSE_REFUSED"), ({"tick": 40}, "RAN_PAST_END")):     # only the second reading shows it
+        W, s = opened()
+        real = W.game._play
+
+        def play(*a, **k):
+            W.game.after_run = after
+            return real(*a, **k)
+        W.game._play = play
+        faulted(want, s.run, 20, limit=200)
+
+
+def test_close_puts_back_also_after_an_error():
+    W = world()
+    try:
+        with scene.open("ArchSmall", needs={"map": "fresh:quicktest", "calm": "standard"}) as s:
+            must(W.game.calm_on and W.lock == "b", "open")
+            raise ValueError("the script's own error")
+    except ValueError:
+        pass
+    must(not W.game.calm_on and W.lock is None and json.loads(W.game.env[scene.GAME_STATE])["session"] is None, "left after an error")
+    must(W.game.status["paused"] is True and s.closed, "paused")
+    W = world()
+    s = scene.open("ArchSmall", needs={"map": "fresh:quicktest", "calm": "standard"})
+    W.game.fail = {"jawa/quiet_site": "broken"}
+    e = faulted("CLOSE_INCOMPLETE", s.close)
+    must("jawa/quiet_site" in str(e) and W.lock is None, "what was not put back is not named, or the lock was kept")
+    W = world(run_until=True)
+    with scene.open("ArchSmall"):
+        must(W.game.session, "the game's session")
+    must(W.game.session is None, "the game's session was left open")
+
+
+def test_session_of_another_is_lost_not_used():
+    W, s = opened()
+    W.game.env.clear()
+    faulted("SESSION_LOST", s.run, 20, limit=200)
+    must(W.game.starts == 0, "a run was started")
+
+
+def test_end_session_ends_a_dead_driver_only():
+    W = world()
+    s = scene.open("ArchSmall", needs={"map": "fresh:quicktest", "calm": "standard"})
+    W.lock = None                                       # the driver died: its lock is free at once
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        must(scene.main(["end-session", "ArchSmall"]) == 3 and W.game.calm_on, "a live driver's session was ended")
+        W.dead = True
+        must(scene.main(["end-session", "ArchSmall"]) == 0, out.getvalue())
+    must(s.id in out.getvalue() and not W.game.calm_on and W.lock is None, out.getvalue())
+    scene.open("ArchSmall").close()
+
+
+def test_names_not_built_say_so():
+    W, s = opened()
+    for n in ("contract", "judge", "attach"):
+        e = refused("NOT_BUILT", getattr, scene, n)
+        must("RIMMANDRAKE_" in e.repair, "no ticket")
+    for n in ("stage", "act", "read", "shot"):
+        refused("NOT_BUILT", getattr, s, n)
+    must(not hasattr(s, "act") and not hasattr(s, "nothing"), "hasattr")
+    must(sorted(scene.BUILT + ("contract", "judge", "attach", "stage", "act", "read", "shot")) == sorted(scene.NAMES), "the ten names")
+
+
+def test_tools_and_raw_census():
+    got = scene.tools("power net")
+    must(0 < len(got) <= 10 and any(t.name == "jawa/get_power_nets_batch" for t in got), "%s" % got)
+    must(scene.tools("zzqqxx") == [], "looked and found none is []")
+    must([t for t in scene.tools("map_info") if t.name == "jawa/map_info"][0].read_only is True, "declared")
+    with tempfile.TemporaryDirectory() as d:
+        for n, t in (("a.py", "import scene\ns.raw('jawa/static_call', type='T', method='A')\ns.raw('jawa/x')\n"),
+                     ("b.py", "from scene import cond\ns.raw('jawa/static_call', type='T', method='B')\ns.raw('jawa/x')\n"), ("c.py", "import other\ns.raw('jawa/x')\n"),
+                     ("d.py", "import scene\ndef(\n")):
+            with open(os.path.join(d, n), "w") as f:
+                f.write(t)
+        ops, looked, blind = scene.raw_census([os.path.join(d, n) for n in ("a.py", "b.py", "c.py", "d.py")])
+    must({k: len(v) for k, v in ops.items()} == {"jawa/static_call T.A": 1, "jawa/static_call T.B": 1, "jawa/x": 2}, "%s" % ops)
+    must(looked == 2 and len(blind) == 1, "%s looked, %s blind" % (looked, blind))
+
+
+def t_a_refusal_changes_nothing():
+    """The eight refusals above each end in untouched(); here the order: no changing call was made before the refusal."""
+    for needs, name in (({"mods": ["Absent"]}, "MOD_NOT_LOADED"), ({"map": "RM_none"}, "FIXTURE_MISSING")):
+        W = world()
+        refused(name, scene.open, "ArchSmall", needs=needs)
+        changed = [t for t, a in W.game.log if t in ("jawa/quiet_site", "rimworld/load_game_ready", "rimworld/pause_game", "jawa/telemetry_mark") or a.get("method") == "SetEnvironmentVariable"]
+        must(not changed, "changed before the refusal: %s" % changed)
+    refused("BAD_ARGS", scene.open, "ArchSmall", needs={"moods": 1})
+    refused("BAD_ARGS", scene.open, "ArchSmall", needs={"mods": ["NoSuchMod"]})
+    refused("BAD_ARGS", scene.open, "ArchSmall", needs={"calm": "loud"})
+
+
+t_build_lines_come_from_the_game = test_open_receipt_build_comes_from_game
+t_could_not_look_is_not_a_refusal_and_not_clean = test_lock_that_could_not_be_read_is_a_fault
+t_unreadable_is_never_false = test_run_unreadable_value_stops_as_unknown
+t_a_lost_reply_is_found_by_its_id = test_run_lost_reply_is_recovered_by_request_id
+t_a_trace_that_is_not_whole_is_a_fault = test_trace_that_is_not_whole
+t_a_game_that_ran_on_is_a_fault = test_game_that_ran_on
+t_the_game_holds_the_mark = test_raw_undeclared_tool_marks_the_process_and_a_new_session_carries_it
+t_an_undeclared_tool_is_changing = test_raw_undeclared_tool_is_treated_as_changing
+t_accept_needs_one_identity = test_accept_refuses_a_dirty_tree_and_an_older_layer
+t_explore_is_stamped = test_explore_run_is_explored
+t_close_puts_back = test_close_puts_back_also_after_an_error
+t_a_name_not_built_says_so = test_names_not_built_say_so
+t_help_equals_the_code = test_help_prints_ten_names_and_each_built_page_matches_its_signature
+
+
+def run(tests):
+    good = 0
+    for t in tests:
+        try:
+            t()
+            good += 1
+            print("ok    " + t.__name__)
+        except Exception as e:  # noqa: BLE001 - a test that dies is a failure with its cause, never a skip
+            print("FAIL  %s: %s: %s" % (t.__name__, type(e).__name__, e))
+    return good
+
+
+def main():
+    ticket = [test_open_refuses_unknown_game, test_open_refuses_game_held, test_open_refuses_owner_hold, test_open_refuses_session_open,
+              test_open_refuses_mod_not_loaded, test_open_refuses_wrong_build, test_open_refuses_canonical_save, test_open_refuses_fixture_missing,
+              test_open_phase_report_names_refusing_phase_and_what_was_put_back, test_open_receipt_build_comes_from_game,
+              test_run_refuses_no_limit, test_run_refuses_game_running, test_run_refuses_run_active, test_run_refuses_unrecorded_value,
+              test_run_refuses_bad_path, test_run_refuses_session_closed, test_run_unreadable_value_stops_as_unknown,
+              test_run_lost_reply_is_recovered_by_request_id, test_raw_undeclared_tool_marks_the_process_and_a_new_session_carries_it,
+              test_accept_refuses_a_dirty_tree_and_an_older_layer, test_explore_run_is_explored,
+              test_help_prints_ten_names_and_each_built_page_matches_its_signature]
+    more = [t_a_refusal_changes_nothing, test_run_true_at_start_plays_no_tick, test_run_limit_is_not_a_hit, test_run_dead_member_stays_in_group_as_gone,
+            test_run_stalled_clock_is_cancelled, test_run_bind_refusal_is_by_name, test_raw_refuses_unknown_tool, test_raw_refuses_bad_args,
+            test_raw_refuses_session_closed, test_raw_refuses_life_cycle_tool, test_raw_changing_call_stamps_explored,
+            test_raw_undeclared_tool_is_treated_as_changing, test_raw_call_is_in_the_trace, test_raw_call_without_a_mark_is_not_made,
+            test_lock_that_could_not_be_read_is_a_fault, test_trace_that_is_not_whole, test_game_that_ran_on, test_close_puts_back_also_after_an_error,
+            test_session_of_another_is_lost_not_used, test_end_session_ends_a_dead_driver_only, test_names_not_built_say_so, test_tools_and_raw_census]
+    a = run(ticket)
+    print("scene library: %d of %d checks passed" % (a, len(ticket)))
+    b = run(more)
+    print("other promises of the pages: %d of %d passed" % (b, len(more)))
+    return 0 if a == len(ticket) == 22 and b == len(more) else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
