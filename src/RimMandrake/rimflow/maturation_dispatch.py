@@ -1023,6 +1023,9 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
     live_total = occupancy(facts)
     drivers = live_drivers(facts)
     games_of = driver_games(facts)
+    deploying = game_deploy_drivers(st)     # a deploy unit drives its game too
+    drivers += list(deploying)
+    games_of.update(deploying)
     for mod in cfg.get("advancing") or []:
         f = facts.get(mod) or {"stage": UNM}
         s = mods.setdefault(mod, {})
@@ -1064,7 +1067,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
                 if row.get("cert_reds"):            # the offline builder on red deciders: a run slot, no game
                     live_total += 1
                 elif not row.get("cert_rerun_key"):     # a zero-token rerun takes no run slot and drives no game
-                    live_total += 1
+                    live_total += 0 if row.get("game_deploy_start") else 1      # a deploy unit drives a game, no slot
                     drivers.append("(this tick: %s)" % mod)
                     games_of[drivers[-1]] = row.get("game", "a")
                 launches.append(mod)
@@ -1609,6 +1612,208 @@ def cert_rerun_worker(mod, key, unit, runner=subprocess.run, take=None, now=time
     return res
 
 
+# ---- the deploy of a mod's game copy, in its own unit (RIMMANDRAKE_RUN_VISIT_DEPLOY_OUTSIDE_TICK_HELD_IT_FOURTEEN_MIN;
+# design/specs/2026-11-24-game-deploy-own-unit/boundary.md): the plan, the --apply and the second plan held the tick 998 s
+# on 2026-11-24, and no other mod could start. One book per mod, s["game_deploy"]: {unit, game, kind, key, at, tries,
+# ended, result, stale}. Only the tick writes it; the unit writes its result file.
+
+DEPLOY_MAX_S = 10 * 998    # the unit's hang guard: a hung deploy would hold the game's lock for good; the one measured ran 998 s
+
+
+def game_deploy_dir():
+    d = os.path.join(sdir(), "game_deploy")
+    os.makedirs(d, exist_ok=True)
+    return d
+
+
+def game_deploy_result(mod):
+    """-> the last deploy unit's result for mod (game_deploy_worker writes it), or None."""
+    r = _read(os.path.join(game_deploy_dir(), "%s.json" % mod), None)
+    return r if isinstance(r, dict) else None
+
+
+def game_deploy_unit(mod, game, kind, purpose, seat="BENCH", now=None):
+    """Start `maturation_dispatch.py game-deploy MOD` as its own transient user unit. -> (rc, text, unit)."""
+    unit = "rm-game-deploy-%s-%d" % (re.sub(r"[^a-z0-9]+", "-", mod.lower()).strip("-"), int(now or time.time()))
+    log = os.path.join(game_deploy_dir(), "%s.log" % mod)
+    argv = ["--user", "--quiet", "--collect", "-p", "RuntimeMaxSec=%d" % DEPLOY_MAX_S, "-p", "Nice=10",
+            "-p", "StandardOutput=append:" + log, "-p", "StandardError=append:" + log, "--working-directory", REPO,
+            "--setenv", "PATH=" + os.environ.get("PATH", "/usr/bin:/bin"), "--setenv", "RM_MATURATION_DISPATCH_DIR=" + sdir(),
+            "--", sys.executable, os.path.abspath(__file__), "game-deploy", mod, "--game", game, "--kind", kind,
+            "--purpose", purpose, "--seat", seat, "--unit", unit]
+    import control as C     # the one admission point (control.py)
+    try:
+        r = C.launch_unit(argv, {"family": "game_deploy", "unit": unit, "mod": mod}, capture_output=True, text=True,
+                          timeout=60, stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return 1, "systemd-run failed: %s: %s" % (type(e).__name__, e), None
+    if r.returncode:
+        return r.returncode, "systemd-run exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()), None
+    return 0, "STARTED %s: %s on %s, zero tokens (log %s)" % (unit, purpose, _GN.show(game), log), unit
+
+
+def game_deploy_worker(mod, game, kind, purpose, unit, seat="BENCH", runner=subprocess.run, take=None, now=time.time):
+    """The unit's body: in a pool clone synced to origin/main (the tick's own tree may sync under a deploy), one per game,
+    `maturation.py game-repair`; its verdict is written for the tick (game_deploy_result). -> the result."""
+    res = {"mod": mod, "unit": unit, "game": game, "kind": kind, "at": now(), "state": "fail", "text": UNM, "sha": None,
+           "generation": None, "paths": []}
+    try:
+        clone, said = (take or DH.take_clone)("RIMMANDRAKE_DEPLOY_GAME_BUILD_TO_%s" % _GN.show(game).upper())
+        res["clone"] = clone
+        r = runner([sys.executable, os.path.join("src", "RimMandrake", "rimflow", "maturation.py"), "game-repair", mod,
+                    "--game", game, "--kind", kind, "--purpose", purpose, "--seat", seat], cwd=clone,
+                   capture_output=True, text=True, stdin=subprocess.DEVNULL)    # bounded by the unit's RuntimeMaxSec
+        got = None
+        for ln in reversed((r.stdout or "").strip().splitlines()):
+            try:
+                got = json.loads(ln)
+                break
+            except ValueError:
+                continue
+        if isinstance(got, dict) and got.get("state") in ("ok", "wait", "fail"):
+            res.update({k: got.get(k) for k in ("state", "text", "sha", "generation", "paths")})
+        else:
+            res["text"] = "game-repair exit %d printed no verdict: %s" % (
+                r.returncode, ((r.stdout or "") + (r.stderr or ""))[-300:])
+    except Exception as e:      # noqa: BLE001  the result says what failed; the tick reads it
+        res["text"] = "%s: %s" % (type(e).__name__, e)
+        if AUT.wait_refusal(res["text"]):
+            res["state"] = "wait"
+    res["end"] = now()
+    _write(os.path.join(game_deploy_dir(), "%s.json" % mod), res)
+    return res
+
+
+def unit_active(unit):
+    """-> True when the unit runs, False when systemd says it ended or is not there, None when it could not look."""
+    import role_launch as RL
+    state = RL.unit_state(unit)
+    return None if state == "unknown" else state not in ("inactive", "failed", "not-found")
+
+
+def _generation(game):
+    import game_lock as GL
+    return GL.query(game, pipe=False).get("generation")
+
+
+def deploy_stale(root, res, generation=None):
+    """-> why an ended visit deploy no longer says what the game plays, or None. A source change under its paths, another
+    run's hold of that game since (a helper may have deployed its own build), or a reading that could not be made. A tree
+    that does not hold the deploy's commit yet is behind the game's copy, so it is not stale."""
+    sha = res.get("sha")
+    if not sha:
+        return "the deploy recorded no commit"
+    try:
+        if (generation or _generation)(res.get("game")) != res.get("generation"):
+            return "another run took a hold of %s since the deploy" % _GN.show(res.get("game") or "a")
+        kw = {"capture_output": True, "text": True, "timeout": 60, "stdin": subprocess.DEVNULL}
+        if subprocess.run(["git", "-C", root, "rev-parse", "--verify", "-q", "HEAD"], **kw).returncode:
+            return "the tree's commit could not be read"
+        if subprocess.run(["git", "-C", root, "cat-file", "-e", sha + "^{commit}"], **kw).returncode:
+            return None
+        if subprocess.run(["git", "-C", root, "merge-base", "--is-ancestor", sha, "HEAD"], **kw).returncode == 1:
+            return None
+        rc = subprocess.run(["git", "-C", root, "diff", "--quiet", sha, "HEAD", "--"] + list(res.get("paths") or ["src"]),
+                            **kw).returncode
+    except Exception as e:      # noqa: BLE001  could not look is never fresh
+        return "the deploy's freshness could not be read (%s: %s)" % (type(e).__name__, e)
+    return None if rc == 0 else "%s changed since %s" % (", ".join(res.get("paths") or ["src"])[:200], sha[:10]) \
+        if rc == 1 else "git diff exited %d" % rc
+
+
+def game_deploy_running(s):
+    gd = s.get("game_deploy")
+    return gd if isinstance(gd, dict) and gd.get("unit") and not gd.get("ended") else None
+
+
+def game_deploy_sync(root, st, now, fx=None):
+    """Before the decision: each mod's running deploy unit is read. Its own result ends it; a unit that systemd says is
+    gone with no result ended as `lost`; one that could not be looked at still runs. An ended visit deploy's freshness is
+    read again (deploy_stale)."""
+    fx = fx or {}
+    active, stale = fx.get("unit_active") or unit_active, fx.get("deploy_stale") or deploy_stale
+    for mod, s in (st.get("mods") or {}).items():
+        gd = s.get("game_deploy") if isinstance(s, dict) else None
+        if not isinstance(gd, dict):
+            continue
+        if game_deploy_running(s):
+            res = game_deploy_result(mod)
+            if not (res and res.get("unit") == gd["unit"]):
+                if active(gd["unit"]) is not False:
+                    continue
+                res = game_deploy_result(mod)       # it may have written its result between the two reads
+                if not (res and res.get("unit") == gd["unit"]):
+                    res = {"unit": gd["unit"], "state": "lost", "game": gd.get("game"), "text":
+                           "the deploy unit %s ended and left no result (killed, or it never ran)" % gd["unit"]}
+            gd.update(ended=now, result=res)
+        if (gd.get("result") or {}).get("state") == "ok" and gd.get("kind") == "visit":
+            gd["stale"] = stale(root, gd["result"])
+
+
+def game_deploy_drivers(st):
+    """-> {unit: game} of the running deploy units: each drives its game as a live driver does (it may not hold the lock
+    yet: its clone is synced first)."""
+    out = {}
+    for s in (st.get("mods") or {}).values():
+        gd = game_deploy_running(s) if isinstance(s, dict) else None
+        if gd:
+            out[gd["unit"]] = gd.get("game") or "a"
+    return out
+
+
+def game_deploy_ended(cfg, mod, s, kind, key):
+    """-> the ended deploy's result that this act may use, or None when a deploy is to be started (none yet, another act's,
+    a wait, a stale one, or a lost one with a try left)."""
+    gd = s.get("game_deploy")
+    if not isinstance(gd, dict) or not gd.get("ended") or (gd.get("kind"), gd.get("key")) != (kind, key):
+        return None
+    res = gd.get("result") or {}
+    if res.get("state") == "wait" or (res.get("state") == "ok" and gd.get("stale")):
+        return None
+    if res.get("state") == "lost" and AUT.tries_left(cfg, mod, gd.get("tries")):
+        return None
+    return res
+
+
+def game_deploy_live(put, gd, what):
+    """The row of a mod whose deploy unit runs: live, and the unit is what it waits on."""
+    put("live", "the deploy unit %s (zero tokens) on %s: %s" % (gd["unit"], _GN.show(gd.get("game") or "a"), what))
+
+
+def game_deploy_launch(cfg, st, row, kind, key, game, purpose, now, fx):
+    """Start the deploy unit and book it. A start that failed for a cause that ends by itself is a wait; any other is the
+    deploy's failure, which the act it serves reads on the next tick. -> True when up. Tries count the units that were
+    lost or never started, for one act."""
+    mod, s = row["mod"], st["mods"][row["mod"]]
+    prior = s.get("game_deploy") if isinstance(s.get("game_deploy"), dict) else {}
+    same = (prior.get("kind"), prior.get("key")) == (kind, key)
+    tries = int(prior.get("tries") or 1) if same else 1
+    if same and (prior.get("result") or {}).get("state") == "lost":
+        tries += 1
+    try:
+        rc, text, unit = (fx.get("game_deploy") or game_deploy_unit)(mod, game, kind, purpose, cfg.get("seat", "BENCH"))
+    except Exception as e:      # noqa: BLE001  a start that raised is a start that failed
+        rc, text, unit = 1, "%s: %s" % (type(e).__name__, e), None
+    unit = unit if rc == 0 else None
+    gd = {"unit": unit, "game": game, "kind": kind, "key": key, "at": now, "tries": tries}
+    for k in ("release", "refund"):     # the run these belong to has not started: its own launch spends them
+        row.pop(k, None)
+    if unit:
+        s["game_deploy"] = gd
+        row.update(decision="live", aut=None, waits_on="%s (zero-token deploy of its game copy)" % unit,
+                   why="%s; the mod is live until it ends, and the act it serves runs on the next tick" % text)
+        return True
+    if AUT.wait_refusal(text):
+        row.update(decision="launch_wait", aut=None, why="the deploy of %s waits on a cause that ends by itself: %s" % (
+            mod, text))
+        return False
+    s["game_deploy"] = dict(gd, ended=now, result={"unit": None, "state": "fail", "game": game, "text":
+                                                   "the deploy unit did not start: %s" % text})
+    row.update(decision="launch_wait", aut=None, why="the deploy unit of %s did not start, and the next tick reads that: %s"
+               % (mod, text))
+    return False
+
+
 def cert_item_id(mod, test, known, kind="red"):
     """-> a rimflow name for the item owing red decider `test`: RIMMANDRAKE_GREEN_<MOD>_<TEST words>_RED_DECIDER (kind
     red_seen: RIMMANDRAKE_PROVE_<MOD>_<TEST words>_RED_SEEN_OWED), test words dropped from the end until it fits
@@ -2108,6 +2313,11 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
     if live:
         put("live", "%s is live on it (in-game visit %s)" % (", ".join(live), n))
         return False
+    gd = game_deploy_running(s)
+    if gd:      # its game copy is half written: no exit is read from it, and nothing launches
+        row["waits_on"] = "%s (zero-token deploy of its game copy)" % gd["unit"]
+        game_deploy_live(put, gd, "in-game visit %s" % n)
+        return False
     le, settle = f.get("last_end"), float(cfg.get("settle_s", 180))
     if isinstance(le, (int, float)) and 0 <= now - le < settle:
         put("settling", "a run ended %d s ago; in-game visit %s is read %d s after the end, not before" % (
@@ -2194,13 +2404,28 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
     full = full_list_only(f)
     only = {g: "every check of visit %s needs his full list (%s), which %s cannot hold beside %s" % (
         n, ", ".join(full), _GN.show(g), _GN.show("a")) for g in games if g != "a"} if full else None
-    game, whys = pick_game(cfg, bridge, "%s in-game acceptance visit %s" % (mod, n), held, only=only)
+    gd = s.get("game_deploy") if isinstance(s.get("game_deploy"), dict) else {}
+    ended = game_deploy_ended(cfg, mod, s, "visit", vid)
+    if ended and gd.get("game") in games:       # the game the copy was deployed to comes first
+        games = [gd["game"]] + [g for g in games if g != gd["game"]]
+    game, whys = pick_game(dict(cfg, game_instances=games), bridge, "%s in-game acceptance visit %s" % (mod, n), held,
+                           only=only)
     if not game:
         put("bridge_held", "%sno game is free: %s; %s" % (
             "WAITS FOR %s, full list (%s): " % (_GN.show("a"), ", ".join(full)) if full else "", "; ".join(whys),
             steve_takes(f, mod)))
         return False
     row.update(cap=cap, visit_id=vid, game=game)
+    if cfg.get("_deploy_unit"):
+        # the visit plays a copy that was read and deployed in its own unit, never in the tick
+        if ended and gd.get("game") == game:
+            row["game_repaired"] = ended
+        else:
+            row["game_deploy_start"] = True
+            old = "; the deploy %s is read again: %s" % (gd.get("unit"), gd["stale"]) if gd.get("stale") else ""
+            put("launch", "in-game visit %s owed: the game copy on %s is read and deployed first, in its own unit%s (%s)" % (
+                n, _GN.show(game), old, account[1]))
+            return True
     if retry:
         row["retry_of"] = dict(retry)
     put("launch", "in-game visit %s owed, nothing live or recorded on it, the visit's automatic run%s, on %s%s (%s)" % (
@@ -2999,6 +3224,7 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
         game, whys = None, []
         if game_set:        # the game-only items, on the first free game: a driven game, or one taken this tick, is not
             taken = {g: u for u, g in driver_games(facts).items() if u in live_drivers(facts)}
+            taken.update({g: u for u, g in game_deploy_drivers(st).items()})
             taken.update({r.get("game") or r.get("holder_game"): "a launch of this tick (%s)" % r["mod"]
                           for r in rows if r["mod"] in launches and (r.get("game") or r.get("holder_game"))})
             game, whys = pick_game(cfg, fx.get("bridge"), "%s live holder run on its game-only road-back items" % mod,
@@ -3025,8 +3251,9 @@ NO_SLOT_AUT = AUT.ACTS     # the pipeline's acts on a concept, not runs: no slot
 
 
 def takes_slot(row):
-    """True when ROW's launch takes a run slot: a zero-token certificate rerun and the pipeline's acts take none."""
-    return not row.get("cert_rerun_key") and row.get("aut") not in NO_SLOT_AUT
+    """True when ROW's launch takes a run slot: a zero-token certificate rerun or deploy unit and the pipeline's acts take
+    none."""
+    return not row.get("cert_rerun_key") and not row.get("game_deploy_start") and row.get("aut") not in NO_SLOT_AUT
 
 
 def slots_ahead(rows, launches, mod):
@@ -3185,6 +3412,10 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             if cert_launch(root, cfg, st, row, now, fx, known, do_file):
                 done.append(row)
             continue
+        if row.get("game_deploy_start"):    # the visit's game copy is read and deployed in its own unit first
+            game_deploy_launch(cfg, st, row, "visit", row.get("visit_id"), row.get("game", "a"),
+                               "deploy %s before its in-game visit %s" % (mod, row.get("visit")), now, fx)
+            continue
         if row.get("stage") == "in_game":
             title = ("%s Stage 6: in-game acceptance visit %s, one live driver on the bridge (launched by the Dispatch "
                      "step)" % (mod, row.get("visit")))
@@ -3199,7 +3430,10 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                 lambda it: do_file(it, title, why, needs="game-up"), do_publish,
                 lambda it: launch_holder(mod, s, row, row["cap"], it, **dict(
                     resume_kw(row), game=row.get("game", "a"),
-                    **({"continue_on_cap": INGAME_CONTINUE_ON_CAP} if _takes(do_launch, "continue_on_cap") else {}))))
+                    **({"continue_on_cap": INGAME_CONTINUE_ON_CAP} if _takes(do_launch, "continue_on_cap") else {}),
+                    **({"repaired": row["game_repaired"]} if row.get("game_repaired") else {}))))
+            if row.get("game_repaired") and not entry.get("wait"):
+                s.pop("game_deploy", None)      # used: a launch that waits keeps it for the next tick
             if ok:
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None
@@ -3970,7 +4204,10 @@ def _tick(root, cfg, apply, fx=None, now=None, page=False):
     shipped = cfg                       # the file's own values, before widen adds discovered mods (maturation_hands)
     cfg = AUT.widen(root, cfg, st, apply, fx) if aut else cfg   # Designer concepts seen and seeded; the game queue
     cfg = dict(cfg, _code=(fx["code"]() if "code" in fx else pipeline_code(REPO)))   # the code this tick runs
+    # a caller that stands in for the launch stands in for its deploy too, unless it gives a stand-in unit
+    cfg["_deploy_unit"] = "game_deploy" in fx or "launch" not in fx
     facts = own_live(st, fx["facts"]() if "facts" in fx else gather(root, cfg), record)
+    game_deploy_sync(root, st, now, fx)
     account = fx["account"]() if "account" in fx else account_gate()
     releases = fx["releases"]() if "releases" in fx else read_releases()
     # The owner's hold (mod_owner_hold.py): a held mod is read (its live run finishes, its spend and ledger rows are still
@@ -4180,6 +4417,8 @@ def _launch_kind(cfg, r, root=None):
         return {"kind": "holder", "model": cfg.get("steward_model", "opus"), "cap_usd": r.get("cap") or cfg.get("cap_usd"),
                 "rule": "pilot_holders on %s" % ", ".join(
                     str(x.get("id") if isinstance(x, dict) else x) for x in r["holder_items"])}
+    if r.get("game_deploy_start"):
+        return {"kind": "game copy deploy", "model": "none (zero tokens)", "cap_usd": 0, "rule": "decide_ingame"}
     if r.get("cert_rerun_key"):
         return {"kind": "certificate rerun", "model": "none (zero tokens)", "cap_usd": 0, "rule": "cert_rerun_decide"}
     if r.get("cert_reds"):
@@ -4425,6 +4664,12 @@ def main(argv=None):
     cr.add_argument("mod")
     cr.add_argument("--key", required=True)
     cr.add_argument("--unit", required=True)
+    gu = sub.add_parser("game-deploy", help="the game copy deploy unit's body: game-repair MOD in a pool clone, the result "
+                                            "written for the tick (zero tokens)")
+    gu.add_argument("mod")
+    for k in ("--game", "--kind", "--purpose", "--unit"):
+        gu.add_argument(k, required=True)
+    gu.add_argument("--seat", default="BENCH")
     pz = sub.add_parser("pause", help="pause the whole pipeline (or MOD): nothing starts until resume or --until; live "
                                       "runs finish unless --stop-live")
     pz.add_argument("mod", nargs="?", help="one mod only (default: every pipeline path)")
@@ -4483,6 +4728,10 @@ def main(argv=None):
         res = cert_rerun_worker(o.mod, o.key, o.unit)
         print(json.dumps(res, indent=1))
         return 1 if res.get("error") else 0
+    if o.cmd == "game-deploy":
+        res = game_deploy_worker(o.mod, o.game, o.kind, o.purpose, o.unit, seat=o.seat)
+        print(json.dumps(res, indent=1))
+        return {"ok": 0, "wait": 75}.get(res["state"], 1)
     cfg = load_cfg()
     if o.cmd == "tick":
         rd = tick(os.path.abspath(o.root), cfg, o.apply, page=o.page and not o.no_page)
@@ -4739,6 +4988,8 @@ def _clear(o):
     if s.get("cert_rerun"):     # a certificate rerun spent on a build (cert_rerun_decide) may run once more
         was = was or {"cert_rerun": s.pop("cert_rerun")}
         s.pop("cert_rerun", None)
+    if (s.get("game_deploy") or {}).get("ended"):       # an ended deploy is read again; a running one keeps its game
+        s.pop("game_deploy")
     # a steward or fixer key that never launched, or ended outside an open road back, is released: the next tick
     # may run it once more (RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_COUNTED_AS_SPENT: clear left those spent)
     released = {}

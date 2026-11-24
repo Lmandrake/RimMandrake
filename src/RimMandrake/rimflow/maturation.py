@@ -2815,6 +2815,65 @@ def _deploy_repair_held(root, mod, game, reading, gi, purpose, runner=subprocess
     return "ok", "; ".join(done)
 
 
+def deploy_paths(root, mod):
+    """-> the repo paths whose change makes a deploy of `mod` old: the mod's own folder, or for a composed mod every
+    folder Biomes.compose.json folds in, and the companion's sources (design/specs/2026-11-24-game-deploy-own-unit)."""
+    base, comp = "src/RimMandrake/", BM.composed_into(root, mod)
+    if comp is None:
+        return [base + mod, base + "bridgetools"]
+    try:
+        with open(BM.compose_file(root), encoding="utf-8") as f:
+            d = json.load(f)
+        names = {e["source"] for e in d.get("entries") or ()} | {(d.get("shell") or {}).get("source") or mod, mod}
+    except (OSError, ValueError, AttributeError, TypeError, KeyError):
+        return ["src"]          # which folders are composed is unknown: any source change makes it old
+    return [base + n for n in sorted(names)] + [base + "Biomes.compose.json", base + "bridgetools"]
+
+
+def game_repair(root, mod, game, kind, purpose, seat="BENCH", game_ops=None, companion=None, lock=None):
+    """The body of the Dispatch step's deploy unit (game_deploy_worker runs it as `game-repair`), so that the plan, the
+    --apply and the second plan hold no tick. kind: visit (the companion, when not current, is rebuilt too; a copy that
+    is current needs nothing) or walk (the walk build's deploy, for drift only). The game's driver lock is held from
+    before the first plan until the game is up again. -> {state: ok | wait | fail, text, game, kind, sha (of this tree),
+    generation (of the hold), paths}."""
+    gi = game_ops or _game_ops()
+    out = {"mod": mod, "game": game, "kind": kind, "generation": None, "sha": None, "paths": deploy_paths(root, mod)}
+    try:
+        r = subprocess.run(["git", "-C", REPO, "rev-parse", "HEAD"], capture_output=True, text=True, timeout=60)
+        r.check_returncode()
+    except (OSError, subprocess.SubprocessError) as e:
+        return dict(out, state="fail", text="could not read this tree's commit, so nothing is deployed: %s: %s" % (
+            type(e).__name__, e))
+    out["sha"] = r.stdout.strip()
+    held = gi.hold_refusal(game)
+    if held:
+        return dict(out, state="wait", text="%s the game copy of %s needs a reading and %s" % (
+            WAIT_MARK, mod, held.splitlines()[0]))
+    state, ltxt, release = (lock or _repair_lock)(game, purpose, seat)
+    if state == "held":
+        return dict(out, state="wait", text="%s %s is held by another run, so the deploy of %s cannot start: %s" % (
+            WAIT_MARK, _gn(game), mod, ltxt))
+    if state != "ok":
+        return dict(out, state="fail", text="could not hold %s for the deploy: %s; nothing done" % (_gn(game), ltxt))
+    try:
+        gen = os.environ.get("RM_HOST_GUARD_GEN")
+        out["generation"] = int(gen) if gen and gen.isdigit() else None
+        creader = (companion or companion_current) if kind == "visit" else None
+        ccur, cwhy = creader(game=game) if creader else (True, "")
+        reading = deploy_state(root, mod, game=game)
+        if reading["state"] not in ("current", "drift"):
+            return dict(out, state="fail", text=reading["why"])
+        if kind == "walk" and reading["state"] != "drift":
+            return dict(out, state="fail", text=reading["why"])
+        if reading["state"] == "current" and ccur:
+            return dict(out, state="ok", text="nothing to deploy: %s" % reading["why"])
+        state, text = _deploy_repair_held(root, mod, game, reading if reading["state"] == "drift" else None, gi, purpose,
+                                          seat=seat, companion=None if ccur else creader)
+        return dict(out, state=state, text=text)
+    finally:
+        release()
+
+
 def game_brief(game, full_list=None):
     """The brief's section naming the run's game: game_instance.brief (RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B);
     full_list: the visit's full-list checks, which a run on a named game records UNMEASURED."""
@@ -2860,9 +2919,49 @@ def _twins_reader(runner, twins):
     return live_twins if runner is subprocess.run else None
 
 
+def _visit_repair(root, mod, f, game, seat, companion, deployed, game_ops, repair_lock):
+    """A hand launch's companion reading, deploy plan and repair before an in-game visit (launch_mod's own arguments; the
+    Dispatch step's run in their own unit and reach launch_mod as `repaired`). -> None when the game plays the repo, else
+    the refusal."""
+    creader = companion or companion_current
+    ccur, cwhy = creader(game=game)
+    # a stale companion is cured as drift is (RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FOUR): the real
+    # game, or a stand-in game_ops; a companion stand-in or fixture DLL with no game_ops refuses as before
+    cfix = not ccur and (game_ops or (companion is None and not os.environ.get(COMPANION_ENV)))
+    if not ccur and not cfix:
+        return ("REFUSED: %s's in-game visit %s would drive an old JawaBench companion, so its checks would not be "
+                "the ones committed: %s; %s" % (mod, f.get("visit"), cwhy, COMPANION_FIX))
+    if deployed:
+        cur, dwhy = deployed(root, mod) if not _takes_kw(deployed, "game") else deployed(root, mod, game=game)
+        reading = None
+    else:
+        reading = deploy_state(root, mod, game=game)
+        cur, dwhy = reading["state"] == "current", reading["why"]
+    dfix = not cur and reading and reading["state"] == "drift" and (game_ops or not os.environ.get(DEPLOY_PLAN_ENV))
+    if not cur and not dfix:
+        return "REFUSED: %s's in-game visit %s would play a game copy not checked against the repo: %s" % (
+            mod, f.get("visit"), dwhy)
+    if dfix or cfix:
+        # the launch cures what --apply cures, and a stale companion, for the game the visit drives, in one game-down
+        # window (design question 3 of RIMMANDRAKE_DEPLOY_BEFORE_GAME_VISIT_PYRELANDS_REFUSED_THRICE)
+        what = " and ".join(x for x in ("deploy %s" % mod if dfix else "", "rebuild the companion" if cfix else "")
+                            if x)
+        state, rwhy = deploy_repair(root, mod, game, reading if dfix else None, game_ops or _game_ops(),
+                                    "%s before its in-game visit %s" % (what, f.get("visit")), seat=seat,
+                                    companion=creader if cfix else None,
+                                    lock=repair_lock or (_STANDIN_LOCK if game_ops else None))
+        if state == "wait":
+            return rwhy
+        if state != "ok":
+            return "REFUSED: %s's in-game visit %s needed a repair first (%s), and it failed: %s" % (
+                mod, f.get("visit"), what, rwhy)
+    return None
+
+
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
                resume=None, bars=None, preface=None, env=None, session=None, reconcile=None, game=None, companion=None,
-               deployed=None, twins=None, game_ops=None, continue_on_cap=0, repair_lock=None, fresh_of=None):
+               deployed=None, twins=None, game_ops=None, continue_on_cap=0, repair_lock=None, fresh_of=None,
+               repaired=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
@@ -2886,7 +2985,9 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     refusal whose cause ends by itself (the bridge not takeable, his hold on the game) starts with WAIT_MARK. At the
     blind challenge, a session (a voided judge's own, the Dispatch step's judge_resume) opens with
     judge_resumed_text, and fresh_of (a voided judge whose session cannot resume) opens with fresh_cycle_text; either
-    launches on owed "resume" (design/specs/2026-11-23-resume-voided-blind-judge/boundary.md)."""
+    launches on owed "resume" (design/specs/2026-11-23-resume-voided-blind-judge/boundary.md). repaired: the result of
+    the deploy unit the Dispatch step ran for this visit (game_repair's); with it, an in-game launch reads no plan, deploys
+    nothing and rebuilds nothing here (design/specs/2026-11-24-game-deploy-own-unit/boundary.md)."""
     if game:
         env = dict(env or {}, RM_GAME_INSTANCE=game)
     game = (env or {}).get("RM_GAME_INSTANCE") or "a"
@@ -2925,38 +3026,16 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
         if not go:
             return 2, "%s the bridge of %s is not takeable for %s's in-game visit %s: %s" % (
                 WAIT_MARK, _gn(game), mod, f.get("visit"), why), None
-        creader = companion or companion_current
-        ccur, cwhy = creader(game=game)
-        # a stale companion is cured as drift is (RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FOUR): the real
-        # game, or a stand-in game_ops; a companion stand-in or fixture DLL with no game_ops refuses as before
-        cfix = not ccur and (game_ops or (companion is None and not os.environ.get(COMPANION_ENV)))
-        if not ccur and not cfix:
-            return 2, ("REFUSED: %s's in-game visit %s would drive an old JawaBench companion, so its checks would not be "
-                       "the ones committed: %s; %s" % (mod, f.get("visit"), cwhy, COMPANION_FIX)), None
-        if deployed:
-            cur, dwhy = deployed(root, mod) if not _takes_kw(deployed, "game") else deployed(root, mod, game=game)
-            reading = None
+        if repaired is not None:
+            if repaired.get("state") != "ok":
+                why = str(repaired.get("text") or UNM)
+                return 2, why if why.startswith(WAIT_MARK) else (
+                    "REFUSED: %s's in-game visit %s needed its game copy read or deployed first, and it failed: %s" % (
+                        mod, f.get("visit"), why)), None
         else:
-            reading = deploy_state(root, mod, game=game)
-            cur, dwhy = reading["state"] == "current", reading["why"]
-        dfix = not cur and reading and reading["state"] == "drift" and (game_ops or not os.environ.get(DEPLOY_PLAN_ENV))
-        if not cur and not dfix:
-            return 2, "REFUSED: %s's in-game visit %s would play a game copy not checked against the repo: %s" % (
-                mod, f.get("visit"), dwhy), None
-        if dfix or cfix:
-            # the launch cures what --apply cures, and a stale companion, for the game the visit drives, in one game-down
-            # window (design question 3 of RIMMANDRAKE_DEPLOY_BEFORE_GAME_VISIT_PYRELANDS_REFUSED_THRICE)
-            what = " and ".join(x for x in ("deploy %s" % mod if dfix else "", "rebuild the companion" if cfix else "")
-                                if x)
-            state, rwhy = deploy_repair(root, mod, game, reading if dfix else None, game_ops or _game_ops(),
-                                        "%s before its in-game visit %s" % (what, f.get("visit")), seat=seat,
-                                        companion=creader if cfix else None,
-                                        lock=repair_lock or (_STANDIN_LOCK if game_ops else None))
-            if state == "wait":
-                return 2, rwhy, None
-            if state != "ok":
-                return 2, "REFUSED: %s's in-game visit %s needed a repair first (%s), and it failed: %s" % (
-                    mod, f.get("visit"), what, rwhy), None
+            why = _visit_repair(root, mod, f, game, seat, companion, deployed, game_ops, repair_lock)
+            if why:
+                return 2, why, None
         text = text.rstrip("\n") + "\n\n" + game_brief(game, f.get("full_list"))
     elif f.get("stage") != "offline_build":
         return 2, ("REFUSED: %s stands at %s; only an offline build, a blind challenge or an in-game acceptance "
@@ -5918,6 +5997,13 @@ def build_parser():
     la.add_argument("--item", required=True, help="the ledger item the run works under (filed on origin/main)")
     la.add_argument("--model", default="opus", choices=("fable", "opus", "sonnet"))
     la.add_argument("--seat", default="BENCH")
+    gr = sub.add_parser("game-repair", help="the Dispatch step's deploy unit's body: read, deploy and read again a mod's "
+                        "game copy under the game's driver lock (one JSON line; the Dispatch step reads it)")
+    gr.add_argument("mod")
+    gr.add_argument("--game", required=True)
+    gr.add_argument("--kind", required=True, choices=("visit", "walk"))
+    gr.add_argument("--purpose", required=True)
+    gr.add_argument("--seat", default="BENCH")
     return ap
 
 
@@ -6175,6 +6261,10 @@ def main(argv=None):
         else:
             sys.stdout.write(text)
         return 0
+    if o.cmd == "game-repair":
+        res = game_repair(root, o.mod, o.game, o.kind, o.purpose, seat=o.seat)
+        print(json.dumps(res))
+        return {"ok": 0, "wait": 75}.get(res["state"], 1)
     if o.cmd == "launch":
         rc, text, _ = launch_mod(root, o.mod, o.budget_usd, o.item, model=o.model, seat=o.seat)
         print(text)

@@ -212,6 +212,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_maturation_reads.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_game_only_exit.py", "seconds": 0.3},
     {"test": "src/RimMandrake/rimflow/selftest_tick_game_only_exit.py", "inputs": ["design/specs/2026-11-20-tick-game-only-exit/boundary.md"], "seconds": 0.4},
+    {"test": "src/RimMandrake/rimflow/selftest_game_deploy_unit.py", "inputs": ["design/specs/2026-11-24-game-deploy-own-unit/boundary.md"], "seconds": 15},
     {"test": "src/RimMandrake/rimflow/selftest_launch_wait_and_deploy.py", "inputs": ["design/specs/2026-11-20-launch-refusal-wait-and-deploy/boundary.md", "design/specs/2026-11-20-launch-refusal-wait-and-deploy/plan_2026-11-20.txt"], "seconds": 1.0},
     {"test": "src/RimMandrake/rimflow/selftest_repair_at_refusal.py", "inputs": ["design/specs/2026-11-21-repair-at-the-refusal/boundary.md"], "seconds": 1.0},
     {"test": "src/RimMandrake/rimflow/selftest_tick_names.py", "inputs": ["design/specs/2026-11-20-tick-names-never-refused/boundary.md", "design/concepts"], "seconds": 3.0},

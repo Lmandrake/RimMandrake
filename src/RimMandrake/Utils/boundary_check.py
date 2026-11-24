@@ -163,6 +163,8 @@ PAGES = {
         "src/RimMandrake/rimflow/selftest_maturation_game_only_exit.py",
     "design/specs/2026-11-20-tick-game-only-exit/boundary.md":
         "src/RimMandrake/rimflow/selftest_tick_game_only_exit.py",
+    "design/specs/2026-11-24-game-deploy-own-unit/boundary.md":
+        "src/RimMandrake/rimflow/selftest_game_deploy_unit.py",
     "design/specs/2026-11-20-launch-refusal-wait-and-deploy/boundary.md":
         "src/RimMandrake/rimflow/selftest_launch_wait_and_deploy.py",
     "design/specs/2026-11-24-brief-text-hash/boundary.md": "src/RimMandrake/rimflow/selftest_brief_text.py",

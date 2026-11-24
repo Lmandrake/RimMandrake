@@ -182,12 +182,13 @@ def t_the_walk_game_holds_the_save():
 
 
 def t_a_stale_walk_build_is_deployed_to_the_walk_game():
-    calls = []
-    with Patch(M, walk_letter=lambda r, m: "b", deploy_state=lambda root, mod, game="a": {"state": "drift", "game": game},
-               deploy_repair=lambda root, mod, game, reading, gi, purpose, seat="BENCH": (
-                   calls.append((game, reading["game"])) or ("ok", "done")), _game_ops=lambda: None):
-        got = AUT.deploy_walk("/r", "FlowWorks")
-    check(got == ("ok", "done") and calls == [("b", "b")], "a-stale-walk-build-is-deployed-to-the-walk-game (%s)" % calls)
+    calls, row = [], {"mod": "FlowWorks", "aut": "autodeploy", "steward_key": "k"}
+    with Patch(M, walk_letter=lambda r, m: "b"):
+        AUT.execute("/r", {}, {"mods": {"FlowWorks": {}}}, [row], ["FlowWorks"], 1.0, {
+            "known": lambda: set(), "game_deploy": lambda mod, game, kind, purpose, seat="BENCH": (
+                calls.append((mod, game, kind)) or (0, "STARTED", "rm-game-deploy-x"))})
+    check(calls == [("FlowWorks", "b", "walk")] and row["decision"] == "live",
+          "a-stale-walk-build-is-deployed-to-the-walk-game (%s)" % calls)
 
 
 def t_his_hold_is_read_on_the_walk_game():

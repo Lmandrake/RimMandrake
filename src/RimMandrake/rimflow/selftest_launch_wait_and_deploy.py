@@ -684,35 +684,38 @@ def t_a_stale_walk_build_is_the_ticks_deploy():
           "steward (read %s / %s)" % (r.get("decision"), la))
     r2, _ = stale_tick({"mods": {}}, [STALE, "in-game check sc_x: its last row reads FAIL"])
     check(r2.get("aut") == "steward", "...with any other reason beside it, the steward reads the visit (%s)" % r2.get("aut"))
-    AUT.execute("/nonexistent", dict(cfg), st, [r], la, 1000.0, dict(known, autodeploy=lambda root, mod, now=None: (
-        "wait", "%s ArchBig is held by another run" % M.WAIT_MARK)))
-    check(r["decision"] == "launch_wait" and not (st["mods"][P].get("steward") or {}),
-          "...a game another run holds is a wait that spends no try (%s)" % r["decision"])
+    key = r["steward_key"]
+
+    def ended(state, text, **kw):
+        """The deploy unit's end, as the tick's game_deploy_sync books it."""
+        st["mods"].setdefault(P, {})["game_deploy"] = dict({
+            "unit": "rm-game-deploy-x", "game": "a", "kind": "walk", "key": key, "at": 900.0, "tries": 1, "ended": 990.0,
+            "result": {"state": state, "text": text}}, **kw)
+    units = []
+    fx = dict(known, walk_letter=lambda r_, m: "a", game_deploy=lambda mod, game, kind, purpose, seat="BENCH": (
+        units.append((mod, game, kind)) or (0, "STARTED", "rm-game-deploy-%d" % len(units))))
+    ended("wait", "%s ArchBig is held by another run" % M.WAIT_MARK)
+    AUT.execute("/nonexistent", dict(cfg), st, [r], la, 1000.0, fx)
+    check(r["decision"] == "live" and units == [(P, "a", "walk")] and not (st["mods"][P].get("steward") or {}),
+          "...a game another run holds is a wait that spends no try: the deploy starts again (%s)" % r["decision"])
     r, la = stale_tick(st, [STALE])
     check(r.get("aut") == "autodeploy" and la == [P], "...and the next tick tries it again (%s)" % r.get("decision"))
-    AUT.execute("/nonexistent", dict(cfg), st, [r], la, 1000.0, dict(known, autodeploy=lambda root, mod, now=None: (
-        "ok", "ArchBig stopped; deployed; ArchBig started")))
+    ended("ok", "ArchBig stopped; deployed; ArchBig started")
+    AUT.execute("/nonexistent", dict(cfg), st, [r], la, 1000.0, fx)
     check(r["decision"] == "launched" and "ArchBig stopped" in r["why"], "...a deploy that lands says what it did (%s)" % r["why"])
     r, la = stale_tick(st, [STALE])
     check(r.get("decision") == "launch_failed" and la == [], "...a reading still stale after it pauses, never loops (%s)"
           % r.get("decision"))
     st = {"mods": {}}
     r, la = stale_tick(st, [STALE])
-    AUT.execute("/nonexistent", dict(cfg), st, [r], la, 1000.0, dict(known, autodeploy=lambda root, mod, now=None: (
-        "fail", "the deploy exited 1")))
+    ended("fail", "the deploy exited 1")
+    AUT.execute("/nonexistent", dict(cfg), st, [r], la, 1000.0, fx)
     check(r["decision"] == "launch_failed" and "exited 1" in r["why"], "...a failed deploy names its cause (%s)" % r["why"])
-    calls, real = [], (M.deploy_state, M.deploy_repair)
-    try:
-        M.deploy_state = lambda root, mod, game="a": {"state": "drift", "why": "w", "args": ["--mod", mod]}
-        M.deploy_repair = lambda root, mod, game, reading, gi, purpose, seat="BENCH": (
-            calls.append((mod, game, reading["state"])) or ("ok", "done"))
-        got = AUT.deploy_walk("/r", P)
-        M.deploy_state = lambda root, mod, game="a": {"state": "stuck", "why": "game-only files"}
-        got2 = AUT.deploy_walk("/r", P)
-    finally:
-        M.deploy_state, M.deploy_repair = real
-    check(got == ("ok", "done") and calls == [(P, "a", "drift")] and got2 == ("fail", "game-only files"),
-          "...through deploy_repair on ArchBig, for drift only (%s, %s)" % (got, got2))
+    st = {"mods": {}}
+    r, la = stale_tick(st, [STALE])
+    ended("ok", "an earlier stale reading's", key="another")
+    AUT.execute("/nonexistent", dict(cfg), st, [r], la, 1000.0, fx)
+    check(r["decision"] == "live" and len(units) == 2, "...another reading's deploy is not this one's (%s)" % r["decision"])
 
 
 def t_a_build_match_that_could_not_look_is_a_wait():

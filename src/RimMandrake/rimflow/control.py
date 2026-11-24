@@ -95,6 +95,7 @@ FAMILIES = {                        # the 7 launch families of the re-measure (0
     "relentless": "relentless*.py (retired by the owner 2026-11-13): OFF from the import on",
     "designer_cleanse": "designer_cleanse.py fleet unit",
     "cert_rerun": "maturation_dispatch.cert_rerun_unit",
+    "game_deploy": "maturation_dispatch.game_deploy_unit (rm-game-deploy-*): a mod's game copy deployed, zero tokens",
     "stop_resume": "stop_resume.py sweep unit",
     "left_open_continue": "left_open_continue.py run unit (<run>-continue): a run that ended with work left",
     "testq": "testq/steward.py wake unit",

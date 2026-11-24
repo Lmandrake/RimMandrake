@@ -1,8 +1,8 @@
-# BOUNDARY: a mod is developed, tested and walked on its small list (small_list.py; build_match.walk_letter; maturation.walk_small_list_why, walk_letter; maturation_autonomy.deploy_walk, walk_game), Design Version 0.1.0
+# BOUNDARY: a mod is developed, tested and walked on its small list (small_list.py; build_match.walk_letter; maturation.walk_small_list_why, walk_letter; maturation_autonomy.walk_game), Design Version 0.1.0
 
 Code: `src/RimMandrake/Utils/small_list.py`, `src/RimMandrake/rimflow/build_match.py` (`walk_letter`, `walk_paths`),
 `src/RimMandrake/rimflow/maturation.py` (`walk_small_list_why`, `walk_letter`) and
-`src/RimMandrake/rimflow/maturation_autonomy.py` (`deploy_walk`, `walk_game`). Tests:
+`src/RimMandrake/rimflow/maturation_autonomy.py` (`walk_game` and the `autodeploy` act). Tests:
 `src/RimMandrake/rimflow/selftest_walk_small_list.py`.
 
 The rule: `design/RimMandrake/standing_rulings.md` §Mod development runs on small lists (owner, 2026-11-24, "go").

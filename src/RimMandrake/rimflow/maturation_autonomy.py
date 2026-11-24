@@ -1442,7 +1442,7 @@ def _walk_owed(root, s, row, ver, owed=None, game=None):
 def _stale_walk(f):
     """-> the exit's one reason when an ended in-game visit owes only the deploy of the walk build, else None. A steward
     may not stop a game, and no DLL is written under a running one (Explosive Knockback, 2026-11-24: a steward waited two
-    hours for an ArchBig that was never both free and down), so that deploy is the tick's (deploy_walk)."""
+    hours for an ArchBig that was never both free and down), so that deploy is the pipeline's, in its own unit (maturation_dispatch.game_deploy_launch, kind walk)."""
     why = [str(x) for x in ((f.get("exit") or {}).get("why") or [])]
     return why[0] if len(why) == 1 and why[0].startswith(M.STALE_WALK) else None
 
@@ -1452,17 +1452,6 @@ def _blind_match(f):
     can do nothing about it (Explosive Knockback, 2026-11-24 8:46 AM PST: ENOMEM on two DLC About.xml files read as
     missing DLC, and a steward was launched)."""
     return next((str(x) for x in (f.get("exit") or {}).get("why") or [] if str(x).startswith(M.BLIND_MATCH)), None)
-
-
-def deploy_walk(root, mod, now=None, seat="BENCH"):
-    """-> (state, text) of the deploy of the mod's walk build to the game that holds the walk savegame (M.walk_letter):
-    ok, wait (another run or his hold has the game; nothing done) or fail (the cause named). M.deploy_repair: the game
-    down, deployed, up again."""
-    game = M.walk_letter(root, mod)
-    reading = M.deploy_state(root, mod, game=game)
-    if reading["state"] != "drift":
-        return "fail", reading["why"]
-    return M.deploy_repair(root, mod, game, reading, M._game_ops(), "deploy %s's walk build" % mod, seat=seat)
 
 
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,
@@ -2208,11 +2197,15 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                            "(%s): %s" % (row["mod"], len(row["visit_checks"]), ", ".join(row["visit_checks"]), text))
                 continue
             if row["aut"] == "autodeploy":   # RIMMANDRAKE_LET_TICK_DEPLOY_STALE_WALK_BUILD_STEWARD_MAY_NOT_STOP_GAME
-                state, text = fx.get("autodeploy", deploy_walk)(root, row["mod"], now=now)
-                if state == "wait":         # no try spent: the next tick reads the game again
-                    row.update(decision="launch_wait", why="the deploy of %s's walk build waits on a cause that ends by "
-                               "itself: %s" % (row["mod"], text))
+                # in its own unit: started on one tick, its result read on the tick after it ended
+                s, key = st["mods"][row["mod"]], row["steward_key"]
+                res = MD.game_deploy_ended(cfg, row["mod"], s, "walk", key)
+                if not res:
+                    MD.game_deploy_launch(cfg, st, row, "walk", key, (fx.get("walk_letter") or M.walk_letter)(
+                        root, row["mod"]), "deploy %s's walk build" % row["mod"], now, fx)
                     continue
+                state, text = res.get("state"), str(res.get("text"))
+                s.pop("game_deploy", None)
                 st["mods"][row["mod"]].setdefault("steward", {})[row["steward_key"]] = {
                     "item": None, "unit": None, "at": now, "failed": None if state == "ok" else text,
                     "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}

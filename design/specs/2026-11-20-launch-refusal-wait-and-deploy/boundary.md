@@ -113,8 +113,8 @@ because the composed Baroque Biomes copy differed from the repo, by one dev scri
   guard (`model.RUNNER_INGAME_NAME`) takes, also when the visit's two names are taken: after the 7:10 PM clear the bare
   `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT` was refused at its spawn.
 - **a-stale-walk-build-is-the-ticks-deploy.** An ended in-game visit whose one open reason is the stale walk folder
-  launches no steward: the tick deploys it to ArchBig through `deploy_repair` (act `autodeploy`, no slot, no run). A
-  held game is a wait that spends no try; a failed deploy, or a reading still stale after it, pauses the mod by name.
+  launches no steward: the tick starts its deploy to the walk's game (act `autodeploy`, no slot, no run) in a unit of
+  its own (`design/specs/2026-11-24-game-deploy-own-unit/boundary.md`). A held game is a wait that spends no try; a failed deploy, or a reading still stale after it, pauses the mod by name.
   With any other reason beside it, the steward reads the visit.
 - **a-build-match-that-could-not-look-is-a-wait.** An ended in-game visit whose build match could not look (a read of
   an installed mod that keeps failing for want of memory, `modset_builder.AboutUnreadable`) launches no steward and no
@@ -133,12 +133,12 @@ because the composed Baroque Biomes copy differed from the repo, by one dev scri
   `deploy_custom_mods._read_retry`, measured 2026-10-31; Biotech's and Anomaly's About.xml at 8:46 AM PST 2026-11-24.
 
 - The game stop waits up to `REPAIR_STOP_S` = 120 s for the process to exit, then stops it with `/F`. Danger: a DLL
-  written while the game holds it fails, and a game that ignores the close would hold the tick. Evidence: none
+  written while the game holds it fails, and a game that ignores the close would hold the deploy. Evidence: none
   measured for RimWorld's close time on this machine; the limit only bounds the wait, and the `/F` stop it falls back
   to is the one `game_instance.stop --force` already offers.
 
 - The deploy and the companion rebuild each run for up to 1800 s. Danger: a hung `deploy_custom_mods.py` or
-  `build.py` (a stuck Windows build server) would hold the tick for ever. Evidence: none measured for a hang; the
+  `build.py` (a stuck Windows build server) would hold its run and the game's lock for ever. Evidence: none measured for a hang; the
   limit is far above a normal run (a companion build is minutes), so it bounds a hang only.
 
 Later lists beside this page: `polish.md`.
