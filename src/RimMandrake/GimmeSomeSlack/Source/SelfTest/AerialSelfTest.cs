@@ -4,7 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using RimMandrake.GimmeSomeSlack.Aerial;
 
 namespace RimMandrake.GimmeSomeSlack.SelfTest
@@ -36,6 +38,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Links();
             Spanning();
             Removal();
+            RuntimeBinding();
             Watchdog();
             Fallen();
             Explosion();
@@ -380,6 +383,35 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             C(off.Kept.Count == 0 && off.Reseed.Count == 3, "setting off / no launch: today's behaviour, every span taken down");
             RemovalPlan boom = AerialMath.PlanRemoval(1, true, spans, aboard);
             C(boom.Kept.Count == 0 && boom.Fallen.Count == 2, "killed during a launch: spans fall exactly as any kill");
+        }
+
+        // The offline suite also checks where the Verse-bound paths make these decisions.
+        private static void RuntimeBinding()
+        {
+            string dir = SwitchFlipChecks.AerialSourceDir();
+            C(dir != null, "found Source/Aerial for runtime bindings");
+            if (dir == null) return;
+            string anchor = File.ReadAllText(Path.Combine(dir, "CompAerialAnchor.cs"));
+            string map = File.ReadAllText(Path.Combine(dir, "RM_MapComponent_Aerial.cs"));
+
+            // gravship_keeps_connections / mod_settings: vanilla spawns landed masts with respawningAfterLoad=false.
+            C(Regex.IsMatch(anchor, @"if \(!GravshipPlacementUtility\.placingGravship && \(!respawningAfterLoad \|\| autoLinkPendingSaved\)[^\n]*QueueAutoLink\(this\);"),
+              "gravship landing skips the build auto-link queue while new and saved-pending masts can still queue");
+
+            // fallen_wire_shocks_crossers: a second cut between sweeps can find the first cut's cached liveness.
+            C(Regex.IsMatch(map, @"if \(contactsDirty && !sweep\)\s*\{[^}]*PollFallen\(\);[^}]*RebuildContacts\("),
+              "a dead recut refreshes liveness before the between-sweep contact rebuild");
+
+            // fallen_wire_shock: vanilla's HasActivePowerSource omits connector traders.
+            string live = Regex.Match(map, @"public bool AnchorLive\([^;]+;").Value;
+            C(live.Contains("NetOf(a) is PowerNet n") && live.Contains("n.HasActivePowerSource") &&
+              Regex.IsMatch(live, @"n\.powerComps\.Any\(t => t\.PowerOn && t\.PowerOutput > 0f && t\.parent\.GetComp<CompPowerTap>\(\) != null\)"),
+              "a tap-only net counts a powered-on clamp with positive output as a fallen-wire source");
+
+            // wire_down_alert: the later orphan-recovery loop skips the mast already linked by the nearest pick.
+            string nearest = Regex.Match(map, @"int pick = AerialMath\.AutoLinkPick[\s\S]*?(?=foreach \(CompAerialAnchor o in others\))").Value;
+            C(Regex.IsMatch(nearest, @"TryLink\(a, (\w+)\.parent\) == LinkVerdict\.Ok\)\s*\{[^}]*\1\.fallen\.RemoveAll\(f => FellToward\(f, a\.Position\)\)"),
+              "the successful nearest auto-link picks up the survivor's nearby fallen orphan");
         }
 
         private static void Watchdog()

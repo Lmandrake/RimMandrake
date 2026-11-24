@@ -160,8 +160,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         // ------------------------------------------------------------------ floor lamps (round 6)
-        /// <summary>The floor lamps hooked to a run: its power connection (CompPower.connectParent, which is also where the
-        /// lamp's plug cord runs) is a run member, or, for a lamp with no connection, it stands on / beside a member cell
+        /// <summary>The lamps hooked to a run: the drawn hookup end or the original power connection is in the run,
+        /// or, for a lamp with no connection, it stands on / beside a member cell
         /// (ConduitStyles.LampHooked; GPT pre-release D2: a lamp wired to ANOTHER run is not this run's). Thing-id order.</summary>
         public List<Thing> LampsOf(List<Thing> run)
         {
@@ -173,7 +173,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
             return ConduitStyles.LampsHookedTo(run, lamps,
                 x => x.OccupiedRect().Cells.Select(c => (c.x, c.z)),
-                l => l.TryGetComp<CompPower>()?.connectParent?.parent,
+                l => CordWorldAdapter.DrawnConnection(l),
                 (p, q) => p.thingIDNumber.CompareTo(q.thingIDNumber),
                 x => Neighbours(x).Where(n => IsBridgeConduit(n.def)));   // a lamp wired to another mod's conduit in the line is hooked
         }
@@ -185,11 +185,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return s != null && !ConduitStylePicker.IsOurStyle(s);
         }
 
-        /// <summary>The run a lamp is hooked to (via its power connection), or null.</summary>
+        /// <summary>The run a lamp is hooked to (by its drawn hookup or original power connection), or null.</summary>
         public List<Thing> RunOfLamp(Thing lamp)
         {
-            Thing parent = lamp.TryGetComp<CompPower>()?.connectParent?.parent;
-            if (parent != null) return ConduitStylePicker.IsMember(parent.def) ? RunOf(parent) : null;   // D2: same rule as LampsOf
+            Thing parent = CordWorldAdapter.DrawnConnection(lamp);
+            if (parent != null) return ConduitStylePicker.IsMember(parent.def) ? RunOf(parent) : null;
             foreach (IntVec3 c in GenAdj.CellsAdjacentCardinal(lamp).Concat(lamp.OccupiedRect().Cells))
             {
                 if (!c.InBounds(map)) continue;

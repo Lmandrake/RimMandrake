@@ -25,6 +25,7 @@ namespace RimMandrake.Shared.StylePicker
         private readonly string[] looks;
         private readonly Func<string> defaultLook;
         private readonly Func<string, string, bool, string, string> resolve;
+        private readonly Func<ThingDef, string, Texture2D> menuIcon;
         private readonly string tag;
 
         /// <summary>State read: style defs missing at startup (each a config error, not a silent fallback).</summary>
@@ -40,12 +41,15 @@ namespace RimMandrake.Shared.StylePicker
         /// <param name="looks">menu order of the looks</param>
         /// <param name="defaultLook">the look unstyled things draw in and new buttons start on (the mod's own setting)</param>
         /// <param name="resolve">(lastPicked, defaultLook, styleOverridden, copiedLook) -> look the button hands the designator</param>
-        public StylePickerCore(string tag, string[] looks, Func<string> defaultLook, Func<string, string, bool, string, string> resolve)
+        /// <param name="menuIcon">optional look icon; a null result uses the style's own icon</param>
+        public StylePickerCore(string tag, string[] looks, Func<string> defaultLook, Func<string, string, bool, string, string> resolve,
+            Func<ThingDef, string, Texture2D> menuIcon = null)
         {
             this.tag = tag;
             this.looks = looks;
             this.defaultLook = defaultLook;
             this.resolve = resolve;
+            this.menuIcon = menuIcon;
         }
 
         public string[] Looks => looks;
@@ -134,7 +138,7 @@ namespace RimMandrake.Shared.StylePicker
                 if (s == null) continue;
                 string l = look;
                 string label = look + (look == cur ? " (current)" : "") + (look == def ? " - default" : "");
-                list.Add(new FloatMenuOption(label, () => Pick(des, l), s.UIIcon ?? (Texture2D)Widgets.GetIconFor(d, null, s), Color.white));
+                list.Add(new FloatMenuOption(label, () => Pick(des, l), menuIcon?.Invoke(d, look) ?? s.UIIcon ?? (Texture2D)Widgets.GetIconFor(d, null, s), Color.white));
             }
             return list;
         }

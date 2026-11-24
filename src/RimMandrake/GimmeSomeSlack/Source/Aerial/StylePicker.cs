@@ -26,7 +26,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     {
         /// <summary>The shared def-agnostic picker (_Shared/StylePicker), this assembly's own instance.</summary>
         internal static readonly StylePickerCore Core =
-            new StylePickerCore("[GimmeSomeSlack]", AerialStyles.Looks, () => DefaultLook, AerialStyles.Resolve);
+            new StylePickerCore("[GimmeSomeSlack]", AerialStyles.Looks, () => DefaultLook, AerialStyles.Resolve, ConduitStylePicker.Icon);
         /// <summary>State read: style defs missing at startup (each a config error, not a silent fallback).</summary>
         public static List<string> Missing => Core.Missing;
         /// <summary>State read: picks made through the menu or the probe this session.</summary>

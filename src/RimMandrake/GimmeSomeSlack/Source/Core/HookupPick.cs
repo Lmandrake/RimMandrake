@@ -54,15 +54,21 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// own power net.</summary>
         internal static List<Cell> Pick(CordWorld w, MachineInfo m, Cell? parentCell, Func<Cell, bool> sameNet)
         {
+            Cell? end = PickEnd(m, parentCell, w.IsConduit, c => Degree(w, c), sameNet);
+            if (!end.HasValue) return null;
+            var res = new List<Cell> { end.Value };
+            if (parentCell.HasValue && w.IsConduit(parentCell.Value) && Degree(w, parentCell.Value) <= 1) res.Add(parentCell.Value);
+            return res;
+        }
+
+        /// <summary>The primary conduit end, shared by drawing and lamp restyle membership.</summary>
+        internal static Cell? PickEnd(MachineInfo m, Cell? parentCell, Func<Cell, bool> isConduit, Func<Cell, int> degree,
+            Func<Cell, bool> sameNet)
+        {
             List<Cell> touching = Touching(m);
             if (parentCell.HasValue && touching.Contains(parentCell.Value)) return null;
             foreach (Cell c in touching)
-            {
-                if (!w.IsConduit(c) || Degree(w, c) > 1 || (sameNet != null && !sameNet(c))) continue;
-                var res = new List<Cell> { c };
-                if (parentCell.HasValue && w.IsConduit(parentCell.Value) && Degree(w, parentCell.Value) <= 1) res.Add(parentCell.Value);
-                return res;
-            }
+                if (isConduit(c) && degree(c) <= 1 && (sameNet == null || sameNet(c))) return c;
             return null;
         }
 

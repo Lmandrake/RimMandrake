@@ -197,7 +197,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             comp?.Register(this);
             RoofOverMast.ClearUnder(parent);   // no roof over a standing pole (his walk of 2026-11-20, row 14)
             // GPT source read 2026-10-06 A6: an auto-link still queued when the game was saved (built while paused) is re-queued
-            if ((!respawningAfterLoad || autoLinkPendingSaved) && AerialLineProfiles.KindBehaviour(Kind, AerialSettings.autoLink)) comp?.QueueAutoLink(this);
+            // Landing also spawns with respawningAfterLoad=false. The ship's links were decided at departure.
+            if (!GravshipPlacementUtility.placingGravship && (!respawningAfterLoad || autoLinkPendingSaved) && AerialLineProfiles.KindBehaviour(Kind, AerialSettings.autoLink)) comp?.QueueAutoLink(this);
             autoLinkPendingSaved = false;
         }
 

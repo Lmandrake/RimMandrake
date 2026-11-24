@@ -257,6 +257,42 @@ namespace RimMandrake.GimmeSomeSlack
             world.Machines.AddRange(byId);
         }
 
+        /// <summary>The primary hookup for a lamp's run membership. Read the nearby conduit cells as AddPower would,
+        /// so a cord built after the lamp can take its hookup even while vanilla keeps the original power parent.</summary>
+        internal static Thing DrawnConnection(Thing lamp)
+        {
+            CompPower c = lamp.TryGetComp<CompPower>();
+            Thing parent = c?.connectParent?.parent;
+            PowerNet net = c?.PowerNet;
+            if (parent?.Spawned != true || net == null || !net.connectors.Contains(c)) return parent;
+            HookupDraw how = ConduitVisuals.HookupTo(parent);
+            if (how == HookupDraw.PatchCable) return parent;
+
+            Map map = lamp.Map;
+            Thing ConduitAt(Cell cell)
+            {
+                IntVec3 at = I(cell);
+                if (!at.InBounds(map)) return null;
+                foreach (Thing t in at.GetThingList(map))
+                {
+                    if (!t.Spawned || t.Position != at) continue;
+                    if (!ConduitVisuals.IsOtherConduit(t.def) &&
+                        (!ConduitVisuals.IsTarget(t.def) || map.fogGrid.IsFogged(at))) continue;
+                    CompPower transmitter = t.TryGetComp<CompPower>();
+                    if (transmitter?.PowerNet?.transmitters.Contains(transmitter) == true) return t;
+                }
+                return null;
+            }
+
+            CellRect r = lamp.OccupiedRect();
+            var footprint = new MachineInfo { X0 = r.minX, Z0 = r.minZ, W = r.Width, H = r.Height };
+            Cell? parentCell = how == HookupDraw.ConduitCell ? C(parent.Position) : (Cell?)null;
+            Cell? end = HookupPick.PickEnd(footprint, parentCell, cell => ConduitAt(cell) != null,
+                cell => Cell.Dirs4.Count(dir => ConduitAt(cell + dir) != null),
+                cell => map.powerNetGrid.TransmittedPowerNetAt(I(cell)) == net);
+            return end.HasValue ? ConduitAt(end.Value) : parent;
+        }
+
         /// <summary>A final fallback for every machine power comp: when no existing cord reaches it, draw its actual
         /// connectParent, including a nonadjacent parent within six cells. Existing hookups and incoming/outgoing machine
         /// links take precedence. PatchCable parents, including aerial anchors, retain their existing drawing.</summary>

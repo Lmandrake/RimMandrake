@@ -197,6 +197,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             bool sweep = now % 250 == (map.uniqueID * 7 + 31) % 250;
             if (contactsDirty && !sweep)
             {
+                PollFallen();
                 contactsDirty = false;
                 RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips, droppedCells);
                 RM_LiveWirePathCost.Sync(map, shockCells);
@@ -334,7 +335,19 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 // stage 2 (design 2.3): auto-link only links to a run of the SAME look; linking two looks by hand is a bridge
                 var others = AutoLinkCandidates(AerialLineProfiles.LookOfThing(a.parent), a, a.Position, a.Kind);
                 int pick = AerialMath.AutoLinkPick(a.Info(), others.Select(o => o.Info()).ToList(), a.Range);
-                if (pick >= 0 && CompAerialAnchor.TryLink(a, others.First(o => o.thingIDNumber == pick).parent) == LinkVerdict.Ok) autoLinks++;
+                if (pick >= 0)
+                {
+                    CompAerialAnchor nearest = others.First(o => o.thingIDNumber == pick);
+                    if (CompAerialAnchor.TryLink(a, nearest.parent) == LinkVerdict.Ok)
+                    {
+                        autoLinks++;
+                        if (nearest.fallen.RemoveAll(f => FellToward(f, a.Position)) > 0)
+                        {
+                            orphanRelinks++;
+                            DirtyGround(nearest);
+                        }
+                    }
+                }
                 // a pole put up where one died takes back every span that fell with it: each neighbour whose wires lie on the ground
                 // aimed at this cell (pass 12, played: a lamp mast rebuilt after a mortar came back linked to its nearest neighbour
                 // only; the other's wires lay live in the yard with no cut to re-string, and no way back but the link gizmo)
@@ -414,7 +427,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
         }
 
-        public bool AnchorLive(CompAerialAnchor a) => NetOf(a) is PowerNet n && n.HasActivePowerSource;
+        // Vanilla checks transmitters for active sources. A clamp supplies power as a connector trader.
+        public bool AnchorLive(CompAerialAnchor a) => NetOf(a) is PowerNet n && (n.HasActivePowerSource ||
+            n.powerComps.Any(t => t.PowerOn && t.PowerOutput > 0f && t.parent.GetComp<CompPowerTap>() != null));
 
         /// <summary>GS-5: coil any wire whose two ends belong to different owners (a pole was claimed or captured).</summary>
         public int OwnerMismatchSweep()

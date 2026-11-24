@@ -1978,11 +1978,14 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LineRestyleChecks.cs",
-   "observes": "the run flood (ConduitStyles.Components over RM_MapComponent_ConduitRuns' neighbour rule) on generated lines of floor cords, a power switch, two poles joined by an overhead span, a wall bracket, a hooked lamp and a FlowWorks pipe pole on the same cells: All connected from each member kind takes every Gimme Some Slack member and no FlowWorks item; a cut span splits the line in two; planted: a flood that stops at a pole, and one that takes the pipe pole, each go red (bar restyle_whole_line)",
+   "observes": "A wall lamp built before the cord follows All connected when its drawn hookup moves to the new same-net conduit end and vanilla keeps its battery parent. Generated lines of cords, switches, poles, brackets, overhead spans and lamps restyle from each member kind and leave FlowWorks pieces alone. A cut span splits the line in two. The planted faults stop the flood at a pole or take the pipe pole, and each goes red (bar restyle_whole_line).",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
-    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs"
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/CordWorldAdapter.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/HookupPick.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs"
    ],
    "new": true,
    "built_in_stage": "3",
@@ -2004,10 +2007,13 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LookIconChecks.cs",
-   "observes": "every look entry of the build menu's look choice and of the Restyle button takes its icon from the shared look-icon path (UI/Looks/<Look>), the four pictures exist and differ; planted: a menu entry back on its strand art goes red (bar look_menu_icons)",
+   "observes": "All four entries in each anchor's build and This item Restyle menus resolve to the same shared look icons through the picker wiring and anchor style defs. The other build and Restyle look entries use that same path (UI/Looks/<Look>), and the four pictures exist and differ. A planted menu entry showing strand art goes red (bar look_menu_icons).",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/StylePicker.cs",
+    "src/RimMandrake/_Shared/StylePicker/StylePickerCore.cs",
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialStyles.xml",
     "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/UI/Looks",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/Program.cs",
     "src/RimMandrake/Utils/selftest_gimmesomeslack.py"

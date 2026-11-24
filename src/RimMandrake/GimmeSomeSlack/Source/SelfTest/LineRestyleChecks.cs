@@ -22,6 +22,7 @@
 //   * lamps (StandingLamp) wired to a member of this line, to another mod's conduit drawn in this line (a bridge), to a
 //     member of another line, or unwired beside a member or beside nothing;
 //     wearing no look, a look the line draws, another look (styled on purpose) or a foreign style;
+//   * a wall lamp built before the cord: the drawn hookup moves to the new conduit end, with the battery still its power parent;
 //   * member looks: none (legacy, draws the default) or one of the four, sometimes mixed in one line;
 //   * lines laid along the map edge (InBounds), thing ids in random order.
 // Left out (why): the GSS master switch off (no style button: Patch_Building_GetGizmos_Restyle, so the bar's step never
@@ -36,6 +37,8 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using RimMandrake.GimmeSomeSlack.Aerial;
+using RimMandrake.GimmeSomeSlack.Core;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.SelfTest
 {
@@ -452,6 +455,43 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Wiring();
         }
 
+        private static void LampBuiltBeforeCord(bool usesDrawnConnection)
+        {
+            var world = new CordWorld(W, H);
+            var machine = new MachineInfo { Id = "c2", X0 = 14, Z0 = 10, W = 1, H = 1, HasHome = true, HomeX = 14, HomeZ = 11 };
+            var battery = new P { Id = 1, Def = "Battery", X = 10, Z = 10 };
+            var lamp = new P { Id = 2, Def = "WallLamp", X = 14, Z = 10, Conn = battery, Look = "Industrial" };
+            var cord = new List<P>();
+            // A lamp wired to a battery has no parent conduit cell. The new cord joins the battery's existing net.
+            Check(HookupPick.Pick(world, machine, null, _ => true) == null,
+                  "before laying the cord, the wall lamp has no conduit hookup");
+            for (int x = 11; x <= 13; x++)
+            {
+                world.SetConduit(new Cell(x, 10));
+                cord.Add(new P { Id = x, Def = "PowerConduit", X = x, Z = 10, Look = "Industrial" });
+            }
+            List<Cell> hookups = HookupPick.Pick(world, machine, null, _ => true);
+            var end = new Cell(13, 10);
+            Check(hookups != null && hookups.SequenceEqual(new[] { end }) && lamp.Conn == battery,
+                  "after laying the cord, the wall lamp draws to (13,10) with the battery still its power parent");
+            machine.Hookups.AddRange(hookups ?? new List<Cell>());
+            world.Machines.Add(machine);
+            Check(CordGraph.Reduce(world).CordEdges().Any(e => e.Chain().Contains(VId.Mach(machine.Id)) && e.Chain().Contains(VId.C(end))),
+                  "the cord graph joins the wall lamp to (13,10)");
+
+            // Compose the shipped hookup and lamp-membership rules, using the connection callback that LampsOf supplies.
+            Cell? drawnEnd = usesDrawnConnection ? HookupPick.PickEnd(machine, null, world.IsConduit, c => HookupPick.Degree(world, c), _ => true) : null;
+            List<P> hooked = ConduitStyles.LampsHookedTo(cord, new[] { lamp }, p => new[] { (p.X, p.Z) },
+                p => drawnEnd.HasValue ? cord.Find(q => new Cell(q.X, q.Z) == drawnEnd.Value) : p.Conn,
+                (p, q) => p.Id.CompareTo(q.Id));
+            var drewBefore = new HashSet<string>(cord.Select(p => p.Look));
+            foreach (P p in cord) p.Look = "Modern";
+            foreach (P p in hooked)
+                if (ConduitStyles.LampFollowsRun(p.Look, drewBefore, true, p.Foreign)) p.Look = "Modern";
+            Check(cord.All(p => p.Look == "Modern") && lamp.Look == "Modern" && lamp.Conn == battery,
+                  "All connected on the new cord: cord " + cord[0].Look + ", wall lamp " + lamp.Look + " (want Modern for both, battery still its power parent)");
+        }
+
         private static void CanFail(string what, Rule broken, Func<Tally, int> metric, int maps = 400)
         {
             var t = new Tally();
@@ -489,6 +529,12 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   "IsBridgeConduit is ConduitStyles.IsBridge over (ours, drawn as cord)");
             Check(Regex.IsMatch(Body(runs, "public List<Thing> RunOf("), @"ConduitStyles\.RunMembers\(\s*seed, Neighbours,"), "RunOf floods with ConduitStyles.RunMembers over Neighbours");
             string lo = Body(runs, "public List<Thing> LampsOf(");
+            string adapter = File.ReadAllText(Path.Combine(dir, "..", "CordWorldAdapter.cs"));
+            string hookup = Body(adapter, "internal static Thing DrawnConnection(");
+            LampBuiltBeforeCord(lo.Contains("l => CordWorldAdapter.DrawnConnection(l)") &&
+                hookup.Contains("HookupPick.PickEnd(footprint, parentCell, cell => ConduitAt(cell) != null,") &&
+                hookup.Contains("cell => map.powerNetGrid.TransmittedPowerNetAt(I(cell)) == net") &&
+                hookup.Contains("return end.HasValue ? ConduitAt(end.Value) : parent;"));
             Check(lo.Contains("ConduitStyles.LampsHookedTo(") && lo.Contains("x => Neighbours(x).Where(n => IsBridgeConduit(n.def))"),
                   "LampsOf is ConduitStyles.LampsHookedTo over the map's lamps, with the bridges beside each piece");
             string rr = Body(runs, "public int RestyleRun(");

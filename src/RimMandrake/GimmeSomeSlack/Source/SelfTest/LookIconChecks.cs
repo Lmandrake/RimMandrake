@@ -10,6 +10,7 @@
 //
 // Declared range (every entry the menus can show; it is finite, so it is read whole):
 //   * the build menu of a conduit def (looks + Modern's Mix, Multi and five colours: 11 entries), of a switch (4 looks);
+//   * the build and "This item" menus of each of the three anchors (4 looks each; source wiring and style defs);
 //   * the Restyle menus: "This item" on a conduit (11), on a switch, pole or bracket (4), "All connected" and "All on map" (11,
 //     they repaint conduit), "This item" on a floor or wall lamp (the 4 looks; "Match its cable run" is no look, no icon owed);
 //   * the four pictures on disk: each exists, is 256 px square (commissions.md), and no two are the same bytes.
@@ -21,6 +22,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using RimMandrake.GimmeSomeSlack.Aerial;
 
 namespace RimMandrake.GimmeSomeSlack.SelfTest
@@ -79,6 +81,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
             Pictures();
             Wiring();
+            AnchorMenus();
         }
 
         // ------------------------------------------------------------------ the four pictures
@@ -178,6 +181,39 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             // can fail: the 0.1.1 Icon (strand art first, no look icon) reads red
             string old = Regex.Replace(picker, @"string iconPath = ConduitStyles\.LookIconPath\(key\);[^\n]*\n[^\n]*\n[^\n]*if \(lookIcon != null\) return lookIcon;", "");
             Check(old != picker && WiringFaults(old).Count > 0, "can fail: the picker without the look icon in Icon reads red");
+        }
+
+        private static void AnchorMenus()
+        {
+            string dir = SwitchFlipChecks.AerialSourceDir();
+            if (dir == null) return;     // Wiring reports a missing Source/Aerial
+            string anchorPicker = File.ReadAllText(Path.Combine(dir, "StylePicker.cs"));
+            string sharedPicker = File.ReadAllText(Path.GetFullPath(Path.Combine(dir, "..", "..", "..", "_Shared", "StylePicker", "StylePickerCore.cs")));
+            string menu = Body(sharedPicker, "public List<FloatMenuOption> MenuFor(");
+            Check(anchorPicker.Contains("Core.Register(AerialStyles.StyledDefs, AerialStyles.StyleDefName);") &&
+                  anchorPicker.Contains("ProcessInputPostfix(__instance,") &&
+                  Body(sharedPicker, "public void ProcessInputPostfix(").Contains("MenuFor(des)") &&
+                  menu.Contains("foreach (string look in looks)") && menu.Contains("StyleFor(d, look)"),
+                  "the anchor build buttons list the registered styles in the shared picker");
+            bool sharedIcon = anchorPicker.Contains("AerialStyles.Resolve, ConduitStylePicker.Icon)") &&
+                              menu.Contains("menuIcon?.Invoke(d, look) ?? s.UIIcon");
+            var styles = XDocument.Load(Path.Combine(ModRoot(), "Defs", "Aerial", "RM_AerialStyles.xml"))
+                .Root.Elements("ThingStyleDef").ToDictionary(s => (string)s.Element("defName"));
+            string[] looks = { "Scrapper", "Industrial", "Modern", "Futuristic" };
+            string[] anchors = { "RM_AerialMast", "RM_AerialLampMast", "RM_AerialWallBracket" };
+            Check(AerialStyles.StyledDefs.SequenceEqual(anchors) && AerialStyles.Looks.SequenceEqual(looks) &&
+                  ConduitStyles.MenuKeys(false).SequenceEqual(looks), "each anchor has the four looks in both menus");
+            foreach (string def in anchors)
+                foreach (string look in looks)
+                {
+                    styles.TryGetValue(AerialStyles.StyleDefName(def, look), out XElement style);
+                    // Without a resolver the build option uses UIIcon, which Verse takes from its style graphic by default.
+                    string build = style == null ? null : sharedIcon ? ConduitStyles.LookIconPath(look)
+                        : (string)style.Element("uiIconPath") ?? (string)style.Element("graphicData")?.Element("texPath");
+                    string restyle = ConduitStyles.LookIconPath(look);
+                    Check(restyle == "RimMandrake/GimmeSomeSlack/UI/Looks/" + look && build == restyle,
+                          def + " / " + look + ": build icon " + (build ?? "missing") + ", Restyle icon " + restyle);
+                }
         }
     }
 }

@@ -130,6 +130,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\..\_Shared\StylePicker\StylePickerCore.cs" />
+    <None Include="..\CordWorldAdapter.cs" />
     <None Include="oracle_scenes.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="matrix_det_scenes.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="sitting_ba_Modern.json" CopyToOutputDirectory="PreserveNewest" />
