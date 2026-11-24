@@ -1230,7 +1230,8 @@ def drain_refusal(now, extra=None, resume_session=None, path=None):
     soft with drain true), live runs finish on it and no new run starts there: a switch stops every Claude process, and
     a run started now would be killed by it (design/specs/2026-11-20-account-drain/boundary.md). A continuation of a
     live run, or a resume of its session, is that run finishing and goes, unless the account is at its end (the notice's
-    `account_end`: its runs were told to save and end, page design/specs/2026-11-24-account-end/boundary.md). An unreadable or stale notice refuses
+    `account_end`: its runs were told to save and end, page design/specs/2026-11-24-account-end/boundary.md). While the
+    fleet is stopped (state stop) nothing starts. An unreadable or stale notice refuses
     nothing (a dead plan timer must not hold every launch)."""
     carried = bool((extra or {}).get("continued_from") or resume_session)
     p = path or os.path.join(os.environ.get("RM_SWITCH_PLAN_DIR") or "/mnt/d/ClaudeWork/rimmandrake/switching_plan",
@@ -1241,8 +1242,13 @@ def drain_refusal(now, extra=None, resume_session=None, path=None):
     except (OSError, ValueError):
         return None
     at = _epoch(n.get("at")) if isinstance(n, dict) else None
-    if not (isinstance(n, dict) and n.get("state") == "soft" and n.get("drain") and at is not None
-            and now - at <= DRAIN_NOTICE_FRESH_S):
+    if not (isinstance(n, dict) and at is not None and now - at <= DRAIN_NOTICE_FRESH_S):
+        return None
+    if n.get("state") == "stop":    # the fleet is stopped on an account that is out: a run here would take it to zero
+        return ("refused: the account %s is out (switching plan notice since %s): the fleet is stopped and nothing starts "
+                "until an account resets (`python3 src/RimMandrake/Utils/switching_plan.py status` shows it)." % (
+                    n.get("account") or "?", n.get("since") or "?"))
+    if not (n.get("state") == "soft" and n.get("drain")):
         return None
     if carried and not n.get("account_end"):
         return None

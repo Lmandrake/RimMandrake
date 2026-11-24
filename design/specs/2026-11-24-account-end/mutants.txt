@@ -5,11 +5,11 @@ caught  the-order-tells-the-numbers: "%s%% of its week is left and the machine b
 caught  the-order-tells-the-numbers: - ((burn or {}).get("age_s") or 0) / 60) -> the-order-tells-the-numbers: the age of the reading comes off the minutes: 14.925373134328357
 caught  no-new-work-after-the-warning: if carried and not n.get("account_end"): -> no-new-work-after-the-warning: a continuation is refused
 caught  no-new-work-after-the-warning: "account_end": bool(d.get("account_end")) and state == "soft", -> no-new-work-after-the-warning: the notice: {'account': 'system', 'account_end': False, 'at': '2027-01-15T00:00:00-08:00', 'drain': True, 'line':
-caught  the-switch-goes-when-the-last-run-ends: under = is_spent(plan, spent_at, live, lr, now) -> the-switch-goes-when-the-last-run-ends: seen inside the same 5-min beat: ([], [])
-caught  the-switch-goes-when-the-last-run-ends: if warn is not None and pl is not None and pl <= warn: -> the-switch-goes-when-the-last-run-ends: seen inside the same 5-min beat: ([], [])
+caught  the-switch-goes-when-the-last-run-ends: under = is_spent(plan, spent_at, live, lr, now) -> the-switch-goes-when-the-last-run-ends: no emergency order
+caught  the-switch-goes-when-the-last-run-ends: if warn is not None and pl is not None and pl <= warn: -> the-switch-goes-when-the-last-run-ends: at 2%, at once, with no pause: ([], [])
 caught  the-switch-goes-when-the-last-run-ends: for _ in range(passes - 1): -> the-switch-goes-when-the-last-run-ends: seen inside the same 5-min beat: ([], [])
-caught  the-warning-is-latched: return max(w, ep["warn_line"]) if ep.get("account") == live -> the-warning-is-latched: a slower burn keeps it: {'account': 'system', 'account_end': False, 'at': '2027-01-15T00:05:00-08:00', 'drain': False, '
-caught  the-warning-is-latched: end_episode(state, d, orders, f"{live} reads {d['pct_left']}%: it has  -> the-warning-is-latched: a reset takes it back and withdraws its orders: ([], {'account_end': {'account': 'system', 'acts': ['ct_1'], 'ordered': 
+caught  the-warning-is-latched: return max(w, ep["warn_line"]) if (ep.get -> the-warning-is-latched: a slower burn keeps it: {'account': 'system', 'account_end': False, 'at': '2027-01-15T00:05:00-08:00', 'drain': False, '
+caught  the-warning-is-latched: end_episode(state, d, orders, f"{live} reads {d['pct_left']}%: it has  -> the-warning-is-latched: a reset takes it back and withdraws its orders: ([], {'account_end': {'account': 'system', 'acts': ['ct_1'], 'line': 1, 
 caught  the-emergency-orders-pauses-then-switches: sleep(min(5, left_s)) -> the-emergency-orders-pauses-then-switches: the pause is 89 s
 caught  the-emergency-orders-pauses-then-switches: "emergency", "write_now", text -> the-emergency-orders-pauses-then-switches: the order: [{'units': ['rm-detached-bench-rimmandrake-some-builder-1795180000'], 'mode': 'at_easy_spo
 caught  the-emergency-orders-pauses-then-switches: em, first = ep.get("emergency"), False -> the-emergency-orders-pauses-then-switches: a dead pass's pause is not started again: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4.0]
@@ -36,5 +36,11 @@ caught  a-wrapped-run-is-carried-on-after-the-switch: waits_for = account_end_wa
 caught  a-wrapped-run-is-carried-on-after-the-switch: if not ok or account_end_wait(now): -> a-wrapped-run-is-carried-on-after-the-switch: nor kicked then: continue kicked rm-detached-bench-wrapped-1799999400-continue (LEFT OPEN note)
 caught  a-wrapped-run-is-carried-on-after-the-switch: r["continue_waits"] = kept -> a-wrapped-run-is-carried-on-after-the-switch: a kick that fails is owed still
 caught  a-switch-never-lands-on-an-ending-account: > AE.target_line(line[n], cfg) -> a-switch-never-lands-on-an-ending-account: system at 2% is no target: {'account': 'lukas', 'line': 2, 'pct_left': 40, 'to': 'system', 'warn_line
-caught  the-hold-file-stops-it: return not (OUT / "HOLD").exists() -> the-hold-file-stops-it: the pass ends in the pause, it does not try the switch: {'acted': True, 'at': '2026-11-24T11:48:47-08:00', 'do': 'switch
-account_end_mutants: PASS (39 of 39 caught, control green)
+caught  no-new-work-after-the-warning: if n.get("state") == "stop": -> no-new-work-after-the-warning: a new run is refused while the fleet is stopped: {'account': 'lukas', 'account_end': False, 'at': '2027-01-15T00:
+caught  no-new-work-after-the-warning: "drain": True, "account_end": True}, now)  # nothing starts -> no-new-work-after-the-warning: nor does a continuation start inside the switch: [None]
+caught  the-warning-is-latched: and not lowered(ep, line[live])) else w -> the-warning-is-latched: the decision itself does not read the old latch: {'account': 'steven', 'line': 5, 'pct_left': 51, 'to': 'system', 'warn_
+caught  a-stale-reading-uses-the-safe-values: if not usable(r) or (r.get("age_min") -> a-stale-reading-uses-the-safe-values: an unread level at 3% is warned though the burn reads fresh
+caught  a-stale-reading-uses-the-safe-values: (r.get("age_min") is not None and r["age_min"] > cfg["stale_min"]) -> a-stale-reading-uses-the-safe-values: a level 25 min old is stale too
+caught  the-pause-keeps-the-chance-of-zero-under-ten-percent: (since is None or t >= since) and -> the-pause-keeps-the-chance-of-zero-under-ten-percent: idle readings from before the switch to it are no burn: {'rate': 0.044444444444444446, 'st
+caught  the-hold-file-stops-it: return not (OUT / "HOLD").exists() -> the-hold-file-stops-it: the pass ends in the pause, it does not try the switch: {'acted': True, 'at': '2026-11-24T12:44:21-08:00', 'do': 'switch
+account_end_mutants: PASS (45 of 45 caught, control green)

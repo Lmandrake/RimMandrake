@@ -13,7 +13,9 @@ fixed priority, which is what `order` in the JSON now means.
 
 Per pass: target = the first account in plan `order` that is MEASURED, fresh (<6 min, polled if within 3% of a line), in window,
 above its line. target != live: arm, use, disarm (marker per transition and target-week). target == live: normal, or SOFT
-at line+2 or within 20 min of a reset that will cause a switch. No target: one hard fleet-stop per account-week;
+at line+2 or within 20 min of a reset that will cause a switch. At or under its warning line the live account is no
+target: the switch (or the stop) falls due, drains while a run is live (the save order goes out, notice `account_end`),
+and at 1% sends the emergency order and pauses (`account_end.py`, `design/specs/2026-11-24-account-end/boundary.md`). No target: one hard fleet-stop per account-week;
 fleet-start when a reset gives headroom. Under-line accounts are no target until their reset (anti-flap). Stale pending
 marker after 2400 s = a dead pass. Output dir files: markers/, notice.json (readers ignore it after 20 min), HOLD.
 Commands: `switching_plan.py check [--dry-run] | status`. Unit timeout 2700 s.

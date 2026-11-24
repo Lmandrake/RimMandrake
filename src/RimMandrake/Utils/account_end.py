@@ -34,10 +34,11 @@ def iso(t):
 
 
 # ------------------------------------------------------------------ the numbers (pure)
-def burn_of(rows, account, now, cfg):
+def burn_of(rows, account, now, cfg, since=None):
     """-> {"rate": % of the week per minute, or None, "stale": bool, "why", "age_s", "span_min"}. The slope of the
     account's MEASURED readings of this week inside the last burn_window_min before its newest one. rate None and stale
-    True when there are fewer than two, or the newest is older than stale_min: could not read is never a slow burn."""
+    True when there are fewer than two, or the newest is older than stale_min: could not read is never a slow burn. `since`:
+    when the account went live; a reading from before it (idle, nothing burned) is not counted."""
     rd = []
     for r in rows or []:
         if not isinstance(r, dict) or r.get("account") != account or r.get("source") != "MEASURED":
@@ -46,7 +47,7 @@ def burn_of(rows, account, now, cfg):
             t, u, rs = epoch(r.get("measured_at")), r.get("week_pct_used"), epoch(r.get("week_resets_at"))
         except ValueError:      # no readable time: no reading
             continue
-        if t is not None and t <= now + 60 and isinstance(u, (int, float)) and not isinstance(u, bool):
+        if t is not None and (since is None or t >= since) and t <= now + 60 and isinstance(u, (int, float)) and not isinstance(u, bool):
             rd.append((t, float(u), rs))
     none = {"rate": None, "stale": True, "age_s": None, "span_min": None}
     if not rd:
@@ -69,7 +70,7 @@ def burn_of(rows, account, now, cfg):
     return {"rate": (u1 - win[-1][1]) / (span / 60), "stale": False, "age_s": age, "span_min": span / 60, "why": ""}
 
 
-def read_burn(account, now, cfg, path=None):
+def read_burn(account, now, cfg, path=None, since=None):
     """burn_of over the tail of series.jsonl; unreadable reads stale, with the cause."""
     try:
         with open(path or SERIES, "rb") as f:
@@ -84,7 +85,7 @@ def read_burn(account, now, cfg, path=None):
             rows.append(json.loads(ln))
         except ValueError:
             continue
-    return burn_of(rows, account, now, cfg)
+    return burn_of(rows, account, now, cfg, since)
 
 
 def stale_burn(why):
@@ -293,7 +294,7 @@ def main(argv=None):
     plan, now = SP.load_plan(), time.time()
     cfg, meter = plan["account_end"], SP.meter_now()
     acct = av[1] if len(av) > 1 else SP.switcher_status().get("live")
-    b = read_burn(acct, now, cfg)
+    b = SP.burn_now(acct, meter, now, cfg, SP.default_burn)
     line = SP.lines(meter, SP.at(plan, now, meter), now)[0].get(acct)
     out = {"account": acct, "line": line, "burn": b, "has_emergency": has_emergency(line, cfg), "pause_s": pause_s(b, cfg)}
     if line is not None:

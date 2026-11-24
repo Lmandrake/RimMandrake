@@ -999,16 +999,19 @@ Please make that true everywhere."* About 6 AM PST: *"Agreed for 1% at the momen
 
 - The soft line (the account's line + 2%) is a notice, not a stop: land your commits with `./publish`, and start no new
   subagent inside an interactive window. A new detached run still starts there. A new detached run is refused only in a
-  drain: the plan's notice has `drain` true, because a switch or a stop waits for live runs (the bullets on the
-  account's line and on the priority switch, below). If a program refused new runs at the soft line, the account would
-  strand: the plan switches at the line, and with no run the meter barely moves toward the line.
-  (A delegated reading. His words name no refusal at the soft line, and his card of 2026-11-23 says *"run to the line"*.)
-- An account whose line is its hard line (1%) has no drain: at 1% the switch kills its live runs. The Conductor decides
-  that (item `RIMMANDRAKE_REFUSE_NEW_RUN_AT_SOFT_LINE_DRAIN_TOO_LATE`).
-- At the account's line, the switch or the stop waits while a detached run is live. The switch or the stop goes when the
-  runs end or at the hard line, whichever is first.
-- The hard line is max(1%, line - 2%). Steven's 52% leave line gives 50% (his 2026-10-28 "use it until 50%"). Every
-  other account stops at 1%.
+  drain: the plan's notice has `drain` true, because a switch or a stop waits for live runs (the bullets on the end of
+  an account and on the priority switch, below).
+- The end of an account (owner, 2026-11-24 11:05 to 11:15 AM PST): *"At 2% no new work is started and "wrap it up
+  cleanly and safely save your work" is sent to everyone. At 1% "emergency: record your state immediately and prepare
+  for termination." Give it a beat... don't just kill at 1%. After a brief pause that has <10% chance of reaching 0%
+  account, initiate the switch. Don't bother manually killing everything, it will happen all by itself"*. Then: *"I
+  agree with your switch when the last live run has ended when <2% remains. Correct, any account that has preserved
+  space well above zero (usually only Steven's) does not need the emergency kill at all. Correct, wait for a reset if
+  it's the last account."* By card ("Sized from the burn rate"): *"that may also initiate the "no new work / save now"
+  warning up at 3% as well if the burn is going crazy fast. Scale both 3/2% (initiate saves) warning and the
+  time-constant post 1% based on load. If the reading is believed to be stale, default to safe values. TELL THE
+  PROCESSES these numbers. Estimate how long they have to complete their saves. It may influence their choices."* This
+  replaces the hard line. Page: `design/specs/2026-11-24-account-end/boundary.md`.
 - The meter reads whole percents (8,749 readings to 2026-11-20, none fractional). So 1% is the lowest line that the
   meter can see. A 0.1% line waits for a finer meter.
 - A switch that the priority pulls (above the line) waits for live runs too, at most 2 h.
@@ -2526,6 +2529,9 @@ constantly"*.
   `USD budget: $used/$cap; $left remaining` every turn (attachment `budget_usd`; 143 in one 11-16 builder run).
   - Claude 2.1.311 has no switch that keeps the cap without the reminder. `CLAUDE_CODE_DISABLE_ATTACHMENTS` drops every
     attachment, hooks included.
+- **One exception: the two orders at the end of an account** tell each live run the account's percent left, the burn
+  rate and the time left to save (owner, 2026-11-24: *"TELL THE PROCESSES these numbers. Estimate how long they have to
+  complete their saves. It may influence their choices."*). No brief, footer or resume prompt carries these numbers.
 - **The hard per-run stop stays** (owner 2026-11-12: *"Don't let any burn go to 90M this time ok?"*).
   `src/RimMandrake/rimflow/spend_watchdog.py` enforces the stop from outside.
   - The watchdog wraps the claude argv and pins the session. The watchdog reads the usage from the transcript

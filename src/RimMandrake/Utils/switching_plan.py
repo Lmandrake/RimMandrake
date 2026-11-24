@@ -497,7 +497,13 @@ def warn_at(plan: dict, line: dict, live, burn, state: dict):
         return None
     w = AE.warning_line(line[live], burn, plan["account_end"])
     ep = state.get("account_end") or {}
-    return max(w, ep["warn_line"]) if ep.get("account") == live and ep.get("warn_line") is not None else w
+    return max(w, ep["warn_line"]) if (ep.get("account") == live and ep.get("warn_line") is not None
+                                       and not lowered(ep, line[live])) else w
+
+
+def lowered(ep: dict, line) -> bool:
+    """The account's line fell after its warning (a dated exception opened more of it): the warning no longer stands."""
+    return line is not None and ep.get("line") is not None and line < ep["line"]
 
 
 def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict, polled: bool = False,
@@ -1025,7 +1031,31 @@ def default_runs():
 
 def default_burn(live, now, cfg):
     """The live plan dir reads the live series; a test's plan dir reads none (unknown: the safe values)."""
-    return AE.read_burn(live, now, cfg) if OUT == LIVE_OUT else AE.stale_burn("a test's plan reads no series")
+    return (AE.read_burn(live, now, cfg, since=live_since(live)) if OUT == LIVE_OUT
+            else AE.stale_burn("a test's plan reads no series"))
+
+
+def live_since(live):
+    """When `live` last went live, by the switcher's log; None when the log's last switch is to another account."""
+    sw = last_switch()
+    return epoch(sw.get("ts")) if sw and sw.get("to") == live else None
+
+
+def burn_now(live, meter, now, cfg, burn_fn):
+    """The burn this pass acts on. A level that cannot be read, or is older than stale_min, makes it stale too: the
+    warning line, the pause and each text then use the safe values, whatever the series says."""
+    r = meter.get(live) or {}
+    if not usable(r) or (r.get("age_min") is not None and r["age_min"] > cfg["stale_min"]):
+        return AE.stale_burn("the level reads %s, %s min old" % (
+            str(r.get("source")) + (" stale" if r.get("stale") else ""), num_age(r)))
+    try:
+        return burn_fn(live, now, cfg)
+    except Exception as e:  # noqa: BLE001  could not read is the safe value, never a slow burn
+        return AE.stale_burn("%s: %s" % (type(e).__name__, e))
+
+
+def num_age(r):
+    return "?" if r.get("age_min") is None else "%g" % round(r["age_min"])
 
 
 def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll, runs_fn=None, burn_fn=None, orders=None,
@@ -1158,7 +1188,8 @@ def warn_step(state: dict, d: dict, plan: dict, burn, runs, orders, now: float) 
     """Step 1: every live run is told to save and end; recorded once, a run that appears later gets its order too."""
     first = (state.get("account_end") or {}).get("account") != d["account"]
     if first:
-        state["account_end"] = {"account": d["account"], "warn_line": d.get("warn_line"), "warned_at": iso(now)}
+        state["account_end"] = {"account": d["account"], "warn_line": d.get("warn_line"), "line": d.get("line"),
+                                "warned_at": iso(now)}
         save_state(state)
     last = d.get("drain_of") != "switch"
     text = AE.warn_text(d["account"], d.get("pct_left"), burn, d.get("line"), plan["account_end"], last)
@@ -1174,13 +1205,13 @@ def emergency_step(state: dict, d: dict, plan: dict, burn, runs, runs_fn, orders
     """Step 3: the emergency order, then the pause. -> True to go on with the switch, False on a HOLD. A pass that died
     in the pause finds its start in the state and waits only what is left."""
     if (state.get("account_end") or {}).get("account") != d["account"]:
-        state["account_end"] = {"account": d["account"], "warn_line": d.get("warn_line"), "warned_at": iso(now)}
+        state["account_end"] = {"account": d["account"], "warn_line": d.get("warn_line"), "line": d.get("line"),
+                                "warned_at": iso(now)}
     ep = state["account_end"]
     em, first = ep.get("emergency"), False
     if not em:
         first = True
-        secs = AE.pause_s(burn if "blind meter" not in str(d.get("why")) else AE.stale_burn("the meter is blind"),
-                          plan["account_end"])
+        secs = AE.pause_s(burn, plan["account_end"])
         em = ep["emergency"] = {"at": now, "pause_s": secs}
         save_state(state)
     last = d["do"] == "stop"
@@ -1240,13 +1271,7 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs, burn_fn=default_bu
     except Exception:  # noqa: BLE001  unreadable runs count as live
         runs = None
     orders = orders or default_orders()
-
-    def burn_now():
-        try:
-            return burn_fn(live, now, plan["account_end"])
-        except Exception as e:  # noqa: BLE001  could not read is the safe value, never a slow burn
-            return AE.stale_burn("%s: %s" % (type(e).__name__, e))
-    burn = burn_now()
+    burn = burn_now(live, meter, now, plan["account_end"], burn_fn)
     d = decide(meter, live, now, plan, state, read_markers(), manual=manual_now(), live_runs=runs, burn=burn)
     pre = None
     if d.get("poll"):
@@ -1271,7 +1296,7 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs, burn_fn=default_bu
                 meter = meter_fn()
                 t_now = clock()
                 now += t_now - t1  # time moved during the poll: windows and resets are judged at the new time
-                burn = burn_now()
+                burn = burn_now(live, meter, now, plan["account_end"], burn_fn)
                 if (OUT / "HOLD").exists():
                     log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared during the poll"})
                     return 0
@@ -1295,6 +1320,8 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs, burn_fn=default_bu
         end_episode(state, d, orders, f"{live} is live now")
     elif ep and d.get("pct_left") is not None and d["pct_left"] > (ep.get("warn_line") or 0) + plan["account_end"]["clear_pct"]:
         end_episode(state, d, orders, f"{live} reads {d['pct_left']}%: it has reset")
+    elif ep and lowered(ep, d.get("line")):
+        end_episode(state, d, orders, f"{live}'s line was lowered from {ep['line']}% to {d['line']}%")
     if d.get("account_end") and d["do"] == "soft":
         write_notice(d, now)    # first: nothing new starts while the orders go out
         warn_step(state, d, plan, burn, runs, orders, now)
@@ -1354,7 +1381,7 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs, burn_fn=default_bu
     if d["do"] == "switch":
         write_marker(d["key"], {"phase": "pending", "at": iso(now), "from": live, "to": d["to"], "under": d.get("under"),
                                 "line": d.get("line")})
-        write_notice({**d, "do": "soft"}, now)
+        write_notice({**d, "do": "soft", "drain": True, "account_end": True}, now)  # nothing starts inside the switch
         res = armed_call(st, ["use", d["to"]], still)
         ok = (res.get("use") or (1,))[0] == 0
         lapsed = (res.get("use") or (1,))[0] is None and "lapsed" in str(res.get("use"))
@@ -1427,7 +1454,7 @@ def status(rate=None, model=None) -> int:
     live = switcher_status().get("live")
     hold = (OUT / "HOLD").exists()
     mk = read_markers()
-    burn = default_burn(live, now, plan["account_end"])
+    burn = burn_now(live, meter, now, plan["account_end"], default_burn)
     d = decide(meter, live, now, plan, state, mk, polled=True, manual=manual_switch(last_switch(), mk, live),
                live_runs=default_runs(), burn=burn)
     pl = pool(meter, now, plan, live)

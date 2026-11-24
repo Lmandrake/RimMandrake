@@ -46,15 +46,16 @@ to safe values. TELL THE PROCESSES these numbers. Estimate how long they have to
   the run's work is carried on.
 - **no-new-work-after-the-warning.** The notice then reads soft, `drain` true and `account_end` true, and
   `drain_refusal` refuses a new run, a continuation and a resume alike. With `account_end` false, a continuation and a
-  resume go as before.
+  resume go as before. While the fleet is stopped, or the switcher runs, nothing starts either.
 - **the-switch-goes-when-the-last-run-ends.** After the warning, with no live run, the switch goes at once, above 1%.
 - **the-warning-is-latched.** A burn that slows after the warning does not take the warning back. A reading above the
-  warning line plus `clear_pct` (a reset) does, and its undelivered orders are withdrawn.
+  warning line plus `clear_pct` (a reset) does, or a line lowered after the warning (a dated exception); the undelivered
+  orders are then withdrawn.
 - **the-emergency-orders-pauses-then-switches.** At 1% or less with a run live: the order goes to every live run, the
   machine waits the computed pause (less when the last run ends sooner), then the switch or the stop starts. No run is
   killed one by one. A pass that died in the pause does not start the pause again.
 - **the-pause-keeps-the-chance-of-zero-under-ten-percent.** pause = a fifth of the time from 0.5% to zero at the burn
-  rate, less the age of the reading, at most 180 s and at least 20 s. Reasoning: a whole-percent meter that reads 1%
+  rate, less the age of the reading, at most 180 s and at least 20 s. The burn is read only from when the account went live. Reasoning: a whole-percent meter that reads 1%
   can stand for anything from just over 0% to 1.5%. The pause spends 0.1 points. If the meter rounds down what is used,
   the true level is uniform in 0 to 1, and the chance that it is under 0.1 is 10% at most. If the meter rounds to the
   nearest, the chance is zero. After the warning the burn falls, so the spend in the pause is smaller still.
@@ -62,7 +63,8 @@ to safe values. TELL THE PROCESSES these numbers. Estimate how long they have to
   warning line is the fast one, the pause is the shortest, and each order says that the reading is stale. A read that
   failed is never "plenty left".
 - **a-kept-account-has-no-emergency.** An account whose line is over `emergency_max_line` gets the warning and the
-  switch at the end of the last run, and never an emergency order or a pause, at any percent.
+  switch at the end of the last run, and never an emergency order or a pause, at any percent. Its one brake with a run
+  live is 1% (51 points under Steven's line): there the switch goes.
 - **the-last-account-goes-dark-and-comes-back.** With nowhere to go, the two orders go out and no switch; the fleet
   stops at the account's own line when the runs end, or after the pause at 1%. After a reset reading the plan starts
   the fleet, or switches to the account that refilled.

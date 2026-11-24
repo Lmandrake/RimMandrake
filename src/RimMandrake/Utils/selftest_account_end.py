@@ -594,6 +594,91 @@ def t_the_reading_is_fresh_at_the_end():
     check("%s: each 60 s repeat reads the meter again" % n, polled == [1], polled)
 
 
+def t_the_dark_notice_starts_nothing():
+    import detached_helper as DH
+    n = "no-new-work-after-the-warning"
+    f = Fake(live="lukas", runs=[])
+    f.go({**OFF, "system": R(0.5, 100), "lukas": R(1, 120)})
+    p = str(SP.OUT / "notice.json")
+    for what, a in (("a new run", ({}, None)), ("a continuation", ({"continued_from": "rm-x"}, None)), ("a resume", ({}, "s"))):
+        check("%s: %s is refused while the fleet is stopped" % (n, what), f.notice()["state"] == "stop"
+              and bool(DH.drain_refusal(f.t + 30, *a, path=p)), f.notice())
+    import maturation_autonomy as MA
+    check("%s: the tick reads that refusal as a wait, not a fault" % n,
+          bool(MA.WAIT_REFUSAL.search(DH.drain_refusal(f.t + 30, {}, None, path=p) or "")))
+    check("%s: a stop notice 30 min old refuses nothing" % n, DH.drain_refusal(f.t + 1800, {}, None, path=p) is None)
+    f.go({**OFF, "system": R(0.5, 100), "lukas": R(100, 167)})
+    check("%s: after the reset all start again" % n, DH.drain_refusal(f.t + 30, {}, None, path=p) is None)
+    # while the switcher runs (about 13 s) the notice refuses a continuation too
+    f = Fake(runs=[])
+    seen, real = [], SP.armed_call
+
+    def call(*a, **k):
+        seen.append(DH.drain_refusal(f.t + 1, {"continued_from": "rm-x"}, None, path=p))
+        return real(*a, **k)
+    SP.armed_call = call
+    try:
+        f.go(m(2))
+    finally:
+        SP.armed_call = real
+    check("%s: nor does a continuation start inside the switch" % n, f.acts() == ["use"] and seen and bool(seen[0]), seen)
+
+
+def t_the_latch_ends_with_a_lowered_line():
+    n = "the-warning-is-latched"
+    f = Fake(live="steven")
+    meter = {"steven": R(51, 150), "system": R(40, 100), "lukas": R(98, 120)}
+    f.go(meter)
+    check("%s: warned at 52" % n, len(f.sent) == 1, f.sent)
+    low = dict(PLAN, accounts=dict(PLAN["accounts"], steven={"leave_pct_left": 5, "window_h_after_reset": None}))
+    (TMP / "low.json").write_text(json.dumps(low))
+    SP.PLAN_PATH = TMP / "low.json"
+    try:
+        f.runs = []
+        f.go(meter)
+    finally:
+        SP.PLAN_PATH = TMP / "plan.json"
+    st = {"account_end": {"account": "steven", "warn_line": 52, "line": 52}}
+    d = SP.decide(meter, "steven", NOW, low, st, markers={}, polled=True, live_runs=[], burn=ORD)
+    check("%s: the decision itself does not read the old latch" % n, d["do"] == "normal" and d["warn_line"] == 5, d)
+    check("%s: his line lowered to 5: no switch at 51%%, the orders are withdrawn" % n, not f.acts()
+          and f.withdrawn == ["ct_1"] and "account_end" not in f.state(), (f.acts(), f.withdrawn, f.state()))
+
+
+def t_a_level_that_cannot_be_read_is_stale():
+    n = "a-stale-reading-uses-the-safe-values"
+    blind = lambda left: {**OFF, "system": R(left, 100, src="ESTIMATE", age=12), "lukas": R(98, 120)}     # noqa: E731
+    f = Fake()      # the burn reads fresh, the level does not
+    f.go(blind(3))
+    check("%s: an unread level at 3%% is warned though the burn reads fresh" % n, len(f.sent) == 1
+          and "STALE" in f.sent[0]["text"], f.sent)
+    f = Fake()
+    f.go(blind(0.8))
+    check("%s: an unread 0.8%%: the emergency order and the record say stale" % n, f.sent and "STALE" in f.sent[0]["text"]
+          and "STALE" in f.steps()[0]["text"] and sum(f.slept) == 20, (f.sent, f.steps()))
+    f = Fake()
+    f.go({**OFF, "system": R(3, 100, age=25), "lukas": R(98, 120)})
+    check("%s: a level 25 min old is stale too" % n, len(f.sent) == 1 and "STALE" in f.sent[0]["text"], f.sent)
+
+
+def t_the_burn_is_only_of_the_time_it_was_live():
+    n = "the-pause-keeps-the-chance-of-zero-under-ten-percent"
+    rs = SP.iso(NOW + 3 * 86400)
+    rows = [{"account": "lukas", "source": "MEASURED", "measured_at": SP.iso(NOW - a * 60), "week_pct_used": u,
+             "week_resets_at": rs} for a, u in ((45, 95), (30, 95), (15, 95), (8, 96), (0, 97))]
+    b = AE.burn_of(rows, "lukas", NOW, CFG, since=NOW - 15 * 60)
+    check("%s: idle readings from before the switch to it are no burn" % n, not b["stale"] and abs(b["rate"] - 2 / 15) < 1e-6, b)
+    b = AE.burn_of(rows, "lukas", NOW, CFG, since=NOW - 5 * 60)
+    check("%s: 5 min after a switch the burn is stale" % n, b["stale"], b)
+    log = SP.SWITCH_LOG
+    log.parent.mkdir(parents=True, exist_ok=True)
+    log.write_text("".join(json.dumps({"op": "use", "from": f, "to": t, "changed": True, "ts": SP.iso(NOW - a)}) + "\n"
+                           for f, t, a in (("system", "lukas", 9000), ("lukas", "system", 5000), ("system", "lukas", 900))))
+    check("%s: since is the last switch to it" % n, SP.live_since("lukas") == NOW - 900 and SP.live_since("system") is None,
+          (SP.live_since("lukas"), SP.live_since("system")))
+    log.unlink()
+
+
 def main():
     real_clock, real_sleep = SP.clock, SP.sleep
     for t in (t_the_warning_fires_at_two_at_an_ordinary_burn, t_the_warning_fires_at_three_at_a_fast_burn,
@@ -605,7 +690,9 @@ def main():
               t_unreadable_runs_count_as_live, t_each_step_is_recorded_once,
               t_an_order_spends_no_trial_and_blocks_nothing, t_a_wrapped_run_is_carried_on_after_the_switch,
               t_a_switch_never_lands_on_an_ending_account, t_the_hold_file_stops_it,
-              t_the_pass_repeats_while_an_account_ends, t_the_reading_is_fresh_at_the_end):
+              t_the_pass_repeats_while_an_account_ends, t_the_reading_is_fresh_at_the_end,
+              t_the_dark_notice_starts_nothing, t_the_latch_ends_with_a_lowered_line, t_a_level_that_cannot_be_read_is_stale,
+              t_the_burn_is_only_of_the_time_it_was_live):
         try:
             t()
         except Exception as e:  # noqa: BLE001

@@ -1,6 +1,6 @@
 ---
 name: rimflow-operations
-description: Operate the multi-account Claude quota system - check each account's level (weekly vs 5-hour cap, percent left, reset time, MEASURED/ESTIMATE/UNMEASURED), apply the standard switching plan (owner's fixed priority steven > system > lukas, 1%/2% floors (never 0%), soft line then drain then hard stop, Steven's 52% leave line, pool pacing), switch or recover accounts with claude-account, and stand windows down and up. Use whenever anyone asks how much quota/usage is left, which account is live, when an account resets, whether to switch accounts, why the fleet stopped or went DARK, how to recover a stuck switch, or touches account_usage.py, account_live.py, switching_plan.py, slot_allocator set/clear, account-plan.timer, or timers_guard pause - even if they just say "are we about to run out".
+description: Operate the multi-account Claude quota system - check each account's level (weekly vs 5-hour cap, percent left, reset time, MEASURED/ESTIMATE/UNMEASURED), apply the standard switching plan (owner's fixed priority steven > system > lukas, 1%/2% floors (never 0%), the save warning at 2% or 3%, the emergency order and sized pause at 1%, Steven's 52% leave line, pool pacing), switch or recover accounts with claude-account, and stand windows down and up. Use whenever anyone asks how much quota/usage is left, which account is live, when an account resets, whether to switch accounts, why the fleet stopped or went DARK, how to recover a stuck switch, or touches account_usage.py, account_live.py, switching_plan.py, slot_allocator set/clear, account-plan.timer, or timers_guard pause - even if they just say "are we about to run out".
 ---
 
 # rimflow-operations: accounts, levels and the standard switching plan
@@ -45,7 +45,9 @@ More traps for this section: [references/traps.md](references/traps.md) § 1. Ch
 
 - An account's **line** is the percent left at which the machine leaves the account. Steven's line is his leave line.
   The line of `system` or `lukas` is a floor.
-- The **hard line** is max(1%, line - 2%). At the hard line the switch or the stop no longer waits for live runs.
+- The **warning line** is the percent left at which the account starts to end. The warning line is max(line, 2%), and
+  one point more when the burn is fast or cannot be read.
+- The **emergency line** is 1%. Only an account with a line of 10% or less has an emergency step.
 - A live run is an active detached run (an `rm-detached-*` unit). If the live runs cannot be read, they count as live.
 - A dated exception in `switching_plan.json` can replace the order, an account's line or its window, for at most 7 days.
   `switching_plan.py status` names the exception in force. While an exception stands, obey the values that it sets.
@@ -58,24 +60,35 @@ More traps for this section: [references/traps.md](references/traps.md) § 1. Ch
 | Steven, outside those 48 h: leave his account alone. Never crowd him out. | owner 2026-10-27, the row above. It narrows his 2026-10-26 words about 10% left late in the week (`references/history.md`). |
 | Floors: **1%** when the machine switches away, **2%** when the machine waits on an account. With 2% left, the owner can still talk to a seat while the machine is idle. No account is driven to 0%. The meter reads whole percents (8,749 readings, none fractional). So 1% is the lowest line that the meter can see. | owner 2026-11-20: *"Actually 0.1% is even ok kept. We just don't want to crash to zero and get stuck."*, then *"Agreed for 1% at the moment"*. The 2% is delegated. |
 | **No share is kept for his evenings.** Each account runs to its line, at any hour. | owner, card 2026-11-23 8:57 AM PST: *"No, run to the line"* (`standing_rulings.md` §Account and capacity budget) |
-| **Soft line** (line + 2%): a notice. Land your commits with `./publish`, and start no new subagent inside an interactive window. A new detached run still starts. **Live runs finish**: at the line the switch or the stop waits while a detached run is live. The switch or the stop goes when those runs end, or at the **hard line** = max(1%, line - 2%) (steven: 50%), whichever is first. | card 10:20 "Soft line, then hard stop"; owner 2026-11-20: *"And yes for live runs finish past, absolutely."* |
+| **Soft line** (line + 2%): a notice. Land your commits with `./publish`, and start no new subagent inside an interactive window. A new detached run still starts. | card 10:20 "Soft line, then hard stop" |
+| **Save warning**, at the warning line (2%; 3% when the burn is over 0.1% a minute, stale or unread): no new work starts on the account: a new run, a continuation and a resume are refused. Each live run gets a stop order: wrap it up cleanly and safely save your work. The order says the percent left, the burn rate and the minutes left. | owner 2026-11-24: *"At 2% no new work is started and "wrap it up cleanly and safely save your work" is sent to everyone."* Card: *"up at 3% as well if the burn is going crazy fast ... TELL THE PROCESSES these numbers."* |
+| **Switch when the work has ended**: after the warning the switch goes as soon as the last live run has ended. The switch does not wait for 1%. | owner 2026-11-24: *"I agree with your switch when the last live run has ended when <2% remains."* |
+| **Emergency**, at 1% with a run live: each live run gets the order to record its state at once. The order says the seconds of the pause. Then the machine pauses: a fifth of the time from 0.5% to zero at the burn rate, 20 s to 180 s (20 s when the reading is stale). Then the switch goes and stops every Claude process. Nothing is killed by hand. | owner 2026-11-24: *"Give it a beat... don't just kill at 1%."* Card "Sized from the burn rate" |
+| **An account kept well above zero** (Steven at 52%) gets the warning and the switch at the end of the last run. It gets no emergency. | owner 2026-11-24: *"does not need the emergency kill at all"* |
+| **The last account** gets the same two orders. Then the machine stops at the account's line, and a reset starts it again. | owner 2026-11-24: *"wait for a reset if it's the last account"* |
 | A priority switch is a switch to an account that comes earlier in `order`, made above the live account's line. A priority switch also waits for live runs, at most `pull_drain_max_s` (2 h). | owner 2026-11-20, the same words as the soft line row; page `design/specs/2026-11-20-account-drain/boundary.md` |
-| **Do not stop runs or switch by hand at the soft line.** The hand stop of 2026-11-18 6:43 PM and the hand switch of 6:59 PM (steven at 55%) killed 9 runs. Their resumes missed the prompt cache: 4.73M weighted. | the 2026-11-20 scan, `design/specs/2026-11-20-context-kept-not-reloaded/report.md` §1 row 3 |
+| **Do not stop runs or switch by hand at the soft line or at the warning.** The hand stop of 2026-11-18 6:43 PM and the hand switch of 6:59 PM (steven at 55%) killed 9 runs. Their resumes missed the prompt cache: 4.73M weighted. | the 2026-11-20 scan, `design/specs/2026-11-20-context-kept-not-reloaded/report.md` §1 row 3 |
 | **Blind meter = 0%**: the last MEASURED reading is <= 1%, and the meter is now blind (a failed /usage, a limit error, an ESTIMATE or a stale reading). Then the account counts as 0%, and the machine switches. | the rule relayed on 2026-10-28 at 11:2x |
 | **Pool pacing**: pace the whole pool "BECAUSE it spreads out the human review time cleanly to inform the process in a timely manner". | by card 10:20 |
 
-What enforces the soft line today:
+What enforces the soft line and the save warning today:
 
 - `switching_plan.py status` shows when the plan is soft. Either the `do` of `next_pass` is `soft`, or the `notice` has
   `state` `soft` and an `at` time under 20 min old. Then land your commits with `./publish`, and start no
   new subagent inside an interactive window (a switch kills it and does not wait for it). The plan is also soft in the 20 min before a reset that will pull the machine to another account.
-- While the plan drains (its notice reads `soft` with `drain` true), `detached_helper.launch` refuses a new run. A
-  continuation or a resume of a live run still starts. A notice that is unreadable or over 20 min old refuses nothing.
-- No program refuses a new helper at the soft line or in a drain. No program refuses a new detached run at the soft line
-  before the drain. If one did, the meter would barely move with no run, and the switch at the line would not come
-  (`references/traps.md`, failover-soft-line-strands). An account whose line is 1% has no drain, because its hard line is
-  also 1%: at 1% its live runs are killed. The allocator reports 0 new helpers, but does not apply that count while
-  `advisory.enabled` is true in `slot_rules.json`.
+- `status` also shows `account_end`: the burn, the warning line, the pause and the episode (who was ordered, and when).
+  `account_end.py burn [ACCOUNT]` shows the sizes of one account.
+- While the plan drains (its notice reads `soft` with `drain` true), `detached_helper.launch` refuses a new run. With
+  `account_end` true it refuses a continuation and a resume too. A continuation that waited starts after the switch
+  (`left_open_continue.kick_waiting`). A notice that is unreadable or over 20 min old refuses nothing.
+- The orders are stop orders of the control store, for the detached and role runs. A run hears an order after its tool
+  call in hand ends. The orders write no OFF switch and void no run. A run that ends on an order writes a note that
+  starts `LEFT OPEN:`, and that note carries its work on.
+- A window has no stop hook. Its signs are the notice, the Conductor log lines `ACCOUNT END` and the ledger notes on
+  `RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN`.
+- No program refuses a new helper inside a window. The allocator reports 0 new helpers, but does not apply that count
+  while `advisory.enabled` is true in `slot_rules.json`.
+- While an account ends, the pass reads the meter and repeats each minute inside its 5-min beat.
 
 The engine is `switching_plan.py check`. The timer `account-plan.timer` runs the engine every 5 min.
 
@@ -135,7 +148,8 @@ More traps for this section: [references/traps.md](references/traps.md) § 4. Re
 
 - A switch kills every window and helper on the machine. Unpublished work dies. **Publish at every green point**: each
   time the checks of your work pass. Write the handoff file (the `handoff` skill) BEFORE a switch. The plan waits for
-  detached runs to end (the drain). But a hard line, a failed switch or a hand switch still kills them.
+  detached runs to end (the drain). But the switch after the pause at 1%, a failed switch or a hand switch still kills
+  them.
 - A switch likely drops the Remote Control sessions, and they need a new attach (UNMEASURED; see the skill
   `claude-remote-control`).
 - Vault freshness: a vault whose token has under 15 min left cannot be probed. `account_usage.py` warms such a DORMANT
@@ -183,7 +197,8 @@ More traps for this section: [references/traps.md](references/traps.md) § 6. Th
 - The dormant-account tie: two accounts can read the same newest time. Do not take the first dict key.
   `claude-account status` is the authority on which account is live. Without its answer, `pick_burn_account` prefers the
   "live login" method.
-- A DARK soft line is right while there is nowhere to go. A DARK soft line is wrong once a fresh account exists.
+- A DARK soft line is right while there is nowhere to go. A DARK soft line is wrong once a fresh account exists. Since
+  2026-11-24 the switch goes when the last run ends, so a drain that stops all work cannot strand the account.
 - If `use` times out at 600 s mid-switch, the journal stays. Recover (§4).
 - Selftests stub the CLI. So probe the real call once. More: `references/traps.md`.
 

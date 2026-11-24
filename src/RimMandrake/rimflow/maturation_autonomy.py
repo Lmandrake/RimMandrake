@@ -73,7 +73,7 @@ NEVER_TRANSIENT = re.compile(r"finish step never ran")
 # returns its clone, which the next launch reuses without that check; the pool's own alarm (disk.pool_breach) owns a pool
 # that never frees (RIMMANDRAKE_UNBLOCK_PYRE_VISIT_SIX_HELD_BY_AN_ART_PICK_THAT_IS_HIS: Pyrelands' certificate rerun and
 # its form repair were refused a clone 4 times on 2026-11-22, and the repair's third refusal named the Conductor)
-WAIT_REFUSAL = re.compile(r"is draining \(switching plan notice|REFUSED \S+ by control:|POOL REFUSED: pool (?:full|at )|%s"
+WAIT_REFUSAL = re.compile(r"is (?:draining|out) \(switching plan notice|REFUSED \S+ by control:|POOL REFUSED: pool (?:full|at )|%s"
                           % re.escape(M.WAIT_MARK))
 
 
