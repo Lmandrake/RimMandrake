@@ -9,7 +9,7 @@ Windows side (no elevation needed):
   scheduled task "RimMandrake\\Telemetry"  every minute: pythonw supervise.py (from the MIRROR)
 WSL side:
   ~/.config/systemd/user/rm-telemetry-{export,health,pull}.{service,timer}  (ops_clocks.py install, from ../systemd)
-  ~/.local/bin/telemetry -> this directory's `telemetry` wrapper
+  ~/.local/bin/telemetry -> the `telemetry` wrapper of the Operations deploy (ops_clocks.deploy)
 
 Pinned versions are below; bump them here, re-run, commit.
 """
@@ -124,7 +124,8 @@ def main(argv=None) -> int:
     binp = os.path.expanduser("~/.local/bin/telemetry")
     if os.path.islink(binp) or os.path.exists(binp):
         os.remove(binp)
-    os.symlink(os.path.join(HERE, "telemetry"), binp)
+    # the deploy fast-forwards itself; a link into a seat clone served stale code (2026-11-23)
+    os.symlink(os.path.join(ops_clocks.deploy(), "src", "RimMandrake", "Utils", "telemetry", "telemetry"), binp)
     print("  ~/.local/bin/telemetry linked")
     r = sh(["schtasks.exe", "/Run", "/TN", TASK])
     print(f"  kicked supervisor: {'ok' if r.returncode == 0 else r.stderr.strip()}")
