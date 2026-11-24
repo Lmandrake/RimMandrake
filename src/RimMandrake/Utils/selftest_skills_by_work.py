@@ -8,7 +8,8 @@ pass relevant debug skills to the subagents we assign to do related work, yes?" 
               page's registration table says `yes` exactly when .claude/skills/<name> is linked.
   read-first  every path in a "## Read first" list of .claude/agents/rm-*.md or src/RimMandrake/rimflow/roles/*.md exists
               (`~/dev/...` paths expanded; UNMEASURED when ~/dev is not on this machine), and every rm-*.md has one.
-  shared      every .claude/agents/rm-*.md carries .claude/rm_agent_shared_block.md verbatim, so the
+  shared      each of them carries .claude/rm_agent_change_block.md too, or (rm-consult, rm-judge) the pointer to it;
+              every .claude/agents/rm-*.md carries .claude/rm_agent_shared_block.md verbatim, so the
               block the six agent files share stays one text.
 
 Each check runs on throwaway trees with a planted fault (must go red) before the real tree (must be green).
@@ -20,6 +21,9 @@ import glob, os, re, shutil, sys, tempfile
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 MAP = os.path.join("skills", "BY_WORK.md")
 BLOCK = os.path.join(".claude", "rm_agent_shared_block.md")
+CHANGE = os.path.join(".claude", "rm_agent_change_block.md")     # the rules of a helper that changes files
+NO_CHANGE = ("rm-consult.md", "rm-judge.md")     # they change nothing: they carry POINTER in place of the CHANGE block
+POINTER = "First read `.claude/rm_agent_change_block.md`."
 AGENTS = os.path.join(".claude", "agents")
 ROLES = os.path.join("src", "RimMandrake", "rimflow", "roles")
 UNMEASURED_PHRASE = "UNMEASURED, not a pass or a fail"
@@ -97,16 +101,28 @@ def read_first_problems(root, home_dev=None):
 
 
 def shared_problems(root):
-    src = os.path.join(root, BLOCK)
-    if not os.path.isfile(src):
-        return ["%s is missing" % BLOCK]
-    block = _read(src)
-    if len(block.splitlines()) < 10:
-        return ["%s holds %d lines, not the shared block" % (BLOCK, len(block.splitlines()))]
+    blocks = {}
+    for rel in (BLOCK, CHANGE):
+        src = os.path.join(root, rel)
+        if not os.path.isfile(src):
+            return ["%s is missing" % rel]
+        blocks[rel] = _read(src)
+        if len(blocks[rel].splitlines()) < 10:
+            return ["%s holds %d lines, not the shared block" % (rel, len(blocks[rel].splitlines()))]
     agents = sorted(glob.glob(os.path.join(root, AGENTS, "rm-*.md")))
     if not agents:
         return ["no agent definitions under %s (blind instrument)" % AGENTS]
-    return ["%s: does not carry %s verbatim" % (os.path.relpath(a, root), BLOCK) for a in agents if block not in _read(a)]
+    bad = []
+    for a in agents:
+        rel, text = os.path.relpath(a, root), _read(a)
+        if blocks[BLOCK] not in text:
+            bad.append("%s: does not carry %s verbatim" % (rel, BLOCK))
+        if os.path.basename(a) in NO_CHANGE:
+            if POINTER not in text or blocks[CHANGE] in text:
+                bad.append("%s: changes nothing, so it carries the pointer to %s and not the block" % (rel, CHANGE))
+        elif blocks[CHANGE] not in text:
+            bad.append("%s: does not carry %s verbatim" % (rel, CHANGE))
+    return bad
 
 
 def check(cond, msg):
@@ -128,7 +144,8 @@ def copy_tree(dst):
     shutil.copytree(os.path.join(REPO, AGENTS), os.path.join(dst, AGENTS))
     shutil.copytree(os.path.join(REPO, ROLES), os.path.join(dst, ROLES))
     os.makedirs(os.path.dirname(os.path.join(dst, BLOCK)), exist_ok=True)
-    shutil.copy(os.path.join(REPO, BLOCK), os.path.join(dst, BLOCK))
+    for rel in (BLOCK, CHANGE):
+        shutil.copy(os.path.join(REPO, rel), os.path.join(dst, rel))
 
 
 def planted(fault):
@@ -193,6 +210,17 @@ def main():
         t = planted(lambda r: os.remove(os.path.join(r, BLOCK)))
         tmps.append(t)
         check(shared_problems(t) == ["%s is missing" % BLOCK], "shared: a missing source is refused, not passed")
+        t = planted(lambda r: _edit(os.path.join(r, CHANGE), "Commit explicit paths only.", "Commit what you like."))
+        tmps.append(t)
+        check(len(shared_problems(t)) == 4, "shared: an edited change block refuses the four files that carry it")
+        t = planted(lambda r: _edit(os.path.join(r, AGENTS, "rm-judge.md"), POINTER, ""))
+        tmps.append(t)
+        check(shared_problems(t) == ["%s: changes nothing, so it carries the pointer to %s and not the block"
+                                     % (os.path.join(AGENTS, "rm-judge.md"), CHANGE)],
+              "shared: a helper that changes nothing and lost the pointer is refused")
+        t = planted(lambda r: os.remove(os.path.join(r, CHANGE)))
+        tmps.append(t)
+        check(shared_problems(t) == ["%s is missing" % CHANGE], "shared: a missing change block is refused, not passed")
         # the real tree: must be green
         for name, bad in (("map", map_problems(REPO)), ("shared", shared_problems(REPO))):
             check(not bad, "%s: the real tree is clean%s" % (name, "" if not bad else ": " + "; ".join(bad)))

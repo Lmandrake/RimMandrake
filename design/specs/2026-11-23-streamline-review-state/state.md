@@ -9,8 +9,8 @@ built. OVERTAKEN: a later ruling of his decides it. Each reading is [measured] u
 
 | rank, change | state | evidence | what is left |
 |---|---|---|---|
-| 1 git publication off the metadata path | PARTLY | `74d8295d69` (a write lands its own shards); `8d9160362d` this run: `./publish --ledger` lands shards alone, past the clone lock, with no peer's commit. Before: 1,146 ledger landings, p50 17 s, p90 96 s, p99 677 s | a ledger write still costs one fetch and one push, and the `rimflow` write itself about 15 s at load 42 |
-| 2 close consumes evidence | DONE | no close is refused for a missing pass since 2026-11-21 (`design/specs/2026-11-21-repair-at-the-refusal`); `8d9160362d`: `close --evidence` writes the pass with the close. Before: 357 of 364 code closes marked `uncheckedLifted` | none |
+| 1 git publication off the metadata path | PARTLY | `74d8295d69` (a write lands its own shards); `8d9160362d` this run: `./publish --ledger` lands shards alone, past the clone lock, with no peer's commit; `dfe46ca961` repairs what the fresh read found. Batch two's measure (§Batch two): p50 18.4 s before, 6.4 s after (30 landings) | a ledger write still costs one fetch and one push, and the `rimflow` write itself about 15 s at load 42 |
+| 2 close consumes evidence | DONE | no close is refused for a missing pass since 2026-11-21 (`design/specs/2026-11-21-repair-at-the-refusal`); `8d9160362d`: `close --evidence` writes the pass with the close (`dfe46ca961`: a refused close now writes neither). Before: 357 of 364 code closes marked `uncheckedLifted` | none |
 | 3 cards by reference | DONE | `3e224420d1` (`card_repair`: the launch adds the card's text and never refuses) | none |
 | 4 delete sentence-based owed detection | PARTLY, the rest not recommended | the demand became a note (`3e224420d1`, `covered`). The note works: of 176 turns that showed it, 35 (20%) filed an owed item; of 1,860 other turns, 130 (7%) did. I read all 35: about 25 filed the act that the note named. His one-list rule of 2026-11-22 says that a debt in a reply must be filed | the kill queue half: 2 rows ever, both false, none filed. It goes with `RIMMANDRAKE_RETIRE_OR_REPAIR_OWED_SOURCES_KILLED_EVERY_TICK` |
 | 5 readable titles and machine ids | OVERTAKEN, done as he ruled | his card: "Keep grammar, never refuse"; `9e5768e86f` | none |
@@ -44,19 +44,72 @@ built. OVERTAKEN: a later ruling of his decides it. Each reading is [measured] u
 
 The Conductor's startup reading chain was 183.3 KB in the review. It is 199.3 KB now, plus `GUIDING_PRINCIPLES.md` (11.2 KB).
 `CLAUDE.md` grew from 43.2 to 58.0 KB. The global file is 38.8 (38.3), the Charter 18.6 (18.3), the model policy 23.4
-(22.2), Purpose 10.1 (9.4), the Conductor role with its pointer 50.4 (51.9). The six `rm-*` helper files are 79.8 KB
-(about 73). `rm-consult.md` changes nothing, and still carries commit, ledger and progress-file rules. He deferred a length
-ceiling for rule files to about 2026-12-05 (note of 2026-11-21).
+(22.2), Purpose 10.1 (9.4), the Conductor role with its pointer 50.4 (51.9). The six `rm-*` helper files were 80,121 bytes
+(about 73 KB in the review) and are 78,069 bytes after batch two. He deferred a length ceiling for rule files to about 2026-12-05 (note
+of 2026-11-21).
+
+## Batch two (2026-11-23, 7 to 9 PM PST)
+
+**The one fresh read of `8d9160362d`.** Each code file was read whole once, against its pages. Tests were read with them.
+
+| file | verdict | evidence |
+|---|---|---|
+| `src/RimMandrake/rimflow/cli.py` | one fault, fixed, FLAGGED | `close --evidence` on an item that is done already was refused, but its pass was written. Red then green: `selftest_close_gate.py` |
+| `src/RimMandrake/Utils/publish.py` | one fault and one untested promise, fixed, FLAGGED | a writer whose lines a peer's landing carried was told "nothing to publish" (exit 4) for lines on origin. The page named two cases with no test (a torn line, no origin). Red then green: `selftest_publish.py`, 79 of 79 |
+| `src/RimMandrake/rimflow/ledger_landing.py` | nothing significant | `selftest_ledger_landing.py` passes |
+| `src/RimMandrake/rimflow/detached_helper.py` | nothing significant | the two changed lines: `--evidence` in the footer, `--ledger` in the launch gate |
+| `src/RimMandrake/Utils/boundary_check.py` | nothing significant, NO PAGE | one row added to its list |
+
+Six polish lines went on `design/specs/2026-11-22-ledger-write-lands-its-shard/polish.md`. The fixes are `dfe46ca961`.
+
+**Landing time**, one method on both sides: the commit time less the newest event time in the commit, for each `ledger:` commit
+that holds shards only. Before (2026-11-23 6 AM PST to `8d9160362d`): 951 landings, p50 18.4 s, p90 74.8 s, p99 407 s. After:
+30 landings, p50 6.4 s, p90 23.5 s, p99 94 s. A p99 of so few landings is their worst one. Clones that had not yet synced still took the old route, and
+the detached finish and return steps still do (`./publish` with no `--ledger`).
+
+**The helper-file diet.** The guess in batch one (about 25 KB) was wrong. The common block already had one source
+(`.claude/rm_agent_shared_block.md`) and a check. A move of the block behind a Read saves nothing, because the helper then reads
+it, and a helper that skips the Read works without its rules. So only lines that a helper never acts on were moved.
+Measured from the subagent transcripts of 14 days (`Agent` runs of each kind):
+
+| helper | runs | publish | git commit | deploy | build | the change block |
+|---|---|---|---|---|---|---|
+| rm-judge | 352 | 1% | under 1% | 1% | 1% | pointer |
+| rm-consult | 36 | 2% (a false match: text in a heredoc) | 0% | 0% | 2% | pointer |
+| rm-builder | 249 | 65% | 32% | 8% | 16% | kept |
+| rm-fixer | 109 | 64% | 39% | 2% | 3% | kept |
+| rm-bridge | 22 | 50% | 50% | 40% | 13% | kept |
+| rm-testpilot | 2 | too few to say | | | | kept |
+
+- A new second source, `.claude/rm_agent_change_block.md`, holds the rules of a helper that changes files: explicit paths, the
+  forbidden git verbs, separate writes and commits, `./publish`, the clean tree, deploy and build commands, the packageId
+  and prefixes, the CLEAN rule, tests before a commit. Builder, fixer, bridge and Test Pilot carry it word for word. Judge and consult
+  carry one pointer: they read it before they write a file in the repo, commit, build or deploy. No permission changed.
+- The tail of the six files (how you run, test 1 and 2, the Conductor's authority) had no source. It is in the shared block now.
+- Said twice in one file, now once: FOUNDRY is retired; check a name with `rimflow namecheck`.
+- Corrected: "commit OWNER.jsonl too" now says `--publish`, which lands it. Deleted as false: "it cost ~23k tokens per call".
+- `selftest_skills_by_work.py` refuses a copy that differs, a lost pointer and a missing source (each seen red on a planted fault). Not run: a live helper on the new files.
+- A line-by-line compare of each file before and after lists only the lines named in the three bullets above.
+
+| file | bytes before | bytes after |
+|---|---|---|
+| `.claude/agents/rm-bridge.md` | 10,605 | 10,593 |
+| `.claude/agents/rm-builder.md` | 12,023 | 12,011 |
+| `.claude/agents/rm-consult.md` | 8,441 | 7,439 |
+| `.claude/agents/rm-fixer.md` | 10,424 | 10,412 |
+| `.claude/agents/rm-judge.md` | 9,805 | 8,803 |
+| `.claude/agents/rm-testpilot.md` | 28,823 | 28,811 |
+| the six | 80,121 | 78,069 |
+| `.claude/rm_agent_shared_block.md` (a source, not loaded) | 5,279 | 6,401 |
+| `.claude/rm_agent_change_block.md` (a source, read on the pointer) | 0 | 1,153 |
 
 ## Recommended order for the rest
 
 1. `RIMMANDRAKE_RETIRE_OR_REPAIR_OWED_SOURCES_KILLED_EVERY_TICK` (a failure that happens every tick; filed).
-2. The helper-file diet: the six `rm-*` files share one common block, and `rm-consult.md` gets a read-only one. No rule of his
-   changes. [guess ~80% that it removes about 25 KB]
-3. Change 13: an early checkpoint signal before the spend stop.
-4. Change 7: count the false blocks of each hook for one week, then move only the worst.
-5. Change 12: count runs on two items with one cause for one week.
-6. Changes 11 and 10: only after a measured collision or a measured rediscovery.
-7. The `CLAUDE.md` diet: after he rules on the length ceiling (about 2026-12-05).
+2. Change 13: an early checkpoint signal before the spend stop.
+3. Change 7: count the false blocks of each hook for one week, then move only the worst.
+4. Change 12: count runs on two items with one cause for one week.
+5. Changes 11 and 10: only after a measured collision or a measured rediscovery.
+6. The `CLAUDE.md` diet: after he rules on the length ceiling (about 2026-12-05).
 
 Tickets: one is filed (row 1). The other rows fail test 1 of §Touching code has a cost today: no failure was measured, except the one capped run in row 13, which resumed.
