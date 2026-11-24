@@ -2344,81 +2344,115 @@ and what they did wrong: `plight.md` §10 in that folder.
 
 ## The nightly checks finished mods only — owner, 2026-11-15 (card)
 
-Asked what should happen to the nightly run (evidence: `D:\ClaudeWork\rimmandrake\conductor\nightly_reds_report_20261115.md`
-§5), he chose *"Pause nightly and fixers until a mod passes"* and typed: *"(3) because I think Nightly tests should check
-mods with finished versions, not mods in production. Code is too fluid otherwise. Wrong phase."* (Sun 2026-11-15, on the
-ledger 4:10 PM PST: item `RIMMANDRAKE_PAUSE_NIGHTLY_SWEEP_WRONG_PHASE_UNTIL_MOD_FINISHED`, file event tsn
-1794787827067966182). He then asked *"Keep nightly tests for Pipeline elements perhaps though?"*; the Conductor's answer,
-his to overrule: the pipeline's machinery is the most fluid code there is, so it is checked at the door instead.
+The card asked what should happen to the nightly run. The evidence was
+`D:\ClaudeWork\rimmandrake\conductor\nightly_reds_report_20261115.md` §5. He chose *"Pause nightly and fixers until a
+mod passes"* and typed: *"(3) because I think Nightly tests should check mods with finished versions, not mods in
+production. Code is too fluid otherwise. Wrong phase."* (Sun 2026-11-15, on the ledger 4:10 PM PST: item
+`RIMMANDRAKE_PAUSE_NIGHTLY_SWEEP_WRONG_PHASE_UNTIL_MOD_FINISHED`, file event tsn 1794787827067966182.)
 
-- **The nightly set** is the tests of mods with a passed Design Version (`design/concepts/<Mod>/version/stage_record.json`
-  at `passed`, or a kept older record that is): `src/<tier>/<Mod>/**/selftest*.py` and
-  `src/RimMandrake/Utils/selftest_<mod>_*.py`. A mod in production is never in it; process machinery is never in it.
-  None passed: the run says "nothing finished yet", green. `python3 src/RimMandrake/Utils/nightly_scope.py show`.
-- **The nightly runs now.** He chose the hold until a mod passed; the first mod passed and the hold lifted itself (measured
-  2026-11-23: `nightly_scope.py show` reads 41 tests from 1 finished mod, and `timers_held.json` is empty). So a missing
-  nightly is a fault. A hold would come back only by `timers_guard.py hold --until finished-mod`, a recorded,
-  ruling-backed stop.
-- **When it runs**, it runs on a clean clone of origin/main (`/home/mandrake/rm/nightly`) with `~/.local/bin` on PATH, and
-  no fixer launches on a red until it has been rerun red on current origin/main (the build cop's RerunGate files the item
-  only then; red_dispatch launches only on filed items).
-- **The pipeline's own tests run at the door:** a publish touching a Maturation Pipeline file runs the pipeline tests whose
-  inputs it touches and refuses on a red (`src/RimMandrake/Utils/pipeline_tests.json`, `publish.py pipeline_checks`);
-  tests that read live state are listed there and excluded. `"nightly": true` in that file puts them back in the nightly.
-- **What stays:** the 13 publish tree checks; agents run the tests for what they changed before a commit; every item is
-  built with its tests (2026-11-13); no test is deleted.
+He then asked *"Keep nightly tests for Pipeline elements perhaps though?"* The Conductor gave this answer, and the
+owner may overrule it. The pipeline's machinery is the most fluid code there is. So `./publish` checks the machinery
+instead.
+
+- **The nightly set** is the tests of mods with a passed Design Version.
+  - A mod has one when `design/concepts/<Mod>/version/stage_record.json` reads `passed`, or when a kept older record
+    does.
+  - The tests are `src/<tier>/<Mod>/**/selftest*.py` and `src/RimMandrake/Utils/selftest_<mod>_*.py`.
+  - A mod in production is never in the set. Process machinery is never in the set.
+  - When no mod has passed, the run says "nothing finished yet" and is green.
+  - `python3 src/RimMandrake/Utils/nightly_scope.py show` prints the set.
+- **The nightly runs now.** He chose the hold until a mod passed. The first mod passed, and the hold lifted itself.
+  - Measured 2026-11-23: `nightly_scope.py show` reads 41 tests from 1 finished mod, and `timers_held.json` is empty.
+  - So a missing nightly is a fault.
+  - A hold comes back only by `timers_guard.py hold --until finished-mod`. That command records a stop and the ruling
+    behind it.
+- **How the nightly runs:**
+  - The nightly runs on a clean clone of origin/main (`/home/mandrake/rm/nightly`), with `~/.local/bin` on PATH.
+  - A red test starts no fixer until the test was run again, red, on current origin/main. `RerunGate` in
+    `src/RimMandrake/Utils/ops_watch.py` files the item only then. `red_dispatch` launches a fixer only on a filed item.
+- **The pipeline's own tests run at the door**, which is `./publish`.
+  - A publish that touches a Maturation Pipeline file runs each pipeline test whose inputs the publish touches. A red
+    test refuses the publish.
+  - The list is `src/RimMandrake/Utils/pipeline_tests.json`. The code is `publish.py pipeline_checks`.
+  - A test that reads live state is listed in that file and excluded.
+  - `"nightly": true` in that file puts the pipeline tests back in the nightly.
+- **What stays:**
+  - the publish tree checks (13 on the day of the ruling, 22 on 2026-11-24, in
+    `src/RimMandrake/Utils/publish_tree_checks.json`);
+  - agents run the tests for what they changed before a commit;
+  - every item is built with its tests (2026-11-13);
+  - no test is deleted.
 
 ## Spend in weighted tokens; the live game is never held for his look while he is away — owner, 2026-11-16
 
-His words (Mon 2026-11-16, ~1:08 PM PST, on the ledger 21:10Z under `RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD`):
-*"Please speak in terms of weighted tokens not money. The money quotes don't translate meaningfully. Do not hold live
-testing when I can't go to the desktop such as now."*
+His words (Mon 2026-11-16, ~1:08 PM PST, on the ledger 21:10Z under
+`RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD`): *"Please speak in terms of weighted tokens not money. The money
+quotes don't translate meaningfully. Do not hold live testing when I can't go to the desktop such as now."*
 
-- **Weighted tokens, never money.** Every line a person reads states spend in weighted tokens: the DETACHED RUN ENDED
-  lines and notes, `maturation_dispatch.py` status, pause, release and `releases` lines, the maturation status page,
-  `maturation_hands.py list`, and the Conductor's own words to him.
-  List dollars stay only inside, where a tool needs them (`spend_watchdog.py --cap-usd`, the run record's `cost_usd`, the
-  stage ceiling and caps); a line about a dollar-kept limit converts at `maturation_dispatch.WT_PER_USD` (exact: one
-  list dollar is 1e6 / the reference input price) and marks the figure `≈`. Moving the ceiling and caps themselves into
-  tokens: `RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS`.
+- **Weighted tokens, never money.** Every line that a person reads states spend in weighted tokens. Those lines include:
+  - the `DETACHED RUN ENDED` lines and notes;
+  - the status, pause, release and `releases` lines of `maturation_dispatch.py`;
+  - the maturation status page and `maturation_hands.py list`;
+  - the Conductor's own words to him.
+- **List dollars stay only inside, where a tool needs them:** `spend_watchdog.py --cap-usd`, the run record's
+  `cost_usd`, the stage ceiling (the spend limit of one stage) and the caps.
+  - A line about a limit that is kept in dollars converts the limit at `maturation_dispatch.WT_PER_USD` and marks the
+    figure `≈`. The rate is exact: one list dollar is 1e6 / the reference input price.
+  - The item `RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS` holds the move of the ceiling and the caps into
+    tokens.
 - **Weighted by model too** (his words, ~10:03 PM PST: *"I want you to properly weight tokens by the model as well so
   they are more comparable. That's how I always want us to measure"*; item
-  `RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT`). The unit is `weighted_v2`: each usage field (input, 5-minute and
-  1-hour cache writes, cache reads, output) at that model's own list price, divided by the list price of one uncached
-  Opus 5.5 input token (= 1). The one table is `role_launch.MODEL_PRICES`, from Anthropic's published list prices; a
-  model missing from it fails by name, never a fallback weight. A run is weighed from its result's `modelUsage` (the
-  whole process, subagents included), else its usage and model. A `weighted_v1` figure (relative to the same model's
-  input, no model weight; Opus reads counted at 0.1 where the list says 0.05) is converted by
-  `role_launch.tokens_v2` before it is compared with a v2 one; limits set in v1 were converted at the measured
-  Opus v2/v1 ratio so they keep meaning the same real spend for Opus runs.
-- **No live hold for his look while he is away.** A staged owner look is never a reason the pipeline holds, parks or
-  pauses the game: the look is kept as a save, the game goes back to the tick, and the look is re-staged from that save
-  when he sits down. Stopping a live run to stage a look is a kill, which the tick retries like any kill
-  (`maturation_dispatch.retriable` counts kills, not launch faults), and `maturation_dispatch.py clear` lifts the stop
-  an ended automatic run left. The in-game driver's brief keeps every `*OWNER_LOOK*` save. His own OWNER bridge hold
-  while he is walking a look stays his (§The bridge is passed through one file).
+  `RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT`). The unit is `weighted_v2`.
+  - The usage fields are input, 5-minute and 1-hour cache writes, cache reads, and output. Each field is weighed at that
+    model's own list price. The sum is divided by the list price of one uncached Opus 5.5 input token (= 1).
+  - The one table is `role_launch.MODEL_PRICES`, from Anthropic's published list prices. A model that is not in the
+    table fails by name. There is no fallback weight.
+  - A run is weighed from its result's `modelUsage` (the whole process, subagents included). Without one, the run is
+    weighed from its usage and its model.
+  - A `weighted_v1` figure is relative to the same model's input and has no model weight. A v1 figure counts Opus
+    reads at 0.1, where the list says 0.05. `role_launch.tokens_v2` converts the figure before anyone compares it with
+    a v2 figure.
+  - Limits that were set in v1 were converted at the measured Opus v2/v1 ratio. So those limits keep the same real
+    spend for Opus runs.
+- **No live hold for his look while he is away.** A staged owner look is never a reason for the pipeline to hold, park
+  or pause the game.
+  - Keep the look as a save. Give the game back to the tick (the timed run of `maturation_dispatch.py`). Stage the look
+    again from that save when he sits down.
+  - A stop of a live run to stage a look is a kill. The tick tries a killed run again, like any kill
+    (`maturation_dispatch.retriable` counts kills, not launch faults).
+  - `maturation_dispatch.py clear` lifts the stop that an automatic run left when it ended.
+  - The in-game driver's brief keeps every `*OWNER_LOOK*` save.
+  - His own OWNER bridge hold while he walks a look stays his (§The bridge is passed through one file).
 
 ## No launched agent is told its spend; the hard cap is enforced from outside — owner, 2026-11-16
 
-His words (Mon 2026-11-16, ~6:25 PM PST, watching a live builder; item `RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN`):
-*"I don't like how you're telling the agent how much it's spent. This has been shown to reduce their creativity and
-obsess on cost savings..."* and *"You're telling it constantly"*.
+His words (Mon 2026-11-16, ~6:25 PM PST, while he watched a live builder; item
+`RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN`): *"I don't like how you're telling the agent how much
+it's spent. This has been shown to reduce their creativity and obsess on cost savings..."* and *"You're telling it
+constantly"*.
 
-- **The agent is blind to its spend.** No launch states its spend, cap or what remains: not a harness flag, a brief, a
-  footer, a hook, a packet, a resume prompt or a tool's output the agent reads. `claude --max-budget-usd` is banned in
-  every launcher: it makes the harness inject `USD budget: $used/$cap; $left remaining` every turn (attachment
-  `budget_usd`; 143 in one 11-16 builder run), and Claude 2.1.311 has no switch that keeps the cap without the
-  reminder (`CLAUDE_CODE_DISABLE_ATTACHMENTS` drops every attachment, hooks included).
-- **The hard per-run stop stays** (owner 2026-11-12: *"Don't let any burn go to 90M this time ok?"*), enforced from
-  OUTSIDE by `src/RimMandrake/rimflow/spend_watchdog.py`: it wraps the claude argv, pins the session, reads the
-  transcript usage (`role_launch.transcript_usage`, each message weighted_v2 at its own model's prices), and at the
-  cap stops the run and writes the result claude writes at its own cap (`error_max_budget_usd`,
-  `stopped_by: spend_watchdog`), so the run is recorded as stopped on cap, raises the same alarms and stays
-  resumable. Its rate is the list price itself (weighted_v2 x the reference input price), and a model not in the
-  table stops the run by name.
-  Launchers call `spend_watchdog.wrap(argv, cap_usd)`; `selftest_spend_blind_agents.py` sweeps the tree for the flag.
-- **Humans still see spend**, in weighted tokens: run records, the DETACHED RUN ENDED lines, the status page. An
-  Operations run is still told the ACCOUNT's reading (its job), never its own budget or spend.
+- **The agent is blind to its spend.** No launch states its spend, its cap or what remains. No part of the
+  launch may state them:
+  - a harness flag, a brief, a footer, a hook, a packet or a resume prompt;
+  - a tool's output that the agent reads.
+- **`claude --max-budget-usd` is banned in every launcher.** With that flag, the harness adds
+  `USD budget: $used/$cap; $left remaining` every turn (attachment `budget_usd`; 143 in one 11-16 builder run).
+  - Claude 2.1.311 has no switch that keeps the cap without the reminder. `CLAUDE_CODE_DISABLE_ATTACHMENTS` drops every
+    attachment, hooks included.
+- **The hard per-run stop stays** (owner 2026-11-12: *"Don't let any burn go to 90M this time ok?"*).
+  `src/RimMandrake/rimflow/spend_watchdog.py` enforces the stop from outside.
+  - The watchdog wraps the claude argv and pins the session. The watchdog reads the usage from the transcript
+    (`role_launch.transcript_usage`, each message weighted_v2 at its own model's prices).
+  - At the cap, the watchdog stops the run. The watchdog writes the result that claude writes at its own cap
+    (`error_max_budget_usd`, `stopped_by: spend_watchdog`).
+  - So the run is recorded as stopped on cap, raises the same alarms, and stays resumable.
+  - The watchdog's rate is the list price itself (weighted_v2 x the reference input price). A model that is not in the
+    table stops the run by name.
+  - Launchers call `spend_watchdog.wrap(argv, cap_usd)`. `selftest_spend_blind_agents.py` sweeps the tree for the flag.
+- **Humans still see spend**, in weighted tokens: run records, the `DETACHED RUN ENDED` lines, the status page.
+- An Operations run is still told the reading of the account, because that reading is its job. An Operations run is
+  never told its own budget or spend. A Conductor role run is told the same reading (a `token_aware` role,
+  2026-10-31).
 
 ## The pipeline's pause switch and its "up next" forecast — owner, 2026-11-18
 
@@ -2428,67 +2462,97 @@ like this. We really don't want work starting (or failing to start) when we expe
 "up next" feature we can ping that says what WILL happen in some amount of time if we do nothing, so we can confirm
 using its own code..."*
 
-- **One switch, no file editing:** `python3 src/RimMandrake/rimflow/maturation_dispatch.py pause [<Mod>] --why "..."
-  [--until <time>|--until-release] [--stop-live]`, `resume [<Mod>] --why "..."`, the same as `rimflow pipeline
-  pause|resume` and as `./pipe off|on all|<Mod>`: a switch in the one control store (next-but-one section), binding the
-  moment it commits. `pause.json` is retired (still read, so an old entry would still hold).
-- **What it stops:** every `systemd-run` launch in `src/RimMandrake` (`control.launch_unit`; the census is
-  `control.call_sites`). A live run finishes unless stopped with `./pipe stop` (three modes, next-but-one section) or
-  `--stop-live` here, which stops it and records it in the control store; a stopped run spends no trial (next section).
-- **A planned stop:** class `planned`, on no idle, paused or stalled reading, so no alarm; `enabled: false` reads the
-  same. `status` and the maturation page lead with PIPELINE PAUSED, its why, who and until; an expired `--until`
-  resumes by itself and says so. A pause store that cannot be read reads PAUSED, never running.
-- **Up next:** `maturation_dispatch.py next [--within 30m]` (`rimflow pipeline next`) runs the tick's own decision code
-  dry on a moving clock: what WILL start, when, on which model and by which rule, what is blocked and by what, and
-  "nothing will start" said outright. A live run's end and a Designer chain cannot be forecast: they read UNMEASURED.
-- **The Conductor's journal hold** stays a launch block in the tick, binding once its commit is in the dispatch clone.
+- **One switch, no file editing.** Three forms set the same switch in the one control store (§One control store and
+  `pipe`). The switch binds the moment it commits:
+  - `python3 src/RimMandrake/rimflow/maturation_dispatch.py pause [<Mod>] --why "..." [--until <time>|--until-release]
+    [--stop-live]`, and `resume [<Mod>] --why "..."`;
+  - `rimflow pipeline pause|resume`;
+  - `./pipe off|on all|<Mod>`.
+- `pause.json` is retired. The code still reads the file, so an old entry would still hold.
+- **What it stops:** every `systemd-run` launch in `src/RimMandrake` that starts pipeline work (`control.launch_unit`).
+  - The census of the launch sites is `control.call_sites`. Two lists in `control.py`, `NOT_PIPELINE` and `BOOKKEEPING`,
+    name the sites that are not pipeline work, each with its reason.
+  - A live run finishes, unless someone stops it with `./pipe stop` (three modes, §One control store and `pipe`) or with
+    `--stop-live`. `--stop-live` stops the run and records the stop in the control store.
+  - A stopped run spends no trial (§Stops that the work did not cause).
+- **A planned stop** has the class `planned`. A planned stop is on no idle, paused or stalled reading, so it raises no
+  alarm. `enabled: false` reads the same.
+  - `status` and the maturation page lead with PIPELINE PAUSED, its why, who paused it, and until when.
+  - When `--until` has passed, the pipeline resumes by itself and says so.
+  - A pause store that cannot be read reads PAUSED, never running.
+- **Up next:** `maturation_dispatch.py next [--within 30m]` (`rimflow pipeline next`) runs the tick's own decision
+  code dry on a moving clock. The forecast prints:
+  - what WILL start, when, on which model and by which rule;
+  - what is blocked, and by what;
+  - "nothing will start", in those words, when nothing will.
+  - The end of a live run cannot be forecast. A chain of Designer runs (each end starts the next) cannot be forecast.
+    Both read UNMEASURED.
+- **The Conductor's journal hold** (a line of kind hold for the stage in the mod's journal, with no later line of kind
+  release for that stage) stays a launch block in the tick. The hold binds once its commit is in the dispatch clone,
+  where the tick runs.
 
 ## One control store and `pipe` — owner, 2026-11-18
 
-His words (Wed 2026-11-18): ~10:40 AM PST *"I want to be able to trivially have you submit a command to change consumable
-resources like looks, runs, etc. to modify the record when it fails due to other reasons or even if we want to make an
-exception. ... This should be a one-line bash command, ok? Build that immediately. No more wasting time and tokens on
-trivial pipeline commanding. ... Individual items should be trivially switchable on and off. Queues should be trivially
-editable. Make all of this deterministic, easy, traceable, reproducable, testable... this stuff isnt hard, so let's make
-sure we're doing it right."* ~11:02 AM PST *"we are going to have. System that is instantly responsive by the time we are
-done here. This is not beyond our technology to achieve."* By card (asked 11:04 AM, answered by 11:25 AM PST): a void
-run's spend does not count toward the stage ceiling (shown apart; the system-fault meter and its alarm catch a fault
-loop); stopping is three specific commands: *"Each of these should be specific commands. "Stop work immediately and
-write where you are." "Stop work at the next easy spot and write where you are." "STOP NOW without write." Defaults for
-the system are nice, sure... should be Stop work at the next easy spot and write where you are" should be the default
-always. But we shouldn't rely on defaults. The agent should be precise in its instruction and use the right option. We
-don't need to prethink this."* ~11:28 AM PST: *"there should even be an option just to force kill the agent, period. Not
-just send it a nudge to die swiftly."* Design: `design/specs/2026-11-18-pipeline-control-surface/03-merged.md`.
+His words (Wed 2026-11-18):
 
-- **The store** is `~/.local/state/rimmandrake/control/control.db` (SQLite, WAL, ext4, outside every clone;
-  `src/RimMandrake/rimflow/control.py`; `RM_CONTROL_DB` for tests, and a test process never reaches the live one).
-  Control state never needs git, a clone, a publish or a tick: every launch reads it at the moment it starts.
-- **One admission point:** every `systemd-run` that starts pipeline work goes through `control.launch_unit`, which
-  admits (switches by scope: all, mod, stage, item, family, role; accounts; a duplicate unit name) in one transaction,
-  and gives the unit an `ExecCondition` that re-checks at start (a run cancelled by a `pipe off` after admission exits
-  REFUSED, never "running") and an end receipt. `selftest_control` fails on any unrouted site. Relentless (retired) is
-  routed and its family is OFF.
-- **His hold** (`mod_owner_hold.json`) is imported into the store with his words; the file is its published mirror.
-  `pipe on all` never lifts a mod's hold; `mod_owner_hold.py lift` lifts store and mirror, and binds at once.
-- **Stopping:** `pipe off` blocks new starts only and names the live runs. `pipe stop <scope> --write-now |
-  --at-easy-spot | --kill`: all three block new starts on the scope, void the live runs' trials, and print each unit and
-  the mode. The two writing modes reach the running agent through its Claude Code PostToolUse hook (`control.py hook`,
-  carried in its `--settings`); `--write-now` escalates to `--kill` at its deadline (5 min by default). `--kill` is
-  SIGKILL to the whole cgroup and the claude scope, verified dead with its milliseconds; a survivor is reported and
-  nothing is recorded killed. A killed detached run's record and clone return are done by the command, so a relaunch
-  needs no hand step. With no mode the default is `--at-easy-spot`, and `pipe` says it was the default.
-- **Consumables are reservations, not counters:** the owner-granted coverage look is reserved before its judge runs and
-  charged only at a valid verdict; no verdict, a raise or a dead holder releases it as a system fault (meter and alarm
-  `control:system_faults:<mod>`). `pipe void <run>` gives a run's charges back once and tells the dispatch books
-  (`run_void.py`); a void never moves a stage, and `pipe show` flags a stage advanced on a voided run.
-- **Unreadable store:** nothing launches, and `pipe show` says `CONTROL UNREADABLE: <cause>`; `pipe doctor` names the
+- ~10:40 AM PST *"I want to be able to trivially have you submit a command to change consumable resources like looks,
+  runs, etc. to modify the record when it fails due to other reasons or even if we want to make an exception. ... This
+  should be a one-line bash command, ok? Build that immediately. No more wasting time and tokens on trivial pipeline
+  commanding. ... Individual items should be trivially switchable on and off. Queues should be trivially editable.
+  Make all of this deterministic, easy, traceable, reproducable, testable... this stuff isnt hard, so let's make sure
+  we're doing it right."* ~11:02 AM PST *"we are going to have. System that is instantly responsive by the time we are
+  done here. This is not beyond our technology to achieve."*
+- By card (asked 11:04 AM, answered by 11:25 AM PST): a void run's spend does not count toward the stage ceiling. That
+  spend is shown apart. The system-fault meter and its alarm catch a fault loop.
+- By the same card, a stop is three specific commands: *"Each of these should be specific commands. "Stop work
+  immediately and write where you are." "Stop work at the next easy spot and write where you are." "STOP NOW without
+  write." Defaults for the system are nice, sure... should be Stop work at the next easy spot and write where you are"
+  should be the default always. But we shouldn't rely on defaults. The agent should be precise in its instruction and
+  use the right option. We don't need to prethink this."* ~11:28 AM PST: *"there should even be an option just to
+  force kill the agent, period. Not just send it a nudge to die swiftly."*
+
+Design: `design/specs/2026-11-18-pipeline-control-surface/03-merged.md`.
+
+- **The store** is `~/.local/state/rimmandrake/control/control.db` (SQLite, WAL, ext4, outside every clone). Its code
+  is `src/RimMandrake/rimflow/control.py`. `RM_CONTROL_DB` names a store for tests, and a test process never reaches
+  the live store.
+  - Control state never needs git, a clone, a publish or a tick. Every launch reads the store at the moment it starts.
+- **One admission point:** every `systemd-run` that starts pipeline work goes through `control.launch_unit`.
+  - `control.launch_unit` admits the launch in one transaction. The transaction checks the switches by
+    scope (all, mod, stage, item, family, role, game), the accounts, and a duplicate unit name.
+  - `control.launch_unit` gives the unit an end receipt and an `ExecCondition` that checks again at the start. A run
+    that a `pipe off` cancelled after admission exits REFUSED, never "running".
+  - `selftest_control` fails on any launch site that does not go through it, unless `NOT_PIPELINE` or
+    `BOOKKEEPING` names the site.
+  - The family of the retired Relentless Pipeline is OFF in the store. The launch sites of that family that remain
+    (`item_exam.py`) go through `control.launch_unit`.
+- **His hold** (`mod_owner_hold.json`) is in the store with his words. The file is the store's published mirror.
+  - `pipe on all` never lifts a mod's hold. `mod_owner_hold.py lift` lifts the hold in the store and the mirror, and
+    binds at once.
+- **To stop work:** `pipe off` blocks new starts only, and names the live runs.
+  - `pipe stop <scope> --write-now | --at-easy-spot | --kill`: all three block new starts on the scope, void the
+    trials of the live runs, and print each unit and the mode.
+  - The two writing modes reach the running agent through its Claude Code PostToolUse hook (`control.py hook`, carried
+    in its `--settings`). `--write-now` becomes `--kill` at its deadline (5 min by default).
+  - `--kill` is SIGKILL to the whole cgroup and the claude scope. The command checks that the run is dead and prints the
+    milliseconds. The command reports a survivor, and then records nothing as killed.
+  - The command also does the record and the clone return of a killed detached run. So a relaunch needs no hand step.
+  - With no mode, the default is `--at-easy-spot`, and `pipe` says that it used the default.
+- **Consumables are reservations, not counters.** A consumable is a limited thing that a run uses up, for example a
+  coverage look (one run of the Designer's coverage judge) that he granted.
+  - The store reserves that look before its judge runs. The store charges the look only at a valid verdict.
+  - When there is no verdict, or the judge run raises, or the holder is dead, the store releases the look as a system
+    fault (meter and alarm `control:system_faults:<mod>`).
+  - `pipe void <run>` gives a run's charges back once, and tells the dispatch books (`run_void.py`).
+  - A void never moves a stage. `pipe show` flags a stage that advanced on a voided run.
+- **Unreadable store:** nothing launches, and `pipe show` says `CONTROL UNREADABLE: <cause>`. `pipe doctor` names the
   fix. `pipe stop <unit> --kill` still works by unit name.
 
 ## A boundary page before pipeline code — owner, by card 2026-11-18
 
 Three decisions by question card (Wed 2026-11-18, answered 11:19 to 11:25 PM PST; three `--by-card` notes on
-`RIMMANDRAKE_DESIGN_REVIEW_TREADMILL_FIX_COUNT_WAS_FLAT`). He picked the recommended option each time. Why he was
-asked: four Codex reviews of the control store made 15, 11 and 15 claims with 2, 0 and 2 real problems, and each
+`RIMMANDRAKE_DESIGN_REVIEW_TREADMILL_FIX_COUNT_WAS_FLAT`). He picked the recommended option each time. The reason for
+the question: four Codex reviews of the control store made 15, 11 and 15 claims, with 2, 0 and 2 real problems. Each
 repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/00-problem.md`]. Design:
 `design/specs/2026-11-18-review-growth-cycle/01-design.md`, section 5.
 
@@ -2497,23 +2561,32 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
 - **Decision 1, the page comes before the code.** Card: *"Before a helper writes new pipeline code, what do we do
   first?"* He picked *"Write a one-page list (Recommended)"*: *"The page lists what the code accepts, which failures
   it does not handle, and what it promises. Each promise gets a test. A reviewer can only report a broken promise."*
-  The page is `design/specs/<component>/boundary.md`, with the parts ACCEPTS, DOES NOT SURVIVE, PROMISES, LIFE
-  CYCLES when the component keeps state between calls, and LIMITS when it enforces any limit. LIMITS lists each limit
-  the component enforces (a cap, pause, timeout, retry bound or text cut) with the danger it guards and the evidence
-  that the danger happens; a limit that cannot name both is removed, not tuned (owner 2026-11-16, the guard test in the
-  limits ruling of 2026-10-31 to 2026-11-17 above; LIMITS added by Crystallize 2026-W47, delegated). Entries are named
-  with words, and a promise's test carries the promise's name. Pipeline machinery owes a page when it is new, or when a change adds a state, an input form, a
-  read of the outside world, or a verb that kills, deletes, locks or launches. A one-line fix owes none. An existing
-  component gets its page when it is next extended, never in a sweep. One fresh reader that did not write the page
-  reads it before code is cut to it. The cost he accepted: *"New code that kills runs goes live in half a day, not
-  one hour."*
-- **Decision 2, when code is clean**, is now his ruling of 2026-11-19 for all code: promises tested; the reviewer
-  fixes a significant finding, and one blind reread checks the fix (§Code is clean when its promises are tested).
+  - The page is `design/specs/<component>/boundary.md`. The page always has the parts ACCEPTS, DOES NOT SURVIVE and
+    PROMISES. The page has LIFE CYCLES when the component keeps state between calls. The page has LIMITS when the
+    component enforces any limit.
+  - LIMITS lists each limit that the component enforces (a cap, pause, timeout, retry bound or text cut). Beside each
+    limit is the danger that the limit guards, and the evidence that the danger happens.
+  - Remove a limit that cannot name both. Do not tune it. (Owner 2026-11-16, the guard test in §No limit without the
+    danger it guards, 2026-10-31 to 2026-11-17. Crystallize 2026-W47 added LIMITS, delegated.)
+  - Name each entry with words. The test of a promise carries the name of the promise. An entry of a SURVIVES part, when
+    the page has one, is owed a test in the same way (`src/RimMandrake/Utils/boundary_check.py`).
+  - Pipeline machinery owes a page when the machinery is new. Pipeline machinery also owes a page when a change adds a
+    state, an input form, a read of the outside world, or a verb that kills, deletes, locks or launches. A one-line
+    fix owes none.
+  - An existing component gets its page when it is next extended, never in a sweep.
+  - One fresh reader that did not write the page reads it before code is cut to it.
+  - The cost that he accepted: *"New code that kills runs goes live in half a day, not one hour."*
+- **Decision 2, when code is clean**, is now his ruling of 2026-11-19 for all code. The promises are tested. The
+  reviewer fixes a significant finding, and one blind reread checks the fix (§Code is clean when its promises are
+  tested).
 - **Decision 3, the open complaints of 2026-11-18.** Card: *"What do we do with these 18?"* He picked *"Fix only
   real problems (Recommended)"*: *"A complaint that breaks a promise on the list gets fixed. The others go on a
-  'later' list."* A claim outside the page goes to `polish.md` or `next_version.md` beside the page as one line: no
-  ticket, no repair. For pipeline machinery with no page yet, a claim is a Problem only if a call site in the repo or
-  a documented command produces the input. This replaces his "Fix all 24" of 7:47 PM the same evening.
+  'later' list."*
+  - A claim outside the page goes to `polish.md` or `next_version.md` beside the page as one line. Such a claim gets
+    no ticket and no repair.
+  - For pipeline machinery with no page yet, a claim is a Problem only if a call site in the repo or a documented
+    command produces the input.
+  - This replaces his "Fix all 24" of 7:47 PM the same evening.
 - **Decision 4, a rare failure that breaks a promise (owner, by card Thu 2026-11-19, answered 5:27 AM PST,
   13:27:48Z, session f95c29f3).** Card: *"Each piece of pipeline code now has a one-page list of promises. A promise
   says what the code always does. A blind reader and Codex each say 21 of 35 old review complaints break a promise.
@@ -2521,25 +2594,33 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
   rare failure that breaks a promise?"* He picked *"Page says 'not handled' (Recommended)"*: *"Why: keep the code
   small and stop the review cycle. The page lists each rare failure it does not survive. No fix is built. Cost: those
   failures stay possible, and you must trust the list. Recommended: fixing all 21 is the review cycle again by
-  another door."* (Not picked: "Fix every one", "Fix only what happened".) So a complaint is a Problem only when it
-  breaks a promise in ordinary operation. A rare failure is not: it goes under DOES NOT SURVIVE as one plain line,
-  the promise's words are narrowed until the page is true, and no fix is built. Where the code already survives a
-  rare failure, the line says "handled today, not promised", so the page stays true and no review asks for more.
-  Our reading of "rare" (the Conductor's helper, delegated, not his words): it needs something to go wrong that the
-  broken promise does not itself name (a failed call, kill or read; a locked, corrupt or lost store; a crash), or a
-  second failure while the first is handled, or two events in the same instant, or an input or code shape no call
-  site produces. Ordinary is any input inside ACCEPTS at the pace a person or a timer sends it, with the world
-  answering, plus the one failure a promise names as its own subject, met alone (`probe-never-lies` names a failed
-  `systemctl` call; without this such a promise would promise nothing). The same card's second question, *"May I run
-  one more Codex test?"*: he picked *"Yes, after the page rule (Recommended)"*: *"Why: the page rule above changes
-  which complaints count as real. I relabel the 35 by your rule, then run one test. Cost: one Codex run, and a short
-  wait for the relabel. Recommended: a test against wrong labels tells us nothing."* That answer allows one run; it does not
-  turn Codex reviews of pipeline machinery back on (his card of 2026-11-23 below did).
-  Applied: `src/RimMandrake/rimflow/roles/code_review.md`, the control page's DOES NOT SURVIVE, and the relabel in
-  `design/specs/2026-11-18-review-growth-cycle/05-three-way-labels-20261119.md`.
-- **Changing a page after it has passed** is next-version work: a new accepted input, survived failure or promise is
-  written for the next Design Version and never added to the current one's bars. Moving a failure to DOES NOT SURVIVE
-  accepts a risk: the Conductor decides it (delegated, logged) and he sees it in the daily digest.
+  another door."* (Not picked: "Fix every one", "Fix only what happened".)
+  - So a complaint is a Problem only when it breaks a promise in ordinary operation. A rare failure is not a Problem.
+  - A rare failure goes under DOES NOT SURVIVE as one plain line. Narrow the promise's words until the page is true.
+    Build no fix.
+  - Where the code already survives a rare failure, the line says "handled today, not promised". So the page stays true,
+    and no review asks for more.
+  - Our reading of "rare" (the Conductor's helper, delegated, not his words). A failure is rare when it needs one of
+    these:
+    - something goes wrong that the broken promise does not itself name (a failed call, kill or read; a locked,
+      corrupt or lost store; a crash);
+    - a second failure happens while the first is handled;
+    - two events happen in the same instant;
+    - an input or a code shape that no call site produces.
+  - Ordinary is any input inside ACCEPTS, at the pace that a person or a timer sends it, when the world answers.
+  - Ordinary also covers the one failure that a promise names as its own subject, met alone. Example: `probe-never-lies`
+    names a failed `systemctl` call. Without this, such a promise would promise nothing.
+  - The same card's second question was *"May I run one more Codex test?"*: he picked *"Yes, after the page rule
+    (Recommended)"*: *"Why: the page rule above changes which complaints count as real. I relabel the 35 by your rule,
+    then run one test. Cost: one Codex run, and a short wait for the relabel. Recommended: a test against wrong labels
+    tells us nothing."* That answer allows one run. That answer does not turn Codex reviews of pipeline machinery back
+    on. His card of 2026-11-23, below, did.
+  - Applied: `src/RimMandrake/rimflow/roles/code_review.md`, the control page's DOES NOT SURVIVE, and the relabel in
+    `design/specs/2026-11-18-review-growth-cycle/05-three-way-labels-20261119.md`.
+- **To change a page after it has passed** is next-version work. Write a new accepted input, survived failure or promise
+  for the next Design Version. Never add it to the bars of the current version.
+  - A move of a failure to DOES NOT SURVIVE accepts a risk. The Conductor decides the move (delegated, logged), and he
+    sees it in the daily digest.
 - **What this does not change.** "The test is built with the item" and "The pipeline fixes its own defects" stand.
 - **Codex and GPT reviews of pipeline machinery are back on (owner, by card Mon 2026-11-23 8:57 AM PST, item
   `RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`).** The card asked whether his stop of 2026-11-18 8:22
@@ -2547,49 +2628,74 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
   typed: *"Codex reviews back on. We found the problem. Modern code review instruction includes the significance
   requirement. The old ones didn’t. It was the forced working of any finding no matter how small. Push back if that is
   not your understanding but I felt we resolved this."*
-  - Each review uses `src/RimMandrake/rimflow/roles/code_review.md`, or a prompt that carries the same significance
-    rule, the same stop level (one full read, one fresh read of a fix, never a third) and the same polish route (one
-    line on `polish.md`, no ticket). A finding that is not significant is one line on `polish.md`, never a ticket
-    and never worked.
+  - Each review uses `src/RimMandrake/rimflow/roles/code_review.md`, or a prompt that carries these three things:
+    - the same significance rule;
+    - the same stop level (one full read, one fresh read of a fix, never a third);
+    - the same polish route (one line on `polish.md`, no ticket).
+  - A finding that is not significant is one line on `polish.md`, never a ticket. Nobody works the finding.
   - A Codex or GPT reviewer that cannot write the clone returns its Problems. The run that launched it fixes each
-    Problem, test first, and one fresh reader reads the fixed file once.
+    Problem, test first. Then one fresh reader reads the fixed file once.
   - UNMEASURED: that Codex obeys the significance rule on real code. To measure it, read the first three reviews:
-    count the findings, and count the significant ones. The one measured reading is a sort of 35 old claims, not a
-    review of code (2026-11-19): 1 of 9 agreed polish claims called a Problem, and 2 of 3 agreed real ones caught.
-    The row `code_review` (the review brief's calibration) in `infrastructure/state/judge_calibration.json` reads
-    UNTESTED. An UNTESTED row does not stop a review; an UNTESTED brief's refusal sends no work back by itself.
+    count the findings, and count the significant ones.
+  - The measured readings are sorts of 35 old claims, not a review of code. Each sort caught 2 of 3 agreed real
+    claims. The agreed polish claims called a Problem were 1 of 9 (2026-11-19), 1 of 9 (2026-11-24 08:51Z) and 2 of 9
+    (2026-11-24 09:07Z).
+  - The row `code_review` (the review brief's calibration) in `infrastructure/state/judge_calibration.json` is the
+    state of the brief. The row read UNTESTED on 2026-11-23 and FAILED after the sorts of 2026-11-24. An edit of the
+    brief resets the row, so read the row.
+  - An UNTESTED or FAILED row does not stop a review. The refusal of a brief that is not CALIBRATED sends no work back
+    by itself.
 - **First page (the pilot):** the control store, `design/specs/2026-11-18-pipeline-control-surface/boundary.md`.
 - **Test that this was applied:** a new pipeline component has a `boundary.md` committed before its first code
-  commit; a review finding on pipeline machinery quotes a page entry or sits on a later list.
+  commit. A review finding on pipeline machinery quotes a page entry, or it sits on a later list.
 
 ## Owner hold: six biome mods stop, Pyrelands stays — owner, 2026-11-16
 
-His words (Mon 2026-11-16, ~5:20 PM PST, on the ledger 01:22Z 11-17 under `RIMMANDRAKE_HOLD_SIX_BIOME_MODS_ONLY_PYRELANDS_STAYS`):
-*"And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now
-and the system choked at their lack of precision I think."*
+His words (Mon 2026-11-16, ~5:20 PM PST, on the ledger 01:22Z 11-17 under
+`RIMMANDRAKE_HOLD_SIX_BIOME_MODS_ONLY_PYRELANDS_STAYS`): *"And stop the new biome mods work. Only Pyrelands as a biome
+mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think."*
 
-- **Held:** Contagion, Cauldron, FeverWood, GelatinousSlime, LeaningScrub, Stillsand: the biome mods that were in the
-  pipeline that day. **His words cover every biome mod but Pyrelands** ("Only Pyrelands as a biome mod right now"). So do
-  not start a biome mod that is not on the list either; first put its row in the list. The hold does not touch mods that
-  are not biome mods.
-- **One list, one file:** `src/RimMandrake/rimflow/mod_owner_hold.json` (code `mod_owner_hold.py`). A held mod: the Dispatch
-  tick launches nothing on it (no builder, judge, live driver, steward, fixer or holder, and a discovered concept is not
-  seeded); the Designer and DesignerCodex chain sweeps, the harvest chain and a pending run-now skip it; it is on no
-  idle, paused, stalled or Designer-stall reading, so it raises no alarm and no incident; `maturation_dispatch.py
-  status` and the maturation page print **HELD BY OWNER** with his words and date. A run already live on it finishes.
+- **Held:** Contagion, Cauldron, FeverWood, GelatinousSlime, LeaningScrub, Stillsand. Those six were the biome mods in
+  the pipeline that day.
+- **His words cover every biome mod but Pyrelands** ("Only Pyrelands as a biome mod right now"). So do not start a
+  biome mod that is not on the list either. First put its row in the list. The hold does not touch mods that are not
+  biome mods.
+- **One list, one file:** `src/RimMandrake/rimflow/mod_owner_hold.json` (code `mod_owner_hold.py`). A hold has these
+  effects:
+  - The Dispatch tick (the timed run of `maturation_dispatch.py`) launches nothing on a held mod: no builder, judge,
+    live driver, steward, fixer or holder. The tick does not seed a discovered concept of a held mod.
+  - The sweeps that start the next Designer or DesignerCodex run skip a held mod. So do the chain at the harvest of a
+    Designer run and a pending run-now (a run that someone asked for by hand).
+  - A held mod is on no idle, paused, stalled or Designer-stall reading. So a held mod raises no alarm and no incident.
+  - `maturation_dispatch.py status` and the maturation page print **HELD BY OWNER** with his words and the date.
+  - A run that is already live on a held mod finishes.
 - **He or the Conductor lifts it** (owner, by question card, Thu 2026-11-19 ~6:50 AM PST, item
-  `RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE`; picked "Yes, let it finish" on the hold-mirror run, his words:
-  *"yes... but Conductor should also be able to lift a Hold. We work together, don't use me as a bottleneck alone."*).
-  His lift: `python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --said "<his words>"`. The Conductor's lift,
-  from the Conductor window (seat BENCH, not a launched run): `... lift <Mod> --per-ruling
-  RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE --why "<the Conductor's reason>"`; it is recorded as the
-  Conductor's act (never as his words) and writes a `delegated: scope` ledger event, so it reaches his daily digest. A
-  lift with neither is refused; no helper, other seat or the Dispatch tick lifts a hold, and `pipe on` never does. Then
-  publish `mod_owner_hold.json`; `mod_owner_hold.py show` lists the holds. A lifted mod still does not run while its
-  readiness list is not READY (§No mod runs forward on a broken pipeline, owner 2026-11-19). A new hold is a row in the same file, with his words,
-  then `./pipe init --import` (safe to repeat), so that every launch refuses the mod and not only the tick.
-
-- **Design text on a held mod is allowed; the held mods will return** (owner, by question card, Thu 2026-11-19 ~5:35 AM PST, after six hand-launched helpers wrote design tickets for FeverWood, whose briefs named no mod so the hold never checked them). Picked "Design text is allowed"; his words: *"Design text is allowed, and we WILL return to the mods... they're not going to be deprecated, don't worry."* The option's description, verbatim: *"Why: design is cheap and loses nothing if the mod never ships. Only builds, tests and live runs stay held. Cost: tokens go to mods you set aside, and designs drift from what you last read."* So: the hold above binds the PIPELINE (its launches, chains, alarms); a helper may write design text on a held mod; builds, tests and live runs on it stay held; no mod is deprecated; no hold is lifted by this (a hold is lifted only by `mod_owner_hold.py lift`, his or the Conductor's). Item `RIMMANDRAKE_ALLOW_DESIGN_TEXT_ON_HELD_MODS_THEY_RETURN`.
+  `RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE`; picked "Yes, let it finish" on the hold-mirror run, his
+  words: *"yes... but Conductor should also be able to lift a Hold. We work together, don't use me as a bottleneck
+  alone."*).
+  - His lift: `python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --said "<his words>"`.
+  - The Conductor's lift, from the Conductor window (seat BENCH, not a launched run): `... lift <Mod> --per-ruling
+    RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE --why "<the Conductor's reason>"`.
+  - The tool records that lift as the Conductor's act, never as his words. The tool writes a `delegated: scope` ledger
+    event, so the lift reaches his daily digest.
+  - A lift with neither is refused. No helper, no other seat and no Dispatch tick lifts a hold. `pipe on` never does.
+  - After a lift, publish `mod_owner_hold.json`. `mod_owner_hold.py show` lists the holds.
+  - A lifted mod still does not run while its readiness list is not READY (§No mod runs forward on a broken pipeline,
+    owner 2026-11-19).
+- **A new hold** is a row in the same file, with his words. `mod_owner_hold.py hold <Mod> --said "<his words>"` writes
+  the row into the store and the file. Then publish `mod_owner_hold.json`. After a row is written by hand, run `./pipe
+  init --import` (safe to repeat). Then every launch refuses the mod, not only the tick.
+- **Design text on a held mod is allowed; the held mods will return** (owner, by question card, Thu 2026-11-19 ~5:35
+  AM PST). He was asked after six hand-launched helpers wrote design tickets for FeverWood. Their briefs named no mod,
+  so the hold never checked them. Picked "Design text is allowed"; his words: *"Design text is allowed, and we WILL
+  return to the mods... they're not going to be deprecated, don't worry."* The option's description, verbatim: *"Why:
+  design is cheap and loses nothing if the mod never ships. Only builds, tests and live runs stay held. Cost: tokens
+  go to mods you set aside, and designs drift from what you last read."*
+  - The hold above binds the PIPELINE: its launches, chains and alarms.
+  - A helper may write design text on a held mod. Builds, tests and live runs on the mod stay held.
+  - No mod is deprecated.
+  - This lifts no hold. A hold is lifted only by `mod_owner_hold.py lift`, his or the Conductor's.
+  - Item: `RIMMANDRAKE_ALLOW_DESIGN_TEXT_ON_HELD_MODS_THEY_RETURN`.
 
 ## Resetting a test scene is harness housekeeping, never a mod deliverable — owner, 2026-11-17
 
@@ -2598,120 +2704,160 @@ His typed answer to a Conductor card (Tue 2026-11-17) on the proposed Pyrelands 
 *"This is dumb. It's not even an item at all. Just save the test in a file and reload... We shouldn't be judging Test
 Reset as a mod deliverable."*
 
-- **The decision:** resetting or cleaning up after a test scene is the harness's job: it saves the game before the scene
-  and reloads that save after. It is never a mod deliverable, never a build item for the mod, and never a coverage gap,
-  Problem or Polish finding. No judge (coverage, blind Judge, scene look) refuses, fails or files anything for how a
-  scene is reset.
-- **Why:** reset is the same for every scene and every mod, so it belongs once in the harness; judging it per mod spends
-  rewrite, exam and judge rounds on work no player ever sees.
-- **What it does not change:** a scene still writes a `restore` line and the runner still records recovery
-  (`designer_stage.py scene-begin` / `scene-end`), so an interrupted run is still put back before the next one; the
-  asserted start and the control are still judged; a mod effect that persists in a real game (a scar that never fades,
-  terrain a mod corrupts) is still a mod finding, since that is play, not test reset.
-- **Owed:** the harness saves before and reloads after each scene where it does not yet
-  (`RIMMANDRAKE_SAVE_RELOAD_AROUND_EVERY_TEST_SCENE`).
+- **The decision:** to reset or clean up after a test scene is the job of the harness (the code that runs the scene).
+  The harness saves the game before the scene, and reloads that save after.
+  - A reset is never a mod deliverable, and never a build item for the mod. A reset is never a coverage gap, a Problem
+    or a Polish finding.
+  - No judge (coverage, blind Judge, scene look) refuses, fails or files anything for how a scene is reset.
+- **Why:** reset is the same for every scene and every mod, so it belongs once in the harness. A judgement of it per mod
+  spends rewrite, exam and judge rounds on work that no player ever sees.
+- **What it does not change:**
+  - A scene still writes a `restore` line, and the runner still records recovery (`designer_stage.py scene-begin` /
+    `scene-end`). So an interrupted run is still put back before the next one.
+  - The asserted start and the control are still judged.
+  - A mod effect that persists in a real game (a scar that never fades, terrain that a mod corrupts) is still a mod
+    finding, because such an effect is play and not test reset.
+- **Built:** `src/RimMandrake/Utils/modcheck/scene_snapshot.py` saves before and reloads after a scene. The scene
+  library (`src/RimMandrake/Utils/scene_runner.py`), `LiveSite` in `showcase_common.py` and `wind_burn_live.py` use
+  it. The item `RIMMANDRAKE_SAVE_RELOAD_AROUND_EVERY_TEST_SCENE` is closed. Mod settings are not in a save, so a scene
+  still puts back the settings that it changed.
+- **Owed:** the harness saves before and reloads after each scene where a live runner does not use it yet.
 
 ## Todoist is for to-do lists only, never an alert route — owner, 2026-11-19
 
 *"So Todoist is officially retired as any kind of alert: it just doesn't work in a timely manner. It's really only to
 maintain to do lists, as it says."* (typed into a card, 2026-11-19 6:10 AM PST). To "May we close our own old alarm
-tasks there?" he picked **"Close them, and stop posting"** (*"Why: fix the source too. We close ours and switch the three
-senders off until the new alerts are built. Cost: until then no alarm reaches the phone at all, not even as a silent
-task."*).
-- No program, hook, unit or agent posts an alarm, alert, page or "ring his phone" message as a Todoist task. The
-  Todoist posts of `ops_core/phone_push.py` (deadman_check, login_watch, switching_plan) and `windows/heartbeat.ps1` are
-  off by default: `RM_TODOIST_ALARM_POSTS=1` / `-TodoistAlarmPosts` is the switch, and nothing sets it.
-- The route that replaces it is decided (owner, 2026-11-19, item
-  `RIMMANDRAKE_DESIGN_PUSHOVER_ALERTS_CRITICAL_ONLY_TWO_SENDERS`): Pushover, for CRITICAL needs only, sent by the
-  Conductor or Operations only. The program is `src/RimMandrake/Utils/pager.py`.
-- Until that item closes, **no alarm reaches his phone** (`pager.py status` read "last sent: none" on 2026-11-23). Each
-  alarm still goes to its own log, alarms file and ledger.
-- To-do lists synced into Todoist (Lodestar Burning, Hestia) are unaffected.
+tasks there?" he picked **"Close them, and stop posting"** (*"Why: fix the source too. We close ours and switch the
+three senders off until the new alerts are built. Cost: until then no alarm reaches the phone at all, not even as a
+silent task."*).
+
+- No program, hook, unit or agent posts a Todoist task that is an alarm, an alert, a page or a "ring his phone" message.
+- The Todoist posts of `ops_core/phone_push.py` (deadman_check, login_watch, switching_plan) and
+  `windows/heartbeat.ps1` are off by default. The switch is `RM_TODOIST_ALARM_POSTS=1` / `-TodoistAlarmPosts`. Nothing
+  sets the switch.
+- The route that replaces Todoist is decided (owner, 2026-11-19, item
+  `RIMMANDRAKE_DESIGN_PUSHOVER_ALERTS_CRITICAL_ONLY_TWO_SENDERS`). The route is Pushover, for CRITICAL needs only.
+  Only the Conductor or Operations sends. The program is `src/RimMandrake/Utils/pager.py`.
+- Until that item closes, **no alarm reaches his phone** by itself. `pager.py status` read "last sent: none" early on
+  2026-11-23. One test page reached his phone at 11:08 AM PST that day. Each alarm still goes to its own log, alarms
+  file and ledger.
+- To-do lists that sync into Todoist (Lodestar Burning, Hestia) are unaffected.
 
 ## The root CLAUDE.md holds rule lines and pointers only — owner, 2026-11-19
 
-Asked by card (2026-11-19 ~12:58 PM PST) how far to drain the project `CLAUDE.md` (41,213 characters, loaded into every
-session and helper), he picked option (1), "Drain to rule line plus pointer", and typed: *"I have no idea why it says
+The card (2026-11-19 ~12:58 PM PST) asked how far to drain the project `CLAUDE.md` (41,213 characters, loaded into every
+session and helper). He picked option (1), "Drain to rule line plus pointer", and typed: *"I have no idea why it says
 regroup, cut nothing. Old likely obsolete guidance. (1) and use Simplified Technical English when rewriting Claude.md
 entries please. No more oracular oddities. No provenance either, that's for git."*
-- Each `CLAUDE.md` entry is a plain heading, the rule in Simplified Technical English (no sentence over 20 words, active
-  voice, one idea per sentence, the same word for the same thing) and a pointer to the file that holds its full text.
+
+- Each `CLAUDE.md` entry has three parts:
+  - a plain heading;
+  - the rule in Simplified Technical English (no sentence over 20 words, active voice, one idea per sentence, the same
+    word for the same thing);
+  - a pointer to the file that holds its full text.
 - `CLAUDE.md` carries no provenance: no dates, no "by card", no quoted owner words, no incident stories, no
-  measurements kept for history. Those live in the rule's home (this file, `biome_rulings.md`, `CLAUDE.history.md`, a
+  measurements kept for history. The home of the rule holds those (this file, `biome_rulings.md`, `CLAUDE.history.md`, a
   facts file).
-- No emphatic riddles or emoji shouting. A warning keeps its force by stating what the wrong move costs.
+- Write no emphatic riddles and no emoji shouting. A warning keeps its force when it states what the wrong move costs.
 - **Superseded:** the 2026-09-23 spring-cleaning ruling for `CLAUDE.md`, "regroup, cut nothing". It no longer binds the
-  root `CLAUDE.md`. What still holds from it: evidence moves to a home, it never vanishes (the Crystallize merge gate,
+  root `CLAUDE.md`. One part of it still holds: evidence moves to a home and never vanishes (the Crystallize merge gate,
   `checkable.py compare`).
 
 ## 🔴 There is no worldgen feature, in any version — owner, 2026-08-15
 
-- **OUT, permanently:** any automated or programmatic worldgen; worldgen as a
-  player-facing capability. ⛔ v2 is not a parking space for it — mark such work
-  dead, never deferred.
-- 🔑 **Players never generate anything. They receive a savegame holding the fixed
-  world** — one hand-made world, frozen, shipped. A faction, ideoligion or setting
-  absent when it freezes is absent from every player's game forever.
-- ⛔ **Do not build anything that produces ALTERNATIVE planets** (owner, 2026-08-18).
-  No seed sweeps, no variants, no knobs that could roll a second world. ✅ Author
-  THE map, judged by realism first, iterated by LOOKING (`worldview.py`); target and
-  references: `design/Jawa/worldbuilding/the_one_map.md`.
+- **Out, permanently:** any automated or programmatic worldgen, and worldgen that a player can use. Do not park
+  such work in v2. Mark it dead, never deferred.
+- **Players never generate anything.** The players receive a savegame that holds the fixed world: one hand-made world,
+  frozen, shipped. A faction, ideoligion or setting that is absent when the world freezes is absent from every
+  player's game forever.
+- **Do not build anything that produces alternative planets** (owner, 2026-08-18). That includes seed sweeps,
+  variants, and any setting that could roll a second world.
+- Author the one map. Judge it by realism first. Improve it by looking at it (`worldview.py`). Target and references:
+  `design/Jawa/worldbuilding/the_one_map.md`.
 
 ## 🔴 The pipelines before the Maturation Pipeline are retired — owner, 2026-11-13 and 2026-11-18
 
-*"Nothing of that era should remain. No more collisions or confusion."* (2026-11-18). Builds run in the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`); the Conductor launches helpers (`src/RimMandrake/rimflow/detached_helper.py`); design goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`), ops alarms to Operations. Every retired era, what was removed and what still carries an old name (no `relentless*` module is left; some live paths and names still say relentless, FOUNDRY or pulse, and each rename is a ticket listed there): `design/RimMandrake/retired_eras_index_2026-11-18.md`; `selftest_retired_era_gone.py` refuses a remnant at `./publish`. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to the Conductor's key (`RETIRED_SEATS` in `cli.py`), as does the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`).
+*"Nothing of that era should remain. No more collisions or confusion."* (2026-11-18).
+
+- Builds run in the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`).
+- The Conductor launches helpers (`src/RimMandrake/rimflow/detached_helper.py`).
+- Design goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`). Ops alarms go to Operations.
+- `design/RimMandrake/retired_eras_index_2026-11-18.md` lists every retired era, what was removed, and what still
+  carries an old name.
+  - No `relentless*` module is left.
+  - Some live paths and names still say relentless, FOUNDRY or pulse, which are retired names. Each rename is a ticket
+    that the index lists.
+- `selftest_retired_era_gone.py` refuses a remnant at `./publish`.
+- `rm-findings-judge.timer` runs the daily findings judgment and the Friday memory sweep.
+- FOUNDRY is a retired name, not a seat. `rimflow` maps it to the Conductor's key (`RETIRED_SEATS` in `cli.py`). So
+  does the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`).
 
 ## Facts you cannot guess — the root CLAUDE.md list, with its rulings (owner, 2026-08-27 and 2026-10-24)
 
-This is the list as the root `CLAUDE.md` carried it until 2026-11-19, word for word. The detail behind each fact is in the file the fact names.
+The root `CLAUDE.md` carried this list until 2026-11-19, word for word. The list was put into plain words on
+2026-11-24. Git holds the old words. The detail behind each fact is in the file that the fact names.
 
-- **The game reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`,
-  never this repo.** Writing a file is not deploying it.
-- **A cold load on the full list costs many minutes; a quicktest map is ~90 s.** Never
-  "restart and see". The measured figures, which grow with the mod list, are in
+- **No game reads this repo.** ArchBig reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`. ArchSmall
+  reads its own `Mods` folder (§There are several live games). To write a file here does not deploy it.
+- **A cold load on the full list costs many minutes; a quicktest map is ~90 s.** Never restart the game only to see the
+  result ("restart and see"). The measured figures grow with the mod list. The home of the figures is
   `design/RimMandrake/CLAUDE.history.md` and the `rimworld-load-round` skill.
-- **`ModsConfig.xml` is the live mod list**, at
+- **`ModsConfig.xml` is the live mod list.** ArchBig's is at
   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`.
-  🔴 **Parse it** (`ET.parse(p).find("activeMods")`) for the active count — never `grep` it,
-  and never cite a mod count written in a doc. ModsConfig describes the NEXT load.
-- 🔴 **Never restore the owner's mod list; only canonical world saves are precious** (owner, 2026-10-24):
-  *"Never worry about my mod list restoration! … Until I start playing (months from now likely) you never need
-  to "restore" mods to anything or worry about harming save games other than canonical world saves."* Leave
-  ModsConfig on whatever tier serves the work; no "restore before release" step. Every save except the canonical
-  world saves (`infrastructure/state/CANONICAL_SAVE.md`) is disposable.
-- **Never guess a defName, field, or namespace.** RimSage (`mcp__rimsage__*`, Windows
-  Desktop only), the def, the About.xml, or `measure` — and 🔴 **a number about a large
-  artifact comes from `measure`, never from a scan** (`block_blind_scan.py` refuses).
-  `0` means measured zero; ignorance answers `UNMEASURED`.
-- 🔴 **Instrument-blindness is a user-level rule.** Measured traps here (ledger key is `id` not `item`, `python.exe` CRLF,
-  `grep -c` exit 1, zsh no word-split, `ls|wc` on a missing dir, `*south*` mask glob, creature
-  census by description not defName, "is there a mod for X" across BOTH mod roots incl.
-  inactive …): `infrastructure/state/facts/instrument_traps.md`.
-- 🔴 **`Plant` only ticks `TickLong()`** — a comp on a plant overrides `CompTickLong()`.
-  🔴 **`MayRequire` on a top-level `<Operation>` is IGNORED** — guard with
-  `PatchOperationFindMod`/`Conditional`; a composed member's packageId never loads. A patch
-  that matches nothing logs nothing. Detail: `skills/rimworld-modding/references/project-engine-facts.md`.
-- 🔴 **`modcheck run <Mod>` REWRITES the live `ModsConfig.xml`** (expensive list). When a new
-  game won't start, read the **FIRST** exception in `Player.log`, not the loudest. More
-  in `infrastructure/state/facts/tool_traps.md`; the 600 s subagent watchdog, mid-session hooks and card
-  gates in `infrastructure/agents/Agent_Policy.md`; `handoff.py` and two Conductor windows in
+  - **Parse it** for the active count (`ET.parse(p).find("activeMods")`). Never `grep` it. Never cite a mod count that
+    a doc holds.
+  - ModsConfig describes the next load, not the game that runs now.
+- **Never restore the owner's mod list; only canonical world saves are precious** (owner, 2026-10-24):
+  *"Never worry about my mod list restoration! … Until I start playing (months from now likely) you never need to
+  "restore" mods to anything or worry about harming save games other than canonical world saves."*
+  - Leave ModsConfig on whatever tier (minimal, a test list or the full list) serves the work. There is no "restore
+    before release" step.
+  - Every save except the canonical world saves (`infrastructure/state/CANONICAL_SAVE.md`) is disposable. A save that
+    waits for his review has its own rule (§Options he must LOOK at ship as a savegame).
+- **Never guess a defName, field, or namespace.** Read it from RimSage (`mcp__rimsage__*`, Windows Desktop only), the
+  def, the About.xml, or `measure`.
+- **A number about a large artifact comes from `measure`, never from a scan** (`block_blind_scan.py` refuses a scan).
+  `0` means measured zero. If you do not know, the answer is `UNMEASURED`.
+- **The rule about an instrument that cannot see is at user level.** The traps that were measured here are in
+  `infrastructure/state/facts/instrument_traps.md`. Examples:
+  - the ledger key is `id`, not `item`;
+  - `python.exe` writes CRLF;
+  - `grep -c` exits 1 on no match;
+  - zsh does not split words;
+  - `ls|wc` on a missing folder;
+  - a texture glob on `*south*` also matches the mask file (`X_southm.png`);
+  - count a creature by its description, not by its defName;
+  - to answer "is there a mod for X", search both mod roots (the game's `Mods` folder and the Steam workshop folder),
+    inactive mods included.
+- **`Plant` ticks only `TickLong()`.** A comp on a plant overrides `CompTickLong()`.
+- **`MayRequire` on a top-level `<Operation>` is ignored.** Guard with `PatchOperationFindMod`/`Conditional`. A member
+  mod that is composed into `mandrake.rm.biomes` has no packageId of its own at runtime, so a `MayRequire` that names
+  its id never loads. A patch that matches nothing logs nothing. Detail:
+  `skills/rimworld-modding/references/project-engine-facts.md`.
+- **`modcheck run <Mod>` rewrites the live `ModsConfig.xml`** (the expensive list, which is slow to load).
+- When a new game does not start, read the **first** exception in `Player.log`, not the loudest one.
+- More traps of tools are in `infrastructure/state/facts/tool_traps.md`. The 600 s subagent watchdog, mid-session
+  hooks and card gates are in `infrastructure/agents/Agent_Policy.md`. `handoff.py` and two Conductor windows are in
   `skills/using-rimflow/references/traps.md`.
-- **Dumps and harvests decay** (owner, 2026-08-27): trust one only after its fingerprint
-  matches the live mod set; the frozen `official` dump is the sole design target.
+- **Dumps and harvests decay** (owner, 2026-08-27). A dump is a capture of the game's defs. A harvest here is data
+  that a script read from the live game. Trust one only after its fingerprint matches the live mod set. The frozen
+  `official` dump is the only design target.
 
 ## The weekly Crystallize pass improves the agents and carries the skill proposals — owner, 2026-11-02, 2026-10-29, by card 2026-11-23
 
 Crystallize is the consolidation pass (the `crystallize` skill of MandrakeWorkflows). For this project it has two jobs.
 
-- **Crystallize improves the agents and the skills.** His words, 2026-11-02: *"Every day we should ask if each agent can be
-  improved based on our evidence. That's the beauty of making them agents. Same with reusable skills not agent
-  specific."* By his card of 2026-11-23 ("Stop it, weekly does it") the weekly pass does this work. The daily improvement
-  pass was deleted. Each pass asks, for each role file and each skill, if the evidence since the last pass improves it.
-- **Crystallize carries the skill and tool proposals.** His words, 2026-10-29: *"This is a good thing to discuss with the user and
-  a positive outcome."* By his card of 2026-11-23 ("Weekly, in one report") a proposal for a new skill, or for a move of a
-  skill or tool up to the user-level tools, goes in the weekly report, not on a daily card. Each entry gives its name,
-  what moves, why it is general, and the measured evidence. He decides each one. First entry owed:
-  `RIMMANDRAKE_PROPOSE_PROSE_CHECK_TO_USER_TOOLS_BELOW_TWELVE`.
+- **Crystallize improves the agents and the skills.** His words, 2026-11-02: *"Every day we should ask if each agent
+  can be improved based on our evidence. That's the beauty of making them agents. Same with reusable skills not agent
+  specific."* By his card of 2026-11-23 ("Stop it, weekly does it") the weekly pass does this work. The daily
+  improvement pass was deleted.
+  - Each pass asks, for each role file and each skill, if the evidence since the last pass improves it.
+- **Crystallize carries the skill and tool proposals.** His words, 2026-10-29: *"This is a good thing to discuss with
+  the user and a positive outcome."*
+  - His card of 2026-11-23 ("Weekly, in one report") covers a proposal for a new skill, and a proposal to move a skill
+    or tool up to the user-level tools. Such a proposal goes in the weekly report, not on a daily card.
+  - Each entry gives its name, what moves, why it is general, and the measured evidence. He decides each one.
+  - First entry owed: `RIMMANDRAKE_PROPOSE_PROSE_CHECK_TO_USER_TOOLS_BELOW_TWELVE`.
 - The report is `CYCLE_REPORT.md` in `D:\ClaudeWork\rimmandrake\conductor\crystallize_<year>W<week>\`.
 - Measured 2026-11-23: the pass runs and applies edits, but it has not been weekly. Its last two runs were 31 days apart
   (2026-10-19 and 2026-11-19). `RIMMANDRAKE_REVIVE_WEEKLY_CRYSTALLIZE_RAN_31_DAYS_APART` holds the repair.
@@ -2722,20 +2868,27 @@ Crystallize is the consolidation pass (the `crystallize` skill of MandrakeWorkfl
 
 ## If it flies in the fiction, it flies in the game — owner, 2026-09-19
 
-*"Standing rule: we make flyers flyers when we can, ok?"* Real flight, triggered by touching
-the def, not a sweep. Flight is the **`MaxFlightTime` STAT** (Core, not a donor); the animation
-is a **whole-body directional flip-book** (`flyingAnimationFramePathPrefix`), ⛔ never a Spastic
-wing render-tree. Mechanics: `skills/rimworld-modding/references/flight.md`.
+*"Standing rule: we make flyers flyers when we can, ok?"*
 
-🔴🔴 **NEVER live-test a flyer's flight without the owner present** — *"For the third time, do
-not do live testing of flyers without a human present. It doesn't work."* and *"Don't try to
-capture images of flight. It doesn't work."* Verify flight by a deterministic STATE read of
-`Pawn_FlightTracker`; a visual check is a joint session or it waits.
+- When you touch the def of a flyer, give it real flight. Do not sweep all the defs for this.
+- Flight is the stat `MaxFlightTime` (Core, not a donor). The animation is a whole-body directional flip-book
+  (`flyingAnimationFramePathPrefix`). Never build a wing render tree with a Spastic node.
+- Mechanics: `skills/rimworld-modding/references/flight.md`.
+- **Never live-test a flyer's flight without the owner present.** *"For the third time, do not do live testing of flyers
+  without a human present. It doesn't work."* and *"Don't try to capture images of flight. It doesn't work."*
+- Verify flight by a deterministic read of the state of `Pawn_FlightTracker`. A visual check is a joint session, or it
+  waits.
 
 ## Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11)
 
-`--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text; the whole card, the picked option's description included, is stamped from the card store: `src/RimMandrake/rimflow/card_capture.py`) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
+- `--owner-said` is his words. You may fix typos and join his own sentences. The meaning stays the same.
+- `--by-card "<question → option>"` is a decision that he took by card. The label is our text.
+  `src/RimMandrake/rimflow/card_capture.py` stamps the whole card from the card store, with the description of the
+  option that he picked.
+- `--per-ruling <item-id|event>` is a standing ruling, cited by reference. The ruling stands until he changes it.
+- `--why "…"` is your own words.
+- No transcript proof runs. Nothing checks a quote except its shape.
 
 ## 🔴 Never send him to a computer you can reach yourself — owner, 2026-10-31
 
-User-level rule; here the route is Tailscale.
+The rule is a user-level rule. Here, reach the other machine over Tailscale.

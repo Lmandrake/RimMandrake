@@ -1,4 +1,5 @@
-"""One scene-begin save and its reload, shared by every live scene runner (RIMMANDRAKE_SAVE_RELOAD_AROUND_EVERY_TEST_SCENE).
+"""One scene-begin save and its reload, shared by the live scene runners that use it: scene_runner.py, LiveSite
+(showcase_common.py) and wind_burn_live.py (RIMMANDRAKE_SAVE_RELOAD_AROUND_EVERY_TEST_SCENE).
 
 Owner, 2026-11-17: *"Just save the test in a file and reload... We shouldn't be judging Test Reset as a mod deliverable."*
 (standing_rulings.md, "Resetting a test scene is harness housekeeping, never a mod deliverable"). So no scene puts its map
