@@ -367,12 +367,16 @@ When you test every biome in turn, the reset rule is simple (owner, 2026-09-17):
   (run while the game is down). The tier is in `design/concepts/<Mod>/version/small_list.json`. If the mod has no such
   file, choose a tier from `modset_builder.py --list`.
 - **If you changed nothing on disk** (you only move to the next biome): **reload or regenerate**. Either re-tile the
-  current tile to the next biome and `world_tile_map_generate` a fresh map, or reload the clean base save. No restart is
+  current tile to the next biome and `world_tile_map_generate` a fresh map, or load the pre-staging save. No restart is
   necessary.
+- The **pre-staging save** is a save that you make yourself, on the mod list that runs now, before you stage anything on
+  the map. No save of that kind ships with this skill. Make it with `rimworld/save_game` under a name of your own, and
+  verify that it landed (§6). Load it with `python.exe src/RimMandrake/Utils/live_site.py --save <NAME>`. A keeper (§6)
+  holds a staged scene, so it is not a pre-staging save.
 - **Reload to reset.** A staged map accumulates test damage, dead raiders and moved pawns. To start the next biome clean,
-  reload the base save or regenerate the map. **Do NOT nurse the map's contents**, because the map is scratch. When a step
-  warns about "losing items from the game", ignore the warning: the map is a throwaway review map, and you reload to
-  reset anyway.
+  load the pre-staging save or regenerate the map. **Do NOT nurse the map's contents**, because the map is scratch. When
+  a step warns about "losing items from the game", ignore the warning: the map is a throwaway review map, and you reload
+  to reset anyway.
 - Never write over a canonical world save (`infrastructure/state/CANONICAL_SAVE.md`). Every other save is disposable, but
   a save that waits for his review stays until he rules. Always say which map a shot came from.
 
