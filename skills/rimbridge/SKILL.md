@@ -32,7 +32,7 @@ actions.** Those two acts have destroyed a colony and a 568-mod game respectivel
 | author the **planet** — tiles, biomes, rivers, roads, mutators, landmarks, settlements, regions | `references/world-authoring.md` |
 | author a **map** — terrain, substructure, buildings, prefab copy/paste, fog, snow, zones | `references/map-authoring.md` |
 | edit **pawns**, or make pawns that live somewhere | `references/pawn-authoring.md` |
-| **add a tool the bridge does not have** | the `rimbridge-companion` skill |
+| **add a tool the bridge does not have** | §9 (no permission needed for a generic tool; tests stay in Python), then the `rimbridge-companion` skill |
 | something "worked" and did not | grep `references/traps/` for your verb |
 | meet a pawn/creature you did not put there, or start any debugging theory | `references/first_look.md` — the 7-step first look (`modcheck/scene_report.py`), and what you may NOT claim about origin |
 | optimise, or quote a timing | `references/performance.md` |
@@ -485,6 +485,14 @@ loop is slower than you expected.
 When the bridge cannot do something, **you can add a `[Tool]` method to a companion DLL.** A companion `[Tool]` is a
 documented, supported path, not a hack. Every `jawa/` tool came from that path. One single day added
 59 of them.
+
+**Do not ask first, and do not poll from Python around the wall.** A thing that Python cannot control or measure today is
+enough reason to add a generic tool. Examples: a capture or an act on each tick, a private value, a live write of a value,
+an event between two ticks. The agent that hits the wall builds the tool, test first, or files a ticket for the tool.
+
+**Tests, scene steps and verdicts stay in Python.** Ask of each new tool: could a scene of another mod call this tool
+unchanged? Yes: an instrument, so add it. No: a test, a scene or a check of one mod, so keep it in Python. The owner's
+words: `design/RimMandrake/standing_rulings.md` §What Python cannot reach goes into the bridge's C#.
 
 ⇒ **Use the `rimbridge-companion` skill.** That skill has the tool pattern, the build guards, and the
 edit→build→deploy→test cycle (about **one minute** on a minimal mod list). The skill also has

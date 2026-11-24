@@ -10,7 +10,7 @@ Owner ask (2026-11-06): composable in-game bridge primitives called from Python:
 ticks, watch this and report when it happens", "Wait until there's water in this cell.", "Report when this cell
 turns dry.", "Alert when light(dark) reaches this location." Attack polling aggressively. Record flyers as the
 sequence of flight-animation frame texture paths (STATE, never screenshots). The first live flight run is a joint
-session with the owner. Proofs stay in Python, and the game gains generic primitives, not C# test suites.
+session with the owner. The Conductor's direction on that ask (not the owner's words): Proofs stay in Python, and the game gains generic primitives, not C# test suites.
 Many ticks per frame belongs to `TICKBURST_PROVE_MANY_TICKS_ONE_FRAME`. This spec references that item and does
 not specify it.
 

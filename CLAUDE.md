@@ -41,6 +41,10 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Agents write, approve and declare passing on these scripts. Every new mod ships with its first script.
 - Agents may add regression checks and new north-star bars (`design/RimMandrake/delegation_policy.md` §1).
 - Only the Conductor may loosen a bar, as a mindful act (see "Only five acts stay his" below).
+- When Python cannot control or measure a thing through the bridge, add generic C# to the bridge that reaches the
+  thing. Do not ask first: build or file the bridge function, test first. Tests, scene steps and verdicts stay in Python;
+  never put a test, a scene or a check of one mod in C#. Full text: `design/RimMandrake/standing_rulings.md` §What Python
+  cannot reach goes into the bridge's C#.
 - When you are stuck, go to GPT early, for hypotheses to test.
 - Process: `design/RimMandrake/debug_process.md`.
 

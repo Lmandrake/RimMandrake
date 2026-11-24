@@ -1447,6 +1447,40 @@ The ruling on a scene short of its X of Y (about 3:00 PM PST; item
 
 > *"I can also rule too: It means escallation is required. Does the mod REQUIRE X of Y to be true, or was X of Y a guess and (X-1) of Y is just as good? Depends on whether the mod's actual function requires X of Y or whether X of Y was just guarding environmental variable fluctuation. That's a Conductor call."*
 
+## What Python cannot reach goes into the bridge's C#; tests stay in Python — owner, 2026-11-23
+
+This ruling has two halves. Quote the two halves together.
+
+**His words.** He typed these words on 2026-11-23, 5:49 PM PST (the time on the ledger event). His words answer
+`design/specs/2026-11-23-bridge-v2/10_for_the_owner.md`:
+
+> *"I am ok with 10_for_the_owner, except for one thing: ANYTHING we literally can't control or measure from Python today is authorized to be installed into the C#. Per-tick, accessing variables... whatever the Python CANNOT reach right now is grounds for more BRIDGE C# to make them accessible. Quote me on that."*
+
+- **Half one: authorized without asking.** Python drives the game through the bridge. Some control or measurement is out
+  of Python's reach through the bridge today. Examples: a capture or an act on each tick, a hidden or private value, a
+  live write of a value, an event between two ticks. Each such wall is enough reason to add generic C# to the bridge.
+  - No agent asks the owner or the Conductor first.
+  - The agent that hits the wall builds the new bridge function, test first, or files a ticket for the new bridge function.
+  - Do not poll from Python around the wall. A poll can miss an event that lasts one tick.
+  - First check that no bridge tool reaches the thing already (`skills/rimbridge-companion/SKILL.md` §0).
+- **Half two: unchanged.** Tests, scene steps and verdicts stay in Python. The C# that an agent adds is a generic
+  instrument that any test can call. The C# is never a test, a scene or a check of one mod.
+- **The question that tells an instrument from a test:** could a scene of another mod call the C# function unchanged?
+  Yes: an instrument, so add it to the bridge. No: a test, so keep it in Python.
+- **Not changed:** the driver lock, the gates of `build.py`, the live flight test of a flyer (one of his five acts), and
+  the ordinary work on tools that Python can reach already.
+
+**Where half two comes from.**
+
+- 2026-11-06: his ask was for primitives of the bridge that Python calls: *"We were always supposed to implement more
+  in-game testing built into Bridge to leverage from Python... let's get back into that!"* The Conductor wrote the
+  direction on that ask: "Proofs stay in Python, and the game gains generic primitives, not C# test suites"
+  (`design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md`; his whole ask is in `draft.md` beside it).
+- 2026-11-23, 4:43 PM PST: *"ALSO, MAJOR NOTE: you have often proposed building tests into the C# itself. Each time I remind you that the Python calls to Bridge are lightning fast and take no real time, allowing us to modify tests IN PROGRESS and keep them as Python (cheaper, no DLL compile or conflicts). Then you back off and say I'm right. Let's make sure to go through that discussion early here. I don't want C#-coded tests if we can just as cheaply keep them in Python, that would be a big error."*
+- 2026-11-23, 5:25 PM PST: *"Or if we're struggling to build what we need in Python but can't seem to and want to put it in C# suggests better "hands" functions in the BRIDGE. And as the evidence suggests, new BRIDGE capabilities (especially deep in-game access like hidden variable reads, per-tick captures and actions, etc.) make complete sense."*
+
+Item `RIMMANDRAKE_ENACT_PYTHON_CANNOT_REACH_IT_AUTHORIZES_BRIDGE_CSHARP`.
+
 ## A cleansed design passes all three checks — owner, by card 2026-11-23
 
 A cleansed design is a mod's design after the pass that strips out extras. The card (Mon 2026-11-23, 8:57 AM PST, item

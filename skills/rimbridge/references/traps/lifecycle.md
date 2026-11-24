@@ -38,8 +38,9 @@ instinct gets wrong:
   reads as a behaviour FAIL. Step exactly (`B.ticks(n)`, safe_advance), never with
   `play_for`. Prefer a durable trace that a single read after the window can see (a
   counter, a log line, a hediff). A stop-on-state is PLANNED (item
-  ADVANCEUNTIL_WIRE_PER_TICK_STOP). Until it lands, a small-step poll belongs in a throwaway
-  diagnostic, not in a committed proof
+  ADVANCEUNTIL_WIRE_PER_TICK_STOP). When no durable trace exists, add a generic bridge tool without
+  asking, and keep the test in Python (`skills/rimbridge/SKILL.md` §9). Until the tool lands, a
+  small-step poll belongs in a throwaway diagnostic, not in a committed proof
   (`skills/live-debugging-proof-harness/references/lightspeed-authoring.md` §3).
 - **Stats do not predict wall pace on the full list.** `Out of Combat ReBoost` walks
   colonists ~2 ticks/cell while `MoveSpeed` still reads 4.6 c/s, so "step K ticks and catch

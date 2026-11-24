@@ -42,8 +42,8 @@ written on one library with ten names, not on 563 bridge tools.
 ## Where you were right
 
 - **Tests belong in Python.** Nothing I found needs a test written in C#.
-- **We keep proposing C# tests.** Your ask of 2026-11-06 ("Proofs stay in Python, and the game gains generic
-  primitives, not C# test suites") is in our own skill. Twelve days later we built an in-game C# scene runner, and the
+- **We keep proposing C# tests.** The direction that the Conductor wrote on your ask of 2026-11-06 ("Proofs stay in
+  Python, and the game gains generic primitives, not C# test suites") is in our own `rimbridge-companion` skill. Twelve days later we built an in-game C# scene runner, and the
   last design was a third form of the same move.
 - **Few rich entry points.** Today's shape is the opposite, and the counts above show how far.
 
@@ -61,6 +61,14 @@ written on one library with ten names, not on 563 bridge tools.
 One thing more: changing a test while it runs is right for building a scene and for hunting a bug, and I give it its
 own mode. A run that counts toward a pass plays a fixed script from a clean copy of the code, so that a pass can be
 repeated.
+
+**Your reply** (2026-11-23, 5:49 PM PST):
+
+> *"I am ok with 10_for_the_owner, except for one thing: ANYTHING we literally can't control or measure from Python today is authorized to be installed into the C#. Per-tick, accessing variables... whatever the Python CANNOT reach right now is grounds for more BRIDGE C# to make them accessible. Quote me on that."*
+
+So an agent adds that C# to the bridge without asking first. The other half is unchanged: tests, scene steps and verdicts
+stay in Python, and the added C# is a generic instrument, never a test. Both halves:
+`D:\Luke\dev\RimMandrake\design\RimMandrake\standing_rulings.md` §What Python cannot reach goes into the bridge's C#.
 
 ## What it changes
 

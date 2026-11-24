@@ -226,8 +226,8 @@ His steer is aimed at something real `[MEASURED: find and wc in this run]`:
   `[READ: knockback_runner.py header]`. That is a C#-coded test.
 - `jawa/static_call` is the most used tool of the live scripts: 844 call sites in 204 files. Much of that is Python
   calling a proof method inside a mod.
-- The rule against this is already written. Owner ask, 2026-11-06: "Proofs stay in Python, and the game gains generic
-  primitives, not C# test suites" (`design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md`); rule 11 of
+- The rule against this is already written. The Conductor's direction on the owner's ask of 2026-11-06: "Proofs stay in
+  Python, and the game gains generic primitives, not C# test suites" (`design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md`); rule 11 of
   `skills/rimbridge-companion/SKILL.md` says the same. The shared in-game scene runner of 2026-11-18 (`jawa/run_scenes`,
   `[RMTest]`) went the other way twelve days later, and pass two's plan interpreter is a third form of the same move.
   So he is right that the proposal keeps coming back.

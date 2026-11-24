@@ -11,6 +11,10 @@ JawaBench DLL, which adds tools to the bridge.
 
 To drive the bridge with tools that exist, use the `rimbridge` skill. This skill is about *making it able to do more*.
 
+**You do not need permission to add a generic bridge tool for a thing that Python cannot control or measure today.** Build
+the bridge tool, test first, or file a ticket for it. Tests, scene steps and verdicts stay in Python (§3, rule 11).
+The owner's words: `design/RimMandrake/standing_rulings.md` §What Python cannot reach goes into the bridge's C#.
+
 ---
 
 ## 0. Before you write anything: does it already exist?
@@ -184,6 +188,8 @@ same gate.
     result is not tested.
 11. **Build a generic primitive, not a test suite in C#.** A new read is a probe (one named read of game state). A new wait
     is a condition that a stepped advance can stop on. So every proof can reuse the probe or the condition.
+    - Ask of each new tool: could a scene of another mod call this tool unchanged? Yes: an instrument, so add it without
+      asking. No: a test, a scene or a check of one mod, so keep it in Python.
     - The verdict stays in Python. A probe that cannot see returns `gone` / `oob` / `unbound` / `error`, never 0 or false.
     - Spec: `design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md`.
     - Built: the evaluator (CONDCORE_BUILD_THREE_VALUED_TREES) and the `cond_eval` tool, `jawa/cond_eval`
