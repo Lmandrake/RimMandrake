@@ -1,7 +1,7 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.2.0",
- "made": "2026-11-23T16:46:40-08:00",
+ "made": "2026-11-23T17:24:25-08:00",
  "made_by": "rm-builder, Maturation hand run beside the pilot, row 2 (throwaway version/make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -2122,7 +2122,8 @@
    "observes": "every edge at least 1.4 times its chord, no bend tighter than the minimum radius, an excursion off the conduit line on edges over four cells",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/validation.py",
-    "design/concepts/GimmeSomeSlack/scenes.json"
+    "design/concepts/GimmeSomeSlack/scenes.json",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
    ],
    "command": "src/RimMandrake/GimmeSomeSlack/validation.py",
    "why_game": "cord geometry is built in game from the live grid; a quicktest colony gives it in 90 s",
@@ -2143,7 +2144,8 @@
    "observes": "strands read greater than zero in every look (the instrument sees cords); unforced == 0 in every look, at plug and junction ends as well as mid-cord; every forced bend names the wall, building, door or socket beside it; on the same strands every edge's drawn length is at least 1.4 times its chord an",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/validation.py",
-    "design/concepts/GimmeSomeSlack/scenes.json"
+    "design/concepts/GimmeSomeSlack/scenes.json",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
    ],
    "command": "src/RimMandrake/GimmeSomeSlack/validation.py",
    "why_game": "cord geometry is built in game from the live grid; a quicktest colony gives it in 90 s",
@@ -2672,7 +2674,8 @@
    "observes": "on his review map (save GSS_OWNER_LOOK_20261116) the probe joins: runs Core/StubJoinAudit on the live pieces of every station: stubs off line or slope, bare stubs, live ends turning or pinched at the join, wall/rock dead ends drawn loose",
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackProbe.cs",
-    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs"
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
    ],
    "why_game": "the drawn pieces come from the running map's graph, looks and settings, not a generated scene",
    "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\northstar\\live_stub_joins.py (game up on the gimmesomeslack tier, bridge held)",
@@ -2848,7 +2851,8 @@
    "reads": [
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyleProbe.cs",
-    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py"
+    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
    ],
    "why_game": "the drawn picture of a style def exists only in the running renderer",
    "for_bar": "wall_lamp_takes_looks",

@@ -483,6 +483,9 @@ for sid, (bid, fn, obs, rd, why) in NEW_LIVE.items():
                       command="python.exe %s --scene %s   (minimal list; entry %s)" % (f.replace("/", "\\"), fn, "exists" if exists else "ABSENT"),
                       runs_today=dict(ran=False, why="live: offline-only run; entry %s in the code" % ("exists" if exists else "ABSENT")))
     OFF_DECIDES.setdefault(bid, []).append(sid)
+# what the scene reads is the cord CordBuilder laid: without it build_match counted these rows on the geometry before 1e926ebe4c (2026-11-23)
+for sid in ("sc_stub_joins", "sc_no_sharp_turn", "sc_cords_slack", "sc_wall_lamp_looks"):
+    tests[sid]["reads"] = list(tests[sid]["reads"]) + [G + "Source/Core/CordBuilder.cs"]
 tests["LOOK_STAGE8"] = dict(id="LOOK_STAGE8", kind="look", stage="8", file=None, entry=None, entry_exists=False,
                             observes="his walk of a scavenger base on his full list, with a mid-way reload",
                             reads=[C + "sheet.md", C + "version/vision.md"], why_game="his eye is the instrument",
