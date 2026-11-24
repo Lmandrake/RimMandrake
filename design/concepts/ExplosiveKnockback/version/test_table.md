@@ -34,10 +34,10 @@ Generated 2026-11-15T15:12:28-08:00 from `test_table.json` (the record; this is 
 | `every_harmful_blast_throws` | tree | 6 | T_LINT, T_KERNEL, sc_blast_kinds | T_LINT_PLANTED, P_emp_no_throw, P_fire_half, P_harmful_unpatched | all |
 | `only_explosions_throw` | tree | 6 | T_ONLY_EXPLOSIONS_STATIC, sc_only_explosions | - | all |
 | `per_weapon_tuning` | tree | 6 | T_KERNEL, T_LINT, sc_lookup | T_FUZZ, P_body_override, P_impact_factor, P_lookup_zero_wins | all |
-| `gas_goes_clump_by_clump` | tree | 6 | T_GAS_CLUMP_ORDER, sc_gas_chain | sc_gas_shove_into_pit, P_gas_clumps | all |
+| `gas_goes_clump_by_clump` | tree | 6 | T_GAS_CLUMP_ORDER, sc_gas_chain | sc_gas_shove_into_pit, P_gas_clumps, T_SITUATION_MAP_OFFLINE | all |
 | `our_gases_burn` | tree | 6 | T_GAS_TAG_CENSUS, sc_cauldron_gas | - | all |
 | `blast_breaks_pit_cover` | tree | 6 | T_FW_COVER, sc_cover_breaks | - | all |
-| `thrown_into_pit_falls` | tree | 6 | T_KERNEL, sc_pit_fall, sc_pit_enemy | sc_gas_shove_into_pit, sc_storeroom_bomb_pit, P_no_cross, P_corpse_into_pit, P_land_no_bump_pit | all |
+| `thrown_into_pit_falls` | tree | 6 | T_KERNEL, sc_pit_fall, sc_pit_enemy | sc_gas_shove_into_pit, sc_storeroom_bomb_pit, P_no_cross, P_corpse_into_pit, P_land_no_bump_pit, T_SITUATION_MAP_OFFLINE | all |
 | `pit_goods_fetched` | tree | 6 | sc_pit_fetch | - | all |
 | `no_teleport` | tree | 6 | sc_storeroom_mortar, sc_gas_chain | P_goods_fly_midair | all |
 | `no_careless_fall` | tree | 6 | sc_no_careless_fall | - | all |

@@ -253,10 +253,11 @@ namespace RimMandrake.ExplosiveKnockback
                 return Skip(p, "too_weak");
             }
             Direction(f, b, out p.dx, out p.dz);
-            p.res = RM_KnockbackMath.Resolve(w.Grid(pawn), f.x, f.z, p.dx, p.dz, p.cells, f.kind, f.mass, s);
+            IKbGrid grid = w.Grid(pawn);
+            p.res = RM_KnockbackMath.Resolve(grid, f.x, f.z, p.dx, p.dz, p.cells, f.kind, f.mass, s);
             if (!p.res.Moved && !pawn)
             {
-                GoodsWithNoFirstCell(p, f, s, q, w.Grid(false));
+                GoodsWithNoFirstCell(p, f, s, q, grid, b.gas);
             }
             if (!p.res.Moved && !p.wallFirst)
             {
@@ -265,6 +266,10 @@ namespace RimMandrake.ExplosiveKnockback
             }
             if (!pawn && !p.wallFirst)
             {
+                if (s.intoPits)
+                {
+                    p.res = StopAtCrossedPit(grid, f.x, f.z, p.res);
+                }
                 p.first = new KbLeg { fromX = f.x, fromZ = f.z, dx = p.dx, dz = p.dz, res = p.res };
             }
             p.act = pawn ? KbAct.LaunchPawn : KbAct.ThrowGoods;
@@ -279,11 +284,16 @@ namespace RimMandrake.ExplosiveKnockback
         /// sandbags (or a shelf) under its whole short throw: backing off them would undo the throw, so it clears them and
         /// comes down on the first cell past them ("they pass over sandbags"), at most HopExtraCells farther.
         /// Deep water right behind it still holds it ("stop short of deep water, never lost in it").</summary>
-        private static void GoodsWithNoFirstCell(KbPlan p, KbFacts f, KbSettings s, KbRules q, IKbGrid grid)
+        private static void GoodsWithNoFirstCell(KbPlan p, KbFacts f, KbSettings s, KbRules q, IKbGrid grid, bool gas)
         {
+            int maxCells = p.cells + HopExtraCells;
+            if (gas)
+            {
+                maxCells = Math.Min(maxCells, s.maxCells);
+            }
             if (p.res.stop == KbStop.None)
             {
-                for (int n = p.cells + 1; n <= p.cells + HopExtraCells; n++)
+                for (int n = p.cells + 1; n <= maxCells; n++)
                 {
                     KbResult r = RM_KnockbackMath.Resolve(grid, f.x, f.z, p.dx, p.dz, n, f.kind, f.mass, s);
                     if (r.Moved)
@@ -304,7 +314,7 @@ namespace RimMandrake.ExplosiveKnockback
                 p.wallFirst = true;
                 return;
             }
-            Tumble(p, f, s, grid);
+            Tumble(p, f, s, grid, maxCells);
         }
 
         /// <summary>Leaf every_good_moves, the cases its throw, hop and bounce all leave in place (blind cycle 6,
@@ -313,7 +323,7 @@ namespace RimMandrake.ExplosiveKnockback
         /// bounce whose reflected line is blocked at a corner, a throw along a shelf row deeper than HopExtraCells. The good tumbles
         /// along the first of the eight directions, most in line with its throw first, whose walk of its throw (up to
         /// HopExtraCells more, to clear a shelf) moves it. Only a good with no such line anywhere stays.</summary>
-        private static void Tumble(KbPlan p, KbFacts f, KbSettings s, IKbGrid grid)
+        private static void Tumble(KbPlan p, KbFacts f, KbSettings s, IKbGrid grid, int maxCells)
         {
             float m = (float)Math.Sqrt(p.dx * p.dx + p.dz * p.dz);
             float ux = m > 1e-6f ? p.dx / m : 1f, uz = m > 1e-6f ? p.dz / m : 0f;
@@ -332,7 +342,7 @@ namespace RimMandrake.ExplosiveKnockback
             order.Sort((a, b) => { int c = dirs[b].dot.CompareTo(dirs[a].dot); return c != 0 ? c : a.CompareTo(b); });
             foreach (int i in order)
             {
-                for (int n = Math.Max(1, p.cells); n <= p.cells + HopExtraCells; n++)
+                for (int n = Math.Max(1, p.cells); n <= maxCells; n++)
                 {
                     KbResult r = RM_KnockbackMath.Resolve(grid, f.x, f.z, dirs[i].x, dirs[i].z, n, f.kind, f.mass, s);
                     if (r.Moved)
@@ -352,6 +362,35 @@ namespace RimMandrake.ExplosiveKnockback
         /// two (Shelf is 2x1), so a throw of N cells that ends on such a line clears it within N + 2. A counterexample would be
         /// a three-deep sandbag field: there the good stays, as it did before.</summary>
         public const int HopExtraCells = 2;
+
+        /// <summary>Goods fly from cell centre to cell centre. Between the kernel's rounded steps the straight leg can
+        /// enter an open pit. End the leg there and recheck the shortened line to that cell's centre.</summary>
+        private static KbResult StopAtCrossedPit(IKbGrid grid, int fromX, int fromZ, KbResult res)
+        {
+            while (res.destX != fromX && res.destZ != fromZ)
+            {
+                int dx = res.destX - fromX, dz = res.destZ - fromZ;
+                int nx = Math.Abs(dx), nz = Math.Abs(dz);
+                int stepX = Math.Sign(dx), stepZ = Math.Sign(dz);
+                int x = 0, z = 0;
+                while (x != nx || z != nz)
+                {
+                    // Compare the next boundary times (x + 0.5) / nx and (z + 0.5) / nz. A corner enters only the diagonal cell.
+                    int crossX = (2 * x + 1) * nz, crossZ = (2 * z + 1) * nx;
+                    if (crossX <= crossZ) x++;
+                    if (crossZ <= crossX) z++;
+                    if (x == nx && z == nz) return res;
+                    int atX = fromX + x * stepX, atZ = fromZ + z * stepZ;
+                    if (grid.At(atX, atZ) == KbCell.Pit)
+                    {
+                        res = new KbResult { destX = atX, destZ = atZ, cellsPlanned = res.cellsPlanned,
+                            cellsTravelled = Math.Max(x, z), stop = KbStop.Pit };
+                        break;
+                    }
+                }
+            }
+            return res;
+        }
 
         /// <summary>Where a landing stack is put, in order, each tried until one takes it (RM_MapComponent_Knockback.PlaceLanding
         /// applies them through GenPlace; the map's model applies the same list).</summary>
@@ -503,6 +542,10 @@ namespace RimMandrake.ExplosiveKnockback
             if (!nr.Moved)
             {
                 return false;
+            }
+            if (s.intoPits)
+            {
+                nr = StopAtCrossedPit(grid, atX, atZ, nr);
             }
             next = new KbLeg { fromX = atX, fromZ = atZ, dx = rx, dz = rz, res = nr };
             return true;

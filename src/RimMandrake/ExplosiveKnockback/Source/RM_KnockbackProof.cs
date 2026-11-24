@@ -1157,9 +1157,35 @@ namespace RimMandrake.ExplosiveKnockback
                     Colonist(s, "p1", O(s, 0, 1), drafted: false);
                     Colonist(s, "p2", O(s, -1, 0), drafted: false);
                     Boom(Map, s.o, 2.9f, DamageDefOf.Bomb, 9999);
+                    // the spin trace (leaf goods_arc_spin_rebound: "loose goods and corpses ... spinning fast"): each tick, the angle
+                    // the pawn renderer draws a carried body at; the turn adds up while it is in the air
+                    Map km = Map;
+                    for (int d = 1; d <= 200; d++)
+                    {
+                        RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + d, () =>
+                        {
+                            foreach (string key in new[] { "p0", "p1", "p2" })
+                            {
+                                Pawn p = (Pawn)s.things[key];
+                                if (!p.Dead || p.Corpse == null || km != Find.CurrentMap || CarrierOf(km, p.Corpse) == null)
+                                {
+                                    continue;
+                                }
+                                float angle = p.Drawer.renderer.BodyAngle(PawnRenderFlags.None);
+                                if (s.numbers.TryGetValue(key + "_angle", out float was))
+                                {
+                                    s.numbers[key + "_turn"] = (s.numbers.TryGetValue(key + "_turn", out float sum) ? sum : 0f)
+                                        + Math.Abs(UnityEngine.Mathf.DeltaAngle(was, angle));
+                                }
+                                s.numbers[key + "_angle"] = angle;
+                                s.numbers[key + "_airTicks"] = (s.numbers.TryGetValue(key + "_airTicks", out float air) ? air : 0f) + 1f;
+                            }
+                        }));
+                    }
                     s.verdict = sc =>
                     {
-                        int dead = 0, thrown = 0;
+                        int dead = 0, thrown = 0, spun = 0;
+                        var turns = new List<string>();
                         foreach (string key in new[] { "p0", "p1", "p2" })
                         {
                             Pawn p = (Pawn)sc.things[key];
@@ -1172,12 +1198,16 @@ namespace RimMandrake.ExplosiveKnockback
                             {
                                 thrown++;
                             }
+                            float turn = sc.numbers.TryGetValue(key + "_turn", out float tn) ? tn : 0f;
+                            turns.Add(key + ":" + turn.ToString("0") + "deg/" + (sc.numbers.TryGetValue(key + "_airTicks", out float at) ? at : 0f) + "t");
+                            spun += turn >= 30f ? 1 : 0;
                         }
                         if (dead == 0)
                         {
                             return "INVALID " + sc.name + " the blast killed nobody";
                         }
-                        return Result(sc, thrown == dead, "dead=" + dead + " corpsesThrown=" + thrown);
+                        return Result(sc, thrown == dead && spun == dead, "dead=" + dead + " corpsesThrown=" + thrown + " corpsesSpun=" + spun
+                            + " [" + string.Join(" ", turns) + "]");
                     };
                     return null;
 
@@ -1834,12 +1864,28 @@ namespace RimMandrake.ExplosiveKnockback
                         var ids = new HashSet<int>(bursts.Select(r => (int)r["exp"]));
                         int ticks = bursts.Select(r => (int)r["tick"]).Distinct().Count();
                         var moves = Recs(sc, "item_move").Where(r => ids.Contains((int)r["exp"])).ToList();
+                        var rebounds = Recs(sc, "item_rebound").ToLookup(r => ((int)r["exp"], (int)r["thingId"]));
+                        var landings = Recs(sc, "item_land").ToLookup(r => ((int)r["exp"], (int)r["thingId"]));
                         var launches = Recs(sc, "launch").Where(r => ids.Contains((int)r["exp"])).ToList();
                         int goodsCap = RimMandrakeExplosiveKnockbackSettings.gasBurstGoodsCells;
                         // row chain: fails alone when the gas burns with no bursts or all at once (planted: Plant gasreg=off)
                         bool chain = bursts.Count >= 3 && ticks >= 2;
                         // row goods: fails alone when no good moves or one flies past the burst cap
-                        bool goods = moves.Count >= 1 && moves.All(r => (int)r["planned"] <= goodsCap);
+                        int maxTravel = 0, maxDisplacement = 0;
+                        foreach (var move in moves)
+                        {
+                            var key = ((int)move["exp"], (int)move["thingId"]);
+                            bool wallFirst = move.TryGetValue("wallFirst", out object wall) && (bool)wall;
+                            // The initial wall bounce repeats the first leg already recorded by item_move.
+                            int travel = (int)move["cells"] + rebounds[key].Skip(wallFirst ? 1 : 0)
+                                .Sum(r => Cheb((IntVec3)r["at"], (IntVec3)r["to"]));
+                            var landed = (bool)move["flying"] ? landings[key].LastOrDefault() : move;
+                            int displacement = landed == null ? int.MaxValue : Cheb((IntVec3)move["from"], (IntVec3)landed["to"]);
+                            maxTravel = Math.Max(maxTravel, travel);
+                            maxDisplacement = Math.Max(maxDisplacement, displacement);
+                        }
+                        bool goods = moves.Count >= 1 && moves.All(r => (int)r["planned"] <= goodsCap)
+                            && maxTravel <= goodsCap && maxDisplacement <= goodsCap;
                         // row shove: fails alone when a person is thrown further than a cell, hurt by the shove, or more often than the cooldown
                         Pawn p = (Pawn)sc.things["p"];
                         var mine = launches.Where(r => (int)r["thingId"] == p.thingIDNumber).Select(r => (int)r["tick"]).OrderBy(t => t).ToList();
@@ -1849,10 +1895,12 @@ namespace RimMandrake.ExplosiveKnockback
                             gap &= mine[i] - mine[i - 1] >= RimMandrakeExplosiveKnockbackSettings.gasPawnCooldownTicks;
                         }
                         bool shove = mine.Count >= 1 && gap && launches.All(r => (int)r["planned"] <= 1 && Convert.ToSingle(r["impact"]) == 0f);
+                        bool noHeavyHit = !Recs(sc, "heavy_hit").Any(r => ids.Contains((int)r["exp"]));
                         // row cover: fails alone when a burst breaks the pit cover (a burst is not a blast: no deck break). The
                         // burning gas's own fire may scorch it (vanilla fire on a flammable cover): HP is reported, not judged
                         bool cover = !sc.things.ContainsKey("cover") || (!sc.things["cover"].Destroyed && RM_KnockbackCompat.CoverAt(Map, sc.starts["cover"]) == sc.things["cover"]);
-                        return Result(sc, chain && goods && shove && cover, "chain=" + chain + " goods=" + goods + " shove=" + shove + " cover=" + cover
+                        return Result(sc, chain && goods && shove && cover && noHeavyHit, "chain=" + chain + " goods=" + goods + " shove=" + shove + " cover=" + cover
+                            + " noHeavyHit=" + noHeavyHit + " maxGoodsTravel=" + maxTravel + " maxGoodsDisplacement=" + maxDisplacement
                             + " bursts=" + bursts.Count + " burstTicks=" + ticks + " goodsMoves=" + moves.Count + " maxGoodsPlanned=" + moves.Select(r => (int)r["planned"]).DefaultIfEmpty(0).Max()
                             + " pawnShoves=" + mine.Count + " cooldownOk=" + gap + " gasReg=" + RM_KnockbackCompat.VentGasRegistered
                             + (sc.things.ContainsKey("cover") ? " coverHp=" + (sc.things["cover"].Destroyed ? -1 : Hp(sc.things["cover"])) + "/" + sc.numbers["coverHp"] : " no cover"));

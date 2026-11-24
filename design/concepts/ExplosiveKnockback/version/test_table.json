@@ -1030,7 +1030,7 @@
    "why_game": "a real gas grid lit by a real fire, bursts over ticks",
    "why_full_list": null,
    "entry_exists": true,
-   "partial": "rename of gas_clumps: checks 3 or more bursts on 2 or more ticks, goods moved within the goods cap, the colonist shoved at most 1 cell with no impact and the cooldown kept, the pit cover intact. Not yet: one burst per clump cell in distance order (offline in T_GAS_CLUMP_ORDER), goods beyond unmoved, colonist B's belt, no despawn-spawn pair, the igniter lane",
+   "partial": "rename of gas_clumps: checks 3 or more bursts on 2 or more ticks, each stack's flight travel and displacement on landing within the goods cap per burst, no heavy-goods hit from a burst, the colonist shoved at most 1 cell with no impact and the cooldown kept, the pit cover intact. Not yet: one burst per clump cell in distance order (offline in T_GAS_CLUMP_ORDER), goods beyond unmoved, colonist B's belt, no despawn-spawn pair, the igniter lane",
    "item": "RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS",
    "runs_today": {
     "ran": false,
@@ -1916,9 +1916,11 @@
   "T_SITUATION_MAP_OFFLINE": {
    "stage": "4-5",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py",
-   "observes": "The situation map of Explosive Knockback as a permanent check (RIMMANDRAKE_RESCUE_KNOCKBACK_PAST_CEILING_CYCLE_SIX).",
+   "observes": "The situation map reads the shipped planner over enumerated lanes and storerooms. Fixed cases measure flight travel and landing displacement for a gas burst over sandbags, heavy steel reaching a pawn with gas and blast controls, and a diagonal goods flight into an open pit its rounded walk misses.",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackMap.cs"
    ],
    "id": "T_SITUATION_MAP_OFFLINE",
@@ -2453,7 +2455,8 @@
     "sc_gas_shove_into_pit",
     "P_gas_clumps",
     "T_GAS_INTO_PIT_OFFLINE",
-    "T_BLIND_CYCLE1_OFFLINE"
+    "T_BLIND_CYCLE1_OFFLINE",
+    "T_SITUATION_MAP_OFFLINE"
    ],
    "held": [],
    "offline_decides": [

@@ -108,8 +108,8 @@ namespace RimMandrake.ExplosiveKnockback
             f.impactFactor = impactFactor;
             f.instigator = instigator;
             f.arcHeight = Mathf.Max(0f, RimMandrakeExplosiveKnockbackSettings.goodsArcHeight);
-            f.spin0 = Rand.Range(0f, 360f);
-            f.spinRate = kind == KbKind.Corpse ? 0f : RimMandrakeExplosiveKnockbackSettings.goodsSpinDegPerTick * Rand.Sign;
+            f.spin0 = f.Inner is Corpse dead ? CorpseAngle(dead) : Rand.Range(0f, 360f);   // a body turns on from how it lay
+            f.spinRate = RimMandrakeExplosiveKnockbackSettings.goodsSpinDegPerTick * Rand.Sign;
             f.StartLeg(start, res, dx, dz);
             GenSpawn.Spawn(f, start, map);
             return f;
@@ -209,6 +209,10 @@ namespace RimMandrake.ExplosiveKnockback
             }
             ticksFlying++;
             ticksTotal++;
+            if (inner is Corpse body)
+            {
+                TurnCorpse(body, SpinAngle);   // the pawn renderer draws a dead body at this angle (PawnRenderer.BodyAngle)
+            }
             RecomputePosition();
             IntVec3 cell = groundPos.ToIntVec3();
             if (cell.InBounds(Map))
@@ -239,7 +243,7 @@ namespace RimMandrake.ExplosiveKnockback
             if (!RM_KnockbackMath.HeavyKnock(RimMandrakeExplosiveKnockbackSettings.heavyGoodsKnock, kind, person, mass,
                     RimMandrakeExplosiveKnockbackSettings.heavyGoodsMinMass, RimMandrakeExplosiveKnockbackSettings.heavyGoodsDamageMin,
                     RimMandrakeExplosiveKnockbackSettings.heavyGoodsDamageMax, Rand.Value, RimMandrakeExplosiveKnockbackSettings.heavyGoodsStaggerTicks,
-                    out float dmg, out int stun))
+                    out float dmg, out int stun, explosionId))
             {
                 if (person && kind == KbKind.Item && RimMandrakeExplosiveKnockbackSettings.heavyGoodsKnock)
                 {
@@ -304,6 +308,10 @@ namespace RimMandrake.ExplosiveKnockback
                 return;
             }
             int count = inner.stackCount;
+            if (inner is Corpse lying)
+            {
+                TurnCorpse(lying, spin0);   // it comes to rest lying as it did, never upright
+            }
             innerContainer.Remove(inner);
             // RIMMANDRAKE_LAND_KNOCKBACK_GOODS_NEVER_BUMP_RESIDENTS: never Direct onto a cell where that shoves a resident
             Thing landed = RM_MapComponent_Knockback.PlaceLanding(inner, destCell, originCell, startVec.ToIntVec3(), map, out bool fallback, out int bumped,
@@ -409,8 +417,20 @@ namespace RimMandrake.ExplosiveKnockback
                 inner.Graphic?.Draw(effectivePos, containerRot, inner, 0f);
                 return;
             }
-            float angle = spinRate == 0f ? 0f : (spin0 + spinRate * ticksTotal) % 360f;
+            float angle = spinRate == 0f ? 0f : SpinAngle;
             inner.Graphic?.Draw(effectivePos, inner.Rotation, inner, angle);
+        }
+
+        private float SpinAngle => Mathf.Repeat(spin0 + spinRate * ticksTotal, 360f);
+
+        private static float CorpseAngle(Corpse c)
+        {
+            return c.InnerPawn?.Drawer?.renderer?.wiggler?.downedAngle ?? 0f;
+        }
+
+        private static void TurnCorpse(Corpse c, float angle)
+        {
+            c.InnerPawn?.Drawer?.renderer?.wiggler?.SetToCustomRotation(angle);
         }
 
         private void DrawShadow()

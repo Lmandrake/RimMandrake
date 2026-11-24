@@ -317,7 +317,7 @@ internal static class KnockbackMap
             {
                 t.air = true; t.flew = true; t.firstLegCells = p.first.res.cellsTravelled;
                 if (p.wallFirst) t.bounces = 1;
-                Leg(w, evs, ref seq, t, p.first, 0);
+                Leg(w, evs, ref seq, t, p.first, 0, kb.id);
             }
             else if (p.act == KbAct.ContainerThrown)
             {
@@ -375,7 +375,7 @@ internal static class KnockbackMap
                 if (again)
                 {
                     t.bounces++;
-                    Leg(w, evs, ref seq, t, next, e.t);
+                    Leg(w, evs, ref seq, t, next, e.t, kb.id);
                     continue;
                 }
                 Place(w, t, atX, atZ);
@@ -390,17 +390,22 @@ internal static class KnockbackMap
         return RM_KnockbackMath.Line(fx, fz, dx, dz, planned).Take(cells).ToList();
     }
 
-    private static void Leg(MWorld w, List<Ev> evs, ref int seq, MThing t, KbLeg leg, double now)
+    private static void Leg(MWorld w, List<Ev> evs, ref int seq, MThing t, KbLeg leg, double now, int explosionId)
     {
-        List<(int x, int z)> cells = Walked(leg.fromX, leg.fromZ, leg.dx, leg.dz, leg.res.cellsPlanned, leg.res.cellsTravelled);
         KbResult res = leg.res;
+        List<(int x, int z)> cells = Walked(leg.fromX, leg.fromZ, leg.dx, leg.dz, res.cellsPlanned, res.cellsTravelled);
+        if (res.stop == KbStop.Pit && cells[cells.Count - 1] != (res.destX, res.destZ))
+        {
+            // The centre-to-centre flight found an open pit off the walk's rounded line.
+            cells = RM_KnockbackMath.Line(leg.fromX, leg.fromZ, res.destX - leg.fromX, res.destZ - leg.fromZ, res.cellsTravelled);
+        }
         KbStop stop = res.stop;
         int left = res.cellsPlanned - res.cellsTravelled;
         // RM_ThingFlyer_Knockback.HeavyHit: a heavy stack reaching a standing person's cell stops there
         for (int i = 0; i < cells.Count; i++)
         {
             bool person = w.At(cells[i].x, cells[i].z).Any(p => p.kind == KbKind.Pawn && !p.container && !p.dead);
-            if (RM_KnockbackMath.HeavyKnock(true, t.kind, person, t.mass, 10f, 2f, 5f, 0.5f, 30, out _, out _))
+            if (RM_KnockbackMath.HeavyKnock(true, t.kind, person, t.mass, 10f, 2f, 5f, 0.5f, 30, out _, out _, explosionId))
             {
                 cells = cells.Take(i + 1).ToList();
                 res.destX = cells[i].x; res.destZ = cells[i].z;
@@ -933,6 +938,21 @@ internal static class KnockbackMap
             Case("sc_pit_fall open: the stack lands in the first pit cell", s.x == 12 && s.inPit, Where(s));
         }
         {
+            // Cell centres and the cast in Verse.IntVec3(Vector3) determine which cell the carrier enters.
+            Blast b = Bomb(0, 0);
+            var clear = new MWorld(30, 30); MThing control = Stack(clear, 2, 1, 1f);
+            Run(clear, b);
+            KbResult leg = control.plan.first.res;
+            int ticks = Ticks(Dist(leg.destX, leg.destZ, control.sx, control.sz), 14, 6);
+            float progress = 3f / ticks;
+            float x = control.sx + 0.5f + (leg.destX - control.sx) * progress;
+            float z = control.sz + 0.5f + (leg.destZ - control.sz) * progress;
+            var w = new MWorld(30, 30); w.deep[3, 1] = true; MThing s = Stack(w, 2, 1, 1f);
+            Run(w, b);
+            Case("sc_pit_fall diagonal: the stack settles in the open pit", w.deep[(int)x, (int)z] && s.x == (int)x && s.z == (int)z && s.inPit,
+                $"straight flight tick 3 is ({x},{z}), settled at {Where(s)}");
+        }
+        {
             // sc_pit_fall, covered lane (RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP): the cover lies outside the blast
             var w = new MWorld(30, 30); w.deep[13, 10] = true; w.cover[13, 10] = true; MThing c = Col(w, 11, 10); MThing s = Stack(w, 11, 11);
             w.deep[13, 12] = true; w.cover[13, 12] = true;
@@ -954,6 +974,32 @@ internal static class KnockbackMap
             Run(w, Gas(10, 10));
             Case("sc_gas_shove_into_pit: the one-cell shove puts the colonist in the open pit", c.x == 12 && c.inPit, Where(c));
             Case("gas shove onto a cover: it stands on it, the cover whole", e.z == 12 && !e.inPit && w.cover[10, 12], Where(e));
+        }
+        {
+            Blast shortBlast = Bomb(10, 10);
+            shortBlast.force = 0.25f; // a real blast whose unblocked throw is two cells
+            foreach (Blast b in new[] { Gas(10, 10), shortBlast })
+            {
+                var w = new MWorld(30, 30); w.terr[12, 10] = w.terr[13, 10] = KbCell.Partial;
+                MThing s = Stack(w, 11, 10, 20f);
+                Run(w, b);
+                int displacement = Math.Max(Math.Abs(s.x - s.sx), Math.Abs(s.z - s.sz));
+                string travel = $"path {s.route.Count} cells, displacement {displacement}, settled at {Where(s)}";
+                if (b.gas)
+                    Case("sc_gas_chain: sandbag scatter stays within the gas cap", s.flew && s.route.Count <= 2 && displacement <= 2, travel);
+                else
+                    Case("a real blast still hops over the sandbags", s.plan.hopped && s.flew && s.x == 14 && s.z == 10, travel);
+            }
+        }
+        {
+            foreach (Blast b in new[] { Gas(10, 10), Bomb(10, 10, 1.9f) })
+            {
+                var w = new MWorld(30, 30); MThing s = Stack(w, 11, 10, 20f); MThing c = Col(w, 13, 10);
+                Run(w, b);
+                Case("heavy steel from " + b.name + (b.gas ? " passes the pawn unharmed" : " hits the pawn"),
+                    s.flew && s.route.Contains((c.sx, c.sz)) && !c.reached && s.heavyStopped == !b.gas,
+                    $"heavy hit={s.heavyStopped}, pawn reached={c.reached}, steel settled at {Where(s)}");
+            }
         }
         {
             // RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN: a burst reaches only what it sees, like an explosion (A5)

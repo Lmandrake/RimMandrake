@@ -23,6 +23,7 @@ from rmpaths import rm_str  # noqa: E402  (data root: rmpaths.py)
 from winbuild import run_interop_captured  # noqa: E402  (WSL lost-launch retry)
 import fcntl
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -74,7 +75,11 @@ FAULTS = [
     ("downed pawns cannot be switched off", "RM_KnockbackPlan.cs", "if (f.downed && !q.throwDowned)", "if (false)"),
     # blind cycle 6 (RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES): the tumble that moves a good its throw, hop
     # and bounce leave in place (a one-cell throw into a wall, a blocked bounce, a deep shelf row)
-    ("a good pinned by a wall or a shelf row sits still", "RM_KnockbackPlan.cs", "            Tumble(p, f, s, grid);\n", ""),
+    ("a good pinned by a wall or a shelf row sits still", "RM_KnockbackPlan.cs", "            Tumble(p, f, s, grid, maxCells);\n", ""),
+    ("a gas hop can exceed the burst cap", "RM_KnockbackPlan.cs", "n = p.cells + 1; n <= maxCells;", "n = p.cells + 1; n <= p.cells + HopExtraCells;"),
+    ("a gas tumble can exceed the burst cap", "RM_KnockbackPlan.cs", "Tumble(p, f, s, grid, maxCells);", "Tumble(p, f, s, grid, p.cells + HopExtraCells);"),
+    ("a gas-thrown heavy stack hits a pawn", "RM_KnockbackMath.cs", "if (explosionId < 0 || !enabled", "if (!enabled"),
+    ("a diagonal goods leg crosses an open pit", "RM_KnockbackPlan.cs", "p.res = StopAtCrossedPit(grid, f.x, f.z, p.res);", ""),
 ]
 
 
@@ -129,6 +134,10 @@ def main(argv):
     if not gas_reach_is_the_explosions(open(os.path.join(HERE, "Source", "RM_MapComponent_Knockback.cs"), encoding="utf-8").read()):
         print("explosive knockback map: FAIL (GasBurst queues things without the explosion's sight line: %s)" % GAS_REACH)
         return 1
+    with open(os.path.join(HERE, "Source", "RM_ThingFlyer_Knockback.cs"), encoding="utf-8") as f:
+        if not re.search(r"RM_KnockbackMath\.HeavyKnock\([^;]*out int stun, explosionId\)\)", f.read()):
+            print("explosive knockback map: FAIL (the carrier drops the burst ID before testing for a heavy hit)")
+            return 1
     with open(os.path.join("/tmp", "explosiveknockback_map_selftest.lock"), "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
         for d in ("obj", "bin"):     # retained outputs can look newer than fresh sources (a clock step back): build clean

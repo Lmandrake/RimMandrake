@@ -334,13 +334,13 @@ namespace RimMandrake.ExplosiveKnockback
 
         /// <summary>RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS (owner card d_c_heavy_knock): a flying good reaching a standing person's
         /// cell. A stack of at least minMass hits (Blunt dmgMin..max(dmgMin, dmgMax) by roll in [0,1), a staggerTicks stun) and
-        /// its flight ends there; a lighter one, a corpse, a pawn, or the rule off passes with no damage. True = hit.</summary>
+        /// its flight ends there; lighter goods, corpses and gas-thrown goods pass with no damage. True = hit.</summary>
         public static bool HeavyKnock(bool enabled, KbKind kind, bool personThere, float mass, float minMass, float dmgMin, float dmgMax,
-            float roll, int staggerTicks, out float damage, out int stun)
+            float roll, int staggerTicks, out float damage, out int stun, int explosionId = 0)
         {
             damage = 0f;
             stun = 0;
-            if (!enabled || kind != KbKind.Item || !personThere || mass < minMass)
+            if (explosionId < 0 || !enabled || kind != KbKind.Item || !personThere || mass < minMass)
             {
                 return false;
             }
