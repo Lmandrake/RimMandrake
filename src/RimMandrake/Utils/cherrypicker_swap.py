@@ -240,7 +240,7 @@ def main():
         print("\nlive currently matches: %s" % live)
         if live.startswith("REVIEW"):
             print("🔴 NOTHING IS BEING CUT. This is the review/testing profile — content the\n"
-                  "   campaign excludes is present and CAN spawn. --ship --apply before he plays.")
+                  "   campaign excludes is present and CAN spawn. --ship --apply for a look at what ships.")
         elif live.startswith("UNRECOGNISED"):
             print("⚠️ The live list is neither profile. If that edit was deliberate, adopt it:\n"
                   "   cherrypicker_swap.py --capture-ship --apply")

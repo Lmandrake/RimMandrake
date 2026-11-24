@@ -202,14 +202,12 @@ More traps for this section: [references/traps.md](references/traps.md) § 3. Th
 | it says | it means |
 |---|---|
 | `CANNOT DEPLOY WHILE RIMWORLD IS RUNNING` | the OS holds the DLL. Kill the game |
-| `THIS DEPLOY WOULD REMOVE TOOLS` | you forgot `--gm`, **or** your source lacks a tool that the game copy has: an older checkout, a renamed tool or a deleted tool |
-| `*** DRIFT *** same commit, DIFFERENT BYTES` | uncommitted source, a different `--gm`, or a changed reference-dir variable. Otherwise someone changed the deployed DLL by hand, or it is from another checkout. Investigate before you overwrite |
+| `THIS DEPLOY WOULD REMOVE TOOLS` | you passed `--no-gm`, **or** your source lacks a tool that the game copy has: an older checkout, a renamed tool or a deleted tool |
+| `*** DRIFT *** same commit, DIFFERENT BYTES` | uncommitted source, `--gm` against `--no-gm`, or a changed reference-dir variable. Otherwise someone changed the deployed DLL by hand, or it is from another checkout. Investigate before you overwrite |
 | `built from a DIFFERENT COMMIT` | normal after any commit |
 
-⚠️ **Without `--gm`, `build.py` can print far more lost tools than its doc comment implies.** On 2026-09-19 it printed
-~40 lines. The doc comment says that only `jawa/fire_incident`/`jawa/send_letter` are `JawaGmTools`-gated. In practice
-many more tools (weather/incident/lord/social/mech-cluster) sit behind the same flag. The output reads like missing source
-or a broken checkout, but the flag is the cause. Re-run with `--gm` before you conclude that anything is missing.
+⚠️ **With `--no-gm`, `build.py` prints about 50 lost tools** (weather, incident, lord, social and mech-cluster tools are behind
+the same flag). The output reads like missing source or a broken checkout, but the flag is the cause.
 
 `--allow-tool-removal` exists, but **verify that each named tool is gone on purpose before you use it**. Count the real
 `[Tool(` attributes in source first.

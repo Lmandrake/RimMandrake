@@ -19,7 +19,7 @@ import sys
 
 # (display name, bridge key, machine, letter). The one source: nothing else spells a game's name.
 GAMES = (
-    ("ArchBig", "archmagi", "archmagi", "a"),            # Steam's install on Archmagi: his game, his full mod list
+    ("ArchBig", "archmagi", "archmagi", "a"),            # Steam's install on Archmagi: the full mod list, his looks
     ("ArchSmall", "archmagi.b", "archmagi", "b"),        # its own install on Archmagi (instances/b/game): tier lists
     ("Steve1", "stevedesktop", "stevedesktop", "a"),     # SteveDesktop's first game (its test lane)
     ("Steve2", "stevedesktop.b", "stevedesktop", "b"),   # SteveDesktop's second game

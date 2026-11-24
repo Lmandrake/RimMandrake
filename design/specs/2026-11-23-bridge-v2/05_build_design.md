@@ -63,7 +63,7 @@ loopback, so callers run under `python.exe`.
 | Awareness (`JawaBenchAwareness.cs`, `JawaBenchAwarenessCore.cs`) | Hooks on `IncidentWorker.TryExecute`, `PawnGenerator.GeneratePawn`, `Pawn.SpawnSetup`, the wild animal spawner, hives, hatching and birth; an incident journal that tells "called" from "fired"; where each pawn came from; a block on wild animal spawning. | The incident tap, the arrival watch and the wild-animal control. |
 | Damage and lineage rings (`JawaBenchSituationalTools.cs`) | Postfixes on `Thing.TakeDamage` (not virtual, so one hook sees all damage), `Pawn.Kill`, `Thing.Destroy`, stack absorb, split and ingest. | The damage, death and destruction taps. |
 | Vitals and the safe advance (`JawaBenchVitals.cs`, `JawaBenchVitalsCore.cs`, tool `jawa/safe_advance`) | Every 60 ticks a diff of the map's pawns gives triggers: arrival, downed, hurt, hostile, starving, mental state, departed. A latch stops an advance. A clock ledger catches a clock jump. | The cast watch and the game watch start here. The 60-tick diff becomes a per-tick track for cast members. |
-| Safety (`JawaBenchSafetyCore.cs`, `JawaBenchCompanionSafety.cs`, tool `jawa/companion_handshake`) | Two profiles: CAMPAIGN (the default) and TEST, granted only by a file on the machine, never by a caller. A gate prefix on every tool. Game epochs, so a call aimed at an old game is refused. A handshake that says what loaded. | Pass one's "sitting mode" and "never destructive on his game" are this gate. The scene kernel is a TEST-only family. |
+| Safety (`JawaBenchSafetyCore.cs`, `JawaBenchCompanionSafety.cs`, tool `jawa/companion_handshake`) | Two profiles: CAMPAIGN, which guards a loaded canonical world save and nothing else, and TEST. A file on the machine lists the canonical saves; a caller cannot change the profile. A gate prefix on every tool. Game epochs, so a call aimed at an old game is refused. A handshake that says what loaded. | The scene kernel is a TEST-only family: it does not run while a canonical world save is loaded. His looks are guarded by his hold and the driver lock, not by this gate. |
 | Disk writer (`JawaBenchTpsWriter.cs`) | Hooks copy numbers and strings on the main thread and enqueue; a writer thread serialises in order, bounded, counts drops, and never blocks the game. | The trace writer. Pass one's "written out while running, bounded, survives a crash" exists. |
 | Hook discipline (`HOOKS.md`, `JawaBenchHookGuard.cs`, `selftest_bridge_hooks.py`) | Every Harmony patch site is on one table with its rules (contained, takes `__runOriginal`, checks the thread, safe as an orphan, void finalizer). A selftest fails when a new site is missing from the table. | Every new tap joins this table. |
 | Pictures (`JawaBenchArtboardTools.cs`, `JawaBenchShotSettleTools.cs`, `JawaBenchHudLease.cs`) | An off-screen capture of a map rectangle: the main camera is pointed at the rectangle, rendered to a texture and put back inside one step after `Update`, with a postfix that makes the game submit the draws for that view. A tool that snaps drawn pawn positions to their cells while paused. A lease that turns screenshot mode off again. | Pass one's "pixels" exist in the "move and restore" form. |
@@ -446,7 +446,7 @@ main camera at the rectangle after `Update`, renders to a texture, and restores 
 view-rectangle postfix that makes the game submit the draws `[READ: JawaBenchArtboardTools.cs lines 10 to 20]`.
 
 - On a test game the camera belongs to the kernel, so nothing is owed.
-- On ArchBig the capture is allowed only while his hold is off and the profile allows it. He would notice nothing on
+- On ArchBig the capture is allowed only while his hold is off (the hold guards a look). He would notice nothing on
   screen, because the swap happens between the update and the present of one frame `[GUESS 80%: no visible flicker;
   the map's section meshes for the other view are regenerated in that frame, which can cost a frame-time spike that he
   could feel as one hitch]`. In sitting mode it is refused.
@@ -639,8 +639,8 @@ UNDONE, the save).
 - **A sweep is a list of run plans** that differ in their `overlay:` block. The kernel needs only "run this list";
   the repeated baseline, the shuffled order and the cold confirmation of the winner are the driver's.
 - **The verdict ledger enforces the three rungs.** A stamped run is TUNED, never PASS.
-- **ArchBig never arms.** Overlay entries are refused in the CAMPAIGN profile, as `jawa/mod_settings_field set` is
-  today `[READ: 04_live_tuning.md, JawaBenchSafetyCore.cs]`.
+- **Overlay entries arm on any game.** They are refused only while a canonical world save is loaded (the CAMPAIGN
+  profile, as for `jawa/mod_settings_field set`), and while his hold guards a look `[READ: JawaBenchSafetyCore.cs]`.
 
 The build order of `04_live_tuning.md` is kept inside the kernel's order: first `jawa/mod_settings_field` joins the
 store (our settings are pokeable today), then def-field writes with recipes, then the sweep on the run plan, then
@@ -723,8 +723,7 @@ no web access; where it named an engine fact, I read the fact in the 1.6 source 
 - **The build order** (see `06_build_order.md`): the first ticket became the life-cycle slice; the run plan was split
   from the staging ops; the taps were split by family; the game watcher and the minimum put-back moved before the
   staging ops; the mod hooks moved before the repeats; four acceptance tests that wrong code could pass were repaired.
-- **The owner's page** (see `07_for_the_owner.md`): the overclaims were cut, and the rules for his game are now one
-  table that tells apart his save, a copy of it, the running game, and his hold.
+- **The owner's page** (see `07_for_the_owner.md`): the overclaims were cut.
 
 ### Round 1: not taken, with the reason
 
@@ -766,8 +765,7 @@ GPT judged five of the twelve round-1 repairs sufficient and seven partial. What
   the gates are built before the certificate, and the calm profile after; the game watcher is before the first plan
   that changes a map; a bootstrap mode marks every run made before the certificate exists as counting for nothing; two
   planted faults that their tests could not catch got fixtures that do.
-- **The owner's page:** the table of his game is now by profile (the kernel does not run at all on a save of his); the
-  camera choice is withdrawn, because nothing new touches his camera; "no bystander can die" was narrowed; the
+- **The owner's page:** the camera choice is withdrawn; "no bystander can die" was narrowed; the
   filmstrip choice asks only what is his (whether pictures of flight may be made), not whether to build it.
 
 ### Round 2: not taken, with the reason
@@ -775,5 +773,6 @@ GPT judged five of the twelve round-1 repairs sufficient and seven partial. What
 - **"Split persistence from restoration into two separate fields on every entry."** Taken in substance as the reach of
   a NOT UNDONE entry. Not taken as a second axis on PUT BACK and GIVEN BACK entries: for those the reach is the value
   itself, and a second field would be filled with the same word every time.
-- **"Choices 2 and 3 reserve 'his own game' beyond the five acts and need an authority."** The authority is this
-  run's brief from the Conductor, which names "his own game ArchBig and his camera" as his. The page now cites it.
+- **"Choices 2 and 3 reserve 'his own game' beyond the five acts and need an authority."** The review was right. Nobody
+  plays (owner, 2026-11-23), so both choices are deleted: a broken game is stopped at once on any game, and a test may
+  remove things on any save that is not canonical.

@@ -369,7 +369,8 @@ When you test every biome in turn, the reset rule is simple (owner, 2026-09-17):
   reload the base save or regenerate the map. **Do NOT nurse the map's contents**, because the map is scratch. When a step
   warns about "losing items from the game", ignore the warning: the map is a throwaway review map, and you reload to
   reset anyway.
-- The campaign save is untouchable. A review map is not the campaign. Always say which map a shot came from.
+- Never write over a canonical world save (`infrastructure/state/CANONICAL_SAVE.md`). Every other save is disposable, but
+  a save that waits for his review stays until he rules. Always say which map a shot came from.
 
 ## 8. The scripts this composes
 

@@ -64,8 +64,8 @@ One tick, under a non-blocking lock (a second tick while one runs exits at once)
      down"), independent of ssh. OFF unless TESTQ_ARCHMAGI=1 is in the tick's environment; QHOME/archmagi.stop also
      stops it. It runs the SAME worker.py, locally, from its own runner clone (TESTQ_ARCHMAGI_RUNNER, default
      ~/rm/archrunner: never an agent's or the dispatch clone), TESTQ_HOME=QHOME/archmagi_worker, with
-     archmagi_phases.py as the phases: it never deploys (drift -> REFUSED/DEPLOY), never launches or stops the
-     owner's game (none running -> REFUSED/LOAD), and its attempt holds Archmagi's host guard (the driver lock that
+     archmagi_phases.py as the phases: it never deploys (drift -> REFUSED/DEPLOY), never launches or stops
+     ArchBig (none running -> REFUSED/LOAD), and its attempt holds Archmagi's host guard (the driver lock that
      `rimflow bridge take` takes), so a seat's take is refused while it runs, never raced.
      One job is admitted only when every gate holds (archmagi_gate): this machine is Archmagi; no window holds
      game a's driver lock (a live holder other than the worker's RUNNER); the driver lock is FREE or STALE; the bridge

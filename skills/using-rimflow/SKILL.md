@@ -308,7 +308,7 @@ There are several games. Each game has its own lock, and one holder at a time:
 
 | game | what it is | lock |
 |---|---|---|
-| ArchBig | Steam's install on Archmagi, his game | `archmagi` (the default) |
+| ArchBig | Steam's install on Archmagi, with the full list | `archmagi` (the default) |
 | ArchSmall | its own install on Archmagi | `archmagi.b` |
 | Steve1, Steve2 | the games on SteveDesktop | `stevedesktop`, `stevedesktop.b` |
 

@@ -104,26 +104,6 @@ tick after the first two layers pass. No agent hunts for a moment; the program k
 - **Recommended: yes, as an output for review only**, never as a pass condition, and only after it reproduces a
   vanilla bird's flip-book correctly.
 
-### 2. When ArchBig breaks while your hold is on it, does the bridge stop the game?
-
-The design says that a broken game is never left running (§10). On a test game that is simple. On ArchBig under your
-hold, stopping it is an act on your game.
-- **Stop it** buys: no wedged game burning a core or holding memory for hours; the next run starts clean. It costs:
-  if you had unsaved play, it is lost (the bridge cannot save a broken game).
-- **Report only** buys: nothing is ever taken from you. It costs: every test that needs ArchBig waits for you.
-- **Recommended: report only while your hold is on; stop it when your hold is off.** A broken state is reported to
-  the Conductor at once in both cases.
-
-### 3. On your saves, may the calm profile use controls that remove things?
-
-Some controls destroy or remove: wild animals, an active game condition, a queued incident. In a test game on a
-disposable save they run freely. On a save of yours, a restore cannot bring back an animal.
-- **Refuse them on your saves** (the design's default) buys: nothing of yours is ever removed by a test. It costs:
-  scenes that run in your full-list colony get a weaker calm (those influences are watched, not held), so more of
-  those runs end as ENVIRONMENT FAULT.
-- **Allow them when a scene asks** buys a calmer full-list run. It costs: your save is changed by a test.
-- **Recommended: refuse.** Full-list checks run on a copy of your save, which is disposable by definition.
-
 ### 4. The start state twin: built when the walk save is written
 
 The brief of this run cites your request of 2026-11-23 for a start state twin beside each aftermath station. I did

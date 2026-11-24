@@ -2,8 +2,8 @@
 """archmagi_phases.py - the worker's phase commands on Archmagi (TESTQ_ARCHMAGI_LANE_BUILD_BACKFILL).
 
 The testq Archmagi backfill runs the same worker.py as SteveDesktop, locally, with these as its TESTQ_CMD_DEPLOY /
-LOAD / DOWN / STATUS. Archmagi's game is the owner's: the lane borrows it while nobody drives it, and never changes
-what is loaded or whether it runs.
+LOAD / DOWN / STATUS. ArchBig holds the full list, and the owner looks at staged work there: the lane borrows it while nobody drives it,
+and never changes what is loaded or whether it runs.
 
   archmagi_phases.py deploy MOD [MOD...]   plan only (deploy_custom_mods.py, no --apply). No drift: exit 0. Drift:
                                            prints `REFUSED: ...` and exits 3 - the worker reads that as REFUSED/DEPLOY
@@ -11,12 +11,12 @@ what is loaded or whether it runs.
   archmagi_phases.py load                  never launches: a running game prints `already running (pid N)`; none
                                            prints `REFUSED: ...` (REFUSED/LOAD; the dispatcher backs the lane off).
                                            The lane keeps whatever list is loaded (MODCHECK_KEEP_MODLIST), and the
-                                           owner's list is no longer kept full (owner 2026-10-24: leave ModsConfig on
+                                           live list is no longer kept full (owner 2026-10-24: leave ModsConfig on
                                            whatever tier serves the work), so a running game whose list is not the
                                            full list (ModsConfig.FULL.LATEST.xml, ids and order, read from the RUNNING
                                            game by jawa/running_mods) is REFUSED too: a full-list job never runs, and
                                            is never recorded, on a minimal tier.
-  archmagi_phases.py down                  never stops the owner's game: `REFUSED: ...`, exit 3 (a hang is then
+  archmagi_phases.py down                  never stops ArchBig: `REFUSED: ...`, exit 3 (a hang is then
                                            INVALID/HANG at once, with no restart-and-retry).
   archmagi_phases.py status                `running pid=N` or `stopped` (worker.game_gone reads it).
 
@@ -78,10 +78,10 @@ def cmd_deploy(mods):
         return EX_REFUSED
     text = (r.stdout or "") + (r.stderr or "")
     if r.returncode == 0:
-        print("deploy: no drift for %s; the owner's game is kept" % " ".join(mods))
+        print("deploy: no drift for %s; ArchBig is kept as it is" % " ".join(mods))
         return 0
     why = "drift found" if "Drift found" in text else "the deploy plan failed (exit %d)" % r.returncode
-    print("REFUSED: %s for %s; the archmagi lane never deploys under the owner's game: %s"
+    print("REFUSED: %s for %s; the archmagi lane never deploys to ArchBig: %s"
           % (why, " ".join(mods), text.strip()[-300:].replace("\n", " | ")))
     return EX_REFUSED
 
@@ -169,19 +169,19 @@ def cmd_load():
     if pid:
         prob = full_list_problem()
         if prob:
-            print("REFUSED: %s; the archmagi lane never swaps the owner's list" % prob)
+            print("REFUSED: %s; the archmagi lane never swaps ArchBig's list" % prob)
             return EX_REFUSED
         print("already running (pid %s), the full list loaded" % pid)
         return 0
     if pid is None:
         print("REFUSED: cannot tell whether RimWorld runs (powershell probe failed); the archmagi lane never launches")
     else:
-        print("REFUSED: no RimWorld running on Archmagi; the archmagi lane never launches the owner's game")
+        print("REFUSED: no RimWorld running on Archmagi; the archmagi lane never launches ArchBig")
     return EX_REFUSED
 
 
 def cmd_down():
-    print("REFUSED: the archmagi lane never stops the owner's game")
+    print("REFUSED: the archmagi lane never stops ArchBig")
     return EX_REFUSED
 
 

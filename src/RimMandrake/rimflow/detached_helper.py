@@ -1472,7 +1472,7 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     cenv = rec.get("env") or {}
     cspec = {"family": "detached", "unit": unit, "item": item, "model": model, "mod": cenv.get("RM_CONTROL_MOD"),
              "stage": cenv.get("RM_CONTROL_STAGE"), "extra_units": [scope_name(seat, unit)],
-             # the game it drives (`pipe off game:a` keeps every run off his game)
+             # the game it drives (`pipe off game:a` keeps every run off ArchBig)
              "game": run_game(item, cenv)}
     try:
         r = C.launch_unit(launch_argv(rec, msg, claude_bin()), cspec, runner=runner, clone=rec.get("clone"),

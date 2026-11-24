@@ -8,7 +8,7 @@ One ticket of the Bridge v2.0 build order. Read `design/specs/2026-11-23-bridge-
 - **Builds:** on the sibling's calm tool: named, versioned profiles; a control reads HELD only after a planted
   breach of its kind was seen stopped on this mod list (in the certification session), else ARMED UNPROVEN; the breach
   log in the trace; the three gates of the gates ticket joined into the profile with a scene's exceptions; the profile
-  armed again after a load; the lease; destructive controls refused in the CAMPAIGN profile.
+  armed again after a load; the lease; destructive controls refused only while a canonical world save is loaded (CAMPAIGN).
 - **Needs:** the run-plan ticket; the gates ticket; the tap certificate; the sibling's calm tool.
 
 Depends on: `RIMMANDRAKE_BUILD_RUN_PLAN_ONE_CALL_SCENE_AS_DATA`, `RIMMANDRAKE_BUILD_INCIDENT_QUEST_MENTAL_GATES_BEFORE_CERTIFICATE`, `RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE`, `RIMMANDRAKE_BUILD_BRIDGE_RECEIPT_CALM_AND_TAP_EITHER_WAY`.
@@ -27,8 +27,8 @@ Seen red on base `adfddcb1f8` on 2026-11-23: exit 1 ("--only names no such file"
   control reads HELD only with its certificate line (1); a scene's exception opens one gate for one named event and
   closes it at leave (1); a hold on needs is two entries, the hold and what did not happen (1); the put-back runs in
   reverse order with read-back (1);
-  a lease that ran out puts back (1); a value that could not be put back is named (1); a destructive control in
-  CAMPAIGN is refused by name (1); "attempts stopped" and "scheduling switched off" are two numbers (1); a second
+  a lease that ran out puts back (1); a value that could not be put back is named (1); a destructive control with a
+  canonical save loaded is refused by name, and runs on any other save (1); "attempts stopped" and "scheduling switched off" are two numbers (1); a second
   driver's call is a breach of class APPARATUS (1); unknown profile keys are refused (1); a control of class NOT
   UNDONE is listed as such (1).
 

@@ -12,7 +12,7 @@ A game's name (ArchBig, ArchSmall, Steve1, Steve2) and the map from its letter a
 
 ## ACCEPTS (the only inputs this is built for)
 
-- **a-game-letter.** A game is one letter: `a` is Steam's install and his game; `b` and on are named games, each with a
+- **a-game-letter.** A game is one letter: `a` is Steam's install (ArchBig, the full list); `b` and on are named games, each with a
   data folder and an install under the instances root (`RM_INSTANCES_ROOT`, else `<data root>/instances`).
 - **the-control-store.** The one control store of `control.py`. A store that does not exist on a machine holds no game:
   a hold is only ever written into it.

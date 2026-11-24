@@ -109,7 +109,7 @@ and the verdict ledger counts it for no bar. The first scenes are built and comp
 ### `RIMMANDRAKE_BUILD_GAME_WATCHER_NAMES_THE_BROKEN_STATE`
 - **Builds:** the watcher outside the game, on the heartbeat that the disk writer already gives: ticking, paused,
   frames stopped, an exception on every frame, stuck in a load, at the menu, no map, process gone. A run never starts
-  on a game whose last state was broken. A test game is stopped; ArchBig is reported (`07_for_the_owner.md`). It
+  on a game whose last state was broken. A broken game is stopped at once, on any game, and the stop is reported. It
   builds on `crash_watch.sh`, the stall dump and `game_health_check.py`. It comes before the run plan, which is the first ticket that changes a map by itself.
 - **Needs:** nothing.
 - **Offline test:** `SELF src/RimMandrake/Utils/selftest_game_watcher.py`, 10 checks: one per state (8); "never
@@ -259,7 +259,7 @@ and the verdict ledger counts it for no bar. The first scenes are built and comp
   named incident through once (1); a held attempt is counted and recorded with its caller (1); a gate that is off
   changes nothing and records nothing (1); a held queue entry comes back with its fire tick and its retry window both
   moved (2); an entry already past its retry window when held is reported, never dropped in silence (1); the hook
-  rules for the two new gate sites (2); CAMPAIGN refuses every gate (1).
+  rules for the two new gate sites (2); with a canonical save loaded (CAMPAIGN), every gate is refused (1).
 - **Wrong code that must go red:** a queue return that moves the fire tick only (GPT's case: the entry expires at
   once).
 
@@ -288,14 +288,14 @@ and the verdict ledger counts it for no bar. The first scenes are built and comp
 - **Builds:** on the sibling's calm tool: named, versioned profiles; a control reads HELD only after a planted
   breach of its kind was seen stopped on this mod list (in the certification session), else ARMED UNPROVEN; the breach
   log in the trace; the three gates of the gates ticket joined into the profile with a scene's exceptions; the profile
-  armed again after a load; the lease; destructive controls refused in the CAMPAIGN profile.
+  armed again after a load; the lease; destructive controls refused only while a canonical world save is loaded (CAMPAIGN).
 - **Needs:** the run-plan ticket; the gates ticket; the tap certificate; the sibling's calm tool.
 - **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_calm_profile.py`, 11 checks on the pure part: a
   control reads HELD only with its certificate line (1); a scene's exception opens one gate for one named event and
   closes it at leave (1); a hold on needs is two entries, the hold and what did not happen (1); the put-back runs in
   reverse order with read-back (1);
-  a lease that ran out puts back (1); a value that could not be put back is named (1); a destructive control in
-  CAMPAIGN is refused by name (1); "attempts stopped" and "scheduling switched off" are two numbers (1); a second
+  a lease that ran out puts back (1); a value that could not be put back is named (1); a destructive control with a
+  canonical save loaded is refused by name, and runs on any other save (1); "attempts stopped" and "scheduling switched off" are two numbers (1); a second
   driver's call is a breach of class APPARATUS (1); unknown profile keys are refused (1); a control of class NOT
   UNDONE is listed as such (1).
 - **Live test (UNRUN):** `python.exe src\RimMandrake\bridgetools\prove_calm_profile.py`, 5 rows: a planted incident,
@@ -345,7 +345,7 @@ and the verdict ledger counts it for no bar. The first scenes are built and comp
   after a revert (1); `overlay: none` with the taint set is not clean (1); a receipt lists every live entry of all four
   kinds with its class (1); a NOT UNDONE entry of reach "save" marks the game state dirty until the fixture is loaded, and one of reach
   "process" stays dirty across a load (2); a
-  `const` and a `static readonly` target are refused by name (2); CAMPAIGN refuses an overlay entry (1); a second
+  `const` and a `static readonly` target are refused by name (2); an overlay entry is refused with a canonical save loaded (1); a second
   holder cannot apply (1); the journal exists before the first write (1); a settings write to disk is blocked while an
   entry is live (1); a value changed by another hand is listed as differing from its default (1).
 - **Live test (UNRUN):** `python.exe src\RimMandrake\bridgetools\prove_overlay_settings.py`: experiments E1 and E2

@@ -28,7 +28,7 @@ Seen red on base `adfddcb1f8` on 2026-11-23: exit 1 ("--only names no such file"
   after a revert (1); `overlay: none` with the taint set is not clean (1); a receipt lists every live entry of all four
   kinds with its class (1); a NOT UNDONE entry of reach "save" marks the game state dirty until the fixture is loaded, and one of reach
   "process" stays dirty across a load (2); a
-  `const` and a `static readonly` target are refused by name (2); CAMPAIGN refuses an overlay entry (1); a second
+  `const` and a `static readonly` target are refused by name (2); an overlay entry is refused with a canonical save loaded (1); a second
   holder cannot apply (1); the journal exists before the first write (1); a settings write to disk is blocked while an
   entry is live (1); a value changed by another hand is listed as differing from its default (1).
 

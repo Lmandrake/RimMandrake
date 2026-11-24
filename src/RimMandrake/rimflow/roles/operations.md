@@ -414,7 +414,7 @@ where the file is.
   - Answer a `QUESTION FOR OPERATIONS` note the same way.
 - **Helpers:** none.
 - **Never:**
-  - touch the game while he plays;
+  - touch ArchBig while his OWNER hold or `./pipe off game:ArchBig` stands (a look at staged work);
   - lower a bar;
   - edit `dispatcher.py`, `ops_watch_rules.json` targets or `slot_rules.json` on your own (propose instead);
   - gather data the watch already gathers;

@@ -1572,7 +1572,7 @@ class Attempt:
         Windows python, headroom-checked, retention capped, one per incident key) into TESTQ_HOME/dumps and put its path
         or its failure in the note. Its next act is the kill, so a dumper that strands the game suspended costs
         nothing. Never fails the result; a dump that hangs is cut off after DUMP_TIMEOUT_S. Only on SteveDesktop: the
-        archmagi lane never stops the owner's game (archmagi_phases.py down REFUSED), so no kill follows a dump there."""
+        archmagi lane never stops ArchBig (archmagi_phases.py down REFUSED), so no kill follows a dump there."""
         cmd = os.environ.get("TESTQ_CMD_DUMP")
         if cmd is None and not STEVE_LANE:
             self.res["note"] = (self.res.get("note") or "") + "; game dump (%s) skipped: %s never kills its game" % (

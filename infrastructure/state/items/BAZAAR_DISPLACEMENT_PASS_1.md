@@ -45,6 +45,6 @@ ideoligion exports and GimmeSomeSlack northstar result JSON mention the names).
 
 Prepared (nothing live touched): `infrastructure/state/modlists/ModsConfig.FULL.CANDIDATE_NO_TRADEUI_VTE.xml` = `FULL.LATEST`
 minus exactly those two ids (614 -> 612). Still owed, needs the game down: copy it over the live `ModsConfig.xml` (the live file
-is currently the 67-mod minimal list), then run the VTE unwind rehearsal in `## spec` on a COPY of the save before he plays it
+is currently the 67-mod minimal list), then run the VTE unwind rehearsal in `## spec` on a COPY of the save
 (wealth/raid-point step, Scribe warnings for the missing VTE components).
 

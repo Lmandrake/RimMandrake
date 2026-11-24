@@ -3,7 +3,7 @@
 The live list is
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`.
 
-🔴 **`ModsConfig.FULL.LATEST.xml` is the owner's real list. Restore it before he plays.
+🔴 **`ModsConfig.FULL.LATEST.xml` is the full list. Restore it for a look or a check that needs the full list.
 Nothing here is authoritative about the game until it is copied back.**
 
 ⛔ **This file does not state the count, on purpose.** It moved 583 → 578 → 576 → 577

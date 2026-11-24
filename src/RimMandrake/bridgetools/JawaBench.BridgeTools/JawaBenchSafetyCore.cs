@@ -6,17 +6,19 @@
 //
 // ⛔ Compiled into bridgetools/AwarenessSelfTest too (UnitsSafety.cs): a `using Verse;` here breaks that build.
 //
-// THE PROFILE LAW (owner rulings by question card 2026-10-10, relayed by the coordinator)
-//   * Two runtime profiles. CAMPAIGN is the default: the bridge stays FULLY usable for authoring (spawn, edit,
-//     incidents, raids, inhabited interactions, content edits). It switches OFF only what costs play speed or is
-//     test-only: arbitrary invocation / debug actions, test-only tools, heavy diagnostics, the quiet-world block,
-//     and the costly awareness hook (GeneratePawn). TEST is the permissive profile for test/diagnostic setups.
+// THE PROFILE LAW (owner 2026-11-23: nobody plays during development; "The only saves that are protected are
+// canonical world saves". Item RIMMANDRAKE_ENACT_NOBODY_PLAYS_NO_OWNER_GAME_OR_SAVES_TO_GUARD)
+//   * Two runtime profiles. CAMPAIGN guards a canonical world save, and guards nothing else: the bridge stays FULLY
+//     usable for authoring (spawn, edit, incidents, raids, inhabited interactions, content edits). It switches OFF
+//     arbitrary invocation / debug actions, test-only tools, heavy diagnostics, the quiet-world block and the costly
+//     awareness hook (GeneratePawn). TEST is the permissive profile.
 //   * Cheap always-on recorders stay ON in campaign, INCLUDING the TPS attribution that says where a slowdown comes
-//     from, so a slowdown is explained, not hidden. Each profile DECLARES its recorder budget (share of play speed the
-//     recorders may cost) as data in Policies below - campaign 10% "for now" - never as a constant inside a hook.
-//   * TEST is granted ONLY by JawaBench/companion_profile.json ("profile": "test"; "gm" is accepted as an alias),
-//     unexpired, and only while the loaded save is not one of its "campaignSaves". Nothing a bridge client sends
-//     raises the profile. Anything unreadable resolves to CAMPAIGN.
+//     from, so a slowdown is explained, not hidden. Each profile DECLARES its recorder budget (share of game speed the
+//     recorders may cost) as data in Policies below - never as a constant inside a hook.
+//   * JawaBench/companion_profile.json names the canonical saves ("campaignSaves") and says "profile": "test" ("gm" is
+//     an alias). CAMPAIGN holds when the loaded save is on that list, when the loaded save is unknown while the list is
+//     not empty, when no readable file gives the list, or when the file itself says campaign. A new game was loaded
+//     from no save, so it is TEST without a file. "expiresUtc" ends nothing. Nothing a bridge client sends raises it.
 //   * Every jawa tool belongs to a FAMILY (CampaignDenied names each denied tool and its family + reason; the rest are
 //     authoring or read). The unit test fails when a must-stay-available authoring tool is denied or a must-be-off
 //     tool is allowed. The compile-time GM flag (JAWA_GM_TOOLS) still decides whether the GM tools EXIST.
@@ -95,7 +97,7 @@ namespace JawaBench.BridgeTools
         };
 
         /// <summary>The tools CAMPAIGN refuses, each with its family. Everything else is authoring or read and stays
-        /// available. Adding to this list is a decision about the owner's play, not a convenience.</summary>
+        /// available.</summary>
         internal static readonly Dictionary<string, string> CampaignDenied = new Dictionary<string, string>(StringComparer.Ordinal)
         {
             ["jawa/static_call"] = FDebugInvoke, ["jawa/debug_actions"] = FDebugInvoke, ["jawa/debug_action_menu"] = FDebugInvoke, ["jawa/debug_action_yielders"] = FDebugInvoke,
@@ -146,8 +148,8 @@ namespace JawaBench.BridgeTools
             string fam = FamilyOf(tool);
             string reason = FamilyReasons.TryGetValue(fam, out var r) ? r : fam;
             return "REFUSED in the CAMPAIGN profile: " + tool + " is " + fam + " (" + reason + "); profile: " + why + ". " +
-                   "Authoring tools stay available. Test/diagnostic tools run only when <SaveData>/JawaBench/" + ProfileFileName +
-                   " says {\"profile\": \"test\"}, is unexpired, and the loaded save is not one of its campaignSaves. " +
+                   "Authoring tools stay available. Test/diagnostic tools run on a new game, and on a loaded save when <SaveData>/JawaBench/" +
+                   ProfileFileName + " says {\"profile\": \"test\"} and does not list that save in campaignSaves (the canonical world saves). " +
                    "Call jawa/companion_handshake to see the profile.";
         }
 
@@ -195,32 +197,29 @@ namespace JawaBench.BridgeTools
             }
         }
 
-        /// <summary>The effective profile, with the reason. Anything short of a clean, unexpired test file is CAMPAIGN.
-        /// <paramref name="loadedSave"/>: "" = no game or a new game (nothing was loaded), a name = the save loaded,
-        /// null = UNKNOWN (unreadable, or the tracker missed the load): with campaign saves listed, unknown is CAMPAIGN,
-        /// because a canonical world save the tracker failed to see must not run under TEST.</summary>
+        /// <summary>The effective profile, with the reason. CAMPAIGN guards the canonical world saves only.
+        /// <paramref name="loadedSave"/>: "" = no game or a new game (nothing was loaded, so nothing to guard), a name =
+        /// the save loaded, null = UNKNOWN (unreadable, or the tracker missed the load): with canonical saves listed,
+        /// unknown is CAMPAIGN, because a canonical save the tracker failed to see must not run under TEST. With no
+        /// readable list, a loaded save may be canonical: CAMPAIGN. An old expiresUtc changes nothing.</summary>
         internal static string Effective(ProfileFile f, DateTime nowUtc, string loadedSave, out string why, string unknownWhy = null)
         {
-            if (f == null || !f.Present) { why = "no profile file: campaign by default"; return Campaign; }
+            if (f != null && f.Present && f.Error == null && f.Profile == Campaign) { why = "profile file says campaign"; return Campaign; }
+            if (loadedSave != null && loadedSave.Length == 0) { why = "no save was loaded, so no canonical save to guard: test"; return Test; }
+            if (f == null || !f.Present) { why = "no profile file, so the loaded save may be canonical: campaign"; return Campaign; }
             if (f.Error != null) { why = f.Error + ": campaign"; return Campaign; }
-            if (f.Profile == Campaign) { why = "profile file says campaign"; return Campaign; }
             if (f.Profile != Test) { why = "unknown profile '" + f.Profile + "': campaign"; return Campaign; }
-            if (f.ExpiresUtc.HasValue && nowUtc >= f.ExpiresUtc.Value)
-            {
-                why = "test profile expired at " + f.ExpiresUtc.Value.ToString("o", CultureInfo.InvariantCulture) + ": campaign";
-                return Campaign;
-            }
             if (loadedSave == null && f.CampaignSaves.Length > 0)
             {
-                why = "loaded save unknown (" + (unknownWhy ?? "not readable") + ") while campaign saves are listed: campaign";
+                why = "loaded save unknown (" + (unknownWhy ?? "not readable") + ") while canonical saves are listed: campaign";
                 return Campaign;
             }
             if (loadedSave != null && f.CampaignSaves.Any(c => string.Equals(c, loadedSave.Trim(), StringComparison.OrdinalIgnoreCase)))
             {
-                why = "loaded save '" + loadedSave + "' is a listed campaign save: campaign";
+                why = "loaded save '" + loadedSave + "' is a listed canonical save: campaign";
                 return Campaign;
             }
-            why = "profile file says test" + (f.ExpiresUtc.HasValue ? " until " + f.ExpiresUtc.Value.ToString("o", CultureInfo.InvariantCulture) : "");
+            why = "profile file says test, and the loaded save is not a listed canonical save";
             return Test;
         }
 

@@ -380,7 +380,7 @@ The trial passed and the first list of tooling is built. What is left is putting
 ## Game b's own install, 2026-11-20 (item RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST)
 
 The owner walked game a from about 6:15 to 7:00 AM and from 11:37 AM to 3:36 PM PST. Both times every in-game run waited,
-because the only way to keep runs off his game was `./pipe off stage:in_game`. His words at 3:40 PM PST: "You should not
+because the only way to keep runs off ArchBig was `./pipe off stage:in_game`. His words at 3:40 PM PST: "You should not
 have been waiting for the game. there are two games".
 
 **What changed.**

@@ -11,7 +11,7 @@ RimMandrake.Patches.SouthDrawsFrontPatches.Probe, which returns, per such pair, 
 DrawPos.y (larger y = in front). Holds when, for every pair, the southern pawn's y is larger. Vanilla's SeededYOffset of
 both is returned too: a pair where vanilla would have put the northern one in front is counted (the bug this fixes).
 Exit 0 holds, 1 a northern pawn draws in front, 2 UNMEASURED (no bridge answer, setting off, patch not routed, no pair).
-Callers hold the bridge lock; this never takes it. Written 2026-11-08, NOT yet run: the owner was playing.
+Callers hold the bridge lock; this never takes it. Written 2026-11-08, NOT yet run.
 """
 import os
 import sys

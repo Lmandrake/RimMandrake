@@ -180,6 +180,34 @@ def own_take_is_no_hold(B):
           "under the exported take / without it read %s, want [None, 'BENCH'] (%s)" % (got, r.get("line")))
 
 
+def gm_tools_by_default(B):
+    """A bare build.py includes the GM tools and --no-gm leaves them out; the csproj's own default agrees. (A bare build
+    once planned a DLL with 50 tools fewer than the game's copy, to guard a game that nobody plays.)"""
+    class Stop(Exception):
+        pass
+    seen = []
+    keep = B.build, B.source_dirty, B.aim
+
+    def spy(clean, gm):
+        seen.append(gm)
+        raise Stop()
+    B.build, B.source_dirty, B.aim = spy, (lambda: []), (lambda *a, **k: None)
+    try:
+        for argv in ([], ["--gm"], ["--no-gm"]):
+            try:
+                B.main(argv)
+            except Stop:
+                pass
+            except SystemExit as e:
+                seen.append("exit %s" % e.code)
+    finally:
+        B.build, B.source_dirty, B.aim = keep
+    check(seen == [True, True, False], "gm_tools_by_default", seen)
+    proj = open(os.path.join(os.path.dirname(os.path.abspath(B.__file__)), "JawaBench.BridgeTools",
+                             "JawaBench.BridgeTools.csproj"), encoding="utf-8").read()
+    check("""Condition="'$(JawaGmTools)' == ''">true</JawaGmTools>""" in proj, "csproj_gm_tools_by_default")
+
+
 def main():
     B = load()
     tmp = tempfile.mkdtemp(prefix="selftest_build_deploy_")
@@ -276,6 +304,7 @@ def main():
         foreign_checkout_status(B, tmp)
         game_a_deploy_ignores_game_b(B)
         own_take_is_no_hold(B)
+        gm_tools_by_default(B)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("build deploy: %d failure(s)" % len(fails))

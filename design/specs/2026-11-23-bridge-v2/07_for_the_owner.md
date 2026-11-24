@@ -10,7 +10,7 @@ not a result.
 **We improve the bridge that we have. We do not rebuild it.** The second designer read its code, which the first
 did not. Most of what the first design asked for is already there, built piece by piece over three months and never
 joined: a runner that plays a whole scene in one call, a condition language, recorders for damage, deaths, arrivals
-and incidents, a safe profile for your game. The new work joins them. Its first step is a small trial on one scene
+and incidents, a profile that guards the canonical world saves. The new work joins them. Its first step is a small trial on one scene
 that shows whether the joining holds; if that trial fails, the design says what we do instead.
 
 ## What will change in live testing
@@ -47,26 +47,22 @@ that shows whether the joining holds; if that trial fails, the design says what 
 - **It arrives in steps.** The first three steps give the recording, the exact stop and the first scene as a file.
   The stage, the planted faults and the tuning follow. The order is in `06_build_order.md`.
 
-## Your game, ArchBig: what a test may do
+## What a test may do on a game
 
-The bridge has two profiles, and they exist today. A save of yours runs in the CAMPAIGN profile. The TEST profile is
-granted only by a file on the machine, and not while a save that the file lists as yours is loaded.
+Nobody plays during development (your ruling of 2026-11-23). No game and no save is yours to protect. The canonical world
+saves are the only protected saves.
 
-| | ArchBig with a save of yours (CAMPAIGN) | ArchBig with a copy of your save, your hold off (TEST) | a test game: ArchSmall, Steve1, Steve2 (TEST) |
-|---|---|---|---|
-| the new scene machinery (stage, record, judge) | **does not run at all** | runs: this is how full-list checks are made | runs |
-| remove things (wild animals, a queued incident) | **refused** (choice 3 below) | allowed: the copy is disposable | allowed |
-| change a value in the running game (tuning, planted faults) | **no agent does.** Only you, by your word or with the dev sliders | not done on ArchBig: tuning runs on a test game | allowed |
-| the camera | no new tool touches it | the test's, while your hold is off | the test's |
-| focus the window, go fullscreen, unpause while you look | **never** | **never** | not your screen |
-| write over a save of yours | **never** | never; the copy has its own name | not applicable |
-| stop a broken game | choice 2 below | choice 2 below | at once |
-
-Nothing new is asked of your camera: no new tool moves it while a save of yours is loaded.
+- A broken game is stopped at once, on any game, also while your hold stands. The stop is reported.
+- A test may remove things (wild animals, a queued incident) on any save that is not canonical.
+- A scene never runs while a canonical world save is loaded, and no test writes over one. The program refuses: this is
+  the one thing that the CAMPAIGN profile of the bridge still does.
+- Your OWNER hold and `./pipe off game:ArchBig` guard a look at staged work. While one stands, no test runs on ArchBig
+  and no test moves its camera.
+- Never, on any game: focus the window, go fullscreen, or unpause while you look.
 
 ## The choices that are yours
 
-The Conductor's brief for this design names two things as yours: live flight tests, and your own game ArchBig.
+The Conductor's brief for this design names live flight tests as yours.
 
 ### 1. The flapping bird
 
@@ -83,20 +79,6 @@ is a small build. It shows what the game selects, not what reaches the screen; t
   screenshots failed. A filmstrip is a different thing: the program knows the ticks and tiles one wing beat into one
   image, for your eye only, never as a pass condition. Whether to build it is the Conductor's call; whether your rule
   allows it is yours. **Recommended: allow it for review only, after it reproduces a vanilla bird correctly.**
-
-### 2. When ArchBig breaks while your hold is on it, does the bridge stop the game?
-
-- **Stop it:** no wedged game holding memory for hours. Cost: unsaved play of yours is lost.
-- **Report only:** nothing is ever taken from you. Cost: tests that need ArchBig wait for you.
-- **Recommended: report only while your hold is on; stop it when your hold is off.**
-
-### 3. On your own saves, may a test ever remove things?
-
-Some calm controls remove things: wild animals, a queued incident, an active game condition.
-- **Refuse on your saves (the design's default, and the profile's rule today):** nothing of yours is ever removed.
-  Cost: none for the new machinery, which runs on a copy; the older single tools stay as weak on your save as now.
-- **Allow when you say so for one sitting:** a calmer run on your own save. Cost: your save is changed by a test.
-- **Recommended: refuse.** Full-list checks run on a copy, which is disposable.
 
 ## What is not yours to decide
 

@@ -43,7 +43,7 @@ The cost of each:
 - The 13-mod minimal list cost ~22 seconds.
 - A quicktest costs from seconds to ~90 s (§1), and belongs to nobody.
 - There are four games, each with its own bridge lock (root `CLAUDE.md` §There are several live games). A quicktest on a
-  small mod list does not need ArchBig, the owner's game on Archmagi.
+  small mod list does not need ArchBig, the game on Archmagi with the full list.
 
 > 🔴 **"Blocked on a map" is almost never real.** Owner's ruling, `infrastructure/agents/CHARTER.md` (maps, saves and
 > colonies are "not precious"): **whoever holds the bridge may create and destroy dev colonies at will.** You need no
@@ -180,9 +180,8 @@ More traps for this section: [references/traps.md](references/traps.md) § 2. Wh
 **A quicktest finding and a campaign finding are different claims.** Report which one you were on, every time. Without
 that, the next reader cannot tell what you established.
 
-⏸️ **SUSPENDED 2026-08-13 — not repealed. It comes back when play starts.** The suspended rule is: do not test on the
-campaign save. That protection is correct *for a campaign being played*. Nothing is being played yet, so the protection
-costs tests and buys nothing. **Owner's standing ruling:**
+Nobody plays a game during development. Only the canonical world saves are protected (root `CLAUDE.md` §Facts you cannot
+guess; `design/RimMandrake/standing_rulings.md` §Nobody plays during development). **Owner's standing ruling:**
 
 > *"NO AGENT SHOULD TRY TO PRESERVE MAP CONTENTS OR CAMPAIGN INTEGRITY AT THIS
 > TIME OR ANY TIME IN THE FUTURE. YOU WILL BE INFORMED WHEN WE GET TO THAT
@@ -193,16 +192,7 @@ or ask permission.
 
 - Two limits stay. The first is the canonical world saves (`infrastructure/state/CANONICAL_SAVE.md`). Test on a loaded
   game. Write over a frozen one only as that page allows.
-- The second: do not kill a game that the owner is actively PLAYING (`infrastructure/GAME_STATE_WORKFLOW.md`).
-
-🔔 **THE TRIGGER THAT BRINGS IT BACK:** the owner says that the play phase has begun.
-
-- **Nobody else may reinstate the rule. Do not ask.**
-- When he says so, this section reverts to *"the campaign save is untouchable — do not test on it"*, and every seat is
-  told. **Until then, test destructively.**
-
-**This rule is suspended and not deleted on purpose.** An erased rule does not come back when its situation returns.
-People forget it, and then find it again when they lose a colony.
+- The second: his OWNER hold and `./pipe off game:ArchBig` guard his look at staged work on ArchBig. They bind.
 
 ⚙️ **You must still say which map a result came from.** The report is evidence hygiene, not
 preservation, however disposable both maps are.

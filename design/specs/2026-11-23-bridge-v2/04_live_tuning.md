@@ -68,7 +68,7 @@ as a follow-up. A field that would need one is LOAD ONLY and is refused. One mor
 | tool | what it does for live tuning | gap |
 |---|---|---|
 | `jawa/get_defs` | reads def fields by reflection, many per call; `deep=true` for nested objects | reads only |
-| `jawa/mod_settings_field` | **reads and writes** a public static or instance field of a mod's settings class; returns `valueBefore` and `valueAfter`; refused in the CAMPAIGN profile | settings classes only; no overlay, no stamp, no guard against the settings being saved to disk |
+| `jawa/mod_settings_field` | **reads and writes** a public static or instance field of a mod's settings class; returns `valueBefore` and `valueAfter`; refused while a canonical world save is loaded (CAMPAIGN profile) | settings classes only; no overlay, no stamp, no guard against the settings being saved to disk |
 | `jawa/static_call` | calls a public static method (enough to call most follow-ups) | no field write; public only |
 | `jawa/stat_cache_bust` | clears one stat's cache, whole or for one thing (uses `TryClearCache`, with the reason why not `DeleteStatCache`) | one follow-up of many |
 | `jawa/harmony_patches` | lists Harmony patches | cannot remove or add one |
@@ -429,15 +429,13 @@ towards 2 to 1 for a scene that must run a game day. Short scenes are where live
 | **A clean-looking game after a revert** | a later run with `overlay: none` passes on things and state that the overlay made | the taint mark (section 5, rule 4): no evidence for a bar from a tainted process or game |
 | **A follow-up that fails half-way, or hangs** | a game in a state nobody can name | the game is marked SPOILED and restarted; the hang is caught from outside |
 
-**The owner's game (ArchBig) and his saves. This tool must never:**
-- apply an overlay on ArchBig by any agent's own decision. Live writes are denied in the CAMPAIGN profile, as
-  `jawa/mod_settings_field set` is today. His OWNER hold and `./pipe off game:ArchBig` bind as for all work;
-- arm an overlay to be applied again at startup on ArchBig;
-- write a mod settings file, `ModsConfig.xml` or any file in his Config folder;
+**On any game, this tool must never:**
+- apply an overlay on ArchBig while his OWNER hold or `./pipe off game:ArchBig` stands (a look at staged work);
+- write a mod settings file, `ModsConfig.xml` or any file in a game's Config folder;
 - save over, or write a stamped save beside, a canonical save, or run while a canonical save is loaded;
 - leave an overlay on when the holder releases the game: release reverts, checks, and reports.
 
-When **he** wants to tune by hand on his game, as he did with RIMMSqol, that is his act: the tuning points show as
+When **he** wants to tune by hand in a sitting, as he did with RIMMSqol, that is his act: the tuning points show as
 sliders in the dev-mode TweakValues window, and an overlay applied on his word shows its line on his screen.
 
 ## 8. Experiments (designed, not run)

@@ -2031,18 +2031,17 @@ def _file(args, seat, w, pf):
     # item is ever offered. A wrong one either hides work or offers unrunnable work.
     # Measured 2026-08-22: CHECK hand-corrected 45 items across 44 filings, almost all
     # to `bridge`. Prompted, never required — the filer knows and the default does not.
-    # 🔴 REGULAR HUMAN PLAY IS THE DEFAULT VALIDATION — owner, 2026-08-27. BUILD produces
-    # NOTHING for CHECK automatically: not on finishing, not on deploying, not "so it gets
-    # looked at". One thing earns a live check — a NEW or significantly changed MECHANISM
-    # that has never once been observed running.
+    # BUILD produces NOTHING for CHECK automatically (owner, 2026-08-27): not on finishing, not on
+    # deploying, not "so it gets looked at". One thing earns a live check — a NEW or significantly
+    # changed MECHANISM that has never once been observed running.
     # ⚠️ A PROMPT, NOT A GATE, and that is the ruling's own shape: the same conversation
     # DROPPED the proposal to enforce this in `file`, because the item it belongs to exists
     # to REDUCE gates. A refusal here would also be wrong on the merits — the exception is
     # real and only the filer can tell whether it applies.
     if args.needs in ("bridge", "game-up"):
         print("")
-        print("🔴 A live check is owed only to a mechanism never once observed running —")
-        print("   the owner playing is the default validation. Answer in one line, in the")
+        print("🔴 A live check is owed only to a mechanism never once observed running.")
+        print("   Answer in one line, in the")
         print("   item: which NEW mechanism has never been seen? ⚠️ The MECHANISM, not this")
         print("   instance — a 49th pawnkind built like the other 48 has been observed. A")
         print("   roster, a stat, a texPath, what a patch matched: offline, close it yourself.")

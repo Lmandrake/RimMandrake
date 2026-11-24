@@ -898,7 +898,7 @@ namespace JawaBench.BridgeTools
         /// <summary>
         /// TEST ONLY (BRIDGE_TPS_REVIEW2_FIXES_1, C3 controlled-interruption matrix): block the game's MAIN thread
         /// for N seconds inside one frame, so the record's stall incident, silence rows and heartbeat split can be
-        /// checked against a known interruption. GM-gated: it freezes the game the owner may be playing.
+        /// checked against a known interruption. GM-gated: it freezes the game.
         /// </summary>
         [Tool(
             "jawa/tps_test_block",

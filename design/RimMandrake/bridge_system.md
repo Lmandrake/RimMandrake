@@ -254,7 +254,7 @@ metadata heaps, not from source:
   `rimbridge_client.py:57-58`). See §7, P2.
 - **UltraSpeedBoost:** "RimBridgeServer enables RimWorld's private
   `TickManager.UltraSpeedBoost` process-wide at startup" (DOC README:300). So speed 4 is not
-  vanilla speed 4 in any bridge-loaded game, **including the owner's campaign** whenever RBS
+  vanilla speed 4 in any bridge-loaded game whenever RBS
   is active.
 
 ### 2.4 The client's connection model
@@ -447,12 +447,9 @@ prose).
 1. **Namespace is provenance, not meaning.** `jawa/spawn_batch` and `rimworld/spawn_thing`
    are the same verb. Guessing `jawa/` is wrong ~84% of the time (DOC skill §1).
 2. **`pawnId` formats differ by namespace** (`Thing_Human1066` vs `Human1066`).
-3. **The GM gate is binary and coarse.** Without `--gm`, `build.py` refuses as "THIS DEPLOY
-   WOULD REMOVE TOOLS". With `--gm`, all 48 world-acting tools ship, `static_call` included.
-   The DEPLOYED DLL has no per-tool gate and no runtime gate, and the owner's campaign game
-   gets the same DLL (§7, P20). A runtime profile is built but not deployed: campaign is the default and
-   refuses only the debug, test-only, heavy-diagnostic and quiet-world families; test is granted
-   by a profile file (`companion_handshake.md`).
+3. **The GM gate is binary and coarse.** All the world-acting tools ship by default; `build.py --no-gm` leaves
+   them out. The runtime profile CAMPAIGN guards a loaded canonical world save: it refuses the debug, test-only,
+   heavy-diagnostic and quiet-world families (`companion_handshake.md`).
 4. **Description prose can create phantom tools.** A `jawa/world_*` mention in a description
    made `build.py`'s byte scan see a tool named `jawa/world_`. `tool_surface()` is an upper
    bound by design (DOC companion skill §3 rule 9 and §4).
@@ -726,7 +723,7 @@ does.
 | S12 | **Launch through Steam, never the bare exe** | memory 2026-08-30 | convention. All scripted launchers comply (MEASURED §4.3) |
 | S13 | **Never `search_debug_actions` on the full list; never call debug-action discovery from a suite** | skill §4; runbook row 8 | convention |
 | S14 | **`hot_reload_defs` is retired**; restart on the minimal list instead | owner 2026-09-03 | client refuses (`_retired`); the DLL still exports it |
-| S15 | **GM (world-acting) tools are opt-in at build time** (`--gm`); `fire_raid` defaults to `dryRun=true` | csproj comment; owner ruling "required before that ships" | build flag. No runtime gate |
+| S15 | **GM (world-acting) tools are in the default build** (`--no-gm` leaves them out); `fire_raid` defaults to `dryRun=true` | csproj comment | build flag |
 | S16 | **All five DLCs in every test list** | owner 2026-09-19 | `modset_builder.tier_guard` |
 | S17 | **The owner announces DEPLOYING and GOING_DOWN**; a seat never stamps an inferred state | owner 2026-08-20/22 | `rimflow` schema (`ownerSaid` vs `why` fields) |
 | S18 | **`./game` from a seat stamps the ledger only** and never broadcasts to windows | owner 2026-09-29 | code (`broadcast.py`) |
@@ -784,7 +781,7 @@ costs a cold load or more, or misleads a decision; **M** = costs a session or mi
 | P17 | **Main thread throttled (unfocused, Run in background off)** | the pref is lost (fresh Prefs.xml, a language switch saves prefs, a reinstall) or the owner minimises the game | `ping` OK, every main-thread call times out at 30 s, all-null `get_bridge_status` | the agent ("game hung") | watchdog signal; `focus_heal` | nothing asserts the pref before a run | preflight: read `Prefs.xml` (game down) or `jawa/prefs` (game up) and refuse an unattended run if `runInBackground` is false | M |
 | P18 | **Focus healing fights the owner** | `focus_heal` minimises his foreground window during his session | his windows minimise, keystrokes land in the game | n/a (a social cost) | ruling S5 | only with `RM_FOCUS_OPT_IN=minimise` (default off since 2026-10-10) | rely on Run in background, which `preflight()` checks | M |
 | P19 | **Our Harmony patches alter the game being measured** | the first `jawa/` call lazily installs patches on `Thing.TakeDamage`, `Pawn.Kill`, `Thing.Destroy`, `PawnGenerator.GeneratePawn`, `Pawn.SpawnSetup`, `IncidentWorker.TryExecute`, `TickManagerUpdate`, `Root.Update`, `SaveGame`/`LoadGame`, and a **blocking prefix on `WildAnimalSpawner`** | perf cost on hot paths, an exception in our postfix breaking gameplay, wild spawns blocked and left armed, and behaviour that differs between sessions with and without a `jawa/` call | TPS measurements, mod authors, **the owner's campaign** (same DLL) | try/catch around installs; counted drops | no "observer effect" statement per patch; no global off switch at runtime | one `jawa/instrumentation status\|off` tool; every patch reports its install state and cost in the context line; the blocking prefix auto-expires | **H** |
-| P20 | **World-acting tools in the campaign game** | a `--gm` DLL is loaded in every game; a script aimed at a test map runs while his campaign is loaded | a raid, explosion, storyteller swap or `static_call` in the campaign | the script (it targets "current map") | `dryRun` defaults; S2's one-line question | no runtime knowledge of which save is loaded | companion refuses GM tools when the loaded save's name is in a campaign list (or the colony name matches) unless `confirmCampaign=true` | **H** |
+| P20 | **World-acting tools on a canonical save** | the GM tools are in every game; a script aimed at a test map runs while a canonical world save is loaded | a raid, explosion, storyteller swap or `static_call` on that save | the script (it targets "current map") | `dryRun` defaults; S2's one-line question | no runtime knowledge of which save is loaded | companion refuses GM tools when the loaded save's name is in a campaign list (or the colony name matches) unless `confirmCampaign=true` | **H** |
 | P21 | **`save_game` overwrites the wrong slot** | `saveName` not honoured (state-dependent, 2026-08-24) | a keeper or campaign save overwritten | the caller (the tool returns the requested path with `exists:true`) | convention S8 | not enforced | a `jawa/save_as` tool that refuses if the target exists or differs from the current slot, and returns the real path plus size and mtime of every changed file | **C** |
 | P22 | **Zombie load reads as UP** | `ErrorWhileLoadingGame` after `game_loaded`; the process keeps answering | plausible numbers from a world in memory; the probe says UP | everyone, including `rimflow next` | the canary in some scripts (`first_light.py`, `w9_run.py`) | not in the probe, not universal | probe and session start: grep this run's log for `ErrorWhileLoadingGame` after settling; mark the game ZOMBIE and refuse bridge work | **H** |
 | P23 | **Hung main thread** | a tight exception loop, a quest test loop, a debug-tree build | `ping` OK, main-thread calls time out, AppHangB1 after ~4 min | callers that poll only "is the process alive" | `belt_watchdog` WEDGED verdict and runbook | the watchdog never acts; recovery waits for an agent | a policy runner: WEDGED for over N min while the lease holder is silent → kill by PID, archive the log, record it | M |
@@ -835,10 +832,7 @@ stall, so the watchdog's remedy kills good loads or chases ghosts).
 5. **Is a single 30 s default timeout right?** Or should timeouts be per tool class (read,
    mutation, long-event), with the operation journal (`get_operation`) as the recovery path
    instead of retries?
-6. **How much instrumentation is acceptable inside the owner's campaign game?** The same
-   companion, Harmony patches and GM tools load there. Should a "campaign mode" disable
-   GM tools and blocking prefixes at runtime?
-7. **What should be the single readiness definition?** Today there are five: process
+6. **What should be the single readiness definition?** Today there are five: process
    exists; port LISTENING; `GABP server running standalone` in the log; `Bridge token:` in
    the log; ~40 s settle after the first answer; plus the zombie canary. Which should
    `rimflow`'s UP mean?

@@ -141,8 +141,15 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   from a doc.
 - Do not restore the owner's mod list. Leave ModsConfig on the tier that serves your work. There is no "restore before
   release" step.
-- Only the canonical world saves are precious (`infrastructure/state/CANONICAL_SAVE.md`). All other saves are
-  disposable.
+- Nobody plays the game during development. No game and no save is the owner's. The full list of what is protected:
+  - Only the canonical world saves are precious (`infrastructure/state/CANONICAL_SAVE.md`). All other saves are
+    disposable. Keep a save that waits for his review until he rules (§Options he must LOOK at).
+  - His OWNER hold and `./pipe off game:ArchBig` guard a look: he looks at staged work on ArchBig.
+  - Never put the game in fullscreen or in focus. He controls the clock in a sitting.
+  - Do not write a rule, a guard or a question that protects his play, his game or his saves. If you find one, delete it.
+  - Stop a broken game at once, on any game, and report the stop. A test may remove things on any save that is not
+    canonical.
+  - Full text: `design/RimMandrake/standing_rulings.md` §Nobody plays during development.
 - Do not guess a defName, field or namespace. Read it from RimSage (`mcp__rimsage__*`, Windows Desktop only), the def,
   the About.xml or `measure`.
 - Get a number about a large artifact from `measure`, never from a scan (`block_blind_scan.py` refuses a scan). `0`
@@ -723,8 +730,8 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
 
 - Never write or say "waiting for the live game". Name the game. Say why no other game can take the work.
 - The games have four names: ArchBig, ArchSmall, Steve1 and Steve2. Each game has its own bridge lock:
-  - ArchBig on Archmagi: Steam's install. It is the owner's game, and it holds his full mod list. Lock key `archmagi`
-    (the default).
+  - ArchBig on Archmagi: Steam's install. It holds the full mod list, and the owner looks at staged work there. Lock key
+    `archmagi` (the default).
   - ArchSmall on Archmagi: its own install, Mods and BridgeTools (`D:\ClaudeWork\rimmandrake\instances\b\game`). Lock
     key `archmagi.b`.
   - Steve1 and Steve2 on SteveDesktop: lock keys `stevedesktop` and `stevedesktop.b`. Submit work to them through the
@@ -743,9 +750,10 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
   writes only ArchSmall's folders.
 - Choose the game by the work:
   - Work that a tier mod list can prove goes to any free game. If ArchBig is busy or held, use ArchSmall or SteveDesktop.
-  - Only a check that needs his full mod list must use ArchBig. The full list on ArchSmall beside ArchBig does not fit in
+  - Only a check that needs the full mod list must use ArchBig. The full list on ArchSmall beside ArchBig does not fit in
     Archmagi's memory. Such a wait names the checks and ArchBig.
-  - ArchBig is his. His OWNER hold and `./pipe off game:ArchBig` stop work on ArchBig only. Work then goes to ArchSmall.
+  - His OWNER hold and `./pipe off game:ArchBig` guard a look. They stop work on ArchBig only. Work then goes to
+    ArchSmall.
 - A pipeline stage or tick line that reads "needs the live game" while a game is free is a pipeline defect. Fix it.
 - Full text: `design/RimMandrake/standing_rulings.md` §There are several live games. Code:
   `design/specs/2026-11-20-per-game-hold-own-install/boundary.md`.

@@ -451,7 +451,7 @@ def t_phases(r):
     rc, o = ph("load", TESTQ_ARCHMAGI_PID="")
     check(rc == 3 and o.startswith("REFUSED:"), "phases load: no game -> REFUSED, never launches")
     rc, o = ph("down", TESTQ_ARCHMAGI_PID="777")
-    check(rc == 3 and o.startswith("REFUSED:"), "phases down: never stops the owner's game")
+    check(rc == 3 and o.startswith("REFUSED:"), "phases down: never stops ArchBig")
     rc, o = ph("status", TESTQ_ARCHMAGI_PID="777")
     check(rc == 0 and "running pid=777" in o, "phases status: running pid")
     rc, o = ph("status", TESTQ_ARCHMAGI_PID="")

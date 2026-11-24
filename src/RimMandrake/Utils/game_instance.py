@@ -880,7 +880,7 @@ def free(busy=(), purpose=None, refusal=None):
 def held_by_anyone(name):
     """-> why game `name` has a holder, the asker's own window included, else None: its per-game hold, or a live
     holder of its driver lock. leftovers asks this first: inside the Conductor's own process tree `rimflow bridge idle`
-    reads the Conductor's walk hold on game a as ours, and leftovers said to stop his game (MEASURED 2026-11-20)."""
+    reads the Conductor's walk hold on game a as ours, and leftovers said to stop ArchBig (MEASURED 2026-11-20)."""
     return hold_refusal(name) or live_holder(name, new_run=True)
 
 

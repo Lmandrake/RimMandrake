@@ -15,7 +15,7 @@ file was condensed for the two-window fleet of that time (BENCH · FOUNDRY). FOU
    - Do not write a sentence that compares a recorded state with a measured state. Run the probe instead. Then the
      disagreement is gone.
 2. 🔴 **One bridge driver per game.** There are several live games:
-   - ArchBig: Steam's install on Archmagi. ArchBig is the owner's game. Lock `archmagi`.
+   - ArchBig: Steam's install on Archmagi, with the full mod list. The owner looks at staged work there. Lock `archmagi`.
    - ArchSmall: its own install on Archmagi. Lock `archmagi.b`.
    - Steve1 and Steve2, the SteveDesktop games. Locks `stevedesktop` and `stevedesktop.b`.
 
@@ -32,7 +32,7 @@ file was condensed for the two-window fleet of that time (BENCH · FOUNDRY). FOU
    - `./bridge conductor|free` is the owner's override.
    - A busy game is never a reason to wait. Name the game, and say why no other game can take the work (CLAUDE.md
      "There are several live games").
-3. **The states below are ArchBig's.** `./game` announces and measures ArchBig, the game that the owner plays.
+3. **The states below are ArchBig's.** `./game` announces and measures ArchBig, the game with the full mod list.
    ArchSmall and the other games have no announced state. A seat starts, measures and stops one of those games with
    `python3 src/RimMandrake/Utils/game_instance.py launch|status|stop`.
 
@@ -53,7 +53,7 @@ The bridge holder is a helper or the Conductor. Before the FOUNDRY seat retired,
 | `DOWN` | Deploy assemblies and content. `DOWN` is the only state in which a DLL can be replaced. Finish the harvest of the last load: drain its dumps and its log. Until they are drained, `needs: harvest` outranks ordinary work. | offline work with the owner |
 | `DEPLOYING` | Deploy the build, then run `rimflow seat ready`. Going idle is the owner's go-signal. | unaffected |
 | `LOADING` | Offline work. Items with `needs: game-up`/`bridge` are simply not offered. | unaffected |
-| `UP` | **First harvest the fresh dumps and log, before anything else.** Then do bridge work: take the bridge, run the live list, release the bridge, go idle. | The owner plays or drives; "spawn me one and I'll read it back". |
+| `UP` | **First harvest the fresh dumps and log, before anything else.** Then do bridge work: take the bridge, run the live list, release the bridge, go idle. | The owner looks or drives; "spawn me one and I'll read it back". |
 | `GOING_DOWN` | Live items ONLY. Postpone offline work that can wait. Announce "Close the Game" when clear (the list of live items is empty). | unaffected |
 
 `--this-deployment` items (`rimflow spawn … --this-deployment`) jump the queue while the game is UP. Those items are cleared
@@ -83,10 +83,10 @@ Still run `./game --said "<his verbatim words>"` for each transition, exactly as
 ruling changed who may *act*. The ruling did not change how the ledger records the state. The owner's words stay the
 provenance on the event.
 
-⛔ **What this does NOT unlock:** killing a game that the owner is actively PLAYING.
-- A debug or test map is disposable. You owe no warning for it.
-- His campaign session is not disposable.
-- If you cannot tell which kind of game runs, ask the owner one line. Only this case of a game kill is worth a question.
+Nobody plays a game during development. Each running map is disposable, and you owe no warning for it.
+- What still binds: his OWNER hold and `./pipe off game:ArchBig` guard his look at staged work. Do not reboot ArchBig
+  under them.
+- A broken game is stopped at once, also under his hold. Report the stop.
 
 ## His phrases, and what you run
 

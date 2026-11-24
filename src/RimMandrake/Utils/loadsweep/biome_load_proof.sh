@@ -150,6 +150,6 @@ for BIOME in "$@"; do
 done
 
 echo
-echo "🔴 RESTORE THE OWNER'S LIST before he plays:"
+echo "Put the full list back, for a check that needs it:"
 echo "   python3 src/RimMandrake/Utils/modlist_swap.py --restore --apply"
 echo "results: $OUT"

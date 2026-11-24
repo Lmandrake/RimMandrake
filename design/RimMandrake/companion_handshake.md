@@ -7,25 +7,24 @@ Items: `COMPANION_HANDSHAKE_BUILD_SAY_WHAT_LOADED`, `COMPANION_PROFILE_ENFORCE_S
 `JawaBenchSafetyCore.cs` (pure rules, unit-tested in `bridgetools/AwarenessSelfTest/UnitsSafety.cs`) and
 `JawaBenchCompanionSafety.cs` (Harmony gate, binder check, the tool).
 
-**State: built offline, NOT deployed.** Revised for the owner's campaign rulings of 2026-10-10 (§1). Nothing below has run in a live game. Every live claim is
-UNVERIFIED until the acceptance list at the bottom runs.
+**State: the gate runs in the live companions.** The rule of 2026-11-23 (§1: the profile guards a canonical world save
+only) is built and unit-tested. It is live in a game from that game's next companion deploy. Until then that game's
+companion still refuses on an old `expiresUtc`.
 
-## 1. The profile: campaign unless a file says test
+## 1. The profile: CAMPAIGN guards a canonical world save, and nothing else
 
-Owner rulings, made by question card on 2026-10-10 and relayed by the coordinator:
+Nobody plays during development (owner, 2026-11-23; `standing_rulings.md` §Nobody plays during development). The only
+protected saves are the canonical world saves.
 
-- The bridge stays **fully usable in the campaign** for authoring: raid improvements, inhabited interactions
-  and content edits. Campaign is NOT read-only.
-- The campaign profile switches OFF only the monitoring, debug and test interactions that could slow play.
-- Campaign play may lose **up to 10% speed for now** to the cheap always-on recorders. Those recorders include
-  the TPS attribution that explains where a slowdown comes from, so it is never hidden. Test and diagnostic
-  setups are much more permissive.
-- Each profile declares its budget as a constant. No hook hard-codes it.
+- The bridge stays **fully usable in the CAMPAIGN profile** for authoring. CAMPAIGN is NOT read-only.
+- CAMPAIGN refuses the debug, test-only, heavy-diagnostic and quiet-world families while a canonical world save is loaded.
+- The cheap always-on recorders stay on in both profiles, so a slowdown is explained, not hidden.
+- Each profile declares its recorder budget as a constant. No hook hard-codes it.
 
 | layer | what decides it | values |
 |---|---|---|
-| compile profile | `build.py --gm` (`JAWA_GM_TOOLS`) | `gm` (the 48 world-acting GM tools exist) or `standard` |
-| runtime profile | `<SaveData>\JawaBench\companion_profile.json` | `test` (`gm` is an alias) or `campaign`. **Absent, invalid, expired or unknown = campaign** |
+| compile profile | `build.py` (`JAWA_GM_TOOLS`) | `gm` (the world-acting GM tools exist; the default) or `standard` (`--no-gm`) |
+| runtime profile | `<SaveData>\JawaBench\companion_profile.json` | `test` (`gm` is an alias) or `campaign`, and `campaignSaves`: the canonical saves. **Absent, invalid or unknown = campaign on a loaded save** |
 | effective | both, plus the loaded save | `campaign` or `test` |
 
 ### Policy per profile (`JawaBenchSafetyCore.CampaignPolicy` / `TestPolicy`: data, read by the installers and hooks)
@@ -61,20 +60,21 @@ slowdown it explains. The real verdict needs the C0-C5 restart protocol
   real source census: every listed name exists, the owner's must-stay authoring tools are allowed, and the
   must-be-off tools are refused.
 - `jawa/awareness action=arm` still arms disk rows in campaign. Only the `GeneratePawn` hook stays off.
-- **test** needs the file. Nothing a bridge client sends can change the profile.
-- A loaded save named in `campaignSaves` is **campaign** even when the file says test. The save name comes from
-  the TPS lifecycle (the `LoadGame` hook), so the campaign check cannot fire for a new game or when the sampler is off.
+- A new game was loaded from no save, so it is **test** with no file. A loaded save is **test** when the file says test
+  and does not list that save. Nothing a bridge client sends can change the profile.
+- A loaded save named in `campaignSaves` is **campaign** even when the file says test. So is a loaded save whose name is
+  unknown while the list is not empty. A file that says `campaign` is campaign everywhere. The save name comes from
+  the TPS lifecycle (the `LoadGame` hook).
 - The file is re-read at most every 2 s, on any jawa call. The policy hot hooks read (`CurrentPolicy`) is refreshed
   by the same calls, so a profile change reaches `GeneratePawn` and the wild spawner on the next jawa call.
 - `rimworld/*` tools belong to RimBridgeServer and are not gated.
 
 ```json
-{"profile": "test", "expiresUtc": "2026-10-11T06:00:00Z", "campaignSaves": "Ashkarr, Ashkarr autosave"}
+{"profile": "test", "expiresUtc": "2036-01-01T00:00:00Z", "campaignSaves": "CANONICAL_ASHKARR_START_2026-09-12"}
 ```
 
-`expiresUtc` is optional but recommended: a grant from a launcher that died ends by itself. Unknown keys are
-tolerated. **Effect of deploying:** without the file, test sessions lose only the denied families above. Agent
-A's launcher owes the file write for test and diagnostic sessions.
+`expiresUtc` ends nothing in the companion. A companion built before 2026-11-23 and the host checks
+(`companion_grant.py`, `ensure_test_profile`) still read it. Unknown keys are tolerated.
 
 ## 2. `jawa/companion_handshake` (schema `companion_handshake/1`)
 
@@ -95,7 +95,7 @@ the unit test fails if the composed object differs; changing it means bumping th
 | `compileProfile` | `gm` or `standard` |
 | `runtimeProfile` | what the file DECLARES: `test`, `campaign`, `none`, `invalid` or `unreadable` |
 | `effectiveProfile` | what is ENFORCED: `campaign` or `test` |
-| `profileWhy` | the reason, e.g. `no profile file: campaign by default` |
+| `profileWhy` | the reason, e.g. `loaded save '<name>' is a listed canonical save: campaign` |
 | `profileFile` | the path the companion reads |
 | `policy` | the effective profile's policy: `recorderBudgetShare`, each recorder switch, `deniedFamilies`, and `budget` (`verdict`, plus the partial awareness figure) |
 | `gate` | `{status: complete|partial|failed|not installed, detail, guarded, unguarded[], installMs, refusals, lastRefusal, gateErrors, campaignDenied}` |
@@ -143,7 +143,7 @@ Other persistent switches, from the 2026-10-10 audit. These are **not** auto-rel
 
 ## 5. Live acceptance owed (one bridge session, after the owner releases the deploy)
 
-1. Handshake with no profile file: `effectiveProfile:"campaign"`, `gate.status:"complete"`, and `installMs`
+1. Handshake with no profile file and a loaded save: `effectiveProfile:"campaign"`, `gate.status:"complete"`, and `installMs`
    recorded (the cost of patching about 400 methods on Mono is UNMEASURED). `jawa/spawn_pawn` must run and
    `jawa/static_call` must refuse. `jawa/awareness action=arm` must arm and leave `generationHook` not installed.
 2. Write a test file: within 2 s the handshake reads test and `static_call` runs. Then list the loaded save in

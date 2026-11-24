@@ -42,7 +42,7 @@ or COULD_NOT_READ. The reply always lists `notCovered`: the influences that no c
 - **a-save-made-while-calm.** The forced weather condition is saved with the map. Release before you save.
 - **another-map.** Weather, conditions, pawns, fires and structures are read on one map (`mapId`). Incidents, the queue,
   the switches and the wild spawner are held for the whole game.
-- **a-campaign-game.** The companion refuses `jawa/quiet_site` in the campaign profile.
+- **a-campaign-game.** The companion refuses `jawa/quiet_site` while a canonical world save is loaded (campaign profile).
 
 ## PROMISES (each one is owed a test of the same name)
 

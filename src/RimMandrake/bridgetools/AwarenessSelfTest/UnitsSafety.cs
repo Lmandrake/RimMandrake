@@ -22,16 +22,24 @@ namespace JawaBench.BridgeTools
             void check(bool ok, string name, string why = "") => c(ok, name, why);
             var t0 = new DateTime(2026, 10, 10, 12, 0, 0, DateTimeKind.Utc);
 
-            // --- profile resolution: default CAMPAIGN, test only by an unexpired file, campaign saves always campaign
+            // --- profile resolution: the CAMPAIGN profile guards the canonical world saves, and nothing else
             var none = S.ProfileFile.Parse(null, t0);
             check(S.Effective(none, t0, null, out var why0) == S.Campaign && why0.Contains("no profile file"), "profile_default_is_campaign", why0);
+            check(S.Effective(none, t0, "CANONICAL_ASHKARR_START", out _) == S.Campaign, "no_file_named_save_may_be_canonical_is_campaign");
+            check(S.Effective(none, t0, "", out var why0n) == S.Test, "no_file_new_game_has_no_canonical_save_is_test", why0n);
             var tst = S.ProfileFile.Parse("{\"profile\": \"test\"}", t0);
             check(S.Effective(tst, t0, "test save", out var why1) == S.Test, "profile_file_test_is_test", why1);
             check(S.Effective(S.ProfileFile.Parse("{\"profile\": \"gm\"}", t0), t0, null, out _) == S.Test, "profile_gm_is_alias_for_test");
             var exp = S.ProfileFile.Parse("{\"profile\": \"test\", \"expiresUtc\": \"2026-10-10T11:00:00Z\"}", t0);
-            check(S.Effective(exp, t0, null, out var why2) == S.Campaign && why2.Contains("expired"), "profile_expired_test_is_campaign", why2);
+            check(S.Effective(exp, t0, "my test save", out var why2) == S.Test, "expired_grant_on_a_non_canonical_save_stays_test", why2);
+            var expc = S.ProfileFile.Parse("{\"profile\": \"test\", \"expiresUtc\": \"2026-10-10T11:00:00Z\", \"campaignSaves\": \"CANONICAL_ASHKARR_START\"}", t0);
+            check(S.Effective(expc, t0, "canonical_ashkarr_start", out var why2c) == S.Campaign && why2c.Contains("canonical"), "expired_grant_on_a_canonical_save_is_campaign", why2c);
+            check(S.Effective(expc, t0, null, out var why2u) == S.Campaign && why2u.Contains("unknown"), "expired_grant_on_an_unknown_save_is_campaign", why2u);
+            check(S.Effective(expc, t0, "my test save", out _) == S.Test, "expired_grant_with_a_canonical_list_keeps_test_elsewhere");
+            var says = S.ProfileFile.Parse("{\"profile\": \"campaign\"}", t0);
+            check(S.Effective(says, t0, "", out _) == S.Campaign, "a_file_that_says_campaign_is_campaign_on_any_game");
             var camp = S.ProfileFile.Parse("{\"profile\": \"test\", \"campaignSaves\": \"Ashkarr Campaign, Other\"}", t0);
-            check(S.Effective(camp, t0, "Ashkarr Campaign", out var why3) == S.Campaign && why3.Contains("campaign save"), "campaign_save_forces_campaign", why3);
+            check(S.Effective(camp, t0, "Ashkarr Campaign", out var why3) == S.Campaign && why3.Contains("canonical"), "campaign_save_forces_campaign", why3);
             check(S.Effective(camp, t0, "quicktest", out _) == S.Test, "non_campaign_save_keeps_test");
             // RIMMANDRAKE_CLOSE_CAMPAIGN_GATE_BYPASSES (GPT c01.F3): an UNKNOWN save (null) with campaign saves listed is
             // campaign - the tracker missing a load must not run a canonical world under TEST; "" (new game) keeps test.

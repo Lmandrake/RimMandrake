@@ -40,7 +40,7 @@ Every capability below is either a part of the scene run, or a thing that the sc
 | **force level** | how hard the scene pushed an actor, on the Minimum Force ladder (policy §7) |
 | **sample** | one run whose random draws were its own. A **replay** repeats the draws of an earlier sample |
 | **twin** | a second copy of a scene's start state, built beside its aftermath for the owner to compare |
-| **test game** | ArchSmall, Steve1, Steve2, or ArchBig on a disposable save. **His game** is ArchBig on a save of his |
+| **test game** | ArchSmall, Steve1, Steve2, or ArchBig: every game. A canonical world save is never run on |
 
 ## Engine facts the design stands on
 
@@ -112,9 +112,8 @@ and a claim about any of these things needs a scene that takes the control off a
 6. **Restore.** When the profile is switched off, every value that it changed returns to what it was. The restore
    reports what it could not put back. The restore also runs when the driver dies (a lease that must be renewed), so
    that a calm profile is never left on in a game by accident.
-7. **Never destructive on his game.** A control that destroys or removes (kill the wild animals, end a game condition,
-   clear the incident queue) is marked as such. It runs freely in a test game. On his game it is refused unless the
-   scene carries the Conductor's or his word.
+7. **Never on a canonical world save.** A control that destroys or removes (kill the wild animals, end a game condition,
+   clear the incident queue) is marked as such. It runs freely on any save that is not canonical.
 
 **The controls.** "Held", "watched" and "unknown" are what I believe the engine allows; the status column says how I
 know. The breach watchers (below the table) work whatever the hold mechanism is.
@@ -344,7 +343,7 @@ from that trace by a program.
 | shape | what it buys | what it costs |
 |---|---|---|
 | **A. Declared probes from a fixed vocabulary.** The scene names values and events; the bridge knows how to read each. | Safe in any game. Fast. Every probe has a schema, so a checker can be written against it and validated once. Nothing an agent wrote runs inside the game. | Every new kind of value needs bridge work, unless values can be reached by a path (below). |
-| **B. Sent programs.** The agent sends source code or a script that runs inside the game. | Any state, any logic, at once. | A program written during a run is a checker that nobody validated and that no receipt can name by version. An exception inside it breaks the run it watches. It can change the game. On his game it is a risk. The present bridge already has a restricted script front end; a general one needs a compiler or interpreter inside the game. |
+| **B. Sent programs.** The agent sends source code or a script that runs inside the game. | Any state, any logic, at once. | A program written during a run is a checker that nobody validated and that no receipt can name by version. An exception inside it breaks the run it watches. It can change the game. The present bridge already has a restricted script front end; a general one needs a compiler or interpreter inside the game. |
 | **C. Trace points inside each mod.** Our mods emit their own events ("eligibility refused because X") through a small shared interface. | Sees the reasons inside a decision, which no outside probe can. | "The mod said it worked" is evidence of a branch, never of the result (review §3). Third-party mods have none. It adds code to shipped mods. |
 
 **Picked: A as the base, with value paths; C as a second channel that is labelled; B only as named probe plug-ins.**
@@ -370,7 +369,7 @@ game, and a path through a method that computes is allowed only from a reviewed 
 and shown.
 
 **An exploring lane, kept apart.** A test pilot who hunts an unknown fault needs to ask the game anything, at once.
-For that, a sent script is right. It runs only in a test game, never on a save of his; the script and its output are
+For that, a sent script is right. It never runs on a canonical world save; the script and its output are
 recorded with a hash; nothing it reports can decide an acceptance scene. A script that proves useful is promoted: it
 becomes a named plug-in or a new path, and is then shown both ways like any checker.
 
@@ -733,19 +732,18 @@ then stays silent `[READ]`; the tap counts a silenced repeat as "seen again" whe
 count, wall clock, phase). A watcher outside the game reads it. States, each told apart: ticking; paused; frames
 stopped; an exception on every frame; stuck in a load; at the main menu; no map; process gone. On a broken state the
 watcher saves the last words (the trace so far, the first exception, the tail of the game's log), ends the run as
-COULD NOT LOOK or APPARATUS FAULT with the state's name, and stops a test game. For his game it reports and follows
-the rules of `./game` (an open question: whether a broken ArchBig is stopped while his hold is on).
+COULD NOT LOOK or APPARATUS FAULT with the state's name, and stops the game, ArchBig included, and reports the stop.
 The census has 29 blind repeats of a job on a game that had died, of which 16 died again: a run never starts on a game
 whose last state was broken until someone has cleared that state.
 
-**The owner's game.**
+**His look.**
 - The bridge never gives the game window focus and never makes it fullscreen.
 - The bridge never moves the camera that he sees, or restores it in the same frame (§6, pixels).
 - **Sitting mode.** When he sits down to look (his hold on ArchBig, or a walk), the session is in sitting mode: no
   call advances time, unpauses, changes speed, opens a window or moves the camera, unless the call carries his ask.
   His presence is not sensed (a rule of this repo); sitting mode is a state that his hold or the Conductor sets.
 - Every scene run returns the game paused.
-- A save of his is never written over. Test saves live under their own names; a write to a canonical save is refused.
+- Test saves live under their own names; a write to a canonical save is refused.
 
 **Calls tell the truth** (each line answers a census record):
 - An unknown parameter is an error, never dropped in silence.
@@ -759,7 +757,7 @@ change is a debt written to disk under the run's id. The debt is repaid at the e
 runs out, and at the next start of the bridge. A debt is repaid only by its own run or after that run is known dead.
 (The census has a restore replayed by another process in the middle of the run that owned it.)
 
-- **For:** COULD NOT LOOK and APPARATUS FAULT as true outcomes; census ranks 2 and 6; his game.
+- **For:** COULD NOT LOOK and APPARATUS FAULT as true outcomes; census ranks 2 and 6; his look.
 - **It works when:** a planted exception at tick T is the first error on the receipt with tick T; a game killed in
   mid-run gives a receipt with the state "process gone" and a readable trace; in sitting mode a call that would
   advance time is refused by name; and a run killed half way leaves no changed setting after the next bridge start.

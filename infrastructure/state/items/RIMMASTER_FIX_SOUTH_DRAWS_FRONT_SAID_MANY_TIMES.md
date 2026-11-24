@@ -26,4 +26,4 @@ objects in the game? I have had to say this many times in the past."* Earlier, 2
   precision, not done.
 - Realtime-drawn buildings (DrawAt, not the map mesh) are not ordered.
 - Proof: `selftest_south_draws_front.py`, `selftest_south_draws_front_scenarios.py` (offline, pass);
-  `prove_draw_order_live.py` written, NOT run (the owner was playing).
+  `prove_draw_order_live.py` written, NOT run.

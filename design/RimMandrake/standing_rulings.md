@@ -897,6 +897,32 @@ Please make that true everywhere."* About 6 AM PST: *"Agreed for 1% at the momen
 - The numbers live in `src/RimMandrake/Utils/switching_plan.json` and nowhere else; the page is
   `design/specs/2026-11-20-account-drain/boundary.md`.
 
+## Nobody plays during development; only the canonical world saves are protected — owner, 2026-11-23
+
+His words, by card, 2026-11-23, about 4:45 PM PST (item `RIMMANDRAKE_ENACT_NOBODY_PLAYS_NO_OWNER_GAME_OR_SAVES_TO_GUARD`):
+
+- On "stop a broken ArchBig under his hold": *"I DO NOT PLAY. You keep making this mistake. No one is playing the game
+  while we're developing it. I don't own any game."*
+- On "removals on his saves": *"I DO NOT OWN SAVES. The only saves that are protected are canonical world saves that
+  we're using to build the playable game itself. There are no players and no actual live games to protect, as long as we
+  can rebuild the world. But currently the world painting is slow, so we have canonical saves. That's it."*
+
+What follows from his words:
+
+- No game is the owner's game, and no save is the owner's save. ArchBig is the game with the full mod list. He looks at
+  staged work there.
+- The canonical world saves (`infrastructure/state/CANONICAL_SAVE.md`) are the only protected saves. The reason is that
+  to paint the world again is slow. A test may remove things on any other save.
+- Each other save is disposable. A save that waits for his review stays until he rules
+  (§Options he must LOOK at ship as a savegame). That rule keeps the look, not a save of his.
+- A broken game is stopped at once, on any game, also while his hold stands. The stop is reported.
+- His OWNER hold and `./pipe off game:ArchBig` guard a look at staged work. They still bind. The game is never put in
+  fullscreen or in focus, and he controls the clock in a sitting.
+- The CAMPAIGN profile of the companion guards a loaded canonical world save, and guards nothing else
+  (`design/RimMandrake/companion_handshake.md`).
+- A rule, guard, test or question that protects his play, his game or his saves is false. Delete it.
+- The census of 2026-11-23: `design/specs/2026-11-23-nobody-plays/census.md`.
+
 ## There are several live games; a busy game is not a reason to wait — owner, 2026-11-14 to 2026-11-20
 
 His words, with their dates (Pacific):
@@ -914,7 +940,7 @@ The games. Each game has its own install, its own bridge and its own lock:
 
 | game | where | lock (`--host`) | what it is for |
 |---|---|---|---|
-| ArchBig | Steam's install on Archmagi, `C:\Program Files (x86)\Steam\steamapps\common\RimWorld` | `archmagi` (the default) | his game: his walks and every check that needs his full mod list |
+| ArchBig | Steam's install on Archmagi, `C:\Program Files (x86)\Steam\steamapps\common\RimWorld` | `archmagi` (the default) | his walks and looks, and every check that needs the full mod list |
 | ArchSmall | its own install on Archmagi, `D:\ClaudeWork\rimmandrake\instances\b\game` (own Mods, BridgeTools, Saves) | `archmagi.b` | any work that a tier mod list can prove |
 | Steve1, Steve2 | SteveDesktop, through `infrastructure/stevedesktop/RUNBOOK.md` | `stevedesktop`, `stevedesktop.b` | queued pipeline tests |
 
@@ -949,7 +975,7 @@ The policies:
 - Choose the game by the work. Work that a tier mod list can prove goes to any free game. If ArchBig is busy or held,
   the work goes to ArchSmall or to SteveDesktop. A seat that needs ArchSmall starts it
   (`python3 src/RimMandrake/Utils/game_instance.py launch ArchSmall --wait`) and does not ask.
-- Only a check that needs his full mod list must use ArchBig. His full list on ArchSmall beside ArchBig does not fit in
+- Only a check that needs the full mod list must use ArchBig. The full list on ArchSmall beside ArchBig does not fit in
   Archmagi's memory (about 17.5 GB needed against 19.6 GB of headroom over a 12 GB floor, measured 2026-11-20). A wait
   for ArchBig names those checks.
 - His walk holds ArchBig only (`./pipe off game:ArchBig`). In-game runs then go to ArchSmall.

@@ -430,7 +430,7 @@ moment that it starts. So an act binds at once, with no publish and no tick wait
 ./pipe why <Mod>                             one line: what blocks it, or what the tick last decided
 ./pipe log -n 20                             the last acts (who, when Pacific, why)
 ./pipe off <all|Mod|stage:S|item:ID|family:F|game:G> --why "..."   new starts stop at once; live runs untouched
-./pipe off game:ArchBig --why "his walk"           hold his game only: in-game runs go to ArchSmall (see below)
+./pipe off game:ArchBig --why "his walk"           hold ArchBig only: in-game runs go to ArchSmall (see below)
 ./pipe on  <same> --why "..."                lifts a `pipe off` (never his hold) and asks for a tick now
 ./pipe stop <scope|unit> --at-easy-spot --why "..."   finish the unit in hand, write where you are, end (the default)
 ./pipe stop <scope|unit> --write-now [--deadline 5m] --why "..."   stop now, write where you are, end; then --kill
@@ -448,7 +448,7 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
                                              for its readiness list to read READY
 ```
 - There are several live games (owner, 2026-11-20: "There are two live games. ... Please stop saying waiting for the
-  live game."). ArchBig is Steam's install on Archmagi, his game with his full list (lock `archmagi`). ArchSmall is its own
+  live game."). ArchBig is Steam's install on Archmagi, with the full list (lock `archmagi`). ArchSmall is its own
   install on Archmagi (lock `archmagi.b`). Steve1 and Steve2 on SteveDesktop take work through
   `infrastructure/stevedesktop/RUNBOOK.md`. Each game has one bridge holder at a time; two holders may drive two games.
   - Never tell him that work waits for "the live game". Name the game, and say why no other game can take the work.
@@ -461,7 +461,7 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
     `--despite-hold "<why>"`.
   - The hold does not depend on your bridge hold. It stays when your bridge hold lapses.
   - Every in-game run that can use ArchSmall goes to ArchSmall. ArchSmall has its own install, Mods and BridgeTools
-    (`D:\ClaudeWork\rimmandrake\instances\b\game`), so its deploys never touch his game.
+    (`D:\ClaudeWork\rimmandrake\instances\b\game`), so its deploys never touch ArchBig.
   - A visit whose every check needs his full list waits. `./pipe why <Mod>` names those checks. ArchSmall holds a tier list
     only beside ArchBig (memory). In a mixed visit on ArchSmall, the full-list checks are UNMEASURED.
   - Full text: `design/specs/2026-11-20-per-game-hold-own-install/boundary.md` and

@@ -47,22 +47,15 @@
   </PropertyGroup>
 
   <!--
-    THE GM PAIR IS OFF BY DEFAULT, ON PURPOSE.
+    THE GM TOOLS ARE IN BY DEFAULT.
 
-    jawa/fire_incident and jawa/send_letter are a different class from every
-    other tool here. The rest change only what the caller named; fire_incident
-    hands the WORLD permission to act on the player - it can drop a raid on the
-    colony the owner is playing. So the default build omits both.
-
-    The failure modes are asymmetric, which is what decides the default: a tool
-    that is missing announces itself the first time you call it, while a raid
-    tool that is present announces itself as a raid. Opt IN, never out, by
-    passing the "gm" flag to bridgetools/build.py (or /p:JawaGmTools=true).
-
-    Owner ruling required before that ships. See a retired seat's state file.
+    The tools inside #if JAWA_GM_TOOLS let the WORLD act on the colony
+    (jawa/fire_incident can drop a raid). Every game we run is a test game, so
+    the default build includes them. Leave them out with the "no-gm" flag of
+    bridgetools/build.py (or /p:JawaGmTools=false).
   -->
   <PropertyGroup>
-    <JawaGmTools Condition="'$(JawaGmTools)' == ''">false</JawaGmTools>
+    <JawaGmTools Condition="'$(JawaGmTools)' == ''">true</JawaGmTools>
   </PropertyGroup>
   <PropertyGroup Condition="'$(JawaGmTools)' == 'true'">
     <DefineConstants>$(DefineConstants);JAWA_GM_TOOLS</DefineConstants>

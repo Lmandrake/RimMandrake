@@ -7,7 +7,7 @@ One ticket of the Bridge v2.0 build order. Read `design/specs/2026-11-23-bridge-
 
 - **Builds:** the watcher outside the game, on the heartbeat that the disk writer already gives: ticking, paused,
   frames stopped, an exception on every frame, stuck in a load, at the menu, no map, process gone. A run never starts
-  on a game whose last state was broken. A test game is stopped; ArchBig is reported (`07_for_the_owner.md`). It
+  on a game whose last state was broken. A broken game is stopped at once, on any game, and the stop is reported (root `CLAUDE.md` §Facts you cannot guess). It
   builds on `crash_watch.sh`, the stall dump and `game_health_check.py`. It comes before the run plan, which is the first ticket that changes a map by itself.
 - **Needs:** nothing.
 
@@ -33,6 +33,6 @@ Live test: none drafted in the build order for this ticket.
 - The acceptance test prints 10 checks passed and exits 0.
 - Each plant below was seen red before the ticket closes.
 - **Wrong code that must go red:** a stale heartbeat file read as "paused"; an unreadable file read as "ticking".
-- On ArchBig the watcher reports only. Choice 2 of `07_for_the_owner.md` is the owner's and is not decided here.
+- On any game, ArchBig included, the watcher stops a broken game and reports the stop.
 - Each new Harmony patch site is in `src/RimMandrake/bridgetools/HOOKS.md`; each new pipeline file has its promises on
   `design/specs/2026-11-23-bridge-v2/boundary.md` first.

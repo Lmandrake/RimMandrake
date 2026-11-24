@@ -28,7 +28,7 @@ Seen red on base `adfddcb1f8` on 2026-11-23: exit 1 ("--only names no such file"
   named incident through once (1); a held attempt is counted and recorded with its caller (1); a gate that is off
   changes nothing and records nothing (1); a held queue entry comes back with its fire tick and its retry window both
   moved (2); an entry already past its retry window when held is reported, never dropped in silence (1); the hook
-  rules for the two new gate sites (2); CAMPAIGN refuses every gate (1).
+  rules for the two new gate sites (2); with a canonical save loaded (CAMPAIGN), every gate is refused (1).
 
 Live test: none drafted in the build order for this ticket.
 

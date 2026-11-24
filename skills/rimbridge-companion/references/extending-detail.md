@@ -21,11 +21,11 @@ scans `BridgeTools\` at startup.
 ## The GM gate
 
 ```xml
-<JawaGmTools Condition="'$(JawaGmTools)' == ''">false</JawaGmTools>
+<JawaGmTools Condition="'$(JawaGmTools)' == ''">true</JawaGmTools>
 <PropertyGroup Condition="'$(JawaGmTools)' == 'true'">
   <DefineConstants>$(DefineConstants);JAWA_GM_TOOLS</DefineConstants>
 ```
-`build.py --gm` sets it. Player-acting tools go inside `#if JAWA_GM_TOOLS`.
+The default build sets it; `build.py --no-gm` clears it. Player-acting tools go inside `#if JAWA_GM_TOOLS`.
 
 ## Compile errors that will happen to you
 

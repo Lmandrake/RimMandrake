@@ -64,7 +64,7 @@ python3 src/RimMandrake/rimflow/game_lock.py release ArchBig
 
 🔴 **There are several games, and each has its own bridge, lock and holder.**
 
-- **ArchBig** is Steam's install on Archmagi. ArchBig is his game, with his full list. Its bridge port is 5174. Its
+- **ArchBig** is Steam's install on Archmagi. ArchBig holds the full list, and he looks at staged work there. Its bridge port is 5174. Its
   lock is `archmagi`, the default.
 - **ArchSmall** is its own install on Archmagi (`D:\ClaudeWork\rimmandrake\instances\b\game`). Its bridge port is 5175.
   Its lock is `archmagi.b`.

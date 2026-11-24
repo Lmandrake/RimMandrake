@@ -36,7 +36,7 @@ ORDER (cheapest first; every map-global side effect is placed AFTER the rows it 
   B9  owner review      owner_review_stage.main (ladders, spikes, gates, shallows, sprinklers, hoses) + the pit-access
                         in-situ props; kill hostiles; ONE named save for the owner
   B10 thirst tail       thirst_live: it paints EVERY potable water cell on the map to Soil, so it runs LAST, after the
-                        owner's save (its docstring: never save the map afterwards)
+                        review save (its docstring: never save the map afterwards)
 
 Every row: {id, item, criterion, status PASS|FAIL|UNMEASURED|SKIP, class MOD|SITE|HARNESS|OWED, detail, block, eyes}.
 "Could not ask" is UNMEASURED, never PASS. A row the scheduler could not run (block crashed, precondition never held)

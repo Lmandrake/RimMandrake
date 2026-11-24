@@ -560,7 +560,7 @@ Read, in this order, and nothing large into context:
 
 Your job: diagnose why the lane is not RUNNING and restore it with the existing tools (`testq.py resume --reason`
 once a pause's cause is dealt with, the RUNBOOK's restart paths). Do not live-test anything, do not deploy, do not
-touch the owner's game. Note what you found and did on the item; close it only if the lane is RUNNING again. If you
+touch ArchBig. Note what you found and did on the item; close it only if the lane is RUNNING again. If you
 cannot fix it, say exactly what the owner must do on the item and stop. You have a hard spending and time cap.
 """ % (inc["unowned_s"] // 60, inc["state"], ls["reason"][:300], item_line,
        path("steward.json"), path("steward.jsonl"), path("tick.log"), os.path.join(clone, RUNBOOK))

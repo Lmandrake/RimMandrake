@@ -508,7 +508,7 @@ def main():
         # exactly that case — the test list live, and nothing on screen saying so
         # (review finding, 2026-09-02). `capture_full` already used startswith.
         if live.startswith("MINIMAL"):
-            print("🔴 THE OWNER'S LIST IS NOT LOADED. --restore --apply before he plays.")
+            print("⚠️ The FULL list is not loaded. --restore --apply for a look or a check that needs it.")
         elif live.startswith("UNRECOGNISED"):
             print("⚠️ The live list is neither stored list. If that change was deliberate:\n"
                   "   modlist_swap.py --capture-full --apply")

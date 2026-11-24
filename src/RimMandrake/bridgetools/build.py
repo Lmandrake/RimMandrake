@@ -33,18 +33,17 @@ REQUIRES A RESTART
 Companions are discovered when RimBridgeServer starts. Deploying to a running
 game changes nothing until RimWorld is restarted.
 
-THE GM PAIR IS OPT-IN
-=====================
-jawa/fire_incident and jawa/send_letter are compiled OUT by default. Every other
-tool changes only what the caller named; fire_incident can drop a raid on the
-colony the owner is playing. `--gm` includes them, and the plan says so in
+THE GM TOOLS ARE IN BY DEFAULT
+==============================
+The tools inside `#if JAWA_GM_TOOLS` (jawa/fire_incident, jawa/send_letter and
+about 48 more) let the world act on the colony. Every game we run is a test game,
+so the build includes them; `--no-gm` leaves them out. The plan says which in
 capitals either way, because "which tools did I just ship" must never be a thing
 you infer from a byte count.
 
 USAGE
   python src/RimMandrake/bridgetools/build.py                 # build + verify, plan the deploy
   python src/RimMandrake/bridgetools/build.py --apply         # build + verify + deploy
-  python src/RimMandrake/bridgetools/build.py --gm --apply    # ...including the GM pair
   python src/RimMandrake/bridgetools/build.py --apply --clean
   (--apply refuses uncommitted companion sources unless --allow-dirty: deploy from a `git archive HEAD` export)
 """
@@ -208,7 +207,7 @@ def build(clean, gm):
 
     # --no-incremental on purpose: JawaGmTools flips DefineConstants, and an
     # incremental build keys off timestamps, not properties. Skipping it would
-    # let a --gm run hand back the previous non-GM DLL (or worse, the reverse).
+    # let a --gm run hand back the previous --no-gm DLL (or the reverse).
     # The whole build is under a second, so there is nothing to save here.
     cmd = [DOTNET, "build", PROJECT, "-c", "Release", "--nologo",
            "--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false"), src_hash_prop()]
@@ -305,12 +304,11 @@ def verify_gm_gate(dll, gm):
             print("  %-24s %s" % (t, "in DLL" if t in present else "MISSING"))
         missing = [t for t in GM_TOOLS if t not in present]
         if missing:
-            sys.exit("\nFAIL: --gm was passed but %s is not in the built DLL. "
+            sys.exit("\nFAIL: the GM tools are on but %s is not in the built DLL. "
                      "The JAWA_GM_TOOLS constant did not reach the compiler."
                      % ", ".join(missing))
     else:
-        print("\nGM tools EXCLUDED (default). Pass --gm to include "
-              "jawa/fire_incident and jawa/send_letter.")
+        print("\nGM tools EXCLUDED (--no-gm).")
         if present:
             sys.exit("\nFAIL: the GM pair is compiled OUT but %s is still in the "
                      "built DLL. Do not deploy this. Check that the #if "
@@ -501,7 +499,7 @@ def plan_deploy(dll, apply_it, allow_removal=False, ignore_hold=False):
     # ======================================
     # Everything above compares PROVENANCE (which commit) and never CAPABILITY
     # (which tools). Those come apart in the case this repo actually hit on
-    # 2026-08-12: build.py defaults to GM tools OFF, so a bare `build.py --apply`
+    # 2026-08-12: build.py then defaulted to GM tools OFF, so a bare `build.py --apply`
     # against a game copy built with --gm printed the wholly routine "differs --
     # built from a DIFFERENT COMMIT ... Deploy to make them agree" and would have
     # SILENTLY REMOVED jawa/fire_incident and jawa/send_letter. The plan invited
@@ -529,8 +527,8 @@ def plan_deploy(dll, apply_it, allow_removal=False, ignore_hold=False):
         for t in removed:
             print("  LOSES  %s" % t)
         print("  The game copy has these and this build does not. If you did not")
-        print("  intend to reduce the companion, you are probably missing a build")
-        print("  flag -- --gm is OFF by default and drops the GM pair.")
+        print("  intend to reduce the companion, check for --no-gm, or for a checkout")
+        print("  older than the game copy.")
         print("  Deliberate? Re-run with --allow-tool-removal.")
 
     if not apply_it:
@@ -539,7 +537,7 @@ def plan_deploy(dll, apply_it, allow_removal=False, ignore_hold=False):
 
     if removed and not allow_removal:
         sys.exit("\nREFUSING TO DEPLOY: it would remove %s.\n"
-                 "  Re-run with --gm if you meant to keep the GM pair, or with\n"
+                 "  Re-run without --no-gm, from a current checkout, or with\n"
                  "  --allow-tool-removal if the reduction is intended."
                  % ", ".join(removed))
 
@@ -643,7 +641,7 @@ def source_dirty():
 
 EXPORT_HINT = ("build from a clean export of committed HEAD instead:\n"
                "    git -C <clone> archive --format=tar HEAD | tar -x -C <empty dir>\n"
-               "    python3 <empty dir>/src/RimMandrake/bridgetools/build.py --gm --apply")
+               "    python3 <empty dir>/src/RimMandrake/bridgetools/build.py --apply")
 
 
 def main(argv=None):
@@ -651,15 +649,13 @@ def main(argv=None):
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--apply", action="store_true", help="actually deploy to the game")
     ap.add_argument("--clean", action="store_true", help="wipe the artifact folder first")
-    ap.add_argument("--gm", action="store_true",
-                    help="include jawa/fire_incident and jawa/send_letter, which "
-                         "let the world act on the player. Off by default; needs "
-                         "the owner's ruling.")
+    ap.add_argument("--gm", action=argparse.BooleanOptionalAction, default=True,
+                    help="the tools that let the world act on the colony; on by default, --no-gm leaves them out")
     ap.add_argument("--allow-tool-removal", action="store_true",
                     help="permit a deploy that removes tools the game copy "
                          "already has. Refused by default, because the usual "
-                         "cause is a forgotten --gm rather than an intent to "
-                         "reduce the companion.")
+                         "cause is an old checkout or --no-gm rather than an "
+                         "intent to reduce the companion.")
     ap.add_argument("--ignore-bridge-hold", action="store_true",
                     help="deploy although another seat (or the OWNER) holds the bridge. Refused by default.")
     ap.add_argument("--allow-dirty", action="store_true",

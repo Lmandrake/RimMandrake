@@ -5,15 +5,15 @@ description: How to spend a RimWorld cold load — and how to stop needing one. 
 
 # The load round
 
-A cold load of the owner's full list costs about 15 to 25 minutes as measured (§0). Plan for **15 to 30 minutes**. ArchBig is the owner's game
-and the expensive load.
+A cold load of the owner's full list costs about 15 to 25 minutes as measured (§0). Plan for **15 to 30 minutes**. ArchBig holds the full list,
+so ArchBig is the expensive load.
 So never spend a load on one question. Never spend a load to learn a thing that you can read off disk.
 
 ## 0. 🟢 FIRST: does this load have to be expensive at all?
 
 **There are several games; pick the one whose load is cheapest for the work.**
 
-- ArchBig is Steam's install on Archmagi. ArchBig is the owner's game, and it holds his full list.
+- ArchBig is Steam's install on Archmagi. ArchBig holds the full list, and the owner looks at staged work there.
 - ArchSmall is its own install on Archmagi. ArchSmall has its own `ModsConfig.xml`, `Mods` and Saves.
 - `RM_GAME_INSTANCE=b` points `game_paths`, `modlist_swap.py` and the deploy at ArchSmall.
 - `python3 src/RimMandrake/Utils/game_instance.py launch ArchSmall --wait` starts ArchSmall.
