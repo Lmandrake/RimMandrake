@@ -1,5 +1,8 @@
 # Boundary for asking the SteveDesktop lane after the host's facts
 
+Code: `src/RimMandrake/Utils/testq/host_facts.py` and `src/RimMandrake/Utils/testq/ask.py`. Tests:
+`src/RimMandrake/Utils/testq/selftest_ask_lane.py` and `src/RimMandrake/Utils/selftest_steve_visit_feed.py`.
+
 `RIMMANDRAKE_ASK_LANE_IN_ONE_LINE_AFTER_HOST_FACTS` covers `host_facts.py`, `ask.py` and `testq.py ask` in
 `src/RimMandrake/Utils/testq/`, tested in `selftest_ask_lane.py` beside them.
 
