@@ -3734,7 +3734,8 @@
      "build": "release"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "cheaper_why": "its six claims are one moat seen through: each needs the same dug, filled 4 m ring, so six scenes would dig and pour six times (107 s once, against about 50 s of staging each); offline the swim, the climb and the drain are copies of the engine's path and flow; no raid, the 13-mod list, 7 s to 60 s of game time a claim"
   },
   "sc_hole_prison": {
    "id": "sc_hole_prison",
@@ -3834,7 +3835,8 @@
     "ran": false,
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
-   }
+   },
+   "cheaper_why": "its bar is that every system holds together on his own full list across a reload from a mid-way save; each system's own check runs on the minimal list, and only this walk loads the other mods beside them, so a smaller list cannot show the failure it looks for; it runs once, in one load"
   },
   "sc_garden": {
    "id": "sc_garden",

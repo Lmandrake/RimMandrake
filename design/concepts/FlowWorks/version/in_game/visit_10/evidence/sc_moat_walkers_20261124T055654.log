@@ -1,0 +1,6 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TEN.det\design\concepts\FlowWorks\version\in_game\visit_10\evidence\sc_moat_walkers_20261124T055654.json AssertionError("rows not all PASS: [('MW_raised_leaf_swims_and_tires', 'UNMEASURED'), ('MW_drains_fast', 'PASS'), ('MW_drained_moat_is_not_walked_over', 'PASS'), ('MW_chemfuel_pumped', 'PASS'), ('MW_moat_burns', 'PASS'), ('MW_lowered_leaf_bears_him_dry', 'PASS')]")
+[bridge split] 151.9 s wall: load 0.5 / ticks 26.2 / reads 5.2 / other 55.1 / outside calls 65.0 s
+[bridge split] WARN 526 calls of jawa/static_call (23.4 s): batch them
+[bridge split] WARN 484 calls of jawa/flowworks_excavation_drive (21.9 s): batch them
+[bridge split] WARN 141 calls of jawa/safe_advance (26.2 s): batch them
+[bridge split] WARN 130 calls of jawa/site_state (5.9 s): batch them

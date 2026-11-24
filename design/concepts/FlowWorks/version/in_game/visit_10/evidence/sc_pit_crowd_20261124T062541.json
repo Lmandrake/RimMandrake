@@ -1,0 +1,3447 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TEN.det\\src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py",
+  "started": 1795530343.1322227,
+  "mode": "live",
+  "calls": [
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 60,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 60
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_115972da1b8e4ddcbb36342ab369e298",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 30
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 60,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 60
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_78a1c1bfa47d4051a70d72818c0032da",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 21
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 60,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 60
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a8e140d436b741448a4b945b5722f3a1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 22
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 60,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 60
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5b9a9fee733649299d4e37d9d3a512a9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 24
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 60,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 60
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8412a2b392ae4326a08077315fc19814",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 25
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 60,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 60
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_31e0bd00e65d455490316e5759a005c6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 19
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 60,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 60
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_aec9f58b72c2444da3fd9bf8a4fbdc1b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 19
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 60,
+        "z": 60,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21169",
+            "name": "Giles",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 60,
+            "z": 60,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 72,
+        "operation": {
+          "OperationId": "op_4b6e7b2cbd1c4288afb86da351fa63f7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 24
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 72
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 60,
+        "z": 60,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21172",
+            "name": "Manabu",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 60,
+            "z": 60,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 72,
+        "operation": {
+          "OperationId": "op_dec0399b5a3f4a00b1cae343a6b2d008",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 72
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.0175,
+          "rainRate": 0.0,
+          "age": 70
+        },
+        "season": "Spring",
+        "hour": 6.0288,
+        "pawnCount": 5,
+        "pawns": [
+          {
+            "id": "Human475",
+            "label": "Rowan",
+            "faction": "PlayerColony",
+            "x": 123,
+            "z": 118,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 117,
+              "z": 112
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human478",
+            "label": "Ellison",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 124,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human483",
+            "label": "Shiki",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21169",
+            "label": "Giles",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21172",
+            "label": "Manabu",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 72,
+        "operation": {
+          "OperationId": "op_dbbb1885b4ad4a409eb1258ca27ecfbf",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 72
+        }
+      }
+    },
+    {
+      "tool": "jawa/order_pawn",
+      "args": {
+        "pawnId": "Human21169",
+        "x": 60,
+        "z": 60,
+        "waitTicks": 0,
+        "draft": true
+      },
+      "result": {
+        "success": false,
+        "message": "1/1 pawn(s) standing on (60,60) after 0 tick(s); 0 moved at all. \u26a0\ufe0f THE GAME DID NOT TICK \u2014 nothing here is a movement result. Speed was raised but no ticks landed; the game may be force-paused (a dialog is open) or not running. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+          "x": 60,
+          "z": 60
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 0,
+        "ticksRequested": 0,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 0,
+        "waitedSeconds": 0.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+          "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+          {
+            "id": "Human21169",
+            "name": "Giles",
+            "kind": "Colonist",
+            "drafted": true,
+            "hasDrafter": true,
+            "requested": {
+              "x": 60,
+              "z": 60
+            },
+            "start": {
+              "x": 60,
+              "z": 60
+            },
+            "end": {
+              "x": 60,
+              "z": 60
+            },
+            "arrived": true,
+            "moved": false,
+            "distanceBefore": 0.0,
+            "distanceAfter": 0.0,
+            "canReach": true,
+            "orderAccepted": true,
+            "stillMoving": false,
+            "curJob": "Wait_Combat",
+            "downed": false
+          }
+        ],
+        "ticksGame": 73,
+        "operation": {
+          "OperationId": "op_0f4c35eeff2d4285860984c51b458225",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 73
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.01775,
+          "rainRate": 0.0,
+          "age": 71
+        },
+        "season": "Spring",
+        "hour": 6.02920055,
+        "pawnCount": 5,
+        "pawns": [
+          {
+            "id": "Human475",
+            "label": "Rowan",
+            "faction": "PlayerColony",
+            "x": 123,
+            "z": 118,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 117,
+              "z": 112
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human478",
+            "label": "Ellison",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 124,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human483",
+            "label": "Shiki",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21169",
+            "label": "Giles",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21172",
+            "label": "Manabu",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 73,
+        "operation": {
+          "OperationId": "op_698d26ce769c4a638c448d7a5778075c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 7
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 73
+        }
+      }
+    },
+    {
+      "tool": "jawa/order_pawn",
+      "args": {
+        "pawnId": "Human21172",
+        "x": 60,
+        "z": 60,
+        "waitTicks": 0,
+        "draft": true
+      },
+      "result": {
+        "success": false,
+        "message": "1/1 pawn(s) standing on (60,60) after 0 tick(s); 0 moved at all. \u26a0\ufe0f THE GAME DID NOT TICK \u2014 nothing here is a movement result. Speed was raised but no ticks landed; the game may be force-paused (a dialog is open) or not running. \u26a0\ufe0f LEFT DRAFTED: Human21172. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+          "x": 60,
+          "z": 60
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 0,
+        "ticksRequested": 0,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 0,
+        "waitedSeconds": 0.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+          "Human21172"
+        ],
+        "noDrafter": [],
+        "pawns": [
+          {
+            "id": "Human21172",
+            "name": "Manabu",
+            "kind": "Colonist",
+            "drafted": true,
+            "hasDrafter": true,
+            "requested": {
+              "x": 60,
+              "z": 60
+            },
+            "start": {
+              "x": 60,
+              "z": 60
+            },
+            "end": {
+              "x": 60,
+              "z": 60
+            },
+            "arrived": true,
+            "moved": false,
+            "distanceBefore": 0.0,
+            "distanceAfter": 0.0,
+            "canReach": true,
+            "orderAccepted": true,
+            "stillMoving": false,
+            "curJob": "Wait_Combat",
+            "downed": false
+          }
+        ],
+        "ticksGame": 74,
+        "operation": {
+          "OperationId": "op_2f415a482560481e8be1ec636e50c9f8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 23
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 74
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_Patch_PitRecovery",
+        "ProofRecover",
+        "Human21172;Human21169"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofRecover(System.String)",
+        "result": "RECOVER collides=True from=60,60 fromDepth=8 to=60,60 toDepth=8 edgesRefused=8",
+        "thingArgs": [],
+        "ticksGame": 84,
+        "operation": {
+          "OperationId": "op_855c39a9f543472cb9caf4de5a1ed8ef",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 18
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 84
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 66,
+        "z": 60,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21175",
+            "name": "Woo",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 66,
+            "z": 60,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 84,
+        "operation": {
+          "OperationId": "op_59c8bc2af31b4b3aad2dcbca4bbf66d9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 84
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 66,
+        "z": 60,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21178",
+            "name": "Veli",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 66,
+            "z": 60,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 84,
+        "operation": {
+          "OperationId": "op_71445006f9a54987968d623474a566b0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 84
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.0205,
+          "rainRate": 0.0,
+          "age": 82
+        },
+        "season": "Spring",
+        "hour": 6.0336,
+        "pawnCount": 7,
+        "pawns": [
+          {
+            "id": "Human475",
+            "label": "Rowan",
+            "faction": "PlayerColony",
+            "x": 123,
+            "z": 118,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 117,
+              "z": 112
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human478",
+            "label": "Ellison",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 124,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human483",
+            "label": "Shiki",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21169",
+            "label": "Giles",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21172",
+            "label": "Manabu",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21175",
+            "label": "Woo",
+            "faction": "PlayerColony",
+            "x": 66,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21178",
+            "label": "Veli",
+            "faction": "PlayerColony",
+            "x": 66,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 84,
+        "operation": {
+          "OperationId": "op_712d385891de4befa3f6e4c69ca61240",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 6
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 84
+        }
+      }
+    },
+    {
+      "tool": "jawa/order_pawn",
+      "args": {
+        "pawnId": "Human21175",
+        "x": 66,
+        "z": 60,
+        "waitTicks": 0,
+        "draft": true
+      },
+      "result": {
+        "success": false,
+        "message": "1/1 pawn(s) standing on (66,60) after 0 tick(s); 0 moved at all. \u26a0\ufe0f THE GAME DID NOT TICK \u2014 nothing here is a movement result. Speed was raised but no ticks landed; the game may be force-paused (a dialog is open) or not running. \u26a0\ufe0f LEFT DRAFTED: Human21175. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+          "x": 66,
+          "z": 60
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 0,
+        "ticksRequested": 0,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 0,
+        "waitedSeconds": 0.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+          "Human21175"
+        ],
+        "noDrafter": [],
+        "pawns": [
+          {
+            "id": "Human21175",
+            "name": "Woo",
+            "kind": "Colonist",
+            "drafted": true,
+            "hasDrafter": true,
+            "requested": {
+              "x": 66,
+              "z": 60
+            },
+            "start": {
+              "x": 66,
+              "z": 60
+            },
+            "end": {
+              "x": 66,
+              "z": 60
+            },
+            "arrived": true,
+            "moved": false,
+            "distanceBefore": 0.0,
+            "distanceAfter": 0.0,
+            "canReach": true,
+            "orderAccepted": true,
+            "stillMoving": false,
+            "curJob": "Wait_Combat",
+            "downed": false
+          }
+        ],
+        "ticksGame": 84,
+        "operation": {
+          "OperationId": "op_0523f0c561134c029569df6f82968a81",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 84
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.0205,
+          "rainRate": 0.0,
+          "age": 82
+        },
+        "season": "Spring",
+        "hour": 6.0336,
+        "pawnCount": 7,
+        "pawns": [
+          {
+            "id": "Human475",
+            "label": "Rowan",
+            "faction": "PlayerColony",
+            "x": 123,
+            "z": 118,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 117,
+              "z": 112
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human478",
+            "label": "Ellison",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 124,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human483",
+            "label": "Shiki",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21169",
+            "label": "Giles",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21172",
+            "label": "Manabu",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21175",
+            "label": "Woo",
+            "faction": "PlayerColony",
+            "x": 66,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 66,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21178",
+            "label": "Veli",
+            "faction": "PlayerColony",
+            "x": 66,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 84,
+        "operation": {
+          "OperationId": "op_b3cda0cb3e2c4e55b471f8d8d57292ff",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 7
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 84
+        }
+      }
+    },
+    {
+      "tool": "jawa/order_pawn",
+      "args": {
+        "pawnId": "Human21178",
+        "x": 66,
+        "z": 60,
+        "waitTicks": 0,
+        "draft": true
+      },
+      "result": {
+        "success": false,
+        "message": "1/1 pawn(s) standing on (66,60) after 0 tick(s); 0 moved at all. \u26a0\ufe0f THE GAME DID NOT TICK \u2014 nothing here is a movement result. Speed was raised but no ticks landed; the game may be force-paused (a dialog is open) or not running. \u26a0\ufe0f LEFT DRAFTED: Human21178. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+          "x": 66,
+          "z": 60
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 0,
+        "ticksRequested": 0,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 0,
+        "waitedSeconds": 0.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+          "Human21178"
+        ],
+        "noDrafter": [],
+        "pawns": [
+          {
+            "id": "Human21178",
+            "name": "Veli",
+            "kind": "Colonist",
+            "drafted": true,
+            "hasDrafter": true,
+            "requested": {
+              "x": 66,
+              "z": 60
+            },
+            "start": {
+              "x": 66,
+              "z": 60
+            },
+            "end": {
+              "x": 66,
+              "z": 60
+            },
+            "arrived": true,
+            "moved": false,
+            "distanceBefore": 0.0,
+            "distanceAfter": 0.0,
+            "canReach": true,
+            "orderAccepted": true,
+            "stillMoving": true,
+            "pathDestination": {
+              "x": 67,
+              "z": 60
+            },
+            "curJob": "Goto",
+            "downed": false
+          }
+        ],
+        "ticksGame": 84,
+        "operation": {
+          "OperationId": "op_a4985ae44f024fe788e637f6bce96919",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 84
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_Patch_PitRecovery",
+        "ProofRecover",
+        "Human21178;Human21175"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofRecover(System.String)",
+        "result": "RECOVER collides=True from=66,60 fromDepth=8 to=67,60 toDepth=8 edgesRefused=8",
+        "thingArgs": [],
+        "ticksGame": 94,
+        "operation": {
+          "OperationId": "op_82ae7ebdeff84410b489321f0a98ce2e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 94
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 72,
+        "z": 59,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21181",
+            "name": "Toby",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 72,
+            "z": 59,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 94,
+        "operation": {
+          "OperationId": "op_d518be6b908b48f0a311abd20a4fc764",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 94
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 72,
+        "z": 59,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21184",
+            "name": "Lover",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 72,
+            "z": 59,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 94,
+        "operation": {
+          "OperationId": "op_3965712d848d44d7ace53356cb884e67",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 14
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 94
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.023,
+          "rainRate": 0.0,
+          "age": 92
+        },
+        "season": "Spring",
+        "hour": 6.03760052,
+        "pawnCount": 9,
+        "pawns": [
+          {
+            "id": "Human475",
+            "label": "Rowan",
+            "faction": "PlayerColony",
+            "x": 123,
+            "z": 118,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 117,
+              "z": 112
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human478",
+            "label": "Ellison",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 124,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human483",
+            "label": "Shiki",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21169",
+            "label": "Giles",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21172",
+            "label": "Manabu",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21175",
+            "label": "Woo",
+            "faction": "PlayerColony",
+            "x": 66,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 66,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21178",
+            "label": "Veli",
+            "faction": "PlayerColony",
+            "x": 67,
+            "z": 60,
+            "job": "Goto",
+            "targetA": {
+              "x": 67,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21181",
+            "label": "Toby",
+            "faction": "PlayerColony",
+            "x": 72,
+            "z": 59,
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21184",
+            "label": "Lover",
+            "faction": "PlayerColony",
+            "x": 72,
+            "z": 59,
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 94,
+        "operation": {
+          "OperationId": "op_5e7b38527b76413fab153fd145a50211",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 10
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 94
+        }
+      }
+    },
+    {
+      "tool": "jawa/order_pawn",
+      "args": {
+        "pawnId": "Human21181",
+        "x": 72,
+        "z": 59,
+        "waitTicks": 0,
+        "draft": true
+      },
+      "result": {
+        "success": false,
+        "message": "1/1 pawn(s) standing on (72,59) after 0 tick(s); 0 moved at all. \u26a0\ufe0f THE GAME DID NOT TICK \u2014 nothing here is a movement result. Speed was raised but no ticks landed; the game may be force-paused (a dialog is open) or not running. \u26a0\ufe0f LEFT DRAFTED: Human21181. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+          "x": 72,
+          "z": 59
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 0,
+        "ticksRequested": 0,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 0,
+        "waitedSeconds": 0.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+          "Human21181"
+        ],
+        "noDrafter": [],
+        "pawns": [
+          {
+            "id": "Human21181",
+            "name": "Toby",
+            "kind": "Colonist",
+            "drafted": true,
+            "hasDrafter": true,
+            "requested": {
+              "x": 72,
+              "z": 59
+            },
+            "start": {
+              "x": 72,
+              "z": 59
+            },
+            "end": {
+              "x": 72,
+              "z": 59
+            },
+            "arrived": true,
+            "moved": false,
+            "distanceBefore": 0.0,
+            "distanceAfter": 0.0,
+            "canReach": true,
+            "orderAccepted": true,
+            "stillMoving": false,
+            "curJob": "Wait_Combat",
+            "downed": false
+          }
+        ],
+        "ticksGame": 95,
+        "operation": {
+          "OperationId": "op_089ffbf0858149658b227ce6881e842e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 95
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.02325,
+          "rainRate": 0.0,
+          "age": 93
+        },
+        "season": "Spring",
+        "hour": 6.038,
+        "pawnCount": 9,
+        "pawns": [
+          {
+            "id": "Human475",
+            "label": "Rowan",
+            "faction": "PlayerColony",
+            "x": 123,
+            "z": 118,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 117,
+              "z": 112
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human478",
+            "label": "Ellison",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 124,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human483",
+            "label": "Shiki",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21169",
+            "label": "Giles",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21172",
+            "label": "Manabu",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21175",
+            "label": "Woo",
+            "faction": "PlayerColony",
+            "x": 66,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 66,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21178",
+            "label": "Veli",
+            "faction": "PlayerColony",
+            "x": 67,
+            "z": 60,
+            "job": "Goto",
+            "targetA": {
+              "x": 67,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21181",
+            "label": "Toby",
+            "faction": "PlayerColony",
+            "x": 72,
+            "z": 59,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 72,
+              "z": 59
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21184",
+            "label": "Lover",
+            "faction": "PlayerColony",
+            "x": 72,
+            "z": 59,
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 95,
+        "operation": {
+          "OperationId": "op_5bebea265c6049ceb4474f9cc2005225",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 95
+        }
+      }
+    },
+    {
+      "tool": "jawa/order_pawn",
+      "args": {
+        "pawnId": "Human21184",
+        "x": 72,
+        "z": 59,
+        "waitTicks": 0,
+        "draft": true
+      },
+      "result": {
+        "success": false,
+        "message": "1/1 pawn(s) standing on (72,59) after 0 tick(s); 0 moved at all. \u26a0\ufe0f THE GAME DID NOT TICK \u2014 nothing here is a movement result. Speed was raised but no ticks landed; the game may be force-paused (a dialog is open) or not running. \u26a0\ufe0f LEFT DRAFTED: Human21184. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+          "x": 72,
+          "z": 59
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 0,
+        "ticksRequested": 0,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 0,
+        "waitedSeconds": 0.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+          "Human21184"
+        ],
+        "noDrafter": [],
+        "pawns": [
+          {
+            "id": "Human21184",
+            "name": "Lover",
+            "kind": "Colonist",
+            "drafted": true,
+            "hasDrafter": true,
+            "requested": {
+              "x": 72,
+              "z": 59
+            },
+            "start": {
+              "x": 72,
+              "z": 59
+            },
+            "end": {
+              "x": 72,
+              "z": 59
+            },
+            "arrived": true,
+            "moved": false,
+            "distanceBefore": 0.0,
+            "distanceAfter": 0.0,
+            "canReach": true,
+            "orderAccepted": true,
+            "stillMoving": true,
+            "pathDestination": {
+              "x": 73,
+              "z": 58
+            },
+            "curJob": "Goto",
+            "downed": false
+          }
+        ],
+        "ticksGame": 95,
+        "operation": {
+          "OperationId": "op_01a14937b42248d9a15dba6c0f3f6858",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 13
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 95
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_Patch_PitRecovery",
+        "ProofRecover",
+        "Human21184;Human21181"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofRecover(System.String)",
+        "result": "RECOVER collides=True from=72,59 fromDepth=0 to=73,59 toDepth=0 edgesRefused=16",
+        "thingArgs": [],
+        "ticksGame": 105,
+        "operation": {
+          "OperationId": "op_5285080417114336ae9efa87a866da6c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 13
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 105
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 78,
+        "z": 60,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21187",
+            "name": "Guisto",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 78,
+            "z": 60,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 105,
+        "operation": {
+          "OperationId": "op_8c0498bfcd044a56afa4504e7407087a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 14
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 105
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 78,
+        "z": 60,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21190",
+            "name": "Shrike",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 78,
+            "z": 60,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 105,
+        "operation": {
+          "OperationId": "op_d31468eb0e194b27a44e6ac823d2e06d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 20
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 105
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.02575,
+          "rainRate": 0.0,
+          "age": 103
+        },
+        "season": "Spring",
+        "hour": 6.042,
+        "pawnCount": 11,
+        "pawns": [
+          {
+            "id": "Human475",
+            "label": "Rowan",
+            "faction": "PlayerColony",
+            "x": 123,
+            "z": 117,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 117,
+              "z": 112
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human478",
+            "label": "Ellison",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 124,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human483",
+            "label": "Shiki",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21169",
+            "label": "Giles",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21172",
+            "label": "Manabu",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21175",
+            "label": "Woo",
+            "faction": "PlayerColony",
+            "x": 66,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 66,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21178",
+            "label": "Veli",
+            "faction": "PlayerColony",
+            "x": 67,
+            "z": 60,
+            "job": "Goto",
+            "targetA": {
+              "x": 67,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21181",
+            "label": "Toby",
+            "faction": "PlayerColony",
+            "x": 72,
+            "z": 59,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 72,
+              "z": 59
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21184",
+            "label": "Lover",
+            "faction": "PlayerColony",
+            "x": 73,
+            "z": 59,
+            "job": "Goto",
+            "targetA": {
+              "x": 73,
+              "z": 58
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21187",
+            "label": "Guisto",
+            "faction": "PlayerColony",
+            "x": 78,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21190",
+            "label": "Shrike",
+            "faction": "PlayerColony",
+            "x": 78,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 105,
+        "operation": {
+          "OperationId": "op_c0b81a490464486aad46d4b74410e4ce",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 7
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 105
+        }
+      }
+    },
+    {
+      "tool": "jawa/order_pawn",
+      "args": {
+        "pawnId": "Human21187",
+        "x": 78,
+        "z": 60,
+        "waitTicks": 0,
+        "draft": true
+      },
+      "result": {
+        "success": false,
+        "message": "1/1 pawn(s) standing on (78,60) after 0 tick(s); 0 moved at all. \u26a0\ufe0f THE GAME DID NOT TICK \u2014 nothing here is a movement result. Speed was raised but no ticks landed; the game may be force-paused (a dialog is open) or not running. \u26a0\ufe0f LEFT DRAFTED: Human21187. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+          "x": 78,
+          "z": 60
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 0,
+        "ticksRequested": 0,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 0,
+        "waitedSeconds": 0.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+          "Human21187"
+        ],
+        "noDrafter": [],
+        "pawns": [
+          {
+            "id": "Human21187",
+            "name": "Guisto",
+            "kind": "Colonist",
+            "drafted": true,
+            "hasDrafter": true,
+            "requested": {
+              "x": 78,
+              "z": 60
+            },
+            "start": {
+              "x": 78,
+              "z": 60
+            },
+            "end": {
+              "x": 78,
+              "z": 60
+            },
+            "arrived": true,
+            "moved": false,
+            "distanceBefore": 0.0,
+            "distanceAfter": 0.0,
+            "canReach": true,
+            "orderAccepted": true,
+            "stillMoving": false,
+            "curJob": "Wait_Combat",
+            "downed": false
+          }
+        ],
+        "ticksGame": 106,
+        "operation": {
+          "OperationId": "op_f7685431686c485aa6a24d8cd1a51a19",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 13
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 106
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.026,
+          "rainRate": 0.0,
+          "age": 104
+        },
+        "season": "Spring",
+        "hour": 6.04239941,
+        "pawnCount": 11,
+        "pawns": [
+          {
+            "id": "Human475",
+            "label": "Rowan",
+            "faction": "PlayerColony",
+            "x": 123,
+            "z": 117,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 117,
+              "z": 112
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human478",
+            "label": "Ellison",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 124,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human483",
+            "label": "Shiki",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21169",
+            "label": "Giles",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21172",
+            "label": "Manabu",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21175",
+            "label": "Woo",
+            "faction": "PlayerColony",
+            "x": 66,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 66,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21178",
+            "label": "Veli",
+            "faction": "PlayerColony",
+            "x": 67,
+            "z": 60,
+            "job": "Goto",
+            "targetA": {
+              "x": 67,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21181",
+            "label": "Toby",
+            "faction": "PlayerColony",
+            "x": 72,
+            "z": 59,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 72,
+              "z": 59
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21184",
+            "label": "Lover",
+            "faction": "PlayerColony",
+            "x": 73,
+            "z": 59,
+            "job": "Goto",
+            "targetA": {
+              "x": 73,
+              "z": 58
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21187",
+            "label": "Guisto",
+            "faction": "PlayerColony",
+            "x": 78,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 78,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human21190",
+            "label": "Shrike",
+            "faction": "PlayerColony",
+            "x": 78,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 106,
+        "operation": {
+          "OperationId": "op_4a95d09381304325a7eeec0dbc60b56d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 8
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 106
+        }
+      }
+    },
+    {
+      "tool": "jawa/order_pawn",
+      "args": {
+        "pawnId": "Human21190",
+        "x": 78,
+        "z": 60,
+        "waitTicks": 0,
+        "draft": true
+      },
+      "result": {
+        "success": false,
+        "message": "1/1 pawn(s) standing on (78,60) after 0 tick(s); 0 moved at all. \u26a0\ufe0f THE GAME DID NOT TICK \u2014 nothing here is a movement result. Speed was raised but no ticks landed; the game may be force-paused (a dialog is open) or not running. \u26a0\ufe0f LEFT DRAFTED: Human21190. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+          "x": 78,
+          "z": 60
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 0,
+        "ticksRequested": 0,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 0,
+        "waitedSeconds": 0.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+          "Human21190"
+        ],
+        "noDrafter": [],
+        "pawns": [
+          {
+            "id": "Human21190",
+            "name": "Shrike",
+            "kind": "Colonist",
+            "drafted": true,
+            "hasDrafter": true,
+            "requested": {
+              "x": 78,
+              "z": 60
+            },
+            "start": {
+              "x": 78,
+              "z": 60
+            },
+            "end": {
+              "x": 78,
+              "z": 60
+            },
+            "arrived": true,
+            "moved": false,
+            "distanceBefore": 0.0,
+            "distanceAfter": 0.0,
+            "canReach": true,
+            "orderAccepted": true,
+            "stillMoving": true,
+            "pathDestination": {
+              "x": 79,
+              "z": 60
+            },
+            "curJob": "Goto",
+            "downed": false
+          }
+        ],
+        "ticksGame": 106,
+        "operation": {
+          "OperationId": "op_60694e63f0e74636bc93d26f834de229",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 106
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_Patch_PitRecovery",
+        "ProofRecover",
+        "Human21190;Human21187"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofRecover(System.String)",
+        "result": "RECOVER collides=True from=78,60 fromDepth=0 to=78,61 toDepth=0 edgesRefused=9",
+        "thingArgs": [],
+        "ticksGame": 116,
+        "operation": {
+          "OperationId": "op_0a5ba9dba29c4406be39140377524ec9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 13
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 116
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 60,
+        "deepenLevels": 8,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 60
+        },
+        "depth": 8,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_0659778cb683419193e9067592b0f568",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 19
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 60,
+        "z": 60,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human24588",
+            "name": "Red",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 60,
+            "z": 60,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 73,
+        "operation": {
+          "OperationId": "op_bfc8bb0c4e8e4afb8345e3082d0c733c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 73
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 60,
+        "z": 60,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human24591",
+            "name": "Thunder",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 60,
+            "z": 60,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 73,
+        "operation": {
+          "OperationId": "op_a827d9b93c6540c3aaac6d6501c3a65d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 73
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.0175,
+          "rainRate": 0.0,
+          "age": 70
+        },
+        "season": "Spring",
+        "hour": 6.02920055,
+        "pawnCount": 5,
+        "pawns": [
+          {
+            "id": "Human475",
+            "label": "Rowan",
+            "faction": "PlayerColony",
+            "x": 123,
+            "z": 118,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 117,
+              "z": 112
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human478",
+            "label": "Ellison",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 110
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human483",
+            "label": "Shiki",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human24588",
+            "label": "Red",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human24591",
+            "label": "Thunder",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 73,
+        "operation": {
+          "OperationId": "op_fb4ef25906904f138eb70cdc871e6034",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 10
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 73
+        }
+      }
+    },
+    {
+      "tool": "jawa/order_pawn",
+      "args": {
+        "pawnId": "Human24588",
+        "x": 60,
+        "z": 60,
+        "waitTicks": 0,
+        "draft": true
+      },
+      "result": {
+        "success": false,
+        "message": "1/1 pawn(s) standing on (60,60) after 0 tick(s); 0 moved at all. \u26a0\ufe0f THE GAME DID NOT TICK \u2014 nothing here is a movement result. Speed was raised but no ticks landed; the game may be force-paused (a dialog is open) or not running. \u26a0\ufe0f LEFT DRAFTED: Human24588. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+          "x": 60,
+          "z": 60
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 0,
+        "ticksRequested": 0,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 0,
+        "waitedSeconds": 0.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+          "Human24588"
+        ],
+        "noDrafter": [],
+        "pawns": [
+          {
+            "id": "Human24588",
+            "name": "Red",
+            "kind": "Colonist",
+            "drafted": true,
+            "hasDrafter": true,
+            "requested": {
+              "x": 60,
+              "z": 60
+            },
+            "start": {
+              "x": 60,
+              "z": 60
+            },
+            "end": {
+              "x": 60,
+              "z": 60
+            },
+            "arrived": true,
+            "moved": false,
+            "distanceBefore": 0.0,
+            "distanceAfter": 0.0,
+            "canReach": true,
+            "orderAccepted": true,
+            "stillMoving": false,
+            "curJob": "Wait_Combat",
+            "downed": false
+          }
+        ],
+        "ticksGame": 74,
+        "operation": {
+          "OperationId": "op_937ec889120e4fbfa63622328e15f8c0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 74
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.01775,
+          "rainRate": 0.0,
+          "age": 71
+        },
+        "season": "Spring",
+        "hour": 6.0296,
+        "pawnCount": 5,
+        "pawns": [
+          {
+            "id": "Human475",
+            "label": "Rowan",
+            "faction": "PlayerColony",
+            "x": 123,
+            "z": 118,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 117,
+              "z": 112
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human478",
+            "label": "Ellison",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 110
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human483",
+            "label": "Shiki",
+            "faction": "PlayerColony",
+            "x": 120,
+            "z": 111,
+            "job": "GotoWander",
+            "targetA": {
+              "x": 122,
+              "z": 115
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human24588",
+            "label": "Red",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 60,
+              "z": 60
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human24591",
+            "label": "Thunder",
+            "faction": "PlayerColony",
+            "x": 60,
+            "z": 60,
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 74,
+        "operation": {
+          "OperationId": "op_ca58c779589049e699e845cb5a40422c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 6
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 74
+        }
+      }
+    },
+    {
+      "tool": "jawa/order_pawn",
+      "args": {
+        "pawnId": "Human24591",
+        "x": 60,
+        "z": 60,
+        "waitTicks": 0,
+        "draft": true
+      },
+      "result": {
+        "success": false,
+        "message": "1/1 pawn(s) standing on (60,60) after 0 tick(s); 0 moved at all. \u26a0\ufe0f THE GAME DID NOT TICK \u2014 nothing here is a movement result. Speed was raised but no ticks landed; the game may be force-paused (a dialog is open) or not running. \u26a0\ufe0f LEFT DRAFTED: Human24591. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+          "x": 60,
+          "z": 60
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 0,
+        "ticksRequested": 0,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 0,
+        "waitedSeconds": 0.0,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+          "Human24591"
+        ],
+        "noDrafter": [],
+        "pawns": [
+          {
+            "id": "Human24591",
+            "name": "Thunder",
+            "kind": "Colonist",
+            "drafted": true,
+            "hasDrafter": true,
+            "requested": {
+              "x": 60,
+              "z": 60
+            },
+            "start": {
+              "x": 60,
+              "z": 60
+            },
+            "end": {
+              "x": 60,
+              "z": 60
+            },
+            "arrived": true,
+            "moved": false,
+            "distanceBefore": 0.0,
+            "distanceAfter": 0.0,
+            "canReach": true,
+            "orderAccepted": true,
+            "stillMoving": true,
+            "pathDestination": {
+              "x": 61,
+              "z": 60
+            },
+            "curJob": "Goto",
+            "downed": false
+          }
+        ],
+        "ticksGame": 75,
+        "operation": {
+          "OperationId": "op_2202980328574cf4acc3b9eff370daed",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 24
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 75
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_Patch_PitRecovery",
+        "ProofRecover",
+        "Human24591;Human24588"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofRecover(System.String)",
+        "result": "RECOVER collides=True from=60,60 fromDepth=8 to=60,61 toDepth=0 edgesRefused=0",
+        "thingArgs": [],
+        "ticksGame": 85,
+        "operation": {
+          "OperationId": "op_b36c0cb110d94f32916d2b2b80198ee3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 85
+        }
+      }
+    }
+  ],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-24T14:25:43Z",
+    "problems": [],
+    "load_s": 5.9,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-24T14:25:50Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 8.3,
+    "verified": true
+  },
+  "scene": "scene_pit_crowd",
+  "rows": [
+    {
+      "id": "CROWD_one_square_cut_stays",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "RECOVER collides=True from=60,60 fromDepth=8 to=60,60 toDepth=8 edgesRefused=8"
+    },
+    {
+      "id": "CROWD_long_cut_moves_along_the_floor",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "RECOVER collides=True from=66,60 fromDepth=8 to=67,60 toDepth=8 edgesRefused=8"
+    },
+    {
+      "id": "CROWD_rim_not_crowded_in",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "RECOVER collides=True from=72,59 fromDepth=0 to=73,59 toDepth=0 edgesRefused=16"
+    },
+    {
+      "id": "CROWD_control_flat_ground_separates",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "RECOVER collides=True from=78,60 fromDepth=0 to=78,61 toDepth=0 edgesRefused=9"
+    },
+    {
+      "id": "CROWD_plant_switch_off_he_lands_on_the_bank",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "RECOVER collides=True from=60,60 fromDepth=8 to=60,61 toDepth=0 edgesRefused=0"
+    }
+  ],
+  "status": "PASS",
+  "finished": 1795530374.185853
+}

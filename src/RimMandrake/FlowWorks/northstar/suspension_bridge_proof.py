@@ -489,7 +489,17 @@ def underpass(ctx):
         V.adopt(u1, fa)
         kv, txt = proof("ProofUnderPath", "%s;%s" % (a_, xz(P(8, 40)))) if a_ else ({}, "no pawn")
         good = kv.get("found") == "True" and int(kv.get("decked", "0")) >= 1 and kv.get("view") == "floor"
-        row("UND_floor_path_walks_under", "PASS" if good else "FAIL", {"read": txt})
+        why = None
+        if a_ and not good:     # visit 10: one FAIL in many runs, no cause read. Read what the pawn and its reach say, before any tick
+            why = {"reach": proof("ProofReach", "%s;%s" % (a_, xz(P(8, 40))))[1], "band": proof("ProofBand", a_)[1],
+                   "pawn": B.call("jawa/pawn_get", pawnId=a_), "at": [xz(P(i, 40)) for i in (1, 8)],
+                   "cells": [B.call("rimworld/get_cell_info", x=P(i, 40)[0], z=P(i, 40)[1]) for i in range(1, 9)]}
+            why["after"] = []
+            for _ in range(3):
+                ticks(60)
+                why["after"].append((proof("ProofUnderPath", "%s;%s" % (a_, xz(P(8, 40))))[1],
+                                     proof("ProofReach", "%s;%s" % (a_, xz(P(8, 40))))[1]))
+        row("UND_floor_path_walks_under", "PASS" if good else "FAIL", {"read": txt, "why": why} if why else {"read": txt})
     with V.scope("UND_both"):
         V.adopt(u1, fa, fb)
         oa = B.call("jawa/order_pawn", pawnId=a_, x=P(8, 40)[0], z=P(8, 40)[1], waitTicks=900, draft=True) or {}

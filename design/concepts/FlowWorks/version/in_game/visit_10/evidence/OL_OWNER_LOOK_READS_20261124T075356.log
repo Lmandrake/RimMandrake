@@ -1,0 +1,3 @@
+owner_look_regressions {"PASS": 1629, "FAIL": 0, "UNMEASURED": 0, "BLOCKED": 0}
+[bridge split] 52.2 s wall: load 0.0 / ticks 0.0 / reads 0.4 / other 44.4 / outside calls 7.5 s
+[bridge split] WARN 1029 calls of jawa/static_call (44.2 s): batch them

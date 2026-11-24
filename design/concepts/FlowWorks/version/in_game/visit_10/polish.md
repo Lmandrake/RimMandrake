@@ -1,0 +1,2 @@
+- suspension_bridge_proof.py GRATE_fire_burns_people_above compares two random burn counts (1 FAIL in 20 runs); judge the deck's fire=True/False read and one burn on the grate instead.
+- sc_moat_walkers: a moat the colonist may never enter reads UNMEASURED; the row now carries canReach beside it.

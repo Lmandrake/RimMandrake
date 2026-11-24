@@ -1,0 +1,2 @@
+A live scene that digs or pours through the bridge and orders a pawn in the same paused instant reads the mod's OLD reach labels (RM_WallReach relabels on the tick, about 60 ticks): the Goto is accepted, dropped, and he never moves. Poll ProofReachPair canReach=True before the one order (concept_scenes _mw_cross, 8eab92b6c2). jawa/order_pawn success=False with waitTicks=0 is not a refusal: it means 'not standing there yet'.
+item: RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TEN

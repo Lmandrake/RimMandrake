@@ -1,0 +1,10670 @@
+[
+[
+"BP0_dry",
+"furn",
+"SculptureGrand",
+"PASS",
+{
+"def": "SculptureGrand",
+"at": [
+2,
+2
+],
+"planned": [
+"SculptureGrand",
+2,
+2
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"DoubleBed",
+"PASS",
+{
+"def": "DoubleBed",
+"at": [
+5,
+2
+],
+"planned": [
+"DoubleBed",
+5,
+2
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"RM_GlowTank",
+"PASS",
+{
+"def": "RM_GlowTank",
+"at": [
+8,
+2
+],
+"planned": [
+"RM_GlowTank",
+8,
+2
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"RM_HoseReel",
+"PASS",
+{
+"def": "RM_HoseReel",
+"at": [
+11,
+2
+],
+"planned": [
+"RM_HoseReel",
+11,
+2
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"Table2x2c",
+"PASS",
+{
+"def": "Table2x2c",
+"at": [
+2,
+5
+],
+"planned": [
+"Table2x2c",
+2,
+5
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"TableButcher",
+"PASS",
+{
+"def": "TableButcher",
+"at": [
+5,
+4
+],
+"planned": [
+"TableButcher",
+5,
+4
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"HandTailoringBench",
+"PASS",
+{
+"def": "HandTailoringBench",
+"at": [
+8,
+4
+],
+"planned": [
+"HandTailoringBench",
+8,
+4
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"SculptureLarge",
+"PASS",
+{
+"def": "SculptureLarge",
+"at": [
+14,
+4
+],
+"planned": [
+"SculptureLarge",
+14,
+4
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"Bed",
+"PASS",
+{
+"def": "Bed",
+"at": [
+13,
+2
+],
+"planned": [
+"Bed",
+13,
+2
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 140,
+"hpBaseline": 140,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"Shelf",
+"PASS",
+{
+"def": "Shelf",
+"at": [
+11,
+4
+],
+"planned": [
+"Shelf",
+11,
+4
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"Dresser",
+"PASS",
+{
+"def": "Dresser",
+"at": [
+5,
+5
+],
+"planned": [
+"Dresser",
+5,
+5
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"RM_ResinSealingJarShelf",
+"PASS",
+{
+"def": "RM_ResinSealingJarShelf",
+"at": [
+8,
+5
+],
+"planned": [
+"RM_ResinSealingJarShelf",
+8,
+5
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"Bedroll",
+"PASS",
+{
+"def": "Bedroll",
+"at": [
+14,
+2
+],
+"planned": [
+"Bedroll",
+14,
+2
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Cloth",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"Battery",
+"PASS",
+{
+"def": "Battery",
+"at": [
+13,
+5
+],
+"planned": [
+"Battery",
+13,
+5
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"PlantPot",
+"PASS",
+{
+"def": "PlantPot",
+"at": [
+10,
+5
+],
+"planned": [
+"PlantPot",
+10,
+5
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"SculptureSmall",
+"PASS",
+{
+"def": "SculptureSmall",
+"at": [
+11,
+5
+],
+"planned": [
+"SculptureSmall",
+11,
+5
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 90,
+"hpBaseline": 90,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"DiningChair",
+"PASS",
+{
+"def": "DiningChair",
+"at": [
+12,
+5
+],
+"planned": [
+"DiningChair",
+12,
+5
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"Stool",
+"PASS",
+{
+"def": "Stool",
+"at": [
+14,
+5
+],
+"planned": [
+"Stool",
+14,
+5
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"Armchair",
+"PASS",
+{
+"def": "Armchair",
+"at": [
+4,
+6
+],
+"planned": [
+"Armchair",
+4,
+6
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Cloth",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"EndTable",
+"PASS",
+{
+"def": "EndTable",
+"at": [
+5,
+6
+],
+"planned": [
+"EndTable",
+5,
+6
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"StandingLamp",
+"PASS",
+{
+"def": "StandingLamp",
+"at": [
+6,
+6
+],
+"planned": [
+"StandingLamp",
+6,
+6
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"TorchLamp",
+"PASS",
+{
+"def": "TorchLamp",
+"at": [
+7,
+6
+],
+"planned": [
+"TorchLamp",
+7,
+6
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"Cooler",
+"PASS",
+{
+"def": "Cooler",
+"at": [
+8,
+6
+],
+"planned": [
+"Cooler",
+8,
+6
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "RM_BrineCrock",
+"at": [
+9,
+6
+],
+"planned": [
+"RM_BrineCrock",
+9,
+6
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"RM_EvaporativeCrock",
+"PASS",
+{
+"def": "RM_EvaporativeCrock",
+"at": [
+10,
+6
+],
+"planned": [
+"RM_EvaporativeCrock",
+10,
+6
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "BlocksGranite",
+"hp": 102,
+"hpBaseline": 102,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"furn",
+"RM_AncientStasisLocker_Refurbished",
+"PASS",
+{
+"def": "RM_AncientStasisLocker_Refurbished",
+"at": [
+11,
+6
+],
+"planned": [
+"RM_AncientStasisLocker_Refurbished",
+11,
+6
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 250,
+"hpBaseline": 250,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"WoodLog",
+"PASS",
+{
+"def": "WoodLog",
+"at": [
+12,
+6
+],
+"planned": [
+"WoodLog",
+12,
+6
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Plasteel",
+"PASS",
+{
+"def": "Plasteel",
+"at": [
+14,
+6
+],
+"planned": [
+"Plasteel",
+14,
+6
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Gold",
+"PASS",
+{
+"def": "Gold",
+"at": [
+1,
+7
+],
+"planned": [
+"Gold",
+1,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"ComponentIndustrial",
+"PASS",
+{
+"def": "ComponentIndustrial",
+"at": [
+2,
+7
+],
+"planned": [
+"ComponentIndustrial",
+2,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 70,
+"hpBaseline": 70,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Cloth",
+"PASS",
+{
+"def": "Cloth",
+"at": [
+3,
+7
+],
+"planned": [
+"Cloth",
+3,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Hay",
+"PASS",
+{
+"def": "Hay",
+"at": [
+4,
+7
+],
+"planned": [
+"Hay",
+4,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Silver",
+"PASS",
+{
+"def": "Silver",
+"at": [
+5,
+7
+],
+"planned": [
+"Silver",
+5,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Steel",
+"PASS",
+{
+"def": "Steel",
+"at": [
+6,
+7
+],
+"planned": [
+"Steel",
+6,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Leather_Plain",
+"PASS",
+{
+"def": "Leather_Plain",
+"at": [
+7,
+7
+],
+"planned": [
+"Leather_Plain",
+7,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"MealSimple",
+"PASS",
+{
+"def": "MealSimple",
+"at": [
+8,
+7
+],
+"planned": [
+"MealSimple",
+8,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"MealFine",
+"PASS",
+{
+"def": "MealFine",
+"at": [
+9,
+7
+],
+"planned": [
+"MealFine",
+9,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"RawPotatoes",
+"PASS",
+{
+"def": "RawPotatoes",
+"at": [
+10,
+7
+],
+"planned": [
+"RawPotatoes",
+10,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Meat_Cow",
+"PASS",
+{
+"def": "Meat_Cow",
+"at": [
+11,
+7
+],
+"planned": [
+"Meat_Cow",
+11,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Pemmican",
+"PASS",
+{
+"def": "Pemmican",
+"at": [
+12,
+7
+],
+"planned": [
+"Pemmican",
+12,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Beer",
+"PASS",
+{
+"def": "Beer",
+"at": [
+13,
+7
+],
+"planned": [
+"Beer",
+13,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Chocolate",
+"PASS",
+{
+"def": "Chocolate",
+"at": [
+14,
+7
+],
+"planned": [
+"Chocolate",
+14,
+7
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"MedicineIndustrial",
+"PASS",
+{
+"def": "MedicineIndustrial",
+"at": [
+1,
+8
+],
+"planned": [
+"MedicineIndustrial",
+1,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"MedicineHerbal",
+"PASS",
+{
+"def": "MedicineHerbal",
+"at": [
+2,
+8
+],
+"planned": [
+"MedicineHerbal",
+2,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Neutroamine",
+"PASS",
+{
+"def": "Neutroamine",
+"at": [
+3,
+8
+],
+"planned": [
+"Neutroamine",
+3,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"MeleeWeapon_Knife",
+"PASS",
+{
+"def": "MeleeWeapon_Knife",
+"at": [
+4,
+8
+],
+"planned": [
+"MeleeWeapon_Knife",
+4,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Gun_BoltActionRifle",
+"PASS",
+{
+"def": "Gun_BoltActionRifle",
+"at": [
+5,
+8
+],
+"planned": [
+"Gun_BoltActionRifle",
+5,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Gun_Revolver",
+"PASS",
+{
+"def": "Gun_Revolver",
+"at": [
+6,
+8
+],
+"planned": [
+"Gun_Revolver",
+6,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"MeleeWeapon_LongSword",
+"PASS",
+{
+"def": "MeleeWeapon_LongSword",
+"at": [
+7,
+8
+],
+"planned": [
+"MeleeWeapon_LongSword",
+7,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Apparel_Parka",
+"PASS",
+{
+"def": "Apparel_Parka",
+"at": [
+8,
+8
+],
+"planned": [
+"Apparel_Parka",
+8,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Cloth",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Apparel_CowboyHat",
+"PASS",
+{
+"def": "Apparel_CowboyHat",
+"at": [
+9,
+8
+],
+"planned": [
+"Apparel_CowboyHat",
+9,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"stuff": "Cloth",
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Apparel_FlakVest",
+"PASS",
+{
+"def": "Apparel_FlakVest",
+"at": [
+10,
+8
+],
+"planned": [
+"Apparel_FlakVest",
+10,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"ChunkGranite",
+"PASS",
+{
+"def": "ChunkGranite",
+"at": [
+11,
+8
+],
+"planned": [
+"ChunkGranite",
+11,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"ChunkSlagSteel",
+"PASS",
+{
+"def": "ChunkSlagSteel",
+"at": [
+12,
+8
+],
+"planned": [
+"ChunkSlagSteel",
+12,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Shell_HighExplosive",
+"PASS",
+{
+"def": "Shell_HighExplosive",
+"at": [
+13,
+8
+],
+"planned": [
+"Shell_HighExplosive",
+13,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Shell_EMP",
+"PASS",
+{
+"def": "Shell_EMP",
+"at": [
+14,
+8
+],
+"planned": [
+"Shell_EMP",
+14,
+8
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Jade",
+"PASS",
+{
+"def": "Jade",
+"at": [
+1,
+9
+],
+"planned": [
+"Jade",
+1,
+9
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"Novel",
+"PASS",
+{
+"def": "Novel",
+"at": [
+2,
+9
+],
+"planned": [
+"Novel",
+2,
+9
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"RM_ResinSealedMeat",
+"PASS",
+{
+"def": "RM_ResinSealedMeat",
+"at": [
+3,
+9
+],
+"planned": [
+"RM_ResinSealedMeat",
+3,
+9
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"RM_ResinSealedFruit",
+"PASS",
+{
+"def": "RM_ResinSealedFruit",
+"at": [
+4,
+9
+],
+"planned": [
+"RM_ResinSealedFruit",
+4,
+9
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"item",
+"RM_AmberAgedMeat",
+"PASS",
+{
+"def": "RM_AmberAgedMeat",
+"at": [
+5,
+9
+],
+"planned": [
+"RM_AmberAgedMeat",
+5,
+9
+],
+"inPit": true,
+"liquidOverM": 0.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP0_dry",
+"mini",
+"Armchair",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+6,
+9
+],
+"planned": [
+"MinifiedThing",
+6,
+9
+],
+"inPit": true,
+"liquidOverM": 0.0
+}
+],
+[
+"BP0_dry",
+"mini",
+"EndTable",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+7,
+9
+],
+"planned": [
+"MinifiedThing",
+7,
+9
+],
+"inPit": true,
+"liquidOverM": 0.0
+}
+],
+[
+"BP0_dry",
+"mini",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+8,
+9
+],
+"planned": [
+"MinifiedThing",
+8,
+9
+],
+"inPit": true,
+"liquidOverM": 0.0
+}
+],
+[
+"BP0_dry",
+"corpse",
+"Muffalo",
+"PASS",
+{
+"def": "Corpse_Muffalo",
+"at": [
+9,
+9
+],
+"planned": [
+"Corpse_Muffalo",
+9,
+9
+],
+"inPit": true,
+"liquidOverM": 0.0
+}
+],
+[
+"BP0_dry",
+"corpse",
+"Villager",
+"PASS",
+{
+"def": "Corpse_Human",
+"at": [
+10,
+9
+],
+"planned": [
+"Corpse_Villager",
+10,
+9
+],
+"inPit": true,
+"liquidOverM": 0.0
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"SculptureGrand",
+"PASS",
+{
+"def": "SculptureGrand",
+"at": [
+2,
+2
+],
+"planned": [
+"SculptureGrand",
+2,
+2
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"DoubleBed",
+"PASS",
+{
+"def": "DoubleBed",
+"at": [
+5,
+2
+],
+"planned": [
+"DoubleBed",
+5,
+2
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"RM_GlowTank",
+"PASS",
+{
+"def": "RM_GlowTank",
+"at": [
+8,
+2
+],
+"planned": [
+"RM_GlowTank",
+8,
+2
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"RM_HoseReel",
+"PASS",
+{
+"def": "RM_HoseReel",
+"at": [
+11,
+2
+],
+"planned": [
+"RM_HoseReel",
+11,
+2
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"Table2x2c",
+"PASS",
+{
+"def": "Table2x2c",
+"at": [
+2,
+5
+],
+"planned": [
+"Table2x2c",
+2,
+5
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"TableButcher",
+"PASS",
+{
+"def": "TableButcher",
+"at": [
+5,
+4
+],
+"planned": [
+"TableButcher",
+5,
+4
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"HandTailoringBench",
+"PASS",
+{
+"def": "HandTailoringBench",
+"at": [
+8,
+4
+],
+"planned": [
+"HandTailoringBench",
+8,
+4
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"SculptureLarge",
+"PASS",
+{
+"def": "SculptureLarge",
+"at": [
+14,
+4
+],
+"planned": [
+"SculptureLarge",
+14,
+4
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"Bed",
+"PASS",
+{
+"def": "Bed",
+"at": [
+13,
+2
+],
+"planned": [
+"Bed",
+13,
+2
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 140,
+"hpBaseline": 140,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"Shelf",
+"PASS",
+{
+"def": "Shelf",
+"at": [
+11,
+4
+],
+"planned": [
+"Shelf",
+11,
+4
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"Dresser",
+"PASS",
+{
+"def": "Dresser",
+"at": [
+5,
+5
+],
+"planned": [
+"Dresser",
+5,
+5
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"RM_ResinSealingJarShelf",
+"PASS",
+{
+"def": "RM_ResinSealingJarShelf",
+"at": [
+8,
+5
+],
+"planned": [
+"RM_ResinSealingJarShelf",
+8,
+5
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"Bedroll",
+"PASS",
+{
+"def": "Bedroll",
+"at": [
+14,
+2
+],
+"planned": [
+"Bedroll",
+14,
+2
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Cloth",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"Battery",
+"PASS",
+{
+"def": "Battery",
+"at": [
+13,
+5
+],
+"planned": [
+"Battery",
+13,
+5
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"PlantPot",
+"PASS",
+{
+"def": "PlantPot",
+"at": [
+10,
+5
+],
+"planned": [
+"PlantPot",
+10,
+5
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"SculptureSmall",
+"PASS",
+{
+"def": "SculptureSmall",
+"at": [
+11,
+5
+],
+"planned": [
+"SculptureSmall",
+11,
+5
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 90,
+"hpBaseline": 90,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"DiningChair",
+"PASS",
+{
+"def": "DiningChair",
+"at": [
+12,
+5
+],
+"planned": [
+"DiningChair",
+12,
+5
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"Stool",
+"PASS",
+{
+"def": "Stool",
+"at": [
+14,
+5
+],
+"planned": [
+"Stool",
+14,
+5
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"Armchair",
+"PASS",
+{
+"def": "Armchair",
+"at": [
+4,
+6
+],
+"planned": [
+"Armchair",
+4,
+6
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Cloth",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"EndTable",
+"PASS",
+{
+"def": "EndTable",
+"at": [
+5,
+6
+],
+"planned": [
+"EndTable",
+5,
+6
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"StandingLamp",
+"PASS",
+{
+"def": "StandingLamp",
+"at": [
+6,
+6
+],
+"planned": [
+"StandingLamp",
+6,
+6
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"TorchLamp",
+"PASS",
+{
+"def": "TorchLamp",
+"at": [
+7,
+6
+],
+"planned": [
+"TorchLamp",
+7,
+6
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"Cooler",
+"PASS",
+{
+"def": "Cooler",
+"at": [
+8,
+6
+],
+"planned": [
+"Cooler",
+8,
+6
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "RM_BrineCrock",
+"at": [
+9,
+6
+],
+"planned": [
+"RM_BrineCrock",
+9,
+6
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"RM_EvaporativeCrock",
+"PASS",
+{
+"def": "RM_EvaporativeCrock",
+"at": [
+10,
+6
+],
+"planned": [
+"RM_EvaporativeCrock",
+10,
+6
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "BlocksGranite",
+"hp": 102,
+"hpBaseline": 102,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"furn",
+"RM_AncientStasisLocker_Refurbished",
+"PASS",
+{
+"def": "RM_AncientStasisLocker_Refurbished",
+"at": [
+11,
+6
+],
+"planned": [
+"RM_AncientStasisLocker_Refurbished",
+11,
+6
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 250,
+"hpBaseline": 250,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"WoodLog",
+"PASS",
+{
+"def": "WoodLog",
+"at": [
+12,
+6
+],
+"planned": [
+"WoodLog",
+12,
+6
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Plasteel",
+"PASS",
+{
+"def": "Plasteel",
+"at": [
+14,
+6
+],
+"planned": [
+"Plasteel",
+14,
+6
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Gold",
+"PASS",
+{
+"def": "Gold",
+"at": [
+1,
+7
+],
+"planned": [
+"Gold",
+1,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"ComponentIndustrial",
+"PASS",
+{
+"def": "ComponentIndustrial",
+"at": [
+2,
+7
+],
+"planned": [
+"ComponentIndustrial",
+2,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 70,
+"hpBaseline": 70,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Cloth",
+"PASS",
+{
+"def": "Cloth",
+"at": [
+3,
+7
+],
+"planned": [
+"Cloth",
+3,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Hay",
+"PASS",
+{
+"def": "Hay",
+"at": [
+4,
+7
+],
+"planned": [
+"Hay",
+4,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Silver",
+"PASS",
+{
+"def": "Silver",
+"at": [
+5,
+7
+],
+"planned": [
+"Silver",
+5,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Steel",
+"PASS",
+{
+"def": "Steel",
+"at": [
+6,
+7
+],
+"planned": [
+"Steel",
+6,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Leather_Plain",
+"PASS",
+{
+"def": "Leather_Plain",
+"at": [
+7,
+7
+],
+"planned": [
+"Leather_Plain",
+7,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"MealSimple",
+"PASS",
+{
+"def": "MealSimple",
+"at": [
+8,
+7
+],
+"planned": [
+"MealSimple",
+8,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"MealFine",
+"PASS",
+{
+"def": "MealFine",
+"at": [
+9,
+7
+],
+"planned": [
+"MealFine",
+9,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"RawPotatoes",
+"PASS",
+{
+"def": "RawPotatoes",
+"at": [
+10,
+7
+],
+"planned": [
+"RawPotatoes",
+10,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Meat_Cow",
+"PASS",
+{
+"def": "Meat_Cow",
+"at": [
+11,
+7
+],
+"planned": [
+"Meat_Cow",
+11,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Pemmican",
+"PASS",
+{
+"def": "Pemmican",
+"at": [
+12,
+7
+],
+"planned": [
+"Pemmican",
+12,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Beer",
+"PASS",
+{
+"def": "Beer",
+"at": [
+13,
+7
+],
+"planned": [
+"Beer",
+13,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Chocolate",
+"PASS",
+{
+"def": "Chocolate",
+"at": [
+14,
+7
+],
+"planned": [
+"Chocolate",
+14,
+7
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"MedicineIndustrial",
+"PASS",
+{
+"def": "MedicineIndustrial",
+"at": [
+1,
+8
+],
+"planned": [
+"MedicineIndustrial",
+1,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"MedicineHerbal",
+"PASS",
+{
+"def": "MedicineHerbal",
+"at": [
+2,
+8
+],
+"planned": [
+"MedicineHerbal",
+2,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Neutroamine",
+"PASS",
+{
+"def": "Neutroamine",
+"at": [
+3,
+8
+],
+"planned": [
+"Neutroamine",
+3,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"MeleeWeapon_Knife",
+"PASS",
+{
+"def": "MeleeWeapon_Knife",
+"at": [
+4,
+8
+],
+"planned": [
+"MeleeWeapon_Knife",
+4,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Gun_BoltActionRifle",
+"PASS",
+{
+"def": "Gun_BoltActionRifle",
+"at": [
+5,
+8
+],
+"planned": [
+"Gun_BoltActionRifle",
+5,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Gun_Revolver",
+"PASS",
+{
+"def": "Gun_Revolver",
+"at": [
+6,
+8
+],
+"planned": [
+"Gun_Revolver",
+6,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"MeleeWeapon_LongSword",
+"PASS",
+{
+"def": "MeleeWeapon_LongSword",
+"at": [
+7,
+8
+],
+"planned": [
+"MeleeWeapon_LongSword",
+7,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Apparel_Parka",
+"PASS",
+{
+"def": "Apparel_Parka",
+"at": [
+8,
+8
+],
+"planned": [
+"Apparel_Parka",
+8,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Cloth",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Apparel_CowboyHat",
+"PASS",
+{
+"def": "Apparel_CowboyHat",
+"at": [
+9,
+8
+],
+"planned": [
+"Apparel_CowboyHat",
+9,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"stuff": "Cloth",
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Apparel_FlakVest",
+"PASS",
+{
+"def": "Apparel_FlakVest",
+"at": [
+10,
+8
+],
+"planned": [
+"Apparel_FlakVest",
+10,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"ChunkGranite",
+"PASS",
+{
+"def": "ChunkGranite",
+"at": [
+11,
+8
+],
+"planned": [
+"ChunkGranite",
+11,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"ChunkSlagSteel",
+"PASS",
+{
+"def": "ChunkSlagSteel",
+"at": [
+12,
+8
+],
+"planned": [
+"ChunkSlagSteel",
+12,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Shell_HighExplosive",
+"PASS",
+{
+"def": "Shell_HighExplosive",
+"at": [
+13,
+8
+],
+"planned": [
+"Shell_HighExplosive",
+13,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Shell_EMP",
+"PASS",
+{
+"def": "Shell_EMP",
+"at": [
+14,
+8
+],
+"planned": [
+"Shell_EMP",
+14,
+8
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Jade",
+"PASS",
+{
+"def": "Jade",
+"at": [
+1,
+9
+],
+"planned": [
+"Jade",
+1,
+9
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"Novel",
+"PASS",
+{
+"def": "Novel",
+"at": [
+2,
+9
+],
+"planned": [
+"Novel",
+2,
+9
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"RM_ResinSealedMeat",
+"PASS",
+{
+"def": "RM_ResinSealedMeat",
+"at": [
+3,
+9
+],
+"planned": [
+"RM_ResinSealedMeat",
+3,
+9
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"RM_ResinSealedFruit",
+"PASS",
+{
+"def": "RM_ResinSealedFruit",
+"at": [
+4,
+9
+],
+"planned": [
+"RM_ResinSealedFruit",
+4,
+9
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"item",
+"RM_AmberAgedMeat",
+"PASS",
+{
+"def": "RM_AmberAgedMeat",
+"at": [
+5,
+9
+],
+"planned": [
+"RM_AmberAgedMeat",
+5,
+9
+],
+"inPit": true,
+"liquidOverM": 0.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP1_0.5m",
+"mini",
+"Armchair",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+6,
+9
+],
+"planned": [
+"MinifiedThing",
+6,
+9
+],
+"inPit": true,
+"liquidOverM": 0.5
+}
+],
+[
+"BP1_0.5m",
+"mini",
+"EndTable",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+7,
+9
+],
+"planned": [
+"MinifiedThing",
+7,
+9
+],
+"inPit": true,
+"liquidOverM": 0.5
+}
+],
+[
+"BP1_0.5m",
+"mini",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+8,
+9
+],
+"planned": [
+"MinifiedThing",
+8,
+9
+],
+"inPit": true,
+"liquidOverM": 0.5
+}
+],
+[
+"BP1_0.5m",
+"corpse",
+"Muffalo",
+"PASS",
+{
+"def": "Corpse_Muffalo",
+"at": [
+9,
+9
+],
+"planned": [
+"Corpse_Muffalo",
+9,
+9
+],
+"inPit": true,
+"liquidOverM": 0.5
+}
+],
+[
+"BP1_0.5m",
+"corpse",
+"Villager",
+"PASS",
+{
+"def": "Corpse_Human",
+"at": [
+10,
+9
+],
+"planned": [
+"Corpse_Villager",
+10,
+9
+],
+"inPit": true,
+"liquidOverM": 0.5
+}
+],
+[
+"BP2_1m",
+"furn",
+"SculptureGrand",
+"PASS",
+{
+"def": "SculptureGrand",
+"at": [
+2,
+2
+],
+"planned": [
+"SculptureGrand",
+2,
+2
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"DoubleBed",
+"PASS",
+{
+"def": "DoubleBed",
+"at": [
+5,
+2
+],
+"planned": [
+"DoubleBed",
+5,
+2
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"RM_GlowTank",
+"PASS",
+{
+"def": "RM_GlowTank",
+"at": [
+8,
+2
+],
+"planned": [
+"RM_GlowTank",
+8,
+2
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"RM_HoseReel",
+"PASS",
+{
+"def": "RM_HoseReel",
+"at": [
+11,
+2
+],
+"planned": [
+"RM_HoseReel",
+11,
+2
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"Table2x2c",
+"PASS",
+{
+"def": "Table2x2c",
+"at": [
+2,
+5
+],
+"planned": [
+"Table2x2c",
+2,
+5
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"TableButcher",
+"PASS",
+{
+"def": "TableButcher",
+"at": [
+5,
+4
+],
+"planned": [
+"TableButcher",
+5,
+4
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"HandTailoringBench",
+"PASS",
+{
+"def": "HandTailoringBench",
+"at": [
+8,
+4
+],
+"planned": [
+"HandTailoringBench",
+8,
+4
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"SculptureLarge",
+"PASS",
+{
+"def": "SculptureLarge",
+"at": [
+14,
+4
+],
+"planned": [
+"SculptureLarge",
+14,
+4
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"Bed",
+"PASS",
+{
+"def": "Bed",
+"at": [
+13,
+2
+],
+"planned": [
+"Bed",
+13,
+2
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 140,
+"hpBaseline": 140,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"Shelf",
+"PASS",
+{
+"def": "Shelf",
+"at": [
+11,
+4
+],
+"planned": [
+"Shelf",
+11,
+4
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"Dresser",
+"PASS",
+{
+"def": "Dresser",
+"at": [
+5,
+5
+],
+"planned": [
+"Dresser",
+5,
+5
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"RM_ResinSealingJarShelf",
+"PASS",
+{
+"def": "RM_ResinSealingJarShelf",
+"at": [
+8,
+5
+],
+"planned": [
+"RM_ResinSealingJarShelf",
+8,
+5
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"Bedroll",
+"PASS",
+{
+"def": "Bedroll",
+"at": [
+14,
+2
+],
+"planned": [
+"Bedroll",
+14,
+2
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Cloth",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"Battery",
+"PASS",
+{
+"def": "Battery",
+"at": [
+13,
+5
+],
+"planned": [
+"Battery",
+13,
+5
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"PlantPot",
+"PASS",
+{
+"def": "PlantPot",
+"at": [
+10,
+5
+],
+"planned": [
+"PlantPot",
+10,
+5
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"SculptureSmall",
+"PASS",
+{
+"def": "SculptureSmall",
+"at": [
+11,
+5
+],
+"planned": [
+"SculptureSmall",
+11,
+5
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 90,
+"hpBaseline": 90,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"DiningChair",
+"PASS",
+{
+"def": "DiningChair",
+"at": [
+12,
+5
+],
+"planned": [
+"DiningChair",
+12,
+5
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"Stool",
+"PASS",
+{
+"def": "Stool",
+"at": [
+14,
+5
+],
+"planned": [
+"Stool",
+14,
+5
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"Armchair",
+"PASS",
+{
+"def": "Armchair",
+"at": [
+4,
+6
+],
+"planned": [
+"Armchair",
+4,
+6
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Cloth",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"EndTable",
+"PASS",
+{
+"def": "EndTable",
+"at": [
+5,
+6
+],
+"planned": [
+"EndTable",
+5,
+6
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"StandingLamp",
+"PASS",
+{
+"def": "StandingLamp",
+"at": [
+6,
+6
+],
+"planned": [
+"StandingLamp",
+6,
+6
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"TorchLamp",
+"PASS",
+{
+"def": "TorchLamp",
+"at": [
+7,
+6
+],
+"planned": [
+"TorchLamp",
+7,
+6
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"Cooler",
+"PASS",
+{
+"def": "Cooler",
+"at": [
+8,
+6
+],
+"planned": [
+"Cooler",
+8,
+6
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "RM_BrineCrock",
+"at": [
+9,
+6
+],
+"planned": [
+"RM_BrineCrock",
+9,
+6
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"RM_EvaporativeCrock",
+"PASS",
+{
+"def": "RM_EvaporativeCrock",
+"at": [
+10,
+6
+],
+"planned": [
+"RM_EvaporativeCrock",
+10,
+6
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "BlocksGranite",
+"hp": 102,
+"hpBaseline": 102,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"furn",
+"RM_AncientStasisLocker_Refurbished",
+"PASS",
+{
+"def": "RM_AncientStasisLocker_Refurbished",
+"at": [
+11,
+6
+],
+"planned": [
+"RM_AncientStasisLocker_Refurbished",
+11,
+6
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 250,
+"hpBaseline": 250,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"WoodLog",
+"PASS",
+{
+"def": "WoodLog",
+"at": [
+12,
+6
+],
+"planned": [
+"WoodLog",
+12,
+6
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Plasteel",
+"PASS",
+{
+"def": "Plasteel",
+"at": [
+14,
+6
+],
+"planned": [
+"Plasteel",
+14,
+6
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Gold",
+"PASS",
+{
+"def": "Gold",
+"at": [
+1,
+7
+],
+"planned": [
+"Gold",
+1,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"ComponentIndustrial",
+"PASS",
+{
+"def": "ComponentIndustrial",
+"at": [
+2,
+7
+],
+"planned": [
+"ComponentIndustrial",
+2,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 70,
+"hpBaseline": 70,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Cloth",
+"PASS",
+{
+"def": "Cloth",
+"at": [
+3,
+7
+],
+"planned": [
+"Cloth",
+3,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Hay",
+"PASS",
+{
+"def": "Hay",
+"at": [
+4,
+7
+],
+"planned": [
+"Hay",
+4,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Silver",
+"PASS",
+{
+"def": "Silver",
+"at": [
+5,
+7
+],
+"planned": [
+"Silver",
+5,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Steel",
+"PASS",
+{
+"def": "Steel",
+"at": [
+6,
+7
+],
+"planned": [
+"Steel",
+6,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Leather_Plain",
+"PASS",
+{
+"def": "Leather_Plain",
+"at": [
+7,
+7
+],
+"planned": [
+"Leather_Plain",
+7,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"MealSimple",
+"PASS",
+{
+"def": "MealSimple",
+"at": [
+8,
+7
+],
+"planned": [
+"MealSimple",
+8,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"MealFine",
+"PASS",
+{
+"def": "MealFine",
+"at": [
+9,
+7
+],
+"planned": [
+"MealFine",
+9,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"RawPotatoes",
+"PASS",
+{
+"def": "RawPotatoes",
+"at": [
+10,
+7
+],
+"planned": [
+"RawPotatoes",
+10,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Meat_Cow",
+"PASS",
+{
+"def": "Meat_Cow",
+"at": [
+11,
+7
+],
+"planned": [
+"Meat_Cow",
+11,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Pemmican",
+"PASS",
+{
+"def": "Pemmican",
+"at": [
+12,
+7
+],
+"planned": [
+"Pemmican",
+12,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Beer",
+"PASS",
+{
+"def": "Beer",
+"at": [
+13,
+7
+],
+"planned": [
+"Beer",
+13,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Chocolate",
+"PASS",
+{
+"def": "Chocolate",
+"at": [
+14,
+7
+],
+"planned": [
+"Chocolate",
+14,
+7
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"MedicineIndustrial",
+"PASS",
+{
+"def": "MedicineIndustrial",
+"at": [
+1,
+8
+],
+"planned": [
+"MedicineIndustrial",
+1,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"MedicineHerbal",
+"PASS",
+{
+"def": "MedicineHerbal",
+"at": [
+2,
+8
+],
+"planned": [
+"MedicineHerbal",
+2,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Neutroamine",
+"PASS",
+{
+"def": "Neutroamine",
+"at": [
+3,
+8
+],
+"planned": [
+"Neutroamine",
+3,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"MeleeWeapon_Knife",
+"PASS",
+{
+"def": "MeleeWeapon_Knife",
+"at": [
+4,
+8
+],
+"planned": [
+"MeleeWeapon_Knife",
+4,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Gun_BoltActionRifle",
+"PASS",
+{
+"def": "Gun_BoltActionRifle",
+"at": [
+5,
+8
+],
+"planned": [
+"Gun_BoltActionRifle",
+5,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Gun_Revolver",
+"PASS",
+{
+"def": "Gun_Revolver",
+"at": [
+6,
+8
+],
+"planned": [
+"Gun_Revolver",
+6,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"MeleeWeapon_LongSword",
+"PASS",
+{
+"def": "MeleeWeapon_LongSword",
+"at": [
+7,
+8
+],
+"planned": [
+"MeleeWeapon_LongSword",
+7,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Apparel_Parka",
+"PASS",
+{
+"def": "Apparel_Parka",
+"at": [
+8,
+8
+],
+"planned": [
+"Apparel_Parka",
+8,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Cloth",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Apparel_CowboyHat",
+"PASS",
+{
+"def": "Apparel_CowboyHat",
+"at": [
+9,
+8
+],
+"planned": [
+"Apparel_CowboyHat",
+9,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"stuff": "Cloth",
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Apparel_FlakVest",
+"PASS",
+{
+"def": "Apparel_FlakVest",
+"at": [
+10,
+8
+],
+"planned": [
+"Apparel_FlakVest",
+10,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"ChunkGranite",
+"PASS",
+{
+"def": "ChunkGranite",
+"at": [
+11,
+8
+],
+"planned": [
+"ChunkGranite",
+11,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"ChunkSlagSteel",
+"PASS",
+{
+"def": "ChunkSlagSteel",
+"at": [
+12,
+8
+],
+"planned": [
+"ChunkSlagSteel",
+12,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Shell_HighExplosive",
+"PASS",
+{
+"def": "Shell_HighExplosive",
+"at": [
+13,
+8
+],
+"planned": [
+"Shell_HighExplosive",
+13,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Shell_EMP",
+"PASS",
+{
+"def": "Shell_EMP",
+"at": [
+14,
+8
+],
+"planned": [
+"Shell_EMP",
+14,
+8
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Jade",
+"PASS",
+{
+"def": "Jade",
+"at": [
+1,
+9
+],
+"planned": [
+"Jade",
+1,
+9
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"Novel",
+"PASS",
+{
+"def": "Novel",
+"at": [
+2,
+9
+],
+"planned": [
+"Novel",
+2,
+9
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"RM_ResinSealedMeat",
+"PASS",
+{
+"def": "RM_ResinSealedMeat",
+"at": [
+3,
+9
+],
+"planned": [
+"RM_ResinSealedMeat",
+3,
+9
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"RM_ResinSealedFruit",
+"PASS",
+{
+"def": "RM_ResinSealedFruit",
+"at": [
+4,
+9
+],
+"planned": [
+"RM_ResinSealedFruit",
+4,
+9
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"item",
+"RM_AmberAgedMeat",
+"PASS",
+{
+"def": "RM_AmberAgedMeat",
+"at": [
+5,
+9
+],
+"planned": [
+"RM_AmberAgedMeat",
+5,
+9
+],
+"inPit": true,
+"liquidOverM": 1.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP2_1m",
+"mini",
+"Armchair",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+6,
+9
+],
+"planned": [
+"MinifiedThing",
+6,
+9
+],
+"inPit": true,
+"liquidOverM": 1.0
+}
+],
+[
+"BP2_1m",
+"mini",
+"EndTable",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+7,
+9
+],
+"planned": [
+"MinifiedThing",
+7,
+9
+],
+"inPit": true,
+"liquidOverM": 1.0
+}
+],
+[
+"BP2_1m",
+"mini",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+8,
+9
+],
+"planned": [
+"MinifiedThing",
+8,
+9
+],
+"inPit": true,
+"liquidOverM": 1.0
+}
+],
+[
+"BP2_1m",
+"corpse",
+"Muffalo",
+"PASS",
+{
+"def": "Corpse_Muffalo",
+"at": [
+9,
+9
+],
+"planned": [
+"Corpse_Muffalo",
+9,
+9
+],
+"inPit": true,
+"liquidOverM": 1.0
+}
+],
+[
+"BP2_1m",
+"corpse",
+"Villager",
+"PASS",
+{
+"def": "Corpse_Human",
+"at": [
+10,
+9
+],
+"planned": [
+"Corpse_Villager",
+10,
+9
+],
+"inPit": true,
+"liquidOverM": 1.0
+}
+],
+[
+"BP3_2m",
+"furn",
+"SculptureGrand",
+"PASS",
+{
+"def": "SculptureGrand",
+"at": [
+2,
+2
+],
+"planned": [
+"SculptureGrand",
+2,
+2
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"DoubleBed",
+"PASS",
+{
+"def": "DoubleBed",
+"at": [
+5,
+2
+],
+"planned": [
+"DoubleBed",
+5,
+2
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"RM_GlowTank",
+"PASS",
+{
+"def": "RM_GlowTank",
+"at": [
+8,
+2
+],
+"planned": [
+"RM_GlowTank",
+8,
+2
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"RM_HoseReel",
+"PASS",
+{
+"def": "RM_HoseReel",
+"at": [
+11,
+2
+],
+"planned": [
+"RM_HoseReel",
+11,
+2
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"Table2x2c",
+"PASS",
+{
+"def": "Table2x2c",
+"at": [
+2,
+5
+],
+"planned": [
+"Table2x2c",
+2,
+5
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"TableButcher",
+"PASS",
+{
+"def": "TableButcher",
+"at": [
+5,
+4
+],
+"planned": [
+"TableButcher",
+5,
+4
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"HandTailoringBench",
+"PASS",
+{
+"def": "HandTailoringBench",
+"at": [
+8,
+4
+],
+"planned": [
+"HandTailoringBench",
+8,
+4
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"SculptureLarge",
+"PASS",
+{
+"def": "SculptureLarge",
+"at": [
+14,
+4
+],
+"planned": [
+"SculptureLarge",
+14,
+4
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"Bed",
+"PASS",
+{
+"def": "Bed",
+"at": [
+13,
+2
+],
+"planned": [
+"Bed",
+13,
+2
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 140,
+"hpBaseline": 140,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"Shelf",
+"PASS",
+{
+"def": "Shelf",
+"at": [
+11,
+4
+],
+"planned": [
+"Shelf",
+11,
+4
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"Dresser",
+"PASS",
+{
+"def": "Dresser",
+"at": [
+5,
+5
+],
+"planned": [
+"Dresser",
+5,
+5
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"RM_ResinSealingJarShelf",
+"PASS",
+{
+"def": "RM_ResinSealingJarShelf",
+"at": [
+8,
+5
+],
+"planned": [
+"RM_ResinSealingJarShelf",
+8,
+5
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"Bedroll",
+"PASS",
+{
+"def": "Bedroll",
+"at": [
+14,
+2
+],
+"planned": [
+"Bedroll",
+14,
+2
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Cloth",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"Battery",
+"PASS",
+{
+"def": "Battery",
+"at": [
+13,
+5
+],
+"planned": [
+"Battery",
+13,
+5
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"PlantPot",
+"PASS",
+{
+"def": "PlantPot",
+"at": [
+10,
+5
+],
+"planned": [
+"PlantPot",
+10,
+5
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"SculptureSmall",
+"PASS",
+{
+"def": "SculptureSmall",
+"at": [
+11,
+5
+],
+"planned": [
+"SculptureSmall",
+11,
+5
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 90,
+"hpBaseline": 90,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"DiningChair",
+"PASS",
+{
+"def": "DiningChair",
+"at": [
+12,
+5
+],
+"planned": [
+"DiningChair",
+12,
+5
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"Stool",
+"PASS",
+{
+"def": "Stool",
+"at": [
+14,
+5
+],
+"planned": [
+"Stool",
+14,
+5
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"Armchair",
+"PASS",
+{
+"def": "Armchair",
+"at": [
+4,
+6
+],
+"planned": [
+"Armchair",
+4,
+6
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Cloth",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"EndTable",
+"PASS",
+{
+"def": "EndTable",
+"at": [
+5,
+6
+],
+"planned": [
+"EndTable",
+5,
+6
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"StandingLamp",
+"PASS",
+{
+"def": "StandingLamp",
+"at": [
+6,
+6
+],
+"planned": [
+"StandingLamp",
+6,
+6
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"TorchLamp",
+"PASS",
+{
+"def": "TorchLamp",
+"at": [
+7,
+6
+],
+"planned": [
+"TorchLamp",
+7,
+6
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"Cooler",
+"PASS",
+{
+"def": "Cooler",
+"at": [
+8,
+6
+],
+"planned": [
+"Cooler",
+8,
+6
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "RM_BrineCrock",
+"at": [
+9,
+6
+],
+"planned": [
+"RM_BrineCrock",
+9,
+6
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"RM_EvaporativeCrock",
+"PASS",
+{
+"def": "RM_EvaporativeCrock",
+"at": [
+10,
+6
+],
+"planned": [
+"RM_EvaporativeCrock",
+10,
+6
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "BlocksGranite",
+"hp": 102,
+"hpBaseline": 102,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"furn",
+"RM_AncientStasisLocker_Refurbished",
+"PASS",
+{
+"def": "RM_AncientStasisLocker_Refurbished",
+"at": [
+11,
+6
+],
+"planned": [
+"RM_AncientStasisLocker_Refurbished",
+11,
+6
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 250,
+"hpBaseline": 250,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"WoodLog",
+"PASS",
+{
+"def": "WoodLog",
+"at": [
+12,
+6
+],
+"planned": [
+"WoodLog",
+12,
+6
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Plasteel",
+"PASS",
+{
+"def": "Plasteel",
+"at": [
+14,
+6
+],
+"planned": [
+"Plasteel",
+14,
+6
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Gold",
+"PASS",
+{
+"def": "Gold",
+"at": [
+1,
+7
+],
+"planned": [
+"Gold",
+1,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"ComponentIndustrial",
+"PASS",
+{
+"def": "ComponentIndustrial",
+"at": [
+2,
+7
+],
+"planned": [
+"ComponentIndustrial",
+2,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 70,
+"hpBaseline": 70,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Cloth",
+"PASS",
+{
+"def": "Cloth",
+"at": [
+3,
+7
+],
+"planned": [
+"Cloth",
+3,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Hay",
+"PASS",
+{
+"def": "Hay",
+"at": [
+4,
+7
+],
+"planned": [
+"Hay",
+4,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Silver",
+"PASS",
+{
+"def": "Silver",
+"at": [
+5,
+7
+],
+"planned": [
+"Silver",
+5,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Steel",
+"PASS",
+{
+"def": "Steel",
+"at": [
+6,
+7
+],
+"planned": [
+"Steel",
+6,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Leather_Plain",
+"PASS",
+{
+"def": "Leather_Plain",
+"at": [
+7,
+7
+],
+"planned": [
+"Leather_Plain",
+7,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"MealSimple",
+"PASS",
+{
+"def": "MealSimple",
+"at": [
+8,
+7
+],
+"planned": [
+"MealSimple",
+8,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"MealFine",
+"PASS",
+{
+"def": "MealFine",
+"at": [
+9,
+7
+],
+"planned": [
+"MealFine",
+9,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"RawPotatoes",
+"PASS",
+{
+"def": "RawPotatoes",
+"at": [
+10,
+7
+],
+"planned": [
+"RawPotatoes",
+10,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Meat_Cow",
+"PASS",
+{
+"def": "Meat_Cow",
+"at": [
+11,
+7
+],
+"planned": [
+"Meat_Cow",
+11,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Pemmican",
+"PASS",
+{
+"def": "Pemmican",
+"at": [
+12,
+7
+],
+"planned": [
+"Pemmican",
+12,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Beer",
+"PASS",
+{
+"def": "Beer",
+"at": [
+13,
+7
+],
+"planned": [
+"Beer",
+13,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Chocolate",
+"PASS",
+{
+"def": "Chocolate",
+"at": [
+14,
+7
+],
+"planned": [
+"Chocolate",
+14,
+7
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"MedicineIndustrial",
+"PASS",
+{
+"def": "MedicineIndustrial",
+"at": [
+1,
+8
+],
+"planned": [
+"MedicineIndustrial",
+1,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"MedicineHerbal",
+"PASS",
+{
+"def": "MedicineHerbal",
+"at": [
+2,
+8
+],
+"planned": [
+"MedicineHerbal",
+2,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Neutroamine",
+"PASS",
+{
+"def": "Neutroamine",
+"at": [
+3,
+8
+],
+"planned": [
+"Neutroamine",
+3,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"MeleeWeapon_Knife",
+"PASS",
+{
+"def": "MeleeWeapon_Knife",
+"at": [
+4,
+8
+],
+"planned": [
+"MeleeWeapon_Knife",
+4,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Gun_BoltActionRifle",
+"PASS",
+{
+"def": "Gun_BoltActionRifle",
+"at": [
+5,
+8
+],
+"planned": [
+"Gun_BoltActionRifle",
+5,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Gun_Revolver",
+"PASS",
+{
+"def": "Gun_Revolver",
+"at": [
+6,
+8
+],
+"planned": [
+"Gun_Revolver",
+6,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"MeleeWeapon_LongSword",
+"PASS",
+{
+"def": "MeleeWeapon_LongSword",
+"at": [
+7,
+8
+],
+"planned": [
+"MeleeWeapon_LongSword",
+7,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Apparel_Parka",
+"PASS",
+{
+"def": "Apparel_Parka",
+"at": [
+8,
+8
+],
+"planned": [
+"Apparel_Parka",
+8,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Cloth",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Apparel_CowboyHat",
+"PASS",
+{
+"def": "Apparel_CowboyHat",
+"at": [
+9,
+8
+],
+"planned": [
+"Apparel_CowboyHat",
+9,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"stuff": "Cloth",
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Apparel_FlakVest",
+"PASS",
+{
+"def": "Apparel_FlakVest",
+"at": [
+10,
+8
+],
+"planned": [
+"Apparel_FlakVest",
+10,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"ChunkGranite",
+"PASS",
+{
+"def": "ChunkGranite",
+"at": [
+11,
+8
+],
+"planned": [
+"ChunkGranite",
+11,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"ChunkSlagSteel",
+"PASS",
+{
+"def": "ChunkSlagSteel",
+"at": [
+12,
+8
+],
+"planned": [
+"ChunkSlagSteel",
+12,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Shell_HighExplosive",
+"PASS",
+{
+"def": "Shell_HighExplosive",
+"at": [
+13,
+8
+],
+"planned": [
+"Shell_HighExplosive",
+13,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Shell_EMP",
+"PASS",
+{
+"def": "Shell_EMP",
+"at": [
+14,
+8
+],
+"planned": [
+"Shell_EMP",
+14,
+8
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Jade",
+"PASS",
+{
+"def": "Jade",
+"at": [
+1,
+9
+],
+"planned": [
+"Jade",
+1,
+9
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"Novel",
+"PASS",
+{
+"def": "Novel",
+"at": [
+2,
+9
+],
+"planned": [
+"Novel",
+2,
+9
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"RM_ResinSealedMeat",
+"PASS",
+{
+"def": "RM_ResinSealedMeat",
+"at": [
+3,
+9
+],
+"planned": [
+"RM_ResinSealedMeat",
+3,
+9
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"RM_ResinSealedFruit",
+"PASS",
+{
+"def": "RM_ResinSealedFruit",
+"at": [
+4,
+9
+],
+"planned": [
+"RM_ResinSealedFruit",
+4,
+9
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"item",
+"RM_AmberAgedMeat",
+"PASS",
+{
+"def": "RM_AmberAgedMeat",
+"at": [
+5,
+9
+],
+"planned": [
+"RM_AmberAgedMeat",
+5,
+9
+],
+"inPit": true,
+"liquidOverM": 2.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP3_2m",
+"mini",
+"Armchair",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+6,
+9
+],
+"planned": [
+"MinifiedThing",
+6,
+9
+],
+"inPit": true,
+"liquidOverM": 2.0
+}
+],
+[
+"BP3_2m",
+"mini",
+"EndTable",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+7,
+9
+],
+"planned": [
+"MinifiedThing",
+7,
+9
+],
+"inPit": true,
+"liquidOverM": 2.0
+}
+],
+[
+"BP3_2m",
+"mini",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+8,
+9
+],
+"planned": [
+"MinifiedThing",
+8,
+9
+],
+"inPit": true,
+"liquidOverM": 2.0
+}
+],
+[
+"BP3_2m",
+"corpse",
+"Muffalo",
+"PASS",
+{
+"def": "Corpse_Muffalo",
+"at": [
+9,
+9
+],
+"planned": [
+"Corpse_Muffalo",
+9,
+9
+],
+"inPit": true,
+"liquidOverM": 2.0
+}
+],
+[
+"BP3_2m",
+"corpse",
+"Villager",
+"PASS",
+{
+"def": "Corpse_Human",
+"at": [
+10,
+9
+],
+"planned": [
+"Corpse_Villager",
+10,
+9
+],
+"inPit": true,
+"liquidOverM": 2.0
+}
+],
+[
+"BP4_3m",
+"furn",
+"SculptureGrand",
+"PASS",
+{
+"def": "SculptureGrand",
+"at": [
+2,
+2
+],
+"planned": [
+"SculptureGrand",
+2,
+2
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"DoubleBed",
+"PASS",
+{
+"def": "DoubleBed",
+"at": [
+5,
+2
+],
+"planned": [
+"DoubleBed",
+5,
+2
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"RM_GlowTank",
+"PASS",
+{
+"def": "RM_GlowTank",
+"at": [
+8,
+2
+],
+"planned": [
+"RM_GlowTank",
+8,
+2
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"RM_HoseReel",
+"PASS",
+{
+"def": "RM_HoseReel",
+"at": [
+11,
+2
+],
+"planned": [
+"RM_HoseReel",
+11,
+2
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"Table2x2c",
+"PASS",
+{
+"def": "Table2x2c",
+"at": [
+2,
+5
+],
+"planned": [
+"Table2x2c",
+2,
+5
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"TableButcher",
+"PASS",
+{
+"def": "TableButcher",
+"at": [
+5,
+4
+],
+"planned": [
+"TableButcher",
+5,
+4
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"HandTailoringBench",
+"PASS",
+{
+"def": "HandTailoringBench",
+"at": [
+8,
+4
+],
+"planned": [
+"HandTailoringBench",
+8,
+4
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"SculptureLarge",
+"PASS",
+{
+"def": "SculptureLarge",
+"at": [
+14,
+4
+],
+"planned": [
+"SculptureLarge",
+14,
+4
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"Bed",
+"PASS",
+{
+"def": "Bed",
+"at": [
+13,
+2
+],
+"planned": [
+"Bed",
+13,
+2
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 140,
+"hpBaseline": 140,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"Shelf",
+"PASS",
+{
+"def": "Shelf",
+"at": [
+11,
+4
+],
+"planned": [
+"Shelf",
+11,
+4
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"Dresser",
+"PASS",
+{
+"def": "Dresser",
+"at": [
+5,
+5
+],
+"planned": [
+"Dresser",
+5,
+5
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"RM_ResinSealingJarShelf",
+"PASS",
+{
+"def": "RM_ResinSealingJarShelf",
+"at": [
+8,
+5
+],
+"planned": [
+"RM_ResinSealingJarShelf",
+8,
+5
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"Bedroll",
+"PASS",
+{
+"def": "Bedroll",
+"at": [
+14,
+2
+],
+"planned": [
+"Bedroll",
+14,
+2
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Cloth",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"Battery",
+"PASS",
+{
+"def": "Battery",
+"at": [
+13,
+5
+],
+"planned": [
+"Battery",
+13,
+5
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"PlantPot",
+"PASS",
+{
+"def": "PlantPot",
+"at": [
+10,
+5
+],
+"planned": [
+"PlantPot",
+10,
+5
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"SculptureSmall",
+"PASS",
+{
+"def": "SculptureSmall",
+"at": [
+11,
+5
+],
+"planned": [
+"SculptureSmall",
+11,
+5
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 90,
+"hpBaseline": 90,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"DiningChair",
+"PASS",
+{
+"def": "DiningChair",
+"at": [
+12,
+5
+],
+"planned": [
+"DiningChair",
+12,
+5
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"Stool",
+"PASS",
+{
+"def": "Stool",
+"at": [
+14,
+5
+],
+"planned": [
+"Stool",
+14,
+5
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"Armchair",
+"PASS",
+{
+"def": "Armchair",
+"at": [
+4,
+6
+],
+"planned": [
+"Armchair",
+4,
+6
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Cloth",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"EndTable",
+"PASS",
+{
+"def": "EndTable",
+"at": [
+5,
+6
+],
+"planned": [
+"EndTable",
+5,
+6
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"StandingLamp",
+"PASS",
+{
+"def": "StandingLamp",
+"at": [
+6,
+6
+],
+"planned": [
+"StandingLamp",
+6,
+6
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"TorchLamp",
+"PASS",
+{
+"def": "TorchLamp",
+"at": [
+7,
+6
+],
+"planned": [
+"TorchLamp",
+7,
+6
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"Cooler",
+"PASS",
+{
+"def": "Cooler",
+"at": [
+8,
+6
+],
+"planned": [
+"Cooler",
+8,
+6
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "RM_BrineCrock",
+"at": [
+9,
+6
+],
+"planned": [
+"RM_BrineCrock",
+9,
+6
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"RM_EvaporativeCrock",
+"PASS",
+{
+"def": "RM_EvaporativeCrock",
+"at": [
+10,
+6
+],
+"planned": [
+"RM_EvaporativeCrock",
+10,
+6
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "BlocksGranite",
+"hp": 102,
+"hpBaseline": 102,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"furn",
+"RM_AncientStasisLocker_Refurbished",
+"PASS",
+{
+"def": "RM_AncientStasisLocker_Refurbished",
+"at": [
+11,
+6
+],
+"planned": [
+"RM_AncientStasisLocker_Refurbished",
+11,
+6
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 250,
+"hpBaseline": 250,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"WoodLog",
+"PASS",
+{
+"def": "WoodLog",
+"at": [
+12,
+6
+],
+"planned": [
+"WoodLog",
+12,
+6
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Plasteel",
+"PASS",
+{
+"def": "Plasteel",
+"at": [
+14,
+6
+],
+"planned": [
+"Plasteel",
+14,
+6
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Gold",
+"PASS",
+{
+"def": "Gold",
+"at": [
+1,
+7
+],
+"planned": [
+"Gold",
+1,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"ComponentIndustrial",
+"PASS",
+{
+"def": "ComponentIndustrial",
+"at": [
+2,
+7
+],
+"planned": [
+"ComponentIndustrial",
+2,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 70,
+"hpBaseline": 70,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Cloth",
+"PASS",
+{
+"def": "Cloth",
+"at": [
+3,
+7
+],
+"planned": [
+"Cloth",
+3,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Hay",
+"PASS",
+{
+"def": "Hay",
+"at": [
+4,
+7
+],
+"planned": [
+"Hay",
+4,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Silver",
+"PASS",
+{
+"def": "Silver",
+"at": [
+5,
+7
+],
+"planned": [
+"Silver",
+5,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Steel",
+"PASS",
+{
+"def": "Steel",
+"at": [
+6,
+7
+],
+"planned": [
+"Steel",
+6,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Leather_Plain",
+"PASS",
+{
+"def": "Leather_Plain",
+"at": [
+7,
+7
+],
+"planned": [
+"Leather_Plain",
+7,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"MealSimple",
+"PASS",
+{
+"def": "MealSimple",
+"at": [
+8,
+7
+],
+"planned": [
+"MealSimple",
+8,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"MealFine",
+"PASS",
+{
+"def": "MealFine",
+"at": [
+9,
+7
+],
+"planned": [
+"MealFine",
+9,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"RawPotatoes",
+"PASS",
+{
+"def": "RawPotatoes",
+"at": [
+10,
+7
+],
+"planned": [
+"RawPotatoes",
+10,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Meat_Cow",
+"PASS",
+{
+"def": "Meat_Cow",
+"at": [
+11,
+7
+],
+"planned": [
+"Meat_Cow",
+11,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Pemmican",
+"PASS",
+{
+"def": "Pemmican",
+"at": [
+12,
+7
+],
+"planned": [
+"Pemmican",
+12,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Beer",
+"PASS",
+{
+"def": "Beer",
+"at": [
+13,
+7
+],
+"planned": [
+"Beer",
+13,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Chocolate",
+"PASS",
+{
+"def": "Chocolate",
+"at": [
+14,
+7
+],
+"planned": [
+"Chocolate",
+14,
+7
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"MedicineIndustrial",
+"PASS",
+{
+"def": "MedicineIndustrial",
+"at": [
+1,
+8
+],
+"planned": [
+"MedicineIndustrial",
+1,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"MedicineHerbal",
+"PASS",
+{
+"def": "MedicineHerbal",
+"at": [
+2,
+8
+],
+"planned": [
+"MedicineHerbal",
+2,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Neutroamine",
+"PASS",
+{
+"def": "Neutroamine",
+"at": [
+3,
+8
+],
+"planned": [
+"Neutroamine",
+3,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"MeleeWeapon_Knife",
+"PASS",
+{
+"def": "MeleeWeapon_Knife",
+"at": [
+4,
+8
+],
+"planned": [
+"MeleeWeapon_Knife",
+4,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Gun_BoltActionRifle",
+"PASS",
+{
+"def": "Gun_BoltActionRifle",
+"at": [
+5,
+8
+],
+"planned": [
+"Gun_BoltActionRifle",
+5,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Gun_Revolver",
+"PASS",
+{
+"def": "Gun_Revolver",
+"at": [
+6,
+8
+],
+"planned": [
+"Gun_Revolver",
+6,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"MeleeWeapon_LongSword",
+"PASS",
+{
+"def": "MeleeWeapon_LongSword",
+"at": [
+7,
+8
+],
+"planned": [
+"MeleeWeapon_LongSword",
+7,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Apparel_Parka",
+"PASS",
+{
+"def": "Apparel_Parka",
+"at": [
+8,
+8
+],
+"planned": [
+"Apparel_Parka",
+8,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Cloth",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Apparel_CowboyHat",
+"PASS",
+{
+"def": "Apparel_CowboyHat",
+"at": [
+9,
+8
+],
+"planned": [
+"Apparel_CowboyHat",
+9,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"stuff": "Cloth",
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Apparel_FlakVest",
+"PASS",
+{
+"def": "Apparel_FlakVest",
+"at": [
+10,
+8
+],
+"planned": [
+"Apparel_FlakVest",
+10,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"ChunkGranite",
+"PASS",
+{
+"def": "ChunkGranite",
+"at": [
+11,
+8
+],
+"planned": [
+"ChunkGranite",
+11,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"ChunkSlagSteel",
+"PASS",
+{
+"def": "ChunkSlagSteel",
+"at": [
+12,
+8
+],
+"planned": [
+"ChunkSlagSteel",
+12,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Shell_HighExplosive",
+"PASS",
+{
+"def": "Shell_HighExplosive",
+"at": [
+13,
+8
+],
+"planned": [
+"Shell_HighExplosive",
+13,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Shell_EMP",
+"PASS",
+{
+"def": "Shell_EMP",
+"at": [
+14,
+8
+],
+"planned": [
+"Shell_EMP",
+14,
+8
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Jade",
+"PASS",
+{
+"def": "Jade",
+"at": [
+1,
+9
+],
+"planned": [
+"Jade",
+1,
+9
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"Novel",
+"PASS",
+{
+"def": "Novel",
+"at": [
+2,
+9
+],
+"planned": [
+"Novel",
+2,
+9
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"RM_ResinSealedMeat",
+"PASS",
+{
+"def": "RM_ResinSealedMeat",
+"at": [
+3,
+9
+],
+"planned": [
+"RM_ResinSealedMeat",
+3,
+9
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"RM_ResinSealedFruit",
+"PASS",
+{
+"def": "RM_ResinSealedFruit",
+"at": [
+4,
+9
+],
+"planned": [
+"RM_ResinSealedFruit",
+4,
+9
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"item",
+"RM_AmberAgedMeat",
+"PASS",
+{
+"def": "RM_AmberAgedMeat",
+"at": [
+5,
+9
+],
+"planned": [
+"RM_AmberAgedMeat",
+5,
+9
+],
+"inPit": true,
+"liquidOverM": 3.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP4_3m",
+"mini",
+"Armchair",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+6,
+9
+],
+"planned": [
+"MinifiedThing",
+6,
+9
+],
+"inPit": true,
+"liquidOverM": 3.0
+}
+],
+[
+"BP4_3m",
+"mini",
+"EndTable",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+7,
+9
+],
+"planned": [
+"MinifiedThing",
+7,
+9
+],
+"inPit": true,
+"liquidOverM": 3.0
+}
+],
+[
+"BP4_3m",
+"mini",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+8,
+9
+],
+"planned": [
+"MinifiedThing",
+8,
+9
+],
+"inPit": true,
+"liquidOverM": 3.0
+}
+],
+[
+"BP4_3m",
+"corpse",
+"Muffalo",
+"PASS",
+{
+"def": "Corpse_Muffalo",
+"at": [
+9,
+9
+],
+"planned": [
+"Corpse_Muffalo",
+9,
+9
+],
+"inPit": true,
+"liquidOverM": 3.0
+}
+],
+[
+"BP4_3m",
+"corpse",
+"Villager",
+"PASS",
+{
+"def": "Corpse_Human",
+"at": [
+10,
+9
+],
+"planned": [
+"Corpse_Villager",
+10,
+9
+],
+"inPit": true,
+"liquidOverM": 3.0
+}
+],
+[
+"BP5_brim",
+"furn",
+"SculptureGrand",
+"PASS",
+{
+"def": "SculptureGrand",
+"at": [
+2,
+2
+],
+"planned": [
+"SculptureGrand",
+2,
+2
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"DoubleBed",
+"PASS",
+{
+"def": "DoubleBed",
+"at": [
+5,
+2
+],
+"planned": [
+"DoubleBed",
+5,
+2
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"RM_GlowTank",
+"PASS",
+{
+"def": "RM_GlowTank",
+"at": [
+8,
+2
+],
+"planned": [
+"RM_GlowTank",
+8,
+2
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"RM_HoseReel",
+"PASS",
+{
+"def": "RM_HoseReel",
+"at": [
+11,
+2
+],
+"planned": [
+"RM_HoseReel",
+11,
+2
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"Table2x2c",
+"PASS",
+{
+"def": "Table2x2c",
+"at": [
+2,
+5
+],
+"planned": [
+"Table2x2c",
+2,
+5
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"TableButcher",
+"PASS",
+{
+"def": "TableButcher",
+"at": [
+5,
+4
+],
+"planned": [
+"TableButcher",
+5,
+4
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"HandTailoringBench",
+"PASS",
+{
+"def": "HandTailoringBench",
+"at": [
+8,
+4
+],
+"planned": [
+"HandTailoringBench",
+8,
+4
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"SculptureLarge",
+"PASS",
+{
+"def": "SculptureLarge",
+"at": [
+14,
+4
+],
+"planned": [
+"SculptureLarge",
+14,
+4
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"Bed",
+"PASS",
+{
+"def": "Bed",
+"at": [
+13,
+2
+],
+"planned": [
+"Bed",
+13,
+2
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 140,
+"hpBaseline": 140,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"Shelf",
+"PASS",
+{
+"def": "Shelf",
+"at": [
+11,
+4
+],
+"planned": [
+"Shelf",
+11,
+4
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"Dresser",
+"PASS",
+{
+"def": "Dresser",
+"at": [
+5,
+5
+],
+"planned": [
+"Dresser",
+5,
+5
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"RM_ResinSealingJarShelf",
+"PASS",
+{
+"def": "RM_ResinSealingJarShelf",
+"at": [
+8,
+5
+],
+"planned": [
+"RM_ResinSealingJarShelf",
+8,
+5
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"Bedroll",
+"PASS",
+{
+"def": "Bedroll",
+"at": [
+14,
+2
+],
+"planned": [
+"Bedroll",
+14,
+2
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Cloth",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"Battery",
+"PASS",
+{
+"def": "Battery",
+"at": [
+13,
+5
+],
+"planned": [
+"Battery",
+13,
+5
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"PlantPot",
+"PASS",
+{
+"def": "PlantPot",
+"at": [
+10,
+5
+],
+"planned": [
+"PlantPot",
+10,
+5
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"SculptureSmall",
+"PASS",
+{
+"def": "SculptureSmall",
+"at": [
+11,
+5
+],
+"planned": [
+"SculptureSmall",
+11,
+5
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 90,
+"hpBaseline": 90,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"DiningChair",
+"PASS",
+{
+"def": "DiningChair",
+"at": [
+12,
+5
+],
+"planned": [
+"DiningChair",
+12,
+5
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"Stool",
+"PASS",
+{
+"def": "Stool",
+"at": [
+14,
+5
+],
+"planned": [
+"Stool",
+14,
+5
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"Armchair",
+"PASS",
+{
+"def": "Armchair",
+"at": [
+4,
+6
+],
+"planned": [
+"Armchair",
+4,
+6
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Cloth",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"EndTable",
+"PASS",
+{
+"def": "EndTable",
+"at": [
+5,
+6
+],
+"planned": [
+"EndTable",
+5,
+6
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"StandingLamp",
+"PASS",
+{
+"def": "StandingLamp",
+"at": [
+6,
+6
+],
+"planned": [
+"StandingLamp",
+6,
+6
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"TorchLamp",
+"PASS",
+{
+"def": "TorchLamp",
+"at": [
+7,
+6
+],
+"planned": [
+"TorchLamp",
+7,
+6
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"Cooler",
+"PASS",
+{
+"def": "Cooler",
+"at": [
+8,
+6
+],
+"planned": [
+"Cooler",
+8,
+6
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "RM_BrineCrock",
+"at": [
+9,
+6
+],
+"planned": [
+"RM_BrineCrock",
+9,
+6
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"RM_EvaporativeCrock",
+"PASS",
+{
+"def": "RM_EvaporativeCrock",
+"at": [
+10,
+6
+],
+"planned": [
+"RM_EvaporativeCrock",
+10,
+6
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "BlocksGranite",
+"hp": 102,
+"hpBaseline": 102,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"furn",
+"RM_AncientStasisLocker_Refurbished",
+"PASS",
+{
+"def": "RM_AncientStasisLocker_Refurbished",
+"at": [
+11,
+6
+],
+"planned": [
+"RM_AncientStasisLocker_Refurbished",
+11,
+6
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 250,
+"hpBaseline": 250,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"WoodLog",
+"PASS",
+{
+"def": "WoodLog",
+"at": [
+12,
+6
+],
+"planned": [
+"WoodLog",
+12,
+6
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Plasteel",
+"PASS",
+{
+"def": "Plasteel",
+"at": [
+14,
+6
+],
+"planned": [
+"Plasteel",
+14,
+6
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Gold",
+"PASS",
+{
+"def": "Gold",
+"at": [
+1,
+7
+],
+"planned": [
+"Gold",
+1,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"ComponentIndustrial",
+"PASS",
+{
+"def": "ComponentIndustrial",
+"at": [
+2,
+7
+],
+"planned": [
+"ComponentIndustrial",
+2,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 70,
+"hpBaseline": 70,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Cloth",
+"PASS",
+{
+"def": "Cloth",
+"at": [
+3,
+7
+],
+"planned": [
+"Cloth",
+3,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Hay",
+"PASS",
+{
+"def": "Hay",
+"at": [
+4,
+7
+],
+"planned": [
+"Hay",
+4,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Silver",
+"PASS",
+{
+"def": "Silver",
+"at": [
+5,
+7
+],
+"planned": [
+"Silver",
+5,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Steel",
+"PASS",
+{
+"def": "Steel",
+"at": [
+6,
+7
+],
+"planned": [
+"Steel",
+6,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Leather_Plain",
+"PASS",
+{
+"def": "Leather_Plain",
+"at": [
+7,
+7
+],
+"planned": [
+"Leather_Plain",
+7,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"MealSimple",
+"PASS",
+{
+"def": "MealSimple",
+"at": [
+8,
+7
+],
+"planned": [
+"MealSimple",
+8,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"MealFine",
+"PASS",
+{
+"def": "MealFine",
+"at": [
+9,
+7
+],
+"planned": [
+"MealFine",
+9,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"RawPotatoes",
+"PASS",
+{
+"def": "RawPotatoes",
+"at": [
+10,
+7
+],
+"planned": [
+"RawPotatoes",
+10,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Meat_Cow",
+"PASS",
+{
+"def": "Meat_Cow",
+"at": [
+11,
+7
+],
+"planned": [
+"Meat_Cow",
+11,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Pemmican",
+"PASS",
+{
+"def": "Pemmican",
+"at": [
+12,
+7
+],
+"planned": [
+"Pemmican",
+12,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Beer",
+"PASS",
+{
+"def": "Beer",
+"at": [
+13,
+7
+],
+"planned": [
+"Beer",
+13,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Chocolate",
+"PASS",
+{
+"def": "Chocolate",
+"at": [
+14,
+7
+],
+"planned": [
+"Chocolate",
+14,
+7
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"MedicineIndustrial",
+"PASS",
+{
+"def": "MedicineIndustrial",
+"at": [
+1,
+8
+],
+"planned": [
+"MedicineIndustrial",
+1,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"MedicineHerbal",
+"PASS",
+{
+"def": "MedicineHerbal",
+"at": [
+2,
+8
+],
+"planned": [
+"MedicineHerbal",
+2,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Neutroamine",
+"PASS",
+{
+"def": "Neutroamine",
+"at": [
+3,
+8
+],
+"planned": [
+"Neutroamine",
+3,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"MeleeWeapon_Knife",
+"PASS",
+{
+"def": "MeleeWeapon_Knife",
+"at": [
+4,
+8
+],
+"planned": [
+"MeleeWeapon_Knife",
+4,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Gun_BoltActionRifle",
+"PASS",
+{
+"def": "Gun_BoltActionRifle",
+"at": [
+5,
+8
+],
+"planned": [
+"Gun_BoltActionRifle",
+5,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Gun_Revolver",
+"PASS",
+{
+"def": "Gun_Revolver",
+"at": [
+6,
+8
+],
+"planned": [
+"Gun_Revolver",
+6,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"MeleeWeapon_LongSword",
+"PASS",
+{
+"def": "MeleeWeapon_LongSword",
+"at": [
+7,
+8
+],
+"planned": [
+"MeleeWeapon_LongSword",
+7,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Apparel_Parka",
+"PASS",
+{
+"def": "Apparel_Parka",
+"at": [
+8,
+8
+],
+"planned": [
+"Apparel_Parka",
+8,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Cloth",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Apparel_CowboyHat",
+"PASS",
+{
+"def": "Apparel_CowboyHat",
+"at": [
+9,
+8
+],
+"planned": [
+"Apparel_CowboyHat",
+9,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"stuff": "Cloth",
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Apparel_FlakVest",
+"PASS",
+{
+"def": "Apparel_FlakVest",
+"at": [
+10,
+8
+],
+"planned": [
+"Apparel_FlakVest",
+10,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"ChunkGranite",
+"PASS",
+{
+"def": "ChunkGranite",
+"at": [
+11,
+8
+],
+"planned": [
+"ChunkGranite",
+11,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"ChunkSlagSteel",
+"PASS",
+{
+"def": "ChunkSlagSteel",
+"at": [
+12,
+8
+],
+"planned": [
+"ChunkSlagSteel",
+12,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Shell_HighExplosive",
+"PASS",
+{
+"def": "Shell_HighExplosive",
+"at": [
+13,
+8
+],
+"planned": [
+"Shell_HighExplosive",
+13,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Shell_EMP",
+"PASS",
+{
+"def": "Shell_EMP",
+"at": [
+14,
+8
+],
+"planned": [
+"Shell_EMP",
+14,
+8
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Jade",
+"PASS",
+{
+"def": "Jade",
+"at": [
+1,
+9
+],
+"planned": [
+"Jade",
+1,
+9
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"Novel",
+"PASS",
+{
+"def": "Novel",
+"at": [
+2,
+9
+],
+"planned": [
+"Novel",
+2,
+9
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"RM_ResinSealedMeat",
+"PASS",
+{
+"def": "RM_ResinSealedMeat",
+"at": [
+3,
+9
+],
+"planned": [
+"RM_ResinSealedMeat",
+3,
+9
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"RM_ResinSealedFruit",
+"PASS",
+{
+"def": "RM_ResinSealedFruit",
+"at": [
+4,
+9
+],
+"planned": [
+"RM_ResinSealedFruit",
+4,
+9
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"item",
+"RM_AmberAgedMeat",
+"PASS",
+{
+"def": "RM_AmberAgedMeat",
+"at": [
+5,
+9
+],
+"planned": [
+"RM_AmberAgedMeat",
+5,
+9
+],
+"inPit": true,
+"liquidOverM": 4.0,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP5_brim",
+"mini",
+"Armchair",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+6,
+9
+],
+"planned": [
+"MinifiedThing",
+6,
+9
+],
+"inPit": true,
+"liquidOverM": 4.0
+}
+],
+[
+"BP5_brim",
+"mini",
+"EndTable",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+7,
+9
+],
+"planned": [
+"MinifiedThing",
+7,
+9
+],
+"inPit": true,
+"liquidOverM": 4.0
+}
+],
+[
+"BP5_brim",
+"mini",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+8,
+9
+],
+"planned": [
+"MinifiedThing",
+8,
+9
+],
+"inPit": true,
+"liquidOverM": 4.0
+}
+],
+[
+"BP5_brim",
+"corpse",
+"Muffalo",
+"PASS",
+{
+"def": "Corpse_Muffalo",
+"at": [
+9,
+9
+],
+"planned": [
+"Corpse_Muffalo",
+9,
+9
+],
+"inPit": true,
+"liquidOverM": 4.0
+}
+],
+[
+"BP5_brim",
+"corpse",
+"Villager",
+"PASS",
+{
+"def": "Corpse_Human",
+"at": [
+10,
+9
+],
+"planned": [
+"Corpse_Villager",
+10,
+9
+],
+"inPit": true,
+"liquidOverM": 4.0
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"SculptureGrand",
+"PASS",
+{
+"def": "SculptureGrand",
+"at": [
+2,
+2
+],
+"planned": [
+"SculptureGrand",
+2,
+2
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"DoubleBed",
+"PASS",
+{
+"def": "DoubleBed",
+"at": [
+5,
+2
+],
+"planned": [
+"DoubleBed",
+5,
+2
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"RM_GlowTank",
+"PASS",
+{
+"def": "RM_GlowTank",
+"at": [
+8,
+2
+],
+"planned": [
+"RM_GlowTank",
+8,
+2
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"RM_HoseReel",
+"PASS",
+{
+"def": "RM_HoseReel",
+"at": [
+11,
+2
+],
+"planned": [
+"RM_HoseReel",
+11,
+2
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"Table2x2c",
+"PASS",
+{
+"def": "Table2x2c",
+"at": [
+2,
+5
+],
+"planned": [
+"Table2x2c",
+2,
+5
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"TableButcher",
+"PASS",
+{
+"def": "TableButcher",
+"at": [
+5,
+4
+],
+"planned": [
+"TableButcher",
+5,
+4
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"HandTailoringBench",
+"PASS",
+{
+"def": "HandTailoringBench",
+"at": [
+8,
+4
+],
+"planned": [
+"HandTailoringBench",
+8,
+4
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"SculptureLarge",
+"PASS",
+{
+"def": "SculptureLarge",
+"at": [
+14,
+4
+],
+"planned": [
+"SculptureLarge",
+14,
+4
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"Bed",
+"PASS",
+{
+"def": "Bed",
+"at": [
+13,
+2
+],
+"planned": [
+"Bed",
+13,
+2
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 140,
+"hpBaseline": 140,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"Shelf",
+"PASS",
+{
+"def": "Shelf",
+"at": [
+11,
+4
+],
+"planned": [
+"Shelf",
+11,
+4
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"Dresser",
+"PASS",
+{
+"def": "Dresser",
+"at": [
+5,
+5
+],
+"planned": [
+"Dresser",
+5,
+5
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"RM_ResinSealingJarShelf",
+"PASS",
+{
+"def": "RM_ResinSealingJarShelf",
+"at": [
+8,
+5
+],
+"planned": [
+"RM_ResinSealingJarShelf",
+8,
+5
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"Bedroll",
+"PASS",
+{
+"def": "Bedroll",
+"at": [
+14,
+2
+],
+"planned": [
+"Bedroll",
+14,
+2
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Cloth",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"Battery",
+"PASS",
+{
+"def": "Battery",
+"at": [
+13,
+5
+],
+"planned": [
+"Battery",
+13,
+5
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"PlantPot",
+"PASS",
+{
+"def": "PlantPot",
+"at": [
+10,
+5
+],
+"planned": [
+"PlantPot",
+10,
+5
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"SculptureSmall",
+"PASS",
+{
+"def": "SculptureSmall",
+"at": [
+11,
+5
+],
+"planned": [
+"SculptureSmall",
+11,
+5
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 90,
+"hpBaseline": 90,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"DiningChair",
+"PASS",
+{
+"def": "DiningChair",
+"at": [
+12,
+5
+],
+"planned": [
+"DiningChair",
+12,
+5
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"Stool",
+"PASS",
+{
+"def": "Stool",
+"at": [
+14,
+5
+],
+"planned": [
+"Stool",
+14,
+5
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"Armchair",
+"PASS",
+{
+"def": "Armchair",
+"at": [
+4,
+6
+],
+"planned": [
+"Armchair",
+4,
+6
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Cloth",
+"hp": 120,
+"hpBaseline": 120,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"EndTable",
+"PASS",
+{
+"def": "EndTable",
+"at": [
+5,
+6
+],
+"planned": [
+"EndTable",
+5,
+6
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"StandingLamp",
+"PASS",
+{
+"def": "StandingLamp",
+"at": [
+6,
+6
+],
+"planned": [
+"StandingLamp",
+6,
+6
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"TorchLamp",
+"PASS",
+{
+"def": "TorchLamp",
+"at": [
+7,
+6
+],
+"planned": [
+"TorchLamp",
+7,
+6
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 75,
+"hpBaseline": 75,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"Cooler",
+"PASS",
+{
+"def": "Cooler",
+"at": [
+8,
+6
+],
+"planned": [
+"Cooler",
+8,
+6
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "RM_BrineCrock",
+"at": [
+9,
+6
+],
+"planned": [
+"RM_BrineCrock",
+9,
+6
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"RM_EvaporativeCrock",
+"PASS",
+{
+"def": "RM_EvaporativeCrock",
+"at": [
+10,
+6
+],
+"planned": [
+"RM_EvaporativeCrock",
+10,
+6
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "BlocksGranite",
+"hp": 102,
+"hpBaseline": 102,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"furn",
+"RM_AncientStasisLocker_Refurbished",
+"PASS",
+{
+"def": "RM_AncientStasisLocker_Refurbished",
+"at": [
+11,
+6
+],
+"planned": [
+"RM_AncientStasisLocker_Refurbished",
+11,
+6
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 250,
+"hpBaseline": 250,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"WoodLog",
+"PASS",
+{
+"def": "WoodLog",
+"at": [
+12,
+6
+],
+"planned": [
+"WoodLog",
+12,
+6
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 150,
+"hpBaseline": 150,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Plasteel",
+"PASS",
+{
+"def": "Plasteel",
+"at": [
+14,
+6
+],
+"planned": [
+"Plasteel",
+14,
+6
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Gold",
+"PASS",
+{
+"def": "Gold",
+"at": [
+1,
+7
+],
+"planned": [
+"Gold",
+1,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"ComponentIndustrial",
+"PASS",
+{
+"def": "ComponentIndustrial",
+"at": [
+2,
+7
+],
+"planned": [
+"ComponentIndustrial",
+2,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 70,
+"hpBaseline": 70,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Cloth",
+"PASS",
+{
+"def": "Cloth",
+"at": [
+3,
+7
+],
+"planned": [
+"Cloth",
+3,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Hay",
+"PASS",
+{
+"def": "Hay",
+"at": [
+4,
+7
+],
+"planned": [
+"Hay",
+4,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Silver",
+"PASS",
+{
+"def": "Silver",
+"at": [
+5,
+7
+],
+"planned": [
+"Silver",
+5,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Steel",
+"PASS",
+{
+"def": "Steel",
+"at": [
+6,
+7
+],
+"planned": [
+"Steel",
+6,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Leather_Plain",
+"PASS",
+{
+"def": "Leather_Plain",
+"at": [
+7,
+7
+],
+"planned": [
+"Leather_Plain",
+7,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"MealSimple",
+"PASS",
+{
+"def": "MealSimple",
+"at": [
+8,
+7
+],
+"planned": [
+"MealSimple",
+8,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"MealFine",
+"PASS",
+{
+"def": "MealFine",
+"at": [
+9,
+7
+],
+"planned": [
+"MealFine",
+9,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"RawPotatoes",
+"PASS",
+{
+"def": "RawPotatoes",
+"at": [
+10,
+7
+],
+"planned": [
+"RawPotatoes",
+10,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Meat_Cow",
+"PASS",
+{
+"def": "Meat_Cow",
+"at": [
+11,
+7
+],
+"planned": [
+"Meat_Cow",
+11,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Pemmican",
+"PASS",
+{
+"def": "Pemmican",
+"at": [
+12,
+7
+],
+"planned": [
+"Pemmican",
+12,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Beer",
+"PASS",
+{
+"def": "Beer",
+"at": [
+13,
+7
+],
+"planned": [
+"Beer",
+13,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Chocolate",
+"PASS",
+{
+"def": "Chocolate",
+"at": [
+14,
+7
+],
+"planned": [
+"Chocolate",
+14,
+7
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"MedicineIndustrial",
+"PASS",
+{
+"def": "MedicineIndustrial",
+"at": [
+1,
+8
+],
+"planned": [
+"MedicineIndustrial",
+1,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"MedicineHerbal",
+"PASS",
+{
+"def": "MedicineHerbal",
+"at": [
+2,
+8
+],
+"planned": [
+"MedicineHerbal",
+2,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Neutroamine",
+"PASS",
+{
+"def": "Neutroamine",
+"at": [
+3,
+8
+],
+"planned": [
+"Neutroamine",
+3,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 50,
+"hpBaseline": 50,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"MeleeWeapon_Knife",
+"PASS",
+{
+"def": "MeleeWeapon_Knife",
+"at": [
+4,
+8
+],
+"planned": [
+"MeleeWeapon_Knife",
+4,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Gun_BoltActionRifle",
+"PASS",
+{
+"def": "Gun_BoltActionRifle",
+"at": [
+5,
+8
+],
+"planned": [
+"Gun_BoltActionRifle",
+5,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Gun_Revolver",
+"PASS",
+{
+"def": "Gun_Revolver",
+"at": [
+6,
+8
+],
+"planned": [
+"Gun_Revolver",
+6,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"MeleeWeapon_LongSword",
+"PASS",
+{
+"def": "MeleeWeapon_LongSword",
+"at": [
+7,
+8
+],
+"planned": [
+"MeleeWeapon_LongSword",
+7,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Steel",
+"hp": 100,
+"hpBaseline": 100,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Apparel_Parka",
+"PASS",
+{
+"def": "Apparel_Parka",
+"at": [
+8,
+8
+],
+"planned": [
+"Apparel_Parka",
+8,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Cloth",
+"hp": 180,
+"hpBaseline": 180,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Apparel_CowboyHat",
+"PASS",
+{
+"def": "Apparel_CowboyHat",
+"at": [
+9,
+8
+],
+"planned": [
+"Apparel_CowboyHat",
+9,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"stuff": "Cloth",
+"hp": 80,
+"hpBaseline": 80,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Apparel_FlakVest",
+"PASS",
+{
+"def": "Apparel_FlakVest",
+"at": [
+10,
+8
+],
+"planned": [
+"Apparel_FlakVest",
+10,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 200,
+"hpBaseline": 200,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"ChunkGranite",
+"PASS",
+{
+"def": "ChunkGranite",
+"at": [
+11,
+8
+],
+"planned": [
+"ChunkGranite",
+11,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"ChunkSlagSteel",
+"PASS",
+{
+"def": "ChunkSlagSteel",
+"at": [
+12,
+8
+],
+"planned": [
+"ChunkSlagSteel",
+12,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 300,
+"hpBaseline": 300,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Shell_HighExplosive",
+"PASS",
+{
+"def": "Shell_HighExplosive",
+"at": [
+13,
+8
+],
+"planned": [
+"Shell_HighExplosive",
+13,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Shell_EMP",
+"PASS",
+{
+"def": "Shell_EMP",
+"at": [
+14,
+8
+],
+"planned": [
+"Shell_EMP",
+14,
+8
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Jade",
+"PASS",
+{
+"def": "Jade",
+"at": [
+1,
+9
+],
+"planned": [
+"Jade",
+1,
+9
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": -1,
+"hpBaseline": -1,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"Novel",
+"PASS",
+{
+"def": "Novel",
+"at": [
+2,
+9
+],
+"planned": [
+"Novel",
+2,
+9
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"RM_ResinSealedMeat",
+"PASS",
+{
+"def": "RM_ResinSealedMeat",
+"at": [
+3,
+9
+],
+"planned": [
+"RM_ResinSealedMeat",
+3,
+9
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"RM_ResinSealedFruit",
+"PASS",
+{
+"def": "RM_ResinSealedFruit",
+"at": [
+4,
+9
+],
+"planned": [
+"RM_ResinSealedFruit",
+4,
+9
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"item",
+"RM_AmberAgedMeat",
+"PASS",
+{
+"def": "RM_AmberAgedMeat",
+"at": [
+5,
+9
+],
+"planned": [
+"RM_AmberAgedMeat",
+5,
+9
+],
+"inPit": true,
+"liquidOverM": 1.5,
+"hp": 60,
+"hpBaseline": 60,
+"hpVerdict": "PASS"
+}
+],
+[
+"BP6_tar1.5m",
+"mini",
+"Armchair",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+6,
+9
+],
+"planned": [
+"MinifiedThing",
+6,
+9
+],
+"inPit": true,
+"liquidOverM": 1.5
+}
+],
+[
+"BP6_tar1.5m",
+"mini",
+"EndTable",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+7,
+9
+],
+"planned": [
+"MinifiedThing",
+7,
+9
+],
+"inPit": true,
+"liquidOverM": 1.5
+}
+],
+[
+"BP6_tar1.5m",
+"mini",
+"RM_BrineCrock",
+"PASS",
+{
+"def": "MinifiedThing",
+"at": [
+8,
+9
+],
+"planned": [
+"MinifiedThing",
+8,
+9
+],
+"inPit": true,
+"liquidOverM": 1.5
+}
+],
+[
+"BP6_tar1.5m",
+"corpse",
+"Muffalo",
+"PASS",
+{
+"def": "Corpse_Muffalo",
+"at": [
+9,
+9
+],
+"planned": [
+"Corpse_Muffalo",
+9,
+9
+],
+"inPit": true,
+"liquidOverM": 1.5
+}
+],
+[
+"BP6_tar1.5m",
+"corpse",
+"Villager",
+"PASS",
+{
+"def": "Corpse_Human",
+"at": [
+10,
+9
+],
+"planned": [
+"Corpse_Villager",
+10,
+9
+],
+"inPit": true,
+"liquidOverM": 1.5
+}
+]
+]
