@@ -274,7 +274,8 @@ def _blocked(iid):
 
 
 def close_item(iid, text, why, publish):
-    """`rimflow close <iid> --no-code <text>` as the pipeline's act. -> (rc, output)."""
+    """`rimflow close <iid> --no-code <text>` as the pipeline's act. -> (rc, output). An item that is already done is
+    closed (rc 0): its own run closed it between the tick's read and this close."""
     argv = [sys.executable, os.path.join(HERE, "cli.py"), "close", iid, "--no-code", text, "--seat", "BENCH",
             "--why", why] + (["--publish"] if publish else [])
     env = dict(os.environ)
@@ -287,7 +288,10 @@ def close_item(iid, text, why, publish):
                            stdin=subprocess.DEVNULL, errors="replace")
     except (OSError, subprocess.TimeoutExpired) as e:
         return 99, "%s: %s" % (type(e).__name__, e)
-    return r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()
+    said = ((r.stdout or "") + (r.stderr or "")).strip()
+    if r.returncode and ("%s is already `done`" % iid) in said:     # model's SECOND-close refusal: its run closed it first
+        return 0, said
+    return r.returncode, said
 
 
 def conductor_need(text, now, path=None):

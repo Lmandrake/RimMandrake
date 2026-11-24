@@ -327,6 +327,27 @@ def t_a_refused_close_is_not_sent_again_unchanged():
     chk(lambda: sent.count(iid) == 2, "after the item changes, the close is sent again")
 
 
+def t_a_close_of_an_item_already_done_is_not_a_refusal():
+    import types
+    L = LE()
+    real = L.subprocess.run
+    said = ("nothing to publish: this command wrote no ledger or prose path\nA_DONE_ITEM is already `%s`, and this would be "
+            "a SECOND one. The first record stands")
+
+    def fake(text, rc):
+        L.subprocess.run = lambda *a, **k: types.SimpleNamespace(returncode=rc, stdout=text, stderr="")
+        try:
+            return L.close_item("A_DONE_ITEM", "t", "w", False)
+        finally:
+            L.subprocess.run = real
+    rc, out = fake(said % "done", 1)
+    chk(lambda: rc == 0 and "already" in out, "a close refused as already done is closed (the failure of 2026-11-23)")
+    chk(lambda: fake(said % "dropped", 1)[0] == 1, "already dropped is not done: still refused")
+    chk(lambda: fake(said.replace("A_DONE_ITEM", "B_OTHER") % "done", 1)[0] == 1, "another item's done word is not this item's")
+    chk(lambda: fake("the close gate refused: a criterion is owed", 1)[0] == 1, "any other refusal stays a refusal")
+    chk(lambda: fake("closed at abc", 0)[0] == 0, "a close that landed is a close")
+
+
 def t_a_dry_beat_writes_nothing():
     L = LE()
     iid = "RIMMANDRAKE_TEST_LIST_EFFECT_DRY_BEAT"
@@ -401,7 +422,7 @@ def main():
                   t_the_tick_obeys_pause_and_pipe_off,
                   t_the_tick_launches_nothing_and_files_nothing,
                   t_a_refused_close_is_not_sent_again_unchanged,
-                  t_a_dry_beat_writes_nothing,
+                  t_a_close_of_an_item_already_done_is_not_a_refusal, t_a_dry_beat_writes_nothing,
                   t_closed_reads_item_states_for_a_check):
             try:
                 t()

@@ -60,6 +60,9 @@ Item: `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED`, step 1 of
 - **a-refused-close-is-not-sent-again-unchanged.** When `rimflow close` refuses, the beat records the refusal with the
   item's event count, says it once on the Needs Conductor line, and sends no close for that item until the item or its
   check changes.
+- **a-close-of-an-item-already-done-is-not-a-refusal.** `close_item` returns 0 when `rimflow close` refuses because that
+  item is already done. An item already dropped, another item's name in the text, and every other refusal stay refusals.
+  Why: on 2026-11-23 a run closed its item while the beat was at work, and the beat raised a Needs Conductor line.
 - **a-dry-beat-writes-nothing.** A beat without `--apply` runs the checks and prints what it would do, and writes no
   ledger event and no state.
 - **closed-reads-item-states-for-a-check.** `list_effect.py closed ID...` exits 0 when every item is done, dropped or
