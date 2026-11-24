@@ -1328,8 +1328,9 @@ A scene with no tag is kind A.
     The program raises it: one RAISE FIRST line in the Conductor log and a note on the item of the mod's in-game run, with
     the scene, X, Y, the count reached and the tag evidence. The Conductor decides whether the mod's function needs X of
     Y, or X was a guess that guarded against environmental fluctuation. The scene's pass is held until the call is
-    recorded (`src/RimMandrake/rimflow/shortfall.py call`). "The mod needs X of Y": the scene reads MOD FAILURE and takes
-    the road back; the call stands while X of Y stands. "X was a guess": a new X goes on the scene before its next run, and
+    recorded (`src/RimMandrake/rimflow/shortfall.py call`). "The mod needs X of Y": the scene reads MOD FAILURE, and
+    the mod goes back to an earlier pipeline stage for a fix, as for any MOD FAILURE (the road back of Stage 6 in
+    `design/specs/2026-11-13-maturation-pipeline.md`); the call stands while X of Y stands. "X was a guess": a new X goes on the scene before its next run, and
     the scene is judged again. The opportunities already run on the same build count. Nobody else changes X or Y. This
     changes nothing for a scene with no X of Y, and no rule of kind A or C.
 - **Kind C, intermittent hunt.** A temporary hunt for a fault that shows only sometimes. A hunt looks for evidence of failure.

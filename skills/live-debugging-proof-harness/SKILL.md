@@ -179,7 +179,8 @@ opportunity at the deciding moment (example: the carrier stands inside the blast
 - Tag B names the things that spoil the run, what was tried to control each, and why that was not enough. The budget of
   runs stands on the scene before the first run.
 - A scene that ends short of its X of Y escalates to the Conductor. Stop running the scene. Do not change X or Y. The
-  pipeline writes the RAISE FIRST line and the note. The scene's pass is held until the Conductor records one of two calls
+  pipeline writes one line marked RAISE FIRST in the Conductor log, and a note with the same text on the ledger item of
+  the mod's in-game run. The scene's pass is held until the Conductor records one of two calls
   with `src/RimMandrake/rimflow/shortfall.py call`: the mod needs X of Y (the scene reads MOD FAILURE), or X was a guess (a new X goes on the scene, the scene is judged again, and the opportunities already run on the same build count).
 - Tag C names the symptom, how often it was seen in how many opportunities, and where the trace is.
 - A tag never removes a recorded run. Never tag B on a guess.
