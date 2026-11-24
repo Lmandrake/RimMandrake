@@ -88,3 +88,23 @@ CORRECTION +60 [+30, +90]. CONTROL +2 [0, +6].
 Rank rule-file work by this order: (1) find false lines and correct them; state the right act, do not only delete;
 (2) gloss a term only where the rest of the section does not already give its meaning; (3) do not spend on style alone
 for the sake of agents. Style may still be worth it for you as a reader; this trial says nothing about that.
+
+## The three silent lines, stated and read again (2026-11-24)
+
+Item `RIMMANDRAKE_STATE_THREE_RULES_THE_CORRECTION_LEFT_SILENT_READERS_SCORED_ZERO`. Tool: `rerun.py` (same readers, prompt, parser and
+grader as the pilot; `rerun.py check` is the item's check). 5 fresh Sonnet readers for each case in each reading. Every planted answer was graded as
+planted. All [measured]. The three readings of the new text are in order; the third is of the final bytes.
+
+| case | old text (base, read again) | new text, pilot situation | new text, second situation |
+|---|---|---|---|
+| digest by hand | 0 of 5 | 5, 5, 5 of 5 | 1 (first wording), 5, 5 of 5 |
+| which `src/` folder | 0 of 5 | 5, 5, 5 of 5 | 5, 5, 5 of 5 |
+| who may broadcast, and when | 0 of 5 | 4, 3, 4 of 5 | 3, 4, 4 of 5 |
+| total | 0 of 15 | 14, 13, 14 of 15 (bar 12) | 9, 14, 14 of 15 |
+
+- `rerun.json` keeps only the last reading of a text.
+- The second situations (`rerun_heldout.json`) were written and key-checked by fresh Opus calls that did not see the new text.
+  The digest one found a hole: the first wording did not say what to do when the file is missing. The wording now says it, so
+  that case is no longer held out. The other two texts did not change after their second situations were read.
+- Each of the 8 broadcast answers graded wrong on the new text did the right act and left out the reason that the key asks
+  for (the agent is, or is not, the Conductor). I read all 8. The grades stand as they fell.
