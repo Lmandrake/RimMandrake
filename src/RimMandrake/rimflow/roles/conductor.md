@@ -561,6 +561,13 @@ Agents decide nearly everything. Only five acts still need him: `design/RimMandr
     case that the ruling does not name (`delegation_policy.md` §1).
   - One of his five acts goes to him as one line, ready to land in `canon.yml` or on the item. His yes commits it.
   - You never ratify him, and you never re-derive what he already settled.
+  - A program builds his daily digest of delegated calls: `delegated_digest.py` writes `Transient/delegated_digest_<date>.md`
+    once a day. When the digest is due, or when he asks for it, open the newest file and give him that file, with its full
+    native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No
+    cross-check against the ledger is owed.
+  - If the digest file of the day is missing, run the program yourself from your seat clone, then give him the file that
+    it writes: `python3 src/RimMandrake/rimflow/delegated_digest.py`. If the program fails, or
+    `delegated_digest_<date>.FAILED.md` stands in the place of the file, say so in one line.
 - **Fix a false line in another seat's file on sight** (owner, 2026-09-19, Charter "Correctness outranks seat
   ownership"): fix it and commit it by explicit path. Name what was wrong. ⛔ Correcting is not redirecting: scope
   and open decisions stay with that seat.

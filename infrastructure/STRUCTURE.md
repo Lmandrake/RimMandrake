@@ -70,12 +70,22 @@ Agents cross these four boundaries by mistake:
 - `deployed/`, `observed/` and `infrastructure/` **do not** carry the split, deliberately. An installed config, a
   measurement and a seat definition belong to something other than our reuse category.
 
-Which tier a new thing takes: `design/NAMING_SCHEME_PLAN.md` (the owner's earlier two-way test is in
-`design/RimMandrake/CLAUDE.history.md`). `design/Jawa/` and `research/Jawa/` keep their old folder name: "Jawa" is lore
-text only, and no new mod folder takes it.
+A new mod goes in exactly one of three folders in `src/`. The first row whose test is yes decides:
 
-To promote a file later costs only a `git mv`. If a "generic" doc silently assumed Star Wars, the cost is a debugging
-session.
+| folder | the test | examples |
+|---|---|---|
+| `src/RimUtinni/` | Does it name Ash'karr, the Kolyska, the Nine, this clan, or this story? It serves this scenario only. | The Salvation, planetary lore, this clan's culture, faith and backstories |
+| `src/RimStarWars/` | Would another Star Wars campaign want it unchanged, and a game with no Star Wars in it not? | the Jawa species (xenotype, genes, body, voice), Star Wars races, ion weapons |
+| `src/RimMandrake/` | Would a player of any RimWorld game install it alone and understand it? | Pits, art fixes for mods that are not Star Wars |
+
+- No new mod goes in `src/Jawa/`, not even a mod about Jawas, and not when you are unsure. "Jawa" is lore text only.
+  `design/Jawa/`, `research/Jawa/` and the art bench in `src/Jawa/` keep their old folder name.
+- A fix mod takes the tier of the mod that it fixes. A reskin takes the tier of its look. A mod that fits two tiers is
+  split: the engine in one mod, the campaign content in another.
+- The other tie-breaks, the packageIds and the prefixes: `design/NAMING_SCHEME_PLAN.md`.
+
+To move a doc to another folder later costs only a `git mv`. A mod also carries its tier in its packageId and its
+defNames, so a wrong tier there costs a rename.
 
 ---
 
@@ -105,7 +115,7 @@ material we did not write (→ `research/`), **anything a machine generates**.
 
 | Path | Holds |
 |---|---|
-| `src/README.md` | The tier rule, and the `RimMandrake.<name>` / `Jawa.<name>` naming rule for **new** work only. For a new name, `CLAUDE.md` now names `design/NAMING_SCHEME_PLAN.md`. |
+| `src/README.md` | The tier rule. For a new name, it points to `design/NAMING_SCHEME_PLAN.md`. |
 | `src/DEPLOY_HOLD.txt` | The deploy interlock: the files that are held back from a deploy on purpose. Read it before `--apply`. |
 | `src/Jawa/` | The old home of the campaign mods `Jawa_Patches`, `Jawa_Armoury`, `Jawa_Doctrine`, `JawaVoice`, `JawaIonWeapons`, `DesertVehicleReskin`. None of the six is here now (2026-11-23). `Jawa_Armoury` is now `src/RimStarWars/Armoury/`, and `Jawa_Doctrine` is now `src/RimUtinni/Doctrine/`. `JawaVoice`, `JawaIonWeapons` and `DesertVehicleReskin` are in `src/RimStarWars/`. `src/Jawa/` still holds `art_bench/` (gitignored `_review/`). |
 | `src/RimMandrake/Utils/` | The Python tools: `deploy_custom_mods.py`, `harvest_log.py`, `refresh.py`, `check_refs.py`, `set_agent_window.sh`, `show.sh`, and the def, save and animal inventory scripts. |

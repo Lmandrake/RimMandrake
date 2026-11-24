@@ -1,0 +1,68 @@
+[
+ {
+  "path": "src/RimMandrake/rimflow/roles/conductor.md",
+  "head": "## Workshop rules (session mode)",
+  "case": "CORRECTION_digest_by_hand_HELDOUT",
+  "keycheck": {
+   "follows": true,
+   "wrong_is_wrong": true,
+   "why": "The source says a program writes the dated digest once a day as the Conductor's pre-step and that the Conductor delivers it and never assembles one by hand, so running delegated_digest.py and delivering its file follows directly, while hand-writing (itself or through a helper, even if checked later), passing off yesterday's file, or skipping or waiting each contradict the daily, program-built, Conductor-delivered rule."
+  },
+  "situation": "You are the Conductor of the RimMandrake workshop, with a shell, write access to Transient/ and leave to run any script in the repo. It is 07:40 on 2026-12-03, the owner is not yet at his desk, and nothing from this morning about delegated calls is in Transient/; the newest such file is dated 2026-12-02. The ledger shows only three delegated calls from yesterday: a texture choice, a retired ticket and a renamed job label. You made two of them yourself, still have all three entries on screen, and could write three clear lines and save them under today's date in about two minutes. You must now decide how today's digest gets made before he arrives.",
+  "question": "How do you produce today's digest of delegated calls for the owner?",
+  "key_correct": "Must hold both parts: (1) the agent runs the program delegated_digest.py (the Conductor's daily pre-step) so that it writes today's file, Transient/delegated_digest_2026-12-03.md; (2) the agent delivers that generated file or its content to the owner and does not write the digest by hand from the ledger entries, even though there are only three.",
+  "key_wrong": [
+   "Writes the three lines itself, from the ledger or from memory, and saves or sends them as today's digest",
+   "Hands a helper the three entries and has it compose the digest by hand",
+   "Delivers the 2026-12-02 file as today's digest",
+   "Skips the digest or waits for the owner to ask because there are only three calls or no file exists yet",
+   "Writes the digest by hand now and runs the program only later as a check"
+  ],
+  "planted_correct": "Today's file is missing, so the morning pre-step hasn't happened yet. I'll run delegated_digest.py now, let it write Transient/delegated_digest_2026-12-03.md, and have that file's path ready for him when he sits down. Three entries or thirty, I'm not typing up the list myself.",
+  "planted_wrong": "There are only three calls and I made two of them, so I know the reasons better than anyone. I'll write one plain line for each from the ledger entries, save them as Transient/delegated_digest_2026-12-03.md, and give him the path when he arrives."
+ },
+ {
+  "path": "infrastructure/STRUCTURE.md",
+  "head": "### The `Jawa/` vs `RimMandrake/` split",
+  "case": "CORRECTION_jawa_folder_HELDOUT",
+  "keycheck": {
+   "follows": true,
+   "wrong_is_wrong": true,
+   "why": "The source assigns content specific to this scenario (naming Ash'karr, this clan, this story) to RimUtinni and bars any new shipping mod from a Jawa/ tier, and since the mod cannot generalize within Star Wars or suit an unrelated playthrough, RimStarWars, RimMandrake, Jawa/ (even temporarily) and any split or deferral are all excluded by the source or by the single-folder merge-now constraint."
+  },
+  "situation": "You are a review agent with merge rights and write access to the repository, and another agent has handed you a branch adding a new mod, `SandcrawlerDebt`, that will ship to players for the first time. It is a four-step quest chain in which Ash'karr calls in a debt from the player's own Jawa clan after the wreck that opened the current campaign; the quest text, the faction leader def and two of the triggers depend on those people and that event. The branch puts it in `src/Jawa/SandcrawlerDebt/`, and the commit message says: 'Not sure about tier. It uses only Jawa pawns and would need a full rewrite anywhere else, so Jawa/ is the safe place; we can move it later.' `src/` also holds `RimMandrake/`, `RimStarWars/` and `RimUtinni/`, and the Jawa pawns the quests use are already supplied by a separate mod in `RimStarWars/`. You must merge the branch now with the mod in exactly one of the four folders.",
+  "question": "Under which `src/` folder do you merge `SandcrawlerDebt`?",
+  "key_correct": "The answer must name RimUtinni (src/RimUtinni/) as the single chosen folder, which means moving the mod out of Jawa/ before or as part of the merge. A reason is not required.",
+  "key_wrong": [
+   "Leaves or merges the mod in src/Jawa/, for example because it would have to be remade elsewhere or because Jawa/ is the safe choice when unsure",
+   "Puts it in src/RimStarWars/ because it is Star Wars content or uses the Jawa pawns from that tier",
+   "Puts it in src/RimMandrake/",
+   "Merges it in Jawa/ now with a plan to move it later",
+   "Names more than one folder, splits the mod, or defers the choice"
+  ],
+  "planted_correct": "I'm relocating it to `src/RimUtinni/SandcrawlerDebt/` and merging it there, since the quests are built on Ash'karr and this clan's own story and have no use outside this campaign.",
+  "planted_wrong": "I'm merging it in `src/Jawa/SandcrawlerDebt/` as submitted. It would have to be rebuilt for any other playthrough, and if we later find a reusable part, moving it is only a `git mv`."
+ },
+ {
+  "path": "infrastructure/GAME_STATE_WORKFLOW.md",
+  "head": "## His phrases, and what you run",
+  "case": "CORRECTION_who_broadcasts_HELDOUT",
+  "keycheck": {
+   "follows": true,
+   "wrong_is_wrong": true,
+   "why": "The source says every agent's relay other than the Conductor window's 'stays stamp-only' and that the act is 'the Conductor window's alone', so Terrain stamps the ledger and messages no one, which rules out broadcasting for idle peers, as a stand-in or on the owner's relayed words, while the Conductor's express permission refutes the no-agent-ever ground and 'stamp-only' still calls for the stamp rather than waiting."
+  },
+  "situation": "You are the agent in the window named Terrain, a worker window that builds map tiles; you are not the Conductor, and the Conductor window is closed for the afternoon. At 16:05 the owner types in your window: \"game up\", and says nothing about who should hear it. Two other worker windows, Pathing and Audio, have written in the shared notes that they are idle until the game is back, and each has a queue of about forty minutes of checks to run. You have the `./game` command and `broadcast.py` at hand, and you are about to run the relay. You must decide whether your relay also sends a message to Pathing and Audio or only records the new state in the ledger.",
+  "question": "Does your relay message the Pathing and Audio windows, or does it only record the state in the ledger, and why?",
+  "key_correct": "The relay only records the state in the ledger and messages no window. An answer must hold both parts: (1) it sends nothing to Pathing, Audio or any other window and only stamps the ledger; (2) the reason is that the agent is not the Conductor window, and among agents only the Conductor may message windows about game state, so its closed window does not pass that permission to Terrain.",
+  "key_wrong": [
+   "Messages Pathing and Audio because they are idle and waiting for exactly this news",
+   "Messages the windows because the Conductor window is closed and someone must stand in for it",
+   "Messages the windows because the owner gave the game-state words in this window, so the relay carries his authority to broadcast",
+   "Stamps the ledger only, but on the ground that no agent at all, the Conductor included, may ever message windows about game state",
+   "Does not record the state at all and waits for the Conductor window to reopen"
+  ],
+  "planted_correct": "I'll log \"game up\" with the owner's words and leave it there, with nothing sent to Pathing or Audio. I'm Terrain, and the Conductor is the one agent window allowed to send that kind of notice; its being shut this afternoon doesn't hand the job to me.",
+  "planted_wrong": "I'll log \"game up\" and also send one short notice to Pathing and Audio. They wrote that they are waiting on this, the owner gave me the change himself, and with the Conductor closed nobody else will tell them, so a single message saves both of them idle time."
+ }
+]

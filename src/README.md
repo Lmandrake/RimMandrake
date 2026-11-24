@@ -6,14 +6,10 @@ source exists it is kept in lockstep with it.
 
 ## The split
 
-| | |
-|---|---|
-| `src/Jawa/` | mods and benches that only make sense in this campaign — the five `Jawa*` mods, `JawaVoice`, `JawaIonWeapons`, `DesertVehicleReskin`, the art bench |
-| `src/RimMandrake/` | reusable across playthroughs — `src/RimMandrake/Utils/`, `src/RimMandrake/bridgetools/`, `mapsynth/`, `MissingArtFixes`, `WreckedMachines`, `RimDefDump` |
+A new mod goes in `src/RimMandrake/`, `src/RimStarWars/` or `src/RimUtinni/`. The test for each folder:
+`infrastructure/STRUCTURE.md` §The `Jawa/` vs `RimMandrake/` split. No new mod goes in `src/Jawa/`.
 
-`MissingArtFixes` and `WreckedMachines` are generic because a stranger who owns the
-donor mod could use them unchanged. That is the same test the owner set for art-fix
-mods: *could someone who owns only the donor mod subscribe to this and have it
+The owner's test for art-fix mods: *could someone who owns only the donor mod subscribe to this and have it
 work?*
 
 ## 🔴 Writing a file here is not deploying it
@@ -33,11 +29,7 @@ anything.
 
 ## Naming, for NEW work only
 
-Generic is **`RimMandrake.<name>`**, campaign-specific is **`Jawa.<name>`**. The
-owner deferred renaming what already exists — `JawaBench.BridgeTools` keeps its
-assembly name, the five mod folders keep their `packageId`s. **Do not "tidy" one
-in passing**: all five packageIds are live in `ModsConfig.xml`, so a rename is a
-load-order edit at a specific slot plus a RimSort rules change, not a `sed`.
+The packageId, the prefix and the namespace of a new mod follow its tier: `design/NAMING_SCHEME_PLAN.md`.
 
 The planned `MODLIST.md` here is **hand-authored** — what this tier's code assumes exists.
 

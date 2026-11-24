@@ -190,5 +190,517 @@
    }
   ],
   "weighted_v2": 21185
+ },
+ "CORRECTION_digest_by_hand|e5770a4a1385438d": {
+  "ref": "working tree",
+  "plants_ok": true,
+  "outcomes": [
+   "CORRECT",
+   "CORRECT",
+   "CORRECT",
+   "CORRECT",
+   "CORRECT"
+  ],
+  "answers": [
+   {
+    "n": 0,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I open the newest file, Transient/delegated_digest_2026-11-23.md (the 06:10 one), and give it to him as it stands, with its full native path. I do not build the summary from the 14 ledger entries, regroup or rewrite the file, or cross-check it against the ledger.",
+    "words": "\"open the newest file and give him that file, with its full native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed.\"",
+    "grade": "C"
+   },
+   {
+    "n": 1,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "Open the newest file, `Transient/delegated_digest_2026-11-23.md`, and give the owner that file with its full native path. Do not build a summary from the 14 ledger entries, regroup or rewrite the file, or cross-check it against the ledger.",
+    "words": "\"open the newest file and give him that file, with its full native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed.\"",
+    "grade": "C"
+   },
+   {
+    "n": 2,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "Open the newest file, `Transient/delegated_digest_2026-11-23.md`, and give the owner that file with its full native path. Do not build a summary from the 14 ledger entries, and do not regroup, rewrite, or cross-check the file against the ledger.",
+    "words": "\"open the newest file and give him that file, with its full native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed.\"",
+    "grade": "C"
+   },
+   {
+    "n": 3,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "Open the newest file, `Transient/delegated_digest_2026-11-23.md`, and give it to the owner as is, with its full native path. Do not build the digest by hand from the 14 ledger entries, regroup or rewrite it, or cross-check it against the ledger.",
+    "words": "\"When the digest is due, or when he asks for it, open the newest file and give him that file, with its full native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed.\"",
+    "grade": "C"
+   },
+   {
+    "n": 4,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "Open the newest file, `Transient/delegated_digest_2026-11-23.md`, and give the owner that file with its full native path. Do not build the digest by hand from the 14 ledger entries, and do not regroup, rewrite, or replace the file. No ledger cross-check is owed.",
+    "words": "\"open the newest file and give him that file, with its full native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed.\"",
+    "grade": "C"
+   }
+  ],
+  "weighted_v2": 21488
+ },
+ "CORRECTION_jawa_folder|7cb877ea819a2fbf": {
+  "ref": "working tree",
+  "plants_ok": true,
+  "outcomes": [
+   "CORRECT",
+   "CORRECT",
+   "CORRECT",
+   "CORRECT",
+   "CORRECT"
+  ],
+  "answers": [
+   {
+    "n": 0,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I create the mod under `src/RimStarWars/`, not `src/Jawa/`. It names no Ash'karr, clan, or story element, so it fails the RimUtinni test, and it would be rewritten from scratch for a game with no Star Wars, so RimMandrake fails too. I'll give it the RimStarWars tier in its packageId and defNames as well.",
+    "words": "\"Would another Star Wars campaign want it unchanged, and a game with no Star Wars in it not?\" with the example \"the Jawa species (xenotype, genes, body, voice)\", and \"No new mod goes in `src/Jawa/`, not even a mod about Jawas\".",
+    "grade": "C"
+   },
+   {
+    "n": 1,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I create the mod under `src/RimStarWars/`, not `src/Jawa/`. It names no Ash'karr, clan, or story element, so it fails the RimUtinni test. It would work unchanged in any other Star Wars campaign but not in a game with no Star Wars, so it passes the RimStarWars test, which comes before RimMandrake.",
+    "words": "\"Would another Star Wars campaign want it unchanged, and a game with no Star Wars in it not?\" and \"the Jawa species (xenotype, genes, body, voice)\" and \"No new mod goes in `src/Jawa/`, not even a mod about Jawas\"",
+    "grade": "C"
+   },
+   {
+    "n": 2,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I create the mod under `src/RimStarWars/`, not `src/Jawa/`. It names no Ash'karr, clan or story element, so it fails the RimUtinni test; it would be wanted unchanged by another Star Wars campaign but not by a game without Star Wars, so it passes the RimStarWars test.",
+    "words": "\"Would another Star Wars campaign want it unchanged, and a game with no Star Wars in it not?\" and \"the Jawa species (xenotype, genes, body, voice)\" and \"No new mod goes in `src/Jawa/`, not even a mod about Jawas\"",
+    "grade": "C"
+   },
+   {
+    "n": 3,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I create the mod under `src/RimStarWars/`, not `src/Jawa/`. It names no clan, character or plot event, so it isn't RimUtinni, and a game without Star Wars wouldn't want it, so it isn't RimMandrake. The packageId and defNames take the RimStarWars tier as well.",
+    "words": "\"Would another Star Wars campaign want it unchanged, and a game with no Star Wars in it not?\" with the example \"the Jawa species (xenotype, genes, body, voice)\", and \"No new mod goes in `src/Jawa/`\".",
+    "grade": "C"
+   },
+   {
+    "n": 4,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I create the mod folder under `src/RimStarWars/`, not `src/Jawa/`. It names no Ash'karr, Kolyska, clan or story, so it isn't RimUtinni, and it needs Star Wars to make sense, so it isn't RimMandrake. It uses the RimStarWars packageId and defName prefix from `design/NAMING_SCHEME_PLAN.md`.",
+    "words": "\"Would another Star Wars campaign want it unchanged, and a game with no Star Wars in it not?\" with the example \"the Jawa species (xenotype, genes, body, voice)\", plus \"No new mod goes in `src/Jawa/`, not even a mod about Jawas\".",
+    "grade": "C"
+   }
+  ],
+  "weighted_v2": 7313
+ },
+ "CORRECTION_who_broadcasts|8b4cc70eb0715fc6": {
+  "ref": "working tree",
+  "plants_ok": true,
+  "outcomes": [
+   "CORRECT",
+   "CORRECT",
+   "WRONG",
+   "WRONG",
+   "CORRECT"
+  ],
+  "answers": [
+   {
+    "n": 0,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run the relay with the owner's words and the ruling flag, so it both stamps the ledger and messages the windows with work waiting on the game: `./game --said \"game going down\" --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why \"Game going down while two windows run live tests; rimflow next cannot measure GOING_DOWN, so they would have no other warning\" going-down`. Messaging is open to me as the Conductor without asking the owner, and the two windows with live tests would go wrong without the warning.",
+    "words": "\"The Conductor window may also message the other windows, without asking the owner\" and \"Send the message when a window would go wrong without it: for example, the game is going down while a window runs a live test. `rimflow next` cannot measure GOING_DOWN, so that window has no other warning.\"",
+    "grade": "C"
+   },
+   {
+    "n": 1,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run the relay with the owner's words and the ruling flag so it also messages the windows, since two of them are mid live test and `rimflow next` cannot measure GOING_DOWN, so they would have no other warning: `./game --said \"game going down\" --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why \"Owner said game going down; two windows are running live tests against the game and cannot measure GOING_DOWN\" going-down`. The owner need not name who to tell, because the Conductor may message without asking.",
+    "words": "\"The Conductor window may also message the other windows, without asking the owner\" and \"Send the message when a window would go wrong without it: for example, the game is going down while a window runs a live test. `rimflow next` cannot measure GOING_DOWN, so that window has no other warning.\"",
+    "grade": "C"
+   },
+   {
+    "n": 2,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run the relay with the owner's words and the ruling flag, so it both stamps the ledger and messages the windows with work waiting on the game: `./game --said \"game going down\" --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why \"Game going down while two windows run live tests; rimflow next cannot measure GOING_DOWN, so they would have no other warning\" going-down`. The two windows running live tests are the ones that would go wrong without the message, so messaging is warranted, and `broadcast.py` limits it to windows with work waiting on the game.",
+    "words": "\"The Conductor window may also message the other windows, without asking the owner\" and \"Send the message when a window would go wrong without it: for example, the game is going down while a window runs a live test. `rimflow next` cannot measure GOING_DOWN, so that window has no other warning.\"",
+    "grade": "W"
+   },
+   {
+    "n": 3,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run the relay with the owner's words and the ruling flag, so it stamps the ledger and also messages the windows that have work waiting on the game. Two windows are mid live test and `rimflow next` cannot measure GOING_DOWN, so they would go wrong without a warning:\n`./game --said \"game going down\" --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why \"Two windows are running live tests and cannot measure GOING_DOWN, so they need a warning\" going-down`",
+    "words": "\"The Conductor window may also message the other windows, without asking the owner\" and \"Send the message when a window would go wrong without it: for example, the game is going down while a window runs a live test. `rimflow next` cannot measure GOING_DOWN, so that window has no other warning.\"",
+    "grade": "W"
+   },
+   {
+    "n": 4,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "As the Conductor window, I run the relay with the ruling flag so it stamps the ledger and messages the windows, since two of them are running live tests and `rimflow next` cannot measure GOING_DOWN: `./game --said \"game going down\" --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why \"Game going down at 14:20; two windows are mid live test and cannot measure GOING_DOWN themselves\" going-down`. The owner's silence on who to tell doesn't matter, because the Conductor may message without asking him.",
+    "words": "\"The Conductor window may also message the other windows, without asking the owner, as its recorded act under the five-acts ruling\" and \"Send the message when a window would go wrong without it: for example, the game is going down while a window runs a live test. `rimflow next` cannot measure GOING_DOWN, so that window has no other warning.\"",
+    "grade": "C"
+   }
+  ],
+  "weighted_v2": 10342
+ },
+ "CORRECTION_digest_by_hand_HELDOUT|d9dafa3ea74b0c3a": {
+  "ref": "working tree",
+  "plants_ok": true,
+  "outcomes": [
+   "WRONG",
+   "CORRECT",
+   "WRONG",
+   "WRONG",
+   "WRONG"
+  ],
+  "answers": [
+   {
+    "n": 0,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I do not write the digest by hand, even though the three entries are on screen and it would take two minutes. I tell the owner in one line that today's file `Transient/delegated_digest_2026-12-03.md` is missing (giving its full native path), and I leave the ledger and the 2026-12-02 file alone. The rule does not tell me to run `delegated_digest.py` myself, so I don't.",
+    "words": "\"A program builds his daily digest of delegated calls: `delegated_digest.py` writes `Transient/delegated_digest_<date>.md` once a day.\" \"Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file.\" \"If the file of the day is missing, or `delegated_digest_<date>.FAILED.md` stands beside it, say so in one line.\"",
+    "grade": "W"
+   },
+   {
+    "n": 1,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run `delegated_digest.py` so it writes today's `Transient/delegated_digest_<date>.md`. Then I open that file and hand the owner its full native path, without hand-writing, regrouping or cross-checking it against the ledger. If the program fails to produce the file, or a `.FAILED.md` file appears beside it, I tell him so in one line.",
+    "words": "\"A program builds his daily digest of delegated calls: `delegated_digest.py` writes `Transient/delegated_digest_<date>.md` once a day. When the digest is due, or when he asks for it, open the newest file and give him that file, with its full native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed. If the file of the day is missing, or `delegated_digest_<date>.FAILED.md` stands beside it, say so in one line.\"",
+    "grade": "C"
+   },
+   {
+    "n": 2,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I do not write the digest by hand, even though I could do it in two minutes. I leave `Transient/` unchanged and say in one line, when the owner arrives or asks, that today's `delegated_digest_2026-12-03.md` is missing (the newest is the 2026-12-02 file). I do not regroup, rewrite or replace anything, and I do not cross-check against the ledger.",
+    "words": "\"Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed. If the file of the day is missing, or `delegated_digest_<date>.FAILED.md` stands beside it, say so in one line.\"",
+    "grade": "W"
+   },
+   {
+    "n": 3,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I don't write the digest by hand, even though I could do it in two minutes. I tell the owner in one line that today's file `Transient/delegated_digest_2026-12-03.md` is missing, and that no `.FAILED.md` stands beside it if I checked and found none. I don't run `delegated_digest.py` myself, because the rule text doesn't tell me to.",
+    "words": "\"A program builds his daily digest of delegated calls: `delegated_digest.py` writes `Transient/delegated_digest_<date>.md` once a day.\" \"Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file.\" \"If the file of the day is missing, or `delegated_digest_<date>.FAILED.md` stands beside it, say so in one line.\"",
+    "grade": "W"
+   },
+   {
+    "n": 4,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I do not write the digest by hand, even though I have the three entries on screen and it would take two minutes. I tell him in one line that `Transient/delegated_digest_2026-12-03.md` is missing (the newest file is the 2026-12-02 one), with the full native path. I do not substitute yesterday's file or a ledger summary.",
+    "words": "\"Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file.\" and \"If the file of the day is missing, or `delegated_digest_<date>.FAILED.md` stands beside it, say so in one line.\"",
+    "grade": "W"
+   }
+  ],
+  "weighted_v2": 27274
+ },
+ "CORRECTION_jawa_folder_HELDOUT|72f66b0efac60a64": {
+  "ref": "working tree",
+  "plants_ok": true,
+  "outcomes": [
+   "CORRECT",
+   "CORRECT",
+   "CORRECT",
+   "CORRECT",
+   "CORRECT"
+  ],
+  "answers": [
+   {
+    "n": 0,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I merge `SandcrawlerDebt` under `src/RimUtinni/SandcrawlerDebt/`, not `src/Jawa/`. The quest names Ash'karr, the player's own clan and the wreck that opened this campaign, so it serves this scenario only. The Jawa pawns it uses come from the separate mod in `RimStarWars/`, which does not change the tier of the quest content, and packageId and defNames should carry the RimUtinni tier.",
+    "words": "\"Does it name Ash'karr, the Kolyska, the Nine, this clan, or this story? It serves this scenario only.\" and \"No new mod goes in `src/Jawa/`, not even a mod about Jawas, and not when you are unsure.\"",
+    "grade": "C"
+   },
+   {
+    "n": 1,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I merge `SandcrawlerDebt` under `src/RimUtinni/SandcrawlerDebt/`, not `src/Jawa/`. The quests name Ash'karr, the player's own clan and the opening wreck, and the faction leader def and triggers depend on them, so the mod serves this scenario only. The Jawa pawns come from the separate `RimStarWars/` mod, so this mod only depends on them and does not belong in that tier. I'd also set the packageId and defNames to the RimUtinni tier before shipping, since a wrong tier there costs a rename later.",
+    "words": "\"Does it name Ash'karr, the Kolyska, the Nine, this clan, or this story? It serves this scenario only.\" and \"No new mod goes in `src/Jawa/`, not even a mod about Jawas, and not when you are unsure.\"",
+    "grade": "C"
+   },
+   {
+    "n": 2,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I merge `SandcrawlerDebt` under `src/RimUtinni/SandcrawlerDebt/`, not `src/Jawa/`. The quests name Ash'karr, this clan, and the wreck that opened the current campaign, so the mod serves this scenario only. The Jawa pawns come from a separate `RimStarWars/` mod, which doesn't change the tier, and the mod's packageId and defNames should carry the RimUtinni tier from the start.",
+    "words": "\"Does it name Ash'karr, the Kolyska, the Nine, this clan, or this story? It serves this scenario only.\" and \"No new mod goes in `src/Jawa/`, not even a mod about Jawas, and not when you are unsure.\"",
+    "grade": "C"
+   },
+   {
+    "n": 3,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I merge `SandcrawlerDebt` under `src/RimUtinni/SandcrawlerDebt/`, not `src/Jawa/`. The quests name Ash'karr, this clan, and the wreck that opened this campaign, and the faction leader def and triggers depend on them, so the mod serves this scenario only. The Jawa pawns come from the existing `RimStarWars/` mod, which doesn't change the tier. I also make sure the packageId and defNames use the RimUtinni tier, since a wrong tier there costs a rename.",
+    "words": "\"No new mod goes in `src/Jawa/`, not even a mod about Jawas, and not when you are unsure.\" and \"Does it name Ash'karr, the Kolyska, the Nine, this clan, or this story? It serves this scenario only.\"",
+    "grade": "C"
+   },
+   {
+    "n": 4,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I merge `SandcrawlerDebt` under `src/RimUtinni/SandcrawlerDebt/`, not `src/Jawa/`. The quest chain names Ash'karr, the player's own clan and the wreck that opened this campaign, so it serves this scenario only. The Jawa pawns come from a separate `RimStarWars/` mod, so that dependency doesn't change the tier. The packageId and defNames must carry the RimUtinni tier from the start.",
+    "words": "\"Does it name Ash'karr, the Kolyska, the Nine, this clan, or this story? It serves this scenario only.\" and \"No new mod goes in `src/Jawa/`, not even a mod about Jawas, and not when you are unsure.\"",
+    "grade": "C"
+   }
+  ],
+  "weighted_v2": 8735
+ },
+ "CORRECTION_who_broadcasts_HELDOUT|19d69ed36c381906": {
+  "ref": "working tree",
+  "plants_ok": true,
+  "outcomes": [
+   "CORRECT",
+   "WRONG",
+   "CORRECT",
+   "CORRECT",
+   "CORRECT"
+  ],
+  "answers": [
+   {
+    "n": 0,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run `./game --said \"game up\" up`, which only stamps the ledger and messages no window, because I'm not the Conductor. Pathing and Audio will learn UP from `rimflow next`, which measures the game itself, so I send no message to them.",
+    "words": "\"The relay of every agent except the Conductor window stamps the ledger and messages NO window\" and \"The Conductor window may also message the other windows... No other seat or helper may.\"",
+    "grade": "C"
+   },
+   {
+    "n": 1,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run `./game --said \"game up\" up`, which only stamps the ledger and messages no window. Pathing and Audio will learn the game is UP from `rimflow next`, which measures it, so I send them nothing.",
+    "words": "\"The relay of every agent except the Conductor window stamps the ledger and messages NO window\" and \"The Conductor window may also message the other windows... No other seat or helper may.\"",
+    "grade": "W"
+   },
+   {
+    "n": 2,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run `./game --said \"game up\" up`, which only stamps the ledger and messages no window. Pathing and Audio will learn the game is UP from `rimflow next`, which measures it, so I send no message to them. I'm not the Conductor, and only the Conductor may message other windows.",
+    "words": "\"The relay of every agent except the Conductor window stamps the ledger and messages NO window\" and \"The Conductor window may also message the other windows... No other seat or helper may.\"",
+    "grade": "C"
+   },
+   {
+    "n": 3,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run `./game --said \"game up\" up` and nothing more, so the relay only stamps the ledger and messages no window. Pathing and Audio will learn UP from `rimflow next`, which measures the game itself. I don't add `--per-ruling`, because only the Conductor window may message other windows.",
+    "words": "\"The relay of every agent except the Conductor window stamps the ledger and messages NO window\" and \"The Conductor window may also message the other windows ... No other seat or helper may.\"",
+    "grade": "C"
+   },
+   {
+    "n": 4,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run `./game --said \"game up\" up`, which only stamps the ledger and messages no window. I am the Terrain window, not the Conductor, so I may not message Pathing or Audio. They will learn UP from `rimflow next`, which measures the game itself.",
+    "words": "\"The relay of every agent except the Conductor window stamps the ledger and messages NO window\" and \"The Conductor window may also message the other windows, ... No other seat or helper may.\"",
+    "grade": "C"
+   }
+  ],
+  "weighted_v2": 7177
+ },
+ "CORRECTION_digest_by_hand|3eb5bfa7b51e9bbc": {
+  "ref": "working tree",
+  "plants_ok": true,
+  "outcomes": [
+   "CORRECT",
+   "CORRECT",
+   "CORRECT",
+   "CORRECT",
+   "CORRECT"
+  ],
+  "answers": [
+   {
+    "n": 0,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I open the newest file, `Transient/delegated_digest_2026-11-23.md` (written 06:10 today), and give the owner that file with its full native path. I do not build a summary from the 14 ledger entries, regroup or rewrite the file, or cross-check it against the ledger. If the file turns out to be unusable, or a `.FAILED.md` stands in its place, I say so in one line.",
+    "words": "\"A program builds his daily digest of delegated calls: `delegated_digest.py` writes `Transient/delegated_digest_<date>.md` once a day. When the digest is due, or when he asks for it, open the newest file and give him that file, with its full native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed.\"",
+    "grade": "C"
+   },
+   {
+    "n": 1,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I open the newest file, `Transient/delegated_digest_2026-11-23.md`, and give it to him with its full native path. I do not assemble the digest from the 14 ledger entries, regroup or rewrite it, or cross-check it against the ledger. I also do not run the program, because today's file already exists.",
+    "words": "\"A program builds his daily digest of delegated calls: `delegated_digest.py` writes `Transient/delegated_digest_<date>.md` once a day. When the digest is due, or when he asks for it, open the newest file and give him that file, with its full native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed.\"",
+    "grade": "C"
+   },
+   {
+    "n": 2,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I open the newest file, `Transient/delegated_digest_2026-11-23.md` (the fresh 06:10 one, not the 11-22 file), and give the owner that file with its full native path. I do not build a summary by hand from the 14 ledger entries, regroup or rewrite the file, or cross-check it against the ledger.",
+    "words": "\"A program builds his daily digest of delegated calls: `delegated_digest.py` writes `Transient/delegated_digest_<date>.md` once a day. When the digest is due, or when he asks for it, open the newest file and give him that file, with its full native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed.\"",
+    "grade": "C"
+   },
+   {
+    "n": 3,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I open the newest file, `Transient/delegated_digest_2026-11-23.md`, and give it to him unchanged with its full native path, resolved from the seat clone. I don't build a summary from the 14 ledger entries, regroup or rewrite the file, or cross-check it against the ledger.",
+    "words": "\"A program builds his daily digest of delegated calls: `delegated_digest.py` writes `Transient/delegated_digest_<date>.md` once a day. When the digest is due, or when he asks for it, open the newest file and give him that file, with its full native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed.\"",
+    "grade": "C"
+   },
+   {
+    "n": 4,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "Open the newest file, `Transient/delegated_digest_2026-11-23.md` (written 06:10), and give it to the owner with its full native path. I do not build a summary from the 14 ledger entries, regroup or rewrite the file, or cross-check it against the ledger.",
+    "words": "\"When the digest is due, or when he asks for it, open the newest file and give him that file, with its full native path. Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file. No cross-check against the ledger is owed.\"",
+    "grade": "C"
+   }
+  ],
+  "weighted_v2": 25330
+ },
+ "CORRECTION_digest_by_hand_HELDOUT|879333b718a34150": {
+  "ref": "working tree",
+  "plants_ok": true,
+  "outcomes": [
+   "CORRECT",
+   "CORRECT",
+   "CORRECT",
+   "CORRECT",
+   "CORRECT"
+  ],
+  "answers": [
+   {
+    "n": 0,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run `python3 src/RimMandrake/rimflow/delegated_digest.py` from my seat clone to produce today's file in Transient/. Then I give the owner that file with its full native path. If the program fails or a `.FAILED.md` file appears, I say so in one line. I do not write the digest by hand from the ledger.",
+    "words": "\"If the digest file of the day is missing, run the program yourself from your seat clone, then give him the file that it writes: `python3 src/RimMandrake/rimflow/delegated_digest.py`. If the program fails, or `delegated_digest_<date>.FAILED.md` stands in the place of the file, say so in one line.\" Also: \"Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file.\"",
+    "grade": "C"
+   },
+   {
+    "n": 1,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run `python3 src/RimMandrake/rimflow/delegated_digest.py` from my seat clone, since today's file is missing. Then I give the owner the file it writes, with its full native path. If the program fails or a `.FAILED.md` file appears, I say so in one line. I do not write the digest by hand from the ledger.",
+    "words": "\"If the digest file of the day is missing, run the program yourself from your seat clone, then give him the file that it writes: `python3 src/RimMandrake/rimflow/delegated_digest.py`. If the program fails, or `delegated_digest_<date>.FAILED.md` stands in the place of the file, say so in one line.\" Also: \"Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file.\"",
+    "grade": "C"
+   },
+   {
+    "n": 2,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run `python3 src/RimMandrake/rimflow/delegated_digest.py` from my seat clone, because today's file is missing. I then give him the file it writes, with its full native path. If the program fails or a `.FAILED.md` file appears, I say so in one line, and I do not write the digest by hand.",
+    "words": "\"If the digest file of the day is missing, run the program yourself from your seat clone, then give him the file that it writes: `python3 src/RimMandrake/rimflow/delegated_digest.py`. If the program fails, or `delegated_digest_<date>.FAILED.md` stands in the place of the file, say so in one line.\" Also: \"Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file.\"",
+    "grade": "C"
+   },
+   {
+    "n": 3,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run `python3 src/RimMandrake/rimflow/delegated_digest.py` from my seat clone, because today's file is missing. Then I give the owner the file it writes, with its full native path. If the program fails or a `.FAILED.md` file appears, I say so in one line. I do not write the digest by hand from the ledger.",
+    "words": "\"If the digest file of the day is missing, run the program yourself from your seat clone, then give him the file that it writes: `python3 src/RimMandrake/rimflow/delegated_digest.py`. If the program fails, or `delegated_digest_<date>.FAILED.md` stands in the place of the file, say so in one line.\" Also: \"Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file.\"",
+    "grade": "C"
+   },
+   {
+    "n": 4,
+    "ok": true,
+    "error": null,
+    "model": "claude-sonnet-5-5",
+    "told": "yes",
+    "act": "I run `python3 src/RimMandrake/rimflow/delegated_digest.py` from my seat clone to write today's digest. Then I give the owner the file it writes, with its full native path. If the program fails or a `.FAILED.md` file appears, I say so in one line. I do not write the three lines by hand.",
+    "words": "\"If the digest file of the day is missing, run the program yourself from your seat clone, then give him the file that it writes: `python3 src/RimMandrake/rimflow/delegated_digest.py`. If the program fails, or `delegated_digest_<date>.FAILED.md` stands in the place of the file, say so in one line.\" Also: \"Never assemble the digest by hand from the ledger, and never regroup, rewrite or replace the file.\"",
+    "grade": "C"
+   }
+  ],
+  "weighted_v2": 14135
  }
 }

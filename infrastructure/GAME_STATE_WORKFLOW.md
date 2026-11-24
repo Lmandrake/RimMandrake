@@ -99,11 +99,17 @@ provenance:
 
 - `--owner-said` records a bare assent ("yes", "ok") and prints a note that asks for `--why`. A short instruction like
   "game up" passes.
-- 🔴 **An agent's relay stamps the ledger and messages NO window** (owner, 2026-09-29: cross-window game-state
-  broadcasts *"burn tokens unnecessarily and rarely inform"*).
-  - The other windows learn the state from `rimflow next`. `rimflow next` measures the game itself.
-  - Only `broadcast.py` reaches the windows. The owner runs `broadcast.py`, or the Conductor window as its recorded act
-    (owner 2026-11-19). No other seat or helper runs it.
+- 🔴 **The relay of every agent except the Conductor window stamps the ledger and messages NO window** (owner,
+  2026-09-29: cross-window game-state broadcasts *"burn tokens unnecessarily and rarely inform"*). The other windows
+  learn UP and DOWN from `rimflow next`, which measures the game itself.
+- **The Conductor window may also message the other windows**, without asking the owner, as its recorded act under the
+  five-acts ruling (owner 2026-11-19). No other seat or helper may.
+  - Send the message when a window would go wrong without it: for example, the game is going down while a window runs a
+    live test. `rimflow next` cannot measure GOING_DOWN, so that window has no other warning.
+  - Do not send it when no window's work depends on the change. Then the ledger stamp is enough.
+  - Send it with the relay itself. `broadcast.py`, which `./game` calls, then stamps the ledger and messages the windows
+    that have work waiting on the game:
+    `./game --said "<his words>" --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the act and its reason>" going-down`
 - The machine cannot see two differences: `DEPLOYING` vs `DOWN`, and `GOING_DOWN` vs `UP`. Those states are the
   owner's alone.
   - The probe never touches those states.

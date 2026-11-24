@@ -21,7 +21,10 @@ do not restate it here.
 | `design/Jawa/` | this campaign. Fiction, the gravship, factions, the xenotype, art briefs. Worthless in another playthrough. |
 | `design/RimMandrake/` | the method, not the content. `faction_authoring_mechanism.md` — how to author a faction — is generic; `faction_roster_v2.md` — ten Star Wars factions — is not. |
 
-**The promotion test, the owner's words:** *"Am I likely to want this in a totally
+This split is for docs in `design/` only. A new mod folder takes one of the three tiers in `src/`
+(`infrastructure/STRUCTURE.md` §The `Jawa/` vs `RimMandrake/` split), never `Jawa/`.
+
+**The promotion test for a doc, the owner's words:** *"Am I likely to want this in a totally
 unrelated playthrough, or will I have to fundamentally remake it — not just
 reconfigure it?"* Reconfigure → `RimMandrake/`. Remake → `Jawa/`.
 
