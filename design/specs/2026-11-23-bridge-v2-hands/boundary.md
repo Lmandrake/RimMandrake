@@ -122,4 +122,14 @@ The records of `scene_trace_v1`, with one more field `sess`, and with `n` counte
 - **an-act-at-zero-shares-the-hop-that-starts-the-clock.** The first sample is before the act, and no frame is between the act and the start.
 - **an-act-on-a-tick-is-any-tool-call.** It is done on its tick with its own records and its request id.
 
+## LIVE READINGS (tier `flowworks`, SteveDesktop, quicktest map, 2026-11-23)
+
+| proof | reading | testq job |
+|---|---|---|
+| `prove_run_until.py` | 13 of 13 rows PASS | `J20261124T062048Z-97f683` |
+| `prove_act_batch.py` | 8 of 8 rows PASS; 436 companion tools, 8 cannot be one hop, 5 can with their wait at 0 | `J20261124T061237Z-8f43fd` |
+| `exp_a_state_after_act.py --scene pocket --arms P,G,T --trials 3` | P held at +10 in 3 of 3; G and T in 0 of 3 and 0 of 3; all held at +100 | `J20261124T061237Z-8f43fd` |
+
+Not run in a game: the full mod list; a game that is replaced under a session; a full disk; a run that a game window pauses by force.
+
 Later lists beside this page: `polish.md`.

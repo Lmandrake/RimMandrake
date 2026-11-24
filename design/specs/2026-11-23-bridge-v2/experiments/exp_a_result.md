@@ -98,6 +98,18 @@ pit ramp on the next tick. K (killed inside the tick) and P (killed on the pause
 later change and a second rebuild at +120; its first is inferred from the count). So a ground write made inside a tick is throttled as R's is, and an act from Python is harmless when the
 FlowWorks write happens in a later tick. The difference needs a write made **while the game is paused**.
 
+**The two hands that repair it** (added 2026-11-23, after `jawa/run_until` was built; SteveDesktop, tier `flowworks`, testq job
+`J20261124T061237Z-8f43fd`, `--arms P,G,T --trials 3`, Normal). G: the dig is an act at 0, done in the hop that starts the clock. T:
+the dig is an act on a tick inside one run.
+
+| arm | runs | held at +10 | held at +100 | grid rebuilt, ticks after the dig |
+|---|---|---|---|---|
+| P | 3 | 3 of 3 | 3 of 3 | 0 |
+| G | 3 | **0 of 3** | 3 of 3 | +40 |
+| T | 3 | **0 of 3** | 3 of 3 | +40 |
+
+Both read as running play does. A batch alone on this scene was not run.
+
 ## What it means for the held ticket
 
 1. The tick claim stands. Nothing here asks for the whole in-game scene player (`RIMMANDRAKE_BUILD_RUN_PLAN_ONE_CALL_SCENE_AS_DATA`):
