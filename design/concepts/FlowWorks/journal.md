@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 11:28 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-24 9:27 AM PST (`version/stage_record.json`).
 - **Bars:** 55 = 28 inventory rows of `record.json` + 27 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (57), and his word of 2026-11-23 ~11:05 PM PST moved the raid proof to 0.2.0
@@ -23,7 +23,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 11:28 PM PST).
+- **Waiting on:** a live run of RIMMANDRAKE_TRACE_FLOWWORKS_UNDER_DECK_PATH_MISS_ONE_IN_28_RUNS on any free game (it classes visit 10's one UNRESOLVED `sc_hung_bridge` run), and `sc_walk` on ArchBig with his full list in visit 11 (it alone decides `inv_settings` and `walk_moat_season`).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -514,4 +514,14 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Game only: RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_DRAINED_MOAT
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 6:00 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 6:00 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-24 9:27 AM PST, stage change: In-game acceptance (Stage 6) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: visit 10 road back: no mod-wrong line sends it back. sc_hung_bridge has one UNRESOLVED run (row 55, T064839) that the evidence on disk cannot class; its cause is readable only in a game, so RIMMANDRAKE_TRACE_FLOWWORKS_UNDER_DECK_PATH_MISS_ONE_IN_28_RUNS (filed by the driver, now needs game-up) is worked at Stage 6. sc_walk was not run (his full list, ArchBig) and alone leaves inv_settings and walk_moat_season undecided: it runs in the next visit. The other 27 checks count.
+- Checks passed: order, by, version, hold.
+- Steward confirms: read visit_10/SUMMARY.md, rows.jsonl, strange.jsonl, both sc_hung_bridge evidence files, the diff and planted reading of the sc_moat_walkers repair 8eab92b6c2 (sound, not weakened), the visit's one edit of suspension_bridge_proof.py (verdict unchanged), maturation.py next --json: fix_readers_owed [], shortfalls [], paused_raids {}, undecided_bars inv_settings and walk_moat_season; verdict: exit not met stands, no item added, nothing classed without evidence
+- Game only: RIMMANDRAKE_TRACE_FLOWWORKS_UNDER_DECK_PATH_MISS_ONE_IN_28_RUNS
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 11:28 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 11:28 PM PST).
 - Record: `version/stage_record.json`.
