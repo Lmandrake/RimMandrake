@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 53.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.45066019999999996
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 54.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.149819
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Gizka",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['STYLE_CARTOON', 'F_INCONSISTENT', 'F_INCONSISTENT', 'F_SIZE_JUMP', 'CANON_MISS', 'CANON_MISS', 'CANON_MISS']; polish ['RES_LOW']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4', 'K5'], own blocking ['STYLE_CARTOON', 'F_INCONSISTENT', 'CANON_MISS', 'F_SIZE_JUMP']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "5cb99eeac77e731361af01241a5bdc1dff6eafbb418d59ef65e0ce1aa6c37fbd",
+  "east.png": "171e612412c98c73de2c2773823d0b1d6e6a7548a249c564bf894d7b584f4d60",
+  "north.png": "6f9c402a3c8d6dd23471534a7a34d6f607796f86bbcddccd0468f683b7c2b80e",
+  "scale.png": "96f201cdc33421e51f9587e27c3deae8f39c25acf86c6a5ed299d6fb92ba9e2c",
+  "facings.png": "d875fef19afafdf2a6790836dff34fc0f6e9715f321747ab3f5b919a4c41795a"
+ }
+}

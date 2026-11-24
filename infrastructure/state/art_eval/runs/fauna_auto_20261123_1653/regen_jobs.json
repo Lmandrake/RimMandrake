@@ -1,0 +1,65 @@
+[
+ {
+  "id": "arteval_RM_ThozzikColonyQueen_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_ThozzikColonyQueen",
+  "prompt": "thozzik queen: A domesticated matriarch, the kurreth's armoured body swollen around a spore-bearing brood chamber. Nearly as fast as her spawn, with a more potent neurotoxin sting; the colony's thozzik answer to her alone. It is NOT an Earth animal: armoured body; body swollen around a spore-bearing brood chamber. The north view is drawn at the same body height as the east view (measured: common S+N factor (keeps N:S width)). The south view is drawn at the same body height as the east view (measured: common S+N factor (keeps N:S width)). Painterly vanilla RimWorld style, realistic, no outlines, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261123_1653",
+  "drawsize": 2.25,
+  "module": "flyer",
+  "target_texpath": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+ },
+ {
+  "id": "arteval_RSW_Clodhopper_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Clodhopper",
+  "prompt": "clodhopper: A small, wingless, four-limbed forager native to Naboo, with tough brown skin, a crimson neck and a pale beak. Clodhoppers breed rapidly and feed in swarms, using powerful clawed forelegs to forage and hop. Off-world export is forbidden after accidental introductions devastated farmland. It is NOT an Earth animal: a pale beak instead of a wide amphibian mouth; a crimson neck against the brown body; powerful clawed forelegs; tough brown skin rather than smooth moist amphibian skin. The north view is drawn at the same body height as the east view (measured: rescale). The south view stands with its feet on the same row as the east view's feet (measured: feet row +0.074 of canvas height from east's). Painterly vanilla RimWorld style, realistic, no outlines, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261123_1653",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/Clodhopper/Clodhopper"
+ },
+ {
+  "id": "arteval_RSW_Gizka_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gizka",
+  "prompt": "A small bipedal reptile, the gizka, drawn as a single sprite in painterly vanilla RimWorld style: realistic, with a clean dark outline, on a transparent background. The body is a horizontal theropod body: the head is carried forward and low, the torso is level and sits over strong digitigrade hind legs, and a thick, tapering balancing tail extends out behind the hips. The head is blunt with a beak-like snout, heavy fleshy cheeks, modest dull side-set eyes with natural eyelids and no glossy highlights, and a mouth line that turns down at the corners. A single backswept crest sits on the midline at the rear of the skull. The forelimbs are tiny and tucked against the chest. The skin is matte, scaled and earthy. Front view (eyes toward the viewer): the same horizontal body foreshortened toward the camera, head forward and low, the crest as one central point, the tail curving out visibly behind the hips. Side view: the full theropod profile with the head forward, the crest sweeping back, and the tail extending behind. Rear view, seen from behind: the haunches, the thick tail base and the crest end-on as one central point, with the eyes hidden. All views show the animal at one scale, with the same head width, torso depth, leg length and foot size, differing only by natural perspective. Reference: none; build the body from this description.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_CARTOON, F_INCONSISTENT, F_INCONSISTENT, F_SIZE_JUMP, STYLE_CARTOON, F_INCONSISTENT, CANON_MISS, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261123_1653",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.87,
+  "module": "walker",
+  "target_texpath": "RimStarWars/SWBestiary/Gizka/Gizka"
+ }
+]
