@@ -210,8 +210,9 @@ def decide(cfg, st, facts, now, account=(True, "")):
         return [{"item": "-", "decision": "blind", "why": "the ledger could not be read; nothing launches"}], []
     sti = st.setdefault("items", {})
     runs = facts.get("runs") or {}
-    live_total = sum(len((runs.get(i) or {}).get("live") or []) for i in items
-                     if (items[i] or {}).get("effect") or (items[i] or {}).get("shape_due"))
+    lane = facts.get("lane_items") or items         # --only narrows `items`; the slots are the whole lane's
+    live_total = sum(len((runs.get(i) or {}).get("live") or []) for i in lane
+                     if (lane[i] or {}).get("effect") or (lane[i] or {}).get("shape_due"))
     paused, pool = facts.get("paused"), facts.get("pool")
     max_runs = int(cfg.get("max_runs_per_item", 2))
     max_never = int(cfg.get("max_never_started", 2))
@@ -263,7 +264,10 @@ def decide(cfg, st, facts, now, account=(True, "")):
             ref = s.get("adopt_refused") or {}
             refused = bool(acc) and ref.get("fp") == [acc, it.get("events")]
             heavy = bool(acc) and "accept_s" in it and it["accept_s"] is None
-            if (refused or heavy) and it.get("shape_due") and not it.get("route"):
+            if it.get("route"):     # routed first: no script is adopted (or said refused) past an open route
+                r = it["route"]
+                put("routed", "routed to %s: %s; resumes on: %s" % (r.get("who"), r.get("ask"), r.get("resumes")))
+            elif (refused or heavy) and it.get("shape_due"):
                 shape = True        # its script cannot be its check, so a due item gets one from Shape
             elif refused:
                 put("adopt_refused", "attaching %s was refused: %s" % (acc, _one(ref.get("why"), 200)))
@@ -276,9 +280,6 @@ def decide(cfg, st, facts, now, account=(True, "")):
             elif acc:
                 put("adopt", "no outcome check; its ## verify runs %s, attached as its check this tick" % acc)
                 row["accept"] = acc
-            elif it.get("route"):
-                r = it["route"]
-                put("routed", "routed to %s: %s; resumes on: %s" % (r.get("who"), r.get("ask"), r.get("resumes")))
             elif it.get("shape_due"):
                 shape = True
             else:
@@ -341,12 +342,14 @@ def decide(cfg, st, facts, now, account=(True, "")):
             if last.get("unit") not in (run.get("ended") or []):
                 put("unseen", "run %s is neither live nor seen ended in the run records; no second launch" % last.get("unit"))
                 continue
-            if shape:
+            shapes = [a for a in done if a.get("kind") == "shape"]
+            if shape and shapes:
+                last = shapes[-1]
                 stop("Shape run %s ended and the item still has neither an outcome check nor a route" % last.get("unit"),
                      "read run %s's notes on %s, then shape it by hand (`rimflow shape %s --parts ...`), drop it, or "
                      "`list_dispatch.py clear %s --why ...` for one more Shape run" % (last.get("unit"), iid, iid, iid))
                 continue
-        if work:
+        if work and not shape:      # a Work run on an earlier, cleared check is no Shape run
             last = work[-1]
             if len(work) >= max_runs:
                 stop("%d Work runs (%s) ended and the check still fails; %d is the most" % (
@@ -755,7 +758,7 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         gone = []
         if only and facts.get("items") is not None:     # the Conductor's run-now: these items, every gate
             gone = [i for i in only if i not in facts["items"]]
-            facts = dict(facts, items={i: facts["items"][i] for i in only if i in facts["items"]})
+            facts = dict(facts, lane_items=facts["items"], items={i: facts["items"][i] for i in only if i in facts["items"]})
         rows, launches = decide(cfg, st, facts, now, account)
         rows += [{"item": i, "decision": "not_found",
                   "why": "not an open item with an outcome check, an acceptance script, a route, or due for Shape"}

@@ -145,6 +145,14 @@ def t_a_routed_item_needs_no_shape_run():
     chk(lambda: rows["A"]["decision"] == "routed" and not launches,
         "an item whose check fails while a part is routed reads routed, and no Work run launches (%s)"
         % rows["A"]["decision"])
+    acc = "src/x_accept.py"
+    for s, kw in (({}, {"accept_s": None}), ({}, {"accept_s": 1.0}),
+                  ({"adopt_refused": {"fp": [acc, 5], "why": "r"}}, {"accept_s": 1.0})):
+        rows, launches, _ = decide({"A": lane_it(accept=acc, events=5, route=R_OK, shape_due=False, **kw)},
+                                   st={"items": {"A": s}})
+        chk(lambda: rows["A"]["decision"] == "routed" and not launches,
+            "a routed item whose ## verify names an acceptance script reads routed, never adopted or refused (%s)"
+            % rows["A"]["decision"])
 
 
 def t_shaped_means_every_part_has_a_check_or_a_full_route():
@@ -313,6 +321,10 @@ def t_the_lane_launches_a_shape_run_through_every_gate():
     rows, launches, _ = decide(items, runs=runs)
     chk(lambda: rows["A"]["decision"] == "slots_full" and not launches,
         "live Shape runs fill the lane's slots (%s)" % rows["A"]["decision"])
+    rd = LD().tick(CFG, False, fx={"facts": lambda s: {"items": items, "runs": runs}, "account": lambda: (True, "")},
+                   now=NOW, only=["A"])
+    chk(lambda: rd["items"]["A"]["decision"] == "slots_full" and list(rd["items"]) == ["A"],
+        "a run-now of one due item meets the same full slots (%s)" % rd["items"]["A"]["decision"])
     got = []
     fx = {"launch": lambda iid, model, cap, brief, seat, mod: (got.append((iid, model, brief)) or (0, "DETACHED u9", "u9"))}
     rows, launches, st = decide({"A": lane_it()})
@@ -339,6 +351,16 @@ def t_a_shape_run_that_left_neither_check_nor_route_is_stopped():
     rows, launches, _ = decide({"A": lane_it()}, runs=runs, st=st)
     chk(lambda: rows["A"]["decision"] == "stopped" and not launches,
         "a LEFT OPEN note does not buy a second Shape run (%s)" % rows["A"]["decision"])
+    wk = [{"at": NOW - 9000, "unit": "u0", "kind": "work", "next": None}]
+    runs = {"A": {"live": [], "ended": ["u0", "u1"]}}
+    rows, launches, _ = decide({"A": lane_it()}, runs=runs, st={"items": {"A": {"attempts": [dict(wk[0])]}}})
+    chk(lambda: rows["A"]["decision"] == "shape" and launches == ["A"],
+        "a Work run is no Shape run: an item whose wrong check was cleared and that was named gets its Shape run (%s: %s)"
+        % (rows["A"]["decision"], rows["A"]["why"]))
+    rows, launches, _ = decide({"A": lane_it()}, runs=runs, st={"items": {"A": {"attempts": wk + [
+        {"at": NOW - 3600, "unit": "u1", "kind": "shape", "next": None}]}}})
+    chk(lambda: rows["A"]["decision"] == "stopped" and "u1" in rows["A"]["why"],
+        "and its one Shape run is still the most (%s)" % rows["A"]["why"])
 
 
 def t_a_large_shape_run_is_not_a_work_run():

@@ -10,3 +10,9 @@
 - A malformed `shape_from` raises in `due`, so the tick fails with a traceback.
 - `list_dispatch.brief_text` puts the check in single quotes; a check that holds single quotes prints a command line that
   does not run as written.
+- A part that holds both a check and a full route keeps the check; its route is dropped at the write and no note says so.
+- A due item whose script was refused is tried for adoption again after each new event on the item, also while its Shape run
+  is live; that tick reads `adopt_refused` instead of `live`.
+- A Work run that shapes the item again with the default `--size small` makes an earlier `large` Shape run count as a Work
+  run. No brief asks a Work run to shape.
+- A routed item with no check that another party claims reads `claimed`, not `routed`, until the lease ends.
