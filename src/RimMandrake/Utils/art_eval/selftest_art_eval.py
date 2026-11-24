@@ -34,6 +34,120 @@ def opus_reply(items, fail=(), unreadable=(), findings=(), overall="good"):
             "findings": list(findings), "overall": overall}
 
 
+def facing_rescale_checks():
+    from types import SimpleNamespace
+    from unittest.mock import patch
+
+    import auto_judge as AJ
+    import fauna_digest as DG
+    import fauna_drive as FD
+    from selftest_facing_truth_gate import Good, body
+
+    R, C = FD.R, FD.C
+    sys.path.insert(0, str(HERE.parent / "art"))
+    import artledger as AL
+    import facing_scale_lint as FSL
+
+    with tempfile.TemporaryDirectory() as temp:
+        td = Path(temp)
+        live = td / "src/Mod/Textures"
+        live.mkdir(parents=True)
+        raw = {"east": body(td / "east.png", 200, 80, 200),
+               "south": body(td / "south.png", 144, 128, 200),
+               "north": body(td / "north.png", 90, 80, 150)}
+        original = {f: C.sha256_file(p) for f, p in raw.items()}
+        spec = {"subject": "RM_Rescale", "candidate": "r1", "template": "creature", "module": "walker",
+                "images": dict(raw, scale=raw["east"]), "owner_kept": False}
+        flag = {"verdict": "FLAG", "plan": "blob",
+                "flags": [{"facing": "south", "key": "d_south", "value": 1.6, "band": [0.64, 1.35]}],
+                "fixes": {"south": {"action": "rescale", "scale": 0.625}, "north": {"action": "reseat"}}}
+        def judge(s, before, name, rev):
+            with patch.object(R, "banned_candidates", return_value=[]), patch.object(
+                    R, "facing_truth", side_effect=lambda x: before if x["images"] == s["images"]
+                    else FSL.truth(x["images"], "elevation", "blob")):
+                return R.evaluate(s, td / name, rev, P.load_policy(), {"max_regen_rounds": 3}, {}, {})
+
+        rev = Good()
+        rec = judge(spec, flag, "card", rev)
+        kept = judge(dict(spec, owner_kept=True), flag, "kept", Good())
+        check("facing rescale: repairable FLAG reaches Opus without a REGEN round",
+              rec["decision"] == "ACCEPT" and rev.asked == 1 and rec["regen"] is None and rec["round"] == 0,
+              rec["decision"])
+        check("facing rescale: owner-kept inputs retain their facing files",
+              all(kept["source_files"][f] == p for f, p in raw.items()), kept["source_files"])
+        check("facing rescale: source bytes remain intact", {f: C.sha256_file(p) for f, p in raw.items()} == original)
+
+        sources, judged = rec["source_files"], rec["source_sha256"]
+        with (td / "card/card.json").open() as fh:
+            card = json.load(fh)
+        check("facing rescale: card shows the repaired geometry and hashes the repaired source files",
+              judged == card["source_sha256"] and all(
+                  judged[f] != original[f] and judged[f] == C.sha256_file(sources[f])
+                  and FSL.measure_file(td / "card" / f"{f}.png")["bottom"] == FSL.measure_file(raw["east"])["bottom"]
+                  for f in ("south", "north"))
+              and abs(FSL.measure_file(td / "card/south.png")["h"] - FSL.measure_file(raw["east"])["h"]) < 0.02)
+
+        east = body(td / "tall_east.png", 200, 128, 200)
+        east_spec = dict(spec, images=dict(raw, east=east, scale=east,
+                                          south=body(td / "short_south.png", 90, 80, 200),
+                                          north=body(td / "seated_north.png", 90, 80, 200)))
+        east_rec = judge(east_spec, dict(flag, fixes={"east": {"action": "rescale", "scale": 0.625}}), "east_card", Good())
+        check("facing rescale: when the scale panel uses east directly it shows the repaired east",
+              east_rec["decision"] == "ACCEPT" and east_rec["source_files"]["scale"] == east_rec["source_files"]["east"]
+              and east_rec["source_files"]["east"] != east, east_rec["decision"])
+
+        base = {}
+        for f, p in raw.items():
+            dst = live / f"{f}.png"
+            dst.write_bytes(Path(p).read_bytes())
+            base[f] = str(dst)
+        (td / "RM_Rescale.spec.json").write_text(json.dumps(dict(spec, images=base)))
+        cmp_root = td / "fauna_cands/cmp"
+        cmp = cmp_root / "RM_Rescale_r1"
+        cmp.mkdir(parents=True)
+        (cmp / "compare.json").write_text('{"winner": "B", "install_b": true}')
+        accepted = dict(rec, decision="ACCEPT")
+        cmds = AJ.install_cmds(accepted, "fauna", spec="raw.spec.json", cmp_root=cmp_root)
+        compare_spec = Path(cmds[0][cmds[0].index("--cand") + 1]) if len(cmds) == 2 else None
+        check("facing rescale: head-to-head compares the repaired candidate instead of reusing a raw verdict",
+              compare_spec and json.loads(compare_spec.read_text())["images"]["south"] == sources["south"])
+        if compare_spec:
+            cmp = Path(cmds[0][-1])
+            cmp.mkdir(parents=True, exist_ok=True)
+            (cmp / "compare.json").write_text('{"winner": "B", "install_b": true}')
+
+        digest = td / "digest.md"
+        first = dict(accepted, _run="fauna_first", candidate=None)
+        with patch.object(DG, "ROOT", td), patch.object(R, "storage_root", return_value=td), \
+                patch.object(DG, "load_runs", return_value=[first, dict(accepted, _run="fauna_r1")]):
+            DG.main(["test", "--roster", spec["subject"], "--out", str(digest)])
+        check("facing rescale: digest reports the new candidate and its head-to-head",
+              "facing repair accepted as a new candidate" in digest.read_text() and "winner B" in digest.read_text())
+
+        # Feed the installer an ACCEPT with the expected repaired shas even when the runner still returns REGEN.
+        expected = C.sha256_file(sources["south"]) if sources["south"] != raw["south"] else "repaired-sha"
+        accepted["source_sha256"] = dict(judged, south=expected)
+        args = SimpleNamespace(specs=td, defname=spec["subject"], round=1, dry_run=True)
+        with patch.object(FD, "ROOT", td), patch.object(R, "storage_root", return_value=td), \
+                patch.object(FD, "latest", side_effect=lambda _d, cand: accepted if cand else None), \
+                patch.object(FD.RS, "resets", return_value={}), patch.object(FD.RS, "tag", return_value="r1"), \
+                patch.object(FD, "job_stem", return_value="render"), patch.object(
+                    FD, "shipping_png", side_effect=lambda job, _draw: raw[job.rsplit("_", 1)[1]]), \
+                patch.object(AL, "cached_index", return_value=SimpleNamespace(protected=lambda sha: [])), \
+                patch.object(FD.subprocess, "run", return_value=SimpleNamespace(returncode=0, stdout="", stderr="")) as install:
+            rc = FD.cmd_install(args)
+            copies = [td / c.args[0][c.args[0].index("--file") + 1] for c in install.call_args_list]
+            copied = {p.stem.removeprefix("r1_"): C.sha256_file(p) for p in copies}
+            check("facing rescale: fauna install accepts exactly the repaired source shas",
+                  rc == 0 and copied == {f: judged[f] for f in raw}, rc)
+            if rc == 0 and sources["south"] != raw["south"]:
+                install.reset_mock()
+                Path(sources["south"]).write_bytes(Path(raw["south"]).read_bytes())
+                rc = FD.cmd_install(args)
+                check("facing rescale: tampered repaired source is refused before any install",
+                      rc == 3 and not install.called, rc)
+
+
 def cap_checks():
     """ARTEVAL_FIX_GPT_IMAGE_CAP_DROPS_FLIGHT: a judge with an attachment cap must see EVERY frame (tiled) or refuse;
     run shirrel_flight_w76 sent GPT 3 of 12 flight frames through a silent [:8]."""
@@ -642,6 +756,8 @@ def main():
     finally:
         (C.build_card, C.source_files, P.load_template, P.card_facts, P.checklist_for, P.pre_route,
          R.banned_candidates, R.facing_truth) = saved
+
+    facing_rescale_checks()
 
     # --- shadow streaks
     s = json.loads(json.dumps(P.DEFAULT_SETTINGS)); s["shadow"]["creature"]["off_after_consecutive_clean"] = 3

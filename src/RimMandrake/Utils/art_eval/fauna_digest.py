@@ -17,6 +17,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import runner as R  # noqa: E402
+from fauna_drive import compare_dir  # noqa: E402
 
 ROOT = R.ROOT
 
@@ -71,7 +72,9 @@ def main(argv=None):
         n["judged"] += 1
         band = (first.get("opus") or {}).get("band", "-")
         ins = installs.get(d, [])
-        if first["decision"] == "ACCEPT":
+        if first["decision"] == "ACCEPT" and first.get("facing_candidate_spec"):
+            out = "facing repair accepted as a new candidate"
+        elif first["decision"] == "ACCEPT":
             out = "kept as installed (pipeline ACCEPT)"
             n["accepted"] += 1
         elif ins:
@@ -99,7 +102,7 @@ def main(argv=None):
             L.append(f"- candidate {c['candidate']} `{c['_run']}`: {c['decision']} - " + "; ".join(c["reasons"])[:300])
             if (cd / "facings.png").is_file():
                 L.append(f"  - saw `{win(cd / 'facings.png')}`")
-            cmpf = work / "fauna_cands" / "cmp" / f"{d}_{c['candidate']}" / "compare.json"
+            cmpf = compare_dir(work / "fauna_cands" / "cmp", c) / "compare.json"
             if cmpf.is_file():
                 cj = json.loads(cmpf.read_text())
                 L.append(f"  - head-to-head: winner {cj.get('winner')}, install_b {cj.get('install_b')} - {str(cj.get('reason'))[:300]}")

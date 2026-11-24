@@ -340,9 +340,11 @@ def install_cmds(rec: dict, kind: str, spec=None, cmp_root: Path | None = None, 
     m = CAND_ROUND.match(tag)
     if not m:
         return []
+    from fauna_drive import compare_dir
     out = []
-    cmp_dir = Path(cmp_root) / f"{rec['subject']}_{tag}"
+    cmp_dir = compare_dir(cmp_root, rec)
     if not compare_done(cmp_dir / "compare.json"):
+        spec = rec.get("facing_candidate_spec") or spec
         if not spec:
             return []
         out.append([sys.executable, HERE / "fauna_compare.py", rec["subject"], "--cand", spec, "--out", cmp_dir])
@@ -667,7 +669,8 @@ def post_run(run_recs, specs, log: Path, st: dict) -> tuple:
         vetoed = False
         for c in cmds:
             if kind == "fauna" and Path(str(c[1])).name == "fauna_drive.py":
-                cj = Path(cmp_root) / f"{r['subject']}_{r.get('candidate')}" / "compare.json"
+                from fauna_drive import compare_dir
+                cj = compare_dir(cmp_root, r) / "compare.json"
                 try:
                     reason = compare_veto(json.loads(cj.read_text()))
                 except (OSError, ValueError):

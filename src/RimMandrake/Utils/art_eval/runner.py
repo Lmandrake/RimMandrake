@@ -33,6 +33,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -406,8 +407,50 @@ def facing_truth(spec: dict) -> dict | None:
     return dict(FSL.truth(files, view, plan), plan=plan, view=view, texpath=tex, texpath_from=how)
 
 
+def facing_candidate(spec: dict, ft: dict, card_dir: Path) -> tuple[dict, Path]:
+    """Save corrected sources outside the card directory, which build_card recreates on every evaluation."""
+    sys.path.insert(0, str(HERE.parent / "art"))
+    import facing_scale_lint as FSL
+
+    out = Path(tempfile.mkdtemp(prefix=f".{card_dir.name}-facings-", dir=card_dir.parent))
+    imgs = dict(spec["images"])
+    with Image.open(imgs["east"]) as im:
+        east = FSL.silhouette(im)
+    if east is None:
+        raise ValueError("empty east silhouette before repair")
+    for f in sorted(ft["fixes"], key=lambda f: f != "east"):
+        fix = ft["fixes"][f]
+        with Image.open(imgs[f]) as im:
+            if FSL.silhouette(im) is None:
+                raise ValueError(f"empty {f} silhouette before {fix['action']}")
+            fixed = FSL.rescale(im, fix["scale"], east) if fix["action"] == "rescale" else FSL.reseat(im, east)[0]
+        sil = FSL.silhouette(fixed)
+        if sil is None:
+            raise ValueError(f"empty {f} silhouette after {fix['action']}")
+        dst = out / f"{f}.png"
+        fixed.save(dst)
+        imgs[f] = str(dst)
+        if f == "east":
+            east = sil
+    if "east" in ft["fixes"] and imgs.get("scale"):
+        draw = (spec.get("size") or {}).get("drawSize")
+        if imgs["scale"] == spec["images"]["east"]:
+            imgs["scale"] = imgs["east"]
+        elif P.canvas_rule(draw):
+            import scale_panel as SP
+            size = {"kind": "animal", "drawSize": draw if isinstance(draw, (list, tuple)) else (draw, draw)}
+            SP.render_panel(Path(imgs["east"]).read_bytes(), size, out / "scale.png", out / "scale_full.png")
+            imgs["scale"] = str(out / "scale.png")
+    candidate = dict(spec, images=imgs)
+    if ft.get("texpath"):
+        candidate["target_texpath"] = ft["texpath"]
+    path = out / "candidate.spec.json"
+    path.write_text(json.dumps(candidate, indent=1, default=os.fspath))
+    return candidate, path
+
+
 def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings: dict, living: dict,
-             rounds: dict) -> dict:
+             rounds: dict, *, facing_repaired: bool = False) -> dict:
     tpl = P.load_template(spec["template"])
     card = C.build_card(spec, card_dir)
     facts = P.card_facts(card)
@@ -455,11 +498,27 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
 
     # 0b. the facing truth: the gate's own deterministic check, before any model spends a call on the set
     ft = facing_truth(spec)
+    if facing_repaired and (ft is None or ft["verdict"] == "UNMEASURED"):
+        rec.update(decision="HOLD_ERROR", facing_truth=ft)
+        rec["reasons"].append(f"could not recheck repaired facings: {(ft or {}).get('why', 'facing truth unavailable')}")
+        return rec
     if ft:
         rec["facing_truth"] = ft
         if ft["verdict"] == "UNMEASURED":
             rec["reasons"].append(f"facing truth UNMEASURED ({ft.get('why')}) — judged by the models alone")
         elif ft["verdict"] == "FLAG":
+            fixes = ft["fixes"]
+            if (not facing_repaired and spec.get("owner_kept") is False and not spec.get("kept_install")
+                    and fixes and all(x["action"] in ("rescale", "reseat") for x in fixes.values())):
+                try:
+                    candidate, path = facing_candidate(spec, ft, card_dir)
+                except (OSError, ValueError) as e:
+                    rec.update(decision="HOLD_ERROR")
+                    rec["reasons"].append(f"facing repair failed: {e}")
+                    return rec
+                repaired = evaluate(candidate, card_dir, rev, policy, settings, living, rounds, facing_repaired=True)
+                repaired.update(facing_candidate_spec=str(path), facing_truth_before=ft)
+                return repaired
             decision, rnd = P.cap_regen("REGEN", rounds.get(card["subject"], 0), settings["max_regen_rounds"])
             rec["decision"], rec["round"] = decision, rnd
             said = "; ".join(f"{x['facing']} {x['key']} {x['value']} (band {x['band'][0]:.2f}..{x['band'][1]:.2f})"

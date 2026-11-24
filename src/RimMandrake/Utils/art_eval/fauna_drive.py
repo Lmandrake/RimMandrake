@@ -25,10 +25,12 @@ view are dropped), and the canvas follows the shipping rule (smallest power of t
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import subprocess
 import sys
+import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -380,6 +382,14 @@ def render_is_judged(judged_shas: dict, face: str, sha: str) -> bool:
     return bool(want) and want == sha
 
 
+def compare_dir(root: Path, rec: dict) -> Path:
+    out = Path(root) / f"{rec['subject']}_{rec['candidate']}"
+    if rec.get("facing_candidate_spec"):
+        shas = json.dumps(rec["source_sha256"], sort_keys=True).encode()
+        out /= hashlib.sha256(shas).hexdigest()[:16]
+    return out
+
+
 def kept_refusal(defname, newer, first):
     """Why an ACCEPTed redraw of owner-KEPT art must not be installed, or None. FURNACEBEAST_ART_INSTALL_OWNER_KEPT_IT
     (BENCH ruling on the owner's card 2026-10-23 06:42, "art-eval pipeline's redraws of kept art, shown to him after
@@ -424,13 +434,14 @@ def cmd_install(a):
     verdict = f"pipeline decision {(cand or {}).get('candidate')} ACCEPT at {(cand or {}).get('at')}"
     first = latest(a.defname, False)
     tg = RS.tag(a.defname, a.round)
-    cmpf = R.storage_root() / "fauna_cands" / "cmp" / f"{a.defname}_{tg}" / "compare.json"
+    cmp_root = R.storage_root() / "fauna_cands" / "cmp"
     if cand and cand.get("candidate") != tg:
         print(f"{a.defname}: newest candidate decision is for {cand.get('candidate')}, not {tg} - not installed")
         return 3
     if not (cand and cand["decision"] == "ACCEPT"):
         print(f"{a.defname}: candidate decision is {cand and cand['decision']} - not installed")
         return 3
+    cmpf = compare_dir(cmp_root, cand) / "compare.json"
     cmp = json.loads(cmpf.read_text()) if cmpf.is_file() else {}
     if not cmp.get("install_b"):
         print(f"{a.defname}: head-to-head says {cmp.get('winner')} (install_b={cmp.get('install_b')}) - not installed")
@@ -452,23 +463,30 @@ def cmd_install(a):
         print(refusal)
         return 3
     judged = (cand.get("source_sha256") or {})
+    repaired = cand.get("facing_candidate_spec")
+    sources = cand.get("source_files") or {}
+    what = "repaired source" if repaired else "render"
     dest = ROOT / "Transient" / "fauna_regen" / a.defname
     dest.mkdir(parents=True, exist_ok=True)
+    if repaired:
+        dest = Path(tempfile.mkdtemp(prefix=f"{tg}-facings-", dir=dest))
     # copy FIRST, then judge the copy: hashing the queue file and copying it later lets a re-render slip in between
     # and installs a picture nobody judged. A missing render installs nothing (a partial set mixes two creatures).
     locals_ = {}
     for fl in files:
         f = fl["face"]
-        src = shipping_png(f"{job_stem(a.defname, tg)}_{f}", (spec.get("size") or {}).get("drawSize"))
-        if not src:
-            print(f"{a.defname}: {f} has no render - nothing installed (a partial set would mix two pictures)")
+        src = sources.get(f) if repaired else shipping_png(
+            f"{job_stem(a.defname, tg)}_{f}", (spec.get("size") or {}).get("drawSize"))
+        if not src or (repaired and not Path(src).is_file()):
+            print(f"{a.defname}: {f} has no {what} - nothing installed (a partial set would mix two pictures)")
             return 1
         locals_[f] = dest / f"{tg}_{f}.png"
         shutil.copy(src, locals_[f])
         got = AL.sha256_file(locals_[f])
         if not render_is_judged(judged, f, got):
-            print(f"{a.defname}: {f} render {got[:12]} is not the picture judged "
-                  f"({str(judged.get(f))[:12]}) - re-rendered after judging, not installed")
+            why = "source changed" if repaired else "re-rendered after judging"
+            print(f"{a.defname}: {f} {what} {got[:12]} is not the picture judged "
+                  f"({str(judged.get(f))[:12]}) - {why}, not installed")
             return 3
     rc = 0
     done = []
