@@ -3,8 +3,10 @@
 // Every row reads the laid pieces through CordAudit (which poses from the decal alone) and carries a planted fault.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using RimMandrake.GimmeSomeSlack.Core;
 using RimMandrake.Shared.Slack;
 
@@ -60,6 +62,84 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         private static readonly DecalKind[] Strip = { DecalKind.PowerStrip, DecalKind.PowerStripDark };
         private static readonly DecalKind[] Box = { DecalKind.JunctionTape, DecalKind.JunctionTin };
 
+        private static void StripOverflow()
+        {
+            var w = new CordWorld(64, 64);
+            var junction = new Cell(50, 50);
+            for (int x = 45; x <= 55; x++) w.SetConduit(new Cell(x, 50));
+            for (int x = 12; x <= 22; x++) w.SetConduit(new Cell(x, 20));
+            void AddLamp(int z)
+            {
+                var lamp = new MachineInfo
+                {
+                    Id = "lamp" + z, Kind = MachineKind.Consumer, X0 = 50, Z0 = z, W = 1, H = 1,
+                    DefName = "StandingLamp", BaseDz = -0.25
+                };
+                lamp.Hookups = HookupPick.Pick(w, lamp, junction, c => c.Z == 50) ?? new List<Cell> { junction };
+                w.Machines.Add(lamp);
+            }
+            var b = new CordBuilder();
+            BuildOptions opt = Modern();
+            opt.AsyncLay = true;
+            List<LaidPiece> Settle()
+            {
+                var wall = Stopwatch.StartNew();
+                do
+                {
+                    List<LaidPiece> pieces = b.Build(w, opt, c => true);
+                    if (b.LastPending == 0 && !b.LayRunning) return pieces;
+                    Thread.Sleep(4);
+                } while (wall.Elapsed.TotalSeconds < 10);
+                return null;
+            }
+
+            AddLamp(48);
+            AddLamp(49);
+            AddLamp(51);
+            List<LaidPiece> before = Settle();
+            Check(before != null && Count(before, Strip) == 1, "the three-lamp Modern junction settles with one strip");
+            if (before == null) return;
+
+            AddLamp(52);
+            List<LaidPiece> after;
+            try { after = Settle(); }
+            catch (InvalidOperationException ex)
+            {
+                Check(false, "adding a fourth lamp threw " + ex.GetType().Name + ": " + ex.Message);
+                return;
+            }
+            Check(after != null && b.LastLayFault == null && b.LastGraphFault == null,
+                "the four-lamp Modern junction settles without a worker fault");
+            if (after == null) return;
+
+            const string junctionEnd = "junction:50,50";
+            List<LaidPiece> leads = after.Where(p => p.EndA == junctionEnd || p.EndB == junctionEnd).ToList();
+            List<CordDecal> strips = after.Where(p => p.Owner == junction).SelectMany(p => p.Decals)
+                .Where(d => Strip.Contains(d.Kind)).ToList();
+            bool complete = leads.Count == 6 && leads.All(p => p.Strands.Count > 0 && p.Strands[0].Pts.Count > 1) && strips.Count == 1;
+            Check(complete,
+                $"the overloaded Modern junction draws all six leads under one strip ({leads.Count} edge pieces, {strips.Count} strips)");
+            if (complete)
+            {
+                CordDecal strip = strips[0];
+                V2 Art(double x, double z) => strip.Pos + CordAudit.Rot(new V2(x, z) * strip.Scale, strip.Angle);
+                List<V2> tips = leads.Select(p => p.EndA == junctionEnd ? p.Strands[0].Pts.First() : p.Strands[0].Pts.Last()).ToList();
+                List<CordDecal> plugs = leads.SelectMany(p => p.Decals).Where(d => d.Kind == DecalKind.PlugTop).ToList();
+                Check(plugs.Count == 4 && CordBuilder.StripHeads.All(x => plugs.Count(d =>
+                    V2.Dist(d.Pos, Art(x, CordBuilder.StripHeadZ)) < 0.02) == 1) &&
+                    plugs.All(d => tips.Count(t => V2.Dist(t, d.Pos + CordAudit.Dir(d.Angle) * CordBuilder.PlugTopReach) < 0.03) == 1) &&
+                    tips.Count(t => V2.Dist(t, Art(CordBuilder.StripLeadX, CordBuilder.StripLeadZ)) < 0.03) == 1 &&
+                    tips.Count(t => V2.Dist(t, Art(CordBuilder.StripBarX, CordBuilder.StripBarZ)) < 0.03) == 1,
+                    "four leads reach distinct sockets, one reaches the captive lead, and the extra joins under the strip");
+            }
+
+            w.SetConduit(new Cell(23, 20));
+            List<LaidPiece> extended = Settle();
+            Check(extended != null && extended.Any(p => (p.EndA == "terminal:23,20" || p.EndB == "terminal:23,20") &&
+                p.Strands.Any(s => s.Pts.Count > 1)),
+                "the unrelated run redraws after the Modern junction overflows");
+        }
+
         public static void Run()
         {
             // every seed: one strip per junction, no box, every cord on a socket under its plug or on the lead, none on a bend
@@ -80,6 +160,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             }
             Check(faults == 0, $"{faults} junction faults over 24 seeds of T and +");
             Console.WriteLine($"  junction strips: {strips} over 24 seeds, {faults} faults");
+
+            StripOverflow();
 
             // a machine right beside a strip takes the strip's own lead: sockets facing it sent a through cord along its edge, which read as two cords into it
             {

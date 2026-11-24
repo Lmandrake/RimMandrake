@@ -2868,7 +2868,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 var arm = new Cell((int)ad.X, (int)ad.Z);
                 if (!g.MachineArmsOf(v).Contains(arm)) continue;
                 StripPose sp = PoseStrip(g, v, opt.Seed);
-                if (StripSocketFor(g, v, e, atA, sp) >= 0) continue;
+                if (StripSocketFor(g, v, e, atA, sp) != StripLeadSeat) continue;
                 var line = new List<V2>();
                 double reached = -1;
                 for (double t = 0; t <= StripNubReach; t += 0.05)
@@ -3353,7 +3353,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 CordNode nd = g.Nodes[v];
                 if (nd.Type != NodeType.Junction || opt.PileFor(nd.Cell) != PileArt.Strips) continue;
                 StripPose sp = PoseStrip(g, v, opt.Seed);
-                if (StripSocketFor(g, v, e, atA, sp) >= 0) continue;
+                if (StripSocketFor(g, v, e, atA, sp) != StripLeadSeat) continue;
                 seats.Add(new PlugSeat { LeadTip = sp.LeadTip, Out = sp.Along, Lead = true });
             }
             if (seats.Count == 0) return;
@@ -4094,13 +4094,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 arm == SocketArm ? SocketOfSocketArm : arm == FreeArm ? SocketOfFreeArm : arm == BackArm ? SocketOfBackArm : -1;
         }
 
-        /// <summary>One captive lead and one distinct socket per other graph end.
-        /// Different edges sharing a cardinal arm must not share that arm's plug.</summary>
+        private const int StripLeadSeat = -1, StripOverflowSeat = -2;
+
+        /// <summary>Reserve the captive lead and one distinct socket per graph end while sockets last.
+        /// Extra ends join under the strip body without a plug.</summary>
         private static int StripSocketFor(CordGraph g, VId v, CordEdge e, bool atA, StripPose sp)
         {
             var ends = IncidentEnds(g, v);
-            if (ends.Count > StripHeads.Length + 1)
-                throw new InvalidOperationException("Strip at " + g.Nodes[v].Cell + " needs another strip: all sockets are occupied.");
             CordEdge upstream = g.StripLeadOf(v);
             int lead = -1, wanted = -1;
             for (int k = 0; k < ends.Count; k++)
@@ -4116,30 +4116,28 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     V2 d = ArmDir(g, ends[k].Edge, ends[k].AtA);
                     if (new Cell((int)d.X, (int)d.Z) == sp.LeadArm) { lead = k; break; }
                 }
-            // Degree is at most five: bit masks preserve the same two-pass allocation.
-            int assigned = 0, used = 0, result = -1;
+            if (wanted == lead) return StripLeadSeat;
+            // Reserve the preferred sockets first. The ends still waiting take the free
+            // sockets in incident order, so count how many such ends precede this one.
+            int used = 0, waitingBefore = wanted - (lead >= 0 && lead < wanted ? 1 : 0);
             for (int k = 0; k < ends.Count; k++)
             {
-                if (k == lead) { assigned |= 1 << k; continue; }
+                if (k == lead) continue;
                 var q = ends[k];
                 V2 d = ArmDir(g, q.Edge, q.AtA);
                 int socket = sp.SocketFor(new Cell((int)d.X, (int)d.Z));
                 if (socket < 0 || (used & (1 << socket)) != 0) continue;
                 used |= 1 << socket;
-                assigned |= 1 << k;
-                if (k == wanted) result = socket;
+                if (k == wanted) return socket;
+                if (k < wanted) waitingBefore--;
             }
-            for (int k = 0; k < ends.Count; k++)
+            for (int socket = 0; socket < StripHeads.Length; socket++)
             {
-                if ((assigned & (1 << k)) != 0) continue;
-                int socket = 0;
-                while (socket < StripHeads.Length && (used & (1 << socket)) != 0) socket++;
-                if (socket == StripHeads.Length)
-                    throw new InvalidOperationException("Strip at " + g.Nodes[v].Cell + " needs another strip: all sockets are occupied.");
-                used |= 1 << socket;
-                if (k == wanted) result = socket;
+                if ((used & (1 << socket)) != 0) continue;
+                if (waitingBefore == 0) return socket;
+                waitingBefore--;
             }
-            return result;
+            return StripOverflowSeat;
         }
 
         private static Cell Turn(Cell d) => new Cell(-d.Z, d.X);                         // +90 degrees
@@ -4260,12 +4258,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 V2 ad = ArmDir(g, e, atA);
                 var arm = new Cell((int)ad.X, (int)ad.Z);
                 int socket = StripSocketFor(g, v, e, atA, sp);
-                if (socket < 0)
+                if (socket == StripLeadSeat)
                 {
                     // the strip's own lead: into the nub at its end, no plug
                     target = sp.LeadTip + sp.Side * (lat * 0.015);
                     arrive = -sp.Along;
                     straight = 0.1;
+                }
+                else if (socket == StripOverflowSeat)
+                {
+                    target = sp.At(StripBarX, StripBarZ);
+                    arrive = -ad;
                 }
                 else
                 {
@@ -5078,7 +5081,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             else if (nd.Type == NodeType.Junction && opt.PileFor(nd.Cell) == PileArt.Strips)
             {
-                // a cord into a junction strip plugs into its socket; the strip's own lead wears no plug
+                // Only an end with a socket wears a plug.
                 StripPose sp = PoseStrip(g, v, opt.Seed);
                 V2 ad = ArmDir(g, e, atStart);
                 int socket = StripSocketFor(g, v, e, atStart, sp);
