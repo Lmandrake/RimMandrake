@@ -19,8 +19,9 @@ design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md).
           see (killed, timed out, the CLI exiting with no result of its own, a launch that never started and has no
           retry left; system_cause): it is moved out the same
           way and counted on the mod's own `system_faults`, never on its trials. At SYSTEM_FAULT_LIMIT faults since
-          the last `clear` the mod reads `system_fault` (alarm OPS_MATURATION_SYSTEM_FAULT_LOOP): nothing launches, no
-          trial is spent, and `clear` (after reading the cause) resets the count.
+          the last `clear` the mod reads `system_fault` (alarm OPS_MATURATION_SYSTEM_FAULT_LOOP): none of its own work
+          launches and no trial is spent. The tick starts one repair run, whose end resets the count; `clear` (after
+          reading the cause) resets it by hand. A launch that never started adds no fault (form_fault).
 
 Four answers stay apart in every record and line: a run that FAILED on the mod's merits counts; a VOID run counts
 nothing (hand or system, with its why); ZERO is a measured count; UNMEASURED is a record that could not be read

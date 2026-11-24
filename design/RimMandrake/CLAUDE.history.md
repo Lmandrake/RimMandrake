@@ -219,3 +219,9 @@ Windows Codex route (`standing_rulings.md` §One Codex door, one sign-in). Do no
 
 Moved 2026-11-24 from `standing_rulings.md` §The bridge is passed through one file. The line there read: "The arena lane
 config key `owner_playing` is ignored and dropped." The arena lane is gone, so the line binds nothing now.
+
+## Two item paths that moved when the items closed (`standing_rulings.md` §Stops that the work did not cause)
+
+Moved 2026-11-24 from `standing_rulings.md`. The section named `infrastructure/state/items/RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP.md`
+and `infrastructure/state/items/RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME.md`. Both items are closed, so
+both files are in `infrastructure/state/items/closed/` now, and the section names them there.

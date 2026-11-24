@@ -1823,43 +1823,71 @@ card kept both gates and did not withdraw the whole-mod check."*
 ## Mod Design Versions use Semantic Versioning — owner, 2026-11-13
 
 *"Each mod now needs an official Version we are building towards. This is not a "game version" but just of that mod. It is not the "current snapshot in git hash" but rather the version of the mod's design we are aiming at."* · *"Semantic Versioning it is."*
-Every mod's Design Version is numbered `MAJOR.MINOR.PATCH` (semver.org), with this project's meaning:
+
+Every mod's Design Version is numbered `MAJOR.MINOR.PATCH` (semver.org). In this project the parts mean:
 - **MAJOR**: the mod's vision changed (a redesign).
-- **MINOR**: Divergent additions: work that extends or shifts the vision, filed for the next version.
+- **MINOR**: Divergent additions. Such work extends or shifts the vision. Divergent work is filed for the next version.
 - **PATCH**: Convergent polish and corrections after a version has passed.
-- A version before release is `0.x`; `1.0.0` is the version shipped to players. A judge round is a release candidate, `-rc.N`.
-The rule is user-level since the same day (*"Semantic Versioning should be a Lodestar-level, User-level addition to all current and future projects, along with the Convergent changes and Divergent changes that are part of the same design."*): `~/.claude/CLAUDE.md`, terms in `~/dev/Lodestar/LEXICON.md`. Here the unit is the mod. His card answers, 2026-11-13:
-- **Problem or Polish:** a refinement that fixes a Problem (a defect, or an experience a player would reject as strange or disappointing) stays in the current version; Polish goes to the mod's Polish list and is not part of passing. The Judge makes the call as best it can; the threshold is tuned with him.
-- **Asked at filing:** the current-or-next question is decided when the ticket is filed as active, not when it is picked up. Once filed as current it moves to the next version only by Judge deferral.
+- A version before release is `0.x`. `1.0.0` is the version shipped to players. A judge round is a release candidate,
+  `-rc.N`.
+
+The rule is user-level since the same day (*"Semantic Versioning should be a Lodestar-level, User-level addition to all current and future projects, along with the Convergent changes and Divergent changes that are part of the same design."*). The user-level rule is in `~/.claude/CLAUDE.md`. Its terms are in `~/dev/Lodestar/LEXICON.md`. Here the unit is the mod.
+
+His card answers, 2026-11-13, and his later rulings:
+- **Problem or Polish:** a Problem is a defect, or an experience that a player would reject as strange or disappointing.
+  - A refinement that fixes a Problem stays in the current version.
+  - Polish goes to the mod's Polish list. Polish is not part of passing.
+  - The Judge makes the call as best it can. The threshold is tuned with him. (In this repo the Conductor decides each
+    move to a Polish list; see "The Conductor decides both".)
+- **Asked at filing:** the question "current version or next version" is decided when the ticket is filed as active. The
+  question is not decided when someone picks the ticket up. A ticket once filed as current moves to the next version only
+  by Judge deferral.
 - **The Conductor decides both in this repo, and tells him after** (owner, by card Mon 2026-11-23 8:57 AM PST, item
-  `RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`). The card asked who decides Polish moves and
-  current-or-next version in RimMandrake. He picked *"Conductor decides, tells you (Recommended)"*: *"Why: your
-  2026-11-19 words say everything else, and you ruled you should not be the bottleneck. Buys: no filing waits for you;
+  `RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`). "Both" is the two questions of that card: who decides
+  Polish moves, and who decides current-or-next version, in RimMandrake. He picked *"Conductor decides, tells you
+  (Recommended)"*: *"Why: your 2026-11-19 words say everything else, and you ruled you should not be the bottleneck. Buys: no filing waits for you;
   each call reaches your daily digest with its reason. Costs: a mod's scope can drift before you see it; you correct
-  after the fact. Recommended: it matches your later words."* The Conductor logs each call with
-  `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the call and its reason>"`. No filing waits: a helper or a
-  Judge files the change with the class that it recommends and its evidence, and the Conductor decides. His user-level
-  rule for other projects ("ask at filing", `~/.claude/CLAUDE.md`) is unchanged.
-- **Judge deferral** of a bar is approved by the Conductor; he sees each one after.
-- **The mods in the Designer enter as 0.1.0** at today's bars, their open gaps sorted into Problem, Polish and next version.
-- **The Deep Desert Tribes are their own mod with their own Design Version** (card 2026-11-13 ~9:30 PM PST, "Own mod, own version, later", correcting the 4 PM "One mod, Tribes next version"): Pyrelands 0.1.0 is the biome alone and passes first. The Tribes mod (`src/RimUtinni/PyrelandsMechanics`, `mandrake.rut.pyrelandsmechanics`, design `design/concepts/PyrelandsMechanics`) gets its own Design Version 0.1.0, started only after the biome passes, and stays out of test mod lists until then. Design kept as written.
-- **A new mod's first Design Version is 0.1.0, locked by the pipeline without asking him** (§Evidence-for-Ask, below):
-  when its concept tree locks, `maturation_autonomy` writes VERSION.json `locked` 0.1.0, `locked_by: pipeline`, and a
-  delegated record for his digest. It asks him only when it finds evidence against 0.1.0, quoted on the card.
+  after the fact. Recommended: it matches your later words."*
+  - The Conductor logs each call with
+    `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the call and its reason>"`.
+  - No filing waits. A helper or a Judge files the change with the class that it recommends and its evidence. The
+    Conductor decides.
+  - His user-level rule for other projects ("ask at filing", `~/.claude/CLAUDE.md`) is unchanged.
+- **Judge deferral** of a bar is approved by the Conductor. He sees each one after.
+- **The mods in the Designer enter as 0.1.0** at today's bars (the bars of 2026-11-13). Their open gaps are sorted into
+  Problem, Polish and next version.
+- **The Deep Desert Tribes are their own mod with their own Design Version** (card 2026-11-13 ~9:30 PM PST, "Own mod,
+  own version, later", correcting the 4 PM "One mod, Tribes next version").
+  - Pyrelands 0.1.0 is the biome alone and passes first.
+  - The Tribes mod is `src/RimUtinni/PyrelandsMechanics`, `mandrake.rut.pyrelandsmechanics`, design
+    `design/concepts/PyrelandsMechanics`. The Tribes mod gets its own Design Version 0.1.0.
+  - The Tribes mod is started only after the biome passes. Until then, the Tribes mod stays out of test mod lists. The
+    design is kept as written.
+- **A new mod's first Design Version is 0.1.0, locked by the pipeline without asking him** (§Evidence-for-Ask, in this
+  file).
+  - When the mod's concept tree locks, `maturation_autonomy` writes VERSION.json `locked` 0.1.0, `locked_by: pipeline`,
+    and a delegated record for his digest.
+  - The pipeline asks him only when it finds evidence against 0.1.0. The card quotes that evidence.
 - **Each passed version is tagged** (owner, 2026-11-20, about 4:10 PM PST: *"Make sure we TAG each finished version
-  of a mod so we can easily come precisely back to it, please. This should become policy."*): every version that passes
-  gets the annotated git tag `mod/<Mod>/v<MAJOR.MINOR.PATCH>` (for example `mod/GimmeSomeSlack/v0.1.0`) on the commit
-  that records its pass, and the tag is pushed to origin. To return to a version, check out its tag
-  (`git checkout mod/<Mod>/v<version>`, read-only, or `git switch -c <branch> mod/<Mod>/v<version>` to work from it).
-  The pipeline does it: `maturation.py advance <Mod> passed` lands the pass files with `./publish`, tags the PUBLISHED
-  commit and pushes the tag. A tag that fails is loud (`PASSED BUT NOT TAGGED`, exit 5) and is retried with
-  `python3 src/RimMandrake/rimflow/maturation.py tag-pass <Mod>`; the pass itself stands. A tag name that is already
-  taken refuses the pass before anything is written. A tag push whose commit is already on origin/main passes the
-  ledger hook (`.claude/hooks/block_ledger_lint.py`). The seat and role clones keep the tags: `./publish` and `./sync`
-  fetch with git's default tag following, and `mirror` fetches `refs/tags/*`. The pool clones and their store
-  (`scratch_clone.py`) fetch with `--no-tags`, so a tag made after a pool clone was cut is not in it: run
-  `git fetch origin tag mod/<Mod>/v<version>` there first. Page: `design/specs/2026-11-20-maturation-pass-tag/boundary.md`.
-His words in full and the build plan (lock, next-version file, pass record), still a draft: `design/specs/2026-11-13-mod-design-versions.md`.
+  of a mod so we can easily come precisely back to it, please. This should become policy."*).
+  - Every version that passes gets the annotated git tag `mod/<Mod>/v<MAJOR.MINOR.PATCH>`. Example:
+    `mod/GimmeSomeSlack/v0.1.0`. The tag is on the commit that records the version's pass. The tag is pushed to origin.
+  - To return to a version, check out its tag (`git checkout mod/<Mod>/v<version>`, read-only). To work from it, use
+    `git switch -c <branch> mod/<Mod>/v<version>`.
+  - The pipeline does it. `maturation.py advance <Mod> passed` lands the pass files with `./publish`, tags the PUBLISHED
+    commit and pushes the tag.
+  - A tag that fails is loud (`PASSED BUT NOT TAGGED`, exit 5). Retry it with
+    `python3 src/RimMandrake/rimflow/maturation.py tag-pass <Mod>`. The pass itself stands.
+  - A tag name that is already taken refuses the pass before anything is written.
+  - A tag push whose commit is already on origin/main passes the ledger hook (`.claude/hooks/block_ledger_lint.py`).
+  - The seat and role clones keep the tags. `./publish` and `./sync` fetch with git's default tag following. `mirror`
+    fetches `refs/tags/*`.
+  - The pool clones and their store (`scratch_clone.py`) fetch with `--no-tags`. So a tag made after a pool clone was cut
+    is not in that clone. There, run `git fetch origin tag mod/<Mod>/v<version>` first.
+  - Page: `design/specs/2026-11-20-maturation-pass-tag/boundary.md`.
+
+His words in full and the build plan (lock, next-version file, pass record) are in
+`design/specs/2026-11-13-mod-design-versions.md`. The plan is still a draft. The numbering is his ruling.
 
 ## A limit from before the Maturation Pipeline is suspect: act, or ask him first — owner, 2026-11-17
 
@@ -1867,22 +1895,25 @@ His words in full and the build plan (lock, next-version file, pass record), sti
 me we can't do things when it's from pre-maturation pipeline decisions. Those old decisions are unlikely to be relevant
 anymore. At least suspect it and ask before refusing."* (Tue 2026-11-17 ~11:00 AM PST.)
 
-The incident: SteveDesktop's queue refused Pyrelands and Graffiti and the steward reported `IDLE_BY_RULE`, all on his
-2026-11-14 card "Pipeline tests only" (spec 18c), a rule set while the pipeline (spec
-`design/specs/2026-11-13-maturation-pipeline.md`) was still being specified. That limit is deleted
-(`RIMMANDRAKE_DROP_STEVEDESKTOP_PIPELINE_ONLY_LIMIT`).
+The incident: SteveDesktop's test queue refused Pyrelands and Graffiti. The steward of that queue reported
+`IDLE_BY_RULE`. Both came from his 2026-11-14 card "Pipeline tests only" (decision 18c of the pipeline spec). That card
+was answered while the pipeline (spec `design/specs/2026-11-13-maturation-pipeline.md`) was still being specified. That
+limit is deleted (`RIMMANDRAKE_DROP_STEVEDESKTOP_PIPELINE_ONLY_LIMIT`).
 
 The rule, for every agent:
-- A limit, gate or refusal that comes from a decision made before the Maturation Pipeline is suspect. Do not refuse on
-  it: take the action, or ask him first, quoting the old decision's date and text.
-- Tag such a limit "old decision (date)" in any "it cannot be done" claim, and challenge it before our own newer rules.
-- What it does not change: his rulings made for the pipeline or after it (his 2026-11-16 hold on six biome mods, no
-  flyer flight test, the machine-safety brakes); a limit he re-confirms becomes a new decision with today's date.
+- A limit, gate or refusal that comes from a decision made before the Maturation Pipeline is suspect. Do not refuse an
+  act because of such a limit. Take the action, or ask him first with the old decision's date and text.
+- In any "it cannot be done" claim, tag such a limit "old decision (date)". Challenge the old decision before you
+  challenge our own newer rules.
+- The rule does not change his rulings made for the pipeline or after it. Examples: his 2026-11-16 hold on six biome
+  mods, no flyer flight test, the machine-safety brakes.
+- A limit that he confirms again becomes a new decision with that day's date.
 
 ## Stops that the work did not cause: system failures, pipeline defects and asks for the owner
 
-Three cases, each with his words and its full rule: §No trial is spent by a system failure, §The pipeline fixes its own
-defects and §Evidence-for-Ask. A refusal at a gate is §A fault of form is repaired where it is found.
+This section has three cases: §No trial is spent by a system failure, §The pipeline fixes its own defects and
+§Evidence-for-Ask. Each case holds his words and its full rule. A refusal at a gate is in §A fault of form is repaired
+where it is found.
 
 ### No trial is spent by a system failure — owner, 2026-11-18
 
@@ -1892,24 +1923,40 @@ statistical measurements based on failed system calls or behavior. You know that
 to indicate this to it. And NEVER tell me "I can't that's frozen" or "it's a write only ledger" or bullshit like
 that."*
 
-- **No trial, turn, look or cycle is spent** by a run that died of a system cause (killed, timed out, the CLI exiting
-  with no result of its own, a launch that never started) or that he or the Conductor stopped or declares void. A mod's
-  real non-pass still counts. "Failed", "void", "zero" and "could not look" stay four answers in every record and line.
-- **Automatic:** the tick classes such a run `void_system` from its record's own result (`run_void.py`) and moves its
-  book entries to the mod's `voided` list; its faults go on the mod's own count, and at 3 since the last `clear` the mod
-  reads `system_fault` (alarm `OPS_MATURATION_SYSTEM_FAULT_LOOP`): nothing launches, no trial is spent.
+- **No trial, turn, look or cycle is spent** by these runs:
+  - a run that died of a system cause: killed, timed out, the CLI exiting with no result of its own, or a launch that
+    never started;
+  - a run that he or the Conductor stopped or declares void.
+- A mod's real non-pass still counts. "Failed", "void", "zero" and "could not look" stay four answers in every record
+  and line.
+- **Automatic:** the tick classes such a run `void_system` from its record's own result (`run_void.py`). The tick's
+  books for the mod are in its `state.json`. The tick moves the run's entries in those books to the mod's `voided`
+  list.
+  - The faults of a run that died go on the mod's own count. A launch that never started is a
+    fault of form and adds no fault (§A fault of form is repaired where it is found). One exception: its repair run
+    ended, and the same refusal came back. That counts once.
+  - At 3 faults since the last `clear`, the mod reads `system_fault` (alarm `OPS_MATURATION_SYSTEM_FAULT_LOOP`). Then
+    none of the mod's own work launches, and no trial is spent. The tick starts one repair run. When that run ends, the
+    tick resets the count, as a `clear` does. A killed repair run resets nothing.
+  - After two repair runs since the last hand `clear`, the tick starts no more. Then the mod's row names the Conductor.
 - **By hand, one verb:** `python3 src/RimMandrake/rimflow/maturation_dispatch.py void <unit>... | --item <ID> | --mod
-  <Mod> --since <time> --why "..." [--owner-said "..."]`; `unvoid <unit> --why "..."` reverses it; `voids` lists every
-  line. It takes the Designer runs and judges the run started, gives back a coverage look it applied (the grant stands
-  again, the earlier verdict file is put back, the void one kept as evidence), and lands the files. An unknown run and
-  a double void are refused. An append-only file is no excuse: the fold of its lines is what every reader honours.
+  <Mod> --since <time> --why "..." [--owner-said "..."]`.
+  - `unvoid <unit> --why "..."` reverses the void. `voids` lists every line.
+  - A void takes with it the Designer runs and the judges that the run started. A void also gives back a coverage look
+    that the run applied. A coverage look is one look of the Designer's coverage judge that `coverage_judge.py
+    release` granted. Then the granted look can be used again, and the earlier verdict file is put back. The void
+    verdict is kept as evidence. The verb lands the files.
+  - The verb refuses an unknown run and a run that is already void.
+  - An append-only file is no excuse. Every reader honours the sum of the void and unvoid lines, read in order.
 - **Void spend is off the ceiling** (his card, 2026-11-18 11:06 AM PST, "Does not count (Recommended)":
-  `design/specs/2026-11-18-pipeline-control-surface/03-merged.md`, Rulings 1): the stage ceiling counts what the mod
-  cost on its merits; a void run's spend stays measured and is shown apart as void spend (`void_usd`), and the
-  system-fault alarm catches a fault loop. The old killed-run refund is retired with it (nothing is charged to give
-  back). A ceiling release a **void_system** run spent is given back (the Conductor's decision of 2026-11-18 1:05 PM
-  PST, delegated by evidence-for-ask, in his digest; he may overrule); a hand void leaves the release spent.
-- Census of every counter and what is not yet reached: `design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md`.
+  `design/specs/2026-11-18-pipeline-control-surface/03-merged.md`, Rulings 1).
+  - The stage ceiling counts what the mod cost on its merits. A void run's spend stays measured and is shown apart as void
+    spend (`void_usd`). The system-fault alarm catches a fault loop.
+  - The old killed-run refund is retired with it. Nothing is charged, so there is nothing to give back.
+  - A ceiling release that a **void_system** run spent is given back (the Conductor's decision of 2026-11-18 1:05 PM PST,
+    delegated by evidence-for-ask, in his digest; he may overrule). A hand void leaves the release spent.
+- The census of every counter, and of what is not yet reached:
+  `design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md`.
 
 ### The pipeline fixes its own defects — owner, 2026-11-15
 
@@ -1920,24 +1967,32 @@ ticket for someone else, it's a ticket to file then do yourself."* (on the ledge
 `RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP`, file event 2026-11-15T20:42:04Z and ruling note
 2026-11-15T20:46:53Z (tsn 1794775613233596209).
 
-The rule, for every pipeline agent and program (the tick `maturation_dispatch`, `maturation_autonomy`, the steward,
-a judge, a fixer, a builder, the Designer's runs, a Conductor helper):
-- A defect found in the **pipeline itself** (its code, tools, records, tests, status page) with a clear cause and a
-  known fix: file the ticket with its acceptance test, then do the fix in the same run, tests first; publish; say so in
-  the report (ticket id, sha). A program does the fix itself when it is deterministic and logs it; when it needs a
-  model, the program files the ticket and launches a fixer on it itself, inside its own caps.
-- Hand off only with the evidence that §Touching code has a cost; if you see it, do it lists: the fix is not known,
-  is outside the agent's tools (it needs the game and the agent holds no bridge; it needs the owner under
-  `delegation_policy.md` §2), would change a north-star bar, or touches files another live run holds. Then the ticket
-  carries the evidence and what was tried. A defect must pass that section's test 1 (worth the touch) before anyone
-  fixes or files it.
-- A workaround by hand without the permanent fix is not allowed. Cleaning up after the pipeline and leaving it alone is
-  the thing he ruled against.
-- What it does not change: a MOD's gaps (its bars, its build work, its findings) keep going through the stages as
-  designed; this rule is about the pipeline's own machinery. Ledger calls made under it: `--per-ruling
+The rule is for every pipeline agent and program: the tick `maturation_dispatch`, `maturation_autonomy`, the steward
+(the run that `maturation_autonomy` starts to do the Conductor's old hand step on a mod), a judge, a fixer, a builder,
+the Designer's runs, a Conductor helper.
+- The rule covers a defect found in the **pipeline itself**: its code, tools, records, tests, status page. The defect has
+  a clear cause and a known fix.
+  - File the ticket with its acceptance test. Then do the fix in the same run, tests first.
+  - Publish. Say so in the report (ticket id, sha).
+  - When the fix is deterministic, a program does the fix itself and logs it. When the fix needs a model, the program
+    itself files the ticket and launches a fixer on the ticket, inside its own caps.
+- Hand off only with the evidence that §Touching code has a cost; if you see it, do it lists under its test 2. The ones
+  that come up most here:
+  - the fix is not known;
+  - the fix is outside the agent's tools (it needs the game and the agent holds no bridge, or it needs the owner under
+    `delegation_policy.md` §2);
+  - the fix would change a north-star bar;
+  - the fix touches files that another live run holds.
+- Then the ticket carries the evidence and what was tried.
+- A defect must pass test 1 of that section (worth the touch) before anyone fixes or files it.
+- A workaround by hand without the permanent fix is not allowed. He ruled against cleaning up after the pipeline and
+  leaving it alone.
+- The rule does not change how a MOD's gaps (its bars, its build work, its findings) are handled. Those gaps keep going
+  through the stages as designed. The rule is about the pipeline's own machinery.
+- Ledger calls made under the rule: `--per-ruling
   RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP --why "delegated: self-fix: <what and why>"`.
 - Where the tick still hands a line to the Conductor, and whether it self-fixes now: the prose of
-  `infrastructure/state/items/RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP.md`. In the spec:
+  `infrastructure/state/items/closed/RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP.md`. In the spec:
   `design/specs/2026-11-13-maturation-pipeline.md` §5 "The pipeline fixes its own defects".
 
 ### Evidence-for-Ask — owner, 2026-11-15
@@ -1949,18 +2004,24 @@ This is a RimMandrake-wide ruling for all pausing agents. Let's call it the Evid
 ~11:40 AM PST.)
 
 The rule, for every agent and role that can pause for him:
-- Take the obvious answer instead of pausing. Log it as a delegated call: `--per-ruling
+- Take the obvious answer instead of pausing. Log the answer as a delegated call: `--per-ruling
   RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call, and why
-  nothing argues against it>"`. It reaches his daily digest (`delegated_digest.py`). It is ours, never stored as his.
-- Pause only with concrete evidence against the obvious answer (a record, a measurement, his earlier words), and put
-  that evidence on the ask. An ask without it is not sent.
-- What it does not change: the five acts that stay his (§Only five acts stay his: his live walk among them) still wait
-  for him, and a quotation of his words is written only from his words; each ask now carries its evidence. Every
-  other card is reviewed by the Conductor first and acted on when nothing argues against the obvious answer.
-- In code: `maturation_autonomy.version_evidence` / `autolock_and_land` (Design Version 0.1.0); `designer_stage`
-  accepts a root or a flagship pick approved this way (`delegated: "evidence-for-ask"`, `CONDUCTOR:<tsn>`), and an ask
-  whose `evidence_against` is filled still waits. The other places that still pause, with the obvious answer for each:
-  `infrastructure/state/items/RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME.md`.
+  nothing argues against it>"`. The call reaches his daily digest (`delegated_digest.py`). The call is ours. Never store
+  the call as his.
+- Pause only with concrete evidence against the obvious answer (a record, a measurement, his earlier words). Put that
+  evidence on the ask. An ask without it is not sent.
+- The rule does not change the five acts that stay his (§Only five acts stay his). His live walk is one of them. Those
+  acts still wait for him. Each ask about one of them now carries its evidence.
+- Write a quotation of his words only from his words.
+- The Conductor first reviews every card that is not about one of the five acts. When nothing argues against the obvious
+  answer, the Conductor acts on it.
+- In code:
+  - `maturation_autonomy.version_evidence` / `autolock_and_land` (Design Version 0.1.0);
+  - `designer_stage` accepts a concept's root (`root` of its `record.json`) or its flagship pick (the choice of showcase
+    scene 1) approved this way
+    (`delegated: "evidence-for-ask"`, `CONDUCTOR:<tsn>`). An ask whose `evidence_against` is filled still waits.
+- The other places that still pause, with the obvious answer for each:
+  `infrastructure/state/items/closed/RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME.md`.
 
 ## A fault of form is repaired where it is found; it never stops the work — owner, 2026-11-20
 
@@ -1974,31 +2035,41 @@ consequences for trivialities. What is going so wrong here?"* (Fri 2026-11-20 ab
 file event of item `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES`, 2026-11-21T08:28:51Z.)
 
 Definitions:
-- **A fault of form** is a fault in how work is presented: a name, a flag, a missing paste, a missing section, a stale
-  stamp, a file that a tool can make, a format, a count of the wrong slots.
-- **A fault of substance** is a fault in the work: the mod is wrong, the test is wrong, the run died, the machine or an
-  account failed without a plan. Waits that end by themselves (a planned account drain, a held bridge, his hold on a
-  game) are neither: they wait, and count nothing.
+- **A fault of form** is a fault in how work is presented. Examples: a name, a flag, a missing paste, a missing section, a
+  stale stamp, a file that a tool can make, a format, a count of the wrong slots.
+- **A fault of substance** is a fault in the work. Examples: the mod is wrong, the test is wrong, the run died. A
+  machine or an account that failed without a plan is also an example.
+- **A wait** ends by itself (a planned account drain, a held bridge, his hold on a game). A wait is neither kind of fault.
+  The work waits, and the wait counts nothing.
 
 The two repair routes, in this order:
 1. **Repair and continue.** The tool repairs the input itself, prints one `NOTE (form, repaired): <what> -> <how>`
-   line, records the note on its event, and the act goes on (exit 0).
-2. **Return to the agent.** When only the agent can repair it, the refusal reads `REFUSED (form): <what>` with a
-   `REPAIR: <the command, or the text to add>` line. The agent's run does the repair and repeats the act at once, with
-   its context. Every launched brief carries the line: "A refusal that names its repair is an instruction: do the
-   repair and repeat the act; never stop or hand off for it."
+   line and records the note on its event. The act goes on (exit 0).
+2. **Return to the agent.** This route is for a fault that only the agent can repair. The refusal reads
+   `REFUSED (form): <what>` with a `REPAIR: <the command, or the text to add>` line. The agent's run does the repair and
+   repeats the act at once, with its context. Every launched brief carries the line: "A refusal that names its repair is
+   an instruction: do the repair and repeat the act; never stop or hand off for it."
 
-For a program caller (the tick): it never sends a refused input again unchanged. It applies the named repair itself,
-or it launches one small repair run with the refusal as its brief, and the mod's line reads `repairing: <what>`. A
-refusal of form never counts as a system fault, pauses a mod, voids a run, spends a trial or waits for a hand. What
-happens when a repair did not hold is promised and tested in the boundary page below.
+For a program caller (the tick):
+- The tick never sends a refused input again unchanged. The tick applies the named repair itself, or launches one small
+  repair run with the refusal as its brief. Meanwhile the mod's line reads `repairing: <what>`.
+- A refusal of form never counts as a system fault, pauses a mod, voids a run, spends a trial or waits for a hand.
+- The boundary page (named below under "Mechanism") promises and tests what happens when a repair did not hold.
 
-The fault loop counts substance only. Every refusal that reaches it carries a class; an unclassed one counts as form
-and is logged for the census, so a new gate cannot bring the old behaviour back unseen. When the loop trips on
-substance, it starts the repair itself (the boundary page below).
+The fault loop is the count of system faults that stops a mod's launches. See §No trial is spent by a system failure. The
+fault loop counts substance only: a run that started and died, and a repair that did not hold. A launch refusal is
+either a wait or a fault of form. There is no table of refusal
+kinds, so a new gate cannot bring the old behaviour back unseen. When the loop trips on substance, the tick starts the
+repair itself (same boundary page).
 
-What still refuses, because it is substance by his standing rulings: his five acts, his holds, his OWNER bridge hold,
-a `./pipe` stop, the per-run spend stop he ordered, the account order and leave lines, and the machine-safety brakes.
+These still refuse, because each is substance by his standing rulings:
+- his five acts;
+- his holds;
+- his OWNER bridge hold;
+- a `./pipe` stop;
+- the per-run spend stop he ordered (§No launched agent is told its spend);
+- the account order and leave lines;
+- the machine-safety brakes (§No limit without the danger it guards lists them).
 
 Mechanism: `src/RimMandrake/rimflow/form_fault.py`. Promises and their tests:
 `design/specs/2026-11-21-repair-at-the-refusal/boundary.md`. The census of refusal sites:
@@ -2009,20 +2080,25 @@ Mechanism: `src/RimMandrake/rimflow/form_fault.py`. Promises and their tests:
 *"I need you to make the system less fussy about user comments. When I say something I don't want to hear it sounded
 like a question or that the card needed a user statement. You work for me. The conductor works for me. It does things
 for me. The system should not be refusing needed items. The system should not be in our way. Make it so."* (Fri
-2026-11-20 ~5:48 PM PST.) Item `RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_ALREADY_SPOKE`; census of every site:
-`D:\ClaudeWork\rimmandrake\conductor\night_20261120\owner_words_gates_census.md`; page:
+2026-11-20 ~5:48 PM PST.) Item `RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_ALREADY_SPOKE`. Census of every site:
+`D:\ClaudeWork\rimmandrake\conductor\night_20261120\owner_words_gates_census.md`. Page:
 `design/specs/2026-11-20-owner-words-not-refused/boundary.md`.
 
-- When he states something in the Conductor window, or the Conductor acts for him, no gate, hook or tool refuses the
-  act for lack of a quote, a card text, a card answer or a provenance flag of a particular kind. The act goes through
-  and is recorded. A missing piece of provenance becomes a recorded note or a self-repair.
+- This rule applies when he states something in the Conductor window, or when the Conductor acts for him. Then no gate,
+  hook or tool refuses the act for a missing quote, card text or card answer. None refuses the act for lack of a
+  provenance flag of a particular kind.
+  The act goes through and is recorded. A missing piece of provenance becomes a recorded note or a self-repair.
 - `--owner-said` records his words as he typed them. A quote that ends in "?" is recorded; a bare "yes" is recorded
   (add `--why` to name what he agreed to).
-- What each gate now does instead of refusing, with its test: the page above
-  (`selftest_owner_words_not_refused.py`). The gates themselves: the census above.
-- **What stays:** his five acts (§Only five acts stay his); his OWNER bridge hold and its 45 minutes; his mod holds
-  for helpers; `./pipe` stops. No helper, tick or other seat gains his authority or the Conductor's. Nobody writes
-  words he did not say into `--owner-said`: an act without his quote is recorded with `--per-ruling` or `--why`.
+- What each gate now does instead of refusing, with its test: that page (`selftest_owner_words_not_refused.py`). The
+  gates themselves: that census.
+- **What stays:**
+  - his five acts (§Only five acts stay his);
+  - his OWNER bridge hold and its 45 minutes after his last deliberate interaction;
+  - his mod holds for helpers;
+  - `./pipe` stops.
+- No helper, tick or other seat gains his authority or the Conductor's. Nobody writes
+  words he did not say into `--owner-said`. An act without his quote is recorded with `--per-ruling` or `--why`.
 
 ### A refusal carries its path to pass; a criterion nothing could pass is an alarm — owner, 2026-11-12
 
@@ -2036,78 +2112,107 @@ grounds for immediate, swift action. Then the item is immediately rejudged once 
 Agreed? This is VITAL. No more repeated loops for the sake of ceremony! No more broken acceptance tests causing judges to
 destroy my account uselessly."*
 
-- **Every refusal is a record** (`refusal_contract.py check`): its evidence, what it shows, `would_pass`, the
-  `smallest_fix` (attainable, cost) and a `criterion_verdict` on the clause itself. A refusal without them is refused
-  itself: re-asked once, and never counted against the item or sent back to the builder. Two malformed answers mark the
-  brief FAILED.
+- **Every refusal is a record** (`refusal_contract.py check`). The record holds its evidence and what the evidence
+  shows. The record also holds `would_pass`, the `smallest_fix` (attainable, cost) and a `criterion_verdict` on the clause
+  itself.
+  - A refusal without them is refused itself. The judge is asked again once. Such a refusal never counts against the item
+    and never goes back to the builder.
+  - Two malformed answers mark the brief FAILED.
 - **A flawed or unattainable criterion goes to the neutral fixer** (`roles/criteria_fixer.md`, `refusal_contract.py
-  repair`), never to the builder; `diffguard` refuses any undeclared loosen, and an owner bar is never repaired: it is a
-  card for him.
-- **Only a CALIBRATED brief's refusal has a consequence** (`infrastructure/state/judge_calibration.json`); an edit to a
-  brief resets it to UNTESTED, and an UNTESTED brief's refusal is stored and shown only.
-- **Loops stop:** the third refusal of one clause triggers repair; the fourth refused verdict on one item, or a family
-  refusing most of what it sees, raises `REFUSAL_NOTHING_COULD_EVER_PASS` to the Conductor. The Designer's coverage
-  judge stops at its second not_covered, parks on a second refusal while he is away, and parks at twice the item's cap.
-- **A judge does not grade its own criterion** (owner 2026-11-16, below): the Contagion judge marked all 25 of its own
-  criteria `sound`. The coverage judge's `criterion_verdict` is kept as its opinion (`judge_criterion_verdict`); the
-  binding one comes from a second reader that did not judge (`coverage_judge.second_read`, one fresh Opus call), and
-  with no second read the refusal is stored and shown only. A judge confessing its own criterion flawed still reaches
-  the neutral fixer.
-Spec: `design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md`. Item: `RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS`.
+  repair`), never to the builder.
+  - `diffguard` refuses any undeclared loosen.
+  - The neutral fixer never repairs an owner bar (a `## north star` line, or anything tagged L4, the level of the
+    owner's own review). A change to an owner
+    bar is a card for him, or the Conductor's recorded act (§Only five acts stay his). The Conductor's act for a
+    looser bar names `lost:` and `undo:`.
+- **Only a CALIBRATED brief's refusal has a consequence** (`infrastructure/state/judge_calibration.json`). An edit to a
+  brief resets it to UNTESTED. An UNTESTED brief's refusal is stored and shown only.
+- **Loops stop.** A family is one judge brief or one gate's set of clauses.
+  - The third refusal of one clause triggers repair. The third refusal also raises the alarm
+    `REFUSAL_NOTHING_COULD_EVER_PASS` to the Conductor.
+  - The fourth refused verdict on one item raises the same alarm. So does a family that refuses most of what it sees.
+  - The Designer's coverage judge stops at its second not_covered. On a second refusal while he is away, the judge parks a
+    concept that needs his answer. The judge also parks a concept when the judge-and-rework loop
+    has spent twice the item's cap. That park does not depend on whether he is away.
+- **A judge does not grade its own criterion** (owner 2026-11-16, item
+  `RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS`). The Contagion judge marked all 25 of its own criteria
+  `sound`.
+  - The coverage judge's `criterion_verdict` is kept as its opinion (`judge_criterion_verdict`).
+  - The binding one comes from a second reader that did not judge (`coverage_judge.second_read`, one fresh Opus call).
+    With no second read, the refusal is stored and shown only.
+  - A judge that confesses its own criterion flawed still reaches the neutral fixer.
+
+Spec: `design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md`. Item:
+`RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS`.
 
 ## After a change, only the checks that the change touches run again — owner, 2026-11-21
 
-His words, 2026-11-21 about 1:00 AM PST (item `RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203`), when the
-steward wrote that all 203 in-game checks of Gimme Some Slack 0.1.1 had to run again after one feature (the power
-switch lamp) landed: *"No all 203 checks should NOT have to be rerun it should only be the ones pertaining to the
+His words, 2026-11-21 about 1:00 AM PST (item `RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203`). One feature of Gimme
+Some Slack 0.1.1 (the power switch lamp) had landed. The steward then wrote that all 203 in-game checks had to run again. He answered: *"No all 203 checks should NOT have to be rerun it should only be the ones pertaining to the
 switch. This is so stupid! We've already agreed that when you change code only the tests that relate get run. Extend
 that logic everywhere! Please get efficient! No more ceremony and over completeness!"*
 
-The earlier agreements he cites: his card of 2026-11-12 (rule 2d, `design/specs/2026-11-13-maturation-pipeline.md`):
-*"Piecemeal revalidation of specific touched line items is crucial"*; his live-run ruling of 2026-10-25 (its words are
-below); and
-`run_selftests.py --only <tests>` with `pipeline_tests.json` (only the tests for what you changed).
+The earlier agreements that he cites:
+- his card of 2026-11-12 (rule 2d, `design/specs/2026-11-13-maturation-pipeline.md`): *"Piecemeal revalidation of
+  specific touched line items is crucial"*;
+- his live-run ruling of 2026-10-25 (the next paragraph holds its words);
+- `run_selftests.py --only <tests>` with `pipeline_tests.json` (only the tests for what you changed).
 
 **The live-run ruling of 2026-10-25, merged here 2026-11-23.** *"Targeted runs should always have been policy."* Then:
 *"When we're building out content we should be focusing aggressive testing only on the highest value informative tests
-not rerunning other tests that happen to be nearby or ahead of it."* A live run after a change runs only the chains and
-rows that the change touches: `modcheck run <Mod> --item <ID>`, `--chains` or `--rows`; the whole suite needs `--full`.
-Run the rows that can change what we do next. Never re-run a row only because it shares a chain with, or runs before,
-the row you need. A brief that asks a live helper for the whole suite to prove one fix is the defect. The design of the
-code that does this: `design/RimMandrake/focused_testing_plan_2026-10-25.md`. The daily full sweep that the ruling once
-allowed is gone (2026-11-23): a full pass is a named act with its reason, below.
+not rerunning other tests that happen to be nearby or ahead of it."*
+- A live run after a change runs only the chains and rows that the change touches: `modcheck run <Mod> --item <ID>`,
+  `--chains` or `--rows`. The whole suite needs `--full`.
+- Run the rows that can change what we do next. Never re-run a row only because it shares a chain with, or runs before,
+  the row you need.
+- A brief that asks a live helper for the whole suite to prove one fix is the defect.
+- The design of the code that does this: `design/RimMandrake/focused_testing_plan_2026-10-25.md`.
+- The daily full sweep that the ruling once allowed is gone (2026-11-23). A full pass is a named act with its reason (see
+  "The rule" in this section).
 
-**What it narrows.** The build-match change of 2026-11-17 (item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`).
-The text is ours, as `build_match.py` records it: "A verdict whose mod hash or game build differs from the build he walks
+**What it narrows.** This ruling narrows the build-match change of 2026-11-17 (item
+`RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`) to the checks the change touches. The text of that change is ours,
+as `build_match.py` records it: "A verdict whose mod hash or game build differs from the build he walks
 does not count; its check is re-run." He approved it, 2026-11-17: *"Leave it as is, I justed wanted to understand. I
-approve your changes to the Step 6->Step 7 transition and preparation."* This ruling narrows it to the checks the change touches. A game build that differs still
-re-runs the row (the game itself changed). A mod hash that differs re-runs the row only when the change touches its
-check.
+approve your changes to the Step 6->Step 7 transition and preparation."*
+- A game build that differs still re-runs the row (the game itself changed).
+- A mod hash that differs re-runs the row only when the change touches its check.
 
 **The rule.**
-- It applies at every stage: the offline certificate, a blind cycle, an in-game visit, the walk build match, the
-  nightly and `./publish`.
+- The rule applies at every stage. The stages are the offline certificate, a blind cycle (one blind judge's run of the
+  blind challenge), an in-game visit, the walk build match, the nightly and `./publish`.
 - A check relates to a change when the change touches something that the check reads or exercises. One program answers
   that for every stage: `src/RimMandrake/rimflow/rerun_relation.py` (page
-  `design/specs/2026-11-21-rerun-only-related/boundary.md`). A check declares its `exercises`, `reads` and `file`; a
-  declaration beside a locked table goes in `version/exercises.json`. A Python file relates by top-level name, a JSON
-  file by the check's own entry, a C# change by source file (the DLL is derived), every other file by file. A full-list
-  check, or one that declares `"*"` (a log budget, a load-without-errors check), relates to the whole mod.
+  `design/specs/2026-11-21-rerun-only-related/boundary.md`).
+- A check declares its `exercises`, `reads` and `file`. When the mod's test table is locked, write the
+  declaration in `version/exercises.json` beside the table.
+- How a changed file relates:
+  - a Python file by top-level name;
+  - a JSON file by the check's own entry;
+  - a C# file by member and by switch section (the DLL is derived, so the DLL relates to nothing);
+  - every other file by file;
+  - a Python or C# file as a whole, when the program cannot relate its parts.
+- A full-list check, or one that declares `"*"` (a log budget, a load-without-errors check), relates to the whole mod.
 - A row made on an earlier build still counts when nothing that its check reads or exercises changed. A whole table is
   never sent back because the build hash moved.
-- When the relation cannot be read for a check, that check runs again, and it is listed so that someone can declare it.
-  The others still count.
-- A full pass is a named act with its reason, never a default: `maturation.py certificate <Mod> --run --all "<why>"`;
-  `--run` alone runs only the stale, red or unstamped deciders. The blind judge's reproduction of the recorded offline
-  runs is the blind stage's own independent check, not a rerun after a change; after a fix of its own it reruns only
-  the deciders the fix touches.
+- When the relation cannot be read for a check, that check runs again. The program lists that check so that someone can
+  declare its relation. The others still count.
+- A full pass is a named act with its reason, never a default: `maturation.py certificate <Mod> --run --all "<why>"`.
+  `--run` alone runs only the stale, red or unstamped deciders (a decider is a test that decides a bar).
+- The blind judge's reproduction of the recorded offline runs is the blind stage's own independent check. The
+  reproduction is not a rerun after a change. After a fix that the blind judge itself makes, the blind judge reruns
+  only the deciders that the fix touches.
 - Never tell the owner that all checks must run again after a small change. Name the checks that the change touches
   (`maturation.py next <Mod>`, `build_match.py check --mod <Mod>`).
 
-**Where it is in force.** The in-game build match and Stage 6 exit (`build_match.py`, `maturation.py`), the visit brief
-and `next` (they name only the checks to run), the walk identity, the offline certificate (`ran_on_this_build` hashes
-each test's own reads; `--run` keeps green-on-this-build tests), `./publish` (it runs only the pipeline tests whose
-inputs the change touches; every test only when the change set cannot be read), and the nightly (finished mods only).
+**Where it is in force:**
+- the in-game build match and Stage 6 exit (`build_match.py`, `maturation.py`);
+- the visit brief and `next` (they name only the checks to run);
+- the walk identity (the build that he walked: mod hash, game build and mod list; `walk_identity` in `maturation.py`);
+- the offline certificate (`ran_on_this_build` hashes each test's own reads; `--run` keeps green-on-this-build tests);
+- `./publish` (only the pipeline tests whose inputs the change touches; every test only when the change set cannot be
+  read);
+- the nightly (the nightly check; finished mods only).
 
 **Risk, stated once.** A change can break a check that no declaration connects to it. The guards are the whole-mod
 checks, the next visit of the related checks, and his walk. No full rerun is added to cover it.
@@ -2121,41 +2226,48 @@ ok? So now you don't have to ask me anymore for that."* Half an hour earlier, by
 ceiling *"but ONLY if we have repaired all tickets remaining for the pipeline stages it's about to engage, including the
 judges etc. The pipeline's ready, right?"*
 
-The incident: after his "One mod at a time" the Conductor switched GimmeSomeSlack on (`./pipe log`, act ct_000066, 5:28
-AM PST). A readiness check then found three open faults on its path, each able to give a stuck stage, a lost trial or a
-ghost run (`D:\ClaudeWork\rimmandrake\conductor\pipeline_ready_for_gimmesomeslack_20261119.md`, verdict NOT READY), and
-the Conductor offered him to run it anyway. GimmeSomeSlack was switched off again (act ct_000070, 6:00 AM PST).
+The incident, in order:
+- After his "One mod at a time", the Conductor switched GimmeSomeSlack on (`./pipe log`, act ct_000066, 5:28 AM PST).
+- A readiness check then found three open faults on its path. Each could give a stuck stage, a lost trial or a ghost run
+  (`D:\ClaudeWork\rimmandrake\conductor\pipeline_ready_for_gimmesomeslack_20261119.md`, verdict NOT READY).
+- The Conductor offered him to run it anyway.
+- GimmeSomeSlack was switched off again (act ct_000070, 6:00 AM PST).
 
 The rule, for every agent and program that can move a mod:
-- No agent switches a mod stage on, releases a ceiling for a mod, or launches a build, fix or in-game visit of a mod
-  while any open Maturation Pipeline ticket classed BLOCKS lies on that mod's path.
-- **The check is a readiness list for that mod**, like the GimmeSomeSlack one: every component the mod will touch, in
-  path order, judges and the road back included; each open pipeline ticket on it classed **BLOCKS** (can give a wrong
-  verdict, a lost trial, a ghost run or a stuck stage on this run), **RARE** (a rare failure listed, not fixed, under
-  §A boundary page before pipeline code, Decision 4) or **NOT ON PATH**; and for each component whether it was looked
-  at. "Could not look" is never counted as clean: a component not looked at keeps the list from reading READY.
+- The rule binds while any open Maturation Pipeline ticket classed BLOCKS lies on a mod's path. Then no agent switches a
+  stage of that mod on, releases a ceiling for it, or launches a build, fix or in-game visit of it.
+- **The check is a readiness list for that mod**, like the GimmeSomeSlack one.
+  - The list names every component the mod will touch, in path order, judges included. The road back is included too.
+    The road back takes a failed line back to a stage (§Touching code has a cost; if you see it, do it).
+  - The list classes each open pipeline ticket as BLOCKS, RARE or NOT ON PATH:
+    - **BLOCKS**: on this run, the ticket can give a wrong verdict, a lost trial, a ghost run or a stuck stage. A
+      ghost run is a run that the records show as started and that systemd does not have.
+    - **RARE**: a rare failure that is listed, not fixed (§A boundary page before pipeline code, Decision 4).
+    - **NOT ON PATH**: this run does not reach the ticket's fault.
+  - The list says for each component whether someone looked at it. "Could not look" is never counted as clean: a
+    component not looked at keeps the list from reading READY.
 - **"Fixed" is measured by that list: it reads READY for that mod** (no BLOCKS row open, no component unlooked). Then
-  the mod runs under the usual rules: his holds, his newest word on how many mods run at once, the stage ceiling. His
-  one-mod-at-a-time words of 2026-11-17 and 2026-11-19 are replaced: two mods (2026-11-20), then three, while the
+  the mod runs under the usual rules: his holds, his newest word on how many mods run at once, the stage ceiling.
+- His one-mod-at-a-time words of 2026-11-17 and 2026-11-19 are replaced: two mods (2026-11-20), then three, while the
   pipeline shows no sign of breaking (2026-11-20 4:12 PM PST, item `RIMMANDRAKE_BURN_STEVEN_FULLY_NEXT_NOT_LUKAS`; three
   again on 2026-11-23).
-- No agent asks him whether to run a mod before its list reads READY: the answer is already his, and it is no.
-- What continues: pipeline repair (the BLOCKS tickets first, each under §The pipeline fixes its own defects), design
-  text, investigations, read-only checks and readiness lists.
-- What it does not change: his holds and his other rulings (a ceiling above the stage's still needs his word or the
-  Conductor's act, §Only five acts stay his); the tick
-  keeps running.
+- No agent asks him whether to run a mod before its list reads READY. The answer is already his, and it is no.
+- These continue: pipeline repair (the BLOCKS tickets first, each under §The pipeline fixes its own defects), design
+  text, investigations, read-only checks and readiness lists. The tick keeps running.
+- The rule does not change his holds and his other rulings. A ceiling above the stage's still needs his word or the
+  Conductor's act (§Only five acts stay his).
 - **The switch that holds it is one per mod:** `./pipe off <Mod> --why "no mod runs on a broken pipeline (owner
-  2026-11-19): readiness <path> NOT READY"`, lifted by `./pipe on <Mod>` only with a READY list's path in its `--why`.
-  It refuses every launch the tick makes for that mod (they carry the mod, `RM_CONTROL_MOD`); a helper the Conductor
-  launches by hand carries no mod, so for that the rule binds by itself. `./pipe off all` is the wrong switch: every run
-  is in scope `all` (`control.run_scopes`), so it would also stop the repair helpers this rule wants. Ledger calls made
-  under it: `--per-ruling RIMMANDRAKE_ENACT_NO_MOD_RUNS_ON_BROKEN_PIPELINE_RULING`.
+  2026-11-19): readiness <path> NOT READY"`. Lift it by `./pipe on <Mod>` only with a READY list's path in its `--why`.
+  - The switch refuses every launch that the tick makes for that mod (those launches carry the mod, `RM_CONTROL_MOD`).
+  - A helper that the Conductor launches by hand carries no mod. So for that launch the rule binds by itself.
+  - `./pipe off all` is the wrong switch. Every run is in scope `all` (`control.run_scopes`), so it would also stop the
+    repair helpers that this rule wants.
+- Ledger calls made under the rule: `--per-ruling RIMMANDRAKE_ENACT_NO_MOD_RUNS_ON_BROKEN_PIPELINE_RULING`.
 
 **This section replaces the rule of 2026-11-03** (the Conductor's decision, 2026-11-23: the later ruling wins). Then he said of
 Relentless, which is now retired: *"Relentless fixes operations or conductor or designer or any other part of the system
 before continuing content creation yes."* The pipeline's form of *"Yes relentless fixes itself first."* is §The pipeline
-fixes its own defects. The health verdict, its budgets and its pauses are deleted; his other words of those days are in
+fixes its own defects. The health verdict, its budgets and its pauses are deleted. His other words of those days are in
 `design/RimMandrake/CLAUDE.history.md`.
 
 ## Mods keep their own state; all other work goes in the one list; the pipeline works the list — owner, 2026-11-22
@@ -2175,25 +2287,25 @@ pipelines. But anything outside that context seems like it should then go into a
 to me."* (Sun 2026-11-22 10:27 PM PST; on the ledger as an OWNER note on item
 `RIMMANDRAKE_STUDY_ONE_PLACE_FOR_OWED_WORK_HE_ASSUMED_IT_EXISTED`, 2026-11-23T06:27:55Z.)
 
-- **Two kinds of state.** A mod's open work (version, bars, gaps, polish, next version) lives in the mod's own folder,
-  and the Maturation Pipeline works it. All other work lives in one list, the rimflow ledger: one place to write it
-  and one place to close it.
+- **Two kinds of state.** A mod's open work (version, bars, gaps, polish, next version) lives in the mod's own folder.
+  The Maturation Pipeline works it. All other work lives in one list, the rimflow ledger. Write such work there and close
+  it there.
 - **Nothing else holds open work.** A handoff, a log, a status page, a memory file, a run's result file and a reply to
   him may describe work. None of them is where the work is owed. A debt that is only in one of those is not recorded.
 - **The pipeline works the list.** The motive of every change to the pipeline is that the pipeline takes over more and
-  needs him less. A seat or role that works the list by hand, with him or the Conductor window as its memory, is the
-  reversion that he names. The list's worker is the pipeline's own clock.
+  needs him less. He names one reversion: a seat or role that works the list by hand, with him or the Conductor window
+  as its memory. The list's worker is the pipeline's own clock.
 - **The pipeline knows when it needs a human and when it does not.** Each kind of list work states the evidence that
   sends it to him. Everything else proceeds and reaches his daily digest. His five acts stay his. A trouble report
-  names the outcome at risk, why the pipeline's own recovery was not enough, and the smallest act that clears it.
+  names the outcome at risk. The report also names why the pipeline's own recovery was not enough, and the smallest act
+  that clears the trouble.
 - **A view is not a store.** A page for him is built from the list by one rule. Beside it stands a count of needs that
-  started somewhere and have no home in the list, because a view built from the list alone cannot show what never
-  reached the list (his words, 2026-11-22 7:05 PM PST: *"if you show me JUST from the ledger... I will never know what
+  started somewhere and have no home in the list. The count is there because a view built from the list alone cannot show
+  what never reached the list (his words, 2026-11-22 7:05 PM PST: *"if you show me JUST from the ledger... I will never know what
   was dropped"*).
 - **No gate for it.** No hard stop makes an agent reconcile a record before it ends (§A fault of form is repaired
   where it is found). Where a program can check an outcome, the check decides that the work is done, and a note does
-  not. Not every remark is work (§Touching code has a
-  cost).
+  not. Not every remark is work (§Touching code has a cost).
 
 ### The list's worker is a pipeline in its own right, and it must not need the Conductor to run — owner, 2026-11-22
 
@@ -2213,14 +2325,19 @@ note on item `RIMMANDRAKE_RESUME_PLAN_RUN_WITH_HIS_SECOND_PIPELINE_DIRECTION`.)
 
 - **Two pipelines.** The Maturation Pipeline works mods. A second pipeline works the list (the plan calls it the List
   Pipeline; the name is his to change). A request to repair the pipeline is work for the second pipeline.
-- **The second pipeline has stages, and it is shown on the Maturation Pipeline page** beside the mod pipeline. It, not
-  a seat, answers six questions: what it is doing now, what is next, what closed, what remains open and why, what is
-  escalated for help, what is ready for human review.
-- **It is as formal as its work needs, not as heavy as the mod pipeline.** A small fix with its test passes in
-  seconds through the stages that are programs.
-- **The Conductor's place:** it monitors, works with him, and rescues and repairs what must be done. A stage that
-  needs the Conductor window to keep it running is a defect of the pipeline, and the page shows which stages are
-  still worked by hand.
+- **The second pipeline has stages, and it is shown on the Maturation Pipeline page** beside the mod pipeline. The
+  second pipeline, not a seat, answers six questions:
+  - what it is doing now;
+  - what is next;
+  - what closed;
+  - what remains open and why;
+  - what is escalated for help;
+  - what is ready for human review.
+- **It is as formal as its work needs, not as heavy as the mod pipeline.** "It" is the second pipeline. A small fix with
+  its test passes in seconds through the stages that are programs.
+- **The Conductor's place:** the Conductor monitors, works with him, and rescues and repairs what must be done. A stage
+  that needs the Conductor window to keep it running is a defect of the pipeline. The page shows which stages are still
+  worked by hand.
 
 Study, plan and build order: `design/specs/2026-11-22-coordination-every-agent-must-use/` (`plan.md`). The ancestors
 and what they did wrong: `plight.md` §10 in that folder.

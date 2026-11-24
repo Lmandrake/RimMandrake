@@ -52,8 +52,8 @@ raised (refusal_contract.py) and `run` exits 3, so the Designer's run never star
 Parked for him (RIMMANDRAKE_PARK_UNATTENDED_DESIGNER_LOOPS, RIMMANDRAKE_CEIL_JUDGE_LOOPS_AT_TWICE_CAP; designer_stage
 park): when he is away (designer_stage.owner_away) the second not_covered parks a concept that needs his answer, and a
 loop whose charges since the first judge reach twice the cap parks it whoever is there. A park writes
-park_summary.md for him and sets waiting_owner; `run` exits 3 while it stands, `release` refuses it, and only his own
-word on the item lifts it.
+park_summary.md for him and sets waiting_owner; `run` exits 3 while it stands, `release` refuses it, and only his
+word or the Conductor's act on the item lifts it.
 
 Exit: 0 for a no-op, a verdict or a refusal the Designer reads (the pre-launch step must not stop the Designer's run: its
 stage-5 gate refuses without the signature anyway); 3 when judging is stopped (the run must not start); 2 for an
