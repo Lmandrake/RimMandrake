@@ -1,0 +1,1 @@
+At wake the Conductor reads ./pipe show and ./pipe why for every mod that is ON, not only the run list. On 2026-11-23 Gimme Some Slack and FlowWorks sat paused 95 and 121 minutes (tick: stopped, steward_spent) while the wake report called them running, because the report read the stage and the runs in flight and not the tick column.

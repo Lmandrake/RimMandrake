@@ -1,0 +1,5847 @@
+# BENCH_REBOOT_HANDOFF_202611240601 — READ FIRST on wake
+
+First handoff for this seat. Everything below is committed and pushed.
+
+## The one thing to carry forward
+
+<!-- The single most important thing learned. Not a list — the thing that would cost the next seat hours if it had to rediscover it. If nothing qualifies, write 'nothing this wave' and mean it. -->
+**HIS NIGHT ORDER IS IN FORCE, and it ends when he next writes** (owner, 2026-11-23 about 9:55 PM PST: "Ok. Sounds like I should leave you alone to attend to all the work queued up. Please alert my phone if the machine is being underutilized. Please utilize SteveDesktop as well to get things done too. Good luck. I'm still around near the keyboard tonight if you need me."). Eleven detached runs were live at 10:00 PM PST and the machine was OVERLOADED (load 47 to 64 on 14 cores), so two runs he ordered are written and NOT launched: the Codex move to WSL and the paperwork run (see the first pointer below; briefs in `/mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/`). Each ending run wakes the window: read its result, tell him only what matters, and launch the two waiting runs when load is under 28. Page his phone (`src/RimMandrake/Utils/pager.py`) only if Archmagi or SteveDesktop sits underused while work waits. He ruled tonight: no raid tests until the tools are better, and a test designer must show that no cheaper test decides the bar; he does not want time estimates corrected in public.
+
+## What the owner should see
+
+<!-- Findings that need HIS eye or HIS decision: a number nobody ruled on, a mod that vanished from his list, a change he can veto. Say what you shipped deliberately with a flag raised. Empty is a legitimate answer. -->
+- **Raid ruling, one call of the Conductor's he can veto:** FlowWorks may go to its walk brief with the moat-raid bar open (its version does not pass until that bar is decided). lost: automatic raid evidence before his walk; undo: lift the raid pause and put the scene back in the stage exit.
+- **Crystal mit fix under his Cauldron hold:** the Conductor made the one-line think-tree fix in Cauldron without lifting the hold (`8333bab3efc0`); undo: revert that commit.
+- **Old tickets:** the one-by-one sort was stopped after three batches (80 of 87 were real work); a grouping run now sorts all 936 by home and keeps the list. Its page is owed to him when it ends.
+- **Items worked today and not closed:** 180 had a run, 147 done, 17 open with an ended run at 10:00 PM PST; 3 since closed; the rest are in the paperwork brief.
+- **Still his:** the drawbridge confirmation (is the overview approval enough?), the Pyrelands walk (ullai, ash footprints, flamefang danger), one live flyer flight test, Droidworks priority, and one money question he already answered NO (no paid OpenAI key, ever).
+- **Selftest exemption he may veto:** `c6b31e46030c` made the Conductor-authority selftest green partly by adding two files to its exemption list; nobody has read those two files to confirm they authorize nothing.
+- **Pyrelands visit 8** has held ArchBig for over three hours; the Conductor has not yet looked at why.
+
+## What is half-done, and where it stops
+
+<!-- Anything left mid-flight, one bullet each: `- ITEM_ID -- state; NEXT: <one imperative action>`. A pointer without a ledger item id does not survive a seat change, and a pointer without a NEXT: measured ~0% pickup. An item in `doing` with no line here is a trap for the next seat. The Conductor's pointers each cite an open owed id too: file the act first (`rimflow file <ID> --for BENCH --kind owed --caused-by <item>`), then cite it on the line; --check runs `owed.py check-pointers`. -->
+<!-- These are the items you started this window and did not
+     close. Say what state each is in and ONE imperative NEXT:
+     action, or close/block it. --check refuses while any is
+     unaccounted for or lacks a NEXT:, so deleting a line here
+     is not a way past it. -->
+- `RIMMANDRAKE_BUILD_ONE_LANDING_COMMAND_215_FORM_REFUSALS` — filed with all eight sections; waits to 2026-12-11 on what the small changes teach (his order); NEXT: Leave it waiting until the 2026-12-04 pick (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_BUILD_ONE_TEST_CALL_PARENT_FIX_AND_FAULT` — filed with all eight sections; waits to 2026-12-11 on what the small changes teach (his order); NEXT: Leave it waiting until the 2026-12-04 pick (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_BUILD_SCENE_LIBRARY_TEN_NAMES_FIVE_LAYERS_TODAY` — a detached run is live on it, launched 2026-11-23 evening (Opus); he accepted the design at Design Version 0.1.0 and ordered the build; it also settles FILE_BRIDGE_TWO_BUILD_ORDER; NEXT: Read its result at the run-end wake and tell him what is built and what is UNRUN (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_BUILD_VISIT_AND_CYCLE_KITS_SEVENTEEN_COPIES_TODAY` — filed; waits to 2026-12-11; overlaps the scene library; NEXT: Leave it waiting until the 2026-12-04 pick (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_CARRY_RESULT_IN_CONDUCTOR_WAKE_408_FILES_OPENED` — small agent-work-to-code change; the List Pipeline started a run on it; NEXT: Read its result at the run-end wake; no hand act owed (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_CLEAN_STEVEDESKTOP_TICKETS_FIX_THE_FORM_NOT_EACH_COMPLAINT` — a detached run is live on it, launched 2026-11-23 evening (Opus) on his order: end game-stop diagnosis, one modern tracker, sleep the RAM test, settle Aurora, forms page, fix small true tickets, ticket the study's seven changes; NEXT: Read its result at the run-end wake and give him the before and after count of open SteveDesktop tickets (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT` — live for over 3 hours, holding ArchBig since 6:56 PM PST; nobody has looked at why it runs so long; Alpha Biomes proof and Explosive Knockback's two full-list checks wait behind it; NEXT: Read the run's notes with `rimflow show RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_EIGHT` and `./pipe why Pyrelands`; if it is hung, stop it with `./pipe stop <unit> --at-easy-spot --why` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_ENACT_GPT_STREAMLINE_REVIEW_TRUST_NOT_SUSPICION` — batches one and two done; the owed-sources step retired (e27539d743); open with a wait to 2026-11-25 for the Conductor's pick of the next batch (the run recommends change 13, a checkpoint signal before the spend stop); NEXT: Pick the next batch and launch one detached run on it (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST` — a detached run is live on it, launched 2026-11-23 evening (Opus) enacting his ruling of about 9:15 PM PST; the launch tool flagged 10 wording faults in the brief; NEXT: Read the run's first notes with `rimflow show RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST` to confirm it understood the brief; at its end tell him the Explosive Knockback answer and that FlowWorks left its pause (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_FILE_BRIDGE_TWO_BUILD_ORDER_THEN_WIRE_FIRST_SLICE` — stopped at 4:45 PM PST on his word (tests stay in Python); still pipe-off; the scene library build run was told to settle it; NEXT: Check the scene library run's result for this item; close it or run `./pipe on item:RIMMANDRAKE_FILE_BRIDGE_TWO_BUILD_ORDER_THEN_WIRE_FIRST_SLICE` only if that run says a part is left (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_FILL_COMMANDS_INTO_BRIEFS_HELP_ASKED_2807_TIMES` — small agent-work-to-code change; the List Pipeline started a run on it; NEXT: Read its result at the run-end wake; no hand act owed (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_GATHER_ALARM_FACTS_BY_PROGRAM_MOST_END_ACKED` — filed; waits to 2026-12-11 (his order: medium items wait); NEXT: Leave it waiting until the 2026-12-04 pick (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_GROUP_OLD_TICKETS_BY_HOME_AND_KEEP_THE_LIST_FOR_GOOD` — a detached run is live on it, launched 2026-11-23 evening (Opus); it already switched the List Pipeline back on; the 30 sort batch items stay pipe-off; NEXT: Read its result at the run-end wake and open its one page for him (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_MOVE_STAGES_BY_PROGRAM_REVERSES_A_WRITTEN_NEVER` — the Conductor ruled 'not now' on its routed question (note of 2026-11-23); the status page may still show it as 'stuck, needs a hand'; NEXT: Rule again on 2026-12-04 with the small items' measurements (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_READ_SMALL_ITEM_MEASUREMENTS_THEN_PICK_OF_FIVE` — dated 2026-12-04; waits for the five small changes to be built and measured for 7 days; NEXT: On 2026-12-04 read the measurements and pick which of the five waiting changes goes next (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_RELEASE_CONTAGION_JUDGE_ONE_LOOK_HIS_WORD_GIVEN` — oldest owed item, 7 days; Contagion is held by the owner; not touched by this window; NEXT: Read `rimflow show RIMMANDRAKE_RELEASE_CONTAGION_JUDGE_ONE_LOOK_HIS_WORD_GIVEN`; discharge it or park it on a `rimflow wait` that names the Contagion hold (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_SETTLE_LANE_LEFTOVERS_OF_NOV_19_SITTING` — dated wait to 2026-11-27; 3 of 10 pointed items open; NEXT: Read it again on 2026-11-27 (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_SKIP_PERMISSIONS_EVERYWHERE_AUTO_MODE_BLOCKED_HIM` — a detached run is live on it, launched 2026-11-23 evening (Opus); he called it CRUCIAL; NEXT: Read its result at the run-end wake and tell him which launch routes are proven and that the Macs are not checked (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_UNBLOCK_FLOWWORKS_MOAT_RAID_TWELVE_STEWARD_RUNS_SPENT` — its Fable sitting was stopped then killed (ct_000163, ct_000164) on his raid ruling; FlowWorks still reads tick steward_spent; the raid-ruling run was told to close this; NEXT: Check `./pipe why FlowWorks` after the raid-ruling run ends; if still BLOCKED, launch a repair run on the pause (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_UNBLOCK_SLACK_FOUR_RED_DECIDERS_PAUSED_THE_MOD` — done: closed at ac10b8d646; the four deciders were green, the pause was a pipeline defect (three fixes, 11 of 11 tests); visit 2 now runs 133 of 206 checks; sc_stub_joins UNRUN; NEXT: Tell him this result once; nothing else to do (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_WIDEN_SLICE_INTO_RUN_UNTIL_AND_ACT_BATCH` — a detached run is live on it, launched 2026-11-23 evening (Opus): generic C# bridge hands; it held ArchSmall for a scene smoke run at 9:58 PM PST; NEXT: Read its result at the run-end wake; then unblock the scene judge and the three-scene conversion items (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMASTER_WIRE_STEVEDESKTOP_TELEMETRY_FLYING_BLIND` — a detached run is live on it, launched 2026-11-23 evening (Opus): telemetry by game name, not Archmagi only; NEXT: Read its result at the run-end wake and tell him if a real Steve1 or Steve2 query returned data (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+
+- `RIMMANDRAKE_ANSWER_SEVEN_TERMS_NO_SOURCE_DEFINES_GREY_MUD` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_ANSWER_SEVEN_TERMS_NO_SOURCE_DEFINES_GREY_MUD` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_ASK_GPT_HOW_TO_DRAW_STEPPED_PIT_FLOOR_HE_COULD_NOT_READ_IT` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_ASK_GPT_HOW_TO_DRAW_STEPPED_PIT_FLOOR_HE_COULD_NOT_READ_IT` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_AUTOBUILD_GIMMESOMESLACK_FOUR_BARS_LEFT_RUN_TWO` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_AUTOBUILD_GIMMESOMESLACK_FOUR_BARS_LEFT_RUN_TWO` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_MANY_BARS_LEFT` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_MANY_BARS_LEFT` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_CENSUS_STEVEDESKTOP_ERA_REMAINS_WHILE_SOAK_RUNS` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_CENSUS_STEVEDESKTOP_ERA_REMAINS_WHILE_SOAK_RUNS` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_CLEAR_FLOWWORKS_PAPERWORK_TO_GAME_ONLY_ROAD` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_CLEAR_FLOWWORKS_PAPERWORK_TO_GAME_ONLY_ROAD` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_COUNT_PROMISE_SCAN_FALSE_HITS_AFTER_ONE_WEEK` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_COUNT_PROMISE_SCAN_FALSE_HITS_AFTER_ONE_WEEK` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_CRYSTALLIZE_SWEEP_RECORDS_AND_SKILLS_PROPOSE_ONLY` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_CRYSTALLIZE_SWEEP_RECORDS_AND_SKILLS_PROPOSE_ONLY` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_CUTOVER_PILOT_MODS_TO_LEDGER_SAME_DAY` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_CUTOVER_PILOT_MODS_TO_LEDGER_SAME_DAY` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_DESIGN_BRIDGE_LIVE_TUNING_POKE_DEF_AND_CODE_VALUES_NO_RELOAD` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_DESIGN_BRIDGE_LIVE_TUNING_POKE_DEF_AND_CODE_VALUES_NO_RELOAD` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_DESIGN_BRIDGE_TWO_WHAT_LIVE_TESTING_NEEDS_FABLE_PASS_ONE` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_DESIGN_BRIDGE_TWO_WHAT_LIVE_TESTING_NEEDS_FABLE_PASS_ONE` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_DESIGN_PAWN_IN_LIQUID_LOOK_WATER_SHEET_IS_A_MISTAKE` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_DESIGN_PAWN_IN_LIQUID_LOOK_WATER_SHEET_IS_A_MISTAKE` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_DESIGN_PUSHOVER_ALERTS_CRITICAL_ONLY_TWO_SENDERS` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_DESIGN_PUSHOVER_ALERTS_CRITICAL_ONLY_TWO_SENDERS` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_DRAW_PAWN_OWN_PICTURE_CUT_AT_LIQUID_SURFACE_NOT_ICON` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_DRAW_PAWN_OWN_PICTURE_CUT_AT_LIQUID_SURFACE_NOT_ICON` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_EVAL_CRYSTALLIZE_SKILL_ONCE_AFTER_EDITS_SETTLE` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_EVAL_CRYSTALLIZE_SKILL_ONCE_AFTER_EDITS_SETTLE` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_FIX_FILED_PIPELINE_TICKETS_AFTER_WEDNESDAY_RESET` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_FIX_FILED_PIPELINE_TICKETS_AFTER_WEDNESDAY_RESET` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_FIX_MINER_JUDGE_FAILED_SLACK_EIGHT_OF_TWENTY` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_FIX_MINER_JUDGE_FAILED_SLACK_EIGHT_OF_TWENTY` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_FIX_STEVE_LANE_WORKER_AND_GAME_STOPS` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_FIX_STEVE_LANE_WORKER_AND_GAME_STOPS` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_GENERALIZE_PIPELINE_REPAIRS_INTO_FEW_PRINCIPLES` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_GENERALIZE_PIPELINE_REPAIRS_INTO_FEW_PRINCIPLES` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_INSTALL_SLACK_ICONS_WALL_LAMP_ALREADY_JUDGED` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_INSTALL_SLACK_ICONS_WALL_LAMP_ALREADY_JUDGED` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_JUDGE_EXPLOSIVEKNOCKBACK_BLIND_CYCLE_SIX_TESTS_FIRST` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_JUDGE_EXPLOSIVEKNOCKBACK_BLIND_CYCLE_SIX_TESTS_FIRST` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_PROBE_STORE_LEFTOVERS_A_WEEK_FOR_ANY_READER` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_PROBE_STORE_LEFTOVERS_A_WEEK_FOR_ANY_READER` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_PROPOSE_PROSE_CHECK_TO_USER_TOOLS_BELOW_TWELVE` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_PROPOSE_PROSE_CHECK_TO_USER_TOOLS_BELOW_TWELVE` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_REDESIGN_JETTY_AND_BRIDGE_ART_STEEL_ONE_READS_AS_WOOD` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_REDESIGN_JETTY_AND_BRIDGE_ART_STEEL_ONE_READS_AS_WOOD` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_REVIEW_RULE_FILE_LENGTH_CEILING_HE_LEFT_OFF` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_REVIEW_RULE_FILE_LENGTH_CEILING_HE_LEFT_OFF` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_REVIVE_WEEKLY_CRYSTALLIZE_RAN_31_DAYS_APART` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_REVIVE_WEEKLY_CRYSTALLIZE_RAN_31_DAYS_APART` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_REWRITE_RULE_DOCS_PLAIN_ENGLISH_LOSE_NOTHING` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_REWRITE_RULE_DOCS_PLAIN_ENGLISH_LOSE_NOTHING` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_RULE_MECHANICS_ARE_UNIVERSAL_THE_BIOME_ONLY_SHOWCASES` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_RULE_MECHANICS_ARE_UNIVERSAL_THE_BIOME_ONLY_SHOWCASES` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_SLIM_OPERATIONS_START_PACKAGE_HALF_IS_UNRELATED` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_SLIM_OPERATIONS_START_PACKAGE_HALF_IS_UNRELATED` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_STOP_SHARED_COPIES_OUTLIVING_THEIR_LENDER` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_STOP_SHARED_COPIES_OUTLIVING_THEIR_LENDER` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_STUDY_ONE_PLACE_FOR_OWED_WORK_HE_ASSUMED_IT_EXISTED` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_STUDY_ONE_PLACE_FOR_OWED_WORK_HE_ASSUMED_IT_EXISTED` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_SWEEP_FLOWWORKS_TICKETS_MERGE_TO_MODERN_BUILD_THE_VALUABLE` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_SWEEP_FLOWWORKS_TICKETS_MERGE_TO_MODERN_BUILD_THE_VALUABLE` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_UNPAUSE_PYRELANDS_SITE_DECIDER_RED_AFTER_VISIT_SIX_PASSED` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_UNPAUSE_PYRELANDS_SITE_DECIDER_RED_AFTER_VISIT_SIX_PASSED` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_UNSTICK_PYRELANDS_FIXER_COUNT_TWELVE_FOUR_REFUSED` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_UNSTICK_PYRELANDS_FIXER_COUNT_TWELVE_FOUR_REFUSED` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_WATCH_OPS_SENSE_OVERRUN_MOST_FAMILIES_BLIND` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_WATCH_OPS_SENSE_OVERRUN_MOST_FAMILIES_BLIND` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_WORK_EIGHTY_OWNER_TICKETS_AFTER_GATES_OPEN` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_WORK_EIGHTY_OWNER_TICKETS_AFTER_GATES_OPEN` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+- `RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS` — marked started in the ledger and still open; this window did not work it; NEXT: Launch the paperwork run (brief /mnt/d/ClaudeWork/rimmandrake/conductor/night_20261123/b_paper.md), which settles it, or read `rimflow show RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS` (owed: `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED`)
+
+## Traps learned
+
+<!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives -- file it with `lessons.py add` the moment it is learned, then cite `(filed: lessons)` or `(see: <item/doc>)`. Never re-explain a trap that is already recorded somewhere durable. -->
+- A look or pick listed as open can be settled already: measure the installed state before it reaches him (filed: `infrastructure/state/lessons/20261124T060231Z-BENCH-before-conductor-shows-owner-look-or.md`).
+- The wake report read stages and runs in flight and missed two paused mods; read the tick column of `./pipe show` (filed: `infrastructure/state/lessons/20261124T060231Z-BENCH-at-wake-conductor-reads-pipe-show.md`).
+- A guessed share on a card was wrong; sample before recommending (filed: `infrastructure/state/lessons/20261124T060231Z-BENCH-before-card-recommends-option-guessed-share.md`).
+- `detached_helper.py launch` can run past 100 s under load and a `timeout` kills it before the run starts; launch with `run_in_background` and no timeout (see: `infrastructure/state/facts/tool_traps.md`).
+
+## Closed since the last handoff (4490)
+
+- `TRIM_VALIDATION_LAYERS_1` — 5c3e1a9e
+- `CAST_NAMES_UNSPAWNABLE_ANIMALS_1` — b1bbd51f
+- `GRAVSHIP_LAUNCH_TRAVEL_1` — 138ee26a
+- `GALACTIC_EMPIRE_NAME_COLLIDES_1` — 6123a1ec
+- `QUEUE_GITHUB_MIRROR_1` — b1c8f39a
+- `DROID_SYSTEM_EMBRACE_1` — bbea1609
+- `EMPIRE_PURSUIT_SCRATCH_PROOF_1` — b0e12305
+- `EMPIRE_PURSUIT_SCENPART_INSTALL_1` — e5f9f61b
+- `GRAVSHIP_LANDING_DIRECT_PLACE_1` — 0f04c84e
+- `TURRET_ROSTER_CURATION_1` — 3015d6a3
+- `LORE_SWITCHOVER_ADOPTION_1` — cf1fe4e1
+- `ASSAILANT_FLESH_DUNGEON_1` — 53bd66ab
+- `VAULT_DUNGEON_CONCEPT_1` — bfc83dff
+- `PAWN_FLAVOR_STARWARS_1` — ee13939f
+- `DIVINE_FRONT_MATRIX_1` — 7cc6cb20
+- `CURSE_COLUMN_RESPEC_1` — 40195a68
+- `DEVOTIONAL_SACRIFICE_CATALOG_1` — 40195a68
+- `GOD_INTERCESSION_SPEC_1` — 40195a68
+- `DIVINE_DILEMMA_EVENTS_1` — 40195a68
+- `FIRST_CONTACT_CHAINS_1` — 40195a68
+- `JAWA_TRAP_RENAISSANCE_1` — 94a05164
+- `COVERED_PIT_TRAPS_1` — 3ee5e2ec
+- `FABLE_HANDOFF_SPRINT_1` — 127aadc5
+- `CAI_FOG_DEEP_DIVE_1` — 1dc6d9bd
+- `SARLACC_SPEC_SESSION_1` — 180bfe8b
+- `NINE_VOICES_CAST_BIBLE_1` — e3533fa0
+- `RESEARCH_TAXONOMY_DRAFT_1` — d85403b5
+- `LLM_INGAME_WIRING_1` — 1309d59f
+- `DUST_STORMS_DESTRUCTIVE_1` — f311db65
+- `BOILING_WATER_BURNS_1` — f311db65
+- `PLANTS_VISIBLE_GROWTH_1` — f311db65
+- `DESERT_PLANTS_SCRAGGLY_1` — f311db65
+- `CANTINA_KITCHEN_SPEC_1` — 5b6ad4fb
+- `TUSKEN_WATER_RAID_1` — fd9d7071
+- `RACE_REGEN_ARCHITECTURE_1` — 31428560
+- `SKYHOOK_BESPIN_REDESIGN_1` — 03534618
+- `PROPOSAL_SUITE_REVIEW_1` — 46edfb7e
+- `PAWNFLAVOR_BREAK_LABEL_FIX_1` — 23f4043c
+- `SAVE_HOLDS_DEAD_TITAN_CORPSE_1` — bd498088
+- `SAVEGAME_PURGE_KEEP_B_1` — 7f96ba47
+- `RIMPLACE_GENSTEP_LIVE_PROOF_1` — 7865b643
+- `BRIDGE_OVERRIDE_ATTRIBUTION_GAP_1` — eaed5422
+- `TEMPLATE_CANVAS_UNDECLARED_1` — 64477ab7
+- `BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1` — ac598d1e
+- `SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1` — ac598d1e
+- `TRADERGEN_CONFIGERRORS_NRE_1` — f66246a7
+- `CORRECT_COLD_LOAD_1` — 47903872
+- `CHERRYPICKER_TWO_PROFILES_1` — ac444adb
+- `CONFIG_SWAP_ATOMIC_WRITES_1` — d1c193ae
+- `LIVE_BIRTH_AND_HATCH_DEMO_1` — c6615420
+- `BRIDGE_TAKE_TOCTOU_AND_EPOCH_SENTINEL_1` — a2d8a0aa
+- `FOG_REVIEW_SITTING_WITH_OWNER_1` — 75204205
+- `COLD_LOAD_RUN_SHEET_2` — e9b009bf
+- `SALVATION_RITUAL_PRUNE_1` — 5ee8fbcd
+- `ANOMALY_CREATURE_RESTORE_1` — 560162dd
+- `RESEARCH_RECOST_PREREQ_JOIN_1` — b2c50c1f
+- `FLUID_CANAL_FLOOD_LIVE_CHECK_1` — c4edccb5
+- `CORRECT_FLUID_CANAL_1` — c4edccb5
+- `RESEARCH_TREE_NORMALIZATION_1` — f1ebc8c1
+- `RESEARCH_TREE_TABS_1` — d27125d2
+- `ARMOURY_LIGHTSABER_FINDMOD_1` — 33e2833d
+- `INHABITED_TILEMUTATOR_NO_ENTRY_1` — d92f5459
+- `OHM_RESCOPE_PROPAGATION_1` — f3293888
+- `OHM_PROVENANCE_PURGE_1` — ebdca39a
+- `BENCH_REBOOT_HANDOFF_20260905` — fc27cbf5
+- `ORACLE_OHM_PROMPT_STILL_SHIP_1` — fc27cbf5
+- `GENEPACK_MODS_PLUNDER_1` — 1549dec6d143a8a1c6f3e3a0c5734902443cce43
+- `NIGHTSIDE_BLUE_DESERT_1` — 4d8f4d7999a3a1c98bebb3f17f85720c57ba6d92
+- `CRACKED_LANDS_ENRICHMENT_1` — dd8c7c71d9fd3bfb8c2d39eedd8a102eabf9eb06
+- `PROJECT_MATURITY_DASHBOARD_1` — 78fe3b38
+- `MATURITY_DASHBOARD_DENSITY_1` — 80e38de9
+- `LANES_DOCTRINE_PARAGRAPH_1` — 71753752
+- `RAKATAN_LEGACY_INDEX_1` — 6180f961
+- `GOLDEN_SHEET_REFRESH_1` — b8b65eb4
+- `WATER_KINDS_TAXONOMY_1` — cb7c9057
+- `MOD_VALIDATION_PLAN_AUTHORING_1` — cb7c9057
+- `SHEET_SUBMEASURE_REFRESH_1` — 4de53d06
+- `MOD_NAMING_CONSOLIDATION_AUDIT_1` — 90334957a0522d8444b9c3e8f3b5f27ba433dc52
+- `WEEPING_STONES_ROSTER_1` — 5851917a
+- `BIOME_FLORA_ROSTER_GAP_1` — 32f9d25d
+- `BIOME_FAUNA_ASSIGNMENT_SITTING_1` — d19997bd
+- `GRAPHICS_GEMINI_BILLING_DECISION_1` — e97591ce3b28f68048c42b8bd6eb49bf040a9625
+- `DUMPDB_MANIFEST_SHORTFALL_1` — d09744bd63138b59bdc718c934461fade6a3cff9
+- `GEMINI_WORKER_BACKEND_1` — 477dfb06f3761403de9604661cd1dec4c95668aa
+- `ANCIENT_RUINS_MOD_AUDIT_1` — e7d9bd4c
+- `SW_BACKGROUND_GARB_HARVEST_1` — 0c6391ee
+- `CODEX_UAC_STORM_1` — 31a92df6
+- `ASHKARR_RIVER_LEDGER_1` — 4c24f9cb
+- `RUST_CATHEDRAL_SCALD_HISTORY_1` — 2eaa493a
+- `HOMELESS_DISPOSITION_SITTING_1` — fbe09dcf176bb809d6be760426f266cd4bf45156
+- `CREATURE_ART_REVIEW_SHEET_1` — 0ca7aa20
+- `FLORA_COMMISSION_TEMPLATE_1` — 61ad66fb
+- `PALETTE_ANCHOR_DRAFT_1` — c3d0dcc8
+- `GELATINOUS_SLIME_MOD_1` — 023beee3
+- `ALPHA_FAMILY_SOURCE_REVIEW_1` — c4a2ec83
+- `GEONOSIAN_BRAINWORM_MORPH_1` — 94ba19d2
+- `STAT_NORMALIZATION_AUDIT_1` — 85cabcfd
+- `STAGED_LORE_DESCRIPTIONS_1` — 927fc9f0
+- `GREENTIDE_MECHANICS_1` — 0167e7af
+- `WEBWORK_MECHANICS_1` — 0167e7af
+- `SCARLANDS_MECHANICS_1` — 0167e7af
+- `KIT_SPECS_CARD_SITTING_1` — cf0632c3915697cfb9915cff2d5efdab9c0536c6
+- `FAUNA_GRAPHS_SITTING_1` — 85f46ea6be1673ee70df00d71c0c43615ba963a1
+- `MINDSTONE_LEGENDS_ENTRIES_1` — a1d9050a2637789823d36c7907dc83588cf612d4
+- `GOD_LINES_ORACLE_PACKS_1` — a0c0fafbac5270d04e79ced842ae3c565107f416
+- `TERRAMANUFACTURE_CANON_1` — 3c2993420c8a487abf02a0f5c3b66dd9c46d1fd6
+- `MECHANOID_ORIGIN_CANON_1` — 2b952d9129aa6aa6a5c84601d12fddf41e0d885b
+- `LOCAL_IMAGEGEN_TRACK_PARKED_1` — 472e00004e5753eccb4a47505cfb8fff8b02346e
+- `POST_FREEZE_WORLDMAP_AUDIT_1` — a7f8208ac69515744c5e5b54828af92d6f19a145
+- `POISON_FOREST_REPASS_1` — 5040448b5ec0f1105a262a004097cf6375835785
+- `RIMWORLD_MEMORY_FOOTPRINT_AUDIT_1` — c0ba80ec77024ba4c6b9013614a67c53a85d782e
+- `BENCH_REBOOT_HANDOFF_202609082018` — 12e6262c086a2bbbce240054328659e6b2a66a3b
+- `DASHBOARD_HUB_ARTIFACT_1` — e4c0e9acd5f25778b423766aa0bd3c8afb8d137b
+- `RECORD_HUB_HEALTH_PROOF_1` — 286790738
+- `DUNGEON_DESIGN_RESEARCH_1` — 78234b27a
+- `CANON_PLANET_CENSUS_1` — d49aa5f03
+- `MUTATION_MODIFIERS_SURVEY_1` — f4a40fd1d
+- `MECHANICS_CARDS_SITTING_1` — 6d13d4b07
+- `CSV_REGION_SYNC_1` — 0b3c6d937
+- `GIDDYUP_NULLKEY_CRASH_1` — 1f222320b2e78f19b6c4bef2e95e845e90df6e47
+- `CORRECT_GIDDYUP_NULLKEY_1` — 1f222320b2e78f19b6c4bef2e95e845e90df6e47
+- `GIDDYUP_KEEP_OR_CUT_1` — 18daf67a6
+- `MODLIST_COMPLEXITY_AUDIT_1` — 18daf67a6
+- `CATHEDRAL_PLAYER_CONCEALMENT_ARC_1` — 060301d43
+- `CATHEDRAL_ARC_OPEN_CARDS_1` — 3f6f98cd24d58470cd4864e45e27043886fe6e7d
+- `DOING_ITEMS_RECONCILE_1` — d07d585cdb4e6c2f334b73f5774c1bd8e740456c
+- `MODCHECK_MATURE_WAVE_1` — db3ccced0560dc9a9a03257e89114aaf8ef77327
+- `ART_LEGIBILITY_GATE_1` — b2d7ea116618ba8a5191851a17dec437cf7494ea
+- `ART_QUEUE_DRAWSIZE_BACKFILL_1` — 247f7d481224c68da91385a962d48b2a1f44cc2f
+- `BACTA_PAWNINTANK_RECON_1` — fdca467f3f0c787fd07e6ebb340b682022bd32ad
+- `SPECIES_CANON_LIBRARY_1` — 47de84d5f
+- `ATMOSPHERIC_BASE_LAW_CONFLICTS_1` — 872b3814e
+- `PYRELANDS_WORLD_SWITCH_1` — eb1f92993aab21e55e0265f2a68447fe476b8eef
+- `PYRELANDS_ANIMALS_GENSTEP_1` — 211b2f0c821f9b099d4ed66d372a6b537cdd97f1
+- `PYRELANDS_FAUNA_WIRING_1` — 211b2f0c821f9b099d4ed66d372a6b537cdd97f1
+- `HANDOFF_RITUAL_OPTIMIZATION_1` — 217075133
+- `BIOMES_CAVERNS_DEEPSCAN_1` — a258e38cb720b26b3413489a60546e33ec5ef12a
+- `CAVERNS_REPLACEMENT_SCOPING_1` — f53f7e8cc7363cf6eb0ac941ed16248b0be2f33f
+- `DEEP_DULCIS_DEDUP_1` — 9dd60bf89854d5f70c607cdaf05671da575a3dd7
+- `CAVERNS_LOADAFTER_STRIP_1` — cfcfdcee4
+- `CAVERNS_ARTOVERRIDE_REHOME_1` — f5abb8b50
+- `DEEPCALM_AMBIENT_SOUND_1` — 7c0f81401
+- `CANONICAL_SAVE_CAVERNS_SCRUB_1` — 05c94d1a0
+- `DEEP_FLORA_RENAME_1` — a1e40ff049cc494493ec6c8210f96a374b3ac168
+- `DEEP_ENTRANCE_BIOMES_SETTING_1` — 21378169a
+- `FULL_LIST_CANNOT_LOAD_GAME_1` — 9a2316798
+- `GRASSLANDS_CAST_DEAD_BIOME_1` — 558808979a4cfc6986c0bde7f67dfc0b6749063b
+- `CANON_STORAGE_ARCHITECTURE_1` — 51e0cebc1
+- `DEEP_TRIBES_FIRE_RITE_1` — 1e73ce51b
+- `PYRELANDS_FIRE_CADENCE_1` — 58a08013f
+- `PYRELANDS_FLORA_ART_IDENTITY_1` — 51e0cebc1
+- `PYRELANDS_FIRE_RITE_TAKE_TUNING_1` — 9dbb36e32
+- `LIQUID_SINK_LEDGER_METADATA_FIX_1` — 25341f171
+- `VAPOR_EMITTER_PLACEMENT_1` — ce76906fb
+- `WORLDMAP_FINAL_REVIEW_1` — ce76906fb
+- `RUT_UMBRA_ROADS_RULING_1` — 9d55fb5ef
+- `TEMP_TERRAIN_DLC_GATE_1` — bd7834ff8
+- `MYCOID_COLOSSUS_ART_MISROUTE_1` — 1ea5c3f079442d8550d7adcf15846a01df6a4d8c
+- `MYCOID_COLOSSUS_NORTH_RECOMPOSE_1` — 6d93614a0
+- `DETERMINISTIC_CHECKER_WAVE_1` — 1ab5aed3bff54d3b676b19213e5e045b85b4c483
+- `CAVERNS_PARITY_BUILD_1` — ad1ab9336
+- `ROT_ART_WAVE_1` — 6144aac19
+- `BIOME_BINDINGS_TABLE_STALE_1` — ee5b61acf2f91d39a492e1196413d61a7b9fe08d
+- `SURRA_GRASS_FERTILITYMIN_1` — ab7f77899
+- `DESERT_PACK_ANIMALS_FOR_TRADERS_1` — 1d5e774f1
+- `DESERT_TABLES_DEPLOYED_AHEAD_OF_SPECIES_1` — 22abdbd8d7b5f4a3728c4c0b87a554f611563e4f
+- `PYRELANDS_SOUTH_TOPDOWN_REGEN_1` — a356ca4efa93e275fdf31fcb91bf56cd5f2ddd01
+- `PYRELANDS_WRONG_BIOME_DEF_1` — 41700160fab3a8ea715cb8e700945961ed4c2633
+- `ENVHAZARDS_NEVER_ACTIVATED_1` — 9bf9ccf4e
+- `PYRELANDS_DENSITY_TRIPLE_1` — 1d55fa45d
+- `READ_LINE_REGISTRY_SHARED_1` — 556403f99
+- `FOUNDERS_EXPORT_TO_REPO_1` — d9232c36e
+- `STALE_VIVIFIED_WORLDMAP_CITED_1` — 6cb085e3f
+- `STALE_V24_NAMES_IN_FROZEN_SHEETS_1` — c279720b5
+- `DEAD_BIOME_DEFS_IN_PROSE_1` — 5e3940963
+- `BIOME_ROSTER_DEAD_SPECIES_REFS_1` — cbd2deb85
+- `FORGE_ROSTER_UNRECONCILED_BMT_1` — a1ad39b1d1c2fcd346ace3feb9132ff14bdded12
+- `FOUNDERS_IMPORTER_OWED_1` — ea58abc1b880ee4d8006bca69c89a07092b02443
+- `SLIME_STANDALONE_MOD_1` — 1197642c9
+- `STONEBACK_DEFNAME_COLLISION_1` — 4b068ea5d
+- `SKILL_SIZE_SPLIT_PASS_1` — adea63eab
+- `EVENTS_JSONL_SHARDING_1` — 2b5947555
+- `WEBWORK_DESIGN_SITTING_1` — 1868e1928
+- `WEBWORK_EGG_BLACKMARKET_1` — f50288aad
+- `SUMP_DESIGN_SITTING_1` — d4eea8de2
+- `FLOWWORKS_LIQUID_FACES_1` — 0161e37f1
+- `WEEPING_STONES_DESIGN_SITTING_1` — af3eaa622
+- `NIGHTSIDE_ICE_DESIGN_SITTING_1` — 53ab8ca3a
+- `BLUEDESERT_DESIGN_SITTING_1` — da0bc8a45
+- `POISONFOREST_SHIPPING_NAMES_1` — cc905a6e197fc3fa50292d649356e76824fbeeec
+- `SCARLANDS_SHIPPING_NAMES_1` — cc905a6e197fc3fa50292d649356e76824fbeeec
+- `SHULLA_INVISIBLE_RENDER_1` — 109f54f6b
+- `OUR_MODS_DEPLOYED_NEVER_ACTIVATED_1` — 35dc68cca
+- `SCALD_FLOOR_PASS_1` — 177aa325105d5e886dfa9c5eb853a5b987c10ce8
+- `DROID_ORACLE_VOICE_DESIGN_1` — e9b3feec3
+- `TWILIGHT_DANGER_LIGHTWEB_1` — d16a7c1ce
+- `TWILIGHT_PANE_STRIKE_1` — a6dc009b9
+- `TWILIGHT_LIGHT_ECONOMY_1` — 2cd74d35e
+- `TWILIGHT_CHANNEL_CURRENT_1` — a7bcd4326
+- `PROPANELAKES_SHIPPING_NAMES_1` — a5a49c0d7
+- `CHILL_WARLAB_ROUTES_1` — ba165f519
+- `BLUEDESERT_MOD_DEPENDENCY_DECISION_1` — c28fa9719
+- `GREYSEA_ANCHOR_CREATURES_1` — 17007f2ad
+- `LONGSHADE_DESIGN_SITTING_1` — 59b95b8a4
+- `STILLSAND_DESIGN_SITTING_1` — 59b95b8a4
+- `WASTELAND_STORM_WEATHER_DEFS_1` — fcde34f5c
+- `CAULDRON_BEDAZZLE_SITTING_1` — 692109fb3
+- `FORGE_BEDAZZLE_SITTING_1` — 9fd936d09
+- `LEANINGSCRUB_BEDAZZLE_SITTING_1` — 31ef2aa43
+- `LONGSHADE_BEDAZZLE_SITTING_1` — 60197d361
+- `BEDAZZLE_ENRICHMENT_REVIEW_REST_1` — 1f64b2499
+- `STILLSAND_BEDAZZLE_SITTING_1` — 1239cb506
+- `WARSCAR_BEDAZZLE_SITTING_1` — 63eadc9c7
+- `CONTAGION_BEDAZZLE_SITTING_1` — c16e11a6f
+- `WASTELAND_BEDAZZLE_SITTING_1` — c16e11a6f
+- `BLUEDESERT_BEDAZZLE_SITTING_1` — c16e11a6f
+- `FLOODEDCANYON_BEDAZZLE_SITTING_1` — c16e11a6f
+- `PYRELANDS_NORTHSTAR_VALIDATE_1` — 2691d0c47
+- `FLOWWORKS_NORTHSTAR_REVALIDATE_1` — e890abfc4
+- `ABYSS_FULL_RENAME_1` — a534284e4
+- `GRAFFITI_NORTHSTAR_WIRED_1` — 541852456
+- `BLACKCRAGS_BEDAZZLE_SITTING_1` — 62444e7ad
+- `BAROQUE_BEDAZZLE_PROGRAM_1` — 6c16589f2
+- `NIGHTSIDEICE_BEDAZZLE_SITTING_1` — 9cc70cce762b748259134f947c46ff8baf585903
+- `NINE_FAULTS_PERMANENT_RITE_1` — 2abb78f03
+- `SHIP_CARGO_HOIST_DESIGN_1` — 97ca59bad
+- `LANTERNDEEPS_BEDAZZLE_SITTING_1` — 9e1a090aebf9b0054f46de151dab5af6e53083b1
+- `DEEPS_FAUNA_REPOPULATION_1` — 56f9c12e7
+- `PYRELANDS_BEDAZZLE_SITTING_1` — 4ff85e5e0f
+- `SUMP_BEDAZZLE_SITTING_1` — 58ae8dd57fa2
+- `BEDAZZLE_FLORA_EXPANSION_1` — 054d01e7cf32
+- `WEBWORK_SCORING_SITTING_1` — 74f4a9f53
+- `GREENTIDE_SCORING_SITTING_1` — 298f6c262
+- `RUSTCATHEDRAL_SCORING_SITTING_1` — 17de8c314
+- `ROT_SCORING_SITTING_1` — 5f5cd1aab
+- `FEVERWOOD_SCORING_SITTING_1` — 0700d1c41
+- `WEEPINGSTONES_SCORING_SITTING_1` — 1fa92efa3
+- `GELATINOUSSLIME_SCORING_SITTING_1` — f214b5385
+- `MIASMA_SCORING_SITTING_1` — 4d426ea50
+- `NORTHSTAR_DRIVER_RECORD_STATUS_1` — 1f39992ed
+- `GREYSEA_SHIP_CRYSTALLISATION_1` — 4b6e73e0c
+- `DARKSEA_LIGHT_ATTRACTION_1` — 4b6e73e0c
+- `GODS_NOT_EVIL_SWEEP_1` — 9666826bb
+- `SEA_SHORE_TILE_MUTATOR_1` — fb352d7c6
+- `WORLDVIEW_MISLABEL_FALLOUT_1` — 9f795164d
+- `NARRATIVE_DICTIONARY_PILOT_1` — 32e980c1b
+- `DROID_CANON_LIBRARY_1` — eb24acd1c
+- `PROPANE_LANDS_RENAME_1` — 0287b61d0
+- `ARIDSHRUBLAND_SHIPPING_NAMES_1` — HEAD
+- `LONGSHADE_SHEET_STRUCTURAL_RULINGS_1` — 68f708add09f3bb857d0562bd6055b0726c98413
+- `LANTERNDEEPS_RSW_ORIGINALS_RETIRE_1` — 8c988d74b
+- `ART_RULING_RENAME_CARRY_1` — a38ce0b3dfec
+- `ARTPIPE_REQUEUE_AUTOMATION_1` — 6de6f9515
+- `TINT_ON_COLOUR_ART_1` — e2bcad71dbd7
+- `BARBSLINGER_SCORPION_REDESIGN_1` — 642c53b46
+- `GSS_INTO_FULL_LIST_1` — 73409a0c5
+- `HUGE_THINGS_GPT_REVIEW_1` — 9580bc4ad
+- `JAWABENCH_DLL_REDEPLOY_1` — 0f2f76dc0
+- `DONOR_PLANT_OVERRIDE_VERIFY_1` — 5cb5cc22e
+- `MIRROR_REPACK_LEAK_FIX_1` — 0b43abbe0
+- `CANON_REALISTIC_REFERENCE_SWEEP_1` — 29a03f481
+- `BIOME_MOD_UNIFICATION_1` — 33408ba72
+- `GREYSEA_FLORA_PASS_1` — 20fd7cf7c
+- `PROPANELAKE_FLORA_PASS_1` — 865c70ad6
+- `BIOME_MOD_SPLIT_EXECUTION_1` — 8d1104bdfb43068735266ce426fa366e49530732
+- `ART_PIPELINE_DAEMON_1` — 368794eb1
+- `CANON_ENTRY_BRIEFS_OWED_1` — af124406f
+- `CANON_MATERIALS_DESIGN_1` — 71c9b7fd6
+- `WEATHER_STONES_OWN_ART_1` — e2932cb7be65ca02c309552cacb04334fbbf051d
+- `SILOOTH_V6_OWNER_PICK_1` — 72efe5e8d3b0
+- `FALL_LINE_MAJOR_REGION_LABEL_1` — 2b0970f24
+- `TWILIGHT_ART_REUSE_ELSEWHERE_1` — ad102b322
+- `LIQUID_PALETTE_DECIDE_KEEP_ALL_TWELVE` — 3eef924d2
+- `WITCHES_OYSTER_MASK_RESTORE_PIN_DRIFTED` — 2390b186b
+- `GSS_PROOF_ALL_RETRY_AFTER_THIRTY_FIXES` — 8cb2e0c86
+- `GSS_HOSE_LAY_DIAGNOSE_FIFTEEN_NEW_REDS` — 1f7a356db
+- `ROT_FOOTPRINT_PATCH_DEPLOY_NEW_OYSTER_CELLS` — 3fcf2f4b6
+- `OLLOPOM_BEAUTY_DEPLOY_WAITING_ON_GAME_CLOSE` — 3fcf2f4b6
+- `THEROT_NAMES_DEPLOY_ELEVEN_NEW_LABELS` — 3fcf2f4b6
+- `FULL_LIST_LOAD_DIAGNOSE_MINIFY_SAYS_NO` — 67153b072
+- `RIVER_NOTE_REPAIR_NAMEERROR_STILL_THERE` — c593401e50
+- `PIT_CHAINS_REPAIR_STALE_SINCE_RULING` — 8931525e4b
+- `EXT_FLUID_SET_REPAIR_ASKED_TOO_LATE` — 8931525e4b
+- `GOLDEN_SITE_REBUILD_RIVER_RUNS_DRY` — 8931525e4b
+- `EXT_LIQUID_REDS_HUNT_FIVE_AT_ONCE` — 2f31d27732
+- `PYRE_SITE_REBUILD_ANIMA_STILL_SAVED` — aa639416c8
+- `PYRE_ASH_REDESIGN_BURN_FEEDS_THE_FIELD` — 7f4bd3e283
+- `CAMPAIGN_STORY_SITTING_1` — 05d6077603
+- `ASSIGNMENT_SHEETS_VERDICT_SITTING_1` — 05d6077603
+- `CANAL_FRONT_FIX_WRONG_END_WETS_FIRST` — 6202592e59
+- `IDEO_DEITY_HUNT_GOD_WITH_NO_NAME` — c474102eae
+- `FLOWWORKS_ORACLE_SYNC_V2_MISSES_THE_CREEP` — c474102eae
+- `PYRE_BURN_LINE_PROVE_TWO_QUIET_DAYS` — c474102eae
+- `HARMONY_PATH_REPAIR_CURRENT_WENT_MISSING` — 7a223e165e8f
+- `DEPLOY_PRUNE_DELETED_FILES_STALE_ASH_LADDER` — d7139d7e6b
+- `PYRE_SETTINGS_SELFTEST_FIX_UNLUCKY_THIRTEEN` — b4d04d123d
+- `PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED` — 365b428d7b
+- `PYRE_SCORCH_YIELD_DIAGNOSE_FLAKY_HARVEST` — 365b428d7b
+- `TELEMETRY_NONE_REPAIR_PHANTOM_FAILURES` — 7be154332ce5
+- `CLOCK_SET_CALLERS_MIGRATE_DECLARE_FIRST` — 46eadf3f56
+- `PYRE_RUINS_ASH_DIAGNOSE_TEN_THEN_TWO` — 380163e211
+- `POND_BED_DESIGN_LAKES_ARE_TALL_CANALS` — dbdfef28f7
+- `PYRE_SITE_VITALS_REPAIR_HALF_THE_COLONY` — dbdfef28f7
+- `TESTENV_TOXIC_HARDEN_SITE_POISONS_ITS_GUESTS` — dbdfef28f7
+- `TESTENV_VITALS_REPAIR_TICKSABS_SECOND_SOURCE` — dbdfef28f7
+- `TESTENV_VITALS_HARDEN_LOADS_ARE_NOT_JUMPS` — dbdfef28f7
+- `WATCH_WAIT_WIRE_SMALL_STEPS` — dbdfef28f7
+- `RIVER_COLORS_FIRST_SCRIPT_1` — f5b3f4bc9d26
+- `FLOODED_CANYON_FIRST_SCRIPT_1` — 8ca92b2aa6
+- `FLOWWORKS_NORTHSTAR_BASELINE_RUN_1` — dbe92f0c92879477af71f45aaecb6de08e0db05a
+- `THICK_LIQUID_CREEP_1` — dbe92f0c92879477af71f45aaecb6de08e0db05a
+- `PYRE_REGROW_BUILD_A_WEEK_IN_MINUTES` — bc29bc5f6c
+- `MAP_DROP_DIAGNOSE_MENU_MIDRUN_GHOST` — ecc7577e69f7
+- `GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED` — 6d19ccfa49a0
+- `TESTENV_MODSET_RESTORE_WRONG_FILE` — 0ece8ec993a0
+- `POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK` — c0216b47b0
+- `LIQUID_HEAT_PUSH_1` — c0216b47b0
+- `FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL` — c0216b47b0
+- `FLOOD_DRIVER_OWNERSHIP_CONTRACT_1` — c0216b47b0
+- `FLOOD_SWITCH_RACE_MEND_ENGINE_OFF` — c0216b47b0
+- `PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD` — c0216b47b0
+- `PYRE_ANIMALS_DIAGNOSE_TEN_IS_NOT_TWELVE` — 0b603ed46aed
+- `TESTENV_GUARD_UNSTICK_BLOCKS_ITS_OWN_SEQUEL` — 03fa69c87db1a3c97c344d09d376fde3344d35fb
+- `TESTENV_SITE_BACKUP_REPAIR_READONLY_REUSE` — 03fa69c87db1a3c97c344d09d376fde3344d35fb
+- `TANK_LOOP_PROVE_LIVE_DONE_TOO_SOON` — d76d4f55dc45267c5f971632baaa81dc21c1ffe0
+- `TESTENV_QUICKTEST_HIVES_HARDEN_EMPTY_NEST` — 4f015f41a2e7
+- `TESTENV_VITALS_HARDEN_FIXTURES_ARE_NOT_HIVES` — 4f015f41a2e7
+- `TESTENV_MONOLITH_HARDEN_UNINVITED_GUEST` — 4f015f41a2e7
+- `TESTENV_STRANGER_JOINS_HARDEN_LET_IT_END` — 4f015f41a2e7
+- `TESTENV_FACTION_DIALOG_HARDEN_FIVE_KNOCKS` — e167f49523f0
+- `TESTENV_GOVERNOR_STOP_DIAGNOSE_NO_NOTE_LEFT` — 4f015f41a2e7
+- `TESTENV_INJURY_HARDEN_WHO_HURT_CAIT` — 4f015f41a2e7
+- `SAFE_ADVANCE_PROVE_DISARM_ENDS_THE_RUN` — f9163831e0
+- `COMPANION_STATIC_LAMBDAS_UNBLOCK_WITHOUT_GSS` — 0f40db2abe54
+- `POND_HOLLOW_DESIGN_THREE_LOOKS_ONE_BED` — d9149d3623
+- `LAKEBED_ART_BUILD_CRACKS_WITH_CHARACTER` — b15b89ddc187
+- `HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST` — ef888b271
+- `SAFE_ADVANCE_MENU_DIAGNOSE_LUCKY_NULLREF` — 53dadcf232
+- `PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE` — 212277fb04
+- `V2_POND_ROWS_REPAIR_STILL_COUNTS_FIVE` — 695812d5ec
+- `V2_PIT_ROWS_DIAGNOSE_NOBODY_STAYS_IN` — 695812d5ec
+- `FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY` — 695812d5ec
+- `TELEMETRY_FALSE_ALARMS_SILENCE_GEYSER_SHRUG` — efc3efdb19f8
+- `CLOCKGATE_STATUS_REPAIR_NULL_WENT_MISSING` — d25e1c95cd
+- `FINDMOD_GUARDS_REPAIR_GHOSTS_BY_NAME_TOO` — ce40347df6
+- `V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT` — b98094a832
+- `POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE` — 38d3744bc9
+- `TESTENV_WILD_DOWNED_REPAIR_STOPS_CLOCK` — 78f534c9e5
+- `MAYREQUIRE_REPAIR_GUARDS_NAME_A_GHOST` — 38d3744bc9
+- `PIT_REROUTE_FIX_TIME_TRAVEL_FORGIVEN` — 92ada47568
+- `BURROW_TIMEOUT_FIX_DEJA_VU_CURED` — 92ada47568
+- `TESTENV_SITE_HEAT_HARDEN_COOKS_BY_ROW3` — 902b565c93
+- `MODSET_MARKER_REPAIR_RESTORES_YESTERDAY` — 902b565c93
+- `READER_BASELINE_REPAIR_OLD_ORDER_TRIPS` — 21ccec33e5
+- `TESTENV_FOGGED_MECH_HARDEN_WOKE_ON_REVEAL` — 68a9928768
+- `TESTENV_STORM_FIRES_HARDEN_DECOY_BURN` — 68a9928768
+- `TESTENV_SWEPT_BRUISE_HARDEN_OWN_HAZARD` — 68a9928768
+- `TESTENV_FLESHBEAST_HARDEN_FREED_BY_UNFOG` — 040ad9af3e
+- `TESTENV_CONTROL_NOISE_HARDEN_SPIDER_AT_ARM` — 040ad9af3e
+- `TESTENV_RIVERSITE_HARDEN_RIVER_ENDS_AT_SEA` — 040ad9af3e
+- `REACH_VETO_FIX_ONE_END_ENOUGH` — 009abe3c49
+- `PIT_REACH_VERIFY_FLYERS_AND_GIANTS` — 009abe3c49
+- `PLACEMENT_FAILURE_MEND_LOST_IN_POSTING` — 8fdc692b89
+- `FLOWWORKS_TOGGLE_MEND_MIDGAME_LEFTOVERS` — ec3e21b942
+- `GSS_FALLEN_LINE_FIX_SHOCKS_THIN_AIR` — f70ee930b8
+- `FERRY_ROPE_FIX_BUILT_ONLY_WHEN_ASKED` — 0377b63928
+- `RIVER_CURRENT_PROBE_LATE_GRAB` — 0377b63928
+- `PANNING_SPOT_VERIFY_EMPTY_RIVER` — 0377b63928
+- `COVER_DECK_TUNE_QUADRATIC_CENSUS` — 0377b63928
+- `FLOOD_RELEASE_PROBE_FORGOTTEN_REFUSALS` — 0377b63928
+- `PIT_FALL_MEND_SAVED_MIDAIR` — 0377b63928
+- `CANAL_SWIM_VERIFY_POISON_POOL_PARTY` — 0377b63928
+- `GSS_LAMP_STYLE_FIX_OFF_STILL_STYLED` — 4173e9556f
+- `POND_CAPACITY_FIX_DOUBLING_BED` — 5b84c1baf651
+- `FILLIN_DISPLACE_FIX_DRY_POND_SNUB` — 5b84c1baf651
+- `MAP_STATICS_PRUNE_GHOST_MAPS` — df46b3e3a9
+- `GSS_TAP_CLAMP_FIX_NO_OFF_SWITCH` — b6241f9758
+- `GSS_STATICS_FIX_OUTLIVE_THE_SAVE` — e42ac437f0
+- `LIQUID_ROTATION_FIX_STARVED_STRANGER` — 69a9a10adb
+- `BOTTLE_STOCK_MEND_FREE_REFILLS` — a6ce6a54db
+- `TANK_SETTLE_FIX_DOUBLE_DIPPED` — 72185cbc4c
+- `PIPE_ADAPTER_FIX_DEBT_NEVER_PAID` — 3ddf921362
+- `TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT` — 682b968dc5
+- `HOSE_OFF_MEND_SLEEPWALKING_RETRACT` — e46ed827b5
+- `GSS_LAMP_RUN_FIX_NEIGHBOUR_PAINTS_IT` — e4030582ac
+- `FLOWWORKS_HOTPATH_MEASURE_EVERY_FRAME` — 72642d8cde
+- `FLOWWORKS_PROBES_MEND_HOOK_HAZARDS` — 7333aa53d5
+- `GSS_FRAME_COST_MEASURE_RIPPLE_DEFAULTS_ON` — 047fa73b09
+- `GSS_RESTRING_DECIDE_FREE_INSTANT_SPLICE` — 0b491a254c
+- `GSS_FALLEN_LINE_REDRAW_FLOATS_OVER_PAWNS` — ef8f5e72a5
+- `GSS_AERIAL_HINTS_FIX_SMALL_FIBS` — 946156859f
+- `GSS_PROBES_FIX_BLIND_SPOTS` — fb76ad5fc9
+- `HOSE_ORDERS_MEND_WAITING_FOREVER` — 944b9d1060
+- `HOSE_SPILL_MEND_POND_GETS_NOTHING` — 4ded2d06ec
+- `HOSE_IMPORT_MEND_ONE_SHOT_MISS` — 8fb5afd51f
+- `DBH_WATER_MEND_ACID_ON_TAP` — 80ac4bda4b
+- `LIQUID_FIRE_MEND_COVER_AND_SAVE` — 9bca729c18
+- `LIQUID_THEFT_VERIFY_FALSE_ACCUSATION` — b7d2d03dd2
+- `GSS_CORD_LAY_FIX_HEAPS_IN_DOORWAYS` — 146e2a6be2
+- `TESTSITE_SAVES_BUILD_ONE_CALM_MAP` — e3f885330d
+- `TESTENV_BUMBLEDRONE_HARDEN_UNINVITED_BUZZ` — e3f885330d
+- `TESTENV_FERRY_ROPE_HARDEN_WIDE_RIVER_BANKS` — e3f885330d
+- `LIQUID_FIRE_QUEUE_ORIGIN_1` — e3f885330d
+- `DIG_RESET_REPAIR_ROLLED_DEPTH_REMEMBERS` — e3f885330d
+- `STATIC_CALL_WIDEN_PAWNS_NEED_NOT_APPLY` — e3f885330d
+- `ASHWALLOW_HEAT_DOME_WIRE_CURLS_UP_LATE` — e3f885330d
+- `TESTENV_BURROW_COLD_PROVE_RELOAD_PER_TRIAL` — e3f885330d
+- `TESTENV_BURROW_HEAT_HARDEN_COLONISTS_COOKED` — e3f885330d
+- `GSS_SESSION_RESET_REPAIR_SNEAKS_INTO_SAVES` — 4f470f7c57
+- `GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED` — 21f2604349
+- `BOTTLE_DIRTY_OFF_REPAIR_EMPTY_GOES_MISSING` — 1f00ca73c7
+- `TESTENV_SWEPT_BRUISE_REPAIR_SLIPS_ITS_PASS` — 1bfc3301dc
+- `PYRE_FIREBORN_DIAGNOSE_TWENTYONE_RETURN` — 0b6132dcd0
+- `CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL` — 6e4fc00401
+- `POND_ELEVATION_BUILD_LAKES_RUN_DEEP` — 536e6c3d0165dac531808fb71f95a5c04fcc106e
+- `FUEL_MOAT_VERIFY_LIGHT_THE_GASOLINE` — 2024fb4890c1ee15603219fbf1caaccf17128ebc
+- `RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP` — 682da5d82c
+- `FLYER_NORTH_REDRAW_WINGS_LEFT_AT_HOME` — 19775594de
+- `GSS_WALK_HOSES_EXCISE_REELED_IN` — b805ca93d9
+- `FURNACE_WARMTH_FIX_NO_SIGN_TO_READ` — 536e6c3d01
+- `FURNACE_AURA_FIX_WARMS_THROUGH_WALLS` — 536e6c3d01
+- `FIREHAWK_EMBER_FIX_WALKS_ITS_TWIG` — 536e6c3d01
+- `SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK` — 536e6c3d01
+- `TAPCLAMP_REDRAW_BITES_DOWN_AT_LAST` — c4bd7af75a
+- `REVIEW_MAP_LABELS_FIX_ORPHANS_ADOPTED` — 45ee83717
+- `SPILL_FILTH_FIX_SOIL_SAYS_NO` — b20c1b890a
+- `REVIEW_MAP_FILL_FOUR_SETTINGS_NO_STAGE` — e648e99dd7
+- `SPRINKLERS_DESIGN_PIPES_THEN_PANACHE` — 86b27742d0aa
+- `TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID` — 5f3da64927
+- `RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW` — 0e472b3fc2
+- `TRIBES_LOOKUP_DIAGNOSE_FIRST_ONE_FALLS` — 902f562a87
+- `GSS_PATCHES_FIX_TWENTY_THREE_UNLABELLED` — 52a6a44d20ff
+- `RAID_DETECTOR_REPAIR_FLOOD_NOT_A_RAID` — f18737e762e7
+- `TREE_SIZE_ASK_GIANTS_WANTED` — 21febb1008
+- `CANOPY_ZOOM_DIAGNOSE_SEE_THE_FOREST` — a9ef6975ad
+- `RONTO_PACK_TEXTURE_REPAIR_SADDLEBAGS_MISSING` — 422c72944e
+- `TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS` — afbd112603
+- `RACES_GEN_REPAIR_STOP_SHREDDING_FIRST` — 399406fa5e
+- `FLOWWORKS_BRIDGES_DESIGN_SPAN_ANYTHING` — fe4b9d8152
+- `CANAL_COVER_DESIGN_WET_FOXHOLE` — fe4b9d8152
+- `WATER_SCENES_PROVE_AFTER_THE_CREEP_FIX` — 5360cda86
+- `FLOWWORKS_HOSE_FIX_PAUSE_REMESH_EVERY_FRAME` — 34d0e4db72
+- `FLOWWORKS_CONVERTER_FIX_CAP_EATS_CHANGE` — 34d0e4db72
+- `FLOWWORKS_VERYSHALLOW_FIX_RESIDUE_GAP` — 8c5f4207e8
+- `OWNER_REVIEW_STAGE_FIX_WATER_STILL_ARRIVING` — 4421fd49b0
+- `HUGE_WALLS_FIX_DECIDER_RETRIES_FOREVER` — ca7e9515e26d1ac2cda6635c2c7c36d8a196cb5b
+- `RAIDER_TRENCH_FIX_REACH_BOUNCE` — dea256e4e04b
+- `WALL_CLIMB_FIX_BUDGET_CAP_LEAKY_MEMOS` — dea256e4e04b
+- `FLOWWORKS_ROWS_FILL_STAGE_THE_UNSEEN` — 0aa1516578
+- `REVIEW_MAP_COVERAGE_FILL_ABOUT_NINETY_ROWS` — f484a75141b38d8e1adafb7ef2e079abc7fea0e7
+- `TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG` — a027e060d9cf4080812b0dee42ed40cac88926a0
+- `GIANT_CLEARAREA_FIX_WIPES_EVERY_MODE` — 601e7482f3
+- `SWIM_REAPPLY_FIX_LATE_TOGGLE_STAYS_DRY` — 601e7482f3
+- `HUGETHINGS_KEYS_FIX_ORPHAN_HEADERS` — 601e7482f3
+- `SUSPENSION_TOWER_LOAD_FIX_LEFTOVERS_PILE` — 23979d509b
+- `UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO` — a01c76fe256bc7e1cd65af8cc90d50eaeec0a847
+- `FLOWWORKS_SETTINGS_MEND_EMPTY_BELOW_RESET` — 6c3f584a9d
+- `SETTINGS_REGISTRY_FILL_FOUR_SECTIONS_UNSEEN` — 6c3f584a9d
+- `FLOWWORKS_ALPHABIOMES_RETIRE_GHOST_TERRAINS` — 62339d00ecfdbbc7402ef27365a08f516f2840c9
+- `CLIMB_RAMP_ROWS_BUILD_STAIRS_ARRIVED_EARLY` — 608c0398f0
+- `FLOWWORKS_V2_DIAGNOSE_THREE_NEW_REDS` — 7a0d4309f3
+- `VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG` — 7a0d4309f3
+- `PIT_COVER_DIAGNOSE_GIVES_WAY_TOO_SOON` — 7a0d4309f3
+- `HOSE_REALFLOW_DIAGNOSE_SHORT_POUR_DRY_TANK` — 7a0d4309f3
+- `RELOAD_POCKETS_DIAGNOSE_KEPT_NO_RECEIPTS` — 7a0d4309f3
+- `TANK_TALL_BUILD_TWICE_THE_DRINK` — 19e8ab2abb
+- `SCALD_SHEET_REDOS_1` — ae9493dd99
+- `QUARANTINE_PURGE_WEEK_1` — 9cafde3ee7
+- `AWAY_DASHBOARD_BUILD_1` — 593156f3a5
+- `THIRST_DESIGN_SLIME_IS_THE_LAST_RESORT` — bca3f5497a
+- `BIOME_WORLDTEX_BUILD_EVERY_BIOME_A_FACE` — ede2336a57
+- `OFFLINE_PILE_DEPLOY_ONE_TRIP_FOR_ALL` — f382a5d0df
+- `LADDER_HOSE_DIAGNOSE_SIPS_NOTHING` — b8d9bd5d41
+- `FALLEN_CORD_DIAGNOSE_LIVE_BUT_HARMLESS` — b8d9bd5d41
+- `WINCH_REACH_DIAGNOSE_CANREACH_FIBS` — 93cdbdc40ac1
+- `DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT` — d722e97f1170
+- `FALLEN_CORD_BUILD_RUBBLE_IS_NO_SHIELD` — f76aafe3ac76
+- `SLUICE_OUTLINE_FIX_GREY_NORTH_LIP` — c922fd3a3f00
+- `FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED` — 18d7683341fa
+- `FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED` — 18d7683341fa
+- `LINE_JOINS_JUDGE_GPT_SEES_FIRST` — 052122d5bea5
+- `DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS` — 1336ffdd98
+- `PIT_COVER_FIX_PLANKS_DRAWN_AS_DIRT` — 9a82ae98f4d7
+- `FLOWWORKS_SETTINGS_UNTANGLE_THE_JUNK_DRAWER` — 9544ea0571
+- `SLUICE_GATE_SETTINGS_EXCISE_KNOBS_ON_NOTHING` — 747c9290c9
+- `HOSE_FITTING_RENAME_CAP_IS_NOT_CAPPED` — 11aec7495c
+- `HOSE_ENDS_FIX_MISSES_THE_PORTS` — 7b57a2ecf6
+- `PIT_COVER_FIX_OCCUPANT_STAYS_BELOW` — 7b57a2ecf6
+- `DEEP_DIG_EXPLAIN_WAITING_ON_NO_DROID` — 5c92b4a9cf
+- `DRILL_SURVEY_EXPLAIN_BEFORE_STEEL_IS_SPENT` — 4e090d7ba1
+- `FLOWWORKS_SETTINGS_POLISH_SUPERDEEP_LEAKS` — b5e1142258
+- `ART_SHEET_FIX_SIBLING_KEEPS_UNSEEN` — c87bbf460392
+- `TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM` — d03ca752f4
+- `PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS` — 41fb948b5e
+- `DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES` — 41fb948b5e
+- `LADDER_HOSE_DIAGNOSE_RETRACTS_ON_A_WHIM` — 0ab8470911
+- `MOAT_LEVEL_DIAGNOSE_HALF_METRE_VANISHES` — 0ab8470911
+- `BLEED_WELL_STRINGS_RENAME_TAP_RETIRED` — f68f12652e
+- `PUBLISH_DLL_FIX_BINARIES_STOP_ARGUING` — 8ead9dd3b19e
+- `PREREVIEW_ENFORCE_EYES_BEFORE_HIS_EYES` — 4845fc61fe
+- `JOINT_FITTINGS_RESTORE_SWITCHED_OFF_AT_HOME` — c8f8307b34
+- `JOINT_CHECK_FIX_ALL_MAPS_SAW_ONE` — f58ceac1d8
+- `MODERN_REEL_FIX_ONE_JOINT_IN_AIR` — 5bed576967a1259ae0c5ed23f5b63de373905008
+- `MAP_R_BUILDER_FIX_FORTY_BANKS_REFUSED` — 6a010b3dec
+- `SCENARIO_MOCK_HARDEN_INKS_THE_REAL_KEYSHEET` — 17586b65cafd
+- `HOSEPROBE_SUMMARY_FIX_WANDERED_OFF` — bb70179f9d
+- `CARD_PICKS_CORRECT_OLDER_ONES_STILL_SAID` — 1611d5fe7175
+- `SELFTEST_EXT_LID_ROW_FIX_UNREGISTERED` — 465f61350b
+- `SELFTEST_HOSE_P3_SHAPE_FIX_UNHOOK_ADDED` — 465f61350b
+- `LADDER_DRAFTS_RETIRE_SEVEN_FOR_ONE` — 34e6494ba613
+- `REVIEW_SHEETS_LINK_REPAIR_POINTS_AT_NOTHING` — 1b05e8471d
+- `ART_PAINTERLY_RESTORATION_1` — 42678b8eff
+- `TANK_FLANGE_FIX_HOVERS_MID_PIPE` — 7d88eac325
+- `TANK_STUB_HUNT_POINTS_AT_NOTHING` — 7d88eac325
+- `C1_TANK_STUB_PRUNE_PIPE_TO_NOWHERE` — 7d88eac325
+- `CREEK_STATIONS_REDESIGN_FORDED_A_PUDDLE` — 7d88eac325
+- `PUMPSTATION_SOUTH_PORT_REDRAW_ALMOST_THERE` — 7d88eac325
+- `FORD_STONES_REDRAW_LOOK_LIKE_A_SMUDGE` — 7d88eac325
+- `RIVER_DOME_DIAGNOSE_WHITE_BLOB_AFLOAT` — 3158150111
+- `KLUDGED_HOSE_PRUNE_TAIL_TO_NOWHERE` — 3158150111
+- `TERRAIN_CROSSES_DIAGNOSE_DARK_BLOTCHES` — 86a4298f22
+- `LEVELLING_FILLS_DIAGNOSE_WATER_GOES_MISSING` — c215f9ab1d
+- `POLE_CABLE_FIX_FORGOT_TO_SAG` — 1798323af6
+- `MODERN_TANK_PORT_REDRAW_COUPLER_FLOATS` — 1798323af6
+- `WALK_KEEP_FIX_SNAPSHOT_STAYED_HOME` — 3d06a6028672
+- `PROOF_SWEEPS_FIX_OTHER_ZOOS_STILL_OPEN` — 3d06a6028672
+- `C1_CORD_REWIRE_BATTERY_GOES_SKINNY_DIPPING` — 3bcca45f4b62
+- `HOSE_SELFTEST_REPAIR_STALE_PORTPOINT` — db2c353b32
+- `HOSE_BEND_FIX_SHAVES_WALL_CORNERS` — dc0d3621a4
+- `HOSE_LEADIN_FIX_STUB_IN_THE_CANAL` — dc0d3621a4
+- `PORTABLE_LADDER_REDRAW_STAND_UP_STRAIGHT` — 41c06f6a2b
+- `SAND_SHOVEL_DIAGNOSE_DIGS_UNDER_WALLS` — 17e90dc6ca1c2c3699fedb8699f7d3cb6556ae90
+- `SUSPENSION_ART_RESKIN_HE_SEES_FIRST` — 41fb948b5ef0b6522f35c473f9fff32c014603ae
+- `HOSE_NOZZLE_DIAGNOSE_HUGS_WALL_ENDS` — 4cff1a0718
+- `FW_SELFTESTS_MEND_TWO_RED_AFTER_PARITY` — 0df38f45e0
+- `TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE` — 8c4ff4f1c36f
+- `GSS_HOOKUP_CABLE_PROBE_HIDDEN_CONDUIT` — 1f37da7100a87d07809817dffbf9f1bdaff4b71c
+- `GSS_STYLE_RUN_PROVE_MIXED_LOOKS_SUSPECTED` — 1f37da7100a87d07809817dffbf9f1bdaff4b71c
+- `LADDER_WALL_FIX_LOSES_CLIMBER_BY_ID` — c43182dac5
+- `WATER_LOOKS_GATE_FIX_WSL_CALL_EMPTY` — c43182dac5
+- `DEEP_LAKE_FIX_PAINTED_LAKE_JOINS_WILD` — 1edfffa471
+- `PIT_RESCUE_FIX_LADDER_UP_NOBODY_COMES` — f8c169a08b
+- `CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT` — 0959a81688
+- `WATERED_PIT_FIX_NO_WAY_IN` — d9f13cebd5
+- `SWIM_DEPTH_FIX_TWO_METRES_WALKED` — d9f13cebd5
+- `DEEP_PIT_SWIM_FIX_FIVE_METRES_WALKS` — d9f13cebd5
+- `DRAFTED_SWIMMER_FIX_PIT_BOTTOM_ROW` — d9f13cebd5
+- `PIT_CLICK_FIX_SHIFTED_ONE_DOWN` — d9f13cebd5
+- `SHALLOW_RIPPLE_FIX_DARK_RING_STATIC` — d9f13cebd5
+- `GODMODE_LADDER_FIX_ASKS_FOR_WOOD` — d9f13cebd5
+- `PIPE_JOINS_REDRAW_RISER_ELBOW_AND_COLLAR` — ade1b1267f
+- `SPILL_FILTH_DIAGNOSE_TWO_OF_THREE` — b050b1c41f
+- `MODERN_PIPE_REDRAW_FIRETRUCK_RED_RETIRED` — ccbe9e339a
+- `SPRINKLER_SEAT_FIX_HEAD_BESIDE_ELBOW` — ccbe9e339a
+- `LADDER_PORTABLE_REDRAW_NORTH_FROM_GROUND` — df90744424
+- `LINES_DRAWBRIDGE_FIX_SELFTEST_DRIFT` — 4ca8ea969d0100ef397303a280c39cb4b69d8de2
+- `LADDER_PORTABLE_DECIDE_EAST_WEST_FACING` — 3017ad0438c2ea401e7df891849e376db2230260
+- `DUG_WATER_FILL_FIX_NO_CANAL_DEBIT` — cfb6f3820338
+- `DRILL_FILL_FIX_LOSES_FRACTIONAL_BRIM` — cfb6f3820338
+- `DISABLED_LIQUID_FIX_LIMITLESS_SOURCE` — cfb6f3820338
+- `UNLIMITED_SINK_FIX_FRACTIONAL_WATER` — 65097834dde8497c267f0e06835a33f5990ad925
+- `LEVEL_HOLDER_FIX_REFILLS_FRACTIONAL_BASIN` — 65097834dde8497c267f0e06835a33f5990ad925
+- `PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE` — a953364956
+- `GAME_DRIFT_DEPLOY_OLDER_COMMITS` — c68ae270245c
+- `LEVELLING_BANDS_FIX_STOPS_PAST_EIGHT` — 675f96c57192575e9af3c2174ddb990e16a3e1f3
+- `HOSE_RELOAD_FIX_SPILLS_SAVED_FLOW` — 52851352e4f2300126577f28315d58ed4a91c4db
+- `TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH` — 4169fce37691
+- `DUG_FILL_FIX_WALKS_TO_SHEET` — c42010afd35b
+- `SPRINKLER_HEAD_REDRAW_SEEN_FROM_ABOVE` — cb78420900
+- `MODCHECK_RUN_DIAGNOSE_TICK_ONE_STALL` — 87998efd85c5
+- `HOSE_EXPLORER_WIDEN_SEEDS_LONG_LEAD` — 8d64560c3f0d
+- `HOSE_FIT_HARDEN_FREE_LENGTH_SHORT_LEAD` — 8c355b364fb9
+- `HOSE_MATE_REWIRE_CONTINUOUS_COUPLING` — 4b02e5884cd6
+- `HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS` — 1ec89cc35d
+- `DEPLOY_PLAN_FIX_REDUNDANT_TREE_PASSES` — a5a7bf7d22aa
+- `DEPLOY_PLAN_FIX_STALE_INVENTORY_CACHE` — 0fd4436617c18f5fba338fd432f5f5bf6684bdc0
+- `SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS` — 9f60e97d1e
+- `GRATE_DOOR_REBUILD_LIFTS_LIKE_THE_SLUICE` — 9f60e97d1e
+- `WET_PIT_LADDER_FIX_STILL_REFUSED` — aca6902967
+- `WET_LADDER_FIX_NO_WALL_WHEN_BRIMFULL` — aca6902967
+- `REVIEW_STAGER_FIX_NUMBER_EVERY_STATION` — bae1f9c239
+- `SAVE_GUARD_FIX_BOM_READ_AS_BROKEN` — d95ee433db74
+- `REVIEW_STAGER_FIX_BARS_OFF_SMALL_MAP` — 1c2472af4b62
+- `REVIEW_STAGER_FIX_BRIDGE_LANES_SWAPPED` — 1c2472af4b62
+- `MODCHECK_SITE_FIX_RAIDS_KILL_THE_RUN` — d2567be9650c178703e51820fed7fb66a89fc86d
+- `MODCHECK_SITE_FIX_MECHS_WAKE_MID_RUN` — d2567be9650c178703e51820fed7fb66a89fc86d
+- `DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL` — f2b17ca5e3
+- `SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY` — fc4a03ba37
+- `FILL_IN_FIXTURE_FIX_CRUSHES_COLONIST` — 2070898e05
+- `PIT_SPIKES_TUNE_SOUTH_ROW_TOO_DENSE` — 21b236986f
+- `SPIKE_DESCENT_FIX_STABS_NOT_COUNTED` — eabfb55709
+- `PIT_SPIKES_TUNE_NORTH_ROW_TOO_SPARSE` — eabfb55709
+- `MODCHECK_VERIFY_FIX_SEAT_LOST_ON_WINDOWS` — fd9016648b
+- `MODCHECK_SEAT_FIX_DETACHED_RUN_NO_RECORD` — fd9016648b
+- `MODCHECK_POLICY_FIX_RECORD_NEEDS_SITUATIONAL` — fd9016648b
+- `DIG_SPOIL_DECIDE_FOUR_DEFAULTS_HELD` — 82fa767908
+- `MODCHECK_TARGETING_BUILD_STOP_AFTER_REUSE` — d0bf5d49b4
+- `MODCHECK_HOLD_FIX_SITUATIONAL_ONLY_ROOF` — d0bf5d49b4
+- `HEAVY_BRIDGE_RENAME_TRUSS_LIKE_THE_PHOTO` — ecfb698b75
+- `FLOWWORKS_DLL_REBUILD_AFTER_SHARED_COMMIT` — 2c3abdad12
+- `ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN` — 41fba6a88f
+- `DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK` — 41fba6a88f
+- `DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY` — 41fba6a88f
+- `PIT_DIG_FIX_SAND_SLIDES_BACK_IN` — 41fba6a88f
+- `DEEP_WATER_BUILD_REFUSED_BY_LIGHT_AFFORDANCE` — a8f10174f1
+- `SPIKES_PIERCE_TUNE_LIKE_VANILLA_TRAP` — a8f10174f1
+- `STEVEDESKTOP_SCRIPTS_VET_FULL_FILE_REVIEW` — ce511ab94e
+- `MODCHECK_REUSE_BUILD_MANIFEST_VALIDITY` — a0c88def1d
+- `MODCHECK_ROWS_FIX_SCOPE_NEVER_PASSED` — 035ca8532cab
+- `SUSPENSION_TOWER_DIAGNOSE_UNSUPPLIED_IN_POOL` — c2474507fb
+- `STEVEDESKTOP_SERVE_DEPLOY_LAN_BOOTSTRAP` — b1cf86d70916
+- `STEVEDESKTOP_SSH_INSTALL_ONE_LINE` — b1cf86d70916
+- `STEVEDESKTOP_REPORT_ABSORB_SSH_CONFIG` — b1cf86d70916
+- `STEVEDESKTOP_TAILSCALE_WIRE_WINDOWS_NODE` — b1cf86d70916
+- `STEVEDESKTOP_TAILNET_HARDEN_NO_KEY_EXPIRY` — b1cf86d70916
+- `STEVEDESKTOP_WSL_FINISH_AFTER_REBOOT` — b1cf86d70916
+- `STEVEDESKTOP_FAILS_REPAIR_OVER_SSH` — b1cf86d70916
+- `STEVEDESKTOP_AUTOLOGON_INSTALL_PASSWORD` — b1cf86d70916
+- `STEVEDESKTOP_CRD_INSTALL_GUI_DOOR` — b1cf86d70916
+- `STEVEDESKTOP_STEAM_VERIFY_FIVE_DLCS` — b1cf86d70916
+- `STEVEDESKTOP_RUNNER_WIRE_DEPLOY_KEY` — 6db9760b131f
+- `STEVEDESKTOP_CLAUDE_REWIRE_ONE_SYMLINK_SWAP` — d31c47eb97eb
+- `STEVEDESKTOP_CLAUDE_WIRE_ONE_LOGIN` — d31c47eb97eb
+- `SHOVELS_BUILD_NO_DIGGING_BARE_HANDED` — f3db3a440a
+- `SAND_SHOVEL_FIX_ORDER_NEVER_SCANNED` — f3db3a440a
+- `GAME_PATHS_REWIRE_ONE_ENV_PER_MACHINE` — 9a7059aabe
+- `STEVEDESKTOP_PWSH_FIX_QUOTING_BY_ENCODING` — 0ad0c14a35
+- `STEVEDESKTOP_LAUNCH_WIRE_DESKTOP_SESSION` — 403b866555
+- `STEVEDESKTOP_MODS_INSTALL_BRIDGE_AND_MINIMAL` — 9d9ba58be1
+- `STEVEDESKTOP_USERDATA_FIX_STEVE_UNTOUCHED` — 403b866555
+- `STEVEDESKTOP_DEPLOY_RUN_FROM_RUNNER_CLONE` — 9d9ba58be1
+- `STEVEDESKTOP_MODCHECK_PROVE_FIRST_REMOTE_RUN` — 5a9d4c4401
+- `STEVEDESKTOP_DOC_SYNC_DOORS_MEASURED` — 0f8e2c0ac2
+- `BRIDGE_LOCK_WIDEN_ONE_PER_HOST` — a7534e71d1
+- `KNOWN_GOOD_BUILD_SKIP_UNCHANGED_PASS` — 24b90ea28b
+- `MODCHECK_METRICS_BUILD_DAILY_WASTE` — e10b2468f8
+- `STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS` — 6a925e0b57
+- `SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE` — b89d625f83
+- `DRAWBRIDGE_WIDEN_FOUR_LANES_TO_MATCH` — 62635fc6c0
+- `ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES` — 05b59f488b
+- `ICE_MELT_TAME_STACK_FLOOD` — 05b59f488b
+- `WORK_PRIORITY_FIX_ZERO_IGNORED_UNMANUAL` — b889d6b9c3
+- `TESTQ_DISPATCHER_BUILD_SSH_NO_LLM` — e1bf597394
+- `STEVEDESKTOP_RUNNER_WIRE_OWN_LEDGER_SEAT` — e1bf597394
+- `SELFTEST_FILTER_BUILD_SERIAL_DLL` — 65ffd1270a
+- `GRAVEL_RECIPE_ROW_DIAGNOSE_BILL_NEVER_STARTS` — 50f1a4dd74
+- `SHOVELS_SAPPER_ROW_DIAGNOSE_RAID_NEVER_FIRES` — 50f1a4dd74
+- `TESTQ_COMMISSION_PROVE_FAILURE_DRILLS` — 2c12cdaefb
+- `TESTQ_DEAD_GAME_RUN_FIX_READS_DONE` — 7ac048eabb
+- `PUMP_TANK_FIX_DRAWS_TOO_LITTLE` — 47dddf7fd7
+- `BOTTLE_WASH_FIX_LOSES_BOTTLE` — 304f572789
+- `TANK_POUR_FIX_FILL_MODE_NEVER_RUNS` — 304f572789
+- `TANK_LOOP_FIX_PROOF_TANK_MISSING` — c3af516436
+- `BOTTLE_REVERT_FIX_OFF_STILL_REVERTS` — c3af516436
+- `PIPE_FEED_FIX_FAR_TANK_STAYS_EMPTY` — c3af516436
+- `SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ` — 63616d9abf
+- `RUNNER_HOST_FIX_PILLOW_MISSING` — d8be21ffcf
+- `MOCK_DLL_FIX_STALE_ON_CLEAN_RUN` — 6c3214a938
+- `LEDGER_TOOLS_WIDEN_RUNNER_SEAT` — 8d8ed94033
+- `STEVEDESKTOP_REPORT_FIX_FINAL_POST_REFUSED` — 275b5f23dc
+- `STEVEDESKTOP_BRINGUP_BUILD_SECOND_BENCH` — 3b4fd8fd75
+- `ACCOUNT_PAGE_FIX_PULSE_TOOK_THE_PORT` — 59639732a0
+- `STEVEDESKTOP_DOORS_VERIFY_BEFORE_LEAVING` — 8cdf248dce
+- `DRAWBRIDGE_LEAF_FIX_RAISED_STILL_DRAWN` — e1bcbecac186
+- `TESTING_RIG_MONITOR_EFFICIENCY_IN_PULSE` — 12a4610171
+- `RIMPULSE_PAGE_FIX_CHORES_POSE_AS_RULINGS` — 2a1bc3ede5
+- `CLAUDE_PLAN_USAGE_MEASURE_A_SOURCE` — 2a1bc3ede5
+- `RIMPULSE_PLAN_BUILD_ON_TRACK_WHILE_AWAY` — 2a1bc3ede5
+- `CANAL_FIRE_FIX_LIGHT_REFUSED_DRY` — b369737f10
+- `TRAP_TRIGGER_FIX_OFF_STILL_GIVES_WAY` — b369737f10
+- `LIQUID_HEAT_FIX_ICY_HUT_NOT_COLDER` — b369737f10
+- `ASTROFUEL_MOAT_FIX_DETONATION_COUNT` — b369737f10
+- `BOTTLE_LOOP_FIX_NOTHING_FILLS` — b369737f10
+- `FLOW_DOORS_DIAGNOSE_GRATE_NEVER_FILLS` — b369737f10
+- `FIXTURE_PAWNS_FIX_MISSING_FROM_PITS` — b369737f10
+- `SUSPENSION_RATING_FIX_PER_LANE_WORDING` — a2354de334
+- `THIRST_BLUEICE_VERIFY_WRONG_MOD_GATE` — e5387c63e4
+- `LADDER_PRISON_FIX_COLONIST_STAYS_HELD` — 89a9a69600
+- `POOL_PIT_FIX_DROWNING_CENSUS_EMPTY` — 89a9a69600
+- `NATURAL_SLIME_FIX_WALKER_NEVER_SLIPS` — 89a9a69600
+- `TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS` — 1c3f90d62d
+- `FLOWWORKS_SELFTESTS_FIX_TMPDIR_LEAKS` — 27f50667c8
+- `VALIDATE_PATCH_DESCENDANT_FIX_FALSE_ZERO` — ee3a515e5f
+- `TESTQ_INGEST_FIX_ONE_ITEM_MANY_ROWS` — c6696800ed
+- `TESTQ_FILL_CAP_SCALE_AND_SKIP_DRY` — 86b0475881
+- `STEVEWORKER_HARDEN_THREE_LOOSE_BOLTS` — 3dc1e6828b
+- `STEVEWORKER_UNSTICK_DIRTY_CLONE_REFUSES_SYNC` — 0fac8aa4c4
+- `STEVEWORKER_HARDEN_OLD_PIN_RUNS_OLD_CODE` — 0fac8aa4c4
+- `MISSION_FIXTURE_FIX_RESEARCH_WINDOW_BLINDS` — f8e7b364d1
+- `LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER` — 25f2a98e95
+- `RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE` — e7ea84ae17
+- `GATESELFTEST_FIX_PIN_MINIMAL_LIST` — 6340b6b3474acc538a0c039183ea958fae40920c
+- `PIT_CAPTURE_FIX_HOSTILE_NOT_PRISONER` — 89a9a69600
+- `PIT_CAPTURE_FIX_FIXTURE_FIGHT_STOPS_CHAINS` — 948ae1b7fc
+- `HOSE_PORT_SELFTEST_FIX_P9_CREDIT_COUNT` — efa77807b7
+- `LEVEL_PERF_PROOF_FIX_LAYS_OUTRUN_BUDGET` — 5795589380
+- `DRAWBRIDGE_ART_FIX_STALE_CABLE_MEASURE` — 829e1d903c
+- `BLACKSTAR_SAPPERS_RESTORE_BREACH_KIND` — e61396125c
+- `BRIDGETOOLS_WORKGIVER_PROBE_ANIMAL_NRE` — 32f201f1bf
+- `ARCHITECT_VISIBLE_FIX_READS_ALWAYS_TRUE` — f5d0dad43e
+- `TESTQ_DISPATCH_PUSH_ENFORCE_LINT` — 03a71088f831
+- `RIVERSITE_FIX_RETILE_NONE_CRASH` — c7f7849afe
+- `TESTQ_JOB_PLAN_WIRE_PREVIEW` — 8f39225abd
+- `LINES_PROOF_FIX_POLE_SPAN_SITE` — 075dec75a7
+- `V2_FILLIN_SCENE_STAGE_FILL_MATERIAL` — 075dec75a7
+- `THIRST_FIX_SALT_DRUNK_ROUTINELY` — 075dec75a7
+- `THIRST_FIX_DESPERATE_SKIPS_BOTTLE` — 075dec75a7
+- `THIRST_FIX_AWKWARD_ACCESS_ROW_FAILS` — 075dec75a7
+- `TOGGLE_LADDER_FIX_REQUIRED_PAWN_ESCAPES_PIT` — 075dec75a7
+- `WASTES_BRINE_FIX_RUT_TERRAINS_DRUNK_FRESH` — 7acc759d82b7
+- `MIRE_FUZZ_FIX_FREE_STRUGGLE_BLIND` — 7acc759d82b7
+- `WARCASKET_FUZZ_FIX_SWIMMER_COMMENT_WRONG` — 7acc759d82b7
+- `STILLSAND_FUZZ_FIX_RUNOUT_TICKS_MISSTATED` — 7acc759d82b7
+- `TESTQ_ARCHMAGI_FIX_OWNER_MODLIST_SWAP` — eddc7f3d3787
+- `RIMPULSE_LOOKS_BUILD_PACKET_IN_WIDGET` — e4374511305d
+- `ICEDIG_SELFTEST_FIX_STALE_MOD_GATE` — 8c8b2ac78032
+- `METEORITE_ADAPTER_PROVE_LIVE_CHAIN` — e99a6c8566
+- `HOSE_SHADOW_FIX_STALE_AFTER_RELAY` — 760592195a
+- `HOSE_SHADOW_FIX_RETRACTING_STRAND_STALE` — 760592195a
+- `HOSE_SHADOW_FIX_CARRIED_STRAND_STALE` — 300816d5f4
+- `HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE` — 525f34a3c4b4
+- `MACHINERY_LOOK_FIX_DECK_REPAINT_ON_SWITCH` — 6de559bc87
+- `WEIR_SELFTEST_FIX_STALE_DEPOSIT_ANCHOR` — 082fae61e9
+- `STATIC_STATE_FIX_RELOAD_TICK_MEMOS` — 082fae61e9
+- `FAUNA_SPEC_SWIMMER_FIX_WALKER_MODULE` — 7743471e29
+- `ARTPIPE_JOBS_WIRE_BODY_PLAN_CLAUSE` — 9b4ed7a53b
+- `TESTQ_FIX_COMPOSE_ROUTE_MOD_WITH` — 26e691ce7271
+- `FLOWWORKS_V2_FIX_PIT_ROWS_RESCUE_LADDER` — e437451130
+- `ARTPIPED_STATUS_FIX_PHANTOM_INFLIGHT` — d870e27cf3
+- `CODEX_SEED_FIX_STALE_RUNNER_BUILD` — f7a33d06ee
+- `CODEXSEED_FIX_FALSE_UAC_HINT` — b8c65ab2a9
+- `STEVE_RIG_FIX_OUTOFBAND_DRIVER_MARKER` — e13c4cc9df
+- `HOSE_LOOK_FIX_RESET_SKIPS_REPAINT` — edc9b8335227
+- `MODCHECK_DRIVERS_FIX_BUDGET_KILL_MIDCALL` — 06c8d1e10d3304ed23bfd4beb0e6da877e99122a
+- `TESTQ_SIZING_FIX_DRIVER_BUDGET_FROM_PLAN` — 4a63a952ef98
+- `STEVEWORKER_FIX_MARKER_BOUNCE_EVERY_JOB` — a961a0a251
+- `FAUNASPEC_FIX_FLIGHT_FRAMES_IGNORE_PREFIX` — 996f892c7e
+- `MODCHECK_DRIVERS_HARDEN_OWN_TIMEOUT_MIDCALL` — 21866d895a2c
+- `TESTQ_FIX_CANARY_PAUSE_IDLES_LANE` — 9c156d42aa31ed90197427c18c826719503b2f7d
+- `TESTQ_SWEEP_FIX_DRIVERS_OVER_CAP` — c69b2fc1e3
+- `ARTEVAL_RUNNER_FIX_FILES_UNSPECED_KEPT` — d4eb6f0491
+- `SELFTEST_ARTPIPE_FIX_UNPINNED_NETEXE_ENVS` — c6f662476c
+- `FILLQUEUE_ENFORCE_ELIGIBILITY_GATE` — ea640a7247
+- `HOSE_SHADOW_VERIFY_RELAY_AND_WIND_LIVE` — 760592195a
+- `ARTGATE_FIX_UNBOUND_SLOT_FILINGS` — ea640a7247
+- `ELIGIBILITY_GATE_WIDEN_TO_TERRAIN_WEATHER` — 3ddc13cb5b
+- `CHILLFIREGATE_FIX_STALE_IDENTITY_COMMENT` — 402cce50a2
+- `RIMBRIDGE_DEADLINE_FIX_NAN_FAILS_OPEN` — 5acc7c9c33
+- `MODCHECK_REUSE_TEST_FIX_VACUOUS_CANARY` — 5acc7c9c33
+- `FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT` — e22d1a7ed0
+- `ARTEVAL_RUNNER_FIX_TEST_RESUMES_PROD_RUN` — db86c8e699fe
+- `EXTPROOF_FILLIN_FIX_STALE_BUDGET_DOC` — 4f55957f6b78
+- `FILLQUEUE_OWNERRULING_FIX_ANY_RULING_PASSES` — 9906e72484
+- `MODCHECK_VALIDATE_FIX_OWNER_WORDS_DROPPED` — 4946dcddef
+- `HOSE_ROUTE_FIX_THREAD_BUDGET` — a188c6f43f
+- `HOSE_LAY_FIX_STALE_EPOCH` — a188c6f43f
+- `HOSE_LAY_FIX_GLOBAL_CAP` — a188c6f43f
+- `HOSE_LAY_FIX_COUNTER_ORDER` — ef18f77fc5
+- `HOSE_LAY_TEST_FIX_VACUOUS_EPOCH_SCAN` — e9f80eff59
+- `BRIDGE_ART_REDRAW_CABINETS_GROW_SADDLES` — 97b09eddea
+- `REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE` — b5e399067a
+- `HUMANREVIEW_FIX_UNMEASURED_FRESHNESS_PROVES` — ede26bdb6e
+- `RIVERSITE_FIX_UNANSWERED_CALL_CRASHES` — 0c61353fac
+- `COLD_STORAGE_ENGINE_BUILD_CLIMATE_COMP` — 09a5462468
+- `COLDSTORAGE_REGISTRY_FIX_STALE_AFTER_LOAD` — 2727a45c4a
+- `COLDSTORAGE_CLIMATE_FIX_TEXTURE_CCTOR` — 2727a45c4a
+- `COLDSTORAGE_LWM_FIX_COMPS_NOT_EXTENSION` — 2727a45c4a
+- `FERRYROPE_FIX_VANISHES_OFFSCREEN_OWNER` — 605184de03
+- `COUPLER_REDRAW_FIX_STALE_ACROSS_SECTIONS` — 605184de03
+- `LADDERPARITY_FIX_TAKE_WORK_SAPPER_ZERO` — 605184de03
+- `RIVERPROOFWORKS_FIX_STALE_CALLER_AND_LEAKS` — 605184de03
+- `RIVERCURRENT_FIX_STALE_DOC_AND_BARE_ENGLISH` — 605184de03
+- `PUMPPREVIEW_PRUNE_STALE_PORT_DRAW` — 605184de03
+- `FLOWWORKS_KEYS_PRUNE_DEAD_DRILL_STRINGS` — 605184de03
+- `BANKWORKS_PRUNE_ORPHAN_PLACEHOLDER_ART` — 605184de03
+- `RIVERDRIFT_DOC_FIX_CLAIMS_NOTHING_READS` — 605184de03
+- `SPIKES_DOC_FIX_STALE_D4_ONLY_HEADER` — 605184de03
+- `SEKKULAATHTANK_DECIDE_RELEASE_ON_DESTROY` — e696f6d185
+- `CLIMBLIMIT_DOC_FIX_SUMMARY_ON_WRONG_MEMBER` — 605184de03
+- `SUSPENSIONMATH_DOC_FIX_SLICE_SAYS_ROWS` — 605184de03
+- `RIVERMATH_DOC_FIX_STAKE_ORDER_GRACE` — 605184de03
+- `RAIDERTRENCH_DOC_FIX_STALE_OWN_FACTION_RULE` — 605184de03
+- `FLOWKERNEL_DOC_FIX_STALE_SURFACE_RANGE` — 605184de03
+- `FLOWWORKSMOD_DOC_FIX_STALE_PHASE_NOTES` — 605184de03
+- `COLDSTORAGE_SEALED_READOUT_FIX_GATE` — c5b82ed617
+- `COLDSTORAGE_STASIS_WIRE_GRADE_FACTOR` — c5b82ed617
+- `COLDSTORAGE_DECAY_READOUT_FIX_UNDER_STASIS` — c5b82ed617
+- `COLDSTORAGE_MINIFIED_FIX_STALE_TEMP` — c5b82ed617
+- `ORPHANART_FIX_MISSED_READERS_NO_COPY` — df07ce83d6
+- `PITWALK_FIX_SHOT_RELPATH_ACROSS_MOUNTS` — 8ab4647364
+- `PITWALK_FIX_FIVE_ROWS_NEVER_MEASURE` — 8ab4647364
+- `PIT_EXPOSURE_FIX_NO_HEDIFF_OPEN_FLOOR` — 8ab4647364
+- `PIT_FLOOD_FIX_NEAR_BRIM_NO_EXIT` — 8ab4647364
+- `COLD_STORAGE_COOLERS_BUILD_RSW_LADDER` — 46cdb52ab7
+- `SETTINGS_SCOPE_LINE_CORRECT_NEXT_PULSE_LIE` — 878bd55620
+- `COLDSTORAGE_WALL_LIGHT_FIX_RESYNC` — bac56b6b50
+- `COLDSTORAGE_WALL_PRISON_FIX_HEMOGEN` — bac56b6b50
+- `SEAT_SYNC_HARDEN_LITERAL_PATHSPECS` — 9ea0915ca7
+- `CONVERSATIONS_LAND_FIX_STALE_TRAILER` — 68d9a4df18
+- `TPS_VERDICT_FIX_WINDOW_LABEL` — 074895cc0f
+- `PLACEHOLDER_GENS_PRUNE_REAL_ART` — b6e3cd89bd
+- `TRANSIENT_PIN_FIX_STALE_TRAILER` — 432f02daf1
+- `HOSE_CENSUS_FIX_RELAYS_IN_PROBE` — fa833277f811
+- `GPT_FW_REVIEW_VERIFY_REMAINING_FINDINGS` — 5dae2afe31
+- `COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE` — dff5f0da7b
+- `COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT` — dff5f0da7b
+- `FW_PROOF_DRIVERS_FIX_EARLY_FALSE_PASS` — ea8d2a6fc9
+- `COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS` — 367f0e9c2627
+- `PIPE_ARM_FIX_STALE_BESIDE_NEW_TANK` — 1bce1ead7a11
+- `RIVERPROBE_FIX_FOUR_UNGUARDED_SPAWNS` — 1bce1ead7a11
+- `LADDERINSPECT_FIX_WALL_LEAN_SAYS_NOWHERE` — 1bce1ead7a11
+- `WEIRCHECKS_FIX_REGEX_READS_NEXT_DEF` — 1bce1ead7a11
+- `DETACHEDBED_HARDEN_REATTACH_NO_WATER` — 1bce1ead7a11
+- `FW_PROOF_DRIVERS_FIX_LATE_FALSE_PASS` — 861069cb4a
+- `REVIEW_MAP_FILL_FIVE_UNSTATIONED_DEFS` — 6cbfcdfc0ddb
+- `GSS_PROOF_DRIVERS_FIX_FALSE_PASS` — 6cbfcdfc0ddb
+- `DRAWBRIDGEPROOF_FIX_SWEEP_KILLS_COLONY` — 47a60bd154
+- `MODCHECK_HARDEN_RESTORE_RAISE_LOSES_SHEET` — 47a60bd154
+- `TESTQTICK_SILENCE_GIT_GC_LEFTOVERS` — 59d27b43cf
+- `GSS_ASYNC_TEST_FIX_STALE_CORRIDOR_GAP` — 2987f99d6e98
+- `COLD_STORAGE_CARBONFREEZE_BUILD_FOOD_PRESS` — 287d027b9fd7
+- `PITWALK_FIX_HUGE_TRUNK_BLOCKERS_IN_SITE` — ed7ff8bbd2
+- `PITWALK_FIX_SPRUNG_DECK_READS_ABSENT` — ed7ff8bbd2
+- `PITWALK_FIX_SWIM_COMPRESSION_SKIPS_WARNING` — ed7ff8bbd2
+- `PITWALK_FIX_GOVERNOR_STOP_CRASHES_WALK` — ed7ff8bbd2
+- `SHADOW_ROWID_FIX_SERIES_TAG_SLIPS_THROUGH` — 78d9f9c7d285
+- `SHADOW_VIEW_ROWS_FIX_MERGED_UNLABELLED` — 78d9f9c7d285
+- `STEVE_STEWARD_BUILD_NO_LLM_OWNER` — 4102db4416
+- `STREAM_METRICS_UNIFY_ONE_SERIES` — 8ea9cb96f36d
+- `MODCHECK_METRICS_RETIRE_INTO_HOURLY` — 8ea9cb96f36d
+- `RIMPULSE_STREAMS_BUILD_VS_TIME` — 8ea9cb96f36d
+- `L1_DONOR_SELFTEST_FIX_UNKNOWN_COMMIT` — d13c498c40
+- `TESTQ_FILL_RANK_BY_EVIDENCE_GAPS` — 78db3805c3
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_C80D` — 78db3805c3
+- `SLOT_ALLOCATOR_BUILD_RULES_FILE` — a8725799ee
+- `SLOT_CAP_ENFORCE_HOOK_REFUSES_OVER_N` — e4614f3bba
+- `ACCOUNT_USAGE_WIRE_PULSE_TILE_ALLOCATOR` — 76c6f0d37f
+- `SHEET_ARTIFACT_BUILD_REMOTE_REVIEW_ROUTE` — e702b31687
+- `SLOT_OVERAGE_BUILD_PAYBACK_LATER` — 7512d82ce059
+- `CARBON_PRESS_FIX_NO_WORKGIVER_RUNS_BILLS` — cb5a4d557f
+- `COLD_INSPECT_FIX_PARTIAL_SAYS_ALL_HELD` — cb5a4d557f
+- `FWSHEET_CULL_MIXED_CONTAINER_ROWS` — c26e1a42b6da
+- `FWSHEET_UNIFY_COUPLED_STATE_ROWS` — c26e1a42b6da
+- `PREREVIEW_ENFORCE_SHEET_SHAPE` — 8bba47008bd8
+- `FWSHEET_FILL_PUMPING_KLUDGED` — c26e1a42b6da
+- `SHEET_ARTIFACT_EXPLAIN_ANSWERED` — f39988136f48
+- `SHEET_ARTIFACT_FIX_PREFILL_ANSWERED` — f39988136f48
+- `FWSHEET_DEDUPE_FORDSTONES_COLUMNS` — c26e1a42b6da
+- `HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC` — bf24416b7b
+- `HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET` — bf24416b7b
+- `HOSE_RELAY_FIX_BUDGET_STARVES_LATE_REELS` — ca7e0b67e1
+- `SELFTEST_BUILD_DECLARED_INPUT_PASS_CACHE` — cca88f0211
+- `CARBON_PRESS_FIX_PACK_TAKES_WHOLE_STACKS` — 17e9ecf967
+- `HOSE_SNAPSHOT_FIX_MISSES_CLIMB_GENERATION` — 92af8fe9ac
+- `CARBON_PACK_FIX_NUTRITION_READ_AS_PIECES` — 92af8fe9ac
+- `PIPE_ELBOW_FIX_SEAM_JOGS` — PENDING
+- `CTX_SIM_FIX_COLD_RESTART_DOUBLE_CHARGE` — f93125b477
+- `ART_MARKS_BUILD_NEWEST_WINS_ARCHIVE` — a8f8e15616
+- `CUISINE_STICKS_MERGE_SEVEN_INTO_ONE_ROAST` — 140cb1d156
+- `HOSE_DRAW_FIX_STALLS_WHILE_WORKER_LAYS` — 295a658f86
+- `ARCHIVED_SHAS_FIX_LIVE_SUBTRACTION` — 58a9390e767b
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_BACB` — 04ab5ee31e
+- `TPS_SCENE_KEY_ENFORCE_LIKE_FOR_LIKE` — 33d7b4b518
+- `ARTLEDGER_BAN_FIX_PH_FROM_LIVE_FILE` — 1ad131f6a4
+- `ART_GUARD_FIX_ALLOWS_LIVE_OF_BANNED` — 1ad131f6a4
+- `LEFTOVERS_BUILD_ARCHIVE_THEN_DELETE` — a89d56de9e
+- `RIMFLOW_SIM_BUILD_FACTORY_IN_A_BOTTLE` — c93c543ec8
+- `STEVE_LANE_UNSTICK_PAUSED_UNOWNED_A686` — 6087591e79
+- `DISPATCHER_HARDEN_OWNER_RETURN_AFTER_RING` — 5c49a263a511
+- `DOORBELL_HARDEN_SPARE_OWNER_TYPING` — 6357be7eac57
+- `DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT` — ed8954506864
+- `DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE` — 2b6857eafa43
+- `DISPATCHER_RECOVERY_PROVE_BG_SURVIVES` — 2b6857eafa43
+- `ROLE_CAPS_TUNE_ABOVE_RUN_FLOOR` — fab2c69088
+- `ROLE_LAUNCH_DECIDE_SEAT_AND_GATES` — fab2c69088
+- `OPS_WATCH_BUILD_TOKEN_TALK_DRIFT` — 2aa3d505dcc6
+- `DISPATCHER_BUILD_PICK_ACCOUNT_FIRST` — b475fd5969
+- `SLOT_ALLOCATOR_FIX_SITTING_ACROSS_SWITCH` — e3ae063457
+- `DISPATCHER_BUILD_WEEKDAY_AND_EVENT_TRIGGERS` — 28fbc818e2f1
+- `PRODUCER_FIX_SLOT_AFTER_BAND_SKIP` — 28fbc818e2f1
+- `ROLE_VET_MODEL_TIERS_PER_POLICY` — 28fbc818e2f1
+- `DISPATCHER_FIX_LENT_HOLD_ALARM` — 28fbc818e2f1
+- `OPS_ALARM_ITEMS_PRUNE_FROM_BENCH_QUEUE` — 7f0b0a6abb
+- `RIMFLOW_AUDITOR_RETHINK_DAILY_CAP` — c913fefb75
+- `AUDITOR_BUILD_PRESCREEN_CLOSES_NO_AI` — b40e79af6b
+- `CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE` — e8196aa714d6
+- `ARBITER_GATES_HARDEN_SIX_FAKES_PASSED` — c1acbe9cf52f
+- `ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS` — 6a4de75dd8
+- `ARBITER_EVIDENCE_FIX_REPLAY_ERASES_FAIL` — 456e902b4b16ce3102ab9190b1f7dafda715fa9d
+- `V3_ROLE_PROMPTS_FIX_SEVENTEEN_GPT_NITS` — c1ff160a5966b500739e19a4cac2b42fbc58acf0
+- `V3_ROLE_PROMPTS_FIX_EIGHT_LEFT_STANDING` — fb313b8c9f
+- `EVIDENCE_COVERS_HARDEN_REVIEW_AD_SIX_MORE` — a4b5173a197dece6a279c327912ae29c59d8b965
+- `WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP` — b3df8798d4
+- `DUG_SWIM_REFRESH_SHRINK_HASH_SETS` — e952307d64
+- `DISPATCHER_GOLIVE_FIX_THREE_BLOCKERS_FOUND` — dd9e0ac80b
+- `ROLE_AFTER_SLOTS_UNIFY_WEEKDAY_KEYS` — dd9e0ac80b
+- `DELEGATED_DIGEST_FIX_NEVER_WRITTEN` — d73e60f218
+- `V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS` — e7dcd7cb10d8
+- `ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK` — c80237e4e3
+- `AUDITOR_BUILD_AUDITS_FILE` — c80237e4e3
+- `DISPATCHER_STOP_HARDEN_HANGS_SKIP_THE_KILL` — f415e0233064
+- `ARBITER_DECIDE_BACKLOG_NEVER_DRAINS` — c7d60d0d5912
+- `ARBITER_FIX_CLAIMS_AGE_OUT_UNJUDGED` — c7d60d0d5912
+- `ARBITER_MEASURE_PRELAUNCH_EVIDENCE_TIME` — c7d60d0d5912
+- `TIERS_FIX_G6_BLIND_WITHOUT_BUILDER` — f8096eb1cc7e55eb483892447f7f291633f9800a
+- `CODE_REVIEW_WIRE_REVIEWER_SEAT` — f8096eb1cc7e55eb483892447f7f291633f9800a
+- `THIRST_FIX_T20_STRAY_BUCKET` — af4bdd9ac120
+- `EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE` — f7ab43142a9c
+- `SWIMGRID_FULL_SHRINK_FILL_FLIP_BUMPS` — f7ab43142a9c
+- `CONTRACTS_BUILD_COMMON_READER_FIVE_RECORDS` — a69a6b522cd8f0636d4e91fc0af8403ee6be7ec6
+- `TESTING_BENCHMARK_MONTE_CARLO` — 6b1d7f316caf
+- `BLINDVIEW_BUILD_CLOSED_TYPE_LEAKPROOF` — c1761831e4b4
+- `DIGEST_BLIND_HARDEN_REASONS_SLIP_THROUGH` — c1761831e4b4
+- `CONTRACTS_REPLAY_HARDEN_OK_WITHOUT_PROOF` — f708f335f381661fe83a43ed1708f2aef802ef2f
+- `RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL` — f9416b0d72
+- `DUGSWIM_TAME_RAIN_FLIP_BURST` — 8d0d9f511b
+- `STEPPULSE_SHRINK_STEADY_SLICE_COST` — b1cc4c3409
+- `MUTANTS_HUNT_ON_IDLE_STEVE` — 88e2214ea23c52b9e008f91679a3bf8cfd0c48f3
+- `THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES` — 63eddf054a12
+- `BLINDVIEW_FIX_TOKEN_WORD_FALSE_WITHHOLDS` — 24c9e6f4e583
+- `BLINDVIEW_HARDEN_SIX_LEAKS_STILL_OPEN` — c78d5406a525
+- `CAST_ROSTERS_RESTORE_CUT_XENOTYPE_RACES` — 7ff41aacf751
+- `FLOWWORKS_RAIN_SETTING_CALLSITES_FIX_DRIFT` — bdf66fc6439b
+- `SCENARIOS_MAP_FIX_LADDER_ICE_NO_HOME` — 5bf1deb85bc9
+- `RIMPULSE_AGENTS_BUILD_DAY_TIMELINE` — 5cc700c339bd
+- `PIPE_SEAT_ELBOW_FIX_VS_SELFTEST_CONSTANT` — 796a9f22158f
+- `ART_REFERENCE_TEXTURE_CHECK_FIX_SHA_OVERLAP` — 249c82c0a43c
+- `ROLE_LAUNCH_HARDEN_MUTATION_SURVIVORS` — d63ac0da65b4
+- `ARBITER_VERDICT_WIRE_JSON_SCHEMA_HANDOFF` — 2bb25707ac86
+- `DISPATCHER_SELFTESTS_HARDEN_HARDWIRED_CLONE` — 6e2d2d66d2
+- `TESTQ_OUTCOME_HARDEN_TAG_ONLY_KEYERROR` — a6cdd76847f2
+- `TESTQ_HARDEN_RECONCILE_NONDICT_CRASH` — a6cdd76847f2
+- `TESTQ_SCHEMA_RECONCILE_UNDECLARED_MARKERS` — a6cdd76847f2
+- `TESTQ_ALLOWANCE_HARDEN_TOO_WIDE_A_GATE` — 147d0b7d09
+- `SELFTEST_EVIDENCE_FIX_COVERS_TESTS_ONLY` — 4af114b7945e51f67102c28bd35e1ed3d5087ec7
+- `LEDGER_TS_HARDEN_NONISO_AFTER_CUTOFF` — 3a4f0a3089
+- `AUDITS_SHA_HARDEN_TRAILING_NEWLINE_MATCH` — 3a4f0a3089
+- `DISPATCHER_JOURNAL_TAME_REPEAT_TS_SKIPS` — 7e10cc2e03
+- `HOSELINKS_REFRESH_DIAGNOSE_MAP0_TICK_SPIKE` — ebf8e5325c73
+- `ROLE_LAUNCH_REVIEW_FINISH_ROUND_FIVE` — 5efb1ce5f9
+- `EVIDENCE_SEALS_HARDEN_STRIPPED_LOOKS_DELETED` — 6e771b895cd6
+- `BLIND_REFS_WIDEN_SHORT_SHA_HIDDEN` — 008f02a161
+- `WALLREACH_BUILD_DIAGNOSE_RAIN_TAIL` — 45ac3920e6c0
+- `SELFTEST_A2_SOURCE_FIX_STALE_PATTERN` — 45ac3920e6c0
+- `ROLE_EVENT_KEY_WIDEN_SAME_SECOND_TWINS` — abe94adc6352
+- `EVIDENCE_CUTOVER_CLONES_SYNC_CHECK` — e132148a0d02
+- `EVIDENCE_SELFTEST_FIX_WRITES_REAL_STORE` — 04d7610eb0
+- `PROCS_SELFTEST_FIX_LIVE_PROC_FLAKE` — 02fff76f38b9
+- `OPS_SILENT_FLAG_FIX_OUTLIVES_SERIES` — 02fff76f38b9
+- `ROLE_LAUNCH_REVIEW_FINISH_ROUND_EIGHT` — dcabaa2252eb
+- `POCKETRAIN_FIX_SURPLUS_CROSSES_SLUICE` — 07dcaa2ada
+- `RIMPULSE_LEDGER_TAME_TAIL_READ` — 8d1493eb60b8
+- `BLIND_REVIEW_FINISH_ROUND_NINE` — a11ea24368
+- `SLOT_OVERAGE_REMEASURE_BY_HELPER_MINUTES` — 099b5faa1e28
+- `ARTPIPE_IDLE_FILL_EMPTY_ALL_NIGHT` — dce017d62b
+- `SLOT_BURNACCOUNT_FIX_DORMANT_TIE` — 0de7f1c10c
+- `PULSE_HANDS_RETIRE_THIRTEEN_HELD_FOREVER` — b29920fb63ad
+- `OWNER_WAITS_DRAIN_28_ANSWERED_NOT_MOVED` — f5cd4d5299
+- `TESTQ_INGEST_REVIEW_FINISH_ROUND_FOUR` — d2ac2e426224
+- `SURFACEGAP_MERGE_ARMS_THROUGH_POND` — bfd2259755
+- `STEVE_WORKER_HARDEN_GUARD_RACE_REQUEUE` — 28a3d706be63
+- `FLOWPINS_FIX_PASS_ON_REGRESSION` — 719344e6fd22
+- `WINBUILD_DOTNET_MIGRATE_STEVEDESKTOP_PATH` — d243dc1a28
+- `FLOWPINS_VERIFY_THREE_LEFT_UNCHECKED` — dc45f8abcf23
+- `TIMERS_DIAGNOSE_SILENT_MASS_STOP` — 78de1dd215e2
+- `THIRST_ROWS_HARDEN_GPT_ROUND2` — ceaad079ec
+- `ARTEVAL_FILE_REGENS_JOBID_FIX_SERIES_TAG` — 8384933c6b46
+- `ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE` — c2ee75cacd26
+- `ARTEVAL_REGEN_PROMPT_FIX_LIMIT_TEXT` — 069bc485f89f
+- `ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET` — 617cecef5d18
+- `HOSE_PERF_BUILD_OFFLINE_REPLAY_HARNESS` — f78f5a1b6dd3
+- `ARTEVAL_COMPARE_VETO_FIX_ACCEPT_LIMBO` — a6b839b8a2d1
+- `THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE` — ad2f5912e4
+- `FURNACEBEAST_ART_INSTALL_OWNER_KEPT_IT` — 7d9cf3d836
+- `SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED` — a77dbfed0b
+- `HOSE_TICK_REBUILD_ZERO_ALLOC` — 74fe2f4c6e
+- `DISPATCHER_HARDEN_MUTATION_SURVIVORS` — 7af1251219
+- `LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED` — 6793586d4d
+- `STEVE_LANE_UNSTICK_PAUSED_UNOWNED_C45B` — efbfbf4872
+- `FLEET_RELAUNCH_FIX_ELEVEN_GHOST_TABS` — 894e13620a
+- `ACCOUNTPICK_CORRECT_OWNER_PRIORITY` — 52c7a70bd0
+- `OPSWATCH_SILENCE_FRESH_WEEK_RUNWAY` — 52c7a70bd0
+- `TESTING_POLICY_DESIGN_RIGHT_TOOL_RIGHT_TIME` — 7d6e490b9e
+- `OPSWATCH_MONITOR_UNCLAIMED_STEVE_INCIDENTS` — 8b295d809dd2
+- `ROLE_CAPS_REMEASURE_ON_REAL_RUNS` — 9953a9cf1d9b
+- `ARBITERTRIAL_PROVE_FAKE_CLOSE_FAILS` — 9e68653bbb
+- `HELPER_BUDGET_MIGRATE_INTO_DISPATCHER` — bce8d5a772
+- `OPS_DEADMAN_REVIVE_A054` — c530010fd0
+- `CONDUCTOR_RESTART_EXPLAIN_ZSH_TOOK_THE_BLAME` — 488bb45d74
+- `CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE` — 024a8cb1b26e4c8174bdec58e94f5fdcbde10a11
+- `CONDUCTOR_TITLE_FIX_KEEP_THE_DOORPLATE` — 15488cc2b9
+- `CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS` — 428e9fa9bcfe297607d113563753eb183a3e24db
+- `SEAT_RESTART_FIX_KILL_AFTER_NEW_WORK` — 3b0e0bbd25
+- `SEAT_RESTART_FIX_HUMAN_INPUT_MARKERS` — 3b0e0bbd25
+- `BIOME_AUDIT_TRIAGE_NINE_REPAIRS_WAITING` — 2b8cc93c8f
+- `ARTPIPE_FACING_COHERENCE_1` — 6c258908c8
+- `V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY` — d302fbbcea
+- `STEVEDESKTOP_REBOOT_PROVE_HANDS_FREE` — 8fb1d221fe
+- `MAINLOCK_DIAGNOSE_WHO_TURNED_THE_KEY` — 8fb1d221fe
+- `STEVE_LANE_UNSTICK_PAUSED_UNOWNED_BE53` — 8fb1d221fe
+- `STEVE_LANE_UNSTICK_PAUSED_UNOWNED_F27F` — e500e9680840
+- `LESSONS_KEEPER_WIRE_AUDITOR_GETS_THE_BROOM` — a179f81c7738a93544ecf5f61d4f6228cd567150
+- `STEVE_LANE_UNSTICK_PAUSED_UNOWNED_15B5` — 1840f6a2a9
+- `CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW` — d9b43e13a66fcf399b55d971ec6fbe4a05dcac46
+- `AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI` — 5ce76d059b59
+- `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X` — 4c0b13067d9e
+- `FLOWWORKS_OWNER_RECONCILE_CUTOVER_STALE` — dea2fee7d4
+- `COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME` — dd1384f31913
+- `STEVE_LANE_UNSTICK_PAUSED_OWNER_FCE8` — 41599c4212
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_D070` — 41599c4212
+- `ARENA_LANE_RESTORE_MAIN_MOD_FILES` — c293a7d498a0
+- `CRITIC_CALIB_FIX_MISS_IGNORES_REASON` — 86a122438f
+- `CRITIC_CALIB_FIX_PLANTED_NOT_DETECTABLE` — 86a122438f
+- `CRITIC_CALIB_MEASURE_AGAINST_TESTER_BASELINE` — 86a122438f
+- `CRITIC_CALIB_REMEASURE_TIERB_AS_UNLABELLED` — 3c7429f5eafa
+- `BRIDGE_FIX_RECHECK_LIVENESS_UNDER_LOCK` — edeef00b69
+- `SCRATCHREAP_FIX_THIRTY_MINUTES_OF_HOMEWORK` — e0eba97b8672
+- `TESTPILOT_HOTAPPLY_TAINT_FIX_CARRY` — 088de11857b7
+- `TESTPILOT_ENQUEUE_TAINT_ID_VET_AT_SEAL` — e4932c913e39
+- `STEVE_LANE_FIX_WEDGED_KEPT_GAME` — 942f472bcc
+- `OPS_STEVE_DIAGNOSE_INVALID_630C` — 942f472bcc
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_68AE` — 942f472bcc
+- `OPS_STEVE_UNSTICK_UNCLAIMED_F6B5` — 942f472bcc
+- `OPS_STEVE_UNSTICK_UNCLAIMED_0B75` — 942f472bcc
+- `OPS_STEVE_UNSTICK_UNCLAIMED_7C91` — 942f472bcc
+- `ARENA_HANDOFF_PROVE_SURVIVES_PROCESS_DEATH` — b2ac9256d112
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_78EA` — 9e288bc106
+- `LOGIN_LOSS_FIX_DEAD_SIGNALS` — eb9459103882
+- `HAIKU_CENSUS_VERIFY_BY_TRANSCRIPT` — 35df48ba0a93
+- `TIMER_FAILED_FIX_AUTO_REPAIR` — f9bef4aafe67
+- `STEVE_STALL_FIX_FILE_FAILED_ROUTE` — f9bef4aafe67
+- `OPS_FLAGS_FIX_NO_ACTION` — f9bef4aafe67
+- `ROLE_OVERBUDGET_FIX_NO_RESPONSE` — f9bef4aafe67
+- `ROLE_OVERTIME_FIX_SCOPE_NO_RESPONSE` — f9bef4aafe67
+- `PUBLISH_FAILURES_FIX_AUTO_RETRY` — f9bef4aafe67
+- `TICK_UNRESERVED_FIX_SILENT_ALARM` — f9bef4aafe67
+- `RATE_LIMIT_FIX_STRANDED_WINDOWS` — f9bef4aafe67
+- `SELFTESTS_MAIN_REPAIR_TWO_RED_AFTER_REWRITE` — 1b78a2ad00
+- `SELFTESTS_DOTNET_FIX_LANE_STARVATION` — 98bc911da074
+- `OWNER_CLOCK_FIX_RELAYED_ORDERS_WEAR_HAT` — d3101f19b2
+- `RIMFLOW_FIX_PER_RULING_UNCHECKED` — d3101f19b2
+- `OWNER_STAMP_FIX_UNWRITABLE_FAILS_OPEN` — d3101f19b2
+- `HOST_OWNER_HOLD_ENFORCE_ACROSS_CLONES` — d3101f19b2
+- `SEAT_RESTART_FIX_DEAD_WINDOW_UNREAD_LOST` — f177b04602
+- `SEAT_RESTART_FIX_WAKE_DEATH_READ_LOST` — f177b04602
+- `SEAT_RESTART_FIX_STALE_RECORD_RELAUNCH` — f177b04602
+- `SHEET_ENFORCE_LIVE_WRITER_REFUSE_PICKS` — c065c8776a
+- `OWNER_DOCS_ENFORCE_WINDOWS_PATHS` — c065c8776a
+- `RETEST_RULE_ONCE_PER_CODE_VERSION` — 8197e06e6e
+- `OPS_WATCH_FIX_FINAL_REVIEW_FINDINGS` — 72650ac457
+- `ARENA_WATCHDOG_BUILD_UNATTENDED_REPLAY` — 9450078d1878
+- `SEAT_BACKSTOP_FIX_NEVER_STARTED_NO_BIRTH` — e4711f7ef9
+- `SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO` — 7f4e012c1c
+- `CANONICAL_SAVE_FIX_STALE_START_POINTER` — e53b33863d7e96b4c832f954434fae01e85a6e74
+- `STEWARD_FIX_LEAVES_THE_LIGHTS_ON` — 5bd612281f
+- `BRIDGE_SKILL_FIX_TOOL_COUNT_STALE` — a50bb84215f10ae335138fae8b9033597554301a
+- `CONDUCTOR_IDENTITY_FIX_HELPERS_NEEDLE_GONE` — 55d0c06810
+- `OPS_DEADMAN_REVIVE_17EC` — f805ee60bc092f0fed2d84b4a55a989f2e9d3879
+- `TESTQSTEWARD_FIX_ESCALATES_TO_A_GHOST` — 357d08b8510949817dc5f0640ced5e642221bc82
+- `PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT` — 4d71a568e54062ef56cb67e5e3bfb55c2fcffe09
+- `CODEXRUNWAY_FIX_YESTERDAYS_RATE_HAUNTS` — d9bce9470cf4298eeffd0e51fc58f0392af3c272
+- `LENT_ALARM_MEASURE_THE_LOAN_NOT_WEEK` — 36b504cba2d44bbaa4d9db15801c3730a2be62f9
+- `OPS_STEVE_DIAGNOSE_INVALID_CE0E` — 588c86e142d51b0fcf1bee8798ce3e923db152af
+- `RIMFLOW_V3_BUILD_WHAT_WAS_ONLY_PROSE` — 161437b00827cf5a7aec7742ced06f8d164fa71f
+- `STEVE_WORKBAR_DIAGNOSE_MANUAL_PRIORITIES_OFF` — ce8b2bed70758677d127b3616a7e480c29033f42
+- `RIMFLOW_V3_SHRINK_FEWER_CHAIRS_SAME_JOBS` — 7b6a741cf3ca209f6d10bf0103cd0b56a83945bb
+- `SCHEDULE_PRUNE_UNREAD_HELPER_KEYS_SIM_ONLY` — bb4f24ff4eb76b839d0c1f798e675411322757ce
+- `TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD` — 93e241be9705e8e3976c2bad3e682f8e18a1c228
+- `CONDUCTOR_CLOSEOUT_BUILD_LEDGER_CHECK` — b00bfae65cb26a60de2e44edcb9a8dc737801be7
+- `OPS_ALARM_RETRY_AFTER_AUTH_DEATH` — a768cf998efebdcb53a2c9e0a907aa991ac67230
+- `STEVE_GAME_FIX_UNBOUNDED_MAPS` — 567435ca04fa6ab8d690181de3cb21ee95ca41ce
+- `OPS_TIMER_REPAIR_EC51` — 2ac3e00ebcb3f38377c781f2f8ce40c1e85d9fcb
+- `CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` — 0535dcc043ce51d6acdebf6c384dd166699b93ab
+- `OPS_STEVE_UNSTICK_UNCLAIMED_FDBF` — 74161bb9ef676bfd78303aaa07259d94ada0bf94
+- `STEVE_WORKER_UNSTICK_WOUNDED_GAME_KEPT_UP` — 5bef97fa2474
+- `ALARM_RUN_DEDUPE_SAID_IT_TWICE` — 81b547c15437f8856ea2f43c42dd1a1445661a52
+- `OPS_STEVE_DIAGNOSE_INVALID_577B` — f2290beaa8ebffd8bb79e5270c3051b788926eb6
+- `SCOPE_ALARM_FIX_DEAD_SELFTEST_STILL_SHOUTS` — 11aa6205a789b5fd812801f3991b9b4af1faec04
+- `ART_CHECKS_FIX_OUTLINE_FLAGS_OVER_LIMIT` — 7f43591f5b960cbec6c0b43b293546b2ef565d56
+- `TESTQ_SELFTEST_FIX_NIGHTLY_FILE_MISSING` — ddf1743074fb88f797f62c9fc77c2af9bd0411a5
+- `MSEDROIDFIX_RETIRE_DEPOT_DEPENDENCY_GONE` — 551c5de672b895ae4b43c64b3418eff13f0b8668
+- `ARMOURY_IONIZE_RETIRE_ABF_REFERENCE_DEAD` — a184fbc08ce2a9812099737e120cc138c39c2e60
+- `ASIMOV_SCRUB_BACKUPS_RESTORE_LOST_PAIR` — d9225a202ba339ae6496dc792900b4ab8779040f
+- `SCRATCHREAP_FIX_ARCHIVE_TAGS_CRY_WOLF` — 851f0741501030e637652234f1b074061d45b4b3
+- `SCRATCHREAP_FIX_ARCHIVE_TAGS_CRY_WOLF` — 851f0741501030e637652234f1b074061d45b4b3
+- `STEVE_LANE_UNSTICK_OFFLINE_UNOWNED_2DEB` — 21bb3a3edd6f1ba3c9283c991aa406ae108c685a
+- `SHADECRAFT_LESSONS_DESIGN_1` — 6c71e1d77b5926445663e0e1baa2fba5c4abf1f3
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `WORLDMAP_BIOME_APPEARANCE_1` — 3d855424e95ded662d235359f11d888b561ff47f
+- `NORTHSTAR_ADVERSARIAL_REVIEW_1` — b24e2066d4f15468372d97fd201e257cb0d3eb7a
+- `NORTHSTAR_ADVERSARIAL_REVIEW_1` — b24e2066d4f15468372d97fd201e257cb0d3eb7a
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `FEVERWOOD_HIVE_GUARD_CHAMBER_1` — 28163af67b993eb64c0bdbf24a716ca303b0e6b0
+- `SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES` — 91e5c6062c
+- `CONDUCTOR_LOG_FIX_FAKE_ALARMS_SINCE_1970S` — fa573c87c2
+- `NORTHSTAR_PROCESS_RETRO_1` — 7f6cce6004d748b38c9ca80c2d4bc5157f918c43
+- `NORTHSTAR_PROCESS_RETRO_1` — 7f6cce6004d748b38c9ca80c2d4bc5157f918c43
+- `NORTHSTAR_PROCESS_RETRO_1` — 7f6cce6004d748b38c9ca80c2d4bc5157f918c43
+- `NORTHSTAR_PROCESS_RETRO_1` — 7f6cce6004d748b38c9ca80c2d4bc5157f918c43
+- `NORTHSTAR_PROCESS_RETRO_1` — 7f6cce6004d748b38c9ca80c2d4bc5157f918c43
+- `NORTHSTAR_PROCESS_RETRO_1` — 7f6cce6004d748b38c9ca80c2d4bc5157f918c43
+- `NORTHSTAR_PROCESS_RETRO_1` — 7f6cce6004d748b38c9ca80c2d4bc5157f918c43
+- `NORTHSTAR_PROCESS_RETRO_1` — 7f6cce6004d748b38c9ca80c2d4bc5157f918c43
+- `NORTHSTAR_PROCESS_RETRO_1` — 7f6cce6004d748b38c9ca80c2d4bc5157f918c43
+- `NORTHSTAR_PROCESS_RETRO_1` — 7f6cce6004d748b38c9ca80c2d4bc5157f918c43
+- `RUSTCATHEDRAL_WORN_BIT_ARC_1` — cd945f4f525cc7ae21373a99e83513faeaf26e73
+- `RUSTCATHEDRAL_WORN_BIT_ARC_1` — cd945f4f525cc7ae21373a99e83513faeaf26e73
+- `RUSTCATHEDRAL_WORN_BIT_ARC_1` — cd945f4f525cc7ae21373a99e83513faeaf26e73
+- `RUSTCATHEDRAL_WORN_BIT_ARC_1` — cd945f4f525cc7ae21373a99e83513faeaf26e73
+- `RUSTCATHEDRAL_WORN_BIT_ARC_1` — cd945f4f525cc7ae21373a99e83513faeaf26e73
+- `RUSTCATHEDRAL_WORN_BIT_ARC_1` — cd945f4f525cc7ae21373a99e83513faeaf26e73
+- `RUSTCATHEDRAL_WORN_BIT_ARC_1` — cd945f4f525cc7ae21373a99e83513faeaf26e73
+- `RUSTCATHEDRAL_WORN_BIT_ARC_1` — cd945f4f525cc7ae21373a99e83513faeaf26e73
+- `RUSTCATHEDRAL_WORN_BIT_ARC_1` — cd945f4f525cc7ae21373a99e83513faeaf26e73
+- `OPS_STAFFING_RESTORE_UNDER_BUDGET` — df1cfee6a4fb
+- `CANON_FAUNA_FLORA_GPT_REVIEW_1` — daf60d10b7aa093818be92599d6a1ebca77d4016
+- `CANON_FAUNA_FLORA_GPT_REVIEW_1` — daf60d10b7aa093818be92599d6a1ebca77d4016
+- `CANON_FAUNA_FLORA_GPT_REVIEW_1` — daf60d10b7aa093818be92599d6a1ebca77d4016
+- `ANT_HIVE_REAL_GEOMETRY_1` — 49341d5083002069cd4db5a9663c770ac264b976
+- `CRACKEDLANDS_SALVAGE_CLAIM_CREW_1` — 41ab4787a1eed835ddb4b2356b90d0c4657a5bcf
+- `OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF` — 3d80580ea4
+- `CANON_HERD_LORE_ARBITRATION_1` — d01d50179fc6b0e898b54660479fe3ae714fdcb7
+- `SCALD_STEAM_WEATHER_DESIGN_1` — 68d33964b5bb7573ed3e91f613ab627cf0bc2910
+- `ARCH_SIM_MEASURE_FANOUT_EQUAL_TERMS` — 23913d43a2e7
+- `JAM_WATCH_BUILD_RELENTLESS_IN_OPS_DIGEST` — 57af4d7e65f900a6f6bf1b15142cd78c63ac17d2
+- `BREAKER_COOL_FIX_SAME_CAUSE_ALARMS_EMERGENCY` — ad49904cf059429b135f1da67cc4c144ac457f0a
+- `ALARM_RANGES_BUILD_CLASSES_AS_DATA` — 570e4d3b27f7eab738fb57e0c1a4417a216cc431
+- `INGEST_PUBLISH_FIX_FETCH_HEAD_RACE` — 8b1da9b5a9
+- `BRIDGE_LOCK_PROBE_PROOF_CROSSED_HOLDER` — c4712fe5cd
+- `IDLE_WATCH_BUILD_SEAT_MINUTES_IN_DIGEST` — 480705561c649b282fa1a64478ad86ee142437c0
+- `RELENTLESS_ENROL_FIX_UNPUBLISHED_RETIRED` — 54f435ea82
+- `DISK_WATCH_BUILD_SCRATCH_OUTSIDE_CAP` — bb1fdf8e7dadfefab0e8ddd7b913782cc98e2781
+- `SELFTEST_NIGHTLY_SILENCE_KNOWN_REDS` — 48c6bd7ab1a7b39ad57f2801c04fac547bc491e9
+- `INCIDENT_LEDGER_BUILD_TOLD_ACKED_RECOVERED` — c09e66322699c064d0f036f2eaee8564145ab28c
+- `PRIORITY_LIST_BUILD_ONE_SHORT_FILE` — 619aef3a64e161ac89c4970cb87212d9cbbc59bc
+- `FOCUS_CAP_ENFORCE_IN_RIMFLOW_NEXT` — 7878c132a0d0098f593eaaaf8a65307bc159d075
+- `IDLE_SEAT_RESTART_BUILD_BRINGS_QUIET_BACK` — faaab9f5fe3d10049be547627d8269ad0b6b96f9
+- `HELP_CALL_BUILD_FRESH_EYES_ON_FAILURES` — 45d207b43ed718a92e56595b8ee4d6aaffa836be
+- `MISSION_PAGE_BUILD_READ_ONLY_STATE` — 58c2b398c7b0c10aa5166ea4c03ecbcb7c0e9f0e
+- `CIRCLING_WATCH_BUILD_REPORT_ONLY_FIRST` — be40dd144f474ca52940aa82b2f5c02da5ff3600
+- `RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS` — 307c7f3ac55ef004dc70967bb72a32845b58332f
+- `ROLE_USE_MEASURE_OUTPUT_READ_AND_ACTED` — ef2bfc62fe82275f2ab57ea2a4a602a1eafff554
+- `RA_TREE_SCHEMA_DESIGN_TWO_PENS` — 14503df20e
+- `LOAD_RED_BASELINE_DRIFT_1` — c0ce6d5d8915e279292fa4a088ef8c371b38a884
+- `KNOWN_RESULTS_BUILD_MEASURED_DEPENDENCIES` — 3425c1a0aa
+- `WASTE_RUN_STUBS_1` — 11032e862d26bf9d9af3b8dfbe5b78bcc01f3564
+- `DONOR_CODE_SHAPE_REBUILD_1` — 4907608dde126b2c70db72f4175c8884dc8d3fcc
+- `PLANETARY_LOADSCREEN_RENDERS_2` — 51350a2f3e74b18e9bbc5588c0b5e1300ed6835a
+- `HANDOFF_FIX_RESTART_TWENTY_SECONDS` — ae07aa74b1
+- `INCIDENT_ROUTING_FILL_UNROUTED_ALARM_KINDS` — 347981f325
+- `WEEPINGSTONES_SETTLED_FOLLOWUPS_1` — f05fb499707e8cd518f0c1939365df0efdc39272
+- `VEXXITH_USES_1` — 3cba77af41f97e5c88a7c55515c9207c329d2130
+- `BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK` — 23f832858fe5090a6236f2d771bc7d7fd609cbb5
+- `AUDITPRESCREEN_FIX_WAVED_THE_FAKE_THROUGH` — df1b475213bde80b77019d7bd8330735dcec1d35
+- `BESKAR_ARMORER_QUEST_1` — d93bbee24bff6483374252b2d9caa8761732dc0b
+- `OPS_PLAN_LIST_FIX_VMIV` — 0b57ec972a
+- `OPS_FINDINGS_DIAGNOSE_17B4` — fb038d5c4c8ea18fe2741e970ea0e7a7323a60b9
+- `OPS_STEVE_SEATS_RESTORE_QTWK` — 98db29f53d7590355108f2672412027000011ad4
+- `FOUNDRY_THROUGHPUT_MEASURE_V2_GAP` — be6bf6c7af33
+- `CLONE_POOL_FIX_TRANSCRIPT_RESIDUE` — b89e198b6b0f
+- `OPS_STEVE_UNSTICK_UNCLAIMED_A00D` — cd315fe1155e5467c72214af30509fe8d143ffd8
+- `OPS_NIGHTLY_RED_DIAGNOSE_LNTM` — 15e0477aed6a22268553355b864778291531f597
+- `OPS_STEVE_UNSTICK_UNCLAIMED_ETBS` — a92421587ef4fb21964279f7988108df47e7a97a
+- `OPS_TIMER_REPAIR_PRXC` — 9a243a7acc1234fba069ac32e5458bfcc74f09bf
+- `STEVE_HASHER_DIAGNOSE_WRONG_DIGESTS` — b1a4cefd78
+- `OPS_RESTART_UNSTICK_FOUNDRY_HDDT` — b797eb0424
+- `STEVE_LANE_UNSTICK_OFFLINE_UNOWNED_26F1` — 01992a8d6a
+- `STEVE_LANE_UNSTICK_BRAKED_OWNER_2E27` — 01992a8d6a
+- `OPS_SCRATCH_EXPIRY_RESTORE_YAQA` — a8c9f1035b
+- `OPS_SEATS_READING_RESTORE_IMJA` — 128a6c44b4b963666c83e14fecf08c478bf64222
+- `OPS_WORKER_CLONE_POOL_RESTORE_HMOQ` — 9a54fab0cfe5868d27d13221f8b785648ee36cc1
+- `RELENTLESS_SEEDS_FIX_WALL_ARM_REUSES_BASE` — 4a841270b92a
+- `RELENTLESS_TRUST_FIX_ON_TARGET_SPACES` — 4a841270b92a
+- `WARLAB_GARRISON_DESIGN_EARLY_BLAST` — c1a8edb34ee5362c8e5b79775f1427142383275b
+- `RELENTLESS_CORE_FIX_REVIEW_FINDINGS` — 87112712e210
+- `RELENTLESS_SELFTEST_FIX_REVIEW_FINDINGS` — 87112712e210
+- `RELENTLESS_SEEDS_FIX_QUOTED_OPERATORS_CENSUS` — 476d9218e0ee
+- `CONTRACT_WIDEN_LIVE_TWO_WORKERS_PER_LINE` — b909e8839d39
+- `RELENTLESS_CONTRACT_FIX_LIVE_LINE_LOCKED_OUT` — b909e8839d39
+- `ARTIST_ROLE_BUILD_ONE_JUDGE_KEEPS_MEMORY` — da77891a76
+- `OPS_STEVE_DIAGNOSE_INVALID_MBTX` — e827de4af8bc7eda56a693c3a7be1be1c770b911
+- `TPS_VERDICT_FIX_SIX_SECONDS_NOT_THIRTY` — 69bf665f3ad572b1ce8329457e63ed3273ffbb1e
+- `ALLOWLIST_DIAGNOSE_BARE_MIXED_PATCHES` — f01ece2efc0fffd64cb2ae3924fa944382fae9bd
+- `FLYER_VARIANTS_INSTALL_MORE_FACES_PLEASE` — 67a8bfeabfada729e74549f1ae7c7b60073f305c
+- `SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY` — def74b1b4a11f765922e3bb47c9b4511508a2529
+- `DONOR_SAVE_ICONS_RENAME_IKEE_STILL_SULKING` — e9db4064dbc49dc2c1f8eaa13d0e8f19463b63dc
+- `RA_S00_BASELINE_MEASURE_BEFORE_BOASTING` — b9ccefbc85
+- `RA_S01_WALL_ENFORCE_MARKER_SEES_NOTHING` — 7f620fdee0
+- `ALPHA_BIOMES_INSTALL_UNINSTALLED_RENDERS` — 2eb75006f9ccabe881a09f85dbebb6265813836d
+- `ALPHA_BIOMES_CENSUS_THE_REST_OF_IT` — 65eef5aa4706a30dbacfbe19106c273b36baaa28
+- `PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE` — ebbb5df494777172720b03b920749f91943bf714
+- `RELENTLESS_LIVE_BUILD_ONE_BUILT_LEAF` — aa1853fc186a
+- `DRAWN_EXTENT_UNIFY_ONE_RULER_TWO_MODS` — c8409d78bc7894d1dbffe7c34cb59f8aa68bbc6c
+- `TEMPLE_RUINS_DESIGN_SEVERAL_FAITHS` — 5678497ff0cfcec56d1fd5daf1a132759de1f3f8
+- `VRE_XENO_MODS_RETIRE_DEFOF_HOLDOUTS` — 25493af2d2c990c90bae189be04ee5c8f996f4b6
+- `PAINT_LIST_BUILD_ONLY_THE_NEEDED_MODS` — 54550afb8f276b1c6824ca02a944da38832d27c1
+- `DERELICT_LABS_DESIGN_ONE_MORE_MUTATOR` — 0401f7429baa9fc6378ac2ddd27db2576da84d99
+- `PLANET_GEOMETRY_WIDEN_SUN_STANDS_STILL` — 758a7d0fb609111412a02e7139b9c141b65774fa
+- `STANDINS_RETIRE_AS_OUR_COATS_ARRIVE` — d1442df0de1da818090162c49096ba0f30ae8dc1
+- `RESTART_NOW_BUILD_WINDOW_SAYS_READY` — 5b0685c512
+- `DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT` — adacdcb7fa73d9afd80b35e71b72bc6c7c9fa557
+- `GEO_LANDMARKS_SKETCH_BEFORE_THE_PAINT_DRIES` — c01b19891bca834cdce463f0d816746f606f17e9
+- `PAINT_LIST_CORRECT_STALE_SINCE_SEPTEMBER` — 134cb527609181750dfdbdb22829e9eec7328935
+- `PAINT_LIST_CORRECT_STALE_SINCE_SEPTEMBER` — 134cb527609181750dfdbdb22829e9eec7328935
+- `PAINT_LIST_CORRECT_STALE_SINCE_SEPTEMBER` — 134cb527609181750dfdbdb22829e9eec7328935
+- `PAINT_LIST_CORRECT_STALE_SINCE_SEPTEMBER` — 134cb527609181750dfdbdb22829e9eec7328935
+- `PAINT_LIST_CORRECT_STALE_SINCE_SEPTEMBER` — 134cb527609181750dfdbdb22829e9eec7328935
+- `PAINT_LIST_CORRECT_STALE_SINCE_SEPTEMBER` — 134cb527609181750dfdbdb22829e9eec7328935
+- `LIVEDEF_UNLOADED_MOD_FIX_READS_AS_FAIL` — f71588cfa641cde336fc17637ad7495c27859fbb
+- `LIVEDEF_UNLOADED_MOD_FIX_READS_AS_FAIL` — f71588cfa641cde336fc17637ad7495c27859fbb
+- `ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL` — aaeefef4420b85c114ceb025c9ba1236e2610983
+- `ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL` — aaeefef4420b85c114ceb025c9ba1236e2610983
+- `CELL_RECT_SHOT_FIX_COLONIST_BAR_PHOTOBOMBS` — 5f5c01c49f51f16f0a8cd5c1883cb383cf256e2c
+- `CONCEPT_TREE_VET_UNTIL_ZERO_FINDINGS` — 550bc610bc41377370012af0879a9745e1e557fe
+- `AMEND_HOOK_HARDEN_SWEPT_A_NEIGHBOUR` — 9fd7d703c3bff5adfaa9d1a43acf3f3c2c76d815
+- `PACK_OVERLAYS_BUILD_SHARED_SADDLEBAGS` — f34e30a3bd52553f4bab6d45a2aaf74506230954
+- `FLIER_FRAMES_FILL_FIVE_GHOST_FLOCKS` — 7cb9cc7a2cd8b8abaedc70f54307eece74e0f8ae
+- `PAUSE_ARG_FIX_PAUSED_NEVER_PAUSED` — db6a40cedd6b6f03ef24a06887110825c3107181
+- `ASHPULSE_READERS_PRUNE_NOBODY_LEFT` — 7165b2f734377c94ae3350120cddd9846894c590
+- `SUSPENSION_PROOF_FIX_EMPTY_ARG_NO_METHOD` — 038a7fbefa0008eaaa4f124d3f9dccc958490b38
+- `VEE_LANDFORMS_BUILD_CRATERS_AND_COMPANY` — 9d5b089d5f320bd66d25affd5934a21392f9d4ec
+- `WALK_SAVE_SILENCE_ABSENT_BIOME_OBJECTS` — a57da3caac9cec075e06fcea4f513895a643982c
+- `HOT_RELEASE_FIX_OWN_WET_TERRAIN` — 106f8fe79db8856b496da4006dad8ae5b16ad01e
+- `PIPE_ATLAS_REBUILD_OTHER_LOOKS_KINK` — f8e3b6f1b1671ea4a3bb41d12522bb83f7eae22f
+- `FLUFF_ASKS_DECIDE_EIGHT_UNDER_VETO` — e6055a28742d04b00a3d14989dc58f61cce772cd
+- `FIRE_SCAN_DIAGNOSE_BIG_BURN_COST` — 7efbf823a14405a101519d10940ef1b795b7ea8b
+- `OPS_TIMERS_REVIVE_1EEB` — ce5b30485d1091f0a91459b782b34ac9449880eb
+- `PUMP_SOURCE_FIX_REJECTS_PARTIAL_DRAW` — 95ef0066c953947f8019ce416dcacb352340312c
+- `LIVE_PROOFS_POPULATE_CLEAN_BUILDS_FIRST` — e22b5e432bf42bbc42264036bf4aea32df93ad8b
+- `NATURAL_SLIME_DIAGNOSE_NEVER_SLIPS` — 567b22fad99acbaaa9ef388b1699e474d3b420f4
+- `OPS_RELENTLESS_UNSTICK_XARX` — 374b4770b0771db84fb429855aee1696f842c436
+- `OPS_STEVE_UNSTICK_VHRP` — 87551b29f0e9e207a9aa660be5e69db7cf11b1ea
+- `OPS_RELENTLESS_READING_RESTORE_IUUR` — f5298a3f61b0ee2c76902f99c4e6e37295237246
+- `SCRATCH_CLONES_RESCUE_FIVE_OUTAGE_SURVIVORS` — 03e4074cfec2961cbb6aef1f622b29265709fb3e
+- `WALLED_COPIES_REPAIR_LEAK_RETURNS_BY_EIGHT` — 52b1f26e7d83
+- `WALLED_COPIES_REPAIR_LEAK_RETURNS_BY_EIGHT` — 52b1f26e7d83
+- `FLEETWATCH_REFRESH_BUILD_OUTLIVES_ITS_WINDOW` — f5a0ac05fbaa
+- `OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS` — 307feed8ee6d
+- `OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC` — 9f0f5d3a8f1731091f18de56b054ef61965d9b03
+- `LANDFORMS_PROBE_REPLACE_OR_KEEP_EXPERIMENT` — 7a664f794facaeb0670ecbeb1a32dcb559e9039e
+- `RELENTLESS_SLOTS_UNSTICK_BLOCKED_PUT_DOWN` — cdec858bf6c344c6e39cc1b8da5f32597c0c5820
+- `FLEETWATCH_PAGE_SHRINK_LESS_BASH_MORE_MODS` — b21d62b9ae
+- `WEATHERSUITE_DEPLOY_MAST_LEAVES_THE_BUILDING` — c0868e628faa4db0365f9e2e779aa66587259ae5
+- `FLEETWATCH_PAGE_REPAIR_BLIND_REVIEW_PARTLY` — c02f8cd1a4ac
+- `WORLD_LABELS_RESTORE_SIZES_MIRROR_WAS_OURS` — dc21cc165ca92eda9646f997c157856f76948b4f
+- `EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY` — 9516a7cfadcc02f319202d2ca0457345bee6023c
+- `PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS` — 50f4ffb8e3a5
+- `WORLD_MUTATORS_PRUNE_28K_STOWAWAYS` — 35c7a73ed446a5de2821108f10c2d590431a20d1
+- `WORLD_PATHS_VERIFY_WATER_FINALLY_WET` — 00cbc23e700dec681f80e2b47019bf9abe3db5df
+- `WORLD_RIVERS_REPAIR_DOWNHILL_AT_LAST` — 8ad08a119b10f00e63f40ae8d656a2649860d9e2
+- `RIVER_BUILD_FIX_IN_PLACE_SWEEPS_STATIONS` — 4f8274d85acfe81539c3bec49fae645b806a429c
+- `TANK_BOTTLE_FILL_FIX_IGNORES_STOCK_TARGET` — 90a0aad62c9a712627c1e9fcd93ca9f54483a62e
+- `POND_OUTLET_FIX_REJECTS_FRACTIONAL_ROOM` — c9767326904a390451143d19ec5774aff2fff718
+- `RECESSION_SCAN_TAME_RERUN_PER_CANDIDATE` — e04172a4feb9138ce691b2bbce0a42acbb9055cc
+- `LINK_BUDGET_FIX_CATCHUP_OVERSTATES_FLOW` — 425f78e6868654b4e2c60383f2fab2be124fcbd2
+- `FILL_IN_DESIGNATION_FIX_SCAN_INVALIDATED` — a882cc11a2e1edca96d73ea86d3ddc28449337c9
+- `RELENTLESS_QUEUE_UNSTICK_SEVEN_WAIT_ON_ONE` — 3fb07976365b
+- `RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED` — 4e52a32fd0beb5a73636cbeb7bca20f00c87cfdc
+- `TOKEN_LIMITS_TAME_BARK_NO_BITE` — bbaccde0b098fe8ec788d0c6b60a96f3cd2d346f
+- `PORTABLE_LADDER_FIX_EW_LIES_ALONG_WALL` — 5f8455b7175aba4cab829457c9d5e3ec8ae3547b
+- `PORTABLE_LADDER_FIX_EW_LIES_ALONG_WALL` — 5f8455b7175aba4cab829457c9d5e3ec8ae3547b
+- `PORTABLE_LADDER_FIX_EW_LIES_ALONG_WALL` — 5f8455b7175aba4cab829457c9d5e3ec8ae3547b
+- `PORTABLE_LADDER_FIX_EW_LIES_ALONG_WALL` — 5f8455b7175aba4cab829457c9d5e3ec8ae3547b
+- `DEHYDRATION_FIX_STAYS_WHEN_THIRST_OFF` — 0415752fd33114b5b95e8234ab66d5dda8fa3d63
+- `DEHYDRATION_FIX_STAYS_WHEN_THIRST_OFF` — 0415752fd33114b5b95e8234ab66d5dda8fa3d63
+- `EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES` — 81e4e7282cfc889798495066e69b07b7e6b63734
+- `SPIRE_DUNGEONS_MERGE_DARK_TOWER` — f64b973f23df00a55561608338c85b33054a7aec
+- `GUBBRA_GOURD_FIX_WONT_SELECT` — a268ec52ab50e84c82ce88cb898855e1dd7c5815
+- `GUBBRA_GOURD_FIX_WONT_SELECT` — a268ec52ab50e84c82ce88cb898855e1dd7c5815
+- `BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT` — c5a80db3604a
+- `BOOKS_JAM_FIX_CODE_REVIEW_SHARD_SHUFFLES` — c5a80db3604a
+- `BOOKS_STALE_FIX_ART_SHARD_REORDER` — c5a80db3604a
+- `IMMERSION_DAMAGE_WIRE_NEVER_APPLIED` — 1f6c68bb89a616d20d6e9aba60ec749496908eef
+- `LEVEL_PERF_PROOF_SHRINK_TO_FIT_BUDGET` — c129550e8795c7b541874276229540eb1aa433aa
+- `FOREIGN_GUARD_PROVE_FLAT_KEPT` — 975aa2a0c16d6850a8994fa77747ad8de26bc8d4
+- `MYNOCK_REGEN_INSTALL_NEEDS_GRAPHIC_MULTI` — fa2e6f138b40df302ba53fdd77b4fa05927ee2d3
+- `DECISIONS_ORPHANS_PRUNE_NO_SNAPSHOT` — f49267361b7ddced5a096bf106655bd85519193d
+- `PROOF_SPOILED_RUNS_BUILD_NO_BLANKET_GREEN` — 1661c3fd8b22d077a644046cbd534ef5522b4d7f
+- `SERIES_STOP_FIX_RENAMED_DEF_ESCAPES` — 1cec24a030e138a51ccbc8696f03110c140bed5b
+- `ATMOSPHERIC_BASE_HARDEN_SMALL_LAMP_COUNTS` — 7edd675e57a47e016df0f857da1f43d6257745de
+- `MODERN_FLANGES_POLISH_DARKER_THAN_THE_BODY` — 12a6f0dd10feb97b108a66bbc0222943834e4db0
+- `FOREIGN_GUARD_WIDEN_MIRROR_CROP` — cf5b07eb3b93fe74b69f777b361a328be91cc418
+- `LIVE_CUT_CRITERION_ENFORCE_AT_IMPLEMENT` — a2365bebdc76
+- `LIVE_CUT_CRITERION_ENFORCE_AT_IMPLEMENT` — a2365bebdc76
+- `LIVE_STALE_HARDEN_CAUGHT_BEFORE_SLOT` — a2365bebdc76
+- `LIVE_STALE_HARDEN_CAUGHT_BEFORE_SLOT` — a2365bebdc76
+- `LIVE_EXIT2_FIX_DEFECT_AFTER_TWO_GAMES` — a2365bebdc76
+- `LIVE_EXIT2_FIX_DEFECT_AFTER_TWO_GAMES` — a2365bebdc76
+- `LIVE_REFUSAL_SILENCE_SAME_TEXT_HELD` — a2365bebdc76
+- `LIVE_REFUSAL_SILENCE_SAME_TEXT_HELD` — a2365bebdc76
+- `NS_CAPTURE_DOWN_FIX_OWN_PIRATE_TRIPS` — 3e568fab2a0c0a7786e018e9197bba8c8d7d2b67
+- `CAULDRON_ROSTER_BOUNDARY_RECONCILE_PATCH` — 8454f352342f01f1492677e6346bf3f4a2712586
+- `SCALDHIDE_R1_DESIGN_NEW_CREATURE` — 87e99c15840d6e3908403f637b129581729d62f6
+- `ROUND_SERIES_FIX_SAME_SECOND_RESTART` — de308d481de12d6b237ddbecb15026e2c415f526
+- `VEXXISS_VARIANT_WIRING_VET_REVIEW` — d4964759565a4655c60149e6f7b69cbd433b23eb
+- `WORLD_SEA_FACES_INSTALL_PICKED_LOOKS` — 15e6748fabc3c647ee450694d90d76f1ce302d29
+- `TERRAIN_DRINK_FIX_SMALL_POND_REFUSED` — 0f58221844abcc11ebb9a3584a4b5637fa8df0e1
+- `TANK_SHADOW_DIAGNOSE_DRIFTS_OFF_THE_SKID` — 58194141b5dfdc1cef0d6bdddea3ab489a80d217
+- `OPS_ARTPIPE_UNSTICK_RBLV` — 8a7879296b
+- `SWB_TWINS_DEDUPE_STILLSAND` — 3cff04f22476130ee1e112e6c8113ccbb4418da7
+- `MODCHECK_DIAGNOSE_DRIVER_DIES_MID_SETFOG` — cf7807e42daf6a8e181a2d58efa94f5bdeebb6a8
+- `THERMOSTAT_FIX_IGNORES_SUBNOTCH_LIQUID` — 819c5a8b3aae98ac9178142fd03483a46ca3bc13
+- `VALIDATION_V2_IDENTITY_WIRE_READS_ZERO` — 2e256d9b3c5c83bab078b6c93163daff28a6c5d2
+- `COLD_LOAD_RUN_SHEET_4` — b4593761c49ec30412bda7999df01aa11acf998f
+- `RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER` — f04151f434a7
+- `WET_CELL_CENSUS_FIX_SHEETS_READ_DRY` — a26ae714b1893a7f509bb241a1a9a4ede9105dbe
+- `FLOOD_EXPIRY_FIX_FULL_CELL_TRAVERSAL` — bbea0548b71ed88d0fa977bc1572d8228279641b
+- `INHABITED_AUGMENTATION_BUILD_1` — 27f3566e69eaf24fc29dc2c352b5f1182c464764
+- `FAUNA_LORE_DIVERSIFICATION_1` — 7be4ad5022941d4b923756da2618668e36fe584a
+- `FEVERWOOD_ANT_HIVE_DUNGEON_1` — f21d4f3e3219dc763284c31ecdd1cf85709e5b2f
+- `LANDMARK_NAMING_PASS_1` — c1488ce83f841f77edb285fc51cba9f0b9a8936c
+- `BIOME_ENRICHMENT_DESERT_WASTELAND_1` — b9cfe1853d661c10d2a9c597a6b5147fde390263
+- `FLEETWATCH_PAGE_REPAIR_BLIND_REVIEW_PARTLY` — 93d65bae08b40ef4ba3b45cb5a18250405347c0e
+- `NORTHSTAR_VALIDATION_SKILL_1` — 7e1018bda61d9791dc081daaedd300d9f7fe1d96
+- `ARTIST_BIOME_INSPIRATION_MOD_1` — 5ed6a4d9d2e24e6244930a27463360865f21b299
+- `NORTHSTAR_PARTIAL_GAPS_FILL_1` — 9da1638f66cfdcb4af42af10b5988c22a8ee5fb6
+- `FALL_LINE_MUTATOR_PLACEMENT_1` — 69f12111f29f418eaf2dae9fda7dfe0b7a58042e
+- `ART_SUBJECT_RESOLVER_1` — 3ce67795593fbc57450881a15791f38c113a59f3
+- `OPS_QUEUES_READING_RESTORE_HQXV` — 1b083af2630bbf97b80defda0450c15f43d6c41e
+- `ART_VERSION_WRANGLING_1` — d95e4f5c264a23e5d1c99106e95fab468fa2667a
+- `MYNOCK_FLIPBOOK_FRAMES_1` — d95e4f5c264a23e5d1c99106e95fab468fa2667a
+- `LIVINGBOLT_CORPSE_ART_1` — 655a57911d7ce40c2cd5ca559eade5d8dc0d8388
+- `OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU` — 172ec3ac238946c76bc44b163c169af86c2b6827
+- `OPS_TIMER_REPAIR_PRXC` — 894b273ef3a0
+- `OPS_TIMER_REPAIR_PRXC` — 894b273ef3a0
+- `BIOME_GROUP_SIZE_WALK_1` — a166f7c1a7317f144f75388792dd2dc9754a214b
+- `NIGHTSIDE_ICE_NEW_LIFE_1` — d1e8cbb8c5c6ebb2ae18313a520991080acee4be
+- `SALT_BREAK_FIX_MISSES_POTABLE_SOURCES` — 51921633949bef636fb75023cf652f7615a2c27d
+- `TANK_DRINK_FIX_LIQUID_SWAPS_MIDJOB` — 57bb94124e9bbc9b6e31ef631a1ef9124ddf40ac
+- `GLOOMCAST_FOLLOW_RECHECK_1` — c8c9e5dd7c6cfbe6583c5f07c5707a72dc90315f
+- `CLIFF_SHOT_FIX_DEPENDS_ON_SHOOTER_END` — 4e40481c9b579667616fc1aca19067d6f8326815
+- `LASSO_CONFIG_UNSET_1` — 4b546167aa0fbe156c6acce0cea2fe323b8748c4
+- `EXTRA_ART_PER_BIOME_COMMISSION_1` — 4a5fdb9e4e5b8c5f46f31bd11d80b1d647bba042
+- `BIOME_FLORAFAUNA_ART_REVIEW_1` — 448050353dd446ab472e2e43c6b96a073674d640
+- `ROT_CARTOON_VARIANT_REPAINT_1` — ae6c60dfdb35fbaacdcb13b989cab4113d7c37c6
+- `DESTROY_BATCH_NEVER_KILLS_PAWNS_1` — 4488d2a00abf068193a9e077634221928a636193
+- `BONES_LEAN_PORT_BUILD_TREELESS_WORLD` — a08df74207828c78a5a519262e9fd341aaab61cf
+- `TRENCH_COVER_FIX_DECK_ERASES_UNDERPASS` — 71b598ea01981e1845f3626c6e80f5e16f60d3a1
+- `ART_SHEETS_SCALE_CELLS_WIDEN_TOO_LATE` — 41e36028f9a47b6ea3aca970b07724653d765265
+- `BODY_SPLIT_FIX_FISH_SHARE_SHRINKS` — b44bc53c230b8415bab214eb16b19a86905ce5a3
+- `SARLACC_PIT_WIDEN_THE_BIG_ONES` — 2638899c96fc4ec522ce25330f75c3582c3bbda7
+- `READOUT_PROOF_FIX_BYPASSES_MOUSEOVER` — 56bd0e0876f199e1a55a7f1130254b309ebe759a
+- `MOOKEE_TRADE_ANIMAL_IDENTIFY_1` — 3225e5a1decfb1c9ba67a3357a3898e4c5e7538f
+- `OVERFLOW_DROWNING_FIX_NO_WARNING` — 377d0644570e97b050c8c1cdca84e4e71853ac4c
+- `SPRINT_KIT_ART_SKETCH_BEFORE_THE_VETO` — 6e84f8f62680a7ba1fbbf70331995069cbc2c973
+- `OLD_ART_SHEETS_REBUILD_WITH_SCALE_PANELS` — 1d83909565feb8455a2b084e7fb9c545fa881bb6
+- `SUCCULENT_PLANTS_REDRAW_BORROWED_WARDROBE` — 5b81b8223e3da367c1beb3e1fbb38c0da84fd5ab
+- `SUCCULENT_PLANTS_REDRAW_BORROWED_WARDROBE` — 5b81b8223e3da367c1beb3e1fbb38c0da84fd5ab
+- `SUCCULENT_PLANTS_REDRAW_BORROWED_WARDROBE` — 5b81b8223e3da367c1beb3e1fbb38c0da84fd5ab
+- `SUCCULENT_PLANTS_REDRAW_BORROWED_WARDROBE` — 5b81b8223e3da367c1beb3e1fbb38c0da84fd5ab
+- `NIGHTLY_REDS_DIAGNOSE_FIFTY_IS_A_CROWD` — d0e160471e
+- `DONOR_SUCCULENT_ART_DECIDE_A_STAND_IN` — 08c9d0ff3308175e84b1a39a6a32f2b46857a159
+- `DONOR_SUCCULENT_ART_DECIDE_A_STAND_IN` — 08c9d0ff3308175e84b1a39a6a32f2b46857a159
+- `DONOR_SUCCULENT_ART_DECIDE_A_STAND_IN` — 08c9d0ff3308175e84b1a39a6a32f2b46857a159
+- `FUNGAL_SOIL_RESCUE_RETIRED_MOD_ART` — c7cfe36eb5a347198530107b3d6abfe6aa25d6fe
+- `FUNGAL_SOIL_RESCUE_RETIRED_MOD_ART` — c7cfe36eb5a347198530107b3d6abfe6aa25d6fe
+- `FUNGAL_SOIL_RESCUE_RETIRED_MOD_ART` — c7cfe36eb5a347198530107b3d6abfe6aa25d6fe
+- `FUNGAL_SOIL_RESCUE_RETIRED_MOD_ART` — c7cfe36eb5a347198530107b3d6abfe6aa25d6fe
+- `ART_SIZES_AUDIT_AFTER_DONORS_LEAVE` — 937e10dd78e1558bf273881c6fa12c36ddca0425
+- `WEIR_TANK_SELFTESTS_FIX_MISSING_PIN_SHAS` — 088a64296078
+- `ALPHA_BIOMES_CENSUS_FIX_UNDECIDED_TOKENS` — c5183fdcea
+- `COMMISSION_LEDGER_CLEANUP_1` — 4a71c05aa295e08c4796c61a93e6b7247cb08e10
+- `REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS` — 5446826a832df58cc1528c5f78d247f3fda6b3c3
+- `VEXXITH_USES_SELFTEST_FIX_250S_TIMEOUT` — ed15fefa6d
+- `OPS_RELENTLESS_GAME_HOLD_UNSTICK_DRDP` — 08c75f0e71fdf5645d5ce44003b9c51819dc5777
+- `CAULDRON_SOILS_BUILD_DIRT_THAT_BREATHES` — 53a4897ba80a05f4423c13fe8e0403297d51329f
+- `CAULDRON_SOILS_BUILD_DIRT_THAT_BREATHES` — 53a4897ba80a05f4423c13fe8e0403297d51329f
+- `TEXREGEN_GAPS_REDRAW_EIGHTEEN_QUEUED` — 859c8c5fe8e98401a222d35d8d0c228192bef3d8
+- `TEXREGEN_GAPS_REDRAW_EIGHTEEN_QUEUED` — 859c8c5fe8e98401a222d35d8d0c228192bef3d8
+- `FEVERWOOD_TWO_FRONT_LURE_TUNING_1` — 466bd416858f
+- `FAUNA_TOLERANCE_NORMALIZATION_1` — 9c2cf869015d
+- `FORGE_DHUVVOX_SWARM_REMAINDER_1` — 0140ba1e19ed
+- `SARLACC_SEEKER_ROOTING_1` — 81f4689881ff
+- `WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE` — 76edd0eccfed
+- `SALVAGE_MINIFY_DESIGN_HAULER_OR_SCRAP` — a8c4b8710ac1
+- `SHEET_NOTES_FINISH_SEVENTEEN_DEF_HALVES` — 5e214563ebea
+- `ROT_REGEN_SHEET_FINISH_SIX_OPTIONS_SERVED` — 6c5ad04c8060
+- `DESSICATED_CORPSES_INSTALL_AFTER_PICKS` — b5df068fe4bb
+- `CAI_FOG_SILENCE_FORCED_OFF_BY_US` — 7f1145d571e1
+- `CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS` — 35986d2a3b15
+- `FLIER_LINE_CHECK_FIX_SIDEWAYS_UNSEEN` — 9ef4be7d17d7
+- `LEVEL_STAGING_DIAGNOSE_FREEZE_ON_BIG_MAP` — 35f4733453f8
+- `FLESHSOP_REDESIGN_AS_WEAPON_SYSTEM` — 02064f927acd
+- `TREE_CROWN_MEASURE_FROM_THE_ART` — b8f121b92c713f0fd773ff252454127bc8d20a71
+- `LUNGERFRY_DECIDE_WEARS_ZEEVS_COAT` — a464923603
+- `DEV_SCRATCH_DIRS_MIGRATE_OFF_LODESTARS_LAWN` — 3b7034cfa5f1fc57a62f188673c878f7aa0b2eed
+- `DEV_SCRATCH_DIRS_MIGRATE_OFF_LODESTARS_LAWN` — 3b7034cfa5f1fc57a62f188673c878f7aa0b2eed
+- `LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT` — b1f10e63a7
+- `CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES` — b483dac19832
+- `CLOSEOUT_SELFTEST_FIX_READS_LIVE_GAPS` — a8cc91bbee
+- `CLOSEOUT_SELFTEST_FIX_RED_ON_ORIGIN` — a8cc91bbee
+- `OPS_NIGHTLY_RED_DIAGNOSE_LNTM` — 4cbcb9f637
+- `STEVE_POST_DIAGNOSE_FIVE_MINUTE_BOOT` — 99d79a0bd6
+- `CHECKER_TMPDIR_FIX_WALLED_OFF_ITSELF` — 79cd92bbc21d16fb3507a957369278ac4068e337
+- `RUNNING_PAGE_BUILD_SNAPSHOT_NOT_NARRATIVE` — bce17568e3
+- `NIGHTLY_COP_FIX_RED_ADEAUS_MRKD` — 29a1da22aca17fb3fd91dfcd162b88b191c644c4
+- `NIGHTLY_COP_FIX_RED_AYQENC_HIKO` — 3f9f0b02263e2bff8c7a8273b2e19c5ba5297de7
+- `NIGHTLY_COP_FIX_RED_CZZSPJ_OFFZ` — da62c32731adc33cc264265e31846a57a044f1e4
+- `NIGHTLY_COP_FIX_RED_ATJKEB_FBYD` — 60758238a0d2301e33f92a5a4fac159304dc31a8
+- `NIGHTLY_COP_FIX_RED_CYGHVG_QCWJ` — 784626a0ad715082344f011da7abecd934c737c5
+- `HARNESS_OOM_MEASURE_NINETEEN_QUIET_KILLS` — eb31958c12de38a108234728ef466cb80c6026c4
+- `HARNESS_OOM_MEASURE_NINETEEN_QUIET_KILLS` — eb31958c12de38a108234728ef466cb80c6026c4
+- `STEVE_BRAKE_FIX_KNOWN_CAUSES_RELEASE` — 715b7281f01c327a68cd207a0ae52c6a57506929
+- `STEVE_BRAKE_FIX_KNOWN_CAUSES_RELEASE` — 715b7281f01c327a68cd207a0ae52c6a57506929
+- `NIGHTLY_COP_FIX_RED_BXSKPY_FGXD` — b52e86557476afe985d7483bba2acc0e309fddcc
+- `RELENTLESS_SEAT_UNTANGLE_FROM_BENCH` — 7cd6f4e2a75b83c7abf9077e04db7bd7eb333bdd
+- `NIGHTLY_COP_FIX_RED_INLFTF_XEWJ` — 6591134db91a70d4d340a624c18c6b6b12ad8990
+- `COMPANION_STAGE_FIX_JOBS_ARRIVE_STALE` — 9cc33ce7a663e36ec68b80ff3b1a2d74ce052ba5
+- `NIGHTLY_COP_FIX_RED_FPVNUY_IBXW` — 4b41f25c1193856256e2001978c6ed6061c57c75
+- `NIGHTLY_COP_FIX_RED_LUENJV_OOHG` — d8c7aca6a64023cc9c29097e0e52364dcac13d46
+- `PROOF_RERUNS_TAME_UNMEASURED_REPEATS` — 8493554c0e4677d306ed752a669a05f4097a3632
+- `NIGHTLY_COP_FIX_RED_EQDNFF_XKUH` — 1d62ce35b2240f3bb9f1df750bdace274e6f6a70
+- `NIGHTLY_COP_FIX_RED_HMGHDI_RQAA` — 14a2ab94964785da129b24de786780e30e894218
+- `NIGHTLY_COP_FIX_RED_NZZZPC_NAFD` — a0538b1356542f74139543e6f4c621ecf81ba021
+- `NIGHTLY_COP_FIX_RED_TKFRGB_FSIQ` — 02e95607d22e18ab2f3073da7720df76bc91c2b3
+- `NIGHTLY_COP_FIX_RED_UPIXSC_QQDI` — 61c7fa8bd93d4fe9b60d45c2b8fd867ed61a1136
+- `NIGHTLY_COP_FIX_RED_TUOOLR_EGFR` — c01c4881926e6d94fccd570bce514d079f27a6a3
+- `RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS` — 850b23c1b1376d6273926b984856ac0ff9952252
+- `NIGHTLY_COP_FIX_RED_MPLZPJ_VKOU` — b44282693fd1819d9b70575d4b9c488d05589232
+- `RELENTLESS_FIX_PARKED_ITEM_STILL_STAFFED` — 44ac6b03f071749088bd3c9b20c40c7b65338e2e
+- `RELENTLESS_GAME_FIX_HOLD_LIFT_FORGETS_GAME` — 477aa5f6261fdb257516c71ea697c6bc820fe4ac
+- `RELENTLESS_DEPLOY_WIRE_NOBODY_MAY_APPLY` — 7df07616108ca9fef7f07eb4364968da286f622d
+- `RELENTLESS_START_SILENCE_REFUSED_RETRY_LOOP` — ddcd6ca8c9cd2571cdf58ba3052500f218b85a50
+- `NIGHTLY_SWEEP_HARDEN_DIED_AT_SIXTY` — 0b0972d84ddd71639ff3dd093b3e7d574ea78700
+- `POOL_STRANDED_FIX_LANDED_COMMITS_STILL_HOWL` — 17e0afbc9124e8a36c5d7732bf011d2bfccd1104
+- `ALARM_CENSUS_EXTEND_BUILT_NAMES_SLIP_PAST` — e9eb77260508454bc88a27c266b1db18f01d6cd9
+- `RELENTLESS_STRIKES_FIX_EMPTY_ACCOUNT_BLAMED` — 133f6e67b922a960245a7bdad515a43faebc9276
+- `REPEAT_ALARM_ENFORCE_GUARD_OR_STAY_OPEN` — b0fb6fe124d7dec511ceedeb4447e0c81a7aff92
+- `RUNNING_PAGE_BUILD_WHOSE_TANK_IS_THIS` — d1410b5763c0
+- `ALARM_REPEAT_FIX_BREAK_ON_WORSE` — 547224ce018c34552a7fb12573090db6e84d1da0
+- `RELENTLESS_HOLD_FIX_TOOLING_ISNT_OWNERS` — 04e3621fbcd6e0dbbae6436d4694830e8fc21dd1
+- `STEVE_FAULT_MONITOR_ONSET_BEFORE_RESULTS` — 5aad64f5cddf410447deb3540a3c6c328c6f7a2d
+- `OPS_ALARM_FIX_LOG_LINE_NEVER_RETRIED` — 1aa587e388aa72b2bad58b90802211aae4d82774
+- `OPS_RANGES_FIXTURE_REPAIR_FOUR_CLASSES_SHORT` — b275106d69a48b9527f671e8d34cb14849397e3d
+- `OPS_REFUSAL_REWIRE_TO_CONDUCTOR` — b105e9a9c985ccbbd80c0525cfa359bbab198c2c
+- `RUNNING_PAGE_BUILD_NAMES_ON_THE_BELT` — 1c42baedfd0ab1ab131bc774316625d7f29f35df
+- `POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG` — 7684d1bcbed34a078dd2639054a48af2cf5d52fa
+- `OPS_NIGHT_GAP_FILL_COVERED_SLOT` — df1905475c9e774710524b09e7a1aef9aebe02c6
+- `RUNNING_PAGE_FIX_REVIEW_LEFTOVERS` — 56d0b295be47bbff9e3e6519778e19ecc11dce04
+- `OPS_RAISE_REWIRE_WITH_DEATH_LADDER` — 643aa0b5579f53730ee2c0cb7ea456335856e552
+- `OPS_CLOCKS_DEPLOY_ONE_PINNED_COPY` — 0f3e9fcd6fbb14d669a6b93ed21ffb83f0a0438c
+- `OPS_METRONOME_PROVE_IN_SHADOW` — 306e8f56e12c918b07c710a3c4874052bc6a326b
+- `OPS_OVERSPEND_FIX_ALARM_FEEDS_ITS_METER` — fc59e15f9da1515dc45932f688d31c390512a397
+- `OPS_ROLE_SHRINK_RUN_COST` — 85260ec4eb9c488024e2260dd10c99fef56109f3
+- `OPS_JUDGE_NOTES_MEASURE_VS_NO_CHANGE` — 0166bd1228bf4c467277411efd4ecfd49f824d65
+- `STEVE_HEAT_MEASURE_BEFORE_THE_SCREWDRIVER` — 84f6ba081660f1880c5213e2b9bd0416eb7a983f
+- `DESIGNER_BRIEF_TUNE_MINED_FROM_TODAYS_BRIDGE` — af1b5fbde5
+- `DESIGNER_BRIEF_TUNE_MINED_FROM_TODAYS_BRIDGE` — af1b5fbde5
+- `CONDUCTOR_PROMPT_WIRE_SEND_IT_AGAIN_LINE` — 01928980e326b547afc90d46c939ce684849ee57
+- `CONDUCTOR_GOODBYE_FIX_QUEUED_WAIT_SKIPPED` — 7d29922ff0f5a17a2aa13dcaabdf7d08f6365911
+- `DISPATCHER_PROVE_BLOCKED_TOP_AND_CURSOR` — 1205f24aa92748989f3c92ea0155456e613699f7
+- `PUBLISH_ALARM_HARDEN_FRESH_LOCK_IS_TRAFFIC` — 05adfa64255c43b59cf3bb9eb48f40c320a65eb5
+- `CALL_DEADLINES_ENFORCE_130_OPEN_ENDED` — 7a9249afe882412e83693f01d7b20e68c4a658d6
+- `STEVE_STEWARD_FIX_PLANNED_OUTAGE_CRIED_WOLF` — 7abee9a0c2b56da32f0a3686d3603cb5953e4b80
+- `PULSE_DEPLOY_UNSTICK_DIRTY_CHECKOUT` — 2fc8d23cf995db2a8ec07493d9282d906cc85e46
+- `TIMER_ALARM_SILENCE_TEST_LITTER_COUNTED` — 11aa6205a789b5fd812801f3991b9b4af1faec04
+- `RELENTLESS_GAME_PROVE_REIMPLEMENT_AFTER_FAIL` — e348a3347f182597e42432314b9a34e1d42e3744
+- `PULSE_DEPLOY_GUARD_SOMEONE_WALKED_IN` — de44537a987d22cd8aa917b924f6229838350ec9
+- `SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF` — 1aaa1987cd90729447fe041199368b9a6f947aa6
+- `OPS_RELENTLESS_BOOKS_UNSTICK_WGYL` — 5caff7b55db93368b5f3c7772c8665d330a91da1
+- `RELENTLESS_CRITERIA_SYNC_AFTER_RETIER` — 85a9d6172cc4f7f5b6dc8bc906745d29f0ab5a72
+- `OPS_FINDINGS_DIAGNOSE_XZLM` — f285a46b6bf51e980b4dbefb27f31e47e78ea602
+- `RELENTLESS_TICK_MEASURE_CLONE_MEMORY_PEAK` — 932875eaea81fc6a9c8eaec4de35d49ffcd24965
+- `RELENTLESS_TICK_PROVE_FIRST_SHUFFLE_BIT` — 528b6d6ab49642cbeb7c98a7360586b6dfb9ffa9
+- `RELENTLESS_WATCH_SELFTEST_FIX_FIXTURE_GAPS` — 4372e92aa3210f85dbcbec8a61c16bf7a43758dc
+- `RELENTLESS_FILLER_FIX_TOO_KEEN_ON_PARKED` — 9aab2421bef6527ee37994b06ee4474578ad72df
+- `RELENTLESS_SELFTESTS_FIX_STANDING_REDS` — 612416958f3f87ac63be40183b30e63b82e90d19
+- `OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH` — ac39eccf390ee7ba06fec42a29b4cdf135f15381
+- `SELFTEST_CONDUCTOR_AUTH_FIX_PREEXISTING_RED` — dccec846c1952d1cf1a7915582155217becfff40
+- `DESIGNER_LESSONS_ABSORB_JOINT_SESSION_DAY` — e42ec37412
+- `DESIGNER_LESSONS_ABSORB_JOINT_SESSION_DAY` — e42ec37412
+- `TESTQ_ARCHMAGI_LANE_BUILD_BACKFILL` — 4d19db627979ac5313f1452aaeed9891ff0c0e83
+- `RELENTLESS_REVIEW_FINISH_POOL_LEVELLING` — e8411a141d3cd2344d1aae9d4d36b86ce5faf352
+- `FOUNDRY_SEAT_RETIRE_ALARM_STILL_MOURNING` — 5f0230ddec2fe07565f811f92ecfd8df4a787405
+- `TESTQ_MODS_WIRE_BEYOND_FLOWWORKS` — 7379a46fcf16753a4ddae199385175c71e66632b
+- `FOUNDRY_CLONE_UNITS_MIGRATE_TO_BENCH` — 95c46f4c775cd45afcb8bd993b38dc5dd5e305ff
+- `TESTQ_FILLER_DIAGNOSE_FAILS_NOBODY_HEARD` — 286bed378d76eec60dabbe791c3890e9ea27976a
+- `SELFTEST_FIX_SIX_TIMEOUTS_AT_240S` — 40134890c7980ec9479b20480396eb9a373fc0be
+- `PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF` — be632d1848ba722cec118c48435d0c2cc872cccd
+- `HARNESS_BOTTLENECK_MEASURE_WHO_WAITS_ON_WHOM` — 6def8c6f7c71a7792ac9780fc45f8e6b25c3e3d2
+- `BRIDGE_DEADLINES_UNIFY_ONE_ABSOLUTE_POLICY` — 80b0be06bb09b71c5fa722732be8cab82c569279
+- `MODCHECK_SWAP_FIX_OUTSIDE_TRY` — 9f01f4bdcea3ac8cf446de9cbbf1234e2458da41
+- `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED` — 3e0b001eb480055a614dd16fa479a2c0362df79f
+- `LOAD_WAIT_FIX_BLIND_PROBE_WAITS_FOREVER` — aa0f59755d3eaebd6d38f78987fcaa3039c43965
+- `MODCHECK_SESSION_FIX_STALE_LIST_ACCEPTED` — 3021d26a0252a309fcf0cf273a19fd7ce35246af
+- `SHARD_LEVEL_FIX_APPEND_LOST_MIDRESTORE` — c512f6bd9a6ff0bc4669bc3c678cfaf6f38d14a5
+- `TOOLS_PURGE_VALIDATOR_VET_UNREVIEWED` — 17658d6fa93531da0f5a01b3d09c394a0f7351df
+- `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST` — d583a3d7858b0cf2b8dca51415be2be6e7a470c5
+- `LIVE_ROWS_FIX_STOP_GUESSING_LOGS` — 582e7241b2391ae8517124d223aaa63a6a6f7456
+- `BRIDGE_HOOKS_HARDEN_REENTRANT_AND_FAULTY` — ac4ac790dabcb5de07a03038b09dddc632029d5f
+- `NIGHTLY_COP_FIX_RED_CYJJIB_ARBP` — aae3f1ee6fab260751a11f6bf8b36742c0ff86f3
+- `VALIDATOR_REPLAY_BUILD_GOOD_AND_BAD` — 750a006a8386c94ed31a96855cb430e172adab66
+- `DESIGNER_STAGES_REBUILD_LAUNCHER_HOLDS_LEASH` — c2c19833ccfa351d5519734e466e2a20be8b1df2
+- `RED_COP_BUILD_NO_ORPHAN_REDS` — f0492bc10c570405313f9ae24d5df7b159904e82
+- `OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS` — d281d6261d5f
+- `OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS` — d281d6261d5f
+- `BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT` — cefb739a823e7d16711995aca3105ffa0665f2cf
+- `CHURN_BREAKER_BUILD_RETRY_NEEDS_A_WARRANT` — 5b7b901893b9299e8832564c50a7902e7e2d3fb8
+- `OPS_LIVES_CENSUS_EVERY_DEATH_READ_ONLY` — bb45c9df1318c58bc350946a26233c91dfbc3959
+- `POOL_FIX_STATE_COMMITS_PIN_CLONES` — 62223b308b7c8d27838d4a4a3ba18519f2b6bac2
+- `RELENTLESS_LINE_FIX_ONE_MOD_CLOGS_ALL` — 24a7e0f17ef30f03eebf5e75b6c03f0a54ff1f88
+- `TESTQ_FIX_ROW_ITEMS_FIRST_ALPHABETICAL` — 1497e523becc3ba240c626013cad895bdc3bc7d9
+- `TESTQ_WORKER_MIGRATE_PYDANTIC_CONTRACT` — f96e761d5c3308f77d7b2caa05e3bd45e49c61a2
+- `ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG` — e92cc041c4fdbe9a24ce23b50728dc42a10bd353
+- `JAWABENCH_TPSARCHIVE_FIX_SKIPPED_AFTER_FAULT` — db93cbfaa42c3bb3c30071e0158dbfc343f95362
+- `BRIDGE_LOAD_FIX_READY_WHILE_INITIALIZING` — b856624fa862b541c2cacc6496c7c00e7c89df0e
+- `OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE` — a93f4dc0b7fa8dd4b96ba0b05027874fa0826a9c
+- `JAWABENCH_TPS_ARCHIVE_DIAGNOSE_STARTUP_CRASH` — b23c160de41bd56c036ac91dce1f94e894033090
+- `MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET` — ef19620a541c3715cb1e322166e2a69e68740621
+- `MODCHECK_VALIDATE_BUILD_DELEGATED_NEW_BARS` — 01599233b5a98e719a1c94b354e19dad8380f79e
+- `RUNNER_COLONY_REVIVE_NOBODY_HOME` — cff654b0a5d57f626006f028359f2f6449b779d9
+- `SCRATCH_CLONES_SHRINK_SPARSE_NOT_FULL` — 6ca95fc03ee52d3a4cb2c507c5a3f0cf4054735c
+- `DEPLOY_SELFTEST_FIX_MUTANT_STILL_PASSES` — c5d995559f951327e486b0253347d53ec497bc07
+- `INCIDENT_STORES_UNIFY_TWO_BOOKS_ONE_FAULT` — 827b7f7ddbb88fad80df62738f4173bbf8c3e1b7
+- `MODCHECK_FIX_ITEMTEXT_CP1252_CRASH` — e271b8ed4ee059bc8a687a8604a89f60aa48f187
+- `REPAIR_FIXTURES_ENFORCE_VERDICT_AT_FILING` — 88f2676c83a9b7424bfbc0da4ebe2ce11e78f47a
+- `OWNER_ASKS_MEASURE_AGE_IN_DIGEST` — 6b610730ccd8dfec935d124b4df9a685123502e3
+- `RIMBRIDGE_LOGDIR_FIX_ENV_VAR_IGNORED` — 5c75ffb53420cf7daf026d70694a6e52154309a2
+- `INCIDENTS_FIX_ONE_READER_ELEVEN_OPEN` — a722cf11d1538110eee630cd932540b341ac4077
+- `INCIDENT_RELAPSE_TAME_STOP_FULL_READS` — 81d65e3b3a2ea24e196437ae23f376db9c0a2e9e
+- `INCIDENT_SELFTEST_FIX_RED_BEFORE_ANYONE_CAME` — 18b8437f9702cbfb827773d819e428cc542e87ab
+- `CONCEPT_COVERAGE_HARDEN_SIGNED_ON_LEDGER` — fedf6b2077c1794f0485df64f08d1397c5b4f7ce
+- `PUBLISH_EDGES_FIX_MODE_GLOB_DLL_RESET` — 04eca1c14ec1b58f321fc9ba8ec00bb308138e7f
+- `WINBUILD_SELFTEST_FIX_VACUOUS_MTIME_CHECK` — f422031ca1bb67a8212b50da003f73ec33e2ff5d
+- `STEVE_LANE_UNSTICK_PAUSED_UNOWNED_29F6` — 05fac5f32c
+- `STEVE_LANE_UNSTICK_PAUSED_UNOWNED_29F6` — 05fac5f32c
+- `DESIGNER_GROUNDING_FIX_ASKS_WHAT_WE_BUILT` — 18b8437f9702cbfb827773d819e428cc542e87ab
+- `DESIGNER_GROUNDING_FIX_ASKS_WHAT_WE_BUILT` — 18b8437f9702cbfb827773d819e428cc542e87ab
+- `CHECKER_PROMPT_FIX_WORKER_REASONING_LEAK` — cd2f83e36cb6d15077951b4a25fab3744650c8c9
+- `NIGHTLY_COP_FIX_RED_BGARNK_COXO` — 563f9cfe8fa9702e292b07a66d8a304c72b35f46
+- `NIGHTLY_COP_FIX_RED_ENVEHB_GOEW` — 556e850ac17914d3b9f63d8e88e0aced308962b7
+- `LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL` — 8c05e64f48aa8c4e95709c034e6bfb34fcb8a04d
+- `HOOKS_VERIFY_TRUE_SUFFIX_MAY_MUTE_REFUSALS` — 9d9cd65c20e8eb3fed51aa8d19c5f18eb068ffa8
+- `RELENTLESS_DIAGNOSE_REPRO_MISS_AS_GAME_FAIL` — e2d24511b768a84c719f32437bf50f6a36a25a3b
+- `TEST_PILOT_WIRE_INTO_THE_PIPELINE_EARLY` — 87d647569a1e127a115d3afabf0b8c618fb9a4d3
+- `INCIDENT_CHAIN_DEDUPE_OPERATIONS_RUNG` — 7ad1f3019452093008897fc37d3160ff47d26567
+- `BUILT_OLD_READER_FIX_LEASE_VERB_UNKNOWN` — 40de8bea3d787a2c495b48cbac88fb38d009fca2
+- `DESIGNER_TESTS_BUILD_NAME_THE_BROKEN_VERSION` — d49f4b867032e96da55acb56ea932cf0766ef033
+- `LEDGER_UNION_DEDUPE_PUBLISH_DOUBLED_LINES` — e35858d8c7eb4b2c89e7e59286f7d7dc0191f09e
+- `LIVE_PROOFS_STRAY_PRUNE_RED_SELFTEST` — 675ed4d6abd8192d21ca1018c06a86552687340d
+- `BRIDGE_CLIENT_HARDEN_FOUR_ROUGH_EDGES` — 8217547f72661a0b733e339e49c15959d02e5c37
+- `IDLE_BRINGBACK_SELFTEST_FIX_SHARD_HOLD` — 460f41be627528391fec508a2e3127ac43d9309a
+- `NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING` — f1574ed29416be7b60ba7136d7afb7b6ae828eb1
+- `TELEMETRY_BRIDGE_FIX_ENDS_BEFORE_STARTS` — 5dc2f1af6103f7efbe00a04b8e02cffaf3dd58e0
+- `INCIDENT_REVISIT_TAME_SAME_NEWS_HOURLY` — 1d5b1960d4508c10230d350b5d017c0480fda662
+- `SPEND_INCIDENT_FIX_BARKS_TILL_DONE` — 568f06abeeb1e53204be77dfba51c97d34402dfe
+- `TMPFS_SCRATCH_PRUNE_FIFTH_LESSON_SAME_DISK` — 8b235baf3be01e2e5420b956bc1bf16e7bf137ea
+- `RUNNING_PAGE_BUILD_TOKEN_FUEL_GAUGE` — 6e57de3e74d692fa3a0bc102dcd0a9d59b8315af
+- `SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP` — 4b1c4a745c218e68d085f26f2c55445ce43930b9
+- `CONDUCTOR_RESET_FIX_KILLED_MID_READ` — 6958dcbf4ed7d50366cfacfe80b1cf89f4d56e6d
+- `NIGHTLY_COP_FIX_RED_EGQAPE_WLOU` — 41519dabc04e823ebb35af6048ccbf3f8fe04bd0
+- `OPS_FILER_FIX_ALARM_NAME_FAILS_GRAMMAR` — 5ab1c5995a068f7704381174a31d4abcfa951d01
+- `OPS_READING_FIX_SHUT_WINDOW_IS_FULL` — 6ccc03a131cc48c2208b17b6592f6f02368d4121
+- `OPS_DEPLOY_UPDATE_UNSTICK_RDHQ` — 0584e34a84f85c8835c71038f3a2a0a914583faf
+- `RELENTLESS_CLOSING_FIX_AGED_BACKLOG` — 7934aa4f7e642537c30e6a0469719b81127bf463
+- `RELENTLESS_FIX_PARKED_RUN_WORKS_ON_ANYWAY` — cb836da20bf0b31718f6559cf4d7c8b175e93959
+- `RELENTLESS_REOPEN_FIX_DONE_MEANS_FOREVER` — 7727ff9bf820febdc278f502b6314ff208a96eba
+- `RELENTLESS_SUBAGENT_DECIDE_THREE_PER_BUILDER` — 47f7fc7999d822a57efc5214aabcf543cfd68bd7
+- `SELFTEST_DECIDE_MUT_REPAIR_RUNNER_TMP_PATH` — d46c4896cc335c14189a2ce57ed20b12c537840c
+- `RELENTLESS_RESUME_BUILD_ACCOUNT_LOST_RUNS` — a80cb501b4a2f2ce90dbb9e1339520ce3b5abf0e
+- `SELFTEST_FRONTIER_FIX_ROLE_STAMP_GATECRASH` — e9cdabdf51ba83e78f4c09d308b07519f6157091
+- `TESTQ_SWEEP_FIX_EMPTY_BOX_SHIPPED` — 14311b3a5c1cedb77c977a7ddf742922499476ba
+- `LIVE_RESTORE_RM_PULSE_DIGEST` — 1370e4bff710481a632c0fca258718c7c2969860
+- `LIVE_RESTORE_RM_PULSE_HEALTH` — c9a0ba2c589315206b3ab4a256e9017aa92716d0
+- `LIVE_RESTORE_IM_BACK_HOOK` — e1a65c83bfcf2367c9bd20942ccc8336b476de5b
+- `IDLE_BRINGBACK_FIX_RESTART_ROWS_EMPTY` — 460f41be627528391fec508a2e3127ac43d9309a
+- `LIVE_RESTORE_RM_PULSE_STREAMS` — c7cc57c3ecb188d16956689090acc48c7b7f9f98
+- `LIVE_RESTORE_RM_PULSE_UPDATE` — 2b21dd61f25b8999a3820ac7921b622757022018
+- `SELFTEST_RETRY_FIX_25_STILL_BARE` — 7c13c4437d8f677718eebb124cd1940b78d23389
+- `OPS_JAM_CLASS_FIX_AGAIN_HJWN` — 15a9485590bb
+- `TEST_PILOT_WIDEN_PAST_THE_CHECKLIST` — 9d850f5221b9
+- `BOOKS_JAM_FIX_CODE_REVIEW_SHARD_SHUFFLES` — 3e6d8f329607b494f7bc4737625326053e153933
+- `LIVE_PROOFS_DIR_FIX_PY_WRAPPER_RED` — 612416958f3f87ac63be40183b30e63b82e90d19
+- `RELAPSE_STEVE_FIX_DIED_TWICE` — 3e6d8f329607b494f7bc4737625326053e153933
+- `CLONE_POOL_DECIDE_REVERT_CLAUSE_TRIPPED` — 08b5b3fd31e787588d278f1b54bb48b9718941db
+- `CHECKER_DEATH_MONITOR_THIRTY_QUIET_FUNERALS` — 9d7bde1be27f7ed72f682cdb3ae260fa3f20354d
+- `RESTART_DOCS_FIX_CONDUCTOR_SAYS_NOW_TWICE` — 8d94a18c589769274864d771e2bce4482e9805fe
+- `INCIDENT_ACK_FIX_OLD_NEWS_REACKS` — 1d97e4a869429ec185458066d4c71b5dc55ddacc
+- `POOL_READING_FIX_LOCKED_READS_EMPTY` — 7684d1bcbed34a078dd2639054a48af2cf5d52fa
+- `RESTART_NOW_TEST_FIX_COUNTS_TWO` — 2cf57fd471
+- `ALARM_ROUTE_FIX_RESTORE_INCOMPLETE_ORPHAN` — 2cf57fd471ddcb98127944258347bc03d0d5a708
+- `BRINGBACK_SELFTEST_FIX_ALREADY_SEVENTEEN_RED` — be912fa85b
+- `MODCHECK_SELFTEST_FIX_ZOOM_GUARD_GATECRASHES` — 57b2aa1eeb00f703c18be37d8c861627711ba61e
+- `SURPRISE_BOOK_BUILD_RETIRE_THE_BORING` — 7447161ea43b
+- `STEVE_SPAWN_FIX_COPIES_THE_PAST` — 426b2c714a08b7b0b736f5549d51563b83b8fc7b
+- `BRIDGE_PENDINGCALL_RECONCILE_INDETERMINATE` — 5660b06876db109aa31d3bc31ff4420184009f10
+- `STEVE_STALE_LOAD_DIAGNOSE_CAMERA_MOD_GONE` — 976ef16e51ad07232bef1e7fc6b966042c491465
+- `MODCHECK_CHANGEDFILES_FIX_FIRST_DIFF_WINS` — 0416a36027ea2dfd986a92fa6d36a32fcb4ea8a4
+- `PUBLISH_ROLLBACK_FIX_RACE_STILL_AJAR` — 374468cc64cd80920c5ffb07d075188622870ad7
+- `MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD` — f86de94d41630335cfe9483a3576a11177a08d67
+- `POOL_REUSE_FIX_CONSULT_GAG_STICKS` — 5e11a1f07380f9394f29249e0960668e786d0cee
+- `MIRROR_PACK_REPAIR_STILL_GRUMBLING` — 2c89b3ca8e6e571e6e8a265087b236ff83ec2cb4
+- `PIPELINE_WINDOW_BUILD_TABS_NOT_TERMINALS` — f06a264ac7adfa29a4af45601bbe73be3252f49f
+- `CLONE_REUSE_FIX_CONSULT_PUSHURL_LINGERS` — 57bbcd1aa0ff31ac82c6f5aa7210e1f24b06e9b0
+- `STEWARD_RUNG_FIX_ASKS_THE_WRONG_GROWNUP` — 476b9061b6f27cfd4948aa63504a7042f09f39ac
+- `CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE` — 4eabac097b9402a426c27991c1db8f9345b84a85
+- `STEVE_FILLER_MONITOR_FAIL_FINDINGS` — 8517d284f74e3a7acc813caec7127d5737d78b24
+- `DESIGNER_SHOWCASES_WIDEN_ORTHOGONAL_SET` — 94b057bcccc53d660d330b1a658e07ea2ba763ea
+- `RUNNING_PAGE_BUILD_ROWS_WEAR_THEIR_BOUNCES` — ae011b5bcff7
+- `HANDOFF_HOOK_FIX_QUOTED_READY_COUNTS` — e7d62cabf40e356e379c682ebb27016259b1f314
+- `RELENTLESS_PAUSE_FIX_CLOCK_WAIT_STALLS_ALL` — 0cd6407291f04ac2b6cde377d0ba3a4f2b615419
+- `CHECKER_REACH_FIX_NAMED_SCRATCH_READ_ONLY` — 0cd6407291f04ac2b6cde377d0ba3a4f2b615419
+- `ARTPIPE_TWINS_PRUNE_FAILED_COPY` — 279e01e80a05c88e229518cfc57d11b61cc63c10
+- `CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD` — 44daff0c9347225c53131c62b839612770707f55
+- `LIVE_RESTORE_RM_ARTEVAL_AUTOJUDGE` — c7d2b44a4399b64deaeca5ac917372ebc2038557
+- `HANDOFF_RESTART_AUDIT_FILES_OWED` — ce1288b62c1ee03d9f04b6a0c075cbbedeb887f4
+- `OPS_RESTART_UNSTICK_FOUNDRY_HDDT` — 4a426810ba42463e7b3a357a7147e2829f9eb764
+- `OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN` — f4ea52508d0bc991cd30ffb191b87a8f49bb61ef
+- `STATUS_PAGES_BUILD_REPLACE_RIMPULSE` — 5bfd2e337eb6ad5ad7ab5e384cb79a7b47ba7d4b
+- `TIMERS_PRUNE_AUDIT_FINALLY_READ` — 783d1f1c76c22d9715222ddba8ab50609b30de96
+- `WRAPUP_SEAT_CLONE_FIX_FALSE_DEBRIS_ROWS` — f4ea52508d0bc991cd30ffb191b87a8f49bb61ef
+- `OPS_GAME_HEALTH_DEBUG_PXQI` — e61e88de08fdc633296780b2655424cdba4ee9b5
+- `RELENTLESS_ATTRIB_FIX_CONSULT_NO_ROOM_HOLDS` — 4da5d60ad1326e4f79c08c587873933799c0b60a
+- `RELENTLESS_POOL_DIAGNOSE_SYSTEM_NEVER_ENROLS` — f525a06a3f6f06af85958d79481cb4732e9353c4
+- `CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS` — d776e3f8e0e0656cc6e09bded3220fe91c3043a5
+- `DONOR_COATS_REDRAW_SIX_HUNDRED_TO_GO` — 893c135ea3644db8657a5d3e54bd6564f9d17b9b
+- `RELENTLESS_WRAPUP_FIX_STOPPOST_NAMESPACE` — 228130b73a06b1158a278f4834cfc906a7e33f94
+- `PATCHCHECK_CUSTOM_OPS_FIX_NEVER_DESCENDED` — 227e67ac860c806bb2ac2b366d269fcc0bb18c0a
+- `DESSICATED_CORPSES_REDRAW_ONE_BY_ONE` — 8c9ca005a7058dd5882fb630811746b6aa9948a8
+- `LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING` — 0486b7fe936e82b56d0de7bba2bc68cb1fe63843
+- `MODCHECK_CLEARAREA_FIX_PAWNS_STILL_LOITER` — 5b454c4e322ecd3bd7ed3326976aa0ecdc726ecc
+- `MODCHECK_COMPOSE_FIX_STALE_CAMERA_SURPRISE` — 8f5be116c1
+- `OPS_TESTQ_UNSTICK_ECPK` — 0400ec93c9e706f952c6dae1ba0c8cea02bc566d
+- `RELENTLESS_SPEND_FIX_ZERO_USAGE_RESERVE` — b902ac4ec9e5c799e00b60dab765a4913ee407fa
+- `SEAT_WAKE_FIX_ANSWERED_MESSAGES_REPLAYED` — e9efb41a6587dff89582ddbabc031be9d5b64f23
+- `WRAPUP_SEAT_CLONE_SILENCE_FALSE_ROWS` — f4ea52508d0bc991cd30ffb191b87a8f49bb61ef
+- `CHECKER_TMPDIR_FIX_SOCKETS_DONT_FIT` — 6a79003efd39c46c402d5d9a6f15c864ddda0703
+- `BRIDGE_FLOOD_FIX_RUNS_EVERY_THREE_HOURS` — 1ad31a769fec5a0b0c4ebad102701c391f3da3d4
+- `CHECKER_DEATHS_MONITOR_29_NOBODY_NOTICED` — e44adbba8ce60f57b46156eee13f28fbcf46e592
+- `QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS` — 80d3d18393358bf8ca91014ada05bea6a5b40733
+- `STOCK_SELFTEST_WIDEN_RUNNER_TIMEOUT` — 3bf4ac83cf
+- `LIVEPROOFS_WRAPPERS_EXCISE_OUT_OF_DIR` — 612416958f
+- `LIVE_VERDICT_BUILD_INFRA_NOT_FAIL` — d9e75accc4
+- `MODCHECK_REGISTRY_PRUNE_DEAD_MODS` — 1447342ebc
+- `PROOFS_CHECK_FIX_PIRATE_ROWS_UNINVITED` — 612416958f
+- `READOUT_SELFTEST_MEND_PATTERN_LOST_ITS_LINE` — 8fda7ee60f
+- `REDFOG_SELFTEST_REPAIR_FOG_OF_WAR` — 61c7fa8bd9
+- `REFTEX_SELFTEST_FIX_IGNORED_INPUTS` — fe86c50a67
+- `SELFTEST_LITTER_FIX_SEED_WALL_STRAGGLERS` — c0c11ac0e9283d095b314f844b7d4d3b60568ffd
+- `WORLD_STIPPLE_VERIFY_CALMER_FACES_LOOK` — 46c7af61ac
+- `CHECKER_REACH_FIX_CLONES_STILL_DARK` — 35c659c58363fb92eb81d64d34cf73a60bc78533
+- `CHECKER_REACH_FIX_SEAT_TMP_STILL_DARK` — c32ad3ad28f9f99d277999bd1fdbb4f09a0e5abe
+- `CHECKER_REACH_FIX_STORE_STILL_DARK` — a96a77071d3ab2004379289e33d69789319bed18
+- `MODCHECK_FINDINGS_FIX_WRITTEN_AS_REPR` — 2088ce24569f2267ccbc29d09c17c2e5a056564d
+- `DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED` — bd801e4be0fe13e8740485a466bd6dbc1ef95522
+- `ALARM_CENSUS_FIX_COLLECTOR_KEY_UNREAD` — d071e6e608962238fcef19d4bafd258193eaddc8
+- `FOUNDRY_CLONE_RESCUE_GHOST_HOLDS_CLOSINGS` — 88770c2d58599bc8eeb783626b5c8f29fb9e37cf
+- `OPERATIONS_RUN_FIX_HALF_A_MILLION_HABIT` — 77fb7ec7c0985e55870a1b5ff022c3d02a791f96
+- `OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV` — 0584e34a84f85c8835c71038f3a2a0a914583faf
+- `RELENTLESS_HOLD_BUILD_A_VERB_FOR_CONDUCTOR` — b0ea679ae0c5d6e1bc9add65ffa5bea6085d1220
+- `CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK` — 26c87a744c49bfc5324bffbe140fb1d6f7240fdd
+- `RELENTLESS_HOLD_BUILD_RELEASE_ON_ANSWER` — 9651abe375c0e347035f17ef72fe90ed4bcc84eb
+- `OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY` — d61e43685d0b81412050e03fac4c1c91c5140dc4
+- `CHECKER_VERDICT_BUILD_CAUSE_BEFORE_RETURN` — 71987919e9247f5bb77e8fb8ffed11e37c3fe019
+- `TESTQ_REPAIR_FIX_TICKETS_NAME_THEIR_PASS` — 45f98f9d54642b3c77b6c2dfdd9d1cbb1cd876c7
+- `ENACT_KEEP_FIX_VARIANT_ROW_ALIASES` — fd7f01959432726381125b1c792e86e337c41379
+- `TESTQ_QUARANTINE_BUILD_WITHDRAW_UNSUPPORTED` — de8fa35b730c95e731809c92752026d003875058
+- `PIPELINE_BLESS_ENFORCE_HAND_CHECKS_SMALL` — 7ace5724df795157c8e0ae10e69dbb8ee10d538b
+- `HARNESS_REPAIR_CAUSE_0CA2BE29` — a1e29edfcc11d85553c7ccec68592d59addbe89d
+- `OPS_RECOVERY_DESIGN_POST_EVENT_MODE` — 7a9f538593bd382734cf31f216e1e15e88c59ae3
+- `NIGHTLY_COP_FIX_RED_APGIHI_JAKI` — 34b2947b156866892c85aa40e8d3e980a06613a4
+- `NIGHTLY_COP_FIX_RED_BCBOSB_PWDD` — 5f02a6fdf5c6bdaec1e52ea1df4b68f638c49660
+- `NIGHTLY_COP_FIX_RED_BGMSKV_VSAQ` — c28bdd9b729753d66bcf8e7cea2dc5117b419030
+- `JUDGE_WEAK_RETHINK_NAME_THE_STRONG_PROOF` — c46b338bb9
+- `UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES` — 0131e9ab96
+- `NIGHTLY_COP_FIX_RED_CAHLTS_WGAG` — 80e6f91f621efdc0c5726f4e5b0fe53fed7aa87e
+- `NIGHTLY_COP_FIX_RED_FDYIER_ALCO` — cbc112aae2014297b1ec955d2e8ec5073e16e893
+- `NIGHTLY_COP_FIX_RED_HDMVNF_XJZW` — f64996751a6bfbd36c38d36ace12c957bc55b5cb
+- `NIGHTLY_COP_FIX_RED_HPZIOX_GMAU` — 243121fe6f54f422fbccb0ddbbd805fc35dfe8ee
+- `NIGHTLY_COP_FIX_RED_YWAYLS_DPFF` — ff82ef920c0f426e1be0ffbcabdb2167a6a2a0ff
+- `NIGHTLY_COP_FIX_RED_JQURAF_DQRD` — e46f38841ec6abfd4bc8825a119ba2af6c8cf100
+- `NIGHTLY_COP_FIX_RED_MTJJIN_ODMC` — f6225e0266cb8672b14f0288901f41685f3df098
+- `NIGHTLY_COP_FIX_RED_ODAKND_UFTV` — c663f7bd746ef370c72e48f69df45c46528b628e
+- `CHECKING_BOUNCE_ENFORCE_QUARANTINE_HOLD` — 597369d825
+- `PASS3_FLOOD_FIX_REJUDGE_GREEN_SHA` — 597369d825
+- `NIGHTLY_COP_FIX_RED_PJLJVQ_TTXI` — eb4599db95a65febc22c37c15596e9e64d9fe817
+- `NIGHTLY_COP_FIX_RED_QHQXLR_JQBT` — b99e431034f2821c98f90fe9c7d26cff7df17cd0
+- `NIGHTLY_COP_FIX_RED_LMTEZQ_YAXX` — 84e043a8f7318f6545422d16b8401b717a090497
+- `NIGHTLY_COP_FIX_RED_RACIBL_KZSJ` — a899d300d020dc33d0c90a32639dd40efc7a378a
+- `NIGHTLY_COP_FIX_RED_TOJBIY_TAAI` — d6b7df79b9a04b51b1ef39d7fa413325d5762ea8
+- `NIGHTLY_COP_FIX_RED_UQUVZZ_AYSU` — 6c6ab1a852ce075d4c753c510dea0fbad891a1af
+- `NIGHTLY_COP_FIX_RED_OIMKSA_WDRT` — 4cc0849b06c3fb39ae8d37bea8bb711fd32e5f00
+- `NIGHTLY_COP_FIX_RED_WABGHY_BUUY` — df89b9406e52abde737db099674c97d5cfc151ae
+- `NIGHTLY_COP_FIX_RED_YZWCJJ_JDSB` — 7ce265522900efcc48b128aac36dce7a0b72280e
+- `DESIGNER_TURNS_FIX_LEFT_ON_THE_DOORSTEP` — 9e6ef43f3b47
+- `STEVE_PIGMENT_LOAD_FIX_BRAKE_ROOT_CAUSE` — 2ef60fd0917958d66d5022a15bd972ff39b7219c
+- `LIVE_MODS_FIX_WORKSHOP_UNNAMEABLE` — cd905b46d67c
+- `OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV` — 13931b306b72bb5b103cdea47abe8dcd4ef3cbc8
+- `VVPROBES_FIX_SELFTEST_CSPROJ_OMITS_THEM` — 469bbd896fe5e10772bd8c7f2e81aa3955face79
+- `OPS_HEALTH_RANK_FIX_GLOB_OUTVOTES_EXACT` — 5d4d5ea0a66106a6449e2539fe264cb768bd6195
+- `RELAPSE_OPS_WATCH_FIX_DIED_TWICE` — 6997fe83311c3b4b7374d90f4383d5e5973165e7
+- `STEVE_FILLER_MONITOR_FAIL_FINDINGS` — 47a673edac4f72d601fa7a6572ca928abe926ed7
+- `TEXREGEN_UNPROVEN_ASK_THE_SHEETS` — 647825a207a4cd5736481ab4c0c91594a075b140
+- `CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK` — 57e44d0419b0f2079e24d3bd52c15de0a506bdd9
+- `HARNESS_REPAIR_CAUSE_E0B6DA41` — 0194c06c6ee2566311e8239c9d3ac7d8174bf54c
+- `OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ` — 04a4b68725366c20b925d17b958ead68ad509762
+- `CHECKER_REACH_FIX_STORE_STILL_DARK` — dd22476db3ea739df2e8d5151bed6c472bde6b3b
+- `CHECKER_REACH_FIX_CLONES_STILL_DARK` — 32eb9b5dedb55a40f8bbcbd5fb48ee4f2ef12a27
+- `CHECKER_REACH_FIX_OTHER_STILL_DARK` — cacd4b457d141c6ae131b97994978fab7db48b23
+- `DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN` — 3ccda6ef548868b7f504928aa085acda14fc78c5
+- `MOUNTAINS2_PLAN_DEPLOY_805_TILES_PACKED` — 2b741d5ac45a930d97e2afe7c5d5a0fcf94727e5
+- `NIGHTLY_COP_REACH_FIX_ARENA_STAYS_DARK` — 85754212622d9803b338402d2953fd6fea030eed
+- `REAPER_SELFTEST_FIX_BLIND_IN_EVERY_BOX` — 21832017e8f21ac7f0595978b2e8f2742e469685
+- `RELENTLESS_CORE_FIX_CODEX_FOUND_TEN_MORE` — bdd92e5726f28aaf2a3c68c7ed7c1aba783a59d2
+- `DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY` — f6b6c6dad9d749fb8720349f470989f01438d843
+- `SCRATCH_CLONES_PRUNE_LANDED_DEAD_WEIGHT` — 8621bb696ef070006d6003d89b1e1790e97b1eea
+- `SHOWINGS_HARDEN_FLYERS_OUT_SUBJECTS_TIGHT` — 14d5496caf742710a73e4793792207701c13504c
+- `PROOF_SHA_FIX_DEPLOYS_NOTHING_TWICE` — 12a7f979beb2cc6459a8610eb48e35f4341a96b0
+- `TIRED_SWIMMER_FIX_UNREACHABLE_SHORE` — 8c747a52728c92557234285d39be6907b86f6730
+- `FLEETWATCH_CODE_RETIRE_NOBODY_WAS_WATCHING` — d7080dccda21c8298f86bd805fd428238e9172c4
+- `ICON_OUTLINE_REPAINT_1` — b4347f4f45025ca8dd67bbd9d1268f0c0ddb74a3
+- `CROP_DROWNING_FIX_ONE_TIME_PUDDLE` — 87b2dddb893e0320d48df55ba69ecb01a1325598
+- `BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS` — 581441646011acf188950926046d20fc3578b9de
+- `CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER` — f0403eeadd983c4e1a926804a650b3b9835aca3f
+- `DESIGNER_CAP_REMEASURE_STAGE_ZERO_ATE_IT` — d718954fa2eeba467446d71d68b1312e2cb23554
+- `STATION_NOTEBOX_BUILD_WHISPER_AT_NEXT_TURN` — 8be5e40536d93821e12e5d96d9e5a77dc2310a21
+- `CONTRACT_BINDING_UNTANGLE_WHAT_FROM_HOW` — 9d672c5a392547b9bb278a2db08f30501207d5db
+- `OPS_CHURN_DIAGNOSE_BRIDGE_GRXX_AYXK` — a9b023a67a7f616eabecb20de38d2d8d2ac6fcd0
+- `OPS_CHURN_DIAGNOSE_PIPELINE_NIZE_JOZV` — d92fbe710789d6b91a7e868a2e143da3206c6bcc
+- `OPS_CHURN_DIAGNOSE_ART_XODX_FYLS` — d262af07e49baa632a366f0b05f660e782ea9303
+- `OPS_CHURN_DIAGNOSE_RELENTLESS_HFDA_UHRX` — a0f49f0e9711659370647b7f797d928918a5f7fc
+- `ROLE_RUNS_BUILD_RESUME_AFTER_ACCOUNT_LOSS` — edf22ff3e03b3899c9372143f8856980279b8dae
+- `SPREADING_FUEL_FIX_IRRIGATES_CROPS` — f89e8229c466ef017e127e182e2f209362e98d18
+- `OPS_CHURN_DIAGNOSE_NIGHTLY_SCRM_GZGX` — 82d75389e1e7b97122d6653e901ebeab50ac14a5
+- `OPS_CHURN_DIAGNOSE_TITANIC_WYZE_DMPL` — dd4e3309ad665f8556ce3e678c39dd481692306c
+- `RELENTLESS_CORE_FIX_CODEX_KEEPS_FINDING` — 0a2ec71ec99066d9dfc05ce64bdde2d4c62b9acd
+- `OPS_CHURN_DIAGNOSE_FORGE_XKMW_BKCN` — 455a50f09bf00c09783a7fba6fd2e31f8c8ac18d
+- `PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT` — 9a8c54a9f754d857709b46425c75653e6495893d
+- `FLEETWATCH_PAGE_REPAIR_BLIND_REVIEW_PARTLY` — f7ea76925e6ed995506aacfe7a484142b28f1f1d
+- `FLYER_VARIANTS_FIX_RULED_COLUMNS_MOVED` — 3b033b495b60e66c3f55d8b5f0d5fdb72c896eb0
+- `OPS_CHURN_DIAGNOSE_OLLOPOM_JLHV_AJHK` — 1da44281d24c3e297ccd3066a780543455f9cf05
+- `SCRUB_WILDLIFE_FIX_Z4_Z5_FINGERPRINTS` — 3b033b495b60e66c3f55d8b5f0d5fdb72c896eb0
+- `FACING_ART_CENSUS_FIND_UNWIRED_SIDES` — e751cdb0c62b79c184b84cce5e1030c1000bbade
+- `TESTQ_ITEMOWED_FIX_DEFS_CHAIN_ADOPTS_ALL` — 930618a17aa2547401ae96fbbaba2d9c26280c6d
+- `OPS_CHURN_DIAGNOSE_OPS_GCNF_SOGA` — 4d30d95f34034f02fa613f9ba242d9a1db7eafd0
+- `RELAPSE_FLOW_FIX_DIED_TWICE` — 8d8aa09df7244f530b0cf07b7824cdc75b3aa51d
+- `OPS_SCRATCH_DIRT_MEASURE_AT_END_QLKI` — e7e1348f07b9a9dede45d8c67cc9074c25401db9
+- `RELAPSE_HELPERS_FIX_DIED_TWICE` — bfeeb3e5f09998122f497c5104525218f44f054a
+- `OPS_CHURN_DIAGNOSE_GRAFFITI_LOVJ_IMIL` — 55ab741b8e7f572b8adce556415c22f9baf1aa11
+- `OPS_JAM_CLASS_FIX_AGAIN_HJWN` — 0da39b35de2b6fe00da9781ac796a08054c8ecf4
+- `OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV` — 8320ad8bf049b411e795506df9d933724595cf50
+- `RELENTLESS_REVIEW_FIX_ROUND_FIVE_DIGS` — b625a2c06ab78f09ef9613367e3e4fcaf9915c0f
+- `OPS_CHURN_DIAGNOSE_NIGHTLY_WHTT_GXBQ` — 6df188b2f27c19179bc0d7518f2882b1c00d5c51
+- `OPS_CHURN_DIAGNOSE_OLLOPOM_JLHV_AJHK` — 56ca045c889439781f30589007236434ffebf4ba
+- `OPS_CHURN_DIAGNOSE_PACK_HMAO_RAYY` — 2f3e59daaae80433d54d55efbfed68de92b3cf34
+- `OPS_CHURN_DIAGNOSE_STILLSAND_WDMI_CRMC` — 1719b4979c8149cb19dbb0e3186c6b0b2558db24
+- `OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT` — 05555c73697888ad5222c3780beb8371a25fd736
+- `OPS_CHURN_DIAGNOSE_WORLD_AVST_JRDU` — f28c3aba5c94dbfc2629d09785b49f7e964fa005
+- `OPS_GAME_HEALTH_DEBUG_PXQI` — 5480fa249deadbf9e1b98e84745fcc42653e9f77
+- `OPS_CHURN_DIAGNOSE_PLAYER_YGLE_IHKT` — ac9c18c479927c3ca8948a868042e1b423e5338c
+- `SELFTEST_FIX_STREAMS_FQCB` — 0751363d27f9ac4f2b842bec612404f6c7a12e9c
+- `WADING_SETTINGS_FIX_STALE_PATH_COSTS` — b740a68c8bc1b791309d669d781834dcdc6dd95a
+- `SELFTEST_FIX_LIVE_QUEUE_QBHV` — fc757688dff84f12da730a7836c18c3dba517563
+- `SELFTEST_FIX_RELENTLESS_TICK_STAMP_DVDQ` — 021255da883d8d9be361cca54769518539063753
+- `OPS_RELENTLESS_READING_RESTORE_IUUR` — 2863b29832d49ff77630cba9d0d8f7527e690236
+- `SELFTEST_FIX_DESSIC_INSTALL_CHECK_HZAH` — 12c4540e3817cf7f9476ebc854f57a4460dde8d8
+- `SELFTEST_FIX_DRAWBRIDGE_PROOF_PHBJ` — 0ae0923221b7d0fbba3c46219cadcb0189a8989b
+- `SELFTEST_FIX_LIVE_VERDICT_GJIC` — 9c5cef0c088c76736e2f6525705d8a19ce757577
+- `SELFTEST_FIX_STATIC_GAME_STATE_FNQN` — 0fd0feb90b6578c01fa9b2e1f6cb8cb44ada7ab0
+- `SELFTEST_FIX_RELENTLESS_REACH_GIT_GRANT_FWMI` — 55f6e33d9b8dca969d3fcf133edc1f1226c6e1b6
+- `SELFTEST_FIX_EXTRA_ART_COMMISSION_UBZM` — 4f02307e55074b2d8d4cbea1e5ad5d1de84b52bb
+- `PIT_TRAVEL_TAGS_VET_LORE_FIRST_GUESS` — 156e0abb14e0d518251845d493113623f840de9c
+- `VEE_LANDMARKS_MIGRATE_KEEP_THE_ICONS` — 0da4e12853d88c0a2b3d463d916145bb4bd516c8
+- `GRAVSHIP_ROTATION_AUDIT_EVERY_BUILDING_TURNS` — b21116e85dee93aa8d35da7a85cf16a12c163768
+- `KEYSHEET_FIX_ONLY_BUILD_SCRIBBLES_ON_IT` — a1534a108ed4cb4a2a83fa23c7c149e3c1f36012
+- `PURGE_CARDS_FIX_WRONG_POCKET` — e53eb99264c59527087db2f436e8955fb84dae55
+- `REEL_FAIRLEAD_DECIDE_AFTER_THE_WALK` — 1064cba21b3e2b1caa243f4a036428ccb9df64ce
+- `GSS_END_HEAPS_FIX_BYPASS_LOOP_BUDGET` — 890c85d02952f344e8b738a0329d657c36791950
+- `MODERN_FIT_REDRAW_ROUND_FOUR_PENDING` — 4199ce4ae73a42e2a013805b1d15bdd76dee37ee
+- `LIVE_SESSION_FIX_B1_NEEDS_PRISTINE_MAP` — d004bfd604c21af6c52d6746f549f227040c9c7c
+- `PROOF_ROWS_FIX_PASS_ON_EMPTY_SAMPLE` — 7b4625c74499277b63e8832f8024a1de36f95b7e
+- `SCRAPPER_PIPE_REDRAW_VERDIGRIS_DASH_RHYTHM` — 3769d6d262513dcbaffc29ae9546aaa740ac8fa0
+- `GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS` — 7bc25dede9f835d305d5fe26da94246dcf4c27a8
+- `HOSE_NET_DIAGNOSE_HALF_HOSE_HALF_PIPE` — d1dfd1faaf332e3ec7e4c6c9cf0fb6463650b82e
+- `DETOX_WORKS_REDRAW_SAME_PLANT_EACH_STAGE` — ec509dbbdb18f2e6f23689c896bde479cf6700d8
+- `PIPE_POLE_REDRAW_NOT_A_POWER_POLE` — 372cb3feac8ec1712fc2e112960b94db27076ff1
+- `GSS_ART_MANIFEST_FIX_OVERLAY_SIZES` — 6247fa669d4982a0699d780911eb4556aa591ee1
+- `GSS_JUNCTION_REDRAW_BODY_WIDER_THAN_CORD` — 9bb5b6eaadf52390dca3f99b4332624e2ede24eb
+- `ARTEVAL_DEPARTURES_TUNE_ALMOST_EVERYTHING` — 4633627c3fd98db83317f7048f8f361dc85e552b
+- `FW_ART_POLISH_REDRAW_FOUR_SMALL_MISSES` — 06a879b1038304d5ad612b69eb375cefa7c8a8b0
+- `HOSE_SELFTEST_FIX_TIMING_BAR_FLAKE` — 8805758ca55228c6814d27e3902ad00bb0308bc6
+- `ROT_KEPT_ART_JUDGE_FOR_OWNER_DIGEST` — cd7a0db190
+- `SELFTEST_FIX_WEEPINGSTONES_FOLLOWUPS_BCTH` — c758f22d3084511fec23a4aeb836a672f9c731e3
+- `SHEET_BULK_ENFORCE_NOBULK_FLAG` — eed14d22e682cbb4099c502b454c2e0865d48c9b
+- `SHEET_HOTKEY_PROVE_VIA_KEYDOWN` — cb41381447dcfaad5434dd15cd145cf618e6c91c
+- `CHECKER_REACH_FIX_CLONES_STILL_DARK` — 06f1afddc02694b2ff08977f9ef71d9686287baf
+- `SHEET_COLUMN_CLICK_WIRE_UNDO` — fc5852d296c5251cccadda3dfc6107ae0e46a1ae
+- `SHEET_SCHEMA1_FIX_MOVED_LETTER` — 5c70b9e21f9be8bc8e3769e1e2be76626ad8521e
+- `TILEMAP_GENERATE_FIX_FACTIONLESS_PARENT` — 33854f6f5c63e28839ebcf8f42a94d574c475cd6
+- `SHEET_FROZEN_WRAPPER_SILENCE_STAMP` — bce8e5b8bc3213a9422088d90a83119dcba00b54
+- `SHEET_UNASSIGNED_PRIMARY_FIX_NOSLOT` — 8e15ba3bc9a7b45f2878735c355729cdebb264a3
+- `SURRIK_ART_DECIDE_AFTER_ROUND3` — 448763ed6b587a55dd78427ca7aed86055aa0a57
+- `TESTQ_SURPRISE_DIAGNOSE_SCRATCH_HALTS_CHAINS` — 17a6def07d64d82b3695176eca686b2348ed51f4
+- `DESSICATED_CORPSES_JUDGE_THE_ONES_HE_MISSED` — 1f3a4a92ac556926fc74daae5a9438722eefc37e
+- `SHEET_SNAPSHOTID_FIX_LANE_RENAME` — e30591709f42c92386722cd281ff32f807099121
+- `FRESH_SERIES_STOP_FIX_AFTER_OWNER_KEEP` — c9c9dff527fc0445beb39fcf54e65cadee3128b3
+- `SHEET_DECISION_WIRE_BUILD_STAMP` — f47501a9839eef3a1d00e23957a66d234323542f
+- `CHECKER_REACH_FIX_OTHER_STILL_DARK` — 7e0d13015a0dca8b34632820da74991f533f54b2
+- `HARNESS_REPAIR_CAUSE_EBC39CFA` — 6f608a9f24
+- `WORLD_WATER_REDRAW_SEAS_THAT_READ_DEEP` — e3d318e6c8b5e29897aec3a8467c74869a40a6eb
+- `OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT` — 744314ff9f880ca47895204e4dde2d827516eb11
+- `PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT` — 0bc4a2aac5d4de195887402e931cc25cbbb491f5
+- `WEIR_LOOKS_REDRAW_ONE_PER_PIPE_STYLE` — af7156fa3fc92c66e8663e7125bafd93a780870c
+- `SUSPENSION_BRIDGE_REDRAW_HEAVY_JUST_PAINTED` — 58c74df11dc4d6c789a2c0dcdfec8e9135a4f870
+- `WOVEN_SCRAP_COVER_REDRAW_FILLS_ITS_CELL` — 7d3947e62a67469bedf8eb0b96e4b5c32549b66a
+- `SELFTEST_FIX_LIVE_QUEUE_QBHV` — bc25b60bda5d93b69ae2d383f4b58df648d978c1
+- `MODERN_BRIDGE_REDRAW_BRIDGE_NOT_PLUMBING` — 2a3a7a03348df001d16a2ebc55ad01129c6a682e
+- `SELFTEST_FIX_EXTRA_ART_COMMISSION_UBZM` — b3ed7b0d63d17df8dea30c895f6750f1f45cb633
+- `SELFTEST_FIX_DESSIC_INSTALL_CHECK_HZAH` — 0fdf8697b9414f1f590a3ca3d9436617b9b4e9c1
+- `SELFTEST_FIX_DRAWBRIDGE_PROOF_PHBJ` — e4f724f01dcbef2aa9301b60a1fcf3bca8517d38
+- `SELFTEST_FIX_RELENTLESS_TICK_STAMP_DVDQ` — bb346e6e72f24527ab2ef1ce4d99d330f598ce27
+- `STEVE_FILLER_DIAGNOSE_NINETY_CHAINS_HELD` — 9385f3607fc80b96690039d6d73a9fd87bed5a9f
+- `SELFTEST_FIX_LIVE_VERDICT_GJIC` — 6673e8980e9d4321325fd8a5c746e62cfb4195cf
+- `SELFTEST_FIX_STREAMS_FQCB` — 80538d0eb1591dcaa0d401411908d65a49599fa7
+- `SELFTEST_FIX_RELENTLESS_REACH_GIT_GRANT_FWMI` — d6335520e2e9e22737d0fe331fb2ddfb57390db4
+- `ARTEVAL_REGEN_FIX_NON_DICT_CARD` — 1b18513ca0885df5176d87521200000b8d2b0c13
+- `HARNESS_REPAIR_CAUSE_5F134E3C` — 5699f8d1a9f3766b78926e0505e6219ee8bba6bf
+- `RELAPSE_ROLES_FIX_DIED_TWICE` — 89e2c44a304c11869c815b34cbbc3df5082696db
+- `WORLDFACE_SHEET_FIX_WIPE_BEFORE_SOURCE` — 4a5c5a0fc7de666ef7f1e09a07bcf92f81eec8bf
+- `ART_ROTATE_FIX_LATE_APPEND_LOST` — c68b1c2711a381d6bcc675da2aa587ce9504fe77
+- `DEFGUARD_INDEX_FIX_SAME_MOD_DUP` — d9a2cf6895d11da1f8f193b3b6b6bb7998e395d4
+- `EVICTIONS_RAZORJACK_FIX_STALE_ROW` — d6173bfa2cd1eb02e2a20ac0f237fa4499a1ad73
+- `MOVED_NAMES_FIX_PAWNKIND_ALIAS` — b43e9046eedc49af5e605820530bfa055393c6a4
+- `ART_INDEX_CACHE_FIX_ABSORB_RACE` — 3f0ed01852cf49c5b2b251e987402156a895591b
+- `PROOF_SETTINGS_RESTORE_FIX_NINE_LEAKS` — a7a3eb444aaee20df5b807f81ae31cb3aad8109c
+- `ENACT_STALELANE_TEST_FIX_FIXTURE_LEAK` — c64746a95b6f9d48f5e25dac3e5eefd881cc98fb
+- `DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE` — c8b8ea6ea3563e7463acc66e8c32b276c6b862df
+- `BANK_WEIR_FIX_TIMBER_TEXT_ON_STONE` — 5139b55521b0de11a1c93155d2f1ae1a3602608c
+- `HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE` — 04562be93eaa17a2938cb7726b6cd65c7edf31b9
+- `ART_INSTALL_DRYRUN_FIX_STORE_WRITE` — cd575a84bdf35f8d2a71da3418664d3af2be2bb5
+- `POND_DRAWN_FIX_VERYSHALLOW_NEVER_MUDS` — dfc2007c13013229f94e717365243b6a63f20003
+- `OPS_CHURN_DIAGNOSE_PIT_XGUR_QNTR` — db832929fd75b164e3869d8936cbf07454af0fb6
+- `OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT` — d2ac77bb776b12da3aada07e4444dd442f7716c6
+- `OPS_CHURN_DIAGNOSE_WORLD_AVST_JRDU` — 5a949a5932278c8bf03b9d07a7f1ff439cfa3918
+- `DESSICATED_SHEET_FIX_SERVED_ALL_STALE` — 17ec635238d82c221cdf0986528e332086c40103
+- `RELAPSE_PLAN_FIX_DIED_TWICE` — d7aa061ddf70663dcf7a5c1e9c62616e2f9aeeb0
+- `WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED` — f58545951cdadf569a4eca8bdce7500784272cc1
+- `DESERT_ART_SHEET_REBUILD_DECAYED_UNSEEN` — e8ebdc48c360db234b3926102fbbdb3eb8152917
+- `OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT` — 14d22b3c939aa15a57c5b417776236b7bb6ea8bf
+- `PROOF_SITE_HARDEN_HUGE_TRUNKS_SURVIVE_CLEAR` — 3ce6d38de631a34882ea8d420f6671b0d9df6bb4
+- `OPS_CHURN_DIAGNOSE_OPS_LPTI_ESRT` — 6fa0d56984e996a138df5c6940ae4fc2ec9c154b
+- `ANIMALDUPES_ORPHAN_OPS_AUDIT_SOLE_SPAWN_CUT` — 2c8a83eedd1dd4fe8a4f73b0e45bf14b17039815
+- `LADDER_ONEWAY_FIX_WALK_ROUND_COUNTED` — ef14706792087177eb1fcbec5be8a88762e76be2
+- `SPIKES_PARITY_FIX_FLOAT32_MIRROR` — bac5f386b2579adbe83f0ba3928a6e12bcf67330
+- `TRANSFER_LINT_HARDEN_REFUSED_CREDIT_PASSES` — 5cdce6f0faf3c7ce342e97f15bdd823bcc25df44
+- `ICE_ART_RESKIN_BORROWED_RUBBLE_AND_SMELTER` — 0d470d8686289fa9ab2897c9d17f03a9de480e74
+- `FILLIN_PROOF_FIX_ORDER_NEVER_FILLS` — 9503ca719792415293d5afb0df43564c21ec02c0
+- `STALE_BLOCKS_UNBLOCK_GATES_ALREADY_OPEN` — 5b1b91035960b889911609a83bad4ecb630e3535
+- `TAUNG_NAMES_DESIGN_WITHOUT_CANON_POOL` — a3b8f0f1fd446f3d7b2bcf5663c39ce5d2d8c84d
+- `ACCEPT_LOOKS_DECIDE_REJECTS_STILL_STAND` — a29f56bd7893bb5b473981e8af49499262ab6b47
+- `MINERAL_SCATTERERS_AUDIT_OUTSIDE_ROCKS` — 139d464cc654442bf7c88bbb4bd80b3840f152d2
+- `SPECIES_HEADS_AUDIT_PROVENANCE_BEFORE_REDRAW` — 86efac8b0d7d03a8b016880bda9969fba464d923
+- `STANDIN_AUDIT_SHADOWED_COPIES_LEFT` — 3d3576d8feccc1602c983b49be42ffcbaf906bec
+- `HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK` — e80294b670fd59b53f6763cb6eeedc3e4be10cd2
+- `OPS_CHURN_DIAGNOSE_OPS_GCNF_SOGA` — 2baf6b38cd9036068570a1d72b2de20fd0958b2e
+- `OPS_CHURN_DIAGNOSE_STALE_EDEN_EOCX` — 4631fd95e548b06fb9e59910a8a808e43ca94357
+- `OPS_FINDINGS_DIAGNOSE_XZLM` — 65a1f109c7383e57beb1a3f2ad548712812ab8ae
+- `HOSESNAP_FIX_HEADING_AND_RAMP_SCALE` — 41caa2ed76baa427adc15b46c2ceae633ace3662
+- `ARCHMAGI_BACKFILL_WIRE_TRIAL_SWITCH` — 72e3880a6f92b9747ddb839be845c56689afcc87
+- `ARTSRC_LEGACY_UNMIGRATED_AUDIT_PURGED` — b1fc44551d439076b18e17350f144e91a4babdfa
+- `CASTROSTER_FIX_STILL_NAMES_CUT_XENOTYPES` — fee328eae23d616476311e910c6feb4c7fee6131
+- `OWNER_WAIT_RESOLVED_PROBE_ZERO_READING` — 67948d7e3c5bd3e067d6215e4b02295275774d0f
+- `OWNER_WALK_MEASURE_STAGED_AND_DONE` — fee328eae23d616476311e910c6feb4c7fee6131
+- `ARTSHEET_FIX_REFERENCE_TEXTURES_PICKABLE` — cf6b6522c23bd7a54751d83f415bf9fe455275a6
+- `ART_OVERRIDE_MEASURE_AGENT_VS_OWNER` — d4eeaf8ed709051e3c656aeb80fb644d7a08e364
+- `GSS_GRAPH_JOB_PROVE_SUSTAINED_CHANGE` — 91d999fcf5ce599eb1fc45247a935ee27eb86bc1
+- `OWNER_RULINGS_HARDEN_DATES_ON_DISK` — 66ffac1579eaf48d68a189d64840d4a9eaab9cdc
+- `ENACT_X_FIX_PURGE_OF_KEPT_ART` — c9ce4d2c2585c6b7a934db9230ccc275f1806efe
+- `CTX_SIM_FIX_UNCACHED_INPUT_PRICE` — 815a86484363cf78e6cbe3279ae88270b74db12b
+- `CSUITE_PAWNBAND_VET_FRESH_EYES` — 13220d07b68d2c22f91cea117318c1df238185aa
+- `ENACT_STALE_LANE_FIX_VACUOUS_CHECKS` — d723a3c4757b248645a9b114f33e1fafe566d6e4
+- `LEFTOVER_PICTURES_RETIRE_VIA_ART_LEDGER` — 79e89afa12a8b6212d81d974746bffc841c74e67
+- `MUTTAVAQ_ART_POLISH_NORTH_SIZE_AND_FACE` — 1b0b61abd0b20da35a1df401683f6fd403d182d6
+- `SELFTEST_EXTENSIONS_FIX_MOCK_PULSE_DL` — 712e946967eebe14f850e69309da1f0f08894745
+- `OPS_CHURN_DIAGNOSE_WARSCAR_WWRK_FJER` — 1ab522d712c92fa9647c571f101a28a069d3bfd4
+- `OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV` — 8001c5a1e533cf1301203c959a2ad0ebd9ec21a1
+- `STANDIN_COPIES_CULL_DEAD_BYTES` — 45a4f4b3c026a7ff76064e3eabe42e3ff2d58f40
+- `TEST_ENV_FIX_TRIBAL_VISIT_STOPS_SETUP` — acb9b96945a97f7614f74255c6fe31ec9a73fd34
+- `CANON_BUILD_SWEEP_WHEN_CANON_MOVES` — 7109764d3fc78fd48fab01b3cf47926c4a1d2ad1
+- `EXACT_SOURCE_PICK_VERIFY_DISABLED_FIRST` — 4ffb20f30d4c254ba84f346b1089822cb00cd751
+- `EXCAVATION_TICKCHECK_HARDEN_SIM_COPY` — d60e769e28a6f05578bf970aaee27dc865206047
+- `EDGE_SINK_WATER_TAME_SEAM_FLICKER` — 5131931babe87b55332281ce73712315ebbe7112
+- `HOSE_DIRTY_LIST_WIDEN_NO_OVERFLOW_REBUILD` — ece7f25d3f99ff8c2065ec0e7b0ef6908aa58183
+- `LIVE_MODS_ENFORCE_ROLL_CALL_BEFORE_BOARDING` — 26d038280b3700736467515ac83c6a1cf7e7b580
+- `HOSEOFFLINE_HO7_FIX_STALE_CACHEFRESH_PIN` — e668c30f93afa423aa2b2845519adb50ab6bebf7
+- `HOSE_REPLAY_WIRE_MONO_TIMING_LANE` — 0df40194b54a98a4ece174666e66356e32006f76
+- `CORDPLANNER_ASTAR_SHRINK_TO_ZERO_ALLOC` — 307561011dfa4286ced19e3ead5d8cb10c1555f8
+- `HOSE_SIGNAL_TAME_WITH_EXPIRY_TICK` — 09757d1ab22d73b39598163bb4010ad79955f553
+- `CODEX_CALLERS_ENFORCE_DRY_BY_THURSDAY` — ad9ac08dfa95b193a6b85c563de19ae42dfe39c7
+- `THIRST_T28_DIAGNOSE_DOUBLE_BLOOD_QUENCH` — accbe5b3c838d155e40366c32b155f981ba0923c
+- `GPT_CONSULT_MEASURE_COST_UNLOGGED` — 2e8d23ecb678453209a18b04674ca0ba95ba296e
+- `PULSEDEPLOY_FIX_SPARSE_LIST_FORGOT_CONTRACTS` — 5143559d0affc58f925ad67d763138753cb62bf5
+- `HOSE_RECHECK_TAME_REPLAN_OFF_TICK` — 94eeff4d00e68da2b5b0839a87bc03287832fe34
+- `FLOWWORKS_DIAGNOSE_FREEZE_AFTER_DRAWBRIDGE` — 0b1a71e99a0bfcb277808083e007c8e37408f54b
+- `FOUNDRY_QUEUE_CULL_CUTOVER_SEPTEMBER_BACKLOG` — 89ae2f8af1e28f7925c44b9c2d0f08dea79691a7
+- `MINERAL_KERNEL_REWIRE_TWINS_BY_PAINT_MAP` — b6d15dac7e844082e72e3a358aec8fdba9f9f767
+- `HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN` — 15feebcea2b3119c28ada3530767f4776f046963
+- `MINERAL_TWIN_COLUMNS_DELETE_RM_WINS` — 44ef18de863dc59dc7eda4e721af4401cff81b00
+- `COMPLETION_FIX_PARTIAL_VERIFY_PAINTS_RED` — d06b2ba4b7a1b97888a0fa34e19cbcf28a111c45
+- `FUELSNOWS_NAME_CULL_FROM_LIVE_DOCS` — ae64dccb3145f9012a9db596b55825c627aea949
+- `GLOWTANK_PROOF_FIX_GROWTH_PARSER_BLIND` — 06efced1ff432bb2738a6c3d6498f66c77924346
+- `WET_PROOF_FIX_SWIMMER_LEFT_TO_DROWN` — f775a5ecb8d350f13dfb86fbed4b61b5842adb46
+- `COLOCLAW_DECIDE_APEX_ALIVE_OR_CORPSE_ONLY` — 7384a470bcbd1ad50649686c5598de907ad9abed
+- `WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS` — 29b0fc496177ee8728c0e7bb75575f1a40b1f465
+- `GSS_FALLEN_WIRE_FIX_SHOCK_HOTSPOT` — bee5f70a245f5a765d1f49445b9ad84569b131c7
+- `HUMAN_INPUT_READERS_AUDIT_QUEUED_PROMPTS` — accb731e3acd7915d618ea0ba11983c47001f66b
+- `PIT_WALK_FIX_CAPTURE_ORDER_AFTER_WANDER` — c926af2b0166a81b7e57d52363d61f00c4081dbc
+- `CLIMB_HAULER_FIX_BACKSTORY_NO_HAULING` — bfee9a10d5cd8dd4ce7614b490d0eb6f6a880bec
+- `OPSWATCH_FINDINGS_WIRE_READ_THE_FOLD` — 3386666634f8be2da54e4a7147c0cc7010647a34
+- `LIVE_SESSION_FIX_OUTDIR_OFF_REPO_CRASH` — b690dd957cacf0045554aa63dcde1eea6bfaf3b2
+- `OWNER_RELAY_FIX_OWN_TERMINAL_UNCOUNTED` — f0d209cc5323214978d17b6835825297760d4b13
+- `RAID_TRENCH_FIX_OWN_JUMP_PACKS_FAIL` — cd264094976649f412cb4eca2df2cf27fb983770
+- `DRIVER_LOCK_FIX_UNFENCED_WRITES` — 39ff543205e2c9441221ec34ec174381265852d4
+- `FINDINGS_FOLD_VET_NOTES_BEAT_THE_REVIEW` — fef620d9b8e63e0daf6105331ca8d6b6c7fd14bc
+- `CANON_START_TILE_DEDUPE_NULL_WINS_QUIETLY` — 1b774ad3e1ba9a609409988f545fe90c05b1138c
+- `BENCH_CLONE_RESCUE_ONE_LINE_ADRIFT` — 085e9eeff5
+- `HOSE_CARRY_DIAGNOSE_LAYOK_HIDES_IN_DETAIL` — e011a2e5fa7144a5cc3f2e05c216b731563f3582
+- `SHIRO_REDRAW_CANON_PAINTERLY` — 63ba04c35639e1fdad49ffceac25385f04492089
+- `OPS_CHURN_DIAGNOSE_SCARLANDS_WYBF_YVLI` — 62a897f92f02e786494688113563c717db0684fc
+- `TRENCH_COVER_PROVE_COLONY_SURVIVES_UNSEEN` — c0c9e0070bf0026366acab8f5fca98530655e075
+- `CONTRACTS_IMPORT_DIAGNOSE_SYSCONFIG_TRIPWIRE` — 9fc0f1298becb5fe32971ac89d72d09ef8f1484c
+- `DESIGNER_STAGES_WIRE_NOBODY_PRESSED_GO` — e24689bad06428edfe48020ea648feca2874e496
+- `GRANT_TEST_PROVE_NEXT_REALLY_WITHHOLDS` — 908b15b6556e53499d6ac8638c43df521c9eb69c
+- `OPS_SCRATCH_DIRT_MEASURE_AT_END_HPCK` — 01b51564e2b6d8f8666bd380625d5e1686760a84
+- `TOKENTALK_SILENT_RETIRE_GHOST_SERIES` — 182f7d2aca9260aa0f6af32288daeb99b5222979
+- `BACKGROUND_FENCE_FIX_EXEC_ESCAPES_SNAPSHOT` — 4ad9680dd63e2674c2faf454c11b2eefdb04bad2
+- `OPS_TIMER_REPAIR_PRXC` — 7872599823c09d4d8dd82253a95bfbd5225b24eb
+- `CLOSEOUT_DRAIN_PROVE_REAL_RESTART_LIVE` — 6cc3ae28226874e48a911acdab67368e150aa2c7
+- `ART_JUDGE_FIX_KEYLINE_BRIEF_DISAGREEMENT` — 94076157f11538dce2f39b6c2b48cccc64f64ebb
+- `SHEET_ENACT_FLIPSLOT_REDRAW_FIX_EMPTY_NOTE` — f439d666841baf1601c8c8e88a4766484347c1b5
+- `BARBSLINGER_REDRAW_TWO_TAILS_OWNER_NOTE` — c3473ed9cf9430e75d3b800df5d4f09b22a4c004
+- `FIREWASP_FLIGHT_BUILD_AFTER_BROWN_REGEN` — c52de7a401a964705c712c0f0c34f290fb3e76af
+- `SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP` — 1fc1876c084b8c041de236020c2a6c1f4ee81d6b
+- `ROOT_DISK_FIX_NIGHT_GROWTH_OUTRUNS_REAPER` — 61fe5317b29781677ce3a91388006573f5250618
+- `GROWER_ALARM_WIRE_NOBODY_READS_IT` — 741a36658de51466c0646628934ee2122bbb9127
+- `RIVERCOLORS_FIX_COMMENT_NAMES_OLD_WATER` — b6932d7995c3e90cb9b981ff6051dd6c15157522
+- `SEAT_SYNC_FIX_DELETE_MATCHES_UPSTREAM` — 855f165cc41879fd9e2ffbf178c08b3c210cb740
+- `CANON_HOMONYMS_DECIDE_SAME_WORD_NEW_BIRD` — 83edbeeaee7989c990a30d93cea13c47c60563c1
+- `OPS_CHURN_DIAGNOSE_WATER_PPCC_FKGE` — 9e9f4daa870430b6c2d72add676c5923142cc80a
+- `FLOWWORKS_PLAYTEST_CAMPAIGN_1` — 7efc6040c3c7a74da0cbc1307246efc6ac343e62
+- `RELENTLESS_BUNDLES_FIX_FOURTEEN_GIG_PATCHES` — 0f607dfe367db7bbb21dd5f7551170761c988ff4
+- `RELENTLESS_FIX_GAME_LANE_OWNER_LOOK_FAILS` — 5989f40ac22994efb9e1a868f761df8c67725396
+- `LEAFTAIL_WIRE_FLIGHT_WINGED_RODENT_GROUNDED` — 788a9ba335799a4266b4149b5a9e3572f78cf600
+- `LANE_TIER_WIRE_A_WHOLE_LIST_LOAD` — fad513f97e1cd4b4d30b73a2901a8afb60b63537
+- `FAST_TESTS_JUDGE_ONE_TWENTY_IDEAS` — 0b6114f394
+- `PROPANE_POUR_DIAGNOSE_DRAINS_TO_NOWHERE` — 41d50799409a074d2d4e68b07336cd542b6911d4
+- `THOZZIK_REDRAW_WINGS_FLIES_WITHOUT_THEM` — f94eb02de4913fe364088c4dca3fe94abd48e24c
+- `RELAPSE_SEATS_FIX_DIED_TWICE` — 8fc10e4365935526a285e065b62f2f6945cc4627
+- `CHECKER_REACH_FIX_ITEMS_STILL_DARK` — d196467ed07c08d3ca6a635173e33a0e30a8d717
+- `OPS_JAM_CLASS_FIX_AGAIN_HJWN` — 5c0cad9ba29893a496adade598f6c3cf5f799aeb
+- `NIGHTLY_COP_FIX_RED_WARIWE_XVFM_WYEK` — 280761445fa829303f270d20776ceaafb799c77b
+- `NIGHTLY_COP_FIX_RED_WARIWE_XVFM_KTXP` — 37a63d285b6276a329f89249d55a7cf761a9a7d2
+- `NIGHTLY_COP_FIX_RED_WARIWE_XVFM_LVPK` — cae77d3ad59fdadabad2a59eb7ce3d96de1cb0b7
+- `NIGHTLY_COP_FIX_RED_WARIWE_XVFM_NJSM` — 682608825dc7895694a7448f4e6adbec0e1d3e49
+- `NIGHTLY_COP_FIX_RED_WARIWE_XVFM_WMBJ` — 9b4d9ef96063b366d17b796400e82ec49d67ff4b
+- `NIGHTLY_COP_FIX_RED_ZHIYUZ_VVZU_WJSB` — 682608825dc7895694a7448f4e6adbec0e1d3e49
+- `NIGHTLY_COP_FIX_RED_ZHIYUZ_VVZU_QJMI` — fc6a639f8eae2ced6a1fdb57b0108130b4f9ce45
+- `OPS_RED_OVERDUE_CHASE_AEUZ_PHBA` — 75c852895458c69d358417e7b45785aaa98883d4
+- `OPS_RED_OVERDUE_CHASE_AEUZ_TUEF` — ec717464dfa90992096622f9547aa4ba6d91e176
+- `LIGHTSPEED_VET_LEFTOVERS_FOR_BRIDGE_TOOLS` — c601a859bd
+- `BAROQUE_LIST_PAGE_REDRAW_UMBRA_AS_BIOME` — ffa769ba550f4e77d909ef644a2973fb132b4650
+- `BRIDGEGUARD_FIX_DEAD_PID_STILL_BLOCKS` — 1e41aa3f91be7c7bfde124a65c778708dda63025
+- `MODCHECK_READERS_FIX_REFUSAL_READ_AS_FAIL` — f9354d7c8d1336150096cc82b8e3ec02be7488c7
+- `OPS_CHURN_DIAGNOSE_WORLD_OVZC_UVPA` — ba379a5b3dee21c8ca7d5de04cdc37f852712cff
+- `PUBLISH_UNKNOWN_DIAGNOSE_LOOPS_FIVE_HOURS` — 6c3d5a9a5d
+- `CANDIDATE_SHA_REPAIR_LANDED_UNDER_NEW_HASH` — be37d17c84ba1b2aff4b1921a9e9b66588b1cc6c
+- `CLOSE_SHA_FIX_REWINDS_PAST_GUARD` — ce1c6832b0191a9709fdcaac9a61c4831710c75a
+- `CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS` — 8a244abc9236bcdb9ca8d7a6e1d24b3f66b8002b
+- `CONDCORE_BUILD_THREE_VALUED_TREES` — 6bf42c467553ef2ae7879ac77fa5e389a4c5dd65
+- `READYWAITS_UNIFY_ONE_HELPER` — aa960083610a7a704edef18fc706706b9ad816fa
+- `SKILLS_REPAIR_SIX_VALIDATOR_ERRORS` — e5e98b5fa0c382b45fc398cc176ba0916d05d876
+- `LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT` — 7964df7b178190fd68b08f59fe244f404e80d391
+- `STEVE_SEATS_FIX_SIBLINGS_EAT_THE_BEAT` — f6fc1346aadee82dc7b45a0e6ef3c136b63a2d26
+- `ARTEVAL_FLIGHT_HARDEN_REROLLS_SKIP_BODY_LOCK` — 6acb8d68cf2d36bb3814fd043de44d61f67cfd38
+- `CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING` — 540749b80794a6931f6e8617f46112d858dcd160
+- `CONCEPT_TREE_ROUTE_FIX_WORDS_GATE_RED` — dccec846c1952d1cf1a7915582155217becfff40
+- `KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES` — 042e3ae632f188b5e9cf83fc54fc030b79846cb0
+- `CONDSDSL_WIRE_PYTHON_BUILDERS` — c20f506f1c4340a46e56b68dfe0fc28785eafcb8
+- `ART_CHECKS_FIX_OUTLINE_COHERENCE_SEVEN` — 5f585e6f66ceabea77c5cd2ed5e2e402761cc2bc
+- `OPS_CHURN_DIAGNOSE_WEEPINGSTONE_BENK_YIMV` — 25339544332cacba28be1ac9d39030dfd55a0f05
+- `ART_CHECKS_FIX_OUTLINE_SEVEN_FLAGGED` — 952ee3a8a51affdc91123223b764d2e42eab9a79
+- `ART_PURGE_FIX_BYTES_GONE_BEFORE_RECEIPT` — e0127a011f86b7e3cf2519759dae48d552fdab81
+- `RELAPSE_WRAPUP_FIX_DIED_TWICE` — d6ed7ff836d7ab9f31e2e32c5edd59144c4101a3
+- `ENV_HOLDS_FIX_ROUTE_TO_BUILDERS` — 1511c64cad9512a2ef106b033acde6c4894fb66a
+- `LIGHTSPEED_WIRE_PROOF_LINES_882_OWED` — 1cea548fd10f97aa9cf5c13ef342da3da5c79835
+- `CSPROJ_BUILD_COMMENT_NAMES_READONLY_MIRROR` — 92dbafe71e3e73d9c3855ab48625de2f30ba91ae
+- `STATUS_FIX_HALF_PASS_ATE_THE_SLOT` — eef121016b9a0a437b22e40d897f2ae348107309
+- `CONTRACT_LIVE_FIX_MISSED_FLAG_COSTS_RETURNS` — 370e4d4d3bb2ac58de6dc86e3d010fe333566874
+- `ARTPIPED_UNSTICK_CODEX_LEFT_THE_BUILDING` — 97609557fcbcc40378327c7c7606e2950a35a96e
+- `CLAIM_CAP_ENFORCE_DIRECT_DOOR_LEFT_AJAR` — 86711e1d2294329b24cfe22904f960936143a820
+- `KNOWN_RESULTS_HARDEN_RECORD_IDENTITY_ONE_DAY` — 53cd9955350785e4c0df6208730ce139ed56903c
+- `MODSET_TIERS_FIX_RETIRED_DONOR_TEXT` — 526981f077068f59a9df52eacdd03b652d51fa95
+- `RA_S02_PACKET_ENFORCE_NO_ADVOCACY` — 4a6b06b34cd3e2495369bfe9339ccf2802f1bc91
+- `SELFBUILD_DESIGN_STAGE_ZERO_KEEPS_KEYS` — 5421f3ecfcd8842f11e943ae35f3e07424396c01
+- `ENACT_OLDSHEET_FIX_FORTY_FIVE_NEAR_MISSES` — 5c9c3b41948ea5931bc89fdeac806ce8361e81fd
+- `MARKER_FAIL_WIRE_INTO_CLOSE_LOCK` — 62f78e417ce8695b389f6d896828cd1fd544f3d0
+- `TELEMETRY_TAILER_FIX_RAW_CURSOR_EARLY` — cf4f779cc3a7bab6b6b230746f3da1bdda28c9b6
+- `TELEMETRY_TAILER_UNSTICK_OVERSIZED_LINE` — c97a8d325dd12e3c9b65dba1728a972249086f42
+- `AGENT_IMPROVE_BUILD_GENERALIZATION_CHECK` — 5321fef315fa2aa81c1c9b0426c8f0d792e50e5f
+- `OPS_CHURN_DIAGNOSE_RELENTLESS_IPFI_XNYX` — 2211be92709c8f7f64b261aff1edd021a2881b27
+- `TELEMETRY_CURSOR_FIX_AFTER_VM_DURABLE` — 7c6ed4907f5bdcbb54fe2ec632c4755295ba40ac
+- `TELEMETRY_REFS_HARDEN_TRUNCATION_RESET` — 1e10b1f2ca7568f3576a91e73da357f627bda283
+- `LIVEROUND_STALE_BUILD_SILENCE_RETRIES` — 5e20627e2f1b7bb49d6e2f0d93d774cbb1eeb86a
+- `BLOCKFRONTIER_FIX_ROLE_UNIT_LEAKS_IN` — f95f0d02b0af710b52c4b484e1491f5f84cb5af4
+- `DETACHED_LAUNCH_FIX_SAME_SECOND_CLOBBER` — f92c045385234c1360474d96f6378eea556ed0e7
+- `HELPERCLONE_FIX_STALE_FENCE_OF_A_STRANGER` — 119296d6fe4086082f36b33e34587baa8f3d031d
+- `SEATRESTART_AUDIT_WHOLE_FILE` — e92cd6a4fec0a4d5c5d73c1f8597b72f61546d05
+- `TELEMETRY_RAW_HARDEN_CRASH_GAP_EATS_BYTES` — cf4f779cc3a7bab6b6b230746f3da1bdda28c9b6
+- `SUITE_REGISTRY_WIDEN_FORTY_SEVEN_STRAYS` — 4e0fcfd81432a80e26e018b3a396876ac6af025c
+- `RUN_MUTATION_FIX_AUDIT_TARGETS_MISSING` — 2b66cb2308
+- `TELEMETRY_EXC_DEDUPE_FORGETS_AT_NINETY` — 3d76cfd43b1e2c284f072a76a07089b47c0cd264
+- `TELEMETRY_SRCREF_DEDUPE_TWINS_LOOK_ALIKE` — 94ce64d41c2ae4a7e3e3a3f7ba78f9ec85595caf
+- `FOCUS_CAP_FIX_STAGE_PLACES_FAILS` — 3d76cfd43b1e2c284f072a76a07089b47c0cd264
+- `METRICS_RECORD_BUILD_EVIDENCE_NOT_TARGETS` — 1e49497234e86f1703929c3f912ba125c3b1473b
+- `ARTEVAL_CROPPED_COPIES_AUDIT_TWO_STOWAWAYS` — f4a207d0bc30890124ceb155690a5f0050df24eb
+- `FINDINGS_FOLD_REVIVE_STALE_SINCE_NOV1` — 1b59785ebc95a7ac52751238f7be14936342f283
+- `LOG_AUTOOPEN_FIX_WAITS_FOR_FIRST_HELLO` — d3678e73aa30dbdd084eedc12bf6ff7f2bc15bab
+- `ARTPIPED_CODEX_LATCH_RETRY_ONE_BLIP_SINKS` — d7d2570ebe5c576de2e0d74eb38253eb1b2aa322
+- `DDRIVE_PCIE_MONITOR_CORRECTED_FOR_NOW` — 52dc7c3a911905de2cf2d38d224b46117c87564a
+- `FOUNDRY_UNITS_MIGRATE_GHOST_STILL_ON_SHIFT` — 314dad127cfd961a612691b2dd35e53a125d95ef
+- `SKILL_VALIDATOR_FIX_CRIES_WOLF_AT_PHANTOMS` — 813f5f31be7b5584fda6b45b4e7a7f38a6c9a113
+- `MODLIST_ORDER_FIX_LOADAFTER_WAS_A_SUGGESTION` — 7d4d370ca23bae9297f46721293fd74a498adafa
+- `RESTORE_LEAKS_FIX_EIGHT_NEW_STRAYS` — 0f3c182a50b9fba81b8c02b348387e9e7c97a145
+- `STALLPROBE_CURTICK_FIX_ONE_RED_LINE` — c8fb7edce42235c426f23abf42a8b933a1ffdcdf
+- `NSJUDGE_TMPDIR_FIX_TMPFS_FULL_OF_MUTANTS` — a7f7ebb1aa118793184c99a67762faa375cb29e5
+- `CODEX_SANDBOX_FIX_FORGETS_ITS_PASSWORD_DATE` — 5d49900b5695ca5750b81452dba48b0c6761ac23
+- `FOUNDRY_LITERALS_EXCISE_FROM_CODE` — 081262e0467150dbde969b7311f47bc99b71cdcf
+- `GAMELANE_LAND_FIX_SEVEN_STRANDINGS` — 617004dec93940f823e0bb246aedb7461740fc09
+- `QUICKTEST_FRESH_FIX_OLD_GAME_PASSES` — 9843479cc0cf709b7cade7ab86f5fc7dcb910b37
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_D283` — 73760d1e3d
+- `RELAPSE_TIMERS_FIX_DIED_TWICE` — b59fb5b7f16bdf41631ed73b133d6221239aa836
+- `DETACHED_STOP_FIX_ORPHAN_KEEPS_BILLING` — 97dd6b2aa1786322c29a397b3828afe93de5be55
+- `EXPEDITE_FIX_SPAWNED_ITEMS_NEVER_BORN` — 40c6c9f97ef9de5f40f8a51095323e0f9e89bb2d
+- `OWNER_HOLD_TEST_REPAIR_FALLBACK_WENT_QUIET` — c05ff57e5de6ec5ad3f6126d47a2d2c362158163
+- `RESTORECHECK_WIDEN_POSITIONAL_SLIPS_NET` — 89feab29c618fef42f1f7af5f116257a20fa5e40
+- `BOOKS_REGISTRY_UNSTICK_MOVED_FILE` — bf7f78020c3427a41b975844d975d4595bb8192c
+- `PROOF_CRASH_FIX_READ_AS_MOD_FAILURE` — 12d9e20315e3adf7231b85d9da6f291c042a0743
+- `INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT` — bd591194a2fefc12e33f1d5bdbc92fd98c1af045
+- `LIVE_GATE_FIXTURE_FIX_FORGOT_THE_HOLDER` — 13aa457b183db7f8e8580c19bb83152e9796743b
+- `GUARD_SEAM_DECIDE_KEPT_WALKS_OUT_UNGUARDED` — 937d67605d2665abc5f9282a15d6fc74bb10f864
+- `MARKER_WALL_FIX_HOST_LOG_BEHIND_GLASS` — 7836a417b7498e8a9337a011d7989a28b233a252
+- `STEVEN_LINK_ENFORCE_TWENTY_ENDS_AT_RESET` — 7cc153accf13595b0e2058dda0bb79e437e0efde
+- `BREAKER_SELFTEST_FIX_ONE_RED_IN_THIRTEEN` — 9d595a5f47e2ca0611888cf47d5d1481ee79d46e
+- `EXPEDITE_GATE_FIX_SPAWNED_ITEMS_LOOK_UNFILED` — 64392a13348f99159ac89df28a825dc4929b0db7
+- `OPS_ROOT_GROWER_MEASURE_CAUGHT_WRITING_QMOX` — 7d25cba7fc08e4692ba4f9b4a0f7d4d52759d87c
+- `ROLE_UNITSTATE_FIX_GHOST_RUNS_NEVER_LEAVE` — 537438a7634fc6d0e884ca1c8c105ca51144cf79
+- `STAGE_WAKE_TUNE_NAPS_AFTER_LOAD` — 09828c703d2febdb7c4f82e85347ae0849a8ebe6
+- `ROLE_LAUNCH_HARDEN_FLOOR_AND_ODD_NAMES` — c49e9b53a7cea924f9771070789e18e98d53b026
+- `SELFTEST_ALARM_FIX_ESCAPES_INTO_REAL_LOG` — 801e7d68bdf7e3bce0ae99c45bcaebb440d781db
+- `LIVE_ROLE_FIX_END_OF_DAY_ALIBI` — c657952845ad3f9c0b5555c698e17fd93c67015d
+- `MARKER_DIFF_FIX_EARLIER_WORK_LOOKS_EMPTY` — dfc12e9bfd909d203a4776504679d06efbd8f088
+- `STEVE_LANE_UNSTICK_PAUSED_UNOWNED_D1A4` — adeb67a4fa7fc1cf469b9fc73b20810abb7e8575
+- `BREAKER_ROADS_TEST_FIX_FLAKY_UNDER_LOAD` — ffdbbeb31614ce288fbaa6a0f16c04a5f2563bb7
+- `CLONEPOOL_FIX_GAME_WAITERS_HOG_THE_POOL` — e149d7a485a8ec8182062ccf989847a2687ac18f
+- `LIVEROUND_SHRINK_PROOFS_ARE_THE_SHORT_PART` — aed7de9fc6ff55f4b446677348b6bc2b37c6d303
+- `HEALTHCHECK_COMPANION_VERIFY_STALE_DLL` — 78ee182cb4825d607ec58c79897e4c347bf17838
+- `LIVEROUND_COMPANION_DEPLOY_OLD_DLL_BLAMED` — 73fd40d03127050280668e0ca897c0792ff4a688
+- `LIVEPROOF_DOLLAR_FIX_REFUSED_AT_FILING` — ba874a19499bebd1daf6108a0c0cc91cbe5de428
+- `PRIORITY_SELFTEST_FIX_BELT_STUB_STALE` — 0eddb2acf7c27d22cb44470265afe8db0636526e
+- `WRAPUP_CLAIMS_FIX_ROBOT_BLAMED_ON_WINDOW` — b8bee45dd06077913a7451c97a206be13b9a6dab
+- `ARTLEDGER_SELFTEST_FIX_FIXTURE_NEVER_WRITES` — 76797407e3f18b6539836ddc7b268116ecb95ed6
+- `RESET_MODE_TEST_FIX_WRONG_WINDOW_WINS` — 5eb7dfe0b368603322d0a6b12831cb915a41ddd8
+- `TELEMETRY_INGEST_FIX_CRASH_EATS_BUFFERS` — b956bf93e94743d4184c19709c755e81a0d94709
+- `WRAPUP_DEBRIS_FIX_BLAMES_THE_WHOLE_HOUSE` — 5d034a08cfb49c204a51b9cb6d7beed0e21b9181
+- `OWNERHOLD_TEST_FIX_UNWRITABLE_STAMP_TAKES` — 2c0919bde5078756175a4e4371eb271cc79eddf5
+- `PACING_SELFTEST_FIX_STILL_SEATS_FOUNDRY` — cad9e3ebea93be7f5a3c2340556f041495526254
+- `PUSH_REFUSALS_MEASURE_BEFORE_BUYING_GITLAB` — 04aca2dc682a8c355216f5ce184bd7d355d32adc
+- `SELFTEST_FIX_EXTRA_ART_COMMISSION_UBZM` — 48e3210f6460b7f52b5b67430e2c6b32d36e9a1c
+- `SELFTEST_FIX_FAKEWORLD_PARITY_OTNC` — 9d8ea4211f3fe2eb08a72c34f51557b08399db6b
+- `SELFTEST_FIX_SCENARIOS_MAP_JJBZ` — cb5dd12686620fbbe6deca6da79d6ad959622014
+- `SELFTEST_FIX_RIMPLACE_JLWJ` — d5c84868f75bdb015128ae1ef502241f603321bc
+- `SELFTEST_FIX_SWBESTIARY_PACK_OVERLAYS_MKLQ` — af35b88a13680ba9c201c3c9fe956d221826a309
+- `SELFTEST_FIX_RELENTLESS_CODEX_KEEPS_IAAY` — d4247ea94532b78d86b8fc2cbff9b04cd1de6aed
+- `RELENTLESS_BREAKER_DIAGNOSE_UNREADABLE_TREE` — 330b67666a160a4e485db91beb8c89abbad6d9e5
+- `SELFTEST_FIX_STATIC_CALL_EMPTY_ARG_TEGC` — ecb0c6a0e2213ceffca4042880b0876f5e563c2d
+- `LIVECHECK_FIX_JUMPS_THE_GUN` — 32387ec4b07b3dab62a6ad8c5fc56360d78a6738
+- `SELFTEST_FIX_FUELSNOWS_NAME_CULL_AAEJ` — f32076b63404fae3a6247666356e152ef397b985
+- `SELFTEST_FIX_RELENTLESS_CODEX_FIVE_B_HXGH` — a4c1bbc8dd9e49a1b9cf79b99f531b7efa99db9c
+- `STAGING_MENU_FIX_ALWAYS_PARKS_ON_MAPS` — 4ddbe26ec1f90672fba92331819ff2840fca3e12
+- `SELFTEST_FIX_TESTQ_FAULT_MONITOR_BOJF` — b251a743366d7b678d10db85c2d8c819cab67085
+- `ARTFOLD_LOADFOLDER_FIX_BEETLE_BEHIND_DOOR` — 31385f947fd38e37b81528943d48d8f9e5b7f430
+- `GAMEENV_FIX_PROOFSITE_B7C18A7D_ITEMS_WAIT` — ac624392f15be1fdc2308cc2d413eb0fa39ed06e
+- `RELENTLESS_REDESIGN_VERDICT_FAIL_CLOSED` — 3d2b3a1cd32d582bf2c2d41aba65121b7c35c9ce
+- `GAMEENV_FIX_PROOFSITE_22E336EE_ITEMS_WAIT` — 402dd744209561d4bab0610c82b2b3793b3413c0
+- `OPS_STEVE_UNSTICK_UNCLAIMED_ETBS` — 33a577f660fc5ce4c063d5eace1e476af3db875d
+- `SELFTEST_FIX_SLIME_SUITE_YTWW` — cf032eae848a2efff99d36b375eb2562b195c680
+- `GAMEENV_FIX_PROOFSITE_9E77C59D_ITEMS_WAIT` — 00cc5ed3b416c9e3be416480be5c6b4ebd8956cc
+- `GAMEENV_FIX_HARNESS_86430B0B_ITEMS_WAIT` — 704f41feaea883459270268285e09b12669893f3
+- `GAMEENV_FIX_PROOFSITE_73C8F2D0_ITEMS_WAIT` — 5f40466c7d745e178253ed562b3352ef9eef9844
+- `LAPSED_LEASES_REPAIR_GHOSTS_HOLD_THE_KEYS` — fb720ef7d485883457b15428706af089557fca62
+- `PROOFREACH_FIX_PAWNLESS_READ_HAS_NO_WALKER` — 788b39697b4b55b7775ea583c65f360b53504185
+- `MODCHECK_ITEMTEXT_RETRY_WSL_HICCUP_FAILS_RUN` — c3fee4051ebf526a86389f8efbf42a6d2c5cf0c7
+- `CHECKER_REACH_FIX_OTHER_DARK_SECOND` — c8ed55d3f869484d6f720a9e91319d5f510df206
+- `CHECKER_REACH_FIX_STORE_DARK_SECOND` — 1f8eb506e52a97c6e8d69a82a8f49b74e048d60a
+- `DEPLOYONLY_SELFTEST_FIX_EXPECTS_UNMEASURED` — f70ad36a4da0
+- `CAMERAPLUS_TIER_BUILD_EVERY_LIST_ADDS_RIVAL` — 0eba9dbcc5c7a63b9e5fd2a71fa5f3727cb61fb7
+- `CHECKER_REACH_FIX_GIT_DARK_SECOND` — 89067f930e5aca1da34c19057656814350211cb1
+- `GAMEENV_FIX_HARNESS_EEE35FD9_ITEMS_WAIT` — b45bac6810a61bd6e3335dca45f95e2b44688a97
+- `GAMEENV_FIX_PROOFCALL_B34890F8_ITEMS_WAIT` — 9117436f3f84b8611dcda407e525a29dc342dbbf
+- `OPS_JAM_UNNAMED_DIAGNOSE_NEW_KIND_KUQY` — 1bcbaafd7d622d696822e148bee9c13b0bfa36f4
+- `CHECKER_REACH_FIX_PROC_DARK_SECOND` — 2407dd04fbdaaa0300f61f512a09bce059dc2a9a
+- `DECIDE_MUT_GOLDEN_FIX_TMPDIR_BOUND` — d46c4896cc335c14189a2ce57ed20b12c537840c
+- `DEGRADED_PAUSE_FIX_STOPS_ONLY_WHAT_BROKE` — 5963c742c86f98c6e03fb46784c9072462ee3327
+- `REDRAW_STALE_SLOT_KEY_AUDIT_DUPES` — e64ba8869ac9d6e8309a01febd4f79d944400a17
+- `PRESCREEN_FIX_AUDITS_FILE_SCHEMA` — b7880a8dca09f65c19b12eb3417f914b69d23783
+- `READYWAITS_MIGRATE_REMAINING_52_COPIES` — cec3c019908720bcd1f7384b3673259169f54c1b
+- `V3_CUTOVER_REVERT_RETIRE_NOW_HARMFUL` — f8f6bf099210afa50d9eea153a7e81c7b2bbe2df
+- `COMPANION_DEPLOY_LIVE_ROUND_FORGETS` — fd7422e1dd52f481c170d50bff053e6cddae6ea8
+- `NIGHTLY_REDS_FIX_REMAINING_REAL_FAILS` — f3b9929d419c496073a7fb2c884cef08b06397c1
+- `CHECKER_REACH_FIX_OTHER_DARK_THIRD` — d937eec4ae55f9c37714d89cef03b31ef261896e
+- `GAMEENV_FIX_DEPLOY_590E0C49_ITEMS_WAIT` — 5c18d31cab0fec584d5716d00c40162ded0124e0
+- `GAMEENV_FIX_PROOFSITE_18CF717D_ITEMS_WAIT` — 7795dc0bc9e032125a76ee28213155ce4ef4f70b
+- `OPS_TMP_DRAIN_RESTORE_DEVU` — 91f784b5e2614e6304a30632401234c73026a200
+- `CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK` — 906ba0197f48b543ecaca56bd589d95610de7f2c
+- `GAMEENV_FIX_PROOFSITE_7B433874_ITEMS_WAIT` — f3b8ff2c6b98e724a090317f9228298ed79fcb8b
+- `GAMEENV_FIX_PROOFSITE_9BC0E9EE_ITEMS_WAIT` — eacf6c7bb718df681bad55bf6636acb6ce4ee772
+- `NIGHTSIDE_TITAN_JUDGE_GIANTS_IN_THE_DARK` — 362a7fbb4c21f27dc3ff5f9fb5c85e3c9c6b7b13
+- `GAMEENV_FIX_HARNESS_09849AF1_ITEMS_WAIT` — 65fee540593b294d2b8a5dea1ab34068aae80a6d
+- `GAMEENV_FIX_PROOFSITE_E94045E9_ITEMS_WAIT` — 0a797678475ee8fef0f00e4231371af463f48433
+- `EXAM_SHADOW_FIX_COUNTS_OWN_ECHOES` — 04b4887c84eaa1df37c1e3b3a195492e12f37412
+- `FOUNDRY_BACKSTOP_REPAIR_CURSOR_HIDES_INPUT` — 34d410be8eab2a0aa7768507562a44a345d78dfc
+- `GAMEENV_FIX_PROOFSITE_0DB67BE7_ITEMS_WAIT` — 46e00ec97386a02166dd2a28e4c838d1cb5b364c
+- `GAMEENV_FIX_PROOFSITE_CF15524E_ITEMS_WAIT` — d1578df8f1cf071e41100ee3fa445ad53db83c64
+- `GAMEENV_FIX_PROOFSITE_02DE407A_ITEMS_WAIT` — 65b5d40e05d3a8cdf430952b9f806b0dea9521ce
+- `GAMEENV_FIX_PROOFSITE_1C77350A_ITEMS_WAIT` — 0698efe57ae0f77251585a08e662ef083eb7e707
+- `OPS_CHURN_DIAGNOSE_PLANET_VBIW_HJEC` — 9aeb8b1b3a6603d22335fed56bee35ef23933142
+- `CHECKER_REACH_FIX_SEEDS_STILL_DARK` — 7398715b9d47f80dfedd51221431c12e9c50d6f0
+- `OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI` — 0b33c89f138aa7d24f4ad73be18b46ed4782b731
+- `REAPER_SPIKE_FIX_THREE_STRANGERS_AT_DOOR` — 4c1e59ddbf
+- `REAPER_FIX_OWN_SELFTEST_LITTERS_FAKE_SAVES` — 4c1e59ddbf
+- `OPS_CHURN_DIAGNOSE_LAPSED_VYPN_VNGX` — 546892f98ed41d6dc05fd77dd42fd9c877d02ad7
+- `EXAM_SHADOW_FILL_ITEMS_OLDER_THAN_EXAMS` — 13ad7a51eae8fcd90596827dccda9a658fef6acf
+- `GAMEENV_FIX_PROOFSITE_87D091F9_ITEMS_WAIT` — 30de004540bd44139a365470db3258f960270b53
+- `GAMEENV_FIX_PROOFSITE_FB127191_ITEMS_WAIT` — abd7949f4b85604fc5ef6795d827dc1814fc7c73
+- `GAMEENV_FIX_HARNESS_47EE6093_ITEMS_WAIT` — 8a4e3ac959103ef760aabbe82922bb784163c0fd
+- `CHECKER_REACH_FIX_OTHER_STILL_DARK` — 4b1b2b04b3e29ab8692c87f54fc5011d89a6e469
+- `OPS_CHURN_DIAGNOSE_ACC_NLLO_VKNQ` — c4beeb3c192c7552e9d8d65d45e1edf21693a3fb
+- `REAPER_SELFTEST_FIX_BLIND_IN_EVERY_BOX` — c02e8bcce7d7159e3f29f66bac1d2cd4f366df44
+- `GAMEENV_FIX_HARNESS_678B1B18_ITEMS_WAIT` — 7e3b2a9f046220692da212e47d25dd8bfc0c4846
+- `GAMEENV_FIX_PROOFSITE_28883863_ITEMS_WAIT` — d7e4b3f52385b8b25ea909786e4d953d80edb00d
+- `OPS_CHURN_DIAGNOSE_FOUNDRY_SALI_SUOK` — 8cfea9cadfa5b54dfeef4ecb4432071590a12c1f
+- `OPS_CHURN_DIAGNOSE_HEAVY_ZWWY_NYJN` — d87ec72a9095936babc6a37931bcbf471c847839
+- `OPS_CHURN_DIAGNOSE_RA_TNDK_QYRZ` — f48153e6fc4d25ef4651b408946a2d27ce755579
+- `OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ` — 79a4cb66bcb9c016959f6bc075ecbfcf80dce127
+- `OPS_TMP_DRAIN_RESTORE_JVCO` — 6f12a2a0d251a71e8f115df75ba7bb272a350bec
+- `OPS_HEALTH_WIRE_INSTRUMENT_INCIDENTS` — 552f9d8bd430604b74f274d1347766f1c9414f65
+- `OPS_CHURN_DIAGNOSE_NIGHTLY_ZNGK_SBPI` — 8e9bcf22c3c4353ba79278cd10236e76893ed5a8
+- `RELENTLESS_EVIDENCE_HARDEN_APPEND_RECOVERY` — 3e1d97efb4c2383b9a03d254816efcff435936b7
+- `RELENTLESS_EXAM_HARDEN_SANDBOX_AND_STATE` — b744860bcd4c33179d528c7fddcf38cf3365ada8
+- `RELENTLESS_DISPUTE_HARDEN_STATE_MACHINE` — 7065a6fcdaf29657c18ef624eaed246bbc6242d1
+- `PROOFLESS_WIRE_ENROL_487_BUILT_STRANDED` — dd19b647186ab97f65262ad7f1151670b0b4000f
+- `RELENTLESS_BLOCK_HARDEN_MIGRATION_GATE` — a1b8484f9cf86314c1788dde7ab0bce44069bded
+- `RELENTLESS_LIVE_HARDEN_ADMISSION_READING` — 8232f32e9362169c2cf859695aa37c80e5c91755
+- `RELENTLESS_BROKER_HARDEN_BRIDGE_CHECK_TOCTOU` — 2514bc638731922ff64ae789c5ed29239a3f0c47
+- `RELENTLESS_REWIRE_BACKOFFS_ON_CAUSE_CLOSE` — fd4128bd8b5f62350f5eeb6f1c0d147f10ba041a
+- `RELENTLESS_WAKE_PROBE_BOUNDARY_GAP_165S` — c4957be5e35cc9f1215ab4317c00fd7068e9dcdb
+- `RELENTLESS_EVIDENCE_HARDEN_GATE_SHADOW` — 5baf796c5773e560a4d635a0b1a0c74dc0366a43
+- `EVIDENCE_SHADOW_FIX_REJECTS_EVERY_CLOSE` — 789b5d71a295a614f3dde763048591b9c3eddbad
+- `RELENTLESS_WAKE_HARDEN_FAILED_SERVE_ACKS` — 207d1cc22aec4aea32bab546ea2ee76e90ae004d
+- `HARNESS_ROWS_FIX_PATTERN_MISSES_CUT_TAILS` — 9289a4731c2501ca9f85c1ff0896b39e0ba3b48c
+- `OPS_CHURN_DIAGNOSE_ART_NRXZ_GNMV` — 1532b1c06f8d678c92914d2426bdaf8dc069b35d
+- `OPS_CHURN_DIAGNOSE_ART_VURK_JIPJ` — 72f4a6be0508fdba1390486ac1ad5adfca3e7697
+- `RELENTLESS_BOXRUN_HARDEN_PARTIAL_PROOF` — 300c7f73c1c00592b37d90ffe8927913ecd01d12
+- `RELENTLESS_JOBS_HARDEN_EXIT_WINDOW_RERUN` — bbaae849446d8cf495bf2be01fe430e3a0b2d6ab
+- `ART_LEDGER_VET_PURGE_BAN_REVIEW_OWED` — 79f481c3bcd869c91653a08160c90b60ea3b46d6
+- `RELENTLESS_FIX_CHECKBOX_TEST_SERIAL_LANE` — f008efd7fb13a7700fa4540f72550c230e10736b
+- `SELFTEST_FIX_ALARM_REPEAT_WORSE_WQKI` — c5c75f61f00bd441d52a982ddc916016937273b5
+- `SELFTEST_FIX_FALSEPASS_LATE_IPFP` — ba95cc0e748316a45d9d6a0f3d14b6aa9b6e8002
+- `SELFTEST_FIX_RELENTLESS_CAUSE_KGEG` — 4cba6b58d348c7fd0f4c7560a1ec4a2ec777f371
+- `SELFTEST_FIX_RELENTLESS_CODEX_FIVE_AZEU` — 0c3e2fd71d415a6b692764f4fad45ee1c882f5a3
+- `SELFTEST_FIX_BIOME_GROUP_SIZES_IMZR` — 8f20da892f8a1560a08fa07f71dd95738d6f76b4
+- `SELFTEST_FIX_HOSE_LAY_SETTLE_ITXN` — d95b15b0bcbf71a66f82c91f41e0ccadf35821ee
+- `SELFTEST_FIX_PROOF_PRECONDITIONS_QLXL` — 3e9388e063a8fea0189f2bf4931622b45f0b0375
+- `SELFTEST_FIX_STUN_SCALING_NNVH` — 4035d07741273f38411f00fc73a57db06b0fc17c
+- `SELFTEST_FIX_DISPATCHER_MUT_YCJR` — 226ed8c7e1fc4f229b651b70aed272542b938711
+- `SELFTEST_FIX_ARENA_METER_NRDE` — c5c75f61f00bd441d52a982ddc916016937273b5
+- `SELFTEST_FIX_DONOR_OFF_W4_VERDICT_RWUA` — 0ebab1272922ae6212a2539a7b20f3e6d119335f
+- `SELFTEST_FIX_REVIEW_MAP_IPJR` — a14cb836f948790fee730d404605ae26d57a3b3a
+- `SELFTEST_FIX_STATUS_BOARD_NHHC` — 0ebab1272922ae6212a2539a7b20f3e6d119335f
+- `SELFTEST_FIX_TIMER_PRUNE_UPBP` — 37f0ac2fbba5e459aaeaeb23ee7883efc4479bce
+- `SELFTEST_FIX_OPS_RANGES_VJAS` — 35a199912f5db85234b1ee40cb4477b1bdc23242
+- `SELFTEST_FIX_INCIDENT_ZXZH` — 877862061e6d10b53f16d21c31cd20308a4bf527
+- `SELFTEST_FIX_L1_DONOR_OFF_ROUND_GAKJ` — 684c1e2bf92121d70b786d354e9ae39d4f17222b
+- `SELFTEST_FIX_ONE_PATH_SEAM_IXBQ` — 9ec2b52cee875c1376c85304e766d5277328dcdb
+- `SELFTEST_FIX_PREFLIGHT_CALM_CCNK` — 88e1516d37b50a7abb4e7f390291d83d82f25553
+- `SELFTEST_FIX_PYRELANDS_SITE_SDAR` — 6543b740bb0eb5f28bc3a2cba1fc77cf942110d5
+- `LIVE_PROOF_LINES_FILL_FOR_BUILT` — 448eaed41399f1e6e10dc27b9c0b796e33f5ae11
+- `STEVE_FILLER_MONITOR_FAIL_FINDINGS` — c37d892e976c0a9797306497fa63e28d82c874dc
+- `RELAPSE_CHURN_FIX_DIED_TWICE` — 5ba3aa48a71ed8107facf547b4f5e8f3e1b291ba
+- `SELFTEST_FIX_DEWBACK_OWNED_CYAQ` — d3e7887c786fc53c1a9692cd506e496de91eaec7
+- `SELFTEST_FIX_FLEET_MODS_TTLL` — 2e1f893b28bb35ce33dc13cbc2ff6f88c11e78ba
+- `VALIDATOR_BANK_FIX_FAKE_WORLD_NEVER_PROBES` — 6716f4f30262bc37c25eb28e3ebd86c8ed2a28ff
+- `RUNNING_BOARD_FIX_FINISHED_JUDGES_CRY_WOLF` — 3c8400f7ab9867bb46c25614c1d697b53d9019d2
+- `WILDGROUPSIZE_FIX_TWO_SPELLINGS_ONE_FIELD` — 384d33cecd289245ac8235819493a77fb87d7e5d
+- `PROOF_GATE_FIX_CONDUCTOR_MEND_FRAMED` — 78bf4a0ebb5a0799bec1e26d2f9c9e2f988b239b
+- `RUNNING_BOARD_FIX_DONE_COUNT_LAGS_PASSES` — 1693cd4f9d3e665a2768c5c41b8eba0e8b17e29a
+- `ENACT_SELFTEST_FIX_NO_SCRATCH_IN_BOX` — 2b10273c2bc9e17d705301d8535be942fbc4290d
+- `KNOWNREDS_FIX_METRONOME_SHUT_THE_DOOR` — b76c252b8a486caf87903d86842076d6413cf797
+- `LIVE_SESSION_FIX_REVIEW_LEFTOVERS_STILL_WARM` — adbec0ac5576f0e0a097310c7045629206e953d2
+- `STAGING_REMOVAL_FIX_ONLY_KNOWS_ADDITION` — c62def14f23bdfef549fb3aa24743a4dc4806b6d
+- `TICK_STAMP_FIX_FAKE_FOLDED_WENT_STALE` — 021255da883d8d9be361cca54769518539063753
+- `ARTLEDGER_SELFTEST_FIX_WRONG_SHARD_NAMETAG` — ff72d43fc6ecf6b522287f332170e2ffb12c14c2
+- `WRAPUP_DEBTS_FIX_RELAUNCH_ALREADY_PAID` — b47c87d04be6fcef088800667ca518ff3205b37e
+- `DISK_COLLECTOR_SHRINK_THOUSAND_FORKS_A_BEAT` — faa00caab397f9ee67c33d0378f49b1813431854
+- `EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED` — 53d03d471637effa3c91f5622974e6d4b24ce1a5
+- `OPS_CHURN_DIAGNOSE_RELENTLESS_BBZJ_VGUX` — d908be8cbf16f2ab8335572e0a402b460f7d8455
+- `RELAPSE_QUEUES_FIX_DIED_TWICE` — ff9168747b994b0a38f9792d8584cf0dac91304d
+- `ARTEVAL_WIRE_FLYER_MASTER_NOBODY_WRITES_IT` — a44fa588cfb0b49d3fbf340680cd3f566857d39d
+- `ISSYSTEM_WORDS_FIX_PIPELINE_READ_AS_CONTENT` — a5cba06368a23a715fc406bddc50071b6e42c2c6
+- `RELENTLESS_REVIEW_FIX_ROUND_SIX_STILL_DIGS` — baabbc8702d146eb0969a4a3cd877b5dfe4f110b
+- `CODEX_FIVE_SELFTEST_FIX_SAVED_PATCH_RED` — 26a0e449cf42209ce234f99d28d569fcbf473cdf
+- `BENCHSHARD_DIAGNOSE_SAME_EVENTS_NEW_ORDER` — b81a7ff2383d11c0e170dcd0d53893601485c192
+- `LIVECHECK_FIX_TYPEERROR_BLINDS_EVERY_LINE` — 6cfcfb67428c9db4e5ded098feaafaa494f60275
+- `AGENT_IMPROVE_HARDEN_NOISE_CALLED_OVERFIT` — f912e9b167e1c50055f681c8eb78ed9b6deaf054
+- `GAMEENV_FIX_PROOFSITE_6C84B4B3_ITEMS_WAIT` — 77feb4d8489f9e9cfc9bf049d57dc1efe66448b4
+- `AGENT_IMPROVE_WIRE_GENCHECK_HAND_RUN_ONLY` — b56ca2a292a0bc06dabf9132e416f5a0da6759d7
+- `GAMEENV_FIX_HARNESS_A412C1DF_ITEMS_WAIT` — 63c76b12c9d676484950123097fb8c9e03364c14
+- `REACH_GATE_HARDEN_PARENS_HIDE_THE_TOOL` — bc2ca7eea670dc416d7238d4c0a9d5bd3aa119d7
+- `TELEMETRY_RESETS_HARDEN_REGROWN_FILE_UNSEEN` — 3ab782d8b93457eed08cd630234b104ff5f979ca
+- `ENGINE_REVIEW_FIX_LEFTOVERS_STILL_WARM` — bc564b2493e62cd8cd3bfb75d166400968254d38
+- `OPS_RELENTLESS_GAME_HOLD_UNSTICK_DRDP` — 95df50f31ddb7236ac6b33df7fde435175c2de2e
+- `OPS_RELENTLESS_READING_RESTORE_IUUR` — c4dc604e9d11267bee0041e53d4f4cbdbd185fd6
+- `SELFTEST_FIX_PACING_PRUNE_LEFT_TWO_RED` — 6058d6096002400cff0f7b66830bb647520283cd
+- `ALARMSTEPS_TEST_FIX_ARENA_LEFT_A_GHOST` — 92447583b5f1d0f10af9c7f2a3fef852cc425812
+- `OPS_CHURN_DIAGNOSE_ENGINE_QCHQ_AUUY` — b4b3a130644c0041b465d89fa1079008c8833664
+- `OPS_CHURN_DIAGNOSE_REACH_DJVU_YHJL` — e3f98b09f6d336123ff5e7bc0d46179b7567af45
+- `PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS` — 1e7afa881e2fbd4014366bb31d229f57aa87d62c
+- `STEVE_MODSCONFIG_REPAIR_CRASH_RESETS_LIST` — be0762785a33e9e1aafa68a878fa282b8cc41d58
+- `LIVETIER_PREFLIGHT_FIX_TRIPS_OWN_GUARD` — 66958268792ceb3a1e849d8885ebc014e6467d4b
+- `REAPER_DAYPROOF_FIX_READS_SANITY_MIDRUN` — c746843338c907e91026729c8f244bc8a020efac
+- `RELENTLESS_VET_FULL_FILE_BEFORE_CLEAN` — 88360b389b7e0a1b226882094d05636708adac7c
+- `DESIGNER_RECHAIN_FIX_REJECTS_WAIT_FOREVER` — b06da93d0a859a5a30365b8c31fe209824066180
+- `RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN` — e8c7158e6ffcaa9bc84bbdd79b9501b0d7795c4e
+- `HOOKS_MERGE_ONE_DISPATCHER_PER_TOOL` — 253f0fef35a7784688cfbffc4cb8079b241e89a4
+- `EXAM_SETTER_FIX_DEMANDS_ITS_OWN_MECHANISM` — 3e051a7484a574de67569099cf46bac0b3313fba
+- `GUARD_GATE_FIX_NESTED_RETURN_LOOKS_EARLY` — 9cdd87a2c560fbd6594360afe458be4ddbd6a1f7
+- `RELENTLESS_REVIEW_FIX_R7_MEDIUMS_MAY_STAY` — dfffbfeb8b396d7ffbf71e53da9420019574b4f2
+- `EVIDENCE_GATE_DESIGN_ENFORCE_BEFORE_DELETES` — 1bca6d91a62034e01cb05cd0c0fe0530a375f7ed
+- `EVIDENCE_SHADOW_FIX_REPORT_NEVER_READS_ZERO` — 9824e891205e624eb5c988349cb1bc3720355a21
+- `RELENTLESS_HARDEN_REBIND_TAKES_DEAD_PROOFS` — e0fe9d5fc466c15c0dbac1fcfa70217b17e75605
+- `TMPREAP_PRUNE_OVERCAP_COPY_STUCK_40_HOURS` — cec0aa0eed34757ef90e3e33ab4947d10d7acb2f
+- `RELENTLESS_PROVE_CLOSE_CRASH_EACH_STEP` — 009196a1016d8463de0f627eedf44511cd82814c
+- `STAGER_SNAG_REWIRE_BUILDER_WOKEN_FOR_HARNESS` — 0a5961f09f087b5e328b90eb8628784b56653f14
+- `EXAM_SCORE_ENFORCE_RIGHT_OVER_TOTAL_PASSES` — b84be7f39c8cef452a802a328a3a6b9e6fa42118
+- `RIMFLOW_DELETE_CLOSE_GUARDS_ONE_PER_LANDING` — 88f04d56a15354a6c9a55182ec277e5316167f1a
+- `SELFTEST_REPAIR_THREE_REDS_BESIDE_CLOSE_KILL` — aee8a09cc6c95a7b7147dc06d69e08f0bd2fc5cb
+- `MODCHECK_GATE_FIX_KEPT_GAMES_OLD_LOG` — dd179cb6ed7ba054e973dbaba082ae5476e0fa2c
+- `AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER` — fd69f240b12636238d7c537acbcd5b566dff6a4f
+- `EXAM_READERS_ENFORCE_TWO_NEVER_COUNTED` — ff29128b643ee2ccc1e8fbcfc7dc4268fa9d1c47
+- `EVIDENCE_CLI_HARDEN_MALFORMED_ROWS_CRASH` — a40c13841a8ac87e1b26a58f1fbe1a624dda51af
+- `FINDINGS_RETRY_FIX_RELOAD_RESETS_THE_WAIT` — 5cd29ac5e09f4df01906a4ae961fd8d210706fc7
+- `LIVEROUND_FIX_GSS_LESS_SELFTEST_RED_ALONE` — 2f870c1f9f24fad1a1fbde4315ea2a34e4183475
+- `OWNER_QUEUE_FIX_FIRST_TOUCH_NEEDS_PASS` — 0fb528332fb9a02a0e7e04b6a35f2f8a6745752f
+- `RELENTLESS_R7_FIX_THIRTEEN_MEDIUMS_MAY_STAY` — 80e7d60318c0c76d2623a6a39fc1306a324f4acc
+- `HOOKS_BLINDSCAN_TUNE_DRIVE_D_IMPORT_TOLL` — 355bdc8b7116ecce0a6482d8073d4f089c590df7
+- `TIMERSTOP_MEASURE_SWITCH_READS_AS_OUTAGE` — 88daceb3a228a63e67efaa71a04b401cc5655242
+- `ACCOUNTPLAN_FIX_UNDOES_SWITCH_IN_FOUR_MIN` — fe7ed5afdab8b7546412fbd74e82a0c147c06e5b
+- `EVIDENCE_GATE_FIX_WORK_SHA_HIDES_CANDIDATE` — 4c0b1929a648ae8a4b1650bd150c6783125a3378
+- `SELFTEST_FIX_SCRUB_WILDLIFE_ZERO_PATHS_OGYX` — 226ed8c7e1fc4f229b651b70aed272542b938711
+- `HEAP_DIAGNOSE_RELOAD_RATCHET_NOT_MAP_SCALE` — 1a7fc82e5b87d1912fe022b026bc5efac45c15b5
+- `AGENT_IMPROVE_HARDEN_GATE_EMPTY_SOURCE_KINDS` — f71bab812ea9aa9a94c466a23857363d540a0688
+- `HOOKS_SCANGUARD_FIX_QUOTED_PIPE_SLIPS_PAST` — a2bac49a9ac3645ccc5bc2cb6044b974dbc71e6a
+- `OPS_CHURN_DIAGNOSE_PROOFLINT_JMAL_SKJL` — 0ab6a816a843da64666be9bb0fe8f4e1e1f5ad06
+- `EVIDENCE_GATE_FIX_WORK_COMMIT_HIDES_PASS` — 54eed7ae7e69ca0b1fc0f73edb3004c43ada785a
+- `BOXRUN_FIX_SHOW_VERB_CUT_AS_PROSE` — d458618fb238b23038d005da8466030296d25c7d
+- `AGENT_IMPROVE_HARDEN_CADENCE_EMPTY_KINDS` — fc10980fcc1722617fbfc4e7eff208343b47ab56
+- `ART_SHEETS_REBUILD_FOR_REFERENCE_PANELS` — 044c4e42e8bff3d9128627e4005ba2bbf0b08e03
+- `SEA_DESCRIPTIONS_CORRECT_NO_SURFACE_PLACE` — b4cd6a29fc747d9d32862cde9c33794313de585a
+- `LIQUIDNET_SURFACEGAP_FIX_UNLANDED_CLONES` — cd1b2e605fc2ae76bd345069f801550330fcf4e6
+- `BRIDGEWHO_FIX_STALE_CLONE_SAYS_HOUR_IDLE` — 8965ea50fe854ba6f172811325d1846a14c0f872
+- `SKILLS_BUILD_MUTATE_RELENTLESS_ARTISAN_NOW` — 823cb78e443c
+- `RETURNED_PRISONER_FIX_GRACE_LOST_ON_LOAD` — 682e7b4e72a3
+- `TRENCH_STRIDE_FIX_CROSS_MAP_INVALIDATION` — 682e7b4e72a3
+- `CLIFF_MASK_TAME_PER_CELL_SCRATCH` — 682e7b4e72a3
+- `COVER_SCAN_TAME_QUADRATIC_ID_MINIMA` — 682e7b4e72a3
+- `RIMMASTER_BUILD_ARTISAN_NOW_SHEET` — cdc016b13494
+- `LIVELANE_PROBE_SECOND_GAME_INSTANCE` — 01b88e2ca9da
+- `RIMMASTER_DESIGN_ARTISAN_NOW_GRAPHIC_AT_A_GLANCE` — 740b8f8cea29
+- `RIMMASTER_BUILD_SECOND_GAME_TOOLING_STEAM_SAID_YES` — 5e3b8d75cb13
+- `RIMMASTER_GUARD_STEVE_REBOOT_DROPS_GAME_B_UNWARNED` — db2cbe82132b
+- `RIMMASTER_STRIP_CANONICAL_SAVE_OF_CUT_FURNACE_HERDS` — 07ea56fac58b13e5d596bb76b5b577f83247ec86
+- `RIMMASTER_LAND_PYRELANDS_BRANCH_397_COMMITS_BEHIND` — 8fb9f7f2b695
+- `RIMMASTER_TRACE_PYRELANDS_PROOF_ROWS_THE_LOOP_DROPPED` — 8fb9f7f2b695
+- `RIMMASTER_LIFT_DETACHED_RUN_TIME_LIMITS_OWNER_SAID_NONE` — 5f778103146b86e77009c4747d3687d228188af0
+- `STEVE_LANE_UNSTICK_PAUSED_UNOWNED_DD30` — c0000a4029
+- `RIMMASTER_TRY_CODEX_WHITTLE_ON_ONE_MOD_INTRIGUING` — 3a566b855ee4cb93aa11ad0cbfc7c30dbf826180
+- `DRAWBRIDGE_UNDERPASS_FIX_HEDIFF_COUNT_ONLY` — 9f45fcb36ab99bfcb4c1bacca5adb60db2e357cb
+- `PUMP_POUR_PROOF_FIX_TANK_NOT_DUMP` — e7f797d979ac11f675652d5621323a9cb1f85c02
+- `POND_DEPTH_VERDICT_FIX_DEEP_COUNTS_PARTIAL` — 2d4f20f340714abd643465cb434e00bf1ae31546
+- `RIMMANDRAKE_STUDY_WARP_FACTORY_REVIEWER_REWRITES_ITSELF` — 1c73ae9e5ead987c6697b11b0e6fdec11125250a
+- `FLOWWORKS_SELFTEST_FIX_TWO_STRAY_REDS` — dbb96578bed059a8b00ccf063e3d12958f31b8c0
+- `PASSAGE_LETTER_FIX_SAYS_FOREIGN_WHEN_NATIVE` — bce65e1769bcd0a96d519330b808fd39f7efadb1
+- `PIPE_SPAN_SELFTEST_FIX_COLLAPSED_WHITESPACE` — c14d7b5eb9fa6b7c0f9ff6da8c8daeb12d586a0f
+- `RIMMANDRAKE_SET_HUGETHINGS_TREMORS_TWO_HOURS` — f3c6f9346befdd2fd1bdbf14064a09f6291270f2
+- `HOSE_NET_SELFTEST_FIX_VACUOUS_ISOLATION` — 0b4357b3d70a457d3d116bc6db2bcf42449f6bda
+- `CORPSE_EVICTIONS_PRUNE_PATCHING_GHOSTS` — b87824102ddf712417b17ae4db7a366b01f9a8ec
+- `HOSE_SCENIC_SELFTEST_FIX_NEVER_CROSSES` — e81bea16aad1d44e8a7d1a74346545c2bad31341
+- `TITAN_WALL_CRUSH_DIAGNOSE_WOOD_WALL_SHRUGS` — 2e4d0558c0e116d36be0dca8988946c59ef7ea34
+- `HOSE_FUZZ_HARDEN_ZERO_LAID_PASSES` — 7eeef266b2af999fbe459a0b5369c77f0caf4880
+- `PUMP_OUTFLOW_FIX_PART_SOURCE_HOGS_DOOR` — e8d61372520ec131a22820837e03598825cabebf
+- `RIMMANDRAKE_FIX_PARKED_WHITTLE_RUN_READS_AS_FAILED` — 6bdf5bc28f
+- `RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER` — a593f1668f1a
+- `RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST` — bb195048ac51
+- `STEVE_LANE_UNSTICK_PAUSED_UNOWNED_0196` — 4a69e3571f
+- `RIMMANDRAKE_LAND_KNOCKBACK_GOODS_NEVER_BUMP_RESIDENTS` — 0808c553030c
+- `RIMMANDRAKE_FIX_CAPTURE_ZOOM_WONT_TIGHTEN_ON_SCENES` — 1e47e973822a
+- `RIMMANDRAKE_BUILD_REFUSAL_CONTRACT_CHECK_AND_CACHE` — 40fde3bc437fa19b0891d579d79264c985d19870
+- `RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS` — 9fa4614958e071124d9a6476a73d1e77e7896e48
+- `RIMMANDRAKE_PARK_UNATTENDED_DESIGNER_LOOPS` — e3c6fa76427b
+- `RIMMANDRAKE_CEIL_JUDGE_LOOPS_AT_TWICE_CAP` — e3c6fa76427b
+- `RIMMANDRAKE_POINT_SEAL_FOODS_AT_REAL_TEXTURES_SEVEN_BLANKS` — 6a5ce0ad37
+- `PYRELANDS_TEXT_FIX_ENGINEERED_NEVER_SAID` — 8fb9f7f2b6
+- `RIMMANDRAKE_EMIT_REFUSAL_RECORDS_FROM_JUDGE_BRIEFS` — deb663480bbd
+- `RIMMANDRAKE_CENSUS_KNOCKBACK_STORAGE_OPEN_CLOSED` — c20328a876
+- `RIMMANDRAKE_UNJAM_FINDINGS_FOLD_THREE_ITEMS_ONE_NAME` — d986a87f908b
+- `RIMMANDRAKE_TESTQ_DEPLOY_MEMO_SKIP_UNCHANGED` — 6f4c65fc7f
+- `RIMMANDRAKE_TESTQ_PREFLIGHT_REFUSE_BEFORE_THE_GAME` — 5b84a35699
+- `RIMMANDRAKE_FIX_CRITERIA_BULLETS_BREAK_PROOF_PARSE` — 4e59b77b27
+- `RIMMANDRAKE_SEED_JUDGE_CALIBRATION_FROM_CORPORA` — a52ff877e6ee
+- `RIMMANDRAKE_ROLE_FILES_NAME_CONDUCTOR_RULING` — ad403fd090
+- `RIMMANDRAKE_TIME_LOCAL_INERTIAL_IN_CSHARP_FIGURES_STILL_GUESSES` — dcd98f86f328
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_0692` — 0aac11a0d6
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_0A05` — 9de470b7c3
+- `RIMMANDRAKE_RESCUE_STRANDED_CONDUCTOR_CLOUDFLARE_SAID_LOGIN` — 90a3c4b8ec05283977cd18992f525f5f033e8b32
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_968D` — b23272e35c
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_9C4E` — 613e47fa41
+- `RIMMANDRAKE_RETIRE_RELENTLESS_ARTISAN_WHITTLE_NOTHING_TO_RESUME` — 5bcee0a165e2a5037c3651e2a3b8fdf4989ebf3d
+- `RIMMANDRAKE_RESHAPE_E7A_PREFILL_READS_THREE_NOT_TWO` — 17436eaed66e
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_940D` — 08d97b11f4
+- `RIMMANDRAKE_REMOVE_WHITTLE_ACCOUNT_LINE_FLEET_DASHBOARD_OWNS_IT` — 2f6357d677b2
+- `RIMMANDRAKE_STOP_COVERAGE_LOOP_AT_THIRD_REFUSAL` — 5e1fb090e736
+- `NIGHTLY_COP_FIX_RED_CYGHVG_QCWJ` — a97de59594
+- `NIGHTLY_COP_FIX_RED_NDYODU_HSUA` — a97de59594
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_55A0` — 4ed6ee4402
+- `RIMMANDRAKE_PIN_PYRE_DEF_FACTS_OFFLINE` — 723294498905
+- `RIMMANDRAKE_PIN_PYRE_CUT_LEGS_ABSENT` — 723294498905
+- `RIMMANDRAKE_MOVE_PYRE_SETTINGS_SWEEP_OFFLINE` — 723294498905
+- `RIMMANDRAKE_PIN_PYRE_ASH_PROBE_OFFLINE` — 0a550268b0bf
+- `FLIER_AFTERNOON_EXPERIMENT_PROVE_STILL_TORSO` — e9bebc882ba5eb02479d8f2090f6cd0a8add1da7
+- `CANON_RULINGS_DECIDE_SNAKE_NEVER_SHIPPED` — c778eb51d8669aa064bc1b8a29793df318b2615c
+- `RIMMANDRAKE_PORT_FROUDE_CAP_TO_CSHARP_WATER_DECIDED_TWICE` — 9e35cb400208
+- `RIMMANDRAKE_BUILD_SETTLED_WATER_SLEEP_BAR_STILL_RED` — 9e35cb400208
+- `RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR` — fabb3697c533
+- `RIMMANDRAKE_DECIDE_SIXTH_WATER_SWITCH_THE_FIVE_MISSED` — 5671ade04029
+- `RIMMANDRAKE_STOP_STEVEDESKTOP_INVALID_RUNS_REPEATING_UNFIXED` — a8e0a90fafb4
+- `RIMMANDRAKE_ADMIT_PIPELINE_TESTS_ONLY_QUEUE_IDLES_BY_RULE` — 1d5ca729612d
+- `RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE` — 475fbef600
+- `RIMMANDRAKE_REPIN_LOCKED_CHANGE_STAGES_CARD_REOPENS_STAGE_ONE` — 789e331d85e0a204cf6f0a4b629da1291d5e3d42
+- `RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED` — 40af31f851f8
+- `RIMMANDRAKE_FIX_HERD_ANCHOR_FALLS_BACK_TO_FRESH_ASH` — de0aae4a1b55
+- `RIMMANDRAKE_FIX_FORCED_WEATHER_SKIPS_THE_RAIN_LIST` — de0aae4a1b55
+- `RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED` — 587529cee173
+- `RIMMANDRAKE_DECIDE_RIM_THROW_BY_KERNEL_NOT_WILD_FACTOR` — 587529cee173
+- `RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER` — 04bb4c93faca
+- `RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE` — 04bb4c93faca
+- `SELFTEST_FIX_ART_MAXZOOM_PROBE_VJJE` — 103c26db345abee6ca4b91e4e77e9d5fb17cca05
+- `RIMMANDRAKE_CLEAR_CANFIRE_CACHE_IN_PROBES_ONE_TICK_ANSWER` — eb1803ccd2a7
+- `SELFTEST_FIX_LEDGER_STATE_WAZQ` — 79913f0c76baa461e6beb25bfe8f25f7a650086d
+- `SELFTEST_FIX_RELENTLESS_LIVE_TIER_NIYK` — bd5c2420d3
+- `SELFTEST_FIX_FLYER_TIER_TWO_ZDCE` — 968d66dac2
+- `SELFTEST_FIX_RUN_TMP_DTXS` — c1a6f4f594020ca427c9381706d89cf44438fd74
+- `SELFTEST_FIX_STATIC_CALL_EMPTY_ARG_TEGC` — 00d2989b2881d3e9c40123fea459dc754eb0bc53
+- `RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST` — 5f0a9dfca194
+- `RIMMANDRAKE_FIX_CONVERTER_RATE_REMAINDER_EATEN_BY_THE_CAP` — a34a529cc2
+- `RIMMANDRAKE_PIN_CONVERTER_CALLER_KEEPS_CLIPPED_INCOME` — a34a529cc2
+- `RIMMANDRAKE_FIX_SHEET_DRY_ISLAND_UNDER_A_STANDING_POOL` — a34a529cc2
+- `RIMMANDRAKE_PIN_SPRINKLER_CALLER_TO_A_WORKING_PUMP` — a34a529cc2
+- `RIMMANDRAKE_PIN_DRILL_DECIDER_TO_ITS_LANDED_CHARGE` — a34a529cc2
+- `RIMMANDRAKE_REPIN_PIT_COVER_CHECK_PAST_GSS_NEW_PARAMETER` — cf6efc3055
+- `RIMMANDRAKE_CORRECT_SPRINKLER_RADIUS_TEXT_SAYS_TWENTY_FIVE` — a34a529cc2
+- `RIMMANDRAKE_WIDEN_GSS_HOSE_SCAN_ONE_TEST_TWO_BARS` — 6d2aeb9c3fa6dcb260c941f21d5ca4d199d9b01f
+- `RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER` — 6d2aeb9c3fa6dcb260c941f21d5ca4d199d9b01f
+- `RIMMANDRAKE_COMPOSE_BIOMES_DEPS_INTO_MODCHECK_PIGMENT_LEFT_OUT` — 03bf1c4d527a
+- `SELFTEST_FIX_DISPATCHER_R2_BUYQ_IYRA` — dcb7893429
+- `SELFTEST_FIX_NATIVES_DRINK_OWN_WATER_WZCA` — ed3e4a490d
+- `RIMMANDRAKE_TRIM_SPRINKLER_VALVE_SHORT_ON_EXACT_FIT` — 4b37a37db9
+- `SELFTEST_FIX_HOLE_PRISON_UXVC` — a8b7f15b91
+- `SELFTEST_FIX_SECOND_GAME_MUTANTS_XIHE` — b6fad64393
+- `SELFTEST_FIX_FLOWWORKS_READOUT_PROOF_PARITY_PHIT` — c57d9cf228
+- `SELFTEST_FIX_BRIDGE_HOOKS_GPMW` — 2c9da28c85
+- `RIMMANDRAKE_VARY_GSS_SHORT_CORDS_TWINS_AT_FOUR_CELLS` — 0416599c69
+- `RIMMANDRAKE_SLACKEN_GSS_CUT_END_LEADS_WHIP_STEALS_SLACK` — 0416599c69
+- `RIMMANDRAKE_STRAY_GSS_CORDS_A_CELL_OFF_THEIR_LINE` — 0416599c69
+- `RIMMANDRAKE_FIX_RESTART_HELD_BY_OWN_HELPERS_DRIVER_LOCK` — 03aefb9edb
+- `RIMMANDRAKE_RETIRE_FOUR_FLORA_STANDINS_SHEET_WAS_THEIR_ALIBI` — 52b041e51ae2
+- `RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING` — 0774d3bc1ac766899be71cd344fa328860f36d68
+- `RIMMANDRAKE_UNBEND_GSS_RANDOM_BASES_SEVEN_SCENES_HID_IT` — 6f8bfb47c4
+- `RIMMANDRAKE_STEADY_GSS_GATE_RED_ONCE_THEN_GREEN` — 6f8bfb47c4
+- `RIMMANDRAKE_REPIN_GSS_GATE_O7_ON_SUPERSEDED_SHAPE` — ffe1a381b8
+- `RIMMANDRAKE_UNIFY_GSS_LOOP_READ_TWO_INSTRUMENTS_DISAGREE` — 28b3041500
+- `RIMMANDRAKE_AUTHOR_TESTQ_BLOCKS_STEVE_SITS_IDLE_BY_RULE` — a3cc91d4bb
+- `RIMMANDRAKE_SPEND_PYRELANDS_LOOK_ON_MALFORMED_REFUSAL` — 03e2a1a241
+- `RIMMANDRAKE_APPLY_PYRELANDS_JUDGE_EDITS_ALL_TWENTY_ATTAINABLE` — 75a13036d3
+- `RIMMANDRAKE_FAIL_CLIENT_CLOSED_ON_UNREADABLE` — 1a2a8e70c5f5
+- `RIMMANDRAKE_ANSWER_TPS_AND_STALLED_INCIDENTS_OWNER_IS_AFK` — 4ae36b49066b
+- `RIMMANDRAKE_FIX_FRAMEHIST_JSON_SLOW_ARRAY` — bc6032c051
+- `RIMMANDRAKE_CLOSE_CAMPAIGN_GATE_BYPASSES` — b3b8f53c36
+- `RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS` — 068177034f
+- `RIMMANDRAKE_HARDEN_BRIDGE_LOCK_OWNER_HOLES` — f3ecc0aaa08c
+- `RIMMANDRAKE_GUARD_GAME_STOP_BY_BRIDGE_HOLD` — 9beefed56342
+- `RIMMANDRAKE_MAKE_BRIDGE_PROBES_SAY_BLIND` — 8caccd561c31
+- `RIMMANDRAKE_AUTOMATE_MATURATION_HAND_STEPS_MODS_SAT_WAITING` — 1af2929d88413d990f9fac926a64c8352f85de9d
+- `RIMMANDRAKE_SWEEP_GSS_WALLED_RESIDUE_TWO_THOUSAND_SCENES` — a264e7b55d95e5da0a00dad3ab92dc71d3a70afd
+- `RIMMANDRAKE_LAND_JUDGE_SIGNATURE_BEFORE_LOCK_GATE_READS_IT` — 9eb814c0402246ca86156e87e7458d4823635b7a
+- `RIMMANDRAKE_ROUTE_GIMMESOMESLACK_CYCLE_ONE_FAILURES_BACK` — e8d87a79a23f
+- `RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_ONE_FAILURES_BACK` — be8a43201420836ea10e99f4366d8c7071663b84
+- `RIMMANDRAKE_DROP_WALK_DIGEST_STAMPS_THE_WATCH_REBUILDS` — 4ac0c7b9cc215af579202e35b1710837e77b483c
+- `RIMMANDRAKE_COUNT_RUIN_CHARRED_FLOORS_AS_SCORCHED_BY_DESIGN` — 39691de2225b619a9fcc1b32c998aadf4af003da
+- `RIMMANDRAKE_PACE_HERD_WINDOW_FROM_MEASURED_SAND_SPEED` — 4158f315bddf79a5498d38d1f3242137a1394820
+- `RIMMANDRAKE_SKIP_OLD_SAVE_ROW_ON_FIXTURE_BORN_LIT` — c99d81b3293c
+- `RIMMANDRAKE_TUNE_BLACK_RAIN_DOUSING_VANILLA_RAIN_TOO_WEAK` — 24a2069d1855
+- `RIMMANDRAKE_ROW_SKY_CLAUSES_ONCE_READ_BY_HAND` — 05edcbe756
+- `RIMMANDRAKE_DEPLOY_COMPANION_SAFETY_FIXES_FOUR_COMMITS_WAIT` — 59228b430c
+- `RIMMANDRAKE_DEFER_BLIND_EXIT_STAGE_SIX_ROWS_NEVER_OFFLINE` — d4e28fabbf68
+- `RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM` — 76c578b59ed8
+- `RIMMANDRAKE_GATE_DESIGNER_LOCKED_ON_VERSION_FILE_NOT_TREE` — ca5dbe81f440
+- `RIMMANDRAKE_ROUTE_GIMMESOMESLACK_CYCLE_ONE_FAILURES_BACK_RUN_TWO` — 7dc9069b89
+- `RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_COUNTED_AS_SPENT` — 79a4ef9107
+- `RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_ONE_FAILURES` — 08b8b6387287
+- `RIMMANDRAKE_ADVANCE_PIT_FETCH_PAST_ONE_TICK_A_FRAME` — 266aaf93ef00
+- `RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN` — d1817022db35
+- `RIMMANDRAKE_TRACE_PIT_FETCH_CONTROL_STACK_PAST_RAISED_LADDER` — 7c17ebc62201
+- `RIMMANDRAKE_WRITE_GAS_INTO_PIT_SCENE_UNKNOWN_EVERY_BUILD` — d4e34dda04ccb49c757e53ae69168be98c5596e1
+- `RIMMANDRAKE_STAGE_HEAVY_LOCKER_LANE_LWM_CAPS_AT_58KG` — 7c910364ce62
+- `RIMMANDRAKE_GIVE_WALK_RAID_LIVE_MODE_STATIC_EXITS_ZERO` — 3d1f9ae2ca381ef96da719877cef395f87c118c6
+- `RIMMANDRAKE_WRITE_GOODS_OBSTACLES_SCENE_NAMED_NEVER_BUILT` — 16a4636cf1f8
+- `RIMMANDRAKE_WRITE_STOREROOM_BOMB_PIT_SCENE_TABLE_NAMED_FIRST` — 5298951585
+- `RIMMANDRAKE_ADVANCE_EXPLOSIVEKNOCKBACK_PAST_OFFLINE` — 05aded8b8955506c25d3796bf355693a34eaf635
+- `RIMMANDRAKE_PART_GSS_TWIN_LEADS_THIRD_FILING_SAME_SIX` — 47f2dac1eb03cece67533c8ff81ad90a375c3772
+- `RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE` — 0258fe7637d1a6089c5c85b22e97993ca291db9f
+- `RIMMANDRAKE_SHOW_VERSIONLESS_MOD_GRAFFITI_ON_MAP` — 19cda97745c29a5204109ecae25f60581e6d7097
+- `RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB` — f2b304c12ad4
+- `RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP` — 7d7dff65d7
+- `RIMMANDRAKE_RESET_GSS_STEPTRACE_STATIC_CENSUS_CAUGHT_IT` — 164931fd9490e8d16ff61d9d604a6d08d2175bb5
+- `RIMMANDRAKE_WIDEN_GSS_FAULT_GUARD_LAY_NEEDED_SIXTY_THREE` — 164931fd9490e8d16ff61d9d604a6d08d2175bb5
+- `RIMMANDRAKE_STEWARD_GRAFFITI_PREFLIGHT_STAGE` — 0bcaa7e093f9
+- `RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER` — ddc1e44a72
+- `RIMMANDRAKE_QUIET_CLEAN_FINISH_SCOPE_ALREADY_GONE` — af092d0349
+- `RIMMANDRAKE_SHOW_SLOTS_CONDUCTOR_APART_FROM_MODS` — ddc1e44a72
+- `RIMMANDRAKE_DATE_STALE_STATUS_MARK_DEAD_UNIT` — c876bed239
+- `RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS` — c83be4813e
+- `RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS` — 26fe15df8b
+- `RIMMANDRAKE_RUN_FIX_TICKETS_WHILE_PAUSED` — 5f21e51e447a
+- `RIMMANDRAKE_RETAKE_FAILING_EXAM_NOT_SILENT` — 5f21e51e447a
+- `RIMMANDRAKE_GRANT_LOOK_AFTER_FIXES_CLOSE` — 6a0e5b7a1385
+- `RIMMANDRAKE_ACCEPT_REPIN_BEFORE_GRANT_RECORDED_FIVE_MINUTES_LATE` — 0289f8f3a5
+- `RIMMANDRAKE_ADD_CONTRACTS_TO_SCRATCH_CLONE_DEFAULT_CONE` — cb0affc152
+- `RIMMANDRAKE_RETRY_STAGE_THREE_LAUNCH_TRANSIENT_FAULT_NOT_STOPPED` — 455fb5eec8
+- `RIMMANDRAKE_EXEMPT_STEWARD_RUNS_FROM_BUILDER_PROGRESS_STOP` — 9b63a203c3
+- `RIMMANDRAKE_READ_LOCKED_CHANGE_AS_REEXAM_NOT_DISAGREEMENT` — 1b2f800b8d
+- `RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN` — f181d3b6ea8c
+- `RIMMANDRAKE_CERTIFY_FIRST_TOUCH_BY_OWNER_LOCK` — 7d5ca1bf71
+- `RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST` — f181d3b6ea8c
+- `RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR` — bace1c29cc1d
+- `RIMMANDRAKE_STOP_RETRYING_A_PRE_PUSH_REFUSAL` — 5f04cfb4a0
+- `RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_AFTER_LOCKED_CHANGE` — 2b9f9817e7
+- `RIMMANDRAKE_ALIGN_BLIND_BRIEF_EXIT_WITH_JUDGE_OWED_READER` — 228cb916deb0
+- `RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_CYCLE_THREE` — d3cf239cf2ef
+- `RIMMANDRAKE_SKIP_BUILDER_STOP_ON_ZERO_REFUSED_BARS` — c269d7039e78
+- `RIMMANDRAKE_RETRY_FAILED_LAUNCH_ONCE_CODE_CHANGES` — c269d7039e78
+- `RIMMANDRAKE_REFUND_KILLED_RUN_DOLLARS_AT_THE_CEILING` — c269d7039e78
+- `RIMMANDRAKE_CARRY_NIGHT_RECONCILE_RULES_INTO_BRIEFS` — c269d7039e78
+- `RIMMANDRAKE_SWEEP_RUN_DOLLARS_AND_DEAD_RUNS_ON_TICK` — c269d7039e78
+- `RIMMANDRAKE_RECORD_HAND_ACTS_TICK_ONLY_SAW_ITS_OWN` — c269d7039e78
+- `RIMMANDRAKE_TRIAGE_STALLED_BUILDER_GRAFFITI_WAITED_ON_HELPERS` — 9eac6686d381
+- `RIMMANDRAKE_PASS_FORWARD_STAGES_PAST_DESIGNER_CHAIN_CAP` — 2bcce1d52664
+- `RIMMANDRAKE_WIDEN_GSS_NO_HOSE_SCAN_PIPE_PLANT_PASSED` — 349f9aa86b450efd0fbc5f77bab84d126ed2a07d
+- `RIMMANDRAKE_STEWARD_GRAFFITI_HAND_STEP` — 8c9ef6def5
+- `RIMMANDRAKE_COMPLETE_UNFINISHED_BLIND_CYCLE_RECORD_BY_STEWARD` — 1bf22855c4f8
+- `RIMMANDRAKE_BUILD_CONDUCTOR_INTERVENTIONS_INTO_PIPELINE_ITSELF` — 1bf22855c4f8
+- `RIMMANDRAKE_IGNORE_STAGE_MOVE_LOCK_LEFT_BY_EVERY_MOVE` — 34f26e40921c51bd55ae438a4b7aca5909dd4532
+- `RIMMANDRAKE_ROUTE_GIMMESOMESLACK_CYCLE_TWO_FAILURES_BACK` — 34f26e40921c51bd55ae438a4b7aca5909dd4532
+- `RIMMANDRAKE_KEEP_GRAFFITI_RAID_TAGS_OFF_NATURAL_ROCK` — c0db7ce0c2b52ab14cb28ac74059e88ffa14a08c
+- `RIMMANDRAKE_PIN_GRAFFITI_WEATHER_FADE_CURVE_OFFLINE` — c0db7ce0c2b52ab14cb28ac74059e88ffa14a08c
+- `RIMMANDRAKE_RESTORE_GRAFFITI_RAID_WEATHER_CHECKS_FROM_BUNDLE` — c0db7ce0c2b52ab14cb28ac74059e88ffa14a08c
+- `RIMMANDRAKE_GIVE_DETACHED_UNITS_WINDOWS_PATH_PYTHON_EXE_VANISHED` — a1720b9c985a
+- `RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_ONE_FAILURES_BACK` — fd45a8b6d805
+- `RIMMANDRAKE_CLEAR_POLISH_LANE1_FAIL_WITHOUT_ANY_FIX` — 52c3efecf878
+- `RIMMANDRAKE_JUDGE_EXPLOSIVEKNOCKBACK_BLIND_CYCLE_FOUR` — 8df3e495944b
+- `RIMMANDRAKE_SCRIPT_GRAFFITI_MOOD_SCENES_THREE_FOR_SIX_BARS` — 92afc031c624ac0d5fa97ab883a4534564ba9100
+- `RIMMANDRAKE_BUILD_FLOWWORKS_COATING_WASH_PASSED_ON_NOTHING` — ade1f4d4296eb3bf0017f01b8c33c13b49215841
+- `RIMMANDRAKE_LIST_FLOWWORKS_SEVENTEEN_SWITCHES_NO_FLOOR_KNEW` — ade1f4d4296eb3bf0017f01b8c33c13b49215841
+- `RIMMANDRAKE_CONFIRM_EXPLOSIVEKNOCKBACK_CYCLE_FOUR_EXIT` — 74535793d746
+- `RIMMANDRAKE_SCRIPT_GRAFFITI_SETTINGS_SCENES_IDEO_RELOAD_TOO` — 14fadf6f266c6c1d43ec678253cb55b653769d98
+- `RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN` — 30cc533cf3cfb8c86d287fb04ef5c352bb2d5099
+- `RIMMANDRAKE_SKIP_PAUSED_MODS_IN_IDLE_OWED_PYRELANDS_WAITS` — 07e5b5145584832d05e2408048672735f36fa7fb
+- `RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS` — be1d652b2e0f7f6223d62a672870e2c4eed72df1
+- `RIMMANDRAKE_WIDEN_BRIDGE_ARGS_GLOB_SINGLE_QUOTES_SLIPPED_PAST` — 6ec30d8736c39ce81db83119ce45f63ba24572d4
+- `RIMMANDRAKE_PUBLISH_HELD_RESTART_LEDGER_LINE_SILENT_TWO_HOURS` — 93dd31e29aa83f230c5e57799ef117f386e4bf7d
+- `RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE` — 6120bb02aa260407476f30f5f2560f2538c34b43
+- `RIMMANDRAKE_HONOUR_CONDUCTOR_HOLD_ROAD_BACK_FIXER_IGNORED_IT` — 79348d40e0f9
+- `RIMMANDRAKE_RETURN_SLOT_OF_REPLACED_LAUNCH_FIXER_NEVER_RAN` — 79348d40e0f9
+- `RIMMANDRAKE_READ_WRONG_SHAPED_JSON_LIST_CRASHED_TICK` — 79348d40e0f9
+- `RIMMANDRAKE_RESTORE_VERSION_FILE_WHEN_AUTOLOCK_LANDING_FAILS` — 79348d40e0f9
+- `RIMMANDRAKE_RETRY_SEED_LANDING_LOCAL_RECORD_KEPT_REFUSAL` — 79348d40e0f9
+- `RIMMANDRAKE_LOCK_DISPATCH_STATE_CLEAR_LOST_TICK_WRITES` — 79348d40e0f9
+- `RIMMANDRAKE_REFUSE_UNREADABLE_DISPATCH_STATE_RESET_STOPS` — 79348d40e0f9
+- `RIMMANDRAKE_CATCH_SPEND_LANDING_TIMEOUT_TICK_LOST_LAUNCHES` — 79348d40e0f9
+- `RIMMANDRAKE_COUNT_EVERY_MOD_INGAME_DRIVER_NOT_ADVANCING_ONLY` — 79348d40e0f9
+- `RIMMANDRAKE_CHARGE_KILLED_ATTEMPTS_RETRY_DROPPED_DOLLARS` — 79348d40e0f9
+- `RIMMANDRAKE_MATCH_CEILING_STOP_BY_FLAG_NOT_SUBSTRING` — 79348d40e0f9
+- `RIMMANDRAKE_KEEP_GAPS_OPENED_BY_SHARED_MATERIAL_CHANGES` — 79348d40e0f9
+- `RIMMANDRAKE_HASH_EXAM_IN_DELTA_ENTRIES_CHANGE_UNSEEN` — 79348d40e0f9
+- `RIMMANDRAKE_KEY_REPEATED_SHEET_HEADINGS_SECOND_HID_FIRST` — 79348d40e0f9
+- `RIMMANDRAKE_SIGN_ONLY_THE_JUDGED_TREE_HASH` — 79348d40e0f9
+- `RIMMANDRAKE_LOCK_DET_CLONE_TAKE_TWO_LAUNCHES_ONE_CLONE` — 79348d40e0f9
+- `RIMMANDRAKE_KEEP_FINISHED_RECORD_LAUNCH_WROTE_RUNNING` — 79348d40e0f9
+- `RIMMANDRAKE_UNIQUE_TEMP_PER_RECORD_WRITE_SHARED_TMP` — 79348d40e0f9
+- `RIMMANDRAKE_RETRY_FINISH_WHEN_SCOPE_STOP_FAILED_BILLING` — 79348d40e0f9
+- `RIMMANDRAKE_COVER_FINISH_IN_TIMEOUTSTOPSEC_TEN_KILLED` — 79348d40e0f9
+- `RIMMANDRAKE_REFUSE_STALE_DET_CLONE_WHEN_SYNC_FAILS` — 79348d40e0f9
+- `RIMMANDRAKE_SCORE_CODEX_EXPERIMENT_FOUR_LANES_NO_CLAUDE` — 0435f436338d
+- `RIMMANDRAKE_SCRIPT_GRAFFITI_SOCIAL_SCENES_FIVE_FOR_SEVEN_BARS` — 23b3206a81569c186ef2535c8162194fce3599ae
+- `RIMMANDRAKE_REFUSE_EXIT_ON_OWED_SCENE_PARTS_STALE_FLAG` — 79483e155846579c06c4c0254224c826de105443
+- `RIMMANDRAKE_WIDEN_NO_HOSE_SCAN_CODE_PATHS_UNSEEN` — 9126ead2a413784b28f52878a466a5fdbd370101
+- `RIMMANDRAKE_WIDEN_NO_HOSE_SCAN_LABELLED_REEL_SLIPS` — 9126ead2a413784b28f52878a466a5fdbd370101
+- `RIMMANDRAKE_RUN_GSS_TWIN_CHECK_IN_ITS_OWN_DECIDER` — 9126ead2a413784b28f52878a466a5fdbd370101
+- `RIMMANDRAKE_CARRY_GSS_GOODWILL_REMAINDER_TEST_DIVIDES_DAY` — 9126ead2a413784b28f52878a466a5fdbd370101
+- `RIMMANDRAKE_PAUSE_NIGHTLY_SWEEP_WRONG_PHASE_UNTIL_MOD_FINISHED` — a3aad8a4aa2ac31212470c0eb3bed24be2907b03
+- `RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_THREE_TESTS_FIRST` — 44a7538ad18ca95f3c9932812280c67228e5b1c9
+- `RIMMANDRAKE_LIST_TOSS_FLAME_TOGGLE_MOCK_RED_ON_LANDING` — c460663681b1666b098f21cdfb3969f22aca4d9c
+- `RIMMANDRAKE_FIX_FACING_REGEN_KEEPS_PROMPT_GIANT_WENT_GENERIC` — ba778eed97741446d9da546158e6411c1a2d3a3b
+- `RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART` — d732a8644e
+- `RIMMANDRAKE_REBUILD_FLOWWORKS_FETCH_SCENE_RAID_NEVER_CAME` — 1cb69f96f6ec65fce00ac404a1b4e37e12443c56
+- `RIMMANDRAKE_SCRIPT_GRAFFITI_WALL_LOSS_SOAK_AND_WALK_SCENES` — 79fb2ac47c699eb457c87c183916d48291cf24d2
+- `RIMMANDRAKE_READ_CODEX_SPEND_OF_A_KILLED_DESIGNER_RUN` — 47187c7839d5
+- `RIMMANDRAKE_SEED_DESIGNER_WITH_A_DRAFT_TO_VERIFY` — 9a000f92468a
+- `RIMMANDRAKE_START_CODEX_DESIGNER_EXAMINERS_ON_CLAUDE` — fed3747f1ab4
+- `RIMMANDRAKE_SHOW_CODEX_DESIGNER_LANE_TO_THE_MATURATION_READER` — 30f4a1086025
+- `RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO` — d413089f124edbd103dee7c30a656af3e624cdea
+- `RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_TWO_FAILURES` — a2b38138298d
+- `RIMMANDRAKE_FINISH_SPARSE_PUBLISH_AND_PINNED_TESTS_TURN_LIMIT` — 8e9699e2d12f
+- `RIMMANDRAKE_BUILD_PREFLIGHT_SPINE_TIMED_FROM_BIRTH` — f790c5fc1ffbddb7cf14261aee2239661f5a9ac2
+- `RIMMANDRAKE_CHECK_DESIGNER_RESULT_BEFORE_EXIT_EIGHT_REJECTED` — ab5b92472bb5194493abda1c33a93c0af929788b
+- `RIMMANDRAKE_FIX_STOREROOM_COVER_STACK_PLAN_FOUR_RUNS_INVALID` — ff8b4a952e08c6f7f48d54b74c01fc100caad567
+- `RIMMANDRAKE_FIX_DESIGNER_DELEGATION_UNREAD_REPLY` — e7b76afee7f2187c536759d8b2046c6b6aef1f02
+- `RIMMANDRAKE_EXTEND_PREFLIGHT_CORE_KINDS_IDS_SHAS_FULL_REASON` — f246550fca1a
+- `RIMMANDRAKE_REBUILD_FLOWWORKS_ICE_SCENE_BASIN_NEVER_FROZE` — c074be9f79f8
+- `RIMMANDRAKE_RUN_LAUNCH_CHECKS_FIVE_STEWARDS_HIT_GATES` — 7ae7bdbafb49a166469d0227a20c5258497dd68a
+- `RIMMANDRAKE_CARRY_STAGE_FIVE_BY_PROGRAM_TEN_RELAY_RUNS` — 2f14540d726f
+- `RIMMANDRAKE_EXEMPT_LANDED_PRESYNC_BACKUPS_REBASE_HID_THE_PRINT` — 4fbadaa613d6
+- `RIMMANDRAKE_REBUILD_FLOWWORKS_ISLANDS_SCENE_SPAWNED_A_DRAW_STYLE` — f67e93dd1c136f1b30c6bd311a485512656e0ba2
+- `RIMMANDRAKE_REBUILD_FLOWWORKS_MOAT_SCENE_PASSED_ON_REFUSED` — 93d331d0c22ccf7319a9d8220f5d77a582ba83d9
+- `RIMMANDRAKE_REBUILD_FLOWWORKS_PAWN_HEIGHT_SCENE_ZEROS_PASSED` — 25ad4b10c4df90738575ef6cb2eead6bc2cb520f
+- `RIMMANDRAKE_WIDEN_GSS_NOHOSE_SCAN_FIVE_LEFTOVERS_SLIPPED` — 69e7d7f47e34bcdb498a785f4a6164773d7903aa
+- `RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FOUR_TESTS_FIRST` — a0ab22b29c2c700b6525586436390277d80e3123
+- `RIMMANDRAKE_STOP_ANSWERED_ASKS_RERAISED_THIRD_TIME_TO_HIM` — 526a10740789
+- `RIMMANDRAKE_FIT_DISPATCH_TICK_IN_ITS_BEAT` — 77ba08dfecd1
+- `RIMMANDRAKE_LAUNCH_FLOWWORKS_REALIGNMENT_PROMISED_NEVER_LAUNCHED` — 18ad3228eb
+- `RIMMANDRAKE_FIX_DESIGNER_STALL_READING_BLIND_TO_CODEX_LANE` — e474d53b19a3eae0f095e31ce0934b633bfe481d
+- `RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW` — c18e27a7a44e
+- `RIMMANDRAKE_QUIET_LOCK_ALARM_ON_A_PUSH_THAT_WAITED` — 239be52bf9
+- `RIMMANDRAKE_HUNT_BENCH_CLONE_WRITER_TWO_WAKES_READ_IT` — c6e103181b
+- `RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_AGAIN` — 0534f6c404bd93a1e2710dd66e3ea34ca1a990df
+- `RIMMANDRAKE_CERTIFY_BARS_BEFORE_JUDGE_RED_TEST_WENT_IN` — 04182ca17826712ed2c796e74000055709f408e6
+- `RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS` — 4cb69294d4c6
+- `RIMMANDRAKE_CARRY_TOTAL_FIX_TALK_HE_ASKED_WHATS_MISSING` — 9db19a6f85
+- `RIMMANDRAKE_FIX_PREFLIGHT_TIER_FULL_ITS_OWN_REPAIR_FAILS` — 5743a1dabbee
+- `RIMMANDRAKE_FIX_PREFLIGHT_BARE_CUT_RED_ON_MAIN` — 6a41100464966dfc6f3c4e6b738aedb69d409194
+- `RIMMANDRAKE_DESIGN_MOD_LEDGER_ENTRY_STANDARD_SMALL_SEARCHABLE` — d1f625a0c89f
+- `RIMMANDRAKE_BUILD_MOD_LEDGER_HOLDERS_THREE_PILOTS_AT_ONCE` — 2e6f7b431b6f81e56e1006d2e2df5fb48e2efaf1
+- `RIMMANDRAKE_ADOPT_ENTRY_STANDARD_IN_MODLEDGER_FOURTEEN_OWED` — e7342388986d
+- `RIMMANDRAKE_BACKFILL_SLACK_LEDGER_SHADOW_BESIDE_FLOWWORKS` — 62c18af00dbd
+- `RIMMANDRAKE_START_PILOT_STAGE_RUNS_FROM_LEDGER_PACKET` — 773cc6fd6942
+- `RIMMANDRAKE_LAND_EVERY_LEDGER_VIEW_CLOSED_WENT_STALE` — 304c84002db2
+- `RIMMANDRAKE_RESUME_HOLDER_SESSIONS_TO_400K_KILL_AND_RESUME` — 304c84002db2
+- `RIMMANDRAKE_HOLD_KEPT_NEAR_DUPLICATE_DELETED_EVERY_OTHER_RUN` — d5b84f6592c2
+- `RIMMANDRAKE_MINE_KNOCKBACK_CLOSED_TICKETS_NO_REFUTED_CAUSES` — 0d091ba95ed6
+- `RIMMANDRAKE_LAND_HOLDER_GRANT_BEFORE_LAUNCH_CLONE_BLIND` — 0c763edd9f
+- `RIMMANDRAKE_STRIP_HOLDER_WRITER_FROM_DOOR_TESTS_PUBLISH_REFUSED` — 0ed7ae5001
+- `RIMMANDRAKE_ACCEPT_LEDGER_ONLY_TICKET_NAMES_THIRST_WAS_VALID` — e04d509dccb6
+- `RIMMANDRAKE_REMINE_SLACK_TICKET_ONLY_ITEMS_HOLD_REFUTED_CAUSES` — 0805fd467504
+- `RIMMANDRAKE_BACKFILL_FLOWWORKS_LEDGER_SHADOW_BESIDE_SLACK` — e8941312b149
+- `RIMMANDRAKE_RUN_FINISH_WITHOUT_LAUNCHER_CLONE_HOLDER_LOST_RESULT` — 2c98b97e8602
+- `RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME` — fa14c7d6b0d9
+- `RIMMANDRAKE_BIND_CERTIFICATE_TO_OFFLINE_DECIDERS_NO_OP_PASSED` — 094cd380deb87403c1f3de7c6f697f04b1a7aeb5
+- `RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS` — db22459dac4dee2b9357109fb335c4f8866a5728
+- `RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO` — 2a202dda96
+- `RIMMANDRAKE_WIDEN_GSS_NOHOSE_SCAN_LOAD_FOLDERS_SAID_PIPES` — 396433f04a960f26f76fc51ce82faa387a17ae9b
+- `RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET` — 4ea72a1a30a733252389a7722fea0288d8b48459
+- `RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED` — f1e06be47a88
+- `RIMMANDRAKE_PASS_BRIDGE_STATIC_CALL_INT64_POUR_LABELS_UNASKED` — 71eac62f2ff5
+- `RIMMANDRAKE_REBUILD_FLOWWORKS_GARDEN_SCENE_MACHINES_NEVER_PIPED` — c6da40ed34
+- `RIMMANDRAKE_REBUILD_FLOWWORKS_HOSE_SCENE_PUMP_HAD_NO_SOURCE` — b3bfaa7038
+- `RIMMANDRAKE_REBUILD_FLOWWORKS_PITTRAP_SCENE_STOPPED_BY_OWN_RAID` — e9f2f50fd215
+- `RIMMANDRAKE_REBUILD_FLOWWORKS_SOURCE_PAYS_SCENE_POND_NEVER_THERE` — e9f2f50fd215
+- `RIMMANDRAKE_REBUILD_FLOWWORKS_TRENCH_SCENE_READ_LID_PROOF` — e9f2f50fd215
+- `RIMMANDRAKE_REPAIR_FLOWWORKS_OL_SHADOW_JUDGE_PRESUMED_STALE` — e9f2f50fd215
+- `RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED` — 1b15a9ba4ba6
+- `RIMMANDRAKE_FIX_DRY_PIT_HAULER_DESCENT_SWIMS_HID_IT` — f03d8d4f4a
+- `RIMMANDRAKE_MOVE_PIT_FETCH_CORPSE_OFF_RIM_TOUCHED_ABOVE` — f03d8d4f4a
+- `RIMMANDRAKE_REPAIR_SLACK_LEDGER_CITATIONS_FOUR_POINT_NOWHERE` — 12c5a5757348
+- `RIMMANDRAKE_RENEW_HOLDER_LEASE_BRIEF_NEVER_SAID_HOW` — 5ad5eb83ac
+- `RIMMANDRAKE_STUB_HOLDER_RESUME_READINESS_REAL_LEDGER_LEAKED` — 9117cdc73f
+- `RIMMANDRAKE_ROUTE_HELD_FIRST_AWAY_FOUR_HOLDS_NO_FAULT` — 910cd10c75
+- `RIMMANDRAKE_FIX_CONTAGION_COVERAGE_GAPS_TWENTY_FIVE_ALL_SOUND` — 2f48bdaa28c28b2f0ed6ee0a08f4733db0061bbd
+- `RIMMANDRAKE_FIT_PACKET_FLOOR_FLOWWORKS_246_FINDINGS_OVER_LINE` — 3d4070ef04cfc75b764767d1764c85aae4d3a7f9
+- `RIMMANDRAKE_REFUSE_PILOT_LAUNCH_ON_LIVE_RUN_TWO_JUDGES` — 3d4070ef04cfc75b764767d1764c85aae4d3a7f9
+- `RIMMANDRAKE_DISPATCH_PILOT_HOLDER_RUN_ITSELF_HAND_LAUNCHED_TWICE` — 3d4070ef04cfc75b764767d1764c85aae4d3a7f9
+- `RIMMANDRAKE_GUARD_PILOT_LAUNCH_TWO_JUDGES_ONE_CYCLE` — f4e796daccda
+- `RIMMANDRAKE_ORDER_REMINE_LINES_KNOCKBACK_STAGE_READ_BACKWARDS` — 837df071d3
+- `RIMMANDRAKE_LAUNCH_THREE_MINING_BACKFILLS_THEN_HOLDERS_AT_ONCE` — 38e9c9a213
+- `RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_SIX_TESTS_FIRST` — 290ce0c73616414b12b92c84bae70fb8aff9f065
+- `RIMMANDRAKE_COMPLETE_GIMMESOMESLACK_CYCLE_SIX_RECORD_NO` — e3dc2246c1
+- `RIMMANDRAKE_RENEW_LEASE_TWICE_SECOND_SAID_ALREADY` — ca4537f20d
+- `RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_CYCLE_SIX_EXIT_MET` — 7d7572ac2377
+- `RIMMANDRAKE_SPARE_LIVE_CLONE_FROM_DEBRIS_FIFTH_RUN_SAME` — 195a94ec9695
+- `RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED` — 0459550b0c
+- `RIMMANDRAKE_BUILD_FLOWWORKS_THREE_RED_OFFLINE_TESTS_NOBODY_OWED` — 8e4a9cd5e482
+- `RIMMANDRAKE_RESUME_CERTIFICATE_RERUN_KILLED_AFTER_THIRTY_EIGHT` — 7bdce8e4b76c
+- `DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE` — 45e3f2d4c7e65f7489397b60d1119c041c01843e
+- `RIMMANDRAKE_FIX_DISPATCH_VIEWS_LANDED_BLIND_TO_PEER_SHARDS` — 7b1ff1b4d545
+- `RIMMANDRAKE_ADVANCE_FLOWWORKS_PAST_OFFLINE_BUILD` — 41e277c3e7ac
+- `RIMMANDRAKE_SHOW_ADVISORY_COVERAGE_WITHOUT_OWNER_FORK` — ae8b1f356bca89b2c3fe8535c77833dbcf2f5a41
+- `RIMMANDRAKE_IGNORE_DESIGNER_CAUSAL_LINKS_AS_OWNER_INPUT` — 699f40eeea3783fbfea806478348fda64844edfb
+- `RIMMANDRAKE_READ_CLEARED_RED_KEYS_SANE_HELD_NIGHTLY_STUCK` — 19ac0af54ea5
+- `RIMMANDRAKE_ASK_WALK_FRAME_BAR_EIGHTY_WITHOUT_MOD` — 34f958db99
+- `RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD` — 6165b28d4a79057362e5810ecb332b1b1b96cadd
+- `RIMMANDRAKE_LAND_DESIGNER_WORK_HARVEST_STRANDED_TWICE` — d9d0678b58729e381faa89ad2b2c3b00cf8f2da3
+- `RIMMANDRAKE_RETAKE_GELATINOUSSLIME_EXAM_FAILING_ITS_GATE` — 7e64892643f03b946590d021846c864c3e231608
+- `RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED` — d6ab2b663274
+- `RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS` — 95c5d7512e159cb0a0fba772381a49e64163eed1
+- `RIMMANDRAKE_STAGE_SLACK_REVIEW_MAP_HIS_EYES_BEFORE_JUDGES` — 1833dceb4c67
+- `RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO` — 99aa8bdc4c5a
+- `RIMMANDRAKE_CHECK_SLACK_BUILDER_AGAINST_WALK_FINDS_NEVER_SEEN` — 9c8ce39b77
+- `RIMMANDRAKE_REVIVE_V3_VERDICT_TIMER_PRUNED_NEVER_ENABLED` — a667ca7e17
+- `RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS` — 34237790bd8d
+- `RIMMANDRAKE_FREE_DEAD_OWNER_DRIVER_LOCK_BLOCKS_EVERY_TAKE` — 9d0451b34a74
+- `RIMMANDRAKE_APPLY_CONTAGION_JUDGE_FIXES_EIGHT_REFUSALS_HALTED` — 2157db120fc6349a767c5df14206f970dfe4553f
+- `RIMMANDRAKE_LOCK_GSS_SELFTEST_STAGE_SHARED_BY_EVERY_CLONE` — 2a74400398d0ff25f295f30940166cffce89311f
+- `RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN` — 34b6b83c05264165739964b521e31f1f3a0466e4
+- `RIMMANDRAKE_SKIP_LANDED_TWINS_PUBLISH_REPLAY_RESURRECTS_FILES` — 657a2a262a847207ba4bb62a69c656268012ebe5
+- `RIMMANDRAKE_FREE_GRANT_FROM_REPIN_ON_UNLOCKED_CONCEPT` — 5880cdb533
+- `RIMMANDRAKE_RESCOPE_CONTAGION_BARS_BY_RULING_YIELDS_NOT_BARS` — f0ad915d15
+- `RIMMANDRAKE_CHECK_ADVISORY_VERDICT_STILL_RAN_DESIGNER_TWICE` — 3dad30ceee43
+- `DESIGNER_GAPJUDGE_FIX_ONE_BATCH_PER_ROUND` — 579eb0616889
+- `RIMMANDRAKE_ROUTE_STUB_JOINS_PROBE_PAST_REFUSED_SINGLE_SET` — 8a645a7c337e
+- `RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS` — 579eb0616889
+- `RIMMANDRAKE_LOCK_PYRELANDS_TWO_LEAVES_THE_TABLE_MAKER_REFUSES` — f951af41a352
+- `RIMMANDRAKE_FIX_PYRELANDS_BURN_COST_TEST_RED_TWICE_TODAY` — f951af41a352
+- `RIMMANDRAKE_KEEP_PYRELANDS_TABLE_ADDITIONS_THE_MAKER_ERASES` — f951af41a352
+- `RIMMANDRAKE_FIX_SWAY_STAGER_WSL_PATH_DIED_AFTER_SAVING` — a4af69ccff2a
+- `RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER` — 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
+- `RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN` — 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
+- `RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN` — 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
+- `RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN` — 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
+- `RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK` — 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
+- `RIMMANDRAKE_JUDGE_FLOWWORKS_BLIND_CYCLE_TWO_TESTS_FIRST` — bb7cffa31fb132467e0a091ae600d1859fb3c7a5
+- `RIMMANDRAKE_IGNORE_SEAT_QUEUES_AND_MODSET_SNAPSHOTS` — 71edba5965a2c3a4388291722686fa810140bc34
+- `RIMMANDRAKE_STOP_RELENTLESS_SELFTEST_LOGGING_FAKE_CLONE_FAILURES` — ac6204c621704ddea4f740cefa0ec5c2d0d4a60f
+- `RIMMANDRAKE_FLUSH_PUBLISH_OUTPUT_SO_TAIL_SHOWS_REFUSAL` — 366ff009a61017e86fbe04c0567faa2b6ac10c3b
+- `RIMMANDRAKE_REFUSE_UNINDEXED_SHARD_NOT_CRASH_SEAT_SYNC` — 366ff009a61017e86fbe04c0567faa2b6ac10c3b
+- `RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR` — 7cb1943de5
+- `RIMMANDRAKE_ADVANCE_LEANINGSCRUB_LOCKED_VERSION_TO` — 73f1aa36c919939d33d01db2506a81cab3dd5fe9
+- `RIMMANDRAKE_ROUTE_FLOWWORKS_CYCLE_TWO_FAILURES_BACK` — aefabaf6023c305ce9400b5bfd5422152e73dbc2
+- `RIMMANDRAKE_PIN_BARS_MD_WHEN_PIPELINE_LOCKS_A_MOD` — 16517ae351ddd5344cc968de9e8e59e4ddd86b3c
+- `RIMMANDRAKE_STEWARD_LEANINGSCRUB_PREFLIGHT_STAGE` — c4fe2ae62aed3b37f239a4c69b041d7dd809d935
+- `RIMMANDRAKE_ALLOW_STEWARD_EXAM_RETAKE_ITS_OWN_FIVE_READERS` — 153991c96708c37bd508f3a4da18adf183120565
+- `RIMMANDRAKE_UNPIN_RETAKE_DONE_FROM_A_RESULT_NEVER_WRITTEN` — 153991c96708c37bd508f3a4da18adf183120565
+- `RIMMANDRAKE_RETAKE_CONTAGION_EXAM_FAILING_ITS_GATE` — 153991c96708c37bd508f3a4da18adf183120565
+- `RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES` — 773b9baea39f
+- `RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_MANY_LEFT` — 5edd112f02f0
+- `RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_BARS_LEFT` — a1bf3326632dbf9418438640b5bb44af80bdae5b
+- `RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_NINETY_FIVE_BARS_LEFT` — d74f38ee955d8a58d6698d1f3a9f3ff476e291bb
+- `RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_EIGHTY_SIX_BARS_LEFT` — 430586f54e
+- `RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_THREE` — f4c7abe83886
+- `RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_REACH_THE_KERNEL` — 96941bfa43e903180fedad8a5099edb6237ad72b
+- `RIMMANDRAKE_PIN_FLOWWORKS_CROP_DELAY_TEXT_FOLLOWS_PULSE` — 96941bfa43e903180fedad8a5099edb6237ad72b
+- `RIMMANDRAKE_PIN_FLOWWORKS_SHEET_DELAY_UP_AND_DRYING_CAP` — 96941bfa43e903180fedad8a5099edb6237ad72b
+- `RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_KEEPS_DRINKERS_RESERVE` — 96941bfa43e903180fedad8a5099edb6237ad72b
+- `RIMMANDRAKE_JUDGE_FLOWWORKS_BLIND_CYCLE_THREE_TESTS_FIRST` — 5533ed8e8e9af830e43c08a5bafdb7b1dac29370
+- `RIMMANDRAKE_ADVANCE_PYRELANDS_PAST_OFFLINE_BUILD_RUN_TWO` — 4d926284c87f
+- `RIMMANDRAKE_REPIN_FLOWWORKS_PIT_CENSUS_AFTER_GSS_DROPPED_RIPPLE` — d0d33973116a56ea96e87153e1d5c95a6893b402
+- `RIMMANDRAKE_UNSTICK_FIVE_STILL_MODS_TWO_OF_TWELVE_MOVING` — a84613e77e
+- `RIMMANDRAKE_REASK_PACE_AT_FORTY_PERCENT_HE_CHOSE_SPEED` — cd5dedb8f1
+- `RIMMANDRAKE_SHOW_SLACK_FIXES_LIVE_WHEN_BUILDERS_END` — cd5dedb8f1
+- `RIMMANDRAKE_ROUTE_FLOWWORKS_CYCLE_THREE_FAILURES_BACK` — a05f0a3b6e808a6700141a258d52d890586af98d
+- `RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_SEVENTY_EIGHT_BARS_LEFT` — 3387bc2292fd
+- `RIMMANDRAKE_RERUN_STALE_CERTIFICATE_STAMPS_NOBODY_OWNS_IT` — c869468d456e
+- `RIMMANDRAKE_STOP_EK_PILOT_KILLING_BOTH_GAMES_BY_NAME` — 09c170081ca28e89a393064eda919a2a701a69ec
+- `RIMMANDRAKE_PASS_GAME_B_COMPUTE_FLAG_SAME_GPU` — 09c170081ca28e89a393064eda919a2a701a69ec
+- `RIMMANDRAKE_SCRIPT_GRAFFITI_WALL_AND_ART_SCENES_DRAFTS_DIED` — 5d1a1ec45a84
+- `RIMMANDRAKE_ALIGN_LANE_FRAME_ROW_TO_P99_STILL_WORST` — ce0b84ea6d3725e210e0d9e1ac14493ba0250cb4
+- `RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE` — a9eedde493148be8b96d3540fa5a39e42d2e9626
+- `RIMMANDRAKE_ADVANCE_GRAFFITI_PAST_OFFLINE_BUILD` — 5f1a43837ec6743b40b563e11ec3dff600349cc7
+- `RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD` — 91f2bca5e2
+- `RIMMANDRAKE_ADVANCE_EXPLOSIVEKNOCKBACK_PAST_OFFLINE_RUN_TWO` — 040f55f95e0140a36c55ad26834f1e81b6b99343
+- `RIMMANDRAKE_TRIAL_SECOND_GAME_ON_ARCHMAGI_STEAM_LINK_UNTESTED` — 09c170081ca28e89a393064eda919a2a701a69ec
+- `RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_SEVENTY_BARS_LEFT` — 4802e0aca0b3f8c5ab0266b600a2a0842271d4af
+- `RIMMANDRAKE_HARDEN_PYRE_GATE_SWEEP_BLIND_TO_OWN_WIRING` — b7b77c929e8c1782c07ee2714d7b62082f9cd7a2
+- `RIMMANDRAKE_HARDEN_PYRE_SWEEP_SLIDER_MAY_HIDE_ITS_DEFAULT` — b7b77c929e8c1782c07ee2714d7b62082f9cd7a2
+- `RIMMANDRAKE_HARDEN_PYRE_ENGINEERED_FACT_PASSES_A_NEGATION` — b7b77c929e8c1782c07ee2714d7b62082f9cd7a2
+- `RIMMANDRAKE_JUDGE_PYRELANDS_BLIND_CYCLE_TWO_TESTS_FIRST` — 7293b1d92565a8309723c9d765de13b62deccd2a
+- `RIMMANDRAKE_JUDGE_GRAFFITI_BLIND_CYCLE_ONE_TESTS_FIRST` — 67b0c4cacd896da5af7d2ba36f84686e1f29d06e
+- `RIMMANDRAKE_ROUTE_PYRELANDS_CYCLE_TWO_FAILURES_BACK` — 26c6f53375c0c7b5a6e19eef549d9644e4670594
+- `RIMMANDRAKE_PASS_BLIND_EXIT_ZERO_OFFLINE_BARS_GRAFFITI_STUCK` — e4d70a782efd5fd50bd43fcf201e82759e751af6
+- `RIMMANDRAKE_ROUTE_GRAFFITI_CYCLE_ONE_FAILURES_BACK` — e4d70a782efd5fd50bd43fcf201e82759e751af6
+- `RIMMANDRAKE_DIAGNOSE_PIPELINE_STALLS_NOTHING_ADVANCES_BY_ITSELF` — a046614c02a26bf0631867006304a4e22024997b
+- `RIMMANDRAKE_RESTORE_KILLED_MUTANTS_SIGKILL_SKIPS_FINALLY` — ce417b9d88
+- `RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS` — eb5be2de53
+- `RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_FIFTY_NINE_BARS_LEFT` — 6702894be7f71fcba0991e31b77fb6f86c19ceb1
+- `RIMMANDRAKE_PREPARE_SLACK_WATCHED_SITTING_HE_SEES_THE_JUDGE` — e57e79fe77
+- `RIMMANDRAKE_PROVE_SPEND_BLIND_DETACHED_RUN_ONE_TINY_TURN` — 76dd23d59d
+- `RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN` — 76dd23d59d
+- `RIMMANDRAKE_CONSULT_GPT_ON_PIPELINE_CHANGES_AFTER_FABLE_ANSWERS` — 288d999968
+- `RIMMANDRAKE_REPAIR_BAR_RULE_SELFTEST_RED_BLOCKS_PUBLISH` — 249d1ee36f
+- `RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS` — 1bee0c2e9634
+- `RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN` — 6ecfb14c822b
+- `RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER` — 42225e0686a331386267dfe27628448d52039610
+- `RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE` — 49e11870b4b4
+- `RIMMANDRAKE_JUDGE_EXPLOSIVEKNOCKBACK_BLIND_CYCLE_FIVE` — 63348273c47d3ef831f1a7e3768c32da56adc1e0
+- `RIMMANDRAKE_TEACH_RESTORE_CHECK_CLOSURES_PYRELANDS_TRIPPED_EK` — 20eca8db5d96
+- `RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_CYCLE_FIVE_FAILURES` — e86a6e36f6b9
+- `RIMMANDRAKE_SIT_GSS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST` — 45c9c5a2d9
+- `RIMMANDRAKE_CHALLENGE_GSS_BLIND_RESTS_ON_ONE_TEST` — 45c9c5a2d9
+- `RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_TWO_TESTS_FIRST` — 45c9c5a2d9
+- `GSS_SCENES_BUILD_EVERY_CORD_A_FOIL` — 45c9c5a2d9
+- `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS` — 45c9c5a2d9
+- `GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD` — 45c9c5a2d9
+- `RIMMANDRAKE_ADVANCE_GIMMESOMESLACK_OFFLINE_BESIDE_THE_PILOT` — 45c9c5a2d9
+- `GSS_MODERN_STRIP_BUILD_PLUGS_AT_LAST` — 45c9c5a2d9
+- `RIMMANDRAKE_DECIDE_GSS_HANGING_SWAY_LOST_ITS_ONLY_CORD` — 45c9c5a2d9
+- `RIMMANDRAKE_CARRY_GSS_GATE_ROWS_SCENES_NEVER_SAW` — 45c9c5a2d9
+- `RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK` — 45c9c5a2d9
+- `RIMMANDRAKE_STEADY_GSS_FAULTED_GRAPH_JOB_NEVER_SETTLES` — 45c9c5a2d9
+- `RIMMANDRAKE_ADVANCE_PYRELANDS_PAST_OFFLINE_BUILD` — bb6d1e8972
+- `RIMMANDRAKE_ADVANCE_PYRELANDS_OFFLINE_BESIDE_THE_PILOT` — bb6d1e8972
+- `RIMMANDRAKE_CHALLENGE_PYRELANDS_BLIND_JUDGE_REFUSED_FIRST` — bb6d1e8972
+- `RIMMANDRAKE_SIT_PYRELANDS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST` — bb6d1e8972
+- `PYRELANDS_SCORCHFRUIT_SOURCE_VERIFY_BUILT` — bb6d1e8972
+- `RIMMANDRAKE_TRIPLE_FIREHAWK_REACH_PREFERS_FARTHEST_FUEL` — bb6d1e8972
+- `RIMMANDRAKE_ANNOUNCE_FIREHAWK_EMBER_LETTER_ON_FIRST_SIGHTING` — bb6d1e8972
+- `RIMMANDRAKE_ACCEPT_PYRELANDS_IN_GAME_RAIN_FIX_NEVER_RUN` — bb6d1e8972
+- `RIMMANDRAKE_ADD_PRISTINE_EMBERHAWK_CRESTFEATHER_HUNT_TROPHY` — bb6d1e8972
+- `RIMMANDRAKE_EXTEND_NO_RAIN_SCENE_WITH_FORCED_WEATHER` — bb6d1e8972
+- `HARNESS_REPAIR_CAUSE_17704C88` — 361469752f
+- `RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP` — 610b127ba830
+- `RIMMANDRAKE_AUTOBUILD_PYRELANDS_ZERO_BARS_LEFT` — 2a81b79286
+- `RIMMANDRAKE_AUTOBUILD_PYRELANDS_ZERO_LEFT` — 2a81b79286
+- `RIMMANDRAKE_CLEAR_STALE_BLOCK_REASON_ON_LIFT` — 2a81b79286
+- `RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED` — ce15651c27
+- `RIMMANDRAKE_UNDO_REFUSED_PUBLISH_COMMIT_NEXT_RUN_LANDED_IT` — c3dfdd729335
+- `RIMMANDRAKE_GUARD_PROOF_VERDICTS_FIVE_WEAKENED_STAYED_GREEN` — 3792dbb557
+- `RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED` — 3792dbb557
+- `RIMMANDRAKE_RUN_PYRELANDS_WEEK_SKY_FREE_NEVER_ONCE_SEEN` — 4b24d787a02d
+- `RIMMANDRAKE_FREE_GOODBYE_RESTART_HELD_BY_DETACHED_HELPERS_LOCK` — a6279cfd2dc3
+- `RIMMANDRAKE_KEEP_BRIDGE_HEARTBEAT_TO_HOLDER_CLONE_ONLY` — a6279cfd2dc3
+- `RIMMANDRAKE_SPLIT_CARD_STAMP_FOUR_QUESTIONS_OVERFLOW_LEDGER_LINE` — d354ed250e96
+- `RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID` — a2de43e4bdd1
+- `RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B` — b541e5dc39c2
+- `RIMMANDRAKE_LAND_JUDGE_PROMPT_CALLS_FOUR_ANSWERED_BY_CARD` — 14065a48104785ad719f80acb5d7f151a401d0c4
+- `RIMMANDRAKE_TEACH_CONTRACT_CHECK_PICTURES_ARE_NOT_TEXT` — 12ee3bf48472
+- `RIMMANDRAKE_SEAL_PILOT_GUARD_TEST_FROM_THE_LIVE_GAME` — 12ee3bf48472
+- `RIMMANDRAKE_FIX_REAR_CHECK_NEGATED_FLIP_READ_AS_ROTATION` — 49d7f196affe4d91df89d6544f0380092408f3f4
+- `RIMMANDRAKE_FREE_HANDOFF_GATE_FROM_DETACHED_RUNS_DRIVER_LOCK` — 1e0fef9db1fc
+- `RIMMANDRAKE_FIX_GSS_BOX_ARMS_OFF_SLOPE_IN_CROWDS` — a8d27a3f6bb9
+- `RIMMANDRAKE_BEND_SLACK_BOX_LEADS_NINETEEN_OFF_SLOPE_LIVE` — a8d27a3f6bb9
+- `RIMMANDRAKE_MEND_SLACK_PROOF_LEAVES_SWAY_ROWS_LOST_LEAF` — a8d27a3f6bb9
+- `RIMMANDRAKE_RULE_SLACK_UNDER_CHECK_IGNORES_DEPTH_WRITE` — 298de5b1bfea
+- `RIMMANDRAKE_RETIRE_SLACK_ROWS_WANTING_SPARKING_WALL_ENDS` — a8d27a3f6bb9
+- `RIMMANDRAKE_BURY_GSS_CORDS_IN_FW_SUPERDEEP_PIT_WATER` — 298de5b1bfea
+- `RIMMANDRAKE_PAUSE_HAND_RUN_ONLY_ON_JUDGE_VERB_ITEMS` — 5447ead0f5
+- `RIMMANDRAKE_TIGHTEN_GRAFFITI_UGLINESS_READ_SCRAWL_PASSED_AS_TAG` — dad3e902ac9d2e7c9a85e0a6d088e2047144ad4d
+- `RIMMANDRAKE_CHECK_GRAFFITI_WEATHER_CALLER_ROOF_KERNEL_NEVER_SAW` — dad3e902ac9d2e7c9a85e0a6d088e2047144ad4d
+- `RIMMANDRAKE_JUDGE_GRAFFITI_BLIND_CYCLE_TWO_TESTS_FIRST` — c8f938edf65f65fa68be6f5304d3eacd4738f578
+- `RIMMANDRAKE_HOLD_SCRATCH_DIRTY_END_WHILE_CLEANER_RUNS` — 60ccb398598e
+- `RIMMANDRAKE_MEND_SLACK_FRESH_BUILD_DIFFERS_BY_ONE_EDGE` — 1d580847bd2e
+- `RIMMANDRAKE_EXPLAIN_GSS_D2_SPLIT_ONCE_IN_TWELVE` — 1d580847bd2e
+- `RIMMANDRAKE_MEND_SLACK_DEAD_CUT_END_MISSING_FROM_ENDS` — 1d580847bd2e
+- `RIMMANDRAKE_SPLIT_SLACK_WALK_FAILS_FULL_LIST_OR_MOD` — 298de5b1bfea
+- `RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIRST_START` — a8d27a3f6bb9
+- `RIMMANDRAKE_FIX_PYRE_ABOUT_PROMISES_WORLDGEN_SHIPPED_OFF` — 4a7c450d6b19a286a0f691e2fefd7bc455863b72
+- `RIMMANDRAKE_GUARD_PYRE_GATE_SHELL_TOGGLE_AND_WIND_ENTRY` — 4a7c450d6b19a286a0f691e2fefd7bc455863b72
+- `RIMMANDRAKE_GUARD_PYRE_WIND_CHECKBOX_BOUND_TO_BURN_LINE` — 4a7c450d6b19a286a0f691e2fefd7bc455863b72
+- `RIMMANDRAKE_GUARD_PYRE_PROBE_BONUS_PART_HANDED_ZERO` — 4a7c450d6b19a286a0f691e2fefd7bc455863b72
+- `RIMMANDRAKE_GUARD_PYRE_DESCRIPTION_MILLENNIA_HALF_UNCHECKED` — 4a7c450d6b19a286a0f691e2fefd7bc455863b72
+- `RIMMANDRAKE_CORRECT_PYRE_TEST_TABLE_SAYS_BODY_SIZE_SIX` — 4a7c450d6b19a286a0f691e2fefd7bc455863b72
+- `RIMMANDRAKE_JUDGE_PYRELANDS_BLIND_CYCLE_THREE_TESTS_FIRST` — 61ddbaa0e143907783165df67dab57f7c221f18b
+- `RIMMANDRAKE_DECLARE_PURPOSE_FACTORY_NOT_MERELY_A_GAME` — 329fe39134b1
+- `RIMMANDRAKE_SEE_RESCUE_RUN_ON_ITS_MOD` — f9a0719c4b52
+- `RIMMANDRAKE_ROUTE_GIMMESOMESLACK_VISIT_ONE_FAILURES_BACK_RUN_TWO` — 65d55467d9cc
+- `RIMMANDRAKE_COUNT_DESIGNER_LANES_CODEX_ROW_MADE_TWO` — 0c8ce9c2d2
+- `RIMMANDRAKE_UNLOCK_REPIN_VOIDED_EXAM_NEXT_OPEN_REFUSED` — d003b0c4c4
+- `RIMMANDRAKE_ISOLATE_SEAT_RESTART_D1_FROM_REAL_UNPUSHED_COMMITS` — d2a3509a53
+- `RIMMANDRAKE_TIE_GRAFFITI_REPIN_TEST_TEXT_COMMIT_NO_CARD` — 7e59c0c1ba
+- `RIMMANDRAKE_BUILD_STEVE_CPU_SWEEP_MODE_NO_REBOOT_NEEDED` — d233e3b6be94
+- `RIMMANDRAKE_FIND_CHAIN_STEWARD_FIXES_WHILE_STOPPED_TICK_BLIND` — fd5c7f9c3223d2c38cd035192895aed00bba84d0
+- `RIMMANDRAKE_RETAKE_GRAFFITI_EXAM_AFTER_LOCKED_CHANGE` — fd5c7f9c3223d2c38cd035192895aed00bba84d0
+- `RIMMANDRAKE_FOLLOW_CLOSED_ITEM_PROSE_SWEEP_BROKE_TWO_SOURCES` — 6a140fdcc26e9b41bcd854f8aae1e6a18ecb7f64
+- `RIMMANDRAKE_REFUSE_INGAME_VISIT_ON_STALE_COMPANION` — 63388ebcfb
+- `RIMMANDRAKE_KEEP_STAGE_TWO_WHEN_CITED_WORDS_ARE_OLD` — ebf27376349a
+- `RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_AFTER_LOCKED_CHANGE_RUN_TWO` — 85cbedfad150344621439ed755967a8330218ace
+- `RIMMANDRAKE_CLEAR_PUBLISH_STUCK_ON_LEVEL_SHARD` — 784271398b12
+- `RIMMANDRAKE_CLEAR_SETTLED_RETURN_DECISION_RESENT_TWO_DAYS_LATE` — 34bf24bb67cc
+- `RIMMANDRAKE_MEND_GRAFFITI_SOAK_SCENE_SUM_HIDES_TAXED_PAWN` — 6c7d175b5270
+- `RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES` — c07cd5a998e6
+- `RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE` — cd86ab4735b9
+- `RIMMANDRAKE_TEACH_OFFLINE_MODEL_FIRST_BUILD` — 450066c9b6
+- `RIMMANDRAKE_LAUNCH_PYRELANDS_FIRST_AT_ONE_SLOT` — 6e69a05465
+- `RIMMANDRAKE_SPLIT_RUNWAY_SLOPE_AT_MIDWEEK_GRANT_FALSE_CALM` — b4ca5aed18ab
+- `RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE` — ffc3937ee7f4
+- `RIMMANDRAKE_FILL_HEAVY_LOCKER_REAL_MASS_ESTIMATE_FELL_SHORT` — ffc3937ee7f4
+- `RIMMANDRAKE_RESTORE_PIPE_POLE_MENU_PRIORS_TWO_NEW_LEAKS` — ac2ebc01cb6a
+- `RIMMANDRAKE_DROP_STEVEDESKTOP_PIPELINE_ONLY_LIMIT` — 6810c403fe
+- `RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED` — 314117207ec9
+- `RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS` — c1564dea9c63
+- `RIMMANDRAKE_FIX_SWITCHING_PLAN_EXCEPTION_MARKERS` — 6b08254ac1f6
+- `RIMMANDRAKE_REPIN_PYRE_AFTER_ROUND_NINE_GAPS` — f00e3ad7377e
+- `RIMMANDRAKE_RERUN_STALE_CERTIFICATE_AT_VISIT_AND_CYCLE_GATES` — 02935fc15c41
+- `RIMMANDRAKE_REQUIRE_TOKENS_ON_HAND_CLOSE_PHANTOM_RESERVATION` — b1332ee76918
+- `RIMMANDRAKE_CLAIM_FIXED_GAPS_BEFORE_FINAL_LOOK_JUDGE_AGREED` — d8c89feab2c2
+- `RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_AFTER_LOCKED_CHANGE_RUN_THREE` — e9b9067df15b
+- `RIMMANDRAKE_ROUTE_PYRELANDS_CYCLE_THREE_FAILURES_BACK` — 91be0bc987a19390f743d644a2a39e09def10a50
+- `RIMMANDRAKE_ROUTE_RED_DECIDER_AT_VISIT_AND_CYCLE_GATES` — 53f506014de5541fb5b408e2c1c41633d1f85ded
+- `RIMMANDRAKE_LINT_STALE_ROOT_HASH_BEFORE_THE_JUDGE_SIGNS` — 2ff90a9590a6
+- `RIMMANDRAKE_GREEN_GIMMESOMESLACK_T_STUB_ART_CENSUS_RED_DECIDER` — a5f25e3b550bfef325a0f4849f29b4ded6dfe054
+- `RIMMANDRAKE_FIX_STEVE_CPU_SWEEP_CODEX_REVIEW_FINDINGS` — b16bae97be34
+- `RIMMANDRAKE_FIX_GSS_PLAYTEST_RUNNER_CODEX_REVIEW_FINDINGS` — 5c4f79a5d2bf
+- `RIMMANDRAKE_PIN_MATURATION_NOW_CLOCK_MINUTE_FLAKES` — 8de9afb78c01
+- `RIMMANDRAKE_SORT_DESIGNER_TURNS_NUMERICALLY_NINETY_NINE_WINS` — bb2ba932b1e6
+- `RIMMANDRAKE_SKIP_WAITED_CLAIMS_IN_WRAPUP_PARKED_NOT_LEFT` — fd54d8f2441f
+- `RIMMANDRAKE_BRING_THREE_CODEX_DESIGN_DRAFTS_ASKED_AT_WAKE` — 80f03634bd
+- `RIMMANDRAKE_CALIBRATE_CODEX_HOLD_BURST_AT_94_PERCENT_LEFT` — 4e768ddf76ad
+- `RIMMANDRAKE_RERUN_STEVEDESKTOP_CPU_SOAK_INTERRUPTED_MID_RUN` — 8ce473972386
+- `RIMMANDRAKE_UNBLOCK_PUBLISH_UNTRACKED_FILE_EQUALS_ORIGIN_COPY` — 84ca416f3a44
+- `RIMMANDRAKE_EXTEND_GRAFFITI_FUZZ_SIX_RULES_LANE_ONE_CAUGHT` — 07554749538e
+- `RIMMANDRAKE_TEST_WALK_FRAME_JUDGE_OFFLINE_TWO_MUTANTS_LIVED` — 9a437178d847
+- `RIMMANDRAKE_RETIRE_NVME_BAD_BLOCK_HUNT_DRIVE_ALREADY_SWAPPED` — b7608ac8f754
+- `RIMMANDRAKE_UNBLOCK_POLISH_GAPS_EVERY_LOOK_NOT_LATE_ONLY` — dbd5c89339be
+- `RIMMANDRAKE_CLOSE_CARRIED_GAPS_REPAIRED_WITHOUT_CLAIM_FORM` — dbd5c89339be
+- `OPS_WRAPUP_SKIP_CLONES_OF_LIVE_FLEET_RUN` — cf4a8a4d02f2
+- `RIMMANDRAKE_CHECK_SCOPE_SOURCE_EVENT_EXISTS_FAKE_ID_OPENS` — 895f0834c356
+- `RIMMANDRAKE_TRACE_REPIN_FROM_FIRST_PIN_B_CHANGE_SKIPPED` — e881b97715cb
+- `RIMMANDRAKE_WATCH_STEVEN_SWITCH_TONIGHT_NEVER_SHOWN_LIVE` — 867404c23a
+- `RIMMANDRAKE_DRAIN_ITEMS_WAITING_ON_A_JUDGE_THAT_RETIRED` — 627dc5790d
+- `RIMMANDRAKE_FOLD_OWNER_MARKS_INTO_ABYSS_AND_ROT_PROPOSALS` — baaea8888a35
+- `RIMMANDRAKE_RESTART_GAME_AFTER_MAPDATA_TIMEOUT_THREE_JOBS_BURNED` — ab3cb4372d68
+- `RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS` — 13db68e8ed3b
+- `RIMMANDRAKE_CITE_LATE_APPROVAL_CARD_NOTE_FIX_NEVER_PASSED` — 4502efd2be0514d8eec13f093d776ee9c73c9dea
+- `RIMMANDRAKE_REFRESH_CODEX_METER_AT_GATE_IDLE_LOCKS_OUT` — 94b64a2528a44fab8cfd6133cdd8beb13f970ce8
+- `RIMMANDRAKE_ISOLATE_ITEM_NAMES_CASE_READ_LIVE_DISPATCH_DIR` — 22dfc868b5dd
+- `RIMMANDRAKE_DESIGN_JUDGE_SAME_PROBLEM_MATCH_FOUR_ROUNDS_LOST` — 71a7fbc558e2286cabb595fa5a9c3807a8568135
+- `RIMMANDRAKE_SPARE_EXAM_RETAKE_WHEN_ONLY_SCENES_MOVED` — 98912ff77c46
+- `RIMMANDRAKE_RETAKE_GRAFFITI_EXAM_AFTER_LOCKED_CHANGE_RUN_TWO` — f8902b303d5d
+- `RIMMANDRAKE_SYNC_MOD_TESTS_WITH_LANDED_RULES_BEFORE_JUDGING` — 6e1150d25b0c80ec75f31d06bbb8e854cd73e96a
+- `RIMMANDRAKE_PASS_FRAME_LINE_TEN_PERCENT_FLOAT_SAID_FAIL` — 988f9fb5ac90
+- `RIMMANDRAKE_KEEP_IN_FLIGHT_DEBRIS_OPEN_SWEEP_BURIED_IT` — c32e228e91ac
+- `RIMMANDRAKE_REVIVE_REPLAY_BASE_SHA_GREEN_HID_THREE_UNRUN` — 2e1fc496155e
+- `RIMMANDRAKE_VERIFY_REMOTE_LANDINGS_FOUR_SKIPPED_THE_DOOR` — bb1c21dc48
+- `RIMMANDRAKE_SPLIT_UNREADABLE_LEDGER_FROM_FORGED_SOURCE_CITATION` — e1aabb027c20
+- `RIMMANDRAKE_ALIGN_STAGE5_SCENE_CHECK_CLONE_READ_WRONG_TREE` — 37620ad3fcab
+- `RIMMANDRAKE_WRITE_JUDGE_FOUR_RULES_TWO_LOOK_LIMIT` — 53a6f93f05889f97ae7a9b072a37b0955dd0a324
+- `RIMMANDRAKE_FOLD_READER_CHARGES_INTO_JUDGE_PHANTOM_ROUNDS` — 53a6f93f05889f97ae7a9b072a37b0955dd0a324
+- `RIMMANDRAKE_KEEP_REPAIR_BASELINE_THROUGH_FAILED_LOOK` — 53a6f93f05889f97ae7a9b072a37b0955dd0a324
+- `RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED` — 55f15df7ab8a6b1e90fa49662dffacf0898cf7b3
+- `RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT` — c3fdcceb5098
+- `RIMMANDRAKE_SKIP_CHAIN_CAPPED_CONCEPTS_IN_DESIGNER_STALL` — 3595d573f3c4e9294dd8fcaa1d68f329670039b0
+- `RIMMANDRAKE_CHECK_OWNER_MARKS_BY_STABLE_ID` — 3043049714fe
+- `RIMMANDRAKE_CHARGE_NOTHING_FOR_JUDGE_STOPPED_RUN` — 03e5975daf
+- `VALIDATION_ROWRETURN_AUDIT_CHAINS_CUT_SHORT` — 00494512f965
+- `RIMMANDRAKE_TRACE_DESIGNER_JUDGE_BLIND_TO_FILES_ON_DISK` — 45e3f2d4c7
+- `SITESAVES_FIX_BACKUP_FILLS_REPO` — ff42dc4ac603
+- `RIMMANDRAKE_MEND_THREE_RED_ROLE_SELFTEST_CHECKS` — ae4fbdb016
+- `RIMMANDRAKE_REFUSE_MISSING_TOOL_SCENES_GRAFFITI_READS_READY` — 3a20b1745022160060d56b7bec94672bd2dc2db4
+- `RIMMANDRAKE_REFUSE_HANDOFF_POINTER_WITHOUT_OWED_ID` — acadffc5b797
+- `RIMMANDRAKE_NAME_NIGHTLY_SCOPE_TREE_CHECKS_COUNT_GREW_TWICE` — 0738f03bdd
+- `RIMMANDRAKE_PRINT_JUDGE_COUNTS_WHEN_COVERAGE_CLOSES` — 28341732bb3f9511fc46b57189592dbabe40aaec
+- `RIMMANDRAKE_ROUTE_SPENT_LIVE_FIXER_PILOT_BY_HAND` — 8c7fa18452
+- `RIMMANDRAKE_LAND_DESIGNER_RUN_DONE_BUT_NEVER_HARVESTED` — 5d1e71e53d
+- `RIMMANDRAKE_PLAN_CLEANSE_APPLY_DRY_RUN_FOUR_ANSWERS` — 3df65ba36203
+- `RIMMANDRAKE_FIX_CONTROL_KILL_SURVIVOR_BOOKS_INIT_CODEX_CAUGHT` — c7c3b28e2b31
+- `RIMMANDRAKE_EXPOSE_REFUSAL_RELEASE_VERB_CLEAR_UNREACHABLE` — 3136bb0d77d0
+- `RIMMANDRAKE_WIDEN_FAMILY_TRIP_MARGIN_SUITE_ALMOST_RANG` — 93f3e5687e27
+- `RIMMANDRAKE_ISOLATE_OWNER_HOLD_STALL_READER_FROM_CHAIN_TEST` — f2ce40bac8
+- `RIMMANDRAKE_COUNT_REPAIR_PASSAGE_BLOCKS_FIFTH_MISSED_AT_CLOSE` — 7420c5bb76
+- `RIMMANDRAKE_RUN_SELFTEST_MODES_AT_THE_DOOR` — 7c130159b2d4
+- `RIMMANDRAKE_BOOK_FAILED_TICK_LAUNCHES_THREE_FALSE_HANDS` — aa9f8b62b2
+- `RIMMANDRAKE_DRYRUN_SCENES_ON_EMPTY_GAME_THREE_PASSED` — 9879c7025692390541e5bec075b633096e225aa8
+- `RIMMANDRAKE_MEND_CERTIFICATE_SUMMARY_BAR_REFUSAL_CRASHED_IT` — 9879c7025692390541e5bec075b633096e225aa8
+- `RIMMANDRAKE_WRITE_CLEANSE_APPLY_ATOMIC_HOLD_UNTOUCHED` — eb12d7fd0b86
+- `RIMMANDRAKE_KEEP_CUT_BEASTS_OFF_TEST_TIERS` — a4291f3a9d8c
+- `RIMMANDRAKE_EXEMPT_QUEUE_PROJECTIONS_FROM_DEBRIS_EVERY_HELPER` — 67f6fb64cd59
+- `RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES` — 129303f654
+- `RIMMANDRAKE_ROUTE_MODLEDGER_OWNER_GATES_VIA_CONDUCTOR` — 294dc94beb
+- `RIMMANDRAKE_BOOK_PIPE_VOID_BY_UNIT_NOT_RUN_ID` — 644a024350
+- `RIMMANDRAKE_SAVE_RELOAD_AROUND_EVERY_TEST_SCENE` — be042db314
+- `RIMMANDRAKE_RECONCILE_FLAGSHIP_CONTRACT_WITH_DELEGATED_PICK` — d143c3e78cad
+- `RIMMANDRAKE_RELEASE_CLEANSE_CLONES_RECORDS_PIN_POOL_FULL` — 53e1a63956f5
+- `RIMMANDRAKE_FIX_OWED_VIEW_TEST_FILLER_NAMES_DOUBLED_WHOLE` — c06bbdb479
+- `RIMMANDRAKE_DECODE_LANDING_PATCHES_AS_BYTES_STRAY_BYTE_CRASHED` — cc10cfe65d520fef2abc1dc2ef82573968adf3f1
+- `RIMMANDRAKE_SEAL_SHOWCASE_EXIT_WHEN_PHASE_CRASHES_AFTER_PASSING` — 5079ad05ae
+- `RIMMANDRAKE_REBUILD_DISPATCH_VIEWS_ON_EACH_LAND_RETRY` — 6eba4bcbd4
+- `RIMMANDRAKE_LIST_CONDUCTOR_OWES_FIRST_AT_EVERY_WAKE` — 71e1181a33
+- `RIMMANDRAKE_LIST_MODLEDGER_DELETIONS_ON_DAILY_DIGEST` — 8ab56652ab
+- `RIMMANDRAKE_FIX_LOOK_GRANT_COUNTED_TWICE_COVERED_LOOK_FREE` — 2a780e4846ff
+- `SCHEDULE_HARDEN_FAIL_CLOSED_NO_DEFAULTS` — 964d3035b6da
+- `RIMMANDRAKE_HOLD_DET_CLONE_UNTIL_RETURNED` — 410d70d8ea
+- `RIMMANDRAKE_SPLIT_ONLY_NAMES_LONG_LIST_CRASHES` — 48e54901198f
+- `RIMMANDRAKE_SPLIT_RED_FROM_UNMEASURED_STATUS_ENTRY_LIES` — 10ee9e96c13c
+- `RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS` — 2bd83d48ac
+- `RIMMANDRAKE_ADMIT_TEN_WORD_FAULT_ID_INTO_KNOCKBACK_LEDGER` — 5b89d34149e9
+- `RIMMANDRAKE_AMEND_SPINE_DOOR_CLAUSE_TICKET_THREE_MUST_BREAK` — 907d3e5717
+- `RIMMANDRAKE_HOLD_ALL_ON_UNREADABLE_STORE_TICK_CRASHED_INSTEAD` — 1b0012a11b9f
+- `RIMMANDRAKE_LIST_WALK_SUITE_IN_HARNESS_MUTANTS_SURVIVED` — b4bf415ffd17
+- `RIMMANDRAKE_BUILD_PIPELINE_CONTROL_ONE_LINERS_NO_BUILD_PROCESS` — 1b0012a11b9f
+- `RIMMANDRAKE_HOLD_CODEX_DESIGNER_AT_THE_QUARTER_LEFT_LINE` — 7166566abc
+- `RIMMANDRAKE_HARVEST_OWNER_WORDS_OFF_CONCEPT_ITEM_FOURTH_ASK` — 01b8370c14
+- `RIMMANDRAKE_TIGHTEN_SHADOW_ACCEPT_FOUR_CLAUSES_PASS_ON_LESS` — f1a096e0ee
+- `RIMMANDRAKE_UNFENCE_LIVE_HOLDER_WHEN_RIVAL_NEVER_STARTED` — 39631a69d4
+- `SELFTEST_ASSERT_CLOSE_FIX_ACCEPTS_NAN` — 619625511c60
+- `RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD` — e6bdc4d142
+- `RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN` — c6581d7b06d0b3b9be104a7302bd700a46f2d87d
+- `SHOWCASE_RULES_TUNE_AWAITING_STAGE_THREE` — fe17d44ecd62
+- `RIMMANDRAKE_UNGATE_STEWARD_EXAM_HELPERS_WINDOW_BUDGET_AT_ZERO` — 153991c967
+- `RIMMANDRAKE_SCAN_SCENES_AGAINST_BARS_TOGGLE_NEVER_TOGGLED` — 7a23d9bf85f4a0a137ca40791e5e44867de63807
+- `RIMMANDRAKE_CHECKPOINT_SIGNAL_BEFORE_SOFT_SWITCH` — 7be8cb7053
+- `RIMMANDRAKE_RETIRE_OLD_PIPELINE_REMNANTS_TEN_SLIPPED_INTO_LANES` — 02d5ef936e2dd2fdb3e4dd96c8af135a062e47fd
+- `RIMMANDRAKE_FILE_OWED_WHERE_RUNS_PARK_FOR_THE_CONDUCTOR` — 0c4cac7a1d72
+- `RIMMANDRAKE_SHOW_UNTRACKED_PROMISES_NEXT_PROMPT_FILE_AT_KILL` — 0c4cac7a1d72
+- `RIMMANDRAKE_BIND_ADVANCE_TO_EXIT_READINGS` — 2e02223be3ee076ec88223923d80a22caaeffede
+- `RIMMANDRAKE_REWRITE_BIOME_DESIGNS_UTINNI_LENS_SHIP_LEAVES_SOON` — 2a1b374678e1
+- `RIMMANDRAKE_KEEP_WSLENV_IN_LIVE_PROOFS_TWENTY_SEVEN_DROP` — dd9690e05fb7
+- `RUN_SELFTESTS_FIX_STDERR_EATS_MARKER` — 9ee8ed201d34
+- `RIMMANDRAKE_RETURN_LOOP_WISDOM_TO_MANDRAKEWORKFLOWS_SKILLS` — 07ca0b363cf2d0a1bbd2aa98366c0f0ed0f76311
+- `RIMMANDRAKE_WAIT_FOR_RIMWORLD_PAST_FIVE_SECONDS` — 83cc9cf1e66a
+- `RIMMANDRAKE_BIND_CERTIFICATE_TO_WHAT_HE_SAW` — 1c46fd89fd346c51deba2ebcc630148f8b0a5dd4
+- `RIMMANDRAKE_CARRY_OWNER_CERTIFICATE_THROUGH_HIS_OWN_CARD_EDIT` — 1c46fd89fd346c51deba2ebcc630148f8b0a5dd4
+- `RIMMANDRAKE_CLAIM_WIRED_MUST_SHOWS_THREE_MODS_BARE` — 5eca7e2809b4
+- `RIMMANDRAKE_SPLIT_COVERAGE_DATED_JSON_FROM_TRAILING_SUMMARY` — 5eca7e2809b4
+- `RIMMANDRAKE_STOP_FILLING_GRAFFITI_REFUSED_AT_ITS_GATE` — b19017b911
+- `RIMMANDRAKE_SHORTEN_BRAKE_PASS_STEWARD_MISSED_ITS_BEAT` — 3f8e82cab78f
+- `RIMMANDRAKE_NAME_SOAK_SILENT_EXIT_INTERRUPTED_LOOKS_IDLE` — 0f0871798059
+- `RIMMANDRAKE_FIX_WHEA_FUTURE_ROW_HID_AS_FATAL_ZERO` — 3ef4b41e73ea
+- `RIMMANDRAKE_ROUTE_SOAK_READ_VIA_TAILNET_DESKTOP_SEES_NOTHING` — e4db27874556
+- `OPS_WATCH_FIX_BLIND_READINGS_STILL_ZERO` — 3ef4b41e73ea
+- `RIMMANDRAKE_SCOPE_SELFTEST_LEDGER_READS_PREFLIGHT_LOG_TRIPS` — 1fe595f83e10
+- `ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING` — c1651115d3
+- `AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO` — c5c07b9e25
+- `RIMMANDRAKE_HOLD_PENDING_BATCH_AFTER_DELIVERY_DEATH` — f29a2b7680
+- `ALARM_FILING_FIX_NO_ROOM_AT_INN` — ba566f60c7
+- `CHECKER_REACH_FIX_GH_DARK_SECOND` — c549cc8ab6
+- `CLEANER_SANITY_REVIEW_FINISH_FULL_FILES` — 3bf4cecd5f
+- `CLOSE_AUDIT_MEASURE_FALSE_CLOSES_HONESTLY` — c043da2443
+- `CONTRACTS_EXCISE_ARBITER_REPLAY_FAMILIES` — b47c87d04b
+- `DELEGATED_DIGEST_HARDEN_MUTATION_SURVIVORS` — 68b347c069
+- `DEPLOY_GUARD_FIX_EXCLUDE_DIR_MISMATCH` — f160d57cf8
+- `DRVFS_ENOMEM_FIX_ORDER_SEVEN_RUNS_DRY` — 34283c8415
+- `EVIDENCE_HEAD_SEAL_REPAIR_THREE_BEHIND` — 9df1e805ad
+- `LOG_BOUND_DECIDE_COLD_LOAD_ALWAYS_GUILTY` — 9d974a4e3c
+- `MIRROR_PACK_REPAIR_STILL_GRUMBLING` — 1a553c5002
+- `RIMMANDRAKE_HARDEN_HANDOFF_CHECK_FOUR_HOLES_CODEX_FOUND` — c04cf0314869
+- `DISPATCHER_FIX_INCIDENT_BELLS_OVERWRITE` — a8e1e2e57023
+- `RIMMANDRAKE_FIX_DENIED_REFUSAL_LOST_WHEN_LOG_FAILS` — a8e1e2e57023
+- `RIMMANDRAKE_FIX_INCIDENT_BELLS_ONE_RING_PER_SEAT_SESSION` — a8e1e2e57023
+- `RIMMANDRAKE_FIX_RUNG_AT_STAMPED_BEFORE_LOCK_WAIT` — a8e1e2e57023
+- `RIMMANDRAKE_BUILD_SHARED_SCENE_RUNNER_FIRST_SLICE` — 5860e8f8cebebdfbee959a94596daf70e8ae02bf
+- `OWNER_ASKS_AUDIT_FIFTY_NINE_DEEP` — f03c025e7e
+- `RIMMANDRAKE_REVISE_PILOT_BIOME_DESIGNS_WITH_FOUR_RULINGS` — b54f06306071
+- `PROOFLINT_FIX_ARGS_READ_AS_SCRIPTS` — 18178d9350
+- `PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN` — e6ab733c03
+- `REGRADE_SAMPLE_BUILD_NOISE_GUARDED` — df7cadb8b9
+- `REPO_RENAME_SYMLINK_RETIRE_1` — e148e8c31e
+- `RESTOREWAIVER_AUDIT_TEN_TAKEN_ON_TRUST` — 746fd15844
+- `ROLE_LAUNCH_KILL_DECIDE_ROLES_SURVIVORS` — 6dcfd7f682
+- `SEAT_TMP_PRUNE_TESTS_LEFT_LUGGAGE` — e9221a885c
+- `SLOT_HOOK_FIX_TEXT_STILL_OWNER_ONLY` — 0535dcc043
+- `STEVE_BRAKE_FIX_KNOWN_CAUSES_RELEASE` — 5f7d5b0d57
+- `TESTQ_ROWS_MEASURE_THE_UNMEASURED_THIRD` — 6607725538
+- `TMP_SCRATCH_PRUNE_SIXTEEN_GIGS_NOBODY_CLAIMS` — 7385b7d55d
+- `OPS_ERROR_BUDGET_DIAGNOSE_CIRG` — 22f53ea356
+- `OPS_ALARM_FIX_CLOSED_TICKET_SILENCES_FAULT` — ee749bf033
+- `OPS_METRONOME_MIGRATE_CLOCKS_FENCED` — aa928335da
+- `LESSONS_RETIRE_INBOX_AS_QUEUE` — 47595a6360
+- `RIMMANDRAKE_REWRITE_BLUEDESERT_TO_SLIME_UTINNI_LENS` — fe304c57fe7a
+- `RIMMANDRAKE_CONTINUE_LEFT_OPEN_RUNS_WITHOUT_A_HAND_RELAUNCH` — 8addfdb8bcbb
+- `RIMMANDRAKE_FIX_MEAN_HELPERS_COUNTS_IDLE_GAPS_AS_RUNNING` — e4f6ecd988d9
+- `RIMMANDRAKE_FIX_SLOT_SET_WORDS_KEEP_OWN_SEAT_TIME` — e4f6ecd988d9
+- `RIMMANDRAKE_FIX_STREAMS_FIXTURE_LACKS_CODEX_BRAKE_KEY` — e4f6ecd988d9
+- `RIMMANDRAKE_REWRITE_LANTERNDEEPS_TO_RUSTCATHEDRAL_UTINNI_LENS` — 3eeeb118bf8c
+- `RIMMANDRAKE_REWRITE_THESUMP_TO_WEEPINGSTONES_UTINNI_LENS` — 80ddbabd42f9
+- `RIMMANDRAKE_REWRITE_SLEEPINGICE_TO_THEROT_UTINNI_LENS` — 260f720cae97
+- `RIMMANDRAKE_REQUIRE_HIS_WORDS_BEHIND_SPEAKER_OWNER_RULING_PASSED` — 085ea874b073
+- `RIMMANDRAKE_MATCH_EXAMINER_TO_AUTHOR_BY_ID_NOT_LABEL` — 6ddd8a75170e
+- `RIMMANDRAKE_FOLD_FRAME_JUDGE_INTO_PRELOOK` — 16ba7496bd694e9800538a83542434e248e932b9
+- `RIMMANDRAKE_ROUTE_FLAWED_CRITERION_GAPS_OFF_DESIGNER_REWORK` — 5b8f201cfa74
+- `RIMMANDRAKE_RESOLVE_CONCEPT_CLONE_IN_CLI_REPIN_REPO_WON` — 11a050e9d891
+- `RIMMANDRAKE_REJECT_MALFORMED_DESIGNER_RESULTS_NOT_CRASH` — 0b8de6809a5a
+- `RIMMANDRAKE_REFUSE_UNREADABLE_OWNER_FEED_BLIND_IS_NO_REPLY` — 0d8c666b3097
+- `RIMMANDRAKE_REWRITE_SCALD_SEA_DESIGN_READ_IN_FULL` — 29749224d14f
+- `RIMMANDRAKE_BUILD_PACKET_BEFORE_SAVING_OPEN_RUN_PHANTOM_CHARGE` — 8992cdc87eb8
+- `RIMMANDRAKE_REWRITE_GREY_SEA_DESIGN_READ_IN_FULL` — 8294b3d28724
+- `RIMMANDRAKE_REWRITE_TWILIGHT_SEA_DESIGN_READ_IN_FULL` — ddc64f3dab17
+- `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD` — 087f5d91e625
+- `RIMMANDRAKE_POINT_CONTROL_HOOKS_AT_RUN_CLONE_LAUNCHER_DELETED` — 16b922b388874a0491acadbf63bdb814d3bab684
+- `RIMMANDRAKE_REWRITE_CHILL_SEA_DESIGN_READ_IN_FULL` — 18e4a66863f3
+- `RIMMANDRAKE_RAISE_POOL_LINE_SIXTEEN_CLONES_NEVER_FIT_SEVENTY` — 12d3fb7100f147282d3aa6cd6634ba8a43f5c3c6
+- `RIMMANDRAKE_REJECT_MALFORMED_RUN_FILES_SECOND_PASS_EXAM_SCENES` — 560c5dd3843a
+- `RIMMANDRAKE_MATCH_ASK_REVIEWER_TO_AUTHOR_BY_AGENT_ID` — 0e7b0b57b99b
+- `RIMMANDRAKE_HONOUR_CRITERIA_SUSPECT_IN_PROGRAM_RESULT_TOO` — f5fbaafde133
+- `RIMMANDRAKE_ANCHOR_PIN_IN_CONCEPT_CLONE_NOT_DISPATCHER` — 73da0adc5ddf
+- `RIMMANDRAKE_REFUSE_WAITING_RESULT_WITHOUT_FEED_BASELINE` — b5cbe7d26829
+- `RIMMANDRAKE_NOTE_UNREADABLE_LIVE_PROOFS_AS_UNMEASURED` — b5cbe7d26829
+- `RIMMANDRAKE_RECHECK_BLUEDESERT_TO_SLIME_CHOICES` — b71e54ede224
+- `RIMMANDRAKE_CLOSE_FOUR_REPAIR_HOLES_CODEX_SECOND_LOOK_FOUND` — 92198f22dc9b
+- `RIMMANDRAKE_BUILD_OBSERVATORY_SMALL_PROVEN_FIRST` — 21221f031b350cb73c6e37216fd3f6b7f19d1395
+- `RIMMANDRAKE_CLEAN_SEED_RECORD_WHEN_LANDING_TIMES_OUT` — eb05bc207356
+- `RIMMANDRAKE_ROLL_BACK_AUTOLOCK_WHEN_RECORD_DIR_FAILS` — eb05bc207356
+- `RIMMANDRAKE_RETRY_ROAD_BACK_FIXER_AFTER_TRANSIENT_LAUNCH_FAIL` — f9ebc4f931af
+- `RIMMANDRAKE_RESUME_REPAIR_LANES_FOUR_STOPPED_FOR_ACCOUNT_SWITCH` — f9ebc4f931
+- `RIMMANDRAKE_KEEP_LAUNCHED_UNIT_WHEN_LEDGER_AFTER_FAILS` — bcb440c84266
+- `RIMMANDRAKE_BOOK_CODE_ON_LAUNCH_EXCEPTION_FRESH_FIX_SEEN` — bcb440c84266
+- `RIMMANDRAKE_READ_FABLE_WEEKLY_METER_USAGE_LINE_NEVER_SHOWED` — c8793e7cc5f0bf5a4a9dc2093a433be99e6d8877
+- `RIMMANDRAKE_WIRE_WRAPUP_RESTORE_ORPHANED_BY_RETIRED_TICK` — 491f1c8055126fe649b182381128706f96619f4c
+- `RIMMANDRAKE_ORDER_UNTRIED_ROAD_BACK_ITEMS_BEFORE_SPENT_FAILURES` — 36915f0974f7
+- `RIMMANDRAKE_GUARD_USAGE_POLL_WIPES_LATEST_ON_EMPTY_REGISTRY` — 92bd6967752624cc68e83001da42f3e18a6b16c5
+- `RIMMANDRAKE_KEEP_CONDUCTOR_HOLD_ABOVE_COVERAGE_STOP_FIXERS` — 6732504a7241
+- `RIMMANDRAKE_RETRY_FAILED_FIX_TICKET_LAUNCH_WHILE_PAUSED` — 6732504a7241
+- `RIMMANDRAKE_KEEP_FILED_STEWARD_ITEM_ACROSS_LAUNCH_FAILURES` — 6732504a7241
+- `RIMMANDRAKE_READ_WHOLE_LAUNCH_OUTPUT_FOR_TRANSIENT_FAULTS` — 6732504a7241
+- `RIMMANDRAKE_CLEAN_SEED_RECORD_WHEN_LAND_CANNOT_START` — 6732504a7241
+- `RIMMANDRAKE_ABORT_AUTOLOCK_WHEN_BACKUP_UNREADABLE` — 6732504a7241
+- `RIMMANDRAKE_COUNT_NO_SLOT_FOR_AUTOLOCK_OR_REPIN_ACTS` — 6732504a7241
+- `RIMMANDRAKE_REVIVE_SHIPPED_FUZZ_WITH_LAWS` — d953880e717f9bea48f487971e32ce4ef7186ca8
+- `RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL` — 797a08f5e7a5384f8fc4b14ddc68c10af14897aa
+- `RIMMANDRAKE_SHARE_GATE_RETRY_RULE_WITH_FIXER_SELECTORS` — a17db97b5a6f
+- `RIMMANDRAKE_FIX_FOCUS_CAP_REFUSED_CLAIM_STILL_TAKES_LEASE` — 8716c3bcdd071304c9dba2e26302b18d1f4c0e4c
+- `RIMMANDRAKE_FIX_MATURATION_AUTONOMY_CODEX_REVIEW_FINDINGS` — a17db97b5a6f
+- `RIMMANDRAKE_BIND_ESCALATION_TO_ITS_ORDER_NEWEST_TOOK_BLAME` — 32098a6e2cba
+- `RIMMANDRAKE_CANCEL_ADMITTED_RUN_ON_UNIT_STOP_STILL_STARTED` — 32098a6e2cba
+- `RIMMANDRAKE_END_SKIPPED_UNIT_RUN_LEFT_ADMITTED_FOREVER` — 32098a6e2cba
+- `RIMMANDRAKE_FENCE_KILL_FAILED_CGROUP_READ_SAID_NOTHING_RAN` — 32098a6e2cba
+- `RIMMANDRAKE_FIND_CLAUDE_SCOPE_ON_EMERGENCY_KILL_STORE_DOWN` — 32098a6e2cba
+- `RIMMANDRAKE_READMIT_FAILED_LAUNCH_RELEASED_ROW_READ_UNREADABLE` — 32098a6e2cba
+- `RIMMANDRAKE_SOUND_FAULT_ALARM_ON_METERED_RELEASE_TWO_MUTE` — 32098a6e2cba
+- `RIMMANDRAKE_FIX_STOP_TEST_RACE_EMPTY_READ_COUNTED_ZERO` — 97c1ba43af2d
+- `RIMMANDRAKE_CLOSE_STOP_FENCING_GAPS_CODEX_ROUND_TWO_FOUND` — dd34dd9e36b5
+- `RIMMANDRAKE_PRINT_MEASUREMENT_REPORT_BESIDE_EVERY_GREEN_CHECK` — a6f66574d826
+- `RIMMANDRAKE_SPLIT_CONTROL_STORE_REVIEW_CLAIMS_EIGHT_UNTRIED` — cebbc5b2dd76
+- `RIMMANDRAKE_PUBLISH_EVERY_DIRTY_SHARD_OWNER_FILES_WENT_UNSENT` — c38d4415aa15d5b9416815a78aef08c7231e407d
+- `RIMMANDRAKE_SCOPE_LAND_REPLAY_TREE_AFTER_RENAME_MERGE` — cd3d6be6d8ce
+- `RIMMANDRAKE_KEEP_AUTHOR_ON_LAND_REPLAY_COMMIT_TREE` — cd3d6be6d8ce
+- `RIMMANDRAKE_LITERAL_LAND_PATHSPECS_AND_FETCH_TIP_CODEX_SAW` — cd3d6be6d8ce
+- `RIMMANDRAKE_FINISH_ROLLBACK_WHEN_A_RESTORE_WRITE_FAILS` — e2aa419fe19254c001ebd0c6b3d9f60868b95ddd
+- `RIMMANDRAKE_HARDEN_PUBLISH_PARK_RESTORE_RACE_CODEX_FOUND` — 3366de5aa45e
+- `RIMMANDRAKE_HARDEN_ACCOUNT_USAGE_POLL_RACES_CODEX_FLAGGED` — dd37ba275875
+- `RIMMANDRAKE_ATTRIBUTE_MANUAL_SWITCH_BY_LOG_NOT_OLD_MARKER` — e219f1e8729f
+- `RIMMANDRAKE_KEEP_UNREADABLE_RECORD_WHEN_SEEDING_SAYS_NEVER` — c38fb7b10abb20de20f95f60a9b6c41815196f98
+- `RIMMANDRAKE_SKIP_RESTOP_OF_STOPPED_FLEET_PUSH_EACH_PASS` — 4576205d06fe
+- `RIMMANDRAKE_RETIRE_SETTER_ARBITER_SEAMS_EVERY_LAUNCH_REFUSED` — 9010e5074c262f2f0e8e4e5ffdd7bddb82fc9fd0
+- `RIMMANDRAKE_FIX_KNOWN_RESULTS_AUDIT_NIGHTLY_SCOPED_TO_NOTHING` — ae36d62c2c5bc2f8225664718d4a412a209721bd
+- `RIMMANDRAKE_COUNT_HAND_FIX_ON_UNBOOKED_ROAD_BACK_TICKET` — 0e9b7b1692d594d50cc0fe664fc37431c3dd77f1
+- `RIMMANDRAKE_KEY_SETTINGS_EDITS_BY_OCCURRENCE_ABAB_LOST_ONE` — fbaa9266c6e491670abc916b36bb9dc0b2e6dead
+- `RIMMANDRAKE_RECORD_DOOR_SKIP_FOUR_LANDINGS_LEFT_NO_TRACE` — 79b2a2169b17
+- `RIMMANDRAKE_FIX_REAL_DIGEST_DETECTOR_BIG_NUMBER_COUNTS_GREW` — 7e79094c4e3c
+- `RIMMANDRAKE_FIX_ASSERTCLOSE_NAN_THREE_OTHER_SELFTESTS` — 71c15213575d
+- `RIMMANDRAKE_FIX_COVERAGE_JUDGE_TEN_FINDINGS_FIFTH_COUNT_CLEAN` — b8d12099e5eb631ca47ea689d873c63f52dee0ad
+- `RIMMANDRAKE_READ_UNREADABLE_PID_AS_UNKNOWN_NOT_DEAD_YET` — dd2f57e81e99
+- `RIMMANDRAKE_STOP_LANES_EASY_SPOT_BEFORE_STEVEN_HITS_LINE` — 52afce67f4
+- `RIMMANDRAKE_FOLD_RECORDED_HAND_ACTS_AFTER_KNOWN_FAILS` — 4a23927267bc885f62087c30557f63a722b42b92
+- `RIMMANDRAKE_SEED_SCENE_LOOK_CALIBRATION_BRIM_PIT_PAIR` — 86d35cdec854bba4ae0e2af45d46445d93393477
+- `RIMMANDRAKE_OWN_VOIDED_TICK_RUNS_ARCHIVE_HID_THEM` — 8666586b8adbae55466ea70ce421a54f419cef73
+- `RIMMANDRAKE_SPLIT_MANUAL_HAND_ACT_IDS_WITHIN_ONE_SECOND` — 8666586b8adbae55466ea70ce421a54f419cef73
+- `RIMMANDRAKE_TYPE_EVERY_CONSUMABLE_AS_ACCOUNT_OLD_COUNTERS_GO` — c180799371c76945dd29f35e2a5f9db52661b736
+- `RIMMANDRAKE_HONOUR_DATED_WAIT_BEFORE_CONTINUING_TWICE_IDLE` — cb61feea75b3
+- `RIMMANDRAKE_DECIDE_GUARDS_OWED_BY_LANDED_OLD_FIXES` — e1d8b84dcf5f
+- `RIMMANDRAKE_RESTAGE_CSHARP_SUITES_FRESH_MTIME_STALE_FAULT_BINARY` — deff17d3ef29
+- `RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS` — 018d405e54fe3916a7364bc529fe2d475aca492f
+- `RIMMANDRAKE_ADD_PIPE_QUEUE_VERBS_QUEUE_VIEW_PRINTS_MEGABYTES` — 16ded1e1fb5f978368589246ce3d921a8ba0e4d7
+- `RIMMANDRAKE_EMIT_REFUSAL_RECORDS_FROM_NORTHSTAR_FRAME_FAILS` — 1ba90a62fa3062e77b06db82967dc3759ed6810f
+- `RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW` — 81af32921341
+- `RIMMANDRAKE_FENCE_LAUNCH_IDENTITY_ONE_ID_TWO_PAYLOADS` — be673ed89530ff242fa64a9607ea98470c7746bd
+- `RIMMANDRAKE_HARDEN_EMERGENCY_KILL_LOCK_FORK_AND_END_RACE` — be673ed89530ff242fa64a9607ea98470c7746bd
+- `RIMMANDRAKE_KEEP_STOP_DEADLINES_TWO_TIMERS_ONE_NAME` — be673ed89530ff242fa64a9607ea98470c7746bd
+- `RIMMANDRAKE_TIGHTEN_CENSUS_AND_P95_POOLED_HID_SLOW_VERB` — be673ed89530ff242fa64a9607ea98470c7746bd
+- `RIMMANDRAKE_KEEP_FIRST_ADMISSION_ON_REFUSED_REPLACEMENT_ID_REUSE` — 53cb713db19de9e5fff02a005adbc7eea2241467
+- `RIMMANDRAKE_BOOK_LOCKED_KILLS_BY_RUN_TIMERS_REAP_TWICE` — 53cb713db19de9e5fff02a005adbc7eea2241467
+- `RIMMANDRAKE_TRACE_CENSUS_ALIASES_HALF_SECOND_READ_AS_ZERO` — 53cb713db19de9e5fff02a005adbc7eea2241467
+- `RIMMANDRAKE_SPLIT_CONTROL_REVIEW_ROUND_THREE_ELEVEN_UNTRIED` — 53cb713db19de9e5fff02a005adbc7eea2241467
+- `RIMMANDRAKE_SCOPE_RUN_SPEND_TO_VERSION_OLD_RUNS_LINGER` — 6593d47a26356d3ff059f08bd013834c52838ce5
+- `RIMMANDRAKE_SHARPEN_FLOWWORKS_VOLUME_LAW_ONE_DECILITRE_SLIPS_BY` — dbf76d554cd6dfbd05ea7bc5192dc6591350dcf3
+- `RIMMANDRAKE_TRACE_ROLE_RUN_LOST_DONE_STRANDING_NOW_CAUGHT` — 3f9dc26cd5da1db1ffbf62d941a7e0b6a476acec
+- `RIMMANDRAKE_RECHECK_SLEEPINGICE_TO_THEROT_CHOICES` — 5da7d5c5e21e
+- `RIMMANDRAKE_RETIRE_RELENTLESS_COLLECTOR_READS_A_DEAD_STORE` — 66577f942c85405cdc31f170ac4c635b3a399c1a
+- `RIMMANDRAKE_TEACH_EXAM_PACKET_PARTIAL_RETAKE_STEP_SEVEN_FORBIDS` — 84ef53b2315b
+- `RIMMANDRAKE_RETAKE_ONLY_TOUCHED_EXAM_SCENARIOS_CARD_ASKED_TWICE` — 84ef53b2315b
+- `RIMMANDRAKE_RETIRE_CIRCLING_WATCH_ONLY_THE_DEAD_TICK_CALLED` — 2406951ab1270a2fb699c143925f9a5fb5ff419e
+- `RIMMANDRAKE_RECHECK_THESUMP_TO_WEEPINGSTONES_CHOICES` — 773d1f1411ce
+- `RIMMANDRAKE_RECHECK_LANTERNDEEPS_TO_RUSTCATHEDRAL_CHOICES` — 2e9ddacd0472
+- `RIMMANDRAKE_SPLIT_CONTROL_REVIEW_ROUND_TWO_NINE_UNTRIED` — be673ed89530ff242fa64a9607ea98470c7746bd
+- `RIMMANDRAKE_RELAUNCH_CUTOVER_CHECK_IF_RUN_ENDS_UNDECIDED` — a22c3e0bcf
+- `RIMMANDRAKE_PLANT_FLOWWORKS_SETTLING_LAW_SHUTTLE_TRIPS_OTHERS` — 8fe7940f1f4c8ce9a0b9fdefbabce46962b039de
+- `RIMMANDRAKE_NARROW_CUTOVER_WRITER_CHECK_EIGHT_OF_THIRTEEN_READ` — d732c71852
+- `RIMMANDRAKE_READ_ADVISORY_PRIOR_GAP_BEFORE_IT_BINDS_UNREAD` — 9aeaccc0a4e6
+- `RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN` — 257923658b21
+- `RIMMANDRAKE_RECHECK_FEVERWOOD_GREENTIDE_ABYSS_CHOICES` — cab579074634
+- `RIMMANDRAKE_HIDE_CAP_STOP_FROM_RESUMED_RUN_READER_TRIMMED` — b08f107a1c59
+- `RIMMANDRAKE_TUNE_ADVANCE_REFUSAL_ALARM_BLOCKS_NOTHING_AS_CODED` — eb691cf88b70b49c2b5f25015e971e77701b6b08
+- `RIMMANDRAKE_LABEL_CONDUCTOR_OPENED_SCOPE_NOT_HIS_WORDS` — 5570fc1a7119
+- `RIMMANDRAKE_GUARD_CONTROL_COPY_RETAINED_RULES_ONE_WORD_REVERSES` — 5570fc1a7119
+- `RIMMANDRAKE_HARDEN_PIN_ANCHOR_THREE_EDGES_CODEX_FOUND` — 5570fc1a7119
+- `RIMMANDRAKE_CORRECT_FOUR_SEAS_GREY_CATCH_SAYS_THIRTEEN` — f0ca981b0ce7
+- `RIMMANDRAKE_RETIRE_COMBINED_SEA_DESIGN_TWO_SEAS_FOUND_WRONG` — f0ca981b0ce7
+- `RIMMANDRAKE_CHECK_RESUMED_READERS_PAGES_FOR_TRIMMED_READING` — 9fcac0b4d3dd
+- `RIMMANDRAKE_UNPLACE_MACHINERY_HELPERS_FROM_MODS_SLOT_TAKEN` — c8e06b5d3197
+- `RIMMANDRAKE_RECONCILE_TWO_EXAM_RETAKE_TESTS_LEAF_VERSUS_FILE` — addbc1f7cf39
+- `RIMMANDRAKE_TEACH_HELPER_WAIT_OWNERS_TURN_RELAUNCHED_FABLE` — cfb9fb5f8c76
+- `RIMMANDRAKE_CHECK_COMMITTED_TREE_NOT_DIRTY_WORKTREE_AT_DOOR` — d04ab1009366
+- `RIMMANDRAKE_SAMPLE_PYRE_NEVER_ROWS_BETWEEN_FIVE_HUNDRED_TICKS` — d04ab1009366
+- `RIMMANDRAKE_RETIRE_LEASE_GUARD_TWENTY_FIVE_GHOST_LEASES` — bb0f483b3a2a83b4763010c9dff9a507ea7a10ea
+- `RIMMANDRAKE_UNCLOG_SCRATCH_ARCHIVE_BACKLOG_29_KB_CLONES_EACH` — 0e46d65aa1
+- `RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES` — 7ab8a45321
+- `RIMMANDRAKE_CARD_REPAIR_RULES_WHEN_ROUND_SPLIT_IS_MEASURED` — 1dbd8e0457
+- `RIMMANDRAKE_READ_NIGHT_RUN_REPORTS_SEVEN_STARTED_AT_TEN` — 1dbd8e0457
+- `RIMMANDRAKE_MEASURE_TWO_MORE_REVIEW_ROUNDS_BEFORE_ANY_FILTER` — 1dbd8e0457
+- `RIMMANDRAKE_ENACT_PAGE_BEFORE_CODE_CONTROL_STORE_IS_PILOT` — daad400e3429
+- `RIMMANDRAKE_READ_CONTROL_PAGE_FRESH_BEFORE_CODE_IS_CUT` — cf4f0a87a246
+- `RIMMANDRAKE_ASK_CLEANSE_TENANCY_ROW_APPROVED_AFTER_HIS_CUT` — 84609890c017
+- `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_READER_GOES` — 4f12b10443b4
+- `RIMMANDRAKE_DRILL_KILL_ON_THROWAWAY_UNIT_ZERO_LIVE_KILLS` — 8481f1a76a94
+- `RIMMANDRAKE_MEND_TWO_SELFTESTS_RED_BEFORE_THE_CODE_SPLIT` — 3fac6d0d7da2
+- `RIMMANDRAKE_PROVE_TWO_COVERAGE_JUDGE_FAULTS_OVERTURN_DOUBLED` — 4a49d294f9c9
+- `RIMMANDRAKE_END_GHOST_RUNS_STORE_SAYS_STARTED_SYSTEMD_GONE` — b058baa480
+- `RIMMANDRAKE_RELABEL_OLD_CLAIMS_BLIND_CODEX_AGREED_ON_SIXTEEN` — 9f3712dc2714bdf75a97d72457911c20f4d70ddf
+- `RIMMANDRAKE_TRY_NIGHT_HYPOTHESES_ON_RUNNING_FACTORY_BETTER` — 321f8272c2e2
+- `RIMMANDRAKE_BUILD_BOUNDARY_CHECK_PROMISE_WITHOUT_TEST_REFUSED` — 046554a9334e27d35362a97b037f8db8352c155a
+- `RIMMANDRAKE_CHECK_PAGE_ONLY_EDIT_AT_PUBLISH_SLIPS_PAST` — 60274d0df25d
+- `RIMMANDRAKE_TEST_SHARED_STARTING_CONTEXT_TWO_TINY_LAUNCHES` — ed91191396ffaeba199b77c59ffa2a250f76787c
+- `RIMMANDRAKE_STRIP_CONDUCTOR_IDENTITY_HELPERS_TOLD_DELEGATE` — 0bf215847a36
+- `RIMMANDRAKE_BREAK_EACH_PROMISE_DOES_ITS_NAMED_TEST_FAIL` — 9cb84a6dca35
+- `RIMMANDRAKE_HARDEN_PROMISE_TESTS_SEVEN_BREAKS_SLIPPED_PAST` — 910aba337e886a03398c0230ebfa977435f4afbb
+- `RIMMANDRAKE_SHARE_PROBE_RESULT_TYPE_NINE_FILES_ROLL_OWN` — be1b9a29452d
+- `RIMMANDRAKE_READ_PROBE_RESULT_PAGE_FRESH_WRITER_COULD_NOT` — 255dfb096e98
+- `RIMMANDRAKE_COUNT_JUDGE_AND_ART_REASK_TOKENS_ONCE` — 0210176155e1
+- `RIMMANDRAKE_REPLAY_TWO_MORE_HYPOTHESES_SURPRISE_AND_LARGE_READS` — 958c4a287c9b
+- `RIMMANDRAKE_SETTLE_SPLIT_CONTROL_REVIEW_LEFT_OPEN` — e68d32a7a9
+- `RIMMANDRAKE_SETTLE_HIDE_CAP_STOP_LEFT_OPEN` — e68d32a7a9
+- `RIMMANDRAKE_REPIN_GRAFFITI_SOAK_FIX_AFTER_WEDNESDAY_RESETS` — e68d32a7a9
+- `RIMMANDRAKE_SETTLE_STALE_CONDUCTOR_DEBTS_THIRTY_ONE_OWED` — 43895e317b
+- `RIMMANDRAKE_TELL_HIM_THE_NIGHT_IN_THE_MORNING` — 473d14755c
+- `RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ONE` — e4b1bbdf5e
+- `RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP` — 2024d9b916
+- `RIMMANDRAKE_JUDGE_EXPLOSIVEKNOCKBACK_BLIND_CYCLE_THREE` — 2024d9b916
+- `RIMMANDRAKE_FIX_OPEN_CODEX_FINDINGS_ONE_AGENT_KEEPS_CONTEXT` — 2024d9b916
+- `RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_ONE` — 2024d9b916
+- `RIMMANDRAKE_DESIGN_REVIEW_TREADMILL_FIX_COUNT_WAS_FLAT` — 2024d9b916
+- `RIMMANDRAKE_RECOGNISE_GOODNIGHT_AS_LAST_SENTENCE_GOODBYE` — 2024d9b9161f
+- `RIMMANDRAKE_SETTLE_DRIVE_FLOWWORKS_IN_LEFT_OPEN` — 2024d9b916
+- `RIMMANDRAKE_SETTLE_HARDEN_PIPELINE_WHERE_LEFT_OPEN` — 1502ca6bfb
+- `RIMMANDRAKE_SETTLE_JUDGE_EXPLOSIVEKNOCKBACK_BLIND_LEFT_OPEN` — 1502ca6bfb
+- `RIMMANDRAKE_SETTLE_FIX_OPEN_CODEX_LEFT_OPEN` — 1502ca6bfb
+- `RIMMANDRAKE_SETTLE_FORECAST_ON_SHARED_LEFT_OPEN` — 1502ca6bfb
+- `RIMMANDRAKE_NAME_RECEIVER_FOR_SEAT_ALARMS_PENDING_WITH_NONE` — d6e0cb654d25
+- `RIMMANDRAKE_REAP_CLONES_WHOSE_LENDER_IS_GONE` — 86cced0192
+- `RIMMANDRAKE_FORECAST_ON_SHARED_PLANNER_DROPIN_MIRROR_DEADMAN` — c7e2273f53
+- `RIMMANDRAKE_CENSUS_RETIRED_ERA_REMAINS_AFTER_GATE_READS_GREEN` — 00e67455a8
+- `RIMMANDRAKE_INSTALL_PERMIT_DROPIN_LIVE_AFTER_CONTROL_FIXES_LAND` — c7e2273f53
+- `RIMMANDRAKE_OPEN_ERA_CENSUS_REPORT_FOR_HIM_WHEN_LANDED` — 219ab84f9e
+- `RIMMANDRAKE_WRITE_LAWS_FOR_EIGHT_FUZZ_FAMILIES_STILL_UNNAMED` — 75b3856b244c622c6765563bc7ee0e4457c8cfa6
+- `RIMMANDRAKE_ENACT_NO_MOD_RUNS_ON_BROKEN_PIPELINE_RULING` — 2cee05e364c1
+- `RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT` — 8af7715c2c73
+- `RIMMANDRAKE_CALIBRATE_ART_JUDGE_BRIEF_AFTER_SIZE_RULE_RESTORED` — 32672dbb0e85
+- `RIMMANDRAKE_ADAPT_SUITE_SCENES_TO_EMPTY_GAME_FLOWWORKS_ONLY` — d78464b22365
+- `RIMMANDRAKE_ADD_ARCHMAGI_LOAD_MEMORY_TO_FLEET_NOW_SMALL` — e1b3f27729
+- `RIMMANDRAKE_MEND_BOUNDARY_ACCEPT_FIXTURE_NOW_NEEDS_MAIN` — 957ec0da0c65
+- `RIMMANDRAKE_PROVE_PIPELINE_READY_BEFORE_SLACK_CEILING_RELEASE` — 9293667cfa
+- `RIMMANDRAKE_HOLD_UNREADABLE_STORE_TICK_CRASH_BACK_SLICE_TWO` — 8eb4a961f0dd
+- `RIMMANDRAKE_SEPARATE_CONTROL_OFF_FROM_LAUNCH_FAILED_180_ALARMS` — 8b055e3018e0
+- `RIMMANDRAKE_PROVE_PIPELINE_CONTROL_ASKS_MET_HE_ASKED_BEFORE` — 39c800fbf6
+- `RIMMANDRAKE_RETIRE_TODOIST_AS_ALERT_ROUTE_IT_NEVER_RANG` — ca131ab03881
+- `RIMMANDRAKE_ANSWER_HIM_CONTROL_ASKS_MET_OR_NOT` — 03c9c7d0a7
+- `RIMMANDRAKE_TELL_HIM_TODOIST_TASKS_CLOSED_COUNT` — 03c9c7d0a7
+- `RIMMANDRAKE_SELECT_CALIBRATION_TEST_ON_REGISTRY_EDIT_JSON_UNSEEN` — 50a28ed7f03d
+- `RIMMANDRAKE_FIX_CALIBRATION_DOOR_SELFTEST_RED_ON_UNTOUCHED_MAIN` — 50a28ed7f03d
+- `RIMMANDRAKE_CHECK_CALIBRATION_DOOR_FIX_IN_BLOCKERS_RUN` — 50a28ed7f03d
+- `RIMMANDRAKE_EXPORT_CONTROL_ACTS_BELT_SPLIT_FROM_SLICE_FOUR` — 50bd2f5765
+- `RIMMANDRAKE_FINISH_RETIRED_ERA_REMAINS_TWENTY_ONE_NO_TICKETS` — 6e8c5ad4ef
+- `RIMMANDRAKE_DROP_RETIRED_SLACK_CHECK_STILL_OWED_AT_EXIT` — 4844a03c0d3e
+- `RIMMANDRAKE_ADD_PERMIT_BREAK_CONTROL_ACCEPT_READ_BLIND` — 50bd2f5765
+- `RIMMANDRAKE_RESOLVE_CLAUDE_BIN_MODLEDGER_READER_RED_SINCE_16TH` — 50bd2f5765
+- `RIMMANDRAKE_CLOSE_TOKEN_COUNT_FIX_ON_FIRST_RESUMED_RUN` — 0bafcfab01
+- `RIMMANDRAKE_READ_ERA_FINISH_RESULT_TELL_HIM_RENAMES` — 0bafcfab01
+- `RIMMANDRAKE_COUNT_RESUMED_RUN_TOKENS_ONCE_SESSION_TOTAL_LOGGED` — 2a5b1558b2
+- `RIMMANDRAKE_READ_SLACK_BLOCKERS_VERDICT_HE_DECIDES_RUN` — 16ebde2113
+- `RIMMANDRAKE_SCOPE_ALARM_TOLD_ROW_SELFTEST_PAGED_CONDUCTOR` — 4b9967ecc59a
+- `RIMMANDRAKE_DECIDE_HOLD_FILE_MIRRORS_STORE_HIS_CALL` — 97f0cc2819
+- `RIMMANDRAKE_BUILD_HOLD_FILE_MIRROR_HE_SAID_COMMISSION_ALL` — 97f0cc2819
+- `RIMMANDRAKE_ADD_PERMIT_BREAK_ACCEPTANCE_COULD_NOT_LOOK_SINCE` — 50bd2f5765
+- `RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE` — 60e6fc8b8b306eed02e5b23da2844e194c76ab1c
+- `RIMMANDRAKE_TYPE_SIX_MORE_CONSUMABLES_READERS_IN_LIVE_LANES` — df9f1d8e54
+- `RIMMANDRAKE_READ_VOID_COUNTERS_PAGE_SECOND_LOOK_OWED` — 40ae7a3a122cfd888e8e13e54b6e9b9f2554675e
+- `RIMMANDRAKE_CLEAR_SLACK_WALK_SITE_ON_MODDED_MAPS` — a129c569f59ff182c0a19bbb5bcccc60ed305318
+- `RIMMANDRAKE_READ_CONTROL_FIX_RESULTS_NINE_OF_TWELVE_MET` — 21ab6b34a9
+- `RIMMANDRAKE_CUT_SLACK_WALK_FLOOR_LINE_BEFORE_SAVE` — a129c569f59ff182c0a19bbb5bcccc60ed305318
+- `RIMMANDRAKE_TRIM_GSS_PROOF_SETTINGS_READS_THIRTY_SEVEN_PERCENT` — a129c569f59ff182c0a19bbb5bcccc60ed305318
+- `RIMMANDRAKE_NAME_AUTHORITY_IN_REVIEW_BRIEF_CENSUS_WENT_RED` — 96f34d61077c
+- `RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE` — 96f34d61077c
+- `RIMMANDRAKE_DRILL_REAL_AGENT_WRITING_STOP_ONLY_STANDIN_TESTED` — 157517ae7a
+- `RIMMANDRAKE_SET_STOP_DEADLINE_BY_WALL_CLOCK_FIRED_LATE` — 157517ae7a
+- `RIMMANDRAKE_SPARE_OTHER_RUNS_PROBE_UNITS_SWEEP_KILLED_DRILL` — 157517ae7a
+- `RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS` — c4e1a29958a6
+- `RIMMANDRAKE_CARD_OPERATIONS_OPTIONS_BINDING_REWRITE_ON_WAKE` — ba23c55414
+- `RIMMANDRAKE_REASK_FABLE_FROM_START_WHEN_MOD_IS_FREE` — 03252bb8bc
+- `RIMMANDRAKE_READ_FLEET_MOVED_RUNWAY_IDLE_ACCOUNT_READS_TEN` — f9b9b5f9cefff1bfe72d2e903c88d4feaf211bd5
+- `RIMMANDRAKE_STOP_OWED_ZERO_WHEN_LEDGER_MISSING_HOOK_CAUGHT` — ec1ebc4e57ca
+- `RIMMANDRAKE_QUIET_OPS_REPEATS_AGING_COUNTS_AS_NEWS` — 5fea40cf02
+- `RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS` — ad38a70a3d39a03ef92e83cf421ede0ee3a79db9
+- `RIMMANDRAKE_CLERK_OPEN_INCIDENTS_FIFTY_SEVEN_RUNS_ONLY_NOTED` — 371138182f8f
+- `RIMMANDRAKE_CARD_FINDINGS_RULE_AFTER_HE_READS_THE_TABLE` — 31d02dbf8f
+- `RIMMANDRAKE_BRING_SECOND_WAVE_OWNER_CALLS_ON_ONE_CARD` — 31d02dbf8f
+- `RIMMANDRAKE_SHOW_PHONE_ALERT_DRAFT_BEFORE_ITS_CARD` — 31d02dbf8f
+- `RIMMANDRAKE_UNREGISTER_DORMANT_SKILLS_HE_INVOKES_BY_NAME` — 479d09056afbf0165f3a1c48ae9b676edb6cf434
+- `RIMMANDRAKE_PRINT_EVERY_ACCOUNT_AS_LEFT_CORRECTED_FOUR_TIMES` — 5333ff7d9978
+- `RIMMANDRAKE_CRYSTALLIZE_KNOWLEDGE_EVIDENCE_MOVES_NEVER_VANISHES` — 3b90ed9505
+- `RIMMASTER_SETTLE_HANDOFF_CULL_AGE_TWO_RULINGS_DISAGREE` — d046be13c5a86c9e8cac1812b20a4c1c7debfc9d
+- `RIMMANDRAKE_RULE_NO_ARBITRARY_LIMITS_CAP_NAMES_ITS_DANGER` — 9f6d6fe34cf67bd3118dd97f89162e8f21b65ee9
+- `RIMMANDRAKE_CRYSTALLIZE_HANDOFFS_REPOINT_HARVEST_THEN_CULL` — 2e5cb699e061ab74a67d99246d36b7a351d8fef9
+- `RIMMANDRAKE_ADOPT_NO_ARBITRARY_LIMITS_RULING_EIGHT_OBJECTIONS` — 2763422ca1
+- `RIMMANDRAKE_REFUSE_DUPLICATE_LESSON_AT_WRITE_WARNING_IGNORED` — 9cb6834d0e16f32eebea4ec43ed59343ee00979a
+- `RIMMANDRAKE_IMPROVE_CRYSTALLIZE_SKILL_WHILE_FINDINGS_ARE_FRESH` — 21a1f7a03f
+- `RIMMANDRAKE_NAME_SKILL_PATHS_IN_BRIEFS_AUTOFIRE_IS_OFF` — f5c94f632a9079ac6f26d7be27a6c90128452b7b
+- `RIMMANDRAKE_SCAN_PUBLIC_REPO_SECRETS_HE_ASKED_WHAT_EXPOSURE` — de5dd9d565
+- `RIMMANDRAKE_TEACH_DESIGNER_CLEANSE_RULES_BRIEF_ONLY_KNEW` — 420ecac9f93fc45b38be5d1f8e4920c1040c5af2
+- `RIMMANDRAKE_RESET_COVERAGE_STRIKES_AFTER_SIGNOFF_OLD_TWO_COUNTED` — 64a1eda328b0648dc9a14d3a0a20248638c4a1ab
+- `RIMMANDRAKE_REQUIRE_PASSING_ROW_TO_CLOSE_REPAIRED_SLOT` — 64a1eda328b0648dc9a14d3a0a20248638c4a1ab
+- `RIMMANDRAKE_PIN_MOD_MODEL_FABLE_EVERY_STAGE_ROLES_OPUS` — a2a7a71e48
+- `RIMMANDRAKE_NAME_DESIGNER_RUNS_MOD_PIPE_OFF_NEVER_SAW` — a2a7a71e48
+- `RIMMANDRAKE_MERGE_TEN_LESSON_CLUSTERS_SWEEP_READ_MERGED_NONE` — eeb532cee47e2dff9b3f5c9abcb682a88f8c6650
+- `RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS` — 321aee60b5c292f3f4e751cac7ce2f837092ebf9
+- `RIMMANDRAKE_FIX_THREE_TOOL_DEFECTS_LESSONS_DID_NOT_STOP` — b3daa2a5ae5468238e4db3ed5b7b7c1daf8dfed8
+- `RIMMANDRAKE_ARM_COULD_NOT_LOOK_LINT_299_PLACES_ALLOWED` — 9a14f32660997432eccbaf8c2cd7aae42c183879
+- `RIMMANDRAKE_LAUNCH_LINT_READS_AFTER_HE_RULES_PAGE_STRICTNESS` — 9a14f32660997432eccbaf8c2cd7aae42c183879
+- `RIMMANDRAKE_READ_ONLY_FILES_THAT_FAILED_PILOT_FOUND_ZERO` — 9a14f32660997432eccbaf8c2cd7aae42c183879
+- `RIMMANDRAKE_ADD_HIS_PHRASING_DEEP_DESIGN_TYPED_EIGHT_TIMES` — e15e81b5bb9e
+- `RIMMANDRAKE_FIX_LODESTAR_DRIFT_AND_GUARD_GAPS_FOUND_TODAY` — e2b67a79e0
+- `RIMMANDRAKE_MOVE_IMAGE_SKILLS_TO_WORKFLOWS_GPT_TOOL_BORROWS` — 97fd9a31edfacf279a9f615b8f2f52975c71d0a2
+- `RIMMANDRAKE_SETTLE_UNREADABLE_STORE_HOLD_NOT_READ_TODAY` — e2b67a79e0
+- `RIMMANDRAKE_BRING_CODEX_FINDINGS_PROBLEM_OR_POLISH_NO_LEAN` — e2b67a79e0
+- `RIMMANDRAKE_READ_NEXT_HELPER_START_NO_SEAT_IDENTITY_BLOCK` — e2b67a79e0
+- `RIMMANDRAKE_REVIEW_OWNER_ONLY_ACTS_WITH_HIM_THEN_CRYSTALLIZE` — e2b67a79e0
+- `RIMMANDRAKE_HOLD_REPAIR_LANES_UNTIL_HE_PICKS_SURVIVORS` — e2b67a79e0
+- `RIMMANDRAKE_STOP_CONDUCTOR_RESTARTS_LOSING_ITEMS_ASK_GPT` — e2b67a79e0
+- `RIMMANDRAKE_GUARD_PIPELINE_DOORS_CHEAPLY_NO_CEREMONY` — e2b67a79e0
+- `RIMMANDRAKE_SCAN_PIPELINE_SLEEPER_TICKETS_ANYWHERE_THEY_HIDE` — e2b67a79e0
+- `RIMMANDRAKE_BUILD_MATURATION_PAGE_NO_TOKENS_SPENT` — e2b67a79e0
+- `RIMMANDRAKE_DIAGNOSE_STEVE_WORLD_START_SIX_MODS_ONE_FAILURE` — e2b67a79e0
+- `RIMMANDRAKE_AUTOBUILD_GRAFFITI_THIRTY_THREE_BARS_LEFT` — e2b67a79e0
+- `RIMMANDRAKE_EXCUSE_STRANDED_FILES_MAIN_HOLDS_BYTE_FOR_BYTE` — 0a39424fa0
+- `RIMMANDRAKE_WAKE_CONDUCTOR_ON_RUN_END_LOG_ONLY_TODAY` — d3bdf96d3bf5
+- `RIMMANDRAKE_WAKE_CONDUCTOR_ON_RUN_END_LOG_ONLY_TODAY` — 0a39424fa0
+- `RIMMANDRAKE_BUILD_NEUTRAL_CRITERIA_FIXER_WITH_GUARD` — 0a39424fa0
+- `RIMMANDRAKE_FIX_CONCEPT_TREE_SELFTEST_DESIGNER_ROW_DRIFTED` — 0a39424fa0
+- `RIMMANDRAKE_GREEN_RESET_PHRASES_FOCUS_CLAIM_RED_ON_MAIN` — 0a39424fa0
+- `RIMMANDRAKE_REPAIR_CODEX_SEATS_FIXTURE_UNLISTED_RED_TWIST` — 0a39424fa0
+- `RIMMANDRAKE_RULE_LEXICON_SEVEN_TERMS_FOUR_RETIRED_ENTRIES` — e42c961037
+- `RIMMANDRAKE_REPAIR_INCIDENT_SELFTEST_TWO_REDS_ON_MAIN` — 0a39424fa0
+- `RIMMANDRAKE_LAUNCH_TWO_RUNS_REFUSED_BY_FULL_POOL` — e2b67a79e0
+- `RIMMANDRAKE_EXPLORE_OPERATIONS_OPTIONS_AFTER_WEDNESDAY_RESET` — e2b67a79e0
+- `RIMMANDRAKE_LAND_STRANDED_ROLE_COMMIT_OPERATIONS_DEAD_FOUR_HOURS` — 774dff5a6e
+- `RIMMANDRAKE_SHARE_POSITIVE_STEPS_TEXT_FOUR_COPIES_DRIFTED` — 65e95f5a90
+- `RIMMANDRAKE_CENSUS_OPEN_PIPELINE_TICKETS_INTO_LANES_NONE_RUN` — 0a39424fa0
+- `RIMMANDRAKE_LOOK_TWICE_AT_SKILL_PATH_WARNING_BUILDER_CANNOT` — 4148b8e03110d1a68b5cb32e21dd11d4941bc945
+- `RIMMANDRAKE_ADD_AUTHORITY_LINE_NEW_CODE_REVIEW_ROLE_MISSED` — 4de8394b349260dad4496decae3a9071f5ef29f6
+- `RIMMANDRAKE_FIX_FOUR_SMALL_DEFECTS_FOUND_AT_TODAYS_WAKE` — 4148b8e03110d1a68b5cb32e21dd11d4941bc945
+- `RIMMANDRAKE_NAME_CLAIM_WHEN_WAIT_REFUSES_PROPOSED_OWED_ITEM` — ed58cd4cab
+- `RIMMANDRAKE_KEEP_UNJUDGED_CHAINS_WHEN_ONLY_CHAIN_FILTERS` — ca17b86e7de254788e816695ecf8d7be9dd5cca7
+- `RIMMANDRAKE_FIX_JUDGE_CLI_KEEPS_OTHER_CHAINS_ONE_FILE` — ca17b86e7de254788e816695ecf8d7be9dd5cca7
+- `RIMMANDRAKE_SWEEP_OWED_LIST_FOR_TRASH_MOST_ARE_LATE` — 0f48f1e595
+- `RIMMANDRAKE_SHOW_HIM_LODESTAR_ICON_SHEET_WHEN_HELPER_REPORTS` — 7df09c59a2
+- `RIMMANDRAKE_MEASURE_CHURN_AGAINST_MISSING_RESPONSIBILITY_SPECS` — e5be3e5aee
+- `RIMMANDRAKE_REQUIRE_EXAM_EXPECT_VERDICT_WORD_492_ALREADY_DO` — f502298f0ae4f5a4cdc26d72fc57485ca992feda
+- `RIMMANDRAKE_DRAIN_CLAUDE_MD_RULE_LINES_OLD_RULING_OBSOLETE` — 52a6cb4195f08b2d3dcf0fb3a793f675a3f4c92d
+- `RIMMANDRAKE_FIX_MATURATION_REVIEW_FINDINGS_SIX_PREDATE_SCOPE` — c776601fe268
+- `RIMMANDRAKE_READ_MATURATION_POINTS_RESULT_AT_ITS_WAKE` — 13f1587bd7
+- `RIMMANDRAKE_MAKE_COMPANION_DEPLOY_ATOMIC_HELD` — 98e81846fcc6
+- `RIMMANDRAKE_FIX_ROLE_UNIT_STAMP_SELFTEST_RED_ON_MAIN` — 328611932dea
+- `RIMMANDRAKE_LAUNCH_MINER_FIX_AND_TIMING_LIMIT_BOTH_WAIT` — 8d41d27910
+- `RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT` — 381db58f594a
+- `RIMMANDRAKE_KEEP_STEVE_PLAYER_LOG_PER_ATTEMPT_SEVENTEEN_BLIND` — 980b2efc6f1d
+- `RIMMANDRAKE_FIX_WORKER_REUSES_BAD_GAME_COSTS_TWO_JOBS` — 29beb482a4
+- `RIMMANDRAKE_HIDE_SPEND_IN_PROMPTS_COST_LINE_SURVIVED` — f5510dac9c76
+- `RIMMANDRAKE_TYPE_PILOT_STREAK_AS_ITEM_ACCOUNT_ALREADY_ORDERED` — 0197f111d3bb
+- `RIMMANDRAKE_READ_FOREIGN_DEF_NOT_FOUND_AS_LIST_FACT` — 1c39a9edc4b6
+- `RIMMANDRAKE_QUIET_CURED_RED_SERIES_GONE_MEANS_GREEN` — 2bc54529df4f
+- `RIMMANDRAKE_REBUILD_REQUIRED_CHECKS_MANIFEST_SIX_MODS_STALE` — 1c39a9edc4b6
+- `RIMMANDRAKE_REFUSE_GSS_GATE_UNDER_PYTHON_EXE_ALWAYS_RED` — 1c39a9edc4b6
+- `RIMMANDRAKE_RERUN_TEST_TABLE_BEFORE_MOD_LANDING_CENSUS_SKIPPED` — 85f388636e4b
+- `RIMMANDRAKE_TAKE_EIGHTY_ONE_OBVIOUS_OWNER_TICKETS_REPORT_UNREAD` — 8d41d27910
+- `RIMMANDRAKE_CLOSE_DETACHED_ITEM_AT_RUN_END` — ec49db3c3a
+- `RIMMANDRAKE_FIX_VALIDATION_CORE_FOREIGN_DEFS_AND_GATES` — 85f388636e4b
+- `RIMMANDRAKE_REPAIR_CONTINUE_STEP_FLAWS_CODEX_FOUND_SEVEN` — ec49db3c3a
+- `RIMMANDRAKE_ADMIT_PAUSED_FLYER_READS_AT_BRIDGE_TAKE` — eba1e8b81341
+- `RIMMANDRAKE_ANNOTATE_FOLD_MEMORY_BESIDE_STANDING_WORK_COVER` — e36cec36427c57eb17d433cc02f1c512af3075f1
+- `RIMMANDRAKE_REFUSE_MALFORMED_IDS_CLOSE_RUN_CRASHES_INSTEAD` — e36cec36427c57eb17d433cc02f1c512af3075f1
+- `RIMMANDRAKE_REVALIDATE_INPUTS_BEFORE_REFUSAL_STALE_THIRD_STRIKE` — e36cec36427c57eb17d433cc02f1c512af3075f1
+- `RIMMANDRAKE_KEEP_STAGE_JSON_DESIGNERS_LEDGER_READS_HOMONYM_NAMED` — a0409779a591
+- `RIMMANDRAKE_SPARE_EXPERIENCE_GAPS_FROM_BAR_WORD_DETECTOR` — e36cec36427c57eb17d433cc02f1c512af3075f1
+- `RIMMANDRAKE_UNBLOCK_CONCEPTS_WHOSE_BLOCKER_CLOSED_DAYS_AGO` — 69ca12d82197a526b6a0710bd88aeffd6ac6797e
+- `RIMMANDRAKE_STOP_STEVE_GAME_FORCE_KILL_LEFT_IT_RUNNING` — d712479dfb70
+- `RIMMANDRAKE_SEAL_JUDGE_SHARD_FROM_SYNCED_CLONE_SEALED_EMPTY` — 1df7a8912052
+- `RIMMANDRAKE_SETTLE_PARTIAL_IMPL_TWO_INVENTORY_ROWS_UNCOUNTED` — 69ca12d82197a526b6a0710bd88aeffd6ac6797e
+- `RIMMANDRAKE_TRACE_PHONE_IMAGE_TMP_FILE_VANISHED_ONCE` — 1df7a8912052
+- `RIMMANDRAKE_MIRROR_KNOCKBACK_STAGE_LEDGER_SAYS_OFFLINE_BUILD` — 1df7a8912052
+- `RIMMANDRAKE_FIX_JUDGE_GATES_AND_DESIGNER_CLOSE_CRASHES` — e36cec36427c57eb17d433cc02f1c512af3075f1
+- `RIMMASTER_FIX_AGENT_GAME_EVENTS_FILED_AS_OWNER` — eba1e8b813
+- `RIMMANDRAKE_BOUND_BRIDGE_MAIN_THREAD_WORK` — 3c8b49c43666
+- `RIMMANDRAKE_WAIT_LOAD_READY_UNTIL_CURRENTMAP_SET` — 3c8b49c43666
+- `RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` — 7894424d640fc31e5602351916ed310f4a8b8444
+- `RIMMANDRAKE_RETIRE_ARCHMAGI_LIVE_ROWS_DEAD_SINCE_NOV_SIX` — 8edeb01ba1fd
+- `RIMMANDRAKE_NAME_SOAK_BLIND_MINUTES_ON_REPEATED_UNREACHABLE` — 3aaf6b39d835
+- `RIMMANDRAKE_WIRE_STREAMS_GAME_STATE_OFF_A_FROZEN_SNAPSHOT` — b4a763fabb78
+- `RIMMANDRAKE_SKIP_WRAPUP_ROWS_A_LIVE_UNIT_CARRIES` — 195a94ec96
+- `RIMMANDRAKE_SPEED_BRAKE_RELEASE_PASS_MISSES_ITS_BEAT` — a3460537afab
+- `RIMMANDRAKE_GUARD_HAND_LAUNCH_AGAINST_DISPATCHER_TWIN_RUN` — 174ce562bae4
+- `RIMMANDRAKE_LIFT_DESIGNER_BLOCK_NAMING_DONE_ITEM_SLIME_WAITS` — 994f9807c1a1
+- `RIMMANDRAKE_RESERVE_PUBLISH_BEAT_STARVED_THIRD_STUCK_ALARM` — 994f9807c1a1
+- `RIMMANDRAKE_STRIP_SPEND_TALK_FROM_CARD_BRIEFS_HAND_CUT` — 9850da2ca2
+- `RIMMANDRAKE_UNJAM_DISPATCH_CLONE_UNTRACKED_TWIN_FROZE_IT` — 994f9807c1
+- `RIMMANDRAKE_CHARGE_SHARED_OUTAGE_ONCE_FORTY_FIVE_DEATHS` — 0197f111d3bb
+- `RIMMANDRAKE_REAP_SELFTEST_CHILD_ENDED_RUN_LEFT_HOLDING_CLONE` — 9850da2ca2
+- `RIMMANDRAKE_RETRY_PUBLISH_ON_INDEX_LOCK_FAILED_TWICE_RUNNING` — 9850da2ca2
+- `RIMMANDRAKE_SET_HELPER_CLONE_NOREPLY_GMAIL_SLIPS_ONTO_PUBLIC` — 9850da2ca2
+- `RIMMANDRAKE_CLOSE_DETACHED_RUN_ENDS_AND_CLONE_LEFTOVERS` — 9850da2ca2
+- `RIMMANDRAKE_DEFEND_OR_DROP_ONE_SECOND_LIMIT_FLAKED_PUBLISH` — aa14c13a2b77
+- `RIMMASTER_FIX_REMOTE_TAKE_HOLDS_LOCK_NOBODY_READS` — 98ba034b57fb
+- `RIMMANDRAKE_STOP_GAME_B_TRIAL_LEFT_RUNNING_BLOCKS_STEAM` — b541e5dc39
+- `RIMMANDRAKE_REWRITE_OPERATIONS_ROLE_ONE_OF_TWO_SWITCHED_ON` — 6b68cee0f8d0
+- `RIMMANDRAKE_REWRITE_RESCUE_AND_WALK_ROLES_PIPELINE_NAMES_THEM` — b1ea74e5446b
+- `RIMMANDRAKE_STAMP_STAGE_SPEND_ROWS_ONE_UNIT` — 09fffd6665b5
+- `RIMMANDRAKE_RELABEL_SPEND_PRINTERS_STILL_V1` — 09fffd6665b5
+- `RIMMANDRAKE_ALLOW_REWRITE_BATCH_ITS_ONE_MEANING_READER` — 47d1dad056ac2bcb8717affca52c7e73fbb304c7
+- `RIMMANDRAKE_REFRESH_READINESS_LISTS_ONLY_BLOCKER_FIXED_AT_TWO` — 20f238d1f5
+- `RIMMANDRAKE_FIX_REDUCER_SKIPS_LINES_ABOVE_LATE_VERSION_OPEN` — 96474969d710
+- `RIMMANDRAKE_MOVE_BIOME_FEATURE_JUDGE_RULES_OUT_POINTERS_STAY` — 3bd830b0ec9cb9e050144f74b460fd570cf1f9fc
+- `RIMMANDRAKE_REWRITE_CONDUCTOR_FILES_LONGEST_ROLE_FILE` — 02e4b2a92372be1c260078f10a4d6ed05070b55e
+- `RIMMANDRAKE_ENACT_CLEAN_MEANS_PROMISES_TESTED_ONE_FIX_ROUND` — 55fb725cec62
+- `RIMMANDRAKE_FLAG_NUMBER_ONLY_DIFFS_IN_MATURATION_NEXT` — 2c71850741ff
+- `RIMMANDRAKE_LIST_THINNEST_MARGINS_IN_CERTIFICATE_RUN` — 2c71850741ff
+- `RIMMANDRAKE_FIX_MATURATION_BRIEFS_AND_SPEND_ROWS` — 2c71850741ff
+- `RIMMANDRAKE_AMEND_REVIEW_RULE_MINOR_FINDINGS_STAY_ON_POLISH` — 62f3aef1f01fbd3887bea7aff867a394cce9adde
+- `RIMMANDRAKE_ENACT_REVIEWER_FIXES_ONE_REREAD_THEN_FLAG` — 33f6e976b3
+- `RIMMANDRAKE_REVIVE_CLEAN_DIRTY_TREEMAP_ON_STANDING_TABS` — f6e22c9f6bedc849997bc0b6b64200699ab44c07
+- `RIMMANDRAKE_READ_SPEC_SCAN_RESULT_THEN_CARD_HIS_OPTIONS` — 9399d6e624
+- `RIMMANDRAKE_CARD_MOD_BARS_AS_PAGE_SHIP_CHECK_GREY` — 9399d6e624
+- `RIMMANDRAKE_PIN_FLOWWORKS_FILM_NEVER_DROWNS_CROPS` — 48864bd58c45440424a4f2e800e7609cf7918d04
+- `RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_KEEP_THEIR_UNITS` — 48864bd58c45440424a4f2e800e7609cf7918d04
+- `RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN` — 48864bd58c45440424a4f2e800e7609cf7918d04
+- `RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_READS_SETTING` — 48864bd58c45440424a4f2e800e7609cf7918d04
+- `RIMMANDRAKE_COUNT_LOCKED_BARS_AS_MOD_PAGE_CHECK_GREY` — 338c6635507b
+- `RIMMANDRAKE_ENACT_TOUCHING_CODE_COSTS_SEE_IT_DO_IT` — f48b559cd5f2
+- `RIMMANDRAKE_JUDGE_FLOWWORKS_BLIND_CYCLE_FOUR_TESTS_FIRST` — 0f0bedba5f18da91e950620bb614021df12a5b43
+- `RIMMANDRAKE_FIX_CARD_STAMP_OVER_LEDGER_LINE_LIMIT` — 7ecf4a9e735f
+- `RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET` — 1b2317ef72a0
+- `RIMMANDRAKE_CARD_FLOWWORKS_FOUR_BARS_TO_NEXT_VERSION` — 4c95f0d115
+- `RIMMANDRAKE_FIX_LIVE_PANEL_COUNTS_A_LOG_NOBODY_WRITES` — 8edeb01ba1fdcc5d92dc04bcf7915e76ab9d5783
+- `RIMMANDRAKE_FIX_KEEP_CHECK_MISPAIRS_BACKTICKS_ON_CHARTER` — fe17dcfce709e158cd0073b5b6f2b1f55ed8938e
+- `RIMMANDRAKE_FIX_DISPATCHER_R2_GREEN_BY_HAND_RED_NIGHTLY` — 026fd344c9e21d470247e2ec59f722d48e0c931b
+- `RIMMANDRAKE_SWITCH_HEALTH_BOARDS_TO_PAGE_CLEAN_RECORD_LINGERS` — 8ff210afee00ca8fc1aab44617e826d9c2290772
+- `RIMMANDRAKE_FIX_STATUS_PAGES_READING_DEAD_LOGS` — 8ff210afee00ca8fc1aab44617e826d9c2290772
+- `RIMMANDRAKE_UNHOOK_SELFTESTS_FROM_LIVE_HOST_STATE_ON_WSL` — 5d3da125a77c72137ee8f54321a9084bd443f0cc
+- `RIMMANDRAKE_HEAD_SELFTESTS_RED_NOT_DESIGNER` — 5d3da125a77c72137ee8f54321a9084bd443f0cc
+- `RIMMANDRAKE_REPAIR_NORTHSTAR_DRIVER_FIXTURES_COUNTS_DRIFTED` — 5d3da125a77c72137ee8f54321a9084bd443f0cc
+- `RIMMANDRAKE_BUILD_PAGES_OPENER_ONE_EDGE_WINDOW_THREE_TABS` — 845ec5085e
+- `RIMMANDRAKE_FIX_NORTHSTAR_MOCK_RUN_RED_ON_MAIN` — 5d3da125a77c72137ee8f54321a9084bd443f0cc
+- `RIMMANDRAKE_MEASURE_CLONE_LAG_FROM_LAST_PULL_CHURN_TRIPS` — 50b0559c0bca18ceaac59a546683b7f7a6e64000
+- `RIMMANDRAKE_SKIP_ZOMBIES_IN_MARKER_SCAN_ONE_DEFUNCT_BLINDS` — cd73ef1d9159ad2126e94f0624fbe9d5b3752488
+- `RIMMANDRAKE_PIN_DISPATCH_SELFTEST_BRIDGE_READ_FLAKED_ONE_PUBLISH` — b28d8d018f5e53345d7f74a0a055cfd90bf8d1a2
+- `RIMMANDRAKE_PREVIEW_THREE_GATES_READ_ONLY_FOR_LAUNCH_CHECKS` — 040a9f20b4d1214a293fe29662c96374cb8beb7d
+- `RIMMANDRAKE_FEED_CLEANSE_OWNER_ANSWERS_SCALD_CARD_SAT_UNREAD` — cdec1068f010817d8c70c17b1f486203beca65cb
+- `RIMMANDRAKE_GUARD_SLACK_GRAVSHIP_SCENE_EXIT_WRITES_NO_ROW` — 774d8f068bbc
+- `RIMMANDRAKE_BUILD_MATURATION_SPINE_WHILE_DESIGN_STILL_MOVES` — 4596983162200392ffffcff2a6234d2d3751721f
+- `RIMMANDRAKE_SEED_DESIGNER_WITH_DRAFT_AS_INPUT_NOT_OUTPUT` — 9a000f92468a18e14968fba5ed7700c23930ed24
+- `RIMMANDRAKE_UPGRADE_DESIGNER_CLEANSE_SIXTY_FOUR_BARS_LOCKED` — ed446eec411ba0caae132323bb973394d55697e6
+- `RIMMANDRAKE_ADOPT_MOD_DESIGN_VERSIONS_SO_JUDGE_CAN_PASS` — bcc1c96c3c0770442ae5032f744d97842f703e04
+- `RIMMANDRAKE_CUT_DESIGNER_RUN_COST_TEN_RAISES_NO_ITEM` — 4fe2af3f9e0cc0b411e639b24daddd0350ca1446
+- `RIMMANDRAKE_BUDGET_SECOND_GAME_MUTANTS_PAST_FIVE_HUNDRED_SECONDS` — 3f2a28f069e3e7da17943549e060b77a89e0030b
+- `RIMMANDRAKE_WRAP_NULL_TEXTURE_PROBE_WALKSTACK_IN_TRY` — 9de5afb5b8bfdacaba1e38714f362505b6fea9a2
+- `RIMMANDRAKE_READ_CONDUCTOR_ACTS_PAGE_FRESH_ONE_READER_OWED` — 31ded22667
+- `OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW` — 31ded22667
+- `OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA` — 31ded22667
+- `OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ` — 31ded22667
+- `OPS_MATURATION_MOD_STALLED_KHOT` — 31ded22667
+- `OPS_PLAN_READING_RESTORE_QOOF` — 31ded22667
+- `OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI_TBVP` — 31ded22667
+- `OPS_SEAT_CLONE_DIRT_RESTORE_VTLF` — 31ded22667
+- `OPS_SLI_DRIFT_DIAGNOSE_BSUI` — 31ded22667
+- `OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV` — 31ded22667
+- `OPS_WORKER_CLONE_POOL_RESTORE_HMOQ_PBAL` — 31ded22667
+- `RIMMANDRAKE_SET_CONDUCTOR_WINDOW_TO_FABLE_POLICY_ALREADY_SAID` — 839d7e1393
+- `RIMMANDRAKE_STRIP_FOUNDRY_ACCEPTANCE_PROSE_RETIRED_TWICE` — 2fe7aae28d
+- `RIMMANDRAKE_INVENTORY_VALIDATION_SCHEMES_BEFORE_ANY_LADDER` — a7fc369869
+- `RIMMANDRAKE_RESTORE_PAUSED_WORK_KEEP_EVERY_SPEND_CAP` — adc4c5a325
+- `RIMMANDRAKE_CLASS_DECISIONS_WAITS_ALARMS_NAME_WHO_ACTS` — adc4c5a325
+- `RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT` — d9870b13c6
+- `RIMMANDRAKE_RENAME_INGEST_REPAIR_ITEMS_MINT_REFUSES_THEM` — 245d951538bc
+- `RIMMANDRAKE_CHECK_THREE_COVERAGE_HOLES_CLOSED_WITH_TEST_RED` — b029a7b81fc7
+- `RIMMANDRAKE_INSTALL_VV_MATRIX_CLOCK_WRITTEN_NOT_RUNNING` — 0e00a54fc6
+- `RIMMANDRAKE_PRUNE_PRIORITY_LIST_CLOSED_ENTRY_STALLS_PLAN` — ee6f74668dd8
+- `RIMMANDRAKE_PIN_FABLE_ALIAS_TO_FIVE_TWO_FOR_SPAWNS` — 384e651a21
+- `RIMMANDRAKE_JUDGE_OPEN_PIPELINE_TICKETS_WORTH_THE_TOUCH` — 384e651a21db
+- `RIMMANDRAKE_TELL_TRUE_BRIDGE_TOOL_OUTCOME` — 3c8b49c43666
+- `RIMMANDRAKE_LET_BRIDGE_CHOP_TREES_NOT_ONLY_CROPS` — c7d498a52e88
+- `RIMMANDRAKE_CHECK_SLACK_VISIT_TWO_AGAINST_UNPROVEN_COMPANION` — c47a19c6276a
+- `RIMMANDRAKE_SPLIT_PIT_LOOK_EXIT_UNMEASURED_READ_AS_FAIL` — f24f71dba4122db44f0b6a3c8756f348ba8046db
+- `RIMMANDRAKE_DECODE_RUN_DIFF_CP1252_DASH_CRASHED_NEXT` — 223b6e24993a90fec01b5463324abf4752ce3a95
+- `RIMMANDRAKE_READ_LIVE_FULL_KIND_AS_FULL_LIST` — 223b6e24993a90fec01b5463324abf4752ce3a95
+- `RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO` — 900dcd8bb4378e67fb748b8e4b56366528759b30
+- `RIMMANDRAKE_ENACT_RED_TEST_VOID_READINGS_AND_LOGON_TABS` — 94c2edf52676
+- `RIMMANDRAKE_ENACT_SYSTEM_LEAVES_AT_ONE_PERCENT_THEN_LUKAS` — a31cd9b0f598
+- `RIMMANDRAKE_REPORT_DISPATCH_PUBLISH_UNSTICK_RESULT_TO_HIM` — fe9c755d3a
+- `RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_TWO_FAILURES_BACK` — 8107c3d37fc5711e4e880bf65f48c9f55fa0d25b
+- `RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS` — c4003b134e81
+- `RIMMANDRAKE_POINT_FLOWWORKS_GEYSER_CHECK_AT_VISIT_ONE_RUNNER` — f2c6a84eee53
+- `RIMMANDRAKE_REPORT_STEVEDESKTOP_CPU_FAULT_DATA_TO_GPT_TWICE` — 9ca69a0debfc520cc509409e3615fd0f0d3899c8
+- `RIMMANDRAKE_REPIN_SOURCE_PAYS_FILM_IS_NOT_A_LEAK` — f81a24fa857b
+- `RIMMANDRAKE_RESET_FLOWWORKS_BIG_PIT_CALLED_WRONG_CLASS` — 16d4894f4893
+- `RIMMANDRAKE_DIG_OL_SPARE_PIT_ONLY_IN_OLD_SAVE` — d1052da8ddf0
+- `RIMMANDRAKE_PIN_SLACK_REMOVAL_CHECK_BRIDGE_TIER_NOT_GSS` — 994c0ff63911
+- `RIMMANDRAKE_ROUTE_GIMMESOMESLACK_VISIT_TWO_FAILURES_BACK` — a745f6007fee
+- `RIMMANDRAKE_MEND_SLACK_STYLED_RUNS_FRESH_BUILD_DIVERGES` — 44124fa3432ac9a5cc26903696f47d5a42966941
+- `RIMMANDRAKE_SETTLE_SLACK_CUT_CENSUS_DEAD_END_POLL_LATE` — 345366aa49f9
+- `RIMMANDRAKE_COPY_PUSHOVER_KEYS_FROM_MAC_DESKTOP_SSH_REFUSED` — 6b83bb5b75
+- `RIMMANDRAKE_SCAN_PIPELINE_FOR_CONTEXT_THROWN_AWAY_THEN_RELOADED` — be4bd85eb412
+- `RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED` — 78f82f3d9c1fe666198c29719d5ed9d1d73656cd
+- `RIMMANDRAKE_FIND_FINER_QUOTA_METERS_WHOLE_PERCENT_TODAY` — 023c872116cb
+- `RIMMANDRAKE_REPORT_CLOSEOUT_VERDICTS_FOURTEEN_UNLEDGERED_NOTES` — 9dfc575e54
+- `RIMMANDRAKE_LAUNCH_SIX_CONTEXT_KEEPING_CHANGES_FROM_THE_SCAN` — 4d9866955c
+- `RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION` — b099ffcb8cd9fdefed7c0f3ce49919eaa46655d7
+- `RIMMANDRAKE_FIX_VOID_CLASSIFIER_FAILED_LAUNCH_CHARGED_FULL_CAP` — 7db1e1b33e7761f18658a0fe348c910676225ed9
+- `RIMMANDRAKE_ENACT_SIGNATURE_PICKS_INTO_DESIGNS_SLIME_KEEPS_FILM` — 7a624e4c800c400e47198e28f29395374e061f61
+- `RIMMANDRAKE_TELL_HIM_FLOWWORKS_WALK_READY_OR_SAVE_STALE` — ef78c43dd6
+- `RIMMANDRAKE_SORT_FLOWWORKS_WALK_REPORT_KNOWN_OR_NEW` — eba008066224
+- `RIMMANDRAKE_RESUME_WALK_SORT_WITH_PART_TWO_THEN_CARD` — ffa0f8f41810
+- `RIMMANDRAKE_DECIDE_SLACK_CEILING_RELEASE_ONCE_SPEND_IS_READ` — 2ac2cd8856
+- `RIMMANDRAKE_REFRESH_SLACK_READINESS_THEN_RELEASE_VISIT_THREE` — 2ac2cd8856
+- `RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_ACCEPTANCE_VISIT_THREE` — 2aa45bd21b13
+- `RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_VISIT_THREE_EXIT_MET` — 783529b121ac
+- `RIMMANDRAKE_STEWARD_GIMMESOMESLACK_PRE_HUMAN_STAGE` — 92ce122826c6
+- `RIMMANDRAKE_ADMIT_COLD_STORAGE_AS_PIPELINE_MOD_RIMFRIDGE_GONE` — 7a87bf1cb2dcee9d8c985fbae0e231440ae651f2
+- `RIMMANDRAKE_BUILD_STEVE_REGISTER_PROBE_SEES_UPPER_HALF_LOSS` — 64eb7f604a0f16deb63a45bff1cee9740ee2367f
+- `RIMMANDRAKE_FIX_STEVE_LANE_REFUSES_JOBS_BRIDGE_IDLE_SILENT` — b5c602d88d72
+- `STEVE_LANE_UNSTICK_PAUSED_UNOWNED_372D` — 100aa00d93
+- `RIMMANDRAKE_STAGE_SLACK_WALK_FULL_LIST_BEFORE_HE_SITS` — 05716eba92
+- `RIMMANDRAKE_SORT_SLACK_WALK_INTO_PATCH_AND_NEXT_VERSION` — f4203845661a
+- `SELFTEST_FIX_GSS_ART_MANIFEST_SIZES_SLAT` — ea55afcea321c4521e91d44af562c707a881f984
+- `RIMMANDRAKE_FIX_LEFT_OPEN_PARSE_READS_ITS_OWN_DENIAL` — a15619f150a545705a02a582220095fb6ce6d7bf
+- `RIMMANDRAKE_LAND_CLOSED_PROSE_MOVE_HELPERS_PUBLISH_SHARD_ONLY` — 922ce3fc1fbca25c89a68835c9bd74a4f2246328
+- `RIMMANDRAKE_RESTAMP_PYRELANDS_CONCEPT_TREE_RED_IN_TWO_LANES` — 47e044e556df
+- `RIMMANDRAKE_DESIGN_HOME_FOR_VANILLA_ELECTRICAL_ART` — 37d95a84481c3685077c2f9a0d0585184a6ae967
+- `RIMMANDRAKE_FIX_STAGE_CEILING_ARRIVAL_TEST_RED_ON_MAIN` — 5f1df790a8
+- `RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS` — a79ad5e7bb
+- `RIMMANDRAKE_KEEP_RUN_REPORT_WHEN_LATE_REMARK_FOLLOWS` — 07b78ded245aac235374c8655f30c5c0fae5d954
+- `RIMMANDRAKE_PUBLISH_THREE_PERCENT_LEAVE_LINES_BEFORE_EIGHT_PM` — 6e06e45588
+- `RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST` — 204e615de3
+- `RIMMANDRAKE_SEE_LIVE_STEWARD_BEFORE_CALLING_IT_SPENT` — 50083b6b3e4a2f1fbf57b7ae6fb23509477f3427
+- `RIMMANDRAKE_RESIGN_PYRELANDS_COVERAGE_AFTER_RESTAMP_VOIDED_IT` — 02ac8fc8bb034c7061e2ac81383151954b9a4750
+- `RIMMANDRAKE_OPEN_MOD_LEDGER_VERSION_WITH_ITS_NEXT_VERSION` — 46083880651e62b8a56b959a556150ca540ddfa7
+- `RIMMANDRAKE_STEWARD_GIMMESOMESLACK_PREFLIGHT_STAGE` — 035865eddb0f78edad52bbda1db431aea5c1edf4
+- `RIMMANDRAKE_FIX_FLOWWORKS_FAULT_LOOP_AND_SLACK_STEWARD_MISREAD` — 489968e0965b7abba4e92651b49977595769d449
+- `RIMMANDRAKE_JUDGE_PYRELANDS_BLIND_CYCLE_FOUR_TESTS_FIRST` — 0611a58915b02a6f9a8c6d90f2c88eef5ad1915b
+- `RIMMANDRAKE_UNMEASURE_SAND_SHOVEL_ROW_PASSING_ON_EMPTY_MAP` — 01853a05a67e5921327211c3605076371926968b
+- `RIMMANDRAKE_CONFIRM_PYRELANDS_CYCLE_FOUR_EXIT_MET` — 7a6a8339650b37847d7da5bdacec61e5bdd8f41a
+- `RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN` — e2288f4c84e8
+- `RIMMANDRAKE_HIDE_FLOWWORKS_PIT_WALLS_UNDER_CONCEALED_COVER` — e2288f4c84e8
+- `RIMMANDRAKE_DIM_FLOWWORKS_DROWNED_WALLS_PALE_FRAME_IN_WATER` — e2288f4c84e8
+- `RIMMANDRAKE_STOP_GATES_DEMANDING_OWNER_WORDS_HE_ALREADY_SPOKE` — 88dff24dfecb44de493620dd19dd1e7c32f0fa0f
+- `RIMMANDRAKE_BURN_STEVEN_FULLY_NEXT_NOT_LUKAS` — a32b1eec5a
+- `RIMMANDRAKE_PROVE_GIMMESOMESLACK_T_CORE_RED_SEEN_OWED` — 269a21321c518c94c078ef59d6bf55c79be7a53a
+- `RIMMANDRAKE_PROVE_GIMMESOMESLACK_T_STUB_JOINS_RED_SEEN_OWED` — 269a21321c518c94c078ef59d6bf55c79be7a53a
+- `RIMMANDRAKE_STOP_COUNTING_DRAIN_REFUSALS_AS_SYSTEM_FAULTS` — 2d58382eccc8
+- `RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_OFFLINE_BUILD_HAND` — 69e8623c85c5
+- `RIMMANDRAKE_DEPLOY_BEFORE_GAME_VISIT_PYRELANDS_REFUSED_THRICE` — f34e6e72281a
+- `RIMMANDRAKE_OWN_CLEARED_TICK_RUNS_ALARM_CRIED_FIVE` — 864fc98a51a63e61bf54ce42fccac23b3c2ef602
+- `RIMMANDRAKE_RELAUNCH_STEVEDESKTOP_SEATS_STILL_IN_ASKING_MODE` — db08db00a8
+- `RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_ONE_TESTS_FIRST` — 3abeaf9b373a4741dd9b0be26d02d443660baa32
+- `RIMMANDRAKE_MOCK_FLOWWORKS_WATER_BY_DEPTH_ON_REAL_GROUND` — 6c668b36a82c40838e9cddf393c4781ea76af074
+- `RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_CYCLE_ONE_EXIT_MET` — 2ff3b5511b08699415c6e53ea080a9697e277753
+- `RIMMANDRAKE_DEFINE_BOTH_GAMES_EVERYWHERE_WAITING_SAID_AGAIN` — b6edc94b0cb3
+- `RIMMANDRAKE_CARRY_WSLENV_INTO_B_RUNS_PROOF_HIT_A` — 08b3ba8881
+- `RIMMANDRAKE_READ_FLOWWORKS_PAWN_HEIGHT_CONTROL_SINK_NONE` — 1a74b3d1c16d
+- `RIMMANDRAKE_POINT_REVIEWMAP_AT_GAME_B_SAVES_KEEPER_BLIND` — 4ee4209d57
+- `RIMMANDRAKE_PROBE_FLOWWORKS_GARDEN_YARD_MOUND_RELIEF_OR_KERNEL` — fac9f22274d8
+- `RIMMANDRAKE_STAGE_FLOWWORKS_ICE_CUT_SHOVEL_KEEP_FROZEN` — 1e1f1f97813e
+- `RIMMANDRAKE_LAUNCH_SLACK_SWITCH_LIGHT_AFTER_BLIND_JUDGE_ENDS` — 0358b50183
+- `RIMMANDRAKE_TRACE_FLOWWORKS_ISLAND_RESTORE_OUT_OF_BANK_REACH` — e1006ea43790de8209473631de8db0c46b0a0e74
+- `RIMMANDRAKE_FIX_TICK_NAMER_RUN_THREE_NAME_TOO_LONG` — 9e5768e86fc732861c9123ca5b946cfc416e1dc7
+- `RIMMANDRAKE_ROUTE_GIMMESOMESLACK_VISIT_ONE_FAILURES_BACK_RUN_THREE` — 142a0a0012a48c39a13fbe80d3fe165b8e0b18cd
+- `RIMMANDRAKE_JUDGE_FLOWWORKS_DROWNED_BODY_COVER_BY_EYE` — 5940b2797960
+- `RIMMANDRAKE_STAGE_FLOWWORKS_TRENCH_RAID_NEVER_CAME_CLOSE` — 51e9d9ce4a18
+- `RIMMANDRAKE_FOLD_HAND_RUNS_THE_BOOKS_NOW_OWN` — 0c320de76d3a
+- `RIMMANDRAKE_NAME_CERT_RERUN_AS_THE_WAIT_NOT_A_STALL` — 1ef26499470c
+- `RIMMANDRAKE_RESEARCH_FLOWWORKS_WATER_LOOK_FIRM_ALREADY_PICKED` — e8ef1c230c2828d5bda3f9aeab65b2e1297ae1c5
+- `RIMMANDRAKE_RESUME_REFUSAL_REPAIR_IF_MY_STOP_ENDS_IT` — 9c0e88a9c2
+- `RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED` — 4afb471a8a51
+- `RIMMANDRAKE_PROVE_GIMMESOMESLACK_T_RED_SEEN_OWED_RUN_THREE` — d0b6483f049741aed3dac690eb4d6c8f4d0a1bcb
+- `RIMMANDRAKE_PROVE_GIMMESOMESLACK_T_RED_SEEN_OWED_RUN_TWO` — d0b6483f049741aed3dac690eb4d6c8f4d0a1bcb
+- `RIMMANDRAKE_PROVE_GIMMESOMESLACK_T_SWITCH_LIGHT_RED_SEEN_OWED` — d0b6483f049741aed3dac690eb4d6c8f4d0a1bcb
+- `RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_SEVEN_REFUSALS_ONE_NIGHT` — 84ce231a0700
+- `RIMMANDRAKE_COUNT_DETACHED_SUBRUNS_APART_FROM_CONDUCTOR_SLOTS` — 3a5ad3492415
+- `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO` — 2c7579fdf2e2c1afbd1b4454264e0d5026a70d52
+- `RIMMANDRAKE_RERUN_ONLY_CHECKS_THE_CHANGE_TOUCHES_NOT_ALL_203` — a794f454cc
+- `RIMMANDRAKE_TRACE_DESIGNER_ROLE_CLONE_VANISHED_OPERATIONS_FAILS` — c9f5f48ce3
+- `RIMMANDRAKE_FILE_FLOWWORKS_TICK_NEVER_RERAN_ITS_OWN_CERTIFICATE` — 75ababe76a27
+- `RIMMANDRAKE_REPAIR_GIMMESOMESLACK_FORM_REFUSAL_AT_THE_RUN_FIVE` — b20428e642d4
+- `RIMMANDRAKE_FIX_THREE_PIPELINE_SELFTESTS_RED_ON_ORIGIN_UNOWNED` — c7d7c958f367ed96c70c82e44cb516ae85d30308
+- `RIMMANDRAKE_RESUME_CAPPED_VISIT_BY_TICK_PYRELANDS_SAT_IDLE` — 3bd2a545b6
+- `RIMMANDRAKE_TRACE_FLOWWORKS_HELD_WINCH_FELL_IN_THE_CONTROL` — 175293dc5f6355a432118029c2820c39fd2eea35
+- `RIMMANDRAKE_CARD_STEVE_HYPERVISOR_TEST_FAULT_IS_FREQUENT_AGAIN` — df877e9459
+- `RIMMANDRAKE_SIGN_ART_WORKERS_IN_PHONE_PUSH_NEVER_CAME` — df877e9459
+- `RIMMANDRAKE_ACCEPT_REPAIR_RECORD_NAMING_TWO_COMMITS_NOT_ONE` — 3fedb9f4f5
+- `RIMMANDRAKE_ACCEPT_STRANGE_EXPLAINED_AS_STATUS_THREE_MODS_WROTE` — 3fedb9f4f5
+- `RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_TWO_FAILURES_BACK` — 3fedb9f4f5
+- `RIMMANDRAKE_FIX_PYRE_HAWK_LETTER_BLANKS_FOUR_NAMED_SLOTS` — fa5e6df8cb69dc79b87f3739ddb916a978673dc5
+- `RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES` — 78ebf9918d35
+- `RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMERS_ONLY_IN_THE_CONTROL` — eb15c22de9cd
+- `RIMMANDRAKE_TRACE_FLOWWORKS_FALLEN_RAIDER_WAITS_FOR_NO_LADDER` — 58cfa254e87e
+- `RIMMANDRAKE_REPAIR_PYRE_TABLE_LIVE_COMMANDS_THAT_NEVER_START` — da329b53fd06ad69267132766f9e4b00a699896c
+- `RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_TWO_RUN_THREE` — 355738466cbf
+- `RIMMANDRAKE_STAGE_FLOWWORKS_PIT_TRAP_RAID_NONE_FELL` — 38d6682c815a
+- `RIMMANDRAKE_HOLD_CLERK_TRIGGER_ON_READINGS_BEFORE_THE_ACK` — 3b7ca34b7fcd
+- `RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN` — f3b199975746
+- `RIMMANDRAKE_BOOT_STEVE_NO_LIGHTING_DRIVERS_LAST_SUSPECT_BUT_CPU` — 091a0435959f08eace4e8f78603d1e70f5af8b44
+- `RIMMANDRAKE_STEWARD_GIMMESOMESLACK_PRE_HUMAN_STAGE_RUN_TWO` — 86d5dae1bc91
+- `RIMMANDRAKE_GUARD_NEXT_STEP_STAGE_MOVED_MID_READ` — e424172a53
+- `RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_VISIT_TWO_EXIT_MET` — e424172a53
+- `RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_THREE` — b3f3113a3227520855b41462e11bc35a58406697
+- `RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE` — 973eb635687b
+- `RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE` — 675ab5765121
+- `RIMMANDRAKE_RESTORE_SLACK_LOOK_FILE_AFTER_PROOF_LEFT_EXTCORD` — d0165b796729
+- `RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FOUR` — b520ffc5c84026c9b17f7c855bd7053c03facecf
+- `RIMMANDRAKE_FRAME_PYRE_CHAIN_SHOTS_ON_THEIR_SUBJECT` — 867a3ab5ecb4
+- `RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY` — 09e5483823b2b1f8510fd8d8edce10a8388cc872
+- `RIMMANDRAKE_READ_SAFE_ADVANCE_ARM_FIX_ONCE_NO_READER_YET` — 46fab8f8b35ab56b97e9ed95bce3620fd5e33e50
+- `RIMMANDRAKE_READ_GAME_LOCK_FRESH_WINDOWS_PYTHON_SLIPPED_PAST_ONCE` — caaa7addcdf486ffa34221df913eab5ce2c37ae6
+- `RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES` — 3a192ba712ae
+- `RIMMANDRAKE_SPLIT_STEVE_DRIVER_SET_AUDIO_DRIVER_ALONE_FIRST` — b3526b920f2332358771a09823b18c802d581be7
+- `RIMMANDRAKE_CRYSTALLIZE_RULE_FILES_DOUBLED_IN_EIGHT_DAYS` — b56d8651ef58
+- `RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS` — cea8d0bae6c6187609e7cf04996e5299d12869df
+- `RIMMANDRAKE_MERGE_TWELVE_REFUSAL_RULE_SECTIONS_THAT_WAITED` — ac9cca02b47cd9744e237b9de979f01f321d1c6d
+- `RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL` — fcfdc7c0e136
+- `RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW` — e34cf35d55ec
+- `RIMMANDRAKE_TEST_STEVE_AUDIO_DEFAULT_ON_REALTEK_DRIVER_STILL_LOADED` — c1bfc75ca5a6c3b125906f20b9889fbe890897fd
+- `RIMMANDRAKE_DROP_TRIBES_FROM_PYRELANDS_TEST_TIERS` — 23cd86d724d8
+- `RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK` — 23cd86d724d8
+- `RIMMANDRAKE_ROUTE_STEVE_RIMWORLD_AUDIO_TO_REALTEK_ONLY_THE_GAME` — 9b5605d343e084387c0a2a410de204941b48ef62
+- `RIMMANDRAKE_TRACE_LIVE_SITTINGS_HIT_SPEND_STOP_THRICE_ONE_NIGHT` — 815489ddf5ee
+- `RIMMANDRAKE_SCOPE_BRIDGE_MARKER_TO_ITS_GAME_A_STOPS_B` — 19e7615934d9
+- `RIMMANDRAKE_STOP_RESUME_REWRITING_CONTEXT_A_MILLION_AT_ONCE` — 84ae32f6e85a5740afdd980694a59efb6646b8a1
+- `RIMMANDRAKE_KEEP_STEVE_LANE_GAME_SOUND_OFF_SONIC_STUDIO_AT_LAUNCH` — 74724b160b
+- `RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_THREE_FAILURES_BACK` — 1a687f690fe4
+- `RIMMANDRAKE_FIX_FLOWWORKS_FROZEN_POND_CUT_LEAVES_NO_CRUSHED_ICE` — f3f597ccc61d
+- `RIMMANDRAKE_FIX_FLOWWORKS_SINK_STOPS_ON_LAST_DECILITRE_FILM` — 2083f92acb
+- `RIMMANDRAKE_JUDGE_FLOWWORKS_PALE_BLOCKS_IN_TWO_METRE_PIT` — d07e03a938f7
+- `RIMMANDRAKE_TRACE_FLOWWORKS_GEYSER_PALE_RING_NOT_STEAM` — d07e03a938f7
+- `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE` — 957a9af1f5a9
+- `RIMMANDRAKE_WIRE_FLOWWORKS_OL_TO_READERS_LANDED_EIGHT_DAYS_AGO` — 7f87c7714c05
+- `RIMMANDRAKE_REMOVE_FORGE_GEYSER_PALE_MASK_KEEP_THE_SWIRLING_STEAM` — 293dc24a0aceac88ccb80ad6cdbdc1f369fecc86
+- `RIMMANDRAKE_CHECK_FLOWWORKS_VISIT_FOUR_RESUMES_AFTER_SPEND_STOP` — be21f77fff
+- `STEVE_LANE_UNSTICK_BRAKED_UNOWNED_68B8` — 26e2983301
+- `RIMMANDRAKE_DISABLE_STEVE_SONIC_STUDIO_DRIVER_SOUND_IS_UNUSED` — 26e2983301
+- `RIMMANDRAKE_FIX_OFFLINE_STEWARD_REFUSED_BY_GAME_A_WALK_HOLD` — 9f0336de6e1d
+- `RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_FOUR` — a3a3399440
+- `RIMMANDRAKE_STRIP_GAME_CHOICE_FROM_DOOR_TESTS_FIVE_RED` — d32f7dc98892
+- `RIMMANDRAKE_CHECK_REPAIR_REPORT_COVERS_REFUSAL_SHOWN_AS_KILL` — be21f77fff
+- `RIMMANDRAKE_MEASURE_FLOWWORKS_DIG_CALL_QUARTER_SECOND_ON_SITTING_MAP` — cb0bc0086e99
+- `RIMMANDRAKE_TRACE_FLOWWORKS_FILTER_SLOWS_ONE_RUN_IN_TWO` — 3a796af9aea0
+- `RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_THREE_FAILURES_BACK_RUN_TWO` — 7860224660fb
+- `RIMMANDRAKE_CHECK_PYRELANDS_STEWARD_LAUNCHES_AFTER_BOTH_REPAIRS` — be21f77fff
+- `RIMMANDRAKE_CARD_HIM_ON_OPEN_GUIDING_PRINCIPLES_SEVEN_POINTS` — be21f77fff
+- `RIMMANDRAKE_DEPLOY_FORGE_GEYSER_FIX_TO_GAME_A_AFTER_HIS_WALK` — 409dad845c
+- `RIMMANDRAKE_STAGE_FLOWWORKS_ISLAND_RAIDERS_NEVER_CROSS_LOWERED_LEAF` — bdd56c6ff6345e0e874adb9ee8014f27137609f4
+- `RIMMANDRAKE_CARD_HIM_ON_PROPOSED_PRINCIPLES_AFTER_HIS_WALK` — af5bd13b5a
+- `RIMMANDRAKE_ENACT_PRINCIPLES_CARDS_RULE_IS_DEFAULT_NOT_A_BAN` — cba242eda8fa9f47aa6183ca5f42742bfb0636ae
+- `RIMMANDRAKE_PLANT_FLOWWORKS_ENDLESS_LAKE_ROW_NEVER_SEEN_RED` — 3cf5fdfc0773
+- `RIMMANDRAKE_SPARE_HELD_STATEMENT_CHECKS_FROM_NEEDLESS_REMOVAL` — 1c65a6e664e7
+- `RIMMANDRAKE_FIX_FLOWWORKS_REVIEW_MAP_SPRINKLER_LOOKS_NEVER_CHOSEN` — af8babff420a
+- `RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_FOUR` — ca7707f9b5b1
+- `RIMMANDRAKE_VERIFY_ACCOUNT_SWITCH_HE_ASKED_TO_SEE_WORK` — 8ff425b234
+- `RIMMANDRAKE_CONFIRM_FLOWWORKS_VISIT_FOUR_EXIT_MET` — 774c4da081d9
+- `RIMMANDRAKE_IGNORE_OFFMAP_COLONIST_DEATH_HEART_ATTACK_TWICE` — 9a9c68c6d6a21a38b5e82599cce8beb2236492b2
+- `RIMMANDRAKE_STEWARD_FLOWWORKS_PRE_HUMAN_STAGE` — fbd23332f17e
+- `RIMMANDRAKE_TUNE_PYRE_FLAMEFANG_BITE_KILLS_BEFORE_IMMUNITY` — 11fca75b4bd1
+- `RIMMANDRAKE_DECLARE_FLOWWORKS_SCENE_CSHARP_PIT_REDRAW_UNSEEN` — 92c459ca747473c91cc15f92c648b45bbe71f400
+- `RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_FIVE` — 06bf88892bfd
+- `RIMMANDRAKE_DECLARE_GSS_SCENE_CSHARP_SWITCH_LAMP_SETTING_UNSEEN` — a26b6bd23209980a57a934d6acd9aedc5f691581
+- `RIMMANDRAKE_SCOPE_SETTINGS_SCREENS_DECIDER_TO_ITS_OWN_MOD` — fa0f590a354b02d37eb718e53149494e9b487018
+- `RIMMANDRAKE_MAP_FINDING_NAME_TO_SIGNATURE_IN_FOLD_DECIDE` — 68efaa1d3a31
+- `RIMMANDRAKE_COMPOSE_UNFINISHEDLINE_WITH_UTINNI_PATCHES_FACTIONS` — 68efaa1d3a31
+- `RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_FIVE` — 6d4c3dc70b
+- `RIMMANDRAKE_SKIP_HASHIGNORED_FILES_IN_WHOLE_MOD_RERUN_DOCS_SENT_WALK_BACK` — 83fb77dd8771c4ee662d98812b74c80926bcb054
+- `RIMMANDRAKE_CLEAR_CALLER_GAME_IN_LOCK_SELFTEST_B_HELPERS_REFUSED` — 780285d06adb66b027ad9395b3474df640f5cc07
+- `RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_FIVE_FAILURES_BACK` — 2838ccdc71ec
+- `RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_THREE_RUN_TWO` — 1319d36adda2028ff36e18c29dd9f0020c3e9446
+- `RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_FIVE` — d274c044db519fe368dcd58738e1671a7fe09b44
+- `RIMMANDRAKE_KEEP_RERUN_RELATION_READABLE_PAST_THE_STEAM_FOLDER` — 697e3eb8ad6ed0c2de81ba36d4ea7dd01e21bc93
+- `RIMMANDRAKE_FIX_VISIT_WAIT_MISSES_FAILURE_CITED_ON_OLD_ITEM` — e04011d0b277
+- `RIMMANDRAKE_JUDGE_PYRELANDS_BLIND_CYCLE_FIVE_TESTS_FIRST` — 85bd4920f261a411dd9ff85dc5d584022d441e02
+- `RIMMANDRAKE_STEADY_GAME_LOCK_TIMING_TEST_UNDER_LOAD_TWENTY` — d274c044db
+- `RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_VISIT_THREE_EXIT_MET_RUN_TWO` — 5c9e5a68c517
+- `RIMMANDRAKE_CONFIRM_PYRELANDS_CYCLE_FIVE_EXIT_MET` — 5c1378f2450346b5a9e9b8ad9e75bed190379021
+- `RIMMANDRAKE_SEE_SECOND_ARRIVAL_AT_STEWARD_STAGE_NOT_SPENT` — 940ea65ea629
+- `RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE` — 65c45b6e9886
+- `RIMMANDRAKE_TRACE_FLOWWORKS_AWAKE_PRISONER_MEAL_SKIPPED_ONE_RUN_IN_TWO` — 65c45b6e9886
+- `RIMMANDRAKE_STEWARD_GIMMESOMESLACK_PRE_HUMAN_STAGE_RUN_THREE` — b7568c37ff1c
+- `RIMMANDRAKE_PROVE_FLOWWORKS_T_FETCH_FALLEN_RED_SEEN_OWED` — 0995cb276c7e
+- `RIMMANDRAKE_PROVE_FLOWWORKS_T_LIQUID_COATING_RED_SEEN_OWED` — 0995cb276c7e
+- `RIMMANDRAKE_PROVE_FLOWWORKS_T_PRISON_CARE_RED_SEEN_OWED` — 0995cb276c7e
+- `RIMMANDRAKE_PROVE_FLOWWORKS_T_TOSS_FLAME_RED_SEEN_OWED` — 0995cb276c7e
+- `RIMMANDRAKE_WIDEN_FLOWWORKS_STAGE3_DECIDER_READS_ONE_FILE_FOR_A_TREE` — 0995cb276c7e
+- `RIMMANDRAKE_FIX_VISIT_PLAN_KEEPS_PASS_FOR_CHECK_WHOSE_CODE_CHANGED` — f51f1cc456
+- `RIMMANDRAKE_CHECK_FLOWWORKS_VISIT_SIX_PLAN_PRISONER_MEAL_CHECK_ABSENT` — 348556b58c
+- `RIMMANDRAKE_REFUSE_LIVE_RED_SEEN_ON_A_FAULT_THE_GAME_NEVER_LOADS` — 1909b51faba8
+- `RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_SIX` — e15beba79849
+- `RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_SIX_FAILURES_BACK` — b6e87bba3408505880a990cdf1f19ad9c670d066
+- `RIMMANDRAKE_STOP_SEAT_DIRT_LANDING_STALE_COPY_OVER_NEWER_ORIGIN` — 707fe0c64d99
+- `RIMMANDRAKE_DECIDE_FLOWWORKS_SOLID_DECK_LOW_CHANCE_SATURATES_IN_ONE_BURN` — 496604468f1b65b241fe411c00db9ec052b97e06
+- `RIMMANDRAKE_FIND_PYRE_BURNLINE_OFF_CONTROL_THAT_CAN_FAIL` — a0e6da8ce330457722fce4989cdb8c807538f4c6
+- `RIMMANDRAKE_IMPORT_WRAPUP_RESTORE_DIES_ON_WINDOWS_FCNTL` — 61e38119d34d4124c2f5ef2848b6762831f24665
+- `RIMMANDRAKE_UNSTICK_FLOWWORKS_FILL_JOB_HOLDS_GRAVEL_BESIDE_THE_HOLE` — 647bc9b0db3baf748e3d1b6f04397892ba63fed5
+- `RIMMANDRAKE_CHECK_PUBLISH_TREE_ON_REBASED_HEAD_NOT_STALE` — 7eee43a858c0670428d34121c6aa11b6dfb5fb14
+- `RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_FOUR_FAILURES_BACK` — 6ec5d7ff4308
+- `RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH` — 3acf1ad82b5e
+- `RIMMANDRAKE_ENACT_SIX_BIOME_ANSWERS_SLIME_GETS_BOTH_DRAWS` — 69518f10810e23a71f791c656741f30790c7c65b
+- `RIMMANDRAKE_PICK_SEVEN_BIOME_SIGNATURES_LISTED_NOT_GUESSED` — 69518f10810e23a71f791c656741f30790c7c65b
+- `RIMMANDRAKE_FEED_PYRE_VENOM_FIXTURES_HUNGER_STOPS_WAITOUT` — 66ae9403727a
+- `RIMMANDRAKE_REWORD_TWILIGHT_BAR_DARK_BETWEEN_WELLS_HE_PUT_COLOUR_THERE` — d98d0e85bc91e524209f849f1170f17cecd7926c
+- `RIMMANDRAKE_CORRECT_TWILIGHT_DARK_STAYS_PITCH_COLOUR_SHAFTS_ARE_ART` — 669ffeaea844
+- `RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_SEVEN` — 1fc208938f4bcf124623985b886f3eb3b6e30b60
+- `RIMMANDRAKE_TRACE_PYRE_EMBERGRASS_GROWS_TENTH_OF_ITS_RATE` — e63595716c5d
+- `RIMMANDRAKE_FIX_PYRE_GRASS_CRAWLS_ON_DRY_ASH` — e63595716c5d
+- `RIMMANDRAKE_CONFIRM_FLOWWORKS_VISIT_SEVEN_EXIT_MET` — 192f9e108580523ecfd44525f0196f99f3cbe02c
+- `RIMMANDRAKE_PROVE_PYRELANDS_T_FUZZ_RED_SEEN_OWED` — a93da1c62434d4563ccff0936ff34d7c9ed0e234
+- `RIMMANDRAKE_PROVE_PYRELANDS_T_SETTINGS_SCREENS_RED_SEEN_OWED` — a93da1c62434d4563ccff0936ff34d7c9ed0e234
+- `RIMMANDRAKE_STEWARD_FLOWWORKS_PRE_HUMAN_STAGE_RUN_TWO` — 312bfa5c936c
+- `RIMMANDRAKE_RETEST_FLOWWORKS_TOSS_FLAME_SINCE_JOBDEF_BUILT` — 17536ef810
+- `RIMMANDRAKE_PASS_FLOWWORKS_COATING_WASH_SCENE_NEVER_PASSED` — 17536ef810
+- `RIMMANDRAKE_RENAME_GAMES_ARCHBIG_ARCHSMALL_STEVE1_STEVE2_LETTERS_UNREADABLE` — 883cc71ec8139e18d263939286c6ec2cc3fb2c08
+- `RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_SIX` — 9b5a071fed18
+- `RIMMANDRAKE_SKIP_SEAT_DIRT_FETCH_IN_CLEAN_CLONE` — 6c735d2660
+- `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_FIVE_RUN_TWO` — 2cb2a07e60c6fc5ba175d76c1bac466ca3593668
+- `RIMMANDRAKE_FIX_VISIT_CITE_SKIPS_OWNER_GRASS_FOIL_MISSED` — c1f968092c4456c016f46d79e3218aed7c755f08
+- `RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_FIVE_FAILURES_BACK` — 4eca75fb66528f568b5f10edb704a7b87cc3d342
+- `RIMMANDRAKE_BUILD_PYRE_DENSITY_ONE_FOIL_BLIND_AT_FIVE` — d5e3400df232
+- `RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES` — 2974096c2e5f
+- `RIMMANDRAKE_SWEEP_PIPELINE_FOR_SINGLE_SOURCE_SCRIPTS_KLUDGES_KEEP_STACKING` — d14e71762f3ee4afd7a4e20b478e7e2eebf85ac7
+- `RIMMANDRAKE_TRACE_WINDOW_LOGIN_EXPIRED_HE_THOUGHT_IT_FIXED` — 196f8bc254cf2f5aa9d481e6cd4a538c43fe6f08
+- `RIMMANDRAKE_MERGE_LIVE_ACCOUNT_READERS_SIX_PARSE_ONE_STATUS` — 3395b453298a07e899fdb52c94299c6c3f5b7054
+- `RIMMANDRAKE_PRUNE_NEEDS_CONDUCTOR_LIST_EIGHTY_TWO_MOSTLY_HISTORY` — f69440f21a6a
+- `RIMMANDRAKE_MAKE_LEDGER_NOTE_LAND_ITS_OWN_SHARD_PROSE_STEP` — 74d8295d690e79e9388f062ee49d3a0506830550
+- `RIMMANDRAKE_MERGE_NEXT_STEP_AND_MAY_RUN_THREE_ANSWERS_ONE_MOD` — 70e16d4fa480
+- `RIMMANDRAKE_MOVE_GAME_DRIVER_READERS_OFF_BRIDGE_FILE_TWO_LEFT` — bccee1cbed339f609e003f3dd8895290f67134ae
+- `RIMMANDRAKE_SEAL_PYRE_SPRAYER_RING_BOTH_COLONISTS_WAIT_IT_OUT` — 1ede9b441f2d
+- `RIMMANDRAKE_MOVE_UNIT_DEFINITIONS_INTO_ONE_FOLDER_SOME_LIVE_ONLY_ON_MACHINE` — 76bd31f806fb7042679b7268f1646833c299f345
+- `RIMMANDRAKE_MERGE_RUN_SPEND_UNIT_AND_MODEL_ALIAS_THREE_RULES_TWO_TABLES` — 343e1663a01dc7534c1c33a413c4f6eb62210940
+- `RIMMANDRAKE_MOVE_TWO_MORE_GLANCE_READERS_CENSUS_MISSED` — 58ed9adf69501db7b8a817d3cd74ff844326eced
+- `RIMMANDRAKE_WIDEN_PYRE_FIRE_TRAILS_RUN_AS_RULER_STRAIGHT_LANES` — 2910619418a9
+- `RIMMANDRAKE_SEAL_PILOT_GUARD_TEST_FROM_THE_LIVE_GAME` — 33c438f3d52b
+- `RIMMANDRAKE_CLASS_PYRE_TEARDOWN_NO_GAME_UNMEASURED_FOUR_RINGS` — 3babc4cdc915
+- `GSS_CORD_SILENCE_PHANTOM_SPARK` — 39b819391690e9b2a026218d20bd662ab7f1079b
+- `RIMMANDRAKE_REPOINT_EK_JOURNAL_JOLT_CHECKS_AFTER_PLAN_MOVE` — 860f017c5025
+- `GSS_SHAPE_PROBE_MEASURE_NO_TWO_ALIKE` — ee0e9d65c8
+- `RIMMANDRAKE_DELIVER_SLACK_THROUGH_STAGE_EIGHT_ITS_OWN_STAGES` — ee0e9d65c8
+- `RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_ACCEPTANCE_VISIT_TWO` — 3252972cf52a1cdcc4e7964746b2379bc0ef1829
+- `RIMMANDRAKE_AUTOBUILD_GIMMESOMESLACK_FOUR_BARS_LEFT` — 90660c8ae3bd8e2a4ae44ff99a98f48200b7bbd3
+- `RIMMANDRAKE_FIX_MATURATION_NOW_SELFTEST_PINNED_TO_LIVE_GSS` — ee0e9d65c8
+- `RIMMANDRAKE_REPAIR_DECK_COLLAPSE_SEAM_CHECK_LOST_ITS_ANCHOR` — cf6efc30552e8f10d38fc75c541bf7381514a7e3
+- `RIMMANDRAKE_SWITCH_ON_PYRELANDS_AND_SLACK_WHEN_ROWS_CLEAR` — ee0e9d65c8
+- `RIMMANDRAKE_RESEND_GPT_QUESTIONS_AFTER_CODEX_SIGN_IN_AND_RENEW_WINDOWS_SIDE` — 3ae03abe060a4e5e1f8cfb536afaff02fd74a6cc
+- `RIMMANDRAKE_REWORD_ABOUT_FIRE_PAYS_HE_SAID_SOLACE` — 71dcee74a7
+- `RIMMANDRAKE_FIX_PYRELANDS_FIRE_CLOCK_LABEL_SAYS_TRIBES_ONLY` — 71dcee74a7
+- `RIMMANDRAKE_UNPIN_CRESTFEATHER_CHANCE_THE_TEST_HARDCODES` — 71dcee74a7
+- `RIMMANDRAKE_READ_PYRE_REGROW_GROWTH_NONE_ON_ALL_SIX_DAYS` — 897516fc92
+- `RIMMANDRAKE_RECALIBRATE_JUDGE_THEN_RESTAMP_PYRELANDS_ONCE` — 47e044e556
+- `RIMMANDRAKE_SWEEP_SLACK_TICKETS_MERGE_TO_MODERN_BUILD_THE_VALUABLE` — 2035b9b0fe53b1d05d5c122091734e906eff6fcd
+- `RIMMANDRAKE_WIDEN_PYRE_BURN_FRONT_COMB_LANES_NOT_SWATHE` — 2910619418
+- `FIREWASP_FLIGHT_BUILD_GROUNDED_IN_THE_SMOKE` — 8e3ccc69d4
+- `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO` — 2c7579fdf2
+- `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_FOUR` — b99d7df504
+- `RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER` — 40f4e85120
+- `RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN` — f243b4bf1b
+- `RIMMANDRAKE_ADVISE_HOW_TO_CLEAN_HOUSE_WITHOUT_A_REBUILD_STUDIES_NEVER_RETURNED` — 3874a432b1a4
+- `RIMMANDRAKE_RESIZE_CLONE_POOL_CAP_CLONES_GREW_TO_FOURTEEN_GB` — 831d8d9d518a75e66c230a9fc342efef5c2b24ad
+- `RIMMANDRAKE_STUDY_ART_PIPELINE_SPLIT_CODEX_GRAPHICS_FROM_RIMMANDRAKE_ART` — 1210e043a0f3
+- `RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS` — 0808c55303
+- `RIMMANDRAKE_DEPLOY_KNOCKBACK_DRAWING_STORAGE_OPEN` — d8cefb050d
+- `RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD` — 92e65812cb
+- `RIMMANDRAKE_ROUTE_FLOWWORKS_WALK_TWO_FINDINGS_BACK_ELEVEN_FILED` — 0e13ee004cc52ba49b34b0f374117be64bfb8bfb
+- `RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS` — 0808c55303
+- `RIMMANDRAKE_LIMIT_KNOCKBACK_STORAGE_CLOSED` — 8b7dd36e9a
+- `RIMMANDRAKE_PROVE_KNOCKBACK_HIDING_LOCKER_LIVE` — ffc3937ee7
+- `RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_SEVEN` — afc872abb4
+- `RIMMANDRAKE_SWEEP_PYRELANDS_TICKETS_MERGE_TO_MODERN_BUILD_THE_VALUABLE` — e4f86f8661e2
+- `RIMMANDRAKE_READ_WALK_TICK_COST_RUNNING_PAUSED_READ_ZERO` — f8e7b36899
+- `RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS` — fdd7054fd0
+- `RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING` — f243b4bf1b
+- `RIMMANDRAKE_CHALLENGE_KNOCKBACK_BLIND_TWO_FIRST_EXIT_MISSED` — dce1db1f1f
+- `RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE` — bbad998788
+- `RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_ACCEPTANCE_FIRST` — 1a7ff89be7
+- `RIMMANDRAKE_SWEEP_HUGETHINGS_TICKETS_MERGE_TO_MODERN_BUILD_THE_VALUABLE` — 046fef56bc
+- `RIMMANDRAKE_RESCUE_KNOCKBACK_PAST_CEILING_CYCLE_SIX` — ffc3937ee7
+- `RIMMANDRAKE_ROUTE_EVERY_GPT_CONSULT_THROUGH_DISPATCH_ONE_DOOR_CAREFULLY` — e3f871529865864f8f466ecd1bf0ff02218694f2
+- `RIMMANDRAKE_RESTORE_EK_FUZZ_MUTANTS_TWO_TARGETS_VANISHED` — feec252970
+- `RIMMANDRAKE_UNBLOCK_PYRE_VISIT_SIX_HELD_BY_AN_ART_PICK_THAT_IS_HIS` — 897f4ff418fff90b2bcaf13ee772d868c8c240ea
+- `RIMMANDRAKE_CENSUS_RED_TESTS_ON_ORIGIN_SEVEN_REPORTED_NONE_OWNED` — 132004e2ee41
+- `RIMMANDRAKE_DEBATE_CLEAN_HOUSE_ADVICE_WITH_GPT_ONE_AGENT_PER_VIEWPOINT` — 9e6c9345741449f531f3563e2cede9ed6071822a
+- `RIMMANDRAKE_SWEEP_KNOCKBACK_TICKETS_MERGE_TO_MODERN_BUILD_THE_VALUABLE` — d33f515241
+- `RIMMANDRAKE_TEST_ART_WORKERS_SHARING_ONE_CODEX_LOGIN_NOT_FIVE` — 55ed92303a
+- `RIMMANDRAKE_GUARD_HELPER_LAUNCH_ON_MISSING_CLONE_TWO_RUNS_DIED_UNSTARTED` — 7f75805efe77
+- `RIMMANDRAKE_PREFILL_SHEET_SLOTS_FROM_NEWEST_KEEP_RED_TANK_REVIVED` — cf145319a57b96433502e3b8721d2266128201ed
+- `RIMMANDRAKE_GENERATE_FLOWWORKS_TANK_DESIGNS_FIRST_RUN_ONLY_REPAINTED` — cf145319a57b96433502e3b8721d2266128201ed
+- `RIMMANDRAKE_CONTINUE_HELPER_LAUNCH_WHEN_ITEM_ALREADY_PUBLISHED_NOTHING_TO_LAND` — c16a130cd932
+- `RIMMANDRAKE_UNBLIND_OPS_DISK_FAMILY_TWENTY_OVERRUNS_STRAIGHT` — 9033b83ec2d7d703c59a21b5c2b8c6e7b307d598
+- `RIMMANDRAKE_REFRESH_PYRELANDS_READINESS_BEFORE_VISIT_SIX_CEILING_RELEASE` — 5a48c552d8
+- `RIMMANDRAKE_GUARD_STATIC_GAME_STATE_THREE_NEW_CACHES_UNREVIEWED` — 5d9004b9ce19
+- `RIMMANDRAKE_TRACE_SLACK_FLOWWORKS_TIER_MINIFIED_LOOKUP_ERROR` — b4e6d1586a7c
+- `RIMMANDRAKE_INSTALL_TANK_SPRINKLER_PICKS_REDO_MODERN_PIPE_TOO_REPETITIVE` — b061ba8aa004b2b12deed7ac8e96e9aa2f72bfe4
+- `RIMMANDRAKE_SHIP_SLACK_GUST_SWAY_AS_DEFAULT_HE_PICKED_OF_THREE` — c3633a8f3084af9b38346ad0444b5e8059b49925
+- `RIMMANDRAKE_KEEP_MODERN_TANK_B_C_AND_REPAINT_AS_CHOOSABLE_RESKINS` — 0cc7b348f1
+- `RIMMANDRAKE_RELEASE_PYRELANDS_STAGE_SIX_CEILING_WHEN_READINESS_READS_READY` — f41759e050
+- `RIMMANDRAKE_REMOVE_WHITE_FRAMES_AT_EVERY_WATER_EDGE_HE_SAW_THEM_EVERYWHERE` — 4ac7142037a1
+- `RIMMANDRAKE_HIDE_WATER_OVER_EAST_WEST_SLUICE_GATE_STATION_SEVEN` — 4ac7142037a1
+- `RIMMANDRAKE_EXCUSE_STRANDED_LEDGER_COMMIT_MAIN_HOLDS_ITS_LINES` — cbfaa56395f0
+- `RIMMANDRAKE_TELL_HIM_STEVE_IDLE_CAUSE_AND_TEN_NEEDS_TRIAGE_RESULTS` — 96c10c9d2c
+- `RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS_HEAVY_B_CHOSEN_TWO_PICKS_OPEN` — 1343324282e0b9f8c66bf47156297ee5ecc9680a
+- `RIMMANDRAKE_CENSUS_WHERE_OPEN_THINGS_LIVE_SEVEN_LISTS_STILL_DROP` — 068a847a0873
+- `RIMMANDRAKE_RESUME_CENSUS_WITH_HIS_COMPLETENESS_RULE_LEDGER_ONLY_REJECTED` — 7fb6effe51
+- `RIMMANDRAKE_SPREAD_FLOWWORKS_LOOK_ALONG_LINE_NOT_PIPES_ONLY` — 8254c2806c5dddb6d96f98fae2b0d282ee240540
+- `RIMMANDRAKE_WIDEN_SLACK_STYLE_BUTTON_REACH_ITEM_RUN_OR_WHOLE_MAP` — e851961457586b9007258779ffb947e07882d111
+- `RIMMANDRAKE_SHRINK_SLACK_SWITCH_LIGHT_TWICE_TOO_WIDE_AT_HIS_WALK` — 09594beb0820
+- `RIMMANDRAKE_STAGE_STEPPED_PIT_TWELVE_CASES_BUILT_BUT_UNSEEN_IN_GAME` — a200358b61
+- `RIMMANDRAKE_LET_PAWN_WALK_UNDER_PLANK_COVER_BRIDGES_ALREADY_ALLOW_IT` — 5e2a36090cf4
+- `RIMMANDRAKE_SMOOTH_SLACK_GROUND_CORD_KINKS_AT_STATION_THREE` — 09594beb0820
+- `RIMMANDRAKE_FADE_EVERY_PIT_COVER_TRANSPARENT_OVER_A_PAWN_LIGHTEN_PLEASED_HIM` — 5e2a36090cf4
+- `RIMMANDRAKE_REPAIR_PYRELANDS_FORM_REFUSAL_AT_THE_RUN_EIGHT` — 4e42c9e8ab817ef9acb5e49da4eb94ed5b5c4e92
+- `RIMMANDRAKE_HONOUR_PIPE_OFF_IN_BRIDGE_TAKE_IT_WALKED_PAST` — 34d860f96a908942bbeadaba4b2815ed2e061920
+- `RIMMANDRAKE_SIZE_SENSE_STEP_LIMIT_FIFTEEN_SECONDS_NOBODY_CAN_SOURCE` — 5a08fffc9602
+- `RIMMANDRAKE_PLAN_ONE_LIST_FOR_NON_MOD_WORK_WORKED_BY_THE_PIPELINE` — 68355dc59b2b
+- `RIMMANDRAKE_RESUME_PLAN_RUN_WITH_HIS_SECOND_PIPELINE_DIRECTION` — 50b30264c439
+- `RIMMANDRAKE_SHOW_NON_MOD_PIPELINE_ON_MATURATION_PAGE_AS_IT_IS_TODAY` — 331c5e83c8
+- `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED` — f94a1a6f1811ae8f0be7ebf328122cfb47887373
+- `RIMMANDRAKE_ROUTE_VISIT_TESTQ_CHECKS_AHEAD_OF_FILLER` — 3e55de61189e5587ef29859da133bbe19a5af1c8
+- `RIMMANDRAKE_FIT_SUITE_WIDE_RECT_SHOTS_NOT_A_DESKTOP_GRAB` — 8375951eba0fd5200cc2d69d4681c9f24d3f4b3f
+- `RIMMANDRAKE_MEND_GLANCE_READER_ARCHSMALL_LOCK_READS_WRONG` — 4cf7d3a26f1343d161c44b649218fd46d9d1c28e
+- `RIMMANDRAKE_STAGE_SLACK_SHORT_LOOK_AT_FOUR_CHANGES_THEN_HIS_PASS` — d03f1cad5bb6
+- `RIMMANDRAKE_OUTLINE_ULLAI_IN_BLACK_SKELETAL_SHAPE_LOST_IN_EMBER_GRASS` — 99cede2bfab4221e5047bc0ba8098d78c4adbbed
+- `RIMMANDRAKE_DEPLOY_THIN_OUTLINE_ULLAI_INSTALLED_BUT_NO_GAME_HAS_IT` — 99cede2bfab4221e5047bc0ba8098d78c4adbbed
+- `RIMMANDRAKE_MAKE_GRATH_ELDER_CLICKABLE_ROOT_CELL_BELOW_ITS_PICTURE` — 0dc82e327054357daf7589fc5da2aab2488679b7
+- `RIMMANDRAKE_SHOW_HIS_WORDS_AT_WAKE_FRESH_WINDOW_DENIED_A_MOD_PASS` — c4f917ce9c7f
+- `RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR` — 81ee41df54
+- `RIMMANDRAKE_GREEN_FLOWWORKS_PY_FLOWWORKS_NORTHSTAR_RED_DECIDER` — c7e0114dfb99aac1c9bf56466d620518b420dc1e
+- `RIMMANDRAKE_GREEN_FLOWWORKS_PY_VALIDATION_V2_OFFLINE_RED_DECIDER` — c7e0114dfb99aac1c9bf56466d620518b420dc1e
+- `RIMMANDRAKE_GREEN_FLOWWORKS_PY_FW_OFFLINE_ART_RED_DECIDER` — c7e0114dfb99aac1c9bf56466d620518b420dc1e
+- `RIMMANDRAKE_WIDEN_EVERY_MOD_TABLE_ON_MATURATION_PAGE_SPARSE_IN_TYPORA` — 48268443d91a8206ab4a0d6d4978d5c7087303e6
+- `RIMMANDRAKE_LOOSEN_SLACK_POLE_WIRE_SWAY_STILL_TOO_STIFF` — c3633a8f3084af9b38346ad0444b5e8059b49925
+- `RIMMANDRAKE_ALIGN_SECOND_GAME_FULL_LIST_ROW_WITH_EXIT_READER` — b437b8520dc1e9c01e11b65e0742ea3c1c279fa9
+- `RIMMANDRAKE_STEWARD_GIMMESOMESLACK_PREFLIGHT_STAGE_RUN_TWO` — 3046fd5974411bd84ced3513b5a402841d8f2264
+- `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_SIX_RUN_TWO` — 64ac23a7d582a42bcabde62fb99c05845d359911
+- `RIMMANDRAKE_WRITE_MODS_WEEK_INTO_GOALS_PRODUCERS_ONLY_INPUT` — 5461ca65c99f1aee5cd34dfcd9df3b448b31083a
+- `RIMMANDRAKE_RETRY_SLACK_RELAY_SLICE_CHECK_RED_TWICE` — ca78844cc5af86ca06c812763e9d9878e4149a9a
+- `RIMMANDRAKE_RERUN_STALE_RED_DECIDER_BEFORE_ANY_BUILDER_RUNS` — b145de7fa7ffdcf5d329a3a068f16aa1a58a482d
+- `RIMMANDRAKE_WRITE_LIST_PIPELINE_GOAL_INTO_SAME_FILE_AGAIN` — 615d28711b
+- `RIMMANDRAKE_HOLD_WRAPUP_RESTORE_OFF_A_LIVE_OWNERS_DEBT` — f459f47ab79f5fec009f0300d5b2e97a08179541
+- `RIMMANDRAKE_BUILD_FOLLOW_THROUGH_AUDIT_LOWER_RATE_IS_HEADLINE` — 02fd9000d7acc1bf1115d3540a93426fd88acda0
+- `SELFTEST_FIX_GIMMESOMESLACK_NWML_JLWY` — 96f4f9d3e8
+- `RIMMANDRAKE_RUN_TARGETED_CHECKS_PAST_UNBUILT_MUST_SHOW_LINES` — ac9a5418ce
+- `RIMMANDRAKE_RESUME_KNOCKBACK_HE_WANTS_IT_FINISHED_OFF_SINCE_NOV_EIGHTEEN` — b145de7fa7ffdcf5d329a3a068f16aa1a58a482d
+- `RIMMANDRAKE_ORDER_SLACK_MAST_BEHIND_TALL_SOUTHERN_PICTURES` — 927580657dda265b541d2cbc8068baf0770d70af
+- `RIMMANDRAKE_SEND_WALK_ONLY_VISIT_TO_ARCHBIG_NOT_ARCHSMALL` — aacba60155a66feb992b1931e333eb2b36f8d929
+- `RIMMANDRAKE_MASK_PUBLISH_TIMINGS_OLD_RED_READ_NEW` — aacba60155
+- `RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_SIX_FAILURES_BACK` — d28caac85c4598c09983e3e1f6d9b41093b72559
+- `RIMMANDRAKE_SLIM_TICK_MEMORY_PAGE_BUILD_HITS_ONE_GIG_TICK_TOOK_FIVE_MIN` — 3b45135bb9088b03646e4704533b99ba1ad9f345
+- `RIMMANDRAKE_ADMIT_MACHINE_LOOKS_MOD_WITH_FRIDGE_AND_BATTERY` — 4661155487e824be13074841d371a7f50ec7f019
+- `RIMMANDRAKE_WORK_NIGHT_POINTERS_OF_NOV_TWENTY_SWITCH_HANDOFF` — 4661155487e824be13074841d371a7f50ec7f019
+- `RIMMANDRAKE_PROVE_EXPLOSIVEKNOCKBACK_T_FUZZ_RED_SEEN_OWED` — 00b1840eedbb5f63eff1ee820d32e301833993aa
+- `RIMMANDRAKE_PROVE_EXPLOSIVEKNOCKBACK_T_HEAVY_KNOCK_RED_SEEN_OWED` — 00b1840eedbb5f63eff1ee820d32e301833993aa
+- `RIMMANDRAKE_PROVE_EXPLOSIVEKNOCKBACK_T_KERNEL_RED_SEEN_OWED` — 00b1840eedbb5f63eff1ee820d32e301833993aa
+- `RIMMANDRAKE_PROVE_EXPLOSIVEKNOCKBACK_T_PROOFGATE_RED_SEEN_OWED` — 00b1840eedbb5f63eff1ee820d32e301833993aa
+- `RIMMANDRAKE_PROVE_EXPLOSIVEKNOCKBACK_T_RED_SEEN_OWED_RUN_TWO` — 00b1840eedbb5f63eff1ee820d32e301833993aa
+- `RIMMANDRAKE_PROVE_EXPLOSIVEKNOCKBACK_T_SETTINGS_RED_SEEN_OWED` — 00b1840eedbb5f63eff1ee820d32e301833993aa
+- `RIMMANDRAKE_BUILD_LIST_LANE_ON_RED_DISPATCH_GOALS_FIRST` — f01a3f0669b283fd7f31b1e9a49e95e4328e36d7
+- `RIMMANDRAKE_FILL_BOTH_STEVEDESKTOP_GAMES_HE_SAYS_IT_HOLDS_TWO` — 7610a8c499270dd5705e03d59b3ad5c30ede7a9c
+- `RIMMANDRAKE_CHECK_SCRATCH_QUEUE_SHRINKS_BEFORE_INCIDENT_CLOSES` — 4f0ab67ad7
+- `RIMMANDRAKE_BUILD_SHAPE_STAGE_CHECK_TESTS_THE_NEED_NOT_PAPER` — 3d28863cb63d247b89981dea75f81365701b4b3c
+- `RIMMANDRAKE_SKIP_VOID_LANDING_WHEN_STAGE_FILE_UNCHANGED` — b99ec67acc16a02ff67159b2a5dc3637ee006488
+- `RIMMANDRAKE_TRIAGE_GIMMESOMESLACK_BUILDER_RESOLVED_NOTHING` — b99ec67acc16a02ff67159b2a5dc3637ee006488
+- `RIMMANDRAKE_BUILD_ONE_OWNER_VIEW_NO_HOME_COUNT_BESIDE` — 5fcfd01f24
+- `RIMMANDRAKE_REPAIR_EXPLOSIVEKNOCKBACK_FAULT_LOOP_AT_THE_GATE` — 72d37b67279def529839273e40417fbc13ad8e93
+- `RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT` — a6b4308f3047f5f006a6c98b88fceb435225e66f
+- `RIMMANDRAKE_REWRITE_JUDGE_BRIEFS_ONE_IS_CALIBRATED` — 33153f3350470e3c07b29cd876b0cb18f291f51b
+- `RIMMANDRAKE_REWRITE_BIOME_RULINGS_FILE_SEAS_AND_ROSTERS` — fc46bfbfa1655902d377ad3682051c7e4e84ac13
+- `RIMMANDRAKE_STOP_KILLING_WORKING_JUDGE_AT_FORTY_FIVE_MIN` — adc94474489fd310b27f4e5522d8f5b08049d2e1
+- `RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_EIGHT_FAILURES_BACK` — ff07edc02a0e8542838ac746930ca49b0b50f2a3
+- `RIMMANDRAKE_RESUME_FIXTURE_ARRIVAL_PAST_UNASKED_BITE` — 5e888e1af2acbd603541862378c37113af7d1712
+- `RIMMANDRAKE_READ_TESTS_EDITED_KEY_JUDGE_NAMED_ITS_OWN` — 4b7d56b65c1b
+- `RIMMANDRAKE_REWRITE_DELEGATION_DEBUG_DOCS_SECTION_NUMBERS_STAY` — 297e5c4214f8e3d8e191e9f8870566549fea6aca
+- `RIMMANDRAKE_REWRITE_STANDING_RULINGS_SESSION_ONE_OF_FIVE` — d11bfc6623afd810ce4250bee7777ee471d27b74
+- `RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_CYCLE_SIX_FAILURES_BACK` — dff4b4a47c
+- `RIMMANDRAKE_REWRITE_BIOME_DELEGATION_DEBUG_DOCS_CODE_CITES_THEM` — 7156ec5277
+- `RIMMANDRAKE_RESUME_VOIDED_BLIND_JUDGE_NOT_READ_AS_VERDICT` — 52cd35916e33982c3906d725114373151b9707d8
+- `RIMMANDRAKE_REWRITE_INSTRUMENT_TRAPS_KEEP_EVERY_MEASUREMENT` — 7042d696f6fa6d01b6251e743f60999a16e3778b
+- `RIMMANDRAKE_REWRITE_TOOL_TRAPS_KEEP_EVERY_MEASUREMENT` — 37b717f5318c3aa2e7974b6a1d6fd46b994897ad
+- `RIMMANDRAKE_SEND_MOD_VISITS_TO_STEVEDESKTOP_TICK_SEES_TWO_OF_FOUR_GAMES` — a074bb82b4f75fb1ee80053f7142bc41df4e25f3
+- `RIMMANDRAKE_REWRITE_TRAP_FACT_FILES_TWO_FILES` — cdbc2558da
+- `RIMMANDRAKE_REWRITE_GIT_GAME_PURPOSE_DOCS_THREE_FILES` — 6b3599a1a2b05df95740535fea4ef8f622b5e97f
+- `RIMMANDRAKE_FINISH_SLACK_ICON_LAMP_CHECKS_CAPPED_AT_HALF` — 6d1c8ed4553f
+- `RIMMANDRAKE_REWRITE_DESIGNER_PACKET_FIRST_FOUR_FILES` — 4b76c186b8db8aa8447ac95baf6813e3a5808d63
+- `RIMMANDRAKE_REWRITE_PRODUCER_AND_AUDITOR_ROLES_SWITCHED_OFF` — a6ade7a07b7d380898b95553ed6912698a602f88
+- `RIMMANDRAKE_REWRITE_DESIGNER_PACKET_LAST_THREE_FILES` — ea995310da608bdff4892c203bd22afd057ee7a5
+- `RIMMANDRAKE_REWRITE_DESIGNER_PACKET_FILES_HASH_IN_STAGE_RECORD` — 6d6f1822bc
+- `RIMMANDRAKE_REWRITE_MATURATION_SPEC_FIRST_HALF_STAGE_TABLES` — 76909cff063079705b29bb924d762d99b4d337c9
+- `RIMMANDRAKE_REWRITE_INNOVATOR_AND_RUNNER_OPTIONS_ROLE_FILES` — c48745065ee9f8cb948f6867224b0ece8e1b6dc8
+- `RIMMANDRAKE_REWRITE_INNOVATOR_AND_RUNNER_OPTIONS_ROLE_FILES` — 8bd89ca9d2
+- `RIMMANDRAKE_REWRITE_PRODUCER_AUDITOR_INNOVATOR_ALL_SWITCHED_OFF` — d540663e3f
+- `RIMMANDRAKE_REBUILD_MOAT_SCENE_FAKE_AFTER_BRIM_FULL_REWRITE` — 51e271d211e0
+- `RIMMANDRAKE_DECIDE_MOAT_RAID_BAR_TEXT_SAYS_D4_SCENE_NEEDS_SIX` — 51e271d211e0
+- `RIMMANDRAKE_REWRITE_STEVE_FAULT_AND_OPERATIONS_FACT_FILES` — ab2a3252f684922795118f952190b02d665a5c95
+- `RIMMANDRAKE_REWRITE_STEVE_FAULT_AND_OPERATIONS_FACT_FILES` — 651b428277
+- `RIMMANDRAKE_REWRITE_SEVEN_SMALL_UNDATED_FACT_FILES` — e8aa4968613fe0d0cda575a85ccb06447dc35ae1
+- `RIMMANDRAKE_REWRITE_OTHER_DOCS_AFTER_DELETE_DECISION` — 225dcdf2c8050e50134cb0d80e1e12a0bc0bb917
+- `RIMMANDRAKE_REREAD_REWRITE_REPAIRS_NO_READER_SAW_THEM` — 5cb7796254f0
+- `RIMMANDRAKE_REWRITE_UNDATED_FACT_FILES_DATED_ONES_STAY` — ad7adcff15
+- `RIMMANDRAKE_RETIRE_INNOVATOR_ROLE_HE_FORGOT_IT_WAS_THERE` — f1f47631e6fc
+- `RIMMANDRAKE_REWRITE_SKILL_CLONE_LANDING_COMMITS` — bf45419c45ed21a05b51a6a8cd6fa9c353b7a58f
+- `RIMMANDRAKE_CHECK_HIS_QUOTED_RULINGS_FOR_IMPRECISE_WORDS_TOO` — 41a7fde67cc72d27c8693543890f93a577d27b56
+- `RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_SEVEN` — 50e948ab24dee819f7b0800c859c0adf07dbcfb3
+- `RIMMANDRAKE_REWRITE_SKILL_CLONE_LANDING_COMMITS` — 41a7fde67c
+- `RIMMANDRAKE_COLLECT_REWRITE_CONFLICTS_UNDEFINED_TERMS_ONE_LIST` — 30547c3ab2bfa520daea4a7ac2a57de4d54f5887
+- `RIMMANDRAKE_REWRITE_SKILL_GENERATING_RIMWORLD_SPRITES` — fed51daad63ca2a70ba0812f403c59c78468aefb
+- `RIMMANDRAKE_SETTLE_REWRITE_CONFLICTS_DELETE_STALE_LINES_NOW` — 7d4e87cd3f61
+- `RIMMANDRAKE_CHECK_GUIDING_PROSE_AT_WRITE_NO_SEARCHING_FOR_MEANING` — 1e9299009bd8
+- `RIMMANDRAKE_CENSUS_RULES_BEST_RETIRED_ANCIENT_STUFF_IN_THERE` — afecd852aab64ae69168191d148c80e44c2eff1f
+- `RIMMANDRAKE_REWRITE_SKILL_LIVE_DEBUGGING_PROOF_HARNESS` — 223da926b6
+- `RIMMANDRAKE_REWRITE_SKILL_LIVE_DEBUGGING_PROOF_HARNESS` — 30e8c2b3718db797d839800c17b786449a248323
+- `RIMMANDRAKE_REWRITE_SKILL_RIMBRIDGE` — a0372d7e1a
+- `RIMMANDRAKE_ASK_HIM_TO_MOVE_PROSE_CHECK_TO_USER_LEVEL_WITH_ITS_RATE` — 5b2a87cc8e
+- `RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS` — c0db9a8b25cc44a4ca89bd0b9703250e70aa0bae
+- `RIMMANDRAKE_READ_TIER_LIST_FROM_EVERY_GAME_INSTALL_HERE` — 9da72c054e595e5c8937d5ba6942bcd771c41cab
+- `RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_SEVEN_FAILURES_BACK` — d72aae562cfe12d5622c4e909632384cd4f51ab3
+- `RIMMANDRAKE_REMOVE_RETIRED_V3_ROLES_FROM_ACTIVE_RULES_STILL_LISTED` — e0a979ce9f98ebbcaf362c4365ebbb52cf983dc3
+- `RIMMANDRAKE_REWRITE_SKILL_RIMBRIDGE_COMPANION` — 14fe4c9c2f04a326da1cf98305bf69b11efca0e2
+- `RIMMANDRAKE_ENACT_LONG_GAME_TIME_ALLOWED_WHEN_COLONY_IS_SAFE` — 657a6e3a80d5692be4dffd58dfcbdf09f4c3f98d
+- `RIMMANDRAKE_REWRITE_SKILL_RIMFLOW_OPERATIONS` — d0d30834ca3e3507c4c3fe428c7e70b777bbe3d5
+- `RIMMANDRAKE_ENACT_HIS_CARD_ARTIST_DAILY_PASS_SKILL_CARDS_RETIRED` — 571c429dd169661cfc1643b673e7bff6afa85584
+- `RIMMANDRAKE_KEEP_THREE_MODS_AND_STEVEDESKTOP_BUSY_WHILE_HE_SLEEPS_NOV_TWENTY_THREE` — ec27325566
+- `STEVE_RETEST_TIMER_RETIRE_WHEN_CPUS_SPEAK` — 9304d3753154c476176c4d1d1e145e05bfb55949
+- `RIMMANDRAKE_SPARE_PYRE_FURNACE_BARN_ROOF_FROM_TITAN_WAKE` — aca7464fe31e
+- `RIMMANDRAKE_REWRITE_SKILL_LOAD_ROUND` — 474b7c158f1b572991b47f082f07dd2e994613da
+- `RIMMANDRAKE_REWRITE_SKILL_DEPLOY` — b26801dec3bed8d2edcde64750653c502ac328c4
+- `RIMMANDRAKE_DECIDE_RETIRE_CENSUS_EIGHTEEN_ARE_THE_CONDUCTORS` — 176546efa20ead1309709118839b409b9c6246e7
+- `RIMMANDRAKE_ENACT_PIT_MELEE_REACH_EQUALS_CLIMB_SIZE_DECIDES` — 6e0600c911b0
+- `RIMMANDRAKE_FIX_ART_JUDGE_TIMER_IDLE_SINCE_NOV_EIGHT` — 6dc9769c2c9f
+- `RIMMANDRAKE_RERUN_DOOR_CHECK_DEAD_ON_ENOMEM_NOT_RED` — eb426322d721
+- `RIMMANDRAKE_REVIVE_FIVE_PROMISED_THINGS_SILENTLY_NOT_HAPPENING` — a7e9e5901090
+- `RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_OFFLINE_BUILD_HAND_STEPS` — 46b6402401ad
+- `RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_FOUR` — df9c139b8714
+- `RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS` — d15dd762b231
+- `RIMMANDRAKE_REWRITE_SKILL_REVIEW_SHEETS` — 2c8b146ae74daf959baf6de775c2a8105569ebf4
+- `RIMMANDRAKE_REWRITE_SKILL_LIVE_REVIEW` — 24108eb6c517
+- `RIMMANDRAKE_REWRITE_SKILL_LIVE_REVIEW` — 24108eb6c5
+- `RIMMANDRAKE_DROP_UNINSTALLED_MOD_FROM_FULL_LIST_IDENTITY_KOTH` — 4ecd015e866f
+- `RIMMANDRAKE_SETTLE_FLOWWORKS_MOAT_MELEE_AND_DROP_BLOCKED_LOOK_ROW` — 32766479e06a1828717e6fd68b3a198ad7079a8e
+- `RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMER_PAST_LOWERED_LEAF_AGAIN` — 32766479e06a1828717e6fd68b3a198ad7079a8e
+- `RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_FOUR_FAILURES_BACK` — ed2418697333
+- `RIMMANDRAKE_REWRITE_SKILLS_README_AND_BY_WORK_MAP` — 9c2678c628f1cf7b2bd9e1d549b12013fe435798
+- `RIMMANDRAKE_REWRITE_SKILLS_README_AND_BY_WORK_MAP` — 9c2678c628
+- `RIMMANDRAKE_STAGE_KNOCKBACK_WALK_SAVE_HE_ASKED_FOR_ANY_PARTIAL_LOOK` — c4f0541c96
+- `RIMMANDRAKE_REWRITE_SKILL_USING_RIMFLOW` — 6d3849cf00d5
+- `RIMMANDRAKE_REWRITE_SKILL_READING_RIMWORLD_GRAPHICS` — 54fa9ca885fc059fa07b3027f6c47fa13d350aa7
+- `RIMMANDRAKE_REWRITE_SKILL_GRAVSHIP_LAYOUT` — 544221a910244f206e53e11976c2f7c7e0060c1d
+- `RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_ONE_TESTS_RUN_TWO` — eda94cc43b23d1b5e8a3a58281c503026f9fd0cf
+- `RIMMANDRAKE_REWRITE_SKILL_ART_EVALUATION` — ce59b4784c69f75cb5780fffe47dc4bd6428280e
+- `RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_CYCLE_ONE_EXIT_MET_RUN_TWO` — ba688a41b8518bd82ecb7f5d62ef52df86e2f53a
+- `RIMMANDRAKE_REWRITE_SKILL_CANON_REFERENCES` — 41d86188248876d084fadb5a327aae565bf2a80c
+- `RIMMANDRAKE_REFUSE_SECOND_HOLDER_WHILE_FIRST_LIVES_FENCED_AGAIN` — 3ca683bf85
+- `RIMMANDRAKE_REWRITE_SKILL_CONTENT_MODERATION` — 909a6caca5f7fa66291bb34e0f55a0d713737bd7
+- `RIMMANDRAKE_REWRITE_SKILL_CREW_AND_NEMESIS_EVENTS` — da6f23353499ee4edaff5d82e181ff28046bcc24
+- `RIMMANDRAKE_REDRAW_NONMOD_PAGE_HALF_SLEEK_SUMMARY_NOT_LOG_BARF` — f5f1061a61532565568a15ffd4098d3fd433bd18
+- `RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT` — 510d96f7b87c
+- `RIMMANDRAKE_HOLD_SPARED_CARRIER_IN_BLAST_IT_WALKED_AWAY` — b710076da695
+- `RIMMANDRAKE_ENACT_THREE_TEST_KINDS_FORCED_COUNTED_HUNTED_NOT_STARS_ALIGNED` — e1036ca2f005560eb6b49716dcb2017cf63ebf58
+- `RIMMANDRAKE_REWRITE_SKILL_CUSTOM_INCIDENTS` — e4bd40f6b3be4dde660dd88b3165b269c55d3138
+- `RIMMANDRAKE_REWRITE_SKILL_DEBUG_TESTING` — cfdf5d2aa2a71a2b8d7de628ee14b37f45d3a402
+- `RIMMANDRAKE_ADVANCE_PYRELANDS_PAST_OFFLINE_BUILD_RUN_THREE` — 185352253106
+- `RIMMANDRAKE_RUN_KNOCKBACK_WALK_FRAME_ARMS_SMALL_COLONY_ABSENT` — 159c28a2dd5a
+- `RIMMANDRAKE_REWRITE_SKILL_LAYOUT_LAYERS` — 9d05e50103b05b5421c44876b2cb8b3ddc3cac8d
+- `RIMMANDRAKE_REWRITE_SKILL_IDEOLIGION` — 5be3834258de22f38302f5d8f7573c371aef1258
+- `RIMMANDRAKE_TEACH_EXIT_READER_KINDS_KNOWS_THREE_WORDS_ONLY` — cccb6c08f973
+- `RIMMANDRAKE_SEAT_SLACK_FAR_LAMP_PLUG_DREW_ON_WALL_PLATE` — 01c8191ac9c430a39d1f71c32d96fda024e5ff01
+- `RIMMANDRAKE_REWRITE_SKILL_MODDING` — cceaaffce8e46f6d20643d0673981ab63e2fa77e
+- `RIMMANDRAKE_REWRITE_SKILL_MODDING` — 7e1ae55c38
+- `RIMMANDRAKE_REWRITE_SKILL_QUESTS` — ae3946a2f9e1716cba2344021f8a3b8b3cf04684
+- `RIMMANDRAKE_REWRITE_SKILL_QUESTS` — 4d0d200585
+- `RIMMANDRAKE_JUDGE_PYRELANDS_BLIND_CYCLE_SIX_TESTS_FIRST` — 52c881c8c3096f511b8a867196e0f4e8ca671339
+- `RIMMANDRAKE_DESIGN_BRIDGE_TWO_REBUILD_OR_IMPROVE_CODE_READ` — 0a8ed98af5596e4adcddd7216a0040da2c4d6451
+- `RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_ONE_RUN_THREE` — f0b0d045bc51eceffed661b6a3bde5fb22206b42
+- `RIMMANDRAKE_ROUTE_PYRELANDS_CYCLE_SIX_FAILURES_BACK` — 7b6726b08df0e90e8b59c5016cc23fa82bc013ad
+- `RIMMANDRAKE_REWRITE_SKILL_SAVEGAME` — 0259e50de8d75a3e4659f6405fb8ac684f721b8c
+- `RIMMANDRAKE_REWRITE_SKILL_SAVEGAME` — 0259e50de8
+- `RIMMANDRAKE_REWRITE_SKILL_SCENARIO_BUILDING` — a5c104cc502813dba026e1361718625da60d3d2e
+- `RIMMANDRAKE_ENACT_SHORT_OF_X_OF_Y_ESCALATES_CONDUCTOR_CALLS_IT` — 39b562dc4ea92a82acbe53646579db1c7450a988
+- `RIMMANDRAKE_REWRITE_SKILL_SCENE_COMPOSITION` — be6f6ba0e3
+- `RIMMANDRAKE_REWRITE_SKILL_SPRITE_FACINGS` — 95e0a85ab1759361ef439bf474bdb56f04cfe4d5
+- `RIMMANDRAKE_REWRITE_SKILL_SPRITE_FACINGS` — 7134302cc3
+- `RIMMANDRAKE_FIX_STEVE_TWO_LANE_READING_STEVE_ONE_INSTALL` — 3bfaf78cd063da8a297fb051bea9edb1bbc6ffdd
+- `RIMMANDRAKE_SHARE_ONE_FAILURE_CLASSIFIER_EVERY_COUNTER_ROLLED_ITS_OWN` — 7134302cc3d6400f04248baae4abeb0e64e55e68
+- `RIMMANDRAKE_REWRITE_SKILL_START_PREP` — 7a1fcd7cf4a5
+- `RIMMANDRAKE_REWRITE_SKILL_START_PREP` — 7a1fcd7cf4
+- `RIMMANDRAKE_FIX_TWO_FLOWWORKS_SELFTESTS_RED_AFTER_PUMP_INSTALL` — b4293975d8ef
+- `RIMMANDRAKE_ENACT_NOBODY_PLAYS_NO_OWNER_GAME_OR_SAVES_TO_GUARD` — f3c90ff50cd81ff5d061b1341bd4d3ca2c80d199
+- `RIMMANDRAKE_STRAIGHTEN_SLACK_CORD_WHERE_IT_LEAVES_WALL_PLUG_HE_SAW_IT_LIVE` — 1e926ebe4c067a0516c356e1cdbdf0baaaa0d46c
+- `RIMMANDRAKE_REWRITE_SKILL_WORLD_EDITING` — 4906216a895a24f055f7288b2467f1acc5465706
+- `RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_NINE` — d9048e05c64f8d832fcf0004732f5bd75665120a
+- `RIMMANDRAKE_LIST_CANONICAL_SAVES_IN_COMPANION_PROFILE_CURRENT_START_MISSING` — 8851132b5a63591186f8e12739a98cd833d13b97
+- `RIMMANDRAKE_BUILD_BRIDGE_RECEIPT_CALM_AND_TAP_EITHER_WAY` — ce2b4d9af0f704f8545b092696245273b47c2376
+- `RIMMANDRAKE_KEEP_FULL_LIST_ROWS_WHEN_ONLY_TEST_SCRIPTS_MOVED` — 6dfc987697b2
+- `RIMMANDRAKE_REWRITE_SKILL_XENOTYPES` — 90df040c0099e38cb2acaa263d1702a70ce2a618
+- `RIMMANDRAKE_ENACT_PYTHON_CANNOT_REACH_IT_AUTHORIZES_BRIDGE_CSHARP` — cb1e161027ad45b36799c7f6385da465a3091a62
+- `RIMMANDRAKE_REWRITE_SKILL_NORTHSTAR_VALIDATION` — b3d478a683
+- `RIMMANDRAKE_REWRITE_SKILL_NORTHSTAR_VALIDATION` — 2958be73c8366ffc32576eea689759e3ec5cb29e
+- `RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_FIVE` — f43575a6c686
+- `RIMMANDRAKE_JUDGE_ROWS_BY_SOURCE_WHILE_WALK_FOLDER_STALE` — 9820c9eb8f01
+- `RIMMANDRAKE_ROUTE_GIMMESOMESLACK_VISIT_ONE_FAILURES_RUN_THREE` — 4ecdaf89ffbd
+- `RIMMANDRAKE_REWRITE_CHARTER_AND_AGENT_POLICY_EVERY_SEAT_READS` — b9463820e35eb0b9967b64d73d2e2422a4ab5536
+- `RIMMANDRAKE_REWRITE_SUBAGENT_FILES_SHARED_BLOCK_SIX_COPIES` — 630ca91c90344bff9e96b7b9792b201d1a36e777
+- `RIMMANDRAKE_DESIGN_BRIDGE_TWO_PYTHON_TESTS_FEW_RICH_ENTRY_POINTS` — cd21224f1118
+- `RIMMANDRAKE_CONFIRM_EXPLOSIVEKNOCKBACK_VISIT_FIVE_EXIT_MET` — 2993ae853e14
+- `RIMMANDRAKE_REWRITE_SKILL_TELEMETRY` — 22579dbd15dd3ea238766cc48bc2ab553b805351
+- `RIMMANDRAKE_RUN_BRIDGE_EXPERIMENT_PYTHON_ACT_AGAINST_IN_GAME_ACT` — a7074c036d0587c615d6abc0498bcce9943577b0
+- `RIMMANDRAKE_FIX_CONTROL_STORE_COUNTS_AND_TICK_PAUSES` — 46aa570b7b
+- `RIMMANDRAKE_FIX_RED_SELFTESTS_ONE_SWEEP_NO_NEW_ONES` — 46aa570b7b
+- `RIMMANDRAKE_HARDEN_BRIDGE_COMPANION_TOOLS_WITHOUT_THE_GAME` — 46aa570b7b
+- `RIMMANDRAKE_FIX_MODLEDGER_CUTOVER_AND_SEAL_EMPTY_SHARD` — 46aa570b7b
+- `RIMMANDRAKE_RECORD_REWRITE_BYTES_AND_TOKENS_IN_CLEAR_FINDINGS_RECORD` — 334faa183d
+- `RIMMANDRAKE_DECIDE_TWELVE_RULE_CONFLICTS_THE_COMPRESSION_LISTED` — 2ee2defbd734c506d8b8d3e8d0a2d0f075e3f32b
+- `RIMMANDRAKE_CHECK_KNOCKBACK_GAS_STATION_MADE_TOX_GAS_NOT_FLAMMABLE` — 0f61b3368c6a
+- `RIMMANDRAKE_LAND_APPENDED_LEDGER_LINES_IN_TIDY_FIFTH_RING` — 8f3ccc7efc8c5fefa02a10a8908a4a806e457b03
+- `RIMMANDRAKE_PLANT_WEEKLY_NEED_20261129_WATCHED_FROM_OUTSIDE` — db89ac69677f5fba2e398f041f9f387b9f45aad3
+- `RIMMANDRAKE_PRUNE_FLOWWORKS_DRAWBRIDGE_TO_HIS_NOV_THIRD_RULINGS` — b51c6d6cb175c3cac14bd9b381df0ed38e8416d2
+- `RIMMANDRAKE_REPAIR_CONDUCTOR_AUTHORITY_SELFTEST_SIX_RED_SINCE_TODAY` — c6b31e46030c5cff80180060454257c82580adba
+- `RIMMANDRAKE_READ_SHAPE_STAGE_CODE_FRESH_MAKER_COULD_NOT_LAUNCH` — 7287855f59f1
+- `RIMMANDRAKE_CORRECT_SPRITE_SKILL_LINES_THE_PIPELINE_CODE_OUTGREW` — 32856f6052d0b36662a4f36bc0e1b311b23260d2
+- `RIMMANDRAKE_READ_SHAPE_STAGE_CODE_FRESH_MAKER_COULD_NOT_LAUNCH` — 2e7b68ef0e
+- `RIMMANDRAKE_CORRECT_SPRITE_SKILL_LINES_THE_PIPELINE_CODE_OUTGREW` — 7863029548
+- `RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN` — db80fab783160b336af864669b65a349ff768441
+- `RIMMANDRAKE_STEWARD_EXPLOSIVEKNOCKBACK_PRE_HUMAN_STAGE` — 623ff7f619de
+- `RIMMANDRAKE_FIX_STAGE_REVIEW_MIDDAY_IT_READS_NO_HOUR` — 830d43808956e9218038dd85abfffa5ac5371c98
+- `RIMMANDRAKE_RETIRE_OR_REPAIR_OWED_SOURCES_KILLED_EVERY_TICK` — a5feaa218e
+- `RIMMANDRAKE_RETIRE_OR_REPAIR_OWED_SOURCES_KILLED_EVERY_TICK` — e27539d7438d
+- `ART_RULINGS_FIX_FLYER_COLUMN_BASELINE` — e1c28b094b
+- `BIOME_TRANSITIONS_JUDGE_VS_BAROQUE` — d85a6202bc
+- `HEAP_BURST_DIAGNOSE_SEVEN_HOUR_APPETITE` — 5480fa249d
+- `RIMMANDRAKE_FIX_THREE_WEIRD_EATERS_WITH_NO_THINK_TREE` — 8333bab3ef
+- `RIMMANDRAKE_SORT_OLD_PIPELINE_TOOLS_PART_ONE_OF_FOUR` — 40f5873eae
+- `OPS_STEVE_DIAGNOSE_INVALID_SHARE_UKDG` — 27eade8bc5
+- `OPS_STEVE_FEED_IDLE_LANE_HURP` — 27eade8bc5
+- `OPS_TIMER_REPAIR_PRXC_XKGA` — 43f0151b1e
+- `RIMMANDRAKE_SORT_OLD_STEVEDESKTOP_TICKETS_IN_ONE_PART` — 316445b92973f7331120016bbba026b559d5e2f5
+- `RIMMANDRAKE_SORT_OLD_OPS_ALARMS_TICKETS_IN_ONE_PART` — 97e23eee491359ace576734012e95b0fdb503111
+- `RIMMANDRAKE_FIX_STEVE2_LOAD_PREPARE_REFUSES_RUNNING` — 1072913ab0
+- `RIMMANDRAKE_TICKET_TEN_AGENT_WORK_TO_CODE_CHANGES_SMALL_ONES_FIRST` — 6ebce0b143b8fdc2bf318581b802f8ece564be94
+- `RIMMANDRAKE_FIND_AGENT_WORK_THAT_PYTHON_CAN_DO_TOKEN_FREE` — 7a5f81324c
+- `RIMMANDRAKE_STUDY_STEVEDESKTOP_WORK_SETUP_AND_TRACKING_WE_MESS_UP` — 7a5f81324c
+- `RIMMANDRAKE_UNBLOCK_SLACK_FOUR_RED_DECIDERS_PAUSED_THE_MOD` — ac10b8d646fc597235f0bd4f7afc81975d50151a
+- `ANOMALY_EVENTS_SUPPRESS_UTINNI_1` — done by implemented, no close
+- `SCALD_UNDERWATER_FLORA_1` — done by implemented, no close
+- `UNSUBSTANTIATED_SPECIES_ABILITIES_1` — done by implemented, no close
+- `SHEET_DONOR_COLUMN_FALSE_PASS_1` — done by implemented, no close
+- `ART_SHEET_DONOR_JOIN_GAPS_1` — done by implemented, no close
+- `FIREHAWK_FLIGHT_BEHAVIOR_1` — done by verify, no close
+- `ASHKARR_PAINTER_NAMES_DIVERGED_1` — done by implemented, no close
+- `POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK` — done by implemented, no close
+- `UNROUTABLE_CORD_BUILD_DIVE_THROUGH_WALLS` — done by implemented, no close
+- `FLOWWORKS_TABS_RECONCILE_PIPES_WITH_PIPES` — done by implemented, no close
+- `WIRE_DOWN_ALERT_1` — done by verify, no close
+- `POLE_OWNER_CHANGE_DROPS_WIRES_1` — done by verify, no close
+- `TAP_CONSERVATION_SELFTEST_1` — done by verify, no close
+- `FLOWWORKS_FORCED_PIT_FALL_ROW_1` — done by verify, no close
+- `FLOWWORKS_PIT_FALL_ONLY_FORCED_1` — done by verify, no close
+- `FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1` — done by verify, no close
+- `HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD` — done by implemented, no close
+- `RIVER_SITE_FIX_GEYSER_ON_EVERY_TILE` — done by implemented, no close
+- `LIQUID_THEFT_FIX_TANK_HIDES_ITSELF` — done by implemented, no close
+- `PUMP_POUR_TUNE_NO_FASTER_THAN_GRAVITY` — done by implemented, no close
+- `ANIMA_TREE_FIX_TAKES_THE_SIDE_DOOR` — done by verify, no close
+- `CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY` — done by implemented, no close
+- `FACE_PATCH_FIX_ADDS_TO_A_GHOST` — done by implemented, no close
+- `THEFT_ROW_REPAIR_WITNESS_WALKS_OFF` — done by implemented, no close
+- `SCORCH_FRUIT_FIX_ROLLS_BEFORE_THE_ASHES` — done by implemented, no close
+- `PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE` — done by implemented, no close
+- `WEIR_POOL_DIAGNOSE_DAMMED_AT_THE_EDGE` — done by implemented, no close
+- `RIVER_SITE_FIX_FISHLESS_ROT_RIVER` — done by implemented, no close
+- `WEIR_BREACH_FIX_CATCH_STRANDS_AT_HOME` — done by implemented, no close
+- `PYRE_HARNESS_SCORCH_CAP_REPAIR_SHARED_BUDGET` — done by implemented, no close
+- `PYRE_DEEP_ASH_TUNE_ONE_POINT_SHORT` — done by implemented, no close
+- `PYRE_SITE_FOOD_REPAIR_COLONY_STARVES` — done by implemented, no close
+- `PYRE_SITE_TEMP_REPAIR_PROBE_HIT_ROCK` — done by implemented, no close
+- `PYRE_SITE_CLOCK_REPAIR_ASH_EXPIRES_FIRST` — done by implemented, no close
+- `POND_RETURN_LEG_BUILD_WATER_GOES_HOME` — done by implemented, no close
+- `TANK_LOOP_REBUILD_BOTTLES_FIND_THE_RIVER` — done by implemented, no close
+- `FLOWWORKS_TANK_LOOP_ROW_WRONG_1` — done by implemented, no close
+- `TESTENV_MEGAPEDE_HARDEN_GATECRASHER` — done by implemented, no close
+- `PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS` — done by implemented, no close
+- `PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS` — done by implemented, no close
+- `PYRE_FULGURITE_BUILD_NO_SAND_TO_STRIKE` — done by implemented, no close
+- `PYRE_SCORCHFRUIT_DIAGNOSE_FIRE_BEARS_NOTHING` — done by implemented, no close
+- `PYRE_ASH_CONTROL_DIAGNOSE_DRY_READS_WET` — done by implemented, no close
+- `PYRE_HERD_DRIVE_BUILD_TWO_DAYS_LATER` — done by implemented, no close
+- `ARTBOARD_PAWNS_HARDEN_IDS_ARE_NOT_PEOPLE` — done by implemented, no close
+- `VITALS_SPECIMENS_FIX_GHOSTS_REHOMED` — done by implemented, no close
+- `FLOWWORKS_SETTINGS_WIRE_AFTER_TANKS` — done by implemented, no close
+- `WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST` — done by verify, no close
+- `FLOOD_STATION_REWIRE_DRY_CANAL_STAYS_DRY` — done by verify, no close
+- `LACQUER_PRESS_REWIRE_BILL_PLUS_RIGHT_CLICK` — done by verify, no close
+- `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD` — done by implemented, no close
+- `DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE` — done by implemented, no close
+- `FISH_ROLL_MEND_PONDS_BORN_BARREN` — done by implemented, no close
+- `TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT` — done by implemented, no close
+- `PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE` — done by implemented, no close
+- `PUMP_ART_RESKIN_LESS_GARDEN_HOSE` — done by implemented, no close
+- `FLOWWORKS_LABELS_POLISH_LEVELS_TO_METRES` — done by implemented, no close
+- `TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP` — done by implemented, no close
+- `SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING` — done by implemented, no close
+- `THIRST_ROWS_DIAGNOSE_SLIME_SITS_STILL` — done by implemented, no close
+- `SUSPENSION_JETTY_BUILD_WALK_THE_PLANK` — done by implemented, no close
+- `PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT` — done by verify, no close
+- `SPRINKLER_HEADS_BUILD_PUMP_REQUIRED` — done by verify, no close
+- `SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN` — done by implemented, no close
+- `DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT` — done by verify, no close
+- `RESCUE_LADDER_DIAGNOSE_NOBODY_FETCHES_IT` — done by implemented, no close
+- `DUG_ICE_DIAGNOSE_COLD_FEET_WARM_WATER` — done by implemented, no close
+- `PIT_COVER_BUILD_DECONSTRUCT_DROPS_TOO` — done by implemented, no close
+- `FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY` — done by implemented, no close
+- `FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE` — done by implemented, no close
+- `FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT` — done by implemented, no close
+- `FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE` — done by implemented, no close
+- `PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL` — done by implemented, no close
+- `POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS` — done by implemented, no close
+- `PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE` — done by implemented, no close
+- `REACH_WINCH_FIX_GHOST_ROAD_RETURNS` — done by implemented, no close
+- `HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL` — done by implemented, no close
+- `WALL_REACH_TUNE_REBUILDS_TENFOLD` — done by verify, no close
+- `STATION_REACH_CENTRE_RETHINK_FOOTPRINT` — done by verify, no close
+- `BEACH_RING_RETIRE_DRAINED_MEANS_DRY` — done by verify, no close
+- `FALL_DAMAGE_BUILD_DEEP_DROPS_KILL` — done by verify, no close
+- `PIT_ALERT_BUILD_RED_MEANS_HELP` — done by verify, no close
+- `PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER` — done by verify, no close
+- `FLOW_ORDER_EXTERNAL_INPUT_1` — done by verify, no close
+- `PIT_LID_FIX_VICKY_PEEKS_THROUGH` — done by implemented, no close
+- `HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE` — done by implemented, no close
+- `HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES` — done by implemented, no close
+- `SCENARIO_REELS_FIX_STILL_FACING_WEST` — done by implemented, no close
+- `PROOF_HOSE_SWEEP_FIX_ATE_THE_ZOO` — done by implemented, no close
+- `X8C_WALKER_FIX_FELL_THROUGH_THE_FLOOR` — done by implemented, no close
+- `MODERN_REEL_SHADOW_FIX_BOX_TOO_BIG` — done by implemented, no close
+- `JOINT_CHECK_WIDEN_PIPE_STUBS_UNSEEN` — done by implemented, no close
+- `HOSE_TANK_LAY_FIX_ENDS_ON_LID` — done by implemented, no close
+- `ART_INSTALL_WIRE_BY_CARD_FLAG_MISSING` — done by implemented, no close
+- `HOSE_WORLD_SNAPSHOT_FIX_STALE_WHILE_PAUSED` — done by implemented, no close
+- `HOSE_FITTING_GATE_BUILD_BELIEVED_HOSEMATH` — done by implemented, no close
+- `VALIDATION_HOSE_REELS_FIX_STILL_WEST` — done by implemented, no close
+- `JOINT_CHECK_FIX_TAPS_LOOK_LIKE_NOTHING` — done by implemented, no close
+- `WALK_PIPES_PRUNE_TWO_TAILS_TO_NOWHERE` — done by implemented, no close
+- `QUIET_SITE_FIX_JAILBREAK_BY_VANISHING` — done by implemented, no close
+- `RELAY_PROOF_FIX_SITE_WIPES_THE_REVIEW` — done by implemented, no close
+- `RIVER_MUFFALO_FIX_SHOWS_ITS_REAR` — done by implemented, no close
+- `TANK_LANE_FITTINGS_REDRAW_MODERN_ONLY` — done by implemented, no close
+- `TANK_SOUTH_PORT_REDRAW_STUB_PEEKS_OUT` — done by implemented, no close
+- `TANK_NS_PORTS_REDRAW_COUPLE_THIN_AIR` — done by implemented, no close
+- `UNDER_COUPLER_DECIDE_CORNER_CROWDING` — done by implemented, no close
+- `CARGO_UPPER_PORT_DECIDE_NOTHING_UNDER` — done by implemented, no close
+- `ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST` — done by implemented, no close
+- `LADDER_EW_FIX_LEANS_THE_WRONG_WAY` — done by implemented, no close
+- `HOSE_SPLICE_BUILD_MATES_BY_SLOPE` — done by implemented, no close
+- `STATION_SIGNS_FIX_LOOK_LIKE_BOOKS` — done by implemented, no close
+- `BARREL_PAIR_FIX_SIZE_MISMATCH` — done by implemented, no close
+- `PUMP_PORTS_REDRAW_SIZED_FOR_FAT_PIPES` — done by implemented, no close
+- `DRAWBRIDGE_CABLES_FIX_STOP_SHORT` — done by implemented, no close
+- `FLOWWORKS_REACTOR_FIX_STUCK_ENDS_SHIFT` — done by implemented, no close
+- `FLOWWORKS_CONVERTER_FIX_BLOCKED_STARVES_REST` — done by implemented, no close
+- `UNDERCOUPLER_GIRTH_TUNE_PEEKS_PAST_NECK` — done by implemented, no close
+- `HOSE_SIDEPORT_FIX_AIMS_AT_OLD_MIDPOINT` — done by implemented, no close
+- `PIPE_STYLE_PRUNE_WHOLE_RUN_ONLY` — done by implemented, no close
+- `PUMP_COUPLING_SHRINK_STILL_SIZED_FOR_GIANTS` — done by implemented, no close
+- `SCENARIO_ONLY_FIX_SWEEPS_THE_WHOLE_ZOO` — done by implemented, no close
+- `FLOWWORKS_RIVERCOLOR_FIX_DICT_SELF_ENUM` — done by verify, no close
+- `RAILING_MATERIAL_FIX_MADE_OF_NOTHING` — done by verify, no close
+- `SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND` — done by verify, no close
+- `POND_PUMP_FIX_LAST_DROP_COUNTS` — done by verify, no close
+- `SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING` — done by verify, no close
+- `GLOWTANK_DRINK_DIAGNOSE_DRY_BESIDE_THE_SEA` — done by verify, no close
+- `SPILL_DIAGNOSE_TEN_THOUSAND_GONE_DRY` — done by verify, no close
+- `EXCAVATION_LEGACY_MIGRATION_FLAG_1` — done by verify, no close
+- `GSS_WATER_STUB_FIX_PASSED_LAST_WEEK` — done by implemented, no close
+- `JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX` — done by verify, no close
+- `HOSE_JOIN_REDRAW_STILL_SHOWS_ITS_BORE` — done by implemented, no close
+- `LADDER_WALL_FIX_CLIMBER_WALKS_ROUND_WALL` — done by implemented, no close
+- `PIT_COVER_FIX_DROPS_THE_SUN_SHADOW` — done by implemented, no close
+- `CORD_LOOP_UNTANGLE_LASSOED_A_PIPE` — done by verify, no close
+- `ART_EVAL_PROVE_CARDS_PY_UNTESTED` — done by implemented, no close
+- `ART_EVAL_FIX_CARD_SOURCES_OMIT_CONTEXT` — done by implemented, no close
+- `ART_SHEET_FIX_COMBINED_MODE_DROPS_REFERENCES` — done by implemented, no close
+- `ART_EVAL_HARDEN_FILE_REGENS_SILENT_FAILURE` — done by implemented, no close
+- `ART_EVAL_FIX_SAME_SUBJECT_CANDIDATES_COLLIDE` — done by implemented, no close
+- `LIQUID_LOOK_MATERIAL_OWNERSHIP_1` — done by verify, no close
+- `WATER_LOOK_DIAGNOSE_GREY_ON_THE_ROT` — done by verify, no close
+- `DRAWDOWN_DIAGNOSE_THIRTEEN_BEFORE_TWELVE` — done by verify, no close
+- `PIPE_FITTINGS_REDRAW_NO_MORE_LADDERS` — done by verify, no close
+- `REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED` — done by verify, no close
+- `SETTINGS_SCREEN_KIT_1` — done by verify, no close
+- `GSS_DETERMINISM_FIX_IGNORES_STALE_PIECES` — done by implemented, no close
+- `REVIEW_PROOFS_FIX_STALE_PROOF_OVERWRITES` — done by implemented, no close
+- `VV_MATRIX_FIX_UNCOMPILED_HOSE_PASSES` — done by implemented, no close
+- `EXTENSION_PROOF_FIX_DISK_SHA_TRUSTED` — done by implemented, no close
+- `DRAWBRIDGE_HOSE_FIX_STAYS_LINKED_RAISED` — done by implemented, no close
+- `HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP` — done by implemented, no close
+- `FAUCET_REDRAW_BORROWED_BLEED_WELL` — done by verify, no close
+- `ANCHOR_BOLLARD_REDRAW_LIES_DOWN_ON_DUTY` — done by verify, no close
+- `RIMPULSE_FAILURES_BUILD_ONLY_THE_STUCK` — done by verify, no close
+- `PIPE_POLE_SWITCH_DECIDE_HOSTAGE_TO_WIRES` — done by verify, no close
+- `MISSION_TANK_GOAL_REWIRE_TO_DEST` — done by verify, no close
+- `EXCAVATION_WALL_ART_1` — done by verify, no close
+- `HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP` — done by verify, no close
+- `HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW` — done by verify, no close
+- `PIPE_GIRTH_TUNE_HALF_AS_THICK` — done by verify, no close
+- `HOSE_LAY_FIX_GC_STORM_FROM_WORKER` — done by verify, no close
+- `GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET` — done by verify, no close
+- `GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS` — done by verify, no close
+- `HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC` — done by verify, no close
+- `GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS` — done by verify, no close
+- `HOSE_TICK_FIX_SPIKES_AT_SUPERFAST` — done by verify, no close
+- `FULLLIST_TPS_DIAGNOSE_THIRD_OF_LAST_WEEK` — done by verify, no close
+- `MAPPRETICK_DIAGNOSE_FULL_LIST_STALL` — done by verify, no close
+- `ARENA_LANE_BUILD_MINIMAL_LIST_ONLY` — done by verify, no close
+- `ARENA_RALPHC_BUILD_BUILDERS_WAIT_ON_TESTERS` — done by verify, no close
+- `ARENA_TESTPILOT_BUILD_RELOAD_SCALED_BY_COST` — done by verify, no close
+- `TESTPILOT_FIX_TAINT_ERASING_FAIL` — done by implemented, no close
+- `TESTPILOT_FIX_CANARY_BLIP_RELOAD` — done by implemented, no close
+- `TESTPILOT_CARRIED_REBUILD_WASTES_RELOAD` — done by implemented, no close
+- `TESTPILOT_HARDEN_SELFTEST_MUTANTS` — done by implemented, no close
+- `ARENA_CRITIC_MEASURE_PLANTED_DEFECTS_FIRST` — done by verify, no close
+- `TESTPILOT_FIX_LADDER_FORGETS_RELOAD` — done by implemented, no close
+- `TESTPILOT_FIX_PROOF_TIMEOUT_ABORTS_PASS` — done by implemented, no close
+- `TESTPILOT_FIX_PASS_CONTINUES_AFTER_ABORT` — done by implemented, no close
+- `TESTPILOT_FIX_CHECKOUT_REFUSAL_LOOPS` — done by implemented, no close
+- `TESTPILOT_FIX_QUARANTINE_SPARES_SIBLING` — done by implemented, no close
+- `TESTPILOT_HARDEN_SELFTEST_MUTANTS_ROUND3` — done by implemented, no close
+- `TESTPILOT_FIX_STALE_YIELD_KNOBS` — done by implemented, no close
+- `TESTPILOT_HARDEN_SELFTEST_MUTANTS_ROUND4` — done by implemented, no close
+- `TESTPILOT_FIX_RELOAD_FOR_COUNTED_REBUILD` — done by implemented, no close
+- `TESTPILOT_FIX_RESOLVE_AFTER_CRASHED_PASS` — done by implemented, no close
+- `TESTPILOT_FIX_CRASH_WINDOWS_IN_LEDGER_WRITES` — done by implemented, no close
+- `TESTPILOT_FIX_PERIODIC_CANARY_IN_PROOF` — done by implemented, no close
+- `TESTPILOT_FIX_DRAIN_CHECKS_EVERY_SEALED` — done by implemented, no close
+- `TESTPILOT_FIX_FAILED_SAMEFP_REBUILD_RELOAD` — done by implemented, no close
+- `DISPATCHER_ENFORCE_SEAT_FOCUS_TRIAL_PREP` — done by implemented, no close
+- `ARENA_JUDGE_RATES_MEASURE_PLANTED` — done by verify, no close
+- `ARENA_GPTJUDGE_HOME_FIX_AGENTS_MD_STEERS` — done by verify, no close
+- `ARENA_JUDGE_OWNPATH_TEST_PREFIX_SIBLING` — done by verify, no close
+- `ARENA_JUDGE_PROGRAMDATA_CONFIG_STEERS` — done by verify, no close
+- `FOUNDRY_RINGS_FIX_ANSWERED_READS_NO_HANDOFF` — done by implemented, no close
+- `FOUNDRY_RINGS_FIX_UNWAKEABLE_TOLD_NOBODY` — done by implemented, no close
+- `FOUNDRY_RINGS_FIX_QUEUE_OFFERS_BARRED_WORK` — done by implemented, no close
+- `FOUNDRY_RINGS_FIX_BACKOFF_HIDES_NEW_WORK` — done by implemented, no close
+- `DISPATCHER_BACKOFF_FIX_BYPASS_EATS_COOLDOWN` — done by implemented, no close
+- `DISPATCHER_ALARMS_FIX_STAMP_BEFORE_DELIVERY` — done by implemented, no close
+- `DISPATCHER_LOCK_FIX_RAISE_STOPS_EVERY_RING` — done by implemented, no close
+- `DISPATCHER_EVENTS_FIX_UNREADABLE_READS_IDLE` — done by implemented, no close
+- `SEAT_FOCUS_FIX_BAD_SCHEDULE_OPENS_BAR` — done by implemented, no close
+- `QUEUE_PROPOSED_FIX_SKIPS_AFK_AVAILABILITY` — done by implemented, no close
+- `LOGIN_WATCH_FIX_REFUSED_SWITCH_RETRIES` — done by implemented, no close
+- `LOGIN_WATCH_FIX_ERROR_JSON_READS_DEAD` — done by implemented, no close
+- `LOGIN_WATCH_FIX_BAD_USAGE_OPENS_GATE` — done by implemented, no close
+- `LOGIN_WATCH_FIX_MIDNIGHT_FORGETS_RESCUE` — done by implemented, no close
+- `QUEUE_CLAIMABLE_FIX_OFFERS_RECONCILED_DONE` — done by implemented, no close
+- `LOGIN_WATCH_FIX_CANCELLED_RESCUE_GOES_SILENT` — done by implemented, no close
+- `SIGNAL_WATCH_FIX_RECOVERY_RESETS_LIMIT` — done by implemented, no close
+- `QUEUE_NEXT_FIX_ALSO_LINE_BYPASSES_FOCUS` — done by implemented, no close
+- `LOGIN_WATCH_FIX_DST_RESET_LATE` — done by implemented, no close
+- `SEAT_RESTART_FIX_IGNORES_HELPER_STALE_S` — done by implemented, no close
+- `DISPATCHER_WITHDRAW_FIX_REMOVED_SEAT_LOST` — done by implemented, no close
+- `DISPATCHER_ALARMS_FIX_DECLINED_SAYS_IDLE` — done by implemented, no close
+- `DISPATCHER_ALARMS_FIX_BLIND_STAMP_KEPT` — done by implemented, no close
+- `SIGNAL_WATCH_FIX_CLEARED_FLAG_KEEPS_HISTORY` — done by implemented, no close
+- `QUEUE_SEAT_FIX_ALIAS_READS_AS_BUILD` — done by implemented, no close
+- `SEAT_RESTART_FIX_ARMED_THEN_DEAD_VERIFIED` — done by implemented, no close
+- `SEAT_RESTART_FIX_SWAPPED_SESSION_KILLED` — done by implemented, no close
+- `DISPATCHER_ALARMS_FIX_LOG_OFF_DELIVERED` — done by implemented, no close
+- `DISPATCHER_COOLDOWN_FIX_VERIFIED_STAYS_OFF` — done by implemented, no close
+- `SIGNAL_WATCH_FIX_READER_RAISE_SKIPS_REST` — done by implemented, no close
+- `SEAT_RESTART_FIX_TORN_TRANSCRIPT_VERIFIED` — done by implemented, no close
+- `DISPATCHER_ROLES_FIX_BAD_ROW_STOPS_RINGS` — done by implemented, no close
+- `DISPATCHER_BACKOFF_FIX_PAUSE_LOSES_COOLDOWN` — done by implemented, no close
+- `SIGNAL_WATCH_FIX_BAD_STAMP_ESCAPES_GUARD` — done by implemented, no close
+- `SIGNAL_WATCH_FIX_SINCE_TEXT_OVERSTATES` — done by implemented, no close
+- `DISPATCHER_SESSION_FIX_RING_HIDES_NEW_WINDOW` — done by implemented, no close
+- `DISPATCHER_STALL_FIX_BACKOFF_KEEPS_CLOCK` — done by implemented, no close
+- `DISPATCHER_EVENTS_FIX_TWO_READS_MISS_HANDOFF` — done by implemented, no close
+- `DISPATCHER_ALARMS_FIX_UNWAKEABLE_SAYS_WORK` — done by implemented, no close
+- `DISPATCHER_HEARTBEAT_FIX_BAD_ROWS_READ_OK` — done by implemented, no close
+- `OPS_WATCH_FIX_ALARM_CONF_STOPS_ALARMS` — done by implemented, no close
+- `OPS_WATCH_FIX_ALARM_ENTRY_STOPS_PASS` — done by implemented, no close
+- `OPS_WATCH_FIX_BAD_ROW_LOSES_FAMILY` — done by implemented, no close
+- `OPS_WATCH_FIX_BAD_STAMP_DROPS_SILENCE` — done by implemented, no close
+- `OPS_WATCH_FIX_BAD_TARGET_STOPS_PASS` — done by implemented, no close
+- `OPS_WATCH_FIX_CLOSED_INCIDENT_MUTES_STALL` — done by implemented, no close
+- `OPS_WATCH_FIX_DISK_ENTRY_LOSES_FAMILY` — done by implemented, no close
+- `OPS_WATCH_FIX_FIT_RULE_LOSES_ACCOUNTS` — done by implemented, no close
+- `OPS_WATCH_FIX_FUTURE_DAY_COMPLETES_WEEK` — done by implemented, no close
+- `OPS_WATCH_FIX_FUTURE_INCIDENT_READS_HEALTHY` — done by implemented, no close
+- `OPS_WATCH_FIX_FUTURE_ROW_HIDES_ALARM` — done by implemented, no close
+- `OPS_WATCH_FIX_LEDGER_LOSS_HIDES_TESTING` — done by implemented, no close
+- `OPS_WATCH_FIX_LOST_STATE_DROPS_SILENCE` — done by implemented, no close
+- `OPS_WATCH_FIX_MALFORMED_VALUES_READ_HEALTHY` — done by implemented, no close
+- `OPS_WATCH_FIX_NAN_BYTES_MUTE_SCRATCH` — done by implemented, no close
+- `OPS_WATCH_FIX_NAN_DAY_POISONS_TESTING` — done by implemented, no close
+- `OPS_WATCH_FIX_NEGATIVE_CODEX_CLEARS_ALARM` — done by implemented, no close
+- `OPS_WATCH_FIX_NON_NUMBERS_PASS_MEASURED` — done by implemented, no close
+- `OPS_WATCH_FIX_NUL_TAG_BLOCKS_FILING` — done by implemented, no close
+- `OPS_WATCH_FIX_OLD_JOB_MUTES_STREAK` — done by implemented, no close
+- `OPS_WATCH_FIX_OUTAGE_LOSES_SILENCE_FLAGS` — done by implemented, no close
+- `OPS_WATCH_FIX_ROW_SHAPE_LOSES_READING` — done by implemented, no close
+- `OPS_WATCH_FIX_RULES_FILE_STOPS_WATCH` — done by implemented, no close
+- `OPS_WATCH_FIX_RULE_SLIPS_STOP_ALARMS` — done by implemented, no close
+- `OPS_WATCH_FIX_SCRATCH_ROW_LOSES_TOTALS` — done by implemented, no close
+- `OPS_WATCH_FIX_SERIES_WRITE_STOPS_PASS` — done by implemented, no close
+- `OPS_WATCH_FIX_TEXT_WINDOW_HIDES_ROW` — done by implemented, no close
+- `OPS_WATCH_FIX_TORN_HISTORY_READS_MEASURED` — done by implemented, no close
+- `OPS_WATCH_FIX_TPS_TEXT_READS_MEASURED` — done by implemented, no close
+- `OPS_WATCH_FIX_UNKNOWN_OUTCOME_CLEARS_ALARM` — done by implemented, no close
+- `RIMFLOW_BRIDGE_FIX_BAD_UNIT_FORCES_LOCK` — done by implemented, no close
+- `RIMFLOW_BRIDGE_FIX_HOST_TAKE_FORCES_GUARD` — done by implemented, no close
+- `RIMFLOW_BRIDGE_FIX_LEASE_LOSES_HEARTBEAT` — done by implemented, no close
+- `RIMFLOW_BRIDGE_FIX_REFUSED_TAKE_FORCES_LOCK` — done by implemented, no close
+- `RIMFLOW_BRIDGE_FIX_RELEASE_BEFORE_REFUSAL` — done by implemented, no close
+- `RIMFLOW_BRIDGE_FIX_WHO_PRINTS_STALE_HOLDER` — done by implemented, no close
+- `RIMFLOW_BRIDGE_FIX_WHO_WRITES_STALE_MIRROR` — done by implemented, no close
+- `RIMFLOW_DISTRESS_FIX_LATE_VERIFY_INFLATES` — done by implemented, no close
+- `RIMFLOW_NEXT_FIX_CLAIMABLE_DROPS_HOLDERS` — done by implemented, no close
+- `RIMFLOW_NEXT_FIX_OFFER_REPEATS_AS_ALSO` — done by implemented, no close
+- `RIMFLOW_NEXT_FIX_PROPOSED_OFFER_DROPS_ORDERS` — done by implemented, no close
+- `SELFTEST_CLI_FIX_AMBIENT_HOST_BREAKS_LOCKS` — done by implemented, no close
+- `SELFTEST_CLI_FIX_FIXTURE_USES_AMBIENT_INDEX` — done by implemented, no close
+- `SELFTEST_CLI_FIX_RACE_PASSES_ON_NOTHING` — done by implemented, no close
+- `SELFTEST_CLI_FIX_REASSIGN_MISREADS_HISTORY` — done by implemented, no close
+- `SELFTEST_CLI_FIX_RENDER_NEVER_DELEGATES` — done by implemented, no close
+- `SELFTEST_CLI_FIX_SHARED_LOCK_AMBIENT` — done by implemented, no close
+- `SELFTEST_CLI_FIX_SWEEP_READS_REAL_TRANSIENT` — done by implemented, no close
+- `SELFTEST_CLI_FIX_TESTS_PROVE_LITTLE` — done by implemented, no close
+- `SELFTEST_OPS_FIX_BUSY_NEVER_RUNS_MAIN` — done by implemented, no close
+- `SELFTEST_OPS_FIX_MOUNT_TEST_PROVES_NOTHING` — done by implemented, no close
+- `SELFTEST_OPS_FIX_NAN_TEST_LOSES_WEEK` — done by implemented, no close
+- `HELPER_REGISTRY_BUILD_DURABLE_RECEIPTS` — done by verify, no close
+- `AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS` — done by verify, no close
+- `AGENT_IMPROVE_REPAIR_SILENT_NONE` — done by verify, no close
+- `AGENT_IMPROVE_INSTALL_DAILY_TIMER` — done by verify, no close
+- `HEARTBEAT_BUILD_OUTSIDE_THE_SINKING_SHIP` — done by verify, no close
+- `RELENTLESS_USAGE_MEASURE_NO_FLAT_GUESSES` — done by verify, no close
+- `RELENTLESS_LIVE_BUILD_ONE_AGENT_TWO_MODES` — done by verify, no close
+- `RELENTLESS_CLONES_REPAIR_REMOVE_OF_GONE` — done by verify, no close
+- `DISK_CHURN_MEASURE_CLONES_EAT_THE_VHDX` — done by verify, no close
+- `RELENTLESS_BOOT_HARDEN_TRUSTED_ZEROS` — done by verify, no close
+- `PLAN_BUILD_BLOCKED_BY_IS_TEXT_ONLY` — done by verify, no close
+- `RELENTLESS_STRIKES_HARDEN_CHANGE_TACK` — done by verify, no close
+- `FLEET_HEALTH_PROVE_NOTHING_HIDING_AFTER_DISK` — done by verify, no close
+- `FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE` — done by implemented, no close
+- `BLUEDESERT_FLORA_PLANT_REFUSAL_1` — done by implemented, no close
+- `HORIZON_CARAVAN_VANILLA_REFUSES_1` — done by implemented, no close
+- `QUICKTEST_POLICY_NRE_FULLLIST_1` — done by implemented, no close
+- `JAWABENCH_DESTROY_PAWNS_1` — done by implemented, no close
+- `BIOME_TIER_CLEANUP_1` — done by implemented, no close
+- `TITANIC_BODYSIZE_TEST_RACE_1` — done by implemented, no close
+- `CONTAGION_SITE_BUILD_SKY_STAYS_CALM` — done by implemented, no close
+- `FULL_LIST_MEMORY_AUDIT_THIRTY_GB_PRIVATE` — done by implemented, no close
+- `LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY` — done by implemented, no close
+- `WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR` — done by implemented, no close
+- `EGROWTH_SAVELOAD_PROVE_DICT_SCRIBE_SHARE` — done by implemented, no close
+- `SCRUB_WILDLIFE_PROVE_NOBODY_CAME` — done by implemented, no close
+- `WARLAB_ROUTE6_ASK_DOES_LAKE_LIGHT_FUSE` — done by verify, no close
+- `DEEP_LAYER_BELT_HARNESS_1` — done by implemented, no close
+- `STILLSAND_MUURROK_EMERGENCE_1` — done by implemented, no close
+- `SUMP_GLASSWALK_SPEED_RATIO_1` — done by implemented, no close
+- `EGROWTH_TINDER_HAY_PROVE_COMES_UP_EMPTY` — done by implemented, no close
+- `MODCHECK_ULTRAFAST_CLOCK_STALL_1` — done by implemented, no close
+- `PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES` — done by implemented, no close
+- `ARTPIPE_ORPHAN_UNSTICK_WEDGE` — done by verify, no close
+- `FINDINGS_JUDGE_TIMER_REPLACE_FOUNDRY` — done by verify, no close
+- `RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS` — done by implemented, no close
+- `DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT` — done by implemented, no close
+- `MASS_VALIDATION_LADDER_1` — done by implemented, no close
+- `VANILLA_BEAST_EXCISION_1` — done by implemented, no close
+- `MODCHECK_DONOR_ENVIRONMENTS_1` — done by implemented, no close
+- `SPECIES_TRAITS_OVER_APTITUDES_1` — done by implemented, no close
+- `LIVE_MODLIST_ENFORCE_BEFORE_SLOT` — done by verify, no close
+- `WARSCAR_HOSPICE_DESERTERS_1` — done by implemented, no close
+- `PYRELANDS_SHIP_READINESS_1` — done by implemented, no close
+- `GELATINOUSSLIME_KIT_ART_1` — done by implemented, no close
+- `GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1` — done by implemented, no close
+- `BLUEDESERT_GPT_ENRICHMENT_1` — done by implemented, no close
+- `MIASMA_WARDEN_MOTHER_ART_1` — done by implemented, no close
+- `STARWARS_JUNK_RESKIN_1` — done by implemented, no close
+- `HUGETHINGS_TRUNK_ZERO_BLOCKERS_1` — done by implemented, no close
+- `WEEPINGSTONES_HANDLER_VANISHES_1` — done by implemented, no close
+- `DEEPFIRE_FAMILY_SETTINGS_SAVE_LOAD_1` — done by implemented, no close
+- `LEANINGSCRUB_SWEETLINE_SHED_LIVE_1` — done by implemented, no close
+- `HEAVY_TEXTURES_MEASURE_REAL_VRAM` — done by implemented, no close
+- `WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS` — done by implemented, no close
+- `OWN_PRESET_WIDEN_PYRELANDS_JOINS_IN` — done by implemented, no close
+- `RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM` — done by implemented, no close
+- `ACC_BIOMES_FIXES_LIVE_RERUN_1` — done by implemented, no close
+- `ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS` — done by implemented, no close
+- `MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG` — done by implemented, no close
+- `PACK_ANIMALS_RESTORE_EMPTY_SADDLES` — done by implemented, no close
+- `CANOPY_LAYER_BUILD_ROOF_OF_THE_WORLD` — done by implemented, no close
+- `RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY` — done by implemented, no close
+- `PLOT_D_BODY_PRUNE_STALE_SEA` — done by verify, no close
+- `CRACKEDLANDS_THREE_HEIGHT_FLORA_1` — done by verify, no close
+- `CANON_MATERIALS_BUILD_1` — done by verify, no close
+- `ASHKARR_WEATHER_INSTALL_THE_SLEEPING_STORMS` — done by implemented, no close
+- `PUMP_ON_TANK_FIX_NO_COUPLER` — done by verify, no close
+- `RIVERS_ROADS_REDESIGN_WORTH_LOOKING_AT` — done by verify, no close
+- `HEADS_VERIFY_SHRUNK_TO_FIT_THE_HATS` — done by implemented, no close
+- `ZOOM_MOD_ENFORCE_NOT_JUST_ONE_DOOR` — done by verify, no close
+- `TICK_SPEED_FIX_GAME_IDLES_WAITING` — done by verify, no close
+- `RUNNING_PAGE_BUILD_WHO_IS_AWAKE` — done by verify, no close
+- `EXPEDITE_LANE_BUILD_JUMPS_THE_GAME_QUEUE` — done by verify, no close
+- `RIMPULSE_RETIRE_SUPERSEDED_BY_STATUS_PAGE` — done by verify, no close
+- `HEARTBEAT_FLASH_FIX_BLACK_WINDOW_EVERY_TEN` — done by verify, no close
+- `STEVE_DISK_MEASURE_ONLY_FORTY_GIGS_LEFT` — done by verify, no close
+- `CHECKER_SANDBOX_FIX_BLIND_TO_STEVE` — done by implemented, no close
+- `RELENTLESS_WEAK_MEASURE_PASS_COLLAPSE` — done by verify, no close
+- `BRONZIUM_DROP_1` — done by verify, no close
+- `RELENTLESS_LINE_FIX_REFUSED_HOLD_PLACES` — done by verify, no close
+- `FIRST_TOUCH_DECIDE_SYSTEM_ITEMS_BARRED` — done by verify, no close
+- `RUNNING_NOW_BUILD_HELD_AND_BLOCKED_BOXES` — done by verify, no close
+- `BLIND_JUDGE_BUILD_FIXES_OWN_EYES` — done by verify, no close
+- `FACINGS_REDRAW_NORTHS_ABOUT_FACE` — done by verify, no close
+- `FW_PROOF_TOOLS_HARDEN_READ_GAPS` — done by implemented, no close
+- `PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN` — done by implemented, no close
+- `CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED` — done by verify, no close
+- `SITTING_GAPS_FIX_READS_BLANK_GRAPHIC_PATHS` — done by implemented, no close
+- `PUMP_DRAW_FIX_LOSES_A_LEVEL` — done by implemented, no close
+- `HOSE_SL4_FIX_CARRY_NEVER_STAGED` — done by implemented, no close
+- `HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK` — done by implemented, no close
+- `MODERN_FITTINGS_PROBE_FAUCET_NEVER_SEEN` — done by implemented, no close
+- `HOSE_END_FIX_CELL_SHORT_OF_PORT` — done by implemented, no close
+- `COLDSTART_PROVE_NTDLL_CRASH_NO_FOLDER` — done by implemented, no close
+- `PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH` — done by implemented, no close
+- `BUILDBATCH_FIX_REPLACE_LEAVES_OLD_THING` — done by implemented, no close
+- `SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE` — done by implemented, no close
+- `GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE` — done by implemented, no close
+- `PLAYER_HOVER_PROBE_TOOLTIP_DRAWN` — done by implemented, no close
+- `MINIMALLIST_FIX_OUTERRIMCORE_CTOR_NRE` — done by implemented, no close
+- `HOSE_SAVELOAD_DIAGNOSE_COMES_BACK_CHANGED` — done by implemented, no close
+- `RINDCOAT_TUNE_NEAR_IMMUNE_AFTER_ALL` — done by implemented, no close
+- `SHOTSETTLE_BUILD_PAUSED_BARRIER` — done by implemented, no close
+- `BATCHREADS_BUILD_ROUND_TRIP_CUT` — done by implemented, no close
+- `SCENERUN_MIGRATE_OFF_UNPAUSED_PLAY` — done by implemented, no close
+- `PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES` — done by implemented, no close
+- `WATER_SCENES_S5_JUDGE_THIRD_DRAFT` — done by verify, no close
+- `DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM` — done by verify, no close
+- `OPS_TIMERS_REVIVE_343F` — done by verify, no close
+- `OPS_TIMERS_REVIVE_115F` — done by verify, no close
+- `NIGHTLY_COP_FIX_RED_AQJSGV_CFVH` — done by verify, no close
+- `COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE` — done by verify, no close
+- `CONDUCTOR_DOCS_UNIFY_ONE_GOODBYE_TWICE_TOLD` — done by verify, no close
+- `RMSEARCH_AGENT_RETIRE_HAIKU_LONG_GONE` — done by verify, no close
+- `RIMMASTER_RELEASE_POOL_FROZEN_ITEMS_HOLD_CLONES` — done by verify, no close
+- `ARENA_TRIAL_RETIRE_HUNDRED_GIGS_IDLE` — done by verify, no close
+- `RIMMASTER_PROMOTE_SKILLS_SPRING_CLEAN_HANDOFFS_TO_LESSONS` — done by verify, no close
+- `RIMMASTER_FIX_ARTISANNOW_BARCOUNT_MISREADS_TRAPS` — done by verify, no close
+- `GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST` — done by verify, no close
+- `GSS_FINISH_RALPH_LOOP_WAITS_GAME_TURN` — done by verify, no close
+- `GSS_RECOLOR_CHECK_FIX_NECKED_JUNCTIONS` — done by verify, no close
+- `GSS_CORD_AUDIT_FIX_REJECTS_WALL_PLUGS` — done by verify, no close
+- `GSS_CORD_ADAPTER_FIX_NO_LAMP_GEOMETRY` — done by verify, no close
+- `GSS_FUZZ_ONLY_FIX_UNKNOWN_FAMILY_PASSES` — done by verify, no close
+- `GSS_STRIP_LED_FIX_MISSED_REPAINT` — done by verify, no close
+- `FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED` — done by implemented, no close
+- `HUGETHINGS_SETTINGS_HARDENING_1` — done by implemented, no close
+- `REEL_BODY_INLET_FIX_SKIPS_DEPTH_RULES` — done by implemented, no close
+- `RAILING_TOGGLE_FIX_KEEPS_DECONSTRUCT` — done by implemented, no close
+- `TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT` — done by implemented, no close
+- `RIMMANDRAKE_LIFT_KNOCKBACK_THROW_CAPS_PLAN_SAYS_GONE` — done by verify, no close
+- `RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE` — done by verify, no close
+- `RIMMANDRAKE_STUDY_WHOLE_MAP_ELEVATION_OWNER_EXPECTS_A_NO` — done by verify, no close
+- `RIMMANDRAKE_REJUDGE_ONLY_CHANGED_GAPS` — done by verify, no close
+- `RIMMANDRAKE_OFFER_OWNER_QUICK_LOOK_LOUDLY` — done by verify, no close
+- `RIMMANDRAKE_DECIDE_OPS_WATCH_RUNS_VIA_METRONOME_ONLY` — done by verify, no close
+- `LIVE_RESTORE_OPERATIONS` — done by verify, no close
+- `LIVE_RESTORE_CONDUCTOR` — done by verify, no close
+- `PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT` — done by verify, no close
+- `RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH` — done by verify, no close
+- `BEER_CUT_DECIDE_BARREL_STILL_BREWS_IT` — done by verify, no close
+- `RIMMANDRAKE_ASK_PYRE_ROOT_STILL_PROMISES_PAVING_HOLDS` — done by verify, no close
+- `RIMMANDRAKE_DECIDE_FIVE_WATER_SWITCHES_THAT_FEED_NOTHING` — done by verify, no close
+- `RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL` — done by verify, no close
+- `SHOVEL_SPRITE_SKETCH_BLADE_DOWN_HANDLE_UP` — done by verify, no close
+- `RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS` — done by verify, no close
+- `RIMMANDRAKE_BUILD_CLOSED_GUARD_FIRE_HALF_SWITCHES_SHEET_NAMED` — done by verify, no close
+- `RIMMANDRAKE_DRAW_CONTAINER_JOLT_DUST_PUFF_WAS_ALL` — done by verify, no close
+- `RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG` — done by verify, no close
+- `RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE` — done by verify, no close
+- `RIMMANDRAKE_CORRECT_FLYING_OFF_WALK_ROW_TO_ITS_BAR` — done by verify, no close
+- `RIMMANDRAKE_ROUTE_NIGHTLY_REDS_RAISED_INTO_A_RETIRED_POOL` — done by verify, no close
+- `RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT` — done by verify, no close
+- `RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH` — done by verify, no close
+- `RIMMANDRAKE_UNPARK_DESIGNER_WHEN_IT_CAN_FIX_GAPS_ALONE` — done by verify, no close
+- `RIMMANDRAKE_CLOSE_EXIT_READER_LOOPHOLES` — done by verify, no close
+- `RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE` — done by verify, no close
+- `RIMMANDRAKE_REPIN_STAGE_FOUR_LEAVES_EXAM_VOID` — done by verify, no close
+- `RIMMANDRAKE_WRITE_STAGE_MOVES_ATOMICALLY` — done by verify, no close
+- `RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT` — done by verify, no close
+- `RIMMANDRAKE_CHECK_PASSED_CONTRACT_EVIDENCE` — done by verify, no close
+- `RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS` — done by verify, no close
+- `RIMMANDRAKE_NAME_STALL_CAUSES_GRAFFITI_SAT_AT_EIGHT` — done by verify, no close
+- `RIMMANDRAKE_RUN_DESIGNER_EXAM_BY_LAUNCHER` — done by verify, no close
+- `RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS` — done by verify, no close
+- `RIMMANDRAKE_RECONCILE_DRY_ASH_TEXT_WITH_VERY_FERTILE_BAR` — done by verify, no close
+- `RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT` — done by verify, no close
+- `RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME` — done by verify, no close
+- `RIMMANDRAKE_RUN_TREE_CHECKS_ON_FULL_HEAD` — done by implemented, no close
+- `RIMMANDRAKE_SAY_NOTE_OWNER_FLAGS_LAND_OWNER` — done by implemented, no close
+- `RIMMANDRAKE_MEASURE_MATURATION_CONVERGENCE_PER_ROUND` — done by verify, no close
+- `RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE` — done by verify, no close
+- `RIMMANDRAKE_READ_STALE_OWNER_HOLD_AS_WAITING` — done by verify, no close
+- `RIMMANDRAKE_ISOLATE_DISPATCH_SELFTEST_FROM_CONVERGENCE` — done by verify, no close
+- `RIMMANDRAKE_FLAG_DETACHED_SUCCESS_LEAVING_ITEM_OPEN` — done by verify, no close
+- `RIMMANDRAKE_SKIP_ROLE_RUNS_IN_HANDOFF_HOOK_REFUSED_TWICE` — done by verify, no close
+- `RIMMANDRAKE_PIN_FLOWWORKS_FILL_SCENE_FIXES_RED_BEFORE_GREEN` — done by verify, no close
+- `RIMMANDRAKE_SIZE_DISPATCH_BUILDS_THIRTY_THREE_BARS_ONE_RUN` — done by verify, no close
+- `RIMMANDRAKE_REDRAW_FURNACE_BEAST_BIGGER_ART_CARD_PROMISED_IT` — done by verify, no close
+- `RIMMANDRAKE_ACCEPT_EXAM_SESSIONS_UUIDS_ARE_IDENTITIES` — done by verify, no close
+- `RIMMANDRAKE_PURGE_V3_VERDICT_RULE_RETIRED_BY_CARD_UNRUN` — done by verify, no close
+- `RIMMANDRAKE_PRUNE_ORPHAN_BUNDLES_FULLY_LANDED` — done by verify, no close
+- `RIMMANDRAKE_ROUTE_LIVE_ONLY_DECIDER_STAGE_THREE_NO_ROAD` — done by verify, no close
+- `RIMMANDRAKE_BATCH_DETACHED_ITEM_STATES_SEVENTY_EIGHT_REPLAYS` — done by verify, no close
+- `RIMMANDRAKE_HOLD_SIX_BIOME_MODS_ONLY_PYRELANDS_STAYS` — done by verify, no close
+- `RIMMANDRAKE_UNSTICK_PULSE_DEPLOY_GIT_SIXTEEN_TIMEOUTS_A_DAY` — done by verify, no close
+- `RIMMANDRAKE_RESTART_ACCOUNT_PLAN_STOPPED_AFTER_TWO_FLEET_KILLS` — done by verify, no close
+- `RIMMANDRAKE_RECONCILE_ART_BRIEF_SIZE_RULE_THREE_PICKS_REFUSED` — done by verify, no close
+- `RIMMANDRAKE_BUILD_ART_BRIEF_CALIBRATION_NOTHING_TO_RUN` — done by verify, no close
+- `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO` — done by verify, no close
+- `GSS_SWITCHES_PROVE_LAST_FOUR_STANDING` — done by verify, no close
+- `RIMMANDRAKE_APPLY_BARS_CARD_PATCH_WHEN_BLIND_JUDGES_END` — done by verify, no close
+- `RIMMANDRAKE_REWORD_DESIGNER_BARS_PINNING_NUMBERS_NOT_HIS` — done by verify, no close
+- `RIMMANDRAKE_GUARD_ONE_COVERAGE_LOOK_STEWARD_LAUNCHER_BOTH_RAN` — done by verify, no close
+- `RIMMANDRAKE_REPAIR_TWO_GAMES_DOOR_TEST_BLOCKS_EVERY_PUBLISH` — done by verify, no close
+- `RIMMANDRAKE_MOVE_END_RECEIPT_OFF_RESULT_FILE_ROLES_FAILED` — done by verify, no close
+- `RIMMANDRAKE_MEND_WRAPUP_W1_AFTER_CONTROL_END_RECEIPT` — done by verify, no close
+- `DELEGATED_CARDS_FIX_HELD_OUT_RECALL` — done by verify, no close
+- `OPS_ALARMS_FIX_FIXED_ITEM_ID` — done by verify, no close
+- `RIMMANDRAKE_FIX_SLOT_ALLOCATOR_OVERRIDE_AND_BURN_PICK` — done by verify, no close
+- `RIMMANDRAKE_GRANT_BLIND_JUDGE_A_JUDGE_WRITER_VERDICTS_REFUSED` — done by verify, no close
+- `RIMMANDRAKE_UNSTICK_DISPATCH_BLIND_CYCLES_WAITED_SIX_HOURS` — done by verify, no close
+- `RIMMANDRAKE_RECHECK_ADVANCE_CALIBRATION_TEST_PASSES_WITHOUT_ROW` — done by verify, no close
+- `RIMMANDRAKE_SPLIT_CONTROL_REVIEW_ROUND_FOUR_FIFTEEN_UNTRIED` — done by verify, no close
+- `RIMMANDRAKE_RECONCILE_FACING_SCALE_GATE_WITH_SIZE_ADVISORY_ONLY` — done by verify, no close
+- `RIMMANDRAKE_ALLOW_DESIGN_TEXT_ON_HELD_MODS_THEY_RETURN` — done by verify, no close
+- `RIMMANDRAKE_RECORD_SEA_CLEANSE_APPROVAL_STANDS_AT_NEW_COUNTS` — done by verify, no close
+- `RIMMANDRAKE_USE_OR_DROP_ACT_BEFORE_VALUE_NOBODY_READS` — done by verify, no close
+- `RIMMANDRAKE_SERIALIZE_CONTROL_SELFTEST_SIBLINGS_SHARE_UNIT_NAMES` — done by verify, no close
+- `RIMMANDRAKE_FIX_SLICE_REVIEW_TWENTY_FINDINGS_QUEUE_FIRST` — done by verify, no close
+- `RIMFRIDGE_DROP_FIX_INBOUND_REFS` — done by verify, no close
+- `RIMMANDRAKE_FIX_DRAFTED_MOVE_IN_BIG_PIT_WALKS_SOUTH` — done by verify, no close
+- `ACCOUNTS_RESTORE_STEVE_LINE_AFTER_BIG_WEEK` — done by verify, no close
+- `RIMMANDRAKE_TAG_EACH_PASSED_MOD_VERSION_PIPELINE_DOES_IT` — done by verify, no close
+- `RIMMANDRAKE_WATCH_STEVE_LANE_IDLE_WHILE_VISIT_CHECKS_WAIT` — done by verify, no close
+
+## Filed and still open (1205) — the next seat's queue
+
+- `PLOT_MECHANISM_MODS_WAVE_1` — Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
+- `VAULT_THAW_QUEST_FAMILY_1` — Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
+- `HORRORS_RAIDING_FACTION_1` — Horrors become a RAIDING faction (no settlements, nightside-gated encounters) + nests/sinkholes/crysalises injected as nightside dungeon content — the
+- `ANCIENT_WAR_LAB_1` — The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians, and the crater ending as a permanent m
+- `KYBER_TRADE_PLOT_1` — Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Re
+- `DROIDWORKS_PRIMITIVE_TIER_1` — Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
+- `DROIDWORKS_WIPE_SEVERITY_1` — Memory wipe: 7-day severe relearning debuff, service-record reset, permanent accreting hardware quirks
+- `EXPLOSIVE_PLANT_GROWTH_1` — World mechanic: water-soaked plants grow VISIBLY on screen; design the terminal moment (what happens at the top), then custom mod actions so players e
+- `FLOOD_WITNESS_EVENT_1` — Plot event: the player witnesses a Cracked Lands flood (chimes, wall of water, explosive growth) at least once — organized as part of the plot, since 
+- `RUST_CATHEDRAL_MECHANICS_1` — Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response e
+- `MIASMA_MECHANICS_1` — Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden
+- `SUMP_MECHANICS_1` — Sump C# kit: poured tar moat + command ignition (smoke wall), dig-lottery tables with era booby traps weighted first, tar beast set-pieces (wake cause
+- `FORGE_MECHANICS_1` — Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tow
+- `SCALD_MECHANICS_1` — Scald C# kit: steam-catch industry, margin fishing + bath recreation, bubble-sailor and bottom-walker set-pieces, geyser fields, boiling-lift integrat
+- `MOD_HUMAN_EXPLORATION_PASS_1` — Human-executable exploration pass: per mod, a scripted in-game walkthrough the owner runs to confirm it looks and feels right -- runs AFTER the art/no
+- `BIOME_LANDMARK_REFINEMENT_1` — First-pass landmark density on 8 dense biomes (Greentide/Contagion/Webwork/Weeping Stones/Slime/Scarlands/Pyrelands/Cracked Lands) needs per-biome ref
+- `MOVING_DUNES_BUILD_1` — Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMater
+- `PLAYER_START_SITE_1` — The formal player start site: Hutt junkyard of ruined ships + old megastructures — lore fixed by Scenario_Utinni + fall_line.md; candidates measured (
+- `ECONOMY_TRADE_SWEEP_1` — Full economic sweep of what is sold where and when, scheduled at the END of the world sweeps; includes Deeps-gated crystals (pyrinth/kyber/KOTOR/lante
+- `CANON_DRAIN_1` — Total canon drain: reconcile every lore doc to ONE level of truth, grinding out all superseded/obsoleted statements - a fresh-context pass gated on th
+- `DUNGEON_SETPIECE_TEXT_1` — Dungeon set-piece prose held for the owner: Assailant reveal letters + 6 Forsaken vault hand-finish text per dungeons_arc_spec.md - text_lore_load_rep
+- `WORLDMAP_AUDIT_LIVE_CHECKS_1` — Four worldmap audit checks needing the live game — batch into next game-up window
+- `CATHEDRAL_REGARD_BLACKBOARD_1` — Cathedral Regard counter + stage machine + exposure pressure on the GM blackboard, shadow-mode first
+- `CATHEDRAL_STAGE_HUM_BRIDGE_1` — Stage-to-hum-baseline bridge lane into RM_BiomeAttitudeDef (C#, row-3)
+- `CATHEDRAL_STAGE_COMMENTARY_POOLS_1` — Stage-keyed RUT_HumCommentary pools + the bans-2/6 linter gate every arc item runs
+- `CATHEDRAL_MISSION_BOON_OFFERS_1` — Deniably-sourced Assailant missions + Heat-gated gravtech boons
+- `CATHEDRAL_SURVEY_MISDIRECTION_QUEST_1` — The A4 Imperial-survey misdirection quest, three branches, K2 anti-laundering
+- `CATHEDRAL_MECHANOID_PASS_VERBS_1` — GRANT/REVOKE mechanoid-pass instrument, scoped Harmony hostility exception (C#, row-3)
+- `CATHEDRAL_DESCENT_REVEAL_SITE_1` — The A7 real under-plate descent site + reveal beat + A1 Utinni-receiver lore propagation
+- `CATHEDRAL_EXPOSURE_COMPLETION_1` — The A6 pyrrhic discovery ending: witnessed fall, warzone flip, priced Hutt extraction, ship mourns
+- `MODCHECK_SUITE_CORRECTIONS_1` — MODCHECK_SUITE_CORRECTIONS_1 first-live-run corrections for the 12 RED + 2 aborted mature-mod suites (evidence: Transient/modcheck sheets + summaries 
+- `WRECKED_DISTILLATION_MODULE_1` — WreckedMachines ship Distillation module: clean water from distillable rows (not oil), rate per repair tier
+- `LIQUID_INDUSTRY_SETPIECES_1` — Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumping station — wreck-tier, never player-buildable in campaign
+- `BAZAAR_WINDOW_GRID_1` — The Bazaar slice 1: Dialog_Trade replacement via WindowStack.Add intercept + virtualized grid, presets, wishlist, plugin defs — silver math identical 
+- `BAZAAR_PRICE_ENGINE_1` — The Bazaar slice 2: read-side RM_BazaarEconomy (worldTag-seeded buckets, history ring, drift+clamp) + intel layers L0-L4 + the three found artifacts —
+- `BAZAAR_HAGGLE_DUEL_1` — The Bazaar slice 3: WHOLE-DEAL patience-meter haggle duel (owner: per-item rejected as monotonous) — crits give junk freebies or true rumors; determin
+- `BAZAAR_BROKER_TAB_1` — The Bazaar slice 4: bulk-liquid Broker tab — renders Liquid Logistics' tank API both directions at worldTag-weighted prices
+- `BAZAAR_BANTER_LINES_1` — The Bazaar slice 5: authored banter pools (day one) + dormant claude -p Oracle consumer gated on ORACLE_EXPERIMENT_SPIKE_1 live proof — model: opus
+- `BAZAAR_DISPLACEMENT_PASS_1` — Retire Trade UI Revised + Utility Columns + VTE from the campaign list after Bazaar slices 1-2 prove live; VTE unwind rehearsed on a save copy first
+- `FLORA_LEGIBILITY_BAR_1` — Flora legibility bar: own grading pass + model (no keyline law), sizeBin-scaled canvases, no stroke — carries the owner's alientree + ambrosia flags
+- `WYYYSCHOKK_FANG_PENDANT_1` — Wyyyschokk fang pendant: hunt trophy apparel, bravery social thoughts with Wildsteam/Blackstar/Deep Tribe (defNames VERIFY), trade good everywhere
+- `BACTA_REVIVAL_MECHANIC_1` — Bacta revival of the recently dead (owner ruling: works on dead bodies IF retrieved within a few hours): corpse-freshness window, tank accepts fresh c
+- `BACTA_TANK_ART_1` — Bacta tank art from the ESB canon image (tall 2:1 cylinder, translucent pale-blue backlit fluid, bubbles, white clinical collar top+bottom): building 
+- `BACTA_TANK_CORE_1` — Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Se
+- `EVENT_TRACE_PROPS_LIBRARY_1` — Design a props library of event traces: blaster marks, burn/scorch marks, floor scrapings, drag trails, impact spall and other signs of something havi
+- `RAKATAN_ARCHOTECH_MACHINES_1` — Design session with the owner: extend Wrecked Machines into the core Rakatan tech trait - robust, survives, degrades gracefully; mobile structures inc
+- `XENOTYPE_CANON_CORRECTION_1` — Nine patterns of xenotype defs disagreeing with canon, found by the species library - wrong-species namers, borrowed heads, placeholder descriptions, 
+- `NORTH_STAR_WALK_AUTHORING_1` — Author must-show sections across the 77 validation walks: agent drafts candidate lines from each walk's must-be-true plus sprites and settings, owner 
+- `NINEFOLD_LOUDNESS_FRONT_1` — Ninefold owes LOUDNESS and THE FRONT, which canon rules exist and no code computes — MEASURED 2026-09-16: GameComponent_Ninefold's entire public read 
+- `PIT_SUPERDEEP_COLLAPSE_1` — Collapse the pit onto the D/F primitive: a superdeep cell you cannot climb out of, a room for prisoner storage, a ladder that works like a prison door
+- `WORLDMAP_DOCS_PASS_1` — Worldmap canonical-docs pass with the owner: reconcile every doc to the authored world, rulings verbatim
+- `FULL_LOAD_RESIDUE_TRIAGE_1` — Full-list load residue beyond the FlowWorks water fix: RSW patch failures, RSW_*Juv config errors, TYR Scribe refs
+- `CUT_FALLOUT_GENERATED_DATA_1` — Load C fallout from the Caverns + Polluted Lands cuts (MEASURED 2026-09-19, Transient/harvest_loadC_triage_2026-09-19.md): ~90 new patch failures and 
+- `ROT_FAUNA_KIN_WIRING_1` — Wire the ruled Rot fauna kin/alarm table onto the 16 race defs (UtinniPatches, FindMod-gated) — AFTER BMT_FAUNA_ABSORPTION_1 renames the BMT_ rows
+- `DEEPS_FAUNA_MECHANICS_2` — Deeps fauna mechanics, second pass on DEEPS_FAUNA_MECHANICS_1: grabber-side crush comp + rescue roll, soulchime LoS/damage trigger/psychic-deaf immuni
+- `REBOOT_BREAKGLASS_VERIFY_1` — Verify the break-glass path survives a Windows reboot: WSL Keepalive must bring tailscaled back before login, and the fleet may need a hand
+- `BAZAAR_STOLEN_GOODS_PROPERTY_1` — Stolen goods as a trade mechanic: RimProperty integration, the scanner registry, and the transponder reader
+- `FALLZONE_LOST_CARGO_QUESTS_1` — Injected wreckage in the fall zone leads to quests about lost cargo of interest
+- `WORLD_REMAKE_FINAL_STEP_1` — Remake the world from scratch as the LAST act before the official first play session - expected, not a failure; worldmap + gravship + founders are the
+- `DONOR_DEFS_PORT_TO_OURS_1` — Port EVERY donor def we use to our own thing defs - owner ruling 2026-09-20; two mods (starwarsanimalcollection 160 entries, alphaanimals 102) carry 2
+- `DESERT_FAMILY_PORT_EXECUTION_1` — Port all 109 desert-family species to our own defs and our own art - owner ruled every row REPLACE 2026-09-20; ~99 donor + 6 vanilla to re-author, 4 a
+- `TITANOSLIME_SLIME_BIOME_1` — Owner ask: a Titanoslime for RUT_Slime, devour-whole + grows-as-it-eats
+- `BIOME_PAINT_ONCE_AT_THE_END_1` — Owner ruling 2026-09-20: the worldmap is painted ONCE, after every biome is its own RimMandrake mod - no per-biome repaint, no work gated on a tile co
+- `SEA_FLOOR_AND_CATCH_PASS_1` — Every sea describes BOTH its floor (animals you meet by diving) and its catch (fish from the shore): the floor half is unbuilt across all four seas
+- `FEVERWOOD_BOUGH_SOIL_TERRAIN_1` — The crown cannot grow anything: boughway is fertility 0, so bough-soil is owed
+- `WEBWORK_EGG_WEAPON_VERSION_1` — Future: free-form egg-planting sabotage weapon (mechanism A hatcher-variant, must re-answer the farm ban) - filed by owner card 2026-09-24, S5 ruling 
+- `WEBWORK_TERRAIN_WEATHER_PASS_1` — Design sitting: the Webwork's signature terrain (silk-carpet floor, gutters) and weather (hard sun for the light-moat, webfall/silk-drift) + soundscap
+- `BIOME_NUISANCE_NORMALIZATION_1` — Nuisance/solvent normalization pass over ALL biomes, run at the end of the last biome detailing (owner ticket 2026-09-24): each biome's annoying mater
+- `SUMP_TAR_NASTINESS_1` — Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
+- `SUMP_INHABITED_NOTES_1` — Sump Inhabited injection notes (owner, 2026-09-24, for later): junkers/Jawa/deep tribes/Black Star more present; tar-expedition ruins, refinery attemp
+- `SUMP_WALKWAYS_1` — Sump walkways, two tiers: duckboards (cheap, foul with tar, burn) and glasswalk (never fouls, never full speed) with cap + rare harmless pratfalls
+- `SUMP_GASLIGHT_1` — Sump gaslight: tar+acid reaction makes green gas (Helixien integration OK), warbling lamp light, flame statuary, natural flames, discovery-unlocked te
+- `INDIGENOUS_TECH_REVISIT_1` — Indigenous-tech revisit per biome, GATED to after the last biome detailing (owner 2026-09-24): which specific techs each biome unlocks on meeting its 
+- `BIOME_SHIP_CONTRIBUTIONS_1` — Every-biome pass: how does each biome uniquely improve the SHIP - what players take aboard (owner 2026-09-24); running list per sitting, normalized at
+- `FORCE_DISTURBANCE_REFLAVOR_1` — Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier
+- `GREYSEA_FLOOR_PASS_1` — Whole individual pass for the Grey Sea floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, robus
+- `TWILIGHTSEA_FLOOR_PASS_1` — Whole individual pass for the Twilight Sea floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, r
+- `PROPANELAKE_FLOOR_PASS_1` — Whole individual pass for the Propane Lake floor biome: terrain+features, dive experience, ruled cast wired with real art, catch, weather, settings, r
+- `REGROWTH_RECOLOR_MINEABLES_NRE_1` — Every full-list save load logs 'Exception from long event: NullReferenceException at ReGrowthCore.Map_FinalizeInit_Patch RecolorMineables' (09-24 and 
+- `SALVAGE_WRECKAGE_EVERYWHERE_1` — Salvage wreckage across the planet: wreck families (hulls, tanks, frames, speeders...) scattered in every biome, biome-appropriate weathering, deconst
+- `STATUE_ART_EXPANSION_1` — Statue expansion: assess the statue-choice mod (patch vs own), RM statues with flame emergence points, Utinni god/culture statues, flame fuel via Sump
+- `JAWA_SWIM_HOOD_KEEP_1` — URGENT (owner, chat 2026-09-25: Jawa must never be seen without a hood): swimming Jawa lose their hood because vanilla 1.6 swim rendering clears the H
+- `MINERALS_WHERE_THEY_BELONG_1` — Design (later): minerals where they belong — per-biome allocation of every mineral, gem and mineable material; specific forms (nodules, crystal cluste
+- `GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1` — The greatbole's song, thermal sanctuary, pilgrims, and the two opt-in crossovers
+- `BIOME_DEFNAME_MIGRATION_WAVE_1` — Three biomes renamed 2026-09-26 carry defNames that no longer match their labels: RM_NightsideIce/RM_PoisonForest/RM_Wasteland move to Sleeping Ice, C
+- `SEA_FISHABLES_ALIVE_IN_DEPTHS_1` — Every fishable in EVERY sea owes a living creature swimming the floor map, not just a catch item - owner ruling 2026-09-26
+- `TERMINALBIOMES_REVIEW_FIXES_1` — TerminalBiomes 29-file review fix wave: 2 dead tickerType mechanisms (vaulisk lure never springs, mobile glower never runs), 6 more BUGs, 6 RISKs, 4 N
+- `TWILIGHTSEA_FLORA_PASS_1` — Twilight Sea underwater flora pass: own strange-flora roster in the light-economy register (decision taken by question card 2026-09-26)
+- `CHILL_SURFACE_SITTING_1` — The Chill surface: its own full biome pass sitting (Burner guardian place, shore ecology)
+- `EMPIRE_ESCALATION_LADDER_1` — Empire escalation ladder: evadable probes first, new raid kinds per rung, until you move
+- `GREYSEA_USELESS_ARTIFACT_PLOT_1` — The Elders' sixth treasure - 'a beautifully useless artifact whose significance only becomes apparent much later' - is a PLOT HOOK: build the item onl
+- `CONTAGION_RULED_CONTENT_1` — Build the Contagion grotesque cast: 35 RM_ defs replacing the donor roster outright (no patches), 8 new species, 4 real flyers, Wombpod wired to the b
+- `CONTAGION_MECHANICS_BUILD_1` — Build the Contagion mechanics: Burn/Bloom weather + tells, the Coalescence (one growing organism), Cloud Repulsor + gravship hardpoint, Sunbeam + arre
+- `WASTELAND_MECHANICS_BUILD_1` — Build the Wasteland mechanics: 20-cell Middenshell on TitanicCreatures, processor gatherable comps, ambient-dose comp, three storm WeatherDefs + Movin
+- `BLUEDESERT_MECHANICS_BUILD_1` — Build the Blue Desert mechanics: vhaulk trigger-gated detonation (EMP-on-hit trap), Warnings study ladder + cold-cutting, blue-ice thaw rolls, three w
+- `CRACKEDLANDS_FULL_RENAME_1` — Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defNam
+- `CRACKEDLANDS_RULED_CONTENT_1` — Build the Cracked Lands ruled content: roster surgery (vanilla zoo out, RM_ migration, eopie to merchants), five new natives (Muttavaq/Uttaqar/Irqit/T
+- `CRACKEDLANDS_MECHANICS_BUILD_1` — Build the Cracked Lands mechanics: the Swale (FlowWorks-normal, Utinni-locked biome discovery), survey+cistern loop, wall fossils + flood re-cut, gian
+- `CAULDRON_MECHANICS_BUILD_1` — Build the Cauldron mechanics: engine-underfoot soundscape + falter tell, four ratified weathers, flammable vent gas w/ toxic smoke + gas-tap scaffolds
+- `FORGE_CYCLE_MECHANICS_1` — Build the Forge fire-and-water grand cycle: gas-wash ignition, boiling rain + FlowWorks flooding, steam plumes + temporary basalt/pumice freeze, float
+- `LEANINGSCRUB_MECHANICS_BUILD_1` — Build the Leaning Scrub mechanics: Stall+Gale wind calendar, the Lean scent/fire axis, vaporator + V-blight, smother-craft, calling-pyre + fire-stampi
+- `DESIGN_MATERIALS_REVIEW_1` — DesignMaterials: first-ever whole-game materials balance review - normalize Star Wars + RimWorld exotic alloys, every exotic source in fauna/flora, re
+- `LONGSHADE_BEDAZZLE_MECHANICS_1` — Long Shade bedazzle mechanics: golden-hour perpetual sunset + pinned sun angle, mirrak false-shadow ambusher, swimmer's road (one young sarlacc, visib
+- `LONGSHADE_BEDAZZLE_CONTENT_1` — Long Shade bedazzle content: wire the finished-but-unwired art (7 magenta creatures + vorrel family), five filler defs, qorrax rename, glitter-bird/pi
+- `WASTELAND_GPT_ENRICHMENT_1` — Wasteland enrichment (GPT consult 2026-09-30, owner-picked by card): named storms (Deadlight Halo, Cinderwire Storm), Middenshell Procession, Sealed C
+- `GRAVSHIP_ACOUSTIC_SCANNER_1` — Gravship acoustic scanner (owner, 2026-09-30, from the Cracked Lands Belly Sounder): grounded ship fires a sounding pulse that reveals broad bands of 
+- `FOOTPRINT_TRACK_GRID_1` — One footprint grid for the planet: capped TrackGrid + section layer + cell-entry postfix in CreatureBehaviors, invisible pawns recorded, erase API; Wa
+- `WARSCAR_AEROSOL_SCREEN_1` — Warscar projectors and aerosol screen: lift ShipShields particulate core to RM, broad polluted-biome screen balanced by cost, live/dead rings, salvage
+- `WARSCAR_TOTCHAK_WAKES_1` — Warscar totchak: dormant in the Last Line, demolition wake, eats ruin walls then player walls, lies down again
+- `WARSCAR_OLD_TONGUE_1` — Warscar old tongue: inscribed panel sets read by Intellectual 8 unlock hospice protocols, projector calibration, the pool phase reader
+- `WARSCAR_RAINBOW_POOLS_1` — Warscar rainbow pools: reaction-liquor registry row, phase cycle with colour-blind icons, tap and four reagents, journal and phase reader, glower crus
+- `WARSCAR_TURRETS_TRACK_1` — Warscar turrets still track: verbless aim comp on broken turrets, refit into a working old-line turret
+- `GRAFFITI_NORTHSTAR_GREEN_MINIMAL_1` — Graffiti: GREEN on MINIMAL+graffiti via fast driver, owner sheet review
+- `GRAFFITI_NORTHSTAR_GREEN_FULL_1` — Graffiti: GREEN on the owner's FULL list (fresh launch, full-list driver mode)
+- `ABYSS_HIDDEN_SHIP_PROBES_1` — The Abyss: hidden-ship cover; probe droids still come and must be avoided
+- `GRAFFITI_NORTHSTAR_BRIDGE_TOOLS_1` — JawaBench tools the Graffiti trial cannot fake: thing_graphic, spawn_variant, running_mods, glow_at, site_state
+- `CAULDRON_ENRICHMENT_VISUALS_1` — Cauldron enrichment visuals: dewfall chemical beads, dewfall plant saturation, assay flecks on old trees, vexxiss mineral-ringed footprints
+- `FORGE_SPUNSTONE_SOURCES_1` — Spunstone bonding remainder: foundry salvage as a study source, and what the high-speed doors and advanced structural parts are
+- `SALVATION_RITES_UNIFICATION_1` — Salvation rites unified in mandrake.rut.rites; biomes teach rites (four Abyss rites, four gods)
+- `SALVATION_RITES_RENORMALIZE_PASS_1` — Renormalize gods, appeasement kinds and outcomes across all rites
+- `BEDAZZLE_TOP_SHAPE_PROGRAM_1` — Bedazzle top-shape program: re-score 12, finish seas, build backlog, rites over the 11
+- `NINEFOLD_FAVOUR_ODDS_BUILD_1` — Build Nine Faults (fresh-find rite, Rekko to Zizzik), the Left Behind transfer (Ohm to Ta'Baa), the god-favour odds-shift def type with incident and w
+- `HUTT_SLAVE_PIT_TEST_SITE_1` — Hutt slave pit at a small stand-alone test site: sell slaves, prisoners and downed beasts for silver; sealed oubliette liftable only after conquest; n
+- `LANTERNDEEPS_ANSWERING_RITE_BUILD_1` — Lantern Deeps: The Answering, Ohm's found settlement rite (campaign)
+- `PYRELANDS_STRUCK_GLASS_RITE_BUILD_1` — Pyrelands: The Struck Glass rite for Zizzik (stamped lightning-glass ring, random powerful strike)
+- `LASSO_CHERRYPICKER_REMOVAL_1` — Remove lassos: Cherry Picker cut AM_LassoCloth + Melee Animation lasso spawning off
+- `SUMP_SINKING_RITE_BUILD_1` — Sump Rite A, the Sinking: one valuable into the tar; Heat down, fewer raids, claims wiped; beast-sleeps and trap-fizzle riders
+- `SUMP_EFFIGY_RITE_BUILD_1` — Sump Rite B, Mob'Unloo's Price: good thing + hated effigy; Empire held off 5x on this map, faction's next group tarred
+- `WEBWORK_DEAD_GIANT_BUILD_1` — Webwork giant: wrapped urraveth skeleton, read bone by bone, loaded bones creak and collapse
+- `WEBWORK_TRACTION_LANCE_BUILD_1` — Traction lance: capstan sibling on one shared pull, learnable at Webwork or Sump, fabric tether
+- `WEBWORK_FELLED_NOON_RITE_1` — Rite: The Felled Noon for Sh'kaar (found in Webwork; fell tallest tree at noon, owners gather at shade line)
+- `GREENTIDE_BASE_PORT_BUILD_1` — Greentide free tier gets Roil, Breaklight, wet-bulb, dry-air blower, root causeways and living greatbole (RUT_ to RM_)
+- `GREENTIDE_THURROCK_HERD_BUILD_1` — The thurrock: tree-felling giant herd on the built Shatterer aura (no moult)
+- `GREENTIDE_STELLOCK_LACE_BUILD_1` — Stellock lace: study a self-sealing branch, craft a cartridge that stops all bleeding on a pawn anywhere
+- `GREENTIDE_CEDED_ROOM_RITE_1` — The Ceded Room, for Ozzik: cede a room built outside the ship to the jungle; scales with room quality
+- `WARSCAR_OPEN_BOAST_RITE_1` — The Open Boast, for Ozzik, found in the Warscar: a public boast, a warned challenge raid, once per colony
+- `RUSTCATHEDRAL_BASE_FINISH_BUILD_1` — Rust Cathedral: line-cycle, hum reading, living coolant eels, overhead-sun heat, cooked strays, mynocks
+- `RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1` — Rust Cathedral giant: the borehulk, a colossal peaceful mining droid with a worn-out drill (three drill states)
+- `RUSTCATHEDRAL_HULL_BOLTS_BUILD_1` — Hull bolts: living bolts ride the ship for good as hull pets and the Cathedral's ears; reveal and dilemma
+- `RUSTCATHEDRAL_MENDING_WELD_RITE_1` — The Mending Weld, for Rekko: rebuild a broken stretch of old structure into a whole room (Rust Cathedral rite)
+- `RUSTCATHEDRAL_STRANGERS_OVERHAUL_RITE_1` — The Stranger's Overhaul, for Ohm: repair a free droid, capture it mid-repair or release it (Rust Cathedral rite)
+- `ROT_UNJOINING_RITE_1` — The Unjoining, for Ta'Baa: a symbiont-joined colonist purged until it dies, just before the clan leaves
+- `FEVERWOOD_RM_CAST_COMPLETION_1` — Fever Wood: build the seven ratified creatures; the skreth brood as the free second front of the lure
+- `FEVERWOOD_BROOD_RANSOM_1` — Fever Wood giant story: ransom of its young (world tally, release gift, young cask trade, Sporefall tank)
+- `WEEPINGSTONES_CONDENSER_QUESTS_1` — Walking condenser quests: Hutt capture for the Arena, or Moisture Farmers keep it free vs Blackstar fame hunters
+- `WEEPINGSTONES_REFUSED_TOLL_RITE_1` — The Refused Toll, for Mob'Unloo: draw at an Imperial metering station and walk away unpaid
+- `GELATINOUSSLIME_PIT_SOLVENT_1` — Slime pit as a solvent: renders toxic or indigestible food safe (Rot's finest in the campaign)
+- `GELATINOUSSLIME_TITAN_CHUNK_BOMB_1` — Slime giant: a chunk of the titanoslime is a terrible thrown bioweapon
+- `GELATINOUSSLIME_VAULT_SEAL_BREACH_1` — A titanoslime chunk opens a Forsaken vault blocked by an Assailant seal (seal does not exist yet; owner to confirm)
+- `GELATINOUSSLIME_JOINING_WATER_RITE_1` — The Joining Water rite: join hands holding slime, one person's permanent hediffs spread weak over several (god: Pomp, unresolved)
+- `MIASMA_RECALL_WRITTEN_OFF_RITE_1` — The Recall of the Written-Off rite (Rekko): a struck-out disposal order calls a salvage operation on you
+- `NORTHSTAR_ISHKO_PILOT_1` — Northstar pilot on IshkoDarkLandmarks: walk arrows, ishko tier, mock clean, record status, first live_session run to green
+- `CHILL_DIVE_DENSITY_SAMPLER_1` — Chill dive spawns obey density (not one-of-each); number set on a live walk with the owner, leaning 2-4 (Q6)
+- `SEABED_PER_SEA_FLOORS_1` — Sea-floor planet layer Phases 3+4: guard the FinalizeInit plant crash, then a real floor biome per sea (replaces the empty RM_SeabedFloor placeholder)
+- `SCALD_WALKING_PASTURE_1` — Scald bottom-walkers: a grazing herd creature first, then the Walking Pasture (crew follows the herd, harvests what grazing exposes)
+- `SCALD_BATHING_RITE_1` — Scald rite: water pilgrims bathe at the cool margins (design; register entry; waits on the margin cove)
+- `UTINNI_DISCOVERY_ACHIEVEMENTS_1` — Utinni discovery achievements mod: surfaces every discoverable and unique mod capability so players know to find and play with it; no rewards (optiona
+- `BIOME_VISUAL_BEDAZZLE_PASS_1` — Visual bedazzle pass on every biome (ground, colour, density), AFTER all biomes are green-code, art-complete, in the single biome mod, with basic Nort
+- `WEEPINGSTONES_NET_TARGET_FLEES_1` — Weeping Stones NET: wild skarrin outruns the handler and leaves the map before the 200-tick net finishes - how should capture work?
+- `ROT_NAVIGATOR_CAMPAIGN_TILES_1` — Swallowed Navigator campaign tiles: name the carrier's Rot tile and the log's salvage-site tiles, then patch
+- `SANGUOPHAGE_KEPT_UNREACHABLE_1` — Owner card: Sanguophage cannot be deleted (XenotypeDefOf binding) - keep the def but make it unreachable (suppress Sanguophages faction, Sanguophage s
+- `KHORRAK_STEEL_DIET_TIER_1` — RSW_Khorrak kept uncast as sole carrier of C# CompMetalEater after the Khorrak RM tier move: port the steel diet to RM_Khorrak or rule it dropped and 
+- `ABYSS_SHEET_DONOR_PORT_1` — Abyss sheet 2026-10-05: port 17 donor rows to owned RM_ defs under new names, wire the ruled art
+- `LEANINGSCRUB_SHEET_ART_REDO_1` — Leaning Scrub sheet: wiring, variants and design asks
+- `NIGHTSIDEICE_SHEET_ART_REDO_1` — Nightside Ice sheet: redo art and Tauntaun canon wiring
+- `RUSTCATHEDRAL_SHEET_ART_REDO_1` — Rust Cathedral sheet: LivingBolt redo art, roach size, installs
+- `LANTERNDEEPS_SHEET_ART_REDO_1` — Lantern Deeps art sheet 2026-10-05: eye repaints, blinker redo, plant variants to install on return
+- `WARSCAR_SHEET_DONOR_PORT_1` — Warscar donor rows: ruled art picks wait for owned defs
+- `KINETIC_BLAST_WEAPONS_1` — Design + commission a range of projectile kinetic-blast weapons; thump cannons throw farther
+- `LEANINGSCRUB_VENOMVINE_SITTING_1` — Settle all 11 Leaning Scrub venomvine forms (art + patch-growth mechanic) in one in-game BENCH sitting with the owner, game up
+- `FLYER_STABLE_BODY_GATE_1` — Flyer-ready static gate + stable-body flip-book regeneration for every flyer
+- `DESICCATED_LOOKALIKE_FAMILIES_1` — Dried-out corpse art shared by look-alike family (~450 jobs; 308 races draw no desiccated corpse today). Blocked until per-biome creature art is final
+- `GREYSEA_FLOOR_FLORA_ZERO_1` — Grey Sea floor grows ZERO flora: plants above the lowest wildOrder need lower-order neighbours and the lowest-order plants need a terrain the floor ge
+- `BRIDGE_STALL_DIAGNOSTIC_1` — When a bridge call blocks past ~60 s, record what the game's main thread is doing (managed stack dump / current tick phase / top job) to a file, so a 
+- `TWILIGHT_SEABED_WELLS_MISSING_1` — Twilight skylight wells run only on the old pocket-map floor; the RM_SeabedLayer floor gets none, so well-driven flora (gleamfloss, farwick, tollhorn)
+- `SUMP_NOOTHELM_B_PLANT_1` — New Sump plant from the noothelm B render, cuisine implications
+- `MAP_LANDFORM_MUTATORS_DESIGN_1` — MAP_LANDFORM_MUTATORS_DESIGN_1
+- `BIOME_MAP_GENERATORS_DESIGN_1` — BIOME_MAP_GENERATORS_DESIGN_1
+- `SHIP_ALLOY_FORGE_1` — Alloy forge aboard with progressive unlocks: durasteel early (steel + zersium, route TO CONFIRM), plasteel late
+- `ASTEROID_DESERT_ORES_1` — Doonium asteroid ore smelted aboard with glower crust; rare desert phrikite smelted aboard into phrik
+- `MATERIAL_MERGE_LOAD_CRASH_1` — Full-list cold load CRASHES on origin/main as of 02:49 2026-10-10: MinifyEverything GenerateImpliedDefsPostfix NRE on a costList ThingDefCountClass wi
+- `PLANET_ATMOSPHERE_CLOUD_COST_1` — Measure Planet Atmosphere 8K cloud cost: load-time and VRAM A/B with and without the mod (owner Q2 = measure first; spec Transient/texture_mod_review_
+- `RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT` — Reclamation trigger: rewire the built 45-day chain delay to a woken-ancients count (owner card 13, 2026-10-10)
+- `SEKKULAATH_RISING_DESIGN_CRATER_EVENT` — Sekkulaath rises in the crater event: Wildsteam site damage, closed world sites (owner card 19, 2026-10-10)
+- `ASSAILANT_WARLAB_BUILD_MERGE` — Assailant complex IS the war lab: fold ASSAILANT_DUNGEON_BUILD_1 and ANCIENT_WAR_LAB_1 into one build, reconcile core-socket thaw vs two-key gate (own
+- `OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN` — Ollopom perceived-beauty DLL is deployed; run its validation.py perceived_beauty check on the next live session (pointer OLLOPOM_BEAUTY_LIVE_CHECK, BE
+- `TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED` — Build the hybrid telemetry stack (VictoriaMetrics + SQLite + Grafana + RimPulse alerts) on E:, 1 s test tier + flight recorder; design Transient/weekl
+- `TELEMETRY_DUPLICATES_RETIRE_AFTER_QUIET_WEEK` — Design 08 P5, due after telemetry has run a week (from 2026-10-11): fold obs_events' transport/timeout/outcome into rimbridge_client._evidence and ret
+- `PAINTER_REGIONS_RETHINK_GHOSTS_MAY_HAUNT` — AFTER the one-time repaint: revisit the 5 painter-only regions (Ashteeth, Ember Sink, Fall Line Barrens, Scald Spine, Umbra Trap) with the owner — the
+- `VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL` — Measure the vitals monitor's overhead armed vs off on the 23-mod tier and the full list (GPT §5): busy pawn maps, arrivals, paused UI, long stepping; 
+- `SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST` — Settings kit: master-switch greying of dependents + Reset-all-to-defaults (confirmed); wire GSS + Pyrelands; FlowWorks wiring owed
+- `DONOR_PACK_TEX_REPAIR_SEVEN_LEFT_BEHIND` — With Star Wars Animal Collection absent (SWBestiary dropped the donor, 3898fe6212; ratchet_pilot now forbids it), the startup log has 8 'Failed to fin
+- `FIRE_CLOCK_FIX_RAIDS_IGNORE_THE_SWITCH` — fireClockEnabled tooltip says fire raid/flame harvest/rite never fire when off; only the fire front reads it
+- `RITE_HARVEST_FIX_PICKS_PAST_FULL` — Fire-rite harvesters cut pods past the carry limit, search radius centred on pawn not rite origin, route-through-fire unchecked
+- `FIRE_RITE_FIX_DEFENDERS_MISS_THE_WAR` — LordJob_RUT_FireRite: hostility/arrival transitions skip the Travel subgraph's defend toil, missed signal never replays
+- `BIOME_SPRINT_PROVE_SCRUB_SETS_PACE` — Next sprint: Cauldron, Contagion and LeaningScrub fully to done (art + mechanics + 0-fail/0-unmeasured suites on saved test maps), per-biome criteria 
+- `ALT_GRAPHICS_FIX_SIX_SECOND_FACES` — Alternate pictures (alternateGraphics) never ruled on for Eopie, Falumpaset, KowakianMonkeyLizard, Hssiss, Worrt, Gembug (72 files, known-issues list 
+- `ROT_BIOME_PROVE_FIRST_IN_LINE` — The Rot is the first biome of the sprint after BIOME_SPRINT_PROVE_SCRUB_SETS_PACE (after Phase 0 removes its Alpha Animals/Alpha Biomes content); plan
+- `CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK` — Contagion northstar: split the test arms so the suite runs on a saved Contagion site (northstar_site.py refuses an already-Contagion map)
+- `PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK` — Review-save pen animals: companion tools to end/re-apply their 60000-tick Wait pin (jawa/pen_release, jawa/pen_pin) + human_review.py --release-pens/-
+- `TAR_LOOK_TUNE_THICK_AND_SLOW` — Tar surface: water ripple plus a thick, slow, glossy look, tuned live with the owner; needs a live look-tuning bridge tool so tuning costs no restarts
+- `GIANT_MUSHROOM_DRAW_FIX_SOUTH_GOES_FRONT` — Tall plants (giant mushrooms on the FW review map) overlap wrongly: a more-southern plant must draw in front of a more-northern one
+- `PIT_LIP_FIX_BOAR_HANGS_OUT` — Pit near-lip occlusion: a pawn lying (asleep/downed) in a pit's southern cell draws over the south lip instead of being hidden by it
+- `PIT_LADDER_REDRAW_HUNG_ON_THE_WALL` — Pit ladder mounts on a pit wall like a door (placed on the edge, faces into the pit), with a slid-up state (prisoners below can't reach) and a slid-do
+- `DEWBACK_ART_RECONCILE_ONE_LIZARD_MANY_CARDS` — Dewback art is split across several texPaths/sheet cards (RimStarWars/SWBestiary/Dewback, swanimals/Dewback via ArtFold, Dessicated, DesertVehicleResk
+- `HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY` — Liquid connection visuals: pump heftier than the hose, hose diameter a bit thinner, visible connectors wherever hoses/pipes/tanks/reels/pumps join (in
+- `EXPLOSIVE_GROWTH_RETHINK_SERIOUS_CONCERNS` — ExplosiveGrowth deep dive: what it is configured to do now, the original design, and where to take it (owner has serious concerns)
+- `VENOMVINE_BUILD_SCRUB_GROWS_TEETH` — Venomvine: LeaningScrub's integral plant - grows abundantly, tall and dangerous; design pass over its many variants, then build in this sprint
+- `POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD` — Natural water cells (ponds, marsh, vanilla water terrain) get partial depth like dug cells: a drying pond shallows all over, then mud, then dry — not 
+- `TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO` — Taozin split: adult RSW_Taozin + RSW_TaozinGrub, nest, brine, art
+- `TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE` — Taozin grub brine tank (C#): grub kept in brine makes RSW_TaozinBrine from RM_Brine; long-brined grub switches to its white look; nest Mod Settings sw
+- `WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS` — Climbing gear scales built walls (unroofed both sides): ask whether 'walls' meant building walls
+- `FACE_ART_DESIGN_ALIGNING_EARS_AND_HELMETS` — Re-assess all alien and human face art: design only, no work order
+- `WORLD_STARS_REPAIR_STILL_SPINNING_FOR_NOBODY` — World view: pin the sun direction for the tidally locked planet so stars, sun disc and planet light stop spinning daily; stars drift once per 60-day y
+- `PROOF_VERDICTS_REPAIR_SAME_BUG_EVERY_ROUND` — Proof scripts score site/harness failures as mod FAIL: three fresh reviews (d85e8a410c, 966a0b922f) each found new call sites in proof_hose.py, suspen
+- `DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS` — FlowWorks drawbridges (timber hand-winch, steel powered): bascule + gate leaf + plank art; tips occupants to hinge side; raise either side/lower winch
+- `FACE_OPTOUT_REPAIR_ONLY_AT_HOME` — Facial Animation exclusion (68 RSW_ head entries) lives only in the owner's own FA config; on a player's install the anime face draws over every paint
+- `WEBWORK_TITAN_POPULATE_NO_GIANT_IN_WEB` — Titan passage has no giant to draw in RM_Webwork + RUT_Webwork: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension passers list
+- `WASTELAND_TITAN_POPULATE_EMPTY_HORIZON` — Titan passage has no giant to draw in RM_Wasteland + RUT_Wasteland: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension passers 
+- `SCARLANDS_TITAN_POPULATE_SCARS_NO_STOMPER` — Titan passage has no giant to draw in RM_Warscar + RUT_Scarlands: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension passers li
+- `SUMP_TITAN_POPULATE_DRAIN_WITHOUT_A_GIANT` — Titan passage has no giant to draw in RM_TheSump + RUT_Sump: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension passers list), 
+- `LEANINGSCRUB_TITAN_POPULATE_SCRUB_UNSTOMPED` — Titan passage has no giant to draw in RM_LeaningScrub: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension passers list), and it
+- `LANTERNDEEPS_TITAN_POPULATE_DIM_AND_SMALL` — Titan passage has no giant to draw in RM_LanternDeeps: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension passers list), and it
+- `CRACKEDLANDS_TITAN_POPULATE_CRACKS_UNSHAKEN` — Titan passage has no giant to draw in RM_FloodedCanyon + RUT_CrackedLands: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension p
+- `FEVERWOOD_TITAN_POPULATE_NO_FEVERED_GIANT` — Titan passage has no giant to draw in RM_FeverWood + RUT_FeverWood: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension passers 
+- `CONTAGION_TITAN_POPULATE_PLAGUE_OF_SMALLS` — Titan passage has no giant to draw in RM_Contagion + RUT_Contagion: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension passers 
+- `CAULDRON_TITAN_POPULATE_POT_WITHOUT_A_LID` — Titan passage has no giant to draw in RM_Cauldron + RUT_Cauldron: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension passers li
+- `BLUEDESERT_TITAN_POPULATE_BLUE_AND_SMALL` — Titan passage has no giant to draw in RM_BlueDesert + RUT_BlueDesert: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension passer
+- `ARIDSHRUBLAND_TITAN_POPULATE_FORTY_NO_GIANT` — Titan passage has no giant to draw in RUT_AridShrubland: the pool is the biome's own hints (roster, or an RM_TitanPassageExtension passers list), and 
+- `GREENTIDE_TITAN_POPULATE_UTINNI_TWIN_SHORT` — Titan passage has no giant to draw in RUT_Greentide (RM_Greentide has RM_Thurrock): the pool is the biome's own hints (roster, or an RM_TitanPassageEx
+- `FORGE_TITAN_POPULATE_UTINNI_TWIN_SHORT` — Titan passage has no giant to draw in RUT_TheForge (RM_TheForge has RSW_Tibidee): the pool is the biome's own hints (roster, or an RM_TitanPassageExte
+- `WEEPINGSTONES_TITAN_POPULATE_UTINNI_TWIN_DRY` — Titan passage has no giant to draw in RUT_WeepingStones (RM_WeepingStones has RM_Gorrask): the pool is the biome's own hints (roster, or an RM_TitanPa
+- `SCALD_TITAN_POPULATE_HOT_WATER_NO_WHALE` — Titan passage has no giant to draw in RM_TheScald + RUT_TheScald (sea: needs a SEA giant): the pool is the biome's own hints (roster, or an RM_TitanPa
+- `PROPANELAKE_TITAN_POPULATE_LAKE_UNSWUM` — Titan passage has no giant to draw in RUT_PropaneLake (sea: needs a SEA giant): the pool is the biome's own hints (roster, or an RM_TitanPassageExtens
+- `TIMBER_LEAF_DIAGNOSE_UP_AND_INVISIBLE` — A raised TIMBER drawbridge leaf with no winch draws nothing (ProofLeaf: raised 3/3, hinge A, tip=True) while a raised steel leaf with a winch draws it
+- `PHONE_SENDS_ENFORCE_STILL_HONOR_SYSTEM` — Phone images (chat_review.py PNGs sent with SendUserFile) have no mechanical pre-review gate; propose a PreToolUse hook on SendUserFile requiring a pr
+- `PROOF_REELS_FIX_STILL_STAGED_WEST` — Proof stagers still build every reel West via validation_core.reel_west (proof_hose, lines_proof, walk_gaps_proof, pipe_levelling_perf_proof): use ree
+- `ART_RESOLUTION_MEASURE_AT_MAX_ZOOM` — Re-measure whether stored art resolution >128 px is visible at the MODDED max zoom-in (resexp was vanilla zoom only); until then canvas sizing stays g
+- `LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT` — HARNESS: pipe_levelling_perf_proof --rehearsal on a fresh quicktest map (after walk_gaps --fresh-map) hit a governor stop (hostile_arrival RM_HullBolt
+- `FOUNTAIN_SCULPTURES_DESIGN_WATER_MEETS_ART` — v2 brainstorm: artistic fountain sculptures (water spewing, counterpart to fire and glow sculptures) built on overspill
+- `SIGNS_BARRELS_VERIFY_ON_REBUILT_WALK_OWED` — Live look on the rebuilt walk save: station signs are signboards, paired barrels twin-sized (owed by STATION_SIGNS_FIX_LOOK_LIKE_BOOKS and BARREL_PAIR
+- `GLOWTANK_CROP_FIX_FROZEN_FRESH_MAP` — glow_tank_live crop row: fresh map out of season and growth read null (SITE/HARNESS)
+- `SHADOW_SHEET_FIX_SHOWS_ONLY_THE_INSTALLED` — art_eval shadow.py build shows only installed art (or artpipe --jobs renders), so a run on uninstalled candidate PNGs FLAGs every row 'judged picture 
+- `PIT_SINK_FIX_SOIL_STRIP_OVER_WALL` — Save e C3 pit boar: after 084ca107fc the boar sits on the lip, but a soil strip still covers the south wall top and a soil square sits outside the rim
+- `SCRAPPER_PIPE_REDRAW_ASKED_TWICE_NOW` — Scrapper pipe art redo: owner live walk 2026-10-23 17:43 on save e — bad art and bad joint alignment (banded segments, offset tees/valves); screenshot
+- `TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS` — dry golden trial site fails preflight on the 14-mod list (stale sidecar, half pond capacity); 3.3 unmeasured
+- `WEIR_CATCH_FIX_ESCAPES_CAP_RADIUS` — [MINOR] Catch placement can escape the radius used to enforce the catch cap
+- `DROWNING_ESCAPE_FIX_READS_DECK_ABOVE` — [MINOR] Drowning escape checks use the deck above a floor-band pawn
+- `ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE` — [MINOR] Absolute-mode descent detection misses falls from a deck over the same excavation
+- `INDUSTRIAL_RUINS_FIX_HIDDEN_EH_DEPENDENCY` — [MINOR] Default industrial progression requires an undeclared extra mod
+- `DEPTH_PROOFS_FIX_EXIT_ZERO_ON_FAIL` — [MINOR] The depth rebuild suite exits successfully after failed checks
+- `P5_SITE_FIX_RERUN_DIGS_DEEPER` — [MINOR] Reusing a depth-proof map silently deepens the previous test geometry
+- `BIGNET_PROOF_FIX_SIZE_NOT_RESTORED` — [MINOR] Resumed large-network phases use command-line size instead of saved size
+- `LAKE_FLOOR_STAGE_TAME_QUADRATIC_SETS` — [MINOR] Lake-center selection repeatedly rebuilds the entire lake set
+- `PIT_LIP_FIX_MUFFALO_OVERHANGS_RIM` — Sunk muffalo on a pit south-corner cell draws over the pit's west rim onto outside ground; colonist feet poke below the lip cover
+- `SPRINKLER_HEAD_FIX_FLOATS_OFF_CURVE` — Sprinkler head on a curved (corner) pipe cell draws at the cell centre, off the drawn pipe curve
+- `SCRAPPER_PIPE_REDRAW_BLURRY_AT_ZOOM` — Scrapper pipe v2 atlas is very low resolution; redraw at higher resolution matching the other looks
+- `PORTABLE_LADDER_REDRAW_NORTH_TOO_FLAT` — Portable ladder set on a pit's northern wall needs a steeper perspective
+- `QUIET_SITE_FIX_SPORE_GUARDIANS_STILL_BITE` — Test environment: on RM_TheRot maps the guardian-grove plants (RM_AgelessCap, RM_AgariluxPrime, RM_Skulltop) emit RM_ChokingSpores -> RM_ToxicSpores (
+- `LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW` — HARNESS: a full live_session cannot finish inside a 540 s foreground call, so driver 7 ran it as --only B0,<block> chunks. Chunking breaks rows that n
+- `LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR` — ProofLevelPerf on the 250 rehearsal (8 rigs, 6 links, calls=200): allocKBAvg 8747.8 KB per levelling cycle against the 1024 KB bar (msAvg 15.2, msMax 
+- `GOLDEN_PONDS_RECONCILE_TWO_FIFTHS` — Golden site P-S2: live pond capacity/stock is 0.4x the sidecar record (D 50/125, K 8/20, S 32/80)
+- `BRIDGES_DIG_DESIGN_THREE_WAYS_EACH` — Pick a way forward for suspension bridges, drawbridges and dig/fill materials: 3 GPT options each in D:\ClaudeWork\rimmandrake\design_bridges_dig_2026
+- `MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED` — Can colonists reach a mid-channel dug square to Restore ground it, or must they bridge first? Unmeasured; restore row only checks the order is placed
+- `DUG_SUBSTRUCTURE_PROBE_SURVIVES_UNDER_WATER` — Digging through ancient substructure leaves terrain BrokenSubstructure at d6/f6 (full of water) and a wall is accepted there; seen only on test-drive 
+- `UTILITY_CREATURES_DESIGN_DIG_THIS_PIT_BOY` — v2 idea, new mod: utility creatures — trainable animals (and droids/machines) taking commands like 'dig this pit' or 'cut that tree'
+- `ACCOUNT_KEEPALIVE_VERIFY_STILL_BREATHING` — Prove claude-account keep-alive renews dormant logins on SteveDesktop: after the 04:28 warm runs past an access-token expiry, health.json shows result
+- `STEVE_LANE_MONITOR_PAUSE_FINDINGS` — Standing host for SteveDesktop lane pauses: testq ingest records each red canary / refused runner pull as a failed steve-lane run here plus one findin
+- `RIVER_STEAM_BUILD_PYRELANDS_SWEEP_SITE` — toggle_river_steam ON/OFF half needs a Pyrelands map the sweep has no driver for (Pyrelands/northstar_site.py builds a scratch world: worldgen-ban que
+- `AGARILUX_PRINT_FIX_NRE_ON_RELOAD` — Plant.Print NRE 'Exception printing RM_GiantAgarilux<id> at (x,0,z)' x8 after loading BENCH_leaf_scenes_20261026 on the full list (stack: Plant.Print 
+- `JAWABENCH_TPSSTARTUP_HARDEN_REMAINING_BG_JIT` — 6010f2a3d6 deferred only the Player-prev archive; install still starts background JIT while the ctor goes on Harmony-patching (JawaBenchTpsSampler.cs:
+- `FACING_AUDIT_BUILD_REDRAW_BATCH` — Redraw the 169 creature facing sets the 2026-10-26 audit failed (a14 b85 c58 d12); per-set list in D:\ClaudeWork\rimmandrake\facing_backlog_20261026\a
+- `COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES` — Step 7 (design/RimStarWars/cold_storage_line_2026-10-26.md §5): Cuisine dishes that REQUIRE a method: RSW_CarboniteNCreamPie (blast-chill), RSW_Pickle
+- `COLD_STORAGE_ART_BUILD_SPRITE_BATCH` — Step 8 (design/RimStarWars/cold_storage_line_2026-10-26.md §7): ~14 building sprites + 3 stasis grade variants + ~33 item icons + VCE ration-sealer re
+- `COLD_STORAGE_PROOF_VERIFY_ROT_RATES_LIVE` — Step 9 (design/RimStarWars/cold_storage_line_2026-10-26.md §9.9): live proof on 13-mod minimal list + Cuisine + TheSump: measured rot per mode (chill/
+- `TELEMETRY_HARDEN_FIX_FOUR_EDGE_CASES` — Telemetry edge cases from review debt part 3: wsl_export ledger_seen set grows without bound; art/game_art.py precommit reads worktree not index; tele
+- `TELEMETRY_FAKE_DEPLOYS_EXCISE_NOT_REWRITE` — Telemetry: 159 fake deploy rows (ModA x143, ModNew x16; 2026-10-11T21:26..10-26T10:05Z) from selftest dummy mods sit in inbox/changes, raw/*.jsonl.gz 
+- `COLD_STORAGE_LADDER_ART_JUDGE_SHEET` — Judge the 13 artpipe jobs for the cold-storage ladder (RM_EvaporativeCrock single; RSW_CoolingSupplyUnit/_Wall/Chamber/CryoUnit south+east+north; list
+- `COLD_STORAGE_CHAMBER_BUILD_DRINKS_CHILLER` — The design's drinks-chiller variant of RSW_CoolingChamber (a label/filter variant for beverages) was not built in LADDER (46cdb52ab7); build it or dro
+- `COLD_STORAGE_RSW_RESEARCH_VERIFY_LAYOUT` — RSW_CoolingUnits (view 5.00,5.60) and RSW_CryoStorage (16.00,5.60) were placed without checking the research tab on the full list; confirm in game the
+- `KYBER_GATE_DEPLOY_AMID_FOREIGN_DRIFT` — Deploy the def-keyed kyber gate (UtinniPatches RUT_LanternDeepGateKyber.xml + RUT_LanternDeepKyberScatter.xml MayRequireAnyOf) and Armoury's 3 Absorbe
+- `RAKATAN_STASIS_LOOT_BUILD_HELD_PROVISIONS` — Design §4.2/§5 layer 3 leftovers: RUT_StasisHeldProvisions (chambers found still holding provisions) and chamber placement in the RUT war-lab rooms. O
+- `STASIS_LOCKER_BUILD_ANCIENT_COMPLEX_LOOT` — RM_AncientStasisLocker (generic layer-1, mandrake.rm.coldstorage, 367f0e9c26) has no loot source yet: place Wrecked/Kludged lockers in vanilla ancient
+- `COLD_STORAGE_CARBONFREEZE_REDRAW_INTERIM_ART` — Carbon-freezing press line draws vanilla interim art: own art for RSW_CarbonFreezingPress (2x2, Graphic_Multi, drawSize 3, now SerumCentrifuge), 4 RSW
+- `COLD_STORAGE_DEFS_FIX_DOUBLED_CATEGORY` — MOD: 16 new Cold Storage / Cuisine defs log 'Config error in <def>: has duplicate thingCategory' (x2 each, 32 lines) on the Archmagi full-list load of
+- `OWNER_CARDS_HARDEN_DECISION_RECEIPTS` — [M] cards carry decision id, revision, addressee; each answer gets an enactment receipt. Confirm: 0 already-ruled messages in 14 d (5 in 10-05..10-24)
+- `QUOTA_LEFT_AT_RESET_MEASURE_PER_ACCOUNT` — Record usable quota left unspent at each limit reset, per account, over several reset cycles; the one number that decides whether idle seats cost anyt
+- `CODE_REVIEW_ENFORCE_REVIEWER_NOT_AUTHOR` — code_review_status mark-clean accepts the author's own mark: the r9 hose fixer marked its own 10 files CLEAN (2bb9d38c30, same timestamp as fix ab9a53
+- `CUISINE_STICKS_BUILD_HUNGRY_SELF_ROAST` — Self-serve roast: a hungry colonist with no meal in reach walks to a campfire, roasts one roast-on-a-stick (raw food + skewer) and eats it, instead of
+- `ART_X_BUILD_DELETE_FOREVER_BAN` — Sheet X = purge bytes forever + permanent ban (exact sha + perceptual near-duplicate) refused by sheet build, art install and every redraw (artpipe re
+- `EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES` — RM_MapComponent_Excavation (mandrake.rm.flowworks) costs 0.87 ms/tick mean with 158-172 ms single-tick spikes on the 325x325 RM_PerfSite map, the larg
+- `CANON_BUILD_SWEEP_WHEN_CANON_MOVES` — check_canon.py sweep when canon.yml moves, on commit, and nightly
+- `FOCUS_ENFORCE_HEADLESS_LAUNCH_ALLOWLIST` — Headless launch allowlist plus foreground-change probe for unattended tools
+- `SCAN_MARKED_HARDEN_YOUNG_SIBLING_BLINDS` — role_launch.scan_marked goes blind (procs_of -> None) whenever any same-uid non-dumpable process started within SINCE_SLACK_S of the run exists: measu
+- `SELFTEST_UNMEASURED_FOUR_REBUILD_DEFDUMP_DB` — 4 UNMEASURED selftests need a fresh DefDump capture + measure build (stale/absent defs.sqlite, dump blind to xenotypeSets)
+- `MONO_ALLOC_MEASURE_PER_TICK_ON_GAME` — Calibrate GC.GetAllocatedBytesForCurrentThread on RimWorld 1.6 Mono (known-allocation probe), report bytes per tick per system, and find what triggers
+- `ARTEVAL_INSTALL_DEPLOY_HELD_SWBESTIARY` — Installed art not deployed to src/RimStarWars/SWBestiary: held: ~ Defs/BiomesTeamPort/ThingDefs_Items/RSW_BiomesTeamPort_Items.xml (not a texture); ~ 
+- `MUTATION_COLLECT_FIX_COPYTO_SILENTLY_EMPTY` — run_mutation collect --copy-to copied nothing for Steve runs 20261028T095621/013440 (summaries had to be scp'd by hand); make it copy or fail loudly
+- `MINERAL_MATRIX_DESIGN_ROUND_TWO_SPARSER` — Minerals x Baroque Biomes normalization pass: lore-prefilled relative abundance per cell (hand-tunable unit), min/max % mountainous per biome, orthogo
+- `STEVE_RUNNER_CLONE_ENFORCE_NO_LLM_WRITES` — The SteveDesktop-Runner Claude session commits into ~/rm/runner (the no-LLM dispatcher's pinned clone), which pauses the lane on the next pull/pin (22
+- `WARMTIMER_HARDEN_SPARE_LIVE` — claude-account-warm.timer (daily 04:48) warms every account, including the LIVE login when no claude process runs: a refresh of the live credential is
+- `SELFTEST_NIGHTLY_SILENCE_KNOWN_REDS` — Nightly selftest RED 14/14 nights (75 distinct reds, handoff red 14/14): known-red list after 3 nights, each with an open item, so a new red stands ou
+- `SELFTEST_SLOW_FOUR_SHRINK_BY_SPLIT` — 4 selftests at ~600 s (property_fabric, seashores, reclamation_trigger, skeleton_burial) are 41% of nightly test-seconds: split or move to a slow tier
+- `SCRATCHREAP_FIX_HUNGRY_FOR_FOUR_GIGS` — rm-scratch-reap.service ran its full 30 min at 17:30 on 2026-10-28, peaked at 3.9 G memory and was killed (failed); it restarted 19:01 and is activati
+- `DISPATCHER_VERIFY_SAME_SECOND_HANDOFF` — dispatcher.py:239 verifies a ring's handoff with strict > on whole-second ledger timestamps; a lease take in the same second as the ring is discarded,
+- `BIOME_TWIN_MAP_UNIFY_ONE_REGISTRY` — One machine-readable biome registry (def, RUT_ twin, kind) read by sheets, registry and kernel; seeded from the 27 painted biomes
+- `SEA_MINERALS_MERGE_FLOOR_INTO_SEA_ROW` — Move each RM_SeabedFloor_* column's minerals onto its sea's row and drop the floor columns; floor defs stay plumbing (owner 10-28: a sea is its floor)
+- `RUT_ONLY_CLAIM_CORRECT_IN_MINERAL_DOCS` — Correct minerals design 10-02:100 and registry design 10-03:199 RUT-only claims (successors, Umbra a painted biome, no twin for ChillCrater/LanternDee
+- `WARSCAR_LABEL_RESTORE_THE_ARTICLE` — RM_Warscar label 'the Warscar' per the 2026-09-26 every-label-is-the-Xxx ruling
+- `RUNNERCLONE_FIX_STRANDED_BY_HISTORY_REWRITE` — Other SteveDesktop clones (~/rm/bench, ~/mutation/RimMandrake) likely still on pre-excise history; ~/rm/runner was moved 2026-10-29 (old head = branch
+- `PLAYER_ROLE_DESIGN_EMPTY_CHAIR_AT_TABLE` — Innovation (agent/L, proposed): a Player role that plays the shipped savegame as a player and files what a player meets, not what a mechanism does
+- `SCRATCH_ENACT_REPAIR_SELFTEST_CRUMB_TRAIL` — Enact selftests leave enact_* clones in scratch/BENCH (248 dirs since 10-20, not reaped); scratch/BENCH is 108G; disk at 47%, not urgent
+- `STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO` — SteveDesktop faults unrelated processes: probable hardware, unproven; RAM test owed
+- `SEAT_RESTART_FIX_TAKEN_REQUEST_LOST` — A tick that consumes a restart request and dies before saving state forgets the request; if the window then dies too his message is not adopted
+- `LOOK_SITTING_BUILD_ONE_SAVE` — Stage the owner's one look save: timber and steel drawbridges, portable ladder and climbing, the four pipe looks, a titan passage and scavenged site, 
+- `SWBESTIARY_DEPLOY_HELD_FOREIGN_DRIFT` — Deploy SWBestiary + composed biomes: Blarth swimming E is in the repo, not the game; enact's deploy refused on RSW_TanniVine move and the plan carries
+- `SEAT_GOODBYE_FIX_QUEUED_PROMPT_LOST` — Conductor goodbye kill: re-check a prompt queued before the goodbye cursor; owner called typing-at-goodbye acceptable risk, low priority
+- `CRITIC_CALIB_HARDEN_WALK_AND_HEADS_FALLBACK` — Residuals from critic measure review: socket walk time is not re-deducted from the call timeout (2.3 s against a 60 s margin); mutant latest() heads f
+- `CLOSE_SHA_REPAIR_EIGHT_ON_LEAP_DAY` — Nine closes carry a sha that is not their work: note the real commit on each
+- `WASTERUNTIER_FIX_CRACKEDLANDS_NEEDS_VEF` — modset tier wasterun loads the biomes mod without VEF: RM_CrackedLands_DonorPorts.xml throws 'Could not find type named VEF.Plants.DualCropExtension' 
+- `DUSTVEIL_FIX_NULL_THINKTREE_ON_QUICKTEST` — RM_Dustveil threw NullReference in Pawn_Thinker.get_MainThinkNodeRoot while determining job on a wasterun-tier quicktest (Player.wasterun.log line 178
+- `SEAT_GOODBYE_FIX_REPLACEMENT_DIED_UNREAD` — Goodbye recovery: a replacement window that takes his message and dies before running wake leaves its transcript unrecorded (woken_tx is set only in w
+- `SEAT_SYNC_FIX_LATE_SAVE_DELETED_PARK` — seat_sync deletes the park once no late write shows, but an editor still holding a displaced inode can save after that and lose it; keep parks to expi
+- `SCRATCHREAP_FIX_SELFTEST_BLINDS_OTHER_RUNS` — concurrent scratch_reap selftests, and any live fixture with an undumpable process or unreadable alternates, blind every other run including the real 
+- `WORKER_CLONES_MONITOR_POOL_NOT_RABBITS` — Owner approved a bounded pool of about 10 reused clones for writers above 4; git worktree stays banned; cap, disk reading and alarm required, revert a
+- `DOORBELL_DELAY_FIX_FRESH_WINDOW_WAITS` — A fresh window waits for a ring: idle clock starts after restart_verified, then stall_after_s plus a 120 s tick; FOUNDRY sat about 8 minutes idle afte
+- `DOORBELL_DELAY_FIX_FRESH_WINDOW_WAITS` — A fresh window waits for a ring: idle clock starts after restart_verified, then stall_after_s plus a 120 s tick; FOUNDRY sat about 8 minutes idle afte
+- `WORLD_BEAUTY_VERIFY_OFFLINE_BEAT_THE_GAME` — World beauty set: capture the seven views live on the full list; the offline set has no ring, rivers or icons
+- `WORN_BIT_LIVE_PROVE_UNMET_GAME` — Worn Bit: run validation.py worn_bit and Rites worn_bit_gods live; first load of the arc's defs, float menu, quest, yard dialog
+- `CANON_SARLACC_ENTRY_FILL_LOUDEST_ABSENCE` — Add a canon library entry for the sarlacc
+- `CANON_LATE_ENTRIES_VET_ARRIVED_AFTER_PARTY` — GPT review of the 55 creature entries added after the 119-entry review
+- `ANT_HIVE_WALLS_VERIFY_NOT_WALKED_IN` — FeverWood: first live look at a walled ant hive
+- `EGROWTH_TREMBLE_DIAGNOSE_SIZE_JUMP_WOBBLE` — Owner saw mushrooms jump big/small/big: map gone before read; prime suspect ExplosiveGrowth tremble flip
+- `FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST` — Flyer flip-books tier 1: redo, reject and replace-donor rows (list in flyer_regen_plan.json)
+- `FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY` — Flyer flip-books tier 3: kept and convertible, wings only
+- `FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING` — Flyer flip-books tier 4: the unruled flyers, gated at their biome sitting
+- `FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS` — Flyer flip-books tier 2: kept statics, cut-out or body pass that keeps his look
+- `SLIME_CARGO_SCOOP_BUILD_NO_BUCKET` — Waste run Slime branch pours cask waste: wastes.md s10 says scoop tons of the Slime onto the gravship first, and no cargo or scoop exists
+- `WASTE_CONSEQUENCES_PROVE_FOUR_STUBS_LIVE` — Live read of the waste-run consequences: ProofGate per destination, crater Triggered after IgnitePropaneLake with mandrake.rut.injections loaded, Tile
+- `SELFTEST_CLOCK_BUILD_INJECTED_TIME` — Injected clock for selftests: wall-clock reads refuse about 62 of 90 refused tests, including scratch_reap, from the known-result ledger
+- `TWITCH_RIG_PROVE_ROOTS_HOLD_MOVING` — Live look at the bulloo and zhool twitch rigs: roots on four facings in motion, baby zhool size, speed (design §5)
+- `TWITCH_RIG_PROVE_ROOTS_HOLD_MOVING` — Live look at the bulloo and zhool twitch rigs: roots on four facings in motion, baby zhool size, speed (design §5)
+- `WAKE_LIST_FIX_OLD_MAIL_MARKED_LATE` — seat_restart wake lists messages as sent after the goodbye that all predate it: gen bb0f4b7d0d25 showed nine dated 13:24Z to 17:11Z against a 19:00:36
+- `WAKE_LIST_FIX_OLD_MAIL_MARKED_LATE` — seat_restart wake lists messages as sent after the goodbye that all predate it: gen bb0f4b7d0d25 showed nine dated 13:24Z to 17:11Z against a 19:00:36
+- `VEXXITH_GEAR_PROVE_ONE_LOAD_AWAY` — Vexxith gear and acid air: first live load, map reads and own art (tinted placeholders today)
+- `WASTERUN_SETTINGS_MEND_ONE_GROUP_TOO_MANY` — selftest_settings_screens red: WasteRun has 4 groups, the audit table expects 3
+- `PLANETARY_LOADSCREEN_WIRE_THREE_RINGS_WAIT` — Owner picks one of three ASH'KARR loadscreen candidates (D:\ClaudeWork\rimmandrake\art\planetary_loadscreen_2026-11-01\README.md) or rules another ite
+- `LEFTOVERS_CHECK_FIX_SAFE_ON_UNSAFE_FOLDER` — leftovers checker reads SAFE on a backup folder holding foreign, unjudged-review and referenced saves, and on an amended never-pushed clone (SD_DF1F5B
+- `MURRINCATCH_REDRAW_KEPT_BUT_OUTSHONE` — RM_MurrinCatch keeps his 10-19 pick (silver fish heap) while settled RM_Murrin is a blue-orange comb fin: redraw needs his word or art-eval
+- `WARLAB_BREAKOUT_BUILD_SEALS_HOLD_THE_LINE` — War lab: build the specimen choice, breakout and reinfection
+- `BESKARPROBE_FIX_EIGHTEEN_POKES_NO_NET` — ArmorerProbe.cs: 18 setting/def pokes have no restore on a throw (proof_restore_check baseline); L9.fail->L9.timeout and L5.setup->L5.read span action
+- `BESKARPROBE_FIX_EIGHTEEN_POKES_NO_NET` — ArmorerProbe.cs: 18 setting/def pokes have no restore on a throw (proof_restore_check baseline); L9.fail->L9.timeout and L5.setup->L5.read span action
+- `EGROWTH_SWELL_DECIDE_FLIP_OR_GROAN` — Owner choice: replace the ExplosiveGrowth tremble flip with a per-plant stepped swell, plus-minus 3.5 percent over about 2000 ticks; it changes the sp
+- `DOORBELL_ARM_HARDEN_TWO_NARROW_RACES` — doorbell.py: _disarm_if_mine removes a newer arm between PID check and remove; take_ring validates then renames, so a Dispatcher withdraw+republish be
+- `HELPER_RECEIPTS_FOREGROUND_FIX_UNREAD_SKIP` — helper_receipts.harvest: any Agent tool_result enters rows[done], so a foreground helper whose parent died right after the result is skipped though un
+- `SCRATCH_REAP_SELFTEST_FIX_NEVER_ENDS` — selftest_scratch_reap reaches no verdict: killed at 280, 530, 590 and 900 s
+- `SEAT_RESTART_REPAIR_TORN_TAIL_AT_GOODBYE` — seat_restart.py goodbye (~1490): a torn final transcript record after the kill makes _wake_conductor refuse to replay complete human messages before i
+- `BENCH_WIRE_BACKSTOP_STILL_ON_GOODBYE` — BENCH has no context backstop (wake false, backstop false): a fresh window still needs him to say goodbye
+- `EXPLOSIVEGROWTH_KERNEL_VET_TWO_OPEN_QUERIES` — RM_ExplosiveGrowthKernel.cs GPT review (design questions, unfixed): StepCharge dry decay ignores clockFactor; EffectiveTop with churn off still return
+- `LIST_READING_FIX_FILLER_PROVES_NOTHING` — 4 of 7 priority list entries read codebase_health_last.json counts.green, a stand-in that does not measure the item, so plan.days_since_advance cannot
+- `WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS` — Build the early-blast garrison, Route 6 clock and codes gate (design note §8)
+- `WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS` — Build the early-blast garrison, Route 6 clock and codes gate (design note §8)
+- `WARLAB_GATES_JUDGE_ROOM_WITH_NO_JUDGE` — War lab: run the opus §4 judge on dungeons_arc_spec.md §2.3 gate order
+- `SEKKULAATH_RISING_BUILD_THE_LAMPS_GO_OUT` — Build the sekkulaath rising: RUT_SekkulaathRising, sunken sites, ruined Wildsteam stock, threat factor (design note section 10)
+- `CRATER_CUTSCENE_BUILD_NOBODY_HELD_THE_REEL` — Build the planet-wide crater cut-scene: every region notices, then the cut to the crater (cards 4, 9); no player exists
+- `SPIRE_SITE_PROVE_ONE_TILE_TO_LOVE` — Place the one Spire live and prove it: RUT_SpireSite + RUT_AshfallSpire on one mountain tile in sight of the Scald lake; seal shut below VOUCHED, open
+- `CATHEDRAL_STAGE_WIRE_SEAL_WAITS_POLITELY` — No shipped code calls RM_MapComponent_BiomeAttitude.SetStage: conduct stage never reaches VOUCHED in play, so the Spire seal stays shut
+- `SALVAGE_RULE_PROVE_ON_A_REAL_FURNACE` — Live proof of the one salvage rule: deploy WreckedMachines, load clean (Harmony postfix with ___parent, the two workerClass edits), a multi-material a
+- `LIFT_PASS_BUILD_ONE_LIST` — One lift pass: generator, def, pre-implied Harmony pass, RM_Lift tags, grants, tradeability, toggles, colonist refusal for droid classes, linked-graph
+- `SHIP_FIXTURES_WIDEN_MINIFY` — SHIP_FIXTURE category through the lift pass: nine fixtures, Cooler in-wall test, audit of our own buildables against the rules
+- `BATTLEFIELD_CAPTURE_BUILD_REDEPLOY` — Battlefield capture: captured mark, Kludged stat factors, finite magazine for ammo-free guns, Jawa disarm-and-take, turret lint (design: salvage_lift_
+- `THEFT_HAULER_WIDEN_MINIFY_GONE` — Theft hauler gates on Minifiable, so since Minify Everything left it reaches only what a colonist can; prove it reaches HEAVY_MACHINE and WRECKED_TIER
+- `RUIN_SCRAP_BUILD_RUST_PAYS` — Scrap yield for RUIN and HULK defs: loot tiers through the one salvage rule; most carry no cost so a deconstruct pays nothing
+- `RUT_FLEETFLIER_FIX_OLD_WINGS_STILL_ON` — RUT_FleetFlier still draws the pre-alien art (east dfe950b38cd8, south 265f30a7b98d, kept north b73818aaddf7): his alien picks D with variants B,C rea
+- `VAALOK_SOUTH_FIX_WEARS_AURROKS_FACE` — src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Vaalok/RM_Vaalok_south.png is byte-identical to RM_Aurrok_south.png (md5 f7cde9eb), so a Vaal
+- `DEEPHOME_RETIRE_AA_ROWS_TWO_STRAGGLERS` — retired_donor_refs check exits 1 on two AA_ rows in RM_DeepHomeTable.xml (AA_SkySteel, AA_UraniumCrystals): allow them or fix the Minerals CSV retire 
+- `SHORTPREGNANCY_DEPLOY_SAVE_THE_EGGS` — Deploy StarWarsRaces (Absorbed_VREArchon_Genes.xml + StandIn Gene_PregnancyShort icon) and UtinniPatches (--prune VREArchon_MortisRename.xml) before t
+- `HUTT_EYES_DECIDE_GENE_IS_NOT_OURS` — 12 Hutt eye overlays (StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/{Feline,Reptile}Eyes/*, StarWarsPatches/Patches/HuttEyes_RestoreRenderNodes.x
+- `STANDIN_PLANTS_RENAME_PATH_ALREADY_TAKEN` — 4 StandIn plant texts (FeverWood AB_Iashiphus, Greentide AB_SugarFamewort, BlueDesert AB_ToxiGrass, Webwork AB_JungleTree picture A) cannot get a rend
+- `CRITERIA_TEXT_FIX_CUT_AT_CAP` — model.CRITERION_TEXT_MAX cuts criterion text at 160 chars on the ledger; 655 of 2570 criteria sit at the cap and 577 of those have no prose copy, so t
+- `TEMPLE_NINE_BUILD_OUR_OWN_GODS_FIRST` — Build RUT_TempleOfTheNineRuin end to end (design §6 step 1): KCSG gen_temple_layout.py, 3 variants, styleCategory symbols on a Totemic placeholder kit
+- `TEMPLE_NINE_BUILD_OUR_OWN_GODS_FIRST` — Build RUT_TempleOfTheNineRuin end to end (design §6 step 1): KCSG gen_temple_layout.py, 3 variants, styleCategory symbols on a Totemic placeholder kit
+- `GENE_LAB_BUILD_SIXTH_SIBLING` — Build RM_DerelictGeneLab v1 (XML mutator on TileMutatorWorker_AncientStructure + worker subclass for 2 settings + validation row), replacing AB_Dereli
+- `GEOSTONE_BUILD_SIX_LABELS_AWAIT_STAMP` — Build and stamp the six geological landmarks (mutators, NaturalRockTypesIn postfix, labels)
+- `PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET` — validation_core saveload_triplet: live/load/reload arms separate save-drops-state from load-nondeterminism
+- `CONDUCTOR_RESTART_REDESIGN_NEVER_FREEZE_HIM` — The hard-limit restart froze the Conductor's spawns while the owner was typing (fixed in the slot hook). Deeper: the restart waits on in-process helpe
+- `GIANTWIELDER_PATCH_FIX_FAILS_EVERY_LOAD` — UtinniPatches Patches/GiantWeaponWielders_Ashkarr.xml: PatchOperationConditional nomatch Add on XenotypeDef RSW_RimMandrake{Wookiee,Gamorrean,Herglic,
+- `GIANTWIELDER_PATCH_FIX_FAILS_EVERY_LOAD` — UtinniPatches Patches/GiantWeaponWielders_Ashkarr.xml: PatchOperationConditional nomatch Add on XenotypeDef RSW_RimMandrake{Wookiee,Gamorrean,Herglic,
+- `GIANTWIELDER_PATCH_FIX_FAILS_EVERY_LOAD` — UtinniPatches Patches/GiantWeaponWielders_Ashkarr.xml: PatchOperationConditional nomatch Add on XenotypeDef RSW_RimMandrake{Wookiee,Gamorrean,Herglic,
+- `GIANTWIELDER_PATCH_FIX_FAILS_EVERY_LOAD` — UtinniPatches Patches/GiantWeaponWielders_Ashkarr.xml: PatchOperationConditional nomatch Add on XenotypeDef RSW_RimMandrake{Wookiee,Gamorrean,Herglic,
+- `GIANTWIELDER_PATCH_FIX_FAILS_EVERY_LOAD` — UtinniPatches Patches/GiantWeaponWielders_Ashkarr.xml: PatchOperationConditional nomatch Add on XenotypeDef RSW_RimMandrake{Wookiee,Gamorrean,Herglic,
+- `SETTINGS_AUDIT_REFRESH_ONE_GROUP_TOO_MANY` — selftest_settings_screens.py RED on origin/main 7ec1b04602: WreckedMachines 5 groups found, expected 4; WasteRun 4 found, expected 3 (screens gained a
+- `MIASMA_DRAKE_FIX_GRASS_GONE_MISSING` — Miasma static check fails: RM_DecayDrake.xml:116 references RM_GlowingGrass, which no Miasma def file defines (python3 src/RimMandrake/Miasma/validati
+- `SETTINGS_SCREENS_FIX_TWO_OUTGREW_AUDIT` — selftest_settings_screens.py red on main: WreckedMachines has 5 groups (audit expects 4), WasteRun 4 (expects 3); update the audit or the screens (see
+- `CRACKEDLANDS_DUALCROP_FIX_VEF_NEVER_INVITED` — Live 16-mod load 2026-11-02 (no VEF): Player.log line 56, first exception: 'Exception loading def from file RM_CrackedLands_DonorPorts.xml: Could not 
+- `CRACKEDLANDS_DUALCROP_FIX_VEF_NEVER_INVITED` — Live 16-mod load 2026-11-02 (no VEF): Player.log line 56, first exception: 'Exception loading def from file RM_CrackedLands_DonorPorts.xml: Could not 
+- `PATCHES_EFFECTFLOOR_FIX_FIVE_DONORS_NAPPING` — selftest_mandrakepatches 'shipped fixes vs the load-14 dump' FAILs on HEAD: floor checked>=15 but only 12 checkable with 5 donor mods inactive on the 
+- `PATCHES_EFFECTFLOOR_FIX_FIVE_DONORS_NAPPING` — selftest_mandrakepatches 'shipped fixes vs the load-14 dump' FAILs on HEAD: floor checked>=15 but only 12 checkable with 5 donor mods inactive on the 
+- `GREENTIDE_SUITE_HARDEN_PASSES_ON_FAITH` — Greentide validation.py can pass on faith (GPT review 2026-11-02): (1) _comp clears upstream_failed after a setup _unmeasured, so mire/swallow/frenzy_
+- `SHIPFALL_SWITCH_ENFORCE_LIGHTS_LEFT_ON` — LongShade validation.py STATIC FAIL: Shipfall Commons MapComponentTick ignores modEnabled (runs with Long Shade off) — RM_ShipfallCommons.cs:141
+- `WORLD_HIGHWAY_TUNE_NAVY_IN_DISGUISE` — Ancient highway fill (0.08,0.08,0.085) renders navy (~48,56,80) under the planet light; warm it like the Stone layer so it reads asphalt, not water
+- `EGROWTH_FLUSH_PROVE_HAS_ONLY_A_TREE` — ExplosiveGrowth top_flush has no subject: the only Flush roster row (RSW_Plant_HydenockTree_Wild) is a tree, whose forced top is TreeBurst, so flush_p
+- `THORNHOLD_TETHER_FIX_WALKS_THROUGH_THE_STALL` — Stall freeze is broken for the Thornhold: RM_CompHomeTether replaces the Stall's Wait_Wander with an InterruptForced Goto home (RM_CompHomeTether.cs:9
+- `THORNHOLD_TETHER_FIX_WALKS_THROUGH_THE_STALL` — Stall freeze is broken for the Thornhold: RM_CompHomeTether replaces the Stall's Wait_Wander with an InterruptForced Goto home (RM_CompHomeTether.cs:9
+- `ALPHA_BIOMES_FIX_UNDECIDED_TOKENS` — selftest_alpha_biomes_census red: UNDECIDED_TOKEN AB_Fern/AB_Grass/AB_Grass_Polluted in selftest_donor_retire_standin.py
+- `STARWARS_FIX_WEATHER_DEFS_LEATHER` — selftest_starwarspatches_semantics + selftest_leather_factors red: weather_defs_are_all_attached check FAIL in chain; whole-block Replace break not ca
+- `EXPLOSIVEGROWTH_FIX_PROBE_PLANT_MOVED` — selftest_explosivegrowth_archetype_seed red: PoisonPlantTallGrass is not on the RUT_BlueDesert sheet
+- `WATER_TERRAINS_FIX_EIGHT_NAME_NO_LIQUID` — selftest_water_terrains_name_liquid red: 8 Water-tagged terrain(s) name no liquid (drunk as Potable FreshWater)
+- `CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS` — Cauldron: build the scab+crystal-fan coat on thornwood trunks (design 2026-11-02)
+- `CAULDRON_FLECKS_FIX_NUGGETS_IN_MIDAIR` — Cauldron: assay fleck overlays float ~31% off the trunk and miss V3 palette
+- `RAWSHADE_BUILD_SKIRT_COMES_DOWN` — Build RM_Rawshade (Scaldhide render C): defs, art install, living-canopy Burn shelter
+- `COUPLER_GLINTS_POLISH_PINK_OUTLIVED_RED` — Modern blue: pink/salmon specular dashes left on Coupler (and pump) highlights — desaturate toward steel
+- `COUPLER_GLINTS_POLISH_PINK_OUTLIVED_RED` — Modern blue: pink/salmon specular dashes left on Coupler (and pump) highlights — desaturate toward steel
+- `VOLTMAW_TIER_MIGRATE_SPARKS_INCLUDED` — RSW_Vozzik (voltmaw, AA_TetraSlug port) is NOT a twin of RM_Vozzik: owner 2026-10-04 gave it the Rust Cathedral and a synthetic redraw, RM_Vozzik the 
+- `VOLTMAW_TIER_MIGRATE_SPARKS_INCLUDED` — RSW_Vozzik (voltmaw, AA_TetraSlug port) is NOT a twin of RM_Vozzik: owner 2026-10-04 gave it the Rust Cathedral and a synthetic redraw, RM_Vozzik the 
+- `SEA_FILMS_FIX_SPHERE_ASSUMED_WHOLE` — RM_WorldLook.BuildSea sizes its shore/deep films by 4 pi r^2 / TilesCount, which over-states tile spacing on a partial-coverage planet (bands come out
+- `SEA_FILMS_FIX_SPHERE_ASSUMED_WHOLE` — RM_WorldLook.BuildSea sizes its shore/deep films by 4 pi r^2 / TilesCount, which over-states tile spacing on a partial-coverage planet (bands come out
+- `TWINLABELS_DEDUPE_SIXTEEN_DOPPELGANGERS` — label_collision_check.py exits 1 on 16 cast RM_/RSW_ twin pairs sharing a label (e.g. RM_TunnelSnake/RSW_TunnelSnake, RM_RustNipperJuv/RSW_RustNipperJ
+- `ATMOSBASE_COST_MEASURE_ELEVEN_TIMES_THE_BAR` — AtmosphericBase C1.cost FAILs live: 1.14-1.15 ms per Evaluate at 16 fixtures against the PROVISIONAL 0.100 ms bar (proof_atmosphere.py, rm_proof_atmos
+- `ATMOSBASE_COST_MEASURE_ELEVEN_TIMES_THE_BAR` — AtmosphericBase C1.cost FAILs live: 1.14-1.15 ms per Evaluate at 16 fixtures against the PROVISIONAL 0.100 ms bar (proof_atmosphere.py, rm_proof_atmos
+- `OILGAS_BUILDABILITY_EXCISE_FOUND_NOT_FORGED` — Strip player buildability from Rimefeller oil works and VHGE pump; remove VHGE's infinite starting pocket (F4: found, never built)
+- `VANILLA_BEAST_LEAKS_EXCISE_ESCAPEES_AT_LARGE` — Vanilla beasts still spawn BY NAME after their CP ThingDef cut: VEE TileMutatorDefs VEE_DomesticatedEscapees (Chicken, Cow) and VEE_Megafauna (Wolf_Gr
+- `PHEROMONE_GENES_BUILD_SMELLS_LIKE_PROGRESS` — Zeltron and Falleen pheromones still ride on AptitudeStrong_Social; canon (zeltron/description.md: 'capable of producing powerful pheromones') says a 
+- `PHEROMONE_GENES_BUILD_SMELLS_LIKE_PROGRESS` — Zeltron and Falleen pheromones still ride on AptitudeStrong_Social; canon (zeltron/description.md: 'capable of producing powerful pheromones') says a 
+- `RACES_GENERATOR_VET_SIX_GPT_HUNCHES` — gen_races_mod.py full-file GPT review (job consult-20261103-000029-1810094) raised six findings on pre-existing behaviour: --check skips verify and as
+- `FAUNANORM_SETTINGS_WIRE_TWO_SWITCHES` — Mod Settings for the fauna normalization patches in UtinniPatches: an on/off for FaunaNorm_Law3_Damage.xml (whole-roster damage band) and FaunaNorm_La
+- `SETTINGS_SCREENS_FIX_FIVE_OUTGREW_GROUPS` — selftest_settings_screens RED on 5 mods: WreckedMachines/UtinniPatches/WasteRun/DivingInteraction one more group than expected; StarWarsRaces abednedo
+- `ARTIST_BIOME_INSPIRATION_BUILD_RESTLESS_MUSE` — Build RimMandrake/ArtistMuse (mandrake.rimmandrake.artistmuse): restless artist muse biome, Fixed mode in settings, per design/RimMandrake/artist_biom
+- `FEVERWOOD_LURE_TUNE_AFTER_A_REAL_RAID` — Retune the two-front lure's numbers against a real colony's lure use
+- `MURROWBULB_ICON_REDRAW_STILL_A_POTATO` — RM_RawMurrowbulb (src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Murrowbulb.xml) wears vanilla Things/Item/Resource/PlantFoodRaw/Potatoes, marked 
+- `FORGE_CHECKS_FIX_PASSING_ON_WRONG_NUMBER` — TheForge validation.py: flyers_carry_flight_stat accepts any positive stat value once MaxFlightTime is named (MaxFlightTime=0 passes); dhoggur health/
+- `FORGE_CHECKS_FIX_PASSING_ON_WRONG_NUMBER` — TheForge validation.py: flyers_carry_flight_stat accepts any positive stat value once MaxFlightTime is named (MaxFlightTime=0 passes); dhoggur health/
+- `FORGE_CHECKS_FIX_PASSING_ON_WRONG_NUMBER` — TheForge validation.py: flyers_carry_flight_stat accepts any positive stat value once MaxFlightTime is named (MaxFlightTime=0 passes); dhoggur health/
+- `WM_PLASTEEL_RESTORE_FIX_FORGE_FORGETS` — WreckedMachines: setting_plasteelAlloyEnabled_drives_def row plasteelAlloyEnabled_restores_the_shipped_def FAILs live (modcheck run WreckedMachines 20
+- `WM_PLASTEEL_RESTORE_FIX_FORGE_FORGETS` — WreckedMachines: setting_plasteelAlloyEnabled_drives_def row plasteelAlloyEnabled_restores_the_shipped_def FAILs live (modcheck run WreckedMachines 20
+- `WM_PLASTEEL_RESTORE_FIX_FORGE_FORGETS` — WreckedMachines: setting_plasteelAlloyEnabled_drives_def row plasteelAlloyEnabled_restores_the_shipped_def FAILs live (modcheck run WreckedMachines 20
+- `RECEDE_EXPIRY_FIX_ONE_CLOCK_MANY_FLOODS` — Recede aftermath: one expiry clock for many floods' irqit and salvage (per-batch deadlines)
+- `RECEDE_EXPIRY_FIX_ONE_CLOCK_MANY_FLOODS` — Recede aftermath: one expiry clock for many floods' irqit and salvage (per-batch deadlines)
+- `RECEDE_EXPIRY_FIX_ONE_CLOCK_MANY_FLOODS` — Recede aftermath: one expiry clock for many floods' irqit and salvage (per-batch deadlines)
+- `RECEDE_EXPIRY_FIX_ONE_CLOCK_MANY_FLOODS` — Recede aftermath: one expiry clock for many floods' irqit and salvage (per-batch deadlines)
+- `RECEDE_EXPIRY_FIX_ONE_CLOCK_MANY_FLOODS` — Recede aftermath: one expiry clock for many floods' irqit and salvage (per-batch deadlines)
+- `SETTLEMENT_SHIPVISIT_BUILD_VANILLA_SAYS_RAID` — Peaceful gravship landing on a full faction Settlement (not a Site): vanilla ArriveNewMap always calls AffectRelationsOnAttacked for a Settlement, and
+- `SETTLEMENT_SHIPVISIT_BUILD_VANILLA_SAYS_RAID` — Peaceful gravship landing on a full faction Settlement (not a Site): vanilla ArriveNewMap always calls AffectRelationsOnAttacked for a Settlement, and
+- `SW_TEMPLATES_REWIRE_DONORS_LEFT_TOWN` — StructureInjectionsSW templates place 6 ThingDefs no loaded mod has: retarget in the .lua sources and re-export
+- `JUNK_RESKIN_REDO_REDRAW_NINE_LIVES` — Redraw the Star Wars junk slots that shipped empty: judge REDO on AncientTank_07, AncientWarwalkerShell_05, AncientMegaCannonBarrel_02 (both takes), A
+- `RENDER_BINDINGS_DECIDE_ORPHANS_AWAIT_PARENTS` — Pick the subject (or no-subject) for the 349 render families on the binding sheet (src/RimMandrake/Utils/art/binding_sheet.py build; enact --by agent 
+- `SARLACC_STAGEONE_MERGE_TWO_WORMS_ONE_THROAT` — Merge the two Stage-I young-sarlacc defs (RSW_SarlaccSwimmer, RM_Gulloth) into one; keep the swallow/changed-return trigger and both incidents
+- `SARLACC_STAGEONE_MERGE_TWO_WORMS_ONE_THROAT` — Merge the two Stage-I young-sarlacc defs (RSW_SarlaccSwimmer, RM_Gulloth) into one; keep the swallow/changed-return trigger and both incidents
+- `SOHL_BUILD_ONE_MOVE_TOTAL` — Sohl: the one-move animal, dormant, one lunge, spent (defs + C#)
+- `FRISSIM_BUILD_WAITS_FOR_THAW` — Frissim: flightless inclusion insects released by thaw (defs + C#)
+- `WYRMLET_BUILD_SHIVVEN_HAND_ME_DOWNS` — Wyrmlet: the apex young, foreshadow rung of the ladder (defs + C#)
+- `DHORRUMAK_BUILD_BIGGEST_LAST` — Dhorrumak: the apex ice wyrm, sustained-heat breach set-piece (defs + C#)
+- `HESSARUND_BUILD_JUST_A_RIDGE` — Hessarund: the living ridge, a mineable landform yielding catalyst crust (defs)
+- `SAALLEN_BUILD_BLISTERS_ON_CUE` — Saallen: seam crust that blisters when warmed and marks the breach ring (defs + C#)
+- `OOLM_BUILD_ONE_BODY_MANY_LOBES` — Oolm: clonal mineable lobes, one body per colony (defs + C#)
+- `NESHKOLL_BUILD_POINTS_AT_LEAKS` — Neshkoll: frost fans that lean toward the colony's heat leaks (C#)
+- `ICEKEPT_DEAD_BUILD_CUT_OUT_COLD` — Ice-kept dead: bodies held in clear ice, cut out for corpse and gear (defs + C#)
+- `CAULDRON_NETTLE_OFFARM_BUILD_TWO_OF_THREE` — Cauldron A4 third arm: a live component proving nettle gardens stop with condensateGardensEnabled off
+- `BROOD_GIZMO_TOOL_BUILD_CLICKS_GO_NOWHERE` — Generic JawaBench gizmo-invoke tool + brood tally read + FeverWood components proving BROOD_RANSOM A3 tally and A4 gift
+- `CATHEDRAL_BASEFINISH_ROWS_BUILD_MAP_EXISTS` — RustCathedral validation components for BASE_FINISH A5-A9 on a live_site.py --biome RM_RustCathedral map
+- `FORGE_VOICE_ROWS_FINISH_HALF_SUNG` — Extend TheForge voices/dormancy components: all four phase cues, sustainer, dhuvvox seal + count invariant (ENRICHMENT_QUICKTEST A3/A4 remainder)
+- `SCALD_STACK_TEXTURES_DELETE_NOBODY_HOME` — Delete 6 orphan stack-texture folders src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/{RM_EkkelCatch,RM_KarrashCatch,RM_MuddalCatch,RM_Sa
+- `SCALD_STACK_TEXTURES_DELETE_NOBODY_HOME` — Delete 6 orphan stack-texture folders src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/{RM_EkkelCatch,RM_KarrashCatch,RM_MuddalCatch,RM_Sa
+- `SCALD_STACK_TEXTURES_DELETE_NOBODY_HOME` — Delete 6 orphan stack-texture folders src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/{RM_EkkelCatch,RM_KarrashCatch,RM_MuddalCatch,RM_Sa
+- `SCALD_STACK_TEXTURES_DELETE_NOBODY_HOME` — Delete 6 orphan stack-texture folders src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/{RM_EkkelCatch,RM_KarrashCatch,RM_MuddalCatch,RM_Sa
+- `EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN` — Wire each commissioned extra look (design/RimMandrake/extra_art_commission/commission.csv: female -> femaleGraphicData, female pack, variant -> PawnKi
+- `VIOLETWIMPLE_TILEGRID_FIX_CAPS_ON_PARADE` — VioletWimple_A.png (src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/VioletWimple) is a regular 2x4 grid of identical caps — reads as a tiled 
+- `XART_FAILS_DIAGNOSE_TENTH_SECOND_RENDERS` — 39 commissioned extra-art jobs (xart_*) sit in D:\ClaudeWork\rimmandrake\artpipe\failed after a 0.12 s 'generated' then 'validated fail' (e.g. xart_RM
+- `STARWARSRACES_SUITE_FIX_STILL_SAYS_NO_DLL` — src/RimStarWars/StarWarsRaces/validation.py SCOPE says the mod has no compiled code and suite.toggles=[]; since 41a57e24f3 it ships a DLL with Mod Set
+- `SUMPMOUSE_ART_INSTALL_STILL_SQUEAKS` — Two followed-note redraws never installed: RM_SumpMouse still wears the plain mouse (owner: 'less mouse-like and more alien'; renders thesump_SumpMous
+- `SETTINGS_SCREENS_FIX_FOUR_STALE_TABLES` — selftest_settings_screens.py red at 0fa427bbe2 on four screens not touched by SARLACC_PIT_WIDEN_THE_BIG_ONES: BlueDesert (12 groups vs 10), CrackedLan
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `KIT_ART_INSTALL_FISHED_FROM_THE_WORKERS` — Install the 10 judge-kept biome-sprint kit lines (art-store shas in infrastructure/state/delegated/2026-11-03/kit_art_veto.json): fit each raw 1254px 
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE` — True-scale judge sitting for the 37 animals art_size_audit.py lists REVIEW (drawn <0.5x or >2.1x vanilla's body->drawSize curve, e.g. RM_Immu 0.30 cel
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `SADDLES_FREE_TIER_VERIFY_HOLD_THE_HUTTS` — Free tier live: on a list WITHOUT UtinniPatches (RimMandrake.Biomes, all five DLC) a vanilla trader caravan can be generated for RM_WeepingStones and 
+- `FACING_NORMVIEW_FIX_SHRINKS_SNAKES_TO_PEAS` — facing_backlog drv.py norm_view scales every new N/S to east's HEIGHT; for long low bodies drawn high-angle (Dragonsnake) a correct rear view shrinks 
+- `FACING_NORMVIEW_FIX_SHRINKS_SNAKES_TO_PEAS` — facing_backlog drv.py norm_view scales every new N/S to east's HEIGHT; for long low bodies drawn high-angle (Dragonsnake) a correct rear view shrinks 
+- `FACING_NORMVIEW_FIX_SHRINKS_SNAKES_TO_PEAS` — facing_backlog drv.py norm_view scales every new N/S to east's HEIGHT; for long low bodies drawn high-angle (Dragonsnake) a correct rear view shrinks 
+- `STATIC_CALL_THINGID_FIX_DIGIT_EATS_ITSELF` — jawa/static_call ThingID resolver splits off trailing digits of defNames ending in a digit
+- `SWEETLINE_CANOPY_REDRAW_TRUNKS_THAT_EARN_IT` — Paint real trunk + canopy art for RM_SweetlineTree (14 letters): today's pools are script-derived stand-ins (canopy_art.py: geometric crown-base cut, 
+- `SWEETLINE_CANOPY_REDRAW_TRUNKS_THAT_EARN_IT` — Paint real trunk + canopy art for RM_SweetlineTree (14 letters): today's pools are script-derived stand-ins (canopy_art.py: geometric crown-base cut, 
+- `SWEETLINE_CANOPY_REDRAW_TRUNKS_THAT_EARN_IT` — Paint real trunk + canopy art for RM_SweetlineTree (14 letters): today's pools are script-derived stand-ins (canopy_art.py: geometric crown-base cut, 
+- `SWEETLINE_CANOPY_REDRAW_TRUNKS_THAT_EARN_IT` — Paint real trunk + canopy art for RM_SweetlineTree (14 letters): today's pools are script-derived stand-ins (canopy_art.py: geometric crown-base cut, 
+- `SWEETLINE_CANOPY_REDRAW_TRUNKS_THAT_EARN_IT` — Paint real trunk + canopy art for RM_SweetlineTree (14 letters): today's pools are script-derived stand-ins (canopy_art.py: geometric crown-base cut, 
+- `SWEETLINE_CANOPY_REDRAW_TRUNKS_THAT_EARN_IT` — Paint real trunk + canopy art for RM_SweetlineTree (14 letters): today's pools are script-derived stand-ins (canopy_art.py: geometric crown-base cut, 
+- `SWEETLINE_CANOPY_REDRAW_TRUNKS_THAT_EARN_IT` — Paint real trunk + canopy art for RM_SweetlineTree (14 letters): today's pools are script-derived stand-ins (canopy_art.py: geometric crown-base cut, 
+- `PAINT_LIST_FIX_STALE_COREFRAMEWORK_EDGE` — PAINT list: biomesteam.coreframework has no class ref left to justify it
+- `BRIDGETOOLS_DLL_REBUILD_THREE_TOOLS_MISSING` — Rebuild the JawaBench DLL: 3 source tools absent from it
+- `SWDESERT_WEATHER_DECIDE_REDFOG_DEAD_CONTENT` — RSW_SW_RedFog and RSW_SW_RedFoggyRain are attached to no biome since the donor retirement (5afbec097e): attach or delete
+- `RESOURCE_SIM_BUILD_WAITS_FOR_REAL_DATA` — Resource model (disk, /tmp tmpfs, 16-clone pool, 70 GB cap) fitted to >=7 days of real readings (scratch_reap records, pool readings, the new /tmp ala
+- `TELLUROX_FACINGS_REDRAW_ALWAYS_SIDEWAYS` — RM_Tellurox (SleepingIce) body uses Graphic_Single with one PNG, so it never turns: the owner saw it walk around live 2026-11-03 without changing faci
+- `STRAY_TREE_DIAGNOSE_HEADLESS_IN_MUSHROOMS` — A normal-looking gold-green tree stands in the mushroom biome of the joint-session map 2026-11-03. Owner: when zoomed in its top is cut off, he cannot
+- `PLANT_PRINT_FIX_NRE_ON_SAVE_LOAD` — 72 Plant.Print NREs on loading JointSession_20261103_pits3 (RM_GiantAgarilux 56, RM_Arpeau 13, RM_Ullumbra 3), with 11 'load a graphic off the main th
+- `UNUSED_PORTS_MEASURE_WHAT_NOBODY_NEEDS` — Survey everything copied in from donor mods to retire them (Biomes! port first): what is unreferenced, used only as a stand-in, kept by the owner, and
+- `SWEETLINE_TRUNK_FIX_HARD_CROP_LINES` — All 14 RM_SweetlineTrunk PNGs show hard flat lines in game at close zoom: a feathered top cut by the plant cutout shader, and a flat bottom row in the
+- `CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD` — Nothing alarms when walled checkers die at launch across items: 29 of 29 died over 2.5 h and each item only read checker_lost
+- `SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP` — BENCH survives as a seat key shared by the Conductor window and Relentless workers, a clone path, role files, units and prose. Census and three-step a
+- `CONDUCTOR_RESET_FIX_KILLED_MID_READ` — The Conductor window's context-limit restart fires 20 s after a turn ends, so it wiped the reply he was reading; wake should re-show the old window's 
+- `PLAYER_EXPECTATIONS_DOCUMENT_NONE_WRITTEN` — Live Testing has a 'falsified player expectations' tile the owner asked for, reading 'not recorded': nothing writes such a record. Give live proofs a 
+- `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS` — Designer deep pass on Solar: read its proof scripts, name each scene's missing site prep and control case, and file the build items for Relentless
+- `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS` — Designer deep pass on Baroque Biomes: read its proof scripts, name each scene's missing site prep and control case, and file the build items for Relen
+- `STEVE_FILLER_MONITOR_FAIL_FINDINGS` — Standing host for the testq filler's FAIL rows: ingest records each item-less job with a FAIL row as a failed run here plus one UNTRIAGED finding per 
+- `STEVE_FILLER_MONITOR_FAIL_FINDINGS` — Standing host for the testq filler's FAIL rows: ingest records each item-less job with a FAIL row as a failed run here plus one UNTRIAGED finding per 
+- `STEVE_FILLER_MONITOR_FAIL_FINDINGS` — Standing host for the testq filler's FAIL rows: ingest records each item-less job with a FAIL row as a failed run here plus one UNTRIAGED finding per 
+- `INHABITED_DESIGN_FIRST_TOUCH` — Designer deep pass on Inhabited (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), c
+- `SWBESTIARY_DESIGN_FIRST_TOUCH` — Designer deep pass on SWBestiary (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), 
+- `UTINNIPATCHES_DESIGN_FIRST_TOUCH` — Designer deep pass on UtinniPatches (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene
+- `ATLAS_DESIGN_FIRST_TOUCH` — Designer deep pass on Atlas (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), certi
+- `ORACLE_DESIGN_FIRST_TOUCH` — Designer deep pass on Oracle (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), cert
+- `ATMOSPHERICBASE_DESIGN_FIRST_TOUCH` — Designer deep pass on AtmosphericBase (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per sce
+- `MINERALS_DESIGN_FIRST_TOUCH` — Designer deep pass on Minerals (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), ce
+- `PYRINTH_DESIGN_FIRST_TOUCH` — Designer deep pass on Pyrinth (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), cer
+- `TILEFEATURES_DESIGN_FIRST_TOUCH` — Designer deep pass on TileFeatures (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene)
+- `ARMOURY_DESIGN_FIRST_TOUCH` — Designer deep pass on Armoury (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), cer
+- `SHIPVERMIN_DESIGN_FIRST_TOUCH` — Designer deep pass on ShipVermin (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), 
+- `COLDSTORAGE_DESIGN_FIRST_TOUCH` — Designer deep pass on ColdStorage (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene),
+- `ASSAILANTSALVAGE_DESIGN_FIRST_TOUCH` — Designer deep pass on AssailantSalvage (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per sc
+- `LUMINOUSPIGMENT_DESIGN_FIRST_TOUCH` — Designer deep pass on LuminousPigment (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per sce
+- `BACTA_DESIGN_FIRST_TOUCH` — Designer deep pass on Bacta (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), certi
+- `BRAINWORMS_DESIGN_FIRST_TOUCH` — Designer deep pass on BrainWorms (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), 
+- `GIZKASTOWAWAY_DESIGN_FIRST_TOUCH` — Designer deep pass on GizkaStowaway (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene
+- `GRAFFITIIMPERIAL_DESIGN_FIRST_TOUCH` — Designer deep pass on GraffitiImperial (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per sc
+- `DROIDREPAIRJOBS_DESIGN_FIRST_TOUCH` — Designer deep pass on DroidRepairJobs (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per sce
+- `EGGRECKONING_DESIGN_FIRST_TOUCH` — Designer deep pass on EggReckoning (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene)
+- `PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH` — Designer deep pass on PyrelandsMechanics (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per 
+- `RITES_DESIGN_FIRST_TOUCH` — Designer deep pass on Rites (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), certi
+- `ACOUSTICSCANNER_DESIGN_FIRST_TOUCH` — Designer deep pass on AcousticScanner (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per sce
+- `TROPHYCRAFT_DESIGN_FIRST_TOUCH` — Designer deep pass on TrophyCraft (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene),
+- `CUISINE_DESIGN_FIRST_TOUCH` — Designer deep pass on Cuisine (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), cer
+- `EMPIREPURSUIT_DESIGN_FIRST_TOUCH` — Designer deep pass on EmpirePursuit (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene
+- `WASTERUN_DESIGN_FIRST_TOUCH` — Designer deep pass on WasteRun (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), ce
+- `SARLACC_DESIGN_FIRST_TOUCH` — Designer deep pass on Sarlacc (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), cer
+- `STARWARSRACES_DESIGN_FIRST_TOUCH` — Designer deep pass on StarWarsRaces (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene
+- `STARWARSPATCHES_DESIGN_FIRST_TOUCH` — Designer deep pass on StarWarsPatches (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per sce
+- `MANDRAKEPATCHES_DESIGN_FIRST_TOUCH` — Designer deep pass on MandrakePatches (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per sce
+- `WATCHERS_DESIGN_FIRST_TOUCH` — Designer deep pass on Watchers (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), ce
+- `AFTERMATH_DESIGN_FIRST_TOUCH` — Designer deep pass on Aftermath (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), c
+- `GRAVSHIPLANDING_DESIGN_FIRST_TOUCH` — Designer deep pass on GravshipLanding (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per sce
+- `STRUCTUREINJECTIONSSW_DESIGN_FIRST_TOUCH` — Designer deep pass on StructureInjectionsSW (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls p
+- `RIMPROPERTY_DESIGN_FIRST_TOUCH` — Designer deep pass on RimProperty (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene),
+- `SUMP_PROOF_HARDEN_IMPLAUSIBLE_READ` — SUMP_GLASSWALK_SPEED_RATIO_1 proof scored a FAIL from an implausible reading (12 cells walked in 2 ticks): a speed ratio needs a plausibility floor th
+- `SCARLANDS_PACKAGEID_CORRECT_ABOUT_MISMATCH` — Deployed Scarlands About.xml has no readable packageId, so the modlist gate refuses ART_OVERRIDE_FAMILY_SCRIPT_1 on every staging (game.harness=4). Re
+- `VITALS_PROOF_ENFORCE_TIER_DECLARED` — VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL proof printed WRONG_TIER/WRONG_LIST then exited 1 on A1 and A2: the item must declare the full-list tier it nee
+- `HORRORS_WORLDCSV_SYNC_STALE_PROOF` — HORRORS_RAIDING_FACTION_1 A2 read 0 nightside tiles from a stale world CSV and scored FAIL: the proof must refresh or date-check the CSV and read UNME
+- `ANTIQUITIES_DESIGN_FIRST_TOUCH` — Designer deep pass on Antiquities (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene),
+- `WETSAND_STAIN_FIX_READS_AS_POLKA_DOTS` — Stillsand wet-sand stain (RM_MapComponent_WetSand.MapComponentUpdate, RM_StillsandWater.cs ~360) over a filled block of cells draws a visible lattice 
+- `STALLREPRO_RETHINK_ABSENCE_IS_THE_PASS` — LEANINGSCRUB_STALL_SHARED_MOVE_1's A1 demands the 10-07 shared Stall move reproduce and calls a miss exit 1. It has missed 4/4 live (2 on the correct 
+- `MIRROR_PACK_REPAIR_STILL_GRUMBLING` — rm-scratch-reap journal logs 'error: wrong index v2 file size in /home/mandrake/rm/mirror.' (111 lines since 11-03, every run); a bad pack index in ~/
+- `SEABED_LAYER_DIAGNOSE_STEALS_THE_ZOOM` — World map: zooming IN switches the view to a grey(land)/tan(sea) layer with no roads, labels or settlements; it switches back only after zooming far o
+- `FIRST_TOUCH_DECIDE_HARNESS_NAMES_A_MOD` — first-touch hold keeps ~16-32 system harness/selftest repairs (HARNESS_REPAIR_CAUSE_*, NIGHTLY_COP_FIX_*) waiting on a needs=owner Designer pass for a
+- `DESSIC_V2_INSTALL_FIX_SIX_STALE_CORPSES` — dessic_install_check.py exits 1 at HEAD: 6 dessic_*_v2/v1 renders (Akk, Devourer, Mastmot_j, PaintedSpat, Raxshir, Snoruuk_j) are bound in the art led
+- `SLAUGHTER_ROWS_PRUNE_GHOSTS_IN_PEN` — The canonical saves name Biomes! creatures deleted by BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS: R3 (world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.
+- `GRAFFITI_VANDAL_REDRAW_TWO_SIGNS_GONE_LEGIT` — Graffiti: replace RM_Graffiti_Vandal vandal_1 (prohibition sign) and vandal_0 (hazard bolt), which fail mark_carries_no_earth_signage
+- `GRAFFITI_SIGILMATS_FIX_OFF_THREAD_FIRST_GAME` — Graffiti: Filth_Mark.RebuildSigilMats loads the sigil frame and ideo icon materials off the main thread on the first new game (18 red errors), so the 
+- `GRAFFITI_SUITE_DIAGNOSE_QUIET_KILLS` — Graffiti suite: two colonists killed by a 0-damage Kill on chain boundaries, and Fingerspikes arriving, in a run whose rows all PASS
+- `DROID_ENCLAVE_POPULATE_EMPTY_BARRACKS` — Free Droid Enclaves Combat and Settlement groups and fixedLeaderKinds are all MayRequire Neronix17.OuterRim.DroidDepot (RUT_Jawa_Droid_* kinds, Droid 
+- `DROIDWORKS_DESIGN_FIRST_TOUCH` — Designer deep pass on Droidworks (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), 
+- `CREATURE_FACINGS_REDRAW_ONE_PICTURE_ZOO` — Draw the missing facings the facing census owes (art pipeline, rimworld-sprite-facings; west mirrors east), then wire each to Graphic_Multi and drop i
+- `REFUSED_HANDOVER_DRAIN_FIX_PUDDLE_OVERSTAYS` — Refused handover leaves a puddle on a dug square forever
+- `UMBRA_TITAN_POPULATE_BURNS_TO_WALK` — Invent a native land giant (adult body size >= 8) for RUT_Umbra's roster, so the titan passage has a giant to draw there. It burns to move (propane sh
+- `CHILL_TITAN_POPULATE_WAX_GIANT_TOO_SMALL` — RM_TheChill has giants (hesuun 3.5, floor's giant Q4b; V-wake proposed ~4, built 1.1) but none passage-sized: at the Chill's roster sitting grow a rul
+- `GRAVSHIP_LOCKED_FIX_ENGINE_TURNS_THEM_ANYWAY` — 14 non-square buildings say rotatable=false, but a turned gravship turns them anyway (Gravship.GetPlacementValues forces shipRotation on a non-square 
+- `GRAVSHIP_FACING_GAPS_REDRAW_BORROWED_SIDES` — 4 rotatable Graphic_Multi buildings miss a facing, so a turned gravship shows a borrowed view: no side at all (sides draw the north/south picture) RM_
+- `GRAVSHIP_VENTS_WIRE_ART_DRAWN_NEVER_SHOWN` — RUT_VentForge, RUT_VentKiln, RUT_VentSmelter (2x2) are rotatable=false yet have _north/_east/_south art drawn: the sides never show and on a turned gr
+- `FLANGE_GIRTH_FIX_OTHER_LOOKS_STILL_SKINNY` — Scrapper/Industrial/Futuristic Joins Flange.png (33 px) and Coupler.png (31 px) rings at FlangeSize 0.5 are 0.129/0.121 cell, thinner than the 0.136-c
+- `B6_FLOOD_FIX_RAIN_FILL_LEFT_OFF` — HARNESS: live_session.py b6_flood restores rainFillsExcavationsEnabled only in its SECOND try/finally; an exception in the first try (the 14,000-tick 
+- `SCENARIOS_MAP_FIX_PIPE_LONG_RUN_HOMELESS` — selftest_scenarios_map.py fails at HEAD a1534a108e: 'every old station lands in a scenario or its stated home (design §4.1)' -> ['pipe_long_run'] (sel
+- `REDRAW_STALE_SLOT_FIX_ORPHANS_ADRIFT` — enact files redraw/asks jobs under a slot key that is no lane today (3 queued now: RSW_KraytDragon f/j, RSW_Taozin), and 5 done renders with a stale j
+- `STEEL_CABLE_BUILD_SAG_ACROSS_THE_SPAN` — Steel suspension bridge: draw the main cables in code across the whole span (sag projected screen-up, hangers per cell, tall towers overhanging the an
+- `WEIR_OVERFLOW_DESIGN_FOAM_WAS_A_HINT` — Weir overflow: design a much better animated sheet of water going over the weir (all four looks)
+- `TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE` — PyrelandsMechanics proof scenes: rite_force_hook bridge call and read, and entry points with start assertions, controls and snapshot restore for every
+- `TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE` — PyrelandsMechanics proof scenes: rite_force_hook bridge call and read, and entry points with start assertions, controls and snapshot restore for every
+- `MODERN_FITTINGS_JUDGE_CAPTURES_SMILE_PLEASE` — Art-eval the in-game Modern faucet/sprinkler/PipeSpan captures that modern_fittings_live.py writes (captures.json in D:\ClaudeWork\rimmandrake\live\MO
+- `BESTIARY_ART_FIX_CRATE_FOR_A_FACE` — In-game SWBestiary art defects seen pre-reviewing picks_dessicated: crate stand-in facings (Tach B north, Thranta B south, Veermok B south), blank FLY
+- `DESSICATED_RULINGS_FINISH_LEFT_HANGING` — Owner rulings visible as not carried out on picks_dessicated: JungleRancor purple A still offered (10-15 'eliminate the purple'), Narglatch still spli
+- `KYBERTRADEPLOT_DESIGN_FIRST_TOUCH` — Designer deep pass on KyberTradePlot (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scen
+- `MINERAL_DEVOID_FIX_ZEROED_VEINS_SLIP_THROUGH` — DeepDrill RM_TileMutatorWorker_MineralDevoid strips only veins whose LIVE mineableScatterCommonality>0 (RM_TileResourceKernel.StripsToPlainRock); the 
+- `HEAD_TEMPLATE_BUILD_FACES_GET_RUBRICS` — art_eval has no head template (creature/plant/machine only): add skills/rimworld-art-evaluation/references/templates/head.md (+ policy TEMPLATES) to j
+- `SPECIES_HEADS_REDRAW_GREY_FOR_TINT` — Queue greyscale skin-tintable redraws of the species heads (Togruta heads + montrals, Twi'lek, Duros, Bothan, Gungan, Herglic, Dathomirian; RimMandrak
+- `TOGRUTA_SKIN_FIX_TWO_TONE_BY_ACCIDENT` — Togruta heads set useSkinShader false while the xenotype carries 7 skin genes, so head and body colours can disagree. Flip to the skin shader together
+- `DEEPDRILL_DESIGN_FIRST_TOUCH` — Designer deep pass on DeepDrill (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene), c
+- `FACING_CAPPED_REDRAW_STUBBORN_NORTHS` — Facing-audit redraw sets that hit the 3-round art-eval cap (view-only north/south redraws vs the installed east keep failing F_INCONSISTENT/F_SIZE_JUM
+- `REVIEW_MAP_SELFTEST_FIX_SIZELESS_STATION` — selftest_falsepass_late.py t_review_map fails KeyError 'size': a review_map.py station/extras entry lacks 'size' (review_map.py :1104/:1110/:1137). Pr
+- `ARTEVAL_INSTALL_DEPLOY_HELD_BIOMES` — Installed art not deployed to compose:biomes: held: ~ Biomes/Cauldron/Defs/ThingDefs_Races/RM_Garsulix.xml (not a texture)
+- `KINETICARMS_DESIGN_FIRST_TOUCH` — Designer deep pass on KineticArms (first touch): read its code and spec, expand the spec and validation strategies (site prep and controls per scene),
+- `COLDLOAD_PROVE_DEFLOADCACHE_HALF_INSTALLED` — Trial DefLoadCache (Workshop, RimWorld 1.6, needs Prepatcher: zetrith.prepatcher is already in our Workshop folder 2934420800, DefLoadCache is not) on
+- `TICKBURST_PROVE_MANY_TICKS_ONE_FRAME` — Experiment: a JawaBench tool that runs N Find.TickManager.DoSingleTick() calls inside one frame with a per-frame wall budget, re-reading ticksGame aft
+- `LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED` — Lightspeed rollout step 1 (spec §4): 112 mods are testq-selectable but never queued (2,966 modcheck rows). Extend wired_mods.json in coverage.py rank 
+- `SKELLICK_BACKWING_REDRAW_SLIVER_VIEW` — Skellick back-view flip-book flaps only slivers: draw a north wing layer
+- `ADVANCEUNTIL_WIRE_PER_TICK_STOP` — Bridge conditions T3 (spec design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 row T3; acceptance as written there): safe_advance stops o
+- `CONDWATCH_BUILD_OWNED_RINGS` — Bridge conditions T5 (spec design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 row T5; acceptance as written there): jawa/cond_watch arm/
+- `RINGPROBES_WIRE_EVENT_CURSORS` — Bridge conditions T6 (spec design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 row T6; acceptance as written there): ring.count over dama
+- `GLASSWALK_MIGRATE_EXACT_EDGES` — Bridge conditions T7 (spec design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 row T7; acceptance as written there): USE ticket (§3): rew
+- `POLLLOOPS_MIGRATE_TO_UNTIL` — Bridge conditions T9 (spec design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 row T9; acceptance as written there): lint_calls.py rule f
+- `FLYERFRAMES_PROVE_JOINT_SESSION` — Bridge conditions T10 (spec design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 row T10; acceptance as written there): flyer flight recor
+- `STEPCALLS_MIGRATE_WHERE_VERDICTS_HOLD` — Migrate the ~255 remaining direct rimworld/step_game_ticks callers onto safe_advance in batches, each batch adopted only if it passes TICKBURST_PROVE_
+- `MURRELITH_FLIGHT_DECIDE_SIX_COATS_ONE_WING` — RM_Murrelith flip-book: 1.6 AlternateGraphic has no flying prefix, so 6 coats share one flight look; pick shared base flip-book or a C# per-coat swap
+- `CONDPROBES_WIDEN_HEDIFF_CELL_WEATHER` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): new capability: probes pawn.hediff(def) (has, severity), cell probes taking a pawn reference (cell 
+- `RINGPROBES_WIDEN_MESSAGES_RING` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): new capability: a Messages source for the owned-cursor rings, ring.count(messages, ...) stopping an
+- `PMECHWALK_DRAIN_BARS_TO_RINGS` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): 7 PyrelandsMechanics walk bars (7 units). Done when all its units run on Lightspeed with no LLM and
+- `ATMOWALK_DRAIN_BARS_TO_WATCHERS` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): 5 AtmosphericBase walk bars (glow / fixture colour / claimant samples) (5 units). Done when all its
+- `SEASWALK_DRAIN_BARS_TO_WATCHERS` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): 3 SeasWaterline walk bars (3 units). Done when all its units run on Lightspeed with no LLM and each
+- `SCRUBWALK_DRAIN_BARS_TO_WATCHERS` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): 2 LeaningScrub walk bars (2 units). Done when all its units run on Lightspeed with no LLM and each 
+- `LIVESTOCKWALK_DRAIN_BAR_TO_WATCHER` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): Livestock bar skarnix_leaves_the_light (1 units). Done when all its units run on Lightspeed with no
+- `CUISINEWALK_DRAIN_BAR_TO_UNTIL` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): Cuisine bar cooked_at_campfire (1 units). Done when all its units run on Lightspeed with no LLM and
+- `ANTIQWALK_DRAIN_BAR_TO_UNTIL` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): Antiquities bar reader_at_station (1 units). Done when all its units run on Lightspeed with no LLM 
+- `GRAFFITIWALK_DRAIN_BAR_TO_UNTIL` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): Graffiti bar mark_actually_appears (1 units). Done when all its units run on Lightspeed with no LLM
+- `CAULDRONWALK_DRAIN_BAR_TO_WEATHER` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): Cauldron bar no_rain_or_snow (1 units). Done when all its units run on Lightspeed with no LLM and e
+- `SWPATCHWALK_DRAIN_BAR_TO_WEATHER` — Adapt to Lightspeed (no LLM; vet_leftovers.md §3): StarWarsPatches bar desert_sandstorms (1 units). Done when all its units run on Lightspeed with no 
+- `LIGHTSPEED_WIDEN_STEVE_TIERS_MISSING_MODS` — Lightspeed rollout #3 (spec §4): per-mod tiers on SteveDesktop carrying the mods its MINIMAL list lacks (sarg.alphaanimals + mlie.starwarsanimalcollec
+- `LIGHTSPEED_REPAIR_STUBS_TOOLS_EXIST_NOW` — Lightspeed rollout #6 (spec §4, vet_leftovers.md §5.4): the 42 'UNMEASURED: live check owed' stubs say no tool exists for reads the bridge now has (co
+- `POLLLOOPS_MIGRATE_THE_OTHER_SEVENTY` — Migrate the remaining advance-read-decide poll loops (AST census 2026-11-06: 75 tick loops, ~57% true polls, plus 82 sleep-and-read loops; draft.md §2
+- `ART_XDELETE_FIX_UNLINK_BEFORE_RECEIPT_TOO` — artledger.x_delete unlinks game slots and store bytes before flushing its live/release/purge events (ban is flushed first); a crash between loses the 
+- `ART_SELFTEST_FIX_LEDGERFIXES_MISSING_SHARD` — selftest_art_ledger_fixes.py CRASHes on HEAD: its fixture runs git add infrastructure/state/art/events/BUILD.jsonl, a path that does not exist (pathsp
+- `TRACE_MKDIR_HARDEN_STAT_OUTLIVES_IT` — known_results.py: the shim does not note mkdir/mkdirat as W, so os.makedirs(p) (stat p absent, then mkdir p) records p as a dir probe it created itsel
+- `FLYERPIN_FIX_DERIVED_ONE_AHEAD_OF_PIN` — selftest_donor_off_w4_verdict and selftest_l1_donor_off_round FAIL: 'flyers: derived 25, pin expects 24 (re-pin after a port)'; l1 also fails 'donor r
+- `TAILSTATE_SHRINK_WHEN_SPOOL_FULL_BLOATS` — telemetry ingest.py Tailer.commit_durable writes vm.points into kv tail_state on every pass with rows; with VM down AND the 2 GB spool refusing, that 
+- `RESTARTREQ_GUARD_RENAME_NO_HARDLINK_RACE` — seat_restart.consume_request: when os.link is unsupported, the exists-then-rename fallback can overwrite a request written between the two calls (GPT 
+- `DDRIVE_NVME_REPAIR_RESEAT_NEXT_SITTING` — Archmagi D: NVMe (Kingston SFYRD4000G, root port 0:6.3) throws WHEA-17 corrected PCIe AER, 3-17/day since 10-26 (ops_watch disk.whea_corrected_24h now
+- `DEWBACK_PIN_FIX_NORTH_REDRAWN_UNDER_IT` — src/RimStarWars/SWBestiary/selftest_dewback_owned.py fails 2 rows: Dewback_north.png no longer matches the pinned set-C sha256 (MAD 255), after 040e27
+- `MODSWAP_FIX_REORDERED_LIST_READS_FOREIGN` — modset_builder.take_before_copy refuses every tier swap when the live ModsConfig holds the before-copy's exact active-mod set merely reordered (md5 di
+- `BRIDGE_RECONCILE_WIRE_CLOSED_NOT_CURED` — Live proofs still die on rimbridge_client IndeterminateError ('earlier mutating call(s) have an UNKNOWN outcome'): 9 of the last 40 Relentless live ru
+- `DRIVERSITE_FIX_HIVE_HALTS_TWO_MAPS` — northstar_driver never clears hostile hives; a mid-chain Hive halts Cauldron water and Forge voices bars
+- `PROVEGRAVSHIP_FIX_PIPES_FOR_ABSENT_VGE` — prove_gravship.py setup lays VGE_AstrofuelPipe, a Vanilla Gravship Expanded def; the relentless live game loads no VGE, so the pipe build fails and ev
+- `CONFIGERRORS_FIX_THREE_LEFTOVER_CLASSES` — Config errors left on every full-list load after the wildGroupSize fix (384d33cecd): duplicate thingCategory on RM_AncientStasisLocker_*, RSW_RakatanS
+- `SHEETSAID_DECIDE_769_TAGS_HE_NEVER_TYPED` — Art ledger: ~769 owner events hold agent sheet-pick tags in said ('reject+purge on sheet <stem>', '(sheet decisions)', '✕ on the facings needs-eyes sh
+- `FLYERMASTER_VET_OWNER_SHEETS_UNREAD` — art_eval runner.accepted_masters picks a flyer's wing-layer derive_from master from decisions.jsonl only: an owner sheet ruling or art.py enact that d
+- `ACCOUNTPLAN_FIX_UNDOES_SWITCH_IN_FOUR_MIN` — account plan undoes an owner-ordered account switch: 11:26 use lukas reverted at 11:30:11 by switching_plan order; HOLD file set as a brake, plan stay
+- `BEER_DIAGNOSE_NON_DRUG_3200_LOG_ERRORS` — Full-list session ee0fbaa8 logged 'AllowedToTakeScheduledEver on non-drug Beer' 3200x during the first two RM_TestSite_calm_v2 loads (1515 and 1685), 
+- `GNAWTREE_FIX_JOBDRIVER_NRE_SEEN_TWICE` — Session ee0fbaa8: 'Exception in JobDriver tick for pawn RM_Krannock#' NRE 2x, driver RM_JobDriver_GnawTreeBase (EnvironmentalHazards) toilIndex=1, in 
+- `CHUNKS_FIX_SAVE_ERRORS_NOT_DEAD_NAMES` — Full-list session ee0fbaa8 logged 'Tried loading non-compressible thing as compressed thing' 3408x for ChunkMarble/ChunkLimestone/ChunkSlate (1738 per
+- `MIRRELBOLE_FIX_TICK_NRE_THIRTY_FIVE_TIMES` — Session ee0fbaa8: 'Exception ticking RM_Mirrelbole#' NRE 35x: RegionAndRoomQuery.RegionAt <- PlantUtility.GrowthSeasonNow <- Plant.TickLong, with mand
+- `PAWNTWEENER_DIAGNOSE_ROOT_NRE_ON_HOSE_SAVE` — Session ee0fbaa8: 'Root level exception in Update()' NRE 100x from log line 36595, on the RM_fw_hose_proof_20261106122151 load: Verse.PawnTweener.Twee
+- `CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD` — Config errors outside CONFIGERRORS_FIX_THREE_LEFTOVER_CLASSES, seen by check_config_errors.py on the 2026-11-06 Player-prev.log: OuterRim_Beskar deepC
+- `EVIDENCE_METRICS_WIRE_ONE_ROW_EVER` — Give evidence_metrics.py record a daily caller; the owner's record has one row
+- `PLANTCOMPS_FIX_SIBLINGS_DIE_IN_OWN_TICK` — Three more plant comps destroy their own plant inside CompTickLong, the same NRE as the mirrelbole (vanilla Plant.TickLong reads base.Map after base.T
+- `FIXTURES_FIX_REST_STILL_COMPRESSED` — cauldron_v2, contagion_v1, leaningscrub_v2, river_v1 and Pyrelands calm2 (registry save names) still hold compressed things (1565, 1409, 1483, 1221, 5
+- `HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE` — The full list retains about 59 MB per reload of one save (floors 3024 to 3321 over 5 loads, session ee0fbaa8) against 8 MB on 14 mods (871ad37b); rela
+- `HOOKS_SCANGUARD_WIDEN_FOUR_SIBLINGS_SLIP` — block_blind_scan misses bash -lc, a background &, a subshell and $(...)
+- `HEAP_READ_BISECT_ROWS_NAME_THE_RETAINERS` — Once HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE's six live proofs have run, collect their HEAP_ROW lines (testq done records for A1-A5 at /mnt/d/ClaudeW
+- `SCRATCH_REAP_FIX_ROUND_TEN_STILL_FINDS` — scratch_reap.py Codex round 4: transient units, template specifiers, path_forms memory
+- `SOORRAK_REPAIR_EAST_TIP_SHEARS_NEAR_LEGS` — RM_Soorrak east frame 3: lowest wing tip shears into a thin hook, tip sits within falloff 120 of the legs so it rotates less than the wing; falloff 70
+- `WARSCAR_REWIRE_SCARLANDS_KIT_TWIN_GONE` — Decide whether RM_Warscar runs the four wirings only the deleted Scarlands twin carried, then delete the orphan RUT_ defs and world faces the twins le
+- `CANON_GAPFILL_FIX_SLOT_TRUSTS_THE_TITLE` — canon_gapfill labels a Legends page CANON when its title has no /Legends suffix
+- `GRAFFITI_STARWARS_RESKIN_NOT_ONE_TERRAN_TAG` — Second Artisan loop in the Graffiti series: the Star Wars layer replaces the standard graffiti art with in-world versions; not started, follows Graffi
+- `SACRED_GRAFFITI_FINISH_NINE_GODS_WAIT_TURN` — Third Artisan loop in the Graffiti series: Utinni takes over Sacred Graffiti, Jawa marks and the Nine Gods; not started, follows the Star Wars loop
+- `EMPIRE_SPLIT_DEPLOY_WAITS_FOR_FREE_GAME` — Deploy the split Empire patch (mandrake.rsw.patches and mandrake.rut.patches, pruning the old Utinni files) when the loops free the game, then read ba
+- `LUMINOUS_GRAFFITI_BUILD_SHIMMER_THAT_STAYS` — Luminous Pigments makes graffiti luminous, shimmering, more beautiful and permanent; future, after Graffiti lands; check 'permanent' against the rulin
+- `RIMMASTER_TRIAGE_MOD_OWED_CENSUS_120_STILL_UNREAD` — Finish the mod-owed census: triage the 120 queue items whose cited files changed since filing
+- `RIMMASTER_FIX_PORG_WINGS_RIP_BELLY_ACCEPTED_FROM_STILLS` — Porg live flip-book carries belly away with its wings; accepted from stills, terrifying in motion
+- `RIMMASTER_AUDIT_CUTOUT_EASTS_THIRTEEN_SHARE_SQUASH_NOISE` — Thirteen other cut-out flyer sets have east poses under |sy| 0.5, the recipe behind FireHawk's static noise
+- `RIMMASTER_TEACH_FLYER_JUDGE_PARTS_SHEET_STILLS_MISSED_IT` — Art-eval flyer module: give judges the parts sheet and the C5a checks, severity codes, regress
+- `RIMMASTER_WEIGH_POCOCK_SKILLS_TRIAL_BEFORE_INSTALL` — Assess mattpocock/skills design skills into mattpocock_design_suggestions.md, then a deep design pass on where they help RimMandrake and Artisan's cod
+- `RIMMASTER_GUARD_WRECKED_LINKS_STATIC_LIST_TRIPS_RATCHET` — selftest_static_game_state is red: RM_WreckedLinksProof.cs:15 holds a static List<Thing> per-game state; move it to a Map/GameComponent or guard it on
+- `RIMMASTER_RESTORE_HOURLY_INSTALL_TIMER_PILE_GREW_UNSEEN` — Restore an hourly install of finished art renders (rm-donor-regen-install.timer is gone, last collect 2026-11-03; 61 finished renders sat up to 12.5 d
+- `RIMMASTER_FIX_SOUTH_DRAWS_FRONT_SAID_MANY_TIMES` — More south draws in front, game-wide: pawns among pawns, buildings among buildings, plants (MandrakePatches SouthDrawsFront)
+- `RIMMASTER_SETTLE_ART_BRIEFS_V2_TWO_CAME_BACK_EMPTY` — 9 art-eval briefs (RM_Chellow..SWPotF ysalamir) sit uncommitted in the bench clone as a departures@v2 regeneration dated 2026-11-05; RM_Wuum (0 depart
+- `RIMMASTER_DESIGN_PHONE_ALERTS_THAT_ACTUALLY_RING` — Phone alerts that actually ring: Pushover primary, Todoist urgent backup, outside watchdog; design at D:\ClaudeWork\rimmandrake\conductor\phone_alerts
+- `RIMMASTER_TRACE_FULL_LIST_LOG_CRUD_SIX_OFFENDERS` — Owner asked what generates the crud in the full list log. Attribution in D:\ClaudeWork\rimmandrake\logspam\REPORT.md (logs ee0fbaa8, e50b27df). Follow
+- `RIMMASTER_RUN_CODEX_DESIGNER_TO_QUESTIONS_23_MODS` — Codex Designer dry runs (stages 0-1) on 22 Baroque biomes + AtmosphericBase: outputs in D:\ClaudeWork\rimmandrake\designer_codex\<Mod>\; commit them t
+- `RIMMANDRAKE_KEEP_HUGETHINGS_WARNED_EDGE_WHEN_WALLED` — Keep the warned approach on the same side when walled off; titan breaks through under normal wall/rock rules, and thick rock may hold (answer 6).
+- `RIMMANDRAKE_RETIRE_ROT_DONOR_SLOT_COPIES_ELEVEN_SHADOWED` — Retire the never-drawn donor-slot texture copies of 11 Rot ports (AgariluxPrime pattern)
+- `RIMMANDRAKE_FIX_GIVEQUEST_DEFS_TWO_SILENT_LOAD_TRAPS` — KyberTradePlot quests: defaultChallengeRating on non-root quests (load config error); 11 RUT GiveQuest incidents keep World target (refused by storyte
+- `RIMMANDRAKE_FIX_SLOT_SCAN_BLIND_TO_TEXPATH_PATCHES` — art_sheet IN GAME column shows the unpatched base texPath for patch-repointed defs (scan_def_slots ignores patches)
+- `RIMMANDRAKE_HARDEN_ARC_LINT_PARAPHRASE_WALKS_PAST` — cathedral_arc_lint matches word patterns only: a paraphrased attribution passes ('The great machine beneath the dunes asks this of you.' --stage 2 -> 
+- `RIMMANDRAKE_RESTORE_SEEPWAX_SOURCE_LOST_IN_TIER_MOVE` — RM_ThrummelSeepwax has no source since the Sump tier move deleted its RosterSource patch, so the weak tar solvent is uncraftable
+- `RIMMANDRAKE_FIX_JAWABENCH_AWARENESS_INSTALL_CRASHES_START` — JawaBench awareness install crashes game start on 2 of 4 launches
+- `RIMMANDRAKE_PAINT_SHIP_GIFTS_OWN_ART` — The 14 biome ship gifts still on stand-in art get their own textures
+- `RIMMANDRAKE_SLOW_RAIN_FILL_PIT_BRIMS_IN_ONE_NIGHT` — Rain fills a 4 m open pit to the brim in one night (~0.5 m/h); the prisoner swims out
+- `RIMMANDRAKE_SCRUB_STEEL_LADDER_KEY_MAGENTA_FRINGE` — Steel fire-escape ladder E/W sprites carry near-invisible key-magenta fringe pixels (v5 side_from_north Lanczos ringing)
+- `RIMMANDRAKE_FIX_TICKBENCH_WSL_PATHS_UNDER_PYTHONEXE` — tickburst_bench.py out_root and tickburst_step.evidence_adoption_path ran ~/dev/Lodestar/bin/lib/agent_storage.py, absent under python.exe on SteveDes
+- `RIMMANDRAKE_REPAIR_FRAME_HIST_READS_THREE_WAYS_WRONG` — jawa/health tps.frame-hist: (1) the session/merged JSON string is malformed (the slow array is never closed before p50RangeMs), so json.loads fails; (
+- `RIMMANDRAKE_SHADE_GATE_SHADOW_SPILLS_OUT_OF_THE_PIT` — A sluice or grate standing on a pit floor casts its full static sun shadow across the pit and onto the bank, unchanged when the gate is mostly under l
+- `RIMMANDRAKE_FIX_LIP_COVER_STRIPES_A_SWIMMER` — A colonist standing in a 4 m pit holding 2.5 m of water was drawn as a dark striped staircase block (the near-lip cover pieces in the wrong material) 
+- `RIMMANDRAKE_ALIGN_FILL_GRID_LAGS_TRUE_BRIM` — A pit can read fill grid 3 with a true level of 4.00 notches (EWA_SUBMERGE_REVIEW_20261112, 113,104): the wall faces (drawn from the fill grid) then s
+- `RIMMANDRAKE_DRAW_PIT_CONTENTS_STANDING_ON_THEIR_BOTTOM` — Every object in a liquid stands on its bottom: a split line rises up it by its drawn size until it is under; clear liquids show the lower part through
+- `RIMMANDRAKE_REMOVE_FILL_STEPS_EXACT_WATER_ONLY_EVERYWHERE` — Water is stored and spoken only as true height / true decilitres; delete every whole-step fill N for water in code, bridge tools, readouts and tests; 
+- `RIMMANDRAKE_DESIGN_NATURAL_WATER_AS_PITS_NOT_FLAT_PONDS` — Redesign with the owner how FlowWorks handles large natural bodies: at map load they become real pits with a bottom altitude map, filled to match, kee
+- `RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS` — Every refusal by a judge or gate carries detail equal to the evidence, an attainable path to pass and an assessment of the acceptance criteria; flawed
+- `RIMMANDRAKE_KEY_TESTQ_SKIP_CACHE_ON_INPUTS` — T7 piecemeal revalidation: testq skip-when-unchanged cache keyed (line, criterion hash, inputs hash, build) and lines declare inputs. Done = the cache
+- `RIMMANDRAKE_PREPARE_FIRST_LOOK_MATRIX_SAVEGAME` — First-human-look savegame standard: merge the review map rulebook with matrix scenes (one prepared cell replicated over the variables, labelled) into 
+- `RIMMANDRAKE_PREFLIGHT_TICKETS_BEFORE_ANY_TOKEN_IS_SPENT` — A deterministic Python preflight checks everything checkable about a ticket (files, paths, defs, races real and expected on the named mod list; accept
+- `RIMMANDRAKE_STORE_TEXT_WHOLE_FINISH_LEFTOVERS` — Finish the no-cuts sweep: 12 sites in the T1-T3 files, the 2-digit pass, reviews owed
+- `RIMMANDRAKE_UNHANG_ARTPIPE_STATE_FIND` — python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find swale hung past 60 s (timeout exit 124) on 2026-11-12 in the bench clone
+- `RIMMANDRAKE_COVER_BOOKS_UNDER_LIQUID_NOVEL_READS_THROUGH_TAR` — Books (class Book) draw crisp under liquid. Live 2026-11-12: Novel at 82,100 in BP6 (1.5 m tar) draws fully crisp; ProofSubmerge there reads kind=item
+- `RIMMANDRAKE_FIX_MOD_SETTINGS_FIELD_STATIC_CLASS_TRAP` — jawa/mod_settings_field throws on a static settings class. Live 2026-11-12: typeName=RimMandrake.FlowWorks.Sheet.RM_SheetSettings field=sheetOverflowE
+- `RIMMANDRAKE_CLEAN_NIGHTLY_SWEEP_ONCE_THEN_RED_RINGS` — One clean-up of the always-red nightly sweep (RED 29 of 29 nights; 44 reds on 2026-11-12: 26 repo-wide guards broken by unrelated commits, 8 stale fix
+- `RIMMANDRAKE_RECOUNT_INVENTORY_KERNELS_ONE_FILTER_THREE_ANSWERS` — validation_inventory_2026-11-12.md quotes kernel/fuzz counts from three different filters (§0: 72 ran, 71 passed; table row: 81 PASS, 1 UNMEASURED; a 
+- `RIMMANDRAKE_CORRECT_INVENTORY_SKIPPED_MEANS_TIER_NOT_CACHE` — validation_inventory_2026-11-12.md §2 defines SKIPPED as 'skipped on unchanged evidence', but the 3 SKIPPED of 2026-11-12 are deployed-tier tests not 
+- `RIMMANDRAKE_RECOUNT_NEVER_BUILT_ONE_SAID_THREE_LISTED` — validation_inventory_2026-11-12.md §0 counts 1 designed-never-built scheme while §4 lists the shared in-game scene runner and the bridge validation ob
+- `RIMMANDRAKE_REWORD_STOPPED_A_FREEZE_IS_NOT_A_PAUSE` — validation_inventory_2026-11-12.md labels three schemes 'STOPPED with Relentless on 2026-11-06', mixing the 2026-11-06 freeze card (no new machinery) 
+- `RIMMANDRAKE_REFUSE_OWNER_DEFECT_CLOSE_WITHOUT_REGRESSION` — rimflow close refuses an owner-reported defect without --regression <path::row> or --no-regression "<reason>". Acceptance test: in the item's first no
+- `RIMMANDRAKE_REFILE_TWILIGHTSEA_COMMISSION_THREE_YOUNG_COLOCLAWS` — Extra-art commission: RM_TwilightSea owes 3 RSW_ColoClawFish young jobs (east/north/south); rerun plan and refile the biome (queues art). Parked on th
+- `RIMMANDRAKE_CLEAR_DEAD_STANDINS_AND_REFIT_MORAVATHA_PACK` — Art drift: 4 dead shadowed stand-ins under src, and RM_Moravatha north pack overlay no longer matches pack_overlay_fit.render(). Parked on the known-r
+- `RIMMANDRAKE_FIX_METAL_EATER_HUNGER_JOB_EXPECTATIONS` — metal_eater: a hungry RM_Khorrak beside Steel gets no RM_EatMetal job, and a fed one still seeks metal. Parked on the known-red list by the nightly cl
+- `RIMMANDRAKE_RECONCILE_RESEARCHRETAG_WORKSHOP_TREE_WITH_DUMP` — ResearchRetag: RM_WM_AlloyForgeRestoration and RM_WM_PlasteelAlloying patch says RUT_Tree_Workshop, the raw dump has Main. Parked on the known-red lis
+- `RIMMANDRAKE_LIST_MOVED_PINS_IN_LOOK_NOTES` — Rule 2e tooling: the notes of his next look list EVERY pinned line (a pass he gave, stored with its value) whose value a fix moved, old beside new, an
+- `RIMMANDRAKE_LABEL_CHANGED_SINCE_LAST_LOOK_IN_REVIEW_SAVES` — Rule 2f tooling: a review save's builder labels every cell whose inputs changed since his last look 'changed since your last look', so each objection 
+- `RIMMANDRAKE_INGEST_HELD_LOOK_DEFECTS_WHEN_LADDER_REGENERATED` — Ingest the held owner-look defects into the regenerated validation ladder, where and how each belongs, then empty the holding store. Acceptance test: 
+- `RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS` — Explosive Knockback: absorb Extra Explosion Effects' idea, our own blast flecks, smoke, debris and big-blast shockwave
+- `RIMMANDRAKE_ROUTE_TESTQ_PROOF_BUILD_JOBS_TO_STEVE` — Test queue: a proof-build job route (build -p:RmProofs=true and deploy it on SteveDesktop); Explosive Knockback's live scenes cannot run without it
+- `RIMMANDRAKE_ANIMATE_POUR_SPILL_SHEET_ARRIVES_ALL_AT_ONCE` — A dev overflow pour lays its whole spill at tick 0: no bulge, nothing to watch move
+- `RIMMANDRAKE_RECONCILE_SHADOW_JUDGE_WITH_TINT_SHEET_130_RED` — Floor shadows under water stay at the dry alpha 0.3: the regression judge says FAIL and the look shows dark patches
+- `RIMMANDRAKE_EXPLAIN_BRIM_POUR_LITRES_WITH_NOWHERE_TO_GO` — An overflow pour reports litres with 'nowhere to go' on open ground
+- `RIMMANDRAKE_REFRESH_LABEL_FADE_AFTER_SET_LEVEL_SEVEN_BRIGHT` — After SetLevel lowered a pit, 7 labels read full brightness over drowned things
+- `RIMMANDRAKE_CHECK_SHOOTING_RULE_OFF_PICKS_FARTHER_PIT_FOE` — Superdeep shooting rule OFF: the shooter picks a farther target than the nearer pit enemy; MOD or expectation unknown
+- `RIMMANDRAKE_RESEAT_HEEMIN_FACINGS_DROPS_WHEN_IT_TURNS` — RM_Heemin (Things/Pawn/Animal/RM_Heemin/RM_Heemin) breaks the facing truth (same size from every side, no hop on turning): severity 0.238, plan serpen
+- `RIMMANDRAKE_RESCALE_HARVESTER_FACINGS_TALLER_FROM_BEHIND` — RUT_HorrorHarvester (RimUtinni/UtinniPatches/NightHorrors/Harvester/Harvester) breaks the facing truth (same size from every side, no hop on turning):
+- `RIMMANDRAKE_RESCALE_SKERREL_FACINGS_WINGS_SPREAD_TOO_BIG` — RM_Skerrel (Things/Pawn/Animal/RM_Skerrel/RM_Skerrel) breaks the facing truth (same size from every side, no hop on turning): severity 0.173, plan ins
+- `RIMMANDRAKE_RESEAT_VIZHIK_FACINGS_SINKS_WHEN_FACING_YOU` — RM_Vizhik (Things/Pawn/Animal/RM_Vizhik/RM_Vizhik) breaks the facing truth (same size from every side, no hop on turning): severity 0.168, plan serpen
+- `RIMMANDRAKE_RESEAT_MURRIN_FACINGS_BATCH_ACCEPT_DROPPED_IT` — RM_Murrin (Things/Pawn/Animal/RM_Murrin/RM_Murrin) breaks the facing truth (same size from every side, no hop on turning): severity 0.164, plan serpen
+- `RIMMANDRAKE_RESEAT_DRAZZIK_NORTH_THIRTEEN_PERCENT_DROP` — RM_Drazzik (Things/Pawn/Animal/RM_Drazzik/RM_Drazzik) breaks the facing truth (same size from every side, no hop on turning): severity 0.133, plan qua
+- `RIMMANDRAKE_RESEAT_MYNOCK_FACINGS_SINCE_GRAPHIC_MULTI_SWAP` — RSW_Mynock (RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock) breaks the facing truth (same size from every side, no hop on turning): severity 0.125, p
+- `RIMMANDRAKE_REDRAW_NEEBRAY_NORTH_TOO_SMALL_TO_STRETCH` — RSW_Neebray (swanimals/Neebray/Neebray) breaks the facing truth (same size from every side, no hop on turning): severity 0.112, plan flyer; north: reg
+- `RIMMANDRAKE_RESEAT_TARRUQ_NORTH_TEN_PERCENT_DROP` — RM_Tarruq (Things/Pawn/Animal/Monkey/RM_Tarruq/RM_Tarruq) breaks the facing truth (same size from every side, no hop on turning): severity 0.105, plan
+- `RIMMANDRAKE_REDRAW_FANBACK_V_C_NORTH_AUTO_ACCEPTED_SMALL` — RSW_Fanback (swanimals/Fanback/FanbackV_C) breaks the facing truth (same size from every side, no hop on turning): severity 0.105, plan quadruped; nor
+- `RIMMANDRAKE_RESEAT_BRATHEK_NORTH_BATCH_ACCEPT_DROPPED_IT` — RM_Brathek (Things/Pawn/Animal/RM_Brathek/RM_Brathek) breaks the facing truth (same size from every side, no hop on turning): severity 0.102, plan ser
+- `RIMMANDRAKE_RESEAT_BULWARK_NORTH_SEVEN_PERCENT_HOP` — RUT_HorrorBroodLord (RimUtinni/UtinniPatches/NightHorrors/Bulwark/Bulwark) breaks the facing truth (same size from every side, no hop on turning): sev
+- `RIMMANDRAKE_RESEAT_DROMMATH_NORTH_OLDEST_OF_SIXTEEN_FLAGS` — RM_Drommath (Things/Pawn/Animal/RM_Drommath/RM_Drommath) breaks the facing truth (same size from every side, no hop on turning): severity 0.047, plan 
+- `RIMMANDRAKE_RESEAT_MIRRIK_NORTH_RISES_WHEN_IT_TURNS` — RM_Mirrik (Things/Pawn/Animal/Spelopede/RM_Mirrik/RM_Mirrik) breaks the facing truth (same size from every side, no hop on turning): severity 0.047, p
+- `RIMMANDRAKE_RESEAT_PROWLER_NORTH_JUST_PAST_TOLERANCE` — RUT_HorrorProwler (RimUtinni/UtinniPatches/NightHorrors/Prowler/Prowler) breaks the facing truth (same size from every side, no hop on turning): sever
+- `RIMMANDRAKE_RESEAT_VHAKK_NORTH_SMALLEST_OF_SIXTEEN_HOPS` — RM_Vhakk (Things/Pawn/Animal/RM_Vhakk/RM_Vhakk) breaks the facing truth (same size from every side, no hop on turning): severity 0.035, plan quadruped
+- `RIMMANDRAKE_HARDEN_FAST_WATER_SOLVERS_VIA_GPT_PIPES_RING` — Send MandrakeModels water code + results to GPT for clever fixes (oscillation in pipes and other fast solvers, boundary conditions), skeptical review 
+- `RIMMANDRAKE_RESCUE_STRANDED_CONDUCTOR_CLOUDFLARE_SAID_LOGIN` — Conductor window sat 7 h 50 m on '403 Attention Required | Cloudflare' (labelled authentication_failed / 'Please run /login') from 01:48:59 PST 2026-1
+- `RIMMANDRAKE_DESIGN_MELEE_SHOVE_INTO_PIT_CONTEST_FLOWWORKS` — FlowWorks: a melee 'shove into pit' — one pawn shoves another into an open pit as a contest of both masses and both melee skills / agility (dodge)
+- `RIMMANDRAKE_BUILD_PYRE_SMOKE_WEATHER_ONLY_LONGSHADE_HAS_ONE` — Pyrelands has no choking-smoke weather; owner: it comes as its own weather
+- `RIMMANDRAKE_BUILD_BLACK_RAIN_FILLS_MOATS_TANKS_STAY_DRY` — Black rain fills no moat or tank; owner: a rare chance to fill both
+- `RIMMANDRAKE_BUILD_DEEP_TRIBES_TRADE_CODE_SAYS_NO_TRADE` — Deep Tribes offer no trade and no share rule; owner: trade, leave their share
+- `RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION` — FlowWorks dig interface: design one consolidated UI for dig, fill, repair and the rest
+- `RIMMANDRAKE_ALLOW_SHARED_INTERACTION_SPOTS_TWO_BENCHES_ONE_STOOL` — Let two benches share one interaction spot: patch vanilla PlaceWorker_PreventInteractionSpotOverlap (owner look 2026-11-14 #2; home mod undecided; PRO
+- `RIMMANDRAKE_REBUILD_SWALE_AS_SOAKING_FLOOR_NOT_FURNITURE` — Rebuild RM_Swale as a floor tile that soaks water fast and turns nearby ground to fertile soil, not a Building (owner look 2026-11-14 #4; PROPOSED Con
+- `RIMMANDRAKE_REFUSE_PITS_IN_LOOSE_GROUND_EVEN_BY_BRIDGE` — Refuse digging in sand, mud and loose snow cover on every dig path incl. the bridge drive; pit mouse-over names its original ground (owner look 2026-1
+- `RIMMANDRAKE_SHORT_DROWNED_ELECTRONICS_LIKE_RAIN_DOES` — Short and explode powered electronics under conductive liquid via vanilla ShortCircuitUtility.TryShortCircuitInRain (owner look 2026-11-14 #8; Diverge
+- `RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE` — Designer pass: all game wetness becomes one thin film (DECIDED by owner 12:01 PM); wet mud under drained natural water, wet/dry terrain looks, spilled
+- `RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC` — Explosive Knockback 0.2.0: a thrown pawn's carried thing flies its own trajectory
+- `RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN` — Explosive Knockback 0.2.0: a thrown pawn landing on a pawn bruises both, scaled by its weight
+- `RIMMANDRAKE_MATCH_FLYER_SIZE_TO_STANDING` — Flyers fly at their standing size: 15 of 40 flying draw sizes shrink or swell on takeoff (RSW_Uvak to 29%)
+- `RIMMANDRAKE_SETTLE_DISTURBED_LAKES_STILL_SLOSH_FIFTY_MINUTES_ON` — MandrakeModels C# local-inertial: water disturbed by a dig never falls back asleep (lake 250 after a 24x24 2 m dig: 4/136 blocks asleep at 600 water-s
+- `RIMMANDRAKE_LET_TRAPPED_COLONISTS_CHOP_OUT_PAST_SAPLING_SIZE` — HugeThings: a colonist sealed inside by a giant at growth >= 0.40 (RM_Nogtyl harvestMinGrowth) cannot cut out. Vanilla Designator_PlantsCut refuses a 
+- `RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE` — Graffiti: 12 validated must-show lines no component claims; modcheck refuses every run, 3 INVALIDs on SteveDesktop
+- `RIMMANDRAKE_ADMIT_PIPELINE_TESTS_ONLY_QUEUE_IDLES_BY_RULE` — SteveDesktop queue admits only pipeline tests (spec 18c); a queue empty by rule is settled, never a stall
+- `RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED` — Graffiti: enter the Maturation Pipeline with a Designer first touch (concept folder, Design Version); the mod is built and far along but has no concep
+- `RIMMANDRAKE_WALK_GRAFFITI_LIVED_IN_WALL_WEEKS_NOT_MINUTES` — Graffiti: an agent walks a colony grown over several in-game weeks and brings zoomed shots, mood numbers and keeper saves for the three face scenes
+- `RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT` — Graffiti site preflight checks 6 of 8 settings; social layer can be off unseen
+- `RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES` — Graffiti: script the spree-corridor flagship, wall-loss and lived-in walk scenes
+- `RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE` — Graffiti: script the scene parts the 24 coverage-judge gap fixes name
+- `RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST` — proof_restore_check.py: a proof's static_call Settings with a variable args= (storeroom_pit_proof.py arm(): args=kv) is not seen as a poke: py_poke_ki
+- `RIMMANDRAKE_ANCHOR_CROP_DROWN_DELAY_IN_DAYS_NOT_PULSES` — Polish: inv_overflow_sheet: cropDrownPulses ships 1680 = 7 days at the shipped 250-tick pulse; it is stored in pulses, so moving the pulse slider (60.
+- `RIMMANDRAKE_PIN_MACHINE_RATES_A_TENFOLD_STILL_PASSES` — Polish: inv_converters: planted DEF_STILL_RATE_TENFOLD (RM_LiquidStills.xml 6000 -> 60000 L a day) survived every decider; the rates are marked PROVIS
+- `RIMMANDRAKE_REWORD_GSS_NO_HOSE_BAR_POLES_DRAW_PIPES` — Polish: GSS 0.1.0 no_hose_in_gss: GSS draws FlowWorks pipe-pole spans (AerialLineKind.Pipe, AerialMaterials.PipeMats), owner-sanctioned (pipe poles 'T
+- `RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL` — Graffiti: a paint order whose north wall is removed is painted on the wall's hidden far side (no re-check at the brush)
+- `RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL` — Graffiti live paint paths refuse only edge-on faces and NoWall, never a wall's far side: GraffitiPool.WeightedPick (GraffitiPool.cs:163) checks Paints
+- `RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME` — Admit Contagion into the Maturation Pipeline as the next most mature biome mod (Designer first touch)
+- `RIMMANDRAKE_SCOPE_HEAP_GROWTH_TO_ONE_GAME_SIX_LOADS` — game_health_check.py measures mem.*_growth_mb_per_h from the FIRST game load to the end, so the reload ratchet's per-load steps read as a leak rate: s
+- `RIMMANDRAKE_FINISH_GRAFFITI_AGAINST_TREE_BUILT_BEFORE_IT` — Graffiti (mandrake.rm.graffiti): build and prove to its locked concept tree
+- `RIMMANDRAKE_PROVE_COMPANION_REFUSALS_THE_MINIMAL_LIST_CANNOT` — Live-prove the companion refusals the minimal list could not reach
+- `RIMMANDRAKE_DESIGN_CONTAGION_LIMB_COSTS_FIVE_LIMBS_WAIT` — Contagion Design Version 0.2.0 (Divergent): design, tune and test what a grown limb costs (Pillar Arm, Lash, Eyeburst, Caudal Spring, Bellows, plus li
+- `RIMMANDRAKE_DRAIN_LIVE_RUNS_BEFORE_ACCOUNT_SWITCH_NOT_AFTER` — claude-account use should drain or checkpoint live detached runs before it SIGTERMs every Claude process (the 2026-11-15 ~12:00 PM PST switch killed t
+- `RIMMANDRAKE_FIX_SUNDASH_READ_WEATHER_COVER_HEAT_ALREADY_DOES` — Sun escape (RM_ShadeHop.cs ~line 141, exposure = WithCover(1f, worn cover)) ignores the weather's sun factor that sun heat already applies (RM_MapComp
+- `RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL` — Contagion proof scenes: 24 named scene_<id> entry points in validation.py for every scenes.json scene, each with its asserted start, discriminating co
+- `RIMMANDRAKE_BUILD_CONTAGION_BURN_REFUGE_READS_SHARED_SHADE` — Contagion Burn refuge reads RM_MapComponent_ShadeGrid (roof, cast canopy shade, water) and the exact-cell tree test at RM_ContagionSkyExtension.cs:95 
+- `RIMMANDRAKE_SHOW_CONTAGION_BATCH_ODDS_BEFORE_THE_STAB` — Contagion gestation: show the batch odds (normal 2-4 natural parts, Monstrous one of five limbs, the miss outcome) in the existing inspect or job text
+- `RIMMANDRAKE_BUILD_CONTAGION_PREBURN_DIVE_NATIVES_LEAVE_FIRST` — Contagion pre-Burn Dive: during the tells window UV-shy natives seek shade and sun lovers come out, before the Burn lands; a Mod Settings switch. Acce
+- `RIMMANDRAKE_BUILD_CONTAGION_BODYPRINTS_SKIN_BEFORE_PRINT` — Contagion Bodyprints: corpse -> collapsed skin -> lasting anatomical print, a Bloody Mess physically eats the skin, the final print is sampleable; a M
+- `RIMMANDRAKE_MEND_GRAFFITI_SHIPCHECK_STALE_LABEL_BLIND_BUNDLE` — Graffiti ship_check: art clause blind to AssetBundle textures, settings clause stale
+- `RIMMANDRAKE_REVIEW_GRAFFITI_SOURCE_THIRTY_SEVEN_FILES_DIRTY` — Graffiti: 37 mod files not CLEAN by code review (Stage 3)
+- `RIMMANDRAKE_RESET_GRAFFITI_MESSAGE_COUNTERS_EACH_GAME` — Graffiti: build offline test T_MSG_COUNTERS_RESET (social message counters 0 at new game)
+- `RIMMANDRAKE_PROVE_GRAFFITI_MARKS_RELOAD_AFTER_IDEO_LOST` — Graffiti: build live test H1_IDEO_RELOAD (save reloads clean after ideoligion removed)
+- `RIMMANDRAKE_JUDGE_FLOWWORKS_REVIEW_SAVE_FOUR_LOOK_QUESTIONS` — FlowWorks review save: four look questions for a judge or his walk (visit 1)
+- `RIMMANDRAKE_PAINT_GRAFFITI_ROOFED_TWIN_RANDOM_ENEMY_WONT_DO` — Graffiti: a probe that paints the raid's own faction a roofed twin mark (sc_weathered_raid_mark's start)
+- `RIMMANDRAKE_PROBE_GRAFFITI_CLEAN_BREAK_GATE_FORCE_SKIPS_IT` — Graffiti: a probe that reads the cleaning break's gate (forcing skips it)
+- `RIMMANDRAKE_PROBE_GRAFFITI_BREACH_PICK_HOOK_NEVER_READ_LIVE` — Graffiti: a probe reading FindBuildingToBreach's pick and a breaching lord's target
+- `RIMMANDRAKE_PROBE_GRAFFITI_IDEO_REMOVAL_NO_TOOL_DELETES_ONE` — Graffiti: a probe removing the colony's ideoligion for H1_IDEO_RELOAD
+- `RIMMANDRAKE_PROBE_GRAFFITI_MARK_VARIANT_SAVED_BUT_UNREAD` — Graffiti: Marks probe prints each mark's variant for the reload check
+- `RIMMANDRAKE_PROBE_GRAFFITI_POOL_PICK_UNREADABLE_AT_A_CELL` — Graffiti: a probe for GraffitiPool's pick at a cell (three scene controls read MISSING TOOL)
+- `RIMMANDRAKE_FINISH_PYRELANDS_AGAINST_TREE_FURNACE_GREW_TO_NINE` — Pyrelands (mandrake.rm.pyrelands): build and prove to its locked concept tree
+- `RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF` — LeaningScrub enters the pipeline at the Designer, run on Codex (first proof of the Codex Designer)
+- `RIMMANDRAKE_ADMIT_FEVERWOOD_DESIGNER_ON_CODEX_DRAFT_IN_HAND` — FeverWood enters the pipeline at the Designer, run on Codex, seeded with its lane-E draft
+- `RIMMANDRAKE_ADMIT_CAULDRON_DESIGNER_ON_CODEX_RANKED_SECOND` — Cauldron enters the pipeline at the Designer, run on Codex
+- `RIMMANDRAKE_ADMIT_STILLSAND_DESIGNER_ON_CODEX_DRAFT_LEFT_UNREAD` — Stillsand enters the pipeline at the Designer, run on Codex
+- `RIMMANDRAKE_ADMIT_GELATINOUSSLIME_DESIGNER_ON_CODEX_FOURTH` — GelatinousSlime enters the pipeline at the Designer, run on Codex
+- `RIMMANDRAKE_APPLY_FACING_RESCALE_NOT_REGEN_FOUR_ALL_TALL` — art_eval: a facing-truth FLAG whose fixes are all rescale/reseat should apply facing_scale_lint.rescale and judge the result, not burn a REGEN round
+- `RIMMANDRAKE_WATCH_NEXT_DESIGNER_STOP_BLOCK_PROVEN_OUTSIDE_FIRST` — Live half of guard RESULT_BEFORE_EXIT (A4): the next Dispatcher-launched Designer (Claude) stage run that tries to end without result.json shows the h
+- `RIMMANDRAKE_WATCH_FIRST_PROGRAM_CLOSE_NO_CONCEPT_AT_FIVE` — Watch the first real stage-5 run closed by program (live half of the stage-five-by-program guard)
+- `SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY` — LeaningScrub: implement route observation, scoped-order controls and real saved-colony/reordered journey acceptance
+- `SCRUB_PROVE_VINE_FORMS_AND_CRAFT` — LeaningScrub: implement complete vine, claim-migration and useful premium fuel proof scenes with exact recovery
+- `SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS` — LeaningScrub: implement independent ecology, tree products and owner-attended motion acceptance scenes
+- `SCRUB_PROVE_WIND_FIRE_AND_RITUAL` — LeaningScrub: implement wind, evidence observation, base-herd and actual ritual proof scenes
+- `SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY` — LeaningScrub: implement common recovery/log/tier harness, complete settings, technology, aliases and floor proof scenes
+- `RIMMANDRAKE_CUTOVER_PILOT_MODS_TO_LEDGER_SAME_DAY` — Cut the three pilot mods over to their mod ledgers, old stores archived, writers redirected
+- `RIMMANDRAKE_KILL_LIVE_HOLDER_RESUME_AFTER_FIRST_SESSION` — Live half: kill a real resumed EK holder run; the next launch reconciles and resumes
+- `FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY` — FeverWood: independent state observations and recoverable proof scenes
+- `FEVERWOOD_BRANCH_MUD_AND_LIVING_WOOD` — FeverWood: prove branch work and deliver the documented mud and living galleries
+- `FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS` — FeverWood: reconcile pool memory, shared strikes, warnings and adult quiet
+- `FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN` — FeverWood: delayed pool establishment and complete captive return journeys
+- `FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS` — FeverWood: real living bait, separated fronts and generated hive journeys
+- `FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS` — FeverWood: functional crown ecology and normal oil harvest and ignition
+- `FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR` — FeverWood: supported composition, settings, geometry heat and floor checkout
+- `RIMMANDRAKE_FIX_MINER_JUDGE_FAILED_SLACK_EIGHT_OF_TWENTY` — Fix the ticket miner along the independent judge's path to pass (verdict D:\ClaudeWork\rimmandrake\conductor\mining_samples\GimmeSomeSlack.judge.json:
+- `RIMMANDRAKE_DRAW_CONTAGION_FLIPBOOKS_TWO_FLYERS_HALF_DRAWN` — Contagion: Blisterfloat and Gorekite need whole-body flying flip-books (Skinflap and Sparkleech have them)
+- `RIMMANDRAKE_VETO_DUPLICATE_PICKUP_ACROSS_SEALED_PIT_DROPS_HAUL` — FlowWorks: vanilla's duplicate pickup retargets a haul at a stack in a sealed pit (raised ladder) within 8 cells; the path errors, the carried stack i
+- `RIMMANDRAKE_BUILD_CONTAGION_REPULSOR_WARNING_NAMES_WHOLE_MAP` — Contagion Repulsor whole-map warning before warmup (approved per d_efa_q04; CompCloudRepulsor.cs has no warning or confirm text, measured 2026-11-16 b
+- `RIMMANDRAKE_BUILD_CONTAGION_TOUCHED_TRANSITION_MESSAGE_SENT_ONCE` — Contagion-touched: one transition message when the progression reaches active change (RM_ContagionTouched.cs sends only the 'Contagion mutation:' lett
+- `RIMMANDRAKE_RETIRE_CONTAGION_BIOME_SCORER_WORLD_IS_FROZEN` — Contagion legacy_placement_worker (scope out by the no-worldgen ruling): RM_BiomeWorker_Contagion.GetScore returns baseScore at the shipped biomeRarit
+- `RIMMANDRAKE_KILL_GSS_ORPHAN_SELFTEST_HOLDING_BUILD_LOCK` — Polish (GSS 0.1.0 blind cycle 6): an orphaned SelfTest dotnet.exe locks the staging DLL; next offline run goes red
+- `STILLSAND_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER` — Implement Stillsand stage-3 script scenes with asserted starts, discriminating controls, honest observers and exact interrupted-state recovery
+- `STILLSAND_PREY_SELECTION_EXCLUDES_WATER_RANKING` — Replace rejected Stillsand water-ranked prey selection while preserving giant hunt, physical eligibility, droid immunity and wet-thumper draw
+- `CAULDRON_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER` — Implement Cauldron acceptance entry points, causal controls and recovery
+- `CAULDRON_METAL_PERSIST_MEDICAL_PURGE` — Make Cauldron metal load persist until normal advanced medical purge
+- `CAULDRON_ACID_ENDURING_PART_INJURIES` — Establish and complete Cauldron acid disfigurement and sensory persistence
+- `CAULDRON_FALTER_MATCH_RULED_HOUR` — Reconcile Cauldron falter with the ruled one-hour warning
+- `CAULDRON_FULL_SEAL_AMBIENT_PROTECTION` — Make full Cauldron sealing protect the worker on both ambient routes
+- `CAULDRON_SITE_POOL_IDENTITY_THROUGH_USE` — Measure Cauldron site pool chemistry and preserve it through transfer
+- `CAULDRON_GAS_RELOAD_AND_SEALED_BOUNDARIES` — Preserve active Cauldron combustion on reload and contain sealed boundaries
+- `GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER` — Implement GelatinousSlime normal-action scenes, controls and exact recovery
+- `GELATINOUSSLIME_ARCHIVE_LAST_TOUCH_AND_SINGLE_RETURN` — Reconcile last-touch archive fidelity, paid growth and single-return family state
+- `GELATINOUSSLIME_SETTINGS_ACTIVE_CONSUMERS_AND_LEGACY_CONTACT` — Make active slime settings and scoped legacy contact match their authored promises
+- `GELATINOUSSLIME_RAIN_COLLECTION_AND_DRAINAGE_RECONCILE` — Trace and reconcile the authored slime-rain water collection and drainage services
+- `GELATINOUSSLIME_KIT_CHECK_NUMBERED_ANIMATION_FRAMES` — Resolve numbered Dwommo animation frames in the kit-art checker
+- `RIMMANDRAKE_ISOLATE_GAME_FREEZES_SMALLEST_LIST_BEYOND_ONE_MOD` — The game freezes for 50-100 ms at moments that do not depend on the mod under test (Explosive Knockback walk runs 4-7: most freezes land at the same m
+- `RIMMANDRAKE_RELEASE_CONTAGION_JUDGE_ONE_LOOK_HIS_WORD_GIVEN` — When the Contagion re-scope builder notes READY FOR ONE MORE LOOK: run coverage_judge.py release design/concepts/Contagion --why with his words 'Yes, 
+- `RIMMANDRAKE_PROVE_CONTAGION_GROWN_LIMBS_NEXT_VERSION_SWITCH_OFF` — Contagion Design Version 0.2.0 (Divergent): the Grown Limbs, all of it (five limbs, recipes, removal, Monstrous gestation, Monstrous-first injection);
+- `RIMMANDRAKE_PROVE_CONTAGION_HELIX_TRADE_NEXT_VERSION_PRINTS_WAIT` — Contagion Design Version 0.2.0 (Divergent): Helix trade (draftprints, Helix contracts, curator caravan); deferred out of 0.1.0 by the owner 2026-11-16
+- `RIMMANDRAKE_PROVE_CONTAGION_COALESCENCE_NEXT_VERSION_GAPS_KEPT` — Contagion Design Version 0.2.0 (Divergent): the Coalescence, all of it (formation, growth, cap, waiting pressure, Burn payoff, contact exposure); move
+- `RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN` — Contagion 0.1.0 ships the Coalescence, Grown Limbs and draftprints/Helix switches OFF (moved to 0.2.0 by the owner 2026-11-16); the old live suite opt
+- `RIMMANDRAKE_REREAD_SCRUB_PINS_AFTER_PYRELANDS_GIANTS_MOVED` — LeaningScrub: re-read RM_PyrelandsGiants.cs and re-pin wildlife-zero-paths Z5 (Stage 3)
+- `RIMMANDRAKE_STRIP_SCRUB_TEXT_WARDENS_CUT_BUT_STILL_SLEEPING` — LeaningScrub About.xml and felt description still promise the cut bark-wardens
+- `RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS` — Keep the Maturation Pipeline's stage ceiling and run caps in weighted tokens, not list dollars: maturation_dispatch.json cap_usd, stage_ceiling_usd, b
+- `RIMMANDRAKE_TOUGHEN_DESIGNER_ENTRY_GATE_VAGUE_BUILDS_CHOKED` — Design, with him, a harder definition gate between the Designer and the build step (precision and completeness of every bar before a mod may enter the
+- `RIMMANDRAKE_RETIRE_FRIVOLOUS_BIOME_CONTENT_TESTING_PRICE_KNOWN` — Per held biome mod, list its content and bars with what each costs to test, and bring him a cut list to rule on. Acceptance test: none, an owner decis
+- `RIMMANDRAKE_ENACT_INVENTION_WHEN_BARS_CONFLICT_GRADIENT_TOO_EASY` — Write the ruling into standing_rulings.md and build it into the Maturation Pipeline: a builder that oscillates between conflicting bars must prove the
+- `RIMMANDRAKE_SHOW_PYRE_GRASS_UNDER_ASH_COVER_COUNTED_UNSEEN` — After the ash falls on a Pyrelands map the grass carpet stops being drawn: the map reads bare grey ash while 81 percent of open ground holds grass
+- `RIMMANDRAKE_KEEP_WEATHERED_SCRAWL_UGLIER_THAN_FRESH_TALLY` — Polish: an awful hand's weathered scrawl inspects less ugly than its same-day tally (-5.23 vs -6.0 at day 9.5, ids 2 and 3, outdoors)
+- `RIMMANDRAKE_CLAMP_GRAFFITI_PUSH_ON_LOAD_NAN_REACHES_RAIDS` — Polish: a hand-edited NaN raiderPressurePush loads unclamped and PressureFactor returns NaN raid points
+- `RIMMANDRAKE_HOLD_SOONER_RETURN_WHEN_MODE_FLIPS_MID_CLAIM` — Polish: switching raider pressure to Sooner mid-claim schedules the return at since+ret, which may be past, so the raid fires at once
+- `RIMMANDRAKE_EXTEND_GRAFFITI_FUZZ_RULES_ONLY_LANE_ONE_SAW` — Polish: four kernel faults (visit cap forgets, psychopath half-feels, edge-on paints, budget uncapped) pass T_FUZZ; only the blind lane 1 caught them
+- `RIMMANDRAKE_MEND_GRAFFITI_VARIETY_SCENE_JUDGE_SEES_NO_CAPTURE` — Graffiti sc_spree_variety: capture for the judge and a recolour-set control (coverage gap g1)
+- `RIMMANDRAKE_SCRIPT_GRAFFITI_VARIETY_JUDGE_CAPTURE_TINTS_UNSEEN` — Graffiti spree_variety: capture lanes unlabelled for a judge, calibrate it on a recolour set
+- `RIMMANDRAKE_SCRIPT_GRAFFITI_SOAK_PER_COLONIST_SUM_HID_ONE` — Graffiti lived-in soak: trait mix, per-colonist mood against the control, one unforced story
+- `RIMMANDRAKE_FIX_FILED_PIPELINE_TICKETS_AFTER_WEDNESDAY_RESET` — After the Wednesday 2026-11-18 resets: (1) fix every filed, open Maturation Pipeline ticket; (2) close every remaining Relentless pipeline ticket as o
+- `RIMMANDRAKE_PROBE_OFFLINE_MODEL_LINKING_REAL_GAME_CODE` — Offline model: measure how much real game code (Assembly-CSharp / Verse) an offline test can link and run without the Unity player, and whether a head
+- `RIMMANDRAKE_OWN_RED_SUPPORTING_TEST_SIXTEEN_HOURS_UNSEEN` — A red offline test that only supports a bar has no owner: T_H_EXPLODE_PARSE stayed red ~16 h after 7adc9ad396 because nothing routes a red that blocks
+- `RIMMANDRAKE_BUILD_CODEX_BUILDER_LANE_WHILE_CLAUDE_RUNS_DRY` — Codex builder lane: pilot is conductor/codex_lane/run_ticket.sh (3 tickets running 1:45 PM PST 2026-11-17); land each result after its verify, then ma
+- `RIMMANDRAKE_GENERALIZE_WIND_FIRE_ALL_BAROQUE_BIOMES_NEXT_VERSION` — Divergent, NEXT version: wind-driven fire ('driven by the wind clearly') becomes a general Baroque Biomes framework rule, not a Pyrelands-only bar; Py
+- `RIMMANDRAKE_SETTLE_TRIBUTE_RIVAL_BAND_NEW_IN_CYCLE_TWO` — Graffiti: settle whose rival a tribute moves (lane-1 L1_TRIBUTE_RIVAL_BAND UNSETTLED, cycle 2)
+- `RIMMANDRAKE_COUNT_PROMISE_SCAN_FALSE_HITS_AFTER_ONE_WEEK` — promise_scan: count its false hits over the first live week, before any blocking
+- `RIMMANDRAKE_PROVE_SCENE_RUNNER_LIVE_SAME_ROWS_FEWER_CALLS` — Prove the scene runner live: same verdict rows as knockback_runner.py, fewer bridge calls
+- `RIMMANDRAKE_PORT_SUITES_TO_SCENE_RUNNER_PIT_EXPOSURE_FIRST` — Port more suites to jawa/run_scenes: FlowWorks pit exposure first, then EK's remaining scenes
+- `RIMMANDRAKE_VERIFY_BIOME_CHOICES_BEFORE_OLD_FILES_GO` — Before any old biome file is deleted: a second Fable reader checks each rewrite_choices.md against its source files for ideas with no row; then he rea
+- `RIMMANDRAKE_ENACT_SEARCH_NEVER_PAUSES_SEA_FLOOR_VERY_CONCEALED` — Enact his 2026-11-18 ruling in every place that says otherwise: no place pauses the Empire's orbital search indefinitely (this changes the 2026-08-05 
+- `RIMMANDRAKE_RECONCILE_POOL_CAPS_SIXTEEN_CLONES_OUTWEIGH_70_GB` — Pool caps disagree: 16 clones of ~4.5 GB outweigh the 70 GB cap
+- `RIMMANDRAKE_REWORD_REEFBACK_TEXT_PROMISES_A_LIT_GARDEN` — The reefback's shipped description promises 'the light of something else's garden' in a sea whose ban is no glow but its mark
+- `RIMMANDRAKE_BUILD_GREY_LIT_GROUND_YIELDS_RULED_NEVER_FOUND` — Grey Sea: 'lit cells yield more' was ruled by card 2026-09-26 and no code for it was found
+- `RIMMANDRAKE_PROVE_OBS_REPORT_ON_A_KEPT_GSS_RESULT` — Prove obs_report on a GSS run whose result is kept (bridge_run in the result, next live run)
+- `RIMMANDRAKE_RECORD_SLACK_DELIVERY_MISSES_BEFORE_ANY_MACHINERY` — Record what went wrong in Slack's delivery before any machinery
+- `RIMMANDRAKE_NARROW_LAVA_LANDING_BURST_WHOLE_MAP_SCAN` — ShipShields: the lava-landing burst fires when lava is anywhere on the map, so every Forge landing would take it. Acceptance test: none, live-app beha
+- `RIMMANDRAKE_DECIDE_ROT_BLASTPOD_GROWS_ONLY_ABOVE_FIFTY_DEGREES` — The Rot's wild blastpod (its chemfuel source) has a growth floor of 50 C on a biome whose maximum is +24 C. Acceptance test: none, an owner decision f
+- `RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS` — Write the code-review brief for pipeline machinery (two looks, against the boundary page only), add the code_review refusal family, and calibrate it o
+- `RIMMANDRAKE_SHARE_HELPER_START_ONE_STATUS_LINE_REWRITES_IT` — Every helper writes its ~50,000-token start into the cache new: give helpers one fixed path (own clone bind-mounted), no git status block and a fixed 
+- `RIMMANDRAKE_STOP_SHARED_COPIES_OUTLIVING_THEIR_LENDER` — review and sweep copies borrow objects from lane clones that are deleted under them (15 orphans, ~55 GB, 2026-11-19)
+- `RIMMANDRAKE_CENSUS_STEVEDESKTOP_ERA_REMAINS_WHILE_SOAK_RUNS` — Census SteveDesktop for retired-era remains and stale checkouts (read-only while the soak runs); apply the clean-up after the soak ends Friday 5:30 PM
+- `RIMMANDRAKE_RENAME_RUN_STORE_AND_POOL_OFF_TICK_PATH` — Run store and helper pool still live under /home/mandrake/rm/relentless, read through RELENTLESS_* env names
+- `RIMMANDRAKE_RETIRE_FOUNDRY_SLOT_KEY_INDEX_NAMED_A_GHOST` — Slot allocator still gives the machine to a RELENTLESS key and keeps a FOUNDRY seat clone
+- `RIMMANDRAKE_PROBE_STORE_LEFTOVERS_A_WEEK_FOR_ANY_READER` — Store leftovers of deleted modules: watch a week for any reader, then move them out
+- `RIMMANDRAKE_SWEEP_STEVEDESKTOP_CLONES_CARRYING_LOOP_TREES` — SteveDesktop holds old clones that still carry the deleted ralph/ and whittle/ trees
+- `RIMMANDRAKE_WORK_EIGHTY_OWNER_TICKETS_AFTER_GATES_OPEN` — After the all-but-five ruling is enacted: work the 80 open needs-owner tickets (43 first-touch certifications first) under the Conductor's new permiss
+- `RIMMANDRAKE_CHECK_SEAT_RESTART_TIMER_MONOTONIC_MAY_FIRE_LATE` — seat_restart.py's delayed start may use a monotonic systemd timer, which on this WSL2 machine fell 141 s behind the wall clock for a 2-minute pipe-sto
+- `RIMMANDRAKE_CUT_CONDUCTOR_DAY_SPEND_PAST_ADVISORY_CAP` — Conductor day spend 956863 weighted + 360000 for the 08:00 quick run > advisory daily_token_cap 1080000 (Dispatcher escalation 2026-11-19T16:00:47Z): 
+- `RIMMANDRAKE_FIX_ART_BRIEF_POINTER_AT_ITS_RECALIBRATION` — art_judge_brief.md E3 cites delegation_policy.md §2.3 (now the walk pass; kept art is §2.2). Left as is on purpose: editing it reset the CALIBRATED ar
+- `RIMMANDRAKE_SWEEP_OWNER_ONLY_TEXT_LEFT_AFTER_FIVE_ACTS` — After the five-acts ruling, read each remaining owner-only phrase and open it to the Conductor or say why it stays: the art_guard pre-push check over 
+- `RIMMANDRAKE_SLIM_OPERATIONS_START_PACKAGE_HALF_IS_UNRELATED` — Operations role launches: slim and stabilise the start package (launch flags --exclude-dynamic-system-prompt-sections and --disable-slash-commands, sk
+- `RIMMANDRAKE_SONNET_OPS_REVISITS_SIX_GREPS_TIMED_OUT` — Operations revisit runs on Sonnet (first looks and the economy pass stay Opus), with an escalate-to-Opus route: a Sonnet run that finds something fish
+- `RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST` — Admit WreckedMachines (generic RM_ tier, Design Version 0.1.0) to the Maturation Pipeline, built start to finish on Fable 5.2 (the Fable-from-the-star
+- `RIMMANDRAKE_DESIGN_UTINNI_HOLY_REPAIR_AFTER_GENERIC` — Design the RimUtinni-tier Wrecked Machines specialization (the holy aspect of repair on the Jawa god-ship), after the generic RM_ design locks
+- `RIMMANDRAKE_EXTEND_WRECK_REPAIR_TO_SHIP_PARTS_NEXT_VERSION` — Divergent, next WreckedMachines version: extend wreck repair to ship components; never moves 0.1.0's bars
+- `RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO` — Before any go on Wrecked Machines: launch Opus repair runs for the Fable model route (RIMMANDRAKE_PIN_MOD_MODEL_FABLE_EVERY_STAGE_ROLES_OPUS) and the 
+- `RIMMANDRAKE_CRYSTALLIZE_SWEEP_RECORDS_AND_SKILLS_PROPOSE_ONLY` — Crystallize lane 3: sweeps (records, skill shape, lesson duplicates, lexicon, drift, one assumption) into one report with three candidate changes; edi
+- `RIMMANDRAKE_EVAL_CRYSTALLIZE_SKILL_ONCE_AFTER_EDITS_SETTLE` — When he says the Crystallize skill edits are finished: run skill-creator's eval runs on D:\Luke\dev\MandrakeWorkflows\skills\crystallize with helpers,
+- `RIMMANDRAKE_PRICE_CEILING_AND_DESIGNER_TOKENS_FOR_PINNED_MODEL` — Pipeline: the stage ceiling and the Designer token budget are priced for Opus; a Fable-pinned mod fills both twice as fast
+- `RIMMANDRAKE_FIX_STEVE_LANE_WORKER_AND_GAME_STOPS` — Pipeline repair lane from the 2026-11-19 census (pipeline_lanes_20261119.md); brief briefs_20261119/lanes_launch/RIMMANDRAKE_FIX_STEVE_LANE_WORKER_AND
+- `RIMMANDRAKE_REWRITE_RULE_DOCS_PLAIN_ENGLISH_LOSE_NOTHING` — Review the project CLAUDE.md (what is in it, what should be in it) and rewrite every process, policy and agent-definition file in Simplified Technical
+- `RIMMANDRAKE_REPORT_CLEAN_SHARE_HISTORY_TREEMAP_WAS_ALL_GREEN` — When the clean-share census reports (clean_share_history_20261119.md): tell him why the old clean job converged, and whether the treemap can be pointe
+- `RIMMANDRAKE_TRACE_REMINE_NEAR_TWIN_WRITTEN_WITHOUT_ITS_REASON` — A --read re-mine of GimmeSomeSlack (2026-11-19 23:47Z) appended finding:RIMMANDRAKE_REWORD_GSS_NO_PIPE_BAR_POLES_ON_PURPOSE (BACKFILL:94e3b1f8ce1e3c07
+- `RIMMANDRAKE_REPORT_DAILY_FILED_COUNT_AFTER_FILING_GATE_STARTS` — Report to him the tickets filed and ended per day for 2026-11-20 to 2026-11-23, to show whether the filing gate and the new clean rule cut the inflow
+- `RIMMANDRAKE_BUILD_STANDING_SCAN_OF_QUIET_FILES_ON_SONNET` — Build the standing scan his card of 2026-11-19 orders: when idle, a Sonnet 5.5 helper reads code files unchanged for 7 days or more, mod content first
+- `RIMMANDRAKE_LAUNCH_REMAINING_PLAIN_ENGLISH_BATCHES_ELEVEN_LEFT` — Launch the remaining batches of design/specs/2026-11-19-plain-english-rule-docs/batch_plan.md (orders 6 to 17; standing_rulings.md is one batch in ses
+- `RIMMANDRAKE_SETTLE_LANE_LEFTOVERS_OF_NOV_19_SITTING` — Settle what the 2026-11-19 repair lanes and rewrite batches left open: each pointer of handoff BENCH_REBOOT_HANDOFF_202611200206.md that cites this it
+- `RIMMANDRAKE_READ_REVIEW_METHOD_RUNS_THEN_LAUNCH_SCAN` — Read the results of the review-method enact run and the treemap run at their wakes, tell him, give him the treemap's Windows path, then launch RIMMAND
+- `RIMMANDRAKE_WIRE_FRIDAY_JUDGE_TO_EXAMINE_FLAGGED_FILES_WEEKLY` — Wire the Friday findings-judge run to examine the FLAGGED code files about weekly, as his card asked
+- `RIMMANDRAKE_LAUNCH_TICKET_JUDGING_SLICES_WHEN_PLAN_LANDS` — When the prep helper writes briefs_20261119/touch_cost/slices/launch_plan.md: read it, file the slice items, launch the slices in its order, then repo
+- `RIMMANDRAKE_CALIBRATE_JUDGE_STOP_RULES_WORDS_UNTIL_RUN` — Calibrate the stop rules written into the judging briefs on 2026-11-19 (auditor, Operations alarm runs, findings judge, scene look judge, rm-judge), a
+- `RIMMANDRAKE_KEY_STEWARD_ITEMS_ON_CAUSE_NOT_FRESH_NAMES` — The testq steward files a fresh ticket each time one lane cause returns (13 BRAKED tickets for one filler brake, 2026-11-12..15); key it on the cause
+- `RIMMANDRAKE_SHOW_MOD_BAR_STATE_ON_CLEAN_MAP` — The clean map asks about files inside a mod and colours them by bar state; a reader of in-game visit results lets a bar that passed in game count as g
+- `RIMMANDRAKE_DESIGN_PUSHOVER_ALERTS_CRITICAL_ONLY_TWO_SENDERS` — Design, then build, the emergency phone alert on Pushover: critical needs only (hardware failure, cannot switch accounts, shocking failure of a stated
+- `RIMMANDRAKE_CLEAR_FLOWWORKS_PAPERWORK_TO_GAME_ONLY_ROAD` — FlowWorks 0.1.0: add north-star lines for the bed-less prison and toss-a-flame, rerun the 23 out-of-date bar records, record the two rows settled offl
+- `RIMMANDRAKE_RETIRE_STATUS_BOARD_HTML_STOP_WRITING_AND_DELETE` — Retire STATUS_BOARD.html (the dead Relentless board): stop writing it and delete the file
+- `RIMMANDRAKE_CLASSIFY_VV_REDS_EDGE_SINKS_OFF_LEDGER_GAP` — Classify the reds the vv matrix does not gate (run 20261119T182941): with edgeSinksEnabled off, kernel_fuzz reads 142/2000 'sink drained 0, cells acco
+- `RIMMANDRAKE_LAUNCH_RUN_CLONE_GROUP_AFTER_LIVE_RUNS_END` — When tonight's live runs have ended: file RIMMANDRAKE_JUDGE_RUN_CLONE_DEPLOY_TICKETS_WORTH_THE_TOUCH and launch slices/slice_helper_runs_clones_and_de
+- `RIMMANDRAKE_ROUTE_SLACK_VISIT_TWO_FAILURES_READ_LATE_RUNS` — Next window: (1) read GimmeSomeSlack visit 2 SUMMARY.md (3252972cf5; 194 of 197 pass) and route its 3 failures (tickets SETTLE_SLACK_M8_CENSUS_READS_O
+- `RIMMANDRAKE_ASSIGN_LEFTOVER_CONTEXT_CHANGES_NEITHER_WORKER_HAD` — Launch one detached run for the two context-keeping changes left open on 2026-11-20: (1) resume the Designer's session to mend the coverage judge's ga
+- `RIMMANDRAKE_DESIGN_FLOWWORKS_WATER_WAVES_FOR_THE_NEXT_VERSION` — FlowWorks 0.2.0, Divergent: moving water (waves, ripples) as a function of depth, designed after the 0.1.0 colour and clarity target is picked. Never 
+- `RIMMANDRAKE_NAME_STAGE_CEILING_DANGER_OR_REMOVE_THE_LIMIT` — The stage spend ceiling (stage_ceiling_usd, 25.0M weighted tokens at one stage) has no danger and no evidence written beside it or under LIMITS on a b
+- `RIMMANDRAKE_READ_STEVE_RESUME_REPORT_CAN_FILL_RAISE_NOISE` — When the SteveDesktop resume helper reports: read whether the lane's self-filled re-run chains can file tickets or raise alarms (he wants no 'check ag
+- `RIMMANDRAKE_SEAT_SLACK_CORDS_IN_OFF_SWITCH_NOT_CUT` — Gimme Some Slack 0.1.1: an off switch draws its cords as cut ends; they should read connected without power (the off switch is in no power net, so it 
+- `RIMMANDRAKE_LOAD_SLACK_POLE_ICONS_ON_MAIN_THREAD` — Gimme Some Slack 0.1.1: Link wire, Unlink wire and Unlink all show the missing-texture square; their vanilla icons load off the main thread and stay n
+- `RIMMANDRAKE_DRAW_SLACK_POLES_IN_FRONT_WHEN_SOUTH` — Gimme Some Slack 0.1.1: a power pole south of something draws behind it (masts print on the Building layer, under plants and BuildingOnTop things)
+- `RIMMANDRAKE_BLOCK_SLACK_ROOF_OVER_POLE_KEEP_THE_CUT` — Gimme Some Slack 0.1.1: a roof can still form over a standing power pole (auto-roof, build-roof); block it, keep the roof cut in code
+- `RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP` — Next version (Divergent), Gimme Some Slack: the battery takes the four looks and follows its run, as the standing lamp does (code; art ordered on RIMM
+- `RIMMANDRAKE_CUT_SLACK_REVIEW_STATIONS_NOBODY_READS` — Next version, Gimme Some Slack: delete the review stations no check or walk reads (proposed 5, 8, 9, 11, 17, 18, 19, 23, 27, 30) and the KNOWN GAP lin
+- `RIMMANDRAKE_ADD_FRIDGE_ART_TO_ELECTRICAL_RESKIN_HOME` — When the vanilla electrical art design pass reports: add the fridge art to that mod's scope and file its art item (art gathered out of the main pool);
+- `RIMMANDRAKE_LAUNCH_CODEX_REVIEWS_OF_MOD_CODE_AND_ART` — Tonight, on his word of 2026-11-20: launch Codex reviews of mod code (Gimme Some Slack 0.1.1 fixes, FlowWorks pits) and of the art sheet; never pipeli
+- `RIMMANDRAKE_JUDGE_SLACK_COVERAGE_AGAIN_UNDER_CALIBRATED_BRIEF` — Gimme Some Slack 0.1.1 is open, so its coverage is judged again under a coverage brief that reads CALIBRATED (his card 2026-11-16 point 19: 'Leave the
+- `RIMMANDRAKE_FIX_CODEX_RUNNER_SELFTEST_CONCEPT_LANE_READS_EMPTY` — selftest_codex_runner test_concept_runner_and_lanes is red: the codex lane reads [] where [('/c/M','codex')] is expected; red on base 2026-11-20 4:45 
+- `RIMMANDRAKE_REDO_MODERN_BATTERY_NORTH_VIEW_FAILED_JUDGE_THRICE` — The Modern-look battery is still owed: its north-facing picture failed the art judge three times for not matching the east view in size (design/specs/
+- `RIMMANDRAKE_SIZE_TICK_FIXER_CAP_REBUILD_STOPPED_AT_TEN` — The tick launched the FlowWorks pits rebuild (a whole-system rebuild decided by card) under the fixer cap of 10 list dollars (2.5M weighted tokens); t
+- `RIMMANDRAKE_ENACT_GPT_STREAMLINE_REVIEW_TRUST_NOT_SUSPICION` — Carry out the GPT streamline review of 2026-11-20 (D:\ClaudeWork\rimmandrake\conductor\system_review_20261120\gpt_analysis.md): its 15 ranked changes,
+- `RIMMANDRAKE_SKIP_PERMISSIONS_EVERYWHERE_AUTO_MODE_BLOCKED_HIM` — Every Claude session on every machine launches with --dangerously-skip-permissions: find why the SteveDesktop sessions he talked to ran in Auto mode a
+- `RIMMANDRAKE_SHRINK_TICK_DEPLOY_PLAN_PEAK_HIT_ONE_GIG` — The Dispatch tick that launched Pyrelands visit 2 (7:19 to 7:22 PM PST 2026-11-20) peaked at its unit's MemoryMax=1G (journal: '1G memory peak, 63.1M 
+- `RIMMANDRAKE_TRIM_CONDUCTOR_QUICK_RUN_OVER_BY_A_FIFTH` — Conductor quick run rm-role-conductor-1795232363 (7:43 PM PST 11-20) used 436026 weighted tokens against its 360000 advisory budget: find what a quick
+- `RIMMANDRAKE_BIND_BRIDGE_CLIENT_TO_ITS_GAME_TWICE_HIT_WRONG_ONE` — Twice on 2026-11-20 a run meant for game b drove game a, because Windows python does not inherit RM_GAME_INSTANCE (not in WSLENV): a proof batch loade
+- `RIMMANDRAKE_GENERALIZE_PIPELINE_REPAIRS_INTO_FEW_PRINCIPLES` — Review every repair made to the pipeline since the Maturation Pipeline turned on (2026-11-13): find the ones that fixed one case of a general fault, n
+- `RIMMANDRAKE_CACHE_TESTQ_DONE_READS_TICK_OUTRUNS_HEARTBEAT` — testq tick takes 12-15 min on a braked lane: fill_plan reads every done record 3 times per mod, 29 mods, twice per tick; the steward heartbeat goes st
+- `RIMMANDRAKE_GUARD_DESIGNER_STAGE_ADVANCE_LOST_TO_A_STALE_OPEN` — A Designer run opened on a stale stage.json and its void harvest wrote the concept's stage back (Pyrelands 5 -> 4)
+- `RIMMANDRAKE_TRACE_DESIGNER_TWIN_COMMIT_LAND_SAID_LEVEL` — Designer role clone held a twin ledger commit + staged twin dirt for 3 h while every land unit said ok/level
+- `RIMMANDRAKE_SPARE_COLONY_BEAST_REVENGE_FOR_TRIBES_RITE_FIRE` — Tribes mod: a rite fire carries the tribe's name, so every wild animal it burns rolls vanilla revenge and hunts the colony
+- `RIMMANDRAKE_LIST_FLOWWORKS_SHALLOW_OPACITY_SO_SECTION_RESET_REACHES_IT` — FlowWorks settings: the shallow under-liquid opacity slider is drawn but not listed in its section, so section reset and search miss it
+- `RIMMANDRAKE_STAGE_PYRE_POND_SO_SHORE_RING_CLAUSE_GETS_A_READING` — Pyrelands: the bar ash_ground_and_blowing_ash has a clause 'richer ground ringing standing water' that no live check decides since sc_ash_ground left 
+- `RIMMANDRAKE_FIX_BRIDGE_RELEASE_WRAPUP_RESTORE_TRACEBACK_EXIT_ONE` — rimflow bridge release on game a printed 'wrapup restore before release: Traceback ... (exit 1)' and still released (12:1x PM PST 2026-11-21, after th
+- `RIMMANDRAKE_RULE_MECHANICS_ARE_UNIVERSAL_THE_BIOME_ONLY_SHOWCASES` — His ruling of 2026-11-21: a biome's mechanics are universal (planet-wide physics); the biome depends on them, showcases them, or holds the materials o
+- `RIMMANDRAKE_FIND_SIX_RUNS_SHARED_ONE_PYRELANDS_CLONE` — Six overlapping detached runs of one item shared one pool clone; the launch's holder check let them in
+- `RIMMANDRAKE_CONVERT_SHADE_AGAINST_DIRECT_SUN_PLANET_WIDE` — Shade against Direct Sun is planet-wide: the shadow length and the sun exposure a pawn feels read only sun geometry and cover, on every map (his words
+- `RIMMANDRAKE_CONVERT_ROT_MAT_TO_CONDITIONS_AND_SUN_DEATH` — TheRot's living floor (the mat that heats rooms and keeps life alive in the cold by eating food) works anywhere: it is native to the Rot and must be t
+- `RIMMANDRAKE_FIX_PIPE_UNDO_LEAVES_KILL_TIMER_ARMED` — Pipeline: pipe undo of a write-now stop withdrew the order but left its escalate-to-kill timer armed (ct_000089 undone by ct_000090 at 5:41 PM PST 202
+- `RIMMANDRAKE_UNSTICK_PYRELANDS_FIXER_COUNT_TWELVE_FOUR_REFUSED` — Pyrelands paused at the offline build: measure whether refused launches sit inside the 12 counted fixer runs, fix the counter if so, rerun the stale i
+- `RIMMANDRAKE_REDRAW_MODERN_PIPE_AND_SPRINKLER_THEY_READ_PLASTIC_FUTURISTIC` — FlowWorks Modern look: the pipe and the sprinkler head read futuristic (clean, plastic, cartoonish). Redraw both with some realism: patches of differe
+- `RIMMANDRAKE_DESIGN_PIT_FLOOR_SOILS_FOR_GROWING_RIVER_MUD_IS_RICHEST` — FlowWorks Design Version 0.2.0 (Divergent, his call): growing at the bottom of a pit. Pit floors get soil types: rich river-bottom mud (very high fert
+- `RIMMANDRAKE_ASK_GPT_HOW_TO_DRAW_STEPPED_PIT_FLOOR_HE_COULD_NOT_READ_IT` — FlowWorks: a pit with steps in its floor does not read (station 39, his walk). Capture his case and more complex stepped pits, ask GPT for visual idea
+- `RIMMANDRAKE_DESIGN_PAWN_IN_LIQUID_LOOK_WATER_SHEET_IS_A_MISTAKE` — FlowWorks: design a new look for a colonist in or coated by each liquid; the water sheet is rejected (misaligned with the body, station 33). Fable Des
+- `RIMMANDRAKE_REDRAW_FLOWWORKS_TANKS_THREE_STYLES_ONLY_SCRAPPER_READS_RIGHT` — FlowWorks tanks: options for his pick in Modern (realistic, worn), Futuristic (cyberpunk, computerized, no analog dials) and Industrial (less rust, al
+- `RIMMANDRAKE_SPREAD_SLACK_LOOK_ALONG_LINE_EACH_MOD_ITS_OWN_ITEMS` — Gimme Some Slack: choosing a style on one GSS item changes every GSS item on the same connected line (cords, poles, lights, switches on that line); it
+- `RIMMANDRAKE_REDESIGN_JETTY_AND_BRIDGE_ART_STEEL_ONE_READS_AS_WOOD` — FlowWorks jetties and bridges: redesign the art. A jetty must read as one structure (no seam between squares), steel must read steel, heavy must read 
+- `RIMMANDRAKE_SWEEP_FLOWWORKS_TICKETS_MERGE_TO_MODERN_BUILD_THE_VALUABLE` — Clean house on every open FlowWorks ticket: find, class, drop the stale, merge the rest into modern tickets by version, build the valuable ones now
+- `RIMMANDRAKE_PROVE_HUGETHINGS_BARS_LIVE_SIXTEEN_TICKETS_ONE_RUN` — HugeThings (current version): prove live the six bars he validated 2026-11-14 (plants incl. door seal, titan crossing then death) plus hitbox and save
+- `RIMMANDRAKE_FIX_HUGETHINGS_REMAINS_ROT_FIFTEEN_PERCENT_A_DAY` — HugeThings (current version): titan remains rot like ordinary meat (his 2026-11-03 ruling; code still spoils 15%/day), and a T3 dying near an edifice 
+- `RIMMANDRAKE_BUILD_HUGETHINGS_CROWD_AT_REMAINS_BAR_HELD` — HugeThings (next version; he held the crowd bar 2026-11-14): visitors arrive unordered, respond by faction, prior claims shown, parallel harvest exped
+- `RIMMANDRAKE_OPT_DRAWN_GIANTS_INTO_HUGETHINGS_SWEETLINE_FIRST` — HugeThings (next version): census plants drawn huge and opt them in with RM_HugePlantExtension in their own mods; RM_SweetlineTree first (LeaningScrub
+- `RIMMANDRAKE_LET_HUGETHINGS_TITANS_WALK_OVER_WALLS_PHASE_TWO` — HugeThings (next version): titans walk over thin walls, leaving them damaged, instead of breaking through (his card 2026-10-19: walk-over phase 2)
+- `RIMMANDRAKE_PASS_OWNER_ITEMS_ON_ROAD_BACK_ULLAI_HELD` — Maturation road back: a needs=owner item holds the mod at fixer_spent after its one fixer run (Pyrelands visit 6 held by his ullai art pick)
+- `RIMMANDRAKE_SHOW_PYRE_HIS_WALK_FOUR_PICKS_ULLAI_FIRST` — Pyrelands 0.1.0, his walk: ullai art pick after an in-game look, fire-hawk east view S, ash footprints and hover, the flamefang danger card
+- `RIMMANDRAKE_SIZE_STYLE_DEF_ROWS_TANKS_SHRANK_TO_ONE_CELL` — art_sheet --subjects <ThingStyleDef> draws the look at a 1-cell FALLBACK size: scale_panel.Resolver.size finds no ThingDef for a ThingStyleDef (RM_Liq
+- `RIMMANDRAKE_READ_PYRE_LONG_RUN_FOUR_OWED_ZHAKKA_FIRST` — Pyrelands 0.1.0 long live reads: foreign kinds on his full list, the 1 s stall, a Titan pool dump, scorch-fruit freezer fill
+- `RIMMANDRAKE_JUDGE_PYRE_POST_SHEET_ART_CRESTFEATHER_A_HORN` — Pyrelands 0.1.0: judge the 17 art and text entries added since his 2026-10-16 sheet, and give the crestfeather its own sprite
+- `RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE` — Pyrelands testq jobs on SteveDesktop measure nothing: no loadable Pyrelands site on the lane, the filler keeps queuing it (5 jobs since 11-19, 0 PASS)
+- `RIMMANDRAKE_CORRECT_SLACK_TWO_FALSE_LINES_AFTER_HIS_WALK` — Gimme Some Slack 0.1.1: two false lines in hashed files (review generator sway line, dripLoops comment); land when his walk ends
+- `RIMMANDRAKE_RUN_KNOCKBACK_ROWS_TIER_LIST_CANNOT_DECIDE` — Explosive Knockback 0.1.0: the live rows the 34-mod tier list cannot decide (full-list barrage and walk raid, its NRE storms, the walk's spared sleepe
+- `RIMMANDRAKE_MEASURE_KNOCKBACK_JOLT_PER_CONTAINER_NOT_GHOST` — Explosive Knockback 0.1.0: each jolted closed container's row reads its own drawn offset (today the literal drawnOffset=UNMEASURED), and a judge rules
+- `RIMMANDRAKE_CARRY_SUNDAY_SITTING_STATE_ACROSS_THE_WINDOW_RESTART` — Sitting of 2026-11-22 in progress when the window restarted. (1) ArchBig is under his walk hold (./pipe off game:ArchBig, act ct_000095): Gimme Some S
+- `RIMMANDRAKE_FENCE_ARTPIPE_SELFTEST_OUT_OF_PROFILE_169_LEAKS` — selftest_artpipe.py writes a .codex_sandbox_backup_<stamp> folder into the real C:\Users\Mandrake on every run (169 of 170 such folders are its fixtur
+- `RIMMANDRAKE_ROUTE_OUTSIDE_GPT_LAUNCHERS_THROUGH_DOOR_THREE_LEFT` — Route the three GPT launchers outside RimMandrake through Dispatch's gpt_door: MandrakeWorkflows placard codex route, oracle-delphi run_gpt.sh (needs 
+- `RIMMANDRAKE_PASS_SCRUB_TIME_JUMPS_TIME_EXCEPTION_TWO_OF_THIRTY_THREE` — two LeaningScrub time_set_ticks calls lack timeException; the caller lint is red for every mod
+- `RIMMANDRAKE_SEAL_GRAFFITI_SHIP_CHECK_FROM_THE_DEPLOYED_INSTALL` — Graffiti's offline T_SHIP_CHECK row reads the deployed Mods folder; red by what is deployed
+- `RIMMANDRAKE_MEND_FLOWWORKS_HOSES_SIX_OLD_FAULTS_ONE_SYSTEM` — FlowWorks hoses: six old faults in one system (small pump lays unconnected, no replan when walled, stale overdraw, style drift and lost links after re
+- `RIMMANDRAKE_FINISH_FLOWWORKS_RIVERS_PLACERS_EIGHT_OLD_TICKETS` — FlowWorks rivers and placers: eight old tickets (swept pawn stuck mid-river, river colours, weir catch and look, panning, placer refill, sluice box wa
+- `RIMMANDRAKE_MEND_FLOWWORKS_LIQUID_RULES_FIVE_OLD_DEFECTS` — FlowWorks liquid rules: five old defects (shut sluice seals its whole square, deep sand reads as fresh water, bottle refuses a small pond, fuel sap ne
+- `RIMMANDRAKE_TEACH_FLOWWORKS_BRIDGE_TOOL_HIS_THREE_WALK_ASKS` — FlowWorks suspension bridge tool: his three asks from the 2026-11-20 walk (Choose style on built bridges, span over ruined bridge scrap, say the drag 
+- `RIMMANDRAKE_FIX_FLOWWORKS_RAIDER_LADDERS_FOUR_FAULTS_ONE_PATH` — FlowWorks raiders and ladders: four faults on one path (leaning ladders skipped, the chop never lands, climber def names that left, no short ladder tr
+- `RIMMANDRAKE_RESCUE_FLOWWORKS_STRANDED_COLONIST_REACHABLE_LADDER` — FlowWorks pit rescue: a colonist stranded in a pit reads untrapped, and the rescue picks a spare ladder nobody can reach
+- `RIMMANDRAKE_FIX_FLOWWORKS_REVIEW_MAP_THREE_TICKETS_ONE_TOOL` — FlowWorks review map: three old tickets on one tool (signs over unbuilt scenes, 39 things still unshown, stations with no hose lead-out)
+- `RIMMANDRAKE_REPAIR_FLOWWORKS_WRONG_CHECKS_SIX_OLD_TICKETS` — FlowWorks checks that are wrong: six old tickets (fuzz float tolerance, lake floor skips height, idle-pulse settle, pond arms split, pit shot passes o
+- `RIMMANDRAKE_BUILD_FLOWWORKS_THIN_FILM_WETTING_FOR_ZERO_TWO` — FlowWorks 0.2.0: build wetting as the thin film (two squares damp beside a canal, the wetness probe, the downhill garden spill), after the one-state d
+- `RIMMANDRAKE_PROVE_FLOWWORKS_NINE_LIVE_ROWS_OWED_ONE_VISIT` — FlowWorks: nine built behaviours still owe one live row each; run them in one in-game visit
+- `RIMMANDRAKE_REPAIR_FLOWWORKS_HARNESS_SEVEN_RED_OR_BLIND_ROWS` — FlowWorks validation harness: seven rows red or blind for harness reasons (hose gate on SteveDesktop, rain E6, site hold, slime rows tier, fuel moat m
+- `RIMMANDRAKE_BUILD_FLOWWORKS_FOUNTAIN_LOOP_ART_FOR_ZERO_TWO` — FlowWorks 0.2.0: the fountain that pumps its own rain, and its art pick
+- `RIMMANDRAKE_PIN_FLOWWORKS_FOUR_UNWATCHED_LAWS_FOR_ZERO_TWO` — FlowWorks 0.2.0: pin four laws no test watches (toss range and relight, fetch fire window and key, drill power when off, coating on colonists)
+- `RIMMANDRAKE_REDRAW_FLOWWORKS_FOUR_PLACEHOLDER_ARTS_FOR_ZERO_TWO` — FlowWorks 0.2.0: four placeholder or borrowed arts (gravel pile, geyser plume bubble, Modern reel tail colour, style icons in every look menu)
+- `RIMMANDRAKE_SERVE_HELPER_SHEETS_OFF_POOL_CLONES_TWO_PINNED_TODAY` — A review sheet served by a helper runs serve_gated.py from the helper's POOL clone, so the clone is pinned for as long as the owner may click (his pic
+- `RIMMANDRAKE_LAND_KNOCKBACK_GOODS_IN_PIT_FIRST_BOUNCE_ONLY_WHEN_FULL` — Explosive Knockback 0.1.0: goods thrown at a pit cell that already holds goods land somewhere in the pit; only when the pit is totally full do they bo
+- `RIMMANDRAKE_SHOW_TANK_FILL_LEVEL_AND_LIQUID_COLOUR_ON_ITS_SIDE` — FlowWorks 0.2.0 (next version, a must by his words): every liquid tank shows on its side a clear indicator of how full it is and what colour the liqui
+- `RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM` — FlowWorks pits: redraw a stepped pit floor so the inner cliff stops at the shallow floor's height part way down the side walls, the outer walls show t
+- `RIMMANDRAKE_WEIGH_DROIDWORKS_SOON_SO_DROIDS_JOIN_EVERY_MOD_TEST` — He thinks Droidworks should likely be prioritised soon, so droids come along through the rest of mod testing (mechanoids, droids, humanoids and animal
+- `RIMMANDRAKE_ADD_COVERED_PITS_TO_FLOWWORKS_WALK_MAP_HE_ASKED` — FlowWorks walk map: add stations with COVERED pits (each cover kind over a pit: empty, with liquid, with a colonist under it, walked over) so his next
+- `RIMMANDRAKE_DRAW_PAWN_OWN_PICTURE_CUT_AT_LIQUID_SURFACE_NOT_ICON` — FlowWorks 0.1.0: a pawn in a liquid is drawn as its own picture cut at the liquid's surface (concept A of design/specs/2026-11-22-pawn-in-liquid-look/
+- `RIMMANDRAKE_ADD_LIQUID_TIDE_MARK_SURFACE_REACTION_AND_BODY_UNDER_SURFACE` — FlowWorks 0.2.0 (next version): the rest of his liquid-look pick: B the tide mark left on a pawn (without the pale shadow he rejected beside the tar s
+- `RIMMANDRAKE_STUDY_WHAT_ONE_WEEK_OF_MODS_TAUGHT_ON_NOV_TWENTY_NINE` — On 2026-11-29: bring him the one-page study of what a week focused on mods taught about the pipeline (stops, their causes, what machinery mattered), a
+- `RIMMANDRAKE_WARN_WHEN_RAIN_IS_FILLING_AN_OCCUPIED_PIT_KEEP_THE_FLOOD` — FlowWorks 0.1.0: rain may still fill a pit prison in one night (physics stays); add an alert that tells the player a pit holding a pawn is filling, in
+- `RIMMANDRAKE_DRAW_TALL_CARGO_XTALL_TANKS_IN_HIS_PICKED_DESIGNS` — FlowWorks art: the tall, cargo and extra-tall tanks of Industrial and Futuristic still show old art; draw them in his picked designs (Industrial C gun
+- `RIMMANDRAKE_SETTLE_FOUR_ROWS_THE_NEEDS_TRIAGE_LEFT_TO_CONDUCTOR` — From the Fleet Now triage (4157ca8c04): rule the two gate-order questions on ASSAILANT_WARLAB_BUILD_MERGE; launch the blastpod growth-floor fix and th
+- `RIMMANDRAKE_STUDY_ONE_PLACE_FOR_OWED_WORK_HE_ASSUMED_IT_EXISTED` — Study: write the full account of where state gets trapped and plans get dropped; research what works for agent factories with little human time; ask G
+- `RIMMANDRAKE_GENERATE_SCRAPPER_JETTY_HEAVY_BRIDGE_ART_DEFAULT_LOOK_SHOWS_OLD` — Default look Scrapper draws OLD art for the heavy bridge and both jetties (his picks exist only in Industrial; live look 917d3ab915, image decision_de
+- `RIMMANDRAKE_KEEP_ALARM_ITEMS_OPEN_FOUR_OF_SIX_POINT_AT_CLOSED` — An open ops alarm must keep an open item: 6 alarms are open while 4 name a closed item, 1 an item not in the ledger, 1 no item (PLAN_DISTRESS open 9 d
+- `RIMMANDRAKE_WATCH_INGAME_VISIT_OWED_NO_DRIVER_UNSEEN` — Operations reads an in-game visit owed bridge work with no driver on ArchBig or ArchSmall
+- `RIMMANDRAKE_RECORD_FOURTEEN_OF_HIS_MESSAGES_THE_PROBE_FOUND_HOMELESS` — Record the 14 owner messages of the last 3 days that needed a home and have none (7 standing instructions, e.g. the 1% emergency cutover line, zoom in
+- `RIMMANDRAKE_WATCH_OPS_SENSE_OVERRUN_MOST_FAMILIES_BLIND` — ops_watch sense killed at 15 s on 64% of runs (87 of 136 in 3 h), 19 families killed even alone: their points go stale, alarms cannot fire
+- `RIMMANDRAKE_SIGN_WILD_ANIMAL_UNDER_TAR_HAS_NO_LABEL_TO_SHOW` — FlowWorks: a wild animal (or any unlabelled pawn) wholly under an opaque liquid shows nothing on the map. Colonists keep their name label and alert bu
+- `RIMMANDRAKE_ADD_COVER_FADE_STATION_TO_NEXT_FLOWWORKS_LOOK_HE_JUDGES_IT` — When FlowWorks is next staged for him: add a station for the pit cover that fades to 0.6 over a pawn (78ca7b2bed14); the transparent look is his to ju
+- `RIMMANDRAKE_TAG_GSS_LIVE_CHECKS_FOR_STEVE_NONE_OF_203_CAN_GO` — Give Gimme Some Slack's live checks a testq block so SteveDesktop can take them (0 of 203 carry one)
+- `RIMMANDRAKE_READ_TIER_JOB_VERDICTS_THE_READER_RETIRED_FIRST` — testq ingest skips every exact-tier job's verdict for a retired reader; nothing records it on its item
+- `RIMMANDRAKE_RUN_ROT_GIANTS_CLICK_LIVE_TEST_BOTH_GAMES_WERE_TAKEN` — The Rot: run the UNRUN live test of the giants' body click (fix 0dc82e3272). Steps: deploy_custom_mods.py --compose biomes --apply on a free game; loa
+- `RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER` — FlowWorks: a dry pit floor is one brown gravel tone on any ground, so on dark ground it is not darker than the ground it was dug in. Measured live (Ar
+- `RIMMANDRAKE_ADD_DEPTH_LADDER_STATION_TO_NEXT_FLOWWORKS_LOOK_HE_MAY_REVERT_IT` — When FlowWorks is next staged for him: add a station from save RM_PIT_DEPTH_LADDER_AFTER (lighter pit floors, four depth steps, taller north wall; art
+- `RIMMANDRAKE_SLIM_TICK_MEMORY_PAGE_BUILD_HITS_ONE_GIG_TICK_TOOK_FIVE_MIN` — rm-maturation-dispatch.service (the tick, 'every 60 s') runs 1.5 to 5 min and peaks at its 1G MemoryMax: journal 2026-11-23 02:15 to 02:28 PST reads p
+- `RIMMANDRAKE_INSTALL_SLACK_ICONS_WALL_LAMP_ALREADY_JUDGED` — Gimme Some Slack 0.2.0: install the 16 judged pictures (4 look icons, 12 wall lamp) from the art store through art install, for bars look_menu_icons a
+- `RIMMANDRAKE_LAUNCH_LIST_PIPELINE_STEPS_IN_ORDER_HE_SAID_BUILD_IT_FULLY` — Launch the rest of the List Pipeline, each as a detached run, as its predecessor ends: (a) RIMMANDRAKE_BUILD_ONE_OWNER_VIEW_NO_HOME_COUNT_BESIDE after
+- `RIMMANDRAKE_SWITCH_LIST_LANE_BACK_ON_WHEN_LOAD_FALLS_UNDER_TWENTY_EIGHT` — When the load average falls under 28 (twice the 14 cores), or the tick repair, SteveDesktop, Knockback and audit runs have ended: ./pipe on family:lis
+- `RIMMANDRAKE_REWRITE_STANDING_RULINGS_LARGEST_HOME_FILE` — Plain-English rewrite batch: standing_rulings.md, in five sessions one after another (waits on its 5 parts)
+- `RIMMANDRAKE_REWRITE_MATURATION_SPEC_EIGHTY_KILOBYTES` — Plain-English rewrite batch: the maturation spec, in two sessions one after another (waits on its 2 parts)
+- `RIMMANDRAKE_REWRITE_SKILLS_IN_CURATION_SESSIONS_ONE_SKILL_EACH` — Plain-English rewrite batch: the 32 SKILL.md files, skills/README.md, skills/BY_WORK.md and five prompt files, one curation session each (waits on its
+- `RIMMANDRAKE_REWRITE_STANDING_RULINGS_SESSION_TWO_OF_FIVE` — Plain-English rewrite of standing_rulings.md, session 2 of 5 (batch RIMMANDRAKE_REWRITE_STANDING_RULINGS_LARGEST_HOME_FILE)
+- `RIMMANDRAKE_REWRITE_STANDING_RULINGS_SESSION_THREE_OF_FIVE` — Plain-English rewrite of standing_rulings.md, session 3 of 5 (batch RIMMANDRAKE_REWRITE_STANDING_RULINGS_LARGEST_HOME_FILE)
+- `RIMMANDRAKE_REWRITE_STANDING_RULINGS_SESSION_FOUR_OF_FIVE` — Plain-English rewrite of standing_rulings.md, session 4 of 5 (batch RIMMANDRAKE_REWRITE_STANDING_RULINGS_LARGEST_HOME_FILE)
+- `RIMMANDRAKE_REWRITE_STANDING_RULINGS_SESSION_FIVE_OF_FIVE` — Plain-English rewrite of standing_rulings.md, session 5 of 5 (batch RIMMANDRAKE_REWRITE_STANDING_RULINGS_LARGEST_HOME_FILE)
+- `RIMMANDRAKE_REWRITE_UNTESTED_JUDGE_ROLE_FILES_THEN_CALIBRATE` — Plain-English rewrite of designer_scene_contract.md, designer_lock.md and code_review.md, then calibrate their families
+- `RIMMANDRAKE_REWRITE_MATURATION_SPEC_SECOND_HALF_HIS_QUESTIONS` — Plain-English rewrite of the maturation spec, second half (batch RIMMANDRAKE_REWRITE_MATURATION_SPEC_EIGHTY_KILOBYTES)
+- `RIMMANDRAKE_REWRITE_ART_EVAL_PROMPT_FILES_THEN_CALIBRATE` — Plain-English rewrite of the five art-evaluation prompt files, then the free calibration (part of batch RIMMANDRAKE_REWRITE_SKILLS_IN_CURATION_SESSION
+- `RIMMANDRAKE_DESIGN_MACHINE_LOOKS_FIRST_TOUCH_BATTERY_LEADS` — Designer first touch on Machine Looks (design/concepts/MachineLooks, intake, switch OFF): read design/specs/2026-11-20-vanilla-electrical-art-home and
+- `RIMMANDRAKE_CUT_TICK_DRVFS_WALK_OF_DEPLOYED_BIOMES_STATS_TEN_THOUSAND` — The maturation tick spends 66 to 125 s per tick in build_match.deployed_hash (via ingame_facts -> read_ingame_exit -> check_visit) walking the deploye
+- `RIMMANDRAKE_UNPAUSE_PYRELANDS_SITE_DECIDER_RED_AFTER_VISIT_SIX_PASSED` — Pyrelands 0.1.0 is PAUSED by the tick after visit 6 passed 34 of 35: its certificate rerun reads decider T_SITE red (the tick's line also names an old
+- `RIMMANDRAKE_RESTORE_FLOWWORKS_PIT_PROOF_SETTINGS_FOUR_NEW_LEAKS` — FlowWorks pit proofs leave pitSteppedReliefEnabled / the pawn-cut setting changed when they throw: 4 new proof_restore_check hits (RM_NorthstarProofs.
+- `RIMMANDRAKE_CLEAR_HELD_NIGHTLY_RED_AFTER_FIX_PROVES_GREEN_WAITS_A_DAY` — A held nightly red stays up a day after its fixer proves it green
+- `RIMMANDRAKE_CHECK_BIOME_CHOICES_READ_IS_HIS_OR_A_JUDGES` — Before the 26 biome choices pages reach him: decide whether that read is one of his five acts or a judge can take it; route it accordingly
+- `RIMMANDRAKE_GIVE_LIST_TICK_CLOSE_A_LIVE_PROMISE_OWNER_VIEW_HAS_NONE` — The List Pipeline tick closes an operational item with no sha and no keeps-running promise (it closed RIMMANDRAKE_BUILD_ONE_OWNER_VIEW_NO_HOME_COUNT_B
+- `RIMMANDRAKE_RESUME_CAPPED_FIXER_WITH_PROGRESS_SLACK_CAPPED_TWICE_TONIGHT` — The Maturation tick sizes a Stage 3 builder or fixer cap below the job and reads a cap stop as an end: GimmeSomeSlack 0.2.0 was cap-stopped twice on 2
+- `RIMMANDRAKE_REPOINT_TOOL_TRAPS_LINE_FIVE_TOPICS_LEFT_IN_NOVEMBER` — CLAUDE.md (Facts you cannot guess) and standing_rulings.md say tool_traps.md covers the subagent watchdog, mid-session hooks, card gates, handoff.py a
+- `RIMMANDRAKE_FIX_BRIDGE_STEPPED_PAWNS_DRAWN_ON_OLD_SQUARE` — HARNESS: after bridge-stepped ticks a standing pawn that walked is drawn on the square it started from. Seen 2026-11-23 on ArchBig (FlowWorks tier, sa
+- `RIMMANDRAKE_FIX_FLOWWORKS_MOAT_SWIM_ROW_MISSES_SHORT_CROSSING` — FlowWorks sc_moat_raid: MOAT_raiders_swim reads FAIL when the swimmers cross before an exhaustion check lands (2 of 8 runs on 2026-11-23: e1.json, c3.
+- `RIMMANDRAKE_LIFT_GRAFFITI_HOLD_HIS_TOKEN_RESET_HAS_PASSED` — Graffiti is still HELD BY OWNER on his 2026-11-18 words 'Stop that Graffiti work. Unauthorized item until the token reset.' That reset (the Wednesday 
+- `RIMMANDRAKE_ANSWER_SEVEN_TERMS_NO_SOURCE_DEFINES_GREY_MUD` — Seven terms in rule files have no source for their meaning (table 2 of design/specs/2026-11-19-plain-english-rule-docs/undefined_terms_and_conflicts.m
+- `RIMMANDRAKE_READ_FIRST_THREE_CODEX_PIPELINE_REVIEWS_COUNT_SIGNIFICANT` — Read the first three Codex reviews of pipeline code after the 2026-11-23 restart: count findings, count significant ones, tell him whether Codex obeys
+- `RIMMANDRAKE_DEFINE_DECK_IN_RIMBRIDGE_NOT_FOUND` — UNFINDABLE MEANING skills/rimbridge/SKILL.md:203 term 'deck'. QUESTION: In 'The test needs no save, no deck and no import' (text of 2026-08-15, commit
+- `RIMMANDRAKE_REVIVE_WEEKLY_CRYSTALLIZE_RAN_31_DAYS_APART` — The weekly Crystallize pass does not run weekly: last two runs 2026-10-19 and 2026-11-19, nothing schedules it, and its reminder cannot see on Archmag
+- `RIMMANDRAKE_PROPOSE_PROSE_CHECK_TO_USER_TOOLS_BELOW_TWELVE` — First entry of the weekly Crystallize report: move guiding_prose.py to the user-level tools, once its model reader's false-alarm rate is lower than 12
+- `RIMMANDRAKE_READ_PARTITION_DIFF_RUN_ENDED_IT_ON_A_GUESS` — Read what commits 7ff1743b00, c0db9a8b25, ecd2092b44 removed about the rough daily partition of quota: his card answer of 2026-11-23 ended the evening
+- `RIMMANDRAKE_LAUNCH_CONDUCTOR_AUTHORITY_SELFTEST_FIX_SIX_RUNS_SAW_IT_RED` — Launch the fix of RIMMANDRAKE_REPAIR_CONDUCTOR_AUTHORITY_SELFTEST_SIX_RED_SINCE_TODAY if the List Pipeline lane has not picked it up: selftest_conduct
+- `RIMMANDRAKE_REFUSE_NEW_RUN_AT_SOFT_LINE_DRAIN_TOO_LATE` — No program refuses a new detached run at an account's soft line; the 1% switch then kills it
+- `RIMMANDRAKE_DECIDE_RETIRED_ROLE_DUTIES_NOBODY_DOES_NOW` — Revive or drop nine duties of the retired Producer and Auditor that nothing does now, and decide the leftover retired names; table: design/RimMandrake
+- `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM` — Standing item, nothing to build: the notes of the running roles go here (OPS PROPOSAL, OPS DECISION, QUESTION FOR OPERATIONS, Dispatcher run notes), a
+- `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM` — Standing item, nothing to build: the notes of the running roles go here (OPS PROPOSAL, OPS DECISION, QUESTION FOR OPERATIONS, Dispatcher run notes), a
+- `RIMMANDRAKE_STATE_THREE_RULES_THE_CORRECTION_LEFT_SILENT_READERS_SCORED_ZERO` — Three corrected rule lines now tell a reader nothing, measured 0 of 5 correct acts each in the weak-reader pilot (design/specs/2026-11-23-weak-reader-
+- `RIMMANDRAKE_TRACE_FLOWWORKS_RAIDER_IN_OPEN_PIT_WALKED_OUT` — FlowWorks: a free raider stood 450 ticks on an open 4 m pit square with no path, then walked out over the strip (seen once; the mod's own reach residu
+- `RIMMANDRAKE_SEND_FIRST_TEST_PAGE_KEYS_VALID_SINCE_NOV_TWENTY` — Ring his phone once: from the Conductor window run pager.py test --why "first real page", then pager.py ack; then switch on the section 8 triggers of 
+- `RIMMANDRAKE_RENDER_TWELVE_FACING_REDRAWS_JUDGED_REGEN_NOBODY_FILED` — The art judge lists 86 follow-ups in D:\ClaudeWork\rimmandrake\arteval_autojudge\status.json that no program works. Measured 2026-11-23: 12 facing row
+- `RIMMANDRAKE_SORT_OLD_BUILT_ITEMS_CHECK_REVERTS_BEFORE_CLOSING_212` — Carry out the revive run's three-group sort of the 362 old built or validated items (design/specs/2026-11-23-retire-census/revive_rows.md): first meas
+- `RIMMANDRAKE_DEFINE_THE_COMBINED_IN_RIMWORLD_LIVE_NOT_FOUND` — UNFINDABLE MEANING skills/rimworld-live-review/SKILL.md:347 term 'The combined review list'. QUESTION: Which mod list is the combined review list that
+- `RIMMANDRAKE_DEFINE_THE_CLEAN_IN_RIMWORLD_LIVE_NOT_FOUND` — UNFINDABLE MEANING skills/rimworld-live-review/SKILL.md:349 term 'the clean base save'. QUESTION: Is the clean base save a save of the map before any 
+- `RIMMANDRAKE_LET_LOCK_CLAIM_PASS_HIS_HOLD_STAGING_RAN_UNLOCKED` — game_lock.py claim refuses under pipe off game:ArchBig and has no --despite-hold, so the run that staged his look on 2026-11-23 drove ArchBig with no 
+- `RIMMANDRAKE_SETTLE_GUN_LOCKER_DRAWS_ITS_GUNS_BUT_KEEPS_THEM` — Explosive Knockback: at his look of 2026-11-23 the gun lockers at station 8 draw their weapons on screen, and the test sc_closed_containers treats wea
+- `RIMMANDRAKE_SHOW_START_STATE_BESIDE_EACH_AFTERMATH_HE_COULD_NOT_JUDGE` — Every walk save that shows an aftermath (a blast, a collapse, a flood) also shows a frozen copy of the start state beside the station, so he can compa
+- `RIMMANDRAKE_DESIGN_BRIDGE_TWO_WHAT_LIVE_TESTING_NEEDS_FABLE_PASS_ONE` — BRIDGE v2.0, design pass 1 (Fable): what live testing needs from the bridge. A census of every environment influence that spoiled or spoils our live t
+- `RIMMANDRAKE_DESIGN_BRIDGE_TWO_HOW_TO_BUILD_IT_FABLE_PASS_TWO` — When BRIDGE v2.0 design pass 1 ends: launch pass 2, a second Fable designer who reads the existing bridge code and the pass 1 design and answers how i
+- `RIMMANDRAKE_DESIGN_BRIDGE_LIVE_TUNING_POKE_DEF_AND_CODE_VALUES_NO_RELOAD` — BRIDGE v2.0 side design pass (Fable): change a running game's XML-loaded def values and C# parameters without a reload or a rebuild, as RIMMSqol did, 
+- `RIMMANDRAKE_CLASS_PYRE_CONTROL_PAD_BURN_NOBODY_LIT` — Pyrelands sc_burn_compounds, visit 7: the old-ash control pad C carried a burn stamp (tick 413443) that nobody traced, and the mod's own lone fire cou
+- `RIMMANDRAKE_CARRY_MONDAY_AFTERNOON_STATE_ACROSS_THE_ACCOUNT_SWITCH` — Across the 2026-11-23 account switch: (1) launch a detached run on RIMMANDRAKE_ENACT_SHORT_OF_X_OF_Y_ESCALATES_CONDUCTOR_CALLS_IT (not launched: switc
+- `RIMMANDRAKE_FIX_OFFLINE_DEF_MERGE_REPLACES_WHAT_GAME_APPENDS` — def_inventory._merge_into replaces an inherited <li> list; the 1.6 engine appends it
+- `RIMMANDRAKE_FILE_BRIDGE_TWO_BUILD_ORDER_THEN_WIRE_FIRST_SLICE` — File the Bridge 2 build order as tickets with their acceptance tests, then build the first slice (wire the condition run into the tick) that confirms 
+- `RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED` — Bridge v2 slice: the condition run stepped in the tick, one hand-written scene, a trace on disk, an exact stop
+- `RIMMANDRAKE_BUILD_SCENE_JUDGE_OUTSIDE_GAME_FROM_KEPT_TRACE` — Bridge v2: the scene judge outside the game, seven outcomes from a kept trace
+- `RIMMANDRAKE_BUILD_GAME_WATCHER_NAMES_THE_BROKEN_STATE` — Bridge v2: the game watcher names the broken state; a run never starts on a broken game
+- `RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK` — Bridge v2: the run life cycle under kill, cancel, thrown tick, changed game; the run lock
+- `RIMMANDRAKE_BUILD_RUN_PLAN_ONE_CALL_SCENE_AS_DATA` — Bridge v2: jawa/run_plan, a scene as data in one call (bootstrap mode)
+- `RIMMANDRAKE_MEASURE_PLAY_AGAINST_PAUSED_STEP_NEVER_COMPARED` — Bridge v2: measure PLAY speeds against the paused STEP loop from one fixture save
+- `RIMMANDRAKE_BUILD_STAGE_OPS_READ_BACK_NEVER_ECHO` — Bridge v2: the full stage ops, each write read back from the game
+- `RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS` — Bridge v2: the stage map with the cast only, the green room, the station allocator
+- `RIMMANDRAKE_BUILD_CAST_TRACKS_AND_JOB_TAPS_FIRST_FAMILY` — Bridge v2: the standard cast tracks and the job and reservation taps
+- `RIMMANDRAKE_BUILD_CAST_ASSERTS_AND_ORDER_THROUGH_GIVER` — Bridge v2: capability asserts, order through the giver, the force level on the record
+- `RIMMANDRAKE_BUILD_WORLD_EVENT_TAPS_SECOND_FAMILY` — Bridge v2: taps for mental state, quest, letter, message, fire, explosion; world tracks
+- `RIMMANDRAKE_BUILD_INCIDENT_QUEST_MENTAL_GATES_BEFORE_CERTIFICATE` — Bridge v2: incident, quest and mental gates with an allow list and an attempt count
+- `RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE` — Bridge v2: the tap certificate, route fixtures by real engine acts in a disposable game
+- `RIMMANDRAKE_BUILD_CALM_PROFILE_BREACH_LOG_AND_LEASE` — Bridge v2: the calm profile with a breach log and a lease
+- `RIMMANDRAKE_BUILD_SCENE_VERDICT_LEDGER_RECEIPT_IS_NOT_VERDICT` — Bridge v2: the scene verdict ledger, kinds A, B and C over the runs of one claim
+- `RIMMANDRAKE_BUILD_DEVIATION_RECORD_SETTINGS_FIELD_JOINS_FIRST` — Bridge v2: the deviation record; the settings field set joins it first
+- `RIMMANDRAKE_BUILD_MOD_TRACE_AND_RESET_HOOKS_BY_REFLECTION` — Bridge v2: RMTrace, reset and digest hooks in our mods, found by reflection
+- `RIMMANDRAKE_BUILD_MUTANTS_BY_OVERLAY_AUTHOR_DOES_NOT_CHOOSE` — Bridge v2: mutants by overlay, drawn by the program, shown both ways
+- `RIMMANDRAKE_BUILD_STAMP_AGAIN_REPEATS_WITH_RESET_DIGEST` — Bridge v2: stamp a scene again, repeats with a reset digest
+- `RIMMANDRAKE_BUILD_FLIGHT_PROBES_STATE_AND_FRAME_NO_PICTURES` — Bridge v2: flight probes, state and frame, no pictures; first live run is with the owner
+- `RIMMANDRAKE_BUILD_DEF_FIELD_OVERLAY_WITH_WRITE_RECIPES` — Bridge v2, later: def-field overlay with write recipes
+- `RIMMANDRAKE_BUILD_SWEEP_RUNNER_ON_RUN_PLAN_LIST` — Bridge v2, later: the sweep runner over a list of run plans
+- `RIMMANDRAKE_BUILD_KEEPER_SAVE_RAND_STATE_DIVERGENCE_FINDER` — Bridge v2, later: keeper save with random state, replay, divergence finder
+- `RIMMANDRAKE_BUILD_LOAD_CROSSING_ACT_REBINDS_ALIASES` — Bridge v2, later: save and load in the middle of a scene
+- `RIMMANDRAKE_BUILD_WINDOW_ADAPTERS_TRADE_AND_SETTINGS_FIRST` — Bridge v2, later: window content as data for the trade window and a Mod Settings page
+- `RIMMANDRAKE_REMOVE_GRANT_EXPIRY_CHECKS_ONCE_FOUR_COMPANIONS_REDEPLOYED` — Remove the expiry half of the companion grant checks once all four games run the new companion
+- `RIMMANDRAKE_ADMIT_INHABITED_TO_PIPELINE_AFTER_FOUR_MODS_NEVER_SEEN_IT` — When FlowWorks, Explosive Knockback, Gimme Some Slack and Pyrelands have passed in-game acceptance: admit Inhabited (and weigh Oracle with it) to the 
+- `RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_DRAINED_MOAT` — FlowWorks: a raider the drained 4 m moat held walked out onto the plot and cut a warden (sc_moat_raid, visit 9 run T161018)
+- `RIMMANDRAKE_PROVE_CANONICAL_GUARD_LIVE_AFTER_NEXT_DEPLOY` — Run the canonical-save guard's live proof at a game's next companion deploy
+- `RIMMANDRAKE_WIDEN_SLICE_INTO_RUN_UNTIL_AND_ACT_BATCH` — Bridge 2 instruments: widen the landed slice into jawa/run_until (exact stop, per-tick recorder of any value path, session), jawa/read_paths (hidden r
+- `RIMMANDRAKE_BUILD_SCENE_LIBRARY_TEN_NAMES_FIVE_LAYERS_TODAY` — Bridge 2 scene library, the skeleton: scene.py with receipts, refusals by name, the process mark, help from the contract pages, and the first two entr
+- `RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP` — Bridge 2: convert three real scenes to the scene library (FlowWorks sc_moat_raid, Explosive Knockback storeroom bomb pit, Gimme Some Slack sc_wall_lam
+- `RIMMANDRAKE_SMOOTH_UNFORCED_DIVE_TURNS_NEAR_WALL_PLUG` — Gimme Some Slack: 53 cords through a wall still turn 90-180 deg within 1.5 cells of the wall plug where nothing forces it (lays dive and dive+fit+fit;
+- `RIMMANDRAKE_REVIEW_RULE_FILE_LENGTH_CEILING_HE_LEFT_OFF` — On 2026-12-05 bring the owner the line counts of the four rule files (CLAUDE.md, standing_rulings.md, CHARTER.md, roles/*.md) beside 6,630 lines (2026
+- `RIMMANDRAKE_CHECK_BIOME_RARITY_SLIDERS_AGAINST_NO_WORLDGEN_RULING` — Two held biome mods may carry biome-rarity sliders in their Mod Settings; read whether they exist and whether each can roll a different world, which t
+- `RIMMANDRAKE_REPAIR_LIST_CLOSE_REFUSED_ON_ITEM_ALREADY_DONE` — Repair the List Pipeline close step: it raised NEEDS CONDUCTOR when rimflow close refused RIMMANDRAKE_REWRITE_SKILL_TELEMETRY as already done; an alre
+- `RIMMANDRAKE_RUN_KNOCKBACK_FULL_LIST_CHECKS_AFTER_GAS_CORNER_FIX` — ExplosiveKnockback: run sc_barrage_perf and sc_walk_raid on ArchBig's full list on the gas-corner fix db80fab783 (proof build deployed to ArchBig firs
+- `RIMMANDRAKE_GROUP_OLD_TICKETS_BY_HOME_AND_KEEP_THE_LIST_FOR_GOOD` — Group every old open ticket by its home (mod or biome, pipeline repair, overarching game need, machine), flag what looks overtaken, and keep the list 
+- `RIMMANDRAKE_READ_SMALL_ITEM_MEASUREMENTS_THEN_PICK_OF_FIVE` — Conductor: read the 7-day measurements of the five small agent-work-to-code items, then decide which waiting item goes next (ranks 1, 2, 4, 8, 9)
+- `RIMMANDRAKE_BUILD_ONE_LANDING_COMMAND_215_FORM_REFUSALS` — Agent work to code, rank 1 (medium, waits): one command commits, publishes, retries, notes and closes, with the outcome check in its path
+- `RIMMANDRAKE_BUILD_VISIT_AND_CYCLE_KITS_SEVENTEEN_COPIES_TODAY` — Agent work to code, rank 2 (large, waits): one kit runs a live visit and one runs lane 2 of a blind round; agents still class and look
+- `RIMMANDRAKE_FILL_COMMANDS_INTO_BRIEFS_HELP_ASKED_2807_TIMES` — Agent work to code, rank 3 (small): each detached brief carries its commands filled in, made from the parser; and the census gets a time window
+- `RIMMANDRAKE_BUILD_ONE_TEST_CALL_PARENT_FIX_AND_FAULT` — Agent work to code, rank 4 (medium, waits): one call runs a test on the old code, the new code and a planted fault, and names the build it read
+- `RIMMANDRAKE_CARRY_RESULT_IN_CONDUCTOR_WAKE_408_FILES_OPENED` — Agent work to code, rank 5 (small): the run-end wake carries the run's whole last message and one state block
+- `RIMMANDRAKE_PASTE_ITEM_HISTORY_INTO_BRIEFS_1503_SHOWS_CUT` — Agent work to code, rank 6 (small): the launcher puts the item's history in the brief and counts what it left out
+- `RIMMANDRAKE_LENGTHEN_WAITS_UNDER_ONE_HOUR_CACHE_DIES_AFTER` — Agent work to code, rank 7 (small): test the long-wait setting in a detached run first; then one wait under 59 minutes that checks its job lives
+- `RIMMANDRAKE_MOVE_STAGES_BY_PROGRAM_REVERSES_A_WRITTEN_NEVER` — Agent work to code, rank 8 (medium, waits, needs a ruling): a program advances a mod when every row counts and files a skeleton for each failed row
+- `RIMMANDRAKE_GATHER_ALARM_FACTS_BY_PROGRAM_MOST_END_ACKED` — Agent work to code, rank 9 (medium, waits): a program gathers the facts of an alarm and answers the steady ones
+- `RIMMANDRAKE_TIE_LIFE_SIGN_TO_PROCESS_484_HAND_NOTES` — Agent work to code, rank 10 (small): the lease and the sign of life come from the running process, not from the agent's hand
+- `RIMMANDRAKE_CLEAN_STEVEDESKTOP_TICKETS_FIX_THE_FORM_NOT_EACH_COMPLAINT` — Clean up every SteveDesktop ticket: end the game-stop diagnosis, keep one modern fault tracker, sleep the RAM test, settle Aurora, find the forms behi
+- `RIMMANDRAKE_UNBLOCK_FLOWWORKS_MOAT_RAID_TWELVE_STEWARD_RUNS_SPENT` — FlowWorks 0.1.0 is paused: twelve steward runs spent on the one scene sc_moat_raid; one sitting settles the scene and brings the mod out of its pause
+- `RIMMANDRAKE_SETTLE_OWNER_PAPERWORK_ONE_TRUE_LIST_OF_WHAT_WAITS_ON_HIM` — Make the Conductor's owed list true and write one ranked page of everything that waits on him: cards, looks, reports, confirmations
+- `RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST` — Enact his ruling: no raid tests until the tools are better; a test designer shows that no cheaper test decides the bar; an unaffordable test is replac
+- `RIMMANDRAKE_MOVE_ALL_CODEX_WORK_TO_WSL_ONE_DISPATCH_DOOR_ONE_LOGIN` — Switch to WSL Codex only: one Dispatch door for GPT questions, images and agent runs on one login of his account, no paid key; archive the Windows Cod
+- `RIMMANDRAKE_WORK_NIGHT_QUEUE_PAGE_HIM_IF_MACHINE_SITS_UNDERUSED` — Night order of 2026-11-23, ends when he next writes: work the queued work; launch, as load falls under 28, the Codex-to-WSL run (item RIMMANDRAKE_MOVE
+- `RIMMANDRAKE_RELATE_CHECKS_BY_ROW_ID_NOT_CREATURE_NAME` — rerun_relation read a defName string (RM_FurnaceBeast) as a row id, so an edit to one scene reran every check that names the same creature
+
+## Commits
+
+```
+7a5f81324c ledger: RIMMANDRAKE_SHOW_PYRE_HIS_WALK_FOUR_PICKS_ULLAI_FIRST note
+c36efc9932 art_eval auto-judge pass 20261123_2053: fauna_auto_20261123_2053 (3 decision(s), 0 installed file(s)) (ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE)
+624ab5181f ledger: RIMMANDRAKE_CARRY_RESULT_IN_CONDUCTOR_WAKE_408_FILES_OPENED note
+9a25aaf4cf ledger: RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST note
+f83b30b60a Pyrelands visit 8: the far hawk starts watered (SITE); the long ground chains resume past wild harm (SITE)
+fc38614edc control: acts export, 164 act(s) to rev 164
+080fe04a5a ledger: RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST claim
+256e48a41f ledger: live sweep OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW kept
+4dd9be6b12 ledger: RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST filed
+c411322ee0 ledger: RIMMANDRAKE_UNBLOCK_FLOWWORKS_MOAT_RAID_TWELVE_STEWARD_RUNS_SPENT clone bundled
+4e558e6342 ledger: RIMMANDRAKE_CARRY_RESULT_IN_CONDUCTOR_WAKE_408_FILES_OPENED note
+ba52607f7c ledger: ops_watch alarm(s) OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW
+ea3f790e86 ledger: detached run on RIMMANDRAKE_UNBLOCK_FLOWWORKS_MOAT_RAID_TWELVE_STEWARD_RUNS_SPENT ended
+94f169206d seat_dirt: land 3 safe path(s) left in the seat clone (conversation records, appended ledger lines, filed item prose, settled concept folders)
+e27926067f ledger: RIMMANDRAKE_UNBLOCK_FLOWWORKS_MOAT_RAID_TWELVE_STEWARD_RUNS_SPENT note
+f68720e814 ledger: ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR note
+65aed06fdc ledger: RIMMANDRAKE_CARRY_RESULT_IN_CONDUCTOR_WAKE_408_FILES_OPENED claim
+3ce9fae46c ledger: RIMMANDRAKE_CARRY_RESULT_IN_CONDUCTOR_WAKE_408_FILES_OPENED start
+90103740c2 ledger: RIMMANDRAKE_WIDEN_SLICE_INTO_RUN_UNTIL_AND_ACT_BATCH note
+164fc58ff6 ledger: RUNNER ingest of 1 testq job(s)
+... 10 more: git log --oneline -30
+```
+
+## Game / bridge / tree state at wrap
+
+- running   : RUNNING   (RimWorldWin64 running, bridge answers)
+- recorded  : DOWN  → corrected to UP, measured now
+- Bridge: ArchBig: HELD by BENCH since 18:56 PST (185 min), for: Pyrelands in-game acceptance visit 8 [holder process pid 3845903 alive]
+- Bridge: ArchSmall: HELD by BENCH since 21:58 PST (3 min), for: scene.open scn_68aaadbba354 (src/RimMandrake/bridgetools/scene_smoke_run.py) [holder process pid 1807854 alive]
+
+Uncommitted (replace the placeholder after each line below with whose it is —
+yours, the other seat's, a subagent's):
+
+```
+ M infrastructure/state/ledger/events/BENCH.jsonl   (this window's own ledger lines; landed with the handoff commit)
+ M infrastructure/state/ledger/events/OWNER.jsonl   (this window's records of his words; landed with the handoff commit)
+?? infrastructure/dashboards/   (untracked before this window started, at the 6:48 PM PST wake; not this window's work; left untouched)
+```
+

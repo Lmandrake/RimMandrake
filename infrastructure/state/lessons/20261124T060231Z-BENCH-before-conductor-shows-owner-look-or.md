@@ -1,0 +1,1 @@
+Before the Conductor shows the owner a look or a pick that a ticket lists as open, measure the present state first (installed files against the candidate, the ticket's successor). On 2026-11-23 the fire-hawk flip-book S look was shown though all 15 files were installed since commit 10bc0e7cca; the ticket read superseded and nobody traced it.

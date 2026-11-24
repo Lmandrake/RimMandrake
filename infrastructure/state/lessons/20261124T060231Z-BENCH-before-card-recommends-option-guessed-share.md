@@ -1,0 +1,1 @@
+Before a card recommends an option on a guessed share, draw a sample. On 2026-11-23 the Conductor guessed that over half of 936 old open tickets were dead and recommended a one-by-one sort; three batches measured 80 of 87 real work, mostly content for mods that are held or not started. Old does not mean dead: it mostly means work for a mod nobody builds now.

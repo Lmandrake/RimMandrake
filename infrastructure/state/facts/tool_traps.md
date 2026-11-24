@@ -462,3 +462,8 @@ By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and les
 
   Before you call a liveness failure real, read the lasso trace for the cause. Require a lost input in the trace of
   any mutant.
+
+- **`detached_helper.py launch` under a wrapping `timeout`.** When the machine is loaded (load 47 to 64 on 14 cores,
+  measured 2026-11-23), one launch ran past 100 s, and `timeout 100` killed it before the run started. The launch
+  printed nothing, and `detached_helper.py status` showed no run. Launch with no `timeout`, as a background command,
+  and read `status` to confirm that the run started.
