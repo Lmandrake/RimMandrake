@@ -491,7 +491,16 @@ def publish_result(d, res):
 # ---------------------------------------------------------------- start
 
 def cmd_start(retry):
-    job = S.validate_job(json.load(sys.stdin))
+    global S
+    job = json.load(sys.stdin)
+    refresh_schema = False
+    try:
+        job = S.validate_job(job)
+    except S.SchemaError:
+        if (os.environ.get("TESTQ_SKIP_PULL") == "1" or not isinstance(job, dict)
+                or not isinstance(job.get("id"), str) or not S.JOB_ID_RE.fullmatch(job["id"])):
+            raise
+        refresh_schema = True
     try:        # admit nothing whose result could not be checked: the job stays pending and the error is logged
         contract_models()
     except ContractMissing as e:
@@ -526,14 +535,28 @@ def cmd_start(retry):
         S.dump(job, os.path.join(d, "job.json"))
         write_text(p("jobs", job["id"]), aid)
 
+        def refuse(cause, note):
+            rc, head = git("rev-parse", "HEAD")
+            res = base_result(job["id"], aid, head if rc == 0 else None)
+            res.update(outcome="REFUSED", cause=cause, note=note)
+            publish_result(d, res)
+            return out({"attempt": aid, "state": "finished", "outcome": "REFUSED", "cause": cause})
+
         ready_for_pull(d)
         if os.environ.get("TESTQ_SKIP_PULL") != "1":
+            if refresh_schema:
+                if os.path.exists(os.path.join(CLONE, ".git", "index.lock")):
+                    return refuse("SYNC", "runner clone still holds index.lock before schema refresh")
+                if git("symbolic-ref", "-q", "HEAD") != (0, "refs/heads/main"):
+                    return refuse("SYNC", "runner clone could not be put on main before schema refresh")
+                rc, msg = git("status", "--porcelain", "--untracked-files=no")
+                if rc:
+                    return refuse("SYNC", "could not read runner status before schema refresh: " + msg[-300:])
+                if msg:
+                    return refuse("SYNC", "runner clone is still dirty before schema refresh: " + msg[-300:])
             rc, msg = git("pull", "-q", "--ff-only", "origin", "main")
             if rc != 0:
-                res = base_result(job["id"], aid, git("rev-parse", "HEAD")[1])
-                res.update(outcome="REFUSED", cause="SYNC", note="runner pull failed: " + msg[-300:])
-                publish_result(d, res)
-                return out({"attempt": aid, "state": "finished", "outcome": "REFUSED", "cause": "SYNC"})
+                return refuse("SYNC", "runner pull failed: " + msg[-300:])
             # STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: the contract was loaded BEFORE this pull, while spawn copies the
             # worker and schema from disk AFTER it; a landing that adds a result field then had the new worker write
             # it and the old contract refuse it (the 07:33Z canary). The outer copy carries the pulled contract.
@@ -543,10 +566,20 @@ def cmd_start(retry):
                 contract_models()
             except ContractMissing as e:
                 _MODELS[:] = before     # the refusal itself is checked by the contract that did load
-                res = base_result(job["id"], aid, git("rev-parse", "HEAD")[1])
-                res.update(outcome="REFUSED", cause="SYNC", note="the pulled contract does not load: %s" % str(e)[-300:])
-                publish_result(d, res)
-                return out({"attempt": aid, "state": "finished", "outcome": "REFUSED", "cause": "SYNC"})
+                return refuse("SYNC", "the pulled contract does not load: %s" % str(e)[-300:])
+            if refresh_schema:
+                path = os.path.join(CLONE, "src", "RimMandrake", "Utils", "testq", "schema.py")
+                try:
+                    pulled = importlib.util.module_from_spec(importlib.util.spec_from_file_location("schema", path))
+                    with open(path, "rb") as f:   # read the pulled source even if a cached .pyc appears current
+                        exec(compile(f.read(), path, "exec"), pulled.__dict__)
+                except (ImportError, OSError, SyntaxError) as e:
+                    return refuse("SYNC", "the pulled job schema does not load: %s" % str(e)[-300:])
+                sys.modules["schema"] = S = pulled
+                try:
+                    job = S.validate_job(job)
+                except S.SchemaError as e:
+                    return refuse("SCHEMA", str(e))
         repair_reset_list(d)    # the last attempt may have died before its own repair
         head = git("rev-parse", "HEAD")[1]
         if git("merge-base", "--is-ancestor", job["source_sha"], "HEAD")[0] != 0:

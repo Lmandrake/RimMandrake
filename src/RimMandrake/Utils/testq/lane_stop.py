@@ -14,7 +14,7 @@ import schema as S
 RETRY_S = 30 * 60           # the end of a stop and of an auto pause: one job is tried again (page, LIMITS)
 DEFAULT_PAUSE_H = 2         # a hand pause that names no end
 ESCALATE_S = 60 * 60        # a game still stopped this long after its first stop is the steward's
-NEVER = ("BLOCKED_SELECTION", "GUARD_HELD", "CANARY")       # a selection, a lock, or a cause with its own pause rule
+NEVER = ("BLOCKED_SELECTION", "SCHEMA", "GUARD_HELD", "CANARY")   # a bad request, a lock, or a cause with its own pause
 
 
 def stop_path(T, host):

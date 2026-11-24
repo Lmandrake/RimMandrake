@@ -19,6 +19,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from pathlib import Path
 from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -644,7 +645,89 @@ def t_wait_prints_a_short_result():
               and "whole record" not in out, "wait prints the outcome and failing rows within 39 lines")
 
 
+def t_worker_schema_refresh():
+    """An older runner admits a new selector after one pull; bad jobs finish and the queue goes on."""
+    import testq as T
+    with tempfile.TemporaryDirectory(prefix="rf_testq_schema_") as tmp:
+        origin, clone, home, queue, trace = (Path(tmp, n) for n in ("origin", "runner", "home", "queue", "git.log"))
+        env = {k: v for k, v in os.environ.items() if not k.startswith("TESTQ_")}
+        env.update(TESTQ_REPO=str(clone), TESTQ_CLONE=str(clone), TESTQ_HOME=str(home), GIT_TRACE=str(trace),
+                   TESTQ_CMD_RESETREPAIR="true", TESTQ_WORKER_HOST="stevedesktop")
+
+        def git(*args):
+            return subprocess.run(["git", "-c", "core.hooksPath=/dev/null", "-c", "user.name=t", "-c", "user.email=t@t",
+                                   *args], env=env, check=True, capture_output=True, text=True, timeout=30).stdout.strip()
+
+        git("init", "-q", "-b", "main", str(origin))
+        files = ("src/RimMandrake/Utils/testq/schema.py", "src/RimMandrake/contracts/models.py",
+                 "src/RimMandrake/bridgetools/companion_identity.py")
+        for rel in files:
+            dst = origin / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(Path(REPO, rel), dst)
+        git("-C", str(origin), "add", *files)
+        git("-C", str(origin), "commit", "-qm", "old schema")
+        git("clone", "-q", str(origin), str(clone))
+        schema = origin / files[0]
+        schema.write_text(schema.read_text().replace('"full", "proofs", "checks"}', '"full", "proofs", "checks", "new_key"}', 1))
+        git("-C", str(origin), "commit", "-qm", "new selector", "--", files[0])
+        sha = git("-C", str(origin), "rev-parse", "HEAD")
+        driver = ("import sys; sys.path.insert(0, sys.argv.pop(1)); import worker as W; "
+                  "W.guard_held_by_other = lambda: None; W.preflight_job = lambda *a: None; "
+                  "W.spawn = lambda *a: None; sys.exit(W.main())")
+
+        def remote(args, stdin=None):
+            r = subprocess.run([sys.executable, "-c", driver, os.path.join(REPO, "infrastructure", "stevedesktop"),
+                                *args], input=stdin, env=env, capture_output=True, text=True, timeout=30)
+            return r.returncode, T.last_json_object(r.stdout.splitlines(), r.returncode, r.stdout + r.stderr)
+
+        def pulls():
+            return trace.read_text().count("built-in: git pull -q --ff-only origin main")
+
+        def job(key, priority=50):
+            j = S.make_job("Mock", {"rows": ["r1"]}, "commission", "BENCH", sha, priority=priority)
+            if key:
+                j["selector"][key] = True
+            return j
+
+        lock = clone / ".git/index.lock"
+        lock.touch()
+        os.utime(lock, (1000, 1000))  # ready_for_pull must clear a pre-boot lock before the schema recovery
+        rc, started = remote(["start"], json.dumps(job("new_key")))
+        check(rc == 0 and started.get("state") == "started" and started.get("runner_sha") == sha and pulls() == 1,
+              "worker admits a new selector after exactly one pull: exit %d, %s" % (
+                  rc, (started.get("error") or str(started)).strip().splitlines()[-1]))
+        env["TESTQ_HOME"] = str(home / "locked")
+        lock.touch()
+        before = pulls()
+        rc, blocked = remote(["start"], json.dumps(job("bad_key")))
+        check(rc == 0 and blocked.get("cause") == "SYNC" and lock.exists() and pulls() == before,
+              "schema recovery leaves a live index lock in place and makes no pull: %s" % (blocked.get("cause") or rc))
+        lock.unlink()
+        env["TESTQ_HOME"] = str(home / "second")
+        bad = [job("bad_key", 90), job("bad_key", 80)]
+        next_job = job(None)
+        with patch.object(T, "QHOME", str(queue)), patch.object(T, "worker_for", return_value=remote):
+            T.ensure_dirs()
+            for j in bad + [next_job]:
+                S.dump(j, T.q("pending", j["id"] + ".json"))
+            before = pulls()
+            for _ in range(3):
+                for rec in T.records("running"):
+                    T.reconcile(rec)
+                T.admit({})
+            finished = [r.get("result", {}) for r in T.records("done")]
+            outcomes = sorted((r["job"], r["outcome"], r["cause"]) for r in finished)
+            check(outcomes == sorted((j["id"], "REFUSED", "SCHEMA") for j in bad)
+                  and all(r["rows"] == [] and r["counts"] == {} for r in finished)
+                  and not T.records("pending") and [r["job"] for r in T.records("running")] == [next_job]
+                  and pulls() - before == 3,
+                  "bad selectors finish REFUSED/SCHEMA once each and the next job starts: done=%s, pending=%d, pulls=%d"
+                  % (outcomes, len(T.records("pending")), pulls() - before))
+
+
 def main():
+    t_worker_schema_refresh()
     for test in (t_wait_returns_recorded_rows, t_wait_detects_a_stale_heartbeat, t_wait_stops_on_unknown_or_cancelled,
                  t_wait_distinguishes_unreadable_empty_and_zero, t_wait_prints_a_short_result):
         test()

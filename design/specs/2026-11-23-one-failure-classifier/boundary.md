@@ -47,7 +47,7 @@ request gives the same refusal).
 - **a-run-record-reads-as-run-void-reads-it.** For a detached run record, the answer is a system cause of
   `run_void.system_cause`, else ENDED. A record that is missing or has no result is UNCLASSED.
 - **a-testq-job-reads-its-cause.** DONE with a FAIL row of the chain reads MOD FAILURE, with a PASS row SUCCESS, with
-  neither COULD NOT LOOK. The causes PREFLIGHT and BLOCKED_SELECTION read BAD REQUEST. Any other
+  neither COULD NOT LOOK. The causes PREFLIGHT, BLOCKED_SELECTION and SCHEMA read BAD REQUEST. Any other
   REFUSED reads REFUSED. INTERRUPTED reads KILLED. INVALID reads by `invalid_class`: TEST or DELIVERY is APPARATUS FAULT,
   GAME is UNRESOLVED (the mod could have spoiled it), and CANARY, HARNESS and DEPLOY are APPARATUS FAULT. A cancelled
   job reads STOPPED.

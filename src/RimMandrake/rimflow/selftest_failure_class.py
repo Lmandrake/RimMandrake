@@ -62,6 +62,7 @@ def t_a_testq_job_reads_its_cause(F):
                    (tq("DONE", rows=[("a", "UNMEASURED")]), "COULD NOT LOOK"), (tq("DONE", rows=[("b", "FAIL")]), "COULD NOT LOOK"),
                    (tq("REFUSED", "LOAD"), "REFUSED"), (tq("REFUSED", "SOURCE_SHA_MISSING"), "REFUSED"),
                    (tq("REFUSED", "PREFLIGHT"), "BAD REQUEST"), (tq("INVALID", "BLOCKED_SELECTION"), "BAD REQUEST"),
+                   (tq("REFUSED", "SCHEMA"), "BAD REQUEST"),
                    (tq("INTERRUPTED", "CRASH"), "KILLED"), (tq("INVALID", "CANARY"), "APPARATUS FAULT"),
                    (tq("INVALID", "GAME_DIED"), "UNRESOLVED"), (tq("INVALID", "HANG"), "UNRESOLVED"),
                    (tq("INVALID", "LOAD", note="unknown chain(s) for FlowWorks"), "APPARATUS FAULT"),

@@ -26,7 +26,7 @@ pause. An **equal ending** is the same outcome, the same cause and the same note
 - **a-done-job-or-a-different-ending-counts-from-one.** A DONE job, or a different ending, between them: no stop.
 - **one-mods-harness-fault-does-not-stop-the-game.** Two equal INVALID/HARNESS endings of one mod are the mod's
   (`repeat_guard.py` holds its chain); the game goes on.
-- **a-cancelled-or-selection-refusal-never-stops.** A cancelled job, GUARD_HELD, BLOCKED_SELECTION and CANARY never count.
+- **a-cancelled-or-selection-refusal-never-stops.** A cancelled job, GUARD_HELD, BLOCKED_SELECTION, SCHEMA and CANARY never count.
 - **a-stop-retries-by-itself.** After the stop's end one job is admitted; the same ending again stops the game again at
   once; a DONE clears the stop.
 - **one-ticket-for-one-cause.** The job that made the stop carries its cause to ingest, which files one

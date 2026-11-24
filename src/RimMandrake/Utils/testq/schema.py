@@ -49,7 +49,8 @@ RESULT (written once per ATTEMPT by the worker into its outbox; the dispatcher k
                 `cause` says why) | INTERRUPTED (killed mid-run: watchdog or signal) | REFUSED (never started)
   cause         null | GUARD_HELD | SOURCE_SHA_MISSING | SYNC | DEPLOY | LOAD | CANARY | HANG | HARNESS |
                 BLOCKED_SELECTION | CRASH | GAME_DIED (the game the attempt loaded was gone or replaced after the run) |
-                PREFLIGHT (REFUSED before any deploy: preflight.py named a check that would have made the job INVALID)
+                PREFLIGHT (REFUSED before any deploy: preflight.py named a check that would have made the job INVALID) |
+                SCHEMA (the pulled runner schema rejected the job)
   deployed      {"mods": {name: {"dll_sha256", "defs_sha256", "files"}}, "modsconfig_sha256_prerun"}
                 what was ON DISK in the game's Mods folder when the run started - the attested identity
   rows          [{"chain", "row", "verdict", "validity", "freshness", "detail"}]; verdict is PASS | FAIL |
@@ -82,7 +83,7 @@ GATES = ("on", "off", "shadow")  # modcheck run --gate choices; None = modcheck 
 LANES = ("stevedesktop", "archmagi", "any")
 OUTCOMES = ("DONE", "INVALID", "INTERRUPTED", "REFUSED")
 CAUSES = (None, "GUARD_HELD", "SOURCE_SHA_MISSING", "SYNC", "DEPLOY", "LOAD", "CANARY", "HANG", "HARNESS",
-          "BLOCKED_SELECTION", "CRASH", "GAME_DIED", "PREFLIGHT")
+          "BLOCKED_SELECTION", "CRASH", "GAME_DIED", "PREFLIGHT", "SCHEMA")
 VERDICTS = ("PASS", "FAIL", "UNMEASURED", "NOT_RUN", "SKIP")
 JOB_ID_RE = re.compile(r"^J\d{8}T\d{6}Z-[0-9a-f]{6}$")
 NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+$")

@@ -112,6 +112,10 @@ def t_stop():
             r.finish(A, job(11 + 2 * n), x, cancel)
         check(r.admits(A), "a-cancelled-or-selection-refusal-never-stops")
         check(LS.signature(res("INVALID", "CANARY")) is None, "a-cancelled-or-selection-refusal-never-stops: CANARY has its own rule")
+    with Rig() as r:
+        for n in (1, 2):
+            r.finish(A, job(n), res("REFUSED", "SCHEMA", "unknown selector key"))
+        check(r.admits(A), "a-cancelled-or-selection-refusal-never-stops: repeated REFUSED/SCHEMA leaves the game open")
 
 
 def pause(**kw):

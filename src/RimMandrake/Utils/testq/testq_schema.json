@@ -252,7 +252,8 @@
       "BLOCKED_SELECTION",
       "CRASH",
       "GAME_DIED",
-      "PREFLIGHT"
+      "PREFLIGHT",
+      "SCHEMA"
      ]
     },
     "chain_versions": {
