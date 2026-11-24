@@ -1561,6 +1561,18 @@ instructed."*
   of 2026-11-24.
 - The line stands until he gives another figure. Every brief that sends work to Codex states it.
 
+### On the day of an account's reset, that account drains — owner, 2026-11-24
+
+*"On the day of an account reset, the standing rules change. We should use GPT today down to 0% because it's about to
+reset. The same is true for other accounts too (except we don't go to 0% on Claude accounts so we don't get stuck,
+otherwise we would). GPT doesn't typically drive/orchestrate, so we can drain to 0%."*
+
+- On the day that an account resets, its leave line does not apply: allowance that the reset would erase is used.
+- Codex drains to 0% on its reset day. Codex does not drive or orchestrate, so an empty Codex stops no run.
+- A Claude account drains to its floor on its reset day, never to 0%. An agent on a Claude account at 0% is stuck.
+- The Conductor reads this as a rule for Codex, system and lukas. Steve's account keeps its own rulings (§Account and
+  capacity budget) and his dated exceptions, until the owner says that this rule covers it too.
+
 ## Codex agents run with full machine access — owner, 2026-11-09
 
 *"Please grant that authority to all agents immediately."* He gave this order when Codex ran on Windows and Codex's
