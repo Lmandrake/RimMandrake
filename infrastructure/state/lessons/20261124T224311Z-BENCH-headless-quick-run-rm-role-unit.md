@@ -1,0 +1,1 @@
+A headless quick run (RM_ROLE_UNIT set) is not the Conductor window: before removing another run's clone or files, remember --per-ruling ..ALL_BUT_FIVE_ACTS is refused for it. Write the ledger record BEFORE the act, so the refusal arrives while nothing is done; route the removal as a note to the owning run instead.
