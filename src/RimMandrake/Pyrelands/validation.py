@@ -3052,6 +3052,8 @@ def heat_dome(t):
 def embergrass_regrow(t):
     """Fixed 20x20 cohort, pre-laid to RM_FE_Ash_Deep (the real ground), grassed, burned, then a COMPRESSED regrow window (override, see below).
     Counts only plants spawned AFTER the burn (ThingID not in the pre-burn set)."""
+    if os.environ.get(REGROW_PART_ENV) == "growth":
+        return _ten_embergrass_regrow(t)
     _pad(t, PAD_REGROW)
     t.clear_area(size=TEST_SIZE)
     regrow = _rect(t, 20)
@@ -5313,6 +5315,14 @@ def regrow_rate_verdict(series, gd):
     watered ember grass grows faster than dry, and bursts land on watered cells only."""
     out = {"rates": {}, "censored": {}, "eventDay": {}, "emberVanillaRate": None, "bursts": {}, "failures": [],
            "unmeasured": []}
+    counts = dict((k, [len(x) for x in (series or {}).get(k) or [] if isinstance(x, (list, tuple))])
+                  for k in ("dry", "watered", "vanilla"))
+    if any(len(set(c)) > 1 for c in counts.values()):
+        # HARNESS (visit 9, 2026-11-24): plants left and came in (dry 16 -> 13 -> 15), and a plant that came in or was grazed
+        # reads low beside the rest, the same as a burst. The reads no longer follow the same plants.
+        out["unmeasured"].append("plants left or came into a patch, so a fall is not a burst (plants read each day): %r"
+                                 % (counts,))
+        return out
     for k in ("dry", "watered", "vanilla"):
         r, c, e = regrow_patch_rate((series or {}).get(k))
         out["rates"][k], out["censored"][k], out["eventDay"][k] = r, c, e
@@ -5357,18 +5367,32 @@ def regrow_rate_verdict(series, gd):
 
 
 def _ten_embergrass_regrow(t):
-    """sc_grass_regreens: three patches burned together, aged past 7 days (no fresh-burn bonus); one is then watered
+    """sc_grass_regreens: three patches burned together, aged past the fresh-burn bonus (freshBurnDays held at
+    REGROW_BONUS_DAYS for the row, so the bonus is spent in a day, not a week); one is then watered
     (WaterShallow beside it); ember grass sown on the dry and the watered patch, Plant_Grass on dry ash; daily growth for
     5 days and a burst count (regrow_rate_verdict: rates read before maturity, a burst is a day the patch's growth fell).
     Dry ember grass >= its vanilla rate (Plant_Grass on the same dry ash scaled by growDays), watered > dry, bursts on
-    watered cells only."""
+    watered cells only. SITE (visit 9, 2026-11-24): a steel ring keeps grazers out of the patches (the row had none, and 9 of
+    16 watered plants were gone on day 1); a pawn inside when it closes is removed, and a plant count that moves reads UNMEASURED."""
     _independent(t)
     with _comp(t, "regrow_dry_watered_vanilla"):
         _pad(t, TEN_PAD_GRASS)
+        _set(t, dict(dict((f, False) for f in ISOLATION_OFF), freshBurnDays=REGROW_BONUS_DAYS))
         t.clear_area(size=TEST_SIZE)
         x, z = t.anchor
         patches = {"dry": (x - 9, z - 2, 4, 4), "watered": (x - 2, z - 2, 4, 4), "vanilla": (x + 5, z - 2, 4, 4)}
-        _firebreak(t, (x - 9, z - 2, 18, 4))
+        yard = (x - 9, z - 2, 18, 4)
+        _firebreak(t, yard)
+        if os.environ.get(PLANT_REGROW_NO_RING_ENV) == "1":
+            _note(t, "PLANTED STATE", "%s=1: no ring round the patches" % PLANT_REGROW_NO_RING_ENV)
+        else:
+            ring = [(cx, cz) for cx in range(yard[0] - 1, yard[0] + yard[2] + 1)
+                    for cz in range(yard[1] - 1, yard[1] + yard[3] + 1)
+                    if cx in (yard[0] - 1, yard[0] + yard[2]) or cz in (yard[1] - 1, yard[1] + yard[3])]
+            t.bridge_call("jawa/build_batch", ops=";".join("Wall:%d,%d" % c for c in ring), stuff="Steel")
+            for pw in (t.bridge_call("jawa/list_pawns", rect=_rs(yard), limit=100) or {}).get("pawns") or []:
+                if pw.get("id") and not pw.get("isPlayer"):
+                    t.bridge_call("jawa/pawn_force_incapacitate", pawn=pw["id"], action="vanish")
         # SITE (Pyrelands visit 4, 2026-11-21): the patches were laid as RM_FE_Ground_Soil, where the ash field never acts
         # (cells read ashField False, fertility 0.7 on all three, visit 3 and 4), so the watered patch could not outgrow
         # the dry one; the scene (scenes.json sc_grass_regreens) asks for dry and watered DEEP ASH.
@@ -5378,7 +5402,7 @@ def _ten_embergrass_regrow(t):
             _fire(t, r)
         _wait(t, 2 * TEN_HOUR)
         _extinguish(t)
-        _wait(t, 7 * TEN_DAY + TEN_HOUR)   # past 7 days: the freshBurnDays bonus is spent
+        _wait(t, int(REGROW_BONUS_DAYS * TEN_DAY) + TEN_HOUR)   # past freshBurnDays: the bonus is spent (read back below)
         t.bridge_call("jawa/set_terrain", x=x - 3, z=z - 2, terrainDef="WaterShallow", width=1, height=4, layer="top")
         _wait(t, 2600)                     # a full watering sweep
         cells = dict((k, _probe(t, r[0] + 1, r[1] + 1)) for k, r in patches.items())
@@ -5392,18 +5416,22 @@ def _ten_embergrass_regrow(t):
         _plants(t, "Plant_Grass", patches["vanilla"], growth=0.05)
         defs = _get_defs(t, "ThingDef/RM_FE_Plant_EmberGrass;ThingDef/Plant_Grass", "plant")
         series = dict((k, [_ten_embergrass_regrow_growth(t, r)]) for k, r in patches.items())
-        for _ in range(5):
+        seen = []
+        for day in range(5):
             _wait(t, TEN_DAY)
             for k, r in patches.items():
                 series[k].append(_ten_embergrass_regrow_growth(t, r))
+            near = (t.bridge_call("jawa/list_pawns", rect=_rs((x - 15, z - 8, 30, 16)), limit=200) or {}).get("pawns") or []
+            seen.append([(pw.get("kindDef"), pw.get("x"), pw.get("z")) for pw in near if not pw.get("isPlayer")])
         if _live(t):
-            _note(t, "patch cells after 7 days (burnTick, watered, bonus)", cells)
+            _note(t, "patch cells after the bonus (burnTick, watered, bonus)", cells)
+            _note(t, "wild pawns within 6 cells of the patches at each daily read", seen)
             if cells["dry"].get("watered") or cells["vanilla"].get("watered") or not cells["watered"].get("watered"):
                 _unmeasured(t, "the patches are not dry/watered as staged: %r" % cells)
             if any(str(c.get("ashField")) != "True" for c in cells.values()):
                 _unmeasured(t, "a patch is not ash-field ground (the scene asks for deep ash): %r" % cells)
             if any(float(c.get("bonus") or 0) > 0 for c in cells.values()):
-                _unmeasured(t, "a patch still carries the fresh-burn bonus after 7 days: %r" % cells)
+                _unmeasured(t, "a patch still carries the fresh-burn bonus after it was spent: %r" % cells)
             if any(str(c.get("burnTick")) in ("-1", "None") for c in cells.values()):
                 _unmeasured(t, "a patch was never burned (burnTick -1): %r" % cells)
             if any(v is None for s in series.values() for v in s):
@@ -5422,6 +5450,9 @@ def _ten_embergrass_regrow(t):
 
 
 PLANT_REGROW_WET_OFF_ENV = "PYRE_PLANT_REGROW_WET_ROOTS_OFF"
+PLANT_REGROW_NO_RING_ENV = "PYRE_PLANT_REGROW_NO_RING"   # planted state: grazers may reach the patches
+REGROW_PART_ENV = "PYRE_REGROW_PART"   # "growth": a planted run of this row alone; the chain's other rows do not run
+REGROW_BONUS_DAYS = 1.0
 PLANT_VENOM_TEND_WRONG_ENV = "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT"   # planted state: the tend lands on the untended patient   # planted state: the ash field's water switched off at sowing
 
 

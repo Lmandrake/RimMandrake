@@ -36,6 +36,15 @@ VISIT4 = {"dry": [0.05, 0.1, 0.16, 0.21, 0.26, 0.32], "watered": [0.05, 0.1, 0.1
           "vanilla": [0.05, 0.18, 0.29, 0.4, 0.52, 0.64]}   # visit_4/evidence/run_embergrass_regrow.log, daily growth note
 
 
+# visit_9/evidence/run_regrow.log (2026-11-24): no ring, grazed. The dry patch's fifth day reads one plant at 0.68 beside
+# fourteen mature: not a restart at 0.05 (the patch gains 0.51 a day), yet the parent counted a burst.
+VISIT9 = {"dry": [[0.05] * 16, [0.17] + [0.56] * 7 + [0.57] * 5, [0.57, 0.71] + [1.0] * 12, [0.62] + [1.0] * 14, [1.0] * 15,
+                  [0.68] + [1.0] * 14],
+          "watered": [[0.05] * 16, [0.38, 0.56, 0.57, 0.57, 0.77, 0.77, 0.77], [0.3, 0.67, 0.67, 0.85] + [1.0] * 6,
+                      [0.71, 0.9] + [1.0] * 9, [0.85] + [1.0] * 11, [0.58] + [1.0] * 11],
+          "vanilla": [[0.05] * 16, [0.05] * 16, [0.12] * 16, [0.16] * 16, [0.2] * 16, [0.24] * 16]}   # vanilla: the log was cut; these reads are filled in
+
+
 def old_verdict(series, gd):
     """The parent's inline decision (validation.py at 546cbfc199, _ten_embergrass_regrow), returned as failures."""
     means = dict((k, [x if isinstance(x, (int, float)) else sum(x) / len(x) for x in s]) for k, s in series.items())
@@ -127,6 +136,19 @@ def main():
     ok = any("burst" in f for f in vb["failures"])
     bad += not ok
     print("%s dry patch fell 1.0 -> 0.94 (a restart) -> %r" % ("PASS" if ok else "FAIL", vb["failures"]))
+    # visit 9: plants left and came in, so a fall is no burst: UNMEASURED and no failure
+    v9 = decide(VISIT9, GD)
+    ok = not v9["failures"] and bool(v9["unmeasured"])
+    bad += not ok
+    print("%s visit-9 grazed series -> failures %r unmeasured %r" % ("PASS" if ok else "FAIL", v9["failures"], v9["unmeasured"]))
+    # the same fall with every plant still there is a burst: one dry plant of 16 restarted
+    full = {"dry": [[0.05] * 16, [0.57] * 16, [1.0] * 16, [1.0] * 16, [1.0] * 16, [0.5] + [1.0] * 15],
+            "watered": [[0.05] * 16, [0.66] * 16, [1.0] * 16, [1.0] * 16, [1.0] * 16, [1.0] * 16],
+            "vanilla": [[0.05 + 0.1 * d] * 16 for d in range(6)]}
+    vf = decide(full, GD)
+    ok = any("burst" in f for f in vf["failures"])
+    bad += not ok
+    print("%s one dry plant of sixteen restarted, none gone -> %r" % ("PASS" if ok else "FAIL", vf["failures"]))
     wrong, near, unm, worst, n = sweep(decide)
     ok = not wrong
     bad += not ok
@@ -135,7 +157,7 @@ def main():
                                                                           unm, worst if worst is not None else -1))
     for w in wrong[:5]:
         print("   wrong: rd %s rw %s rv %s burst %s -> %r" % w)
-    print("%s%s: %d of 4 checks failed" % (NAME, " --old" if old else "", bad))
+    print("%s%s: %d of 6 checks failed" % (NAME, " --old" if old else "", bad))
     return 1 if bad else 0
 
 
