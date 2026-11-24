@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "pre_human",
-  "stage_label": "Walk brief (Stage 7)",
-  "since": "2026-11-24T04:28:32-08:00",
+  "stage": "his_walk",
+  "stage_label": "His live walk (Stage 8)",
+  "since": "2026-11-24T04:50:46-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -368,6 +368,23 @@
         "steward_confirms",
         "exit_met",
         "build_match"
+      ]
+    },
+    {
+      "from": "pre_human",
+      "to": "his_walk",
+      "at": "2026-11-24T04:50:46-08:00",
+      "by": "BENCH",
+      "why": "walk brief arrival_1 written",
+      "unit": "rm-detached-bench-rimmandrake-steward-pyrelands-pre-human-1795523659",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "walk_brief",
+        "walk_items_closed"
       ]
     }
   ],
