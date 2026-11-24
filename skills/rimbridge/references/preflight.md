@@ -10,7 +10,7 @@ This is the full text; `SKILL.md` §0 carries one pointer row. Source: `src/RimM
 python3 src/RimMandrake/Utils/preflight_bridge.py --tier full --deep     # before launching the full list
 python3 src/RimMandrake/Utils/preflight_bridge.py --tier minimal --purpose menu
 python3 src/RimMandrake/Utils/preflight_bridge.py --modset acc_green_min # any modset_builder tier as the intended list
-python3 src/RimMandrake/Utils/preflight_bridge.py --tier full --live     # after launch: files + OS only, no bridge call
+python3 src/RimMandrake/Utils/preflight_bridge.py --tier full --live     # after launch: files, OS and one running_mods bridge read
 ```
 
 Exit **0 GREEN**, **1 NO-GO** (a FAIL), **2 NOT-GREEN** (no FAIL, but a required check is UNMEASURED or
@@ -19,7 +19,11 @@ was skipped by fail-fast). Each line: `STATUS id name req|opt seconds reason`. R
 complete` reads it.
 
 - **Cheapest first, fail-fast.** A required FAIL stops the run; `--all` runs everything.
-- **"Could not ask" is UNMEASURED, never PASS.** GREEN needs no FAIL and no required UNMEASURED.
+- **"Could not ask" is UNMEASURED, never PASS.** GREEN needs no FAIL and no required UNMEASURED. A NOTE names a
+  finding that does not change whether this load is sound.
+- **Read the verdict before you send the launch.** A launch in the same message as the preflight starts before the
+  verdict is back, and a pipe to `tail` hides the exit code.
+- An `--only` run writes its `--json` file but not `last_preflight.json`.
 - **`--deep`** lets the patched-tree lint build on a cache miss (~1-3 min under `python.exe` on 551 mods).
   Without it a miss is UNMEASURED, so a changed mod set cannot read GREEN by accident.
 - **`--purpose test`** (default) refuses known wedgers (RealFoW on a bland-world run). Use
@@ -36,8 +40,8 @@ complete` reads it.
 | O02 | this game's driver lock free or ours (`game_lock.query`; `RM_GAME_INSTANCE` names the game); free under `pipe off game:<g>` FAILs | #22, #50 |
 | O03 | free disk C: >= 20 GB, D: >= 10 GB | |
 | O04 | live `ModsConfig.xml` == intended list, **ordered**; names a Core-only reset | #19, #47, #54 |
-| O05 | intended list: no composed-member ids, duplicates or uninstalled ids | #58, #80 |
-| O06 | every mod we build is on the full list (opt; `modmanifest.shipping_gap`) | P-a |
+| O05 | intended list: no composed-member ids, duplicates or uninstalled ids. On the full list, an uninstalled id is a NOTE if it is not ours, not the bridge or Harmony, and no listed mod needs it: the game drops it and loads the rest. Every other uninstalled id is a FAIL | #58, #80 |
+| O06 | every mod we build is on the full list (opt; `modmanifest.shipping_gap`): a mod that is off the list is a NOTE, a listed composed member is a FAIL | P-a |
 | O07 | known wedgers for the purpose | #61 |
 | O08 | previous `Player.log` archived | #26 |
 | O09 | deployed companion == repo artifact (sha + build id) | #51, #57, P-c |
@@ -58,7 +62,7 @@ The intended list is `--modset <tier>` when given, else `modmanifest.py`'s
 | L01 | this PID started before the log was last written, its log holds `Bridge token:`, and the bridge port is held by that PID |
 | L02 | no `Resetting mods config` / `Recovered from incompatible or corrupted mods` |
 | L03 | `launch_gate`: no missing RimMandrake types; prints the FIRST exception and the `Config error in` count |
-| L04 | the running list (RimDefDump's `manifest.json`, written after this PID started) == intended, ordered |
+| L04 | the running list (`jawa/running_mods`, read from this PID) == intended, ordered, without the ids that O05 notes as dropped |
 | L05 | `[JawaBench] ready: N tools, build X`: X == the repo artifact's build |
 | L06 | `[JawaBench] TPS sampler installed (bridge-registration)` (opt) |
 | L07 | `[JawaBench] map awareness:` installed, not failed (opt) |

@@ -13,8 +13,8 @@ Reuse, not a parallel system: run_identity (deploy fingerprint), effective_def_l
 check_load/running_mods_snapshot (actual ordered running list), launch_gate (missing types), belt_watchdog (wedgers).
 
 CONTRACT
-  * Every check prints PASS / FAIL / UNMEASURED / UNSUPPORTED, its cost, and a reason. "Could not ask" is
-    UNMEASURED, never PASS.
+  * Every check prints PASS / NOTE / FAIL / UNMEASURED / UNSUPPORTED, its cost, and a reason. "Could not ask" is
+    UNMEASURED, never PASS. NOTE: it looked and found something that does not change whether this load is sound.
   * Checks run CHEAPEST first. A FAIL of a required check stops the run (fail-fast) unless --all; the rest print
     SKIPPED and count as UNMEASURED.
   * Exit code: 0 GREEN, 1 any FAIL, 2 no FAIL but a REQUIRED check is UNMEASURED/SKIPPED (not GREEN), 3 usage.
@@ -78,13 +78,14 @@ RESET_MARKERS = ('Resetting mods config', 'Recovered from incompatible or corrup
 # ------------------------------------------------------------------------------------------------- the framework
 class Result:
     def __init__(self, status, reason, evidence=None):
-        assert status in ('PASS', 'FAIL', 'UNMEASURED', 'UNSUPPORTED', 'SKIPPED')
+        assert status in ('PASS', 'NOTE', 'FAIL', 'UNMEASURED', 'UNSUPPORTED', 'SKIPPED')
         self.status, self.reason, self.evidence = status, reason, evidence or {}
 
 
 def PASS(r, **e): return Result('PASS', r, e)          # noqa: E704
 def FAIL(r, **e): return Result('FAIL', r, e)          # noqa: E704
 def UNM(r, **e): return Result('UNMEASURED', r, e)     # noqa: E704
+def NOTE(r, **e): return Result('NOTE', r, e)          # noqa: E704 -- looked, found, and it does not decide this load
 def UNSUP(r, **e): return Result('UNSUPPORTED', r, e)  # noqa: E704
 
 
@@ -266,17 +267,26 @@ def c_list_sane(ctx):
     dup = sorted({p for p in want if want.count(p) > 1})
     idx = installed_index()
     absent = [p for p in want if p not in idx and not p.startswith('ludeon.')]
+    if absent and _UNREAD:
+        return UNM('could not read %s, so whether %s is installed is unknown' % (_UNREAD[:3], absent[:6]), absent=absent)
+    dropped = dropped_by_game(want, ctx)
+    absent = [p for p in absent if p not in dropped]
     msgs = []
     if bad:
         msgs.append('composed members listed (no runtime packageId): %s' % bad)
     if dup:
         msgs.append('duplicates %s' % dup)
     if absent:
-        msgs.append('not installed %s' % absent)
+        need = {p: [m for m in want if p in mod_deps(idx.get(m))] for p in absent}
+        msgs.append('not installed %s' % ', '.join(
+            '%s%s' % (p, ' (needed by %s)' % need[p][:3] if need[p] else '') for p in absent))
     if msgs:
-        return FAIL('; '.join(msgs), members=bad, duplicates=dup, absent=absent)
+        return FAIL('; '.join(msgs), members=bad, duplicates=dup, absent=absent, dropped=dropped)
     if not members:
         return UNM('Biomes.compose.json unreadable: member check not done')
+    if dropped:
+        return NOTE('%d ids; the game will drop %s (not installed, not ours, nothing listed needs it) and load %d' % (
+            len(want), dropped, len(want) - len(dropped)), dropped=dropped)
     return PASS('%d ids, none composed/duplicate/uninstalled' % len(want))
 
 
@@ -290,12 +300,17 @@ def c_ship_coverage(ctx):
         return UNSUP('modmanifest.shipping_ids unavailable: %s' % e)
     gap = modmanifest.shipping_gap(ctx.get('want') or intended(ctx)[0], ours, folded)
     if gap['absent'] or gap['folded_but_listed']:
-        return FAIL('%d mods we build are absent from the intended list %s; %d folded members listed %s' % (
-            len(gap['absent']), gap['absent'][:8], len(gap['folded_but_listed']), gap['folded_but_listed'][:4]), **gap)
+        # A mod we build that the list leaves out does not change this load (a mod joins the list when it is ready);
+        # a composed member that is listed does.
+        return (FAIL if gap['folded_but_listed'] else NOTE)(
+            '%d mods we build are absent from the intended list %s; %d folded members listed %s' % (
+                len(gap['absent']), gap['absent'][:8], len(gap['folded_but_listed']), gap['folded_but_listed'][:4]),
+            **gap)
     return PASS('every mod we build is on the list')
 
 
-_IDX = {}
+_IDX, _UNREAD = {}, []
+NEVER_DROP = ('brrainz.harmony', 'brrainz.rimbridgeserver')       # without one of these no test runs at all
 
 
 def about_id(mod_dir):
@@ -311,16 +326,48 @@ def about_id(mod_dir):
 
 def installed_index():
     if not _IDX:
+        del _UNREAD[:]
         for root in (gp.LOCAL_MODS, gp.WORKSHOP):
             try:
                 names = os.listdir(root)
             except OSError:
+                _UNREAD.append(root)                # could not look: no mod is 'not installed' on this reading
                 continue
             for d in names:
                 pid = about_id(os.path.join(root, d))
                 if pid:
                     _IDX.setdefault(pid, os.path.join(root, d))
+                else:
+                    try:
+                        with open(os.path.join(root, d, 'About', 'About.xml'), 'rb') as fh:
+                            fh.read(1)
+                    except (FileNotFoundError, NotADirectoryError):
+                        pass                        # not a mod folder
+                    except OSError:
+                        _UNREAD.append(os.path.join(root, d))
     return _IDX
+
+
+def mod_deps(mod_dir):
+    """The packageIds that this mod's About.xml says it needs (lower case); [] for a mod that is not installed."""
+    if not mod_dir:
+        return []
+    import modset_builder as mb
+    return (mb.read_about(os.path.join(mod_dir, 'About', 'About.xml')) or {'deps': []})['deps']
+
+
+def dropped_by_game(want, ctx):
+    """The ids of the FULL list that the game will drop without harm: not installed (ModsConfig.DeactivateNotInstalledMods
+    removes such an id and loads the rest), not ours, not the bridge or Harmony, and needed by no listed mod. A test tier
+    names each mod on purpose, so nothing is droppable there. [] too when the mods folders could not be read whole."""
+    if ctx.get('tier') != 'full' or ctx.get('modset'):
+        return []
+    idx = installed_index()
+    out = [p for p in want if p not in idx and not p.startswith(('ludeon.', 'mandrake.')) and p not in NEVER_DROP]
+    if not out or _UNREAD:
+        return []
+    needed = {d for p in want for d in mod_deps(idx.get(p))}
+    return [p for p in out if p not in needed]
 
 
 def c_wedgers(ctx):
@@ -595,13 +642,16 @@ def c_live_mods(ctx):
         return UNM('live mod-list process identity differs from this preflight', reading=reading)
     got = reading['ids']
     want = ctx.get('want') or intended(ctx)[0]
+    dropped = dropped_by_game(want, ctx) if got != want else []
+    want = [p for p in want if p not in dropped]
     if got != want:
         miss = [p for p in want if p not in set(got)]
         extra = [p for p in got if p not in set(want)]
         return FAIL('running list (%d) != intended (%d): missing %s extra %s%s' % (
             len(got), len(want), miss[:6], extra[:6], ' (same set, other ORDER)' if not miss and not extra else ''),
                     reading=reading)
-    return PASS('running list == intended, ordered (%d mods); direct live read' % len(want), reading=reading)
+    return PASS('running list == intended, ordered (%d mods%s); direct live read' % (
+        len(want), ', without %s, not installed' % dropped if dropped else ''), reading=reading)
 
 
 def c_live_companion(ctx):
@@ -817,7 +867,8 @@ def main(argv=None):
         r['required'] and r['status'] in ('UNMEASURED', 'SKIPPED')))) if code else ''))
     report = {'when': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), 'mode': 'live' if a.live else 'offline',
               'tier': a.tier, 'modset': a.modset, 'purpose': a.purpose, 'verdict': v, 'rows': rows}
-    for p in filter(None, [a.json, LAST_REPORT]):
+    # an --only run is not a preflight: as the newest report it would read 'no FAIL' to experiment_manifest complete
+    for p in filter(None, [a.json, None if a.only else LAST_REPORT]):
         try:
             os.makedirs(os.path.dirname(os.path.abspath(p)), exist_ok=True)
             json.dump(report, open(p, 'w'), indent=1, default=str)

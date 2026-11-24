@@ -1,0 +1,2 @@
+Send the game launch only in a message after the one that read the preflight verdict. On 2026-11-24 the Alpha Biomes run sent preflight_bridge.py and game_instance.py launch in one message (2 s apart); the launch was sent 60 s before the NO-GO came back, and '| tail -6' hid the exit code. That NO-GO was wrong (koth.isid is not installed, the game drops it), but a right one would have been launched through in the same way, at the cost of one 13-minute full-list load.
+item: RIMMANDRAKE_STOP_LAUNCH_ON_PREFLIGHT_NO_GO_KOTH_RAN_ANYWAY

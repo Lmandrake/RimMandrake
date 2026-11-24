@@ -379,10 +379,105 @@ def t_live_mod_list():
         check('L04 unreadable live list is UNMEASURED', pf.c_live_mods(ctx).status == 'UNMEASURED')
 
 
+def t_uninstalled():
+    """RIMMANDRAKE_STOP_LAUNCH_ON_PREFLIGHT_NO_GO_KOTH_RAN_ANYWAY (2026-11-24): the full list named koth.isid, which is
+    not installed. The game drops such a mod and loads the rest (314 of 315, 8 of 8 checks PASS), but O05 said NO-GO on
+    it and fail-fast skipped the deploy and def checks. Only an absence that changes what we test still refuses."""
+    import contextlib
+    import io
+    import modmanifest
+    from unittest.mock import patch
+    base = ['ludeon.rimworld', 'brrainz.harmony', 'brrainz.rimbridgeserver', 'a.one', 'mandrake.rm.biomes']
+
+    def about(root, name, pid, dep=None):
+        d = os.path.join(root, name, 'About')
+        os.makedirs(d)
+        with open(os.path.join(d, 'About.xml'), 'w') as fh:
+            fh.write('<ModMetaData><packageId>%s</packageId>%s</ModMetaData>' % (pid, (
+                '<modDependenciesByVersion><v1.6><li><packageId>%s</packageId></li></v1.6></modDependenciesByVersion>'
+                % dep) if dep else ''))
+
+    with tempfile.TemporaryDirectory() as td:
+        mods, shop, mc = (os.path.join(td, x) for x in ('Mods', 'workshop', 'mc'))
+        os.makedirs(mods), os.makedirs(shop), os.makedirs(mc)
+        about(shop, '1', 'brrainz.harmony'), about(shop, '2', 'brrainz.rimbridgeserver')
+        about(shop, '3', 'A.One'), about(mods, 'Biomes', 'mandrake.rm.biomes')
+        about(shop, '4', 'a.needy', 'Gone.Lib')
+
+        def run(want, tier='full', only='O05', workshop=shop, modset=None):
+            """-> (the verdict of main(), O05's row)"""
+            rep = os.path.join(td, 'rep.json')
+            argv = ['--tier', tier, '--only', only, '--no-archive', '--json', rep] + (['--modset', modset] if modset
+                                                                                       else [])
+            import effective_def_lint as edl
+            with patch.object(pf.gp, 'LOCAL_MODS', mods), patch.object(pf.gp, 'WORKSHOP', workshop), \
+                    patch.object(pf, '_IDX', {}), patch.object(pf, 'intended', lambda c: (list(want), 'fixture')), \
+                    patch.object(pf, 'LAST_REPORT', os.path.join(td, 'last.json')), \
+                    patch.object(edl, 'composed_members', lambda: {'mandrake.rm.stillsand'}), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                pf.main(argv)
+            d = json.load(open(rep))
+            return d['verdict'], d['rows'][0]
+        v, r = run(base + ['koth.isid'])
+        check('uninstalled: the real koth.isid case is GREEN', v == 'GREEN', repr((v, r['reason'])))
+        check('uninstalled: and the row names the mod the game will drop', r['status'] == 'NOTE'
+              and 'koth.isid' in r['reason'], repr((r['status'], r['reason'])))
+        check('uninstalled: the whole list installed is a PASS', run(base)[1]['status'] == 'PASS')
+        v, r = run(base + ['a.needy', 'gone.lib'])
+        check('uninstalled: a mod that a listed mod needs is NO-GO', v == 'NO-GO' and 'a.needy' in r['reason'],
+              repr((v, r['reason'])))
+        for pid in ('mandrake.rm.gone', 'brrainz.rimbridgeserver', 'brrainz.harmony'):
+            v, r = run([x for x in base if x != pid] + [pid], workshop=os.path.join(td, 'empty')
+                       if pid.startswith('brrainz') and not os.makedirs(os.path.join(td, 'empty'), exist_ok=True)
+                       else shop)
+            check('uninstalled: %s absent is NO-GO' % pid, v == 'NO-GO' and pid in r['reason'], repr((v, r['reason'])))
+        check('uninstalled: a test tier that names an absent mod is NO-GO', run(base + ['koth.isid'], tier='minimal')[0]
+              == 'NO-GO' and run(base + ['koth.isid'], tier='quicktest', modset='t')[0] == 'NO-GO'
+              and run(base + ['koth.isid'], tier='full', modset='t')[0] == 'NO-GO')
+        check('uninstalled: a composed member is still NO-GO beside an absent mod',
+              run(base + ['koth.isid', 'mandrake.rm.stillsand'])[0] == 'NO-GO')
+        v, r = run(base + ['koth.isid'], workshop=os.path.join(td, 'no_such_folder'))
+        check('uninstalled: a mods folder that cannot be read is UNMEASURED', r['status'] == 'UNMEASURED', r['reason'])
+
+        # L04: the running list is judged against what the game can load
+        def l04(got, want, workshop=shop, tier='full', modset=None):
+            ctx = {'want': want, 'procs': [(42, 100)], 'tier': tier, 'modset': modset}
+            with patch.object(pf, 'running_mods_snapshot', return_value={'ids': got, 'procs': [[42, 100]]}), \
+                    patch.object(pf.gp, 'LOCAL_MODS', mods), patch.object(pf.gp, 'WORKSHOP', workshop), \
+                    patch.object(pf, '_IDX', {}):
+                return pf.c_live_mods(ctx)
+        r = l04(base, base + ['koth.isid'])
+        check('uninstalled: L04 passes on the list without it, and names it', r.status == 'PASS'
+              and 'koth.isid' in r.reason, repr((r.status, r.reason)))
+        check('uninstalled: L04 still fails when an installed mod is missing',
+              l04(base[:3] + base[4:], base + ['koth.isid']).status == 'FAIL')
+        check('uninstalled: L04 still fails when a mod of ours is missing',
+              l04(base, base + ['mandrake.rm.gone']).status == 'FAIL')
+        check('uninstalled: L04 still fails on a test tier', l04(base, base + ['koth.isid'], modset='t').status == 'FAIL')
+
+    # O06 said NO-GO on the same list in the same run: a mod we build that the list leaves out does not change this load
+    def o06(gap):
+        with patch.object(modmanifest, 'shipping_ids', lambda: ({}, set())), \
+                patch.object(modmanifest, 'shipping_gap', lambda *a: gap):
+            return pf.c_ship_coverage({'tier': 'full', 'want': base})
+    r = o06({'absent': ['mandrake.rm.deepdrill'], 'folded_but_listed': []})
+    check('O06: a mod we build that is off the list is a NOTE that names it', r.status == 'NOTE'
+          and 'deepdrill' in r.reason, repr((r.status, r.reason)))
+    check('O06: a folded member on the list is still a FAIL',
+          o06({'absent': [], 'folded_but_listed': ['mandrake.rm.stillsand']}).status == 'FAIL')
+    # a partial run must not pose as the newest whole preflight (experiment_manifest complete reads it)
+    with tempfile.TemporaryDirectory() as td, patch.object(pf, 'LAST_REPORT', os.path.join(td, 'last.json')), \
+            contextlib.redirect_stdout(io.StringIO()):
+        pf.main(['--tier', 'full', '--only', 'O07', '--no-archive', '--json', os.path.join(td, 'mine.json')])
+        wrote = sorted(os.listdir(td))
+    check('--only writes its --json and leaves last_preflight.json alone', wrote == ['mine.json'], repr(wrote))
+
+
 def main():
     import io
     import contextlib
-    for t in (t_verdict, t_modsconfig, t_live, t_manifest, t_deploy_staged, t_review_w10, t_review_w11, t_dependency_loadfolders, t_live_mod_list):
+    for t in (t_verdict, t_modsconfig, t_live, t_manifest, t_deploy_staged, t_review_w10, t_review_w11, t_dependency_loadfolders, t_live_mod_list,
+              t_uninstalled):
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             before = len(RESULTS)
