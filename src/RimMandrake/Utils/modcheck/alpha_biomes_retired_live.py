@@ -154,6 +154,30 @@ def undrawn(call, names):
             if str((x.get("fields") or {}).get("drawerType")) == "None"}
 
 
+def diseases(call, rows):
+    """Four colonists on the current (Miasma) map; each incident fires there and one of THEM holds its hediff after and
+    none did before."""
+    ids = []
+    for i in range(4):
+        r = call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=MAP // 2 + i, z=MAP // 2)
+        ids += [str(q["id"]) for q in (r.get("pawns") or []) if q.get("ok") and q.get("id")]
+    bad, unread, ev = [], [], {"pawns": ids}
+    if not ids:
+        unread.append("no colonist spawned on the Miasma map: %s" % str(r)[:200])
+    for inc, hed in DISEASES.items():
+        def sick():
+            return [q for q in ids if '"%s"' % hed in json.dumps(call("jawa/pawn_get", pawn=q))]
+        before = sick()
+        r = call("jawa/fire_incident", incidentDef=inc, forced=True)
+        after = sick()
+        ev[inc] = {"fired": r.get("fired"), "before": before, "after": after, "reply": str(r)[:160]}
+        if before:
+            unread.append("%s: held before the incident %s" % (hed, before))
+        elif ids and not after:
+            bad.append("%s: fired=%s, no colonist holds %s" % (inc, r.get("fired"), hed))
+    row(rows, "diseases", bad, unread, n=len(DISEASES), ev=ev)
+
+
 # ------------------------------------------------------------------------------------------------- the bridge half
 def inner(pl, out, shots):
     for p in (HERE, UTILS):
@@ -284,25 +308,6 @@ def _drive(pl, out, shots, rows, rec, ours, FastSession, B, NS):
         r = call("rimworld/screenshot_cell_rect", fileName="%s_terrain_polluted" % shots, suppressMessage=True, **rect)
         rec["shots"].append(r.get("path") or r.get("filePath") or str(r)[:300])
         call("jawa/kill_hostiles", destroyCorpses=True)
-        # diseases, on the quicktest colonists
-        bad, unread, ev = [], [], {}
-        for inc, hed in DISEASES.items():
-            r = call("jawa/fire_incident", incidentDef=inc, forced=True)
-            pawns = [p for p in (call("jawa/list_pawns", limit=500).get("pawns") or [])]
-            sick = []
-            for p in pawns:
-                pid = p.get("id") or p.get("thingId") or p.get("pawnId")
-                if not pid or not (p.get("isColonist") or p.get("colonist") or "Player" in str(p.get("faction"))):
-                    continue
-                g = json.dumps(call("jawa/pawn_get", pawn=str(pid)))
-                if '"%s"' % hed in g:
-                    sick.append(pid)
-            ev[inc] = {"fired": r.get("fired"), "sick": sick, "reply": str(r)[:200]}
-            if not pawns:
-                unread.append("%s: list_pawns read nothing" % inc)
-            elif not sick:
-                bad.append("%s: fired=%s, no colonist holds %s" % (inc, r.get("fired"), hed))
-        row(rows, "diseases", bad, unread, n=len(DISEASES), ev=ev)
         # maps
         work = os.path.join(os.path.dirname(out), "site")
         os.makedirs(work, exist_ok=True)
@@ -350,6 +355,8 @@ def _drive(pl, out, shots, rows, rec, ours, FastSession, B, NS):
                          "ports": {n: cnt[n] for n in pl["plants"] if n in cnt}, "top": sorted(cnt.items(), key=lambda kv: -kv[1])[:12]}
                 if (g.get("mapFinalize") or {}).get("failedSteps"):
                     bad.append("%s: finalize %s" % (b, g["mapFinalize"]["failedSteps"]))
+                if b == "RM_Miasma":
+                    diseases(call, rows)
                 call("jawa/weather_set", weather="Clear", lockWeather=True)
                 r = call("rimworld/screenshot_cell_rect", x=40, z=40, width=44, height=30, fileName="%s_map_%s" % (shots, b), suppressMessage=True)
                 rec["shots"].append(r.get("path") or r.get("filePath") or str(r)[:300])
