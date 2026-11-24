@@ -12046,3 +12046,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-24T19:51:11Z","tsn":1795549871444848389}
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_PAUSED_FYEB","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-24T19:51:23Z","tsn":1795549883258198180}
 {"seat":"RUNNER","event":"note","id":"OPS_MATURATION_MOD_STALLED_KHOT","text":"ops_watch: cleared at 2026-11-24T19:50:54Z (maturation.stalled now 0)","ts":"2026-11-24T19:51:33Z","tsn":1795549893524993439}
+{"seat":"RUNNER","event":"note","id":"SELFTEST_FIX_GSS_ART_MANIFEST_SIZES_SLAT","text":"ops_watch: cleared at 2026-11-24T20:25:42Z (testing.red_rvxcpn now 0)","ts":"2026-11-24T20:25:55Z","tsn":1795551955152615830}
