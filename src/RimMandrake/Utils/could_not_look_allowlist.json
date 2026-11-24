@@ -1,6 +1,8 @@
 {
  "_doc": "Places could_not_look_lint.py found when it was born (2026-11-19, RIMMANDRAKE_SHARE_PROBE_RESULT_TYPE_NINE_FILES_ROLL_OWN), keyed file::function::shape with a count. A count is a list of places to read, not a count of bugs. Fixed places leave slack: could_not_look_lint.py --prune. `reasons` holds, per key, one line per place in source order, classed by reading it (RIMMANDRAKE_LAUNCH_LINT_READS_AFTER_HE_RULES_PAGE_STRICTNESS): RARE (only a rare failure reaches it; the component's boundary page lists it as not handled, owner by card 2026-11-19) or NOT A COLLAPSE (why). A third class, UNREAD (\"unread by owner's card 2026-11-19: only files that failed before are read\", RIMMANDRAKE_READ_ONLY_FILES_THAT_FAILED_PILOT_FOUND_ZERO), marks a place allowed without a reading: only the files where a could-not-look collapse was seen were read.",
  "places": {
+  "src/RimMandrake/Utils/waitalive.py::stat_of::except-returns-empty": 1,
+  "src/RimMandrake/Utils/waitalive.py::size_of::except-returns-empty": 1,
   "src/RimMandrake/rimflow/run_end_wake.py::_disarm_if_mine::or-empty": 1,
   "src/RimMandrake/rimflow/run_end_wake.py::has_pending::except-returns-empty": 1,
   "src/RimMandrake/rimflow/run_end_wake.py::take::except-returns-empty": 1,
@@ -276,6 +278,12 @@
   "src/RimMandrake/Utils/install_wt_seat_profiles.py::restart_seats::except-returns-empty": 1
  },
  "reasons": {
+  "src/RimMandrake/Utils/waitalive.py::stat_of::except-returns-empty": [
+   "NOT A COLLAPSE: None is 'the process is gone' (only ENOENT and ESRCH, which are that reading); every other error raises CouldNotLook, exit 5"
+  ],
+  "src/RimMandrake/Utils/waitalive.py::size_of::except-returns-empty": [
+   "NOT A COLLAPSE: None is 'no such file yet' (only ENOENT), a HUNG line names a progress file that is not there; every other error raises CouldNotLook, exit 5"
+  ],
   "src/RimMandrake/rimflow/run_end_wake.py::_disarm_if_mine::or-empty": [
    "RARE (design/specs/2026-11-23-wake-carries-result/boundary.md an-armed-file-that-does-not-parse): an armed file that cannot be read is not this waiter's, so it consumes nothing and the run end stays pending; the file is written whole (os.replace)"
   ],

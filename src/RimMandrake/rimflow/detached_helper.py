@@ -106,6 +106,10 @@ KILL_STATUSES = ("HUP", "INT", "KILL", "TERM", "129", "130", "137", "143")   # s
 LAUNCH_GRACE_S = 120   # a record "launching" this young may simply not have its unit yet
 RETURN_WAIT_S = 600    # how long launch waits for the run before to give the clone back (a 3.6 GB bundle takes minutes)
 RETURN_POLL_S = 10
+# the longest Bash call of a run (BASH_MAX_TIMEOUT_MS in its unit): one long wait (Utils/waitalive.py, 55 min) in place of
+# many of 10 min, under the one-hour prompt cache. Tried in real units: design/specs/2026-11-23-long-waits/experiment.json.
+# 0 = not set. A Claude Code that does not know the variable ignores it.
+BASH_MAX_MS = 3420000
 EVENTS_REL = "infrastructure/state/ledger/events"
 # RIMMANDRAKE_MOVE_BIOME_FEATURE_JUDGE_RULES_OUT_POINTERS_STAY: CLAUDE.md keeps only a pointer for these rule groups, so
 # every detached brief names their homes. Boundary: design/specs/2026-11-19-rule-homes-in-briefs/boundary.md.
@@ -140,8 +144,13 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
 - This run ends when your turn ends: a helper or command still running in the background then is killed and its work
   is lost. Run helpers and long commands in the foreground and take their results before your last message; never end
   "waiting" for anything.
+- A command that can take over 10 minutes: one Bash call with `timeout` BASH_MAX_MS of
+  `python3 src/RimMandrake/Utils/waitalive.py run --name <name> -- <command>`. It waits up to 55 minutes and its last line
+  is the verdict: exit 0 FINISHED rc=0, 1 FINISHED rc=N, 3 HUNG, 4 STILL RUNNING, 5 COULD NOT LOOK, 6 DIED. It kills
+  nothing: after 3, 4 or a cut call, `python3 src/RimMandrake/Utils/waitalive.py attach <name>` waits again. For a job
+  whose work is on Windows or another machine, add `--progress <the log that it writes>`. Do not poll with `sleep`.
 - Nobody reads your stdout until you end; the note is what the Conductor sees. End with a 5-line summary.
-""" + RULE_HOMES + FF.BRIEF_LINE
+""".replace("BASH_MAX_MS", str(BASH_MAX_MS)) + RULE_HOMES + FF.BRIEF_LINE
 
 
 def dirty_shards(clone, seat, runner=subprocess.run):
@@ -1172,6 +1181,7 @@ def launch_argv(rec, msg, claude):
             "--setenv", "RM_ROLE_UNIT=" + unit, "--setenv", "RM_DETACHED_UNIT=" + unit,
             "--setenv", "RM_DISPATCHER_STATE=" + rec["state"],
             *sum((["--setenv", "%s=%s" % kv] for kv in sorted(game_env(rec.get("env")).items())), []),
+            *(["--setenv", "BASH_MAX_TIMEOUT_MS=%d" % BASH_MAX_MS] if BASH_MAX_MS else []),
             *(["--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound, "-p", "RuntimeMaxSec=%d" % bound] if bound else []),
             # the ExecStopPost steps run inside this bound: finish's note (120 s) and publish (300 s), wrapup and the
             # return start; 30 s killed ten finishes in a week, measured 2026-11-15 (RIMMANDRAKE_COVER_FINISH_IN_TIMEOUTSTOPSEC_TEN_KILLED)

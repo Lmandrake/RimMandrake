@@ -1,0 +1,86 @@
+{
+ "setting": "BASH_MAX_TIMEOUT_MS",
+ "setting_ms": 3420000,
+ "unit": "rm-detached-bench-longwait-experiment-m55-1795502400",
+ "session": "f15959d0-a91b-4455-bd48-f61af26809d7",
+ "evidence": "/home/mandrake/.claude/projects/-home-mandrake-rm-relentless-clones-RIMMANDRAKE-LENGTHEN-WAITS-UNDER-ONE-HOUR-CACHE-DIES-AFTER-det/f15959d0-a91b-4455-bd48-f61af26809d7.jsonl",
+ "asked_s": 3300,
+ "call_timeout_ms": 3420000,
+ "background": false,
+ "call_lasted_s": 3303.0,
+ "tool_result": "started 22:40:08\nLONG WAIT ENDED after 3300 s",
+ "turns": [
+  {
+   "at": "2026-11-24T06:40:06.736Z",
+   "cache_read": 0,
+   "cache_write": 67483
+  },
+  {
+   "at": "2026-11-24T07:35:10.849Z",
+   "cache_read": 67483,
+   "cache_write": 544
+  }
+ ],
+ "cut_by_harness": false,
+ "cache_rebuilt_after": false,
+ "final": "LONG WAIT ENDED after 3300 s",
+ "runs": [
+  {
+   "setting": "BASH_MAX_TIMEOUT_MS",
+   "setting_ms": 3300000,
+   "unit": "rm-detached-bench-longwait-experiment-m25-1795502293",
+   "session": "2f7f23c7-80cc-4e6f-abd9-bc6302205396",
+   "evidence": "/home/mandrake/.claude/projects/-home-mandrake-rm-relentless-clones-RIMMANDRAKE-LENGTHEN-WAITS-UNDER-ONE-HOUR-CACHE-DIES-AFTER-det/2f7f23c7-80cc-4e6f-abd9-bc6302205396.jsonl",
+   "asked_s": 1500,
+   "call_timeout_ms": 2700000,
+   "background": false,
+   "call_lasted_s": 1502.9,
+   "tool_result": "started 22:38:24\nLONG WAIT ENDED after 1500 s",
+   "turns": [
+    {
+     "at": "2026-11-24T06:38:22.279Z",
+     "cache_read": 0,
+     "cache_write": 67343
+    },
+    {
+     "at": "2026-11-24T07:03:25.953Z",
+     "cache_read": 67343,
+     "cache_write": 367
+    }
+   ],
+   "cut_by_harness": false,
+   "cache_rebuilt_after": false,
+   "final": "LONG WAIT ENDED after 1500 s"
+  },
+  {
+   "setting": "BASH_MAX_TIMEOUT_MS",
+   "setting_ms": 3300000,
+   "unit": "rm-detached-bench-longwait-experiment-m50-1795502294",
+   "session": "fac6db5f-eca5-4367-8e9a-059979de7235",
+   "evidence": "/home/mandrake/.claude/projects/-home-mandrake-rm-relentless-clones-RIMMANDRAKE-LENGTHEN-WAITS-UNDER-ONE-HOUR-CACHE-DIES-AFTER-det/fac6db5f-eca5-4367-8e9a-059979de7235.jsonl",
+   "asked_s": 3000,
+   "call_timeout_ms": 3300000,
+   "background": false,
+   "call_lasted_s": 3003.5,
+   "tool_result": "started 22:38:24\nLONG WAIT ENDED after 3000 s",
+   "turns": [
+    {
+     "at": "2026-11-24T06:38:22.644Z",
+     "cache_read": 0,
+     "cache_write": 67343
+    },
+    {
+     "at": "2026-11-24T07:28:27.378Z",
+     "cache_read": 67343,
+     "cache_write": 369
+    }
+   ],
+   "cut_by_harness": false,
+   "cache_rebuilt_after": false,
+   "final": "LONG WAIT ENDED after 3000 s"
+  }
+ ],
+ "claude_code": "2.1.325",
+ "model": "opus",
+ "how": "each unit: detached_helper.launch_argv's own argv through control.launch_unit, without its stop steps, plus --setenv BASH_MAX_TIMEOUT_MS; the brief asks for one foreground Bash call with `timeout` call_timeout_ms that sleeps asked_s, then one short turn. 2026-11-23, 10:38 PM to 11:35 PM PST. call_lasted_s: the time from the tool call to its result in the transcript. cache_rebuilt_after: the turn after wrote more cache than it read, or over 20k tokens."
+}
