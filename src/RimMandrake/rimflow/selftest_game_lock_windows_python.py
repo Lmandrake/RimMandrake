@@ -106,6 +106,11 @@ def plant(name, holder_pid, clone, heartbeat_age_s=0, gen=7):
     return path
 
 
+def interop_down(text):
+    """WSL's own words for "no Windows process was started", with no line from the probe."""
+    return "UtilAcceptVsock" in text and "{" not in text
+
+
 def probe(lock, timed=0, **extra):
     env = {k: v for k, v in os.environ.items() if k not in ("RM_HOST_GUARD_GEN", "RM_BRIDGE_CROSS_WHY",
                                                               "RIMFLOW_LEDGER", "RM_GAME_INSTANCE", "RM_DRIVER_PID")}
@@ -116,9 +121,16 @@ def probe(lock, timed=0, **extra):
     script = os.path.join(TMP, "timed.py" if timed else "probe.py")
     with open(script, "w") as fh:
         fh.write(TIMED if timed else PROBE)
-    r = subprocess.run(["python.exe", win(script), win(HERE), win(os.path.join(CLONE, "src", "RimMandrake", "Utils"))]
-                       + ([str(timed)] if timed else []),
-                       capture_output=True, text=True, timeout=120, env=env, cwd=CLONE)
+    for n in range(3):
+        r = subprocess.run(["python.exe", win(script), win(HERE), win(os.path.join(CLONE, "src", "RimMandrake", "Utils"))]
+                           + ([str(timed)] if timed else []),
+                           capture_output=True, text=True, timeout=120, env=env, cwd=CLONE)
+        if not interop_down(r.stdout + r.stderr):
+            break
+        time.sleep(5)
+    else:       # python.exe never ran: could not look, which is no verdict on the lock (2026-11-23, load 60 on the machine)
+        print("UNMEASURED: WSL could not start a Windows process (3 tries): %s" % (r.stdout + r.stderr).strip()[-160:])
+        sys.exit(2)
     try:
         return json.loads(r.stdout.strip().splitlines()[-1])
     except (ValueError, IndexError):

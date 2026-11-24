@@ -17,7 +17,8 @@
    "progress": [
     "/mnt/d/ClaudeWork/rimmandrake/testq/done"
    ],
-   "paused_file": "/mnt/d/ClaudeWork/rimmandrake/testq/paused.json"
+   "paused_file": "/mnt/d/ClaudeWork/rimmandrake/testq/paused.json",
+   "resumed_file": "/mnt/d/ClaudeWork/rimmandrake/testq/lane_resumed.json"
   },
   {
    "name": "designer",

@@ -63,6 +63,7 @@ import fnmatch
 import glob
 import importlib.util
 import inspect
+import contextlib
 import json
 import math
 import os
@@ -3161,6 +3162,9 @@ def c_queues(now, rules, ctx):
                 out[k + "stalled_min"] = M(0.0, "min pending > 0 with no claim, finish or heartbeat", why="switched off")
                 continue
             marks = [m for m in marks if m is not None]
+            with contextlib.suppress(OSError):      # the end of a pause: the time before it was not a stall
+                if q.get("resumed_file"):
+                    marks.append(Path(q["resumed_file"]).stat().st_mtime)
             if off:
                 stalled = 0.0
             elif not plist:

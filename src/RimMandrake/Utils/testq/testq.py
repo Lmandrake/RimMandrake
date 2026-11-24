@@ -1703,6 +1703,7 @@ def cmd_resume(a):
         print("not paused")
         return 0
     os.remove(pause_path(lane))
+    S.dump({"at": S.utcnow(), "lane": lane, "reason": a.reason}, q("lane_resumed.json"))     # ops_watch: the pause was no stall
     if lane == STEVE and pz.get("until") and not pz.get("outcome"):
         record_lane_window("maintenance", pz.get("since"), S.utcnow(), pz.get("reason") or "")
     log("lane%s resumed (paused since %s by %s %s/%s): %s" % ("" if lane == STEVE else " " + lane, pz.get("since"),

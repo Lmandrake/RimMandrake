@@ -184,6 +184,19 @@ def t_ticket():
         check(len(got) == 1 and got[0].startswith("repeat: REFUSED/LOAD: "), "one-ticket-for-one-cause: ingest files the stop's cause, and only a stop's (%r)" % got)
 
 
+# One scene proves several promises; each promise's name is the test that proves it (boundary_check.py).
+t_two_equal_refusals_stop_that_game = t_stop
+t_a_done_job_or_a_different_ending_counts_from_one = t_stop
+t_one_mods_harness_fault_does_not_stop_the_game = t_stop
+t_a_cancelled_or_selection_refusal_never_stops = t_stop
+t_a_stop_retries_by_itself = t_stop
+t_one_ticket_for_one_cause = t_ticket
+t_every_pause_has_an_end = t_pause
+t_a_unit_pause_waits_for_its_unit = t_pause
+t_a_hand_pause_is_extended_not_refused = t_pause
+t_the_steward_reads_a_stop_as_a_pause = t_steward
+
+
 MUTANTS = [("sig is None:\n        if os", "sig is not None and False:\n        if os"), ('rec["stops"] if False else ', ""),
            ("if same and not one_mod else 0", "if same else 0"), ("if same and not one_mod else 0", "if not one_mod else 0"),
            ('a is None:\n            return None', 'a is None:\n            return True'), ("return now >= until", "return False"),
@@ -214,11 +227,19 @@ def mutants():
 def main():
     if "--mutants" in sys.argv:
         return mutants()
-    t_stop()
-    t_pause()
-    if "--core" not in sys.argv:
-        t_steward()
-        t_ticket()
+    scenes = dict.fromkeys((t_two_equal_refusals_stop_that_game,
+                           t_a_done_job_or_a_different_ending_counts_from_one,
+                           t_one_mods_harness_fault_does_not_stop_the_game,
+                           t_a_cancelled_or_selection_refusal_never_stops,
+                           t_a_stop_retries_by_itself,
+                           t_one_ticket_for_one_cause,
+                           t_every_pause_has_an_end,
+                           t_a_unit_pause_waits_for_its_unit,
+                           t_a_hand_pause_is_extended_not_refused,
+                           t_the_steward_reads_a_stop_as_a_pause))
+    for t in scenes:
+        if "--core" not in sys.argv or t in (t_stop, t_pause):
+            t()
     print("FAILED %d" % len(FAILS) if FAILS else "PASS")
     return 1 if FAILS else 0
 

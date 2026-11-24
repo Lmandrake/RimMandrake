@@ -102,6 +102,28 @@ def main():
         os.utime(lock, (1000, 1000))
         r = start("a4")
         check(r["rc"] == 0 and open(os.path.join(clone, "base")).read() == "base", "a pre-boot lock and dirt: healed and pulled (%s)" % r)
+        # 5. the runner clone refuses a commit (STEVE_RUNNER_CLONE_ENFORCE_NO_LLM_WRITES): a commit there makes the next
+        #    pull refuse SYNC; the runner's own update still lands
+        open(os.path.join(clone, "llm"), "w").write("x")
+        g(clone, "add", "llm")
+        c = subprocess.run(["git", "-C", clone] + ident + ["commit", "-m", "an AI session"], capture_output=True, text=True)
+        check(c.returncode != 0 and "own clone" in c.stderr, "a commit in the runner clone is refused, naming the cure: %s" % c.stderr[-200:])
+        g(clone, "rm", "-q", "-f", "--cached", "llm")
+        os.remove(os.path.join(clone, "llm"))
+        other = os.path.join(tmp, "other")
+        subprocess.run(["git", "clone", "-q", origin, other], check=True, capture_output=True)
+        open(os.path.join(other, "five"), "w").write("5")
+        g(other, "add", "five")
+        g(other, *ident, "commit", "-q", "-m", "five")
+        g(other, "push", "-q", "origin", "main")
+        r = start("a5")
+        check(r["rc"] == 0 and os.path.exists(os.path.join(clone, "five")), "the runner's own pull still lands: %s" % r)
+        code = ("import sys; sys.path.insert(0, %r); import worker as w\n"
+                "print([(w.setattr_clone(n), w.runner_clone_only())[1] for n in ('/x/runner', '/x/runner_b', '/x/bench')])" % HERE)
+        code = code.replace("w.setattr_clone(n)", "setattr(w, 'CLONE', n)")
+        out = subprocess.run([sys.executable, "-I", "-c", code], env={k: v for k, v in env.items() if k != "TESTQ_CLONE"},
+                             capture_output=True, text=True, timeout=60).stdout.strip()
+        check(out == "[True, True, False]", "both runner clones heal and refuse commits, a seat clone does neither: %s" % out)
     print("FAIL %d" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

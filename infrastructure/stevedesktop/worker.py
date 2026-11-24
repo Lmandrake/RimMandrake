@@ -201,6 +201,10 @@ CTOR_RE = re.compile(r"Error in static constructor of")
 #    invalid_class.SIGNATURES, which answers a different question (whose fault an INVALID was) and has no WorldGenStep
 #    row; and a cross-tree import of it would crash a job pinned to a sha from before that module existed.
 NOTE_WOUND_RE = re.compile(r"readiness .mapData|quicktest world start FAILED|" + LOG_WOUND_RE.pattern)
+# A row that says the MAP is spoiled (its colony is dead or downed, or its site cannot be held): nothing on that map can be
+# measured, so the kept game goes down before the next job. 33 lane jobs had such a row in 21 days (2026-11-23 study);
+# the game went on to the next job each time.
+SPOILED_RE = re.compile(r"dead colonists|no live colonist|RESTART \(damage to the test|could not hold the site quiet")
 # stop_game_for_next_job's own words: an attempt that stopped its game says nothing about the process running now.
 STOPPED_NOTE = "game stopped so the next job cold-starts"
 # A cap on scanning a healthy giant Player.log once per kept load, not a measurement of one: every line above is
@@ -274,9 +278,9 @@ def pin_marker():
 
 
 def runner_clone_only():
-    """Self-heal of a dirty clone is only for the machine-owned runner clone (~/rm/runner), never a seat clone.
+    """Self-heal of a dirty clone is only for the machine-owned runner clones (~/rm/runner, ~/rm/runner_b), never a seat clone.
     Tests opt in by pointing TESTQ_CLONE at a scratch repo."""
-    return bool(os.environ.get("TESTQ_CLONE")) or os.path.basename(CLONE.rstrip("/")) == "runner"
+    return bool(os.environ.get("TESTQ_CLONE")) or os.path.basename(CLONE.rstrip("/")) in ("runner", "runner_b")
 
 
 def save_dirty(logdir):
@@ -382,12 +386,37 @@ def clear_boot_stale_index_lock(logdir):
     return msg
 
 
+NO_COMMIT_HOOK = """#!/bin/sh
+# written by infrastructure/stevedesktop/worker.py (STEVE_RUNNER_CLONE_ENFORCE_NO_LLM_WRITES)
+echo "REFUSED: this is the test lane's pinned runner clone; a commit here makes the next pull refuse and stops the lane." >&2
+echo "Work in your own clone: git clone git@github.com:Lmandrake/RimMandrake.git ~/rm/<name>" >&2
+exit 1
+"""
+
+
+def guard_clone():
+    """A commit in a runner clone is refused (its history may only fast-forward). -> message; never raises."""
+    if not runner_clone_only():
+        return ""
+    hook = os.path.join(CLONE, ".git", "hooks", "pre-commit")
+    try:
+        if read_text(hook) == NO_COMMIT_HOOK.strip() or read_text(hook) == NO_COMMIT_HOOK:
+            return ""
+        os.makedirs(os.path.dirname(hook), exist_ok=True)
+        write_text(hook, NO_COMMIT_HOOK)
+        os.chmod(hook, 0o755)
+        return "pre-commit guard written"
+    except OSError as e:
+        return "pre-commit guard could not be written: %s" % e
+
+
 def ready_for_pull(d):
     """The start's steps before `pull --ff-only`, each of which once refused a job SYNC: a leftover pin, dirt on
     main, and a reboot's leftover index.lock."""
     clear_boot_stale_index_lock(d)  # first: a reboot mid-git leaves index.lock, and the two checkouts below need the index
     unpin(d)    # a crashed attempt can leave the clone on its detached pin: pull needs main
     heal_dirty(d)   # dirt left on main by the last attempt would make the pull refuse SYNC
+    guard_clone()   # and a commit made there would make it refuse for good
 
 
 def git(*args):
@@ -1464,8 +1493,12 @@ class Attempt:
                     return False
                 if self.liveness_unknown:
                     self.res["note"] = (self.res.get("note") or "") + "; " + self.liveness_unknown
+                spoiled = next((r for r in self.res.get("rows") or [] if r.get("verdict") in ("UNMEASURED", "NOT_RUN")
+                                and SPOILED_RE.search(r.get("detail") or "")), None)
                 if self.res.get("cause") == "CANARY":
                     self.stop_game_for_next_job("canary red")
+                elif spoiled:
+                    self.stop_game_for_next_job("the map is spoiled (%s: %s)" % (spoiled.get("row"), (spoiled.get("detail") or "")[:80]))
                 elif self.res.get("cause") == "HARNESS" and (NO_GAME_RE.search(tail or "")
                                                              or WORLD_START_FAILED_RE.search(tail or "")
                                                              or TICK_UNREAD_RE.search(tail or "")):

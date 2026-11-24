@@ -121,6 +121,10 @@ if mode == "canary":
     print("[modcheck] vanilla canary RED: no mod row runs")
     summary = {"chains": [{"name": "c1", "components": [{"name": "r1", "verdict": "UNMEASURED",
                                                          "detail": "vanilla canary red: not a verdict on the mod"}]}]}
+if mode in ("spoiled", "quoted"):     # J20261124T035514Z-a16591: a dead colony on a kept map; "quoted": a FAIL that only names it
+    v = {"spoiled": "UNMEASURED", "quoted": "FAIL"}[mode]
+    summary = {"chains": [{"name": "c1", "components": [{"name": "r1", "verdict": "PASS", "detail": "ok"},
+        {"name": "r2", "verdict": v, "detail": "could not hold the site quiet -- not a verdict on the mod: dead colonists: ['Human1']"}]}]}
 json.dump({"mod": "Mock", "summary": summary}, open(os.path.join(sheet_dir, name + ".json"), "w"))
 open(os.path.join(sheet_dir, name + ".html"), "w").write("<html/>")
 import subprocess
@@ -191,6 +195,15 @@ def main():
                 time.sleep(0.3)
             return {}
 
+        # 0. a-spoiled-kept-game-goes-down-before-the-next-job
+        for mode, want in (("spoiled", True), ("quoted", False), ("pass", False)):
+            mark = os.path.join(tmp, "spoiled_down_" + mode)
+            rc, o = w(["start"], job(), MOCK_MODE=mode, TESTQ_CMD_DOWN="echo down >> %s" % mark)
+            res = wait_result(o.get("attempt", "x"))
+            check(res.get("outcome") == "DONE" and os.path.exists(mark) == want
+                  and (("game stopped so the next job cold-starts" in (res.get("note") or "")) == want),
+                  "a-spoiled-kept-game-goes-down-before-the-next-job: %s -> %s: %s" % (mode, "down" if want else "kept", (res.get("note") or "")[-120:]))
+            w(["ack", "--attempt", o.get("attempt", "x")])
         # 1. a clean attempt
         j = job()
         rc, o = w(["start"], j)
@@ -948,7 +961,7 @@ def main():
         # 11. STEVEWORKER_UNSTICK_DIRTY_CLONE_REFUSES_SYNC: a tracked file dirtied while pinned must not wedge the rig
         open(os.path.join(scratch, "one"), "w").write("three")     # main moves on: "one" now differs from the pin
         g("add", "one")
-        g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "three")
+        g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "--no-verify", "-q", "-m", "three")
         third = g("rev-parse", "HEAD")
         g("checkout", "-q", "--detach", second)
         open(os.path.join(home, "pinned_clone"), "w").write(second)
@@ -998,7 +1011,7 @@ def main():
         os.makedirs(bad, exist_ok=True)
         open(os.path.join(bad, "runner.py"), "w").write("raise RuntimeError('selftest: a broken modcheck runner')\n")
         g("add", "src/RimMandrake/Utils/modcheck/runner.py")
-        g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "broken runner")
+        g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "--no-verify", "-q", "-m", "broken runner")
         broken = g("rev-parse", "HEAD")
         if os.path.exists(rec):
             os.remove(rec)
