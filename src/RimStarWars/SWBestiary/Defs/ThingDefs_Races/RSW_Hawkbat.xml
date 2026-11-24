@@ -189,7 +189,7 @@
     <flyingAnimationFramePathPrefixFemale>swanimals/Hawkbat/Hawkbat_j_Flying_</flyingAnimationFramePathPrefixFemale>
     <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSize>1.89</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
     <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>

@@ -186,7 +186,7 @@
     <flyingAnimationFramePathPrefixFemale>swanimals/Beldon/BeldonC_Flying_</flyingAnimationFramePathPrefixFemale>
     <flyingAnimationFrameCount>3</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>20</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSize>4.00</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
     <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>

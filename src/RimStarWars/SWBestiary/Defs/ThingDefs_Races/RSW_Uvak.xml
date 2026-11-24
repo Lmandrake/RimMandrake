@@ -169,7 +169,7 @@
     <!-- 8: the south flap is the owner-accepted 8-frame layered bake (2026-11-14); north and east frames 5-8 repeat 1-4 -->
     <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSize>3.50</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
     <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>

@@ -88,7 +88,7 @@
     <flyingAnimationFramePathPrefix>RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_</flyingAnimationFramePathPrefix>
     <flyingAnimationFrameCount>5</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1.6</flyingAnimationDrawSize>
+    <flyingAnimationDrawSize>1.02</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
     <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
     <lifeStages>

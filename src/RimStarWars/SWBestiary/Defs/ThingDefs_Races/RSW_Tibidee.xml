@@ -191,7 +191,7 @@
     <flyingAnimationFramePathPrefix>swanimals/Tibidee/Tibidee_Flying_</flyingAnimationFramePathPrefix>
     <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSize>8.52</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
     <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>

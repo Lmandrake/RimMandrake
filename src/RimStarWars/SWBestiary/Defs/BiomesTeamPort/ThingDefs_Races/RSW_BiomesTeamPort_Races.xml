@@ -1246,7 +1246,7 @@ copied verbatim from the donor mods' own Textures trees.
     <flyingAnimationFramePathPrefix>swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_Flying_</flyingAnimationFramePathPrefix>
     <flyingAnimationFrameCount>1</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1.2</flyingAnimationDrawSize>
+    <flyingAnimationDrawSize>2.64</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
     <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
@@ -2088,7 +2088,7 @@ A qattora does not fight well, but it does not need to: struck or seized, it fir
     <flyingAnimationFramePathPrefix>swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar_Flying_</flyingAnimationFramePathPrefix>
     <flyingAnimationFrameCount>1</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1</flyingAnimationDrawSize>
+    <flyingAnimationDrawSize>2.01</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
     <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
