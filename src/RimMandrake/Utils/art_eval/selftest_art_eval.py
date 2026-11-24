@@ -387,8 +387,43 @@ def tuning_checks():
                 check("regress: resuming on other prompt versions refused", False)
             except SystemExit:
                 check("regress: resuming on other prompt versions refused", True)
+
+            scale = Path(ok["images"]["scale"])
+            scale_bytes = scale.read_bytes()
+            scale.unlink()
+            rows[1]["expect"] = "ACCEPT"
+            (td / "state" / "regression.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+            try:
+                with contextlib.redirect_stderr(io.StringIO()):
+                    result = runner.regress(rev=Mock(), run_id="regress_missing", max_new=1)
+                held, failed, held_not_accept = result["rows"]
+                check("regress: missing pictures are unmeasured, other pictures are judged",
+                      result["total"] == 3 and result["unmeasured"] == 2 and result["passed"] == 0
+                      and held["got"] == "HOLD_INPUT" and held["unmeasured"] and not held["pass"]
+                      and held["missing_images"] == ["scale"]
+                      and held_not_accept["unmeasured"] and not held_not_accept["pass"]
+                      and failed["got"] == "REGEN" and not failed["pass"] and not failed["unmeasured"],
+                      result)
+            except FileNotFoundError as e:
+                check("regress: missing pictures are unmeasured, other pictures are judged", False, e.filename)
+            finally:
+                scale.write_bytes(scale_bytes)
+            calls.clear()
+            with contextlib.redirect_stderr(io.StringIO()):
+                result = runner.regress(rev=Mock(), run_id="regress_missing")
+            check("regress: restored pictures can be judged on resume",
+                  result["unmeasured"] == 0 and len(calls) == 2, (result, calls))
         finally:
             runner.STATE, RS.RESETS = old
+
+    state = P.ROOT / "infrastructure/state/art_eval"
+    history = state / "runs/regress_after_tuning_20261024/decisions.jsonl"
+    shas = {r["subject"]: r["source_sha256"] for r in map(json.loads, history.read_text().splitlines())}
+    for name in ("RM_DecayDrake_C", "RM_Durrok_B", "RM_Gawpsack_A"):
+        spec = json.loads((state / f"regression_specs/owner_{name}.json").read_text())
+        images = {panel: Path(path).parts[-3:] for panel, path in spec["images"].items()}
+        check(f"regress: {name} paths identify the original pictures by SHA",
+              images == {p: ("artstore", sha[:2], sha + ".png") for p, sha in shas[spec["subject"]].items()})
 
 def departures_checks():
     """ARTEVAL_DEPARTURES_TUNE_ALMOST_EVERYTHING: a departure the description does not state never reaches a card."""

@@ -17,10 +17,10 @@
  "source": "RimMandrake/Miasma/Defs/ThingDefs_Races/RM_DecayDrake.xml",
  "owner_kept": false,
  "images": {
-  "south": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_DecayDrake_C/south.png",
-  "east": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_DecayDrake_C/east.png",
-  "north": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_DecayDrake_C/north.png",
-  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_DecayDrake_C/scale.png"
+  "south": "/mnt/d/ClaudeWork/rimmandrake/artstore/ae/ae788a400644d09e3da630d107a0a5284f158250511134c1b54f92c3e6282583.png",
+  "east": "/mnt/d/ClaudeWork/rimmandrake/artstore/3e/3e6d1c4a693c055cc23d4fd4dcb3d005a73fa813bea5b42561f03acab77d8e86.png",
+  "north": "/mnt/d/ClaudeWork/rimmandrake/artstore/d8/d8ecd1383e11df855bc5db54e0ee6b69520e9a491e355e7f227801e3a7d275d1.png",
+  "scale": "/mnt/d/ClaudeWork/rimmandrake/artstore/99/99e33723b52366c1828d7b4043e1119217ba44799237ff92506699a76070aabc.png"
  },
  "departures": [
   "Stunted, vestigial wings folded flat over the back and sides, too small for flight",

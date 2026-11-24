@@ -1047,7 +1047,8 @@ def regress(rev: Reviewers | None = None, run_id: str | None = None, max_new: in
     """Re-run every regression row on the current prompt versions; a row passes when the decision lands in its
     expected class (ACCEPT vs not). Writes infrastructure/state/art_eval/regression_runs/<run>.json.
     run_id resumes a regress run (the set outgrew one 8-minute call); max_new judges at most that many rows this
-    call and returns {"incomplete": n} until every row is decided. A resumed run on other prompt versions is refused."""
+    call and returns {"incomplete": n} while judgeable rows remain. Missing pictures hold a row unmeasured and
+    can be retried on resume. A resumed run on other prompt versions is refused."""
     rows = [json.loads(l) for l in (STATE / "regression.jsonl").read_text().splitlines() if l.strip()]
     specs = [C.pilot_spec(r["pilot"]) if r.get("pilot") else json.loads((ROOT / r["spec"]).read_text()) for r in rows]
     rid = run_id or "regress_" + dt.datetime.now().strftime("%Y%m%dT%H%M%S")
@@ -1059,19 +1060,28 @@ def regress(rev: Reviewers | None = None, run_id: str | None = None, max_new: in
     if (rdir / "decisions.jsonl").is_file():
         done = {spec_key(json.loads(l)) for l in (rdir / "decisions.jsonl").read_text().splitlines() if l.strip()}
     todo = [s for s in specs if spec_key(s) not in done]
+    blocked = {}
+    for s in todo:
+        absent = [panel for panel, path in C.source_files(s).items() if not Path(path).is_file()]
+        if absent:
+            blocked[spec_key(s)] = absent
+    todo = [s for s in todo if spec_key(s) not in blocked]
     recs = {spec_key(r): r for r in run(todo[:max_new] if max_new else todo, rid, rev=rev, test=True)}
-    missing = [spec_key(s) for s in specs if spec_key(s) not in recs]
+    missing = [spec_key(s) for s in todo if spec_key(s) not in recs]
     if missing:
         return {"run": rid, "incomplete": len(missing), "total": len(specs)}
     res = []
     for row, s in zip(rows, specs):
-        d = recs[spec_key(s)]["decision"]
+        absent = blocked.get(spec_key(s))
+        d = "HOLD_INPUT" if absent else recs[spec_key(s)]["decision"]
         # A HOLD_* (transport error, missing panel, kept art) decided nothing: it is UNMEASURED, never a pass.
         # (2026-10-23: a session-limit outage made every row HOLD_ERROR and the NOT_ACCEPT rows "passed".)
         measured = d == "ACCEPT" or d in ("REGEN", "ESCALATE", "REGEN_AFTER_SOURCE")
         ok = measured and (d == "ACCEPT") == (row["expect"] == "ACCEPT")
         res.append({"subject": s["subject"], "expect": row["expect"], "got": d, "pass": ok,
                     "unmeasured": not measured, "why": row.get("why")})
+        if absent:
+            res[-1]["missing_images"] = absent
     out = {"versions_key": versions_key(prompt_versions("creature")), "run": rid, "at": now(),
            "passed": sum(r["pass"] for r in res), "total": len(res),
            "unmeasured": sum(r["unmeasured"] for r in res), "rows": res}
@@ -1151,6 +1161,9 @@ def main(argv=None):
             print(f"regression {o['run']}: {o['incomplete']}/{o['total']} rows still to judge — "
                   f"resume: runner.py regress --run-id {o['run']}")
             return 2
+        for row in o["rows"]:
+            if row.get("missing_images"):
+                print(f"{row['subject']}: UNMEASURED (missing {', '.join(row['missing_images'])})")
         print(f"regression {o['passed']}/{o['total']} on {o['versions_key']}"
               + (f" — UNMEASURED {o['unmeasured']}/{o['total']} (HOLD_*: nothing decided; not a pass)" if o["unmeasured"] else ""))
         return 0 if o["passed"] == o["total"] else 1

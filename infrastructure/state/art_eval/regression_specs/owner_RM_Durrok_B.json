@@ -17,10 +17,10 @@
  "source": "RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml",
  "owner_kept": false,
  "images": {
-  "south": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Durrok_B/south.png",
-  "east": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Durrok_B/east.png",
-  "north": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Durrok_B/north.png",
-  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Durrok_B/scale.png"
+  "south": "/mnt/d/ClaudeWork/rimmandrake/artstore/c1/c1f71f73dd7a8cf80116b53da1ed039f5754347fb7c01945dc3dfd2c96b39ffa.png",
+  "east": "/mnt/d/ClaudeWork/rimmandrake/artstore/38/38404a11e7e7171bf43c046f229e5bcf6925c7600ec318a39faabd3d8a987101.png",
+  "north": "/mnt/d/ClaudeWork/rimmandrake/artstore/55/5528b691f5a1f617a74fe438bd6d02d5bf95e560d0f16a5ca909780b7c8d0ca1.png",
+  "scale": "/mnt/d/ClaudeWork/rimmandrake/artstore/68/682641164d73fc156e68a6c76e15889099c198f7f15c3889e21b86fd4c2b7f4b.png"
  },
  "departures": [
   "No head or neck visible at all: the front end is a blunt, featureless mound of hair with no horns, eyes, ears, muzzle or face",

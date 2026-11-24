@@ -17,10 +17,10 @@
  "source": "RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
  "owner_kept": false,
  "images": {
-  "south": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Gawpsack_A/south.png",
-  "east": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Gawpsack_A/east.png",
-  "north": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Gawpsack_A/north.png",
-  "scale": "/home/mandrake/rm/foundry/Transient/art_eval_regress_owner_20261024/RM_Gawpsack_A/scale.png"
+  "south": "/mnt/d/ClaudeWork/rimmandrake/artstore/2d/2d47a2273c11fd68c5c4d888137a7af1c61c6dda7fbca020615d6cf82c98a3e1.png",
+  "east": "/mnt/d/ClaudeWork/rimmandrake/artstore/55/55a5f4c93fa78328cf7c6d0a33229e4f7a65aefaa91be613e6c6e3a52f5742ce.png",
+  "north": "/mnt/d/ClaudeWork/rimmandrake/artstore/f8/f8245a78438ee9e5ee6c67e248deefa7dcd812d524ee504e7e58893c54eca408.png",
+  "scale": "/mnt/d/ClaudeWork/rimmandrake/artstore/59/5982a9f381cd76549c21d826e787491c1ef7854bd10ae915a2ace0b63fc1406c.png"
  },
  "departures": [
   "a sagging, stuffed bag shape, not a jellyfish's domed bell",
