@@ -332,6 +332,8 @@ namespace RimMandrake.FlowWorks
 			public bool Beside;
 			public bool Current;
 			public bool HasLiveWinch;
+			/// <summary>The winch is of another material than the leaf's bridge: it never works it.</summary>
+			public bool OtherMaterial;
 		}
 
 		/// <summary>DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT (live run6 2026-10-25): the leaf a new winch house takes, or -1.
@@ -346,7 +348,7 @@ namespace RimMandrake.FlowWorks
 				for (int i = 0; i < leaves.Count; i++)
 				{
 					WinchCandidate c = leaves[i];
-					if (c.Current && !c.HasLiveWinch && (pass == 0 ? c.Planned : c.Beside))
+					if (c.Current && !c.HasLiveWinch && !c.OtherMaterial && (pass == 0 ? c.Planned : c.Beside))
 					{
 						return i;
 					}
@@ -392,6 +394,76 @@ namespace RimMandrake.FlowWorks
 			return holdRaised ? "Peace: held raised by order" : "Peace: lowers itself for your people";
 		}
 
+
+		/// <summary>TIMBER_WINCH_FIX_POWERS_STEEL_BRIDGE: whether a winch drives a bridge of this material: a steel leaf needs a winch
+		/// with a power connection that is on; a timber leaf needs no current (it needs hands). The bridge's material decides, never
+		/// the winch's.</summary>
+		public static bool WinchPowers(SuspensionTier bridge, bool hasPowerComp, bool powerOn)
+		{
+			return !IsPowered(bridge) || (hasPowerComp && powerOn);
+		}
+
+		private static int Percent(bool raising, int progress, int fullTicks)
+		{
+			int pct = fullTicks < 1 ? 0 : (int)(100L * progress / fullTicks);
+			return raising ? pct : 100 - pct;
+		}
+
+		/// <summary>DRAWBRIDGE_BUTTON_FIX_CLICK_SEEMS_DEAD: what the leaf is waiting for or doing and who does it, from the click until
+		/// it is done; null at rest. worker: the colonist with the winch job (null: none); atWinch: they stand at it.</summary>
+		public static string OrderStatus(SuspensionTier t, int pendingOrder, bool targetRaised, int progress, int fullTicks, string worker, bool atWinch,
+			bool hasWinch, bool frozen, bool anyoneCan)
+		{
+			if (pendingOrder != OrderNone)
+			{
+				string s = (pendingOrder == OrderRaise ? "Raise" : "Lower") + " ordered: ";
+				if (!hasWinch)
+				{
+					return s + "there is no winch house to work";
+				}
+				if (worker != null)
+				{
+					return s + worker + (atWinch ? " is at the winch" : " is on the way to the winch");
+				}
+				return s + (anyoneCan ? "waiting for a free colonist" : "no colonist here can do basic work");
+			}
+			if (AtTarget(progress, targetRaised, fullTicks))
+			{
+				return null;
+			}
+			string move = (targetRaised ? "Raising " : "Lowering ") + Percent(targetRaised, progress, fullTicks) + "%";
+			if (!hasWinch)
+			{
+				return move + ": stopped, there is no winch house";
+			}
+			if (IsPowered(t))
+			{
+				return frozen ? move + ": stopped, the winch has no power" : move;
+			}
+			return worker == null ? move + ": stopped, waiting for a colonist at the winch"
+				: move + ": " + worker + (atWinch ? " is at the winch" : " is on the way to the winch");
+		}
+
+		/// <summary>The button's label: the order it gave, then the travel, then itself again.</summary>
+		public static string OrderButton(bool raise, int pendingOrder, bool targetRaised, int progress, int fullTicks)
+		{
+			string verb = raise ? "Raise" : "Lower";
+			if (pendingOrder == (raise ? OrderRaise : OrderLower))
+			{
+				return verb + " ordered";
+			}
+			if (pendingOrder == OrderNone && targetRaised == raise && !AtTarget(progress, targetRaised, fullTicks))
+			{
+				return (raise ? "Raising " : "Lowering ") + Percent(raise, progress, fullTicks) + "%";
+			}
+			return verb + " drawbridge";
+		}
+
+		/// <summary>The leaf is already there and no order is taking it away: the button would send a colonist to do nothing.</summary>
+		public static bool OrderPointless(bool raise, int pendingOrder, bool targetRaised, int progress, int fullTicks)
+		{
+			return pendingOrder == OrderNone && targetRaised == raise && AtTarget(progress, targetRaised, fullTicks);
+		}
 
 		// ── Phase 4: raiders (R5) ───────────────────────────────────────────────────────────────
 
@@ -558,6 +630,75 @@ namespace RimMandrake.FlowWorks
 		public static string GateFacing(bool rotationHorizontal)
 		{
 			return rotationHorizontal ? "_east" : "_south";
+		}
+
+		/// <summary>A pixel rectangle of an installed picture, as UVs (v up).</summary>
+		public struct Cut
+		{
+			public string Path;
+			public float U0, V0, U1, V1;
+
+			public Cut(string path, float w, float h, float x0, float y0, float x1, float y1)
+			{
+				Path = path;
+				U0 = x0 / w;
+				U1 = x1 / w;
+				V0 = 1f - y1 / h;
+				V1 = 1f - y0 / h;
+			}
+		}
+
+		/// <summary>The pieces the gate frame, its threshold and the far bank's mooring are cut from. Every piece is a rectangle of a
+		/// picture the owner already picked (the open gate, the deck tile, the anchor posts): no picture is painted for the frame.</summary>
+		public struct FrameArt
+		{
+			public Cut PostLeft, PostRight, PostEdge, Beam, BeamTop, Pad, Moor;
+			public float BeamDrop, BeamDepth, MoorW, MoorH, PadTurn;
+		}
+
+		/// <summary>The scale the open gate picture is drawn at in the frame: its 300 px stand PostH tall.</summary>
+		private const float GateScale = (float)(DrawbridgeFrameMath.PostH / (300.0 / 256.0));
+
+		/// <summary>One repeat of the lintel (126 px of the picture).</summary>
+		public const float BeamUnit = 126f / 256f * GateScale;
+
+		public static readonly Cut Footing = new Cut("Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel_north", 256, 256, 60, 120, 190, 190);
+
+		public static FrameArt Frame(SuspensionTier t)
+		{
+			bool steel = t == SuspensionTier.Steel;
+			string face = Dir + "RM_DrawbridgeGate_" + Material(t) + "_Open_south", edge = Dir + "RM_DrawbridgeGate_" + Material(t) + "_Open_east";
+			const string susp = "Things/Building/FlowWorks/SuspensionBridge/";
+			float beam1 = steel ? 122 : 150;
+			return new FrameArt
+			{
+				PostLeft = new Cut(face, 256, 384, 11, 72, 66, 372),
+				PostRight = new Cut(face, 256, 384, 189, 72, 244, 372),
+				PostEdge = new Cut(edge, 256, 384, 94, 10, 162, 374),
+				Beam = new Cut(face, 256, 384, 64, 84, 190, beam1),
+				BeamTop = new Cut(face, 256, 384, 64, steel ? 86 : 88, 190, steel ? 120 : 112),
+				BeamDrop = (84 - 72) / 256f * GateScale,
+				BeamDepth = (beam1 - 84) / 256f * GateScale,
+				Pad = steel ? new Cut(Dir + "RM_DrawbridgeLeafUp_Steel_Face", 256, 1024, 31, 256, 241, 512)
+					: new Cut(susp + "RM_SuspensionDeck_Timber", 256, 256, 26, 0, 230, 256),
+				PadTurn = steel ? 90f : 0f,
+				Moor = steel ? new Cut(susp + "RM_SuspensionAnchor_Steel", 256, 256, 42, 134, 100, 242)
+					: new Cut(susp + "RM_SuspensionAnchor_Timber_north", 256, 256, 54, 104, 108, 190),
+				MoorW = steel ? 0.225f : 0.21f,
+				MoorH = steel ? 0.42f : 0.335f,
+			};
+		}
+
+		/// <summary>The gate square's panel: half a lane of the shut gate's planks face on; a lane of the gate's edge side on.</summary>
+		public static Cut GatePanel(SuspensionTier t, bool sideways)
+		{
+			string m = Material(t);
+			if (sideways)
+			{
+				return new Cut(Dir + "RM_DrawbridgeGate_" + m + "_Open_east", 256, 384, 100, 90, 156, 330);
+			}
+			return t == SuspensionTier.Steel ? new Cut(Dir + "RM_DrawbridgeGate_Steel_Closed_south", 256, 384, 60, 158, 195, 348)
+				: new Cut(Dir + "RM_DrawbridgeGate_Timber_Closed_south", 256, 384, 62, 122, 193, 348);
 		}
 
 		public enum RaidPlankPiece
@@ -989,6 +1130,113 @@ namespace RimMandrake.FlowWorks
 				return Slices - 1;
 			}
 			return 1 + (i - 1) % (Slices - 2);
+		}
+	}
+
+	/// <summary>RIMMANDRAKE_PRUNE_FLOWWORKS_DRAWBRIDGE_TO_HIS_NOV_THIRD_RULINGS (owner 2026-11-03: option B, "the Gate reads like the
+	/// doorway that it really is"; its inside "transparent instead like a doorway"; "The NEAR (friendly) side stays taut"; the far
+	/// side "slack or disconnected"): where the gate frame, the hauling lines and the far bank's mooring are drawn. One design for
+	/// every width, length and direction, and it takes no material. Frame: origin the middle of the hinge lip, u cells toward
+	/// the leaf's tip (fx, fz), v cells along the bridge's side (sx, sz), up cells up the screen. The copy that was solved and
+	/// rendered offline is art_source/Drawbridge/frame_geometry.py; selftest_flowworks_drawbridge_frame.py keeps them equal.</summary>
+	public static class DrawbridgeFrameMath
+	{
+		public struct P
+		{
+			public double X, Z;
+		}
+
+		/// <summary>The frame's plane, just behind the hinge lip.</summary>
+		public const double Plane = -0.1;
+		/// <summary>A post's centre stands this far outside the lanes' edge.</summary>
+		public const double PostV = 0.1;
+		public const double PostW = 0.22;
+		/// <summary>A post's drawn height up the screen, its cap included.</summary>
+		public const double PostH = 1.26;
+		/// <summary>The doorway's clear height up the screen: nothing of the frame or the lines is drawn in it.</summary>
+		public const double OpenH = 0.86;
+		/// <summary>The height up the screen where a line runs over the lintel.</summary>
+		public const double SheaveZ = 1.1;
+		/// <summary>The far bank's mooring posts stand this far past the lowered tip, on their own anchor squares.</summary>
+		public const double MoorU = 0.26;
+		public const double MoorUp = 0.12;
+		/// <summary>A line reaches the winch this far above its square's centre.</summary>
+		public const double DrumZ = 0.1;
+		/// <summary>The mooring hitch is cast off in the first degrees of the raise.</summary>
+		public const double HitchDeg = 3.0;
+
+		public static P At(int fx, int fz, int sx, int sz, double u, double v, double up)
+		{
+			return new P { X = fx * u + sx * v, Z = fz * u + sz * v + up };
+		}
+
+		/// <summary>A point of the leaf: along cells from the hinge, v cells across, `below` cells under its top, at deg.</summary>
+		public static P Leaf(int fx, int fz, int sx, int sz, double along, double v, double deg, double below = 0)
+		{
+			double a = deg * System.Math.PI / 180.0, c = System.Math.Cos(a), s = System.Math.Sin(a);
+			return At(fx, fz, sx, sz, along * c + below * s, v, DrawbridgeLeafPose.K * (along * s - below * c));
+		}
+
+		/// <summary>Where a line ties to the leaf: the corner of its drawn tip edge.</summary>
+		public static P Eye(int fx, int fz, int sx, int sz, int width, int length, int sgn, double deg)
+		{
+			return Leaf(fx, fz, sx, sz, length, sgn * width / 2.0, deg);
+		}
+
+		public static P Sheave(int fx, int fz, int sx, int sz, int width, int sgn)
+		{
+			return At(fx, fz, sx, sz, Plane, sgn * (width / 2.0 + PostV), SheaveZ);
+		}
+
+		public static P Post(int fx, int fz, int sx, int sz, int width, int sgn)
+		{
+			return At(fx, fz, sx, sz, Plane, sgn * (width / 2.0 + PostV), 0);
+		}
+
+		/// <summary>One hauling line of the friendly bank, taut in every state: tip edge, over the lintel, (the far-side line along
+		/// the lintel to the winch side,) down to the winch. It never crosses the doorway.</summary>
+		public static List<P> NearLine(int fx, int fz, int sx, int sz, int width, int length, int sgn, double deg, int winchSgn, P drum)
+		{
+			var pts = new List<P> { Eye(fx, fz, sx, sz, width, length, sgn, deg), Sheave(fx, fz, sx, sz, width, sgn) };
+			if (sgn != winchSgn)
+			{
+				pts.Add(Sheave(fx, fz, sx, sz, width, winchSgn));
+			}
+			pts.Add(drum);
+			return pts;
+		}
+
+		public static P Moor(int fx, int fz, int sx, int sz, int width, int length, int sgn)
+		{
+			return At(fx, fz, sx, sz, length + MoorU, sgn * (width / 2.0 - 0.1), 0);
+		}
+
+		/// <summary>The far bank's only line: the short hitch from a mooring post to the lowered tip; false once it is cast off, so
+		/// at the hold nothing of the far bank's lines is drawn.</summary>
+		public static bool Hitch(int fx, int fz, int sx, int sz, int width, int length, int sgn, double deg, out P a, out P b)
+		{
+			a = Moor(fx, fz, sx, sz, width, length, sgn);
+			a.Z += MoorUp;
+			b = a;
+			double k = 1.0 - deg / HitchDeg;
+			if (k <= 0)
+			{
+				return false;
+			}
+			P e = Eye(fx, fz, sx, sz, width, length, sgn, deg);
+			b = new P { X = a.X + (e.X - a.X) * k, Z = a.Z + (e.Z - a.Z) * k };
+			return true;
+		}
+
+		/// <summary>The doorway seen face on (a leaf running north or south): its clear rectangle; false edge-on.</summary>
+		public static bool Doorway(int fx, int fz, int sx, int sz, int width, out double x0, out double z0, out double x1, out double z1)
+		{
+			double half = width / 2.0 + PostV - PostW / 2;
+			x0 = -half;
+			x1 = half;
+			z0 = At(fx, fz, sx, sz, Plane, 0, 0).Z;
+			z1 = z0 + OpenH;
+			return fx == 0;
 		}
 	}
 }

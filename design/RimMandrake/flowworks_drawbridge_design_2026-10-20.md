@@ -165,36 +165,37 @@ riders would be tipped (or fall). Mod Settings (defaults = shipped behaviour): "
 
 ### R12. Art
 
-Leaf lowered: the suspension deck tiles in the four styles. Raised: the squares draw empty, and the winch house draws
-the leaf upright, height scaled to its length, 4 facings. Gate: closed (leaf upright) and open, 4 styles. Planks: drawn
-stacked beside the bridge. Search `artpipe_state.py find` and the sheets' `.decisions.json` before queuing any art; art
-is a separate item, as `SUSPENSION_ART_RESKIN_HE_SEES_FIRST` was.
+One design for both materials, every width (1 to 4), every leaf length and all four directions (his rulings of 2026-11-03,
+option B). The geometry is `DrawbridgeLeafPose` and `DrawbridgeFrameMath` (`src/RimMandrake/FlowWorks/Source/RM_DrawbridgeMath.cs`),
+solved offline in `src/RimMandrake/FlowWorks/art_source/Drawbridge/frame_geometry.py`; the drawing is `RM_DrawbridgeArt`.
 
-**Art contract (BENCH, 2026-10-20; the builder reads texture paths from here).** Owner: *"commission the art for the
-bridges so it will be ready for you by the time you need it."* Searched first: no drawbridge, winch, bascule, gangplank
-or raid-plank art existed (`artpipe_state.py find`, the done jobs, every `Transient/biome_ffar/*.decisions.json`).
-All paths are texPaths under `src/RimMandrake/FlowWorks/Textures/`, 256 px per cell like the suspension art. Queued
-from `infrastructure/artpipe/art_lists/flowworks_drawbridge_2026-10-20.json` (28 jobs); until each passes review and
-`art install`, the path does not exist on disk, so the builder ships a stand-in or guards for a missing texture.
-`<M>` is `Timber` or `Steel`.
+- **Leaf.** One picture, `RM_DrawbridgeLeafUp_<M>_Face`, cut into one slice per cell, its body columns only. Lowered it lies on
+  the deck squares; raised it is the same slices on a rigid leaf turned about its hinge (hold 55 running south, 85 running
+  north, 75 east and west), darker toward the hinge, with its tip end and (east, west) its side showing. Nothing changes
+  picture at the first tick and nothing is stretched along the leaf.
+- **Gate frame.** On the hinge bank, at the hinge lip: two posts outside the lanes and one lintel, cut from the picked open gate
+  (`DrawbridgeArtPaths.Frame`). Nothing is drawn inside the doorway. The hinge anchors draw the threshold only.
+- **Gate squares.** One bank square behind: only the panel (`GatePanel`), which sinks into its slot as the door opens.
+- **Hauling lines.** Rope on timber, cable on steel, drawn by code in every state: the corner of the drawn tip edge, over the
+  lintel, (along it to the winch side,) down to the winch. Taut always; never across the doorway.
+- **Far bank.** A footing and two mooring posts. Lowered, a short hitch ties the tip to each post; it is cast off in the first
+  3 degrees, so a raised drawbridge has no line on the far bank and nothing crosses the gap.
+- **No plank stack.** No winch on the far bank.
 
-| picture | texPath | graphic | canvas / size |
-|---|---|---|---|
-| leaf lowered | `Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_<M>_Atlas` (+ railing edge) | existing, reused | no new art |
-| winch house (timber hand-crank; steel motor house) | `Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_<M>` | Graphic_Multi `_south/_east/_north`; front (chains) faces the leaf | 384×384, 1×1 footprint, drawSize 1.5 |
-| leaf raised, deck face toward camera | `Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_<M>_Face` | single, drawn by code at the hinge | 256×1024 = 1 lane × 4 cells, hinge at the bottom edge |
-| leaf raised, underside toward camera | `…/Drawbridge/RM_DrawbridgeLeafUp_<M>_Underside` | as above | as above |
-| leaf raised, edge-on (span runs east/west; flip for west) | `…/Drawbridge/RM_DrawbridgeLeafUp_<M>_Edge` | as above | as above |
-| gate leaf closed / open | `…/Drawbridge/RM_DrawbridgeGate_<M>_Closed`, `…_Open` | Graphic_Multi `_south` (face-on) and `_east` (edge-on); north reuses south | 256×384 per lane, drawSize 1×1.5 |
-| planks beside the bridge (art only) | `…/Drawbridge/RM_DrawbridgePlanks_<M>` | single | 256×256, 1 cell |
-| raid plank, carried/dropped item | `Things/Item/FlowWorks/RM_RaidPlank` | single | 256×256 |
-| raid plank laid across the pit | `…/Drawbridge/RM_RaidPlank_Laid` (one per cell) + `…/Drawbridge/RM_RaidPlank_LaidEnd` (each bank end, hooks at the top) | single, rotated with the span | 256×256 each |
-| command icons | `UI/Commands/FlowWorks/RM_DrawbridgeRaise`, `…/RM_DrawbridgeLower`, `…/RM_DrawbridgeHoldRaised` | UI | 256×256 |
+**Art contract.** All paths are texPaths under `src/RimMandrake/FlowWorks/Textures/`. `<M>` is `Timber` or `Steel`. No picture was
+painted for the frame: every piece is a rectangle of a picture already installed.
 
-Which raised view to draw: the leaf rotates up about its hinge, so a span running **north** from its hinge shows its
-`_Face` to the camera, a span running **south** shows its `_Underside`, east/west show `_Edge`. The raised art is drawn
-1 lane wide and 4 cells tall; the code draws one copy per lane and scales its height to the leaf length (a steel leaf
-over 4 cells is stretched).
+| picture | texPath | drawn as |
+|---|---|---|
+| leaf, lowered and raised | `Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_<M>_Face` | 256x1024 = 4 slices, hinge at the bottom edge |
+| winch house | `…/Drawbridge/RM_DrawbridgeWinch_<M>` | Graphic_Multi `_south/_east/_north`, drawSize 1.5 |
+| posts, lintel | `…/Drawbridge/RM_DrawbridgeGate_<M>_Open` (`_south`, `_east`) | cut by `DrawbridgeArtPaths.Frame` |
+| gate panel | `…/Drawbridge/RM_DrawbridgeGate_<M>_Closed_south`; edge-on `_Open_east` | cut by `GatePanel` |
+| threshold | timber `…/SuspensionBridge/RM_SuspensionDeck_Timber`; steel the leaf's middle slice, turned | one per hinge anchor |
+| mooring posts | `…/SuspensionBridge/RM_SuspensionAnchor_Timber_north`, `…/RM_SuspensionAnchor_Steel` | below the painted rope |
+| lines | timber `Things/Building/FlowWorks/Rivers/RM_FerryRope`; steel `RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Galv` | tiled along each run |
+| raid plank, carried / laid | `…/Drawbridge/RM_RaidPlank`, `RM_RaidPlank_Laid`, `RM_RaidPlank_LaidEnd` | laid piece turned with the span |
+| command icons | `UI/Commands/FlowWorks/RM_DrawbridgeRaise` (not installed: a stand-in shows), `…/RM_DrawbridgeLower`, `…/RM_DrawbridgeHoldRaised` | UI |
 
 **The four looks** (`Scrapper`, `Industrial`, `Modern`, `Futuristic`), as installed 2026-10-21 (bridge_art_redraw picks), all
 in `Things/Building/FlowWorks/Drawbridge/`: `RM_DrawbridgeLeafUp_<View>_<Look>`, `RM_DrawbridgePlanks_<Look>`,
@@ -203,8 +204,7 @@ A part draws its MATERIAL's picture first, its bridge's look only where the mate
 "Material picks win": a Timber drawbridge always shows the Timber picture; looks restyle pipes and machinery); the candidate order
 is `DrawbridgeArtPaths` in `Source/RM_DrawbridgeMath.cs`, checked on disk by `selftest_flowworks_drawbridge_art.py`.
 
-**Not commissioned:** a mid-raise picture (the spec does not animate the raise), raid planks in steel, a crash-down
-wreck (`RM_SuspensionWreck` exists).
+**Not commissioned:** raid planks in steel, a crash-down wreck (`RM_SuspensionWreck` exists).
 
 ### R13. Build order, cost, live rows
 
@@ -222,16 +222,16 @@ ESTIMATE 8 to 11 agent-days plus art.
 
 Live rows (minimal list, about 1 day): RAISE_PATH (a colonist re-routes at once), RAISE_TIPS_RIDERS (six raiders on a
 3-wide leaf, one free bank square: one lands, five fall), RAISE_SPARES_UNDERPASS (a pawn beneath is untouched),
-LOWER_ONLY_FROM_WINCH, TWO_LEAF_TIPS_OWN_HINGE, HOSTILE_LOCKS (queued auto-lower cancelled when a raid spawns; a trapped
+LOWER_ONLY_FROM_WINCH, LONG_SPAN_NOT_A_DRAWBRIDGE, HOSTILE_LOCKS (queued auto-lower cancelled when a raid spawns; a trapped
 hostile does not lock), STEEL_UNPOWERED_FREEZES, WINCH_LOST_CRASHES (a destroyed winch crashes its raised leaf down on a pawn under it), RAID_UP (decoy outside, winch inside; legal
 progress, no job loop), RAID_PLANK (interrupted carrier makes no duplicate crossing), SAVE_MIDRAISE.
 
 
 ## Owner's follow-up answers (question cards, 2026-10-20, late evening). These override the Ruled design where they differ.
 
-- **Planks:** art only. This was settled earlier: *"part of its art, not an actual item you can misplace"*.
+- **Planks:** no plank stack beside the bridge (owner, 2026-11-03: *"Cut the pile of material, it's pointless."*).
 - **Winch destroyed:** the leaf **crashes down**, and anything under it is hit. This replaces "a lost winch freezes the leaf". A steel bridge that loses power still freezes.
-- **Two-leaf bridges:** each leaf has its own winch house on its own bank.
+- **One leaf only:** a span over the longest leaf is not a drawbridge (owner by card, 2026-11-03: "Remove double drawbridges").
 - **Bridge across the gravship edge:** the bridge **collapses** on launch, and anyone on it falls.
 
 ## Owner questions as asked (ANSWERED, see the next section)

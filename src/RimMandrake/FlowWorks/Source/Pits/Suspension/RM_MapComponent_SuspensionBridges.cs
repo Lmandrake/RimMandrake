@@ -1237,6 +1237,13 @@ namespace RimMandrake.FlowWorks.Pits
 			// SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN: a deck completed over the hole has whoever stands on its floor UNDER it
 			// (the band was entered only by a walked step: live 2026-10-19 a timber span read 816 kg with one rider, 13 pawns in
 			// the trench below counted on top) and what lies there slides out to open floor, or is marked under.
+			SettleUnder(d);
+		}
+
+		/// <summary>A deck square over the hole has just become ground (built, or its drawbridge leaf came down): whoever stands on
+		/// the floor under it joins the floor band, and what lies there slides out.</summary>
+		public void SettleUnder(Building_SuspensionDeck d)
+		{
 			if (!d.FloorBandPassesUnder)
 			{
 				return;

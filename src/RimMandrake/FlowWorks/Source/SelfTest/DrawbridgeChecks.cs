@@ -34,6 +34,25 @@ namespace RimMandrake.FlowWorks.SelfTest
             throw new Exception("unbalanced: " + signature);
         }
 
+        /// <summary>Why this is not one taut hauling line, or null.</summary>
+        private static string TautFault(List<DrawbridgeFrameMath.P> p, int fx, int fz, int sx, int sz, int w, int len, int sgn, double deg,
+            DrawbridgeFrameMath.P drum, bool face, double x0, double z0, double x1, double z1)
+        {
+            DrawbridgeFrameMath.P tip = DrawbridgeFrameMath.Leaf(fx, fz, sx, sz, len, sgn * w / 2.0, deg);
+            if (Math.Abs(p[0].X - tip.X) > 1e-6 || Math.Abs(p[0].Z - tip.Z) > 1e-6) return "does not start on the drawn tip edge";
+            DrawbridgeFrameMath.P last = p[p.Count - 1];
+            if (Math.Abs(last.X - drum.X) > 1e-6 || Math.Abs(last.Z - drum.Z) > 1e-6) return "does not end at the winch";
+            for (int i = 0; face && i + 1 < p.Count; i++)
+            {
+                for (int k = 1; k < 200; k++)
+                {
+                    double t = k / 200.0, x = p[i].X + (p[i + 1].X - p[i].X) * t, z = p[i].Z + (p[i + 1].Z - p[i].Z) * t;
+                    if (x > x0 + 1e-6 && x < x1 - 1e-6 && z > z0 + 1e-6 && z < z1 - 1e-6) return "crosses the doorway";
+                }
+            }
+            return null;
+        }
+
         public static void Run(Action<string, Action> Case)
         {
             // ISLAND_RAIDERS_NEVER_CROSS_LOWERED_LEAF (test pilot 2026-11-21): grenadiers sent at a winch by
@@ -504,6 +523,121 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!DrawbridgeLeafPose.TopShows(0, -1, 70), "can-fail: south-running past edge-on (63.43) would show the underside");
             });
 
+            // RIMMANDRAKE_PRUNE_FLOWWORKS_DRAWBRIDGE_TO_HIS_NOV_THIRD_RULINGS: his 2026-11-03 rulings on the lines and the frame, over
+            // every direction, both ends a leaf may hinge at, widths 1-4, lengths 1-8, both winch sides (no material: one path)
+            Case("Drawbridge_Frame_near_lines_taut_far_side_bare_doorway_clear", () =>
+            {
+                foreach (int[] d in new[] { new[] { 0, 1 }, new[] { 0, -1 }, new[] { 1, 0 }, new[] { -1, 0 } })
+                {
+                    foreach (int turn in new[] { -1, 1 })
+                    {
+                        int fx = d[0], fz = d[1], sx = turn * fz, sz = -turn * fx;
+                        double hold = DrawbridgeLeafPose.HoldDegrees(fx, fz);
+                        for (int w = 1; w <= 4; w++)
+                        {
+                            bool face = DrawbridgeFrameMath.Doorway(fx, fz, sx, sz, w, out double x0, out double z0, out double x1, out double z1);
+                            Assert(face == (fx == 0) && (!face || (x1 - x0 >= w - 0.05 && z1 - z0 >= 0.8)), "the doorway is as wide as its lanes");
+                            for (int len = 1; len <= 8; len++)
+                            {
+                                foreach (int ws in new[] { -1, 1 })
+                                {
+                                    DrawbridgeFrameMath.P drum = DrawbridgeFrameMath.At(fx, fz, sx, sz, -0.5, ws * (w / 2.0 + 0.5), DrawbridgeFrameMath.DrumZ);
+                                    foreach (int sgn in new[] { -1, 1 })
+                                    {
+                                        string why = TautFault(DrawbridgeFrameMath.NearLine(fx, fz, sx, sz, w, len, sgn, hold, ws, drum),
+                                            fx, fz, sx, sz, w, len, sgn, hold, drum, face, x0, z0, x1, z1);
+                                        Assert(why == null, "near line " + fx + "," + fz + " w" + w + " L" + len + " side " + sgn + ": " + why);
+                                        Assert(!DrawbridgeFrameMath.Hitch(fx, fz, sx, sz, w, len, sgn, hold, out _, out _), "at the hold the far bank draws no line");
+                                        Assert(DrawbridgeFrameMath.Hitch(fx, fz, sx, sz, w, len, sgn, 0, out _, out _), "lowered, the tip is hitched to its mooring post");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // can-fail: a slack line (it stops short of the winch), and one through the doorway
+                DrawbridgeFrameMath.P dr = DrawbridgeFrameMath.At(0, 1, 1, 0, -0.5, 1.0, DrawbridgeFrameMath.DrumZ);
+                List<DrawbridgeFrameMath.P> slack = DrawbridgeFrameMath.NearLine(0, 1, 1, 0, 1, 4, 1, 85, 1, dr);
+                slack.RemoveAt(slack.Count - 1);
+                DrawbridgeFrameMath.Doorway(0, 1, 1, 0, 1, out double a0, out double b0, out double a1, out double b1);
+                Assert(TautFault(slack, 0, 1, 1, 0, 1, 4, 1, 85, dr, true, a0, b0, a1, b1) != null, "can-fail: a line that stops short of the winch is refused");
+                List<DrawbridgeFrameMath.P> cross = DrawbridgeFrameMath.NearLine(0, 1, 1, 0, 1, 4, -1, 85, 1, dr);
+                cross.RemoveAt(2);
+                Assert(TautFault(cross, 0, 1, 1, 0, 1, 4, -1, 85, dr, true, a0, b0, a1, b1) != null, "can-fail: a line across the doorway is refused");
+            });
+
+            Case("Drawbridge_Frame_wired_at_the_draw_sites", () =>
+            {
+                string a = Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs");
+                string d = Src("Pits", "Suspension", "Building_SuspensionDeck.cs");
+                string print = Body(d.Substring(d.IndexOf("public class Building_SuspensionAnchor")), "public override void Print(SectionLayer layer)");
+                Assert(print.IndexOf("RM_DrawbridgeArt.PrintDrawbridgeEnd(layer, this)") > 0
+                    && print.IndexOf("RM_DrawbridgeArt.PrintDrawbridgeEnd(layer, this)") < print.IndexOf("RM_DrawbridgeArt.AnchorPrintFor(this)"),
+                    "can-fail: a drawbridge's anchor prints its frame or mooring before any rope or suspension tower, on both materials");
+                Assert(Body(a, "public static void DrawLeaves(Map map, IReadOnlyList<SuspensionBridgeRecord> bridges)").Contains("DrawLines(map, r, l);"), "the lines are drawn each frame");
+                Assert(Body(d, "public override void Print(SectionLayer layer)").Contains("RM_DrawbridgeArt.PrintLeafDeck(layer, this, Record)"), "the lowered leaf prints the raised leaf's picture");
+                Assert(Body(d.Substring(d.IndexOf("public class Building_SuspensionRailing")), "public override void Print(SectionLayer layer)").Contains("RM_Drawbridges.RaisedAt(map, Position)"),
+                    "a raised leaf's railing does not hang in the gap");
+            });
+
+            // DRAWBRIDGE_BUTTON_FIX_CLICK_SEEMS_DEAD (owner 2026-11-03: "When I clicked on a button to raise/lower it, nothing happened";
+            // test pilot 16eff7aa52: the order was taken and waited, unseen, for a colonist 50 cells away)
+            Case("Drawbridge_Order_shows_itself_and_its_worker_until_done", () =>
+            {
+                string S(SuspensionTier t, int pend, bool target, int prog, string who, bool at, bool winch, bool frozen, bool any)
+                    => RM_DrawbridgeMath.OrderStatus(t, pend, target, prog, 960, who, at, winch, frozen, any);
+                const SuspensionTier T = SuspensionTier.Timber, St = SuspensionTier.Steel;
+                Assert(S(T, RM_DrawbridgeMath.OrderNone, false, 0, null, false, true, false, true) == null, "a leaf at rest with no order says nothing");
+                Assert(S(T, RM_DrawbridgeMath.OrderLower, true, 960, "Nel", false, true, false, true) == "Lower ordered: Nel is on the way to the winch", "the owner's case: who is coming");
+                Assert(S(T, RM_DrawbridgeMath.OrderRaise, false, 0, null, false, true, false, true) == "Raise ordered: waiting for a free colonist", "nobody yet");
+                Assert(S(T, RM_DrawbridgeMath.OrderRaise, false, 0, null, false, true, false, false) == "Raise ordered: no colonist here can do basic work", "nobody ever");
+                Assert(S(T, RM_DrawbridgeMath.OrderRaise, false, 0, null, false, false, false, true) == "Raise ordered: there is no winch house to work", "no winch");
+                Assert(S(T, RM_DrawbridgeMath.OrderNone, true, 480, "Nel", true, true, false, true) == "Raising 50%: Nel is at the winch", "a hand on it, until it is done");
+                Assert(S(T, RM_DrawbridgeMath.OrderNone, true, 480, null, false, true, false, true) == "Raising 50%: stopped, waiting for a colonist at the winch", "left half way");
+                Assert(S(St, RM_DrawbridgeMath.OrderNone, false, 480, null, false, true, false, true) == "Lowering 50%", "a powered leaf needs nobody");
+                Assert(S(St, RM_DrawbridgeMath.OrderNone, false, 480, null, false, true, true, true) == "Lowering 50%: stopped, the winch has no power", "no power");
+                Assert(S(T, RM_DrawbridgeMath.OrderNone, true, 960, null, false, true, false, true) == null, "done: nothing left to show");
+                Assert(RM_DrawbridgeMath.OrderButton(true, RM_DrawbridgeMath.OrderRaise, false, 0, 960) == "Raise ordered" && RM_DrawbridgeMath.OrderButton(false, RM_DrawbridgeMath.OrderRaise, false, 0, 960) == "Lower drawbridge",
+                    "the pressed button stays marked");
+                Assert(RM_DrawbridgeMath.OrderButton(true, RM_DrawbridgeMath.OrderNone, true, 480, 960) == "Raising 50%" && RM_DrawbridgeMath.OrderButton(true, RM_DrawbridgeMath.OrderNone, true, 960, 960) == "Raise drawbridge", "then shows the travel");
+                Assert(RM_DrawbridgeMath.OrderPointless(true, RM_DrawbridgeMath.OrderNone, true, 960, 960) && !RM_DrawbridgeMath.OrderPointless(true, RM_DrawbridgeMath.OrderLower, true, 960, 960)
+                    && !RM_DrawbridgeMath.OrderPointless(false, RM_DrawbridgeMath.OrderNone, true, 960, 960), "a raised leaf cannot be raised again, unless that takes back a lower order");
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                Assert(Body(db, "public static string InspectLine(").Contains("OrderStatusLine(map, r, l)"), "can-fail: the readout names the order and its worker");
+                string giz = Body(db, "public static IEnumerable<Gizmo> Gizmos(");
+                Assert(giz.Contains("RM_DrawbridgeMath.OrderButton(") && giz.Contains("OrderStatusLine(map, r, l)") && giz.Contains("RM_DrawbridgeMath.OrderPointless("), "can-fail: the buttons show the order");
+                Assert(Body(db, "public static void OrderByClick(").Contains("Messages.Message("), "can-fail: a click answers at once");
+                Assert(Body(Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs"), "public static void DrawLeaves(Map map, IReadOnlyList<SuspensionBridgeRecord> bridges)").Contains("DrawOrderMark(map, r, l);"),
+                    "can-fail: the leaf itself shows the order until it is done");
+            });
+
+            // DRAWBRIDGE_LOWER_FIX_LIFTS_OCCUPANTS_BENEATH: a raider swimming the moat under a raised leaf was promoted onto the deck
+            Case("Drawbridge_Lower_leaves_whoever_is_beneath_beneath", () =>
+            {
+                string apply = Body(Src("Pits", "Drawbridge", "RM_Drawbridges.cs"), "public static void Apply(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)");
+                int flip = apply.IndexOf("d.leafRaised = up;"), settle = apply.IndexOf("SettleUnder(d)");
+                Assert(flip > 0 && settle > flip && apply.Substring(flip, settle - flip).Contains("if (!up)"), "can-fail: a square that becomes ground again settles its occupants under it");
+                string comp = Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs");
+                Assert(Body(comp, "public void Notify_DeckBuilt(Building_SuspensionDeck d)").Contains("SettleUnder(d);"), "the rule a newly built deck uses, not a second copy");
+                string s = Body(comp, "public void SettleUnder(Building_SuspensionDeck d)");
+                Assert(s.Contains("SetBand(p, true)") && s.Contains("!p.Flying") && s.Contains("FloorBandPassesUnder"), "walkers below join the floor band; flyers and shallow holes do not");
+            });
+
+            // TIMBER_WINCH_FIX_POWERS_STEEL_BRIDGE
+            Case("Drawbridge_Timber_winch_never_moves_a_steel_leaf", () =>
+            {
+                Assert(!RM_DrawbridgeMath.WinchPowers(SuspensionTier.Steel, false, false), "can-fail: a steel leaf on a timber (unpowered) winch has no power");
+                Assert(!RM_DrawbridgeMath.WinchPowers(SuspensionTier.Steel, true, false) && RM_DrawbridgeMath.WinchPowers(SuspensionTier.Steel, true, true), "steel on steel follows the current");
+                Assert(RM_DrawbridgeMath.WinchPowers(SuspensionTier.Timber, false, false) && RM_DrawbridgeMath.WinchPowers(SuspensionTier.Timber, true, false), "a timber leaf needs hands, never current");
+                Assert(!RM_DrawbridgeMath.DriveMoves(SuspensionTier.Steel, true, RM_DrawbridgeMath.WinchPowers(SuspensionTier.Steel, false, false), true), "so it does not move, worked or not");
+                RM_DrawbridgeMath.WinchCandidate other = new RM_DrawbridgeMath.WinchCandidate { Beside = true, Current = true, OtherMaterial = true };
+                Assert(RM_DrawbridgeMath.PickWinchLeaf(new[] { other }) == -1, "can-fail: a winch takes no leaf of another material");
+                Assert(RM_DrawbridgeMath.PickWinchLeaf(new[] { other, new RM_DrawbridgeMath.WinchCandidate { Beside = true, Current = true } }) == 1, "it takes the leaf of its own");
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                Assert(Body(db, "public static void LinkWinch(").Contains("OtherMaterial = w.Tier != r.tier,"), "the link reads both materials");
+                Assert(Body(db, "public static void Tick(").Contains("w.PowersTier(r.tier)"), "can-fail: the drive reads power for the LEAF's material, not the winch's");
+            });
+
             Case("Drawbridge_Looks_paths_look_first_then_material", () =>
             {
                 foreach (SuspensionTier t in new[] { SuspensionTier.Timber, SuspensionTier.Steel })
@@ -553,7 +687,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string c = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
                 Assert(c.Contains("lookGraphic = RM_DrawbridgeArt.Winch(Tier, look) ?? base.Graphic;"), "can-fail: the winch house draws its look");
                 string gate = Body(c, "public class Building_DrawbridgeGate : Building_Door");
-                Assert(gate.Contains("RM_DrawbridgeArt.DrawGate(this, drawLoc, artTier, artLook, OpenPct >= 0.5f)") && gate.Contains("base.DrawAt(drawLoc, flip);"),
+                Assert(gate.Contains("RM_DrawbridgeArt.DrawGate(this, drawLoc, artTier, artLook, artSideways, OpenPct)") && gate.Contains("base.DrawAt(drawLoc, flip);"),
                     "can-fail: the gate draws its art, the vanilla door only where none exists");
                 string d = Src("Pits", "Suspension", "Building_SuspensionDeck.cs");
                 string print = Body(d, "public override void Print(SectionLayer layer)");
@@ -1168,7 +1302,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(deck.Contains("RM_DrawbridgeArt.AnchorPrintFor(this)") && deck.Contains("RM_DrawbridgeArt.PrintBollards(layer, p)")
                     && deck.Contains("RM_DrawbridgeArt.PrintRopes(layer, p)"), "the anchor prints its ropes through the cable math");
                 string up = DrawbridgeChecks.Body(art, "public static void DrawLeafUp(");
-                Assert(up.Contains("Graphics.DrawMesh(LeafSlice(DrawbridgeLeafPose.SliceFor(i, length)), m, mat, 0);") && !art.Contains("LeafMesh("),
+                Assert(up.Contains("Graphics.DrawMesh(LeafSlice(DrawbridgeLeafPose.SliceFor(i, length)), m, Shaded(path, mat, ") && !art.Contains("LeafMesh("),
                     "the raised leaf draws Face slices through the pose (the edge picture and its rope-stub crop are no longer drawn)");
                 Assert(art.Contains("slack = deck.leafRaised"), "raised = the deck square the ropes face is a raised leaf");
             });

@@ -70,6 +70,17 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 	}
 
+	[DefOf]
+	public static class WorkTypeDefOf_Drawbridge
+	{
+		public static WorkTypeDef BasicWorker;
+
+		static WorkTypeDefOf_Drawbridge()
+		{
+			DefOfHelper.EnsureInitializedInCtor(typeof(WorkTypeDefOf_Drawbridge));
+		}
+	}
+
 	/// <summary>
 	/// DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS, phase 1 (core): making a suspension bridge a drawbridge, moving its leaves and
 	/// telling every path at once (R8). A raise or a lower is a reversible state change on the leaf record: the deck squares
@@ -267,7 +278,7 @@ namespace RimMandrake.FlowWorks.Pits
 					Mode(comp.map, r, l, now);
 					Building_DrawbridgeWinch w = l.winch != null && l.winch.Spawned ? l.winch : null;
 					w?.HoldProofPower();
-					bool powered = w != null && w.Powered;
+					bool powered = w != null && w.PowersTier(r.tier);
 					l.frozen = RM_DrawbridgeMath.FrozenFor(r.tier, w != null, powered);
 					if (RM_DrawbridgeMath.AtTarget(l.progress, l.targetRaised, full))
 					{
@@ -326,6 +337,11 @@ namespace RimMandrake.FlowWorks.Pits
 					if (d.leafRaised != up)
 					{
 						d.leafRaised = up;
+						if (!up)
+						{
+							// DRAWBRIDGE_LOWER_FIX_LIFTS_OCCUPANTS_BENEATH: whoever is down in the hole stays under the leaf
+							RM_MapComponent_SuspensionBridges.Of(map)?.SettleUnder(d);
+						}
 						(changed ?? (changed = new List<IntVec3>())).Add(c);
 					}
 				}
@@ -720,6 +736,7 @@ namespace RimMandrake.FlowWorks.Pits
 						Beside = beside,
 						Current = current,
 						HasLiveWinch = l.winch != null && l.winch.Spawned,
+						OtherMaterial = w.Tier != r.tier,
 					});
 				}
 			}
@@ -881,11 +898,74 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				s += "\nNo winch house: build one beside the hinge anchor";
 			}
-			if (l.pendingOrder != RM_DrawbridgeMath.OrderNone)
+			string order = OrderStatusLine(map, r, l);
+			if (order != null)
 			{
-				s += "\nWaiting for a colonist to " + (l.pendingOrder == RM_DrawbridgeMath.OrderRaise ? "raise" : "lower (winch bank only)") + " it";
+				s += "\n" + order;
 			}
 			return s + "\n" + RM_DrawbridgeMath.LockLine(n > 0, n, l.holdRaised);
+		}
+
+		/// <summary>The colonist who has this leaf's work job now, or null; atWinch: they have arrived.</summary>
+		public static Pawn WorkerOf(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, out bool atWinch)
+		{
+			atWinch = false;
+			int index = r.leaves.IndexOf(l);
+			Building_SuspensionAnchor far = WorkGiver_Drawbridge.FarAnchor(map, r, l);
+			foreach (Pawn p in map.mapPawns.FreeColonistsSpawned)
+			{
+				Job j = p.CurJob;
+				if (j == null || j.def != RM_DrawbridgeDefOf.RM_WorkDrawbridge)
+				{
+					continue;
+				}
+				Thing t = j.targetA.Thing;
+				if (t != null && (t == l.winch || (t == far && j.count == index)))
+				{
+					atWinch = p.pather == null || !p.pather.Moving;
+					return p;
+				}
+			}
+			return null;
+		}
+
+		/// <summary>DRAWBRIDGE_BUTTON_FIX_CLICK_SEEMS_DEAD: the order, its progress and who works it (RM_DrawbridgeMath.OrderStatus);
+		/// null when the leaf is at rest.</summary>
+		public static string OrderStatusLine(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)
+		{
+			int full = FullTicks(r, l);
+			if (l.pendingOrder == RM_DrawbridgeMath.OrderNone && RM_DrawbridgeMath.AtTarget(l.progress, l.targetRaised, full))
+			{
+				return null;
+			}
+			Pawn worker = WorkerOf(map, r, l, out bool at);
+			bool any = worker != null;
+			if (!any)
+			{
+				foreach (Pawn p in map.mapPawns.FreeColonistsSpawned)
+				{
+					if (!p.Downed && p.workSettings != null && p.workSettings.WorkIsActive(WorkTypeDefOf_Drawbridge.BasicWorker))
+					{
+						any = true;
+						break;
+					}
+				}
+			}
+			return RM_DrawbridgeMath.OrderStatus(r.tier, l.pendingOrder, l.targetRaised, l.progress, full, worker?.LabelShortCap, at,
+				l.winch != null && l.winch.Spawned, l.frozen, any);
+		}
+
+		/// <summary>The buttons' action: the order, and an answer at once (the click seemed dead: the order waited unseen for a
+		/// colonist 50 squares away).</summary>
+		public static void OrderByClick(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, bool raise)
+		{
+			Order(map, r, l, raise);
+			string line = OrderStatusLine(map, r, l);
+			if (line != null)
+			{
+				TargetInfo at = l.winch != null && l.winch.Spawned ? new TargetInfo(l.winch) : new TargetInfo(r.Cell(0, l.first), map);
+				Messages.Message(line + ".", at, MessageTypeDefOf.TaskCompletion, false);
+			}
 		}
 
 		/// <summary>The player's controls for one leaf: raise, lower (carried out by a colonist), hold raised.</summary>
@@ -895,22 +975,27 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				yield break;
 			}
-			yield return new Command_Action
+			int full = FullTicks(r, l);
+			string status = OrderStatusLine(map, r, l);
+			foreach (bool raise in new[] { true, false })
 			{
-				defaultLabel = "Raise drawbridge",
-				defaultDesc = "A colonist raises this leaf, from either bank (timber by hand at the winch, steel by its powered winch). "
-					+ "Anyone on it is tipped onto the hinge bank; whoever finds no room falls into the pit. Raised in peacetime, it stays up; "
-					+ "raised while hostiles are about, it lowers itself for your people once they are gone.",
-				icon = RM_DrawbridgeArt.Icon("RM_DrawbridgeRaise", TexCommand.ForbidOff),
-				action = () => Order(map, r, l, true),
-			};
-			yield return new Command_Action
-			{
-				defaultLabel = "Lower drawbridge",
-				defaultDesc = "A colonist lowers this leaf. Only from the winch house's bank.",
-				icon = RM_DrawbridgeArt.Icon("RM_DrawbridgeLower", TexCommand.ForbidOn),
-				action = () => Order(map, r, l, false),
-			};
+				bool up = raise;
+				Command_Action order = new Command_Action
+				{
+					defaultLabel = RM_DrawbridgeMath.OrderButton(up, l.pendingOrder, l.targetRaised, l.progress, full),
+					defaultDesc = (up ? "A colonist raises this leaf, from either bank (timber by hand at the winch, steel by its powered winch). "
+						+ "Anyone on it is tipped onto the hinge bank; whoever finds no room falls into the pit. Raised in peacetime, it stays up; "
+						+ "raised while hostiles are about, it lowers itself for your people once they are gone."
+						: "A colonist lowers this leaf. Only from the winch house's bank.") + (status == null ? "" : "\n\n" + status + "."),
+					icon = up ? RM_DrawbridgeArt.Icon("RM_DrawbridgeRaise", TexCommand.ForbidOff) : RM_DrawbridgeArt.Icon("RM_DrawbridgeLower", TexCommand.ForbidOn),
+					action = () => OrderByClick(map, r, l, up),
+				};
+				if (RM_DrawbridgeMath.OrderPointless(up, l.pendingOrder, l.targetRaised, l.progress, full))
+				{
+					order.Disable(up ? "It is already raised." : "It is already lowered.");
+				}
+				yield return order;
+			}
 			// DRAWBRIDGE_BUILD_ONE_DRAG_DOES_IT_ALL: the winch house has no Architect button; a leaf without one offers it here
 			Command_Action place = RM_DrawbridgePackage.WinchGizmo(map, r, l);
 			if (place != null)

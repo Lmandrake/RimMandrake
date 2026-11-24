@@ -138,6 +138,10 @@ namespace RimMandrake.FlowWorks.Pits
 			Material m = RM_DrawbridgeArt.RaidPlankMat(this, r, out angle);
 			if (m == null)
 			{
+				m = RM_DrawbridgeArt.LeafDeckMat(this, r, out angle);
+			}
+			if (m == null)
+			{
 				m = RM_DeckArt.DeckMat(this, r, out angle);
 			}
 			return m ?? RM_SuspensionDeckLink.TileFor(this, out angle);
@@ -236,6 +240,10 @@ namespace RimMandrake.FlowWorks.Pits
 			if (RM_DrawbridgeArt.PrintRaidPlank(layer, this, Record))
 			{
 				// DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS: a laid raid plank draws its own mid and end pieces, turned to the span
+			}
+			else if (RM_DrawbridgeArt.PrintLeafDeck(layer, this, Record))
+			{
+				// his rulings of 2026-11-03: a drawbridge's lowered leaf is the picture it raises, so nothing changes at the first tick
 			}
 			else if (RM_DeckArt.PrintDeck(layer, this, Record))
 			{
@@ -364,6 +372,14 @@ namespace RimMandrake.FlowWorks.Pits
 		/// 2026-10-23). The deck toggling a leaf re-prints its neighbours (RM_Drawbridges.NotifyToggled → DirtyAround).</summary>
 		public override void Print(SectionLayer layer)
 		{
+			if (RM_DrawbridgeArt.PrintDrawbridgeEnd(layer, this))
+			{
+				foreach (ThingComp c in AllComps)
+				{
+					c.PostPrintOnto(layer);
+				}
+				return;   // the gate frame (hinge bank) or the mooring (far bank): no suspension tower, no painted ropes
+			}
 			RM_DrawbridgeArt.AnchorPrint p = RM_DrawbridgeArt.AnchorPrintFor(this);
 			if (p == null)
 			{
@@ -469,9 +485,9 @@ namespace RimMandrake.FlowWorks.Pits
 		{
 			Map map = Map;
 			Material mat = Graphic?.MatSingle;
-			if (map == null || mat == null)
+			if (map == null || mat == null || RM_Drawbridges.RaisedAt(map, Position))
 			{
-				return;
+				return;   // a raised leaf's railing does not hang in the open gap
 			}
 			Vector3 center = Position.ToVector3Shifted();
 			center.y = def.Altitude;

@@ -47,6 +47,14 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
+		/// <summary>Whether this winch drives a bridge of this material (RM_DrawbridgeMath.WinchPowers): a timber winch house beside a
+		/// steel drawbridge carries no current to it.</summary>
+		public bool PowersTier(SuspensionTier bridge)
+		{
+			CompPowerTrader c = GetComp<CompPowerTrader>();
+			return RM_DrawbridgeMath.WinchPowers(bridge, c != null, c != null && c.PowerOn);
+		}
+
 		/// <summary>The functional script's power override (RM_DrawbridgeProofs.ProofWinchPower): 0 none, 1 held on, 2 held off.
 		/// Saved, so a proof's save/load keeps its staging; never set in play.</summary>
 		public int proofPower;
@@ -387,6 +395,7 @@ namespace RimMandrake.FlowWorks.Pits
 		private int artReadTick = -99999;
 		private SuspensionTier artTier = SuspensionTier.Timber;
 		private string artLook;
+		private bool artSideways;
 
 		/// <summary>MACHINERY_LOOK_FIX_DECK_REPAINT_ON_SWITCH: a default-look switch re-reads the look on the next frame, not
 		/// up to 250 ticks later.</summary>
@@ -405,9 +414,10 @@ namespace RimMandrake.FlowWorks.Pits
 				bool linked = RM_Drawbridges.LeafOfGate(this, out SuspensionBridgeRecord r, out _);
 				artTier = linked ? r.tier : (Stuff != null && Stuff.IsMetal ? SuspensionTier.Steel : SuspensionTier.Timber);
 				artLook = RM_DrawbridgeArt.LookOf(linked ? r : null);
+				artSideways = linked ? r.dir.IsHorizontal : Rotation.IsHorizontal;   // a gate with no wall beside it has no turn of its own
 			}
 			DoorPreDraw();
-			if (RM_DrawbridgeArt.DrawGate(this, drawLoc, artTier, artLook, OpenPct >= 0.5f))
+			if (RM_DrawbridgeArt.DrawGate(this, drawLoc, artTier, artLook, artSideways, OpenPct))
 			{
 				Comps_PostDraw();
 				return;
