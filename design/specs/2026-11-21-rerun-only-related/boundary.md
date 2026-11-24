@@ -72,7 +72,8 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   back for CordBuilder.cs, which their lists leave out on purpose, so 206 of 206 reran.)
 - **python-relates-by-symbol.** In a changed Python file, only the top-level names that changed count, and they
   touch a check only when the names its entry and id reach (across its declared Python files) include one of them; a
-  dict literal relates key by key. A file that does not parse at either commit relates whole.
+  dict literal relates key by key. A shipped def name (RM_, RSW_, RUT_) is never read as a row id. A top-level call that
+  only registers another file's chains relates by itself. A file that does not parse at either commit relates whole.
 - **json-relates-by-entry.** In a changed JSON file that holds an object whose `id` (or key) is the check's id or
   entry, only that object's change touches the check; otherwise the file relates whole.
 - **spec-change-reruns.** A check whose own test-table entry changed between the two commits in what it runs

@@ -232,16 +232,54 @@ def _strings(node):
     return {n.value for n in ast.walk(node) if isinstance(n, ast.Constant) and isinstance(n.value, str)}
 
 
+def _call_name(v):
+    """'a.b.c' of a call's function, or ''."""
+    f, parts = getattr(v, "func", None), []
+    while isinstance(f, ast.Attribute):
+        parts.append(f.attr)
+        f = f.value
+    return ".".join(reversed(parts + [f.id])) if isinstance(f, ast.Name) else ""
+
+
+def _registers_a_file(st, defs):
+    """-> name f when `st` is a bare `f()` and f's body only loads another file and calls its `register(suite, ...)` (the
+    chains of that file, which the checks of that file declare); else None. A body that does anything else relates whole."""
+    v = st.value if isinstance(st, ast.Expr) else None
+    if not (isinstance(v, ast.Call) and isinstance(v.func, ast.Name) and not v.args and not v.keywords):
+        return None
+    d = defs.get(v.func.id)
+    if d is None:
+        return None
+    registered = False
+    for b in _strip_doc(list(d.body)):
+        if isinstance(b, (ast.Import, ast.ImportFrom)):
+            continue
+        if isinstance(b, ast.Assign) and len(b.targets) == 1 and isinstance(b.targets[0], ast.Name) \
+                and _call_name(b.value) in ("importlib.util.spec_from_file_location", "importlib.util.module_from_spec"):
+            continue
+        c = b.value if isinstance(b, ast.Expr) and isinstance(b.value, ast.Call) else None
+        nm = _call_name(c) if c is not None else ""
+        if nm.endswith(".loader.exec_module"):
+            continue
+        if nm.endswith(".register") and c.args and isinstance(c.args[0], ast.Name) and c.args[0].id == "suite":
+            registered = True
+            continue
+        return None
+    return v.func.id if registered else None
+
+
 def py_symbols(text):
     """-> {symbol: (dump, refs, strings)} or None when the text does not parse. Symbols: each top-level def or class by
     name; each assignment to one name by that name, a dict literal of constant keys also key by key ('N[k]') and a
     tuple, list or set literal of strings element by element; each
-    imported name; '<module>' for every other top-level statement together."""
+    imported name; '<call f>' for a bare f() that only registers another file's chains; '<module>' for every other top-level
+    statement together."""
     try:
         tree = ast.parse(text)
     except (SyntaxError, ValueError):
         return None
     out, other = {}, []
+    defs = {st.name: st for st in tree.body if isinstance(st, ast.FunctionDef)}
     for st in tree.body:
         if isinstance(st, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
             body = _strip_doc(list(st.body))
@@ -271,7 +309,11 @@ def py_symbols(text):
                 nm = (a.asname or a.name).split(".")[0]
                 out[nm] = (ast.dump(st), set(), set())
         else:
-            other.append(st)
+            f = _registers_a_file(st, defs)
+            if f:   # its chains live in the file it loads; an added registration changes no other check
+                out["<call %s>" % f] = (ast.dump(st), set(), set())
+            else:
+                other.append(st)
     out["<module>"] = ("\n".join(ast.dump(s) for s in other), set(), set())
     return out
 

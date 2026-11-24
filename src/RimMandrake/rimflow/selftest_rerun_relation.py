@@ -548,6 +548,40 @@ def t_python_def_name_is_no_row_id():
     ok("python_relates_by_symbol: a def writing a row the anchor names still is", "maker" in got, sorted(got))
 
 
+REGISTER_IDIOM = '''
+def scene_a(t):
+    return 1
+
+
+def _register_other():
+    spec = importlib.util.spec_from_file_location("other", "other.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod.register(suite, types.SimpleNamespace(**globals()))
+
+
+_register_other()
+'''
+
+
+def t_python_chain_registration_is_the_other_files():
+    """Pyrelands in-game visit 8: 077f18f8b0 registered two new chains from a new file by this idiom; the added top-level call
+    reads as a changed '<module>', so 32 checks of validation.py reran."""
+    with_call, without = RR.py_symbols(REGISTER_IDIOM), RR.py_symbols(REGISTER_IDIOM.replace("\n_register_other()\n", "\n"))
+    ok("python_relates_by_symbol: registering another file's chains changes no module-level state",
+       "<module>" not in RR.py_changed(without, with_call), sorted(RR.py_changed(without, with_call)))
+    ok("python_relates_by_symbol: the registration call is still a symbol of its own",
+       "<call _register_other>" in RR.py_changed(without, with_call), sorted(RR.py_changed(without, with_call)))
+    other = REGISTER_IDIOM.replace("    mod.register(suite, types.SimpleNamespace(**globals()))", "    globals()['LIMIT'] = 3")
+    a, b = RR.py_symbols(other.replace("\n_register_other()\n", "\n")), RR.py_symbols(other)
+    ok("python_relates_by_symbol: a module-level call that does anything else still relates whole",
+       "<module>" in RR.py_changed(a, b), sorted(RR.py_changed(a, b)))
+    kept = REGISTER_IDIOM.replace("    mod.register(", "    suite.limit = 3\n    mod.register(")
+    a, b = RR.py_symbols(kept.replace("\n_register_other()\n", "\n")), RR.py_symbols(kept)
+    ok("python_relates_by_symbol: a registration that also sets something still relates whole",
+       "<module>" in RR.py_changed(a, b), sorted(RR.py_changed(a, b)))
+
+
 def t_json_relates_by_entry():
     tr = Tree()
     try:
@@ -790,6 +824,7 @@ def main():
     t_declared_exercises_bound_the_types_named()
     t_python_relates_by_symbol()
     t_python_def_name_is_no_row_id()
+    t_python_chain_registration_is_the_other_files()
     t_json_relates_by_entry()
     t_spec_change_reruns()
     t_rows_from_several_builds()
