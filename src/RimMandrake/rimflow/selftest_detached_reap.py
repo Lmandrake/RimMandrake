@@ -148,6 +148,7 @@ def t_a_reused_det_clone_takes_the_seat_identity():
     item = "RIMMANDRAKE_REAP_TEST_IDENTITY_ITEM"
     dest = os.path.join(os.environ["RM_DETACHED_POOL"], "clones", item + ".det")
     subprocess.run(["git", "init", "-q", dest], check=True)
+    open(os.path.join(dest, "sync"), "w").close()   # a whole clone has its ./sync (a half-made one is replaced)
     os.environ["RM_IDENTITY_FROM"] = src
     try:
         got, line = DH.take_clone(item, runner=runner)

@@ -677,6 +677,7 @@ def units_runner(states, log=None):
         log.append((list(argv), kw))
         if argv and argv[0] == "python3" and "scratch_clone.py" in " ".join(argv):     # a fresh clone at --name
             os.makedirs(os.path.join(POOL, "clones", argv[argv.index("--name") + 1], ".git"), exist_ok=True)
+            open(os.path.join(POOL, "clones", argv[argv.index("--name") + 1], "sync"), "w").close()
         return R(0, "")
     return log, run
 
@@ -944,6 +945,7 @@ def _test_midreturn():
     rec["returned"] = T0
     DH.write_record(rec)
     os.makedirs(os.path.join(clone, ".git"), exist_ok=True)
+    open(os.path.join(clone, "sync"), "w").close()   # a whole clone has its ./sync
     log, run = units_runner({})
     rc, text = _mr_launch(item, run, lambda s: None)
     check(rc == 0 and len(_mr_syncs(log)) == 1 and "reused " in text, "midreturn: a returned run's clone is reused: %s" % text[:80])
@@ -1657,6 +1659,7 @@ def t_a_launch_on_a_missing_clone_takes_a_pool_clone_instead():
     gone = os.path.join(TMP, "pool-took-it-back", "clone")
     pool = os.path.join(TMP, "missingpool")
     os.makedirs(os.path.join(pool, "clones", item + ".det", ".git"), exist_ok=True)   # the pool clone a launch reuses
+    open(os.path.join(pool, "clones", item + ".det", "sync"), "w").close()   # a whole clone has its ./sync (a half-made one is replaced)
     os.environ["RM_DETACHED_POOL"] = pool
     try:
         rc, text = DH.launch("BENCH", item, "Build.", "sonnet", 600, 5, now=T0 + 7, runner=recorder()[1], known=KNOWN,

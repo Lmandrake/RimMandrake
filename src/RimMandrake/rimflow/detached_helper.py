@@ -500,11 +500,63 @@ def restore_session_bundle(item, session, clone, restorer=None, root=None):
     return "restored the work of run %s from %s%s" % (unit, bundle, "; NOT restored: " + "; ".join(bad) if bad else "")
 
 
+def retired_trees_root():
+    """The agent storage root's retired-trees folder (a half-made clone that holds work is moved here, never deleted)."""
+    if os.environ.get("RM_RETIRED_TREES"):
+        return os.environ["RM_RETIRED_TREES"]
+    sys.path.insert(0, os.path.expanduser("~/dev/Lodestar/bin/lib"))
+    import agent_storage
+    return agent_storage.subdir("retired-trees", create=True)
+
+
+def clone_holds_work(dest, runner=subprocess.run):
+    """True when `dest` (a git clone whose checkout is incomplete) holds anything a replacement would lose: a commit on no
+    remote ref, a changed or added or untracked file. A deleted file is not work (HEAD still has it: a half-made checkout
+    reads as thousands of deletions). Any git answer that cannot be read counts as work: moved aside, never lost."""
+    def git(*a):
+        return runner(["git", *a], cwd=dest, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)
+    try:
+        if git("rev-parse", "--verify", "-q", "HEAD").returncode == 0:      # no HEAD: no commit to lose
+            r = git("rev-list", "--count", "HEAD", "--not", "--remotes")
+            if r.returncode or (r.stdout or "").strip() != "0":
+                return True
+        r = git("status", "--porcelain", "--untracked-files=all")
+        if r.returncode:
+            return True
+        return any(ln[:2] not in (" D", "D ", "DD") for ln in (r.stdout or "").splitlines() if ln.strip())
+    except Exception:  # noqa: BLE001
+        return True
+
+
+def move_half_made_aside(dest, name, runner=subprocess.run, now=None):
+    """-> one line. `dest` cannot start a unit (its checkout died partway, or it is no clone): moved aside, never deleted.
+    One holding work goes to the retired-trees folder; one holding none goes beside the pool's clones (same disk, at once);
+    an empty directory is just taken away."""
+    stamp = time.strftime("%Y%m%d-%H%M%S", time.localtime(now or time.time()))
+    is_git = os.path.isdir(os.path.join(dest, ".git"))
+    if not is_git and not os.listdir(dest):
+        os.rmdir(dest)
+        return "an empty directory stood where the clone goes: taken away"
+    if clone_holds_work(dest, runner) if is_git else True:
+        target = os.path.join(retired_trees_root(), "%s.halfcheckout-%s" % (name, stamp))
+        why = "holds work" if is_git else "is no git clone"
+    else:
+        target = "%s.halfcheckout-%s" % (dest, stamp)
+        why = "holds no work"
+    shutil.move(dest, target)
+    return "%s %s, moved aside to %s" % (dest, why, target)
+
+
 def take_clone(item, runner=subprocess.run, name=None):
     """-> (clone path, log line). A pool clone named <ITEM>.det (or `name`, a resume's fresh one): made by
-    scratch_clone.py, or reused and synced."""
+    scratch_clone.py, or reused and synced. A clone whose checkout is incomplete (no ./sync at its root: its first checkout
+    died partway) or that is no clone is moved aside and made again, said in one line
+    (RIMMANDRAKE_REPLACE_HALF_MADE_POOL_CLONE_LAUNCH_FAILED_THRICE: three launches died on `./sync` missing)."""
     name = name or item + ".det"
     dest = os.path.join(pool_root(), "clones", name)
+    replaced = ""
+    if os.path.isdir(dest) and not (os.path.isdir(os.path.join(dest, ".git")) and os.path.isfile(os.path.join(dest, "sync"))):
+        replaced = "half-made clone replaced: " + move_half_made_aside(dest, name, runner) + "; "
     if os.path.isdir(os.path.join(dest, ".git")):
         r = runner(["./sync"], cwd=dest, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)
         said = ((r.stdout or "") + (r.stderr or "")).strip()
@@ -518,7 +570,7 @@ def take_clone(item, runner=subprocess.run, name=None):
                env=env, capture_output=True, text=True, timeout=540, stdin=subprocess.DEVNULL)
     if r.returncode or not os.path.isdir(os.path.join(dest, ".git")):
         raise RuntimeError("scratch_clone failed (exit %d): %s" % (r.returncode, ((r.stdout or "") + (r.stderr or ""))))
-    return dest, "made " + dest
+    return dest, replaced + "made " + dest
 
 
 def clone_lock_path(dest):
