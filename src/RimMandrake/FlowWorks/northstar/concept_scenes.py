@@ -1751,6 +1751,7 @@ def _moat_fuel(S, G, dry_at, tag):
 # own map. What only raiders decide (they choose to swim, they are held and taken from the rim as enemies, they stab no
 # warden) stays with sc_moat_raid, which is paused. The rim capture with no raid is sc_hole_prison's.
 MW_POLL, MW_POLLS = 30, 120          # a swim of four squares is watched every 30 ticks, at most 3,600 ticks
+MW_REACH_TICKS = 600                 # the labels follow a pour within about 60 ticks (visit 10); ten times that is a refusal
 MW_BLOCK_TICKS = 1500                # an order that a drained moat refuses is given this long to be wrong
 
 
@@ -1766,9 +1767,18 @@ def _mw_in_plot(G, at):
 
 def _mw_cross(S, G, pid, to):
     """One drafted colonist is ordered across; every MW_POLL ticks his square and ProofSwim under him are read. -> what was seen."""
+    # visit 10 (ArchSmall and Steve1, 2026-11-24): the scene ordered 4 ticks after its staged pour, while the mod's reach labels
+    # (RM_WallReach, relabelled on the tick) still held the dry 4 m walls, so the Goto was dropped and he never moved. He is
+    # ordered once the mod says he can reach the plot; if it never says so, the order goes out at the bound and the row shows it.
+    reach = []
+
+    def open_():
+        reach.append(S.sc(WALLREACH, 'ProofReachPair', '%s;%d,%d' % (pid.replace('Human', ''), to[0], to[1])))
+        return 'canReach=True' in reach[-1]
+    after = _poll_ticks(S, open_, MW_REACH_TICKS, step=30)
     r = S.call('jawa/order_pawn', pawnId=pid, x=to[0], z=to[1], waitTicks=0, draft=True)
     seen = {'order': r.get('success'), 'start': _at(S, pid), 'reads': 0, 'swam': False, 'tired': None, 'arrived': False, 'last': None,
-            'refused': 0}
+            'refused': 0, 'reachAfterTicks': after, 'reach': reach[-1]}
     ring = set(G['ring'])
     for _ in range(MW_POLLS):
         S.ticks(MW_POLL)

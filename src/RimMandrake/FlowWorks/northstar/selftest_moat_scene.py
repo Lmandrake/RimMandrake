@@ -504,9 +504,22 @@ class Walk(Fake):
         if tool in ('jawa/lord_assault_spawn', 'jawa/fire_raid'):
             self.bad('a raid call in sc_moat_walkers: %s' % tool)
         if tool == 'jawa/order_pawn':
-            g['pawns'][kw['pawnId']]['to'] = (kw['x'], kw['z'])
-            return {'success': True}
+            # the live engine (visit 10): the reach labels follow a staged pour 60 ticks later; a Goto to a plot that reads
+            # unreachable is taken and dropped, and the reply's success is False until he stands on the square
+            if not self.stale():
+                g['pawns'][kw['pawnId']]['to'] = (kw['x'], kw['z'])
+            return {'success': False}
         return Fake.call(self, tool, _answer=_answer, **kw)
+
+    def stale(self):
+        return self.mod == 'laggy' or self.g['tick'] - self.g.get('poured', -99) < 60
+
+    def static(self, typ, method, arg):
+        if method == 'ProofReachPair':
+            return 'REACHPAIR canReach=%s found=True' % (not self.stale())
+        if method == 'ProofFillWithFluid':
+            self.g['poured'] = self.g['tick']
+        return Fake.static(self, typ, method, arg)
 
     def deep(self, c):
         return self.mod != 'dryshod' and Fake.deep(self, c)
@@ -540,6 +553,7 @@ class Walk(Fake):
 
 
 def walkers(mod='healthy', fault=None):
+    # 'laggy': the reach labels never follow the pour
     F = Walk(mod, fault)
     o = C.scene_moat_walkers(F, lambda: F.save('begin'), lambda: F.load('begin'), {'calls': []})
     return {x['id']: x['status'] for x in o['rows']}, o, F
@@ -552,7 +566,8 @@ check('sc_moat_walkers: swims and tires, drains, the drained moat stops him, pum
       all(r.get(x) == 'PASS' for x in MW) and len(r) == len(MW), (r, [x['detail'] for x in o['rows'] if x['status'] != 'PASS'][:3]))
 check('sc_moat_walkers stages no raid and keeps its tool contracts', not F.contract, F.contract)
 for mod, rid, want in (('dryshod', MW[0], 'FAIL'), ('refuse', MW[0], 'UNMEASURED'), ('nodrain', MW[1], 'FAIL'), ('nodrain', MW[2], 'UNMEASURED'),
-                       ('climber', MW[2], 'FAIL'), ('deckwet', MW[5], 'FAIL')):
+                       ('climber', MW[2], 'FAIL'), ('deckwet', MW[5], 'FAIL'),
+                       ('laggy', MW[0], 'UNMEASURED')):
     r, o, _ = walkers(mod)
     check('sc_moat_walkers, plant %s: %s %s' % (mod, rid, want), r.get(rid) == want, (r, [x['detail'] for x in o['rows'] if x['id'] == rid]))
 r, o, _ = walkers(fault='nopower')
