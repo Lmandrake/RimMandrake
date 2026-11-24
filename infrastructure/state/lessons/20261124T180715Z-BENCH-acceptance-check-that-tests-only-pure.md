@@ -1,0 +1,2 @@
+An acceptance check that tests only a pure plan function lets the list lane close the item with nothing live: list_run_on_steve_accept.py went 0/12 to 12/12 in 29 minutes on a launcher that read no fact of the real machine (2026-11-24). Put the live reading into the item's effect check, or file the live half as its own item in the same act.
+item: RIMMANDRAKE_PUT_STEVEDESKTOP_ON_NON_MOD_WORK_ALL_DAY_HE_ASKED
