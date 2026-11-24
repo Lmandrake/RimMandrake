@@ -1,0 +1,69 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Niim": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r3 (image sha 179c2dfb12); F_INCONSISTENT: The fin rising behind the body on south is a broad, wavy, flame-like crest. The tail nearest the camera on north is a narrow pointed taper, "
+  },
+  "RM_Noolim": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r3 (image sha 369cdd2121); F_INCONSISTENT: North members are rounded teardrops with a bulb and a tail, spread in a radiating splash, while south and east members are angular diamond o; DEPARTURE_MISSING: The teardrop bulb at one end and the taper at the other can read as a little head and tail, like tadpoles or droplets."
+  },
+  "RM_IllothLarvae": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_INCONSISTENT, STYLE_CARTOON \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r3 (image sha 1353c4fd7d); F_INCONSISTENT: The north silhouette is a narrow pinecone or egg shape, visibly narrower than the south's wide squat dome, although they are the same body s; STYLE_CARTOON: Two round, glossy dark eyes with white highlights and a small centred mouth groove give the front face a slightly endearing look."
+  },
+  "RUT_SealedSleeper": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: ACCEPT (regen round 2) \u00b7 Opus GOOD",
+   "context": "judged candidate r3 (image sha 854d266746); "
+  },
+  "RM_Vennick": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_INCONSISTENT, F_NORTH_FACE, STYLE_EARTHLY \u00b7 GPT regen, unsettled K3",
+   "context": "judged candidate r3 (image sha e8c08a1d84); F_INCONSISTENT: North shows about four legs per side (eight in all), while south and east show about three per side (six in all).; F_NORTH_FACE: Two small pale hooked points low at the centre of the rear view look similar to the south's ivory fangs. There are no eyes, so they probably; STYLE_EARTHLY: The long, low, flattened shell over running legs gives the east profile something of a pale cockroach silhouette."
+  },
+  "RM_Ssurr": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT strong_accept",
+   "context": "judged candidate r3 (image sha 3639e19377); F_INCONSISTENT: The north view's haunches and hind legs look noticeably more muscular and heavy than the very thin hind legs in the east profile."
+  },
+  "RM_Aveluthia": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r3 (image sha 2fd0196f01); F_SIZE_JUMP: On the shared-scale panel the south facing stands about 18% taller than the north and 22% taller than the east, which makes the front view l; F_INCONSISTENT: The rear-view folds are drawn as regular concentric horizontal rings around the rump and legs, while east shows long, irregular vertical dra"
+  },
+  "RM_Tarruq": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT strong_accept",
+   "context": "judged candidate r3 (image sha 74772bf8c4); F_INCONSISTENT: The hind legs splay out sideways like a frog's, and the body looks wider at the hips and shorter than the lean, long-limbed body with tucked"
+  }
+ }
+}

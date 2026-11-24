@@ -1,0 +1,362 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_auto_20261107_1651",
+ "built": "2026-11-24T12:35:09-0800",
+ "census": "Transient/biome_ffar/art_eval_shadow_audit_auto_20261107_1651.subjects.json",
+ "census_git_head": null,
+ "droppedAllRuled": [],
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 315 active",
+ "noncanonOptions": {},
+ "rows": {
+  "RM_Aveluthia": {
+   "columns": {
+    "A": {
+     "east": "bbdba019ca5f62e762eaf4642509b5550c910b59f7f36fb75dcf849e142b71b2",
+     "north": "1baafd6d0fb8faac493f839c8657c915db058bd22403785a7d6b961b7fba0a2f",
+     "south": "2fd0196f019db4a646c0793b42b56de36bc18deb634ebc36f61c3550be8f1e01"
+    },
+    "B": {
+     "east": "bbdba019ca5f62e762eaf4642509b5550c910b59f7f36fb75dcf849e142b71b2",
+     "north": "190f129f7ee18adcfd872e91af35009b5c644c29af9fae95d87f35a97d5c8b3e",
+     "south": "c0cb54e25dc9907324af2f03be3b601a32eb50f0025356d6163af175fefec830"
+    },
+    "C": {
+     "east": "5f63145391a7eccfa367895468a5fde6677179e1ce82df3a64ce91340c718440",
+     "north": "a81b603c18942cf67cd8ba041baf5a250e81358816089b5637add8f85f43153a",
+     "south": "c0d38392355848ba6abce146c6bb683cd497e6c130c8a7694fb5c8851584505f"
+    },
+    "D": {
+     "east": "36560958011fe32ecc381361890990ec1e8fba1e22afce08eb7c0970e1520aa8",
+     "north": "ca56417efab4abf03f63c3d8debbb15e8dce9af7272768f9733aa7f18b7ef302",
+     "south": "8b42b70a26f218ddfc58065ea646e81bef26728787094be7807280931f055f6f"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia",
+    "C": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia",
+    "D": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_aveluthia_v3",
+    "C": "render abyss_aveluthia_v2",
+    "D": "render xart_RM_Aveluthia_young_v1"
+   },
+   "pools": [
+    "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia"
+   ],
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "aveluthia"
+  },
+  "RM_IllothLarvae": {
+   "columns": {
+    "A": {
+     "east": "4d6ffbf5556971a19f7755d48017d1f1676828d62a3e2c8598c839bcc1a1ef32",
+     "north": "b87d9bee33da9be799facb2af6701589d9bab82e47842ca46537dbaec0fa48b9",
+     "south": "5b7548c396e3d99a82dcc6d37e21ee84cebb866561e24db3ac3c7813051b7722"
+    },
+    "B": {
+     "east": "4d6ffbf5556971a19f7755d48017d1f1676828d62a3e2c8598c839bcc1a1ef32",
+     "north": "38d253d6d89a69133d7fb7d0481d653a039638286b4c5cc3746e5b5cc93dbced",
+     "south": "d43d324533fb9796cda5b865591796f38d595be2751b79eb58b6fd34009eae2f"
+    },
+    "C": {
+     "east": "4d6ffbf5556971a19f7755d48017d1f1676828d62a3e2c8598c839bcc1a1ef32",
+     "north": "37fec96c9af85a3a4d2ac7bfd0e7ea5ea1af03d22c6222e98ea6bcdbff1afad9",
+     "south": "07c4fc955e9740167bc8e2159fb52ab6b045cdfaffeb6e69b7e52089936de7ee"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar",
+    "B": "RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar",
+    "C": "RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render standtall_b1_smogapillar_1f9f4812",
+    "C": "history TheRot 2026-10-03"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar"
+   ],
+   "res": "RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "illothlarvae"
+  },
+  "RM_Niim": {
+   "columns": {
+    "A": {
+     "east": "972955e43566e41e47a9277df4fb0f32db36a2b1d0a0b1e70c7e20a819dcdb6c",
+     "north": "5fd2ebd1615bada53d5bd693e6b8bc8a4e9b1cf77c501912d08b739b5ca81f4b",
+     "south": "5c7e2d068c37d90fc328182127c45a760b822c7fe88434654c0cd2b592567a38"
+    },
+    "B": {
+     "east": "2351a5717e70a581925b919fde57afd893d01c5cbade28c7ed305a2eb26c4707",
+     "north": "7c1410aff2c9e08b89e8b6389588a857255f98aad18a05c9f9200c19fc6a5f03",
+     "south": "d555b7b36f515c1a566845e13b7733abde40d12d96b0aa16cb8a5c26adc203c2"
+    },
+    "C": {
+     "east": "972955e43566e41e47a9277df4fb0f32db36a2b1d0a0b1e70c7e20a819dcdb6c",
+     "north": "8ead22f316cffa370211f66d06f55d97abd7ae2dd026ef0b39863c2b8cdb4ea2",
+     "south": "b29a3677231477a92b87f83a464269c57d586b6664ff98dc3325d630afe84604"
+    },
+    "D": {
+     "single": "1ea182b766b8743c06159b00974e099762b3a50a11a61458c4ac221d1546476a"
+    },
+    "E": {
+     "east": "2351a5717e70a581925b919fde57afd893d01c5cbade28c7ed305a2eb26c4707",
+     "north": "7c1410aff2c9e08b89e8b6389588a857255f98aad18a05c9f9200c19fc6a5f03",
+     "single": "1ea182b766b8743c06159b00974e099762b3a50a11a61458c4ac221d1546476a",
+     "south": "d555b7b36f515c1a566845e13b7733abde40d12d96b0aa16cb8a5c26adc203c2"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Niim/RM_Niim",
+    "B": "Things/Pawn/Animal/RM_Niim/RM_Niim",
+    "C": "Things/Pawn/Animal/RM_Niim/RM_Niim",
+    "D": "Things/Pawn/Animal/RM_Niim/RM_Niim",
+    "E": "Things/Pawn/Animal/RM_Niim/RM_Niim"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render twilightsea_niim_v1",
+    "C": "render twilightsea_niim_v2",
+    "D": "history TerminalBiomes 2026-10-03",
+    "E": "history TerminalBiomes 2026-10-03"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Niim/RM_Niim"
+   ],
+   "res": "Things/Pawn/Animal/RM_Niim/RM_Niim",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "niim"
+  },
+  "RM_Noolim": {
+   "columns": {
+    "A": {
+     "east": "89a8a05d2d750cf6b0b977bc9d1b542aa7604a3b0163fa58463ac1769a01bc44",
+     "north": "fd7ed6e0a47129da69ff0fac162344635cdeb0a5caf782371a0a0e64eb1f8a25",
+     "south": "5f0f81e730a2694dd60a72e97b2ec3aa09a280dcac7872a6377a8604ec3f05f2"
+    },
+    "B": {
+     "east": "89a8a05d2d750cf6b0b977bc9d1b542aa7604a3b0163fa58463ac1769a01bc44",
+     "north": "6f892917b55189462a64c9472e9b4ad1f1432a4595f0c3d19649aef0c9847f4c",
+     "south": "ea96403d457aef906a2422c9e15d493910722c3938b15d4a648f548a4a54cf86"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Noolim/RM_Noolim",
+    "B": "Things/Pawn/Animal/RM_Noolim/RM_Noolim"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render twilightsea_noolim_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Noolim/RM_Noolim"
+   ],
+   "res": "Things/Pawn/Animal/RM_Noolim/RM_Noolim",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "noolim"
+  },
+  "RM_Ssurr": {
+   "columns": {
+    "A": {
+     "east": "f4905ce7dfb88792f4e76ad0479932dd14e7ccb7ba956726e9053e025f49286b",
+     "north": "d5d264876b1516193f097aa34d6e87ec9a8533191523e546f8ea3b51a6904098",
+     "south": "801466c341d2af4544d17a470cc16ed296670a3d0a95aedb0e68fa11729ec5b2"
+    },
+    "B": {
+     "east": "952013656ee140fedbe8316b1089f32df22b9acdcc1dcfa5adb8205b4c65f6f7",
+     "north": "00627f74cb7e3bab9744a9b6d40909c40bf9959b4eb8e7588e86aab5bb4a616a",
+     "south": "2ae50f3e85486040e3f9b108a152cd09b5cd4127893f85f58387fc33c5fc3786"
+    },
+    "C": {
+     "east": "522935c4248b99068da0c202108a98d4aa71b632c8a261c1e562273eadd4293c",
+     "north": "530b2469521232c736fc1c623fef044d164d9785a6ff74ee66ec05ec1bb5ce7c",
+     "south": "d45d511069d0a7df46c97bcb4693220d9b77670e31c3f394036d1d306c71c365"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr",
+    "B": "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render weepingstones2_ssurr",
+    "C": "render enact_0baaed3f_ssurr_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr"
+   ],
+   "res": "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "ssurr"
+  },
+  "RM_Tarruq": {
+   "columns": {
+    "A": {
+     "north": "e0d496dd33cc622b05e79a36ff6d1470e13809565aa8594057b8c9ba13c7b40b",
+     "south": "e92f82115616c0411080d402982af7ce9277aa019bde56d8c746d1a390a2d1f7"
+    },
+    "B": {
+     "east": "48996f4d3e2199d587a1f4858ee7db77524b679e92e8f6dc27338f8a07b1ffaa",
+     "north": "bcb8875dfee3ee396495a90a77bb83e053da52254d020eed3d199fa064d79f56",
+     "south": "c1eabb2373a2a778345f05ff8141de394e66993238981ca8ce9ddffa32353772"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq",
+    "B": "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 CrackedLands",
+    "B": "render RM_Tarruq"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq"
+   ],
+   "res": "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "tarruq"
+  },
+  "RM_Vennick": {
+   "columns": {
+    "A": {
+     "east": "eea1944a0d9dc518dfface29ad8e839980b5cc9a315b879882a1e437f39f41f4",
+     "north": "719a89c2881925cd2e7a59eadc47cce963d02b0e90c382e07ddd5b991a8efe62",
+     "south": "756c60053ae1f44f6242ff2b6070571f65b2159abe711d57de315c8bf9cec4f1"
+    },
+    "B": {
+     "east": "545e085e883bd3b6bccb0e399b4f3b563ca096925bd452ef825cfdc800bb48ca",
+     "north": "c1c1648b3597c5860412b253816dd4a8d8807ecccd42f7fea3e7e082e1ec9b8d",
+     "south": "847ebfc91e965c7637e96935f7be7fa1653e5f7f149bd23897d3c592b1ba5c36"
+    },
+    "C": {
+     "east": "eea1944a0d9dc518dfface29ad8e839980b5cc9a315b879882a1e437f39f41f4",
+     "north": "0f074616c763fe742d2c56406eb87903e4129ce18b5fc2c13dacf65c261b49be",
+     "south": "756c60053ae1f44f6242ff2b6070571f65b2159abe711d57de315c8bf9cec4f1"
+    },
+    "D": {
+     "east": "7674e41713d0eeae9f097b3c02f7d5b85fc1c2624f29828a736b700de2d7f279",
+     "north": "7d42ef51e4076b067cebe1d4fa24c192638381a6f35c59c63d6737e60dc9048f",
+     "south": "8a802d0375db893dc4b357144397388a8f761cc9bdc72d463a1f22de191c8c66"
+    },
+    "E": {
+     "east": "f8365169600c829890fcf69cb71e9623e9c51114c95ad31eb3ae0e38d784ed55",
+     "south": "0d57aa52a2719d90e6a1607b020bb255f22c7e11cb580e62569f4b4cb9141e16"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
+    "B": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
+    "C": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
+    "D": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
+    "E": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "render webwork_vennick_redo_v3",
+    "C": "render RM_Vennick_v2",
+    "D": "history Webwork 2026-09-25",
+    "E": "render xart_RM_Vennick_variant_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vennick/RM_Vennick"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "vennick"
+  },
+  "RUT_SealedSleeper": {
+   "columns": {
+    "A": {
+     "east": "838b1bc326f5f070a4dbd4dd48ee66a8337f23491889d865933f0b2bf54b8d4d",
+     "north": "bbc4dbb6fa058dd1ac0f69ba81b6542c2125e1377364dcfd134a8b8cedf23193",
+     "south": "3621704881f428ec606dd6dccdf21ab1a9ee7ba56c1c8330f02cac8d57ab2428"
+    },
+    "B": {
+     "east": "b6358fda56656551fac2647f349023fe7faa907cc00e773c0411d9e30edcdc1c",
+     "north": "2e5ad1fdc0a41b7b336d52e08eea49f963e0f1aa4de5c9a12adf1e019f01763c",
+     "south": "0d8a262a1b71e0ad081f453069b440ae38db071bdde679b8c0f9b1604e276458"
+    },
+    "C": {
+     "east": "ed99bc9e0a98d1c1084c2452d1edff277ada6e4dbfce72e00008d72dc7affbd0",
+     "north": "fa039bb7e0069e78e62af058f2ece1fe59851c66273dc914fd1c500aca08fdcd",
+     "south": "72b1a2a8c4f576cb9abc63c59808a2b380abe8a86955a19ffde53308aa26ea88"
+    },
+    "D": {
+     "east": "18bc675bd61cc088812aa72e8d205ba6351d9c9700c850971d28dad5f9c6594a",
+     "north": "3a7f6c564a537ede7c47e03ef3b699bc4062ef361ee45630b0e081b91afbdc41",
+     "south": "852fe376c646f7c3b509541687989cac883ad7720d81e13f23ede00e527da4ab"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper",
+    "B": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper",
+    "C": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper",
+    "D": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render enact_15eaaf39_sealedsleeper_v1",
+    "C": "history UtinniPatches 2026-10-02",
+    "D": "render xart_RUT_SealedSleeper_young_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper"
+   ],
+   "res": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "sealedsleeper"
+  }
+ },
+ "sheetId": "art_eval_shadow_audit_auto_20261107_1651_sheet_2026-11-24",
+ "snapshotId": "2750127243abccef"
+}

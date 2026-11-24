@@ -1,0 +1,61 @@
+{
+ "RM_Niim": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Niim/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Niim/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Niim/north.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Niim_east_972955e43566.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Niim_north_5fd2ebd1615b.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Niim_south_5c7e2d068c37.png"
+ ],
+ "RM_Noolim": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Noolim/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Noolim/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Noolim/north.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Noolim_east_89a8a05d2d75.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Noolim_north_fd7ed6e0a471.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Noolim_south_5f0f81e730a2.png"
+ ],
+ "RM_IllothLarvae": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_IllothLarvae__Smogapillar/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_IllothLarvae__Smogapillar/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_IllothLarvae__Smogapillar/north.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_Smogapillar_east_4d6ffbf55569.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_Smogapillar_north_b87d9bee33da.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_Smogapillar_south_5b7548c396e3.png"
+ ],
+ "RUT_SealedSleeper": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RUT_SealedSleeper__RUT_SealedSleeper/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RUT_SealedSleeper__RUT_SealedSleeper/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RUT_SealedSleeper__RUT_SealedSleeper/north.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RUT_SealedSleeper_east_ed99bc9e0a98.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RUT_SealedSleeper_north_071947162488.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RUT_SealedSleeper_south_ab1308b4b4f5.png"
+ ],
+ "RM_Vennick": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Vennick/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Vennick/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Vennick/north.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Vennick_east_eea1944a0d9d.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Vennick_north_719a89c28819.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Vennick_south_756c60053ae1.png"
+ ],
+ "RM_Ssurr": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Ssurr/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Ssurr/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Ssurr/north.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Ssurr_east_afaa9fdec46c.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Ssurr_north_4041f88eb271.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Ssurr_south_c2ad51dbf0b7.png"
+ ],
+ "RM_Aveluthia": [
+  "/home/mandrake/rm/bench/src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Aveluthia_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Aveluthia_north_1baafd6d0fb8.png"
+ ],
+ "RM_Tarruq": [
+  "/home/mandrake/rm/bench/src/RimMandrake/CrackedLands/Textures/Things/Pawn/Animal/Monkey/RM_Tarruq/RM_Tarruq_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/CrackedLands/Textures/Things/Pawn/Animal/Monkey/RM_Tarruq/RM_Tarruq_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Tarruq__dessicated_n/north.png"
+ ]
+}

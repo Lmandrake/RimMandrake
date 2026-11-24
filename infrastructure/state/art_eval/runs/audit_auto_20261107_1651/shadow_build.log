@@ -1,0 +1,33 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_auto_20261107_1651",
+ "html": "Transient/biome_ffar/art_eval_shadow_audit_auto_20261107_1651_sheet_2026-11-24.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_audit_auto_20261107_1651_sheet_2026-11-24.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_audit_auto_20261107_1651_sheet_2026-11-24.snapshot.json",
+ "snapshotId": "2750127243abccef",
+ "census_rows": 8,
+ "rows": 8,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 28,
+ "images": 982
+}
+
+--- stderr ---
+/home/mandrake/rm/relentless/clones/RIMMANDRAKE_SETTLE_TWO_ACCEPTED_FACING_SETS_PASS_DIED_BEFORE_INSTALL.det/src/RimMandrake/Utils/art/art_sheet.py:2601: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RM_Niim: reference_textures ['infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Niim_east_972955e43566.png', 'infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Niim_north_5fd2ebd1615b.png', 'infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Niim_south_5c7e2d068c37.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Noolim: reference_textures ['infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Noolim_east_89a8a05d2d75.png', 'infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Noolim_north_fd7ed6e0a471.png', 'infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Noolim_south_5f0f81e730a2.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_IllothLarvae: reference_textures ['infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_Smogapillar_east_4d6ffbf55569.png', 'infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_Smogapillar_north_b87d9bee33da.png', 'infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_Smogapillar_south_5b7548c396e3.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RUT_SealedSleeper: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RUT_SealedSleeper__RUT_SealedSleeper/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RUT_SealedSleeper__RUT_SealedSleeper/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RUT_SealedSleeper__RUT_SealedSleeper/north.png', 'infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RUT_SealedSleeper_east_ed99bc9e0a98.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Vennick: reference_textures ['infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Vennick_east_eea1944a0d9d.png', 'infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Vennick_north_719a89c28819.png', 'infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Vennick_south_756c60053ae1.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Ssurr: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Ssurr/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Ssurr/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Ssurr/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Aveluthia: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia_east.png', 'infrastructure/state/art_eval/runs/audit_auto_20261107_1651/kept/kept_RM_Aveluthia_north_1baafd6d0fb8.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
