@@ -43,6 +43,7 @@ PAGES = {
     "design/specs/2026-11-23-wake-his-words/boundary.md": "src/RimMandrake/rimflow/selftest_wake_words.py",
     "design/specs/2026-11-23-wake-carries-result/boundary.md":
         "src/RimMandrake/rimflow/selftest_run_end_wake_result.py",
+    "design/specs/2026-11-23-run-alive/boundary.md": "src/RimMandrake/rimflow/selftest_run_alive.py",
     "design/specs/2026-11-23-steve-two-games-lane/boundary.md": "src/RimMandrake/Utils/testq/selftest_testq_steve2.py",
     "design/specs/2026-11-23-lane-stops-name-their-end/boundary.md": "src/RimMandrake/Utils/testq/selftest_lane_stop.py",
     "design/specs/2026-11-22-steve-idle-takeable/boundary.md": "src/RimMandrake/Utils/selftest_steve_idle_takeable.py",

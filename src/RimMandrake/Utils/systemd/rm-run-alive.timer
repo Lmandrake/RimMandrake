@@ -1,0 +1,11 @@
+# Every 5 min - see rm-run-alive.service.
+[Unit]
+Description=RimMandrake: each detached run's sign of life and lease, every 5 min
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=5min
+AccuracySec=15s
+
+[Install]
+WantedBy=timers.target

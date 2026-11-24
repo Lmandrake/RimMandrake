@@ -132,8 +132,8 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
 - A `LEFT OPEN:` note relaunches this brief in a fresh session (left_open_continue.py). When what is left is not a
   helper's to do (the owner's decision, an act of the Conductor's, a date), also put a dated wait on the item, so it
   is not relaunched for nothing (the wait line).
-- Before you stop, and at least every 20 minutes: write your state, evidence paths and one imperative NEXT as
-  a note (the note line).
+- Before you stop: write your state, evidence paths and one imperative NEXT as a note (the note line). A program
+  reads your process for your sign of life: no note is asked by the clock.
 - After each experiment or step that changes what you know, write your progress record as a note whose text starts
   `PROGRESS:` and names the theory, the experiment, the reading and the next action (`"PROGRESS: theory: ... |
   experiment: ... | reading: ... | next: ..."`). A stopped run with a large context is carried on by a fresh session that has only this brief and those notes.
@@ -2063,6 +2063,12 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         rec["finish_blocked"] = {"at": now, "why": steps[0]}
         write_record(rec)
         return 1, "NOT FINISHED %s: %s" % (unit, steps[0])
+    if not st.startswith("success ("):   # its last sign of life, once, for the run that carries it on (run_alive.py)
+        try:
+            import run_alive
+            text += " " + run_alive.run_line(rec, now)
+        except Exception as e:  # noqa: BLE001  the line never stops the finish
+            text += " ALIVE: could not look (%s: %s)." % (type(e).__name__, e)
     owed = ""
     got = None
     if not os.path.isdir(clone):                 # deleted under the run: no clone to note from, the log line still goes
@@ -2147,6 +2153,9 @@ def status(show_all=False, runner=subprocess.run):
             st = "DEAD (unit %s, finish never ran: detached_helper.py finish --unit %s)" % (live, rec["unit"])
         lines.append("%s  %s  %s  item %s  %s  started %s" % (rec["unit"], st, live, rec["item"],
                                                                rec.get("model"), iso(rec["at"])))
+        if rec.get("status") in ("launching", "running"):
+            import run_alive
+            lines.append("    " + run_alive.status_text(rec["unit"]))
     return "\n".join(lines) or "no detached runs" + ("" if show_all else " running (--all lists finished ones)")
 
 

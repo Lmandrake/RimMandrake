@@ -1,0 +1,21 @@
+# A detached run's sign of life and its mod lease, from the running process (rimflow/run_alive.py; item
+# RIMMANDRAKE_TIE_LIFE_SIGN_TO_PROCESS_484_HAND_NOTES; page design/specs/2026-11-23-run-alive/boundary.md): looks at each
+# live detached run, renews the lease of one that lives, lets the lease of a gone or hung one lapse. It launches nothing,
+# stops nothing and files nothing. No model of its own. Runs from the dispatch clone.
+# Reading: D:\ClaudeWork\rimmandrake\dispatcher\run_alive\reading.json (WSL /mnt/d/ClaudeWork/rimmandrake/dispatcher/run_alive/reading.json)
+# Install:  python3 src/RimMandrake/Utils/ops_clocks.py install rm-run-alive --apply --enable
+# Off:      systemctl --user disable --now rm-run-alive.timer   (an hour later a holder's brief asks for renewals again)
+[Unit]
+Description=RimMandrake: each detached run's sign of life and lease, every 5 min
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+Environment=RM_ROLE_UNIT=rm-run-alive.service
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/run_alive.py beat
+Nice=10
+MemoryMax=1G
+# Hang guard: a beat is a few reads for each live run and one ledger append for each lease that is due.
+TimeoutStartSec=10min

@@ -884,8 +884,9 @@ def unseal(root, mod, run, why, void=None, ts=None, views=True):
     return eid
 
 
-def holder_brief(mod, lease, token, role, stage):
-    """-> the lines that follow the packet in a holder's brief: who it writes as and how it checkpoints."""
+def holder_brief(mod, lease, token, role, stage, by_program=False):
+    """-> the lines that follow the packet in a holder's brief: who it writes as and how it checkpoints. by_program:
+    rm-run-alive.timer renews this run's lease from its process (run_alive.py), so the brief asks for no renewal."""
     me = "python3 src/RimMandrake/rimflow/modledger.py"
     w = "HOLDER.%s" % lease
     return "\n".join([
@@ -895,6 +896,7 @@ def holder_brief(mod, lease, token, role, stage):
         "(never stage 1). You write as `%s` with fencing token %d (RM_MODLEDGER_WRITER is set to it; any other shard "
         "refuses you). Every append carries `--writer %s --token %d`." % (stage or UNM_STAGE, w, token, w, token),
         "",
+        "A program renews your lease while your process lives; append no lease.renew." if by_program else
         "Keep the lease alive (RIMMANDRAKE_RENEW_HOLDER_LEASE_BRIEF_NEVER_SAID_HOW): it lapses for good after %d minutes "
         "with no ledger event of yours (rimflow notes do not count), and a lapsed lease refuses every later append, "
         "your checkpoint included. In a long stretch (a game load, a live run) append "
@@ -916,7 +918,7 @@ def holder_brief(mod, lease, token, role, stage):
 UNM_STAGE = "UNMEASURED"
 
 
-def launch(root, mod, lease, role, stage=None, ts=None, views=True, budget=None):
+def launch(root, mod, lease, role, stage=None, ts=None, views=True, budget=None, by_program=False):
     """DISPATCH starts a holder's stage run from the packet (spec §3.1, §3.3): grants `lease` (the next fencing token),
     records run.start naming the lease, the role, the stage the ledger stands at now (`stage` only when the ledger
     names none) and the packet's size, and -> {"token", "run", "brief", "stage", "writer"}; the brief begins with the
@@ -929,7 +931,7 @@ def launch(root, mod, lease, role, stage=None, ts=None, views=True, budget=None)
     tok = grant(root, mod, lease, ts=ts, views=False)
     events = read(root, mod)
     at = reduce(events).get("stage") or stage
-    tail = "\n\n" + holder_brief(mod, lease, tok, role, at) + "\n"
+    tail = "\n\n" + holder_brief(mod, lease, tok, role, at, by_program) + "\n"
     room = max(1, budget - tokens(tail) - 1)
     try:
         text, _info = packet_from(mod, events, budget=room, stale=stale_check(root))

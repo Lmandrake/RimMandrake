@@ -2547,10 +2547,13 @@ def ledger_open(root, mod, role, brief, stage=None, now=None, fx=None):
     "stage", "landed"}."""
     now = now or time.time()
     lease = "run-%d" % int(now)
-    out = modledger.launch(root, mod, lease, role, stage=stage)
+    import run_alive    # the timer renews a detached run's lease from its process; the brief asks only while no timer lives
+    by_program = run_alive.timer_live()
+    out = modledger.launch(root, mod, lease, role, stage=stage, by_program=by_program)
     landed = land_ledger(root, [mod], "run %s on %s granted" % (lease, mod), fx)
     return {"run": lease, "stage": out["stage"], "packet": out["brief"], "landed": landed,
-            "brief": out["brief"].rstrip("\n") + "\n\n" + renew_line(mod, out["writer"], out["token"]) + (
+            "brief": out["brief"].rstrip("\n") + (
+                "" if by_program else "\n\n" + renew_line(mod, out["writer"], out["token"])) + (
                 "\n\n---\n\n" + brief if brief else ""),
             "env": {"RM_MODLEDGER_WRITER": out["writer"], "RM_MODLEDGER_TOKEN": str(out["token"])}}
 
