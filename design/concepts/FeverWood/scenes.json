@@ -850,6 +850,37 @@
       "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
     },
     {
+      "id": "arrival_keeps_adult_defeat",
+      "kind": "acceptance",
+      "requirement": [
+        "delayed_establishment"
+      ],
+      "staged_by": "script",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_FEVERWOOD_SMALL_SCENES_NOT_A_CAMPAIGN",
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_arrival_keeps_adult_defeat",
+      "hold": "immediate",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "The adult defeated for good on this map by the mod's own call, and the defeat read as set (asserted); one armed tank escapee beside pool A.",
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)"
+      ],
+      "action": "Let the escapee enter pool A; read the defeat and the young's record at once and again 250 ticks later, before any deadline.",
+      "expect": "The young is recorded at A and the adult is still defeated in both reads.",
+      "control": {
+        "case": "From the same checkpoint the young's deadline is set 60 ticks ahead and run past.",
+        "expect": "The defeat is cleared once.",
+        "rules_out": "A read that shows a defeated adult whatever the young does."
+      },
+      "cheaper_why": "one escapee and two reads of one saved flag; the deadline and the treatments are the other scenes'",
+      "split_from": "young_establishment",
+      "restored_by": "RIMMANDRAKE_RESTORE_FIVE_BAR_CLAIMS_THE_NIGHT_SHRINK_TOOK_OUT"
+    },
+    {
       "id": "young_poison_choice",
       "kind": "acceptance",
       "staged_by": "script",

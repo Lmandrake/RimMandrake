@@ -6,6 +6,10 @@ For item `RIMMANDRAKE_RULE_FIFTEEN_REWORDED_BARS_SOME_LOOSENED_UNLOGGED`. Writte
 - The old and new texts are read from git [measured]. "Looser" and "settled" are this run's reading of those texts [guess ~80%].
 - The bar's sentence (`experience`) changed in 4 of the 15: `prepared_day`, `attack_brings_raids`, `walk_tribes_season`, `ordinary_work` [measured].
 - The new text is the text of `4e53cf96e5`. After it, this run only took the long play on his walk out of it.
+- `RIMMANDRAKE_RESTORE_FIVE_BAR_CLAIMS_THE_NIGHT_SHRINK_TOOK_OUT` restored, on the Conductor's decision, five claims after this table was
+  written (`prepared_day` food and vent competition, `attack_brings_raids` the raid, `walk_tribes_season` the scar warning,
+  `delayed_establishment` the defeated adult, `walk_red_lid` the dash). The new text in this table for those leaves is not the text now. It
+  also repaired the walk leaves, so the lint passes on all six trees [measured].
 - The same commit made the door lint refuse the walk leaf of all six trees: the scenario lacks the words for the repeat or the
   second order. At its parent no tree had those faults [measured, `concept_tree.py lint`].
 

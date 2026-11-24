@@ -188,6 +188,34 @@
    "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
   },
   {
+   "id": "sc_attack_raid_source",
+   "kind": "acceptance",
+   "requirement": [
+    "attack_brings_raids"
+   ],
+   "staged_by": "script",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_TRIBES_RITE_SMALL_SCENES_NOT_A_SEASON",
+   "restore": "reload the checkpoint save, so the forecast leaves no count behind; then the restore of sc_attack_raids",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::scene_attack_raid_source",
+   "hold": "immediate",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "small list: every DLC, RM Pyrelands, UtinniPatches and this mod; incident queue emptied; needs and wild animals held still (asserted)",
+    "a forced rite under way; a checkpoint save; the colony old enough for the Tribes' own earliest raid day (asserted); the random source seeded"
+   ],
+   "action": "read the incident queue (each def and faction), the storyteller's own forecast of the following days, and the raid worker's answer to 'can the Tribes be the source' for each forecast raid; order a drafted colonist to shoot a harvester who is not defending fruit; read all three again; fire nothing and stage no raid",
+   "expect": "before the attack the raid worker refuses the Tribes; after it the worker accepts the Tribes for the first forecast raid and for each later one; a queued raid counts only when its own faction reads as the Tribes; no queued incident is of this mod's defs",
+   "control": {
+    "case": "the same forecast read with no attack made, and the same read for a faction that stays not hostile",
+    "expect": "the Tribes are refused, and the other faction is refused in both reads",
+    "rules_out": "a worker that accepts every faction, or a raid from another faction counted as theirs"
+   },
+   "cheaper_why": "reads of game state only; a forecast with no raid in it is UNMEASURED; the raid that follows is vanilla's, raid tests are paused, and no tick of play is needed",
+   "split_from": "sc_attack_raids",
+   "restored_by": "RIMMANDRAKE_RESTORE_FIVE_BAR_CLAIMS_THE_NIGHT_SHRINK_TOOK_OUT"
+  },
+  {
    "id": "sc_no_arson_tally",
    "kind": "acceptance",
    "requirement": [
@@ -266,6 +294,34 @@
    "hold": "immediate",
    "cheaper_why": "only a real reload of a live lord decides it; the season, the full list and the waiting add other mods' incidents, not evidence about the lord",
    "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
+  },
+  {
+   "id": "sc_walk_scar_warning",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_tribes_season"
+   ],
+   "staged_by": "script",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_TRIBES_RITE_SMALL_SCENES_NOT_A_SEASON",
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::scene_walk_scar_warning",
+   "hold": "immediate",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "small list: every DLC, RM Pyrelands, UtinniPatches and this mod; incident queue emptied; needs and wild animals held still (asserted)",
+    "a rite forced by rite_force_hook, its party picking and its scar recorded; one colonist outside the scar (asserted)"
+   ],
+   "action": "order the colonist to pick scorch-fruit in the scar; at the warning order the colonist out (at most 2,500 ticks)",
+   "expect": "a message that names the Tribes comes while the colonist picks in the scar; the party goes on with its harvest",
+   "control": {
+    "case": "the colonist is ordered to pick burned ground outside the scar",
+    "expect": "no warning",
+    "rules_out": "a warning sent with every rite"
+   },
+   "cheaper_why": "one forced rite, one colonist and one order; sc_fruit_defence decides the attack that follows a colonist who stays",
+   "split_from": "sc_walk_tribes_season",
+   "restored_by": "RIMMANDRAKE_RESTORE_FIVE_BAR_CLAIMS_THE_NIGHT_SHRINK_TOOK_OUT"
   },
   {
    "id": "sc_rite_second_order",

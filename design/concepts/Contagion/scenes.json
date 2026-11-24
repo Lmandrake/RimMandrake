@@ -707,6 +707,35 @@
    "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
   },
   {
+   "id": "sc_walk_natural_burn_dash",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_red_lid"
+   ],
+   "staged_by": "script",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SMALL_SCENES_NOT_TWO_WEEKS",
+   "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
+   "entry_point": "src/RimMandrake/Contagion/validation.py::scene_walk_natural_burn_dash",
+   "hold": "immediate",
+   "start": [
+    "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
+    "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+    "no condition active; the Burn clock jumped to the last part of its tells, no Burn forced (asserted)",
+    "two roofed refuges with open ground between them, one prepared colonist in the first (asserted)"
+   ],
+   "action": "run to the Burn's own start; order the colonist to dash to the second refuge",
+   "expect": "the Burn starts by its own clock; the dasher arrives alive with a Burn dose above zero",
+   "control": {
+    "case": "the same dash ordered and ended while the tells still run",
+    "expect": "the dose stays zero",
+    "rules_out": "a dose from some other cause than the Burn"
+   },
+   "cheaper_why": "one Burn started by the clock and one dash of one colonist; sc_one_dash_at_cost decides what the dash costs against staying out",
+   "split_from": "sc_walk_red_lid",
+   "restored_by": "RIMMANDRAKE_RESTORE_FIVE_BAR_CLAIMS_THE_NIGHT_SHRINK_TOOK_OUT"
+  },
+  {
    "id": "sc_gestation_burn_order",
    "kind": "acceptance",
    "requirement": [

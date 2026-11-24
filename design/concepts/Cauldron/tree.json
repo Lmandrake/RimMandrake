@@ -9,7 +9,7 @@
  "coverage": null,
  "floor": {
   "ref": "concept_floor.json",
-  "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
+  "hash": "9f5d9b761d114cdd8ac7505f14c1e5a7209ed812eca9008fd0daad2b204a1d68",
   "off": []
  },
  "exam_waived": null,
@@ -436,7 +436,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": "scene_observer",
-   "oracle_proposed": "the prepared workers complete their orders with no new ambient injury; the bare worker is harmed; stock deltas match the completed jobs",
+   "oracle_proposed": "the prepared workers complete their orders with no new ambient injury; the bare worker is harmed; stock deltas match the completed jobs; the meal is made and eaten with no new ambient injury to the cook; the output the vexxiss takes is read against that vexxiss, and the arm with the lined tap keeps its tap undamaged",
    "tier_reason": "The actual composed map, engine jobs, worn stats, health and player-visible transitions require runtime observation on a declared dependency-complete list. Offline source and kernel checks support these observations and cannot certify their delivery.",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -447,12 +447,13 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player whose people are sheltered, geared and supplied gets ordinary shelter, forestry, hauling and water work done through a bloom without unavoidable new ambient injury or silent production loss. An exposed expedition still carries its danger.",
-   "scenario": "routine_day runs one compressed bloom over two prepared workers and one bare one with three orders.",
+   "experience": "The player whose people are sheltered, geared and supplied gets ordinary shelter, forestry, hauling, food and water work done through a bloom without unavoidable new ambient injury or silent production loss. An exposed expedition and wild vent competition still present attributable choices and danger.",
+   "scenario": "routine_day runs one compressed bloom over two prepared workers and one bare one with three orders. routine_food: one prepared cook makes and eats one meal from colony stock through the same bloom. routine_vent_choice: one wild vexxiss at one working vent, with an ordinary tap in one arm and a lined tap in the other, both from one checkpoint.",
    "false_pass": [
     "Invulnerable need-free actors make the routine look dependable",
     "One debug-spawned reagent proves a forty-worker livelihood",
-    "All hazards are disabled while the presentation claims prepared safety"
+    "All hazards are disabled while the presentation claims prepared safety",
+    "A meal or a tap that stood there before the order is counted"
    ],
    "red": "Ordinary prepared workers cannot maintain fresh water and useful work, or correct preparation still permits unavoidable ambient injury.",
    "tier_proposed": "live_minimal",
@@ -474,7 +475,7 @@
    "leaf_kind": "walk",
    "clause_kind": "change",
    "experience": "The player can resume midway through Cauldron work, repeat the core action and perform the main actions in a second order without losing protection, grove binding, vent state, health, stored fluids or completed discovery. Returning still offers dependable work and risky expeditions.",
-   "scenario": "resume_walk saves midway through warning and tap production and reloads; resume_walk_second_order takes the main jobs in both orders from one checkpoint; metal_purge and gas_chain decide the purge and the mid-flame reload.",
+   "scenario": "resume_walk saves midway through warning and tap production and reloads; resume_walk_second_order reloads one checkpoint and repeats the harvest and the conversion in a second order; metal_purge and gas_chain decide the purge and the mid-flame reload.",
    "false_pass": [
     "A new map after load is substituted for the saved state",
     "Only static finished products reload while active state is lost"

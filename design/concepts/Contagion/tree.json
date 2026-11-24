@@ -9,7 +9,7 @@
  "coverage": null,
  "floor": {
   "ref": "concept_floor.json",
-  "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
+  "hash": "9f5d9b761d114cdd8ac7505f14c1e5a7209ed812eca9008fd0daad2b204a1d68",
   "off": []
  },
  "exam_waived": null,
@@ -626,7 +626,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "after the reload the Burn clock, touched severity and gestation deadline are the saved ones; both orders give the same batch and letters; that the sky and the body tell one story is judged at his walk",
+   "oracle_proposed": "after the reload the Burn clock, touched severity and gestation deadline are the saved ones; both orders give the same batch and letters; the Burn starts by its own clock and the dasher arrives alive with a Burn dose; that the sky and the body tell one story is judged at his walk",
    "tier_reason": "the proof is one save and load and one order check, on the small list",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -640,7 +640,7 @@
    "leaf_kind": "walk",
    "clause_kind": "preserve",
    "experience": "The player walks a lived-in Contagion colony through a Bloom day, a natural Burn with a dash, a Repulsor Burn and a gestation, and the sky and the body tell one story.",
-   "scenario": "Script: touch a colonist, inject a host, jump the Burn clock to mid-tells, save, reload and compare; then, from one checkpoint, a Repulsor Burn and a birth in both orders.",
+   "scenario": "Script: touch a colonist, inject a host, jump the Burn clock to mid-tells, save, reload and compare; sc_walk_natural_burn_dash lets the Burn clock start a natural Burn and orders one dash; then, from one checkpoint, a Repulsor Burn and a birth, and the same two repeated in a second order.",
    "false_pass": [
     "a reload compared with itself",
     "one order run twice"

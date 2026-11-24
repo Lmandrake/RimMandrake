@@ -859,6 +859,66 @@
       "shrunk": "RIMMANDRAKE_SHRINK_OVERSIZED_SCENES_IN_EVERY_MOD_AFTER_PYRE, owner 2026-11-24"
     },
     {
+      "id": "routine_food",
+      "kind": "acceptance",
+      "requirement": [
+        "prepared_day"
+      ],
+      "staged_by": "script",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_CAULDRON_SMALL_WALK_SCENES_NOT_FORTY_HANDS",
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for connected_gas: retain keeper save RM_Cauldron_review_gas_chain, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes gas_chain review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "exercises": [],
+      "status": "planned_unrun",
+      "implementation_items": [],
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_routine_food",
+      "hold": "immediate",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+        "one worker in full gear with one roof, one stove and the ingredients of one meal in stock; no meal on the map (asserted)"
+      ],
+      "action": "run one compressed bloom (warning to end); order the worker to cook the meal and then to eat it during the bloom",
+      "expect": "one meal is made and eaten, the ingredients are spent once, and the worker takes no new ambient injury or load",
+      "control": {
+        "case": "the same orders with the ingredients taken away, and the same orders with the roof removed and the gear off",
+        "expect": "no meal without the ingredients; the bare worker takes load",
+        "rules_out": "a meal that stood there before, or a bloom that harms nobody"
+      },
+      "cheaper_why": "one worker, one meal and one bloom decide that food work goes on; a colony with free needs adds nothing that this reads",
+      "split_from": "routine_day",
+      "restored_by": "RIMMANDRAKE_RESTORE_FIVE_BAR_CLAIMS_THE_NIGHT_SHRINK_TOOK_OUT"
+    },
+    {
+      "id": "routine_vent_choice",
+      "kind": "acceptance",
+      "requirement": [
+        "prepared_day"
+      ],
+      "staged_by": "script",
+      "entry_point_item": "RIMMANDRAKE_SCRIPT_CAULDRON_SMALL_WALK_SCENES_NOT_FORTY_HANDS",
+      "restore": "Before any persistent mutation, including preflight weather/storyteller/incident changes, record scene-begin with a durable entry save, settings backup and map/global/actor/inventory manifest. On success, failure or interruption reload the exact entry checkpoint, restore external settings and compare the manifest, save-folder diff and running candidate; close with scene-end only after match. If intentionally retained for review, scene-hold with the keeper save and named review end instead. Missing recovery blocks further concept runs. Required owner review for connected_gas: retain keeper save RM_Cauldron_review_gas_chain, the separate entry checkpoint, settings backup, actor/cell manifest and tick-keyed captures. At the declared review checkpoint pause and scene-hold --until \"owner finishes gas_chain review or explicitly releases this hold\" naming that keeper. The keeper includes a pre-action branch for replay of transient cues; resume_walk includes its midway save and second-order branch so the owner can perform the actions. After that review end reload the entry checkpoint, restore external settings, verify the manifest and scene-end. Never overwrite the entry checkpoint with the keeper.",
+      "exercises": [],
+      "status": "planned_unrun",
+      "implementation_items": [],
+      "entry_point": "src/RimMandrake/Cauldron/validation.py::scene_routine_vent_choice",
+      "hold": "immediate",
+      "start": [
+        "Assert candidate source/deployed DLL hashes, loaded list and dependencies, map/save/tile identity and shipped settings or declared fixture overrides.",
+        "needs, wild animals and arrivals held still by the calm test profile (asserted: the profile reports each control on; UNMEASURED otherwise)",
+        "one checkpoint save: one working vent and one wild vexxiss, released from the hold alone, with a reachable path to the vent (asserted)"
+      ],
+      "action": "arm one: an ordinary tap on the vent; the vexxiss chooses to walk to the vent and drinks past one pry interval; reload the checkpoint; arm two: a lined tap on the same vent, the same run",
+      "expect": "in both arms the vent's lost output is traced to that vexxiss's own job; the ordinary tap loses hit points and the lined tap does not, so the player's choice of tap changes what the competition costs",
+      "control": {
+        "case": "the same two arms with the vexxiss still held",
+        "expect": "no output is lost and neither tap is damaged",
+        "rules_out": "a loss with another cause, or a vent already suppressed"
+      },
+      "cheaper_why": "one animal, one vent and two short arms; vent_competition decides the drinking, recovery and settings, and this reads only what the player's choice changes",
+      "split_from": "routine_day",
+      "restored_by": "RIMMANDRAKE_RESTORE_FIVE_BAR_CLAIMS_THE_NIGHT_SHRINK_TOOK_OUT"
+    },
+    {
       "id": "resume_walk",
       "kind": "acceptance",
       "staged_by": "script",

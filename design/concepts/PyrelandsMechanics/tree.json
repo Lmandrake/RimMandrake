@@ -4,12 +4,12 @@
  "kind": "mod",
  "authored_by": "concept",
  "root_ref": "design/validation_walks/RimUtinni/PyrelandsMechanics.md#north-star",
- "root_state": "DRAFT",
- "root_hash": null,
+ "root_state": "VALIDATED",
+ "root_hash": "3203d10e48d2b19888d290ee35b4873872c593f408f3c4f5efd32745bbf3ee80",
  "coverage": null,
  "floor": {
   "ref": "concept_floor.json",
-  "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
+  "hash": "9f5d9b761d114cdd8ac7505f14c1e5a7209ed812eca9008fd0daad2b204a1d68",
   "off": []
  },
  "exam_waived": null,
@@ -196,7 +196,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "relation goes to hostile on the attack",
+   "oracle_proposed": "relation goes to hostile on the attack; before the attack the raid worker refuses the Tribes as a source; after it the Tribes are accepted for each forecast raid, the first and the later ones; no queued incident is this mod's own",
    "tier_reason": "a dev quicktest colony on a Pyrelands tile, minimal list plus RM Pyrelands, UtinniPatches and this mod, with the Deep Desert Tribes present and not hostile (asserted), gives the fire clock and the faction in about 90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -207,10 +207,11 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "The player orders colonists to attack a Tribes party openly: the Tribes turn hostile, and vanilla faction hostility follows. Nothing in this mod adds to it.",
-   "scenario": "Order a drafted colonist to shoot a rite harvester who is not defending fruit; read goodwill and relation.",
+   "experience": "The player orders colonists to attack a Tribes party openly: the Tribes turn hostile, and a raid from them comes in the following days, possibly again later. This is vanilla faction hostility; nothing in this mod adds to it.",
+   "scenario": "Order a drafted colonist to shoot a rite harvester who is not defending fruit; read goodwill and relation. sc_attack_raid_source stages no raid: before and after the attack it reads, from game state, the queued incidents and their factions, the raids that the storyteller forecasts, and whether the raid worker accepts the Tribes as the source of each.",
    "false_pass": [
-    "the hostility is set by the test"
+    "the hostility is set by the test",
+    "a raid from another faction is counted"
    ],
    "red": "the rite lord's turned-hostile exit swallows the attack, so the Tribes leave and stay friendly",
    "tier_proposed": "quicktest",
@@ -268,7 +269,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "state digest before save equals after reload; the party leaves with its fruit; the switches leave no Tribes pawn or lord behind; no log line names this mod",
+   "oracle_proposed": "state digest before save equals after reload; the party leaves with its fruit; the switches leave no Tribes pawn or lord behind; no log line names this mod; a colonist sent to pick in the scar gets a warning that names the Tribes",
    "tier_reason": "the proof is one forced rite, saved and reloaded on the small list",
    "cannot_show": null,
    "wall_expect_h": 3,
@@ -282,8 +283,8 @@
    ],
    "leaf_kind": "walk",
    "clause_kind": "change",
-   "experience": "The player saves while a rite party is harvesting, reloads, and finds the party, its lord, its scar and its carried fruit exactly as they were; the party then walks off with the fruit. In ordinary play a rite party comes on its own, lights the grass and picks behind the front.",
-   "scenario": "Script: force a rite, save mid-harvest, reload and compare; a rite that finds a colonist picking; a switch off under a rite; the roll offline.",
+   "experience": "The player sends a colonist to pick in the scar of a rite party and is warned off, saves while the party is harvesting, reloads, and finds the party, its lord, its scar and its carried fruit exactly as they were; the party then walks off with the fruit. In ordinary play a rite party comes on its own, lights the grass and picks behind the front.",
+   "scenario": "Script: force a rite, save mid-harvest, reload and compare; sc_walk_scar_warning sends a colonist to pick in the scar of a forced rite; sc_rite_second_order repeats the rite in a second order, with the colonist picking before the party comes; a switch off under a rite; the roll offline.",
    "false_pass": [
     "the reload is from a save made before the party arrived"
    ],
