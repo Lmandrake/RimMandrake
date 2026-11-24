@@ -48,3 +48,14 @@ obvious reading; no entry above is removed). The 0.2.0 scope is `../VERSION.json
   built and checked in 0.1.1 (`c3633a8f30`, `e851961457`), so they are not 0.2.0 scope.
 - Taken from the 2026-11-20 design pass: bar `wall_lamp_takes_looks`.
 
+
+## 0.2.0 close-out, 2026-11-24: what his order took from this list
+
+Appended by `RIMMANDRAKE_CLOSE_SLACK_VERSION_ALL_REAL_WORK_ONE_RUN_ONE_CONTEXT` (no entry above is removed).
+
+- **The battery in the four looks:** in 0.2.0 by his order of 2026-11-24, bar `battery_takes_looks` (built in 8c13ce0390). It is in
+  Gimme Some Slack, not in Machine Looks.
+- **Delete the review stations nobody reads:** not done. The stale "KNOWN GAP" line of stations 1-4 is deleted from the generator;
+  the ten stations stay, and the ticket is dropped (the 0.2.0 walk uses a staged save that the generator did not rebuild).
+- **Re-judge coverage under a calibrated brief:** not done; the ticket is dropped (paperwork, nothing a player sees).
+- Taken from his words of 2026-11-24: bar `ship_to_ground_wire_snaps`.

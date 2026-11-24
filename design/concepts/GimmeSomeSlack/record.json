@@ -686,7 +686,7 @@
   },
   {
    "id": "no_hose",
-   "what": "GSS draws no hose or pipe: hoses and reels live in FlowWorks",
+   "what": "GSS draws no hose and no reel: hoses and reels live in FlowWorks. (The spans of FlowWorks pipe poles are drawn here on purpose, under their own switch.)",
    "impl": "present",
    "impl_evidence": [
     "ITEM:GSS_WALK_HOSES_EXCISE_REELED_IN",
@@ -921,6 +921,45 @@
    "quote": "Please also re-examine the basegame lamp and Wall Lamp (some of the existing ones are too low res for our modern tastes, see dpi for creatures, and the Wall Lamp doesn't even have any yet).",
    "note": "0.2.0 MINOR. His walk of 2026-11-20 (full words: D:\\ClaudeWork\\rimmandrake\\conductor\\gss_walk_20261120_his_words.md, message 2; the OWNER note lists 'better lamp and wall lamp art'). The design pass that he ordered ('design and decide and advise') put the wall lamp in Gimme Some Slack with the other light fixtures and the battery in a new mod, Machine Looks (design.md, Decision). The art exists (12 of 12 KEEP, in the art store); the install is through art install only. A plain sentence about what the player sees, never an asset count.",
    "proof_note": "offline: T_WALL_LAMP_LOOKS_OFFLINE (Stage 3 builds it, red first): ConduitStyles registers WallLamp as a lamp def with a style def per look, its textures exist for every facing, and with the master switch off it draws vanilla; live: sc_wall_lamp_looks, a capture of each look on a wall beside a standing lamp, a restyle of its line, and the master switch off (Stage 6)"
+  },
+  {
+   "id": "battery_takes_looks",
+   "what": "A battery takes the looks as the standing lamp does: it wears the look of the cable run it touches unless the player gives it its own from its style button, each look reads as that look's battery whichever way it is turned, and with the master switch off it draws the vanilla battery.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_ConduitStyles.xml",
+    "ITEM:RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP"
+   ],
+   "proof": "current",
+   "proof_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/review/close_020_stations.py row st34_battery_follows_run PASS, ArchBig 2026-11-24, build 8c13ce0390 + redo"
+   ],
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795546467448705900",
+   "source": [
+    "OWNER:1795546467448705900",
+    "ITEM:RIMMANDRAKE_STYLE_SLACK_BATTERY_LIKE_THE_LAMP"
+   ],
+   "note": "his order of 2026-11-24 took the next-version battery item into 0.2.0; the 2026-11-20 design pass had put it in Machine Looks."
+  },
+  {
+   "id": "ship_to_ground_wire_snaps",
+   "what": "When a gravship takes off, an overhead wire from the ship to an anchor left on the ground snaps: the player sees a fallen wire at the ground anchor and gets a message, and a wire between two anchors aboard is untouched.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs",
+    "ITEM:RIMMANDRAKE_SNAP_SLACK_GROUND_CORD_AT_TAKEOFF_IT_COILS_TODAY"
+   ],
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795510680855123236",
+   "source": [
+    "OWNER:1795510680855123236",
+    "OWNER:1795546467448705900"
+   ],
+   "note": "his words of 2026-11-24: 'Yes, the wire should snap ship-to-ground. Of course it would.' Offline: AerialSelfTest GravshipLaunch. Live flight UNRUN on 2026-11-24."
   }
  ],
  "contradictions": [

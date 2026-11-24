@@ -247,7 +247,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                         f.toward = Position;
                     }
             }
-            if (plan.Grounded.Count > 0) NotifyGroundedAtLaunch(plan.Grounded.Count);
+            if (plan.Grounded.Count > 0 && plan.Fallen.Count > 0) NotifyGroundedAtLaunch(plan.Fallen.Count);   // only a span that was up snaps
             // GS-1: spans to partners flying with us are kept. Cable lying at our foot is cleared either way: its
             // 'toward' cell is a map cell, meaningless after the ship lands somewhere else.
             links.RemoveAll(l => l.other == null || !plan.Kept.Contains(l.other.thingIDNumber));

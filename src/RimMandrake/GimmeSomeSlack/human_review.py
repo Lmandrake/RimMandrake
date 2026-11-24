@@ -225,8 +225,7 @@ def ground_station(mk, n, x, look):
            look, " (menu entry 'Modern: one colour per run')" if modern else ""),
        ["every cord, plug, junction, wall stub, cut end and the switch is %s art (the art board M says which pieces still "
         "fall back)" % look,
-        "the tangle: %s" % ("power strips with plugs in the sockets" if modern else "junction boxes with cables in them") +
-        " (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)",
+        "the tangle: %s" % ("power strips with plugs in the sockets" if modern else "junction boxes with cables in them"),
         "the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark",
         "the three floor lamps are %s lamps (round 6: built in their run's look; 'Restyle... > All connected' repaints them too)" % look]
        + (["one colour along the whole run (built with 'one colour per run'); the 2 cells past the gap are a run of their "

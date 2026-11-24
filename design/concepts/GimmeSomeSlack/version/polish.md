@@ -1,66 +1,21 @@
 # Gimme Some Slack: Polish list
 
-Polish improves play but is not part of passing 0.1.0. Each entry is moved here only with his confirmation, marked in the decision (owner, by card 2026-11-13).
+Polish improves play but is not part of passing. A record; nobody takes lines from it.
 
-*Empty at entry on 2026-11-13: no open judge gap sorted as Polish.* Candidate if he disagrees with the sort: g2's FlowWorks fallen-deck cord case (`gaps_sorted.md`).
+The list was emptied on 2026-11-24 by the owner's order (item RIMMANDRAKE_CLOSE_SLACK_VERSION_ALL_REAL_WORK_ONE_RUN_ONE_CONTEXT): each
+line that a player would see went into 0.2.0 or was dropped with its reason, and each line that a player would not see was done or
+deleted. The lines that were here are in git (the parent of this change) and in that item's closing note, with the state of each.
 
-0.1.1 blind cycle 1 (`blind_challenge/cycle_1/lane2/faults.json`), moved to Polish by the steward RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_CYCLE_ONE_EXIT_MET as the Conductor's delegated call (`--per-ruling RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME`), 2026-11-20:
-- **RIMMANDRAKE_CLIP_SLACK_FALLEN_WIRE_TENTH_CELL_INTO_WALL** (MOD): a fallen wire's bend can clip up to 0.117 cell into a wall face in 15 of 5934 random walled lays (`LayFallen` samples walkability every 0.2 cell). The wire never crosses a wall; `fallen_span_on_ground` names no wall, and `cords_meet_walls_at_face` reds only a cord across a wall top. Stage 6 sees it live.
-- **RIMMANDRAKE_NOTE_SLACK_DLL_HOSE_NAMES_ONLY_ALTITUDES** (HARNESS): five hose-named altitude constants from `_Shared/SlackGeometry/DrawOrder.cs` are compiled into the GSS DLL; no hose def, texture, class or drawing ships.
-- **RIMMANDRAKE_SHARE_SLACK_TAP_SURPLUS_UNTESTED_IN_CALLER** (HARNESS): no check puts two taps on one victim; the shipped code shares the surplus and no bar names several taps.
-- **RIMMANDRAKE_MISS_SLACK_PIPE_KIND_IN_BLIND_LANE_ONE** (HARNESS): the blind lane-1 scanner missed a `lineKind` pipe plant; repaired in the sitting and shown both ways.
+Lines written after that change:
 
-The switch lamp (RIMMANDRAKE_LIGHT_SLACK_SWITCH_GREEN_RED_DARK_WHEN_UNPOWERED, 2026-11-20), the art judge's polish notes (`version/evidence/switch_light/judge_v1.json`, `judge_v2.json`); nobody fixes these:
-- **Futuristic baked cyan** (ART): the Futuristic look's closed art carries its own cyan glow, which still shows on an unpowered switch beside the dark lamp.
-- **Modern two reds** (ART): on the Modern look the red lever sits beside the red lamp when the switch is open; still readable.
-- **Dark lamp at far zoom** (ART): at 36 px per cell the unlit lamp is nearly invisible on the dark bodies (Industrial, Futuristic); the lit states still read.
-- **Scrapper halo cast** (ART): the green halo takes a yellow cast over the Scrapper look's copper bar at 112 px per cell.
-
-Ticket sweep of 2026-11-22 (RIMMANDRAKE_SWEEP_SLACK_TICKETS_MERGE_TO_MODERN_BUILD_THE_VALUABLE): each ticket below failed test 1 of §Touching code has a cost (no broken promise in ordinary play, no failure that happened, no red test that shows misbehaviour) and was dropped `not worth the touch`. One line each; nobody fixes these. Page: `ticket_sweep_2026-11-22.md`.
-- **CORD_PLANNER_MEASURE_ASTAR_EXPANSIONS** (TOOL): an A* expansion counter for the hose replay harness; a measurement, no failure.
-- **GSS_FRAME_GARBAGE_SHRINK_HALF_MEG_LEFT** (MOD): CordBuilder.Build allocates ~0.45 MB per AsyncLay frame at 8 lattices; the no-delay bar passes in game.
-- **RIMMASTER_POLISH_GSS_CORD_LEFTOVERS_AFTER_APPROVAL** (ART): Scrapper lead S-bend, the r3_13 crossing, the faded wall plug; each changes the look he approved (put on this list 2026-11-19).
-- **RIMMANDRAKE_COVER_GSS_CALLERS_FOUR_PLANTS_WALKED_PAST** (HARNESS): blind-cycle caller and patch plants no offline suite reds; the in-game rows decide those bars.
-- **RIMMANDRAKE_TRIM_GSS_LAY_COST_SLICES_ROSE_A_THIRD** (MOD): the cold lay costs ~690 ms over ~71 Builds after 0416599c69; the no-delay bar passes.
-- **RIMMANDRAKE_ALIGN_GSS_SHARP_ROW_READS_CUT_END_CELL** (HARNESS): lane 1's sharp-turn row reads windows the bar's instrument does not count.
-- **RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_NEVER_IN_GAME** (MOD): AerialMath.RestringTicks(NaN) is int.MinValue and (+inf) is 0; the caller feeds ConstructionSpeed, never NaN or inf.
-- **RIMMANDRAKE_TRIM_GSS_FALLEN_WIRE_COILS_OUTGROW_CABLE** (MOD): 13 of 1500 seeded fallen wires draw over 2x their cable; no bar promises length.
-- **RIMMANDRAKE_PROVE_GSS_GEOMETRY_RAN_COUNT_IS_ONLY_TELL** (HARNESS): T_CORD_GEOMETRY_OFFLINE stays rc 0 when --geometry is dropped; only its check count tells.
-- **RIMMANDRAKE_EXERCISE_GSS_CORD_GUARDS_THREE_PLANTS_SURVIVE** (HARNESS): three cord-lay guards can be weakened with T_CORE and T_CORD_GEOMETRY_OFFLINE green.
-- **RIMMANDRAKE_REPIN_GSS_ASYNC_FAULT_CAP_FIFTY_SEVEN_USED** (HARNESS): SliceGateChecks asserts builds5 < 60 with ~57 used; never red on record.
-- **RIMMANDRAKE_TIGHTEN_GSS_FALLEN_WIRE_WALL_CHECK_HALF_STEP** (MOD): LayFallen checks every 0.2 cell, draws every 0.1; up to 0.114 cell inside a wall, hidden under wall art (same family as the 0.1.1 cycle 1 line above).
-- **RIMMANDRAKE_SPLIT_GSS_DLL_HOSE_DRAW_ORDER_SHARED_TABLE** (HARNESS): hose-named altitude members compiled into the GSS DLL from the shared DrawOrder.cs (same as the cycle 1 line above).
-- **RIMMANDRAKE_GUARD_GSS_NOHOSE_FLEXIBLE_PIPES_CLAUSE_UNMUTATED** (HARNESS): T_NO_HOSE's 'flexible pipes' clause has no self-mutant.
-- **RIMMANDRAKE_SCAN_GSS_ABOUT_TEXT_HOSE_CLAIMS_UNREAD** (HARNESS): T_NO_HOSE does not read About.xml; the shipped About text names FlowWorks as the home of the hoses, which is true.
-- **RIMMANDRAKE_SEE_GSS_DLL_HOSE_NAMES_HIDDEN_IN_TAILS** (HARNESS): T_NO_HOSE's byte scan misses LayParams.Hose and CordKind.Hose; no hose ships.
-- **RIMMANDRAKE_MEASURE_SLACK_LIVE_END_PARITY_COPY_AGAINST_GAME** (HARNESS): parity of the Python live-end copy against the game is UNMEASURED; the in-game live-end rows decide the bars (P_B3_whip_live_ends PASS, visit 3).
-- **RIMMANDRAKE_EXPLAIN_SLACK_DECK_SHOCK_COUNTED_VICTIM_UNMARKED** (SITE): once in six trials on 2026-11-17 the shock counter rose with no hediff on the deck colonist; not seen again (P_SC_shock_reach_deck_cord_per_value PASS, visit 3).
-- **RIMMANDRAKE_TRACE_TURRET_TICK_EXCEPTION_ON_FULL_LIST_WALK_SAVE_LOAD** (NOT OURS): one exception on the first tick of his full list; the throwing frame is LargePawns.LargePawnsMapComponent.GetLargePawns (a corrupted Dictionary of the third-party mod neku.largepawns); FlowWorks is only a prefix on the stack (`D:\ClaudeWork\rimmandrake\gss_walk_stage\load_walk_log_tail.txt` line 4228).
-- **Mast head over a plant over 4 cells tall to its south** (MOD, journal Questions 4 (b)): unreachable with vanilla plants (the tallest is 3.0 cells; `selftest_gss_pole_south_draws_front.py`).
-- **Restyle reach menu says "1 lamps"** (MOD, polish): the All connected count reads "8 pieces, 1 lamps" with one lamp (ConduitStylePicker.ReachMenu); grammar only.
-- **The style reach menu has no on-screen capture** (HARNESS): screenshot_cell_rect renders the map without UI, so the live check reads the menu's labels (style_reach_live.py R1) instead of a picture of the menu.
-- **Dead end's limp curl measures as a kink** (MOD, RIMMANDRAKE_SMOOTH_SLACK_GROUND_CORD_KINKS_AT_STATION_THREE sweep): a cut dead end's own curl turns about 66 degrees within 0.12 cell, 0.7 cell from the frayed tip, on most cut leads; it is the limp art (break_live_and_dead_ends_differ), the kink check excuses it as "limp", and no walk has named it.
-- **Battery plug turns under the battery's art** (MOD, same sweep): a battery's cord turns about 75 degrees 0.34 cell from its plug, inside the battery footprint; the battery draws over it (live capture `D:\ClaudeWork\rimmandrake\scratch\gss_kinks_st3_before_left.png`), so nothing shows.
-- **Stub join lays a 0.04-cell S-notch at a box arm** (MOD, RIMMANDRAKE_SMOOTH_SLACK_GROUND_CORD_KINKS_AT_STATION_THREE region sweep): one geometry of 384 (seed 4, 4x3 box pile, battery lead 1, lamp 2 cells up), on the parent build too: a lamp cord meets its junction-box arm with two opposite turns 0.06 cell apart, its heading the same either side; T_NO_KINK_OFFLINE reports it as an S-jog.
-- **A 188-degree hairpin with two cords per run** (MOD, RIMMANDRAKE_SMOOTH_SLACK_GROUND_CORD_KINKS_AT_STATION_THREE full region sweep): with the Mod Setting cords per run at 2 (default 1), one geometry (4x3 box pile, battery lead 2, the run under a wall) keeps a hairpin 0.23 cell from the pile port on the wall-plate cord's second strand, in 9 of 5,184 worlds; no default-setting world shows it.
-- 2026-11-22 (four-changes look, RIMMANDRAKE_STAGE_SLACK_SHORT_LOOK_AT_FOUR_CHANGES_THEN_HIS_PASS): the Restyle reach menu says "1 lamps" on a count of one; the look menu marks no entry "(current)"; the Scrapper, Industrial and Futuristic swatches are dark on the dark float menu (Industrial almost invisible). Evidence: `evidence/four_look_20261122/menu_1_reach.jpg`, `menu_2_looks.jpg`.
-
-0.2.0 blind cycle 1 (`blind_challenge/cycle_1/lane2/faults.json`); nobody fixes these:
-- **RIMMANDRAKE_CHECK_SLACK_LAMP_MASTER_OFF_GUARD_NEGATED_SURVIVES** (HARNESS): T_WALL_LAMP_LOOKS_OFFLINE reads source text and stays green when the master-off lamp patch is negated; sc_wall_lamp_looks decides it in game.
-- **RIMMANDRAKE_CAP_SLACK_GUST_SWAY_ABOVE_CHORD_MAX_SLIDER** (MOD): at sway strength 2 in wind 2.0 a Gust wire rises above its chord in 25% of frames; never at the shipped strength 1.
-- **RIMMANDRAKE_SPREAD_SLACK_FALLEN_TIPS_TWO_OF_THREE_MEET** (MOD): in 517 of 20000 broken 3-wire spans two wire tips lie within 0.25 cells.
-- **RIMMANDRAKE_ASK_SLACK_LAMP_ON_FOREIGN_CONDUIT_ITS_LINE** (MOD): a lamp wired to another mod's drawn conduit is offered "not hooked to a cable run"; the line's own menu does repaint it.
-- Codex review 2026-11-24, not significant in ordinary operation (wall_plug_bend_allowance, `WallPlugChecks.cs:205`): The 1,560-scene Modern sweep builds wall-lamp, through-wall and wall-ending cords with the production builder. The recorded run at db7ead9f11 passed with 53 bends classified as unforced near plugs, on `dive` and `dive+fit+fit` strands. The current deciding assertion still allows that result with `r.Unforced.Count <= ...
-- Codex review 2026-11-24, not significant in ordinary operation (connected_menu_action_unexercised, `ConduitStylePicker.cs:336`): Changing only the All connected option's callback to pass `Reach.Item` would leave its label and counts intact and both deciding tests green. On an Industrial run of several conduits, picking All connected → Futuristic would then repaint just the selected conduit.
-- Codex review 2026-11-24, not significant in ordinary operation (shared_cell_exempts_other_live_span, `RM_FallenWireShock.cs:165`): Cut two crossing spans so grounded halves share a walkable cell. Leave one span live and the other dead, then order the dead span re-strung and let its worker cross the shared cell. The worker is immune to the live wire on that cell because their own dead wire also touches it.
-- Codex review 2026-11-24, not significant in ordinary operation (tap_reload_discards_pending_goodwill_time, `CompPowerTap.cs:81`): Let a caught clamp drain its victim's last battery charge partway through an event window. Save and reload before the window closes, and leave the battery empty through the flush. The saved draining ticks disappear from goodwill accounting and the next charge is delayed by those ticks. Continuing from the same point without ...
-- Codex review 2026-11-24, not significant in ordinary operation (buried_hookup_uses_other_net, `CordGraph.cs:284`): Run a powered conduit east to (50,50) and wall in all four sides of each of its last three cells. Leave (51,50) without conduit and start a separate powered run at (52,50) with an open north face. A lamp at (50,53) hooked to (50,50) draws its cord into the other run's wall at (52,50). I could not inspect vanilla ...
-- Codex review 2026-11-24, not significant in ordinary operation (one_cell_cut_remnant_disappears, `CordGraph.cs:679`): Build a charged battery feeding a straight floor run through x=10 to x=16, with no device at the far tip. Remove x=15. The west side shows a live end, and the surviving tile at x=16 shows no dead end, even after the build settles. I could not inspect vanilla's singleton-net registration here. If it omits the surviving tile ...
-- Codex review 2026-11-24, not significant in ordinary operation (pruned_ring_gains_false_ends, `CordGraph.cs:603`): Lay an unfogged 8-by-8 square perimeter of conduit with no device, then add a one-cell spur outward from the middle of one side with Needless Loops on. The closed ring acquires two dead-end frays at the spur junction even though the perimeter is unbroken. I could not inspect vanilla net registration here. The repo's ...
-- Codex review 2026-11-24, not significant in ordinary operation (settings_close_apply_can_break_undetected, `GimmeSomeSlackMod.cs:464`): A regression that runs the existing Apply statement only when enabled is true would leave every deciding test able to pass. In play, a user would untick Messy Cords and close Mod Settings. The cord layer would hide immediately, but already-transparent conduits would stay invisible. This is a source-traced regression, not a ...
-- Codex review 2026-11-24, not significant in ordinary operation (mast_drop_omits_wall_face_fittings, `AerialMath.cs:836`): Put a powered mast outside a workshop and a standing lamp four cells away inside, with the workshop entrance on the far side and the mast the nearest transmitter. Vanilla connects the lamp through the wall. The local drop cannot reach the entrance, so it draws one continuous floor ribbon through the wall. At play zoom the ...
-- Check removed 2026-11-24 (RIMMANDRAKE_DECIDE_SLACK_WALK_BAR_CODE_PLAYS_NO_WEEK): `sc_walk` (full list, a week) is out of scenes.json and the test table; its code played no week. `sc_save_reload_wire_down` decides its part of `walk_scavenger_base`, with the seven rows `sc_walk` was read from. lost: a scripted second order (overhead first, floor after) and the runner's cords/soak/ui recipe as a Stage 6 row (last live: PASS twice in visit 1 of 0.2.0, live == fresh). undo: revert the commit of this item.
-
-Walk fix of 2026-11-24 (RIMMANDRAKE_FIX_SLACK_WALL_LAMPS_FACE_INTO_WALL_CORDS_STOP_AT_HOLE); nobody fixes these:
-- **A side-facing wall lamp's cord meets the lamp at its head** (ART): the cord runs under the head to the wall, so it reads as plugged into the head's tip.
-- **A plate behind a wall lamp shows its top edge above the lamp** (ART): a dive that comes out in a lamp's cell puts its plate behind the lamp.
+- **Fresh read of 8c13ce0390, 2026-11-24** (not significant, nobody fixes these): poles that wait for their auto-link in one tick at
+  x = 0, 1, 5, 6 wire as two pairs where the older rule made one chain; the stump a ship keeps of a snapped wire ignores a ship that
+  lands turned; a battery that touches its run only through another battery does not take the run's look; with the cords master
+  switch off the Futuristic switch's glow is not put out; at the Connected reach the look menu marks the run's look as current, for
+  a lamp that wears its own look too.
+- **Fallen wire, 2026-11-24**: after the soft sideways limit and the one-curve drop, 13 of 640 measured lays still turn over 100
+  degrees within 0.15 cell where the ground path doubles back at the foot of the drop (160 before; AerialSelfTest FallenTouchdown).
+- **Battery charge bar, 2026-11-24**: vanilla's yellow charge bar covers each look's gauge window (capture
+  st34_battery_four_looks.png in the close-out showings folder); it reads as the battery's meter.
+- **Art judge, 2026-11-24**: the Modern battery's north end face is a little shallower than its east front face; not visible at play
+  zoom (infrastructure/state/delegated/2026-11-24/GSS_Close_Battery_SwitchUnlit.json).

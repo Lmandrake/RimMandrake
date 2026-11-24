@@ -33,7 +33,7 @@ one compact floor build in the Scrapper look: full battery, a 3x3 tangle, a run 
 **Notice**
 
 - every cord, plug, junction, wall stub, cut end and the switch is Scrapper art (the art board M says which pieces still fall back)
-- the tangle: junction boxes with cables in them (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
+- the tangle: junction boxes with cables in them
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
 - the three floor lamps are Scrapper lamps (round 6: built in their run's look; 'Restyle... > All connected' repaints them too)
 
@@ -58,7 +58,7 @@ one compact floor build in the Industrial look: full battery, a 3x3 tangle, a ru
 **Notice**
 
 - every cord, plug, junction, wall stub, cut end and the switch is Industrial art (the art board M says which pieces still fall back)
-- the tangle: junction boxes with cables in them (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
+- the tangle: junction boxes with cables in them
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
 - the three floor lamps are Industrial lamps (round 6: built in their run's look; 'Restyle... > All connected' repaints them too)
 
@@ -79,7 +79,7 @@ one compact floor build in the Modern look (menu entry 'Modern: one colour per r
 **Notice**
 
 - every cord, plug, junction, wall stub, cut end and the switch is Modern art (the art board M says which pieces still fall back)
-- the tangle: power strips with plugs in the sockets (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
+- the tangle: power strips with plugs in the sockets
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
 - the three floor lamps are Modern lamps (round 6: built in their run's look; 'Restyle... > All connected' repaints them too)
 - one colour along the whole run (built with 'one colour per run'); the 2 cells past the gap are a run of their own and may carry another colour
@@ -101,7 +101,7 @@ one compact floor build in the Futuristic look: full battery, a 3x3 tangle, a ru
 **Notice**
 
 - every cord, plug, junction, wall stub, cut end and the switch is Futuristic art (the art board M says which pieces still fall back)
-- the tangle: junction boxes with cables in them (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
+- the tangle: junction boxes with cables in them
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
 - the three floor lamps are Futuristic lamps (round 6: built in their run's look; 'Restyle... > All connected' repaints them too)
 

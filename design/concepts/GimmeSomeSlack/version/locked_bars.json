@@ -60,7 +60,9 @@
   "owner_change_coils_wires",
   "statics_clear_between_games",
   "no_hose_in_gss",
-  "walk_scavenger_base"
+  "walk_scavenger_base",
+  "battery_takes_looks",
+  "ship_to_ground_wire_snaps"
  ],
  "history": [
   {
@@ -118,6 +120,19 @@
    "added": [],
    "removed": [],
    "count": 57
+  },
+  {
+   "at": "2026-11-24T19:53:56Z",
+   "by": "BENCH",
+   "why": "his order of 2026-11-24 took the battery looks and the ship-to-ground snap into 0.2.0",
+   "how": "changed by his card",
+   "source": "OWNER:1795546467448705900",
+   "added": [
+    "battery_takes_looks",
+    "ship_to_ground_wire_snaps"
+   ],
+   "removed": [],
+   "count": 59
   }
  ]
 }

@@ -1,0 +1,75 @@
+{
+  "judge_model": "claude-opus-5-5",
+  "brief": "design/RimMandrake/art_judge_brief.md@blob:91d754c7f904",
+  "subject": "GSS Battery_Modern north facing; Futuristic PowerSwitch_Unlit (x15)",
+  "look": "first and only look (standing_rulings §The judge refuses flaws, not polish, Rule 2)",
+  "inputs_note": "Given: full-resolution pictures, partner east facing, sibling keeps (Scrapper/Industrial/Futuristic battery N+E, kept 2026-11-20), def facts read from Defs/Aerial/RM_ConduitStyles.xml (Battery_Modern: Graphic_Multi, drawSize (2,3), 1x2 footprint). Scale panel: src/RimMandrake/Utils/art/scale_panel.human_sprite was used on the battery sheets. No canon entry (not a Star Wars subject).",
+  "sheets": [
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/gss_close_judge/battery_modern_native.png",
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/gss_close_judge/battery_all_48ppc.png",
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/gss_close_judge/battery_all_32ppc.png",
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/gss_close_judge/battery_all_128.png",
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/gss_close_judge/switch_main_3x.png",
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/gss_close_judge/switch_center_6x.png",
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/gss_close_judge/switch_p3_p8_2x.png",
+    "/mnt/d/ClaudeWork/rimmandrake/scratch/gss_close_judge/switch_48ppc.png"
+  ],
+  "verdicts": [
+    {
+      "picture": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Modern/Battery_north.png@blob:496797f4022c",
+      "facing": "north",
+      "verdict": "KEEP",
+      "notes": "C2 pass. MEASURED alpha bbox: north 118x276 px, east (kept) 261x128 px. The kept looks have the same long-axis relation (north 276 / east 261 for Industrial and Futuristic, Scrapper 245/261), so north is not huge or small against its east. SEEN: same pale brushed-grey lid with four corner screws and the same dark slot window turned with the body; the end face carries the same vents, green LED and cable gland as the east's long face; one palette. At 48 and 32 px/cell beside the vanilla colonist it reads as the same appliance as its east and in the same size class as the three kept looks. B2 pass (pale body clearly apart from the brown ground, few bold shapes). B6 pass (reads as a present-day appliance, not a red tier marker). D3: north overruns the 1x2 footprint by 18 px at the bottom, the same overrun as the kept Industrial north (bbox bottom 338 in both), so not a flaw. D4: clean alpha, no ground shadow seen. Polish (no ticket): the north end face is about 40 px tall against about 55-60 px for the east's front face (GUESSED by eye from the native sheet), a slightly shallower camera on the north; not visible at play zoom."
+    },
+    {
+      "picture": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit.png@blob:0a54a935ebb6",
+      "verdict": "REDO",
+      "violated": "Rule 1 of standing_rulings.md §The judge refuses flaws, not polish: a promise is not kept",
+      "quote": "make_unlit_switch.py: \"the same picture with every glowing cyan pixel turned to dark glass. Nothing else moves, so the kept art is not redrawn.\" Conductor brief (owner authority): \"does the unlit picture read as the same switch with its glow out (no leftover cyan, no damaged casing shading, no holes in the alpha)?\"",
+      "seen": "At 6x (switch_center_6x.png) the octagonal glow ring has become a broad dark octagon with stair-step edges that eats into the white casing: the white inner bevel around the ring, beside the lever and at the top and bottom glow bars is painted dark glass. Thin dark-teal fringe lines still outline the ring, the lever slot and the end-bar pits. MEASURED: 61 casing pixels that were near-white in the lit picture (s<0.12, v>0.75) are dark (v<0.4) in the unlit one; 399 cyan-hued pixels (s>0.3, v>0.12) remain against 22 in the kept Off picture; bright cyan (v>0.45) left = 0 of 552 (instrument sees 552 in the lit picture). Alpha: 0 pixels differ (no holes). At 48 px/cell it still reads roughly as a dark-centred switch; the damage shows at 128 px/cell and above.",
+      "redo_brief": "In make_unlit_switch.py, never touch a casing pixel: drop or tighten the 'near ... s>=0.05 v>=0.55' dilation branch so near-white casing (s<0.12) keeps its lit value, and extend the glow match down to dim cyan (v>=0.12) so the teal fringe also goes to dark glass; rerun, then confirm by diff that only glow pixels changed and the ring reads like the thin dark ring of PowerSwitch_Off.png.",
+      "notes": "Not owner-kept (derived today), so E3 does not apply."
+    },
+    {
+      "picture": "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Styles/Futuristic/PowerSwitch_Unlit_p1.png .. PowerSwitch_Unlit_p14.png (p3@blob:90ab55ed222c)",
+      "verdict": "REDO",
+      "violated": "Rule 1 of standing_rulings.md §The judge refuses flaws, not polish: a promise is not kept",
+      "quote": "make_unlit_switch.py: \"the same picture with every glowing cyan pixel turned to dark glass. Nothing else moves, so the kept art is not redrawn.\"",
+      "seen": "Same script, same fault. Spot-checked p3 and p8 by eye at 2x (switch_p3_p8_2x.png): the same dark blocky halo over the white rim around the ring. MEASURED casing-darkened / teal-left (Off for comparison): p3 49 / 356 (16), p8 37 / 317 (19), p13 61 / 379 (21). Alpha differs in 0 pixels on all 14; bright cyan left = 0 on all 14.",
+      "redo_brief": "Rerun the repaired make_unlit_switch.py; all 15 outputs come from one function, so one fix repairs them all.",
+      "notes": "p13 judged by measurement only, not viewed."
+    }
+  ],
+  "proposals": [
+    "The brief has no line for a picture derived from kept art by a script (a state variant such as unlit). Proposal: 'A derived variant changes only the pixels its stated purpose names; every other pixel equals the kept source.' Evidence: this REDO had to rest on the script's own promise and the Conductor's question, not on a brief line."
+  ],
+  "contract": {
+    "item": "RIMMANDRAKE_CLOSE_SLACK_VERSION_ALL_REAL_WORK_ONE_RUN_ONE_CONTEXT",
+    "family": "art_judge_brief",
+    "sha": "PowerSwitch_Unlit.png@blob:0a54a935ebb6; Battery_north.png@blob:496797f4022c",
+    "passed": [
+      {"clause": "C2", "evidence": ["Modern/Battery_north.png", "Modern/Battery_east.png", "battery_all_48ppc.png"]},
+      {"clause": "B2", "evidence": ["battery_all_32ppc.png", "battery_all_48ppc.png"]},
+      {"clause": "B3", "evidence": ["battery_all_48ppc.png"]},
+      {"clause": "B6", "evidence": ["battery_modern_native.png"]},
+      {"clause": "D1", "evidence": ["battery_all_128.png", "battery_all_32ppc.png", "switch_48ppc.png"]},
+      {"clause": "D2", "evidence": ["Modern/Battery_north.png 256x384 = drawSize (2,3) x 128"]},
+      {"clause": "D3", "evidence": ["battery_all_48ppc.png"]},
+      {"clause": "D4", "evidence": ["Modern/Battery_north.png", "PowerSwitch_Unlit*.png alpha identical to lit"]},
+      {"clause": "E1", "evidence": ["Modern/Battery_north.png"]}
+    ],
+    "refusals": [
+      {
+        "clause": "standing_rulings Rule 1 (promise not kept): make_unlit_switch.py 'Nothing else moves'",
+        "criterion_hash": "",
+        "evidence": ["Futuristic/PowerSwitch_Unlit.png", "Futuristic/PowerSwitch_Unlit_p3.png", "Futuristic/PowerSwitch_Unlit_p8.png", "Futuristic/PowerSwitch_Unlit_p13.png", "switch_center_6x.png"],
+        "observed": "37-61 near-white casing pixels per picture turned to dark glass in a blocky halo round the ring, and 317-399 dim cyan fringe pixels left (kept Off art: 16-22).",
+        "would_pass": "Only the glow pixels differ from the lit source; the white casing rim keeps its lit shading; no visible teal fringe at 128 px/cell; alpha unchanged.",
+        "smallest_fix": {"what": "Tighten the dilation branch in make_unlit_switch.py to skip low-saturation casing pixels and extend the glow match to dim cyan; rerun for all 15 pictures.", "attainable": "yes", "cost": "rerun"},
+        "criterion_verdict": "sound",
+        "criterion_why": "The promise is the variant's own stated purpose and the Conductor's acceptance question; it is checkable by pixel diff and drawable, since the Off art already shows the ring dark without damaging the casing.",
+        "new_since": "first"
+      }
+    ]
+  }
+}

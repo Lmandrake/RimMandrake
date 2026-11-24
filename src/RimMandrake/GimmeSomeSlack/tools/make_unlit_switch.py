@@ -8,35 +8,35 @@ no power beside the dark lamp (polish, art judge 2026-11-20). This writes PowerS
 same picture with every glowing cyan pixel turned to dark glass. Nothing else moves, so the kept art is not redrawn. The mod
 draws the unlit picture over the switch only while its lamp is dark (SwitchLightDraw). Install with art.py install.
 """
-import colorsys, os, sys
+import os, sys
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "..", "Textures", "RimMandrake", "GimmeSomeSlack", "Styles", "Futuristic")
 
 
+def cyan_excess(r, g, b):
+    """How cyan a pixel is: its green and blue over its red. White, grey and steel casing read about 0 to 15; the glow, its pale
+    core and its dim teal edge read 30 and up."""
+    return min(g, b) - r
+
+
 def unlit(im):
     im = im.convert("RGBA"); px = im.load(); n = 0
-    hsv = {}
     for y in range(im.height):
         for x in range(im.width):
             r, g, b, a = px[x, y]
-            if a:
-                hsv[x, y] = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
-    # the glow: strongly cyan pixels, and the pale core of the glow (near white, a cyan tint) within 2 pixels of one
-    strong = {q for q, (h, s, v) in hsv.items() if 0.44 <= h <= 0.58 and s >= 0.35 and v >= 0.35}
-    for (x, y), (h, s, v) in hsv.items():
-        near = any((x + dx, y + dy) in strong for dx in range(-2, 3) for dy in range(-2, 3))
-        if (x, y) in strong or (0.44 <= h <= 0.58 and s >= 0.22 and v >= 0.35):
-            k = min(1.0, (s - 0.16) / 0.14)
-        elif near and 0.40 <= h <= 0.62 and s >= 0.05 and v >= 0.55:
-            k = 1.0
-        else:
-            continue
-        r, g, b, a = px[x, y]
-        r2, g2, b2 = colorsys.hsv_to_rgb(0.58, 0.12, 0.20 + 0.10 * v)     # dark glass keeps a little of its shading
-        px[x, y] = (int(r * (1 - k) + 255 * r2 * k), int(g * (1 - k) + 255 * g2 * k), int(b * (1 - k) + 255 * b2 * k), a)
-        n += 1
+            if a == 0:
+                continue
+            c = cyan_excess(r, g, b)
+            if c < 18:
+                continue                                              # casing: never touched
+            k = min(1.0, (c - 18) / 14.0)                             # all glow from an excess of 32
+            v = max(r, g, b) / 255.0
+            d = int(255 * (0.17 + 0.10 * v))                          # dark glass keeps a little of its shading
+            dr, dg, db = d - 4, d, d + 5                              # a cool grey, excess under 10
+            px[x, y] = (int(r * (1 - k) + dr * k), int(g * (1 - k) + dg * k), int(b * (1 - k) + db * k), a)
+            n += 1
     return im, n
 
 
