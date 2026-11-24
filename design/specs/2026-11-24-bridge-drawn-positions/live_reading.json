@@ -1,0 +1,77 @@
+{
+ "companionSrc": "eb93c01d0dbd08ef4c96f245bd3e92615673a67e7b9cbc7803244c759c0aa2b7",
+ "host": "STEVEDESKTOP",
+ "job": "J20261124T155334Z-a06e8f, Steve2, sha ae37376a81",
+ "off": {
+  "advanceState": "done",
+  "at": [
+   125,
+   114
+  ],
+  "drawn": [
+   119.5,
+   114.5
+  ],
+  "faults": 0,
+  "framesSinceDraw": 1,
+  "hookOn": false,
+  "installed": true,
+  "moving": false,
+  "offsetCells": 6.0,
+  "paused": true,
+  "resets": 70,
+  "start": [
+   119,
+   114
+  ],
+  "ticks": 300,
+  "tried": [
+   [
+    6,
+    0,
+    true,
+    null
+   ]
+  ],
+  "walked": 6
+ },
+ "on": {
+  "advanceState": "done",
+  "at": [
+   131,
+   114
+  ],
+  "drawn": [
+   131.5,
+   114.5
+  ],
+  "faults": 0,
+  "framesSinceDraw": 1,
+  "hookOn": true,
+  "installed": true,
+  "moving": false,
+  "offsetCells": 0.0,
+  "paused": true,
+  "resets": 420,
+  "start": [
+   125,
+   114
+  ],
+  "ticks": 300,
+  "tried": [
+   [
+    6,
+    0,
+    true,
+    null
+   ]
+  ],
+  "walked": 6
+ },
+ "pawn": "Human311",
+ "shots": [
+  "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\drawn_positions_off_1795535824__cell_rect.png",
+  "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\drawn_positions_on_1795535828__cell_rect.png"
+ ],
+ "utc": "2026-11-24T15:57:00Z"
+}

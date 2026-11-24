@@ -1,0 +1,3 @@
+A capture taken before companion source hash eb93c01d0dbd (2026-11-24) after safe_advance or step_game_ticks on a paused game can draw a walked pawn on the square where its walk began: PawnTweener eases by TickRateMultiplier, which is 0 under pause (measured on Steve2: 6.0 squares off with the hook off, 0.0 with it on). Do not judge pawn places from such a picture; read the pawn's cell. Newer companions settle a stepped pawn on its next draw (JawaBenchDrawSettle), so no capture script calls jawa/settle_tweens for it; jawa/drawn_positions reads drawn against real.
+item: RIMMANDRAKE_FIX_BRIDGE_STEPPED_PAWNS_DRAWN_ON_OLD_SQUARE
+home: skills/rimworld-live-review/references/traps.md
