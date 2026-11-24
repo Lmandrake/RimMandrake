@@ -283,6 +283,72 @@ def t_stage_seven_goes_back_only_for_an_owed_check():
     return shut and opened and other and "pre_human" not in M.ROADS_BACK, (shut, opened, other)
 
 
+def t_a_fix_that_landed_at_the_walk_owes_a_reader():
+    tr = Tree(stage="his_walk")
+    src = "src/RimMandrake/%s/" % MOD
+
+    def at(path, when, text="class A { int v = 9; }\n"):
+        tr.put(src + path, text)
+        tr.git("add", "-A", ".")
+        env = dict(os.environ, GIT_COMMITTER_DATE=when, GIT_AUTHOR_DATE=when)
+        subprocess.run(["git", "-C", tr.root, "commit", "-q", "-m", path], env=env, check=True, capture_output=True)
+        return tr.git("rev-parse", "HEAD")
+    tr.put(src + "Source/P.csproj", "<Project/>\n")
+    tr.put(src + "Source/SelfTest/T.csproj", "<Project/>\n")
+    tr.put(src + "Assemblies/P.dll.srchash", "# project: RimMandrake/%s/Source/P.csproj\n00 A.cs\n" % MOD)
+    at("Source/A.cs", "2026-11-24T03:00:00-08:00", "class A { int v = 5; }\n")        # before the Stage 6 exit
+    cs = at("Source/A.cs", "2026-11-24T04:10:00-08:00")
+    xml = at("Defs/B.xml", "2026-11-24T04:11:00-08:00", "<Defs/>\n")
+    at("Source/SelfTest/T.cs", "2026-11-24T04:12:00-08:00")                              # never ships
+    at("validation2.py", "2026-11-24T04:13:00-08:00", "x = 1\n")
+    at("Assemblies/P.dll", "2026-11-24T04:14:00-08:00", "dll")
+    at("Source/A.cs", "2026-11-24T05:30:00-08:00", "class A { int v = 7; }\n")        # after the visit opened
+    rec = M.load(tr.root, MOD)
+    rec["stage"] = "in_game"
+    rec["moves"] += [{"from": "pre_human", "to": "his_walk", "at": "2026-11-24T04:50:00-08:00", "by": "BENCH"},
+                     {"from": "his_walk", "to": "in_game", "at": "2026-11-24T05:00:00-08:00", "by": "DISPATCH"}]
+
+    def save():
+        tr.put(tr.c("version/stage_record.json"), json.dumps(rec))
+    save()
+    out = [M.landed_at_walk(tr.root, MOD, rec, 2) == [cs, xml], M.landed_at_walk(tr.root, MOD, rec, 1) == []]
+    tr.rows({t: tr.c2 for t in CHECKS}, visit=2)
+    tr.put(tr.c("version/in_game/visit_2/SUMMARY.md"), "# v\n\n## Exit\n```\ningame_rows: {sc_a: pass, sc_b: pass, "
+           "sc_c: pass}\nstrange_open: 0\nsavegame: /x.rws\nexit_met: true\n```\n")
+
+    def reads():
+        ex = M.read_ingame_exit(tr.root, MOD, 2)
+        return sorted(o["fix"] for o in ex["fix_readers_owed"]), [w for w in ex["why"] if "walk" in w and "reader" in w]
+    got, why = reads()
+    out.append(got == sorted([cs, xml]) and cs[:10] in " ".join(why))
+    tr.put(tr.c("version/in_game/visit_2/fix_reviews.jsonl"), "".join(json.dumps({
+        "fix": c, "reader": "rm-reader", "verdict": v, "why": "w"}) + "\n" for c, v in ((cs, "sound"), (xml, "wrong"))))
+    out.append(reads()[0] == [xml])
+    tr.put(tr.c("version/in_game/visit_1/fix_reviews.jsonl"), json.dumps({
+        "fix": xml[:10], "reader": "rm-reader", "verdict": "sound", "why": "w"}) + "\n")
+    tr.put(tr.c("version/in_game/visit_2/fix_reviews.jsonl"), json.dumps({
+        "fix": cs, "reader": "rm-reader", "verdict": "sound", "why": "w"}) + "\n")
+    out.append(reads()[0] == [])                                    # read before the visit opened, by a short hash
+    mv = rec["moves"][-1]
+    mv["confirmed"] = {"walk_result": "x"}                          # his walk's own road back: its fixes come after it
+    save()
+    out.append(M.landed_at_walk(tr.root, MOD, rec, 2) == [] and reads()[0] == [])
+    mv.pop("confirmed")
+    mv["from"] = "in_game"
+    out.append(M.landed_at_walk(tr.root, MOD, rec, 2) == [])
+    mv["from"] = "his_walk"
+    save()
+    real = M._git_log
+    M._git_log = lambda *a: real(os.path.join(tr.root, "no_such_clone"), *a[1:])
+    try:
+        g, w = reads()
+        blind = any("could not" in x for x in M.read_ingame_exit(tr.root, MOD, 2)["why"])
+        out.append(blind)
+    finally:
+        M._git_log = real
+    return all(out), out
+
+
 def t_the_tick_opens_the_visit():
     out = []
     for stage in ("pre_human", "his_walk"):
@@ -380,7 +446,7 @@ def main():
              t_the_visit_brief_lists_only_owed_unrun_rows, t_an_owed_unrun_check_runs_in_the_next_visit,
              t_a_check_outside_the_table_holds_no_move, t_untouched_checks_read_no_walk_folder,
              t_stage_six_exit_waits_for_the_unrun_rows, t_no_walk_while_a_check_is_owed, t_could_not_look_is_not_clean,
-             t_stage_seven_goes_back_only_for_an_owed_check, t_the_tick_opens_the_visit, t_his_hold_keeps_the_walk,
+             t_stage_seven_goes_back_only_for_an_owed_check, t_a_fix_that_landed_at_the_walk_owes_a_reader, t_the_tick_opens_the_visit, t_his_hold_keeps_the_walk,
              t_nothing_owed_changes_nothing, t_an_unlanded_visit_move_puts_files_back)
     bad = 0
     for t in tests:

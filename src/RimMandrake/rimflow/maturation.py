@@ -4608,6 +4608,21 @@ def read_ingame_exit(root, mod, n, tt=None):
     reviews = fix_reviews(os.path.join(d, FIX_REVIEWS))
     owed = out["fix_readers_owed"] = []
     out["shortfalls"] = []
+    try:
+        for c in landed_at_walk(root, mod, load(root, mod), n):
+            # the reader may have read it before this visit opened (ExplosiveKnockback db80fab783: visit 5's file)
+            seen = [dict(x, fix=c) for k in visit_numbers(root, mod) if k <= n for x in fix_reviews(os.path.join(
+                mod_dir(root, mod), INGAME_DIR, "visit_%d" % k, FIX_REVIEWS))
+                if SHA_RE.match(str(x.get("fix") or "")) and c.startswith(x["fix"])]
+            good, rwhy = review_sound(seen, c, "the run that landed %s" % c)
+            if not good:
+                owed.append({"check": None, "fix": c, "why": rwhy})
+                why.append("the mod change %s landed while the mod stood at his walk and owes one fresh reader (%s): a run "
+                           "that did not make it reads only that commit, once, and writes %s/%s" % (
+                               c, rwhy, rel(mod, base), FIX_REVIEWS))
+    except OSError as e:
+        why.append("the changes that landed while the mod stood at his walk could not be read (%s): whether a fresh "
+                   "reader is owed is unknown" % e)
     out["carried"] = sorted(carried)
     for t, _ in checks:
         claim = blk["ingame_rows"].get(t)
@@ -5284,6 +5299,47 @@ def unrun_owed(root, mod, tt=None, carried=None, git=None):
             out.append(dict(u, owed_why="git cannot resolve %s or %s, and its last row is of no later visit" % (
                 u.get("sha"), r.get("mod_sha"))))
     return out
+
+
+def _git_log(root, since, until, path):
+    """-> [(commit, [files])] oldest first, committed in (since, until] under path; raises OSError when git cannot say."""
+    try:
+        r = subprocess.run(["git", "-C", root, "log", "--reverse", "--no-merges", "--format=%x00%H %ct", "--name-only", "--",
+                            path], capture_output=True, text=True, timeout=120)
+    except subprocess.SubprocessError as e:
+        raise OSError("git cannot list the commits of %s: %s" % (path, e)) from e
+    if r.returncode:
+        raise OSError("git cannot list the commits of %s: %s" % (path, r.stderr.strip()[-200:]))
+    out = []
+    for blk in r.stdout.split("\0")[1:]:
+        head, _, names = blk.partition("\n")
+        sha, t = head.split()
+        if since < int(t) <= until:
+            out.append((sha, [x for x in names.split("\n") if x]))
+    return out
+
+
+def landed_at_walk(root, mod, rec, n):
+    """-> the commits that changed the mod's shipped C# or XML while it stood at Stage 7 or 8 before visit n opened: each
+    owes one fresh reader (a fix made outside any sitting, which no other reader sees). [] when visit n opened from
+    another stage, or by his walk's own result (its fixes come after it). Raises OSError when git cannot list them."""
+    moves = [m for m in (rec or {}).get("moves") or [] if isinstance(m, dict)]
+    into = [i for i, m in enumerate(moves) if m.get("to") == "in_game"]
+    if n < 1 or n > len(into):
+        return []
+    mv = moves[into[n - 1]]
+    if mv.get("from") not in ("pre_human", "his_walk") or (mv.get("confirmed") or {}).get("walk_result"):
+        return []
+    left = next((m for m in reversed(moves[:into[n - 1]]) if m.get("to") == "pre_human"), None)
+    t1, t2 = _ts((left or {}).get("at")), _ts(mv.get("at"))
+    if t1 is None or t2 is None:
+        raise OSError("the moves around visit %d carry no time that reads" % n)
+    base = BM.RR.mod_root(mod)
+    log = _git_log(root, t1, t2, base + "/")
+    if not log:
+        return []
+    ships = BM.RR.Relation(root, mod, {}).shipped_cs("HEAD")[0]
+    return [sha for sha, files in log if any(f in ships or f.endswith(".xml") for f in files)]
 
 
 def walk_owed(root, mod, rec=None):

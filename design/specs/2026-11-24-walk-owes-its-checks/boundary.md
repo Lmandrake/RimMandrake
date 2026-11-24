@@ -1,6 +1,6 @@
 # BOUNDARY: a mod does not stand at his walk with in-game checks owed (maturation.py walk_owed, unrun_owed; maturation_autonomy.py the act `autovisit`), Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/maturation.py` (`unrun_owed`, `walk_owed`, the clauses `unrun_run` and
+Code: `src/RimMandrake/rimflow/maturation.py` (`unrun_owed`, `walk_owed`, `landed_at_walk`, the clauses `unrun_run` and
 `walk_checks_stand` and the Stage 7 road of `evaluate`, `unrun_lines`, `ingame_to_run`) and
 `src/RimMandrake/rimflow/maturation_autonomy.py` (`_walk_owed`, `visit_and_land`, the act `autovisit` in `resolve` and
 `execute`). Tests of the same names: `src/RimMandrake/rimflow/selftest_walk_owes_checks.py`.
@@ -25,6 +25,7 @@ The question: at Stage 7 or 8, must a check run in a game before he walks?
   that touches its check, sends no mod back from Stage 7 or 8. The Stage 6 exit reads those.
 - **a-walk-he-makes-with-no-hold.** The act reads his OWNER hold and the stops on ArchBig. It cannot see a walk that he
   makes with neither.
+- **a-reader-that-made-the-commit.** A commit names no unit, so that its reader is another run is the reader's word.
 - **a-check-added-after-stage-six.** A check that joined the table after the Stage 6 exit has no row and is not owed here.
 
 ## PROMISES (each one is owed a test of the same name)
@@ -49,6 +50,11 @@ The question: at Stage 7 or 8, must a check run in a game before he walks?
   (measured 2026-11-24: 32 s of the 44 s a reading of Pyrelands took).
 - **stage-seven-goes-back-only-for-an-owed-check.** The move `pre_human` to `in_game` passes `order` only while a check is
   owed; Stage 7 has no other road back.
+- **a-fix-that-landed-at-the-walk-owes-a-reader.** When a visit opened from Stage 7 or 8 with no walk result, each commit
+  that changed the mod's shipped C# or XML between the Stage 6 exit and that opening owes one fresh reader: the visit's
+  exit is not met, and names it in `fix_readers_owed`, until the `fix_reviews.jsonl` of that visit or an earlier one
+  holds a `sound` row with that commit in `fix`. A commit list that git cannot give keeps the exit not met, by cause. (a6f05380df: nothing saw its
+  owed reader.)
 - **the-tick-opens-the-visit.** At Stage 7 or 8 with a check owed, the tick's row is the act `autovisit`: the record moves
   to `in_game` by `DISPATCH`, landed, and the next visit opens, which runs on a free game. The act takes no run slot.
 - **his-hold-keeps-the-walk.** At Stage 8, while ArchBig is under his hold or a stop, or who holds it cannot be read, the
