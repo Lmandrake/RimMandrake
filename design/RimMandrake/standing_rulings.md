@@ -999,9 +999,9 @@ Please make that true everywhere."* About 6 AM PST: *"Agreed for 1% at the momen
 
 - The soft line (the account's line + 2%) is a notice, not a stop: land your commits with `./publish`, and start no new
   subagent inside an interactive window. A new detached run still starts there. A new detached run is refused only in a
-  drain: the plan's notice has `drain` true, because a switch or a stop waits for live runs (the next bullet, and the
-  priority switch below). If a program refused new runs at the soft
-  line, the account would strand: the plan switches at the line, and with no run the meter barely moves toward the line.
+  drain: the plan's notice has `drain` true, because a switch or a stop waits for live runs (the bullets on the
+  account's line and on the priority switch, below). If a program refused new runs at the soft line, the account would
+  strand: the plan switches at the line, and with no run the meter barely moves toward the line.
   (A delegated reading. His words name no refusal at the soft line, and his card of 2026-11-23 says *"run to the line"*.)
 - An account whose line is its hard line (1%) has no drain: at 1% the switch kills its live runs. The Conductor decides
   that (item `RIMMANDRAKE_REFUSE_NEW_RUN_AT_SOFT_LINE_DRAIN_TOO_LATE`).
