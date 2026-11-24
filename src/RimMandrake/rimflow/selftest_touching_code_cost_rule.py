@@ -6,7 +6,7 @@ card, "Stop rule in every judge brief (Recommended)" (item RIMMANDRAKE_ENACT_TOU
 design/RimMandrake/standing_rulings.md §Touching code has a cost; if you see it, do it).
 
 - PRESENT: each file carries the words of the two tests, or its stopping level.
-- The extension of 2026-11-20 (a wrong check is repaired or set aside in the sitting) is pinned the same way (WRONG).
+- The extension of 2026-11-20 (a wrong check is repaired or removed in the sitting) is pinned the same way (WRONG).
 - ABSENT: the lines that the ruling made false stay deleted (the CHARTER's "File a
   ticket only for a fix that is not small", the agents' "Do not pick up more work.", designer.md's "The Conductor
   cannot supply these" and "first-touch certification stay his").
@@ -56,7 +56,7 @@ for a in AGENTS:
     PRESENT.setdefault(a, []).extend(AGENT_PINS)
 
 # the extension of 2026-11-20 (RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED): a wrong check is repaired or
-# set aside in the sitting and never sends the mod back; selftest_wrong_check_fixed_in_sitting.py tests the code
+# removed in the sitting and never sends the mod back; selftest_wrong_check_fixed_in_sitting.py tests the code
 WRONG = {
     "CLAUDE.md": ["Fix a fault in the sitting. Repair or remove a wrong check in the sitting. Neither sends the mod back",
                   "seen to FAIL on a planted fault", "Remove a check that no bar needs from the test table",

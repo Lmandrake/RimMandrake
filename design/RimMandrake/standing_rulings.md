@@ -513,82 +513,122 @@ the clean/dirty codebase is ressurrected and included on the standard suite of D
 (perhaps this should become tabs in a standing browser actually, along with FLEET_NOW and MATURATION_NOW in their own
 windows)."* Who may take a line from a polish list? He picked *"Nobody; it is a record"*, and wrote: *"(3) for now. We
 will later do experiments on Polish if we can/must. We're not close to polishing anything right now"*. The card also
-stated two rows that he did not have to pick: the definition of significant, and the filing gate (below).
-Reason (measured 2026-11-19, `D:\ClaudeWork\rimmandrake\conductor\review_instructions_old_vs_new_20261119.md`,
-`review_loop_three_gaps_20261119.md` and `clean_rule_origin_20261119.md` in the same folder): the old FOUNDRY review
-loop let the reviewer fix what it found, with the whole file in context, then sent one fresh reader. It fixed only
-significant findings and converged on quiet files (median 0.75 commits in the week before a review): a first read
-found 0 or 1 bug per mod file, and the fresh reread found 0. Reviews that fixed every finding wrote new code, and new
-fix lines drew 14 to 25 claims per 1,000 lines, against about 3 for old code; on fast-changing pipeline files 8 of 11
-and 9 of 15 later claims pointed at lines the last fix had just written.
+stated two rows that he did not have to pick: the definition of significant, and the filing gate. Both are bullets of
+this section.
+
+Why this rule exists (measured 2026-11-19). The measurements are in
+`D:\ClaudeWork\rimmandrake\conductor\review_instructions_old_vs_new_20261119.md`, and in
+`review_loop_three_gaps_20261119.md` and `clean_rule_origin_20261119.md` in the same folder.
+
+- In the old FOUNDRY review loop, the reviewer fixed what it found, with the whole file in context. Then the loop sent
+  one fresh reader.
+- That loop fixed only significant findings. The loop converged on quiet files (median 0.75 commits in the week before
+  a review). A first read found 0 or 1 bug per mod file, and the fresh reread found 0.
+- Reviews that fixed every finding wrote new code. New fix lines drew 14 to 25 claims per 1,000 lines, against about 3
+  for old code.
+- On fast-changing pipeline files, 8 of 11 and 9 of 15 later claims pointed at the newest lines. The last fix had just
+  written those lines.
+
+The rule:
 
 - **For all code** (mods, defs, C#, tools, hooks and pipeline machinery), CLEAN is judged against a stated page of
-  promises: `design/specs/<component>/boundary.md`, in the form of §A boundary page before pipeline code. A file is
-  CLEAN when a page names it in its `Code:` line, each promise on that page has a test of the same name, and those
-  tests pass. A later edit stays clean while those tests pass.
-- **"A full-file review finds nothing" is not a pass condition, for any code.** A review record (`mark-clean`) does
-  not make a file CLEAN.
-- **Two meanings of clean, named apart.** PAGE-CLEAN: each stated promise has a passing test (`check`; this is what
-  CLEAN means everywhere). READ-CLEAN: a cold read of these exact bytes found nothing significant (the review record,
-  `mark-clean`, read by `check --record`). The standing scan writes READ-CLEAN; it never makes a file PAGE-CLEAN.
-- **A finding is significant** when it is measured, or predicted with a concrete case (this input, this wrong
-  result), to break a stated promise or cause a failure. A prediction with no concrete case is not significant.
+  promises. The page is `design/specs/<component>/boundary.md`, in the form of §A boundary page before pipeline code. A
+  file is CLEAN when three things are true:
+  - a page names the file in its `Code:` line;
+  - each promise on that page has a test of the same name;
+  - those tests pass.
+
+  After a later edit, the file stays clean while those tests pass.
+- **"A full-file review finds nothing" is not a pass condition, for any code.**
+  - A review record (`mark-clean`) does not make a file CLEAN.
+- **Two meanings of clean, named apart.**
+  - PAGE-CLEAN: each stated promise has a passing test. `check` reads it. PAGE-CLEAN is what CLEAN means everywhere.
+  - READ-CLEAN: a cold read of these exact bytes found nothing significant. READ-CLEAN is the review record, which
+    `mark-clean` writes and `check --record` reads.
+  - The standing scan writes READ-CLEAN. The standing scan never makes a file PAGE-CLEAN.
+- **A finding is significant** in one of two cases. A prediction with no concrete case is not significant.
+  - A measurement shows that it breaks a stated promise or causes a failure.
+  - A prediction with a concrete case (this input, this wrong result) shows the same.
 - **The reviewer fixes a significant finding on the spot**, in the same job. The reviewer first writes a test and sees
-  it fail, then fixes, then sees it pass. No ticket carries the finding to a separate builder.
-- **Precisely one blind reread checks a fix in a code review.** (A mod fault fixed in a sitting: §Touching code has a
-  cost; that reader reads only the fix.) One fresh reader who did not make the fix reads the fixed file once. The reader gets the file, not the diff and not the earlier findings. If the reader finds nothing
-  significant, the review is over. If the reader also finds a significant thing, the reader fixes it (same test rule)
-  and flags the file: `code_review_status.py flag <path> --why "…"`. Nobody reviews a FLAGGED file again. There is no
-  third read.
-- **Flagged files are examined about weekly.** Read the list with `code_review_status.py list --flagged`. For each
-  file, ask one question: must the definition of significant change, or is this code really unstable? Record the
-  answer with `code_review_status.py unflag <path> --why "<the answer>"`, or leave the flag with a note on its ticket.
-  The Conductor does this until a timer does. Proposal, not wired: the Friday run of `rm-findings-judge.timer`
-  (`src/RimMandrake/Utils/findings_judge_friday.md`, a weekly Opus `claude -p` that already reads patterns across runs
-  and files rule candidates) takes this as one more step; the item
-  `RIMMANDRAKE_WIRE_FRIDAY_JUDGE_TO_EXAMINE_FLAGGED_FILES_WEEKLY` holds the wiring.
-- **A minor nit, or a claim that is not significant,** is one line on `polish.md` beside the page. Nobody fixes it. For
-  now nobody takes lines from a polish list: it is a record (his words above).
+  it fail. Then the reviewer fixes the code and sees the test pass. No ticket carries the finding to a separate builder.
+- **Precisely one blind reread checks a fix in a code review.**
+  - For a mod fault that is fixed in a sitting, §Touching code has a cost applies. There the reader reads only the fix.
+  - One fresh reader who did not make the fix reads the fixed file once. The reader gets the file. The reader does not
+    get the diff or the earlier findings.
+  - If the reader finds nothing significant, the review is over.
+  - If the reader also finds a significant thing, the reader fixes it (same test rule). Then the reader flags the file:
+    `code_review_status.py flag <path> --why "…"`.
+  - Nobody reviews a FLAGGED file again. There is no third read.
+- **Flagged files are examined about weekly.**
+  - Read the list with `code_review_status.py list --flagged`.
+  - For each file, ask one question: must the definition of significant change, or is this code really unstable?
+  - Record the answer with `code_review_status.py unflag <path> --why "<the answer>"`, or leave the flag with a note on
+    its ticket.
+  - The Friday run of `rm-findings-judge.timer` does this examination
+    (`src/RimMandrake/Utils/findings_judge_friday.md`). That run is a weekly Opus `claude -p`, which also reads
+    patterns across runs and files rule candidates. The step came in with item
+    `RIMMANDRAKE_WIRE_FRIDAY_JUDGE_TO_EXAMINE_FLAGGED_FILES_WEEKLY`, and first ran on 2026-11-20 (`flagged=0`).
+- **A minor nit, or a claim that is not significant,** is one line on `polish.md` beside the page. Nobody fixes it.
+  - For now nobody takes lines from a polish list. The list is a record (his card of 5:54 PM PST, quoted at the top of
+    this section).
 - **Filing gate.** A new ticket must cite a broken promise or a failure. File one ticket per source event, never one
   per symptom.
-- **A standing scan reads quiet files when the machine is idle** (his card above): files unchanged for 7 days or more,
-  mod content first, when no mod step needs the machine. It follows the same method (significant, the reviewer fixes,
-  one blind reread, flag). The clean/dirty view is back on the Desktop (`CODEBASE_NOW.html`). The scan is not built
-  yet: the item `RIMMANDRAKE_BUILD_STANDING_SCAN_OF_QUIET_FILES_ON_SONNET` holds it.
+- **A standing scan reads quiet files when the machine is idle** (his card of 5:54 PM PST).
+  - A quiet file is unchanged for 7 days or more. The scan reads mod content first. The scan runs when no mod step needs
+    the machine.
+  - The scan follows the same method: the same meaning of significant, the reviewer fixes, one blind reread, flag.
+  - The clean/dirty view is back on the Desktop (`CODEBASE_NOW.html`).
+  - The item `RIMMANDRAKE_BUILD_STANDING_SCAN_OF_QUIET_FILES_ON_SONNET` holds the build of the scan. Until that
+    item closes, the scan is not built.
 - **A mod's locked bars are the page of every file inside the mod** (his card, 2026-11-19 evening: *"Locked bars are
-  the page"*). The promises are `design/concepts/<Mod>/version/locked_bars.json`, and the tests are the test table
-  rows that decide each bar. A mod with no locked bars reads NO PAGE. A bar with no test, or a red test, reads DIRTY.
-  A bar whose test has not run on these bytes (in-game tests included) reads UNREADABLE. Detail:
-  `design/specs/2026-11-19-clean-means-promises-tested/boundary.md`.
-- **Code with no page reads NO PAGE, not DIRTY** (the Conductor's reading, delegated, told to him 2026-11-19). It gets
-  its page when someone next changes it, or when it is on a mod's next-step path. Nobody writes pages for untouched
-  code in a sweep. For pipeline machinery, Decision 1 of §A boundary page before pipeline code also says when a page
-  is owed.
+  the page"*).
+  - The promises are `design/concepts/<Mod>/version/locked_bars.json`. The tests are the test table rows that decide
+    each bar.
+  - A mod with no locked bars reads NO PAGE.
+  - A bar with no test, or a red test, reads DIRTY.
+  - A bar whose test has not run on these bytes (in-game tests included) reads UNREADABLE.
+  - Detail: `design/specs/2026-11-19-clean-means-promises-tested/boundary.md`.
+- **Code with no page reads NO PAGE, not DIRTY** (the Conductor's reading, delegated, told to him 2026-11-19).
+  - The code gets its page when someone next changes it, or when it is on a mod's next-step path.
+  - Nobody writes pages for untouched code in a sweep.
+  - For pipeline machinery, Decision 1 of §A boundary page before pipeline code also says when a page is owed.
 
-The commands (`check`, `check --record`, `mark-clean`, `flag`, `list --flagged`, `unflag`) and what each answers:
-`python3 src/RimMandrake/Utils/code_review_status.py --help`.
-`check` exits 0 CLEAN, 1 DIRTY (a promise has no test, or its tests file fails), 3 UNREADABLE (a page or tests file
-could not be read or run, or a page is not registered in `boundary_check.py` `PAGES`), 4 NO PAGE; over several paths
-the worst answer sets the exit. It runs each naming page's tests file once per call. Its own page:
+The commands are `check`, `check --record`, `mark-clean`, `flag`, `list --flagged` and `unflag`. To see what each one
+answers, run `python3 src/RimMandrake/Utils/code_review_status.py --help`.
+
+`check` gives one of four answers. Over several paths, the worst answer sets the exit code.
+
+- Exit 0 CLEAN.
+- Exit 1 DIRTY: a promise has no test, or the tests file of the page fails.
+- Exit 3 UNREADABLE: a page or a tests file could not be read or run. Exit 3 also means that a page is not registered
+  in `boundary_check.py` `PAGES`.
+- Exit 4 NO PAGE.
+
+`check` runs the tests file of each page that names the path, once per call. The page of `check` itself is
 `design/specs/2026-11-19-clean-means-promises-tested/boundary.md`.
 
-- **Before you spend a review on a file, check that it is still reachable** — owner, 2026-09-03: old scripts sit
-  around long after they stop mattering. A Python file with no importer, no `python3 <it>` in any doc, hook or script,
-  and no CLI entry point is a DEAD-FILE candidate; a `.cs` file dropped from the `.csproj` or with no live caller
-  (reflection-registered bridge tools included — grep the tool-name string, not just C# call sites) is the same. Say
-  what you checked. **Don't delete on a grep alone — verify, then file it** (or drop it, if it's plainly gone) rather
-  than spending a review on code nobody runs. A file only a human runs by hand can look unused to a naive grep and
-  not be.
-- **What this does not change.** The judge rule for mod work (§The judge refuses flaws, not polish: one full
-  inspection, then one check of the repairs) is a separate ruling about mod judges. Codex and GPT
-  may review pipeline machinery by this rule (§A boundary page before pipeline code). "The test is built
-  with the item" and "The pipeline fixes its own defects" stand. A mod's Polish list in the Maturation Pipeline (the
-  Design Version rule) is a separate list; the Conductor decides each move to it; "nobody takes lines" covers only the `polish.md` beside
-  a code page.
-- **Test that this was applied:** `code_review_status.py check` on a file that no page names reads NO PAGE; on a file
-  whose page has every promise tested and passing it reads CLEAN, with no review record. A FLAGGED file reads FLAGGED
-  in `list`, never DIRTY, and `mark-clean` refuses it. `roles/code_review.md` says that the reviewer fixes and that
-  one blind reread follows.
+- **Before you spend a review on a file, check that it is still reachable** (owner, 2026-09-03). Old scripts sit around
+  long after they stop mattering.
+  - A Python file is a DEAD-FILE candidate when three things are true. The file has no importer. No doc, hook or script
+    holds `python3 <it>`. The file has no CLI entry point.
+  - A `.cs` file is a DEAD-FILE candidate when the `.csproj` dropped it, or when it has no live caller. That
+    search covers bridge tools that register by reflection. So grep the tool-name string, not just C# call sites.
+  - Say what you checked.
+  - **Don't delete on a grep alone — verify, then file it.**
+  - If the file is plainly gone, drop it. Do not spend a review on code that nobody runs.
+  - A file that only a human runs by hand can look unused to a naive grep. That file can still be in use.
+- **What this does not change.**
+  - The judge rule for mod work is a separate ruling about mod judges (§The judge refuses flaws, not polish). That rule
+    is one full inspection, then one check of the repairs.
+  - Codex and GPT may review pipeline machinery by this rule (§A boundary page before pipeline code).
+  - "The test is built with the item" and "The pipeline fixes its own defects" stand.
+  - A mod's Polish list in the Maturation Pipeline (the Design Version rule) is a separate list. The Conductor decides
+    each move to it. "Nobody takes lines" covers only the `polish.md` beside a code page.
+- **Test that this was applied:**
+  - `code_review_status.py check` on a file that no page names reads NO PAGE.
+  - `check` on a file whose page has every promise tested and passing reads CLEAN, with no review record.
+  - A FLAGGED file reads FLAGGED in `list`, never DIRTY, and `mark-clean` refuses it.
+  - `roles/code_review.md` says that the reviewer fixes and that one blind reread follows.
 
 ## Touching code has a cost; if you see it, do it — owner, 2026-11-19
 
@@ -612,48 +652,62 @@ now. Vital: OF COURSE you do, no debate. Any real chance of voiding a run is cat
 The same card's other question (*"Which of these should I build?"*, about why findings never stop) he answered *"Stop
 rule in every judge brief (Recommended)"* and *"One fault, one ticket"*
 (`RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET`).
-Why a touch is dangerous (measured 2026-11-19): new fix lines drew 14 to 25 review claims per 1,000 lines, against
-about 3 for old code (§Code is clean when its promises are tested); tickets born of a review beget 2.5 times the
-descendant tickets of tickets born of a live failure (0.78 against 0.31 per root), and the costliest retired-era
-failure classes came from reviewers, judges and auto-filers with no stopping level
-(`D:\ClaudeWork\rimmandrake\conductor\churn_vs_responsibility_specs_20261119.md` §3, §6 and §8).
 
-- **Who this binds.** Every fixer that receives a ticket, every reviewer and judge, and every pipeline monitor
-  (Operations, the ops alarm filers, the findings judge, the sweeps) before it files. It binds tickets
-  filed before the ruling too: a ticket that does not show why its repair is worth the touch is judged now
-  (`RIMMANDRAKE_JUDGE_OPEN_PIPELINE_TICKETS_WORTH_THE_TOUCH`).
-- **Test 1, the worth of the touch, asked before the touch.** Change code, a def, a test, a hook or a brief only to fix
-  something that someone would care about. The touch is worth it when one of these is true:
-  - the finding is significant (§Code is clean: measured, or predicted with a concrete case, to break a stated
-    promise or cause a failure) and ordinary operation reaches it (a call site, a documented command, a player's
-    game or a later run produces the input);
+Why a touch is dangerous (measured 2026-11-19). The measurements are in
+`D:\ClaudeWork\rimmandrake\conductor\churn_vs_responsibility_specs_20261119.md` §3, §6 and §8.
+
+- New fix lines drew 14 to 25 review claims per 1,000 lines, against about 3 for old code. (§Code is clean when its
+  promises are tested.)
+- Tickets born of a review beget 2.5 times the descendant tickets of tickets born of a live failure. The figures are
+  0.78 against 0.31 per root.
+- The costliest retired-era failure classes came from reviewers, judges and auto-filers with no stopping level.
+
+The rule:
+
+- **Who this binds.** The rule binds every fixer that receives a ticket, and every reviewer and judge.
+  - The rule also binds every pipeline monitor before the monitor files. The pipeline monitors are Operations, the ops
+    alarm filers, the findings judge and the sweeps.
+  - The rule also binds tickets from before the ruling. If a ticket does not show why its repair is worth the touch, the
+    ticket is judged now (`RIMMANDRAKE_JUDGE_OPEN_PIPELINE_TICKETS_WORTH_THE_TOUCH`).
+- **Test 1, the worth of the touch, asked before the touch.**
+  Change code, a def, a test, a hook or a brief only to fix something that someone would care about. The touch is worth
+  it when one of these is true:
+  - the finding is significant, and ordinary operation reaches it.
+    - §Code is clean defines significant. The definition: measured, or predicted with a concrete case, to break a stated
+      promise or cause a failure.
+    - Ordinary operation reaches a finding when ordinary operation produces the input. The sources are a call site, a
+      documented command, a player's game and a later run;
   - a failure happened: a run, a test, a player-visible fault, or the owner's report;
-  - its ticket has a red test that shows misbehaviour: a wrong result or a failure. That is a go. A red test that only
-    restates the ticket proves no worth and is not a go; a judge reads each red test (his card answer, Thu 2026-11-19
-    10:17 PM PST, *"When it shows misbehaviour (Recommended)"*; the card asked *"When is a red test enough to make a
-    ticket a go?"*).
-- **A real chance of voiding a run is always worth the touch** (his words: *"Vital: OF COURSE you do, no debate"*). A
-  void is a run killed, timed out or never started, or a trial or a run's work lost (§No trial is spent by a system
-  failure). "Real" means *"Happened, or ordinary use causes it (Recommended)"*: a failure that happened, or a concrete case in
-  normal use (his card answer, Thu 2026-11-19 10:17 PM PST; the card asked *"How should 'a real chance of voiding a
-  run' be read?"*). No repair for an imagined fault. A rare known fault may waste one run before it is fixed; that run
-  is voided, so no trial is lost. A rare failure that a page
-  lists under DOES NOT SURVIVE (§A boundary page before pipeline code, Decision 4) is not a real chance until it
-  happens once. Then it is a failure and a new source event, and it is worth the touch.
-- **A finding that fails test 1 gets no fix and no ticket.** Write it as one line on `polish.md` beside its page, or
-  as one line in your report where no page exists. An open ticket that fails test 1 is dropped with the reason
-  `not worth the touch: <why>`. That is not trimming work: §You do not trim work (`roles/conductor.md`) forbids cutting
-  worthy work to save spend, and this rule says the unworthy touch is itself the cost.
-- **Test 2, if you see it, do it.** Whoever judges a finding or a ticket worth the touch is its fixer, in the same run:
-  write the test and see it fail, fix, see the test pass, publish. Never set it down for someone else without evidence
-  that you should not do it. The evidence is one of these:
+  - its ticket has a red test that shows misbehaviour: a wrong result or a failure. Such a red test is a go.
+    - A red test that only restates the ticket proves no worth and is not a go.
+    - A judge reads each red test. His card answer, Thu 2026-11-19 10:17 PM PST: *"When it shows misbehaviour
+      (Recommended)"*; the card asked *"When is a red test enough to make a ticket a go?"*.
+- **A real chance of voiding a run is always worth the touch** (his words: *"Vital: OF COURSE you do, no debate"*).
+  - A void is a run killed, timed out or never started. A lost trial is also a void, and so is a run's lost
+    work. (§No trial is spent by a system failure.)
+  - "Real" means *"Happened, or ordinary use causes it (Recommended)"*: a failure that happened, or a concrete case in
+    normal use. (His card answer, Thu 2026-11-19 10:17 PM PST; the card asked *"How should 'a real chance of voiding a
+    run' be read?"*.)
+  - Do not repair an imagined fault.
+  - A rare known fault may waste one run before it is fixed. That run is voided, so no trial is lost.
+  - A page can list a rare failure under DOES NOT SURVIVE (§A boundary page before pipeline code, Decision 4). Such a
+    failure is not a real chance until it happens once. Then it is a failure and a new source event, and it is worth the
+    touch.
+- **A finding that fails test 1 gets no fix and no ticket.**
+  - Write the finding as one line on `polish.md` beside its page. Where no page exists, write one line in your report.
+  - An open ticket that fails test 1 is dropped with the reason `not worth the touch: <why>`.
+  - Such a drop does not trim work. §You do not trim work (`roles/conductor.md`) forbids a cut of worthy work to
+    save spend. This rule says that the unworthy touch is itself the cost.
+- **Test 2, if you see it, do it.** Whoever judges a finding or a ticket worth the touch is its fixer, in the same run.
+  The fixer writes the test, sees the test fail, fixes, sees the test pass, and publishes. Never set the fix down for
+  someone else without evidence that you should not do it. The evidence is one of these:
   - you lack the tools or the access (a read-only role; a live-only fault and no bridge);
   - the fix is not known;
   - it needs one of the owner's five acts (§Only five acts stay his);
   - it would change a north-star bar;
   - another live run holds the same files;
-  - your verdict must stay independent of the work: a judge that fixed the work it judges would become
-    its maker, and nobody would judge the fix;
+  - your verdict must stay independent of the work. A judge that fixed the work it judges would become its
+    maker, and nobody would judge the fix;
   - your assigned work would not finish (name it).
 
   The ticket that you file carries that evidence, and the fix where you could see it.
@@ -679,57 +733,71 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
   judge (or any role!) should be able to just grab it and use it to get something done! IT's an unused resource
   otherwise... the worst case."*; about 5:05 AM PST, on "set it aside": *"How does that help if there's a needless
   test present? The next judge will hit it again..."*
-  - Class each failed or unmeasured check first: the mod is wrong (`class` MOD), the check is wrong (HARNESS) or the
-    staged scene is wrong (SITE). These are the classes of skill `live-debugging-proof-harness`.
-  - A wrong check or scene is worth repair only if a bar would go undecided without it. A check that no bar needs is
-    removed: taken out of the test table (and deleted when nothing else names it), so that no later judge meets it
-    again. One line on the polish list is the record of the removal. No ticket.
-  - "A failure happened" (test 1) does not make a wrong check worth the touch by itself: the failure was the check's.
-  - The agent that classes a check wrong repairs it in the same sitting and runs it again while the game is up. The
-    reasons "my verdict must stay independent" and "my assigned work would not finish" (test 2) do not excuse a wrong
-    check or scene: its repair does not touch the mod.
-  - The guard that replaces distrust: a repaired check counts only after it is seen to FAIL on a planted fault (or on
-    a state that is known bad) and PASS on the real build, in that sitting, with both readings recorded beside the
-    row. A needed check whose repair cannot be shown both ways stays not counted (UNMEASURED), never PASS, and keeps
-    an owner: the run that found it, or a filed item with the evidence. "Not counted" is for that case only. Plant with
-    what exists: the planted cases of the blind challenge, a check's `--old` or mutant switch, or a save or state that
-    is known bad.
-  - A mod fault that the judge or driver can fix is fixed in the sitting: a before/after test (red on the parent,
-    green on the fix), the fix, and the check shown passing on the fixed build (in a visit, the checks that the fix
-    touches run again on that build). Then one fresh reader, a run that did not make the fix, reads only that fix, once, and writes its
-    review (`fix_reviews.jsonl`); the steward run that reads the record is that reader. This replaces the whole new
+  - Class each failed or unmeasured check first. Write the class in the field `class`. MOD: the mod is wrong. HARNESS:
+    the check is wrong. SITE: the staged scene is wrong. These are the classes of skill `live-debugging-proof-harness`.
+  - A wrong check or scene is worth repair only if a bar would go undecided without it.
+  - Remove a check that no bar needs. Take the check out of the test table, so that no later judge meets it again. When
+    nothing else names the check, delete it. One line on the polish list is the record of the removal. No ticket.
+  - "A failure happened" (test 1) does not by itself make a wrong check worth the touch. The failure was the check's.
+  - The agent that classes a check wrong repairs the check in the same sitting. That agent runs the check again while
+    the game is up.
+  - Two reasons of test 2 do not excuse a wrong check or scene. One is "my verdict must stay independent". The other is
+    "my assigned work would not finish". The repair of a check or scene does not touch the mod.
+  - The guard that replaces distrust: a repaired check counts only when three things are true in that sitting.
+    - The check is seen to FAIL on a planted fault (or on a state that is known bad).
+    - The check is seen to PASS on the real build.
+    - Both readings are recorded beside the row.
+    - A needed check whose repair cannot be shown both ways stays not counted (UNMEASURED), never PASS. That check keeps
+      an owner: the run that found it, or a filed item with the evidence. "Not counted" is for that case only.
+    - Plant with what exists:
+      - the planted cases of the blind challenge;
+      - a check's `--old` or mutant switch; or
+      - a save or state that is known bad.
+  - The judge or driver that can fix a mod fault fixes it in the sitting. The sitting leaves three things:
+    - a before/after test (red on the parent, green on the fix);
+    - the fix;
+    - the check shown passing on the fixed build. In a visit, the checks that the fix touches run again on that build.
+  - Then one fresh reader, a run that did not make the fix, reads only that fix, once. The reader writes its review
+    (`fix_reviews.jsonl`). The steward run that reads the record is that reader. This one read replaces the whole new
     blind cycle that a fixed mod used to owe.
-  - Only a mod fault that could not be fixed in the sitting goes down the road back, with the evidence why (no tools,
-    the fix is not known, another run holds the files, one of his five acts, a north-star bar), and so does a bar left
-    undecided. A wrong check or scene never moves the mod back. The driver or judge files each line that still goes
-    back, before it ends; the router files only what they did not.
-  - A fix that needs the live game takes it when it is free (§The bridge is passed through one file): any role, a
-    judge included.
+  - Only two things go down the road back.
+    - One is a mod fault that the sitting could not fix. That fault goes with the evidence why. The evidence is one of
+      these: no tools, the fix is not known, another run holds the files, one of his five acts, a north-star bar.
+    - The other is a bar left undecided.
+  - A wrong check or scene never moves the mod back.
+  - The driver or judge files each line that still goes back, before it ends. The router files only what they did not.
+  - A fix that needs the live game takes the game when it is free. Any role may take it, a judge included (§The bridge
+    is passed through one file).
   - A resume never crosses a blind boundary (owner, 2026-11-20, about 5:30 AM PST: *"And of course blind judges and
     others don't inherit the builder's context, or anywhere else the whole point was NOT to inherit the context. I
-    didn't mean that."*). A blind judge, the fresh reader of a fix, an examiner, a challenger and the coverage judge
-    always start fresh; a run that keeps context (a continuation, a holder, the run that records its own red-seen
-    proof) resumes only its own session, never the session of a run whose work it judges.
+    didn't mean that."*).
+    - A blind judge, the fresh reader of a fix, an examiner, a challenger and the coverage judge always start fresh.
+    - Some runs keep context: a continuation, a holder, the run that records its own red-seen proof. Such a run resumes
+      only its own session, never the session of a run whose work it judges.
   - A run that edits a deciding test records its red run with `maturation.py red-seen` before it closes. Measured
-    2026-11-20: two fixers (`44124fa343`, `345366aa49`) edited Gimme Some Slack's deciding test file and saw planted
-    faults go red without recording it; the certificate then refused 18 of 26 bars on `red_seen`, and the mod sat
-    from 2:14 AM to about 4:50 AM PST until a hand ran `maturation.py red-seen` (`509bca1964`).
-  - In the blind challenge, a Problem `against` a check or scene that the judge repairs, shown both ways, owes
-    nothing more. A Problem fixed in the mod owes its one fresh reader.
+    2026-11-20: two fixers (`44124fa343`, `345366aa49`) edited Gimme Some Slack's deciding test file. Both saw planted
+    faults go red, and neither recorded it. The certificate then refused 18 of 26 bars on `red_seen`. The mod sat from
+    2:14 AM to about 4:50 AM PST, until a hand ran `maturation.py red-seen` (`509bca1964`).
+  - In the blind challenge, a judge can repair the check or scene that a Problem is `against`. When that repair is shown
+    both ways, the Problem owes nothing more. A Problem fixed in the mod owes its one fresh reader.
   - Enforced by `maturation.py` (`read_ingame_exit`: `line_class`, `repair_shown`, `mod_fix_shown`, `review_sound`,
-    needless and undecided lines; `read_exit`: `check_repair`, `review_sound`) and carried by the blind-judge,
-    in-game driver, steward, fixer and builder briefs (`WRONG_CHECK_RULE`, `RED_SEEN_RULE`).
+    needless and undecided lines; `read_exit`: `check_repair`, `review_sound`). The blind-judge, in-game driver,
+    steward, fixer and builder briefs carry the rule (`WRONG_CHECK_RULE`, `RED_SEEN_RULE`).
     Page: `design/specs/2026-11-20-wrong-check-fixed-in-sitting/boundary.md`; test:
     `src/RimMandrake/rimflow/selftest_wrong_check_fixed_in_sitting.py`.
 - **Group the repairs.** Tickets with one cause, or in the same files, are fixed in one run and one context.
 - **A stopping level in every judging brief** (his pick on the same card, *"Stop rule in every judge brief
   (Recommended)"*, whose description read: *"Why: it hits the measured cause. About a dozen briefs (auditor, ops
   alarms, blind judges, art and coverage judges, sweeps) each get a look count and a 'good enough' level. Cost: each
-  brief needs a calibration run, or the rule is only words."*). Each brief that reviews, judges, audits or files
-  findings states three things: the level that is enough, when to stop looking, and the polish route that files no
-  ticket. A count in such a brief names the danger it guards beside it (§No limit without the danger it guards).
-  Until a calibration run checks a brief's stop rule, that rule is only words: the list of briefs and the runs owed
-  are on `RIMMANDRAKE_CALIBRATE_JUDGE_STOP_RULES_WORDS_UNTIL_RUN`.
+  brief needs a calibration run, or the rule is only words."*).
+  - Each brief that reviews, judges, audits or files findings states three things:
+    - the level that is enough;
+    - when to stop the look;
+    - the polish route that files no ticket.
+  - A count in such a brief names the danger that it guards. The danger stands beside the count. (§No limit without the
+    danger it guards.)
+  - Until a calibration run checks a brief's stop rule, that rule is only words. The list of briefs and the runs owed
+    are on `RIMMANDRAKE_CALIBRATE_JUDGE_STOP_RULES_WORDS_UNTIL_RUN`.
 - **A small change is checked by the agent that made it, and never waits for a run** (two rulings of the owner,
   2026-11-05, merged here 2026-11-23). *"Please make a ruling: The pipeline is NOT to be used to "bless" any change in
   the game. That's a huge expenditure for a small validation that could be manually performed."* He said this of
@@ -738,44 +806,59 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
   this diagnosis onto the item... YOU DO IT NOW!"* to a Conductor. That Conductor had diagnosed
   `MODCHECK_DONOR_ENVIRONMENTS_1` and had written the next step on the item.)
   - A small change is a change whose check is a quick manual validation: an installed picture equals his pick, a value
-    reads back, a file is deployed. The agent that made it checks it on the spot (a hash, a read, a single bridge call)
-    and closes it with that evidence in one command: `rimflow close <ID> --sha <sha> --evidence "<what ran and its
-    result>"`. The command records the pass and the close together.
-  - When a seat or helper finds why an item is stuck, that seat or helper does the fix and the remaining check at once.
-    Then the same seat or helper closes the item with that evidence. Never write the diagnosis or a `NEXT:` onto the ticket instead.
+    reads back, a file is deployed.
+  - The agent that made the change checks it on the spot (a hash, a read, a single bridge call). Then the agent closes
+    it with that evidence in one command: `rimflow close <ID> --sha <sha> --evidence "<what ran and its result>"`. The
+    command records the pass and the close together.
+  - A seat or helper can find why an item is stuck. Then that finder does the fix and the remaining check at once. Then
+    that finder closes the item with that evidence. Never write the diagnosis or a `NEXT:` onto the ticket instead.
   - Never queue, unhold or re-release an item for a check alone. An item goes back to the pipeline only when real build
     work remains.
-- **How the rules fit.** §Code is clean when its promises are tested is this rule for code review (significant, the
-  reviewer fixes, one blind reread). §The pipeline fixes its own defects is test 2 for the pipeline's own machinery,
-  and its hand-off list is the list above. The CHARTER's "See it, fix it, then" (owner, 2026-11-05) is test 2 for a
-  small fix; since this ruling, a fix that is not small is still yours unless the evidence above says otherwise.
-- **Test that this was applied:** `src/RimMandrake/rimflow/selftest_touching_code_cost_rule.py` finds the two tests
-  in the root `CLAUDE.md`, the CHARTER, the six `.claude/agents/rm-*.md` files and the fixer, judge and monitor role
-  files, and a stopping level in each judging brief that it names.
+- **How the rules fit.**
+  - §Code is clean when its promises are tested is this rule for code review. Its parts: significant, the reviewer
+    fixes, one blind reread.
+  - §The pipeline fixes its own defects is test 2 for the pipeline's own machinery. The hand-off list of that section is
+    the list under test 2.
+  - The CHARTER's "See it, fix it, then" (owner, 2026-11-05) is test 2 for a small fix. Since this ruling, a fix that is
+    not small is still yours, unless the evidence under test 2 says otherwise.
+- **Test that this was applied:** `src/RimMandrake/rimflow/selftest_touching_code_cost_rule.py`.
+  - It finds the two tests in the root `CLAUDE.md`, the CHARTER and the six `.claude/agents/rm-*.md` files.
+  - It finds the two tests in the fixer, judge and monitor role files.
+  - It finds a stopping level in each judging brief that it names.
 
 ## What is where
 
 **Art is judged against the canon library, and canon is the target** (owner, 2026-09-15).
-`design/RimStarWars/canon_references/` holds the canon entries (creatures, species, droid
-chassis; count it, never cite a number) — each with sourced canon, a visual brief written against real reference images, a
-`## Must show` checklist and `## Engine limits`. **An empty `## ruling` means canon stands
-unopposed, not that the entry is unusable**; he rules on deliberate departures from canon;
-ambiguity and contested regens go to the art judge first (`delegation_policy.md`). `AGENT_BRIEF.md` there is the operating doc. 🔴 Keep the
-three defect classes apart — a **missing gene** is edited in the def, an **engine limit**
-needs new art or more mask channels, and a **rig limit** (Ithorian neck, Kaminoan
-proportions, Muun body, Lasat legs) cannot be fixed at all, so art chasing it is waste.
-Art and cosmetic changes are delegated (owner, 2026-10-22, `delegation_policy.md`): a judge agent applies
-`art_judge_brief.md`, which keeps the old rule's reason — a pawn cosmetic change must not break animated faces.
-🔑 **Every art review sheet shows the canon reference images and the entry's `## Must show`
-beside each row whenever the subject has a canon entry** (owner, 2026-10-04); a row without one
-says so. Since 2026-10-04 art goes through the art ledger and its `art install` only
-(`design/RimMandrake/art_ledger_design_2026-10-04.md`), and his rulings live in
-`infrastructure/state/art_rulings/`, never only in `Transient/`.
+
+- `design/RimStarWars/canon_references/` holds the canon entries (creatures, species, droid chassis). Count the entries;
+  never cite a number.
+- Each entry has sourced canon, a visual brief written against real reference images, a `## Must show` checklist and
+  `## Engine limits`.
+- **An empty `## ruling` means canon stands unopposed, not that the entry is unusable.**
+- The owner rules on a deliberate departure from canon. The Conductor may also rule on it, as its recorded act (§Only
+  five acts stay his). A departure that replaces art he kept stays his. Ambiguity and contested regens go to the art
+  judge first (`delegation_policy.md`).
+- `AGENT_BRIEF.md` in that folder is the operating doc.
+- 🔴 Keep the three defect classes apart:
+  - a **missing gene** is edited in the def;
+  - an **engine limit** needs new art or more mask channels;
+  - a **rig limit** (Ithorian neck, Kaminoan proportions, Muun body, Lasat legs) cannot be fixed at all. Art that chases
+    a rig limit is waste.
+- Art and cosmetic changes are delegated (owner, 2026-10-22, `delegation_policy.md`). A judge agent applies
+  `art_judge_brief.md`. That brief keeps the reason of the old rule: a pawn cosmetic change must not break animated
+  faces.
+- 🔑 **Every art review sheet shows the canon reference images and the entry's `## Must show`
+  beside each row whenever the subject has a canon entry** (owner, 2026-10-04). A row without a canon entry says so.
+- Since 2026-10-04, art goes through the art ledger and its `art install` only
+  (`design/RimMandrake/art_ledger_design_2026-10-04.md`).
+- His art rulings live in `infrastructure/state/art_rulings/`, never only in `Transient/`.
 
 The folder tree is in `CLAUDE.md` §What is where, and the Transient rule is in `CLAUDE.md` §Transient. Two facts
-are only here. `Transient/` is untracked since 2026-10-18 (owner, by card: *"Stop tracking; pin to keep"*); pin a
-file with `transient_pin.py add <path>` (`*.decisions.json` always stay tracked). `rimflow sweep --transient` lists by
-age; it never deletes.
+are only here:
+
+- `Transient/` is untracked since 2026-10-18 (owner, by card: *"Stop tracking; pin to keep"*). Pin a file with
+  `transient_pin.py add <path>` (`*.decisions.json` always stay tracked).
+- `rimflow sweep --transient` lists files by age. The command never deletes a file.
 
 ## Nothing reaches the owner unread — owner, 2026-10-22
 
@@ -789,39 +872,50 @@ age; it never deletes.
 > before wasting a human's time to tell that to you."*
 
 🔴 **Whatever we put in front of him to judge** — review sheet, art set, phone image, walkthrough map or save, list of
-rules, report, a card's material — **the presenter first looks at every item an agent can judge**, itself or through a
-naive judge (a fresh-context Opus that did not make it; `gpt_consult.py` for a big sheet), and **fixes or drops what is
-obviously broken**: does not render, does not connect, is not recognisable as what it is, contradicts itself or its
-spec, repeats something he already ruled. A walkthrough: a zoomed capture of every station, connection and path, each
-stared at for the mod's faults. He gets what survived, items an agent cannot judge marked as such, and one line of
-what was caught. **Test:** if his first comment is something we could have seen, it was not ready.
-**Enforced** for sheets: `serve_gated.py`, `review_queue.py` and `sheet_to_artifact.py` refuse a sheet without a
-complete `<stem>.prereview.json` (`src/RimMandrake/Utils/art/prereview.py`); maps, images and prose rest on the
-presenter. **Unchanged:** who decides (`delegation_policy.md`), the scaled-review gate, a grader's score as evidence
-only. The 2026-10-19 card *"Python command, no agent before you see it"* now means no agent COMPOSES the page; one
-still reads it. Incident: 2026-10-22 FlowWorks walkthrough (hoses missing reels, under buildings, unreadable
-connectors, a pawn over a pit cover), `skills/rimworld-live-review/references/traps.md`.
+rules, report, a card's material — **the presenter first looks at every item an agent can judge**. The presenter looks
+itself, or through a naive judge. A naive judge is a fresh-context Opus that did not make the item. For a big sheet, use
+`gpt_consult.py`.
+
+- The presenter **fixes or drops what is obviously broken**. A broken item has one of
+  these faults:
+  - it does not render;
+  - it does not connect;
+  - it is not recognisable as what it is;
+  - it contradicts itself or its spec;
+  - it repeats something he already ruled.
+- A walkthrough: take a zoomed capture of every station, connection and path. Stare at each capture for the faults of
+  the mod.
+- He gets the items that survived. Items that an agent cannot judge are marked as such. He also gets one line of what
+  was caught.
+- **Test:** if his first comment is something we could have seen, the material was not ready.
+- **Enforced** for sheets: `serve_gated.py`, `review_queue.py` and `sheet_to_artifact.py` refuse a sheet without a
+  complete `<stem>.prereview.json` (`src/RimMandrake/Utils/art/prereview.py`). Maps, images and prose rest on the
+  presenter.
+- **Unchanged:** who decides (`delegation_policy.md`), the scaled-review gate, a grader's score as evidence only.
+- The 2026-10-19 card *"Python command, no agent before you see it"* now means that no agent COMPOSES the page. An agent
+  still reads the page.
+- Incident: 2026-10-22 FlowWorks walkthrough (hoses missing reels, under buildings, unreadable connectors, a pawn over a
+  pit cover), `skills/rimworld-live-review/references/traps.md`.
 
 ## Options he must LOOK at ship as a savegame — owner, 2026-09-02
 
 *"Save user review options as save games."* A screenshot shows one angle of one
-thing; a save lets him walk it, zoom it, and read the tooltips. So when a pass
-produces options for him to judge in-world — structures, layouts, creatures,
-gear on a pawn — **build them and save the game.**
+thing. A save lets him walk it, zoom it, and read the tooltips. So when a pass
+produces options for him to judge in-world, **build them and save the game.** Such options are structures, layouts,
+creatures, or gear on a pawn.
 
-- **One map, all options** (his ruling by card), laid out on a grid with enough
-  pitch that nothing overlaps, plus an item file giving the **grid key**: which
+- **One map, all options** (his ruling by card). Lay the options out on a grid with enough
+  pitch that nothing overlaps. Write an item file that gives the **grid key**: which
   option is at which cell.
-- **Saves stay until he says delete** while he may still judge them. Not overwritten by the
-  next review. A save nothing reads any more is a leftover: archive, delete, list in his
+- **Saves stay until he says delete** while he may still judge them. The next review does not
+  overwrite them. A save that nothing reads any more is a leftover. Archive it, delete it, and list it in his
   digest (owner card 2026-10-26, `delegation_policy.md` §2).
 - 🔴 **Back up the Saves folder's keepers first and stat it afterwards.**
   `rimworld/save_game` has silently written the CURRENT slot instead of `saveName`.
-  Confirm a NEW file appeared and no existing one changed size — never trust the
-  path it hands back.
-- ⚠️ Verify each option is actually THERE (`jawa/list_things` per slot) before
-  calling it a review. A placement log's `thingsSpawned` is a NET count and goes
-  negative when a build clears plants.
+  Confirm that a NEW file appeared and that no existing file changed size. Never trust the
+  path that the call hands back.
+- ⚠️ Before you call a save a review, verify that each option is actually THERE (`jawa/list_things` per slot). A
+  placement log's `thingsSpawned` is a NET count, and it goes negative when a build clears plants.
 
 ## Check for existing regenerated art before queuing more — owner, 2026-09-20
 
@@ -830,21 +924,21 @@ on**. Do the same whenever a def or item is "missing art" or "owed new art". Gen
 find. The artpipe daemon runs all the time, and its output often sits unused for days. The def or roster
 work that would wire it in often has not happened yet.
 
-- **Search the artpipe state dir by subject/defName first** —
-  `python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <term>…` covers `done/`, `_artsrc/`,
-  `registry.jsonl` and `art_status.json` in `D:\ClaudeWork\rimmandrake\artpipe` (outside git since 2026-10-02) and
-  refuses rather than report 0 when that dir is absent — not just by job-id guesswork.
-  A finished job's `rimflow_item_id` and `style_notes` often name the exact
-  roster row or item it was generated for.
+- **Search the artpipe state dir by subject/defName first**, not just by job-id guesswork:
+  `python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <term>…`
+  - The command covers `done/`, `_artsrc/`, `registry.jsonl` and `art_status.json` in
+    `D:\ClaudeWork\rimmandrake\artpipe` (outside git since 2026-10-02). When that dir is absent, the command refuses. It
+    does not report 0.
+  - A finished job's `rimflow_item_id` and `style_notes` often name the exact roster row or item that the job was
+    generated for.
 - **Check for a review sheet's `.decisions.json`** (`Transient/*.decisions.json`,
-  a `port_tail_*`/`bulk_art_*` sheet, or similar) — if the owner already ruled
-  on that art (kept/replace/improve), queuing a fresh regen throws that
-  ruling away and spends a job for nothing.
+  a `port_tail_*`/`bulk_art_*` sheet, or similar). The owner can have already ruled
+  on that art (kept/replace/improve). Then a fresh regen throws that ruling away and spends a job for nothing.
 - 🔑 **Caught live, 2026-09-20 (`BMT_FLORA_ABSORPTION_1`):** three plants
   (giant leaf, fire lavender, heatsink fungus) were about to get a fresh
-  `fill_queue.py` job each. All three already had finished, validated art
-  sitting in `_artsrc/` since 2026-09-12/13 — one traced straight to the
-  exact roster row being fixed — found only because the owner said *"I
+  `fill_queue.py` job each. All three already had finished, validated art in
+  `_artsrc/` since 2026-09-12/13. One of them traced straight to the
+  exact roster row that was being fixed. The art was found only because the owner spoke. He said *"I
   actually already saw beautiful art for giant leaf somewhere in a review
   sheet"* and asked for a check across the rest of the missing set. Nothing
   in the workflow up to that point had prompted the check on its own.
@@ -856,12 +950,17 @@ have some stopping criteria for both finish and strengthen. Zero bugs is NOT it.
 imperfections. We're trying for "a human won't immediate get frustrated and produce bug reports" instead
 of "no one will ever find anything wrong." Hours producing no issues, or only partial/weak issues that have
 had multiple rounds of attempting to fix them already, produce a conditional pass... and that's ok."*
-So finishing or strengthening a thing STOPS at a conditional pass: hours of testing that turn up no issues,
-or only weak/partial ones already through several fix rounds. Record it as a conditional pass and move on;
-never grind toward zero defects. Here "finish" and "strengthen" are kinds of spare work, and "(4)" is the card's
-option 4. A conditional pass ends that spare work. A conditional pass never passes a mod's version: only his walk does
-(§Only five acts stay his). His later ruling of 2026-11-20 says what fills a quota surplus: quality work queued ahead,
-with the clean/dirty code review as the backup plan (`src/RimMandrake/rimflow/roles/operations.md` §Success test).
+
+- Here "finish" and "strengthen" are kinds of spare work, and "(4)" is the card's option 4.
+- The work to finish or strengthen a thing STOPS at a conditional pass. A conditional pass is hours of testing with one
+  of two results:
+  - the testing turns up no issues;
+  - the testing turns up only weak or partial issues that already went through several fix rounds.
+- Record it as a conditional pass and move on. Never grind toward zero defects.
+- A conditional pass ends that spare work. A conditional pass never passes a mod's version: only his walk does
+  (§Only five acts stay his).
+- His later ruling of 2026-11-20 says what fills a quota surplus: quality work queued ahead. The clean/dirty code review
+  is the backup plan (`src/RimMandrake/rimflow/roles/operations.md` §Success test).
 
 ## Account and capacity budget (owner, 2026-10-25, by card)
 
@@ -869,38 +968,46 @@ with the clean/dirty code review as the backup plan (`src/RimMandrake/rimflow/ro
 fully consumed each week. Partition how much you can use per day (roughly), but it's really the weekly
 reset. Always save some capacity for our interactive exploration together at night (predominantly).
 There's also GPT capacity to monitor and exploit. Steven.lewis can be used once the others are depleted...
-roughly half of it is available for our use."* So: budget against the WEEKLY reset; track GPT capacity too and use it.
-The order of the accounts in that quote is replaced. His standard switching plan of 2026-10-28 (item
-`ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING`) burns steven first inside its window after its reset, then system, then
-lukas. It keeps "about half" of steven as the leave line. The order, the leave lines, and each dated exception (one is
-in force from 2026-11-20) are in `src/RimMandrake/Utils/switching_plan.json`; obey that file.
-He was answering the card question "How much should be kept free for you?". The share for his evenings and the rough
-daily partition in that quote are ended (owner, by card Mon 2026-11-23 8:57 AM PST, item
-`RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`). The card asked *"Must agents keep account capacity for
-your evenings?"* He picked *"No, run to the line (Recommended)"*: *"Buys: the most work done unattended. Costs: on a
-heavy day an account can be near its line when you sit down, and the sitting moves to another account or waits.
-Recommended: later and more specific."* No share is kept. Each account runs to its line, at any hour. The order, the
-leave lines and Steven's line do not change.
-The fixed account order and the shared account's leave line may be changed by the Conductor as its mindful act
-(owner 2026-11-19, §Only five acts stay his): its `--why` names what is lost if wrong (`lost:`) and the undo (`undo:`).
-The money side stays his: nothing here buys capacity.
+roughly half of it is available for our use."*
+
+- Budget against the WEEKLY reset. Track GPT capacity too, and use it.
+- The order of the accounts in that quote is replaced. The replacement is his standard switching plan of 2026-10-28
+  (item `ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING`). That plan burns steven first inside its window after its reset, then
+  system, then lukas. The plan keeps "about half" of steven as the leave line.
+- The order, the leave lines, and each dated exception (one is in force from 2026-11-20) are in
+  `src/RimMandrake/Utils/switching_plan.json`. Obey that file.
+- He was answering the card question "How much should be kept free for you?". Two parts of that quote are
+  ended: the share for his evenings, and the rough daily partition. (Owner, by card Mon 2026-11-23 8:57 AM PST, item
+  `RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`.) The card asked *"Must agents keep account capacity for
+  your evenings?"* He picked *"No, run to the line (Recommended)"*: *"Buys: the most work done unattended. Costs: on a
+  heavy day an account can be near its line when you sit down, and the sitting moves to another account or waits.
+  Recommended: later and more specific."*
+- So no share is kept. Each account runs to its line, at any hour. The order, the leave lines and Steven's line do not
+  change.
+- The Conductor may change the fixed account order and the shared account's leave line as its mindful act.
+  (Owner 2026-11-19, §Only five acts stay his.) The `--why` of that act names what is lost if the act is wrong (`lost:`)
+  and the undo (`undo:`). The money side stays his: nothing here buys capacity.
 
 Live runs finish past the soft line; no account is driven to zero (owner, 2026-11-20 about 5:30 AM PST): *"And yes for
 live runs finish past, absolutely. Actually 0.1% is even ok kept. We just don't want to crash to zero and get stuck.
 Please make that true everywhere."* About 6 AM PST: *"Agreed for 1% at the moment"*. So:
-- At an account's soft line (its line + 2%) no new run starts on it. At its line the switch or the stop waits while a
-  detached run is live, and goes when the runs end or at the hard line, whichever is first.
-- The hard line is max(1%, line - 2%): steven's 52% leave line gives 50% (his 2026-10-28 "use it until 50%"); every
-  other account stops at 1%. The meter reads whole percents (8,749 readings to 2026-11-20, none fractional), so 1% is
-  the lowest line it can see; a 0.1% line waits for a finer meter.
-- A switch the priority pulls (above the line) waits for live runs too, at most 2 h.
-- Do not stop runs or switch accounts by hand at the soft line; the plan drains them.
-- The numbers live in `src/RimMandrake/Utils/switching_plan.json` and nowhere else; the page is
+
+- At an account's soft line (its line + 2%), no new run starts on it.
+- At the account's line, the switch or the stop waits while a detached run is live. The switch or the stop goes when the
+  runs end or at the hard line, whichever is first.
+- The hard line is max(1%, line - 2%). Steven's 52% leave line gives 50% (his 2026-10-28 "use it until 50%"). Every
+  other account stops at 1%.
+- The meter reads whole percents (8,749 readings to 2026-11-20, none fractional). So 1% is the lowest line that the
+  meter can see. A 0.1% line waits for a finer meter.
+- A switch that the priority pulls (above the line) waits for live runs too, at most 2 h.
+- Do not stop runs or switch accounts by hand at the soft line. The plan drains them.
+- The numbers live in `src/RimMandrake/Utils/switching_plan.json` and nowhere else. The page is
   `design/specs/2026-11-20-account-drain/boundary.md`.
 
 ## Nobody plays during development; only the canonical world saves are protected — owner, 2026-11-23
 
-His words, by card, 2026-11-23, about 4:45 PM PST (item `RIMMANDRAKE_ENACT_NOBODY_PLAYS_NO_OWNER_GAME_OR_SAVES_TO_GUARD`):
+His words, by card, 2026-11-23, about 4:45 PM PST (item
+`RIMMANDRAKE_ENACT_NOBODY_PLAYS_NO_OWNER_GAME_OR_SAVES_TO_GUARD`):
 
 - On "stop a broken ArchBig under his hold": *"I DO NOT PLAY. You keep making this mistake. No one is playing the game
   while we're developing it. I don't own any game."*

@@ -1,4 +1,4 @@
-# BOUNDARY: a wrong check is repaired or set aside in the sitting (maturation.py read_ingame_exit, read_exit, the stage briefs), Design Version 0.1.0
+# BOUNDARY: a wrong check is repaired or removed in the sitting (maturation.py read_ingame_exit, read_exit, the stage briefs), Design Version 0.1.0
 
 Code: `src/RimMandrake/rimflow/maturation.py` and `src/RimMandrake/rimflow/maturation_autonomy.py`. Owner rulings
 2026-11-20: the first part, and the follow-up of item `RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION`
@@ -8,8 +8,8 @@ only how a failed or unmeasured line is classed and what each class does to the 
 and their use in `read_ingame_exit`; `check_repair` and its use in `read_exit`; and the class text in
 `ingame_brief_text`, `blind_brief_text`, `steward_brief` and `fixer_brief`. Item
 `RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED`; the rule is
-`design/RimMandrake/standing_rulings.md` §Touching code has a cost, "A wrong check is repaired or set aside in the
-sitting". A row with an `outcome`, and a tagged scene, are
+`design/RimMandrake/standing_rulings.md` §Touching code has a cost, "A fault is fixed in the sitting; a wrong check is
+repaired or removed there; neither sends the mod back". A row with an `outcome`, and a tagged scene, are
 read first by `live_kinds.py` (`design/specs/2026-11-23-live-kinds-exit-reader/boundary.md`).
 Each promise has a test of its name in `src/RimMandrake/rimflow/selftest_wrong_check_fixed_in_sitting.py`;
 that selftest also plants a fault in each part of the reader and sees its test go red.
@@ -64,7 +64,7 @@ that selftest also plants a fault in each part of the reader and sees its test g
   builds; the last rows of the checks must name one build.
 - **scene-wrong-same-as-check.** A SITE line follows the same rules as a HARNESS line.
 - **unclassed-not-silent.** An UNMEASURED or FAIL last row with no class reads not_met and is named `unclassed`.
-- **wrong-unhandled-not-silent.** A HARNESS or SITE last row neither repaired, set aside nor said `unrepaired` reads
+- **wrong-unhandled-not-silent.** A HARNESS or SITE last row neither repaired nor said `unrepaired` reads
   not_met and names what is owed.
 - **mix-reads-each-line.** A visit with each kind of line reads each line's class, and only the `mod` and undecided
   lines send it back.
