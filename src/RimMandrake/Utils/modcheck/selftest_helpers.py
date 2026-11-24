@@ -178,6 +178,9 @@ def main():
     p = H.assert_bland(w, expected_ids=["Col3"])
     check("a dead FIXTURE colonist is not 'dead colonists' contamination", not any("dead colonists" in x for x in p), str(p))
     p = H.assert_bland(w)
+    ids = []
+    H.assert_bland(w, dead=ids)
+    check("assert_bland hands out the dead colonists' ids (reload_spoiled_site reads them)", ids == ["Col3"], str(ids))
     check("control: the same corpse un-declared IS reported", any("dead colonists" in x for x in p), str(p))
 
     # --- measured: removal by part can fail where removal by def works

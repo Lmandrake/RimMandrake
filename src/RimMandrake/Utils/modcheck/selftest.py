@@ -1037,10 +1037,130 @@ def t_hold_bridge_timeout_reprobes_the_game():
         (H.SettingsTransaction, H.kill_hostiles, V.canary, runner.load_fixtures, runner.save_fixtures) = real
 
 
+def t_site_reloaded_after_a_chain_kills_its_colonist():
+    """RIMMANDRAKE_RELOAD_SITE_AFTER_A_CHAIN_KILLS_ITS_COLONIST: run_suite's use of reload_spoiled_site, and what
+    _load_site_again loads. The site is fake: `site` holds the ids dead on it, and a load puts `loads_with` back."""
+    import helpers as H
+    import test_site_saves as T
+    calls, site, state = [], {"dead": []}, {"loads_with": []}
+
+    class Tx(object):
+        def __init__(self, session):
+            pass
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            pass
+
+    class Rep(object):
+        def as_dict(self):
+            dead = list(site["dead"])
+            p = ["dead colonists: %s" % dead] if dead else []
+            return {"bland": not p, "problems": p, "dead": dead, "notes": [], "steps": []}
+
+    class Res(object):
+        def as_dict(self):
+            return {}
+
+    def prepare(session, tx, expected_ids=(), kill=True, resurrect=False):
+        calls.append(("hold", tuple(sorted(expected_ids))))
+        return Rep()
+
+    def load(session):
+        calls.append("load")
+        if isinstance(state["loads_with"], Exception):
+            raise state["loads_with"]
+        site["dead"] = list(state["loads_with"])
+        return "save S"
+
+    def make_suite(killers):
+        suite = Suite("t_mod")
+        for n in ("c1", "c2", "c3"):
+            def body(t, n=n):
+                calls.append(n)
+                with t.component("comp_" + n, beyond_toggle=True):
+                    if n == "c1":
+                        t.fixture_ids.add("Human9")
+                if n in killers:
+                    site["dead"] = ["H1"]
+            suite.chains.append((n, body))
+        return suite
+
+    def go(killers, start=(), loads_with=()):
+        del calls[:]
+        site["dead"], state["loads_with"] = list(start), loads_with
+        r = runner.run_suite(make_suite(killers), _fake_session(), hold_site=True, anchor=(10, 10))
+        return r, [c for c in calls if not isinstance(c, tuple)]
+
+    real = (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures, runner.save_fixtures,
+            runner._load_site_again)
+    H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles = prepare, Tx, (lambda s, e=(): Res())
+    runner.load_fixtures, runner.save_fixtures = (lambda *a, **k: set()), (lambda *a, **k: None)
+    runner._load_site_again = load
+    try:
+        r, c = go({"c1"})
+        notes = [(ch.get("site_reload") or {}) for ch in r["chains"]]
+        check("reload: the chain after the killer loads the site once and every later chain runs",
+              c == ["c1", "load", "c2", "c3"] and not notes[0] and notes[1].get("loaded") == "save S"
+              and "H1" in notes[1].get("note", "") and not notes[2], (c, notes))
+        check("reload: the record keeps the fresh hold, and the verdicts stand",
+              all((ch["site_hold"] or {}).get("bland") for ch in r["chains"]), [ch["site_hold"] for ch in r["chains"]])
+        holds = [x for x in calls if isinstance(x, tuple)]
+        check("reload: the old game's fixture ids exempt nobody in the loaded one",
+              len(holds) == 4 and holds[2] == ("hold", ()), holds)
+        r, c = go({"c1", "c2"})
+        check("reload: a second chain that kills spoils the site again, and it is loaded again",
+              c == ["c1", "load", "c2", "load", "c3"], c)
+        r, c = go(set(), start=["H1"])
+        check("reload: a colonist dead at the run's first hold is never a reload", c == [], c)
+        r, c = go({"c1"}, loads_with=["H1"])
+        check("reload: a site that loads with its colonist dead is loaded once, not before every chain",
+              c == ["c1", "load"] and [x["verdict"] for ch in r["chains"][1:] for x in ch["components"]]
+              == [UNMEASURED] * 2, c)
+        r, c = go({"c1"}, loads_with=RuntimeError("boom"))
+        d = [x.get("detail") or "" for ch in r["chains"][1:] for x in ch["components"]]
+        check("reload: a load that raises is named on the chain, never clean, and is not tried again",
+              c == ["c1", "load"] and "boom" in d[0] and len(d) == 2 and "dead colonists" in d[1], (c, d))
+        runner._load_site_again = real[5]
+        reg = T.read_registry()["pyrelands"]
+        here = {"success": True, "tile": reg["tile"], "mapId": reg["mapId"], "mapBiome": reg["biome"]}
+        check("reload: the current map names its registered site; another map on that tile does not",
+              T.registered_site(here) == "pyrelands" and T.registered_site(dict(here, mapId=0)) is None
+              and T.registered_site({}) is None and T.registered_site({"tile": None}) is None)
+        seen = []
+        real_rr, real_menu = T.reload_registered, T._to_main_menu
+        T.reload_registered = lambda s, name: seen.append(name) or "SAVE"
+        T._to_main_menu = lambda *a, **k: seen.append("menu")
+        try:
+            s = _fake_session()
+            s.call = lambda tool, **p: here if tool == "jawa/map_info" else {"success": True}
+            check("reload: a registered site goes through its own loader",
+                  runner._load_site_again(s) == "save SAVE" and seen == ["pyrelands"], seen)
+            del seen[:]
+            s.call = lambda tool, **p: (seen.append(tool), {"success": True, "tile": 7, "mapId": 0, "mapBiome": "Tundra"})[1]
+            check("reload: a map that no save made goes to the menu and a fresh debug map",
+                  "fresh debug map" in runner._load_site_again(s)
+                  and seen == ["jawa/map_info", "menu", "rimworld/start_debug_game_ready", "jawa/map_info"], seen)
+            s.call = lambda tool, **p: {"success": False, "message": "No current map"}
+            try:
+                raised = runner._load_site_again(s)
+            except RuntimeError as e:
+                raised = e
+            check("reload: an unreadable map raises, it never guesses a site", isinstance(raised, RuntimeError), raised)
+        finally:
+            T.reload_registered, T._to_main_menu = real_rr, real_menu
+    finally:
+        (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures, runner.save_fixtures,
+         runner._load_site_again) = real
+
+
 TESTS = [
     t_fixture_declared_without_watch,
     t_site_held_between_chains_without_watch,
     t_hold_bridge_timeout_reprobes_the_game,
+    t_site_reloaded_after_a_chain_kills_its_colonist,
     t_dependency_closure_and_composed_folders,
     t_floor_uncovered,
     t_compose_test_list_appends_once_and_reads_back,

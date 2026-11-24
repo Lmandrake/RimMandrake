@@ -884,6 +884,62 @@ def _hold_site(session, tx, expected_ids):
     return out
 
 
+DEAD_PROBLEM = "dead colonists:"      # helpers.assert_bland's own words
+START_MAP_TIMEOUT_S = 320.0           # one start_debug_game_ready call (timeoutMs 280000); ensure_live_colony's own value
+
+
+def reload_spoiled_site(hold, dead_before, reload):
+    """-> (hold, note). A colonist that an EARLIER chain of this run killed spoils the site for every later chain
+    (Pyrelands Human75828, 2026-11-24). When such deaths are the ONLY problems of `hold`, reload() is called once and its
+    fresh hold reading is returned; every other hold comes back as it is, with note None. `dead_before`: the colonist ids
+    that this run did not kill (dead at its first hold) or that a reload did not bring back. A reload that raises leaves
+    the hold not quiet and names the cause. Contract: acceptance_site_reload.py."""
+    problems, dead = hold.get("problems") or [], hold.get("dead") or []
+    if (not problems or not dead or set(dead) & set(dead_before)
+            or not all(str(p).startswith(DEAD_PROBLEM) for p in problems)):
+        return hold, None
+    try:
+        fresh = reload()
+    except Exception as e:     # noqa: BLE001 - a reload that could not run is a reason, never a clean site
+        why = "site reload raised %s: %s" % (type(e).__name__, e)
+        return (dict(hold, bland=False, problems=list(problems) + [why], bridge_timeout=bool(BRIDGE_TIMEOUT.search(why))),
+                "an earlier chain killed %s; %s" % (dead, why))
+    left = fresh.get("problems")
+    return fresh, "an earlier chain killed %s; the site was reloaded and %s" % (
+        dead, "is still not quiet: %s" % "; ".join(str(p) for p in left) if left else "is quiet")
+
+
+def _load_site_again(session):
+    """Put the run's site back: the registered site save that made the current map, or, for a map that no registered save
+    made, a fresh debug map (what ensure_playing_map starts a run on). -> what was loaded; raises when it cannot say."""
+    import test_site_saves as T  # noqa: E402
+    mi = session.call("jawa/map_info") or {}
+    if mi.get("success") is False or mi.get("tile") is None:
+        raise RuntimeError("cannot read which site the map is: %s" % str(mi.get("message") or mi)[:160])
+    site = T.registered_site(mi)
+    if site:
+        return "save %s" % T.reload_registered(session, site)
+    menu = T._to_main_menu(session.call, time.sleep)
+    if menu:
+        raise RuntimeError(menu)
+    # A start outlasts the session's 30 s call, and a lost reply leaves every later mutating call refused as INDETERMINATE.
+    rb = getattr(session, "_rb", None)
+    full = getattr(rb, "timeout", None)
+    if rb is not None:
+        rb._set_call_timeout(START_MAP_TIMEOUT_S)
+    try:
+        r = session.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000) or {}
+    finally:
+        if rb is not None:
+            rb._set_call_timeout(full)
+    if r.get("success") is False:
+        raise RuntimeError("start_debug_game_ready refused: %s" % str(r.get("message") or r)[:160])
+    mi = session.call("jawa/map_info") or {}
+    if mi.get("success") is False or mi.get("tile") is None:
+        raise RuntimeError("no map after start_debug_game_ready: %s" % str(mi.get("message") or mi)[:160])
+    return "fresh debug map, tile %s (no registered save made the old one)" % mi["tile"]
+
+
 def _env_reset(session):
     """The hold's environment contract (focused_testing_plan_2026-10-25 §3.5; MODCHECK_HOLD_FIX_SITUATIONAL_ONLY_ROOF):
     before EVERY chain on every live path -- it used to run only under --situational, and run5's Crush deaths on the
@@ -1037,6 +1093,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
         except Exception as e:     # noqa: BLE001 - settings unreadable: every chain is UNMEASURED, never a crash
             hold_tx = None
             hold_err = "site hold could not open its settings transaction: %s: %s" % (type(e).__name__, e)
+    dead_before = None    # colonists dead at this run's first readable hold (None = none read yet): reload_spoiled_site
     declared = set()      # fixture ids TestContext declared to clockgate WITHOUT a watch: withdrawn after the suite
     # CANARY (focused_testing_plan option B, `run --canary`): a vanilla-only probe before the first chain; red -> every
     # selected LIVE chain records one UNMEASURED/invalid HARNESS row and its body does not run (modcheck/validity.py);
@@ -1093,6 +1150,32 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             _modal = None
             _hold = (_hold_site(session, hold_tx, fixtures) if hold_tx is not None
                      else {"bland": False, "problems": [hold_err]} if hold_err else None)
+            _reload = None
+            if _hold is not None and dead_before is not None and not bland_world:
+                _loaded = []
+
+                def _again():
+                    _loaded.append(_load_site_again(session))
+                    # another game now: the old game's fixture ids could exempt a real pawn of this one
+                    import clockgate as _CG  # noqa: E402
+                    for pid in declared:
+                        _CG.withdraw_fixture(pid)
+                    declared.clear()
+                    fixtures.clear()
+                    return _hold_site(session, hold_tx, fixtures)
+                _dead = _hold.get("dead") or ()
+                _hold, _why = reload_spoiled_site(_hold, dead_before, _again)
+                if _why:
+                    _reload = {"note": _why, "loaded": _loaded[0] if _loaded else None,
+                               "s": round(time.monotonic() - _m0, 1)}
+                    if _hold.get("problems"):      # what one reload did not bring back, a second one will not
+                        dead_before |= set(_dead) | set(_hold.get("dead") or ())
+                    elif anchor_given is None:
+                        anchor = _default_anchor(session)
+                    print("[modcheck] chain %s SITE RELOAD: %s (%s)" % (name, _why, _reload["loaded"]),
+                          file=sys.stderr, flush=True)
+            elif _hold is not None and isinstance(_hold.get("dead"), list):
+                dead_before = set(_hold["dead"])
             if _hold is not None and _hold.get("bridge_timeout"):
                 # HARNESS_REPAIR_CAUSE_0CA2BE29 (testq J20261031T195557Z-deb97a.a1): the canary was GREEN, then the game
                 # stopped answering and EVERY chain's hold spent 30 s on a bridge timeout and filed a site_hold fault. A
@@ -1109,7 +1192,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                     if name not in getattr(suite, "offline_chains", ()):
                         chains_out.append({"name": name, "components": [_V.canary_component(canary_res).as_dict()],
                                            "situational": None, "modal_check": None, "site_hold": _hold,
-                                           "env_reset": None,
+                                           "site_reload": _reload, "env_reset": None,
                                            "phase_s": {"hold": round(time.monotonic() - _m0, 1), "body": 0.0,
                                                        "teardown": 0.0}})
                         continue
@@ -1225,6 +1308,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                                "situational": watch.summary() if watch is not None else None,
                                "modal_check": _modal,
                                "site_hold": _hold,
+                               "site_reload": _reload,
                                "env_reset": _env,
                                "phase_s": _phase})
             if _gd is not None:

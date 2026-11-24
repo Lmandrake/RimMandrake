@@ -534,6 +534,39 @@ def _head():
             return None
 
 
+def registered_site(map_info, path=REGISTRY):
+    """The registered site whose save made this map (tile, map id and biome all match), or None. `map_info` is a
+    jawa/map_info answer; only an answer that read a tile can name a site."""
+    if not map_info or map_info.get("tile") is None:
+        return None
+    for site, e in sorted(read_registry(path).items()):
+        if e.get("save") and all(e.get(k) is not None and e.get(k) == map_info.get(m)
+                                 for k, m in (("tile", "tile"), ("mapId", "mapId"), ("biome", "mapBiome"))):
+            return site
+    return None
+
+
+def reload_registered(session, site, path=REGISTRY):
+    """Load the registered save of `site` through that site's own loader (Pyrelands: northstar_site.reload_fixture, the
+    others: load_site). -> the save's name; raises RuntimeError when the load is not verified."""
+    entry = read_registry(path).get(site) or {}
+    if not entry.get("save"):
+        raise RuntimeError("no registered save for site %s" % site)
+    if SITES[site].get("save"):
+        rec = load_site(session.call, site, name=entry["save"])
+        if not rec["verified"]:
+            raise RuntimeError("load of %s not verified: %s" % (rec["save"], "; ".join(str(p) for p in rec["problems"])))
+        return rec["save"]
+    pdir = os.path.join(os.path.dirname(_UTILS), "Pyrelands")
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("pyrelands_site_for_reload", os.path.join(pdir, "northstar_site.py"))
+    ns = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ns)
+    # ignore_mods: as Pyrelands/validation.py _load_registered_site; reload_fixture reads the tile and biome back
+    ns.reload_fixture(session, entry["save"], entry["tile"], map_id=entry.get("mapId"), ignore_mods=True)
+    return entry["save"]
+
+
 # ------------------------------------------------------------------ builds
 def fresh_quicktest(call, sleep=time.sleep, budget_s=420):
     call("rimworld/go_to_main_menu")

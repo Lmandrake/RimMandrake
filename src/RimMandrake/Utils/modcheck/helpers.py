@@ -641,19 +641,20 @@ class BlandReport(object):
         self.problems = []
         self.notes = []
         self.baseline = None
+        self.dead = None       # ids of the dead colonists assert_bland read; None = it never ran (could not look)
 
     @property
     def bland(self):
         return not self.problems
 
     def as_dict(self):
-        return {"bland": self.bland, "problems": self.problems, "notes": self.notes,
+        return {"bland": self.bland, "problems": self.problems, "notes": self.notes, "dead": self.dead,
                 "steps": [s.as_dict() for s in self.steps]}
 
 
-def assert_bland(session, expected_ids=()):
+def assert_bland(session, expected_ids=(), dead=None):
     """Verification only: returns a list of problems (empty == bland). Counts come from the pawn
-    roster and the fire list, never from an LLM."""
+    roster and the fire list, never from an LLM. `dead`: a list that receives the dead colonists' ids."""
     exp = set(expected_ids)
     problems = []
     rows = read_pawns(session)
@@ -675,6 +676,8 @@ def assert_bland(session, expected_ids=()):
     # is not contamination: MEASURED 2026-10-01, that teardown is what made earlier "everyone is dead"
     # reports (E1) -- the harness killed its own spawns and the next suite read them as casualties.
     dead_col = [r["id"] for r in rows if is_colonist(r) and r["dead"] and r["id"] not in exp]
+    if dead is not None:
+        dead.extend(dead_col)
     if dead_col:
         problems.append("dead colonists: %s" % dead_col)
     return problems
@@ -728,5 +731,7 @@ def prepare_bland_map(session, tx, expected_ids=(), kill=True, resurrect=False):
     for s in rep.steps:
         if not s.verified:
             rep.problems.append("%s unverified: %s" % (s.name, s.residue))
-    rep.problems.extend(assert_bland(session, expected_ids))
+    dead = []
+    rep.problems.extend(assert_bland(session, expected_ids, dead=dead))
+    rep.dead = dead
     return rep
