@@ -11,7 +11,8 @@ A RimWorld texture is not a picture, it is an asset with a contract. The contrac
 - real alpha;
 - a silhouette that occupies the tiles that the def says it occupies.
 
-Art that breaks one part looks broken in game. You discover the fault only after a **~23–30 minute** cold load.
+Art that breaks one part looks broken in game. You discover the fault only after a cold load. On the full mod list, plan
+for **15 to 30 minutes** (the `rimworld-load-round` skill holds the dated measurements).
 
 So one rule governs everything here: **no sprite reaches the Mods folder until the validator passes offline.** Spend a
 load only to learn things that a program cannot compute. A program can compute canvas size and alpha.
@@ -29,22 +30,32 @@ verified CLI facts, read `~/dev/MandrakeWorkflows/skills/generating-images/refer
 **Owner's ruling, 2026-08-23:** *"2048x2048 be used for a 16x16 creature… 128 pixels per
 cell occupancy for modern, high quality art."*
 
-    texture edge (px)  =  drawSize (cells)  x  128        then round UP to a power of two
+    texture edge (px)  =  drawSize (cells)  x  128        then round UP to a power of two, floor 256, ceiling 1024
+
+The code for this rule is `common.canvas_for_cells` in `src/RimMandrake/Utils/artpipe/`. The art judge's
+`policy.canvas_rule` gives the same numbers. The floor of 256 is the owner's prefer-higher tiebreak
+(`ART_PAINTERLY_RESTORATION_1`, 2026-09-14). The same ruling allows high resolution "as long as the user will actually
+see the resolution".
+
+- `fill_queue.py` only WARNS when a row's canvas is larger than the rule. It files the job anyway. State the reason in
+  the row's `oversize_reason`.
+- A row with no `drawsize` field and no measured def reads as 1.0 cell, so the rule gives 256. Put the real `drawsize`
+  on the row.
 
 **THE CEILING IS THE GENERATOR, NOT THE RULE — owner, 2026-09-02: "Accept, amend the contract."** The target is
 128 px/cell. You cannot reach the target once `drawSize × 128` exceeds what the image model actually renders.
 
 - The model returns about **1.5 megapixels natively**. So a canvas beyond ~1024–1280 px is an upscale. The file is
-  bigger and carries interpolated pixels, not more detail.
+  bigger and carries interpolated pixels, not more detail. The code stops at 1024 (`CANVAS_CEILING_PX`).
 - The measured case is the sea-beast colossi (`drawSize` 12–20). The 128 px/cell target puts them at 2048. They shipped
   at **1024, i.e. 85–96 px/cell**. That size is CORRECT, not a shortfall.
-- **For any creature whose 128 px/cell target lands above ~1280 px, do two things:**
-  - **Ship the largest canvas that the generator fills with real detail.**
+- **For any creature whose 128 px/cell target lands above 1024 px, do two things:**
+  - **Ship the largest canvas that the generator fills with real detail: 1024.**
   - **STATE the achieved px/cell in that creature's `PLAN.md`.**
 - Do not round up to a power of two that you cannot fill. A reviewer who sees 85 px/cell on a leviathan sees the
   ceiling, not sloppy work.
 - This exception covers the LARGE end only. Below the ceiling, 128 px/cell still binds. Nothing here licenses a
-  1.0-cell animal at 64 px.
+  1.0-cell animal under the 256 floor.
 
 **ZOOM-ONLY ART SCALES TO ITS ZOOM — owner, 2026-10-18:** *"That resolution limit should
 always change if something can only be seen at certain zoom levels. Scale things
@@ -64,12 +75,12 @@ rationally."*
 
 | drawSize | 128 px/cell wants | ship |
 |---|---|---|
-| 1.0 | 128 | 128 or 256 |
+| 1.0 | 128 | **256** (the floor) |
 | 2.0 | 256 | 256 |
-| 3.7 | 473 | **512** |
-| 4.3 | 557 | **512** or 1024 |
+| 3.7 | 474 | **512** |
+| 4.3 | 550 | **1024** |
 | 8.0 | 1024 | **1024** |
-| 16.0 | 2048 | **2048** |
+| 16.0 | 2048 | **1024** (the ceiling: 64 px/cell, state it) |
 
 **Mod convention is FAR below this and is not the standard to copy.** Measured over Alpha Animals' 350 loose creature
 textures: **321 are 256x256**, and only **four** reach 512. The 256x256 set includes creatures that we draw at
@@ -203,7 +214,7 @@ The validator grades each finding:
 
 | Family | Catches |
 |---|---|
-| Canvas | size differs from the reference |
+| Canvas | size differs from the reference (`--drawsize`: see below) |
 | **Linear span** | subject width or height off by >6%, either direction |
 | **Subject aspect** | art squashed rather than redrawn |
 | **Origin** | subject sits somewhere else on the canvas |
@@ -217,6 +228,10 @@ The validator grades each finding:
 | **Canvas contact** (warn) | subject touches an edge the reference does not — clipping |
 | **Fragments** (warn) | solid pixels detached from the main mass |
 | Identity | pixel-identical to the reference — nothing changed |
+
+**For a redraw at another resolution, pass `--drawsize <the def's drawSize>`.** The validator then judges the candidate at
+scale and does not refuse it for canvas size. This works only when the candidate is square on the rule canvas
+(`canvas_for_cells`) and is an exact integer multiple or divisor of the reference on both axes. Any other canvas difference is still a REJECT.
 
 **Span is checked separately from coverage, and that separation is the point.** A wreck legitimately *loses area*,
 because its damage removed material. So the area tolerance has to stay loose. But a wreck must still *span* its
@@ -235,8 +250,12 @@ multiple interchangeable art files for one graphic slot, e.g. a plant's leafless
 
 ```bash
 python skills/generating-rimworld-sprites/scripts/selftest.py \
-  --reference path/to/any_real_sprite.png
+  --reference src/RimMandrake/CrackedLands/Textures/Things/Item/RM_ZennaqFilament.png
 ```
+
+Use a crisp, hard-edged reference. A soft sprite has few solid pixels, so the semi-transparent case fails on it and
+proves nothing. Check a different reference first: `python3 src/RimMandrake/Utils/selftest_sprite_reference_crisp.py
+--reference <png>`.
 
 The selftest has twelve cases:
 
@@ -297,7 +316,7 @@ only this says good.**
 
 ## Art direction that survives downscaling
 
-This project's pilot earned both rules. Both rules are now non-negotiable.
+Three rules. The project's pilot earned rules 1 and 2. All three are non-negotiable.
 
 1. **Silhouette, not surface.** Damage must be **subtractive**: chunks torn out of the outline. Surface corrosion
    disappears into noise at sprite size. Lit indicators and hard cable shapes survive. Mid-tone rust does not.
@@ -316,14 +335,17 @@ This project's pilot earned both rules. Both rules are now non-negotiable.
 Phrase all three positively in the prompt: "every fitting terminates flush against the hull", never "no cables sticking
 out". See `~/dev/MandrakeWorkflows/skills/generating-images/references/prompting.md`.
 
-- **Generate creature sprites at 256 px, not 512.** Art from a 512 source and art from a 256 source are pixel-identical
-  after a downscale to play sizes. The RMSE is 5-7 at every zoom. But 512 costs about 4x the atlas VRAM (183 renders:
-  ~241 MB vs ~64 MB). That cost is a real out-of-memory axis on a large mod list. The default is 256.
-  `fill_queue.py` warns past it without an `oversize_reason`.
-- **Gate legibility with `art_zoom_sim.py`.** Downscale the candidate to on-screen tiers beside a same-tier vanilla
-  control (vanilla small creatures ship at 128 px), and LOOK. Three features let vanilla read at 24-32 px. The features
-  are a thick dark keyline, a few bold shapes, and a body value clearly apart from the ground. Fine detail and thin or
-  absent outlines turn to mud.
+- **Size a creature from its `drawSize`** (§HOW BIG SHOULD THE TEXTURE BE), never from a fixed edge. The 2026-09-13
+  finding that 512 shows no more than 256 was measured at vanilla zoom only. The owner is not convinced that it holds at
+  the zoom levels of the current mod stack, so sizes err generous.
+- **Look at legibility with `art_zoom_sim.py`.** Downscale the candidate to on-screen tiers beside a same-tier vanilla
+  control (vanilla small creatures ship at 128 px), and LOOK. At 32 px/cell two features carry a sprite: a few bold
+  shapes, and a body value clearly apart from the ground. Fine surface detail turns to mud. This is a judgment by eye,
+  never a refusal on a number (`design/RimMandrake/art_judge_brief.md` B2).
+- 🔴 **No outlines (owner card, 2026-10-04; `art_judge_brief.md` B1a).** Value and colour contrast carry the silhouette.
+  A sprite without an outline is correct. A heavy drawn keyline is STYLE_OFF. `fill_queue.py` strips the retired
+  black-outline clause from a row, and refuses a row that still says "black outline" or "keyline". B1a lists the
+  exceptions by creature.
 
 More traps for this section: [references/traps.md](references/traps.md) § Art direction that survives downscaling.
 
@@ -363,8 +385,11 @@ For facings, mirroring, Spastic appendages and flight frames, read the `rimworld
 - 🔴 **`reference=` on an artpipe job triggers reskin-validate.** That check tests pixel-fidelity against the OLD sprite.
   - A deliberate RESTYLE always fails it. 21 Pyrelands jobs REJECTed this way, on canvas/subject-size mismatch vs the
     donor.
-  - For a restyle, file **reference-less**: prompt + library images for inspiration only. The legibility gate gates the
-    job, not reskin-validate (BENCH 2026-09-13).
+  - For a restyle, file **reference-less**: prompt + library images for inspiration only (BENCH 2026-09-13). Reskin-validate
+    then does not run. Other checks can still fail the render, for example a wrong canvas, a flat placeholder shape, a picture that the owner
+    banned.
+  - No legibility gate runs. It is off by default since 2026-09-14 (`ART_PAINTERLY_RESTORATION_1`), and the daemon records
+    `skipped`, which is not a pass. So LOOK at the render (§5).
 - **A brief can cite reference art that does not exist.** "Match `X`'s art" is checked only when the job's `reference`
   field holds `X`'s path. Nothing checks prose in `style_notes`.
   - A def with a name and a `drawSize` does not always have a texture.
@@ -372,14 +397,18 @@ For facings, mirroring, Spastic appendages and flight frames, read the `rimworld
 - 🔴 **A redo whose note rejects the ANATOMY carries no reference image.** Build that prompt from the def's description
   instead.
   - The evidence: an enact redo for "make it alien / fails the Terran check" attached the rejected render as
-    `canon_reference`. The generator redrew the rejected creature. The canon check failed it twice (ulvassk, 2026-10-10).
-- **An owner-kind canon check grades EVERY sentence of `owner_note`.** The kind is "owner" when the job has no canon
-  entry but has an owner note. The note is the `owner_note` field, else the owner-attributed passage of the job's prompt
-  (`canon_check.py`).
-  - The check grades a workflow clause ("generate AFTER the source is settled") as a visual requirement. Such a clause
-    can fail a render forever. Mark the clause with the job's `canon_na` + `canon_na_reason`. Do not retry.
-  - The converse: a note with only provenance ("decision taken by question card …") passes 0/0 VACUOUSLY and grades
-    nothing (`rotimmature_greylady_v1`). Put the visual ask in `owner_note` when you file.
+    `canon_reference`. The generator redrew the rejected creature. The canon check flagged it twice (ulvassk, 2026-10-10).
+- **The canon check is an ADVISOR, never a gate** (owner, 2026-10-15, by card; `canon_check.py`). The check attaches its
+  verdict to the picture. The check never fails a job, never blocks one and never files a retry. FAIL predicted 0 of 64
+  owner rejections. So never redraw on its score alone.
+  - A job with a canon entry is graded on the `## Must show` lines of the entry. The owner note is then context only.
+  - A job with no canon entry but with an owner note is graded on each sentence of the note. The note is the `owner_note`
+    field. When the field is empty, the note is the prompt from its first sentence that names the owner, a rejection or
+    a ruling, to the end.
+  - The check grades a workflow clause ("generate AFTER the source is settled") as a visual requirement, and flags it.
+    Mark such a clause with the job's `canon_na` + `canon_na_reason`. Do not retry the render.
+  - A note with only provenance ("decision taken by question card …") has only n/a lines. The verdict is then
+    UNGRADED (0/0), which is not a PASS (`rotimmature_greylady_v1`). Put the visual ask in `owner_note` when you file.
 - ⛔ **A pose change from a live reference is a generator limit, not a prompt problem.** A dead-catch job used a living
   reference. The render copied the reference pose in three rounds. Appended HARD REQUIREMENT tails and a front-loaded
   pose sentence alike scored 0/1. Derive from a dead master that passed instead (2026-10-11).
@@ -388,8 +417,8 @@ For facings, mirroring, Spastic appendages and flight frames, read the `rimworld
     `D:\ClaudeWork\rimmandrake\artpipe` (outside git since 2026-10-02).
   - That dir, and any `.decisions.json` review sheet, can already hold finished, ruled-on art for the subject. The daemon
     runs continuously, and its output regularly sits unused.
-  - Before you file, grep `registry.jsonl` for `source: "<ITEM_ID>"`. One wave's "81 owed renders" was not 81 to
-    generate. The wave was actually 77 already in flight and 24 finished renders that waited on review (BENCH 2026-09-21).
+  - Before you file, grep `registry.jsonl` for `source: "<ITEM_ID>"`. One wave's "81 owed renders" were
+    not owed: they were already in flight, or finished and waiting on review (BENCH 2026-09-21).
   - Rule: `CLAUDE.md > Check for existing regenerated art before queuing more`. Full text:
     `design/RimMandrake/standing_rulings.md` §Check for existing regenerated art before queuing more.
 
@@ -399,7 +428,8 @@ More traps for this section: [references/traps.md](references/traps.md) § Befor
 
 A claim that you deployed a file is separate from a claim that you wrote it. The game reads the Steam Mods folder, never
 this repo. Run `python src/RimMandrake/Utils/deploy_custom_mods.py` for a plan. Read the plan. Then run it with
-`--apply`. Per `infrastructure/agents/CHARTER.md`, deploy only your own files.
+`--apply`. Never deploy over the uncommitted files of another window
+(`infrastructure/agents/CHARTER.md`).
 
 🔴 **Art shipped at a donor's own texPath can be silently regressed by a later-loading mod shipping art at the same
 texPath.** There is no error and no log entry. The custom art just quietly reverts (FOUNDRY 2026-09-12,

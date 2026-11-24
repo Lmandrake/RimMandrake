@@ -3,7 +3,7 @@
 Moved verbatim from `../SKILL.md`; the parent skill keeps a pointer.
 
 The validator proves the file is shippable. Only the game proves the art is
-*drawn*, and a cold load costs **~23–30 minutes** — so a sprite is not finished
+*drawn*, and a cold load of the full list costs **15 to 30 minutes** — so a sprite is not finished
 until it ships with the plan for looking at it. Write the plan in the same
 commit as the PNG; the alternative is that the person holding the game invents
 one, and theirs will not carry your prediction.
