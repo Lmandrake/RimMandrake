@@ -82,7 +82,7 @@
       </li>
     </comps>
     <race>
-      <thinkTreeMain MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">VEF_AnimalWeirdEater</thinkTreeMain>
+      <thinkTreeMain>Animal</thinkTreeMain>
       <herdAnimal>false</herdAnimal>
       <predator>false</predator>
       <useMeatFrom>Tortoise</useMeatFrom>

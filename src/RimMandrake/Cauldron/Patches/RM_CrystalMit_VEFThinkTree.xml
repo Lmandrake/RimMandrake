@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RIMMANDRAKE_FIX_THREE_WEIRD_EATERS_WITH_NO_THINK_TREE: the crystal mit (RM_CrystalMit) eats its odd food through VEF's weird-eater think
+     tree. Set only when that ThinkTreeDef is loaded; without the Vanilla Expanded Framework the def keeps Animal. A
+     MayRequire on the def's own field would leave the race with no tree at all. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThinkTreeDef[defName="VEF_AnimalWeirdEater"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_CrystalMit"]/race/thinkTreeMain</xpath>
+      <value>
+        <thinkTreeMain>VEF_AnimalWeirdEater</thinkTreeMain>
+      </value>
+    </match>
+  </Operation>
+</Patch>
