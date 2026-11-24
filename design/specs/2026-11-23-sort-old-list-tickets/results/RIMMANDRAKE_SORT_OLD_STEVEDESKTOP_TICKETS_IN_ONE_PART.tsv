@@ -1,0 +1,25 @@
+CUISINE_LXML_MEND_STEVE_HAS_NONE	REAL_WORK	src/RimStarWars/Cuisine/validation.py still imports lxml at lines 63 and 101 on origin/main; no fallback seen	-
+HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE	REAL_WORK	state built; criteria A1-A6 (live reload bisects) outstanding	-
+OPS_STEVE_DIAGNOSE_INVALID_MBTX_YAHV	REAL_WORK	ledger refused the close: guard owed (a class guard test shown failing); alarm itself is not open	-
+OPS_STEVE_DIAGNOSE_INVALID_SHARE_UKDG	DONE	packet: alarm not in ops_watch alarms.json (no open alarm)	cleared
+OPS_STEVE_FEED_IDLE_LANE_HURP	DONE	packet: alarm not in ops_watch alarms.json (no open alarm)	cleared
+OPS_STEVE_SEATS_RESTORE_QTWK_RGFZ	REAL_WORK	packet: alarm state now OPEN	-
+OPS_STEVE_UNSTICK_UNCLAIMED_ETBS	REAL_WORK	ledger refused the close: guard owed (a class guard test shown failing); alarm itself is not open	-
+RIMMANDRAKE_CENSUS_STEVEDESKTOP_ERA_REMAINS_WHILE_SOAK_RUNS	REAL_WORK	state doing; clean-up apply step owed after the soak, steps 1-14 not shown done	-
+RIMMANDRAKE_DIAGNOSE_HAR_CTOR_TOKEN_ZERO	REAL_WORK	crash cause unexplained; hardware is a guess at 65%; no ruling replaced it	-
+RIMMANDRAKE_DIAGNOSE_STEVE_GAME_VANISHES_FIVE_BEFORE_BREAKFAST	REAL_WORK	gap a fixed in fc5896563c; the no-crash-record part is left open per its note	-
+RIMMANDRAKE_FIX_STEVE_LANE_WORKER_AND_GAME_STOPS	REAL_WORK	state doing; 6 of 13 lane items still open	-
+RIMMANDRAKE_FIX_STEVE_WORKER_STALE_INDEX_LOCK_BEFORE_PULL	REAL_WORK	fix f456f21b7c landed but the fresh reader and live proof are owed before close	-
+RIMMANDRAKE_FIX_TICKBENCH_WSL_PATHS_UNDER_PYTHONEXE	REAL_WORK	fix e51e288739 landed; the level-tagged verify run is owed and not probed	-
+RIMMANDRAKE_MEASURE_STEVE_NOTHING_HOURS_ON_SETTLED_JOBS_ONLY	REAL_WORK	filed 2026-11-23; blind collector with a named fix and acceptance selftest	-
+RIMMANDRAKE_PROBE_OFFLINE_MODEL_LINKING_REAL_GAME_CODE	REAL_WORK	design probe the owner asked about; first spike named, not run	-
+RIMMANDRAKE_SKIP_PERMISSIONS_EVERYWHERE_AUTO_MODE_BLOCKED_HIM	REAL_WORK	OWNER MARK in packet; the Macs and a phone-spawned session still owed	-
+RIMMANDRAKE_SWEEP_STEVEDESKTOP_CLONES_CARRYING_LOOP_TREES	REAL_WORK	acceptance test (find count = 0) not run; clones on Steve not shown clean	-
+RIMMANDRAKE_UNBLIND_SOAK_WORKER_PROBE_SYSTEM_SEES_NO_DISTRO	REAL_WORK	fix b937fdc2d1 is in the repo but not installed on Steve; no proof of the install	-
+RIMMASTER_WIRE_STEVEDESKTOP_TELEMETRY_FLYING_BLIND	REAL_WORK	route not built; owner said it is important per Conductor note	-
+STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO	REAL_WORK	OWNER MARK in packet; fault windows still recurring	-
+STEVE_DEPLOY_FIX_AURORA_TYPE_MISSING	REAL_WORK	state ready not done; its own prose says the deploy proof on the Steve host is owed	-
+STEVE_FILLER_MONITOR_FAIL_FINDINGS	REAL_WORK	standing host, its title says do not close while the filler runs; new fail rows 2026-11-24	-
+STEVE_LANE_MONITOR_PAUSE_FINDINGS	REAL_WORK	standing host, its title says do not close while the lane runs; kept open on purpose by 2f74ae363d	-
+STEVE_RUNNER_CLONE_ENFORCE_NO_LLM_WRITES	REAL_WORK	OWNER MARK in packet; state built, criterion A1 outstanding	-
+STEWARD_FIX_LEAVES_THE_LIGHTS_ON	REAL_WORK	its notes say stays open, guard owed after the live promise broke	-
