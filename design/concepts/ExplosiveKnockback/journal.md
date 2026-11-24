@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 7:31 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 7, the walk brief, since 2026-11-24 11:41 AM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 7:31 PM PST).
+- **Waiting on:** the Dispatch tick's walk-brief run (Stage 7, arrival 2; visit 6's own session wrote arrival 1, so a fresh run writes it). Walk save EK_VISIT6_WALK_20261124_C on ArchBig, which holds the walk build.
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -433,5 +433,15 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Checks passed: order, by, version, hold.
 - Steward confirms: read db80fab783 once (sound, visit_5/fix_reviews.jsonl), selftest map PASS 31 of 31 faults, before DISAGREE / after AGREE 123 of 123, build_match 54 of 56
 - Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-23 7:31 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 7:31 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-24 11:41 AM PST, stage change: In-game acceptance (Stage 6) to Walk brief (Stage 7) (by BENCH)
+
+- Why: Stage 6 exit met at visit 6 (run-1795510833): 56 of 56 checks PASS and count on the walk build e089dc2573; ArchBig's DLL equals the committed one; steward read SUMMARY, 140 rows and evidence
+- Checks passed: order, by, version, hold, steward_confirms, exit_met, build_match, unrun_run.
+- Steward confirms: visit 6 (drive run-1795510833, read by run-1795548573): SUMMARY.md, 140 rows, strange, planted, fix_reviews (1acc05e0ed, d61b1e2b31, e089dc2573 read sound by an earlier steward; none owed) and the evidence files. Last rows 57 of 57 PASS on e089dc2573 (56 checks, 1 map agreement); no evidence file has FAIL, UNMEASURED or INVALID; build_match 56 of 56, 0 to run, no undecided bar; ArchBig DLL md5 equals the committed DLL (c41f0c11); only a proof script changed since. sc_walk_blasts repair a1dd0592dc planted FAIL, real PASS. sc_blast_kinds stages no Outer Rim lane (table partial): its bar is decided by P_harmful_unpatched (untuned Thump 100 percent, 3 cells as Bomb) and P_fire_half, and OuterRim_Sonic is DamageWorker_AddInjury, untuned, so the same path. Verdict: exit met.
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: Stage 6 exit met at visit 6 (run-1795510833): 56 of 56 checks PASS and count on the walk build e089dc2573; ArchBig's DLL equals the committed one; steward read SUMMARY, 140 rows and evidence
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 7:31 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 7:31 PM PST).
 - Record: `version/stage_record.json`.

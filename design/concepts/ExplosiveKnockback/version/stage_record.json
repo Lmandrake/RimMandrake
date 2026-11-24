@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-23T19:31:47-08:00",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-24T11:41:51-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -18,7 +18,7 @@
     "visit": 2,
     "total": 6
   },
-  "pre_human_arrivals": 1,
+  "pre_human_arrivals": 2,
   "moves": [
     {
       "from": "offline_build",
@@ -326,6 +326,28 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-24T11:41:51-08:00",
+      "by": "BENCH",
+      "why": "Stage 6 exit met at visit 6 (run-1795510833): 56 of 56 checks PASS and count on the walk build e089dc2573; ArchBig's DLL equals the committed one; steward read SUMMARY, 140 rows and evidence",
+      "unit": "rm-detached-bench-rimmandrake-confirm-explosiveknockback-v-1795548754",
+      "confirmed": {
+        "steward_confirms": "visit 6 (drive run-1795510833, read by run-1795548573): SUMMARY.md, 140 rows, strange, planted, fix_reviews (1acc05e0ed, d61b1e2b31, e089dc2573 read sound by an earlier steward; none owed) and the evidence files. Last rows 57 of 57 PASS on e089dc2573 (56 checks, 1 map agreement); no evidence file has FAIL, UNMEASURED or INVALID; build_match 56 of 56, 0 to run, no undecided bar; ArchBig DLL md5 equals the committed DLL (c41f0c11); only a proof script changed since. sc_walk_blasts repair a1dd0592dc planted FAIL, real PASS. sc_blast_kinds stages no Outer Rim lane (table partial): its bar is decided by P_harmful_unpatched (untuned Thump 100 percent, 3 cells as Bomb) and P_fire_half, and OuterRim_Sonic is DamageWorker_AddInjury, untuned, so the same path. Verdict: exit met.",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: Stage 6 exit met at visit 6 (run-1795510833): 56 of 56 checks PASS and count on the walk build e089dc2573; ArchBig's DLL equals the committed one; steward read SUMMARY, 140 rows and evidence"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match",
+        "unrun_run"
       ]
     }
   ],
