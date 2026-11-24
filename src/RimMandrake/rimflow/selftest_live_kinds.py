@@ -674,7 +674,8 @@ def missed_mutants(tests):
 
 def main():
     tests = [t_old_rows_read_as_today, t_absent_tag_is_kind_a, t_unknown_outcome_refused,
-             t_success_needs_a_pass, t_spoiled_run_speaks_for_nobody, t_last_run_spoiled_runs_again,
+             t_success_needs_a_pass, t_spoiled_run_speaks_for_nobody, t_voided_run_speaks_for_nobody,
+             t_last_run_spoiled_runs_again,
              t_environment_fault_needs_its_record, t_unresolved_holds_until_classed, t_forbidden_effect_is_mod_failure,
              t_random_miss_only_by_design, t_kind_b_one_success, t_kind_b_x_of_y,
              t_inconclusive_is_not_pass_or_fail, t_tag_without_evidence_refused, t_hunt_is_never_in_the_exit,

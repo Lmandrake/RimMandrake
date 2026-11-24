@@ -76,19 +76,19 @@ def table(**c1):
     return K.table(**dict({"stages_raid": "a raid of 6 at the map edge"}, **c1))
 
 
-def T_raid_call_refused():
+def t_raid_call_refused():
     switch()
     assert all(client(t, p) == "refused" for t, p in RAIDS), [(t, client(t, p)) for t, p in RAIDS]
     switch(paused=False)
     assert all(client(t, p) == "sent" for t, p in RAIDS), [(t, client(t, p)) for t, p in RAIDS]
 
 
-def T_other_calls_pass():
+def t_other_calls_pass():
     switch()
     assert all(client(t, p) == "sent" for t, p in OTHERS), [(t, client(t, p)) for t, p in OTHERS]
 
 
-def T_allowed_item_may_stage():
+def t_allowed_item_may_stage():
     switch(allow=["RIMMANDRAKE_BUILD_RAID_TOOL"])
     for item, want in (("RIMMANDRAKE_BUILD_RAID_TOOL", "sent"), ("RIMMANDRAKE_OTHER", "refused"), ("", "refused")):
         os.environ[RP.FOR_ENV] = item
@@ -98,7 +98,7 @@ def T_allowed_item_may_stage():
             os.environ.pop(RP.FOR_ENV, None)
 
 
-def T_tagged_scene_does_not_start():
+def t_tagged_scene_does_not_start():
     switch()
     tt = table()
     ids = [t for t, _ in M.ingame_tests(tt)]
@@ -120,7 +120,7 @@ def T_tagged_scene_does_not_start():
     assert M.read_ingame_exit(root, MOD, 1, tt)["state"] == "not_met"
 
 
-def T_paused_is_its_own_word():
+def t_paused_is_its_own_word():
     switch()
     for rows in ([], [K.o("SUCCESS", "FAIL")], [K.row("c1", "FAIL", **{"class": "MOD"})], [K.o("UNRESOLVED")],
                  [K.row("c1", "UNMEASURED", **{"class": "HARNESS"})]):
@@ -133,7 +133,7 @@ def T_paused_is_its_own_word():
         assert "c1" not in ex["lines"] and not ex["undecided_bars"] and not ex["shortfalls"] and ex["state"] == "met", (rows, ex)
 
 
-def T_a_standing_pass_stands():
+def t_a_standing_pass_stands():
     switch()
     tt = table()
 
@@ -155,7 +155,7 @@ def T_a_standing_pass_stands():
     assert read([K.o("UNRESOLVED"), K.good()])["open"]
 
 
-def T_open_raid_bar_holds_the_pass():
+def t_open_raid_bar_holds_the_pass():
     switch()
     tt = table()
     root = K.S.visit("rp_pass%d" % switch.n, list(K.OTHERS), tt=tt)
@@ -170,7 +170,7 @@ def T_open_raid_bar_holds_the_pass():
     assert M.raid_bars_decided(root, MOD, 1, K.table(), None)[0]
 
 
-def T_walk_brief_names_it():
+def t_walk_brief_names_it():
     switch()
     tt = table()
     root = K.S.visit("rp_wb%d" % switch.n, list(K.OTHERS), tt=tt)
@@ -185,7 +185,7 @@ def T_walk_brief_names_it():
     assert "clause(\"raid_bars_decided\"" in src, "the pass does not ask"
 
 
-def T_chain_is_not_run():
+def t_chain_is_not_run():
     import suite as SU
     switch(chains={"Visibility": {"c_raid": "a raid"}})
     assert RP.chain_paused("Visibility", "c_raid") and not RP.chain_paused("Visibility", "c_other")
@@ -209,7 +209,7 @@ def T_chain_is_not_run():
     assert PA.refusal("Visibility", {"chains": ["c_raid"]}, "BENCH") is None
 
 
-def T_switch_unreadable_is_paused():
+def t_switch_unreadable_is_paused():
     for body in (None, "{", "[]", '{"paused": "no"}'):
         p = os.path.join(TMP, "bad_%d.json" % switch.n)
         switch.n += 1
@@ -223,7 +223,7 @@ def T_switch_unreadable_is_paused():
     assert json.load(open(REAL_SWITCH))["paused"] in (True, False)
 
 
-def T_one_command_lifts():
+def t_one_command_lifts():
     calls = []
     run = lambda argv, **k: calls.append(argv) or types.SimpleNamespace(returncode=run.rc, stdout="PUBLISHED abc", stderr="")  # noqa: E731
     run.rc = 0
@@ -243,7 +243,7 @@ def T_one_command_lifts():
     assert cli("lift", "--why", "x") == 4
 
 
-def T_briefs_carry_the_rule():
+def t_briefs_carry_the_rule():
     assert RP.RULE in M.HOW_A_BAR_HOLDS and "cheaper_why" in M.LIVE_KINDS_RULE and "PAUSED" in M.LK.STEWARD_RULE
     for f in ("src/RimMandrake/rimflow/roles/designer_scene_contract.md", "src/RimMandrake/rimflow/roles/fable_rescue.md",
               ".claude/agents/rm-testpilot.md", ".claude/agents/rm-bridge.md", "infrastructure/agents/CHARTER.md", "CLAUDE.md",
@@ -251,7 +251,7 @@ def T_briefs_carry_the_rule():
         assert "cheapest test that decides" in " ".join(open(os.path.join(REPO, f), encoding="utf-8").read().split()), f
 
 
-def T_census_lists_every_call():
+def t_census_lists_every_call():
     root = os.path.join(TMP, "cen")
     shutil.rmtree(root, ignore_errors=True)
     vd = os.path.join(root, "design", "concepts", "Mx", "version")
@@ -268,12 +268,9 @@ def T_census_lists_every_call():
     assert RP.census(root)[2]
 
 
-TESTS = [v for k, v in sorted(globals().items()) if k.startswith("T_")]
-
-
-def run_all():
+def run_all(tests):
     red = []
-    for t in TESTS:
+    for t in tests:
         keep = dict(RP.__dict__)
         try:
             t()
@@ -291,23 +288,42 @@ PLANTS = [      # (what, module attribute, the broken stand-in): each must turn 
     ("no chain is paused", "chain_paused", lambda mod, chain, path=None: None)]
 
 
+def missed_plants(tests):
+    missed = []
+    for what, name, bad in PLANTS:
+        old = getattr(RP, name)
+        setattr(RP, name, bad)
+        got = run_all(tests)
+        setattr(RP, name, old)
+        print("plant %-34s %s" % (what, "red: " + ", ".join(x for x, _ in got) if got else "NOT SEEN"))
+        if not got:
+            missed.append(what)
+    return missed
+
+
 def main():
-    red = run_all()
+    tests = [t_raid_call_refused,
+             t_other_calls_pass,
+             t_allowed_item_may_stage,
+             t_tagged_scene_does_not_start,
+             t_paused_is_its_own_word,
+             t_a_standing_pass_stands,
+             t_open_raid_bar_holds_the_pass,
+             t_walk_brief_names_it,
+             t_chain_is_not_run,
+             t_switch_unreadable_is_paused,
+             t_one_command_lifts,
+             t_briefs_carry_the_rule,
+             t_census_lists_every_call]
+    red = run_all(tests)
     for n, why in red:
         print("FAIL %s: %s" % (n, why[:400]))
     missed = []
     if not red:
-        for what, name, bad in PLANTS:
-            old = getattr(RP, name)
-            setattr(RP, name, bad)
-            got = run_all()
-            setattr(RP, name, old)
-            print("plant %-34s %s" % (what, "red: " + ", ".join(x for x, _ in got) if got else "NOT SEEN"))
-            if not got:
-                missed.append(what)
+        missed = missed_plants(tests)
     RP.SWITCH = REAL_SWITCH
     shutil.rmtree(TMP, ignore_errors=True)
-    print("selftest_raid_pause: %d of %d tests pass%s" % (len(TESTS) - len(red), len(TESTS), "" if not missed else
+    print("selftest_raid_pause: %d of %d tests pass%s" % (len(tests) - len(red), len(tests), "" if not missed else
                                                         "; planted faults not seen: %s" % ", ".join(missed)))
     return 1 if red or missed else 0
 
