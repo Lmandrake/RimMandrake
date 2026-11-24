@@ -1,3 +1,3 @@
-# POLISH: a Stage 6 check goes to a Steve game (a record; nobody works it)
-
-- 2026-11-24, RIMMANDRAKE_UNPAUSE_FLOWWORKS_VISIT_TEN_SUMMARY_HAS_NO_EXIT_BLOCK: `ingame_to_run` reads rows only up to visit N-1, so a driver's list of checks to run names a check that the lane already decided in visit N (one extra run, no wrong verdict).
+- GimmeSomeSlack/validation.py lines 236-247: the offline gate's 600 s guard is under a real run of its C# selftest (435 s on Archmagi, over 900 s on SteveDesktop).
+- sc_look_menu_icons and sc_pole_south_of_tree need a screenshot judged, so the lane reads them COULD NOT LOOK and sends them again every 2 h while the visit is open.
+- visit_feed: chain jobs' rows (modcheck's own list) can never count; each writes COULD NOT LOOK rows.
