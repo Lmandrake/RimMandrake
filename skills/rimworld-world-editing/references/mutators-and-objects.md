@@ -168,7 +168,7 @@ reads the field a second time.
 
 Every entry below is a mistake that was made and caught in one session.
 
-## 🔴 `world_landmarks_set`'s `isValidTile` is evaluated AFTER the add. It is not a gate.
+## 🔴 `world_landmarks_set`'s `isValidTile` is not a gate.
 
 ```
 world_landmarks_set {action:add, def:sw_Sarlacc, tiles:"6", checkValid:true}
@@ -177,9 +177,9 @@ world_landmarks_set {action:add, def:sw_Sarlacc, tiles:"6", checkValid:true}
      tiles:    [{landmark: "sw_Sarlacc", landmarkName: "White Sarlacci Burrow", ...}]
 ```
 
-The landmark **is on the tile** and named. `isValidTile` reports false because a landmark now
-occupies it — the flag describes the state *after* your own write. ⛔ It never blocks the add,
-and it is worthless as a pre-check.
+The landmark **is on the tile** and named. The tool computes `isValidTile`
+just before the add, in the same call. A false verdict means that the def's own rule refuses the
+tile, or that a landmark was already there. ⛔ It never blocks the add, so the call is not a pre-check.
 
 ✅ **The only honest success signal is `added >= 1` AND the read-back row showing your def in
 `landmark`.** Everything else lies in one direction or the other.

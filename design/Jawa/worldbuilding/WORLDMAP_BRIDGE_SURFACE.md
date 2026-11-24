@@ -29,7 +29,7 @@ sane shape for a writer.
 If anything has already read `HillinessLabel`, `MinTemperature`, `MaxTemperature` or
 `Biomes` on a tile, changing `hilliness` / `temperature` / `PrimaryBiome` afterwards
 leaves the stale value for the rest of the session.
-⇒ **Write before anything reads, or reload.** Our validators must therefore read back
+⇒ **Write before anything reads, or run `jawa/world_tile_cache_reset`, or reload.** Our validators must therefore read back
 the RAW FIELDS, never the cached properties — a validator built on `HillinessLabel`
 would confirm its own writes while the planet stayed wrong.
 
@@ -253,9 +253,8 @@ that source alone would have got wrong.
   could only mark ⚠️ UNCERTAIN because vanilla has no call site for them. Proven.
 * ⚡ **Writing all 21,872 tiles takes 0.1 seconds** and reading them back to validate takes
   about as long. Bulk world editing is not expensive; the expensive part was always the load.
-* 🔴 **`BiomeDef.allowRivers` / `allowRoads` do not exist in the offline def dump.** All 80
-  biomes report neither field, yet live they are `False` on `Ocean`, `IceSheet` and
-  `GlacialPlain`. **This question cannot be answered offline.**
+* ✅ **`BiomeDef.allowRivers` / `allowRoads` are in a current def dump** (all 61 BiomeDefs of capture
+  `2026-11-24T00-35-54Z`). Live they are `False` on `Ocean`, `IceSheet` and `GlacialPlain`.
 * 🔴 **Biome-hiding is common, not theoretical.** An untouched quicktest world carries 20+
   tiles whose rivers or roads exist in `potential*` and are invisible because the biome
   forbids them. Paint water over a river and the river is still there, silently.

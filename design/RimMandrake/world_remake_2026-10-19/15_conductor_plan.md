@@ -13,7 +13,7 @@ to take. Labels as in 06: **MEASURED** (read today, instrument named), **RECORDE
 (read from engine source, not run), **UNMEASURED**.
 
 Why defaults are acceptable: the dev world is disposable (Option D), and every step from S10 on has a checkpoint (C5–C8) to
-return to; there is no C4 (no save is possible at the landing page in 1.6 — the world lives in `Current.CreatingWorld` and `Current.Game` is null until landing (`rimworld/save_game` → 'No game is currently loaded'; `GameDataSaveLoader.SaveGame` NREs; MEASURED 2026-10-20)), so a failure between S6 and C5 costs a regeneration. What cannot be undone *inside one world* (ideology mode, the faction pass) costs only a regeneration.
+return to; there is no C4 (no save is possible at the landing page in 1.6 — the world is in `Current.Game.World`, but no map exists and `programState` is `Entry` until landing (`rimworld/save_game` → 'No game is currently loaded'; `GameDataSaveLoader.SaveGame` NREs; MEASURED 2026-10-20)), so a failure between S6 and C5 costs a regeneration. What cannot be undone *inside one world* (ideology mode, the faction pass) costs only a regeneration.
 
 ---
 

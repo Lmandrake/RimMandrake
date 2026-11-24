@@ -339,7 +339,8 @@ Measured live at `Page_SelectStartingSite` (see `skills/rimworld-world-editing`)
 - ✅ resolve and execute debug paths under `Actions\` — even though listing the `Actions`
   **root NREs**, its children resolve. `Set biome (mod)...` has **54** biomes,
   `Set landmark (mod)...` has **113** landmarks.
-- 🔴 **but nothing can target a world tile.** `execute_debug_action` accepts only
+- ✅ **The `jawa/world_*` tools target world tiles since 2026-08-19** (`skills/rimworld-world-editing` §3).
+- 🔴 **But no debug action can target one.** `execute_debug_action` accepts only
   `pawnId`/`x`/`z`/`thingId`, all map-scoped; the vanilla `SetBiome` closure reads
   `GenWorld.MouseTile(false)`. Proven no-op: `Set biome -> ice sheet` returned
   `success: true` and the IceSheet tile count stayed at **6070**.

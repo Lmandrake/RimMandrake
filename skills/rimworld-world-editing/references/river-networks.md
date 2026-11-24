@@ -16,8 +16,8 @@ rb.call("jawa/world_links_get", {"range": "0-1999"})              # -> count 100
 rb.call("jawa/world_links_get", {"range": "0-1999", "limit": 2000})  # -> count 2000
 ```
 
-⛔ `max` and `count` are **silently ignored** — they return 100 and report
-`requested: 2000`, which reads like a partial success rather than a capped one. The same
+⛔ `max` and `count` are not parameters: a guard refuses them, or the raw bridge **silently ignores** them. Each tool now reports the cut: `limitHit`
+(links, mutators), `truncated` (`world_tile_get`, default 200), or `count` against `returned`. The same
 cap and the same fix apply to `world_mutators_get`, `world_objects_get` and
 `world_landmarks_get`. A whole-planet harvest without `limit` gives you 100 tiles per
 call and a plausible-looking answer.

@@ -112,8 +112,8 @@ Lake, SeaIce and IceSheet all refuse roads: **2,504 tiles**.
 dropped = [e for e in edges if not allow[e[0]] or not allow[e[1]]]
 ```
 
-⚠️ **`allowRoads` is absent from the offline def dump.** It can only be read live —
-`world_links_get` returns it per tile.
+✅ **A current def dump holds `allowRoads`** (`defs/BiomeDef.json`). Live, `world_links_get` returns
+it per tile.
 
 ---
 

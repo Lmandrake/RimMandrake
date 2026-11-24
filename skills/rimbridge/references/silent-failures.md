@@ -80,7 +80,7 @@ happened to match. **Treat the written path as a claim and stat the Saves folder
 | getter | lies because | read instead |
 |---|---|---|
 | **`SkillRecord.Level`** | **adds aptitudes**, so read-back ≠ what you wrote | `GetLevel(false)` |
-| **`Tile.HillinessLabel`, `MinTemperature`, `MaxTemperature`, `Biomes`** | lazily cached with **no reset method anywhere in RimWorld** — stale for the session after any write | the raw fields: `hilliness`, `temperature`, `PrimaryBiome` |
+| **`Tile.HillinessLabel`, `MinTemperature`, `MaxTemperature`, `Biomes`** | lazily cached with **no reset method anywhere in RimWorld** — stale after any write until a reload or `jawa/world_tile_cache_reset` | the raw fields: `hilliness`, `temperature`, `PrimaryBiome` |
 | **`SurfaceTile.Roads` / `Rivers`** | biome-FILTERED views — `allowRoads ? potentialRoads : null`. A water biome **hides** links without deleting them | `potentialRoads` / `potentialRivers` to validate; the views only to answer "what does the player see" |
 | **`RaidStrategyDef.Worker.CanUseWith`** | meaningless while `parms.faction` is **null** — every strategy reports unusable | resolve an attacker first |
 | **`IncidentWorker.CanFireNow`** | carries storyteller **pacing** that `TryExecute` never consults | `false` does **not** block a raid. Just fire it | It also caches its result (and `CanFireNowSub`) per worker per game tick (`lastCheckCanRunTick`), forced calls included: a dry run re-asked in the same tick, e.g. after flipping a toggle on a paused game, replays the first answer. Step a tick (`S.run(5)`) between asks.
@@ -118,8 +118,6 @@ happened to match. **Treat the written path as a claim and stat the Saves folder
 
 ## 6. Facts that cannot be checked offline
 
-* 🔴 **`BiomeDef.allowRivers` / `allowRoads` are ABSENT from the def dump** — all 80 biomes
-  report neither field — yet live they are `False` on `Ocean`, `IceSheet`, `GlacialPlain`.
 * 🔴 **`WorldInfo.overallPopulation` and `landmarkDensity` are not scribed** — whatever you
   set, they revert on the next load.
 * 📌 **`isThickRoof` lives under the `fields` sub-object** in the dump, not at top level.
@@ -166,7 +164,7 @@ MAP generation from the tile's hilliness, topology and elevation.
 
 ## `jawa/world_landmarks_set` — `isValidTile: false` on a landmark that was placed correctly
 
-The validity array is evaluated AFTER the add, so it reports the landmark you just wrote.
+The validity array is computed just before the add, in the same call, and never blocks the add.
 `added >= 1` plus a read-back showing your def is the only trustworthy signal. Conversely a
 landmark CAN be placed on a tile the engine considers invalid — the flag never blocks.
 
