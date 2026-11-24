@@ -71,6 +71,31 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(refusal != null && reel.pending == Hose.HosePendingOrder.None, "all four blocked ports refuse the order");
             });
 
+            Case("Pump_deploy_click_avoids_occupied_relay_intake", () =>
+            {
+                var map = new HoseHarness.Map();
+                var reel = new HoseHarness.CompHoseReel { parent = new HoseHarness.Thing { Map = map } };
+                var pump = new HoseHarness.Building_LiquidPump { Map = map, Position = new HoseHarness.IntVec3(12, 0, 5) };
+                map.things.Add(pump);
+                var sharedPort = new HoseHarness.IntVec3(11, 0, 5);
+                var freePort = new HoseHarness.IntVec3(12, 0, 6);
+                var relay = new HoseHarness.CompHoseReel { Rect = new Hose.HoseReelRect(9, 4, 2, 2) };
+                var feeder = new HoseHarness.CompHoseReel { Rect = new Hose.HoseReelRect(11, 9, 2, 2), laid = true, far = sharedPort };
+                map.Hoses.reels.AddRange(new[] { reel, relay, feeder });
+                map.blocked.UnionWith(new[] { freePort, new HoseHarness.IntVec3(13, 0, 5), new HoseHarness.IntVec3(12, 0, 4) });
+
+                Assert(reel.OrderDeploy(sharedPort) == "that reel's hose connector already has a hose on it",
+                    "A direct aim refuses the occupied relay intake");
+                string refusal = reel.OrderDeploy(pump.Position);
+                Assert(refusal != null && reel.pending == Hose.HosePendingOrder.None,
+                    $"Pump click queued a second feeder at the occupied relay intake ({reel.pendingAt.x},{reel.pendingAt.z})");
+
+                map.blocked.Remove(freePort);
+                refusal = reel.OrderDeploy(pump.Position);
+                Assert(refusal == null && reel.pending == Hose.HosePendingOrder.Deploy && reel.pendingAt == freePort,
+                    $"Expected the free pump port, got ({reel.pendingAt.x},{reel.pendingAt.z}), refusal={refusal}");
+            });
+
             // FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE (bar pump_hose_joins_at_side_port; he typed 2026-10-20: "No. a HOSE must
             // connect at one of the four sides. A solid pipe must only be adjacent and is then drawn undernead to the center of
             // the object as ruled previously.")

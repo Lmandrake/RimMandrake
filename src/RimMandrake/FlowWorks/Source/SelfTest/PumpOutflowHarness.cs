@@ -24,7 +24,18 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
     {
         public Building_LiquidPump pump;
         public CellIndices cellIndices = new();
-        public RM_MapComponent_Excavation engine = new();
+        public EdificeGrid edificeGrid = new();
+        public RM_MapComponent_Excavation engine;
+        public Map() => engine = new RM_MapComponent_Excavation(this);
+    }
+    internal class EdificeGrid
+    {
+        public readonly HashSet<IntVec3> shutSluices = new();
+        public bool this[IntVec3 cell] => shutSluices.Contains(cell);
+    }
+    internal static class RM_FlowDoorRules
+    {
+        public static bool SealsLiquid(bool edifice) => edifice;
     }
     internal class FluidDef
     {
@@ -105,16 +116,19 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
     }
     internal class RM_MapComponent_Excavation
     {
+        private readonly Map map;
         public Dictionary<int, long> water = new();
         public Dictionary<int, long> capacity = new();
+        public Dictionary<int, FluidDef> fluids = new();
         public HashSet<int> refuseTake = new();
         public int takeCalls;
         public FluidDef ActiveFluid = new();
         public Stock Stock = new();
+        public RM_MapComponent_Excavation(Map map) => this.map = map;
         public bool IsExcavated(IntVec3 cell) => water.ContainsKey(cell.x);
         public bool IsSourceCell(IntVec3 cell) => Stock.body.ContainsKey(cell.x);
         public long WaterDlAt(IntVec3 cell) => water.GetValueOrDefault(cell.x);
-        public FluidDef FluidAt(IntVec3 cell) => ActiveFluid;
+        public FluidDef FluidAt(IntVec3 cell) => fluids.GetValueOrDefault(cell.x, ActiveFluid);
         public long TryTakeDl(IntVec3 cell, int amount, out FluidDef fluid)
         {
             fluid = ActiveFluid;
@@ -125,13 +139,16 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
             return amount;
         }
         public long RoomDlAt(IntVec3 cell) => capacity.GetValueOrDefault(cell.x, long.MaxValue) - WaterDlAt(cell);
-        public long PourRoomDl(IntVec3 cell, FluidDef fluid, long want) => Math.Min(want, Math.Max(0, RoomDlAt(cell)));
+        public long PourRoomDl(IntVec3 cell, FluidDef fluid, long want) =>
+            RM_FlowDoorRules.SealsLiquid(map.edificeGrid[cell]) || !RM_StockMath.FluidsCompatible(WaterDlAt(cell) > 0, FluidAt(cell), fluid)
+                ? 0 : Math.Min(want, Math.Max(0, RoomDlAt(cell)));
         public bool TryPourLevel(IntVec3 cell, FluidDef fluid) => TryPourDl(cell, fluid, RM_PumpMath.TankUnitsPerLevel);
         public void NoteDriverBackedUp(IntVec3 cell) { }
         public bool TryPourDl(IntVec3 cell, FluidDef fluid, long amount)
         {
             if (PourRoomDl(cell, fluid, amount) != amount) return false;
             deliveredFluid = fluid;
+            fluids[cell.x] = fluid;
             water[cell.x] = WaterDlAt(cell) + amount;
             return true;
         }
@@ -244,6 +261,7 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
         public List<IntVec3> reach = new();
         public List<RM_NetPort> intakes = new(), outflows = new();
         public Building_LiquidTank tank = new();
+        public readonly List<Building_LiquidTank> connectedTanks = new();
         public int Moved, lastMovedUnits, hoseNeed, hoseStored;
         public bool pourMode, on = true;
         private bool Running => on && RimMandrakeFlowWorksSettings.liquidPumpEnabled;
@@ -257,7 +275,7 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
         private string LabelCap => "pump";
         public string Status => lastStatus;
         private IEnumerable<IntVec3> ReachCells() => reach;
-        private List<Building_LiquidTank> NetTanks() => new() { tank };
+        private List<Building_LiquidTank> NetTanks() => new[] { tank }.Concat(connectedTanks).ToList();
         private void Stamp(int amount) => lastMovedUnits = amount;
         private void NoteNeighbours() { }
         private string PourToPond(RM_MapComponent_Excavation ex, List<Building_LiquidTank> tanks, int units) => null;
@@ -364,6 +382,34 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
                 p.Pulse();
                 Assert(p.lastMovedUnits == 300 && p.tank.stored == 11700 && p.Map.engine.WaterDlAt(new(0)) == 10000,
                     $"300 dL room: tank={p.tank.stored}, channel={p.Map.engine.WaterDlAt(new(0))}, status={p.Status}");
+            });
+
+            Case("Pump_pour_skips_shut_sluice_for_next_dump_tank", () =>
+            {
+                var p = Site(5000, 5000);
+                p.pourMode = true;
+                p.outflows.Clear();
+                var ex = p.Map.engine;
+                ex.capacity[0] = ex.capacity[1] = 20000;
+                var tar = new FluidDef { label = "tar" };
+                ex.fluids[0] = tar;
+                p.Map.edificeGrid.shutSluices.Add(new(0));
+                p.tank.EffectiveMode = RM_TankMode.Dump;
+                p.tank.storedLiquid = new LiquidDef { canalFluid = tar, label = "tar" };
+                p.tank.storedUnits = 2080;
+                var water = new Building_LiquidTank
+                {
+                    EffectiveMode = RM_TankMode.Dump,
+                    storedLiquid = DefDatabase<LiquidDef>.AllDefsListForReading[0],
+                    storedUnits = RM_PumpMath.TankUnitsPerLevel
+                };
+                p.connectedTanks.Add(water);
+
+                p.Pulse();
+                Assert(p.Moved == 1 && p.lastMovedUnits == RM_PumpMath.TankUnitsPerLevel
+                    && water.stored == 0 && ex.WaterDlAt(new(1)) == 15000 && ex.deliveredFluid == ex.ActiveFluid,
+                    $"Expected one level of water past the shut tar sluice, moved {p.lastMovedUnits} dL ({p.Status})");
+                Assert(p.tank.stored == 2080 && ex.WaterDlAt(new(0)) == 5000, "The shut sluice and its tar tank retain their tar");
             });
 
             Case("TankTheft_actual_pump_entry_supplies_and_restores_actor", () =>

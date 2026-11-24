@@ -107,14 +107,17 @@ namespace RimMandrake.FlowWorks.SelfTest.HoseHarness
         private readonly Map map;
         private readonly CordWorld world = new(25, 15);
         private readonly HoseReplanQueue replanQueue = new();
+        public readonly List<CompHoseReel> reels = new();
         private static int LeaseVersion;
         private int LastLayMs, Relays;
         public RM_MapComponent_Hoses(Map map) => this.map = map;
         public CordWorld World() => world;
         public CompHoseReel ReelCovering(CompHoseReel reel, IntVec3 target) => null;
-        public CompHoseReel RelayAt(CompHoseReel reel, Cell cell) => null;
+        public CompHoseReel RelayAt(CompHoseReel reel, Cell cell) =>
+            reels.FirstOrDefault(r => r != reel && HoseRelay.IsIntakeOf(r.Rect, cell));
         public bool Loops(CompHoseReel reel, CompHoseReel relay, bool order) => false;
-        public IEnumerable<CompHoseReel> FeedersOf(CompHoseReel relay) => Array.Empty<CompHoseReel>();
+        public IEnumerable<CompHoseReel> FeedersOf(CompHoseReel relay) =>
+            reels.Where(r => r.laid && RelayAt(r, new Cell(r.far.x, r.far.z)) == relay);
         public string CheckInstall(CompHoseReel reel, IntVec3 target) => HoseMath.CheckInstall(world, reel.Rect, new Cell(target.x, target.z), 20);
         private ulong CorridorHash(CordWorld w, HoseLay lay) => 0;
         private void DropMeshes(CompHoseReel r) { }

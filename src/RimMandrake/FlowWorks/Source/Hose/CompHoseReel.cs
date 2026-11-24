@@ -480,6 +480,7 @@ namespace RimMandrake.FlowWorks.Hose
                 var cell = new Cell(c.x, c.z);
                 if (corner || !c.InBounds(map) || !c.Walkable(map) || !w.IsWalkable(cell) || Rect.Contains(cell)) continue;
                 if (HosePorts.FindAt(map, c, parent, out _, out _) != port) continue;
+                if (port is Building_LiquidPump && comp.RelayAt(this, cell) != null) continue;
                 if (port is Building_LiquidPump && comp.CheckInstall(this, c) != null) continue;
                 cells.Add(cell);
             }

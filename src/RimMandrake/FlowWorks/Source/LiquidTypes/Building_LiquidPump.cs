@@ -523,7 +523,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			var cd = new List<(int room, bool wet, FluidDef fill)>();
 			foreach (IntVec3 c in ReachCells())
 			{
-				if (!c.InBounds(Map) || !ex.IsExcavated(c))
+				if (!c.InBounds(Map) || !ex.IsExcavated(c) || RM_FlowDoorRules.SealsLiquid(Map.edificeGrid[c]))
 				{
 					continue;
 				}

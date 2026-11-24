@@ -82,6 +82,31 @@ namespace RimMandrake.FlowWorks.SelfTest.SpanLiquidContact
                 Assert(CoatOf(pawn) == null, "Wading in uncovered water should wash off oil");
             });
 
+            Case("Coating_awash_solid_suspension_deck_washes_coat", () =>
+            {
+                Current.Game = new Game();
+                var map = new Map();
+                var cell = new IntVec3(1, 0);
+                map.excavation.SetHollow(cell, 4);
+                cell.GetThingList(map).Add(new Building_SuspensionDeck { Map = map, Position = cell, DeckHeightM = 1f });
+                var pawn = new Pawn { Map = map, Position = cell };
+                map.mapPawns.AllPawnsSpawned.Add(pawn);
+                RM_SuspensionUnderpass.Entered(pawn, default, cell);
+                var tar = new FluidDef { label = "tar", coats = true };
+                RM_LiquidCoating.Coat(pawn, tar);
+                var water = RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
+
+                map.excavation.Fill(cell, water, 1);
+                Tick(map);
+                Assert(CoatOf(pawn) == "coated in tar", "Water below the deck should preserve the coat");
+                map.excavation.Fill(cell, water, 2);
+                Tick(map);
+                Assert(CoatOf(pawn) == "coated in tar", "Water level with the deck should preserve the coat");
+                map.excavation.Fill(cell, water, 3);
+                Tick(map);
+                Assert(CoatOf(pawn) == null, "Fresh water 0.5 m above the solid deck left the pawn " + CoatOf(pawn));
+            });
+
             Case("Coating_stepping_onto_dry_cover_applies_previous_exposure", () =>
             {
                 var (map, pawn) = CoveredPit();
@@ -198,7 +223,8 @@ namespace RimMandrake.FlowWorks.SelfTest.SpanLiquidContact
         public virtual bool FloorBandPassesUnder => false;
         public bool Decked => Spawned;
         public bool Grated => false;
-        public int DeckNotches => 0;
+        public float DeckHeightM { get; init; }
+        public int DeckNotches => RM_SpanMath.Notches(DeckHeightM);
     }
 
     internal partial class Building_SuspensionDeck { }
@@ -247,6 +273,8 @@ namespace RimMandrake.FlowWorks.SelfTest.SpanLiquidContact
         }
         public bool IsExcavated(IntVec3 c) => HollowDepthAt(c) > 0;
         public bool WetAt(IntVec3 c) => fill.GetValueOrDefault(c).notches > 0;
+        public float WaterSurfaceMetresAt(IntVec3 c) => WetAt(c)
+            ? (float)RM_LevelSolve.Metres((fill[c].notches - HollowDepthAt(c)) * (long)RM_LevelSolve.U) : float.NaN;
         public FluidDef FluidAt(IntVec3 c) => fill.GetValueOrDefault(c).fluid;
         public FluidDef ActiveFluid => RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
         public RM_MapComponent_Excavation SuperdeepTrap => this;
