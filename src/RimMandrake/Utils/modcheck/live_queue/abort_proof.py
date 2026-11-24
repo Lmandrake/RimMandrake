@@ -5,7 +5,7 @@ opens its own Watch (bland prep, baseline), applies ONE hazard after the baselin
 short wait). PASS for a hazard case requires ALL of: a SurpriseAbort of kind 'surprise'; the expected
 detector among its hits; a sidecar json on disk; the game left paused. Control cases must end with no abort
 and no SURPRISE/FATAL hit. The runner path is proved once end to end: a Suite chain whose component meets a
-hostile must record that component UNMEASURED naming the detector, never PASS or FAIL.
+harmless hostile PASSes on a CLEAN run that records it; a hostile that attacks first makes it UNMEASURED, DISRUPTED.
 
 🔑 OWNER RULE, question card 2026-10-10 (VISITOR_DETECTORS_MEND_NAME_THE_STRANGER): an unexpected VISITOR (a hostile,
 a stranger, new wildlife, a player-faction joiner) that shows no evidence of disrupting a colonist or a subject is
@@ -179,7 +179,7 @@ def hz_declared(s, ctx):
 
 
 def runner_path(s, job):
-    """End to end through runner.run_suite: the component that meets the hazard is UNMEASURED, naming it."""
+    """End to end through runner.run_suite: a harmless hostile is recorded and removed, and the component measures."""
     import runner
     from suite import Suite
     su = Suite("LiveQueueAbort")

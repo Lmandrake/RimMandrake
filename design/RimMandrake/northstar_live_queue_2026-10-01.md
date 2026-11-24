@@ -42,9 +42,8 @@ reach it.
    - deploys every suite mod with `deploy_custom_mods --apply`;
    - composes every suite mod's packageId onto the end of `activeMods`.
 
-   The suite set is **derived** from `infrastructure/state/modcheck_status.json`. On 2026-10-01 that was 13
-   mods: Aftermath, Antiquities, Droidworks, FlowWorks, Inhabited, JawaIonWeapons, Ninefold, PawnFlavor,
-   Pyrelands, ResearchRetag, ShipMemory, StarWarsRaces, StructureInjections. Run it with no flags to see the
+   The suite set is **derived** from disk by `live_queue/suite_set.py`: each suite that composes onto the minimal
+   list. (On 2026-10-01 the set was 13 mods.) Run it with no flags to see the
    plan only.
 4. Check the companion DLL is the one carrying `JawaBenchSituationalTools.cs` (it is deployed from
    `bridgetools/build.py --gm --apply`). preflight checks this live and FAILs if it is not.
@@ -93,7 +92,7 @@ damage or break their own colonists on purpose. Before filing any surprise from 
 `--mods A,B` re-runs a subset after a fix.
 
 ### abort_proof abort-path proof — `abort_proof.py`
-The abort path has never fired live: no real hazard occurred in the 10-01 pass. Each case opens its own
+No real hazard occurred in the 10-01 pass, so this job makes the hazards. Each case opens its own
 Watch, which does the bland prep and takes a baseline. The case then applies ONE hazard and sweeps, either
 with `check()` or a short wait. The next case's bland prep cleans up after it: it kills hostiles and
 wildlife, extinguishes fires, calms pawns and resurrects the dead.
@@ -101,18 +100,20 @@ wildlife, extinguishes fires, calms pawns and resurrects the dead.
 | case | hazard | must abort via |
 |---|---|---|
 | control_quiet | nothing; wait 1200 | must NOT abort, and no SURPRISE/FATAL hit |
-| hostile_raid | 3 `Tribal_Warrior` spawned hostile at the anchor | `hostile_pawns` |
+| hostile_raid | 3 `Tribal_Warrior` spawned hostile at the anchor | must NOT abort (the owner's visitor rule, card 2026-10-10): `hostile_pawns` is recorded with its sidecar, the visitors are removed, the run stays CLEAN |
 | fire_near_colonist | `map_fire` on a 3x1 rect 4 cells from a colonist; wait 60 | `fire_on_map` |
 | colonist_killed | a player `Colonist` spawned after the baseline, then killed | `colonist_died` (FATAL) |
 | predator_hunts_colonist | `Wolf_Timber` 15 cells away, `ordered_job PredatorHunt` on a colonist | `predator_hunting` |
 | colonist_berserk | `pawn_force_mental_break Berserk` on a colonist | `mental_break` (FATAL) |
 | raid_queued | `incident_schedule RaidEnemy` with a delay of 30000 | `incident_queued` |
 | control_declared | far hostile + benign incident, both declared by the test; wait 60 | must NOT abort |
-| runner path | a Suite whose component meets a hostile, run through `runner.run_suite` | component UNMEASURED naming `hostile_pawns` |
+| runner path | a Suite whose component meets a hostile, run through `runner.run_suite` | component PASS, run CLEAN, `hostile_pawns` recorded and removed; or, if the hostile attacked first, component UNMEASURED with the run DISRUPTED |
 | control_after_cleanup | nothing; wait 600 | must NOT abort (cleanup worked) |
 
-**Fails when** a hazard does not abort, aborts with kind `harness`, aborts on the wrong detector, leaves no
-sidecar json, or leaves the game unpaused. It also fails when any control aborts. The evidence is under
+**Fails when** a hazard other than `hostile_raid` does not abort, aborts with kind `harness`, aborts on the wrong detector, leaves no
+sidecar json, or leaves the game unpaused. `hostile_raid` fails when it aborts, when the run
+is not CLEAN, when a spawned hostile is not recorded (`hostile_pawns`) and removed, when no sidecar json is on disk, or
+when the game is unpaused. The job also fails when any control aborts. The evidence is under
 `Transient/modcheck/live_queue/abort_proof/<case>/`.
 
 ### bland_tile bland tile — `bland_tile.py` (NORTHSTAR_BLAND_TILE_1)

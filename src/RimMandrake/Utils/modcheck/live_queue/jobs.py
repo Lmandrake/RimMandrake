@@ -14,7 +14,7 @@ JOBS = [
      "title": "Playing map, required tools, companion recorder, suite mods active",
      "fails_when": "any required tool is missing, the recorder is not installed, or a suite mod is not active"},
     {"id": "situational_rerun", "file": "situational_rerun.py",
-     "title": "--situational re-run of every registered suite on the fixed runner",
+     "title": "--situational re-run of every disk suite that composes onto the minimal list",
      "fails_when": "a suite crashes, FlowWorks is refused, Antiquities' long chain is UNMEASURED by budget, "
                    "or a chain records a surprise whose detector is the chain's own declared act"},
     {"id": "abort_proof", "file": "abort_proof.py",

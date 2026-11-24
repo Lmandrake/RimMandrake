@@ -3,7 +3,7 @@
 Runs the bland_tile bland-tile recipe (colony_found -> map -> wildlife/ruins gone -> 3 colonists), then
 induce_and_finish_naming (no naming dialog can ever re-raise), assert_bland, and save_base (backs up Saves, proves
 a NEW file appeared and no existing save changed). After this, saved_base.world_reset() loads the save between suites.
-Write-once: refuses (UNMEASURED) if the save already exists. NOT YET RUN LIVE.
+Write-once: refuses (UNMEASURED) if the save already exists.
 """
 import os
 import sys
