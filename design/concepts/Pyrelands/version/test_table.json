@@ -292,11 +292,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.04,
+    "seconds": 4.84,
     "last": "PASS: 0 failure(s)",
-    "at": "2026-11-24T10:01:52Z",
+    "at": "2026-11-24T12:29:47Z",
     "result": "PASS",
-    "build": "874b7821fd94f9227767",
+    "build": "c5ec3991139f6ad6c9f3",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
     "margins": []
    }
@@ -316,9 +316,9 @@
     "rc": 0,
     "seconds": 0.03,
     "last": "selftest_pyrelands_fruit_clear: PASS",
-    "at": "2026-11-24T10:01:52Z",
+    "at": "2026-11-24T12:29:47Z",
     "result": "PASS",
-    "build": "40c7e97dfe2b0e74102c",
+    "build": "34520fac84cd9b473977",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py",
     "margins": []
    }
@@ -336,11 +336,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.31,
+    "seconds": 0.26,
     "last": "selftest_pyrelands_firefoam_scene: PASS  cases {'geometry': 1, 'verdicts': 36, 'staging': 396, 'timelines': 1352, 'challenges': 3}",
-    "at": "2026-11-24T10:01:52Z",
+    "at": "2026-11-24T12:29:48Z",
     "result": "PASS",
-    "build": "1c6580418ded5c2380dd",
+    "build": "b52ec63fbb1844ab8eeb",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py",
     "margins": []
    }
@@ -1715,11 +1715,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 9.38,
+    "seconds": 6.68,
     "last": "PASS: 0 of 18 checks failed",
-    "at": "2026-11-24T10:02:03Z",
+    "at": "2026-11-24T12:29:55Z",
     "result": "PASS",
-    "build": "93c0fee6ac7e0edbe797",
+    "build": "8a512f66dc09611eb0c5",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
     "margins": []
    }
@@ -1785,11 +1785,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 7.81,
+    "seconds": 4.47,
     "last": "selftest_pyrelands_venom_staging: 0 of 46 checks failed",
-    "at": "2026-11-24T10:02:10Z",
+    "at": "2026-11-24T12:30:00Z",
     "result": "PASS",
-    "build": "0fd236777640da742863",
+    "build": "935b6cce30b5fa45773a",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
     "margins": []
    }
@@ -1835,11 +1835,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.11,
-    "last": "selftest_pyrelands_walk_small: 0 of 61 checks failed",
-    "at": "2026-11-24T10:02:11Z",
+    "seconds": 0.06,
+    "last": "selftest_pyrelands_walk_small: 0 of 62 checks failed",
+    "at": "2026-11-24T12:30:00Z",
     "result": "PASS",
-    "build": "0d7c1fc9d06ee0cb7b39",
+    "build": "bd8944b8243d6ab51877",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_walk_small.py",
     "margins": []
    }
