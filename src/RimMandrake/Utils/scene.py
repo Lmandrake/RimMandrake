@@ -342,7 +342,10 @@ class Session(object):
             p["did"].append("nothing: no map was asked for")
             rec.could_not_look.append("the map was not loaded by this session: its state is whatever was there")
             return
-        tool, args = ("rimworld/start_debug_game_ready", {}) if where.startswith("fresh:") else ("rimworld/load_game_ready", {"saveName": where})
+        fresh = where.startswith("fresh:")
+        if fresh and self._status().get("programState") != "Entry":
+            self._menu(p)
+        tool, args = ("rimworld/start_debug_game_ready", {}) if fresh else ("rimworld/load_game_ready", {"saveName": where})
         args.update(timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
         try:
             r = self._call(tool, **args)
@@ -352,8 +355,27 @@ class Session(object):
             raise Fault("LOAD_FAILED", done=["asked for %s" % where], detail=str(r.get("message") or r.get("error") or r)[:300])
         self._loaded = where
         p["did"].append("loaded %s (the game's earlier map is gone)" % where)
-        if not where.startswith("fresh:"):
+        if not fresh:
             rec.could_not_look.append("whether %s was saved in a marked process: a save does not carry the mark yet" % where)
+
+    def _menu(self, p):
+        """A fresh map is started from the main menu only (measured 2026-11-23: from a map the start timed out after 280 s)."""
+        r = self._look("rimworld/go_to_main_menu")
+        if r.get("success") is not True:
+            raise Fault("LOAD_FAILED", detail="the game did not go to the main menu: %s" % str(r.get("message") or r)[:300])
+        self._loaded = "the main menu"
+        p["did"].append("left the loaded map for the main menu")
+        end = self.W.clock() + SETTLE_S
+        while True:
+            try:
+                st = self._status()
+            except Fault as e:                      # the bridge may not answer while the scene changes
+                st = {"unread": e.detail}
+            if st.get("programState") == "Entry" and not st.get("longEventPending"):
+                return
+            if self.W.clock() > end:
+                raise Fault("LOAD_NOT_SETTLED", done=list(p["did"]), detail="%.0f s and the main menu is not there: %s" % (SETTLE_S, st))
+            self.W.sleep(POLL_S)
 
     def _settle(self, p, where):
         """Playing, a current map, no long event, paused, and the same tick on three reads."""

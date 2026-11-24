@@ -39,6 +39,7 @@ class FakeGame(object):
         self.script = {"state": "hit", "ticks": 20, "tracks": {}}   # how the next run goes
         self.after_run = {}             # what the status reads after the run, over what the trace says
         self.lose, self.fail, self.deny_static = set(), {}, False   # tool:action whose reply is lost; tool -> error
+        self.menu_polls = 0
         self.load_ready = [rec("status_initializing")]              # what a load shows before it is ready
 
     # ---- the tools
@@ -57,6 +58,10 @@ class FakeGame(object):
         if tool == "jawa/running_mods":
             return copy.deepcopy(self.running_mods)
         if tool == "rimbridge/get_bridge_status":
+            if self.menu_polls:
+                self.menu_polls -= 1
+                if not self.menu_polls:
+                    self.status = rec("status_menu")
             st = self.load_ready.pop(0) if self.loads and self.load_ready else dict(self.status, **self.after_run)
             return {"success": True, "state": st}
         if tool == "jawa/static_call":
@@ -76,8 +81,13 @@ class FakeGame(object):
             r["page"] = {"offset": a.get("offset", 0), "nextOffset": at if at < len(self.saves) else None}
             return r
         if tool in ("rimworld/load_game_ready", "rimworld/start_debug_game_ready"):
+            if not a.get("saveName") and self.status["programState"] != "Entry":     # measured on ArchSmall 2026-11-23, after 280 s
+                return {"success": False, "message": "Timed out waiting for RimWorld entry scene readiness."}
             self.loads.append(a.get("saveName") or "fresh")
             self.status = rec("status_playing")
+            return {"success": True}
+        if tool == "rimworld/go_to_main_menu":
+            self.menu_polls = 2
             return {"success": True}
         if tool == "rimworld/pause_game":
             self.status["paused"] = bool(a.get("pause", True))
