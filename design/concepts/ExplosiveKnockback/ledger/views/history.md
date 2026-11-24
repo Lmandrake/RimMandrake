@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":35109,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":1450,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=1ba895c743561e24b65cd1c84818b7758eef5a53c7d91faf2ea37bd9c3b69267 -->
-# ExplosiveKnockback — mod ledger history (665 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":35799,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":1450,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=830716618fd28a696b5756ad217311e6c11d62e402dd491b5adbdece674a6002 -->
+# ExplosiveKnockback — mod ledger history (667 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -666,3 +666,5 @@
 - 2026-11-24T02:50:39Z HOLDER.run-1795487290#3 lease.renew lease v0.1.0: 
 - 2026-11-24T03:11:02Z HOLDER.run-1795487290#4 lease.renew lease v0.1.0: 
 - 2026-11-24T03:25:19Z HOLDER.run-1795487290#5 lease.renew lease v0.1.0: 
+- 2026-11-24T03:31:41Z DISPATCH#101 stage.accepted stage v0.1.0: 
+- 2026-11-24T03:31:47Z DISPATCH#102 stage.accepted stage v0.1.0: 

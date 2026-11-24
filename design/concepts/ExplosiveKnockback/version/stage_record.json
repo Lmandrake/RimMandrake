@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.1.0",
-  "stage": "pre_human",
-  "stage_label": "Walk brief (Stage 7)",
-  "since": "2026-11-23T18:14:49-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-23T19:31:47-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -292,6 +292,40 @@
         "steward_confirms",
         "exit_met",
         "build_match"
+      ]
+    },
+    {
+      "from": "pre_human",
+      "to": "his_walk",
+      "at": "2026-11-23T19:31:41-08:00",
+      "by": "BENCH",
+      "why": "walk brief arrival_1 written",
+      "unit": "rm-detached-bench-rimmandrake-steward-explosiveknockback-p-1795487378",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "walk_brief",
+        "walk_items_closed"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "in_game",
+      "at": "2026-11-23T19:31:47-08:00",
+      "by": "BENCH",
+      "why": "steward road back, before he walks: the mod's code changed at db80fab783 (gas corner, the Conductor's call of 2026-11-23 6:24 PM PST: a Problem of 0.1.0, fixed before his walk). build_match: 54 of 56 count, sc_barrage_perf and sc_walk_raid (full list, ArchBig) to run; both need the game (RIMMANDRAKE_RUN_KNOCKBACK_FULL_LIST_CHECKS_AFTER_GAS_CORNER_FIX). Back to Stage 6 for exactly those 2; no mod-wrong line open; fix db80fab783 read sound. Precedent: FlowWorks his_walk to in_game 2026-11-21",
+      "unit": "rm-detached-bench-rimmandrake-steward-explosiveknockback-p-1795487378",
+      "confirmed": {
+        "steward_confirms": "read db80fab783 once (sound, visit_5/fix_reviews.jsonl), selftest map PASS 31 of 31 faults, before DISAGREE / after AGREE 123 of 123, build_match 54 of 56"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],

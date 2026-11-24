@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 7, the walk brief, since 2026-11-23 6:14 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 7:31 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 6:14 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 7:31 PM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -417,4 +417,21 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Steward confirms: visit 5 (run-1795478277): read SUMMARY.md, all 10 rows, their evidence, strange.jsonl, screenshots and the diffs fa3f95313d and 6dfc987697. sc_spared, sc_frame_probe_check, sc_barrage_perf (p99 22.1 ms, limit 50, mod off 21.7) and sc_walk_raid (18 of 18) PASS; the reload repair waits only, seen FAIL on planted goods lost on reload and PASS on the real build; the mod's own code is unchanged since visit 4, so its 52 rows stand; build_match rerun: 56 count, 0 to run. Verdict: exit met.
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 11:44 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 11:44 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-23 7:31 PM PST, stage change: Walk brief (Stage 7) to His live walk (Stage 8) (by BENCH)
+
+- Why: walk brief arrival_1 written
+- Checks passed: order, by, version, hold, walk_brief, walk_items_closed.
+- Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-23 6:14 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 6:14 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-23 7:31 PM PST, stage change: His live walk (Stage 8) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: steward road back, before he walks: the mod's code changed at db80fab783 (gas corner, the Conductor's call of 2026-11-23 6:24 PM PST: a Problem of 0.1.0, fixed before his walk). build_match: 54 of 56 count, sc_barrage_perf and sc_walk_raid (full list, ArchBig) to run; both need the game (RIMMANDRAKE_RUN_KNOCKBACK_FULL_LIST_CHECKS_AFTER_GAS_CORNER_FIX). Back to Stage 6 for exactly those 2; no mod-wrong line open; fix db80fab783 read sound. Precedent: FlowWorks his_walk to in_game 2026-11-21
+- Checks passed: order, by, version, hold.
+- Steward confirms: read db80fab783 once (sound, visit_5/fix_reviews.jsonl), selftest map PASS 31 of 31 faults, before DISAGREE / after AGREE 123 of 123, build_match 54 of 56
+- Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-23 7:31 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 7:31 PM PST).
 - Record: `version/stage_record.json`.
