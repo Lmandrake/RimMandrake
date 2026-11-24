@@ -12,6 +12,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -64,6 +65,29 @@ def t_holds_the_item():
         chk(lambda s=s: s in t, "holds-the-item: %s" % s)
     chk(lambda: t.index("first note") < t.index("last note"), "holds-the-item: the notes stay oldest first")
     chk(lambda: pk()["left_out"] == [] and "Nothing was left out" in t, "holds-the-item: under the limit nothing goes")
+    run = {"ts": "2026-10-30T20:45:21Z", "result": "partial",
+           "config": "BENCH independent offline e2e through real writers (bfeed.py 17/18: MEASURED, units exact, dedup ok, "
+                     "judge spend off-arm, 8 broken feeds UNMEASURED) + 14 mutants all killed (mutB.txt); FAIL probe d1: "
+                     "tester spend unmetered -> ARENA_TESTER_SPEND_ENFORCE_METERED_HOME",
+           "evidence": r"D:\ClaudeWork\rimmandrake\arena_verify2_20261030\bfeed.txt"}
+    r = pk(runs=[run])
+    chk(lambda: "- %s partial: %s" % (run["ts"], run["evidence"]) in r["text"] and not SPEND.search(r["text"])
+        and any("run of %s (partial)" % run["ts"] in x for x in r["left_out"]),
+        "holds-the-item: a partial run keeps its time, result and bfeed.txt after redaction")
+    child = "LINT_EXCLUDE_LAKE_SUBMERGED_1"
+    finding = "LINT_COUNTS_LAKE_AS_LAND_1"
+    events = EVENTS[:3] + [ev("verify", 3, result="partial", config="full-583", evidence="run.txt"),
+                          ev("finding", 4, name=finding, type="defect", severity="medium",
+                             **{"from": IT + "/run-1@full-583"}),
+                          {"seat": "BENCH", "event": "spawn", "name": child, "kind": "task", "needs": "offline",
+                           "spec": "Add the lake exclusion.", "for": "BENCH", "from": finding, "ts": ev("note", 5)["ts"]},
+                          ev("supersede", 6, by=child)]
+    with tempfile.TemporaryDirectory() as d:
+        c = make_clone(os.path.join(d, "c"), events)
+        g = IP.gather(child, c)
+        t = IP.packet(child, g)["text"]
+        chk(lambda: IT not in g["prose"] and t.count(IT + " [superseded]") == 1,
+            "holds-the-item: a spawn from a run finding links its superseded source once")
 
 
 def t_decisive_notes_are_kept():
@@ -269,8 +293,10 @@ BLIND = (("blind judge", "You are the blind judge: you did not build this mod.")
 
 
 def t_blind_roles_get_none():
+    import control
     import coverage_judge
     import detached_helper as DH
+    import left_open_continue as LOC
     import maturation as M
     import maturation_autonomy as MA
     for role, text in BLIND:
@@ -299,6 +325,40 @@ def t_blind_roles_get_none():
             DH.mark_fresh(rec, "carry on", "sess-" + unit, d)
             chk(lambda: (rec.get("env") or {}).get(IP.ROLE_ENV) == role, "blind-roles-get-none: --resume of %s: %s" % (
                 unit, role))
+    with tempfile.TemporaryDirectory() as d:
+        c = make_clone(os.path.join(d, "c"), EVENTS)
+        state, projects = os.path.join(d, "state"), os.path.join(d, "projects")
+        sid, unit = "examiner-session", "rm-detached-examiner"
+        project = os.path.join(projects, "c")
+        os.makedirs(project)
+        with open(os.path.join(project, sid + ".jsonl"), "w", encoding="utf-8") as f:
+            f.write(json.dumps({"type": "assistant", "message": {"usage": {"input_tokens": 150000}}}) + "\n")
+        src = os.path.join(d, "exam.md")
+        with open(src, "w", encoding="utf-8") as f:
+            f.write("Read the design.")
+        DH.write_record({"unit": unit, "item": IT, "session": sid, "at": 5.0, "seat": "BENCH",
+                         "brief_src": src, "env": {IP.ROLE_ENV: "examiner"}}, state)
+        progress = ev("note", 7, text="PROGRESS: the first part is read")
+
+        def launch(seat, item, brief, model, max_s, budget, clone, skip_launch_checks, env, resume_session, extra):
+            return DH._launch_locked(seat, item, brief, model, max_s, budget, 10.0, None, clone, clone,
+                                     skip_launch_checks=skip_launch_checks, env=env, resume=(resume_session, projects),
+                                     extra=extra)
+
+        with patch.dict(os.environ, RM_DISPATCHER_STATE=state), patch.object(LOC, "CONDUCTOR_PROJECTS", projects), \
+                patch.object(DH, "read_item", return_value={"notes": [progress]}), patch.object(DH, "launch", launch), \
+                patch.object(DH, "clone_holders", return_value=[]), patch.object(DH, "launch_argv", return_value=[]), \
+                patch.object(control, "launch_unit", return_value=subprocess.CompletedProcess([], 0)):
+            rc = DH.main(["launch", "--seat", "BENCH", "--item", IT, "--brief", "Carry on.", "--resume", sid,
+                          "--clone", c, "--skip-launch-checks", "selftest", "--budget-usd", "0"])
+        rec = DH.read_record(DH.unit_name("BENCH", IT, 10.0), state)
+        with open(rec["brief_file"], encoding="utf-8") as f:
+            msg = f.read()
+        chk(lambda: rc == 0 and rec.get("resume_converted_from") == sid and not rec.get("resume_session")
+            and progress["text"] in msg and "150000 tokens" in msg, "blind-roles-get-none: manual resume converts at 150000")
+        chk(lambda: (rec.get("env") or {}).get(IP.ROLE_ENV) == "examiner" and "You start fresh (examiner)" in msg
+            and "ITEM PACKET" not in msg and "cli.py show" not in msg,
+            "blind-roles-get-none: a converted manual resume keeps the examiner role and no packet or show command")
     maker = {}
     DH.mark_fresh(maker, "Build it.")
     chk(lambda: maker == {}, "blind-roles-get-none: a maker's record gets no role")

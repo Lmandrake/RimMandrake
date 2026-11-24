@@ -1304,9 +1304,9 @@ def command_lines(item, seat):
 
 
 def mark_fresh(rec, brief, session=None, root=None):
-    """Leave the run's fresh-start role on its record's env: a resume or a continuation, whose text no longer says it, gets
-    no history either. session: the one this launch resumes (`launch --resume` by hand carries no env): the role is then
-    read from that session's earlier runs on this item. A role that cannot be read marks nothing and is said."""
+    """Return the fresh-start role and leave it on the record's env so a resume or continuation gets no history.
+    With a session, read the role from its earlier runs on this item if the brief and env do not say it.
+    A role that cannot be read marks nothing and is said."""
     try:
         import item_packet
         role = item_packet.role_of(brief, rec.get("env"))
@@ -1320,6 +1320,7 @@ def mark_fresh(rec, brief, session=None, root=None):
             role = item_packet.role_of(first, r.get("env"))
         if role:
             rec["env"] = dict(rec.get("env") or {}, **{item_packet.ROLE_ENV: role})
+        return role
     except Exception as e:  # noqa: BLE001
         print("launch: the fresh-start role could not be read (%s: %s)" % (type(e).__name__, e), file=sys.stderr)
 
@@ -2297,8 +2298,9 @@ def main(argv=None):
             session, first, written = args.resume, "", brief
             if session and not args.planned_resume:     # the one resume rule (left_open_continue.whole_or_fresh): a large session with a progress
                 import left_open_continue as LOC        # record starts fresh from it
-                cr = LOC.conductor_resume(session, args.item, brief)
+                cr = LOC.conductor_resume(session, args.item, brief, env=env)
                 session, brief, first = cr["session"], cr["brief"], cr["line"]
+                env = cr.get("env", env)
                 extra.update(cr["extra"])
             rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief, args.model,
                               args.max_s, budget, clone=args.clone, skip_launch_checks=args.skip_launch_checks,

@@ -380,9 +380,10 @@ def resume_choice(rec, p, now, projects=None):
     return (sid, None, why) if resume else (None, why, None)
 
 
-def conductor_resume(session, item, brief, projects=None, reader=None):
+def conductor_resume(session, item, brief, projects=None, reader=None, env=None):
     """The Conductor's `launch --resume SESSION`, under the one rule. -> {"session": the session to resume or None,
-    "brief": the brief to launch, "extra": record fields, "line": one line to print first, or ""}."""
+    "brief": the brief to launch, "extra": record fields, "line": one line to print first, or ""}.
+    A converted resume also returns the launch env with any fresh-start role carried over."""
     projects = projects or CONDUCTOR_PROJECTS
     t = DH.find_transcript(session, projects)
     if not t:          # the launch itself refuses a session with no transcript, as before
@@ -402,13 +403,17 @@ def conductor_resume(session, item, brief, projects=None, reader=None):
     if resume:
         return {"session": session, "brief": brief, "extra": {"continue_resume_why": why}, "line": ""}
     orig = brief_of(mine[0])          # the session's first run holds the original brief; a resume's is its short prompt
-    text = (brief.rstrip() + "\n\nThis is a FRESH session, not a resume of session %s (%s). Your clone stands on "
-            "origin/main. First read `git log --oneline -15` and the ITEM PACKET below (no packet, or a part left out: `python3 "
-            "src/RimMandrake/rimflow/cli.py show %s`); do not redo work that is already published. Then carry on from the progress record below.\n\n" % (
-                session, why, item)) + progress_block(progress)
+    rest = progress_block(progress)
     if orig.strip():
-        text += "\n---- the previous run's brief ----\n" + orig.rstrip() + "\n"
-    return {"session": None, "brief": text, "line": "FRESH instead of --resume %s: %s" % (session, why),
+        rest += "\n---- the previous run's brief ----\n" + orig.rstrip() + "\n"
+    new = {"item": item, "env": env}
+    role = DH.mark_fresh(new, brief + "\n\n" + rest, session)
+    packet_hint = "" if role else (" and the ITEM PACKET below (no packet, or a part left out: `python3 "
+                                   "src/RimMandrake/rimflow/cli.py show %s`)" % item)
+    text = (brief.rstrip() + "\n\nThis is a FRESH session, not a resume of session %s (%s). Your clone stands on "
+            "origin/main. First read `git log --oneline -15`%s; do not redo work that is already published. Then carry on "
+            "from the progress record below.\n\n" % (session, why, packet_hint)) + rest
+    return {"session": None, "brief": text, "env": new["env"], "line": "FRESH instead of --resume %s: %s" % (session, why),
             "extra": {"continue_how": "fresh", "continue_fresh_why": why, "resume_converted_from": session}}
 
 

@@ -29,7 +29,9 @@ has a test of its name in `src/RimMandrake/rimflow/selftest_item_packet.py`. Acc
 ## PROMISES (each one is owed a test of the same name)
 
 - **holds-the-item.** The text holds the state, the title, the prose, the notes, the runs with their evidence, the linked
-  items with their states, the open criteria, the commits that name the item, and the time of the reading.
+  items with their states, the open criteria, the commits that name the item, and the time of the reading. An item spawned
+  from a finding links to the source item once, with its state, even when the finding names a run and the prose never names
+  the source. A run keeps its time, result and clean evidence when spend language is removed from its configuration.
 - **decisive-notes-are-kept.** Over the budget these are never dropped: the last note, each note with the owner's words,
   each `LEFT OPEN:`, `PROGRESS:`, `RULING` and `REFUSED` note, each run that is not a pass, the open criteria.
 - **oldest-routine-notes-go-first.** Over the budget the oldest routine notes go first, then the oldest commits, then the
@@ -46,7 +48,9 @@ has a test of its name in `src/RimMandrake/rimflow/selftest_item_packet.py`. Acc
   lost a sentence is in `left_out`, by name.
 - **blind-roles-get-none.** The brief of a blind judge, a fresh reader, an examiner, a challenger and a coverage judge holds
   no packet and no `show` command from this module, and neither does its resume or its continuation (the first launch leaves
-  the role on the run's env as `RM_FRESH_ROLE`). The pipeline stages `blind_challenge` and `pre_human` hold none either.
+  the role on the run's env as `RM_FRESH_ROLE`). A manual resume converted to a fresh session carries that role from the
+  earlier run and omits the packet and its `show` command. The pipeline stages `blind_challenge` and `pre_human` hold none
+  either.
 - **every-detached-launch-carries-the-packet.** `detached_helper.brief_message` holds the packet of every other run, and
   `_launch_locked` makes its message with it.
 - **a-launch-never-fails-on-the-packet.** When `gather` or `packet` raises, the brief still goes out. It says could not look,

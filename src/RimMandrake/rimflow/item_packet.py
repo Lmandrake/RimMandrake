@@ -99,6 +99,16 @@ def _note(n, i, of):
     return "%s\n%s\n" % (head, text), lost + lost2 + lost3
 
 
+def _run(r):
+    config, config_lost = clean(r.get("config"))
+    evidence, evidence_lost = clean(r.get("evidence"))
+    if not evidence:
+        evidence = "(left out, below)" if evidence_lost else "no evidence named"
+    text = "%s %s%s: %s" % (r.get("ts") or "no time", r.get("result") or "no result",
+                           " (%s)" % config if config else "", evidence)
+    return text, config_lost + evidence_lost
+
+
 def _ranges(nums):
     """[1, 2, 3, 7] -> "1-3, 7"."""
     out = []
@@ -131,16 +141,13 @@ def _parts(facts, budget):
                 keep=k in (last, len(notes) - 1) or decisive(n), rank=0))
     else:
         out["notes"] = None
-    rows = (("commits", lambda c: "%s %s" % (c.get("sha"), c.get("subject")), lambda c: "commit %s" % c.get("sha"),
+    rows = (("commits", lambda c: clean("%s %s" % (c.get("sha"), c.get("subject"))), lambda c: "commit %s" % c.get("sha"),
              lambda c: (False, 1)),
-            ("linked", lambda x: "%s [%s] %s%s" % (x.get("id"), x.get("state") or COULD_NOT, x.get("title") or "",
-                                                   " (%s)" % x["how"] if x.get("how") else ""),
+            ("linked", lambda x: clean("%s [%s] %s%s" % (x.get("id"), x.get("state") or COULD_NOT, x.get("title") or "",
+                                                        " (%s)" % x["how"] if x.get("how") else "")),
              lambda x: "linked item %s" % x.get("id"), lambda x: (False, 2 if x.get("state") in CLOSED else 4)),
-            ("runs", lambda r: "%s %s%s: %s" % (r.get("ts") or "no time", r.get("result") or "no result",
-                                                " (%s)" % r["config"] if r.get("config") else "",
-                                                r.get("evidence") or "no evidence named"),
-             lambda r: "run of %s (%s)" % (r.get("ts"), r.get("result")), lambda r: (r.get("result") != "pass", 3)),
-            ("criteria", str, lambda c: "criterion", lambda c: (True, 9)))
+            ("runs", _run, lambda r: "run of %s (%s)" % (r.get("ts"), r.get("result")), lambda r: (r.get("result") != "pass", 3)),
+            ("criteria", lambda c: clean(str(c)), lambda c: "criterion", lambda c: (True, 9)))
     for kind, say, name, how in rows:
         got = facts.get(kind)
         if got is None:
@@ -149,7 +156,7 @@ def _parts(facts, budget):
         out[kind] = []
         # commits come newest first: the oldest goes first, so the newest has the highest number
         for k, g in enumerate(got):
-            text, lost = clean(say(g))
+            text, lost = say(g)
             keep, rank = how(g)
             out[kind].append(_Part(kind, len(got) - k if kind == "commits" else k + 1, "- %s\n" % text, name(g), lost, keep,
                                    rank))
@@ -323,7 +330,7 @@ def _linked(world, it, text):
 
     def add(iid, how):
         x = world.items.get(str(iid)) if iid else None
-        if x is None:       # a cause can be a run or a finding: its item is linked by its own cause
+        if x is None:       # a run links to its item
             import model
             m = model.RUN_RE.match(str(iid or ""))
             x = world.items.get(m.group("item")) if m else None
@@ -331,7 +338,8 @@ def _linked(world, it, text):
             seen.add(x.id)
             out.append({"id": x.id, "state": x.state, "title": x.title, "how": how})
 
-    for iid, how in ((it.caused_by, "caused this item"), (it.spawned_by, "spawned this item"),
+    cause = world.findings.get(str(it.caused_by), {}).get("from", it.caused_by)
+    for iid, how in ((cause, "caused this item"), (it.spawned_by, "spawned this item"),
                      (it.blocked_on, "blocks this item"), (it.superseded_by, "supersedes this item")):
         add(iid, how)
     for iid in it.blocked_also or ():
