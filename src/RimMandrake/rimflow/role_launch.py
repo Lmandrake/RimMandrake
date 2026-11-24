@@ -3247,6 +3247,27 @@ def _boot_time(proc):
     return None
 
 
+def _older_parent(proc, n, btime, since, started):
+    """An older branch below the service manager cannot inherit this run's marker."""
+    try:
+        while True:
+            with open(os.path.join(proc, n, "stat"), "rb") as f:
+                parent = f.read().rsplit(b")", 1)[1].split()[1].decode("ascii")
+            if not parent.isdigit() or int(parent) <= 1:
+                return False            # an orphan can still carry the marker
+            with open(os.path.join(proc, parent, "stat"), "rb") as f:
+                head, tail = f.read().rsplit(b")", 1)
+            comm = head.split(b"(", 1)[1]
+            born = btime + int(tail.split()[19]) / float(os.sysconf("SC_CLK_TCK"))
+            if not comm or comm in (b"systemd", b"init") or born >= started:
+                return False            # launcher/adopter or uncertain ancestry (including PID reuse)
+            if born < since - SINCE_SLACK_S:
+                return True
+            n, started = parent, born
+    except (OSError, IndexError, ValueError):
+        return False
+
+
 SCAN_RETRIES = 3          # re-reads of an unreadable environ before the scan is called blind
 SCAN_RETRY_S = 0.05
 SINCE_SLACK_S = 5       # clock-tick rounding and boot-time granularity between a run's `at` and its first process
@@ -3258,8 +3279,8 @@ def scan_marked(marker, proc="/proc", uid=None, since=None):
     ruled out. Ruled out: it exited mid-scan (entry gone), it is a zombie (its environ is never readable and it runs
     nothing: one `[python3] <defunct>` of this uid made every scan blind, measured 2026-11-19,
     RIMMANDRAKE_SKIP_ZOMBIES_IN_MARKER_SCAN_ONE_DEFUNCT_BLINDS), it belongs to another uid (a run of ours never changes
-    uid), or `since` (the run's start, epoch) is given and it started more than SINCE_SLACK_S before it (the marker
-    is inherited, so every process of a run is younger than the run). Measured 2026-10-27: this user's systemd,
+    uid), or `since` (the run's start, epoch) puts the process or a non-launching ancestor before the run with
+    SINCE_SLACK_S to spare. Measured 2026-10-27: this user's systemd,
     (sd-pam) and ssh-agent are same-uid and unreadable (non-dumpable), so without `since` a real scan is blind."""
     want = ("RM_ROLE_UNIT=%s" % marker).encode()
     try:
@@ -3296,6 +3317,8 @@ def scan_marked(marker, proc="/proc", uid=None, since=None):
                 started = _started_at(proc, n, btime) if btime is not None else None
                 if started is not None and started < since - SINCE_SLACK_S:
                     continue                # older than the run: cannot carry its inherited marker
+                if started is not None and _older_parent(proc, n, btime, since, started):
+                    continue                # a separate branch, e.g. the child of an older SSH daemon
                 why[n] = "pid %s (uid %s) environ unreadable" % (n, owner)
                 again.append(n)
                 continue

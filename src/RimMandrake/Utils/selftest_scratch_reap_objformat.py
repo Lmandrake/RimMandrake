@@ -51,6 +51,13 @@ def main() -> int:
         sh(empty, "init", "-q", "-b", "main")
         if R.git(empty, "cat-file", "-e", tip).returncode != 0:
             bad.append("a sha1 repo no longer borrows the mirror's objects")
+        broken = src / "broken"
+        broken.mkdir()
+        sh(broken, "init", "-q")
+        (broken / ".git/HEAD").write_text("garbage\n")
+        state = R.clone_state(broken)
+        if not any("git cannot read it" in why for why in state["corrupt"]):
+            bad.append("a corrupt nested clone is read through its enclosing repo")
     for b in bad:
         print("FAIL", b)
     print("selftest_scratch_reap_objformat:", "FAIL" if bad else "PASS")

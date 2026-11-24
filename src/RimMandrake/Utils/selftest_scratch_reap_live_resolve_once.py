@@ -60,6 +60,12 @@ try:
     L._name_token(str(root / "link" / ".." / "x"), "/", "1", True)
     keys = {p for p, _ in L.paths}
     ok(str(root / "real" / "x") in keys, "a `..` after a link names the real parent (%s)" % sorted(keys))
+
+    L = bare_live()
+    named = str(root / "real" / "sub")
+    L._name_token("--prompt=" + "x" * 8192 + f' "{named}"', str(root), "1", False)
+    ok(named in L.resolved and len(L.resolved) < 32,
+       f"a long prompt keeps its embedded path with a small cache ({len(L.resolved)} entries)")
 finally:
     shutil.rmtree(root, ignore_errors=True)
 

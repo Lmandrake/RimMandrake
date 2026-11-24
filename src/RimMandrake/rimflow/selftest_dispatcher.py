@@ -21,6 +21,8 @@ import sys
 import tempfile
 import threading
 import time
+from pathlib import Path
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TMP = tempfile.mkdtemp(prefix="selftest_dispatcher_")
@@ -181,6 +183,35 @@ def test_verify_retry():
           and seen.count("alarm") == 1, "never consumed: withdrawn + retried %d times, then one alarm (%s)"
           % (sch["max_retries"], seen))
     check(st["seats"]["FOUNDRY"].get("cooldown_until", 0) > now - 3600, "give-up starts a cooldown")
+
+
+def test_same_second_handoff():
+    root = tempfile.mkdtemp(dir=TMP)
+    sch = sched(ledger_notes=False, publish=False)
+    clone = os.path.join(root, "clone")
+    sch["seats"]["FOUNDRY"]["clone"] = clone
+    shard = Path(clone) / "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+    shard.parent.mkdir(parents=True)
+    o = obs(consumed={"consumed_at": 1060.5})
+    o["events"] = lambda seat, since: D.seat_events_since(clone, seat, since)
+    fx = {"ring": lambda *a: None, "paused": lambda: None}
+    for takes in (False, True):
+        st = fresh()
+        acts = stall(sch, st, o)
+        t = st["seats"]["FOUNDRY"]["ring"]["rung_at"]
+        old = {"seat": "FOUNDRY", "event": "lease", "action": "take", "id": "OLD", "ts": D.iso(t)}
+        shard.write_text(json.dumps(old) + "\n")
+        D.execute(acts, sch, st, root, True, t, fx=fx, ring_clock=lambda: t + 0.25)
+        if takes:
+            with shard.open("a") as f:
+                f.write(json.dumps(dict(old, id="NEW")) + "\n")
+        acts = D.decide(sch, st, o, t + 0.25 + sch["handoff_s"], True)
+        if takes:
+            check(kinds(acts) == ["verified"] and acts[0]["ticket"] == "NEW",
+                  "same-second lease appended after release verifies the ring (got %s)" % kinds(acts))
+        else:
+            check(kinds(acts) == ["woke_no_handoff"],
+                  "same-second lease already present before release does not verify the ring")
 
 
 def test_answered_ring_is_not_no_handoff():
@@ -2555,71 +2586,78 @@ def test_golive_b1_busy_until_ended():
     check(sigs == [(11, 9)], "B1 stop forced: KILL")
     check("UNMEASURED" in RL.stop("U", "S.scope", runner=run_ok, unit_gone=True, marker="U", procs=lambda m, **k: None),
           "B1 stop: a blind marker scan is said, not hidden")
-    # procs_of: a fake /proc, and the real one with a live marked child
-    fp = os.path.join(TMP, "fakeproc")
-    for pid, env in (("101", b"A=1\0RM_ROLE_UNIT=uX\0"), ("102", b"RM_ROLE_UNIT=uXY\0"), ("self", b"")):
-        os.makedirs(os.path.join(fp, pid), exist_ok=True)
-        with open(os.path.join(fp, pid, "environ"), "wb") as f:
-            f.write(env)
-    os.makedirs(os.path.join(fp, "103"), exist_ok=True)       # no environ: skipped, not a failure
-    check(RL.procs_of("uX", proc=fp) == [101], "B1 procs_of: exact marker match only (uXY is another run)")
-    check(RL.procs_of("uX", proc=os.path.join(TMP, "no_such_proc")) is None, "B1 procs_of: /proc unreadable -> None")
-    # a process mid-exec is unreadable for a moment (the live flake: young siblings under parallel load); a
-    # non-dumpable one stays so. A fake /proc with a 000 environ made readable after 60 ms:
-    import threading
-    tp = os.path.join(TMP, "transientproc")
-    for pid in ("201", "202"):
-        os.makedirs(os.path.join(tp, pid), exist_ok=True)
-    for pid, env in (("201", b"RM_ROLE_UNIT=uT\0"), ("202", b"RM_ROLE_UNIT=uOther\0")):
-        with open(os.path.join(tp, pid, "environ"), "wb") as f:
-            f.write(env)
-        with open(os.path.join(tp, pid, "stat"), "wb") as f:   # a live process: scan_marked reads its state, and a pid
-            f.write(b"%s (python3) S 1 1 1 0 -1" % pid.encode())  # with no stat reads as exited (cd73ef1d91)
-    if os.getuid() != 0:
-        e201 = os.path.join(tp, "201", "environ")
-        os.chmod(e201, 0)
-        thr = threading.Timer(0.06, os.chmod, (e201, 0o644))
-        thr.start()
-        check(RL.procs_of("uT", proc=tp) == [201], "B1 procs_of: a transiently unreadable environ is re-read, not blind")
-        thr.join()
-        os.chmod(e201, 0)
-        check(RL.procs_of("uT", proc=tp) is None, "B1 procs_of: a persistently unreadable environ stays blind")
-        os.chmod(e201, 0o644)
-        _r = RL.SCAN_RETRIES
-        RL.SCAN_RETRIES = 0                     # control: without the re-read the transient case is blind (the old code)
-        try:
-            os.chmod(e201, 0)
-            thr = threading.Timer(0.06, os.chmod, (e201, 0o644))
-            thr.start()
-            check(RL.procs_of("uT", proc=tp) is None, "B1 procs_of control: no retries -> blind on a transient")
-            thr.join()
-        finally:
-            RL.SCAN_RETRIES = _r
-    mk = "selftest-marker-%d" % os.getpid()
-    t_run = time.time()      # a run's `at`: this user's older unreadable processes (systemd, sd-pam) predate it
-    # The real /proc is shared with every co-running selftest: their young same-uid children (python3, git,
-    # reg.exe mid-exec) are unreadable for a moment, and a scan that meets one past SCAN_RETRIES is blind (None),
-    # which the Dispatcher treats as UNMEASURED and rescans next tick. Measured under testq+contracts load
-    # 2026-10-29: 11/489 single scans blind with no re-read (the old code; 1 in 14 runs FAILed "none once it is
-    # gone"), 0/479 with it. These rows test what a live scan SEES, so a blind scan is rescanned (bounded) like
-    # the next tick would, and its reason is printed (DISPATCHER_HUNT_SELFTEST_PARALLEL_FLAKE).
-    def live(mk_, since_):
-        for _ in range(10):
-            pids, blind = RL.scan_marked(mk_, since=since_)
-            if not blind:
-                return pids, None
-            time.sleep(0.2)
-        return None, blind
-    p = subprocess.Popen(["sleep", "30"], env=dict(os.environ, RM_ROLE_UNIT=mk))
-    try:
-        got, blind = live(mk, t_run)
-        check(got == [p.pid], "B1 procs_of on the real /proc sees a live marked process (%s, blind: %s)"
-              % (got, blind))
-    finally:
-        p.kill()
-        p.wait()
-    got, blind = live(mk, t_run)
-    check(got == [], "B1 procs_of: none once it is gone (%s, blind: %s)" % (got, blind))
+    # All /proc entries and read errors are local to this fixture.
+    fp = Path(TMP) / "fakeproc"
+    fp.mkdir()
+    (fp / "stat").write_text("btime 1000\n")
+    ticks = os.sysconf("SC_CLK_TCK")
+
+    def proc(pid, env, start=100, parent=1, comm="python3"):
+        d = fp / str(pid)
+        d.mkdir()
+        (d / "stat").write_text(("%d (%s) S %d " % (pid, comm, parent)) + "0 " * 17 + str(start * ticks))
+        if env is not None:
+            (d / "environ").write_bytes(env)
+        return d
+
+    marked = proc(10000001, b"A=1\0RM_ROLE_UNIT=uX\0")
+    proc(10000002, b"RM_ROLE_UNIT=uXY\0")
+    proc(10000003, None)      # no environ: skipped, not a failure
+    (fp / "self").mkdir()
+    check(RL.procs_of("uX", proc=fp) == [10000001], "B1 procs_of: exact marker match only (uXY is another run)")
+    check(RL.procs_of("uX", proc=fp / "no_such_proc") is None, "B1 procs_of: /proc unreadable -> None")
+
+    proc(10000004, b"", start=20, comm="tailscaled")
+    proc(10000005, b"", start=98, parent=10000004, comm="sh")
+    sibling = proc(10000006, b"", start=99, parent=10000005, comm="tailscaled")
+    child = proc(10000007, b"", start=101, parent=10000001)
+    orphan = proc(10000008, b"", start=101)
+    proc(10000009, b"", start=20, comm="systemd")
+    service = proc(10000010, b"", start=101, parent=10000009)
+    missing_parent = proc(10000011, b"", start=101, parent=10000012)
+    blind_environs = set()
+
+    def read(path, *args, **kwargs):
+        if Path(path).parent in blind_environs and Path(path).name == "environ":
+            raise PermissionError(path)
+        return open(path, *args, **kwargs)
+
+    with patch.object(RL, "open", read, create=True), patch.object(RL.time, "sleep"):
+        blind_environs.add(sibling)
+        got, blind = RL.scan_marked("uX", proc=fp, since=1100)
+        check(got == [10000001] and blind is None,
+              "B1 young unrelated sibling leaves the marked process visible (%s, blind: %s)" % (got, blind))
+        check(RL.procs_of("uX", proc=fp) is None, "B1 no run start: an unreadable sibling stays blind")
+        for unreadable in (child, orphan, service, missing_parent):
+            blind_environs.add(unreadable)
+            check(RL.procs_of("uX", proc=fp, since=1100) is None,
+                  "B1 possible descendant %s stays blind" % unreadable.name)
+            blind_environs.remove(unreadable)
+        (marked / "environ").unlink()
+        got, blind = RL.scan_marked("uX", proc=fp, since=1100)
+        check(got == [] and blind is None, "B1 procs_of: none once it is gone (%s, blind: %s)" % (got, blind))
+        blind_environs.add(child)
+        check(RL.procs_of("uX", proc=fp, since=1100) is None, "B1 an empty partial scan stays blind")
+        blind_environs.remove(child)
+        blind_environs.clear()
+        (marked / "environ").write_bytes(b"RM_ROLE_UNIT=uX\0")
+
+        def transient(path, *args, **kwargs):
+            if Path(path) == marked / "environ" and marked in blind_environs:
+                blind_environs.remove(marked)
+                raise PermissionError(path)
+            return read(path, *args, **kwargs)
+
+        with patch.object(RL, "open", transient):
+            blind_environs.add(marked)
+            check(RL.procs_of("uX", proc=fp) == [10000001],
+                  "B1 procs_of: a transiently unreadable environ is re-read, not blind")
+            with patch.object(RL, "SCAN_RETRIES", 0):
+                blind_environs.add(marked)
+                check(RL.procs_of("uX", proc=fp) is None,
+                      "B1 procs_of control: no retries -> blind on a transient")
+        blind_environs.add(marked)
+        check(RL.procs_of("uX", proc=fp) is None, "B1 procs_of: a persistently unreadable environ stays blind")
     # execute: the scope and marker are on disk BEFORE systemd-run, and a launcher's own scope cannot replace them
     sch = sched(roles=[conductor()])
     act = {"do": "role_launch", "role": "Conductor", "unit": "UB1", "message": "m", "ticket": "ROLES_ITEM_X",
@@ -3267,7 +3305,7 @@ def test_review_e_incident_gates_and_torn_denied():
 
 def main():
     strict_roles()
-    for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
+    for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_same_second_handoff,
               test_no_handoff_rering_and_escalation, test_new_ticket_skips_the_backoff, test_alarm_delivery_and_lock, test_answered_ring_is_not_no_handoff, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_publish_young_lock_is_traffic, test_seat_rule, test_ringed_next_withholds_nothing,
               test_role_reading, test_role_gates, test_role_economy_and_alarms,

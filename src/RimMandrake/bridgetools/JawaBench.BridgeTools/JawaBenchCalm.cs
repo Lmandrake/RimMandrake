@@ -33,8 +33,14 @@ namespace JawaBench.BridgeTools
         internal static bool EverArmed;
         internal static string WeatherName = "Clear";
         internal static HashSet<string> Allow = new HashSet<string>(), Except = new HashSet<string>(), KeepDefs = new HashSet<string>(), KeepIds = new HashSet<string>();
-        internal static int ArmTick = -1, MapId = -1;
+        internal static int MapId = -1;
+        internal static int ArmTick
+        {
+            get { return _armGame?.Target is object game && ReferenceEquals(game, Current.Game) ? _armTick : -1; }
+        }
 
+        private static WeakReference _armGame;
+        private static int _armTick = -1;
         private static HashSet<int> _known = new HashSet<int>();
         private static long _placed;
         private static bool _owed;                                           // a restore is owed (the calm changed something)
@@ -308,7 +314,8 @@ namespace JawaBench.BridgeTools
             if (fresh)
             {
                 if (_owed) Restore("set again");
-                MapId = map.uniqueID; ArmTick = Tick(); _placed = 0; Breaches.Clear(); QueueTicksHeld = 0;
+                MapId = map.uniqueID; _armTick = Tick(); _placed = 0; Breaches.Clear(); QueueTicksHeld = 0;
+                _armGame = new WeakReference(Current.Game);
                 _known = new HashSet<int>(map.mapPawns.AllPawnsSpawned.Select(x => x.thingIDNumber));
             }
             EverArmed = true;

@@ -8,7 +8,7 @@
      @ <exe>                 the process exists (written by the constructor; a child with no such line was NOT observed)
      P                       this process carries the python runtime, whatever its file is called
      R <path>                opened for reading
-     W <path>                opened for writing, the target of a rename/link/symlink, or removed (unlink, rmdir)
+     W <path>                opened for writing, the target of a rename/link/symlink, created by mkdir, or removed
      K <path>                what a new link points at, or what a rename took: the test's own TMPDIR must not launder a
                              shared file
      L <dir>                 directory listed
@@ -230,6 +230,8 @@ ssize_t readlink(const char *p, char *b, size_t n) { REAL(readlink); note_path('
 ssize_t readlinkat(int d, const char *p, char *b, size_t n) { REAL(readlinkat); note_path('R', d, p); return real_readlinkat(d, p, b, n); }
 
 /* ---- directories ------------------------------------------------------------------------------------------------ */
+int mkdir(const char *p, mode_t m) { REAL(mkdir); note_path('W', AT_FDCWD, p); return real_mkdir(p, m); }
+int mkdirat(int d, const char *p, mode_t m) { REAL(mkdirat); note_path('W', d, p); return real_mkdirat(d, p, m); }
 DIR *opendir(const char *p) { REAL(opendir); note_path('L', AT_FDCWD, p); return real_opendir(p); }
 DIR *fdopendir(int fd) {
     REAL(fdopendir);

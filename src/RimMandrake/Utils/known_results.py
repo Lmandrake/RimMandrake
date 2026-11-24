@@ -253,7 +253,7 @@ def analyse(trace_dir: Path, repo: Path, own_tmp: str, started: float) -> dict:
         """False for what is no input at all. Refuses for what must never be cached."""
         if not p.startswith("/"):
             return False
-        if _under(p, mine) or "/__pycache__/" in p or p.endswith(".pyc") or p.startswith("/rm-selftest/"):
+        if _under(p, mine) or "/__pycache__/" in p + "/" or p.endswith(".pyc") or p.startswith("/rm-selftest/"):
             return False
         if p.startswith("/dev/"):
             if not any(p == d or p.startswith(d) for d in DEV_OK if d):

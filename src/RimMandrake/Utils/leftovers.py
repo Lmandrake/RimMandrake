@@ -17,7 +17,7 @@ Kinds and what `check` must prove (every reason below is a NOT-SAFE reason; SAFE
            prefix (SAVE_PREFIXES). Never canonical: the canon.yml start_savegame, CANONICAL_SAVE.md's file and
            anything named CANONICAL*/ASHKARR_DEV* (or a folder holding one) is REFUSED outright. Read = its name
            appears in any tracked repo file (items, docs, scenes), or it is a review save (an unjudged review
-           save counts as read), or it is younger than --min-age-days.
+           save counts as read), or it is younger than --min-age-days. A backup also checks each .rws inside it.
   clone    a scratch git clone under CLONE_ROOTS whose origin is this repo's origin. Read/unpushed = dirty or
            untracked/ignored files, a stash, a merge/rebase in progress, extra worktrees, any commit a ref, HEAD
            or reflog entry reaches that the real origin lacks (this repo's refs/remotes/origin/* + `ls-remote
@@ -564,6 +564,9 @@ def probe_repo_grep(ctx, v):
         v.blind("probe: no canonical save name readable from canon.yml/CANONICAL_SAVE.md")
         return False
     hits = ctx.git_grep_files(os.path.splitext(names[0])[0])
+    if hits is None:
+        v.blind("probe: git grep failed for known reference %r" % names[0])
+        return False
     if not hits:
         v.blind("probe: git grep could not see known reference %r" % names[0])
         return False
@@ -576,27 +579,34 @@ def check_save(ctx, p, v):
     canon = ctx.canon_save_names()
     if name in canon or any(m in name.upper() for m in CANONICAL_MARKS) or name.split(".rws")[0] + ".rws" in canon:
         return v.refuse("canonical save (or a copy/derivative of one): never a leftover")
+    names = [name]
+    prefixes = tuple(x.lower() for x in SAVE_PREFIXES)
     if os.path.isdir(p):
         if not re.match(r"Saves_(backup|archive)", name):
             return v.refuse("not a save backup folder of ours")
-        for d, _dirs, files in os.walk(p):
+        for _d, _dirs, files in os.walk(p, onerror=lambda e: v.blind("could not list save backup: %s" % e)):
             for f in files:
                 if f in canon or any(m in f.upper() for m in CANONICAL_MARKS):
                     return v.refuse("folder holds a canonical save copy (%s)" % f)
-    elif not name.lower().startswith(tuple(x.lower() for x in SAVE_PREFIXES)):
+                if f.lower().endswith(".rws"):
+                    if not f.lower().startswith(prefixes):
+                        return v.refuse("folder holds a save with no agent prefix (%s)" % f)
+                    names.append(f)
+    elif not name.lower().startswith(prefixes):
         return v.refuse("save name has no agent prefix: not provably ours")
     if not probe_repo_grep(ctx, v):
         return
-    stem = name[:-4] if name.lower().endswith(".rws") else name
-    hits = ctx.git_grep_files(stem)
-    if hits is None:
-        return v.blind("git grep failed")
-    if hits:
-        v.no("named in %d repo file(s): %s" % (len(hits), ", ".join(hits[:3])))
-    else:
-        v.evidence.append("0 repo files name %r" % stem)
-    if REVIEW_MARK.search(name):
-        v.no("review save: counts as read until he has judged it")
+    for member in names:
+        stem = member[:-4] if member.lower().endswith(".rws") else member
+        hits = ctx.git_grep_files(stem)
+        if hits is None:
+            return v.blind("git grep failed for %r" % stem)
+        if hits:
+            v.no("%r named in %d repo file(s): %s" % (stem, len(hits), ", ".join(hits[:3])))
+        else:
+            v.evidence.append("0 repo files name %r" % stem)
+        if REVIEW_MARK.search(member):
+            v.no("review save %r: counts as read until he has judged it" % member)
     age = _now() - _newest_mtime(p)
     if age < ctx.min_age:
         v.no("younger than %.0f days (%.1f d)" % (ctx.min_age / 86400, age / 86400))
@@ -666,9 +676,12 @@ def check_clone(ctx, p, v):
     pushed, how = ctx.pushed_shas()
     if not om or not pushed:
         return v.blind("this repo has no refs/remotes/origin/main: cannot tell pushed from unpushed")
-    stdin = "\n".join(["HEAD", "--all", "--reflog", "--not"] + pushed) + "\n"
-    pr = subprocess.run(["git", "-C", p, "rev-list", "--parents", "--stdin"], input=stdin.encode(), env=dict(
-        env, GIT_OPTIONAL_LOCKS="0"), stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=300)
+    def rev_list(*flags):
+        stdin = "\n".join(["HEAD", "--all", *flags, "--not"] + pushed) + "\n"
+        return subprocess.run(["git", "-C", p, "rev-list", "--parents", "--stdin"], input=stdin.encode(), env=dict(
+            env, GIT_OPTIONAL_LOCKS="0"), stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=300)
+
+    pr = rev_list("--reflog")
     if pr.returncode != 0:
         return v.blind("rev-list failed: %s" % pr.stderr.decode("utf-8", "replace").strip())
     rows = [l.split() for l in pr.stdout.decode().splitlines() if l.strip()]
@@ -679,20 +692,33 @@ def check_clone(ctx, p, v):
         local = set(unpushed)
         tips = [s for s in unpushed if s not in parents]   # heads of the unpushed graph
         real = None
+        protected = None
         for tip in tips:
             rc, ch, err = _git(p, "cherry", om, tip, env=env, timeout=300)
             if rc != 0:
                 return v.blind("git cherry against origin/main failed: %s" % err.strip())
             plus = [x for x in (l[2:].strip() for l in ch.splitlines() if l.startswith("+ ")) if x in local]
             if plus:
-                # publish rebases through ledger conflicts, so a landed commit's patch-id can differ; the
-                # same author + author time + subject on origin/main is that commit, landed
-                rc, keys, _ = _git(p, "log", "--no-walk", "--format=%H%x1f%ae%x1f%at%x1f%s", *plus)
+                # Conflict replay can leave the old commit only in the reflog. A ref or an amend can
+                # still hold work with the same author, time and subject but different content.
+                rc, keys, err = _git(p, "log", "--no-walk", "--format=%H%x1f%ae%x1f%at%x1f%s", *plus)
+                if rc:
+                    return v.blind("git log failed: %s" % err.strip())
                 landed = ctx.landed_keys()
                 left = [l.split("\x1f", 1)[0] for l in keys.splitlines()
                         if l.strip() and l.split("\x1f", 1)[1] not in landed]
-                if rc != 0 or left:
-                    real = left[0] if left else plus[0]
+                if not left:
+                    if protected is None:
+                        live = rev_list()
+                        if live.returncode:
+                            return v.blind("rev-list of refs failed: %s" % live.stderr.decode("utf-8", "replace").strip())
+                        rc, amended, err = _git(p, "reflog", "show", "--all", "--format=%H", "--grep-reflog=^commit (amend):")
+                        if rc:
+                            return v.blind("git reflog failed: %s" % err.strip())
+                        protected = {l.split()[0] for l in live.stdout.decode().splitlines()} | set(amended.splitlines())
+                    left = [sha for sha in plus if sha in protected]
+                if left:
+                    real = left[0]
                     break                   # one is enough for NOT-SAFE; a clone can hold hundreds of refs
         if real:
             v.no("commit(s) not on origin and not patch-equivalent on origin/main (e.g. %s)" % real[:10])

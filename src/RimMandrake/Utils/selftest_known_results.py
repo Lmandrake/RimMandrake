@@ -26,7 +26,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 RUNNER = HERE / "run_selftests.py"
 SOURCE = HERE / "known_results.py"
-SCRATCH = Path("/home/mandrake/rm/scratch/BENCH") if Path("/home/mandrake/rm").is_dir() else HERE.parents[2] / ".scratch"
+SCRATCH = Path(os.environ["RM_SELFTEST_STATE_DIR"]) if "RM_SELFTEST_STATE_DIR" in os.environ else (
+    Path("/home/mandrake/rm/scratch/BENCH") if Path("/home/mandrake/rm").is_dir() else HERE.parents[2] / ".scratch")
 FAILS = []
 
 
@@ -382,14 +383,13 @@ def decide(K, root: Path, loud=False) -> list:
     return wrong
 
 
-def shim_removal(K, root: Path):
-    """The real shim notes a removal as a write, from a native tool and from python: a dependency read and then deleted
-    must reach `analyse` as read-and-written, never as an absent input (GPT review, 2026-11-01)."""
+def shim_writes(K, root: Path):
+    """The real shim notes file removals and directory changes from native tools and Python as writes."""
     shutil.rmtree(root, ignore_errors=True)
     root.mkdir(parents=True)
     so = K.build_shim(root / "state")
     if so is None:
-        eq("shim built", "no shim", "shim: compiles for the removal check")
+        eq("shim built", "no shim", "shim: compiles for the write checks")
         return
     for label, cmd in [("rm", ["/bin/rm", "{f}"]), ("rmdir", ["/bin/rmdir", "{d}"]),
                        ("python os.remove", [sys.executable, "-S", "-c", "import os; os.remove('{f}')"])]:
@@ -402,6 +402,14 @@ def shim_removal(K, root: Path):
         lines = {ln for n in tr.glob("*.native") for ln in n.read_text().splitlines()}
         want = f"W {d}" if label == "rmdir" else f"W {f}"
         eq(want in lines, True, f"shim: {label} is noted as a write")
+    tr = root / "trace_mkdirat"
+    tr.mkdir()
+    env["RM_SELFTEST_TRACE"] = str(tr)
+    subprocess.run([sys.executable, "-S", "-c",
+                    f"import os; os.mkdir('new', dir_fd=os.open({str(root)!r}, os.O_RDONLY))"],
+                   env=env, check=True, timeout=60)
+    lines = {ln for n in tr.glob("*.native") for ln in n.read_text().splitlines()}
+    eq(f"W {root / 'new'}" in lines, True, "shim: mkdirat resolves dir_fd and is noted as a write")
 
 
 # --- layer 2: mutants ---------------------------------------------------------------------------------------------------
@@ -542,6 +550,7 @@ FIXTURES = {
     "src/selftest_python_i.py": "import subprocess, sys\nsubprocess.run([sys.executable, '-I', '-c', 'print(1)'], check=True)\n",
     "src/selftest_env_cleared.py": "import subprocess\nsubprocess.run(['/bin/sh', '-c', 'exit 0'], env={}, check=True)\n",
     "src/selftest_rewrites.py": "p = 'src/rw.txt'\nt = open(p).read()\nopen(p, 'w').write(t)\n",
+    "src/selftest_makedirs.py": "import os\nos.makedirs('src/made/child', exist_ok=True)\n",
     "src/selftest_touches.py": "import os\nopen('src/touched.txt').read()\nos.utime('src/touched.txt')\n",
 }
 HIDDEN = "src/Fix/Hidden/selftest_hidden.py"
@@ -560,7 +569,8 @@ def tq(name):
 
 CACHEABLE = ["import", "data", "listing", "env", "tool", "absent", "shadow", "threads", "unrelated", "hidden"]
 NEVER = {"clock": "clock", "network": "network", "game": "external", "git": "git state", "machine": "machine state",
-         "python_i": "unobserved", "env_cleared": "unobserved", "rewrites": "reads and writes", "touches": "changed during"}
+         "python_i": "unobserved", "env_cleared": "unobserved", "rewrites": "reads and writes", "touches": "changed during",
+         "makedirs": "stats and writes"}
 
 
 def build(root: Path):
@@ -942,7 +952,7 @@ def main():
         wrong = decide(K, work / "unit", loud=True)
         eq(wrong, [], "every ledger decision on hand-built traces and real files")
         mutants(work)
-        shim_removal(K, work / "shim")
+        shim_writes(K, work / "shim")
         blind_run_reader(work / "blind")
         fixture(work / "repo")
         counterexamples(work / "second")

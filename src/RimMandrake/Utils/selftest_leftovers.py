@@ -169,6 +169,13 @@ def main():
         ok(s(os.path.join(os.path.dirname(saves), "Saves_backup_x")) == L.SAFE, "save: old backup folder is SAFE")
         ok(s(os.path.join(os.path.dirname(saves), "Saves_backup_canon")) == L.REFUSED,
            "save: backup folder holding a canonical copy is REFUSED")
+        for folder, member, want in (("foreign", "PlayerColony.rws", L.REFUSED),
+                                     ("unjudged", "RM_x_REVIEW.rws", L.NOT_SAFE),
+                                     ("named", "RM_referenced_save.rws", L.NOT_SAFE)):
+            backup = os.path.join(os.path.dirname(saves), "Saves_backup_" + folder)
+            w(os.path.join(backup, "nested", member), "s")
+            got = s(backup)
+            ok(got == want, "save: backup containing %s reads %s (want %s)" % (member, got, want))
         # sanity probe: blind the repo grep -> UNMEASURED, never SAFE
         blind = L.Ctx(repo=repo, saves=saves, config=config, mods=mods, clone_roots=[sc],
                       archive_root=ctx.archive_root, dump="", retired=ctx._retired, canon_saves={"NOPE_ZZ.rws"})
@@ -270,6 +277,17 @@ def main():
         git(cl, "reset", "-q", "--hard", "origin/main")   # the pre-rebase sha now lives only in the reflog
         age_git(cl)
         ok(s(cl) == L.SAFE, "clone: a commit rebased through a conflict (same author+time+subject landed) is SAFE")
+        w(os.path.join(cl, "ledger.txt"), "amended after landing")
+        git(cl, "add", "ledger.txt")
+        git(cl, *idn, "commit", "-q", "--amend", "--no-edit")
+        age_git(cl)
+        got = s(cl)
+        ok(got == L.NOT_SAFE, "clone: never-pushed amended commit reads %s (want NOT-SAFE)" % got)
+        git(cl, "reset", "-q", "--keep", "origin/main")
+        age_git(cl)
+        got = s(cl)
+        ok(got == L.NOT_SAFE, "clone: reflog-only amended commit reads %s (want NOT-SAFE)" % got)
+        git(cl, "reflog", "expire", "--expire=now", "--all")
         w(os.path.join(cl, "ledger.txt"), "never landed")
         git(cl, "add", "ledger.txt")
         subprocess.run(["git", "-C", cl] + idn + ["commit", "-q", "-m", "ledger: same subject"], check=True,

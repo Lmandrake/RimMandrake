@@ -41,6 +41,10 @@ def t_release_restores_proximity_letters():
     return L.group("letter_restore", [])
 
 
+def t_arm_tick_follows_game():
+    return L.group("arm_tick_follows_game", [])
+
+
 def t_reassert_keeps_the_lease():
     return L.group("reassert_lease", [])
 
@@ -49,7 +53,8 @@ def main():
     try:
         res = [t_calm_only_when_every_control_was_read(), t_each_thing_not_calm_is_named(), t_not_calm_outranks_could_not_read(),
                t_an_exception_is_shown_and_checked(), t_the_gate_holds_all_but_the_allowed(), t_every_breach_is_counted(),
-               t_lease_expires_while_paused(), t_release_restores_proximity_letters(), t_reassert_keeps_the_lease()]
+               t_lease_expires_while_paused(), t_release_restores_proximity_letters(), t_arm_tick_follows_game(),
+               t_reassert_keeps_the_lease()]
     except L.Unmeasured as e:
         print("FAIL calm core UNMEASURED: %s" % e)
         return 1

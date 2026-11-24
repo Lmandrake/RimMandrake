@@ -62,6 +62,8 @@ or COULD_NOT_READ. The reply always lists `notCovered`: the influences that no c
   while the game tick stays fixed.
 - **release-restores-proximity-letters.** On the same loaded map, release puts back the unsent flags that calm changed.
   Letters that had already been sent stay sent.
+- **arm-tick-follows-game.** The arm tick belongs to the game that was armed. After a load `read` reports `-1` until
+  the new game is armed, even if its map id matches the old one.
 - **reassert-keeps-the-lease.** With no `minutes` argument, repairing an active calm on the same map preserves the calm
   deadline and any active wild spawner deadline, even if they differ. It restores a missing spawner block for the
   remaining calm time. Rearming uses the last `calm` duration. Explicit `minutes` sets a new deadline for both.

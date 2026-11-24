@@ -53,6 +53,21 @@ namespace JawaBench.BridgeTools
                 return true;
             });
 
+            Program.Check("arm_tick_follows_game.hides_previous_games_tick", () =>
+            {
+                SetUp();
+                var calm = Act("calm");
+                Require(calm.success && calm.armTick == 123, "calm did not report the armed tick");
+                Current.Game = new object();
+                Find.CurrentMap = new Map();   // the new game reuses the old map id
+                Find.TickManager.TicksGame = 12;
+                var read = Act("read");
+                Require(read.armTick == -1, $"new game reported armTick={read.armTick}, expected -1");
+                var rearmed = Act("reassert");
+                Require(rearmed.success && rearmed.armTick == 12, "reassert did not report the new arm tick");
+                return true;
+            });
+
             Program.Check("reassert_lease.preserves_deadline_and_allows_explicit_renewal", () =>
             {
                 SetUp();

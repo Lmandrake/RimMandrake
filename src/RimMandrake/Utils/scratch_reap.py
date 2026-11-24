@@ -509,11 +509,12 @@ def path_forms(token: str, cwd: str, bare_must_exist: bool = False) -> list[str]
         cands = [part]
         if part[:1] in ("@", "+", "<", ">", "!", "%"):       # @response-file, redirections
             cands.append(part[1:])
+        option, sep, value = part.partition("=")
+        if sep:
+            cands.append(value)
         if part[:1] == "-":
-            cands += [part.partition("=")[2]] + [part[k:] for k in range(1, len(part))
-                                                 if part[k - 1] not in "/-" and part[k] != "/"]   # -isystemscratch/c: the flag's length is unknown
-        elif "=" in part:
-            cands.append(part.partition("=")[2])
+            # -isystemscratch/c: the flag's length is unknown, but an explicit value is already covered.
+            cands += [part[k:] for k in range(1, len(option) + bool(sep)) if part[k - 1] not in "/-" and part[k] != "/"]
         for pre in ("$HOME", "${HOME}", "~"):                # a shell expands these only after the process was started
             if pre + "/" in part:                         # never bare HOME: naming it would make every home dir a lender walk
                 cands += [x.replace(pre + "/", str(HOME) + "/", 1) for x in list(cands) if pre + "/" in x]
@@ -1292,7 +1293,7 @@ def clone_state(c: Path) -> dict:
     if dotgit.is_file() or dotgit.is_symlink():
         hard.append(f"{c}: .git is a file/link (linked worktree or submodule) — its real repo is elsewhere")
         return out
-    if git(c, "rev-parse", "--git-dir").returncode:
+    if git(c, "--git-dir=.git", "rev-parse", "--git-dir").returncode:  # never fall back to an enclosing repo
         hard.append(f"{c}: git cannot read it (corrupt or not a repo) — inspect by hand")
         out["corrupt"].append(hard[-1])
         return out

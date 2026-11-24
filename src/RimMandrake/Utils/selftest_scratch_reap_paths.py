@@ -35,6 +35,7 @@ SHAPES = [
     ("~/rm/scratch/c", "/home/mandrake/rm/scratch/c"),
     ("@scratch/c/build.rsp", "/home/mandrake/rm/bench/scratch/c/build.rsp"),      # response file
     ("-I=../scratch/c", "/home/mandrake/rm/scratch/c"),
+    ("-Icache=local/include", "/home/mandrake/rm/bench/cache=local/include"),
 ]
 
 
@@ -44,6 +45,9 @@ def main() -> int:
         got = {os.path.normpath(p) for p in R.path_forms(word, CWD)}
         if want not in got:
             bad.append(f"{word!r}: wanted {want}, got {sorted(got)}")
+    counts = [len(R.path_forms("--prompt=" + "x" * size, CWD)) for size in (1024, 8192)]
+    if counts[0] != counts[1]:
+        bad.append(f"a longer explicit option value added path forms ({counts[0]} -> {counts[1]})")
     with tempfile.TemporaryDirectory() as td:
         os.mkdir(os.path.join(td, "worker"))
         if os.path.join(td, "worker") not in R.path_forms("worker", td, True):

@@ -100,13 +100,7 @@ TARGET_EXCLUDE = {
 }
 # Checks that flake for reasons outside the mutated module; a run failing ONLY these counts as a pass for that
 # target (otherwise every flake reads as a killed mutant). Each entry names the item that tracks the flake.
-FLAKY = {
-    # role_launch.scan_marked goes blind on any young same-uid non-dumpable process (a fresh tailscale-ssh session,
-    # a transient sh); the check exercises role_launch, not dispatcher.py. Item SCAN_MARKED_HARDEN_YOUNG_SIBLING_BLINDS.
-    "dispatcher": ("B1 procs_of on the real /proc sees a live marked process", "B1 procs_of: none once it is gone"),
-    # the same flake, tolerated for role_launch too: a mutant that breaks ONLY those two B1 checks reads as survived
-    "role_launch": ("B1 procs_of on the real /proc sees a live marked process", "B1 procs_of: none once it is gone"),
-}
+FLAKY = {}
 #: measured selftest seconds per target on SteveDesktop, 2026-10-27 (sizes the shards; 3.0 for a target not here)
 BASELINE_S = {"close_evidence": 17.5, "dispatcher": 3.4,
               "delegated_digest": 2.2, "role_launch": 5.0}

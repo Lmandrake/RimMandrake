@@ -67,6 +67,7 @@ import contextlib
 import fcntl
 import fnmatch
 import glob
+import hashlib
 import json
 import os
 import shutil
@@ -355,7 +356,7 @@ def parse_peek(out):
 
 
 def seat_events_since(clone, seat, since_iso, on_skip=None):
-    """Events the seat wrote to its own shard (on disk in its clone, before any push) at or after since_iso."""
+    """Events the seat wrote to its own shard (on disk in its clone, before any push) strictly after since_iso."""
     p = os.path.join(clone, "infrastructure", "state", "ledger", "events", "%s.jsonl" % seat)
     out = []
     try:
@@ -381,11 +382,16 @@ def seat_events_since(clone, seat, since_iso, on_skip=None):
             ev = r.value
             # BENCH's shard holds lines written as CONDUCTOR/RELENTLESS (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP)
             if (ev.get("seat") == seat or (seat == "BENCH" and ev.get("seat") in ("CONDUCTOR", "RELENTLESS"))) \
-                    and CC.ledger_ts(ev) > since_iso:   # strictly after the ring's second
+                    and CC.ledger_ts(ev) > since_iso:
                 out.append(ev)
     except FileNotFoundError:   # any other read error raises into the seat's guard: an unreadable shard is not a silent seat
         pass
     return out
+
+
+def event_digest(ev):
+    """Identity for a ring's ledger cursor, independent of shard order and JSON key order."""
+    return hashlib.sha256(json.dumps(ev, sort_keys=True).encode()).hexdigest()
 
 
 def consumed_ring(root, seat, ring_id):
@@ -973,7 +979,13 @@ def decide(sch, st, obs, now, apply, out=None):
             if rec and not pend.get("consumed_at"):
                 pend["consumed_at"] = rec.get("consumed_at") or now
             if pend.get("consumed_at"):
-                events = obs["events"](seat, pend["rung_iso"])    # one snapshot: a take between two reads is seen by neither
+                second = pend["rung_iso"]
+                before = pend.get("same_second_before")
+                cutoff = second if before is None else iso(pend["rung_at"] - 1)
+                events = obs["events"](seat, cutoff)       # one snapshot for both hand-off and answer
+                if before is not None:
+                    events = [ev for ev in events if CC.ledger_ts(ev) > second or
+                              (CC.ledger_ts(ev) == second and event_digest(ev) not in before)]
                 ev = handoff_seen(events)
                 if ev:
                     act(do="verified", seat=seat, ring_id=pend["ring_id"], ticket=ev.get("id") or pend.get("ticket"),
@@ -1836,18 +1848,30 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             res = "held at release: PAUSE (%s)" % paused
                             unring(st, a, now)
                         else:
+                            seat = a["seat"]
+                            pend = (st.get("seats", {}).get(seat) or {}).get("ring")
+                            clone = ((sch.get("seats") or {}).get(seat) or {}).get("clone")
+                            baseline = None
+                            if clone and pend and pend.get("ring_id") == a["ring_id"]:
+                                try:
+                                    baseline = seat_events_since(clone, seat, iso(now - 1))
+                                except OSError as e:
+                                    a["handoff_cursor"] = "unreadable (%s)" % type(e).__name__
                             a["released"] = True     # from here on it may be in the inbox: never given back
-                            do_ring(root, a["seat"], a["ring_id"], a["message"], a.get("session_id"))
+                            do_ring(root, seat, a["ring_id"], a["message"], a.get("session_id"))
                             res = "rung"
                             # decide() stamped the tick's start; a lease taken in the lock wait before this write read as
                             # the ring's hand-off (RUNG_AT_STAMPED_BEFORE_LOCK_WAIT).
                             # The live tick passes its real clock (ring_clock), so observation time counts too.
-                            pend = (st.get("seats", {}).get(a["seat"]) or {}).get("ring")
                             # A simulated clock (a selftest's) moves only past a second: under rung_iso's grain.
                             at = max(now, ring_clock()) if ring_clock else now + time.time() - began
-                            if (at > now if ring_clock else at - now >= 1) and pend and pend.get("ring_id") == a["ring_id"]:
-                                pend["rung_at"] = at
-                                pend["rung_iso"] = iso(at)
+                            if pend and pend.get("ring_id") == a["ring_id"]:
+                                if at > now if ring_clock else at - now >= 1:
+                                    pend["rung_at"] = at
+                                    pend["rung_iso"] = iso(at)
+                                if baseline is not None:
+                                    pend["same_second_before"] = [event_digest(ev) for ev in baseline
+                                                                  if CC.ledger_ts(ev) == pend["rung_iso"]]
                     elif a["do"] == "withdraw":
                         w = withdraw_reading(do_withdraw(root, a["seat"], a["ring_id"]))
                         res = "%s: %s" % (w["outcome"], w.get("why") or "")
