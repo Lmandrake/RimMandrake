@@ -10,16 +10,16 @@ Also: skills/rimworld-scene-composition/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 16,924 | 18,337 |
-| words in linted prose | 2,076 | 2,384 |
+| bytes | 16,924 | 18,420 |
+| words in linted prose | 2,076 | 2,400 |
 | STE violations per 100 words | 4.19 | 1.13 |
 | sentences over 20 words | 40 | 12 |
-| flagged lines (mechanical) | 12 | 11 |
+| flagged lines (mechanical) | 12 | 9 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 10 | 0 |
 
 The 12 long sentences that stay are of these kinds: an owner quote (line 8); a quoted example or story (lines 96 and 141); old bold
 slogans kept word for word (lines 37 and 71); short sentences that the lint joined (the other seven). The flags that stay are
-emphasis marks and pronouns of the kinds that were there before.
+emphasis marks.
 
 ## The hand count
 
@@ -71,6 +71,8 @@ facts against the mod XML, the texture sheets, the mod lists, the templates and 
 The same reader then read each repair and the whole of both files again. Three of the repairs did not hold: the note string of
 `long_crossing.lua`, the sentence on tickets in `history.md`, and the sentence on depth in §6. They are repaired as the reader
 proposed. No reader read these last edits, nor the sentence on the south end cell in `history.md` and the rewrapped lines.
+After the first landing (be6f6ba0e38e), the prose check of `./publish` named six lines. The writer put the noun in each, and said that
+Long Crossing is a truck hull. No reader read those.
 
 ## Conflicts and stale lines: settled
 

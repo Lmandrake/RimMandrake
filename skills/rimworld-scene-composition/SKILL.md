@@ -50,7 +50,7 @@ The mods cannot check that claim for you. So make the claim true by construction
     edge of a plateau. The TOP piece tells the eye "there is more raised ground back there," behind the face. The mod
     ships both halves because neither half completes the claim alone.
   - Do not put the top row south of the face row. Then the face draws small posts and the top draws a thin rail with
-    posts. That is the picture of a fence. (Source: the mod's texture sheets, not a live test.)
+    posts. Such a rail is the picture of a fence. (Source: the mod's texture sheets, not a live test.)
 - 🔴 **Orient every cliff or hill run east-west (same z, different x). Never use a north-south run (same x, different z)
   as a face.**
   - In a live test (2026-09-06), a north-south column of `Dirt_Hill_Right` drew a broken, disconnected zigzag or ladder
@@ -93,7 +93,7 @@ storytelling.
   center. Props sprinkled independently around a point do not read as a hearth.
 - A collapsed shelter reads as a shelter if its frame pieces still trace the wall or doorway that it had. Even
   collapsed and askew, the pieces describe a shape. A viewer can draw the missing walls again on that shape.
-- 🔑 **A skeleton or corpse pile is not a props bag. It is ONE dead body.** Put the skull at one end. The spine and
+- 🔑 **A skeleton or corpse pile is not a props bag. Each skeleton or pile is ONE dead body.** Put the skull at one end. The spine and
   ribcage are the visual backbone of the whole composition. Everything else trails outward from that line, in one
   consistent direction. The story is:
   "a kill happened here and something settled/dragged it," never an even scatter of bone-type props at one density.
@@ -150,7 +150,7 @@ in §4. §7 step 6 says when to stop sooner.
 reviewer has a failure mode too. In a wide shot, a reviewer cannot tell "built by this template" from "already on the
 quicktest map". (A quicktest is a throwaway dev colony.)
 
-- It happened once. A reviewer scored Waste Camp 2/5 on every metric. The reviewer described a tent-pole frame and a
+- The failure happened once. A reviewer scored Waste Camp 2/5 on every metric. The reviewer described a tent-pole frame and a
   dark "collapsed mass" 15-20 tiles from the actual sunken pit. Those objects were a large ambient decoration and a map
   prop that was there before. The template placed NEITHER of them.
 - **Before you trust a low score as a real defect, do one of these.** Frame the screenshot tightly enough to exclude
@@ -161,16 +161,16 @@ quicktest map". (A quicktest is a throwaway dev colony.)
 ## 6. Worked example — two rounds, and what they taught
 
 Three Deep Desert templates went through two rounds of this pass. The fixes, the findings and the parts that nobody
-finished are in `references/history.md`. These are the lessons:
+finished are in `references/history.md`. The lessons:
 
 - **Waste Camp** (`design/Jawa/templates/waste_camp.lua`). The fix was a sunk floor in a jagged, non-rectangular pit,
   with every prop inside that pit (§2, §3). A jagged edge can still be too subtle. The reviewer called the pit "a flat,
   near-rectangular patch of slightly lighter soil". Make the jaggedness strong enough to read at normal play zoom.
 - **Boneyard** (`design/Jawa/templates/boneyard.lua`). The fix was a zero gap from skull to ribcage. One skull object
   can still read as two heads. A bone-fragment prop (`AB_AncientBrokenBone` or `AB_AncientVerticalBone`) at the far end
-  of the tail has a sprite close to the skull's. So it read as "a second head". So check that no other silhouette
+  of the tail has a sprite close to the skull's. So the prop read as "a second head". So check that no other silhouette
   echoes the main one.
-- **Long Crossing** (`design/Jawa/templates/long_crossing.lua`).
+- **Long Crossing** (`design/Jawa/templates/long_crossing.lua`). The site is a truck hull that stalled in sand.
   - A dune lip that linked correctly still read as a wooden fence rail. Its horizontal run was ONE CELL THICK. A dune
     needs BULK: 2-3 rows of depth, not only correct links. The top row of that dune lip was also on the wrong side of
     the face (§1).
@@ -178,7 +178,7 @@ finished are in `references/history.md`. These are the lessons:
     posts (texture sheets, not a live test). With distance between the rows, join the ends with side edges. That closed
     outline is untested (§1).
   - A drift chance that changed only with x painted a uniform band across the WHOLE rect. Taper a drift in z too, or
-    mask it to the z-span of the hull. Then the sand reads as caused by the truck, not as an unrelated background
+    mask it to the z-span of the hull. Then the sand reads as caused by the truck hull, not as an unrelated background
     gradient.
 - **A thing that a template places can fail to spawn through the live bridge, silently.** The tree (`TreeDead`) of
   Boneyard did. Check each placed thing in the live game, not only in the plan.
