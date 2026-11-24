@@ -4,7 +4,7 @@
  "template": "creature",
  "module": "walker",
  "candidate": "live",
- "provenance": "owner-labelled regression case from run fauna_contagion_01; owner PICKED live Gawpsack (column A) on owner_escalations_contagion_sheet_2026-10-24; pipeline REALLY_BAD on DEPARTURE_MISSING",
+ "provenance": "render of run fauna_contagion_01",
  "description": "A drifting translucent bag stuffed with mismatched eyes, all of them open, all of them looking up. It reads the cloud from canopy height and sinks, all at once, seconds before the sky tears.",
  "tier": "RM_",
  "invented": true,

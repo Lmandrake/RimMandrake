@@ -4,7 +4,7 @@
  "template": "creature",
  "module": "walker",
  "candidate": "r2",
- "provenance": "owner-labelled regression case from run fauna_leaningscrub_r2_00; owner POOLED Durrok column B (r2) on owner_escalations_leaningscrub_1_sheet_2026-10-24; pipeline REGEN on F_SIZE_JUMP",
+ "provenance": "render of run fauna_leaningscrub_r2_00",
  "description": "A low, barrel-bodied quadruped on four short, thick legs, so buried under long, pale, glossy hair that no head or neck shows - only a blunt front end and a tail-like fall of white cords behind. The hair hangs in heavy, wet-looking ropes to the ground, and mats of grey-green lichen cling in drifts across its back, shoulders and legs, trailing in strands where they slip. Smaller and less dangerous than its wetland kin for lack of water and rot to grow on, it plods through the scrub like a drowned haystack. Durroks release clumps of spores every few weeks to reproduce; the resulting young are wholly independent from birth, with no bond to their parent. Risky to hunt, but the raw fungus beneath the hide is edible.",
  "tier": "RM_",
  "invented": true,

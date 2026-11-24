@@ -4,7 +4,7 @@
  "template": "creature",
  "module": "walker",
  "candidate": "r1",
- "provenance": "owner-labelled regression case from run fauna_contagion_r1_01; owner PURGED Danglemaw r1 on owner_escalations_contagion_sheet_2026-10-24; guard: a DEPARTURE_MISSING confidence floor passes it (replay 2026-10-24)",
+ "provenance": "render of run fauna_contagion_r1_01",
  "description": "A mouth on a tendon: a muscular cord anchored in the Eyebark canopy with a free-hanging jaw at the end of it, slack until something walks underneath. Shelter from the sky under the trees is not safe from this.",
  "tier": "RM_",
  "invented": true,

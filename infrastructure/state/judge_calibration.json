@@ -4,20 +4,297 @@
   "art_eval_first_pass": {
    "brief": [
     "skills/rimworld-art-evaluation/references/prompts/preamble.md",
-    "skills/rimworld-art-evaluation/references/prompts/opus_first_pass.md"
+    "skills/rimworld-art-evaluation/references/prompts/opus_first_pass.md",
+    "skills/rimworld-art-evaluation/references/severity_policy.md",
+    "skills/rimworld-art-evaluation/references/templates/creature.md",
+    "skills/rimworld-art-evaluation/references/templates/plant.md"
    ],
    "cases": {
     "bad": [
-     "infrastructure/state/art_eval/regression.jsonl rows expect NOT_ACCEPT (6)"
+     "infrastructure/state/art_eval/regression.jsonl rows expect NOT_ACCEPT, less `taste` rows (art_first_pass_calibration.py)"
     ],
     "good": [
-     "infrastructure/state/art_eval/regression.jsonl rows expect ACCEPT (5)"
+     "infrastructure/state/art_eval/regression.jsonl rows expect ACCEPT, less `taste` rows"
     ]
    },
-   "hash": "5155b7276a2b25c8",
-   "note": "regression_runs/regress_departures_v3c_20261105.json was run on an earlier prompt hash; it does not calibrate this one",
-   "reset_at": "2026-11-24T12:19:39Z",
-   "status": "UNTESTED",
+   "hash": "4b72fce1955c0c6f",
+   "last_run": {
+    "at": "2026-11-24T18:27:53Z",
+    "cases": "came out the other way: first_pass_RM_Danglemaw_r1, first_pass_RM_DecayDrake_r2, first_pass_RM_Dewblade_B, first_pass_RM_Peeper_r2, first_pass_RM_Shadefern_B, first_pass_RM_Ssurr_B",
+    "exit": 0,
+    "out": "first_pass_RM_Danglemaw_r1         expect refuse got second look band WEAK, model said really_bad, blocking [['F_NORTH_FACE', 0.6], ['F_INCONSISTENT', 0.65]]",
+    "results": [
+     {
+      "band": "WEAK",
+      "blocking": [
+       [
+        "DESC_MISS",
+        0.2
+       ]
+      ],
+      "expect": "pass",
+      "got": "second look",
+      "id": "first_pass_RM_Shadefern_B",
+      "overall": "good",
+      "unreadable": [
+       "VARIANTS"
+      ]
+     },
+     {
+      "band": "REALLY_BAD",
+      "blocking": [
+       [
+        "STYLE_EARTHLY",
+        0.92
+       ],
+       [
+        "F_INCONSISTENT",
+        0.85
+       ],
+       [
+        "DEPARTURE_MISSING",
+        0.75
+       ],
+       [
+        "DESC_MISS",
+        0.7
+       ],
+       [
+        "STYLE_CARTOON",
+        0.6
+       ],
+       [
+        "STYLE_OFF",
+        0.4
+       ]
+      ],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "first_pass_RM_Huldu_C",
+      "overall": "really_bad",
+      "unreadable": []
+     },
+     {
+      "band": "WEAK",
+      "blocking": [
+       [
+        "F_INCONSISTENT",
+        0.7
+       ],
+       [
+        "F_INCONSISTENT",
+        0.75
+       ],
+       [
+        "F_INCONSISTENT",
+        0.4
+       ],
+       [
+        "STYLE_EARTHLY",
+        0.5
+       ],
+       [
+        "STYLE_CARTOON",
+        0.4
+       ],
+       [
+        "STYLE_OFF",
+        0.45
+       ],
+       [
+        "F_TOPDOWN",
+        0.3
+       ]
+      ],
+      "expect": "refuse",
+      "got": "second look",
+      "id": "first_pass_RM_Ssurr_B",
+      "overall": "really_bad",
+      "unreadable": [
+       "DEPARTURES"
+      ]
+     },
+     {
+      "band": "REALLY_BAD",
+      "blocking": [
+       [
+        "STYLE_EARTHLY",
+        0.82
+       ],
+       [
+        "STYLE_OFF",
+        0.45
+       ],
+       [
+        "F_INCONSISTENT",
+        0.35
+       ],
+       [
+        "DESC_MISS",
+        0.15
+       ]
+      ],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "first_pass_RM_Vellak_B",
+      "overall": "really_bad",
+      "unreadable": []
+     },
+     {
+      "band": "REALLY_BAD",
+      "blocking": [
+       [
+        "ALPHA_HALO",
+        0.82
+       ],
+       [
+        "F_TOPDOWN",
+        0.68
+       ],
+       [
+        "F_INCONSISTENT",
+        0.5
+       ],
+       [
+        "F_SIZE_JUMP",
+        0.4
+       ],
+       [
+        "STYLE_OFF",
+        0.45
+       ],
+       [
+        "STYLE_CARTOON",
+        0.25
+       ]
+      ],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "first_pass_RM_Murrin_C",
+      "overall": "really_bad",
+      "unreadable": []
+     },
+     {
+      "band": "WEAK",
+      "blocking": [
+       [
+        "DESC_MISS",
+        0.3
+       ],
+       [
+        "FOOTPRINT",
+        0.12
+       ]
+      ],
+      "expect": "pass",
+      "got": "second look",
+      "id": "first_pass_RM_Dewblade_B",
+      "overall": "weak",
+      "unreadable": []
+     },
+     {
+      "band": "WEAK",
+      "blocking": [
+       [
+        "F_SIZE_JUMP",
+        0.35
+       ]
+      ],
+      "expect": "pass",
+      "got": "second look",
+      "id": "first_pass_RM_DecayDrake_r2",
+      "overall": "good",
+      "unreadable": []
+     },
+     {
+      "band": "WEAK",
+      "blocking": [
+       [
+        "STYLE_EARTHLY",
+        0.6
+       ],
+       [
+        "F_SIZE_JUMP",
+        0.6
+       ],
+       [
+        "F_INCONSISTENT",
+        0.25
+       ]
+      ],
+      "expect": "refuse",
+      "got": "second look",
+      "id": "first_pass_RM_Peeper_r2",
+      "overall": "really_bad",
+      "unreadable": []
+     },
+     {
+      "band": "WEAK",
+      "blocking": [
+       [
+        "F_NORTH_FACE",
+        0.6
+       ],
+       [
+        "F_INCONSISTENT",
+        0.65
+       ]
+      ],
+      "expect": "refuse",
+      "got": "second look",
+      "id": "first_pass_RM_Danglemaw_r1",
+      "overall": "really_bad",
+      "unreadable": []
+     }
+    ]
+   },
+   "model_check": [
+    "python3",
+    "src/RimMandrake/rimflow/art_first_pass_calibration.py",
+    "run"
+   ],
+   "note": "the answer is the band that production acts on (GOOD pass, REALLY_BAD refuse, WEAK second look); design/specs/2026-11-24-first-pass-calibration/boundary.md",
+   "planted": [
+    {
+     "expect": "pass",
+     "id": "first_pass_RM_Shadefern_B"
+    },
+    {
+     "expect": "refuse",
+     "id": "first_pass_RM_Huldu_C"
+    },
+    {
+     "expect": "refuse",
+     "id": "first_pass_RM_Ssurr_B"
+    },
+    {
+     "expect": "refuse",
+     "id": "first_pass_RM_Vellak_B"
+    },
+    {
+     "expect": "refuse",
+     "id": "first_pass_RM_Murrin_C"
+    },
+    {
+     "expect": "pass",
+     "id": "first_pass_RM_Dewblade_B"
+    },
+    {
+     "expect": "pass",
+     "id": "first_pass_RM_DecayDrake_r2"
+    },
+    {
+     "expect": "refuse",
+     "id": "first_pass_RM_Peeper_r2"
+    },
+    {
+     "expect": "refuse",
+     "id": "first_pass_RM_Danglemaw_r1"
+    }
+   ],
+   "reset_at": "2026-11-24T18:27:53Z",
+   "status": "FAILED",
+   "timeout_s": 8400,
    "was": "UNTESTED"
   },
   "art_judge_brief": {
