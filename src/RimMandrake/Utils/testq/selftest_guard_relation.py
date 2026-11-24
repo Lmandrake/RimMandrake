@@ -83,6 +83,7 @@ def main():
     put(M + "Source/B.cs", "class B { void Run() { int x = 3; } }\n")
     check(ask("b", commit()) is False, "a kept answer does not outlive its bytes")
     G._REL.clear()
+    os.remove(os.path.join(os.environ["TESTQ_QUEUE"], G.RELATION_CACHE))     # no kept answer of the same bytes may hide it
     subprocess.run(["git", "-C", R, "branch", "-f", "moving", doc], check=True)
     before = G.untouched("M", "a", old, "moving")
     subprocess.run(["git", "-C", R, "branch", "-f", "moving", cs], check=True)
