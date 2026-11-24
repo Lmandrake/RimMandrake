@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":35799,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":1450,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=05364f9ce4d18ef3db84bc3f13e4a599dd423e478c36e8aa2c918657a05e914c -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":35799,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=460a401d65e96a6cf3c2e992dea5f17bc16bd03f18baaf9b6b5f93f9ea77b3ad -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 667 events in 19 shards · reducer 1
-holder lease run-1795487290, token 23, last active 2026-11-24T03:25:19Z
+version 0.1.0 · stage in_game · 668 events in 19 shards · reducer 1
+holder lease run-1795487290, token 23, last active 2026-11-24T03:33:23Z
 holder session c233b9cb-378c-4172-8531-d3e28c280fa3, context 231127 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795485747, 2026-11-24T02:15:00Z)
-- done: Steward read visit 5 (4 live rows, the reload-wait repair, the relation fix) and advanced in_game to pre_human; build_match 56 of 56, 0 to run
-- next: Write the Stage 7 walk brief; the Conductor classes RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN (steward recommends Polish)
-- ruled out: The raid NRE storms were not seen: Player-prev.log of the 17:35 full-list walk (goods-lost plant build) has 0 Exception ticking and 0 TweenedPosRoot lines over its reloads; the real-build walk log was overwritten, so it is unread
+## Last checkpoint (HOLDER.run-1795487290, 2026-11-24T03:33:23Z)
+- done: Walk brief arrival 1 (54c99b1267); fix db80fab783 read sound; pre_human to his_walk to in_game: sc_barrage_perf, sc_walk_raid owed on db80fab783
+- next: Drive in-game visit 6 on ArchBig: sc_barrage_perf and sc_walk_raid on db80fab783; walk save in daylight with start-state twins
+- ruled out: 2026-11-16 raid NRE storms did not return: archived visit 5 walk log has 0 such lines over 18 loads; station 10 tox gas is burned vent gas smoke
 
 ## Open findings (43)
 (claimed fixes, awaiting a judge, on one line each with the oldest 39 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
@@ -237,6 +237,6 @@ spend recorded: USD 178.61, 171672717 tokens
 - tests: 106, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 1 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 39 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 667 events (views/history.md; never read whole)
+- the full history: 668 events (views/history.md; never read whole)
 
-cursor: t=2026-11-24T03:31:47Z.1795491107180827235 (modledger.py since --mod ExplosiveKnockback t=2026-11-24T03:31:47Z.1795491107180827235 prints what changed after this packet)
+cursor: t=2026-11-24T03:33:23Z.1795491203832185962 (modledger.py since --mod ExplosiveKnockback t=2026-11-24T03:33:23Z.1795491203832185962 prints what changed after this packet)

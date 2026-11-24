@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "a02d44fcc83ce6e0308feb338a180523858d7783b9524f70ff5709af514d3681",
+  "body_sha256": "9bda2d2f22dcaae686b5368d776df7449f5cd05d7c7fa8c68b0e917aec79b8c0",
   "reducer": 1,
   "shards": {
    "BACKFILL": 341359,
@@ -18,7 +18,7 @@
    "HOLDER.run-1795464425": 3294,
    "HOLDER.run-1795478277": 3184,
    "HOLDER.run-1795485747": 1414,
-   "HOLDER.run-1795487290": 1450,
+   "HOLDER.run-1795487290": 2197,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -679,11 +679,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795485747",
-   "done": "Steward read visit 5 (4 live rows, the reload-wait repair, the relation fix) and advanced in_game to pre_human; build_match 56 of 56, 0 to run",
-   "next": "Write the Stage 7 walk brief; the Conductor classes RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN (steward recommends Polish)",
-   "ruled_out": "The raid NRE storms were not seen: Player-prev.log of the 17:35 full-list walk (goods-lost plant build) has 0 Exception ticking and 0 TweenedPosRoot lines over its reloads; the real-build walk log was overwritten, so it is unread",
-   "ts": "2026-11-24T02:15:00Z"
+   "by": "HOLDER.run-1795487290",
+   "done": "Walk brief arrival 1 (54c99b1267); fix db80fab783 read sound; pre_human to his_walk to in_game: sc_barrage_perf, sc_walk_raid owed on db80fab783",
+   "next": "Drive in-game visit 6 on ArchBig: sc_barrage_perf and sc_walk_raid on db80fab783; walk save in daylight with start-state twins",
+   "ruled_out": "2026-11-16 raid NRE storms did not return: archived visit 5 walk log has 0 such lines over 18 loads; station 10 tox gas is burned vent gas smoke",
+   "ts": "2026-11-24T03:33:23Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -879,7 +879,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 667,
+  "events": 668,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2485,7 +2485,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-24T03:25:19Z",
+   "last": "2026-11-24T03:33:23Z",
    "lease": "run-1795487290",
    "released": false,
    "token": 23
