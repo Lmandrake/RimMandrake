@@ -167,8 +167,8 @@ def owner_key(env=None):
     return "pid:%d" % os.getpid()
 
 
-def owe(kind, what, undo=None, owner=None, extra=None):
-    """Record that this agent left its current game changed (a setting forced, a scene staged) -> token for paid().
+def owe(kind, what, undo=None, owner=None, extra=None, game=None):
+    """Record a change to the selected game (default: current game) -> token for paid().
     `extra` adds fields (the bridge door's `key` and `orig`). Best effort for the caller: a register that cannot be
     written prints and returns None, never raises."""
     tok = "%s-%s" % (time.strftime("%Y%m%dT%H%M%S", time.gmtime()), uuid.uuid4().hex[:8])
@@ -176,7 +176,7 @@ def owe(kind, what, undo=None, owner=None, extra=None):
     body.update({"token": tok, "kind": kind, "what": what, "undo": undo, "owner": owner or owner_key(),
                  "at": _iso(_now()), "ns": time.time_ns(), "cwd": os.getcwd()})
     try:
-        body["game"] = game_instance.current()
+        body["game"] = game if game is not None else game_instance.current()
         _write_json(_p("debts", tok + ".json"), body)
     except (OSError, game_instance.InstanceError) as e:
         sys.stderr.write("wrapup: could not record debt %r: %s\n" % (what, e))
@@ -223,9 +223,9 @@ def _debt_game(debt):
     return debt.get("game", "a")               # legacy debts belong to ArchBig
 
 
-def debts_keyed(key):
-    """Open debts carrying this `key` on the current game, whoever owes them."""
-    game = game_instance.current()
+def debts_keyed(key, game=None):
+    """Open debts carrying this `key` on the selected game (default: current game), whoever owes them."""
+    game = game if game is not None else game_instance.current()
     out = []
     for f in sorted(glob.glob(_p("debts", "*.json")) + glob.glob(_p("debts", "filed", "*.json"))):
         d = _read_json(f)
@@ -409,10 +409,19 @@ class World(object):
 
     def game_relaunched(self, game="a"):
         """-> epoch seconds the previous process of this game last wrote its log, or None when unmeasured.
-        RM_WRAPUP_PREV_LOG overrides ArchBig's file ('' = unmeasured)."""
+        RM_WRAPUP_PREV_LOG overrides the local first game's file ('' = unmeasured)."""
         try:
             if game == "a":
-                p = os.environ.get("RM_WRAPUP_PREV_LOG", PREV_LOG_WIN if os.name == "nt" else PREV_LOG_WSL)
+                p = os.environ.get("RM_WRAPUP_PREV_LOG")
+                if p is None:
+                    # A named game's shell may have replaced RM_GAME_LOGDIR with its instance directory.
+                    logdir = os.environ.get("RM_GAME_A_LOGDIR", "").strip()
+                    if not logdir:
+                        shell_logdir = os.environ.get("RM_GAME_LOGDIR", "").strip()
+                        if shell_logdir and (game_instance.current() == "a" or not game_instance._under_root(shell_logdir)):
+                            logdir = shell_logdir
+                    p = (os.path.join(game_instance._native(logdir), "Player-prev.log") if logdir
+                         else PREV_LOG_WIN if os.name == "nt" else PREV_LOG_WSL)
             else:
                 p = game_instance.log_path(game_instance.check_name(game)) + ".prev"
             if p:

@@ -11,7 +11,7 @@ Tests are in `src/RimMandrake/rimflow/selftest_wrapup_void_relaunch.py`.
 ## PROMISES
 
 - **debts-keep-the-games-letter.** Settings and scenes carry the game's letter in the register and in filed rows.
-- **only-the-debts-game-can-void-it.** ArchBig uses `Player-prev.log`, with `RM_WRAPUP_PREV_LOG` as an override.
-  Named games use `<instances root>/<letter>/Player.log.prev`. When a debt predates its own previous log's last
-  write by more than the clock-skew margin, it stops standing and sweep clears it. A missing or unreadable log
-  leaves that game's debts standing.
+- **only-the-debts-game-can-void-it.** ArchBig and Steve1 use `Player-prev.log` in the local first game's log
+  directory, with `RM_WRAPUP_PREV_LOG` as an override. Named instances use `<instances root>/<letter>/Player.log.prev`.
+  When a debt predates its own previous log's last write by more than the clock-skew margin, release preflight and
+  restore skip it, it stops standing, and sweep clears it. A missing or unreadable log leaves that game's debts standing.

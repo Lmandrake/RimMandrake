@@ -23,6 +23,7 @@ import os
 import sys
 import tempfile
 import time
+from unittest.mock import Mock, patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -210,6 +211,31 @@ def t_only_the_debts_game_can_void_it():
     finally:
         os.environ["RM_WRAPUP_PREV_LOG"] = ""
         reset()
+
+    steve_log = os.path.join(TMP, "sjlewis", "Player-prev.log")
+    os.makedirs(os.path.dirname(steve_log))
+    open(steve_log, "w").close()
+    os.utime(steve_log, (launch, launch))
+    fallback = os.path.join(TMP, "missing-default", "Player-prev.log")
+    with patch.dict(os.environ, RM_HOST="stevedesktop", RM_GAME_INSTANCE="Steve1",
+                    RM_GAME_LOGDIR=os.path.dirname(steve_log)), \
+         patch.multiple(wrapup, PREV_LOG_WSL=fallback, PREV_LOG_WIN=fallback):
+        os.environ.pop("RM_WRAPUP_PREV_LOG")
+        os.environ.pop("RM_GAME_A_LOGDIR", None)
+        tok = put_debt(old, "pid:0")
+        wrapup.amend(tok, {"game": "a", "plan": [
+            wrapup._door().step("jawa/difficulty_tune", threatScale=1.0)]})
+        runner = Mock(side_effect=OSError("fixture runner"))
+        code, line = wrapup.restore_at_release(runner=runner, game="a")
+        check(code is None and "no planned setting debt" in line and not runner.called,
+              "V8 Steve1 release skips restore after its own relaunch: %s" % line)
+        write = Mock(return_value={"success": True})
+        out = wrapup.restore(write)
+        check(not write.called and out["void"] == 1,
+              "V8 restore sends no Steve1 write for a debt from its exited process")
+        check(out["swept"] == [1, 0] and not os.path.isfile(wrapup._p("debts", tok + ".json")),
+              "V8 sweep clears Steve1's prelaunch debt")
+    reset()
 
 
 def main():

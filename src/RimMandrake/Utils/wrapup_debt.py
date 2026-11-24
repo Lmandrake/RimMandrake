@@ -124,7 +124,7 @@ def setting_changes(tool, params, out):
              "jawa/difficulty_tune %s=%s" % (k, before.get(k))) for k in sorted(params) if k in before]
 
 
-def settings_write(tool, params, out):
+def settings_write(tool, params, out, game=None):
     """The door's hook: owe or pay what this answered call did to a setting. -> [(act, key)]. Never raises."""
     if tool not in SETTING_TOOLS:
         return []
@@ -132,7 +132,7 @@ def settings_write(tool, params, out):
     acts = []
     try:
         for key, before, after, undo in setting_changes(tool, params, out):
-            open_ = w.debts_keyed(key) if w else []
+            open_ = w.debts_keyed(key, game=game) if w else []
             if open_:
                 if same_value(after, open_[0].get("orig")):
                     for d in open_:
@@ -142,7 +142,7 @@ def settings_write(tool, params, out):
             if not same_value(before, after) and w and not RESTORING[0]:
                 tok = w.owe("setting", "%s=%s (was %s)" % (key, after, before), undo,
                             extra={"key": key, "orig": before, "door": "rimbridge_client",
-                                   "plan": key_plan(key, before)})
+                                   "plan": key_plan(key, before)}, game=game)
                 if tok:
                     acts.append(("owed", key))
     except Exception as e:  # noqa: BLE001  the register never breaks a bridge call

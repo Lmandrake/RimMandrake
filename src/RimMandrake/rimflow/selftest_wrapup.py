@@ -32,6 +32,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from types import SimpleNamespace
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
@@ -475,13 +476,15 @@ try:
     g16 = Game16()
 
     def door_session():
-        rb = RC.RimBridge(host="192.0.2.1", token="t")   # TEST-NET: never this machine's game, so the live driver
-        rb._request = g16                                 # lock (_driver_crossing reads it for loopback) is not read
+        rb = RC.RimBridge(port=wrapup.game_instance.port(), token="t")
+        rb.sock = SimpleNamespace(getpeername=lambda: (rb.host, rb.port))
+        rb._request = g16
         rb.check_params = lambda tool, params: None
         s = RS.Session.__new__(RS.Session)
         s._rb, s.calls, s._log_reset_at = rb, 0, 1e18
         return s
 
+    os.environ["RIMFLOW_DRIVER_LOCK"] = os.path.join(TMP, "driver.json")
     os.environ["RM_ROLE_UNIT"] = "validation-w16"
     s16 = door_session()
     SET = "RimMandrake.Sarlacc.SarlaccSettings"

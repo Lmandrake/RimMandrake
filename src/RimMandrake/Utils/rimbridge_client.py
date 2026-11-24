@@ -246,15 +246,19 @@ import atexit  # noqa: E402
 atexit.register(_split_at_exit)
 
 
-def _settings_debt(tool, params, out):
-    """AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED: every answered settings write goes on the wrap-up's debt register
+def _settings_debt(tool, params, out, sock):
+    """AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED: every answered local game's write goes on the wrap-up's debt register
     (wrapup_debt.settings_write: a change owes, a write back to the original pays), so no caller has to remember to.
     Never raises; a tool that is not a settings writer costs one tuple test."""
     if tool not in _SETTING_TOOLS:
         return
     try:
+        import game_instance
         import wrapup_debt
-        wrapup_debt.settings_write(tool, params, out)
+        host, port = sock.getpeername()[:2]
+        index = port - game_instance.BASE_PORT
+        if _local_host(host) and 0 <= index < 26:
+            wrapup_debt.settings_write(tool, params, out, game=chr(ord("a") + index))
     except Exception:  # noqa: BLE001  the register never breaks a bridge call
         pass
 
@@ -1529,7 +1533,7 @@ class RimBridge:
                         "timeout": False, "transport": "ok"}, **_stall_fields(t0)))
         _inflight_clear(cid)
         _ACTIVE.discard(cid)
-        _settings_debt(tool, params, out)
+        _settings_debt(tool, params, out, self.sock)
         _note_call(tool, params, int((time.time() - t0) * 1000), not mutating)
         if tool == LOAD_READY_TOOL:
             out = self._settle_load_ready(params, out)

@@ -23,6 +23,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RIM = os.path.dirname(HERE)
@@ -251,6 +252,41 @@ def t_answered_writes_pay_only_the_current_games_debt():
               "W8 putting a key back in ArchSmall leaves ArchBig's keyed debt owed")
     finally:
         os.environ["RM_GAME_INSTANCE"] = "a"
+
+    clear_register()
+    with patch.dict(os.environ, RIMBRIDGE_SESSION_LOG="", RIMBRIDGE_EVIDENCE_LOG="", RM_HOST="archmagi"):
+        import rimbridge_client as RC
+
+        def write(host, port, reply):
+            args = ["--host", host, "--port", str(port), "--token", "fixture", "--call", tool,
+                    "--json", '{"action":"set","field":"logRaidInfo","value":%s}' %
+                    str(reply["valueAfter"]).lower(), "--yes-i-know-this-is-live"]
+            with patch.object(RC.socket, "create_connection") as connect, patch.object(RC.RimBridge, "_request", return_value=reply), \
+                 patch.object(RC.RimBridge, "check_params", return_value=None), \
+                 patch.object(RC, "_driver_crossing", return_value=None):
+                connect.return_value.getpeername.return_value = (host, port)
+                return RC._main(args)
+
+        os.environ["RM_GAME_INSTANCE"] = "ArchSmall"
+        check(write("127.0.0.1", 5175, force) == 0, "W8 setup: ArchSmall force receives a successful reply")
+        debts = wrapup.debts_of(wrapup.owner_key())
+        check([(r["game"], r["orig"]) for r in debts] == [("b", False)],
+              "W8 setup: only ArchSmall owes the original value")
+        del os.environ["RM_GAME_INSTANCE"]
+        check(write("127.0.0.1", 5175, restore) == 0, "W8 explicit ArchSmall undo receives a successful reply")
+        debts = wrapup.debts_of(wrapup.owner_key())
+        check(not debts, "W8 explicit ArchSmall undo clears its debt without owing ArchBig: %s" %
+              [(r["game"], r["orig"]) for r in debts])
+
+        write("127.0.0.1", 5175, force)
+        debts = wrapup.debts_of(wrapup.owner_key())
+        check([(r["game"], r["orig"]) for r in debts] == [("b", False)],
+              "W8 an explicit ArchSmall force opens a debt only for ArchSmall from an unset game shell")
+
+        clear_register()
+        write("192.0.2.1", 5175, force)
+        write("127.0.0.1", 6000, force)
+        check(not wrapup.debts_of(wrapup.owner_key()), "W8 remote and unknown endpoints register no local debt")
 
 
 def t_release_passes_the_selected_game_to_python():
