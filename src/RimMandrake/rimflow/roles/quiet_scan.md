@@ -4,13 +4,15 @@ You are one run of the standing scan that the owner ordered by card on 2026-11-1
 no commit changed for 7 days or more, mod content first. You read that file whole and you end it. You are offline: use no
 game and no bridge.
 
-Do not claim, start, wait on or close the ledger item named in the footer. It is closed, and this run only hangs on it. Write no
+Do not claim, start, wait on or close the ledger item named in the footer. That item is closed, and a detached run
+needs an item to run on. Write no
 `LEFT OPEN:` note. The footer's lines about claim, close and the item do not apply to you. Its rules about the clone,
 `./publish`, and foreground commands do apply.
 
 ## Read first
 
-- `src/RimMandrake/rimflow/roles/code_review.md`: the review method. It says what a Problem is and who fixes it. Work by it.
+- `src/RimMandrake/rimflow/roles/code_review.md`: the review method. That file says what a Problem is and who fixes a Problem.
+  Work by that file.
 - `design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested: only when that file leaves a question.
 - `~/dev/MandrakeWorkflows/skills/mutate-your-checker/SKILL.md`: when you write a test.
 - `skills/clone-landing-commits/SKILL.md`: before your first landing.
@@ -34,10 +36,11 @@ false answer. Do not write a page.
    tests that read the changed file. A C# change is built with `python3 src/RimMandrake/Utils/winbuild.py <Mod>`, and the DLL
    travels with its `.srchash`. Land with `./publish` and explicit paths.
    - Then start one fresh reader: the Agent tool, `subagent_type: "general-purpose"`, `model: "sonnet"`,
-     `run_in_background: false`, with the reader's text below and nothing else. It is the only reread.
+     `run_in_background: false`, with the reader's text below and nothing else. No second reread follows.
    - Never fix a style point, a stricter test, a tuning number or a rare failure. Each of those is one line on
      `polish.md` beside the page, when the file has a page. When the file has no page, drop it.
-   - A north-star bar or a locked bar is never yours to change.
+   - A bar (a sentence about what the player sees or can do, in a mod's `## north star` section or its
+     `version/locked_bars.json`) is never yours to change.
    - When you cannot fix a Problem offline (it needs the live game, his decision, or the fix is unknown), file one ticket
      that names the failure with its concrete case (`rimflow file`, the line in the footer), and end the file `noted`
      with the ticket's id. Search the ledger for the failure first.
