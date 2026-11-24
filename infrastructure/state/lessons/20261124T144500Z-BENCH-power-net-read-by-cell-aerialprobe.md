@@ -1,0 +1,2 @@
+A power net read by cell (AerialProbe net:x,z, PowerNetGrid) returns no net at a lamp's or other connector's cell: only transmitters hold a cell. A true-to-grid check of a cord that ends at a connector must read that connector's own PowerNet (its things list), or it reads a false 'outside the net'. Building conduits and a lamp in one batch also leaves the lamp hooked to the FIRST conduit in reach, not the nearest, and dark for about 100-250 ticks.
+item: RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_THREE_RUN_THREE
