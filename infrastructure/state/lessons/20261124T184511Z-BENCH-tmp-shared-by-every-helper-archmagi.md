@@ -1,0 +1,2 @@
+/tmp is shared by every helper on Archmagi: on 2026-11-24 a Shape run wrote /tmp/parts.json, another run overwrote it, and the Shape run read that run's parts back an hour later; the shape gate refused it by luck (a check in it already held). Put a run's scratch under mktemp -d or $CLAUDE_CODE_TMPDIR, never a fixed /tmp name.
+item: RIMMANDRAKE_CALIBRATE_FIRST_PASS_AND_SCENE_LOOK_BRIEFS_READ_UNTESTED
