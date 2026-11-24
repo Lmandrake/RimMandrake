@@ -1,0 +1,28 @@
+ACCOUNTPLAN_FIX_UNDOES_SWITCH_IN_FOUR_MIN	REAL_WORK	OWNER MARK: his words on the note event; guard owed	-
+CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD	REAL_WORK	live promise DEAD in the packet (rm-ops-watch.timer reading); not sure the work is done	-
+CREATURE_ALARM_ORIGIN_SHARE_1	REAL_WORK	built; criterion A1 (live check) outstanding	-
+DDRIVE_NVME_REPAIR_RESEAT_NEXT_SITTING	REAL_WORK	OWNER MARK: physical act, waits on the owner	-
+GM_BLACKBOARD_SHADOW_M4_1	REAL_WORK	built; criteria A1 and A2 (live runs) outstanding	-
+LIVE_RESTORE_UNITS	REAL_WORK	live-sweep ticket, not an OPS alarm; its cited path is not on origin/main; no look settles it	-
+OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN	REAL_WORK	built; criterion A1 outstanding; verifies only partial	-
+OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV	REAL_WORK	alarm not open, but the ledger refused the close: a class guard test is owed (rimflow guard) after repeated rings	-
+OPS_FINDINGS_DIAGNOSE_XZLM	REAL_WORK	packet: alarm state now OPEN (findings 1 to 14 untriaged)	-
+OPS_GAME_HEALTH_DEBUG_PXQI	REAL_WORK	OWNER MARK: his words on a note event	-
+OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA	REAL_WORK	alarm not open, but the ledger refused the close: a class guard test is owed (rimflow guard) after repeated rings	-
+OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ	REAL_WORK	alarm not open, but the ledger refused the close: a class guard test is owed (rimflow guard) after repeated rings	-
+OPS_MATURATION_MOD_PAUSED_FYEB	REAL_WORK	packet: alarm state now OPEN	-
+OPS_MATURATION_MOD_STALLED_KHOT	REAL_WORK	alarm not open, but the ledger refused the close: a class guard test is owed (rimflow guard) after repeated rings	-
+OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ	REAL_WORK	alarm not open, but the ledger refused the close: a class guard test is owed (rimflow guard) after repeated rings	-
+OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF	REAL_WORK	packet: alarm state now OPEN	-
+OPS_TIMER_REPAIR_PRXC_XKGA	DONE	packet: alarm state now not in alarms.json (no open alarm)	cleared
+OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN	REAL_WORK	alarm not open, but the ledger refused the close: a class guard test is owed (rimflow guard) after repeated rings	-
+RESOURCE_SIM_BUILD_WAITS_FOR_REAL_DATA	REAL_WORK	OWNER MARK: his card on the file event; new build	-
+RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS	REAL_WORK	OWNER MARK: his words on a note event	-
+RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS	REAL_WORK	OWNER MARK: his words; child T7 still open	-
+RIMMANDRAKE_CHECK_SEAT_RESTART_TIMER_MONOTONIC_MAY_FIRE_LATE	REAL_WORK	unverified guess; acceptance test not yet written; could not settle it by one look	-
+RIMMANDRAKE_DRAIN_LIVE_RUNS_BEFORE_ACCOUNT_SWITCH_NOT_AFTER	REAL_WORK	unbuilt feature; design call for the Designer	-
+RIMMANDRAKE_FIX_PIPE_UNDO_LEAVES_KILL_TIMER_ARMED	REAL_WORK	a real chance to kill a live run; measured armed timer after an undo	-
+RIMMANDRAKE_KEEP_ALARM_ITEMS_OPEN_FOUR_OF_SIX_POINT_AT_CLOSED	REAL_WORK	census finding with a red acceptance test (alarm_home_check.py exit 1 on base)	-
+RIMMANDRAKE_RESCUE_STRANDED_CONDUCTOR_CLOUDFLARE_SAID_LOGIN	REAL_WORK	OWNER MARK: his words on the file event	-
+RIMMANDRAKE_WATCH_OPS_SENSE_OVERRUN_MOST_FAMILIES_BLIND	REAL_WORK	state doing; its 3 h live verify window is outstanding	-
+RIMMASTER_RESTORE_HOURLY_INSTALL_TIMER_PILE_GREW_UNSEEN	REAL_WORK	OWNER MARK: his card on the file event; timer still not restored	-
