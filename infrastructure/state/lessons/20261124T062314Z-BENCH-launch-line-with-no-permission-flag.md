@@ -1,0 +1,1 @@
+A launch line with no permission flag is hidden on Archmagi, because ~/.claude/settings.json defaults to bypassPermissions: the same line asks for an allow on a machine without that default. Read launch lines with launch_permissions.py (repo|live), not by trying them on Archmagi. --allowed-tools is not a wall; only --tools is.
