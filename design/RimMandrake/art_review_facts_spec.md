@@ -60,8 +60,8 @@ could not name.
 |---|---|---|---|
 | A1 | Transparency is real — genuine alpha, no baked matte, no opaque border ring, no near-white/near-black fill behind the subject | alpha channel inspection | built |
 | A2 | Boundaries are respected — drawn content does not touch or bleed off the canvas edge, and keeps a sane margin | alpha bbox vs canvas | built |
-| A3 | Size agrees across facings — **height** specifically; an animal's height does not change with viewing angle, while width legitimately does | alpha-bbox height, max/min across the set | built, validated |
-| A4 | Outline is coherent — a continuous dark keyline around the whole silhouette | fraction of alpha boundary with a dark pixel inside; largest unbroken gap | built |
+| A3 | Size agrees across facings — **height** specifically; in our ground-camera art an animal's height does not change with viewing angle, while width legitimately does (top-down art: `facing_scale_lint.py`) | alpha-bbox height, max/min across the set | built, validated |
+| A4 | Retired: the owner ruled outlines OUT by card on 2026-10-04 (`ART_VERSION_WRANGLING_1`), so there is no outline check | none | removed |
 | A5 | No facing or variant is a duplicate of another | sha256 of pixel data across facings and across `_f`/`_m`, `X`/`XW` variants | built, validated |
 | A6 | Resolution is proportional to drawSize / bodySize — the canvas is what the creature's size warrants | `drawSize × 128` → next power of two; errs GENEROUS, so undersized is the violation and oversized is a note | owed |
 | A7 | Coloration agrees across facings — the same creature's palette in all three views | hue/saturation distribution over opaque pixels only, area-weighted | owed |
@@ -70,10 +70,9 @@ could not name.
 ### A8 — the convention, established empirically 2026-09-15
 
 The owner asked whether vanilla animals face toward/away like human pawns, or
-point up/down, and whether the base game was consistent. **Vanilla could not be
-read from the Laptop** — no RimWorld install, no `resources.assets`; that check
-belongs on the Windows box. What was measurable is the donor corpus, and it
-settles the shape question: `SWBestiary` has 190 three-facing sets, and in them
+point up/down, and whether the base game was consistent. The donor corpus was
+measured first (vanilla: the end of this section), and it settles the shape
+question: `SWBestiary` has 190 three-facing sets, and in them
 north and south are **bilaterally symmetric, axis-aligned** views while east is a
 profile. Porg north is a plain dark back; Porg south shows a white belly and
 eyes. Maxolotl north points its head away; south brings the gills to the viewer.
@@ -105,10 +104,10 @@ not against a guess.
 north scores 0.84 while showing teeth to camera. A8 catches *profile-as-north*;
 **B2 is still required** for *face-as-north*, and neither subsumes the other.
 
-⛔ **Still owed from the Windows box:** whether vanilla base-game animals are
-internally consistent on this convention. If vanilla itself ships variation, then
-this ruleset is house style rather than conformance — which changes nothing about
-whether we enforce it, but should be recorded honestly either way.
+**Vanilla, measured 2026-11-23** on the 127 vanilla animals of `facing_scale_calibration.json`, with the formula of
+`art_checks.py`: median 0.99 for north and for south; 123 norths and 122 souths reach 0.80. So vanilla agrees with the
+symmetry. A symmetric silhouette fits a front view and a top-down view alike, and `facing_scale_lint.py` models the
+vanilla north and south as top-down.
 
 🔑 **A3 is validated against the owner's eye.** It reports 1.85× on the one row he
 flagged by hand, and flags 8 of 19 creature rows — including 6 he had not yet

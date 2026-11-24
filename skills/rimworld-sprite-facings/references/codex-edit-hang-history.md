@@ -2,8 +2,8 @@
 
 Two earlier drafts of the "generate facings individually" guidance, kept in full:
 the 2026-08-23 claim that the second `--image` was the cause, and the same-day
-correction that it is intermittent. The distilled rule (120 s cap, retry loop,
-anchor with words) is in `../SKILL.md` > "Multi-facing assets".
+correction that it is intermittent. The current rule (a cap near 105 s, retry
+by hand, anchor with words) is in `../SKILL.md` > "Multi-facing assets".
 
 ## The 2026-08-23 claim
 

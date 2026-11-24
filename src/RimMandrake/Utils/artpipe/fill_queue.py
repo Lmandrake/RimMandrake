@@ -433,7 +433,7 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
     # gets east as the fresh-generated MASTER; north/south (if also
     # requested) are filed as DERIVATIONS of it (`derive_from`) rather than
     # independent prompts — the mechanism the owner ruled and
-    # `rimworld-sprite-facings/SKILL.md` already documents as owed. A row
+    # `rimworld-sprite-facings/SKILL.md` documents. A row
     # with no "east" facing (or `--no-derive-facings`) files every facing
     # exactly as before, reference-less and independent.
     # A row that already names its own `reference` (a reskin) never also
