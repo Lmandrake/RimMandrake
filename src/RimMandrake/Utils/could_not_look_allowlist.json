@@ -1,6 +1,13 @@
 {
  "_doc": "Places could_not_look_lint.py found when it was born (2026-11-19, RIMMANDRAKE_SHARE_PROBE_RESULT_TYPE_NINE_FILES_ROLL_OWN), keyed file::function::shape with a count. A count is a list of places to read, not a count of bugs. Fixed places leave slack: could_not_look_lint.py --prune. `reasons` holds, per key, one line per place in source order, classed by reading it (RIMMANDRAKE_LAUNCH_LINT_READS_AFTER_HE_RULES_PAGE_STRICTNESS): RARE (only a rare failure reaches it; the component's boundary page lists it as not handled, owner by card 2026-11-19) or NOT A COLLAPSE (why). A third class, UNREAD (\"unread by owner's card 2026-11-19: only files that failed before are read\", RIMMANDRAKE_READ_ONLY_FILES_THAT_FAILED_PILOT_FOUND_ZERO), marks a place allowed without a reading: only the files where a could-not-look collapse was seen were read.",
  "places": {
+  "src/RimMandrake/rimflow/run_end_wake.py::_disarm_if_mine::or-empty": 1,
+  "src/RimMandrake/rimflow/run_end_wake.py::has_pending::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/run_end_wake.py::take::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/run_end_wake.py::is_conductor_window::or-empty": 1,
+  "src/RimMandrake/rimflow/run_end_wake.py::is_conductor_window::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/run_end_wake.py::deliver::or-empty": 1,
+  "src/RimMandrake/rimflow/run_end_wake.py::wait::or-empty": 1,
   "src/RimMandrake/rimflow/list_pipeline.py::epoch::except-returns-empty": 1,
   "src/RimMandrake/Utils/no_home.py::last::except-returns-empty": 1,
   "src/RimMandrake/rimflow/detached_helper.py::drain_refusal::except-returns-empty": 1,
@@ -268,6 +275,27 @@
   "src/RimMandrake/rimflow/maturation.py::void_judge_run::except-returns-empty": 1
  },
  "reasons": {
+  "src/RimMandrake/rimflow/run_end_wake.py::_disarm_if_mine::or-empty": [
+   "RARE (design/specs/2026-11-23-wake-carries-result/boundary.md an-armed-file-that-does-not-parse): an armed file that cannot be read is not this waiter's, so it consumes nothing and the run end stays pending; the file is written whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/run_end_wake.py::has_pending::except-returns-empty": [
+   "RARE (design/specs/2026-11-23-wake-carries-result/boundary.md a-state-folder-that-cannot-be-read): reads no run end this poll, consumes nothing, tries again at the next poll; an absent folder is none pending"
+  ],
+  "src/RimMandrake/rimflow/run_end_wake.py::take::except-returns-empty": [
+   "RARE (design/specs/2026-11-23-wake-carries-result/boundary.md a-state-folder-that-cannot-be-read): reads no run end this poll, consumes nothing, tries again at the next poll; an absent folder is none pending"
+  ],
+  "src/RimMandrake/rimflow/run_end_wake.py::is_conductor_window::or-empty": [
+   "NOT A COLLAPSE: not provably the Conductor window is the answer asked for; an unreadable session file never arms, by the function's rule (only a proven Conductor window arms)"
+  ],
+  "src/RimMandrake/rimflow/run_end_wake.py::is_conductor_window::except-returns-empty": [
+   "NOT A COLLAPSE: not provably the Conductor window is the answer asked for; an unreadable session file never arms, by the function's rule (only a proven Conductor window arms)"
+  ],
+  "src/RimMandrake/rimflow/run_end_wake.py::deliver::or-empty": [
+   "RARE (design/specs/2026-11-23-wake-carries-result/boundary.md an-armed-file-that-does-not-parse): an armed file that cannot be read is not this waiter's, so it consumes nothing and the run end stays pending; the file is written whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/run_end_wake.py::wait::or-empty": [
+   "RARE (design/specs/2026-11-23-wake-carries-result/boundary.md an-armed-file-that-does-not-parse): an armed file that cannot be read is not this waiter's, so it consumes nothing and the run end stays pending; the file is written whole (os.replace)"
+  ],
   "src/RimMandrake/rimflow/list_pipeline.py::epoch::except-returns-empty": [
    "NOT A COLLAPSE: None is 'unknown time', never an empty answer: every caller of list_pipeline.epoch reads None as unknown (no age, no later act; a wait date that cannot be read is its own wait), design/specs/2026-11-23-list-stage-view/boundary.md one-stage-per-item-from-one-rule"
   ],

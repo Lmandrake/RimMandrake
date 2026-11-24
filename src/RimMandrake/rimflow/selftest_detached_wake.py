@@ -128,8 +128,9 @@ def main():
     sfs = {"conductor": {"name": "CONDUCTOR", "entrypoint": "cli"},
            "print": {"name": "CONDUCTOR", "entrypoint": "sdk-cli"},
            "detached": {"name": "DETACHED BENCH X", "entrypoint": "sdk-cli"}}
-    real = (RW.doorbell.claude_ancestor, SR.session_file, RW.MAX_WAIT_S, RW.POLL_S)
+    real = (RW.doorbell.claude_ancestor, SR.session_file, RW.MAX_WAIT_S, RW.POLL_S, RW.default_readers)
     try:
+        RW.default_readers = lambda: {}     # the real readers are selftest_run_end_wake_result's and the live wake's
         RW.doorbell.claude_ancestor = lambda pid=None: os.getpid()
         RW.MAX_WAIT_S, RW.POLL_S = 2, 0.05
         for kind, want in (("conductor", 2), ("print", 0), ("detached", 0)):
@@ -148,7 +149,7 @@ def main():
             code, len(pending())))
         check(RW.hook_main(stdin=io.StringIO("{}"), env={"AGENT_SEAT": "FOUNDRY"}) == 0, "another seat exits 0 at once")
     finally:
-        RW.doorbell.claude_ancestor, SR.session_file, RW.MAX_WAIT_S, RW.POLL_S = real
+        RW.doorbell.claude_ancestor, SR.session_file, RW.MAX_WAIT_S, RW.POLL_S, RW.default_readers = real
     passed = sum(ok for ok, _ in RESULTS)
     for ok, what in RESULTS:
         print("%s  %s" % ("ok  " if ok else "FAIL", what))

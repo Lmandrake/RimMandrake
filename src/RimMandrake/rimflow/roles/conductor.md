@@ -496,9 +496,10 @@ python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR
 Without the anchor and the exclusion, the watcher's own command text and the backstop's restart line match the grep.
 **Stop the watcher before HANDOFF READY**, because a live watcher holds the context backstop restart.
 
-A detached run of this seat that ends wakes this window by itself, with its result path (the `run_end_wake.py` Stop
-hook; RIMMANDRAKE_WAKE_CONDUCTOR_ON_RUN_END_LOG_ONLY_TODAY). When the result arrives, read it. The result needs no
-watcher.
+A detached run of this seat that ends wakes this window by itself (the `run_end_wake.py` Stop hook;
+RIMMANDRAKE_WAKE_CONDUCTOR_ON_RUN_END_LOG_ONLY_TODAY). The wake holds the whole last message of the run. At its end it
+holds who drives each game, the pipe line and the accounts, each line with the time of its reading. Read the result
+there: do not open the `.out.json` file. The result needs no watcher.
 
 **Anything you owe is an owed item, filed when the sentence that creates the debt is written.** Examples of such a
 sentence: a launch that you promise, a decision that you call yours, a question that you put to him, a page that you

@@ -40,6 +40,8 @@ PAGES = {
     "design/specs/2026-11-23-guiding-prose-check/boundary.md": "src/RimMandrake/Utils/selftest_guiding_prose.py",
     "design/specs/2026-11-23-tick-page-own-unit/boundary.md": "src/RimMandrake/rimflow/selftest_tick_page_own_unit.py",
     "design/specs/2026-11-23-wake-his-words/boundary.md": "src/RimMandrake/rimflow/selftest_wake_words.py",
+    "design/specs/2026-11-23-wake-carries-result/boundary.md":
+        "src/RimMandrake/rimflow/selftest_run_end_wake_result.py",
     "design/specs/2026-11-23-steve-two-games-lane/boundary.md": "src/RimMandrake/Utils/testq/selftest_testq_steve2.py",
     "design/specs/2026-11-22-steve-idle-takeable/boundary.md": "src/RimMandrake/Utils/selftest_steve_idle_takeable.py",
     "design/specs/2026-11-23-list-dispatch/boundary.md": "src/RimMandrake/rimflow/selftest_list_dispatch.py",

@@ -2038,7 +2038,7 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         steps.append("conductor log " + path)
     except Exception as e:  # noqa: BLE001
         steps.append("conductor log FAILED: %s" % e)
-    steps.append(wake_conductor(unit, st, rec["out"], item, seat, waker))
+    steps.append(wake_conductor(unit, st, rec["out"], item, seat, waker, owed))
     import role_launch as RL
     rec.pop("finish_owed", None)
     rec.update(status="finished", ended=now, result=st, tokens=tokens, token_unit=RL.TOKEN_UNIT, steps=steps,
@@ -2057,8 +2057,8 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     return 0, "FINISHED %s: %s" % (unit, "; ".join(steps))
 
 
-def wake_conductor(unit, st, out, item, seat, waker=None):
-    """A run of the Conductor's seat wakes the live Conductor window with its result path (run_end_wake.py;
+def wake_conductor(unit, st, out, item, seat, waker=None, owed=""):
+    """A run of the Conductor's seat wakes the live Conductor window with its result and its owed line (run_end_wake.py;
     RIMMANDRAKE_WAKE_CONDUCTOR_ON_RUN_END_LOG_ONLY_TODAY). A test process never posts to the real one: it passes a
     waker. -> the step's line."""
     if seat != "BENCH":
@@ -2070,7 +2070,7 @@ def wake_conductor(unit, st, out, item, seat, waker=None):
                 return "wake: skipped under a selftest"
             import run_end_wake
             waker = run_end_wake.post
-        p = waker(unit, st, out, item)
+        p = waker(unit, st, out, item, owed)
         return "wake " + (p if p else "none: no live Conductor window (the log line stands)")
     except Exception as e:  # noqa: BLE001 - the run is finished; the log line is its record
         return "wake FAILED: %s: %s" % (type(e).__name__, e)
