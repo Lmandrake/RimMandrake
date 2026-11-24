@@ -380,6 +380,12 @@ def test_run_dead_member_stays_in_group_as_gone():
     W.game.script = {"state": "hit", "ticks": 20, "tracks": {"raiders[0].positionInt.x": [(0, "ok", 1)], "raiders[1].positionInt.x": [(0, "ok", 2), (5, "gone", None)]}}
     r = s.run(until=c.gone_ok("raiders[1]", "positionInt.x", c.value("raiders[1]", "positionInt.x") > 9), limit=200)
     must(r.hit and r.values["raiders[1].positionInt.x"].state == "gone" and r.values["raiders[0].positionInt.x"].v == 1, "%r %r" % (r, r.values))
+    W.game.script = {"state": "hit", "ticks": 5, "tracks": {"thing:Human1078.positionInt.x": [(0, "ok", 1), (2, "gone", None)],
+                                                            '{"f":"dead","p":"pawn.state","pawn":"Human1078"}': [(0, "unbound", None)]}}
+    r = s.run(until=c.value("Human1078", "positionInt.x") > 3, limit=200)
+    must(r.why == "unknown" and "Human1078.positionInt.x" in r.values, "the game's name of a track is not the script's: %r %r" % (r, r.values))
+    r = s.run(until=c.pawn("Human1078").dead == True, limit=200)  # noqa: E712
+    must(r.why == "unknown" and "pawn.state(f=dead,pawn=Human1078)" in r.detail, "%r" % r)
 
 
 def test_run_stalled_clock_is_cancelled():
@@ -491,7 +497,8 @@ def test_trace_that_is_not_whole():
         must(scene_hands.trace_fault(F.rec(name)) is None and scene_hands.ran_on(F.rec(name)) is None, "a real trace reads as faulty")
     gap = F.rec("trace_hit")
     gap.pop(5)
-    must("gap" in scene_hands.trace_fault(gap, count_rows=False), "a gap with no count of rows")
+    gap[-1]["rows"] -= 1
+    must("gap" in (scene_hands.trace_fault(gap) or ""), "a gap that the count of rows does not show")
     lost = F.rec("trace_hit")
     lost[-1]["rows"] += 1
     must("counts" in scene_hands.trace_fault(lost), "a lost row")

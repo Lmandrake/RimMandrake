@@ -592,10 +592,13 @@ class Session(object):
         row, stalled = self._wait(request, row)
         self._run = dict(row)
         rows = self._trace(row)
+        for r in rows:
+            if r.get("rec") == "track":
+                r["name"] = self.hand.name(r["name"])
         path = os.path.join(self.run_dir, "trace_%s.jsonl" % request)
         self.W.save(path, "".join(json.dumps(r, sort_keys=True) + "\n" for r in rows))
         self._run["trace"] = path
-        bad = hands.trace_fault(rows, count_rows=self.hand.tool == hands.SLICE)
+        bad = hands.trace_fault(rows)
         did = ["the run was played to tick %s" % row.get("tick")]
         if bad:
             raise Fault("TRACE_INCOMPLETE", done=did, detail=bad, request=request, trace=path)

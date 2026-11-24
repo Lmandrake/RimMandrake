@@ -103,7 +103,7 @@ class FakeGame(object):
         return {"success": True, "tool": tool}
 
     # ---- a run: its records in the recorded schema
-    def _play(self, run_id, names, limit, sess=None):
+    def _play(self, run_id, names, limit):
         s = self.script
         t0 = self.status["tick"]
         n = min(s["ticks"], limit) if s["state"] in ("hit", "unknown") else (limit if s["state"] == "done" else s["ticks"])
@@ -175,10 +175,11 @@ class FakeGame(object):
                 return dict(self.run, replayed=True)
             self.starts += 1
             t0 = self.status["tick"]
-            names = ["%s.%s" % (t["of"].replace("thing:", ""), t["path"]) for t in json.loads(a["record"])] + [n for n in self.script["tracks"]]
-            end = self._play("r1", sorted(set(names)), a["limit"], sess="g1")
+            names = ["%s.%s" % (t["of"], t["path"]) for t in json.loads(a["record"])] + [n for n in self.script["tracks"]]
+            rid = "S1_r%d" % self.starts
+            end = self._play(rid, sorted(set(names)), a["limit"])
             why = {"done": "limit"}.get(self.script["state"], self.script["state"])
-            self.run = {"success": True, "request": a["request"], "run": "r1", "stage": "closed", "why": why, "state": self.script["state"],
+            self.run = {"success": True, "request": a["request"], "run": rid, "stage": "closed", "why": why, "state": self.script["state"],
                         "tickFrom": t0, "tick": end, "rows": 5, "polls": 0}
             return dict(self.run, stage="running", why=None)
         if not self.run or self.run["request"] != a.get("request"):

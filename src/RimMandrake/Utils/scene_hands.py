@@ -34,9 +34,13 @@ class RunUntil(object):
     request_ids = True
 
     def __init__(self, call, driver):
-        self.call, self.driver = call, driver
+        self.call, self.driver, self.names = call, driver, {}
 
     def plan(self, tree, tracks):
+        # the game names a track "thing:Human12.path", or by the canonical text of its probe (JawaBenchHandsCore.TrackName)
+        for p, _opt in C.walk(tree):
+            if p["p"] not in C.VALUE_PROBES:
+                self.names[C.conds.canon(p)] = C.probe_name(p)
         return {"until": _retarget(tree, "of"), "record": [{"of": _target(t.of), "path": t.path} for t in tracks]}
 
     def start(self, request, plan, limit, speed):
@@ -71,7 +75,10 @@ class RunUntil(object):
             raise Fault(name or "RUN_NOT_STARTED", detail=say.strip(), request=request)
         return {"run": r.get("run"), "request": request, "stage": r.get("stage"), "state": r.get("state") or r.get("why"),
                 "why": r.get("why"), "tick": r.get("tick"), "tickFrom": r.get("tickFrom"), "rows": r.get("rows"),
-                "recordDir": r.get("recordDir"), "writer": r.get("writerSession"), "detail": r.get("unknownValue") or r.get("faults")}
+                "recordDir": r.get("recordDir"), "writer": r.get("writerSession"), "detail": r.get("unknownValue") or r.get("detail") or r.get("faults")}
+
+    def name(self, track):
+        return self.names.get(track) or (track[6:] if track.startswith("thing:") else track)
 
     def note(self):
         return []
@@ -151,6 +158,9 @@ class Slice(object):
                 "writer": r.get("session"), "detail": r.get("why") or r.get("lastFault"),
                 "unknown": [v for v in res.get("values") or [] if v.get("status") not in (None, "ok", "ignored")]}
 
+    def name(self, track):
+        return track
+
     def note(self):
         out = ["the run was played by %s (%s is not in this game's companion); it asked for a pawn and was given %s" % (SLICE, RUN_UNTIL, self.pawn)]
         if self.lost:
@@ -159,7 +169,7 @@ class Slice(object):
 
 
 # ------------------------------------------------------------------------------------------------ the kept trace
-def trace_fault(rows, count_rows=True):
+def trace_fault(rows):
     """None when the records of one run are whole, else the point that is not. Pure."""
     def recs(k):
         return [r for r in rows if r.get("rec") == k]
@@ -173,7 +183,7 @@ def trace_fault(rows, count_rows=True):
     c = recs("close")[0]
     if c.get("drained") is not True or c.get("dropped") != 0:
         return "drained %s, dropped %s" % (c.get("drained"), c.get("dropped"))
-    if count_rows and c.get("rows") != len(rows) - 1:
+    if c.get("rows") != len(rows) - 1:
         return "the closing record counts %s rows, the file holds %d" % (c.get("rows"), len(rows) - 1)
     return None
 

@@ -42,6 +42,7 @@ PLANTS = [
     ("optional counts an unreadable value as false", "scene_cond.py", "        if opt:\n", "        if False:\n", "test_run_refuses_unrecorded_value"),
     ("a method is in the path grammar", "scene_cond.py", r'[A-Za-z_]\w*)(?:\[', r'[A-Za-z_]\w*(?:\(\))?)(?:\[', "test_run_refuses_bad_path"),
     ("a gap in the trace passes", "scene_hands.py", "    if None in ns or ns !=", "    if None in ns and ns !=", "test_trace_that_is_not_whole"),
+    ("the game's track name is not the script's", "scene_hands.py", 'return self.names.get(track) or (track[6:]', 'return track if track else (track[6:]', "test_run_dead_member_stays_in_group_as_gone"),
     ("a dropped row passes", "scene_hands.py", 'or c.get("dropped") != 0:', "or False:", "test_trace_that_is_not_whole"),
     ("the second reading of the tick is left out", "scene.py", 'if over is None and after.get("tick") != t2:', "if False:", "test_game_that_ran_on"),
     ("the second reading of the pause is left out", "scene.py", 'if over is None and after.get("paused") is not True:', "if False:", "test_game_that_ran_on"),
