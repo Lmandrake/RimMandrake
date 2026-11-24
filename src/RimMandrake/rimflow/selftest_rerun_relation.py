@@ -572,6 +572,11 @@ def t_python_chain_registration_is_the_other_files():
        "<module>" not in RR.py_changed(without, with_call), sorted(RR.py_changed(without, with_call)))
     ok("python_relates_by_symbol: the registration call is still a symbol of its own",
        "<call _register_other>" in RR.py_changed(without, with_call), sorted(RR.py_changed(without, with_call)))
+    loop = REGISTER_IDIOM.replace('    spec = importlib.util.spec_from_file_location("other", "other.py")',
+                                  '    for n in ("other", "third"):\n        spec = importlib.util.spec_from_file_location(n, n + ".py")')
+    loop = loop.replace("\n    mod = ", "\n        mod = ").replace("\n    spec.l", "\n        spec.l").replace("\n    mod.r", "\n        mod.r")
+    ok("python_relates_by_symbol: a loop over two files registered (5411bd360c) changes no module-level state",
+       "<module>" not in RR.py_changed(with_call, RR.py_symbols(loop)), sorted(RR.py_changed(with_call, RR.py_symbols(loop))))
     other = REGISTER_IDIOM.replace("    mod.register(suite, types.SimpleNamespace(**globals()))", "    globals()['LIMIT'] = 3")
     a, b = RR.py_symbols(other.replace("\n_register_other()\n", "\n")), RR.py_symbols(other)
     ok("python_relates_by_symbol: a module-level call that does anything else still relates whole",

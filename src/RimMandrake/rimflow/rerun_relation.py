@@ -251,8 +251,14 @@ def _registers_a_file(st, defs):
     if d is None:
         return None
     registered = False
-    for b in _strip_doc(list(d.body)):
+    todo = _strip_doc(list(d.body))
+    while todo:
+        b = todo.pop(0)
         if isinstance(b, (ast.Import, ast.ImportFrom)):
+            continue
+        if isinstance(b, ast.For) and isinstance(b.target, ast.Name) and not b.orelse and isinstance(b.iter, (ast.Tuple, ast.List)) \
+                and all(isinstance(e, ast.Constant) and isinstance(e.value, str) for e in b.iter.elts):
+            todo = list(b.body) + todo    # the same few statements for each named file
             continue
         if isinstance(b, ast.Assign) and len(b.targets) == 1 and isinstance(b.targets[0], ast.Name) \
                 and _call_name(b.value) in ("importlib.util.spec_from_file_location", "importlib.util.module_from_spec"):
