@@ -35,6 +35,7 @@ _UTILS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _UTILS not in sys.path:
     sys.path.insert(0, _UTILS)
 import game_paths  # noqa: E402
+import walk_twins  # noqa: E402
 
 # The Saves folder of the game this process names (game_paths follows RM_GAME_INSTANCE: game b has its own). Hard-wired
 # to game a's LocalLow before 2026-11-20, a keeper saved on game b was watched in game a's folder and read "no new file"
@@ -71,7 +72,11 @@ def judge_save(before, after, name):
 def save_keeper(B, name, saves=None, wait_s=30.0, poll_s=1.0, stat=saves_stat, sleep=time.sleep, signs=None):
     """Save the live game as <name>.rws and prove it: -> dict(ok, name, new, changed, gone, tool, signs). Refuses (ok
     False, refused=...) when <name>.rws already exists; never overwrites. `signs` = the label ops pinned on the map:
-    on an ok save they are written to the save's sign sidecar (write_signs)."""
+    on an ok save they are written to the save's sign sidecar (write_signs). Sign books among them whose station shows an
+    aftermath with no START twin are refused before the save, with the repair (walk_twins.py; owner, 2026-11-23)."""
+    lack = walk_twins.why(walk_twins.of_ops(signs))
+    if lack:
+        return dict(ok=False, name=name, refused=lack, new=[], changed=[], gone=[], tool=None)
     before = stat(saves)
     if name + ".rws" in before:
         return dict(ok=False, name=name, refused="%s.rws already exists" % name, new=[], changed=[], gone=[], tool=None)
@@ -208,7 +213,7 @@ SIGN_PREFIX = "SIGN "        # jawa/review_sign clears and lists Books whose tit
 
 
 def sign_book(x, z, key, name, clause="", look="", do="", decide="", more=""):
-    """-> one jawa/review_sign place op 'x|z|title|body'. Title: 'SIGN <key> <name> - DO: <do>' (one line: what the
+    """The last word of `name` is the station's tag where it shows an event: AFTER, or START for its twin (walk_twins.py). -> one jawa/review_sign place op 'x|z|title|body'. Title: 'SIGN <key> <name> - DO: <do>' (one line: what the
     owner sees on mouse-over); body: name, clause, LOOK / DO / DECIDE, then `more`, joined by the \\n escape."""
     clean = lambda t: " ".join(str(t).replace("|", "/").split())  # noqa: E731
     title = "%s%s %s" % (SIGN_PREFIX, key, clean(name)) + (" - DO: %s" % clean(do) if do else "")

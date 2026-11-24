@@ -4884,6 +4884,11 @@ def read_ingame_exit(root, mod, n, tt=None):
         small = walk_small_list_why(root, mod, n, (bm or {}).get("walk"))
         if small:
             why.append(small)
+    if os.path.isfile(native_to_here(sv)):          # owner, 2026-11-23: he compares before and after (walk_twins.py)
+        import walk_twins as WT
+        twins = WT.save_why(native_to_here(sv))
+        if twins:
+            why.append(twins)
     out["state"] = "not_met" if why else "met"
     if not why:
         nc = sorted(t for t, ln in lines_.items() if ln["count"] == "not_counted")
@@ -5843,7 +5848,12 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "- `strange.jsonl`: as above; an empty file when nothing strange was seen.",
           "- the labelled savegame for his walk (dense, labelled scenes; spec rule 5), its path in the block. Stage it on the "
           "mod's small list, never the full list (`python3 src/RimMandrake/Utils/small_list.py show %s` prints the tier and "
-          "its mods); the game whose Saves folder holds it is the game he walks on, ArchBig or ArchSmall." % mod,
+          "its mods); the game whose Saves folder holds it is the game he walks on, ArchBig or ArchSmall. "
+          "A station that shows an aftermath (a blast, a collapse, a flood) has a START twin beside it: the same scene as it stood "
+          "before the event, with what would set it off removed before any tick (owner, 2026-11-23: \"replicate their frozen initial "
+          "states beside them so I can see before / after\"). Give both a sign book (`reviewmap.sign_book`) with one key and one "
+          "name, and the tag AFTER or START as the last word of the name. `python3 src/RimMandrake/Utils/walk_twins.py check "
+          "<save>` refuses an aftermath station without its twin, and so does this exit. A station he acts on himself needs none." % mod,
           "- `SUMMARY.md`: what ran, what failed and what you did about it, the owed cases one by one, then this block "
           "(the program reads it):", "",
           "```", "## Exit", "```", "ingame_rows: {%s}" % ", ".join("%s: pass|fail|unmeasured" % k for k in checks[:3])

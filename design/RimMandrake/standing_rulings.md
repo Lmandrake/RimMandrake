@@ -920,6 +920,11 @@ creatures, or gear on a pawn.
   path that the call hands back.
 - ⚠️ Before you call a save a review, verify that each option is actually THERE (`jawa/list_things` per slot). A
   placement log's `thingsSpawned` is a NET count, and it goes negative when a build clears plants.
+- **An aftermath station has a START twin beside it** (owner, 2026-11-23: *"It might be useful to replicate their frozen initial
+  states beside them so I can see before / after when I review."*). It binds every walk save. A station that shows an aftermath (a blast,
+  a collapse, a flood) stands beside the same scene as it stood before the event, unarmed. The two signs share a key and a name; the
+  last word of the name is AFTER or START. Check: `python3 src/RimMandrake/Utils/walk_twins.py check <save>`. `reviewmap.save_keeper`
+  and the Stage 6 exit refuse a save without the twin. Page: `design/specs/2026-11-24-walk-save-start-twin/boundary.md`.
 
 ## Check for existing regenerated art before queuing more — owner, 2026-09-20
 

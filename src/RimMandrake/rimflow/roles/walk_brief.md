@@ -44,6 +44,9 @@ the end of "What you write".
   move.
 - the mod's open rimflow items, and the strange things filed during the visit
 
+- the walk savegame's station signs. If a station shows an aftermath (a blast, a collapse, a flood) and its sign has no AFTER
+  tag, `walk_twins.py` cannot see that station. Then look for its START twin yourself. File a missing twin as a ticket
+
 ## What you write
 
 Write `design/concepts/<Mod>/version/walk_brief/arrival_<N>.md`, where N = the record's `pre_human_arrivals`. The
