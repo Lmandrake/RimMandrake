@@ -208,7 +208,8 @@ def lane_state(now, mods=None):
                  for j in ready)
         return _st("READY", "%d ready job(s) not admitted (oldest ready since %s)" % (len(ready), iso(t0)),
                    t0 + READY_GRACE_S, jobs=[j["id"] for j in ready])
-    plans = {m: T.fill_plan(m, int(os.environ.get("TESTQ_FILL_CHAINS", "4")),
+    with T.done_once():
+        plans = {m: T.fill_plan(m, int(os.environ.get("TESTQ_FILL_CHAINS", "4")),
                             int(os.environ.get("TESTQ_FILL_CAP") or T.FILL_CAP_DEFAULT), now=now)
              for m in mods or mods_default()}
     by = {}

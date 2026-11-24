@@ -89,6 +89,7 @@ One tick, under a non-blocking lock (a second tick while one runs exits at once)
      displaced interactive minutes, priced at SteveDesktop's verified items per lane-hour.
 """
 import argparse
+import contextlib
 import fcntl
 import glob
 import json
@@ -210,12 +211,50 @@ def heartbeat(job_id):
         pass
 
 
+_DONE_TEXT = [None]     # done_once(): {path: text} while one plan loop runs; None: every read goes to the disk
+
+
+@contextlib.contextmanager
+def done_once():
+    """The done records are read from the disk once inside this block (a plan loop that only reads them): 1,334 files over
+    the 9p mount, three or more times for each of 29 mods, held a tick 7 to 15 min on 2026-11-21 and 2026-11-23, past the
+    steward's 300 s heartbeat. Each record is parsed again for each reader, so a reader that changes its copy changes
+    nothing. Never wrap code that writes done/."""
+    outer = _DONE_TEXT[0]
+    _DONE_TEXT[0] = {} if outer is None else outer
+    try:
+        yield
+    finally:
+        _DONE_TEXT[0] = outer
+
+
+def done_paths():
+    memo = _DONE_TEXT[0]
+    if memo is None:
+        return sorted(glob.glob(q("done", "*.json")))
+    if "paths" not in memo:
+        memo["paths"] = sorted(glob.glob(q("done", "*.json")))
+    return memo["paths"]
+
+
+def read_done(path):
+    """read_json of a done record, through the memo of done_once when one is open."""
+    memo = _DONE_TEXT[0]
+    if memo is None:
+        return read_json(path)
+    if path not in memo:
+        rec = read_json(path)
+        memo[path] = None if rec is None else json.dumps(rec)
+    return None if memo[path] is None else json.loads(memo[path])
+
+
 def records(state):
     """Every readable record file in `state`. An unreadable one is skipped as before, but named on stderr: a
     skipped file is accounted, never silent (contracts policy)."""
     out, bad = [], []
-    for f in sorted(glob.glob(q(state, "*.json"))):
-        r = read_json(f)
+    done = state == "done"
+    for f in done_paths() if done else sorted(glob.glob(q(state, "*.json"))):
+        r = read_done(f) if done else read_json(f)
         if r is not None:
             out.append(r)
         else:
@@ -2079,6 +2118,11 @@ def cmd_fill(a):
     current identity is never filler. Brakes (`fill_plan`): the stop file, a daily job backstop, a paused
     lane, and two filler jobs in a row that did not come back DONE (a cancel is not counted; a brake whose jobs all have
     a recorded non-fault cause is released by Operations' one canary, brake_release.py)."""
+    with done_once():
+        return fill_once(a)
+
+
+def fill_once(a):
     now = time.time()
     plan = fill_plan(a.mod, a.n, a.cap, now=now)
     if plan["verdict"] != "pick":
