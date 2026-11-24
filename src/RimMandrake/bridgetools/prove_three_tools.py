@@ -76,6 +76,13 @@ def tick():
     return call("jawa/map_info").get("ticksGame")
 
 
+def unhook(hid):
+    """Plant: take our hooks off. -> None when Harmony itself says they are gone, else what it said (the plant did not take)."""
+    r = call("jawa/first_exception", action="plant", kind="unhook", label=hid)
+    h = call("jawa/static_call", type="HarmonyLib.Harmony", method="HasAnyPatches", args=hid)
+    return None if str(h.get("result")).lower() == "false" else "unpatch: %s | has patches: %s" % (str(r)[:300], str(h)[:120])
+
+
 def status(r, name):
     return next((c.get("status") for c in r.get("controls") or [] if c.get("name") == name), None)
 
@@ -199,12 +206,12 @@ def calm():
     row("calm.reassert_without_clear_removes_nothing", r.get("verdict") == "NOT_CALM" and r.get("success") is False and r.get("couldNotRepair") == ["predators"], r.get("couldNotRepair"))
     r = qs("reassert", clear=True)
     row("calm.reassert_clear_removes_it", r.get("verdict") == "CALM" and any("Cougar" in x for x in r.get("repaired") or []), r.get("repaired"))
-    call("jawa/static_call", type="HarmonyLib.Harmony", method="UnpatchID", args="mandrake.jawabench.calm")
+    miss = unhook("mandrake.jawabench.calm")
     r = qs("read")
-    row("calm.removed_gate_is_never_calm", r.get("calm") is False and status(r, "incident_gate") == "NOT_CALM" and status(r, "arrivals") == "COULD_NOT_READ",
-        "%s | %s | %s" % (r.get("verdict"), r.get("notCalm"), r.get("notRead")))
+    row("calm.removed_gate_is_never_calm", None if miss else r.get("calm") is False and status(r, "incident_gate") == "NOT_CALM" and status(r, "arrivals") == "COULD_NOT_READ",
+        miss or "%s | %s | %s" % (r.get("verdict"), r.get("notCalm"), r.get("notRead")))
     r = qs("reassert")
-    row("calm.reassert_puts_the_gate_back", r.get("verdict") == "CALM", "%s %s" % (r.get("repaired"), r.get("message")))
+    row("calm.reassert_puts_the_gate_back", None if miss else r.get("verdict") == "CALM", "%s %s" % (r.get("repaired"), r.get("message")))
 
     # an allowed incident runs, and the map then names its raiders
     r = qs("calm", allowIncidents="raidenemy", minutes=60)
@@ -218,7 +225,25 @@ def calm():
     r = qs("calm", clear=True, minutes=60)
     row("calm.clear_after_a_raid", r.get("verdict") == "CALM", "%s %s" % (r.get("verdict"), r.get("message")))
 
+    # release puts every value back
+    r = qs("release")
+    st = call("jawa/site_state")
+    w = qs("read")
+    row("calm.release_puts_back", r.get("released") is True and (st.get("storyteller") or {}).get("enabledAfter") is True and "forced weather ended" in str(r.get("restored")) and
+        status(w, "weather") == "NOT_CALM" and status(w, "incident_gate") == "NOT_CALM" and status(w, "wild_spawner") == "NOT_CALM", r.get("restored"))
+    row("calm.release_twice_says_nothing_to_release", qs("release").get("released") is False, "ok")
+
+    # the lease ends by itself and puts the values back
+    qs("calm", minutes=0.05)
+    time.sleep(5)
+    step(2)
+    st = call("jawa/site_state")
+    r = qs("read")
+    row("calm.lease_end_puts_back", (st.get("storyteller") or {}).get("enabledAfter") is True and r.get("lastRelease") and status(r, "weather") == "NOT_CALM"
+        and status(r, "incident_gate") == "NOT_CALM", "%s %s" % (r.get("lastRelease"), r.get("lastRestore")))
+
     # a load ends the calm; reassert sets it again
+    r = qs("calm", clear=True, minutes=60)
     call("rimworld/save_game", saveName=SAVE)
     call("rimworld/load_game", saveName=SAVE, ignoreModCompatibility=True)
     time.sleep(5)
@@ -229,14 +254,9 @@ def calm():
         "%s lastRelease=%s" % (r.get("verdict"), r.get("lastRelease")))
     r = qs("reassert", clear=True)
     row("calm.reassert_after_a_load", r.get("verdict") == "CALM", "%s %s" % (r.get("verdict"), r.get("message")))
-
     r = qs("release")
-    st = call("jawa/site_state")
-    step(1)
-    w = qs("read")
-    row("calm.release_puts_back", r.get("released") is True and (st.get("storyteller") or {}).get("enabledAfter") is True and
-        status(w, "weather") == "NOT_CALM" and status(w, "incident_gate") == "NOT_CALM" and status(w, "wild_spawner") == "NOT_CALM", r.get("restored"))
-    row("calm.release_twice_says_nothing_to_release", qs("release").get("released") is False, "ok")
+    row("calm.release_names_the_saved_weather", "still forced to Clear" in str(r.get("restored")), r.get("restored"))
+    call("jawa/weather_set", unlock=True)
 
 
 # -------------------------------------------------------------------------------------------------------------- tap
@@ -284,9 +304,9 @@ def tap():
     first = (r.get("window") or {}).get("firstException") or {}
     row("tap.unity_exception_is_seen_once", r.get("state") == "SEEN" and first.get("source") == "unity Exception" and (r.get("window") or {}).get("exceptions") == 1,
         "%s %s" % (first.get("source"), (r.get("window") or {}).get("exceptions")))
-    call("jawa/static_call", type="HarmonyLib.Harmony", method="UnpatchID", args="mandrake.jawabench.firstexception")
+    miss = unhook("mandrake.jawabench.firstexception")
     r = fe("arm", label="unhooked")
-    row("tap.removed_hook_is_not_armed", r.get("state") == "NOT_ARMED" and r.get("armed") is False, "%s: %s" % (r.get("state"), r.get("notArmedWhy")))
+    row("tap.removed_hook_is_not_armed", None if miss else r.get("state") == "NOT_ARMED" and r.get("armed") is False, miss or "%s: %s" % (r.get("state"), r.get("notArmedWhy")))
 
 
 def main():

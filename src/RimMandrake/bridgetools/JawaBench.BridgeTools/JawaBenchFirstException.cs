@@ -58,6 +58,7 @@ namespace JawaBench.BridgeTools
                     HarmonyMethod Hm(string n) => new HarmonyMethod(typeof(JawaBenchFirstException).GetMethod(n, BindingFlags.Static | BindingFlags.NonPublic)) { priority = Priority.First };
                     h.Patch(AccessTools.Method(typeof(Log), nameof(Log.Error), new[] { typeof(string) }), prefix: Hm(nameof(ErrorPre)), finalizer: Hm(nameof(ErrorFin)));
                     h.Patch(AccessTools.Method(typeof(Log), nameof(Log.ErrorOnce), new[] { typeof(string), typeof(int) }), prefix: Hm(nameof(OncePre)), finalizer: Hm(nameof(OnceFin)));
+                    h.Patch(AccessTools.Method(typeof(Log), nameof(Log.ResetMessageCount), Type.EmptyTypes), prefix: Hm(nameof(ResetPre)));
                     _fReached = AccessTools.Field(typeof(Log), "reachedMaxMessagesLimit");
                     _fDisablers = AccessTools.Field(typeof(Log), "logDisablers");
                 }
@@ -110,12 +111,21 @@ namespace JawaBench.BridgeTools
             try { if (__state) { if (Roads.ExitOnce()) Tap.Note("Log.ErrorOnce (kept silent by the game)", text, false, true, Fill); } } catch { }
         }
 
+        /// <summary>The cap ends here (Log.Clear and the log-revive tools come through it): keep that it was reached. The game's own
+        /// "Reached max messages limit" warning is logged inside Unity's callback and does not reach ours (live, 2026-11-23).</summary>
+        private static void ResetPre() { try { if (Reached() == true) NoteCap(); } catch { } }
+        private static bool? Reached() { try { return _fReached == null ? (bool?)null : (bool)_fReached.GetValue(null); } catch { return null; } }
+        private static void NoteCap()
+        {
+            var now = DateTime.UtcNow.ToString("o");
+            if (CapHitUtc == null) CapHitUtc = now;
+            if (CapHitWindow == null) CapHitWindow = now;
+        }
+
         private static void OnUnity(string condition, string stackTrace, LogType type)
         {
             try
             {
-                if (type == LogType.Warning && condition != null && condition.StartsWith("Reached max messages limit", StringComparison.Ordinal))
-                { CapHitUtc = DateTime.UtcNow.ToString("o"); CapHitWindow = CapHitUtc; }
                 if (type != LogType.Exception && type != LogType.Error && type != LogType.Assert) return;
                 if (Roads.UnityIsACopy) return;
                 Tap.Note("unity " + type, condition, type == LogType.Exception, false, e => { e.Stack = stackTrace; Fill(e); });
@@ -127,15 +137,17 @@ namespace JawaBench.BridgeTools
         {
             var b = new List<string>();
             if (!UnityOn) b.Add("the Unity channel is not subscribed");
-            bool? reached = null, logOn = null; int? dis = null;
-            try { if (_fReached != null) reached = (bool)_fReached.GetValue(null); } catch { }
+            bool? reached = Reached(), logOn = null; int? dis = null;
+            if (reached == true) NoteCap();
             try { if (_fDisablers != null) dis = (int)_fDisablers.GetValue(null); } catch { }
             try { logOn = UnityEngine.Debug.unityLogger.logEnabled; } catch { }
             if (logOn == null) b.Add("Unity's logger state could not be read");
             else if (logOn == false) b.Add("Unity's logger is off" + (reached == true ? " (the game reached its 10,000-message cap)" : "") + ": a Unity-only exception is not seen; Log.Error still is");
             if (reached == null) b.Add("the game's message cap could not be read");
             if (dis == null) b.Add("the game's log lock could not be read");
-            if (CapHitWindow != null) b.Add("the 10,000-message cap was reached in this window at " + CapHitWindow + ": a Unity-only exception after it may be missing");
+            if (CapHitWindow != null) b.Add("the 10,000-message cap was reached in this window (seen at " + CapHitWindow + "): a Unity-only exception after it may be missing");
+            try { var i = Harmony.GetPatchInfo(AccessTools.Method(typeof(Log), nameof(Log.ResetMessageCount), Type.EmptyTypes)); if (i == null || !i.Prefixes.Any(x => x.owner == HarmonyId)) b.Add("a cap that was reached and reset would not be seen (no hook on Log.ResetMessageCount)"); }
+            catch (Exception e) { b.Add("the hook on Log.ResetMessageCount could not be read: " + e.GetType().Name); }
             return b;
         }
 
@@ -165,7 +177,7 @@ namespace JawaBench.BridgeTools
             IRimBridgeContext ctx, CancellationToken cancellationToken,
             [ToolParameter(Description = "read | arm | plant", DefaultValue = "read")] string action = "read",
             [ToolParameter(Description = "arm: the window's name (a scene or a visit)", DefaultValue = null)] string label = null,
-            [ToolParameter(Description = "plant: 'caught' (thrown in a post-long-event action, which the game catches and logs) | 'unity' (Debug.LogException)", DefaultValue = "caught")] string kind = "caught",
+            [ToolParameter(Description = "plant: 'caught' (thrown in a post-long-event action, which the game catches and logs) | 'unity' (Debug.LogException) | 'unhook' (take the hooks named by label off, to see that the readers say so)", DefaultValue = "caught")] string kind = "caught",
             [ToolParameter(Description = "plant: then log this many different messages (0-12000) to flood the log", DefaultValue = 0)] int flood = 0)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
@@ -186,7 +198,14 @@ namespace JawaBench.BridgeTools
                     var k = (kind ?? "").Trim().ToLowerInvariant();
                     if (k == "caught") LongEventHandler.ExecuteWhenFinished(PlantedThrow);
                     else if (k == "unity") { try { PlantedThrow(); } catch (Exception e) { UnityEngine.Debug.LogException(e); } }
-                    else return Fail("kind must be caught or unity");
+                    else if (k == "unhook")
+                    {
+                        var id = (label ?? "").Trim();
+                        if (id != JawaBenchFirstException.HarmonyId && id != JawaBenchCalm.HarmonyId)
+                            return Fail("unhook takes the hooks of this tap or of the calm map off: label must be " + JawaBenchFirstException.HarmonyId + " or " + JawaBenchCalm.HarmonyId);
+                        new Harmony(id).UnpatchAll(id);
+                    }
+                    else return Fail("kind must be caught, unity or unhook");
                     for (int i = 0; i < flood; i++) Log.Message("[JawaBench] planted flood line " + i);
                 }
                 var why = JawaBenchFirstException.ReadHooks();

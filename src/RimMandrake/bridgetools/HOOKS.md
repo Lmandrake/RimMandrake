@@ -55,7 +55,7 @@ Column meanings:
 | `JawaBenchArgGuard.cs` | 1 | startup | on | bridge binder thread | Prefix[gate] | static audit (wraps bridge tool binding, not a game method) |
 | `JawaBenchCompanionSafety.cs` | 2 | startup | on | bridge tool threads | GateTask[gate] GateObject[gate] | static audit (wraps bridge tools, not game methods) |
 | `JawaBenchCalm.cs` | 3 | lazy | off | main only (game tick and main-thread tools) | GatePre[c] QueuePre[c] SpawnPost[c,ro] | `LiveToolsSelfTest/Program.cs` (gate, breach), live `prove_three_tools.py` |
-| `JawaBenchFirstException.cs` | 2 | startup | on | accepted: `[ThreadStatic]` roads, locked store | ErrorPre[c] ErrorFin[vf,c,or] OncePre[c] OnceFin[vf,c,or] | `LiveToolsSelfTest/Program.cs` (roads, flood, bounded), live `prove_three_tools.py` |
+| `JawaBenchFirstException.cs` | 3 | startup | on | accepted: `[ThreadStatic]` roads, locked store | ErrorPre[c] ErrorFin[vf,c,or] OncePre[c] OnceFin[vf,c,or] ResetPre[c] | `LiveToolsSelfTest/Program.cs` (roads, flood, bounded), live `prove_three_tools.py` |
 
 Proof of the ones marked `static audit`: `python3 src/RimMandrake/bridgetools/selftest_bridge_hooks.py`. The run without
 `--no-cs` also builds `TpsMathSelfTest` and requires every `T_Recorder*`, `T_Guard*` and `T_Writer*` unit to read `ok`.

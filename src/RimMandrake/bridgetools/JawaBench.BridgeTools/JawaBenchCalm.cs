@@ -387,6 +387,13 @@ namespace JawaBench.BridgeTools
             Back("enableRandomDiseases", () => DebugSettings.enableRandomDiseases, v => DebugSettings.enableRandomDiseases = v);
             Saved.Clear();
             try { var w = EndOurWeather(); if (w != null) o.Add(w); } catch (Exception e) { o.Add("COULD NOT END the forced weather: " + e.Message); }
+            try
+            {
+                var map = Find.Maps?.FirstOrDefault(m => m.uniqueID == MapId);
+                var left = map?.weatherDecider.ForcedWeather;
+                if (left != null) o.Add("the weather is still forced to " + left.defName + " by a condition that this calm did not set (another tool, or a save made while calm)");
+            }
+            catch (Exception e) { o.Add("the forced weather could not be read: " + e.Message); }
             if (_wildOurs) { AW.Wild.Release("calm released"); _wildOurs = false; o.Add("wild spawner released"); }
             try
             {
