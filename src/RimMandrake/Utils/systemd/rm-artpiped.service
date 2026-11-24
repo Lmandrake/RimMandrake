@@ -10,7 +10,7 @@ WorkingDirectory=/home/mandrake/rm/roles/artpiped
 Environment=ARTPIPE_STATE_DIR=/mnt/d/ClaudeWork/rimmandrake/artpipe
 Environment=RM_DATA_ROOT=/mnt/d/ClaudeWork/rimmandrake
 Environment=PYTHONUNBUFFERED=1
-# Same login PATH the WT tile had (codex.exe / gemini via /mnt/c interop).
+# A login shell, so the Linux codex in ~/.local/bin is on PATH.
 ExecStartPre=/bin/bash -lc './sync'
 ExecStart=/bin/bash -lc 'exec python3 src/RimMandrake/Utils/artpipe/artpiped.py'
 # what it leaves in its clone is published from there however it stops (role_clones.py land)

@@ -58,7 +58,7 @@ PAGES = {
     "design/specs/2026-11-23-item-packet/boundary.md": "src/RimMandrake/rimflow/selftest_item_packet.py",
     "design/specs/2026-11-22-list-outcome-checks/boundary.md": "src/RimMandrake/rimflow/selftest_list_effect.py",
     "design/specs/2026-11-23-follow-through-audit/boundary.md": "src/RimMandrake/Utils/selftest_follow_through.py",
-    "design/specs/2026-11-22-art-worker-own-signin/boundary.md": "src/RimMandrake/Utils/artpipe/selftest_artpipe_signin.py",
+    "design/specs/2026-11-24-art-daemon-over-the-one-door/boundary.md": "src/RimMandrake/Utils/artpipe/selftest_artpipe_signin.py",
     "design/specs/2026-11-22-clone-pool-disk-floor/boundary.md": "src/RimMandrake/Utils/selftest_pool_floor.py",
     "design/specs/2026-11-22-disk-sense-reads-only/boundary.md": "src/RimMandrake/Utils/selftest_disk_sense.py",
     "design/specs/2026-11-22-sense-families-cheap/boundary.md": "src/RimMandrake/Utils/selftest_ops_sense_blind.py",

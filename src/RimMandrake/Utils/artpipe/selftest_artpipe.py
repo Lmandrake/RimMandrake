@@ -40,7 +40,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-os.environ["RM_CODEX_SIDE"] = "win"  # Windows sandbox/template fixtures; Linux routing has its own suite.
+os.environ["GPT_DOOR_CODEX"] = "/bin/true"   # the ready check only asks that a CLI is named; nothing launches it
 import common  # noqa: E402
 import artpiped  # noqa: E402
 import fill_queue  # noqa: E402 — row_to_jobs() unit tests (ARTPIPE_FACING_COHERENCE_1 §2)
@@ -101,13 +101,7 @@ def job_dict(job_id: str, reference: Path | str | None, priority: int = 100,
     }
 
 
-# A provisioning time this machine can never really hold, so a daemon run that forgets the
-# $CODEX_SANDBOX_MACHINE_PWSET pin (and falls through to the real net.exe) fails here on EVERY
-# machine instead of passing only where the fixture happens to equal Windows' own reading
-# (SELFTEST_ARTPIPE_FIX_UNPINNED_NETEXE_ENVS).
-SANDBOX_PWSET_PINNED = "2001-02-03T04:05:06Z"
-SANDBOX_MARKER_CURRENT = '{"version": 5, "created_at": "2001-02-03T04:05:07.0+00:00"}'
-SANDBOX_MARKER_STALE = '{"version": 5, "created_at": "2001-02-03T01:32:13.0+00:00"}'
+
 
 
 def make_job(pending_dir: Path, job_id: str, reference: Path | None,
@@ -131,7 +125,8 @@ class Queue:
         self.done = tmp / "done"
         self.failed = tmp / "failed"
         self.artsrc = tmp / "_artsrc"
-        self.codex_homes = tmp / "_codex_homes"
+        self.codex_home = tmp / "_codex_home"          # the one sign-in folder, a fake sign-in
+        self.sign_in()
         self.throughput_log = tmp / "throughput.jsonl"
         # ARTPIPE_CONSOLE_REDESIGN_1: every scenario gets its own logs/status
         # dirs under this tempdir — never the real infrastructure/artpipe/
@@ -143,56 +138,15 @@ class Queue:
         self.reference = tmp / "reference.png"
         make_reference(self.reference)
 
-        # CODEX_UAC_STORM_1's daemon-startup sandbox-fingerprint preflight
-        # (common.codex_sandbox_preflight) runs unconditionally in
-        # artpiped.main() — every scenario here, codex-channel or not, would
-        # otherwise fall through to comparing against this MACHINE's real
-        # /mnt/c/Users/*/.codex, which this file's own module docstring
-        # forbids ("NEVER touch real Codex"). A fresh Queue therefore always
-        # carries its OWN matching fixture pair, wired in via
-        # --codex-sandbox-base (the "installed" side) and $CODEX_SANDBOX_SEED
-        # (the "template" side, run()'s own env) — see set_sandbox_fingerprint()
-        # for the two tests that deliberately break this match.
-        self.codex_sandbox_base = tmp / "_codex_sandbox_base"
-        self.codex_sandbox_template = tmp / "_codex_sandbox_template"
-        self.set_sandbox_fingerprint("9.9.9", "9.9.9")
-
-    def set_sandbox_fingerprint(self, base_version: str | None,
-                                 template_version: str | None,
-                                 template_has_bin: bool = True) -> None:
-        """(Re)write this queue's fixture sandbox-base/template pair.
-        `None` for either version means "no codex-command-runner-*.exe at
-        all on that side" (the fingerprint-unknown case); `template_has_bin
-        =False` means the template has no `.sandbox-bin` DIRECTORY at all.
-        Matching versions is the default (set by __init__) so every
-        pre-existing scenario in this file sees a healthy preflight without
-        having to know this fixture exists."""
-        shutil.rmtree(self.codex_sandbox_base, ignore_errors=True)
-        (self.codex_sandbox_base / ".sandbox-bin").mkdir(parents=True)
-        if base_version is not None:
-            (self.codex_sandbox_base / ".sandbox-bin" /
-             f"codex-command-runner-{base_version}.exe").write_bytes(b"x")
-
-        shutil.rmtree(self.codex_sandbox_template, ignore_errors=True)
-        # SANDBOX_UAC_ONE_STATE: base and template carry the SAME provisioning, and it matches the
-        # machine reading pinned in run()'s env ($CODEX_SANDBOX_MACHINE_PWSET) — never net.exe here.
-        for root in (self.codex_sandbox_base, self.codex_sandbox_template):
-            (root / ".sandbox").mkdir(parents=True, exist_ok=True)
-            (root / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_CURRENT)
-            (root / ".sandbox-secrets").mkdir(parents=True, exist_ok=True)
-            (root / ".sandbox-secrets" / "sandbox_users.json").write_text('{"version": 5}')
-        if template_has_bin:
-            (self.codex_sandbox_template / ".sandbox-bin").mkdir()
-            if template_version is not None:
-                (self.codex_sandbox_template / ".sandbox-bin" /
-                 f"codex-command-runner-{template_version}.exe").write_bytes(b"y")
+    def sign_in(self) -> None:
+        self.codex_home.mkdir(parents=True, exist_ok=True)
+        (self.codex_home / "auth.json").write_text(json.dumps({"auth_mode": "chatgpt", "tokens": {"refresh_token": "fake"}}))
 
     def daemon_args(self, *extra: str) -> list[str]:
         return [sys.executable, str(HERE / "artpiped.py"),
                 "--pending-dir", str(self.pending), "--active-dir", str(self.active),
                 "--done-dir", str(self.done), "--failed-dir", str(self.failed),
-                "--artsrc-dir", str(self.artsrc), "--codex-home-root", str(self.codex_homes),
-                "--codex-sandbox-base", str(self.codex_sandbox_base),
+                "--artsrc-dir", str(self.artsrc), "--codex-home", str(self.codex_home),
                 "--throughput-log", str(self.throughput_log),
                 "--worker-script", str(MOCK_WORKER),
                 "--gemini-worker-script", str(MOCK_GEMINI_WORKER),
@@ -207,8 +161,6 @@ class Queue:
         env = dict(os.environ)
         env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
-        env["CODEX_SANDBOX_SEED"] = str(self.codex_sandbox_template)
-        env["CODEX_SANDBOX_MACHINE_PWSET"] = SANDBOX_PWSET_PINNED
         return subprocess.run(self.daemon_args(*extra), capture_output=True,
                                text=True, timeout=timeout, env=env)
 
@@ -252,7 +204,7 @@ def test_crash_reconciliation():
 def test_orphan_wedge_housekeeping():
     """ARTPIPE_ORPHAN_WEDGE_1: a stale active/ orphan must be recoverable by a
     RUNNING daemon (reconcile skip_ids spares its own in-flight ids), and the
-    main loop must carry the periodic reconcile + sandbox re-preflight."""
+    main loop must carry the periodic reconcile + codex ready re-check."""
     with tempfile.TemporaryDirectory() as td:
         q = Queue(Path(td))
         make_job(q.pending, "mine", q.reference, priority=1)
@@ -266,7 +218,7 @@ def test_orphan_wedge_housekeeping():
         ok("housekeeping: stale orphan returned to pending, own in-flight id spared",
            [m[0] for m in moved] == ["orph"] and a.is_file() and (q.pending / "orph.json").is_file(), moved)
     src = Path(artpiped.__file__).read_text()
-    ok("housekeeping: main loop re-reconciles and re-preflights the sandbox while running",
+    ok("housekeeping: main loop re-reconciles and re-checks the codex channel while running",
        "HOUSEKEEPING_INTERVAL_S" in src and "skip_ids=live" in src
        and "mark_codex_channel_enabled" in src)
 
@@ -593,8 +545,6 @@ def test_two_concurrent_daemons_claim_atomically():
         env = dict(os.environ)
         env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
-        env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
-        env["CODEX_SANDBOX_MACHINE_PWSET"] = SANDBOX_PWSET_PINNED  # never the real net.exe
 
         procs = [subprocess.Popen(q.daemon_args("--once", "--workers", "3"),
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -622,33 +572,7 @@ def test_two_concurrent_daemons_claim_atomically():
         ok("atomicity: exactly one manifest per job, no duplicates",
            len(manifests) == n, f"{len(manifests)} manifests for {n} jobs")
 
-        # Finding 1 (this pass): codex_home dirs are now a bounded, LEASED
-        # pool ("w0".."wN-1", no pid in the name) rather than one dir per
-        # pid — so growth is bounded across restarts. The collision-safety
-        # proof is different now: with --workers 3 on each of 2 daemons
-        # running CONCURRENTLY, the flock lease means neither process can
-        # ever be handed a slot the other is actively holding, so exactly
-        # 2*3=6 DISTINCT slot dirs must exist (no sharing/reuse WITHIN one
-        # concurrent run), and each slot's lockfile must name one of the
-        # two real child pids — proving both processes actually acquired
-        # leases, not just that six directories happen to exist.
-        home_dirs = sorted(p for p in q.codex_homes.iterdir() if p.is_dir())
-        ok("atomicity: exactly 2*workers distinct leased codex_home dirs, no cross-daemon reuse",
-           len(home_dirs) == 6, f"home dirs: {[p.name for p in home_dirs]}")
-
-        real_pids = {str(p.pid) for p in procs}
-        lock_pids = set()
-        for home in home_dirs:
-            lock = home / ".artpipe_lease.lock"
-            if lock.is_file():
-                text = lock.read_text()
-                m = re.search(r"pid=(\d+)", text)
-                if m:
-                    lock_pids.add(m.group(1))
-        ok("atomicity: every leased home's lockfile names one of the two real daemon pids",
-           lock_pids and lock_pids <= real_pids, f"lock_pids={lock_pids} real_pids={real_pids}")
-        ok("atomicity: BOTH real daemon pids actually appear across the leases",
-           lock_pids == real_pids, f"lock_pids={lock_pids} real_pids={real_pids}")
+        ok("atomicity: both daemons used the one sign-in folder", (q.codex_home / "sessions").is_dir())
 
 
 def test_dry_run_never_touches_the_queue():
@@ -1416,228 +1340,22 @@ def test_rate_limit_marker_strips_prompt_echo_but_not_real_refusals():
 # fresh-review fixes (cf488dd8 -> this pass): 9 findings + Gemini backend
 # --------------------------------------------------------------------------
 
-def test_codex_home_root_default_is_outside_the_repo():
-    """Finding: infrastructure/artpipe/_codex_homes/ was INSIDE this public
-    repo, and seeding a worker home copies auth.json there — a credential
-    leak, not a config choice. The real fix moves the default out; a
-    .gitignore entry is a backstop only."""
-    root = common.DEFAULT_CODEX_HOME_ROOT
-    ok("codex-home-root: default is not inside the repo",
-       common.REPO_ROOT not in root.parents and root != common.REPO_ROOT, str(root))
 
 
-def test_codex_home_lease_bounds_growth_and_avoids_collision():
-    """Finding: growth must be BOUNDED (no pid-in-name accumulation across
-    restarts) while still never letting two live holders share one
-    codex_home (openai/codex #11435's interference). Two separate open()
-    calls on the same lockfile — even in one process — get two distinct
-    open file descriptions, so this genuinely exercises flock contention,
-    not just two Python objects agreeing not to collide."""
-    with tempfile.TemporaryDirectory() as td:
-        root = Path(td)
-        home1, fh1 = common.acquire_codex_home_lease(root, max_slots=4)
-        home2, fh2 = common.acquire_codex_home_lease(root, max_slots=4)
-        ok("lease: two concurrent leases get two DISTINCT slots", home1 != home2,
-           f"{home1} vs {home2}")
-        ok("lease: slot dirs are small bounded names, not pid-suffixed",
-           home1.name in ("w0", "w1") and home2.name in ("w0", "w1"),
-           f"{home1.name}, {home2.name}")
-
-        fh1.close()  # release — simulates that holder's process exiting
-        home1b, fh1b = common.acquire_codex_home_lease(root, max_slots=4)
-        ok("lease: releasing a slot lets the NEXT acquire REUSE it, not grow",
-           home1b == home1, f"{home1b} vs {home1}")
-
-        existing_slots = [p for p in root.iterdir() if p.is_dir()]
-        ok("lease: still only 2 slot directories exist after release+reuse (bounded)",
-           len(existing_slots) == 2, [p.name for p in existing_slots])
-        fh1b.close()
-        fh2.close()
 
 
-def test_codex_sandbox_preflight_matching_allows_codex_jobs():
-    """The default Queue fixture's base/template pair matches (both '9.9.9')
-    — the ordinary, healthy case. A codex job must run exactly as it always
-    has, and the daemon must say so in its own log line."""
-    with tempfile.TemporaryDirectory() as td:
-        q = Queue(Path(td))
-        make_job(q.pending, "sandboxok", q.reference, channel="codex")
-        proc = q.run({"sandboxok": "ok"}, "--once", "--workers", "1")
-        ok("sandbox-preflight match: daemon exits 0", proc.returncode == 0, proc.stderr)
-        ok("sandbox-preflight match: the codex job actually ran",
-           (q.done / "sandboxok.json").is_file())
-        ok("sandbox-preflight match: logged as ok, naming the matched build",
-           "codex sandbox ok" in proc.stdout and "9.9.9" in proc.stdout,
-           proc.stdout)
 
 
-def test_codex_sandbox_preflight_mismatch_blocks_codex_not_gemini():
-    """CODEX_UAC_STORM_1's actual root cause, reproduced with fixtures only:
-    a seed template captured against one build, an installed build that has
-    since moved on. The daemon must refuse the WHOLE codex channel for this
-    run (never claim the job, never spawn a worker that could pop an
-    unattended UAC prompt) while a gemini job in the same queue proceeds
-    completely normally."""
-    with tempfile.TemporaryDirectory() as td:
-        q = Queue(Path(td))
-        q.set_sandbox_fingerprint(base_version="0.153.4", template_version="0.153.1")
-        make_job(q.pending, "codexstuck", q.reference, priority=1, channel="codex")
-        make_job(q.pending, "geminifine", q.reference, priority=2, channel="gemini")
-        proc = q.run({"codexstuck": "ok", "geminifine": "ok"}, "--once", "--workers", "2",
-                     "--gemini-budget-usd", "10")
-
-        ok("sandbox-preflight mismatch: exits nonzero — codex work remains stuck",
-           proc.returncode != 0, proc.stdout + proc.stderr)
-        ok("sandbox-preflight mismatch: the codex job was NEVER claimed",
-           (q.pending / "codexstuck.json").is_file()
-           and not (q.active / "codexstuck.json").is_file(), proc.stderr)
-        ok("sandbox-preflight mismatch: no codex worker home was ever leased",
-           not q.codex_homes.is_dir() or not any(q.codex_homes.iterdir()))
-        ok("sandbox-preflight mismatch: the gemini job in the SAME queue still ran",
-           (q.done / "geminifine.json").is_file(), proc.stdout + proc.stderr)
-        # ARTPIPE_CONSOLE_REDESIGN_1 §3: one stream — everything the console
-        # prints (warnings included) goes to stdout now, never stderr.
-        ok("sandbox-preflight mismatch: the log names the channel-disabled state",
-           "codex channel disabled" in proc.stdout, proc.stdout)
-        ok("sandbox-preflight mismatch: the log names BOTH builds",
-           "0.153.1" in proc.stdout and "0.153.4" in proc.stdout, proc.stdout)
-        # CODEXSEED_FIX_FALSE_UAC_HINT: base users are current with the machine -> only the seed is stale.
-        ok("sandbox-preflight mismatch (base current): prescribes --sync-sandbox, not a hand cp",
-           "--sync-sandbox" in proc.stdout and "cp -r" not in proc.stdout, proc.stdout)
-        ok("sandbox-preflight mismatch (base current): says no elevated setup is needed",
-           "NO elevated (UAC) setup is needed" in proc.stdout, proc.stdout)
-
-    # Base provisioning stale vs the machine: the elevated recapture advice stays.
-    with tempfile.TemporaryDirectory() as td:
-        q = Queue(Path(td))
-        q.set_sandbox_fingerprint(base_version="0.153.4", template_version="0.153.1")
-        (q.codex_sandbox_base / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_STALE)
-        make_job(q.pending, "codexstuck2", q.reference, priority=1, channel="codex")
-        proc = q.run({"codexstuck2": "ok"}, "--once", "--workers", "1")
-        ok("sandbox-preflight mismatch (base stale): still names the elevated recapture command",
-           "cp -r" in proc.stdout and "NO elevated (UAC) setup is needed" not in proc.stdout, proc.stdout)
 
 
-def test_sandbox_stale_vs_machine_blocks_codex():
-    """SANDBOX_UAC_ONE_STATE (2026-10-16): base == template, same runner build, but BOTH hold an older
-    provisioning than Windows' sandbox users (another home re-ran setup). The codex channel is refused
-    at startup — the job is never claimed — and --check-sandbox says NOT SAFE without launching."""
-    with tempfile.TemporaryDirectory() as td:
-        q = Queue(Path(td))
-        for root in (q.codex_sandbox_base, q.codex_sandbox_template):
-            (root / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_STALE)
-        make_job(q.pending, "stalecodex", q.reference, channel="codex")
-        proc = q.run({"stalecodex": "ok"}, "--once", "--workers", "1")
-        ok("stale-vs-machine: codex job never claimed",
-           (q.pending / "stalecodex.json").is_file(), proc.stdout + proc.stderr)
-        ok("stale-vs-machine: log names --sync-sandbox", "--sync-sandbox" in proc.stdout, proc.stdout)
-        chk = q.run({}, "--check-sandbox", "--workers", "1")
-        ok("--check-sandbox exits 1 when unsafe", chk.returncode == 1, chk.stdout + chk.stderr)
-        ok("--check-sandbox says NOT SAFE", "NOT SAFE" in chk.stdout, chk.stdout)
-        ok("--check-sandbox created no worker home",
-           not q.codex_homes.is_dir() or not any(q.codex_homes.iterdir()))
-        # --sync-sandbox adopts a current home's state (here a pre-existing worker home w0).
-        w0 = q.codex_homes / "w0"
-        (w0 / ".sandbox").mkdir(parents=True)
-        (w0 / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_CURRENT)
-        (w0 / ".sandbox-secrets").mkdir()
-        (w0 / ".sandbox-secrets" / "sandbox_users.json").write_text('{"version": 5, "fresh": 1}')
-        (w0 / ".sandbox-bin").mkdir()
-        (w0 / ".sandbox-bin" / "codex-command-runner-9.9.9.exe").write_bytes(b"z")
-        syn = q.run({}, "--sync-sandbox", "--workers", "1")
-        ok("--sync-sandbox then reports SAFE", syn.returncode == 0 and "SAFE:" in syn.stdout,
-           syn.stdout + syn.stderr)
-        ok("--sync-sandbox copied the current users file into the shared base",
-           "fresh" in (q.codex_sandbox_base / ".sandbox-secrets" / "sandbox_users.json").read_text())
-        chk2 = q.run({}, "--check-sandbox", "--workers", "1")
-        ok("--check-sandbox exits 0 after sync", chk2.returncode == 0, chk2.stdout)
 
 
-def test_running_daemon_reenables_codex_after_sync():
-    """ARTPIPED_UNSTICK_CODEX_LEFT_THE_BUILDING: a daemon that started with a stale sandbox disabled
-    codex for the run, and `--sync-sandbox` then said SAFE while the RUNNING daemon never rechecked,
-    so codex jobs sat for 7h+ behind a phantom in-flight entry. Behavioural, not a source grep: start a
-    long-running daemon on a stale sandbox, repair it with --sync-sandbox mid-run, and the SAME
-    process must re-enable codex, render the waiting job and leave no in-flight entry behind."""
-    with tempfile.TemporaryDirectory() as td:
-        q = Queue(Path(td))
-        for root in (q.codex_sandbox_base, q.codex_sandbox_template):
-            (root / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_STALE)
-        make_job(q.pending, "waitcodex", q.reference, channel="codex")
-        (q.root / "control.json").write_text(json.dumps({"waitcodex": "ok"}))
-        env = dict(os.environ)
-        env.update({"ARTPIPE_LEGIBILITY_THRESHOLDS": "", "ARTPIPE_MOCK_CONTROL": str(q.root / "control.json"),
-                    "CODEX_SANDBOX_SEED": str(q.codex_sandbox_template),
-                    "CODEX_SANDBOX_MACHINE_PWSET": SANDBOX_PWSET_PINNED,
-                    "ARTPIPE_HOUSEKEEPING_S": "0.5", "ARTPIPE_PREFLIGHT_RECHECK_S": "0.5"})
-        log = q.root / "daemon.out"
-        with open(log, "w") as fh:
-            proc = subprocess.Popen(q.daemon_args("--workers", "1"), stdout=fh, stderr=subprocess.STDOUT,
-                                    text=True, env=env)
-        try:
-            deadline = time.time() + 20
-            while time.time() < deadline and "codex channel disabled" not in log.read_text():
-                time.sleep(0.2)
-            time.sleep(1.5)  # several housekeeping ticks with the sandbox still stale
-            ok("running re-enable: stale sandbox disables codex and the job is not claimed",
-               "codex channel disabled" in log.read_text() and (q.pending / "waitcodex.json").is_file()
-               and proc.poll() is None, log.read_text())
-            ok("running re-enable: no re-enable while the sandbox is still stale",
-               "codex channel re-enabled" not in log.read_text(), log.read_text())
-            # Repair exactly as an operator would: a current worker home, then --sync-sandbox.
-            w0 = q.codex_homes / "w0"
-            (w0 / ".sandbox").mkdir(parents=True)
-            (w0 / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_CURRENT)
-            (w0 / ".sandbox-secrets").mkdir()
-            (w0 / ".sandbox-secrets" / "sandbox_users.json").write_text('{"version": 5, "fresh": 1}')
-            (w0 / ".sandbox-bin").mkdir()
-            (w0 / ".sandbox-bin" / "codex-command-runner-9.9.9.exe").write_bytes(b"z")
-            syn = q.run({"waitcodex": "ok"}, "--sync-sandbox", "--workers", "1")
-            ok("running re-enable: --sync-sandbox reports SAFE", syn.returncode == 0 and "SAFE:" in syn.stdout,
-               syn.stdout + syn.stderr)
-            deadline = time.time() + 30
-            while time.time() < deadline and not (q.done / "waitcodex.json").is_file():
-                time.sleep(0.2)
-            out = log.read_text()
-            ok("running re-enable: the SAME daemon re-enabled codex without a restart",
-               "codex channel re-enabled" in out and proc.poll() is None, out)
-            ok("running re-enable: the waiting codex job rendered to done/",
-               (q.done / "waitcodex.json").is_file(), out)
-            time.sleep(0.5)
-            snaps = [json.loads(f.read_text()) for f in q.status_dir.glob("artpiped_*.json")]
-            ok("running re-enable: status file shows no phantom in-flight job",
-               snaps and all(not (sn.get("in_flight") or []) for sn in snaps), snaps)
-        finally:
-            proc.terminate()
-            try:
-                proc.wait(timeout=15)
-            except subprocess.TimeoutExpired:
-                proc.kill()
 
 
-def test_sandbox_guard_refusal_returns_job_to_pending():
-    """The per-launch guard: the startup preflight passes, but this slot's home cannot be brought to the
-    shared state (its .sandbox-secrets is a FILE, so the sync fails). The worker must NOT be launched,
-    the job goes back to pending/ (retryable, nothing in failed/), and the codex channel latches off."""
-    with tempfile.TemporaryDirectory() as td:
-        q = Queue(Path(td))
-        w0 = q.codex_homes / "w0"
-        w0.mkdir(parents=True)
-        (w0 / ".sandbox-secrets").write_text("not a directory")
-        make_job(q.pending, "guarded", q.reference, channel="codex")
-        proc = q.run({"guarded": "ok"}, "--once", "--workers", "1")
-        ok("guard refusal: job is back in pending/", (q.pending / "guarded.json").is_file(),
-           proc.stdout + proc.stderr)
-        ok("guard refusal: nothing filed to failed/ or done/",
-           not (q.failed / "guarded.json").exists() and not (q.done / "guarded.json").exists())
-        ok("guard refusal: no image was produced (worker never launched)",
-           not any(q.artsrc.rglob("*.png")))
-        ok("guard refusal: codex channel disabled in the log", "codex channel disabled" in proc.stdout,
-           proc.stdout)
 
 
 def test_requeued_job_leaves_status_in_flight():
-    """ARTPIPED_STATUS_FIX_PHANTOM_INFLIGHT (2026-10-26): a SANDBOX_NOT_READY result goes back to pending/
+    """ARTPIPED_STATUS_FIX_PHANTOM_INFLIGHT (2026-10-26): a COULD_NOT_START result goes back to pending/
     and skips finalize_job, so nothing popped its in-flight entry — the live status file showed
     artfeed_RUT_NeebrayMeat_v1 'in flight' for 21530 s with no worker. Console.job_requeued must clear it
     without counting an ok/failed result, and main()'s requeue branch must call it."""
@@ -1662,30 +1380,12 @@ def test_requeued_job_leaves_status_in_flight():
            json.dumps(snap.get("session")))
         con.close()
     src = (HERE / "artpiped.py").read_text()
-    branch = src[src.index("== SANDBOX_NOT_READY:"):]
+    branch = src[src.index("== COULD_NOT_START:"):]
     branch = branch[:branch.index("continue")]
-    ok("requeue: main()'s SANDBOX_NOT_READY branch calls console_obj.job_requeued before continue",
+    ok("requeue: main()'s COULD_NOT_START branch calls console_obj.job_requeued before continue",
        "console_obj.job_requeued(" in branch, branch[:400])
 
 
-def test_codex_sandbox_preflight_missing_bin_refuses_not_passes():
-    """A template with `.sandbox/setup_marker.json` but no `.sandbox-bin` at
-    all (an incomplete or pre-fingerprint-era capture) must REFUSE, never
-    silently pass just because a template directory exists."""
-    with tempfile.TemporaryDirectory() as td:
-        q = Queue(Path(td))
-        q.set_sandbox_fingerprint(base_version="1.0.0", template_version=None,
-                                   template_has_bin=False)
-        make_job(q.pending, "nobinjob", q.reference, channel="codex")
-        proc = q.run({"nobinjob": "ok"}, "--once", "--workers", "1")
-
-        ok("sandbox-preflight no-bin: exits nonzero — the job was never claimed",
-           proc.returncode != 0, proc.stdout + proc.stderr)
-        ok("sandbox-preflight no-bin: job still sitting in pending/",
-           (q.pending / "nobinjob.json").is_file())
-        ok("sandbox-preflight no-bin: logged as channel-disabled, not as ok",
-           "codex channel disabled" in proc.stdout
-           and "codex sandbox ok" not in proc.stdout, proc.stdout)
 
 
 def test_reference_less_job_size_mismatch_is_caught():
@@ -2407,9 +2107,8 @@ def test_gemini_never_touches_codex_homes():
                      "--gemini-budget-usd", "10")
         ok("gemini-isolation: daemon exits 0", proc.returncode == 0, proc.stderr)
         ok("gemini-isolation: the job succeeds", (q.done / "onlygemini.json").is_file())
-        no_homes = not q.codex_homes.is_dir() or not any(q.codex_homes.iterdir())
-        ok("gemini-isolation: NO codex_home directory was ever created for a gemini-only run",
-           no_homes, list(q.codex_homes.iterdir()) if q.codex_homes.is_dir() else "codex_homes/ absent")
+        ok("gemini-isolation: a gemini-only run leaves the sign-in folder as it was",
+           [p.name for p in q.codex_home.iterdir()] == ["auth.json"], list(q.codex_home.iterdir()))
 
 
 def test_mixed_channel_queue_codex_wedge_does_not_block_gemini():
@@ -2952,8 +2651,6 @@ def test_gemini_budget_live_reread_sees_concurrent_external_spend_end_to_end():
         env = dict(os.environ)
         env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
-        env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
-        env["CODEX_SANDBOX_MACHINE_PWSET"] = SANDBOX_PWSET_PINNED  # never the real net.exe
 
         proc = subprocess.Popen(
             q.daemon_args("--workers", "1", "--poll-interval", "0.1",
@@ -3042,7 +2739,7 @@ def test_daemon_unwedges_codex_channel_without_restart_end_to_end():
     """Finding 4, end to end: a persistent (non---once) daemon wedges
     stop_all via job1, with job2 still pending. It must claim and finish
     job2 WITHOUT a restart once a fresh, healthy meter reading appears in
-    the ALREADY-LEASED codex_home — proving main()'s own periodic refresh
+    the one sign-in folder — proving main()'s own periodic refresh
     is actually wired up, not just the Detector method in isolation."""
     with tempfile.TemporaryDirectory() as td:
         q = Queue(Path(td))
@@ -3056,8 +2753,6 @@ def test_daemon_unwedges_codex_channel_without_restart_end_to_end():
         env = dict(os.environ)
         env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
-        env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
-        env["CODEX_SANDBOX_MACHINE_PWSET"] = SANDBOX_PWSET_PINNED  # never the real net.exe
 
         proc = subprocess.Popen(
             q.daemon_args("--workers", "1", "--poll-interval", "0.1",
@@ -3074,11 +2769,7 @@ def test_daemon_unwedges_codex_channel_without_restart_end_to_end():
             ok("unwedge e2e: job2 is genuinely blocked right after the wedge",
                (q.pending / "wedgejob2.json").is_file())
 
-            # --workers 1 means the first (only) lease is always w0 —
-            # deterministic, since this fresh codex_homes root has no
-            # contention.
-            fresh_home = q.codex_homes / "w0"
-            mock_codex_worker.write_rollout(fresh_home, weekly=1.0, five_h=1.0)
+            mock_codex_worker.write_rollout(q.codex_home, weekly=1.0, five_h=1.0)
 
             deadline2 = time.time() + 15
             while time.time() < deadline2 and not (q.done / "wedgejob2.json").is_file():
@@ -3202,12 +2893,12 @@ def test_finalize_job_feeds_per_attempt_not_summed_wall_clock():
 def gemini_run_ctx(q: "Queue") -> artpiped.RunCtx:
     """A minimal RunCtx for calling process_gemini_job() directly, in
     process, without going through a whole daemon subprocess — the gemini
-    path never touches ctx.slots/codex_home_root at all, so a placeholder
+    path never touches ctx.slots/codex_home at all, so a placeholder
     empty Queue is enough."""
     return artpiped.RunCtx(
         worker_script=MOCK_WORKER, validator_script=VALIDATOR,
         manifest_schema=SCHEMA, artsrc_dir=q.artsrc, active_dir=q.active,
-        codex_home_root=q.codex_homes, workers_count=1,
+        codex_home=q.codex_home, workers_count=1,
         timeout_generate=60, timeout_edit=60, reasoning_effort="low",
         verbose=False, slots=queue.Queue(), gemini_worker_script=MOCK_GEMINI_WORKER,
         gemini_timeout=60, throughput_log=q.throughput_log)
@@ -3459,7 +3150,7 @@ def test_dry_run_never_creates_queue_directories():
             [sys.executable, str(HERE / "artpiped.py"),
              "--pending-dir", str(pending), "--active-dir", str(active),
              "--done-dir", str(done), "--failed-dir", str(failed),
-             "--artsrc-dir", str(artsrc), "--codex-home-root", str(tdp / "_codex_homes"),
+             "--artsrc-dir", str(artsrc), "--codex-home", str(tdp / "_codex_home"),
              "--throughput-log", str(tdp / "throughput.jsonl"),
              "--worker-script", str(MOCK_WORKER),
              "--gemini-worker-script", str(MOCK_GEMINI_WORKER),
@@ -3985,208 +3676,123 @@ def test_detector_selects_meter_by_declared_window_not_position():
 
 
 # --------------------------------------------------------------------------
-# ARTPIPE_WORKER_AUTH_STALENESS_1: worker-home auth freshness + refresh-race guard (no sign-in is copied)
+# the one Codex door (design/specs/2026-11-24-art-daemon-over-the-one-door)
 # --------------------------------------------------------------------------
 
-def _fake_access_token(exp: int, plan_type: str = "plus") -> str:
-    """A syntactically-real (unsigned) JWT — enough for
-    codex_image._decode_jwt_claims to decode, never enough to authenticate
-    anything."""
-    def b64(obj: dict) -> str:
-        return base64.urlsafe_b64encode(json.dumps(obj).encode()).rstrip(b"=").decode()
-    header = b64({"alg": "none", "typ": "JWT"})
-    payload = b64({"exp": exp, "https://api.openai.com/auth":
-                   {"chatgpt_plan_type": plan_type}})
-    return f"{header}.{payload}.sig"
+def _start(q: "Queue", control: dict, *extra: str, **env_extra):
+    (q.root / "control.json").write_text(json.dumps(control))
+    env = dict(os.environ, ARTPIPE_LEGIBILITY_THRESHOLDS="", ARTPIPE_MOCK_CONTROL=str(q.root / "control.json"),
+               ARTPIPE_HOUSEKEEPING_S="0.5", ARTPIPE_PREFLIGHT_RECHECK_S="0.5", **env_extra)
+    log = q.root / "daemon.out"
+    fh = open(log, "w")
+    return subprocess.Popen(q.daemon_args("--workers", "1", *extra), stdout=fh, stderr=subprocess.STDOUT, text=True,
+                            env=env), log
 
 
-def write_auth_json(home: Path, last_refresh: datetime, refresh_token: str,
-                     plan_type: str = "plus") -> None:
-    home.mkdir(parents=True, exist_ok=True)
-    exp = int((last_refresh + timedelta(days=30)).timestamp())
-    (home / "auth.json").write_text(json.dumps({
-        "auth_mode": "chatgpt", "OPENAI_API_KEY": None,
-        "last_refresh": last_refresh.isoformat(),
-        "tokens": {"id_token": "id.tok.en", "access_token": _fake_access_token(exp, plan_type),
-                    "refresh_token": refresh_token, "account_id": "acct-1"},
-    }))
+def _until(cond, s=25.0) -> bool:
+    end = time.time() + s
+    while time.time() < end and not cond():
+        time.sleep(0.1)
+    return bool(cond())
 
 
-def test_read_auth_freshness_decodes_last_refresh_and_jwt_claims():
-    """The one place this decodes last_refresh/exp/plan_type/refresh_token
-    must read back exactly what was written — the diagnostic and the fix
-    have to agree on what "fresh" means."""
-    with tempfile.TemporaryDirectory() as td:
-        home = Path(td) / "w0"
-        now = datetime.now(timezone.utc).replace(microsecond=123000)
-        write_auth_json(home, now, "rt-alpha", plan_type="prolite")
-        info = common.read_auth_freshness(home)
-        ok("auth-freshness: last_refresh round-trips", info["last_refresh"] == now,
-           (info["last_refresh"], now))
-        ok("auth-freshness: refresh_token round-trips", info["refresh_token"] == "rt-alpha")
-        ok("auth-freshness: plan_type decoded from the JWT claim", info["plan_type"] == "prolite")
-        ok("auth-freshness: exp decoded from the JWT claim", isinstance(info["exp"], int))
-
-    with tempfile.TemporaryDirectory() as td:
-        ok("auth-freshness: a home with no auth.json at all reads as None",
-           common.read_auth_freshness(Path(td) / "nohome") is None)
+def _stop(proc) -> None:
+    proc.terminate()
+    try:
+        proc.wait(timeout=15)
+    except subprocess.TimeoutExpired:
+        proc.kill()
 
 
-def _minimal_ctx(codex_home_root: Path) -> "artpiped.RunCtx":
-    return artpiped.RunCtx(
-        worker_script=MOCK_WORKER, validator_script=VALIDATOR,
-        manifest_schema=SCHEMA, artsrc_dir=codex_home_root, active_dir=codex_home_root,
-        codex_home_root=codex_home_root, workers_count=1,
-        timeout_generate=60, timeout_edit=60, reasoning_effort="low",
-        verbose=False, slots=queue.Queue(), gemini_worker_script=MOCK_GEMINI_WORKER,
-        gemini_timeout=60, throughput_log=codex_home_root / "throughput.jsonl")
+def test_could_not_start_spends_no_attempt():
+    """A worker that could not start, or whose login is dead, returns the job to pending/ and turns the channel off."""
+    for behavior in ("could_not_start", "queue_full", "dead_login"):
+        with tempfile.TemporaryDirectory() as td:
+            q = Queue(Path(td))
+            make_job(q.pending, "held", q.reference, channel="codex")
+            proc = q.run({"held": behavior}, "--once", "--workers", "1")
+            ok(f"{behavior}: the job is back in pending/", (q.pending / "held.json").is_file(), proc.stdout + proc.stderr)
+            ok(f"{behavior}: nothing in failed/ or done/", not any(q.failed.iterdir()) and not any(q.done.iterdir()))
+            ok(f"{behavior}: the channel is off, by name", "codex channel disabled" in proc.stdout, proc.stdout)
+            ok(f"{behavior}: one launch, no retry", len(list(q.root.rglob("held.png.invocations"))) <= 1)
 
 
-def test_stale_refresh_guard_fresh_home_never_takes_the_lock():
-    """A home whose last_refresh is recent must cost nothing — no lock
-    contention for the common case where nothing is near a refresh."""
-    with tempfile.TemporaryDirectory() as td:
-        root = Path(td)
-        write_auth_json(root / "w0", datetime.now(timezone.utc), "rt-fresh")
-        ctx = _minimal_ctx(root)
-        with ctx.stale_refresh_guard(root / "w0") as guard:
-            ok("stale-guard: a fresh home never takes the lock", guard.held is False)
-            ok("stale-guard: the lock is genuinely free while a fresh guard is open",
-               ctx._stale_refresh_lock.acquire(blocking=False))
-            ctx._stale_refresh_lock.release()
-        ok("stale-guard: lock still free after exit", not ctx._stale_refresh_lock.locked())
-
-
-def test_stale_refresh_guard_rotation_copies_to_no_sibling():
-    """A guarded job whose home rotates its own token mid-run leaves every
-    other home's sign-in as it was: nothing copies a sign-in between homes
-    (design/specs/2026-11-22-art-worker-own-signin/boundary.md; the 2026-09-26
-    resync that copied it here would have overwritten the owner's five device
-    sign-ins of 2026-11-21)."""
-    with tempfile.TemporaryDirectory() as td:
-        root = Path(td)
-        stale_at = datetime.now(timezone.utc) - timedelta(hours=20)
-        write_auth_json(root / "w0", stale_at, "rt-own-0")
-        write_auth_json(root / "w1", stale_at, "rt-own-1")
-        w1_before = (root / "w1" / "auth.json").read_bytes()
-        ctx = _minimal_ctx(root)
-
-        with ctx.stale_refresh_guard(root / "w0") as guard:
-            ok("stale-guard: a home due for refresh DOES take the lock", guard.held is True)
-            ok("stale-guard: the lock is genuinely held for a due-for-refresh home",
-               not ctx._stale_refresh_lock.acquire(blocking=False))
-            # Simulate codex itself refreshing w0's token mid-job.
-            write_auth_json(root / "w0", datetime.now(timezone.utc), "rt-own-0-rotated")
-
-        ok("stale-guard: lock released on exit", not ctx._stale_refresh_lock.locked())
-        ok("stale-guard: the sibling home's sign-in is byte-identical after the rotation",
-           (root / "w1" / "auth.json").read_bytes() == w1_before)
-
-
-def test_stale_refresh_guard_serializes_two_due_for_refresh_homes():
-    """Real concurrency, not just logical correctness: two homes both due
-    for refresh must never run their guarded section at the same time —
-    the exact race that produced 5 identical 'refresh token already used'
-    failures in one real run."""
-    with tempfile.TemporaryDirectory() as td:
-        root = Path(td)
-        stale_at = datetime.now(timezone.utc) - timedelta(hours=20)
-        write_auth_json(root / "w0", stale_at, "rt-shared")
-        write_auth_json(root / "w1", stale_at, "rt-shared")
-        ctx = _minimal_ctx(root)
-
-        timeline = {}
-
-        def hold(name, home_name, hold_s):
-            with ctx.stale_refresh_guard(root / home_name):
-                timeline[f"{name}_enter"] = time.monotonic()
-                time.sleep(hold_s)
-                timeline[f"{name}_exit"] = time.monotonic()
-
-        ta = threading.Thread(target=hold, args=("a", "w0", 0.3))
-        ta.start()
-        time.sleep(0.05)  # let thread a genuinely enter first
-        tb = threading.Thread(target=hold, args=("b", "w1", 0.0))
-        tb.start()
-        ta.join(timeout=5)
-        tb.join(timeout=5)
-
-        ok("stale-guard: both guarded sections ran", {"a_enter", "a_exit", "b_enter", "b_exit"} <= timeline.keys(),
-           timeline)
-        ok("stale-guard: the second home's critical section never overlapped the first's",
-           timeline["b_enter"] >= timeline["a_exit"], timeline)
-
-
-def test_stale_refresh_guard_clean_probe_releases_concurrency():
-    """ART_PIPELINE_LATENCY fix (2026-10-08): ONE clean guarded run that does
-    not rotate the lineage proves codex is not refresh-due for it, so later
-    jobs on that same lineage run concurrently instead of serializing forever
-    (all 32 homes sat at one 45 h-old last_refresh and 5 workers ran as 1).
-    An auth-failed run proves nothing; a token near expiry always locks."""
-    with tempfile.TemporaryDirectory() as td:
-        root = Path(td)
-        stale_at = datetime.now(timezone.utc) - timedelta(hours=45)
-        for i in range(3):
-            write_auth_json(root / f"w{i}", stale_at, "rt-shared")
-        ctx = _minimal_ctx(root)
-
-        with ctx.stale_refresh_guard(root / "w0") as guard:
-            guard.auth_failed = True
-        ok("probe: an auth-failed run is never recorded as a clean probe",
-           not ctx._lineage_probe_ok)
-        with ctx.stale_refresh_guard(root / "w0") as guard:
-            ok("probe: the first stale job after that still takes the lock", guard.held is True)
-        ok("probe: a clean non-rotating run records the lineage as probed",
-           len(ctx._lineage_probe_ok) == 1, ctx._lineage_probe_ok)
-
-        timeline, held = {}, {}
-        barrier = threading.Barrier(3)
-
-        def run(home_name):
-            with ctx.stale_refresh_guard(root / home_name) as g:
-                held[home_name] = g.held
-                timeline[f"{home_name}_enter"] = time.monotonic()
-                try:
-                    barrier.wait(timeout=2)  # all three must be inside at once
-                except threading.BrokenBarrierError:
-                    pass
-                timeline[f"{home_name}_exit"] = time.monotonic()
-
-        threads = [threading.Thread(target=run, args=(f"w{i}",)) for i in range(3)]
-        for t in threads:
-            t.start()
-        for t in threads:
-            t.join(timeout=5)
-        ok("probe: after a clean probe, no stale-lineage job holds the lock", not any(held.values()), held)
-        ok("probe: three stale-lineage jobs were inside the guard at the same time",
-           not barrier.broken and max(timeline[f"w{i}_enter"] for i in range(3))
-           < min(timeline[f"w{i}_exit"] for i in range(3)), timeline)
-
-        ctx._lineage_probe_ok[stale_at] = time.time() - artpiped.STALE_PROBE_VALID_S - 1
-        with ctx.stale_refresh_guard(root / "w1") as guard:
-            ok("probe: an EXPIRED probe makes the next stale job take the lock again", guard.held is True)
-
-        near = root / "near"
-        near.mkdir()
-        exp = int(time.time() + 600)
-        (near / "auth.json").write_text(json.dumps({
-            "last_refresh": stale_at.isoformat(),
-            "tokens": {"access_token": _fake_access_token(exp, "plus"), "refresh_token": "rt-shared"}}))
-        ctx._lineage_probe_ok[stale_at] = time.time()
-        with ctx.stale_refresh_guard(near) as guard:
-            ok("probe: a token about to expire always takes the lock, probe or not", guard.held is True)
-
-
-def test_n_workers_run_concurrently_with_stale_logins():
-    """End to end through the real daemon and mock worker: every leased home
-    carries a 45 h-old shared last_refresh (the 2026-10-08 production state).
-    Before the fix every job held the global lock and runs never overlapped;
-    now one probe job runs alone and the rest overlap across the workers."""
+def test_bad_input_fails_the_job_not_the_channel():
+    """A reference that is not there is the job's own fault: it fails, and the next job still renders."""
     with tempfile.TemporaryDirectory() as td:
         q = Queue(Path(td))
-        stale_at = datetime.now(timezone.utc) - timedelta(hours=45)
-        for i in range(3):
-            write_auth_json(q.codex_homes / f"w{i}", stale_at, "rt-shared")
+        make_job(q.pending, "badref", q.reference, priority=1)
+        make_job(q.pending, "goodone", q.reference, priority=2)
+        proc = q.run({"badref": "bad_input", "goodone": "ok"}, "--once", "--workers", "1")
+        ok("bad input: the job is in failed/", (q.failed / "badref.json").is_file(), proc.stdout + proc.stderr)
+        ok("bad input: the channel stayed on and the next job rendered", (q.done / "goodone.json").is_file())
+
+
+def test_home_without_signin_is_not_ready():
+    """No sign-in: refused by name at startup, the job is never claimed, and gemini still runs."""
+    for fault in ("absent", "torn"):
+        with tempfile.TemporaryDirectory() as td:
+            q = Queue(Path(td))
+            (q.codex_home / "auth.json").unlink()
+            if fault == "torn":
+                (q.codex_home / "auth.json").write_text("{not json")
+            make_job(q.pending, "waits", q.reference, channel="codex")
+            make_job(q.pending, "gem", q.reference, channel="gemini")
+            proc = q.run({"waits": "ok", "gem": "ok"}, "--once", "--workers", "1", "--gemini-budget-usd", "10")
+            ok(f"{fault} sign-in: the codex job was never claimed", (q.pending / "waits.json").is_file(), proc.stdout)
+            ok(f"{fault} sign-in: exits nonzero, work remains", proc.returncode != 0)
+            ok(f"{fault} sign-in: the log names the state and the renew command",
+               "codex channel disabled" in proc.stdout and "renew" in proc.stdout, proc.stdout)
+            ok(f"{fault} sign-in: the gemini job in the same queue still ran", (q.done / "gem.json").is_file(), proc.stdout)
+
+
+def test_channel_comes_back_without_a_restart():
+    """ARTPIPED_UNSTICK_CODEX_LEFT_THE_BUILDING: the SAME daemon turns the channel on again when the sign-in is back."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        (q.codex_home / "auth.json").unlink()
+        make_job(q.pending, "waitcodex", q.reference, channel="codex")
+        proc, log = _start(q, {"waitcodex": "ok"})
+        try:
+            ok("re-enable: no sign-in turns the channel off", _until(lambda: "codex channel disabled" in log.read_text()))
+            time.sleep(1.5)
+            ok("re-enable: it stays off and the job waits while the sign-in is gone",
+               "re-enabled" not in log.read_text() and (q.pending / "waitcodex.json").is_file() and proc.poll() is None)
+            q.sign_in()
+            ok("re-enable: the waiting job renders in the same process",
+               _until(lambda: (q.done / "waitcodex.json").is_file()) and proc.poll() is None
+               and "codex channel re-enabled" in log.read_text(), log.read_text())
+            time.sleep(0.5)
+            snaps = [json.loads(f.read_text()) for f in q.status_dir.glob("artpiped_*.json")]
+            ok("re-enable: no phantom in-flight job", snaps and all(not (x.get("in_flight") or []) for x in snaps), snaps)
+        finally:
+            _stop(proc)
+
+
+def test_dead_login_is_tried_once_per_interval_and_recovers():
+    """The ready check reads a file, so it cannot see a dead login. The channel tries one job per interval, fails none,
+    and renders when the login answers again."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        for i in range(4):
+            make_job(q.pending, f"j{i}", q.reference, channel="codex")
+        dead = {f"j{i}": "dead_login" for i in range(4)}
+        proc, log = _start(q, dead)
+        try:
+            ok("dead login: the channel goes off", _until(lambda: "codex channel disabled" in log.read_text()))
+            time.sleep(2.5)
+            ok("dead login: no job failed", not any(q.failed.iterdir()), list(q.failed.iterdir()))
+            (q.root / "control.json").write_text(json.dumps({k: "ok" for k in dead}))
+            ok("dead login: all four render once it answers", _until(
+                lambda: len([p for p in q.done.glob("j*.json") if not p.name.endswith(".manifest.json")]) == 4), log.read_text())
+        finally:
+            _stop(proc)
+
+
+def test_n_workers_share_one_home():
+    """Seven jobs, three workers, one sign-in folder: they overlap and all finish."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
         control = {}
         for i in range(7):
             make_job(q.pending, f"conc{i}", q.reference, priority=0)
@@ -4197,19 +3803,16 @@ def test_n_workers_run_concurrently_with_stale_logins():
             proc = q.run(control, "--once", "--workers", "3", timeout=120)
         finally:
             os.environ.pop("ARTPIPE_MOCK_TIMELINE", None)
-        ok("concurrency: daemon exits 0", proc.returncode == 0, proc.stderr[-2000:])
+        ok("one home: daemon exits 0", proc.returncode == 0, proc.stderr[-2000:])
         runs = [json.loads(l) for l in timeline_path.read_text().splitlines()] if timeline_path.is_file() else []
-        ok("concurrency: all 7 mock codex runs happened", len(runs) == 7, runs)
-        events = sorted([(r["start"], 1) for r in runs] + [(r["end"], -1) for r in runs])
+        events = sorted([(x["start"], 1) for x in runs] + [(x["end"], -1) for x in runs])
         cur = peak = 0
         for _, d in events:
             cur += d
             peak = max(peak, cur)
-        ok("concurrency: stale-login homes still ran >=2 codex jobs at once (peak overlap)",
-           peak >= 2, f"peak={peak} runs={runs}")
-        ok("concurrency: all 3 workers were busy together at some point", peak == 3, f"peak={peak}")
+        ok("one home: all 7 runs happened and 3 ran together", len(runs) == 7 and peak == 3, f"peak={peak} runs={len(runs)}")
         done_ids = {p.stem for p in q.done.glob("*.json") if not p.name.endswith(".manifest.json")}
-        ok("concurrency: every job landed in done/", len(done_ids) == 7, sorted(done_ids))
+        ok("one home: every job landed in done/", len(done_ids) == 7, sorted(done_ids))
 
 
 def test_queue_order_is_priority_then_ruled_then_age():
@@ -4540,14 +4143,6 @@ def main() -> int:
         test_detector_wall_clock_halving,
         test_row6_timeout_language_never_reads_as_rate_limited,
         test_rate_limit_marker_strips_prompt_echo_but_not_real_refusals,
-        test_codex_home_root_default_is_outside_the_repo,
-        test_codex_home_lease_bounds_growth_and_avoids_collision,
-        test_codex_sandbox_preflight_matching_allows_codex_jobs,
-        test_codex_sandbox_preflight_mismatch_blocks_codex_not_gemini,
-        test_codex_sandbox_preflight_missing_bin_refuses_not_passes,
-        test_running_daemon_reenables_codex_after_sync,
-        test_sandbox_stale_vs_machine_blocks_codex,
-        test_sandbox_guard_refusal_returns_job_to_pending,
         test_requeued_job_leaves_status_in_flight,
         test_reference_less_job_size_mismatch_is_caught,
         test_oversized_same_aspect_is_downscaled_and_kept,
@@ -4575,6 +4170,12 @@ def main() -> int:
         test_gemini_budget_hard_stop,
         test_gemini_budget_is_durable_across_restarts,
         test_gemini_never_touches_codex_homes,
+        test_could_not_start_spends_no_attempt,
+        test_bad_input_fails_the_job_not_the_channel,
+        test_home_without_signin_is_not_ready,
+        test_channel_comes_back_without_a_restart,
+        test_dead_login_is_tried_once_per_interval_and_recovers,
+        test_n_workers_share_one_home,
         test_mixed_channel_queue_codex_wedge_does_not_block_gemini,
         test_fill_queue_channel_flag_and_per_row_override,
         test_run_validator_never_raises_on_timeout_or_bad_exit,
@@ -4621,12 +4222,6 @@ def main() -> int:
         test_requeue_flakes_refuses_without_pending_dir,
         test_cancel_jobs_takes_pending_out_and_spares_running,
         test_detector_selects_meter_by_declared_window_not_position,
-        test_read_auth_freshness_decodes_last_refresh_and_jwt_claims,
-        test_stale_refresh_guard_fresh_home_never_takes_the_lock,
-        test_stale_refresh_guard_rotation_copies_to_no_sibling,
-        test_stale_refresh_guard_serializes_two_due_for_refresh_homes,
-        test_stale_refresh_guard_clean_probe_releases_concurrency,
-        test_n_workers_run_concurrently_with_stale_logins,
         test_queue_order_is_priority_then_ruled_then_age,
         test_no_image_failure_is_classified_retryable,
         test_no_image_gets_two_firm_retries_end_to_end,

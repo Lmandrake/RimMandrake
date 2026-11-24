@@ -27,6 +27,9 @@ Behaviors:
     bad_image     writes a manifest CLAIMING "ok", but the PNG is fully
                   opaque with no working alpha — proves the daemon
                   re-validates rather than trusting the worker's own report.
+    could_not_start, queue_full, dead_login, bad_input
+                  no picture, and the door's typed verdict line for that cause
+                  as the last stderr line.
     no_manifest   exits 0, writes NOTHING — the `--`-trap no-op (row 5).
     rate_limited  exits 1, stderr names TooManyRequests (row 1).
     weekly_high   like ok, but the rollout reports secondary.used_percent at
@@ -214,6 +217,7 @@ def main(argv=None) -> int:
         p.add_argument("--model", default=None)
         p.add_argument("--reasoning-effort", default="low")
         p.add_argument("--codex-home", default=None)
+        p.add_argument("--slot-wait", type=float, default=None)
         p.add_argument("--force", action="store_true")
         p.add_argument("--dry-run", action="store_true")
         p.add_argument("--verbose", action="store_true")
@@ -269,6 +273,13 @@ def main(argv=None) -> int:
         print("codex: TooManyRequests — image generation request was rate limited",
               file=sys.stderr)
         return 1
+
+    planted = {"could_not_start": ("TRANSPORT", "could_not_start", 2), "queue_full": ("QUEUE_FULL", "could_not_start", 2),
+               "dead_login": ("AUTH", "failed", 1), "bad_input": ("BAD_INPUT", "could_not_start", 2)}
+    if behavior in planted:              # the door's typed verdict line (codex_image.py's last stderr line)
+        o, k, rc = planted[behavior]
+        print(f"ERROR planted {behavior}\n[image] VERDICT={o} KIND={k} exit={rc}", file=sys.stderr)
+        return rc
 
     if behavior == "no_manifest":
         return 0  # the `--`-trap no-op: exit 0, touch nothing at all.

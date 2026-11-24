@@ -6,11 +6,10 @@ A dumb local orchestrator, no LLM of its own: scans
 `os.rename` into `active/`, and runs up to N concurrent one-shot workers.
 Two channels, routed per job by its `"channel"` field:
 
-  - **codex** (default) — a `codex_image.py generate|edit` subprocess per
-    job, pointed at a small POOL of leased `--codex-home` directories
-    (openai/codex #11435: parallel `exec` under one shared CODEX_HOME
-    interferes via shared session restore, so isolation is mandatory).
-    Gated by the six-row grumpiness `Detector` below.
+  - **codex** (default) — one call per job through the one Codex door
+    (imagecall.py; design/specs/2026-11-24-art-daemon-over-the-one-door):
+    every worker uses the one sign-in folder, and the door gives each call
+    only its own picture. Gated by the six-row grumpiness `Detector` below.
   - **gemini** — a `gemini_image.py generate --ref` subprocess per job. NOT
     gated by the codex Detector at all — gated instead by `GeminiBudget`, a
     dollar cap whose SPENT side is re-read live from `throughput.jsonl`
@@ -75,8 +74,8 @@ import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.js
 # The rollout-reading path (find the newest rollout-*.jsonl under a
 # CODEX_HOME, pull its last rate_limits) and the PNG-header reader both
 # already exist and are already selftested —
-# generating-images/scripts/codex_grumpiness.py (MandrakeWorkflows) and codex_image.py's
-# own png_info() — so they are imported here rather than re-implemented.
+# generating-images/scripts/codex_grumpiness.py (MandrakeWorkflows) and the door's
+# png_info() — so they are imported here rather than re-implemented.
 # codex_grumpiness's `after_mtime` parameter is also what fixes a real bug:
 # without it, `meter_after` for a job whose worker died before writing its
 # own rollout would silently read the PREVIOUS job's leftover rollout on a
@@ -87,8 +86,7 @@ import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.js
 # the threshold judgment.
 common.image_skills.add_to_path()
 import codex_grumpiness  # noqa: E402
-import codex_image  # noqa: E402
-import signin_health  # noqa: E402 — one sign-in per worker home; the dead-sign-in alarm reads it
+import imagecall  # noqa: E402 — the one Codex door: the picture call and the ready check
 
 # Month-long measured median for a cold `generate` (design addendum §A) —
 # the baseline row 4's wall-clock guard compares against. `edit` (a
@@ -167,7 +165,7 @@ def _select_meter_windows(meters: dict, warn=None) -> tuple:
 
 DEFAULT_TIMEOUT_GENERATE_S = 300  # measured 2026-09-10: solo edit runs 119-130s; 3-way concurrency blew the old 150/220 ceilings
 DEFAULT_TIMEOUT_EDIT_S = 420  # measured 2026-09-10: both codexcal attempts died at ~240s under -N 3; solo is ~130s
-WORKER_SUBPROCESS_GRACE_S = 30  # on top of --timeout, so our own kill never
+WORKER_SUBPROCESS_GRACE_S = imagecall.GRACE_S  # on top of --timeout, so our own kill never
                                  # races the worker's own harvest-with-grace.
 
 # Row 1 spec: one retry max on a failed request — never for an explicit
@@ -1373,16 +1371,10 @@ def repair(active_dir: Path, done_dir: Path, failed_dir: Path) -> list[tuple[str
 # --------------------------------------------------------------------------
 
 class RunCtx:
-    """Immutable-for-the-run configuration handed to every worker thread —
-    except the codex_home leases, which are acquired LAZILY (see
-    codex_home_for_slot below), one per slot, on that slot's FIRST codex
-    job. A gemini-only run therefore never creates a single codex_home
-    directory, never risks the one-time UAC-gated sandbox setup prompt for
-    a brand-new one, and "a gemini job never touches codex homes" is true
-    at the whole-daemon level, not just within process_gemini_job."""
+    """Immutable-for-the-run configuration handed to every worker thread."""
 
     def __init__(self, worker_script, validator_script, manifest_schema,
-                 artsrc_dir, active_dir, codex_home_root, workers_count,
+                 artsrc_dir, active_dir, codex_home, workers_count,
                  timeout_generate, timeout_edit, reasoning_effort, verbose, slots,
                  gemini_worker_script, gemini_timeout, throughput_log=None,
                  done_dir=None, failed_dir=None, canon_vision=None, canon_model=None):
@@ -1401,7 +1393,7 @@ class RunCtx:
         # job it processes will ever carry that field.
         self.done_dir = done_dir
         self.failed_dir = failed_dir
-        self.codex_home_root = codex_home_root
+        self.codex_home = codex_home    # None: the door's one sign-in folder; a test names its own
         self.timeout_generate = timeout_generate
         self.timeout_edit = timeout_edit
         self.reasoning_effort = reasoning_effort
@@ -1429,154 +1421,10 @@ class RunCtx:
         # No `dry_run` field: --dry-run is handled entirely in main()'s
         # run_dry_run(), before a RunCtx is ever built.
 
-        self._codex_homes: list[Path | None] = [None] * workers_count
-        self.lease_handles: list = []  # closed by main() at shutdown
-        self._lease_lock = threading.Lock()
-        # ARTPIPE_WORKER_AUTH_STALENESS_1's guard: serializes any job whose
-        # home's own last_refresh has aged past the stale threshold; see
-        # stale_refresh_guard below. Since 2026-11-22 each home holds its own
-        # device sign-in and nothing copies one between homes
-        # (design/specs/2026-11-22-art-worker-own-signin/boundary.md), so the
-        # lock guards only a home that still shares a lineage by mistake.
-        self._stale_refresh_lock = threading.Lock()
-        # ART_PIPELINE_LATENCY fix (2026-10-08): the lock above used to be
-        # taken by EVERY job once a home passed 12 h, and codex only rotates
-        # when it actually needs to — so a lineage sitting at 45 h with a
-        # token valid for 8 more days serialized 5 workers into 1 forever.
-        # A guarded job that runs clean WITHOUT rotating proves codex does not
-        # want a refresh for this lineage right now; record that probe here,
-        # keyed by the lineage's last_refresh value, and let later jobs on the
-        # same lineage run concurrently for STALE_PROBE_VALID_S. The lock still
-        # covers the one job per window that might refresh, and any home whose
-        # access token is near expiry (a refresh codex WILL attempt).
-        self._lineage_probe_ok: dict = {}  # last_refresh -> probe time (epoch s)
+    def meter_home(self) -> Path:
+        """Where Codex writes the account meter (its rollouts): the one sign-in folder."""
+        return imagecall.home(self.codex_home)
 
-    def stale_refresh_guard(self, codex_home: Path) -> "_StaleRefreshGuard":
-        """Use as `with ctx.stale_refresh_guard(codex_home): ...` around the
-        one codex subprocess invocation for a job. A home whose auth.json
-        looks due for a refresh (last_refresh older than
-        codex_image.STALE_REFRESH_THRESHOLD_S) is serialized against every
-        OTHER such home via `_stale_refresh_lock` — a home that's still
-        fresh never blocks on it at all. A rotation copies nothing to any
-        other home. On exit every job records its home's sign-in outcome
-        (signin_health.record_outcome), which the dead-sign-in alarm reads."""
-        return _StaleRefreshGuard(self, codex_home)
-
-    def codex_home_for_slot(self, slot: int) -> Path:
-        """Acquire (once) and cache the leased codex_home for this slot.
-        Guarded by a lock: two threads could in principle race to be the
-        FIRST codex job on the same never-yet-used slot (unlikely — a slot
-        is only handed to one thread at a time via ctx.slots — but this is
-        the cheap, correct way to be sure rather than relying on that)."""
-        with self._lease_lock:
-            if self._codex_homes[slot] is None:
-                home, fh = common.acquire_codex_home_lease(self.codex_home_root)
-                self._codex_homes[slot] = home
-                self.lease_handles.append(fh)
-            return self._codex_homes[slot]
-
-    def any_leased_codex_home(self) -> Path | None:
-        """The first codex_home this run has actually leased, or None if
-        no codex job has run yet this session. Used ONLY for the
-        independent meter refresh (finding 4): the weekly/5h limits are
-        ACCOUNT-level, not per-codex_home, so reading from whichever
-        codex_home is already leased reflects the same account state as
-        any other — there is no need to lease a NEW one just to check."""
-        with self._lease_lock:
-            for home in self._codex_homes:
-                if home is not None:
-                    return home
-            return None
-
-
-# Codex's own wording for a refresh-token failure (ARTPIPE_WORKER_AUTH_STALENESS_1).
-_AUTH_FAILURE_RE = re.compile(r"refresh token|could not be refreshed|sign in again|"
-                              r"Failed to refresh token", re.IGNORECASE)
-
-# How long one clean, non-rotating guarded run vouches for its lineage. Short
-# on purpose: codex's own refresh decision is monotone in last_refresh age, so
-# a probe an hour old bounds how long a newly-crossed threshold can go unseen
-# to one hour, at a cost of one serialized job per lineage per hour.
-STALE_PROBE_VALID_S = 3600.0
-# A token this close to `exp` is one codex WILL refresh (on its 401), so the
-# probe never excuses it — that run always takes the lock.
-EXPIRY_MARGIN_S = STALE_PROBE_VALID_S + 600.0
-
-
-def _codex_home_is_refresh_due(codex_home: Path, probe_ok: dict | None = None
-                               ) -> tuple[bool, "datetime | None"]:
-    """(is it old enough that codex might attempt a refresh, its current
-    last_refresh) — a home with no readable auth.json yet (never leased a
-    job, or seeded but not yet used) is never "due", it simply has nothing
-    to be stale about yet. `probe_ok` (RunCtx._lineage_probe_ok) excuses a
-    stale home whose exact last_refresh was probed clean within
-    STALE_PROBE_VALID_S, unless its access token expires within
-    EXPIRY_MARGIN_S."""
-    info = codex_image.read_auth_freshness(codex_home)
-    if info is None or info["last_refresh"] is None:
-        return False, None
-    now = time.time()
-    exp = info.get("exp")
-    if isinstance(exp, (int, float)) and exp - now < EXPIRY_MARGIN_S:
-        return True, info["last_refresh"]
-    age_s = (datetime.now(timezone.utc) - info["last_refresh"]).total_seconds()
-    if age_s <= codex_image.STALE_REFRESH_THRESHOLD_S:
-        return False, info["last_refresh"]
-    if probe_ok is not None:
-        probed_at = probe_ok.get(info["last_refresh"])
-        if probed_at is not None and now - probed_at < STALE_PROBE_VALID_S:
-            return False, info["last_refresh"]
-    return True, info["last_refresh"]
-
-
-class _StaleRefreshGuard:
-    """See RunCtx.stale_refresh_guard's docstring for the mechanism. Cheap
-    when the home is fresh (one auth.json read, no lock taken); serializes
-    with every other stale-guarded job when it isn't."""
-
-    def __init__(self, ctx: "RunCtx", codex_home: Path):
-        self.ctx = ctx
-        self.codex_home = codex_home
-        self.held = False
-        self.before_last_refresh: "datetime | None" = None
-        # The caller sets this when its codex run's output names an auth /
-        # refresh-token failure; such a run proves nothing about the lineage
-        # and must not be recorded as a clean probe.
-        self.auth_failed = False
-
-    def __enter__(self) -> "_StaleRefreshGuard":
-        probe_ok = self.ctx._lineage_probe_ok
-        due, last_refresh = _codex_home_is_refresh_due(self.codex_home, probe_ok)
-        self.before_last_refresh = last_refresh
-        if due:
-            self.ctx._stale_refresh_lock.acquire()
-            # Re-check under the lock: the job we just waited behind may have
-            # probed this lineage clean, in
-            # which case this job has nothing to serialize and runs in parallel.
-            due, last_refresh = _codex_home_is_refresh_due(self.codex_home, probe_ok)
-            self.before_last_refresh = last_refresh
-            if due:
-                self.held = True
-            else:
-                self.ctx._stale_refresh_lock.release()
-        return self
-
-    def __exit__(self, exc_type, exc, tb) -> bool:
-        if exc_type is None:
-            signin_health.record_outcome(self.codex_home, self.auth_failed)
-        if self.held:
-            try:
-                _, after_last_refresh = _codex_home_is_refresh_due(self.codex_home)
-                # A home that rotated its own lineage copies it nowhere: no other home shares it.
-                rotated = after_last_refresh is not None and after_last_refresh != self.before_last_refresh
-                if (not rotated and exc_type is None and not self.auth_failed
-                        and self.before_last_refresh is not None):
-                    # Codex ran on this lineage and chose not to rotate: it is
-                    # not refresh-due right now. Vouch for it for a short window.
-                    self.ctx._lineage_probe_ok[self.before_last_refresh] = time.time()
-            finally:
-                self.ctx._stale_refresh_lock.release()
-        return False  # never swallow an exception from the guarded block
 
 
 # Downscale-legibility direction baked into EVERY in-game (transparent-bg)
@@ -1726,34 +1574,6 @@ def build_job_prompt(job: dict) -> str:
                                           f"Facing: {job['facing']}."))
     parts.append(NO_PREAMBLE_LINE)
     return " ".join(parts)
-
-
-def run_worker(worker_script: Path, subcmd: str, prompt: str, out_png: Path,
-                codex_home: Path, timeout: int, schema_path: Path,
-                last_msg_path: Path, reference, model, reasoning_effort,
-                verbose: bool) -> tuple[int, str, str, float, bool]:
-    cmd = [sys.executable, str(worker_script), subcmd,
-           "--prompt", prompt, "--out", str(out_png),
-           "--codex-home", str(codex_home), "--timeout", str(timeout),
-           "--force", "--reasoning-effort", reasoning_effort,
-           "--output-schema", str(schema_path),
-           "--output-last-message", str(last_msg_path)]
-    if model:
-        cmd += ["--model", model]
-    if reference:
-        cmd += ["--image", str(reference)]
-    if verbose:
-        cmd.append("--verbose")
-
-    started = time.monotonic()
-    try:
-        proc = subprocess.run(cmd, capture_output=True, text=True,
-                               timeout=timeout + WORKER_SUBPROCESS_GRACE_S)
-        return proc.returncode, proc.stdout, proc.stderr, time.monotonic() - started, False
-    except subprocess.TimeoutExpired as exc:
-        out = exc.stdout.decode() if isinstance(exc.stdout, bytes) else (exc.stdout or "")
-        err = exc.stderr.decode() if isinstance(exc.stderr, bytes) else (exc.stderr or "")
-        return 124, out, err, time.monotonic() - started, True
 
 
 _GEMINI_MODEL_RE = re.compile(r"model=([^,\s]+)")
@@ -2089,7 +1909,7 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
     crop decision, not an automatic one) still fails exactly as before.
     """
     try:
-        info = codex_image.png_info(out_png)
+        info = imagecall.png_info(out_png)
     except (ValueError, OSError) as exc:
         result.update(status="failed", worker_status="unreadable_png", validator="not_run",
                        note=f"could not read the returned file's PNG header: {exc}")
@@ -2336,8 +2156,9 @@ def _advisory_palette_distance(candidate: Path, master_png: Path) -> float | Non
         return None
 
 
-# worker_status of a codex job refused BEFORE launch by the sandbox guard: retryable, returned to pending/.
-SANDBOX_NOT_READY = "sandbox_not_ready"
+# worker_status of a codex job the door could not draw for a reason that is not the job's: retryable, returned to
+# pending/ (imagecall.Call.not_run: it could not start, or its login is dead).
+COULD_NOT_START = "could_not_start"
 
 
 def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: RunCtx,
@@ -2364,23 +2185,7 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
 
     slot = ctx.slots.get()
     try:
-        # Lazily leased on this slot's FIRST codex job (a bounded pool of
-        # "w0".."w<N-1>" directories via a cross-process flock, never one
-        # per pid — restarts don't accumulate homes, or UAC prompts for a
-        # brand-new one, forever — and never shared with another daemon,
-        # openai/codex #11435). A run with no codex jobs never acquires one.
-        codex_home = ctx.codex_home_for_slot(slot)
-        # SANDBOX_UAC_ONE_STATE (2026-10-16): HARD pre-launch guard. Sync this slot's sandbox state from
-        # the shared home and refuse — WITHOUT launching codex — unless the shared state is proven current
-        # against Windows' own sandbox-user provisioning. A refusal is returned to pending/ by main() and
-        # latches the codex channel off for this run, so no worker ever raises the UAC setup dialog.
-        sandbox_ok, sandbox_why = common.ensure_worker_sandbox(
-            codex_home, getattr(ctx, "codex_sandbox_base", None))
-        if not sandbox_ok:
-            return {"id": job_id, "channel": "codex", "status": "failed", "cost_usd": 0.0,
-                    "worker_status": SANDBOX_NOT_READY, "validator": "not_run",
-                    "note": f"codex NOT launched — sandbox not ready: {sandbox_why}"}
-        meter_before = codex_grumpiness.read_meters(codex_home)
+        meter_before = codex_grumpiness.read_meters(ctx.meter_home())
         prompt = build_job_prompt(job)
 
         job_started_at = time.time()
@@ -2392,68 +2197,67 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
         attempt_log: list[dict] = []
         no_image_retries = 0
         firm_prompt_used = False
-        # ARTPIPE_WORKER_AUTH_STALENESS_1: serialize against any other slot
-        # whose home is ALSO due for a refresh right now — cheap (one
-        # auth.json read, no lock) when this home is fresh.
-        with ctx.stale_refresh_guard(codex_home) as refresh_guard:
-            while True:
-                attempts += 1
-                # A stale PNG/manifest at these exact paths, left by a PREVIOUS
-                # attempt (this retry, or a requeue after a fix), must never be
-                # mistaken for THIS attempt's output.
-                for stale in (out_png, last_msg_path):
-                    try:
-                        stale.unlink()
-                    except FileNotFoundError:
-                        pass
-                code, out, err, elapsed, timed_out = run_worker(
-                    ctx.worker_script, subcmd, prompt, out_png, codex_home, timeout,
-                    ctx.manifest_schema, last_msg_path, attach_image, job.get("model"),
-                    ctx.reasoning_effort, ctx.verbose)
-                elapsed_total += elapsed
-                last_attempt_elapsed = elapsed  # PER-ATTEMPT, not summed — see note_wall_clock's
-                                                 # own docstring for why a retry-summed total
-                                                 # would report double a normal request's real cost.
-                combined = (out or "") + (err or "")
-                # Read the -o last-message note BEFORE deciding whether to
-                # retry — a throttle visible ONLY there (clean stdout/stderr,
-                # a schema-valid "refused" manifest whose note names
-                # TooManyRequests) must never be retried against an already-
-                # throttled account. Retry decisions used to look only at
-                # stdout+stderr, checked again (identically) below AFTER the
-                # loop for the final row-1 verdict — this is that same check,
-                # done early enough to matter for the retry itself.
-                attempt_note = ""
-                if last_msg_path.is_file():
-                    try:
-                        attempt_report = json.loads(last_msg_path.read_text())
-                        if isinstance(attempt_report, dict):
-                            attempt_note = str(attempt_report.get("note") or "")
-                    except (OSError, ValueError):
-                        pass
-                combined_with_note = combined + " " + attempt_note
-                if _AUTH_FAILURE_RE.search(combined_with_note):
-                    refresh_guard.auth_failed = True  # never a clean probe
-                failed = (code != 0) or timed_out
-                rate_limited_now = failed and _looks_rate_limited(combined_with_note, prompt)
-                no_image_now = (failed and not rate_limited_now
-                                and _is_no_image_failure(code, timed_out, combined,
-                                                         out_png.is_file()))
-                attempt_log.append({"attempt": attempts, "exit": code,
-                                    "timed_out": timed_out, "no_image": no_image_now,
-                                    "firm_prompt": firm_prompt_used,
-                                    "elapsed_s": round(elapsed, 1)})
-                cap = MAX_NO_IMAGE_ATTEMPTS if no_image_now else MAX_CODEX_ATTEMPTS
-                if not failed or rate_limited_now or attempts >= cap:
-                    break
-                # Retryable: a genuine tool error or timeout, NOT a throttle
-                # refusal — row 1 spec allows exactly one retry; the no-image
-                # class (ARTPIPE_NO_IMAGE_RETRY) gets two, with a firmer prompt.
-                if no_image_now:
-                    no_image_retries += 1
-                    if not firm_prompt_used:
-                        prompt = prompt + " " + NO_IMAGE_RETRY_LINE
-                        firm_prompt_used = True
+        while True:
+            attempts += 1
+            # A stale PNG/manifest at these exact paths, left by a PREVIOUS
+            # attempt (this retry, or a requeue after a fix), must never be
+            # mistaken for THIS attempt's output.
+            for stale in (out_png, last_msg_path):
+                try:
+                    stale.unlink()
+                except FileNotFoundError:
+                    pass
+            made = imagecall.call(
+                ctx.worker_script, subcmd, prompt, out_png, timeout,
+                ctx.manifest_schema, last_msg_path, attach_image, job.get("model"),
+                ctx.reasoning_effort, ctx.verbose, ctx.codex_home)
+            if made.not_run:
+                return {"id": job_id, "channel": "codex", "status": "failed", "cost_usd": 0.0,
+                        "worker_status": COULD_NOT_START, "validator": "not_run",
+                        "note": f"no picture asked for: {made.outcome or made.kind}: {(made.err or '')[-400:].strip()}"}
+            code, out, err, elapsed, timed_out = made.code, made.out, made.err, made.elapsed, made.timed_out
+            elapsed_total += elapsed
+            last_attempt_elapsed = elapsed  # PER-ATTEMPT, not summed — see note_wall_clock's
+                                             # own docstring for why a retry-summed total
+                                             # would report double a normal request's real cost.
+            combined = (out or "") + (err or "")
+            # Read the -o last-message note BEFORE deciding whether to
+            # retry — a throttle visible ONLY there (clean stdout/stderr,
+            # a schema-valid "refused" manifest whose note names
+            # TooManyRequests) must never be retried against an already-
+            # throttled account. Retry decisions used to look only at
+            # stdout+stderr, checked again (identically) below AFTER the
+            # loop for the final row-1 verdict — this is that same check,
+            # done early enough to matter for the retry itself.
+            attempt_note = ""
+            if last_msg_path.is_file():
+                try:
+                    attempt_report = json.loads(last_msg_path.read_text())
+                    if isinstance(attempt_report, dict):
+                        attempt_note = str(attempt_report.get("note") or "")
+                except (OSError, ValueError):
+                    pass
+            combined_with_note = combined + " " + attempt_note
+            failed = (code != 0) or timed_out
+            rate_limited_now = failed and _looks_rate_limited(combined_with_note, prompt)
+            no_image_now = (failed and not rate_limited_now
+                            and _is_no_image_failure(code, timed_out, combined,
+                                                     out_png.is_file()))
+            attempt_log.append({"attempt": attempts, "exit": code,
+                                "timed_out": timed_out, "no_image": no_image_now,
+                                "firm_prompt": firm_prompt_used,
+                                "elapsed_s": round(elapsed, 1)})
+            cap = MAX_NO_IMAGE_ATTEMPTS if no_image_now else MAX_CODEX_ATTEMPTS
+            if not failed or rate_limited_now or attempts >= cap:
+                break
+            # Retryable: a genuine tool error or timeout, NOT a throttle
+            # refusal — row 1 spec allows exactly one retry; the no-image
+            # class (ARTPIPE_NO_IMAGE_RETRY) gets two, with a firmer prompt.
+            if no_image_now:
+                no_image_retries += 1
+                if not firm_prompt_used:
+                    prompt = prompt + " " + NO_IMAGE_RETRY_LINE
+                    firm_prompt_used = True
     finally:
         # Acquisition-to-release is ALL inside this try — a mkdir/read
         # failure, a malformed job, or any other exception in between still
@@ -2466,7 +2270,7 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
     # floor, a worker that died before writing its own rollout would leave
     # read_meters() reading whatever this codex_home last wrote for a
     # PREVIOUS job, misattributing its meters to this one.
-    meter_after = codex_grumpiness.read_meters(codex_home, after_mtime=job_started_at)
+    meter_after = codex_grumpiness.read_meters(ctx.meter_home(), after_mtime=job_started_at)
 
     manifest_present = last_msg_path.is_file()
     worker_self_report = None
@@ -2643,13 +2447,11 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
 
 
 def _canon_grade(spec: dict, out_png: Path, ctx: RunCtx) -> dict:
-    """One vision grade on a leased codex home (the slot pool — never a fresh home, which could raise a UAC
-    sandbox prompt). A grader outage returns status=error; the caller keeps the render (never lost to a
-    grader being down) and canon_check.py can grade it later."""
+    """One vision grade through the door. A grader outage returns status=error; the caller keeps the render (never
+    lost to a grader being down) and canon_check.py can grade it later."""
     slot = ctx.slots.get()
     try:
-        home = ctx.codex_home_for_slot(slot)
-        return canon_check.grade(out_png, spec, vision=ctx.canon_vision, model=ctx.canon_model, home=home)
+        return canon_check.grade(out_png, spec, vision=ctx.canon_vision, model=ctx.canon_model, home=ctx.codex_home)
     except Exception as exc:  # noqa: BLE001
         return {"status": "error", "note": f"{type(exc).__name__}: {exc}"[:400]}
     finally:
@@ -2968,13 +2770,8 @@ def parse_args(argv=None) -> argparse.Namespace:
     ap.add_argument("--failed-dir", type=Path, default=common.DEFAULT_FAILED)
     ap.add_argument("--artsrc-dir", type=Path, default=common.DEFAULT_ARTSRC)
     ap.add_argument("--throughput-log", type=Path, default=common.DEFAULT_THROUGHPUT_LOG)
-    ap.add_argument("--codex-home-root", type=Path, default=common.DEFAULT_CODEX_HOME_ROOT)
-    ap.add_argument("--codex-sandbox-base", type=Path, default=None,
-                     help="the 'installed build' side of the CODEX_UAC_STORM_1 "
-                          "sandbox-fingerprint preflight — normally the real "
-                          "shared codex home (auto-discovered). Override only "
-                          "for tests: points the check at a fixture directory "
-                          "instead of the real /mnt/c home.")
+    ap.add_argument("--codex-home", type=Path, default=None,
+                     help="a sign-in folder other than the one the door uses (tests)")
     ap.add_argument("--worker-script", type=Path,
                      default=Path(os.environ.get("ARTPIPE_WORKER_SCRIPT",
                                                    str(common.DEFAULT_WORKER_SCRIPT))))
@@ -3003,14 +2800,6 @@ def parse_args(argv=None) -> argparse.Namespace:
     ap.add_argument("--poll-interval", type=float, default=2.0)
     ap.add_argument("--once", action="store_true",
                      help="drain what's claimable now, then exit — for scripts/tests")
-    ap.add_argument("--check-sandbox", action="store_true",
-                     help="report whether starting would raise the Windows UAC sandbox-setup dialog "
-                          "(net.exe + file reads only; never launches codex, writes nothing); "
-                          "exit 0 = safe, 1 = codex launches would be refused")
-    ap.add_argument("--sync-sandbox", action="store_true",
-                     help="adopt the sandbox provisioning Windows currently holds (found in any known "
-                          "codex home) into the shared home + seed template, with a backup; never "
-                          "launches codex. Then prints --check-sandbox")
     ap.add_argument("--dry-run", action="store_true",
                      help="report what pending/ would run and exit — reads "
                           "only, never claims, reconciles, or moves anything")
@@ -3082,6 +2871,7 @@ def default_reconcile_min_age(timeout_edit: int, gemini_timeout: int = DEFAULT_G
     reconcile() as a false orphan. Taking the max of both configured
     values is what makes raising EITHER timeout safe.
     """
+    # the wait for an image slot is not in here: a live daemon heartbeats its own claims (LEASE_S)
     codex_worst_case = (timeout_edit + WORKER_SUBPROCESS_GRACE_S) \
         * max(MAX_CODEX_ATTEMPTS, MAX_NO_IMAGE_ATTEMPTS) \
         + VALIDATOR_TIMEOUT_S
@@ -3277,29 +3067,6 @@ def _report_batch(console_obj: "console.Console", collapsed_label: str,
 
 
 
-def codex_image_base_home() -> Path | None:
-    """The shared Codex home, or None when it cannot be found (then no lineage is compared with it)."""
-    try:
-        return codex_image.base_codex_home()
-    except Exception:  # noqa: BLE001 - no shared home is no comparison, never a start-up failure
-        return None
-
-
-def worker_signin_startup(codex_home_root: Path, base: Path | None, warn) -> dict:
-    """The daemon's start-up sign-in step: read every worker home's sign-in and `warn` one line per bad home. It
-    writes no auth.json (design/specs/2026-11-22-art-worker-own-signin/boundary.md). -> the verdicts, {} when the
-    root cannot be read (warned)."""
-    try:
-        verdicts = signin_health.check(codex_home_root, base)
-    except OSError as e:
-        warn(f"worker sign-ins not read: {e}")
-        return {}
-    for name, v in verdicts.items():
-        if v in signin_health.BAD:
-            warn(f"worker home {name} sign-in {v}; "
-                 + codex_image.SIGN_IN_HOWTO.format(home=Path(codex_home_root) / name))
-    return verdicts
-
 def main(argv=None) -> int:
     args = parse_args(argv)
 
@@ -3310,16 +3077,6 @@ def main(argv=None) -> int:
     # requiring mkdir first.
     if args.dry_run:
         return run_dry_run(args)
-
-    # SANDBOX_UAC_ONE_STATE: offline sandbox check / repair — never launch codex.
-    if args.sync_sandbox:
-        ok, msg = common.sync_shared_sandbox(args.codex_home_root, args.codex_sandbox_base)
-        print(("ok   " if ok else "FAIL ") + msg)
-    if args.check_sandbox or args.sync_sandbox:
-        safe, lines = common.sandbox_check_report(args.codex_home_root, args.workers,
-                                                  args.codex_sandbox_base)
-        print("\n".join(lines))
-        return 0 if safe else 1
 
     # §7: --status is read-only over --status-dir alone — never touches the
     # queue, creates no directories, takes no lock. Returns before
@@ -3392,41 +3149,23 @@ def main(argv=None) -> int:
     # quiet channel. GeminiBudget/read_gemini_spend/process_gemini_job and
     # the --gemini-* flags are unaffected — this is reporting only.
 
-    # CODEX_UAC_STORM_1: one fingerprint check, before ANY worker home is
-    # leased — never per-slot, never per-job. A stale/missing seed template
-    # otherwise lets each of N workers independently discover the problem by
-    # each triggering its own (possibly unattended) UAC prompt. On a
-    # mismatch the codex channel is refused until the housekeeping tick's
-    # re-preflight (every PREFLIGHT_RECHECK_S while codex jobs wait) sees the
-    # template repaired, e.g. by `--sync-sandbox` — no restart needed
-    # (ARTPIPED_UNSTICK_CODEX_LEFT_THE_BUILDING); the gemini channel is
-    # entirely unaffected.
-    codex_sandbox_ok, codex_sandbox_msg = common.codex_sandbox_preflight(args.codex_sandbox_base)
-    if codex_sandbox_ok:
-        console_obj.info(f"codex sandbox ok — {codex_sandbox_msg}")
+    # One ready check before any job is claimed: no door or no sign-in turns the codex channel off, and the
+    # housekeeping tick (every PREFLIGHT_RECHECK_S while codex jobs wait) turns it on again without a restart
+    # (ARTPIPED_UNSTICK_CODEX_LEFT_THE_BUILDING). The gemini channel is unaffected.
+    codex_ok, codex_msg = imagecall.ready(args.codex_home)
+    if codex_ok:
+        console_obj.info(f"codex ready — {codex_msg}")
     else:
-        console_obj.warn(f"codex channel disabled until a sandbox re-preflight passes — {codex_sandbox_msg}")
+        console_obj.warn(f"codex channel disabled until the ready check passes — {codex_msg}")
         console_obj.mark_codex_channel_disabled()
 
-    # Read (never write) each worker home's sign-in before any lease is used:
-    # a home that is gone, torn, shared or dead is named on the console. The
-    # start-up resync that copied one home's auth.json over the others is gone
-    # (2026-11-22): it would have overwritten the owner's five device sign-ins.
-    if codex_sandbox_ok:
-        worker_signin_startup(args.codex_home_root, codex_image_base_home(), console_obj.warn)
-
-    # codex_home leases are NOT acquired here — RunCtx acquires each slot's
-    # lease lazily, on that slot's first CODEX job (see codex_home_for_slot).
-    # A run that only ever processes gemini jobs therefore never creates a
-    # single codex_home directory.
     ctx = RunCtx(args.worker_script, args.validator_script, args.manifest_schema,
-                 args.artsrc_dir, args.active_dir, args.codex_home_root, args.workers,
+                 args.artsrc_dir, args.active_dir, args.codex_home, args.workers,
                  args.timeout_generate, args.timeout_edit, args.reasoning_effort,
                  args.verbose, slots, args.gemini_worker_script, args.gemini_timeout,
                  throughput_log=args.throughput_log,
                  done_dir=args.done_dir, failed_dir=args.failed_dir,
                  canon_vision=_canon_vision_for(args), canon_model=args.canon_model)
-    ctx.codex_sandbox_base = args.codex_sandbox_base  # SANDBOX_UAC_ONE_STATE pre-launch guard's base
     if ctx.canon_vision is None:
         console_obj.info("canon advisor OFF for this run")
     else:
@@ -3457,7 +3196,7 @@ def main(argv=None) -> int:
     def _channel_permanently_blocked(ch: str) -> bool:
         if ch == "gemini":
             return gemini_budget.admission_blocked()
-        return (not codex_sandbox_ok) or detector.admission_blocked()
+        return (not codex_ok) or detector.admission_blocked()
 
     last_meter_refresh = 0.0
     last_housekeeping = time.monotonic()
@@ -3474,7 +3213,7 @@ def main(argv=None) -> int:
                         def _claim_blocked(ch, _in_flight=codex_in_flight, _cap=current_codex_n):
                             if ch == "gemini":
                                 return gemini_budget.admission_blocked()
-                            return ((not codex_sandbox_ok) or detector.admission_blocked()
+                            return ((not codex_ok) or detector.admission_blocked()
                                     or _in_flight >= _cap)
 
                         job_path = claim_next(args.pending_dir, args.active_dir,
@@ -3529,7 +3268,7 @@ def main(argv=None) -> int:
                         futures[pool.submit(process_job, job_path, ctx)] = (job_path, ch, reserved_usd)
 
                 # ARTPIPE_ORPHAN_WEDGE_1: startup-only reconcile/preflight let a
-                # stale active/ orphan and a latched sandbox preflight idle the
+                # stale active/ orphan and a latched codex channel idle the
                 # daemon for 17 h. Re-run both periodically while running.
                 if not stop_event.is_set() and \
                         time.monotonic() - last_housekeeping >= HOUSEKEEPING_INTERVAL_S:
@@ -3550,12 +3289,12 @@ def main(argv=None) -> int:
                         if again:
                             _report_batch(console_obj, f"reconciled {len(again)} job(s)",
                                           again, lambda item: f"reconciled {item[0]} - {item[1]}")
-                        if (not codex_sandbox_ok and _codex_jobs_pending(args.pending_dir)
+                        if (not codex_ok and _codex_jobs_pending(args.pending_dir)
                                 and time.monotonic() - last_preflight >= PREFLIGHT_RECHECK_S):
                             last_preflight = time.monotonic()
-                            ok_now, msg_now = common.codex_sandbox_preflight(args.codex_sandbox_base)
+                            ok_now, msg_now = imagecall.ready(args.codex_home)
                             if ok_now:
-                                codex_sandbox_ok = True
+                                codex_ok = True
                                 console_obj.mark_codex_channel_enabled()
                                 console_obj.info(f"codex channel re-enabled - {msg_now}")
                     except Exception as exc:  # housekeeping must never kill the daemon
@@ -3576,9 +3315,8 @@ def main(argv=None) -> int:
                     now_mono = time.monotonic()
                     if now_mono - last_meter_refresh >= args.meter_refresh_interval:
                         last_meter_refresh = now_mono
-                        home = ctx.any_leased_codex_home()
-                        if home is not None and _codex_jobs_pending(args.pending_dir):
-                            detector.note_meters(codex_grumpiness.read_meters(home),
+                        if _codex_jobs_pending(args.pending_dir):
+                            detector.note_meters(codex_grumpiness.read_meters(ctx.meter_home()),
                                                   warn=console_obj.warn)
                             console_obj.quota(quota_state(detector, args.workers))
 
@@ -3596,12 +3334,10 @@ def main(argv=None) -> int:
                     job_path, ch, reserved_usd = futures.pop(fut)
                     try:
                         result = fut.result()
-                        if result.get("worker_status") == SANDBOX_NOT_READY:
-                            # Retryable: codex never ran, nothing billed. Back to pending/ and the codex
-                            # channel goes off until the housekeeping re-preflight (every PREFLIGHT_RECHECK_S
-                            # while codex jobs wait) passes: a one-off net.exe read blip re-enables it, a real
-                            # mismatch keeps failing the preflight and stays off (no claim/refuse loop;
-                            # ARTPIPED_CODEX_LATCH_RETRY_ONE_BLIP_SINKS).
+                        if result.get("worker_status") == COULD_NOT_START:
+                            # Retryable: no picture was asked for. Back to pending/ with no attempt spent, and the
+                            # codex channel goes off until the housekeeping ready check passes (every
+                            # PREFLIGHT_RECHECK_S while codex jobs wait), so a dead login fails no job.
                             dest = args.pending_dir / job_path.name
                             if not dest.exists():
                                 try:
@@ -3611,10 +3347,11 @@ def main(argv=None) -> int:
                             # finalize_job is skipped below, so clear the in-flight entry here or the
                             # status file shows this job running forever (ARTPIPED_STATUS_FIX_PHANTOM_INFLIGHT).
                             console_obj.job_requeued(job_path.stem)
-                            if codex_sandbox_ok:
-                                codex_sandbox_ok = False
-                                console_obj.warn(f"codex channel disabled until a sandbox re-preflight passes — {result.get('note')}")
-                                console_obj.mark_codex_channel_disabled()
+                            if codex_ok:
+                                codex_ok = False
+                                console_obj.warn(f"codex channel disabled until the ready check passes — {result.get('note')}")
+                                last_preflight = time.monotonic()     # a file-level ready check cannot see a
+                                console_obj.mark_codex_channel_disabled()   # dead login: wait a full interval
                             continue
                     except Exception as exc:  # never let a worker-thread crash kill the daemon
                         # `ch` is what claim_next() actually claimed THIS
@@ -3638,11 +3375,6 @@ def main(argv=None) -> int:
                 if args.once and not futures and _queue_empty(args.pending_dir):
                     break
     finally:
-        for fh in ctx.lease_handles:
-            try:
-                fh.close()
-            except OSError:
-                pass
         render_stop.set()
         render_thread.join(timeout=1.0)
 

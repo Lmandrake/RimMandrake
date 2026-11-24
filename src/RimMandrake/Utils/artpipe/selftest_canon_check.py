@@ -219,7 +219,7 @@ def _ctx(vision, tmp: Path):
     slots = queue.Queue()
     slots.put(0)
     return SimpleNamespace(canon_vision=vision, canon_model="mock", slots=slots,
-                           codex_home_for_slot=lambda s: tmp / "home")
+                           codex_home=tmp / "home")
 
 
 def test_gate_in_process():

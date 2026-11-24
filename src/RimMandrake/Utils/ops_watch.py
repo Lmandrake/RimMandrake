@@ -3187,25 +3187,24 @@ def c_queues(now, rules, ctx):
     return out
 
 
-def artpipe_signin_reading(root=None, base=None):
-    """queues.artpipe.signins_bad (RIMMANDRAKE_TEST_ART_WORKERS_SHARING_ONE_CODEX_LOGIN_NOT_FIVE): art worker homes
-    whose Codex sign-in is gone, torn, shared with another home or dead on its last job (artpipe/signin_health.py; a
-    read of each auth.json and the daemon's per-home outcome record, no network, no token in the point). A root that
-    cannot be read is UNMEASURED, never 0. Page: design/specs/2026-11-22-art-worker-own-signin/boundary.md."""
+def artpipe_signin_reading(home=None, log_dir=None):
+    """queues.artpipe.signins_bad: 1 when the one Codex sign-in is gone, torn or dead on the last call that could tell,
+    else 0 (artpipe/signin_health.py: the folder and the door's call log, no network, no token in the point). A log or
+    folder that cannot be read is UNMEASURED, never 0. Page:
+    design/specs/2026-11-24-art-daemon-over-the-one-door/boundary.md."""
     k = "queues.artpipe.signins_bad"
     try:
         ap = str(HERE / "artpipe")
         if ap not in sys.path:
             sys.path.insert(0, ap)
         import signin_health as SH
-        if root is None:
-            root, base = SH.default_root(), SH.default_base()
-        v = SH.check(Path(root), Path(base) if base else None)
-    except Exception as e:  # noqa: BLE001 - an unreadable root or a failed import is blind, never a calm 0
-        return {k: U("worker sign-ins not read: %s: %s" % (type(e).__name__, str(e)), "homes")}
-    bad = {n: x for n, x in v.items() if x in SH.BAD}
-    return {k: M(len(bad), "art worker homes whose Codex sign-in is gone, torn, shared or dead", homes=len(v),
-                 bad=bad, root=str(root))}
+        if home is None:
+            home, log_dir = SH.defaults()
+        v, facts = SH.check(Path(home), Path(log_dir))
+    except Exception as e:  # noqa: BLE001 - an unreadable log or a failed import is blind, never a calm 0
+        return {k: U("the Codex sign-in was not read: %s: %s" % (type(e).__name__, str(e)), "sign-ins")}
+    bad = {str(home): v} if v in SH.BAD else {}
+    return {k: M(len(bad), "the one Codex sign-in, gone, torn or dead", homes=1, bad=bad, **facts)}
 
 
 def c_wrapup(now, rules, ctx):
