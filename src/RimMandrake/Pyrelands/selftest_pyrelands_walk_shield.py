@@ -214,6 +214,10 @@ check("burn line: can-fail: an arrival or a critical subject is not taken",
 check("burn line: the days run inside the shield",
       "with _wildlife_shield(t):\n        _r6_burn_line(t)" in open(V.__file__, encoding="utf-8").read())
 
+for chain in ("fresh_burn_bonus", "embergrass_regrow"):
+    check("burn line's shield: chain %s runs inside it" % chain,
+          "@_wildlife_shielded\ndef %s(t):" % chain in open(V.__file__, encoding="utf-8").read())
+
 n = sum(RESULTS)
 print("\n%d/%d passed" % (n, len(RESULTS)))
 sys.exit(0 if n == len(RESULTS) else 1)

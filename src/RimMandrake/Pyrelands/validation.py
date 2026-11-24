@@ -1172,6 +1172,16 @@ def _teardown(fire=False, weather=False):
     return deco
 
 
+def _wildlife_shielded(fn):
+    """A chain whose days read ground, not animals, runs inside _wildlife_shield (visit 8: a wild barbslinger downing a
+    fire-hawk stopped fresh_burn_bonus on day 1)."""
+    @functools.wraps(fn)
+    def wrapper(t):
+        with _wildlife_shield(t):
+            return fn(t)
+    return wrapper
+
+
 def _independent(t):
     """Start a component that reads its own state, so an earlier component's FAIL or UNMEASURED does
     not turn it UNMEASURED. The environment still ends the chain: a surprise abort, or a map the runner
@@ -1705,6 +1715,7 @@ def ash_fertility_watered(t):
 
 @suite.chain("fresh_burn_bonus")
 @_teardown(fire=True, weather=True)
+@_wildlife_shielded
 def fresh_burn_bonus(t):
     """LONG SPLIT (~100k ticks). pyre_fresh_burn_feeds_the_field, a STATE read of FertilityAt on a burned deep-ash cell:
     before the burn, right after it, +1 day (the linear decay; the design's +3 days costs another 120k ticks for a point
@@ -3020,6 +3031,7 @@ def heat_dome(t):
 
 @suite.chain("embergrass_regrow")
 @_teardown(fire=True)
+@_wildlife_shielded
 def embergrass_regrow(t):
     """Fixed 20x20 cohort, pre-laid to RM_FE_Ash_Deep (the real ground), grassed, burned, then a COMPRESSED regrow window (override, see below).
     Counts only plants spawned AFTER the burn (ThingID not in the pre-burn set)."""
@@ -5713,6 +5725,10 @@ def _ten_firehawk(t):
         t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
         _ten_lit_plot(t, plot)
         hawk = _spawn_wild(t, "RM_FireHawk", fx + TEN_HAWK_OFFSET, fz)
+        # SITE (visit 8, 2026-11-23): a thirsty hawk's RM_DrinkFromTerrain flew it to water inside the ember reach of the
+        # burn, so the carry took over and the seek band was never tried. It starts watered and fed.
+        for need in ("RM_Thirst", "Food"):
+            t.bridge_call("jawa/pawn_need", pawn=hawk, action="need", need=need, level=1.0)
         seq, dist, strays = watch(hawk, plot)
         if planted:
             _set(t, {"fireHawkSpreadEnabled": True})
