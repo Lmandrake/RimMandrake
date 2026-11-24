@@ -48,7 +48,7 @@ The Conductor's startup reading chain was 183.3 KB in the review. It is 199.3 KB
 (about 73 KB in the review) and are 78,097 bytes after batch two. He deferred a length ceiling for rule files to about 2026-12-05 (note
 of 2026-11-21).
 
-## Batch two (2026-11-23, 7 to 9 PM PST)
+## Batch two (2026-11-23, 6:57 to 7:25 PM PST)
 
 **The one fresh read of `8d9160362d`.** Each code file was read whole once, against its pages. Tests were read with them.
 
