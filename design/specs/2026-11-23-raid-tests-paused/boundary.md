@@ -2,9 +2,9 @@
 
 Code: `src/RimMandrake/rimflow/raid_pause.py` (the rule and the switch), `src/RimMandrake/rimflow/raid_pause.json` (the
 switch), and its use in `src/RimMandrake/Utils/rimbridge_client.py` (every bridge call), `maturation.py` (`ingame_tests`,
-`read_ingame_exit`, `ingame_facts`, the driver's brief, the walk brief, the pass), `src/RimMandrake/Utils/modcheck/suite.py`
-and `runner.py` (a chain), and `src/RimMandrake/Utils/testq/pipeline_admit.py` (the test lane). Item
-`RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST`. The rule:
+`read_ingame_exit`, `ingame_facts`, the driver's brief, the walk brief, the pass), `src/RimMandrake/Utils/modcheck/suite.py`,
+`runner.py` and `spoil_gate.py` (a chain, acceptance and verification), and `src/RimMandrake/Utils/testq/pipeline_admit.py`
+(the test lane). Item `RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST`. The rule:
 `design/RimMandrake/standing_rulings.md` §The cheapest test that decides the bar. Each promise has a test of its name in
 `src/RimMandrake/rimflow/selftest_raid_pause.py`.
 
@@ -49,8 +49,8 @@ says `"paused": true`.
   bars and the verdict of its last row. The word is none of PASS, FAIL and UNMEASURED. The scene makes no line, no
   undecided bar, no shortfall and no road back, so it spends no trial, turn, look or cycle, and does not pause its mod.
 - **a-standing-pass-stands.** A paused scene whose last row is a PASS that the change since its commit does not touch, with no MOD
-  FAILURE on that build and no UNRESOLVED run, reads `PASS stands`, and opens no bar. A relation that cannot be read leaves
-  the scene PAUSED.
+  FAILURE on that build and no UNRESOLVED run, reads `PASS stands`, and opens no bar. A same-build legacy `FAIL` classed `MOD`
+  counts as a MOD FAILURE. A relation that cannot be read leaves the scene PAUSED.
 - **open-raid-bar-holds-the-pass.** A bar that a raid scene decides is open while that scene has no standing pass, with the
   pause on or off. The version does not pass (`advance --to passed`) while a raid bar is open, unless
   `--conductor-decision` names each open bar.
@@ -59,8 +59,9 @@ says `"paused": true`.
   are left out of the brief, and an item that only its failed rows cite holds no visit (`visit_cited_items`).
 - **walk-brief-names-moved-bars.** A walk brief that does not name each bar that moved to the next version is not written yet, and
   says which bar is missing.
-- **chain-is-not-run.** A modcheck chain in `chains`, and a chain that meets the refused call, read NOT_RUN with the word, never
-  UNMEASURED and never FAIL. The other chains of the run go on. The test lane refuses a job whose every chain is paused.
+- **chain-is-not-run.** While the pause is on, a chain listed in `chains` or stopped by a refused raid call records its
+  skipped rows with `execution: not_run`. Those rows read `NOT_RUN` with the pause word in the acceptance report. The other
+  chains go on, and verification counts only executed rows. The test lane refuses a job whose every chain is paused.
 - **switch-unreadable-is-paused.** A switch that is missing or cannot be read is a pause, and its reason is named.
 - **one-command-lifts.** `raid_pause.py lift --why`, `pause --why`, `allow ITEM --why` and `disallow ITEM --why` write the switch and
   land it. Exit 0 written and landed; 2 refused, nothing written (no why, or a role run); 4 written and not landed.

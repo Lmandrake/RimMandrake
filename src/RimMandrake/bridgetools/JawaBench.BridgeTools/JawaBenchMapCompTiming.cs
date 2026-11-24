@@ -95,7 +95,8 @@ namespace JawaBench.BridgeTools
                 "the mod whose loaded assemblies contain the type). Elapsed time: CPU, GC pauses and blocking all count, " +
                 "so it is a lead, not a verdict.",
             ResultDescription =
-                "success, ticksElapsed, realSeconds, patchedMethods, patchFailures[], sumMs, sumMsPerTick, " +
+                "success, ticksElapsed, realSeconds, waitEnded ('ticks', 'timeout' or 'paused'), " +
+                "patchedMethods, patchFailures[], sumMs, sumMsPerTick, " +
                 "foreignThreadCalls, otherMapCalls (instances on other maps, not counted), orphanExits, hookFaults, lastHookFault, coverage (ok|degraded), components[] of {type, assembly, packageId, calls, totalMs, msPerTick, maxMs}.")]
         public static async Task<object> MapCompTiming(
             IRimBridgeContext ctx,
@@ -156,12 +157,8 @@ namespace JawaBench.BridgeTools
                 });
                 if (setup != null) return setup;
 
-                while (true)
-                {
-                    await Task.Delay(250, cancellationToken).ConfigureAwait(false);
-                    int now = await ctx.MainThread.InvokeAsync(() => Find.TickManager?.TicksGame ?? startTick, cancellationToken);   // GPT c02.F3
-                    if (now - startTick >= ticks || sw.Elapsed.TotalSeconds >= maxSeconds) break;
-                }
+                var (_, _, waitEnded, _, _) = await WaitForGameTicks(
+                    ctx, cancellationToken, startTick, ticks, maxSeconds, pollMs: 250, clock: sw).ConfigureAwait(false);
 
                 return await ctx.MainThread.InvokeAsync(() =>
                 {
@@ -217,6 +214,7 @@ namespace JawaBench.BridgeTools
                         error = unmeasured,
                         ticksElapsed = ticksRan,
                         realSeconds = Math.Round(sw.Elapsed.TotalSeconds, 1),
+                        waitEnded,
                         patchedMethods = patched,
                         patchFailures = failures,
                         sumMs = Math.Round(sum, 1),

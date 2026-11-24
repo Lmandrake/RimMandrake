@@ -32,6 +32,10 @@ class Fault(Exception):
 class ReplyLost(Exception):
     """A call was sent and no reply came: whether the game did it is not known."""
 
+    def __init__(self, detail, reconcile=None):
+        super().__init__(detail)
+        self.reconcile = reconcile
+
 
 class CallFailed(Exception):
     """The bridge answered with an error, or refused the call before it was sent: the call was not done."""

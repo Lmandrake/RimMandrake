@@ -797,6 +797,7 @@ BRIDGE_VERSION = "1.0"
 
 # Anything not on this list is assumed to mutate the game until proven otherwise.
 READ_ONLY_PREFIXES = ("list_", "get_", "search_", "find_", "compile_", "ping")
+RUN_TOOLS = ("jawa/run_until", "jawa/scene_slice")
 # Reads the prefixes cannot see. companion_handshake only reports the companion's profile; treated as mutating it was
 # refused whenever any earlier call had an UNKNOWN outcome (testq: 4 jobs INVALID/HARNESS 10-27..10-29), so the
 # harness could not even read the state it needed to reconcile.
@@ -1497,6 +1498,8 @@ class RimBridge:
                             "transport": "ok" if answered else outcome}, **_stall_fields(t0)))
             if mutating and status == "INDETERMINATE":
                 _mark_indeterminate(start, str(ex))
+                if tool in RUN_TOOLS and (params or {}).get("action") == "start" and EVIDENCE_LOG:
+                    ex.indeterminate_cid = cid
             else:
                 _inflight_clear(cid)
             _ACTIVE.discard(cid)
@@ -1607,6 +1610,8 @@ class RimBridge:
         leaf = tool.split("/", 1)[-1]
         if tool == "jawa/static_call" and getattr(self, "static_reads", False):
             return read_only_static(params) is None
+        if tool in RUN_TOOLS and (params or {}).get("action") == "status":
+            return True
         return leaf.startswith(READ_ONLY_PREFIXES) or tool in READ_ONLY_TOOLS
 
 

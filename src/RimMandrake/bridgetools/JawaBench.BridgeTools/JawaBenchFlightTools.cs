@@ -66,15 +66,6 @@ using Verse;
 
 namespace JawaBench.BridgeTools
 {
-    /// <summary>One maintain-poll's worth of state, so the poll loop does not
-    /// have to reflect over an anonymous type to read its own numbers back.</summary>
-    internal sealed class FlightPoll
-    {
-        public int Ticks;
-        public int FlyingNow;
-        public int Reasserts;
-    }
-
     public sealed partial class JawaBenchTerrainTools
     {
         // ================================================================
@@ -303,7 +294,7 @@ namespace JawaBench.BridgeTools
                 "After a maintain window: ticksElapsed, reasserts, and flyingLowWater - the " +
                 "smallest number of the selected pawns seen flying at any poll. If " +
                 "flyingLowWater is less than the pawn count, the window was NOT clean and any " +
-                "measurement taken across it is contaminated.")]
+                "measurement taken across it is contaminated. waitEnded is 'ticks', 'timeout' or 'paused'.")]
         public static async Task<object> PawnFlight(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -498,55 +489,43 @@ namespace JawaBench.BridgeTools
             var reasserts = 0;
             var polls = 0;
             var flyingLowWater = maintained.Count;
-            var timedOut = false;
+            string waitEnded;
             try
             {
-                var elapsedMs = 0;
-                while (maintainTicks > 0)
+                void MaintainFlight()
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    if (ticksNow - startTicks >= maintainTicks) break;
-                    if (elapsedMs >= timeoutSeconds * 1000) { timedOut = true; break; }
-                    await Task.Delay(50, cancellationToken).ConfigureAwait(false);
-                    elapsedMs += 50;
-
-                    var poll = await ctx.MainThread.InvokeAsync<FlightPoll>(() =>
+                    var flyingNow = 0;
+                    foreach (var p in maintained)
                     {
-                        var flyingNow = 0;
-                        var re = 0;
-                        foreach (var p in maintained)
+                        if (p == null || p.Dead || !p.Spawned) continue;
+                        var t = p.flight;
+                        if (t == null) continue;
+                        // Count BEFORE re-asserting: the low-water mark must
+                        // record what the simulation actually saw, not what
+                        // this tool put back afterwards.
+                        if (p.Flying) flyingNow++;
+                        else
                         {
-                            if (p == null || p.Dead || !p.Spawned) continue;
-                            var t = p.flight;
-                            if (t == null) continue;
-                            // Count BEFORE re-asserting: the low-water mark must
-                            // record what the simulation actually saw, not what
-                            // this tool put back afterwards.
-                            if (p.Flying) flyingNow++;
-                            else
+                            string werr;
+                            if (FlightStateWrite(t, FlightStateFlying, out werr))
                             {
-                                string werr;
-                                if (FlightStateWrite(t, FlightStateFlying, out werr))
-                                {
-                                    FlightIntWrite(t, FlightFlyingTicksField, HoldFlyingTicks);
-                                    FlightIntWrite(t, FlightLerpTickField, 0);
-                                    re++;
-                                }
-                            }
-                            // Keep flyingTicks from reaching MaxFlightTicks even
-                            // for a pawn that is still airborne, or FlightTick
-                            // lands it mid-window.
-                            if (FlightIntField(t, FlightFlyingTicksField, 0) > HoldFlyingTicks / 2)
                                 FlightIntWrite(t, FlightFlyingTicksField, HoldFlyingTicks);
+                                FlightIntWrite(t, FlightLerpTickField, 0);
+                                reasserts++;
+                            }
                         }
-                        return new FlightPoll { Ticks = TicksGameSafe(), FlyingNow = flyingNow, Reasserts = re };
-                    }, cancellationToken).ConfigureAwait(false);
-
-                    ticksNow = poll.Ticks;
-                    reasserts += poll.Reasserts;
-                    if (poll.FlyingNow < flyingLowWater) flyingLowWater = poll.FlyingNow;
-                    polls++;
+                        // Keep flyingTicks from reaching MaxFlightTicks even
+                        // for a pawn that is still airborne, or FlightTick
+                        // lands it mid-window.
+                        if (FlightIntField(t, FlightFlyingTicksField, 0) > HoldFlyingTicks / 2)
+                            FlightIntWrite(t, FlightFlyingTicksField, HoldFlyingTicks);
+                    }
+                    if (flyingNow < flyingLowWater) flyingLowWater = flyingNow;
                 }
+
+                (ticksNow, _, waitEnded, polls, _) = await WaitForGameTicks(
+                    ctx, cancellationToken, startTicks, maintainTicks, timeoutSeconds, speedChanged,
+                    onPoll: MaintainFlight, pollMs: 50).ConfigureAwait(false);
             }
             finally
             {
@@ -593,7 +572,8 @@ namespace JawaBench.BridgeTools
                 // NOT clean and anything measured across it is contaminated.
                 flyingLowWater = maintainTicks > 0 ? flyingLowWater : -1,
                 flyingAtEnd,
-                timedOut,
+                timedOut = waitEnded == "timeout",
+                waitEnded,
                 speedRestored,
                 results = actionRows,
                 pawns = rowsAfter,

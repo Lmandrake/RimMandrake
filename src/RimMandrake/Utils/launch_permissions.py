@@ -60,7 +60,7 @@ PROG_RX = (r"(?:(?:%s|\{(?:script|bounded|claude|exe)\}|(?:[~\w./${}\\-]*/)?clau
            r"(?=-p\s+(?:--[a-z]|[\"'$<\\{%])|--[a-z]|remote-control\s+--)"
            r"|(?:[~\w./${}\\-]*/)?claude(?:\.exe)?[\"']?\s+"
            r"(?=-p\s+(?:--[a-z]|[\"'$<\\{%])|--(?:dangerously|bg|resume|continue|name|permission|remote)|remote-control\s+--)"
-           r"|^remote-control\s+(?=--))")
+           r"|^[ \t]*remote-control\s+(?=--))")
 STRING_RX = re.compile(r"(?<![\w-])" + PROG_RX)
 
 

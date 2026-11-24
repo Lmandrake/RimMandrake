@@ -18,6 +18,8 @@ import subprocess
 import sys
 import tempfile
 import time
+from types import SimpleNamespace
+from unittest import mock
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -63,7 +65,7 @@ class FakeVM:
 
     def query(self, expr, start=None, end=None, step=None, url=None, game=None):
         import games
-        name = re.match(r"\w+", expr).group(0)
+        name = re.match(r"(?:last_over_time\()?(\w+)", expr).group(1)
         rx = games.label_re(game) if game else ".*"
         by: dict = {}
         for x in self.lines:
@@ -128,9 +130,9 @@ class World:
         return rc, out.getvalue() + err.getvalue()
 
 
-def four_games(W):
+def four_games(W, t=None):
     import host
-    t = W.now - 20
+    t = W.now - 20 if t is None else t
     pids = {"archmagi": 11, "archmagi.b": 22, "stevedesktop": 33, "stevedesktop.b": 44}
     for i, (k, pid) in enumerate(pids.items()):
         s = f"{i}{i}aaaaaa{k.replace('.', '')}"
@@ -179,6 +181,49 @@ def t_a_game_name_reads_that_games_rows_and_no_others(W):
     check("ArchBig's rows from before the label are ArchBig's and nobody else's",
           re.fullmatch(games.label_re("ArchBig"), "") and not re.fullmatch(games.label_re("Steve1"), ""))
 
+    s = "22aaaaaastevedesktop"
+    top = [[f"other-signature-{i}", 1] for i in range(5)]
+    w(W.seg("stevedesktop", s, 33), [sample(W.now - 5, s, 102, tier="test", exc={"top": top})])
+    side = os.path.join(W.dirs["stevedesktop"], "tps", "exc", f"exc_{s}.jsonl")
+    w(side, [{"session": s, "utc": iso(W.now - 5), "sig": "sixth-signature", "msg": "Steve1 first sight only"}])
+    W.step()
+    rc, steve = W.cli("exc", "--text", "--game", "steve1")
+    _, arch = W.cli("exc", "--text", "--game", "ArchBig")
+    check("first-sight text outside the sample top five belongs only to Steve1",
+          rc == 0 and "sixth-signature" in steve and "Steve1 first sight only" in steve
+          and "sixth-signature" not in arch, (rc, steve, arch))
+
+    import game_instance
+    reached = []
+
+    @contextlib.contextmanager
+    def bridge(host, port, token, client_name):
+        reached.append((port, os.environ.get("RIMFLOW_DRIVER_LOCK")))
+        yield SimpleNamespace(call=lambda *_: {"ok": True})
+
+    def endpoint(host=None):
+        return host or "127.0.0.1", int(os.environ["GABP_SERVER_PORT"]), os.environ["GABP_TOKEN"]
+
+    fake = SimpleNamespace(resolve_endpoint=endpoint, RimBridge=bridge, DEFAULT_HOST="127.0.0.1")
+    with mock.patch.dict(os.environ, RM_INSTANCES_ROOT=os.path.join(W.tmp, "instances")):
+        with mock.patch.dict(os.environ, game_instance.env("ArchSmall")), mock.patch.dict(sys.modules, rimbridge_client=fake):
+            rc, o = W.cli("tier", "campaign", "--game", "ArchBig")
+            check("tier ArchBig refuses ArchSmall's exported settings before connecting",
+                  rc != 0 and not reached and "ArchBig" in o, (rc, reached, o))
+            reached.clear()
+            with mock.patch.dict(os.environ, RM_GAME_INSTANCE="a", GABP_TOKEN="",
+                                 GABP_SERVER_PORT=str(game_instance.port("ArchBig"))):
+                rc, o = W.cli("tier", "campaign", "--game", "ArchBig")
+                check("tier ArchBig refuses a matching port with ArchSmall's lock", rc != 0 and not reached, (rc, reached, o))
+            reached.clear()
+            with mock.patch.dict(os.environ, GABP_SERVER_PORT=str(game_instance.port("ArchBig"))):
+                rc, o = W.cli("tier", "campaign", "--game", "ArchSmall")
+                check("tier ArchSmall refuses a matching lock with ArchBig's port", rc != 0 and not reached, (rc, reached, o))
+            reached.clear()
+            rc, o = W.cli("tier", "campaign", "--game", "ARCHSMALL")
+            check("tier accepts the requested game's own exported settings", rc == 0 and reached == [
+                (game_instance.port("ArchSmall"), game_instance.lock_path("ArchSmall"))], (rc, reached, o))
+
 
 def t_an_unknown_game_is_refused_by_name(W):
     four_games(W)
@@ -200,10 +245,33 @@ def t_an_unreachable_machine_reads_could_not_look_with_its_cause(W):
               rc == 3 and "COULD NOT LOOK" in o and "connect timed out" in o, (rc, o))
         check(f"{argv[0]}: no zero and no empty list", not re.search(r"\b0 (shown|series|completed|calls)|\(0\)", o), o)
     four_games(W)
+    s = "22aaaaaastevedesktop"
+    w(W.seg("stevedesktop", s, 33), [
+        sample(W.now - 5, s, 102, tier="test", exc={"top": [["held-signature", 1]]}),
+        {"kind": "flight", "utc": iso(W.now - 4), "session": s, "seq": 7, "trigger": "held-flight"}])
+    W.step()
     W.pulled(error="ssh exit 255: connect timed out", last_ok=W.now - 900)
     rc, o = W.cli("query", "rm_game_tps", "--game", "Steve1")
     check("rows held from before are shown, with the cause and their age",
           "last=102" in o and "COULD NOT LOOK" in o and re.search(r"last look 15m ago", o), o)
+    moment = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(W.now - 20))
+    for argv, held in ((["query", "rm_game_tps"], "last=102"), (["events", "--kind", "incident"], "incident"),
+                       (["bridge"], "jawa/stevedesktop"), (["flight"], "held-flight"), (["exc"], "held-signature"),
+                       (["at", moment], "med=102")):
+        rc, o = W.cli(*argv, "--game", "Steve1")
+        check(f"{argv[0]} returns exit 3 after showing held rows", rc == 3 and held in o
+              and "connect timed out" in o and "held from before: newest row" in o, (rc, o))
+    import store
+    with mock.patch.object(store, "vm_get", return_value=b'{"data":["rm_game_tps"]}'):
+        rc, o = W.cli("series", "--game", "Steve1")
+        check("series returns exit 3 after showing held rows", rc == 3 and "e.g. 102" in o and "connect timed out" in o, (rc, o))
+    deploy = store.add_event(W.d.con, W.now - 180, "deploy", "fixture deploy")
+    deploy_id = W.d.con.execute("SELECT id FROM events WHERE kind='deploy'").fetchone()[0]
+    W.d.con.commit()
+    with mock.patch.object(store, "vm_export", return_value=[({}, [], [3.0] * 30)]):
+        rc, o = W.cli("around", f"deploy:{deploy_id}", "--game", "Steve1")
+        check("around returns exit 3 after showing held rows", deploy and rc == 3 and "NO_SHIFT" in o
+              and "connect timed out" in o, (rc, o))
     W.pulled(at=W.now - 3600)
     rc, o = W.cli("games", "Steve1")
     check("a pull that stopped running is could not look, not a reading", rc == 3 and "pull" in o and "1.0h" in o, (rc, o))
@@ -273,11 +341,27 @@ def t_every_answer_carries_its_age(W):
     _, o = W.cli("games", "Steve1")
     check("an old row of a game that is up reads STALE", "STALE" in o and re.search(r"newest row [67]m", o), o)
 
+    import pull_games
+    root, stub = far(W.tmp)
+    for letter in ("a", "b"):
+        os.makedirs(os.path.join(root, letter, "JawaBench", "tps"))
+    with mock.patch.object(pull_games.time, "time", return_value=W.now - 180):
+        pull(stub)
+    blocked = serve_source().replace("        os.listdir(tps)",
+                                     "        if letter == 'a': raise PermissionError('TPS listing denied')\n"
+                                     "        os.listdir(tps)")
+    pull(stub, [sys.executable, "-c", blocked])
+    rc, steve1 = W.cli("games", "Steve1")
+    ok, steve2 = W.cli("games", "Steve2")
+    check("a failed Steve1 look keeps its prior age while Steve2 gets a fresh look",
+          rc == 3 and "TPS listing denied" in steve1 and "last look 3m ago" in steve1
+          and ok == 0 and re.search(r"last look \d+s ago", steve2), (rc, steve1, ok, steve2))
+
 
 def t_one_games_alarm_state_never_mixes_with_anothers(W):
-    four_games(W)
+    four_games(W, t=W.now - 290)
     s = "22aaaaaastevedesktop"
-    w(W.seg("stevedesktop", s, 33), [{"kind": "incident", "utc": iso(W.now - 5), "session": s, "type": "stall", "gapS": 40}])
+    w(W.seg("stevedesktop", s, 33), [{"kind": "incident", "utc": iso(W.now - 275), "session": s, "type": "stall", "gapS": 40}])
     W.step()
     al = json.load(open(os.path.join(W.c["state"], "alerts.json")))["alerts"]
     hit = [a for a in al if a["id"].startswith("stall")]
@@ -291,11 +375,23 @@ def t_one_games_alarm_state_never_mixes_with_anothers(W):
     check("ArchBig's stall still alarms, once", len([a for a in al if a["id"].startswith("stall")]) == 1, al)
     check("ArchBig's own state holds no stall of Steve1's",
           not any(i.get("gapS") == 40 for i in W.d.latest.get("incidents", [])), W.d.latest.get("incidents"))
-    low = [sample(W.now - 130 + 5 * i, s, 10, ratio=0.1) for i in range(26)]
+    low = [sample(W.now - 270 + 5 * i, s, 10, ratio=0.1) for i in range(26)]
     w(W.seg("stevedesktop", s, 33), low)
     W.step()
     check("Steve1's low speed is not in ArchBig's speed history",
           not any(h[1] == 0.1 for h in W.d.latest["tps_hist"]), W.d.latest["tps_hist"][-2:])
+    rc, o = W.cli("events", "--game", "Steve1", "--grep", "tps_low")
+    check("Steve1's sustained low speed is one Steve1 event", rc == 0 and "1 shown" in o and "tps_low" in o, (rc, o))
+    al = json.load(open(os.path.join(W.c["state"], "alerts.json")))["alerts"]
+    check("Steve1's low speed raises no alarm", not any(a["id"] == "tps_low" for a in al), al)
+    import store
+    import telemetryd
+    W.d.con.close()
+    W.d = telemetryd.Daemon(store.VMSink(post=W.vm))
+    w(W.seg("stevedesktop", s, 33), [sample(W.now - 140 + 5 * i, s, 10, ratio=0.1) for i in range(26)])
+    W.step()
+    rc, o = W.cli("events", "--game", "Steve1", "--grep", "tps_low")
+    check("the same sustained low speed stays one event after a daemon restart", rc == 0 and "1 shown" in o, (rc, o))
     import analysis
     lat = {"game_running": True, "game_running_since": W.now - 4000}
     quiet = {"tps": {"last_row_ts": W.now - 4000}, "tps.archmagi.b": {"last_row_ts": W.now - 5}}
@@ -317,13 +413,20 @@ def far(tmp):
         f.write("import os\ndef data_dir(n):\n    return os.path.join(%r, n)\n" % root)
     with open(os.path.join(stub, "rmpaths.py"), "w") as f:
         f.write("import os\ndef rm_str(*a):\n    return os.path.join(%r, *a)\n" % os.path.join(root, "data"))
+    tasklist = os.path.join(stub, "tasklist.exe")
+    with open(tasklist, "w") as f:
+        f.write("#!/bin/sh\necho 'INFO: No tasks are running'\n")
+    os.chmod(tasklist, 0o755)
     return root, stub
+
+
+def serve_source():
+    return open(os.path.join(HERE, "games_serve.py")).read().replace("/mnt/c/Windows/System32/tasklist.exe", "./tasklist.exe")
 
 
 def pull(stub, argv=None):
     import pull_games
-    src = open(os.path.join(HERE, "games_serve.py")).read()
-    return pull_games.pull("stevedesktop", argv or [sys.executable, "-c", src], cwd=stub)
+    return pull_games.pull("stevedesktop", argv or [sys.executable, "-c", serve_source()], cwd=stub)
 
 
 def t_a_pull_copies_each_byte_once(W):
@@ -354,7 +457,7 @@ def t_a_pull_copies_each_byte_once(W):
           and r["bytes"] == os.path.getsize(bc) and open(mbc).read() == open(bc).read(), r)
     full = open(seg, "rb").read()
     w(seg, [sample(W.now - 3, "s1", 52), sample(W.now - 2, "s1", 53)])
-    cut = open(os.path.join(HERE, "games_serve.py")).read().replace("CUT_AFTER = None", "CUT_AFTER = 40")
+    cut = serve_source().replace("CUT_AFTER = None", "CUT_AFTER = 40")
     r = pull(stub, [sys.executable, "-c", cut])
     check("a cut transfer is an error, keeping what arrived", r["error"] is not None
           and os.path.getsize(mine) == len(full) + 40, (r, os.path.getsize(mine), len(full)))

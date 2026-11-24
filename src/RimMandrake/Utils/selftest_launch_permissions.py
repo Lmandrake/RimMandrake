@@ -205,6 +205,14 @@ def t_every_launch_specification_in_this_tree():
         "rimflow/role_launch.py", "rimflow/seat_restart.py", "rimflow/dispatcher.py", "rimflow/coverage_judge.py",
         "rimflow/designer_cleanse.py", "rimflow/item_exam.py")}
     check("the reader sees each route known on 2026-11-23 (a reader gone blind is red)", KNOWN <= seen, KNOWN - seen)
+    path = "src/RimMandrake/Utils/install_wt_seat_profiles.py"
+    with open(os.path.join(LP.ROOT, path), encoding="utf-8") as f:
+        src = f.read()
+    at = src[:src.index("SERVER_CMD = (")].count("\n") + 1
+    check("the Windows Terminal Server template is read (its fragment starts with a space)",
+          (at, S) in {(l, v) for l, v, _w in LP.Py(src, path).sites()})
+    mut = src.replace("--permission-mode bypassPermissions\"", "--permission-mode default\"", 1)
+    check("that template alone changed to default reads LACKS", (at, L) in {(l, v) for l, v, _w in LP.Py(mut, path).sites()})
 
     root = LP.ROOT
     for p in sorted({r[0] for r in rows if r[2] == S}):

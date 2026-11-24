@@ -32,23 +32,29 @@ into `<root>/inbox/games/<machine>/`, and read from there. Every point, event an
   the game's own machine.
 - **bridge-rows-before-2026-11-23.** They carry no game. `telemetry bridge --game X` counts them apart, as unlabelled.
 - **game-series-before-2026-11-23.** They carry no `game` label and are ArchBig's: ArchBig was the only game read.
+- **an-old-flattened-exception-copy-whose-source-is-gone.** Its first-sight rows keep their legacy attribution.
 
 ## PROMISES (each one is owed a test of the same name)
 
 - **a-game-name-reads-that-games-rows-and-no-others.** With rows of all four games in the store, each verb that takes
   `--game` answers with the rows of that game only, in any letter case, and an old key reaches the same rows.
+  First-sight exception text follows its source game, including signatures outside the sample's top five. `tier --game`
+  uses the named local game's bridge and refuses conflicting inherited settings before connecting.
 - **an-unknown-game-is-refused-by-name.** Exit 2, the name typed and the four names known in the refusal; no default game.
 - **an-unreachable-machine-reads-could-not-look-with-its-cause.** Exit 3 and the cause when the machine, the pull, or the
-  daemon could not be read; never a count of zero and never an empty list. Rows held from before are shown with their age.
+  daemon could not be read; never a count of zero and never an empty list. Rows held from before are shown with their age,
+  still with exit 3.
 - **a-game-with-no-data-yet-reads-no-data-yet.** Reached, and it has written no row: exit 4, never "could not look" and
   never zero.
 - **a-game-that-is-down-reads-down-with-the-age-of-its-last-row.** The machine was read, and the process that wrote the
   newest row is gone: "down", with the age. An unread process list reads "process unread".
 - **every-answer-carries-its-age.** The answer names the age of the game's newest row and of the last look at it; a row
   older than the fresh line of a game that is up reads STALE. The age is corrected for the other machine's clock.
+  A failed game check keeps that game's last successful look, even if a game on the same machine was just read.
 - **one-games-alarm-state-never-mixes-with-anothers.** The alarms read the store's own first game. A stall or a low
   speed of another game is kept as that game's event, raises no alarm, and leaves the first game's alarm state
-  unchanged; a second game that is up does not read as "the record of the first is silent".
+  unchanged; a second game that is up does not read as "the record of the first is silent". Low speed uses the same
+  normal-speed threshold and records one event per episode, including across a daemon restart.
 - **a-session-without-windows-folders-on-path-finds-python.** The command works in an ssh session on the store's
   machine; with no Windows python at all it reads "could not look", exit 3.
 - **a-backlog-being-read-is-a-live-daemon.** The heartbeat is written between files, so a daemon that drains a long

@@ -1,0 +1,1 @@
+- `./publish` selects this selftest only when a changed path is a pipeline file, so a change to one launch file outside that list (for example `modcheck/judge.py`) alone does not run it; the nightly look does (Codex review 2026-11-24).

@@ -9,6 +9,7 @@ import shutil
 import sys
 import tempfile
 import types
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -153,6 +154,13 @@ def t_a_standing_pass_stands():
     assert read([good], "touched")["open"] and read([good], None)["read"] == RP.WORD
     assert read([K.o("MOD FAILURE", "FAIL"), K.good()])["open"], "a MOD FAILURE on that build is not hidden by a later PASS"
     assert read([K.o("UNRESOLVED"), K.good()])["open"]
+    legacy = K.row("c1", "FAIL", **{"class": "MOD"})
+    x = read([legacy, good])
+    assert x["read"] == RP.WORD and x["open"], "same-build legacy MOD FAIL read %s, open=%s" % (x["read"], x["open"])
+    assert RP.open_bars({"c1": x}) == {"b_one": ["c1"]}, x
+    assert read([legacy, K.good()])["open"], "a SUCCESS row does not hide a legacy MOD FAIL either"
+    assert read([dict(legacy, mod_sha="1111111111"), good])["read"] == RP.STANDS
+    assert read([dict(legacy, void_system=True), good])["read"] == RP.STANDS
 
 
 def t_open_raid_bar_holds_the_pass():
@@ -229,7 +237,11 @@ def t_walk_brief_names_moved_bars():
 
 
 def t_chain_is_not_run():
+    from functools import partial
+    import clockgate
+    import spoil_gate as SG
     import suite as SU
+    from rimdrive.fake import FakeWorld, pawn_row
     switch(chains={"Visibility": {"c_raid": "a raid"}})
     assert RP.chain_paused("Visibility", "c_raid") and not RP.chain_paused("Visibility", "c_other")
     t = SU.TestContext(types.SimpleNamespace(call=lambda *a, **k: None), anchor=(0, 0))
@@ -250,6 +262,50 @@ def t_chain_is_not_run():
     assert PA.refusal("Visibility", {}, "BENCH") is None and PA.refusal("Pyrelands", {"chains": ["c_raid"]}, "BENCH") is None
     switch(paused=False, chains={"Visibility": {"c_raid": "a raid"}})
     assert PA.refusal("Visibility", {"chains": ["c_raid"]}, "BENCH") is None
+
+    st = SU.Suite("Aftermath")
+
+    @st.chain("battle_lifecycle_repelled")
+    def raid(t):
+        with t.component("raid row"):
+            raise RC.RaidPausedError(RP.WORD + ". Refused: jawa/fire_raid: a raid")
+        with t.component("after the raid"):
+            pass
+
+    @st.chain("harmony_patches_registered")
+    def other(t):
+        with t.component("patches applied"):
+            pass
+
+    results = {}
+    pause_without_wait = partial(clockgate.ensure_paused, sleep=lambda _: None)
+    with patch.multiple(RU, SHEET_DIR=TMP, FIXTURE_LEDGER=os.path.join(TMP, "fixtures.json")), \
+            patch.object(clockgate, "ensure_paused", pause_without_wait):
+        for catalogued in (True, False):
+            switch(chains={"Aftermath": {"battle_lifecycle_repelled": "a raid"}} if catalogued else {})
+            world = FakeWorld(pawns=[pawn_row("Col1"), pawn_row("Col2", x=103), pawn_row("Col3", x=106)])
+            world.shot_dir = TMP
+            case = "catalogued raid" if catalogued else "refused raid call"
+            results[case] = RU.run_suite(st, world, anchor=(100, 100), situational=True)
+    readings = {case: [(c["verdict"], c["execution"]) for c in result["chains"][0]["components"]]
+                for case, result in results.items()}
+    assert all(rs and all(v == (SU.NOT_RUN, "not_run") for v in rs) for rs in readings.values()), "raid readings: %s" % readings
+    for result in results.values():
+        raid_chain, other_chain = result["chains"]
+        assert all(RP.WORD in c["detail"] for c in raid_chain["components"]), raid_chain
+        assert other_chain["components"][0]["verdict"] == SU.PASS, other_chain
+        accept = result["acceptance"]
+        paused = [r for r in accept["rows"] if r["row"].startswith("battle_lifecycle_repelled/")]
+        assert len(paused) == len(raid_chain["components"]) and all(
+            r["verdict"] == r["grade"] == SU.NOT_RUN and RP.WORD in " ".join(r["notes"]) for r in paused), accept
+        assert accept["overall"] == SG.GREEN and accept["counts"][SG.UNMEASURED] == 0, accept
+        assert result["all_green"] and not result["findings"], result
+        assert SG.grade({"chains": [raid_chain]})["overall"] == SU.NOT_RUN, raid_chain
+        mixed = dict(other_chain, components=other_chain["components"] + raid_chain["components"])
+        assert SG.grade({"chains": [mixed]})["overall"] == SG.GREEN, mixed
+        verified = RU.emit_verify("TEST", "Aftermath", "test", result, "test.html", dry_run=True, seat="BENCH")
+        assert verified["n_pass"] == verified["n_total"] == 1, verified
+        assert verified["cmd"][verified["cmd"].index("--result") + 1] == "pass", verified
 
 
 def t_switch_unreadable_is_paused():

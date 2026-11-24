@@ -145,6 +145,10 @@ def t_a_thousand_reads_change_nothing():
 
 
 def t_only_the_driver_drives_an_open_session():
+    s = code(os.path.join(CS, "JawaBenchSceneTick.cs"))
+    cancel = re.search(r'if \(a == ""\)\s*\{([^{}]*r\.Force\([^{}]*)\}', s)
+    if not cancel or not re.search(r'if \(JawaBenchHands\.Busy\) return Fail\(""\);.*r\.Force\(', cancel[1], re.S):
+        return "FAIL jawa/scene_slice can reach Force while a session is open"
     return unit("only_the_driver_drives_an_open_session")
 
 

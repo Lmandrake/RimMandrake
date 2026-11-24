@@ -73,7 +73,9 @@ class RealBridge(object):
             if " failed: " in str(e):
                 raise CallFailed(str(e))
             self.close()                                           # a timed-out connection is never used again
-            raise ReplyLost("%s: %s" % (tool, e))
+            cid = getattr(e, "indeterminate_cid", None)
+            reconcile = (lambda note: self.rb.reconcile_resolve(cid, "applied", note)) if cid else None
+            raise ReplyLost("%s: %s" % (tool, e), reconcile=reconcile)
         d = self.rb._reply_dict(out)[0]
         if not isinstance(d, dict):
             raise CallFailed("%s: the reply is not an object: %r" % (tool, str(d)[:200]))
@@ -96,7 +98,7 @@ class RealWorld(object):
         `game_lock.py run <g> -- cat`, and its input closes when this process ends, however it ends."""
         gl, hg = _import("game_lock", RIMFLOW), _import("host_guard", RIMFLOW)
         q = gl.query(letter)
-        if q["state"] == "HELD":
+        if q["state"] == "HELD" and q["code"] != gl.EX_HIS:
             cur, _problem = gl.driver_lock._read(gl.lock_path(letter))
             mine = os.environ.get(hg.ENV_GEN) and cur and str(cur.get("generation")) == os.environ[hg.ENV_GEN]
             # a take of this clone's window is ours to drive under; the take of another scene of this clone is not: it ends with it

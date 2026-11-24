@@ -12,9 +12,9 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
 
 - **The game**, by name (`game_names.py`) and never by the shell's environment: the port and the token of that game.
 - **The driver lock** of that game (`game_lock.py`). A take that this process inherited (`game_lock.py run`), or that the
-  window of this clone holds, is kept. A Windows python cannot claim, so a WSL child (`game_lock.py run <g> -- cat`) holds the
-  lock; its input closes when the script's process ends, and the lock is free within about a second. The take of another scene is
-  never inherited.
+  window of this clone holds, is kept. His switch can still refuse a new scene. A Windows python cannot claim, so a WSL
+  child (`game_lock.py run <g> -- cat`) holds the lock. Its input closes when the script's process ends, and the lock is
+  free within about a second. The take of another scene is never inherited.
 - **The process mark and the session record.** One text in the environment block of the game's own process
   (`System.Environment`, through `jawa/static_call`), with the game's process id in it. It dies with the process. A
   process that the game starts inherits the text, and the id in it then names another process, so it is not read as a mark.
@@ -30,7 +30,10 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
 - **The status of a run is asked for 60 s over lost replies.** Danger: a game that died never answers, and the script waits
   for ever.
 - **The wait for a load to settle: 600 s.** Danger: a game stuck in MapInitializing (measured live 2026-10-26, load r8).
-- **The wait for the closing record: 20 s.** Danger: a full disk; the fault is then `TRACE_INCOMPLETE`.
+- **The wait for the run's closing record is 20 s.** A full disk can prevent the record from being written. The fault
+  is then `TRACE_INCOMPLETE`.
+- **Session close uses the companion's 60 s writer drain limit.** A blocked writer can keep the session in `closing`.
+  If the stage is still `closing` at the end of the wait, close reports `CLOSE_INCOMPLETE`.
 - **A bridge call: 600 s**, the hang guard of the older layers. Danger: a game on a stalled frame.
 
 ## DOES NOT SURVIVE (not promised)
@@ -46,22 +49,32 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
 
 - **a-refusal-changes-nothing.** After each refusal of `scene.open` the lock, the calm, the session record and the loaded
   map are as before, and the phase report names the phase and what was put back.
+- **owner-hold-refuses-a-new-scene.** `OWNER_HOLD` is checked before inheriting a take. The existing take stays in place
+  and the library refuses before connecting (`test_open_refuses_owner_hold_under_an_inherited_take`).
 - **build-lines-come-from-the-game.** The build lines of a receipt are the game's own reply; the repo's hash is not in them.
 - **could-not-look-is-not-a-refusal-and-not-clean.** A lock, a tool list, a handshake or a mark that could not be read is a
   Fault or a `could_not_look` line, never "free", "no mods" or "no stamp".
 - **unreadable-is-never-false.** An unreadable value of the condition ends the run as `unknown`, also when the hand says `hit`
-  or `limit`; `r.hit` then raises.
-- **a-lost-reply-is-found-by-its-id.** The run is found and returned; it is not started twice.
+  or `limit`. `r.hit` then raises. A bare thing id and an explicit `thing:` target both match the hand's track
+  (`test_run_unreadable_thing_target_stops_as_unknown`).
+- **a-lost-reply-is-found-by-its-id.** The recovered run is returned without another start. The exact `action=status`
+  reads of both run tools pass the bridge client's pending guard. Finding the run reconciles its original start marker
+  (`test_run_lost_reply_passes_the_pending_guard`, real client with stub transport).
+- **true-at-start-plays-no-tick.** A condition already true at the paused start hits on that tick. Both hands send the
+  specified condition on the wire (`test_run_true_at_start_plays_no_tick`).
 - **a-trace-that-is-not-whole-is-a-fault.** No closing record, a gap, a dropped row, a writer that did not drain.
 - **a-game-that-ran-on-is-a-fault.** Ticks after the stop, or a game that is not paused after it, read a second time.
 - **the-game-holds-the-mark.** A changing raw call marks the process before the call; a new session in that process carries
   the stamp; another process does not.
+- **raw-arguments-are-recorded-before-the-call.** A raw marker carries the tool name and full argument JSON. A marker
+  failure appears in `could_not_look` (`test_raw_batch_arguments_are_in_the_trace`).
 - **an-undeclared-tool-is-changing.** Only a description that begins with READ ONLY is read-only; `jawa/static_call` never.
 - **accept-needs-one-identity.** It refuses a tree that is not clean, a script outside the repo and a script that imports an
   older layer, in the script or in a module of the repo that it imports. A tree that could not be read is its own answer.
 - **explore-is-stamped.** Each receipt of a run from `explore` carries EXPLORED.
-- **close-puts-back.** The session record, the calm and the lock are put back after a normal end and after an error; what
-  could not be put back is named.
+- **close-puts-back.** Close puts back the session record, the calm and the lock after a normal end and after an error.
+  It holds the take while it waits for the companion session to report `closed` or `aborted`. If the wait fails, close
+  names the unfinished session and continues cleanup (`test_close_waits_for_the_session_writer`).
 - **a-name-not-built-says-so.** The other seven names refuse `NOT_BUILT` with the ticket that builds them.
 - **help-equals-the-code.** Help prints the ten names; each built page takes the arguments that the function takes.
 

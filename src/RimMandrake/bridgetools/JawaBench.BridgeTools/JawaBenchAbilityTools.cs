@@ -445,7 +445,8 @@ namespace JawaBench.BridgeTools
                 "gate that refused when it did, and a READ-BACK block taken after the wait - the " +
                 "pawn's job, stance, verb state, lastCastTick and cooldown, which together are " +
                 "the only evidence the cast actually started. ticksElapsed is at the top: if it " +
-                "is 0 the game never ticked and nothing below it means anything.")]
+                "is 0 the game never ticked and nothing below it means anything. " +
+                "waitEnded is 'ticks', 'timeout' or 'paused'.")]
         public static async Task<object> PawnUseAbility(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -763,21 +764,10 @@ namespace JawaBench.BridgeTools
             // 🔴 THE SPEED MUST COME BACK EVEN WHEN THE CALL DOES NOT. Everything
             // between here and the read-back can throw on cancellation, so the
             // restore lives in a finally as well as in the happy path.
-            var ticksNow = startTicks;
-            var timedOut = false;
             try
             {
-                var elapsedMs = 0;
-                while (waitTicks > 0)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    if (ticksNow - startTicks >= waitTicks) break;
-                    if (elapsedMs >= timeoutSeconds * 1000) { timedOut = true; break; }
-                    await Task.Delay(100, cancellationToken).ConfigureAwait(false);
-                    elapsedMs += 100;
-                    ticksNow = await ctx.MainThread.InvokeAsync(
-                        () => TicksGameSafe(), cancellationToken).ConfigureAwait(false);
-                }
+                var (ticksNow, _, waitEnded, _, _) = await WaitForGameTicks(
+                    ctx, cancellationToken, startTicks, waitTicks, timeoutSeconds, speedChanged).ConfigureAwait(false);
 
                 return await ctx.MainThread.InvokeAsync<object>(() =>
                 {
@@ -807,7 +797,8 @@ namespace JawaBench.BridgeTools
                         accepted,
                         refusedBy,
                         ticksElapsed = elapsed,
-                        timedOut,
+                        timedOut = waitEnded == "timeout",
+                        waitEnded,
                         speedChanged,
                         speedRestored,
                         preCast,
@@ -877,7 +868,7 @@ namespace JawaBench.BridgeTools
                 "burst count, current state, whether the caster can still use it and - when a " +
                 "target was given - canHitTarget. action='cast': accepted (the engine's real " +
                 "bool), the gate that refused when it did, and a read-back of the verb state, " +
-                "the caster's stance and job after the wait.")]
+                "the caster's stance and job after the wait. waitEnded is 'ticks', 'timeout' or 'paused'.")]
         public static async Task<object> PawnUseVerb(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1068,21 +1059,10 @@ namespace JawaBench.BridgeTools
                 };
             }
 
-            var ticksNow = startTicks;
-            var timedOut = false;
             try
             {
-                var elapsedMs = 0;
-                while (waitTicks > 0)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    if (ticksNow - startTicks >= waitTicks) break;
-                    if (elapsedMs >= timeoutSeconds * 1000) { timedOut = true; break; }
-                    await Task.Delay(100, cancellationToken).ConfigureAwait(false);
-                    elapsedMs += 100;
-                    ticksNow = await ctx.MainThread.InvokeAsync(
-                        () => TicksGameSafe(), cancellationToken).ConfigureAwait(false);
-                }
+                var (ticksNow, _, waitEnded, _, _) = await WaitForGameTicks(
+                    ctx, cancellationToken, startTicks, waitTicks, timeoutSeconds, speedChanged).ConfigureAwait(false);
 
                 return await ctx.MainThread.InvokeAsync<object>(() =>
                 {
@@ -1095,7 +1075,8 @@ namespace JawaBench.BridgeTools
                         action = "cast",
                         accepted = true,
                         ticksElapsed = elapsed,
-                        timedOut,
+                        timedOut = waitEnded == "timeout",
+                        waitEnded,
                         speedChanged,
                         speedRestored,
                         preCast,

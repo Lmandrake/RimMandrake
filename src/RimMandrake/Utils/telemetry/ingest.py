@@ -33,6 +33,7 @@ import os
 import re
 import time
 
+import analysis
 import games
 import store
 from tcommon import bridge_failed, cfg, loads, parse_ts, utc_day
@@ -199,6 +200,12 @@ def parse_tps(r: dict, E: Emit, ref: str) -> bool | None:
         busy = ((br or {}).get("mainMs") or 0) / max((r.get("dReal") or 1) * 1000, 1)
         E.latest.setdefault("tps_hist", []).append((ts, r.get("ratio"), r.get("state"), r.get("mult"), busy))
         E.latest["tps_hist"] = E.latest["tps_hist"][-200:]
+        if E.game and E.src != "tps":
+            low = analysis.low_speed(E.latest["tps_hist"], ts)
+            if low and not E.latest.get("tps_low"):
+                since, detail = low
+                E.event(ts, "incident", "tps_low", {"type": "tps_low", "since": since, **detail}, E.src, f"{ref}:tps_low")
+            E.latest["tps_low"] = low is not None
         return
     if k == "context":
         lab = {"session": sess, **modlab}
@@ -427,10 +434,13 @@ TAIL_STATE_KEY = "tail_state"
 
 def tail_state(vm: store.VMSink, latest: dict) -> dict:
     """What the committed cursors stand on beyond SQLite: the open and parked bridge buckets (rows already read but
-    not yet a point) and any point neither VM nor the spool took. Written in the cursor's own commit."""
+    not yet a point), secondary games' speed history and episodes, and points neither VM nor the spool took.
+    Written in the cursor's own commit."""
     return {"open": [[*k, a] for k, a in _BRIDGE_OPEN.items()],
             "parked": [[cid, list(v)] for cid, v in _BRIDGE_PARKED.items()],
             "bridge_lasts": latest.get("bridge_lasts"),
+            "game_speed": {name: {"tps_hist": g["tps_hist"], "tps_low": g["tps_low"]}
+                           for name, g in latest.get("games", {}).items() if "tps_low" in g},
             "points": [list(p) for p in vm.points]}
 
 
@@ -450,6 +460,8 @@ def restore_tail_state(con, vm: store.VMSink, latest: dict) -> bool:
     lasts = latest.setdefault("bridge_lasts", {})
     for src, t in saved.items():
         lasts[src] = max(lasts.get(src) or 0, t)
+    for name, speed in (st.get("game_speed") or {}).items():
+        latest.setdefault("games", {}).setdefault(name, {}).update(speed)
     held = [tuple(p) for p in st.get("points") or []]
     if held:
         vm.points[:0] = held
@@ -821,33 +833,38 @@ class Tailer:
 
 def copy_side_files(con) -> int:
     """Flight dumps and first-sight exception files (P2) are capped and rotated in-game; keep a copy."""
-    dirs = [glob.escape(games.record_dir(g[1])) for g in games.all_games()]
+    dirs = [(name, key, glob.escape(games.record_dir(key))) for name, key, _, _ in games.all_games()]
     n = 0
     for sub, pat in (("flight", "flight_*.jsonl.gz"), ("exc", "exc_*.jsonl")):
-        dst = os.path.join(cfg()["raw"], sub)
-        for p in [p for d in dirs for p in glob.glob(os.path.join(d, "tps", sub, pat))]:
-            q = os.path.join(dst, os.path.basename(p))
-            try:
-                st = os.stat(p)
-                if os.path.exists(q) and os.path.getsize(q) == st.st_size:
-                    continue
-                if sub == "flight" and time.time() - st.st_mtime < 5:
-                    continue   # still being written
-                os.makedirs(dst, exist_ok=True)
-                with open(p, "rb") as a, open(q, "wb") as b:
-                    b.write(a.read())
-                n += 1
-            except OSError:
-                continue
         if sub == "exc":
-            ingest_exc_files(con, dst)
+            ingest_exc_files(con, os.path.join(cfg()["raw"], sub))    # old copies carry no game
+        for name, key, d in dirs:
+            dst = os.path.join(cfg()["raw"], f"exc.{key}" if sub == "exc" else sub)
+            for p in glob.glob(os.path.join(d, "tps", sub, pat)):
+                q = os.path.join(dst, os.path.basename(p))
+                try:
+                    st = os.stat(p)
+                    if os.path.exists(q) and os.path.getsize(q) == st.st_size:
+                        continue
+                    if sub == "flight" and time.time() - st.st_mtime < 5:
+                        continue   # still being written
+                    os.makedirs(dst, exist_ok=True)
+                    with open(p, "rb") as a, open(q, "wb") as b:
+                        b.write(a.read())
+                    n += 1
+                except OSError:
+                    continue
+            if sub == "exc":
+                ingest_exc_files(con, dst, name)
+    con.commit()
     return n
 
 
-def ingest_exc_files(con, d: str) -> None:
-    for p in glob.glob(os.path.join(d, "exc_*.jsonl")):
+def ingest_exc_files(con, d: str, game: str | None = None) -> None:
+    src = os.path.basename(d)
+    for p in glob.glob(os.path.join(glob.escape(d), "exc_*.jsonl")):
         key = os.path.basename(p)
-        cur = con.execute("SELECT offset FROM cursors WHERE src='exc' AND key=?", (key,)).fetchone()
+        cur = con.execute("SELECT offset FROM cursors WHERE src=? AND key=?", (src, key)).fetchone()
         off = cur[0] if cur else 0
         try:
             with open(p, "rb") as f:
@@ -865,13 +882,13 @@ def ingest_exc_files(con, d: str) -> None:
             if not isinstance(r, dict):
                 continue
             ts = parse_ts(r.get("utc")) or time.time()
-            con.execute("INSERT INTO exc_sigs(session,sig,first_ts,last_ts,n,sup,sample) VALUES(?,?,?,?,0,0,?) "
-                        "ON CONFLICT(session,sig) DO UPDATE SET sample=COALESCE(sample,excluded.sample)",
+            con.execute("INSERT INTO exc_sigs(session,sig,first_ts,last_ts,n,sup,sample,game) VALUES(?,?,?,?,0,0,?,?) "
+                        "ON CONFLICT(session,sig) DO UPDATE SET sample=COALESCE(sample,excluded.sample), "
+                        "game=COALESCE(game,excluded.game)",
                         (r.get("session"), str(r.get("sig"))[:300], ts, ts,
-                         json.dumps({k: r.get(k) for k in ("msg", "stack", "level", "asm") if r.get(k)})[:4096]))
-        con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime) VALUES('exc',?,?,?,0,0)",
-                    (key, p, off + end + 1))
-    con.commit()
+                         json.dumps({k: r.get(k) for k in ("msg", "stack", "level", "asm") if r.get(k)})[:4096], game))
+        con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime) VALUES(?,?,?,?,0,0)",
+                    (src, key, p, off + end + 1))
 
 
 # ================================================================== proof runs

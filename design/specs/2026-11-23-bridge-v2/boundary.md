@@ -12,6 +12,9 @@ plays it in its own loop (PLAY). The run is stepped at the end of each tick, in 
 act steps**. The run judges nothing.
 
 `jawa/scene_slice` (TEST profile only) is the one hand-written scene: probes on one pawn, one damage act, one end condition.
+`cancel` ends a live standalone slice. While a session is open or closing, the slice tool allows `status` and refuses
+`start` and `cancel`. The session driver uses `jawa/run_until` to cancel. The hands page's
+`only-the-driver-drives-an-open-session` check covers this guard.
 `jawa/run_plan` (`RIMMANDRAKE_BUILD_RUN_PLAN_ONE_CALL_SCENE_AS_DATA`) replaces the tool and keeps the run.
 
 ## THE TRACE (schema `scene_trace_v1`)

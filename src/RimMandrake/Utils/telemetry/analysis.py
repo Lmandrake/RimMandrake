@@ -65,6 +65,20 @@ def log_firings(con, alerts: list, now: float) -> int:
     return n
 
 
+def low_speed(history, now: float) -> tuple[float, dict] | None:
+    """Sustained low TPS at normal speed. Skip windows where bridge work held the main thread."""
+    R = RULES
+    hist = [h for h in history if now - h[0] <= R["ratio_low_window_s"] + 15]
+    run = [h for h in hist if h[2] == "run" and h[3] == R["ratio_low_mult"] and h[1] is not None]
+    calm = [h for h in run if (h[4] if len(h) > 4 else 0) <= R["ratio_bridge_busy_frac"]]
+    if run and len(run) == len(hist) and hist[-1][0] - hist[0][0] >= R["ratio_low_window_s"] - 10 \
+            and len(calm) >= R["ratio_min_windows"]:
+        med = statistics.median(h[1] for h in calm)
+        if med < R["ratio_low"]:
+            return calm[0][0], {"median": med, "windows": len(calm), "skipped_bridge_busy": len(run) - len(calm)}
+    return None
+
+
 # The alarms read the store's own first game only (latest's top level). Another game's live view is kept apart
 # (latest["games"]) and alarms nothing: a lane game freezes 10-15 s at each step by design, and alarming on it raised 15
 # alarms in one pass (measured 2026-11-23, ArchSmall). Its incidents stay events: `telemetry events --game`.
@@ -97,16 +111,11 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
     # list is CPU-bound by design). Bridge delay spikes must not trigger it (owner, same day): windows
     # where the bridge held the main thread >10 % are skipped, and the verdict is a median over >= 12
     # remaining windows. Every firing is logged (`alert_fired`) so `telemetry label` can grade it.
-    hist = [h for h in latest.get("tps_hist", []) if now - h[0] <= R["ratio_low_window_s"] + 15]
-    run = [h for h in hist if h[2] == "run" and h[3] == R["ratio_low_mult"] and h[1] is not None]
-    calm = [h for h in run if (h[4] if len(h) > 4 else 0) <= R["ratio_bridge_busy_frac"]]
-    if run and len(run) == len(hist) and hist[-1][0] - hist[0][0] >= R["ratio_low_window_s"] - 10 \
-            and len(calm) >= R["ratio_min_windows"]:
-        med = statistics.median(h[1] for h in calm)
-        if med < R["ratio_low"]:
-            out.append(_alert("tps_low", "amber", f"game at {med:.2f}x its target speed for 2 min (normal speed)",
-                              calm[0][0], detail={"median": med, "windows": len(calm),
-                                                  "skipped_bridge_busy": len(run) - len(calm)}))
+    low = low_speed(latest.get("tps_hist", []), now)
+    if low:
+        since, detail = low
+        out.append(_alert("tps_low", "amber", f"game at {detail['median']:.2f}x its target speed for 2 min (normal speed)",
+                          since, detail=detail))
     for inc in latest.get("incidents", []):
         if now - inc["ts"] < R["stall_recent_s"] and (inc.get("gapS") or 0) >= R["stall_s"]:
             # a freeze that a bridge call spent holding the main thread (save load, map generation, big step) is

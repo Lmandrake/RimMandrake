@@ -57,7 +57,8 @@ def raid_component(what):
     """-> the one NOT_RUN component of a paused raid chain."""
     from suite import Component, NOT_RUN, RAID_PAUSED  # noqa: E402
     comp = Component("<raid chain, not run>", None, False)
-    comp.verdict, comp.detail = NOT_RUN, "%s: the chain stages %s" % (RAID_PAUSED, what)
+    comp.verdict, comp.execution = NOT_RUN, "not_run"
+    comp.detail = "%s: the chain stages %s" % (RAID_PAUSED, what)
     return comp
 
 

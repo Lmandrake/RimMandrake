@@ -135,6 +135,11 @@ def age_s(s: float) -> str:
         else f"{s / 86400:.1f}d"
 
 
+def last_good(machine: dict, game: dict) -> float | None:
+    """Older pull state has a machine timestamp only. It can date a successful game check."""
+    return game.get("last_ok", machine.get("last_ok") if game.get("state") in ("ok", "absent") else None)
+
+
 def look(key: str, now: float, daemon: bool = True) -> dict:
     """Could this game be looked at? {at: last good look or None, error: cause or None, pids, skew, absent}.
     daemon False: the asker reads the record files themselves, so a dead telemetryd hides nothing from it."""
@@ -160,7 +165,7 @@ def look(key: str, now: float, daemon: bool = True) -> dict:
         out.update(at=None, error=out["error"] or f"the pull of {m} has never run (rm-telemetry-pull.timer)")
         return out
     g = (p.get("games") or {}).get(letter) or {}
-    out.update(at=p.get("last_ok"), pids=p.get("pids"), skew=p.get("skew") or 0.0, absent=g.get("state") == "absent")
+    out.update(at=last_good(p, g), pids=p.get("pids"), skew=p.get("skew") or 0.0, absent=g.get("state") == "absent")
     if out["error"]:
         return out
     if p.get("error"):

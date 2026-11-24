@@ -93,6 +93,7 @@ class Reading:
 
     def __init__(self, text):
         self.name = None
+        self.rc = 0
         if text is None:
             return
         try:
@@ -102,6 +103,7 @@ class Reading:
             raise SystemExit(games.EX_UNKNOWN)
         p = cfg()["db"]
         self.st = games.status(store.connect(p, readonly=True) if os.path.exists(p) else None, self.name)
+        self.rc = self.st["rc"]
         print(self.st["line"])
 
     def empty(self, why: str) -> int:
@@ -193,7 +195,7 @@ def cmd_series(a) -> int:
         newest = max(float(x["value"][0]) for x in r)
         v = r[0]["value"][1]
         print(f"  {n:<34} {len(r):>3} label sets · newest {age(newest):>5} ago · e.g. {v} {_labels(r[0]['metric'])}")
-    return 0
+    return g.rc
 
 
 def _labels(m: dict) -> str:
@@ -221,7 +223,7 @@ def cmd_query(a) -> int:
         if a.points:
             for t, v in s["values"][-a.points:]:
                 print(f"     {iso(float(t))}  {v}")
-    return 0
+    return g.rc
 
 
 def parse_moment(s: str) -> float:
@@ -287,7 +289,7 @@ def cmd_at(a) -> int:
     calls = con.execute(f"SELECT COUNT(*), AVG(ms), MAX(ms) FROM bridge_calls WHERE ts BETWEEN ? AND ? AND {w}",
                         (t - span, t + span, *wa)).fetchone()
     print(f"  bridge calls: {calls[0]}" + (f", mean {calls[1]:.0f} ms, max {calls[2]:.0f} ms" if calls[0] else ""))
-    return 0
+    return g.rc
 
 
 def cmd_events(a) -> int:
@@ -313,7 +315,7 @@ def cmd_events(a) -> int:
         det = (r["detail"] or "")[:a.width]
         print(f"  #{r['id']:<7} {iso(r['ts'])}  {r['kind']:<14} {r['game'] or '-':<9} {str(r['subject'] or '')[:60]:<60} "
               f"{r['sha'] or ''} {det if a.detail else ''}")
-    return 0
+    return g.rc
 
 
 def cmd_around(a) -> int:
@@ -341,7 +343,7 @@ def cmd_around(a) -> int:
         else:
             print(f"  x{mult:<3} {c['verdict']:<10} median {c['median_before']:.2f} -> {c['median_after']:.2f} "
                   f"({c['rel'] * 100:+.0f}%, threshold {c['threshold']:.2f}; n {c['n_before']}/{c['n_after']})")
-    return 0
+    return g.rc
 
 
 def cmd_runs(a) -> int:
@@ -407,7 +409,7 @@ def cmd_flight(a) -> int:
                 print(f"     {json.dumps(t)[:200]}")
         except (OSError, ValueError, IndexError) as e:
             print(f"  cannot read dump ({e})")
-    return 0
+    return g.rc
 
 
 def cmd_exc(a) -> int:
@@ -434,7 +436,7 @@ def cmd_exc(a) -> int:
         print(f"  {r['n']:>6}  {r['sig'][:120]}")
         if a.text and r["sample"]:
             print(f"          {r['sample'][:400]}")
-    return 0
+    return g.rc
 
 
 def cmd_bridge(a) -> int:
@@ -466,7 +468,7 @@ def cmd_bridge(a) -> int:
         fails = sum(1 for x in v if x[1])
         print(f"  {tool:<40} {len(v):>6} calls  p50 {pct(ms, .5):>6.0f}  p99 {pct(ms, .99):>7.0f}  "
               f"max {ms[-1]:>7.0f} ms  {fails} failed")
-    return 0
+    return g.rc
 
 
 def cmd_disk(a) -> int:
@@ -532,7 +534,23 @@ def cmd_tier(a) -> int:
         if not games.is_local(key):
             print(f"REFUSED: {name} runs on {games.split(key)[0]}: its bridge is driven there, not from this machine")
             return games.EX_UNKNOWN
-        os.environ["RM_GAME_INSTANCE"] = games.split(key)[1]    # rimbridge_client and game_paths follow the name
+        import game_instance
+        letter = games.split(key)[1]
+        expected_port = game_instance.port(letter)
+        if os.environ.get("GABP_TOKEN") and game_instance.current() != letter:
+            print(f"REFUSED: {name}: the inherited bridge token is for the shell's game")
+            return games.EX_UNKNOWN
+        lock = os.environ.get("RIMFLOW_DRIVER_LOCK")
+        if lock is not None:
+            if letter == "a":
+                import driver_lock
+                expected = driver_lock.DEFAULT
+            else:
+                expected = game_instance.lock_path(letter)
+            if os.path.normcase(os.path.normpath(lock)) != os.path.normcase(os.path.normpath(expected)):
+                print(f"REFUSED: {name}: RIMFLOW_DRIVER_LOCK does not name this game's driver lock")
+                return games.EX_UNKNOWN
+        os.environ["RM_GAME_INSTANCE"] = letter    # rimbridge_client and game_paths follow the name
     utils = os.path.dirname(CODE_DIR)
     sys.path.insert(0, utils)
     try:
@@ -542,7 +560,10 @@ def cmd_tier(a) -> int:
         return 1
     args = {"tier": a.tier, "ttl_min": a.ttl}
     try:
-        h, port, tok = rimbridge_client.resolve_endpoint()
+        h, port, tok = rimbridge_client.resolve_endpoint(host=rimbridge_client.DEFAULT_HOST if a.game else None)
+        if a.game and port != expected_port:
+            print(f"REFUSED: {name}: bridge port {port} does not match its port {expected_port}")
+            return games.EX_UNKNOWN
         with rimbridge_client.RimBridge(h, port, tok, client_name="telemetry tier") as c:
             r = c.call("jawa/telemetry_tier", args)
     except Exception as e:  # noqa: BLE001

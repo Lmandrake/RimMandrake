@@ -53,6 +53,8 @@ class RunUntil(object):
         r = self.call(RUN_UNTIL, action="status", driver=self.driver, request=request)
         if r.get("success") is False and r.get("refused") == "UNKNOWN_REQUEST":
             return None
+        if r.get("success") is True and (r.get("request") != request or not r.get("run")):
+            raise Fault("COULD_NOT_LOOK", detail="%s did not identify the run for request %s" % (RUN_UNTIL, request), request=request)
         return self._read(r, request)
 
     def live(self):

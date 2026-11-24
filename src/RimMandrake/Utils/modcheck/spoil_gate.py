@@ -12,9 +12,10 @@ grade(summary, situational) reads a runner summary ({"chains": [...]}; each chai
     FAIL           the row failed (a DISRUPTED chain's FAIL is UNMEASURED: the visitor, not the mod, may have caused it)
     INDETERMINATE  the row passed, but a spoil it depends on means the pass cannot be certified
     UNMEASURED     nothing was measured (empty row, empty chain, not-run, disrupted run)
+    NOT_RUN        the raid pause skipped this row (excluded from scoring)
 
-and an overall: RED (any FAIL) > UNMEASURED > INDETERMINATE > GREEN. GREEN only when every criterion is PASS and no
-run-level spoil exists. The spoil classes, and the evidence each is read from (only what the record holds):
+and an overall: RED (any FAIL) > UNMEASURED > INDETERMINATE > GREEN. GREEN requires PASS on every scored criterion and
+no run-level spoil; a run with only paused rows grades NOT_RUN. The spoil classes and their evidence:
 
   unknown_blocking_window  situational chain with no modal_check, or one whose sweep errored, read no dialog, or left
                            a dialog unread
@@ -43,6 +44,8 @@ live_queue/rollout_gate.py). Pure; no I/O.
 """
 import json
 import re
+
+from suite import NOT_RUN, RAID_PAUSED
 
 PASS, FAIL, INDETERMINATE, UNMEASURED = "PASS", "FAIL", "INDETERMINATE", "UNMEASURED"
 GREEN, RED = "GREEN", "RED"
@@ -133,15 +136,23 @@ def _observation(chain, summary, situational):
 
 def grade_chain(chain, situational, summary=None):
     summary = summary or {}
+    raw = chain.get("components") or []
+    allc = _dicts(raw)
+    comps = [c for c in allc if c.get("execution") != "not_run"]
+    skipped = [c for c in allc if c.get("execution") == "not_run"]
+    paused = [c for c in skipped if c.get("verdict") == NOT_RUN and RAID_PAUSED in str(c.get("detail") or "")]
+    paused_rows = [{"row": "%s/%s" % (chain.get("name"), c.get("name")), "verdict": NOT_RUN,
+                    "class": criterion_class(c), "grade": NOT_RUN, "notes": [c["detail"]]} for c in paused]
+    if paused and len(paused) == len(raw):
+        return {"chain": chain.get("name"), "rows": paused_rows, "spoils": []}
+
     spoils = _blocking(chain, situational)
     obs, gap, disrupted = _observation(chain, summary, situational)
     spoils += obs
     chain_spoiled = [s for s in spoils if s[0] != "disrupted"]
-    allc = _dicts(chain.get("components"))
-    if len(allc) != len(chain.get("components") or []):
+    if len(allc) != len(raw):
         spoils.append(("empty_rows", "a component record is not a dict"))
-    comps = [c for c in allc if c.get("execution") != "not_run"]
-    skipped = [c for c in allc if c.get("execution") == "not_run"]
+    skipped = [c for c in skipped if c not in paused]
     if not comps:
         spoils.append(("empty_rows", "chain recorded no executed component"))
     if skipped and comps:
@@ -180,7 +191,7 @@ def grade_chain(chain, situational, summary=None):
                      "grade": g, "notes": notes})
     if gap and any(r["class"] in SENSITIVE_CLASSES and r["grade"] == INDETERMINATE for r in rows):
         spoils.append(("visitor_gap", gap))
-    return {"chain": chain.get("name"), "rows": rows, "spoils": [{"class": k, "why": w} for k, w in spoils]}
+    return {"chain": chain.get("name"), "rows": rows + paused_rows, "spoils": [{"class": k, "why": w} for k, w in spoils]}
 
 
 def grade(summary, situational=True):
@@ -196,13 +207,15 @@ def grade(summary, situational=True):
     cs = summary.get("checklist_state")
     if "checklist_state" in summary and cs != "VALIDATED":
         spoils.append({"class": "draft_status", "why": "north-star checklist is %s, not VALIDATED" % cs, "chain": None})
-    counts = {g: sum(1 for r in rows if r["grade"] == g) for g in (PASS, FAIL, INDETERMINATE, UNMEASURED)}
+    counts = {g: sum(1 for r in rows if r["grade"] == g) for g in (PASS, FAIL, INDETERMINATE, UNMEASURED, NOT_RUN)}
     if counts[FAIL]:
         overall = RED
     elif counts[UNMEASURED] or any(s["class"] in ("empty_rows", "disrupted") for s in spoils):
         overall = UNMEASURED
     elif counts[INDETERMINATE] or spoils:
         overall = INDETERMINATE
+    elif counts[NOT_RUN] and not counts[PASS]:
+        overall = NOT_RUN
     else:
         overall = GREEN
     return {"overall": overall, "rows": rows, "spoils": spoils, "counts": counts,

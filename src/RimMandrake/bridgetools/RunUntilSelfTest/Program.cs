@@ -417,7 +417,13 @@ namespace JawaBench.BridgeTools
                 Eq(w.Done.Count, 0, "acts done");
                 Eq(G(w.Run("drv", "a", Until(1010)), "success"), true, "the driver's own run");
                 Eq(G(w.Run("drv", "b", Until(1020)), "refused"), "RUN_ACTIVE", "a second run while one is live");
+                Eq(G(w.Hands.Cancel("other", "a"), "refused"), "NOT_THE_DRIVER", "cancel by another caller");
                 w.Play(10);
+                Eq(w.TickNow, 1010L, "the original stop tick after a refused cancel");
+                Eq(G(w.Run("drv", "cancel", Until(1020)), "success"), true, "the driver's next run");
+                Eq(G(w.Hands.Cancel("drv", "cancel"), "why"), "cancelled", "cancel by the driver");
+                w.Play(10);
+                Eq(w.TickNow, 1010L, "the driver cancelled before another tick");
                 Eq(G(w.Batch("drv", "[{\"id\":\"x\",\"tool\":\"jawa/ping\"}]"), "success"), true, "the driver's own batch");
                 w.PausedNow = false;
                 Eq(G(w.Run("drv", "c", Until(5000)), "refused"), "GAME_RUNNING", "a run on a running game");

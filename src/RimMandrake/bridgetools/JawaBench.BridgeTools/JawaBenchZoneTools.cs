@@ -434,7 +434,7 @@ namespace JawaBench.BridgeTools
                 "accepted (TryTakeOrderedJobPrioritizedWork's own bool), interruptibleBefore, " +
                 "beforeJobDef/afterJobDef, nowRunningRequested, cellUsed, workGiverPrioritizeSustains " +
                 "(whether priorityWork was actually stamped). success requires accepted AND " +
-                "nowRunningRequested.")]
+                "nowRunningRequested. waitEnded is 'ticks', 'timeout' or 'paused'.")]
         public static async Task<object> PrioritizedWork(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -540,21 +540,16 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
             if (setup != null) return setup;
 
-            var ticksNow = startTicks;
-            var elapsedMs = 0;
-            while (ticksNow - startTicks < waitTicks && elapsedMs < timeoutSeconds * 1000)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                await Task.Delay(100, cancellationToken).ConfigureAwait(false);
-                elapsedMs += 100;
-                ticksNow = await ctx.MainThread.InvokeAsync(() => TicksGameSafe(), cancellationToken).ConfigureAwait(false);
-            }
+            var (ticksNow, _, waitEnded, _, _) = await WaitForGameTicks(
+                ctx, cancellationToken, startTicks, waitTicks, timeoutSeconds).ConfigureAwait(false);
+            var ticksElapsed = ticksNow - startTicks;
 
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 string perr;
                 var pawn = FindPawn(pawnId, out perr);
-                if (pawn == null) return new { success = false, accepted, message = "Pawn no longer resolvable after the wait." };
+                if (pawn == null)
+                    return new { success = false, accepted, message = "Pawn no longer resolvable after the wait.", waitEnded };
 
                 var afterJobDef = pawn.jobs != null && pawn.jobs.curJob != null && pawn.jobs.curJob.def != null ? pawn.jobs.curJob.def.defName : null;
                 var nowRunningRequested = string.Equals(afterJobDef, jdefName, StringComparison.OrdinalIgnoreCase);
@@ -565,7 +560,7 @@ namespace JawaBench.BridgeTools
                            "returned false (current job non-interruptible, its driver refuses, or the " +
                            "pawn is on fire).";
                 else if (!nowRunningRequested)
-                    note = $"Job was accepted (enqueued) but curJob after {waitTicks} tick(s) is " +
+                    note = $"Job was accepted (enqueued) but curJob after {ticksElapsed} tick(s) is " +
                            $"'{afterJobDef ?? "(none)"}', not '{jdefName}' - it may have finished, " +
                            "failed immediately, or be queued rather than current.";
 
@@ -580,7 +575,8 @@ namespace JawaBench.BridgeTools
                     nowRunningRequested,
                     cellUsed = new { x = cellUsed.x, z = cellUsed.z },
                     workGiverPrioritizeSustains = prioritizeSustains,
-                    ticksElapsed = ticksNow - startTicks,
+                    ticksElapsed,
+                    waitEnded,
                     note,
                 };
             }, cancellationToken).ConfigureAwait(false);

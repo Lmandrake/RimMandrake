@@ -4,7 +4,8 @@ each minute, on the store's machine under WSL). One ssh call per machine; only n
 
 Which games: game_names.GAMES. How a machine is reached: host_guard.SSH_TARGETS, and host_guard.RUNNER_DIR is the clone
 there that knows its folders. State, one entry per machine, in <state>/games_pull.json: last_try, last_ok, error (the
-cause, None when the last look was good), skew (its clock less ours), pids, each game's state, and the files' ids.
+cause, None when the last look was good), skew (its clock less ours), pids, each game's state and last good look,
+and the files' ids.
 A machine that could not be read keeps its last good look and never reads as an empty one (games.look).
 
     pull_games.py               every other machine; exit 0 all read, 3 one or more could not be (the cause on stdout)
@@ -145,12 +146,20 @@ def pull(machine: str, argv: list[str] | None = None, cwd: str | None = None) ->
                 err = (err + "; " if err else "") + f"exit {rc}" + (f": {tail}" if tail else "")
             elif head is None:
                 err = err or f"the answer is not a reading (it starts {line[:60]!r})"
+    looked_at = time.time() if err is None else None
     if head is not None:
+        previous = st.get("games") or {}
+        outcomes = {}
+        for letter, g in head["games"].items():
+            last_ok = games.last_good(st, previous.get(letter) or {})
+            if looked_at is not None and g["state"] in ("ok", "absent"):
+                last_ok = looked_at
+            outcomes[letter] = {**g, "last_ok": last_ok}
         st.update(skew=round(head["now"] - t_head, 1), pids=head.get("pids"), pids_error=head.get("pids_error"),
-                  games=head["games"], machine_error=head.get("machine_error"))
+                  games=outcomes, machine_error=head.get("machine_error"))
     st.update(ids=ids, error=err, seconds=round(time.time() - t0, 1))
-    if err is None:
-        st["last_ok"] = time.time()
+    if looked_at is not None:
+        st["last_ok"] = looked_at
     all_state[machine] = st
     write_json_atomic(sp, all_state)
     return {**st, "bytes": n_bytes}

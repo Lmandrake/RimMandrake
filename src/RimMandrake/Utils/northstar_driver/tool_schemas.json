@@ -1874,6 +1874,7 @@
     "draft",
     "pathEndMode",
     "pawnId",
+    "stopOnArrival",
     "targetId",
     "timeoutSeconds",
     "undraftAfter",

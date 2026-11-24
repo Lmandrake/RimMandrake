@@ -12,12 +12,14 @@ import re
 import subprocess
 import sys
 import tempfile
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import scene                                        # noqa: E402
 import scene_fake as F                              # noqa: E402
 import scene_hands                                  # noqa: E402
+import scene_world                                  # noqa: E402
 c = scene.cond
 
 
@@ -92,6 +94,30 @@ def test_open_refuses_owner_hold():
     W.lock_code = 3
     refused("OWNER_HOLD", scene.open, "ArchSmall")
     must(not W.game.log and untouched(W) is None, "something was asked of a game")
+
+
+def test_open_refuses_owner_hold_under_an_inherited_take():
+    W = world()
+    gl = scene_world._import("game_lock", scene_world.RIMFLOW)
+    control = scene_world._import("control", scene_world.RIMFLOW)
+    with tempfile.TemporaryDirectory() as d:
+        lock = os.path.join(d, "driver.json")
+        db = os.path.join(d, "control.db")
+        take = json.dumps({"identity": gl.driver_lock.my_identity(), "seat": "BENCH", "generation": 7,
+                           "purpose": "window take"})
+        with open(lock, "w", encoding="utf-8") as f:
+            f.write(take)
+        with patch.dict(os.environ, {"RM_CONTROL_DB": db}), patch.object(gl, "lock_path", return_value=lock):
+            control.init(db)
+            control.switch("game:b", True, "his walk", p=db)
+            q = gl.query("b")
+            must(q["state"] == "HELD" and q["code"] == 3 and q["mine"], "wrong lock setup: %s" % q)
+            W.lock_take = scene_world.RealWorld().lock_take
+            with patch.object(W, "connect", side_effect=AssertionError("scene connected during OWNER_HOLD")) as connect:
+                refused("OWNER_HOLD", scene.open, "ArchSmall")
+                connect.assert_not_called()
+        with open(lock, encoding="utf-8") as f:
+            must(f.read() == take and W.released == 0, "the inherited take was changed")
 
 
 def test_open_refuses_session_open():
@@ -235,6 +261,16 @@ def test_run_unreadable_value_stops_as_unknown():
         must(any("gone on 9 tick(s), first on 13" in x for x in r.receipt.could_not_look), "could_not_look: %s" % r.receipt.could_not_look)
 
 
+def test_run_unreadable_thing_target_stops_as_unknown():
+    for of in ("Fire1", "thing:Fire1"):
+        W, s = opened(world(run_until=True))
+        W.game.script = {"state": "done", "ticks": 20, "tracks": {"thing:Fire1.fireSize": [(0, "ok", 1), (12, "gone", None)]}}
+        r = s.run(until=(c.value(of, "fireSize") < -1) & (c.game.tick < 0), limit=20)
+        must(r.why == "unknown", "%s gave %s for a gone condition value" % (of, r.why))
+        faulted("CONDITION_UNKNOWN", lambda: r.hit)
+        must(r.values["Fire1.fireSize"].state == "gone", "the trace lost the gone value")
+
+
 def test_run_lost_reply_is_recovered_by_request_id():
     for ru in (True, False):
         W = world(run_until=ru)
@@ -257,6 +293,75 @@ def test_run_lost_reply_is_recovered_by_request_id():
     W.game.lose = {scene_hands.RUN_UNTIL + ":start"}
     e = faulted("REPLY_LOST", s.run, 20, limit=200)
     must(e.request and W.game.starts == 1, "the fault carries no id, or the run was started again")
+
+
+def test_run_lost_reply_passes_the_pending_guard():
+    with patch.dict(os.environ, {"RIMBRIDGE_SESSION_LOG": "", "RIMBRIDGE_EVIDENCE_LOG": ""}):
+        import rimbridge_client as rb
+
+    class StubTransport(rb.RimBridge):
+        def connect(self):
+            self.sock = object()
+            for marker in rb.outstanding_indeterminate():
+                pending.append(marker["cid"])
+                for name, args in ((tool, {"action": "start"}), (tool, {"action": "cancel"}), ("jawa/damage", {})):
+                    try:
+                        self.call(name, args, check=False)
+                    except rb.IndeterminateError:
+                        continue
+                    raise AssertionError("%s %s bypassed the pending guard" % (name, args))
+
+        def close(self):
+            self.sock = None
+
+        def _set_call_timeout(self, seconds):
+            self.timeout = seconds
+
+        def _request(self, method, params=None):
+            if method == "tools/list":
+                return {"tools": W.game.tools}
+            must(method == "tools/call", "unexpected request %s" % method)
+            if params["name"] == rb.JOURNAL_TOOL:
+                return {"operations": []}
+            try:
+                return W.game.call(params["name"], params["arguments"])
+            except scene.ReplyLost as e:
+                raise rb.RimBridgeError(str(e))
+
+    def connect(_letter):
+        b = scene_world.RealBridge.__new__(scene_world.RealBridge)
+        b.rb, b.where, b.S = rb, ("127.0.0.1", 12345, "stub"), None
+        b._open()
+        return b
+
+    for run_until in (True, False):
+        W = world(run_until=run_until)
+        W.connect = connect
+        pending = []
+        tool = scene_hands.RUN_UNTIL if run_until else scene_hands.SLICE
+        for desc in W.game.tools:
+            if desc["name"] in (scene_hands.SESSION, scene_hands.RUN_UNTIL):
+                desc["inputSchema"]["properties"] = dict.fromkeys(("action", "driver", "request", "until", "limit", "speed", "record"))
+        with tempfile.TemporaryDirectory() as d, patch.object(rb, "EVIDENCE_LOG", os.path.join(d, "calls.jsonl")), \
+                patch.object(rb, "RimBridge", StubTransport), patch.object(rb, "_driver_crossing", return_value=None), \
+                patch.object(rb, "_deadline_left", return_value=None), patch.object(rb, "game_starts", return_value=[0]):
+            s = scene.open("ArchSmall")
+            W.game.lose = {tool + ":start"}
+            try:
+                r = s.run(until=c.game.tick >= 21, limit=200)
+            except scene.Fault as e:
+                pending = rb.outstanding_indeterminate()
+                if e.name == "REPLY_LOST" and [p["tool"] for p in pending] == [tool] and "IndeterminateError" in e.detail:
+                    raise AssertionError("%s status was blocked by the lost start marker" % tool) from e
+                raise
+            must(r.hit and r.tick == 21 and s._run["run"] == W.game.run["run"], "the original run was not returned")
+            sent = [a for t, a in W.game.log if t == tool and a["action"] == "start"]
+            must(len(sent) == W.game.starts == 1 and not rb.outstanding_indeterminate(), "the start was repeated or its marker was left")
+            with open(rb.EVIDENCE_LOG, encoding="utf-8") as f:
+                settled = [row for row in map(json.loads, f) if row["ev"] == "reconciled"]
+            must(len(settled) == 1 and [settled[0]["cid"]] == pending and settled[0]["as"] == "applied",
+                 "the original start marker was not recorded as applied")
+            s.close()
 
 
 def test_raw_undeclared_tool_marks_the_process_and_a_new_session_carries_it():
@@ -360,10 +465,15 @@ def test_help_prints_ten_names_and_each_built_page_matches_its_signature():
 
 # ------------------------------------------------------------------------------- the other promises of the pages
 def test_run_true_at_start_plays_no_tick():
-    W, s = opened()
-    W.game.script = {"state": "hit", "ticks": 0, "tracks": {}}
-    r = s.run(until=c.game.tick >= 1, limit=200)
-    must(r.hit and r.tick == r.tick_from == 1, "%r from %s" % (r, r.tick_from))
+    for run_until in (False, True):
+        W, s = opened(world(run_until=run_until))
+        W.game.script = {"state": "hit", "ticks": 0, "tracks": {}}
+        tick = W.game.status["tick"]
+        r = s.run(until=c.game.tick >= 1, limit=200)
+        tool = scene_hands.RUN_UNTIL if run_until else scene_hands.SLICE
+        (sent,) = [json.loads(a["until"]) for t, a in W.game.log if t == tool and a["action"] == "start"]
+        must(tick == 1 and sent == {"cmp": [{"p": "game.tick"}, ">=", tick]}, "%s sent until=%s at tick %s" % (tool, sent, tick))
+        must(r.hit and r.tick == r.tick_from == 1, "%r from %s" % (r, r.tick_from))
 
 
 def test_run_limit_is_not_a_hit():
@@ -445,6 +555,30 @@ def test_raw_call_is_in_the_trace():
     W, s = opened()
     s.raw("jawa/damage", damageDef="Bullet", amount=1, thingId="H")
     must(any("scene raw jawa/damage" in m and '"amount": 1' in m for m in W.game.marks), "the game's record: %s" % W.game.marks)
+
+
+def test_raw_batch_arguments_are_in_the_trace():
+    W = world()
+    tool = "jawa/set_terrain_batch"
+    W.game.tools.append({"name": tool, "parameters": [{"name": "ops", "required": True}]})
+    s = scene.open("ArchSmall")
+    args = {"ops": ";".join("PavedTile:%d,20,1,1" % x for x in range(20, 50))}
+    prefix = "scene raw %s " % tool
+    s.raw(tool, **args)
+    (mark_at, payload), = [(i, a["why"][len(prefix):]) for i, (t, a) in enumerate(W.game.log)
+                           if t == "jawa/telemetry_mark" and a["why"].startswith(prefix)]
+    (call_at, sent), = [(i, a) for i, (t, a) in enumerate(W.game.log) if t == tool]
+    must(mark_at < call_at and sent == args, "the marker was late or the call was changed")
+    must(prefix + payload in W.game.marks, "the game's record does not hold the marker")
+    try:
+        marked = json.loads(payload)
+    except ValueError as e:
+        raise AssertionError("batch marker holds incomplete argument JSON (%d characters)" % len(payload)) from e
+    must(marked == sent, "the marker arguments differ from the call")
+    W.game.fail["jawa/telemetry_mark"] = "writer dropped the marker row"
+    r = s.raw(tool, **args)
+    must(any(tool in line and "writer dropped the marker row" in line for line in r.receipt.could_not_look),
+         "the missing batch marker was not reported")
 
 
 def test_raw_call_without_a_mark_is_not_made():
@@ -541,6 +675,40 @@ def test_close_puts_back_also_after_an_error():
     must(W.game.session is None, "the game's session was left open")
 
 
+def test_close_waits_for_the_session_writer():
+    for finishes in (True, False):
+        W, s = opened(world(run_until=True))
+        s.run(until=20, limit=200)
+        polls = []
+        session = W.game._session
+
+        def draining(a):
+            if a["action"] == "close":
+                W.game.session["stage"] = "closing"
+                return session({"action": "state"})
+            if W.game.session and W.game.session["stage"] == "closing":
+                must(W.lock == "b" and W.released == 0, "the lock was released while the writer drained")
+                polls.append(W.clock())
+                if finishes and len(polls) == 3:
+                    W.game.session["stage"] = "closed"
+            return session(a)
+
+        W.game._session = draining
+        if finishes:
+            s.close()
+            must(W.game.session["stage"] == "closed", "close returned with the companion still closing")
+            must(len(polls) == 3 and W.released == 1, "the lock was not released after the writer drained")
+            W.game._session = session
+            with scene.open("ArchSmall"):
+                pass
+        else:
+            started = W.clock()
+            e = faulted("CLOSE_INCOMPLETE", s.close)
+            must("SESSION_NOT_CLOSED" in str(e) and "closing" in str(e), "the unfinished session is not named")
+            must(polls and W.released == 1, "the close did not wait or did not release after the fault")
+            must(60 <= W.clock() - started < 61, "the close did not use the companion's drain limit")
+
+
 def test_session_of_another_is_lost_not_used():
     W, s = opened()
     W.game.env.clear()
@@ -601,12 +769,15 @@ def t_a_refusal_changes_nothing():
 
 
 t_build_lines_come_from_the_game = test_open_receipt_build_comes_from_game
+t_owner_hold_refuses_a_new_scene = test_open_refuses_owner_hold_under_an_inherited_take
 t_could_not_look_is_not_a_refusal_and_not_clean = test_lock_that_could_not_be_read_is_a_fault
 t_unreadable_is_never_false = test_run_unreadable_value_stops_as_unknown
 t_a_lost_reply_is_found_by_its_id = test_run_lost_reply_is_recovered_by_request_id
+t_true_at_start_plays_no_tick = test_run_true_at_start_plays_no_tick
 t_a_trace_that_is_not_whole_is_a_fault = test_trace_that_is_not_whole
 t_a_game_that_ran_on_is_a_fault = test_game_that_ran_on
 t_the_game_holds_the_mark = test_raw_undeclared_tool_marks_the_process_and_a_new_session_carries_it
+t_raw_arguments_are_recorded_before_the_call = test_raw_batch_arguments_are_in_the_trace
 t_an_undeclared_tool_is_changing = test_raw_undeclared_tool_is_treated_as_changing
 t_accept_needs_one_identity = test_accept_refuses_a_dirty_tree_and_an_older_layer
 t_explore_is_stamped = test_explore_run_is_explored
@@ -636,12 +807,16 @@ def main():
               test_run_lost_reply_is_recovered_by_request_id, test_raw_undeclared_tool_marks_the_process_and_a_new_session_carries_it,
               test_accept_refuses_a_dirty_tree_and_an_older_layer, test_explore_run_is_explored,
               test_help_prints_ten_names_and_each_built_page_matches_its_signature]
-    more = [t_a_refusal_changes_nothing, test_run_true_at_start_plays_no_tick, test_run_limit_is_not_a_hit, test_run_dead_member_stays_in_group_as_gone,
+    more = [t_a_refusal_changes_nothing, test_open_refuses_owner_hold_under_an_inherited_take,
+            test_run_unreadable_thing_target_stops_as_unknown, test_run_lost_reply_passes_the_pending_guard,
+            test_run_true_at_start_plays_no_tick, test_run_limit_is_not_a_hit, test_run_dead_member_stays_in_group_as_gone,
             test_run_stalled_clock_is_cancelled, test_run_bind_refusal_is_by_name, test_raw_refuses_unknown_tool, test_raw_refuses_bad_args,
             test_raw_refuses_session_closed, test_raw_refuses_life_cycle_tool, test_raw_changing_call_stamps_explored,
-            test_raw_undeclared_tool_is_treated_as_changing, test_raw_call_is_in_the_trace, test_raw_call_without_a_mark_is_not_made,
+            test_raw_undeclared_tool_is_treated_as_changing, test_raw_call_is_in_the_trace, test_raw_batch_arguments_are_in_the_trace,
+            test_raw_call_without_a_mark_is_not_made,
             test_lock_that_could_not_be_read_is_a_fault, test_trace_that_is_not_whole, test_game_that_ran_on, test_close_puts_back_also_after_an_error,
-            test_session_of_another_is_lost_not_used, test_end_session_ends_a_dead_driver_only, test_names_not_built_say_so, test_tools_and_raw_census]
+            test_close_waits_for_the_session_writer, test_session_of_another_is_lost_not_used, test_end_session_ends_a_dead_driver_only,
+            test_names_not_built_say_so, test_tools_and_raw_census]
     a = run(ticket)
     print("scene library: %d of %d checks passed" % (a, len(ticket)))
     b = run(more)

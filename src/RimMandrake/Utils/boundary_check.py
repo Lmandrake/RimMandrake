@@ -30,6 +30,7 @@ PAGES = {
     "design/specs/2026-11-23-owed-sources-retired/boundary.md": "src/RimMandrake/rimflow/selftest_owed_sources.py",
     "design/specs/2026-11-23-canonical-save-guard/boundary.md": "src/RimMandrake/Utils/selftest_canonical_save_guard.py",
     "design/specs/2026-11-23-bridge-v2-hands/boundary.md": "src/RimMandrake/bridgetools/selftest_run_until.py",
+    "design/specs/2026-11-24-bridge-order-waits/boundary.md": "src/RimMandrake/bridgetools/selftest_order_wait.py",
     "design/specs/2026-11-23-bridge-v2/boundary.md": "src/RimMandrake/bridgetools/selftest_scene_tick_wiring.py",
     "design/specs/2026-11-23-loaded-receipt/boundary.md": "src/RimMandrake/rimflow/selftest_loaded_receipt.py",
     "design/specs/2026-11-23-calm-map/boundary.md": "src/RimMandrake/Utils/selftest_calm_core.py",

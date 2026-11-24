@@ -168,6 +168,7 @@ namespace JawaBench.BridgeTools
                 if (a == "status") return SceneTickStatus();
                 if (a == "cancel")
                 {
+                    if (JawaBenchHands.Busy) return Fail("a session is open: its driver runs jawa/run_until");
                     var r = JawaBenchSceneTick.Cur;
                     if (r == null || !r.Running) return Fail("no run is live");
                     r.Force("cancelled", "cancelled by a call", TicksGameSafe());

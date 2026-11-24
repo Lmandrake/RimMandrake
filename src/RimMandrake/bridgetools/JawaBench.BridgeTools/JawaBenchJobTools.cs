@@ -887,9 +887,8 @@ namespace JawaBench.BridgeTools
                 "requires both accepted and nowRunningRequested - so a job legitimately " +
                 "QUEUED behind a non-interruptible current job, or queued on purpose with " +
                 "queue:true, reads success:false; queueLength and note say so. Also plantDefToSow (what " +
-                "was actually set on the Job) and pausedDuringWait - 🔑 when that is true " +
-                "NO ticks passed, ticksElapsed is 0 by definition, and the read-back proves " +
-                "NOTHING about whether the job would run.")]
+                "was actually set on the Job), pausedDuringWait (a poll saw the game paused), " +
+                "and waitEnded ('ticks', 'timeout' or 'paused').")]
         public static async Task<object> OrderedJob(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1061,31 +1060,16 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
             if (setup != null) return setup;
 
-            // ORDERED_JOB_CANNOT_SOW_1, related half: waitTicks does NOTHING while the game
-            // is PAUSED - ticksElapsed comes back 0 however long you ask for, because no
-            // ticks pass. Reported below as pausedDuringWait rather than left to look like
-            // a job that failed to start.
-            var pausedDuringWait = await ctx.MainThread.InvokeAsync(
-                () => Find.TickManager != null && Find.TickManager.Paused, cancellationToken)
-                .ConfigureAwait(false);
-
-            var ticksNow = startTicks;
-            var elapsedMs = 0;
-            while (ticksNow - startTicks < waitTicks && elapsedMs < timeoutSeconds * 1000)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                await Task.Delay(100, cancellationToken).ConfigureAwait(false);
-                elapsedMs += 100;
-                ticksNow = await ctx.MainThread.InvokeAsync(() => TicksGameSafe(), cancellationToken)
-                    .ConfigureAwait(false);
-            }
+            var (ticksNow, pausedDuringWait, waitEnded, _, _) = await WaitForGameTicks(
+                ctx, cancellationToken, startTicks, waitTicks, timeoutSeconds).ConfigureAwait(false);
+            var ticksElapsed = ticksNow - startTicks;
 
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 string perr;
                 var pawn = FindPawn(pawnId, out perr);
                 if (pawn == null)
-                    return new { success = false, accepted, message = "Pawn no longer resolvable after the wait." };
+                    return new { success = false, accepted, message = "Pawn no longer resolvable after the wait.", pausedDuringWait, waitEnded };
 
                 var afterJobDef = pawn.jobs?.curJob?.def?.defName;
                 var nowRunningRequested = string.Equals(afterJobDef, jdefName, StringComparison.OrdinalIgnoreCase);
@@ -1103,7 +1087,7 @@ namespace JawaBench.BridgeTools
                            "naming the pawn and job. Nothing about interruptibility, drafting or fire " +
                            "makes this call return false.";
                 else if (!nowRunningRequested)
-                    note = $"Job was accepted (enqueued) but curJob after {waitTicks} tick(s) is " +
+                    note = $"Job was accepted (enqueued) but curJob after {ticksElapsed} tick(s) is " +
                            $"'{afterJobDef ?? "(none)"}', not '{jdefName}' - it may have finished, " +
                            "failed immediately, or be queued rather than current." +
                            (!interruptibleBefore
@@ -1117,10 +1101,9 @@ namespace JawaBench.BridgeTools
                                ? " 🔑 You passed queue:true, so a non-current curJob is the REQUESTED "
                                  + "outcome; check queueLength rather than this field."
                                : "") +
-                           (pausedDuringWait
-                               ? " ⚠️ THE GAME WAS PAUSED for this wait, so NO ticks passed and this "
-                                 + "reading proves nothing about whether the job would run. Unpause, or "
-                                 + "step ticks, and ask again."
+                           (waitEnded == "paused"
+                               ? " ⚠️ THE GAME PAUSED before the wait reached its requested ticks. " +
+                                 "Unpause or step ticks to advance the job."
                                : "");
 
                 return new
@@ -1132,8 +1115,9 @@ namespace JawaBench.BridgeTools
                     requestedJobDef = jdefName,
                     afterJobDef,
                     nowRunningRequested,
-                    ticksElapsed = ticksNow - startTicks,
+                    ticksElapsed,
                     pausedDuringWait,
+                    waitEnded,
                     plantDefToSow = plantDefName,
                     queueLength = pawn.jobs?.jobQueue?.Count ?? 0,
                     note,
@@ -1186,7 +1170,8 @@ namespace JawaBench.BridgeTools
                 "different job, not the DoBill bug), accepted (TryTakeOrderedJob's own bool), " +
                 "interruptibleBefore, beforeJobDef/afterJobDef, nowRunningRequested, " +
                 "afterJobBillRecipe (Job.bill.recipe read back off curJob after the wait), " +
-                "pausedDuringWait. success requires accepted, nowRunningRequested AND " +
+                "pausedDuringWait and waitEnded ('ticks', 'timeout' or 'paused'). " +
+                "success requires accepted, nowRunningRequested AND " +
                 "afterJobBillRecipe non-null.")]
         public static async Task<object> DoBillNow(
             IRimBridgeContext ctx,
@@ -1333,27 +1318,16 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
             if (setup != null) return setup;
 
-            var pausedDuringWait = await ctx.MainThread.InvokeAsync(
-                () => Find.TickManager != null && Find.TickManager.Paused, cancellationToken)
-                .ConfigureAwait(false);
-
-            var ticksNow = startTicks;
-            var elapsedMs = 0;
-            while (ticksNow - startTicks < waitTicks && elapsedMs < timeoutSeconds * 1000)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                await Task.Delay(100, cancellationToken).ConfigureAwait(false);
-                elapsedMs += 100;
-                ticksNow = await ctx.MainThread.InvokeAsync(() => TicksGameSafe(), cancellationToken)
-                    .ConfigureAwait(false);
-            }
+            var (ticksNow, pausedDuringWait, waitEnded, _, _) = await WaitForGameTicks(
+                ctx, cancellationToken, startTicks, waitTicks, timeoutSeconds).ConfigureAwait(false);
+            var ticksElapsed = ticksNow - startTicks;
 
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 string perr;
                 var pawn = FindPawn(pawnId, out perr);
                 if (pawn == null)
-                    return new { success = false, accepted, message = "Pawn no longer resolvable after the wait." };
+                    return new { success = false, accepted, message = "Pawn no longer resolvable after the wait.", pausedDuringWait, waitEnded };
 
                 var afterJobDef = pawn.jobs?.curJob?.def?.defName;
                 var afterJobBillRecipe = pawn.jobs?.curJob?.bill?.recipe?.defName;
@@ -1364,7 +1338,7 @@ namespace JawaBench.BridgeTools
                     note = "TryTakeOrderedJob returned false: job.TryMakePreToilReservations failed - the " +
                            "pawn could not reserve the bill giver or its interaction cell.";
                 else if (!nowRunningRequested)
-                    note = $"Job was accepted (enqueued) but curJob after {waitTicks} tick(s) is " +
+                    note = $"Job was accepted (enqueued) but curJob after {ticksElapsed} tick(s) is " +
                            $"'{afterJobDef ?? "(none)"}', not '{jdefName}' - it may have finished, failed " +
                            "immediately, or be queued rather than current." +
                            (!interruptibleBefore
@@ -1375,9 +1349,8 @@ namespace JawaBench.BridgeTools
                            (queue
                                ? " 🔑 You passed queue:true, so a non-current curJob is the REQUESTED outcome."
                                : "") +
-                           (pausedDuringWait
-                               ? " ⚠️ THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading " +
-                                 "proves nothing."
+                           (waitEnded == "paused"
+                               ? " ⚠️ THE GAME PAUSED before the wait reached its requested ticks."
                                : "");
                 else if (afterJobBillRecipe == null)
                     note = "curJob is the requested JobDef but curJob.bill.recipe read back null - this IS " +
@@ -1397,8 +1370,9 @@ namespace JawaBench.BridgeTools
                     afterJobDef,
                     afterJobBillRecipe,
                     nowRunningRequested,
-                    ticksElapsed = ticksNow - startTicks,
+                    ticksElapsed,
                     pausedDuringWait,
+                    waitEnded,
                     queueLength = pawn.jobs?.jobQueue?.Count ?? 0,
                     note,
                 };

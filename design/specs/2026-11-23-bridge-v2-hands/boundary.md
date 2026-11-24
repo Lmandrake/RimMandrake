@@ -111,7 +111,9 @@ The records of `scene_trace_v1`, with one more field `sess`, and with `n` counte
 - **a-wrong-field-is-an-error-with-the-fields.** The state is `error` and `detail` lists the fields that the type has.
 - **an-unreviewed-method-is-refused-by-name.** Nothing is called.
 - **a-thousand-reads-change-nothing.** The state digest is equal before and after.
-- **only-the-driver-drives-an-open-session.** Another caller is refused; the driver is not.
+- **only-the-driver-drives-an-open-session.** Another caller is refused by the session hands. While the session is open
+  or closing, `jawa/scene_slice` refuses `start` and `cancel` and allows `status`. The driver can cancel a session run
+  through `jawa/run_until`. The offline check covers the slice guard and the driver's cancel.
 - **a-session-past-its-lease-stays-open-and-paused.** It is not closed by itself, it can be read, and the game is paused.
 - **no-session-no-run.** A run or a batch with no open session is refused by name.
 - **the-slice-tool-still-passes.** `jawa/scene_slice` passes its own selftest.

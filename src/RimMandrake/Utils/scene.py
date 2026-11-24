@@ -42,6 +42,7 @@ CALM_MINUTES = 240                      # the calm tool's own longest lease (des
 STALL_S = 60.0                          # boundary.md LIMITS
 SETTLE_S = 600.0
 CLOSE_RECORD_S = 20.0
+CLOSE_SESSION_S = 60.0                  # the companion's writer drain limit (bridge-v2-hands/boundary.md)
 POLL_S = 0.3
 LIFE_CYCLE = re.compile(r"(?:^rimworld/(?:load_game|load_game_ready|start_debug_game|start_debug_game_ready|go_to_main_menu)$)|^jawa/session$|"
                         r"quit|shutdown|restart|set_mods|mod_list_set|enable_mod|disable_mod|modsconfig")
@@ -467,6 +468,15 @@ class Session(object):
             r = self._look(hands.SESSION, action="close", driver=self.id)
             if r.get("success") is not True:
                 raise Fault(r.get("refused") or "SESSION_NOT_CLOSED", detail=str(r.get("message") or r)[:200])
+            session = r.get("session")
+            end = self.W.clock() + CLOSE_SESSION_S
+            while r.get("stage") == "closing" and self.W.clock() < end:
+                self.W.sleep(POLL_S)
+                r = self._look(hands.SESSION, action="state")
+                if r.get("success") is not True or r.get("session") != session:
+                    raise Fault("SESSION_NOT_CLOSED", detail="could not confirm the close of session %s: %s" % (session, str(r)[:200]))
+            if r.get("stage") not in ("closed", "aborted"):
+                raise Fault("SESSION_NOT_CLOSED", detail="session %s still reports stage %s" % (session, r.get("stage")))
             return "closed the game's session"
 
         def forget():
@@ -607,8 +617,8 @@ class Session(object):
             if start is None:
                 raise Fault("COULD_NOT_LOOK", detail="the game's tick could not be read")
             tree = cond.to_tree(cond.game.tick >= start + ticks)
-        names = [cond.probe_name(p) for p, _o in cond.walk(tree) if p["p"] not in (cond.TICK, "value.state")]
         plan = self.hand.plan(tree, tracks)
+        names = [self.hand.name(cond.probe_name(p)) for p, _o in cond.walk(tree) if p["p"] not in (cond.TICK, "value.state")]
         request = rec.entry["request"]
         row, lost = self._start(request, plan, limit, speed)
         row, stalled = self._wait(request, row)
@@ -640,7 +650,7 @@ class Session(object):
         if stalled:
             why, detail = "fault", "the clock stood still for %.0f s, so the run was cancelled (a window that pauses the game?)" % STALL_S
         elif why in ("hit", "limit", "unknown"):
-            free = cond.excused(tree)
+            free = {self.hand.name(n) for n in cond.excused(tree)}
             unread = [n for n in names if n in blind and n not in free]
             if unread:
                 n = unread[0]
@@ -670,10 +680,16 @@ class Session(object):
         except CallFailed as e:
             raise Fault("RUN_NOT_STARTED", detail=str(e), request=request)
         except ReplyLost as e:
-            why = str(e)
+            why, reconcile = str(e), e.reconcile
         row = self._ask(request)
         if row is None:
             raise Fault("REPLY_LOST", done=["the start of the run was sent"], detail="%s; the game knows no run of this request" % why, request=request)
+        if reconcile is not None:
+            try:
+                reconcile("found run %s for scene request %s" % (row["run"], request))
+            except OSError as e:
+                raise Fault("COULD_NOT_LOOK", done=["found run %s" % row["run"]],
+                            detail="the start marker could not be reconciled: %s" % e, request=request) from e
         return row, True
 
     def _ask(self, request):
@@ -737,7 +753,7 @@ class Session(object):
             st["stamps"] = sorted(set(st["stamps"]) | {EXPLORED})
             self._set_state(st)                 # before the call: a call that dies half way has marked the process
             self.stamps = st["stamps"]
-        self._mark_record("scene raw %s %s" % (tool, json.dumps(args, sort_keys=True, default=str)[:400]), rec)
+        self._mark_record("scene raw %s %s" % (tool, json.dumps(args, sort_keys=True, default=str)), rec)
         rec.did = ["raw call of %s; the library does not know what it changed" % tool] if changing else []
         rec.could_not_look.append("the effect of a raw call is not read back")
         try:

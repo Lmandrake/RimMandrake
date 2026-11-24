@@ -172,8 +172,8 @@ class FakeGame(object):
             self.session = {"session": "g1", "driver": a["driver"], "stage": "open"}
             return {"success": True, "session": "g1", "state": "open"}
         if a["action"] in ("close", "abort"):
-            self.session = None
-            return {"success": True}
+            old, self.session = self.session or {}, None
+            return {"success": True, "session": old.get("session"), "stage": "closed" if a["action"] == "close" else "aborted"}
         out = {"success": True, "stage": "none", "lastRun": None, "recordDir": "D:\\rec", "writerSession": "w"}
         out.update(self.session or {})
         out["lastRun"] = self.run and {"request": self.run["request"], "run": self.run["run"], "stage": "running" if self.run["polls"] > 0 else "closed"}

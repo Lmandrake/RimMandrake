@@ -51,9 +51,8 @@ import time
 import preconditions as _PC
 
 PASS, FAIL, UNMEASURED = "PASS", "FAIL", "UNMEASURED"
-# A row a targeted PREFIX run deliberately did not execute (focused_testing_plan_2026-10-25 option A): written by the
-# runner from the chain's catalogue after a StopAfter, never by a component. Not a verdict on the mod and not "could
-# not measure" -- `Component.execution` says "not_run" beside it.
+# A row skipped by a targeted PREFIX run (focused_testing_plan_2026-10-25 option A) or by the raid pause.
+# `Component.execution` says "not_run" beside it.
 NOT_RUN = "NOT_RUN"
 RAID_PAUSED = "PAUSED: raid tests wait for the tools"      # raid_pause.WORD (the selftest compares the two)
 
@@ -116,7 +115,7 @@ class Component(object):
         # A `(change)` must-show line is judged on the last one (spec §4b).
         self.sequences = []
         self.checkpoints = []
-        self.verdict = None         # PASS / FAIL / UNMEASURED, set on exit (NOT_RUN only from the runner's catalogue)
+        self.verdict = None         # PASS / FAIL / UNMEASURED / NOT_RUN
         self.execution = "ran"      # "ran" | "not_run": execution state beside the verdict, never folded into it
         self.detail = ""
         self.surprises = None       # watch.SurpriseAbort.summary() when a detector ended the component
@@ -1033,6 +1032,8 @@ class _ComponentCtx(object):
         if self.ctx.upstream_failed:
             c.verdict = UNMEASURED
             c.detail = self.ctx.upstream_reason
+            if RAID_PAUSED in str(c.detail or ""):
+                c.verdict, c.execution = NOT_RUN, "not_run"
         elif exc is not None and getattr(exc, "is_surprise_abort", False):
             # A detector (or the harness's own budget/clock guard) ended the run. That is a statement
             # about the ENVIRONMENT, never a verdict on the mod: UNMEASURED, evidence named, no finding.
@@ -1052,7 +1053,7 @@ class _ComponentCtx(object):
             self.ctx.upstream_reason = "an UNMEASURED component ended this chain earlier: " + c.detail[:200]
         elif exc is not None and RAID_PAUSED in str(exc):
             # raid tests are paused (rimflow/raid_pause.py; owner, 2026-11-23): not run, never a verdict and never a fault
-            c.verdict = NOT_RUN
+            c.verdict, c.execution = NOT_RUN, "not_run"
             c.detail = str(exc)[:400]
             self.ctx.upstream_failed = True
             self.ctx.upstream_reason = "a paused raid call ended this chain earlier: " + c.detail[:200]

@@ -150,7 +150,10 @@ def read_scenes(root, mod, n, tt, path=None):
             why = "it has no row"
         elif v != "PASS" or (k is not None and not (k["passes"] and k["count"] in (None, "pass"))):
             why = "its last row reads %s%s" % (v, "; " + "; ".join(k["why"]) if k and k["why"] else "")
-        elif k is not None and k["mod"] and "mod_fix" not in r:
+        elif "mod_fix" not in r and ((k is not None and k["mod"]) or any(
+                LK.norm(old.get("verdict")) == "FAIL" and LK.norm(old.get("class")) == "MOD"
+                and LK.same_build(old, r) and LK.outcome(old, spec)[0] is None and not LK.spoiled(old)
+                for _, old in runs.get(t, ()))):
             why = "an earlier run on that build is a MOD FAILURE"
         elif (rel.get(t) or {}).get("state") != "untouched":
             why = "the change since its PASS touches what it reads (%s)" % ((rel.get(t) or {}).get("why") or "not read")
