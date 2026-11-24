@@ -1,0 +1,12 @@
+{
+ "run_id": "audit_auto_20261124_1411",
+ "test": false,
+ "started": "2026-11-24T14:11:36-08:00",
+ "subjects": [
+  "RM_Gloomcast",
+  "RSW_Falumpaset",
+  "RSW_Falumpaset__FalumpasetE",
+  "RSW_Fambaa"
+ ],
+ "versions_key": "departures_brief@v3#50b472+gpt_targeted_second_look@v2#4640d0+opus_first_pass@v3#d22c47+preamble@v4#815246+regen_prompt_edit@v2#209449+severity@v4#3e1892+creature@v4#3a3bc2"
+}

@@ -1,0 +1,71 @@
+[
+ {
+  "id": "arteval_RM_Gloomcast_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gloomcast",
+  "prompt": "A creature sprite for RimWorld: the gloomcast. A colossal grazer that strains buried vegetation and small animals from the sand during long crossings of the open dayside. It sheds the stored heat fiercely when it reaches shade. Body plan: a long, low, slab-sided barrel of a body carried on exactly six thick pillar legs in three pairs, three legs on each side, a land animal. Every foot is a broad pad with three short blunt toes, the same in every facing. The torso, shoulders and head form one continuous wedge sloping down to the ground, with no separate domed back and no distinct neck. The head is dominated by a broad, flat, scoop-shaped sieve mouth of fine comb plates held close to the ground across the full width of the front, with small eyes set high and far back on the sides of the head. The hide is smooth and close-grained, overlapped in broad heat-shedding scale-plates with darker seams between them. The tail is a short, thick, blunt counterweight. The spine carries exactly five dorsal fans in one midline row. Each fan is a broad, thin, veined radiator sail standing upright in the vertical plane that runs along the length of the body, attached to the centre line of the back. Keep the same five fans at the same spine positions in every facing. In side view the five sails show their full broad veined faces in a row along the spine, with the legs showing six in a row, the far-side legs partly hidden behind the near ones. In front view, with the eyes toward the viewer, the same five sails turn their thin edge to the viewer and show as five narrow upright blades stacked in one line up the midline: one rising behind the head and four more behind it, each slightly smaller than the one in front, their tips stepping up in a staircase, with only a hint of vein texture, and the shoulders free of fans. In rear view, seen from behind with the eyes hidden, the same five thin blades stand in one narrow column above the back and haunches, and exactly six legs show: the large hind pair nearest the viewer, with the middle and front pairs partly hidden behind it, each leg joined to the body, and a dark belly shadow in the gap between the two sides. Colour: one coherent muted palette, dusky grey-brown hide with slightly warmer fan edges, with no red or yellow anywhere. Style: realistic painterly vanilla RimWorld sprite, painted with visible brushwork and strong value variation, flat painted value shapes with a lit top and a darker belly, selective detail. Soft painted edges; value and colour contrast against the ground carry the silhouette. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with a clean antialiased cut-out edge in which every edge pixel matches the adjacent hide shade: no ground, no water, no cast shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261124_1411",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 13.2,
+  "module": "walker",
+  "target_texpath": "swanimals/Gloomcast/Gloomcast"
+ },
+ {
+  "id": "arteval_RSW_Falumpaset_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Falumpaset",
+  "prompt": "A creature sprite for RimWorld: the falumpaset. A huge, long-legged herbivore from Naboo, with a heavy rump, wrinkled spotted hide and a low-hung head. Gungans and Naboo domesticate falumpasets to pull carts and haul heavy loads. They are strong swimmers. Visible features it must show: the canon Naboo falumpaset (see canon entry falumpaset); very long legs under a heavy rump; wrinkled hide with large irregular spots, and a low-hung head. Hide colour: a warm grey-brown back and flanks with large darker spots, and an underside, belly and inner legs in a visibly lighter tan hide colour that stays clearly paler than the back in the front, side and rear views, even under natural shading. Spots: large irregular blotches of mixed sizes with a few smaller spots between them, scattered asymmetrically, with different patterns on the left and right flanks and no matching pairs or rows; the same blotch sizes and one continuous spot map in the front, side and rear views. Tail: one short, thin tail, a slender cord attached high on the hindquarters, reaching only a short way down the upper hind legs and ending in one small tuft; the same thin tail, at the same height and with the same tuft, in every view. A little coarse hair at the neck and at the leg joints. The head hangs low in every view, below the line of the back. Front view, eyes toward the viewer: the low-hung head, the broad chest and the two front legs, with the belly line closing cleanly beneath the chest and open space between the front legs; the tail is hidden behind the body. Side view: the head hangs low in front of the chest with the muzzle above the lowest belly contour, the front legs as thick and broad-footed as the hind legs with the far feet only slightly higher, and the short thin tail sits against the upper hind legs. Rear view, seen from behind: the barrel body and heavy rump fill the frame and form the top of the silhouette, showing the back, haunches and the short slender tail with its small tuft; the low-carried head sits below the back line and is fully hidden behind the body and rump, with no ears and no crown of the head above the rump; the two front legs show beside and below the belly as thick and broad-footed as the hind legs, in the same proportions as the side view, with their feet only slightly higher than the hind feet; between the hind legs there is clear open space with the belly line closing cleanly above it. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour; value and colour contrast against the ground carry the silhouette. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT, CANON_MISS, F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261124_1411",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Falumpaset/Falumpaset"
+ },
+ {
+  "id": "arteval_RSW_Falumpaset__FalumpasetE_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Falumpaset__FalumpasetE",
+  "prompt": "A creature sprite for RimWorld: the falumpaset. A huge, long-legged herbivore from Naboo, with a heavy rump, wrinkled spotted hide and a low-hung head. Gungans and Naboo domesticate falumpasets to pull carts and haul heavy loads. They are strong swimmers. Visible features it must show: the canon Naboo falumpaset (see canon entry falumpaset); very long legs under a heavy rump; wrinkled spotted hide and a low-hung head with a drooping muzzle. The belly and the whole underside of the body are a visibly lighter greyish-tan hide colour than the brown flanks, with soft natural shading where the underside curves away from the light; this lighter underside shows in every facing, between the front legs in the south view and along the underside of the body in the east view. The legs grade from the body colour to a darker grey-brown from the lower joint down to the feet. The tail is short and thin, a slim cord that hangs from the lower rump only as far as the hock, ending in a small tuft at hock height, well above the belly line; it takes up a small fraction of the animal's height and is identical in length and tuft height in every facing. The south view shows the front of the head, eyes toward the viewer, with a continuous drooping muzzle, a clean pendulous lip, a clean chin and throat, and open empty space between the front legs showing the lighter greyish-tan belly; the tail is hidden behind the body. The north view shows the rear, seen from behind: heavy rump, haunches, and the short thin tail hanging down the centre of the rump to hock height with its small tuft level with the hocks, the rear legs extending below it, head hidden. The east view shows the same short tail in profile, hanging from the lower rump to hock height, its tuft level with the hock and clearly above the underside of the belly, which is the lighter greyish-tan. Keep the palette of the flanks and back, the body plan, the spotted wrinkled hide and the low-hung head exactly as in the previous render. Realistic painterly vanilla RimWorld sprite style, soft painted edges; value and colour contrast against the ground carry the silhouette. No outlines. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261124_1411",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Falumpaset/Falumpaset"
+ }
+]

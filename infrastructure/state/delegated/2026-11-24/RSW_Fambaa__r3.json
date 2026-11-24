@@ -1,0 +1,66 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 46.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5282576000000001
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 36.9
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Fambaa",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (no target_texpath; the def draws 4 texPaths) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['STYLE_CARTOON', 'F_INCONSISTENT', 'F_SIZE_JUMP']; polish []; unreadable ['SCALE']",
+  "gpt strong_accept: unsettled [], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v4",
+   "sha": "3a3bc2e81422"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "5c99cce731bebaf7fb840a2591fa9f9df239a0935bcf69645ba4d0082b40949c",
+  "east.png": "cb37e01ba8c7050b9b06dca2c0e24d24327eb6f535c7db11cacb120db492b6a3",
+  "north.png": "26c2cf84655f31d00416d3321c0103cf7046295af7729491632f98a81b32af2c",
+  "scale.png": "4b2e5ed200487bca89917cd324dd79fb32b9e550ebe40548c7439755c3a144a3",
+  "facings.png": "d92b27171415019b1b1cd2f2d1cf3ad2fc862e9c108e84c089b0cf1aae939a88"
+ }
+}
