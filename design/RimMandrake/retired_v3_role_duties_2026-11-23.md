@@ -36,27 +36,47 @@ and that the Conductor decides if it matters. Nobody is assigned here.
 
 | duty | who or what does it now | evidence |
 |---|---|---|
-| AU-1 sample closed items and passes | The mechanical check of every close: `close_check.py`, daily, no AI (a close whose commit is not on main reopens its item). The sample by a reader: the weekly follow-through audit reads needs, not closes; a sample of closes is REVIVE-OR-DROP. | `rm-close-check.timer`; `design/specs/2026-11-23-close-check/boundary.md` |
+| AU-1 sample closed items and passes | The mechanical check of every close: `close_check.py`, daily, no AI (a close whose commit is not on main reopens its item). The sample by a reader: the daily findings judge (step 3, `regrade.py`, at most 3 closed items a day) sampled closes from 2026-11-06 until its own stop rule ended the sample ("18 days since the first regrade and nothing held up: stopped, as the owner asked"). The weekly follow-through audit reads needs. To start the regrade again is REVIVE-OR-DROP. | `regrade.py report` (exit 3, 2026-11-24); `findings_judge_prompt.md` step 3; `rm-close-check.timer`; `design/specs/2026-11-23-close-check/boundary.md` |
 | AU-2 re-check each verdict that sets blocking evidence aside | A rule, not a re-check: a repaired check counts only when it is seen to fail and pass, and one fresh reader reads a fix. | `CLAUDE.md` §Touching code has a cost |
 | AU-3 a repeat error becomes an enforced rule | The findings judge files `Rule candidate:` items for the Conductor, on Fridays. The run that sees a defect fixes it. A program that counts repeats over lessons: REVIVE-OR-DROP. | `Utils/findings_judge_friday.md`; `rm-findings-judge.timer` enabled |
 | AU-4 scheduled adversarial reviews that he released | Nobody. GPT and Codex reviews of pipeline code stay stopped. | `CLAUDE.md` §Code is clean |
 | AU-5 spot check of the daily digest | The owner only: REVIVE-OR-DROP. | `delegated_digest.py` builds it, and no reader checks it |
 | AU-6 instrument trust | A rule for whoever counts. | `facts/instrument_traps.md` |
-| AU-7 read codebase health | The page is made each night. Nobody reads it on a schedule: REVIVE-OR-DROP. | `rm-codebase-health.timer` enabled |
-| AU-8 re-check the v3-against-v2 verdict | Dead: `v3_vs_v2.py` no longer exists. `Utils/v3_vs_v2_rules.json` is a leftover. | `ls src/RimMandrake/Utils` |
+| AU-7 read codebase health | Dead: the page's timer and publisher are retired, and `rm-codebase-now.timer` makes the page that replaced it. No scheduled read is owed on either page. | `live_retired.txt`; `selftest_retired_era_gone.py` RETIRED_UNITS |
+| AU-8 re-check the v3-against-v2 verdict | Dead: `v3_vs_v2.py` no longer exists. `Utils/v3_vs_v2_rules.json` is the default `--rules` file of `sim/process_sim.py backtest`. | `git grep v3_vs_v2_rules` |
 | weekly sample of the findings fold's merges and retire decisions | Nobody: REVIVE-OR-DROP. | `dispatcher_schedule.json` `findings_fold` named the Auditor |
 | token talk in the reports of token-blind roles (the check that Operations owns) | The check measures nothing: the two roles that it listed are gone. Point it at the Designer, or delete it: REVIVE-OR-DROP. | `ops_watch_rules.json` `token_talk.roles` is `[]` |
 
 ## Retired names that are still in use (for the Conductor)
 
-- `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` is the parent item where Operations and the Conductor post `OPS PROPOSAL`,
-  `OPS DECISION` and `QUESTION FOR OPERATIONS` notes. Its ledger state is already `dropped`. A rename touches the
-  Conductor's `ledger_item` and the Operations `on_alarm` text in `dispatcher_schedule.json`, the role files
-  `conductor.md` and `operations.md`, the goals file head, `canon.yml`, and the tests that name it. Its name says
-  "eight chairs".
+- `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` is no longer the notes item: the roles write on
+  `RIMMANDRAKE_KEEP_ROLE_NOTES_ON_ONE_LIVE_ITEM` (2026-11-23), and `selftest_retired_era_gone.py` refuses the old name on
+  a live instruction line. The old name stays only in code comments and test data.
 - `audits.py`, `audits.schema.json` and `audits.jsonl` stay: `contracts/` replays them as one of six record families.
-- `stage_dispute.py` and `stage_dispute.json` are the retired Arbiter's loop. Nothing starts them.
+- `stage_dispute.py` and `stage_dispute.json` are the retired Arbiter's loop. Nothing imports them, and the
+  config reads `shadow` (`git grep stage_dispute`, 2026-11-24).
 - `concept_tree.py` keeps the leaf value `setter_sweep` and an error text that names the Setter. No code reads
   `binding.json`.
 - The priority list and its tool were deleted 2026-11-23 (retire census): the order of work comes from the Maturation
   Pipeline, the List Pipeline and `CONDUCTOR_GOALS.md`.
+
+## Evidence and a recommendation for each open decision (2026-11-24, for the Conductor)
+
+Item: `RIMMANDRAKE_DECIDE_RETIRED_ROLE_DUTIES_NOBODY_DOES_NOW`. These are recommendations by the run that shaped the
+item. They are not rulings. The Conductor rules, replaces the words REVIVE-OR-DROP in the rows above with the ruling, and
+does (or has a helper do) the act.
+
+| open decision | evidence, measured 2026-11-24 unless tagged | recommendation and its act |
+|---|---|---|
+| P-4 automatic replan run on a failed plan step | There is no plan to replan (no daily list, no plan list). Operations files one item for the Conductor when a goal's work does not fit a date (`operations.md` §forecast against the goals). | DROP. No act. |
+| P-5 weekly run of `queue_staleness_review.py` | Its run reads 301 doing or blocked items: 30 blocked past 3 days, 0 doing past 7 days, 18 of them with a `needs` tag that its window already met (up to 21.6 days idle). `list_dispatch.py` reads `blocked` as a reason to wait, and that file holds no age rule for a block (other files were not searched). Many of the 30 belong to held biome mods [guess ~60%]. | REVIVE, as an age line inside the List Pipeline (a block idle past 3 days whose `needs` window has opened since is due for Shape), not as a weekly page. Then delete the tool and its selftest. This is the one duty here with a measured gap. |
+| P-9 a reader of `design/V2_DREAMS.md` | An idea for a mod's next version is already a ticket (`CHARTER.md`). The file is the overflow for ideas that bind nobody. | DROP the reading duty; keep the file. No act. |
+| AU-1 the regrade of closes | It sampled from 2026-11-06 to 2026-11-19 and ended by its own rule with nothing held up. `close_check.py` checks every close daily. | DROP. No act; step 3 of the judge prompt skips itself. |
+| AU-3 a program that counts repeat lessons | `lessons.py add` refuses a near-twin and offers `--merge`. `findings_fold.py` groups each failure under one signature and lists DECIDED-and-failed-again each day. | DROP. No act. |
+| AU-5 a spot check of the daily digest | A program builds the digest, three selftests cover the program, and the Conductor delivers it. No wrong digest is on record in this run's reading [guess ~70%: the ledger was not searched whole]. | DROP. No act. |
+| the sample of the findings fold's merge and retire decisions | `decisions.jsonl` holds 159 decisions in 2026-11: 67 merge, 42 route, 30 work, 19 retire, 1 memory. A wrong merge or retire comes back by itself under DECIDED-and-failed-again, which the judge must decide again each day. | DROP. No act. |
+| the token-talk check of role reports | `token_talk.roles` and `.seats` are both `[]`. The word list `token_talk.terms` is live: `dispatcher.py` and `ops_watch.py` use it to withhold lines from the blind digest. | DROP the measure (`c_tokentalk`, `tt_texts`, `tt_point`, `tt_groups`, `tt_retired`, its tests, §Drift check of `operations.md`). KEEP `terms` and `tt_regex`. |
+| `audits.py`, its schema and fixture | `contracts/` replays them as a record family. | KEEP. No act. |
+| `stage_dispute.py`, `stage_dispute.json` | Nothing imports the module. | DELETE both, with their line in `failure_counter_list.json`. |
+| `setter_sweep` in `concept_tree.py` | A value that the schema accepts, with a selftest. No tracked JSON holds the value (`git grep`). | KEEP the value. No failure is on record (§Touching code has a cost). |
+| `v3_vs_v2_rules.json` | `process_sim.py backtest` reads it by default. | KEEP with the simulator. No act. |
