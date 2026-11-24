@@ -1523,7 +1523,7 @@ class Attempt:
             v = x.get("verdict") if x.get("verdict") in ("PASS", "FAIL") else "UNMEASURED"
             rows.append({"chain": "checks", "row": c, "verdict": v, "detail": str(x.get("detail") or "")[:S.DETAIL_CAP]})
             facts[c] = {k: x.get(k) for k in ("site", "held", "command", "log") if x.get(k) is not None}
-        for path in [os.path.join(out, "checks.json")] + sorted(glob.glob(os.path.join(out, "run_*.log"))):
+        for path in [os.path.join(out, "checks.json")] + sorted(glob.glob(os.path.join(out, "run_*.log*"))):
             self.res["artifacts"].append({"name": os.path.basename(path), "path": path, "sha256": sha256_file(path),
                                           "bytes": os.path.getsize(path)})
         self.res["rows"], self.res["counts"] = rows, S.count_verdicts(rows)

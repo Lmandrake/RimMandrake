@@ -2149,14 +2149,7 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack",
-   "testq": {
-    "check": {
-     "tier": "gimmesomeslack",
-     "build": "release"
-    },
-    "by": "testq_blocks.py"
-   }
+   "tier": "gimmesomeslack"
   },
   "sc_cords_slack": {
    "id": "sc_cords_slack",
@@ -2177,14 +2170,7 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack",
-   "testq": {
-    "check": {
-     "tier": "gimmesomeslack",
-     "build": "release"
-    },
-    "by": "testq_blocks.py"
-   }
+   "tier": "gimmesomeslack"
   },
   "sc_no_sharp_turn": {
    "id": "sc_no_sharp_turn",
@@ -2345,14 +2331,7 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack_flowworks",
-   "testq": {
-    "check": {
-     "tier": "gimmesomeslack_flowworks",
-     "build": "release"
-    },
-    "by": "testq_blocks.py"
-   }
+   "tier": "gimmesomeslack_flowworks"
   },
   "sc_cords_under_items": {
    "id": "sc_cords_under_items",
@@ -2458,14 +2437,7 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack",
-   "testq": {
-    "check": {
-     "tier": "gimmesomeslack",
-     "build": "release"
-    },
-    "by": "testq_blocks.py"
-   }
+   "tier": "gimmesomeslack"
   },
   "sc_fallen_span": {
    "id": "sc_fallen_span",
@@ -2660,14 +2632,7 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack",
-   "testq": {
-    "check": {
-     "tier": "gimmesomeslack",
-     "build": "release"
-    },
-    "by": "testq_blocks.py"
-   }
+   "tier": "gimmesomeslack"
   },
   "sc_settings": {
    "id": "sc_settings",
@@ -2688,14 +2653,7 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack_flowworks",
-   "testq": {
-    "check": {
-     "tier": "gimmesomeslack_flowworks",
-     "build": "release"
-    },
-    "by": "testq_blocks.py"
-   }
+   "tier": "gimmesomeslack_flowworks"
   },
   "sc_gravship": {
    "id": "sc_gravship",
@@ -2756,13 +2714,6 @@
     "why": "live: this run is offline only; entry exists in the code"
    },
    "tier": "gimmesomeslack",
-   "testq": {
-    "check": {
-     "tier": "gimmesomeslack",
-     "build": "release"
-    },
-    "by": "testq_blocks.py"
-   },
    "replaces": [
     "sc_walk"
    ]

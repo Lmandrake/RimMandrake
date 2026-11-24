@@ -65,6 +65,30 @@ def _gss_scene(tid, spec):
             "steps": ["python.exe -u %svalidation.py --scene %s --out {wout}" % (GSS, m.group(1))]}
 
 
+_GSS_SCENES = {}
+
+
+def _gss_offline_rows(tid):
+    """-> the offline-gate rows (O1..O8) that scene TID's verdict reads; [] none, or the scenes could not be read here."""
+    if not _GSS_SCENES:
+        _GSS_SCENES["V"] = None
+        try:
+            import importlib.util
+            d = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack")
+            if d not in sys.path:
+                sys.path.append(d)
+            sp = importlib.util.spec_from_file_location("gss_validation", os.path.join(d, "validation.py"))
+            m = importlib.util.module_from_spec(sp)
+            sp.loader.exec_module(m)
+            _GSS_SCENES["V"] = m
+        except Exception:       # noqa: BLE001 - a host without its imports (SteveDesktop): the committed blocks decide
+            pass
+    try:
+        return [r for r in _GSS_SCENES["V"].scene_rows_for(tid) if re.match(r"O\d", r)]
+    except Exception:       # noqa: BLE001
+        return []
+
+
 def _gss_proof(tid, spec):
     if "proof_all.py --live" not in _cmd(spec) and not (
             _cmd(spec) == GSS + "validation.py" and str(spec.get("entry") or "").startswith("scene_")):
@@ -72,8 +96,12 @@ def _gss_proof(tid, spec):
     tier = spec.get("tier") or "gimmesomeslack"
     if not tier.startswith("gimmesomeslack"):
         return "its tier %s is a list without the mod: it reads a save that an earlier run on the mod's tier made" % tier
+    rows = _gss_offline_rows(tid) if tid.startswith("sc_") else []
+    if rows:
+        return "its verdict reads offline gate rows (%s), and the gate's C# selftest takes over 15 min on SteveDesktop" % (
+            ", ".join(rows))
     return {"key": "gss_proof:" + tier, "read": "gss_proof", "tier": tier, "build": "release",
-            "steps": ["python.exe -u %snorthstar/proof_all.py --live --no-shots --out {wout}" % GSS,
+            "steps": ["python.exe -u %snorthstar/proof_all.py --live --no-shots --skip-offline --out {wout}" % GSS,
                       "python3 %svalidation.py --scenes-from {out} > {out}.scenes 2>&1" % GSS]}
 
 
@@ -355,23 +383,28 @@ def wpath(path):
 
 
 def sh(line, log, timeout):
-    """-> (exit code or None on a timeout, text). The whole process group dies on a timeout."""
+    """-> (exit code or None on a timeout, stdout then stderr). Two streams into one file glued a stderr line into a row's
+    line (Steve2, 2026-11-24), so stderr has its own file. The whole process group dies on a timeout."""
     import signal
-    with open(log, "ab") as f:
+    err = log + ".err"
+    with open(log, "ab") as f, open(err, "ab") as e:
         f.write(("$ %s\n" % line).encode())
         f.flush()
-        at = f.tell()
-        p = subprocess.Popen(["bash", "-c", line], cwd=REPO, stdin=subprocess.DEVNULL, stdout=f,
-                             stderr=subprocess.STDOUT, start_new_session=True)
+        at, eat = f.tell(), e.tell()
+        p = subprocess.Popen(["bash", "-c", line], cwd=REPO, stdin=subprocess.DEVNULL, stdout=f, stderr=e,
+                             start_new_session=True)
         try:
             rc = p.wait(timeout=max(1, timeout))
         except subprocess.TimeoutExpired:
             os.killpg(p.pid, signal.SIGKILL)
             p.wait()
             rc = None
-    with open(log, "rb") as f:
-        f.seek(at)
-        return rc, f.read().decode("utf-8", "replace").replace("\r", "")
+    got = []
+    for path, pos in ((log, at), (err, eat)):
+        with open(path, "rb") as f:
+            f.seek(pos)
+            got.append(f.read().decode("utf-8", "replace").replace("\r", ""))
+    return rc, got[0] + ("\n--- stderr ---\n" + got[1][-4000:] if got[1].strip() else "")
 
 
 def make_site(r, log, sh_=sh):
@@ -388,8 +421,12 @@ def make_site(r, log, sh_=sh):
             return None, "site not made (exit %s): %s" % (rc, _tail(text, 240))
     rc, text = sh_("python.exe -u %s%s%s" % (SITE, " --sweep" if r.get("sweep") else "",
                                              " --biome " + want[6:] if want.startswith("biome:") else ""), log, 180)
-    m = re.findall(r"^SITE_JSON (\{.*\})$", text or "", re.M)
-    site = json.loads(m[-1]) if m else None
+    site = None
+    for x in re.finditer(r"SITE_JSON (?=\{)", text or ""):
+        try:
+            site = json.JSONDecoder().raw_decode(text, x.end())[0]
+        except ValueError:
+            pass
     if rc != 0 or not site:
         return None, "site not read (exit %s): %s" % (rc, _tail(text, 240))
     return site, None

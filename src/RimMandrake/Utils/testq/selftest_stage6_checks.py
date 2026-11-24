@@ -187,6 +187,20 @@ def t_the_verdict_is_the_checks_own_row():
     rows, lines = fake_run("FlowWorks", "gimmesomeslack", {"c": concept()}, concept_json("PASS", [("a", "PASS")]))
     check(rows["c"]["verdict"] == "UNMEASURED" and not lines, n + "a check of another tier never runs on this load")
 
+    def interleaved(line, out):
+        if "live_site" in line:
+            return 0, "READY"
+        if "stage6_site" in line:
+            return 0, 'SITE_JSON {"biome": "AridShrubland"}[bridge split] 0.3 s wall'
+        return 0, "a_scene  PASS x"
+    check(fake_run("ExplosiveKnockback", "explosiveknockback_visit", {"e": ek("a_scene")}, interleaved)[0]["e"]["verdict"] == "PASS",
+          n + "a site line with another line glued to it still reads (Steve2, 2026-11-24)")
+    log = os.path.join(TMP, "x.log")
+    rc, text = SC.sh("echo one; echo noise >&2; echo two; echo Traceback >&2; exit 3", log, 60)
+    check(rc == 3 and text.startswith("one\ntwo\n") and "noise" in text[text.index("--- stderr"):],
+          n + "stderr never breaks a row's line: it comes after stdout (%r)" % text)
+    check(SC.sh("sleep 5", log, 1)[0] is None, n + "a command past its time is ended and said")
+
     def walk(text, rc):
         def script(line, out):
             if "live_site" in line:
@@ -227,6 +241,11 @@ def t_one_run_serves_all_its_checks():
         open(out + ".scenes", "w").write("sc_walls                 PASS       A=PASS\n")
         return 1, ""
     rows, lines = fake_run("GimmeSomeSlack", "gimmesomeslack", specs, script)
+    check(all("--skip-offline" in x for x in lines if "proof_all" in x),
+          "one-run-serves-all-its-checks: the lane's proof skips the offline gate (its C# selftest passed 15 min there)")
+    p = SC.place("GimmeSomeSlack", {"sc_spans": gss("sc_spans", "scene_spans", tier="gimmesomeslack")}, root=ROOT)
+    check(p["sc_spans"][0] == SC.NO_LOOK and "offline gate" in p["sc_spans"][1],
+          "no-entry-point-is-could-not-look: a scene that reads offline-gate rows is not sent (%s)" % p["sc_spans"][1])
     check(sum("proof_all" in x for x in lines) == 1, "one-run-serves-all-its-checks: the proof ran once")
     check({k: v["verdict"] for k, v in rows.items()} == {"P_A": "PASS", "P_B": "FAIL", "P_GONE": "UNMEASURED", "sc_walls": "PASS"},
           "one-run-serves-all-its-checks: each check its own row %s" % {k: v["verdict"] for k, v in rows.items()})
