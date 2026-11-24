@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-23T11:44:19-08:00",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-23T18:14:49-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -18,7 +18,7 @@
     "visit": 2,
     "total": 6
   },
-  "pre_human_arrivals": 0,
+  "pre_human_arrivals": 1,
   "moves": [
     {
       "from": "offline_build",
@@ -272,6 +272,26 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-23T18:14:49-08:00",
+      "by": "BENCH",
+      "why": "Stage 6 exit met at visit 5 (run-1795478277, unit rm-detached-bench-rimmandrake-drive-explosiveknockback-in-1795478768): build match counts 56 of 56, SUMMARY and rows read by the steward bear it out",
+      "unit": "rm-detached-bench-rimmandrake-confirm-explosiveknockback-v-1795485915",
+      "confirmed": {
+        "steward_confirms": "visit 5 (run-1795478277): read SUMMARY.md, all 10 rows, their evidence, strange.jsonl, screenshots and the diffs fa3f95313d and 6dfc987697. sc_spared, sc_frame_probe_check, sc_barrage_perf (p99 22.1 ms, limit 50, mod off 21.7) and sc_walk_raid (18 of 18) PASS; the reload repair waits only, seen FAIL on planted goods lost on reload and PASS on the real build; the mod's own code is unchanged since visit 4, so its 52 rows stand; build_match rerun: 56 count, 0 to run. Verdict: exit met."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match"
       ]
     }
   ],

@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "e0986afbee32ef567f0764921dfe4ad69a406edcbfbe085efb7f4b75f9b7df85",
+  "body_sha256": "da9d54205d44498184e9ad38fb292f4455a79a61dd984eeb8f868eaf6e944769",
   "reducer": 1,
   "shards": {
    "BACKFILL": 344431,
-   "DISPATCH": 33397,
+   "DISPATCH": 33742,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
    "HOLDER.run-1794830532": 2304,
@@ -17,6 +17,7 @@
    "HOLDER.run-1795461416": 958,
    "HOLDER.run-1795464425": 3294,
    "HOLDER.run-1795478277": 3184,
+   "HOLDER.run-1795485747": 1414,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -686,11 +687,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795478277",
-   "done": "Visit 5 exit met: 56 of 56, walk 18 of 18, barrage p99 22.1 ms; reload arm repaired fa3f95313d; relation fix 6dfc987697",
-   "next": "Steward: read visit_5/SUMMARY.md and advance to pre_human, or send a line back",
-   "ruled_out": "barrage run 1 pause was a vanilla Ancient danger letter, not the mod",
-   "ts": "2026-11-24T01:57:11Z"
+   "by": "HOLDER.run-1795485747",
+   "done": "Steward read visit 5 (4 live rows, the reload-wait repair, the relation fix) and advanced in_game to pre_human; build_match 56 of 56, 0 to run",
+   "next": "Write the Stage 7 walk brief; the Conductor classes RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN (steward recommends Polish)",
+   "ruled_out": "The raid NRE storms were not seen: Player-prev.log of the 17:35 full-list walk (goods-lost plant build) has 0 Exception ticking and 0 TweenedPosRoot lines over its reloads; the real-build walk log was overwritten, so it is unread",
+   "ts": "2026-11-24T02:15:00Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -886,7 +887,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 656,
+  "events": 660,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2508,7 +2509,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-24T02:05:06Z",
+   "last": "2026-11-24T02:15:00Z",
    "lease": "run-1795485747",
    "released": false,
    "token": 22
@@ -2549,13 +2550,14 @@
    "HOLDER.run-1795461416",
    "HOLDER.run-1795464425",
    "HOLDER.run-1795478277",
+   "HOLDER.run-1795485747",
    "JUDGE.judge-1794890427",
    "JUDGE.judge-1795437145",
    "OWNER"
   ],
   "spend_tokens": 171672717,
   "spend_usd": 178.6086,
-  "stage": "in_game",
+  "stage": "pre_human",
   "superseded": [],
   "tests": [
    {

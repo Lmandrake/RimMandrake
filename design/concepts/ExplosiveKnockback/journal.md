@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 11:44 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 7, the walk brief, since 2026-11-23 6:14 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 11:44 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 6:14 PM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -408,4 +408,13 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward road back: visit 4 exit not met; every open line is game-only: sc_spared (SITE, four bars undecided, RIMMANDRAKE_HOLD_SPARED_CARRIER_IN_BLAST_IT_WALKED_AWAY) and sc_walk_raid (HARNESS/SITE, RIMMANDRAKE_RUN_KNOCKBACK_WALK_FRAME_ARMS_SMALL_COLONY_ABSENT); no mod-wrong line open: fix 2590111487 read sound dc7550420b; koth.isid identity fixed 4ecd015e866f
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 6:21 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 6:21 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-23 6:14 PM PST, stage change: In-game acceptance (Stage 6) to Walk brief (Stage 7) (by BENCH)
+
+- Why: Stage 6 exit met at visit 5 (run-1795478277, unit rm-detached-bench-rimmandrake-drive-explosiveknockback-in-1795478768): build match counts 56 of 56, SUMMARY and rows read by the steward bear it out
+- Checks passed: order, by, version, hold, steward_confirms, exit_met, build_match.
+- Steward confirms: visit 5 (run-1795478277): read SUMMARY.md, all 10 rows, their evidence, strange.jsonl, screenshots and the diffs fa3f95313d and 6dfc987697. sc_spared, sc_frame_probe_check, sc_barrage_perf (p99 22.1 ms, limit 50, mod off 21.7) and sc_walk_raid (18 of 18) PASS; the reload repair waits only, seen FAIL on planted goods lost on reload and PASS on the real build; the mod's own code is unchanged since visit 4, so its 52 rows stand; build_match rerun: 56 count, 0 to run. Verdict: exit met.
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 11:44 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 11:44 AM PST).
 - Record: `version/stage_record.json`.
