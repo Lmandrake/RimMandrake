@@ -1,0 +1,77 @@
+[
+ {
+  "test": "sc_full_list_smoke",
+  "label": "full_list_smoke",
+  "identity": "identity_full.json",
+  "note": "run first: his full list was already up with the a6f05380df DLL; site NS_Pyrelands_site_1_417df172fdb5_visit9full, tile 49"
+ },
+ {
+  "test": "sc_ashwallow",
+  "label": "burrowers",
+  "identity": "identity_pyrelands.json"
+ },
+ {
+  "test": "sc_heat_dome",
+  "label": "heat_dome",
+  "identity": "identity_pyrelands.json",
+  "note": "naive GPT judge of the two unlabelled crops (text cropped out) named the domed one: evidence/dome_naive_judge_gpt.md"
+ },
+ {
+  "test": "sc_fire_dusts_ash",
+  "label": "fire_tick_effects",
+  "identity": "identity_pyrelands.json"
+ },
+ {
+  "test": "sc_scorchfruit",
+  "label": "scorchfruit",
+  "identity": "identity_pyrelands.json"
+ },
+ {
+  "test": "sc_no_rain",
+  "label": "no_ordinary_rain",
+  "identity": "identity_pyrelands.json"
+ },
+ {
+  "test": "P_mapgen_log",
+  "label": "mapgen_log",
+  "identity": "identity_pyrelands.json"
+ },
+ {
+  "test": "P_grass_cover",
+  "label": "grass",
+  "identity": "identity_pyrelands.json"
+ },
+ {
+  "test": "P_ambient_ash_drift",
+  "label": "ambient_ash_drift",
+  "identity": "identity_pyrelands.json"
+ },
+ {
+  "test": "P_blackrain",
+  "label": "blackrain",
+  "identity": "identity_pyrelands.json"
+ },
+ {
+  "test": "P_gate",
+  "label": "gate_live_proof",
+  "identity": "identity_pyrelands.json",
+  "script": "script_gate_live_proof.log",
+  "pass_line": "A1 ShellPresent=True On=True"
+ },
+ {
+  "test": "sc_ullai",
+  "label": "ullai_and_giant",
+  "identity": "identity_pyrelands.json"
+ },
+ {
+  "test": "sc_reload_keeps_the_burn",
+  "label": "reload_keeps_the_burn",
+  "identity": "identity_pyrelands.json"
+ },
+ {
+  "test": "sc_fire_walks_with_wind",
+  "label": "wind_burn_live",
+  "identity": "identity_pyrelands.json",
+  "script": "script_wind_burn_live.log"
+ }
+]

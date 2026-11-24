@@ -1,0 +1,1 @@
+X has a tall, rounded body with overlapping gray plates and small limbs visible at its base. Y has a low, closed body covered in tightly fitted tan plates, with no limbs visible. Y is the curled protective dome.

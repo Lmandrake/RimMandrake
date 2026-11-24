@@ -1,0 +1,66 @@
+{
+ "stations": [
+  "VISIT9: LIVE burn front in fresh ember grass - unpause and watch it walk",
+  "VISIT9: creatures - ullai herd, furnace-beast giant, ashwallows",
+  "VISIT9: scorch-fruit standing in ash",
+  "VISIT9: ember grass under a roof (left) withers within a day; open patch (right) stays",
+  "VISIT9: charred ruin on deep ash (walls painted RM_FE_Charred)"
+ ],
+ "shots": [
+  "Transient\\pv9\\shots\\pv9_walk_station_0.png",
+  "Transient\\pv9\\shots\\pv9_walk_station_1.png",
+  "Transient\\pv9\\shots\\pv9_walk_station_2.png",
+  "Transient\\pv9\\shots\\pv9_walk_station_3.png",
+  "Transient\\pv9\\shots\\pv9_walk_station_4.png"
+ ],
+ "windows": [
+  [
+   26,
+   20
+  ],
+  [
+   110,
+   20
+  ],
+  [
+   164,
+   20
+  ],
+  [
+   68,
+   26
+  ],
+  [
+   206,
+   44
+  ],
+  [
+   134,
+   62
+  ],
+  [
+   38,
+   68
+  ],
+  [
+   176,
+   86
+  ]
+ ],
+ "advance": null,
+ "exportCount": 56133,
+ "exportTruncated": false,
+ "ruinCluster": 40,
+ "fire": 32,
+ "ruinWalls": 331,
+ "labels": true,
+ "save": {
+  "success": true,
+  "path": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Saves\\PYRELANDS_0.1.0_VISIT9_WALK_FULL.rws",
+  "new": [],
+  "changed": [
+   "PYRELANDS_0.1.0_VISIT9_WALK_FULL.rws"
+  ],
+  "bytes": 36964036
+ }
+}

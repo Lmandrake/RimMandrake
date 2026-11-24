@@ -1,0 +1,40 @@
+732311
+48 None ['id', 'name', 'kind', 'kindDef', 'def', 'hasGenes', 'uniqueXenotype', 'isPlayer', 'hostile', 'x', 'z', 'spawned', 'dead', 'downed', 'stunned', 'stunTicksLeft', 'fleshType', 'isMechanoid', 'isFlesh', 'intelligence', 'bodySize']
+RM_Ashwallow 168 128 None False False None
+RM_Ashwallow 56 222 None False False None
+RM_Ashwallow 56 223 None False False None
+RM_Ashwallow 56 223 None False False None
+RM_Ashwallow 70 193 None False False None
+RM_Ashwallow 70 193 None False False None
+RM_Ashwallow 70 193 None False False None
+RM_Ullai 56 129 None False False None
+RM_Ullai 68 124 None False False None
+RM_Ullai 58 130 None False False None
+RM_Ullai 57 123 None False False None
+RM_Ullai 54 129 None False False None
+RM_Ullai 56 132 None False False None
+RM_Ullai 60 125 None False False None
+RM_Ullai 94 152 None False False None
+RM_Ullai 63 125 None False False None
+RM_Ullai 60 129 None False False None
+RM_Ullai 59 124 None False False None
+RM_Ullai 64 127 None False False None
+RM_Ullai 60 124 None False False None
+RM_Ullai 56 124 None False False None
+RM_Ullai 60 122 None False False None
+RM_Ullai 59 121 None False False None
+RM_Ullai 66 122 None False False None
+RM_Ullai 64 124 None False False None
+RM_Ashwallow 168 128 None False False None
+RM_Ullai 118 28 None False False None
+RM_Ullai 120 24 None False False None
+RM_Ullai 111 24 None False False None
+RM_Ullai 121 22 None False False None
+RM_Ullai 117 25 None False False None
+RM_Ullai 119 26 None False False None
+RM_FurnaceBeast 119 31 None False False None
+RM_Ashwallow 142 38 None False False None
+RM_Ashwallow 142 38 None False False None
+['RM_FE_Plant_EmberGrass', 'RM_FE_Plant_Quickgrass', 'SteamGeyser']
+['RM_FE_Plant_EmberGrass', 'RM_FE_Plant_Quickgrass', 'RM_FurnaceBeast', 'RM_Ullai']
+[bridge split] 0.7 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.0 / outside calls 0.6 s

@@ -1,0 +1,42 @@
+START full1 2026-11-24 07:56:54
+STOPPED at full_list_smoke: reload_rc=1 07:56:56
+START full1 2026-11-24 08:01:21
+STOPPED at full_list_smoke: reload_rc=1 08:01:23
+START full1 2026-11-24 08:01:28
+STOPPED at full_list_smoke: reload_rc=1 08:01:29
+START full1 2026-11-24 08:01:43
+DONE full_list_smoke reload_rc=0 rc=1 62s 08:02:45
+END full1 2026-11-24 08:02:45
+START fullwalk 2026-11-24 08:02:52
+DONE script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/walk_save.py reload_rc=0 rc=0 54s 08:03:46
+END fullwalk 2026-11-24 08:03:46
+START close 2026-11-24 08:04:05
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/walk_closeups.py reload_rc=skipped rc=0 15s 08:04:20
+END close 2026-11-24 08:04:20
+START peek 2026-11-24 08:04:34
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/peek_creatures.py reload_rc=skipped rc=0 3s 08:04:37
+END peek 2026-11-24 08:04:37
+START fullwalk2 2026-11-24 08:04:45
+DONE script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/walk_save.py reload_rc=0 rc=0 51s 08:05:36
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/walk_closeups.py reload_rc=skipped rc=0 12s 08:05:48
+END fullwalk2 2026-11-24 08:05:48
+START peek 2026-11-24 08:07:06
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/peek_creatures.py reload_rc=skipped rc=0 2s 08:07:08
+END peek 2026-11-24 08:07:08
+START b1 2026-11-24 08:16:49
+DONE burrowers reload_rc=0 rc=1 52s 08:17:41
+DONE heat_dome reload_rc=0 rc=1 72s 08:18:53
+DONE fire_tick_effects reload_rc=0 rc=1 155s 08:21:28
+DONE plant_census,scorchfruit_fire_born@scorchfruit reload_rc=0 rc=1 362s 08:27:30
+DONE no_ordinary_rain reload_rc=0 rc=1 71s 08:28:41
+DONE mapgen_log reload_rc=0 rc=1 41s 08:29:22
+DONE grass_cover@grass reload_rc=0 rc=1 45s 08:30:07
+DONE ambient_ash_drift reload_rc=0 rc=1 54s 08:31:01
+DONE blackrain reload_rc=0 rc=1 240s 08:35:01
+DONE script:src/RimMandrake/Pyrelands/gate_live_proof.py reload_rc=0 rc=0 22s 08:35:23
+DONE ullai_and_giant reload_rc=0 rc=1 74s 08:36:37
+DONE reload_keeps_the_burn reload_rc=0 rc=1 103s 08:38:20
+DONE script:src/RimMandrake/Pyrelands/wind_burn_live.py reload_rc=0 rc=0 199s 08:41:39
+END b1 2026-11-24 08:41:39
+START b2 2026-11-24 08:41:56
+DONE ash_fertility_watered@ash_watered reload_rc=0 rc=1 191s 08:45:07

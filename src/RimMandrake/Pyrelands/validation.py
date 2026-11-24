@@ -4597,6 +4597,7 @@ def walk_season(t):
 # can make is recorded `_unmeasured(...)` with its reason, never invented. Every part is independent of the chain's own
 # rows (`_independent`), so a FAIL above does not hide it. Offline (the declaration probe) every bridge call is a no-op.
 TEN_DAY = 60000
+TEN_WET_STEP = 10000
 TEN_HOUR = 2500
 TEN_PAD_SENSE = (30, 160)      # fire_sense: free of every other pad (nearest PAD_HERD_OLD, 60 cells)
 TEN_PAD_ROOF = (95, 30)        # walk_season's roofed room on ember grass
@@ -5596,8 +5597,9 @@ def _ten_flamefang_venom(t):
 
 def _ten_ash_fertility_watered(t):
     """sc_ash_watered: a wet and a dry deep-ash strip of Plant_Potato; the cell temperature above the crop's
-    maxOptimalGrowthTemperature asserted (else UNMEASURED); five daily inspect reads, the wet-roots line on wet only;
-    control: ashWaterFertilityEnabled off drops it. Each daily read also takes every crop's Plant.GrowthRateFactor_Temperature
+    maxOptimalGrowthTemperature asserted (else UNMEASURED); five inspect reads 10,000 ticks apart (the factor is a state read:
+    what varies it is the hour's temperature, so one day samples it; it was five days until visit 9), the wet-roots line on wet only;
+    control: ashWaterFertilityEnabled off drops it. Each read also takes every crop's Plant.GrowthRateFactor_Temperature
     (jawa/thing_read runs the patched getter, RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN) and vanilla's
     PlantUtility.GrowthRateFactorFor_Temperature at the dry strip's cell temperature; growth_rate_factor_temperature
     judges them."""
@@ -5637,9 +5639,9 @@ def _ten_ash_fertility_watered(t):
             reads.append({"temp": temp, "wetLine": lines["wet"], "dryLine": lines["dry"], "wetFactor": fac["wet"],
                           "dryFactor": fac["dry"], "dryTemp": dry_temp, "vanillaDry": _ten_num(van)})
             _GEN["wet_roots_reads"] = {"reads": reads, "top": top}
-            _wait(t, TEN_DAY)
+            _wait(t, TEN_WET_STEP)
         if _live(t):
-            _note(t, "daily: cell temperature vs %s maxOptimalGrowthTemperature %r, the wet-roots line" % (TEN_CROP, top),
+            _note(t, "each read: cell temperature vs %s maxOptimalGrowthTemperature %r, the wet-roots line" % (TEN_CROP, top),
                   reads)
             if not isinstance(top, (int, float)):
                 _unmeasured(t, "%s maxOptimalGrowthTemperature unread: %r" % (TEN_CROP, crop))
@@ -5661,7 +5663,7 @@ def _ten_ash_fertility_watered(t):
     with _comp(t, "growth_rate_factor_temperature"):
         got = _GEN.get("wet_roots_reads")
         if _live(t):
-            _note(t, "daily GrowthRateFactor_Temperature: wet / dry strip and vanilla's at the dry cell", got)
+            _note(t, "each read: GrowthRateFactor_Temperature: wet / dry strip and vanilla's at the dry cell", got)
             ok, why = growth_factor_verdict(got)
             if ok is None:
                 _unmeasured(t, why)

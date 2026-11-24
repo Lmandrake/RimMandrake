@@ -1,0 +1,14 @@
+PASS       3.8.1                bridge lock held by this seat  BENCH
+PASS       3.8.2                game started after the newest deploy (plan 3.2.5)  Player.log created 2026-11-24 08:07:58; newest deploy 2026-11-24 05:47:47 (RM_Cindermare.xml)
+PASS       3.8.3                running mod set == tier manifest  18 running; equals manifest
+PASS       3.2.1                deploy current: compose biomes + UtinniPatches  --compose biomes rc=0 drift=0; --mod UtinniPatches rc=0 drift=0
+PASS       3.8.4                .srchash agrees across source, repo and deployed  3 DLLs agree
+PASS       3.2.3                loaded assemblies are the deployed ones  FireEcologyHook mvid=66e16842-14da-480e-aca3-438afedbac6a; RimMandrake.Biomes mvid=9cc43136-e4c4-4f0a-b7cb-be6bb3cd7bfc; RimMandrake.Utinni.UtinniPatches mvid=7
+PASS       3.8.5                defs as loaded + def fingerprint  found 29/29 notFound [] fingerprint 417df172fdb5e402
+PASS       3.3                  Mod Settings at shipped defaults  all 45 at shipped defaults; no settings file (defaults: ON)
+PASS       3.8.7                log since load is clean  0 refusing line(s); 0 allowed burnedDef lines
+FAIL       3.8.12               loadavg < 10  14.3
+PASS       3.8.dialogs          no unexpected dialogs  closed 1 benign, 0 open
+PASS       3.8.snapshot         Mod_* settings snapshot  100 Mod_*.xml snapshotted to Transient/pv9_snapshot
+GATE A: REFUSED -- 3.8.12(FAIL)
+[bridge split] 242.8 s wall: load 0.0 / ticks 0.0 / reads 0.2 / other 0.7 / outside calls 242.0 s

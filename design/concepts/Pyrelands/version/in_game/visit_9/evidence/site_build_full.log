@@ -1,0 +1,3 @@
+site 1: tile 49 map 1 saved NS_Pyrelands_site_1_417df172fdb5_visit9full -> Transient/pv9_site_1_full.json
+[bridge split] 245.4 s wall: load 36.4 / ticks 9.5 / reads 8.2 / other 67.1 / outside calls 124.3 s
+[bridge split] WARN 67 calls of rimworld/get_ui_state (4.9 s): batch them

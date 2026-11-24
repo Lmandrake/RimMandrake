@@ -1,0 +1,16 @@
+F_wind_east {'asked': 90, 'wind_set': '90', 'probe': 'wind=90.0;carries=True;carried=3;fires=7', 'carries_wanted': True, 'fires_before': 0, 'lit': 9, 'peak_fires': 18, 'down_cells': 7, 'up_cells': 0, 'fires_in_outer_lanes': 0}
+R_wind_west {'asked': 270, 'wind_set': '270', 'probe': 'wind=270.0;carries=True;carried=65;fires=15', 'carries_wanted': True, 'fires_before': 0, 'lit': 9, 'peak_fires': 18, 'down_cells': 7, 'up_cells': 0, 'fires_in_outer_lanes': 0}
+B_wind_off_control {'asked': 90, 'wind_set': '90', 'probe': 'wind=90.0;carries=False;carried=123;fires=8', 'carries_wanted': False, 'fires_before': 0, 'lit': 9, 'peak_fires': 100, 'down_cells': 11, 'up_cells': 11, 'fires_in_outer_lanes': 28}
+ok   start the wind reads back as set, carries as its switch: F asked 90 set 90 probe wind=90.0;carries=True;carried=3;fires=7; R asked 270 set 270 probe wind=270.0;carries=True;carried=65;fires=15; B asked 90 set 90 probe wind=90.0;carries=False;carried=123;fires=8
+ok   start every strip holds no fire before it is lit: [0, 0, 0, 0]
+ok   F wind east: the burn runs further downwind than upwind: down 7 up 0
+ok   R wind reversed: the burn turns and runs west: down 7 up 0
+ok   F,R at no 500-tick sample more fires than 3 x the cells lit: F 18/9 R 18/9
+ok   F,R at no 500-tick sample a fire beside the lit lanes: F 0 R 0
+ok   B CONTROL even spread reaches the outer lanes: 28
+ok   B CONTROL runs both ways, leaning less than the wind runs: down 11 up 11, wind lean 7
+ok   C black rain puts the line out: lit 9, [9, 0, 0, 0, 0, 0, 0, 0, 0]
+PASS (9 of 9 rows)
+[bridge split] 182.8 s wall: load 1.2 / ticks 75.4 / reads 49.2 / other 21.1 / outside calls 36.0 s
+[bridge split] WARN 1156 calls of jawa/list_things (47.7 s): batch them
+[bridge split] WARN 70 calls of jawa/safe_advance (75.4 s): batch them

@@ -292,11 +292,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 6.0,
+    "seconds": 5.89,
     "last": "PASS: 0 failure(s)",
-    "at": "2026-11-24T14:43:12Z",
+    "at": "2026-11-24T16:45:36Z",
     "result": "PASS",
-    "build": "8cd2e95337f059f91f9b",
+    "build": "5cde1bd8cc6afecc9102",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
     "margins": []
    }
@@ -314,11 +314,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
+    "seconds": 0.06,
     "last": "selftest_pyrelands_fruit_clear: PASS",
-    "at": "2026-11-24T12:29:47Z",
+    "at": "2026-11-24T16:45:36Z",
     "result": "PASS",
-    "build": "34520fac84cd9b473977",
+    "build": "3d60fa8156119d1042c5",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py",
     "margins": []
    }
@@ -336,11 +336,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.26,
+    "seconds": 0.44,
     "last": "selftest_pyrelands_firefoam_scene: PASS  cases {'geometry': 1, 'verdicts': 36, 'staging': 396, 'timelines': 1352, 'challenges': 3}",
-    "at": "2026-11-24T12:29:48Z",
+    "at": "2026-11-24T16:45:36Z",
     "result": "PASS",
-    "build": "b52ec63fbb1844ab8eeb",
+    "build": "2c41743e6d050d35e47f",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py",
     "margins": []
    }
@@ -610,7 +610,8 @@
      "burn_line"
     ],
     "by": "testq_blocks.py"
-   }
+   },
+   "cheaper_why": "the bar is a fire that walks, dies and relights over days: the relight clock waits two quiet days, so no scene under a day reaches it, and the burned share is read at four day ends with the wind on and at four with it off (the control). The kernel and the burn model are already decided offline (T_FUZZ, T_BURN_ECOLOGY); vanilla's fire, the biome's plants and the live wind meet only in a game. Tier list, one map."
   },
   "sc_ash_watered": {
    "id": "sc_ash_watered",
@@ -618,7 +619,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "ash_fertility_watered",
-   "observes": "the dry strip takes the sowing and grows, and the watered strip is clearly ahead of it; each day the watered strip's GrowthRateFactor_Temperature is above the dry strip's, and the dry strip's equals vanilla's factor for its cell temperature (wet roots acts on watered ash only)",
+   "observes": "the dry strip takes the sowing and grows, and the watered strip is clearly ahead of it; at each of five reads over one day the watered strip's GrowthRateFactor_Temperature is above the dry strip's, and the dry strip's equals vanilla's factor for its cell temperature (wet roots acts on watered ash only)",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -666,7 +667,8 @@
      "fresh_burn_bonus"
     ],
     "by": "testq_blocks.py"
-   }
+   },
+   "cheaper_why": "the claim is a bonus that ends on its own clock of days while rain feeds it: the decay kernel is already decided offline (T_FUZZ), and the stamp, the Black Rain watering and the plants' growth meet only in a game. The scene plays past the clock's end, and the same days show no raid, death or stray fire. Tier list, three pads on one map."
   },
   "sc_grass_regreens": {
    "id": "sc_grass_regreens",
@@ -694,7 +696,8 @@
      "embergrass_regrow"
     ],
     "by": "testq_blocks.py"
-   }
+   },
+   "cheaper_why": "regrowth is the plants' own growth over days and the bar is what the player sees on day 3 and day 7, so a shorter scene shows no green. The watered patch against the dry one is read in the same days. Offline tests fix the rates (T_LINT, T_BURN_ECOLOGY), not the standing grass. Tier list, one map."
   },
   "sc_scorchfruit": {
    "id": "sc_scorchfruit",
@@ -1149,7 +1152,8 @@
      "heat_dome"
     ],
     "by": "testq_blocks.py"
-   }
+   },
+   "cheaper_why": "the clauses are one sequence of one act on one pawn, about 300 ticks and 70 s of the tier list: hit, dome, drawn body, surface, with the switch as its control. Splitting it would load the site once for each clause and read the same pawn again. The drawn body and the job exist only in a running game."
   },
   "sc_fire_dusts_ash": {
    "id": "sc_fire_dusts_ash",
@@ -1715,11 +1719,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 6.1,
+    "seconds": 7.6,
     "last": "PASS: 0 of 18 checks failed",
-    "at": "2026-11-24T14:43:31Z",
+    "at": "2026-11-24T16:45:45Z",
     "result": "PASS",
-    "build": "25022aaeae6afa38eee0",
+    "build": "0899364e3f871dc1b126",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
     "margins": []
    }
@@ -1785,11 +1789,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.47,
+    "seconds": 7.2,
     "last": "selftest_pyrelands_venom_staging: 0 of 46 checks failed",
-    "at": "2026-11-24T12:30:00Z",
+    "at": "2026-11-24T16:45:52Z",
     "result": "PASS",
-    "build": "935b6cce30b5fa45773a",
+    "build": "63dbc27616af6d8504c7",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
     "margins": []
    }
@@ -1835,11 +1839,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.06,
+    "seconds": 0.18,
     "last": "selftest_pyrelands_walk_small: 0 of 62 checks failed",
-    "at": "2026-11-24T12:30:00Z",
+    "at": "2026-11-24T16:45:52Z",
     "result": "PASS",
-    "build": "bd8944b8243d6ab51877",
+    "build": "a7460f5994fe43065baa",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_walk_small.py",
     "margins": []
    }
