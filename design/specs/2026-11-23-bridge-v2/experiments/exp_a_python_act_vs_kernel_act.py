@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
-"""Experiment A of 08_where_tests_live.md: one scene, two homes for its act.
+"""Experiment A of 08_where_tests_live.md: one scene, two homes for its act, and a pause-only control.
 
 The scene: a colonist of a quicktest map is cut once, ACT ticks after the start; the run ends END ticks after the start.
 
   arm K (act inside the game)   one call. jawa/scene_slice does the cut itself in its end-of-tick step (actAt=ACT).
   arm P (act from Python)       jawa/scene_slice with no act runs until tick start+ACT and pauses; Python calls jawa/damage
                                 while the game is paused; jawa/scene_slice runs again until tick start+END.
+  arm KP (pause only)           the cut is done inside the game as in arm K, the run pauses one tick later, the game stands
+                                paused for --dwell seconds with no call from Python, then it runs on. K against KP shows what
+                                a pause alone changes; KP against P shows what the Python act adds (GPT's control arm).
 
 It measures, per trial: the tick on which the cut landed, the tick on which the trace first shows the new injury, the tick
 of the end, the wall time, the bridge calls, and (arm P) the wall time that the game stood paused for the act.
-The question it decides: does an act from Python on a paused game land on the same tick as an act inside the game's tick?
+The question it decides: does an act from Python on a paused game land on the same TICK as an act inside the game's tick?
+It does NOT decide whether the game's state is then the same: three tick offsets of one injury cannot see a cache, a power
+net or a mod's frame work that differs. Scene 3 of 08 (a FlowWorks read on the tick after the act) is owed for that.
 
     python.exe exp_a_python_act_vs_kernel_act.py --trials 10 --out DIR     live: a TEST-profile game, a small mod list, a
                                                                            scratch quicktest map (it hurts one colonist)
     python3 exp_a_python_act_vs_kernel_act.py --selfcheck                  the comparison on hand-made traces; no game
 
-Exit 0 = the two arms agree on every tick offset in every trial, 1 = they differ, 2 = could not measure.
+Exit 0 = the three arms agree on every tick offset in every trial, 1 = they differ, 2 = could not measure.
 The live part is UNRUN (2026-11-23): every game was held. It needs no code that is not landed (slice 5cebf3567fe1)."""
 import argparse
 import json
@@ -174,12 +179,24 @@ def live(a):
         st2, tr2 = seg(t1 + END, END - ACT + 50)
         p_wall, p_calls = time.time() - w, calls[0]
         p = offsets(t1, at if (d.get("success") and at == after) else None, [tr1, tr2] if tr1 and tr2 else [])
+        # arm KP: the cut inside the game, then a pause with no call, then on
+        t2 = call("jawa/map_info").get("ticksGame")
+        st3, tr3 = seg(t2 + ACT + 1, ACT + 50, act_at=ACT)
+        time.sleep(a.dwell)
+        moved = call("jawa/map_info").get("ticksGame") != t2 + ACT + 1
+        st4, tr4 = seg(t2 + END, END - ACT + 50)
+        acts = [r for r in tr3 if r.get("rec") == "act"]
+        kp = offsets(t2, acts[0]["tick"] if (acts and not moved) else None, [tr3, tr4] if tr3 and tr4 else [])
         v, text = compare(k, p)
+        v2, text2 = compare(k, kp)
+        v = None if (v is None or v2 is None) else (v and v2)
         verdicts.append(v)
-        rows.append({"trial": i, "K": k, "P": p, "same": v, "text": text, "K_wall_s": round(k_wall, 3), "P_wall_s": round(p_wall, 3),
-                     "K_calls": k_calls, "P_calls": p_calls, "P_paused_for_act_s": round(gap, 3), "clock_moved_in_gap": at != after})
-        print("trial %d  %s  K %.2f s %d calls  P %.2f s %d calls  paused for the act %.0f ms  %s"
-              % (i, {True: "SAME", False: "DIFFER", None: "COULD NOT LOOK"}[v], k_wall, k_calls, p_wall, p_calls, gap * 1000, text), flush=True)
+        rows.append({"trial": i, "K": k, "P": p, "KP": kp, "same": v, "text": text, "pause_only_text": text2,
+                     "K_wall_s": round(k_wall, 3), "P_wall_s": round(p_wall, 3),
+                     "K_calls": k_calls, "P_calls": p_calls, "P_paused_for_act_s": round(gap, 3), "clock_moved_in_gap": at != after,
+                     "clock_moved_in_dwell": moved})
+        print("trial %d  %s  K %.2f s %d calls  P %.2f s %d calls  paused for the act %.0f ms  K:P %s | K:KP %s"
+              % (i, {True: "SAME", False: "DIFFER", None: "COULD NOT LOOK"}[v], k_wall, k_calls, p_wall, p_calls, gap * 1000, text, text2), flush=True)
     with open(os.path.join(a.out, "exp_a_rows.json"), "w", encoding="utf-8") as f:
         json.dump(rows, f, indent=1)
     ok = [r for r in rows if r["same"] is not None]
@@ -197,6 +214,7 @@ def main():
     ap.add_argument("--selfcheck", action="store_true")
     ap.add_argument("--trials", type=int, default=10)
     ap.add_argument("--speed", default="Normal")
+    ap.add_argument("--dwell", type=float, default=0.25, help="arm KP: seconds the game stands paused")
     ap.add_argument("--out", default=".")
     a = ap.parse_args()
     return selfcheck() if a.selfcheck else live(a)

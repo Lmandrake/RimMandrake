@@ -73,19 +73,28 @@ points, and the knowledge of how to combine them repeated in 436 files.
 ## The entry points
 
 One Python module, `src/RimMandrake/Utils/scene.py`, is the whole interface for a test author and for an agent. It has
-nine entry points. The 563 tools are its implementation.
+**ten names**. The 563 tools are its implementation.
 
-| # | entry point | accepts | returns | what it hides |
+The count, stated honestly (GPT's objection, taken): ten names are not ten operations. `s.act` is a family of ten verbs
+with different preconditions and failure modes; `s.read` has a batch form; `s.raw` has a search beside it. A caller
+learns **ten names and about twenty operations**, against 563 tools and five driver layers today.
+
+| # | name | accepts | returns | what it hides |
 |---|---|---|---|---|
-| 1 | `scene.open(game, needs)` | the game's name; the mods and map kind the scene needs; a fixture save or "fresh map"; the calm profile's name | a session, and the **receipt**: the loaded DLL hashes, the mod list, the profile, the game's state. It refuses, by name, the wrong game, the wrong build, a broken game, a game that another process drives | the driver lock, the handshake, the load and its settle, the game watcher, arming calm, arming the recorders, the put-back at close |
-| 2 | `s.contract(claim, kind, opportunity, exposure, success, forbidden, end, budget)` | the scene's contract as data, before the game is touched | the contract's hash. It refuses a success with no exposure, a kind B scene with no budget, a def name that is not in the frozen dump, a condition on a value that no track or tap records | the lint of pass two's compiler; the tracks and taps that the conditions need are armed from it |
-| 3 | `s.stage(cast, things, terrain)` | the cast by alias (kind, faction, health, gear, skills, position), things, terrain, on a clean station | each alias bound to the object that the game really made, **read back**; a staging fault when the game made something else (a replaced pawn kind, a blocked cell) | the station allocator, clean, the batch tools, the capability checks ("can do this work type", "has a ranged attack") |
-| 4 | `s.run(until, limit, speed)` | a condition (built by helper functions) or a tick count; a tick limit | the tick on which the condition turned true, the values that made it true, why the run ended. The game is **paused on that tick** | `jawa/run_until`: the game's own loop, the end-of-tick evaluation, the exact pause, the handle and the status reads for a long run |
-| 5 | `s.act.<verb>(...)` | one act on the paused game: `order` (through the work giver or the float menu), `job`, `damage`, `explode`, `incident`, `weather`, `setting`, `place`, `remove`, `reload` | the effect, read back; a giver's refusal as a fact. Every act is written into the trace with its tick and its force level | which of the present tools does it, the read-back, the deviation record |
-| 6 | `s.read(alias, path)` and `s.read_many(...)` | an alias and a field path, or a named reader; a rectangle | the value with its state: ok, gone, unbound, error. Never 0 for "could not read" | the probes, the batch reads, the reviewed list of readers |
-| 7 | `scene.judge(run_dir)` | a run's folder (script hash, contract, trace, receipt) | one of the seven outcomes, the first failed condition with its values. It checks the evidence contract first and answers COULD NOT LOOK when a point fails. `--rejudge` judges a kept trace again | the classifier, the evidence contract, the run's history |
+| 1 | `scene.contract(claim, kind, opportunity, exposure, success, forbidden, end, limit, budget)` | the scene's contract as data. **Nothing touches the game** | the contract, with its hash. It refuses a success with no exposure, a kind B scene with no budget, a def name that is not in the frozen dump, a condition on a value that no track or tap records | the lint duties of pass two's compiler; the list of tracks and taps that the conditions need |
+| 2 | `scene.open(game, needs, contract)` | the game's name; the mods, the map kind, a fixture save or "fresh map", the calm profile; the contract | a session, and a **phase report**: for each of lock, identify, load, settle, calm, arm: done or refused, what it changed, and what was put back when a later phase refused. The receipt is in it: loaded DLL hashes, mod list, game state | the driver lock, the handshake, the load and its settle, the game watcher, calm, arming the recorders for the whole session |
+| 3 | `s.stage(cast, things, terrain)` | the cast by alias (kind, faction, health, gear, skills, position), things, terrain, on a clean station | each alias bound to the object that the game really made, read back **in the same call that made it**; a staging fault when the game made something else; on a failure half way, what was made and what was not | the station allocator, clean, the batch tools, the capability checks |
+| 4 | `s.run(until, limit, speed)` | a condition (built by `scene.cond` helpers) or a tick count; a tick limit | a **run handle** with the result: the tick on which the condition turned true, the values, why it ended; the game is paused on that tick. The handle has `status()` and `cancel()`, so a lost reply is not a lost run | `jawa/run_until`: the game's own loop, the end-of-tick evaluation, the exact pause, the comparison of the sample after the pause with the sample at the end of the tick |
+| 5 | `s.act.<verb>(...)`, and `s.act.batch([...])` | one act on the paused game: `order` (through the game's own work giver or float menu code), `job`, `damage`, `explode`, `incident`, `weather`, `setting`, `place`, `remove`, `reload`. `batch` does several acts in one call, with **no frame between them** | the effect, read back; a giver's refusal as a fact. Each act has a request id (a repeat is refused, not done twice) and a start and an end record in the trace, with the tick, the frame count and the force level | which present tool does it, `jawa/act_batch`, the deviation record, the load barrier of `reload` |
+| 6 | `s.read(alias, path)`, and `s.read_many(...)` | an alias and a field path, or a reader from the reviewed list; a rectangle | the value with its state: ok, gone, unbound, error. Never 0 for "could not read" | the probes, the batch reads. A reader has no effect on the game |
+| 7 | `scene.judge(run_dir)` | a run's folder (commit hash, contract, trace, receipt) | one of the seven outcomes, the first failed condition with its values. It checks the evidence contract first and answers COULD NOT LOOK when a point fails. `--rejudge` judges a kept trace again | the classifier, the evidence contract, the run's history |
 | 8 | `s.shot(rect, name)` | a rectangle of the map, a name | the path of a picture that is known to be fresh, with the tick | the off-screen capture, the settle of drawn positions, the unique file name |
-| 9 | `s.raw(tool, **args)` and `scene.tools(words)` | any tool of the 563 by name; search words | the tool's reply; a short list of tools that match, each with one line | the exploring layer. Every raw call is written into the trace. A raw call that changes the game stamps the run EXPLORED unless the tool is on the reviewed list |
+| 9 | `scene.attach(game)` | a game's name | the open session of that game after a driver died or a reply was lost: its state, its last run, its trace so far; then `close()` or `abort()`, each of which writes the trace's closing record and leaves the game paused | the session's lease, the reconnect, the durable end of a trace |
+| 10 | `s.raw(tool, **args)`, and `scene.tools(words)` | any tool of the 563 by name; search words | the tool's reply; a short list of tools that match, one line each | the exploring layer. The game side writes every raw call into the trace. **Any raw call of a changing tool stamps the run EXPLORED**; there is no list of allowed tool names, because a name does not say what a call does (`jawa/static_call` can read or write). An acceptance script that needs a raw changing call needs a verb first |
+
+**What a condition's words mean.** Each act writes a start record and an end record. "Unchanged since the blast" compares
+with the last sample **before the start record** of the act named "blast", so a victim hurt by the explosion itself is
+seen (GPT's case: a baseline taken after the effects would pass a harmed victim).
 
 A scene on this library (pass one's worked example 1, the spared carrier; a sketch, not run):
 
@@ -93,30 +102,39 @@ A scene on this library (pass one's worked example 1, the spared carrier; a sket
 import scene
 from scene import cond as c
 
-with scene.open("ArchSmall", needs={"mods": ["ExplosiveKnockback"], "map": "settlement"}) as s:
-    s.contract(claim="a carried pawn is spared by the blast", kind="A",
-               exposure=[c.count("damage", victim="control", instigator="blast") >= 1],
-               success=[c.unchanged("victim.health", since="blast"), c.alive("victim")],
-               forbidden=[c.count("spawn", duplicate_of="victim") > 0],
-               end=c.ticks_after("blast", 120), limit=600)
+contract = scene.contract(
+    claim="a carried pawn is spared by the blast", kind="A",
+    exposure=[c.count("damage", victim="control", instigator="blast") >= 1],
+    success=[c.unchanged("victim.health", since="blast"), c.alive("victim")],
+    forbidden=[c.count("spawn", duplicate_of="victim") > 0],
+    end=c.ticks_after("blast", 120), limit=600)
+with scene.open("ArchSmall", needs={"mods": ["ExplosiveKnockback"], "map": "settlement"}, contract=contract) as s:
     cast = s.stage(cast={
         "carrier": dict(kind="Colonist", at="center", hold="pin"),
         "victim":  dict(kind="Colonist", downed=True, carried_by="carrier"),
         "control": dict(kind="Colonist", downed=True, at=("mirror", "victim"))})
     s.run(until=c.ticks(30))
     s.act.explode("Bomb", cell=cast["carrier"].cell.offset(2, 0), radius=3.9, name="blast")
-    s.run(until=s.end)
+    s.run(until=contract.end)
 print(scene.judge(s.run_dir))
 ```
 
-It is 17 lines, against 21 lines of YAML for the same scene
-in `02_needs_design.md`. Between any two lines a test pilot can stop, read with `s.read`, and change what comes next.
+It is 18 lines, against 21 lines of YAML for the same scene in `02_needs_design.md`.
+
+**Changing a test in progress** needs an interactive session, because an edit of a script's file does not change a
+script that is already running. `python.exe src\RimMandrake\Utils\scene.py explore <game>` opens a Python prompt on a
+session; a test pilot runs, reads, acts and runs again there, line by line. Every run made there is stamped EXPLORED.
+An acceptance run is `scene.py accept <script>`: a clean tree, the commit hash on the receipt, no keyboard.
 
 ### The documentation of each entry point
 
-Each entry point has **one page**, and the page is the function's docstring: `python3 src/RimMandrake/Utils/scene.py
-help <name>` prints it, and `help` alone prints the nine names with one line each. One home, so it cannot disagree with
-the code. A page holds, in this order (Anthropic's test: "how you would describe your tool to a new hire"):
+Each name has **one page**, and the page is the function's docstring: `python3 src/RimMandrake/Utils/scene.py
+help <name>` prints it, and `help` alone prints the ten names with one line each. One home, so it cannot drift from the
+code's signature (a selftest compares the two). Three catalogs are printed from the code in the same way, because a
+docstring cannot hold them: `help cond` (every condition helper), `help readers` (the reviewed readers), `help verbs`
+(the ten verbs of `s.act`, each with its preconditions, when it is complete, and its failure modes). One more page,
+`help order`, states what all ten names share: the life of a session, the order of records in the trace, and what a
+request id is. A page holds, in this order (Anthropic's test: "how you would describe your tool to a new hire"):
 
 1. what it does, in two sentences, and when to use another entry point instead;
 2. every argument, with its unit and an example value;
@@ -135,8 +153,8 @@ Three layers, by the deletion test.
 
 | layer | what | how many | rule |
 |---|---|---|---|
-| **entry points** | the nine of `scene.py` | 9 | the only thing a scene imports; the only thing the testing docs teach |
-| **instruments** | the tools that the nine call: the batch stagers, `jawa/run_until`, the recorders, calm, the gates, the forcing tools, the readers | about 60 `[GUESS 60%: the tools that 20 or more live files name are 58]` | kept, each with its promise on a boundary page when it is next touched; not taught to scene authors |
+| **entry points** | the ten names of `scene.py` | 10 | the only thing a scene imports; the only thing the testing docs teach |
+| **instruments** | the tools that the ten call: the batch stagers, `jawa/run_until`, the recorders, calm, the gates, the forcing tools, the readers | about 60 `[GUESS 60%: the tools that 20 or more live files name are 58]` | kept, each with its promise on a boundary page when it is next touched; not taught to scene authors |
 | **exploring layer** | every other tool | about 500 | kept, hidden from the default docs, reached by `s.raw` and found by `scene.tools`. A test pilot uses them in a hunt. A tool that three scenes call through `s.raw` is promoted into a verb of `s.act` or a reader |
 | **deletion candidates** | tools with no Python caller and no call in the bridge's journal over 30 days | at most 123 of 430 `[MEASURED upper bound; the journal is UNMEASURED]` | not deleted on today's evidence. First count the journal. Then delete in one curation pass, each with its name in the commit |
 
@@ -155,23 +173,26 @@ The 436 scripts do not convert for this design. A script converts when its mod n
 |---|---|---|
 | new languages | 2: the YAML scene file; the JSON run plan | 0 |
 | new vocabulary inside them | 11 top-level keys of a scene file; the functions of its expressions (`mirror_of`, `inside_radius_of`, `carried_by`, `duplicate_of`, `at()`, `count() where`); 9 act ops; about 6 stage ops | the 10 verbs of `s.act`; the helper functions of `scene.cond` |
-| new bridge tools | `jawa/run_plan`, `jawa/run_status`; later `scene.py run`, `compare`, `both-ways`, `sweep` | `jawa/run_until` (the landed slice, generalized) |
+| new bridge tools | `jawa/run_plan`, `jawa/run_status`; later `scene.py run`, `compare`, `both-ways`, `sweep` | `jawa/run_until` (the landed slice, widened), `jawa/act_batch`; a bounded rule later, if measured (`08`) |
 | new C# attributes that a mod author must know | 5: `RMProbe`, `RMFixture`, `RMReset`, `RMDigest`, `RMTrace` | 3: `RMReset`, `RMDigest`, `RMTrace` (decision 8 of `05`, kept) |
-| new Python programs | `scene_compile.py`, `scene_judge.py`, `scene_verdicts.py`, `scene.py` | `scene.py` (the judge is its entry point 7), `scene_verdicts.py` |
+| new Python programs | `scene_compile.py`, `scene_judge.py`, `scene_verdicts.py`, `scene.py` | `scene.py` (the judge is its name 7; `accept` and `explore` are its two launchers), `scene_verdicts.py` |
 | the condition tree language | kept (it exists) | kept, behind `scene.cond` helpers |
 
 Pass two's plan would have added a third way to write a scene (after Python scripts and `[RMTest]` C#) with its own
-language. By the deletion test its compiler is a pass-through: delete it, and the same knowledge sits in the library
-calls of the scene, in a language that the agent already knows.
+language. By the deletion test its compiler is mostly a pass-through: delete it, and the same knowledge sits in the
+library calls of the scene, in a language that the agent already knows. What does not pass through is the compiler's
+lint; that duty moves to `scene.contract` and must not be lost.
 
 ## What I am not sure of
 
-- **Nine is a design, not a measurement.** Whether an agent writes better scenes on nine entry points than on 563 tools
+- **Ten is a design, not a measurement.** Whether an agent writes better scenes on ten names than on 563 tools
   is the owner's hypothesis and both sources' claim; nobody has measured it here. The cheap test: convert three scenes
   that failed for harness reasons, give a fresh agent only `scene.py help`, and count lines, calls and reruns against
   the old scripts `GUESS 75%` that it is clearly better.
-- **`s.act` is ten verbs under one name.** Counting it as one entry point is fair only if the verbs share one shape
-  (target by alias, read-back, a trace record). If they do not, it is ten entry points and the count is 18.
+- **The counts of trouble above do not show that many entry points caused it.** A full disk fails a run under any
+  interface. The counts show how the work is spread today; the cause is the hypothesis under test.
+- **`scene.open` does six things.** The phase report makes each one visible. If agents still cannot diagnose a refusal
+  from it, `open` is split.
 - **The contract as data is a small language too** (`scene.cond`). It is Python functions that build the condition tree
   that exists, so it adds no parser. It can still grow without limit; the rule is that a helper is added only when two
   scenes need it.
