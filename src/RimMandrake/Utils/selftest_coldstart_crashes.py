@@ -104,6 +104,14 @@ try:
 except ValueError:
     expect(True, "sentinel with no header raises ValueError (UNMEASURED, not a traceback)")
 
+# Unity keeps one crash root per machine user, whichever game's data folder game_paths names (Steve2, 2026-11-24)
+from game_paths import LOCALLOW as AL  # noqa: E402
+ROOT_U = os.path.join(AL.replace("\\", "/").split("/LocalLow/")[0], "Local", "Temp", *AL.replace("\\", "/").split("/LocalLow/")[1].split("/"), "Crashes")
+expect(cc.crash_root(AL, {}) == ROOT_U, "crash_root of the Steam game's folder")
+expect(cc.crash_root("/mnt/d/ClaudeWork/rimmandrake/instances/b", {"RM_GAME_A_LOGDIR": AL}) == ROOT_U,
+       "crash_root of a second game follows the first game's folder")
+expect(cc.crash_root("D:\\x\\instances\\b", {}).endswith("Crashes"), "crash_root with no first game named still reads as a path that check() finds absent")
+
 # the cold-start proof uses the shared check
 src = open(os.path.join(HERE, "..", "bridgetools", "prove_tps_startup_no_bg_jit.py")).read()
 expect("coldstart_crashes.check(start" in src and "os.listdir(CRASHES)" not in src,

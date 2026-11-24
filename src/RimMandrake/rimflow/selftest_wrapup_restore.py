@@ -320,6 +320,14 @@ def main():
     code, line = wrapup.probe(g.call, World())
     check(code == 0 and g.dbg["logRaidInfo"] is False and owed() == [], "R8 probe -> 0 on a game that restores: %s"
           % line)
+    class OwnerRuns(World):        # the real reading: the probe's own process is the owner of the debt it writes, and it runs
+        owner_alive = wrapup.World.owner_alive
+    reset()
+    g = Game()
+    kept = {k: os.environ.pop(k) for k in ("RM_ROLE_UNIT", "CLAUDE_CODE_SESSION_ID") if k in os.environ}   # a plain process
+    code, line = wrapup.probe(g.call, OwnerRuns())
+    os.environ.update(kept)
+    check(code == 0 and g.dbg["logRaidInfo"] is False and owed() == [], "R8 probe -> 0 with the real owner reading: %s" % line)
     g = Game()
     del g.dbg["logRaidInfo"]
     code, line = wrapup.probe(g.call, World())

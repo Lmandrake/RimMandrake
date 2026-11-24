@@ -951,6 +951,19 @@ def _bridge_call():
 PROBE_FIELD = "logRaidInfo"     # a debug flag nothing in the game's outcome reads: a proof may flip it freely
 
 
+class _OwnerEnded(object):
+    """A world as it is, but for one debt whose owner reads as ended."""
+
+    def __init__(self, world, token):
+        self._world, self._token = world, token
+
+    def __getattr__(self, name):
+        return getattr(self._world, name)
+
+    def owner_alive(self, debt):
+        return False if debt.get("token") == self._token else self._world.owner_alive(debt)
+
+
 def probe(call, world=None):
     """The live proof of restore: force PROBE_FIELD through the door, owe a planned debt for it (as a killed
     SettingsTransaction would leave), run restore(), and read the game back. -> (exit, line): 0 restored and paid,
@@ -972,7 +985,9 @@ def probe(call, world=None):
     if D.step_ok(D.step("jawa/debug_settings", field=PROBE_FIELD, value=not was), w):
         paid(tok)
         return 2, "UNMEASURED: the probe could not force %s: %s" % (PROBE_FIELD, str(w))
-    res = restore(call, world)
+    # the debt stands for one whose owner was killed; its real owner is this very process, and restore() leaves the debt of
+    # a running owner alone (Steve2, 2026-11-24: the probe read FAIL on a restore that works)
+    res = restore(call, _OwnerEnded(world or World(), tok))
     now = dict((x["name"], x["value"]) for x in call("jawa/debug_settings", {"action": "list"})["fields"]).get(
         PROBE_FIELD)
     left = os.path.exists(_p("debts", safe_key(tok) + ".json"))

@@ -32,8 +32,15 @@ EXE = "RimWorldWin64.exe"
 SLACK_S = 5.0
 # Unity writes crash folders to %LOCALAPPDATA%\Temp\<company>\<product>\Crashes; LOCALLOW is
 # %USERPROFILE%\AppData\LocalLow\<company>\<product>
-_APPDATA = os.path.dirname(os.path.dirname(os.path.dirname(LOCALLOW)))
-CRASHES = os.path.join(_APPDATA, "Local", "Temp", *LOCALLOW.replace("\\", "/").rstrip("/").split("/")[-2:], "Crashes")
+def crash_root(locallow, env):
+    """One root per Windows user. A second game's data folder (instances/b) is not under AppData: the first game's is
+    (RM_GAME_A_LOGDIR, game_instance.py env). SteveDesktop 2026-11-24: Steve2's clause read D:/ClaudeWork/Local/Temp."""
+    low = next((p for p in (locallow, env.get("RM_GAME_A_LOGDIR") or "") if "/AppData/" in p.replace("\\", "/")), locallow)
+    appdata = os.path.dirname(os.path.dirname(os.path.dirname(low.rstrip("/\\"))))
+    return os.path.join(appdata, "Local", "Temp", *low.replace("\\", "/").rstrip("/").split("/")[-2:], "Crashes")
+
+
+CRASHES = crash_root(LOCALLOW, os.environ)
 # Event 1001 is a WER report of any kind; only these event names mean the process died or faulted.
 # RADAR_PRE_LEAK_64 and friends are diagnostics, not deaths. FaultTolerantHeap is the heap-corruption
 # report that rode with the 2026-10-26 ntdll death: count it.

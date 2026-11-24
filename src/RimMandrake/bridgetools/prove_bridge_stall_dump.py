@@ -20,12 +20,13 @@ import time
 
 _RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_RM_ROOT / "src" / "RimMandrake" / "Utils"))
+import game_paths  # noqa: E402
 import rimbridge_client as rb  # noqa: E402
 
 BLOCK_S = 75.0
 _BT = _RM_ROOT / "src" / "RimMandrake" / "bridgetools"
-DLL = os.environ.get("RM_COMPANION_DLL") or (
-    r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll")
+DLL = os.environ.get("RM_COMPANION_DLL") or os.path.join(
+    game_paths.GAME_DIR, "BridgeTools", "JawaBench", "JawaBench.BridgeTools.dll")     # the game this run drives, on any machine
 
 
 def site_check(dll=DLL, repo_root=str(_RM_ROOT), log=None):
