@@ -21,7 +21,7 @@ Per red item, in due order, one decision:
   green         every test of the group passed on the last night: nothing (the build cop clears the alarm)
   attempted     this night's one attempt was made: nothing
   system_wait   the last try never started or died of a system cause: it spends no attempt; the next waits SYSTEM_WAIT_S
-  stopped       an attempt ended on its own merits and the item is still open: nothing, ever, until `clear`; one Needs Conductor line in
+  stopped       an attempt since the item's last close ended on its own merits and the item is still open: nothing, ever, until `clear`; one Needs Conductor line in
                 the Conductor log, once. There is no automatic reject-and-retry loop (the owner's condition, 2026-11-14).
   held          no mod has a passed Design Version yet (nightly_scope.py; owner by card 2026-11-15): no fixer at all
   night_cap | slots_full | account_hold | disabled   caps: max_launches_per_night, max_live, the Dispatcher's account pick
@@ -126,13 +126,28 @@ def red_alarms(alarms):
     return sorted(out, key=lambda r: (r["due"] or "9", r["item"]))
 
 
+def close_times(events, ids):
+    """-> {item: epoch of its last `close` event}. A closed item that a later night reopened is a red that came back."""
+    out = {}
+    for e in events:
+        if e.get("event") == "close" and e.get("id") in ids:
+            try:
+                t = dt.datetime.strptime(str(e.get("ts")), "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=dt.timezone.utc).timestamp()
+            except ValueError:
+                continue
+            out[e["id"]] = max(t, out.get(e["id"], t))
+    return out
+
+
 def ledger_items(ids):
     import model as LM
-    w = LM.replay()
+    events = LM.read()
+    w, closed = LM.replay(events), close_times(events, set(ids))
     out = {}
     for i in ids:
         it = w.items.get(i)
-        out[i] = None if it is None else {"state": it.state, "blocked": bool(it.blocked), "owner": it.owner}
+        out[i] = None if it is None else {"state": it.state, "blocked": bool(it.blocked), "owner": it.owner,
+                                           "closed_t": closed.get(i)}
     return out
 
 
@@ -214,7 +229,11 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if run.get("live"):
             put("live", "%s is live on it" % ", ".join(run["live"]))
             continue
-        att, died = s.get("attempts") or [], None
+        # an attempt made before the item's last close ended with the item closed: it answered an earlier red, so it is
+        # not the failed attempt of this one (RIMMANDRAKE_STAFF_A_RED_THAT_RETURNS_AFTER_ITS_FIX)
+        since_close = led.get("closed_t")
+        att = [a for a in s.get("attempts") or [] if since_close is None or (a.get("at") or 0) > since_close]
+        died = None
         if att and not s.get("cleared_after_attempt"):
             last = att[-1]
             if last.get("night") == night and not last.get("failed") and last.get("unit") not in (run.get("ended") or []):

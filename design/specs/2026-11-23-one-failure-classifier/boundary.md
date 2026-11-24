@@ -72,6 +72,9 @@ request gives the same refusal).
   refusal record leaves the stopped run eligible for retry. The successful relaunch is recorded as its successor.
 - **a-red-fixer-that-died-spends-no-attempt** (`rimflow/selftest_red_dispatch.py`). A launch that never started and a run
   that died of a system cause do not stop the red item. The next try waits `SYSTEM_WAIT_S` and stays inside the night cap.
+- **a-red-that-returns-after-its-fix-gets-a-new-attempt** (`rimflow/selftest_red_dispatch.py`). An attempt made before the
+  red item's last close on the ledger is not a failed attempt. An attempt after the last close that ended with the item
+  open stops the item, as before. The danger: 2026-11-24, a red that came back stood 8 hours with no fixer.
 - **a-list-run-that-died-spends-no-run** (`rimflow/selftest_list_dispatch.py`). A Work or Shape run that died of a system
   cause is not one of `max_runs_per_item` and stops nothing. Launches that never started hold the item for
   `SYSTEM_WAIT_S`, said once, and never stop it, except a refusal of form, which names its repair.

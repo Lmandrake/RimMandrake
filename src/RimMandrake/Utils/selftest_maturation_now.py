@@ -596,6 +596,50 @@ def p12b_phone_concurrent_save():
         shutil.rmtree(out, ignore_errors=True)
 
 
+def p12c_phone_write_enomem():
+    """RIMMANDRAKE_RETRY_PHONE_IMAGE_WRITE_ENOMEM_FAILS_PAGE: a 9p write that raises ENOMEM is tried again, on
+    the same image; another error, and an ENOMEM that lasts, still fail."""
+    import builtins
+    import errno
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("matnow_phone_enomem", PROG)
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    out = tempfile.mkdtemp(prefix="maturation_now_phone_enomem_")
+    real, m.WRITE_WAITS = builtins.open, (0, 0)
+    if hasattr(m, "write_again"):
+        m.write_again.__defaults__ = ((0, 0),)
+
+    def run(code, times):
+        left = [times]
+
+        def opener(path, mode="r", *a, **k):
+            f = real(path, mode, *a, **k)
+            if left[0] and "w" in mode and str(path).startswith(out):
+                left[0] -= 1
+                f.close()
+                raise OSError(code, "planted")
+            return f
+        builtins.open = opener
+        try:
+            p = m.Phone()
+            p.text("enomem", "h1", True, gap=4)
+            p.save(os.path.join(out, "x.png"))
+            return "saved"
+        except OSError as e:
+            return e.errno
+        finally:
+            builtins.open = real
+    try:
+        check("12c a write that raises ENOMEM once is tried again and the image lands",
+              run(errno.ENOMEM, 1) == "saved" and os.listdir(out) == ["x.png"], str(os.listdir(out)))
+        check("12c an ENOMEM that lasts still fails, and no temp file is left",
+              run(errno.ENOMEM, 9) == errno.ENOMEM and os.listdir(out) == ["x.png"], str(os.listdir(out)))
+        check("12c another write error is not tried again", run(errno.ENOSPC, 1) == errno.ENOSPC)
+    finally:
+        shutil.rmtree(out, ignore_errors=True)
+
+
 def p13_versionless():
     """RIMMANDRAKE_SHOW_VERSIONLESS_MOD_GRAFFITI_ON_MAP: a folder with a stage record but no VERSION.json is on the map."""
     t = temp_tree()
@@ -828,6 +872,7 @@ def main():
     p11_unmeasured(page_of(REPO))
     p12_phone()
     p12b_phone_concurrent_save()
+    p12c_phone_write_enomem()
     p13_versionless()
     p14_measured_dollars()
     p15_slots()

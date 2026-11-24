@@ -270,6 +270,31 @@ check("rm-red-dispatch.service runs red_dispatch.py tick --apply from the dispat
       "red_dispatch.py tick --apply" in svc and "WorkingDirectory=/home/mandrake/rm/dispatch" in svc)
 check("rm-red-dispatch.timer fires every 10 min", "OnUnitActiveSec=10min" in tmr)
 
+# RIMMANDRAKE_STAFF_A_RED_THAT_RETURNS_AFTER_ITS_FIX: 2026-11-24, SELFTEST_FIX_GSS_ART_MANIFEST_SIZES_SLAT: the fixer of
+# 2026-11-20 closed the item; the red came back on 11-24 and the step read that old attempt as a failed one (8 h unstaffed)
+for p_ in ("state.json", "reading.json"):
+    if os.path.exists(os.path.join(TMP, p_)):
+        os.remove(os.path.join(TMP, p_))
+CALLS["launch"].clear(); CALLS["need"].clear()
+WORLD.update(items=open_items(), runs={}, night={})
+RD.tick(dict(CFG, max_live=1), apply=True, fx=fx(), now=NOW)
+WORLD["items"] = open_items(SELFTEST_FIX_ALPHA_AAAA={"state": "ready", "blocked": False, "owner": "BENCH",
+                                                     "closed_t": NOW + 900})
+WORLD["runs"] = {"SELFTEST_FIX_ALPHA_AAAA": {"live": [], "ended": [U1]}}
+n0 = len(CALLS["launch"])
+rd = RD.tick(dict(CFG, max_live=1), apply=True, fx=fx(), now=NOW + 3 * 86400)
+check("a-red-that-returns-after-its-fix-gets-a-new-attempt: the attempt that closed the item is not a failed one",
+      rd["items"]["SELFTEST_FIX_ALPHA_AAAA"]["decision"] == "launched" and len(CALLS["launch"]) == n0 + 1
+      and not [x for x in CALLS["need"] if "ALPHA" in x], rd["items"]["SELFTEST_FIX_ALPHA_AAAA"])
+WORLD["runs"] = {"SELFTEST_FIX_ALPHA_AAAA": {"live": [], "ended": [U1]}}
+rd = RD.tick(dict(CFG, max_live=1), apply=True, fx=fx(), now=NOW + 4 * 86400)
+check("a-failed-attempt-is-not-retried: the attempt after the last close ended with the item open, so it stops",
+      rd["items"]["SELFTEST_FIX_ALPHA_AAAA"]["decision"] == "stopped", rd["items"]["SELFTEST_FIX_ALPHA_AAAA"])
+check("a-red-that-returns-after-its-fix-gets-a-new-attempt: the close time is the ledger's last close of that item",
+      RD.close_times([{"event": "close", "id": "A", "ts": "2026-11-21T00:11:47Z"}, {"event": "note", "id": "A", "ts":
+                      "2026-11-24T00:00:00Z"}, {"event": "close", "id": "B", "ts": "2026-11-22T00:00:00Z"}], {"A"})
+      == {"A": RD.dt.datetime(2026, 11, 21, 0, 11, 47, tzinfo=RD.dt.timezone.utc).timestamp()})
+
 # RIMMANDRAKE_PAUSE_NIGHTLY_SWEEP_WRONG_PHASE_UNTIL_MOD_FINISHED: while the finished-mod hold waits, no fixer at all
 WORLD.update(items=open_items(), runs={}, night={})
 CALLS["launch"].clear()

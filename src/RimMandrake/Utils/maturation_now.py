@@ -60,13 +60,16 @@ the pages (PIL for the phone images), no network, no model. Selftest: selftest_m
 
 import argparse
 import datetime as dt
+import errno
 import glob
 import html
+import io
 import json
 import os
 import threading
 import re
 import sys
+import time
 import xml.etree.ElementTree as ET
 from zoneinfo import ZoneInfo
 
@@ -2082,9 +2085,34 @@ class Phone:
                            (x + 20, y + 32), (x, y + 32)], fill=YELLOW, outline=INK)
                 g.text((x + 46, y + 22), str(n), font=f, fill=YELLOW, anchor="lm")
         tmp = "%s.%d.%d.tmp.png" % (path, os.getpid(), threading.get_ident())     # one name per writer: a shared one raced
-        im.save(tmp, "PNG", optimize=True)
-        os.replace(tmp, path)
+        buf = io.BytesIO()
+        im.save(buf, "PNG", optimize=True)
+        try:
+            write_again(tmp, buf.getvalue())
+            os.replace(tmp, path)
+        finally:
+            if os.path.exists(tmp):
+                os.remove(tmp)
         return im.size
+
+
+# RIMMANDRAKE_RETRY_PHONE_IMAGE_WRITE_ENOMEM_FAILS_PAGE. Guards: a write to D: over 9p raised ENOMEM ("Cannot
+# allocate memory") in PIL's save and failed the page unit 11 times in 36 h (journal, 2026-11-23 21:15 to 11-24 10:55).
+# The waits add at most 3.5 s; after them the error stands and the unit fails, as before.
+WRITE_WAITS = (0.5, 1.0, 2.0)
+
+
+def write_again(path, data, waits=WRITE_WAITS):
+    """Write data to path, whole, tried again after each of `waits` while it raises ENOMEM. Any other error is raised."""
+    for w in tuple(waits) + (None,):
+        try:
+            with open(path, "wb") as f:
+                f.write(data)
+            return
+        except OSError as e:
+            if e.errno != errno.ENOMEM or w is None:
+                raise
+            time.sleep(w)
 
 
 def phone_list(P, sec):
