@@ -312,6 +312,35 @@ def pilot_chains(world, st, pr):
     return out
 
 
+def stage6_tests(mod):
+    """-> {id: test} of MOD's table entries, or None when the table cannot be read."""
+    try:
+        with open(os.path.join(repo_root(), "design", "concepts", mod, "version", "test_table.json"), encoding="utf-8") as f:
+            return {k: t for k, t in (json.load(f).get("tests") or {}).items() if isinstance(t, dict)}
+    except (OSError, ValueError):
+        return None
+
+
+def untouched(mod, chain, old_sha, new_sha, changed=None, tests=None, g=git):
+    """-> True | False | None. True: every stage-6 check whose testq block names CHAIN declares `reads`, and no file
+    changed between OLD_SHA and NEW_SHA is one of them or under one. False: a changed file is. None: no check of the chain
+    declares reads (or one lacks them), or the change cannot be read: the chain runs again. CHANGED / TESTS stand in for
+    git's file list and the test table."""
+    tests = stage6_tests(mod) if tests is None else tests
+    if not tests:
+        return None
+    checks = [t for t in tests.values() if str(t.get("stage")) == "6" and chain in ((t.get("testq") or {}).get("chains") or [])]
+    if not checks or any(not t.get("reads") for t in checks):
+        return None
+    if changed is None:
+        out = g("diff", "--name-only", old_sha, new_sha) if old_sha and new_sha else None
+        if out is None:
+            return None
+        changed = [l for l in out.splitlines() if l.strip()]
+    reads = [r.rstrip("/") for t in checks for r in t["reads"]]
+    return not any(f == r or f.startswith(r + "/") for f in changed for r in reads)
+
+
 def settled(mod, recs, world=None, g=None, prober=None, items=None):
     """-> {"settled": chains with a verdict at their code version, "held": chains waiting for a repair item, "runs",
     "ident", "moved", "st", "pr", "items", "blind"}: the retest rule, for rank and for every other door (submit, sweep)."""
@@ -350,6 +379,10 @@ def settled(mod, recs, world=None, g=None, prober=None, items=None):
             by_identity.add(c)      # a run from before chain_versions, or no version known: the identity decides. A
             #                         --rows run is a verdict on its prefix once a version can tell: only the old rule's
     settled_set |= by_identity
+    for c, s_ in st.items():     # a PASS whose checks read nothing that changed since its commit stands (the code version hashes the whole mod)
+        if c not in settled_set and s_["last"][1] == "PASS" and not s_["last"][0]["partial"] \
+                and untouched(mod, c, s_["last"][0]["sha"], "origin/main", g=g) is True:
+            settled_set.add(c)
     skew = sorted(c for c, s in st.items() if latest and s["last"][0]["sha"] == latest["sha"] and not moved
                   and now_v.get(c) and (s["last"][0]["versions"] or {}).get(c) not in (None, now_v[c])
                   and latest["sha"] and g("rev-parse", "--short", "origin/main") is not None
