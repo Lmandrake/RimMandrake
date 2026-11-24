@@ -17,6 +17,7 @@ import re
 import shutil
 import sys
 import tempfile
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -597,6 +598,21 @@ def test_run():
         check(len(fx.sleeps) == 3 and kinds.count("codex") == 2, "each quota refusal is a wait and a retry (%d waits, %d runs)"
               % (len(fx.sleeps), kinds.count("codex")))
         check("claude" not in kinds, "a quota refusal never falls back to Claude")
+        raw = "an earlier quota warning\n" + "x" * 2100 + "\nfinal failure detail"
+        repo = fake_repo()
+        write_good(repo)
+        effects = DC.Effects(DC.Status(repo))
+
+        def broken_json(argv, *, stdout, **kw):
+            stdout.write(raw)
+            return DC.subprocess.CompletedProcess(argv, 1)
+
+        with patch.object(DC.subprocess, "run", broken_json):
+            answer = effects.claude(repo, "fixture", os.path.join(repo, "capture"))
+        failed = FX(repo, claude=[answer])
+        out = DC.run_mod("Demo", failed, runner="claude")
+        check(not failed.sleeps, "an earlier quota warning outside the fallback search tail does not cause a retry")
+        check(out["agent_errors"] == [raw], "the fallback agent error record keeps the whole output")
         prompt = [c for c in fx.calls if c[0] == "codex"][0][1]
         check(prompt.startswith("You are the Designer.") and "design/concepts/Demo/cleanse/" in prompt,
               "the agent gets the brief and the CASE")

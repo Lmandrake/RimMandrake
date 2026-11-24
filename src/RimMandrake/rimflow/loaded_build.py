@@ -99,7 +99,7 @@ def judge(reply, pid, deployed, source, expected_ids=None, expected_game=None, p
         return res
 
     if not isinstance(reply, dict) or reply.get("success") is not True:
-        found.append((BLIND, "the bridge did not answer the receipt: %s" % (str(reply)[:200],)))
+        found.append((BLIND, "the bridge did not answer the receipt: %s" % (str(reply),)))
         return out()
     ld = reply.get("loaded")
     ids = reply.get("packageIds")
@@ -183,7 +183,7 @@ def fetch(utils):
         # 300 s: a hang guard on a call that answers in under a second; a game on a stalled frame can hold it
         p = subprocess.run([py, client, "--call", "jawa/running_mods", "--json", json.dumps(CALL)],
                            capture_output=True, text=True, errors="replace", timeout=300)
-        return unwrap(json.loads(p.stdout)) if p.stdout.strip() else {"success": False, "message": (p.stderr or "no answer").strip()[-300:]}
+        return unwrap(json.loads(p.stdout)) if p.stdout.strip() else {"success": False, "message": (p.stderr or "no answer").strip()}
     except (OSError, subprocess.SubprocessError, ValueError) as e:
         return {"success": False, "message": "%s: %s" % (type(e).__name__, e)}
 

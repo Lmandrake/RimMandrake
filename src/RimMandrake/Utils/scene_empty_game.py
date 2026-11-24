@@ -63,10 +63,10 @@ def rows_on_empty(scene):
     try:
         out = scene(EmptyGame(), lambda: None, lambda: None, receipt, **kw)
     except Exception as e:  # noqa: BLE001  any escape is the scene failing to read an empty answer, never a pass
-        return [{"id": name, "status": "ERROR", "detail": ("%s: %s" % (type(e).__name__, e))[:400]}]
+        return [{"id": name, "status": "ERROR", "detail": ("%s: %s" % (type(e).__name__, e))}]
     rows = out.get("rows") if isinstance(out, dict) else out
     if not isinstance(rows, list):
-        return [{"id": name, "status": "ERROR", "detail": "the scene returned no rows: %r" % (out,)[:400]}]
+        return [{"id": name, "status": "ERROR", "detail": "the scene returned no rows: %r" % (out,)}]
     return [r for r in rows if isinstance(r, dict)]
 
 
@@ -96,7 +96,7 @@ def flowworks_vacuous(root):
         with open(path, encoding="utf-8") as fh:
             exec(compile(fh.read(), path, "exec"), m.__dict__)  # noqa: S102  our own scene file, loaded as its runner does
     except Exception as e:  # noqa: BLE001
-        return None, "%s did not load: %s: %s" % (FLOWWORKS_SCENES, type(e).__name__, str(e)[:200])
+        return None, "%s did not load: %s: %s" % (FLOWWORKS_SCENES, type(e).__name__, str(e))
     finally:
         for p in added:
             if p in sys.path:
@@ -157,7 +157,7 @@ def sandbox():
                 return
         elif event not in _SEALED:
             return
-        REFUSED.append("%s %s" % (event, str(args[0] if args else "")[:120]))
+        REFUSED.append("%s %s" % (event, str(args[0] if args else "")))
         raise PermissionError("scene_empty_game sandbox refused %s" % event)
     sys.addaudithook(hook)
 
@@ -195,7 +195,7 @@ def suite_file_vacuous(root, path, chains=None):
         with open(full, encoding="utf-8") as fh:
             exec(compile(fh.read(), full, "exec"), m.__dict__)  # noqa: S102  our own mod file, loaded as its runner does
     except BaseException as e:  # noqa: BLE001  SystemExit at import included: it did not load
-        return None, "%s did not load: %s: %s" % (path, type(e).__name__, str(e)[:200])
+        return None, "%s did not load: %s: %s" % (path, type(e).__name__, str(e))
     suite = getattr(m, "suite", None)
     if not hasattr(suite, "chains") or not hasattr(suite, "offline_chains"):
         return None, "%s has no module-level modcheck suite" % path

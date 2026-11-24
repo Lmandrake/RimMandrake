@@ -1587,7 +1587,7 @@ class RimBridge:
                     mi, _ = _reply_dict(self.call("jawa/map_info", check=False))
                     no_map = not (isinstance(mi, dict) and mi.get("success") is True)
                     err = None if not no_map else "jawa/map_info: %s" % (
-                        (mi.get("message") or mi.get("error")) if isinstance(mi, dict) else str(mi)[:200])
+                        (mi.get("message") or mi.get("error")) if isinstance(mi, dict) else str(mi))
                 except RimBridgeError as ex:      # not answered is not "no map": keep waiting, cause kept
                     no_map, err = True, "jawa/map_info: %s" % ex
                 if not no_map:

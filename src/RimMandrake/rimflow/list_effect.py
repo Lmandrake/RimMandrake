@@ -160,7 +160,7 @@ def _git(root, *args):
     except (OSError, subprocess.TimeoutExpired) as e:
         return PR.could_not_look("git %s: %s" % (args[0], e))
     if r.returncode:
-        return PR.could_not_look("git %s exit %d: %s" % (args[0], r.returncode, (r.stderr or "").strip()[:200]))
+        return PR.could_not_look("git %s exit %d: %s" % (args[0], r.returncode, (r.stderr or "").strip()))
     return PR.value(r.stdout)
 
 

@@ -119,7 +119,7 @@ brk("unreadable-store-launches-nothing", "launch_unit() runs systemd-run with th
     ("    except Unreadable as e:\n        return _refusal(args, str(e), unreadable=True)",
      '    except Unreadable as e:\n        return runner(["systemd-run"] + args, **kw)'))
 brk("probe-never-lies", "_cgroup_pids() reads a failed `systemctl show` as an empty cgroup",
-    ('        return P.could_not_look("systemctl show failed (rc %d): %s" % (rc, out.strip()[:120])), ""',
+    ('        return P.could_not_look("systemctl show failed (rc %d): %s" % (rc, out.strip())), ""',
      '        return P.empty(), ""'))
 brk("same-command-twice", "_idem_hit() never finds an earlier act: a keyed command sent twice acts twice",
     ('    if not idem:\n        return None\n    r = c.execute("SELECT * FROM acts WHERE idem=?"',

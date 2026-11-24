@@ -1508,7 +1508,7 @@ def forecast(within="30m", runner=subprocess.run, full=False):
         return FAILED, ["pipe next: the forecast could not run (%s: %s)" % (type(e).__name__, e)]
     if r.returncode:
         return FAILED, ["forecast by %s at %s" % (tree, head)] + (r.stdout or "").rstrip("\n").splitlines()[-5:] + [
-            "pipe next: the forecast exited %d: %s" % (r.returncode, (r.stderr or "").strip()[-200:])]
+            "pipe next: the forecast exited %d: %s" % (r.returncode, (r.stderr or "").strip()[-200:])]  # cut-ok: terminal display
     if full:
         return OK, ["forecast by %s at %s" % (tree, head)] + (r.stdout or "").rstrip("\n").splitlines()
     try:
@@ -1584,7 +1584,7 @@ def install_dropin(prefix, permit, root=None):
         f.write(dropin_text(permit))
     rc, out = _systemctl(["daemon-reload"], 30)
     if rc:
-        raise RuntimeError("daemon-reload failed (rc %d): %s" % (rc, out.strip()[:120]))
+        raise RuntimeError("daemon-reload failed (rc %d): %s" % (rc, out.strip()[:120]))  # cut-ok: exception message
     return d
 
 
@@ -1963,7 +1963,7 @@ def _cgroup_pids(unit):
     be read; the cgroup path, "" when there is none)."""
     rc, out = _systemctl(["show", "-p", "ControlGroup", "--value", unit], 5)
     if rc != 0:     # a failed read is "could not look", never an empty cgroup (a unit that does not exist reads rc 0)
-        return P.could_not_look("systemctl show failed (rc %d): %s" % (rc, out.strip()[:120])), ""
+        return P.could_not_look("systemctl show failed (rc %d): %s" % (rc, out.strip())), ""
     cg = out.strip()
     if not cg:
         return P.empty(), ""
@@ -2762,7 +2762,7 @@ def show(mod=None, p=None, now=None, as_json=False):
     out += game_lines()
     for s in sw:
         if not s["scope"].startswith("mod:") and s["scope"] != "all":
-            out.append("%s %s" % (s["scope"], label(s)[:150]))
+            out.append("%s %s" % (s["scope"], label(s)[:150]))  # cut-ok: terminal display
     for m in mods:
         ms = [s for s in sw if s["scope"] == "mod:" + m]
         state = "; ".join(label(s) for s in ms) or "ON"
@@ -2779,9 +2779,9 @@ def show(mod=None, p=None, now=None, as_json=False):
             out += ["  %s" % describe(s) for s in ms]
             out += ["  look window %s: %s" % (w, fmt_acct(a)) for (am, w), a in accts.items() if am == m]
             if tr.get("why"):
-                out.append("  tick why: %s" % str(tr["why"])[:200])
+                out.append("  tick why: %s" % str(tr["why"])[:200])  # cut-ok: terminal display
             if tr.get("live"):
-                out.append("  live (tick): %s" % ", ".join(str(x) for x in tr["live"])[:200])
+                out.append("  live (tick): %s" % ", ".join(str(x) for x in tr["live"])[:200])  # cut-ok: terminal display
             try:    # each consumable's count and limit (pipeline_control.py's census)
                 sys.path.insert(0, HERE) if HERE not in sys.path else None
                 import pipeline_control as PC
@@ -2873,7 +2873,7 @@ def log(n=10, p=None):
     if not rows:
         return ["[] no acts yet (the store at %s is initialised and empty)" % (p or db_path())]
     return ["%s r%d %s %-5s %s: %s%s [%s -> %s]" % (
-        r["id"], r["rev"], r["at_pacific"], r["kind"], r["scope"], r["why"][:120],
+        r["id"], r["rev"], r["at_pacific"], r["kind"], r["scope"], r["why"][:120],  # cut-ok: terminal display
         " (his words: %s)" % r["owner_said"][:60] if r["owner_said"] else "", _brief(r["before"]), _brief(r["after"]))
         for r in reversed(rows)]
 
@@ -2918,20 +2918,20 @@ def cmd_switch(o, off):
         return ["%s: already applied as %s (idempotency key %s): nothing changed" % (shown, r["act"]["id"], o.idem)]
     if not off and not r["had"]:
         if r["still"]:
-            return ["%s: no `pipe off` switch to lift; still %s" % (shown, r["still"][0][:160])]
+            return ["%s: no `pipe off` switch to lift; still %s" % (shown, r["still"][0][:160])]  # cut-ok: terminal display
         return ["%s is already ON (the store holds no switch for it)" % shown]
     if r.get("withdrawn"):
         lines0 = ["%s: stop order(s) withdrawn: %s" % (shown, ", ".join(x["unit"] for x in r["withdrawn"]))]
     else:
         lines0 = []
-    after = "OFF" if off else ("still " + r["still"][0][:120] if r["still"] else "ON")
+    after = "OFF" if off else ("still " + r["still"][0][:120] if r["still"] else "ON")  # cut-ok: terminal display
     lines = ["%s %s -> %s%s" % (shown, r["before"], after,
                                 "; cancelled before start: %s" % ", ".join(r["cancelled"]) if r["cancelled"] else "")]
     rep = r.get("replaced")
     if rep:     # the old switch's reason is gone from the store now: a later `pipe on` lifts both (2026-11-23)
         lines.append("REPLACES %s (%s, %s): %s -- a later `pipe on %s` lifts that switch too; to keep it, put it back "
                      "with its own --why" % (rep.get("act") or "-", rep.get("who") or "-", rep.get("at_pacific") or "-",
-                                            str(rep.get("why") or "")[:300], o.target))
+                                            str(rep.get("why") or "")[:300], o.target))  # cut-ok: terminal display
     if off:
         try:
             live = [x for x in _q("SELECT * FROM runs WHERE state='started'") if _in_scope(x, scope)]
@@ -2969,8 +2969,8 @@ def cmd_stop(o):
     l2 = ("%s%s" % (_who_line(r["act"]) if r["act"] else "no act written",
                     "; cancelled before start: %s" % ", ".join(r["cancelled"]) if r["cancelled"] else ""))
     if mode == "kill":
-        l2 += "; " + "; ".join(u.get("bookkeeping", "") for u in r["units"])[:300]
-    return (FAILED if bad else OK), [head[:400], l2[:400],
+        l2 += "; " + "; ".join(u.get("bookkeeping", "") for u in r["units"])[:300]  # cut-ok: terminal display
+    return (FAILED if bad else OK), [head[:400], l2[:400],  # cut-ok: terminal display
                                                              "undo: pipe undo %s --why \"...\" (withdraws the order while the run has not obeyed it)" % (
                                                                  r["act"]["id"] if r["act"] else "<act>")]
 
@@ -3060,7 +3060,7 @@ def doctor():
         try:
             ok = c.execute("PRAGMA quick_check").fetchone()[0]
             if ok != "ok":      # a damaged store is not a healthy one (round-four claim 11)
-                raise Unreadable("corrupt: quick_check says %s" % str(ok)[:200].replace("\n", " | "))
+                raise Unreadable("corrupt: quick_check says %s" % str(ok)[:200].replace("\n", " | "))  # cut-ok: exception message
             lines = ["store %s: quick_check ok, rev %d" % (db_path(), rev(c))]
             c.execute("PRAGMA busy_timeout=3000")   # a held write lock is no healthy store (slice review 17)
             c.execute("BEGIN IMMEDIATE")

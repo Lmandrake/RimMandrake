@@ -276,7 +276,7 @@ def ledger_events(texts):
         for t in texts:
             rc, out = ing.rimflow("note", ITEM, "--text", t, "--why", "account end (switching_plan.py, no AI)")
             if rc:
-                print("account_end: ledger note refused: %s" % out[-300:], file=sys.stderr)
+                print("account_end: ledger note refused: %s" % out[-300:], file=sys.stderr)  # cut-ok: terminal display
                 continue
             left.remove(t)
             n += 1

@@ -175,7 +175,7 @@ def _call(prompt, model, timeout=600, system=None):
     try:
         out = json.loads(r.stdout)
     except ValueError:
-        raise RuntimeError("claude -p gave no JSON (rc %s): %s" % (r.returncode, (r.stderr or r.stdout)[:300]))
+        raise RuntimeError("claude -p gave no JSON (rc %s): %s" % (r.returncode, (r.stderr or r.stdout)))
     usd = float(out.get("total_cost_usd") or 0)
     txt = out.get("result") or ""
     m = re.search(r"\{.*\}", txt, re.S)
@@ -247,7 +247,7 @@ def read_tickets(path, records, bars, budget_usd, model="sonnet", workers=4, log
                 try:
                     b, (ans, usd) = f.result()
                 except Exception as e:      # a failed call is counted and its tickets keep their old reading
-                    failed.append(str(e)[:200])
+                    failed.append(str(e))
                     continue
                 spent += usd
                 worst = max(worst, usd)

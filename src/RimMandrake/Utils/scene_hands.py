@@ -62,7 +62,7 @@ class RunUntil(object):
         r = self.call(SESSION, action="state", driver=self.driver)
         last = r.get("lastRun")
         if r.get("success") is not True:
-            raise Fault("COULD_NOT_LOOK", detail="jawa/session did not say its state: %s" % str(r)[:300])
+            raise Fault("COULD_NOT_LOOK", detail="jawa/session did not say its state: %s" % str(r))
         return (last.get("request") or last.get("run")) if isinstance(last, dict) and last.get("stage") not in (None, "none", "closed") else None
 
     def cancel(self, request):
@@ -71,7 +71,7 @@ class RunUntil(object):
     def _read(self, r, request):
         if r.get("success") is not True:
             name = r.get("refused")
-            say = "%s %s" % (r.get("message") or r.get("detail") or str(r)[:300], r.get("repair") or "")
+            say = "%s %s" % (r.get("message") or r.get("detail") or str(r), r.get("repair") or "")
             if name in REFUSALS:
                 raise Refused(REFUSALS[name], "%s (the game: %s)" % (say.strip(), name))
             raise Fault(name or "RUN_NOT_STARTED", detail=say.strip(), request=request)
@@ -131,7 +131,7 @@ class Slice(object):
             name, at = r.get("refused"), str(r.get("at") or "")
             if name:
                 raise Refused("BAD_PATH" if "sample" in at else "UNRECORDED_VALUE", "%s at %s: %s" % (name, at, r.get("detail")))
-            raise Fault("RUN_NOT_STARTED", detail=str(r.get("message") or r)[:300], request=request)
+            raise Fault("RUN_NOT_STARTED", detail=str(r.get("message") or r), request=request)
         return self._read(r, request)
 
     def find(self, request):
@@ -150,7 +150,7 @@ class Slice(object):
     def _status(self):
         r = self.call(SLICE, action="status")
         if "stage" not in r:
-            raise Fault("COULD_NOT_LOOK", detail="%s did not say its state: %s" % (SLICE, str(r)[:300]))
+            raise Fault("COULD_NOT_LOOK", detail="%s did not say its state: %s" % (SLICE, str(r)))
         return r
 
     def _read(self, r, request):

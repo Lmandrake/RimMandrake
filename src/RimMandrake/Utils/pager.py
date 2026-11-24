@@ -270,7 +270,7 @@ def pushover_verdict(status, body, err):
     if status is None:
         return False, None, "Pushover unreachable: %s" % err
     errs = j.get("errors") if isinstance(j, dict) else None
-    detail = "; ".join(str(x) for x in errs)[:200] if isinstance(errs, list) and errs else (err or "no receipt")
+    detail = "; ".join(str(x) for x in errs) if isinstance(errs, list) and errs else (err or "no receipt")
     if status == 200:
         return False, None, "Pushover answered 200 without status 1 and a receipt: %s" % detail
     return False, None, "Pushover refused the request (HTTP %s): %s" % (status, detail)
@@ -529,7 +529,7 @@ def check_credentials(env=None, post=None):
     if status is None:
         return 3, "CREDENTIALS COULD NOT LOOK: Pushover unreachable: %s" % err
     if status == 400 or j.get("status") == 0:
-        return 1, "CREDENTIALS INVALID: %s" % "; ".join(str(x) for x in (j.get("errors") or [err]))[:200]
+        return 1, "CREDENTIALS INVALID: %s" % "; ".join(str(x) for x in (j.get("errors") or [err]))[:200]  # cut-ok: terminal display
     return 3, "CREDENTIALS COULD NOT LOOK: Pushover answered HTTP %s" % status
 
 

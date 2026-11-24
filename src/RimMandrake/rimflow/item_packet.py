@@ -277,7 +277,7 @@ def _git(clone, *args):
     r = subprocess.run(["git", "-C", clone] + list(args), capture_output=True, text=True, timeout=GIT_S,
                        stdin=subprocess.DEVNULL)
     if r.returncode:
-        raise RuntimeError(("git %s: %s" % (args[0], (r.stderr or "").strip()))[:200])
+        raise RuntimeError("git %s: %s" % (args[0], (r.stderr or "").strip()))
     return r.stdout
 
 
@@ -370,7 +370,7 @@ def gather(item, clone):
         except Exception as e:  # noqa: BLE001 - said in the packet, never guessed at
             for n in names:
                 f[n] = None
-                why[n] = ("%s: %s" % (type(e).__name__, e))[:300]
+                why[n] = "%s: %s" % (type(e).__name__, e)
 
     def prose():
         f["prose"], f["prose_path"] = _read_prose(item, clone)

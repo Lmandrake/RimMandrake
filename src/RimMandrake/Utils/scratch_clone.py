@@ -458,7 +458,7 @@ def shed(c: Path) -> list[str]:
     for argv, what in ((["clean", "-q", "-ffdx"], "clean"), (["repack", "-d", "-l", "-q"], "repack"),
                        (["prune-packed", "-q"], "prune-packed")):
         r = subprocess.run(["git", *argv], cwd=c, capture_output=True, text=True, timeout=900)
-        said.append(f"{what} exit {r.returncode}" + (f": {r.stderr.strip()[:120]}" if r.returncode else ""))
+        said.append(f"{what} exit {r.returncode}" + (f": {r.stderr.strip()[:120]}" if r.returncode else ""))  # cut-ok: terminal display
     return said
 
 

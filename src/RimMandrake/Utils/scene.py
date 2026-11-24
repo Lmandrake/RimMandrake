@@ -185,7 +185,7 @@ class Session(object):
         """The text in the game process. -> dict. Another process's text (a child inherited it) reads as none."""
         r = self._look("jawa/static_call", type="System.Environment", method="GetEnvironmentVariable", args=GAME_STATE)
         if r.get("success") is not True:
-            raise Fault("COULD_NOT_LOOK", detail="the process mark could not be read (a campaign game refuses jawa/static_call): %s" % str(r.get("message") or r)[:200])
+            raise Fault("COULD_NOT_LOOK", detail="the process mark could not be read (a campaign game refuses jawa/static_call): %s" % str(r.get("message") or r))
         if r.get("result") in (None, "null", ""):
             return {"pid": self.pid, "stamps": [], "session": None}
         try:
@@ -285,7 +285,7 @@ class Session(object):
         r = self._look("jawa/running_mods", details=False, assembly="", loadedOf="ours")
         ld, ids = r.get("loaded"), r.get("packageIds")
         if r.get("success") is not True or not isinstance(ld, dict) or not isinstance(ids, list) or not ids:
-            raise Fault("COULD_NOT_LOOK", detail="the game did not say what it has loaded (a companion older than the receipt): %s" % str(r)[:200])
+            raise Fault("COULD_NOT_LOOK", detail="the game did not say what it has loaded (a companion older than the receipt): %s" % str(r))
         if ld.get("gameKey") != self.key:
             raise Fault("WRONG_GAME", detail="the bridge of %s answers for %s" % (self.game, ld.get("gameKey")))
         self.pid = ld.get("pid")
@@ -346,7 +346,7 @@ class Session(object):
         while True:
             r = self._look("rimworld/list_saves", offset=at)
             if r.get("success") is not True or not isinstance(r.get("saves"), list):
-                raise Fault("COULD_NOT_LOOK", detail="the saves of the game could not be listed: %s" % str(r)[:200])
+                raise Fault("COULD_NOT_LOOK", detail="the saves of the game could not be listed: %s" % str(r))
             self._saves = r.get("saveFolder")
             if any(str(x.get("name")).lower() == name.lower() for x in r["saves"]):
                 return True
@@ -372,7 +372,7 @@ class Session(object):
         except (CallFailed, ReplyLost) as e:
             raise Fault("LOAD_FAILED", done=["asked for %s; whether the game loaded it is not known" % where], detail=str(e))
         if r.get("success") is not True:
-            raise Fault("LOAD_FAILED", done=["asked for %s" % where], detail=str(r.get("message") or r.get("error") or r)[:300])
+            raise Fault("LOAD_FAILED", done=["asked for %s" % where], detail=str(r.get("message") or r.get("error") or r))
         self._loaded = where
         p["did"].append("loaded %s (the game's earlier map is gone)" % where)
         if not fresh:
@@ -382,7 +382,7 @@ class Session(object):
         """A fresh map is started from the main menu only (measured 2026-11-23: from a map the start timed out after 280 s)."""
         r = self._look("rimworld/go_to_main_menu")
         if r.get("success") is not True:
-            raise Fault("LOAD_FAILED", detail="the game did not go to the main menu: %s" % str(r.get("message") or r)[:300])
+            raise Fault("LOAD_FAILED", detail="the game did not go to the main menu: %s" % str(r.get("message") or r))
         self._loaded = "the main menu"
         p["did"].append("left the loaded map for the main menu")
         end = self.W.clock() + SETTLE_S
@@ -429,7 +429,7 @@ class Session(object):
         self._calmed = True                     # owed from before the call: a lost reply may have set it
         r = self._look("jawa/quiet_site", action="calm", clear=True, minutes=CALM_MINUTES)
         if r.get("success") is not True:
-            raise Fault("NOT_CALM", detail="the calm tool refused: %s" % str(r.get("message") or r)[:300])
+            raise Fault("NOT_CALM", detail="the calm tool refused: %s" % str(r.get("message") or r))
         p["did"] += ["calm: %s" % x for x in r.get("repaired") or []]
         for c in r.get("controls") or []:
             if c.get("status") == "COULD_NOT_READ":
@@ -449,7 +449,7 @@ class Session(object):
         if hands.RUN_UNTIL in self._tools and hands.SESSION in self._tools:
             r = self._look(hands.SESSION, action="open", driver=self.id)
             if r.get("success") is not True:
-                raise Fault(r.get("refused") or "SESSION_NOT_OPENED", done=list(p["did"]), detail=str(r.get("message") or r)[:300])
+                raise Fault(r.get("refused") or "SESSION_NOT_OPENED", done=list(p["did"]), detail=str(r.get("message") or r))
             self._insession = True
             p["did"].append("opened the game's session %s" % r.get("session"))
             self.hand = hands.RunUntil(self._call, self.id)
@@ -464,7 +464,7 @@ class Session(object):
         """A line in the game's own record. Best effort: what could not be written is said."""
         try:
             r = self._call("jawa/telemetry_mark", why=why)
-            bad = None if r.get("success") is True else str(r.get("error") or r.get("message") or r)[:200]
+            bad = None if r.get("success") is True else str(r.get("error") or r.get("message") or r)
         except (CallFailed, ReplyLost) as e:
             bad = str(e)
         if bad and rec is not None:
@@ -486,14 +486,14 @@ class Session(object):
             self._insession = False
             r = self._look(hands.SESSION, action="close", driver=self.id)
             if r.get("success") is not True:
-                raise Fault(r.get("refused") or "SESSION_NOT_CLOSED", detail=str(r.get("message") or r)[:200])
+                raise Fault(r.get("refused") or "SESSION_NOT_CLOSED", detail=str(r.get("message") or r))
             session = r.get("session")
             end = self.W.clock() + CLOSE_SESSION_S
             while r.get("stage") == "closing" and self.W.clock() < end:
                 self.W.sleep(POLL_S)
                 r = self._look(hands.SESSION, action="state")
                 if r.get("success") is not True or r.get("session") != session:
-                    raise Fault("SESSION_NOT_CLOSED", detail="could not confirm the close of session %s: %s" % (session, str(r)[:200]))
+                    raise Fault("SESSION_NOT_CLOSED", detail="could not confirm the close of session %s: %s" % (session, str(r)))
             if r.get("stage") not in ("closed", "aborted"):
                 raise Fault("SESSION_NOT_CLOSED", detail="session %s still reports stage %s" % (session, r.get("stage")))
             return "closed the game's session"
@@ -511,7 +511,7 @@ class Session(object):
             self._calmed = False
             r = self._look("jawa/quiet_site", action="release")
             if r.get("success") is not True:
-                raise Fault("CALM_NOT_RELEASED", detail=str(r.get("message") or r)[:200])
+                raise Fault("CALM_NOT_RELEASED", detail=str(r.get("message") or r))
             return "released the calm: %s" % "; ".join(str(x) for x in r.get("restored") or [])
 
         def unlock():
@@ -766,7 +766,7 @@ class Session(object):
                 tool, ", ".join(difflib.get_close_matches(tool, self._tools, 5, 0.4)) or "none"))
         why = _bad_args(d, args)
         if why:
-            raise Refused("BAD_ARGS", "%s: %s. Its schema: %s" % (tool, why, json.dumps(d.get("parameters") or d.get("inputSchema"), default=str)[:1500]))
+            raise Refused("BAD_ARGS", "%s: %s. Its schema: %s" % (tool, why, json.dumps(d.get("parameters") or d.get("inputSchema"), default=str)))
         rec = self._begin("s.raw")
         changing = not _read_only(d)
         if changing and EXPLORED not in self.stamps:
@@ -852,7 +852,7 @@ def tools(words):
         score = sum(5 * (w in hay_n) + (w in hay_d) for w in want)
         if want and all(w in hay_n or w in hay_d for w in want):
             scored.append((-score, n, d))
-    return [Tool(n, (d.split(". ")[0] or "(no description in the repo)")[:150], _read_only({"name": n, "description": d})) for _s, n, d in sorted(scored)[:10]]
+    return [Tool(n, (d.split(". ")[0] or "(no description in the repo)")[:150], _read_only({"name": n, "description": d})) for _s, n, d in sorted(scored)[:10]]  # cut-ok: short tool listing from the full description
 
 
 # ------------------------------------------------------------------------------------------------- help
@@ -947,11 +947,11 @@ def check_accept(script, repo, git):
     if rc != 0:
         rc2, out2 = git("rev-parse", "--is-inside-work-tree")
         if rc2 != 0:
-            raise Fault("COULD_NOT_LOOK", detail="git could not read the tree: %s" % out2.strip()[:300])
+            raise Fault("COULD_NOT_LOOK", detail="git could not read the tree: %s" % out2.strip())
         raise Refused("SCRIPT_NOT_IN_REPO", "%s is not committed: commit it, then accept" % rel)
     rc, out = git("status", "--porcelain")
     if rc != 0:
-        raise Fault("COULD_NOT_LOOK", detail="git status: %s" % out.strip()[:300])
+        raise Fault("COULD_NOT_LOOK", detail="git status: %s" % out.strip())
     if out.strip():
         rows = out.strip("\n").split("\n")
         raise Refused("TREE_NOT_CLEAN", "%d path(s) differ from the commit: %s%s. Commit or remove them, then accept" % (
@@ -962,7 +962,7 @@ def check_accept(script, repo, git):
                       ". A scene imports scene only; a scene of a mod that already passed keeps its old script and is not accepted again")
     rc, out = git("rev-parse", "HEAD")
     if rc != 0 or not out.strip():
-        raise Fault("COULD_NOT_LOOK", detail="git rev-parse HEAD: %s" % out.strip()[:300])
+        raise Fault("COULD_NOT_LOOK", detail="git rev-parse HEAD: %s" % out.strip())
     return out.strip()
 
 
@@ -1065,7 +1065,7 @@ def raw_census(files=None):
     if files is None:
         rc, out = _world().git("ls-files", "*.py")
         if rc != 0:
-            raise Fault("COULD_NOT_LOOK", detail="git ls-files: %s" % out[:300])
+            raise Fault("COULD_NOT_LOOK", detail="git ls-files: %s" % out)
         import scene_world
         files = [os.path.join(scene_world.REPO, f) for f in out.split("\n") if f]
     ops, looked, blind = {}, 0, []

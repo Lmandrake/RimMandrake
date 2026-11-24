@@ -74,7 +74,7 @@ def _digest_note(mod, why):
                        capture_output=True, text=True, timeout=300)  # budget: class=rimflow
     if r.returncode != 0:
         raise RuntimeError("the digest note was not written (rimflow note exit %d: %s)"
-                           % (r.returncode, (r.stderr or r.stdout).strip()[-300:]))
+                           % (r.returncode, (r.stderr or r.stdout).strip()[-300:]))  # cut-ok: exception message
 
 
 MIRROR_ALARM = "control:owner_hold_mirror"

@@ -109,7 +109,7 @@ def read_states(clone, ids):
     r = subprocess.run([sys.executable, "-c", READ_STATES] + list(ids), cwd=clone, capture_output=True, text=True,
                        timeout=300, stdin=subprocess.DEVNULL)  # budget: class=rimflow
     if r.returncode:
-        raise RuntimeError("ledger read in %s exited %d: %s" % (clone, r.returncode, (r.stderr or "")[-200:]))
+        raise RuntimeError("ledger read in %s exited %d: %s" % (clone, r.returncode, (r.stderr or "")))
     return json.loads(r.stdout)
 
 
@@ -311,7 +311,7 @@ def blind_role(rec, target=None):
         if "BLIND" in s and any(v in BLIND_VERBS for v in verbs):
             return "item %s" % it
     b = brief_of(rec)
-    m = ROLE_RX.search(b[:800])
+    m = ROLE_RX.search(b[:800])  # cut-ok: search the brief header for a role
     if m:
         return "its brief says %r" % m.group(0)
     first = next((ln for ln in b.splitlines() if ln.strip()), "")
@@ -544,10 +544,10 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
         return {"unit": unit, "act": "none", "why": why}
     waits_for = account_end_wait(now)
     if waits_for:       # its run was told to save and end because the account ends: kick_waiting starts it after
-        rec["continue_waits"] = {"at": now, "why": waits_for[:300]}
+        rec["continue_waits"] = {"at": now, "why": waits_for}
         DH.write_record(rec, root)
-        journal({"at": DH.iso(now), "unit": unit, "item": rec.get("item"), "act": "waits", "why": waits_for[:300]}, root)
-        return {"unit": unit, "act": "none", "why": "waits for the account switch: " + waits_for[:200]}
+        journal({"at": DH.iso(now), "unit": unit, "item": rec.get("item"), "act": "waits", "why": waits_for}, root)
+        return {"unit": unit, "act": "none", "why": "waits for the account switch: " + waits_for[:200]}  # cut-ok: terminal display
     rec["continue_claim"] = now
     DH.write_record(rec, root)
     root_brief = rec.get("continue_brief_src") or rec.get("brief_src")
@@ -585,7 +585,7 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
             return 1, "%s: %s" % (type(e).__name__, e)
     code, out = go(sid, fresh_why)
     if sid and code and "has no transcript" in str(out):     # it vanished between the look and the launch
-        sid, fresh_why = None, "the resume of session %s was refused: %s" % (sid, " ".join(str(out).split())[:200])
+        sid, fresh_why = None, "the resume of session %s was refused: %s" % (sid, " ".join(str(out).split()))
         code, out = go(None, fresh_why)
     rec = DH.read_record(unit, root) or rec
     rec.pop("continue_claim", None)
@@ -603,15 +603,15 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
         journal({"at": DH.iso(now), "unit": unit, "item": rec["item"], "act": "continued", "new": m.group(1),
                  "target": p["target"]}, root)
         return {"unit": unit, "act": "continued", "new": m.group(1), "why": p.get("why")}
-    rec["continue_refused"] = {"at": now, "why": str(out)[:500]}
+    rec["continue_refused"] = {"at": now, "why": str(out)}
     DH.write_record(rec, root)
     try:
         DH.conductor_line("%s on %s ended with work left but its continuation was REFUSED: %s" % (
-            unit, rec["item"], " ".join(str(out).split())[:300]), now, log_path, head=HEAD)
+            unit, rec["item"], " ".join(str(out).split())), now, log_path, head=HEAD)
     except Exception:  # noqa: BLE001
         pass
-    journal({"at": DH.iso(now), "unit": unit, "item": rec["item"], "act": "refused", "why": str(out)[:300]}, root)
-    return {"unit": unit, "act": "refused", "why": str(out)[:300]}
+    journal({"at": DH.iso(now), "unit": unit, "item": rec["item"], "act": "refused", "why": str(out)}, root)
+    return {"unit": unit, "act": "refused", "why": str(out)[:300]}  # cut-ok: terminal display
 
 
 def account_end_wait(now):
@@ -680,7 +680,7 @@ def kick(rec, p, runner=subprocess.run):
     if getattr(r, "refused", False):
         return "continue refused by control: %s" % r.why
     return "continue kicked %s-continue (%s)" % (rec["unit"], p.get("why")) if r.returncode == 0 else \
-        "continue NOT kicked: %s" % ((r.stderr or r.stdout or "").strip()[:200])
+        "continue NOT kicked: %s" % ((r.stderr or r.stdout or "").strip())
 
 
 def at_finish(rec, got, clone, now, runner=subprocess.run, continuer=None, states_reader=None):

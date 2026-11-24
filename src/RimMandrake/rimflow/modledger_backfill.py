@@ -237,7 +237,7 @@ def whole(name, text):
     full = store_texts(name)
     if not full:
         return text
-    for i in [0] + [m.end() for m in re.finditer(r" ", t[:240])]:
+    for i in [0] + [m.end() for m in re.finditer(r" ", t[:240])]:  # cut-ok: search the lead for possible text starts
         body = t[i:]
         if len(body) < 80:
             break
@@ -1297,7 +1297,7 @@ def drop_overtaken(root, mod, ev, tev, titles, states, mod_words, notes, raw_rea
             continue
         for n_, (i, k, _t0, _sen, cs, td) in enumerate(qs, 1):
             if n_ in rr["current"]:
-                out_(i, k, ("the currency reader found later work made it false", (cs or td)[0][:120]))
+                out_(i, k, ("the currency reader found later work made it false", (cs or td)[0]))
     out = []
     for i, e in enumerate(ev):
         if i not in cut:
@@ -1828,7 +1828,7 @@ def plan(root, mod):
         if said and art:
             body_["text"] = fit(etext, S["text"])
         add("decision", subj, body_, ["path:%s:%d" % (_rel(root, sp_), i), ("item:" + iid) if iid else None] +
-            ["ext:" + a_[:150] for a_ in art[:2]], auth)
+            ["ext:" + a_ for a_ in art[:2] if len(a_) + 4 <= M.std()["evidence_ref_chars"]], auth)  # longer paths remain in the cited event
     ev = apply_judge_rules(ev, ticket_ctx, decider, tt.get("tests") if isinstance(tt.get("tests"), dict) else {}, S,
                            notes)
     ev = drop_overtaken(root, mod, ev, tev, titles, {n: states.get(n) or _fold(tev.get(n, [])) for n in items},

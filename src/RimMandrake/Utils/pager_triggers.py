@@ -217,7 +217,7 @@ def run(root, now, send=None, dry_run=False):
             continue
         verdict, cause, text = read(name, root, now)
         if verdict == FIRES:
-            outcome, rec = send(TRIGGERS[name][0], cause, text[:200], "trigger %s: %s" % (name, TRIGGERS[name][2]),
+            outcome, rec = send(TRIGGERS[name][0], cause, text[:200], "trigger %s: %s" % (name, TRIGGERS[name][2]),  # cut-ok: the pager requires a reading of at most 200 characters
                                 dry_run=dry_run)
             if outcome not in (P.SENT, P.REPEAT, P.DRY_RUN):
                 unsent += 1

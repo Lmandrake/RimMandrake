@@ -102,7 +102,7 @@ def check_text(p, text):
         return []
     if scope == "mark" and has_history_mark(text):
         return []
-    return [f"{p}:{n}: {ln.strip()[:160]}" for n, ln in era_lines(text)]
+    return [f"{p}:{n}: {ln.strip()[:160]}" for n, ln in era_lines(text)]  # cut-ok: terminal display
 
 
 def mark_text(p, text):

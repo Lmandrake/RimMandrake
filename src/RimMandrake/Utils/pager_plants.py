@@ -81,7 +81,7 @@ def main():
         u = stage(tmp)
         rc, out = run(u)
         if rc != 0 or "ALL PASS" not in out:
-            print("BROKEN: the unmutated control is not ALL PASS:\n" + out[-800:])
+            print("BROKEN: the unmutated control is not ALL PASS:\n" + out[-800:])  # cut-ok: test diagnostic display
             return 3
         missed, caught = [], 0
         for name, f, anchor, repl in PLANTS:

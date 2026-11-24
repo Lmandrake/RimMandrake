@@ -96,7 +96,7 @@ def drill(lines):
     pidf = os.path.join(TMP, "child.pid")
     res = launch(u, [trap, pidf])
     check(res.returncode == 0 and not res.refused, "launch: %s did not start (rc %s: %s)" % (
-        u, res.returncode, res.why or (res.stderr or "")[:120]))
+        u, res.returncode, res.why or (res.stderr or "")[:120]))  # cut-ok: test diagnostic display
     check(wait_for(lambda: os.path.exists(pidf) and open(pidf).read().strip(), 5) and state(u) == "started",
           "launch: %s reads %s, its child pid never appeared" % (u, state(u)))
     main = int(subprocess.run(["systemctl", "--user", "show", "-p", "MainPID", "--value", u], capture_output=True,
@@ -119,7 +119,7 @@ def drill(lines):
     lines.append("end      ok: %s ran /bin/true and its ExecStopPost recorded it ended" % ue)
     # off: a launch on an off scope is refused and never reaches systemd
     rc, out, _ms = pipe("off", "family:probe", "--why", "kill drill: off blocks starts")
-    check(rc == 0, "off: pipe off family:probe failed (rc %d): %s" % (rc, out.strip()[:160]))
+    check(rc == 0, "off: pipe off family:probe failed (rc %d): %s" % (rc, out.strip()[:160]))  # cut-ok: test diagnostic display
     uo = TAG + "-off"
     res = launch(uo, ["/bin/sleep", "300"])
     loaded = subprocess.run(["systemctl", "--user", "show", "-p", "LoadState", "--value", uo + ".service"],
@@ -128,12 +128,12 @@ def drill(lines):
           "off: %s launched past pipe off (refused %s, rc %s, LoadState %s)" % (uo, res.refused, res.returncode,
                                                                                 loaded))
     rc, out, _ms = pipe("on", "family:probe", "--why", "kill drill: on again")
-    check(rc == 0, "off: pipe on family:probe failed (rc %d): %s" % (rc, out.strip()[:160]))
+    check(rc == 0, "off: pipe on family:probe failed (rc %d): %s" % (rc, out.strip()[:160]))  # cut-ok: test diagnostic display
     lines.append("off      ok: %s refused (rc %d) and never reached systemd; pipe on again" % (uo, res.returncode))
     # kill: the trap fixture, by unit name
     rc, out, ms = pipe("stop", u, "--kill", "--why", "kill drill: SIGKILL the throwaway trap fixture")
     gone = wait_for(lambda: not any(C._alive(x) for x in pids), 2)
-    check(rc == 0 and "dead in" in out, "kill: pipe stop %s --kill (rc %d): %s" % (u, rc, out.strip()[:200]))
+    check(rc == 0 and "dead in" in out, "kill: pipe stop %s --kill (rc %d): %s" % (u, rc, out.strip()[:200]))  # cut-ok: test diagnostic display
     check(gone, "kill: survivors after the kill: %s" % [x for x in pids if C._alive(x)])
     check(state(u) == "killed", "kill: %s's run reads %s, not killed" % (u, state(u)))
     kms = int(out.split("dead in", 1)[1].split()[0])
@@ -144,7 +144,7 @@ def drill(lines):
     res = launch(ud, ["/bin/sleep", "300"])
     check(res.returncode == 0 and wait_for(lambda: state(ud) == "started", 5), "escalate: %s never started" % ud)
     rc, out, _ms = pipe("stop", ud, "--write-now", "--deadline", "1s", "--why", "kill drill: deaf run escalates")
-    check(rc == 0 and "escalates to --kill" in out, "escalate: no escalation set (rc %d): %s" % (rc, out[:200]))
+    check(rc == 0 and "escalates to --kill" in out, "escalate: no escalation set (rc %d): %s" % (rc, out[:200]))  # cut-ok: test diagnostic display
     check(wait_for(lambda: state(ud) == "killed", 20), "escalate: %s reads %s 20 s after a 1 s deadline" % (
         ud, state(ud)))
     esc = C._q("SELECT * FROM acts WHERE kind='escalate' AND scope=?", ("unit:" + ud,), DB, one=True)
@@ -169,7 +169,7 @@ def drill(lines):
     rc, out, ms = pipe("stop", ul, "--kill", "--why", "kill drill: kill on a locked store")
     th.join()
     check(rc == 0 and "dead in" in out and "recorded after the kill" in out, "locked: pipe stop %s --kill did not "
-          "kill first on a locked store (rc %d): %s" % (ul, rc, out.strip()[:200]))
+          "kill first on a locked store (rc %d): %s" % (ul, rc, out.strip()[:200]))  # cut-ok: test diagnostic display
     check(state(ul) == "killed", "locked: %s reads %s after the store freed, not killed" % (ul, state(ul)))
     lines.append("locked   ok: %s killed while the store was held (%d ms), recorded killed once it freed" % (ul, ms))
     # live: the live store never heard of this drill

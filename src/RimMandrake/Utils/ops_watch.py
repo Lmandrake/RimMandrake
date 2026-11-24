@@ -1233,7 +1233,7 @@ def c_testing(now, rules, ctx):
     lost = sorted(((d.get("job") or {}).get("id") or "?", str(d["ingested"]["error"])) for _, d in jobs
                   if isinstance(d.get("ingested"), dict) and d["ingested"].get("error"))
     gave = [j for j, _ in lost]
-    said = "; ".join("%s: %s" % (j, err[:120]) for j, err in lost[:3])
+    said = "; ".join("%s: %s" % (j, err) for j, err in lost[:3])
     if bad:
         out["testing.ingest_gave_up_7d"] = E(len(gave), "%d done record(s) unreadable: a floor" % len(bad),
                                              "testq records ingest gave up on, 7 d", said=said, jobs=gave)
@@ -2091,7 +2091,7 @@ def seat_dirt_reading():
         for clone, r in zip(cl, got):
             tag = "" if clone == seat_dirt.SEAT_CLONE else os.path.basename(clone) + ":"
             if isinstance(r, Exception):
-                unread.append("%s %s" % (clone, str(r)[:150]))
+                unread.append("%s %s" % (clone, str(r)))
                 continue
             stale += r["stale"]
             fresh += r["fresh"]
@@ -2102,7 +2102,7 @@ def seat_dirt_reading():
         return {"disk.seat_dirt": M(stale, "paths dirty in the seat and role clones over %d min" % seat_dirt.STALE_MIN,
                                     paths=paths[:12], fresh=fresh, tidy_late=late)}
     except Exception as e:
-        return {"disk.seat_dirt": M(9999, "paths dirty in the seat clone", why="unreadable: %s" % str(e)[:200])}
+        return {"disk.seat_dirt": M(9999, "paths dirty in the seat clone", why="unreadable: %s" % str(e))}
 
 
 def systemctl_json(*args):
@@ -2319,7 +2319,7 @@ def ghost_runs_reading():
         import control
         g = control.ghosts()
     except Exception as e:  # noqa: BLE001  could not look: said, never a 0
-        return U("control store or systemd unreadable: %s: %s" % (type(e).__name__, str(e)[:200]))
+        return U("control store or systemd unreadable: %s: %s" % (type(e).__name__, str(e)))
     return M(len(g["gone"]), "runs the store holds started that systemd reads gone",
              gone=[r["unit"] for r in g["gone"]], unreadable=[r["unit"] for r in g["unreadable"]])
 
@@ -4536,7 +4536,7 @@ def spawn_held_filer(argv):
     why = ((getattr(r, "stderr", None) or "") + (getattr(r, "stdout", None) or "")).strip()
     if "DUPLICATE" in why or "already loaded" in why or "already exists" in why:
         return "running"        # the unit is still up: a filer runs (it takes its lock a moment after it starts)
-    return "not started: %s" % why[:200]
+    return "not started: %s" % why
 
 
 def start_held_filer(spawn=None):

@@ -80,7 +80,7 @@ class RealBridge(object):
             raise ReplyLost("%s: %s" % (tool, e), reconcile=reconcile)
         d = self.rb._reply_dict(out)[0]
         if not isinstance(d, dict):
-            raise CallFailed("%s: the reply is not an object: %r" % (tool, str(d)[:200]))
+            raise CallFailed("%s: the reply is not an object: %r" % (tool, str(d)))
         return d
 
     def close(self):

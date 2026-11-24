@@ -133,7 +133,7 @@ class Origin:
             return None
         r = git("fetch", "-q", "--no-tags", bundle_path, *specs)
         if r.returncode != 0:
-            return "fetch from commits.bundle failed: " + r.stderr.strip()[:160]
+            return "fetch from commits.bundle failed: " + r.stderr.strip()
         try:
             refs = [x for x in git("for-each-ref", "--format=%(objectname)", ns).stdout.split() if x]
             shas = git("rev-list", "--no-merges", *refs, "--not", self.ref).stdout.split()
@@ -208,7 +208,7 @@ def main(argv=None):
             try:
                 verdict, why = judge(d, o)
             except Exception as e:  # noqa: BLE001 - one unreadable bundle is listed, never deleted
-                verdict, why = "UNJUDGED", "error: %s" % str(e)[:160]
+                verdict, why = "UNJUDGED", "error: %s" % str(e)
             rows.append({"bundle": name, "verdict": verdict, "why": why, "bytes": size(d)})
             print("%-9s %s %s" % (verdict, name, why), flush=True)
     finally:

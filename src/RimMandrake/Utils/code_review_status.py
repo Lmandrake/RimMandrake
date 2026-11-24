@@ -699,7 +699,7 @@ def _run_tests(tests):
     except OSError as e:
         return "could not start: %s" % e
     tail = [ln for ln in (r.stdout + r.stderr).splitlines() if ln.strip()]
-    return r.returncode, (tail[-1].strip()[:160] if tail else "no output")
+    return r.returncode, (tail[-1].strip() if tail else "no output")
 
 
 # A mod's locked bars are the page of every file inside the mod (owner, by card
@@ -729,7 +729,7 @@ def _mod_json(mod, name):
     except FileNotFoundError:
         return None, "no file"
     except (OSError, UnicodeDecodeError, ValueError) as e:
-        return None, "version/%s cannot be read: %s" % (name, str(e)[:120])
+        return None, "version/%s cannot be read: %s" % (name, str(e))
 
 
 def mod_page_state(mod, builds=None):

@@ -359,7 +359,7 @@ def one_view(his, ours_rows, home, fmt="md"):
     hl = home_line(home)
     if fmt == "html":
         e = H.escape
-        rows = "".join("<div>• %s <span style=\"color:#98a1af;font-size:11px\">%s</span></div>" % (e(x["q"][:130]), e(x["item"]))
+        rows = "".join("<div>• %s <span style=\"color:#98a1af;font-size:11px\">%s</span></div>" % (e(x["q"][:130]), e(x["item"]))  # cut-ok: compact dashboard display of the saved question
                        for x in his) or "<div>Nothing waits on you.</div>"
         tail = ""
         if ours_rows:

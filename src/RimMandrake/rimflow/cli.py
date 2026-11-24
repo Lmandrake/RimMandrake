@@ -486,8 +486,8 @@ def compact_queue(text, w, ev, full_cmd, now=None, limit=COMPACT_SECTIONS):
         nonlocal kept, left
         if sec:
             if keep and kept < limit:     # the heading and what to do; the rest is in --full
-                out.append(sec[0] if len(sec[0]) <= 241 else sec[0][:240] + "…\n")
-                out.extend((x if len(x) <= 241 else x[:240] + "…\n") for x in sec[1:]
+                out.append(sec[0] if len(sec[0]) <= 241 else sec[0][:240] + "…\n")  # cut-ok: terminal display
+                out.extend((x if len(x) <= 241 else x[:240] + "…\n") for x in sec[1:]  # cut-ok: terminal display
                            if x.startswith(("state:", "lease:", "action:", "then:")))
                 out.append("\n")
                 kept += 1

@@ -337,7 +337,7 @@ def program_faults(path, text, sents, tree, lex, door="publish"):
 
     def add(s, kind, term, repair):
         out.append({"file": path, "line": s["l0"], "kind": kind, "term": term.strip(), "repair": repair, "by": "program",
-                    "sentence": s["raw"][:240]})
+                    "sentence": s["raw"]})
     for s in sents:
         t, raw = s["mask"], s["raw"]
         here = "this sentence, or the first line of its section (%s)" % (("“%s”" % s["head"]) if s["head"] else path)
@@ -425,10 +425,10 @@ def ask_model(prompt):
                             "You check rule text for terms that a reader cannot resolve. You answer with one JSON object."],
                            input=prompt, capture_output=True, text=True, cwd=d, timeout=READER_TIMEOUT_S)
     if r.returncode != 0:
-        raise OSError("claude exit %s: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-160:]))
+        raise OSError("claude exit %s: %s" % (r.returncode, (r.stderr or r.stdout).strip()))
     d = json.loads(r.stdout)
     if d.get("is_error"):
-        raise OSError("claude: %s" % str(d.get("result"))[:160])
+        raise OSError("claude: %s" % str(d.get("result")))
     return str(d.get("result") or "")
 
 
@@ -451,7 +451,7 @@ def read_faults(path, text, sents, lex, ask, whole=False):
     except subprocess.TimeoutExpired:
         return None, 0, "no answer in %d s" % READER_TIMEOUT_S
     except (OSError, ValueError, AttributeError) as e:
-        return None, 0, "%s: %s" % (type(e).__name__, str(e)[:200])
+        return None, 0, "%s: %s" % (type(e).__name__, str(e))
     out, dropped = [], 0
     for r in rows:
         n, term = r.get("n"), str(r.get("term") or "").strip()
@@ -461,7 +461,7 @@ def read_faults(path, text, sents, lex, ask, whole=False):
                 or r.get("kind") not in ("undefined", "synonym", "no-object"):
             dropped += 1
             continue
-        out.append({"file": path, "line": s["l0"], "kind": r["kind"], "term": term, "by": "reader", "sentence": s["raw"][:240],
+        out.append({"file": path, "line": s["l0"], "kind": r["kind"], "term": term, "by": "reader", "sentence": s["raw"],
                     "repair": "%s Say it in %s." % (str(r.get("why") or "").strip(), str(r.get("define_at") or "this sentence").strip().rstrip("."))})
     return out, dropped, None
 
@@ -511,7 +511,7 @@ def check_files(top, news, olds, door="publish", reader=None, status=None, sents
 
 
 def line_of(f):
-    return "  %s:%s [%s] %r in: %s\n      REPAIR: %s" % (f["file"], f["line"], f["kind"], f["term"], f["sentence"][:110], f["repair"])
+    return "  %s:%s [%s] %r in: %s\n      REPAIR: %s" % (f["file"], f["line"], f["kind"], f["term"], f["sentence"][:110], f["repair"])  # cut-ok: terminal display
 
 
 def render(res, principal=None):
@@ -578,7 +578,7 @@ def rows():
 def git(top, *a):
     r = subprocess.run(["git", *a], cwd=top, capture_output=True, text=True, errors="replace", timeout=GIT_TIMEOUT_S)
     if r.returncode != 0:
-        raise CouldNotLook("git %s failed: %s" % (" ".join(a[:2]), r.stderr.strip()[:160]))
+        raise CouldNotLook("git %s failed: %s" % (" ".join(a[:2]), r.stderr.strip()))
     return r.stdout
 
 
@@ -612,7 +612,7 @@ def after_publish(top, base, head, landed):
         row = record("publish", res, landed=git(top, "rev-list", "-n", str(max(1, n)), landed).split())
         return render(res, row["principal"])
     except Exception as e:  # noqa: BLE001  the landing is done: a broken check says so and stops nothing
-        return "GUIDING PROSE: UNMEASURED, the check did not run (%s: %s). The landing is complete." % (type(e).__name__, str(e)[:240])
+        return "GUIDING PROSE: UNMEASURED, the check did not run (%s: %s). The landing is complete." % (type(e).__name__, str(e)[:240])  # cut-ok: terminal display
 
 
 def _sent_path():
@@ -646,7 +646,7 @@ def after_launch(brief, item=None):
             f.write("".join(_key(s) + "\n" for s in sentences(brief)))
         return render(res, row["principal"])
     except Exception as e:  # noqa: BLE001  the run has started: a broken check says so and stops nothing
-        return "GUIDING PROSE: UNMEASURED, the check did not run (%s: %s). The run has started." % (type(e).__name__, str(e)[:240])
+        return "GUIDING PROSE: UNMEASURED, the check did not run (%s: %s). The run has started." % (type(e).__name__, str(e)[:240])  # cut-ok: terminal display
 
 
 # ---- the one list of meanings that nobody finds --------------------------------------------------------------------
@@ -700,7 +700,7 @@ def _publish_door(env):
         r = subprocess.run([sys.executable, os.path.join(HERE, "publish.py"), "-m", "planted", rel], cwd=c, capture_output=True,
                            text=True, env=env, timeout=DOOR_TIMEOUT_S)
         if r.returncode != 0 or "PUBLISHED " not in r.stdout:
-            return "the planted landing did not land (exit %s: %s)" % (r.returncode, (r.stdout + r.stderr).strip()[-160:])
+            return "the planted landing did not land (exit %s: %s)" % (r.returncode, (r.stdout + r.stderr).strip())
         return "ok" if "retired-name" in r.stdout else "./publish landed a planted fault and returned nothing"
 
 
@@ -711,7 +711,7 @@ def _launch_door(env):
             % (RIMFLOW, PLANT))
     r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env=env, timeout=DOOR_TIMEOUT_S, cwd=TOP)
     if r.returncode != 0 or "started" not in r.stdout:
-        return "the planted launch did not start (exit %s: %s)" % (r.returncode, (r.stdout + r.stderr).strip()[-160:])
+        return "the planted launch did not start (exit %s: %s)" % (r.returncode, (r.stdout + r.stderr).strip())
     return "ok" if "retired-name" in r.stdout else "a launch sent a planted fault and returned nothing"
 
 
@@ -724,7 +724,7 @@ def uncovered(top, since, rows):
         sha, _, subject = head.partition("\x02")
         files = sorted(p for p in names.split("\n") if p.strip() and is_guiding(p.strip(), cfg))
         if files and sha not in have:
-            out.append({"sha": sha, "files": files, "subject": subject[:100]})
+            out.append({"sha": sha, "files": files, "subject": subject})
     return out
 
 
@@ -737,7 +737,7 @@ def recheck(write=True, coverage=True, env=None):
             try:
                 res[name] = fn(e)
             except (CouldNotLook, OSError, subprocess.SubprocessError) as x:
-                res[name] = "could not look: %s: %s" % (type(x).__name__, str(x)[:200])
+                res[name] = "could not look: %s: %s" % (type(x).__name__, str(x))
     res["cause"] = "; ".join("%s: %s" % (k, v) for k, v in res.items() if v != "ok")
     res["ok"] = not res["cause"]
     if coverage:

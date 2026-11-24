@@ -65,6 +65,7 @@ for _p in (HERE, UTILS):
         sys.path.insert(0, _p)
 
 import bar_rule            # noqa: E402
+import fulltext  # noqa: E402
 import failure_class as FC  # noqa: E402
 import mod_owner_hold as MH  # noqa: E402
 
@@ -250,7 +251,7 @@ def check_dir(out):
         try:
             return json.loads(text)
         except (ValueError, RecursionError) as e:
-            refuse("files", name, "%s does not parse: %s" % (name, str(e)[:200]), "%s is valid JSON" % name)
+            refuse("files", name, "%s does not parse: %s" % (name, str(e)), "%s is valid JSON" % name)
             return _ABSENT
 
     result = load_json("result.json")
@@ -893,7 +894,7 @@ class Effects:
             r = subprocess.run(["./sync"], cwd=dest, capture_output=True, text=True, timeout=540, stdin=subprocess.DEVNULL)
             if r.returncode:
                 raise RuntimeError("reused %s but its ./sync failed (exit %d): %s" % (dest, r.returncode,
-                                   ((r.stdout or "") + (r.stderr or "")).strip()[-600:]))
+                                   ((r.stdout or "") + (r.stderr or "")).strip()))
             self.log(mod, "reused and synced %s" % dest)
         else:
             env = dict(os.environ, RM_SCRATCH_ROOT=pool_root(), RM_SEAT="clones")
@@ -902,7 +903,7 @@ class Effects:
                                env=env, capture_output=True, text=True, timeout=540, stdin=subprocess.DEVNULL)
             if r.returncode or not os.path.isdir(os.path.join(dest, ".git")):
                 raise RuntimeError("scratch_clone failed (exit %d): %s" % (r.returncode,
-                                   ((r.stdout or "") + (r.stderr or "")).strip()[-600:]))
+                                   ((r.stdout or "") + (r.stderr or "")).strip()))
             self.log(mod, "made %s" % dest)
         sparse = subprocess.run(["git", "-C", dest, "config", "--get", "core.sparseCheckout"], capture_output=True,
                                 text=True, timeout=60, stdin=subprocess.DEVNULL)
@@ -940,7 +941,9 @@ class Effects:
         try:
             res = json.loads(raw)
         except ValueError:
-            return {"runner": "claude", "is_error": True, "result": (raw + (_read(base + ".err") or ""))[-2000:],
+            output = raw + (_read(base + ".err") or "")
+            return {"runner": "claude", "is_error": True, "result": output,
+                    "read_result": output[-2000:],  # cut-ok: existing quota search and reviewer parsing window
                     "returncode": p.returncode}
         res = res if isinstance(res, dict) else {"result": str(res)}
         res.setdefault("runner", "claude")
@@ -968,7 +971,7 @@ class Effects:
         said = (r.stdout or "") + (r.stderr or "")
         m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", said)
         if r.returncode or not m:
-            raise RuntimeError("./publish exit %d: %s" % (r.returncode, said.strip()[-800:]))
+            raise RuntimeError("./publish exit %d: %s" % (r.returncode, said.strip()))
         return m.group(1)
 
     def sleep(self, s):
@@ -1024,6 +1027,11 @@ def _usage(res):
         return {"claude_usage": res.get("usage")}
 
 
+def _agent_answer(res):
+    res = res or {}
+    return res.get("read_result", res.get("result"))
+
+
 def _agent(fx, mod, runner, cwd, prompt, base, **kw):
     """One agent run, waiting out the quota: a gate refusal or a quota error is a wait and a retry, never a failure and
     never a fall back to the other runner."""
@@ -1045,12 +1053,12 @@ def _agent(fx, mod, runner, cwd, prompt, base, **kw):
             fx.log(mod, "claude run %d starts (%s)" % (n, os.path.basename(base)))
             res = fx.claude(cwd, prompt, base + ".%d" % n, **kw)
         text = str((res or {}).get("result") or "")
-        if (res or {}).get("is_error") and QUOTA.search(text):
-            fx.log(mod, "the agent hit its quota (%s); waiting %d s and retrying" % (text[:160], QUOTA_WAIT_S))
+        if (res or {}).get("is_error") and QUOTA.search(str(_agent_answer(res) or "")):
+            fx.log(mod, "the agent hit its quota (%s); waiting %d s and retrying" % (text, QUOTA_WAIT_S))
             fx.status(mod, "running", "waiting for the %s quota" % runner)
             fx.sleep(QUOTA_WAIT_S)
             continue
-        fx.log(mod, "%s run %d ended: %s" % (runner, n, "error: " + text[:200] if (res or {}).get("is_error") else "done"))
+        fx.log(mod, "%s run %d ended: %s" % (runner, n, "error: " + text if (res or {}).get("is_error") else "done"))
         return res
 
 
@@ -1159,7 +1167,7 @@ def run_mod(mod, fx, runner="codex", model=None, effort=None):
            "started": datetime.datetime.fromtimestamp(t0).isoformat(timespec="seconds"),
            "seconds": int(time.time() - t0), "agent_runs": len(runs), "first_check": first, "check": refs,
            "check_stats": stats, "stray": stray, "usage": [_usage(r) for r in runs],
-           "agent_errors": [str(r.get("result"))[:400] for r in runs if (r or {}).get("is_error")]}
+           "agent_errors": [str(r.get("result")) for r in runs if (r or {}).get("is_error")]}
     _write_json(os.path.join(out, "run.json"), rec)
     paths = sorted(p for p in fx.changed(clone) if p.startswith(out_rel))
     if paths:
@@ -1345,7 +1353,7 @@ def _blind_sort(fx, mod, rv_runner, rv_model, items, base):
             p = prompt if attempt == 1 else prompt + "\n\nYour last answer was not the one JSON object asked for. " \
                                                      "Answer again with it only.\n"
             res = _agent(fx, mod, rv_runner, cwd, p, base + (".blind.retry" if attempt == 2 else ".blind"), **kw)
-            doc = parse_review((res or {}).get("result"))
+            doc = parse_review(_agent_answer(res))
             if isinstance(doc, dict) and isinstance(doc.get("blind_sort"), list):
                 sort = doc["blind_sort"]
                 break
@@ -1374,7 +1382,7 @@ def _look(fx, mod, clone, rv_runner, rv_model, base, rng):
         p = prompt if attempt == 1 else prompt + ("\n\nYour last answer could not be read as the record: %s. Answer "
                                                   "again with the one JSON object only.\n" % "; ".join(bad))
         res = _agent(fx, mod, rv_runner, clone, p, base + (".retry" if attempt == 2 else ""), **kw)
-        doc = parse_review((res or {}).get("result"))
+        doc = parse_review(_agent_answer(res))
         bad = validate_review(doc)
         if not bad:
             break
@@ -1404,7 +1412,7 @@ def _reviewer_failed(fx, mod, clone, rounds, t0, fix_rec=None):
     """The reviewer gave no readable record: the mod is blocked on its review, nothing about the proposal is decided,
     and review.json is not written (so a resumed fleet looks again). The attempt is kept in review_attempt.json."""
     out_rel = rel_out(mod)
-    why = "the reviewer's record was unreadable twice (%s); the proposal is unreviewed" % "; ".join(rounds[-1]["defects"])[:300]
+    why = "the reviewer's record was unreadable twice (%s); the proposal is unreviewed" % "; ".join(rounds[-1]["defects"])
     _write_json(os.path.join(clone, out_rel, "review_attempt.json"), {
         "mod": mod, "rounds": rounds, "fix_run": fix_rec, "seconds": int(time.time() - t0),
         "at": datetime.datetime.now().isoformat(timespec="seconds")})
@@ -1463,7 +1471,7 @@ def review_mod(mod, fx, author="codex", author_model=None, effort=None, clone=No
         res = _agent(fx, mod, author, clone, fix, base + ".fix", **kw)
         after, _ = check_dir(out)
         fix_rec = {"usage": _usage(res), "check_after": after,
-                   "error": str(res.get("result"))[:400] if (res or {}).get("is_error") else None}
+                   "error": str(res.get("result")) if (res or {}).get("is_error") else None}
         fx.status(mod, "running", "review: second look")
         rounds.append(_look(fx, mod, clone, rv_runner, rv_model, base + ".look2", rng))
         if rounds[-1]["defects"]:
@@ -1696,7 +1704,7 @@ Your last message is one JSON object and nothing else:
    "smallest_fix": "..."}],
  "advisory_late": [{"what": "...", "reason": "..."}]}
 """ % (rnd, mod, rel_out(mod), json.dumps(records, indent=1, ensure_ascii=False),
-       (fixes_text or "(the author wrote no fixes.json)")[:8000], "\n".join(shown) or "(none)\n", heads)
+       fulltext.clip(fixes_text or "(the author wrote no fixes.json)", 8000, rel_out(mod) + "fixes.json"), "\n".join(shown) or "(none)\n", heads)
 
 
 def _verify(fx, mod, clone, rv_runner, rv_model, records, fixes_text, changed, rnd, base):
@@ -1711,7 +1719,7 @@ def _verify(fx, mod, clone, rv_runner, rv_model, records, fixes_text, changed, r
                                                   "with the one JSON object only, a verdict for every record.\n"
                                                   % ", ".join(missing))
         res = _agent(fx, mod, rv_runner, clone, p, base + (".verify.retry" if attempt == 2 else ".verify"), **kw)
-        doc = parse_review((res or {}).get("result"))
+        doc = parse_review(_agent_answer(res))
         if isinstance(doc, dict):
             for v in _dicts(doc.get("verdicts")):
                 if v.get("id") in ids and v.get("verdict") in ("fixed", "not_fixed"):
@@ -1856,7 +1864,7 @@ def converge_mod(mod, fx, clone=None):
         if (res or {}).get("is_error") and not names and fixes_text is None:
             # it changed nothing: a run that died spends no round (failure_class); the same round runs on the next start
             return blocked("converge round %d is not spent: the author run %s (%s)" % (
-                rnd, FC.KILLED, " ".join(str(res.get("result")).split())[:200]))
+                rnd, FC.KILLED, " ".join(str(res.get("result")).split())))
         refs, _ = check_dir(out)
         verdicts = {}
         bars = _dicts(_dict(_json_file(os.path.join(out, "bars.json"))).get("bars"))
@@ -1913,7 +1921,7 @@ def converge_mod(mod, fx, clone=None):
         new_open += check_records(refs, cur.get("outcome"), "C%d" % rnd)
         rounds.append({"n": rnd, "records": open_, "fixes": _json_text(fixes_text) if fixes_text else None,
                        "verdicts": verdicts, "changed_entries": names, "verifier_defects": defects,
-                       "author_usage": _usage(res), "author_error": str(res.get("result"))[:400]
+                       "author_usage": _usage(res), "author_error": str(res.get("result"))
                        if (res or {}).get("is_error") else None, "open_after": new_open})
         open_ = new_open
         cv, sha = finish(rnd, open_, late, rounds, sha)
@@ -2162,7 +2170,7 @@ def fleet(mods, fx_for, runner="codex", parallel=4, model=None, effort=None, con
             return mod, rec["state"]
         except Exception as e:      # noqa: BLE001  one mod's crash is its own line, never the fleet's end
             import traceback
-            fx.log(mod, "crashed: %s" % traceback.format_exc()[-1500:])
+            fx.log(mod, "crashed: %s" % traceback.format_exc())
             fx.status(mod, "blocked", "the launcher crashed: %s: %s" % (type(e).__name__, e))
             return mod, "blocked"
         finally:

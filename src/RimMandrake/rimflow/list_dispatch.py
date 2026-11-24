@@ -568,7 +568,7 @@ def _read_next(st, iids, runs):
     evs = [e for e in LM.read() if e.get("id") in set(i for i, _ in need) and e.get("event") == "note"]
     for i, a in need:
         n = LOC.last_left_open(evs, i, a.get("at") or 0)
-        a["next"] = str(n.get("text"))[:600] if n else None
+        a["next"] = str(n.get("text")) if n else None
 
 
 def block_facts(world, x, now):

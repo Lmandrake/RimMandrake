@@ -137,7 +137,7 @@ def git(root, *args):
     except (OSError, subprocess.TimeoutExpired) as e:
         raise Blind("git %s: %s" % (args[0], e))
     if r.returncode:
-        raise Blind("git %s exit %d: %s" % (args[0], r.returncode, " ".join((r.stderr or "").split())[:200]))
+        raise Blind("git %s exit %d: %s" % (args[0], r.returncode, " ".join((r.stderr or "").split())))
     return r.stdout
 
 
@@ -259,7 +259,7 @@ def mod_step(reading, live_records, now, max_age):
         return None, "the mod pipeline's reading is %d s old" % (now - at)
     for mod, row in sorted(mods.items()):
         if row.get("decision") in BUSY or row.get("live"):
-            return "%s: %s (%s)" % (mod, row.get("decision"), " ".join(str(row.get("why") or "").split())[:120]), None
+            return "%s: %s (%s)" % (mod, row.get("decision"), " ".join(str(row.get("why") or "").split())), None
     return None, None
 
 
@@ -562,7 +562,7 @@ def tick(cfg, apply, fx=None, now=None, hand=None):
                 st["run"] = {"unit": unit, "at": now, "hand": hand}
                 d.update(decision="launched", unit=unit)
             else:
-                why = " ".join((text or "rc %s" % rc).split())[:400]
+                why = " ".join((text or "rc %s" % rc).split())
                 st.update(wait_until=now + cfg["system_wait_s"], wait_why="never started: " + why)
                 d.update(decision="launch_failed", why=why)
         rd = dict(d, schema=1, at=now, at_pac=pac(now), ended=len(ends()), last_run=st.get("last_run"))

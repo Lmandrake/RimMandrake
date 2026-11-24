@@ -173,7 +173,7 @@ def classify(msgs, ev):
         shared8 = any(lo <= et <= hi and (g8 & grams(ef.split(), 8)) for et, eg, ef in anyf) if g8 else False
         home = "QUOTED" if (q >= 0.5 or inside) else ("ECHOED" if (e2 >= 0.25 or shared8) else "NO HOME")
         rows.append({"ts": m["ts"], "session": m["session"], "words": n, "quoted_cover": round(q, 2),
-                     "any_cover": round(e2, 2), "home": home, "text": m["text"][:600]})
+                     "any_cover": round(e2, 2), "home": home, "text": m["text"]})
     return rows
 
 
@@ -205,7 +205,7 @@ def cards(since, until, files=None):
                     if since <= t < until:
                         out["asked"].append(b.get("id"))
                         qs = ((b.get("input") or {}).get("questions") or [{}])
-                        out["text"][b.get("id")] = str((qs[0] or {}).get("question") or "")[:200]
+                        out["text"][b.get("id")] = str((qs[0] or {}).get("question") or "")
                         last_ask = (k, b.get("id"))
                 elif b.get("type") == "tool_result" and not b.get("is_error"):
                     out["answered"].add(b.get("tool_use_id"))

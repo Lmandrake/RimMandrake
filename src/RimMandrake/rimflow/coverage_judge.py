@@ -78,6 +78,7 @@ import refusal_contract as RC  # noqa: E402
 import pipeline_control as PC  # noqa: E402  one-line overrides of every count here (`pipe`)
 import control as C  # noqa: E402  the granted look's account: reserve, settle, void, grant (`pipe`)
 import bar_rule as BR  # noqa: E402
+import fulltext  # noqa: E402
 import spend_watchdog  # noqa: E402  (the hard spend stop, from outside the agent; owner 2026-11-16)
 
 CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
@@ -1207,7 +1208,7 @@ def reader_items(rec, crit):
     items = []
     for g in gaps:
         ids = list(g.get("ids") or []) or [REST_CLAUSE]
-        item = {"clause": ids, "criterion": [str(crit.get(i) or "")[:1500] for i in ids[:3]],
+        item = {"clause": ids, "criterion": [fulltext.fit(crit.get(i) or "", 1500) for i in ids[:3]],
                 "what": g.get("what"), "where": g.get("where"), "would_pass": g.get("would_pass"),
                 "smallest_fix": g.get("smallest_fix")}
         if _late(g):   # the reader confirms a late gap's seriousness or not (bar_rule.blocks); the judge's own word is not shown

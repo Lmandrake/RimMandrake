@@ -343,7 +343,7 @@ def origin_gate(item, runner=subprocess.run, repo=None, seat=None, env=None):
     try:
         r = runner(argv, cwd=repo, capture_output=True, text=True, timeout=21600, stdin=subprocess.DEVNULL)  # budget: class=publish
     except (OSError, subprocess.SubprocessError) as e:
-        return "%s; the launcher's own publish could not run (%s)" % (text, str(e)[-120:])
+        return "%s; the launcher's own publish could not run (%s)" % (text, str(e))
     again = origin_check(item, runner=runner, repo=repo, seat=seat)     # fetches first: a publish that exited non-zero may
     if r.returncode:                                                    # still find the item landed (another publish won)
         if again is None:
@@ -1273,7 +1273,7 @@ def drain_refusal(now, extra=None, resume_session=None, path=None):
     return ("refused: the account %s is draining (switching plan notice since %s): live runs finish on it and no new "
             "run starts until the switch. Launch again after it (`python3 src/RimMandrake/Utils/switching_plan.py "
             "status` shows it). Why: %s" % (n.get("account") or "?", n.get("since") or "?",
-                                             " ".join(str(n.get("why") or "").split())[:300]))
+                                             " ".join(str(n.get("why") or "").split())))
 
 
 def card_refusal(item, brief, events_dir=None):
@@ -1843,7 +1843,7 @@ def file_remainder(rec, got, report, runner=subprocess.run):
                    cwd=rec["clone"], capture_output=True, text=True, timeout=1800, stdin=subprocess.DEVNULL)  # budget: class=call
         if r.returncode:
             return "remainder FAILED (%s exit %d: %s)" % (argv[0], r.returncode,
-                                                          ((r.stderr or "") + (r.stdout or "")).strip()[-200:])
+                                                          ((r.stderr or "") + (r.stdout or "")).strip())
     return "remainder filed: " + rest["name"]
 
 

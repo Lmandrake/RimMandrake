@@ -391,11 +391,11 @@ def judge(c, d, runner=None):
                 redo, refs, _v = _refusing(so)
                 errs = contract_errors(so, g) if (redo or refs) else []
     got = outcome(c.get("route"), so, errs)
-    detail.update(verdicts=[{k: str(x.get(k))[:160] for k in ("picture", "verdict", "violated", "seen", "why", "notes")
+    detail.update(verdicts=[{k: str(x.get(k)) for k in ("picture", "verdict", "violated", "seen", "why", "notes")
                              if x.get(k)} for x in so.get("verdicts") or [] if isinstance(x, dict)][:8],
                   refusals=[{"clause": r.get("clause"), "evidence": r.get("evidence"),
-                             "fix": str((r.get("smallest_fix") or {}).get("what"))[:200]} for r in refs][:8],
-                  errors=errs[:12], proposals=[str(p)[:200] for p in so.get("proposals") or []][:4])
+                             "fix": str((r.get("smallest_fix") or {}).get("what"))} for r in refs][:8],
+                  errors=errs[:12], proposals=[str(p) for p in so.get("proposals") or []][:4])
     return got, detail
 
 

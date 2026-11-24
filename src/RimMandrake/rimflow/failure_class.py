@@ -80,15 +80,15 @@ def of_run(rec, runner=None):
         never = rec.get("status") == "launch_failed" or rec.get("state") == "launch_failed"
         return read(NEVER_STARTED if never else TIMED_OUT if res.startswith("timeout") else KILLED, cause)
     if rec.get("status") == "refused":
-        return read(REFUSED, str(rec.get("result") or "")[:160])
+        return read(REFUSED, str(rec.get("result") or ""))
     if rec.get("status") == "finished" and rec.get("result"):
-        return read(ENDED, str(rec.get("result"))[:160])
+        return read(ENDED, str(rec.get("result")))
     return read(None, "run %s: status %r, result %r" % (rec.get("unit"), rec.get("status"), rec.get("result")))
 
 
 def of_launch(text):
     """A launch that did not start never ran the work, whatever refused it."""
-    return read(NEVER_STARTED, " ".join(str(text or "no text").split())[:200])
+    return read(NEVER_STARTED, " ".join(str(text or "no text").split()))
 
 
 def of_error(text):
@@ -97,11 +97,11 @@ def of_error(text):
     t = " ".join(str(text or "").split())
     low = t.lower()
     if "timeoutexpired" in low or "timed out" in low:
-        return read(TIMED_OUT, t[:200])
+        return read(TIMED_OUT, t)
     if low.startswith("crash:") or "traceback (most recent call last)" in low or "could not read" in low \
             or "index.lock" in low:
-        return read(LK.APPARATUS, t[:200])
-    return read(BAD_REQUEST, t[:200]) if t else read(None, "no error text")
+        return read(LK.APPARATUS, t)
+    return read(BAD_REQUEST, t) if t else read(None, "no error text")
 
 
 def of_testq(rec, chain=None):
@@ -154,7 +154,7 @@ def of_artpipe(man):
     if not isinstance(man, dict):
         return read(None, "no manifest that can be read")
     if man.get("timed_out"):
-        return read(TIMED_OUT, str(man.get("note") or "")[:160])
+        return read(TIMED_OUT, str(man.get("note") or ""))
     ws = man.get("worker_status")
     return read(_ARTPIPE.get(ws), "worker_status %r" % (ws,))
 

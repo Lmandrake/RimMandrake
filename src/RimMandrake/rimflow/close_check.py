@@ -72,7 +72,7 @@ class Commits:
         except (OSError, subprocess.TimeoutExpired) as e:
             raise Unmeasured("git %s: %s" % (a[0], e))
         if r.returncode:
-            raise Unmeasured("git %s exit %d: %s" % (a[0], r.returncode, r.stderr.strip()[:200]))
+            raise Unmeasured("git %s exit %d: %s" % (a[0], r.returncode, r.stderr.strip()[:200]))  # cut-ok: exception message
         return r.stdout
 
     def full(self, sha):
@@ -228,7 +228,7 @@ def _load(path):
         _epoch(d["generated"])
         return d
     except (OSError, ValueError, KeyError, TypeError, AttributeError) as e:
-        raise Unmeasured("%s is unreadable (%s: %s)" % (path, type(e).__name__, str(e)[:100]))
+        raise Unmeasured("%s is unreadable (%s: %s)" % (path, type(e).__name__, str(e)[:100]))  # cut-ok: exception message
 
 
 def cmd_run(a, fx):
@@ -245,7 +245,7 @@ def cmd_run(a, fx):
         for r in res["substance"]:
             rc, out = (fx.get("reopen") or reopen)(r["item"], r["sha"], r["flags"], a.reading)
             if rc:
-                res["reopen_failed"].append({"item": r["item"], "why": "exit %s: %s" % (rc, out[-300:])})
+                res["reopen_failed"].append({"item": r["item"], "why": "exit %s: %s" % (rc, out)})
             else:
                 res["reopened"].append(r["item"])
         os.makedirs(os.path.dirname(a.reading) or ".", exist_ok=True)

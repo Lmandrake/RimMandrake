@@ -52,7 +52,7 @@ Two kinds of finding, kept apart (`CLAUDE.md` §A fault of form is repaired wher
   answer, exits 2 with the cause, and the old reading stays.
 - **fresh-says-stale-missing-and-unreadable-apart.** `fresh` exits 0 for a reading inside its age, 1 for an older one, and
   2 for a missing or torn one or one dated after now. Each prints its cause.
-- **a-run-whose-reopen-failed-says-so.** A refused `fail` run is listed under `reopen_failed`, and the run exits 1.
+- **a-run-whose-reopen-failed-says-so.** A refused `fail` run is listed under `reopen_failed` with its whole refusal, and the run exits 1.
 
 ## LIMITS
 

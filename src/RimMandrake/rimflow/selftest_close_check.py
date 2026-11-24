@@ -134,7 +134,7 @@ def _run(events, argv, fail=0, git_dir=None):
 
     def reopen(iid, sha, flags, reading):
         calls.append((iid, sha, tuple(flags)))
-        return fail, "refused: x" if fail else "ok"
+        return fail, "refused: " + "x" * 600 + " repair the same item (reopen refused)" if fail else "ok"
     out = io.StringIO()
     with contextlib.redirect_stdout(out), contextlib.redirect_stderr(out):
         rc = CC.main(argv, fx={"events": lambda: events, "reopen": reopen, "now": NOW, "repo": git_dir or X["repo"],
@@ -197,6 +197,8 @@ def t_a_run_whose_reopen_failed_says_so():
     d = json.load(open(p))
     chk(rc == 1 and d["reopened"] == [] and d["reopen_failed"][0]["item"] == "BAD" and "refused" in d["reopen_failed"][0]["why"],
         "a refused fail run is named and the run exits 1")
+    chk(d["reopen_failed"][0]["why"] == "exit 3: refused: " + "x" * 600 + " repair the same item (reopen refused)",
+        "the reopen reading keeps the whole refusal")
 
 
 def main():

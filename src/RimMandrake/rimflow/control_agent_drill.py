@@ -141,7 +141,7 @@ def launch(mode, hooked):
                                               "extra_units": [scope + ".scope"]},
                         p=DB, capture_output=True, text=True, timeout=30)
     check(res.returncode == 0 and not res.refused, "%s: %s did not start (rc %s: %s)" % (
-        mode, u, res.returncode, res.why or (res.stderr or "")[:160]))
+        mode, u, res.returncode, res.why or (res.stderr or "")[:160]))  # cut-ok: test diagnostic display
     check(wait_for(lambda: state(u) == "started", 15), "%s: %s reads %s, not started" % (mode, u, state(u)))
     return u, ws, notes, pubs, out, err, scope + ".scope"
 
@@ -169,11 +169,11 @@ def stop_row(u):
 def drill_writing(mode, flag, rec):
     u, ws, notes, pubs, out, err, scope = launch(mode, hooked=True)
     check(wait_for(lambda: steps_done(ws) >= 3, 240, 1), "%s: the agent did 3 steps in 240 s? it did %d (err: %s)" % (
-        mode, steps_done(ws), open(err).read()[-200:] if os.path.exists(err) else "none"))
+        mode, steps_done(ws), open(err).read()[-200:] if os.path.exists(err) else "none"))  # cut-ok: test diagnostic display
     at_order = steps_done(ws)
     extra = ["--deadline", DEADLINE] if mode == "now" else []
     rc, txt, ms = pipe("stop", u, flag, *extra, "--why", "agent drill: real claude, %s" % flag)
-    check(rc == 0, "%s: pipe stop %s %s failed (rc %d): %s" % (mode, u, flag, rc, txt.strip()[:200]))
+    check(rc == 0, "%s: pipe stop %s %s failed (rc %d): %s" % (mode, u, flag, rc, txt.strip()[:200]))  # cut-ok: test diagnostic display
     ended = wait_for(lambda: state(u) in ("ended", "killed"), 600, 1)
     s, run = stop_row(u), C.run_state(u) or {}
     note = [json.loads(x) for x in open(notes)] if os.path.exists(notes) else []
@@ -209,7 +209,7 @@ def drill_deaf(rec):
                                                    "processes" % (pids, spids))
     alive0 = sorted(set(pids) | set(spids))
     rc, txt, ms = pipe("stop", u, "--write-now", "--deadline", DEADLINE, "--why", "agent drill: deaf claude escalates")
-    check(rc == 0 and "escalates to --kill" in txt, "deaf: no escalation set (rc %d): %s" % (rc, txt.strip()[:200]))
+    check(rc == 0 and "escalates to --kill" in txt, "deaf: no escalation set (rc %d): %s" % (rc, txt.strip()[:200]))  # cut-ok: test diagnostic display
     t0 = time.time()
     killed = wait_for(lambda: state(u) == "killed", 240, 1)
     s, run = stop_row(u), C.run_state(u) or {}

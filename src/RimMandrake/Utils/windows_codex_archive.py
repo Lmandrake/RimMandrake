@@ -56,7 +56,7 @@ def archive() -> Path:
     r = subprocess.run([sys.executable, os.path.expanduser("~/dev/Lodestar/bin/lib/agent_storage.py")],
                        capture_output=True, text=True, timeout=60)
     if r.returncode or not r.stdout.strip():
-        raise OSError("the agent storage root could not be read: %s" % r.stderr.strip()[-200:])
+        raise OSError("the agent storage root could not be read: %s" % r.stderr.strip())
     return Path(r.stdout.strip()) / "retired-trees" / NAME
 
 
@@ -85,7 +85,7 @@ def _robo(src: Path, dst: Path) -> None:
                         "/XJ", "/R:1", "/W:1", "/MT:16", "/NFL", "/NDL", "/NP", "/NJH"], capture_output=True, text=True,
                        errors="replace", cwd="/mnt/c", timeout=MOVE_LIMIT_S + 60)
     if r.returncode >= 8 or r.returncode < 0:            # robocopy: 8 and over means files were not moved
-        raise OSError("robocopy exit %s: %s" % (r.returncode, (r.stdout or r.stderr)[-400:].strip()))
+        raise OSError("robocopy exit %s: %s" % (r.returncode, (r.stdout or r.stderr).strip()))
 
 
 def _rename(src: Path, dst: Path) -> None:
@@ -122,7 +122,7 @@ def move(p: Path, a: Path, only=None, mv=None) -> int:
             row["state"] = "MOVED"
         except (OSError, subprocess.SubprocessError) as e:
             bad += 1
-            row.update(state="PARTIAL", why=str(e)[:400])
+            row.update(state="PARTIAL", why=str(e))
         row["secs"] = round(time.time() - row["t"], 1)
         save(a, m)
         print("%s %s (%.0fs)%s" % (row["state"], d.name, row["secs"], " " + row.get("why", "")), flush=True)

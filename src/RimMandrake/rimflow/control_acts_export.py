@@ -49,7 +49,7 @@ def _git(repo, *args, env=None, inp=None):
     r = subprocess.run(["git", "-C", repo] + list(args), capture_output=True, text=True, input=inp, timeout=120,
                        env=dict(os.environ, **(env or {})))
     if r.returncode:
-        raise GitFailed("git %s exited %d: %s" % (args[0], r.returncode, (r.stderr or r.stdout).strip()[-300:]))
+        raise GitFailed("git %s exited %d: %s" % (args[0], r.returncode, (r.stderr or r.stdout).strip()[-300:]))  # cut-ok: exception message
     return r.stdout
 
 
@@ -149,7 +149,7 @@ def run(repo=REPO, store=None, reading=None, remote="origin", branch="main", dry
             _write_reading(reading, "published", n, top, sha, now)
             return OK, ["%d act(s) to rev %d pushed (try %d)" % (n, top, attempt), "PUBLISHED %s" % sha]
         said = (r.stderr or r.stdout).strip()      # the reject words lead git's message: read it whole
-        last = " ".join(ln for ln in said.splitlines() if not ln.startswith("hint:"))[:300]
+        last = " ".join(ln for ln in said.splitlines() if not ln.startswith("hint:"))[:300]  # cut-ok: terminal display
         if not any(w in said for w in REJECT_WORDS):
             return FAILED, ["FAILED: the push exited %d: %s" % (r.returncode, last)]
     return FAILED, ["FAILED: the push was refused %d times, origin kept moving: %s" % (TRIES, last)]

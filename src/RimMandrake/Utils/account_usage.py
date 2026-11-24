@@ -691,7 +691,7 @@ def read_genai_status() -> tuple[str, str | None]:
     except (OSError, subprocess.SubprocessError) as e:
         return "failed", f"{type(e).__name__}: {e}"
     if r.returncode != 0:
-        return "failed", f"exit {r.returncode}: {(r.stderr or r.stdout or '').strip()[-200:]}"
+        return "failed", f"exit {r.returncode}: {(r.stderr or r.stdout or '').strip()[-200:]}"  # cut-ok: terminal display
     return "ok", r.stdout
 
 

@@ -180,7 +180,7 @@ def main(argv=None, read=read):
         print("\n".join(lines(v, tickets=False)))
     else:
         info = {i: "  [%s%s] %s" % (h["flag"].lower(), ": " + h["reason"] if h["reason"] else "",
-                                    " ".join(str(items[i].title or "").split())[:110]) for i, h in homes.items() if h}
+                                    " ".join(str(items[i].title or "").split())[:110]) for i, h in homes.items() if h}  # cut-ok: terminal display
         if o.home and o.home not in v["homes"]:
             print("no open ticket has the home %s (%d homes read)" % (o.home, len(v["homes"])))
             return 0

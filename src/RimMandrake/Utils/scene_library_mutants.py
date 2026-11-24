@@ -99,7 +99,7 @@ def one(plant):
         red = re.findall(r"^FAIL  (\w+)", p.stdout, re.M)
         if p.returncode == 0:
             return plant[0], "GREEN", "no test saw it"
-        return plant[0], "RED" if plant[4] in red else "WRONG TEST", "%s (want %s) %s" % (red, plant[4], p.stderr[-200:])
+        return plant[0], "RED" if plant[4] in red else "WRONG TEST", "%s (want %s) %s" % (red, plant[4], p.stderr[-200:])  # cut-ok: test diagnostic display
 
 
 def main():
@@ -120,7 +120,7 @@ def main():
 def _clean():
     with tempfile.TemporaryDirectory() as d:
         p = subprocess.run([sys.executable, "-B", copy_tree(d)], capture_output=True, text=True, timeout=300)
-        return "clean", "GREEN" if p.returncode == 0 else "RED", (p.stdout + p.stderr)[-600:]
+        return "clean", "GREEN" if p.returncode == 0 else "RED", (p.stdout + p.stderr)[-600:]  # cut-ok: test diagnostic display
 
 
 if __name__ == "__main__":

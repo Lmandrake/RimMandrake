@@ -140,7 +140,8 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **unreadable-store-launches-nothing.** With the store missing, corrupt or locked, nothing launches. `pipe show`
   says `CONTROL UNREADABLE` with the cause, or `STORE LOCKED` before the last saved state. Tested by `t_unreadable`.
 - **probe-never-lies.** A failed `systemctl` call, an unreadable store or an unreadable `cgroup.procs` file is
-  reported as "could not look". It never reads as "nothing there". `pipe doctor` on a store whose write lock is held says locked and exits 3,
+  reported as "could not look". A failed `systemctl` call keeps its whole cause. It never reads as "nothing there".
+  `pipe doctor` on a store whose write lock is held says locked and exits 3,
   never ok (slice review 17). Tested by `t_probe_never_lies`,
   `t_review_round_four_p1`.
 - **same-command-twice.** A void, a settlement, an import or a keyed command sent twice has the effect of once.

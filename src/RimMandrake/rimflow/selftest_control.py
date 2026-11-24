@@ -2098,7 +2098,8 @@ def t_stopped_run_spends_no_trial():
 def t_probe_never_lies():
     """A failed `systemctl` call and an unreadable cgroup.procs read as "could not look", never as "nothing there"."""
     real_sc, real_root = C._systemctl, C.CGROUP_ROOT
-    C._systemctl = lambda args, timeout=10: (1, "Failed to connect to bus: No such file or directory")
+    detail = "Failed to connect to bus: " + "x" * 150 + " No such file or directory"
+    C._systemctl = lambda args, timeout=10: (1, detail)
     try:
         pids, why = C._cgroup_pids("rm-probe-blind1")
         res = C.kill_units(["rm-probe-blind1"], wait_s=0)
@@ -2106,6 +2107,7 @@ def t_probe_never_lies():
         C._systemctl = real_sc
     check(pids.kind == "could_not_look" and "systemctl show failed" in pids.cause and why == "",
           "a failed systemctl show reads could not look, not empty", (pids, why))
+    check(pids.cause == "systemctl show failed (rc 1): " + detail, "the failed probe keeps the whole cause", pids)
     check(res[0]["dead"] is None and "UNVERIFIED" in res[0]["said"] and "nothing was running" not in res[0]["said"],
           "and the kill says death UNVERIFIED, never nothing was running", res)
     root = os.path.join(TMP, "cgroot")

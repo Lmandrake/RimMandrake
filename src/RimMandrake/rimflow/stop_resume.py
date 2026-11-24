@@ -318,7 +318,7 @@ def classify(rec, stops, siblings, ctx, now):
         return {**base, "act": "wait", "why": "another sweep claimed it at %s" % local(claim)}
     n, last = int(rec.get("resume_attempts") or 0), str(rec.get("resume_last_refusal") or "")
     if n >= MAX_TRIES:
-        why = "refused %d times (last: %s)" % (n, last[:200])
+        why = "refused %d times (last: %s)" % (n, last)
         if FC.of_launch(last).counts:
             return {**base, "act": "give_up", "why": why}
         # a launch that never started spends no resume (failure_class): it is said once, then tried every REFUSED_WAIT_S
@@ -472,10 +472,10 @@ def resume(rec, x, now, root, repo, projects, launch_fn, log_path):
                                                          how_stopped(x["stop"]), new, x["why"]), now, log_path)
         return {**x, "act": "resumed", "new": new}
     rec["resume_attempts"] = int(rec.get("resume_attempts") or 0) + 1
-    rec["resume_last_refusal"] = str(text)[:500]
+    rec["resume_last_refusal"] = str(text)
     rec["resume_refused_at"] = now
     DH.write_record(rec, root)
-    return {**x, "act": "refused_launch", "why": str(text)[:300]}
+    return {**x, "act": "refused_launch", "why": str(text)}
 
 
 def sweep(now=None, root=None, plan_dir=None, acct_log=None, repo=None, projects=None, launch_fn=None,
@@ -551,7 +551,7 @@ def kick(now=None, runner=subprocess.run, **kw):
                       timeout=60, stdin=subprocess.DEVNULL)
     return "stop_resume: %d owed (%s); sweep unit %s" % (
         len(found), ", ".join("%s %s" % (x["act"], x["unit"]) for x in found[:6]),
-        "started" if r.returncode == 0 else "not started (%s)" % ((r.stderr or r.stdout or "").strip()[:200]))
+        "started" if r.returncode == 0 else "not started (%s)" % ((r.stderr or r.stdout or "").strip()[:200]))  # cut-ok: terminal display
 
 
 def main(argv=None):

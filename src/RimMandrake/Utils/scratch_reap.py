@@ -2842,9 +2842,9 @@ def prune_orphan_bundles() -> dict:
     try:
         r = progress_guard.run([sys.executable, str(tool), "prune", "--apply"])
         lines = [ln for ln in r.stdout.splitlines() if ln.startswith(("SUMMARY", "pruned"))]
-        return {"rc": r.returncode, "summary": lines} if r.returncode == 0 else {"rc": r.returncode, "error": r.stderr[-300:]}
+        return {"rc": r.returncode, "summary": lines} if r.returncode == 0 else {"rc": r.returncode, "error": r.stderr}
     except Exception as e:  # noqa: BLE001 - the reap goes on; the record says why the prune did not
-        return {"error": str(e)[:300]}
+        return {"error": str(e)}
 
 
 def run(a, sd: Path) -> int:

@@ -668,7 +668,7 @@ def owed_pointer_problems(path):
     if r.returncode == 1:
         return ["pointer(s) citing no open owed id, or a closed one (owed.py check-pointers):\n      "
                 + "\n      ".join(out.splitlines()[:24])]
-    return ["owed.py check-pointers could not look (exit %d): %s" % (r.returncode, out[-400:] or "no output")]
+    return ["owed.py check-pointers could not look (exit %d): %s" % (r.returncode, out[-400:] or "no output")]  # cut-ok: terminal display
 
 
 def show_owed():

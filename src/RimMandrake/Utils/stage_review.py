@@ -170,7 +170,7 @@ def _list_group(rb, group, rect):
         p["rect"] = rect
     r = rb.call("jawa/list_things", p)
     if not (isinstance(r, dict) and r.get("success")) or r.get("isCompleteList") is False:
-        raise RuntimeError("list_things group=%s unreadable or cut short: %s" % (group, str(r)[:300]))
+        raise RuntimeError("list_things group=%s unreadable or cut short: %s" % (group, str(r)[:300]))  # cut-ok: exception message
     return r.get("things") or []
 
 
@@ -193,7 +193,7 @@ def clear_chunks(rb, rect=None):
     left = _list_group(rb, "Chunk", rect)
     stuck = [t for t in left if (t["x"], t["z"]) not in shared]
     if stuck:
-        raise RuntimeError("%d chunk(s) survived the clear, e.g. %s" % (len(stuck), str(stuck[0])[:200]))
+        raise RuntimeError("%d chunk(s) survived the clear, e.g. %s" % (len(stuck), str(stuck[0])[:200]))  # cut-ok: exception message
     return {"destroyed": len(chunks) - len(left), "left_beside_items": len(left)}
 
 
@@ -318,7 +318,7 @@ def local_hour(rb):
     r = rb.call("jawa/glow_at", {"cells": "0,0"})
     h, t = r.get("hour"), r.get("ticksGame")
     if not r.get("success") or h is None or t is None:
-        raise RuntimeError("the local hour cannot be read (jawa/glow_at): %s" % str(r)[:300])
+        raise RuntimeError("the local hour cannot be read (jawa/glow_at): %s" % str(r)[:300])  # cut-ok: exception message
     return float(h) % 24, int(t)
 
 
@@ -355,7 +355,7 @@ def settle_weather(rb, weather, ticks):
     """Force and lock a weather, then run `ticks`. Raises when the weather did not take or the ticks did not run."""
     r = rb.call("jawa/weather_set", {"weather": weather, "lockWeather": True})
     if not r.get("success") or r.get("after", weather) != weather:
-        raise RuntimeError("weather_set %s did not take: %s" % (weather, str(r)[:300]))
+        raise RuntimeError("weather_set %s did not take: %s" % (weather, str(r)[:300]))  # cut-ok: exception message
     start = rb.call("rimworld/get_game_info", {}).get("ticksGame")
     stepped = 0
     while stepped < ticks:

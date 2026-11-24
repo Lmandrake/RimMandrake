@@ -33,7 +33,7 @@ def codex_probe():
                         "Reply with the single word: ok"], capture_output=True, text=True,
                        timeout=PROBE_TIMEOUT_S, stdin=subprocess.DEVNULL)
     if r.returncode != 0:
-        raise RuntimeError("exit %s: %s" % (r.returncode, (r.stderr or r.stdout or "").strip()[-300:]))
+        raise RuntimeError("exit %s: %s" % (r.returncode, (r.stderr or r.stdout or "").strip()[-300:]))  # cut-ok: exception message
 
 
 def _read_meter():
@@ -178,7 +178,7 @@ def run(cwd, prompt, result, events, spend, *, model=None, effort=None, sandbox=
     for p in (result, events, spend):
         p.parent.mkdir(parents=True, exist_ok=True)
     rec = {"runner": "codex", "usage": "UNMEASURED", "state": "failed"}
-    answer, error, rc = "", None, 1
+    answer, error, read_result, rc = "", None, None, 1
     try:
         rec["quota"] = quota_gate(meter)
         if agent:
@@ -199,7 +199,10 @@ def run(cwd, prompt, result, events, spend, *, model=None, effort=None, sandbox=
                    codex_side="wsl", codex_home=r.home, outcome=r.outcome, kind=r.kind, job=r.job)
         answer = r.text
         if not r.answered:
-            error = "Codex %s (%s): %s" % (r.kind, r.outcome, (r.detail or "").strip()[-1500:])
+            prefix, detail = "Codex %s (%s): " % (r.kind, r.outcome), (r.detail or "").strip()
+            error = prefix + detail
+            if len(detail) > 1500:
+                read_result = prefix + detail[-1500:]  # cut-ok: existing quota search and reviewer parsing window
         rec["state"] = "failed" if error else "done"
     except Exception as e:
         error = "%s: %s" % (type(e).__name__, e)
@@ -212,7 +215,8 @@ def run(cwd, prompt, result, events, spend, *, model=None, effort=None, sandbox=
     events.write_text(stream, encoding="utf-8")
     spend.write_text(json.dumps(rec, indent=2) + "\n", encoding="utf-8")
     return {"runner": "codex", "is_error": rec["state"] != "done", "codex_usage": rec["usage"],
-            "result": error or answer, "subtype": rec["state"], "spend": str(spend)}
+            "result": error or answer, "subtype": rec["state"], "spend": str(spend),
+            **({"read_result": read_result} if read_result is not None else {})}
 
 
 def main(argv=None):

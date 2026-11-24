@@ -248,7 +248,7 @@ def holds_parts(parts, root, run=None):
             v, out = run(p["effect"], root)
             fails += v == "fails"
             blind += v not in ("holds", "fails")
-            lines.append("%s: %s (%s) %s" % (n, v, p["effect"], " ".join(str(out or "").split())[:200]))
+            lines.append("%s: %s (%s) %s" % (n, v, p["effect"], " ".join(str(out or "").split())[:200]))  # cut-ok: terminal display
         elif route_ok(p.get("route")):
             fails += 1
             r = p["route"]

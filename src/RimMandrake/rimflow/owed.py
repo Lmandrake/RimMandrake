@@ -269,7 +269,7 @@ def check_pointers_main(path):
     bad = check_pointers(text, world)
     lines = text.splitlines()
     for n, why in bad:
-        print("%s:%d: %s\n    %s" % (path, n, why, lines[n - 1].strip()[:160]))
+        print("%s:%d: %s\n    %s" % (path, n, why, lines[n - 1].strip()[:160]))  # cut-ok: terminal display
     n_ptr = len(pointer_bullets(text))
     print("check-pointers: %d pointer(s), %d refused" % (n_ptr, len(bad)) if bad or n_ptr else
           "check-pointers: no pointers in %s" % path)

@@ -49,6 +49,8 @@ def t_a_run_record_reads_as_run_void_reads_it(F):
                    ({"status": "finished", "result": "unknown (read from out)"}, "ENDED"),
                    ({"status": "finished"}, "UNCLASSED"), ({}, "UNCLASSED")):
         assert F.of_run(rec).word == w, (rec, F.of_run(rec))
+    refusal = "pool is full: " + "x" * 600 + " retry when a clone is free"
+    assert F.of_run({"status": "refused", "result": refusal}).why == refusal, "the run reading keeps the whole refusal"
 
 
 def tq(outcome, cause=None, rows=(), **kw):
@@ -81,6 +83,8 @@ def t_an_error_text_is_the_tools_or_the_records(F):
     for text, counts in (("crash: TimeoutExpired: x", False), ("crash: OSError: [Errno 5]", False), ("git: index.lock exists", False),
                          ("Traceback (most recent call last): KeyError", False), ("verify refused: no item X", True)):
         assert F.of_error(text).counts is counts, (text, F.of_error(text))
+    refusal = "verify refused: " + "x" * 600 + " check the item id"
+    assert F.of_error(refusal).why == refusal, "the error reading keeps the whole refusal"
 
 
 MUTANTS = (("COUNTS = (LK.MOD_FAILURE, ENDED, BAD_REQUEST)", "COUNTS = (LK.MOD_FAILURE, ENDED, BAD_REQUEST, KILLED)"),

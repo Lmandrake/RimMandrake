@@ -540,7 +540,7 @@ def system_cause(rec, runner=None):
     if not isinstance(rec, dict):
         return ""
     if rec.get("status") == "launch_failed" or rec.get("state") == "launch_failed":   # real records: the word is in `status` (`state` is a folder path); the old reading stays
-        return "its launch never started (%s)" % str(rec.get("result") or rec.get("why") or rec.get("err") or "launch_failed")[:160]
+        return "its launch never started (%s)" % str(rec.get("result") or rec.get("why") or rec.get("err") or "launch_failed")
     res = str(rec.get("result") or "")
     if res.startswith("killed"):
         return "killed with no result JSON (%s)" % res
@@ -623,7 +623,7 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
                     if FF.fault_class(text) == "wait":
                         return None
                     held = FF.owe_repair(s, text, "%s %s" % (mod, book), now, book=book)
-                    return {"cause": held or "its launch never started (form, repairing): %s" % text[:200],
+                    return {"cause": held or "its launch never started (form, repairing): %s" % text,
                             "faults": 1 if held else 0, "class": "void_system" if held else "void_form"}
                 return None
             if seen.get(u) == "counted":

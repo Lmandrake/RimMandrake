@@ -898,7 +898,7 @@ def _holder_hold(seat, what, ident, rec, window_pid, ppid):
     who = ", ".join(x for x in (
         "pid %s" % ident["pid"] if ident.get("pid") else None,
         "unit %s" % rec["role_unit"] if rec.get("role_unit") else None,
-        "for: %s" % str(rec["purpose"])[:120] if rec.get("purpose") else None,
+        "for: %s" % str(rec["purpose"]) if rec.get("purpose") else None,
         "clone %s" % rec["clone"] if rec.get("clone") else None) if x)
     inside = in_window_tree(ident, window_pid, ppid) if ident else None
     if inside is False:
@@ -2181,7 +2181,7 @@ def _proc_read(pid):
     parts = (r.stdout or "").split()
     if r.returncode and not parts:
         if (r.stderr or "").strip():
-            return "unknown", "ps exited %s: %s" % (r.returncode, r.stderr.strip()[:120]), None
+            return "unknown", "ps exited %s: %s" % (r.returncode, r.stderr.strip()), None
         return "gone", None, None                        # ps says there is no such process
     try:
         return "ok", parts[0][:1], int(time.mktime(time.strptime(" ".join(parts[1:]), "%a %b %d %H:%M:%S %Y")))

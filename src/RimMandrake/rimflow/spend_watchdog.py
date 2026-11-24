@@ -162,7 +162,7 @@ def run(argv, cap_usd, poll_s=POLL_S, grace_s=GRACE_S, projects=RL.PROJECTS, out
         return proc.returncode if proc.returncode is not None else 1
     usd, tok, u = hit
     if child_out.strip():       # what the stopped child printed goes to stderr: out stays one whole result JSON
-        err.write("spend_watchdog: the stopped child's stdout: %s\n" % child_out.decode("utf-8", "replace")[-4000:])
+        err.write("spend_watchdog: the stopped child's stdout: %s\n" % child_out.decode("utf-8", "replace"))
     # what a person reads says weighted tokens (owner 2026-11-16); cap_usd stays a field for the tools that need it.
     # No resumed or continued run reads this text: finish keeps it out of the item note (detached_helper.cap_stopped)
     cap_tok = cap_usd * 1e6 / rate(model)

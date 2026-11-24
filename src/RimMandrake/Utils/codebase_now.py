@@ -85,7 +85,7 @@ def git(root, *args):
     except (OSError, subprocess.TimeoutExpired) as e:
         raise Unseen("git %s could not run: %s" % (args[0], e))
     if r.returncode != 0:
-        raise Unseen("git %s failed in %s: %s" % (args[0], root, r.stderr.decode("utf-8", "replace").strip()[:200]))
+        raise Unseen("git %s failed in %s: %s" % (args[0], root, r.stderr.decode("utf-8", "replace").strip()))
     return r.stdout
 
 

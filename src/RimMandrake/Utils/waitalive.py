@@ -302,7 +302,7 @@ def tail(path, n=TAIL_LINES):
         with open(path, "rb") as f:
             f.seek(0, 2)
             f.seek(max(0, f.tell() - 8000))
-            return [x[:400] for x in f.read().decode("utf-8", "replace").splitlines()[-n:]]
+            return [x[:400] for x in f.read().decode("utf-8", "replace").splitlines()[-n:]]  # cut-ok: terminal display
     except OSError as e:
         return ["(output cannot be read: %s)" % e]
 

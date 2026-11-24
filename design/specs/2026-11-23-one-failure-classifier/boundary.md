@@ -45,7 +45,7 @@ request gives the same refusal).
 - **an-outcome-nobody-can-class-does-not-count-and-is-named.** An unknown word, an empty word or a wrong type does not
   count, reads `classed` False, and its text names the word.
 - **a-run-record-reads-as-run-void-reads-it.** For a detached run record, the answer is a system cause of
-  `run_void.system_cause`, else ENDED. A record that is missing or has no result is UNCLASSED.
+  `run_void.system_cause`, else ENDED. A record that is missing or has no result is UNCLASSED. A refusal's result text is kept whole.
 - **a-testq-job-reads-its-cause.** DONE with a FAIL row of the chain reads MOD FAILURE, with a PASS row SUCCESS, with
   neither COULD NOT LOOK. The causes PREFLIGHT, BLOCKED_SELECTION and SCHEMA read BAD REQUEST. Any other
   REFUSED reads REFUSED. INTERRUPTED reads KILLED. INVALID reads by `invalid_class`: TEST or DELIVERY is APPARATUS FAULT,
@@ -54,7 +54,7 @@ request gives the same refusal).
 - **the-count-names-what-it-left-out.** `count` gives the number that counts and the words it left out with their
   number, so a counter can report them.
 - **an-error-text-is-the-tools-or-the-records.** The error text of our own tool reads TIMED OUT or APPARATUS FAULT for a
-  timeout, a crash, a lock or a traceback, and BAD REQUEST for a refusal.
+  timeout, a crash, a lock or a traceback, and BAD REQUEST for a refusal. The reading keeps the whole explanation on one line.
 
 ## COUNTER PROMISES (each one is owed a test of the same name, in the selftest that it names)
 

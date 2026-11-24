@@ -88,7 +88,7 @@ def main():
     rc, out, fails = run(t)
     shutil.rmtree(t, ignore_errors=True)
     ok = rc == 0 and "selftest_steve_idle_takeable: PASS" in out and not fails
-    print("%-62s %s" % ("control (no mutation)", "green" if ok else "RED: %s" % (fails[:1] or out[-300:])))
+    print("%-62s %s" % ("control (no mutation)", "green" if ok else "RED: %s" % (fails[:1] or out[-300:])))  # cut-ok: test diagnostic display
     if not ok:
         print("mutate_steve_idle_takeable: the control is red; nothing below would mean anything")
         return 2

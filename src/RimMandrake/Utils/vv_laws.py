@@ -187,7 +187,7 @@ def judge(doc, name, baseline, planted):
     if named & mine:
         return "PROVEN", "red %s/%s by %s" % (p["failures"], p["completed"], ", ".join(sorted(named & mine)))
     return "NOT_PROVEN", "red %s/%s, but by %s, not by this family's laws" % (
-        p["failures"], p["completed"], ", ".join(sorted(named)) or "no named law (examples: %s)" % (p.get("examples") or ["-"])[0][:200])
+        p["failures"], p["completed"], ", ".join(sorted(named)) or "no named law (examples: %s)" % (p.get("examples") or ["-"])[0])
 
 
 def prove_flowworks(doc, only=None, log=print):
@@ -241,11 +241,11 @@ def prove_ep(doc, only=None, log=print):
         if r.returncode == 0 and mine:
             st, why = "PROVEN", "caught by %s" % ", ".join(l["id"] for l in mine)
         elif r.returncode == 0:
-            st, why = "NOT_PROVEN", "the fuzz caught the mutation, but no failure text of this family's laws shows (tail: %s)" % out.strip()[-240:]
+            st, why = "NOT_PROVEN", "the fuzz caught the mutation, but no failure text of this family's laws shows (output: %s)" % out.strip()
         elif "SURVIVED" in out or "survived" in out:
-            st, why = "NOT_PROVEN", "the mutation survived: the fuzz stayed green (tail: %s)" % out.strip()[-240:]
+            st, why = "NOT_PROVEN", "the mutation survived: the fuzz stayed green (output: %s)" % out.strip()
         else:
-            st, why = "UNMEASURED", "mutate_empirepursuit_fuzz.py exited %d (tail: %s)" % (r.returncode, out.strip()[-240:])
+            st, why = "UNMEASURED", "mutate_empirepursuit_fuzz.py exited %d (output: %s)" % (r.returncode, out.strip())
         results[name] = {"status": st, "why": why, "plant": pl}
         log("  %-34s %-11s %s" % (name, st, why))
     return results

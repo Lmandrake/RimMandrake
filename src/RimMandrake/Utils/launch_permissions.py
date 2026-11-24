@@ -306,7 +306,7 @@ def code_lines(path, src):
 def files(root):
     r = subprocess.run(["git", "-C", root, "ls-files", "-z"], capture_output=True, timeout=120)     # hang guard
     if r.returncode != 0:
-        raise OSError("git ls-files: " + r.stderr.decode(errors="replace")[:160])
+        raise OSError("git ls-files: " + r.stderr.decode(errors="replace")[:160])  # cut-ok: exception message
     return [p for p in r.stdout.decode().split("\0") if p]
 
 
@@ -443,7 +443,7 @@ def judge_host(host, probe):
             pv, note = SKIPS, "no flag; the settings default covers it"
         else:
             note = "argv"
-        rows.append((host, "running: " + " ".join(a)[:110], pv, note))
+        rows.append((host, "running: " + " ".join(a)[:110], pv, note))  # cut-ok: display label for a live process
     if probe.get("fleet") is not None:
         got = [x for x in shell_sites(probe["fleet"]) if x[1] != NOSESSION]
         rows += [(host, "claude_fleet.ps1:%d" % ln, v, w) for ln, v, w in got] or \
@@ -472,7 +472,7 @@ def run_probe(host, ssh=None, timeout=60):
         "echo %s | base64 -d | python3 -" % base64.b64encode(PROBE.encode()).decode()]
     r = subprocess.run(argv, capture_output=True, text=True, timeout=timeout)       # hang guard
     if r.returncode != 0:
-        raise OSError("exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-160:]))
+        raise OSError("exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()))
     return json.loads(r.stdout.strip().splitlines()[-1])
 
 
@@ -482,7 +482,7 @@ def live(hosts=(("Archmagi", None), ("SteveDesktop", STEVE)), probe=run_probe):
         try:
             rows += judge_host(host, probe(host, ssh))
         except (OSError, ValueError, KeyError, IndexError, subprocess.SubprocessError) as e:
-            rows.append((host, "the whole machine", BLIND, "%s: %s" % (type(e).__name__, str(e)[:160])))
+            rows.append((host, "the whole machine", BLIND, "%s: %s" % (type(e).__name__, str(e))))
     rows.append(("Archmagi, SteveDesktop", "claude.exe on the Windows side", "NOT CHECKED", "the probe reads WSL processes only"))
     for mac in ("Mac Desktop (mt-515497)", "Mac Laptop (mt-400028)"):
         rows.append((mac, "the whole machine", "NOT CHECKED", "no route from Archmagi; Lodestar's shell/claude.zsh adds the flag there"))

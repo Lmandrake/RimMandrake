@@ -476,9 +476,9 @@ def judge(root, d, route=None, reader="auto", _resume=None):
         unread = CJ.second_read(rec, crit, reader)
         gaps, adv2 = CJ.BR.split(rec["gaps"])
         adv += adv2
-    detail.update(verdict=so["verdict"], gaps=[str(g.get("what"))[:200] for g in gaps][:8],
-                  advisory=[str(g.get("what"))[:200] for g in adv][:8],
-                  routes=[{"what": str(g.get("what"))[:120], "route": route_of(g), "new_since": g.get("new_since"),
+    detail.update(verdict=so["verdict"], gaps=[str(g.get("what")) for g in gaps][:8],
+                  advisory=[str(g.get("what")) for g in adv][:8],
+                  routes=[{"what": str(g.get("what")), "route": route_of(g), "new_since": g.get("new_since"),
                            "ids": g.get("ids"), "return_to": g.get("return_to"),
                            "judge_criterion_verdict": g.get("judge_criterion_verdict"),
                            "criterion_verdict": g.get("criterion_verdict"), "severity": g.get("severity"),

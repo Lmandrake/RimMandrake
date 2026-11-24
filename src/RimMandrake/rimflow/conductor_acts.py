@@ -188,7 +188,7 @@ def digest_note(item, act, text, why, run=None, env=None):
             capture_output=True, text=True, timeout=300, env=env)  # budget: class=rimflow
     if r.returncode != 0:
         raise RuntimeError("the Conductor's act was not recorded (rimflow note exit %d: %s)"
-                           % (r.returncode, (r.stderr or r.stdout or "").strip()[-300:]))
+                           % (r.returncode, (r.stderr or r.stdout or "").strip()[-300:]))  # cut-ok: exception message
     return True
 
 

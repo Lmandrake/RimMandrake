@@ -294,7 +294,7 @@ def _patch_paths(root, patch):
     """-> (the repo-relative paths the patch touches, None) or (None, why); NUL-delimited, so no path is quoted."""
     r = subprocess.run(["git", "apply", "--numstat", "-z", patch], cwd=root, capture_output=True, timeout=60)
     if r.returncode != 0:
-        return None, "the patch does not parse: %s" % (r.stderr.decode("utf-8", "replace").strip()[-200:]
+        return None, "the patch does not parse: %s" % (r.stderr.decode("utf-8", "replace").strip()
                                                        or "rc %s" % r.returncode)
     paths, recs = [], r.stdout.decode("utf-8", "surrogateescape").split("\0")
     i = 0
@@ -401,7 +401,7 @@ def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
     dirty0 = _git_dirty(root)
     a = subprocess.run(["git", "apply", os.path.abspath(patch)], cwd=root, capture_output=True, text=True, timeout=60)
     if a.returncode != 0:
-        return {"ok": False, "why": "did not run: the fault does not apply: %s" % a.stderr.strip()[-200:]}
+        return {"ok": False, "why": "did not run: the fault does not apply: %s" % a.stderr.strip()}
     try:
         try:
             r = runner(t["command"], shell=True, cwd=root, capture_output=True, text=True, timeout=RUN_TIMEOUT_S,
@@ -451,7 +451,7 @@ def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
                 "test, so the red proves nothing; repair the table's command; nothing recorded" % (test_id, rc, last)}
     at = now if now is not None else datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     reds[test_id] = {"rc": rc, "last": last, "at": at, "file": t.get("file"), "test_blob": test_blob(root, t),
-                     "command": t["command"], "patch_files": paths, "patch": patch_text[:4000],
+                     "command": t["command"], "patch_files": paths, "patch": patch_text,
                      "patch_sha": hashlib.sha256(patch_text.encode("utf-8", "replace")).hexdigest()[:16]}
     _write_evidence(root, mod, RED_SEEN, reds)
     return {"ok": True, "why": "%s went red under the fault (rc %s: %s); recorded in %s" % (test_id, rc, last, RED_SEEN)}
@@ -586,7 +586,7 @@ def certify(root, mod, to="blind_challenge"):
         try:
             _asks_on_empty_game(root, tt, row, out["did_not_run"])
         except Exception as e:  # noqa: BLE001  this clause could not look: it says so and refuses nothing
-            out["did_not_run"].append("asks_on_empty_game did not run: %s: %s" % (type(e).__name__, str(e)[:200]))
+            out["did_not_run"].append("asks_on_empty_game did not run: %s: %s" % (type(e).__name__, str(e)))
     out["ok"] = not any(x["status"] == "REFUSED" for x in rows)
     return out
 
@@ -622,10 +622,10 @@ def _asks_on_empty_game(root, tt, row, did_not_run):
                                timeout=EMPTY_GAME_TIMEOUT_S)
             got = json.loads(r.stdout.strip().splitlines()[-1]) if r.stdout.strip() else {}
         except (subprocess.TimeoutExpired, OSError, ValueError) as e:
-            got = {"did_not_run": "%s: %s" % (type(e).__name__, str(e)[:160])}
+            got = {"did_not_run": "%s: %s" % (type(e).__name__, str(e))}
         pairs, why = (got["vacuous"], None) if isinstance(got.get("vacuous"), list) else (
             None, got.get("did_not_run") or "scene_empty_game.py printed no verdict (rc %s): %s" % (
-                r.returncode, (r.stderr or "").strip()[-160:]))
+                r.returncode, (r.stderr or "").strip()))
         ran = set(got.get("scenes") or []) if pairs is not None else set()
         unseen = sorted(e for e in fw if e not in ran)
         if pairs is not None and unseen:    # never run, so its absence from the vacuous list establishes nothing
@@ -657,9 +657,9 @@ def _asks_on_empty_game(root, tt, row, did_not_run):
                                timeout=EMPTY_GAME_TIMEOUT_S)
             got = json.loads(r.stdout.strip().splitlines()[-1]) if r.stdout.strip() else {
                 "did_not_run": "scene_empty_game.py --suite printed no verdict (rc %s): %s"
-                               % (r.returncode, (r.stderr or "").strip()[-160:])}
+                               % (r.returncode, (r.stderr or "").strip())}
         except (subprocess.TimeoutExpired, OSError, ValueError) as e:
-            got = {"did_not_run": "%s: %s" % (type(e).__name__, str(e)[:160])}
+            got = {"did_not_run": "%s: %s" % (type(e).__name__, str(e))}
         if not isinstance(got.get("vacuous"), list):
             why = str(got.get("did_not_run") or "no verdict")
             if "has no module-level modcheck suite" in why:

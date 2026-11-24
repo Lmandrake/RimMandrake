@@ -52,7 +52,7 @@ def units(plant=""):
     count = [ln for ln in p.stdout.splitlines() if ln.startswith("U-count ")]
     want = int(count[0].split()[1]) if count else -1
     if want != len(out) or want < MIN_UNITS:
-        raise Unmeasured("printed %d units, declared %s (expected at least %d): %s" % (len(out), want, MIN_UNITS, p.stderr[-400:]))
+        raise Unmeasured("printed %d units, declared %s (expected at least %d): %s" % (len(out), want, MIN_UNITS, p.stderr[-400:]))  # cut-ok: exception message
     return out
 
 

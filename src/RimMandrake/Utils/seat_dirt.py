@@ -62,7 +62,7 @@ CONCEPT_SETTLE_MIN = 30  # a concept folder lands only this long after its last 
 def git(clone, *a, check=True, timeout=120):
     r = subprocess.run(["git", "-C", clone] + list(a), capture_output=True, text=True, timeout=timeout)
     if check and r.returncode != 0:
-        raise RuntimeError("git %s: %s" % (" ".join(a[:2]), r.stderr.strip()[:300]))
+        raise RuntimeError("git %s: %s" % (" ".join(a[:2]), r.stderr.strip()))
     return r.stdout
 
 
@@ -309,7 +309,7 @@ def tidy(clone=SEAT_CLONE, now=None, land=LAND, settle_min=SETTLE_MIN, fetch_tim
         if p.returncode == 0:
             said_paths.append((p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1])
         elif "nothing to land" not in p.stderr:
-            raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-400:]))
+            raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()))
     return said + ("; ".join(said_paths) or "nothing to land")
 
 
@@ -330,7 +330,7 @@ def main(argv=None):
                 print("%s: %s" % (clone, tidy(clone)))
             except Exception as e:  # noqa: BLE001 - named, counted in the exit; the next clone still lands
                 failed += 1
-                print("%s: FAILED %s: %s" % (clone, type(e).__name__, str(e)[:400]))
+                print("%s: FAILED %s: %s" % (clone, type(e).__name__, str(e)[:400]))  # cut-ok: terminal display
         return 1 if failed else 0
     if a.cmd == "tidy":
         if a.apply:

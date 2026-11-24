@@ -309,7 +309,7 @@ def read_nudges(root, mod, since, until=None, runner=subprocess.run):
                 for i, (x, y) in enumerate(zip(na, nb)):
                     if x != y:
                         try:
-                            rows.append({"file": path, "line": _template(b)[:160], "slot": i, "old": float(x),
+                            rows.append({"file": path, "line": _template(b), "slot": i, "old": float(x),
                                          "new": float(y), "sha": sha, "at": at})
                         except ValueError:
                             pass
@@ -405,7 +405,7 @@ def _c2(r, s):
     # now a, else starts its own. Lines that share a text (`<min>#</min>` in one file) stay apart by their values.
     chains = {}
     for x in r.get("nudges") or []:
-        cs = chains.setdefault((x["file"], x["line"], x["slot"]), [])
+        cs = chains.setdefault((x["file"], x["line"][:160], x["slot"]), [])  # cut-ok: existing nudge chain and dedup key
         c = next((c for c in reversed(cs) if c[-1]["new"] == x["old"] and c[-1]["sha"] != x["sha"]), None)
         if c is None:
             cs.append([x])
@@ -427,7 +427,7 @@ def _c2_chain(f, line, slot, seq, s):
             last = revs[-1]
             out.append({"criterion": "C2", "key": "C2:%s:%s:%d:%s" % (f, line, slot, last["sha"][:12]),
                         "since": last.get("at"),
-                        "evidence": {"file": f, "line": line, "reversals": len(revs), "min": s["nudge_reversals_min"],
+                        "evidence": {"file": f, "line": last["line"], "reversals": len(revs), "min": s["nudge_reversals_min"],
                                      "values": " -> ".join([("%g" % seq[0]["old"])] + ["%g" % x["new"] for x in seq]),
                                      "shas": [x["sha"][:12] for x in seq]}})
     return out
@@ -462,7 +462,7 @@ def _c4(r, s):
         return []
     stage = c.get("stage") or r.get("stage")
     return [{"criterion": "C4", "key": "C4:%s:%s" % (stage, int(r.get("stage_since") or 0)), "since": c.get("at"),
-             "evidence": {"stage": stage, "why": str(c.get("why") or "")[:200],
+             "evidence": {"stage": stage, "why": str(c.get("why") or ""),
                           "certificate": "unread" if not isinstance(cert, dict) else "%s, %s REFUSED row(s), to %s" % (
                               "green" if cert.get("ok") else "not green", cert.get("refused", "?"), cert.get("to")),
                           "paths": ["design/concepts/%s/version/stage_record.json" % r.get("mod"),
@@ -781,7 +781,7 @@ def main(argv=None):
         for p in props:
             print("  %s: %s" % (p["mod"], ", ".join(p["criteria"])))
             for e in p["evidence"][:12]:
-                print("    %s %s" % (e["criterion"], json.dumps(e["evidence"], default=str)[:260]))
+                print("    %s %s" % (e["criterion"], json.dumps(e["evidence"], default=str)[:260]))  # cut-ok: terminal display
         for r in recs:
             u = unmeasured(r)
             if u or r["errors"]:
@@ -813,7 +813,7 @@ def main(argv=None):
                 print("%s %s %s %s [%s]" % (r["id"], r["at"], r["mod"], ",".join(r["criteria"]),
                                             ",".join(outs.get(r["id"], [])) or "open"))
                 for e in r.get("evidence") or []:
-                    print("    %s %s" % (e["criterion"], json.dumps(e["evidence"], default=str)[:220]))
+                    print("    %s %s" % (e["criterion"], json.dumps(e["evidence"], default=str)[:220]))  # cut-ok: terminal display
             elif r.get("kind") == "rescue":
                 print("rescue %s %s started %s ended %s" % (r["mod"], r["item"], r.get("started"), r.get("ended")))
         return 0

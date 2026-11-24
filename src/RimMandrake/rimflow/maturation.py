@@ -71,6 +71,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+import fulltext  # noqa: E402
 import maturation_now as MN     # noqa: E402  the journal readers: one parser, never a second one
 import raid_pause as RP          # noqa: E402  raid tests are paused (owner, 2026-11-23)
 import scene_size as SZ          # noqa: E402  an oversized live scene carries its evidence (owner, 2026-11-24)
@@ -569,7 +570,7 @@ def undeclared_stops(root, mod, tt, ended=None):
                 scans[f] = _missing_tool_scan(os.path.join(root, f))
             except (OSError, SyntaxError, ValueError) as e:
                 scans[f] = None
-                dnr.append("%s: %s" % (f, type(e).__name__ if not str(e) else str(e).splitlines()[0][:160]))
+                dnr.append("%s: %s" % (f, type(e).__name__ if not str(e) else str(e).splitlines()[0]))
         if scans[f] is None:
             continue
         raises, edges = scans[f]
@@ -799,7 +800,7 @@ def exit_met_clause(root, mod, rec, cur, owner, clause, rec_ref, req_ref, game_o
             what, reader, base = "in-game visit %d" % n, "read_ingame_exit", "%s/visit_%d" % (INGAME_DIR, n)
     except Exception as e:  # noqa: BLE001  evidence the reader cannot parse: no reading, so not met
         n, ex, opened, base = None, {"state": "unreadable", "why": ["the exit reader raised %s: %s" % (
-            type(e).__name__, str(e)[:200])]}, None, None
+            type(e).__name__, str(e))]}, None, None
         what, reader = "the %s exit" % cur, "the exit reader"
     met = ex.get("state") == "met" and not blocked
     over, ohow = None, "none in the request"
@@ -1238,7 +1239,8 @@ def ledger_version_open(root, mod, new, by, why):
     if not os.path.isdir(os.path.join(root, "design", "concepts", mod, "ledger")) and not modledger.read(root, mod):
         return None
     return modledger.append(root, mod, "DISPATCH", "version.open", "version",
-                            body={"version": str(new), "text": "opened by next-version (%s): %s" % (by, str(why)[:300])},
+                            body={"version": str(new), "text": fulltext.fit("opened by next-version (%s): %s" % (by, why),
+                                                                            modledger.std()["caps"]["text"])},
                             version=str(new), env_writer=None)
 
 
@@ -1952,7 +1954,7 @@ def run_diff(root, mod):
     except (OSError, subprocess.SubprocessError) as e:
         return None, "git could not run: %s" % e
     if r.returncode:
-        return None, "git diff failed: %s" % (r.stderr.strip()[:200] or r.returncode)
+        return None, "git diff failed: %s" % (r.stderr.strip()[:200] or r.returncode)  # cut-ok: terminal display
     return r.stdout, item
 
 
@@ -2582,7 +2584,7 @@ def _named_in_repo(names, runner=subprocess.run):
     except (OSError, subprocess.SubprocessError) as e:
         return None, "%s: %s" % (type(e).__name__, e)
     if r.returncode not in (0, 1):
-        return None, "git grep exited %s: %s" % (r.returncode, (r.stderr or "").strip()[:160])
+        return None, "git grep exited %s: %s" % (r.returncode, (r.stderr or "").strip())
     hits = r.stdout or ""
     return {n for n in names if re.search(r"[>\"']%s[<\"']" % re.escape(n), hits)}, None
 
@@ -2609,7 +2611,7 @@ def deploy_state(root, mod, runner=subprocess.run, game="a"):
         return dict(out, state="current", why="the game's copy of %s matches the repo" % mod)
     if "Drift found." not in text:
         return dict(out, why="the deploy plan could not read the game copy (exit %s: %s)" % (
-            r.returncode, (text.splitlines() or ["no output"])[-1][:200]))
+            r.returncode, (text.splitlines() or ["no output"])[-1]))
     lines = [x.strip() for x in text.splitlines() if x.strip()[:3] in ("~  ", "+  ", "-  ")]
     loaded, ignored, stuck, assets = [], [], [], {}
     for ln in lines:
@@ -2630,7 +2632,7 @@ def deploy_state(root, mod, runner=subprocess.run, game="a"):
         named, err = _named_in_repo(sorted({n for v in names.values() for n in v}))
         if named is None:
             return dict(out, why="game-only textures or sounds (%s) could not be checked against the repo's defs: %s"
-                        % (", ".join(sorted(rel for rel, _ in assets.values()))[:200], err))
+                        % (", ".join(sorted(rel for rel, _ in assets.values())), err))
         for ln, (rel, note) in assets.items():
             if set(names[ln]) & named:
                 loaded.append(ln)
@@ -2789,7 +2791,7 @@ def _deploy_repair_held(root, mod, game, reading, gi, purpose, runner=subprocess
             last = [x.strip() for x in txt.splitlines() if x.strip()]
             bad = [x for x in last if x.startswith(("CANNOT", "REFUSING", "DEPLOY", "ERROR", "error", "FAIL"))]
             return "fail", "the JawaBench companion rebuild failed (`%s`, exit %s: %s)%s" % (
-                " ".join(cmd[-5:]), rc, "; ".join(bad[:3]) or (last or ["no output"])[-1][:200],
+                " ".join(cmd[-5:]), rc, "; ".join(bad[:3]) or (last or ["no output"])[-1],
                 "; %s, left down" % done[0] if done else "")
         done.append("companion rebuilt and deployed (build.py --gm --apply --instance %s)" % game)
     if reading:
@@ -2797,7 +2799,7 @@ def _deploy_repair_held(root, mod, game, reading, gi, purpose, runner=subprocess
         if rc:
             bad = [x.strip() for x in txt.splitlines() if x.strip().startswith(("!", "STILL", "NOTHING", "DEF GUARD"))]
             return "fail", "the deploy failed (`%s`, exit %s: %s)%s" % (
-                reading["fix"], rc, "; ".join(bad[:3]) or (txt.splitlines() or ["no output"])[-1][:200],
+                reading["fix"], rc, "; ".join(bad[:3]) or (txt.splitlines() or ["no output"])[-1],
                 "; %s, left down" % done[0] if done and not done[0].startswith("companion") else "")
         done.append("deployed (%s)" % reading["fix"])
     if was_up:
@@ -3255,7 +3257,7 @@ def _commit_paths(root, sha):
     except (OSError, subprocess.TimeoutExpired) as e:
         return PR.could_not_look("git diff-tree %s: %s" % (sha, e))
     if p.returncode != 0:
-        return PR.could_not_look("git diff-tree %s exited %d: %s" % (sha, p.returncode, p.stderr.strip()[:120]))
+        return PR.could_not_look("git diff-tree %s exited %d: %s" % (sha, p.returncode, p.stderr.strip()))
     paths = [x for x in p.stdout.split("\n") if x.strip()]
     return PR.value(paths) if paths else PR.empty()
 
@@ -3640,7 +3642,7 @@ def void_resume_text(bf):
     vr = bf.get("void_run") or {}
     return ("its last judge run %s was voided (%s: %s), so its exit block in %s/SUMMARY.md is interim, no verdict; "
             "the tick resumes that judge's own session (ledger run %s), or opens the cycle fresh when the session "
-            "cannot be resumed" % (vr.get("unit"), vr.get("void") or vr.get("class"), str(vr.get("why") or "-")[:160],
+            "cannot be resumed" % (vr.get("unit"), vr.get("void") or vr.get("class"), str(vr.get("why") or "-"),
                                    (bf.get("exit") or {}).get("record", "the cycle record"), vr.get("run") or UNM))
 
 
@@ -3659,7 +3661,7 @@ def void_judge_run(mod, vid, n):
     except FileNotFoundError:
         return None
     except Exception as e:  # noqa: BLE001  could not look: said, never read as "no void"
-        return "%s/state.json: %s: %s" % (d, type(e).__name__, str(e)[:160])
+        return "%s/state.json: %s: %s" % (d, type(e).__name__, str(e))
     if not isinstance(st, dict):
         return "%s/state.json is not an object" % d
     return RV.voided_cycle_run((st.get("mods") or {}).get(mod), vid, n)
@@ -4395,7 +4397,7 @@ def _remote_tag(root, name):
     except (OSError, subprocess.TimeoutExpired) as e:
         return None, repr(e)
     if r.returncode:
-        return None, (r.stderr or "").strip()[-300:]
+        return None, (r.stderr or "").strip()
     return (r.stdout.split()[0] if r.stdout.strip() else None), None
 
 
@@ -4418,7 +4420,7 @@ def tag_pass(root, mod, version, paths=None):
             return fail("land", "no executable publish at %s" % pub)
         add = _g(root, "add", "--", *paths)       # a new pass record must be known to git before publish
         if add.returncode:
-            return fail("land", "git add: %s" % (add.stderr or "").strip()[-300:])
+            return fail("land", "git add: %s" % (add.stderr or "").strip())
         try:
             r = subprocess.run([pub, "-m", "%s %s PASSED: pass record, stage record and journal (maturation.py)"
                                 % (mod, version)] + list(paths), cwd=root, capture_output=True, text=True, timeout=21600)  # budget: class=publish
@@ -4447,7 +4449,7 @@ def tag_pass(root, mod, version, paths=None):
         t = _g(root, "tag", "-a", "-m", "%s %s passed: the commit that records the pass (%s)" % (mod, version, prp),
                name, sha)
         if t.returncode:
-            return fail("tag", "git tag: %s" % (t.stderr or "").strip()[-300:])
+            return fail("tag", "git tag: %s" % (t.stderr or "").strip())
     on, _ = _remote_tag(root, name)
     if on == sha:
         return {"tag": {"name": name, "commit": sha, "pushed": True}, "already": not made}
@@ -4995,7 +4997,7 @@ def walk_result_md(mod, ver, n, data, titles, words):
             continue
         L += ["## %s" % head[k], ""]
         for i in data[k]:
-            L.append("- `%s`: %s" % (i, (titles.get(i) or "").strip()[:400]))
+            L.append("- `%s`: %s" % (i, (titles.get(i) or "").strip()))
             for w in words.get(i) or []:
                 L.append("  - He said: \"%s\"" % w.replace("\n", " "))
         L.append("")
@@ -5445,7 +5447,7 @@ def _git_log(root, since, until, path):
     except subprocess.SubprocessError as e:
         raise OSError("git cannot list the commits of %s: %s" % (path, e)) from e
     if r.returncode:
-        raise OSError("git cannot list the commits of %s: %s" % (path, r.stderr.strip()[-200:]))
+        raise OSError("git cannot list the commits of %s: %s" % (path, r.stderr.strip()[-200:]))  # cut-ok: exception message
     out = []
     for blk in r.stdout.split("\0")[1:]:
         head, _, names = blk.partition("\n")

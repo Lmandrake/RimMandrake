@@ -246,7 +246,7 @@ def _text_of(ref, given):
             raw = f.read()
     except OSError:
         return None
-    if b"\0" in raw[:8192]:   # a picture (an art judge's evidence) has no words to match: its ref alone is checked
+    if b"\0" in raw[:8192]:   # cut-ok: sample bytes to detect binary evidence, which is checked by ref alone
         return None           # (RIMMANDRAKE_TEACH_CONTRACT_CHECK_PICTURES_ARE_NOT_TEXT)
     return raw.decode("utf-8", errors="replace")
 

@@ -65,6 +65,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 sys.path.insert(1, os.path.join(os.path.dirname(HERE), "Utils"))
+import fulltext  # noqa: E402
 import model                                                     # noqa: E402  rimflow's shard writer and reader
 import ledger_lint                                               # noqa: E402  the append-only shard lint
 
@@ -847,7 +848,7 @@ def _origin_shard_bytes(root, mod, shard):
         elif b"exists on disk, but not in" in r.stderr or b"does not exist" in r.stderr:
             out = b""
         else:
-            cause = "git show: " + r.stderr.decode("utf-8", "replace").strip()[:200]
+            cause = "git show: " + r.stderr.decode("utf-8", "replace").strip()
     except (OSError, subprocess.SubprocessError) as e:
         cause = "%s: %s" % (type(e).__name__, e)
     return out, cause
@@ -882,7 +883,7 @@ def unseal(root, mod, run, why, void=None, ts=None, views=True):
     if shard not in seals(read(root, mod)):
         return None
     eid, _ = append(root, mod, "DISPATCH", "judge.unsealed", "judge", ts=ts, views=views,
-                    body={"shard": shard, "why": str(why)[:300], "void": void})
+                    body={"shard": shard, "why": fulltext.fit(str(why), 300), "void": void})
     return eid
 
 

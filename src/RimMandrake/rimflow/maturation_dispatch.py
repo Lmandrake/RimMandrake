@@ -1585,7 +1585,7 @@ def cert_rerun_worker(mod, key, unit, runner=subprocess.run, take=None, now=time
             cv = json.loads(r.stdout or "")
         except ValueError:
             raise RuntimeError("certificate --run exit %d printed no verdict: %s" % (
-                r.returncode, ((r.stdout or "") + (r.stderr or ""))[-300:]))
+                r.returncode, (r.stdout or "") + (r.stderr or "")))
         res.update(ok=bool(cv.get("ok")), key_after=stale_key(cv), ran=cv.get("run"))
         g = runner(["git", "status", "--porcelain", "--", rel], cwd=clone, timeout=120, **kw)  # budget: class=call
         if (g.stdout or "").strip():
@@ -1604,7 +1604,7 @@ def cert_rerun_worker(mod, key, unit, runner=subprocess.run, take=None, now=time
                 res.update(race=True, error="RERUN RACE: a newer %s reached origin while the rerun worked; its stamp "
                                             "commit was dropped and the rerun starts again" % rel)
             else:
-                res["error"] = "publish exit %d: %s" % (p.returncode, out[-300:])
+                res["error"] = "publish exit %d: %s" % (p.returncode, out)
         else:
             res["note"] = "the table did not change"
     except Exception as e:      # noqa: BLE001  the result says what failed; the tick reads it
@@ -1676,7 +1676,7 @@ def game_deploy_worker(mod, game, kind, purpose, unit, seat="BENCH", runner=subp
             res.update({k: got.get(k) for k in ("state", "text", "sha", "generation", "paths")})
         else:
             res["text"] = "game-repair exit %d printed no verdict: %s" % (
-                r.returncode, ((r.stdout or "") + (r.stderr or ""))[-300:])
+                r.returncode, (r.stdout or "") + (r.stderr or ""))
     except Exception as e:      # noqa: BLE001  the result says what failed; the tick reads it
         res["text"] = "%s: %s" % (type(e).__name__, e)
         if AUT.wait_refusal(res["text"]):
@@ -1719,7 +1719,7 @@ def deploy_stale(root, res, generation=None):
                             **kw).returncode
     except Exception as e:      # noqa: BLE001  could not look is never fresh
         return "the deploy's freshness could not be read (%s: %s)" % (type(e).__name__, e)
-    return None if rc == 0 else "%s changed since %s" % (", ".join(res.get("paths") or ["src"])[:200], sha[:10]) \
+    return None if rc == 0 else "%s changed since %s" % (", ".join(res.get("paths") or ["src"]), sha[:10]) \
         if rc == 1 else "git diff exited %d" % rc
 
 
@@ -2197,7 +2197,7 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
     per = PC.limit(mod, "blind_cycles_visit", int(cfg.get("blind_auto_cycles_per_visit", 1)))
     dec = f.get("cycle_decision")
     if dec:     # the Conductor's recorded decision opened this cycle: it allows this one, past the visit's count
-        row["conductor_decision"] = "%s: %s" % (dec.get("at"), str(dec.get("text"))[:160])
+        row["conductor_decision"] = "%s: %s" % (dec.get("at"), str(dec.get("text")))
     if PC.used(mod, "blind_cycles_visit", len([x for x in ours if x is not retry])) >= per and not dec:
         put("auto_spent", "the visit's %d automatic cycle(s) are spent (cycle %s)" % (
             per, ", ".join(str(x.get("cycle")) for x in ours)),
@@ -3134,7 +3134,7 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game
         return rc, text, unit, item
     st.setdefault("mods", {}).setdefault(mod, {}).setdefault("holder_road_back", []).append(
         dict({"at": now, "ids": sorted(ids), "item": item, "unit": unit, "stage": stage,
-              "tried": None if unit else tried_unit(text)}, **({} if unit else {"failed": str(text)[:600]})))
+              "tried": None if unit else tried_unit(text)}, **({} if unit else {"failed": str(text)})))
     return rc, text, unit, item
 
 
@@ -3778,7 +3778,7 @@ def clone_head(root):
         return PR.could_not_look("git rev-parse HEAD: %s" % e)
     sha = r.stdout.strip()
     if r.returncode or not sha:
-        return PR.could_not_look("git rev-parse HEAD: rc %s %s" % (r.returncode, r.stderr.strip()[:200]))
+        return PR.could_not_look("git rev-parse HEAD: rc %s %s" % (r.returncode, r.stderr.strip()))
     return PR.value(sha)
 
 
@@ -4978,7 +4978,7 @@ def _void(o):
         last = [x for x in (r.stdout or "").splitlines() if x.startswith("PUBLISHED")]
         if r.returncode != 0 or not last:
             print("%s WRITTEN, NOT LANDED: ./publish exited %d; land these by hand: %s\n%s" % (
-                o.cmd.upper(), r.returncode, " ".join(paths), ((r.stdout or "") + (r.stderr or ""))[-800:]))
+                o.cmd.upper(), r.returncode, " ".join(paths), ((r.stdout or "") + (r.stderr or ""))[-800:]))  # cut-ok: terminal display
             return 1
         print(last[-1])
     elif paths:

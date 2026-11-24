@@ -90,7 +90,7 @@ def pass2_prompt(path):
 def grade(case, ok, raw):
     """-> (got, detail). got None = the judge could not run (the case did not run)."""
     if not ok or JC.is_throttle(ok, raw) or JC._error_envelope(raw):
-        return None, {"error": "the judge could not run: %s" % str(raw)[:300]}
+        return None, {"error": "the judge could not run: %s" % str(raw)}
     if case["pass"] == 1:
         look, where, first, cause = JC.parse_open(raw)
         if look is None:
@@ -98,10 +98,10 @@ def grade(case, ok, raw):
                 return None, {"error": cause}
             return "malformed", {"error": cause}
         got = {"EXPECTED": "pass", "ODD": "refuse", "WRONG": "refuse"}.get(look, "unsure")
-        return got, {"look": look, "where": where[:300], "first_noticed": first[:300]}
+        return got, {"look": look, "where": where, "first_noticed": first}
     verdict, why = judge._parse_verdict(raw)
     got = {judge.YES: "pass", judge.NO: "refuse"}.get(verdict, "unsure")
-    return got, {"verdict": verdict, "why": str(why)[:300]}
+    return got, {"verdict": verdict, "why": str(why)}
 
 
 def run(runner=None, pins=None, out=print):

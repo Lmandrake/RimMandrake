@@ -119,7 +119,7 @@ def ensure(name, runner=subprocess.run):
         if r.returncode or not os.path.isdir(os.path.join(part, ".git")):
             shutil.rmtree(part, ignore_errors=True)
             return False, "scratch_clone failed (exit %d): %s" % (
-                r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[-400:])
+                r.returncode, ((r.stdout or "") + (r.stderr or "")).strip())
         os.rename(part, dest)
     return True, dest
 
@@ -155,14 +155,14 @@ def make_in_background(name, runner=subprocess.run):
         r = runner(argv, capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
     except Exception as e:  # noqa: BLE001 - one answer, its cause named
         return "failed", "role clone %s is missing and its maker unit %s did not start: %s: %s" % (
-            dest, unit, type(e).__name__, str(e)[:200])
+            dest, unit, type(e).__name__, str(e))
     said = ((r.stdout or "") + (r.stderr or "")).strip()
     if r.returncode and "already" not in said:
         return "failed", "role clone %s is missing and its maker unit %s did not start (systemd-run exit %d: %s)" % (
-            dest, unit, r.returncode, said[-300:])
+            dest, unit, r.returncode, said)
     if last and last.startswith("FAILED"):
         return "failed", "role clone %s is missing: its last make said %s (log %s); unit %s makes it again" % (
-            dest, last[:300], log, unit)
+            dest, last, log, unit)
     return "making", "%s role clone %s is missing: unit %s is making it (log %s); the launch waits for it" % (
         MAKING, dest, unit, log)
 
@@ -202,12 +202,12 @@ def level(clone, land_sh=None):
     try:
         r = _git(clone, "rev-list", "refs/remotes/origin/main..HEAD", timeout=60)
         if r.returncode:
-            return dict(out, state="UNMEASURED", why="git rev-list exit %d: %s" % (r.returncode, r.stderr.strip()[:200]))
+            return dict(out, state="UNMEASURED", why="git rev-list exit %d: %s" % (r.returncode, r.stderr.strip()))
         if not r.stdout.strip():
             return dict(out, state="level")
         f = _git(clone, "fetch", "-q", "origin")
         if f.returncode:
-            return dict(out, state="UNMEASURED", why="git fetch exit %d: %s" % (f.returncode, f.stderr.strip()[:200]))
+            return dict(out, state="UNMEASURED", why="git fetch exit %d: %s" % (f.returncode, f.stderr.strip()))
         sys.path.insert(0, UTILS)
         import seat_sync
         g = seat_sync.Git(clone)
@@ -219,7 +219,7 @@ def level(clone, land_sh=None):
                                timeout=21600, stdin=subprocess.DEVNULL, env=dict(os.environ, LAND_REPO=clone))  # budget: class=publish
             m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", p.stdout or "")
             if p.returncode or not m:
-                refused[row["sha"]] = "land.sh exit %d: %s" % (p.returncode, ((p.stdout or "") + (p.stderr or "")).strip()[-200:])
+                refused[row["sha"]] = "land.sh exit %d: %s" % (p.returncode, ((p.stdout or "") + (p.stderr or "")).strip())
             else:
                 out["landed"].append(m.group(1))
                 done.append(row["sha"])
@@ -232,7 +232,7 @@ def level(clone, land_sh=None):
                            capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL)
         left = seat_sync.unlanded(seat_sync.Git(clone))
     except Exception as e:  # noqa: BLE001 - one JSON answer, its cause named
-        return dict(out, state="UNMEASURED", why="%s: %s" % (type(e).__name__, str(e)[:200]))
+        return dict(out, state="UNMEASURED", why="%s: %s" % (type(e).__name__, str(e)))
     out["left"] = [{"sha": r["sha"], "subject": r["subject"], "paths": r["touched"]} for r in left]
     if not left:
         return dict(out, state="landed" if out["landed"] else "level")
@@ -255,7 +255,7 @@ def land(clone, seat, runner=subprocess.run, tidy=_tidy, exists=os.path.isdir, l
     try:
         r = runner(["git", "status", "--porcelain", "--", shard], cwd=clone, capture_output=True, text=True, timeout=60)
         if r.returncode:
-            out.update(ok=False, shard="UNMEASURED: git status exit %d: %s" % (r.returncode, (r.stderr or "").strip()[:200]))
+            out.update(ok=False, shard="UNMEASURED: git status exit %d: %s" % (r.returncode, (r.stderr or "").strip()))
         elif not (r.stdout or "").strip():
             out["shard"] = "clean"
         else:
@@ -264,11 +264,11 @@ def land(clone, seat, runner=subprocess.run, tidy=_tidy, exists=os.path.isdir, l
             said = ((p.stdout or "") + (p.stderr or "")).strip()
             m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", said)
             if p.returncode or not m:
-                out.update(ok=False, shard="FAILED: publish exit %d: %s" % (p.returncode, said[-300:]))
+                out.update(ok=False, shard="FAILED: publish exit %d: %s" % (p.returncode, said))
             else:
                 out["shard"] = "PUBLISHED " + m.group(1)
     except Exception as e:  # noqa: BLE001 - a timeout or OSError is a failure with its cause, still one JSON line
-        out.update(ok=False, shard="FAILED: %s: %s" % (type(e).__name__, str(e)[:200]))
+        out.update(ok=False, shard="FAILED: %s: %s" % (type(e).__name__, str(e)))
     # a shard the run committed but never published reads clean above: level lands it, and names any other strand
     # (a test's fake runner gets no real git on a real clone unless it passes its own leveller)
     lv = (leveller or (level if runner is subprocess.run else lambda c: {"state": "skipped"}))(clone)
@@ -279,7 +279,7 @@ def land(clone, seat, runner=subprocess.run, tidy=_tidy, exists=os.path.isdir, l
     try:
         out["tidy"] = tidy(clone, 0)
     except Exception as e:  # noqa: BLE001 - said in the result
-        out.update(ok=False, tidy="FAILED: %s" % str(e)[:300])
+        out.update(ok=False, tidy="FAILED: %s" % str(e))
     if not out["ok"]:
         out["why"] = "; ".join(x for x in (out["shard"], out["level"], out["tidy"])
                                if x and ("FAILED" in x or "UNMEASURED" in x or x.startswith("stranded")))

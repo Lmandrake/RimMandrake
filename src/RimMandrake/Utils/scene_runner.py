@@ -178,7 +178,7 @@ def render(rep, out=None):
     if rep.get("error"):
         p("NO RUN: %s" % rep["error"])
         if rep.get("refusal"):
-            p("  %s" % json.dumps(rep["refusal"])[:600])
+            p("  %s" % json.dumps(rep["refusal"])[:600])  # cut-ok: terminal display
     if rep["rows"]:
         p("%-28s %-34s %-10s %-14s %-10s %s" % ("SCENE", "CHECK", "STATUS", "MEASURED", "EXPECTED", "SOURCE / CAUSE"))
         for r in rep["rows"]:
@@ -186,7 +186,7 @@ def render(rep, out=None):
             if r.get("cause"):
                 tail += " / " + str(r["cause"])
             p("%-28s %-34s %-10s %-14s %-10s %s" % (str(r.get("scene"))[:28], str(r.get("check"))[:34], r.get("status"),
-                                                    str(r.get("measured"))[:14], str(r.get("expected"))[:10], tail[:160]))
+                                                    str(r.get("measured"))[:14], str(r.get("expected"))[:10], tail[:160]))  # cut-ok: terminal display
     for s in rep.get("scenes") or []:
         p("  %-26s origin %-8s ticks %s/%s in %s frames; stage %s ms, ticks %s ms, judge %s ms" % (
             s.get("scene"), s.get("origin"), s.get("ticksStepped"), s.get("ticksWanted"), s.get("frames"),

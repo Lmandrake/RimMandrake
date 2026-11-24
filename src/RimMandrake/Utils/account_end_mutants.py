@@ -99,7 +99,7 @@ def main():
     from concurrent.futures import ThreadPoolExecutor
     rc, out = run()
     if rc != 0 or "selftest_account_end: PASS" not in out:
-        print("CONTROL RED: the harness proves nothing:\n" + out[-800:])
+        print("CONTROL RED: the harness proves nothing:\n" + out[-800:])  # cut-ok: test diagnostic display
         return 3
     bad = 0
     with ThreadPoolExecutor(4) as ex:     # each run has its own copy and its own scratch dirs
@@ -109,7 +109,7 @@ def main():
             ok = rc == 1 and bool(named)
             bad += not ok
             print("%s %s: %s -> %s" % ("caught " if ok else "MISSED ", p[0], p[2].strip().splitlines()[0][:70],
-                                       named[0][6:150] if named else (out[-160:] if rc is None else "%d other FAIL(s): %s" % (
+                                       named[0][6:150] if named else (out[-160:] if rc is None else "%d other FAIL(s): %s" % (  # cut-ok: test diagnostic display
                                            len(fails), fails[:1]))))
     print("account_end_mutants: %s (%d of %d caught, control green)" % ("FAIL" if bad else "PASS", len(PLANTS) - bad, len(PLANTS)))
     return 1 if bad else 0

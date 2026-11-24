@@ -238,7 +238,7 @@ def reading(spec, runs):
         w = outcome(d, spec)[0]
         out.update(count="spoiled", rows="SPOILED", passes=False)
         out["why"].append("its last run was spoiled (%s%s) and no valid run stands: run that scene again" % (
-            w, ": %s" % str(d.get("spoiled_by"))[:200] if w == ENVIRONMENT else ""))
+            w, ": %s" % str(d.get("spoiled_by")) if w == ENVIRONMENT else ""))
     # a run that nobody classed, or whose words cannot be read, holds the scene under any later PASS, whatever its visit
     for word, cnt in ((UNRESOLVED, "unresolved"), (REFUSED, "refused")):
         for v, r in runs:
