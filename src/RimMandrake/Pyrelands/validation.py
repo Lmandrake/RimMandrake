@@ -4500,6 +4500,21 @@ def _wildlife_shield(t):
             _note(t, "burn line shield: harm to pawns not the player's, resumed past", got)
 
 
+def _walk_steady_colonists(t):
+    """SITE (visit 8, 2026-11-24, his full list): a generated colonist brought GR_FeatherdustAddiction and a heart artery
+    blockage from other mods and went down twice in the third week, so the later parts could not be read. The walk's colonists
+    start with no ailment they were generated with; whatever they take afterwards is the walk's, and still stops it."""
+    r = t.bridge_call("jawa/list_pawns", limit=1000)
+    if not _live(t):
+        return
+    got = {}
+    for q in _ok(r, "list_pawns").get("pawns") or []:
+        if q.get("intelligence") == "Humanlike" and q.get("isPlayer") and not q.get("dead"):
+            h = t.bridge_call("jawa/pawn_health", pawn=q["id"], action="healAll", confirmDestructive=True)
+            got[q["id"]] = (h or {}).get("removed") if (h or {}).get("success") else "refused: %r" % (h or {}).get("message")
+    _note(t, "walk: ailments the colonists were generated with, taken off", got)
+
+
 @suite.chain("walk_season")
 @_teardown(fire=True)
 def walk_season(t):
@@ -4511,6 +4526,7 @@ def walk_season(t):
     the harvest from a scar, the sowing on a fresh burn and on watered ash, and the shelter with a furnace-beast
     through ash fall (the colony's own work over the two weeks; his Stage 8 walk reads them). Every walk save is kept."""
     with _walk_shield(t):
+        _walk_steady_colonists(t)
         with _comp(t, "walk_reload_keeps_the_state"):
             if os.environ.get("PYRE_WALK") != "1":
                 _unmeasured(t, "the two-week walk runs only with PYRE_WALK=1 (full list, Stage 6)")

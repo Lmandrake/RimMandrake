@@ -19,3 +19,7 @@ Detached BENCH helper, item RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT
 - 23:10 walk_master_off_then_on on the tier: real PASS; planted left_on FAIL, left_off FAIL. walk_gate_off_then_on planted (gate ignored) FAIL. Roster plant and burn_line3 running.
 - 23:40 tier9: roster plant FAIL, animal_census PASS, burn_line3 4/4 PASS. 23:45 his full list (315 active, restore-full) on ArchBig, launching.
 - 00:20 full list up (bridge after ~18 min under load; ArchBig pid 47988), full-list site NS_Pyrelands_site_1_417df172fdb5_visit8full (tile 193); gate B above; sc_walk started.
+- 00:33 sc_walk run 1 on his full list: every part UNMEASURED: SITE. The full-list site (tile 193) holds no water cell at all (evidence/script_need_peek.log), so colonists died of Dubs Bad Hygiene dehydration and one of a bite. Site rebuilt with water required.
+- 00:45 site NS_Pyrelands_site_1_417df172fdb5_visit8full2 (tile 23589, 58 shallow water cells), gate B above; sc_walk run 2 started.
+- 01:10 sc_walk run 2 still in its first week.
+- 01:47 sc_walk run 2: walk_reload_keeps_the_state PASS, walk_second_pass_and_switches PASS (two weeks, 3 colonists alive); walk_gate/roster/roof UNMEASURED: colonist Gutierrez went down twice from GR_FeatherdustAddiction and heart artery blockage he was generated with (SITE); later parts still running. Scene repair: the walk's colonists start with no generated ailment.
