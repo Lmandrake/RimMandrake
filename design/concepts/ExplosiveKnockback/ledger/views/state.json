@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "6872654303ea1f45518be40b27ee3d831a5aac7f25346e100b417e0b7f27465c",
+  "body_sha256": "a43657f009a5f6a6e8a127d783f3957312c9e6b57a20f7d991d66c9f46f7d5dd",
   "reducer": 1,
   "shards": {
    "BACKFILL": 341359,
@@ -20,7 +20,7 @@
    "HOLDER.run-1795485747": 1414,
    "HOLDER.run-1795487290": 2197,
    "HOLDER.run-1795510833": 4164,
-   "HOLDER.run-1795525975": 290,
+   "HOLDER.run-1795525975": 3126,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -681,11 +681,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795510833",
-   "done": "Visit 6: 56 of 56 PASS on e089dc2573; fixes 1acc05e0ed, d61b1e2b31, e089dc2573; walk save EK_VISIT6_WALK_20261124_C",
-   "next": "Steward reads visit 6, reads the three fixes once, deploys the release build to ArchBig, advances to pre_human",
-   "ruled_out": "closed_containers_control FAIL was my own earlier steel on the landing cell; walk control FAIL was the two-cell shelf miscount",
-   "ts": "2026-11-24T13:03:16Z"
+   "by": "HOLDER.run-1795525975",
+   "done": "Steward read visit 6: 56 of 56 PASS, no mod-wrong line, no undecided bar; three mod fixes read once, sound (fix_reviews.jsonl); T_SITUATION_MAP_OFFLINE red seen; pipeline fixes 599234a5da and 9f802d6866",
+   "next": "Let the tick deploy the walk build to ArchBig (autodeploy), then advance to pre_human with steward_confirms",
+   "ruled_out": "The rebound is no miss: bar_lists_map reads 70 percent of the cells left. A deploy onto a running ArchBig writes no DLL (locked); an r+b open does not show the lock",
+   "ts": "2026-11-24T15:55:33Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -881,7 +881,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 690,
+  "events": 698,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2487,7 +2487,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-24T13:18:14Z",
+   "last": "2026-11-24T15:55:33Z",
    "lease": "run-1795525975",
    "released": false,
    "token": 25

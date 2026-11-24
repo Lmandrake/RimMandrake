@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":38533,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":290,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=0c314d64a7a885b07d90082cc93503b70712d52cae801193945e7e383ae60c21 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":38533,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=f0c478008a69be1ed7ca4133f89dd4fb7cfc65e72318a0cf93c0ef23956afcac -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 690 events in 21 shards · reducer 1
-holder lease run-1795525975, token 25, last active 2026-11-24T13:18:14Z
+version 0.1.0 · stage in_game · 698 events in 21 shards · reducer 1
+holder lease run-1795525975, token 25, last active 2026-11-24T15:55:33Z
 holder session e33fe682-2992-493a-b294-ef9eeaf3bf6b, context 635144 of ceiling 400000 — ROTATE DUE
 
-## Last checkpoint (HOLDER.run-1795510833, 2026-11-24T13:03:16Z)
-- done: Visit 6: 56 of 56 PASS on e089dc2573; fixes 1acc05e0ed, d61b1e2b31, e089dc2573; walk save EK_VISIT6_WALK_20261124_C
-- next: Steward reads visit 6, reads the three fixes once, deploys the release build to ArchBig, advances to pre_human
-- ruled out: closed_containers_control FAIL was my own earlier steel on the landing cell; walk control FAIL was the two-cell shelf miscount
+## Last checkpoint (HOLDER.run-1795525975, 2026-11-24T15:55:33Z)
+- done: Steward read visit 6: 56 of 56 PASS, no mod-wrong line, no undecided bar; three mod fixes read once, sound (fix_reviews.jsonl); T_SITUATION_MAP_OFFLINE red seen; pipeline fixes 599234a5da and 9f802d6866
+- next: Let the tick deploy the walk build to ArchBig (autodeploy), then advance to pre_human with steward_confirms
+- ruled out: The rebound is no miss: bar_lists_map reads 70 percent of the cells left. A deploy onto a running ArchBig writes no DLL (locked); an r+b open does not show the lock
 
 ## Open findings (43)
 (claimed fixes, awaiting a judge, on one line each with the oldest 39 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
@@ -237,6 +237,6 @@ spend recorded: USD 178.61, 171672717 tokens
 - tests: 106, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 1 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 39 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 690 events (views/history.md; never read whole)
+- the full history: 698 events (views/history.md; never read whole)
 
-cursor: t=2026-11-24T13:18:14Z.1795526294463865118 (modledger.py since --mod ExplosiveKnockback t=2026-11-24T13:18:14Z.1795526294463865118 prints what changed after this packet)
+cursor: t=2026-11-24T15:55:33Z.1795535733211286123 (modledger.py since --mod ExplosiveKnockback t=2026-11-24T15:55:33Z.1795535733211286123 prints what changed after this packet)

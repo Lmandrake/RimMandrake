@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":38533,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":290,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=0333aa2f7b8d7cd3f6273a17d79b1ba4766ce6afb25cc7ddd1e207800ea56824 -->
-# ExplosiveKnockback — mod ledger history (690 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":38533,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=0c4881de7f91dcde158ae09605ff88474d5fc42dd3e1615d2a0544d89fd9d769 -->
+# ExplosiveKnockback — mod ledger history (698 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -691,3 +691,11 @@
 - 2026-11-24T13:14:46Z DISPATCH#109 lease.grant lease v0.1.0: 
 - 2026-11-24T13:14:48Z DISPATCH#110 run.start run v0.1.0: 
 - 2026-11-24T13:18:14Z HOLDER.run-1795525975#1 lease.renew lease v0.1.0: 
+- 2026-11-24T13:38:12Z HOLDER.run-1795525975#2 lease.renew lease v0.1.0: 
+- 2026-11-24T13:58:13Z HOLDER.run-1795525975#3 lease.renew lease v0.1.0: 
+- 2026-11-24T14:18:22Z HOLDER.run-1795525975#4 lease.renew lease v0.1.0: 
+- 2026-11-24T14:38:23Z HOLDER.run-1795525975#5 lease.renew lease v0.1.0: 
+- 2026-11-24T14:58:15Z HOLDER.run-1795525975#6 lease.renew lease v0.1.0: 
+- 2026-11-24T15:18:17Z HOLDER.run-1795525975#7 lease.renew lease v0.1.0: 
+- 2026-11-24T15:38:18Z HOLDER.run-1795525975#8 lease.renew lease v0.1.0: 
+- 2026-11-24T15:55:33Z HOLDER.run-1795525975#9 session.checkpoint session v0.1.0: 
