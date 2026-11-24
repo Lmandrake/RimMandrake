@@ -1,0 +1,1 @@
+A count of runs spent must skip book entries that launched nothing (a program's own act with a landed line and no unit): FlowWorks read 12 of 12 steward runs on 10 launched (2026-11-23, maturation_autonomy.is_run)
