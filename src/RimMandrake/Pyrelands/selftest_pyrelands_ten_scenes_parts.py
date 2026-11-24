@@ -38,7 +38,7 @@ SCENES = (
      ("skies_noon", "_load_site_save(", "_ten_noon_hour(", "ASHFALL", "CINDERFALL", "BLACKRAIN", '"Rain"',
       "wash_verdict(", "screenshot")),
     ("sc_grass_regreens", "embergrass_regrow", False,
-     ("RM_FE_Plant_EmberGrass", "Plant_Grass", "WaterShallow", "burnTick", "watered", "jawa/inspect_string", "burst")),
+     ("RM_FE_Plant_EmberGrass", "Plant_Grass", "WaterShallow", "burnTick", "watered", "jawa/thing_read", "burst")),
     ("sc_furnace_bed", "furnace_sleep", False,
      ("RM_FurnaceBeast", "Muffalo", "ProbeSleep", "health=True", "burn_injuries(", "1,1")),
     ("sc_flamefang_venom", "flamefang_venom", False,

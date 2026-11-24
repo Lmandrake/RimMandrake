@@ -102,7 +102,7 @@ namespace JawaBench.BridgeTools
         /// available.</summary>
         internal static readonly Dictionary<string, string> CampaignDenied = new Dictionary<string, string>(StringComparer.Ordinal)
         {
-            ["jawa/static_call"] = FDebugInvoke, ["jawa/comp_set"] = FDebugInvoke, ["jawa/debug_actions"] = FDebugInvoke, ["jawa/debug_action_menu"] = FDebugInvoke, ["jawa/debug_action_yielders"] = FDebugInvoke,
+            ["jawa/static_call"] = FDebugInvoke, ["jawa/comp_set"] = FDebugInvoke, ["jawa/map_comp_set"] = FDebugInvoke, ["jawa/debug_actions"] = FDebugInvoke, ["jawa/debug_action_menu"] = FDebugInvoke, ["jawa/debug_action_yielders"] = FDebugInvoke,
             ["jawa/debug_settings"] = FDebugInvoke, ["jawa/hot_reload_defs"] = FDebugInvoke, ["jawa/stat_cache_bust"] = FDebugInvoke,
             ["jawa/tps_test_block"] = FTestOnly, ["jawa/tps_test_attribution"] = FTestOnly,
             ["jawa/playtest_start"] = FTestOnly, ["jawa/playtest_collect"] = FTestOnly, ["jawa/playtest_status"] = FTestOnly,

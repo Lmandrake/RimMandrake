@@ -1,0 +1,28 @@
+installed mods discovered: 1378
+
+tier 'pyrelands': PYRELANDS_NORTHSTAR_TRIAL_1: the composed Baroque Biomes + the Utinni fauna patch closure for the Pyrelands north-star trial, with biome transitions, Map Designer, flora injectors and the Tribes mod kept off the list. mandrake.rm.patches rides along so metal, stone and gem walls do not burn (owner 2026-11-08, ca4586309b).
+
+    1  brrainz.harmony                              Harmony
+    2  ludeon.rimworld                              Ludeon.RimWorld
+    3  ludeon.rimworld.royalty                      Ludeon.RimWorld.Royalty
+    4  ludeon.rimworld.ideology                     Ludeon.RimWorld.Ideology
+    5  ludeon.rimworld.biotech                      Ludeon.RimWorld.Biotech
+    6  ludeon.rimworld.anomaly                      Ludeon.RimWorld.Anomaly
+    7  ludeon.rimworld.odyssey                      Ludeon.RimWorld.Odyssey
+    8  brrainz.rimbridgeserver                      RimBridgeServer
+    9  owlchemist.cherrypicker                      Cherry Picker
+   10  ray1203.simplecamerasetting                  SimpleCameraSetting
+   11  mandrake.rm.flowworks                        RimMandrake: FlowWorks
+   12  mandrake.rm.hugethings                       RimMandrake: Huge Things
+   13  mandrake.rm.luminouspigment                  RimMandrake: Luminous Pigment
+   14  mandrake.rm.biomes                           RimMandrake: Baroque Biomes
+   15  mandrake.rm.patches                          RimMandrake Patches
+   16  mandrake.rm.weathersuite                     RimMandrake: SW — Weather Suite
+   17  mandrake.rsw.swbestiary                      RimMandrake: SW — Bestiary
+   18  mandrake.rut.patches                         RimUtinni Patches (Jawa campaign)
+
+  18 mods, down from 315.
+
+  backed up  -> deployed/config/game_b/ModsConfig.before-tier-pyrelands.xml
+  wrote      -> ModsConfig.xml (18 active)
+  restore with: python src/RimMandrake/Utils/modset_builder.py --restore

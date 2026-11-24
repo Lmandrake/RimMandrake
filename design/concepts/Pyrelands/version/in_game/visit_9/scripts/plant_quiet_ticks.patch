@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs b/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs
+index 246636f9eb..326120e8f1 100644
+--- a/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs
++++ b/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs
+@@ -40,7 +40,7 @@ namespace RimMandrake.Pyrelands
+         /// <summary>Sheet §5: "The burn exists somewhere on the biome, always;
+         /// only its address changes." Two quiet days is the grace period before
+         /// this component lights the next address itself. [INVENTED]</summary>
+-        public const int StandingBurnQuietTicks = 120000;
++        public const int StandingBurnQuietTicks = 60000;
+ 
+         /// <summary>How many cells are sampled looking for somewhere lawful to
+         /// re-seed the standing burn before giving up until the next attempt.</summary>

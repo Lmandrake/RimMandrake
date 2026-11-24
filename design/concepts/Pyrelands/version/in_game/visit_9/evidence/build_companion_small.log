@@ -1,0 +1,40 @@
+canonical saves: list is current
+*** companion sources are DIRTY in /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_NINE.det:
+   M src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchProofHookTools.cs
+   M src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSafetyCore.cs
+staging src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBench.BridgeTools.csproj -> D:\ClaudeWork\rimmandrake\build\JawaBench
+  src/RimMandrake/bridgetools/JawaBench.BridgeTools/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\JawaBench\src\RimMandrake\bridgetools\JawaBench.BridgeTools\JawaBench.BridgeTools.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  JawaBench.BridgeTools -> D:\ClaudeWork\rimmandrake\build\JawaBench\src\RimMandrake\bridgetools\artifacts\BridgeTools\JawaBench\JawaBench.BridgeTools.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:10.42
+
+bundle contents (/home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_NINE.det/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench):
+  JawaBench.BridgeTools.dll                 5505536 B
+
+OK: bundle ships only JawaBench.BridgeTools.dll
+source hash embedded: 2f6fcda8b5174d74 (companion_identity.py checks it on every lane)
+
+*** GM TOOLS INCLUDED - this build can act on the player. ***
+  jawa/fire_incident       in DLL
+  jawa/send_letter         in DLL
+
+closure_scan: clean - 716 fields on 2 shared types, none names an optional mod's type
+deploy target: ArchSmall, /mnt/d/ClaudeWork/rimmandrake/instances/b/game/BridgeTools/JawaBench
+
+deploy plan
+  from : /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_NINE.det/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+  to   : /mnt/d/ClaudeWork/rimmandrake/instances/b/game/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+  state: *** DRIFT *** same commit (fb3f685008ab), DIFFERENT BYTES.
+         One commit builds different bytes when the sources are dirty, --gm differs, or a
+         reference-dir variable changed; otherwise someone hand-edited the deployed DLL or it
+         is from another checkout. Investigate before overwriting -- --apply replaces it.
+  readback sha256 7b23f10cecc8ea67 matches the verified build
+
+deployed. RimBridgeServer only discovers companions at startup, so this does nothing until RimWorld restarts.

@@ -228,6 +228,8 @@ class _FakeGame(object):
             return {"success": True, "sizeX": 100, "sizeZ": 100, "mapBiome": "RM_Pyrelands"}
         if tool == "jawa/static_call" and kw.get("method") == "RearmOpeningFront":
             return {"success": True, "result": "1"}
+        if tool == "jawa/map_comp_set":   # _stage_quiet puts the quiet counter near its end
+            return {"success": True, "after": kw.get("value")}
         if tool == "jawa/mod_settings_field" and kw.get("action") == "get":   # the off-control reads what it holds
             return {"success": True, "value": str(self.settings.get(kw.get("field"), True))}
         return {"success": True}
@@ -461,7 +463,7 @@ def fire_reader_checks():
         g, res = walk("unlit")
         out.append(("walk, real reader: a re-arm that lights nothing is UNMEASURED before the day is spent",
                     res.get("burn_line_walks_hourly") == "UNMEASURED"
-                    and g.tick - g.rearm_tick == V.OPENING_WAIT_TICKS + V.OFF_CONTROL_WAIT_TICKS))   # the off control's wait only (four reseed retries past the quiet window, visit 4)
+                    and g.tick - g.rearm_tick == V.OPENING_WAIT_TICKS + 2 * V.BURN_WATCH_TICKS + V.OFF_CONTROL_WAIT_TICKS))   # the off control's wait only (the staged quiet, then four reseed retries)
         out.append(("walk, real reader: rows with no cell are UNMEASURED, never 0 fires",
                     walk("noxz")[1].get("burn_line_walks_hourly") == "UNMEASURED"))
         out.append(("off control, real reader: fire with burnLineEnabled off FAILS",

@@ -1,0 +1,9 @@
+game 693301
+grazer RSW_Zeer RSW_Zeer102440 {'success': True, 'action': 'need', 'notes': ['set Food to 0.08'], 'needs': [{'need': 'Food', 'level': 0.359999985, 'pct': 0.08}, {'need': 'Rest', 'level': 0.94
+grazer RSW_Nuna RSW_Nuna102441 {'success': True, 'action': 'need', 'notes': ['set Food to 0.08'], 'needs': [{'need': 'Food', 'level': 0.048, 'pct': 0.08}, {'need': 'Rest', 'level': 0.9039332,
+grazer RSW_Orray RSW_Orray102442 {'success': True, 'action': 'need', 'notes': ['set Food to 0.08'], 'needs': [{'need': 'Food', 'level': 0.16, 'pct': 0.08}, {'need': 'Rest', 'level': 0.9681472, 
+grazer RM_Ashwallow RM_Ashwallow102443 {'success': True, 'action': 'need', 'notes': ['set Food to 0.08'], 'needs': [{'need': 'Food', 'level': 0.103999995, 'pct': 0.08}, {'need': 'Rest', 'level': 0.99
+START {'dry': (16, [(151, 223, '1', '0'), (151, 224, '1', '0')]), 'watered': (16, [(158, 223, '1', '0'), (158, 224, '1', '0')]), 'vanilla': (16, [(165, 223, '1', '0'), (165, 224, '1', '0')])}
+END counts {'dry': 16, 'watered': 16, 'vanilla': 16} growth {'dry': [(151, 223, '1', '0')], 'watered': [(158, 223, '1', '0')], 'vanilla': [(165, 223, '1', '0')]} pawn-samples within the box {'RM_Sytheclaw': 25, 'RSW_Gizka': 2, 'RSW_Zeer': 45, 'RSW_Nuna': 11, 'RSW_Orray': 11, 'RM_Ashwallow': 2}
+[bridge split] 47.9 s wall: load 0.0 / ticks 19.3 / reads 1.3 / other 9.9 / outside calls 17.5 s
+[bridge split] WARN 174 calls of jawa/thing_read (8.3 s): batch them

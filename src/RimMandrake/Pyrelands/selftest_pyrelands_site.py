@@ -613,7 +613,7 @@ def test_manifests_match_suite():
     w = re.search(r"BurnWatchIntervalTicks\s*=\s*([\d_]+)", cs)
     check("burn_line arm constants == PyrelandsTuning (quiet/watch)",
           bool(q and w) and int(q.group(1).replace("_", "")) == v.BURN_QUIET_TICKS
-          and int(w.group(1).replace("_", "")) == v.BURN_WATCH_TICKS and v.BURN_LINE_WAIT_TICKS > v.BURN_QUIET_TICKS)
+          and int(w.group(1).replace("_", "")) == v.BURN_WATCH_TICKS and v.BURN_STAGED_WAIT_TICKS > 4 * v.BURN_RETRY_TICKS)
     ow = re.search(r"OpeningFrontWindowTicks\s*=\s*([\d_]+)", cs)
     check("opening_front old-save window == PyrelandsTuning.OpeningFrontWindowTicks",
           bool(ow) and int(ow.group(1).replace("_", "")) == v.OPENING_WINDOW)
@@ -1125,7 +1125,7 @@ def test_probe_skips_rock_and_food_and_clock():
     src = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
     waits = [int(n) for n in re.findall(r"_wait\(t, (\d+)\)", src)]
     chain_regrow = v.REGROW_BURN_TICKS + 7 * S.TICKS_PER_DAY      # embergrass_regrow: 5000 + 3 d + 4 d
-    longest = max(waits + [v.BURN_LINE_WAIT_TICKS, chain_regrow])
+    longest = max(waits + [v.BURN_STAGED_WAIT_TICKS, chain_regrow])
     check("FOOD_RUN_TICKS covers the longest declared chain", S.FOOD_RUN_TICKS >= longest, (S.FOOD_RUN_TICKS, longest))
     packs = S.food_packs_needed()
     check("food covers 6 colonists x 2 packs x (8 days + 1 spare)", packs == 6 * 2 * 9, packs)

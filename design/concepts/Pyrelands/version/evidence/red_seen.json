@@ -118,17 +118,17 @@
   "test_blob": "95a5114462e102d33764e9b9e93d103f792a4178"
  },
  "T_SITE": {
-  "at": "2026-11-23T12:31:32Z",
+  "at": "2026-11-24T20:30:07Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
   "last": "FAIL: 1 failure(s)",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/northstar_site.py b/src/RimMandrake/Pyrelands/northstar_site.py\nindex 3a2ca63812..fe442b8218 100644\n--- a/src/RimMandrake/Pyrelands/northstar_site.py\n+++ b/src/RimMandrake/Pyrelands/northstar_site.py\n@@ -624,7 +624,7 @@ def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep, map_id=None, i\n     r = None\n     try:\n         if ignore_mods:\n-            r = s.call(\"rimworld/load_game\", saveName=name, ignoreModCompatibility=True)\n+            r = s.call(\"rimworld/load_game\", saveName=name)\n         else:\n             r = s.call(\"rimworld/load_game\", saveName=name)\n     except Exception as ex:\n",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs b/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs\nindex 246636f9eb..326120e8f1 100644\n--- a/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs\n+++ b/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs\n@@ -40,7 +40,7 @@ namespace RimMandrake.Pyrelands\n         /// <summary>Sheet \u00a75: \"The burn exists somewhere on the biome, always;\n         /// only its address changes.\" Two quiet days is the grace period before\n         /// this component lights the next address itself. [INVENTED]</summary>\n-        public const int StandingBurnQuietTicks = 120000;\n+        public const int StandingBurnQuietTicks = 60000;\n \n         /// <summary>How many cells are sampled looking for somewhere lawful to\n         /// re-seed the standing burn before giving up until the next attempt.</summary>\n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/northstar_site.py"
+   "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs"
   ],
-  "patch_sha": "5e3c0cd5ce8ad960",
+  "patch_sha": "0e2a35fc8df1b95f",
   "rc": 1,
-  "test_blob": "1967442b33b485b1cd7cf5a6ec7189aef3351cd0"
+  "test_blob": "ffbb55b3e121e8b21d453973da635f493df69d96"
  },
  "T_VENOM_STAGING": {
   "at": "2026-11-23T10:09:23Z",

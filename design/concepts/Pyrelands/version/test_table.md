@@ -31,7 +31,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `three_skies` | tree | 6 | sc_three_skies | T_BURN_ECOLOGY, P_ashfall_weather_accumulation, P_ashfall_drifts, P_blackrain | all |
 | `no_ordinary_rain` | tree | 6 | T_DEFS_OFFLINE, sc_no_rain | - | all |
 | `ash_fertility_probe` | tree | 4-5 | T_ASH_PROBE_OFFLINE | T_FUZZ, sc_burn_compounds | all |
-| `walk_season_on_the_pyre` | tree | 6 | sc_reload_keeps_the_burn, sc_fire_sense, sc_full_list_smoke | T_WALK_SMALL, T_FUZZ, sc_burn_line_walks, sc_scorchfruit, sc_burn_compounds, sc_ash_watered, sc_furnace, LOOK_STAGE8 | all |
+| `walk_season_on_the_pyre` | tree | 6 | sc_reload_keeps_the_burn, sc_fire_sense | T_WALK_SMALL, T_FUZZ, sc_burn_line_walks, sc_scorchfruit, sc_burn_compounds, sc_ash_watered, sc_furnace, LOOK_STAGE8 | all |
 | `firefoam_sprayer_reaches_the_fruit` | tree | 6 | sc_firefoam_sprayer | T_FIREFOAM_SCENE, P_firefoam_aim | all |
 | `sand_shovel_yields_glass_sand` | tree | 6 | sc_sand_shovel | T_DEFS_OFFLINE | all |
 | `fire_rite_hook_silent_alone` | tree | 6 | sc_rite_hook_alone | - | all |
@@ -104,7 +104,6 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `sc_no_rain` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: no_ordinary_rain | live: this run is offline only; entry exists in validation.py |
 | `sc_reload_keeps_the_burn` | live_minimal | 6 | `src/RimMandrake/Pyrelands/walk_small_live.py` :: reload_keeps_the_burn | UNRUN |
 | `sc_fire_sense` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: fire_sense | UNRUN on this build |
-| `sc_full_list_smoke` | live_full | 6 | `src/RimMandrake/Pyrelands/walk_small_live.py` :: full_list_smoke | UNRUN |
 | `sc_firefoam_sprayer` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: firefoam_sprayer | live: this run is offline only; entry exists in validation.py |
 | `sc_sand_shovel` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: sand_shovel | live: this run is offline only; entry exists in validation.py |
 | `sc_rite_hook_alone` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: rite_hook_alone | live: this run is offline only; entry exists in validation.py |

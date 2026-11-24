@@ -41,8 +41,8 @@ SPAN_DAYS = 1.0
 CLAUSES = 5
 DAY = 60000
 # Owner, 2026-11-24 ("go"): full-list testing is retired until the integration phase. No evidence buys a full-list test now.
-# FULL_LEFT names each test that still stands on it, with why; nothing else may. It empties with that reason.
-FULL_LEFT = {("Pyrelands", "sc_full_list_smoke"): "Pyrelands visit 9 was live when the owner ruled; it leaves the table when that visit has ended"}
+# FULL_LEFT names each test that still stands on it, with why; nothing else may. Empty since Pyrelands visit 9 ended.
+FULL_LEFT = {}
 FULL_REPAIR = ("run the same scene on the mod's small list (kind live_minimal, its tier in small_list.json), or take it out of the table "
                "and write its claim on design/RimMandrake/integration_phase_list.md (design/RimMandrake/standing_rulings.md "
                "§Mod development runs on small lists)")

@@ -292,11 +292,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.89,
+    "seconds": 5.0,
     "last": "PASS: 0 failure(s)",
-    "at": "2026-11-24T16:45:36Z",
+    "at": "2026-11-24T20:29:34Z",
     "result": "PASS",
-    "build": "5cde1bd8cc6afecc9102",
+    "build": "4d7bda9c8b234e4a35b1",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
     "margins": []
    }
@@ -314,11 +314,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.06,
+    "seconds": 0.03,
     "last": "selftest_pyrelands_fruit_clear: PASS",
-    "at": "2026-11-24T16:45:36Z",
+    "at": "2026-11-24T20:29:34Z",
     "result": "PASS",
-    "build": "3d60fa8156119d1042c5",
+    "build": "3bed2d1f916e7aed6536",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py",
     "margins": []
    }
@@ -336,11 +336,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.44,
+    "seconds": 0.31,
     "last": "selftest_pyrelands_firefoam_scene: PASS  cases {'geometry': 1, 'verdicts': 36, 'staging': 396, 'timelines': 1352, 'challenges': 3}",
-    "at": "2026-11-24T16:45:36Z",
+    "at": "2026-11-24T20:29:35Z",
     "result": "PASS",
-    "build": "2c41743e6d050d35e47f",
+    "build": "d90d5692ecebf4351981",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py",
     "margins": []
    }
@@ -590,7 +590,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "burn_line",
-   "observes": "burning ground whose centre moves, a growing scorched trail, and a relight in open grass after it dies; 24 hourly captures, each at its asserted hour, show grass fire moving across the map with the black trail behind it, and a judge shown them and the whole-map day-end captures confirms a natural grass fire that moves, not a flood over the whole map and not a fire that stands still; the burned share of open plantable ground grows over the four days and is never most of the map (at most half) at any day end",
+   "observes": "burning ground whose centre moves, a growing scorched trail, and a relight in open grass after it dies; 8 hourly captures, each at its asserted hour, show grass fire moving across the map with the black trail behind it, and a judge shown them and the whole-map day-end captures confirms a natural grass fire that moves, not a flood over the whole map and not a fire that stands still; the burned share of open plantable ground grows over the four days and is never most of the map (at most half) at any day end",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -611,7 +611,7 @@
     ],
     "by": "testq_blocks.py"
    },
-   "cheaper_why": "the bar is a fire that walks, dies and relights over days: the relight clock waits two quiet days, so no scene under a day reaches it, and the burned share is read at four day ends with the wind on and at four with it off (the control). The kernel and the burn model are already decided offline (T_FUZZ, T_BURN_ECOLOGY); vanilla's fire, the biome's plants and the live wind meet only in a game. Tier list, one map."
+   "cheaper_why": "only the burned share plays days, four with the wind on and four with it off: what the fire spreads over a few days is the claim, and no bridge call stages a spread the fire did not make. The relight, the eight-hour walk and the switch control are staged and need about 43,000 ticks (chains burn_line_walk and burn_line_off_control, in burn_line too)."
   },
   "sc_ash_watered": {
    "id": "sc_ash_watered",
@@ -676,7 +676,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "embergrass_regrow",
-   "observes": "the burned patch is largely green again by day 7, and the day 3 and day 7 captures show green grass standing, not grey ash over grass the census counts unseen; the census reads open plantable ground carpeted (validation.py grass_cover, bar pyre_grass_chokes_ground), ember grass and quick grass only; ember grass on dry ash grows per day at least its own vanilla rate, the watered patch grows faster than the dry one, and bursts land on watered cells only",
+   "observes": "the burned patch is largely green again by day 7, and the day 3 and day 7 captures show green grass standing, not grey ash over grass the census counts unseen; the census reads open plantable ground carpeted (validation.py grass_cover, bar pyre_grass_chokes_ground), ember grass and quick grass only; in one staged growth step ember grass on dry ash grows at least at its own vanilla rate, the watered patch grows faster than the dry one, and bursts land on watered cells only",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -697,7 +697,7 @@
     ],
     "by": "testq_blocks.py"
    },
-   "cheaper_why": "regrowth is the plants' own growth over days and the bar is what the player sees on day 3 and day 7, so a shorter scene shows no green. The watered patch against the dry one is read in the same days. Offline tests fix the rates (T_LINT, T_BURN_ECOLOGY), not the standing grass. Tier list, one map."
+   "cheaper_why": "only the burned patch's re-greening plays its seven days: the bar is that a scar is largely green within about a week by the plants' own spread, and a patch staged green would show nothing. The sown patches (dry, watered, vanilla, bursts) are one staged growth step of about 16,000 ticks (chain regrow_growth, in embergrass_regrow too)."
   },
   "sc_scorchfruit": {
    "id": "sc_scorchfruit",
@@ -1014,33 +1014,6 @@
     ],
     "by": "testq_blocks.py"
    }
-  },
-  "sc_full_list_smoke": {
-   "id": "sc_full_list_smoke",
-   "kind": "live_full",
-   "stage": "6",
-   "file": "src/RimMandrake/Pyrelands/walk_small_live.py",
-   "entry": "full_list_smoke",
-   "observes": "fire burns at every hour, its centre has moved at least 3 cells, and no error since the mark names Pyrelands",
-   "claims": [
-    "on his full list one lit fire walks as a front and Pyrelands writes no error"
-   ],
-   "reads": [
-    "src/RimMandrake/Pyrelands/walk_small_live.py",
-    "src/RimMandrake/Pyrelands/validation.py",
-    "design/concepts/Pyrelands/scenes.json"
-   ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains full_list_smoke",
-   "why_game": "his whole list runs only in a game",
-   "why_full_list": "the one claim is that his full list does not break the burn: a patch of another mod on fire, plants or weather shows only where that mod is loaded",
-   "cheaper_why": "no smaller list can hold the other mods, and no offline test loads them; three game hours of one lit fire is the shortest read of a front that moves, and too short for thirst, hunger or an arrival to spoil it",
-   "entry_exists": true,
-   "item": "RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS",
-   "runs_today": {
-    "ran": false,
-    "why": "UNRUN: replaced sc_walk's full-list play on 2026-11-24; offline T_WALK_SMALL (every planted fault FAILs)"
-   },
-   "command_note": "full list; run it last, in one load"
   },
   "sc_firefoam_sprayer": {
    "id": "sc_firefoam_sprayer",
@@ -1718,12 +1691,12 @@
    "item": "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS",
    "runs_today": {
     "ran": true,
-    "rc": 0,
-    "seconds": 7.6,
-    "last": "PASS: 0 of 18 checks failed",
-    "at": "2026-11-24T16:45:45Z",
-    "result": "PASS",
-    "build": "0899364e3f871dc1b126",
+    "rc": 1,
+    "seconds": 3.65,
+    "last": "FAIL: 1 of 18 checks failed",
+    "at": "2026-11-24T20:29:39Z",
+    "result": "FAIL",
+    "build": "fa6aa3dce96199e1af62",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
     "margins": []
    }
@@ -1789,11 +1762,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 7.2,
+    "seconds": 6.15,
     "last": "selftest_pyrelands_venom_staging: 0 of 46 checks failed",
-    "at": "2026-11-24T16:45:52Z",
+    "at": "2026-11-24T20:29:45Z",
     "result": "PASS",
-    "build": "63dbc27616af6d8504c7",
+    "build": "18873739565e37b7b743",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
     "margins": []
    }
@@ -1839,11 +1812,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.18,
-    "last": "selftest_pyrelands_walk_small: 0 of 62 checks failed",
-    "at": "2026-11-24T16:45:52Z",
+    "seconds": 0.1,
+    "last": "selftest_pyrelands_walk_small: 0 of 61 checks failed",
+    "at": "2026-11-24T20:29:45Z",
     "result": "PASS",
-    "build": "a7460f5994fe43065baa",
+    "build": "b1fb36fe123ef0aa9d8d",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_walk_small.py",
     "margins": []
    }
@@ -2178,8 +2151,7 @@
    "proves_at": "6",
    "decides": [
     "sc_reload_keeps_the_burn",
-    "sc_fire_sense",
-    "sc_full_list_smoke"
+    "sc_fire_sense"
    ],
    "supports": [
     "T_WALK_SMALL",

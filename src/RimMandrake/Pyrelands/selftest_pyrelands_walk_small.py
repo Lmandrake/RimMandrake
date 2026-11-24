@@ -235,13 +235,13 @@ for c in (R, F):
 sc = dict((s["id"], s) for s in json.load(open(os.path.join(CONCEPT, "scenes.json"), encoding="utf-8"))["scenes"])
 tt = json.load(open(os.path.join(CONCEPT, "version", "test_table.json"), encoding="utf-8"))
 bar = [b for b in tt["bars"] if b["id"] == BAR][0]
-NEW = ("sc_reload_keeps_the_burn", "sc_fire_sense", "sc_full_list_smoke")
+NEW = ("sc_reload_keeps_the_burn", "sc_fire_sense")
 check("sc_walk is gone from the scenes and the table", "sc_walk" not in sc and "sc_walk" not in tt["tests"])
 for s in NEW:
     check("%s is a scene of the bar and a kind A test" % s, BAR in (sc.get(s) or {}).get("requirement", []) and
           (tt["tests"].get(s) or {}).get("test_kind", "A") == "A" and s in tt["tests"], s)
-check("the three scenes, and not his walk, decide the bar", sorted(bar["decides"]) == sorted(NEW), bar["decides"])
-check("only the smoke uses his full list", [k for k, t in tt["tests"].items() if t.get("kind") == "live_full"] == ["sc_full_list_smoke"])
+check("the two scenes, and not his walk, decide the bar", sorted(bar["decides"]) == sorted(NEW), bar["decides"])
+check("no check uses the full list (retired until the integration phase)", [k for k, t in tt["tests"].items() if t.get("kind") == "live_full"] == [])
 check("his walk names no season and no weeks (season-long play is play testing)",
       not any(w in tt["tests"]["LOOK_STAGE8"]["observes"] for w in ("week", "season")), tt["tests"]["LOOK_STAGE8"]["observes"])
 

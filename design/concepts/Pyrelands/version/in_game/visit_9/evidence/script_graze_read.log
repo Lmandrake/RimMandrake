@@ -1,0 +1,5 @@
+game 676501
+START {'dry': (16, [(151, 223, '0.05', '0.9511881'), (151, 224, '0.05', '0.9511881')]), 'watered': (16, [(158, 223, '0.05', '1.06'), (158, 224, '0.05', '1.06')]), 'vanilla': (16, [(165, 223, '0.05', '0.6860918'), (165, 224, '0.05', '0.6860918')])}
+END counts {'dry': 16, 'watered': 16, 'vanilla': 16} growth {'dry': [(151, 223, '0.1264386', '0.9010888')], 'watered': [(158, 223, '0.1383333', '1.06')], 'vanilla': [(165, 223, '0.06751212', '0.6426932')]} pawn-samples within the box {}
+[bridge split] 64.4 s wall: load 0.0 / ticks 21.5 / reads 1.7 / other 8.1 / outside calls 33.1 s
+[bridge split] WARN 123 calls of jawa/thing_read (5.3 s): batch them

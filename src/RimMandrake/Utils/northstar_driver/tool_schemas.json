@@ -1745,6 +1745,19 @@
    ],
    "source": "csharp"
   },
+  "jawa/map_comp_set": {
+   "parameters": [
+    "comp",
+    "member",
+    "value"
+   ],
+   "required": [
+    "comp",
+    "member",
+    "value"
+   ],
+   "source": "csharp"
+  },
   "jawa/map_comp_timing": {
    "parameters": [
     "maxSeconds",

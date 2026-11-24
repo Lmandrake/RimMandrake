@@ -1,0 +1,2261 @@
+{
+  "mod": "Pyrelands",
+  "mode": "live",
+  "started_utc": "2026-11-24T20:18:43Z",
+  "expected": [
+    "pyre_plant_distribution_correct",
+    "pyre_animal_distribution_correct",
+    "pyre_mapgen_log_clean",
+    "pyre_ground_deep_ash",
+    "pyre_ash_fertile_when_watered",
+    "pyre_fresh_burn_feeds_the_field",
+    "pyre_grass_chokes_ground",
+    "pyre_embergrass_regrows",
+    "pyre_burn_line_present",
+    "pyre_scorchfruit_fire_born",
+    "pyre_scorchfruit_produces",
+    "pyre_scorchfruit_spoils_fast",
+    "pyre_ruins_scorched",
+    "pyre_firehawk_carries_ember",
+    "pyre_furnacebeast_warmth",
+    "pyre_furnacebeast_heats_room",
+    "pyre_burrowers_dive",
+    "pyre_ashfall_darkens_drifts",
+    "pyre_cinderfall_distinct",
+    "pyre_blackrain_reads",
+    "pyre_cannot_ordinary_rain"
+  ],
+  "expected_source": "VALIDATED walk Pyrelands.md",
+  "bars": [
+    {
+      "id": "pyre_plant_distribution_correct",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_animal_distribution_correct",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_mapgen_log_clean",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_ground_deep_ash",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_ash_fertile_when_watered",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_fresh_burn_feeds_the_field",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_grass_chokes_ground",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_embergrass_regrows",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_burn_line_present",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]; skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]; skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]; skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_scorchfruit_fire_born",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_scorchfruit_produces",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_scorchfruit_spoils_fast",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_ruins_scorched",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_firehawk_carries_ember",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_furnacebeast_warmth",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_furnacebeast_heats_room",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_burrowers_dive",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_ashfall_darkens_drifts",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_cinderfall_distinct",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_blackrain_reads",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "pyre_cannot_ordinary_rain",
+      "status": "UNMEASURED",
+      "evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "evidenceFull": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]",
+      "visual": true,
+      "polarity": "cannot",
+      "state_status": "UNMEASURED",
+      "state_evidence": "skipped#0=UNMEASURED [{'detail': 'UNMEASURED: chain not run (--chains regrow_growth)'}]"
+    },
+    {
+      "id": "regrow_growth.regrow_dry_watered_vanilla",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: watered ember grass did not outgrow the dry patch: 0.0796 vs 0.0796",
+      "evidenceFull": "ExpectationFailed: watered ember grass did not outgrow the dry patch: 0.0796 vs 0.0796"
+    },
+    {
+      "id": "plant_census.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "plant_census.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ruins.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "burn_line.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "burn_line.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "burn_line.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "opening_front.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "opening_front.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "startup_and_def_wiring.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ground_deep_ash.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ash_fertility_watered.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ash_fertility_watered.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "fresh_burn_bonus.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ambient_ash_drift.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "fire_tick_effects.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ashfall_weather_accumulation.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "cinderfall.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "cinderfall.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "cinderfall.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "blackrain.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "blackrain.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "soaked_map_stays_smooth.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "no_ordinary_rain.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "no_ordinary_rain.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "scorchfruit_fire_born.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "firehawk.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "firehawk.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "furnace_sleep.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "furnace_sleep.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "heat_dome.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "heat_dome.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "heat_dome.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "embergrass_regrow.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "embergrass_regrow.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "embergrass_regrow.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "ullai_and_giant.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "gpt_hunt_plausible.skipped#8",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "sand_shovel.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "flamefang_venom.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "flamefang_venom.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "flamefang_venom.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "flamefang_venom.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "flamefang_venom.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "rite_hook_alone.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "rite_hook_alone.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "firefoam_sprayer.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "firefoam_sprayer.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "walk_season.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "walk_season.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "walk_season.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "walk_season.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "walk_season.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "walk_season.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "walk_season.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "walk_season.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "foreign_arrivals.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "foreign_arrivals.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "foreign_arrivals.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "fire_sense.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "fire_sense.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "fire_sense.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "fire_sense.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "fire_sense.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "burn_line_walk.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "burn_line_off_control.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "furnace_hide_bank.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "roof_withers.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "roof_withers.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "roof_withers.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "herd_thirst.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "firehawk_first_sighting_letter.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "firehawk_first_sighting_letter.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "firehawk_first_sighting_letter.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "firehawk_crestfeather_yield.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "firehawk_mapwide_carry.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "reload_keeps_the_burn.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    },
+    {
+      "id": "full_list_smoke.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "572 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=676501 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 676501 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "18 active, sha256 66f3f1d90416d398 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "compat": [],
+  "config": "current",
+  "config_list": null,
+  "chains_selected": [
+    "regrow_growth"
+  ],
+  "chains_skipped": [
+    "mapgen_log",
+    "plant_census",
+    "animal_census",
+    "grass_cover",
+    "ruins",
+    "burn_line",
+    "opening_front",
+    "startup_and_def_wiring",
+    "ground_deep_ash",
+    "ash_fertility_watered",
+    "fresh_burn_bonus",
+    "ambient_ash_drift",
+    "fire_tick_effects",
+    "ashfall_weather_accumulation",
+    "ashfall_drifts",
+    "cinderfall",
+    "blackrain",
+    "soaked_map_stays_smooth",
+    "no_ordinary_rain",
+    "scorchfruit_fire_born",
+    "scorchfruit_produces",
+    "scorchfruit_spoils",
+    "firehawk",
+    "furnace_warmth",
+    "furnace_room",
+    "furnace_sleep",
+    "burrowers",
+    "heat_dome",
+    "embergrass_regrow",
+    "ullai_and_giant",
+    "gpt_hunt_plausible",
+    "sand_shovel",
+    "flamefang_venom",
+    "rite_hook_alone",
+    "firefoam_sprayer",
+    "walk_season",
+    "foreign_arrivals",
+    "fire_sense",
+    "burn_line_walk",
+    "burn_line_off_control",
+    "furnace_hide_bank",
+    "roof_withers",
+    "herd_thirst",
+    "firehawk_first_sighting_letter",
+    "firehawk_crestfeather_yield",
+    "firehawk_mapwide_carry",
+    "reload_keeps_the_burn",
+    "full_list_smoke"
+  ],
+  "bar_text": {
+    "pyre_plant_distribution_correct": {
+      "polarity": "must",
+      "text": "every wild plant on a fresh Pyrelands map is ember grass, quick grass or scorch-fruit; no other wild plant species grows there."
+    },
+    "pyre_animal_distribution_correct": {
+      "polarity": "must",
+      "text": "every wild animal on a fresh Pyrelands map belongs to the biome's fire-ecology cast, no other kind wanders in, and the small common grazers outnumber the big predators."
+    },
+    "pyre_mapgen_log_clean": {
+      "polarity": "must",
+      "text": "generating a fresh Pyrelands map raises no error message on screen."
+    },
+    "pyre_ground_deep_ash": {
+      "polarity": "must",
+      "text": "a fresh Pyrelands map is almost all deep ash; only small pockets of unburned soil and gravel remain, and standing water is ringed with richer ground."
+    },
+    "pyre_ash_fertile_when_watered": {
+      "polarity": "must",
+      "text": "a crop on deep ash beside a watered channel grows clearly faster than the same crop on dry ash."
+    },
+    "pyre_fresh_burn_feeds_the_field": {
+      "polarity": "must",
+      "text": "ground that has just burned grows noticeably faster for a few days, and black rain compounds that advantage rather than washing it away."
+    },
+    "pyre_grass_chokes_ground": {
+      "polarity": "must",
+      "text": "open ground is carpeted densely in grass; there are no bare-dirt expanses where grass should carry the ground."
+    },
+    "pyre_embergrass_regrows": {
+      "polarity": "must",
+      "text": "a burned patch of grass is visibly re-greening within a few days and largely green again within about a week, at the biome's own heat."
+    },
+    "pyre_burn_line_present": {
+      "polarity": "must",
+      "text": "a fresh Pyrelands map shows grass fire burning somewhere and moving like a natural grass fire, with a visibly scorched trail behind it."
+    },
+    "pyre_scorchfruit_fire_born": {
+      "polarity": "must",
+      "text": "scorch-fruit appears only on freshly burned ground, never as ordinary wild growth on unburned land."
+    },
+    "pyre_scorchfruit_produces": {
+      "polarity": "must",
+      "text": "a ripe scorch-fruit plant yields edible fruit that a colonist can harvest, and eating it raises a hungry colonist's food meter."
+    },
+    "pyre_scorchfruit_spoils_fast": {
+      "polarity": "must",
+      "text": "unrefrigerated, harvested scorch-fruit rots within about four days, and a ripe unharvested plant withers within about a day."
+    },
+    "pyre_ruins_scorched": {
+      "polarity": "must",
+      "text": "ruins on a fresh Pyrelands map stand blackened and fire-scarred, not pristine."
+    },
+    "pyre_firehawk_carries_ember": {
+      "polarity": "must",
+      "text": "a fire-hawk picks up a burning twig and a new fire starts where it drops it, ahead of the existing blaze."
+    },
+    "pyre_furnacebeast_warmth": {
+      "polarity": "must",
+      "text": "a pawn standing in the open near a furnace-beast shows a readable warmth status that disappears after it walks away."
+    },
+    "pyre_furnacebeast_heats_room": {
+      "polarity": "must",
+      "text": "an enclosed room holding a furnace-beast becomes clearly hotter than a comparable room without one."
+    },
+    "pyre_burrowers_dive": {
+      "polarity": "must",
+      "text": "when fire reaches a burrowing grazer it shows a readable burrowed status and comes through unharmed once the fire has passed."
+    },
+    "pyre_ashfall_darkens_drifts": {
+      "polarity": "must",
+      "text": "ash fall dims the map and lays visible loose-ash drifts that keep accumulating while it lasts."
+    },
+    "pyre_cinderfall_distinct": {
+      "polarity": "must",
+      "text": "cinderfall is recognisable at a glance as its own weather, not ash fall renamed."
+    },
+    "pyre_blackrain_reads": {
+      "polarity": "must",
+      "text": "black rain falls visibly dark, plainly different from ordinary blue-grey rain."
+    },
+    "pyre_cannot_ordinary_rain": {
+      "polarity": "cannot",
+      "text": "ordinary rain falling on a Pyrelands map; its only wet weather is black rain."
+    }
+  },
+  "bar_text_source": "design\\validation_walks\\RimMandrake\\Pyrelands.md (hash 6ad3da0a6e44abb1094d65b4d4918cb8e839049de167f2abf59f48d61fdd2cf7)",
+  "components": [
+    {
+      "chain": "regrow_growth",
+      "name": "regrow_dry_watered_vanilla",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: watered ember grass did not outgrow the dry patch: 0.0796 vs 0.0796",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "mapgen_log",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_mapgen_log_clean"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "plant_census",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_plant_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "plant_census",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plant_census",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "animal_census",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_animal_distribution_correct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "grass_cover",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_grass_chokes_ground"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_ruins_scorched"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_burn_line_present"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "opening_front",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "opening_front",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "startup_and_def_wiring",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_ground_deep_ash"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_deep_ash",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_ash_fertile_when_watered"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ash_fertility_watered",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fresh_burn_bonus",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_fresh_burn_feeds_the_field"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "fresh_burn_bonus",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ambient_ash_drift",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_tick_effects",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_weather_accumulation",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ashfall_drifts",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_ashfall_darkens_drifts"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_cinderfall_distinct"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cinderfall",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "blackrain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_blackrain_reads"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "blackrain",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "blackrain",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "soaked_map_stays_smooth",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_cannot_ordinary_rain"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "no_ordinary_rain",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_scorchfruit_fire_born"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_fire_born",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_produces",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_scorchfruit_produces"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "scorchfruit_spoils",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_scorchfruit_spoils_fast"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_firehawk_carries_ember"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_warmth",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_furnacebeast_warmth"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_room",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_furnacebeast_heats_room"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_sleep",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_sleep",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burrowers",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_burrowers_dive"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "heat_dome",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "heat_dome",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "heat_dome",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_embergrass_regrows"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "embergrass_regrow",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ullai_and_giant",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gpt_hunt_plausible",
+      "name": "skipped#8",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sand_shovel",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flamefang_venom",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rite_hook_alone",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rite_hook_alone",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firefoam_sprayer",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firefoam_sprayer",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "walk_season",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "foreign_arrivals",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "foreign_arrivals",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "foreign_arrivals",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_sense",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_sense",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_sense",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_sense",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire_sense",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line_walk",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [
+        "pyre_burn_line_present"
+      ],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line_walk",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_line_off_control",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "furnace_hide_bank",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "roof_withers",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "roof_withers",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "roof_withers",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "herd_thirst",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_first_sighting_letter",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_first_sighting_letter",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_first_sighting_letter",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_crestfeather_yield",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "firehawk_mapwide_carry",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "reload_keeps_the_burn",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "full_list_smoke",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains regrow_growth)",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 0,
+    "FAIL": 1,
+    "UNMEASURED": 116
+  },
+  "all_green": false,
+  "timing": {
+    "n": 289,
+    "total_ms": 48525.331,
+    "mean_ms": 167.9077,
+    "p50_ms": 61.1398,
+    "p95_ms": 160.7304,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 23,
+        "mean_ms": 65.1177,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 21,
+        "mean_ms": 30.0408,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 13,
+        "mean_ms": 38.8344,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 19.339,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 77.5616,
+        "errors": 0
+      },
+      "jawa/world_mutators_get": {
+        "n": 1,
+        "mean_ms": 58.5914,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 1,
+        "mean_ms": 41.9163,
+        "errors": 0
+      },
+      "jawa/get_roof_batch": {
+        "n": 21,
+        "mean_ms": 36.5073,
+        "errors": 0
+      },
+      "rimworld/get_cell_info": {
+        "n": 21,
+        "mean_ms": 27.5896,
+        "errors": 0
+      },
+      "jawa/cell_temperature": {
+        "n": 20,
+        "mean_ms": 76.1726,
+        "errors": 0
+      },
+      "jawa/world_tile_get": {
+        "n": 1,
+        "mean_ms": 84.3248,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 2,
+        "mean_ms": 107.2052,
+        "errors": 0
+      },
+      "jawa/time_clock": {
+        "n": 1,
+        "mean_ms": 123.7792,
+        "errors": 0
+      },
+      "jawa/incident_queue_clear": {
+        "n": 1,
+        "mean_ms": 99.4858,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 17,
+        "mean_ms": 42.1713,
+        "errors": 0
+      },
+      "jawa/window_list_close": {
+        "n": 2,
+        "mean_ms": 112.2016,
+        "errors": 0
+      },
+      "jawa/drain_log": {
+        "n": 1,
+        "mean_ms": 82.9173,
+        "errors": 0
+      },
+      "jawa/name_colony": {
+        "n": 1,
+        "mean_ms": 92.1159,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 33,
+        "mean_ms": 86.8541,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 44,
+        "mean_ms": 74.0359,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 1,
+        "mean_ms": 1455.1757,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 1,
+        "mean_ms": 74.7437,
+        "errors": 0
+      },
+      "jawa/set_plants": {
+        "n": 17,
+        "mean_ms": 59.1588,
+        "errors": 0
+      },
+      "jawa/build_batch": {
+        "n": 1,
+        "mean_ms": 82.1333,
+        "errors": 0
+      },
+      "jawa/set_terrain": {
+        "n": 7,
+        "mean_ms": 80.0839,
+        "errors": 0
+      },
+      "jawa/map_fire": {
+        "n": 7,
+        "mean_ms": 118.8019,
+        "errors": 0
+      },
+      "jawa/safe_advance": {
+        "n": 9,
+        "mean_ms": 3270.9124,
+        "errors": 0
+      },
+      "jawa/glow_at": {
+        "n": 1,
+        "mean_ms": 104.5828,
+        "errors": 0
+      },
+      "jawa/time_set_ticks": {
+        "n": 1,
+        "mean_ms": 96.6894,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 1,
+        "mean_ms": 29.9565,
+        "errors": 0
+      },
+      "jawa/thing_read": {
+        "n": 15,
+        "mean_ms": 89.0003,
+        "errors": 0
+      },
+      "rimworld/list_colonists": {
+        "n": 2,
+        "mean_ms": 24.2555,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "cedd5b8cfc420a0fd41d1ebedd26f3ba4caf26b4480160066c0c27318435b5d8"
+}

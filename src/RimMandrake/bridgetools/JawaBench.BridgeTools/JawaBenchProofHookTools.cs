@@ -82,6 +82,40 @@ namespace JawaBench.BridgeTools
                 return (object)new { success = true, compType = ct.FullName, values, missing, ticksGame = TicksGameSafe() };
             });
         }
+
+#if JAWA_GM_TOOLS
+        // RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_NINE (2026-11-24): the MapComponent twin of comp_set. A clock a
+        // map component counts itself (Pyrelands' quiet counter, 120,000 ticks) could be seen at its end only by playing to it.
+        [Tool(
+            "jawa/map_comp_set",
+            Description =
+                "Reflectively WRITE one scalar instance field (private and inherited ones too) of a MapComponent on the CURRENT " +
+                "map: int and every integer width, float/double/decimal, bool, string, enum. comp = a substring of the component's " +
+                "type name, an ambiguous one refused with the candidates. Properties, lists, consts and readonly fields are " +
+                "refused; a refusal writes nothing. For putting a counter near its deadline so the mod's own code acts next. GM-gated.",
+            ResultDescription = "success, compType, member, before, after (read back), ticksGame.")]
+        public static async Task<object> MapCompSet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Substring of the MapComponent type name.")] string comp,
+            [ToolParameter(Description = "The field's name.")] string member,
+            [ToolParameter(Description = "The value, as text.")] string value)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Current.ProgramState != ProgramState.Playing) return Fail("Not in a loaded game.");
+                Map map = Find.CurrentMap;
+                if (map == null) return Fail("No current map.");
+                var hits = map.components.Where(x => x.GetType().Name.IndexOf(comp ?? "", StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                if (hits.Count == 0) return Fail("No map component matches '" + comp + "'.", new { components = map.components.Select(x => x.GetType().Name).ToList() });
+                if (hits.Count > 1) return Fail("Ambiguous component substring.", new { candidates = hits.Select(x => x.GetType().Name).ToList() });
+                string err = JawaBenchStaticCallArgsCore.SetField(hits[0], member, value, out object before, out object after);
+                if (err != null) return Fail(err);
+                return (object)new { success = true, compType = hits[0].GetType().FullName, member,
+                                     before = ProbeRender(before), after = ProbeRender(after), ticksGame = TicksGameSafe() };
+            });
+        }
+#endif
     }
 
     /// <summary>SETTINGS_OPEN_SMOKE_HOOK_1: type=JawaBench.BridgeTools.JawaBenchSettingsSmoke, method Start then (a moment

@@ -60,14 +60,11 @@ def t_old_walk_is_red():
 def t_new_scenes_are_green():
     tt = json.load(open(PYRE))
     owes = Z.owed(tt)
-    for t in ("sc_reload_keeps_the_burn", "sc_fire_sense", "sc_full_list_smoke"):
+    for t in ("sc_reload_keeps_the_burn", "sc_fire_sense"):
         assert t in tt["tests"] and t not in owes, (t, owes.get(t))
     m = Z.measure(tt["tests"]["sc_reload_keeps_the_burn"])
     assert m["days"] is not None and 0 < m["days"] < 0.2 and m["claims"] == 1 and not Z.over(m), m
-    s = Z.measure(tt["tests"]["sc_full_list_smoke"])
-    assert s["days"] is not None and 0 < s["days"] < 0.2 and s["full"] and s["claims"] == 1, s
-    no_why = dict(tt["tests"]["sc_full_list_smoke"], cheaper_why="")
-    assert words(no_why, ROOT) == ["runs on the full list"], words(no_why, ROOT)
+    assert not [t for t, e in tt["tests"].items() if e.get("kind") == "live_full"]
 
 
 def t_evidence_clears():

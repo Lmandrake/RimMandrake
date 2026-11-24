@@ -125,7 +125,8 @@ BURN_LINE = "RimMandrake.Pyrelands.MapComponent_BurnLine"
 FOLLOW_BURN = "RimMandrake.Pyrelands.RM_JobGiver_FollowBurn"
 BURN_QUIET_TICKS = 120000      # PyrelandsTuning.StandingBurnQuietTicks (selftest_pyrelands_site pins both to the C#)
 BURN_WATCH_TICKS = 60          # PyrelandsTuning.BurnWatchIntervalTicks
-BURN_LINE_WAIT_TICKS = BURN_QUIET_TICKS + 6 * BURN_WATCH_TICKS   # quiet window + a few watch intervals
+BURN_RETRY_TICKS = 2500        # PyrelandsTuning.StandingBurnRetryTicks
+BURN_STAGED_WAIT_TICKS = 6 * BURN_WATCH_TICKS + 4 * BURN_RETRY_TICKS   # after _stage_quiet: the watch intervals and four reseed retries
 COMMON_GRAZERS = ("RM_Ullai", "RM_Ashwallow", "RSW_Nuna", "RSW_Iriaz", "RSW_Gizka")
 BIG_PREDATORS = ("RM_Flamefang", "RM_Barbslinger", "RM_Emberscythe", "RM_Sytheclaw", "RSW_Anooba", "RSW_Orray", "RSW_Dalgo")
 REGROW_SAMPLE_DAYS = (3, 7)
@@ -1487,11 +1488,18 @@ def ruins(t):
 @suite.chain("burn_line")
 @_teardown(fire=True)
 def burn_line(t):
-    """LONG SPLIT ONLY (~10 min at ~200 ticks/s before the burned-share read added seven game days, UNMEASURED since): run
-    as --chains embergrass_regrow,burn_line, skip in the main run.
+    """LONG SPLIT ONLY (the burned-share read plays eight game days): run as --chains embergrass_regrow,burn_line, skip in the
+    main run.
     The fixture holds burnLineEnabled OFF, so a census alone is UNMEASURED. The arm: burnLineEnabled ON, extinguish the
-    map, wait StandingBurnQuietTicks + a few BurnWatchIntervalTicks, count free-standing Fire. MapComponent_BurnLine
+    map, put the burn line's own quiet counter just short of StandingBurnQuietTicks (_stage_quiet), wait a few watch
+    intervals and reseed retries, count free-standing Fire. MapComponent_BurnLine
     .TryReseedStandingBurn must have lit one smoulder (parent == null). Then extinguish; _teardown restores settings."""
+    _burn_line_present(t)
+    with _wildlife_shield(t):
+        _r6_burn_line(t)
+
+
+def _burn_line_present(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "burn_line_present", shows=["pyre_burn_line_present"]):
         _fresh_site(t)
@@ -1500,20 +1508,30 @@ def burn_line(t):
         before = len(_things(t, "Fire", limit=2000))
         _set(t, {"burnLineEnabled": True})
         _extinguish(t)
-        _wait(t, BURN_LINE_WAIT_TICKS)
+        _stage_quiet(t)
+        _wait(t, BURN_STAGED_WAIT_TICKS)
         fires = [f for f in _things(t, "Fire", limit=2000) if not f.get("parent")]
         _note(t, "burn line quiet-arm (free-standing Fire after the quiet window)",
               {"fixtureBurnLineEnabled": (s or {}).get("value"), "firesBeforeArm": before,
-               "waitTicks": BURN_LINE_WAIT_TICKS, "freeStandingFires": len(fires)})
+               "waitTicks": BURN_STAGED_WAIT_TICKS, "freeStandingFires": len(fires)})
         if _live(t) and not fires:
-            _fail("burnLineEnabled ON, map extinguished, %d ticks (> StandingBurnQuietTicks %d) and no free-standing "
-                  "Fire: the standing burn did not reseed" % (BURN_LINE_WAIT_TICKS, BURN_QUIET_TICKS))
+            _fail("burnLineEnabled ON, map extinguished, the quiet counter put just short of StandingBurnQuietTicks %d, %d "
+                  "ticks on and no free-standing Fire: the standing burn did not reseed" % (BURN_QUIET_TICKS, BURN_STAGED_WAIT_TICKS))
         t.screenshot(rect=_frame(t, [(f.get("x"), f.get("z")) for f in fires], cluster=FRAME_CLUSTER))   # the front
         # The walk does not start from this reseed: it puts the map out and re-arms the opening front (visit 2's 0 fires at
         # every hour were its reader, blind to the bridge's x/z rows, not this front; RIMMANDRAKE_REORDER_PYRE_BURN_WALK_
         # BEFORE_ITS_FRONT_DIES). _teardown puts the map out at the chain's end.
-    with _wildlife_shield(t):
-        _r6_burn_line(t)
+
+
+def _stage_quiet(t):
+    """The map is out: let the burn line's watch see it, then put its saved quiet counter (MapComponent_BurnLine.
+    ticksSinceAnyFire) two watch intervals short of StandingBurnQuietTicks, so KeepTheBurnAlive acts next. Where the toggle is
+    off the counter is never read: what must not happen is a relight."""
+    _wait(t, 2 * BURN_WATCH_TICKS)
+    want = BURN_QUIET_TICKS - 2 * BURN_WATCH_TICKS
+    r = t.bridge_call("jawa/map_comp_set", comp="MapComponent_BurnLine", member="ticksSinceAnyFire", value=str(want))
+    if _live(t) and str((r or {}).get("after")) != str(want):
+        _unmeasured(t, "the quiet counter could not be staged at %d: %r" % (want, r))
 
 
 OPENING_WAIT_TICKS = 6 * BURN_WATCH_TICKS   # PYRE_OPENING_FRONT: lit on the first watch interval; a few for slack
@@ -3052,8 +3070,6 @@ def heat_dome(t):
 def embergrass_regrow(t):
     """Fixed 20x20 cohort, pre-laid to RM_FE_Ash_Deep (the real ground), grassed, burned, then a COMPRESSED regrow window (override, see below).
     Counts only plants spawned AFTER the burn (ThingID not in the pre-burn set)."""
-    if os.environ.get(REGROW_PART_ENV) == "growth":
-        return _ten_embergrass_regrow(t)
     _pad(t, PAD_REGROW)
     t.clear_area(size=TEST_SIZE)
     regrow = _rect(t, 20)
@@ -5250,139 +5266,94 @@ def plant_growth_of_lines(lines):
     return None
 
 
-def _ten_embergrass_regrow_growth(t, rect):
-    """Each plant's growth (0-1) over `rect` from the inspect strings ('N% grown', 'Mature.'), sorted; None when no plant
-    reads. Per plant, not the mean: a patch whose plants restart out of step (a cycling carpet) never shows a mean at
-    maturity, so maturity and restarts are read off the plants (regrow_patch_rate)."""
-    r = t.bridge_call("jawa/inspect_string", rect=_rs(rect), limit=100)
-    if not _live(t):
-        return None
-    vals = sorted(g for g in (plant_growth_of_lines(row.get("inspect")) for row in (r or {}).get("things") or [])
-                  if g is not None)
-    return vals or None
+REGROW_STEP_TICKS = 4000     # two long ticks: each plant grows exactly twice
+REGROW_BURST_TICKS = 2000    # the mature patches are watched this much longer
+REGROW_CHARGE_HOURS = 1      # ExplosiveGrowth chargeHours for the row (shipped 6): mature to burst in 2,500 ticks
+REGROW_DROP_TOL = 0.01       # a plant's growth fell: a restart, a graze or a swap
+REGROW_PATCHES = ("dry", "watered", "vanilla", "matureDry", "matureWet")
 
 
-REGROW_DROP_TOL = 0.01   # inspect reads whole percents: rounding moves a read by at most 0.005, so a fall > 0.01 is real
-REGROW_MATURE = 0.999    # 'Mature.' reads 1.0
-
-
-def _regrow_read(x):
-    """One day's read -> (mean, lowest, highest). A list is the patch's plants; a bare number is a recorded mean (visit 4)."""
-    vals = [x] if isinstance(x, (int, float)) else list(x)
-    return sum(vals) / len(vals), min(vals), max(vals)
-
-
-def _regrow_unread(x):
-    return x is None or (not isinstance(x, (int, float)) and not x)
-
-
-def regrow_patch_rate(s):
-    """Pure. One patch's daily reads (each a list of plant growths, or a mean) -> (rate per day before its first event,
-    censored, event day). An event is the first day a plant reads mature or the patch's lowest plant falls (a matured
-    plant restarted by a burst, or a 5% seedling sown in): after it the reads stop telling the patch's speed, so a mean
-    over the whole window under-reads a fast plant (HARNESS, this item: x1 ember grass matures by day 2, its 5-day mean
-    gain is 0.19, below the 0.369 its own vanilla rate asks). The rate is the mean's gain up to the last read before the
-    event; censored=True when the event came on day 1, and then the rate is only a lower bound (mature - start, in one
-    day). Event day None: no event inside the series."""
-    if not s or len(s) < 2 or any(_regrow_unread(x) for x in s):
-        return None, False, None
-    reads = [_regrow_read(x) for x in s]
-    event = None
-    for i in range(1, len(reads)):
-        if reads[i][2] >= REGROW_MATURE or reads[i][1] < reads[i - 1][1] - REGROW_DROP_TOL:
-            event = i
-            break
-    if event == 1:
-        return REGROW_MATURE - reads[0][0], True, 1
-    k = (event - 1) if event else (len(reads) - 1)
-    return (reads[k][0] - reads[0][0]) / k, False, event
-
-
-def regrow_bursts(s):
-    """Pure. Count the days a patch's lowest plant FELL by more than the reading's rounding. A gentle burst restarts the
-    mature plant at 5% growth where it stands (ExplosiveGrowth RM_TopResolver.EndCycle) and a cycle sows seedlings at 5%
-    (RM_SproutRing.Sow), so a burst drops a plant below the rest. A fast day is not a burst (the parent's proxy, 'a gain
-    above 1.5x the vanilla rate', counted a healthy x1 dry patch's first day as one and could not see a real burst)."""
-    reads = [_regrow_read(x) for x in s if not _regrow_unread(x)]
-    return sum(1 for a, b in zip(reads, reads[1:]) if b[1] < a[1] - REGROW_DROP_TOL)
-
-
-def regrow_rate_verdict(series, gd):
-    """Pure. sc_grass_regreens growth part. series: {"dry", "watered", "vanilla"} -> daily reads (day 0 first), each
-    a list of plant growths or a recorded mean; gd: {defName: growDays}. -> {"rates", "censored", "eventDay", "emberVanillaRate", "bursts", "failures",
-    "unmeasured"}.
-    Dry ember grass grows at least at its own vanilla rate (Plant_Grass's rate on the same dry ash, scaled by growDays),
-    watered ember grass grows faster than dry, and bursts land on watered cells only."""
-    out = {"rates": {}, "censored": {}, "eventDay": {}, "emberVanillaRate": None, "bursts": {}, "failures": [],
-           "unmeasured": []}
-    counts = dict((k, [len(x) for x in (series or {}).get(k) or [] if isinstance(x, (list, tuple))])
-                  for k in ("dry", "watered", "vanilla"))
-    if any(len(set(c)) > 1 for c in counts.values()):
-        # HARNESS (visit 9, 2026-11-24): plants left and came in (dry 16 -> 13 -> 15), and a plant that came in or was grazed
-        # reads low beside the rest, the same as a burst. The reads no longer follow the same plants.
-        out["unmeasured"].append("plants left or came into a patch, so a fall is not a burst (plants read each day): %r"
-                                 % (counts,))
-        return out
-    for k in ("dry", "watered", "vanilla"):
-        r, c, e = regrow_patch_rate((series or {}).get(k))
-        out["rates"][k], out["censored"][k], out["eventDay"][k] = r, c, e
-        out["bursts"][k] = regrow_bursts((series or {}).get(k) or [])
-    eg, vg = (gd or {}).get("RM_FE_Plant_EmberGrass"), (gd or {}).get("Plant_Grass")
+def regrow_step_verdict(got):
+    """Pure. sc_grass_regreens growth part, one staged growth step. got: {"before", "after", "last": {patch: {plantId:
+    growth}}, "growDays": {def: days}}; "before" at the sowing, "after" REGROW_STEP_TICKS later, "last" REGROW_BURST_TICKS
+    after that. -> (True/False/None, why, {"gain", "emberVanillaGain", "fell"}).
+    Dry ember grass gains at least its own vanilla share (Plant_Grass's gain on the same dry ash, scaled by growDays); watered
+    gains more than dry; a plant whose growth falls burst: never on the dry, vanilla or mature-dry patch, and on the soaked
+    mature patch at least once (the control: without it the read cannot see a burst). A patch that does not hold the same
+    plants at every read is UNMEASURED: a plant taken or brought in reads like a burst (visit 9)."""
+    d = {"gain": {}, "emberVanillaGain": None, "fell": {}}
+    reads = [(got or {}).get(k) or {} for k in ("before", "after", "last")]
+    if any(not r.get(k) for r in reads for k in REGROW_PATCHES):
+        return None, "a patch was unread: %r" % ([{k: len(r.get(k) or {}) for k in REGROW_PATCHES} for r in reads],), d
+    before, after, last = reads
+    moved = [k for k in REGROW_PATCHES if set(before[k]) != set(after[k]) or set(after[k]) != set(last[k])]
+    if moved:
+        return None, "plants left or came into %r, so a fall is not a burst" % (moved,), d
+    gd = (got or {}).get("growDays") or {}
+    eg, vg = gd.get("RM_FE_Plant_EmberGrass"), gd.get("Plant_Grass")
     if not eg or not vg:
-        out["unmeasured"].append("growDays unread: %r" % (gd,))
-        return out
-    if any(out["rates"][k] is None for k in out["rates"]):
-        out["unmeasured"].append("a patch's growth series is short or unread: %r" % (series,))
-        return out
-    if out["censored"]["vanilla"]:
-        out["unmeasured"].append("the vanilla grass matured or fell within a day, so its rate is only a bound: %r" % (series,))
-        return out
-    ember_rate = out["rates"]["vanilla"] * vg / eg
-    out["emberVanillaRate"] = ember_rate
-    rd, rw = out["rates"]["dry"], out["rates"]["watered"]
-    cd, cw = out["censored"]["dry"], out["censored"]["watered"]
-    if rd < ember_rate:
-        if cd:   # matured within a day: rd is a lower bound, so "below" is not shown
-            out["unmeasured"].append("dry ember grass matured within the first day; a daily read bounds its rate only from "
-                                     "below (%.3f), under the %.3f asked: %r" % (rd, ember_rate, series["dry"]))
-        else:
-            out["failures"].append("dry ember grass grew %.3f a day before maturity, below its vanilla daily rate %.3f: %r"
-                                   % (rd, ember_rate, series["dry"]))
-    ed, ew = out["eventDay"]["dry"], out["eventDay"]["watered"]
-    pair = {"dry": series["dry"], "watered": series["watered"]}
-    if ew is not None and (ed is None or ew < ed):
-        pass   # the watered patch matured (or burst) on an earlier day than the dry one: faster
-    elif ed is not None and (ew is None or ed < ew):
-        out["failures"].append("watered ember grass did not outgrow the dry patch: dry matured on day %s, watered %s: %r"
-                               % (ed, ew, pair))
-    elif cd and cw:
-        out["unmeasured"].append("dry and watered both matured within the first day: a daily read cannot order them: %r"
-                                 % (pair,))
-    elif not rw > rd:
-        out["failures"].append("watered ember grass did not outgrow the dry patch: %.3f vs %.3f a day before maturity: %r"
-                               % (rw, rd, pair))
-    if out["bursts"]["dry"] or out["bursts"]["vanilla"]:
-        out["failures"].append("bursts off the watered cells (days the patch's growth fell): %r" % (out["bursts"],))
-    return out
+        return None, "growDays unread: %r" % (gd,), d
+    for k in REGROW_PATCHES:
+        d["fell"][k] = sum(1 for i in before[k] if after[k][i] < before[k][i] - REGROW_DROP_TOL
+                           or last[k][i] < after[k][i] - REGROW_DROP_TOL)
+    off = [k for k in REGROW_PATCHES if k != "matureWet" and d["fell"][k] and k != "watered"]
+    for k in ("dry", "watered", "vanilla"):
+        d["gain"][k] = sum(after[k][i] - before[k][i] for i in before[k]) / len(before[k])
+    if off:
+        return False, "growth fell (a burst) off the watered cells: %r" % (dict((k, d["fell"][k]) for k in off),), d
+    if d["gain"]["vanilla"] <= 0:
+        return None, "the vanilla grass did not grow in the step (night, heat or dark), so there is no rate to hold: %r" % (d["gain"],), d
+    d["emberVanillaGain"] = d["gain"]["vanilla"] * vg / eg
+    if d["gain"]["dry"] < d["emberVanillaGain"]:
+        return False, "dry ember grass gained %.4f in the step, below its vanilla rate's %.4f" % (
+            d["gain"]["dry"], d["emberVanillaGain"]), d
+    if not d["gain"]["watered"] > d["gain"]["dry"]:
+        return False, "watered ember grass did not outgrow the dry patch: %.4f vs %.4f" % (d["gain"]["watered"], d["gain"]["dry"]), d
+    if not d["fell"]["matureWet"]:
+        return None, "no soaked mature plant burst, so the read cannot show a burst: 'none on dry' is not shown", d
+    return True, "dry %.4f >= vanilla rate %.4f, watered %.4f, bursts %r" % (
+        d["gain"]["dry"], d["emberVanillaGain"], d["gain"]["watered"], d["fell"]), d
+
+
+def _jump_clock(t, ticks, why):
+    """Age every absolute-tick stamp by `ticks` without simulating (jawa/time_set_ticks); reads the clock back."""
+    now = _r6_tick(t)
+    if not _live(t):
+        return
+    r = t.bridge_call("jawa/time_set_ticks", ticks=now + int(ticks), timeException=True, why=why)
+    _ok(r, "time_set_ticks")
+    after = _r6_tick(t)
+    if after != now + int(ticks):
+        _unmeasured(t, "the clock did not jump: %r -> %r, asked %r" % (now, after, now + int(ticks)))
+
+
+def _ten_embergrass_regrow_read(t, rect):
+    """{plant id: Growth} of every plant in `rect` (jawa/thing_read, exact), {} when unread."""
+    r = t.bridge_call("jawa/thing_read", rect=_rs(rect), defName="RM_FE_Plant_EmberGrass,Plant_Grass", members="Growth")
+    if not _live(t) or not (r or {}).get("success") or (r or {}).get("truncated"):
+        return {}
+    vals = dict((row.get("id"), _ten_num((row.get("values") or {}).get("Growth"))) for row in r.get("rows") or [])
+    return vals if vals and all(v is not None for v in vals.values()) else {}
 
 
 def _ten_embergrass_regrow(t):
-    """sc_grass_regreens: three patches burned together, aged past 7 days (no fresh-burn bonus, and
-    ExplosiveGrowth's fresh ash is spent: with the bonus held to one day, visit 9, both patches matured inside a day); one is then watered
-    (WaterShallow beside it); ember grass sown on the dry and the watered patch, Plant_Grass on dry ash; daily growth for
-    5 days and a burst count (regrow_rate_verdict: rates read before maturity, a burst is a day the patch's growth fell).
-    Dry ember grass >= its vanilla rate (Plant_Grass on the same dry ash scaled by growDays), watered > dry, bursts on
-    watered cells only. SITE (visit 9, 2026-11-24): a steel ring keeps grazers out of the patches (the row had none, and 9 of
-    16 watered plants were gone on day 1); a pawn inside when it closes is removed, and a plant count that moves reads UNMEASURED."""
+    """sc_grass_regreens, the growth of sown patches, one staged growth step (it played 12 game days until visit 9). Five 4x4
+    deep-ash patches burned together, then the clock jumped past 7 days (no fresh-burn bonus, ExplosiveGrowth's fresh ash
+    spent); a WaterShallow column beside one. Sown at 5%: ember grass dry and watered, Plant_Grass dry; sown mature: ember
+    grass dry, and ember grass soaked (ExplosiveGrowthAPI.Soak, the control that shows a burst). From about 9h,
+    REGROW_STEP_TICKS of growth and REGROW_BURST_TICKS more; regrow_step_verdict decides on each plant's exact growth. A steel
+    ring keeps grazers out (visit 9: the row had none, and plants came and went from the patches; a hungry nuna set beside
+    them eats one, graze_stage.py); a wild pawn inside when it closes is removed."""
     _independent(t)
     with _comp(t, "regrow_dry_watered_vanilla"):
         _pad(t, TEN_PAD_GRASS)
         _isolate(t)
         t.clear_area(size=TEST_SIZE)
         x, z = t.anchor
-        patches = {"dry": (x - 9, z - 2, 4, 4), "watered": (x - 2, z - 2, 4, 4), "vanilla": (x + 5, z - 2, 4, 4)}
-        yard = (x - 9, z - 2, 18, 4)
-        _firebreak(t, yard)
+        patches = {"dry": (x - 9, z - 2, 4, 4), "watered": (x - 2, z - 2, 4, 4), "vanilla": (x + 5, z - 2, 4, 4),
+                   "matureDry": (x - 9, z - 8, 4, 4), "matureWet": (x + 5, z - 8, 4, 4)}
+        yard = (x - 9, z - 8, 18, 10)
+        _firebreak(t, yard, width=2)
         if os.environ.get(PLANT_REGROW_NO_RING_ENV) == "1":
             _note(t, "PLANTED STATE", "%s=1: no ring round the patches" % PLANT_REGROW_NO_RING_ENV)
         else:
@@ -5393,66 +5364,87 @@ def _ten_embergrass_regrow(t):
             for pw in (t.bridge_call("jawa/list_pawns", rect=_rs(yard), limit=100) or {}).get("pawns") or []:
                 if pw.get("id") and not pw.get("isPlayer"):
                     t.bridge_call("jawa/pawn_force_incapacitate", pawn=pw["id"], action="vanish")
-        # SITE (Pyrelands visit 4, 2026-11-21): the patches were laid as RM_FE_Ground_Soil, where the ash field never acts
-        # (cells read ashField False, fertility 0.7 on all three, visit 3 and 4), so the watered patch could not outgrow
-        # the dry one; the scene (scenes.json sc_grass_regreens) asks for dry and watered DEEP ASH.
+        # the ground between the patches is bare: the biome's carpet must not bring fire to a patch, or a plant into it
+        t.bridge_call("jawa/set_terrain", x=yard[0], z=yard[1], terrainDef=FIREBREAK, width=yard[2], height=yard[3], layer="top")
+        t.bridge_call("jawa/set_plants", ops="CLEAR:%s" % _rs(yard))
         for k, r in patches.items():
             t.bridge_call("jawa/set_terrain", x=r[0], z=r[1], terrainDef=DEEP_ASH, width=r[2], height=r[3], layer="top")
             _plants(t, "RM_FE_Plant_EmberGrass", r)
             _fire(t, r)
         _wait(t, 2 * TEN_HOUR)
         _extinguish(t)
-        _wait(t, 7 * TEN_DAY + TEN_HOUR)   # past 7 days: the freshBurnDays bonus is spent
+        h = _ten_hour(t)
+        if _live(t) and h is None:
+            _unmeasured(t, "glow_at gave no clock hour, so the step cannot be put in daylight")
+        # past 7 days (the freshBurnDays bonus and ashFlushDays are spent), and to 8h, so the step runs 9h to 11h
+        _jump_clock(t, 8 * TEN_DAY + int(((8.0 - (h or 8.0)) % 24) * TEN_HOUR), "the sown patches' burn is a week old")
         t.bridge_call("jawa/set_terrain", x=x - 3, z=z - 2, terrainDef="WaterShallow", width=1, height=4, layer="top")
         _wait(t, 2600)                     # a full watering sweep
-        cells = dict((k, _probe(t, r[0] + 1, r[1] + 1)) for k, r in patches.items())
+        cells = dict((k, _probe(t, patches[k][0] + 1, patches[k][1] + 1)) for k in patches)
+        t.set_setting(EG_SETTINGS, {"chargeHours": REGROW_CHARGE_HOURS})
         planted = os.environ.get(PLANT_REGROW_WET_OFF_ENV) == "1"
         if planted:   # after the staging read, so the patch still reads watered: the field's water then does nothing
             _note(t, "PLANTED FAULT", "%s=1: ashWaterFertilityEnabled off from the sowing on, as if water did nothing"
                   % PLANT_REGROW_WET_OFF_ENV)
             _set(t, {"ashWaterFertilityEnabled": False})
-        for k in ("dry", "watered"):
-            _plants(t, "RM_FE_Plant_EmberGrass", patches[k], growth=0.05)
-        _plants(t, "Plant_Grass", patches["vanilla"], growth=0.05)
-        defs = _get_defs(t, "ThingDef/RM_FE_Plant_EmberGrass;ThingDef/Plant_Grass", "plant")
-        series = dict((k, [_ten_embergrass_regrow_growth(t, r)]) for k, r in patches.items())
-        seen = []
-        for day in range(5):
-            _wait(t, TEN_DAY)
+        try:
             for k, r in patches.items():
-                series[k].append(_ten_embergrass_regrow_growth(t, r))
-            near = (t.bridge_call("jawa/list_pawns", rect=_rs((x - 15, z - 8, 30, 16)), limit=200) or {}).get("pawns") or []
-            seen.append([(pw.get("kindDef"), pw.get("x"), pw.get("z")) for pw in near if not pw.get("isPlayer")])
+                t.bridge_call("jawa/set_plants", ops="CLEAR:%s" % _rs(r))
+                _plants(t, "Plant_Grass" if k == "vanilla" else "RM_FE_Plant_EmberGrass", r,
+                        growth=1.0 if k.startswith("mature") else 0.05)
+            soak = patches["matureWet"] if os.environ.get(PLANT_REGROW_SOAK_DRY_ENV) != "1" else patches["matureDry"]
+            if soak is patches["matureDry"]:
+                _note(t, "PLANTED FAULT", "%s=1: the dry mature patch is the one soaked, so bursts land off it" % PLANT_REGROW_SOAK_DRY_ENV)
+            for cx in range(soak[0], soak[0] + soak[2]):
+                for cz in range(soak[1], soak[1] + soak[3]):
+                    t.bridge_call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI", method="Soak",
+                                  args="current|%d,%d|%d" % (cx, cz, 4 * TEN_HOUR))
+            defs = _get_defs(t, "ThingDef/RM_FE_Plant_EmberGrass;ThingDef/Plant_Grass", "plant")
+            reads = [dict((k, _ten_embergrass_regrow_read(t, r)) for k, r in patches.items())]
+            for wait in (REGROW_STEP_TICKS, REGROW_BURST_TICKS):
+                _wait(t, wait)
+                reads.append(dict((k, _ten_embergrass_regrow_read(t, r)) for k, r in patches.items()))
+        finally:
+            t.set_setting(EG_SETTINGS, {"chargeHours": EG_CHARGE_HOURS})
+            if planted:
+                _set(t, {"ashWaterFertilityEnabled": True})
         if _live(t):
-            _note(t, "patch cells after 7 days (burnTick, watered, bonus)", cells)
-            _note(t, "wild pawns within 6 cells of the patches at each daily read", seen)
-            if cells["dry"].get("watered") or cells["vanilla"].get("watered") or not cells["watered"].get("watered"):
+            _note(t, "patch cells a week after the burn (burnTick, watered, bonus)", cells)
+            dry = [k for k in ("dry", "vanilla", "matureDry") if cells[k].get("watered")]
+            if dry or not cells["watered"].get("watered"):
                 _unmeasured(t, "the patches are not dry/watered as staged: %r" % cells)
             if any(str(c.get("ashField")) != "True" for c in cells.values()):
                 _unmeasured(t, "a patch is not ash-field ground (the scene asks for deep ash): %r" % cells)
             if any(float(c.get("bonus") or 0) > 0 for c in cells.values()):
-                _unmeasured(t, "a patch still carries the fresh-burn bonus after 7 days: %r" % cells)
+                _unmeasured(t, "a patch still carries the fresh-burn bonus after the jump: %r" % cells)
             if any(str(c.get("burnTick")) in ("-1", "None") for c in cells.values()):
                 _unmeasured(t, "a patch was never burned (burnTick -1): %r" % cells)
-            if any(v is None for s in series.values() for v in s):
-                _unmeasured(t, "a patch's growth was unread on some day: %r" % series)
             gd = dict((d, float(((f.get("plant") or {}).get("growDays")) or 0)) for d, f in defs.items())
-            v = regrow_rate_verdict(series, gd)
-            _note(t, "daily growth, rates before maturity, burst count (a burst: a day the patch's lowest plant fell)",
-                  dict(v, series=series, growDays=gd))
-            if v["failures"]:   # a measured failure stands even beside a sub-claim the reads could not order
-                _fail("; ".join(v["failures"] + ["UNMEASURED beside it: " + u for u in v["unmeasured"]]))
-            if v["unmeasured"]:
-                _unmeasured(t, "; ".join(v["unmeasured"]))
-        if planted:
-            _set(t, {"ashWaterFertilityEnabled": True})
-        t.screenshot(rect=(x - 10, z - 3, 20, 6))
+            got = {"before": reads[0], "after": reads[1], "last": reads[2], "growDays": gd}
+            ok, why, detail = regrow_step_verdict(got)
+            _note(t, "one growth step of %d ticks, then %d more" % (REGROW_STEP_TICKS, REGROW_BURST_TICKS),
+                  dict(detail, why=why, plants=dict((k, len(v)) for k, v in reads[0].items()), growDays=gd))
+            if ok is None:
+                _unmeasured(t, why)
+            if not ok:
+                _fail(why)
+        t.screenshot(rect=(x - 10, z - 9, 20, 12))
 
 
+EG_SETTINGS = "RimMandrake.ExplosiveGrowth.ExplosiveGrowthSettings"
+EG_CHARGE_HOURS = 6          # ExplosiveGrowthSettings.chargeHours as shipped (selftest_pyrelands_regrow_rates pins it to the C#)
 PLANT_REGROW_WET_OFF_ENV = "PYRE_PLANT_REGROW_WET_ROOTS_OFF"
 PLANT_REGROW_NO_RING_ENV = "PYRE_PLANT_REGROW_NO_RING"   # planted state: grazers may reach the patches
-REGROW_PART_ENV = "PYRE_REGROW_PART"   # "growth": a planted run of this row alone; the chain's other rows do not run
+PLANT_REGROW_SOAK_DRY_ENV = "PYRE_PLANT_REGROW_SOAK_DRY"   # planted state: bursts land on the patch that must show none
 PLANT_VENOM_TEND_WRONG_ENV = "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT"   # planted state: the tend lands on the untended patient   # planted state: the ash field's water switched off at sowing
+
+
+@suite.chain("regrow_growth")
+@_teardown(fire=True)
+@_wildlife_shielded
+def regrow_growth(t):
+    """sc_grass_regreens' sown-patch row alone (the embergrass_regrow chain runs it too)."""
+    _ten_embergrass_regrow(t)
 
 
 def _ten_furnace_sleep(t):
@@ -5905,8 +5897,8 @@ def _ten_ruins(t):
 # offline (the declaration probe) every bridge call is a no-op. Selftest: selftest_pyrelands_round6_parts.py.
 R6_PLAY_PPC = 64                 # play zoom (px per cell on the PNG, play_zoom.py), as Graffiti's PLAY_PPC
 R6_HALF_DAY = 30000
-R6_FRONT_HOURS = 24              # sc_burn_line_walks: one capture per game hour for a day
-R6_FRONT_SAVE_HOUR = 12          # the kept walking-front save is made at this capture
+R6_FRONT_HOURS = 8               # sc_burn_line_walks: one capture per game hour (24 until visit 9: the moving centre shows in 8)
+R6_FRONT_SAVE_HOUR = 4           # the kept walking-front save is made at this capture
 R6_FRONT_MIN_SHIFT = 3.0         # cells the front's centroid must move over the day (a walking line, not one standing blaze)
 R6_FRONT_CROP = 30               # largest side of the capture rect around the front
 R6_HOUR_TOL = 0.6                # a capture's clock hour may sit this far from its expected hour
@@ -6055,7 +6047,7 @@ def front_walks(rows, min_shift=R6_FRONT_MIN_SHIFT):
         return None, "no hourly reads"
     dark = [r["hour"] for r in rows if not r.get("fires")]
     if dark:
-        return False, "no fire at hour(s) %r: the front did not walk the whole day" % dark
+        return False, "no fire at hour(s) %r: the front did not walk every hour watched" % dark
     c0 = (rows[0]["cx"], rows[0]["cz"])
     shift = max(_dist(c0, (r["cx"], r["cz"])) for r in rows)
     if shift < min_shift:
@@ -6151,13 +6143,13 @@ def _r6_share_days(t, ground, arm, t0, first=1):
     return shares, shots
 
 
-def _r6_burn_line(t):
+def _r6_burn_line(t, share=True):
     """sc_burn_line_walks: the walk watches a fresh map's opening front, as the scenario says. The site is an aged fixture
     whose own front was lit at its birth and is long out (visit 2), so the map is extinguished (burn_line_present's reseed
     included), fireClockEnabled set, and MapComponent_BurnLine.RearmOpeningFront lays yesterday's fire and lights its arc
     by the mod's own arrival path (no test fire); ProbeOpeningFront must then say lit by that re-arm (litTick at or after
     it), else the row is UNMEASURED before a day is spent. Then vitals and pending incidents
-    recorded; 24 hourly captures at play zoom of the front's box, each capture's clock hour asserted; one save while the
+    recorded; R6_FRONT_HOURS hourly captures at play zoom of the front's box, each capture's clock hour asserted; one save while the
     front walks (burn_line_walking, kept for his review); front_walks decides; the guard read again at the end.
     The flood read (burn_line_burned_share): the burned share of open plantable ground at the start and at each day end
     over R6_SHARE_DAYS, a whole-map capture with each; then the start save (R6_SHARE_SAVE) reloaded with
@@ -6205,6 +6197,9 @@ def _r6_burn_line(t):
                 if i >= R6_FRONT_SAVE_HOUR and saved is None:
                     saved = t.bridge_call("rimworld/save_game", saveName="burn_line_walking")
             rows.append(row)
+            if i == 1 and os.environ.get(PLANT_FRONT_OUT_ENV) == "1":
+                _note(t, "PLANTED FAULT", "%s=1: the map is put out after the second capture" % PLANT_FRONT_OUT_ENV)
+                _extinguish(t)
         guard1 = _r6_guard(t)
         if _live(t):
             _note(t, "front by the hour (captures at %d px/cell)" % R6_PLAY_PPC,
@@ -6222,7 +6217,9 @@ def _r6_burn_line(t):
                 _fail(why)
             dmg = _r6_guard_changes(guard0, guard1)
             if dmg:
-                _fail("the day's watch changed the colony: %r" % dmg)
+                _fail("the watch changed the colony: %r" % dmg)
+    if not share:
+        return
     _independent(t)
     with _comp(t, "burn_line_burned_share"):
         st = _GEN.get("burn_share") or {}
@@ -6261,6 +6258,7 @@ def _r6_burn_line(t):
     _burn_line_off_control(t)
 
 
+PLANT_FRONT_OUT_ENV = "PYRE_PLANT_FRONT_OUT"   # planted state: the front goes out while it is watched
 PLANT_BURNLINE_TOGGLE_IGNORED_ENV = "PYRE_PLANT_BURNLINE_TOGGLE_IGNORED"   # planted state: the toggle left on
 # the other fire sources this control holds off, so that a fire after the window can only be the burn line's own relight
 # (KeepTheBurnAlive). burnLineEnabled and fireClockEnabled are independent switches (MapComponent_BurnLine, MOD_OPTIONS_
@@ -6273,8 +6271,7 @@ OFF_CONTROL_HOLDS = ("fireClockEnabled", "fireHawkSpreadEnabled", "furnaceTherma
 # found no cell read 0 fires and the control could not fail (visit 3). Four more retries; with the toggle off nothing else
 # lights, so the longer window only makes the PASS stricter. Visit 4's probe (burnLineEnabled on, the other sources held
 # off) read 1-2 burn-line fires at every sample from the window's end to 15000 ticks past it.
-BURN_RETRY_TICKS = 2500        # PyrelandsTuning.StandingBurnRetryTicks
-OFF_CONTROL_WAIT_TICKS = BURN_LINE_WAIT_TICKS + 4 * BURN_RETRY_TICKS
+OFF_CONTROL_WAIT_TICKS = BURN_STAGED_WAIT_TICKS   # it played the 120,000-tick quiet window until visit 9
 
 
 def _burn_line_off_control(t):
@@ -6289,6 +6286,7 @@ def _burn_line_off_control(t):
         t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
         try:
             _extinguish(t)
+            _stage_quiet(t)
             _wait(t, OFF_CONTROL_WAIT_TICKS)
             n = len(_r6_fires(t))
         finally:
@@ -6300,6 +6298,15 @@ def _burn_line_off_control(t):
             if n:
                 _fail("%d free-standing fires after the window with burnLineEnabled %s and every other fire source held "
                       "off: the burn line relit what was put out" % (n, planted))
+
+
+@suite.chain("burn_line_walk")
+@_teardown(fire=True)
+def burn_line_walk(t):
+    """The burn line's relight and the front's hourly watch, without the eight-day burned share (the burn_line chain runs all)."""
+    _burn_line_present(t)
+    with _wildlife_shield(t):
+        _r6_burn_line(t, share=False)
 
 
 @suite.chain("burn_line_off_control")

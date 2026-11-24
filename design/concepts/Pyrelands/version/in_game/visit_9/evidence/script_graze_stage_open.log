@@ -1,0 +1,10 @@
+game 688201
+grazer RSW_Zeer RSW_Zeer101664 {'success': True, 'action': 'need', 'notes': ['set Food to 0.08'], 'needs': [{'need': 'Food', 'level': 0.359999985, 'pct': 0.08}, {'need': 'Rest', 'level': 0.95
+grazer RSW_Nuna RSW_Nuna101665 {'success': True, 'action': 'need', 'notes': ['set Food to 0.08'], 'needs': [{'need': 'Food', 'level': 0.048, 'pct': 0.08}, {'need': 'Rest', 'level': 0.9587587,
+grazer RSW_Orray RSW_Orray101666 {'success': True, 'action': 'need', 'notes': ['set Food to 0.08'], 'needs': [{'need': 'Food', 'level': 0.16, 'pct': 0.08}, {'need': 'Rest', 'level': 0.9030987, 
+grazer RM_Ashwallow RM_Ashwallow101667 {'success': True, 'action': 'need', 'notes': ['set Food to 0.08'], 'needs': [{'need': 'Food', 'level': 0.103999995, 'pct': 0.08}, {'need': 'Rest', 'level': 0.90
+START {'dry': (16, [(151, 223, '1', '0.5668557'), (151, 224, '1', '0.5668557')]), 'watered': (16, [(158, 223, '1', '0.6618365'), (158, 224, '1', '0.6618365')]), 'vanilla': (16, [(165, 223, '1', '0.3055159'), (165, 224, '1', '0.3055159')])}
+t+700 GONE {'watered': [(158, 223, '1', '0.5428602')]} CAME {'dry': 0, 'watered': 0, 'vanilla': 0} NEAR [('RSW_Zeer', 147, 216, 'JobDef:Ingest'), ('RSW_Nuna', 158, 222, 'JobDef:GotoWander'), ('RSW_Orray', 180, 213, 'JobDef:PredatorHunt'), ('RM_Ashwallow', 180, 213, 'JobDef:Ingest')]
+END counts {'dry': 16, 'watered': 15, 'vanilla': 16} growth {'dry': [(151, 223, '1', '0.1262743')], 'watered': [(158, 224, '1', '0.1425254')], 'vanilla': [(165, 223, '1', '0')]} pawn-samples within the box {'RSW_Zeer': 25, 'RSW_Nuna': 25, 'RSW_Orray': 25, 'RM_Ashwallow': 20, 'RM_Sytheclaw': 5}
+[bridge split] 50.2 s wall: load 0.0 / ticks 17.6 / reads 1.3 / other 10.1 / outside calls 21.3 s
+[bridge split] WARN 178 calls of jawa/thing_read (8.4 s): batch them

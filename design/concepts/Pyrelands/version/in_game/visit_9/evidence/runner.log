@@ -68,3 +68,16 @@ DONE +script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/off_contr
 DONE HOLD_FURNACE=1:+script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/off_control_source.py@off_src131_furnace reload_rc=skipped rc=0 407s 10:55:54
 END b5 2026-11-24 10:55:54
 START b6 2026-11-24 10:55:54
+START s1 2026-11-24 12:16:57
+DONE regrow_growth@growth_small reload_rc=0 rc=1 74s 12:18:11
+END s1 2026-11-24 12:18:11
+START s2 2026-11-24 12:18:20
+DONE PYRE_PLANT_REGROW_WET_ROOTS_OFF=1:regrow_growth@growth_small_wet_off reload_rc=0 rc=1 73s 12:19:33
+DONE PYRE_PLANT_REGROW_SOAK_DRY=1:regrow_growth@growth_small_soak_dry reload_rc=0 rc=1 76s 12:20:49
+DONE burn_line_off_control@off_small reload_rc=0 rc=1 56s 12:21:45
+DONE PYRE_PLANT_BURNLINE_TOGGLE_IGNORED=1:burn_line_off_control@off_small_planted reload_rc=0 rc=1 74s 12:22:59
+DONE burn_line_walk@walk_small reload_rc=0 rc=1 136s 12:25:15
+END s2 2026-11-24 12:25:15
+START s3 2026-11-24 12:25:38
+DONE PYRE_PLANT_FRONT_OUT=1:burn_line_walk@walk_small_planted reload_rc=0 rc=1 100s 12:27:18
+END s3 2026-11-24 12:27:18
