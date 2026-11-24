@@ -11841,3 +11841,4 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_UNITS","result":"broken","detail":"1 unit text(s) out of their one home: rm-launch-permissions.service: in the folder, not installed: ops_clocks.py install rm-launch-permissions.service --apply","ts":"2026-11-24T06:18:57Z","tsn":1795501137908921607}
 {"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_UNITS","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-24T06:19:20Z","tsn":1795501160859699606}
 {"seat":"RUNNER","event":"note","id":"OPS_TIMERS_REVIVE","text":"timers_guard: watched timers are active again (2026-11-24T06:28:00Z)","ts":"2026-11-24T06:28:05Z","tsn":1795501685029340167}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_UNITS","result":"kept","detail":"sweep: running again","ts":"2026-11-24T06:33:33Z","tsn":1795502013051360329}
