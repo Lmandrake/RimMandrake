@@ -22,11 +22,10 @@
 -- carries MarketValue 0 (verified below): ecological/atmospheric dressing,
 -- not a treasure hunt.
 --
--- ⚠️ SILVERBOLE_STANDIN - READ BEFORE TOUCHING THE TREE LINE BELOW. No
--- Silverbole/Silverpan TreeDef exists anywhere yet - checked by grepping
--- `silverbole`/`silverpan` (case-insensitive) across src/, design/ and the
--- live def dump; the biome sheet itself says the final name is still
--- owner-to-pick (deep_desert.md, "Owed / ticketed elsewhere"). Stand-in used
+-- ⚠️ SILVERBOLE_STANDIN - READ BEFORE TOUCHING THE TREE LINE BELOW. The real
+-- tree now exists: `RM_Ollim` in the mod Stillsand ("silverbole" was the
+-- ollim's first name). This template still places the stand-in: nobody has
+-- tried RM_Ollim here, and it needs Stillsand in the load. Stand-in used
 -- per this task's option (a): vanilla `TreeDead` - already a LEGAL wild plant
 -- IN ExtremeDesert itself (confirmed in the live BiomeDef: commonality 0.04
 -- alongside AB_DeadBowerTree and GRimTreeDead), bare/leafless
@@ -34,9 +33,9 @@
 -- thermally fine to 77.1C - comfortably past this biome's 29-43C band. It
 -- carries NONE of the real silverbole's payoff: no bone-white reflective
 -- read, no heat/flame-immune wood stat, no geological growth story. It is a
--- PLACEHOLDER FOR POSITION AND SILHOUETTE ONLY. The moment a real Silverbole
--- TreeDef ships, change the single `TREE = "TreeDead"` line below - nothing
--- else in this file needs to move.
+-- PLACEHOLDER FOR POSITION AND SILHOUETTE ONLY. To place the real tree,
+-- change the single `TREE = "TreeDead"` line below. Untested: RM_Ollim draws
+-- far larger than TreeDead (visualSizeRange 6.7~10.5).
 --
 -- Bone assets: Alpha Biomes' "ancient Gallatross" fossil set - ThingDefs
 -- AB_HugeGallatrossSkeleton (8x4, the whole animal), AB_AncientGallatrossSkull

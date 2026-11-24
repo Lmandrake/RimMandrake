@@ -81,7 +81,7 @@ function build(ctx)
   -- per row (never a rectangle - section 1's jagged-boundary rule) so the
   -- boundary reads as an eroded dug-in hollow, not a UI grid or a foundation
   -- slab. `row_inset[i] = {left, right}` indexes by row-within-pit (0 at the
-  -- north edge); every prop placed below is deliberately kept inside this
+  -- south edge, z grows to the north); every prop placed below is deliberately kept inside this
   -- same footprint so the ground plane and the clutter agree about where
   -- the camp actually was.
   local sunk_floor = "PackedDirt"

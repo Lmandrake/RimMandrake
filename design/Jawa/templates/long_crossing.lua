@@ -80,36 +80,39 @@ function build(ctx)
   -- ---- dune-lip the hull is half-buried against --------------------------
   -- rimworld-scene-composition §1's pairing rule: a cliff/hill FACE piece
   -- never stands alone - it reads as a wall in a field unless its TOP piece
-  -- sits behind/above it, implying more raised ground continues back. Put on
-  -- the SAME leeward (+x) side the sand already drifts toward (below), so
-  -- the two effects reinforce each other instead of competing: the hull
+  -- sits behind/above it, implying more raised ground continues back. Put
+  -- against the hull's south end, reaching toward the leeward (+x) side the
+  -- sand drifts to (below), so the two effects reinforce each other: the hull
   -- stalled nose-first into a dune's flank, half-buried at its base, not
   -- sitting on open flat sand with an unrelated drift beside it.
   --
   -- 🔴 ORIENTATION, live-tested 2026-09-06 (rimworld-scene-composition's own
-  -- first live proof): Decorative Cliffs' `Graphic_Single`+`CornerFiller`
-  -- linking only reads as a solid face along a HORIZONTAL run of the SAME
-  -- defName at a fixed z (varying x) - a VERTICAL column at fixed x (varying
-  -- z, the first version of this file) renders as a broken zigzag/ladder
+  -- first live proof): a Decorative Cliffs face piece only reads as a solid
+  -- face along a HORIZONTAL run at a fixed z (varying x) - the pieces link in
+  -- all four directions, whatever their defName, but the texture sheet draws
+  -- only a thin side edge for a north-south link. A VERTICAL column at
+  -- fixed x (varying z, the first version of this file) renders as a broken zigzag/ladder
   -- shape, not a dune. Confirmed live: an isolated build_batch test of a
   -- vertical column of Dirt_Hill_Right produced the zigzag; the identical
   -- pieces placed as a horizontal row linked into one continuous mound.
-  -- So the ridge here runs EAST-WEST (fixed z, varying x) beside the hull's
-  -- flank, not north-south along its height.
+  -- So the ridge here runs EAST-WEST (fixed z, varying x) at the hull's
+  -- south end, not north-south along its height.
   --
   -- Dirt_Hill_Right / Dirt_HillTop_Right (Decorative Cliffs' Dirt Hill
   -- family, ParentName="HillBase" in Buildings_Cliffs.xml, both verified
   -- against the live def dump) - not the Stone_Cliff family, which reads as
   -- quarried rock. A packed-dirt dune lip is the desert-honest read for a
-  -- Deep Desert wreck site. The ridge sits one row north of the hull's own
-  -- footprint (dune_face_z = hz - 2, clear of the Iguana's shade spot below
-  -- the hull), running east from the hull's east flank for 4 cells, with the
-  -- TOP row one further cell north (behind/above the face, per §1).
-  local dune_face_z = hz - 2
-  local dune_top_z = dune_face_z - 1
+  -- Deep Desert wreck site. The ridge sits SOUTH of the hull's own footprint
+  -- (z grows to the north; the hull's lowest row is hz - 1), clear of the
+  -- Iguana's shade spot east of the hull, running east from hx for 4 cells,
+  -- with the TOP row one cell north of the face (behind/above it, per §1).
+  -- Until 2026-11-23 the top row sat south of the face, which draws a thin
+  -- rail with posts; the corrected order has had no live look.
+  local dune_face_z = hz - 3
+  local dune_top_z = dune_face_z + 1
   local dune_run_len = 4
   local dune_cells = 0
-  if ctx:in_bounds(hx, dune_top_z) then
+  if ctx:in_bounds(hx, dune_face_z) then
     for i = 0, dune_run_len - 1 do
       local dx = hx + i
       if ctx:in_bounds(dx, dune_face_z) and not ctx:occupied(dx, dune_face_z) then
@@ -177,8 +180,8 @@ function build(ctx)
   note(string.format(
     "the long crossing: 1 stalled AncientIndustrialTruck (engine failure, "
     .. "never touched by anything alive), half-buried against a %d-cell "
-    .. "Dirt_Hill/Dirt_HillTop dune-lip on its leeward side, %d ChunkSlagSteel "
+    .. "Dirt_Hill/Dirt_HillTop dune-lip at its south end, %d ChunkSlagSteel "
     .. "leftovers too small to have been worth carrying off, %d SoftSand "
-    .. "cells drifted against the same side, 1 dessicated Iguana - the "
+    .. "cells drifted on its leeward (+x) side, 1 dessicated Iguana - the "
     .. "shade's first and so-far only tenant", dune_cells, scattered, drift_cells))
 end
