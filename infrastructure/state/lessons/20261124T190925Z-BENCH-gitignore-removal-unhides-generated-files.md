@@ -1,0 +1,2 @@
+A commit that removes lines from .gitignore turns every generated file those lines hid into untracked dirt, in each clone as it levels past the commit. The retire census 9304d37531 (2026-11-23 10:04 PST) rang disk.seat_dirt 19 minutes later on five hub/data files in the bench clone, and the alarm stood for 24 h. When you retire a generator and its ignore lines, delete its leftover output in the seat clone and every role clone (git ls-files -o) in the same act.
+item: RELAPSE_WORK_BELT_FIX_DIED_TWICE
