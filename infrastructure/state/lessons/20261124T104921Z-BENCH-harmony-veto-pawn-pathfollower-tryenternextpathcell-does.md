@@ -1,0 +1,2 @@
+A Harmony veto on Pawn_PathFollower.TryEnterNextPathCell does not see every walked move: PatherTick's collision recovery ('Unstuck') writes pawn.Position from CellFinder.TryFindBestPawnStandCell(cellByCell), and reads walkability only. A rule that holds a pawn must also filter that search (its neighbour iterator), not refuse its answer: refusing sends the pawn back and forth between two squares.
+item: RIMMANDRAKE_TRACE_FLOWWORKS_HELD_RAIDER_LEFT_DRAINED_MOAT

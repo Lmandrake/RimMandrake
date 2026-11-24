@@ -233,6 +233,19 @@
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
+ "T_PIT_ACCESS": {
+  "at": "2026-11-24T10:49:09Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Climb*,Diagonal*,LadderClimb*,LadderInspect*,LadderParity*,LadderRails*,LadderWall*,PitAccess*,PitRamp*,PitRecovery*,PitRescue*,PitRoute*,PitTravel*,Pocket*,PocketGrid*,Step*,WallClimb*,WallReach*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "shape 1 depth 2 k 1 crowd 3 seed 1: (10, 14) -> (11, 14) crosses a pit edge",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RM_PitTrapMath.cs b/src/RimMandrake/FlowWorks/Source/RM_PitTrapMath.cs\nindex 790e35cc89..3e269e2f62 100644\n--- a/src/RimMandrake/FlowWorks/Source/RM_PitTrapMath.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_PitTrapMath.cs\n@@ -116,7 +116,7 @@ namespace RimMandrake.FlowWorks\n \t\t/// relative, a step this body takes by itself; absolute, a held pawn stays on the D = 4 floor and nobody is crowded into it.</summary>\n \t\tpublic static bool RecoveryShuffleAllowed(bool relative, bool heldHere, int fromDepth, int toDepth, int k)\n \t\t{\n-\t\t\treturn relative ? BodyTakesStep(fromDepth, toDepth, k, false, 0, 0, false, false)\n+\t\t\treturn relative ? true\n \t\t\t\t: !StepBlocked(heldHere, toDepth) && !IsPitDescent(fromDepth, toDepth);\n \t\t}\n \n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/RM_PitTrapMath.cs"
+  ],
+  "patch_sha": "5c49cf9089b42b49",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
  "T_PIT_COVER": {
   "at": "2026-11-23T04:05:50Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Beneath*,DeckCollapse*,FallRail*,LidWalker*,PitCover*,PitCoverLook*,PitDeck*,SpikePierce*,Spikes*,SuperdeepTrap*",
