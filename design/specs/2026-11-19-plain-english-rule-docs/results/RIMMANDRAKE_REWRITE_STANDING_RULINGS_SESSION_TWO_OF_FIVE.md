@@ -16,17 +16,17 @@ the paragraphs of dated quotes and the two evidence paragraphs (`batch_plan.md` 
 
 | measure | before | after |
 |---|---|---|
-| bytes (section) | 39,436 | 42,296 |
-| words in linted prose (section) | 6,406 | 6,855 |
-| STE violations per 100 words (section, quotes included) | 4.51 | 3.12 |
-| STE violations per 100 words (rule text) | 4.15 | 2.29 |
+| bytes (section) | 39,436 | 42,782 |
+| words in linted prose (section) | 6,406 | 6,931 |
+| STE violations per 100 words (section, quotes included) | 4.51 | 3.09 |
+| STE violations per 100 words (rule text) | 4.15 | 2.26 |
 | sentences over 20 words (section) | 115 | 47 |
 | sentences over 20 words (rule text) | 80 | 15 |
-| flagged lines (mechanical, section) | 12 (6 pronoun, 6 shout) | 9 (7 shout, 2 pronoun) |
-| whole file: STE per 100 words, long sentences, flagged lines | 4.10, 545, 63 | 3.83, 477, 60 |
+| flagged lines (mechanical, section) | 12 (6 pronoun, 6 shout) | 8 (7 shout, 1 pronoun) |
+| whole file: STE per 100 words, long sentences, flagged lines | 4.10, 545, 63 | 3.82, 477, 59 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 16 | 0 |
 
-The section grew by 7%.
+The section grew by 8%.
 
 ### The 15 long sentences that stay in the rule text
 
@@ -102,8 +102,12 @@ After that the writer split ten long sentences; the same reader read those ten: 
 | "Either act is better than a review of code that nobody runs" | a ban became a preference | "Do not spend a review on code that nobody runs." |
 | the three "Plant with what exists" bullets without "or" (late edit) | the list read as "use all three" | the old "or" restored; the reader read it |
 
-Lines that no reader read: none of the wording edits. After the reader's last read, the writer only re-wrapped lines over
-120 characters (a script checked that the words are the same).
+After the first publish, the prose check of `./publish` listed 8 lines. The writer repaired them. A second fresh Opus reader read
+those 8 against the old text: 6 SAME, 2 CHANGED. Both were new definitions that the writer had taken wrong (a blind cycle,
+the road back). The writer replaced them with the reader's wording, from `maturation.py` `ROADS_BACK` and the blind brief.
+A third fresh Opus reader read the two lines: TRUE and SAME, no repair.
+
+Lines that no reader read: none. After the reads, the writer only re-wrapped lines over 120 characters.
 
 ## Conflicts and stale lines: decided
 

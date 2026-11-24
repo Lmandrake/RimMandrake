@@ -698,8 +698,8 @@ The rule:
   - Such a drop does not trim work. §You do not trim work (`roles/conductor.md`) forbids a cut of worthy work to
     save spend. This rule says that the unworthy touch is itself the cost.
 - **Test 2, if you see it, do it.** Whoever judges a finding or a ticket worth the touch is its fixer, in the same run.
-  The fixer writes the test, sees the test fail, fixes, sees the test pass, and publishes. Never set the fix down for
-  someone else without evidence that you should not do it. The evidence is one of these:
+  The fixer writes the test, sees the test fail, fixes, sees the test pass, and publishes. Never set the
+  fix down for someone else without evidence that the fix is not yours to do. The evidence is one of these:
   - you lack the tools or the access (a read-only role; a live-only fault and no bridge);
   - the fix is not known;
   - it needs one of the owner's five acts (§Only five acts stay his);
@@ -758,8 +758,11 @@ The rule:
     - the check shown passing on the fixed build. In a visit, the checks that the fix touches run again on that build.
   - Then one fresh reader, a run that did not make the fix, reads only that fix, once. The reader writes its review
     (`fix_reviews.jsonl`). The steward run that reads the record is that reader. This one read replaces the whole new
-    blind cycle that a fixed mod used to owe.
-  - Only two things go down the road back.
+    blind cycle that a fixed mod used to owe. A blind cycle is one blind judge's run
+    of the blind challenge. After the first cycle, each cycle has a new blind judge.
+    That judge reads the changed files and the bars whose inputs changed.
+  - Only two things go down the road back. The road back takes each such line to the
+    lowest stage that can show the fault. That stage can be an earlier stage or the same stage.
     - One is a mod fault that the sitting could not fix. That fault goes with the evidence why. The evidence is one of
       these: no tools, the fix is not known, another run holds the files, one of his five acts, a north-star bar.
     - The other is a bar left undecided.
@@ -821,9 +824,9 @@ The rule:
   - The CHARTER's "See it, fix it, then" (owner, 2026-11-05) is test 2 for a small fix. Since this ruling, a fix that is
     not small is still yours, unless the evidence under test 2 says otherwise.
 - **Test that this was applied:** `src/RimMandrake/rimflow/selftest_touching_code_cost_rule.py`.
-  - It finds the two tests in the root `CLAUDE.md`, the CHARTER and the six `.claude/agents/rm-*.md` files.
-  - It finds the two tests in the fixer, judge and monitor role files.
-  - It finds a stopping level in each judging brief that it names.
+  - That selftest finds the two tests in the root `CLAUDE.md`, the CHARTER and the six `.claude/agents/rm-*.md` files.
+  - That selftest finds the two tests in the fixer, judge and monitor role files.
+  - That selftest finds a stopping level in each judging brief that it names.
 
 ## What is where
 
@@ -926,8 +929,8 @@ work that would wire it in often has not happened yet.
 - **Search the artpipe state dir by subject/defName first**, not just by job-id guesswork:
   `python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <term>…`
   - The command covers `done/`, `_artsrc/`, `registry.jsonl` and `art_status.json` in
-    `D:\ClaudeWork\rimmandrake\artpipe` (outside git since 2026-10-02). When that dir is absent, the command refuses. It
-    does not report 0.
+    `D:\ClaudeWork\rimmandrake\artpipe` (outside git since 2026-10-02). When that dir is absent, the command refuses.
+    The command does not report 0.
   - A finished job's `rimflow_item_id` and `style_notes` often name the exact roster row or item that the job was
     generated for.
 - **Check for a review sheet's `.decisions.json`** (`Transient/*.decisions.json`,
@@ -983,8 +986,9 @@ roughly half of it is available for our use."*
   Recommended: later and more specific."*
 - So no share is kept. Each account runs to its line, at any hour. The order, the leave lines and Steven's line do not
   change.
-- The Conductor may change the fixed account order and the shared account's leave line as its mindful act.
-  (Owner 2026-11-19, §Only five acts stay his.) The `--why` of that act names what is lost if the act is wrong (`lost:`)
+- The Conductor may change the fixed account order and the shared account's leave line as its mindful act. A
+  mindful act is recorded with `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`. (Owner 2026-11-19,
+  §Only five acts stay his.) The `--why` of that act names what is lost if the act is wrong (`lost:`)
   and the undo (`undo:`). The money side stays his: nothing here buys capacity.
 
 Live runs finish past the soft line; no account is driven to zero (owner, 2026-11-20 about 5:30 AM PST): *"And yes for
