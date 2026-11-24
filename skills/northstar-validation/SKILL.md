@@ -160,7 +160,8 @@ needs all of these:
 - the pass is MEASURED PASS;
 - the pass ran at or after the newest commit of the gate file. A later change of the envelope is a note, not a failure;
 - the pass covers every suite on disk that composes onto the minimal list (`suite_set.py`);
-- the status registry holds no key without a mod folder.
+- the status registry (`infrastructure/state/modcheck_status.json`) holds no key without a mod folder. To clear such a
+  key, use `rename-key` or `forget-key` of `modcheck/cli.py`.
 
 Exit 1 prints each reason. Exit 2 means that no record exists. Read the item's state. Never say from memory that the
 flip is done.
@@ -200,7 +201,7 @@ Set up the session in this order:
 
 1. Run `rimflow bridge take`.
 2. Quit the game.
-3. Run `python3 …/live_queue/prep_wsl.py --apply`. It swaps to the minimal list, deploys every suite mod and composes
+3. Run `python3 …/live_queue/prep_wsl.py --apply`. This script swaps to the minimal list, deploys every suite mod and composes
    their packageIds. With no flags, it only prints the plan.
 4. Launch the game through Steam.
 
@@ -220,7 +221,7 @@ The detectors are `detectors.py`: pure functions over a snapshot. The severities
 
 `Watch` probes the companion once, at enter. When the companion is absent, the detectors fall back to inference. The
 summary then says `companion: false`, never silence. The offline proof is `selftest_companion_detectors.py` and
-`selftest_detectors.py`. The live proof is the `companion_live` job. It checks the **evidence** of each detector, not only
+`selftest_detectors.py`. The live proof is the `companion_live` job. That job checks the **evidence** of each detector, not only
 the name.
 
 A direct read shows **new** surprises in suites that hurt or break their own colonists. Before you file a
@@ -293,8 +294,8 @@ say that a fix is done.
 ## The scoreboard counts only what it can read
 
 - `required_checks_report.py` counts the required checks that are proven, per mod. The report reads
-  `Transient/modcheck/live_queue/*/<Mod>_summary.json`. The report also reads the live results of a mod whose walk header names a
-  `checkout:` script.
+  `Transient/modcheck/live_queue/*/<Mod>_summary.json`. The report also reads the live results of a mod whose validation walk
+  (`design/validation_walks/<tier>/<Mod>.md`) names a `checkout:` script in its header.
 - A mod with no readable record counts as unproven, even when its suite passes live. The report once read "proven 0 of
   1543" while FlowWorks ran 59/59.
 - The report names the unreadable mods under NOT IN THE TOTAL. Never cite a proven-count without that line beside it.

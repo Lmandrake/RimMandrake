@@ -10,10 +10,10 @@ Also: skills/northstar-validation/references/history.md
 
 | measure | before | after |
 |---|---|---|
-| bytes | 17,389 | 23751 |
-| words in linted prose | 1,664 | 2528 |
-| STE violations per 100 words | 4.75 | 1.46 |
-| sentences over 20 words | 33 | 4 |
+| bytes | 17,389 | 23952 |
+| words in linted prose | 1,664 | 2549 |
+| STE violations per 100 words | 4.75 | 1.49 |
+| sentences over 20 words | 33 | 5 |
 | flagged lines (mechanical) | 3 | 2 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 11 | 0; 1 listed under "Could not determine" |
 | dead paths in `check_paths.py` | 1 | 0 |
@@ -71,6 +71,9 @@ the code.
 The same reader then read the repairs. It found 1 real item (the queue doc lost two `hostile_raid` conditions) and 3
 trivial. The real one and the APPARATUS FAULT line are repaired. No reader read those two repairs. No reader read three
 small edits: "`setup()` then keeps", "The class is", and the bullet that holds the two homes of the spoiled-run rule.
+
+After the first landing (95e1b087ce), the prose check of `./publish` named 4 lines: the status registry, the walk header and
+two pronouns. All 4 are repaired. The paths come from `rollout_gate.py` and the walk files. No reader read those 4 repairs.
 
 Not repaired (trivial): a surplus pawn on the cell of a kept colonist stays; REFUSED also covers an unreachable bridge; the
 hash leaves out the three validation header lines; "counts as unproven" beside "NOT IN THE TOTAL" (old wording).
