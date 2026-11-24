@@ -39,6 +39,8 @@ namespace RimMandrake.Pyrelands
 
         // Saved.
         private int[] burnTick;
+        // Live burns with fruit on and the fresh-burn bonus off. Only the fruit scan reads these stamps.
+        private int[] fruitBurnTick;
         private int blackRainWateredUntil = -1;
         // Fires that took their one scorch-fruit roll (FireEcologyHook). Saved as the ids of fires still burning at the save, so a
         // fire alive across a save/load does not roll again (SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK, an item name).
@@ -80,24 +82,38 @@ namespace RimMandrake.Pyrelands
         private void EnsureGrids()
         {
             int n = map.cellIndices.NumGridCells;
-            if (burnTick == null || burnTick.Length != n)
-            {
-                burnTick = new int[n];
-                for (int i = 0; i < n; i++) burnTick[i] = -1;
-            }
+            if (burnTick == null || burnTick.Length != n) burnTick = NewBurnGrid(n);
             if (wateredUntil == null || wateredUntil.Length != n) wateredUntil = new int[n];
+        }
+
+        private static int[] NewBurnGrid(int count)
+        {
+            int[] ticks = new int[count];
+            for (int i = 0; i < count; i++) ticks[i] = -1;
+            return ticks;
+        }
+
+        private static void LookBurnGrid(ref int[] ticks, string key)
+        {
+            byte[] bytes = null;
+            if (Scribe.mode == LoadSaveMode.Saving && ticks != null)
+            {
+                bytes = new byte[ticks.Length * 4];
+                Buffer.BlockCopy(ticks, 0, bytes, 0, bytes.Length);
+            }
+            DataExposeUtility.LookByteArray(ref bytes, key);
+            if (Scribe.mode == LoadSaveMode.LoadingVars && bytes != null && bytes.Length % 4 == 0)
+            {
+                ticks = new int[bytes.Length / 4];
+                Buffer.BlockCopy(bytes, 0, ticks, 0, bytes.Length);
+            }
         }
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref blackRainWateredUntil, "blackRainWateredUntil", -1);
-            byte[] bt = null, wu = null;
-            if (Scribe.mode == LoadSaveMode.Saving && burnTick != null)
-            {
-                bt = new byte[burnTick.Length * 4];
-                Buffer.BlockCopy(burnTick, 0, bt, 0, bt.Length);
-            }
+            byte[] wu = null;
             if (Scribe.mode == LoadSaveMode.Saving && wateredUntil != null)
             {
                 wu = new byte[wateredUntil.Length * 4];
@@ -122,16 +138,9 @@ namespace RimMandrake.Pyrelands
             {
                 rolledFruitFires = rolled != null ? new HashSet<int>(rolled) : new HashSet<int>();
             }
-            DataExposeUtility.LookByteArray(ref bt, "ashBurnTick");
-            if (Scribe.mode == LoadSaveMode.LoadingVars)
-            {
-                // A save without the grids (or from a different map size) reads as "never burned".
-                if (bt != null && bt.Length % 4 == 0)
-                {
-                    burnTick = new int[bt.Length / 4];
-                    Buffer.BlockCopy(bt, 0, burnTick, 0, bt.Length);
-                }
-            }
+            // A save without the grids (or from a different map size) reads as "never burned".
+            LookBurnGrid(ref burnTick, "ashBurnTick");
+            LookBurnGrid(ref fruitBurnTick, "ashFruitBurnTick");
         }
 
         // A removed map despawns nothing, so its furnace-beasts never unregister from the warmth field: drop the map there.
@@ -171,9 +180,11 @@ namespace RimMandrake.Pyrelands
 
         public override void MapComponentTick()
         {
-            if (!active || !PyrelandsMechanicsGate.On) return;
+            if (!active) return;
             int now = Find.TickManager.TicksGame;
             if ((now + map.uniqueID) % IntervalTicks != 0) return;
+            PyrelandsAshFieldPatches.RefreshWeatherIfGateChanged();
+            if (!PyrelandsMechanicsGate.On) return;
             try
             {
                 EnsureGrids();
@@ -280,6 +291,20 @@ namespace RimMandrake.Pyrelands
         {
             if (burnTick == null || burnTick.Length != map.cellIndices.NumGridCells || !c.InBounds(map)) return -1;
             return burnTick[map.cellIndices.CellToIndex(c)];
+        }
+
+        internal void StampFruitBurn(IntVec3 c, int now)
+        {
+            int n = map.cellIndices.NumGridCells;
+            if (fruitBurnTick == null || fruitBurnTick.Length != n) fruitBurnTick = NewBurnGrid(n);
+            fruitBurnTick[map.cellIndices.CellToIndex(c)] = now;
+        }
+
+        internal int FruitBurnTickAt(IntVec3 c)
+        {
+            int stamp = BurnTickAt(c);
+            if (fruitBurnTick == null || fruitBurnTick.Length != map.cellIndices.NumGridCells || !c.InBounds(map)) return stamp;
+            return Math.Max(stamp, fruitBurnTick[map.cellIndices.CellToIndex(c)]);
         }
 
         // Unsaved: the latest watered-until stamp this session laid or loaded, so the ash cover can skip a map with nothing wet.
@@ -567,14 +592,22 @@ namespace RimMandrake.Pyrelands
         }
 
         private static float clearWeightXml = -1f;
+        private static bool? lastWeatherGate;
+
+        internal static void RefreshWeatherIfGateChanged()
+        {
+            if (lastWeatherGate != PyrelandsMechanicsGate.On) ApplySettings();
+        }
 
         /// <summary>Settings written into defs (design §5, §5a): deep ash's XML fertility = ashDryFertility, so vanilla readers agree;
         /// the biome's old Clear weight split between AshDrift and Clear; the heavy sheet layered on AshDrift. Run at startup and
-        /// again when the settings window closes (the weather overlay itself is fixed once a game has built its weather worker).</summary>
+        /// again on map load, when this mod writes settings, or when a running map observes a gate change (the weather overlay
+        /// itself is fixed once a game has built its weather worker).</summary>
         public static void ApplySettings()
         {
             try
             {
+                bool gateOn = PyrelandsMechanicsGate.On;
                 TerrainDef deep = DefDatabase<TerrainDef>.GetNamedSilentFail(RM_FireEcoKernel.DeepAshDefName);
                 if (deep != null)
                 {
@@ -602,10 +635,11 @@ namespace RimMandrake.Pyrelands
                             clearRec = new WeatherCommonalityRecord { weather = clear, commonality = 0f };
                             biome.baseWeatherCommonalities.Add(clearRec);
                         }
-                        RM_FireEcoKernel.SplitClear(clearWeightXml, RM_PyrelandsSettings.ambientAshEnabled && PyrelandsMechanicsGate.On,
+                        RM_FireEcoKernel.SplitClear(clearWeightXml, RM_PyrelandsSettings.ambientAshEnabled && gateOn,
                             RM_PyrelandsSettings.ambientAshShare, out float d, out float cl);
                         driftRec.commonality = d;
                         clearRec.commonality = cl;
+                        lastWeatherGate = gateOn;
                     }
                 }
                 if (drift != null)

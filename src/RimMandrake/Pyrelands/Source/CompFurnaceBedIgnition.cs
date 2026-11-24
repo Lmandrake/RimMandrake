@@ -61,6 +61,8 @@ namespace RimMandrake.Pyrelands
 
             if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
+                // A wake while disabled must not leave a pending roll for a cell the beast walks to later.
+                restingTicks = 0;
                 return;
             }
             if (!(parent is Pawn beast) || !beast.Spawned || beast.Dead)

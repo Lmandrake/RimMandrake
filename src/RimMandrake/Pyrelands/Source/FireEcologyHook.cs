@@ -494,8 +494,8 @@ namespace RimMandrake.Pyrelands
     {
         // Fire thingIDNumbers that already took their one scorch-fruit roll
         // (taken only once a legal spot exists -- see TakeFruitRoll), one set
-        // PER MAP, saved with it (MapComponent_PyrelandsAshField.RolledFruitFires);
-        // this weak table is the fallback for a map without that component.
+        // PER MAP, saved with it (MapComponent_PyrelandsAshField.RolledFruitFires).
+        // A map without that component still has a per-map set, but cannot prove a spot burned.
         // Never static: a reload re-issues the same thingIDNumbers,
         // and a static set then blocked every reloaded fire's roll
         // (PYRE_SCORCHFRUIT_DIAGNOSE_FIRE_BEARS_NOTHING, RM_FireEcoKernel.RollSetFor).
@@ -510,11 +510,15 @@ namespace RimMandrake.Pyrelands
         /// <summary>The 3x3 scan of RM_FireEcoKernel.FirstFruitSpot, written out so the hot fire tick allocates nothing.</summary>
         private static int FirstLegalFruitSpot(IntVec3 pos, Map map)
         {
+            MapComponent_PyrelandsAshField ash = MapComponent_PyrelandsAshField.For(map);
+            if (ash == null) return -1;
+            int now = Find.TickManager.TicksGame;
             for (int i = 0; i < RM_FireEcoKernel.FruitSpotDx.Length; i++)
             {
                 IntVec3 c = new IntVec3(pos.x + RM_FireEcoKernel.FruitSpotDx[i], 0, pos.z + RM_FireEcoKernel.FruitSpotDz[i]);
                 bool inb = c.InBounds(map);
-                if (RM_FireEcoKernel.FruitLandingLegal(inb, inb && c.Standable(map), inb && c.GetPlant(map) != null,
+                if (RM_BurnKernel.RecentBurn(false, ash.FruitBurnTickAt(c), now, GenDate.TicksPerDay)
+                    && RM_FireEcoKernel.FruitLandingLegal(inb, inb && c.Standable(map), inb && c.GetPlant(map) != null,
                         inb && FireEcologyHookMod.IsScorchableGround(c.GetTerrain(map))))
                 {
                     return i;
@@ -540,12 +544,14 @@ namespace RimMandrake.Pyrelands
                 // FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT: vanilla soils are scorchable ground, so the map's biome must also opt in
                 // (the Pyrelands, or the cross-biome setting) or a temperate-forest fire dusts ash, stamps burns and grows fruit.
                 bool scorchable = RM_FireEcoKernel.ScorchableHere(usable && FireEcologyBiomeGate.On(map), terrain?.defName);
+                MapComponent_PyrelandsAshField ash = null;
                 // The fresh-burn stamp (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED §4): this cell burned now. Its own toggle, independent
                 // of dusting and fruit. The gate is scorchable ground, deep ash included, on a map fire ecology runs on (ScorchableHere).
                 if (RM_FireEcoKernel.BurnStampMay(PyrelandsMechanicsGate.On, RM_PyrelandsSettings.freshBurnBonusEnabled, usable,
                         __instance.parent != null, scorchable))
                 {
-                    MapComponent_PyrelandsAshField.For(map)?.StampBurn(pos, Find.TickManager.TicksGame);
+                    ash = MapComponent_PyrelandsAshField.For(map);
+                    ash?.StampBurn(pos, Find.TickManager.TicksGame);
                 }
                 if (!RM_FireEcoKernel.FireTickMayRoll(PyrelandsMechanicsGate.On, RM_PyrelandsSettings.ashDustingEnabled,
                         RM_PyrelandsSettings.scorchFruitEnabled, usable, __instance.parent != null, scorchable)) return;
@@ -586,12 +592,17 @@ namespace RimMandrake.Pyrelands
                 // grass it is about to burn still stood in its cell and all eight
                 // neighbours, so the roll was spent with nowhere to land and a fully
                 // grassed burn grew 0 fruit. Now the fire takes its roll the first
-                // interval its own cell (scanned first) or a neighbour is bare --
-                // i.e. once its plant has burned away -- still one roll per fire.
+                // interval its own cell (scanned first) or a neighbour is bare
+                // and has its own recent burn stamp. Still one roll per fire.
                 // The set is SAVED with the map (MapComponent_PyrelandsAshField, SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK), so a fire still
-                // burning at a save does not roll again after the load; the weak table is only the fallback with no component.
-                HashSet<int> rolledFires = RM_PyrelandsSettings.scorchFruitEnabled
-                    ? (MapComponent_PyrelandsAshField.For(map)?.RolledFruitFires ?? RM_FireEcoKernel.RollSetFor(rolledFiresByMap, map)) : null;
+                // burning at a save does not roll again after the load.
+                HashSet<int> rolledFires = null;
+                if (RM_PyrelandsSettings.scorchFruitEnabled)
+                {
+                    ash = ash ?? MapComponent_PyrelandsAshField.For(map);
+                    if (!RM_PyrelandsSettings.freshBurnBonusEnabled) ash?.StampFruitBurn(pos, Find.TickManager.TicksGame);
+                    rolledFires = ash?.RolledFruitFires ?? RM_FireEcoKernel.RollSetFor(rolledFiresByMap, map);
+                }
                 if (rolledFires != null && !rolledFires.Contains(__instance.thingIDNumber))
                 {
                     // FIRE_SCAN_DIAGNOSE_BIG_BURN_COST: a static scan, never a lambda. A lambda capturing `pos`/`map` made C# hoist

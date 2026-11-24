@@ -28,8 +28,8 @@ namespace RimMandrake.Pyrelands
     /// ground for PyrelandsTuning.BurrowTimeoutCooldownTicks; without that the
     /// giver would re-issue the burrow at once. AddFinishAction removes the
     /// hediff on every exit path — safe emergence, timeout, the job being
-    /// interrupted by damage or capture, or the pawn dying — so the hediff
-    /// can never outlive the job that granted it.
+    /// interrupted by damage or capture, the gate or burrow switch going off,
+    /// or the pawn dying — so the hediff can never outlive the job that granted it.
     /// </summary>
     public class RM_JobDriver_Burrow : JobDriver
     {
@@ -65,6 +65,7 @@ namespace RimMandrake.Pyrelands
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOn(() => pawn.Dead);
+            this.FailOn(() => !PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.burrowOnFireEnabled);
 
             yield return Toils_General.Do(() => ApplyBurrowedHediff(pawn));
 

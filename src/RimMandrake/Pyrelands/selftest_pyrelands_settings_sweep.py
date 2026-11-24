@@ -16,7 +16,8 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
   entry_gated      each pinned mechanic entry point (a Harmony postfix) consults the gate in ITS OWN body, not merely
                    somewhere in its file (cycle 2: an ungated postfix in a gated file stayed green); blind cycle 3 added the
                    furnace-beast heat-immunity prefix, and the wind carry's one predicate (MapComponent_BurnLine.WindCarries,
-                   which both wind patches read) must consult the gate and its own switch in its own expression
+                   which both wind patches read) must consult the gate and its own switch in its own expression;
+                   a disabled furnace bed-ignition tick discards the rest clock before it can roll on an unrelated cell
   clock_label      the fire-clock checkbox's label and tooltip name the biome's own fire fronts, which it also stops
                    (RIMMANDRAKE_FIX_PYRELANDS_FIRE_CLOCK_LABEL_SAYS_TRIBES_ONLY: it read as a Tribes-only switch)
   checkboxes       every bool setting is the `ref` of exactly one checkbox on the settings screen (blind cycle 3: the wind
@@ -38,6 +39,10 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
   wind_tooltip     "The wind carries the fire" does not promise one cell a fire, no sideways step or a line no wider than it was lit:
                    the kernel's CarryPlan heals a cell aside and its FlankPlan opens and closes the flanks
   master_tooltip   the "Mod enabled" tooltip names every switch that ships on and is not declared under it
+  reset_all        the Reset-all callback restores every writable setting and never writes a constant or readonly field
+  opening_scar     yesterday's fire respects the ash dusting and fresh-burn bonus switches independently
+  roster_weather   a running map refreshes the Clear/Ash Drift split when the effective gate changes in either direction
+  fruit_landing    the fire's 3x3 scan requires fresh burn history on the landing cell, even with the fertility bonus off
 Every planted fault must go red and the clean copy stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = FAIL
 """
@@ -93,7 +98,8 @@ ENTRY_PROPERTIES = [("MapComponent_BurnLine.cs", "WindCarries", "windCarriesFire
 # (file, class, method, switch): the entry point of a mechanic only its own switch stops; its first statement returns on that switch.
 SWITCH_GUARDS = [("PyrelandsFoamPath.cs", "MapComponent_RM_FoamPath", "MapComponentTick", "sprayerFoamsPathEnabled")]
 # (file, job driver class, switch): a job a switch starts ends when that switch or the gate goes off, so no job lands an effect after it.
-JOB_GUARDS = [("JobDriver_RUT_FireHawkCarryEmber.cs", "JobDriver_RUT_FireHawkCarryEmber", "fireHawkSpreadEnabled")]
+JOB_GUARDS = [("JobDriver_RUT_FireHawkCarryEmber.cs", "JobDriver_RUT_FireHawkCarryEmber", "fireHawkSpreadEnabled"),
+              ("RM_JobDriver_Burrow.cs", "RM_JobDriver_Burrow", "burrowOnFireEnabled")]
 # A switch "Mod enabled" does not stop, and the words its tooltip names it by.
 MASTER_LEAVES = {"sandShovelEnabled": "sand shovelling", "furnaceBeastGiant": "giant furnace-beast", "ullaiEnabled": "ullai spawning",
                  "sprayerFoamsPathEnabled": "firefoam sprayer"}
@@ -165,6 +171,11 @@ def facts(mod):
         if os.path.basename(f) == SETTINGS or os.sep + "SelfTest" + os.sep in f:
             continue
         code[os.path.relpath(f, src_dir)] = _strip(open(f, errors="replace").read())
+    fact("reset_all", _reset_failures(ms, fields), "the callback restores every writable setting")
+    fact("opening_scar", _scar_failures(code["PyrelandsFireFront.cs"]), "each scar write obeys its own switch")
+    fact("roster_weather", _weather_failures(code["PyrelandsAshField.cs"]), "the split follows the effective gate in both directions")
+    fact("fruit_landing", _fruit_failures(code["FireEcologyHook.cs"], code["PyrelandsAshField.cs"]),
+         "the source and its neighbours need their own recent burn, independent of fertility")
     readers = {n: [f for f, s in code.items() if re.search(r"\bRM_PyrelandsSettings\.%s\b" % n, s)] for n in fields}
     fact("read", ["%s has no reader outside the settings file" % n for n, r in readers.items() if not r and n != "pyrelandsEnabled"]
          + ([] if any("pyrelandsEnabled" in s and "MechanicsOn" in s for s in code.values()) else ["pyrelandsEnabled not fed to the gate"]),
@@ -202,7 +213,13 @@ def facts(mod):
             bad.append("%s never consults %s" % (prop, GATE))
         if "RM_PyrelandsSettings.%s" % setting not in m.group(1):
             bad.append("%s never reads its switch %s" % (prop, setting))
-    fact("entry_gated", bad, "%d entry points and %d predicates consult the gate" % (len(ENTRY_POINTS), len(ENTRY_PROPERTIES)))
+    bed = _method_body(code.get("CompFurnaceBedIgnition.cs", ""), "CompFurnaceBedIgnition", "CompTickInterval") or ""
+    bed = re.sub(r"\s+", "", bed)
+    if not bed.startswith("base.CompTickInterval(delta);if(!PyrelandsMechanicsGate.On||"
+                          "!RM_PyrelandsSettings.furnaceThermalEnabled){restingTicks=0;return;}"):
+        bad.append("disabled furnace bed ignition leaves stale rest for the next enabled wake roll")
+    fact("entry_gated", bad, "%d entry points and %d predicates consult the gate; disabled bed ignition discards rest"
+         % (len(ENTRY_POINTS), len(ENTRY_PROPERTIES)))
     clock = re.findall(r"CheckboxLabeled\(([^;]*?),\s*ref fireClockEnabled\s*,([^;]*)\);", ms)
     fact("clock_label", ["no fire-clock checkbox"] if not clock else
          ["the fire-clock %s does not name the biome's fire fronts it stops" % w for w, x in
@@ -316,6 +333,8 @@ def facts(mod):
         want = {"!" + GATE, "!RM_PyrelandsSettings.%s" % switch}
         if want not in ends:
             bad.append("%s does not fail every toil on %s off or %s off" % (cls, GATE, switch))
+        if cls == "RM_JobDriver_Burrow" and "hide.AddFinishAction(()=>RemoveBurrowedHediff(pawn));" not in body:
+            bad.append("RM_JobDriver_Burrow leaves its protection in place when the wait toil ends")
     fact("job_ends_off", bad, "%d job(s) in flight end when their switch or the gate goes off" % len(JOB_GUARDS))
     return out
 
@@ -368,8 +387,98 @@ def _call_args(s, i):
     return None
 
 
+def _reset_failures(src, fields):
+    cls = "RM_PyrelandsSettings"
+    body = _method_body(src, cls, "SnapshotDefaults") or ""
+    guard = re.search(r"if\s*\((.*)\)\s*d\[f.Name\]\s*=", body, flags=re.S)
+    if not guard:
+        return ["cannot read the shipped-default snapshot filter"]
+    expr = re.sub(r"f\.FieldType\s*==\s*typeof\((\w+)\)", r"type_ == '\1'", guard.group(1))
+    expr = expr.replace("f.IsLiteral", "literal").replace("f.IsInitOnly", "readonly")
+    expr = " ".join(expr.replace("&&", " and ").replace("||", " or ").replace("!", " not ").split())
+    defaults = {name: value for name, (_, value) in fields.items()}
+    candidates = [(name, typ, False, False) for name, (typ, _) in fields.items()]
+    candidates += [(name, typ, True, False) for typ, name in re.findall(r"public const (\w+) (\w+)", src)]
+    candidates += [("readonly probe", "float", False, True)]
+    bad = []
+    for name, type_, literal, readonly in candidates:
+        if bool(eval(expr, {"__builtins__": {}}, dict(type_=type_, literal=literal, readonly=readonly))):
+            if literal or readonly:
+                bad.append("Reset all tries to write %s (%s)" % (name, "constant" if literal else "readonly"))
+        else:
+            defaults.pop(name, None)
+    skipped = fields.keys() - defaults.keys()
+    if skipped:
+        bad.append("Reset all skips %s" % ", ".join(sorted(skipped)))
+    reset = _method_body(src, cls, "ResetAllFields") or ""
+    if "ResetFields(" not in reset or "shippedDefaults.Keys" not in reset:
+        bad.append("Reset all does not pass the snapshot keys to ResetFields")
+    writer = _method_body(src, cls, "ResetFields") or ""
+    if "shippedDefaults.TryGetValue(n, out object v)" not in writer or "f.SetValue(null, v)" not in writer:
+        bad.append("ResetFields does not restore the snapshotted value")
+    return bad
+
+
+def _scar_failures(src):
+    body = _method_body(src, "PyrelandsYesterdayFire", "Lay") or ""
+    bad = []
+    for switch, write, outcome in (
+            ("ashDustingEnabled", "PyrelandsDriftField.LayScarAsh", "lays ash"),
+            ("freshBurnBonusEnabled", "ash?.StampBurn", "stamps fertility history")):
+        if not re.search(r"if \(RM_PyrelandsSettings\.%s\)\s*%s\(" % (switch, re.escape(write)), body):
+            bad.append("opening scar %s with %s off" % (outcome, switch))
+    return bad
+
+
+def _weather_failures(src):
+    tick = _method_body(src, "MapComponent_PyrelandsAshField", "MapComponentTick") or ""
+    cls = "PyrelandsAshFieldPatches"
+    refresh = _method_body(src, cls, "RefreshWeatherIfGateChanged") or ""
+    apply = _method_body(src, cls, "ApplySettings") or ""
+    if not re.search(r"IntervalTicks != 0\) return;\s*" + cls + r"\.RefreshWeatherIfGateChanged\(\);\s*"
+                     r"if \(!PyrelandsMechanicsGate\.On\) return;", tick):
+        return ["roster off leaves Ash Drift at its enabled weight on the running map"]
+    if not re.search(r"if \(lastWeatherGate != PyrelandsMechanicsGate\.On\)\s*ApplySettings\(\);", refresh):
+        return ["weather refresh does not notice both effective gate transitions"]
+    if ("bool gateOn = PyrelandsMechanicsGate.On;" not in apply or
+            "ambientAshEnabled && gateOn" not in apply or
+            not re.search(r"driftRec\.commonality = d;\s*clearRec\.commonality = cl;\s*lastWeatherGate = gateOn;", apply)):
+        return ["applying weather weights does not split Clear by the effective gate and remember it"]
+    return []
+
+
+def _fruit_failures(src, ash_field):
+    cls = "Patch_FireTick_AshAndScorchFruit"
+    scan = _method_body(src, cls, "FirstLegalFruitSpot") or ""
+    if not re.search(r"if \(RM_BurnKernel\.RecentBurn\(false, ash\.FruitBurnTickAt\(c\), now, GenDate\.TicksPerDay\)\s*"
+                     r"&& RM_FireEcoKernel\.FruitLandingLegal\(", scan):
+        return ["standing grass on the source lets a successful roll land on never-burned bare deep ash next door"]
+    if "i < RM_FireEcoKernel.FruitSpotDx.Length" not in scan:
+        return ["a recently burned bare neighbour must remain eligible"]
+    tick = _method_body(src, cls, "Postfix") or ""
+    if not re.search(r"if \(!RM_PyrelandsSettings\.freshBurnBonusEnabled\)\s*ash\?\.StampFruitBurn\(pos, Find\.TickManager\.TicksGame\);"
+                     r".*FirstLegalFruitSpot\(pos, map\)", tick, flags=re.S):
+        return ["a live ground fire with the fertility bonus off does not record its cell before the fruit scan"]
+    lookup = _method_body(ash_field, "MapComponent_PyrelandsAshField", "FruitBurnTickAt") or ""
+    if "BurnTickAt(c)" not in lookup or "fruitBurnTick[" not in lookup:
+        return ["the fruit scan must read both fertility and fruit-only burn history for its candidate"]
+    return []
+
+
 S = "Source/"
 MUTANTS = [
+    ("Reset all includes constants", S + SETTINGS, "!f.IsLiteral && !f.IsInitOnly &&", "!f.IsInitOnly &&"),
+    ("Reset all includes readonly fields", S + SETTINGS, "!f.IsLiteral && !f.IsInitOnly &&", "!f.IsLiteral &&"),
+    ("scar ash ignores its switch", S + "PyrelandsFireFront.cs", "if (RM_PyrelandsSettings.ashDustingEnabled)", ""),
+    ("scar stamp ignores its switch", S + "PyrelandsFireFront.cs", "if (RM_PyrelandsSettings.freshBurnBonusEnabled)", ""),
+    ("roster change is not polled", S + "PyrelandsAshField.cs", "PyrelandsAshFieldPatches.RefreshWeatherIfGateChanged();", ""),
+    ("weather refresh misses off transition", S + "PyrelandsAshField.cs", "if (lastWeatherGate != PyrelandsMechanicsGate.On)",
+     "if (PyrelandsMechanicsGate.On && lastWeatherGate != PyrelandsMechanicsGate.On)"),
+    ("fruit can land on an unburned cell", S + "FireEcologyHook.cs",
+     "if (RM_BurnKernel.RecentBurn(false, ash.FruitBurnTickAt(c), now, GenDate.TicksPerDay)\n                    && RM_FireEcoKernel.FruitLandingLegal(",
+     "if (RM_FireEcoKernel.FruitLandingLegal("),
+    ("fruit scan drops burned neighbours", S + "FireEcologyHook.cs", "i < RM_FireEcoKernel.FruitSpotDx.Length", "i < 1"),
+    ("fruit loses history with bonus off", S + "FireEcologyHook.cs", "ash?.StampFruitBurn(pos, Find.TickManager.TicksGame);", "{ }"),
     ("fire clock reads as Tribes-only", "Source/RM_PyrelandsMod.cs", "Fire clock (the biome's fire fronts, flame",
      "Fire clock (flame"),
     ("Scribe default flipped", S + SETTINGS, 'Look(ref burnLineEnabled, "burnLineEnabled", true)', 'Look(ref burnLineEnabled, "burnLineEnabled", false)'),
@@ -411,6 +520,10 @@ MUTANTS = [
     ("ember carry outlives the switches", S + "JobDriver_RUT_FireHawkCarryEmber.cs", "this.FailOn(() => !PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.fireHawkSpreadEnabled);", ""),
     ("ember carry outlives the gate", S + "JobDriver_RUT_FireHawkCarryEmber.cs", "!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.fireHawkSpreadEnabled);", "!RM_PyrelandsSettings.fireHawkSpreadEnabled);"),
     ("ember carry needs both off", S + "JobDriver_RUT_FireHawkCarryEmber.cs", "On || !RM_PyrelandsSettings.fireHawkSpreadEnabled);", "On && !RM_PyrelandsSettings.fireHawkSpreadEnabled);"),
+    ("burrow outlives the gate", S + "RM_JobDriver_Burrow.cs", "!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.burrowOnFireEnabled);", "!RM_PyrelandsSettings.burrowOnFireEnabled);"),
+    ("burrow outlives its switch", S + "RM_JobDriver_Burrow.cs", " || !RM_PyrelandsSettings.burrowOnFireEnabled);", ");"),
+    ("burrow keeps the hediff on exit", S + "RM_JobDriver_Burrow.cs", "hide.AddFinishAction(() => RemoveBurrowedHediff(pawn));", ""),
+    ("furnace keeps stale rest while off", S + "CompFurnaceBedIgnition.cs", "restingTicks = 0;", ""),
 ]
 
 

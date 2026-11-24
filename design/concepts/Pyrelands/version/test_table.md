@@ -21,7 +21,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `ash_fertile_when_watered` | tree | 6 | sc_ash_watered | T_FUZZ | all |
 | `fresh_burn_compounds_with_black_rain` | tree | 6 | sc_burn_compounds | T_FUZZ, T_ASH_PROBE_OFFLINE | all |
 | `grass_carpets_and_regreens` | tree | 6 | sc_grass_regreens | T_LINT, T_BURN_ECOLOGY, P_grass_cover, LOOK_STAGE8 | all |
-| `scorchfruit_born_of_fire` | tree | 6 | sc_scorchfruit | T_FRUIT_CLEAR, T_BURN_COST, P_scorchfruit_produces, P_scorchfruit_spoils, LOOK_STAGE8 | all |
+| `scorchfruit_born_of_fire` | tree | 6 | sc_scorchfruit | T_SETTINGS_SWEEP_OFFLINE, T_FRUIT_CLEAR, T_BURN_COST, P_scorchfruit_produces, P_scorchfruit_spoils, LOOK_STAGE8 | all |
 | `populations_are_the_biomes_own` | tree | 6 | sc_populations, T_ALLOWLIST | T_LINT, T_SITE, P_animal_census, P_mapgen_log | all |
 | `ruins_stand_blackened` | tree | 6 | sc_ruins | - | all |
 | `firehawk_lights_ahead` | tree | 6 | sc_firehawk | T_FUZZ | all |

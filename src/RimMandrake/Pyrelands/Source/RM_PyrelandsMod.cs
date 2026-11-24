@@ -267,7 +267,7 @@ namespace RimMandrake.Pyrelands
         /// <summary>The Reset-all button (after the confirmation): every Pyrelands setting back to its shipped value.</summary>
         public static void ResetAllFields() { ResetFields(new List<string>(shippedDefaults.Keys).ToArray()); }
 
-        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string setting, read from the field
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every writable public static bool/float/int/string setting, read from the field
         // initialisers. MUST stay after every PUBLIC static field initialiser in this class (C# runs them in textual order);
         // the private UI-state statics below it are not snapshotted.
         private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
@@ -276,7 +276,8 @@ namespace RimMandrake.Pyrelands
         {
             var d = new Dictionary<string, object>();
             foreach (FieldInfo f in typeof(RM_PyrelandsSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
-                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string))
+                if (!f.IsLiteral && !f.IsInitOnly &&
+                    (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string)))
                     d[f.Name] = f.GetValue(null);
             return d;
         }

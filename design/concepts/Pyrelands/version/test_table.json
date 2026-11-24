@@ -465,7 +465,7 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
-   "observes": "the settings sweep moved off the game: every Scribe field of RM_PyrelandsSettings has its default equal to its initializer and to shipped behaviour; every mechanic switch has a reader in its mechanic outside the settings file; every mechanic entry point consults PyrelandsMechanicsGate.On (static half of g10); a mutant dropping a reader or flipping a default goes red",
+   "observes": "source checks for Scribe defaults matching initializers and shipped behaviour, setting readers in the mechanics, and entry points consulting PyrelandsMechanicsGate.On. Burrowing ends and clears its protection when the gate or burrow switch turns off. Disabled furnace bed ignition discards the rest clock. Reset all restores writable settings. The opening scar obeys the ash dusting and fresh-burn fertility switches independently. The ash-field tick refreshes the Clear and Ash Drift weights on either effective gate transition. A live fire can roll for fruit only on a cell with its own recent burn record, including when the fertility bonus is off.",
    "reads": [
     "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
     "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs",
@@ -1973,6 +1973,7 @@
     "sc_scorchfruit"
    ],
    "supports": [
+    "T_SETTINGS_SWEEP_OFFLINE",
     "T_FRUIT_CLEAR",
     "T_BURN_COST",
     "P_scorchfruit_produces",

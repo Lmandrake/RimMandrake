@@ -594,9 +594,11 @@ namespace RimMandrake.Pyrelands
             MapComponent_PyrelandsAshField ash = MapComponent_PyrelandsAshField.For(map);
             for (int i = 0; i < cells.Count; i++)
             {
-                PyrelandsDriftField.LayScarAsh(map, cells[i]);
-                ash?.StampBurn(cells[i], RM_BurnKernel.ScarStampTick(now, depths[i],
-                    PyrelandsTuning.YesterdayFireOldestAgeTicks, PyrelandsTuning.YesterdayFireYoungestAgeTicks));
+                if (RM_PyrelandsSettings.ashDustingEnabled)
+                    PyrelandsDriftField.LayScarAsh(map, cells[i]);
+                if (RM_PyrelandsSettings.freshBurnBonusEnabled)
+                    ash?.StampBurn(cells[i], RM_BurnKernel.ScarStampTick(now, depths[i],
+                        PyrelandsTuning.YesterdayFireOldestAgeTicks, PyrelandsTuning.YesterdayFireYoungestAgeTicks));
             }
 
             // Sprouts at about the wild ratio of the biome's two grasses.
