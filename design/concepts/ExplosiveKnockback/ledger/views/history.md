@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":34443,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=5d82b605113cfc4dbb5a8663831dddf31ac23a719990ba45f1f97585d61a1768 -->
-# ExplosiveKnockback — mod ledger history (658 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":35109,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=34e5b0dd69e8338403d9f6c456e5f8fca3ca79b66fbf4bb9e4a079ee945dee5a -->
+# ExplosiveKnockback — mod ledger history (660 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -659,3 +659,5 @@
 - 2026-11-24T02:27:18Z BACKFILL#464 trap.noted trap:short-frame-runs-on-the-same-build-swung v0.1.0: Short frame runs on the same build swung from -1% to +19%; mod-off arms alone spread 38-51 ms, so 3 pairs flip pass/fail. Only the pre-registered 21-pair cold run is decisive (+3.1%).
 - 2026-11-24T02:27:59Z DISPATCH#97 run.end run v0.1.0: 
 - 2026-11-24T02:28:00Z DISPATCH#98 session.id session v0.1.0: 
+- 2026-11-24T02:29:30Z DISPATCH#99 lease.grant lease v0.1.0: 
+- 2026-11-24T02:29:31Z DISPATCH#100 run.start run v0.1.0: 
