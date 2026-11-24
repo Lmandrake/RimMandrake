@@ -4,10 +4,12 @@ facing rows' judged-by-artpipe-job check, HOLD_ERROR never a verdict, the fauna 
 every outside call (scan, gate, probe, subprocess) replaced; temp dirs only, no model call, no git."""
 from __future__ import annotations
 
+import contextlib
 import json
 import sys
 import tempfile
 import time
+import types
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -130,6 +132,17 @@ def main():
     idle_since_nov_eight()
     installs_and_unfiled()
     compare_veto()
+    for t in (t_newest_verdict_decides,
+              t_no_fourth_round,
+              t_discharged_leaves_the_list,
+              t_regen_below_the_cap_is_filed,
+              t_unfiled_is_an_item,
+              t_capped_is_noted_once,
+              t_vetoed_escalation_is_noted,
+              t_same_pass_files_the_next_round,
+              t_due_tells_four_answers,
+              t_files_from_the_judging_clone):
+        t()
     print("FAILED: " + ", ".join(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
 
@@ -393,6 +406,257 @@ def compare_veto():
             check("a vetoed ACCEPT is not vetoed twice", AJ.already_vetoed(AJ.run_records("fauna_auto_q"), acc))
         finally:
             AJ.STATE, RR.file_regen_jobs = saved
+
+
+# ---- follow-ups (design/specs/2026-11-24-art-auto-judge/boundary.md). RIMMANDRAKE_RENDER_TWELVE_FACING_REDRAWS_JUDGED_
+# REGEN_NOBODY_FILED: 12 rows judged REGEN with rounds left waited from 11-06 to 11-24, and 86 follow-ups had no reader.
+A1, A2, A3 = "2026-11-06T10:00:00-08:00", "2026-11-07T10:00:00-08:00", "2026-11-08T10:00:00-08:00"
+VETO = {"at": A1, "subject": "RM_V", "run": "fv", "owed": "escalate to the owner (round cap) after a compare veto"}
+
+
+class A:
+    max_subjects, dry_run = 4, False
+
+
+def row(i, d="RM_A"):
+    return {"id": i, "target_def": d, "target_texpath": "T/" + d, "facings": ["north"]}
+
+
+def rec(job, dec, at, sub="x"):
+    return {"artpipe_job": job, "decision": dec, "at": at, "subject": sub}
+
+
+@contextlib.contextmanager
+def rig():
+    """The driver, the queue, the ledger and the pass, all faked; every replaced name is put back."""
+    keep = {n: getattr(AJ, n) for n in ("SCRATCH", "STATUS", "DRV", "sh", "in_queue", "commit", "file_item", "scan", "gate",
+                                        "probe", "load_drv", "STATE", "run_records", "post_run", "def_exists", "kept_after")}
+    keep_rs = AJ.RS.production_decisions
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        AJ.SCRATCH, AJ.STATUS, AJ.DRV = td / "s", td / "s/status.json", td / "drv.py"
+        sf, log = td / "state.json", td / "log"
+        calls, items, commits, opt = [], [], [], {"regen": True, "file": True, "note": 0}
+        queue = set()
+
+        def put(st):
+            sf.write_text(json.dumps(st))
+
+        def sh(cmd, cwd, lg, timeout=0, env=None):
+            c = [str(x) for x in cmd[1:]]
+            calls.append([Path(c[0]).name] + c[1:])
+            st = json.loads(sf.read_text())
+            if c[1] == "regen" and opt["regen"]:
+                for k in c[3:]:
+                    st[k]["round"] += 1
+                    st[k]["row"]["id"] += "n"
+                put(st)
+            if c[1] == "file" and opt["file"]:
+                queue.add(st[c[3]]["row"]["id"])
+            if c[1] == "spec":
+                (td / "x.spec.json").write_text("{}")
+                st[c[3]]["spec"] = str(td / "x.spec.json")
+                put(st)
+            return opt["note"] if c[1] == "note" else 0
+
+        AJ.sh, AJ.in_queue = sh, lambda r: r["id"] in queue
+        AJ.commit = lambda paths, msg, lg: commits.append(paths) or "c"
+        AJ.file_item = lambda iid, *a, **k: items.append(iid) or iid
+        AJ.RS.production_decisions = lambda d=None: []
+        AJ.def_exists, AJ.kept_after = lambda d: True, lambda r, at: False
+        AJ.gate = lambda now=None: {"mode": "CRUISE", "n": 1, "held": None}
+        AJ.STATUS.parent.mkdir(parents=True, exist_ok=True)
+        AJ.STATUS.write_text(json.dumps({"follow_ups": []}))
+        put({"RM_A_n": {"group": "g", "round": 2, "row": row("j2")}})
+        try:
+            yield types.SimpleNamespace(td=td, sf=sf, log=log, calls=calls, items=items, commits=commits, opt=opt, queue=queue, put=put)
+        finally:
+            for n, x in keep.items():
+                setattr(AJ, n, x)
+            AJ.RS.production_decisions = keep_rs
+
+
+def t_newest_verdict_decides():
+    """HOLD_ERROR is no verdict."""
+    v = AJ.verdicts([("run_b", rec("j", "REGEN", A2)), ("run_a", rec("j", "ACCEPT", A1)), ("run_c", rec("j", "HOLD_ERROR", A3)),
+                     ("run_d", rec("k", "HOLD_ERROR", A3))])
+    check("verdicts: the newest by time, HOLD_ERROR is none", v["j"][0] == "run_b" and "k" not in v, v)
+
+
+def t_no_fourth_round():
+    """What each open row is owed: the cap, an ESCALATE, a newer keep and an unread keep are never a redraw."""
+    state = {"two": {"group": "g", "round": 2, "row": row("j2")}, "one": {"group": "g", "round": 1, "row": row("j1")},
+             "cap": {"group": "g", "round": 3, "row": row("j3")}, "esc": {"group": "g", "round": 2, "row": row("j4")},
+             "acc": {"group": "g", "round": 2, "row": row("j5")}, "done": {"group": "g", "round": 2, "done": "ACCEPT", "row": row("j2")},
+             "stop": {"group": "g", "round": 2, "row": row("j2")}, "gone": {"group": "g", "round": 2, "row": row("j2", "RM_Gone")},
+             "kept": {"group": "g", "round": 2, "row": row("j6")}, "blind": {"group": "g", "round": 3, "row": row("j7")},
+             "lost": {"group": "g", "round": 2, "row": row("j8")}, "wait": {"group": "g", "round": 2, "row": row("j9")},
+             "fresh": {"group": "g", "round": 1, "row": row("j10")}, "stopdef": {"group": "g", "round": 2, "row": row("j2", "RM_S")}}
+    jd = {f"j{n}": (f"run{n}", rec(f"j{n}", "REGEN", A1)) for n in (1, 2, 3, 6, 7)}
+    jd["j4"] = ("run4", rec("j4", "ESCALATE", A1))
+    jd["j5"] = ("run5", rec("j5", "ACCEPT", A1))
+    got = AJ.facing_next(state, jd, lambda d: d in ("stop", "RM_S"), lambda d: {"RM_Gone": False}.get(d),
+                         lambda r, at: {"j6": True, "j7": None}.get(r["id"], False), lambda r: r["id"] == "j9")
+    check("facing_next: below the cap is a regen of the run that judged it; done, stopped, gone, kept and ACCEPT rows are not",
+          got["regen"] == [("two", "g", "run2"), ("one", "g", "run1")], got)
+    check("facing_next: the cap and an ESCALATE are capped, never a fourth round", got["capped"] == [("cap", "run3"), ("esc", "run4")], got)
+    check("facing_next: a later round whose jobs are not in the queue is filed again; one in the queue is not",
+          got["refile"] == [("lost", "g")], got)
+    check("facing_next: keeps that could not be read hold the row and name it", got["unread"] == ["blind"], got)
+
+
+def t_discharged_leaves_the_list():
+    """Done, filed on, judged again or stopped."""
+    fus = [{"at": A1, "subject": "d", "run": "r1", "owed": "o"}, {"at": A1, "subject": "again", "run": "r1", "owed": "o"},
+           {"at": A1, "subject": "stop", "run": "r1", "owed": "o"}, {"at": A1, "subject": "live", "run": "r1", "owed": "old"},
+           {"at": A2, "subject": "live", "run": "r2", "owed": "new"}, {"at": A1, "subject": "err", "run": "r1", "owed": "o"},
+           {"at": A2, "subject": "before", "run": "r2", "owed": "o"}, {"at": A2, "subject": "moved", "run": "r1", "owed": "o"},
+           {"at": A2, "subject": "same", "run": "r1", "owed": "o"}]
+    left = AJ.open_follow_ups(fus, {"d": {"done": "ACCEPT"}, "live": {}, "moved": {"row": row("jm2")}, "same": {"row": row("js")}},
+                              [("r9", rec("", "REGEN", A3, "again")), ("r9", rec("", "HOLD_ERROR", A3, "err")),
+                               ("r1", rec("", "REGEN", A1, "before")), ("r1", rec("jm", "REGEN", A1, "moved")),
+                               ("r1", rec("js", "REGEN", A1, "same"))], lambda k: k == "stop")
+    check("a follow-up whose row is done, filed on, judged again or stopped leaves the list; the rest stay once",
+          [(f["subject"], f["owed"]) for f in left] == [("live", "new"), ("err", "o"), ("before", "o"), ("same", "o")], left)
+
+
+def t_regen_below_the_cap_is_filed():
+    """drv.py regen, then drv.py file."""
+    with rig() as R:
+        log, calls, items, put = R.log, R.calls, R.items, R.put
+        put({"RM_A_n": {"group": "g", "round": 2, "row": row("j2")}})
+        st = {"follow_ups": []}
+        wrote = AJ.follow({"regen": [("RM_A_n", "g", "run2")]}, st, log)
+        check("a REGEN below the cap runs drv.py regen, then drv.py file for that row",
+              calls == [["drv.py", "regen", "run2", "RM_A_n"], ["drv.py", "file", "g", "RM_A_n"]], calls)
+        check("a filed regen is named by its new job, and owes nothing",
+              st.get("regens_filed") == ["j2n"] and not st["follow_ups"] and not items and not wrote, st)
+
+
+def t_unfiled_is_an_item():
+    """Read back from the state and the queue, never from an exit code."""
+    with rig() as R:
+        log, calls, items, opt, queue = R.log, R.calls, R.items, R.opt, R.queue
+        opt["regen"] = False
+        st = {"follow_ups": []}
+        AJ.follow({"regen": [("RM_A_n", "g", "run2")]}, st, log)
+        check("a regen that moved nothing is never filed, and becomes an item and a follow-up",
+              [c[1] for c in calls] == ["regen"] and items == [AJ.unfiled_item_id({"def": "RM_A"})]
+              and [f["subject"] for f in st["follow_ups"]] == ["RM_A_n"] and not st.get("regens_filed"), (calls, items, st))
+
+        calls.clear(); items.clear(); queue.clear()
+        opt.update(regen=True, file=False)
+        st = {"follow_ups": []}
+        wrote = AJ.follow({"refile": [("RM_A_n", "g")]}, st, log)
+        check("a filing whose jobs are not in the queue is an item, whatever the exit code",
+              wrote and len(items) == 1 and len(st["follow_ups"]) == 1 and not st.get("regens_filed"), (items, st))
+
+
+def t_capped_is_noted_once():
+    """One item; a note that did not land leaves the row open."""
+    with rig() as R:
+        sf, log, calls, opt, put = R.sf, R.log, R.calls, R.opt, R.put
+        put({"RM_C_n": {"group": "g", "round": 3, "row": row("j3")}, "RM_D_n": {"group": "g", "round": 1, "row": row("j4")}})
+        opt["note"] = 4
+        st = {"follow_ups": []}
+        AJ.follow({"capped": [("RM_C_n", "run3")]}, st, log)
+        check("a capped row whose note did not land stays open and is listed",
+              not json.loads(sf.read_text())["RM_C_n"].get("done") and len(st["follow_ups"]) == 1, st)
+        opt["note"] = 0
+        st = {"follow_ups": []}
+        wrote = AJ.follow({"capped": [("RM_C_n", "run3")]}, st, log)
+        got = json.loads(sf.read_text())
+        check("a capped row is noted on the one capped item and closed, with no other row touched",
+              wrote and got["RM_C_n"]["done"] == "ESCALATE" and got["RM_C_n"]["escalated_to"] == AJ.CAPPED_ITEM
+              and "done" not in got["RM_D_n"] and calls[-1][1:3] == ["note", AJ.CAPPED_ITEM] and "RM_C_n (run run3)" in calls[-1][4]
+              and not any(c[1] == "regen" for c in calls), (got, calls))
+
+
+def t_vetoed_escalation_is_noted():
+    """A compare veto at the cap."""
+    with rig() as R:
+        log, calls, opt = R.log, R.calls, R.opt
+        other = {"at": A1, "subject": "RM_W", "run": "fw", "owed": "install of ACCEPT r2: rc 1"}
+        opt["note"] = 4
+        st = {"follow_ups": [VETO, other]}
+        AJ.follow({}, st, log)
+        check("a compare veto at the cap stays listed while its note does not land", st["follow_ups"] == [VETO, other], st)
+        opt["note"] = 0
+        AJ.follow({}, st, log)
+        check("a compare veto at the cap is noted on the capped item and leaves the list",
+              st["follow_ups"] == [other] and "RM_V (run fv)" in calls[-1][4], (st, calls[-1]))
+
+        AJ.scan = lambda: {"fauna_defs": [], "facing": []}
+        AJ.STATUS.write_text(json.dumps({"follow_ups": [VETO]}))
+        calls.clear()
+        AJ.cmd_run(A)
+        check("a pass with only a vetoed escalation to do does it", any(c[1:2] == ["note"] for c in calls), calls)
+
+
+def t_same_pass_files_the_next_round():
+    """The row this pass judged; a pass with only a redraw owed; held and dry passes file nothing."""
+    with rig() as R:
+        td, calls, commits, opt, put = R.td, R.calls, R.commits, R.opt, R.put
+        # ---- a whole pass: the row that this pass judges REGEN is regenerated in this pass, after its gate
+        AJ.STATE = td / "st"
+        put({"RM_B_n": {"group": "g", "round": 1, "row": row("jb", "RM_B")}})
+        opt.update(regen=True, file=True)
+        judged = []
+        AJ.scan = lambda: {"fauna_defs": [], "facing": [("RM_B_n", "g")],
+                           "next": {"regen": [], "refile": [], "capped": [], "unread": []}}
+        AJ.gate = lambda now=None: {"mode": "CRUISE", "n": 1, "held": None}
+        AJ.probe, AJ.load_drv = (lambda: (True, "ok")), (lambda: object())
+        AJ.run_records = lambda rid: judged.append(dict(rec("jb", "REGEN", A1, "RM_B_n"), candidate="r1")) or judged[-1:]
+        AJ.RS.production_decisions = lambda d=None: [("audit_x", rec("jb", "REGEN", A1, "RM_B_n"))]
+        AJ.post_run = lambda *a, **k: ([], [])
+        calls.clear(); commits.clear()
+        AJ.STATUS.parent.mkdir(parents=True, exist_ok=True)
+        AJ.STATUS.write_text(json.dumps({"follow_ups": [{"at": A1, "subject": "RM_B_n", "run": "old", "owed": "drv.py regen old RM_B_n"}]}))
+        AJ.cmd_run(A)
+        got = json.loads(AJ.STATUS.read_text())
+        check("a pass that judges a row REGEN files its next round in the same pass",
+              [c[:2] for c in calls if c[0] == "drv.py"] == [["drv.py", "spec"], ["drv.py", "regen"], ["drv.py", "file"]]
+              and got.get("regens_filed") == ["jbn"], (calls, got))
+
+        # ---- an owed regen alone makes the pass work, behind the same gate
+        AJ.scan = lambda: {"fauna_defs": [], "facing": [], "next": {"regen": [("RM_B_n", "g", "r")], "refile": [], "capped": [], "unread": []}}
+        calls.clear()
+        AJ.gate = lambda now=None: {"mode": "CRUISE", "n": 1, "held": "the pipeline is paused"}
+        AJ.cmd_run(A)
+        check("a held pass files no redraw", calls == [], calls)
+        AJ.gate = lambda now=None: {"mode": "CRUISE", "n": 1, "held": None}
+        A.dry_run = True
+        AJ.cmd_run(A)
+        check("a dry run files no redraw", not any(c[0] == "drv.py" for c in calls), calls)
+        A.dry_run = False
+        AJ.cmd_run(A)
+        check("an owed regen with nothing to judge is still filed",
+              [c[1] for c in calls if c[0] == "drv.py"] == ["regen", "file"], calls)
+
+
+def t_due_tells_four_answers():
+    """0 clear, 1 owed or stale, 2 could not look."""
+    with rig() as R:
+        put = R.put
+        # ---- due: 0 nothing owed, 1 owed or a discharged entry listed, 2 could not look
+        empty = {"regen": [], "refile": [], "capped": [], "unread": []}
+        AJ.RS.production_decisions = lambda d=None: []
+        res = {}
+        for name, nxt, fu in (("clear", empty, []), ("regen", dict(empty, regen=[("k", "g", "r")]), []),
+                              ("capped", dict(empty, capped=[("k", "r")]), []), ("refile", dict(empty, refile=[("k", "g")]), []),
+                              ("stale", empty, [{"at": A1, "subject": "Z", "run": "r", "owed": "o"}]),
+                              ("held", empty, [{"at": A1, "subject": "Y", "run": "r", "owed": "o"}]),
+                              ("veto", empty, [VETO]), ("blind", dict(empty, unread=["k"]), []), ("nodrv", None, [])):
+            put({"Z": {"done": "ACCEPT"}})
+            AJ.scan = lambda nxt=nxt: {} if nxt is None else {"next": nxt}
+            AJ.STATUS.write_text(json.dumps({"follow_ups": fu}))
+            res[name] = AJ.cmd_due(A)
+        check("due: owed, discharged, clear and could-not-look are different exits",
+              res == {"clear": 0, "regen": 1, "capped": 1, "refile": 1, "stale": 1, "held": 0, "veto": 1, "blind": 2, "nodrv": 2}, res)
+
+
+def t_files_from_the_judging_clone():
+    check("the driver files from the clone that judged", AJ.driver_env()["FAB_REPO"] == str(AJ.ROOT))
 
 
 if __name__ == "__main__":

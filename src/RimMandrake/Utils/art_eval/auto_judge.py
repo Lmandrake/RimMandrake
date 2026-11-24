@@ -8,6 +8,8 @@ renders 2 days, because each session that filed the renders ended before they la
     auto_judge.py scan                 what is owed + the slot gate, no model call
     auto_judge.py run [--max-subjects 4] [--dry-run]
     auto_judge.py status               the last pass (status.json in the scratch dir)
+    auto_judge.py follow                       file the owed facing redraws and escalate the capped ones, no model call
+    auto_judge.py due                          exit 0 nothing owed after a verdict, 1 owed, 2 could not look
 
 Two sources of owed renders, each judged the way the rimworld-art-evaluation skill says:
   fauna   done artpipe jobs arteval_<DEF>_<s?r?>_<face> filed by the art-eval pipeline -> `fauna_drive.py candidates
@@ -16,7 +18,9 @@ Two sources of owed renders, each judged the way the rimworld-art-evaluation ski
   facing  the facing-audit batch driver's state.json (per-view subjects RM_Foo_n / RM_Foo__dessicated_n are its own
           keys, never a scan of names): a row whose jobs are all done and which no production decision judged under
           its artpipe job id -> `drv.py spec <group> <subject>` -> `runner.py run --run-id audit_auto_<stamp> --record`.
-          drv.py regen / install stay owed follow-ups (listed in status.json), never done here.
+          A row judged REGEN below the round cap gets its next round (drv.py regen, then drv.py file); a row at the cap
+          is noted on CAPPED_ITEM and closed in state.json. A follow-up in status.json leaves the list when its row is
+          done, judged again or stopped.
 
 Judging calls Claude, so a pass does nothing in allocator DARK, while the pipeline is paused or `./pipe off` holds
 family:art_judge, or while the Dispatcher's account pick holds launches. The window's helper count N holds nothing here
@@ -60,6 +64,8 @@ FAUNA_JOB = re.compile(r"^arteval_(.+?)_((?:s\d+)?r\d+)_(south|east|north)\.json
 BACKOFF_S = 3600
 RUN_TIMEOUT = 900          # one runner call: CHUNK subjects, Opus ~40-70 s + GPT ~25-45 s each
 CHUNK = 2
+ROUND_CAP = 3              # drv.py cmd_regen's own cap (policy.py max_regen_rounds): a 4th round is never filed
+CAPPED_ITEM = "FACING_CAPPED_REDRAW_STUBBORN_NORTHS"     # the list item that holds every set the cap stopped
 
 
 def now_iso() -> str:
@@ -128,6 +134,96 @@ def facing_owed(state: dict, judged: set, job_ok, stopped) -> list:
     return out
 
 
+def verdicts(recs) -> dict:
+    """{artpipe job: (run, newest record)}. HOLD_ERROR is no verdict."""
+    out = {}
+    for rid, r in recs:
+        j = r.get("artpipe_job")
+        if j and r.get("decision") not in NO_VERDICT and (j not in out or RS._instant(r.get("at")) >= RS._instant(out[j][1].get("at"))):
+            out[j] = (rid, r)
+    return out
+
+
+def facing_next(state: dict, judged: dict, stopped, exists, kept, queued) -> dict:
+    """What each open facing row is owed after its verdict: {"regen": [(subject, group, run)], "refile": [(subject, group)],
+    "capped": [(subject, run)], "unread": [subject]}. kept(row, at) -> the owner kept the installed art after that
+    verdict (his newer word, so nothing is owed); None = could not look, so nothing is done and the row is named.
+    refile: a later round whose jobs never reached the queue (drv.py file died after drv.py regen)."""
+    out = {"regen": [], "refile": [], "capped": [], "unread": []}
+    for k, v in state.items():
+        r = v.get("row") or {}
+        d = r.get("target_def") or k
+        if v.get("done") or not r.get("id") or stopped(k) or stopped(d) or exists(d) is False:
+            continue
+        rid, rec = judged.get(r["id"]) or (None, {})
+        if rid is None:
+            if int(v.get("round") or 1) > 1 and not queued(r):
+                out["refile"].append((k, v.get("group")))
+            continue
+        dec = rec.get("decision")
+        if dec not in ("REGEN", "ESCALATE"):
+            continue
+        newer = kept(r, rec.get("at"))
+        if newer is None:
+            out["unread"].append(k)
+        elif newer:
+            continue
+        elif dec == "ESCALATE" or int(v.get("round") or 1) >= ROUND_CAP:
+            out["capped"].append((k, rid))
+        else:
+            out["regen"].append((k, v.get("group"), rid))
+    return out
+
+
+def open_follow_ups(fus, state: dict, recs, stopped) -> list:
+    """The follow-ups still owed. Dropped: the row is done, its next render is filed (the row's job is not the one that run
+    judged), the subject was judged again in a later run, or its series was stopped. An older entry of the same subject is dropped too."""
+    newest, jobs = {}, {}
+    for rid, r in recs:
+        jobs[(rid, r.get("subject"))] = r.get("artpipe_job")
+        if r.get("decision") not in NO_VERDICT:
+            t = RS._instant(r.get("at"))
+            if t >= newest.get(r.get("subject"), (0, None))[0]:
+                newest[r.get("subject")] = (t, rid)
+    out = {}
+    for f in fus:
+        k = f.get("subject")
+        t, rid = newest.get(k, (0, None))
+        row, was = (state.get(k) or {}).get("row") or {}, jobs.get((f.get("run"), k))
+        if row.get("id") and was and row["id"] != was:
+            continue
+        if (state.get(k) or {}).get("done") or stopped(k) or (rid and rid != f.get("run") and t > RS._instant(f.get("at"))):
+            continue
+        out[k] = f
+    return list(out.values())
+
+
+def escalations(fus) -> list:
+    """(subject, run) of the follow-ups that a compare veto left at the round cap (veto_to_regen)."""
+    return [(f.get("subject"), f.get("run")) for f in fus if str(f.get("owed")).startswith("escalate")]
+
+
+def kept_after(row: dict, at):
+    """True | False: the owner kept a live facing of this row after AT. None: the art ledger or git could not be read."""
+    try:
+        sys.path.insert(0, str(UTILS / "art"))
+        import artledger as AL
+        pats = [f":(glob)src/**/Textures/{row['target_texpath']}_{f}.png" for f in row["facings"]]
+        r = subprocess.run(["git", "ls-files", "--", *pats], cwd=ROOT, capture_output=True, text=True, timeout=300)     # hang guard
+        if r.returncode != 0:
+            return None
+        ix = AL.cached_index()
+        keeps = [k for x in r.stdout.splitlines() for k in ix.protected(AL.sha256_file(ROOT / x))]
+        return bool(RS.keeps_after(keeps, at))
+    except Exception:  # noqa: BLE001  could not look is its own answer: the row waits and is named
+        return None
+
+
+def in_queue(row: dict) -> bool:
+    import runner as RN
+    return RN.in_queue(row, ART)
+
+
 def def_exists(d: str):
     """True | False: src holds <defName>d</defName>. None: git could not say (never read as gone)."""
     try:
@@ -156,7 +252,9 @@ def driver_env() -> dict:
     sys.path.insert(0, str(UTILS))
     import image_skills
     scripts = str(image_skills.require(image_skills.GENERATING_SCRIPTS))
-    return dict(os.environ, PYTHONPATH=os.pathsep.join(x for x in (scripts, os.environ.get("PYTHONPATH")) if x))
+    # FAB_REPO: the driver reads a run's regen_jobs.json and files from the clone this pass judged in
+    return dict(os.environ, FAB_REPO=str(ROOT),
+                PYTHONPATH=os.pathsep.join(x for x in (scripts, os.environ.get("PYTHONPATH")) if x))
 
 
 def hold_errors(recs) -> list:
@@ -259,6 +357,7 @@ def scan() -> dict:
         st = json.loads((DRV.parent / "state.json").read_text())
         owed = facing_owed(st, judged_jobs(recs), lambda r: all(drv.job_state(j) == "ok" for j in drv.jobs(r)), RS.stopped)
         out["facing"], out["gone"] = split_gone(owed, st, def_exists)
+        out["next"] = facing_next(st, verdicts(recs), RS.stopped, def_exists, kept_after, in_queue)
     out["fauna_judged"] = len(FD.judged_set(FD.production()))
     return out
 
@@ -706,6 +805,83 @@ def post_run(run_recs, specs, log: Path, st: dict) -> tuple:
     return changed, every
 
 
+def drv_state() -> dict:
+    f = DRV.parent / "state.json"
+    return json.loads(f.read_text()) if f.is_file() else {}
+
+
+def follow(nxt: dict, st: dict, log: Path) -> bool:
+    """Do what facing_next says. Every act is read back: a regen counts when the driver's row moved to its next round and
+    the round's jobs are in the queue; anything else becomes a list item. Returns True when the ledger was written."""
+    wrote, filed = False, []
+
+    def failed(k, owed):
+        nonlocal wrote
+        d = ((drv_state().get(k) or {}).get("row") or {}).get("target_def") or k
+        st.setdefault("unfiled_items", []).append(
+            file_item(unfiled_item_id({"def": d}), f"Facing redraw of {k} did not reach the artpipe queue: {owed}"[:200],
+                      f"auto_judge follow: {owed}; log {log}"[:400], log, caused_by="ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET"))
+        st["follow_ups"].append({"at": now_iso(), "subject": k, "run": None, "owed": owed})
+        wrote = True
+
+    todo = []
+    for k, grp, rid in nxt.get("regen") or []:
+        before = drv_state().get(k) or {}
+        sh([sys.executable, DRV, "regen", rid, k], DRV.parent, log, timeout=300, env=driver_env())
+        now = drv_state().get(k) or {}
+        if now.get("done") or now.get("round") != (before.get("round") or 0) + 1 \
+                or (now.get("row") or {}).get("id") == (before.get("row") or {}).get("id"):
+            failed(k, f"drv.py regen {rid} {k} moved nothing")
+            continue
+        todo.append((k, grp))
+    for k, grp in todo + list(nxt.get("refile") or []):
+        sh([sys.executable, DRV, "file", grp, k], DRV.parent, log, timeout=600, env=driver_env())
+        row = (drv_state().get(k) or {}).get("row") or {}
+        if row and in_queue(row):
+            filed.append(row["id"])
+        else:
+            failed(k, f"drv.py file {grp} {k}: no jobs in the queue")
+    if filed:
+        st["regens_filed"] = (st.get("regens_filed") or []) + filed
+    esc = escalations(st["follow_ups"])
+    capped = list(nxt.get("capped") or []) + esc
+    if capped:
+        text = ("at the round cap, still judged REGEN or ESCALATE: " + ", ".join(f"{k} (run {rid})" for k, rid in capped)
+                + f". state.json done=ESCALATE ({DRV.parent}/state.json). Written by auto_judge.py follow.")
+        rc = sh([sys.executable, RIMFLOW, "note", CAPPED_ITEM, "--text", text, "--seat", SEAT, "--why",
+                 "auto_judge: round cap reached in the facing redraw batch"], ROOT, log, timeout=600)
+        if rc == 0:
+            wrote = True
+            s = drv_state()
+            st["follow_ups"] = [f for f in st["follow_ups"] if (f.get("subject"), f.get("run")) not in esc]
+            for k, _ in capped[:len(capped) - len(esc)]:
+                s[k].update(done="ESCALATE", escalated_to=CAPPED_ITEM)
+            tmp = DRV.parent / "state.json.tmp"
+            tmp.write_text(json.dumps(s, indent=1))
+            tmp.replace(DRV.parent / "state.json")
+            st["escalated"] = [k for k, _ in capped]
+        else:
+            st["follow_ups"] += [{"at": now_iso(), "subject": k, "run": rid, "owed": f"note on {CAPPED_ITEM} failed (rc {rc})"}
+                                 for k, rid in capped[:len(capped) - len(esc)]]
+    return wrote
+
+
+def prune_follow_ups(st: dict):
+    st["follow_ups"] = open_follow_ups(st["follow_ups"], drv_state(), list(RS.production_decisions(STATE / "runs")), RS.stopped)
+
+
+def follow_pass(nxt: dict, st: dict, log: Path):
+    log.parent.mkdir(parents=True, exist_ok=True)
+    if follow(nxt, st, log):
+        st["follow_commit"] = commit([str(LEDGER.relative_to(ROOT))], "art_eval follow-ups: ledger lines of capped or unfiled "
+                                     "facing redraws (RIMMANDRAKE_RENDER_TWELVE_FACING_REDRAWS_JUDGED_REGEN_NOBODY_FILED)", log)
+    prune_follow_ups(st)
+
+
+def owed_next(nxt) -> bool:
+    return any((nxt or {}).get(x) for x in ("regen", "refile", "capped"))
+
+
 def write_status(st: dict):
     SCRATCH.mkdir(parents=True, exist_ok=True)
     tmp = STATUS.with_suffix(".tmp")
@@ -731,7 +907,9 @@ def cmd_run(a) -> int:
         return 0
     owed = scan()
     st["owed"] = owed
-    if not owed["fauna_defs"] and not owed["facing"]:
+    prune_follow_ups(st)
+    todo = owed_next(owed.get("next")) or bool(escalations(st["follow_ups"]))
+    if not owed["fauna_defs"] and not owed["facing"] and not todo:
         st["result"] = "nothing owed"
         write_status(st); print(st["result"])
         return 0
@@ -745,6 +923,9 @@ def cmd_run(a) -> int:
     stamp = datetime.now().strftime("%Y%m%d_%H%M")
     log = SCRATCH / "logs" / f"pass_{stamp}.log"
     log.parent.mkdir(parents=True, exist_ok=True)
+    if todo and not a.dry_run:
+        follow_pass(owed.get("next") or {}, st, log)
+        write_status(st)
     # fauna: which defs have a ready, unjudged candidate (fauna_drive applies rounds, stops and judged)
     cand_dir = DATA / "art_eval/fauna_cands" / f"auto_{stamp}"
     ready = []
@@ -791,11 +972,11 @@ def cmd_run(a) -> int:
             for part in chunks(specs):
                 sh([sys.executable, HERE / "runner.py", "run", "--spec", *part, "--run-id", rid, "--record"], HERE, log)
             runs.append(rid); recs += run_records(rid)
-            for r in run_records(rid):
-                if r["decision"] in ("REGEN", "ESCALATE"):
-                    st["follow_ups"].append({"at": now_iso(), "subject": r["subject"], "run": rid,
-                                             "owed": f"drv.py regen {rid} {r['subject']}" if r["decision"] == "REGEN"
-                                             else "escalate to the owner (round cap)"})
+            # the new verdicts' next rounds, in the same pass (only the rows this run judged)
+            mine = {k for k, _ in facing}
+            nxt = facing_next({k: v for k, v in drv_state().items() if k in mine},
+                              verdicts(RS.production_decisions(STATE / "runs")), RS.stopped, def_exists, kept_after, in_queue)
+            follow_pass(nxt, st, log)
     st["runs"] = runs
     changed, installed = post_run([(rid, r) for rid in runs for r in run_records(rid)], fauna_specs, log, st)
     st["decisions"] = {f"{r['subject']}:{r.get('candidate')}": r["decision"] for r in recs}
@@ -821,6 +1002,47 @@ def cmd_run(a) -> int:
     write_status(st)
     print(st["result"])
     return 1 if failed else 0       # a row that can never be judged is a failed unit, not a quiet "judged 0"
+
+
+def cmd_follow(a) -> int:
+    """The follow-up half of a pass, with no model call and no Claude gate: the redraws go to the Codex art queue."""
+    SCRATCH.mkdir(parents=True, exist_ok=True)
+    os.environ.setdefault("RIMFLOW_SEAT", SEAT)
+    lk = open(SCRATCH / "autojudge.lock", "w")
+    try:
+        fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        print("COULD NOT LOOK: another pass holds the lock")
+        return 2
+    nxt = scan().get("next")
+    if nxt is None:
+        print(f"COULD NOT LOOK: no facing driver at {DRV}")
+        return 2
+    st = json.loads(STATUS.read_text()) if STATUS.is_file() else {}
+    st.setdefault("follow_ups", [])
+    for x in ("regens_filed", "escalated", "unfiled_items", "follow_commit"):
+        st.pop(x, None)
+    log = SCRATCH / "logs" / f"follow_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+    follow_pass(nxt, st, log)
+    write_status(st)
+    print(json.dumps({x: st.get(x) for x in ("regens_filed", "escalated", "unfiled_items", "follow_commit", "follow_ups")}
+                     | {"unread": nxt["unread"], "log": str(log)}, indent=1))
+    return 1 if st.get("unfiled_items") or nxt["unread"] else 0
+
+
+def cmd_due(a) -> int:
+    nxt = scan().get("next")
+    if nxt is None or not STATUS.is_file():
+        print(f"COULD NOT LOOK: {DRV if nxt is None else STATUS} is not there")
+        return 2
+    if nxt["unread"]:
+        print(f"COULD NOT LOOK: the owner's keeps of {', '.join(nxt['unread'])} could not be read")
+        return 2
+    fus = json.loads(STATUS.read_text()).get("follow_ups") or []
+    live = open_follow_ups(fus, drv_state(), list(RS.production_decisions(STATE / "runs")), RS.stopped)
+    print(f"regen owed {[x[0] for x in nxt['regen']]}; not in the queue {[x[0] for x in nxt['refile']]}; "
+          f"capped and not escalated {[x[0] for x in nxt['capped']]}; escalations with no item {[k for k, _ in escalations(live)]}; discharged follow-ups still listed {len(fus) - len(live)} of {len(fus)}")
+    return 1 if owed_next(nxt) or escalations(live) or len(live) != len(fus) else 0
 
 
 def cmd_install(a) -> int:
@@ -852,11 +1074,15 @@ def main(argv=None) -> int:
     r.add_argument("--max-subjects", type=int, default=4)
     r.add_argument("--dry-run", action="store_true")
     sub.add_parser("status")
+    sub.add_parser("follow", help="file the owed facing redraws and escalate the capped ones; no model call")
+    sub.add_parser("due", help="exit 0 nothing owed after a verdict, 1 owed, 2 could not look")
     i = sub.add_parser("install", help="install + deploy the ACCEPTs of a judged run")
     i.add_argument("--run", required=True)
     i.add_argument("--subject", nargs="*")
     i.add_argument("--no-deploy", action="store_true")
     a = ap.parse_args(argv)
+    if a.cmd in ("follow", "due"):
+        return cmd_follow(a) if a.cmd == "follow" else cmd_due(a)
     if a.cmd == "install":
         return cmd_install(a)
     if a.cmd == "scan":
