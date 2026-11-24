@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 7, the walk brief, since 2026-11-24 11:41 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 8, his live walk, since 2026-11-24 2:58 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** the Dispatch tick's walk-brief run (Stage 7, arrival 2; visit 6's own session wrote arrival 1, so a fresh run writes it). Walk save EK_VISIT6_WALK_20261124_C on ArchBig, which holds the walk build.
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 2:58 PM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -444,4 +444,12 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: Stage 6 exit met at visit 6 (run-1795510833): 56 of 56 checks PASS and count on the walk build e089dc2573; ArchBig's DLL equals the committed one; steward read SUMMARY, 140 rows and evidence
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-23 7:31 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-23 7:31 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-24 2:58 PM PST, stage change: Walk brief (Stage 7) to His live walk (Stage 8) (by BENCH)
+
+- Why: walk brief arrival_2 written
+- Checks passed: order, by, version, hold, walk_checks_stand, walk_brief, walk_items_closed.
+- Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-24 11:41 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** the Dispatch tick's walk-brief run (Stage 7, arrival 2; visit 6's own session wrote arrival 1, so a fresh run writes it). Walk save EK_VISIT6_WALK_20261124_C on ArchBig, which holds the walk build.
 - Record: `version/stage_record.json`.

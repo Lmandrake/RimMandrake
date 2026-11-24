@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "a809cba3455e2cd282832b272cc6ca3363d8e16c4df672edb30c6792e5f9ac40",
+  "body_sha256": "5f14e13a8023dabe619d6286bc75f89843e776936b2d66faba1bae4934dc829a",
   "reducer": 1,
   "shards": {
    "BACKFILL": 341359,
-   "DISPATCH": 42975,
+   "DISPATCH": 43321,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
    "HOLDER.run-1794830532": 2304,
@@ -23,6 +23,7 @@
    "HOLDER.run-1795525975": 3126,
    "HOLDER.run-1795538786": 1751,
    "HOLDER.run-1795548573": 1024,
+   "HOLDER.run-1795560492": 1077,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -683,11 +684,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795548573",
-   "done": "Steward confirmed the visit 6 exit (56 of 56 PASS and count, ArchBig DLL equals the committed one) and advanced 0.1.0 to pre_human",
-   "next": "Write walk brief arrival 2 in a fresh run",
-   "ruled_out": "The unstaged Outer Rim lanes of sc_blast_kinds leave no bar undecided: OuterRim_Sonic is DamageWorker_AddInjury, harmful and untuned, the path P_harmful_unpatched passed live; the plasma grenade is plain Flame, read by P_fire_half",
-   "ts": "2026-11-24T19:42:03Z"
+   "by": "HOLDER.run-1795560492",
+   "done": "Walk brief arrival 2 written by a fresh reader from the save, rows and screenshots; 0.1.0 advanced to his_walk (Stage 8)",
+   "next": "Stage EK_VISIT6_WALK_20261124_C on tier explosiveknockback_visit for the owner walk, after deploying FlowWorks to ArchBig or Gimme Some Slack to ArchSmall",
+   "ruled_out": "ArchBig is not on an older Explosive Knockback: both games hold DLL md5 c41f0c11 and equal Defs and Patches; covers unseen at START 11 and 12 are FlowWorks concealment, not missing",
+   "ts": "2026-11-24T22:59:07Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -883,7 +884,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 717,
+  "events": 720,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2489,7 +2490,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-24T22:52:14Z",
+   "last": "2026-11-24T22:59:07Z",
    "lease": "run-1795560492",
    "released": false,
    "token": 28
@@ -2536,13 +2537,14 @@
    "HOLDER.run-1795525975",
    "HOLDER.run-1795538786",
    "HOLDER.run-1795548573",
+   "HOLDER.run-1795560492",
    "JUDGE.judge-1794890427",
    "JUDGE.judge-1795437145",
    "OWNER"
   ],
   "spend_tokens": 171672717,
   "spend_usd": 178.6086,
-  "stage": "pre_human",
+  "stage": "his_walk",
   "superseded": [],
   "tests": [
    {

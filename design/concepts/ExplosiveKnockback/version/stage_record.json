@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.1.0",
-  "stage": "pre_human",
-  "stage_label": "Walk brief (Stage 7)",
-  "since": "2026-11-24T11:41:51-08:00",
+  "stage": "his_walk",
+  "stage_label": "His live walk (Stage 8)",
+  "since": "2026-11-24T14:58:53-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -348,6 +348,24 @@
         "exit_met",
         "build_match",
         "unrun_run"
+      ]
+    },
+    {
+      "from": "pre_human",
+      "to": "his_walk",
+      "at": "2026-11-24T14:58:53-08:00",
+      "by": "BENCH",
+      "why": "walk brief arrival_2 written",
+      "unit": "rm-detached-bench-rimmandrake-steward-explosiveknockback-p-1795560743",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "walk_checks_stand",
+        "walk_brief",
+        "walk_items_closed"
       ]
     }
   ],
