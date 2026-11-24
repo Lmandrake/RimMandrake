@@ -1,0 +1,32 @@
+[
+ {
+  "id": "arteval_RM_Shadefern__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shadefern",
+  "prompt": "A single clump of Shadefern, a deep-green fern, drawn as a top-down-leaning three-quarter RimWorld plant sprite in painterly vanilla RimWorld style, realistic, with a clean dark outline, on a transparent background. The clump is compact and centered, about 0.7 of a cell across. Every frond in the clump, the tall central ones, the shorter left-side ones and the young curled tips alike, arches and bends toward the right-hand side of the image, all following one shared direction as if combed by a single stroke. The shorter fronds on the left of the clump lean rightward from their bases, and each young curled tip (crozier) curls toward the right, so the whole silhouette sweeps right as one combed mass. The left edge of the clump is a clean diagonal line from which every blade leans right, so the left third reads as the start of the sweep. Each frond is finely cut into many small pinnae in deep green, and a pale, light-toned rachis (midrib) runs the length of every frond, standing out clearly against the deep-green blades and catching bounced light. Fronds spring from one tight crown at the base. Colors: deep forest green blades, pale cream-green rachis, soft dark-green shadow tones, dark brown-green outline.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_old_b",
+  "drawsize": 1,
+  "module": "bush"
+ },
+ {
+  "id": "arteval_RM_Dewblade__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dewblade",
+  "prompt": "A single shin-high tuft of Dewblade, a grass-analog ground-cover plant for RimWorld, seen from a top-down three-quarter view as a vanilla RimWorld plant sprite. The tuft is a dense fan of flat, narrow, ribbon-like blades in muted grey-green with a faint silvery bloom, each blade a thin flat strip rather than a rounded green grass leaf. Every blade stands edge-on in the same orientation, so all the blades in the tuft lean and face the same way in parallel, like iron filings aligned in a field, with the thin edge toward the viewer's left and the broad flat face turned toward the right. Each blade tapers to a fine point, and at the tip of every blade hangs a single small clear water droplet on a drip-point that glints with a pale highlight. The base of the tuft is a compact cluster of blades rising from a small patch of dark soil, slightly darker grey-green at the root and lighter at the tips. The tuft fills about 80 percent of the frame, centered, with a soft painterly shading and a clean dark outline in the style of vanilla RimWorld plants, realistic and not cartoonish. Transparent background, no ground, no shadow plane, no text.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_old_b",
+  "drawsize": 1,
+  "module": "ground_cover"
+ }
+]

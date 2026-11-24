@@ -1,0 +1,12 @@
+# art_eval run regress_plain_english_20261124 (TEST — nothing installed, no rounds counted)
+
+| subject | cand | template/module | Opus band | GPT | decision | s | reasons |
+|---|---|---|---|---|---|---|---|
+| RM_Shadefern | B | plant/bush | WEAK | regen | **REGEN** | 72.3 | opus band WEAK (model said good); blocking ['DESC_MISS']; polish ['STYLE_EARTHLY', 'WANTS_VARIANTS']; gpt regen: unsettled ['K1'], own blocking ['DESC_MISS'] |
+| RM_Huldu | C | creature/swimmer | REALLY_BAD | - | **REGEN** | 130.0 | facing truth UNMEASURED (no target_texpath; the def draws 2 texPaths) — judged by the models alone; opus band REALLY_BAD (model said really_bad); blocking ['STYLE_EARTHLY', 'F_INCONSISTENT', 'DEPARTURE_MISSING', 'DESC_MISS', 'STYLE_CARTOON', 'STYLE_OFF']; polish ['LEGIB_32'] |
+| RM_Ssurr | B | creature/walker | REALLY_BAD | - | **REGEN** | 78.9 | facing truth UNMEASURED (no target_texpath; the def draws 2 texPaths) — judged by the models alone; opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'F_INCONSISTENT', 'F_INCONSISTENT', 'F_SIZE_JUMP', 'STYLE_EARTHLY', 'STYLE_OFF', 'DEPARTURE_MISSING']; polish [] |
+| RM_Vellak | B | creature/pack | REALLY_BAD | - | **REGEN** | 72.0 | facing truth UNMEASURED (no target_texpath; the def draws 2 texPaths) — judged by the models alone; opus band REALLY_BAD (model said really_bad); blocking ['STYLE_EARTHLY', 'F_INCONSISTENT', 'STYLE_OFF', 'STYLE_CARTOON']; polish ['LEGIB_32'] |
+| RM_Murrin | C | creature/swimmer | WEAK | regen | **REGEN** | 141.2 | facing truth UNMEASURED (no target_texpath; the def draws 2 texPaths) — judged by the models alone; opus band WEAK (model said really_bad); blocking ['ALPHA_HALO', 'F_TOPDOWN', 'F_INCONSISTENT', 'F_SIZE_JUMP', 'STYLE_OFF']; polish ['LEGIB_32']; gpt regen: unsettled ['K1', 'K2', 'K3', 'K4', 'K5'], own blocking ['ALPHA_HALO', 'F_TOPDOWN', 'STYLE_OFF'] |
+| RM_Dewblade | B | plant/ground_cover | WEAK | regen | **REGEN** | 80.5 | opus band WEAK (model said weak); blocking ['DESC_MISS', 'FOOTPRINT']; polish ['STYLE_EARTHLY', 'SCALE_WRONG', 'WANTS_VARIANTS', 'LEGIB_32']; gpt regen: unsettled ['K2'], own blocking ['FOOTPRINT'] |
+
+Models reported: UNMEASURED, claude-opus-5-5, claude-sonnet-5-5 · prompt versions: `departures_brief@v3#50b472+gpt_targeted_second_look@v2#4640d0+opus_first_pass@v3#a5f511+preamble@v4#d9e716+regen_prompt_edit@v2#e5699a+severity@v4#3e1892+plant@v3#d69b4b`

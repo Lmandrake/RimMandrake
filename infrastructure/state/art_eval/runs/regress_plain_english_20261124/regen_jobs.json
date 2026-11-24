@@ -1,0 +1,112 @@
+[
+ {
+  "id": "arteval_RM_Shadefern__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shadefern",
+  "prompt": "A single clump of shadefern, a deep-green fern that grows on the shaded face of standing stone, drawn as a painterly, realistic RimWorld plant sprite on a transparent background, seen from above at a slight angle. Every frond and every fiddlehead on the plant, the large right-hand fronds and the smaller left-hand growth alike, arcs in one single direction, toward the right of the picture, as if the whole plant were combed by one stroke of a comb. The small left-hand fronds rise from the base and bend over to the right at once, their curled tips turning right; the whole plant forms one clearly combed, right-leaning silhouette with all tips pointing right. The fronds are a rich deep green, and each frond's pale rachis (midrib) stands out clearly in a light, cool grey-green against the dark leaf blades, catching the light. The plant rises from one central base, compact and full, centred in the frame. Value and colour contrast against the ground carry the silhouette; soft painterly shading, matching vanilla RimWorld plant sprites.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_plain_english_20261124",
+  "drawsize": 1,
+  "module": "bush"
+ },
+ {
+  "id": "arteval_RM_Huldu__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu",
+  "prompt": "RimWorld animal sprite, painterly vanilla RimWorld style, realistic, transparent background. One alien swimmer, forearm-length, with a long, low, tapered torso and a smooth wedge-shaped head. The head has a small blunt snout, no external ears and no whiskers. The face has small, matte, dark animal eyes set close to the head, without highlights, and a short neutral mouth, painted with natural anatomy. The hide is smooth, short-napped velvet skin with a soft even sheen, like wet suede, in warm slate-grey with a paler belly. A fleshy dorsal comb, a row of soft low fins in deep rust-brown, lies flat along the spine like wet fur, from the nape to the tail base. Its darker value stands out against the slate body and is clearly visible on every facing. It has four short paddle-like limbs with webbed, fingerless ends, and a slim tapering tail ending in a soft rounded paddle. The body plan matches no Earth animal. The same animal appears on every facing, with the same limbs, tail, comb, skin and palette turning with the body. Front view: head toward the viewer, comb visible as a flat ridge above the head and shoulders. Side view: full profile, comb running flat along the whole back. Rear view, seen from behind: back, comb, haunches and tail, eyes hidden. The silhouette is carried by value and colour contrast against the ground, and the edges are painted and soft all the way round.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, F_INCONSISTENT, DEPARTURE_MISSING, DESC_MISS, STYLE_CARTOON, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_plain_english_20261124",
+  "drawsize": 0.8,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Huldu/RM_Huldu"
+ },
+ {
+  "id": "arteval_RM_Ssurr__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ssurr",
+  "prompt": "A hound-sized alien reptile in the painterly, realistic style of vanilla RimWorld creature sprites, on a transparent background, with soft painted edges and shapes carried by value and colour contrast against the ground. The body is an invented build: low and long, with a deep keel chest, a heavy wedge-shaped skull on a long arched neck, long digitigrade hind legs, shorter forelegs ending in broad clawed paws, and a muscular tail thinning to a whip lined with spines. The torso is a ridged channel that grows directly into the root of one enormous half-circle crest-fan, so the fan is part of the body's own structure. The fan is rooted along the spine from shoulder to hip and stands upright in the body's centre plane, a full half-circle wheel patterned with pale cream oval blotches. Colouring: teal back and flanks, with cream belly, throat and fan blotches. The head carries a tall pale horn-blade crest and short brow horns. The feet are clawed, the neck long, and the spined tail tapers to its whip tip. Shoulder height, fan height and body size stay consistent throughout. In its resting state, the same animal has the crest-fan folded flat into one long blade lying along the spine from shoulder to hip, with the same colours and scale. Painted tonal modelling, soft edges, no outlines.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT, F_SIZE_JUMP, STYLE_EARTHLY, STYLE_OFF, DEPARTURE_MISSING; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_plain_english_20261124",
+  "drawsize": 1.1,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr"
+ },
+ {
+  "id": "arteval_RM_Vellak__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vellak",
+  "prompt": "A single RimWorld creature sprite, the Vellak, a camel-tall desert strider that walks dry country in single file along caravan roads. Painterly vanilla RimWorld style, realistic, with soft painted edges, no outlines. Transparent background. The silhouette is carried by painted value and colour contrast against the ground.\n\nBody plan, built as its own invented animal: a long low wedge-shaped head with a narrow beak-like muzzle, two eyes set wide and high on the sides of the head, small swept-back ear flaps; a long supple neck held forward and slightly raised; a lean barrel-shaped body; four long digitigrade legs with two-segment lower legs and broad splayed pad feet carrying three short blunt toes; a thin whip tail with a small paddle tip. The hide is smooth, slate-grey on the back and upper flanks and dusty ochre below, with fine pale banding on the legs and flanks, and no woolly or shaggy coat.\n\nThe signature feature: fanned dorsal sail-combs growing from the spine midline, from the shoulders to the hips, in place of a hump. It is one upright lengthwise fan, the same height on every facing, with its peak above head height. The ribs are rust-red at the base and fade to cream at the tips, with a thin translucent cream membrane between them, lit softly so the fan reads as the creature's catch-the-wind sail.\n\nFacings: the east view shows the creature in side profile, head to the right, with the fan side-on as a tall half-circle above the back. The south view is a front view, eyes toward the viewer, with the fan nearly edge-on as a narrow upright blade centred on the spine and rising above the head. The north view is a rear view, seen from behind, showing the back, haunches and tail, eyes hidden, with the same narrow upright blade centred on the spine and rising above the head. The west view mirrors the east.\n\nOn every facing, muscle, hide and sail membrane are modelled with the same soft painterly light-to-dark transitions, with a warm light from the upper left and gradual shading across the flank, legs and fan. The creature stands calm and upright, seen from a slightly raised viewpoint, centred in the frame with a small margin all round.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, F_INCONSISTENT, STYLE_OFF, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_plain_english_20261124",
+  "drawsize": 2,
+  "module": "pack",
+  "target_texpath": "Things/Pawn/Animal/RM_Vellak/RM_Vellak"
+ },
+ {
+  "id": "arteval_RM_Murrin__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Murrin",
+  "prompt": "A single small pool fish, hand-length, for a RimWorld game sprite. It is painted in the painterly, realistic vanilla RimWorld style, on a fully transparent background, with clear empty alpha all around the fish. The fish alone fills the frame; nothing else is painted beside or across it. The body is deep-keeled: tall and rounded from back to belly, bulky and calm, with visible scales in soft olive-silver and warm pale-belly tones. One single tall comb-like dorsal fin rises high above the back, its many fine rays fanned like a comb, translucent amber to rust with darker ray tones. Small pectoral fins, a fan tail fin, a gentle dark eye. The silhouette is carried by value and colour contrast against the ground: body and fin edges are soft and painted, with natural shaded transitions where they meet the transparency, and the fin rays separate through tone and colour shifts. Lit from the upper left with soft shading. Three views share the same fish with identical body depth, body width, comb-fin height, fins and palette, so every facing stands equally tall. Front view (south): seen head-on, eyes toward the viewer, the deep body and the tall comb-fin centred above. Side view (east): the fish in profile, head to the right, the full deep keel and the comb-fin along the back. Rear view (north): a level rear view seen from behind from the game's angled camera, the tail fin nearest the viewer, the same deep rounded body foreshortened behind it toward the distant head, eyes hidden, and the same comb-fin rising above.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ALPHA_HALO, F_TOPDOWN, F_INCONSISTENT, F_SIZE_JUMP, STYLE_OFF, ALPHA_HALO, F_TOPDOWN, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_plain_english_20261124",
+  "drawsize": 0.7,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Murrin/RM_Murrin"
+ },
+ {
+  "id": "arteval_RM_Dewblade__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dewblade",
+  "prompt": "A single shin-high tuft of Dewblade grass-analog for a top-down RimWorld plant sprite, transparent background, painterly vanilla RimWorld style, realistic, no outlines. The tuft is a dense fan of flat, narrow grey-green blades (cool grey-green, slightly silvery, lighter than ordinary green grass). Every blade is a flat ribbon standing edge-on, and all blades share the same orientation and lean together in one direction, like iron filings aligned by a field, so the wind is visible in the tuft. Each blade ends in a small bright drip-point at its tip, with a tiny bead of water hanging from it. The blades rise from one tight basal convergence where the roots meet the ground. Composition: the base of the tuft, the basal convergence and roots, sits directly on the bottom edge of the canvas, with no empty transparent margin below it. The tuft rises from that bottom edge and its blade tips reach near the top of the canvas, so the plant fills the full height of the picture and is centred horizontally. Value and colour contrast against the ground carry the silhouette: darker grey-green at the base, lighter silvery grey-green toward the drip-point tips.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: FOOTPRINT, FOOTPRINT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_plain_english_20261124",
+  "drawsize": 1,
+  "module": "ground_cover"
+ }
+]

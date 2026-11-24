@@ -1,0 +1,32 @@
+[
+ {
+  "id": "arteval_RM_Shadefern__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shadefern",
+  "prompt": "A single Shadefern, a deep-green fern clump for RimWorld, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, centered, filling about 70 percent of the frame. Every frond, from the tallest mature fronds to the shortest young shoots on the left, bends and points toward the same right-hand side of the image, as if combed by one steady wind. The tall fronds arch to the right in long smooth curves. The short left-hand shoots lean right at the same angle as the tall fronds, and every fiddlehead tip coils toward the right. The whole clump forms one clearly combed silhouette, with all fronds sharing one sweep direction from base to tip. Each frond is deep green with a pale, cream-green rachis (midrib) that stands out clearly against the dark leaflets and catches bounced light. The fronds rise from one tight base at the bottom center, like a plant growing on the shaded face of standing stone. Soft painterly shading, readable at small size.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_old_a",
+  "drawsize": 1,
+  "module": "bush"
+ },
+ {
+  "id": "arteval_RM_Dewblade__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dewblade",
+  "prompt": "A single shin-high tuft of the plant Dewblade, a grass-analog, for a RimWorld top-down-angled sprite. Flat, ribbon-like grey-green blades, each a narrow flat strap rather than a rounded green grass leaf, with a subtle cool silver-green sheen. The blades all stand edge-on in one shared flat plane: they are parallel to each other and all sweep the same way with a gentle, uniform lean to one side, as if one steady wind had combed the tuft. The tuft is a tight, narrow cluster of about a dozen blades of slightly varied height, rising side by side from one compact base, so that many copies placed beside each other would line up in parallel like iron filings, the wind made visible. Each blade ends in a fine drip-point tip, with a tiny glistening bead of water at the point. The base where the blades converge sits at the bottom edge of the canvas at its horizontal centre, touching the bottom edge with no empty margin below, and the tuft rises from that point to fill the height of the canvas. Painterly vanilla RimWorld style, realistic, clean dark outline, soft shading on the blades, transparent background. reference: none.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, ANCHOR, ANCHOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_old_a",
+  "drawsize": 1,
+  "module": "ground_cover"
+ }
+]

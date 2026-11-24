@@ -1,0 +1,32 @@
+[
+ {
+  "id": "arteval_RM_Shadefern__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shadefern",
+  "prompt": "A single deep-green fern clump for a RimWorld plant sprite, seen from above at a slight angle, on a transparent background. Painterly vanilla RimWorld style, realistic, no outlines. All of the fronds grow from one base at the lower left of the clump and sweep toward the right side of the image in one shared direction, as if one stroke of a comb had swept the whole plant: the tall central fronds, the shorter left-hand fronds, and the young fiddleheads all lean and curl rightward. Each frond arcs gently to the right with natural variation in length and curvature, long fronds reaching far right, short fronds reaching a little right. The silhouette reads as a lopsided, wind-combed mass leaning right, never a spreading rosette. Each frond has a pale, cream-green rachis (midrib) that stands out clearly against the deep-green leaflets, which are dark forest green with slightly lighter green where light bounces in. Small fiddleheads at the base tightly curl rightward. Strong value contrast between the pale midribs and the dark green blades carries the silhouette against any ground.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_new_a",
+  "drawsize": 1,
+  "module": "bush"
+ },
+ {
+  "id": "arteval_RM_Dewblade__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dewblade",
+  "prompt": "A single shin-high tuft of Dewblade, an alien grass-analog, for a top-down-leaning RimWorld plant sprite, painterly vanilla RimWorld style, realistic, transparent background. The tuft is a compact cluster of flat, narrow, grey-green blades (cool grey-green with lighter silvery edges and darker green-grey in the shadowed folds), rising from a complete converging base of leaf bases. All blades stand in parallel and lean the same way, edge-on, in one shared orientation, like combed iron filings or iron filings aligned by a field, so the whole tuft reads as the wind made visible. Each blade ends in a sharp drip-point, and from each tip hangs a large, bright, pale water bead, clearly round, about as wide as the blade or wider, bright against the grey-green so it reads as a pale dot at small size. The base of the tuft, where the leaf bases converge, touches the bottom edge of the canvas at centre, with the tuft rising from that edge and no empty canvas beneath it. Strong value and colour contrast between the grey-green blades and the pale beads carries the silhouette against the ground. No outlines.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS, ANCHOR, ANCHOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_new_a",
+  "drawsize": 1,
+  "module": "ground_cover"
+ }
+]

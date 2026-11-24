@@ -28,14 +28,16 @@ panels a card must carry, and the checklist every reviewer answers item by item.
    in one word, in `nearest_earth_animal`. Then check each line of the card's `departures` (the per-subject
    features that make it NOT that animal): each one present or absent. `ALIEN` fails only when a stranger would
    name the Earth animal at first glance AND most departures are absent; naming the nearest animal is not itself
-   a failure. — owner 2026-10-11: *"it looks like a
+   a failure. When the card says `earth_body_named: no`, the preamble's rule on departures that are bolted on (section
+   Calibration) decides first. — owner 2026-10-11: *"it looks like a
    terran hippo with ash on its back. Much more alien please."* A canon (RSW_) or vanilla subject is not
    invented; a def whose own text names its Earth body (a frog, an octopus) may look like it.
 4. **The defining feature** the description names (the fan, the comb, the sail) is visible and legible.
 5. **Realistic and painterly, not cute** — he rejected creatures as *"cartoonish"* (2026-09-15) and asked
    *"Make it as realistic as you can"* (2026-10-10). Glossy round eyes and a smiling face are cute.
 6. **Provenance**: a vanilla or other-mod animal is donor art, never a final keep.
-7. **Real alpha**: no water, rock, grass or shadow baked under the body.
+7. **Real alpha**: no water, rock, grass or shadow baked under the body, except the ground matter that the preamble's
+   Style law allows.
 8. **Scale** beside the human against the description's size words; **legibility** at 32 px. Both are polish.
 
 ### Module: swimmer / amphibious
@@ -57,7 +59,7 @@ the catch waits for it whatever you say here.
 ```json template
 {
   "template": "creature",
-  "version": "creature@v3",
+  "version": "creature@v4",
   "modules": ["walker", "pack", "swimmer", "amphibious", "flyer", "catch"],
   "required_panels": {
     "*":     ["south", "east", "north", "facings", "scale"],
@@ -76,7 +78,7 @@ the catch waits for it whatever you say here.
     {"id": "CANON",         "q": "Is every canon Must show line present (Engine limits excluded)?", "code": "CANON_MISS", "when": "canon"},
     {"id": "STYLE",         "q": "Painterly and realistic, not cute, cel-shaded, photo or 3D?", "code": "STYLE_CARTOON"},
     {"id": "OURS",          "q": "Is it our own art, not a donor/vanilla stand-in or placeholder?", "code": "DONOR"},
-    {"id": "ALPHA",         "q": "Clean cut-out: no backdrop, water, rock, ground or shadow baked in?", "code": "ALPHA_HALO"},
+    {"id": "ALPHA",         "q": "Clean cut-out: no backdrop, water, rock, ground or shadow baked in (except ground matter the Style law allows)?", "code": "ALPHA_HALO"},
     {"id": "SIBLINGS",      "q": "Same artist, palette and size class as the owner-kept siblings?", "code": "SIBLING_MISMATCH", "when": "siblings"},
     {"id": "OWNER_NOTES",   "q": "Is every owner note on the card honoured?", "code": "OWNER_NOTE_IGNORED", "when": "owner_notes"},
     {"id": "SCALE",         "q": "Does its size beside the human fit the description?", "code": "SCALE_WRONG"},

@@ -221,3 +221,10 @@ Two structural findings behind the catch class:
 Caveats on all of the above: one biome, one sitting, one scorer for §2, 18 REDOs. The counterfactuals in §5
 are re-scorings of existing outputs, not re-runs; a changed prompt must be re-raced (on a different biome, to
 avoid tuning to this key) before any number here is quoted as the new rate.
+
+## Prompt words that the 2026-11-24 rewrite corrected
+
+- `opus_first_pass@v2` asked for `"code": "<reason code from the card>"`. The card holds no reason codes. They are in
+  the section "Reason codes" of the prompt (`runner.opus_prompt`), and `opus_first_pass@v3` says so.
+- `preamble@v3` and `regen_prompt_edit@v1` asked for a "clean dark outline". The owner's card of 2026-10-04 retired
+  outlines (`design/RimMandrake/art_judge_brief.md`, B1a).

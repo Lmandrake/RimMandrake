@@ -1,0 +1,14 @@
+{
+ "run_id": "regress_plain_english_20261124",
+ "test": true,
+ "started": "2026-11-24T02:25:57-08:00",
+ "subjects": [
+  "RM_Shadefern",
+  "RM_Huldu",
+  "RM_Ssurr",
+  "RM_Vellak",
+  "RM_Murrin",
+  "RM_Dewblade"
+ ],
+ "versions_key": "departures_brief@v3#50b472+gpt_targeted_second_look@v2#4640d0+opus_first_pass@v3#a5f511+preamble@v4#d9e716+regen_prompt_edit@v2#e5699a+severity@v4#3e1892+creature@v4#3a3bc2"
+}

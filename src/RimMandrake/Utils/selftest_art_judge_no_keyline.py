@@ -20,6 +20,7 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 BRIEF = REPO / "design/RimMandrake/art_judge_brief.md"
 TEX = REPO / "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands"
+PROMPTS = REPO / "skills/rimworld-art-evaluation/references/prompts"
 REGENS = ("Ullai", "Emberscythe")   # keyline-free art_eval picks, 2026-10-23
 
 # A clause that ASKS for a line. Negations ("no outlines", "not a keyline") are fine.
@@ -92,6 +93,19 @@ def main() -> int:
     for name, body in made.items():
         for hit in demands(body):
             fails.append("%s asks the generator for an outline: %r" % (name, hit))
+        # fill_queue.py and artpiped.py append HOUSE_ART_REGISTER ("... no outlines") only to a prompt that does not
+        # itself say "no outlines". A prompt that says so loses the matte, soft-edge, never-cartoonish text with it.
+        if "no outlines" in body.lower():
+            fails.append("%s says 'no outlines', so the queue leaves the house style text out" % name)
+    import common  # noqa: E402
+    if "no outlines" not in common.HOUSE_ART_REGISTER.lower():
+        fails.append("common.HOUSE_ART_REGISTER no longer says 'no outlines', and the composed prompts rely on it")
+
+    # The two art-eval prompt files that carry the style law: the judge's preamble and the regen prompt writer.
+    for name in ("preamble.md", "regen_prompt_edit.md"):
+        body = (PROMPTS / name).read_text(encoding="utf-8")
+        for hit in demands(body):
+            fails.append("%s asks for an outline: %r" % (name, hit))
         if "no outlines" not in body:
             fails.append("%s does not say 'no outlines'" % name)
 
@@ -111,7 +125,7 @@ def main() -> int:
         print("FAIL  " + f)
     if fails:
         return 1
-    print("PASS  judge brief, art_checks and the two prompts that code composes agree: no outlines (owner card 2026-10-04)")
+    print("PASS  judge brief, art_checks, the two prompts that code composes and the two prompt files agree: no outlines (owner card 2026-10-04)")
     return 0
 
 

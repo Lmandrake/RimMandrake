@@ -1,0 +1,32 @@
+[
+ {
+  "id": "arteval_RM_Shadefern__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shadefern",
+  "prompt": "A single clump of shadefern, a deep-green fern, in painterly vanilla RimWorld plant style, realistic, on a transparent background, seen from a slightly raised three-quarter top-down angle. Fronds of varied length rise from one low base: tall mature fronds in the centre, shorter young fronds at the left and right of the base. Every frond, tall and short, the young left-hand ones included, bends and curls toward the right-hand side of the image, as if combed by one steady hand. The shorter fronds along the left edge sweep rightward, parallel to the tall fronds, and the fiddlehead tips of those short fronds curl rightward as well, so the whole plant shows one combed direction from left to right. Each frond has a pale rachis (midrib), light grey-green to cream, standing out clearly against the deep-green leaflets. The leaflets are deep, cool green with darker shaded undersides and subtle lighter highlights along the rachis. Value and colour contrast between the pale midribs, the deep-green leaflets and the ground carry the silhouette. The clump fills about 0.7 of the cell, centred, with soft painterly shading.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_new_b",
+  "drawsize": 1,
+  "module": "bush"
+ },
+ {
+  "id": "arteval_RM_Dewblade__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dewblade",
+  "prompt": "A single shin-high tuft of the plant Dewblade for a RimWorld top-down-ish sprite, painterly vanilla RimWorld style, realistic, transparent background. The tuft is a compact cluster of flat, narrow, grey-green blades rising from one small root base. All blades in the tuft stand upright and parallel to one another: every blade is turned to the same common direction, its flat face toward the right of the frame and its thin edge toward the viewer, and every blade carries the same slight lean to the right, so the whole tuft looks combed by one steady wind, like iron filings aligned along a field line. The blades are flat ribbons of cool grey-green with a subtle lighter midrib, similar in height with small natural variation, none fanning out or splaying in other directions. Each blade ends in a fine drip-point tip, with a tiny bead of water gathered at the point. The base is a small tight clump of grey-green blade roots at ground level. Value and colour contrast between the pale grey-green blades and the ground carry the silhouette. Centered, single plant, no ground or background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "race_new_b",
+  "drawsize": 1,
+  "module": "ground_cover"
+ }
+]

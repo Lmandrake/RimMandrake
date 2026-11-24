@@ -40,8 +40,8 @@ OWNER_PROMPTS = STATE / "owner_prompts.jsonl"
 ADOPTIONS = STATE / "fauna_run_adoptions.jsonl"   # non-fauna_* runs that judged fauna candidates (append-only)
 SHEET_GLOB = "Transient/biome_ffar/owner_escalations_*_sheet_*.decisions.json"
 
-STYLE_HEAD = ("A single RimWorld creature sprite of the {label}, painterly vanilla RimWorld style, realistic, no "
-              "outlines, transparent background.")
+STYLE_HEAD = ("A single RimWorld creature sprite of the {label}, painterly vanilla RimWorld style, realistic, "
+              "transparent background.")   # the queue adds HOUSE_ART_REGISTER ("no outlines"); said here, it would not
 STYLE_TAIL = ("Same low, angled game camera and the same body size in every drawing. The edges fade cleanly into "
               "transparency with no coloured fringe.")
 
