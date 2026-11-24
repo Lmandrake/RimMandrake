@@ -323,8 +323,10 @@ namespace JawaBench.BridgeTools
             {
                 var err = AW.EnsureWildPatch();
                 if (err != null) throw new InvalidOperationException(err);
-                if (!AW.Wild.Active(Current.Game, now)) _wildOurs = true;
-                AW.Wild.Block(Current.Game, now, renewal ?? (Lease.UntilS - now) / 60.0, by);
+                bool wildActive = AW.Wild.Active(Current.Game, now);
+                if (!wildActive) _wildOurs = true;
+                if (!wildActive || renewal.HasValue)
+                    AW.Wild.Block(Current.Game, now, renewal ?? (Lease.UntilS - now) / 60.0, by);
             });
             Do(C.Weather, () => SetWeather(map));
             Do(C.Letters, () =>

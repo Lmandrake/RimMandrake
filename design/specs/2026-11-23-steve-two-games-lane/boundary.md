@@ -46,7 +46,8 @@ host `stevedesktop.b`); the map is `src/RimMandrake/rimflow/game_names.py`.
   `stevedesktop.b` and Steve1's companion inbox.
 - **filler-fills-an-idle-game.** `fill_plan` reads the lane busy only while a ready job is pending or each eligible
   Steve game has a running job on its own host. The filler can pick while Steve1 is running and Steve2 is idle,
-  or while Steve1 is idle and Steve2 drains under `steve2.stop`.
+  or while Steve1 is idle and Steve2 drains under `steve2.stop`. A chain running on the draining game stays
+  excluded from the pick. With only that chain available, the filler returns `exhausted`.
 - **visit-feed-one-mod-per-game.** The visit feed queues a second visit job while one runs, for a different mod,
   when two Steve games are live; never a second job for a mod already in flight, never one while a visit job is
   pending.

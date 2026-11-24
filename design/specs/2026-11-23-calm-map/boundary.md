@@ -63,7 +63,8 @@ or COULD_NOT_READ. The reply always lists `notCovered`: the influences that no c
 - **release-restores-proximity-letters.** On the same loaded map, release puts back the unsent flags that calm changed.
   Letters that had already been sent stay sent.
 - **reassert-keeps-the-lease.** With no `minutes` argument, repairing an active calm on the same map preserves the calm
-  and wild spawner deadlines. Rearming uses the last `calm` duration. Explicit `minutes` sets a new deadline for both.
+  deadline and any active wild spawner deadline, even if they differ. It restores a missing spawner block for the
+  remaining calm time. Rearming uses the last `calm` duration. Explicit `minutes` sets a new deadline for both.
 
 **LIVE PROOF** (2026-11-23): ArchSmall, all rows of `prove_three_tools.py` at 9d022c7087 PASS (45 of 45 with the other two tools); Steve1 testq `J20261124T011611Z-348324`, all calm rows PASS.
 

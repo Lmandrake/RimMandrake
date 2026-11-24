@@ -73,6 +73,25 @@ namespace JawaBench.BridgeTools
                 Require(Act("reassert").secondsLeft == 3600, "rearming did not use the last calm's 60 minutes");
                 return true;
             });
+
+            Program.Check("reassert_lease.preserves_an_independent_spawner_deadline", () =>
+            {
+                SetUp();
+                Require(Act("calm", 60).success, "60-minute calm failed to arm");
+                Clock.Now += 10;
+                AW.Wild.Block(Current.Game, Clock.Now, 120, "jawa/wild_spawner_block");
+                Clock.Now += 10;
+                DebugSettings.enableStoryteller = true;
+                var repaired = Act("reassert");
+                Require(repaired.success && !DebugSettings.enableStoryteller, "reassert did not repair the storyteller");
+                Require(repaired.secondsLeft == 3580 && AW.Wild.UntilS == 7310,
+                        $"after repair calm={repaired.secondsLeft}s, wild deadline={AW.Wild.UntilS}s, expected 3580s and 7310s");
+                AW.Wild.Release("released");
+                var reblocked = Act("reassert");
+                Require(reblocked.success && reblocked.secondsLeft == 3580 && AW.Wild.UntilS == 3700,
+                        "reassert did not restore the missing spawner block for the remaining calm time");
+                return true;
+            });
         }
 
         private static dynamic Act(string action, double? minutes = null) => minutes.HasValue

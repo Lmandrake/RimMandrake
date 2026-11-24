@@ -262,11 +262,15 @@ def t_filler_fills_an_idle_game(r):
     open(r.p("queue", "steve2.stop"), "w").close()
     draining = r.py("import testq, gaps\n"
                     "gaps.owed_items = lambda world=None: {}\n"
-                    "gaps.probe = lambda mod, items, since: {'chains': ['c1']}\n"
-                    "p = testq.fill_plan('Mock', 4, 200)\n"
-                    "print(json.dumps([p['verdict'], p.get('pick'), p['text']]))")
-    check(isinstance(draining, list) and draining[:2] == ["pick", ["c1"]],
-          "filler-fills-an-idle-game: Steve2 draining under steve2.stop, Steve1 idle -> pick c1 (%s)" % (draining,))
+                    "def plan(chains):\n"
+                    "    gaps.probe = lambda mod, items, since: {'chains': chains}\n"
+                    "    p = testq.fill_plan('Mock', 4, 200)\n"
+                    "    return [p['verdict'], p.get('pick'), p['text']]\n"
+                    "print(json.dumps([plan(['c1']), plan(['c1', 'c2'])]))")
+    check(isinstance(draining, list) and draining[0][:2] == ["exhausted", []],
+          "filler-fills-an-idle-game: Steve2 draining c1, only c1 offered -> exhausted (%s)" % (draining,))
+    check(isinstance(draining, list) and draining[1][:2] == ["pick", ["c2"]],
+          "filler-fills-an-idle-game: Steve2 draining c1 under steve2.stop, Steve1 idle -> pick c2 (%s)" % (draining,))
     for f in glob.glob(r.p("queue", "running", "*.json")):
         os.remove(f)
     r.reset()
