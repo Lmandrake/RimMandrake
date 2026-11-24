@@ -58,7 +58,7 @@ More traps for this section: [references/traps.md](references/traps.md) § 1. Ch
 | Steven, outside those 48 h: leave his account alone. Never crowd him out. | owner 2026-10-27, the row above. It narrows his 2026-10-26 words about 10% left late in the week (`references/history.md`). |
 | Floors: **1%** when the machine switches away, **2%** when the machine waits on an account. With 2% left, the owner can still talk to a seat while the machine is idle. No account is driven to 0%. The meter reads whole percents (8,749 readings, none fractional). So 1% is the lowest line that the meter can see. | owner 2026-11-20: *"Actually 0.1% is even ok kept. We just don't want to crash to zero and get stuck."*, then *"Agreed for 1% at the moment"*. The 2% is delegated. |
 | **No share is kept for his evenings.** Each account runs to its line, at any hour. | owner, card 2026-11-23 8:57 AM PST: *"No, run to the line"* (`standing_rulings.md` §Account and capacity budget) |
-| **Soft line** (line + 2%): a notice. Publish and finish, and start no new window helper. A new detached run still starts. **Live runs finish**: at the line the switch or the stop waits while a detached run is live. The switch or the stop goes when those runs end, or at the **hard line** = max(1%, line - 2%) (steven: 50%), whichever is first. | card 10:20 "Soft line, then hard stop"; owner 2026-11-20: *"And yes for live runs finish past, absolutely."* |
+| **Soft line** (line + 2%): a notice. Land your commits with `./publish`, and start no new subagent inside an interactive window. A new detached run still starts. **Live runs finish**: at the line the switch or the stop waits while a detached run is live. The switch or the stop goes when those runs end, or at the **hard line** = max(1%, line - 2%) (steven: 50%), whichever is first. | card 10:20 "Soft line, then hard stop"; owner 2026-11-20: *"And yes for live runs finish past, absolutely."* |
 | A priority switch is a switch to an account that comes earlier in `order`, made above the live account's line. A priority switch also waits for live runs, at most `pull_drain_max_s` (2 h). | owner 2026-11-20, the same words as the soft line row; page `design/specs/2026-11-20-account-drain/boundary.md` |
 | **Do not stop runs or switch by hand at the soft line.** The hand stop of 2026-11-18 6:43 PM and the hand switch of 6:59 PM (steven at 55%) killed 9 runs. Their resumes missed the prompt cache: 4.73M weighted. | the 2026-11-20 scan, `design/specs/2026-11-20-context-kept-not-reloaded/report.md` §1 row 3 |
 | **Blind meter = 0%**: the last MEASURED reading is <= 1%, and the meter is now blind (a failed /usage, a limit error, an ESTIMATE or a stale reading). Then the account counts as 0%, and the machine switches. | the rule relayed on 2026-10-28 at 11:2x |
@@ -67,15 +67,15 @@ More traps for this section: [references/traps.md](references/traps.md) § 1. Ch
 What enforces the soft line today:
 
 - `switching_plan.py status` shows when the plan is soft. Either the `do` of `next_pass` is `soft`, or the `notice` has
-  `state` `soft` and an `at` time under 20 min old. Then publish, and start no new window helper (a switch kills it and does
-  not wait for it). The plan is also soft in the 20 min before a reset that will pull the machine to another account.
+  `state` `soft` and an `at` time under 20 min old. Then land your commits with `./publish`, and start no
+  new subagent inside an interactive window (a switch kills it and does not wait for it). The plan is also soft in the 20 min before a reset that will pull the machine to another account.
 - While the plan drains (its notice reads `soft` with `drain` true), `detached_helper.launch` refuses a new run. A
   continuation or a resume of a live run still starts. A notice that is unreadable or over 20 min old refuses nothing.
 - No program refuses a new helper at the soft line or in a drain. No program refuses a new detached run at the soft line
   before the drain. If one did, the meter would barely move with no run, and the switch at the line would not come
   (`references/traps.md`, failover-soft-line-strands). An account whose line is 1% has no drain, because its hard line is
-  also 1%: at 1% its live runs are killed. The allocator reports 0 new helpers, but does not apply that count while `advisory.enabled` is true in
-  `slot_rules.json`.
+  also 1%: at 1% its live runs are killed. The allocator reports 0 new helpers, but does not apply that count while
+  `advisory.enabled` is true in `slot_rules.json`.
 
 The engine is `switching_plan.py check`. The timer `account-plan.timer` runs the engine every 5 min.
 
