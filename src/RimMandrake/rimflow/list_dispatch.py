@@ -509,6 +509,23 @@ def _read_next(st, iids, runs):
         a["next"] = str(n.get("text"))[:600] if n else None
 
 
+def block_facts(world, x, now):
+    """-> (the open items that x's block waits on, whether a block with no open predecessor still holds). Whether a block
+    holds at all is priority.block_holds, the one rule of every offer path."""
+    up = os.path.dirname(HERE)
+    if up not in sys.path:
+        sys.path.insert(0, up)          # priority imports only as rimflow.priority
+    from rimflow import priority as PR
+    if not PR.block_holds(world, x, now):
+        return [], False
+    waits = []
+    for on in PR.block_ons(x):
+        b = PR.follow(world, on)[0]
+        if b is not None and b.state not in CLOSED and b.id not in waits:
+            waits.append(b.id)
+    return waits, not waits
+
+
 def gather(st, now=None, root=None):
     import list_effect as LE
     now = time.time() if now is None else now
@@ -540,9 +557,8 @@ def gather(st, now=None, root=None):
                     acc = accept_script(f.read())
         if not x.effect and not acc and not sdue and not sf["route"]:
             continue
-        waits = [b for b in (x.blocked_on,) + tuple(x.blocked_also or ())
-                 if b and b in w.items and w.items[b].state not in CLOSED]
-        d = {"state": x.state, "blocked": bool(x.blocked) and not waits, "blocked_reason": x.blocked_reason,
+        waits, blocked = block_facts(w, x, now)
+        d = {"state": x.state, "blocked": blocked, "blocked_reason": x.blocked_reason,
              "effect": x.effect, "waits_on": waits, "events": len(x.history), "title": x.title,
              "filed": LM.epoch(x.created_at) if x.created_at else None, "blocks_others": iid in waited_on,
              "caused_by": x.caused_by, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],

@@ -56,6 +56,10 @@ Why: on 2026-11-23 Fleet Now listed 4 things for him and Maturation Now's "Needs
   with their age, then `not filed anywhere: N` with each source's own number and the names of the sources not read.
   With `no_home` None it prints `not filed anywhere: UNMEASURED` and never `0`. `fmt="md"` returns Markdown lines;
   `fmt="html"` returns one line of HTML with no blank line in it (Typora).
+- **not-his-before-its-turn.** `owner_queue.is_his` is False for an item with a dated wait ahead, or with a block on a
+  ticket that is still open (`later`); `needs_you` names it under `later`. A date that cannot be read and a blocker that
+  was never filed keep the row on his list. A Designer turn that waits on him is his whatever the wait. Tested in
+  `src/RimMandrake/Utils/selftest_owner_queue.py`.
 - **both-pages-build-from-one-view.** `maturation_now` (its "Needs Mandrake" block on MATURATION_DETAIL; the short block on
   MATURATION_NOW draws the same rows and counts) and `running_now` (its "Needs you" panel) both call
   `owner_queue.one_view`. `maturation_now.live_facts` writes the view it built (`write_view`);

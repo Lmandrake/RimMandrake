@@ -101,7 +101,7 @@ def stage_of(item, now):
         if who == "review":
             return _r("review", "ready for his look: %s" % ask, res)
         if who == "conductor":
-            return _r("trouble", "routed to the Conductor: %s" % ask, res)
+            return _r("waiting", "routed to the Conductor: %s" % ask, res)      # a question, not a broken run (six: asked)
         return _r("waiting", "routed to %s: %s" % (who, ask), res)
     until = epoch((waits or {}).get("until")) if isinstance(waits, dict) else None
     if isinstance(waits, dict) and (until is None or until > now):
@@ -218,7 +218,8 @@ def facts(it, runs=(), lane_row=None, lane_at=None, lane_cause=None, his=False, 
         d["waits"] = {"on": "a date: %s" % _clip(g(it, "wait_reason") or "no reason given", 90),
                       "resumes": "the date %s" % _clock(wu), "until": wu}
     elif g(it, "blocked"):
-        kind, on = g(it, "blocked_kind"), g(it, "blocked_on")
+        on = g(it, "blocked_on")
+        kind = g(it, "blocked_kind") or ("item" if on else None)     # priority.block_kind
         if kind == "item" and on:
             if open_ids is None or on in open_ids:
                 d["waits"] = {"on": str(on), "resumes": "%s closes" % on, "until": None}
@@ -287,7 +288,8 @@ def six(items, now, stage=None):
     """-> the six answers over {id: item} (six-answers-from-the-stages). Rows keep the order given. stage: the stage
     function (stage_of; a caller may pass its own reference to the same function)."""
     stage = stage or stage_of
-    out = {"doing": [], "next": [], "closed": [], "open_why": {}, "escalated": [], "review": [], "counts": {}}
+    out = {"doing": [], "next": [], "closed": [], "open_why": {}, "escalated": [], "asked": [], "review": [],
+           "counts": {}}
     for iid, it in (items or {}).items():
         it = it if isinstance(it, dict) else {}
         st = stage(it, now)
@@ -303,6 +305,8 @@ def six(items, now, stage=None):
             out["next"].append(row)
         if st["stage"] in ("trouble", "conflict"):
             out["escalated"].append(row)
+        if st["stage"] == "waiting" and isinstance(it.get("route"), dict) and it["route"].get("who") == "conductor":
+            out["asked"].append(row)
         if st["stage"] == "review":
             out["review"].append(row)
         k = reason(it, st)

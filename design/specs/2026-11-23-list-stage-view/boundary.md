@@ -60,6 +60,11 @@ disagree.
   `closed`, `open_why` (every item not closed, grouped by one reason per stage, a wait grouped by what it waits on, each
   group with its count, its oldest item and that item's age), `escalated` (`trouble` and `conflict`) and `review`.
   Each item is in exactly one `open_why` group or in `closed`.
+- **a-question-for-the-conductor-is-not-trouble.** A part routed to the Conductor reads `waiting` ("routed to the
+  Conductor") and is in `six`'s `asked`, never in `escalated`. A stopped run on the same item still reads `trouble`. Why:
+  on 2026-11-23 such a question stood under "stuck, needs a hand", and the owner read it as a broken run.
+- **a-block-on-an-item-names-it-with-or-without-a-kind.** In `facts`, a block with a `blocked_on` and no kind is a wait on
+  that item (`priority.block_kind`); a block on an item that is not open is no wait.
 - **the-tick-and-the-page-call-it.** `list_dispatch.tick` writes each row's `stage` into `reading.json`, from
   `list_dispatch.row_stage`: `stage_of` over the tick's own facts (its fresh verdict, waits and decision).
   `maturation_now` hands `stage_of` to `maturation_nonmod.section`, which places every open non-mod item by

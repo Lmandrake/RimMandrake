@@ -396,6 +396,23 @@ def t_page_is_a_picture_not_a_log():
     assert words[stuck - 1] == "6", words[stuck - 2:stuck + 1]
 
 
+def t_a_question_for_the_conductor_is_its_own_block():
+    s = stores()
+    q = item("RIMMANDRAKE_ASK_WHO_MAY_ADVANCE", "May the program advance a mod", days=1, effect="cmd:false",
+             shape={"size": "small", "parts": [{"name": "rule", "effect": None, "fooled_by": None,
+                                                "route": {"who": "conductor", "ask": "rule it", "resumes": "its ruling"}}]})
+    s["items"][q["id"]] = q
+    s["lane"]["items"][q["id"]] = {"decision": "routed", "why": "a part is routed to conductor: rule it"}
+    x = sec(s)
+    assert [r["id"] for r in x["asked"]] == [q["id"]], x["asked"]
+    assert q["id"] not in [r["id"] for r in x["escalated"]] and len(x["escalated"]) == len(sec()["escalated"])
+    svg = N.panel(x)
+    a, b = svg.index("stuck, needs a hand"), svg.index("a question for the Conductor")
+    assert b > a and svg.index("May the program advance a mod") > b, "the question stands under its own head"
+    assert "a question for the Conductor" not in N.panel(sec()), "no question: no head"
+    assert dict(x["waits"])["a ruling of the Conductor"] == 1, x["waits"]
+
+
 def t_waits_in_plain_words():
     x = sec()
     assert dict(x["waits"]) == {"a date": 1, "another ticket to close": 1, "a live game": 1}, x["waits"]
@@ -489,7 +506,7 @@ def main():
     tests = [t_mod_or_not_by_one_rule, t_stages_from_one_rule, t_launcher_from_records, t_doing_now_rows,
              t_next_names_its_wait, t_closed_last_day, t_open_by_reason_oldest_first, t_escalated_from_run_ends,
              t_ready_for_review, t_cannot_see_is_unmeasured, t_four_answers_differ, t_lists_go_to_detail,
-             t_page_is_a_picture_not_a_log, t_waits_in_plain_words, t_plain_titles, t_page_four_answers_differ,
+             t_page_is_a_picture_not_a_log, t_a_question_for_the_conductor_is_its_own_block, t_waits_in_plain_words, t_plain_titles, t_page_four_answers_differ,
              t_needs_short_and_his_first, t_trend_on_the_page, t_plain_waits, t_same_inputs_same_section]
     failed = 0
     for t in tests:

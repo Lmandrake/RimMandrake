@@ -2100,6 +2100,11 @@ def phone_list(P, sec):
            fill="#a9c25f", gap=4)
     for t, n, _v in MNM.alike([r for r in c["rows"] if r["verb"] == "close"] or c["rows"])[:MNM.TOP]:
         P.text(t + (" (%d like it)" % n if n > 1 else ""), "small", bullet="✓", gap=4)
+    a = sec["asked"]
+    if a:
+        P.text("Questions for the Conductor (%d)" % len(a), "h3", True, fill="#e6be7e", gap=4)
+        for t, n, _v in MNM.alike(a)[:3]:
+            P.text(t + (" (%d like it)" % n if n > 1 else ""), "small", bullet="•", gap=4)
     e = sec["escalated"]
     P.text("Stuck, needs a hand (%s)" % (UNM if e == UNM else len(e)), "h3", True, fill=MNM.RUST if e else "#a9c25f", gap=4)
     for t, n, _v in MNM.alike(e if e != UNM else [])[:3]:

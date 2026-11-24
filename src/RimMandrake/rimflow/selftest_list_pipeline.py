@@ -72,7 +72,7 @@ def t_a_wait_and_a_route_name_what_resumes():
     r = st(effect=None, verdict=None, route={"who": "owner", "ask": "pick", "resumes": "his card answer"})
     assert r["stage"] == "review" and r["resumes"] == "his card answer", r
     c = st(route={"who": "conductor", "ask": "choose a goal", "resumes": "its ruling"})
-    assert c["stage"] == "trouble" and c["resumes"] == "its ruling", c
+    assert c["stage"] == "waiting" and c["resumes"] == "its ruling" and "routed to the Conductor" in c["why"], c
     j = st(route={"who": "judge", "ask": "a taste call", "resumes": "the judge's verdict"})
     assert j["stage"] == "waiting" and j["resumes"] == "the judge's verdict", j
     # the Shape stage's split: a part routed to the Conductor, with no check, is the item's route
@@ -80,7 +80,7 @@ def t_a_wait_and_a_route_name_what_resumes():
         {"name": "p1", "effect": None, "fooled_by": None,
          "route": {"who": "conductor", "ask": "choose a goal", "resumes": "its ruling"}}]}}
     f = LP.facts(shaped, now=NOW, his=True)
-    assert f["route"]["who"] == "conductor" and LP.stage_of(f, NOW)["stage"] == "trouble", f
+    assert f["route"]["who"] == "conductor" and LP.stage_of(f, NOW)["stage"] == "waiting", f
     import list_dispatch as LD
     assert LD.row_stage({"state": "ready", "effect": None, "route": {"who": "owner", "ask": "a", "resumes": "b"}},
                         {"decision": "routed", "why": "x"}, NOW) == "review"
@@ -170,6 +170,27 @@ def t_six_answers_from_the_stages():
     assert sum(s["counts"].values()) == len(items)
 
 
+def t_a_question_for_the_conductor_is_not_trouble():
+    need()
+    q = it(route={"who": "conductor", "ask": "rule it", "resumes": "its ruling"})
+    s = LP.six({"Q": q, "F": it(stopped=True, run="ended")}, NOW)
+    assert [r["item"] for r in s["asked"]] == ["Q"] and [r["item"] for r in s["escalated"]] == ["F"], s
+    assert s["counts"] == {"waiting": 1, "trouble": 1}, s["counts"]
+    # a run that stopped on a routed item is trouble all the same
+    assert LP.stage_of(it(stopped=True, route=q["route"]), NOW)["stage"] == "trouble"
+
+
+def t_a_block_on_an_item_names_it_with_or_without_a_kind():
+    need()
+    for kind in ("item", None):
+        x = {"state": "ready", "effect": "cmd:false", "blocked": True, "blocked_on": "P", "blocked_kind": kind,
+             "blocked_reason": "runs after P"}
+        f = LP.facts(x, now=NOW, open_ids={"P"})
+        assert f["waits"]["on"] == "P" and f["waits"]["resumes"] == "P closes", (kind, f["waits"])
+        assert LP.facts(x, now=NOW, open_ids=set())["waits"] is None, kind      # P is closed: nothing to wait on
+    assert "no event" in LP.facts({"state": "ready", "blocked": True, "blocked_reason": "no event"}, now=NOW)["waits"]["on"]
+
+
 def t_the_tick_and_the_page_call_it():
     need()
     for p, word in (("src/RimMandrake/rimflow/list_dispatch.py", "stage_of("),
@@ -214,7 +235,8 @@ def main():
     tests = [t_one_stage_per_item_from_one_rule, t_facts_that_disagree_are_a_conflict,
              t_unmeasured_is_never_closed_or_ready, t_a_wait_and_a_route_name_what_resumes,
              t_a_promise_rides_beside_the_stage, t_lane_row_to_verdict, t_a_run_end_the_tick_has_not_read_is_verify,
-             t_a_dead_run_nobody_acted_on_is_trouble, t_six_answers_from_the_stages, t_the_tick_and_the_page_call_it,
+             t_a_dead_run_nobody_acted_on_is_trouble, t_six_answers_from_the_stages, t_a_question_for_the_conductor_is_not_trouble,
+             t_a_block_on_an_item_names_it_with_or_without_a_kind, t_the_tick_and_the_page_call_it,
              t_each_stage_says_program_or_by_hand, t_each_limit_names_its_danger]
     failed = 0
     for t in tests:

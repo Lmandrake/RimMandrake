@@ -254,6 +254,35 @@ try:
 finally:
     Q.designer_passes = saved
 
+# an item whose turn has not come is not his today: a dated wait ahead, or a block on a ticket that is still open
+# (RIMMANDRAKE_REVIEW_RULE_FILE_LENGTH_CEILING_HE_LEFT_OFF, waiting to 2026-12-05, sat under Needs Mandrake on 11-23)
+T0 = 1_800_000_000.0
+
+
+def lit(iid, **kw):
+    x = it("owner", title=iid)
+    x.id, x.wait_until, x.blocked_on, x.blocked_also = iid, None, None, ()
+    for k, v in kw.items():
+        setattr(x, k, v)
+    return x
+
+
+lits = {"DATE_AHEAD": lit("DATE_AHEAD", wait_until="2027-03-01T08:00:00Z"),
+        "DATE_PASSED": lit("DATE_PASSED", wait_until="2026-01-01T08:00:00Z"),
+        "DATE_UNREADABLE": lit("DATE_UNREADABLE", wait_until="soon"),
+        "AFTER_OPEN": lit("AFTER_OPEN", blocked=True, blocked_kind="item", blocked_on="P_OPEN"),
+        "AFTER_OPEN_NO_KIND": lit("AFTER_OPEN_NO_KIND", blocked=True, blocked_on="P_OPEN"),
+        "AFTER_DONE": lit("AFTER_DONE", blocked=True, blocked_kind="item", blocked_on="P_DONE"),
+        "AFTER_UNKNOWN": lit("AFTER_UNKNOWN", blocked=True, blocked_kind="item", blocked_on="P_NEVER_FILED"),
+        "HIS_BLOCK": lit("HIS_BLOCK", blocked=True, blocked_kind="owner"),
+        "P_OPEN": it("offline"), "P_DONE": it("offline", open_=False)}
+ln = Q.needs_you(lits, {}, {}, evs=[], now=T0)
+check("a date ahead or an open predecessor: not his today", {x["item"] for x in ln["lines"]} ==
+      {"DATE_PASSED", "DATE_UNREADABLE", "AFTER_DONE", "AFTER_UNKNOWN", "HIS_BLOCK"})
+check("it is named under later, never lost", {x["item"] for x in ln["later"]} == {"DATE_AHEAD", "AFTER_OPEN", "AFTER_OPEN_NO_KIND"})
+check("a waiting Designer turn is his whatever the wait", {x["item"] for x in Q.needs_you(
+    {"DATE_AHEAD": lits["DATE_AHEAD"]}, {}, {}, evs=[], turns={"DATE_AHEAD": "turn"}, now=T0)["lines"]} == {"DATE_AHEAD"})
+
 # the real books: every first-touch row routed to him is on exactly one list, and a listed one has its pass or its turn
 real_evs, real_w = M.ledger()
 real_turns, real_passes = Q.designer_turns(), Q.read_designer_passes(os.path.join(Q.REPO, "design", "concepts"))  # this tree, whichever clone runs it

@@ -180,6 +180,39 @@ def t_waits_are_not_launched():
     chk(lambda: dec({"A": it(blocked=True)}) == ("blocked", []), "blocked: nothing")
 
 
+def t_a_block_whose_predecessor_is_done_is_not_a_block():
+    import model as LM
+    def ev(**k):
+        ev.n += 1
+        return dict({"seat": "BENCH", "ts": "2026-11-23T%02d:%02d:00Z" % (ev.n // 60, ev.n % 60), "tsn": ev.n}, **k)
+    ev.n = 0
+
+    def world(*acts):
+        ids = sorted({a["id"] for a in acts} | {"LD_FIRST_PART_OF_CHAIN_ONE", "LD_SECOND_PART_OF_CHAIN_TWO",
+                                                 "LD_OTHER_PART_OF_CHAIN_THREE"})
+        evs = [ev(event="file", id=i, title="t", kind="task", **{"for": "BENCH"}) for i in ids] + \
+            [ev(**a) for a in acts]
+        return LM.replay(evs)
+    one, two, three = "LD_FIRST_PART_OF_CHAIN_ONE", "LD_SECOND_PART_OF_CHAIN_TWO", "LD_OTHER_PART_OF_CHAIN_THREE"
+    blk = {"event": "block", "id": two, "reason": "runs after one", "on": one}
+    fin = {"event": "close", "id": one, "sha": "a" * 40}
+
+    def bf(*acts):
+        w = world(*(a for a in acts if a is not fin))
+        if fin in acts:
+            w.items[one].state = "done"
+        return LD().block_facts(w, w.items[two], NOW)
+    chk(lambda: bf(blk) == ([one], False), "its predecessor is open: it waits on it")
+    chk(lambda: bf(blk, fin) == ([], False), "its predecessor is done: no wait and no block (the block of 2026-11-23)")
+    chk(lambda: bf(blk, {"event": "supersede", "id": one, "by": three}) == ([three], False),
+        "its predecessor was superseded: it waits on the successor")
+    chk(lambda: bf(blk, {"event": "drop", "id": one, "reason": "dead"}) == ([], True),
+        "its predecessor was dropped with nothing released: still blocked")
+    chk(lambda: bf({"event": "block", "id": two, "reason": "no event named", "kind": "external"}) == ([], True),
+        "a block of another kind holds until unblock")
+    chk(lambda: bf() == ([], False), "an item with no block")
+
+
 def t_the_gates_launch_nothing():
     chk(lambda: dec({"A": it()}, cfg=dict(CFG, enabled=False)) == ("disabled", []), "disabled")
     chk(lambda: dec({"A": it()}, paused="paused by the Conductor") == ("pipeline_paused", []), "the pause")
@@ -361,6 +394,7 @@ def main():
               t_a_launch_that_never_started_is_not_spent, t_a_list_run_that_died_spends_no_run,
               t_a_stop_names_the_outcome_the_reason_and_the_smallest_act,
               t_waits_are_not_launched,
+              t_a_block_whose_predecessor_is_done_is_not_a_block,
               t_the_gates_launch_nothing,
               t_the_lane_has_its_own_slots_and_chain_rule,
               t_a_claimed_item_is_not_the_lanes,

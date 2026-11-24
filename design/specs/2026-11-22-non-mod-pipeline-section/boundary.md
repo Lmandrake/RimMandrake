@@ -55,6 +55,9 @@ MATURATION_DETAIL.
 
 ## PROMISES
 
+- **a-question-for-the-conductor-is-its-own-block.** An item with a part routed to the Conductor is under "a question for
+  the Conductor" with its ask, on the picture, the lists and the phone, and not under "stuck, needs a hand". With no such
+  item the block is absent from the picture. Tested by `t_a_question_for_the_conductor_is_its_own_block`.
 - **mod-or-not-by-one-rule.** An item is mod work when its id or its title names a mod on the page
   (`item_identity.named_mod`, the rule the mod cards use) or when a run on it recorded `RM_CONTROL_MOD`. An id or title
   that names a mod but ties between two mods is "could not class": counted and shown, and in no list. A run that

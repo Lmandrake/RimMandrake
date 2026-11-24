@@ -486,6 +486,11 @@ def section(s, now, spend=None, stage=None):
                             "age": "at " + pac(float(rr.get("at") or 0))})
         out["escalated"] = esc
 
+    # a question for the Conductor: a part routed to the Conductor, no run broke
+    out["asked"] = [{"what": named(r["item"], title(r["item"])), "id": r["item"], "title": title(r["item"]),
+                     "kind": "question", "words": clip(str((facts[r["item"]].get("route") or {}).get("ask") or r["why"]), 140),
+                     "age": age(utc(g(items[r["item"]], "created_at")), now)} for r in sx["asked"]]
+
     # ready for his review: routed to him (owner_queue.is_his) or a look staged for him
     shows = s.get("showings")
     rd = []
@@ -514,7 +519,7 @@ WAIT_WORDS = {"item": "another ticket to close", "live": "a live game", "externa
 def wait_kind(it, f):
     """What a waiting item waits on, in a few plain words (waits-in-plain-words)."""
     if isinstance(f.get("route"), dict) and f["route"].get("who") and not f.get("waits"):
-        return "routed to %s" % f["route"]["who"]
+        return "a ruling of the Conductor" if f["route"]["who"] == "conductor" else "routed to %s" % f["route"]["who"]
     if g(it, "wait_until"):
         return "a date"
     if g(it, "blocked"):
@@ -603,6 +608,10 @@ def blocks(sec):
                                                  if by else ""),
                     _capped(e, lambda x: "%s, %s: %s" % (x["what"], x["age"], x["words"]))
                     or ["none (looked: the stages and the red dispatcher's reading)"]))
+    a = sec["asked"]
+    out.append(("Questions for the Conductor (%d)" % len(a),
+                _capped(a, lambda x: "%s, %s: %s" % (x["what"], x["age"], x["words"]))
+                or ["none (looked: the routes of the Shape stage)"]))
     r = sec["ready"]
     out.append(("Ready for his review (%d)" % len(r),
                 _capped(r, lambda x: ("%s, %s: \"%s\" Where: %s" % (x["what"], x["when"], x["note"], x["where"])) if x["where"]
@@ -857,6 +866,19 @@ def picture(sec):
             P.append(_t(rx, yr + 30, plain(v[0]["words"], 84), 10.5, DIM))
             yr += 36
         rest = len(e) - sum(n for _t2, n, _v in alike(e)[:3])
+        if rest:
+            P.append(_t(rx, yr + 12, "and %d more" % rest, 11, DIM))
+            yr += 18
+    a = sec["asked"]
+    if a:
+        yr += 24
+        head(rx, yr, "a question for the Conductor" if len(a) == 1 else "questions for the Conductor", len(a), GOLD)
+        yr += 8
+        for t, n, v in alike(a)[:3]:
+            P.append(_t(rx, yr + 16, plain(t, 62) + (" (%d like it)" % n if n > 1 else ""), 12.5, TEXT, True))
+            P.append(_t(rx, yr + 30, plain(v[0]["words"], 84), 10.5, DIM))
+            yr += 36
+        rest = len(a) - sum(n for _t2, n, _v in alike(a)[:3])
         if rest:
             P.append(_t(rx, yr + 12, "and %d more" % rest, 11, DIM))
             yr += 18

@@ -184,6 +184,21 @@ def t_one_view_shows_his_ours_and_the_count():
     assert [r["item"] for r in rows] == ["A", "B"] and rows[0]["age"] == "5d", rows
 
 
+def t_not_his_before_its_turn():
+    need()
+    from types import SimpleNamespace as NS
+
+    def row(**kw):
+        return NS(**dict({"id": "A", "open": True, "needs": "owner", "title": "t", "blocked": False, "blocked_kind": None,
+                          "blocked_on": None, "blocked_also": (), "wait_until": None, "history": [], "state": "proposed"}, **kw))
+    for x, his in ((row(wait_until=iso(NOW + 86400)), False), (row(wait_until=iso(NOW - 60)), True), (row(), True),
+                   (row(wait_until="soon"), True), (row(blocked=True, blocked_on="P"), False),
+                   (row(blocked=True, blocked_on="GONE"), True)):
+        n = OQ.needs_you({"A": x, "P": row(id="P", needs="offline")}, {}, {}, evs=[], now=NOW)
+        assert ([r["item"] for r in n["lines"]] == ["A"]) is his and ([r["item"] for r in n["later"]] == ["A"]) is not his, x
+        assert OQ.needs_you({"A": x}, {}, {}, evs=[], turns={"A": "turn"}, now=NOW)["count"] == 1, "a Designer turn is his"
+
+
 def t_both_pages_build_from_one_view():
     need()
     for p in ("running_now.py", "maturation_now.py"):
@@ -213,7 +228,7 @@ def main():
     tests = [t_count_sums_the_readable_sources, t_no_readable_source_is_none_never_zero, t_an_unanswered_card_is_a_need,
              t_an_ended_run_with_no_later_act_is_a_need, t_the_reading_is_shared_and_cached,
              t_a_test_never_writes_the_shared_files,
-             t_one_view_shows_his_ours_and_the_count, t_both_pages_build_from_one_view, t_each_limit_names_its_danger]
+             t_one_view_shows_his_ours_and_the_count, t_not_his_before_its_turn, t_both_pages_build_from_one_view, t_each_limit_names_its_danger]
     failed = 0
     for t in tests:
         try:

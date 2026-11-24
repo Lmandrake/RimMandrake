@@ -58,6 +58,11 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   dated wait in the future reads `waiting`. An item whose dated wait has passed and whose check still fails reads
   `reshape` (plan: a date never launches old work; the Shape stage, step 4, takes it), and an item with no check that is
   due for Shape goes on to `shape`. A blocked item reads `blocked`.
+- **a-block-whose-predecessor-is-done-is-not-a-block.** `block_facts` asks `priority.block_holds`, the one rule of every
+  offer path. When each ticket that the block names has reached its level, the item reads neither `waits_on` nor
+  `blocked` and the lane works it. A superseded predecessor is followed to its successor. A block of another kind, or on
+  a predecessor dropped with nothing released, still reads `blocked`. Measured 2026-11-23: 40 open items were blocked on
+  a done ticket, and the plain-English batch chain had stood still for 16 hours behind such blocks.
 - **the-gates-launch-nothing.** The lane launches nothing when it is disabled, under the pause, under `pipe off` (all,
   `family:list_dispatch`, the item or its mod), on an item whose mod is held by the owner, under an account hold (the plan's drain or the Dispatcher's pick), when
   the control store cannot be read, or when the clone pool refuses a new clone. Each reads its own decision. Disabled, the pause and `pipe off` (or a
