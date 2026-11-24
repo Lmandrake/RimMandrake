@@ -10,3 +10,6 @@
   (another machine) (fresh read, 2026-11-21).
 - `driver_lock._fence_identity` records no distro, so a Windows caller judges a WSL fence by its age only (60 s)
   (fresh read, 2026-11-21).
+- `selftest_game_lock.sleeper()` still sleeps 50 ms after `Popen`; `Popen` already gives the pid the test needs (Codex review, 2026-11-24).
+- The query-work line limit 850 is 771 measured plus about 10%; at the warm query body's measured 0.26-0.31 ms per line
+  (load 47, 2026-11-24) the 88-line headroom costs about 25 ms, inside the 100 ms bar's 55 ms headroom (review, 2026-11-24).

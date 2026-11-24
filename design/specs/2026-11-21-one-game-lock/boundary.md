@@ -83,11 +83,15 @@ Before: `rimflow bridge who` 5.0 s for ArchBig, 1.8 s for ArchSmall.
   `host_guard.py status` reads a claim made here.
 - **release-frees-only-this-process-trees-hold.** `release` of another tree's live hold exits 75 and touches nothing;
   `--force "<why>"` cuts it; the holder or a child of it releases its own; a free game reads `already FREE`, exit 0.
-- **a-query-answers-under-100-ms.** `game_lock.py query a`, run as a fresh process from WSL on the live locks (read
-  only), takes under 100 ms, median of 9, in one of up to three batches; the test prints every batch, its CPU time and
-  the load. When the load average passes half the cores the wall bound is printed UNMEASURED and the CPU time per query
-  decides (measured 2026-11-21: 38-45 ms wall and 33 ms CPU quiet; 110-274 ms wall and 63-72 ms CPU inside
-  `./publish`'s side-by-side door tests).
+- **a-query-answers-under-100-ms.** On quiet WSL, `game_lock.py query a` takes under 100 ms as a fresh command.
+  The selftest prints the median and worst wall time of nine calls against a throwaway held lock and control store.
+  The wall bound is UNMEASURED when the one-minute load exceeds half the available CPUs or the median of nine
+  interleaved bare Python starts exceeds 30 ms (twice the upper end of the 12-15 ms bare Python CPU reading on
+  Archmagi, 2026-11-24). Guest CPU time also rose to 103-118 ms per query in three failed runs at load 38-48.
+  On every run, fresh queries on a warm data-root cache with a free lock, a live holder, and a pipe hold must answer
+  with no process starts, network connections, sleeps, unapproved imports or extra file opens or database connections.
+  Those three fixtures also permit up to 850 executed repository line events per query (771 measured on 2026-11-24,
+  with room for small changes). The test prints the worst count, limit and case count. These checks decide on busy WSL.
 - **the-225-am-release-that-left-bridge-who-saying-held.** When a run's holder process has ended with its take still in
   this clone's ledger, `rimflow bridge who` reads FREE and the next `rimflow bridge take` succeeds without `--force`.
   A take still honours his `pipe off game:<g>`, and a control store that cannot be read refuses it as COULD NOT LOOK

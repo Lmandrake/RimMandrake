@@ -3,13 +3,14 @@
 
 Every case runs the real `game_lock.py` (and, for the doors, the real `rimflow` cli) against throwaway locks:
 RIMFLOW_DRIVER_LOCK names game a's, RM_INSTANCES_ROOT holds game b's, RIMFLOW_LEDGER a throwaway ledger and
-RM_CONTROL_DB a throwaway control store. Holders are real sleeping processes, named with RM_DRIVER_PID. Only
-t_a_query_answers_under_100_ms reads the live locks, and only reads them. Nothing here takes, breaks or releases a
-live hold.
+RM_CONTROL_DB a throwaway control store. Holders are real sleeping processes, named with RM_DRIVER_PID.
+The query speed check uses the same throwaway state as the other cases.
 """
 import atexit
+from collections import Counter
 import json
 import os
+import select
 import shutil
 import signal
 import statistics
@@ -176,7 +177,8 @@ def t_an_unreadable_lock_is_could_not_look():
     check(q.returncode == 2, "query all with one game unreadable: exit 2", q.stdout)
     open(bx.a, "w").close()
     r = bx.gl("query", "a")
-    check(r.returncode == 2 and "still being written" in r.stdout, "an empty lock that stays empty: exit 2", r.stdout)
+    # A child scheduled after the write grace sees an old empty file. Both readings must name the unreadable lock.
+    check(r.returncode == 2 and "is UNREADABLE" in r.stdout, "an empty lock that stays empty: exit 2", r.stdout)
     os.remove(bx.a)
     r = bx.gl("query", "a", RIMFLOW_DRIVER_LOCK="")
     check(r.returncode == 2 and "no lock path" in r.stdout, "no lock path at all: exit 2, never free", r.stdout)
@@ -201,38 +203,70 @@ def t_run_releases_on_exit_crash_and_sigterm():
                    "capture_output=True,text=True); d=json.loads(r.stdout); sys.exit(0 if d.get('mine') else 9)" % GL)
     r = bx.gl("run", "a", "--for", "probe", "--", sys.executable, "-c", child_probe)
     check(r.returncode == 0, "run: a child reads the hold as its own process tree's", r.stderr)
-    p = subprocess.Popen([sys.executable, GL, "run", "a", "--for", "long", "--", "sleep", "60"], env=bx.env,
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    for _ in range(100):
-        if bx.lock():
-            break
-        time.sleep(0.05)
-    held = bx.gl("query", "a")
-    p.send_signal(signal.SIGTERM)
-    rc = p.wait(timeout=30)
-    check(held.returncode == 75 and rc == 143 and bx.lock() is None,
-          "run: SIGTERM is forwarded, CMD ends (143), the lock is released", (held.stdout, rc, bx.lock()))
-    p = subprocess.Popen([sys.executable, GL, "run", "a", "--for", "killed", "--", "sleep", "60"], env=bx.env,
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    for _ in range(100):
-        if bx.lock():
-            break
-        time.sleep(0.05)
-    try:
-        with open("/proc/%d/task/%d/children" % (p.pid, p.pid)) as f:
-            orphans = [int(x) for x in f.read().split()]
-    except OSError:
-        orphans = []
-    p.kill()
-    p.wait()
-    q = bx.gl("query", "a")
-    check(q.returncode == 0 and "FREE" in q.stdout, "run killed outright (SIGKILL): the game reads FREE at once",
-          q.stdout)
-    for pid in orphans:                 # the CMD that SIGKILL left running (DOES NOT SURVIVE on the page)
-        try:
-            os.kill(pid, signal.SIGKILL)
-        except OSError:
-            pass
+    # Deliver the real signal at both startup boundaries. The stand-in CMD has no scheduler race of its own.
+    startup_term = """
+import os, signal, sys
+import game_lock as G
+
+class Child:
+    def __init__(self):
+        self.code = 7
+
+    def poll(self):
+        return None
+
+    def send_signal(self, sig):
+        self.code = -sig
+
+    def wait(self):
+        return self.code
+
+claim = G.claim
+def claim_and_signal(*args, **kwargs):
+    result = claim(*args, **kwargs)
+    os.kill(os.getpid(), signal.SIGTERM)
+    return result
+
+def spawn(*args, **kwargs):
+    if sys.argv[1] == 'spawning CMD':
+        os.kill(os.getpid(), signal.SIGTERM)
+    return Child()
+
+if sys.argv[1] == 'after claim':
+    G.claim = claim_and_signal
+G.subprocess.Popen = spawn
+sys.exit(G.run('a', 'startup SIGTERM', ['fixture CMD']))
+"""
+    for when in ("after claim", "spawning CMD"):
+        fixture = Box()
+        r = subprocess.run([sys.executable, "-c", startup_term, when], cwd=HERE, env=fixture.env,
+                           capture_output=True, text=True, timeout=60)
+        check(r.returncode == 143 and fixture.lock() is None,
+              "run: SIGTERM %s reaches CMD (143) and releases the lock" % when,
+              (r.returncode, fixture.lock() is not None, r.stderr))
+    # CMD announces readiness and waits for EOF, including when SIGKILL leaves it orphaned.
+    ready_cmd = [sys.executable, "-c", "import sys; print('ready', flush=True); sys.stdin.read()"]
+    for sig in (signal.SIGTERM, signal.SIGKILL):
+        with subprocess.Popen([sys.executable, GL, "run", "a", "--for", sig.name, "--", *ready_cmd],
+                              env=bx.env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as p:
+            try:
+                ready, _, _ = select.select([p.stdout], [], [], 30)  # same hang guard as the signal wait
+                if not check(ready and p.stdout.readline().strip() == "ready", "run: CMD ready for %s" % sig.name):
+                    continue
+                held = bx.gl("query", "a")
+                p.send_signal(sig)
+                rc = p.wait(timeout=30)
+                if sig == signal.SIGTERM:
+                    check(held.returncode == 75 and rc == 143 and bx.lock() is None,
+                          "run: SIGTERM is forwarded, CMD ends (143), the lock is released",
+                          (held.stdout, rc, bx.lock()))
+                else:
+                    q = bx.gl("query", "a")
+                    check(held.returncode == 75 and rc == -sig and q.returncode == 0 and "FREE" in q.stdout,
+                          "run killed outright (SIGKILL): the game reads FREE at once", (held.stdout, rc, q.stdout))
+            finally:
+                if p.poll() is None:
+                    p.kill()
 
 
 def t_his_hold_refuses_with_exit_3():
@@ -336,59 +370,179 @@ def t_release_frees_only_this_process_trees_hold():
     check(r.returncode == 0 and "already FREE" in r.stdout, "release of a free game: 0, already FREE", r.stdout)
 
 
+# Run the CLI entry point in a fresh interpreter and count work from its first import.
+_QUERY_WORK = r"""
+import os
+import sys
+import time
+
+script, sources, helper = sys.argv[1:]
+sys.argv = [script, "query", "a"]
+sys.path[0] = os.path.dirname(script)
+sys.path.insert(0, os.path.join(sources, "Utils"))
+with open(script, "rb") as f:
+    code = compile(f.read(), script, "exec")
+loaded = set(sys.modules)
+calls, reads = [], []
+lines = 0
+
+def audit(event, args):
+    if event in ("subprocess.Popen", "os.system", "os.exec", "os.posix_spawn", "os.fork", "os.forkpty", "socket.connect"):
+        calls.append(event)
+        raise RuntimeError("unexpected query operation: " + event)
+    if event in ("open", "os.listdir", "os.scandir", "sqlite3.connect"):
+        if not sys._getframe(1).f_code.co_filename.startswith("<frozen importlib."):
+            reads.append(os.fsdecode(args[0]) if isinstance(args[0], (str, bytes)) else str(args[0]))
+
+def profile(frame, event, func):
+    if event == "c_call" and func is time.sleep:
+        calls.append("time.sleep")
+        raise RuntimeError("unexpected query operation: time.sleep")
+
+def trace(frame, event, arg):
+    global lines
+    if event == "call":
+        return trace if frame.f_code.co_filename.startswith(sources) else None
+    if event == "line":
+        lines += 1
+    return trace
+
+sys.addaudithook(audit)
+sys.setprofile(profile)
+sys.settrace(trace)
+try:
+    if helper:
+        import rmpaths
+        rmpaths.AGENT_STORAGE = helper
+    exec(code, {"__name__": "__main__", "__file__": script})
+finally:
+    sys.settrace(None)
+    sys.setprofile(None)
+    imports = sorted(set(sys.modules) - loaded)
+    import json
+    print("QUERY_WORK " + json.dumps(dict(imports=imports, calls=calls, reads=reads, lines=lines)), file=sys.stderr)
+"""
+
+# Observed on Archmagi on 2026-11-24 with Python 3.12 and 3.14. Only these imports may run in a fresh query.
+_QUERY_IMPORTS = set("""
+__future__ _collections _contextvars _datetime _functools _heapq _json _locale _operator _posixsubprocess
+_py_warnings _socket _sqlite3 _sre _strptime _types _weakrefset array calendar collections contextlib control
+collections.abc copyreg datetime difflib driver_lock enum errno fcntl fnmatch functools game_names glob grp
+heapq io ipaddress itertools json json.decoder json.encoder json.scanner keyword locale math ntpath operator
+pathlib pathlib._os probe_result pwd re re._casefix re._compiler re._constants re._parser reprlib rmpaths
+select selectors signal socket sqlite3 sqlite3.dbapi2 subprocess threading types urllib urllib.parse warnings
+""".split())
+# The high-water mark was 771 repository line events on 2026-11-24. Allow roughly 10% for small code changes.
+_QUERY_LINES = 850
+
+
+def _check_query_work(env, cases):
+    issues = []
+    worst = 0
+    for name, expected, case_env, helper, allowed in cases:
+        case_env = dict(env, **case_env)
+        if helper:
+            del case_env["RM_DATA_ROOT"]  # exercise a warm cache hit with the normal resolver
+        r = subprocess.run([sys.executable, "-I", "-S", "-B", "-c", _QUERY_WORK, GL, os.path.dirname(HERE) + os.sep, helper],
+                           env=case_env, capture_output=True, text=True, timeout=60)
+        report = next((line.removeprefix("QUERY_WORK ") for line in r.stderr.splitlines()
+                       if line.startswith("QUERY_WORK ")), "")
+        try:
+            work = json.loads(report)
+        except ValueError:
+            issues.append("%s: missing work report (%s)" % (name, r.stderr[-300:]))
+            continue
+        worst = max(worst, work["lines"])
+        extra_imports = set(work["imports"]) - _QUERY_IMPORTS
+        extra_reads = Counter(work["reads"]) - allowed
+        if extra_imports:
+            issues.append("%s imports %s" % (name, ", ".join(sorted(extra_imports))))
+        if extra_reads:
+            issues.append("%s extra reads %s" % (name, ", ".join(sorted(extra_reads))))
+        if work["calls"]:
+            issues.append("%s calls %s" % (name, ", ".join(sorted(set(work["calls"])))))
+        if r.returncode != expected:
+            issues.append("%s exit %d, expected %d" % (name, r.returncode, expected))
+    return check(not issues and worst <= _QUERY_LINES,
+                 "query work (worst %d line events, limit %d, %d cases)" % (worst, _QUERY_LINES, len(cases)),
+                 ", ".join(issues))
+
+
+def _measure_query_wall(bx, env):
+    # One batch of nine and the half-cores threshold come from the 2026-11-21 boundary and Windows precedent.
+    # A bare interpreter's 30 ms wall ceiling is twice the 15 ms CPU upper reading on Archmagi (2026-11-24).
+    # It detects contention that the guest load can miss without judging the query by its own CPU or wall ratio.
+    cores = len(os.sched_getaffinity(0))
+    load = os.getloadavg()[0]
+    if load > cores / 2:
+        print("     UNMEASURED: query's 100 ms wall bound (load %.1f on %d cores)" % (load, cores))
+        return
+
+    startup, query, answers = [], [], []
+    for _ in range(9):
+        t0 = time.perf_counter()
+        subprocess.run([sys.executable, "-c", "pass"], env=env, capture_output=True, timeout=60, check=True)
+        startup.append((time.perf_counter() - t0) * 1000)
+        t0 = time.perf_counter()
+        r = bx.gl("query", "a", **env)
+        query.append((time.perf_counter() - t0) * 1000)
+        answers.append(r.returncode)
+    check(all(code == 75 for code in answers), "the timed queries report the held lock", answers)
+    load = max(load, os.getloadavg()[0])
+    baseline = statistics.median(startup)
+    if load > cores / 2 or baseline > 30:
+        print("     UNMEASURED: query's 100 ms wall bound (bare Python median %.1f ms, load %.1f on %d cores)"
+              % (baseline, load, cores))
+        return
+    med = statistics.median(query)
+    check(med < 100, "query wall time on a throwaway held lock and control store (median %.1f ms, "
+          "worst %.1f ms, limit 100 ms, %d cases, bare Python median %.1f ms)"
+          % (med, max(query), len(query), baseline))
+
+
 def t_a_query_answers_under_100_ms():
-    env = {k: v for k, v in os.environ.items() if k not in (
-        "RIMFLOW_LEDGER", "RIMFLOW_DRIVER_LOCK", "RM_INSTANCES_ROOT", "RM_GAME_INSTANCE", "RM_CONTROL_DB", "TMPDIR")}
-    import game_lock
-    live = False
+    import control
+    import socket
+
+    bx = Box()
+    lodestar = os.path.join(bx.d, "Lodestar")
+    os.makedirs(lodestar)
+    machines = os.path.join(lodestar, "machines.md")
+    open(machines, "w").close()
+    helper = os.path.join(lodestar, "agent_storage.py")
+    with open(helper, "w", encoding="utf-8") as f:
+        f.write("print(%r)\n" % bx.d)
+    cache = os.path.join(bx.d, "root-cache.json")
+    env = dict(bx.env, RM_DATA_ROOT=bx.d, LODESTAR_ROOT=lodestar, RM_PATHS_CACHE=cache)
+    # Seed the resolver's cache from fixture files so a broken cache would call only the fixture helper.
+    st = os.stat(machines)
+    key = [socket.gethostname(), env.get("AGENT_STORAGE_ROOT", "").strip(), env.get("LODESTAR_MACHINE", ""),
+           lodestar, helper, [st.st_size, st.st_mtime_ns]]
+    with open(cache, "w", encoding="utf-8") as f:
+        json.dump({"key": key, "root": bx.d}, f)
+
+    control.init(env["RM_CONTROL_DB"])
+    holder = sleeper()
     try:
-        live = bool(subprocess.run([sys.executable, "-c", "import sys; sys.path.insert(0,%r); import game_lock; "
-                                    "sys.exit(0 if game_lock.lock_path('a') else 1)" % HERE],
-                                   env=env, timeout=60).returncode == 0)
-    except subprocess.SubprocessError:
-        live = False
-    if not live:
-        bx = Box()
-        env = bx.env
-    subprocess.run([sys.executable, GL, "query", "all"], env=env, capture_output=True, timeout=60)  # warm the caches
-    # Up to three batches of 9: a burst of drive I/O from other processes slows every reader of D: (measured
-    # 2026-11-21: 45 ms quiet, 129 ms beside five parallel selftests). The bound is the tool's, so one quiet batch
-    # decides; three slow batches in a row fail, and every batch is printed with the load.
-    import resource
-    meds, cpus = [], []
-    for _batch in range(3):
-        ts = []
-        c0 = resource.getrusage(resource.RUSAGE_CHILDREN)
-        for _ in range(9):
-            t = time.perf_counter()
-            r = subprocess.run([sys.executable, GL, "query", "a"], env=env, capture_output=True, text=True,
-                               timeout=60)
-            ts.append((time.perf_counter() - t) * 1000)
-        c1 = resource.getrusage(resource.RUSAGE_CHILDREN)
-        cpus.append((c1.ru_utime + c1.ru_stime - c0.ru_utime - c0.ru_stime) * 1000 / 9)
-        meds.append(statistics.median(ts))
-        print("     measured: `game_lock.py query a` wall time median %.0f ms, min %.0f ms, max %.0f ms over 9 runs, "
-              "CPU %.0f ms each (%s; load average %.1f on %d cores)" % (
-                  meds[-1], min(ts), max(ts), cpus[-1], "the live locks, read only" if live else
-                  "a throwaway lock: no live lock here", os.getloadavg()[0], os.cpu_count()))
-        if meds[-1] < 100:
-            break
-    med = min(meds)
-    # contended: the wall time is mostly waiting for a core, not the query's own work (the door at load 5-6 on 14 cores,
-    # 2026-11-21: 121-135 ms wall against 64-69 ms CPU blocked three publishes; quiet: 38-45 ms wall, 33 ms CPU)
-    contended = min(meds) >= 1.5 * max(min(cpus), 1)
-    busy = os.getloadavg()[0] > (os.cpu_count() or 2) / 2 or contended
-    if med >= 100 and busy:
-        # A busy machine (./publish runs its door tests side by side: 110-274 ms wall there, 38-45 ms quiet,
-        # 2026-11-21) measures the machine, not the tool: the wall bound is UNMEASURED this run, and the CPU each
-        # query spends decides instead (33 ms quiet, 63-72 ms at the door).
-        print("     UNMEASURED: the wall-time bound, load %.1f on %d cores; CPU per query decides"
-              % (os.getloadavg()[0], os.cpu_count()))
-        med = min(cpus)
-    check(r.returncode in (0, 75, 3), "the query answered", r.stdout + r.stderr)
-    check(med < 100, "a query answers in under 100 ms (median of 9, in one of up to three batches)",
-          "batch medians %s ms, CPU %s ms" % (["%.0f" % m for m in meds], ["%.0f" % c for c in cpus]))
-    check(game_lock is not None, "game_lock imports")
+        env["RM_DRIVER_PID"] = str(holder.pid)
+        write_lock(bx.a, "BENCH", holder.pid)
+        free_lock = os.path.join(bx.d, "free.json")
+        pipe_db = os.path.join(bx.d, "pipe.db")
+        control.init(pipe_db)
+        control.switch("game:a", True, "query work fixture", p=pipe_db)
+        # Per-path maxima measured on 2026-11-24. A free lock also reads its generation file. A held lock
+        # inspects the holder's start and boot. Both states consult the fixture control store once.
+        free = Counter([free_lock, free_lock + ".gen", env["RM_CONTROL_DB"], cache])
+        holder_reads = Counter({bx.a: 1, "/proc/%d/stat" % holder.pid: 3, "/proc/sys/kernel/random/boot_id": 6})
+        cases = (
+            ("cached free", 0, {"RIMFLOW_DRIVER_LOCK": free_lock}, helper, free),
+            ("held", 75, {}, "", holder_reads + Counter([env["RM_CONTROL_DB"]])),
+            ("pipe hold", 3, {"RM_CONTROL_DB": pipe_db}, "", holder_reads + Counter([pipe_db])),
+        )
+        if _check_query_work(env, cases):
+            _measure_query_wall(bx, env)
+    finally:
+        kill(holder)
 
 
 # --- the four disagreements of 2026-11-21, one test each ----------------------------------------------------------

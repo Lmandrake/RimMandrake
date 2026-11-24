@@ -66,7 +66,6 @@ unit name when the store cannot be read (emergency stopping never waits on it).
 Exit codes: 0 done, 2 refused, 3 could not look (the store is unreadable), 4 failed (an error that is neither).
 Every write prints at most 3 lines (before -> after; act id + revision; the undo command). Selftest: selftest_control.py.
 """
-import argparse
 import datetime as dt
 import difflib
 import json
@@ -3099,6 +3098,7 @@ def main(argv=None):
         if text:
             sys.stderr.write(text + "\n")
         return code
+    import argparse  # only the CLI parses arguments; game_lock imports this module for its control-store read
     ap = argparse.ArgumentParser(prog="pipe", description=__doc__.split("\n\n")[0])
     ap.add_argument("--json", action="store_true")
     sub = ap.add_subparsers(dest="verb", required=True)

@@ -397,46 +397,52 @@ def run(g, purpose, cmd, seat=None, force=None, flyer=False):
     reads FREE at once). Children inherit the take (RM_HOST_GUARD_GEN). -> CMD's exit code, or a refusal's."""
     me = _host_guard().self_identity()
     path = lock_path(g)
-    inherited = None
-    if path and os.environ.get(GEN_ENV):
-        cur, _p = driver_lock._read(path)
-        if cur and str(cur.get("generation")) == os.environ[GEN_ENV] and driver_lock._alive(cur)[0]:
-            inherited = cur.get("generation")
-    if inherited is None:
-        r = claim(g, purpose, seat=seat, force=force, flyer=flyer, identity=me)
-        if not r["ok"]:
-            sys.stderr.write(r["line"] + "\n")
-            return r["code"]
-        gen = r.get("generation")
-        if r.get("reentrant"):              # this process tree's window holds it: drive under that take, free nothing
-            inherited = gen
-    else:
-        gen = inherited
-    env = dict(os.environ)
-    env[GEN_ENV] = str(gen)
-    wslenv = env.get("WSLENV", "")
-    if GEN_ENV not in wslenv.split(":"):
-        env["WSLENV"] = (wslenv + ":" if wslenv else "") + GEN_ENV
-    sys.stderr.write("%s: held for `%s` (gen %s%s)\n" % (game_names.show(g), " ".join(cmd), gen,
-                                                              ", inherited" if inherited is not None else ""))
     child = None
-    got = []
+    pending = []
+    release_ours = False
 
     def forward(signum, _frame):
-        got.append(signum)
-        if child is not None and child.poll() is None:
+        if child is None:
+            pending.append(signum)
+        elif child.poll() is None:
             try:
                 child.send_signal(signum)
             except OSError:
                 pass
 
+    # The lock can be seen before Popen returns. Catch signals before publishing it and forward them once CMD exists.
     olds = {s: signal.signal(s, forward) for s in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP)}
     try:
+        inherited = None
+        if path and os.environ.get(GEN_ENV):
+            cur, _p = driver_lock._read(path)
+            if cur and str(cur.get("generation")) == os.environ[GEN_ENV] and driver_lock._alive(cur)[0]:
+                inherited = cur.get("generation")
+        if inherited is None:
+            r = claim(g, purpose, seat=seat, force=force, flyer=flyer, identity=me)
+            if not r["ok"]:
+                sys.stderr.write(r["line"] + "\n")
+                return r["code"]
+            gen = r.get("generation")
+            release_ours = not r.get("reentrant")
+            if not release_ours:
+                inherited = gen
+        else:
+            gen = inherited
+        env = dict(os.environ)
+        env[GEN_ENV] = str(gen)
+        wslenv = env.get("WSLENV", "")
+        if GEN_ENV not in wslenv.split(":"):
+            env["WSLENV"] = (wslenv + ":" if wslenv else "") + GEN_ENV
+        sys.stderr.write("%s: held for `%s` (gen %s%s)\n" % (game_names.show(g), " ".join(cmd), gen,
+                                                                  ", inherited" if inherited is not None else ""))
         try:
             child = subprocess.Popen(cmd, env=env)
         except OSError as e:
             sys.stderr.write("%s: could not start %s: %s\n" % (game_names.show(g), cmd[0], e))
             return 127
+        for signum in pending:
+            forward(signum, None)
         while True:
             try:
                 rc = child.wait()
@@ -445,10 +451,12 @@ def run(g, purpose, cmd, seat=None, force=None, flyer=False):
                 continue
         return rc if rc >= 0 else 128 - rc
     finally:
-        for s, h in olds.items():
-            signal.signal(s, h)
-        if inherited is None and path:
-            driver_lock.release(path, seat or default_seat(), me)
+        try:
+            if release_ours and path:
+                driver_lock.release(path, seat or default_seat(), me)
+        finally:
+            for s, h in olds.items():
+                signal.signal(s, h)
 
 
 # --- the command --------------------------------------------------------------------------------------------------
