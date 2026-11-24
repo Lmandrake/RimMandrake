@@ -1548,6 +1548,16 @@ image reprocessing, running agents... everything."* *"confirm that a single log-
 - The ChatGPT desktop app stays until he says otherwise. Its `.codex` folder must stay, because without the folder the
   app's next start raises the Windows consent dialog.
 
+## Codex leave line: 25% of the week is his — owner, 2026-11-24
+
+*"ALL should be used before the reset today of course. Otherwise preserve 25% for personal use unless otherwise
+instructed."*
+
+- Our work stops sending new Codex jobs when 25% of the Codex week is left. The 25% is for the owner's own use.
+- Before a Codex reset, the allowance that would be lost at the reset is used in full. He gave this order for the reset
+  of 2026-11-24.
+- The line stands until he gives another figure. Every brief that sends work to Codex states it.
+
 ## Codex agents run with full machine access — owner, 2026-11-09
 
 *"Please grant that authority to all agents immediately."* He gave this order when Codex ran on Windows and Codex's
