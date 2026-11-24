@@ -11807,3 +11807,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_START: disk.scratch_dirty_start = 1 sanity problems at the start of the last run (MEASURED), line > 0","ts":"2026-11-24T03:08:45Z","tsn":1795489725515780976}
 {"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-24T03:08:55Z","tsn":1795489735549827949}
 {"seat":"RUNNER","event":"note","id":"OPS_STEVE_SEATS_RESTORE_QTWK_RGFZ","text":"ops_watch: WORSE at 2026-11-24T03:16:56Z: 167 -> 335 min a Steve seat has been absent, the rule's step is {\"factor\": 2}","ts":"2026-11-24T03:17:07Z","tsn":1795490227389507225}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","result":"kept","detail":"sweep: running again","ts":"2026-11-24T03:18:20Z","tsn":1795490300884671880}
