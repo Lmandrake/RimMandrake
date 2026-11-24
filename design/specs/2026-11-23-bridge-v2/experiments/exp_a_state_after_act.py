@@ -90,10 +90,16 @@ def selfcheck():
         u = [{"n": 1, "tick": cut, "rec": "open"}, {"n": 2, "tick": cut, "rec": "track", "phase": "first", "name": "i", "st": "ok", "v": 1},
              {"n": 3, "tick": cut, "rec": "track", "phase": "first", "name": "x", "st": "ok", "v": x}, {"n": 4, "tick": start + END, "rec": "close", "drained": True}]
         return [t + [{"n": 4, "tick": cut, "rec": "track", "phase": "last", "name": "i", "st": "ok", "v": 0}, {"n": 5, "tick": cut, "rec": "close", "drained": True}], u]
+    def arm(n, first, late):
+        return {"runs": n, "void": 0, "heldAtFirstRead": first, "heldAt100": late}
     k = series(100, mk(100, 161))
     cases = [("same over a split run", first_split(k, series(900, mk(900, 961, 2))), (None, [])),
              ("one tick late", first_split(k, series(900, mk(900, 962, 2))), (61, ["i"])),
              ("another track", first_split(k, series(900, mk(900, 961, 2, x=6))), (1, ["x"])),
+             ("a hand that reads as running play", pocket_verdict({"P": arm(3, 3, 3), "G": arm(3, 0, 3), "T": arm(3, 0, 3)}), 0),
+             ("a hand that a paused frame saw", pocket_verdict({"P": arm(3, 3, 3), "G": arm(3, 1, 3)}), 1),
+             ("a blind reading", pocket_verdict({"P": arm(3, 0, 0), "G": arm(3, 0, 0)}), 2),
+             ("no hand's arm", pocket_verdict({"P": arm(3, 3, 3)}), 0),
              ("not whole is unread", first_split(k, series(900, [mk(900, 961)[0][:-1]])), ("unread", []))]
     bad = [c for c in cases if c[1] != c[2]]
     for c in cases:
@@ -303,8 +309,22 @@ def pocket(W, a):
                      row["t_second"], row["at100"]["held"], row["at100"]["pocket"], row["rebuiltAfterDig"]), flush=True)
             with open(os.path.join(a.out, "pocket_rows_%s.json" % ("quiet" if a.quiet else "throttled")), "w", encoding="utf-8") as f:
                 json.dump(rows, f, indent=1)
-    print(json.dumps(pocket_summary(rows)))
-    return 0
+    out = pocket_summary(rows)
+    print(json.dumps(out))
+    return pocket_verdict(out)
+
+
+def pocket_verdict(out):
+    """0: each arm of the hands (G, T) reads as running play does (not held at the first read, held at +100), and P, the arm that must
+    differ, is held at its first read, so the reading is not blind. 1: a hand's arm is held at its first read. 2: cannot say."""
+    hands = [out[k] for k in ("G", "T") if k in out]
+    if not hands:
+        return 0
+    if any(o["heldAtFirstRead"] for o in hands):
+        return 1
+    p = out.get("P") or {}
+    good = p.get("runs") and p["heldAtFirstRead"] == p["runs"] and all(o["runs"] and o["heldAt100"] == o["runs"] for o in hands)
+    return 0 if good else 2
 
 
 def pocket_summary(rows):

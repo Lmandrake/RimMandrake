@@ -1,0 +1,7 @@
+# The generic hands of BRIDGE v2.0 (design/specs/2026-11-23-bridge-v2-hands/boundary.md). A scratch quicktest map; the proofs spawn and hurt animals and dig. No save is read or written.
+# A1: jawa/session, run_until, read_paths. A2: jawa/act_batch. A3: experiment A's pocket scene, the arms of the hands (G act and go, T act on a tick) against P.
+# The companion must hold this item's tools; an older one reads UNMEASURED.
+live-tier: flowworks
+live-proof A1: python.exe src/RimMandrake/bridgetools/prove_run_until.py < /dev/null
+live-proof A2: python.exe src/RimMandrake/bridgetools/prove_act_batch.py < /dev/null
+live-proof A3: python.exe design/specs/2026-11-23-bridge-v2/experiments/exp_a_state_after_act.py --scene pocket --arms P,G,T --trials 3 < /dev/null
