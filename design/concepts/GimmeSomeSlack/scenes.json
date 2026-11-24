@@ -410,19 +410,21 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_tap_theft",
-   "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
+   "entry_point_item": "RIMMANDRAKE_DECIDE_SLACK_WALK_BAR_CODE_PLAYS_NO_WEEK",
    "start": [
-    "quicktest colony with a neighbour settlement's powered line on the map; every faction's goodwill recorded (asserted)"
+    "quicktest colony with a neighbour's powered line on the map, our clamp on it and draining (asserted); no pawn of theirs on the map; every faction's goodwill recorded (asserted)"
    ],
-   "action": "clamp a tap; read power flow; bring one of their pawns into sight; read goodwill daily for two days; remove the clamp; read again",
-   "expect": "power flows from their net into ours only; their goodwill falls each day after sighting and stops after removal; every other faction's goodwill unchanged",
+   "action": "read power flow both ways; put the clamp's own count of draining ticks one day ahead, so that the mod's next event makes its daily call: once with nobody having seen it, once after a villager of theirs stood in sight of it, once with the clamp removed before the event; read every faction's goodwill around each call",
+   "expect": "power flows from their net into ours only; the daily call with the clamp seen costs that faction the per-day setting, and the call after the removal costs nothing; every other faction's goodwill unchanged",
    "control": {
     "case": "the same clamp with no witness",
     "expect": "no goodwill change",
     "rules_out": "a goodwill change from a gift, a raid or a quest in the same window"
    },
    "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
-   "hold": "immediate"
+   "hold": "immediate",
+   "shrunk": "two played days became one daily call, read three times",
+   "cheaper_why": "T_CORE decides the daily arithmetic and the sight rule offline; that the game's own event reaches them, finds the witness and moves only the victim's goodwill is live state, read in about 1,000 ticks"
   },
   {
    "id": "sc_four_looks",
@@ -477,13 +479,14 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_gravship",
-   "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
+   "entry_point_item": "RIMMANDRAKE_DECIDE_SLACK_WALK_BAR_CODE_PLAYS_NO_WEEK",
    "start": [
     "live minimal list, all DLC, a gravship with conduit, a battery and two consumers (asserted one net aboard)",
-    "two wall-bracket anchors aboard joined by a span (asserted linked)"
+    "two wall-bracket anchors aboard joined by a span (asserted linked)",
+    "a pole aboard strung to a pole left on the ground"
    ],
-   "action": "launch and land; read the span link and run the true-to-grid read on the landed ship; repeat the flight with keepWiresOnGravship off",
-   "expect": "switch on: the aboard span is still linked after landing and the true-to-grid read passes; switch off: the aboard span is down after landing (no link between the two anchors) and the true-to-grid read still passes",
+   "action": "launch and land; read the span link and run the true-to-grid read on the landed ship; repeat the flight with keepWiresOnGravship off; and once more with it off and the auto-link setting at its default (on) from take-off to the read",
+   "expect": "switch on: the aboard span is still linked after landing and the true-to-grid read passes; switch off: the aboard span is down after landing (no link between the two anchors) and the true-to-grid read still passes; switch off with auto-link on: the landing strings no span again; the link to the ground is gone and the battery and consumers are one net on every flight",
    "control": {
     "case": "the probe feeds the pre-launch cord set to the true-to-grid read against the landed map",
     "expect": "the read fails by name: cord ends on cells outside the landed net",
@@ -493,28 +496,28 @@
    "hold": "immediate"
   },
   {
-   "id": "sc_walk",
+   "id": "sc_save_reload_wire_down",
    "kind": "acceptance",
    "requirement": [
     "walk_scavenger_base"
    ],
    "staged_by": "script",
-   "entry_point": "src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py::scene_walk",
-   "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
+   "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_save_reload_wire_down",
+   "entry_point_item": "RIMMANDRAKE_DECIDE_SLACK_WALK_BAR_CODE_PLAYS_NO_WEEK",
+   "split_from": "sc_walk",
    "start": [
-    "his full list, a fresh colony (asserted mod list fingerprint)",
-    "colony vitals and pending incidents recorded",
-    "heap and texture MB recorded at start"
+    "the 12-mod tier gimmesomeslack; on its own plot a floor run from a charged battery to a lamp, and a pole fed by a second charged battery, strung to a far pole that feeds another lamp (asserted whole: span up, both lamps lit)"
    ],
-   "action": "play a week: wire a workshop, string to a mast, cut a floor cell and kill a mast, re-string, save with a wire down, reload, rewire a second room, then string overhead first and floor after; master off and on mid-game",
-   "expect": "after reload the true-to-grid and live/dead reads match before save; repeat and second order pass the same reads; each rewire's frame time under the 20 ms bar; master off: vanilla conduit art and no cord, master on: cords back and the true-to-grid read passes; heap and texture MB recorded at the end and save size on the mid-way and end saves; log clean",
+   "action": "save that whole game (the control); remove one floor cell and cut the span; read the cords, the floor ends, the poles and the lamps; save; load; make the same read; the proof's own save and load rows (SL1 to SL3, S7, S12d, the log budget) read the same load",
+   "expect": "after the load: the same cords as before the save, none joining two nets, none without a net, none in a wall; every floor end, span, fallen half and lamp reads live or dead as before the save; the save names no class of ours and the log is clean",
    "control": {
-    "case": "a reload from a save made before any cut",
-    "expect": "the comparison is refused as not mid-way",
+    "case": "a save made before any cut",
+    "expect": "the comparison is refused as not mid-way, and that save file holds none of the cut links that the wire-down save adds",
     "rules_out": "a reload with nothing cut passing for one with a wire down"
    },
-   "restore": "nothing restores in place: the walk is a fresh colony on its own saves, abandoned at scene-end with its saves kept as evidence; the mod list is left as it is (owner 2026-10-24)",
-   "hold": "immediate"
+   "restore": "a throwaway test map and its own saves; nothing restores in place",
+   "hold": "immediate",
+   "cheaper_why": "the mod's own load path and the game's map load decide this, so it needs one real save and one real load; they are the proof's one save and load, which run anyway. No offline test loads a RimWorld save. A week of play, a second order and the switch by hand add nothing that this reads; they are his walk"
   },
   {
    "id": "sc_shock_restring",

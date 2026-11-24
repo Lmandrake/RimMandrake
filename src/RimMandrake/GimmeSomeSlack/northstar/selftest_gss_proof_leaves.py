@@ -7,7 +7,7 @@ Oracles, each independent of the map's own key list:
   LIVE_RUN: the 157 row ids proof_all --live printed in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea; the log names
             S12d twice and 156 rows in its JSON). Each must cite a leaf or be a preflight SITE row.
   the code's own row lists, read by ast (no import, no game): validation.OFFLINE_IDS, validation.ROW_SHOWS and ROW_TOGGLES
-            keys, scene_rows.ROWS, gravship_scene.ROW_IDS.
+            keys, scene_rows.ROWS, gravship_scene.ROW_IDS, save_wire_down.ROWS, tap_goodwill.ROWS.
   the tree: every leaf has a row, or is in proof_leaves.OWED under a live item; every cited id is a leaf; every north-star id a row shows (validation.ROW_SHOWS) is a root
             of a leaf that row cites; the no-sharp-turn leaf exists, roots in never_taut_straight_cord, carries his words on
             the sheet (OWNER:1794107260790205247) and is cited by M2c_no_sharp_bends.
@@ -90,6 +90,7 @@ def code_rows():
     ids = list(literal(v, "OFFLINE_IDS")) + list(shows) + list(literal(v, "ROW_TOGGLES"))
     ids += literal(os.path.join(HERE, "scene_rows.py"), "ROWS")
     ids += list(literal(os.path.join(HERE, "gravship_scene.py"), "ROW_IDS").values())
+    ids += literal(os.path.join(HERE, "save_wire_down.py"), "ROWS") + literal(os.path.join(HERE, "tap_goodwill.py"), "ROWS")
     return list(dict.fromkeys(ids)), shows
 
 

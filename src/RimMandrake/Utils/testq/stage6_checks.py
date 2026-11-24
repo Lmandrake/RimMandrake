@@ -78,12 +78,14 @@ def _gss_proof(tid, spec):
 
 
 def _gss_gravship(tid, spec):
-    m = re.search(r"gravship_(on|off)_", str(spec.get("entry") or ""))
-    if not m:
+    e = str(spec.get("entry") or "")
+    m = re.search(r"gravship_(on|off)_", e)
+    mode = "off_autolink" if e.startswith("GS3_") else m.group(1) if m else None     # gravship_scene.ROW_IDS
+    if not mode:
         return None
-    return {"key": "gss_gravship:" + m.group(1), "read": "exit012", "tier": spec.get("tier") or "gimmesomeslack",
+    return {"key": "gss_gravship:" + mode, "read": "exit012", "tier": spec.get("tier") or "gimmesomeslack",
             "build": "release", "site": "game",
-            "steps": ["python.exe -u %snorthstar/gravship_scene.py %s --out {wout}" % (GSS, m.group(1))]}
+            "steps": ["python.exe -u %snorthstar/gravship_scene.py %s --out {wout}" % (GSS, mode)]}
 
 
 def _ek_scenes(tid, spec):

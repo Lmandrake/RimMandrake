@@ -115,6 +115,10 @@ ROW_LEAVES = dict(_MATRIX, **{
     "M19_tap_drains_one_way": ["tap_steals_and_costs_goodwill"],
     "M19n_taps_off_control": ["tap_steals_and_costs_goodwill", "settings_switch_cleanly"],
     "M19m_tap_mixed_net_connects_own_conduit": ["tap_steals_and_costs_goodwill", "drawing_true_to_grid"],
+    # sc_tap_theft: one daily call of the goodwill code (tap_goodwill.ROWS, 2026-11-24)
+    "PT_daily_call_unseen_costs_nothing": ["tap_steals_and_costs_goodwill"],
+    "PT_daily_call_seen_costs_goodwill": ["tap_steals_and_costs_goodwill"],
+    "PT_daily_call_removed_costs_nothing": ["tap_steals_and_costs_goodwill"],
     "M17_owner_change_cuts_cross_owner_wires": ["owner_change_coils_wires"],
     "M20a_fallen_wire_shock_flip": ["fallen_wire_shocks_crossers", "settings_switch_cleanly"],
     "M20b_fallen_wire_knockback_flip": ["fallen_wire_shocks_crossers", "settings_switch_cleanly"],
@@ -190,6 +194,10 @@ ROW_LEAVES = dict(_MATRIX, **{
     "SL1_save_landed_new_file_only": ["walk_scavenger_base"],
     "SL2_save_names_no_class_of_ours": ["walk_scavenger_base"],
     "SL3_after_load_census_equal": ["walk_scavenger_base", "drawing_true_to_grid"],
+    # sc_save_reload_wire_down (save_wire_down.ROWS, 2026-11-24)
+    "WD_save_before_cut_refused": ["walk_scavenger_base"],
+    "WD_reload_true_to_grid": ["walk_scavenger_base"],
+    "WD_reload_live_dead_ends_equal": ["walk_scavenger_base"],
     "Z_log_budget": ["walk_scavenger_base"],
     "SC_statics_clear_between_games": ["statics_clear_between_games"],
     # offline tier (validation.OFFLINE_IDS)
@@ -205,6 +213,8 @@ ROW_LEAVES = dict(_MATRIX, **{
     # gravship_scene on/off (A2/A3) and the offline hose scan
     "GS1_keep_wires_on_gravship_on_aboard_span_flies": ["gravship_keeps_connections"],
     "GS1_keep_wires_on_gravship_off_aboard_span_taken_down": ["gravship_keeps_connections"],
+    "GS2_prelaunch_cords_fail_on_landed_map": ["gravship_keeps_connections"],
+    "GS3_auto_link_on_keep_wires_off_span_stays_down": ["gravship_keeps_connections"],
     "selftest_gss_no_hose": ["no_hose_in_gss"],
 })
 

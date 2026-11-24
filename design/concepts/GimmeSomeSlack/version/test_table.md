@@ -74,7 +74,7 @@ Generated 2026-11-23T18:16:12-08:00 from `test_table.json` (the record; this is 
 | `owner_change_coils_wires` | tree | 6 | sc_owner_change | - | 3 | all |
 | `statics_clear_between_games` | tree | 6 | sc_statics_new_game | T_STATICS_CENSUS | 1 | all |
 | `no_hose_in_gss` | tree | 4-5 | T_NO_HOSE | - | 0 | all |
-| `walk_scavenger_base` | tree | 8 | sc_walk, LOOK_STAGE8 | T_H_PLAYTEST_RUNNER, sc_cords_under_items | 6 | some |
+| `walk_scavenger_base` | tree | 8 | sc_save_reload_wire_down, LOOK_STAGE8 | T_H_PLAYTEST_RUNNER, T_H_SMALL_SCENES, sc_cords_under_items | 6 | some |
 
 ## Tests (offline and scenes; the 170 proof rows are in the JSON)
 
@@ -100,6 +100,7 @@ Generated 2026-11-23T18:16:12-08:00 from `test_table.json` (the record; this is 
 | `T_H_EXPLODE_PARSE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_explode_parse.py` | PASS rc=0 1.4s | harness: the explode probe's parsing against production AerialMath |
 | `T_H_NO_TWO_ALIKE_SHORT` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_two_alike_short.py` | PASS rc=0 0.03s | harness: SC_no_two_cords_alike exempts cords under 3 cells |
 | `T_H_PLAYTEST_RUNNER` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py` | PASS rc=0 0.07s | harness: the walk launcher's recipe expansion |
+| `T_H_SMALL_SCENES` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_small_scenes.py` | PASS | harness: save_wire_down, tap_goodwill and gravship_scene against a fake game; each planted fault red, the shipped behaviour green; sc_walk is gone and its seven rows are kept |
 | `T_H_PROOF_DRIVERS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py` | PASS rc=0 0.14s | harness: the proof drivers' false-pass fixes |
 | `T_H_REVIEW_LEFTOVERS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py` | PASS rc=0 0.4s | harness: post-approval proof-harness findings |
 | `T_H_WEAKCLOSE_GUARDS` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_weakclose_guards.py` | PASS rc=0 0.02s | harness: source-shape guards for Verse-bound findings |
@@ -137,11 +138,11 @@ Generated 2026-11-23T18:16:12-08:00 from `test_table.json` (the record; this is 
 | `sc_floor_end_shock` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_floor_end_shock | entry exists | hauler 1, hauler 4, the visitor and constructor B shocked; hauler 1 shocked again with the aerial master off; with maxSparkingEnds 1 both live-end haulers shock |
 | `sc_shock_reach` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_shock_reach | entry exists | the default reads All; All: all three haulers shocked; Only downed lines: the fallen-wire and deck-cord haulers shocked, the floor-end hauler not; None: none sh |
 | `sc_restring` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_restring | entry exists | alert lists both the cut anchor and the grounded one; each jump centres the camera on the listed anchor's cell; the job runs at the cut anchor; after it the spa |
-| `sc_tap_theft` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_tap_theft | entry exists | power flows from their net into ours only; their goodwill falls each day after sighting and stops after removal; every other faction's goodwill unchanged |
+| `sc_tap_theft` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_tap_theft | entry exists | power flows from their net into ours only; the daily call with the clamp seen costs that faction the per-day setting, and the call after the removal costs nothi |
 | `sc_four_looks` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_four_looks | entry exists | each run's members report one style, and the four runs' cord texture paths and junction defs all differ; a judge agent given the four captures in grayscale (art |
 | `sc_settings` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_settings | entry exists | each feature's observable state changes with its switch and returns on flip-back, no restart: drip loops drawn or not at a mast; slideUnder off makes the dual-p |
 | `sc_gravship` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_gravship | entry exists | switch on: the aboard span is still linked after landing and the true-to-grid read passes; switch off: the aboard span is down after landing (no link between th |
-| `sc_walk` | 6 | live_full | `src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py` :: scene_walk | entry exists | after reload the true-to-grid and live/dead reads match before save; repeat and second order pass the same reads; each rewire's frame time under the 20 ms bar;  |
+| `sc_save_reload_wire_down` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_save_reload_wire_down | entry exists | after a load of a save with a wire down, the cords, the floor ends, the span, the fallen halves and the lamps read as before the save and true to the grid |
 | `sc_shock_restring` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_shock_restring | entry exists | the hauler is shocked crossing the sparking end; the re-stringer is not; after the re-string power flows and no one is shocked |
 | `sc_owner_change` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_owner_change | entry exists | switch on: no link from the middle mast to either mast of ours, the sweep's cut count equals the two links cut, the message shown, the middle mast unpowered by  |
 | `sc_fuel_ignition` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_fuel_ignition | entry exists | live and switch on: fire on the fallen wire's puddle cell and none on the floor end's puddle cell; switch off: no fire; wire dead: no fire |

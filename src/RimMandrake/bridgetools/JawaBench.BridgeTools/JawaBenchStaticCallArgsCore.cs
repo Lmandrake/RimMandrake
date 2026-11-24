@@ -11,6 +11,7 @@
 
 using System;
 using System.Globalization;
+using System.Reflection;
 
 namespace JawaBench.BridgeTools
 {
@@ -53,6 +54,26 @@ namespace JawaBench.BridgeTools
             if (pt == typeof(double)) return double.Parse(a, CultureInfo.InvariantCulture);
             if (pt == typeof(decimal)) return decimal.Parse(a, CultureInfo.InvariantCulture);
             throw new ArgumentException("not a scalar this core coerces: " + pt.Name);
+        }
+
+        /// <summary>jawa/comp_set: write one scalar instance field (private and inherited ones too) and read it back.
+        /// Returns null when written, else the refusal; a refusal writes nothing.</summary>
+        public static string SetField(object target, string member, string text, out object before, out object after)
+        {
+            before = after = null;
+            const BindingFlags F = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
+            FieldInfo fi = null;
+            for (Type t = target.GetType(); t != null && fi == null; t = t.BaseType) fi = t.GetField(member ?? "", F);
+            if (fi == null) return "No instance field '" + member + "' on " + target.GetType().FullName + ".";
+            if (fi.IsInitOnly) return "Field '" + member + "' is readonly.";
+            if (!Handles(fi.FieldType)) return "Field '" + member + "' is a " + fi.FieldType.Name + ", not a scalar.";
+            object v;
+            try { v = Coerce(fi.FieldType, (text ?? "").Trim()); }
+            catch (Exception e) { return "Cannot coerce '" + text + "' to " + fi.FieldType.Name + ": " + e.Message; }
+            before = fi.GetValue(target);
+            fi.SetValue(target, v);
+            after = fi.GetValue(target);
+            return null;
         }
     }
 }

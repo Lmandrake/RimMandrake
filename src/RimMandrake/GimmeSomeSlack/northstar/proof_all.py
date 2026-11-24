@@ -72,7 +72,7 @@ import validation as V  # noqa: E402
 SCRATCH_WIN = rm_win("scratch", "gss_proof")
 SCRATCH_POSIX = rm_str("scratch", "gss_proof")
 SPEC_NAME = "scenes_design.json"
-BLOCKS = ["matrix", "core", "aerial", "style", "scenes", "save_load", "d4_save", "statics"]   # hose/maze/relay/carry/style_hose moved to FlowWorks/northstar/proof_hose.py (hose port)
+BLOCKS = ["matrix", "core", "aerial", "style", "scenes", "save_load", "d4_save", "tap_goodwill", "statics"]   # hose/maze/relay/carry/style_hose moved to FlowWorks/northstar/proof_hose.py (hose port)
 PARK = (125, 165)                     # colonists moved here, out of the matrix REGION and every site
 
 # The row ids a full live run emits, per block, for the required-check manifest (the walk's `checkout:` header names
@@ -83,9 +83,12 @@ PARK = (125, 165)                     # colonists moved here, out of the matrix 
 if os.path.dirname(os.path.abspath(__file__)) not in sys.path:   # a caller that loads this file by path (modcheck)
     sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
 SCENE_ROWS = __import__("scene_rows").ROWS
+import save_wire_down as WD  # noqa: E402  (sc_save_reload_wire_down: its plot and reads ride on the one save and load)
+import tap_goodwill as TG  # noqa: E402  (sc_tap_theft: one daily call of the goodwill code)
 DECLARED_ROWS = {
     "scenes": SCENE_ROWS,
     "statics": ["SC_statics_clear_between_games"],
+    "tap_goodwill": list(TG.ROWS),
     "preflight": ["P1_fresh_map", "P2_tier_running_startup_log_clean", "P3_probes_site_pinned_region_empty"],
     "core": ["M1_conduit_transparent", "M1_cords_exist", "M1_node_census", "M1c_end_pieces", "M2b_no_vertex_unwalkable", "M2c_no_sharp_bends",
              "M1e_machine_on_inwall_run_draws_a_cord", "M1f_machine_on_hidden_conduit_draws_none",
@@ -112,7 +115,7 @@ DECLARED_ROWS = {
               "S9d_restyle_and_materials", "S10_legacy_default_materials", "S11_lamp_master_off_vanilla", "S12a_D1_legacy_run_one_look", "S12b_D7_bulk_spawn_cost", "S12e_batched_links_merge"],
     "session": ["D1_zero_tick_rereads_same", "D2_fresh_builder_same", "Z_log_budget"],
     "save_load": ["SL1_save_landed_new_file_only", "SL2_save_names_no_class_of_ours", "SL3_after_load_census_equal",
-                  "S12d_D4_pending_queue_save"],
+                  "S12d_D4_pending_queue_save"] + WD.ROWS,
 }
 
 
@@ -789,16 +792,40 @@ class Proof(object):
 
     # ------------------------------------------------------------------ 4. the one save
     def save_load(self):
+        """_save_load, with every row of sc_save_reload_wire_down written whatever stopped it."""
+        try:
+            self._save_load()
+        finally:
+            for rid in WD.ROWS:
+                if not any(r["id"] == rid for r in self.rows):
+                    self.row("save_load", rid, "UNMEASURED", "HARNESS", "the save and load stopped before its read: see SL1 to SL3")
+
+    def tap_goodwill(self):
+        """sc_tap_theft's goodwill rows, after the saves (it re-strings the cut spans that the saves keep)."""
+        rows = []
+        TG.run(VA.A(), V, rows, VA)
+        self.take("tap_goodwill", {"rows": rows})
+
+    def _save_load(self):
         """The ONE save + load. Hoses (H10, R4, SL4) moved with the hose to FlowWorks/northstar/proof_hose.py (hose port)."""
         B = self.B
         notes = {}
         # ---- staging (ticks allowed here; nothing is read for the comparison until the staging is done)
+        name = self.args.save_name or "RM_gss_proof_%s" % time.strftime("%Y%m%d%H%M%S")
+        # sc_save_reload_wire_down: its plot whole, read and saved (the control), then its floor cell and span cut
+        WD.stage(B, V)
+        wd_uncut = WD.read(B)
+        B.call("rimworld/save_game", saveName=name + "_uncut")
+        V._wait_saved(name + "_uncut")
         ca = B.ap("census")                           # M16 asserted a CUT span and its two fallen halves survive
         apos = VA.anchors_by_pos(ca)
         if VA.M2 in apos and VA.M3 in apos and not any(l["state"] == "Cut" for a in ca.get("anchors") or [] for l in a["links"]):
             notes["aerialCut"] = B.ap("cut:%d,%d" % (apos[VA.M2]["id"], apos[VA.M3]["id"]))
             B.ticks(3)
             B.ap("poll")
+        # after the M2-M3 cut, which asks for a map with no cut span yet
+        notes["wireDownCut"] = WD.wire_down(B)
+        wd_before = WD.read(B)
         VS._cst(B)                                    # stage-2 runs processed (2 ticks)
         # ---- the BEFORE read: zero ticks from here to the save
         B.call("rimworld/frame_cell_rect", x=V.SITE[0], z=V.SITE[1] - 6, width=V.SITE[2], height=V.SITE[3] + 6, paddingCells=1)
@@ -808,7 +835,6 @@ class Proof(object):
         aer_a = B.ap("census")
         sty_a = B.ap("styles")
         s9_a = B.ap("cstyles:%d,%d,%d,%d" % VS.SITE2)
-        name = self.args.save_name or "RM_gss_proof_%s" % time.strftime("%Y%m%d%H%M%S")
         self.res["save"] = name + ".rws"
         before = V._saves_stat()
         if name + ".rws" in before:
@@ -828,6 +854,12 @@ class Proof(object):
             return
         with open(os.path.join(V.SAVES, name + ".rws"), "rb") as f:
             blob = f.read()
+        try:
+            with open(os.path.join(V.SAVES, name + "_uncut.rws"), "rb") as f:
+                uncut_blob = f.read()
+        except OSError:
+            uncut_blob = None
+        self.row("save_load", WD.ROWS[0], *WD.control_row(wd_uncut, uncut_blob, blob))
         # SL2 = M9a (no "GimmeSomeSlack" anywhere) U M16b (no aerial MapComponent) + the legacy namespace (the rename:
         # nothing may still be written as MessyConduit). One class of ours MAY legitimately be in a save: the re-string
         # JobDriver (Aerial/RestringJob.cs), whose ExposeData keeps a colonist's work progress when saved mid-job -- vanilla
@@ -889,6 +921,8 @@ class Proof(object):
                   "sizes": {"aerialLinks": len(parts["aerial(M16)"][0]["links"]), "aerialFallen": len(parts["aerial(M16)"][0]["fallen"]),
                             "masts": len(parts["mastStyles(S7)"][0]), "runCells": len(parts["runStyles(S9e)"][0][0])},
                   "spawned": cords_b.get("spawnedConduitTexture")})
+        for r in WD.reload_rows(wd_before, WD.read_after_load(B, wd_before)):
+            self.row("save_load", *r)
         self.res["save_load_notes"] = notes
 
     # ------------------------------------------------------------------ 4b. S12d: a SECOND save, after SL3
@@ -1072,6 +1106,7 @@ class Proof(object):
             self.block("determinism", self.determinism)
         self.block("save_load", self.save_load)
         self.block("d4_save", self.d4_save)
+        self.block("tap_goodwill", self.tap_goodwill)
         self.block("log_budget", self.log_budget)
         self.block("statics", self.statics)
 

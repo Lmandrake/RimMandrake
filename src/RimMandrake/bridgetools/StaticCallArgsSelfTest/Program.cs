@@ -8,6 +8,18 @@ namespace JawaBench.BridgeTools
 {
     internal enum Probe { Alpha, Beta }
 
+    // jawa/comp_set writes one scalar field of a live comp (RIMMANDRAKE_DECIDE_SLACK_WALK_BAR_CODE_PLAYS_NO_WEEK)
+    internal class Base0 { private int hidden = 3; public int Hidden() { return hidden; } }
+    internal class Target : Base0
+    {
+        public int ticks = 12;
+        private bool on = false;
+        public readonly int fixedOne = 1;
+        public const int Never = 5;
+        public int[] list = new int[0];
+        public bool On() { return on; }
+    }
+
     internal static class Program
     {
         static int n;
@@ -76,6 +88,25 @@ namespace JawaBench.BridgeTools
             // ---------------- not ours: the game-typed cases stay in the tool
             U("handles.not_object", !C.Handles(typeof(object)));
             U("handles.not_array", !C.Handles(typeof(int[])));
+
+            // ---------------- SetField (jawa/comp_set): the write reads back, a wrong ask is refused and writes nothing
+            var t = new Target();
+            string e1 = C.SetField(t, "ticks", "60000", out object was, out object now);
+            U("set.public_int", e1 == null && (int)was == 12 && (int)now == 60000 && t.ticks == 60000, e1);
+            e1 = C.SetField(t, "on", "true", out was, out now);
+            U("set.private_bool", e1 == null && t.On(), e1);
+            e1 = C.SetField(t, "hidden", "9", out was, out now);
+            U("set.private_of_base", e1 == null && t.Hidden() == 9, e1);
+            e1 = C.SetField(t, "nope", "1", out was, out now);
+            U("set.missing_member_refused", e1 != null && e1.Contains("nope"), e1);
+            e1 = C.SetField(t, "list", "1", out was, out now);
+            U("set.not_scalar_refused", e1 != null && t.list.Length == 0, e1);
+            e1 = C.SetField(t, "ticks", "12x", out was, out now);
+            U("set.bad_text_refused_unwritten", e1 != null && t.ticks == 60000, e1);
+            e1 = C.SetField(t, "fixedOne", "7", out was, out now);
+            U("set.readonly_refused", e1 != null && t.fixedOne == 1, e1);
+            e1 = C.SetField(t, "Never", "7", out was, out now);
+            U("set.const_refused", e1 != null, e1);
 
             Console.WriteLine("U-count " + n);
             return 0;

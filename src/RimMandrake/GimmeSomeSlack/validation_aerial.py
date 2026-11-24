@@ -1458,7 +1458,9 @@ def theft_stopped_status(before, goodwill, charged):
     return "PASS" if not before["clampLeft"] and values[2] == values[0] and values[3] == values[1] else "FAIL"
 
 
-def theft_catch(B, rows, res):
+def theft_stage(B, rows, res, control_row, clear_clamps=True):
+    """The theft scene of --theft catch and of proof_all's tap_goodwill block: a victim battery grid, our clamp biting it, no victim pawn
+    in sight. clear_clamps False keeps the clamps of other blocks (a 300-tick window charges none of them). -> {scene, faction, clamp, batteries, built, goodwill0}, or None with `control_row` written UNMEASURED SITE."""
     gi = B.call("jawa/map_info")
     sx, sz = res.get("origin") or (20, 20)       # a corner, away from the quicktest colonists at the map centre
     S = _pt_scene(sx, sz)
@@ -1474,12 +1476,12 @@ def theft_catch(B, rows, res):
     vic = _pt_victim(facs)
     res["victim"] = vic and {k: vic.get(k) for k in ("defName", "name", "goodwill", "hostile")}
     if not vic:
-        V.row(rows, "PT_A2_letter", "UNMEASURED", "SITE", "no non-hostile, visible, non-player faction in this world")
-        return
+        V.row(rows, control_row, "UNMEASURED", "SITE", "no non-hostile, visible, non-player faction in this world")
+        return None
     nf = vic["defName"]
     # every clamp already on the map goes first: live 2026-10-21 a clamp left at an earlier --origin was still draining the
     # same faction (and caught), so the global goodwillCharged counter read -4 for "one day" -- two clamps x 2, no mod bug
-    old = B.call("jawa/list_things", defName="RM_PowerTapClamp", rect="0,0,%d,%d" % (gi.get("sizeX") or 250, gi.get("sizeZ") or 250),
+    old = [] if not clear_clamps else B.call("jawa/list_things", defName="RM_PowerTapClamp", rect="0,0,%d,%d" % (gi.get("sizeX") or 250, gi.get("sizeZ") or 250),
                  limit=50).get("things") or []
     for t in old:
         B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t["x"], t["z"]), categories="All")
@@ -1512,8 +1514,30 @@ def theft_catch(B, rows, res):
             break
         B.ticks(250)
     if near:
-        V.row(rows, "PT_A2_drain_no_witness_no_letter", "UNMEASURED", "SITE", {"victimPawnsNearClamp": near, "fix": "--origin elsewhere"})
+        V.row(rows, control_row, "UNMEASURED", "SITE", {"victimPawnsNearClamp": near, "fix": "--origin elsewhere"})
+        return None
+    return {"scene": S, "faction": nf, "clamp": clamp, "batteries": bats, "built": [x.get("survived") for x in b], "goodwill0": gw0}
+
+
+def theft_witness(B, res, S, nf):
+    """Two villagers of the victim faction 5 cells from the clamp, held there by a defend lord. -> their ids."""
+    wit = B.call("jawa/spawn_pawn", kindDef="Villager", x=S["witness"][0], z=S["witness"][1], faction=nf, count=2)
+    wids = [p.get("id") or p.get("thingId") for p in wit.get("pawns") or []]
+    # a lordless visitor's first job is Goto the map edge (live 2026-10-21: out of 12-cell sight before the next 250-tick
+    # drain event, so nobody ever caught it); a defend lord on the witness cell keeps them looking at the clamp
+    lord = B.call("jawa/lord_defend_spawn", pawns=",".join(wids), point="%d,%d" % S["witness"], wanderRadius=2.0,
+                  defendRadius=3.0, addFleeToil=False) if wids else {}
+    res["witnessLord"] = {k: lord.get(k) for k in ("success", "message", "error")}
+    return wids
+
+
+def theft_catch(B, rows, res):
+    st = theft_stage(B, rows, res, "PT_A2_drain_no_witness_no_letter")
+    if st is None:
+        if not res.get("victim"):
+            rows[-1]["id"] = "PT_A2_letter"          # the row the catch phase owes (THEFT_PHASE_ROW)
         return
+    S, nf, clamp, bats, gw0 = st["scene"], st["faction"], st["clamp"], st["batteries"], st["goodwill0"]
     cc0 = _pt_stat(B, "caughtCount")
     # control first: draining with NO witness on the map must not catch (the letter needs a pawn of THEIRS that sees it)
     B.ticks(300)
@@ -1524,14 +1548,8 @@ def theft_catch(B, rows, res):
     ctrl_status = counter_status(cc0, cc_ctrl)
     ctrl_status = "UNMEASURED" if not tap or ctrl_status == "UNMEASURED" else "PASS" if (tap.get("lastStolenW") or 0) > 0 and ctrl_status == "PASS" else "FAIL"
     V.row(rows, "PT_A2_drain_no_witness_no_letter", ctrl_status, "HARNESS" if ctrl_status == "UNMEASURED" else "MOD",
-          {"tap": tap, "caughtCount": [cc0, cc_ctrl], "built": [x.get("survived") for x in b], "batteries": bats})
-    wit = B.call("jawa/spawn_pawn", kindDef="Villager", x=S["witness"][0], z=S["witness"][1], faction=nf, count=2)
-    wids = [p.get("id") or p.get("thingId") for p in wit.get("pawns") or []]
-    # a lordless visitor's first job is Goto the map edge (live 2026-10-21: out of 12-cell sight before the next 250-tick
-    # drain event, so nobody ever caught it); a defend lord on the witness cell keeps them looking at the clamp
-    lord = B.call("jawa/lord_defend_spawn", pawns=",".join(wids), point="%d,%d" % S["witness"], wanderRadius=2.0,
-                  defendRadius=3.0, addFleeToil=False) if wids else {}
-    res["witnessLord"] = {k: lord.get(k) for k in ("success", "message", "error")}
+          {"tap": tap, "caughtCount": [cc0, cc_ctrl], "built": st["built"], "batteries": bats})
+    wids = theft_witness(B, res, S, nf)
     B.ticks(300)
     cc1 = _pt_stat(B, "caughtCount")
     letters = [l for l in B.call("jawa/letter_list").get("letters") or [] if "Power theft" in json.dumps(l)]

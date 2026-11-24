@@ -71,6 +71,7 @@ def stub_blocks(P, boom=None):
     P.log_budget = lb
     P.save_load = lambda: P.row("save_load", "SL1_x", "PASS", "MOD", {})
     P.d4_save = lambda: None
+    P.tap_goodwill = lambda: None
     P.scenes = lambda: None
     P.statics = lambda: None
 
@@ -442,6 +443,29 @@ got, P, calls = d4_case(S7OK, "FAIL")
 check("9 control: a FAIL verdict stays FAIL", [r["status"] for r in got] == ["FAIL"], str(got))
 check("9 declared: S12d is a declared save_load row", "S12d_D4_pending_queue_save" in PA.DECLARED_ROWS["save_load"] and "d4_save" in PA.BLOCKS)
 
+
+
+# 9b. save_load writes every row of sc_save_reload_wire_down whatever stopped it, and never a PASS for a read it did not make
+def wd_case(body):
+    P = PA.Proof(args(None))
+    P.out_path = os.devnull
+    P._save_load = lambda: body(P)
+    try:
+        P.save_load()
+    except RuntimeError:
+        pass
+    return {r["id"]: r["status"] for r in P.rows}
+
+
+def wd_raise(P):
+    raise RuntimeError("the save never came")
+
+
+check("9b a save that stops early leaves the three rows UNMEASURED", wd_case(lambda P: None) == {r: "UNMEASURED" for r in PA.WD.ROWS})
+check("9b a save that raises leaves the three rows UNMEASURED", wd_case(wd_raise) == {r: "UNMEASURED" for r in PA.WD.ROWS})
+check("9b control: a row the read made is kept", wd_case(lambda P: P.row("save_load", PA.WD.ROWS[0], "PASS", "HARNESS", {}))[PA.WD.ROWS[0]] == "PASS")
+check("9b declared: the new rows are declared rows", set(PA.WD.ROWS) <= set(PA.DECLARED_ROWS["save_load"]) and PA.DECLARED_ROWS["tap_goodwill"] == PA.TG.ROWS
+      and PA.BLOCKS.index("tap_goodwill") > PA.BLOCKS.index("d4_save"))
 
 
 # 10. D2 rejects a stale EXTRA edge (GPT deep review 2026-10-22 #7: the probe reports it, the verdict ignored it)

@@ -2294,8 +2294,14 @@ def scene_restring(B, V, rows):
     return _scene_row("sc_restring", B, V, rows)
 
 def scene_tap_theft(B, V, rows):
-    """scenes.json sc_tap_theft: its rows of the one dense live proof decide it (scene_verdict)."""
+    """scenes.json sc_tap_theft: its rows of the one dense live proof decide it (scene_verdict): the net rows M19* and the goodwill rows
+    of northstar/tap_goodwill.py (proof_all's block tap_goodwill; needs the companion's jawa/comp_set)."""
     return _scene_row("sc_tap_theft", B, V, rows)
+
+def scene_save_reload_wire_down(B, V, rows):
+    """scenes.json sc_save_reload_wire_down (bar walk_scavenger_base): the proof's one save and load with a wire down. Its rows: the seven
+    the old sc_walk was read from, and northstar/save_wire_down.ROWS (scene_verdict). Offline: northstar/selftest_gss_small_scenes.py."""
+    return _scene_row("sc_save_reload_wire_down", B, V, rows)
 
 def scene_four_looks(B, V, rows):
     """scenes.json sc_four_looks: its rows of the one dense live proof decide it (scene_verdict)."""
@@ -2306,7 +2312,7 @@ def scene_settings(B, V, rows):
     return _scene_row("sc_settings", B, V, rows)
 
 def scene_gravship(B, V, rows):
-    """scenes.json sc_gravship: its rows of the one dense live proof decide it (scene_verdict)."""
+    """scenes.json sc_gravship: its proof rows and the three flights of northstar/gravship_scene.py (on, off, off_autolink) decide it."""
     return _scene_row("sc_gravship", B, V, rows)
 
 def scene_shock_restring(B, V, rows):
@@ -2403,6 +2409,10 @@ def scenes_from(path):
     import json as _json
     res = _json.load(open(path))
     rows = list(res.get("rows") or [])
+    # a shared session keeps its S7 re-read in d4_save_notes (proof_all.d4_save): a row-shaped note is that row
+    have = {r["id"] for r in rows}
+    rows += [r for k, v in res.items() if k.endswith("_notes") and isinstance(v, list) for r in v
+             if isinstance(r, dict) and r.get("status") and r.get("id") and r["id"] not in have]
     # the offline gate's rows (O1..O8) as proof_all recorded them; a live row of the same id wins
     # (RIMMANDRAKE_CARRY_GSS_GATE_ROWS_SCENES_NEVER_SAW)
     gate = ((res.get("offline") or {}).get("steps") or {}).get("validation_offline") or {}

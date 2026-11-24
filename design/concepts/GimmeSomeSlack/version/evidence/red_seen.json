@@ -26,30 +26,30 @@
   "test_blob": "130d8579e10c3a3de37bae17294cbd7944651256"
  },
  "T_LINE_RESTYLE_OFFLINE": {
-  "at": "2026-11-23T12:08:23Z",
+  "at": "2026-11-24T11:01:23Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
   "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LineRestyleChecks.cs",
-  "last": "5743/5755 checks passed",
-  "patch": "--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\n@@ -52,7 +52,7 @@\n         /// mod's thing (a FlowWorks pipe pole, a pipe) is never one: each mod restyles only its own (owner 2026-11-22).\n         /// ConduitStylePicker builds its member set from this (bar restyle_whole_line, T_LINE_RESTYLE_OFFLINE).</summary>\n         public static bool IsRunMemberDef(string defName, bool stylable) =>\n-            defName != null && (Array.IndexOf(AerialStyles.StyledDefs, defName) >= 0 || (stylable && (IsConduitDef(defName) || IsSwitchDef(defName))));\n+            defName != null && (Array.IndexOf(AerialStyles.StyledDefs, defName) >= 0 || defName.EndsWith(\"Pole\") || (stylable && (IsConduitDef(defName) || IsSwitchDef(defName))));\n \n         /// <summary>GPT pre-release D8: a conduit GSS draws as cords that is not ours (another mod's conduit with no style\n         /// field) BRIDGES: the flood walks through it, but it is never a member.</summary>\n",
+  "last": "5828/5841 checks passed",
+  "patch": "--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\n@@ -234,9 +234,7 @@\n                 for (int i = 0; i < l.Count; i++)\n                     if (l[i] != t && joins(l[i])) yield return l[i];\n             }\n-            if (spans != null)\n-                foreach ((T other, bool up) in spans)\n-                    if (up && other != null) yield return other;\n+            // FAULT: the overhead spans are not followed, so the flood stops at a pole\n         }\n \n         /// <summary>The floor lamps hooked to a run (RM_MapComponent_ConduitRuns.LampsOf is this over the map): a lamp's power\n",
   "patch_files": [
    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs"
   ],
-  "patch_sha": "e40a58f9529cdcad",
+  "patch_sha": "a8c83ea42ee12e35",
   "rc": 1,
-  "test_blob": "f8678fe66ef6183f6694ce2138c06a59689e5aaf"
+  "test_blob": "4c70b42475dbd09eb998b4910012de011b90fa79"
  },
  "T_LOOK_ICONS_OFFLINE": {
-  "at": "2026-11-23T14:48:26Z",
+  "at": "2026-11-24T11:09:51Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --looks-only",
   "file": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LookIconChecks.cs",
-  "last": "49/50 checks passed (look icons + wall lamp looks only)",
-  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\nindex 0bab3764e4..f034dad4ed 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs\n@@ -98,7 +98,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial\n         public static string LookIconPath(string key)\n         {\n             if (key == Key(\"Modern\", Multi)) return LookIconDir + \"Modern\";\n-            return TryParseKey(key, out string look, out _) ? LookIconDir + look : null;\n+            return TryParseKey(key, out string look, out _) ? LookIconDir + key : null;   // PLANTED: a colour entry on a picture of its own\n         }\n \n         // ------------------------------------------------------------------ naming\n",
+  "last": "62/65 checks passed (look icons + wall lamp looks only)",
+  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs\nindex 701b9722d7..d7aa23e586 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs\n@@ -182,7 +182,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial\n         {\n             string iconPath = ConduitStyles.LookIconPath(key);\n             Texture2D lookIcon = iconPath == null ? null : RimMandrake.GimmeSomeSlack.SafeTex.Get(iconPath, false);\n-            if (lookIcon != null) return lookIcon;\n+            // PLANTED: the look icon is never returned\n             if (!IsConduit(d))\n             {\n                 ThingStyleDef s = StyleFor(d, key);\n",
   "patch_files": [
-   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs"
+   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStylePicker.cs"
   ],
-  "patch_sha": "0a71a064d52db8f4",
+  "patch_sha": "1d4adc3d768a97a8",
   "rc": 1,
-  "test_blob": "df83a37310bd8a184b05568f1243eda24b802ed3"
+  "test_blob": "6c1c2c116a68618a7e0a358f4c608fb599c1bea7"
  },
  "T_LOOK_SCENES_FAKE_GAME": {
   "at": "2026-11-23T23:10:48Z",

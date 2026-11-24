@@ -2,15 +2,18 @@
 """gravship_scene.py -- does a span strung on a gravship stay up through the flight, and do its cords come with it? (sc_gravship,
 keepWiresOnGravship; a live launch on a scratch quicktest, the origin map is destroyed.)
 
-    python.exe src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py on|off [--shot NAME] [--out RESULT.json]
+    python.exe src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py on|off|off_autolink [--shot NAME] [--out RESULT.json]
 
-Flies bridgetools/prove_gravship.py's own ship (its recipe knows every engine gate), with two masts, a floor run and a lamp staged on
-the pad, and one mast left on the ground strung to the ship. Reads, after landing: the aboard span up (on) or taken down (off), the
-ground span gone either way, the cords laid on the new map within the new map's nets. Exit 0/1/2: PASS/FAIL/UNMEASURED.
---out writes the verdict as one row of a result JSON (script/started/mode/rows, the shape mod_completion.py folds):
-GS1_keep_wires_on_gravship_on_aboard_span_flies or GS1_keep_wires_on_gravship_off_aboard_span_taken_down, class MOD when
-measured, HARNESS when the scene could not ask (GSS_SWITCHES_PROVE_LAST_FOUR_STANDING: the switch's BEHAVIOUR row; M21e/f
-in validation_aerial.py read only the setting).
+Flies bridgetools/prove_gravship.py's own ship (its recipe knows every engine gate), staged as scenes.json sc_gravship asks: two wall
+brackets on walls aboard joined by a span, a battery and two consumers (lamps) on one floor run (one net, asserted before the launch),
+and a pole aboard strung to a pole left on the ground. off_autolink is the off flight with the auto-link setting at its default (on) from
+take-off to the read: landing must not string the wires again (f6be36c45e).
+Reads, after landing: the bracket span up (on) or taken down (off, off_autolink), the ground span gone, the battery and both consumers
+still one net, and every cord true to the landed grid: each end on a net of this map, both ends on the same one (true_to_grid, worked out
+here from the map's own nets, not from the cord census's counters). The planted control, every flight: the cord set read BEFORE the launch
+goes through the same read against the landed map and must fail by name. Exit 0/1/2: PASS/FAIL/UNMEASURED.
+--out writes two rows of a result JSON (script/started/mode/rows, the shape mod_completion.py folds): the flight's row (ROW_IDS[mode], class
+MOD when measured, HARNESS when the scene could not ask) and the control's (ROW_IDS["control"]).
 """
 import argparse
 import json
@@ -26,12 +29,82 @@ sys.path.insert(0, os.path.join(HERE, "..", "northstar_matrix"))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 sys.path.insert(0, os.path.dirname(PROVE))
 SHOTS = r"D:\ClaudeWork\rimmandrake\ralph_gss\shots"
-ROW_IDS = {"on": "GS1_keep_wires_on_gravship_on_aboard_span_flies", "off": "GS1_keep_wires_on_gravship_off_aboard_span_taken_down"}
+ROW_IDS = {"on": "GS1_keep_wires_on_gravship_on_aboard_span_flies", "off": "GS1_keep_wires_on_gravship_off_aboard_span_taken_down",
+           "off_autolink": "GS3_auto_link_on_keep_wires_off_span_stays_down", "control": "GS2_prelaunch_cords_fail_on_landed_map"}
+
+
+def cord_edges(census):
+    """[(name, (x, z), (x, z))] of a cord census: the edge names carry their end cells ("bend:12,40|end:19,40")."""
+    out = []
+    for name in sorted((census or {}).get("edgeHashes") or {}):
+        cells = []
+        for end in name.split("|"):
+            try:
+                x, z = end.rsplit(":", 1)[1].split(",")
+                cells.append((int(x), int(z)))
+            except (IndexError, ValueError):
+                pass
+        out.append((name, cells[0] if len(cells) == 2 else None, cells[1] if len(cells) == 2 else None))
+    return out
+
+
+def true_to_grid(edges, net_of):
+    """The true-to-grid read of a cord set against a map: [(cord name, fault)]. net_of(cell) -> the net id there, or None for no net."""
+    bad = []
+    for name, a, b in edges:
+        if a is None:
+            bad.append((name, "its end cells could not be read from its name"))
+            continue
+        na, nb = net_of(a), net_of(b)
+        out = [c for c, n in ((a, na), (b, nb)) if n is None]
+        if out:
+            bad.append((name, "ends outside the landed net: %s" % (out,)))
+        elif na != nb:
+            bad.append((name, "joins two nets"))
+    return bad
+
+
+def control_verdict(before_edges, net_of):
+    """-> (status, class, detail): the pre-launch cord set against the landed map must fail by name on an end outside the landed net."""
+    bad = true_to_grid(before_edges, net_of)
+    outside = [x for x in bad if "outside the landed net" in x[1]]
+    d = {"prelaunchCords": len(before_edges), "failByName": outside[:4], "faults": len(bad)}
+    if not before_edges:
+        return "UNMEASURED", "HARNESS", dict(d, why="no cord was read before the launch")
+    if not outside and not bad:
+        return "UNMEASURED", "SITE", dict(d, why="every pre-launch cord end stands on a net of the landed map: the ship came down on the cells it left")
+    return ("PASS" if outside else "FAIL"), "HARNESS", d
+
+
+def one_net(reads, consumers=2):
+    """(True/False/None, detail): the battery and every consumer are on one net. `reads`: [(name, net id or None)], battery first."""
+    if len(reads) != 1 + consumers or any(n is None for _, n in reads):
+        return None, reads
+    return len({n for _, n in reads}) == 1 and reads[0][1] != -1, reads
+
+
+def flight_verdict(mode, up_aboard, to_ground, spans_up, grid, edges, net_ok, unwalkable):
+    """-> [why not] of a measured landing ([] = PASS)."""
+    out = []
+    if up_aboard != (mode == "on"):
+        out.append("the bracket span is %s after the landing" % ("up" if up_aboard else "down"))
+    if to_ground:
+        out.append("a link to the pole left on the ground is kept")
+    if mode != "on" and spans_up:
+        out.append("%s span(s) up after a landing with keep wires off" % spans_up)
+    if not edges:
+        out.append("no cord on the landed map")
+    out += ["%s: %s" % x for x in grid[:6]]
+    if net_ok is False:
+        out.append("the battery and the consumers are not one net after the landing")
+    if unwalkable:
+        out.append("%s cord vertices in a wall" % unwalkable)
+    return out
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("mode", choices=("on", "off"))
+    ap.add_argument("mode", choices=("on", "off", "off_autolink"))
     ap.add_argument("--shot", default=None)
     ap.add_argument("--out", default=None, help="write the verdict row as a result JSON here")
     a = ap.parse_args()
@@ -50,9 +123,11 @@ def main():
     finally:
         if a.out:
             st, cl = {0: ("PASS", "MOD"), 1: ("FAIL", "MOD")}.get(rc, ("UNMEASURED", "HARNESS"))
+            c_st, c_cl, c_det = det.pop("control", None) or ("UNMEASURED", "HARNESS", "the flight did not reach its landed read")
             with open(a.out, "w", encoding="utf-8") as f:
                 json.dump({"mod": "GimmeSomeSlack", "script": "gravship_scene.py", "mode": "live", "started": started,
-                           "rows": [{"id": ROW_IDS[a.mode], "status": st, "class": cl, "detail": det}]}, f, indent=1)
+                           "rows": [{"id": ROW_IDS[a.mode], "status": st, "class": cl, "detail": det}, {"id": ROW_IDS["control"], "status": c_st, "class": c_cl, "detail": c_det}]},
+                          f, indent=1, default=str)
             print("wrote", a.out)
     return rc
 
@@ -70,25 +145,61 @@ def scene(a, det):
         B.call("rimworld/set_god_mode", enabled=True)
         B.ap("set:keepWiresOnGravship=%s" % ("True" if a.mode == "on" else "False"))
         B.ap("set:autoLink=False")
-        aboard = [(X + 3, Z + 17), (X + 16, Z + 17)]
-        ground = (X + 3, Z + 24)
-        for c in aboard + [ground]:
+        brackets = [(X + 3, Z + 17), (X + 16, Z + 17)]           # each on the south face of its own wall
+        pole, ground = (X + 1, Z + 14), (X + 1, Z + 24)
+        B.call("jawa/destroy_batch", rects="%d,%d,3,3" % (ground[0] - 1, ground[1] - 1), categories="Plant,Item,Filth,Building")
+        B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,3,3" % (ground[0] - 1, ground[1] - 1))
+        B.call("jawa/build_batch", ops=";".join("Wall:%d,%d" % (x, z + 1) for x, z in brackets), stuff="Steel", faction="player", wipeExisting=False)
+        for c in brackets:
+            B.ap("place:RM_AerialWallBracket:Industrial:%d,%d:0:god" % c)
+        for c in (pole, ground):
             B.ap("place:RM_AerialMast:Industrial:%d,%d:god" % c)
-        for x in range(X + 4, X + 11):
+        for x in range(X + 3, X + 11):
             B.ap("cplace:PowerConduit:Industrial:%d,%d:god" % (x, Z + 16))
         B.ap("cprocess")
-        B.call("jawa/build_batch", ops="StandingLamp:%d,%d" % (X + 12, Z + 15), faction="player", wipeExisting=False)
+        consumers = [(X + 9, Z + 15), (X + 12, Z + 15)]
+        B.call("jawa/build_batch", ops="Battery:%d,%d,0;" % (X + 6, Z + 14) + ";".join("StandingLamp:%d,%d" % c for c in consumers), faction="player", wipeExisting=False)
         B.ticks(3)
+        pad = "%d,%d,20,20" % (X, Z)
+        for t in B.call("jawa/list_things", defName="Battery", rect=pad, limit=20).get("things") or []:
+            B.call("jawa/battery_set", thing=t.get("id") or t.get("thingId"), mode="setPct", value=1.0)
+        B.ticks(3)
+
+        def devices(ids=None):
+            """[(ThingID, (x, z))] of the battery and the consumers: on the pad before the launch, by id anywhere after it."""
+            out = []
+            for d in ("Battery", "StandingLamp"):
+                kw = {"rect": pad} if ids is None else {}
+                out += [(t.get("id") or t.get("thingId"), (t["x"], t["z"])) for t in B.call("jawa/list_things", defName=d, limit=200, **kw).get("things") or []
+                        if ids is None or (t.get("id") or t.get("thingId")) in ids]
+            return out
+
+        def nets(devs):
+            out = []
+            for tid, (x, z) in devs:
+                got = [t for t in B.ap("net:%d,%d" % (x, z)).get("things") or [] if str(tid).endswith(str(t.get("id")))]
+                out.append((tid, got[0].get("net") if got else None))
+            return out
+        devs = devices()
         apos = {(q["x"], q["z"]): q["id"] for q in B.ap("census").get("anchors") or []}
-        ids = [apos.get(c) for c in aboard + [ground]]
+        ids = [apos.get(c) for c in brackets + [pole, ground]]
         if None in ids:
-            print("UNMEASURED: masts did not build: %s %s" % (ids, sorted(apos)))
-            det["unmeasured"] = "masts did not build"
+            print("UNMEASURED: the brackets or poles did not build: %s %s" % (ids, sorted(apos)))
+            det["unmeasured"] = "the brackets or poles did not build"
             return 2
-        print("links", B.ap("link:%d,%d" % (ids[0], ids[1])).get("verdict"), B.ap("link:%d,%d" % (ids[0], ids[2])).get("verdict"))
+        ok_net, reads = one_net(nets(devs))
+        det["netBefore"] = reads
+        if not ok_net:
+            print("UNMEASURED: the battery and two consumers are not one net before the launch: %s" % (reads,))
+            det["unmeasured"] = "the battery and two consumers are not one net before the launch"
+            return 2
+        print("links", B.ap("link:%d,%d" % (ids[0], ids[1])).get("verdict"), B.ap("link:%d,%d" % (ids[2], ids[3])).get("verdict"))
         B.call("rimworld/set_god_mode", enabled=False)
         B.ticks(2)
-        before = B.ap("census")
+        B.probe("rebuild")
+        before, cords_before = B.ap("census"), cord_edges(B.probe("census"))
+        if a.mode == "off_autolink":
+            B.ap("set:autoLink=True")
         g["call"]("rimworld/step_game_ticks", ticks=60)
         tail = "# -- 5. launch" + rest.split("# -- 6. land", 1)[0] + "# -- 6. land" + rest.split("# -- 6. land", 1)[1].split("for part in", 1)[0]
         exec(compile(tail, PROVE, "exec"), g)                    # launch, travel, land
@@ -98,25 +209,39 @@ def scene(a, det):
         after = B.ap("census")
         anchors = after.get("anchors") or []
         links = [(q["id"], l.get("other"), l.get("state")) for q in anchors for l in q.get("links") or []]
-        up_aboard = any(i in ids[:2] and o in ids[:2] and st == "Up" for i, o, st in links)
-        to_ground = any(ids[2] in (i, o) for i, o, st in links)
+        up_aboard = any(i in ids[:2] and o in ids[:2] and st_ == "Up" for i, o, st_ in links)
+        to_ground = any(ids[3] in (i, o) or o == -1 for i, o, _ in links)
         gr = B.probe("census")
         lay = {k: gr.get(k) for k in ("cordEdges", "cordsAcrossNets", "verticesInUnwalkable", "conduitCells")}
         # a failed census reads as no anchors and zero counters: measured only when both censuses answered and both spans
         # were up before the launch (Codex review 2026-11-09)
-        measured = bool(after.get("success")) and bool(gr.get("success")) and before.get("spansUp") == 2 and len(anchors) >= 2
+        measured = bool(after.get("success")) and bool(gr.get("success")) and before.get("spansUp") == 2 and len(anchors) >= 3
         if not measured:
             why = {"before": before.get("spansUp"), "after": after.get("success"), "graph": gr.get("success"), "anchors": len(anchors)}
             print("UNMEASURED: census failed or the spans were not up before launch: %s" % json.dumps(why))
             det["unmeasured"] = why
             return 2
-        ok = (up_aboard == (a.mode == "on")) and not to_ground and (gr.get("cordsAcrossNets") or 0) == 0 and (gr.get("verticesInUnwalkable") or 0) == 0
-        if a.mode == "on":
-            ok = ok and (gr.get("conduitCells") or 0) >= 7 and (gr.get("cordEdges") or 0) >= 1
+        cache = {}
+
+        def net_of(c):
+            if c not in cache:
+                n = B.ap("net:%d,%d" % c)
+                cache[c] = None if not n.get("success") or n.get("net") in (None, -1) else n["net"]
+            return cache[c]
+        edges = cord_edges(gr)
+        grid = true_to_grid(edges, net_of)
+        det["control"] = control_verdict(cords_before, net_of)
+        net_ok, reads = one_net(nets(devices({t for t, _ in devs})))
+        if net_ok is None:
+            print("UNMEASURED: the battery or a consumer was not found on the landed map: %s" % (reads,))
+            det["unmeasured"] = "the battery or a consumer was not found on the landed map: %s" % (reads,)
+            return 2
+        why = flight_verdict(a.mode, up_aboard, to_ground, after.get("spansUp"), grid, edges, net_ok, gr.get("verticesInUnwalkable"))
+        ok = not why
         det.update({"mode": a.mode, "before": {"spansUp": before.get("spansUp")}, "after": {"spansUp": after.get("spansUp"), "spansCut": after.get("spansCut")},
-                    "aboardSpanUp": up_aboard, "groundLinkKept": to_ground, "cords": lay, "links": links, "ids": ids,
-                    "verdict": "PASS" if ok else "FAIL"})
-        print(json.dumps(det))
+                    "aboardSpanUp": up_aboard, "groundLinkKept": to_ground, "cords": lay, "links": links, "ids": ids, "netAfter": reads,
+                    "cordsRead": len(edges), "whyNot": why, "verdict": "PASS" if ok else "FAIL"})
+        print(json.dumps(det, default=str))
         if a.shot:
             q = next((p for p in anchors if p["id"] == ids[0]), None)
             if q:
@@ -130,6 +255,9 @@ def scene(a, det):
                 if src_ and os.path.exists(src_):
                     shutil.copyfile(src_, os.path.join(SHOTS, a.shot + ".png"))
                     print(os.path.join(SHOTS, a.shot + ".png"))
+        if ok and det["control"][0] != "PASS":    # a pass the read could not have failed is no pass
+            det["unmeasured"] = "the control did not fail by name on the landed map, so the read is not trusted: %s" % (det["control"][2],)
+            return 2
         return 0 if ok else 1
     finally:   # every exit, the early UNMEASURED return and exceptions too, puts the settings back (Codex review 2026-11-09)
         for f in (lambda: st["B"].call("rimworld/set_god_mode", enabled=False),

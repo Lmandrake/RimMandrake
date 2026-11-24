@@ -148,6 +148,44 @@ namespace JawaBench.BridgeTools
             return ProbeRender(v);
         }
 
+#if JAWA_GM_TOOLS
+        // RIMMANDRAKE_DECIDE_SLACK_WALK_BAR_CODE_PLAYS_NO_WEEK (2026-11-24): the write twin of comp_read. A daily charge could be
+        // seen only by playing the day (Gimme Some Slack's tap goodwill: 60,000 ticks); with the comp's own counter set just
+        // short of its deadline, the mod's own next event makes the charge.
+        [Tool(
+            "jawa/comp_set",
+            Description =
+                "Reflectively WRITE one scalar instance field (private and inherited ones too) of a ThingComp on a live thing: " +
+                "int and every integer width, float/double/decimal, bool, string, enum. thing = a ThingID or a defName (first " +
+                "spawned match); comp = a substring of the comp's type name, an ambiguous one refused with the candidates. " +
+                "Properties, lists, consts and readonly fields are refused; a refusal writes nothing. For putting a counter " +
+                "near its deadline so the mod's own code acts on its next tick. GM-gated.",
+            ResultDescription = "success, thing, resolvedBy, compType, member, before, after (read back), ticksGame.")]
+        public static async Task<object> CompSet(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "ThingID or defName.")] string thing,
+            [ToolParameter(Description = "Substring of the comp type name.")] string comp,
+            [ToolParameter(Description = "The field's name.")] string member,
+            [ToolParameter(Description = "The value, as text.")] string value)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Current.ProgramState != ProgramState.Playing) return Fail("Not in a loaded game.");
+                Thing t = ProbeFindThing(thing, out string how);
+                if (t == null) return Fail("No thing matched '" + thing + "'.");
+                if (!(t is ThingWithComps twc)) return Fail(t.ThingID + " is not ThingWithComps.");
+                var hits = twc.AllComps.Where(x => x.GetType().Name.IndexOf(comp ?? "", StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                if (hits.Count == 0) return Fail("No comp matches '" + comp + "'.", new { comps = twc.AllComps.Select(x => x.GetType().Name).ToList() });
+                if (hits.Count > 1) return Fail("Ambiguous comp substring.", new { candidates = hits.Select(x => x.GetType().Name).ToList() });
+                string err = JawaBenchStaticCallArgsCore.SetField(hits[0], member, value, out object before, out object after);
+                if (err != null) return Fail(err);
+                return (object)new { success = true, thing = t.ThingID, resolvedBy = how, compType = hits[0].GetType().FullName, member,
+                                     before = ProbeRender(before), after = ProbeRender(after), ticksGame = TicksGameSafe() };
+            });
+        }
+#endif
+
         // RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN (2026-11-21): the Thing twin of comp_read. A Harmony postfix on
         // an INSTANCE getter of the thing itself (Pyrelands' wet roots on Plant.GrowthRateFactor_Temperature) was readable by no
         // tool: comp_read reads comps, static_call reaches statics. Reading the property through reflection runs the patched
