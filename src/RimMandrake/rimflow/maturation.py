@@ -4024,6 +4024,35 @@ def visit_cited_items(root, mod, n):
     return out
 
 
+def paused_scene_items(root, mod, ids, path=None):
+    """-> [the ids whose every citing failed row, over all visits, is of a raid scene that is paused now]: such an item
+    makes no road back (raid-tests-paused page, tagged-scene and paused-is-its-own-word; FlowWorks visit 9's moat item).
+    A row cites an item as visit_cited_items reads it. [] when the pause is off, or when a table or a visit's rows
+    cannot be read (could not look is never free)."""
+    if not RP.switch(path)["paused"]:
+        return []
+    tt, _ = read_json(root, mod, "version/test_table.json")
+    tagged = {k for k, _ in RP.scenes(tt)} if isinstance(tt, dict) else set()
+    base = os.path.join(mod_dir(root, mod), INGAME_DIR)
+    cites = {i: set() for i in ids}
+    for v in sorted(os.listdir(base)) if os.path.isdir(base) else []:
+        p = os.path.join(base, v, "rows.jsonl")
+        if not v.startswith("visit_") or not os.path.exists(p):
+            continue
+        rows = _jsonl(p)
+        if rows is None:
+            return []
+        for r in rows:
+            if not isinstance(r, dict) or str(r.get("verdict") or "").upper() == "PASS":
+                continue
+            named = []
+            for f in (r.get("owner"), r.get("filed")):
+                named += f if isinstance(f, list) else [f]
+            for i in set(str(x or "").strip() for x in named) & set(cites):
+                cites[i].add(str(r.get("test") or ""))
+    return [i for i in ids if cites[i] and cites[i] <= tagged]
+
+
 def ingame_openings(rec):
     """-> {visit number: iso time} for the moves into in-game acceptance (visit k is the k-th)."""
     return {i + 1: m.get("at") for i, m in enumerate(m for m in rec.get("moves") or [] if m.get("to") == "in_game")}

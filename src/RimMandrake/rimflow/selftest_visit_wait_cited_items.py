@@ -222,13 +222,76 @@ def t_other_spent_item_still_holds():
           (row.get("why"), row.get("owner_items")))
 
 
+RAID_ITEM = "RIMMANDRAKE_TRACE_A_RAIDER_WHO_LEFT_THE_DRAINED_MOAT"
+RAID_EVENTS = [
+    {"event": "file", "id": DRIVER, "title": "drive visit 5", "ts": "2026-11-22T10:00:00Z"},
+    {"event": "file", "id": STEWARD, "title": "route visit 5 back", "ts": "2026-11-22T12:30:00Z"},
+    {"event": "file", "id": RAID_ITEM, "title": "a held raider left the moat", "caused_by": DRIVER, "needs": "bridge",
+     "ts": "2026-11-22T14:44:26Z"},
+]
+RAID_ROWS = [{"test": "sc_moat_raid", "verdict": "FAIL", "class": "MOD", "filed": RAID_ITEM},
+             {"test": "sc_fill", "verdict": "PASS"}]
+
+
+def raid_wait(rows, fixed, paused=True, tag=True):
+    """-> (_road_back's answer, row, state) on FlowWorks visit 9's shape: RAID_ITEM open, caused by the driver and cited
+    by the raid scene's failed row."""
+    root = site(rows, RAID_EVENTS)
+    try:
+        tt = {"tests": {"sc_moat_raid": dict({"kind": "live_minimal", "stage": "6"},
+                                             **({"stages_raid": "six raiders at a moat"} if tag else {})),
+                        "sc_fill": {"kind": "live_minimal", "stage": "6"}}}
+        d = os.path.join(M.mod_dir(root, MOD), "version")
+        os.makedirs(d, exist_ok=True)
+        with open(os.path.join(d, "test_table.json"), "w", encoding="utf-8") as fh:
+            json.dump(tt, fh)
+        sw = os.path.join(root, "raid_pause.json")
+        with open(sw, "w", encoding="utf-8") as fh:
+            json.dump({"paused": paused, "why": "t", "allow": [], "chains": {}}, fh)
+        s = {"road_back": opened(root), "ingame_auto": [{"item": DRIVER, "at": 50}],
+             "fixers": {i: {"item": i, "unit": "u-" + i} for i in fixed}}
+        row = {"mod": MOD, "stage": "in_game", "visit": 5, "decision": "launch"}
+        open_items = lambda ids, **kw: M.ledger_items_caused_by(root, ids, **kw)    # noqa: E731
+        return A._road_back(s, row, open_items, 200, moved=True,
+                            paused_items=lambda ids: M.paused_scene_items(root, MOD, ids, path=sw)), row, s
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
+def t_paused_scene_item_does_not_hold_the_visit():
+    """FlowWorks visit 9 (2026-11-23): the one open item is cited by a paused raid scene's failed row alone; once its
+    fixer ran, the next visit is not held, and the row names the item."""
+    got, row, s = raid_wait(RAID_ROWS, [RAID_ITEM])
+    check(got is False and row.get("decision") == "launch",
+          "paused-scene-item-does-not-hold-the-visit: the row is not decided (no fixer_spent)", (got, row.get("decision")))
+    check("road_back" in s and row.get("paused_raid_items") == [RAID_ITEM],
+          "paused-scene-item-does-not-hold-the-visit: the road back stays open and the row lists the item",
+          row.get("paused_raid_items"))
+    got, row, s = raid_wait(RAID_ROWS, [])
+    check(got is True and row.get("fix_item") == RAID_ITEM,
+          "paused-scene-item-does-not-hold-the-visit: it gets its one fixer run first", (got, row.get("fix_item")))
+
+
+def t_paused_scene_item_holds_when_not_paused():
+    """The planted faults: the pause lifted, the scene untagged, or the item also cited by a failed row of a scene that
+    runs: it holds as fixer_spent."""
+    for what, rows, kw in (("the pause is lifted", RAID_ROWS, {"paused": False}),
+                           ("the scene has no tag", RAID_ROWS, {"tag": False}),
+                           ("a scene that runs cites it too", RAID_ROWS + [
+                               {"test": "sc_fill", "verdict": "FAIL", "class": "MOD", "owner": RAID_ITEM}], {})):
+        got, row, s = raid_wait(rows, [RAID_ITEM], **kw)
+        check(got is True and row.get("decision") == "fixer_spent",
+              "paused-scene-item-holds-when-not-paused: %s" % what, (got, row.get("decision")))
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
     for t in (t_failed_line_on_old_item_holds_the_next_visit, t_closed_cited_item_holds_nothing,
               t_only_failed_lines_are_cited, t_owner_named_item_is_cited, t_unreadable_visit_record_is_said,
               t_spent_owner_item_does_not_hold_the_visit, t_cited_owner_item_still_holds,
-              t_owner_item_gets_its_fixer_first, t_other_spent_item_still_holds):
+              t_owner_item_gets_its_fixer_first, t_other_spent_item_still_holds,
+              t_paused_scene_item_does_not_hold_the_visit, t_paused_scene_item_holds_when_not_paused):
         if only is not None and t.__name__ not in only:
             continue
         print("== %s" % t.__name__)

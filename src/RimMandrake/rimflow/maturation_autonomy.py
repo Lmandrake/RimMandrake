@@ -881,7 +881,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             _stop_tickets(fx, row, s, dst, now, root=root, ver=ver, cfg=cfg)
         elif dec in LAUNCH and s.get("road_back") and row.get("stage") in ROAD_BACK_STAGES and \
                 _road_back(s, row, open_items, now, moved=True, endings=endings, cfg=cfg, ver=ver,
-                           version_bugs=vbugs):
+                           version_bugs=vbugs, paused_items=lambda ids: M.paused_scene_items(root, row["mod"], ids)):
             # RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM: the road back's items get their fixers before
             # the next cycle or visit launches (a blind_challenge -> blind_challenge road back launched at once)
             launches = [m for m in launches if m != mod]
@@ -1204,7 +1204,8 @@ def road_back_open(s, rb, open_items):
     return open_items(ids, named=cited) if cited else open_items(ids)
 
 
-def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None, ver=None, version_bugs=None):
+def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None, ver=None, version_bugs=None,
+               paused_items=None):
     """-> True when the mod's open road back decides the row: a fixer on its next open item, fixers spent, or an
     unreadable ledger. Keyed on the road back being open, never on a stage change: blind_challenge -> blind_challenge
     is the road back ROADS_BACK draws for a blind cycle, so the stage never changes.
@@ -1215,7 +1216,8 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
     filings yet; a steward that filed nothing stays spent.
     endings: the ledger reader of the Test Pilot step (_pilot_step); None leaves the step out.
     ver, version_bugs: the version and the reader of its open offline Problems (read_version_bugs), read when every
-    open item needs the live game at an offline stage: they get their fixer runs first, then the game-only exit."""
+    open item needs the live game at an offline stage: they get their fixer runs first, then the game-only exit.
+    paused_items: the reader of the items that only a paused raid scene cites (M.paused_scene_items); None reads none."""
     rb = s.get("road_back")
     if not rb:
         return False
@@ -1304,7 +1306,12 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
                and not rb.get("cited_unread")]
         if his:
             row["owner_items"] = [x["id"] for x in his]
-        rest = [x for x in items if x not in his]
+        # an item that only a paused raid scene's failed rows cite: the paused scene makes no road back and pauses no mod
+        # (design/specs/2026-11-23-raid-tests-paused/boundary.md; FlowWorks visit 9)
+        shut = set(paused_items([x["id"] for x in items if x not in his])) if paused_items else set()
+        if shut:
+            row["paused_raid_items"] = sorted(shut)
+        rest = [x for x in items if x not in his and x["id"] not in shut]
         if not rest:
             return False
         row.update(decision="fixer_spent", why="every open road-back item (%s) has had its one fixer run and "
@@ -1413,7 +1420,8 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
         return
     # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage
     if stage in ROAD_BACK_STAGES and _road_back(s, row, open_items, now, endings=endings, cfg=cfg, ver=ver,
-                                                version_bugs=fx_version_bugs):
+                                                version_bugs=fx_version_bugs,
+                                                paused_items=lambda ids: M.paused_scene_items(root, mod, ids)):
         return
     if row.get("road_back_closed") and dec == "stopped":
         s.pop("stopped", None)

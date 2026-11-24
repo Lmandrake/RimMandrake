@@ -25,6 +25,13 @@ item decides: then the item holds, and the Conductor brings him the pick first. 
 (`cited_unread`) holds as well: a bar that could not be looked at is never free. The item stays open and stays on his
 Needs Mandrake list (`owner_queue.needs_you` lists every open `needs owner` item). The row names it in `owner_items`.
 
+## The rule for an item of a paused raid scene
+
+An open road-back item whose every citing failed row, over all visits, is of a raid scene that is paused now
+(`maturation.py` `paused_scene_items`) does not hold the next cycle or visit after its one fixer run. The paused scene
+makes no road back (`design/specs/2026-11-23-raid-tests-paused/boundary.md`). The item stays open, its bar stays open and
+holds the version's pass, and the row names it in `paused_raid_items`. When the pause is lifted, it holds again.
+
 ## ACCEPTS
 
 - **rows-with-filed.** A visit's `rows.jsonl` row names its item in `filed` or in `owner`, as one rimflow item name or
@@ -62,5 +69,10 @@ Needs Mandrake list (`owner_queue.needs_you` lists every open `needs owner` item
 - **owner-item-gets-its-fixer-first.** An open `owner` item whose fixer has not run gets its one fixer run first.
 - **other-spent-item-still-holds.** A spent open item whose window is not `owner` holds the row as `fixer_spent`. Its
   why names only the items that are not his; the `owner` items are listed apart in `owner_items`.
+- **paused-scene-item-does-not-hold-the-visit.** When every open road-back item has had its fixer run and each one still
+  open is cited only by failed rows of paused raid scenes, `_road_back` returns False and `row["paused_raid_items"]`
+  lists those items. Such an item whose fixer has not run gets its one run first.
+- **paused-scene-item-holds-when-not-paused.** The same item holds as `fixer_spent` when the pause is off, when its scene
+  carries no `stages_raid`, or when a failed row of any other scene cites it. An unreadable table or rows file holds too.
 - **unreadable-visit-record-is-said.** When the visit's `rows.jsonl` cannot be read, the road back opens on the
   steward item and records `cited_unread` naming `rows.jsonl`; it never records an empty cited list.
