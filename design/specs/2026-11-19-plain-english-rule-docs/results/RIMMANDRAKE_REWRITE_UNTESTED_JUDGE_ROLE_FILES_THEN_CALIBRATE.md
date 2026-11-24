@@ -14,9 +14,9 @@ No `rm-role-designer*` unit was active at the start. A changed packet hash does 
 
 | file | bytes | words | STE per 100 words | sentences over 20 words | flagged lines |
 |---|---|---|---|---|---|
-| `designer_scene_contract.md` | 10,891 → 11,571 | 1,485 → 1,585 | 3.37 → 2.08 | 17 → 6 | 0 → 0 |
-| `designer_lock.md` | 6,531 → 7,206 | 988 → 1,086 | 3.64 → 1.93 | 19 → 8 | 1 → 0 |
-| `code_review.md` | 7,931 → 8,626 | 1,269 → 1,386 | 2.84 → 2.31 | 11 → 8 | 5 → 5 |
+| `designer_scene_contract.md` | 10,891 → 11,590 | 1,485 → 1,587 | 3.37 → 2.08 | 17 → 6 | 0 → 0 |
+| `designer_lock.md` | 6,531 → 7,524 | 988 → 1,136 | 3.64 → 2.20 | 19 → 10 | 1 → 0 |
+| `code_review.md` | 7,931 → 8,756 | 1,269 → 1,398 | 2.84 → 2.22 | 11 → 7 | 5 → 5 |
 
 Each file meets the 2.5 target. The 5 flags of `code_review.md` are the page's part name DOES NOT SURVIVE.
 
@@ -24,11 +24,11 @@ Each file meets the 2.5 target. The 5 flags of `code_review.md` are the page's p
 
 - `designer_scene_contract.md`, 6: lines 63, 113, 116, 142 and 147 hold a command or a list of three; line 131 is two short
   sentences that the lint joined at a bold lead.
-- `designer_lock.md`, 8: lines 5, 33, 52 and 70 hold a command or a command text. Line 26 is two sentences that the lint joined.
-  Line 38 stays word for word (`case_carried_gap_closes_on_ok_rows.py` reads it). Line 36 is a list of three. Line 41 stays near its old words,
-  because the meaning reader found that a comma loosened it.
-- `code_review.md`, 8: lines 15 and 74 hold a path, a date or a joined bold lead. Lines 7, 36, 59, 69, 81 and 126 are
-  definitions or a rule with its list. The calibration reads these words, so they stay close to the old text.
+- `designer_lock.md`, 10: each holds a command, a condition with its list, or two sentences that the lint joined.
+  "A gap you do not claim stays open …" stays word for word (`case_carried_gap_closes_on_ok_rows.py` reads it). "A new gap
+  blocks only when …" stays near its old words, because the meaning reader found that a comma loosened it.
+- `code_review.md`, 7: each is a definition, or a rule with its list, date or path. The calibration reads these words, so
+  they stay close to the old text.
 
 ## Code that reads the files, and what the rewrite kept for it
 
@@ -83,7 +83,7 @@ Names of people: no person's name is in the three files. The read of the diff fo
 
 ## What the meaning read found
 
-Four fresh Opus readers (rm-judge, model opus), one at a time. Three read one file each. The fourth read each repair and
+Five fresh Opus readers (rm-judge, model opus), one at a time. Three read one file each. The fourth read each repair and
 later edit of all three files against the old text. No reader got the writer's reasoning.
 
 | file | finding | repair |
@@ -102,63 +102,70 @@ later edit of all three files against the old text. No reader got the writer's r
 | review | "**Polish**: … The kinds of polish are" reads as a closed list | "**Each of these** is one line on `polish.md`" |
 
 The fourth reader: 0 unsupported changes, 0 unsupported additions, 1 change that the code supports (the owner-event condition).
-No line was edited after that read.
+
+## The guiding-prose check, after the first landing
+
+The first landing is `dfce52f1c1`. The door check of `./publish` (`guiding_prose.py`) then returned 8 faults in the new
+sentences. A run of the check after the repairs returned 1 more, and that one was repaired too. The repairs: "locked bars"
+and the test table rows got their paths; "the owner's short list", "the pruning check" and "its slot" got their meaning from
+`coverage_judge.py` and `concept_tree.py`; "the exam" became "the stage 4 exam"; two pronouns and one long sentence were
+repaired. A fifth fresh reader read these edits against the old text. It found one false addition: the mark `short_list` is
+not on every such gap. The repair names only `advisory_gaps`. No reader read that repair, which follows the reader's own
+words. The last guiding-prose run is before that repair.
+
 
 ## Calibration
 
-Both calibrations ran after the last edit, on the final text, in this clone. Both families read UNTESTED before
-(`coverage_judge` hash `74bd06973476df0e`, `code_review` hash `f5fc230be16849e5`).
+Each family ran twice: on the text of the first landing, and again on the final text, after the guiding-prose repairs. Both
+families read UNTESTED before this run (`coverage_judge` hash `74bd06973476df0e`, `code_review` hash `f5fc230be16849e5`).
 
 ### `python3 src/RimMandrake/rimflow/refusal_contract.py calibrate --model coverage_judge`
 
-Exit 0. It printed:
+Exit 0 on both runs. Each printed:
 
 ```
 coverage_judge           CALIBRATED 12 planted case(s) ran and came out as planted
 ```
 
-| case | planted | got |
-|---|---|---|
-| `good_lanterns` | pass | pass |
-| `good_lanterns_tuning` | pass | pass |
-| `good_lanterns_no_reset` | pass | pass |
-| `good_round2_repaired` | pass | pass |
-| `good_pyrelands_look8` | pass | pass |
-| `good_one_kind_enough` | pass | pass |
-| `bad_leaf_no_scene` | refuse | refuse (route designer) |
-| `bad_scene_no_control` | refuse | refuse (route designer) |
-| `bad_conflict_routing` | refuse | refuse (route criteria) |
-| `bad_mixed_row` | refuse | refuse (route designer) |
-| `bad_late_serious` | refuse | refuse (route designer, late confirmed) |
-| `bad_fire_never_touched` | refuse | refuse (route designer) |
+| case | planted | got, run 1 | got, run 2 (final text) |
+|---|---|---|---|
+| `good_lanterns` | pass | pass | pass |
+| `good_lanterns_tuning` | pass | pass | pass |
+| `good_lanterns_no_reset` | pass | pass | pass |
+| `good_round2_repaired` | pass | pass | pass |
+| `good_pyrelands_look8` | pass | pass | pass |
+| `good_one_kind_enough` | pass | pass | pass |
+| `bad_leaf_no_scene` | refuse | refuse | refuse |
+| `bad_scene_no_control` | refuse | refuse | refuse |
+| `bad_conflict_routing` | refuse, to criteria | refuse, to criteria | refuse, to criteria |
+| `bad_mixed_row` | refuse | refuse | refuse |
+| `bad_late_serious` | refuse | refuse | refuse |
+| `bad_fire_never_touched` | refuse | refuse | refuse |
 
-Status after: CALIBRATED at hash `a89f53a9cd6c3647`, run at 2026-11-24T08:48:24Z. Spend: ≈1.64M weighted_v2 tokens (Opus 5.5),
-converted from the cases' recorded list cost with the rate of the judge-briefs batch.
+Status after: CALIBRATED at hash `01cbd5dc7f5f5473`, run at 2026-11-24T09:05:30Z. Spend: ≈1.64M and ≈1.54M weighted_v2
+tokens (Opus 5.5), converted from the cases' recorded list cost with the rate of the judge-briefs batch.
 
 ### `python3 src/RimMandrake/rimflow/refusal_contract.py calibrate --model code_review`
 
-Exit 0. It printed:
+Exit 0 on both runs. The family reads FAILED on both. Spend: two Codex calls, weighted tokens UNMEASURED.
 
-```
-code_review              FAILED     came out the other way: c2.9, c3.4, c4.1, c4.10, c4.14
-```
+| run | hash | came out the other way | agreed real caught (limit all) | agreed polish called problem (limit 1) | as labelled, of 35 |
+|---|---|---|---|---|---|
+| the old text, 2026-11-19T13:54:07Z | `f5fc230be16849e5` | c2.9, c3.4, c4.1, c4.14 | 2 of 3 | 1 of 9 | 31 |
+| the first landing, 2026-11-24T08:51:09Z | `e4e11112e343453b` | c2.9, c3.4, c4.1, c4.10, c4.14 | 2 of 3 | 1 of 9 | 30 |
+| the final text, 2026-11-24T09:07:25Z | `ca80659d18edbf02` | c2.9, c3.4, c4.1, c4.14, c4.3 | 2 of 3 | 2 of 9 | 30 |
 
-The check's own last line: "pass mark FAIL: agreed real caught 2 of 3 (limit all); agreed polish called problem 1 of 9
-(limit 1); unscored: 30 of 35 as labelled". Status after: FAILED at hash `e4e11112e343453b`, run at 2026-11-24T08:51:09Z.
-Spend: one Codex call, weighted tokens UNMEASURED.
+The same four claims miss on the old text and on both new texts. So those four are not from this rewrite. The fifth miss
+differs (c4.10, then c4.3). Neither missed on the old text. Two explanations stand: noise between calls, or an effect of the
+rewrite on a claim near the edge. One call per text cannot separate them: UNMEASURED. A repeat on one fixed text would.
 
-The last run on the old text (2026-11-19T13:54:07Z) missed four of the same claims (c2.9, c3.4, c4.1, c4.14) and read 31 of 35.
-Its pass mark line was the same. So four of the five misses are not from this rewrite. The fifth is c4.10:
+This run first guessed that the label of c4.10 is stale, because the page line "a mod the store already holds keeps the
+store's words" (commit `97f0cc2819`) is later than the labels (commit `c89dea59f0`). The second run answered c4.10 as labelled,
+so that guess is weaker [guess ~40%]. The date order is measured.
 
-- The claim: a re-hold of a mod on the same day with new words is not imported. The label is `real`.
-- The answer: polish, because the page says "a mod the store already holds keeps the store's words".
-- That page line came in commit `97f0cc2819` (2026-11-19 06:58 PST). The label file last changed in commit `c89dea59f0`
-  (2026-11-19 05:53 PST), before it. So the label is older than the page. The label of c4.10 is probably stale
-  [guess ~85%]; this run did not change the label, because that would edit the grader.
-
-This run made one call and no repeat, so the noise between two calls on one text is UNMEASURED. No word of the brief was
-changed to pass a case. Only a CALIBRATED family's refusal sends work back, so FAILED and UNTESTED have the same consequence
-for a review. The finding is on the open item `RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS` as a note.
+No word of the brief was changed to pass a case, and no label was changed. Only a CALIBRATED family's refusal sends work back,
+so FAILED and UNTESTED have the same consequence for a review. The finding is on the open item
+`RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS` as two notes.
 
 The other rows of the table did not change.
 
@@ -184,5 +191,5 @@ For the owner: none.
 ## What this run did not test
 
 - No code review and no Designer run read the new text, except the judge calls of the two calibrations.
-- A second call of the `code_review` calibration.
+- A repeat of the `code_review` calibration on one fixed text.
 - No measurement shows that an agent acts better on the new text.

@@ -144,7 +144,7 @@ file that he judges as the mod's face. In `scenes.json`, beside `scenes`:
   `coverage_rest`. Each entry names the cheaper ordinary scene or leaf check that covers the capability (`by`: a scene
   id here or a tree leaf id), and `why`. Coverage is had when every unit is exercised by a showcase or
   listed in `coverage_rest`. No capability is silently uncovered.
-- **Interactions stay.** Orthogonality chooses showcases. It deletes no check. Three things remain, whatever they share
+- **Interactions stay.** Orthogonality chooses showcases. Orthogonality deletes no check. Three things remain, whatever they share
   with a showcase: the per-mod `walk` leaf, every leaf whose point IS an interaction, and every `interaction` scene.
 
 What the program checks: `designer_stage.py showcases <dir>` prints it, and stage 3 and stage 5 refuse on it. The
@@ -157,6 +157,6 @@ command prints the new-coverage count and the overlap of each showcase. The chec
 - Each `coverage_rest` entry must name a real scene or leaf and a why.
 - Every unit must be covered.
 
-The program does not judge whether two showcases are "very different" in play. The exam and his review judge that.
+The program does not judge whether two showcases are "very different" in play. The stage 4 exam and his review judge that.
 
 Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation; the rules are in `designer.md`.

@@ -1,19 +1,20 @@
 # Code review against the boundary page: you fix what is significant, one blind reread checks it
 
 You can be Claude, Codex or GPT. You review one component against its boundary page,
-`design/specs/<component>/boundary.md`. For a file inside a mod, the page is the mod's locked bars. A mod with no locked
-bars has no page. A change to a bar is not yours: set it down with its evidence.
+`design/specs/<component>/boundary.md`. For a file inside a mod, the page is the mod's locked bars: the bars in
+`design/concepts/<Mod>/version/locked_bars.json`. A mod with no locked bars has no page. A change to a bar is not yours: set
+it down with its evidence.
 
 The page is the whole bar. Since the owner's ruling of 2026-11-19, this bar holds for all code, pipeline machinery included.
-Code is clean when each promise on its page has a test of the same name and those tests pass. (In a mod, the test of a bar
-is a test table row that decides the bar.) You fix each significant finding yourself, and one blind reread checks the fix.
+Code is clean when each promise on its page has a test of the same name and those tests pass. (In a mod, the tests of a bar
+are the rows of `design/concepts/<Mod>/version/test_table.json` that decide the bar.) You fix each significant finding yourself, and one blind reread checks the fix.
 
 You do not ask "how could it be better?". You ask "does it keep its page?".
 
 Where the rules live:
 
-- `design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested holds that rule, his words of
-  2026-11-19 5:27 PM PST and his card of 5:54 PM PST.
+- `design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested holds that rule. That section also holds his
+  words of 2026-11-19 5:27 PM PST and his card of 5:54 PM PST.
 - §A boundary page before pipeline code holds the boundary-page rule and his card of 2026-11-18.
 - The design is `design/specs/2026-11-18-review-growth-cycle/01-design.md` section 5.3.
 

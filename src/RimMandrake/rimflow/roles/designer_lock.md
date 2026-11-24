@@ -15,7 +15,7 @@ The launcher injects this packet with `designer.md` at stage 5. Follow one versi
    The judge read `designer_scene_contract.md`, this packet and the frozen artifacts, and judged coverage. The verdict is
    in `<dir>/coverage_verdict.json`.
    - On `covered`, the program signed (`concept_tree.py sign <dir> --by CoverageJudge`). The program writes a
-     `rimflow note` on the concept's item that names the tree and sheet hashes. Then it writes the stamp in tree.json.
+     `rimflow note` on the concept's item that names the tree and sheet hashes. Then the program writes the stamp in tree.json.
    - Signed: commit tree.json and your seat's ledger shard. The gate wants both. The signature does not change the tree
      hash that the launcher tracks.
    - `not_covered`: each gap names `return_to` 3 (yours to fix) or 2 (needs his answer). `return` to that stage with the
@@ -36,10 +36,11 @@ The launcher injects this packet with `designer.md` at stage 5. Follow one versi
    - The next judge is shown three things: those claims, the entries that changed since the verdict (by hash), and the
      open gaps carried on file. The judge redoes only the checklist rows that these touch, and keeps the rest.
    - A gap you do not claim stays open unless the judge's own rows on all its ids read ok; then it is closed and listed
-     as answered. When the judge answers `repairs`, that gap closes only when its slot also says repaired. A claimed gap
+     as answered. When the judge answers `repairs`, that gap closes only when its slot (the judge's answer to that `gid` in `repairs`) also says repaired. A claimed gap
      closes the same way, never by the claim.
    - A new gap blocks only when it quotes a passage that a repair changed and a second reader confirms it a serious
-     Problem. Any other new gap is advisory, on the owner's short list.
+     Problem. Any other new gap is advisory, on the owner's short list, and blocks nothing. The program puts that gap in
+     `advisory_gaps` of `<dir>/coverage_verdict.json`.
    - No claim and no change: no judge runs.
    - A `coverage_fixes.json` against another judge is ignored. So the next round needs a new one.
 
@@ -81,4 +82,5 @@ Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTO
 - A new mod filed under another kind with no citation escapes.
 - A mod item may cite another mod's passing tree.
 - `askcheck` catches a repeated waiver, not a rewording.
-- The pruning check proves that a citation exists, not that the citation is good.
+- The pruning check proves that a citation exists, not that the citation is good. That check wants an answer to "would you
+  reject the mod on this alone?" for each leaf except an instrument leaf, in the `## pruning` section of the sheet.
