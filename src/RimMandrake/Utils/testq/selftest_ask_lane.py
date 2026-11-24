@@ -111,13 +111,17 @@ def t_each_clause_goes_to_its_own_list():
 
 
 def t_a_held_companion_is_queued_not_dropped():
+    import contextlib
+    import io
     import testq as T
     sent, home = [], os.environ["TESTQ_QUEUE"]
     json.dump({"at": __import__("time").time(), "facts": dict(F, mods=["brrainz.rimbridgeserver", "brrainz.harmony", "owlchemist.cherrypicker"])},
               open(os.path.join(home, "host_facts.json"), "w"))
     real, T.cmd_submit = T.cmd_submit, lambda a: sent.append(a) or 0
     try:
-        rc = T.main(["ask", "RIMMANDRAKE_FIX_BRIDGE_STEPPED_PAWNS_DRAWN_ON_OLD_SQUARE", "--purpose", "fix", "--sha", "HEAD"])
+        said = io.StringIO()
+        with contextlib.redirect_stdout(said):      # the facts hold companion h1 and HEAD wants another: cmd_ask must ask for HEAD's
+            rc = T.main(["ask", "RIMMANDRAKE_FIX_BRIDGE_STEPPED_PAWNS_DRAWN_ON_OLD_SQUARE", "--purpose", "fix", "--sha", "HEAD"])
         dry = T.main(["ask", "RIMMANDRAKE_FIX_BRIDGE_STEPPED_PAWNS_DRAWN_ON_OLD_SQUARE", "--purpose", "fix", "--sha", "HEAD", "--dry"])
         no = T.main(["ask", "NO_SUCH_ITEM_HAS_A_PROOF", "--purpose", "fix", "--sha", "HEAD"])
         os.remove(os.path.join(home, "host_facts.json"))
@@ -126,6 +130,8 @@ def t_a_held_companion_is_queued_not_dropped():
         T.cmd_submit = real
     check((rc, dry, no, blind) == (0, 0, 3, 4) and len(sent) == 1 and sent[0].profile == "tier:flowworks" and "FlowWorks" in sent[0].deploy,
           "a held companion is queued, not dropped; exits %s, sent %d" % ((rc, dry, no, blind), len(sent)))
+    check(said.getvalue().startswith("HOLD ") and "is not staged yet" in said.getvalue(),
+          "a held companion is queued, not dropped: cmd_ask asked for the companion (%s)" % said.getvalue()[:90].strip())
 
 
 def t_a_check_the_host_cannot_run_is_not_sent():
