@@ -158,6 +158,7 @@ PAGES = {
         "src/RimMandrake/rimflow/selftest_tick_game_only_exit.py",
     "design/specs/2026-11-20-launch-refusal-wait-and-deploy/boundary.md":
         "src/RimMandrake/rimflow/selftest_launch_wait_and_deploy.py",
+    "design/specs/2026-11-24-brief-text-hash/boundary.md": "src/RimMandrake/rimflow/selftest_brief_text.py",
     "design/specs/2026-11-21-repair-at-the-refusal/boundary.md": "src/RimMandrake/rimflow/selftest_repair_at_refusal.py",
     "design/specs/2026-11-20-tick-names-never-refused/boundary.md":
         "src/RimMandrake/rimflow/selftest_tick_names.py",

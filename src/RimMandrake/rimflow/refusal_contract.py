@@ -40,7 +40,8 @@ answers a repeat (same item, clause, criterion hash, evidence content and sha) f
                                     [--second-read R]   classify a criteria change {clause: text}; exit 1 if refused
     python3 src/RimMandrake/rimflow/refusal_contract.py calibrate [--no-run | --model <family>]   the judge calibration
                                     registry (infrastructure/state/judge_calibration.json): an edited brief resets to
-                                    UNTESTED, free deterministic checks run (--model runs a family's model_check, which
+                                    UNTESTED (a .py docstring or comment is not brief text: brief_text.py),
+                                    free deterministic checks run (--model runs a family's model_check, which
                                     spends); a check must show every planted case ran and came out as planted, both
                                     ways. Only a CALIBRATED brief's verdict, either way, has a consequence. --no-run is
                                     a read-only status (writes nothing) and flags signatures made under an unproven brief
@@ -61,6 +62,7 @@ from contextlib import contextmanager
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import brief_text  # noqa: E402
 
 ALARM_ID = "REFUSAL_NOTHING_COULD_EVER_PASS"
 REAL_DIR = "/mnt/d/ClaudeWork/rimmandrake/refusal_contract"
@@ -617,13 +619,14 @@ def load_calibration(path=None):
 
 
 def brief_hash(files, root=None):
-    """sha256 over a brief's files (repo-relative), in order; a missing file hashes as its name: the hash still moves."""
+    """sha256 over a brief's files (repo-relative), in order; a missing file hashes as its name: the hash still moves.
+    A docstring or a comment of a .py file is not brief text and does not move it (brief_text.py)."""
     h = hashlib.sha256()
     for rel in files:
         h.update(rel.encode())
         try:
             with open(os.path.join(root or calibration_root(), rel), "rb") as f:
-                h.update(f.read())
+                h.update(brief_text.rule_bytes(rel, f.read()))
         except OSError:
             h.update(b"MISSING")
     return h.hexdigest()[:16]

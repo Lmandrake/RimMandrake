@@ -177,7 +177,8 @@ reruns every line that reads that file. This is the testq skip-when-unchanged ca
   `criteria_ledger.jsonl`) or a planted break (`mutate-your-checker`).
 - Existing calibration sets count: `evidence_gate_corpus.json` (false and valid closes), the art regression set, and the
   2026-11-12 scene-judge calibration (n=1).
-- Status is UNTESTED, CALIBRATED or FAILED. Any edit to a brief resets it to UNTESTED.
+- Status is UNTESTED, CALIBRATED or FAILED. Any edit to the text of a brief resets it to UNTESTED. A
+  docstring or a comment of a `.py` brief file is not brief text (`design/specs/2026-11-24-brief-text-hash/boundary.md`).
 - **Only a CALIBRATED brief's refusal has a consequence.** An UNTESTED one may pass or report. Its refusal is stored and
   shown, but the item is not sent back.
 - When calibration fails:
