@@ -68,3 +68,5 @@ false answer. Do not write a page.
 One whole read per file, one fix round, one fresh reader. A file that ends is never read again by you. Stop when `next` says so.
 
 End with a summary of at most 5 lines: each file, its outcome, and what was fixed.
+
+Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation.

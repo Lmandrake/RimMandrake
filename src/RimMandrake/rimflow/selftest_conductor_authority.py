@@ -283,6 +283,8 @@ OWNER_ONLY = {
                                                    "via CA.words) already gated",
     "src/RimMandrake/bridgetools/build.py": "reads the game's driver lock holder (his OWNER hold) to refuse a deploy; "
                                             "authorizes nothing",
+    "src/RimMandrake/rimflow/item_packet.py": "picks which notes a launch packet keeps whole (his words are never "
+                                              "dropped); authorizes nothing",
     "src/RimMandrake/rimflow/wake_words.py": "reads OWNER-shard events that carry his words from the ledger; "
                                              "authorizes nothing",
     "design/RimStarWars/canon_references/gpt_review/check_review_complete.py": "compares a review row's disposition "

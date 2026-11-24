@@ -37,8 +37,9 @@ R3 = ("A refusal binds only \"close this hole\". The numbers, day counts, wind b
 R4 = ("Only the owner's promises must be proven. A \"must not read as\" line the Designer added is a tip for thinking "
       "of broken mods, never a separate thing that needs its own test, unless it is the owner's own words or the plain "
       "opposite of the promise.")
-R4_DESIGNER = ("Write at most one \"must not read as\" line per promise; unless it is the owner's own words or the plain "
-               "opposite of the promise, it is a tip for the judge, never a separate thing that needs its own test.")
+R4_DESIGNER = ("Write at most one \"must not read as\" line per promise. - Some \"must not read as\" lines are neither his "
+               "words nor the plain opposite of the promise. Such a line is a tip for the judge. Such a tip never needs "
+               "its own test.")
 J2 = ("Judge the situations exercised and alternatives ruled out, rather than the number of seeds or scenes.",
       "Hunt parameter regimes and regions, not examples.")
 

@@ -63,7 +63,7 @@ else.
     - deleting or overwriting work that is not ours;
     - loosening or removing a bar.
 - **Code:** `src/RimMandrake/rimflow/conductor_acts.py` (the five, the window check, the why rules; page
-  `design/specs/conductor-acts/boundary.md`).
+  `design/specs/2026-11-19-conductor-acts/boundary.md`).
 
 **His cards: the Conductor reviews each one first.**
 - Every question card bound for him passes the Conductor first.
@@ -1321,7 +1321,8 @@ act, or by the Conductor's mindful act in their own sections. The rulings are:
 - his holds:
   - the six biome mods held on 2026-11-16;
   - his OWNER bridge hold's 45 minutes;
-  - his stops, such as the 8:22 PM stop of pipeline reviews on 2026-11-18;
+  - his stops, each until he lifts it (the 8:22 PM stop of pipeline reviews on 2026-11-18 ended by his card of
+    2026-11-23: §A boundary page before pipeline code);
 - the hard per-run spend stop that he ordered (*"Don't let any burn go to 90M this time ok?"*, 2026-11-12, §No launched
   agent is told its spend). Of that stop, only a DEFAULT level with no evidence is in scope of this rule;
 - the account order and leave lines (§Account and capacity budget);
@@ -2735,8 +2736,8 @@ mod right now. They are poorly defined builds right now and the system choked at
 - **Held:** Contagion, Cauldron, FeverWood, GelatinousSlime, LeaningScrub, Stillsand. Those six were the biome mods in
   the pipeline that day.
 - **His words cover every biome mod but Pyrelands** ("Only Pyrelands as a biome mod right now"). So do not start a
-  biome mod that is not on the list either. First put its row in the list. The hold does not touch mods that are not
-  biome mods.
+  biome mod that is not on the list either. When a step would start one, put its row in the list instead. The hold does
+  not touch mods that are not biome mods.
 - **One list, one file:** `src/RimMandrake/rimflow/mod_owner_hold.json` (code `mod_owner_hold.py`). A hold has these
   effects:
   - The Dispatch tick (the timed run of `maturation_dispatch.py`) launches nothing on a held mod: no builder, judge, live
@@ -2799,7 +2800,7 @@ Reset as a mod deliverable."*
   library (`src/RimMandrake/Utils/scene_runner.py`), `LiveSite` in `showcase_common.py` and `wind_burn_live.py` use
   it. The item `RIMMANDRAKE_SAVE_RELOAD_AROUND_EVERY_TEST_SCENE` is closed. Mod settings are not in a save, so a scene
   still puts back the settings that it changed.
-- **Owed:** the harness saves before and reloads after each scene where a live runner does not use it yet.
+- Some older live runners do not use it yet. The run that next changes such a runner adds it, where a scene needs a reset.
 
 ## Todoist is for to-do lists only, never an alert route — owner, 2026-11-19
 
