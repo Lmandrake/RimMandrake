@@ -65,8 +65,8 @@ Tools emit change events with `telemetry_emit.emit_change(kind, subject, sha=, d
 ## Arming the test tier for a live test
 
 Hold the bridge (`rimflow bridge take`), `telemetry tier test --ttl 60`, run the test, `telemetry tier campaign`
-(disarm also dumps the flight recorder). The CAMPAIGN profile (a canonical world save is
-loaded) never runs the 1 s / per-tick tier.
+(disarm also dumps the flight recorder). The companion's CAMPAIGN profile (a save named in
+`infrastructure/state/CANONICAL_SAVE.md` is loaded) never runs the 1 s / per-tick tier.
 
 ## Adding a series or source
 

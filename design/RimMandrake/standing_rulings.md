@@ -916,7 +916,7 @@ What follows from his words:
 - Each other save is disposable. A save that waits for his review stays until he rules
   (§Options he must LOOK at ship as a savegame). That rule keeps the look, not a save of his.
 - A broken game is stopped at once, on any game, also while his hold stands. The stop is reported.
-- His OWNER hold and `./pipe off game:ArchBig` guard a look at staged work. They still bind. The game is never put in
+- His OWNER hold and `./pipe off game:ArchBig` guard a look at staged work. Both still bind. The game is never put in
   fullscreen or in focus, and he controls the clock in a sitting.
 - The CAMPAIGN profile of the companion guards a loaded canonical world save, and guards nothing else
   (`design/RimMandrake/companion_handshake.md`).

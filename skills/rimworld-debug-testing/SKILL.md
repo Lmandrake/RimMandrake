@@ -192,7 +192,7 @@ or ask permission.
 
 - Two limits stay. The first is the canonical world saves (`infrastructure/state/CANONICAL_SAVE.md`). Test on a loaded
   game. Write over a frozen one only as that page allows.
-- The second: his OWNER hold and `./pipe off game:ArchBig` guard his look at staged work on ArchBig. They bind.
+- The second: his OWNER hold and `./pipe off game:ArchBig` guard his look at staged work on ArchBig. Both bind.
 
 ⚙️ **You must still say which map a result came from.** The report is evidence hygiene, not
 preservation, however disposable both maps are.

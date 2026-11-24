@@ -730,7 +730,7 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
 
 - Never write or say "waiting for the live game". Name the game. Say why no other game can take the work.
 - The games have four names: ArchBig, ArchSmall, Steve1 and Steve2. Each game has its own bridge lock:
-  - ArchBig on Archmagi: Steam's install. It holds the full mod list, and the owner looks at staged work there. Lock key
+  - ArchBig on Archmagi: Steam's install. ArchBig holds the full mod list, and the owner looks at staged work there. Lock key
     `archmagi` (the default).
   - ArchSmall on Archmagi: its own install, Mods and BridgeTools (`D:\ClaudeWork\rimmandrake\instances\b\game`). Lock
     key `archmagi.b`.
@@ -752,7 +752,7 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
   - Work that a tier mod list can prove goes to any free game. If ArchBig is busy or held, use ArchSmall or SteveDesktop.
   - Only a check that needs the full mod list must use ArchBig. The full list on ArchSmall beside ArchBig does not fit in
     Archmagi's memory. Such a wait names the checks and ArchBig.
-  - His OWNER hold and `./pipe off game:ArchBig` guard a look. They stop work on ArchBig only. Work then goes to
+  - His OWNER hold and `./pipe off game:ArchBig` guard a look. The hold and the stop act on ArchBig only. Work then goes to
     ArchSmall.
 - A pipeline stage or tick line that reads "needs the live game" while a game is free is a pipeline defect. Fix it.
 - Full text: `design/RimMandrake/standing_rulings.md` §There are several live games. Code:

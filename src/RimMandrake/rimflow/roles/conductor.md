@@ -448,8 +448,9 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
                                              for its readiness list to read READY
 ```
 - There are several live games (owner, 2026-11-20: "There are two live games. ... Please stop saying waiting for the
-  live game."). ArchBig is Steam's install on Archmagi, with the full list (lock `archmagi`). ArchSmall is its own
-  install on Archmagi (lock `archmagi.b`). Steve1 and Steve2 on SteveDesktop take work through
+  live game.").
+  - ArchBig is Steam's install on Archmagi, with the full list (lock `archmagi`).
+  - ArchSmall is its own install on Archmagi (lock `archmagi.b`). Steve1 and Steve2 on SteveDesktop take work through
   `infrastructure/stevedesktop/RUNBOOK.md`. Each game has one bridge holder at a time; two holders may drive two games.
   - Never tell him that work waits for "the live game". Name the game, and say why no other game can take the work.
   - Read `python3 src/RimMandrake/rimflow/game_lock.py query all` before you say that any work waits for a game.
