@@ -1,0 +1,93 @@
+{
+ "sc_walk": {
+  "verdict_fixed": "UNMEASURED",
+  "site_checked": false,
+  "detail": "ArchSmall: tier list only beside ArchBig",
+  "held": [],
+  "class": "SITE",
+  "unrepaired": "ArchSmall cannot hold his full list beside ArchBig in memory, so this check did not run here",
+  "owner": "ArchBig: its full-list run of this check"
+ },
+ "_extra_tests": [
+  "P_firefoam_aim",
+  "P_gate",
+  "firehawk_crestfeather_yield",
+  "firehawk_first_sighting_letter",
+  "sc_fire_walks_with_wind",
+  "sc_sand_shovel"
+ ],
+ "P_furnace_room": {
+  "label": "furnace_room_holing",
+  "class": "MOD",
+  "prior": [
+   {
+    "label": "furnace_room",
+    "class": "MOD",
+    "note": "first run: beast room +0.3 C over the control, both pens openRoofCount 25 after the series"
+   },
+   {
+    "label": "furnace_room_noholing",
+    "class": "MOD",
+    "note": "experiment, not the shipped state: Huge Things wakeRoofHolingEnabled=False (scripts/hugethings_roof.py): PASS, beast room 79.0 C (+24.8), openRoofCount 0; a pen with no beast keeps all 25 roof cells over 600 ticks (evidence/script_roof_probe.log)"
+   }
+  ],
+  "unfixed": "the fix is not known in the sitting: which ruling yields is a design choice (the furnace-beast, body size 9 by owner card 2026-11-15, is a Huge Things T2 titan whose wake holes thin roofs; its description promises it heats a barn). Huge Things offers only a whole opt-out (RM_TitanicExtension forceEnabled=false), or a new per-def roof exemption in Huge Things; either is a new build that re-runs every check",
+  "filed": "RIMMANDRAKE_SPARE_PYRE_FURNACE_BARN_ROOF_FROM_TITAN_WAKE",
+  "detail_prefix": "Huge Things (hard dependency of the composed biomes since 0dc82e3270) rates RM_FurnaceBeast T2 and its wake holes the pen roof; on with defaults: "
+ },
+ "sc_flamefang_venom": {
+  "label": "flamefang_venom2",
+  "class": "HARNESS",
+  "prior": [
+   {
+    "label": "flamefang_venom",
+    "class": "HARNESS",
+    "note": "4 rows UNMEASURED: the declared biter's arrival and its bite latched in one 60-tick sub-step; clockgate refused the resume because a 'hurt' (a kind BITE_STOP_ON leaves out) rode along"
+   }
+  ],
+  "repair": {
+   "class": "HARNESS",
+   "commit": "5e888e1af2acbd603541862378c37113af7d1712",
+   "what": "clockgate.is_fixture_arrival: with an explicit stop_on, a non-critical trigger of a kind the caller did not ask to stop on rides along with a declared fixture's arrival (selftest_clockgate 85/86 on the parent, 86/86 on the fix; default stop_on and death/critical still stop). RIMMANDRAKE_RESUME_FIXTURE_ARRIVAL_PAST_UNASKED_BITE, closed",
+   "planted": {
+    "plant": "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1: the doctor tends the untended patient, as if the tend did nothing",
+    "command": "PYRE_PLANT_VENOM_TEND_WRONG_PATIENT=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains flamefang_venom",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_7/evidence/pv7_flamefang_venom_planted_wrong_tend.json"
+   }
+  }
+ },
+ "sc_grass_regreens": {
+  "label": "embergrass_regrow"
+ },
+ "sc_scorchfruit": {
+  "label": "scorchfruit_with_census",
+  "components": [
+   "scorchfruit_fire_born",
+   "scorchfruit_off_burn_bears_none"
+  ]
+ },
+ "P_scorchfruit_spoils": {
+  "label": "scorchfruit_spoils"
+ },
+ "sc_burn_compounds": {
+  "label": "fresh_burn_bonus2",
+  "prior": [
+   {
+    "label": "fresh_burn_bonus",
+    "class": "SITE",
+    "note": "burn_compounds_with_black_rain UNMEASURED: the old-ash control pad C carried a burn stamp (tick 413443) set during the first row's day-1 wait, 40 cells from that row's firebreaked burn"
+   }
+  ]
+ },
+ "sc_burn_line_walks": {
+  "verdict_fixed": "FAIL",
+  "site_checked": true,
+  "label": "burn_line",
+  "evidence": "design/concepts/Pyrelands/version/in_game/visit_7/evidence/script_line_speed.log",
+  "class": "MOD",
+  "detail": "harness rows 4/4 PASS (present, walks hourly, burned share, off control: evidence/pv7_burn_line.json). The bar's judge clause ('a judge shown them and the whole-map day-end captures confirms a natural grass fire that moves'): this driver (not the maker) reads the front itself as a natural moving grass fire, but lone fires away from it walk as ruler-straight one-cell lanes 20-27 cells long, one cell every ~1,300 ticks along the wind (script_line_speed.log), and the day-end captures show thin straight lines across the map (screenshots/burn_line_dayend_sheet.jpg, burn_line_hourly_sheet.jpg; lanes_burn_line_walking_mask.png). Reproduced offline on the shipped model (evidence/accept_lone_fire_lane.py, 0/8).",
+  "unfixed": "the fix is a kernel design choice (how a single lit cell should spread under the carry: even spread until it is a front, or a widened carry), not known in the sitting; it needs a new kernel build and every check rerun",
+  "filed": "RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT"
+ }
+}

@@ -1,0 +1,8 @@
+before: 11 {"success": true, "readErrors": [], "weather": {"current": "Clear", "last": "Clear", "curWeatherAge": 708, "rainRate": 0.0, "snowRate": 0.0}, "activeConditionCount": 0, "conditions": [], "threatPoints": 35.0, "wealth": {"total": 9864.334, "items": 4041.52, "buildings": 3382.81348, "pawns": 2440.0}, "storyteller": {"def": "Tutor", "difficulty": "Rough", "threatScale": 0.0, "allowBigThreats": false}, "note": "TransitionTo does not HOLD - WeatherDecider rerolls when the duration expires. Use jawa/weather_set lock=true.", "ticksGame": 374001}
+{"success": true, "action": "set", "field": "pyrelandsEnabled", "fieldKind": "static", "valueBefore": "True", "valueAfter": "False", "typeIdentity": {"resolvedVia": "GenTypes", "copiesInAppDomain": 1, "assembly": "FireEcologyHook"}, "ticksGame": 374001}
+after extinguish: 0 gate {"success": true, "method": "Boolean get_On()", "result": "False", "thingArgs": [], "ticksGame": 374001}
+no fire in a day
+{"success": true, "action": "set", "field": "pyrelandsEnabled", "fieldKind": "static", "valueBefore": "False", "valueAfter": "True", "typeIdentity": {"resolvedVia": "GenTypes(cached)", "copiesInAppDomain": 1, "assembly": "FireEcologyHook"}, "ticksGame": 434001}
+[bridge split] 144.1 s wall: load 0.0 / ticks 107.2 / reads 8.7 / other 0.8 / outside calls 27.3 s
+[bridge split] WARN 242 calls of jawa/safe_advance (107.2 s): batch them
+[bridge split] WARN 242 calls of jawa/list_things (5.3 s): batch them

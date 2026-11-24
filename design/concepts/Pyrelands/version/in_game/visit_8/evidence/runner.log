@@ -1,0 +1,66 @@
+START tier 2026-11-23 19:23:02
+DONE furnace_room reload_rc=0 rc=1 49s 19:23:51
+DONE burn_line reload_rc=0 rc=1 771s 19:36:42
+SKIPPED script:design/concepts/Pyrelands/version/in_game/visit_7/scripts/lanes_probe.py (run from visit_8/scripts instead) 19:36:42
+END tier 2026-11-23 19:36:42
+START tier2 2026-11-23 19:36:56
+SKIPPED +script:design/concepts/Pyrelands/version/in_game/visit_8/scripts/lanes_probe.py (run from visit_8/scripts instead) 19:36:56
+DONE script:src/RimMandrake/Pyrelands/wind_burn_live.py reload_rc=0 rc=0 114s 19:38:50
+START tier3 2026-11-23 19:41:12
+KILLED tier2/tier3 (two runners overlapped: a walk_season without PYRE_WALK still running) 19:42; nothing counted from them but wind_burn_live
+START tier3 2026-11-23 19:42:18
+DONE burn_line@burn_line2 reload_rc=1 rc=2 1796s 20:12:14
+INVALID tier3 burn_line2: the game hung at 19:41 (two drivers collided, harness); restarted
+START tier3 2026-11-23 20:13:39
+KILLED tier3 20:15 (the graceful stop had not taken: still the hung process); relaunched
+START tier3 2026-11-23 20:18:00
+DONE burn_line@burn_line2 reload_rc=0 rc=1 1131s 20:36:51
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_8/scripts/lanes_probe.py reload_rc=skipped rc=0 26s 20:37:17
+END tier3 2026-11-23 20:37:17
+START tier3bed 2026-11-23 20:37:17
+DONE walk_season@walk_bed_real reload_rc=0 rc=1 117s 20:39:14
+DONE PYRE_PLANT_BED_MASTER=left_on:walk_season@walk_bed_left_on reload_rc=0 rc=1 35s 20:39:49
+DONE PYRE_PLANT_BED_MASTER=left_off:walk_season@walk_bed_left_off reload_rc=0 rc=1 144s 20:42:13
+END tier3bed 2026-11-23 20:42:13
+START tier4gate 2026-11-23 20:42:28
+DONE PYRE_PLANT_GATE_IGNORED=1:walk_season@walk_gate_planted reload_rc=0 rc=1 174s 20:45:22
+DONE walk_season@walk_gate_real reload_rc=0 rc=1 195s 20:48:37
+END tier4gate 2026-11-23 20:48:37
+START tier5walk 2026-11-23 21:07:28
+STOPPED at walk_season@walk_parts_tier: reload_rc=1 21:07:38
+START tier5 2026-11-23 21:07:38
+DONE burrowers reload_rc=0 rc=1 60s 21:08:38
+DONE firehawk reload_rc=0 rc=1 272s 21:13:10
+DONE firehawk_first_sighting_letter reload_rc=0 rc=1 74s 21:14:24
+DONE plant_census,scorchfruit_fire_born@scorchfruit reload_rc=0 rc=1 215s 21:17:59
+DONE fire_tick_effects reload_rc=0 rc=1 90s 21:19:29
+DONE furnace_warmth reload_rc=0 rc=1 36s 21:20:05
+DONE fresh_burn_bonus reload_rc=0 rc=1 92s 21:21:37
+DONE grass_cover,embergrass_regrow@regrow reload_rc=0 rc=1 522s 21:30:19
+END tier5 2026-11-23 21:30:19
+START tier6walk 2026-11-23 21:30:34
+DONE walk_season@walk_parts_tier reload_rc=0 rc=1 1190s 21:50:24
+END tier6walk 2026-11-23 21:50:24
+START tier7 2026-11-23 21:50:25
+DONE firehawk@firehawk2 reload_rc=0 rc=1 251s 21:54:36
+DONE PYRE_PLANT_FARHAWK_NO_SEEK=1:firehawk@firehawk_planted_no_seek reload_rc=0 rc=1 258s 21:58:54
+DONE fresh_burn_bonus@fresh_burn_bonus2 reload_rc=0 rc=1 1277s 22:20:12
+END tier7 2026-11-23 22:20:12
+START tier8 2026-11-23 22:20:14
+DONE grass_cover,embergrass_regrow@regrow2 reload_rc=0 rc=1 1722s 22:48:56
+END tier8 2026-11-23 22:48:56
+START tier9a 2026-11-23 22:48:57
+DONE walk_season@walk_master_real reload_rc=0 rc=1 424s 22:56:01
+DONE PYRE_PLANT_MASTER=left_on:walk_season@walk_master_left_on reload_rc=0 rc=1 249s 23:00:10
+DONE PYRE_PLANT_MASTER=left_off:walk_season@walk_master_left_off reload_rc=0 rc=1 349s 23:05:59
+END tier9a 2026-11-23 23:05:59
+START tier9b 2026-11-23 23:05:59
+DONE PYRE_PLANT_GATE_IGNORED=1:walk_season@walk_gate_planted2 reload_rc=0 rc=1 238s 23:09:57
+END tier9b 2026-11-23 23:09:57
+START tier9c 2026-11-23 23:09:57
+DONE PYRE_PLANT_ROSTER_IGNORED=1:walk_season@walk_roster_planted reload_rc=0 rc=1 263s 23:14:20
+END tier9c 2026-11-23 23:14:20
+START tier9d 2026-11-23 23:14:20
+DONE animal_census reload_rc=0 rc=1 26s 23:14:46
+DONE burn_line@burn_line3 reload_rc=0 rc=1 1492s 23:39:38
+END tier9d 2026-11-23 23:39:38

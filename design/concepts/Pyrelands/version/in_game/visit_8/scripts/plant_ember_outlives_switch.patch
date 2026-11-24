@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs b/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs
+index 2dd0c0084f..a2afc3d3bb 100644
+--- a/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs
++++ b/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs
+@@ -70,7 +70,6 @@ namespace RimMandrake.Pyrelands
+             }
+             this.FailOn(() => !job.GetTarget(SourceCellInd).IsValid);
+             // A hawk already carrying when a switch goes off lets the ember die: no fire is lit after "Mod enabled" or the spread switch.
+-            this.FailOn(() => !PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.fireHawkSpreadEnabled);
+ 
+             yield return Toils_Goto.GotoCell(SourceCellInd, PathEndMode.Touch);
+ 

@@ -1,0 +1,16 @@
+[modcheck] chain walk_season START 03:39:09Z
+[pyre-note] heat guard (row start, row walk_reload_keeps_the_state): {"cleared": [["Human75699", 0.0094]], "failed": [], "read": true}
+[pyre-note] colony vitals after walk_reload_keeps_the_state: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 19:39:09 walk_reload_keeps_the_state UNMEASURED UNMEASURED: the two-week walk runs only with PYRE_WALK=1 (full list, Stage 6)
+[pyre-note] heat guard (every 6000 ticks, row walk_second_pass_and_switches): {"cleared": [["Human75699", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row walk_second_pass_and_switches): {"cleared": [["Human75699", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row walk_second_pass_and_switches): {"cleared": [["Human75699", 0.0308]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row walk_second_pass_and_switches): {"cleared": [["Human75699", 0.0304]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row walk_second_pass_and_switches): {"cleared": [["Human75699", 0.0176]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row walk_second_pass_and_switches): {"cleared": [["Human75699", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row walk_second_pass_and_switches): {"cleared": [["Human75699", 0.0371]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row walk_second_pass_and_switches): {"cleared": [["Human75699", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row walk_second_pass_and_switches): {"cleared": [["Human75699", 0.0038]], "failed": [], "read": true}
+GOVERNOR_STOP {"utc": "2026-11-24T03:41:15Z", "message": "safe_advance aborted after 540 of 2000 tick(s): map_gone: start map #1 is no longer in Find.Maps", "state": "aborted", "executed": 540, "requested": 2000, "stopBy": null, "refused": null, "abortWhy": "map_gone: start map #1 is no longer in Find.Maps", "triggers": [], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "Pyrelands", "--plan", "src/RimMandrake/Pyrelands/northstar_plan.py", "--no-record", "--chains", "walk_season", "--out", "design/concepts/Pyrelands/version/in_game/visit_8/evidence/pv8_walk_bed_left_on.json"]}
+[pyre-note] colony vitals after walk_second_pass_and_switches: {"colonists": 0, "offsite": 0, "damage": ["Human75696 died during the row", "Human75699 died during the row", "Human75703 died during the row"]}
+[pyre] 19:41:15 walk_second_pass_and_switches UNMEASURED UNMEASURED: RESTART (damage to the test, not a verdict): Human75696 died during the row; Human75699 died during the row; Human75703 died during the row

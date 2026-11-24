@@ -1,0 +1,136 @@
+[
+ {
+  "test": "P_furnace_room",
+  "label": "furnace_room",
+  "identity": "identity_pyrelands_before_hawkfix.json",
+  "mod_sha": "454764adbe",
+  "note": "beast room 81.8 C, control 56.0 C, 0 open roof cells (Huge Things at its defaults)"
+ },
+ {
+  "test": "sc_burn_line_walks",
+  "label": "burn_line",
+  "identity": "identity_pyrelands_before_hawkfix.json",
+  "mod_sha": "ee7c70bbf9",
+  "outcome": "APPARATUS FAULT",
+  "note": "our clock's stop, not the mod's: safe_advance stops on harm to wildlife, which this read does not look at. The stop: a wild barbslinger downed a wild fire wasp on day 4 (GOVERNOR_STOP in run_burn_line.log, tick 606559). What hurt the animal is not read. Fixed by the wildlife shield"
+ },
+ {
+  "test": "sc_burn_line_walks",
+  "label": "burn_line2",
+  "identity": "identity_pyrelands_before_hawkfix.json",
+  "mod_sha": "05d3da7407",
+  "note": "with the wildlife shield (05d3da7407); lanes_probe on its walking save: strand share 0.046 (limit 0.25), no one-cell run; naive GPT judge of the hourly and day-end captures: YES (evidence/burn_line_naive_judge_gpt.md)"
+ },
+ {
+  "test": "sc_burn_line_walks",
+  "label": "burn_line3",
+  "identity": "identity_pyrelands_final.json",
+  "mod_sha": "259988da10",
+  "note": "the shield's last edit (6e9257a1af) touches this check, so it ran again; judge reading as burn_line2's"
+ },
+ {
+  "test": "sc_fire_walks_with_wind",
+  "label": "wind_burn_live",
+  "identity": "identity_pyrelands_before_hawkfix.json",
+  "mod_sha": "ee7c70bbf9",
+  "script": "script_wind_burn_live.log"
+ },
+ {
+  "test": "sc_ashwallow",
+  "label": "burrowers",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "4ae211941a"
+ },
+ {
+  "test": "sc_firehawk",
+  "label": "firehawk",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "4ae211941a",
+  "outcome": "APPARATUS FAULT",
+  "class": "SITE",
+  "unrepaired": null,
+  "detail": "firehawk_carries_ember PASS; far_hawk_seeks_the_burn FAIL: the spawned hawk was thirsty; RM_DrinkFromTerrain flew it from 104 to 44 cells, inside the ember reach, so the carry took over and the seek band was never tried; far_hawk_spread_off_control PASS"
+ },
+ {
+  "test": "sc_firehawk",
+  "label": "firehawk2",
+  "identity": "identity_pyrelands_final.json",
+  "mod_sha": "f83b30b60a",
+  "class": "SITE",
+  "repair": {
+   "class": "SITE",
+   "commit": "f83b30b60ac2ca89053d39c3d82627d0e2bfa2a6",
+   "what": "the far hawk starts watered and fed",
+   "planted": {
+    "plant": "PYRE_PLANT_FARHAWK_NO_SEEK=1: fireHawkSpreadEnabled off for the row, as if the hawk never sought",
+    "command": "PYRE_PLANT_FARHAWK_NO_SEEK=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_8/evidence/pv8_firehawk_planted_no_seek.json"
+   }
+  }
+ },
+ {
+  "test": "sc_firehawk_rewards",
+  "label": "firehawk_first_sighting_letter",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "4ae211941a"
+ },
+ {
+  "test": "firehawk_first_sighting_letter",
+  "label": "firehawk_first_sighting_letter",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "4ae211941a"
+ },
+ {
+  "test": "sc_scorchfruit",
+  "label": "scorchfruit",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "4ae211941a"
+ },
+ {
+  "test": "sc_fire_dusts_ash",
+  "label": "fire_tick_effects",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "4ae211941a"
+ },
+ {
+  "test": "sc_furnace",
+  "label": "furnace_warmth",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "4ae211941a"
+ },
+ {
+  "test": "sc_burn_compounds",
+  "label": "fresh_burn_bonus",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "4ae211941a",
+  "outcome": "APPARATUS FAULT",
+  "note": "our clock's stop, not the mod's: safe_advance stops on harm to wildlife, which this read does not look at. The stop: a wild barbslinger downed a wild fire-hawk on day 1 (GOVERNOR_STOP in run_fresh_burn_bonus.log). What hurt the animal is not read. Fixed by the wildlife shield"
+ },
+ {
+  "test": "sc_burn_compounds",
+  "label": "fresh_burn_bonus2",
+  "identity": "identity_pyrelands_final.json",
+  "mod_sha": "6e9257a1af"
+ },
+ {
+  "test": "sc_grass_regreens",
+  "label": "regrow",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "4ae211941a",
+  "outcome": "APPARATUS FAULT",
+  "note": "our clock's stop, not the mod's: safe_advance stops on harm to wildlife, which this read does not look at. The stop: a wild nuna hen was downed beside a burned flamefang (GOVERNOR_STOP in run_regrow.log). What hurt the animal is not read. Fixed by the wildlife shield"
+ },
+ {
+  "test": "sc_grass_regreens",
+  "label": "regrow2",
+  "identity": "identity_pyrelands_final.json",
+  "mod_sha": "6e9257a1af"
+ },
+ {
+  "test": "P_animal_census",
+  "label": "animal_census",
+  "identity": "identity_pyrelands_final.json",
+  "mod_sha": "259988da10"
+ }
+]

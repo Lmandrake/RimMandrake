@@ -105,17 +105,17 @@
   "test_blob": "e9bc063b23c724c03dc083e4fe903a476d17771b"
  },
  "T_SETTINGS_SWEEP_OFFLINE": {
-  "at": "2026-11-23T23:24:06Z",
+  "at": "2026-11-24T06:21:02Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "last": "FAIL: the unchanged copy is not green",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs b/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs\nindex 0dce249108..66ba23572f 100644\n--- a/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs\n+++ b/src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs\n@@ -56,7 +56,7 @@ namespace RimMandrake.Pyrelands\n \n         public override void MapComponentTick()\n         {\n-            if (!RM_PyrelandsSettings.sprayerFoamsPathEnabled || SprayerDef == null) return;\n+            if (SprayerDef == null) return;\n             if (map.listerThings.ThingsOfDef(ThingDefOf.Fire).Count == 0) return;\n             List<Pawn> pawns = map.mapPawns.SpawnedPawnsInFaction(Faction.OfPlayer);\n             for (int i = 0; i < pawns.Count; i++)\n",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs b/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs\nindex 2dd0c0084f..a2afc3d3bb 100644\n--- a/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs\n+++ b/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs\n@@ -70,7 +70,6 @@ namespace RimMandrake.Pyrelands\n             }\n             this.FailOn(() => !job.GetTarget(SourceCellInd).IsValid);\n             // A hawk already carrying when a switch goes off lets the ember die: no fire is lit after \"Mod enabled\" or the spread switch.\n-            this.FailOn(() => !PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.fireHawkSpreadEnabled);\n \n             yield return Toils_Goto.GotoCell(SourceCellInd, PathEndMode.Touch);\n \n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/Source/PyrelandsFoamPath.cs"
+   "src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs"
   ],
-  "patch_sha": "d8be776eb15c6ffe",
+  "patch_sha": "cbc6a2db02250849",
   "rc": 1,
-  "test_blob": "a408e7fe34b34b66b03acac809dc452a8f00c1c1"
+  "test_blob": "12bcd42b162d14551a204a57cfc8e5dcfe58c5a8"
  },
  "T_SITE": {
   "at": "2026-11-23T12:31:32Z",
