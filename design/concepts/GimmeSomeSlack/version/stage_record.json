@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "GimmeSomeSlack",
   "version": "0.2.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-24T10:54:01-08:00",
-  "since_from": "advance by DISPATCH",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-24T14:55:20-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-23T02:24:49-08:00",
@@ -17,7 +17,7 @@
     "visit": 1,
     "total": 1
   },
-  "pre_human_arrivals": 1,
+  "pre_human_arrivals": 2,
   "spend": [],
   "moves": [
     {
@@ -176,6 +176,27 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-24T14:55:20-08:00",
+      "by": "BENCH",
+      "why": "RIMMANDRAKE_RECORD_SLACK_VERSION_PASS_AFTER_HIS_WALK_ALL_STATIONS_PASSED: visit 4, 208 of 208 in-game checks PASS on the build he walked; its one owed fresh read of 5bfe7b4d0e is sound (visit_4/fix_reviews.jsonl); he passed his walk (OWNER:1795551645304319538); the Conductor relaunched this item for the pass",
+      "unit": "rm-detached-bench-rimmandrake-record-slack-version-pass-af-1795560142",
+      "confirmed": {
+        "steward_confirms": "Read visit_4/SUMMARY.md and fix_reviews.jsonl: 208 of 208 PASS on folder sha256:b7a89e075b4d (1e22ca37eb), build_match 208 count and 0 to run as recorded by the visit's run, no mod-wrong line, no bar undecided; ship_to_ground_wire_snaps read live 3 of 3 (its take-off message was read in code only); fresh read of 5bfe7b4d0e by this run: red at the parent (16 of 16 lamps, 766 of 766 cords), green at the commit. This run did not rerun the 208 rows. The exit is met."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match",
+        "unrun_run"
       ]
     }
   ]
