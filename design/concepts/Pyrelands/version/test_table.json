@@ -177,11 +177,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 101.01,
+    "seconds": 89.69,
     "last": "Pyrelands lint planted-defect selftest: 30/30 ok",
-    "at": "2026-11-24T10:00:20Z",
+    "at": "2026-11-24T14:43:06Z",
     "result": "PASS",
-    "build": "b5552840b628663cf880",
+    "build": "a9cefc447eb4f03cab32",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_lint.py",
     "margins": []
    }
@@ -223,11 +223,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.08,
+    "seconds": 0.09,
     "last": "selftest_pyrelands_burn_cost: PASS (fire postfix closure-free, burrow scan throttled x30 and disc-bounded)",
-    "at": "2026-11-23T22:08:14Z",
+    "at": "2026-11-24T14:43:06Z",
     "result": "PASS",
-    "build": "f8c7a17a5647e9bda343",
+    "build": "456c532a00610def65d1",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_burn_cost.py",
     "margins": []
    }
@@ -292,11 +292,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.84,
+    "seconds": 6.0,
     "last": "PASS: 0 failure(s)",
-    "at": "2026-11-24T12:29:47Z",
+    "at": "2026-11-24T14:43:12Z",
     "result": "PASS",
-    "build": "c5ec3991139f6ad6c9f3",
+    "build": "8cd2e95337f059f91f9b",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
     "margins": []
    }
@@ -359,11 +359,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.12,
+    "seconds": 0.14,
     "last": "settings screens selftest: 14/14 ok (mods: Pyrelands)",
-    "at": "2026-11-23T23:31:20Z",
+    "at": "2026-11-24T14:43:12Z",
     "result": "PASS",
-    "build": "4528a1d7143372a8fd6a",
+    "build": "70e8f2ca74fa94083052",
     "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands",
     "margins": []
    }
@@ -429,9 +429,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "selftest_pyrelands_firehawk_letter: PASS",
-    "at": "2026-11-23T23:31:20Z",
+    "at": "2026-11-24T14:43:12Z",
     "result": "PASS",
-    "build": "b738dbd683e029a0dcbb",
+    "build": "52df8f89e851a1f7c770",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_letter.py",
     "margins": []
    }
@@ -476,11 +476,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 7.07,
-    "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 35 of 35 mutants red, the clean copy green",
-    "at": "2026-11-24T10:00:34Z",
+    "seconds": 9.24,
+    "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 48 of 48 mutants red, the clean copy green",
+    "at": "2026-11-24T14:43:22Z",
     "result": "PASS",
-    "build": "8940ff7b660b976c49e9",
+    "build": "490e6e1367c013a7261d",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
     "margins": []
    }
@@ -575,11 +575,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.77,
+    "seconds": 1.68,
     "last": "PASS: the probe reads cells part by part and refuses with the ash field off; 8 mutants red",
-    "at": "2026-11-23T00:13:46Z",
+    "at": "2026-11-24T14:43:23Z",
     "result": "PASS",
-    "build": "7b0844ce6b52d42d0924",
+    "build": "567b2107a49bbb5928fe",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_ash_probe.py",
     "margins": []
    }
@@ -1692,11 +1692,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.62,
+    "seconds": 0.72,
     "last": "PASS: payload FindMod-guarded on its own target, mutator ports mapped, text generic, cross-biome labelled unsupported; 8 of 8 mutants red, the clean copy green",
-    "at": "2026-11-23T23:33:28Z",
+    "at": "2026-11-24T14:43:24Z",
     "result": "PASS",
-    "build": "4c4dbce584ccd0aa7459",
+    "build": "b2a30f802b62db046311",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py",
     "margins": []
    }
@@ -1715,11 +1715,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 6.68,
+    "seconds": 6.1,
     "last": "PASS: 0 of 18 checks failed",
-    "at": "2026-11-24T12:29:55Z",
+    "at": "2026-11-24T14:43:31Z",
     "result": "PASS",
-    "build": "8a512f66dc09611eb0c5",
+    "build": "25022aaeae6afa38eee0",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
     "margins": []
    }

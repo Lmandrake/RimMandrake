@@ -105,17 +105,17 @@
   "test_blob": "e9bc063b23c724c03dc083e4fe903a476d17771b"
  },
  "T_SETTINGS_SWEEP_OFFLINE": {
-  "at": "2026-11-24T06:21:02Z",
+  "at": "2026-11-24T14:43:50Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "last": "FAIL: the unchanged copy is not green",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs b/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs\nindex 2dd0c0084f..a2afc3d3bb 100644\n--- a/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs\n+++ b/src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs\n@@ -70,7 +70,6 @@ namespace RimMandrake.Pyrelands\n             }\n             this.FailOn(() => !job.GetTarget(SourceCellInd).IsValid);\n             // A hawk already carrying when a switch goes off lets the ember die: no fire is lit after \"Mod enabled\" or the spread switch.\n-            this.FailOn(() => !PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.fireHawkSpreadEnabled);\n \n             yield return Toils_Goto.GotoCell(SourceCellInd, PathEndMode.Touch);\n \n",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs b/src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs\nindex 313af437c0..21ecf5c7d2 100644\n--- a/src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs\n@@ -28,8 +28,8 @@ namespace RimMandrake.Pyrelands\n     /// ground for PyrelandsTuning.BurrowTimeoutCooldownTicks; without that the\n     /// giver would re-issue the burrow at once. AddFinishAction removes the\n     /// hediff on every exit path \u2014 safe emergence, timeout, the job being\n-    /// interrupted by damage or capture, the gate or burrow switch going off,\n-    /// or the pawn dying \u2014 so the hediff can never outlive the job that granted it.\n+    /// interrupted by damage or capture, or the pawn dying \u2014 so the hediff\n+    /// can never outlive the job that granted it.\n     /// </summary>\n     public class RM_JobDriver_Burrow : JobDriver\n     {\n@@ -65,7 +65,6 @@ namespace RimMandrake.Pyrelands\n         protected override IEnumerable<Toil> MakeNewToils()\n         {\n             this.FailOn(() => pawn.Dead);\n-            this.FailOn(() => !PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.burrowOnFireEnabled);\n \n             yield return Toils_General.Do(() => ApplyBurrowedHediff(pawn));\n \n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs"
+   "src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs"
   ],
-  "patch_sha": "cbc6a2db02250849",
+  "patch_sha": "31ba0a086b5fa9e7",
   "rc": 1,
-  "test_blob": "12bcd42b162d14551a204a57cfc8e5dcfe58c5a8"
+  "test_blob": "95a5114462e102d33764e9b9e93d103f792a4178"
  },
  "T_SITE": {
   "at": "2026-11-23T12:31:32Z",
