@@ -5,7 +5,7 @@ Work of 2026-11-24. Pyrelands has its own run. Every claim is tagged. The full t
 **Your three questions.** What is tested? Should a script test it? What is the minimum test?
 
 **Short answer.**
-- The same fault is in eleven of eleven other mods that have scenes. [measured]
+- The same fault is in all eleven other mods that have scenes. [measured]
 - The long scenes mostly repeat claims that a small scene or an offline test decides already. [measured for the three in-game mods]
 - In the in-game mods, the eleven scenes below ran 143 times and did not pass 77 times. [measured]
 - Nine of them carry times, and those add to 16,034 s. [measured]
