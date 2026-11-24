@@ -428,6 +428,10 @@ namespace JawaBench.BridgeTools
             public object Prev;
             public bool HasStart;
             public long Start;
+            // the last reading (Evaluator.Records)
+            public bool? RV;
+            public string RStatus, RDetail;
+            public object RPv;
             public Node(string kind, string id) { Kind = kind; Id = id; }
             public void Reset() { HasPrev = false; Prev = null; HasStart = false; Start = 0; }
         }
@@ -915,6 +919,8 @@ namespace JawaBench.BridgeTools
             return r;
         }
 
+        static readonly object BoxTrue = true, BoxFalse = false;
+
         internal sealed class Evaluator
         {
             readonly IProbeSource _src;
@@ -984,30 +990,38 @@ namespace JawaBench.BridgeTools
                 return rr;
             }
 
-            Tri EvalNode(Node n, long tick, List<object> outl)
+            /// <summary>Evaluate one node and keep its reading ON the node. No record object is made here: a run that is stepped
+            /// on every tick must not allocate in its steady state (build_spec 1.6); <see cref="Records"/> makes them when asked.</summary>
+            Tri EvalNode(Node n, long tick)
             {
                 NodeEvals++;
-                var r = new Dictionary<string, object> { { "id", n.Id } };
-                outl.Add(r);
                 object pv = null;
                 bool? v;
                 string st, de;
                 if (n.Kind == "all" || n.Kind == "any")
                 {
-                    var res = new List<Tri>();
-                    foreach (var c in n.Children) res.Add(EvalNode(c, tick, outl));
-                    var k = Kleene(n.Kind, res);
-                    v = k.V; st = k.Status; de = k.Detail;
+                    // Kleene: a decisive child wins, else the first unknown, else the other value. Every child is evaluated.
+                    bool want = n.Kind == "any", decided = false, unk = false;
+                    string ust = null, ude = null;
+                    foreach (var c in n.Children)
+                    {
+                        var t = EvalNode(c, tick);
+                        if (t.V == want) decided = true;
+                        else if (t.V == null && !unk) { unk = true; ust = t.Status; ude = t.Detail; }
+                    }
+                    if (decided) { v = want; st = "ok"; de = ""; }
+                    else if (unk) { v = null; st = ust; de = ude; }
+                    else { v = !want; st = "ok"; de = ""; }
                 }
                 else if (n.Kind == "not")
                 {
-                    var c = EvalNode(n.Children[0], tick, outl);
+                    var c = EvalNode(n.Children[0], tick);
                     st = c.Status; de = c.Detail;
                     v = c.V == null ? (bool?)null : !c.V.Value;
                 }
                 else if (n.Kind == "alarm")
                 {
-                    var c = EvalNode(n.Children[0], tick, outl);
+                    var c = EvalNode(n.Children[0], tick);
                     v = c.V; st = c.Status; de = c.Detail;
                 }
                 else if (n.Kind == "cmp")
@@ -1041,7 +1055,7 @@ namespace JawaBench.BridgeTools
                 }
                 else if (n.Kind == "edge")
                 {
-                    var c = EvalNode(n.Children[0], tick, outl);
+                    var c = EvalNode(n.Children[0], tick);
                     st = c.Status; de = c.Detail;
                     if (c.V == null)
                     {
@@ -1054,12 +1068,12 @@ namespace JawaBench.BridgeTools
                         else if (n.Dir == "rise") v = (bool)n.Prev == false && c.V.Value;
                         else v = (bool)n.Prev && !c.V.Value;
                         n.HasPrev = true;
-                        n.Prev = c.V.Value;
+                        n.Prev = c.V.Value ? BoxTrue : BoxFalse;
                     }
                 }
                 else if (n.Kind == "stays")
                 {
-                    var c = EvalNode(n.Children[0], tick, outl);
+                    var c = EvalNode(n.Children[0], tick);
                     st = c.Status; de = c.Detail;
                     if (c.V == true)
                     {
@@ -1075,10 +1089,7 @@ namespace JawaBench.BridgeTools
                 else throw new InvalidOperationException(n.Kind);
                 if (v != null) { st = "ok"; de = ""; }
                 else if (n.Optional) { v = false; de = st + ": " + de; st = "ignored"; }
-                r["v"] = v;
-                r["status"] = st;
-                if (st != "ok") r["detail"] = de;
-                if (n.Kind == "cmp" || n.Kind == "changed") r["pv"] = pv;
+                n.RV = v; n.RStatus = st; n.RDetail = de; n.RPv = pv;
                 return new Tri(v, st, de);
             }
 
@@ -1087,25 +1098,40 @@ namespace JawaBench.BridgeTools
                 if (st == "error" && FirstError == null) FirstError = de;
             }
 
-            public Tri Evaluate(Node tree, long tick, out List<object> records)
+            public Tri Evaluate(Node tree, long tick)
             {
-                records = new List<object>();
                 FirstError = null;
-                var t = EvalNode(tree, tick, records);
+                var t = EvalNode(tree, tick);
                 if (t.Status == "ignored") t.Status = "ok";
                 return t;
             }
+
+            public Tri Evaluate(Node tree, long tick, out List<object> records)
+            {
+                var t = Evaluate(tree, tick);
+                records = Records(tree);
+                return t;
+            }
+
+            /// <summary>The per-node records of the tree's LAST evaluation, parent before child.</summary>
+            public static List<object> Records(Node tree)
+            {
+                var outl = new List<object>();
+                AddRecord(tree, outl);
+                return outl;
+            }
+
+            static void AddRecord(Node n, List<object> outl)
+            {
+                var r = new Dictionary<string, object> { { "id", n.Id }, { "v", n.RV }, { "status", n.RStatus } };
+                if (n.RStatus != "ok") r["detail"] = n.RDetail;
+                if (n.Kind == "cmp" || n.Kind == "changed") r["pv"] = n.RPv;
+                outl.Add(r);
+                foreach (var c in n.Children) AddRecord(c, outl);
+            }
         }
 
-        static Tri Kleene(string kind, List<Tri> res)
-        {
-            bool want = kind == "any";
-            foreach (var t in res) if (t.V == want) return new Tri(want, "ok", "");
-            foreach (var t in res) if (t.V == null) return new Tri(null, t.Status, t.Detail);
-            return new Tri(!want, "ok", "");
-        }
-
-        static bool SameValue(object a, object b)
+        internal static bool SameValue(object a, object b)
         {
             if (JType(a) != JType(b)) return false;
             if (IsNum(a)) return Num(a) == Num(b);
@@ -1189,7 +1215,8 @@ namespace JawaBench.BridgeTools
             readonly Func<double> _clockMs;
             public string State = "running";
             public long? HitTick;
-            List<object> _values = new List<object>(), _atArm = new List<object>();
+            List<object> _atArm = new List<object>();
+            bool _evaluated;
             bool _trueAtArm;
             long _tickFrom, _tickTo;
             object _epoch;
@@ -1213,10 +1240,13 @@ namespace JawaBench.BridgeTools
                 _clockMs = clockMs;
             }
 
-            Tri Timed(Node tree, long tick, out List<object> recs)
+            /// <summary>The until tree's records as of its last evaluation.</summary>
+            List<object> Values() { return _evaluated ? Evaluator.Records(_c.Tree) : new List<object>(); }
+
+            Tri Timed(Node tree, long tick)
             {
                 double t0 = _clockMs != null ? _clockMs() : 0.0;
-                var t = _ev.Evaluate(tree, tick, out recs);
+                var t = _ev.Evaluate(tree, tick);
                 if (_clockMs != null)
                 {
                     double ms = _clockMs() - t0;
@@ -1228,10 +1258,9 @@ namespace JawaBench.BridgeTools
 
             Tri EvalUntil(long tick)
             {
-                List<object> recs;
-                var t = Timed(_c.Tree, tick, out recs);
+                var t = Timed(_c.Tree, tick);
                 _evals++;
-                _values = recs;
+                _evaluated = true;
                 if (t.V == null)
                 {
                     if (_gapOpen == null)
@@ -1250,8 +1279,7 @@ namespace JawaBench.BridgeTools
                 foreach (var w in _c.Watch)
                 {
                     if (w.Disarmed != null) continue;
-                    List<object> recs;
-                    var t = Timed(w.Tree, tick, out recs);
+                    var t = Timed(w.Tree, tick);
                     if (_ev.FirstError != null)
                     {
                         w.Disarmed = new Dictionary<string, object> { { "tick", (double)tick }, { "why", "error: " + _ev.FirstError } };
@@ -1264,7 +1292,7 @@ namespace JawaBench.BridgeTools
                         w.Events++;
                         var ev = new Dictionary<string, object>
                         {
-                            { "name", w.Name }, { "seq", (double)_seq }, { "tick", (double)tick }, { "values", recs },
+                            { "name", w.Name }, { "seq", (double)_seq }, { "tick", (double)tick }, { "values", Evaluator.Records(w.Tree) },
                         };
                         if (w.Tree.Kind == "alarm")
                         {
@@ -1305,7 +1333,7 @@ namespace JawaBench.BridgeTools
 
             Dictionary<string, object> DescribeUnknown(string st, string de)
             {
-                var r = FirstUnknown(_values);
+                var r = FirstUnknown(Values());
                 return new Dictionary<string, object> { { "id", r != null ? r["id"] : null }, { "status", st }, { "detail", de } };
             }
 
@@ -1317,7 +1345,7 @@ namespace JawaBench.BridgeTools
                 foreach (var n in WalkNodes(_c)) n.Reset();
                 _ev.ArmRings(AllProbes(_c));
                 var t = EvalUntil(tick);
-                _atArm = _values;
+                _atArm = Values();
                 EvalWatch(tick);
                 TakeSample(0, tick);
                 if (t.V == true)
@@ -1367,6 +1395,7 @@ namespace JawaBench.BridgeTools
                     unk = t.V == null && _c.OnUnknown == "stop";
                 }
                 TakeSample(k, tick);
+                if (!hit && !unk && string.IsNullOrEmpty(stop) && k < _c.MaxTicks) return;   // the steady state: nothing to say
                 var trig = new List<object>();
                 if (hit)
                 {
@@ -1415,7 +1444,7 @@ namespace JawaBench.BridgeTools
                 return new Dictionary<string, object>
                 {
                     { "runKey", _c.RunKey }, { "state", State }, { "hitTick", HitTick.HasValue ? (object)(double)HitTick.Value : null },
-                    { "values", _values }, { "atArm", _atArm }, { "trueAtArm", _trueAtArm },
+                    { "values", Values() }, { "atArm", _atArm }, { "trueAtArm", _trueAtArm },
                     { "executed", (double)(_tickTo - _tickFrom) }, { "tickFrom", (double)_tickFrom }, { "tickTo", (double)_tickTo },
                     { "epoch", _epoch }, { "triggers", _triggers }, { "unknown", _unknown },
                     { "coverage", new Dictionary<string, object>

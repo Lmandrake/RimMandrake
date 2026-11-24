@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,7 +52,23 @@ namespace JawaBench.BridgeTools
             _findThing = findThing;
         }
 
-        static CondRead Ok(object v) { return new CondRead(v, "ok", ""); }
+        static CondRead Ok(string v) { return new CondRead(v, "ok", ""); }
+        static CondRead Ok(bool v) { return new CondRead(v ? BoxTrue : BoxFalse, "ok", ""); }
+        static CondRead Ok(double v) { return new CondRead(Box(v), "ok", ""); }
+
+        // A run stepped on every tick allocates nothing in its steady state (build_spec 1.6): a number that was boxed a moment
+        // ago is handed out again. Direct-mapped, main thread only, like every read here.
+        static readonly object BoxTrue = true, BoxFalse = false;
+        const int BoxSlots = 1024;
+        static readonly object[] Boxes = new object[BoxSlots];
+        static object Box(double v)
+        {
+            long bits = BitConverter.DoubleToInt64Bits(v);
+            int i = (int)(((ulong)bits * 11400714819323198485UL) >> 54);
+            object b = Boxes[i];
+            if (b != null && BitConverter.DoubleToInt64Bits((double)b) == bits) return b;
+            return Boxes[i] = v;
+        }
         static CondRead St(string status, string detail) { return new CondRead(null, status, detail); }
 
         internal static Map MapById(int id)
@@ -386,8 +403,12 @@ namespace JawaBench.BridgeTools
                 else { why = "no field or property '" + n + "' on " + cur.FullName; return null; }
             }
             if (!Readable(cur)) { why = "path '" + path + "' ends at " + cur.FullName + ": want a number, bool, string, enum or Def"; return null; }
+            var fast = FastPath(root, path, cur);
             return o =>
             {
+                // The compiled chain allocates nothing. It answers numbers and bools; a null link (or anything it throws) falls
+                // to the reflective walk below, which names the link.
+                if (fast != null && o != null) { try { return fast(o); } catch (Exception) { } }
                 object v = o;
                 for (int i = 0; i < steps.Count; i++)
                 {
@@ -396,6 +417,37 @@ namespace JawaBench.BridgeTools
                 }
                 return Convert(v);
             };
+        }
+
+        /// <summary>The path as one compiled getter (private members included), for a chain that ends in a number or a bool; null
+        /// when the chain is not of that shape or the runtime cannot compile it.</summary>
+        static Func<object, CondRead> FastPath(Type root, string path, Type leaf)
+        {
+            bool isBool = leaf == typeof(bool);
+            if (!isBool && !(leaf.IsPrimitive && leaf != typeof(char) && leaf != typeof(IntPtr) && leaf != typeof(UIntPtr))) return null;
+            try
+            {
+                var arg = Expression.Parameter(typeof(object), "o");
+                Expression e = Expression.Convert(arg, root);
+                foreach (var raw in path.Split('.'))
+                {
+                    string n = raw.Trim();
+                    MemberInfo m = null;
+                    for (var ty = e.Type; ty != null && m == null; ty = ty.BaseType)
+                        m = (MemberInfo)ty.GetField(n, Inst | BindingFlags.DeclaredOnly) ?? ty.GetProperty(n, Inst | BindingFlags.DeclaredOnly);
+                    var f = m as FieldInfo;
+                    if (f != null) e = Expression.Field(e, f);
+                    else e = Expression.Property(e, (PropertyInfo)m);
+                }
+                if (isBool)
+                {
+                    var b = Expression.Lambda<Func<object, bool>>(e, arg).Compile();
+                    return o => Ok(b(o));
+                }
+                var d = Expression.Lambda<Func<object, double>>(Expression.Convert(e, typeof(double)), arg).Compile();
+                return o => Ok(d(o));
+            }
+            catch (Exception) { return null; }
         }
 
         static bool Readable(Type t)
@@ -408,8 +460,9 @@ namespace JawaBench.BridgeTools
         static CondRead Convert(object v)
         {
             if (v == null) return St("error", "value is null");
-            if (v is bool) return Ok(v);
-            if (v is string) return Ok(v);
+            if (v is bool) return Ok((bool)v);
+            var str = v as string;
+            if (str != null) return Ok(str);
             if (v is Enum) return Ok(v.ToString());
             var d = v as Def;
             if (d != null) return Ok(d.defName);

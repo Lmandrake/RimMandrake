@@ -1,0 +1,250 @@
+// JawaBenchSceneTickCore.cs - one scene run, stepped at the end of each tick: the PURE half (no Verse, no Unity, no Harmony).
+// Item RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED. Page: design/specs/2026-11-23-bridge-v2/boundary.md (the trace
+// schema, the evidence contract, the promises). It joins the condition run (JawaBenchCondCore.CondRun, built 2026-11-06 and
+// never run in a tick) to a tick: sample, conditions, end test, act steps, in that order. It judges nothing.
+//
+// Compiled into bridgetools/SceneTickSelfTest as well: a `using Verse;` here breaks that build, which is the guard rail.
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+
+namespace JawaBench.BridgeTools
+{
+    /// <summary>What a run needs of the game and of the disk writer.</summary>
+    internal interface ISceneHost
+    {
+        /// <summary>One record line of kind `scene`. Returns the line's sequence number, or -1 when the writer dropped it.</summary>
+        long Enqueue(string fields);
+        /// <summary>True when the writer has nothing left to write.</summary>
+        bool Drained();
+        /// <summary>Pause the game now. False when the speed, read back, is not Paused.</summary>
+        bool Pause();
+        long Tick();
+        ulong RandState();
+        double NowMs();
+        /// <summary>Bytes allocated so far (a calibrated counter), or null when none is calibrated.</summary>
+        long? AllocBytes();
+    }
+
+    internal static class JawaBenchSceneTickCore
+    {
+        internal const string Schema = "scene_trace_v1";
+        internal const double DrainMs = 60000;      // boundary page, LIMITS
+
+        internal sealed class Act
+        {
+            public readonly string Name;
+            public readonly long At;                // ticks after the start, at least 1
+            public readonly Func<string> Do;        // what it did; an exception is "not delivered"
+            public bool Done;
+            public Act(string name, long at, Func<string> act) { Name = name; At = at; Do = act; }
+        }
+
+        internal sealed class Track
+        {
+            public string Name;
+            public JawaBenchCondCore.Probe Probe;
+            public bool Has;
+            public CondRead Last;
+        }
+
+        /// <summary>null, or why these act steps cannot be part of a run of maxTicks.</summary>
+        internal static string RefuseActs(IList<Act> acts, int maxTicks)
+        {
+            var names = new HashSet<string>();
+            foreach (var a in acts)
+            {
+                if (a.At < 1) return "act '" + a.Name + "' at " + a.At + ": the first tick is 1";
+                if (a.At >= maxTicks) return "act '" + a.Name + "' at " + a.At + " is not before the tick limit " + maxTicks + ": its effect could not be sampled";
+                if (!names.Add(a.Name)) return "two act steps are named '" + a.Name + "'";
+            }
+            return null;
+        }
+
+        internal sealed class SceneRun
+        {
+            public readonly string Id;
+            readonly ISceneHost _h;
+            readonly JawaBenchCondCore.CondRun _cond;
+            readonly JawaBenchCondCore.Evaluator _read;
+            readonly JawaBenchCondCore.Compiled _c;
+            readonly List<Track> _tracks = new List<Track>();
+            readonly List<Act> _acts;
+            readonly string _mode, _speed;
+            int _n, _rows, _dropped, _randFaults, _skipped, _emitted;
+            long _from, _endTick;
+            bool _ended, _lastTaken, _paused;
+            double _settleFrom = -1;
+            long _steady, _steadyBytes, _steadyDirty, _gc;
+            string _forced, _forcedWhy;
+
+            /// <summary>running -> settling (ended, paused) -> closed.</summary>
+            public string Stage = "new";
+            public bool Running { get { return Stage == "running"; } }
+            public string State { get { return _forced ?? _cond.State; } }
+            public long EndTick { get { return _endTick; } }
+            public int Rows { get { return _rows; } }
+            public int Dropped { get { return _dropped; } }
+            public long? HitTick { get { return _cond.HitTick; } }
+            public string Why { get { return _forcedWhy; } }
+            public Dictionary<string, object> Result() { return _cond.Result(); }
+
+            /// <summary>The compiled spec's `sample` probes are the tracks: they are read here, once a tick, and not by the
+            /// condition run.</summary>
+            public SceneRun(string id, JawaBenchCondCore.Compiled c, IProbeSource src, IList<Act> acts, ISceneHost h, string mode, string speed)
+            {
+                Id = id; _h = h; _c = c; _mode = mode; _speed = speed;
+                _acts = new List<Act>(acts);
+                if (c.Sample != null) foreach (var kv in c.Sample) _tracks.Add(new Track { Name = kv.Key, Probe = kv.Value });
+                c.Sample = null;
+                _read = new JawaBenchCondCore.Evaluator(src);
+                _cond = new JawaBenchCondCore.CondRun(c, src, h.NowMs);
+            }
+
+            // ------------------------------------------------------------------------------------------ records
+            long Emit(long tick, string phase, string rec, string fields)
+            {
+                _n++; _emitted++;
+                var sb = new StringBuilder(128);
+                sb.Append("\"run\":").Append(S(Id)).Append(",\"n\":").Append(_n).Append(",\"tick\":").Append(tick)
+                  .Append(",\"phase\":\"").Append(phase).Append("\",\"rec\":\"").Append(rec).Append('"');
+                if (!string.IsNullOrEmpty(fields)) sb.Append(',').Append(fields);
+                long seq = _h.Enqueue(sb.ToString());
+                if (seq < 0) _dropped++; else _rows++;
+                return seq;
+            }
+
+            static string S(object o) { return JawaBenchCondCore.Canon(o); }
+
+            void Fault(long tick, string phase, string what, string detail)
+            {
+                Emit(tick, phase, "fault", "\"what\":" + S(what) + ",\"detail\":" + S(detail));
+            }
+
+            void Sample(long tick, string phase, bool all)
+            {
+                for (int i = 0; i < _tracks.Count; i++)
+                {
+                    var t = _tracks[i];
+                    var r = _read.ReadProbe(t.Probe);
+                    if (!all && t.Has && r.Status == t.Last.Status && JawaBenchCondCore.SameValue(r.V, t.Last.V)) continue;
+                    t.Has = true; t.Last = r;
+                    Emit(tick, phase, "track", "\"name\":" + S(t.Name) + ",\"st\":" + S(r.Status) + ",\"v\":" + S(r.V) +
+                                               (r.Status == "ok" ? "" : ",\"detail\":" + S(r.Detail)));
+                }
+            }
+
+            void RandCheck(ulong before, long tick, string phase)
+            {
+                ulong after = _h.RandState();
+                if (after == before) return;
+                _randFaults++;
+                Fault(tick, phase, "rand_in_sample", "random state " + before + " -> " + after);
+            }
+
+            // ------------------------------------------------------------------------------------------ the run
+            /// <summary>On the tick the run starts at, before any act.</summary>
+            public void Arm(long tick, object epoch)
+            {
+                _from = _endTick = tick;
+                Stage = "running";
+                var acts = new List<object>();
+                foreach (var a in _acts) acts.Add(new Dictionary<string, object> { { "name", a.Name }, { "at", (double)a.At } });
+                var tracks = new List<object>();
+                foreach (var t in _tracks) tracks.Add(t.Name);
+                Emit(tick, "first", "open", "\"schema\":" + S(Schema) + ",\"mode\":" + S(_mode) + ",\"speed\":" + S(_speed) + ",\"epoch\":" + S(epoch) +
+                                            ",\"maxTicks\":" + _c.MaxTicks + ",\"tracks\":" + S(tracks) + ",\"acts\":" + S(acts) + ",\"cond\":" + S(_c.Canonical));
+                ulong r0 = _h.RandState();
+                Sample(tick, "first", true);
+                _cond.Arm(tick, epoch);
+                RandCheck(r0, tick, "first");
+                if (_cond.State != "running") End(tick, "first");
+            }
+
+            /// <summary>The end of one tick: sample, conditions, end test, act steps. A run never ends on a tick that did an
+            /// act step, because the end is tested before the act steps and an ended run does none.</summary>
+            public void OnTickEnd(long tick, object epoch, bool runOriginal)
+            {
+                if (Stage != "running") return;
+                if (!runOriginal) { _skipped++; return; }
+                int emitted = _emitted;
+                long? a0 = _h.AllocBytes();
+                ulong r0 = _h.RandState();
+                Sample(tick, "end_of_tick", false);
+                _cond.Step(tick, epoch, null);
+                RandCheck(r0, tick, "end_of_tick");
+                long? a1 = _h.AllocBytes();
+                _endTick = tick;
+                if (_cond.State != "running") { End(tick, "end_of_tick"); return; }
+                if (a0.HasValue && a1.HasValue && emitted == _emitted) Meter(a1.Value - a0.Value);
+                long k = tick - _from;
+                for (int i = 0; i < _acts.Count; i++)
+                {
+                    var a = _acts[i];
+                    if (a.Done || a.At != k) continue;
+                    a.Done = true;
+                    bool ok = true; string d;
+                    try { d = a.Do(); } catch (Exception e) { ok = false; d = e.GetType().Name + ": " + e.Message; }
+                    Emit(tick, "end_of_tick", "act", "\"name\":" + S(a.Name) + ",\"ok\":" + (ok ? "true" : "false") + ",\"detail\":" + S(d ?? ""));
+                }
+            }
+
+            void Meter(long d)
+            {
+                if (d < 0) { _gc++; return; }              // a collection landed inside: this tick says nothing
+                _steady++;
+                if (d > 0) { _steadyBytes += d; _steadyDirty++; }
+            }
+
+            void End(long tick, string phase)
+            {
+                _ended = true;
+                _endTick = tick;
+                _paused = _h.Pause();
+                if (!_paused) Fault(tick, phase, "pause_refused", "the speed read back is not Paused");
+                var r = _cond.Result();
+                var cov = (Dictionary<string, object>)r["coverage"];
+                Emit(tick, phase, "end", "\"state\":" + S(State) + ",\"why\":" + S(_forcedWhy) + ",\"hitTick\":" + S(r["hitTick"]) + ",\"executed\":" + (tick - _from) +
+                                         ",\"triggers\":" + S(r["triggers"]) + ",\"unknown\":" + S(r["unknown"]) + ",\"complete\":" + S(cov["complete"]) + ",\"cost\":" + S(r["cost"]));
+                Stage = "settling";
+            }
+
+            /// <summary>End the run from outside the tick: `cancelled`, `epoch`, `aborted`.</summary>
+            public void Force(string state, string why, long tick)
+            {
+                if (_ended || Stage == "closed") return;
+                _forced = state; _forcedWhy = why;
+                End(tick, "end_of_tick");
+            }
+
+            /// <summary>After the pause, once a frame until it closes: the last sample, then the closing record when the writer
+            /// has drained.</summary>
+            public void Settle()
+            {
+                if (Stage != "settling") return;
+                long tick = _h.Tick();
+                if (!_lastTaken)
+                {
+                    _lastTaken = true;
+                    _settleFrom = _h.NowMs();
+                    if (tick != _endTick && State != "epoch") Fault(tick, "last", "ran_past_end", "ended on " + _endTick + ", the game is on " + tick);
+                    ulong r0 = _h.RandState();
+                    Sample(tick, "last", true);
+                    RandCheck(r0, tick, "last");
+                    return;
+                }
+                bool drained = _h.Drained();
+                if (!drained && _h.NowMs() - _settleFrom < DrainMs) return;
+                var left = new List<object>();
+                foreach (var a in _acts) if (!a.Done) left.Add(a.Name);
+                string alloc = _steady == 0 && _gc == 0 ? "null"
+                    : "{\"steadyTicks\":" + _steady + ",\"bytes\":" + _steadyBytes + ",\"ticksThatAllocated\":" + _steadyDirty + ",\"ticksWithGc\":" + _gc + "}";
+                Emit(tick, "last", "close", "\"rows\":" + _rows + ",\"dropped\":" + _dropped + ",\"drained\":" + (drained ? "true" : "false") +
+                                            ",\"paused\":" + (_paused ? "true" : "false") + ",\"tickAfter\":" + tick + ",\"skipped\":" + _skipped +
+                                            ",\"randFaults\":" + _randFaults + ",\"actsNotDone\":" + S(left) + ",\"alloc\":" + alloc);
+                Stage = "closed";
+            }
+        }
+    }
+}

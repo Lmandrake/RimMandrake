@@ -1,0 +1,4 @@
+# A1: one condition run stepped in the game's own loop: exact stop, trace on disk, the act's effect before the end, no allocation.
+live-tier A1: ratchet_pilot
+live-mods: mandrake.rm.biomes, mandrake.rut.patches, mandrake.rsw.swbestiary, mandrake.rut.pyrelandsmechanics, mandrake.rm.flowworks, mandrake.rm.gimmesomeslack, mandrake.rm.patches
+live-proof A1: python.exe src/RimMandrake/bridgetools/prove_scene_tick_wiring.py --out Transient/scene_tick < /dev/null

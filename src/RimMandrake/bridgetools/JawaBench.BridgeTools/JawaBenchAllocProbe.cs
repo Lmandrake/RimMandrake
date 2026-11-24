@@ -84,6 +84,8 @@ namespace JawaBench.BridgeTools
         }
 
         internal static bool Running => _on && Stopwatch.GetTimestamp() < Interlocked.Read(ref _untilTs);
+        /// <summary>The calibrated counter, or null when no calibration chose one. Allocates nothing.</summary>
+        internal static long? TrustedBytes() { var f = _count; return f != null ? f() : (long?)null; }
         private static int Gc() => GC.CollectionCount(0);
         private static bool Mono => Type.GetType("Mono.Runtime") != null;
 

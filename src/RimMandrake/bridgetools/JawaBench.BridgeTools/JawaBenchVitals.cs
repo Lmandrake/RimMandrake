@@ -249,14 +249,14 @@ namespace JawaBench.BridgeTools
         {
             __state = default(JawaBenchHookGuard.Scope);
             __state.Rejected = true;                      // not counted unless the body below admits it
-            if (!Armed) return;
+            if (!Armed && !JawaBenchSceneTick.Live) return;
             try
             {
                 if (!GameReady()) return;                 // a tick of an unloaded game is not counted
                 EnsureEpoch(Mono);
                 __state.I0 = __instance.TicksGame;
                 __state.Valid = true; __state.Rejected = false;
-                if (On(V.ChClock)) Latch1(Clock.BeforeTick(__state.I0, Mono));
+                if (Armed && On(V.ChClock)) Latch1(Clock.BeforeTick(__state.I0, Mono));
             }
             catch (Exception e) { Fault("tick-pre", e); }
         }
@@ -264,18 +264,27 @@ namespace JawaBench.BridgeTools
         private static void TickPost(TickManager __instance, JawaBenchHookGuard.Scope __state, bool __runOriginal)
         {
             if (!__state.Valid) { if (!__state.Rejected) Interlocked.Increment(ref TickOrphans); return; }
-            if (!__runOriginal) { Interlocked.Increment(ref TickSkipped); return; }
-            if (!Armed) return;
-            try
+            if (!__runOriginal)
             {
-                TickHookCalls++;
-                long t0 = Stopwatch.GetTimestamp();
-                if (On(V.ChClock)) Latch1(Clock.AfterTick(__state.I0, __instance.TicksGame, Mono));
-                else Clock.Processed++;
-                Meters[V.ChClock].Add(Stopwatch.GetTimestamp() - t0);
-                if (++_ticksSinceSample >= V.SampleEveryTicks) Sample("t60");
+                Interlocked.Increment(ref TickSkipped);
+                try { JawaBenchSceneTick.TickEnd(false); } catch (Exception e) { Fault("scene-skip", e); }
+                return;
             }
-            catch (Exception e) { Fault("tick-post", e); }
+            if (Armed)
+            {
+                try
+                {
+                    TickHookCalls++;
+                    long t0 = Stopwatch.GetTimestamp();
+                    if (On(V.ChClock)) Latch1(Clock.AfterTick(__state.I0, __instance.TicksGame, Mono));
+                    else Clock.Processed++;
+                    Meters[V.ChClock].Add(Stopwatch.GetTimestamp() - t0);
+                    if (++_ticksSinceSample >= V.SampleEveryTicks) Sample("t60");
+                }
+                catch (Exception e) { Fault("tick-post", e); }
+            }
+            // the scene run last, in its own containment: a pause it makes ends the game's loop on this tick
+            try { JawaBenchSceneTick.TickEnd(true); } catch (Exception e) { Fault("scene-tick", e); }
         }
 
         /// <summary>From JawaBenchEventRecorder.KillPostfix (only real deaths reach it). The tombstone outlives the corpse.</summary>
@@ -312,6 +321,18 @@ namespace JawaBench.BridgeTools
             // Pumped armed or not, ready or not: a disarm, a TTL or an unready game must still let a running advance end
             // (cancel / wall / coverage lost). Gated behind Armed it stayed "running" forever (night review 2026-10-13).
             JawaBenchSafeAdvance.Frame();
+            JawaBenchSceneTick.Frame();
+        }
+
+        /// <summary>The end-of-tick hook and the frame driver for a scene run, without arming the monitor. Null when they are on,
+        /// else why not. Also settles the epoch: a first tick must not read the standing game as a new one.</summary>
+        internal static string EnsureTickHook()
+        {
+            InstallHooks();
+            EnsureDriver();
+            EnsureEpoch(Mono);
+            if (HookStatus != "complete") return "hook " + HookStatus + ": " + HookDetail;
+            return DriverStatus == "monobehaviour" ? null : "driver " + DriverStatus;
         }
 
         private static void FrameArmed()
