@@ -220,6 +220,7 @@ PAGES = {
         "design/specs/2026-11-23-his-quotes-checked/selftest_his_quotes_checked.py",
     "design/specs/2026-11-21-northstar-run-exit-codes/boundary.md":
         "src/RimMandrake/Utils/northstar_driver/selftest_run_exit_codes.py",
+    "design/specs/2026-11-24-account-plan-one-file/boundary.md": "src/RimMandrake/Utils/selftest_account_plan.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")

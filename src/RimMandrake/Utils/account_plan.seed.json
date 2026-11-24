@@ -1,0 +1,15 @@
+{
+ "_doc": "The numbers of a FIRST plan file only (./acct import-legacy). After that the plan file is the one home: account_plan.py never reads this file while a plan stands. Each number's danger and evidence: design/specs/2026-11-24-account-plan-one-file/boundary.md LIMITS.",
+ "ledger_item": "RIMMANDRAKE_DESIGN_ACCOUNT_PLAN_ONE_FILE_COMMANDED_IN_ONE_LINE",
+ "meter_steps": {"codex": 25, "jpl-genai": null},
+ "meter_why": "owner 2026-11-24: 'preserve 25% for personal use unless otherwise instructed'",
+ "numbers": {
+  "floor_pct": 1, "last_account_floor_pct": 2, "blind_pct": 1, "entry_margin_pct": 2,
+  "switch_cost_pts": 3, "idle_weight": 1, "evening_share_pct": 0, "request_default_h": 24,
+  "rescue": {"drain_h": 2},
+  "forecast": {"burn_window_h": 24, "step_min": 30},
+  "reset_day": {"hours": 24, "accounts": ["codex", "system", "lukas"], "line": {"meter": 0, "claude": "floor"}},
+  "burn_mode": {"window_h": 24, "min_at_risk_pts": 5, "max_load_per_core": 1.5},
+  "account_end": {}
+ }
+}

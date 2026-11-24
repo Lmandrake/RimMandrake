@@ -276,7 +276,9 @@
   "src/RimMandrake/rimflow/wake_words.py::Wake.stamp::or-empty": 1,
   "src/RimMandrake/rimflow/wake_words.py::first_ts::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::void_judge_run::except-returns-empty": 1,
-  "src/RimMandrake/Utils/install_wt_seat_profiles.py::restart_seats::except-returns-empty": 1
+  "src/RimMandrake/Utils/install_wt_seat_profiles.py::restart_seats::except-returns-empty": 1,
+  "src/RimMandrake/Utils/account_plan.py::stamp::except-returns-empty": 1,
+  "src/RimMandrake/Utils/account_plan.py::series_rows::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/Utils/waitalive.py::stat_of::except-returns-empty": [
@@ -1164,6 +1166,12 @@
   ],
   "src/RimMandrake/Utils/install_wt_seat_profiles.py::restart_seats::except-returns-empty": [
    "RARE (design/specs/2026-11-23-launch-permissions/boundary.md an-unreadable-schedule): dispatcher_schedule.json is a tracked file of the same clone; unreadable, the installer writes the plain launch line, which skips permissions too"
+  ],
+  "src/RimMandrake/Utils/account_plan.py::stamp::except-returns-empty": [
+   "NOT A COLLAPSE: None is 'no time in this text' (absent, or not an ISO time); every write validates the text first (problems) and refuses it by name, and no caller reads None as a time"
+  ],
+  "src/RimMandrake/Utils/account_plan.py::series_rows::except-returns-empty": [
+   "NOT A COLLAPSE: None is could not look (the series cannot be opened), [] is a series with no line; fleet_burn and entry_level answer None (unknown) on None, and measures_cmd prints COULD NOT LOOK"
   ]
  }
 }
