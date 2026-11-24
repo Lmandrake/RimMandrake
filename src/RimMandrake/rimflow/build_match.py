@@ -44,6 +44,7 @@ Packages compare lower-case with a trailing `_steam` dropped (RimWorld's own suf
 MATURATION_WALK_BUILD names a JSON file that stands in for the live machine ({mod_hash, game_build, active_mods,
 tiers: {name: [packageIds]}}); selftests use it, and every reading made with it names it.
 """
+import errno
 import argparse
 import hashlib
 import json
@@ -503,12 +504,20 @@ def other_tier_match(tier, mods, tiers):
     try:
         lists = (getattr(tiers, "others", None) or (lambda t: []))(tier)
     except Exception as e:                  # could not look is said, and counts nothing
+        if could_not_look(e):
+            raise
         return None, "; the other installs could not be read (%s: %s)" % (type(e).__name__, e)
     for g, ref, why in lists:
         if ref is not None and same_list(mods, ref):
             return g, ""
         said.append("on %s: %s" % (g, why if ref is None else _first_diff(mods, ref)))
     return None, "".join("; " + x for x in said)
+
+
+def could_not_look(e):
+    """True when e is a read that failed for want of kernel memory (modset_builder.AboutUnreadable is one): it ends by
+    itself, and says nothing of what it read."""
+    return isinstance(e, OSError) and e.errno == errno.ENOMEM
 
 
 def _resolve_tier(t, installed, mods_dir=None):
@@ -526,6 +535,8 @@ def _resolve_tier(t, installed, mods_dir=None):
             return None, "modset_builder refuses tier %s: %s" % (t, "; ".join(map(str, (missing and [
                 "missing %s" % ", ".join(missing)] or []) + list(refusals or []))))
         return list(ordered), None
+    except MB.AboutUnreadable:              # could not look: no reading, never "this row does not count"
+        raise
     except Exception as e:                  # a tier that cannot be built gives no list; the row does not count
         return None, "modset_builder could not build tier %s (%s: %s)" % (t, type(e).__name__, e)
 

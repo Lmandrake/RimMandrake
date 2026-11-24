@@ -715,6 +715,27 @@ def t_a_stale_walk_build_is_the_ticks_deploy():
           "...through deploy_repair on ArchBig, for drift only (%s, %s)" % (got, got2))
 
 
+def t_a_build_match_that_could_not_look_is_a_wait():
+    blind = "the build match could not look (AboutUnreadable: ENOMEM): no in-game check counts until it does"
+    for why in ([blind], [blind, "in-game check sc_x: its last row reads FAIL"]):
+        st = {"mods": {}}
+        r, la = stale_tick(st, why)
+        check(r.get("decision") == "launch_wait" and not r.get("aut") and not r.get("need") and la == [],
+              "a-build-match-that-could-not-look-is-a-wait: no steward, no launch (read %s / %s / %s)" % (
+                  r.get("decision"), r.get("aut"), la))
+    r, _ = stale_tick({"mods": {}}, ["the build match could not run (ValueError: x): no in-game check counts until it does"])
+    check(r.get("aut") == "steward", "...a build match that cannot run for another cause still brings the steward (%s)"
+          % r.get("aut"))
+
+
+def t_about_read_waits_out_enomem():
+    import subprocess
+    r = subprocess.run([sys.executable, os.path.join(HERE, "..", "Utils", "selftest_modset_about_enomem.py")],
+                       capture_output=True, text=True, timeout=300)     # a hang guard
+    check(r.returncode == 0, "about-read-waits-out-enomem: selftest_modset_about_enomem.py (rc %d, %s)" % (
+        r.returncode, r.stdout[-300:]))
+
+
 def main():
     fx = Fixture()
     try:
@@ -730,7 +751,9 @@ def main():
     finally:
         fx.close()
     for t in (t_drain_refusals_count_no_fault, t_a_never_started_launch_owes_a_repair, t_the_tick_waits_on_a_drain,
-              t_a_visit_item_name_passes_the_spawn_guard, t_a_stale_walk_build_is_the_ticks_deploy):
+              t_a_visit_item_name_passes_the_spawn_guard, t_a_stale_walk_build_is_the_ticks_deploy,
+              t_a_build_match_that_could_not_look_is_a_wait,
+              t_about_read_waits_out_enomem):
         safe(lambda: t() is None, t.__name__[2:] + " ran")
     print("%d failed" % len(FAILS))
     return 1 if FAILS else 0

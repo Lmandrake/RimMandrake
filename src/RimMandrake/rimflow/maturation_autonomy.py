@@ -1447,6 +1447,13 @@ def _stale_walk(f):
     return why[0] if len(why) == 1 and why[0].startswith(M.STALE_WALK) else None
 
 
+def _blind_match(f):
+    """-> the exit's reason that says the build match could not look (a read that ends by itself), else None. A steward
+    can do nothing about it (Explosive Knockback, 2026-11-24 8:46 AM PST: ENOMEM on two DLC About.xml files read as
+    missing DLC, and a steward was launched)."""
+    return next((str(x) for x in (f.get("exit") or {}).get("why") or [] if str(x).startswith(M.BLIND_MATCH)), None)
+
+
 def deploy_walk(root, mod, now=None, seat="BENCH"):
     """-> (state, text) of the deploy of the mod's walk build to the game that holds the walk savegame (M.walk_letter):
     ok, wait (another run or his hold has the game; nothing done) or fail (the cause named). M.deploy_repair: the game
@@ -1553,6 +1560,10 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
     # a blind cycle's record with no exit block and nothing live: the night of 2026-11-14 each one got a reconcile run
     # by hand. One steward completes the record from its files or says what judging is missing. An unfinished in-game
     # visit stays a hand: the game it left needs a look, and a steward never takes the bridge.
+    if dec == "exit_not_met" and stage == "in_game" and _blind_match(f):
+        row.update(decision="launch_wait", need=None, why="the reading of %s's visit waits on a cause that ends by itself "
+                   "(no fault, no try spent); the next tick reads it again: %s" % (mod, _blind_match(f)))
+        return
     if dec == "exit_not_met" and stage == "in_game" and _stale_walk(f):
         row.update(aut="autodeploy", decision="autodeploy", need=None, why="%s; the pipeline deploys it" % _stale_walk(f),
                    steward_why=_stale_walk(f), steward_key="%s|%s|autodeploy|%s|%s" % (

@@ -41,6 +41,7 @@ the game up: ModsConfig describes the NEXT load, and RimWorld rewrites it only w
 """
 import argparse
 import collections
+import errno
 import io
 import os
 import re
@@ -1129,9 +1130,37 @@ def resolve_tier(name, installed):
     return ordered, missing, tier_guard(t, ordered)
 
 
+class AboutUnreadable(OSError):
+    """An installed mod's files could not be read for want of kernel memory: the scan could not look, so it names no
+    mod "not installed" (RIMMANDRAKE_RETRY_ABOUT_READ_ON_ENOMEM_BIOTECH_READ_MISSING)."""
+
+
+# A /mnt/c read needs contiguous kernel memory, which a fragmented page cache denies for seconds at a time (the waits of
+# deploy_custom_mods._read_retry). Guards: 2026-11-24 8:46 AM PST, Biotech's and Anomaly's About.xml read ENOMEM, the
+# tier read "DLC missing", and a steward run was launched on a mod that owed nothing.
+ABOUT_WAITS = (0.5, 1, 2, 4, 8)
+
+
+def _wait_out_enomem(read, path):
+    """read(), tried again after each of ABOUT_WAITS while it raises ENOMEM; then AboutUnreadable. Any other error is
+    the caller's."""
+    for wait in ABOUT_WAITS + (None,):
+        try:
+            return read()
+        except OSError as e:
+            if e.errno != errno.ENOMEM:
+                raise
+            if wait is None:
+                raise AboutUnreadable(errno.ENOMEM, "could not look: the read failed for want of memory %d times" % (
+                    len(ABOUT_WAITS) + 1), path)
+            time.sleep(wait)
+
+
 def read_about(path):
     try:
-        r = ET.parse(path).getroot()
+        r = _wait_out_enomem(lambda: ET.parse(path), path).getroot()
+    except AboutUnreadable:
+        raise
     except Exception as e:
         print("  ! could not parse %s (%s: %s) -- this mod will read as "
               "NOT INSTALLED" % (path, type(e).__name__, e), file=sys.stderr)
@@ -1170,12 +1199,13 @@ def read_about(path):
 
 
 def scan(local_mods=None):
-    """packageId -> record, across DLC, workshop and local mods (local_mods: another install's Mods folder)."""
+    """packageId -> record, across DLC, workshop and local mods (local_mods: another install's Mods folder).
+    Raises AboutUnreadable when a file there stays unreadable for want of memory: never a quieter map."""
     found = {}
     for base in (DATA, WORKSHOP, local_mods or LOCAL_MODS):
         if not os.path.isdir(base):
             continue
-        for d in sorted(os.listdir(base)):
+        for d in sorted(_wait_out_enomem(lambda: os.listdir(base), base)):
             about = os.path.join(base, d, "About", "About.xml")
             if not os.path.isfile(about):
                 continue

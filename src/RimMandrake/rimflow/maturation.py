@@ -4403,6 +4403,7 @@ def tag_line(res):
 WRONG_CLASSES = ("HARNESS", "SITE")
 FIX_REVIEWS = "fix_reviews.jsonl"
 STALE_WALK = "the walk build is not the current source: "   # the exit reason the tick's autodeploy act cures
+BLIND_MATCH = "the build match could not look "   # a read that ends by itself (ENOMEM): the tick waits and reads again
 
 
 def _commit_words(v):
@@ -4761,8 +4762,8 @@ def read_ingame_exit(root, mod, n, tt=None):
         bm = BM.check_visit(root, mod, n, tt, blk["savegame"])
     except Exception as e:      # a build match that cannot run counts nothing
         bm = None
-        why.append("the build match could not run (%s: %s): no in-game check counts until it does" % (
-            type(e).__name__, e))
+        why.append("%s(%s: %s): no in-game check counts until it does" % (
+            BLIND_MATCH if BM.could_not_look(e) else "the build match could not run ", type(e).__name__, e))
     out["build_match"] = bm
     if bm and not one and not bm.get("rerun") and not bm.get("deploy"):
         out["build"] = BM.source_sha(root, mod)       # every row counts on the source now: that is the build

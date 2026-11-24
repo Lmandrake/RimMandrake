@@ -116,10 +116,21 @@ because the composed Baroque Biomes copy differed from the repo, by one dev scri
   launches no steward: the tick deploys it to ArchBig through `deploy_repair` (act `autodeploy`, no slot, no run). A
   held game is a wait that spends no try; a failed deploy, or a reading still stale after it, pauses the mod by name.
   With any other reason beside it, the steward reads the visit.
+- **a-build-match-that-could-not-look-is-a-wait.** An ended in-game visit whose build match could not look (a read of
+  an installed mod that keeps failing for want of memory, `modset_builder.AboutUnreadable`) launches no steward and no
+  deploy, whatever other reasons stand beside it: the row waits, and the next tick reads it again. A build match that
+  cannot run for any other cause still brings the steward.
+- **about-read-waits-out-enomem.** `modset_builder.scan` reads a file or a folder again while it raises ENOMEM, and then
+  raises; it never returns a map with that mod left out
+  (its check: `src/RimMandrake/Utils/selftest_modset_about_enomem.py`). A malformed About.xml still reads "not installed".
 - **the-tick-waits-on-a-drain.** While the drain notice stands, the tick launches nothing and every row it would have
   launched reads `account_hold`, "waiting: account switch".
 
 ## LIMITS
+
+- A read of an installed mod is tried again after 0.5, 1, 2, 4 and 8 s (`modset_builder.ABOUT_WAITS`). Danger: a tick
+  held by a read that never works. Evidence that the failure ends by itself within seconds: the same waits of
+  `deploy_custom_mods._read_retry`, measured 2026-10-31; Biotech's and Anomaly's About.xml at 8:46 AM PST 2026-11-24.
 
 - The game stop waits up to `REPAIR_STOP_S` = 120 s for the process to exit, then stops it with `/F`. Danger: a DLL
   written while the game holds it fails, and a game that ignores the close would hold the tick. Evidence: none

@@ -424,12 +424,30 @@ def missed_mutants(tests):
     return missed
 
 
+def t_a_blind_build_match_is_named_at_the_exit():
+    """RIMMANDRAKE_RETRY_ABOUT_READ_ON_ENOMEM_BIOTECH_READ_MISSING: the exit's own reason, as the tick's _blind_match reads it"""
+    sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+    import modset_builder as MB
+    real = M.BM.check_visit
+    got = {}
+    try:
+        for name, e in (("blind", MB.AboutUnreadable(12, "no memory", "About.xml")), ("bug", ValueError("x"))):
+            def boom(*a, e=e, **k):
+                raise e
+            M.BM.check_visit = boom
+            x = ingame(ALL_PASS, name="blind_match")
+            got[name] = (x["state"], bool(MA._blind_match({"exit": x})))
+    finally:
+        M.BM.check_visit = real
+    return got == {"blind": ("not_met", True), "bug": ("not_met", False)}, got
+
+
 def main():
     tests = [t_all_pass_met, t_mod_wrong_not_met, t_check_wrong_repaired_counts, t_repair_without_planted_not_pass,
              t_repair_in_two_commits_counts, t_strange_explained_as_status_settles, t_needless_check_is_removed, t_held_statement_check_is_not_needless, t_not_counted_needs_owner, t_mod_fixed_in_sitting_counts,
              t_one_build_is_the_last_rows, t_scene_wrong_same_as_check, t_unclassed_not_silent,
              t_wrong_unhandled_not_silent, t_mix_reads_each_line, t_blind_check_repair_owes_no_judge,
-             t_blind_mod_fix_owes_one_fresh_reader, t_briefs_carry_the_rule]
+             t_blind_mod_fix_owes_one_fresh_reader, t_briefs_carry_the_rule, t_a_blind_build_match_is_named_at_the_exit]
     fails = run(tests)
     missed = missed_mutants(tests) if not fails else []
     shutil.rmtree(TMP, ignore_errors=True)
