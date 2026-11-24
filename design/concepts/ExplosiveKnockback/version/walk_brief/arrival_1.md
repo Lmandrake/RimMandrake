@@ -1,7 +1,7 @@
 # ExplosiveKnockback 0.1.0: walk brief, arrival 1
 written_by: rm-detached-bench-rimmandrake-steward-explosiveknockback-p-1795487378
 
-Written 2026-11-23, 6:40 PM PST, by a fresh reader. This reader made none of this version's evidence writes (no stage
+Written 2026-11-23, 7:30 PM PST, by a fresh reader. This reader made none of this version's evidence writes (no stage
 move, no in-game row). Sources: `D:\Luke\dev\RimMandrake\design\concepts\ExplosiveKnockback\version\stage_record.json`,
 the summaries, rows and strange things of visits 4 and 5
 (`D:\Luke\dev\RimMandrake\design\concepts\ExplosiveKnockback\version\in_game\visit_4\` and `visit_5\`),
@@ -17,9 +17,12 @@ the summaries, rows and strange things of visits 4 and 5
 - **Mod list:** your full list, 314 mods in the save, Camera+ and Explosive Knockback among them [measured]. **The live
   `ModsConfig.xml` is now a smaller list without Explosive Knockback** (ArchBig is held for your drawbridge look)
   [measured 6:35 PM]. The seat that stages the walk restores the full list before the load.
-- **Build:** the release DLL on ArchBig equals the repo's (md5 `148c9a36...`) [measured]. The last change to the mod's
-  code before this brief is `2590111487`. See the first entry under "Known": one more fix is being made now.
-- **Build match:** all 56 in-game checks count, and 0 must run again [measured, before that fix].
+- **Build:** the mod's code is at `db80fab783` (the gas fix, 2026-11-23 6:53 PM PST). **ArchBig still has the build before
+  that fix**: deploy first [measured 7:26 PM].
+- **Build match:** 54 of the 56 in-game checks count on that build. The two full-list checks (`sc_barrage_perf`,
+  `sc_walk_raid`) must run again on it, on ArchBig [measured 7:26 PM]. So the mod goes back to the in-game stage for these
+  two before you walk: `RIMMANDRAKE_RUN_KNOCKBACK_FULL_LIST_CHECKS_AFTER_GAS_CORNER_FIX`. The next brief (arrival 2)
+  replaces this one.
 - **Where to look:** the stations are in one row, left to right, 15 cells apart, at z = 12 (signs at z = 9). The map is
   at night and paused at tick 301.
 
@@ -49,9 +52,12 @@ the summaries, rows and strange things of visits 4 and 5
 ## What changed since his last look
 
 The record has no `his_walk` move, so the start point is the version's first move (2026-11-14 9:28 PM PST). Your informal
-look on 2026-11-23 about 12:35 PM PST was at the visit 4 save, on `2590111487`. **The mod's code has not changed since
-that look** [measured: `git log`], except for the gas fix named under "Known". Changes to the mod since 2026-11-14:
+look on 2026-11-23 about 12:35 PM PST was at the visit 4 save, on `2590111487`. **The mod's code has changed once since
+that look**: the first entry below. Changes to the mod since 2026-11-14:
 
+- **A burning gas clump no longer shoves a thing in another room, past a wall corner** (`db80fab783`). The Conductor ruled
+  on 2026-11-23 that this is a Problem of 0.1.0 to fix before you walk. Gas now uses the sight line of an explosion. Live:
+  the game and the map model disagreed on the corner case before, and agree in 123 of 123 cases after.
 - **Goods fly wild**: thrown goods go 1.6 times as far as the plain rule (`81392aea38`).
 - **A thrown colonist who was hauling goes back to the haul** (`ef266bbdf9`). What a thrown colonist carries stays in the
   hands. You: *"For today have them hold it."*
@@ -65,7 +71,8 @@ that look** [measured: `git log`], except for the gas fix named under "Known". C
 - **The fire switch also covers electrical burns** (`bace1c29cc`).
 - **The closed container is thrown whole, as built**, by your card; a container that cannot move jolts (`587529cee1`).
 
-In-game acceptance, visits 4 and 5 (2026-11-23): 56 of 56 checks pass. The frame bar on your full list reads 22.1 ms at
+In-game acceptance, visits 4 and 5 (2026-11-23): 56 of 56 checks passed, on the build before the gas fix. On the gas fix,
+54 of 54 small-list checks pass. The frame bar on your full list reads 22.1 ms at
 the 99th percentile (limit 50; with the mod off, 21.7). The storeroom raid walk passes 18 of 18 rows. Its frame
 row reads -1.0% against mod off (limit +10%, your card "Compare to mod-off"), measured on a 24-mod list as ruled on
 2026-11-16.
@@ -89,8 +96,6 @@ row reads -1.0% against mod off (limit +10%, your card "Compare to mod-off"), me
 ## Known, not fixed: you need not report these
 
 Current version (0.1.0), open:
-- **Being fixed now, before you walk:** a burning gas clump can shove a thing in another room, diagonally past a wall
-  corner. `RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN` (the Conductor's call, 2026-11-23 6:24 PM PST).
 - **Gun lockers draw their guns but keep them** (station 8).
   `RIMMANDRAKE_SETTLE_GUN_LOCKER_DRAWS_ITS_GUNS_BUT_KEEPS_THEM`. Your proposal: patch them so that they do not draw.
 - **No station has its start state beside it.** `RIMMANDRAKE_SHOW_START_STATE_BESIDE_EACH_AFTERMATH_HE_COULD_NOT_JUDGE`.
