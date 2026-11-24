@@ -2248,9 +2248,9 @@ approve your changes to the Step 6->Step 7 transition and preparation."*
 - A check declares its `exercises`, `reads` and `file`. When the mod's test table is locked, write the
   declaration in `version/exercises.json` beside the table. A path there may name parts of a C# file
   (`F.cs::Type,member`, `F.cs::~`) or say `none` (`design/specs/2026-11-21-rerun-only-related/boundary.md`).
-- After you write or edit an entry, run `python3 src/RimMandrake/rimflow/declaration_check.py --mod <Mod>`. It names the C#
-  that a check's scene names and its entry leaves out. Declare that C#, or write why under `left_out`. A named check reruns
-  on a change there.
+- After you write or edit an entry, run `python3 src/RimMandrake/rimflow/declaration_check.py --mod <Mod>`. The command
+  lists each check whose entry leaves out C# that the scene of the check names. Declare that C#, or write under `left_out`
+  why the entry leaves that C# out. Until you do one of these, a change to that C# makes the listed check run again.
 - How a changed file relates:
   - a Python file by top-level name;
   - a JSON file by the check's own entry;
