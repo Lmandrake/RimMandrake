@@ -40,8 +40,7 @@ written before the first run and were not tuned afterwards. Scripts, question te
 | Same request sent 10 times | the same pick 10 of 10, but its probability moved between 0.83 and 0.88 `[measured]` |
 | Image input (new since the first study) | one 140 KB picture: 165 to 196 ms, 3045 tokens; one 6.7 MB capture refused ("Invalid image dimensions") `[measured, 2 pictures]` |
 
-Jev is not in `MODEL_PRICES` (`src/RimMandrake/rimflow/role_launch.py`), so each weighted figure for Jev here is
-converted from the vendor's dollar price and marked `≈`.
+Jev is not in `MODEL_PRICES`, so each weighted figure for Jev is converted from the dollar price and marked `≈`.
 
 ### Labelled set 1: is a ticket worth the touch?
 
@@ -89,8 +88,7 @@ file path), and the floor can read that style, so this set flatters the floor.
   clean classes are not recorded. To settle it: 40 failed rows classed by hand from run records.
 - **The seven outcomes of a live run.** The ledger holds 8 runs with an outcome word, all of them COULD NOT LOOK
   `[measured]`. There is no set to test on.
-- **Accuracy on pictures.** Two pictures show that the call works. They say nothing about how often Jev is right.
-- **Duplicates.** Not run. The ledger holds 462 supersede events that could give pairs.
+- **Accuracy on pictures, and duplicates.** Not run. Two pictures show only that the call works.
 
 ## What the first study proposed, and what happened to it
 
@@ -111,8 +109,6 @@ that cut most of them).
   `JEV_KEY_ARCHMAGI_1`, closed). The shadow log that was to set the thresholds does not exist in this clone or in
   the bench clone `[measured]`. On 2026-11-05 a scoring of 29 fast-testing ideas put "Jev small judgments" at
   rank 22 (`design/RimMandrake/fast_testing_2026-11-05/scored.md`).
-- **Why so little followed** `[guess ~70%]`: the first study's own test (is the deciding evidence in the text?)
-  removed most ideas, and the era that it served was retired on 2026-11-13.
 
 The first study's main finding still holds, and today's numbers support it: a cheap judge does not help where
 an input is missing.
@@ -128,9 +124,9 @@ an input is missing.
 | 3 | **Screen a capture before an image judge reads it** (black frame, menu, wrong subject) | Image input is new. The vendor calls it prototype grade `[published]`. Two pictures tried. | About 32 weighted tokens a picture against a few thousand for an Opus look `[guess ~50%]`; it saves only on bad frames, and their rate is unknown | A good frame is taken again, or a bad frame passes and the Opus judge catches it | 40 captures labelled usable, black or menu | medium / unknown |
 | 4 | Ticket triage: worth the touch | Set 1 above: AUC 0.47 to 0.76 | none | A real fault is dropped. Nothing catches it. | done today: it fails | low / none |
 | 5 | Review finding: significant or polish | Set 2 above: AUC 0.61 | none | A significant finding is lost on a polish list | done today: it fails | low / none |
-| 6 | Ticket triage: already fixed (the brief says that a Codex lane closed 13 of 28 tickets as already fixed today) | The answer is in the code, not in the ticket | none | A ticket closes with its fault alive | not a Jev job: a reader of code must look. Keep the Codex lane. | none |
-| 7 | Class of a failed check; the seven outcomes of a run | No clean labels (see above). The cause is in the game state. | unknown | A mod is sent back for a fault of the check | first make 40 labels by hand | low / small `[guess ~80%]` |
-| 8 | Duplicates at filing; routing of a new item; an unclear sentence in a brief | 28 of 1030 drops name a duplicate or a successor `[measured, by a crude word match]`. Routing is set by the filer. Rule text already has a measured reader test. | small | A new ticket is wrongly merged | not worth a test now | low / small |
+| 6 | Ticket triage: already fixed (the brief: a Codex lane closed 13 of 28 so today) | The answer is in the code, not in the ticket | none | A ticket closes with its fault alive | not a Jev job; keep the Codex lane | none |
+| 7 | Class of a failed check; the seven outcomes of a run | No clean labels. The cause is in the game state. | unknown | A mod is sent back for a fault of the check | first make 40 labels by hand | low / small `[guess ~80%]` |
+| 8 | Duplicates at filing; routing of a new item; an unclear brief sentence | 28 of 1030 drops name a duplicate or a successor `[measured, crude word match]` | small | A ticket is wrongly merged | not worth a test now | low / small |
 
 Rows 4 to 8 fail test 1 of "Touching code has a cost": nobody would care about the fix that they offer.
 
@@ -185,8 +181,7 @@ shot, the larder is empty). Store the answers as a reaction table in the mod's X
   judged and edited.
 - The cost: the judgment sees a class of event, never the live colony. For "wasn't that guy working a refinery
   a while ago?", a class of event is enough `[guess ~60%]`.
-- Any model can fill the table. Jev's edge over an Opus pass is a small one-time cost. Do not choose Jev for this
-  on price.
+- Any model can fill the table. Jev's edge over an Opus pass is a small one-time cost.
 
 **If a true play-time judgment is wanted later**, a local model fits the present law better than Jev does: a
 sidecar process with no key and no network, the same shape as `claude -p`. The ruling of 2026-09-05 struck the
@@ -224,8 +219,7 @@ sets are of that weak kind.
   Each use needs a named catcher. No Jev answer may drop a ticket, void a run or pass a bar.
 - **Data that leaves the machine.** Build-time text is our own, in private repos; the risk is small. Play-time
   state belongs to a player; see the play-time section.
-- **Text that argues for itself.** The vendor says that such text can move an answer `[published]`. Our tickets
-  and notes are written by agents with a stake in the verdict.
+- **Text that argues for itself** can move an answer `[published]`, and agents with a stake write our tickets.
 
 ## Sources
 
