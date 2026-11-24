@@ -81,3 +81,14 @@ END s2 2026-11-24 12:25:15
 START s3 2026-11-24 12:25:38
 DONE PYRE_PLANT_FRONT_OUT=1:burn_line_walk@walk_small_planted reload_rc=0 rc=1 100s 12:27:18
 END s3 2026-11-24 12:27:18
+START s4 2026-11-24 12:54:47
+DONE firehawk_first_sighting_letter@letter reload_rc=0 rc=1 54s 12:55:41
+DONE firehawk_crestfeather_yield@crest reload_rc=0 rc=1 28s 12:56:09
+DONE mapgen_log@mapgen2 reload_rc=0 rc=1 31s 12:56:40
+DONE reload_keeps_the_burn@reload2 reload_rc=0 rc=1 125s 12:58:45
+DONE script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/walk_save.py reload_rc=0 rc=0 42s 12:59:27
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/walk_closeups.py reload_rc=skipped rc=0 14s 12:59:41
+END s4 2026-11-24 12:59:41
+START s5 2026-11-24 13:00:00
+DONE +script:design/concepts/Pyrelands/version/in_game/visit_9/scripts/owed_text2.py reload_rc=skipped rc=0 1s 13:00:01
+END s5 2026-11-24 13:00:01

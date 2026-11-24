@@ -15,52 +15,52 @@
  ],
  "windows": [
   [
-   26,
+   20,
    20
+  ],
+  [
+   74,
+   20
+  ],
+  [
+   128,
+   20
+  ],
+  [
+   170,
+   32
+  ],
+  [
+   212,
+   56
   ],
   [
    110,
-   20
-  ],
-  [
-   164,
-   20
-  ],
-  [
-   68,
-   26
-  ],
-  [
-   206,
-   44
-  ],
-  [
-   134,
    62
   ],
   [
-   38,
+   68,
    68
   ],
   [
-   176,
+   170,
    86
   ]
  ],
  "advance": null,
- "exportCount": 56133,
+ "exportCount": 56480,
  "exportTruncated": false,
- "ruinCluster": 40,
+ "ruinCluster": 52,
  "fire": 32,
- "ruinWalls": 331,
+ "ruinWalls": 305,
  "labels": true,
  "save": {
   "success": true,
-  "path": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Saves\\PYRELANDS_0.1.0_VISIT9_WALK_FULL.rws",
-  "new": [],
-  "changed": [
-   "PYRELANDS_0.1.0_VISIT9_WALK_FULL.rws"
+  "path": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Saves\\PYRELANDS_0.1.0_VISIT9_WALK.rws",
+  "new": [
+   "PYRELANDS_0.1.0_VISIT9_WALK.rws"
   ],
-  "bytes": 36964036
+  "changed": [],
+  "bytes": 27660888
  }
 }

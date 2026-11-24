@@ -9,7 +9,7 @@ sys.path.insert(0, r"src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
 SAVES = os.path.join(os.environ["RM_GAME_USERDATA"], "Saves") if os.environ.get("RM_GAME_USERDATA") else \
     os.path.expandvars(r"%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves")
-NAME = sys.argv[1] if len(sys.argv) > 1 else "PYRELANDS_0.1.0_VISIT9_WALK_FULL"   # his full list: ..._VISIT9_WALK_FULL
+NAME = sys.argv[1] if len(sys.argv) > 1 else "PYRELANDS_0.1.0_VISIT9_WALK"   # his full list: ..._VISIT9_WALK
 SHOTS = r"Transient\pv9\shots"
 TAG = "pyre_visit9"
 h, p, tk = resolve_endpoint()

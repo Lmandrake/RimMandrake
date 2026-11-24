@@ -20,9 +20,13 @@ for s in SPEC:
     else:
         p = os.path.join(E, "pv9_%s.json" % lab)
         m = re.search(r"--chains (\S+)", cmd); ch = m.group(1).split(",")
-        cs = [c for c in json.load(open(p))["components"] if c.get("chain") in ch and not str(c.get("name")).startswith("skipped")]
+        cs = [] if s.get("parts") else [c for c in json.load(open(p))["components"] if c.get("chain") in ch and not str(c.get("name")).startswith("skipped")]
         if s.get("components"):
             cs = [c for c in cs if c["name"] in s["components"]]
+        for pl, names in s.get("parts") or []:   # the row's components from more than one run (each named in the row's note)
+            cs += [c for c in json.load(open(os.path.join(E, "pv9_%s.json" % pl)))["components"] if c["name"] in names]
+        if s.get("parts") and len(cs) != sum(len(n) for _, n in s["parts"]):
+            raise SystemExit("%s: a named component is missing" % lab)
         vs = [c["verdict"] for c in cs]
         v = "FAIL" if "FAIL" in vs else "PASS" if vs and all(x == "PASS" for x in vs) else "UNMEASURED"
         det = "; ".join("%s %s" % (c["name"], c["verdict"]) for c in cs)

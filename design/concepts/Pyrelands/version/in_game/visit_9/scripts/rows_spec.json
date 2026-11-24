@@ -1,11 +1,5 @@
 [
  {
-  "test": "sc_full_list_smoke",
-  "label": "full_list_smoke",
-  "identity": "identity_full.json",
-  "note": "run first: his full list was already up with the a6f05380df DLL; site NS_Pyrelands_site_1_417df172fdb5_visit9full, tile 49"
- },
- {
   "test": "sc_ashwallow",
   "label": "burrowers",
   "identity": "identity_pyrelands.json"
@@ -73,5 +67,165 @@
   "label": "wind_burn_live",
   "identity": "identity_pyrelands.json",
   "script": "script_wind_burn_live.log"
+ },
+ {
+  "test": "sc_ash_watered",
+  "label": "ash_watered",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "3a3294ac36",
+  "note": "the short scene (five reads over 50,000 ticks, hot and cool hours both read)"
+ },
+ {
+  "test": "sc_burn_compounds",
+  "label": "fresh_burn",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "3a3294ac36"
+ },
+ {
+  "test": "sc_grass_regreens",
+  "label": "regrow",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "3a3294ac36",
+  "outcome": "APPARATUS FAULT",
+  "class": "HARNESS",
+  "detail": "regrow_dry_watered_vanilla FAIL 'bursts off the watered cells': the dry patch held 16, 13, 14, 15, 15, 15 plants, and its check matched plants by rank, so a newcomer at 0.68 beside fourteen mature read as a burst (a restart stands at 0.05, and gains 0.51 a day). The other four parts PASS. Visit 8's unfenced row held 16 at every read, and inside a ring 16 of 16 stood at all six daily reads (run growth_real), so what took them came from outside the patches; what it was is not shown: in 4,000 unstaged ticks on ArchSmall none went and no animal came near; a hungry nuna set beside the patches ate one of 48, none inside a ring (graze_read.py, graze_stage.py)"
+ },
+ {
+  "test": "sc_grass_regreens",
+  "label": "growth_real",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "82bdcf15cf",
+  "outcome": "APPARATUS FAULT",
+  "command": "PYRE_REGROW_PART=growth python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains embergrass_regrow",
+  "components": [
+   "regrow_dry_watered_vanilla"
+  ],
+  "parts": [
+   [
+    "growth_real",
+    [
+     "regrow_dry_watered_vanilla"
+    ]
+   ]
+  ],
+  "detail": "this run's own shortening held freshBurnDays at one day and left ExplosiveGrowth's fresh ash on, so both patches matured within a day"
+ },
+ {
+  "test": "sc_grass_regreens",
+  "label": "growth_small",
+  "identity": "identity_small.json",
+  "mod_sha": "4980c8dcdd",
+  "class": "HARNESS",
+  "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains regrow_growth   (and the four other parts from python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains grass_cover,embergrass_regrow, run regrow at 09:47 on ArchBig)",
+  "parts": [
+   [
+    "regrow",
+    [
+     "grass_chokes_ground",
+     "embergrass_regrows",
+     "grass_census_first",
+     "plant_density_one_control_map"
+    ]
+   ],
+   [
+    "growth_small",
+    [
+     "regrow_dry_watered_vanilla"
+    ]
+   ]
+  ],
+  "note": "the sown patches as one staged growth step (16,000 ticks, 74 s): dry gain 0.0796 (its vanilla rate 0.0666), watered 0.0840, bursts 16 of 16 on the soaked patch and 0 on the dry ones, 16 plants in each patch at every read. Four parts stand from run regrow; their code did not change",
+  "repair": {
+   "class": "HARNESS",
+   "commit": "4980c8dcdd1da6d0724ab2732145261fc90a8867",
+   "what": "each plant is followed by id over one growth step, a moved plant is UNMEASURED, and a soaked mature patch shows a burst",
+   "planted": {
+    "plant": "PYRE_PLANT_REGROW_SOAK_DRY=1: bursts on the dry mature patch (and PYRE_PLANT_REGROW_WET_ROOTS_OFF=1: water does nothing; both FAIL)",
+    "command": "PYRE_PLANT_REGROW_SOAK_DRY=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains regrow_growth",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_9/evidence/pv9_growth_small_soak_dry.json"
+   }
+  }
+ },
+ {
+  "test": "sc_burn_line_walks",
+  "label": "burn_line",
+  "identity": "identity_pyrelands.json",
+  "mod_sha": "82bdcf15cf",
+  "outcome": "APPARATUS FAULT",
+  "class": "SITE",
+  "detail": "burn_line_present and burn_line_burned_share PASS; hourly UNMEASURED: the game window was 1458x831 and a 23-cell crop did not fit one screen (HARNESS, play_zoom); off_control FAIL, 34 fires: the site's two furnace-beasts lit the grass they slept in (SITE: off_control_source.py, first fire one cell from a beast; none in 131,000 ticks with furnaceThermalEnabled off too)"
+ },
+ {
+  "test": "sc_burn_line_walks",
+  "label": "walk_small",
+  "identity": "identity_small.json",
+  "mod_sha": "4980c8dcdd",
+  "class": "SITE",
+  "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains burn_line_walk,burn_line_off_control   (and burn_line_burned_share from python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains burn_line, run burn_line at 09:47 on ArchBig)",
+  "parts": [
+   [
+    "walk_small",
+    [
+     "burn_line_present",
+     "burn_line_walks_hourly"
+    ]
+   ],
+   [
+    "off_small",
+    [
+     "burn_line_off_control"
+    ]
+   ],
+   [
+    "burn_line",
+    [
+     "burn_line_burned_share"
+    ]
+   ]
+  ],
+  "note": "relight and switch control staged by the quiet counter (10,360 ticks each), eight hourly captures; the naive GPT judge of the captures and the four day-end maps: YES (evidence/burn_line_naive_judge_gpt.md). The share (0.31 at worst with the wind on, 0.84 off, limit 0.50) stands from run burn_line",
+  "repair": {
+   "class": "SITE",
+   "commit": "4980c8dcdd1da6d0724ab2732145261fc90a8867",
+   "what": "furnaceThermalEnabled held off in the switch control, which is one step long; play_zoom stitches columns",
+   "planted": {
+    "plant": "PYRE_PLANT_BURNLINE_TOGGLE_IGNORED=1: the switch left on, 39 fires (and PYRE_PLANT_FRONT_OUT=1: the watch FAILs)",
+    "command": "PYRE_PLANT_BURNLINE_TOGGLE_IGNORED=1 (through WSLENV) python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains burn_line_off_control",
+    "verdict": "FAIL",
+    "evidence": "design/concepts/Pyrelands/version/in_game/visit_9/evidence/pv9_off_small_planted.json"
+   }
+  }
+ },
+ {
+  "test": "sc_firehawk_rewards",
+  "label": "letter",
+  "identity": "identity_small.json",
+  "mod_sha": "4980c8dcdd"
+ },
+ {
+  "test": "firehawk_first_sighting_letter",
+  "label": "letter",
+  "identity": "identity_small.json",
+  "mod_sha": "4980c8dcdd"
+ },
+ {
+  "test": "firehawk_crestfeather_yield",
+  "label": "crest",
+  "identity": "identity_small.json",
+  "mod_sha": "4980c8dcdd"
+ },
+ {
+  "test": "P_mapgen_log",
+  "label": "mapgen2",
+  "identity": "identity_small.json",
+  "mod_sha": "4980c8dcdd"
+ },
+ {
+  "test": "sc_reload_keeps_the_burn",
+  "label": "reload2",
+  "identity": "identity_small.json",
+  "mod_sha": "4980c8dcdd",
+  "note": "again: front_walks' wording changed in the file it imports"
  }
 ]

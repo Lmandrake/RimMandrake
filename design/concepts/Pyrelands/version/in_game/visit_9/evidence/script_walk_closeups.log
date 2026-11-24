@@ -1,6 +1,6 @@
-SHOT burn_front (24, 20, 24, 16) C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\pv9_walk_closeup_burn_front__cell_rect.png
-SHOT creatures (110, 20, 20, 16) C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\pv9_walk_closeup_creatures__cell_rect.png
-SHOT scorchfruit (168, 22, 12, 12) C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\pv9_walk_closeup_scorchfruit__cell_rect.png
-SHOT roof_wither (68, 26, 20, 16) C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\pv9_walk_closeup_roof_wither__cell_rect.png
-SHOT charred_ruin (215, 191, 16, 12) C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\pv9_walk_closeup_charred_ruin__cell_rect.png
-[bridge split] 12.1 s wall: load 0.0 / ticks 1.4 / reads 0.0 / other 3.1 / outside calls 7.6 s
+SHOT burn_front (18, 20, 24, 16) D:\ClaudeWork\rimmandrake\instances\b\Screenshots\pv9_walk_closeup_burn_front__cell_rect.png
+SHOT creatures (74, 20, 20, 16) D:\ClaudeWork\rimmandrake\instances\b\Screenshots\pv9_walk_closeup_creatures__cell_rect.png
+SHOT scorchfruit (132, 22, 12, 12) D:\ClaudeWork\rimmandrake\instances\b\Screenshots\pv9_walk_closeup_scorchfruit__cell_rect.png
+SHOT roof_wither (170, 32, 20, 16) D:\ClaudeWork\rimmandrake\instances\b\Screenshots\pv9_walk_closeup_roof_wither__cell_rect.png
+SHOT charred_ruin (151, 99, 16, 12) D:\ClaudeWork\rimmandrake\instances\b\Screenshots\pv9_walk_closeup_charred_ruin__cell_rect.png
+[bridge split] 12.1 s wall: load 0.0 / ticks 0.8 / reads 0.0 / other 3.0 / outside calls 8.3 s
