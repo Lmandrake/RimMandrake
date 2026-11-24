@@ -107,4 +107,18 @@ Baseline: the study's 21 days and 7 days to 2026-11-23 8:30 PM PST. Run again 7 
 
 ## The outcome of each ticket
 
-See the table at the end: `ticket_outcomes.tsv` beside this page. It lists before and after.
+`ticket_outcomes.tsv` beside this page gives each ticket its outcome and its evidence. Counts of 2026-11-23, 10:40 PM PST
+`[measured]`:
+
+| | count |
+|---|---|
+| open SteveDesktop tickets before | 61 |
+| DONE | 20 |
+| OVERTAKEN OR ENDED | 15 |
+| CASE OF A FORM, superseded | 17 |
+| KEPT: two standing hosts, one asleep, the proof-build route, three pieces of real work, telemetry (another run), this run's own item | 9 |
+| new form items, open | 4 |
+| open SteveDesktop tickets after, this run's own item not counted | 12 |
+
+17 more tickets name SteveDesktop in a title and are not SteveDesktop's: a mod's own fault that the lane found, or another
+program. They stay as they are, and the table names each.
