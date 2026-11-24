@@ -45,7 +45,7 @@ built. OVERTAKEN: a later ruling of his decides it. Each reading is [measured] u
 The Conductor's startup reading chain was 183.3 KB in the review. It is 199.3 KB now, plus `GUIDING_PRINCIPLES.md` (11.2 KB).
 `CLAUDE.md` grew from 43.2 to 58.0 KB. The global file is 38.8 (38.3), the Charter 18.6 (18.3), the model policy 23.4
 (22.2), Purpose 10.1 (9.4), the Conductor role with its pointer 50.4 (51.9). The six `rm-*` helper files were 80,121 bytes
-(about 73 KB in the review) and are 78,069 bytes after batch two. He deferred a length ceiling for rule files to about 2026-12-05 (note
+(about 73 KB in the review) and are 78,097 bytes after batch two. He deferred a length ceiling for rule files to about 2026-12-05 (note
 of 2026-11-21).
 
 ## Batch two (2026-11-23, 7 to 9 PM PST)
@@ -95,11 +95,11 @@ Measured from the subagent transcripts of 14 days (`Agent` runs of each kind):
 |---|---|---|
 | `.claude/agents/rm-bridge.md` | 10,605 | 10,593 |
 | `.claude/agents/rm-builder.md` | 12,023 | 12,011 |
-| `.claude/agents/rm-consult.md` | 8,441 | 7,439 |
+| `.claude/agents/rm-consult.md` | 8,441 | 7,453 |
 | `.claude/agents/rm-fixer.md` | 10,424 | 10,412 |
-| `.claude/agents/rm-judge.md` | 9,805 | 8,803 |
+| `.claude/agents/rm-judge.md` | 9,805 | 8,817 |
 | `.claude/agents/rm-testpilot.md` | 28,823 | 28,811 |
-| the six | 80,121 | 78,069 |
+| the six | 80,121 | 78,097 |
 | `.claude/rm_agent_shared_block.md` (a source, not loaded) | 5,279 | 6,401 |
 | `.claude/rm_agent_change_block.md` (a source, read on the pointer) | 0 | 1,153 |
 

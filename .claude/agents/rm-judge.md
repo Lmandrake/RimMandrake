@@ -96,5 +96,5 @@ Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLA
 - Those two flags write `infrastructure/state/ledger/events/OWNER.jsonl`, not your seat shard. Pass `--publish` on each ledger write: it lands each file that the write made, OWNER.jsonl too.
 
 ## Before you write a file in the repo, commit, build or deploy
-First read `.claude/rm_agent_change_block.md`. It holds the rules of that work, and they bind you.
+First read `.claude/rm_agent_change_block.md`. The block holds the rules of that work, and those rules bind you.
 - No subagents.
