@@ -837,8 +837,10 @@ def _origin_shard_bytes(root, mod, shard):
     cause, out = None, None
     try:
         rel = os.path.relpath(os.path.join(ledger_dir(root, mod), shard + ".jsonl"), root)
-        subprocess.run(["git", "-C", root, "fetch", "-q", "origin", "main"], capture_output=True, timeout=60, check=True)
+        subprocess.run(["git", "-C", root, "fetch", "-q", "origin", "main"], capture_output=True, timeout=60, check=True)  # budget: class=call
         r = subprocess.run(["git", "-C", root, "show", "origin/main:" + rel.replace(os.sep, "/")],
+                           # budget: danger=a hung git holds the ledger read; longest=0.9s (180 local git calls sampled at load
+                           # budget: 20 to 52, 2026-11-24)
                            capture_output=True, timeout=30)
         if r.returncode == 0:
             out = r.stdout

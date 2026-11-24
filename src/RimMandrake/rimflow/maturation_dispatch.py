@@ -1559,6 +1559,8 @@ def cert_rerun_unit(mod, key, runner=subprocess.run, now=None):
     import control as C     # the one admission point (control.py)
     try:
         r = C.launch_unit(argv, {"family": "cert_rerun", "unit": unit, "mod": mod}, runner=runner, capture_output=True,
+                          # budget: danger=a hung launch holds the dispatch tick; longest=1.3s (admission to start of 1057 runs,
+                          # budget: control.db)
                           text=True, timeout=60, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         return 1, "systemd-run failed: %s: %s" % (type(e).__name__, e), None
@@ -1585,7 +1587,7 @@ def cert_rerun_worker(mod, key, unit, runner=subprocess.run, take=None, now=time
             raise RuntimeError("certificate --run exit %d printed no verdict: %s" % (
                 r.returncode, ((r.stdout or "") + (r.stderr or ""))[-300:]))
         res.update(ok=bool(cv.get("ok")), key_after=stale_key(cv), ran=cv.get("run"))
-        g = runner(["git", "status", "--porcelain", "--", rel], cwd=clone, timeout=120, **kw)
+        g = runner(["git", "status", "--porcelain", "--", rel], cwd=clone, timeout=120, **kw)  # budget: class=call
         if (g.stdout or "").strip():
             p = runner(["./publish", "-m", "maturation: %s certificate rerun on its build (dispatch, zero tokens)" % mod,
                         rel], cwd=clone, timeout=21600, **kw)  # budget: class=publish
@@ -1598,7 +1600,7 @@ def cert_rerun_worker(mod, key, unit, runner=subprocess.run, take=None, now=time
                 # a newer table reached origin while the rerun worked (Pyrelands, 2026-11-22: a testq-blocks commit in
                 # its 449 s): the stamp commit is derived and this clone has one owner, so it is dropped and the tick
                 # starts the rerun again on the new table (cert_rerun_decide), never a hand merge
-                runner(["git", "reset", "--hard", "origin/main"], cwd=clone, timeout=120, **kw)
+                runner(["git", "reset", "--hard", "origin/main"], cwd=clone, timeout=120, **kw)  # budget: class=call
                 res.update(race=True, error="RERUN RACE: a newer %s reached origin while the rerun worked; its stamp "
                                             "commit was dropped and the rerun starts again" % rel)
             else:
@@ -2434,6 +2436,7 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
 
 
 NAME_MAX_LEN, NAME_MAX_WORDS = 64, 9     # rimflow model's name grammar (`rimflow namecheck`); `file` only warns now
+# budget: danger=an endless search on a wrong known set; ends no work: a count of names, no time
 RUN_MAX = 99    # runs tried per name. Danger: an endless search on a wrong known set. Evidence: boundary page LIMITS
 
 
@@ -2612,6 +2615,7 @@ READY_TEST = os.path.join(HERE, "acceptance", "modledger_backfill_accept.py")
 
 def ledger_ready(root, mod):
     """-> (ready, its last line): the mod's ledger passes its backfill acceptance (plan step 3; ~0.2 s)."""
+    # budget: danger=a hung ledger test holds the dispatch tick; longest=0.2s (the docstring's reading, 2026-11-16)
     r = subprocess.run([sys.executable, READY_TEST, mod], capture_output=True, text=True, timeout=300,
                        stdin=subprocess.DEVNULL, cwd=root)
     return r.returncode == 0, ((r.stdout or "").strip().splitlines() or ["no output"])[-1]
@@ -2661,6 +2665,7 @@ def origin_views(root, mods):
         if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(root):
             return None
         f = subprocess.run(["git", "-C", root, "fetch", "-q", "origin", "main"], capture_output=True, text=True,
+                           # budget: class=call
                            timeout=180)
     except (OSError, subprocess.SubprocessError) as e:
         return "views not landed: fetch failed: %s: %s" % (type(e).__name__, e)
@@ -3609,11 +3614,13 @@ def reap_run(unit):
     said = []
     rec = DH.read_record(unit) or {}
     if rec.get("status") != "finished":
-        r = subprocess.run([sys.executable, me, "finish", "--unit", unit], capture_output=True, text=True, timeout=600,
+        r = subprocess.run([sys.executable, me, "finish", "--unit", unit], capture_output=True, text=True, timeout=21600,  # budget: class=publish
                            stdin=subprocess.DEVNULL)
         said.append("finish exit %d" % r.returncode)
         rec = DH.read_record(unit) or {}
     if rec.get("status") == "finished" and not rec.get("returned"):
+        # budget: danger=a hung start of the return unit holds the dispatch tick; never reached in the 14 days to 2026-11-24; no
+        # budget: record of its run
         r = subprocess.run(DH.return_argv(rec), capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
         said.append("return started exit %d" % r.returncode)
     return "reaped %s: %s" % (unit, ", ".join(said) or "nothing owed")
@@ -3674,6 +3681,7 @@ def record_spend(root, facts, fx=None):
 
 
 CHORES_S = 1800         # the slow chores run this often, not every 60 s tick
+# budget: danger=the tick finishes a run whose own finish still runs; ends no work: the tick leaves the run for a later tick
 DEAD_WAIT_S = 600       # a dead run is finished by the tick only after this long dead (its own finish may be running)
 
 
@@ -3726,7 +3734,10 @@ def reading(cfg, rows, now):
 
 
 CLONE_FETCH_S = 30          # the tick's fetch of its own clone
+# budget: danger=the tick launches from a clone that is behind origin; ends no work: the tick launches nothing and says so; the
+# budget: next tick reads again
 CLONE_STALE_MIN = 5.0     # the OPS_DISPATCH_CLONE_BEHIND_UNSTICK alarm's threshold: past it the tick launches nothing
+# budget: danger=a refused fetch read as level with origin; ends no work: the reading says: could not look
 CLONE_BLIND_S = 900         # a refused fetch with origin/main's ref unmoved this long is no reading, not "level"
 
 
@@ -3911,6 +3922,8 @@ REPAIR_KEEP = {"live", "owner_hold", "pipeline_paused", "control_off", "disabled
 REPAIR_LAUNCH_MOST = 3      # a repair launcher refused this many times names the Conductor (danger: the repair launch
                             # itself refused forever, each tick re-sending it; evidence: the night of 2026-11-20, where
                             # every refused launch was re-sent until a hand came)
+# budget: danger=a launch is sent again every tick into the same refusal (the night of 2026-11-20); ends no work: a wait before
+# budget: the next try
 VOID_REPAIR_WAIT_S = 3600   # after a killed repair run (danger and evidence: as REPAIR_LAUNCH_MOST, a launch re-sent each tick)
 FAULT_REPAIRS_MOST = 2      # boundary page LIMITS: two repair runs that did not hold mean the fix is unknown
 
@@ -4381,7 +4394,9 @@ def _tick(root, cfg, apply, fx=None, now=None, page=False):
     # boundary design/specs/2026-11-23-tick-page-own-unit/boundary.md). page=True (`tick --page`) is a hand tick's.
     if page and apply:
         regen = fx.get("page") or (lambda: subprocess.run([sys.executable, os.path.join(
-            REPO, "src", "RimMandrake", "Utils", "maturation_now.py")], capture_output=True, text=True, timeout=600))
+            # budget: danger=a hung page build holds a hand tick; longest=124s (1228 rm-maturation-page runs, user journal, 14
+            # budget: days to 2026-11-24)
+            REPO, "src", "RimMandrake", "Utils", "maturation_now.py")], capture_output=True, text=True, timeout=1800))
         r = regen()
         rd["page"] = "regenerated" if getattr(r, "returncode", 0) == 0 else "page failed: %s" % (
             (getattr(r, "stdout", "") or "") + (getattr(r, "stderr", "") or ""))

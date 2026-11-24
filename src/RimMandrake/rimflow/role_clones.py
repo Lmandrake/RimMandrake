@@ -150,6 +150,8 @@ def make_in_background(name, runner=subprocess.run):
             "-p", "StandardOutput=append:" + log, "-p", "StandardError=append:" + log,
             "--", "/usr/bin/python3", os.path.abspath(__file__), "ensure", name]
     try:
+        # budget: danger=a hung systemd-run holds the launch of a role; never reached in the 14 days to 2026-11-24; no record of
+        # budget: its run
         r = runner(argv, capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
     except Exception as e:  # noqa: BLE001 - one answer, its cause named
         return "failed", "role clone %s is missing and its maker unit %s did not start: %s: %s" % (
@@ -171,6 +173,7 @@ def _tidy(clone, settle_min):
     return seat_dirt.tidy(clone, settle_min=settle_min)
 
 
+# budget: danger=a hung git holds the launch of a role; never reached in the 14 days to 2026-11-24; no record of its run
 def _git(clone, *a, timeout=300):
     return subprocess.run(["git", "-C", clone] + list(a), capture_output=True, text=True, timeout=timeout,
                           stdin=subprocess.DEVNULL)
@@ -224,6 +227,8 @@ def level(clone, land_sh=None):
             _git(clone, "fetch", "-q", "origin")
             sync = os.path.join(UTILS, "seat_sync.py")
             subprocess.run(["python3", sync, "--no-fetch", "--repo", clone] + sum((["--superseded", c] for c in done), []),
+                           # budget: danger=a hung seat_sync holds the launch of a role; never reached in the 14 days to
+                           # budget: 2026-11-24; no record of its run
                            capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL)
         left = seat_sync.unlanded(seat_sync.Git(clone))
     except Exception as e:  # noqa: BLE001 - one JSON answer, its cause named

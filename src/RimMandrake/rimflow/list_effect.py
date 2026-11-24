@@ -57,6 +57,8 @@ FORMS = "path-has:<repo path>::<text>, path-lacks:<repo path>::<text>, cmd:<shel
 PAC = dt.timezone(dt.timedelta(hours=-8), "PST")
 # Hang guard (the class of call_deadline_lint.py): a check command that never ends would hold this beat's lock and stop
 # every later check. Set far above a real check (a grep or one selftest: seconds), never a speed bar.
+# budget: danger=a check command that never ends holds this beat's lock and stops every later check; never reached in the 14
+# budget: days to 2026-11-24; no record of its run
 CMD_TIMEOUT_S = 600
 # Text cut: the close event is one ledger line that every replay of every seat reads; the whole output is kept in the
 # evidence file, so the line carries only its head.

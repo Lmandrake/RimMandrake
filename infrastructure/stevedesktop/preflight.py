@@ -181,6 +181,8 @@ def read_driver(name=AUDIO_DRIVER, win32=WIN32, runner=subprocess.run):
     """-> (start, state): registry Start as an int (None: no such key) and the SCM state word (RUNNING, STOPPED, ...;
     ABSENT: no such service). Raises OSError/ValueError when it cannot read (no Windows interop, odd output)."""
     key = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\" + name
+    # budget: danger=a hung reg.exe or sc.exe (WSL interop) holds the SteveDesktop worker's preflight, and so the lane; never
+    # budget: reached in the 14 days to 2026-11-24; no record of its run
     r = runner([os.path.join(win32, "reg.exe"), "query", key, "/v", "Start"], capture_output=True, text=True, timeout=30)
     start = None
     if r.returncode == 0:
@@ -192,6 +194,8 @@ def read_driver(name=AUDIO_DRIVER, win32=WIN32, runner=subprocess.run):
             raise ValueError("reg.exe gave no Start value: %r" % r.stdout[-120:])
     elif "unable to find" not in (r.stdout + r.stderr):
         raise ValueError("reg.exe exit %d: %r" % (r.returncode, (r.stdout + r.stderr)[-120:]))
+    # budget: danger=a hung reg.exe or sc.exe (WSL interop) holds the SteveDesktop worker's preflight, and so the lane; never
+    # budget: reached in the 14 days to 2026-11-24; no record of its run
     s = runner([os.path.join(win32, "sc.exe"), "query", name], capture_output=True, text=True, timeout=30)
     if "1060" in s.stdout + s.stderr:
         return start, "ABSENT"
@@ -233,7 +237,10 @@ def check_tier_build(job, runner):
     if not tier:
         return None
     r = subprocess.run([sys.executable, os.path.join(runner, "src", "RimMandrake", "Utils", "modset_builder.py"),
-                        "--tier", tier], cwd=runner, capture_output=True, text=True, timeout=180)
+                        # budget: danger=a hung modset_builder holds the SteveDesktop worker's preflight, and so the lane;
+                        # budget: longest=241s (the whole attest phase, an upper bound; testq done records, 14 days to
+                        # budget: 2026-11-24)
+                        "--tier", tier], cwd=runner, capture_output=True, text=True, timeout=2500)
     text = (r.stdout or "") + (r.stderr or "")
     if "REFUSING tier" in text or (r.returncode != 0 and "NOT INSTALLED" not in text):
         return "modset_builder --tier %s (plan) failed, exit %d: %s" % (tier, r.returncode, text.strip()[-300:])

@@ -109,8 +109,13 @@ STAGES = ("intake", "designer", "preflight", "offline_build", "blind_challenge",
           "passed")
 STOP_MODES = ("write_now", "at_easy_spot", "kill")
 DEFAULT_STOP_MODE = "at_easy_spot"  # his default (card 2026-11-18); `pipe` always prints which mode it used
+# budget: danger=a run that is told to write now never stops; evidence=3 of 15 write_now stops reached it and were escalated;
+# budget: longest=599s (control.db stops, 14 days to 2026-11-24); stays=the owner's stop, and the deadline is part of the stop
+# budget: he orders
 WRITE_NOW_DEADLINE_S = 300
+# budget: danger=a process that does not die, or a locked store, holds a kill; its reach leaves no record; no record of its run
 KILL_WAIT_S = 1.0
+# budget: danger=a process that does not die, or a locked store, holds a kill; its reach leaves no record; no record of its run
 KILL_STORE_WAIT_S = 0.2           # a unit kill tries the store this long, then kills without it
 ESCALATE_SLACK_S = 2.0              # a deadline timer may fire this early against the wall clock
 UNM = "UNMEASURED"
@@ -210,6 +215,7 @@ def _err(e):
     return "%s: %s" % (type(e).__name__, s)
 
 
+# budget: danger=a locked store holds its caller; its reach leaves no record; no record of its run
 def connect(p=None, timeout=3.0):
     """-> an open connection to an initialised store. Raises Unreadable (with its cause) on anything else."""
     p = p or db_path()
@@ -234,6 +240,7 @@ def init(p=None):
     """Create the store (idempotent). -> path."""
     p = p or db_path()
     os.makedirs(os.path.dirname(os.path.abspath(p)), exist_ok=True)
+    # budget: danger=a locked store holds its caller; its reach leaves no record; no record of its run
     c = sqlite3.connect(p, timeout=5, isolation_level=None)
     try:
         c.execute("PRAGMA journal_mode=WAL")
@@ -249,6 +256,7 @@ def init(p=None):
 class txn:
     """BEGIN IMMEDIATE ... COMMIT on a fresh connection: every write is one serialised transaction."""
 
+    # budget: danger=a locked store holds its caller; its reach leaves no record; no record of its run
     def __init__(self, p=None, timeout=3.0):
         self.p, self.timeout = p, timeout
 
@@ -278,6 +286,7 @@ class txn:
         return False
 
 
+# budget: danger=a locked store holds its caller; its reach leaves no record; no record of its run
 def read(p=None, timeout=1.5):
     """A connection for reads (WAL: a reader never waits on a writer)."""
     return connect(p, timeout)
@@ -1493,6 +1502,8 @@ def forecast(within="30m", runner=subprocess.run, full=False):
     try:
         h = runner(["git", "-C", root, "rev-parse", "--short", "HEAD"], capture_output=True, text=True, timeout=10)
         head = h.stdout.strip() if h.returncode == 0 else "HEAD UNMEASURED (git exit %d)" % h.returncode
+        # budget: danger=a hung forecast holds the pipe command; never reached in the 14 days to 2026-11-24; no record of its
+        # budget: run
         r = runner(argv + ([] if full else ["--json"]), capture_output=True, text=True, timeout=300)
     except (OSError, subprocess.SubprocessError) as e:
         return FAILED, ["pipe next: the forecast could not run (%s: %s)" % (type(e).__name__, e)]
@@ -1783,6 +1794,7 @@ def _hook_quiet():
 def _receipt(line):
     """The hook's line, to the journal only (the store already holds the state). Never raises."""
     try:
+        # budget: danger=a hung journal holds the hook of a live run; its reach leaves no record; no record of its run
         subprocess.run(["systemd-cat", "-t", RECEIPT_TAG], input=line + "\n", text=True, timeout=10,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError):
@@ -1938,6 +1950,7 @@ STOP_TEXT = {
 }
 
 
+# budget: danger=a hung systemd holds the pipeline's control; never reached in the 14 days to 2026-11-24; no record of its run
 def _systemctl(args, timeout=10):
     try:
         r = subprocess.run(["systemctl", "--user"] + args, capture_output=True, text=True, timeout=timeout)
@@ -2334,7 +2347,9 @@ def schedule_escalation(unit, deadline_s, p=None, order=None, runner=subprocess.
         r = runner(["systemd-run", "--user", "--quiet", "--collect", "--unit", name,
                     "--on-calendar=" + due, "--timer-property=AccuracySec=1s",
                     *DH.stop_resolver(cands, ["escalate", unit, "--db", os.path.abspath(p or db_path())])],
-                   capture_output=True, text=True, timeout=10)
+                   # budget: danger=a hung systemd-run holds the stop; longest=1.3s (admission to start of 1057 runs,
+                   # budget: control.db)
+                   capture_output=True, text=True, timeout=30)
     except (OSError, subprocess.SubprocessError) as e:
         return "escalation timer NOT set (%s)" % e
     if r.returncode:
@@ -2409,8 +2424,10 @@ def reap_detached(run, act, why):
             env += ["--setenv", "%s=%s" % (k, os.environ[k])]
     try:
         r = subprocess.run(["systemd-run", "--user", "--quiet", "--collect", "--no-block", "--unit", unit + "-return",
-                            "-p", "RuntimeMaxSec=1800"] + env + [py, os.path.abspath(__file__), "reap", unit],
-                           capture_output=True, text=True, timeout=10)
+                            "-p", "RuntimeMaxSec=3600"] + env + [py, os.path.abspath(__file__), "reap", unit],
+                           # budget: danger=a hung systemd-run holds the stop; longest=1.3s (admission to start of 1057 runs,
+                           # budget: control.db)
+                           capture_output=True, text=True, timeout=30)
     except (OSError, subprocess.SubprocessError) as e:
         return "%s; the finish+return unit could NOT start (%s): by hand: detached_helper.py finish --unit %s; " \
                "return --unit %s" % (msg, e, unit, unit)
@@ -2443,6 +2460,7 @@ def hook(p=None, unit=None, now=None, stdin=None):
         return 0, ""
     now = time.time() if now is None else now
     try:
+        # budget: danger=a locked store holds a hook of a live run; its reach leaves no record; no record of its run
         c = sqlite3.connect(p, timeout=0.5, isolation_level=None)
         try:
             c.row_factory = sqlite3.Row

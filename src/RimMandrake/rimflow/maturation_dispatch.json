@@ -20,7 +20,7 @@
   "_build_batch_bars_doc": "An offline build owing more refused bars than this goes out in even batches of about this many, one builder per batch, each judged on the whole refused set (a batch resolving none of its bars stops the mod as before). Item RIMMANDRAKE_SIZE_DISPATCH_BUILDS_THIRTY_THREE_BARS_ONE_RUN: one builder given all 33 refused Graffiti bars spent USD 7.15 of its 8 and stalled; the steward split them by hand into items of about six. 0 or absent sends the whole set.",
   "stage_ceiling_usd": 100,
   "_stage_ceiling_doc": "Set by the builder of this step: one mod's measured dollars at a stage (every run the status page places there, plus this step's launches, a run with no measured dollars counted at its cap) plus the next run's cap must fit this line, or nothing more launches on that mod at that stage, with a Needs Conductor line: the cap is reserved before launch (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH). Read at the offline build (a stop), the blind challenge and in-game acceptance (decision ceiling, read each tick). Raised 60 -> 100 on 2026-11-15 by the owner's card (\"Raise the limit to $100\", item RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB).",
-  "settle_s": 180,
+  "_settle_s": "danger=a run is judged before its published files reach the dispatch clone; ends no work: the run is judged at a later tick", "settle_s": 180,
   "_settle_doc": "A run that ended less than this many seconds ago is not judged yet (the tick is 60 s; its published files may not have reached the dispatch clone). Nothing launches on the mod meanwhile.",
   "idle_alarm_min": 60,
   "blind_enabled": true,
@@ -42,6 +42,6 @@
   "steward_cap_usd": 8,
   "fix_cap_usd": 10,
   "steward_max_per_version": 12,
-  "stalled_min": 10,
+  "_stalled_min": "danger=a stalled mod goes unseen; ends no work: the stall is alarmed", "stalled_min": 10,
   "_steward_doc": "maturation_autonomy.py (item RIMMANDRAKE_AUTOMATE_MATURATION_HAND_STEPS_MODS_SAT_WAITING; the owner 2026-11-15: \"Get the automation going so things can keep moving even if that means we have to pause them to fix something.\"). Each Conductor hand step becomes ONE steward run (opus: judging another agent's work, Agent_Policy.md) per state key, capped at steward_cap_usd; each road-back item a steward files gets ONE fixer run (fix_cap_usd). A run that ends with the state unmoved PAUSES the mod (OPS_MATURATION_MOD_PAUSED), never a retry. steward_max_per_version bounds the steward runs on one mod's version; stalled_min is the wait-on-nothing line for OPS_MATURATION_MOD_STALLED."
 }

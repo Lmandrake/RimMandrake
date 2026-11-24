@@ -14,6 +14,8 @@ from scene_core import CallFailed, Fault, ReplyLost
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 RIMFLOW = os.path.join(REPO, "src", "RimMandrake", "rimflow")
+# budget: danger=a bridge call that never answers holds the scene and its game; never reached in the 14 days to 2026-11-24; no
+# budget: record of its run
 CALL_TIMEOUT_S = 600.0      # a hang guard (boundary.md LIMITS): the older layers use the same
 
 
@@ -117,8 +119,12 @@ class RealWorld(object):
         distro = gl.driver_lock._wsl_distro()
         if not distro:
             return {"code": 2, "line": "the WSL distro that holds the lock records is not known from here", "inherited": False}
-        script = "/" + os.path.join(RIMFLOW, "game_lock.py")[2:].split("\\", 2)[2].replace("\\", "/") if _unc(RIMFLOW) else \
-            subprocess.run(["wsl.exe", "-d", distro, "wslpath", "-u", os.path.join(RIMFLOW, "game_lock.py")], capture_output=True, text=True, timeout=60).stdout.strip()
+        if _unc(RIMFLOW):
+            script = "/" + os.path.join(RIMFLOW, "game_lock.py")[2:].split("\\", 2)[2].replace("\\", "/")
+        else:
+            # budget: danger=a hung wsl.exe (interop) holds the lock take, and so the scene; never reached in the 14 days to
+            # budget: 2026-11-24; no record of its run
+            script = subprocess.run(["wsl.exe", "-d", distro, "wslpath", "-u", os.path.join(RIMFLOW, "game_lock.py")], capture_output=True, text=True, timeout=60).stdout.strip()
         env = {k: v for k, v in os.environ.items() if k not in (hg.ENV_GEN, "RM_GAME_INSTANCE", "RIMFLOW_DRIVER_LOCK")}
         p = subprocess.Popen(["wsl.exe", "-d", distro, "python3", script, "run", letter, "--for", purpose, "--", "cat"], stdin=subprocess.PIPE,
                              stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True, env=env)
@@ -229,6 +235,8 @@ class RealWorld(object):
             distro, _, rest = repo[2:].split("\\", 1)[1].partition("\\")      # the clone lives in WSL: its own git reads it
             cmd = ["wsl.exe", "-d", distro, "git", "-C", "/" + rest.replace("\\", "/")]
         try:
+            # budget: danger=a hung git (interop, drvfs) holds the scene and its game; never reached in the 14 days to
+            # budget: 2026-11-24; no record of its run
             p = subprocess.run(cmd + list(args), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=120)
         except (OSError, subprocess.SubprocessError) as e:
             raise Fault("COULD_NOT_LOOK", detail="git could not be run: %s" % e)

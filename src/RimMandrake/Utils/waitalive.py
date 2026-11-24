@@ -22,10 +22,15 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+# budget: danger=the wait outlives the one-hour prompt cache; ends no work: it reads STILL RUNNING; attach waits again
 MAX_WAIT_S = 3300       # under the one-hour prompt cache (page, LIMITS)
+# budget: danger=a hung job holds its caller; ends no work: the silence bound of a progress guard: it reads HUNG and kills
+# budget: nothing
 SILENCE_S = 600
 CPU_SHARE = 0.01        # CPU growth under 1% of the silence bound is a poll loop, not work
 CPU_MIN_S = 0.05
+# budget: danger=a supervisor that never starts holds its caller; never reached in the 14 days to 2026-11-24; no record of its
+# budget: run
 START_S = 30
 KEEP_DAYS = 14
 TAIL_LINES = 20

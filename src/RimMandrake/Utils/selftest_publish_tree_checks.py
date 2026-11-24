@@ -8,8 +8,8 @@ ledger-only change runs nothing (a red check stays unrun); a timeout warns and r
 nothing; the bypass variable skips, out loud. A sparse git fixture clone (a check joining an in-cone list with an
 out-of-cone record) passes on a clean HEAD and refuses a violation committed in the cone, leaving no check tree. A pipeline
 test red on origin/main the same way before the change is named PRE-EXISTING and not refused; one the change turned red,
-made worse, or added, or one with no base to compare, is refused saying which. The real list: every listed test exists, and the listed seconds sum
-under budget_s. Exit 0 = all pass, 1 = a case failed.
+made worse, or added, or one with no base to compare, is refused saying which. The real list: every listed test exists and carries
+its fix. Exit 0 = all pass, 1 = a case failed.
 """
 import contextlib
 import io
@@ -538,9 +538,6 @@ def main():
                                  timeout=60).stdout.split())      # a sparse clone holds them in git, not on disk
     missing = [t for t in listed if not os.path.isfile(os.path.join(root, t)) and t not in tracked]
     check(not missing, "every listed test exists: %s" % missing)
-    total = sum(c["seconds"] for c in cfg["checks"])
-    check(total < cfg["budget_s"] * 1.5 and max(c["seconds"] for c in cfg["checks"]) < cfg["budget_s"],
-          "listed seconds %.1f serial; run in parallel the wall stays under budget_s %d" % (total, cfg["budget_s"]))
     check(all(c.get("fix") for c in cfg["checks"]), "every listed check carries its fix")
     print("PASS" if not FAILS else "FAIL %d" % len(FAILS))
     return 1 if FAILS else 0

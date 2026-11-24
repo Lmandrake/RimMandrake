@@ -21,6 +21,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
+# budget: danger=old facts of a host read as current; ends no work: the facts are read again
 MAX_AGE_S = 2 * 3600
 KINDS = ("mods", "saves", "python", "companion")
 PART = {"companion": "companions"}      # the facts key of a kind that is not its own name
@@ -161,6 +162,7 @@ def collect(run):
 
 def _ssh(code):
     argv = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15", os.environ.get("STEVE_WSL", "mandrake@stevedesktop-wsl"), "python3 -"]
+    # budget: danger=a hung ssh holds the host facts; never reached in the 14 days to 2026-11-24; no record of its run
     r = subprocess.run(argv, input=code, capture_output=True, text=True, timeout=180)
     if r.returncode:
         raise OSError(r.stderr.strip()[-200:] or "ssh exit %d" % r.returncode)

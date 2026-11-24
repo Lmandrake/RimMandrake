@@ -39,7 +39,11 @@ EXPLORED = "EXPLORED"
 SPEEDS = ("Normal", "Fast", "Superfast", "Ultrafast")
 CALM_PROFILES = ("standard",)
 CALM_MINUTES = 240                      # the calm tool's own longest lease (design/specs/2026-11-23-calm-map/boundary.md)
+# budget: danger=a run whose clock stands still never ends (a window that pauses the game); ends no work: the silence bound of a
+# budget: progress guard: a clock that moves starts it again
 STALL_S = 60.0                          # boundary.md LIMITS
+# budget: danger=a load that never settles holds the scene and its game; never reached in the 14 days to 2026-11-24; no record
+# budget: of its run
 SETTLE_S = 600.0
 CLOSE_RECORD_S = 20.0
 CLOSE_SESSION_S = 60.0                  # the companion's writer drain limit (bridge-v2-hands/boundary.md)
@@ -360,6 +364,8 @@ class Session(object):
         if fresh and self._status().get("programState") != "Entry":
             self._menu(p)
         tool, args = ("rimworld/start_debug_game_ready", {}) if fresh else ("rimworld/load_game_ready", {"saveName": where})
+        # budget: danger=a load that never answers holds the scene and its game; never reached in the 14 days to 2026-11-24; no
+        # budget: record of its run
         args.update(timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
         try:
             r = self._call(tool, **args)

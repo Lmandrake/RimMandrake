@@ -268,6 +268,8 @@ _SETTING_TOOLS = ("jawa/mod_settings_field", "jawa/mod_settings_fields", "jawa/d
 
 LOAD_READY_TOOL = "rimworld/load_game_ready"
 LOAD_READY_WAIT_ENV = "RIMBRIDGE_LOAD_READY_WAIT_S"
+# budget: danger=a game that never reads Playing holds the caller after a load reply (live r8: stuck over 3 min); never reached
+# budget: in the 14 days to 2026-11-24; no record of its run
 LOAD_READY_WAIT_S = 180.0     # live r8: the stuck state lasted >3 min; a healthy load reads Playing within seconds of the reply
 LOAD_READY_POLL_S = 3.0
 
@@ -336,6 +338,7 @@ def _evidence(row, required=False):
 # BRIDGE_STALL_DIAGNOSTIC_1: a call that blocked this long names, on its `end` row, the stall dumps the companion's
 # watchdog wrote meanwhile (stall_<session>_NN.json in the game's JawaBench\tps record dir: phase stack, tick bucket
 # and its pawns' jobs, main-thread CPU). MUST equal JawaBenchStallDump.DumpSeconds (selftest_bridge_stall_client.py).
+# budget: danger=a stalled call with no pointer to its stall dump; ends no work: the call's end row names the dumps
 STALL_DUMP_SECONDS = 60.0
 
 
@@ -631,6 +634,7 @@ def reconcile_auto(starts=None):
 #   no answer, or a reply this code cannot parse         -> refuse (--journal-probe proves the parser on the live bridge)
 JOURNAL_TOOL = "rimbridge/list_operations"
 JOURNAL_LIMIT = 1000                           # the journal's own size: a smaller read could miss a running operation
+# budget: danger=a hung journal read holds every mutating call; never reached in the 14 days to 2026-11-24; no record of its run
 JOURNAL_READ_TIMEOUT_S = 10.0
 JOURNAL_SKIP = ("rimbridge.core/diagnostics/",)    # journal reads and status pings, this one among them, run all the time
 OP_LIVE = ("Pending", "Running")
@@ -906,7 +910,11 @@ def _raid_refusal(tool, params):
 # sets this to the epoch second of its subprocess timeout) gets no NEW mutating call that could still be in flight
 # then: a kill mid call strands an UNKNOWN-outcome marker that refuses every later mutation of the run.
 DEADLINE_ENV = "RIMBRIDGE_CALL_DEADLINE"
+# budget: danger=a kill in mid call strands an UNKNOWN-outcome marker that refuses every later mutation; ends no work: a
+# budget: mutation that could not finish before the caller's own kill does not start
 DEADLINE_MARGIN_S = 10.0       # kept clear between a clamped call's own timeout and the kill
+# budget: danger=a kill in mid call strands an UNKNOWN-outcome marker that refuses every later mutation; ends no work: a
+# budget: mutation that could not finish before the caller's own kill does not start
 DEADLINE_MIN_CALL_S = 30.0     # less room than this refuses the mutation (DeadlineError) instead of clamping it
 
 
@@ -1067,6 +1075,8 @@ class RimBridge:
     """
 
     def __init__(self, host=DEFAULT_HOST, port=DEFAULT_PORT, token="",
+                 # budget: danger=a dead bridge holds its caller; never reached in the 14 days to 2026-11-24; no record of its
+                 # budget: run
                  timeout=30.0, connect_timeout=5.0, client_name="rimbridge_client.py"):
         self.host = host
         self.port = int(port)
@@ -1689,6 +1699,7 @@ def _main(argv=None):
     ap.add_argument("--port", type=int)
     ap.add_argument("--token")
     ap.add_argument("--log", dest="log_path", help="Player.log to scrape for port/token")
+    # budget: danger=a dead bridge holds its caller; never reached in the 14 days to 2026-11-24; no record of its run
     ap.add_argument("--timeout", type=float, default=30.0)
     ap.add_argument("--list-tools", action="store_true")
     ap.add_argument("--call", metavar="TOOL")

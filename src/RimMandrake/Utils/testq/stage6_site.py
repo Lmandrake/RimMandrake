@@ -42,6 +42,8 @@ def main(argv=None):
     try:
         from rimbridge_client import RimBridge, resolve_endpoint
         host, port, token = resolve_endpoint()
+        # budget: danger=a dead bridge holds one game of the lane; never reached in the 14 days to 2026-11-24; no record of its
+        # budget: run
         with RimBridge(host=host, port=port, token=token, timeout=120.0) as rb:
             site = read(rb, a.sweep)
     except Exception as e:  # noqa: BLE001 - a site that could not be read is said, never a verdict

@@ -64,6 +64,8 @@ FAMILY = "art_judge_brief"
 CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin
 MODEL = "opus"
 CASE_BUDGET_USD = 4
+# budget: danger=a judge call that never returns holds the calibration; longest=134s (100 case sessions, agent transcripts, 14
+# budget: days to 2026-11-24)
 CASE_TIMEOUT_S = 1500
 PX_PER_CELL = 32
 FACT_KEYS = ("subject", "label", "template", "module", "body_plan", "tier", "invented", "canon", "description", "size",
@@ -183,6 +185,8 @@ def source_dir():
     if env:
         return env
     r = subprocess.run([sys.executable, os.path.expanduser("~/dev/Lodestar/bin/lib/agent_storage.py")],
+                       # budget: danger=a hung agent_storage.py holds the calibration; never reached in the 14 days to
+                       # budget: 2026-11-24; no record of its run
                        capture_output=True, text=True, timeout=30)
     if r.returncode or not r.stdout.strip():
         raise SystemExit("agent storage root unknown (agent_storage.py failed); set RM_ART_CAL_SOURCE")

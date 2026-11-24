@@ -65,9 +65,14 @@ QUIET_TICKS = 2
 CLEAN_TO_RESUME = 2
 MIN_UPTIME_S = 20 * 60              # the fault back sooner than this: a reboot is not clearing it
 MAX_REBOOTS_DAY = 12                # measured onset ~3 h on BIOS 3401: 8 a day is the honest worst case
+# budget: danger=a reboot of SteveDesktop that never comes back goes unseen; ends no work: the monitor says so and raises its
+# budget: alarm
 BOOT_TIMEOUT_S = 40 * 60
+# budget: danger=a dead canary read as a clean one; ends no work: the monitor says that the canary is blind
 BLIND_S = 20 * 60                   # reachable, up this long, and no cycle this recent: the canary is dead
+# budget: danger=a result with no clean canary cycle waits for ever; ends no work: the result counts, marked unguarded
 HOLD_S = 2 * 3600                   # a result waits this long for a clean cycle, then counts as unguarded
+# budget: danger=an old reading read as a current one; ends no work: the reading says nothing
 STALE_S = 30 * 60                   # a reading older than this says nothing (hold goes on, check fails)
 RERUN_WITHIN_S = 48 * 3600          # older quarantined jobs are not re-queued; the fill's gap scan owns those
 
@@ -275,6 +280,8 @@ def rerun_job(rec, now=None):
 
 # ---------------------------------------------------------------- SteveDesktop, over ssh (a selftest replaces these)
 
+# budget: danger=a hung ssh to SteveDesktop holds the fault monitor; never reached in the 14 days to 2026-11-24; no record of
+# budget: its run
 def ps(script, timeout=120):
     """PowerShell on Steve -> (rc, stdout); rc None = no route answered. Direct ssh first; when it gives no answer and
     STEVE_FALLBACK_SSH names a command prefix that runs a bash line on Steve's WSL (a machine with no direct route, e.g.
@@ -370,6 +377,8 @@ $c=Get-ItemProperty 'HKLM:\HARDWARE\DESCRIPTION\System\CentralProcessor\0'; $u=$
 
 def snapshot(window):
     """Cause evidence, taken while the faulty boot is still up -> the file, or None when Steve would not answer."""
+    # budget: danger=a hung ssh to SteveDesktop holds the fault monitor; never reached in the 14 days to 2026-11-24; no record
+    # budget: of its run
     rc, out = ps(SNAPSHOT_PS.replace("@SINCE@", window["start"]).replace("@LOG@", REGPROBE_LOG), timeout=180)
     if rc is None:
         return None
@@ -728,6 +737,8 @@ def check(_a=None, now=None):
 
 def scp_to(local, remote_dir):
     r = subprocess.run(["scp", "-q", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15", local,
+                        # budget: danger=a hung ssh to SteveDesktop holds the fault monitor; never reached in the 14 days to
+                        # budget: 2026-11-24; no record of its run
                         "%s:%s/" % (STEVE_WIN, remote_dir.replace("\\", "/"))], capture_output=True, text=True, timeout=300)
     if r.returncode:
         raise SystemExit("FAIL scp %s: %s" % (local, r.stderr.strip()[-300:]))

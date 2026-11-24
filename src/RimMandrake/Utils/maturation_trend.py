@@ -31,6 +31,7 @@ HOURS = 120          # five days of clock hours, as he asked
 DAY = 86400
 # A ticket nobody filed, took up or ran in this many days is left out as stale. Danger: the old backlog hides the week's
 # change. Evidence: 2026-11-23, over 600 of 1,174 open non-mod tickets had no act in seven days.
+# budget: danger=the old backlog hides the week's change; ends no work: the trend leaves the ticket out
 STALE_DAYS = 7
 CLASSES = ("nonmod", "mod")
 GROUPS = ("held", "oldmod", "later", "parked", "stale")

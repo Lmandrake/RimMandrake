@@ -107,7 +107,7 @@ def read_states(clone, ids):
     if not ids:
         return {}
     r = subprocess.run([sys.executable, "-c", READ_STATES] + list(ids), cwd=clone, capture_output=True, text=True,
-                       timeout=120, stdin=subprocess.DEVNULL)
+                       timeout=300, stdin=subprocess.DEVNULL)  # budget: class=rimflow
     if r.returncode:
         raise RuntimeError("ledger read in %s exited %d: %s" % (clone, r.returncode, (r.stderr or "")[-200:]))
     return json.loads(r.stdout)
@@ -653,7 +653,7 @@ def kick_argv(rec):
         if os.environ.get(k):
             env += ["--setenv", "%s=%s" % (k, os.environ[k])]
     return ["--user", "--quiet", "--collect", "--no-block",     # control.launch_unit names the unit
-            "-p", "RuntimeMaxSec=1800", "-p", "WorkingDirectory=/", *env,
+            "-p", "RuntimeMaxSec=10800", "-p", "WorkingDirectory=/", *env,
             "--", *DH.stop_resolver(candidates(rec, me), ["run", "--unit", rec["unit"]])]
 
 
@@ -672,6 +672,8 @@ def kick(rec, p, runner=subprocess.run):
     try:
         r = C.launch_unit(kick_argv(rec), {"family": "left_open_continue", "unit": rec["unit"] + "-continue",
                                            "item": p.get("target"), "reuse_name": True},
+                          # budget: danger=a hung launch holds the run's end; longest=1.3s (admission to start of 1057 runs,
+                          # budget: control.db)
                           runner=runner, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     except Exception as e:  # noqa: BLE001
         return "continue NOT kicked: %s: %s" % (type(e).__name__, e)

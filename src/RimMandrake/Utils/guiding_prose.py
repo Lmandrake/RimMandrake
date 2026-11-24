@@ -48,6 +48,8 @@ BRIEF_PATH = "(brief)"
 READER_MODEL = "opus"
 # A hang guard. Danger: a model call that never returns keeps the writer's ./publish open after the landing. Evidence: a
 # real call took 4 to 13 s on 61 to 434 sentences (2026-11-23); this is far above that.
+# budget: danger=a model call that never returns keeps the writer's ./publish open after the landing; longest=13s (real calls of
+# budget: 4 to 13 s on 61 to 434 sentences, 2026-11-23)
 READER_TIMEOUT_S = 300
 # ASD-STE100: a procedural sentence has at most 20 words (clarify.MAX_SENTENCE_WORDS), a descriptive one at most 25.
 # Danger: several ideas in one sentence, which a reader at that line must take apart. Evidence: the census of 2026-11-19
@@ -55,6 +57,7 @@ READER_TIMEOUT_S = 300
 # were about half of the hits (2026-11-23).
 MAX_DESCRIPTIVE_WORDS = 25
 GIT_TIMEOUT_S = 60          # a hang guard on local git reads (a stuck drvfs read), which take well under 1 s
+# budget: danger=a hung throwaway landing or launch holds the recheck; longest=5s (each took 2 to 5 s)
 DOOR_TIMEOUT_S = 180        # a hang guard on the recheck's throwaway landing and launch (each takes 2-5 s)
 CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin
 

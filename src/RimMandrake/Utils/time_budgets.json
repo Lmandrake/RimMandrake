@@ -1,136 +1,89 @@
 {
- "_doc": "The time budgets that stood before time_budget_lint.py (2026-11-24), read by that lint. A key is file::scope::name; values are seconds. An entry lets its budget stand at that value or higher: a lowered or added number is a new budget and needs a tag. longest_s is the longest real run measured (record says where); an entry without it is UNMEASURED. `--prune` drops entries whose budget is gone or now has a tag. Never add an entry by hand: tag the budget. Census: design/specs/2026-11-24-time-budgets/census.md.",
+ "_doc": "The time budgets that stood before time_budget_lint.py (2026-11-24), read by that lint. A key is file::scope::name; values are seconds. An entry lets its budget stand at that value or higher: a lowered or added number is a new budget and needs a tag. longest_s is the longest real run measured (record says where); an entry without it has no class and is red. in_test: a budget inside a test that stood when the lint began to read the tests (2026-11-24); the guard of the runner ends the test, so nobody measured it. `--prune` drops entries whose budget is gone or now has a tag. Never add an entry by hand: tag the budget. Census: design/specs/2026-11-24-time-budgets/census.md.",
  "budgets": {
-  ".claude/hooks/role_result_before_stop.py::<module>::TIMEOUT_S": {
+  "design/specs/2026-11-23-agent-work-to-code/acceptance/census_window_accept.py::run::timeout": {
+   "in_test": true,
    "values": [
-    45.0
+    120.0
    ]
   },
-  "infrastructure/stevedesktop/bootstrap_wsl.sh::<sh>::timeout": {
-   "values": [
-    25.0
-   ]
-  },
-  "infrastructure/stevedesktop/preflight.py::check_tier_build::timeout": {
-   "values": [
-    180.0
-   ]
-  },
-  "infrastructure/stevedesktop/preflight.py::read_driver::timeout": {
-   "values": [
-    30.0,
-    30.0
-   ]
-  },
-  "infrastructure/stevedesktop/serve_bootstrap.sh::<sh>::timeout": {
-   "values": [
-    70.0
-   ]
-  },
-  "infrastructure/stevedesktop/sync_test_mods.py::push::timeout": {
-   "values": [
-    1800.0
-   ]
-  },
-  "infrastructure/stevedesktop/sync_test_mods.py::push_file::timeout": {
-   "values": [
-    600.0
-   ]
-  },
-  "infrastructure/stevedesktop/sync_test_mods.py::remote_saves::timeout": {
+  "design/specs/2026-11-23-agent-work-to-code/acceptance/rank7_long_waits_accept.py::wa::timeout": {
+   "in_test": true,
    "values": [
     60.0
    ]
   },
-  "infrastructure/stevedesktop/sync_test_mods.py::remote_sha::timeout": {
+  "infrastructure/stevedesktop/selftest_rw_game_up_wait.py::<module>::LONGEST_DONE_LOAD_S": {
+   "in_test": true,
    "values": [
+    574.0
+   ]
+  },
+  "infrastructure/stevedesktop/selftest_steve_worker.py::main.w::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "infrastructure/stevedesktop/selftest_steve_worker.py::main::timeout": {
+   "in_test": true,
+   "values": [
+    60.0,
     120.0
    ]
   },
-  "infrastructure/stevedesktop/sync_test_mods.py::remote_tally::timeout": {
+  "infrastructure/stevedesktop/selftest_steve_worker_companion.py::main.run::timeout": {
+   "in_test": true,
    "values": [
-    300.0
+    60.0
    ]
   },
-  "infrastructure/stevedesktop/verify_from_archmagi.sh::<sh>::timeout": {
+  "infrastructure/stevedesktop/selftest_steve_worker_contract.py::main::timeout": {
+   "in_test": true,
    "values": [
-    5.0
+    60.0
    ]
   },
-  "infrastructure/stevedesktop/worker.py::<module>::DUMP_TIMEOUT_S": {
+  "infrastructure/stevedesktop/selftest_steve_worker_contract_mutants.py::run::timeout": {
+   "in_test": true,
    "values": [
     180.0
    ]
   },
-  "infrastructure/stevedesktop/worker.py::<module>::PROBE_TIMEOUT_S": {
+  "infrastructure/stevedesktop/selftest_steve_worker_outer_copy.py::main.g::timeout": {
+   "in_test": true,
    "values": [
-    30.0
+    60.0
    ]
   },
-  "infrastructure/stevedesktop/worker.py::Attempt.clear_moot_markers::timeout": {
+  "infrastructure/stevedesktop/selftest_steve_worker_outer_copy.py::main::timeout": {
+   "in_test": true,
    "values": [
     120.0
    ]
   },
-  "infrastructure/stevedesktop/worker.py::Attempt.companion::timeout": {
-   "values": [
-    300.0
-   ]
-  },
-  "infrastructure/stevedesktop/worker.py::Attempt.deploy_proof::timeout": {
-   "values": [
-    300.0
-   ]
-  },
-  "infrastructure/stevedesktop/worker.py::Attempt.deploy_release::timeout": {
-   "values": [
-    300.0
-   ]
-  },
-  "infrastructure/stevedesktop/worker.py::Attempt.dump_game::timeout": {
-   "values": [
-    30.0
-   ]
-  },
-  "infrastructure/stevedesktop/worker.py::Attempt.game_gone::timeout": {
+  "infrastructure/stevedesktop/selftest_steve_worker_reset_repair.py::main.run::timeout": {
+   "in_test": true,
    "values": [
     120.0
    ]
   },
-  "infrastructure/stevedesktop/worker.py::Attempt.kill_child::timeout": {
-   "values": [
-    10.0
-   ]
-  },
-  "infrastructure/stevedesktop/worker.py::Attempt.load::timeout": {
-   "values": [
-    300.0,
-    300.0
-   ]
-  },
-  "infrastructure/stevedesktop/worker.py::Attempt.pending_markers::timeout": {
+  "infrastructure/stevedesktop/selftest_steve_worker_stale_lock.py::main.start::timeout": {
+   "in_test": true,
    "values": [
     120.0
    ]
   },
-  "infrastructure/stevedesktop/worker.py::Attempt.run_modcheck::timeout": {
+  "infrastructure/stevedesktop/selftest_steve_worker_stale_lock.py::main::timeout": {
+   "in_test": true,
    "values": [
-    300.0
+    60.0
    ]
   },
-  "infrastructure/stevedesktop/worker.py::Attempt.stale_load::timeout": {
+  "infrastructure/stevedesktop/selftest_steve_worker_tier.py::main.run::timeout": {
+   "in_test": true,
    "values": [
-    300.0
-   ]
-  },
-  "infrastructure/stevedesktop/worker.py::Attempt.stop_game_for_next_job::timeout": {
-   "values": [
-    300.0
-   ]
-  },
-  "infrastructure/stevedesktop/worker.py::Attempt.tier_load::timeout": {
-   "values": [
-    300.0
+    60.0
    ]
   },
   "infrastructure/stevedesktop/worker.py::cmd_stop::timeout": {
@@ -140,22 +93,12 @@
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
   },
-  "infrastructure/stevedesktop/worker.py::deploy_closure::timeout": {
-   "values": [
-    120.0
-   ]
-  },
   "infrastructure/stevedesktop/worker.py::git::timeout": {
    "values": [
     300.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "infrastructure/stevedesktop/worker.py::repair_reset_list::timeout": {
-   "values": [
-    120.0
-   ]
   },
   "infrastructure/stevedesktop/worker.py::save_dirty::timeout": {
    "values": [
@@ -164,9 +107,10 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "infrastructure/stevedesktop/worker.py::spawn::timeout": {
+  "src/RimMandrake/Utils/account_end_mutants.py::run::timeout": {
+   "in_test": true,
    "values": [
-    60.0
+    600.0
    ]
   },
   "src/RimMandrake/Utils/call_deadline_lint.py::tracked_files::timeout": {
@@ -176,37 +120,12 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/Utils/game_watcher.py::<module>::LOAD_S": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/Utils/game_watcher.py::<module>::STALL_S": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/Utils/guiding_prose.py::<module>::DOOR_TIMEOUT_S": {
-   "values": [
-    180.0
-   ]
-  },
   "src/RimMandrake/Utils/guiding_prose.py::<module>::GIT_TIMEOUT_S": {
    "values": [
     60.0
    ],
    "longest_s": 3.8,
    "record": "210 local git calls sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/Utils/guiding_prose.py::<module>::READER_TIMEOUT_S": {
-   "values": [
-    300.0
-   ]
-  },
-  "src/RimMandrake/Utils/launch_permissions.py::<module>::timeout": {
-   "values": [
-    60.0
-   ]
   },
   "src/RimMandrake/Utils/launch_permissions.py::files::timeout": {
    "values": [
@@ -215,42 +134,12 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/Utils/maturation_nonmod.py::<module>::RED_STALE_S": {
-   "values": [
-    1800.0
-   ]
-  },
-  "src/RimMandrake/Utils/maturation_now.py::<module>::LONG_RUN_S": {
-   "values": [
-    3600.0
-   ]
-  },
-  "src/RimMandrake/Utils/maturation_trend.py::<module>::STALE_DAYS": {
-   "values": [
-    604800.0
-   ]
-  },
-  "src/RimMandrake/Utils/no_home.py::<module>::TTL_S": {
-   "values": [
-    300.0
-   ]
-  },
-  "src/RimMandrake/Utils/publish.py::<module>::CHECKTREE_STALE_S": {
-   "values": [
-    3600.0
-   ]
-  },
   "src/RimMandrake/Utils/publish.py::lock_holders::timeout": {
    "values": [
     30.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/Utils/publish.py::winbuild::timeout": {
-   "values": [
-    1200.0
-   ]
   },
   "src/RimMandrake/Utils/publish.py::with_skip_trailers::timeout": {
    "values": [
@@ -259,67 +148,12 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/Utils/publish_tree_checks.json::<top>::budget_s": {
-   "values": [
-    30.0
-   ]
-  },
-  "src/RimMandrake/Utils/rimbridge_client.py::<module>::DEADLINE_MARGIN_S": {
-   "values": [
-    10.0
-   ]
-  },
-  "src/RimMandrake/Utils/rimbridge_client.py::<module>::DEADLINE_MIN_CALL_S": {
-   "values": [
-    30.0
-   ]
-  },
-  "src/RimMandrake/Utils/rimbridge_client.py::<module>::JOURNAL_READ_TIMEOUT_S": {
-   "values": [
-    10.0
-   ]
-  },
-  "src/RimMandrake/Utils/rimbridge_client.py::<module>::LOAD_READY_WAIT_S": {
-   "values": [
-    180.0
-   ]
-  },
-  "src/RimMandrake/Utils/rimbridge_client.py::<module>::STALL_DUMP_SECONDS": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/Utils/rimbridge_client.py::RimBridge::connect_timeout": {
-   "values": [
-    5.0
-   ]
-  },
-  "src/RimMandrake/Utils/rimbridge_client.py::RimBridge::timeout": {
-   "values": [
-    30.0
-   ]
-  },
-  "src/RimMandrake/Utils/rimbridge_client.py::_main::timeout": {
-   "values": [
-    30.0
-   ]
-  },
   "src/RimMandrake/Utils/run_selftests.py::_install_slice::timeout": {
    "values": [
     30.0
    ],
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
-  },
-  "src/RimMandrake/Utils/run_selftests.py::_run_capped::timeout": {
-   "values": [
-    15.0
-   ]
-  },
-  "src/RimMandrake/Utils/run_selftests.py::_suite::timeout": {
-   "values": [
-    1.0
-   ]
   },
   "src/RimMandrake/Utils/run_selftests.py::_test_root::timeout": {
    "values": [
@@ -328,62 +162,14 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/Utils/run_selftests.py::probe_harness::timeout": {
+  "src/RimMandrake/Utils/scene_library_mutants.py::_clean::timeout": {
+   "in_test": true,
    "values": [
-    60.0
+    300.0
    ]
   },
-  "src/RimMandrake/Utils/scene.py::<module>::SETTLE_S": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/Utils/scene.py::<module>::STALL_S": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/Utils/scene.py::Session._load::timeoutMs": {
-   "values": [
-    280000.0
-   ]
-  },
-  "src/RimMandrake/Utils/scene_world.py::<module>::CALL_TIMEOUT_S": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/Utils/scene_world.py::RealWorld.git::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/Utils/scene_world.py::RealWorld.lock_take::timeout": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/Utils/scratch_reap.py::<module>::BORROW_REFRESH_S": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/Utils/scratch_reap.py::<module>::CORPUS_REFRESH_S": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/Utils/scratch_reap.py::<module>::FIXTURE_TTL_S": {
-   "values": [
-    86400.0
-   ]
-  },
-  "src/RimMandrake/Utils/scratch_reap.py::<module>::timeout": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/Utils/scratch_reap.py::commit_digests::timeout": {
+  "src/RimMandrake/Utils/scene_library_mutants.py::one::timeout": {
+   "in_test": true,
    "values": [
     300.0
    ]
@@ -394,25 +180,6 @@
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/Utils/scratch_reap.py::make_bundle::timeout": {
-   "values": [
-    1800.0,
-    1800.0
-   ]
-  },
-  "src/RimMandrake/Utils/scratch_reap.py::make_residual::timeout": {
-   "values": [
-    1800.0,
-    1800.0,
-    1800.0
-   ]
-  },
-  "src/RimMandrake/Utils/scratch_reap.py::make_tar::timeout": {
-   "values": [
-    600.0,
-    1800.0
-   ]
   },
   "src/RimMandrake/Utils/scratch_reap.py::object_format::timeout": {
    "values": [
@@ -428,19 +195,96 @@
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
   },
-  "src/RimMandrake/Utils/scratch_reap.py::proved_objects::timeout": {
+  "src/RimMandrake/Utils/selftest_guiding_prose.py::publish::timeout": {
+   "in_test": true,
    "values": [
-    1800.0
+    120.0
    ]
   },
-  "src/RimMandrake/Utils/slot_rules.json::ops::stale_min": {
+  "src/RimMandrake/Utils/selftest_guiding_prose.py::t_a_publish_with_faults_still_lands::timeout": {
+   "in_test": true,
    "values": [
-    2700.0
+    120.0
    ]
   },
-  "src/RimMandrake/Utils/slot_rules.json::ops::steve_stall_min": {
+  "src/RimMandrake/Utils/selftest_guiding_prose.py::t_the_check_verb_exits_for_a_caller.verb::timeout": {
+   "in_test": true,
    "values": [
-    1800.0
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_progress_guard.py::t_a_left_behind_process_does_not_hold_the_result::silence_s": {
+   "in_test": true,
+   "values": [
+    40.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_progress_guard.py::t_could_not_look_is_not_a_hang::silence_s": {
+   "in_test": true,
+   "values": [
+    2.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_progress_guard.py::t_ended_child_keeps_its_result::silence_s": {
+   "in_test": true,
+   "values": [
+    30.0,
+    30.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_progress_guard.py::t_run_kills_the_session::silence_s": {
+   "in_test": true,
+   "values": [
+    3.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_progress_guard.py::t_silent_child_ends::silence_s": {
+   "in_test": true,
+   "values": [
+    3.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_progress_guard.py::t_silent_worker_lives::silence_s": {
+   "in_test": true,
+   "values": [
+    4.0,
+    4.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_progress_guard.py::t_slow_writer_lives::silence_s": {
+   "in_test": true,
+   "values": [
+    4.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_progress_guard.py::t_spinning_child_ends_at_the_backstop::cap_s": {
+   "in_test": true,
+   "values": [
+    4.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_progress_guard.py::t_spinning_child_ends_at_the_backstop::silence_s": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_scene_library.py::_tree.git::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_waitalive.py::t_the_job_outlives_the_wait::timeout": {
+   "in_test": true,
+   "values": [
+    10.0
+   ]
+  },
+  "src/RimMandrake/Utils/selftest_waitalive.py::wa::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
    ]
   },
   "src/RimMandrake/Utils/systemd/account-plan.service::<unit>::TimeoutStartSec": {
@@ -449,36 +293,6 @@
    ],
    "longest_s": 50.3,
    "record": "user journal, 14 d (4031 runs)"
-  },
-  "src/RimMandrake/Utils/systemd/metronome_phases.json::phases.chores::cleanup_s": {
-   "values": [
-    2.0
-   ]
-  },
-  "src/RimMandrake/Utils/systemd/metronome_phases.json::phases.dispatch::cleanup_s": {
-   "values": [
-    3.0
-   ]
-  },
-  "src/RimMandrake/Utils/systemd/metronome_phases.json::phases.raise::cleanup_s": {
-   "values": [
-    2.0
-   ]
-  },
-  "src/RimMandrake/Utils/systemd/metronome_phases.json::phases.remember::cleanup_s": {
-   "values": [
-    2.0
-   ]
-  },
-  "src/RimMandrake/Utils/systemd/metronome_phases.json::phases.ring::cleanup_s": {
-   "values": [
-    2.0
-   ]
-  },
-  "src/RimMandrake/Utils/systemd/metronome_phases.json::phases.sense::cleanup_s": {
-   "values": [
-    5.0
-   ]
   },
   "src/RimMandrake/Utils/systemd/rm-artpiped.service::<unit>::TimeoutStopSec": {
    "values": [
@@ -592,52 +406,6 @@
    "longest_s": 20.1,
    "record": "user journal, 14 d (2016 runs)"
   },
-  "src/RimMandrake/Utils/testq/archmagi_phases.py::_ask_bridge::timeout": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/archmagi_phases.py::_ask_from_windows::timeout": {
-   "values": [
-    30.0,
-    120.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/archmagi_phases.py::cmd_deploy::timeout": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/archmagi_phases.py::game_pid::timeout": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/archmagi_switch.py::<module>::COOLDOWN_S": {
-   "values": [
-    1800.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/archmagi_switch.py::<module>::LOAD_S": {
-   "values": [
-    900.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/archmagi_switch.py::<module>::OLDEST_WAIT_S": {
-   "values": [
-    1800.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/archmagi_switch_reading.py::main::max_age_s": {
-   "values": [
-    7200.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/brake_release.py::<module>::RELEASE_GRACE_S": {
-   "values": [
-    1800.0
-   ]
-  },
   "src/RimMandrake/Utils/testq/brake_release.py::submit::timeout": {
    "values": [
     60.0
@@ -645,92 +413,12 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/Utils/testq/companion_stage.py::<module>::BUILD_TIMEOUT_S": {
-   "values": [
-    420.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/companion_stage.py::<module>::PROOF_MAX_AGE_S": {
-   "values": [
-    7200.0
-   ]
-  },
   "src/RimMandrake/Utils/testq/companion_stage.py::decide::timeout": {
    "values": [
     60.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/Utils/testq/companion_stage.py::probe::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/coverage.py::<module>::PROBE_TIMEOUT_S": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/fault_monitor.py::<module>::BLIND_S": {
-   "values": [
-    1200.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/fault_monitor.py::<module>::BOOT_TIMEOUT_S": {
-   "values": [
-    2400.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/fault_monitor.py::<module>::HOLD_S": {
-   "values": [
-    7200.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/fault_monitor.py::<module>::STALE_S": {
-   "values": [
-    1800.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/fault_monitor.py::<module>::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/fault_monitor.py::scp_to::timeout": {
-   "values": [
-    300.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/fault_monitor.py::snapshot::timeout": {
-   "values": [
-    180.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/gaps.py::<module>::PROBE_TIMEOUT_S": {
-   "values": [
-    480.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/host_facts.py::<module>::MAX_AGE_S": {
-   "values": [
-    7200.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/host_facts.py::_ssh::timeout": {
-   "values": [
-    180.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/ingest.py::<module>::FRESH_LOCK_WAIT_S": {
-   "values": [
-    10.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/ingest.py::<module>::STALE_LOCK_S": {
-   "values": [
-    300.0
-   ]
   },
   "src/RimMandrake/Utils/testq/ingest.py::_publish.git::timeout": {
    "values": [
@@ -746,11 +434,6 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/Utils/testq/ingest.py::lint_refusal::timeout": {
-   "values": [
-    120.0
-   ]
-  },
   "src/RimMandrake/Utils/testq/ingest.py::rebase_left.git::timeout": {
    "values": [
     300.0
@@ -758,22 +441,12 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/Utils/testq/ingest.py::recorded_run::timeout": {
-   "values": [
-    120.0
-   ]
-  },
   "src/RimMandrake/Utils/testq/ingest.py::replay_onto_origin::timeout": {
    "values": [
     60.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/Utils/testq/ingest.py::rimflow::timeout": {
-   "values": [
-    120.0
-   ]
   },
   "src/RimMandrake/Utils/testq/ingest.py::unpublished.git::timeout": {
    "values": [
@@ -797,11 +470,6 @@
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
   },
-  "src/RimMandrake/Utils/testq/regprobe_log.py::<module>::STALE_CYCLES": {
-   "values": [
-    3.0
-   ]
-  },
   "src/RimMandrake/Utils/testq/repeat_guard.py::git::timeout": {
    "values": [
     30.0
@@ -809,62 +477,298 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/Utils/testq/retest.py::remote_record::timeout": {
+  "src/RimMandrake/Utils/testq/selftest_fault_monitor_route.py::run_with::timeout": {
+   "in_test": true,
+   "values": [
+    5.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_ingest.py::fresh_lock_checks::timeout": {
+   "in_test": true,
+   "values": [
+    60.0,
+    60.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_ingest.py::leftover_checks.sh::timeout": {
+   "in_test": true,
    "values": [
     60.0
    ]
   },
-  "src/RimMandrake/Utils/testq/stage6_checks.py::<module>::FRESH": {
-   "values": [
-    100000000.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/stage6_checks.py::wpath::timeout": {
+  "src/RimMandrake/Utils/testq/selftest_ingest.py::leftover_checks::timeout": {
+   "in_test": true,
    "values": [
     60.0
    ]
   },
-  "src/RimMandrake/Utils/testq/stage6_site.py::main::timeout": {
+  "src/RimMandrake/Utils/testq/selftest_ingest.py::main.ingest::timeout": {
+   "in_test": true,
+   "values": [
+    300.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_ingest.py::main::timeout": {
+   "in_test": true,
+   "values": [
+    120.0,
+    120.0,
+    120.0,
+    120.0,
+    120.0,
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_ingest.py::peer_dirty_checks.sh::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_ingest.py::publish_prose_checks.sh::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_ingest.py::publish_sandbox.sh::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_ingest.py::review_r1_checks::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_ingest.py::template_checks::timeout": {
+   "in_test": true,
+   "values": [
+    60.0,
+    60.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_ingest.py::window_and_proofs_checks::timeout": {
+   "in_test": true,
    "values": [
     120.0
    ]
   },
-  "src/RimMandrake/Utils/testq/steward.py::<module>::CLAIM_HOLD_S": {
+  "src/RimMandrake/Utils/testq/selftest_lane_stop.py::mutants::timeout": {
+   "in_test": true,
    "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_stage6_checks.py::mutants::timeout": {
+   "in_test": true,
+   "values": [
+    600.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_stage6_checks.py::t_a_passed_guard_stands_on_the_one_relation::timeout": {
+   "in_test": true,
+   "values": [
+    300.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq.py::main.tq::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq.py::main::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq.py::t_bad_selection::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq.py::t_driver_sizing::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq.py::t_forward_submit::timeout": {
+   "in_test": true,
+   "values": [
+    120.0,
+    120.0,
+    120.0,
+    120.0,
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq.py::t_sweep_split::cap_s": {
+   "in_test": true,
+   "values": [
+    3200.0,
+    7200.0,
+    7200.0,
     7200.0
    ]
   },
-  "src/RimMandrake/Utils/testq/steward.py::<module>::COMPANION_GRACE_S": {
+  "src/RimMandrake/Utils/testq/selftest_testq.py::t_sweep_split::timeout": {
+   "in_test": true,
    "values": [
-    900.0
+    240.0,
+    240.0
    ]
   },
-  "src/RimMandrake/Utils/testq/steward.py::<module>::LOCK_WAIT_S": {
+  "src/RimMandrake/Utils/testq/selftest_testq.py::t_worker_schema_refresh.git::timeout": {
+   "in_test": true,
    "values": [
     30.0
    ]
   },
-  "src/RimMandrake/Utils/testq/steward.py::<module>::READY_GRACE_S": {
+  "src/RimMandrake/Utils/testq/selftest_testq.py::t_worker_schema_refresh.remote::timeout": {
+   "in_test": true,
    "values": [
-    300.0
+    30.0
    ]
   },
-  "src/RimMandrake/Utils/testq/steward.py::<module>::STALE_S": {
-   "values": [
-    300.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/steward.py::bench::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/steward.py::launch_wake::timeout": {
+  "src/RimMandrake/Utils/testq/selftest_testq_archmagi.py::Rig.call::timeout": {
+   "in_test": true,
    "values": [
     60.0
    ]
   },
-  "src/RimMandrake/Utils/testq/steward.py::pull_wake_clone::timeout": {
+  "src/RimMandrake/Utils/testq/selftest_testq_archmagi.py::Rig.tq::timeout": {
+   "in_test": true,
+   "values": [
+    180.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_archmagi.py::t_gate::timeout": {
+   "in_test": true,
+   "values": [
+    30.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_archmagi.py::t_keep_modlist::timeout": {
+   "in_test": true,
+   "values": [
+    60.0,
+    60.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_archmagi.py::t_phases.ph::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_archmagi_switch.py::t_pure::useful_oldest_wait_s": {
+   "in_test": true,
+   "values": [
+    600.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_archmagi_switch.py::t_report::load_s": {
+   "in_test": true,
+   "values": [
+    900.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_blocks.py::main::timeout": {
+   "in_test": true,
+   "values": [
+    300.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_blocks.py::run_checks::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_fault_monitor.py::ingest_checks.ingest::timeout": {
+   "in_test": true,
+   "values": [
+    300.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_fault_monitor.py::ingest_checks::timeout": {
+   "in_test": true,
+   "values": [
+    120.0,
+    120.0,
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_invalid_guard.py::main::timeout": {
+   "in_test": true,
+   "values": [
+    300.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_pipeline_admit.py::main::timeout": {
+   "in_test": true,
+   "values": [
+    300.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_pipeline_admit.py::ns::timeout": {
+   "in_test": true,
+   "values": [
+    7200.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_steve2.py::Rig.py::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_steve2.py::Rig.tq::timeout": {
+   "in_test": true,
+   "values": [
+    240.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_steward.py::main.cli::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_steward.py::main.git::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_steward.py::main::LOCK_WAIT_S": {
+   "in_test": true,
+   "values": [
+    0.3,
+    30.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_steward.py::main::timeout": {
+   "in_test": true,
+   "values": [
+    30.0,
+    30.0,
+    60.0,
+    120.0,
+    120.0
+   ]
+  },
+  "src/RimMandrake/Utils/testq/selftest_testq_tier.py::tq::timeout": {
+   "in_test": true,
    "values": [
     120.0
    ]
@@ -889,27 +793,6 @@
    ],
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
-  },
-  "src/RimMandrake/Utils/testq/testq.py::<module>::ARCH_SILENT_S": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/testq.py::<module>::HUNG_S": {
-   "values": [
-    300.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/testq.py::<module>::YIELD_GRACE_S": {
-   "values": [
-    180.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/testq.py::<module>::timeout": {
-   "values": [
-    180.0,
-    180.0
-   ]
   },
   "src/RimMandrake/Utils/testq/testq.py::cmd_ask::timeout": {
    "values": [
@@ -941,41 +824,10 @@
   },
   "src/RimMandrake/Utils/testq/testq.py::forward_submit::timeout": {
    "values": [
-    30.0,
-    300.0
+    30.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/Utils/testq/testq.py::preview::timeout": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/testq.py::site_stage_step.run::timeout": {
-   "values": [
-    900.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/testq.py::ssh_reachable::timeout": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/tier_load.py::measure::timeout": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/visit_feed.py::<module>::FAULT_BACKOFF_MAX_S": {
-   "values": [
-    7200.0
-   ]
-  },
-  "src/RimMandrake/Utils/testq/visit_feed.py::<module>::READING_MAX_AGE_S": {
-   "values": [
-    1800.0
-   ]
   },
   "src/RimMandrake/Utils/testq/visit_feed.py::_send::timeout": {
    "values": [
@@ -984,29 +836,58 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/Utils/waitalive.py::<module>::MAX_WAIT_S": {
+  "src/RimMandrake/rimflow/acceptance/control_acts_export_breaks_accept.py::run_test::timeout": {
+   "in_test": true,
    "values": [
-    3300.0
+    300.0
    ]
   },
-  "src/RimMandrake/Utils/waitalive.py::<module>::SILENCE_S": {
+  "src/RimMandrake/rimflow/acceptance/game_only_exit_guards_break_accept.py::run::timeout": {
+   "in_test": true,
+   "values": [
+    300.0
+   ]
+  },
+  "src/RimMandrake/rimflow/acceptance/list_effect_mutants.py::run_test::timeout": {
+   "in_test": true,
+   "values": [
+    900.0
+   ]
+  },
+  "src/RimMandrake/rimflow/acceptance/list_shape_mutants.py::run::timeout": {
+   "in_test": true,
+   "values": [
+    900.0
+   ]
+  },
+  "src/RimMandrake/rimflow/acceptance/list_stage_view_mutants.py::run::timeout": {
+   "in_test": true,
+   "values": [
+    900.0
+   ]
+  },
+  "src/RimMandrake/rimflow/acceptance/probe_result_promise_breaks_accept.py::one::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/rimflow/acceptance/step1_outcome_check_accept.py::<module>::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/acceptance/tick_peak_accept.py::main::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/rimflow/acceptance/wake_his_words_accept.py::run_child::timeout": {
+   "in_test": true,
    "values": [
     600.0
-   ]
-  },
-  "src/RimMandrake/Utils/waitalive.py::<module>::START_S": {
-   "values": [
-    30.0
-   ]
-  },
-  "src/RimMandrake/rimflow/art_calibration.py::<module>::CASE_TIMEOUT_S": {
-   "values": [
-    1500.0
-   ]
-  },
-  "src/RimMandrake/rimflow/art_calibration.py::source_dir::timeout": {
-   "values": [
-    30.0
    ]
   },
   "src/RimMandrake/rimflow/build_match.py::source_sha::timeout": {
@@ -1015,53 +896,6 @@
    ],
    "longest_s": 3.8,
    "record": "30 path logs sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/card_capture.py::backfill::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/card_capture.py::store_path::timeout": {
-   "values": [
-    30.0
-   ]
-  },
-  "src/RimMandrake/rimflow/close_check.py::<module>::MAX_AGE_S": {
-   "values": [
-    129600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/conductor_acts.py::digest_note::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/control.py::<module>::KILL_STORE_WAIT_S": {
-   "values": [
-    0.2
-   ]
-  },
-  "src/RimMandrake/rimflow/control.py::<module>::KILL_WAIT_S": {
-   "values": [
-    1.0
-   ]
-  },
-  "src/RimMandrake/rimflow/control.py::<module>::WRITE_NOW_DEADLINE_S": {
-   "values": [
-    300.0
-   ]
-  },
-  "src/RimMandrake/rimflow/control.py::<module>::timeout": {
-   "values": [
-    1.5,
-    3.0,
-    10.0
-   ]
-  },
-  "src/RimMandrake/rimflow/control.py::_receipt::timeout": {
-   "values": [
-    10.0
-   ]
   },
   "src/RimMandrake/rimflow/control.py::_unit_loaded::timeout": {
    "values": [
@@ -1072,36 +906,10 @@
   },
   "src/RimMandrake/rimflow/control.py::forecast::timeout": {
    "values": [
-    10.0,
-    300.0
+    10.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/control.py::hook::timeout": {
-   "values": [
-    0.5
-   ]
-  },
-  "src/RimMandrake/rimflow/control.py::init::timeout": {
-   "values": [
-    5.0
-   ]
-  },
-  "src/RimMandrake/rimflow/control.py::reap_detached::timeout": {
-   "values": [
-    10.0
-   ]
-  },
-  "src/RimMandrake/rimflow/control.py::schedule_escalation::timeout": {
-   "values": [
-    10.0
-   ]
-  },
-  "src/RimMandrake/rimflow/control.py::txn::timeout": {
-   "values": [
-    3.0
-   ]
   },
   "src/RimMandrake/rimflow/control_acts_export.py::_git::timeout": {
    "values": [
@@ -1119,16 +927,10 @@
   },
   "src/RimMandrake/rimflow/control_acts_export.py::run::timeout": {
    "values": [
-    30.0,
-    120.0
+    30.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/coverage_calibration.py::<module>::CASE_TIMEOUT_S": {
-   "values": [
-    1200.0
-   ]
   },
   "src/RimMandrake/rimflow/coverage_calibration.py::_stage_pyrelands::timeout": {
    "values": [
@@ -1138,11 +940,16 @@
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
   "src/RimMandrake/rimflow/coverage_judge.py::<module>::READER_TIMEOUT_S": {
+   "longest_s": 13,
+   "record": "17 second readers, agent transcripts, 14 days to 2026-11-24",
    "values": [
     600.0
    ]
   },
   "src/RimMandrake/rimflow/coverage_judge.py::<module>::TIMEOUT_S": {
+   "longest_s": 462,
+   "record": "2 COVERAGE JUDGE sessions, agent transcripts, 14 days to 2026-11-24",
+   "stays": "the file is the calibrated brief of the judge; the launcher passes --timeout 5400 (role_launch.JUDGE_TIMEOUT_S)",
    "values": [
     1500.0
    ]
@@ -1184,55 +991,9 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/detached_helper.py::<module>::DRAIN_NOTICE_FRESH_S": {
-   "values": [
-    1200.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::<module>::GRACE_S": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::<module>::LAUNCH_GRACE_S": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::<module>::MIN_MAX_S": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::<module>::REAP_TERM_WAIT_S": {
-   "values": [
-    5.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::<module>::RETURN_WAIT_S": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::<module>::STOP_S": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::<module>::grace_s": {
-   "values": [
-    3600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::<module>::timeout_s": {
-   "values": [
-    120.0
-   ]
-  },
   "src/RimMandrake/rimflow/detached_helper.py::_launch_locked::timeout": {
    "values": [
-    30.0,
-    60.0
+    30.0
    ],
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
@@ -1251,66 +1012,12 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/detached_helper.py::finish::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::main::grace_s": {
-   "values": [
-    3600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::main::timeout": {
-   "values": [
-    300.0
-   ]
-  },
   "src/RimMandrake/rimflow/detached_helper.py::origin_check::timeout": {
    "values": [
-    60.0,
-    120.0
+    60.0
    ],
    "longest_s": 3.7,
    "record": "15 fetches sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::origin_gate::timeout": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::read_item::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/detached_helper.py::return_clone::timeout": {
-   "values": [
-    300.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher.py::<module>::kill_wait": {
-   "values": [
-    10.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher.py::<module>::timeout": {
-   "values": [
-    60.0,
-    120.0,
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher.py::<module>::wait_s": {
-   "values": [
-    90.0,
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher.py::ledger_structural.rf::timeout": {
-   "values": [
-    120.0
-   ]
   },
   "src/RimMandrake/rimflow/dispatcher.py::old_timer_state::timeout": {
    "values": [
@@ -1319,97 +1026,12 @@
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/dispatcher.py::publish_bounded::timeout": {
-   "values": [
-    0.3
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher.py::recover::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::<top>::cooldown_s": {
-   "values": [
-    3600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::<top>::handoff_s": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::<top>::ops_stale_s": {
-   "values": [
-    2700.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::<top>::recover_verify_s": {
-   "values": [
-    300.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::<top>::restart_reconcile_hold_fresh_s": {
-   "values": [
-    480.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::<top>::stall_after_s": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::<top>::verify_s": {
-   "values": [
-    300.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::roles[DesignerCodex]::pre_launch_max_s": {
-   "values": [
-    1800.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::roles[Designer]::pre_launch_max_s": {
-   "values": [
-    1800.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::seat_restart.seats.BENCH::grace_s": {
-   "values": [
-    20.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::seat_restart.seats.BENCH::helper_stale_s": {
-   "values": [
-    1800.0
-   ]
-  },
-  "src/RimMandrake/rimflow/dispatcher_schedule.json::seat_restart.seats.BENCH::hold_max_s": {
-   "values": [
-    14400.0
-   ]
-  },
-  "src/RimMandrake/rimflow/game_lock.py::<module>::WRITING_WAIT_S": {
-   "values": [
-    1.0
-   ]
-  },
   "src/RimMandrake/rimflow/item_packet.py::<module>::GIT_S": {
    "values": [
     120.0
    ],
    "longest_s": 3.8,
    "record": "210 local git calls sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/judge_certificate.py::<module>::EMPTY_GAME_TIMEOUT_S": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/judge_certificate.py::<module>::START_PROBE_S": {
-   "values": [
-    20.0
-   ]
   },
   "src/RimMandrake/rimflow/judge_certificate.py::_git_dirty::timeout": {
    "values": [
@@ -1433,11 +1055,6 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/launch_checks.py::<module>::timeout_s": {
-   "values": [
-    120.0
-   ]
-  },
   "src/RimMandrake/rimflow/ledger_landing.py::<module>::GIT_TIMEOUT_S": {
    "values": [
     60.0
@@ -1445,52 +1062,12 @@
    "longest_s": 3.8,
    "record": "210 local git calls sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/left_open_continue.py::kick::timeout": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/rimflow/left_open_continue.py::read_states::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/list_dispatch.json::<top>::shape_grace_h": {
-   "values": [
-    86400.0
-   ]
-  },
-  "src/RimMandrake/rimflow/list_dispatch.py::<module>::SYSTEM_WAIT_S": {
-   "values": [
-    3600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/list_effect.py::<module>::CMD_TIMEOUT_S": {
-   "values": [
-    600.0
-   ]
-  },
   "src/RimMandrake/rimflow/list_effect.py::_git::timeout": {
    "values": [
     60.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/list_pipeline.py::<module>::LANE_STALE_S": {
-   "values": [
-    1800.0
-   ]
-  },
-  "src/RimMandrake/rimflow/maturation.py::<module>::REPAIR_STOP_S": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/maturation.py::<module>::timeout": {
-   "values": [
-    120.0
-   ]
   },
   "src/RimMandrake/rimflow/maturation.py::_commit_paths::timeout": {
    "values": [
@@ -1557,11 +1134,6 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/maturation.py::bridge_idle::timeout": {
-   "values": [
-    120.0
-   ]
-  },
   "src/RimMandrake/rimflow/maturation.py::cycle_open_sha::timeout": {
    "values": [
     60.0,
@@ -1586,16 +1158,7 @@
   },
   "src/RimMandrake/rimflow/maturation.py::run_diff::timeout": {
    "values": [
-    60.0,
-    120.0
-   ],
-   "longest_s": 0.9,
-   "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/maturation.py::tag_pass::timeout": {
-   "values": [
-    180.0,
-    240.0
+    60.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
@@ -1621,63 +1184,12 @@
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/maturation_dispatch.json::<top>::settle_s": {
-   "values": [
-    180.0
-   ]
-  },
-  "src/RimMandrake/rimflow/maturation_dispatch.json::<top>::stalled_min": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/maturation_dispatch.py::<module>::CLONE_BLIND_S": {
-   "values": [
-    900.0
-   ]
-  },
-  "src/RimMandrake/rimflow/maturation_dispatch.py::<module>::CLONE_STALE_MIN": {
-   "values": [
-    300.0
-   ]
-  },
-  "src/RimMandrake/rimflow/maturation_dispatch.py::<module>::DEAD_WAIT_S": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/maturation_dispatch.py::<module>::RUN_MAX": {
-   "values": [
-    99.0
-   ]
-  },
-  "src/RimMandrake/rimflow/maturation_dispatch.py::<module>::VOID_REPAIR_WAIT_S": {
-   "values": [
-    3600.0
-   ]
-  },
   "src/RimMandrake/rimflow/maturation_dispatch.py::_commit_time::timeout": {
    "values": [
     60.0
    ],
    "longest_s": 3.8,
    "record": "30 path logs sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/maturation_dispatch.py::_tick::timeout": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/maturation_dispatch.py::cert_rerun_unit::timeout": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/rimflow/maturation_dispatch.py::cert_rerun_worker::timeout": {
-   "values": [
-    120.0,
-    120.0
-   ]
   },
   "src/RimMandrake/rimflow/maturation_dispatch.py::clone_head::timeout": {
    "values": [
@@ -1693,17 +1205,11 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/maturation_dispatch.py::ledger_ready::timeout": {
-   "values": [
-    300.0
-   ]
-  },
   "src/RimMandrake/rimflow/maturation_dispatch.py::origin_views::timeout": {
    "values": [
     120.0,
     120.0,
-    120.0,
-    180.0
+    120.0
    ],
    "longest_s": 3.7,
    "record": "15 fetches sampled at load 20 to 52, 2026-11-24"
@@ -1714,12 +1220,6 @@
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/maturation_dispatch.py::reap_run::timeout": {
-   "values": [
-    120.0,
-    600.0
-   ]
   },
   "src/RimMandrake/rimflow/maturation_dispatch.py::rerun_landed::timeout": {
    "values": [
@@ -1752,27 +1252,6 @@
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/mod_next.py::<module>::READING_MAX_AGE_S": {
-   "values": [
-    1800.0
-   ]
-  },
-  "src/RimMandrake/rimflow/mod_owner_hold.py::_digest_note::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/modledger.json::<top>::lease_idle_minutes": {
-   "values": [
-    2700.0
-   ]
-  },
-  "src/RimMandrake/rimflow/modledger.py::_origin_shard_bytes::timeout": {
-   "values": [
-    30.0,
-    60.0
-   ]
-  },
   "src/RimMandrake/rimflow/modledger_backfill.py::_base::timeout": {
    "values": [
     120.0
@@ -1787,32 +1266,12 @@
    "longest_s": 3.8,
    "record": "30 path logs sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/modledger_reader.py::<module>::timeout": {
-   "values": [
-    600.0
-   ]
-  },
   "src/RimMandrake/rimflow/modledger_sample.py::main::timeout": {
    "values": [
     60.0
    ],
    "longest_s": 3.8,
    "record": "30 path logs sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/owed.py::<module>::timeout": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/quiet_scan.json::<top>::reading_max_age_s": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/quiet_scan.json::<top>::system_wait_s": {
-   "values": [
-    3600.0
-   ]
   },
   "src/RimMandrake/rimflow/quiet_scan.py::<module>::GIT_TIMEOUT_S": {
    "values": [
@@ -1821,37 +1280,12 @@
    "longest_s": 3.8,
    "record": "210 local git calls sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/quiet_scan.py::<module>::wait_s": {
-   "values": [
-    3600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/red_dispatch.py::<module>::SYSTEM_WAIT_S": {
-   "values": [
-    3600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/refusal_contract.py::<module>::FIXER_TIMEOUT_S": {
-   "values": [
-    1200.0
-   ]
-  },
-  "src/RimMandrake/rimflow/refusal_contract.py::<module>::timeout": {
-   "values": [
-    600.0
-   ]
-  },
   "src/RimMandrake/rimflow/rerun_relation.py::Git._git::timeout": {
    "values": [
     120.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/role_clones.py::<module>::timeout": {
-   "values": [
-    300.0
-   ]
   },
   "src/RimMandrake/rimflow/role_clones.py::land::timeout": {
    "values": [
@@ -1862,76 +1296,10 @@
   },
   "src/RimMandrake/rimflow/role_clones.py::level::timeout": {
    "values": [
-    60.0,
-    600.0
+    60.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/role_clones.py::make_in_background::timeout": {
-   "values": [
-    30.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::<module>::CAUSE_ATTACH_WAIT_S": {
-   "values": [
-    5.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::<module>::CHAIN_SWEEP_GRACE_S": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::<module>::CLOSE_OWED_MAX_S": {
-   "values": [
-    172800.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::<module>::OPS_STALE_S": {
-   "values": [
-    2700.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::<module>::RESUME_TTL_S": {
-   "values": [
-    172800.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::<module>::RESUME_WAIT_S": {
-   "values": [
-    3600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::<module>::RUN_NOW_TTL_S": {
-   "values": [
-    3600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::<module>::SCOPE_GRACE_S": {
-   "values": [
-    600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::<module>::SCOPE_STOP_S": {
-   "values": [
-    30.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::<module>::timeout": {
-   "values": [
-    45.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::<module>::wait_s": {
-   "values": [
-    500.0
-   ]
-  },
-  "src/RimMandrake/rimflow/role_launch.py::launch::timeout": {
-   "values": [
-    60.0
-   ]
   },
   "src/RimMandrake/rimflow/role_launch.py::load_state::timeout": {
    "values": [
@@ -1947,52 +1315,12 @@
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/role_launch.py::stage5_judge::timeout": {
-   "values": [
-    21600.0
-   ]
-  },
   "src/RimMandrake/rimflow/role_launch.py::unit_state::timeout": {
    "values": [
     30.0
    ],
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/run_alive.py::<module>::CMD_S": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/run_alive.py::<module>::LIVE_S": {
-   "values": [
-    3600.0
-   ]
-  },
-  "src/RimMandrake/rimflow/run_alive.py::<module>::SILENCE_S": {
-   "values": [
-    7500.0
-   ]
-  },
-  "src/RimMandrake/rimflow/run_alive.py::<module>::START_S": {
-   "values": [
-    120.0
-   ]
-  },
-  "src/RimMandrake/rimflow/run_end_wake.py::<module>::MAX_WAIT_S": {
-   "values": [
-    82800.0
-   ]
-  },
-  "src/RimMandrake/rimflow/run_end_wake.py::<module>::READER_S": {
-   "values": [
-    18.0
-   ]
-  },
-  "src/RimMandrake/rimflow/run_end_wake.py::<module>::STATE_DEADLINE_S": {
-   "values": [
-    20.0
-   ]
   },
   "src/RimMandrake/rimflow/run_void.py::landable::timeout": {
    "values": [
@@ -2008,26 +1336,6 @@
    ],
    "longest_s": 3.8,
    "record": "30 path logs sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/seat_restart.py::<module>::FALLBACK_GRACE_S": {
-   "values": [
-    200.0
-   ]
-  },
-  "src/RimMandrake/rimflow/seat_restart.py::<module>::HELPER_STALE_FLOOR_S": {
-   "values": [
-    1200.0
-   ]
-  },
-  "src/RimMandrake/rimflow/seat_restart.py::<module>::TELL_RING_HOLD_S": {
-   "values": [
-    60.0
-   ]
-  },
-  "src/RimMandrake/rimflow/seat_restart.py::<module>::wait_s": {
-   "values": [
-    10.0
-   ]
   },
   "src/RimMandrake/rimflow/seat_restart.py::_git_lines::timeout": {
    "values": [
@@ -2050,11 +1358,6 @@
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/seat_restart.py::_proc_read::timeout": {
-   "values": [
-    10.0
-   ]
-  },
   "src/RimMandrake/rimflow/seat_restart.py::_tick_soon::timeout": {
    "values": [
     10.0
@@ -2062,22 +1365,12 @@
    "longest_s": 0.014,
    "record": "30 calls sampled, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/seat_restart.py::cmd_wake::timeout": {
-   "values": [
-    120.0
-   ]
-  },
   "src/RimMandrake/rimflow/seat_restart.py::git_tree::timeout": {
    "values": [
     60.0
    ],
    "longest_s": 0.9,
    "record": "180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24"
-  },
-  "src/RimMandrake/rimflow/seat_restart.py::run_fallback::timeout": {
-   "values": [
-    180.0
-   ]
   },
   "src/RimMandrake/rimflow/seat_restart.py::unpublished_shard::timeout": {
    "values": [
@@ -2087,9 +1380,375 @@
    "longest_s": 3.8,
    "record": "30 path logs sampled at load 20 to 52, 2026-11-24"
   },
-  "src/RimMandrake/rimflow/spend_watchdog.py::<module>::GRACE_S": {
+  "src/RimMandrake/rimflow/selftest_close_check.py::git::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_close_remainder.py::Led.__init__::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_close_remainder.py::Led.cli::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_close_remainder.py::t_a_run_end_files_the_remainder_its_report_declares_once.read::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::_leak_child::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::conductor_ledger::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::ohcli::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::pipe::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::systemd_ok::timeout": {
+   "in_test": true,
+   "values": [
+    5.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_clones::timeout": {
+   "in_test": true,
    "values": [
     30.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_conductor_lift_only_from_its_window::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_crash::timeout": {
+   "in_test": true,
+   "values": [
+    30.0,
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_deadline_is_wall_clock::deadline_s": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_end_receipt_outlives_its_clone::timeout": {
+   "in_test": true,
+   "values": [
+    30.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_hooks_in_run_clone::timeout": {
+   "in_test": true,
+   "values": [
+    30.0,
+    30.0,
+    30.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_kill_verified_dead::wait_s": {
+   "in_test": true,
+   "values": [
+    0.05
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_permit_never_ghosts::timeout": {
+   "in_test": true,
+   "values": [
+    30.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_race::timeout": {
+   "in_test": true,
+   "values": [
+    30.0,
+    30.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_review_claims_eight::deadline_s": {
+   "in_test": true,
+   "values": [
+    60.0,
+    60.0,
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_review_claims_eight::timeout": {
+   "in_test": true,
+   "values": [
+    30.0,
+    30.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_review_claims_round_three::deadline_s": {
+   "in_test": true,
+   "values": [
+    5.0,
+    5.0,
+    5.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_review_claims_round_three::timeout": {
+   "in_test": true,
+   "values": [
+    10.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_review_claims_round_three::wait_s": {
+   "in_test": true,
+   "values": [
+    0.1,
+    0.2
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_review_claims_round_two::deadline_s": {
+   "in_test": true,
+   "values": [
+    5.0,
+    5.0,
+    3600.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_review_claims_round_two::wait_s": {
+   "in_test": true,
+   "values": [
+    0.5
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_slice4::timeout": {
+   "in_test": true,
+   "values": [
+    30.0,
+    30.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_stop::deadline_s": {
+   "in_test": true,
+   "values": [
+    1.0,
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_stop::timeout": {
+   "in_test": true,
+   "values": [
+    30.0,
+    30.0,
+    30.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_stop_reaches_the_agent::deadline_s": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_stop_reaches_the_agent::timeout": {
+   "in_test": true,
+   "values": [
+    30.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_stop_review_fixes::timeout": {
+   "in_test": true,
+   "values": [
+    30.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::t_undo_disarms_escalation::timeout": {
+   "in_test": true,
+   "values": [
+    10.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control.py::unit_state::timeout": {
+   "in_test": true,
+   "values": [
+    5.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_control_acts_export.py::git::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_detached_wake.py::main::max_wait": {
+   "in_test": true,
+   "values": [
+    3.0,
+    5.0,
+    5.0,
+    5.0,
+    10.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_end_receipt_off_result.py::launch::timeout": {
+   "in_test": true,
+   "values": [
+    30.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_end_receipt_off_result.py::systemd_ok::timeout": {
+   "in_test": true,
+   "values": [
+    5.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_end_receipt_off_result.py::t_receipt::timeout": {
+   "in_test": true,
+   "values": [
+    10.0,
+    10.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_launch_wait_and_deploy.py::t_about_read_waits_out_enomem::timeout": {
+   "in_test": true,
+   "values": [
+    300.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_list_effect.py::_git::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_list_effect.py::cli::timeout": {
+   "in_test": true,
+   "values": [
+    180.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_list_effect.py::t_holds_keeps_could_not_look_apart_from_fails::timeout": {
+   "in_test": true,
+   "values": [
+    0.5
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_list_home.py::cli::timeout": {
+   "in_test": true,
+   "values": [
+    180.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_list_shape.py::cli::timeout": {
+   "in_test": true,
+   "values": [
+    180.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_list_shape.py::holds_cli::timeout": {
+   "in_test": true,
+   "values": [
+    180.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_maturation_pass_tag.py::git::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_maturation_record.py::t_stage_spend_unmeasured_when_no_row_measured::wall_s": {
+   "in_test": true,
+   "values": [
+    20.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_mod_next.py::t_cli_next_reads_the_one_home::timeout": {
+   "in_test": true,
+   "values": [
+    300.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_mod_next_equivalence.py::old_source::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_owed_sources.py::t_no_step_in_the_dispatcher::deadline": {
+   "in_test": true,
+   "values": [
+    1000000000000.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_owed_sources.py::t_old_command_is_refused::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_own_cgroup.py::service::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_own_cgroup.py::t_child_dies_with_its_service::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_probe_result.py::lint::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_rerun_relation.py::Tree.git::timeout": {
+   "in_test": true,
+   "values": [
+    60.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_run_end_wake_result.py::t_a_reader_never_holds_the_wake::deadline_s": {
+   "in_test": true,
+   "values": [
+    1.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_run_end_wake_result.py::t_a_wake_is_never_lost::max_wait": {
+   "in_test": true,
+   "values": [
+    4.0,
+    5.0,
+    6.0
+   ]
+  },
+  "src/RimMandrake/rimflow/selftest_tick_names.py::run::timeout": {
+   "in_test": true,
+   "values": [
+    120.0
    ]
   }
  }

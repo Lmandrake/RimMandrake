@@ -1947,6 +1947,7 @@ def run_diff(root, mod):
             return None, "no origin/main commit before the run began"
         # errors="replace": a diffed evidence log may hold Windows bytes (a cp1252 dash), which must not kill the reader
         r = subprocess.run(["git", "-C", root, "diff", base, "--"] + paths, capture_output=True, text=True, encoding="utf-8",
+                           # budget: class=call
                            errors="replace", timeout=120)
     except (OSError, subprocess.SubprocessError) as e:
         return None, "git could not run: %s" % e
@@ -2535,6 +2536,8 @@ WAIT_MARK = "REFUSED (a wait, not a fault):"
 # A drift line outside them (a .sh, Source/, a README) cannot change what the game plays.
 LOADED_DIRS = ("about", "assemblies", "defs", "patches", "languages", "textures", "sounds", "assetbundles")
 ASSET_DIRS = ("textures", "sounds")
+# budget: danger=a game that ignores its close holds the repair (it is stopped with /F after this); never reached in the 14 days
+# budget: to 2026-11-24; no record of its run
 REPAIR_STOP_S = 120     # the boundary page's LIMITS: a game that ignores the close is stopped with /F after this
 
 
@@ -4347,7 +4350,7 @@ def pass_record(root, mod, rec, owner, sha, t, wid):
 PASS_TAG = "mod/%s/v%s"
 
 
-def _g(root, *a, timeout=120):
+def _g(root, *a, timeout=120):  # budget: class=call
     return subprocess.run(["git", "-C", root] + list(a), capture_output=True, text=True, timeout=timeout)
 
 
@@ -4427,6 +4430,7 @@ def tag_pass(root, mod, version, paths=None):
             return fail("land", "publish exit %d: %s" % (r.returncode, " | ".join(tail)))
         sha = _g(root, "rev-parse", m.group(1) + "^{commit}").stdout.strip()
     else:
+        # budget: class=call
         _g(root, "fetch", "-q", "origin", "main", timeout=180)     # best effort: a stale origin/main only misses
         added = _g(root, "log", "--diff-filter=A", "--format=%H", "origin/main", "--", prp)
         sha = (added.stdout.split() or [""])[0] if added.returncode == 0 else ""
@@ -4450,6 +4454,7 @@ def tag_pass(root, mod, version, paths=None):
     if on:
         return fail("push", "origin's tag %s names %s, not the pass commit %s" % (name, on[:10], sha[:10]))
     try:
+        # budget: danger=a hung push holds the pass; never reached in the 14 days to 2026-11-24; no record of its run
         p = _g(root, "push", "origin", "refs/tags/" + name, timeout=240)
     except (OSError, subprocess.TimeoutExpired) as e:
         return fail("push", repr(e))
@@ -5603,7 +5608,7 @@ def bridge_idle(purpose, seat="BENCH", runner=subprocess.run, game=None, lock=No
     import game_instance as GI
     env = GI.child_env(game or "a")
     try:
-        r = runner(argv, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL, env=env)
+        r = runner(argv, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL, env=env)  # budget: class=rimflow
     except (OSError, subprocess.SubprocessError) as e:
         return False, "the bridge reading failed: %s" % e
     text = ((r.stdout or "") + (r.stderr or "")).strip().splitlines()

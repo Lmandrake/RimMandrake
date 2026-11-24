@@ -31,6 +31,7 @@ PYRE = "src/RimMandrake/Pyrelands/"
 EK_BIOME = "AridShrubland"
 SITE = "src/RimMandrake/Utils/testq/stage6_site.py"
 LIVE_SITE = "python.exe src/RimMandrake/Utils/live_site.py"
+# budget: danger=live_site refuses an old test game as a colony; ends no work: a tick count that the site check is given
 FRESH = 100000000       # live_site refuses an old game as "a colony"; on SteveDesktop every game is a test game
 
 
@@ -405,6 +406,7 @@ READERS = {"rowfile": read_rowfile, "concept": read_concept, "status": read_stat
 # ---- the runner (on the game machine) ------------------------------------------------------------------------------
 
 def wpath(path):
+    # budget: danger=a hung wslpath holds one game of the lane; its reach leaves no record; no record of its run
     r = subprocess.run(["wslpath", "-w", path], capture_output=True, text=True, timeout=60)
     return r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else path
 

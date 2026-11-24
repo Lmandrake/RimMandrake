@@ -25,6 +25,8 @@ import time
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DEFAULT_CHECK = "python3 src/RimMandrake/rimflow/designer_stage.py check"
 MAX_BLOCKS = 2
+# budget: danger=a hung result check holds a role run open at its stop; never reached in the 14 days to 2026-11-24; no record of
+# budget: its run
 TIMEOUT_S = 45
 GUARD_KIND = "guard:result_before_exit:did_not_run"
 

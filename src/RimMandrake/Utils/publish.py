@@ -459,6 +459,8 @@ def winbuild(scratch, csproj):
     """Build `csproj` (absolute, inside `scratch`) with scratch's own winbuild.py. Selftest hook."""
     r = subprocess.run([sys.executable or "python3", os.path.join(scratch, "src/RimMandrake/Utils/winbuild.py"),
                         csproj, "--", "--no-incremental"],          # obj/ cache built a stale DLL once (lesson 22:36Z)
+                       # budget: danger=a hung winbuild holds a landing; never reached in the 14 days to 2026-11-24; no record
+                       # budget: of its run
                        cwd=scratch, capture_output=True, text=True, timeout=1200)
     return r.returncode, (r.stdout + r.stderr).strip()
 
@@ -1107,7 +1109,9 @@ def is_sparse(top):
 
 
 CHECKTREE_PREFIX = "rm-treecheck-"
-CHECKTREE_STALE_S = 3600
+# budget: danger=the sweep deletes the check tree of a live landing; longest=584s (the longest door-check wall of 636 publishes,
+# budget: 14 days to 2026-11-24; one check may now take 6000 s)
+CHECKTREE_STALE_S = 21600
 
 
 @contextlib.contextmanager

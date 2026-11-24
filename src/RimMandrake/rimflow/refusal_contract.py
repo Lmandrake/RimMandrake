@@ -678,6 +678,8 @@ def judge_cases(planted, results):
     return "CALIBRATED", "%d planted case(s) ran and came out as planted" % n   # a recorded, unplanted row is not one
 
 
+# budget: danger=a calibration check that never ends holds the calibration; never reached in the 14 days to 2026-11-24; no
+# budget: record of its run
 def run_check(cmd, root, planted, timeout=600):
     """Run one calibration check with RESULTS_ENV set. -> (status, last_run)."""
     import subprocess
@@ -736,6 +738,8 @@ UPPER = ("at most", "no more than", "maximum", "within", "<=")
 BOUND_RE = re.compile(r"(at least|no fewer than|minimum|at most|no more than|maximum|within|>=|<=)\s*(\d+(?:\.\d+)?)",
                       re.I)
 CONTROL_WORDS = ("control", "assert", "must", "never", "each", "every", "only")
+# budget: danger=a fixer call that never returns holds the repair of the criterion; longest=17s (1 CRITERIA FIXER session, agent
+# budget: transcripts, 14 days to 2026-11-24)
 FIXER_TIMEOUT_S = 1200
 
 

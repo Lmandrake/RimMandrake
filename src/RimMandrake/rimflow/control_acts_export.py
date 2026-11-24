@@ -140,6 +140,8 @@ def run(repo=REPO, store=None, reading=None, remote="origin", branch="main", dry
         if before_push:
             before_push()
         r = subprocess.run(["git", "-C", repo, "push", "-q", remote, "%s:refs/heads/%s" % (sha, branch)],
+                           # budget: danger=a hung push holds the export tick; never reached in the 14 days to 2026-11-24; no
+                           # budget: record of its run
                            capture_output=True, text=True, timeout=120)
         if r.returncode == 0:
             subprocess.run(["git", "-C", repo, "update-ref", "refs/remotes/%s/%s" % (remote, branch), sha],

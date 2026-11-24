@@ -60,6 +60,8 @@ def store_path():
         return env
     if not _ROOT:
         r = subprocess.run([sys.executable or "python3", AGENT_STORAGE, "rimmandrake"], capture_output=True, text=True,
+                           # budget: danger=a hung agent_storage.py holds the card record; never reached in the 14 days to
+                           # budget: 2026-11-24; no record of its run
                            timeout=30)
         out = r.stdout.strip()
         if r.returncode or not out:
@@ -533,7 +535,7 @@ def backfill(since, apply=False):
                             "card backfill: the whole card behind the --by-card of %s (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_"
                             "LABEL_LOST_THE_ART)" % e["ts"], "--by-card", e["byCard"], "--seat", "BENCH",
                             "--why", "card backfill from the session transcripts"],
-                           capture_output=True, text=True, env=env, cwd=REPO, timeout=120)
+                           capture_output=True, text=True, env=env, cwd=REPO, timeout=300)  # budget: class=rimflow
         if r.returncode:
             bad += 1
             print("   note refused: %s" % (r.stdout + r.stderr).strip())

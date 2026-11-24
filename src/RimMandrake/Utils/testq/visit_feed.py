@@ -34,6 +34,8 @@ BY = "BENCH.visit"
 PRIORITY = 40               # above the filler's 20; under a hand commission's 50 (testq.py submit's default priority)
 # The dispatch tick writes its reading every 60 s; one older than this is a dead step (the same line as
 # ops_watch.MATURATION_READING_MAX_AGE_S), and a check read from it may have run already.
+# budget: danger=a check is read from a dead dispatch step, and may have run already; ends no work: the feed says that the
+# budget: reading is old
 READING_MAX_AGE_S = 1800
 # A chain whose jobs failed by their own fault (failure_class: BAD REQUEST, the same job is refused again) this many
 # times since the visit opened is not sent again: sending it every tick spins the lane (the filler brake's evidence: two
@@ -42,6 +44,8 @@ FAILS_TO_STOP = 2
 # A run that held the lane and whose outcome is not the chain's own (killed, INVALID, no verdict read, or nobody can
 # class it) spends nothing (RIMMANDRAKE_SHARE_ONE_FAILURE_CLASSIFIER_EVERY_COUNTER_ROLLED_ITS_OWN): the chain waits
 # BOUNCE_BACKOFF_S, doubled for each such run in a row, this long at most, and is named in `faults`.
+# budget: danger=a chain is sent again every tick into the same fault (20 h of lane lost, 2026-10-25); ends no work: the longest
+# budget: wait before the chain is sent again
 FAULT_BACKOFF_MAX_S = 7200
 # A run the lane refused before the chain ran (REFUSED for a cause in testq.ARCH_BOUNCE - deploy, load, the guard's
 # hold - or SYNC, the runner's pull) measured nothing about the chain and is not one of those failures: live 2026-11-23,

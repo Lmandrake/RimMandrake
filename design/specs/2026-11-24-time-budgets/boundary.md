@@ -1,12 +1,14 @@
-# BOUNDARY: time budgets in pipeline machinery, Design Version 0.1.0
+# BOUNDARY: time budgets in pipeline machinery, Design Version 0.2.0
 
 Code: `src/RimMandrake/Utils/time_budget.py`, `src/RimMandrake/Utils/time_budget_lint.py`,
 `src/RimMandrake/Utils/time_budgets.json`. Tests: `src/RimMandrake/Utils/selftest_time_budget_lint.py`.
 The guard on progress: `design/specs/2026-11-24-progress-guard/boundary.md`.
-Item: `RIMMANDRAKE_MEASURE_TIME_BUDGETS_AGAINST_REAL_RUNS_HE_SEES_TEN_PERCENT`. Census: `census.md`.
+Items: `RIMMANDRAKE_MEASURE_TIME_BUDGETS_AGAINST_REAL_RUNS_HE_SEES_TEN_PERCENT`,
+`RIMMANDRAKE_MEASURE_EVERY_UNMEASURED_TIME_BUDGET_HE_CALLED_IT_LAZINESS`. Census: `census.md`.
 
 Owner, 2026-11-24: *"Aren't time budgets for detecting out-of-control or stuck programs? Why do we have them set to within
-10% of what the process really needs?"*
+10% of what the process really needs?"* · *"They aren't unmeasured... we can measure them."* · *"if no one ever looks, and
+we can't see a value now, shouldn't we just delete it?"* So each budget has a class, and no budget is UNMEASURED.
 
 ## ACCEPTS
 
@@ -19,15 +21,21 @@ Owner, 2026-11-24: *"Aren't time budgets for detecting out-of-control or stuck p
 
 - **a-budget-with-another-name.** A wait loop that counts its own polls, and a number with no telling name, are not found.
 - **a-number-set-at-run-time.** A budget that a program computes, or reads from the environment, is not found.
-- **a-budget-inside-a-test.** The selftests and the acceptance programs are not read. The guard of the runner ends them.
+- **a-false-class.** The lint reads that a tag says `never reached` or `ends no work`. The lint does not check that the words
+  are true. The readings of 2026-11-24 are in `census.md`.
+- **a-budget-in-a-string.** `"RuntimeMaxSec=3600"` in an argument list is a string, and is not found.
 
 ## PROMISES (each one is owed a test of the same name)
 
 - **no-danger-is-refused.** A new budget whose tag names no danger, or no longest run, is RED. So is one with no tag.
 - **tight-is-refused.** A budget under `FACTOR` times the longest run that its tag (or its class) names is RED.
 - **one-constant.** `time_budget.FACTOR` alone sets the number.
-- **stays-green.** A tag with an UNMEASURED longest run, a tag with `stays=<reason>`, a name from `time_budget.py`, and a
-  number that is no time budget are green.
+- **stays-green.** A tag with `stays=<reason>`, a name from `time_budget.py`, and a number that is no time budget are green.
+- **no-class-is-refused.** A budget with no class is RED: `longest=UNMEASURED`, or an entry of `time_budgets.json` with no
+  `longest_s`. A class is RECORD, NEVER REACHED, REACH NOT RECORDED or ENDS NO WORK, and each one needs a danger.
+- **a-class-with-no-record-is-green.** The words of NEVER REACHED, REACH NOT RECORDED and ENDS NO WORK, with a danger, are green.
+- **a-test-budget-is-read.** A new or lowered budget inside a selftest or an acceptance program is RED. A budget that stood
+  when the lint began to read the tests (`in_test`) is green at its value. `# budget: fixture` is green in a test only.
 - **known-stands.** A budget of `time_budgets.json` stands at its value or higher.
 - **lowered-is-refused.** A lowered budget is a new budget.
 - **added-is-refused.** One more budget in the same place is a new budget.
@@ -50,5 +58,8 @@ Owner, 2026-11-24: *"Aren't time budgets for detecting out-of-control or stuck p
 - What stays under 10 times, each with its reason: the job deadlines of SteveDesktop that
   `testq.py`, `brake_release.py` and `visit_feed.py` submit (21600 s, 5.3 and 8.5 times). A worker at an older commit
   refuses a job over 21600 s before it syncs.
-- 270 budgets have no record of a real time. They stand as they were (`time_budgets.json`), and nothing reached them in the
-  14 days as far as the journal and the agent transcripts show. A measured run that comes later goes in as `longest_s`.
+- `detached_helper.STOP_S` (600 s, 1.03 times the longest publish that its stop steps hold) and `control.WRITE_NOW_DEADLINE_S`
+  (300 s; 3 of 15 write-now stops of the 14 days reached it) are the owner's stops: they stay.
+- NEVER REACHED means: no `timed out after`, no `TimeoutExpired` and no message of the budget in the user journal, the agent
+  transcripts or the SteveDesktop job results of the 14 days to 2026-11-24. A call that swallows its own timeout is REACH NOT
+  RECORDED.

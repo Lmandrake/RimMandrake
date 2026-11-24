@@ -68,6 +68,8 @@ CFG_PATH = os.path.join(HERE, "list_dispatch.json")
 CLOSED = ("done", "dropped", "superseded")
 # after a run or launches that did not count: the danger is a launch sent again every tick into the same refusal (the
 # night of 2026-11-20, maturation_dispatch.REPAIR_LAUNCH_MOST)
+# budget: danger=a launch is sent again every tick into the same refusal (the night of 2026-11-20); ends no work: a wait before
+# budget: the next try
 SYSTEM_WAIT_S = 3600
 PAC = dt.timezone(dt.timedelta(hours=-8), "PST")
 ACCEPT_RX = re.compile(r"python3\s+((?:design|src)/[^\s'\"`]+?_accept\.py)\b")

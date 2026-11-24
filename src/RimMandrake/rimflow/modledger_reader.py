@@ -164,6 +164,8 @@ def rec_hash(text, field="reading"):
     return hashlib.sha256((FIELD_VERSION[field] + "\n" + text).encode("utf-8")).hexdigest()[:16]
 
 
+# budget: danger=a model call that never returns holds the reader; longest=49s (every session run from /tmp (336), an upper
+# budget: bound; agent transcripts, 14 days to 2026-11-24)
 def _call(prompt, model, timeout=600, system=None):
     """-> (answer dict, usd). One `claude -p` call, no tools, no settings, no MCP; run from /tmp (no project files)."""
     claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")   # systemd's PATH lacks ~/.local/bin

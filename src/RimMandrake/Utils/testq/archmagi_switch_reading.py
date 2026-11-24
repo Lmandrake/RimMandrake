@@ -35,6 +35,7 @@ def verdict(state, now, max_age_s):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("state", nargs="?", default=DEFAULT)
+    # budget: danger=a dead switch read as a live one; ends no work: the reading says that it is old
     ap.add_argument("--max-age-s", type=int, default=7200)
     a = ap.parse_args(argv)
     try:

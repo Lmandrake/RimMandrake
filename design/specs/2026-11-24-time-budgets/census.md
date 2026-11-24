@@ -15,7 +15,7 @@ holds the rule from now on is `src/RimMandrake/Utils/time_budget_lint.py` (`boun
 | 1.5 to under 3 | 12 |
 | 3 to under 10 | 37 |
 | 10 or more | 142 |
-| UNMEASURED: no record gives the time | 270 |
+| no record joined by the first run of the day; the second run classed each one (§The 270) | 270 |
 
 - **"Within 10%" is true of 27 budgets** (ratio 1.10 or less), and it is worse than he said: 17 of these stood
   under the longest real run. 12 of the 27 rest on an upper bound (the time of a whole that holds the work), so their true ratio may be
@@ -24,8 +24,9 @@ holds the rule from now on is `src/RimMandrake/Utils/time_budget_lint.py` (`boun
 - 159 of 499 budgets name no danger at the number.
 - The machine's load is the other half of the answer. `selftest_maturation_autonomy.py` took 36 s alone (2026-11-15) and
   599 s at load 45 (2026-11-24). A budget of 5 times the idle run is a budget of 0.3 times the loaded run.
-- 181 more budgets stand inside selftests and acceptance programs of the scope. They end a step of a test, and the
-  runner's guard ends the test. Their real times are UNMEASURED. The lint does not read them.
+- The first run counted 181 more budgets inside selftests and acceptance programs. The lint reads them now: 196
+  (why the count moved is not known). Each stands at its value (`in_test`), and a new or
+  lowered one is checked when it lands. A record of a run that such a budget ended: none seen.
 
 ## Where the ten tightest came from
 
@@ -287,276 +288,311 @@ run and stand at 1 to 2 times it. An agent measured the longest run on that day 
 | rimflow/seat_restart.py:2916 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | 0.9 | 0.02 | 180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24 | 66.67 | 0 (journal and agent transcripts, 14 d) | none | stays |
 | rimflow/seat_restart.py:3566 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | 0.9 | 0.02 | 180 local git calls of 6 kinds sampled at load 20 to 52, 2026-11-24 | 66.67 | 0 (journal and agent transcripts, 14 d) | none | stays |
 | rimflow/seat_restart.py:3929 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | 0.014 | 0.007 | 30 calls sampled, 2026-11-24 | 4285.71 | 0 | none | stays |
-| .claude/hooks/role_result_before_stop.py:28 | TIMEOUT_S | 45 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| infrastructure/stevedesktop/bootstrap_wsl.sh:127 | timeout | 25 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| infrastructure/stevedesktop/preflight.py:184 | timeout | 30 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/preflight.py:195 | timeout | 30 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/preflight.py:236 | timeout | 180 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/serve_bootstrap.sh:37 | timeout | 70 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| infrastructure/stevedesktop/sync_test_mods.py:109 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/sync_test_mods.py:123 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/sync_test_mods.py:137 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/sync_test_mods.py:176 | timeout | 1800 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/sync_test_mods.py:194 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/verify_from_archmagi.sh:78 | timeout | 5 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:167 | DUMP_TIMEOUT_S | 180 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:168 | PROBE_TIMEOUT_S | 30 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:719 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:776 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:812 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:918 | timeout | 10 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:951 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:993 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:1076 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:1133 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:1167 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:1329 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:1345 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:1376 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:1474 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:1617 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:1664 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:1716 | timeout | 30 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| infrastructure/stevedesktop/worker.py:1745 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/game_watcher.py:15 | STALL_S | 60 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/game_watcher.py:16 | LOAD_S | 600 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/guiding_prose.py:51 | READER_TIMEOUT_S | 300 | the call, run or phase is ended | A hang guard. Danger: a model call that never returns keeps the writer's ./publish open after the landing. Evidence: a real call took 4 to 1 | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/guiding_prose.py:58 | DOOR_TIMEOUT_S | 180 | the call, run or phase is ended | a hang guard on the recheck's throwaway landing and launch (each takes 2-5 s) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/guiding_prose.py:651 | timeout | 600 | the call, run or phase is ended | hang guard: a rimflow write that publishes takes 30-120 s | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | raised to 21600 |
-| Utils/launch_permissions.py:467 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/maturation_nonmod.py:38 | RED_STALE_S | 1800 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/maturation_now.py:494 | LONG_RUN_S | 3600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/maturation_trend.py:34 | STALE_DAYS | 604800 | a reading past this age is refused | A ticket nobody filed, took up or ran in this many days is left out as stale. Danger: the old backlog hides the week's change. Evidence: 202 | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/no_home.py:37 | TTL_S | 300 | a reading past this age is refused | A count younger than this is shared, not recounted. Danger: both pages build every minute, and recounting on every build doubles a load the  | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/publish.py:462 | timeout | 1200 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/publish.py:1107 | CHECKTREE_STALE_S | 3600 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/publish_tree_checks.json:3 | budget_s | 30 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/rimbridge_client.py:271 | LOAD_READY_WAIT_S | 180 | a wait ends, or a state reads as late | live r8: the stuck state lasted >3 min; a healthy load reads Playing within seconds of the reply | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/rimbridge_client.py:339 | STALL_DUMP_SECONDS | 60 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/rimbridge_client.py:634 | JOURNAL_READ_TIMEOUT_S | 10 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/rimbridge_client.py:909 | DEADLINE_MARGIN_S | 10 | the work is ended or skipped | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/rimbridge_client.py:910 | DEADLINE_MIN_CALL_S | 30 | the work is ended or skipped | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/rimbridge_client.py:1070 | timeout | 30 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/rimbridge_client.py:1070 | connect_timeout | 5 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/rimbridge_client.py:1692 | timeout | 30 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/run_selftests.py:459 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/run_selftests.py:543 | timeout | 15 | the call, run or phase is ended | Bounded: a descendant that escaped the group can still hold the pipe, and an unbounded communicate() here hung the whole runner (audit §7). | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/run_selftests.py:1367 | timeout | 1 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/scene.py:42 | STALL_S | 60 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/scene.py:43 | SETTLE_S | 600 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/scene.py:363 | timeoutMs | 280000 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/scene_world.py:17 | CALL_TIMEOUT_S | 600 | the call, run or phase is ended | a hang guard (boundary.md LIMITS): the older layers use the same | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/scene_world.py:121 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/scene_world.py:232 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/scratch_reap.py:130 | FIXTURE_TTL_S | 86400 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/scratch_reap.py:154 | BORROW_REFRESH_S | 120 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/scratch_reap.py:239 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/scratch_reap.py:980 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/scratch_reap.py:1361 | CORPUS_REFRESH_S | 60 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/scratch_reap.py:1836 | timeout | 1800 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/scratch_reap.py:1840 | timeout | 1800 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/scratch_reap.py:1857 | timeout | 1800 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/scratch_reap.py:1871 | timeout | 1800 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/scratch_reap.py:1886 | timeout | 1800 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/scratch_reap.py:1893 | timeout | 1800 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/scratch_reap.py:1957 | timeout | 1800 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/scratch_reap.py:1960 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/slot_rules.json:83 | stale_min | 2700 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/slot_rules.json:91 | steve_stall_min | 1800 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/systemd/metronome_phases.json:6 | cleanup_s | 5 | the work is ended or skipped | reason text in the file names the past runs, no danger | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/systemd/metronome_phases.json:6 | cleanup_s | 2 | the work is ended or skipped | reason text in the file names the past runs, no danger | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/systemd/metronome_phases.json:6 | cleanup_s | 2 | the work is ended or skipped | reason text in the file names the past runs, no danger | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/systemd/metronome_phases.json:6 | cleanup_s | 2 | the work is ended or skipped | reason text in the file names the past runs, no danger | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/systemd/metronome_phases.json:6 | cleanup_s | 3 | the work is ended or skipped | reason text in the file names the past runs, no danger | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/systemd/metronome_phases.json:6 | limit_s | 10 | the call, run or phase is ended | reason text in the file names the past runs, no danger | UNMEASURED | 0.0 | no command runs | UNMEASURED | 0 | none | raised to 100 |
-| Utils/systemd/metronome_phases.json:6 | cleanup_s | 2 | the work is ended or skipped | reason text in the file names the past runs, no danger | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/archmagi_phases.py:59 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/archmagi_phases.py:75 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/archmagi_phases.py:114 | timeout | 30 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/archmagi_phases.py:115 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/archmagi_phases.py:138 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/archmagi_switch.py:37 | OLDEST_WAIT_S | 1800 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/archmagi_switch.py:41 | COOLDOWN_S | 1800 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/archmagi_switch.py:46 | LOAD_S | 900 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/archmagi_switch_reading.py:38 | max_age_s | 7200 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/brake_release.py:39 | RELEASE_GRACE_S | 1800 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/companion_stage.py:51 | BUILD_TIMEOUT_S | 420 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/companion_stage.py:53 | PROOF_MAX_AGE_S | 7200 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/companion_stage.py:82 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/coverage.py:47 | PROBE_TIMEOUT_S | 60 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/fault_monitor.py:68 | BOOT_TIMEOUT_S | 2400 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/fault_monitor.py:69 | BLIND_S | 1200 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/fault_monitor.py:70 | HOLD_S | 7200 | a wait ends, or a state reads as late | a result waits this long for a clean cycle, then counts as unguarded | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/fault_monitor.py:71 | STALE_S | 1800 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/fault_monitor.py:278 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/fault_monitor.py:373 | timeout | 180 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/fault_monitor.py:731 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/gaps.py:53 | PROBE_TIMEOUT_S | 120 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | raised to 480 |
-| Utils/testq/host_facts.py:24 | MAX_AGE_S | 7200 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/host_facts.py:164 | timeout | 180 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/ingest.py:81 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/ingest.py:121 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/ingest.py:1013 | STALE_LOCK_S | 300 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/ingest.py:1015 | FRESH_LOCK_WAIT_S | 10 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/ingest.py:1140 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/regprobe_log.py:25 | STALE_CYCLES | 3 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/retest.py:228 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/stage6_checks.py:34 | FRESH | 1e+08 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/stage6_checks.py:408 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/stage6_site.py:45 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/steward.py:116 | READY_GRACE_S | 300 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/steward.py:118 | CLAIM_HOLD_S | 7200 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/steward.py:119 | LOCK_WAIT_S | 30 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/steward.py:120 | STALE_S | 300 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/steward.py:144 | COMPANION_GRACE_S | 900 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/steward.py:309 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/steward.py:517 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/steward.py:549 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED (not sampled) | UNMEASURED | 0 (journal and agent transcripts, 14 d) | none | stays |
-| Utils/testq/testq.py:219 | HUNG_S | 300 | a wait ends, or a state reads as late | An orphan stops getting the 60 s tick's heartbeat (OPS_TESTQ_UNSTICK_ECPK). Ticks stalled 7-15 min on Nov 21 and 23 (done_once). Use the ste | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/testq.py:380 | timeout | 180 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/testq.py:399 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/testq.py:811 | timeout | 900 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/testq.py:830 | ARCH_SILENT_S | 600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/testq.py:987 | timeout | 180 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/testq.py:1093 | YIELD_GRACE_S | 180 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/testq.py:1408 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/testq.py:2484 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/tier_load.py:68 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| Utils/testq/visit_feed.py:37 | READING_MAX_AGE_S | 1800 | a reading past this age is refused | The dispatch tick writes its reading every 60 s; one older than this is a dead step (the same line as ops_watch.MATURATION_READING_MAX_AGE_S | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/testq/visit_feed.py:45 | FAULT_BACKOFF_MAX_S | 7200 | a wait ends, or a state reads as late | A run that held the lane and whose outcome is not the chain's own (killed, INVALID, no verdict read, or nobody can class it) spends nothing  | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/waitalive.py:25 | MAX_WAIT_S | 3300 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/waitalive.py:26 | SILENCE_S | 600 | the work is ended or skipped | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| Utils/waitalive.py:29 | START_S | 30 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/art_calibration.py:67 | CASE_TIMEOUT_S | 1500 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/art_calibration.py:186 | timeout | 30 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/card_capture.py:63 | timeout | 30 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/card_capture.py:536 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/close_check.py:31 | MAX_AGE_S | 129600 | a reading past this age is refused | Danger: the check stops and nobody sees it (it did, 2026-11-01 to 2026-11-23). The timer is daily; 36 h is one missed day. | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/conductor_acts.py:188 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/control.py:111 | WRITE_NOW_DEADLINE_S | 300 | the work is ended or skipped | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/control.py:112 | KILL_WAIT_S | 1 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/control.py:113 | KILL_STORE_WAIT_S | 0.2 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/control.py:212 | timeout | 3 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/control.py:236 | timeout | 5 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/control.py:251 | timeout | 3 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/control.py:280 | timeout | 1.5 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/control.py:1495 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/control.py:1785 | timeout | 10 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/control.py:1940 | timeout | 10 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/control.py:2306 | timeout | 10 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/control.py:2382 | timeout | 10 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/control.py:2415 | timeout | 0.5 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/control_acts_export.py:143 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED (not sampled) | UNMEASURED | 0 (journal and agent transcripts, 14 d) | none | stays |
-| rimflow/coverage_calibration.py:75 | CASE_TIMEOUT_S | 1200 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/coverage_judge.py:86 | TIMEOUT_S | 1500 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/coverage_judge.py:89 | READER_TIMEOUT_S | 600 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:90 | MIN_MAX_S | 60 | the work is ended or skipped | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:91 | STOP_S | 600 | the work is ended or skipped | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:92 | GRACE_S | 120 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:107 | LAUNCH_GRACE_S | 120 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:108 | RETURN_WAIT_S | 600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:332 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/detached_helper.py:573 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | raised to 1800 |
-| rimflow/detached_helper.py:720 | REAP_TERM_WAIT_S | 5 | a wait ends, or a state reads as late | A process that ignores SIGTERM gets SIGKILL after this long. Danger: one that never exits would hold the return step (and so the clone) for  | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:870 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:922 | grace_s | 3600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:1223 | DRAIN_NOTICE_FRESH_S | 1200 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:1355 | timeout_s | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:1604 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/detached_helper.py:1672 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/detached_helper.py:2155 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/detached_helper.py:2274 | grace_s | 3600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/detached_helper.py:2299 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/dispatcher.py:303 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher.py:318 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher.py:740 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/dispatcher.py:1364 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/dispatcher.py:1381 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher.py:1543 | kill_wait | 10 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher.py:1580 | timeout | 0.3 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/dispatcher.py:1591 | wait_s | 90 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher.py:2466 | wait_s | 120 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:3 | ops_stale_s | 2700 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:6 | stall_after_s | 60 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:7 | verify_s | 300 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:8 | handoff_s | 600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:10 | cooldown_s | 3600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:12 | recover_verify_s | 300 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:44 | restart_reconcile_hold_fresh_s | 480 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:51 | grace_s | 20 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:54 | helper_stale_s | 1800 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:56 | hold_max_s | 14400 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:115 | pre_launch_max_s | 1800 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/dispatcher_schedule.json:115 | pre_launch_max_s | 1800 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/game_lock.py:68 | WRITING_WAIT_S | 1 | a wait ends, or a state reads as late | danger: a lock read mid-write is empty for milliseconds (driver_lock | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/judge_certificate.py:46 | START_PROBE_S | 20 | the work is ended or skipped | how long red_seen's no-fault probe waits before it reads the command as started. Danger: a probe as long as the test doubles every red proof | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/judge_certificate.py:52 | EMPTY_GAME_TIMEOUT_S | 120 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/launch_checks.py:55 | timeout_s | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/left_open_continue.py:110 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/left_open_continue.py:640 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/list_dispatch.json:27 | shape_grace_h | 86400 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/list_dispatch.py:71 | SYSTEM_WAIT_S | 3600 | a wait ends, or a state reads as late | after a run or launches that did not count: the danger is a launch sent again every tick into the same refusal (the night of 2026-11-20, mat | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/list_effect.py:60 | CMD_TIMEOUT_S | 600 | the call, run or phase is ended | Hang guard (the class of call_deadline_lint.py): a check command that never ends would hold this beat's lock and stop every later check. Set | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/list_pipeline.py:26 | LANE_STALE_S | 1800 | a reading past this age is refused | A lane reading older than this is not current. Danger: a dead rm-list-dispatch.timer leaves every verdict silently old. Evidence: the timer  | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/maturation.py:2537 | REPAIR_STOP_S | 120 | the work is ended or skipped | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/maturation.py:4269 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/maturation.py:5522 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/maturation_dispatch.json:23 | settle_s | 180 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/maturation_dispatch.json:45 | stalled_min | 600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/maturation_dispatch.py:1559 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/maturation_dispatch.py:2212 | RUN_MAX | 99 | the work is ended or skipped | runs tried per name. Danger: an endless search on a wrong known set. Evidence: boundary page LIMITS | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/maturation_dispatch.py:2390 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/maturation_dispatch.py:3378 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/maturation_dispatch.py:3383 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/maturation_dispatch.py:3443 | DEAD_WAIT_S | 600 | a wait ends, or a state reads as late | a dead run is finished by the tick only after this long dead (its own finish may be running) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/maturation_dispatch.py:3495 | CLONE_STALE_MIN | 300 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/maturation_dispatch.py:3496 | CLONE_BLIND_S | 900 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/maturation_dispatch.py:3680 | VOID_REPAIR_WAIT_S | 3600 | a wait ends, or a state reads as late | itself refused forever, each tick re-sending it; evidence: the night of 2026-11-20, where every refused launch was re-sent until a hand came | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/maturation_dispatch.py:4147 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/mod_next.py:30 | READING_MAX_AGE_S | 1800 | a reading past this age is refused | A dead-tick guard: the tick runs every 60 s, so a reading this old means about 30 ticks did not run, and its rows no longer say what the tic | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/mod_owner_hold.py:74 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/modledger.json:17 | lease_idle_minutes | 2700 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/modledger_reader.py:167 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/owed.py:194 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/quiet_scan.json:9 | reading_max_age_s | 600 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/quiet_scan.json:11 | system_wait_s | 3600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/quiet_scan.py:455 | wait_s | 3600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/red_dispatch.py:55 | SYSTEM_WAIT_S | 3600 | a wait ends, or a state reads as late | after a try that did not count (it never started, or died of a system cause): the danger is a launch sent again every 10 min into the same r | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/refusal_contract.py:681 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/refusal_contract.py:739 | FIXER_TIMEOUT_S | 1200 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_clones.py:118 | timeout | 1800 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | raised to 10800 |
-| rimflow/role_clones.py:153 | timeout | 30 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/role_clones.py:174 | timeout | 300 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_clones.py:216 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/role_clones.py:227 | timeout | 600 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/role_launch.py:117 | RESUME_WAIT_S | 3600 | a wait ends, or a state reads as late | no reset named: try again after an hour (a still-dead account just waits again) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_launch.py:126 | RESUME_TTL_S | 172800 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_launch.py:199 | OPS_STALE_S | 2700 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_launch.py:252 | RUN_NOW_TTL_S | 3600 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_launch.py:2116 | timeout | 45 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_launch.py:2238 | timeout | 21600 | the call, run or phase is ended | the judge bounds its own claude (coverage_judge.TIMEOUT_S); this bound only stops a hung step from holding the unit | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/role_launch.py:2319 | CLOSE_OWED_MAX_S | 172800 | the work is ended or skipped | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_launch.py:2756 | CHAIN_SWEEP_GRACE_S | 600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_launch.py:2965 | CAUSE_ATTACH_WAIT_S | 5 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_launch.py:3303 | SCOPE_GRACE_S | 600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_launch.py:3304 | SCOPE_STOP_S | 30 | the work is ended or skipped | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/role_launch.py:3489 | timeout | 60 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/role_launch.py:3664 | wait_s | 500 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/run_alive.py:31 | SILENCE_S | 7500 | the work is ended or skipped | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/run_alive.py:32 | LIVE_S | 3600 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/run_alive.py:33 | START_S | 120 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/run_alive.py:34 | CMD_S | 120 | the call, run or phase is ended | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/run_end_wake.py:47 | MAX_WAIT_S | 82800 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/run_end_wake.py:49 | STATE_DEADLINE_S | 20 | the work is ended or skipped | a hung reader never holds the wake (the page's LIMITS) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/run_end_wake.py:50 | READER_S | 18 | the call, run or phase is ended | one reader's subprocess: killed before the block's deadline | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/seat_restart.py:105 | HELPER_STALE_FLOOR_S | 1200 | a reading past this age is refused | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/seat_restart.py:110 | FALLBACK_GRACE_S | 200 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/seat_restart.py:112 | TELL_RING_HOLD_S | 60 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/seat_restart.py:2173 | timeout | 10 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/seat_restart.py:2229 | wait_s | 10 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
-| rimflow/seat_restart.py:2359 | timeout | 180 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/seat_restart.py:3779 | timeout | 120 | the call, run or phase is ended | class: a call hang guard (call_deadline_lint.py; a hung copy held a seat 4 h, 2026-11-02) | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | 0 seen (journal, agent transcripts, 14 d) | UNMEASURED | stays |
-| rimflow/spend_watchdog.py:47 | GRACE_S | 30 | a wait ends, or a state reads as late | NONE | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | UNMEASURED | stays |
+
+## The 270 with no record, classed by their danger
+
+Item `RIMMANDRAKE_MEASURE_EVERY_UNMEASURED_TIME_BUDGET_HE_CALLED_IT_LAZINESS`, 2026-11-24. Owner: *"if no one ever looks, and we
+can't see a value now, shouldn't we just delete it?"* Nothing was run only to time it. Each site was read in the code. The
+records that exist were joined: the user journal, the agent transcripts, `control.db`, `tick_steps.jsonl`, `stage_timings.jsonl`
+and the SteveDesktop job results, 14 days to 2026-11-24.
+
+| class | budgets |
+|---|---|
+| NO DANGER, removed | 3 |
+| RECORD, under 10 times its longest run, raised (4 of them by the first run) | 36 |
+| RECORD, value stays | 23 |
+| replaced by a guard on progress | 0 |
+| NEVER REACHED: a danger is named, no reach in the 14 days, no record of its run | 91 |
+| REACH NOT RECORDED: a danger is named, and the code swallows its own timeout, so a reach could not have been seen | 30 |
+| ENDS NO WORK: a refresh, an alarm, a wait, a size. The danger is named | 93 |
+| all: the 270, and 6 that the first run had counted as measured or had added | 276 |
+
+- **Judge (LLM) call times are in the agent transcripts** (first to last line of the session): COVERAGE JUDGE 198 and 462 s
+  (2 sessions), coverage calibration case 166 s at most of 119, art calibration case 134 s of 100, second reader 13 s of 17,
+  criteria fixer 17 s (1). The reader of `guiding_prose.py` keeps no session; its 4 to 13 s is a note of 2026-11-23.
+- **One record stood for unlike budgets.** 9 entries of `time_budgets.json` held one `longest_s` for two or more different
+  budgets of one function (a 0.9 s git read and a 300 s ssh). The lint refuses that now, and each budget has its own tag.
+- `"RuntimeMaxSec=1800"` in four argument lists (a string, which the lint does not read) stood at 6 times the longest clone
+  return (289 s) and 2 times the longest launch (896 s, an upper bound). Raised to 3600 and 10800.
+
+| file:line (at 24841afcbf) | budget | s | class | danger, or why removed | longest real s | record, or what happens when the time passes | change |
+|---|---|---|---|---|---|---|---|
+| .claude/hooks/role_result_before_stop.py:28 | TIMEOUT_S | 45 | NEVER REACHED | a hung result check holds a role run open at its stop |  |  | stays |
+| infrastructure/stevedesktop/bootstrap_wsl.sh:127 | timeout | 25 | NO DANGER | tailscale ends itself (`--timeout=20s`) |  |  | removed |
+| infrastructure/stevedesktop/preflight.py:184 | timeout | 30 | NEVER REACHED | a hung reg.exe or sc.exe (WSL interop) holds the SteveDesktop worker's preflight, and so the lane |  |  | stays |
+| infrastructure/stevedesktop/preflight.py:195 | timeout | 30 | NEVER REACHED | a hung reg.exe or sc.exe (WSL interop) holds the SteveDesktop worker's preflight, and so the lane |  |  | stays |
+| infrastructure/stevedesktop/preflight.py:236 | timeout | 180 | RECORD | a hung modset_builder holds the SteveDesktop worker's preflight, and so the lane | 241 | the whole attest phase, an upper bound; testq done records, 14 days to 2026-11-24 | raised to 2500 |
+| infrastructure/stevedesktop/serve_bootstrap.sh:37 | timeout | 70 | NO DANGER | the server ends itself (`--minutes 1`) |  |  | removed |
+| infrastructure/stevedesktop/sync_test_mods.py:109 | timeout | 300 | REACH NOT RECORDED | a hung ssh holds the sync, and the tick that runs it |  |  | stays |
+| infrastructure/stevedesktop/sync_test_mods.py:123 | timeout | 120 | REACH NOT RECORDED | a hung ssh holds the sync, and the tick that runs it |  |  | stays |
+| infrastructure/stevedesktop/sync_test_mods.py:137 | timeout | 600 | NEVER REACHED | a hung ssh holds the push, and the tick that runs it |  |  | stays |
+| infrastructure/stevedesktop/sync_test_mods.py:176 | timeout | 1800 | NEVER REACHED | a hung ssh holds the push, and the tick that runs it |  |  | stays |
+| infrastructure/stevedesktop/sync_test_mods.py:194 | timeout | 60 | REACH NOT RECORDED | a hung ssh holds the sync, and the tick that runs it |  |  | stays |
+| infrastructure/stevedesktop/verify_from_archmagi.sh:78 | timeout | 5 | REACH NOT RECORDED | a dead port holds the verify script with no end |  |  | stays |
+| infrastructure/stevedesktop/worker.py:167 | DUMP_TIMEOUT_S | 180 | NEVER REACHED | a hung minidump of a hung game holds the kill of that game |  |  | stays |
+| infrastructure/stevedesktop/worker.py:168 | PROBE_TIMEOUT_S | 30 | NEVER REACHED | a wedged kept game holds the lane at its bridge probe |  |  | stays |
+| infrastructure/stevedesktop/worker.py:719 | timeout | 60 | NEVER REACHED | a hung systemd-run holds the spawn of the worker, and so the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:776 | timeout | 120 | NEVER REACHED | a hung repair of the mod list holds the lane's reset |  |  | stays |
+| infrastructure/stevedesktop/worker.py:812 | timeout | 120 | NEVER REACHED | a hung closure read holds the attempt, and so the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:918 | timeout | 10 | REACH NOT RECORDED | a child that ignores SIGTERM holds the attempt; SIGKILL follows |  |  | stays |
+| infrastructure/stevedesktop/worker.py:951 | timeout | 300 | NEVER REACHED | a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:993 | timeout | 300 | NEVER REACHED | a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:1076 | timeout | 300 | NEVER REACHED | a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:1133 | timeout | 300 | NEVER REACHED | a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:1167 | timeout | 300 | NEVER REACHED | a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:1329 | timeout | 120 | NEVER REACHED | a hung bridge client holds the attempt, and so one game of the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:1345 | timeout | 120 | NEVER REACHED | a hung status command holds the attempt, and so one game of the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:1376 | timeout | 120 | NEVER REACHED | a hung bridge client holds the attempt, and so one game of the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:1474 | timeout | 300 | NEVER REACHED | a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:1617 | timeout | 300 | NEVER REACHED | a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:1664 | timeout | 300 | NEVER REACHED | a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane |  |  | stays |
+| infrastructure/stevedesktop/worker.py:1716 | timeout | 30 | REACH NOT RECORDED | a hung wslpath holds the dump of a hung game, and the kill after it |  |  | stays |
+| infrastructure/stevedesktop/worker.py:1745 | timeout | 300 | NEVER REACHED | a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane |  |  | stays |
+| Utils/game_watcher.py:15 | STALL_S | 60 | ENDS NO WORK | a stalled main thread read as healthy |  | a silence this long reads STALLED and a dump is written; the game goes on | stays |
+| Utils/game_watcher.py:16 | LOAD_S | 600 | ENDS NO WORK | a stuck load read as a slow load (MapInitializing stall, 2026-10-26) |  | a load this old reads stuck_load; the game goes on | stays |
+| Utils/guiding_prose.py:51 | READER_TIMEOUT_S | 300 | RECORD | a model call that never returns keeps the writer's ./publish open after the landing | 13 | real calls of 4 to 13 s on 61 to 434 sentences, 2026-11-23 | stays |
+| Utils/guiding_prose.py:58 | DOOR_TIMEOUT_S | 180 | RECORD | a hung throwaway landing or launch holds the recheck | 5 | each took 2 to 5 s | stays |
+| Utils/launch_permissions.py:467 | timeout | 60 | NEVER REACHED | a hung probe (ssh to another machine) holds the permission check |  |  | stays |
+| Utils/maturation_nonmod.py:38 | RED_STALE_S | 1800 | ENDS NO WORK | a dead rm-red-dispatch.timer leaves the red list silently old |  | the page says that the reading is old | stays |
+| Utils/maturation_now.py:497 | LONG_RUN_S | 3600 | ENDS NO WORK | a long run is not seen on the page |  | the page marks the run as long | stays |
+| Utils/maturation_trend.py:34 | STALE_DAYS | 604800 | ENDS NO WORK | the old backlog hides the week's change |  | the trend leaves the ticket out | stays |
+| Utils/no_home.py:37 | TTL_S | 300 | ENDS NO WORK | both pages recount on every build |  | the count is made again | stays |
+| Utils/progress_guard.py:27 | SILENCE_S | 1800 | NEVER REACHED | a hung child holds its caller with no end (new on 2026-11-24) |  |  | stays |
+| Utils/progress_guard.py:105 | timeout | 15 | REACH NOT RECORDED | a killed child in uninterruptible IO never reaps |  |  | stays |
+| Utils/publish.py:462 | timeout | 1200 | NEVER REACHED | a hung winbuild holds a landing |  |  | stays |
+| Utils/publish.py:1110 | CHECKTREE_STALE_S | 3600 | RECORD | the sweep deletes the check tree of a live landing | 584 | the longest door-check wall of 636 publishes, 14 days to 2026-11-24; one check may now take 6000 s | raised to 21600 |
+| Utils/publish_tree_checks.json:3 | budget_s | 30 | NO DANGER | none: a speed bar on the list of door checks |  |  | removed |
+| Utils/rimbridge_client.py:271 | LOAD_READY_WAIT_S | 180 | NEVER REACHED | a game that never reads Playing holds the caller after a load reply (live r8: stuck over 3 min) |  |  | stays |
+| Utils/rimbridge_client.py:339 | STALL_DUMP_SECONDS | 60 | ENDS NO WORK | a stalled call with no pointer to its stall dump |  | the call's end row names the dumps | stays |
+| Utils/rimbridge_client.py:634 | JOURNAL_READ_TIMEOUT_S | 10 | NEVER REACHED | a hung journal read holds every mutating call |  |  | stays |
+| Utils/rimbridge_client.py:909 | DEADLINE_MARGIN_S | 10 | ENDS NO WORK | a kill in mid call strands an UNKNOWN-outcome marker that refuses every later mutation |  | a mutation that could not finish before the caller's own kill does not start | stays |
+| Utils/rimbridge_client.py:910 | DEADLINE_MIN_CALL_S | 30 | ENDS NO WORK | a kill in mid call strands an UNKNOWN-outcome marker that refuses every later mutation |  | a mutation that could not finish before the caller's own kill does not start | stays |
+| Utils/rimbridge_client.py:1070 | timeout | 30 | NEVER REACHED | a dead bridge holds its caller |  |  | stays |
+| Utils/rimbridge_client.py:1070 | connect_timeout | 5 | NEVER REACHED | a dead bridge holds its caller |  |  | stays |
+| Utils/rimbridge_client.py:1692 | timeout | 30 | NEVER REACHED | a dead bridge holds its caller |  |  | stays |
+| Utils/run_selftests.py:466 | timeout | 60 | NEVER REACHED | a hung systemd-run holds the runner before its first test |  |  | stays |
+| Utils/run_selftests.py:550 | timeout | 15 | ENDS NO WORK | a descendant that escaped the group holds the pipe, and the whole runner (audit 7) |  | the test has ended; its pipe is closed and its result stands | stays |
+| Utils/run_selftests.py:1375 | timeout | 1 | ENDS NO WORK | the runner reads the memory only when a test ends |  | a poll; the loop waits again | stays |
+| Utils/scene.py:42 | STALL_S | 60 | ENDS NO WORK | a run whose clock stands still never ends (a window that pauses the game) |  | the silence bound of a progress guard: a clock that moves starts it again | stays |
+| Utils/scene.py:43 | SETTLE_S | 600 | NEVER REACHED | a load that never settles holds the scene and its game |  |  | stays |
+| Utils/scene.py:363 | timeoutMs | 280000 | NEVER REACHED | a load that never answers holds the scene and its game |  |  | stays |
+| Utils/scene_world.py:17 | CALL_TIMEOUT_S | 600 | NEVER REACHED | a bridge call that never answers holds the scene and its game |  |  | stays |
+| Utils/scene_world.py:121 | timeout | 60 | NEVER REACHED | a hung wsl.exe (interop) holds the lock take, and so the scene |  |  | stays |
+| Utils/scene_world.py:232 | timeout | 120 | NEVER REACHED | a hung git (interop, drvfs) holds the scene and its game |  |  | stays |
+| Utils/scratch_reap.py:130 | FIXTURE_TTL_S | 86400 | ENDS NO WORK | test fixtures fill /tmp (owner-authority brief, 2026-11-01) |  | a fixture this old may go; an open one is held by its process | stays |
+| Utils/scratch_reap.py:154 | BORROW_REFRESH_S | 120 | ENDS NO WORK | the borrower list is stale while the run deletes |  | the list is read again | stays |
+| Utils/scratch_reap.py:239 | timeout | 600 | NEVER REACHED | a hung git holds the cleaner, and the disk fills |  |  | stays |
+| Utils/scratch_reap.py:983 | timeout | 300 | NEVER REACHED | a hung git holds the cleaner, and the disk fills |  |  | stays |
+| Utils/scratch_reap.py:1364 | CORPUS_REFRESH_S | 60 | ENDS NO WORK | an item filed in mid run does not reserve its clone |  | the ledger text is read again | stays |
+| Utils/scratch_reap.py:1839 | timeout | 1800 | NEVER REACHED | a hung git holds the cleaner, and the disk fills |  |  | stays |
+| Utils/scratch_reap.py:1843 | timeout | 1800 | NEVER REACHED | a hung git holds the cleaner, and the disk fills |  |  | stays |
+| Utils/scratch_reap.py:1860 | timeout | 1800 | NEVER REACHED | a hung git holds the cleaner, and the disk fills |  |  | stays |
+| Utils/scratch_reap.py:1874 | timeout | 1800 | NEVER REACHED | a hung git holds the cleaner, and the disk fills |  |  | stays |
+| Utils/scratch_reap.py:1889 | timeout | 1800 | NEVER REACHED | a hung git holds the cleaner, and the disk fills |  |  | stays |
+| Utils/scratch_reap.py:1896 | timeout | 1800 | NEVER REACHED | a hung git holds the cleaner, and the disk fills |  |  | stays |
+| Utils/scratch_reap.py:1960 | timeout | 1800 | NEVER REACHED | a hung tar holds the cleaner, and the disk fills |  |  | stays |
+| Utils/scratch_reap.py:1963 | timeout | 600 | NEVER REACHED | a hung tar holds the cleaner, and the disk fills |  |  | stays |
+| Utils/slot_rules.json:83 | stale_min | 2700 | ENDS NO WORK | a dead ops reading steers the allocator |  | the old reading is reported and not used | stays |
+| Utils/slot_rules.json:91 | steve_stall_min | 1800 | ENDS NO WORK | a stalled SteveDesktop lane goes unseen |  | the allocator reads the lane as stalled | stays |
+| Utils/systemd/metronome_phases.json:6 | cleanup_s | 5 | REACH NOT RECORDED | a phase that ignores SIGTERM holds the one beat lock; SIGKILL follows |  |  | stays |
+| Utils/systemd/metronome_phases.json:6 | cleanup_s | 2 | REACH NOT RECORDED | a phase that ignores SIGTERM holds the one beat lock; SIGKILL follows |  |  | stays |
+| Utils/systemd/metronome_phases.json:6 | cleanup_s | 2 | REACH NOT RECORDED | a phase that ignores SIGTERM holds the one beat lock; SIGKILL follows |  |  | stays |
+| Utils/systemd/metronome_phases.json:6 | cleanup_s | 2 | REACH NOT RECORDED | a phase that ignores SIGTERM holds the one beat lock; SIGKILL follows |  |  | stays |
+| Utils/systemd/metronome_phases.json:6 | cleanup_s | 3 | REACH NOT RECORDED | a phase that ignores SIGTERM holds the one beat lock; SIGKILL follows |  |  | stays |
+| Utils/systemd/metronome_phases.json:6 | limit_s | 100 | ENDS NO WORK | the beat's reserve sum needs a number for each phase |  | no command runs in this phase | stays |
+| Utils/systemd/metronome_phases.json:6 | cleanup_s | 2 | REACH NOT RECORDED | a phase that ignores SIGTERM holds the one beat lock; SIGKILL follows |  |  | stays |
+| Utils/testq/archmagi_phases.py:59 | timeout | 60 | NEVER REACHED | a hung Windows program (interop) holds the Archmagi lane |  |  | stays |
+| Utils/testq/archmagi_phases.py:75 | timeout | 600 | RECORD | a hung deploy holds its caller and the game copy with no end | 998 | class `deploy` (time_budget.py) | raised to 10800 |
+| Utils/testq/archmagi_phases.py:114 | timeout | 30 | NEVER REACHED | a hung Windows program (interop) holds the Archmagi lane |  |  | stays |
+| Utils/testq/archmagi_phases.py:115 | timeout | 120 | NEVER REACHED | a hung Windows program (interop) holds the Archmagi lane |  |  | stays |
+| Utils/testq/archmagi_phases.py:138 | timeout | 60 | NEVER REACHED | a dead bridge holds the Archmagi lane |  |  | stays |
+| Utils/testq/archmagi_switch.py:37 | OLDEST_WAIT_S | 1800 | ENDS NO WORK | Archmagi takes SteveDesktop's work while SteveDesktop keeps up |  | a ready job this old may turn the backfill on | stays |
+| Utils/testq/archmagi_switch.py:41 | COOLDOWN_S | 1800 | ENDS NO WORK | the backfill turns on and off at each reading |  | the switch waits before it turns on again | stays |
+| Utils/testq/archmagi_switch.py:46 | LOAD_S | 900 | ENDS NO WORK | a load that costs more than the work it serves |  | a size that the rule compares; nothing is timed by it | stays |
+| Utils/testq/archmagi_switch_reading.py:38 | max_age_s | 7200 | ENDS NO WORK | a dead switch read as a live one |  | the reading says that it is old | stays |
+| Utils/testq/brake_release.py:39 | RELEASE_GRACE_S | 1800 | ENDS NO WORK | a known brake that nobody releases |  | the steward's ladder starts | stays |
+| Utils/testq/companion_stage.py:51 | BUILD_TIMEOUT_S | 420 | NEVER REACHED | a hung winbuild holds the testq tick (its queue on the shared stage lock included) |  |  | stays |
+| Utils/testq/companion_stage.py:53 | PROOF_MAX_AGE_S | 7200 | ENDS NO WORK | an old proof read as a current one |  | the proof reads old | stays |
+| Utils/testq/companion_stage.py:82 | timeout | 120 | REACH NOT RECORDED | a hung ssh holds the testq tick |  |  | stays |
+| Utils/testq/coverage.py:47 | PROBE_TIMEOUT_S | 60 | NEVER REACHED | a hung modcheck preview holds the coverage table |  |  | stays |
+| Utils/testq/fault_monitor.py:68 | BOOT_TIMEOUT_S | 2400 | ENDS NO WORK | a reboot of SteveDesktop that never comes back goes unseen |  | the monitor says so and raises its alarm | stays |
+| Utils/testq/fault_monitor.py:69 | BLIND_S | 1200 | ENDS NO WORK | a dead canary read as a clean one |  | the monitor says that the canary is blind | stays |
+| Utils/testq/fault_monitor.py:70 | HOLD_S | 7200 | ENDS NO WORK | a result with no clean canary cycle waits for ever |  | the result counts, marked unguarded | stays |
+| Utils/testq/fault_monitor.py:71 | STALE_S | 1800 | ENDS NO WORK | an old reading read as a current one |  | the reading says nothing | stays |
+| Utils/testq/fault_monitor.py:278 | timeout | 120 | NEVER REACHED | a hung ssh to SteveDesktop holds the fault monitor |  |  | stays |
+| Utils/testq/fault_monitor.py:373 | timeout | 180 | NEVER REACHED | a hung ssh to SteveDesktop holds the fault monitor |  |  | stays |
+| Utils/testq/fault_monitor.py:731 | timeout | 300 | NEVER REACHED | a hung ssh to SteveDesktop holds the fault monitor |  |  | stays |
+| Utils/testq/gaps.py:54 | PROBE_TIMEOUT_S | 480 | RECORD | a hung probe holds the ranking of the fill; evidence=at 120 s the ranking went blind | 118 | a FlowWorks probe at load 20, 2026-11-24 | raised to 1200 |
+| Utils/testq/host_facts.py:24 | MAX_AGE_S | 7200 | ENDS NO WORK | old facts of a host read as current |  | the facts are read again | stays |
+| Utils/testq/host_facts.py:164 | timeout | 180 | NEVER REACHED | a hung ssh holds the host facts |  |  | stays |
+| Utils/testq/ingest.py:81 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| Utils/testq/ingest.py:121 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| Utils/testq/ingest.py:1013 | STALE_LOCK_S | 300 | ENDS NO WORK | a live git's index.lock is removed, or a dead one stops every publish |  | a lock this old with no live git process is removed | stays |
+| Utils/testq/ingest.py:1015 | FRESH_LOCK_WAIT_S | 10 | ENDS NO WORK | a fresh index.lock of a live git stops the publish |  | a short wait for the lock; then the publish says why it stopped | stays |
+| Utils/testq/ingest.py:1140 | timeout | 120 | NEVER REACHED | a hung ledger_lint holds the ingest lock |  |  | stays |
+| Utils/testq/regprobe_log.py:25 | STALE_CYCLES | 3 | ENDS NO WORK | a dead probe read as a live one |  | a count of cycles, no time: the probe reads as not running | stays |
+| Utils/testq/retest.py:228 | timeout | 60 | NEVER REACHED | a hung ssh holds the retest |  |  | stays |
+| Utils/testq/stage6_checks.py:34 | FRESH | 1e+08 | ENDS NO WORK | live_site refuses an old test game as a colony |  | a tick count that the site check is given | stays |
+| Utils/testq/stage6_checks.py:408 | timeout | 60 | REACH NOT RECORDED | a hung wslpath holds one game of the lane |  |  | stays |
+| Utils/testq/stage6_site.py:45 | timeout | 120 | NEVER REACHED | a dead bridge holds one game of the lane |  |  | stays |
+| Utils/testq/steward.py:116 | READY_GRACE_S | 300 | ENDS NO WORK | a ready lane that nobody works goes unseen |  | the steward's clock starts | stays |
+| Utils/testq/steward.py:118 | CLAIM_HOLD_S | 7200 | ENDS NO WORK | a claim with no lease holds the escalation for ever |  | the steward's clock runs again | stays |
+| Utils/testq/steward.py:119 | LOCK_WAIT_S | 30 | ENDS NO WORK | two passes wait on each other |  | the pass is skipped; the next timer beat runs it | stays |
+| Utils/testq/steward.py:120 | STALE_S | 300 | ENDS NO WORK | a dead steward goes unseen |  | the watcher says that the steward is stale | stays |
+| Utils/testq/steward.py:144 | COMPANION_GRACE_S | 900 | ENDS NO WORK | a hold that outlasts a build and a push goes unseen |  | the steward's clock starts | stays |
+| Utils/testq/steward.py:309 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| Utils/testq/steward.py:517 | timeout | 60 | RECORD | a hung launch holds the steward's pass | 1.3 | admission to start of 1057 runs, control.db | stays |
+| Utils/testq/steward.py:549 | timeout | 120 | NEVER REACHED | a hung git pull holds the steward's pass |  |  | stays |
+| Utils/testq/testq.py:219 | HUNG_S | 300 | ENDS NO WORK | a worker that stopped its heartbeat reads as running (ticks stalled 7 to 15 min, Nov 21 and 23) |  | a wait reads HUNG; the job goes on | stays |
+| Utils/testq/testq.py:380 | timeout | 180 | NEVER REACHED | a hung ssh or worker call holds the testq tick |  |  | stays |
+| Utils/testq/testq.py:399 | timeout | 60 | NEVER REACHED | a hung ssh or worker call holds the testq tick |  |  | stays |
+| Utils/testq/testq.py:811 | timeout | 900 | NEVER REACHED | a hung copy of the site saves holds the testq tick |  |  | stays |
+| Utils/testq/testq.py:830 | ARCH_SILENT_S | 600 | ENDS NO WORK | the Archmagi backfill starts between two calls of a driver |  | the backfill waits for the next tick | stays |
+| Utils/testq/testq.py:987 | timeout | 180 | NEVER REACHED | a hung ssh or worker call holds the testq tick |  |  | stays |
+| Utils/testq/testq.py:1093 | YIELD_GRACE_S | 180 | ENDS NO WORK | a bridge take waits for the whole attempt |  | the taker waits this long for a row boundary, then takes the game, as it ordered | stays |
+| Utils/testq/testq.py:1408 | timeout | 60 | REACH NOT RECORDED | a hung modcheck preview holds the submit |  |  | stays |
+| Utils/testq/tier_load.py:68 | timeout | 60 | NEVER REACHED | a dead bridge holds one game of the lane |  |  | stays |
+| Utils/testq/visit_feed.py:37 | READING_MAX_AGE_S | 1800 | ENDS NO WORK | a check is read from a dead dispatch step, and may have run already |  | the feed says that the reading is old | stays |
+| Utils/testq/visit_feed.py:45 | FAULT_BACKOFF_MAX_S | 7200 | ENDS NO WORK | a chain is sent again every tick into the same fault (20 h of lane lost, 2026-10-25) |  | the longest wait before the chain is sent again | stays |
+| Utils/waitalive.py:25 | MAX_WAIT_S | 3300 | ENDS NO WORK | the wait outlives the one-hour prompt cache |  | it reads STILL RUNNING; attach waits again | stays |
+| Utils/waitalive.py:26 | SILENCE_S | 600 | ENDS NO WORK | a hung job holds its caller |  | the silence bound of a progress guard: it reads HUNG and kills nothing | stays |
+| Utils/waitalive.py:29 | START_S | 30 | NEVER REACHED | a supervisor that never starts holds its caller |  |  | stays |
+| rimflow/art_calibration.py:67 | CASE_TIMEOUT_S | 1500 | RECORD | a judge call that never returns holds the calibration | 134 | 100 case sessions, agent transcripts, 14 days to 2026-11-24 | stays |
+| rimflow/art_calibration.py:186 | timeout | 30 | NEVER REACHED | a hung agent_storage.py holds the calibration |  |  | stays |
+| rimflow/card_capture.py:63 | timeout | 30 | NEVER REACHED | a hung agent_storage.py holds the card record |  |  | stays |
+| rimflow/card_capture.py:536 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/close_check.py:31 | MAX_AGE_S | 129600 | ENDS NO WORK | the close check stops and nobody sees it (2026-11-01 to 2026-11-23) |  | the dead-man alarms | stays |
+| rimflow/conductor_acts.py:188 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/control.py:112 | WRITE_NOW_DEADLINE_S | 300 | RECORD | a run that is told to write now never stops; evidence=3 of 15 write_now stops reached it and were escalated | 599 | control.db stops, 14 days to 2026-11-24 | stays |
+| rimflow/control.py:113 | KILL_WAIT_S | 1 | REACH NOT RECORDED | a process that does not die, or a locked store, holds a kill |  |  | stays |
+| rimflow/control.py:114 | KILL_STORE_WAIT_S | 0.2 | REACH NOT RECORDED | a process that does not die, or a locked store, holds a kill |  |  | stays |
+| rimflow/control.py:213 | timeout | 3 | REACH NOT RECORDED | a locked store holds its caller |  |  | stays |
+| rimflow/control.py:237 | timeout | 5 | REACH NOT RECORDED | a locked store holds its caller |  |  | stays |
+| rimflow/control.py:252 | timeout | 3 | REACH NOT RECORDED | a locked store holds its caller |  |  | stays |
+| rimflow/control.py:281 | timeout | 1.5 | REACH NOT RECORDED | a locked store holds its caller |  |  | stays |
+| rimflow/control.py:1786 | timeout | 10 | REACH NOT RECORDED | a hung journal holds the hook of a live run |  |  | stays |
+| rimflow/control.py:1941 | timeout | 10 | NEVER REACHED | a hung systemd holds the pipeline's control |  |  | stays |
+| rimflow/control.py:2307 | timeout | 10 | RECORD | a hung systemd-run holds the stop | 1.3 | admission to start of 1057 runs, control.db | raised to 30 |
+| rimflow/control.py:2383 | timeout | 10 | RECORD | a hung systemd-run holds the stop | 1.3 | admission to start of 1057 runs, control.db | raised to 30 |
+| rimflow/control.py:2416 | timeout | 0.5 | REACH NOT RECORDED | a locked store holds a hook of a live run |  |  | stays |
+| rimflow/coverage_calibration.py:75 | CASE_TIMEOUT_S | 1200 | RECORD | a judge call that never returns holds the calibration | 166 | 119 case sessions, agent transcripts, 14 days to 2026-11-24 | raised to 1800 |
+| rimflow/coverage_judge.py:86 | TIMEOUT_S | 1500 | RECORD | a judge (LLM) call that never returns holds its caller with no end | 462 | class `judge` (time_budget.py) | stays (its file is the calibrated brief); role_launch passes 5400 |
+| rimflow/coverage_judge.py:89 | READER_TIMEOUT_S | 600 | RECORD | a reader call that never returns holds the judge | 13 | 17 second readers, agent transcripts, 14 days to 2026-11-24 | stays |
+| rimflow/detached_helper.py:90 | MIN_MAX_S | 60 | ENDS NO WORK | a wall bound under one minute ends a run before its first turn |  | a launch that asks for it is refused, with the repair | stays |
+| rimflow/detached_helper.py:91 | STOP_S | 600 | RECORD | a stopped run that never ends holds its clone | 584 | the stop steps hold a publish: the longest of 636 | stays |
+| rimflow/detached_helper.py:92 | GRACE_S | 120 | NEVER REACHED | a run with a wall bound is ended while it finishes and publishes |  |  | stays |
+| rimflow/detached_helper.py:107 | LAUNCH_GRACE_S | 120 | ENDS NO WORK | a launching run with no unit yet reads as dead |  | the record reads as a dead launch | stays |
+| rimflow/detached_helper.py:108 | RETURN_WAIT_S | 600 | RECORD | a return that never ends holds the launch | 289 | 1151 return units, user journal, 14 days to 2026-11-24 | raised to 3000 |
+| rimflow/detached_helper.py:334 | timeout | 600 | RECORD | a hung ./publish or land.sh holds its caller with no end | 584 | class `publish` (time_budget.py) | raised to 21600 |
+| rimflow/detached_helper.py:722 | REAP_TERM_WAIT_S | 5 | REACH NOT RECORDED | a process that never exits holds the return, and so the clone |  |  | stays |
+| rimflow/detached_helper.py:872 | timeout | 300 | RECORD | a hung return step holds the clone | 289 | the whole return, an upper bound; 1151 return units, user journal, 14 days to 2026-11-24 | raised to 3000 |
+| rimflow/detached_helper.py:924 | grace_s | 3600 | ENDS NO WORK | a clone is taken from a run whose launcher still reads it |  | the sweep leaves the clone for a later sweep | stays |
+| rimflow/detached_helper.py:1225 | DRAIN_NOTICE_FRESH_S | 1200 | ENDS NO WORK | a stopped switching plan holds every launch |  | an older notice is not obeyed | stays |
+| rimflow/detached_helper.py:1357 | timeout_s | 120 | NEVER REACHED | a hung launch check holds the launch |  |  | stays |
+| rimflow/detached_helper.py:1684 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/detached_helper.py:2203 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/detached_helper.py:2322 | grace_s | 3600 | ENDS NO WORK | a clone is taken from a run whose launcher still reads it |  | the sweep leaves the clone for a later sweep | stays |
+| rimflow/detached_helper.py:2347 | timeout | 300 | RECORD | a hung launch (its clone, its sync, its checks) holds the tick with no end | 896 | class `launch` (time_budget.py) | raised to 10800 |
+| rimflow/dispatcher.py:303 | timeout | 60 | NEVER REACHED | a hung `claude agents` holds the Dispatcher's tick |  |  | stays |
+| rimflow/dispatcher.py:318 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/dispatcher.py:740 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/dispatcher.py:1364 | timeout | 120 | NEVER REACHED | a hung recovery command holds the Dispatcher's tick |  |  | stays |
+| rimflow/dispatcher.py:1381 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/dispatcher.py:1543 | kill_wait | 10 | REACH NOT RECORDED | a child that does not die holds the Dispatcher's tick |  |  | stays |
+| rimflow/dispatcher.py:1580 | timeout | 0.3 | REACH NOT RECORDED | a child that does not die holds the Dispatcher's tick |  |  | stays |
+| rimflow/dispatcher.py:1591 | wait_s | 90 | ENDS NO WORK | a peer that holds ingest.lock holds the tick |  | the notes and the publish wait for the next beat | stays |
+| rimflow/dispatcher.py:2466 | wait_s | 120 | NEVER REACHED | a role run that does not end holds the rollback command |  |  | stays |
+| rimflow/dispatcher_schedule.json:3 | ops_stale_s | 2700 | ENDS NO WORK | a dead ops reading steers the launches |  | the gate says that the reading is old | stays |
+| rimflow/dispatcher_schedule.json:6 | stall_after_s | 60 | ENDS NO WORK | an idle window with work is never rung |  | the window is rung | stays |
+| rimflow/dispatcher_schedule.json:7 | verify_s | 300 | ENDS NO WORK | a ring that nobody took is never tried again |  | the ring is tried again | stays |
+| rimflow/dispatcher_schedule.json:8 | handoff_s | 600 | ENDS NO WORK | a ring that was taken with no hand-off goes unseen |  | it is recorded, and the next ring may go | stays |
+| rimflow/dispatcher_schedule.json:10 | cooldown_s | 3600 | ENDS NO WORK | a window that does not answer is rung at every tick |  | a wait before the next ring | stays |
+| rimflow/dispatcher_schedule.json:12 | recover_verify_s | 300 | ENDS NO WORK | a recovery that did not work goes unseen |  | the recovery is read again | stays |
+| rimflow/dispatcher_schedule.json:44 | restart_reconcile_hold_fresh_s | 480 | ENDS NO WORK | a held restart read as lost |  | an older hold line is not counted | stays |
+| rimflow/dispatcher_schedule.json:51 | grace_s | 20 | ENDS NO WORK | a restart cuts his last words |  | the restart waits this long first | stays |
+| rimflow/dispatcher_schedule.json:54 | helper_stale_s | 1800 | ENDS NO WORK | a dead helper holds a restart for ever |  | a helper this silent no longer holds the restart | stays |
+| rimflow/dispatcher_schedule.json:56 | hold_max_s | 14400 | ENDS NO WORK | his hold is left on and the window's context grows with no end |  | the hold no longer holds, and an alarm says so (CONDUCTOR_RESET_FIX_KILLED_MID_READ) | stays |
+| rimflow/dispatcher_schedule.json:115 | pre_launch_max_s | 1800 | RECORD | a hung pre-step holds the role slot | 462 | the longest coverage judge, agent transcripts, 14 days to 2026-11-24 | raised to 6000 |
+| rimflow/dispatcher_schedule.json:115 | pre_launch_max_s | 1800 | RECORD | a hung pre-step holds the role slot | 462 | the longest coverage judge, agent transcripts, 14 days to 2026-11-24 | raised to 6000 |
+| rimflow/game_lock.py:68 | WRITING_WAIT_S | 1 | ENDS NO WORK | a lock read in mid write is empty for milliseconds |  | the reading says: could not look | stays |
+| rimflow/judge_certificate.py:46 | START_PROBE_S | 20 | RECORD | a probe as long as the test doubles every red proof | 2 | start-up deaths of the 46 Pyrelands live commands, 2026-11-20 | stays |
+| rimflow/judge_certificate.py:52 | EMPTY_GAME_TIMEOUT_S | 120 | RECORD | a hung scene on an empty game holds the certificate | 0.15 | FlowWorks' 17 scenes, 2026-11-18 | stays |
+| rimflow/launch_checks.py:55 | timeout_s | 120 | NEVER REACHED | a hung launch check holds the launch |  |  | stays |
+| rimflow/left_open_continue.py:110 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/left_open_continue.py:640 | timeout | 60 | RECORD | a hung launch holds the run's end | 1.3 | admission to start of 1057 runs, control.db | stays |
+| rimflow/list_dispatch.json:27 | shape_grace_h | 86400 | ENDS NO WORK | a Shape run is spent on an item that its filer is about to close or claim |  | the item is due for Shape | stays |
+| rimflow/list_dispatch.py:71 | SYSTEM_WAIT_S | 3600 | ENDS NO WORK | a launch is sent again every tick into the same refusal (the night of 2026-11-20) |  | a wait before the next try | stays |
+| rimflow/list_effect.py:60 | CMD_TIMEOUT_S | 600 | NEVER REACHED | a check command that never ends holds this beat's lock and stops every later check |  |  | stays |
+| rimflow/list_pipeline.py:26 | LANE_STALE_S | 1800 | ENDS NO WORK | a dead rm-list-dispatch.timer leaves every verdict silently old |  | the lane reading says that it is old | stays |
+| rimflow/maturation.py:2537 | REPAIR_STOP_S | 120 | NEVER REACHED | a game that ignores its close holds the repair (it is stopped with /F after this) |  |  | stays |
+| rimflow/maturation.py:4349 | timeout | 120 | RECORD | a hung local command (git, systemctl, one small tool) holds its caller with no end | 4 | class `call` (time_budget.py) | stays |
+| rimflow/maturation.py:5603 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/maturation_dispatch.json:23 | settle_s | 180 | ENDS NO WORK | a run is judged before its published files reach the dispatch clone |  | the run is judged at a later tick | stays |
+| rimflow/maturation_dispatch.json:45 | stalled_min | 600 | ENDS NO WORK | a stalled mod goes unseen |  | the stall is alarmed | stays |
+| rimflow/maturation_dispatch.py:1562 | timeout | 60 | RECORD | a hung launch holds the dispatch tick | 1.3 | admission to start of 1057 runs, control.db | stays |
+| rimflow/maturation_dispatch.py:1588 | timeout | 120 | RECORD | a hung local command (git, systemctl, one small tool) holds its caller with no end | 4 | class `call` (time_budget.py) | stays |
+| rimflow/maturation_dispatch.py:1601 | timeout | 120 | RECORD | a hung local command (git, systemctl, one small tool) holds its caller with no end | 4 | class `call` (time_budget.py) | stays |
+| rimflow/maturation_dispatch.py:2437 | RUN_MAX | 99 | ENDS NO WORK | an endless search on a wrong known set |  | a count of names, no time | stays |
+| rimflow/maturation_dispatch.py:2615 | timeout | 300 | RECORD | a hung ledger test holds the dispatch tick | 0.2 | the docstring's reading, 2026-11-16 | stays |
+| rimflow/maturation_dispatch.py:3612 | timeout | 600 | RECORD | a hung ./publish or land.sh holds its caller with no end | 584 | class `publish` (time_budget.py) | raised to 21600 |
+| rimflow/maturation_dispatch.py:3617 | timeout | 120 | NEVER REACHED | a hung start of the return unit holds the dispatch tick |  |  | stays |
+| rimflow/maturation_dispatch.py:3677 | DEAD_WAIT_S | 600 | ENDS NO WORK | the tick finishes a run whose own finish still runs |  | the tick leaves the run for a later tick | stays |
+| rimflow/maturation_dispatch.py:3729 | CLONE_STALE_MIN | 300 | ENDS NO WORK | the tick launches from a clone that is behind origin |  | the tick launches nothing and says so; the next tick reads again | stays |
+| rimflow/maturation_dispatch.py:3730 | CLONE_BLIND_S | 900 | ENDS NO WORK | a refused fetch read as level with origin |  | the reading says: could not look | stays |
+| rimflow/maturation_dispatch.py:3914 | VOID_REPAIR_WAIT_S | 3600 | ENDS NO WORK | a launch is sent again every tick into the same refusal (the night of 2026-11-20) |  | a wait before the next try | stays |
+| rimflow/maturation_dispatch.py:4384 | timeout | 600 | RECORD | a hung page build holds a hand tick | 124 | 1228 rm-maturation-page runs, user journal, 14 days to 2026-11-24 | raised to 1800 |
+| rimflow/mod_next.py:30 | READING_MAX_AGE_S | 1800 | ENDS NO WORK | a dead tick's rows read as current (six hours of automatic on a paused mod) |  | the claim reads UNMEASURED | stays |
+| rimflow/mod_owner_hold.py:74 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/modledger.json:17 | lease_idle_minutes | 2700 | ENDS NO WORK | a dead holder keeps a mod's lease for ever |  | the lease lapses; a live holder's program renews it (run_alive.py, each 20 min) | stays |
+| rimflow/modledger.py:840 | timeout | 60 | RECORD | a hung local command (git, systemctl, one small tool) holds its caller with no end | 4 | class `call` (time_budget.py) | stays |
+| rimflow/modledger.py:842 | timeout | 30 | RECORD | a hung git holds the ledger read | 0.9 | 180 local git calls sampled at load 20 to 52, 2026-11-24 | stays |
+| rimflow/modledger_reader.py:167 | timeout | 600 | RECORD | a model call that never returns holds the reader | 49 | every session run from /tmp (336), an upper bound; agent transcripts, 14 days to 2026-11-24 | stays |
+| rimflow/owed.py:194 | timeout | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/quiet_scan.json:9 | reading_max_age_s | 600 | ENDS NO WORK | a mod pipeline reading that stopped, read as an idle machine |  | the scan launches nothing and says so | stays |
+| rimflow/quiet_scan.json:11 | system_wait_s | 3600 | ENDS NO WORK | a launch is sent again every tick into the same refusal |  | a wait before the next try | stays |
+| rimflow/quiet_scan.py:455 | wait_s | 3600 | ENDS NO WORK | a launch is sent again every tick into the same refusal (the night of 2026-11-20) |  | a wait before the next try | stays |
+| rimflow/red_dispatch.py:55 | SYSTEM_WAIT_S | 3600 | ENDS NO WORK | a launch is sent again every tick into the same refusal (the night of 2026-11-20) |  | a wait before the next try | stays |
+| rimflow/refusal_contract.py:681 | timeout | 600 | NEVER REACHED | a calibration check that never ends holds the calibration |  |  | stays |
+| rimflow/refusal_contract.py:739 | FIXER_TIMEOUT_S | 1200 | RECORD | a fixer call that never returns holds the repair of the criterion | 17 | 1 CRITERIA FIXER session, agent transcripts, 14 days to 2026-11-24 | stays |
+| rimflow/role_clones.py:153 | timeout | 30 | NEVER REACHED | a hung systemd-run holds the launch of a role |  |  | stays |
+| rimflow/role_clones.py:174 | timeout | 300 | NEVER REACHED | a hung git holds the launch of a role |  |  | stays |
+| rimflow/role_launch.py:117 | RESUME_WAIT_S | 3600 | ENDS NO WORK | a run resumes on a dead account at every tick |  | a wait before the next try | stays |
+| rimflow/role_launch.py:126 | RESUME_TTL_S | 172800 | ENDS NO WORK | a resume nobody can launch stays for ever |  | the resume is dropped, said | stays |
+| rimflow/role_launch.py:199 | OPS_STALE_S | 2700 | ENDS NO WORK | a dead ops reading read as current |  | the launch gate says that the reading is old | stays |
+| rimflow/role_launch.py:252 | RUN_NOW_TTL_S | 3600 | ENDS NO WORK | a hand request starts a run that nobody waits for any more |  | the request expires, said | stays |
+| rimflow/role_launch.py:2116 | timeout | 45 | RECORD | a hung fetch holds the designer's judge | 3.7 | 15 fetches sampled at load 20 to 52, 2026-11-24 | stays |
+| rimflow/role_launch.py:2238 | timeout | 21600 | RECORD | a judge (LLM) call that never returns holds its caller with no end | 462 | class `judge` (time_budget.py) | stays |
+| rimflow/role_launch.py:2319 | CLOSE_OWED_MAX_S | 172800 | ENDS NO WORK | a stage close that raises on each tick is tried for ever |  | the close is given up, said to the Conductor | stays |
+| rimflow/role_launch.py:2756 | CHAIN_SWEEP_GRACE_S | 600 | ENDS NO WORK | the sweep chains a concept that a harvest is about to chain |  | the sweep leaves it for a later sweep | stays |
+| rimflow/role_launch.py:2965 | CAUSE_ATTACH_WAIT_S | 5 | ENDS NO WORK | a busy cause book holds the tick |  | the attachment is kept and tried again | stays |
+| rimflow/role_launch.py:3303 | SCOPE_GRACE_S | 600 | NEVER REACHED | the scope ends a run before the Dispatcher's own stop |  |  | stays |
+| rimflow/role_launch.py:3304 | SCOPE_STOP_S | 30 | REACH NOT RECORDED | a run that ignores SIGTERM holds its slot |  |  | stays |
+| rimflow/role_launch.py:3489 | timeout | 60 | RECORD | a hung launch holds the Dispatcher's tick | 1.3 | admission to start of 1057 runs, control.db | stays |
+| rimflow/role_launch.py:3664 | wait_s | 500 | RECORD | a hung tick holds a hand command with no end | 97 | a real --apply tick, 2026-11-06 | raised to 1000 |
+| rimflow/run_alive.py:31 | SILENCE_S | 7500 | ENDS NO WORK | a hung run keeps its lease |  | the silence bound of a progress guard, above the longest call that the harness allows (7200 s): the lease is not renewed | stays |
+| rimflow/run_alive.py:32 | LIVE_S | 3600 | ENDS NO WORK | a brief with no renewal lines while no program renews |  | the reading says that the timer is not live | stays |
+| rimflow/run_alive.py:33 | START_S | 120 | ENDS NO WORK | a young run reads as gone |  | the run reads blind, not gone | stays |
+| rimflow/run_alive.py:34 | CMD_S | 120 | RECORD | a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end | 28.3 | class `rimflow` (time_budget.py) | raised to 300 |
+| rimflow/run_end_wake.py:47 | MAX_WAIT_S | 82800 | ENDS NO WORK | the harness ends the wake hook with no message |  | the wake ends under the hook's own 86400 s and is armed again | stays |
+| rimflow/run_end_wake.py:49 | STATE_DEADLINE_S | 20 | NEVER REACHED | a hung reader holds the wake |  |  | stays |
+| rimflow/run_end_wake.py:50 | READER_S | 18 | NEVER REACHED | a hung reader holds the wake |  |  | stays |
+| rimflow/seat_restart.py:105 | HELPER_STALE_FLOOR_S | 1200 | ENDS NO WORK | a live helper reads as dead at a restart |  | the floor of a reading's age | stays |
+| rimflow/seat_restart.py:110 | FALLBACK_GRACE_S | 200 | ENDS NO WORK | a restart is reclaimed beside a launch |  | the reclaim waits | stays |
+| rimflow/seat_restart.py:112 | TELL_RING_HOLD_S | 60 | ENDS NO WORK | two rings in one tick |  | the ring waits a tick | stays |
+| rimflow/seat_restart.py:2173 | timeout | 10 | NEVER REACHED | a hung ps holds the restart |  |  | stays |
+| rimflow/seat_restart.py:2229 | wait_s | 10 | REACH NOT RECORDED | a window that ignores SIGTERM holds the restart; SIGKILL follows |  |  | stays |
+| rimflow/seat_restart.py:2359 | timeout | 180 | NEVER REACHED | a hung fallback launch holds the restart |  |  | stays |
+| rimflow/seat_restart.py:3779 | timeout | 120 | NEVER REACHED | a hung handoff.py holds the window's wake |  |  | stays |
+| rimflow/spend_watchdog.py:47 | GRACE_S | 30 | REACH NOT RECORDED | a run that ignores SIGTERM goes on spending past its stop (the per-run spend stop he ordered); SIGKILL follows |  |  | stays |
+| rimflow/role_clones.py:216 | timeout | 600 | RECORD | a hung ./publish or land.sh holds its caller with no end | 584 | class `publish` (time_budget.py) | raised to 21600 by the first run |
+| rimflow/role_clones.py:118 | timeout | 1800 | RECORD | a hung launch holds the tick with no end | 896 | class `launch` (time_budget.py) | raised to 10800 by the first run |
+| Utils/guiding_prose.py:651 | timeout | 600 | RECORD | a hung ./publish or land.sh holds its caller with no end | 584 | class `publish` (time_budget.py) | raised to 21600 by the first run |
+| rimflow/detached_helper.py:573 | timeout | 300 | RECORD | a hung local command holds its caller with no end | 4 | class `call` (time_budget.py) | raised to 1800 by the first run |
+| rimflow/detached_helper.py:1604 | timeout | 60 | RECORD | a hung launch holds its caller | 1.3 | admission to start of 1057 runs, control.db | stays |
+| rimflow/role_clones.py:227 | timeout | 600 | NEVER REACHED | a hung seat_sync holds the launch of a role |  |  | stays |
+| rimflow/control_acts_export.py:143 | timeout | 120 | NEVER REACHED | a hung push holds the export tick |  |  | stays |
+| rimflow/control.py:1495 | timeout | 300 | NEVER REACHED | a hung forecast holds the pipe command |  |  | stays |
+| Utils/testq/testq.py:2484 | timeout | 300 | NEVER REACHED | a hung ssh holds the submit |  |  | stays |
 
 ## Left apart: the limits that stay (read, not changed)
 

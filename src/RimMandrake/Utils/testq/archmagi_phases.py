@@ -56,6 +56,8 @@ def game_pid():
     try:
         r = subprocess.run([PS, "-NoProfile", "-NonInteractive", "-Command",
                             "(Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | Select-Object -First 1).Id"],
+                           # budget: danger=a hung Windows program (interop) holds the Archmagi lane; never reached in the 14
+                           # budget: days to 2026-11-24; no record of its run
                            capture_output=True, text=True, timeout=60)
     except (OSError, subprocess.SubprocessError):
         return None
@@ -72,7 +74,7 @@ def cmd_deploy(mods):
         args += ["--mod", m]
     try:
         r = subprocess.run([sys.executable, os.path.join(REPO, "src", "RimMandrake", "Utils", "deploy_custom_mods.py")]
-                           + args, capture_output=True, text=True, timeout=600, cwd=REPO)
+                           + args, capture_output=True, text=True, timeout=10800, cwd=REPO)  # budget: class=deploy
     except (OSError, subprocess.SubprocessError) as e:
         print("REFUSED: the deploy plan could not run: %s" % e)
         return EX_REFUSED
@@ -111,7 +113,11 @@ def _ask_from_windows():
         return None, "the bridge is unreachable from WSL and no python.exe was found"
     try:
         me = subprocess.run(["wslpath", "-w", os.path.abspath(__file__)], capture_output=True, text=True,
+                            # budget: danger=a hung Windows program (interop) holds the Archmagi lane; never reached in the 14
+                            # budget: days to 2026-11-24; no record of its run
                             timeout=30).stdout.strip()
+        # budget: danger=a hung Windows program (interop) holds the Archmagi lane; never reached in the 14 days to 2026-11-24;
+        # budget: no record of its run
         r = subprocess.run([exe, me, "running-ids"], capture_output=True, text=True, timeout=120, cwd=REPO)
         last = [ln for ln in r.stdout.replace("\r", "").splitlines() if ln.startswith("{")][-1:]
         d = json.loads(last[0]) if last else {"why": "python.exe printed no reply (exit %d): %s"
@@ -135,6 +141,7 @@ def _ask_bridge():
         host, port, token = resolve_endpoint(None, None, None)
         if not token:
             return None, "no bridge token in Player.log"
+        # budget: danger=a dead bridge holds the Archmagi lane; never reached in the 14 days to 2026-11-24; no record of its run
         with RimBridge(host, port, token, timeout=60.0, client_name="archmagi_phases.py") as b:
             r = b.call("jawa/running_mods", {"assembly": "", "details": False})
     except Exception as e:      # noqa: BLE001 - any failure to ask is "cannot show", never a match

@@ -34,6 +34,7 @@ WINDOW_S = 3 * 86400
 # A count younger than this is shared, not recounted. Danger: both pages build every minute, and recounting on every
 # build doubles a load the pages carry each minute. Evidence: the count took 6.8 s live on 2026-11-23 (the transcript
 # scan is about 5 s, probe_results.md); its sources move on the scale of minutes to hours.
+# budget: danger=both pages recount on every build; ends no work: the count is made again
 TTL_S = 300
 # Names kept per source for the view. Danger: a long list of chat messages buries his block (the owner asked for a
 # dense, readable page, 2026-11-23). Evidence: 48 typed messages read NO HOME in 3 days on 2026-11-23.

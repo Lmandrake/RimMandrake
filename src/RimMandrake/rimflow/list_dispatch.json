@@ -24,6 +24,6 @@
   "_sonnet_if_doc": "Ladder (infrastructure/agents/Agent_Policy.md): sonnet for well-defined coding a test proves; the item's check is that test when it runs a selftest or an acceptance script. Every other check (a path check on prose, a study) gets opus.",
   "shape_from": "2026-11-23T14:00:00Z",
   "_shape_from_doc": "A flood of Shape runs on old items: 1,457 open items carried no outcome check on 2026-11-23 (measured), and the plan does no hand migration of old items. An item filed before this moment enters Shape only when someone names it (`rimflow shape <ID> --enter`); one filed at or after it enters by itself after shape_grace_h. Empty: no item enters by itself.",
-  "shape_grace_h": 24,
+  "_shape_grace_h": "danger=a Shape run is spent on an item that its filer is about to close or claim; ends no work: the item is due for Shape", "shape_grace_h": 24,
   "_shape_grace_h_doc": "A Shape run spent on an item that its filer is about to close or claim. Measured 2026-11-23 over the 385 items filed with no check and closed in the 3 days before: 52% closed inside 1 h, 75% inside 6 h, 88% inside 24 h."
 }

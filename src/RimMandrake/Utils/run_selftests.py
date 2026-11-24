@@ -463,6 +463,8 @@ def probe_harness():
         return None, "no cgroup v2 here"
     _install_slice()
     try:
+        # budget: danger=a hung systemd-run holds the runner before its first test; never reached in the 14 days to 2026-11-24;
+        # budget: no record of its run
         p = subprocess.run(_scope_argv(256 << 20, 30, []), capture_output=True, text=True, timeout=60)
     except (OSError, subprocess.SubprocessError) as exc:
         return None, f"systemd-run unavailable ({type(exc).__name__}: {exc})"
@@ -547,6 +549,8 @@ def _run_capped(path: Path, timeout: int, cap: int = 0, est: int = 0, env=None):
         try:
             # Bounded: a descendant that escaped the group can still hold the pipe, and an
             # unbounded communicate() here hung the whole runner (audit §7).
+            # budget: danger=a descendant that escaped the group holds the pipe, and the whole runner (audit 7); ends no work:
+            # budget: the test has ended; its pipe is closed and its result stands
             p.communicate(timeout=15)
         except subprocess.TimeoutExpired:
             for f in (p.stdout, p.stderr):
@@ -1372,6 +1376,7 @@ def _suite(args) -> int:
                     lane[fut] = _lane_of(pick)
                     inflight.add(fut)
                     time.sleep(0.05)  # let the scope register before the next admit() reads
+                # budget: danger=the runner reads the memory only when a test ends; ends no work: a poll; the loop waits again
                 done, inflight = wait(inflight, timeout=1.0, return_when=FIRST_COMPLETED)
                 for fut in done:
                     _progress(fut.result())

@@ -65,6 +65,8 @@ def measure(tier):
         import rimbridge_client as rb
         import runner
         host, port, token = rb.resolve_endpoint()
+        # budget: danger=a dead bridge holds one game of the lane; never reached in the 14 days to 2026-11-24; no record of its
+        # budget: run
         c = rb.RimBridge(host=host, port=port, token=token, timeout=60.0)
         c.connect()
         running = live_def_check.running_ids(runner._rb_call(c, "jawa/running_mods", {"details": False, "assembly": ""}))

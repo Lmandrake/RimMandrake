@@ -52,6 +52,7 @@ def _refusal(c, rc, evidence):
                             "still red"}
 
 
+# budget: danger=a hung launch check holds the launch; never reached in the 14 days to 2026-11-24; no record of its run
 def run(checks, cwd, timeout_s=120, runner=subprocess.run):
     """-> {"ok", "refusals", "did_not_run", "ms"}: each check run in cwd (the run's clone), capped at timeout_s."""
     t0 = time.time()

@@ -494,6 +494,7 @@ IV_KINDS = ("decision", "re-pin", "hold", "release", "relaunch", "brief", "bar-a
 IV_RX = re.compile(r"CONDUCTOR INTERVENED\s*\(\s*stage\s+(intake|4\s*\+\s*5|[1-8])\s*"
                    r"(?:,\s*(\d{4}-\d{2}-\d{2})\s+(\d{1,2}):(\d{2})\s*(AM|PM)?\s*(?:PST|PDT)?)?\s*"
                    r"(?:,\s*kind\s+([a-z-]+))?\s*\)\s*:\s*(\S.*)$", re.I)
+# budget: danger=a long run is not seen on the page; ends no work: the page marks the run as long
 LONG_RUN_S = 3600
 CYCLE_ALARM = 3
 

@@ -216,6 +216,8 @@ def heartbeat(job_id):
 
 # An orphan stops getting the 60 s tick's heartbeat (OPS_TESTQ_UNSTICK_ECPK). Ticks stalled 7-15 min
 # on Nov 21 and 23 (done_once). Use the steward's five-minute guard so a missed tick alone is not a hang.
+# budget: danger=a worker that stopped its heartbeat reads as running (ticks stalled 7 to 15 min, Nov 21 and 23); ends no work:
+# budget: a wait reads HUNG; the job goes on
 HUNG_S = 300
 
 
@@ -377,6 +379,8 @@ def remote_cmd(args, host=STEVE):
         runner, pre, " ".join(shlex.quote(a) for a in args))
 
 
+# budget: danger=a hung ssh or worker call holds the testq tick; never reached in the 14 days to 2026-11-24; no record of its
+# budget: run
 def remote(args, stdin=None, timeout=180, host=STEVE):
     """Run `worker.py ARGS` in SteveDesktop's runner clone -> (exit code, last JSON line). SshDown on ssh failure."""
     cmd = remote_cmd(args, host)
@@ -396,6 +400,8 @@ def ssh_reachable():
     if st.get("down_since") and time.time() - st.get("last_probe", 0) < PROBE_S:
         return None
     try:
+        # budget: danger=a hung ssh or worker call holds the testq tick; never reached in the 14 days to 2026-11-24; no record
+        # budget: of its run
         rc, status = remote(["status"], timeout=60)
     except SshDown as e:
         st.update(down_since=st.get("down_since") or S.utcnow(), last_probe=time.time(), last_error=str(e))
@@ -808,6 +814,8 @@ def site_stage_step(now=None, run=None):
         return {"state": "unchanged", "rc": st.get("rc")}
     if run is None:
         def run():
+            # budget: danger=a hung copy of the site saves holds the testq tick; never reached in the 14 days to 2026-11-24; no
+            # budget: record of its run
             r = subprocess.run(site_stage_argv(), capture_output=True, text=True, timeout=900)
             return r.returncode, (r.stdout + r.stderr)[-1500:]
     try:
@@ -827,6 +835,7 @@ def cmd_visit_feed(a):
 
 # ---------------------------------------------------------------- the Archmagi backfill (TESTQ_ARCHMAGI_LANE_BUILD_BACKFILL)
 
+# budget: danger=the Archmagi backfill starts between two calls of a driver; ends no work: the backfill waits for the next tick
 ARCH_SILENT_S = 600          # plan section 3: "only when the bridge is free and has been silent for 10 min"
 ARCH_BACKOFF_S = 1800        # after REFUSED/LOAD (no game running): look again in 30 min, not every minute
 ARCH_MODS_DIR = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
@@ -984,6 +993,8 @@ def archmagi_candidates(steve_up, steve_busy, now=None):
     return out
 
 
+# budget: danger=a hung ssh or worker call holds the testq tick; never reached in the 14 days to 2026-11-24; no record of its
+# budget: run
 def archmagi_worker(args, stdin=None, timeout=180):
     """Run `worker.py ARGS` locally in the Archmagi runner clone -> (exit code, last JSON line), like remote()."""
     run = arch_runner()
@@ -1090,6 +1101,8 @@ def archmagi_tick(steve_up, steve_busy):
 
 # ---------------------------------------------------------------- the section 2 trial switch (ARCHMAGI_BACKFILL_WIRE_TRIAL_SWITCH)
 
+# budget: danger=a bridge take waits for the whole attempt; ends no work: the taker waits this long for a row boundary, then
+# budget: takes the game, as it ordered
 YIELD_GRACE_S = 180      # a bridge take: wait this long for a row boundary, then stop the attempt outright
 EST_DEFAULT_S = 900      # a job's lane seconds when no finished Steve job of the last 7 days says otherwise
 
@@ -1405,6 +1418,8 @@ def preview(mod, sel):
     cli = os.path.join(HERE, "..", "modcheck", "cli.py")
     try:
         r = subprocess.run([sys.executable, cli, "run", mod] + args + ["--preview"], capture_output=True, text=True,
+                           # budget: danger=a hung modcheck preview holds the submit; its reach leaves no record; no record of
+                           # budget: its run
                            timeout=60, cwd=REPO)
     except (OSError, subprocess.SubprocessError):
         return out
@@ -2481,6 +2496,7 @@ def forward_submit(a, argv):
         where, " ".join(shlex.quote(x) for x in args))
     print("testq: this queue (%s) is not the dispatcher's; submitting on %s (%s)" % (QHOME, target, clone), flush=True)
     try:
+        # budget: danger=a hung ssh holds the submit; never reached in the 14 days to 2026-11-24; no record of its run
         r = subprocess.run(SSH + [target, cmd], timeout=300)
     except (OSError, subprocess.TimeoutExpired) as e:
         print("UNMEASURED: the submit could not reach %s (%s); nothing was queued here" % (target, e))

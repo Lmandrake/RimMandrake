@@ -191,7 +191,7 @@ def safe_banner_and_items(seat="BENCH"):
 WAKE_HEAD = "== what the Conductor OWES (rimflow queue CONDUCTOR --owed): act on these before anything else"
 
 
-def wake_lines(repo, seat="CONDUCTOR", timeout=120):
+def wake_lines(repo, seat="CONDUCTOR", timeout=300):  # budget: class=rimflow
     """-> [line] for a wake (seat_restart.py wake, handoff.py --wake), printed right after the old window's last reply.
     Runs `cli.py queue <seat> --owed`; a view that cannot run says `did not run` and the wake goes on."""
     import subprocess

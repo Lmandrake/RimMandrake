@@ -12,7 +12,11 @@ import game_instance as games
 from tps_record import HB_FRESH_SECONDS, PROC_START_TOLERANCE_S, _epoch, loads_strict
 
 BROKEN = {"frames_stopped", "frame_exceptions", "stuck_load"}
+# budget: danger=a stalled main thread read as healthy; ends no work: a silence this long reads STALLED and a dump is written;
+# budget: the game goes on
 STALL_S = 60       # stall dump threshold; known long events can recover, see boundary LIMITS
+# budget: danger=a stuck load read as a slow load (MapInitializing stall, 2026-10-26); ends no work: a load this old reads
+# budget: stuck_load; the game goes on
 LOAD_S = 600      # scene settle threshold after the 2026-10-26 MapInitializing stall
 CADENCE_S = 5     # writer cadence; a shorter exception streak can come from one bad moment (boundary LIMITS)
 CONFIRM_S = 2 * CADENCE_S    # beyond the watchdog's immediate warm-up pair (boundary LIMITS)

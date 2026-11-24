@@ -44,9 +44,13 @@ import doorbell  # noqa: E402
 
 SEAT = "BENCH"
 NAMES = ("CONDUCTOR", "AGENT BENCH")      # the window's session name and its pre-rename alias (dispatcher_schedule)
+# budget: danger=the harness ends the wake hook with no message; ends no work: the wake ends under the hook's own 86400 s and is
+# budget: armed again
 MAX_WAIT_S = 23 * 3600                    # under Claude Code's 86400 s hook timeout, as the doorbell's
 POLL_S = 3.0
+# budget: danger=a hung reader holds the wake; never reached in the 14 days to 2026-11-24; no record of its run
 STATE_DEADLINE_S = 20                     # a hung reader never holds the wake (the page's LIMITS)
+# budget: danger=a hung reader holds the wake; never reached in the 14 days to 2026-11-24; no record of its run
 READER_S = 18                             # one reader's subprocess: killed before the block's deadline
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 

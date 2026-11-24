@@ -225,6 +225,8 @@ def remote_record(job_id, qhome):
     cmd = "for f in %s; do [ -f \"$f\" ] && exec cat \"$f\"; done; exit 3" % paths
     try:
         r = subprocess.run(["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15", "-o", "LogLevel=ERROR", target, cmd],
+                           # budget: danger=a hung ssh holds the retest; never reached in the 14 days to 2026-11-24; no record
+                           # budget: of its run
                            capture_output=True, text=True, timeout=60)
     except (OSError, subprocess.TimeoutExpired) as e:
         return None, ", nor could %s be asked (%s)" % (target, e)

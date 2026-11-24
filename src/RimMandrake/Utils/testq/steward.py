@@ -113,10 +113,14 @@ import lane_ticket as LT  # noqa: E402
 RIMFLOW_DIR = os.path.join(T.REPO, "src", "RimMandrake", "rimflow")
 STEWARD_ITEM = os.environ.get("TESTQ_STEWARD_ITEM", "STEVE_STEWARD_BUILD_NO_LLM_OWNER")
 L1_S, L2_S, L3_S = 600, 1800, 7200          # section 6.4: T+10, T+30, T+120 min of unowned clock
+# budget: danger=a ready lane that nobody works goes unseen; ends no work: the steward's clock starts
 READY_GRACE_S = 300
 MANUAL_PAUSE_S = 3600                       # section 6.1: "a pause with neither escalates at 60 min"
+# budget: danger=a claim with no lease holds the escalation for ever; ends no work: the steward's clock runs again
 CLAIM_HOLD_S = 7200                         # a claim without a lease pauses the clock this long
+# budget: danger=two passes wait on each other; ends no work: the pass is skipped; the next timer beat runs it
 LOCK_WAIT_S = 30                            # a pass waits this long for the other pass, then skips
+# budget: danger=a dead steward goes unseen; ends no work: the watcher says that the steward is stale
 STALE_S = 300                               # the watcher: steward.json older than this
 LEDGER_ERR = "ledger unreadable: "          # inc["error"] prefix; ops_watch counts it as nobody escalating
 HARNESS_CAUSES = {"HARNESS", "DEPLOY", "SYNC", "SOURCE_SHA_MISSING", "BLOCKED_SELECTION"}
@@ -141,6 +145,7 @@ def mods_default():
 # ---------------------------------------------------------------- what state the lane is in
 
 UNIT_PAUSE_S = 24 * 3600     # a pause that waits for a unit is told of after a day (a 49 h pause stood unseen, 2026-11-15)
+# budget: danger=a hold that outlasts a build and a push goes unseen; ends no work: the steward's clock starts
 COMPANION_GRACE_S = 900     # a hold outlasting a build and a push, and more than one retry of a blip, is a fault
 
 
@@ -306,7 +311,7 @@ def bench(*args):
     import ingest
     env = dict(os.environ, RIMFLOW_SEAT="BENCH", CLAUDE_PROJECT_DIR=ingest.REPO)
     try:
-        r = subprocess.run([sys.executable, ingest.CLI, *args], env=env, capture_output=True, text=True, timeout=120)
+        r = subprocess.run([sys.executable, ingest.CLI, *args], env=env, capture_output=True, text=True, timeout=300)  # budget: class=rimflow
     except (OSError, subprocess.TimeoutExpired) as e:
         return 1, "could not run rimflow %s: %s" % (args[0], e)
     return r.returncode, (r.stdout + r.stderr).strip()
@@ -514,6 +519,8 @@ def launch_wake(clone, brief_path, log_path, budget, max_s):
         r = C.launch_unit(["--user", "--collect", "-p", "RuntimeMaxSec=%d" % max_s,
                            "-p", "WorkingDirectory=%s" % clone, "--setenv=RIMFLOW_SEAT=BENCH",
                            "--setenv=PATH=%s" % os.environ.get("PATH", ""), "--", "/bin/bash", "-c", cmd],
+                          # budget: danger=a hung launch holds the steward's pass; longest=1.3s (admission to start of 1057
+                          # budget: runs, control.db)
                           {"family": "testq", "unit": WAKE_UNIT, "reuse_name": True}, capture_output=True, text=True, timeout=60)
     except (OSError, subprocess.SubprocessError) as e:
         return False, "systemd-run failed: %s" % e
@@ -546,6 +553,8 @@ def pull_wake_clone(clone):
         return "pull off"
     try:
         r = subprocess.run(["git", "-C", clone, "pull", "-q", "--ff-only", "origin", "main"], capture_output=True,
+                           # budget: danger=a hung git pull holds the steward's pass; never reached in the 14 days to
+                           # budget: 2026-11-24; no record of its run
                            text=True, timeout=120)
     except (OSError, subprocess.SubprocessError) as e:
         return "pull failed: %s" % e

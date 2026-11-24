@@ -44,6 +44,8 @@ import role_launch as RL  # noqa: E402
 
 USD_PER_M = RL.MODEL_PRICES[RL.REF_MODEL]["input_tokens"]   # list $/MTok of the reference input: 1 v2 token's price
 POLL_S = 30
+# budget: danger=a run that ignores SIGTERM goes on spending past its stop (the per-run spend stop he ordered); SIGKILL follows;
+# budget: its reach leaves no record; no record of its run
 GRACE_S = 30
 
 

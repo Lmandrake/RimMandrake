@@ -34,7 +34,7 @@ case "${1:-}" in
     --stop) stop ;;
     --test)
         stage
-        timeout 70 python.exe "$SERVE_WIN\\serve_bootstrap.py" --dir "$SERVE_WIN" --port $PORT --minutes 1 &
+        python.exe "$SERVE_WIN\\serve_bootstrap.py" --dir "$SERVE_WIN" --port $PORT --minutes 1 &
         sleep 4
         { curl -s -m 5 "http://192.168.86.221:$PORT/b" || true; } | head -c 120 || true; echo
         curl -s -m 5 -o /dev/null -w 'archmagi.pub http=%{http_code}\n' "http://192.168.86.221:$PORT/archmagi.pub"

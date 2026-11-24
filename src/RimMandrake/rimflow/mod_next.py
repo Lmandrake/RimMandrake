@@ -27,6 +27,8 @@ RESULTS = ("yes", "held", "off", "paused", "ceiling", "waiting", "hand", UNM)
 # A dead-tick guard: the tick runs every 60 s, so a reading this old means about 30 ticks did not run, and its rows no
 # longer say what the tick decides now (RIMMANDRAKE_UNSTICK_DISPATCH_BLIND_CYCLES_WAITED_SIX_HOURS: six hours of
 # "automatic" on a paused mod). Past it an automatic claim reads UNMEASURED.
+# budget: danger=a dead tick's rows read as current (six hours of automatic on a paused mod); ends no work: the claim reads
+# budget: UNMEASURED
 READING_MAX_AGE_S = 1800
 
 

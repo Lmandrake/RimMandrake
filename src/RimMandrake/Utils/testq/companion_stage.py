@@ -48,8 +48,11 @@ STATE = "companion_stage.json"
 LOG = "companion_stage.log"
 RECHECK = "companion_recheck.json"  # testq.admit saw origin/main's companion missing on SteveDesktop: probe, don't trust
 RETRY_S = 1800              # a build that failed is not retried every tick
+# budget: danger=a hung winbuild holds the testq tick (its queue on the shared stage lock included); never reached in the 14
+# budget: days to 2026-11-24; no record of its run
 BUILD_TIMEOUT_S = 420       # the tick's TimeoutStartSec is 900; winbuild queues on a shared stage lock
 FIXED_AT = "2026-11-03T22:40:00Z"   # `proof` counts only jobs finished after this fix began
+# budget: danger=an old proof read as a current one; ends no work: the proof reads old
 PROOF_MAX_AGE_S = 7200
 _READER = ("import re,sys\n"
            "for p in sys.argv[1:]:\n"
@@ -79,6 +82,7 @@ def probe():
     paths = remote_paths()
     cmd = "python3 -c %s %s %s" % (shlex.quote(_READER), shlex.quote(paths["inbox"]), shlex.quote(paths["game"]))
     try:
+        # budget: danger=a hung ssh holds the testq tick; its reach leaves no record; no record of its run
         r = subprocess.run(M.SSH + [cmd], capture_output=True, text=True, timeout=120)
     except subprocess.TimeoutExpired:
         return None

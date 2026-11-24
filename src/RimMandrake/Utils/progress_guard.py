@@ -23,11 +23,12 @@ if HERE not in sys.path:
 import waitalive  # noqa: E402
 
 # budget: danger=a hung child holds its caller with no end; evidence=INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT 2026-11-03 (a
-# budget: WSL interop launch that never answered); longest=UNMEASURED (no record of the longest silence of a live child)
+# budget: WSL interop launch that never answered; new on 2026-11-24); never reached in the 14 days to 2026-11-24; no record of
+# budget: its run
 SILENCE_S = 1800
 POLL_S = 2.0
 # budget: danger=a process that a finished child left behind holds its pipe open with no end (run_selftests audit 7);
-# budget: longest=UNMEASURED; it ends no work: the child has exited and its result is returned
+# budget: ends no work: the child has exited and its result is returned
 LEFT_OPEN_S = 15
 
 
@@ -102,7 +103,8 @@ def kill_session(p):
     except OSError:
         pass
     try:
-        p.wait(timeout=15)      # budget: danger=a killed child in uninterruptible IO never reaps; longest=UNMEASURED
+        # budget: danger=a killed child in uninterruptible IO never reaps; its reach leaves no record; no record of its run
+        p.wait(timeout=15)
     except subprocess.TimeoutExpired:
         pass
     for f in (p.stdout, p.stderr):

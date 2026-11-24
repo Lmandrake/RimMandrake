@@ -52,6 +52,8 @@ ALARM_PREFIX = "NIGHTLY_RED:testing.red_"
 CLOSED = ("done", "dropped", "superseded")
 # after a try that did not count (it never started, or died of a system cause): the danger is a launch sent again every
 # 10 min into the same refusal (the night of 2026-11-20, maturation_dispatch.REPAIR_LAUNCH_MOST)
+# budget: danger=a launch is sent again every tick into the same refusal (the night of 2026-11-20); ends no work: a wait before
+# budget: the next try
 SYSTEM_WAIT_S = 3600
 PAC = dt.timezone(dt.timedelta(hours=-8), "PST")
 NIGHT_START_H = 3

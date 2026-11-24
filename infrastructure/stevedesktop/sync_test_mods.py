@@ -106,6 +106,7 @@ def remote_tally(path):
     (ssh failed or printed no tally) - unread is not empty."""
     cmd = "cd %s 2>/dev/null && find . -type f -printf '%%s\\n' | awk '{n++; b+=$1} END {print n+0, b+0}' || echo 0 0" % shlex.quote(path)
     try:
+        # budget: danger=a hung ssh holds the sync, and the tick that runs it; its reach leaves no record; no record of its run
         r = subprocess.run(SSH + [cmd], capture_output=True, text=True, timeout=300)
     except subprocess.TimeoutExpired:
         return None
@@ -120,6 +121,7 @@ def remote_sha(path):
     q = shlex.quote(path)
     cmd = "if [ -f %s ]; then sha256sum %s | cut -d' ' -f1; else echo absent; fi" % (q, q)
     try:
+        # budget: danger=a hung ssh holds the sync, and the tick that runs it; its reach leaves no record; no record of its run
         r = subprocess.run(SSH + [cmd], capture_output=True, text=True, timeout=120)
     except subprocess.TimeoutExpired:
         return None
@@ -134,6 +136,8 @@ def push_file(src, dest_dir):
     d, f = shlex.quote(dest_dir), shlex.quote(dest_dir + "/" + os.path.basename(src))
     with open(src, "rb") as fh:
         r = subprocess.run(SSH + ["set -e; mkdir -p %s; cat > %s.part; mv %s.part %s" % (d, f, f, f)], stdin=fh,
+                           # budget: danger=a hung ssh holds the push, and the tick that runs it; never reached in the 14 days
+                           # budget: to 2026-11-24; no record of its run
                            capture_output=True, timeout=600)
     if r.returncode:
         raise RuntimeError("push %s failed: ssh=%s %s" % (src, r.returncode, r.stderr.decode(errors="replace").strip()))
@@ -173,6 +177,8 @@ def push(src, dest_parent, name):
     tar = subprocess.Popen(["tar", "-cf", "-", "-C", os.path.dirname(src), "--transform",
                             "s,^%s,%s," % (re.escape(os.path.basename(src)), name), os.path.basename(src)],
                            stdout=subprocess.PIPE)
+    # budget: danger=a hung ssh holds the push, and the tick that runs it; never reached in the 14 days to 2026-11-24; no record
+    # budget: of its run
     r = subprocess.run(SSH + [rcmd], stdin=tar.stdout, capture_output=True, text=True, timeout=1800)
     tar.stdout.close()
     tar.wait()
@@ -191,6 +197,8 @@ def remote_saves():
         return SAVES_WSL
     try:
         r = subprocess.run(SSH + ['. %s >/dev/null 2>&1; echo "${RM_GAME_USERDATA:-}"' % ENV_SH], capture_output=True,
+                           # budget: danger=a hung ssh holds the sync, and the tick that runs it; its reach leaves no record; no
+                           # budget: record of its run
                            text=True, timeout=60)
     except subprocess.TimeoutExpired:
         return None

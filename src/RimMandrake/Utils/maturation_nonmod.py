@@ -35,6 +35,8 @@ TITLE = "Pipeline for work that is not mod work"
 OPEN_STATES = ("proposed", "ready", "doing", "built", "validated")     # model.OPEN_STATES
 CLOSED_VERBS = ("close", "drop", "supersede")
 ROWS = 12            # rows shown per list before "and N more"; the heading always carries the full count
+# budget: danger=a dead rm-red-dispatch.timer leaves the red list silently old; ends no work: the page says that the reading is
+# budget: old
 RED_STALE_S = 1800   # a red reading older than this is not current: rm-red-dispatch.timer ticks every 10 min
 DAY = 86400
 SHOWINGS = "/mnt/d/ClaudeWork/rimmandrake/showings"

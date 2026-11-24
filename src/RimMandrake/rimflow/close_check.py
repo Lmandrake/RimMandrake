@@ -28,6 +28,7 @@ READING = "/mnt/d/ClaudeWork/rimmandrake/close_check/reading.json"
 UNIT = "rm-close-check.service"
 START = "2026-11-01T21:01:30Z"      # the last pre-screen of the Auditor era: the first run takes up from there
 # Danger: the check stops and nobody sees it (it did, 2026-11-01 to 2026-11-23). The timer is daily; 36 h is one missed day.
+# budget: danger=the close check stops and nobody sees it (2026-11-01 to 2026-11-23); ends no work: the dead-man alarms
 MAX_AGE_S = 36 * 3600
 # Danger: a close written in a clone lands on main after the run that covers its time (`--publish` exit 4), and is never
 # checked. A second look at a close costs a lookup and reopens nothing twice.

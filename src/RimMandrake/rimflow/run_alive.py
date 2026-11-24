@@ -28,10 +28,15 @@ import modledger  # noqa: E402
 import spend_talk  # noqa: E402
 
 BEAT_S = 1200       # the page's LIMITS name each number's danger
+# budget: danger=a hung run keeps its lease; ends no work: the silence bound of a progress guard, above the longest call that
+# budget: the harness allows (7200 s): the lease is not renewed
 SILENCE_S = 7500
+# budget: danger=a brief with no renewal lines while no program renews; ends no work: the reading says that the timer is not
+# budget: live
 LIVE_S = 3600
+# budget: danger=a young run reads as gone; ends no work: the run reads blind, not gone
 START_S = 120
-CMD_S = 120
+CMD_S = 300  # budget: class=rimflow
 TAIL = 1 << 20      # the last message is looked for in the last MB first, then in the whole file: speed, not a cut
 SHELL_MARK = "/shell-snapshots/"
 DEAD = DH.DEAD_STATES

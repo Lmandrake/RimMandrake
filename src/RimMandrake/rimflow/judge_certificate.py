@@ -43,12 +43,15 @@ RUN_TIMEOUT_S = 6000      # the slowest measured offline decider is FlowWorks' C
 # how long red_seen's no-fault probe waits before it reads the command as started. Danger: a probe as long as the test
 # doubles every red proof (live commands run for minutes); evidence: a start-up death (import, shell syntax) ends in
 # under 2 s, measured on the 46 Pyrelands live commands, 2026-11-20 (table_commands_start.py)
+# budget: danger=a probe as long as the test doubles every red proof; longest=2s (start-up deaths of the 46 Pyrelands live
+# budget: commands, 2026-11-20)
 START_PROBE_S = 20
 RED_SEEN = "version/evidence/red_seen.json"
 # what a game loads only from a build and a deploy, never from the tree (red_seen refuses an in-game check planted there)
 GAME_LOADED_EXT = (".cs", ".csproj", ".xml", ".dll")
 GRANDFATHER = "version/evidence/red_seen_grandfather.json"
 OFFLINE_STAGES = ("2", "4-5")   # a bar proving at one of these stages is decided offline
+# budget: danger=a hung scene on an empty game holds the certificate; longest=0.15s (FlowWorks' 17 scenes, 2026-11-18)
 EMPTY_GAME_TIMEOUT_S = 120      # FlowWorks' 17 scenes on an empty game: 0.15 s measured 2026-11-18
 
 

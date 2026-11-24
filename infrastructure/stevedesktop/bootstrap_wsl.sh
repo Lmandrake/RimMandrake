@@ -124,7 +124,7 @@ tailscale_login() {
     systemd_up || { echo "systemd not running yet; tailscale login waits for pass2"; return 0; }
     if tailscale status >/dev/null 2>&1; then echo "tailscale up: $(tailscale ip -4 | head -1)"; tailscale set --ssh >/dev/null 2>&1; return 0; fi
     # Same flags as Archmagi's break-glass (setup_break_glass.sh). Prints a login URL.
-    timeout 25 tailscale up --ssh --hostname stevedesktop-wsl --accept-dns=false --timeout=20s 2>&1 | tee /tmp/ts_up.txt
+    tailscale up --ssh --hostname stevedesktop-wsl --accept-dns=false --timeout=20s 2>&1 | tee /tmp/ts_up.txt
     grep -o 'https://login.tailscale.com/[^ ]*' /tmp/ts_up.txt | head -1 | sed 's/^/TAILSCALE_WSL_LOGIN_URL: /'
     return 0
 }

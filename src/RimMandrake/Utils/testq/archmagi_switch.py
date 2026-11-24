@@ -34,15 +34,20 @@ state back (queue/archmagi_state.json, key "switch"). The switch says whether th
 """
 
 SUSTAIN_S = 3600            # S1 must hold for 60 min running
+# budget: danger=Archmagi takes SteveDesktop's work while SteveDesktop keeps up; ends no work: a ready job this old may turn the
+# budget: backfill on
 OLDEST_WAIT_S = 1800        # S1: oldest ready non-filler job waited > 30 min
 LANE_S = 3600               # S1: or ready non-filler work > 60 lane-minutes
 INVALID_SHARE_MAX = 0.20    # S1: SteveDesktop's INVALID share over 6 h under 20%
 UNAVAILABLE_S = 1800        # S2: SteveDesktop down/paused/quarantined > 30 min
+# budget: danger=the backfill turns on and off at each reading; ends no work: the switch waits before it turns on again
 COOLDOWN_S = 1800           # after OFF, no ON for 30 min
 LATCH_STREAK = 2            # 2 consecutive INVALID attempts on Archmagi
 LATCH_ITEM = "ARCHMAGI_LATCH_FIX_TWO_STRIKES"
 NEVER_PURPOSES = ("guard", "sweep")
 FILLER = "BENCH.filler"
+# budget: danger=a load that costs more than the work it serves; ends no work: a size that the rule compares; nothing is timed
+# budget: by it
 LOAD_S = 900                # one load of the owner's full list (11-25 min measured 10-25; the low end, so the rule binds)
 HISTORY_MAX = 200
 TICK_GAP_S = 300            # S1's sustain clock: readings further apart than this are not "running"

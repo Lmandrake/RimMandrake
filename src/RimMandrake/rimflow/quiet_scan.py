@@ -452,6 +452,8 @@ def end(path, unit, outcome, reason, root, now, look=look_at):
     return 0, "%s ends %s" % (path, outcome)
 
 
+# budget: danger=a launch is sent again every tick into the same refusal (the night of 2026-11-20); ends no work: a wait before
+# budget: the next try
 def harvest(st, runs, now, wait_s=3600):
     """The scan run that ended: its files with no outcome are noted with its end, or released when its end does not count."""
     run = st.get("run")

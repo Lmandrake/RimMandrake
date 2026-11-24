@@ -102,13 +102,16 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             # RIMMANDRAKE_PUBLISH_HELD_RESTART_LEDGER_LINE_SILENT_TWO_HOURS: a handoff or goodbye held this long alarms
             # the Conductor log once (restart:<seat>:held); any other restart at hold_alarm_s
             "held_tell_s": 600}
+# budget: danger=a live helper reads as dead at a restart; ends no work: the floor of a reading's age
 HELPER_STALE_FLOOR_S = 1200
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
 OWNS = ("claimed", "killed", "relaunched")      # pending leaves ring/recover running (review2: no recovery deadlock)
 TRANSITIONAL = ("DEPLOYING", "LOADING", "GOING_DOWN")
 DOES = ("restart_request", "restart_kill", "restart_fallback", "restart_orphan", "restart_abort", "restart_tell")
+# budget: danger=a restart is reclaimed beside a launch; ends no work: the reclaim waits
 FALLBACK_GRACE_S = 200                          # past run_fallback's own 180 s timeout: no reclaim beside a launch
 TELL_RETRY_S = 300
+# budget: danger=two rings in one tick; ends no work: the ring waits a tick
 TELL_RING_HOLD_S = 60                           # under a tick: the doorbell polls every 3 s, so one tick clears it
 MAX_CLAIMS = 3                                  # tile relaunches of one restart, the first included
 BOUNDED = "{clone}/src/RimMandrake/Utils/claude_bounded.sh"
@@ -2170,6 +2173,8 @@ def _proc_read(pid):
             return "unknown", "/proc/%d/stat unparseable" % pid, None
     try:
         r = subprocess.run(["ps", "-o", "state=", "-o", "lstart=", "-p", str(pid)],
+                           # budget: danger=a hung ps holds the restart; never reached in the 14 days to 2026-11-24; no record
+                           # budget: of its run
                            capture_output=True, text=True, timeout=10)
     except (OSError, subprocess.SubprocessError) as e:
         return "unknown", "ps failed (%s)" % type(e).__name__, None
@@ -2226,6 +2231,8 @@ def proc_alive(pid, start):
     return kind == "ok" and state != "Z" and born == start
 
 
+# budget: danger=a window that ignores SIGTERM holds the restart; SIGKILL follows; its reach leaves no record; no record of its
+# budget: run
 def kill_pid(pid, wait_s=10, start=None):
     """SIGTERM, then SIGKILL after wait_s, each only while pid still has the start time seen at the check (no PID
     reuse kill), then death confirmed. -> how it ended: SIGTERM | SIGKILL | already gone | refused: .. | survived: .."""
@@ -2356,6 +2363,7 @@ def consume_request(seat, root=None, ts=None):
 
 def run_fallback(argv):
     env = {k: v for k, v in os.environ.items() if k not in ("AGENT_SEAT", "RIMFLOW_SEAT", "CLAUDE_CODE_SESSION_ID")}
+    # budget: danger=a hung fallback launch holds the restart; never reached in the 14 days to 2026-11-24; no record of its run
     r = subprocess.run(argv, env=env, cwd=os.path.expanduser("~"), capture_output=True, text=True, timeout=180)
     return "rc=%d %s" % (r.returncode, (r.stderr or r.stdout).strip())
 
@@ -3776,6 +3784,8 @@ def cmd_wake(args):
     print("\n== handoff pointers (handoff.py --wake)")
     try:
         r = subprocess.run([sys.executable, os.path.join(UTILS, "handoff.py"), "--wake"], cwd=REPO,
+                           # budget: danger=a hung handoff.py holds the window's wake; never reached in the 14 days to
+                           # budget: 2026-11-24; no record of its run
                            capture_output=True, text=True, timeout=120)
         out = (r.stdout or r.stderr or "").strip().splitlines()
         print("\n".join(out[:args.lines]) or "(nothing)")

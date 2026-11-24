@@ -22,6 +22,7 @@ LINE_RE = re.compile("^" + _TS + r" (RPSTART|RPCONTROL|RPFAULT|RPCYCLE) (.*)$")
 KV_RE = re.compile(r"(\w+)=(\[[^\]]*\]|\d{4}-\d\d-\d\d \d\d:\d\d:\d\dZ|\S+)")     # boot= holds a space
 RESULTS = ("fault", "clean", "partial", "unmeasured")
 CLASSES = ("upper_half_loss", "lower_half_error", "sse_error", "scalar_error")
+# budget: danger=a dead probe read as a live one; ends no work: a count of cycles, no time: the probe reads as not running
 STALE_CYCLES = 3        # no cycle for this many cycle lengths: the probe is not running (one late cycle is not)
 
 

@@ -13,10 +13,20 @@ A budget is GREEN when one of these holds:
 1. Its tag names `danger=` and `longest=`, and the number is at least FACTOR times `longest`. The tag is a `# budget:`
    comment on the line or in the lines just above it (in .json the string `_<key>` beside the key):
        # budget: danger=a hung git holds the tick; evidence=<incident, date>; longest=12s (<record>)
-   `# budget: class=publish` names a class of time_budget.CLASSES, which holds both once. `longest=UNMEASURED` is an answer. `stays=<reason>` after it keeps a number under FACTOR times (an owner's limit, a
-   machine-safety brake, or a number that does not end live work).
-2. It is in time_budgets.json: a budget that stood before this lint (2026-11-24), at that value or higher. An entry with
-   `longest_s` and no `stays` is held to FACTOR too. A lowered number is a new budget.
+   `# budget: class=publish` names a class of time_budget.CLASSES, which holds both once. `stays=<reason>` after it keeps a
+   number under FACTOR times (an owner's limit, a machine-safety brake, or a number that does not end live work).
+   In place of `longest=`, a tag with no record of the run says one of three things:
+       `never reached in the 14 days to <date>; no record of its run`    the records of reaches were read, and show none
+       `its reach leaves no record; no record of its run`                a reach could not have been seen
+       `ends no work: <what happens when the time passes>`               a refresh, an alarm, a wait, a size
+   `longest=UNMEASURED` is RED: it is no class (owner, 2026-11-24: "They aren't unmeasured... we can measure them."). A NEW
+   budget takes a time_budget.py name, or the time of one measured run.
+2. It is in time_budgets.json: a budget that stood before this lint (2026-11-24), at that value or higher, with its
+   `longest_s`. An entry with no `longest_s` has no class, and is RED. An entry is held to FACTOR unless it has `stays`. A
+   lowered number is a new budget.
+3. It stands inside a test and is in time_budgets.json with `in_test`: a budget that stood when the lint began to read the
+   tests. The runner's guard ends the test, so nobody measured it. A NEW or lowered one is checked as any budget, and
+   `# budget: fixture` is green there: a number that the test feeds to the code under test.
 
     python3 src/RimMandrake/Utils/time_budget_lint.py            report; exit 0 green, 1 red, 2 UNMEASURED (blind)
     python3 src/RimMandrake/Utils/time_budget_lint.py --list     every budget found, tab-separated
@@ -79,17 +89,35 @@ def seconds(name, value):
     return float(value)
 
 
+NO_RECORD = re.compile(r"(never reached in the 14 days to \d{4}-\d\d-\d\d|its reach leaves no record); no record of its run")
+NO_WORK = re.compile(r"\bends no work: \S")
+FIXTURE = re.compile(r"^fixture\b")
+
+
+def is_test(rel):
+    base = os.path.basename(rel)
+    return base.startswith("selftest") or "/acceptance/" in rel or base.endswith(("_accept.py", "_mutants.py"))
+
+
 def parse_tag(text):
-    """-> {danger, longest (seconds, None = UNMEASURED), stays} or None when the text is no tag."""
+    """-> {danger, longest (seconds, None = no record), state, stays} or None when the text is no tag. `state` is the class:
+    RECORD, NEVER REACHED, REACH NOT RECORDED, ENDS NO WORK, or NO CLASS (an UNMEASURED longest run)."""
     m = re.search(r"\bclass=([a-z_]+)", text or "")
     if m:       # a class names its danger and its longest real run once (time_budget.CLASSES)
         c = time_budget.CLASSES.get(m.group(1))
-        return {"danger": c["danger"], "longest": float(c["longest_s"]), "stays": ""} if c else None
-    if not text or "danger=" not in text or "longest=" not in text:
+        return {"danger": c["danger"], "longest": float(c["longest_s"]), "state": "RECORD", "stays": ""} if c else None
+    if not text or "danger=" not in text:
         return None
-    f = dict((m.group(1), m.group(2).strip()) for m in re.finditer(r"(danger|evidence|longest|stays)=(.*?)(?=;\s*(?:danger|evidence|longest|stays)=|$)", text, re.S))
+    f = dict((m.group(1), m.group(2).strip()) for m in re.finditer(
+        r"(danger|evidence|longest|stays)=(.*?)(?=;\s*(?:(?:danger|evidence|longest|stays)=|never reached|its reach leaves|ends no work:)|$)",
+        text, re.S))
     if not f.get("danger") or f["danger"].lower().startswith(("none", "unknown")):
         return None
+    if "longest=" not in text:
+        m = NO_RECORD.search(text)
+        state = (("NEVER REACHED" if m.group(1).startswith("never") else "REACH NOT RECORDED") if m else
+                 "ENDS NO WORK" if NO_WORK.search(text) else None)
+        return {"danger": f["danger"], "longest": None, "state": state, "stays": f.get("stays") or ""} if state else None
     m = re.match(r"(\d+(?:\.\d+)?)\s*(ms|s|min|h)?\b", f.get("longest", ""))
     if m:
         longest = float(m.group(1)) * {"ms": 0.001, "s": 1, None: 1, "min": 60, "h": 3600}[m.group(2)]
@@ -97,7 +125,8 @@ def parse_tag(text):
         longest = None
     else:
         return None
-    return {"danger": f["danger"], "longest": longest, "stays": f.get("stays") or ""}
+    return {"danger": f["danger"], "longest": longest, "state": "NO CLASS" if longest is None else "RECORD",
+            "stays": f.get("stays") or ""}
 
 
 def comment_tag(lines, i):
@@ -248,14 +277,11 @@ def scan(repo=REPO, files=None):
         return None, "git ls-files failed"
     out, unread = [], []
     for rel in sorted(files):
-        base = os.path.basename(rel)
         read = (budgets_in_py if rel.endswith(".py") else budgets_in_json if rel.endswith(".json") else
                 budgets_in_sh if rel.endswith(".sh") else
                 budgets_in_unit if rel.endswith((".service", ".timer", ".conf", ".slice", ".path")) else None)
         if read is None:
             continue
-        if base.startswith("selftest") or "/acceptance/" in rel or base.endswith(("_accept.py", "_mutants.py")):
-            continue        # a budget inside a test: the runner's own guard ends the test (census.md counts them)
         try:
             out += read(rel, open(os.path.join(repo, rel), encoding="utf-8").read())
         except (OSError, SyntaxError, ValueError) as e:
@@ -274,8 +300,13 @@ def judge(budgets, known):
     left = {k: sorted(v["values"]) for k, v in known.items()}
     for b in sorted(budgets, key=lambda b: (b.key, b.value)):
         where = "%s:%d %s = %g s" % (b.rel, b.line, b.name, b.value)
+        if is_test(b.rel) and FIXTURE.match(b.tag):
+            continue
         t = parse_tag(b.tag)
         if t:
+            if t["state"] == "NO CLASS":
+                reds.append("%s has no class (longest=UNMEASURED): read its run from a record, or measure one run, or use a "
+                            "time_budget.py name" % where)
             if t["longest"] is not None and b.value < time_budget.FACTOR * t["longest"] and not t["stays"]:
                 reds.append("%s is %.1f times its longest real run (%g s): raise it to %g s, or guard on progress "
                             "(progress_guard.py)" % (where, b.value / t["longest"] if t["longest"] else 0, t["longest"],
@@ -285,11 +316,18 @@ def judge(budgets, known):
         fit = [v for v in left.get(b.key, ()) if v <= b.value]
         if not e or not fit:
             reds.append("%s is a %s and names no danger: use time_budget.CALL_S, or add `# budget: danger=...; "
-                        "evidence=...; longest=<N>s (<record>) or UNMEASURED`"
-                        % (where, "lowered budget" if e and left.get(b.key) else "new budget"))
+                        "evidence=...; longest=<N>s (<record>, or one measured run)`%s"
+                        % (where, "lowered budget" if e and left.get(b.key) else "new budget",
+                           "; a number that the test feeds to the code under test: `# budget: fixture`" if is_test(b.rel) else ""))
             continue
         left[b.key].remove(fit[-1])
         longest = e.get("longest_s")
+        if not longest and not (e.get("in_test") and is_test(b.rel)):
+            reds.append("%s has no class: its entry in time_budgets.json holds no longest_s. Name its danger in a `# budget:` "
+                        "tag, and its record or `never reached in the 14 days to <date>; no record of its run`" % where)
+        elif longest and len(set(e["values"])) > 1:
+            reds.append("%s has no class: its entry in time_budgets.json holds one longest_s for unlike budgets (%s). Give each "
+                        "a `# budget:` tag" % (where, e["values"]))
         if longest and b.value < time_budget.FACTOR * longest and not e.get("stays"):
             reds.append("%s is %.1f times its longest real run (%g s, time_budgets.json)" % (where, b.value / longest, longest))
     return reds
@@ -299,12 +337,23 @@ def prune(budgets, known):
     """-> the entries cut to the values that are still there and untagged."""
     have = {}
     for b in budgets:
-        if not parse_tag(b.tag):
+        if not parse_tag(b.tag) and not (is_test(b.rel) and FIXTURE.match(b.tag)):
             have.setdefault(b.key, []).append(b.value)
     out = {}
     for k, e in known.items():
         if k in have:
             out[k] = dict(e, values=sorted(have[k]))
+    return out
+
+
+def classes(budgets, known):
+    """-> {class: count}. A budget inside a test is counted apart."""
+    out = {}
+    for b in budgets:
+        t, e = parse_tag(b.tag), known.get(b.key) or {}
+        k = ("IN A TEST" if is_test(b.rel) else t["state"] if t else
+             "RECORD" if e.get("longest_s") and len(set(e["values"])) == 1 else "NO CLASS")
+        out[k] = out.get(k, 0) + 1
     return out
 
 
@@ -330,8 +379,9 @@ def main(argv):
         known = doc["budgets"]
     reds = judge(budgets, known)
     tagged = sum(1 for b in budgets if parse_tag(b.tag))
-    print("time budget lint: %d budgets, %d with a tag, %d in time_budgets.json, FACTOR %d"
+    print("time budget lint: %d budgets, %d with a tag, %d with none (time_budgets.json, or red), FACTOR %d"
           % (len(budgets), tagged, len(budgets) - tagged, time_budget.FACTOR))
+    print("classes: " + ", ".join("%s %d" % kv for kv in sorted(classes(budgets, known).items())))
     for rel, why in unread:
         print("RED %s could not be read (%s)" % (rel, why))
     for r in reds:

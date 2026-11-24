@@ -44,6 +44,8 @@ WIRED = os.path.join(HERE, "wired_mods.json")
 MINIMAL = os.path.join(REPO, "infrastructure", "state", "modlists", "ModsConfig.MINIMAL.xml")
 TIERS = ("RimMandrake", "RimStarWars", "RimUtinni")
 STATES = ("selectable", "offline", "refused", "load", "steve_missing")
+# budget: danger=a hung modcheck preview holds the coverage table; never reached in the 14 days to 2026-11-24; no record of its
+# budget: run
 PROBE_TIMEOUT_S = 60
 
 

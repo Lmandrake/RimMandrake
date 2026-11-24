@@ -185,7 +185,7 @@ def digest_note(item, act, text, why, run=None, env=None):
     For a gate that writes no ledger event of its own. Raises RuntimeError when it is not written."""
     run = run or subprocess.run
     r = run([sys.executable, CLI, "note", item, "--per-ruling", RULING, "--text", text, "--why", tagged(why, act)],
-            capture_output=True, text=True, timeout=120, env=env)
+            capture_output=True, text=True, timeout=300, env=env)  # budget: class=rimflow
     if r.returncode != 0:
         raise RuntimeError("the Conductor's act was not recorded (rimflow note exit %d: %s)"
                            % (r.returncode, (r.stderr or r.stdout or "").strip()[-300:]))

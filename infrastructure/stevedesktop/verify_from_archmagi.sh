@@ -75,6 +75,7 @@ if echo "$out" | grep -q -i microsoft; then say PASS wsl_hop "$out"; else say FA
 out=$(win "(Get-Service chromoting -ErrorAction SilentlyContinue).Status")
 case "$out" in Running*) say PASS gui_crd "chromoting service Running" ;; *) say FAIL gui_crd "chromoting: ${out:-not installed}" ;; esac
 if [ -n "$EDITION" ] && ! [[ "$EDITION" =~ ^Core ]]; then
+    # budget: danger=a dead port holds the verify script with no end; its reach leaves no record; no record of its run
     if timeout 5 bash -c "</dev/tcp/${WIN#*@}/3389" 2>/dev/null; then say PASS rdp "3389 open ($EDITION)"; else say WARN rdp "3389 closed ($EDITION)"; fi
 else say SKIP rdp "Home edition (no RDP server) or edition unknown"; fi
 

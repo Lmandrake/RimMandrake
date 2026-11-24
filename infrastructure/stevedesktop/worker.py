@@ -164,7 +164,11 @@ HOST = os.environ.get("TESTQ_WORKER_HOST") or "stevedesktop"
 # dump are theirs; the archmagi lane's game is the owner's (design/specs/2026-11-23-steve-two-games-lane/boundary.md)
 STEVE_LANE = HOST.split(".")[0] == "stevedesktop"
 GAME = "infrastructure/stevedesktop/rw_game.sh"
+# budget: danger=a hung minidump of a hung game holds the kill of that game; never reached in the 14 days to 2026-11-24; no
+# budget: record of its run
 DUMP_TIMEOUT_S = 180      # one small (no full memory) dump before a kill; the kill follows either way
+# budget: danger=a wedged kept game holds the lane at its bridge probe; never reached in the 14 days to 2026-11-24; no record of
+# budget: its run
 PROBE_TIMEOUT_S = 30    # the kept-game bridge probe: modcheck's own client timeout (ensure_playing_map)
 PROBE_GAP_S = 15        # between its two tries, so a game mid-autosave is not mistaken for a wedged one
 # modcheck's refusal when the running load is not the list it composed (runner.verify_loaded_list), and its line saying
@@ -716,6 +720,8 @@ def spawn(aid, d):
                             "--property=KillMode=control-group", "--working-directory", RUNNER]
                            + ["--setenv=%s=%s" % (k, os.environ[k]) for k in keep]
                            + ["--setenv=TESTQ_UNIT=" + unit, "--"] + argv,
+                           # budget: danger=a hung systemd-run holds the spawn of the worker, and so the lane; never reached in
+                           # budget: the 14 days to 2026-11-24; no record of its run
                            capture_output=True, text=True, timeout=60)
         if r.returncode == 0:
             return unit
@@ -773,6 +779,8 @@ def repair_reset_list(d):
         return
     try:
         r = subprocess.run(["bash", "-c", cmd or RESET_REPAIR], cwd=CLONE, stdin=subprocess.DEVNULL,
+                           # budget: danger=a hung repair of the mod list holds the lane's reset; never reached in the 14 days
+                           # budget: to 2026-11-24; no record of its run
                            capture_output=True, text=True, timeout=120)
         text = "exit %s: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")).strip())
     except (OSError, subprocess.SubprocessError) as e:
@@ -809,6 +817,8 @@ def deploy_closure(mod, clone=None):
     INVALID/HARNESS stale_load `not loaded: mandrake.rm.luminouspigment` (2026-11-04) because only the composed biomes
     were deployed. Raises on any failure: guessing an empty closure is the defect itself."""
     r = subprocess.run([sys.executable, "-c", CLOSURE_PY, mod], cwd=clone or CLONE, capture_output=True, text=True,
+                       # budget: danger=a hung closure read holds the attempt, and so the lane; never reached in the 14 days to
+                       # budget: 2026-11-24; no record of its run
                        timeout=120)
     if r.returncode != 0:
         raise RuntimeError("exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
@@ -915,6 +925,8 @@ class Attempt:
                 except ProcessLookupError:
                     break
                 try:
+                    # budget: danger=a child that ignores SIGTERM holds the attempt; SIGKILL follows; its reach leaves no
+                    # budget: record; no record of its run
                     c.wait(timeout=10)
                     break
                 except subprocess.TimeoutExpired:
@@ -948,6 +960,8 @@ class Attempt:
         """A job with proof_build: each named mod's PROOF DLL over the game's release DLL, the game down, the clone's
         Assemblies untouched (proof_build.py). The next job's deploy plan sees the drift and puts the release back."""
         for m in self.job.get("proof_build") or []:
+            # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane; never
+            # budget: reached in the 14 days to 2026-11-24; no record of its run
             rc, tail = self.sh(self.cmd_down(), timeout=300)
             if rc != 0:
                 return self.fail("INVALID", "DEPLOY", "game down before the proof build failed: " + tail)
@@ -990,6 +1004,8 @@ class Attempt:
         text = read_text(os.path.join(self.d, "deploy_plan.txt")) or ""
         if "Drift found" not in text:
             return self.fail("INVALID", "DEPLOY", "deploy plan failed: " + text[-300:])
+        # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane; never
+        # budget: reached in the 14 days to 2026-11-24; no record of its run
         rc, tail = self.sh(self.cmd_down(), timeout=300)
         if rc != 0:
             return self.fail("INVALID", "DEPLOY", "game down before deploy failed: " + tail)
@@ -1073,6 +1089,8 @@ class Attempt:
                                  "this lane never deploys it" if never else
                                  "fix: build.py --gm at the job's sha, then sync_test_mods.py --apply on Archmagi "
                                  "(stages it in TESTQ_HOME/companion/; the next job installs it with the game down)"))
+        # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane; never
+        # budget: reached in the 14 days to 2026-11-24; no record of its run
         rc, tail = self.sh(self.cmd_down(), timeout=300)
         if rc != 0:
             return self.fail("REFUSED" if refused_line(tail) else "INVALID", "DEPLOY",
@@ -1130,6 +1148,8 @@ class Attempt:
                     # the next cold start overwrites Player.log and the one after takes its -prev copy (keep_game_log):
                     # this is the only chance to read why the process could not make a map
                     self.keep_game_log("Player_unmappable.log")
+                # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane;
+                # budget: never reached in the 14 days to 2026-11-24; no record of its run
                 rc, tail = self.sh(self.cmd_down(), timeout=300)
                 if rc != 0:
                     return self.fail("REFUSED" if refused_line(tail) else "INVALID", "LOAD",
@@ -1164,6 +1184,8 @@ class Attempt:
                 self.res["bounced_for_markers"] = stale
                 self.say("kept game carries %d unknown-outcome bridge marker(s) older than this load (%s): "
                          "restarting it" % (len(stale), " ".join(stale)))
+                # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane;
+                # budget: never reached in the 14 days to 2026-11-24; no record of its run
                 rc, tail = self.sh(self.cmd_down(), timeout=300)
                 if rc != 0:
                     return self.fail("REFUSED" if refused_line(tail) else "INVALID", "LOAD",
@@ -1326,6 +1348,8 @@ class Attempt:
         list cannot be read: the job's own calls will then say if it matters)."""
         try:
             r = subprocess.run(["bash", "-c", self.bridge_cmd() + " --reconcile"], cwd=RUNNER, capture_output=True,
+                               # budget: danger=a hung bridge client holds the attempt, and so one game of the lane; never
+                               # budget: reached in the 14 days to 2026-11-24; no record of its run
                                text=True, timeout=120)
         except (OSError, subprocess.TimeoutExpired) as e:
             self.say("could not list bridge markers: %s" % e)
@@ -1342,6 +1366,8 @@ class Attempt:
             return None
         cmd = os.environ.get("TESTQ_CMD_STATUS") or GAME + " status"
         try:
+            # budget: danger=a hung status command holds the attempt, and so one game of the lane; never reached in the 14 days
+            # budget: to 2026-11-24; no record of its run
             r = subprocess.run(["bash", "-c", cmd], cwd=RUNNER, capture_output=True, text=True, timeout=120)
             text = r.stdout
         except (OSError, subprocess.TimeoutExpired) as e:
@@ -1373,6 +1399,8 @@ class Attempt:
             try:
                 rr = subprocess.run(["bash", "-c", "%s --reconcile --resolve %s --as not-applied --note %s"
                                      % (base, cid, shlex.quote(note))], cwd=RUNNER, capture_output=True,
+                                    # budget: danger=a hung bridge client holds the attempt, and so one game of the lane; never
+                                    # budget: reached in the 14 days to 2026-11-24; no record of its run
                                     text=True, timeout=120)
             except (OSError, subprocess.TimeoutExpired) as e:
                 self.say("could not resolve marker %s: %s" % (cid, e))
@@ -1471,6 +1499,8 @@ class Attempt:
             self.res["tier"] = self.tier_reading(tier)
             return True
         self.say("tier %s: the running load is not it (%s): whole-list swap" % (tier, (r.get("why") or "")[:160]))
+        # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane; never
+        # budget: reached in the 14 days to 2026-11-24; no record of its run
         rc, tail = self.sh(self.cmd_down(), timeout=300)
         if rc != 0:
             return self.fail("INVALID", "LOAD", "game down before the tier swap failed: " + tail)
@@ -1614,6 +1644,8 @@ class Attempt:
             self.beat()
             self.dump_game("hang%d" % attempt_no)
             self.keep_game_log("Player_hang%d.log" % attempt_no)
+            # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane; never
+            # budget: reached in the 14 days to 2026-11-24; no record of its run
             rc_down, tail = self.sh(self.cmd_down(), timeout=300)
             if rc_down != 0 and refused_line(tail):    # the game may not be restarted here: no second run
                 return self.fail("INVALID", "HANG", "modcheck hung past %ss; no restart (%s)"
@@ -1661,6 +1693,8 @@ class Attempt:
         self.res["retries"] += 1
         self.phase = "restart"
         self.beat()
+        # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane; never
+        # budget: reached in the 14 days to 2026-11-24; no record of its run
         rc_down, tail_down = self.sh(self.cmd_down(), timeout=300)
         if rc_down != 0:
             return self.fail("REFUSED" if refused_line(tail_down) else "INVALID", "HARNESS",
@@ -1713,6 +1747,8 @@ class Attempt:
             try:
                 os.makedirs(ddir, exist_ok=True)
                 wdir = subprocess.run(["wslpath", "-w", ddir], capture_output=True, text=True,
+                                      # budget: danger=a hung wslpath holds the dump of a hung game, and the kill after it; its
+                                      # budget: reach leaves no record; no record of its run
                                       timeout=30).stdout.strip() or ddir
             except (OSError, subprocess.SubprocessError):
                 wdir = ddir
@@ -1742,6 +1778,8 @@ class Attempt:
         with a dead colony (load 1-2 s) voided every later job until someone ran rw_game.sh down by hand (10-27,
         10-29 03:28, 18:54); stopping it here, after the liveness check, makes the next job cold-start a fresh colony.
         A lane whose phases may not stop the game (archmagi_phases.py REFUSED) says so in the note instead."""
+        # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane; never
+        # budget: reached in the 14 days to 2026-11-24; no record of its run
         rc_down, tail_down = self.sh(self.cmd_down(), timeout=300)
         down = "game stopped so the next job cold-starts" if rc_down == 0 else "game NOT stopped (%s)" % (
             refused_line(tail_down) or "rc %s: %s" % (rc_down, (tail_down or "")[-120:]))

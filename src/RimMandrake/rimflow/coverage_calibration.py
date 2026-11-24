@@ -72,7 +72,9 @@ PYRELANDS_LOOK8_AT = "e9b9067df1~1"   # look 8's input: look 7's verdict on file
 PYRELANDS = "design/concepts/Pyrelands"
 PYRELANDS_FILES = ("sheet.md", "tree.json", "scenes.json", "floor.json", "exam.json", "record.json",
                    "coverage_verdict.json", "coverage_fixes.json", "stage.json")
-CASE_TIMEOUT_S = 1200
+# budget: danger=a judge call that never returns holds the calibration; longest=166s (119 case sessions, agent transcripts, 14
+# budget: days to 2026-11-24)
+CASE_TIMEOUT_S = 1800
 
 LEAF = {"by": "concept", "root": ["lantern_root"], "leaf_kind": "experience", "clause_kind": "preserve",
         "tier_proposed": "live", "owner_part": "lantern_root"}

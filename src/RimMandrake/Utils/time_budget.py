@@ -35,8 +35,22 @@ CLASSES = {
         "danger": "a hung launch (its clone, its sync, its checks) holds the tick with no end",
         "evidence": "none measured; a launch that a deadline cut leaves a half-made clone (selftest_take_clone_half_made.py)",
         "record": "the longest whole rm-list-dispatch run (user journal, 14 days to 2026-11-24): an upper bound"},
+    "rimflow": {
+        "s": 300, "longest_s": 28.3,
+        "danger": "a hung ledger command (a note, a lease, a replay of the ledger) holds its caller with no end",
+        "evidence": "none measured of a hang; 10 to 28 s for one note at load 20 to 45 (2026-11-24)",
+        "record": "the longest of 489 note steps of the Dispatcher's tick (tick_steps.jsonl, 2026-11-16 to 2026-11-24); one "
+                  "step wrote 1 note; a note writes its event and lands nothing, and a replay reads the same ledger"},
+    "judge": {
+        "s": 5400, "longest_s": 462,
+        "danger": "a judge (LLM) call that never returns holds its caller with no end",
+        "evidence": "none measured",
+        "record": "the longest COVERAGE JUDGE session (2 sessions; 119 calibration cases took 166 s at most and 100 art cases "
+                  "134 s: agent transcripts, first to last line, 14 days to 2026-11-24)"},
 }
 CALL_S = CLASSES["call"]["s"]
 PUBLISH_S = CLASSES["publish"]["s"]
 DEPLOY_S = CLASSES["deploy"]["s"]
 LAUNCH_S = CLASSES["launch"]["s"]
+RIMFLOW_S = CLASSES["rimflow"]["s"]
+JUDGE_S = CLASSES["judge"]["s"]

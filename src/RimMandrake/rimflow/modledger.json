@@ -14,7 +14,7 @@
   "packet_budget_tokens": 25000,
   "chars_per_token": 1.8,
   "packet_line_chars": 500,
-  "lease_idle_minutes": 45,
+  "_lease_idle_minutes": "danger=a dead holder keeps a mod's lease for ever; ends no work: the lease lapses; a live holder's program renews it (run_alive.py, each 20 min)", "lease_idle_minutes": 45,
   "proposed_fix_min_chars": 12,
   "writers": {
     "DISPATCH": [

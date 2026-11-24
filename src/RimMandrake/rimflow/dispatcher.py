@@ -300,6 +300,8 @@ def sessions_ok(data):
     return CC.sessions_ok(data)
 
 
+# budget: danger=a hung `claude agents` holds the Dispatcher's tick; never reached in the 14 days to 2026-11-24; no record of
+# budget: its run
 def observe_agents(timeout=60):
     """-> {"state": MEASURED, "sessions": [...]} or {"state": UNMEASURED, "why": ...}."""
     try:
@@ -315,7 +317,7 @@ def observe_agents(timeout=60):
         return {"state": "UNMEASURED", "why": "%s: %s" % (type(e).__name__, str(e))}
 
 
-def peek_ticket(clone, seat, timeout=120):
+def peek_ticket(clone, seat, timeout=300):  # budget: class=rimflow
     """-> {"id", "needs"} of the seat's next item per `rimflow next --peek` in its clone, {} when its queue is empty,
     None when unreadable."""
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
@@ -737,7 +739,7 @@ def ledger_structural(r, run=subprocess.run):
 
     def rf(*args):
         p = run([sys.executable, cli, *args, "--seat", "RUNNER"], cwd=REPO, env=env, capture_output=True, text=True,
-                timeout=120, stdin=subprocess.DEVNULL)
+                timeout=300, stdin=subprocess.DEVNULL)  # budget: class=rimflow
         return p.returncode == 0, ((p.stdout or "") + (p.stderr or "")).strip()
     ok, out = rf("spawn", "--from", r["from"], "--for", "BENCH", "--needs", "offline", "--kind", "bug", "--name", r["item"],
                  "--title", r["title"], "--why", "incident ladder (deterministic, no AI): %s tamed" % r["id"])
@@ -1361,6 +1363,8 @@ def recover(cfg, session_id, msg, runner=subprocess.run):
                      model=cfg.get("model") or "sonnet", message=msg) for a in (cfg.get("recover_argv") or DEFAULT_RECOVER)]
     env = claude_env(cfg["seat"])
     try:
+        # budget: danger=a hung recovery command holds the Dispatcher's tick; never reached in the 14 days to 2026-11-24; no
+        # budget: record of its run
         r = runner(argv, cwd=cfg["clone"], env=env, capture_output=True, text=True, timeout=120,
                    stdin=subprocess.DEVNULL)
         return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()
@@ -1378,7 +1382,7 @@ def claude_env(seat):
     return env
 
 
-def ledger_note(item, text, run=subprocess.run, timeout=120):
+def ledger_note(item, text, run=subprocess.run, timeout=300):  # budget: class=rimflow
     cli = os.path.join(HERE, "cli.py")
     env = dict(os.environ, RIMFLOW_SEAT="DISPATCHER", CLAUDE_PROJECT_DIR=REPO)
     r = run([sys.executable, cli, "note", item, "--text", text, "--seat", "DISPATCHER"], cwd=REPO, env=env,
@@ -1540,6 +1544,7 @@ def publish(n):
     return ingest.publish(n, shard_rel=SHARD_REL, message="ledger: DISPATCHER notes (%d)" % n)
 
 
+# budget: danger=a child that does not die holds the Dispatcher's tick; its reach leaves no record; no record of its run
 def publish_bounded(n, timeout, argv=None, kill_wait=10, env=None):
     """publish(n) in a child process (its own process group) killed when it outlives timeout: ingest.publish's git
     calls each wait up to 300 s, and a hung push must not carry the tick past the service's 600 s. A killed
@@ -1577,6 +1582,8 @@ def publish_bounded(n, timeout, argv=None, kill_wait=10, env=None):
         for sig in (signal.SIGTERM, signal.SIGKILL):
             try:
                 os.killpg(p.pid, sig)
+                # budget: danger=a child that does not die holds the Dispatcher's tick; its reach leaves no record; no record of
+                # budget: its run
                 p.wait(timeout=0.3)
                 break
             except (OSError, subprocess.TimeoutExpired):
@@ -1588,6 +1595,7 @@ def publish_bounded(n, timeout, argv=None, kill_wait=10, env=None):
     return None if out == "None" else (out.splitlines() or [""])[-1]
 
 
+# budget: danger=a peer that holds ingest.lock holds the tick; ends no work: the notes and the publish wait for the next beat
 def git_lock(wait_s=90):
     """testq's ingest.lock: the RUNNER ingest commits, pull --rebases and pushes in this same dispatch clone. Our note
     appends (an unstaged DISPATCHER.jsonl) and our publish must not interleave with its pull --rebase, or each makes
@@ -2463,6 +2471,8 @@ def live_runs_alarm(now):
                    "they end at their scope's RuntimeMaxSec at the latest. Stop them: dispatcher.py stop-runs" % n}
 
 
+# budget: danger=a role run that does not end holds the rollback command; never reached in the 14 days to 2026-11-24; no record
+# budget: of its run
 def stop_runs(sch, wait_s=120, force_after_s=60, obs=None, clock=time.time, sleep=time.sleep, stopper=None):
     """Rollback helper: stop every LIVE role run on record (state.json, else the registry) and VERIFY each ended
     (unit and scope terminal, marker scan clean: role_launch.ended). TERM first, KILL after force_after_s. Writes

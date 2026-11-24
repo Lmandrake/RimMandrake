@@ -23,6 +23,8 @@ CLOSED = ("done", "dropped", "superseded")
 # A lane reading older than this is not current. Danger: a dead rm-list-dispatch.timer leaves every verdict silently
 # old. Evidence: the timer beats every 10 min (OnUnitActiveSec=10min); three missed beats is a stopped timer, the same
 # rule as the red dispatcher's reading (maturation_nonmod.RED_STALE_S).
+# budget: danger=a dead rm-list-dispatch.timer leaves every verdict silently old; ends no work: the lane reading says that it is
+# budget: old
 LANE_STALE_S = 1800
 
 # who moves an item on from each stage, today (each-stage-says-program-or-by-hand)

@@ -87,8 +87,14 @@ except ImportError:
     import fulltext  # noqa: E402
 
 DEFAULT_MAX_S = None    # unbounded: no RuntimeMaxSec on the unit, no CLAUDE_SCOPE_RUNTIME_MAX (owner 2026-11-08)
+# budget: danger=a wall bound under one minute ends a run before its first turn; ends no work: a launch that asks for it is
+# budget: refused, with the repair
 MIN_MAX_S = 60
+# budget: danger=a stopped run that never ends holds its clone; longest=584s (the stop steps hold a publish: the longest of
+# budget: 636); stays=TimeoutStopSec is also how long a stopped run may ignore SIGTERM, and his stops stay as they are
 STOP_S = 600           # TimeoutStopSec: the stop-post steps' bound (finish, wrapup, the return's start)
+# budget: danger=a run with a wall bound is ended while it finishes and publishes; never reached in the 14 days to 2026-11-24;
+# budget: no record of its run
 GRACE_S = 120          # finish + publish time on top of the run's own bound
 # The per-run stop guards a runaway unattended burn (owner 2026-11-12: "not burn 90M tokens overnight by itself"), and
 # has NO default level: a $15 default named no danger and stopped 4 real runs (3 lessons), so a launch states its cap,
@@ -104,8 +110,11 @@ ORIGIN_REF = "origin/main"
 ARG_BRIEF_MAX = 100_000
 DEAD_STATES = ("inactive", "failed", "not-found")   # a unit in one of these runs nothing; "unknown" is not proof of death
 KILL_STATUSES = ("HUP", "INT", "KILL", "TERM", "129", "130", "137", "143")   # systemd's EXIT_STATUS of a signal stop
+# budget: danger=a launching run with no unit yet reads as dead; ends no work: the record reads as a dead launch
 LAUNCH_GRACE_S = 120   # a record "launching" this young may simply not have its unit yet
-RETURN_WAIT_S = 600    # how long launch waits for the run before to give the clone back (a 3.6 GB bundle takes minutes)
+# budget: danger=a return that never ends holds the launch; longest=289s (1151 return units, user journal, 14 days to
+# budget: 2026-11-24)
+RETURN_WAIT_S = 3000    # how long launch waits for the run before to give the clone back (a 3.6 GB bundle takes minutes)
 RETURN_POLL_S = 10
 # the longest Bash call of a run (BASH_MAX_TIMEOUT_MS in its unit): one long wait (Utils/waitalive.py, 55 min) in place of
 # many of 10 min, under the one-hour prompt cache. Tried in real units: design/specs/2026-11-23-long-waits/experiment.json.
@@ -292,6 +301,7 @@ def origin_check(item, runner=subprocess.run, repo=None, seat=None):
     stale = ""
     try:
         r = runner(["git", "fetch", "-q", "--no-tags", "origin", "main"], cwd=repo, capture_output=True, text=True,
+                   # budget: class=call
                    timeout=120, stdin=subprocess.DEVNULL)
         if r.returncode:
             stale = "fetch exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[-80:])
@@ -331,7 +341,7 @@ def origin_gate(item, runner=subprocess.run, repo=None, seat=None, env=None):
         return text
     argv = shlex.split(publish_command(item, shards)) + ["--ledger"]    # waits for no peer's publish (publish.land_ledger)
     try:
-        r = runner(argv, cwd=repo, capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL)
+        r = runner(argv, cwd=repo, capture_output=True, text=True, timeout=21600, stdin=subprocess.DEVNULL)  # budget: class=publish
     except (OSError, subprocess.SubprocessError) as e:
         return "%s; the launcher's own publish could not run (%s)" % (text, str(e)[-120:])
     again = origin_check(item, runner=runner, repo=repo, seat=seat)     # fetches first: a publish that exited non-zero may
@@ -687,7 +697,7 @@ def return_argv(rec):
         if os.environ.get(k):
             env += ["--setenv", "%s=%s" % (k, os.environ[k])]
     return ["/usr/bin/systemd-run", "--user", "--quiet", "--collect", "--no-block", "--unit", rec["unit"] + "-return",
-            "-p", "RuntimeMaxSec=1800", "-p", "StandardOutput=file:" + rec["out"] + ".return", "-p", "StandardError=inherit",
+            "-p", "RuntimeMaxSec=3600", "-p", "StandardOutput=file:" + rec["out"] + ".return", "-p", "StandardError=inherit",
             *env, *stop_resolver(stop_candidates(rec, os.path.basename(me), run_clone_last=True),
                                  ["return", "--unit", rec["unit"]])]
 
@@ -718,7 +728,8 @@ def clone_busy(clone):
 
 
 # A process that ignores SIGTERM gets SIGKILL after this long. Danger: one that never exits would hold the return step
-# (and so the clone) for good; the return unit's own RuntimeMaxSec=1800 is the only other bound.
+# (and so the clone) for good; the return unit's own RuntimeMaxSec=3600 is the only other bound.
+# budget: danger=a process that never exits holds the return, and so the clone; its reach leaves no record; no record of its run
 REAP_TERM_WAIT_S = 5
 
 
@@ -869,7 +880,9 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
         return 0, kept_why(rec, "a process is working in it%s" % ("; " + reaped if reaped else ""), root)
     steps = [reaped] if reaped else []
 
-    def run(argv, what, timeout=300):
+    # budget: danger=a hung return step holds the clone; longest=289s (the whole return, an upper bound; 1151 return units, user
+    # budget: journal, 14 days to 2026-11-24)
+    def run(argv, what, timeout=3000):
         r = runner(argv, cwd=clone, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
         steps.append("%s exit %d" % (what, r.returncode))
         return r
@@ -921,6 +934,8 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
     return (1 if kept else 0), "%s %s: %s" % ("KEPT" if kept else "RETURNED", unit, "; ".join(steps))
 
 
+# budget: danger=a clone is taken from a run whose launcher still reads it; ends no work: the sweep leaves the clone for a later
+# budget: sweep
 def return_all(runner=subprocess.run, evictor=None, busy=None, publish_ledger=True, root=None, now=None, grace_s=3600):
     """Every finished run whose pool .det clone is still standing and not returned (a return step that never ran), except
     a run that ended less than grace_s ago: whoever launched it may still be reading the clone."""
@@ -1222,6 +1237,7 @@ def prose_after(brief, item):
         return "GUIDING PROSE: UNMEASURED, the check did not load (%s: %s). The run has started." % (type(e).__name__, e)
 
 
+# budget: danger=a stopped switching plan holds every launch; ends no work: an older notice is not obeyed
 DRAIN_NOTICE_FRESH_S = 20 * 60     # switching_plan.py writes its notice every 5 min: an older one means its timer stopped
 
 
@@ -1362,6 +1378,7 @@ def brief_message(brief, item, seat, clone, max_s=None, env=None):
             + card_footer(item) + command_lines(item, seat))
 
 
+# budget: danger=a hung launch check holds the launch; never reached in the 14 days to 2026-11-24; no record of its run
 def launch_check_refusal(item_text, cwd, runner=subprocess.run, timeout_s=120):
     """-> (refusal text or None, notes): the item's `## launch-checks` block run in the run's clone before the unit starts
     (GATE_FIRST, RIMMANDRAKE_RUN_LAUNCH_CHECKS_FIVE_STEWARDS_HIT_GATES). notes: one "launch check did not run: ..." line
@@ -1611,6 +1628,8 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
              "game": run_game(item, cenv)}
     try:
         r = C.launch_unit(launch_argv(rec, msg, claude_bin()), cspec, runner=runner, clone=rec.get("clone"),
+                          # budget: danger=a hung launch holds its caller; longest=1.3s (admission to start of 1057 runs,
+                          # budget: control.db)
                           capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     except OSError as e:                # it never ran (E2BIG, ENOENT): no unit can exist, nothing to ask systemd
         rec["status"] = "launch_failed"
@@ -1689,7 +1708,7 @@ def read_item(clone, item):
     any other clone pulls it), or None when that cannot be read."""
     try:
         r = subprocess.run([sys.executable, "-c", READ_ITEM, item], cwd=clone, capture_output=True, text=True,
-                           timeout=120, stdin=subprocess.DEVNULL)
+                           timeout=300, stdin=subprocess.DEVNULL)  # budget: class=rimflow
         return json.loads(r.stdout) if r.returncode == 0 else None
     except (OSError, ValueError, subprocess.SubprocessError):
         return None
@@ -2208,7 +2227,7 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         if owed:
             text += " OWED: " + owed + "."
         r = runner(["python3", cli, "note", item, "--text", text, "--seat", seat, "--why", "detached run ended"],
-                   cwd=clone, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+                   cwd=clone, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)  # budget: class=rimflow
         steps.append("note exit %d" % r.returncode)
         own = "infrastructure/state/ledger/events/%s.jsonl" % seat
         r = runner(["./publish", "-m", "ledger: detached run on %s ended" % item, own]
@@ -2327,6 +2346,8 @@ def main(argv=None):
     b = sub.add_parser("return", help="give the run's pool clone back, bundled (the unit's last step; --all sweeps strays)")
     b.add_argument("--unit")
     b.add_argument("--all", action="store_true", help="every finished run whose pool .det clone still stands")
+    # budget: danger=a clone is taken from a run whose launcher still reads it; ends no work: the sweep leaves the clone for a
+    # budget: later sweep
     b.add_argument("--grace-s", type=int, default=3600, help="with --all: skip a run that ended more recently than this")
     b.add_argument("--no-publish-ledger", action="store_true",
                    help="do not publish the seat shard from the clone (its dirty lines ride in the bundle instead)")
@@ -2352,7 +2373,7 @@ def main(argv=None):
             print("%s: %s" % (pl["verdict"], pl["why"]))
             if pl["verdict"] != "REMOTE":
                 return 2 if pl["verdict"] == "REFUSED" else 5
-            r = subprocess.run(pl["argv"], capture_output=True, text=True, timeout=300)
+            r = subprocess.run(pl["argv"], capture_output=True, text=True, timeout=10800)  # budget: class=launch
             print((r.stdout + r.stderr).strip())
             return r.returncode
         budget, carried = args.budget_usd, ""

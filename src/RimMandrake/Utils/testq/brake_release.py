@@ -36,6 +36,7 @@ import schema as S  # noqa: E402
 import testq as T  # noqa: E402
 
 BY = "Operations.canary"
+# budget: danger=a known brake that nobody releases; ends no work: the steward's ladder starts
 RELEASE_GRACE_S = 1800      # two rm-ops-watch passes: past this a known brake is a plain fault, and the ladder runs
 STATE = "brake_release.json"
 

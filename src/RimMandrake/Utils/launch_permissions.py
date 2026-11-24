@@ -464,6 +464,8 @@ def judge_host(host, probe):
     return rows
 
 
+# budget: danger=a hung probe (ssh to another machine) holds the permission check; never reached in the 14 days to 2026-11-24;
+# budget: no record of its run
 def run_probe(host, ssh=None, timeout=60):
     argv = ["python3", "-c", PROBE] if not ssh else [
         "ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15", ssh,

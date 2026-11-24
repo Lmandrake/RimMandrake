@@ -79,7 +79,7 @@ def shard_path():
 
 def rimflow(*args):
     env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO)
-    r = own_cgroup.run([sys.executable, CLI] + list(args), env=env, capture_output=True, text=True, timeout=120)
+    r = own_cgroup.run([sys.executable, CLI] + list(args), env=env, capture_output=True, text=True, timeout=300)  # budget: class=rimflow
     return r.returncode, (r.stdout + r.stderr).strip()
 
 
@@ -119,7 +119,7 @@ def recorded_run(item, attempt):
             "print(next((r.name for r in (it.runs if it else []) if re.search(%r, r.evidence or '')), ''))"
             % (os.path.dirname(CLI), item, pat))
     r = subprocess.run([sys.executable, "-c", code], env=dict(os.environ, CLAUDE_PROJECT_DIR=REPO),
-                       capture_output=True, text=True, timeout=120)
+                       capture_output=True, text=True, timeout=300)  # budget: class=rimflow
     if r.returncode != 0:     # a failed lookup is not "no run": verifying anyway would record the attempt twice
         raise RuntimeError("replay for %s failed (exit %d): %s" % (item, r.returncode, (r.stderr or "").strip()[-160:]))
     return r.stdout.strip() or None
@@ -1011,8 +1011,12 @@ def replay_onto_origin():
                           timeout=60).stdout.strip(), None, None
 
 
+# budget: danger=a live git's index.lock is removed, or a dead one stops every publish; ends no work: a lock this old with no
+# budget: live git process is removed
 STALE_LOCK_S = 300
 INDEX_LOCK_TRIES, INDEX_LOCK_WAIT_S = 6, 2     # an add/commit waits up to ~10 s on another git's index.lock
+# budget: danger=a fresh index.lock of a live git stops the publish; ends no work: a short wait for the lock; then the publish
+# budget: says why it stopped
 FRESH_LOCK_WAIT_S = 10      # clear_leftovers waits as long for a fresh index.lock to go before it stops the publish
 
 
@@ -1138,6 +1142,8 @@ def lint_refusal(rev="HEAD"):
         script = os.path.join(HERE, "..", "ledger_lint.py")
     try:
         r = subprocess.run([sys.executable, script, "--rev", rev, "--root", REPO, "--base", "origin/main"],
+                           # budget: danger=a hung ledger_lint holds the ingest lock; never reached in the 14 days to
+                           # budget: 2026-11-24; no record of its run
                            capture_output=True, text=True, timeout=120)
     except (OSError, subprocess.SubprocessError) as e:
         return "ledger_lint could not run: %s" % e

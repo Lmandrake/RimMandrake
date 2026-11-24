@@ -71,7 +71,7 @@ def _digest_note(mod, why):
     text = "the Conductor lifted the owner hold on %s" % key(mod)
     r = subprocess.run([sys.executable, CLI, "note", CONDUCTOR_LIFT, "--seat", "BENCH", "--text", text, "--why",
                         "delegated: scope: %s per %s: %s" % (text, CONDUCTOR_LIFT, why.strip())],
-                       capture_output=True, text=True, timeout=120)
+                       capture_output=True, text=True, timeout=300)  # budget: class=rimflow
     if r.returncode != 0:
         raise RuntimeError("the digest note was not written (rimflow note exit %d: %s)"
                            % (r.returncode, (r.stderr or r.stdout).strip()[-300:]))

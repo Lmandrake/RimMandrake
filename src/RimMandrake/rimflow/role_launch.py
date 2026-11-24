@@ -114,6 +114,7 @@ AUTH_RX = re.compile(r"failed to authenticate|oauth session expired|login expire
 # on the normal schedule (it did no work to keep).
 ACCOUNT_ERRORS = ("usage_limit_reached", "rate_limit", "rate_limit_error", "overloaded_error")
 LIMIT_RX = re.compile(r"hit your (?:\w+ )?limit|usage limit|rate limit", re.I)
+# budget: danger=a run resumes on a dead account at every tick; ends no work: a wait before the next try
 RESUME_WAIT_S = 3600        # no reset named: try again after an hour (a still-dead account just waits again)
 RESUME_MAX = 3              # resumes in a row that did no work; past it the run is given up, said. A leg that did work
 #                             and then ended on the account spends none (failure_class: ACCOUNT LIMIT). The danger is a
@@ -123,6 +124,7 @@ RESUME_MAX = 3              # resumes in a row that did no work; past it the run
 # none gets its slot back (auth_failed_back). RIMMANDRAKE_RESCUE_STRANDED_CONDUCTOR_CLOUDFLARE_SAID_LOGIN.
 CLOUDFLARE_RETRY_S = 120
 CLOUDFLARE_RX = re.compile(r"attention required!?\s*\|\s*cloudflare", re.I)    # = login_watch.CLOUDFLARE_RX
+# budget: danger=a resume nobody can launch stays for ever; ends no work: the resume is dropped, said
 RESUME_TTL_S = 2 * 86400    # a resume not launchable for this long is dropped, said
 
 LAUNCH_KEYS = ("instructions", "seat", "clone", "model", "ledger_item")
@@ -196,6 +198,7 @@ def inline_instructions(role, scope, root=None):
 MODELS_OK = ("opus", "sonnet")         # model_by_mode: Sonnet is the floor (Agent_Policy; Haiku banned 2026-10-31)
 ALARM_KEY_PREFIX = "alarm:"            # an Operations-only alarm (no ledger item) in alarms_seen: "alarm:<aid>" (V2)
 ALARM_RUN_GAP_S = 3600                 # at least this long between two alarm runs of a role (review W, W1)
+# budget: danger=a dead ops reading read as current; ends no work: the launch gate says that the reading is old
 OPS_STALE_S = 45 * 60
 WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")      # time.localtime().tm_wday order
 ACTIVE = ("active", "activating", "deactivating", "reloading")
@@ -249,6 +252,7 @@ TOKEN_WEIGHTS = {"input_tokens": Fraction(1), "cache_write_5m": Fraction(5, 4), 
 # run-now (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE): a one-shot run asked for by hand, held in the dispatcher state as
 # st["roles"][R]["run_now"] and launched by the next tick through every gate a scheduled run passes. A request the
 # ticks could not launch for this long (busy, account hold) expires, said; refusals (off, ops, cap) consume it.
+# budget: danger=a hand request starts a run that nobody waits for any more; ends no work: the request expires, said
 RUN_NOW_TTL_S = 3600
 RUN_NOW_MODES = ("run", "quick", "economy")
 # The one alias table (design/specs/2026-11-22-run-spend-and-model-alias/boundary.md): the variable that names each
@@ -2113,6 +2117,7 @@ def concept_dir(cfg, concept):
     return concept if os.path.isabs(concept) else os.path.join(cfg.get("clone") or os.path.dirname(os.path.dirname(_SRC)), concept)
 
 
+# budget: danger=a hung fetch holds the designer's judge; longest=3.7s (15 fetches sampled at load 20 to 52, 2026-11-24)
 def judge_sync(concept, timeout=45, repos=None):
     """Fetch origin into every clone the judge reads before judging a concept: the Dispatcher's own (designer_stage's
     REPO, ~/rm/dispatch) and the concept's (the Designer's clone). designer_stage reads OWNER.jsonl from each working
@@ -2218,6 +2223,9 @@ def session_part(rs, run, tok, res):
     return part
 
 
+JUDGE_TIMEOUT_S = 5400  # budget: class=judge
+
+
 def stage5_judge(concept, runner=None):
     """The first pre-launch step at stage 5: `coverage_judge.py run` only while the concept is still at stage 5 when the
     unit runs. The steps are fixed when the run is asked; a run asked at stage 5 can reopen stage 3 at its open (inputs
@@ -2235,7 +2243,9 @@ def stage5_judge(concept, runner=None):
     run = runner or subprocess.run
     judge = os.path.join(os.path.dirname(os.path.abspath(__file__)), "coverage_judge.py")
     # the judge bounds its own claude (coverage_judge.TIMEOUT_S); this bound only stops a hung step from holding the unit
-    return run(["python3", judge, "run", concept], stdin=subprocess.DEVNULL, timeout=6 * 3600).returncode
+    # --timeout: coverage_judge.TIMEOUT_S (1500 s) is 3.2 times the longest judge (462 s); its file is the calibrated brief,
+    # and an edit of one number there costs a paid calibration
+    return run(["python3", judge, "run", concept, "--timeout", str(JUDGE_TIMEOUT_S)], stdin=subprocess.DEVNULL, timeout=6 * 3600).returncode  # budget: class=judge
 
 
 PRE_DONE_EXIT = 79     # a pre-step that did the run's work itself: the unit ends 0 and the model never starts
@@ -2316,6 +2326,8 @@ def program_closed(concept, unit):
     return ("error", err["why"]) if err else None
 
 
+# budget: danger=a stage close that raises on each tick is tried for ever; ends no work: the close is given up, said to the
+# budget: Conductor
 CLOSE_OWED_MAX_S = 2 * 86400     # a stage close still raising after this long is given up, said to the Conductor
 
 
@@ -2753,6 +2765,8 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
 # already holding the slot or a queue place, and one a running run of this role works on. A rejected concept that is
 # not parked (the path its rejection cited has landed since, or an unlabelled rejection not yet met twice) is
 # re-chained with the rejection's reasons (RELAPSE_QUEUES_FIX_DIED_TWICE: GSS sat 6 h after its missing file landed).
+# budget: danger=the sweep chains a concept that a harvest is about to chain; ends no work: the sweep leaves it for a later
+# budget: sweep
 CHAIN_SWEEP_GRACE_S = 600    # a harvest chains at once; the sweep is for what no harvest will ever see
 
 
@@ -2962,6 +2976,7 @@ def forget_rejections(rs, concept):
 # RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK: the cause-book seam DECIDES only. It returns the action that carries its
 # route out (role_cause_attach), which dispatcher.execute performs through cause_attach, so a dry run (and any decision
 # collected without --apply) writes no book.
+# budget: danger=a busy cause book holds the tick; ends no work: the attachment is kept and tried again
 CAUSE_ATTACH_WAIT_S = 5.0     # cause_attach's wait for the book lock (an ops_watch pass holds it across its filing)
 CAUSE_OWED_CAP = 50           # attachments kept to retry while the book stays busy (oldest dropped, said)
 
@@ -3300,7 +3315,10 @@ def procs_of(marker, proc="/proc", uid=None, since=None):
     return None if blind else pids
 
 
+# budget: danger=the scope ends a run before the Dispatcher's own stop; never reached in the 14 days to 2026-11-24; no record of
+# budget: its run
 SCOPE_GRACE_S = 600     # the scope's own bound sits this far past run_max_s: the Dispatcher's stop comes first
+# budget: danger=a run that ignores SIGTERM holds its slot; its reach leaves no record; no record of its run
 SCOPE_STOP_S = 30       # TERM -> KILL escalation of that bound (TimeoutStopSec)
 
 
@@ -3486,7 +3504,7 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run, level=None):
     r = C.launch_unit(launch_argv(role, unit, msg, out, err, claude, session, tmpdir),
                       {"family": "role", "unit": unit, "role": role.get("name"), "mod": mod, "model": role.get("model"),
                        "extra_units": [role_scope(role["seat"], unit)]},
-                      runner=runner, clone=role.get("clone"), capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+                      runner=runner, clone=role.get("clone"), capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)  # budget: danger=a hung launch holds the Dispatcher's tick; longest=1.3s (admission to start of 1057 runs, control.db)
     text = ((r.stdout or "") + (r.stderr or "")).strip()
     if getattr(r, "refused", False):
         return False, "REFUSED by control: %s" % r.why, {}
@@ -3661,7 +3679,8 @@ def resolve_account():
     return None
 
 
-def _cli_state(root, wait_s=500):
+# budget: danger=a hung tick holds a hand command with no end; longest=97s (a real --apply tick, 2026-11-06)
+def _cli_state(root, wait_s=1000):
     """The live state under the tick's own lock (dispatcher.stop_runs's pattern): a request written beside a tick
     would be lost to its save. -> (lock file, D, state)."""
     import fcntl

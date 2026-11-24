@@ -127,6 +127,8 @@ UNIX_SOCKETS = "/proc/net/unix"
 # A clone's config may tell git to look less hard than this job must: it answers for the bytes on disk, on this filesystem.
 HONEST_STATUS = [w for k in ("core.ignorecase=false", "core.trustctime=true", "core.checkStat=default", "core.fileMode=true",
                                     "core.symlinks=true", "core.ignoreStat=false", "core.fsmonitor=false", "core.untrackedCache=false") for w in ("-c", k)]
+# budget: danger=test fixtures fill /tmp (owner-authority brief, 2026-11-01); ends no work: a fixture this old may go; an open
+# budget: one is held by its process
 FIXTURE_TTL_S = 24 * 3600   # owner-authority brief 2026-11-01: disposable selftest_* a day old may go
 WALK_CAP = 3_000_000        # entries; a tree bigger than this is not aged (REFUSE: too big to age)
 DIRTY_CAP = 2 * 1024 ** 3   # dirty/untracked bytes we will tar; more is skipped and reported
@@ -151,6 +153,7 @@ TMP_PROTECTED = re.compile(r"^(systemd-private-.*|\.X11-unix|\.ICE-unix|\.XIM-un
                            r"|\.?vscode.*|snap.*|pulse-.*|dbus-.*|\.?wsl.*|claude-.*|codex.*|pyright.*|krb5cc.*|gpg-.*"
                            r"|keyring-.*|runtime-.*|\.lock|.*\.sock|.*\.pid)$")
 COOLDOWN_MIN = 30
+# budget: danger=the borrower list is stale while the run deletes; ends no work: the list is read again
 BORROW_REFRESH_S = 120
 BORROW_WALK_SHARE = 0.2     # the borrower find may take at most this share of the time: 40-124 s a walk, every 120 s,
                             # was half of every apply (2026-11-18: 19 rows in 1157 s, 358 deferred)
@@ -236,6 +239,8 @@ def object_format(repo: Path) -> str:
     return _FORMATS[k]
 
 
+# budget: danger=a hung git holds the cleaner, and the disk fills; never reached in the 14 days to 2026-11-24; no record of its
+# budget: run
 def git(repo: Path, *a, stdin: str | None = None, timeout: int = 600) -> subprocess.CompletedProcess:
     env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_") or k in ("GIT_CONFIG_GLOBAL", "GIT_CONFIG_SYSTEM")}
     env.update(GIT_OPTIONAL_LOCKS="0", GIT_TERMINAL_PROMPT="0", GIT_NO_REPLACE_OBJECTS="1")
@@ -980,6 +985,8 @@ def commit_digests(repo: Path, *args, stdin: str | None = None) -> dict[str, tup
     NUL ends every field: a path can hold a newline, never a NUL. None = unreadable."""
     a, b = f"<{os.urandom(16).hex()}>", f"<{os.urandom(16).hex()}>"    # a subject or a path may hold any fixed mark
     r = git(repo, "log", *args, "--no-renames", "--no-abbrev", "--raw", "-z", "--diff-merges=first-parent",
+            # budget: danger=a hung git holds the cleaner, and the disk fills; never reached in the 14 days to 2026-11-24; no
+            # budget: record of its run
             f"--format={a}%H %at %ct %ae %s{b}", stdin=stdin, timeout=300)
     if r.returncode:
         return None
@@ -1361,6 +1368,7 @@ def clone_state(c: Path) -> dict:
 _CORPUS: list[tuple[str, str]] | None = None
 _VOCAB: set[str] | None = None
 _CORPUS_AT = 0.0
+# budget: danger=an item filed in mid run does not reserve its clone; ends no work: the ledger text is read again
 CORPUS_REFRESH_S = 60   # Ctx.refresh rereads the ledger corpus older than this: an item filed mid-run reserves its clone
 
 
@@ -1836,10 +1844,14 @@ def make_bundle(c: Path, tips: list[str], work: Path) -> Path:
     for i, t in enumerate(tips):
         must_read(git(src, "update-ref", f"refs/rm/{i}", t), "pin tip")
     must_read(git(src, "bundle", "create", "-q", str(out), *[f"refs/rm/{i}" for i in range(len(tips))],
+                  # budget: danger=a hung git holds the cleaner, and the disk fills; never reached in the 14 days to 2026-11-24;
+                  # budget: no record of its run
                   *["^" + b for b in sorted(set(mirror_tips()))], timeout=1800), "git bundle create")
     if out.stat().st_size > BUNDLE_CAP:
         raise OverCap(f"bundle is {human(out.stat().st_size)}, over the {human(BUNDLE_CAP)} cap")
     must(git(dst, "bundle", "verify", str(out)), "git bundle verify")
+    # budget: danger=a hung git holds the cleaner, and the disk fills; never reached in the 14 days to 2026-11-24; no record of
+    # budget: its run
     must(git(dst, "fetch", "-q", str(out), "refs/rm/*:refs/rm/*", timeout=1800), "restore test")
     got = git(dst, "for-each-ref", "--format=%(objectname)", "refs/rm/").stdout.split()
     if sorted(got) != sorted(tips):
@@ -1857,6 +1869,8 @@ def proved_objects() -> set[str]:
                                            for x in ("refs/remotes/origin/main", "refs/heads/main")) if r.returncode == 0]
         if tags.returncode or not tips:
             continue
+        # budget: danger=a hung git holds the cleaner, and the disk fills; never reached in the 14 days to 2026-11-24; no record
+        # budget: of its run
         r = git(m, "rev-list", "--objects", "--stdin", stdin="\n".join(tips + tags.stdout.split()) + "\n", timeout=1800)
         if r.returncode == 0:
             out.update(ln[:40] for ln in r.stdout.splitlines())
@@ -1871,6 +1885,8 @@ def make_residual(c: Path, tips: list[str], work: Path, why: str) -> tuple[list[
     src = work / "residual_src.git"
     must(subprocess.run(["git", "init", "-q", "--bare", str(src)], capture_output=True, text=True), "git init")
     (src / "objects" / "info" / "alternates").write_text(str(c / ".git" / "objects") + "\n")
+    # budget: danger=a hung git holds the cleaner, and the disk fills; never reached in the 14 days to 2026-11-24; no record of
+    # budget: its run
     listed = must(git(src, "rev-list", "--objects", "--stdin", stdin="\n".join(tips) + "\n", timeout=1800), "git rev-list --objects")
     # No ^mirror tips here: they would drop objects before proved_objects() has shown any mirror can actually be walked.
     paths = {ln[:40]: ln[41:] for ln in listed.stdout.split("\n") if ln}
@@ -1886,6 +1902,8 @@ def make_residual(c: Path, tips: list[str], work: Path, why: str) -> tuple[list[
             write_text_out(work / "refs.txt", git(c, "for-each-ref", "--format=%(objectname) %(refname)"), "git for-each-ref")]
     if not left:
         return made, {"objects": 0, "pack_bytes": 0, "instead_of": why}
+    # budget: danger=a hung git holds the cleaner, and the disk fills; never reached in the 14 days to 2026-11-24; no record of
+    # budget: its run
     h = must(git(src, "pack-objects", "-q", str(work / "residual"), stdin="".join(x + "\n" for x in left), timeout=1800),
              "git pack-objects")
     pack = work / "residual.pack"
@@ -1893,6 +1911,8 @@ def make_residual(c: Path, tips: list[str], work: Path, why: str) -> tuple[list[
     if pack.stat().st_size > RESIDUE_CAP:
         raise OverCap(f"{why}, and the objects on no mirror pack to {human(pack.stat().st_size)}, over the {human(RESIDUE_CAP)} cap")
     idx = work / "restored.idx"
+    # budget: danger=a hung git holds the cleaner, and the disk fills; never reached in the 14 days to 2026-11-24; no record of
+    # budget: its run
     must(git(src, "index-pack", "-o", str(idx), str(pack), timeout=1800), "restore test")
     with open(idx, "rb") as f:
         shown = subprocess.run(["git", "show-index"], stdin=f, capture_output=True, text=True)
@@ -1957,9 +1977,13 @@ def make_tar(top: Path, paths: list[str] | None, out: Path):
         cmd += ["--null", "--verbatim-files-from", "-T", "-"]
         inp = b"\0".join(os.fsencode(x) for x in paths) + b"\0"
     env = {k: v for k, v in os.environ.items() if k not in ("TAR_OPTIONS", "GZIP")}    # the options here are all of them
+    # budget: danger=a hung tar holds the cleaner, and the disk fills; never reached in the 14 days to 2026-11-24; no record of
+    # budget: its run
     r = subprocess.run(cmd, input=inp, capture_output=True, timeout=1800, env=env)
     if r.returncode:
         raise PreserveFailed(f"tar: {r.stderr.decode('utf-8', 'replace').strip()}")
+    # budget: danger=a hung tar holds the cleaner, and the disk fills; never reached in the 14 days to 2026-11-24; no record of
+    # budget: its run
     t = subprocess.run(["tar", "-tzf", str(out)], capture_output=True, timeout=600, env=env)
     if t.returncode or not t.stdout.strip():
         raise PreserveFailed("tar: the archive does not list back")

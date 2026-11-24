@@ -65,6 +65,7 @@ class Blind(Exception):
 GAME_A = "a"                            # today's game: Steam's install, his
 GEN_ENV = "RM_HOST_GUARD_GEN"           # a holder's children drive under its take (host_guard.export_take)
 REMOTE_GAMES = ("stevedesktop", "stevedesktop.b")   # bridge keys of Steve1, Steve2: through their test lane, never read here
+# budget: danger=a lock read in mid write is empty for milliseconds; ends no work: the reading says: could not look
 WRITING_WAIT_S = 1.0                    # danger: a lock read mid-write is empty for milliseconds (driver_lock
                                         # WRITING_GRACE_S); past this the answer is "could not look", never a guess
 
