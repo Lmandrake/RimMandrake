@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-24T07:14:54-08:00",
-  "since_from": "advance by DISPATCH",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-24T14:44:08-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -18,7 +18,7 @@
     "visit": 1,
     "total": 6
   },
-  "pre_human_arrivals": 1,
+  "pre_human_arrivals": 2,
   "moves": [
     {
       "from": "offline_build",
@@ -400,6 +400,27 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-24T14:44:08-08:00",
+      "by": "BENCH",
+      "why": "visit 9 exit met: 39 of 39 in-game checks PASS on checked sites on the walk build; the one thing owed, the fresh reader of a6f05380df, read it sound (visit_9/fix_reviews.jsonl, 18cf1d0cd8)",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-nine-f-1795558961",
+      "confirmed": {
+        "steward_confirms": "Read visit_9/SUMMARY.md, rows.jsonl and strange.jsonl (8 strange things, all explained), and the diff of validation.py and the selftests the visit edited: the regrow row keeps its three claims on exact per-plant growth and gains a positive control, burn-line waits are staged through the saved quiet counter, each repair seen red on a planted fault and green on the build; no assertion lost but the season wording his no-long-play ruling retired. Fresh reader of a6f05380df: sound, its selftest rc 1 on the parent (six facts) and rc 0 at the fix (48 of 48 mutants red), DLL MATCH. The visit 7 control-pad run of sc_burn_compounds is on an older build and is being classed under RIMMANDRAKE_CLASS_PYRE_CONTROL_PAD_BURN_NOBODY_LIT; its reading so far finds no mod ignition. Verdict: exit met."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match",
+        "unrun_run"
       ]
     }
   ],
